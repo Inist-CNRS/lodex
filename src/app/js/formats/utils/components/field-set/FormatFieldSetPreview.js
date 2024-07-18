@@ -22,16 +22,26 @@ const FormatFieldSetPreview = ({
 }) => {
     const ReactJson = require('react-json-view').default;
 
-    const [datasetName, setDatasetName] = useState(datasets[0].name);
+    const [datasetName, setDatasetName] = useState('');
     const [dataset, setDataset] = useState({});
 
     useEffect(() => {
+        if (datasets && datasets.length >= 1) {
+            setDatasetName(datasets[0].name);
+        }
+    }, [datasets]);
+
+    useEffect(() => {
         const newSet = datasets.find((value) => value.name === datasetName);
+        if (!newSet) {
+            setDataset({});
+            return;
+        }
         setDataset({
             total: newSet.total,
             values: newSet.values,
         });
-    }, [datasetName]);
+    }, [datasets, datasetName]);
 
     const handleDataSetChange = (event) => {
         setDatasetName(event.target.value);

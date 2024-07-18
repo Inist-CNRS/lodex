@@ -26,6 +26,8 @@ const TreeMapView = (props) => {
     const {
         data,
         field,
+        hierarchy,
+        flatType,
         advancedMode,
         advancedModeSpec,
         tooltip,
@@ -43,12 +45,22 @@ const TreeMapView = (props) => {
             return data;
         }
 
-        const treeMapDataBuilder = new TreeMapData(data.values);
+        let values = data.values;
+        if (!hierarchy) {
+            if (flatType === 'id/value') {
+                values = TreeMapData.transformIdValue(data.values);
+            }
+            if (flatType === 'source/target/weight') {
+                values = TreeMapData.transformSourceTargetWeight(data.values);
+            }
+        }
+
+        const treeMapDataBuilder = new TreeMapData(values, hierarchy);
         return {
             ...data,
             values: treeMapDataBuilder.build(),
         };
-    }, [data]);
+    }, [data, hierarchy, flatType]);
 
     const { ref, width } = useSizeObserver();
     const [error, setError] = useState('');
@@ -69,8 +81,12 @@ const TreeMapView = (props) => {
 
         const specBuilder = new TreeMap();
 
+        specBuilder.setHierarchy(hierarchy);
         specBuilder.setColors(colors.split(' '));
         specBuilder.setTooltip(tooltip);
+        specBuilder.setThirdTooltip(
+            hierarchy || (!hierarchy && flatType !== 'id/value'),
+        );
         specBuilder.setTooltipSource(tooltipSource);
         specBuilder.setTooltipTarget(tooltipTarget);
         specBuilder.setTooltipWeight(tooltipWeight);
@@ -80,6 +96,8 @@ const TreeMapView = (props) => {
         return specBuilder.buildSpec(width);
     }, [
         width,
+        hierarchy,
+        flatType,
         advancedMode,
         advancedModeSpec,
         tooltip,
@@ -108,9 +126,11 @@ const TreeMapView = (props) => {
 };
 
 TreeMapView.propTypes = {
-    field: fieldPropTypes.isRequired,
-    resource: PropTypes.object.isRequired,
+    field: fieldPropTypes,
+    resource: PropTypes.object,
     data: PropTypes.any,
+    hierarchy: PropTypes.bool,
+    flatType: PropTypes.oneOf(['id/value', 'source/target/weight']),
     advancedMode: PropTypes.bool,
     advancedModeSpec: PropTypes.string,
     tooltip: PropTypes.bool,
