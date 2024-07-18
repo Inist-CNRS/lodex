@@ -23,6 +23,7 @@ import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import Tenants from './Tenants';
 import LoginForm from './LoginForm';
 import { ROOT_ROLE } from '../../../common/tools/tenantTools';
+import SystemLoad from './SystemLoad';
 
 const localesMUI = new Map([
     ['fr', { ...frFR, ...frFRDatagrid }],
@@ -31,7 +32,7 @@ const localesMUI = new Map([
 
 const locale = getLocale();
 
-export default function RootAdmin() {
+function RootAdmin() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [role, setRole] = useState('');
 
@@ -68,25 +69,35 @@ export default function RootAdmin() {
                             <Box
                                 sx={{
                                     display: 'flex',
-                                    justifyContent: 'space-between',
                                     flex: 1,
                                     alignItems: 'stretch',
                                 }}
                             >
-                                <Typography variant="h6" color="inherit">
+                                <Typography
+                                    variant="h6"
+                                    color="inherit"
+                                    sx={{
+                                        marginTop: 'auto',
+                                        marginBottom: 'auto',
+                                        marginRight: 'auto',
+                                    }}
+                                >
                                     Configuration des instances
                                 </Typography>
                                 {isLoggedIn && (
-                                    <Button
-                                        onClick={handleLogout}
-                                        aria-label="signout"
-                                        color="inherit"
-                                    >
-                                        <ExitToAppIcon />
-                                        <Box component="span" ml={1}>
-                                            Déconnexion
-                                        </Box>
-                                    </Button>
+                                    <>
+                                        <SystemLoad />
+                                        <Button
+                                            onClick={handleLogout}
+                                            aria-label="signout"
+                                            color="inherit"
+                                        >
+                                            <ExitToAppIcon />
+                                            <Box component="span" ml={1}>
+                                                Déconnexion
+                                            </Box>
+                                        </Button>
+                                    </>
                                 )}
                             </Box>
                         </Toolbar>

@@ -92,6 +92,7 @@ export const getAvailableThemes = () => {
             value,
             name: theme.name,
             description: theme.description,
+            defaultVariables: theme.customTemplateVariables,
         });
     });
     return toReturn;

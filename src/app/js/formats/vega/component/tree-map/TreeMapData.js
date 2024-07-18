@@ -30,13 +30,37 @@ export default class TreeMapData {
      */
     filteredNodes;
 
-    constructor(data) {
+    /**
+     * Those variables are use when we have flat data
+     * @type {boolean}
+     */
+    isHierarchy;
+    /**
+     * @type {Map<string, any>}
+     */
+    originalObject;
+
+    /**
+     * @param {Array<{source: string, target: string, weight: string | number, original?: any}>} data
+     * @param isHierarchy
+     */
+    constructor(data, isHierarchy = true) {
         this.data = data;
         this.idIncrement = 0;
         this.ids = new Map();
         this.rawNodesAndLeaves = new Map();
         this.formattedNodesAndLeaves = new Map();
         this.filteredNodes = new Set();
+        this.isHierarchy = isHierarchy;
+
+        if (!this.isHierarchy) {
+            this.originalObject = new Map();
+            data.forEach((datum) => {
+                if (datum.original) {
+                    this.originalObject.set(datum.target, datum.original);
+                }
+            });
+        }
     }
 
     /**
@@ -141,7 +165,11 @@ export default class TreeMapData {
                 continue;
             }
 
-            datum.hierarchy = this.createHierarchy(datum.parent);
+            if (this.isHierarchy) {
+                datum.hierarchy = this.createHierarchy(datum.parent);
+            } else {
+                datum.original = this.originalObject.get(datum.name);
+            }
 
             transformedAndCleanupData.push(datum);
         }
@@ -159,3 +187,49 @@ export default class TreeMapData {
         return this.buildReturnable();
     }
 }
+
+/**
+ * @param {Array<{_id: string, value: string | number}>} values
+ * @return {Array<{source: string, target: string, weight: string | number, original: any}>}
+ */
+TreeMapData.transformIdValue = (values) => {
+    const finalValues = [];
+    values.forEach((datum) => {
+        const middleNode = `root_${datum._id}`;
+        finalValues.push({
+            source: middleNode,
+            target: datum._id,
+            weight: datum.value,
+            original: { ...datum },
+        });
+        finalValues.push({
+            source: 'root',
+            target: middleNode,
+            weight: datum.value,
+        });
+    });
+    return finalValues;
+};
+
+/**
+ * @param {Array<{source: string, target: string, weight: string | number}>} values
+ * @return {Array<{source: string, target: string, weight: string | number, original: any}>}
+ */
+TreeMapData.transformSourceTargetWeight = (values) => {
+    const finalValues = [];
+    values.forEach((datum) => {
+        const leaves = `leaves_${datum.source}_${datum.target}`;
+        finalValues.push({
+            source: datum.source,
+            target: leaves,
+            weight: datum.weight,
+            original: { ...datum },
+        });
+        finalValues.push({
+            source: 'root',
+            target: datum.source,
+            weight: datum.weight,
+        });
+    });
+    return finalValues;
+};
