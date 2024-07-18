@@ -9,9 +9,14 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Quicksand:400,500"/>
     <link rel="stylesheet" href="<%= theme.current.href %>/css/styles.css"/>
     <style><%= theme.cssVariable %></style>
+    <style>
+        html, body, #root {
+            height: 100%;
+        }
+    </style>
 </head>
 <body>
-<div id="root" class="container-fluid"></div>
+<div id="root"></div>
 <script>
     window.__DBNAME__ = '<%= lodex.dbName %>';
     window.__TENANT__ = '<%= lodex.tenant %>';

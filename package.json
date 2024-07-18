@@ -71,6 +71,7 @@
         "@bull-board/koa": "^5.9.1",
         "@dnd-kit/core": "6.0.6",
         "@dnd-kit/sortable": "7.0.1",
+        "@draconides/format": "1.0.3",
         "@emotion/react": "11.7.1",
         "@emotion/styled": "11.6.0",
         "@ezs/analytics": "2.3.2",
