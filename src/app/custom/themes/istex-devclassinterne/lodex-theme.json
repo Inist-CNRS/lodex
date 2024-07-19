@@ -15,7 +15,6 @@
             "palette": "istexDataLodexTheme.js"
         },
         "variables": {
-            ""
             "host": "/",
             "title": "DATA",
             "summary": "Catalogues de données, de ressources et d'outils.",
