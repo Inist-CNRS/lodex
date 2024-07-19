@@ -3,17 +3,22 @@ import translate from 'redux-polyglot/translate';
 import PropTypes from 'prop-types';
 import { polyglot as polyglotPropTypes } from '../../../../propTypes';
 import { FormatDefaultParamsFieldSet } from '../../../utils/components/field-set/FormatFieldSets';
-import { MenuItem, TextField } from '@mui/material';
+import TextField from '@mui/material/TextField';
 import FormatGroupedFieldSet from '../../../utils/components/field-set/FormatGroupedFieldSet';
+import MenuItem from '@mui/material/MenuItem';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Switch from '@mui/material/Switch';
 
 export const defaultArgs = {
     type: 'text',
     label: '',
+    fullScreen: false,
+    maxWidth: 'sm',
 };
 
 const MarkdownModalAdmin = (props) => {
     const { args, p, onChange } = props;
-    const { type, label } = args;
+    const { type, label, fullScreen, maxWidth } = args;
 
     const handleType = (event) => {
         onChange({
@@ -26,6 +31,20 @@ const MarkdownModalAdmin = (props) => {
         onChange({
             ...args,
             label: event.target.value,
+        });
+    };
+
+    const handleFullScreen = (_, newFullScreen) => {
+        onChange({
+            ...args,
+            fullScreen: newFullScreen,
+        });
+    };
+
+    const handleSize = (event) => {
+        onChange({
+            ...args,
+            maxWidth: event.target.value,
         });
     };
 
@@ -56,6 +75,30 @@ const MarkdownModalAdmin = (props) => {
                     onChange={handleLabel}
                     value={label}
                 />
+                <FormControlLabel
+                    control={
+                        <Switch
+                            checked={fullScreen}
+                            onChange={handleFullScreen}
+                        />
+                    }
+                    label={p.t('label_format_fullscreen')}
+                />
+                {!fullScreen ? (
+                    <TextField
+                        fullWidth
+                        select
+                        label={p.t('label_format_size')}
+                        onChange={handleSize}
+                        value={maxWidth}
+                    >
+                        <MenuItem value="xs">xs</MenuItem>
+                        <MenuItem value="sm">sm</MenuItem>
+                        <MenuItem value="md">md</MenuItem>
+                        <MenuItem value="lg">lg</MenuItem>
+                        <MenuItem value="xl">xl</MenuItem>
+                    </TextField>
+                ) : null}
             </FormatDefaultParamsFieldSet>
         </FormatGroupedFieldSet>
     );
@@ -65,6 +108,8 @@ MarkdownModalAdmin.propTypes = {
     args: PropTypes.shape({
         type: PropTypes.oneOf(['text', 'column']),
         label: PropTypes.string,
+        fullScreen: PropTypes.bool,
+        maxWidth: PropTypes.oneOf(['xs', 'sm', 'md', 'lg', 'xl']),
     }),
     onChange: PropTypes.func.isRequired,
     p: polyglotPropTypes.isRequired,

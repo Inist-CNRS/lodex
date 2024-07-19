@@ -2,12 +2,12 @@
     "version": "6",
     "licence": "CeCILL",
     "name": {
-        "fr": "voscouleurs",
-        "en": "yourcolors"
+        "fr": "Voscouleurs",
+        "en": "Voscouleurs"
     },
     "description": {
-        "fr": "Theme personnalisable",
-        "en": "customizable Theme"
+        "fr": "Thème personnalisable",
+        "en": "Customizable theme"
     },
     "configuration": {
         "files": {
@@ -35,7 +35,7 @@
             "themePrimary": "code hexa ",
             "themeSecondary": "code hexa",
             "themeRGBA": "code rgba de primary ou secondary",
-            "info-fond": "bg, pour 'background' en css, permet de mettre une couleur de fond sur les différents élèments de structure de vos pages",
+            "info-fond": "bg, pour 'background' en css, permet de mettre une couleur de fond sur les différents éléments de structure de vos pages",
             "bgBody": "#fff",
             "bgHeader": "",
             "headerTitle": "",

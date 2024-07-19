@@ -1102,3 +1102,7 @@
 "routine_arg"	"Field N°"	"Champ N°"
 "routine_arg_add"	"Add a new field"	"Ajouter un nouveau champ"
 "routine_arg_delete"	"Delete this field"	"Supprimer ce champ"
+"treemap_hierarchy_data"	"Hierarchy data"	"Données hiérarchiques"
+"treemap_flat_data_type"	"Data structure"	"Structure des données"
+"label_format_fullscreen"	"Full screen"	"Plein écran"
+"label_format_size"	"Size"	"Taille"

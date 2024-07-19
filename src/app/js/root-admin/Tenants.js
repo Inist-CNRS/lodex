@@ -26,6 +26,7 @@ import {
     Typography,
 } from '@mui/material';
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
+import { sizeConverter } from './rootAdminUtils';
 
 const baseUrl = getHost();
 
@@ -386,21 +387,7 @@ const Tenants = ({ handleLogout }) => {
             flex: 2,
             sortable: true,
             valueFormatter: (params) => {
-                if (params.value == null) {
-                    return '-';
-                }
-
-                const mbSize = (params.value / 1024).toFixed(2);
-
-                if (mbSize > 1024) {
-                    return `${(mbSize / 1024).toFixed(2)} Gio`;
-                }
-
-                if (mbSize > 1) {
-                    return `${mbSize} Mio`;
-                }
-
-                return `${params.value} Kio`;
+                return sizeConverter(params.value);
             },
         },
         {
@@ -442,7 +429,13 @@ const Tenants = ({ handleLogout }) => {
 
     return (
         <>
-            <div style={{ height: `calc(100vh - 110px)`, width: '100%' }}>
+            <div
+                style={{
+                    height: `calc(100vh - 64px - 24px)`,
+                    width: `calc(100vw - 24px)`,
+                    margin: '12px',
+                }}
+            >
                 <DataGrid
                     getRowId={(row) => row._id}
                     rows={tenants}
@@ -463,12 +456,14 @@ const Tenants = ({ handleLogout }) => {
                 createAction={addTenant}
             />
             <UpdateTenantDialog
+                isOpen={!!tenantToUpdate}
                 tenant={tenantToUpdate}
                 handleClose={() => setTenantToUpdate(null)}
                 updateAction={updateTenant}
             />
 
             <DeleteTenantDialog
+                isOpen={!!openDeleteTenantDialog}
                 tenant={openDeleteTenantDialog}
                 handleClose={() => setOpenDeleteTenantDialog(false)}
                 deleteAction={deleteTenant}

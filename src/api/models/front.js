@@ -1,5 +1,5 @@
 import { createTheme } from '@mui/material/styles';
-import { assign } from 'lodash';
+import { assign, escape } from 'lodash';
 import { getTheme } from './themes';
 import { version } from '../../../package.json';
 import ejs from 'ejs';
@@ -64,10 +64,25 @@ export const createMuiTheme = (lodexTheme) => {
  * @return {Promise<string>}
  */
 const renderTemplate = (file, data) => {
-    return ejs.renderFile(file, data, {
-        async: true,
-        beautify: true,
-        root: path.dirname(file),
+    return new Promise((resolve) => {
+        ejs.renderFile(file, data, {
+            async: true,
+            beautify: true,
+            root: path.dirname(file),
+        })
+            .then(resolve)
+            .catch((reason) => {
+                resolve(`<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Server Side Rendering Error</title>
+</head>
+<body>
+    <h1>Server Side Rendering Error</h1>
+    <p>${escape(reason)}</p>
+</body>
+</html>`);
+            });
     });
 };
 
