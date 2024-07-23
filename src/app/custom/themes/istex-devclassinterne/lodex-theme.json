@@ -6,8 +6,8 @@
         "en": "ISTEX istex-dev internalclass"
     },
     "description": {
-        "fr": "Thème ISTEX compatible juin2024 data et istex lodex (restreint) non maintenu",
-        "en": "ISTEX theme june2024 for Data and Lodex  (restricted) obsoleted"
+        "fr": "ATTENTION ! Thème ISTEX en cours de migration : consulter https://github.com/Inist-CNRS/lodex/tree/master/src/app/custom/themes/istex-devclassinternes#howToMigrate.md",
+        "en": "ISTEX theme june2024 for Data,Tools and Lodex  (restricted) obsoleted"
     },
     "configuration": {
         "files": {
