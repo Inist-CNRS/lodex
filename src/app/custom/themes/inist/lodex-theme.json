@@ -1,21 +1,21 @@
 {
-  "version": "6",
-  "licence": "All Right Reserved",
-  "name": {
-    "fr": "INIST",
-    "en": "INIST"
-  },
-  "description": {
-    "fr": "Thème INIST (restreint)",
-    "en": "INIST theme (restricted)"
-  },
-  "configuration": {
-    "files": {
-      "index": "index.ejs",
-      "palette": "inistTheme.js"
+    "version": "6",
+    "licence": "All Right Reserved",
+    "name": {
+        "fr": "INIST",
+        "en": "INIST"
     },
-    "variables": {
-      "title": "Etudes"
+    "description": {
+        "fr": "Thème INIST (restreint)",
+        "en": "INIST theme (restricted)"
+    },
+    "configuration": {
+        "files": {
+            "index": "index.ejs",
+            "palette": "inistTheme.js"
+        },
+        "variables": {
+            "siteTitle": "Etudes"
+        }
     }
-  }
 }
