@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Container from '@mui/material/Container';
 
 import stylesToClassname from '../lib/stylesToClassName';
 
@@ -13,9 +14,9 @@ const styles = stylesToClassname(
 );
 
 export const AppComponent = ({ children }) => (
-    <div className={styles.page}>
+    <Container className={styles.page} maxWidth="xl">
         <div className="body">{children}</div>
-    </div>
+    </Container>
 );
 
 AppComponent.propTypes = {
