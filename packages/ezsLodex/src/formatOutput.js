@@ -47,7 +47,7 @@ function formatOutput(data, feed) {
         if (keys.length > 0) {
             let check = false;
             keys.forEach((k, index) => {
-                if (values[index]) {
+                if (values[index] !== undefined) {
                     feed.write(!check ? ' ' : ',');
                     check = true;
                     feed.write(json(k));
