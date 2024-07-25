@@ -148,6 +148,21 @@ class Hierarchy extends PureComponent {
 
                     this.update();
                 }
+                let current = this.divContainer.current;
+                let gBbox = this.g().node().getBBox();
+
+                if (
+                    current.clientWidth / gBbox.width <
+                    current.clientHeight / gBbox.height
+                ) {
+                    this.initialPosition.scale = current.clientWidth / gBbox.width;
+                } else {
+                    this.initialPosition.scale =
+                        current.clientHeight / gBbox.height;
+                }
+
+                this.initialPosition.scale = this.initialPosition.scale * 0.8;
+                this.centerGraphClick();
             } catch (error) {
                 const { p: polyglot } = this.props;
                 this.tooltip()
@@ -162,21 +177,7 @@ class Hierarchy extends PureComponent {
                     );
             }
 
-            let current = this.divContainer.current;
-            let gBbox = this.g().node().getBBox();
 
-            if (
-                current.clientWidth / gBbox.width <
-                current.clientHeight / gBbox.height
-            ) {
-                this.initialPosition.scale = current.clientWidth / gBbox.width;
-            } else {
-                this.initialPosition.scale =
-                    current.clientHeight / gBbox.height;
-            }
-
-            this.initialPosition.scale = this.initialPosition.scale * 0.8;
-            this.centerGraphClick();
         }
     }
 
