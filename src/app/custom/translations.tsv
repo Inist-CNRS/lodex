@@ -521,6 +521,8 @@
 "bib-comment"	"BibTeX uses a style-independent text-based file format for lists of bibliography items, such as articles, books, and theses"	"BibTeX est format de fichier texte dédié aux références bibliographiques."
 "query-conditor"	"TXT - query for Conditor"	"TXT - requête d'interrogation pour Conditor"
 "query-conditor-comment"	"Direct loading of query results for the Conditor database."	"Chargement direct des résultats d'une requête d'interrogation pour la base Conditor."
+"query-conditor-for-halcnrs" "TXT - query conditor for halcnrs" "TXT - requête Conditor pour traitements hal"
+"query-conditor-for-halcnrs-comment" "Direct loading of query results for the Conditor database and needed processing for the HAL CNRS service." "Chargement direct des résultats d'une requête d'interrogation pour la base Conditor et transformations pour exploitation par le service hal cnrs."
 "query-istex"	"TXT - query for ISTEX"	"TXT - requête d'interrogation pour ISTEX"
 "query-istex-comment"	"Direct loading of query results for the ISTEX archive."	"Chargement direct des résultats d'une requête d'interrogation pour l'archive ISTEX."
 "query-openalex"	"TXT - query for OpenAlex"	"TXT - requête d'interrogation pour OpenAlex"
