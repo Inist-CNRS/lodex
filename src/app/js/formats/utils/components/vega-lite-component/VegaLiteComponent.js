@@ -10,7 +10,7 @@ import {
     VEGA_LITE_DATA_INJECT_TYPE_C,
 } from '../../chartsUtils';
 import { ASPECT_RATIO_NONE, ASPECT_RATIOS } from '../../aspectRatio';
-import ZoomableFormat from '../ZoomableFormat';
+import FormatFullScreenMode from '../FormatFullScreenMode';
 
 /**
  * small component use to handle vega lite display
@@ -89,7 +89,7 @@ function CustomActionVegaLite({
                     />
                 </div>
             ) : (
-                <ZoomableFormat>
+                <FormatFullScreenMode>
                     <Vega
                         style={
                             aspectRatio === ASPECT_RATIO_NONE
@@ -100,7 +100,7 @@ function CustomActionVegaLite({
                         actions={actions}
                         mode="vega-lite"
                     />
-                </ZoomableFormat>
+                </FormatFullScreenMode>
             )}
         </>
     );

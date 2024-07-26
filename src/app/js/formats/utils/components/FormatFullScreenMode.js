@@ -9,7 +9,7 @@ import Tooltip from '@mui/material/Tooltip';
 import translate from 'redux-polyglot/translate';
 import { polyglot as polyglotPropTypes } from '../../../propTypes';
 
-const ZoomableFormat = ({ children, p }) => {
+const FormatFullScreenMode = ({ children, p }) => {
     const [open, setOpen] = useState(false);
 
     const handleClickOpen = () => {
@@ -71,9 +71,9 @@ const ZoomableFormat = ({ children, p }) => {
     );
 };
 
-ZoomableFormat.propTypes = {
+FormatFullScreenMode.propTypes = {
     children: PropTypes.node.isRequired,
     p: polyglotPropTypes.isRequired,
 };
 
-export default translate(ZoomableFormat);
+export default translate(FormatFullScreenMode);

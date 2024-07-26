@@ -16,7 +16,7 @@ import { StyleSheet, css } from 'aphrodite/no-important';
 
 import injectData from '../../injectData';
 import MouseIcon from '../../utils/components/MouseIcon';
-import ZoomableFormat from '../../utils/components/ZoomableFormat';
+import FormatFullScreenMode from '../../utils/components/FormatFullScreenMode';
 
 const simulationOptions = {
     animate: true,
@@ -72,7 +72,7 @@ class Network extends Component {
         const { nodes, links, colorSet } = this.props;
 
         return (
-            <ZoomableFormat>
+            <FormatFullScreenMode>
                 <div className={css(styles.container)}>
                     <InteractiveForceGraph
                         simulationOptions={simulationOptions}
@@ -102,7 +102,7 @@ class Network extends Component {
 
                     <div>{this.mouseIcon}</div>
                 </div>
-            </ZoomableFormat>
+            </FormatFullScreenMode>
         );
     }
 }
