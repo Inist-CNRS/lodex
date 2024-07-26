@@ -21,22 +21,20 @@ const FormatFullScreenMode = ({ children, p }) => {
 
     return (
         <>
-            <div>
-                {!open ? children : null}
+            {children}
 
-                <Tooltip title={p.t('fullscreen')} placement="left">
-                    <IconButton
-                        onClick={handleClickOpen}
-                        sx={{
-                            position: 'absolute',
-                            right: 8,
-                            bottom: 8,
-                        }}
-                    >
-                        <OpenInFullIcon />
-                    </IconButton>
-                </Tooltip>
-            </div>
+            <Tooltip title={p.t('fullscreen')} placement="left">
+                <IconButton
+                    onClick={handleClickOpen}
+                    sx={{
+                        position: 'absolute',
+                        right: 8,
+                        bottom: 8,
+                    }}
+                >
+                    <OpenInFullIcon />
+                </IconButton>
+            </Tooltip>
 
             <Dialog fullScreen={true} open={open} onClose={handleClose}>
                 <IconButton
@@ -63,7 +61,7 @@ const FormatFullScreenMode = ({ children, p }) => {
                             overflow: 'scroll',
                         }}
                     >
-                        {open ? children : null}
+                        {children}
                     </fieldset>
                 </DialogContent>
             </Dialog>
