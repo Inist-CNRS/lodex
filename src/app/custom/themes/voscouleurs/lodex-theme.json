@@ -13,44 +13,44 @@
         "files": {
             "index": "index.ejs",
             "palette": ""
-        }
-    },
-    "variables": {
-        "information": "toutes les configurations ci-dessous sont optionnelles.Pour les désactiver, supprimer \"le texte entre les guillemets\"",
-        "siteTitle": "titre du site",
-        "summary": "promesse du site, sous-titre",
-        "logo": {
-            "file": "url fichier du logo de l'organisme",
-            "alt": "nom de l'organisme",
-            "url": "url de l'organisme",
-            "size": "100"
         },
-        "font": {
-            "information": "utiliser strictement https://fonts.google.com/",
-            "family": "nom d'une famille de googlefont construit le lien dans head ",
-            "title": "nom de cette font pour les titres déclaration css"
-        },
-        "color": {
-            "info-theme": "EN DEVELOPPEMENT : les trois couleurs suivantes permettent de mémoriser les codes hexadecimaux de 2 couleurs qui font l'identité de votre organisme",
-            "themePrimary": "code hexa ",
-            "themeSecondary": "code hexa",
-            "themeRGBA": "code rgba de primary ou secondary",
-            "info-fond": "bg, pour 'background' en css, permet de mettre une couleur de fond sur les différents éléments de structure de vos pages",
-            "bgBody": "#fff",
-            "bgHeader": "",
-            "headerTitle": "",
-            "bgContent": "",
-            "bgFacet": "",
-            "titles": "",
-            "titleGraph": "",
-            "text": "",
-            "info-bouton": "ci-dessous, les couleurs des liens et boutons",
-            "icon": "",
-            "iconHover": "",
-            "button": "",
-            "buttonHover": "",
-            "textContrast": "",
-            "bgContrast": ""
+        "variables": {
+            "information": "toutes les configurations ci-dessous sont optionnelles.Pour les désactiver, supprimer \"le texte entre les guillemets\"",
+            "siteTitle": "titre du site",
+            "summary": "promesse du site, sous-titre",
+            "logo": {
+                "file": "url fichier du logo de l'organisme",
+                "alt": "nom de l'organisme",
+                "url": "url de l'organisme",
+                "size": "100"
+            },
+            "font": {
+                "information": "utiliser strictement https://fonts.google.com/",
+                "family": "nom d'une famille de googlefont construit le lien dans head ",
+                "title": "nom de cette font pour les titres déclaration css"
+            },
+            "color": {
+                "info-theme": "EN DEVELOPPEMENT : les trois couleurs suivantes permettent de mémoriser les codes hexadecimaux de 2 couleurs qui font l'identité de votre organisme",
+                "themePrimary": "code hexa ",
+                "themeSecondary": "code hexa",
+                "themeRGBA": "code rgba de primary ou secondary",
+                "info-fond": "bg, pour 'background' en css, permet de mettre une couleur de fond sur les différents éléments de structure de vos pages",
+                "bgBody": "#fff",
+                "bgHeader": "",
+                "headerTitle": "",
+                "bgContent": "",
+                "bgFacet": "",
+                "titles": "",
+                "titleGraph": "",
+                "text": "",
+                "info-bouton": "ci-dessous, les couleurs des liens et boutons",
+                "icon": "",
+                "iconHover": "",
+                "button": "",
+                "buttonHover": "",
+                "textContrast": "",
+                "bgContrast": ""
+            }
         }
     }
 }
