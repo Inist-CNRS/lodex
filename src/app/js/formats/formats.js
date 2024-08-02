@@ -19,7 +19,6 @@ import istex from './other/istex';
 import link from './url/link';
 import linkImage from './url/link-image';
 import list from './text/list';
-import trelloTimeline from './other/trello-timeline';
 import markdown from './text/markdown/simple';
 import markdownModal from './text/markdown/modal';
 import uri from './url/uri';
@@ -180,13 +179,6 @@ export const FORMATS_CATALOG = [
         componentName: 'list',
         component: list,
         type: 'text',
-    },
-    {
-        name: 'formatTrelloTimeline',
-        description: 'formatTrelloTimelineDescription',
-        componentName: 'trelloTimeline',
-        component: trelloTimeline,
-        type: 'other',
     },
     {
         name: 'formatMarkdown',
