@@ -121,7 +121,6 @@
         "from": "0.1.7",
         "history": "^4.7.2",
         "inist-ark": "^2.1.3",
-        "inist-roadmap": "^1.2.0",
         "js-sentencecase": "^1.2.1",
         "jsonstream": "1.0.3",
         "jsonwebtoken": "9.0.2",
