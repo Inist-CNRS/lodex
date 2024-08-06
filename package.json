@@ -141,7 +141,7 @@
         "mime": "1.6.0",
         "mime-types": "2.1.35",
         "moment": "2.29.4",
-        "mongodb": "4.17.1",
+        "mongodb": "6.8.0",
         "mongodb-restore": "1.6.2",
         "mui-file-dropzone": "4.0.2",
         "multistream": "^2.1.1",
