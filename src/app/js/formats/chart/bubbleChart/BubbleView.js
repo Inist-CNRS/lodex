@@ -8,7 +8,7 @@ import memoize from 'lodash/memoize';
 import injectData from '../../injectData';
 import Bubble from './Bubble';
 import { getColor } from '../../utils/colorUtils';
-import ZoomableFormat from '../../utils/components/ZoomableFormat';
+import FormatFullScreenMode from '../../utils/components/FormatFullScreenMode';
 
 const styles = {
     container: memoize(({ diameter }) => ({
@@ -20,7 +20,7 @@ const styles = {
 };
 
 export const BubbleView = ({ data, diameter, colorSet }) => (
-    <ZoomableFormat>
+    <FormatFullScreenMode>
         <div style={styles.container({ diameter })}>
             {data.map(({ data: { _id: key }, r, x, y, value }, index) => (
                 <Bubble
@@ -34,7 +34,7 @@ export const BubbleView = ({ data, diameter, colorSet }) => (
                 />
             ))}
         </div>
-    </ZoomableFormat>
+    </FormatFullScreenMode>
 );
 
 BubbleView.propTypes = {
