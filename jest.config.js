@@ -57,6 +57,9 @@ module.exports = {
                 '/node_modules/(?!quick-lru)',
             ],
             testTimeout: 8000,
+            setupFilesAfterEnv: [
+                './jest-setup.js',
+            ]
         },
     ],
 };

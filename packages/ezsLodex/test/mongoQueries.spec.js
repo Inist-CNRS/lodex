@@ -1,3 +1,4 @@
+import {performance, PerformanceObserver} from 'perf_hooks';
 import from from 'from';
 import { MongoClient } from 'mongodb';
 import _ from 'lodash';
@@ -14,22 +15,25 @@ ezs.use(ezsLodex);
 
 describe('mongo queries', () => {
     const connectionStringURI = process.env.MONGO_URL;
+    let client;
     let connection;
     let db;
 
     beforeAll(async () => {
-        connection = await MongoClient.connect(process.env.MONGO_URL, {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-        });
-        db = await connection.db();
+        client = new MongoClient(process.env.MONGO_URL);
+        try {
+            await client.connect();
+            db = await client.db();
+        } catch (e) {
+            console.error(`Unable to connect to ${connectionStringURI}` , e);
+        }
     });
 
     afterAll(async () => {
         await Promise.all(
-            Object.keys(handles).map(key => handles[key].close()),
+            Object.keys(handles).map((key) => handles[key].close()),
         );
-        await connection.close();
+        await client.close();
     });
 
     const initDb = (url, data) => {
@@ -40,11 +44,11 @@ describe('mongo queries', () => {
         return Promise.all(requests);
     };
 
-    const drop = () => db.dropDatabase();
+    const drop = async () => await db.dropDatabase();
 
     describe('getCharacteristics', () => {
-        beforeEach(() => initDb(connectionStringURI, publishedCharacteristic));
-        afterEach(() => drop());
+        beforeEach(async () => await initDb(connectionStringURI, publishedCharacteristic));
+        afterEach(async () => await drop());
 
         it('should return characteristics', done => {
             let res = [];
@@ -93,8 +97,8 @@ describe('mongo queries', () => {
     });
 
     describe('getFields', () => {
-        beforeEach(() => initDb(connectionStringURI, field));
-        afterEach(() => drop());
+        beforeEach(async () => await initDb(connectionStringURI, field));
+        afterEach(async () => await drop());
 
         it('should return the fields', done => {
             let res = [];
@@ -137,8 +141,8 @@ describe('mongo queries', () => {
     });
 
     describe('runQuery', () => {
-        beforeEach(() => initDb(connectionStringURI, publishedDataset));
-        afterEach(() => drop());
+        beforeEach(async () => await initDb(connectionStringURI, publishedDataset));
+        afterEach(async () => await drop());
 
         it('should return results', done => {
             let res = [];
@@ -306,8 +310,8 @@ describe('mongo queries', () => {
     });
 
     describe('reduceQuery', () => {
-        beforeEach(() => initDb(connectionStringURI, publishedDataset));
-        afterEach(() => drop());
+        beforeEach(async () => await initDb(connectionStringURI, publishedDataset));
+        afterEach(async () => await drop());
 
         it('should throw when no reducer is given', done => {
             from([
@@ -360,6 +364,8 @@ describe('mongo queries', () => {
                         field: 'publicationDate',
                     }),
                 )
+                .pipe(ezs.catch())
+                .on('error', done)
                 .on('data', data => {
                     res = [...res, data];
                 })
@@ -506,7 +512,7 @@ describe('mongo queries', () => {
                 initDb(connectionStringURI, field),
             ]),
         );
-        afterEach(() => drop());
+        afterEach(async () => await drop());
 
         it('should inject title & summary in each item', done => {
             const res = [];
@@ -555,8 +561,8 @@ describe('mongo queries', () => {
     });
 
     describe('injectDatasetFields', () => {
-        beforeEach(() => initDb(connectionStringURI, publishedCharacteristic));
-        afterEach(() => drop());
+        beforeEach(async () => await initDb(connectionStringURI, publishedCharacteristic));
+        afterEach(async () => await drop());
 
         it('should inject dataset fiels in each item', done => {
             const res = [];
@@ -593,8 +599,8 @@ describe('mongo queries', () => {
     });
 
     describe('labelizeFieldID', () => {
-        beforeEach(() => initDb(connectionStringURI, field));
-        afterEach(() => drop());
+        beforeEach(async () => await initDb(connectionStringURI, field));
+        afterEach(async () => await drop());
 
         const input = [
             {
@@ -668,8 +674,8 @@ describe('mongo queries', () => {
         });
     });
     describe('buildContext', () => {
-        beforeEach(() => initDb(connectionStringURI, field));
-        afterEach(() => drop());
+        beforeEach(async () => await initDb(connectionStringURI, field));
+        afterEach(async () => await drop());
 
         it('with a standard context', done => {
             const res = [];
@@ -745,8 +751,8 @@ describe('mongo queries', () => {
     });
 
     describe('countField', () => {
-        beforeEach(() => initDb(connectionStringURI, publishedDataset));
-        afterEach(() => drop());
+        beforeEach(async () => await initDb(connectionStringURI, publishedDataset));
+        afterEach(async () => await drop());
 
         it('should return results', done => {
             let res = [];
@@ -776,8 +782,8 @@ describe('mongo queries', () => {
     });
 
     describe('aggregateQuery', () => {
-        beforeEach(() => initDb(connectionStringURI, publishedDataset));
-        afterEach(() => drop());
+        beforeEach(async () => await initDb(connectionStringURI, publishedDataset));
+        afterEach(async () => await drop());
 
         it('should return results', done => {
             let res = [];
@@ -898,10 +904,10 @@ describe('mongo queries', () => {
     });
 
     describe('#joinQuery', () => {
-        beforeEach(() =>
-            initDb(connectionStringURI, publishedDatasetWithSubResource),
+        beforeEach(async () =>
+            await initDb(connectionStringURI, publishedDatasetWithSubResource),
         );
-        afterEach(() => drop());
+        afterEach(async () => await drop());
 
         it('should return no results with parameters matchField, matchValue, joinField as empty string', done => {
             const results = [];
@@ -1097,7 +1103,7 @@ describe('mongo queries', () => {
             await initDb(connectionStringURI, precomputedDataset);
         });
 
-        afterEach(() => drop());
+        afterEach(async () => await drop());
 
         it('should return 5 result for segments precomputed', done => {
             const results = [];
