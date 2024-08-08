@@ -4,7 +4,7 @@ import omit from 'lodash/omit';
 import uniqWith from 'lodash/uniqWith';
 import JSONStream from 'jsonstream';
 import { Transform } from 'stream';
-import { ObjectID } from 'mongodb';
+import { ObjectId } from 'mongodb';
 
 import { URI_FIELD_NAME, moveUriToFirstPosition } from '../../common/uris';
 import countNotUnique from './countNotUnique';
@@ -141,7 +141,7 @@ export default (db) => {
     };
 
     collection.removeAttribute = async (attribute) =>
-        collection.update({}, { $unset: { [attribute]: 1 } }, { multi: true });
+        collection.updateOne({}, { $unset: { [attribute]: 1 } }, { multi: true });
 
     collection.findBy = async (fieldName, value) => {
         if (!(await collection.ensureIsUnique(fieldName))) {
@@ -201,7 +201,7 @@ export default (db) => {
     };
 
     collection.deleteOne = async (id) =>
-        collection.remove({ _id: new ObjectID(id) });
+        collection.deleteOne({ _id: new ObjectId(id) });
 
     return collection;
 };

@@ -55,7 +55,15 @@ export const createFunction = () => async function LodexReduceQuery(data, feed) 
     const collName = String('mp_').concat(
         hashCoerce.hash({ reducer, fields }),
     );
-    const options = {
+    const connectionStringURI = this.getParam(
+        'connectionStringURI',
+        data.connectionStringURI || '',
+    );
+    const db = await mongoDatabase(connectionStringURI);
+    const command = {
+        mapReduce: 'publishedDataset',
+        map: map.toString(),
+        reduce: reduce.toString(),
         query: filter,
         finalize,
         out: {
@@ -65,16 +73,13 @@ export const createFunction = () => async function LodexReduceQuery(data, feed) 
             fields,
         },
     };
-    const connectionStringURI = this.getParam(
-        'connectionStringURI',
-        data.connectionStringURI || '',
-    );
-    const db = await mongoDatabase(connectionStringURI);
-    const collection = db.collection('publishedDataset');
+    const { result: collectionResult, ok } = await db.command(command);
+    if (ok !== 1) {
+        return feed.stop(new Error('MongoDB command return an error'))
+    }
 
-    const result = await collection.mapReduce(map, reduce, options);
-
-    const total = await result.count();
+    const result = await db.collection(collectionResult);
+    const total = await result.estimatedDocumentCount();
 
     const findFilter = {};
 
@@ -101,6 +106,7 @@ export const createFunction = () => async function LodexReduceQuery(data, feed) 
     const cursor = result.find(findFilter);
     const count = await cursor.count();
 
+
     if (total === 0 || count === 0) {
         return feed.send({ total: 0 });
     }
@@ -110,6 +116,7 @@ export const createFunction = () => async function LodexReduceQuery(data, feed) 
         path.push('referer');
         value.push(referer);
     }
+
     const stream = cursor
         .sort(sort)
         .skip(skip)
@@ -117,7 +124,7 @@ export const createFunction = () => async function LodexReduceQuery(data, feed) 
         .stream()
         .on('error', (e) => feed.stop(e))
         .pipe(ezs('assign', { path, value }));
-    await feed.flow(stream);
+    feed.flow(stream);
 };
 
 export default {

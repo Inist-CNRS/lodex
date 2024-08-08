@@ -56,7 +56,7 @@ describe('publishedDataset', () => {
         };
         const collection = {
             findOne: jest.fn().mockImplementation(() => previousResource),
-            update: jest.fn(),
+            updateOne: jest.fn(),
             createIndex: jest.fn(),
         };
         const db = {
@@ -90,7 +90,7 @@ describe('publishedDataset', () => {
                 );
 
                 expect(collection.findOne).toHaveBeenCalledWith({ uri: 'uri' });
-                expect(collection.update).toHaveBeenCalledWith(
+                expect(collection.updateOne).toHaveBeenCalledWith(
                     { uri: 'uri' },
                     {
                         $addToSet: {
@@ -136,7 +136,7 @@ describe('publishedDataset', () => {
                 );
 
                 expect(collection.findOne).toHaveBeenCalledWith({ uri: 'uri' });
-                expect(collection.update).toHaveBeenCalledWith(
+                expect(collection.updateOne).toHaveBeenCalledWith(
                     { uri: 'uri' },
                     {
                         $addToSet: {
@@ -171,7 +171,7 @@ describe('publishedDataset', () => {
         };
         const collection = {
             aggregate: jest.fn().mockImplementation(() => aggregateResult),
-            update: jest.fn(),
+            updateOne: jest.fn(),
             createIndex: jest.fn(),
         };
         const db = {
@@ -204,7 +204,7 @@ describe('publishedDataset', () => {
                 'name',
                 'status',
             );
-            expect(collection.update).toHaveBeenCalledWith(
+            expect(collection.updateOne).toHaveBeenCalledWith(
                 { uri: 'uri', 'contributions.fieldName': 'name' },
                 {
                     $set: { 'contributions.$.status': 'status' },

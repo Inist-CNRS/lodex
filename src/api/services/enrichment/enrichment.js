@@ -423,7 +423,7 @@ export const restoreEnrichments = async (ctx) => {
                 ctx,
                 enrichment,
             );
-            await ctx.enrichment.update(enrichment._id, enrichmentWithRule);
+            await ctx.enrichment.updateOne(enrichment._id, enrichmentWithRule);
         }
     }
 };

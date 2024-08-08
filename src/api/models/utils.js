@@ -1,4 +1,4 @@
-import { ObjectID } from 'mongodb';
+import { ObjectId } from 'mongodb';
 
 export const castIdsFactory = (collection) => async () => {
     const items = await collection.find({}).toArray();
@@ -7,10 +7,10 @@ export const castIdsFactory = (collection) => async () => {
         (acc, item) =>
             acc.then(async () => {
                 await acc;
-                await collection.remove({ _id: item._id });
-                await collection.insert({
+                await collection.deleteOne({ _id: item._id });
+                await collection.insertOne({
                     ...item,
-                    _id: new ObjectID(item._id),
+                    _id: new ObjectId(item._id),
                 });
             }),
         Promise.resolve(),
