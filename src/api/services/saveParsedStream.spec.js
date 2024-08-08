@@ -52,7 +52,7 @@ describe('saveParsedStream', () => {
     describe('with publication', () => {
         const ctx = {
             dataset: {
-                remove: jest.fn(),
+                deleteOne: jest.fn(),
                 count: jest.fn().mockImplementation(() => 'count'),
                 updateMany: jest.fn(),
             },
@@ -88,7 +88,7 @@ describe('saveParsedStream', () => {
         });
 
         it('should not have called dataset.remove', () => {
-            expect(ctx.dataset.remove).not.toHaveBeenCalled();
+            expect(ctx.dataset.deleteOne).not.toHaveBeenCalled();
         });
 
         it('should have called updateMany on dataset and publishedDataset to set lodex_published to true', () => {
@@ -141,14 +141,14 @@ describe('saveParsedStream', () => {
         const parsedStream = 'parsedStream';
         const ctx = {
             dataset: {
-                remove: jest.fn(),
+                deleteOne: jest.fn(),
                 count: jest.fn().mockImplementation(() => 'count'),
                 updateMany: jest.fn(),
             },
             publishedDataset: {
                 count: jest.fn().mockImplementation(() => 1000),
                 updateMany: jest.fn(),
-                remove: jest.fn(),
+                deleteOne: jest.fn(),
             },
             field: {
                 findAll: jest
@@ -219,10 +219,10 @@ describe('saveParsedStream', () => {
         });
 
         it('should remove all unpublished document from dataset and publishedDataset', () => {
-            expect(ctx.dataset.remove).toHaveBeenCalledWith({
+            expect(ctx.dataset.deleteOne).toHaveBeenCalledWith({
                 lodex_published: { $exists: false },
             });
-            expect(ctx.publishedDataset.remove).toHaveBeenCalledWith({
+            expect(ctx.publishedDataset.deleteOne).toHaveBeenCalledWith({
                 lodex_published: { $exists: false },
             });
         });

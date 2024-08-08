@@ -13,7 +13,7 @@ const removeOldValue = (publishedFacet, field) => async (oldValue) => {
 };
 
 const addNewValue = (publishedFacet, field) => async (newValue) => {
-    await publishedFacet.updateOne(
+    await publishedFacet.update(
         { field, value: newValue },
         { $inc: { count: 1 } },
         { upsert: true },
