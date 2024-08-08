@@ -159,6 +159,7 @@ app.use(function* (next) {
     try {
         yield next;
     } catch (err) {
+        console.error('Sending error as a body', err);
         this.status = err.status || 500;
         this.body = err.message;
         this.app.emit('error', err, this);

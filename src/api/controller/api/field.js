@@ -156,6 +156,7 @@ export const setup = async (ctx, next) => {
     try {
         await next();
     } catch (error) {
+        console.error('Sending error as a body', error);
         ctx.status = 500;
         ctx.body = { error: error.message };
     }
@@ -314,8 +315,8 @@ export const importFields = (asyncBusboyImpl) => async (ctx) => {
         };
         ctx.status = 200;
     } catch (e) {
+        console.error('Sending error as a body', e);
         ctx.status = 500;
-        console.error(e);
         ctx.body = e.message;
     }
 };
