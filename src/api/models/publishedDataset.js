@@ -1,4 +1,4 @@
-import { ObjectID } from 'mongodb';
+import { ObjectId } from 'mongodb';
 import chunk from 'lodash/chunk';
 import omit from 'lodash/omit';
 
@@ -201,7 +201,7 @@ export default async (db) => {
     };
 
     collection.findById = async (id) => {
-        const oid = new ObjectID(id);
+        const oid = new ObjectId(id);
         return collection.findOne({ _id: oid });
     };
 

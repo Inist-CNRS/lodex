@@ -20,7 +20,7 @@ import {
 } from '../../../common/scope';
 import { dropJobs } from '../../workers/tools';
 import { ENRICHER } from '../../workers/enricher';
-import { ObjectID } from 'mongodb';
+import { ObjectId } from 'mongodb';
 import generateUid from '../../services/generateUid';
 import { restoreEnrichments } from '../../services/enrichment/enrichment';
 import { restorePrecomputed } from '../../services/precomputed/precomputed';
@@ -228,7 +228,7 @@ export const patchSearchableFields = async (ctx) => {
     const fields = ctx.request.body;
 
     try {
-        const ids = fields.map((field) => new ObjectID(field._id));
+        const ids = fields.map((field) => new ObjectId(field._id));
         await ctx.field.updateMany(
             { _id: { $in: ids } },
             { $set: { searchable: true } },

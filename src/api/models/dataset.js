@@ -4,7 +4,7 @@ import omit from 'lodash/omit';
 import uniqWith from 'lodash/uniqWith';
 import JSONStream from 'jsonstream';
 import { Transform } from 'stream';
-import { ObjectID } from 'mongodb';
+import { ObjectId } from 'mongodb';
 
 import { URI_FIELD_NAME, moveUriToFirstPosition } from '../../common/uris';
 import countNotUnique from './countNotUnique';
@@ -201,7 +201,7 @@ export default (db) => {
     };
 
     collection.deleteOne = async (id) =>
-        collection.deleteOne({ _id: new ObjectID(id) });
+        collection.deleteOne({ _id: new ObjectId(id) });
 
     return collection;
 };

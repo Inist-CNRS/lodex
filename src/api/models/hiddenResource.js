@@ -1,4 +1,4 @@
-import { ObjectID } from 'mongodb';
+import { ObjectId } from 'mongodb';
 import { castIdsFactory } from './utils';
 
 export default async (db) => {
@@ -18,7 +18,7 @@ export default async (db) => {
     collection.deleteByUri = async (uri) => collection.deleteOne({ uri });
 
     collection.delete = async (id) =>
-        collection.deleteOne({ _id: new ObjectID(id) });
+        collection.deleteOne({ _id: new ObjectId(id) });
 
     collection.castIds = castIdsFactory(collection);
 

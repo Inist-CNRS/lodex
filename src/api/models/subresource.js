@@ -1,4 +1,4 @@
-import { ObjectID } from 'mongodb';
+import { ObjectId } from 'mongodb';
 import omit from 'lodash/omit';
 import { castIdsFactory } from './utils';
 
@@ -6,7 +6,7 @@ export default async (db) => {
     const collection = db.collection('subresource');
 
     collection.findOneById = async (id) =>
-        collection.findOne({ _id: new ObjectID(id) });
+        collection.findOne({ _id: new ObjectId(id) });
 
     collection.findAll = async () => collection.find({}).toArray();
 
@@ -16,15 +16,15 @@ export default async (db) => {
     };
 
     collection.delete = async (id) =>
-        collection.deleteOne({ _id: new ObjectID(id) });
+        collection.deleteOne({ _id: new ObjectId(id) });
 
     collection.update = async (id, data) => {
-        const objectId = new ObjectID(id);
+        const objId = new ObjectId(id);
 
         return collection
             .findOneAndUpdate(
                 {
-                    _id: objectId,
+                    _id: objId,
                 },
                 {
                     $set: omit(data, ['_id']),
