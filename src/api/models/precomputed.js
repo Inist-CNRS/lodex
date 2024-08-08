@@ -35,7 +35,7 @@ export default async (db) => {
             // Collection does not exist, no big deal
             console.warn(`Failed to drop collection 'pc_${id}'`);
         }
-        return collection.remove({
+        return collection.deleteOne({
             $or: [{ _id: new ObjectId(id) }, { _id: id }],
         });
     };

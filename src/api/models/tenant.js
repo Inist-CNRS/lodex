@@ -20,7 +20,7 @@ export default async (db) => {
     };
 
     collection.delete = async (id) =>
-        collection.remove({ $or: [{ _id: new ObjectID(id) }, { _id: id }] });
+        collection.deleteOne({ $or: [{ _id: new ObjectID(id) }, { _id: id }] });
 
     collection.update = async (id, data) => {
         const objectId = new ObjectID(id);

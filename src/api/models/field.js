@@ -203,10 +203,10 @@ export default async (db) => {
     };
 
     collection.removeById = (id) =>
-        collection.remove({ _id: new ObjectID(id), name: { $ne: 'uri' } });
+        collection.deleteOne({ _id: new ObjectID(id), name: { $ne: 'uri' } });
 
     collection.removeBySubresource = (subresourceId) =>
-        collection.remove({
+        collection.deleteOne({
             $or: [
                 { subresourceId: new ObjectID(subresourceId) },
                 { subresourceId },
@@ -261,7 +261,7 @@ export default async (db) => {
         }
 
         if (isLogged) {
-            await collection.update(
+            await collection.updateOne(
                 {
                     name,
                     contribution: true,
@@ -278,7 +278,7 @@ export default async (db) => {
             return name;
         }
 
-        await collection.update(
+        await collection.updateOne(
             {
                 name,
                 contribution: true,

@@ -18,7 +18,7 @@ export default async (db) => {
     collection.deleteByUri = async (uri) => collection.deleteOne({ uri });
 
     collection.delete = async (id) =>
-        collection.remove({ _id: new ObjectID(id) });
+        collection.deleteOne({ _id: new ObjectID(id) });
 
     collection.castIds = castIdsFactory(collection);
 

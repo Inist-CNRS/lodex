@@ -16,7 +16,7 @@ export default async (db) => {
     };
 
     collection.delete = async (id) =>
-        collection.remove({ _id: new ObjectID(id) });
+        collection.deleteOne({ _id: new ObjectID(id) });
 
     collection.update = async (id, data) => {
         const objectId = new ObjectID(id);
