@@ -21,7 +21,7 @@ describe('publishFacets', () => {
         },
         publishedFacet: {
             insertMany: jest.fn().mockImplementation(() => Promise.resolve()),
-            remove: jest.fn(),
+            deleteOne: jest.fn(),
         },
     };
     const facetFields = [
@@ -51,9 +51,9 @@ describe('publishFacets', () => {
         );
     });
 
-    it('should call publishedFacet.remove', () => {
-        expect(ctx.publishedFacet.remove).toHaveBeenCalled();
-        expect(ctx.publishedFacet.remove).toHaveBeenCalledWith({
+    it('should call publishedFacet.deleteOne', () => {
+        expect(ctx.publishedFacet.deleteOne).toHaveBeenCalled();
+        expect(ctx.publishedFacet.deleteOne).toHaveBeenCalledWith({
             field: { $in: ['facet1', 'facet2', 'field2'] },
         });
     });
@@ -71,7 +71,7 @@ describe('publishFacets', () => {
 
     describe('with no facet', () => {
         beforeEach(() => {
-            ctx.publishedFacet.remove.mockClear();
+            ctx.publishedFacet.deleteOne.mockClear();
             ctx.publishedFacet.insertMany.mockClear();
         });
         it('should do nothing', async () => {
@@ -80,7 +80,7 @@ describe('publishFacets', () => {
                 [{ name: 'field1' }, { name: 'field2' }, { name: 'field3' }],
                 false,
             );
-            expect(ctx.publishedFacet.remove).toHaveBeenCalledTimes(0);
+            expect(ctx.publishedFacet.deleteOne).toHaveBeenCalledTimes(0);
             expect(ctx.publishedFacet.insertMany).toHaveBeenCalledTimes(0);
         });
     });
