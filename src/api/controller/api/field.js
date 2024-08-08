@@ -35,7 +35,7 @@ export const restoreFields = (fileStream, ctx) => {
             .then((fieldsString) => JSON.parse(fieldsString))
             .then((fields) => {
                 ctx.field
-                    .remove({})
+                    .drop()
                     .then(() =>
                         Promise.all(
                             fields
@@ -70,7 +70,7 @@ export const restoreFields = (fileStream, ctx) => {
     };
 
     return ctx.field
-        .remove({})
+        .drop()
         .then(restoreTask)
         .then(() =>
             Promise.all([
@@ -315,6 +315,7 @@ export const importFields = (asyncBusboyImpl) => async (ctx) => {
         ctx.status = 200;
     } catch (e) {
         ctx.status = 500;
+        console.error(e);
         ctx.body = e.message;
     }
 };

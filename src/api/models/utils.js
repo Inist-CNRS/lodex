@@ -7,7 +7,7 @@ export const castIdsFactory = (collection) => async () => {
         (acc, item) =>
             acc.then(async () => {
                 await acc;
-                await collection.removeOne({ _id: item._id });
+                await collection.deleteOne({ _id: item._id });
                 await collection.insertOne({
                     ...item,
                     _id: new ObjectId(item._id),
