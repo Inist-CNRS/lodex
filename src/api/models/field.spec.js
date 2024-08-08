@@ -20,7 +20,7 @@ describe('field', () => {
                 insertOne: jest.fn().mockImplementation(() => ({
                     insertedId: 'insertedId',
                 })),
-                update: jest.fn(),
+                updateOne: jest.fn(),
                 updateMany: jest.fn(),
                 find: jest.fn().mockImplementation(() => ({
                     sort: () => ({
@@ -204,7 +204,7 @@ describe('field', () => {
                     true,
                     'nameArg',
                 );
-                expect(fieldCollection.update).toHaveBeenCalledWith(
+                expect(fieldCollection.updateOne).toHaveBeenCalledWith(
                     {
                         name: 'this field name',
                         contribution: true,
@@ -232,7 +232,7 @@ describe('field', () => {
                     false,
                     'nameArg',
                 );
-                expect(fieldCollection.update).toHaveBeenCalledWith(
+                expect(fieldCollection.updateOne).toHaveBeenCalledWith(
                     {
                         name: 'this field name',
                         contribution: true,
