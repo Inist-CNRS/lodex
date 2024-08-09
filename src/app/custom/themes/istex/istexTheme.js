@@ -12,6 +12,10 @@
  * https://zenoo.github.io/mui-theme-creator/
  * @type {import('@mui/material/styles').Theme['palette']}
  */
+/*TODO for :hover :focus secondary for active tertyary add blue: {
+        secondary: '#31768f',
+        tertiary: '#1a5a71',
+    }, */
 const palette = {
     mode: 'light',
     primary: {
@@ -67,6 +71,10 @@ const palette = {
     contrast: {
         main: '#fff',
         light: '#f0f0f0',
+    },
+    link: {
+        secondary: '#31768f',
+        dark: '#1a5a71',
     },
 };
 
