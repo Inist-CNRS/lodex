@@ -14,7 +14,7 @@
     <meta name="msapplication-TileColor" content="#ffc40d" />
     <meta name="theme-color" content="#ffc40d" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" />
-    <% if(custom.font.family){ %>
+    <% if (custom.font) { %>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=<%= custom.font.family %>:700" />
     <% } %>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Quicksand:400,500" />
@@ -23,14 +23,13 @@
     /* import palette */
         <%=theme.cssVariable %>
     /* import config theme color */    
-        <% if(custom.font) {%> 
+        <% if (custom.font) {%> 
         :root {
         --font-title: <%= custom.font.title %>;
-        --font-text: <%= custom.font.text %>;
         }
-        <%}%>
+        <% } %>
     /* import config theme color */    
-        <% if(custom.color) {%> 
+        <% if (custom.color) {%> 
         :root {
         --bgBody: <%= custom.color.bgBody %>;
         --bgHeader: <%= custom.color.bgHeader %>;
@@ -47,7 +46,7 @@
         --textContrast: <%= custom.color.textContrast %>;
         --bgContrast: <%= custom.color.bgContrast %>;
         }
-        <%}%>        
+        <% } %>        
     </style>
 </head>
 

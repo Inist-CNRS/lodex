@@ -71,6 +71,7 @@
         "json-lines",
         "query-istex",
         "query-conditor",
+        "query-conditor-for-halcnrs",
         "query-openalex",
         "rss",
         "atom",
