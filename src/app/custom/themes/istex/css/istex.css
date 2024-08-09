@@ -1,4 +1,5 @@
 @import 'istex-internalclass.css';
+@import 'istex-linksclass.css';
 @font-face {
     font-family: 'Montserrat';
     src:
@@ -163,11 +164,15 @@ header {
     color: var(--second-color);
 }
 .banner {
-    height: 150px;
     background: #fff url(../img/fondistex.png) center center;
     background-size: cover;
-    padding-top: 30px;
     color: #ffffff;
+}
+.banner .zutile {
+    height: 150px;
+    display: flex;
+    flex-wrap: wrap;
+    align-content: center;
 }
 .banner img {
     margin-right: 10px;
@@ -250,6 +255,7 @@ footer.site-footer::after {
 #root .page-page {
     min-height: 35vh;
     padding: 0 !important;
+    max-width: 100% !important;
 }
 .body {
     font-family: var(--font-texte) !important;
@@ -326,11 +332,11 @@ nav.nav-bar-menu div.nav-bar-container > img {
 }
 .body h3 {
     font-size: 2.2rem;
-    line-height: 3rem;
+    line-height: 2.6rem;
 }
 .body h4 {
     font-size: 2rem;
-    line-height: 2.8rem;
+    line-height: 2.4rem;
     font-style: italic;
 }
 .body h5 {
@@ -355,32 +361,9 @@ nav.nav-bar-menu div.nav-bar-container > img {
 a img {
     border: none;
 }
-.body > div a:not(.graph-link),
-.body > div a[target='_blank'] {
-    color: var(--primary-main);
-    cursor: pointer;
-}
-a:hover {
-    color: #31768f;
-    text-decoration: underline;
-}
-a:active,
-a:focus {
-    color: #1a5a71 !important;
-    text-decoration: underline;
-}
-a desactive {
-    color: #cdcdcd;
-}
-.body > div a:not(:empty)[target='_blank']::after {
-    display: inline-block;
-    content: ' ';
-    width: 20px;
-    height: 17px;
-    margin-bottom: -4px;
-    background: url('../img/lien-externe.svg') bottom right no-repeat;
-    background-size: 15px;
-}
+/*links&alikebutton see*/
+/*istex-linksclass.css*/
+
 /*.body liste*/
 .body ul,
 .body ol {
@@ -398,82 +381,6 @@ a desactive {
 .body li p:first-of-type {
     margin: 0 !important;
 }
-/******************************/
-/*.body button links a.button*/
-/******************************/
-button,
-.button {
-    border: 0px solid transparent;
-    border-radius: 5px;
-    cursor: pointer;
-    padding: 15px 30px;
-    line-height: 18px;
-    font-size: 16px !important;
-    text-decoration: none;
-}
-/*fonce sur fond clair*/
-/*plus, parcourir résultats css-10ro12o css-xiqrbu*/
-.cta1,
-a.cta1,
-.button.cta1 > a {
-    color: var(--contrast-light);
-    background-color: var(--primary-main);
-}
-.cta1:hover,
-.cta1:focus,
-.button.cta1 > a:hover,
-.button.cta1:hover > a,
-.button.cta1 > a:focus,
-.cta3:hover,
-.cta3:focus,
-.css-10ro12o:hover,
-.css-10ro12o:focus,
-.css-xiqrbu:hover,
-.css-xiqrbu:focus {
-    background: var(--primary-secondary);
-}
-/*clair bordure sur fond clair*/
-.button.cta3 {
-    color: var(--primary-main);
-    background-color: transparent;
-    border: 1px solid var(--primary-main);
-    padding: 15px 30px;
-}
-.button.cta3:hover,
-.button.cta3:focus {
-    color: var(--contrast-light);
-}
-/*clair bordure sur fond fonce*/
-.cta2,
-.designCta2 .property_value_container button,
-a.button.cta2,
-.button.cta2 > a {
-    font-family: var(--font-texte);
-    color: var(--contrast-light);
-    background-color: transparent;
-    border: 1px solid var(--contrast-light);
-}
-.designCta2 .property_value_container button:hover,
-.designCta2 .property_value_container button:focus,
-.button.cta2:hover,
-.button.cta2:focus {
-    color: var(--primary-main) !important;
-    background-color: var(--contrast-light);
-}
-/*clair bordure sur fond clair .cta3*/
-/*connexion*/
-/*button class = MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeMedium MuiButton-textSizeMedium MuiButtonBase-root  css-qjrhga*/
-.body > .MuiPaper-root button {
-    color: var(--primary-main);
-    background-color: transparent;
-    border: 1px solid var(--primary-main);
-    padding: 15px 30px;
-}
-.body > .MuiPaper-root button:hover,
-.body > .MuiPaper-root button:focus {
-    color: var(--contrast-light);
-    background: linear-gradient(to left, rgb(96, 157, 178), #458ca5);
-}
 /***************/
 /* formulaires */
 /* color size  */
@@ -489,6 +396,7 @@ a.button.cta2,
 * textarea {
     font-family: var(--font-texte) !important;
     font-size: 1.4rem !important;
+    text-align: left;
 }
 * input,
 * textarea {
@@ -513,6 +421,8 @@ a.button.cta2,
     line-height: 2.9rem;
     font-weight: 550;
 }
+/*bouton fermer x de modal lodex */
+/* MuiButton-root MuiButton-contained MuiButton-containedPrimary MuiButton-sizeMedium MuiButton-containedSizeMedium MuiButtonBase-root  css-zuixs4-MuiButtonBase-root-MuiButton-root*/
 .MuiPaper-root[role='dialog'] button svg {
     width: 2rem;
     height: 2rem;
@@ -532,9 +442,10 @@ a.button.cta2,
     margin-bottom: 1.5rem;
 }
 /* label */
-span.property_label[style*='color: rgb(158, 158, 158)'] {
+span.property_label[style*='color: rgb(158, 158, 158)']:not(:empty) {
     font-family: var(--font-titre) !important;
     font-size: 1.4rem !important;
+    text-align: initial;
 }
 /*label semantique*/
 .body span.property_scheme a {
@@ -562,105 +473,16 @@ span.property_label[style*='color: rgb(158, 158, 158)'] {
 /* design Home             */
 /* .header-dataset-section */
 /***************************/
-/*marge si pas de breadcrumb-root*/
+/*pas de marge haute*/
 .body div:last-child .dataset-characteristics > div:first-child {
-    margin-top: 3.5rem;
-}
-.breadcrumb-root ~ div:last-child .dataset-characteristics > div:first-child {
-    margin-top: 0 !important;
-}
-/*propulsé lodex zutile*/
-.header-dataset-section {
-    /*background-color: var(--primary-main);
-    background-position-y: 0;
-    background-size: 100% 50px;*/
-    position: relative;
-    z-index: 2;
-    background: linear-gradient(
-        to top,
-        var(--primary-main) 40px,
-        transparent 1px,
-        transparent
-    );
-}
-.header-dataset-section > div:last-child {
-    position: relative;
-    max-width: 1200px;
-    min-width: 360px;
-    margin: 0 auto;
-    padding: 10px 30px !important;
-    background-color: var(--primary-main);
-    color: var(--contrast-light) !important;
-    text-align: right;
-}
-.header-dataset-section > div:last-child a {
-    color: var(--contrast-light) !important;
-}
-.header-dataset-section > div:last-child b {
-    font-weight: bold !important;
-}
-.header-dataset-section > div:last-child a:hover,
-.header-dataset-section > div:last-child a:focus {
-    text-decoration: underline !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    gap: 0 !important;
 }
 /*home .property = bloc d'info*/
+/*premier niveau*/
 .dataset-characteristics > div > div.property {
     margin-bottom: 3rem;
-}
-/*************************/
-/* design Home bottom    */
-/* full screen           */
-/* content fond et promo */
-/*************************/
-/*istex home promo*/
-/* galaxieIstex */
-.designHomeGalaxieIstex {
-    background-color: var(--neutral-dark-very-light);
-}
-#design-home-galaxieIstex-container {
-    width: 100% !important;
-    background-image: url(../img/galaxie-istex-1.jpg);
-    background-image: url(../img/galaxie-istex.jpg);
-    background-image: url(../img/galaxie-istex-2.jpg);
-    background-position: center bottom;
-    background-size: cover;
-    background-repeat: no-repeat;
-}
-#design-home-galaxieIstex-container #design-home-galaxieIstex-texte {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 5rem;
-    width: 100%;
-    height: 45rem;
-    max-width: 1920px;
-    margin: 0 auto;
-}
-#design-home-galaxieIstex-texte * {
-    color: var(--secondary-contrast-text);
-    margin: 0;
-}
-#design-home-galaxieIstex-texte span#surtitre {
-    display: block;
-    font-weight: 400;
-    font-family: var(--font-titre);
-    font-size: 2rem;
-    line-height: 4rem;
-}
-#design-home-galaxieIstex-texte h2 {
-    text-align: center !important;
-    color: #c4d733;
-    font-size: 4.3rem;
-    line-height: 5.3rem;
-}
-#design-home-galaxieIstex-texte div#texte {
-    font-size: 2rem;
-    line-height: 3rem;
-}
-#design-home-galaxieIstex-texte div#url a {
-    font-size: 1.6rem;
-    line-height: 2rem;
 }
 /*****************************/
 /* .drawer .search-container */

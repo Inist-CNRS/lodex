@@ -34,8 +34,8 @@ export default {
     },
     blue: {
         primary: '#458CA5',
-        secondary: '#337288',
-        tertiary: '#59A7C2',
+        secondary: '#31768f',
+        tertiary: '#1a5a71',
         light: '#F6F9FA',
     },
 };
