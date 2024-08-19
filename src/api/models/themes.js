@@ -2,7 +2,7 @@ import config from '../../../config.json';
 import path from 'path';
 import getLogger from '../services/logger';
 import defaultMuiTheme from '../../app/custom/themes/default/defaultTheme';
-import deepClone from 'lodash/cloneDeep';
+import { cloneDeep, merge } from 'lodash';
 
 import fs from 'fs/promises';
 
@@ -155,7 +155,7 @@ const init = async () => {
                 }
             }
 
-            let muiTheme = deepClone(defaultMuiTheme);
+            let muiTheme = cloneDeep(defaultMuiTheme);
             if (themeConfig?.configuration?.files?.palette) {
                 const unVerifiedMuiTheme = getThemeFile(
                     theme,
@@ -164,7 +164,7 @@ const init = async () => {
 
                 try {
                     await fs.access(unVerifiedMuiTheme, fs.constants.R_OK);
-                    Object.assign(
+                    muiTheme = merge(
                         muiTheme,
                         (await import(unVerifiedMuiTheme)).default,
                     );
