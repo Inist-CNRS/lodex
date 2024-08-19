@@ -14,7 +14,6 @@ import Alert from '../lib/components/Alert';
 import Loading from '../lib/components/Loading';
 import DatasetCharacteristics from '../characteristic/DatasetCharacteristics';
 import NoDataset from './NoDataset';
-import Version from './Version';
 import getTitle from '../lib/getTitle';
 
 import { preLoadDatasetPage } from './dataset';
@@ -72,14 +71,13 @@ export class HomeComponent extends Component {
 
         if (hasPublishedDataset) {
             return (
-                <div>
+                <div id="home-page">
                     <Helmet>
                         <title>{getTitle(tenant, title || 'LODEX')}</title>
                         <meta name="description" content={description || ''} />
                     </Helmet>
                     <div className="header-dataset-section">
                         <DatasetCharacteristics />
-                        <Version />
                     </div>
                 </div>
             );

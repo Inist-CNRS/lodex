@@ -18,6 +18,7 @@ import scrollToTop from '../lib/scrollToTop';
 import ScrollToTop from './ScrollToTop';
 import Breadcrumb from './breadcrumb/Breadcrumb';
 import { initializeLanguage } from '../i18n';
+import Version from './Version';
 
 const notLogin = new RegExp('^(?!.*(/login)).*$');
 
@@ -49,16 +50,7 @@ const Routes = (props) => {
                 <>
                     <ScrollToTop />
                     <Route path={notLogin} component={Breadcrumb} />
-                    <Route
-                        path={notLogin}
-                        render={(props) => (
-                            <NavBar
-                                {...props}
-                                search={search}
-                                closeSearch={handleCloseSearch}
-                            />
-                        )}
-                    />
+
                     <Route
                         path="/"
                         exact
@@ -101,6 +93,21 @@ const Routes = (props) => {
                             component={CustomPage}
                         />
                     ))}
+
+                    {/* Nav Bar and version footer */}
+                    <Route
+                        path={notLogin}
+                        render={(props) => (
+                            <>
+                                <Version />
+                                <NavBar
+                                    {...props}
+                                    search={search}
+                                    closeSearch={handleCloseSearch}
+                                />
+                            </>
+                        )}
+                    />
                 </>
             </ConnectedRouter>
         </App>
