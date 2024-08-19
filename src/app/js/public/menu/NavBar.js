@@ -18,6 +18,7 @@ import Favicon from '../Favicon';
 import MenuItem from './MenuItem';
 import stylesToClassname from '../../lib/stylesToClassName';
 import LanguageSelector from './LanguageSelector';
+import Container from '@mui/material/Container';
 
 config.autoAddCss = false;
 
@@ -164,7 +165,10 @@ export const NavBar = ({
                         searchDrawer === 'open' || graphDrawer === 'open',
                 })}
             >
-                <div className={classnames('container', styles.container)}>
+                <Container
+                    maxWidth="xl"
+                    className={classnames('container', styles.container)}
+                >
                     <Favicon className={styles.icon} />
                     <div className={styles.first}>
                         {leftMenu.map((config, index) => (
@@ -215,7 +219,7 @@ export const NavBar = ({
                             advancedDrawer={advancedMenuDrawer}
                         />
                     )}
-                </div>
+                </Container>
             </nav>
             <Drawer status={searchDrawer} onClose={toggleSearch}>
                 <Search

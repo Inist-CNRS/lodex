@@ -9,6 +9,7 @@ import { withRouter } from 'react-router';
 import { fromBreadcrumb } from '../selectors';
 import BreadcrumbItem from './BreadcrumbItem';
 import stylesToClassname from '../../lib/stylesToClassName';
+import Container from '@mui/material/Container';
 
 const styles = stylesToClassname(
     {
@@ -45,7 +46,7 @@ export const Breadcrumb = ({ breadcrumb, location }) => {
 
     return (
         <div id="breadcrumb">
-            <div className={styles.root}>
+            <Container maxWidth="xl" className={`${styles.root} container`}>
                 <FontAwesomeIcon
                     className={styles.icon}
                     icon={faAngleLeft}
@@ -63,7 +64,7 @@ export const Breadcrumb = ({ breadcrumb, location }) => {
                         </>
                     ))}
                 </div>
-            </div>
+            </Container>
         </div>
     );
 };
