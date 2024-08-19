@@ -12,6 +12,7 @@ import stylesToClassname from '../../lib/stylesToClassName';
 
 const styles = stylesToClassname(
     {
+        container: {},
         root: {
             display: 'flex',
             alignItems: 'center',
@@ -43,23 +44,25 @@ export const Breadcrumb = ({ breadcrumb, location }) => {
         : breadcrumb;
 
     return (
-        <div className={styles.root}>
-            <FontAwesomeIcon
-                className={styles.icon}
-                icon={faAngleLeft}
-                height={20}
-            />
-            <div className={styles.trail}>
-                {items.map((item, index) => (
-                    <>
-                        <BreadcrumbItem
-                            key={index}
-                            value={item}
-                            className={styles.item}
-                        />
-                        {index + 1 < items.length && <span>/</span>}
-                    </>
-                ))}
+        <div id="breadcrumb">
+            <div className={styles.root}>
+                <FontAwesomeIcon
+                    className={styles.icon}
+                    icon={faAngleLeft}
+                    height={20}
+                />
+                <div className={styles.trail}>
+                    {items.map((item, index) => (
+                        <>
+                            <BreadcrumbItem
+                                key={index}
+                                value={item}
+                                className={styles.item}
+                            />
+                            {index + 1 < items.length && <span>/</span>}
+                        </>
+                    ))}
+                </div>
             </div>
         </div>
     );
