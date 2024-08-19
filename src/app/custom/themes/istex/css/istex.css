@@ -13,7 +13,7 @@
 @font-face {
     font-family: 'Montserrat';
     src:
-        local('Montserrat'),
+        local('Montserrat Medium'),
         url('/themes/istex/fonts/Montserrat/Montserrat-Medium.ttf')
             format('truetype');
     font-style: normal;
@@ -49,6 +49,9 @@
 /*****************************/
 /* General *******************/
 /*****************************/
+* {
+    box-sizing: border-box;
+}
 html {
     font-size: 62.5%;
     width: 100%;
@@ -60,6 +63,7 @@ body {
 }
 :root {
     --font-titre: Montserrat, Arial, Helvetica, sans-serif;
+    --font-titre-medium: Montserrat Medium, Arial, Helvetica, sans-serif;
     --font-texte: Inter, Arial, Helvetica, sans-serif;
 }
 /*otdm2023.css pour header footer*/
@@ -320,28 +324,23 @@ nav.nav-bar-menu div.nav-bar-container > img {
     text-align: left !important;
 }
 .body h1 {
-    font-size: 4.8rem;
-    line-height: 4.8rem;
+    font-size: 3.8rem;
     font-weight: 700;
 }
 .body h2 {
     font-size: 2.8rem;
-    line-height: 3rem;
     font-weight: 700;
     margin-block-end: 0.5em;
 }
 .body h3 {
     font-size: 2.2rem;
-    line-height: 2.6rem;
 }
 .body h4 {
     font-size: 2rem;
-    line-height: 2.4rem;
     font-style: italic;
 }
 .body h5 {
     font-size: 1.8rem;
-    line-height: 2.6rem;
     font-style: italic;
 }
 .body h6 {
@@ -434,12 +433,23 @@ a img {
     line-height: 1.93rem;
     font-weight: 550;
 }
-/***************/
-/* LODEX class */
-/***************/
+/*****************/
+/* LODEX class & */
+/*   composants  */
+/*****************/
+
 /* champs*/
 .property {
     margin-bottom: 1.5rem;
+}
+.MuiBox-root.css-oa9bdm {
+    text-align: initial;
+}
+/*champs composé*/
+/*espace entre les property qui composent*/
+div.property div.MuiBox-root > div > * + div {
+    justify-content: space-between;
+    gap: 0%;
 }
 /* label */
 span.property_label[style*='color: rgb(158, 158, 158)']:not(:empty) {
@@ -473,6 +483,40 @@ span.property_label[style*='color: rgb(158, 158, 158)']:not(:empty) {
 /* design Home             */
 /* .header-dataset-section */
 /***************************/
+/*version lodex propulsé lodex zutile*/
+.header-dataset-section {
+    /*background-color: var(--primary-main);
+    background-position-y: 0;
+    background-size: 100% 50px;*/
+    position: relative;
+    z-index: 2;
+    background: linear-gradient(
+        to top,
+        var(--primary-main) 40px,
+        transparent 1px,
+        transparent
+    );
+}
+.header-dataset-section > div:last-child {
+    position: relative;
+    max-width: 1200px;
+    min-width: 360px;
+    margin: 0 auto;
+    padding: 10px 30px !important;
+    background-color: var(--primary-main);
+    color: var(--contrast-light) !important;
+    text-align: right;
+}
+.header-dataset-section > div:last-child a {
+    color: var(--contrast-light) !important;
+}
+.header-dataset-section > div:last-child b {
+    font-weight: bold !important;
+}
+.header-dataset-section > div:last-child a:hover,
+.header-dataset-section > div:last-child a:focus {
+    text-decoration: underline !important;
+}
 /*pas de marge haute*/
 .body div:last-child .dataset-characteristics > div:first-child {
     margin: 0 !important;
@@ -585,7 +629,7 @@ ul.MuiList-root.facets-list > li .facet-value-list svg {
 /*a.search-result-link*/
 .body .search-result-list-container a {
     text-decoration: none;
-    flex: 1;
+    flex: 1 0 325px;
     color: rgb(74, 74, 74);
     transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
     border-radius: 5px;
@@ -594,7 +638,7 @@ ul.MuiList-root.facets-list > li .facet-value-list svg {
     background-color: var(--neutral-dark-very-light);
     display: flex;
     flex-direction: column;
-    min-width: 48%;
+    width: 48%;
 }
 /*.search-result-list-container a:hover,
 .search-result-list-container a:focus,
@@ -609,13 +653,13 @@ ul.MuiList-root.facets-list > li .facet-value-list svg {
     border: 0px;
     background-color: transparent;
 }
-/*****************/
-/*page resource*/
-/*general*/
-/*donnees en noir*/
-.resource .detail .property_value_container .property_value_container * {
-    color: var(--text-main);
+.search-result-list-container a div.search-result-title {
+    font-family: var(--font-titre);
 }
+/*****************/
+/* page resource */
+/*****************/
+/*general*/
 /*labels en noir et soulignes*/
 .resource
     .property
@@ -653,7 +697,6 @@ ul.MuiList-root.facets-list > li .facet-value-list svg {
 }
 /*bloc header-resource-section*/
 .header-resource-section .property * {
-    color: var(--text-main);
     padding-left: 1rem;
 }
 /* resource titre*/

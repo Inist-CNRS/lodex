@@ -1,49 +1,54 @@
-/* links in text */
-/*fond clair*/
-.body a {
+/* lien du content*/
+.body > div:last-child a {
+    text-decoration: underline;
+}
+/*a avec url comme texte*/
+.property div[class*='designHomeSidebar'] a.property_value {
+    overflow-wrap: anywhere !important;
+    word-break: break-all !important;
+    hyphens: auto;
+    width: inherit;
+}
+/*lien externe icone couleur position*/
+.property a:not(:empty)[target='_blank'] {
+    display: inline-flex;
+}
+.property a:not(:empty)[target='_blank']::after {
+    filter: invert(55%) sepia(9%) saturate(2387%) hue-rotate(150deg)
+        brightness(88%) contrast(81%);
+    color: black;
+    display: inline-block;
+}
+/* link in text fond clair*/
+.property a {
     color: var(--primary-main);
     cursor: pointer;
 }
-.body div:not([class*='Bouton LinkAction']) a {
-    text-decoration: underline !important;
-}
-.body a:is(:hover, :focus) {
+.property a:is(:hover, :focus) {
     color: var(--link-secondary);
-    text-decoration: underline;
 }
-.body a:active {
+.property a:active {
     color: var(--link-dark);
-    text-decoration: underline;
 }
-/*lien externe in text*/
-.body a:not(:empty)[target='_blank'] {
-    display: inline-flex;
-    width: max-content;
-    justify-content: center;
-    align-items: center;
-}
-.body a:not(:empty)[target='_blank']::after {
-    content: ' ';
-    background-size: 15px;
-    width: 15px;
-    height: 15px;
+/*link externe in text fond clair*/
+.property a:not(:empty, .property_value)[target='_blank']::after {
+    content: url('../img/suivre-le-lien-nouvel-onglet.png');
     padding-left: 5px;
 }
-.body a:not(:empty)[target='_blank']::after {
-    background: url('../img/suivre-le-lien-nouvel-onglet.png') center center
-        no-repeat;
-    filter: invert(47%) sepia(25%) saturate(824%) hue-rotate(150deg)
-        brightness(100%) contrast(91%);
-}
-.body a:is(:hover, :focus):not(:empty)[target='_blank']::after {
+.property a:is(:hover, :focus):not(:empty)[target='_blank']::after,
+div[class*='Icon'] a:is(:hover, :focus)::after {
     filter: invert(39%) sepia(60%) saturate(480%) hue-rotate(150deg)
         brightness(90%) contrast(85%);
+    color: black;
 }
-.body a:active:not(:empty)[target='_blank']::after {
+.property a:active:not(:empty, .property_value)[target='_blank']::after,
+div[class*='Icon'] a:active::after {
     filter: invert(24%) sepia(74%) saturate(509%) hue-rotate(150deg)
         brightness(99%) contrast(88%);
+    color: black;
 }
 /*link in text fond sombre*/
+/*lien externe icon*/
 div[class*='HomeSidebar'] a {
     color: var(--contrast-light);
 }
@@ -51,206 +56,149 @@ div[class*='HomeSidebar'] a:is(:hover, :focus, :active) {
     color: var(--contrast-main);
 }
 /*link externe in text fond sombre*/
-div[class*='HomeSidebar'] a:not(:empty)[target='_blank']::after {
-    background: url('../img/lien-externe_blanc.svg') center center no-repeat;
-    background-size: 15px;
-    filter: none;
+/*link externe icon */
+div[class*='HomeSidebar'] a:not(:empty)[target='_blank']::after,
+div[class*='HomeSidebar'] div[class*='Icon'] a::after {
+    filter: invert(88%) sepia(54%) saturate(7152%) hue-rotate(182deg)
+        brightness(124%) contrast(89%);
+    color: black;
 }
 div[class*='HomeSidebar']
-    a:is(:hover, :focus, :active):not(:empty)[target='_blank']::after {
-    filter: none;
-    background-size: 16px;
+    a:is(:hover, :focus, :active):not(:empty)[target='_blank']::after,
+div[class*='HomeSidebar']
+    div[class*='Icon']
+    a:is(:hover, :focus, :active)::after {
+    filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(327deg)
+        brightness(107%) contrast(101%);
+    color: black;
 }
-/*link icon action see button*/
+/*linkIcon = bloc ? */
 
 /************************/
-/* link action & bouton */
+/* linkIcon & bouton */
 /************************/
-
 /* la forme */
-/*div[class*='LinkAction'] .property_value_container > div > div,
-div[class*='Bouton'] .property_value_container > div > div {
-    width: max-content;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border: 0px solid transparent;
-    border-radius: 5px;
-    cursor: pointer;
-    padding: 15px 30px;
-}*/
-div[class*='LinkAction'] .property_value_container > div > div a.property_value,
-div[class*='Bouton'] .property_value_container > div > div a.property_value {
-    display: flex;
-    width: max-content;
-    justify-content: center;
-    align-items: center;
-    border: 0px solid transparent;
-    border-radius: 8px;
-    cursor: pointer;
-    padding: 12px 20px;
+div[class*='LinkIcon'] a.property_value,
+div[class*='Bouton'] a.property_value {
     font-family: var(--font-texte);
-    /*line-height: 18px;*/
     font-size: 16px !important;
     text-decoration: none !important;
     text-transform: uppercase;
+    padding: 12px 0;
+    width: auto;
+    line-height: auto;
+    display: inline-flex;
 }
-div[class*='BoutonOmbre']
-    .property_value_container
-    > div
-    > div
-    a.property_value {
+div[class*='LinkIcon'] a.property_value {
+    font-weight: 700;
+    padding-right: 20px;
+}
+div[class*='Bouton'] a.property_value {
+    font-family: var(--font-texte);
+    border: 1px solid transparent;
+    border-radius: 8px;
+    cursor: pointer;
+    padding: 12px 20px;
+}
+div[class*='BoutonOmbre'] a.property_value {
     border: none !important;
     box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.15);
 }
-
-/*couleur*/
-/*fond clair*/
-div[class*='LinkAction'] .property_value_container > div > div a.property_value,
-div[class*='BoutonSecondaire']
-    .property_value_container
-    > div
-    > div
-    a.property_value,
-div[class*='BoutonOmbre']
-    .property_value_container
-    > div
-    > div
-    a.property_value {
-    color: var(--primary-main);
+/*avec Icon*/
+div[class*='Icon'] a.property_value {
+    display: inline-flex;
+    gap: 10px;
+    padding-right: 20px;
+    padding-left: 20px;
 }
-/*bordure :  BoutonPrimaire Bouton secondaire*/
-div[class*='Bouton'] .property_value_container > div > div a.property_value {
-    border: 1px solid var(--primary-main) !important;
+div[class*='Icon'] a.property_value::after {
+    color: black;
 }
-/*fond BoutonPrimaire*/
-div[class*='BoutonPrimaire']
-    .property_value_container
-    > div
-    > div
-    a.property_value {
+/*Icon fleche droite */
+div[class*='IconFlecheDroite'] a.property_value.link::after {
+    content: url('../img/fleche-petite-droite.png');
+}
+/*Icon chevron droit*/
+div[class*='IconChevronDroit'] a.property_value::after {
+    content: url('../img/chevron-droit.png');
+}
+/*couleurs + bordures fond clair*/
+/* couleurs */
+/*BoutonPrimaire*/
+div[class*='BoutonPrimaire'] a.property_value {
     color: var(--contrast-light);
     background-color: var(--primary-main) !important;
 }
-
-div[class*='BoutonPrimaire']
-    .property_value_container
-    > div
-    > div
-    a.property_value:hover,
-div[class*='BoutonPrimaire']
-    .property_value_container
-    > div
-    > div
-    a.property_value:focus {
-    color: var(--contrast-main);
-    background-color: #31768f !important;
-}
-div[class*='BoutonPrimaire']
-    .property_value_container
-    > div
-    > div
-    a.property_value:active {
-    color: var(--contrast-main);
-    background-color: #1a5a71 !important;
-}
-
-/*fond sombre*/
-/*div[class*='HomeSidebar']
-    div[class*='LinkAction']
-    .property_value_container
-    > div
-    > div
-    a.property_value,
-div[class*='HomeSidebar']
-    div[class*='Bouton']
-    .property_value_container
-    a.property_value {
-    color: var(--contrast-light) !important;
-}
-/* div[class*='BoutonPrimaire'] 
-div[class*='BoutonSecondaire'] 
-div[class*='BoutonOmbre'] */
-/*la forme et couleur*/
-/*div[class*='HomeSidebar']
-    div[class*='BoutonSecondaire']
-    .property_value_container
-    > div
-    > div {
-    color: var(--contrast-light);
-    background-color: transparent;
-    border: 1px solid var(--contrast-light);
-}
-/*le lien*/
-/*div[class*='HomeSidebar']
-    div[class*='BoutonSecondaire']
-    .property_value_container
-    a.property_value {
-    color: var(--contrast-light);
-}
-/*hover&focus sur div et a*/
-/*div[class*='HomeSidebar']
-    div[class*='BoutonSecondaire']
-    .property_value_container
-    > div
-    > div:hover,
-div[class*='HomeSidebar']
-    div[class*='BoutonSecondaire']
-    .property_value_container
-    > div
-    > div:focus,
-div[class*='HomeSidebar']
-    div[class*='BoutonSecondaire']
-    .property_value_container
-    > div
-    > div:hover
-    a.property_value,
-div[class*='HomeSidebar']
-    div[class*='BoutonSecondaire']
-    .property_value_container
-    > div
-    > div:focus
-    a.property_value {
-    color: var(--primary-main) !important;
+/* les autres */
+div[class*='Bouton'] a.property_value {
     background-color: var(--contrast-light);
 }
-/* bouton clair externe*/
-/*div[class*='HomeSidebar']
-    div[class*='BoutonSecondaireFlecheDroite']
-    .property_value_container
-    > div
-    > div
-    a[target='_blank']::after {
-    display: block;
-    content: ' ';
-    width: 18px;
-    height: 18px;
-    background-image: url('../img/chevron-droit-blanc.png') !important;
-    background-position: bottom center;
-    background-repeat: no-repeat;
+/*bordure :  BoutonPrimaire Bouton secondaire*/
+div[class*='Bouton'] a.property_value {
+    border: 1px solid var(--primary-main) !important;
 }
-div[class*='HomeSidebar']
-    div[class*='BoutonSecondaireFlecheDroite']
-    .property_value_container
-    > div
-    > div:hover
-    a[target='_blank']::after,
-div[class*='HomeSidebar']
-    div[class*='BoutonSecondaireFlecheDroite']
-    .property_value_container
-    > div
-    > div:focus
-    a[target='_blank']::after {
-    background-image: url('../img/chevron-droit.png') !important;
+/*hover&focus&active Bouton*/
+div:is([class*='BoutonPrimaire'], [class*='BoutonSecondaire'])
+    a.property_value:is(:hover, :focus) {
+    color: var(--contrast-main);
+    background-color: var(--link-secondary) !important;
+    border-color: var(--link-secondary) !important;
 }
+div[class*='BoutonOmbre'] a.property_value:is(:hover, :focus) {
+    background-color: var(--neutral-dark-very-light) !important;
+}
+/*tous les boutons actifs fond clair*/
+div[class*='Bouton'] a.property_value:active {
+    color: var(--contrast-main);
+    background-color: var(--link-dark) !important;
+    border-color: var(--link-dark) !important;
+}
+/*couleurs + bordures fond sombre*/
+/* couleurs */
+/*BoutonPrimaire*/
+div[class*='BoutonPrimaire'] a.property_value {
+    color: var(--primary-main);
+    background-color: var(--contrast-light);
+    border: 1px solid var(--contrast-light);
+}
+/* les autres */
+div[class*='HomeSidebar']
+    div:is([class*='LinkIcon'], [class*='Bouton'])
+    a.property_value {
+    background-color: transparent;
+}
+/*bordure :  Bouton secondaire*/
+div[class*='HomeSidebar'] div[class*='BoutonSecondaire'] a.property_value {
+    border: 1px solid var(--contrast-light) !important;
+}
+/*hover&focus&active*/
+div[class*='BoutonPrimaire'] a:is(:hover, :focus).property_value {
+    color: var(--contrast-main) !important;
+    background-color: var(--link-secondary) !important;
+    border: 1px solid var(--link-secondary) !important;
+}
+div[class*='BoutonPrimaire'] a.property_value:active {
+    color: var(--contrast-main);
+    background-color: var(--link-dark) !important;
+    border: 1px solid var(--link-secondary) !important;
+}
+/*les autres*/
+div[class*='HomeSidebar']
+    div[class*='BoutonSecondaire']
+    a:is(:hover, :focus, :active).property_value {
+    border-color: var(--contrast-main);
+}
+/*********************/
 /*liste liens en pave*/
-/**[class*='ListePave'] li > * > a > div {
-    margin: 2rem;
-    height: 80px;
-    background: var(--contrast-light) url('../img/fleched.svg') no-repeat bottom
-        0rem right 1rem;
+/*********************/
+[class*='ListePave'] div.property_value_container a {
+    text-decoration: none;
 }
-.designHomeContent
+/*home designHomeContent*/
+/*div[class*='HomeContentSidebar']
+    div[class*='designHomeContent']*/
+
+/**.designHomeContent
     .resources-grid-content
     > div
     > a
@@ -259,66 +207,4 @@ div[class*='HomeSidebar']
     line-height: 2rem;
     font-weight: 700;
     padding-bottom: 1rem;
-}
-/*.designHomeSidebar contrast color text*/
-/*.designHomeSidebar *:not(button, svg, [class*='Bouton']) {
-    color: var(--secondary-contrast-text) !important;
-    text-align: left;
-}
-/*a avec url en texte*/
-/*.designHomeSidebar > .property_value_container > div .property a {
-    color: var(--secondary-contrast-text) !important;
-    overflow-wrap: anywhere !important;
-    word-break: break-all !important;
-    hyphens: auto;
-}
-.designHomeSidebar
-    > .property_value_container
-    > div
-    .property:not([class*='Bouton'])
-    a[target='_blank']::after {
-    background: url('../img/lien-externe_blanc.svg') bottom right no-repeat;
-    background-size: 15px;
-}
-.designHomeSidebar
-    > .property_value_container
-    > div
-    .property
-    a[target='_blank']::after {
-    background: url('../img/lien-externe_blanc.svg') bottom right no-repeat;
-    background-size: 15px;
-}
-/*version lodex propulsé lodex zutile*/
-.header-dataset-section {
-    /*background-color: var(--primary-main);
-    background-position-y: 0;
-    background-size: 100% 50px;*/
-    position: relative;
-    z-index: 2;
-    background: linear-gradient(
-        to top,
-        var(--primary-main) 40px,
-        transparent 1px,
-        transparent
-    );
-}
-.header-dataset-section > div:last-child {
-    position: relative;
-    max-width: 1200px;
-    min-width: 360px;
-    margin: 0 auto;
-    padding: 10px 30px !important;
-    background-color: var(--primary-main);
-    color: var(--contrast-light) !important;
-    text-align: right;
-}
-.header-dataset-section > div:last-child a {
-    color: var(--contrast-light) !important;
-}
-.header-dataset-section > div:last-child b {
-    font-weight: bold !important;
-}
-.header-dataset-section > div:last-child a:hover,
-.header-dataset-section > div:last-child a:focus {
-    text-decoration: underline !important;
-}
+}*/
