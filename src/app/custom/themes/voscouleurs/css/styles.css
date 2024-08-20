@@ -15,6 +15,7 @@
 --bgBody: <%= custom.color.bgBody %>;
 --bgHeader: <%= custom.color.bgHeader %>;
 --headerTitle: <%= custom.color.headerTitle %>;
+--bgContent: <%= custom.color.bgContent %>;
 --bgFacet: <%= custom.color.bgFacet %>;
 --titles: <%= custom.color.titles %>;
 --titleGraph: <%= custom.color.titleGraph %>;
@@ -24,8 +25,7 @@
 --button: <%= custom.color.button %>;
 --buttonHover: <%= custom.color.buttonHover %>;
 --textContrast: <%= custom.color.textContrast %>;
---font-title: <%= custom.font.title %>;
---font-text: <%= custom.font.text %>;
+--bgContrast: <%= custom.color.bgContrast %>;
 */
 :root {
     /*search-results : couleur resultat visited*/
@@ -35,9 +35,9 @@
 body {
     background-color: var(--bgBody);
     margin: 0;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-        "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji",
-        "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+        'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji',
+        'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
     font-size: 14px;
     font-weight: 400;
     line-height: 1.5;
