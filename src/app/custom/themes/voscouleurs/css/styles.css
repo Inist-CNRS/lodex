@@ -30,6 +30,7 @@
 :root {
     /*search-results : couleur resultat visited*/
     --secondary-main: var(--neutral-dark-secondary) !important;
+    --maxWidthXl: 1536px;
 }
 /*bgBody + text*/
 body {
@@ -181,33 +182,9 @@ fieldset.MuiOutlinedInput-notchedOutline {
 /*structure lodex*/
 .container,
 .container-fluid {
-    width: 100%;
+    width: var(--maxWidthXl);
     margin-right: auto;
     margin-left: auto;
     padding-left: 0.5rem;
     padding-right: 0.5rem;
-}
-
-@media (min-width: 576px) {
-    .container {
-        max-width: 540px;
-    }
-}
-
-@media (min-width: 768px) {
-    .container {
-        max-width: 720px;
-    }
-}
-
-@media (min-width: 992px) {
-    .container {
-        max-width: 960px;
-    }
-}
-
-@media (min-width: 1200px) {
-    .container {
-        max-width: 1200px;
-    }
 }
