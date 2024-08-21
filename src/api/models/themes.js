@@ -7,7 +7,7 @@ import deepClone from 'lodash/cloneDeep';
 import fs from 'fs/promises';
 
 // --- Global variable for the Theme system
-export const THEMES_VERSION = '6';
+export const THEMES_VERSION = '7';
 export const THEMES_FOLDER = '../../app/custom/themes';
 
 // --- Global function for the Theme system
