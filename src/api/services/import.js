@@ -70,16 +70,18 @@ export const startImport = async (ctx) => {
         const source = url ? url : filename;
         const parser =
             !loaderName || loaderName === 'automatic' ? extension : loaderName;
-        const loaderEnvironment = {
-            source,
-            parser,
-        };
+
         fusible = await createFusible();
         await enableFusible(fusible);
         ctx.job.update({
             ...ctx.job.data,
             fusible,
         });
+        const loaderEnvironment = {
+            source,
+            parser,
+            fusible,
+        };
         let parseStream;
         if (customLoader) {
             loaderEnvironment.parser =
