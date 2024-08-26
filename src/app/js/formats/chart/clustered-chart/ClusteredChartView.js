@@ -9,7 +9,7 @@ import injectData from '../../injectData';
 import { field as fieldPropTypes } from '../../../propTypes';
 import ClusteredChart from './ClusteredChart';
 import { flip } from '../../utils/chartsUtils';
-import ZoomableFormat from '../../utils/components/ZoomableFormat';
+import FormatFullScreenMode from '../../utils/components/FormatFullScreenMode';
 
 /**
  * Clustered chart view components use to render the chart with given parameters
@@ -40,7 +40,7 @@ const ClusteredChartView = ({ data, colors, xTitle, yTitle, flipAxis }) => {
 
     return (
         <div style={{ margin: '12px' }}>
-            <ZoomableFormat>
+            <FormatFullScreenMode>
                 <Grid
                     container
                     justifyContent="center"
@@ -64,7 +64,7 @@ const ClusteredChartView = ({ data, colors, xTitle, yTitle, flipAxis }) => {
                         </Grid>
                     ))}
                 </Grid>
-            </ZoomableFormat>
+            </FormatFullScreenMode>
         </div>
     );
 };

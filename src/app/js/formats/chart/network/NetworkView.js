@@ -12,16 +12,13 @@ import compose from 'recompose/compose';
 import get from 'lodash/get';
 import isEqual from 'lodash/isEqual';
 import { scaleLinear } from 'd3-scale';
-import { StyleSheet, css } from 'aphrodite/no-important';
 
 import injectData from '../../injectData';
 import MouseIcon from '../../utils/components/MouseIcon';
-import ZoomableFormat from '../../utils/components/ZoomableFormat';
+import FormatFullScreenMode from '../../utils/components/FormatFullScreenMode';
 
 const simulationOptions = {
     animate: true,
-    width: '100%',
-    height: '100%',
     strength: {
         charge: ({ radius }) => -radius * 100,
     },
@@ -32,17 +29,12 @@ const labelOffset = {
     y: ({ radius }) => radius * Math.sin(Math.PI / 4) + 6,
 };
 
-const styles = StyleSheet.create({
+const styles = {
     container: {
         overflow: 'hidden',
         userSelect: 'none',
-        height: '100%',
-        minHeight: '600px',
     },
-    network: {
-        minHeight: '600px',
-    },
-});
+};
 
 const zoomOptions = { minScale: 0.25, maxScale: 16 };
 
@@ -72,8 +64,8 @@ class Network extends Component {
         const { nodes, links, colorSet } = this.props;
 
         return (
-            <ZoomableFormat>
-                <div className={css(styles.container)}>
+            <FormatFullScreenMode>
+                <div style={styles.container}>
                     <InteractiveForceGraph
                         simulationOptions={simulationOptions}
                         zoom
@@ -83,7 +75,6 @@ class Network extends Component {
                         labelOffset={labelOffset}
                         highlightDependencies
                         createSimulation={this.createSimulation}
-                        className={css(styles.network)}
                     >
                         {nodes.map((node) => (
                             <ForceGraphNode
@@ -102,7 +93,7 @@ class Network extends Component {
 
                     <div>{this.mouseIcon}</div>
                 </div>
-            </ZoomableFormat>
+            </FormatFullScreenMode>
         );
     }
 }
