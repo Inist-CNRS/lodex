@@ -58,5 +58,42 @@ module.exports = {
             ],
             testTimeout: 8000,
         },
+        {
+            displayName: 'ezsTansformers',
+            rootDir: `${__dirname}/packages/transformers`,
+            modulePaths: ['<rootDir>/packages/transformers/node_modules'],
+            moduleDirectories: [
+                `<rootDir>/packages/transformers/node_modules`,
+                'node_modules',
+            ],
+            moduleNameMapper: {},
+            testMatch: [
+                '**/test?(s)/**/*.[jt]s?(x)',
+                '**/__tests__/**/*.[jt]s?(x)',
+                '**/?(*.)+(spec|test).[tj]s?(x)',
+            ],
+            testEnvironment: 'node',
+            testPathIgnorePatterns: [
+                '/node_modules/',
+                'locals.js',
+                'testOne.js',
+                'testAll.js',
+                '/data/',
+            ],
+            collectCoverage: true,
+            coveragePathIgnorePatterns: [
+                '/node_modules/',
+                '/test/',
+                '/lib/',
+                '/lodex/src/reducers/',
+            ],
+            coverageReporters: ['lcov', 'text-summary'],
+            preset: '@shelf/jest-mongodb',
+            transformIgnorePatterns: [
+                '<rootDir>/node_modules/',
+                '/node_modules/(?!quick-lru)',
+            ],
+            testTimeout: 8000,
+        },
     ],
 };
