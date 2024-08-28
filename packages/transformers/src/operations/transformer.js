@@ -12,7 +12,7 @@ export const transformer = (func, value) =>
     });
 
 export const transformerWithArg = (func, name, value, args) => {
-    const arg = args.find(a => a.name === name);
+    const arg = args.find((a) => a.name === name);
 
     if (!arg) {
         throw new Error(`Invalid Argument for ${name}`);
@@ -21,7 +21,7 @@ export const transformerWithArg = (func, name, value, args) => {
     return new Promise((resolve, reject) => {
         try {
             if (Array.isArray(value)) {
-                resolve(value.map(val => func(val, arg.value)));
+                resolve(value.map((val) => func(val, arg.value)));
             } else {
                 resolve(func(value, arg.value));
             }
@@ -32,8 +32,8 @@ export const transformerWithArg = (func, name, value, args) => {
 };
 
 export const transformerWithTwoArgs = (func, name1, name2, value, args) => {
-    const arg1 = args.find(a => a.name === name1);
-    const arg2 = args.find(a => a.name === name2);
+    const arg1 = args.find((a) => a.name === name1);
+    const arg2 = args.find((a) => a.name === name2);
 
     if (!arg1 || !arg2) {
         throw new Error(`Invalid Argument for ${name1} or ${name2}`);
@@ -42,7 +42,7 @@ export const transformerWithTwoArgs = (func, name1, name2, value, args) => {
     return new Promise((resolve, reject) => {
         try {
             if (Array.isArray(value)) {
-                resolve(value.map(val => func(val, arg1.value, arg2.value)));
+                resolve(value.map((val) => func(val, arg1.value, arg2.value)));
             } else {
                 resolve(func(value, arg1.value, arg2.value));
             }
@@ -53,7 +53,7 @@ export const transformerWithTwoArgs = (func, name1, name2, value, args) => {
 };
 
 export const rawTransformerWithArg = (func, name, value, args) => {
-    const arg = args.find(a => a.name === name);
+    const arg = args.find((a) => a.name === name);
 
     if (!arg) {
         throw new Error(`Invalid Argument for ${name}`);
@@ -68,10 +68,11 @@ export const rawTransformerWithArg = (func, name, value, args) => {
     });
 };
 
-export const rawTransformerWithoutArg = (func, value) => new Promise((resolve, reject) => {
-    try {
-        resolve(func(value));
-    } catch (error) {
-        reject(error);
-    }
-});
+export const rawTransformerWithoutArg = (func, value) =>
+    new Promise((resolve, reject) => {
+        try {
+            resolve(func(value));
+        } catch (error) {
+            reject(error);
+        }
+    });

@@ -1,11 +1,11 @@
-import { transformer } from './transformer';
+import { rawTransformerWithoutArg } from './transformer';
 
-export const valueToArray = value => {
+export const valueToArray = (value) => {
     const arr = Array.isArray(value) ? value : [value];
-    return arr.filter(x => x);
+    return arr.filter((x) => x);
 };
 
-const transformation = () => value => transformer(valueToArray, value);
+const transformation = () => (value) => rawTransformerWithoutArg(valueToArray, value);
 
 transformation.getMetas = () => ({
     name: 'ARRAY',

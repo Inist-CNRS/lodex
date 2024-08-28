@@ -767,7 +767,7 @@
 "refresh_button"	"Refresh"	"Rafraîchir"
 "cancelImportTitle"	"Cancel running import ?"	"Annuler l'import en cours ?"
 "cancelImportContent"	"By cancelling running import, you also clear already imported data."	"En annulant l'import en cours, vous supprimerez également les données déjà importées."
-"transformer_ARRAY"	"Transforms comma-separated data into an array."	"Transforme des données séparées par des virgules en un tableau."
+"transformer_ARRAY"	"Transforms data into an array only if it's not there."	"Transforme les données en tableau uniquement si elles n'y sont pas."
 "transformer_BOOLEAN"	"Transforms the value of the field into a boolean (whose value can only be true or false, true or false). This is only useful if the expected value is a boolean (by default, the value of a field is a string)."	"Transforme la valeur du champ en un booléen (dont la valeur ne peut être que true ou false, vrai ou faux). Ceci n’est utile que si la valeur attendue est un booléen (par défaut, la valeur d’un champ est une chaîne de caractères)."
 "transformer_CAPITALIZE"	"Sets the first letter of the string to uppercase, and all others to lowercase."	"Met la première lettre de la chaîne de caractères en majuscule, et toutes les autres en minuscules."
 "transformer_DEFAULT"	"Returns a default value if the default value does not exist (is null, undefined, 0, “”, i.e. one of JavaScript's falsy values)."	"Renvoie une valeur par défaut si la valeur par défaut n’existe pas (vaut null, undefined, 0, “”, c’est-à-dire une des valeurs falsy de Javascript)."
