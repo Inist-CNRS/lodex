@@ -1,6 +1,6 @@
 import { ObjectId } from 'mongodb';
 import omit from 'lodash/omit';
-import { castIdsFactory } from './utils';
+import { castIdsFactory, getCreatedCollection } from './utils';
 
 const checkMissingFields = (data) =>
     !data.name ||
@@ -9,7 +9,7 @@ const checkMissingFields = (data) =>
     (data.sourceColumns instanceof Array && data.sourceColumns.length === 0);
 
 export default async (db) => {
-    const collection = db.collection('precomputed');
+    const collection = await getCreatedCollection(db, 'precomputed');
     await collection.createIndex({ name: 1 }, { unique: true });
 
     collection.findOneById = async (id) =>

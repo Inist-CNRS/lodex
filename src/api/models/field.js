@@ -6,7 +6,7 @@ import { validateField as validateFieldIsomorphic } from '../../common/validateF
 import { URI_FIELD_NAME } from '../../common/uris';
 import { SCOPE_DOCUMENT, SCOPE_COLLECTION } from '../../common/scope';
 import generateUid from '../services/generateUid';
-import { castIdsFactory } from './utils';
+import { castIdsFactory, getCreatedCollection } from './utils';
 
 export const buildInvalidPropertiesMessage = (name) =>
     `Invalid data for field ${name} which need a name, a label, a scope, a valid scheme if specified and a transformers array`;
@@ -96,8 +96,7 @@ const createSubresourceUriField = (subresource) => ({
 });
 
 export default async (db) => {
-    const collection = db.collection('field');
-
+    const collection = await getCreatedCollection(db, 'field');
     await collection.createIndex({ name: 1 }, { unique: true });
 
     collection.findAll = async () =>

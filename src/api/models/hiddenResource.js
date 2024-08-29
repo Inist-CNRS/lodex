@@ -1,8 +1,8 @@
 import { ObjectId } from 'mongodb';
-import { castIdsFactory } from './utils';
+import { castIdsFactory, getCreatedCollection } from './utils';
 
 export default async (db) => {
-    const collection = db.collection('hiddenResource');
+    const collection = await getCreatedCollection(db, 'hiddenResource');
     await collection.createIndex({ uri: 1 }, { unique: true });
 
     collection.findAll = async () => collection.find({}).toArray();

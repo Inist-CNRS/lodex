@@ -9,9 +9,10 @@ import { ObjectId } from 'mongodb';
 import { URI_FIELD_NAME, moveUriToFirstPosition } from '../../common/uris';
 import countNotUnique from './countNotUnique';
 import countNotUniqueSubresources from './countNotUniqueSubresources';
+import { getCreatedCollection } from './utils';
 
-export default (db) => {
-    const collection = db.collection('dataset');
+export default async (db) => {
+    const collection = await getCreatedCollection(db, 'dataset');
     collection.insertBatch = (documents) => {
         return Promise.all(
             chunk(documents, 100).map((data) => {

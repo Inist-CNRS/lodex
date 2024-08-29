@@ -5,6 +5,7 @@ import omit from 'lodash/omit';
 import { getFullResourceUri } from '../../common/uris';
 import getPublishedDatasetFilter from './getPublishedDatasetFilter';
 import { VALIDATED, PROPOSED } from '../../common/propositionStatus';
+import { getCreatedCollection } from './utils';
 
 const getMeta = (match, searchableFieldNames) => {
     if (!match || !searchableFieldNames || !searchableFieldNames.length) {
@@ -35,7 +36,7 @@ const getSort = (sortBy, sortDir, match, searchableFieldNames) => {
 };
 
 export default async (db) => {
-    const collection = db.collection('publishedDataset');
+    const collection = await getCreatedCollection(db, 'publishedDataset');
 
     await collection.createIndex({ uri: 1 }, { unique: true });
 

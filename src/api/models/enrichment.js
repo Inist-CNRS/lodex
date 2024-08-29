@@ -1,9 +1,9 @@
 import { ObjectId } from 'mongodb';
 import omit from 'lodash/omit';
-import { castIdsFactory } from './utils';
+import { castIdsFactory, getCreatedCollection } from './utils';
 
 export default async (db) => {
-    const collection = db.collection('enrichment');
+    const collection = await getCreatedCollection(db, 'enrichment');
     await collection.createIndex({ name: 1 }, { unique: true });
 
     collection.findOneById = async (id) =>

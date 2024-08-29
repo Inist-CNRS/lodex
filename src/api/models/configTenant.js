@@ -1,9 +1,9 @@
 import { ObjectId } from 'mongodb';
 import omit from 'lodash/omit';
-import { castIdsFactory } from './utils';
+import { castIdsFactory, getCreatedCollection } from './utils';
 
 export default async (db) => {
-    const collection = db.collection('configTenant');
+    const collection = await getCreatedCollection(db, 'configTenant');
 
     collection.findOneById = async (id) =>
         collection.findOne({ $or: [{ _id: new ObjectId(id) }, { _id: id }] });

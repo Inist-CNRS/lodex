@@ -16,3 +16,13 @@ export const castIdsFactory = (collection) => async () => {
         Promise.resolve(),
     );
 };
+
+export const getCreatedCollection = async (db, collectionName) => {
+    const checkIfExists = await db
+        .listCollections({ name: collectionName }, { nameOnly: true })
+        .toArray();
+    if (checkIfExists.length === 0) {
+        await db.createCollection(collectionName);
+    }
+    return db.collection(collectionName);
+};

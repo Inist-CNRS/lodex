@@ -1,3 +1,4 @@
+import mongoClient from './mongoClient';
 import dataset from '../models/dataset';
 import field from '../models/field';
 import publishedCharacteristic from '../models/publishedCharacteristic';
@@ -6,7 +7,6 @@ import publishedFacet from '../models/publishedFacet';
 import subresource from '../models/subresource';
 import enrichment from '../models/enrichment';
 import precomputed from '../models/precomputed';
-import mongoClient from './mongoClient';
 import tenant from '../models/tenant';
 import configTenant from '../models/configTenant';
 import hiddenResource from '../models/hiddenResource';
