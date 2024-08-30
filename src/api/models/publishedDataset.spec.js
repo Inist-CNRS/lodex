@@ -7,8 +7,12 @@ describe('publishedDataset', () => {
             createIndex: jest.fn(),
             findOneAndUpdate: jest.fn(),
         };
+        const listCollections = {
+            toArray: () => [true],
+        };
         const db = {
             collection: () => collection,
+            listCollections: () => listCollections,
         };
         let publishedDatasetCollection;
 
@@ -59,8 +63,12 @@ describe('publishedDataset', () => {
             updateOne: jest.fn(),
             createIndex: jest.fn(),
         };
+        const listCollections = {
+            toArray: () => [true],
+        };
         const db = {
             collection: () => collection,
+            listCollections: () => listCollections,
         };
 
         let publishedDatasetCollection;
@@ -174,8 +182,12 @@ describe('publishedDataset', () => {
             updateOne: jest.fn(),
             createIndex: jest.fn(),
         };
+        const listCollections = {
+            toArray: () => [true],
+        };
         const db = {
             collection: () => collection,
+            listCollections: () => listCollections,
         };
 
         let publishedDatasetCollection;
@@ -235,11 +247,15 @@ describe('publishedDataset', () => {
             skip,
             count,
         }));
+        const listCollections = {
+            toArray: () => [true],
+        };
         const db = {
             collection: () => ({
                 find,
                 createIndex: jest.fn(),
             }),
+            listCollections: () => listCollections,
         };
 
         let publishedDatasetCollection;
@@ -300,12 +316,15 @@ describe('publishedDataset', () => {
                 skip: skipToEmpty,
                 count,
             }));
-
+            const listCollections = {
+                toArray: () => [true],
+            };
             publishedDatasetCollection = await publishedDataset({
                 collection: () => ({
                     find: emptyFind,
                     createIndex: jest.fn(),
                 }),
+                listCollections: () => listCollections,
             });
 
             await publishedDatasetCollection.findPage({
@@ -404,11 +423,15 @@ describe('publishedDataset', () => {
 
     describe('create', () => {
         const insertOne = jest.fn().mockImplementation(() => 'inserted');
+        const listCollections = {
+            toArray: () => [true],
+        };
         const db = {
             collection: () => ({
                 insertOne,
                 createIndex: jest.fn(),
             }),
+            listCollections: () => listCollections,
         };
 
         let publishedDatasetCollection;
