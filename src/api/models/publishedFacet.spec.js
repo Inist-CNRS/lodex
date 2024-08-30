@@ -13,8 +13,12 @@ describe('publishedFacet model', () => {
             }),
         })),
     };
+    const listCollections = {
+        toArray: () => [true],
+    };
     const db = {
         collection: () => collection,
+        listCollections: () => listCollections,
     };
     const publishedFacet = publishedFacetFactory(db);
 
