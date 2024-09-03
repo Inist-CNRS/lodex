@@ -20,11 +20,10 @@ describe('publishedFacet model', () => {
         collection: () => collection,
         listCollections: () => listCollections,
     };
-    const publishedFacet = publishedFacetFactory(db);
-
     describe('findValuesForField', () => {
         describe('without filter', () => {
             it('calls collection.find with correct parameters', async () => {
+                const publishedFacet = await publishedFacetFactory(db);
                 await publishedFacet.findValuesForField({ field: 'foo' });
 
                 expect(collection.find).toHaveBeenCalledWith({ field: 'foo' });
@@ -32,6 +31,7 @@ describe('publishedFacet model', () => {
         });
         describe('with filter', () => {
             it('calls collection.find with correct parameters', async () => {
+                const publishedFacet = await publishedFacetFactory(db);
                 await publishedFacet.findValuesForField({
                     field: 'foo',
                     filter: 'filter',
@@ -48,6 +48,7 @@ describe('publishedFacet model', () => {
     describe('countValuesForField', () => {
         describe('without filter', () => {
             it('calls collection.count with correct parameters', async () => {
+                const publishedFacet = await publishedFacetFactory(db);
                 await publishedFacet.countValuesForField('foo');
 
                 expect(collection.count).toHaveBeenCalledWith({ field: 'foo' });
@@ -55,6 +56,7 @@ describe('publishedFacet model', () => {
         });
         describe('with filter', () => {
             it('calls collection.count with correct parameters', async () => {
+                const publishedFacet = await publishedFacetFactory(db);
                 await publishedFacet.countValuesForField('foo', 'filter');
 
                 expect(collection.count).toHaveBeenCalledWith({
