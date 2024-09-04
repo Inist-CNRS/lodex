@@ -171,50 +171,31 @@ export class ResourceComponent extends React.Component {
 
         return (
             <Swipeable
+                id="resource-page"
+                className="resource"
                 {...swipeableConfig}
                 onSwipedRight={navigatePrev}
                 onSwipedLeft={navigateNext}
             >
-                <div className="resource">
-                    {removed && <RemovedDetail />}
-                    {!removed && (
-                        <Detail
-                            backToListLabel={backToListLabel}
-                            tenant={tenant}
-                        />
-                    )}
-                    {prevResource && (
-                        <div
-                            className={classnames(
-                                navStyles.nav,
-                                navStyles.left,
-                            )}
-                        >
-                            <NavButton
-                                direction={PREV}
-                                navigate={navigatePrev}
-                            />
-                        </div>
-                    )}
-                    {nextResource && (
-                        <div
-                            className={classnames(
-                                navStyles.nav,
-                                navStyles.right,
-                            )}
-                        >
-                            <NavButton
-                                direction={NEXT}
-                                navigate={navigateNext}
-                            />
-                        </div>
-                    )}
-                    {goBackButton && (
-                        <Card sx={{ marginTop: '0.5rem' }}>
-                            <CardActions>{goBackButton}</CardActions>
-                        </Card>
-                    )}
-                </div>
+                {removed && <RemovedDetail />}
+                {!removed && (
+                    <Detail backToListLabel={backToListLabel} tenant={tenant} />
+                )}
+                {prevResource && (
+                    <div className={classnames(navStyles.nav, navStyles.left)}>
+                        <NavButton direction={PREV} navigate={navigatePrev} />
+                    </div>
+                )}
+                {nextResource && (
+                    <div className={classnames(navStyles.nav, navStyles.right)}>
+                        <NavButton direction={NEXT} navigate={navigateNext} />
+                    </div>
+                )}
+                {goBackButton && (
+                    <Card sx={{ marginTop: '0.5rem' }}>
+                        <CardActions>{goBackButton}</CardActions>
+                    </Card>
+                )}
             </Swipeable>
         );
     }

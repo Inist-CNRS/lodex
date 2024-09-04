@@ -16,7 +16,6 @@ import { fromFields } from '../../sharedSelectors';
 import Property from '../Property';
 import HideResource from './HideResource';
 import SelectVersion from './SelectVersion';
-import Version from '../Version';
 import getTitle from '../../lib/getTitle';
 import ExportButton from '../ExportButton';
 
@@ -109,9 +108,6 @@ const styles = {
     icon: {
         color: 'black',
     },
-    version: {
-        paddingRight: '16px',
-    },
 };
 
 export const DetailComponent = ({
@@ -182,9 +178,6 @@ export const DetailComponent = ({
                             />
                         )}
                     </CardActions>
-                    <div style={styles.version}>
-                        <Version />
-                    </div>
                 </div>
             </div>
         </span>

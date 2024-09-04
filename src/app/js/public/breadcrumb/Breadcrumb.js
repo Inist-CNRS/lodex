@@ -9,9 +9,11 @@ import { withRouter } from 'react-router';
 import { fromBreadcrumb } from '../selectors';
 import BreadcrumbItem from './BreadcrumbItem';
 import stylesToClassname from '../../lib/stylesToClassName';
+import Container from '@mui/material/Container';
 
 const styles = stylesToClassname(
     {
+        container: {},
         root: {
             display: 'flex',
             alignItems: 'center',
@@ -43,24 +45,26 @@ export const Breadcrumb = ({ breadcrumb, location }) => {
         : breadcrumb;
 
     return (
-        <div className={styles.root}>
-            <FontAwesomeIcon
-                className={styles.icon}
-                icon={faAngleLeft}
-                height={20}
-            />
-            <div className={styles.trail}>
-                {items.map((item, index) => (
-                    <>
-                        <BreadcrumbItem
-                            key={index}
-                            value={item}
-                            className={styles.item}
-                        />
-                        {index + 1 < items.length && <span>/</span>}
-                    </>
-                ))}
-            </div>
+        <div id="breadcrumb">
+            <Container maxWidth="xl" className={`${styles.root} container`}>
+                <FontAwesomeIcon
+                    className={styles.icon}
+                    icon={faAngleLeft}
+                    height={20}
+                />
+                <div className={styles.trail}>
+                    {items.map((item, index) => (
+                        <>
+                            <BreadcrumbItem
+                                key={index}
+                                value={item}
+                                className={styles.item}
+                            />
+                            {index + 1 < items.length && <span>/</span>}
+                        </>
+                    ))}
+                </div>
+            </Container>
         </div>
     );
 };
