@@ -53,7 +53,7 @@ export default async (db) => {
     collection.insertBatchIgnoreDuplicate = (documents) =>
         Promise.all(
             chunk(documents, 1000).map((data) =>
-                collection.insertOne(data, { ordered: false }).catch((e) => {
+                collection.insertMany(data, { ordered: false }).catch((e) => {
                     if (e.code === 11000 /* duplicate error */) {
                         return;
                     }
