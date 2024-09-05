@@ -1,5 +1,5 @@
 {
-    "version": "6",
+    "version": "7",
     "licence": "All Right Reserved",
     "name": {
         "fr": "INIST",
@@ -15,7 +15,7 @@
             "palette": "inistTheme.js"
         },
         "variables": {
-            "siteTitle": "Etudes"
+            "siteTitle": "Titre a modifier/supprimer dans la config du theme"
         }
     }
 }

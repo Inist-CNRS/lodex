@@ -37,15 +37,18 @@ const BreadcrumbItem = ({ value, p: polyglot }) => {
         to: value.url,
     };
 
-    if (value.isExternal === true) {
+    if (value.url.startsWith('https://')) {
+        props = {
+            href: value.url,
+        };
+    } else if (value.isExternal === true) {
         props = {
             href: value.url,
             target: '_blank',
             rel: 'noopener noreferrer',
         };
-    }
-    // if value.url contain .html, it's a static page. Use href instead of to with react-router default route
-    else if (
+    } else if (
+        // if value.url contain .html, it's a static page. Use href instead of to with react-router default route
         value.url.indexOf('.html') !== -1 &&
         typeof sessionStorage !== 'undefined'
     ) {

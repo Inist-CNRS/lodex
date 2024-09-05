@@ -9,7 +9,7 @@ import Tooltip from '@mui/material/Tooltip';
 import translate from 'redux-polyglot/translate';
 import { polyglot as polyglotPropTypes } from '../../../propTypes';
 
-const ZoomableFormat = ({ children, p }) => {
+const FormatFullScreenMode = ({ children, p }) => {
     const [open, setOpen] = useState(false);
 
     const handleClickOpen = () => {
@@ -21,22 +21,20 @@ const ZoomableFormat = ({ children, p }) => {
 
     return (
         <>
-            <div>
-                {!open ? children : null}
+            {children}
 
-                <Tooltip title={p.t('fullscreen')} placement="left">
-                    <IconButton
-                        onClick={handleClickOpen}
-                        sx={{
-                            position: 'absolute',
-                            right: 8,
-                            bottom: 8,
-                        }}
-                    >
-                        <OpenInFullIcon />
-                    </IconButton>
-                </Tooltip>
-            </div>
+            <Tooltip title={p.t('fullscreen')} placement="left">
+                <IconButton
+                    onClick={handleClickOpen}
+                    sx={{
+                        position: 'absolute',
+                        right: 8,
+                        bottom: 8,
+                    }}
+                >
+                    <OpenInFullIcon />
+                </IconButton>
+            </Tooltip>
 
             <Dialog fullScreen={true} open={open} onClose={handleClose}>
                 <IconButton
@@ -63,7 +61,7 @@ const ZoomableFormat = ({ children, p }) => {
                             overflow: 'scroll',
                         }}
                     >
-                        {open ? children : null}
+                        {children}
                     </fieldset>
                 </DialogContent>
             </Dialog>
@@ -71,9 +69,9 @@ const ZoomableFormat = ({ children, p }) => {
     );
 };
 
-ZoomableFormat.propTypes = {
+FormatFullScreenMode.propTypes = {
     children: PropTypes.node.isRequired,
     p: polyglotPropTypes.isRequired,
 };
 
-export default translate(ZoomableFormat);
+export default translate(FormatFullScreenMode);

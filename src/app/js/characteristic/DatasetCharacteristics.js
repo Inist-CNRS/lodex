@@ -14,9 +14,7 @@ const styles = {
     container: {
         display: 'flex',
         flexFlow: 'row wrap',
-        paddingTop: '2rem',
-        paddingBottom: '1rem',
-        gap: '1vw',
+        paddingBottom: '0rem',
     },
     item: {
         display: 'flex',

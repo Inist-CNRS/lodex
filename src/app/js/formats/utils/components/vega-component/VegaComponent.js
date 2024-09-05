@@ -10,7 +10,7 @@ import {
     VEGA_DATA_INJECT_TYPE_C,
 } from '../../chartsUtils';
 import { ASPECT_RATIO_NONE, ASPECT_RATIOS } from '../../aspectRatio';
-import ZoomableFormat from '../ZoomableFormat';
+import FormatFullScreenMode from '../FormatFullScreenMode';
 
 /**
  * small component use to handle vega lite display
@@ -82,7 +82,7 @@ function CustomActionVega(props) {
     }
 
     return (
-        <ZoomableFormat>
+        <FormatFullScreenMode>
             <style>{'#vg-tooltip-element {z-index:99999}'}</style>
             <Vega
                 style={
@@ -94,7 +94,7 @@ function CustomActionVega(props) {
                 actions={actions}
                 mode="vega"
             />
-        </ZoomableFormat>
+        </FormatFullScreenMode>
     );
 }
 

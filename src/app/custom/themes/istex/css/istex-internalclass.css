@@ -271,7 +271,7 @@ div[class*='HomeCompteur'] div.content {
 #backZoneContainer #backZoneTexte div#url a:hover {
     font-weight: bold;
 }
-/*autre version non implémentée*/
+/*autre version */
 
 /*************************/
 /* design Home bottom    */
@@ -280,17 +280,22 @@ div[class*='HomeCompteur'] div.content {
 /*************************/
 /*istex home promo*/
 /* galaxieIstex */
-.designHomeGalaxieIstex {
-    background-color: var(--neutral-dark-very-light);
-}
-#design-home-galaxieIstex-container {
-    width: 100% !important;
+
+/*istex home promo*/
+/* galaxieIstex */
+div[class*='designHomeGalaxieIstex'] {
+    width: 100vw !important;
     background-image: url(../img/galaxie-istex-1.jpg);
     background-image: url(../img/galaxie-istex.jpg);
     background-image: url(../img/galaxie-istex-2.jpg);
     background-position: center bottom;
     background-size: cover;
     background-repeat: no-repeat;
+    margin: 0 0 !important;
+}
+div[class*='designHomeGalaxieIstex'] div.MuiBox-root {
+    margin: 0 0 !important;
+    padding: 0 0 !important;
 }
 #design-home-galaxieIstex-container #design-home-galaxieIstex-texte {
     display: flex;
@@ -300,7 +305,7 @@ div[class*='HomeCompteur'] div.content {
     gap: 5rem;
     width: 100%;
     height: 45rem;
-    max-width: 1920px;
+    max-width: var(--maxWidth);
     margin: 0 auto;
 }
 #design-home-galaxieIstex-texte * {

@@ -3,7 +3,7 @@
         "node": ">= 16"
     },
     "name": "lodex",
-    "version": "14.0.59",
+    "version": "14.0.60",
     "description": "",
     "main": "src/api/index.js",
     "browser": {
@@ -275,7 +275,7 @@
         "nodemon": "3.0.3",
         "prettier": "^3.2.5",
         "sleepjs": "4.0.3",
-        "webpack": "5.90.3",
+        "webpack": "5.94.0",
         "webpack-bundle-analyzer": "4.10.1",
         "webpack-cli": "5.1.4",
         "webpack-dev-server": "5.0.2"

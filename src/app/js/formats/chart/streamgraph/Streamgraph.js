@@ -22,7 +22,7 @@ import MouseIcon from '../../utils/components/MouseIcon';
 
 import CenterIcon from '../../utils/components/CenterIcon';
 import stylesToClassname from '../../../lib/stylesToClassName';
-import ZoomableFormat from '../../utils/components/ZoomableFormat';
+import FormatFullScreenMode from '../../utils/components/FormatFullScreenMode';
 
 const styles = StyleSheet.create({
     divContainer: {
@@ -654,7 +654,7 @@ class Streamgraph extends PureComponent {
             loading = '';
         }
         return (
-            <ZoomableFormat>
+            <FormatFullScreenMode>
                 <div
                     ref={this.divContainer}
                     style={styles.divContainer}
@@ -701,7 +701,7 @@ class Streamgraph extends PureComponent {
                         <g id="anchor" ref={this.anchor} />
                     </svg>
                 </div>
-            </ZoomableFormat>
+            </FormatFullScreenMode>
         );
     }
 }
