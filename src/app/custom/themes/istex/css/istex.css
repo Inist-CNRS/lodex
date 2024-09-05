@@ -69,7 +69,7 @@ body {
     --font-texte: Inter, Arial, Helvetica, sans-serif;
     --maxWidth: 1700px; /* .css-19r6kue-MuiContainer-root 19.08.2024*/
 }
-/*otdm2023.css pour header footer*/
+/*class pour header footer*/
 .flexrow {
     display: flex;
     flex-direction: row;
@@ -278,11 +278,11 @@ footer.site-footer::after {
     max-width: 100% !important;
     padding: 0 0 !important;
 }
-#content > div.container div:is(.graph-page.graph-container, .resource) {
+div:is(.graph-page.graph-container, .resource, .drawer) {
     width: 100%;
     max-width: var(--maxWidth) !important;
     min-width: 360px;
-    padding: 0 10px;
+    padding: 0 5%;
     margin: 0 auto 4rem;
 }
 /*stucture pour home-page*/
@@ -521,23 +521,9 @@ span.property_label[style*='color: rgb(158, 158, 158)']:not(:empty) {
 #version .container strong {
     font-weight: bold !important;
 }
-/***********/
-/*
-/*************************/
-/* design Home bottom    */
-/* full screen           */
-/* content fond et promo */
-/*************************/
-/* #home-page {
-    position: relative;
-    left: 0;
-    width: 100vw;
-} */
-/*****************************/
-/* .drawer .search-container */
-/* .graph-container          */
-/* input search - facets     */
-/*****************************/
+/***************************/
+/* search facettes results */
+/***************************/
 /*comme .graph-container*/
 .search-container {
     margin-top: 3rem !important;
@@ -561,7 +547,7 @@ span.property_label[style*='color: rgb(158, 158, 158)']:not(:empty) {
 }
 /*stats graph*/
 .graph-header .graph-advanced {
-    max-width: 100%;
+    max-width: 875px;
 }
 .graph-header .graph-advanced .stats {
     min-width: 400px;
@@ -617,7 +603,7 @@ ul.MuiList-root.facets-list > li .facet-value-list svg {
 }
 /*****************************/
 /* Recherche  results        */
-/* .drawer .search-container */
+/* = .drawer .search-container */
 /* ***************************/
 /*stats + tris*/
 .search-results > div > div {
@@ -632,7 +618,7 @@ ul.MuiList-root.facets-list > li .facet-value-list svg {
     gap: 16px;
 }
 /*a.search-result-link*/
-#content .search-result-list-container a {
+.search-result-list-container a {
     text-decoration: none;
     flex: 1 0 325px;
     color: rgb(74, 74, 74);
@@ -665,6 +651,9 @@ ul.MuiList-root.facets-list > li .facet-value-list svg {
 /* page resource */
 /*****************/
 /*general*/
+#content > div.container div.resource {
+    margin: 4rem auto 4rem;
+}
 /*labels en noir et soulignes*/
 .resource
     .property

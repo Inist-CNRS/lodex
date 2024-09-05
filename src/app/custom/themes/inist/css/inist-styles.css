@@ -221,17 +221,12 @@ footer li#lodex::before {
 .container-fluid {
     max-width: var(--maxWidth) !important;
 }
-/*connexion + home*/
-#root > #content:first-child .container {
+#root > #content .container {
     padding: 0 0 0 0 !important;
     background-color: transparent;
 }
-#root > #content:first-child .container #home-page {
-    background-color: #fff;
-    padding-left: 1.6rem;
-    padding-right: 1.6rem;
-}
-#root > #content:first-child > .container > .MuiPaper-root.MuiPaper-elevation {
+/*connexion*/
+#root > #content > .container > .MuiPaper-root.MuiPaper-elevation {
     padding: 2rem;
     margin: 1rem;
 }
@@ -301,7 +296,7 @@ footer li#lodex::before {
     transform: translateY(-1rem);
 }*/
 /*pages+drawers margin padding fond blanc*/
-#content > div.container,
+#content div.container div:is(#home-page, .graph-page, .resource),
 .drawer {
     padding-top: 2rem;
     padding-bottom: 2rem;
@@ -460,6 +455,7 @@ ul.MuiList-root.facets-list > li .facet-value-list svg {
 /*CHARTE inist*/
 /*element de charte inist class a disposition*/
 /*bordure violette verticale titre 2*/
+/* utilisable en class interne */
 .bl3 {
     border-left: 3px solid var(--info-main);
     padding-left: 30px;
@@ -481,7 +477,7 @@ ul.MuiList-root.facets-list > li .facet-value-list svg {
     background-color: rgba(229, 229, 229, 0.17);
 }
 /*a "voir plus" charte inist */
-a.VoirPlus {
+.VoirPlus a {
     color: var(--text-primary);
     margin: 15px 0 15px 0;
     padding: 15px 20px;
@@ -493,7 +489,7 @@ a.VoirPlus {
     width: max-content;
     text-decoration: none;
 }
-a.VoirPlus:hover,
-a.VoirPlus:focus {
+.VoirPlus a:hover,
+.VoirPlus a:focus {
     box-shadow: 0px 0px 0px 1px var(--neutral-dark-light);
 }

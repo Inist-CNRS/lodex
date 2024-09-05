@@ -204,7 +204,7 @@ div[class*='HomeCompteur'] div.content {
 .dataset-characteristics div[class*='HomeSidebar'] img:last-child {
     filter: opacity(90%);
 }
-/* tdm tools home*/
+/* for home sidebar img */
 .design-filter {
     filter: opacity(90%);
 }
@@ -283,6 +283,7 @@ div[class*='HomeCompteur'] div.content {
 
 /*istex home promo*/
 /* galaxieIstex */
+/* #TODO faire template ejs */
 div[class*='designHomeGalaxieIstex'] {
     width: 100vw !important;
     background-image: url(../img/galaxie-istex-1.jpg);
