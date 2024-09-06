@@ -17,12 +17,28 @@ export const castIdsFactory = (collection) => async () => {
     );
 };
 
-export const getCreatedCollection = async (db, collectionName) => {
-    const checkIfExists = await db
+const checkIfCollectionExists = async (db, collectionName) => {
+    const found = await db
         .listCollections({ name: collectionName }, { nameOnly: true })
         .toArray();
-    if (checkIfExists.length === 0) {
-        await db.createCollection(collectionName);
+    return found.length !== 0;
+};
+
+export const getCreatedCollection = async (db, collectionName) => {
+    const collExists = await checkIfCollectionExists(db, collectionName);
+    if (!collExists) {
+        try {
+            await db.createCollection(collectionName);
+        } catch (error) {
+            // in some cases, with concurrent access, creation is simultaneous.
+            const collAlreadyExists = await checkIfCollectionExists(
+                db,
+                collectionName,
+            );
+            if (!collAlreadyExists) {
+                throw error;
+            }
+        }
     }
     return db.collection(collectionName);
 };
