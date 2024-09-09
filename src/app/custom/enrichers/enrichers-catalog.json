@@ -8,14 +8,6 @@
         "type": "affiliation"
     },
     {
-        "id": "post-v1-halauthorid-idref-json",
-        "url": "https://mapping-tools.services.istex.fr/v1/halAuthorId/idRef/json",
-        "doc": "https://gitbucket.inist.fr/tdm/web-services/tree/master/mapping-tools#v1%2fhalauthorid%2fidref%2fjson",
-        "swagger": "https://openapi.services.istex.fr/?urls.primaryName=mapping-tools%20-%20Utilisation%20de%20tables%20de%20correspondance#/mapping/post-v1-halauthorid-idref-json",
-        "objectifTDM": "https://services.istex.fr/2022/03/29/associer-un-idref-auteur-a-un-identifiant-hal-author-id/",
-        "type": "author"
-    },
-    {
         "id": "post-v2-crossref-prefixes-expand",
         "url": "https://biblio-tools.services.istex.fr/v2/crossref/prefixes/expand",
         "doc": "",
@@ -222,5 +214,110 @@
         "swagger": "https://openapi.services.istex.fr/?urls.primaryName=terms-extraction%20-%20Extraction%20de%20termes#/terms-extraction/post-v1-teeft-with-numbers-en",
         "objectifTDM": "https://services.istex.fr/2023/06/30/extraction-de-termes-via-teeft-nombres-compris/",
         "type": "indexation"
-    }
+    },
+        {
+        "id": "post-v1-entityTag",
+        "url": "https://person-ner.services.istex.fr/v1/tagger",
+        "doc": "https://github.com/Inist-CNRS/web-services/tree/main/services/person-ner",
+        "swagger": "https://openapi.services.istex.fr/?urls.primaryName=person-ner%20-%20Extraction%20d%27entit%C3%A9%20nomm%C3%A9es%20de%20noms%20de%20personnes#/default/post_v1_tagger",
+        "objectifTDM": "https://services.istex.fr/extraction-dentites-nommees-personnes-localisations-organismes-et-autres/",
+        "type": "extraction d'entités nommées"
+    },
+            {
+        "id": "post-v1-IdRorDetect",
+        "url": "https://affiliations-tools.services.istex.fr/v1/ror/get-id",
+        "doc": "https://github.com/Inist-CNRS/web-services/tree/main/services/affiliations-tools/v1/ror",
+        "swagger": "https://openapi.services.istex.fr/?urls.primaryName=affiliations-tools%20-%20Structuration%20et%20enrichissements%20d%27affiliations#/ror/post_v1_ror_get_id",
+        "objectifTDM": "https://services.istex.fr/associer-un-identifiant-ror-a-une-adresse-daffiliation/",
+        "type": "affiliation"
+    },
+                {
+        "id": "post-v1-noiseDetect",
+        "url": "https://text-clustering.services.istex.fr/v1/noise-lodex",
+        "doc": "https://github.com/Inist-CNRS/web-services/tree/main/services/text-clustering",
+        "swagger": "https://openapi.services.istex.fr/?urls.primaryName=text-clustering%20-%20Cr%C3%A9er%20diff%C3%A9rents%20clusters%20%C3%A0%20partir%20d%27un%20ensemble%20de%20textes%20courts%20ou%20d%27un%20ensemble%20de%20listes%20de%20mots-cl%C3%A9s.#/clustering/post-v1-noise",
+        "objectifTDM": "https://services.istex.fr/detection-de-bruit-dun-corpus/",
+        "type": "classification"
+    },
+                    {
+        "id": "post-v1-sciencemetrixClass",
+        "url": "https://sciencemetrix-classification.services.istex.fr/v1/classif",
+        "doc": "https://github.com/Inist-CNRS/web-services/tree/main/services/sciencemetrix-classification",
+        "swagger": "https://openapi.services.istex.fr/?urls.primaryName=sciencemetrix-classification%20-%20Classification%20en%20domaines%20scientifiques%20Science-Metrix#/sciencemetrix-classification/post_v1_classif",
+        "objectifTDM": "https://services.istex.fr/classification-en-domaines-scientifiques-science-metrix/",
+        "type": "classification"
+    },
+                        {
+        "id": "post-v1-textClustering",
+        "url": "https://text-clustering.services.istex.fr/v1/clustering",
+        "doc": "https://github.com/Inist-CNRS/web-services/tree/main/services/text-clustering",
+        "swagger": "https://openapi.services.istex.fr/?urls.primaryName=text-clustering%20-%20Cr%C3%A9er%20diff%C3%A9rents%20clusters%20%C3%A0%20partir%20d%27un%20ensemble%20de%20textes%20courts%20ou%20d%27un%20ensemble%20de%20listes%20de%20mots-cl%C3%A9s.#/data-computer/post-v1-clustering",
+        "objectifTDM": "https://services.istex.fr/extraction-de-cluster-dun-corpus/",
+        "type": "classification"
+    },
+                            {
+        "id": "post-v1-textExtract",
+        "url": "https://pdf-text.services.istex.fr/v1/pdf2txt",
+        "doc": "https://github.com/Inist-CNRS/web-services/tree/main/services/pdf-text",
+        "swagger": "https://openapi.services.istex.fr/?urls.primaryName=pdf-text%20-%20Transforme%20un%20PDF%20en%20texte%20%C3%A0%20partir%20de%20l%27URL#/pdf-text/post-v1-pdf2txt",
+        "objectifTDM": "https://services.istex.fr/extraction-du-texte-epure-de-pdf/",
+        "type": "prétraitement"
+    },
+                        {
+        "id": "post-v1-quantityExtract",
+        "url": "https://terms-extraction.services.istex.fr/v1/quantity/extract",
+        "doc": "https://github.com/Inist-CNRS/web-services/tree/main/services/terms-extraction/v1/quantity",
+        "swagger": "https://openapi.services.istex.fr/?urls.primaryName=terms-extraction%20-%20Extraction%20de%20termes#/terms-extraction/post-v1-quantity-extract",
+        "objectifTDM": "https://services.istex.fr/extraction-de-quantites/",
+        "type": "extraction d'entités nommées"
+    } ,
+                        {
+        "id": "post-v1-bibCheck",
+        "url": "https://biblio-ref.services.istex.fr/v1/validate",
+        "doc": "https://github.com/Inist-CNRS/web-services/tree/main/services/biblio-ref",
+        "swagger": "https://openapi.services.istex.fr/?urls.primaryName=biblio-ref%20-%20Valide%20une%20r%C3%A9f%C3%A9rence%20bibliographique#/biblio-ref/post-v1-validate",
+        "objectifTDM": "https://services.istex.fr/validation-de-reference-bibliographique/",
+        "type": "validation"
+    } ,
+                        {
+        "id": "post-v1-countryDetect",
+        "url": "https://address-kit.services.istex.fr/v1/affiliationcountry/affilcountry",
+        "doc": "https://gitbucket.inist.fr/tdm/web-services/tree/master/address-kit/v1/affiliationcountry",
+        "swagger": "https://openapi.services.istex.fr/?urls.primaryName=address-kit%20-%20Informations%20sur%20des%20adresses%20d%27affiliations#/address/post-v1-affiliationcountry",
+        "objectifTDM": "https://services.istex.fr/detection-du-pays-dune-affiliation/",
+        "type": "affiliation"
+    } ,
+                        {
+        "id": "post-v1-funderTag",
+        "url": "https://funder-ner.services.istex.fr/v1/tagger",
+        "doc": "https://gitbucket.inist.fr/tdm/web-services/tree/master/fund-ner",
+        "swagger": "https://openapi.services.istex.fr/?urls.primaryName=funder-ner%20-%20D%C3%A9tection%20de%20financeurs#/default/post_v1_tagger",
+        "objectifTDM": "https://services.istex.fr/detection-de-financeurs-dans-un-article/",
+        "type": "extraction d'entités nommées"
+    }  ,
+                        {
+        "id": "post-v1-chemTag",
+        "url": "https://chem-ner.services.istex.fr/v1/chem/tagger",
+        "doc": "https://github.com/Inist-CNRS/web-services/tree/main/services/chem-ner#readme",
+        "swagger": "https://openapi.services.istex.fr/?urls.primaryName=chem-ner%20-%20Trouve%20des%20entit%C3%A9s%20nomm%C3%A9es%20de%20Chimie%20dans%20un%20texte#/default/post_v1_chem_tagger",
+        "objectifTDM": "https://services.istex.fr/detection-dentites-nommees-en-chimie/",
+        "type": "extraction d'entités nommées"
+    } ,
+                        {
+        "id": "post-v1-diseaseTag",
+        "url": "https://diseases-ner.services.istex.fr/v1/diseases/tagger",
+        "doc": "https://github.com/Inist-CNRS/web-services/tree/main/services/diseases-ner#readme",
+        "swagger": "https://openapi.services.istex.fr/?urls.primaryName=diseases-ner%20-%20Trouve%20des%20entit%C3%A9s%20nomm%C3%A9es%20de%20maladies%20dans%20un%20texte#/default/post_v1_diseases_tagger",
+        "objectifTDM": "https://services.istex.fr/detection-dentites-nommees-de-maladies/",
+        "type": "extraction d'entités nommées"
+    } ,
+                        {
+        "id": "post-v1-astroTag",
+        "url": "https://astro-ner.services.istex.fr/v1/tagger",
+        "doc": "https://gitbucket.inist.fr/tdm/web-services/tree/master/astro-ner",
+        "swagger": "https://openapi.services.istex.fr/?urls.primaryName=astro-ner%20-%20Cette%20instance%20propose%20un%20outil%20de%20reconnaissance%20d%27entit%C3%A9s%20nomm%C3%A9es%20en%20astronomie#/default/post_v1_tagger",
+        "objectifTDM": "https://services.istex.fr/detection-dentites-nommees-en-astronomie/",
+        "type": "extraction d'entités nommées"
+    }                                                     
+]                                           
 ]
