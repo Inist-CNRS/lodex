@@ -78,7 +78,7 @@
         "doc": "https://gitbucket.inist.fr/tdm/web-services/tree/master/authors-tools",
         "swagger": "https://openapi.services.istex.fr/?urls.primaryName=authors-tools%20-%20Les%20web%20services%20qui%20se%20lancent%20sur%20le%20champs%20%27authors%27#/default/post_v1_orcid_disambiguation_orcidDisambiguation",
         "objectifTDM": "https://services.istex.fr/2023/10/16/desambiguisation-dauteurs-via-orcid/",
-        "type": "author"
+        "type": "homogeneisation"
     },
      {
         "id": "post-v1-en-classify",
@@ -126,7 +126,7 @@
         "doc": "https://gitbucket.inist.fr/tdm/web-services/tree/master/astro-ner",
         "swagger": "https://openapi.services.istex.fr/?urls.primaryName=astro-ner%20-%20Cette%20instance%20propose%20un%20outil%20de%20reconnaissance%20d%27entit%C3%A9s%20nomm%C3%A9es%20en%20astronomie#/default/post_v1_tagger",
         "objectifTDM": "https://services.istex.fr/detection-dentites-nommees-en-astronomie/",
-        "type": "extraction d'entités nommées"
+        "type": "entites nommees"
     } ,   
               {
         "id": "post-v1-chemTag",
@@ -134,7 +134,7 @@
         "doc": "https://github.com/Inist-CNRS/web-services/tree/main/services/chem-ner#readme",
         "swagger": "https://openapi.services.istex.fr/?urls.primaryName=chem-ner%20-%20Trouve%20des%20entit%C3%A9s%20nomm%C3%A9es%20de%20Chimie%20dans%20un%20texte#/default/post_v1_chem_tagger",
         "objectifTDM": "https://services.istex.fr/detection-dentites-nommees-en-chimie/",
-        "type": "extraction d'entités nommées"
+        "type": "entites nommees"
     } ,
                         {
         "id": "post-v1-diseaseTag",
@@ -142,7 +142,7 @@
         "doc": "https://github.com/Inist-CNRS/web-services/tree/main/services/diseases-ner#readme",
         "swagger": "https://openapi.services.istex.fr/?urls.primaryName=diseases-ner%20-%20Trouve%20des%20entit%C3%A9s%20nomm%C3%A9es%20de%20maladies%20dans%20un%20texte#/default/post_v1_diseases_tagger",
         "objectifTDM": "https://services.istex.fr/detection-dentites-nommees-de-maladies/",
-        "type": "extraction d'entités nommées"
+        "type": "entites nommees"
     } ,
         {
         "id": "post-v1-entityTag",
@@ -150,7 +150,7 @@
         "doc": "https://github.com/Inist-CNRS/web-services/tree/main/services/person-ner",
         "swagger": "https://openapi.services.istex.fr/?urls.primaryName=person-ner%20-%20Extraction%20d%27entit%C3%A9%20nomm%C3%A9es%20de%20noms%20de%20personnes#/default/post_v1_tagger",
         "objectifTDM": "https://services.istex.fr/extraction-dentites-nommees-personnes-localisations-organismes-et-autres/",
-        "type": "extraction d'entités nommées"
+        "type": "entites nommees"
     },
                         {
         "id": "post-v1-funderTag",
@@ -158,7 +158,7 @@
         "doc": "https://gitbucket.inist.fr/tdm/web-services/tree/master/fund-ner",
         "swagger": "https://openapi.services.istex.fr/?urls.primaryName=funder-ner%20-%20D%C3%A9tection%20de%20financeurs#/default/post_v1_tagger",
         "objectifTDM": "https://services.istex.fr/detection-de-financeurs-dans-un-article/",
-        "type": "extraction d'entités nommées"
+        "type": "entites nommees"
     }  ,
                         {
         "id": "post-v1-quantityExtract",
@@ -166,7 +166,7 @@
         "doc": "https://github.com/Inist-CNRS/web-services/tree/main/services/terms-extraction/v1/quantity",
         "swagger": "https://openapi.services.istex.fr/?urls.primaryName=terms-extraction%20-%20Extraction%20de%20termes#/terms-extraction/post-v1-quantity-extract",
         "objectifTDM": "https://services.istex.fr/extraction-de-quantites/",
-        "type": "extraction d'entités nommées"
+        "type": "entites nommees"
     } ,
         {
         "id": "post-v1-irc3sp",
@@ -174,7 +174,7 @@
         "doc": "https://github.com/Inist-CNRS/web-services/tree/main/services/irc3-species",
         "swagger": "https://openapi.services.istex.fr/?urls.primaryName=irc3-species%20-%20Recherche%20de%20noms%20d%27esp%C3%A8ces#/default/post_v1_irc3sp",
         "objectifTDM": "https://services.istex.fr/2023/03/22/irc3-species-recherche-despeces-animales/",
-        "type": "extraction d'entités nommées"
+        "type": "entites nommees"
     },
     {
         "id": "post-v1-D63-identify",
@@ -294,7 +294,7 @@
         "doc": "https://github.com/Inist-CNRS/web-services/tree/main/services/pdf-text",
         "swagger": "https://openapi.services.istex.fr/?urls.primaryName=pdf-text%20-%20Transforme%20un%20PDF%20en%20texte%20%C3%A0%20partir%20de%20l%27URL#/pdf-text/post-v1-pdf2txt",
         "objectifTDM": "https://services.istex.fr/extraction-du-texte-epure-de-pdf/",
-        "type": "prétraitement"
+        "type": "pretraitement"
     },
         {
         "id": "post-v1-lemma",
@@ -302,7 +302,7 @@
         "doc": "https://gitbucket.inist.fr/tdm/web-services/tree/master/nlp-tools2#v1%2flemma",
         "swagger": "https://openapi.services.istex.fr/?urls.primaryName=nlp-tools2%20-%20Outils%20de%20NLP#/NLP/post-v1-lemma",
         "objectifTDM": "https://services.istex.fr/2023/04/19/lemmatiseur_eng/",
-        "type": "TAL"
+        "type": "tal"
     },
                        {
         "id": "post-v1-bibCheck",
