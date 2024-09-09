@@ -13,47 +13,7 @@
         "doc": "https://gitbucket.inist.fr/tdm/web-services/tree/master/mapping-tools#v1%2fhalauthorid%2fidref%2fjson",
         "swagger": "https://openapi.services.istex.fr/?urls.primaryName=mapping-tools%20-%20Utilisation%20de%20tables%20de%20correspondance#/mapping/post-v1-halauthorid-idref-json",
         "objectifTDM": "https://services.istex.fr/2022/03/29/associer-un-idref-auteur-a-un-identifiant-hal-author-id/",
-        "type": "other"
-    },
-    {
-        "id": "post-v1-homogenize-document-type-json",
-        "url": "https://mapping-tools.services.istex.fr/v1/homogenize/documentType/json",
-        "doc": "https://gitbucket.inist.fr/tdm/web-services/tree/master/mapping-tools#v1%2fhomogenize%2fdocumenttype%2fjson",
-        "swagger": "https://openapi.services.istex.fr/?urls.primaryName=mapping-tools%20-%20Utilisation%20de%20tables%20de%20correspondance#/mapping/post-v1-homogenize-document-type-json",
-        "objectifTDM": "https://services.istex.fr/2022/03/29/homogeneisation-des-types-de-documents/",
-        "type": "other"
-    },
-    {
-        "id": "post-v1-homogenize-publisher-json",
-        "url": "https://mapping-tools.services.istex.fr/v1/homogenize/publisher/json",
-        "doc": "https://gitbucket.inist.fr/tdm/web-services/tree/master/mapping-tools#v1%2fhomogenize%2fpublisher%2fjson",
-        "swagger": "https://openapi.services.istex.fr/?urls.primaryName=mapping-tools%20-%20Utilisation%20de%20tables%20de%20correspondance#/mapping/post-v1-homogenize-document-type-json",
-        "objectifTDM": "https://services.istex.fr/2022/03/29/homogeneisation-des-editeurs/",
-        "type": "other"
-    },
-    {
-        "id": "post-v1-homogenize-source-json",
-        "url": "https://mapping-tools.services.istex.fr/v1/homogenize/source/json",
-        "doc": "https://gitbucket.inist.fr/tdm/web-services/tree/master/mapping-tools#v1%2fhomogenize%2fsource%2fjson",
-        "swagger": "https://openapi.services.istex.fr/?urls.primaryName=mapping-tools%20-%20Utilisation%20de%20tables%20de%20correspondance#/mapping/post-v1-homogenize-source-json",
-        "objectifTDM": "https://services.istex.fr/2022/03/29/homogeneisation-des-sources-revues-ouvrages-congres/",
-        "type": "other"
-    },
-    {
-        "id": "post-v1-idref-orcid-json",
-        "url": "https://mapping-tools.services.istex.fr/v1/idRef/orcid/json",
-        "doc": "https://gitbucket.inist.fr/tdm/web-services/tree/master/mapping-tools#v1%2fidref%2forcid%2fjson",
-        "swagger": "https://openapi.services.istex.fr/?urls.primaryName=mapping-tools%20-%20Utilisation%20de%20tables%20de%20correspondance#/mapping/post-v1-idref-orcid-json",
-        "objectifTDM": "https://services.istex.fr/2022/03/29/associer-un-identifiant-orcid-a-lidentifiant-idref-correspondant-a-valider/",
-        "type": "other"
-    },
-    {
-        "id": "post-v1-rnsr-instituts-cnrs-json",
-        "url": "https://mapping-tools.services.istex.fr/v1/rnsr/instituts-cnrs/json",
-        "doc": "https://gitbucket.inist.fr/tdm/web-services/tree/master/mapping-tools#v1%252frnsr%252finstituts-cnrs%252fjson",
-        "swagger": "https://openapi.services.istex.fr/?urls.primaryName=mapping-tools%20-%20Utilisation%20de%20tables%20de%20correspondance#/mapping/post-v1-rnsr-instituts-cnrs-json",
-        "objectifTDM": "https://services.istex.fr/2022/03/29/attribution-de-noms-dinstituts-cnrs-a-partir-didentifiants-rnsr/",
-        "type": "affiliation"
+        "type": "author"
     },
     {
         "id": "post-v2-crossref-prefixes-expand",
@@ -213,7 +173,7 @@
         "doc": "https://gitbucket.inist.fr/tdm/web-services/tree/master/authors-tools",
         "swagger": "https://openapi.services.istex.fr/?urls.primaryName=authors-tools%20-%20Les%20web%20services%20qui%20se%20lancent%20sur%20le%20champs%20%27authors%27#/default/post_v1_orcid_disambiguation_orcidDisambiguation",
         "objectifTDM": "https://services.istex.fr/2023/10/16/desambiguisation-dauteurs-via-orcid/",
-        "type": "other"
+        "type": "author"
     },
     {
         "id": "post-v2-affiliation-rnsr",
@@ -232,22 +192,6 @@
         "type": "affiliation"
     },
     {
-        "id": "post-v1-inspire-labos-in2p3-labos-json",
-        "url": "https://mapping-tools.services.istex.fr/v1/inspire-labos/in2p3-labos/json",
-        "doc": "https://gitbucket.inist.fr/tdm/web-services/tree/master/mapping-tools#v1%2finspire-labos%2fin2p3-labos%2fjson",
-        "swagger": "https://openapi.services.istex.fr/?urls.primaryName=mapping-tools%20-%20Utilisation%20de%20tables%20de%20correspondance#/mapping/post-v1-inspire-labos-in2p3-labos-json",
-        "objectifTDM": "https://services.istex.fr/2023/02/06/identification-des-laboratoires-in2p3/",
-        "type": "other"
-    },
-    {
-        "id": "post-v1-inspire-category-meta-category-json",
-        "url": "https://mapping-tools.services.istex.fr/v1/inspire-category/meta-category/json",
-        "doc": "https://gitbucket.inist.fr/tdm/web-services/tree/master/mapping-tools#v1%2finspire-category%2fmeta-category%2fjson",
-        "swagger": "https://openapi.services.istex.fr/?urls.primaryName=mapping-tools%20-%20Utilisation%20de%20tables%20de%20correspondance#/mapping/post-v1-inspire-category-meta-category-json",
-        "objectifTDM": "https://services.istex.fr/2023/02/06/regroupement-des-categories-inspire-en-meta-categorie-in2p3/",
-        "type": "other"
-    },
-    {
         "id": "post-v1-first-name-gender",
         "url": "https://authors-tools.services.istex.fr/v1/first-name/gender",
         "doc": "https://gitbucket.inist.fr/tdm/web-services/tree/master/authors-tools#v1%2ffirst-name%2fgender",
@@ -261,7 +205,7 @@
         "doc": "https://gitbucket.inist.fr/tdm/web-services/tree/master/nlp-tools2#v1%2flemma",
         "swagger": "https://openapi.services.istex.fr/?urls.primaryName=nlp-tools2%20-%20Outils%20de%20NLP#/NLP/post-v1-lemma",
         "objectifTDM": "https://services.istex.fr/2023/04/19/lemmatiseur_eng/",
-        "type": "other"
+        "type": "TAL"
     },
     {
         "id": "post-v1-corporate-private-public",
