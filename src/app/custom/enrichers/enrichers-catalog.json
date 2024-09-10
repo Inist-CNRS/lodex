@@ -311,6 +311,5 @@
         "swagger": "https://openapi.services.istex.fr/?urls.primaryName=biblio-ref%20-%20Valide%20une%20r%C3%A9f%C3%A9rence%20bibliographique#/biblio-ref/post-v1-validate",
         "objectifTDM": "https://services.istex.fr/validation-de-reference-bibliographique/",
         "type": "validation"
-    } ,
-]                                           
+    }                                      
 ]
