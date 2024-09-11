@@ -45,6 +45,7 @@ export const prepareUpload = async (ctx, next) => {
         await next();
     } catch (error) {
         progress.throw(ctx.tenant, error);
+        console.error('Sending error as a body', error);
         ctx.status = 500;
         ctx.body = error.message;
     }

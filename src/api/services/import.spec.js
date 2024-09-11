@@ -24,7 +24,7 @@ describe.skip('import', () => {
                 update: jest.fn(),
             },
             getLoader: jest.fn().mockImplementation(() => loader),
-            mergeChunks: jest.fn().mockImplementation(() => 'stream'),
+            mergeChunks: jest.fn().mockImplementation(() => stream),
             clearChunks: jest.fn(),
             saveParsedStream: jest.fn(),
             dataset: {
@@ -108,7 +108,9 @@ describe.skip('import', () => {
                 update: jest.fn(),
             },
             getCustomLoader: jest.fn().mockImplementation(() => loader),
-            mergeChunks: jest.fn().mockImplementation(() => 'stream'),
+            getStreamFromUrl: jest.fn().mockImplementation(() => stream),
+            getStreamFromText: jest.fn().mockImplementation(() => stream),
+            mergeChunks: jest.fn().mockImplementation(() => stream),
             clearChunks: jest.fn(),
             saveParsedStream: jest.fn(),
             dataset: {

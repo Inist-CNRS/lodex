@@ -57,11 +57,11 @@ export async function clear() {
     }
 
     await Promise.all([
-        db.dataset.remove({}),
-        db.field.remove({}),
-        db.publishedCharacteristic.remove({}),
-        db.publishedDataset.remove({}),
-        db.publishedFacet.remove({}),
+        db.dataset.drop(),
+        db.field.drop(),
+        db.publishedCharacteristic.drop(),
+        db.publishedDataset.drop(),
+        db.publishedFacet.drop(),
     ]);
 
     return db;

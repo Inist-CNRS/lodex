@@ -1,5 +1,10 @@
-export default (db) => {
-    const collection = db.collection('publishedCharacteristic');
+import { getCreatedCollection } from './utils';
+
+export default async (db) => {
+    const collection = await getCreatedCollection(
+        db,
+        'publishedCharacteristic',
+    );
 
     collection.findLastVersion = async () => {
         const items = await collection
