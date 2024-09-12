@@ -50,7 +50,7 @@ body {
 header {
     background: var(--bgHeader);
 }
-header #banner {
+header #banner.container {
     display: flex;
     flex-wrap: nowrap;
     align-items: center;
@@ -74,11 +74,24 @@ header #banner :last-child {
 #banner p {
     font-weight: 500;
 }
+/*structure lodex*/
+.container,
+.container-fluid {
+    width: 100%;
+    max-width: var(--maxWidthXl);
+    margin-right: auto;
+    margin-left: auto;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+}
 /*bgContent*/
-#root {
-    box-sizing: content-box;
-    padding: 0 50px;
+#content .container {
+    padding: 30px 50px !important;
     background-color: var(--bgContent);
+}
+.drawer .search-content {
+    padding-left: 1rem;
+    padding-right: 1rem;
 }
 /*bgFacet : facet search et graph*/
 .search-content ul.search-facets,
@@ -167,24 +180,52 @@ a.graph-link.graph-summary-link:hover {
 .MuiButton-textPrimary:hover svg {
     background-color: var(--bgContrast) !important;
 }
+/*facettes : search in facettes*/
+.css-134m6vv-MuiInputBase-root-MuiInput-root::after {
+    border-bottom-color: var(--buttonHover) !important;
+}
 /*background search content*/
 div._1eoh2kv.search-content {
     background-color: var(--bgContent);
 }
 /*fieldset active*/
 fieldset.MuiOutlinedInput-notchedOutline {
-    border-color: var(--button) !important;
+    border-color: var(--icon) !important;
+}
+.Mui-focused fieldset.MuiOutlinedInput-notchedOutline {
+    border-color: var(--iconHover) !important;
 }
 .MuiListItemText-secondary {
     background-color: #fff;
 }
-
-/*structure lodex*/
-.container,
-.container-fluid {
-    width: var(--maxWidthXl);
-    margin-right: auto;
-    margin-left: auto;
-    padding-left: 0.5rem;
-    padding-right: 0.5rem;
+/*resource feuilletage*/
+.resource .nav-button-root {
+    background-color: var(--grey-200) !important;
+    color: var(--button) !important;
+}
+.resource .nav-button-root svg {
+    fill: var(--button) !important;
+}
+.resource .nav-button-root:is(:hover, :focus, :active) {
+    background-color: var(--grey-100) !important;
+    color: var(--buttonHover) !important;
+}
+.resource .nav-button-root:is(:hover, :focus, :active) svg {
+    fill: var(--buttonHover) !important;
+}
+/*resource : title*/
+.header-resource-section .property_value_container > div > div > :first-child {
+    font-weight: 600;
+    font-size: 1.3rem;
+    line-height: 1.5rem;
+}
+/*resource space property*/
+.resource .property {
+    padding: 0 0.5rem 0 !important;
+}
+.resource .property .css-oa9bdm {
+    padding: 0 0 0 0 !important;
+}
+.resource .property .property_value_container ul {
+    margin: 0 0 0.5rem !important;
 }
