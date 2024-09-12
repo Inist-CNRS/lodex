@@ -2,7 +2,7 @@
 /*div[class*='HomeContentSidebar'] */
 /* fond blanc casse + decor */
 div[class*='HomeContentSidebar'] {
-    background-color: var(--neutral-dark-very-light);
+    background-color: var(--primary-very-light);
     background-image: url('../img/svgfond.svg');
     background-repeat: repeat-x;
     background-position: bottom center;
@@ -61,88 +61,99 @@ span.property_label:empty {
 /* home ou resource */
 /* liste en pave    */
 /********************/
-[class*='ListePave'] div.property_value_container:first-child {
-    padding: 0 !important;
-}
-.body [class*='ListePave'] :is(ul, li) {
-    padding: 0;
-    margin: 0;
-}
-.body [class*='ListePave'] ul {
+/* ul istex en pave*/
+/* syndication*/
+div[class*='ListePave'] ul,
+ul.resources-grid-list {
     display: flex;
     flex-wrap: wrap;
-    gap: 12px;
+    gap: 20px;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    margin-bottom: 3rem !important;
 }
-/*avec liste syndication*/
-div.property_value_container li[class*='item'],
-[class*='ListePave'] div.property_value_container li div {
+/*reset lodex style*/
+div[class*='ListePave'] li *,
+li.resources-grid-item,
+li.resources-grid-item * {
+    padding: 0;
+    margin: 0;
     background: transparent;
     box-shadow: none;
     border: 0px;
-    width: auto;
+    text-decoration: none !important;
 }
-[class*='ListePave'] div.property_value_container li div[class*='wrapper'] {
-    padding: 0rem;
-}
-[class*='ListePave'] li a {
-    display: block;
-    width: 325px;
-    min-height: 80px;
-    padding: 1.3rem;
-    background-color: var(--primary-light);
-    border: 1px solid var(--primary-main);
+div[class*='ListePave'] li,
+li.resources-grid-item {
+    width: 330px;
+    height: 100px;
     border-radius: 4px;
+    padding: 2rem !important;
 }
-[class*='ListePave'] li a > div {
+div[class*='ListePave'] li a,
+li.resources-grid-item a {
+    display: block;
+    overflow: hidden;
+}
+[class*='ListePave'] li a > div,
+li.resources-grid-item a > div {
     width: 100%;
     height: 100%;
     display: flex;
     flex-direction: column;
+    gap: 5px;
 }
+/*liste pave general*/
+[class*='ListePave'] li {
+    background-color: var(--primary-very-light);
+    border: 1px solid var(--primary-main);
+    padding: 1.3rem !important;
+    display: flex;
+}
+/*[class*='ListePave'] li a {
+}*/
 /* titre du bloc toutes liste */
 [class*='ListePave'] a div[class*='contentTitle'] {
     flex: 1;
     font-family: var(--font-titre);
-    color: var(--primary-main);
+    color: var(--text-main);
     font-weight: 700;
     font-size: 1.6rem;
 }
-/*liste pave dans designHomeContent*/
-div[class*='HomeContentSidebar']
-    div[class*='designHomeContent']
+/*********************/
+/* liste pave dans   */
+/* designHomeContent */
+/*********************/
+div[class*='designHomeContent']
    /* [class*='ListePave']*/
-    li
-    a {
+    li {
     background-color: var(--contrast-light);
     border-color: var(--contrast-light);
+    padding: 2rem;
 }
-div[class*='HomeContentSidebar']
-    div[class*='designHomeContent']
+div[class*='designHomeContent']
    /* [class*='ListePave']*/
-    div.property_value_container
-    li
-    a
-    > div {
-    display: flex;
-    flex-direction: column;
-    gap: 0 2px;
-}
-div[class*='HomeContentSidebar']
-    div[class*='designHomeContent']
-   /* [class*='ListePave']*/
-    a
+    li a
     div[class*='contentTitle'] {
     background: var(--contrast-light) url('../img/fleched.svg') no-repeat center
         right 1.3rem;
 }
-div[class*='HomeContentSidebar']
-    div[class*='designHomeContent']
+div[class*='designHomeContent']
    /* [class*='ListePave']*/
     div.property_value_container
     li
     a
     div[class*='contentParagraph'] {
     flex: 2;
+}
+/*titre dans homecontent*/
+div[class*='designHomeContent']
+    div.property_value_container
+    li
+    a
+    div[class*='contentTitle'] {
+    color: var(--primary-main);
 }
 /******************/
 /*  home ISTEX    */
@@ -364,7 +375,7 @@ div[class*='ResourceCompose'],
 }
 /*champs composés*/
 div[class*='ResourceCompose'] {
-    background-color: var(--primary-light);
+    background-color: var(--primary-very-light);
     flex: 2.79;
 }
 /*titre*/
@@ -381,7 +392,7 @@ div[class*='ResourceCompose'] .property_value_container > div > div > div {
     margin-left: 0 !important;
     border-left: 0px !important;
     padding: 0 !important;
-    background-color: var(--primary-light);
+    background-color: var(--primary-very-light);
 }
 div[class*='ResourceCompose'] div.property {
     margin: 0rem auto;
