@@ -34,8 +34,9 @@
                 "themePrimary": "code hexa ",
                 "themeSecondary": "code hexa",
                 "themeRGBA": "code rgba de primary ou secondary",
-                "info-fond": "bg, pour 'background' en css, permet de mettre une couleur de fond sur les différents éléments de structure de vos pages",
-                "bgBody": "#fff",
+                "info-fond": "bg, pour 'background' en css, permet de mettre une couleur de fond sur les différents éléments de structure de vos pages. 'bgContrast' permet de visualiser tout objet (texte, icon,...) dans le bg.",
+                "bgBody": "black",
+                "bgContrast": "white",
                 "bgHeader": "",
                 "headerTitle": "",
                 "bgContent": "",
@@ -48,8 +49,7 @@
                 "iconHover": "",
                 "button": "",
                 "buttonHover": "",
-                "textContrast": "",
-                "bgContrast": ""
+                "TextContrast": "couleur contraste pour texte des boutons"
             }
         }
     }

@@ -352,20 +352,18 @@ a.VoirPlus {
 .resources-grid-list {
     background-color: rgba(229, 229, 229, 0.17);
 }
+/*resource feuilletage*/
+.resource .nav-button-root {
+    background-color: rgba(100%, 100%, 100%, 0.8);
+}
+.resource .nav-button-root:is(:hover, :focus, :active) {
+    background-color: rgba(100%, 100%, 100%, 1);
+}
 /*resource titres champs*/
+
 div.resource span.property_label {
     font-size: 1rem !important;
     border-bottom: 1px dotted var(--neutral-dark-light);
-}
-/*svg suivant précédent*/
-.resource
-    .css-78trlr-MuiButtonBase-root-MuiIconButton-root:is(
-        :not(:hover),
-        :hover,
-        :focus,
-        :active
-    ) {
-    background-color: #fff;
 }
 /*barre search*/
 .searchbar-container fieldset,
