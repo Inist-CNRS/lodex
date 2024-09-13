@@ -531,6 +531,7 @@ export const setPrecomputedError = async (ctx, err) => {
     progress.finish(ctx.tenant);
     jobLogger.info(ctx.job, logData);
     notifyListeners(room, logData);
+    console.warn('handlePrecomputedError', err);
     notifyListeners(`${ctx.tenant}-precomputer`, {
         isPrecomputing: false,
         success: false,
