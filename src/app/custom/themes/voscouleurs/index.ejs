@@ -32,6 +32,7 @@
         <% if (custom.color) {%> 
         :root {
         --bgBody: <%= custom.color.bgBody %>;
+        --bgContrast: <%= custom.color.bgContrast %>;
         --bgHeader: <%= custom.color.bgHeader %>;
         --headerTitle: <%= custom.color.headerTitle %>;
         --bgContent: <%= custom.color.bgContent %>;
@@ -44,7 +45,6 @@
         --button: <%= custom.color.button %>;
         --buttonHover: <%= custom.color.buttonHover %>;
         --textContrast: <%= custom.color.textContrast %>;
-        --bgContrast: <%= custom.color.bgContrast %>;
         }
         <% } %>        
     </style>
@@ -68,7 +68,7 @@
             </div>
         </div>
     </header>
-    <div id="root" class="container"></div>
+    <div id="root"></div>
     <script>
         window.__PRELOADED_STATE__ = <%- lodex.preload %>;
         window.__TENANT__ = '<%= lodex.tenant %>';

@@ -13,7 +13,7 @@
 @font-face {
     font-family: 'Montserrat';
     src:
-        local('Montserrat'),
+        local('Montserrat Medium'),
         url('/themes/istex/fonts/Montserrat/Montserrat-Medium.ttf')
             format('truetype');
     font-style: normal;
@@ -65,10 +65,30 @@ body {
 }
 :root {
     --font-titre: Montserrat, Arial, Helvetica, sans-serif;
+    --font-titre-medium: Montserrat Medium, Arial, Helvetica, sans-serif;
     --font-texte: Inter, Arial, Helvetica, sans-serif;
     --maxWidth: 1700px; /* .css-19r6kue-MuiContainer-root 19.08.2024*/
+
+    --canard0: #458ca5; /*canard 0 */
+    --canard-1: #31768f; /*canard -1*/
+    --canard-2: #1a5a71; /*canard -2*/
+    --canard1: #69a1b6; /*canard 1*/
+    --canard2: #8fbac9; /*canard 2*/
+    --canard3: #f6f9fa; /* background*/
+
+    --lime0: #c4d733; /*lime 0*/
+    --lime1: #e3ef63; /*lime 1*/
+    --lime2: #f9fbeb; /*lime 2*/
+    --lime-1: #a9bb1e; /*lime -1*/
+
+    --black: #000000;
+    --gris0: #1d1d1d; /*gris 0*/
+    --gris1: #fafafa; /*gris 1*/
+    --gris2: #8f8f8f; /*gris 2*/
+    --gris3: #f0f0f0; /*gris 3*/
+    --white: #ffffff;
 }
-/*otdm2023.css pour header footer*/
+/*class pour header footer*/
 .flexrow {
     display: flex;
     flex-direction: row;
@@ -245,7 +265,7 @@ footer.site-footer::after {
     margin-top: 30px;
 }
 .footer4.container {
-    color: var(--neutral-dark-light);
+    color: var(--neutral-dark-main);
     text-align: center;
     padding: 30px;
 }
@@ -277,12 +297,16 @@ footer.site-footer::after {
     max-width: 100% !important;
     padding: 0 0 !important;
 }
-#content > div.container div:is(.graph-page.graph-container, .resource) {
+div:is(.graph-page.graph-container, .resource, .drawer) {
     width: 100%;
     max-width: var(--maxWidth) !important;
     min-width: 360px;
-    padding: 0 10px;
-    margin: 0 auto 4rem;
+    padding: 2rem 5% 4rem;
+    margin: 0 auto 0;
+}
+div.drawer {
+    padding: 2rem 5% !important;
+    margin: 0 auto 0;
 }
 /*stucture pour home-page*/
 /*property_label_container*/
@@ -348,22 +372,18 @@ nav.nav-bar-menu div.nav-bar-container > img {
 }
 #content h2 {
     font-size: 2.8rem;
-    line-height: 3rem;
     font-weight: 700;
     margin-block-end: 0.5em;
 }
 #content h3 {
     font-size: 2.2rem;
-    line-height: 3rem;
 }
 #content h4 {
     font-size: 2rem;
-    line-height: 2.8rem;
     font-style: italic;
 }
 #content h5 {
     font-size: 1.8rem;
-    line-height: 2.6rem;
     font-style: italic;
 }
 #content h6 {
@@ -386,9 +406,9 @@ a img {
 /*links&alikebutton see*/
 /*istex-linksclass.css*/
 
-/*.body liste*/
-.body ul,
-.body ol {
+/*#content liste*/
+#content ul,
+#content ol {
     margin-inline-start: 0px;
     margin-bottom: 10px;
 }
@@ -422,7 +442,7 @@ a img {
 }
 * input,
 * textarea {
-    color: var(--neutral-dark-light) !important;
+    color: var(--neutral-dark-main) !important;
 }
 * label {
     color: var(--text-main);
@@ -484,17 +504,6 @@ span.property_label[style*='color: rgb(158, 158, 158)']:not(:empty) {
 #content span.property_scheme a {
     text-decoration: none;
 }
-/* ul istex */
-.resources-grid-list {
-    list-style-type: none;
-    display: flex;
-    gap: 20px;
-    margin-bottom: 3rem !important;
-}
-.resources-grid-item {
-    padding: 0 !important;
-    margin: 0 !important;
-}
 /*input search*/
 .searchbar-container .MuiOutlinedInput-root fieldset,
 .searchbar-container .MuiOutlinedInput-root fieldset:hover,
@@ -524,23 +533,9 @@ span.property_label[style*='color: rgb(158, 158, 158)']:not(:empty) {
 #version .container strong {
     font-weight: bold !important;
 }
-/***********/
-/*
-/*************************/
-/* design Home bottom    */
-/* full screen           */
-/* content fond et promo */
-/*************************/
-/* #home-page {
-    position: relative;
-    left: 0;
-    width: 100vw;
-} */
-/*****************************/
-/* .drawer .search-container */
-/* .graph-container          */
-/* input search - facets     */
-/*****************************/
+/***************************/
+/* search facettes results */
+/***************************/
 /*comme .graph-container*/
 .search-container {
     margin-top: 3rem !important;
@@ -564,7 +559,7 @@ span.property_label[style*='color: rgb(158, 158, 158)']:not(:empty) {
 }
 /*stats graph*/
 .graph-header .graph-advanced {
-    max-width: 100%;
+    max-width: 875px;
 }
 .graph-header .graph-advanced .stats {
     min-width: 400px;
@@ -586,7 +581,7 @@ span.property_label[style*='color: rgb(158, 158, 158)']:not(:empty) {
 ul.MuiList-root.facets-list {
     display: flex;
     flex-direction: column;
-    background-color: var(--neutral-dark-very-light);
+    background-color: var(--primary-very-light);
     border-radius: 4px;
     min-width: 370px !important;
     padding-bottom: 8px !important;
@@ -620,7 +615,7 @@ ul.MuiList-root.facets-list > li .facet-value-list svg {
 }
 /*****************************/
 /* Recherche  results        */
-/* .drawer .search-container */
+/* = .drawer .search-container */
 /* ***************************/
 /*stats + tris*/
 .search-results > div > div {
@@ -635,7 +630,7 @@ ul.MuiList-root.facets-list > li .facet-value-list svg {
     gap: 16px;
 }
 /*a.search-result-link*/
-#content .search-result-list-container a {
+.search-result-list-container a {
     text-decoration: none;
     flex: 1 0 325px;
     color: rgb(74, 74, 74);
@@ -643,7 +638,7 @@ ul.MuiList-root.facets-list > li .facet-value-list svg {
     border-radius: 5px;
     border: 1px solid var(--primary-main);
     overflow: hidden;
-    background-color: var(--neutral-dark-very-light);
+    background-color: var(--primary-very-light);
     display: flex;
     flex-direction: column;
     width: 48%;
@@ -668,6 +663,12 @@ ul.MuiList-root.facets-list > li .facet-value-list svg {
 /* page resource */
 /*****************/
 /*general*/
+.resource .nav-button-root {
+    background-color: rgba(100%, 100%, 100%, 0.8);
+}
+.resource .nav-button-root:is(:hover, focus, :active) {
+    background-color: rgba(100%, 100%, 100%, 1);
+}
 /*labels en noir et soulignes*/
 .resource
     .property
@@ -705,7 +706,6 @@ ul.MuiList-root.facets-list > li .facet-value-list svg {
 }
 /*bloc header-resource-section*/
 .header-resource-section .property * {
-    color: var(--text-main);
     padding-left: 1rem;
 }
 /* resource titre*/
@@ -766,6 +766,9 @@ ul.MuiList-root.facets-list > li .facet-value-list svg {
 @media screen and (max-width: 576px) {
     .menuIstex {
         height: 68px;
+    }
+    .resource {
+        padding: 0 4rem !important;
     }
 }
 @media screen and (max-width: 530px) {
