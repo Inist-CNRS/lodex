@@ -39,6 +39,8 @@ const startPublishing = async (job) => {
 const handlePublishError = async (job, error) => {
     const ctx = await prepareContext({ job });
     await clearPublished(ctx);
+    // very useful for identifying the origin of production errors.
+    console.warn('handlePublisherError', error);
     notifyListeners(`${job.data.tenant}-publisher`, {
         isPublishing: false,
         success: false,

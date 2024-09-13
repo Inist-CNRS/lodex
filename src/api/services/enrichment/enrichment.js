@@ -400,6 +400,8 @@ export const setEnrichmentError = async (ctx, err) => {
     });
     jobLogger.info(ctx.job, logData);
     notifyListeners(room, logData);
+    // very useful for identifying the origin of production errors.
+    console.warn('handleEnrichmentError', err);
     notifyListeners(`${ctx.tenant}-enricher`, {
         isEnriching: false,
         success: false,

@@ -58,6 +58,8 @@ const handleImportError = async (job, err) => {
     if (err instanceof CancelWorkerError) {
         await ctx.dataset.drop();
     }
+    // very useful for identifying the origin of production errors.
+    console.warn('handleImportError', err);
     notifyListeners(`${job.data.tenant}-import`, {
         isImporting: false,
         success: false,
