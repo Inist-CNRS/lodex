@@ -74,7 +74,7 @@ header a.logo,
 header a.logo img {
     flex: 1;
 }
-header #banner :last-child {
+header #banner > :last-child {
     flex: 3;
     text-align: center;
 }
@@ -87,10 +87,13 @@ header #banner :last-child {
 .container-fluid {
     width: 100%;
     max-width: var(--maxWidthXl);
+    min-width: 360px;
     margin-right: auto;
     margin-left: auto;
     padding-left: 2rem !important;
     padding-right: 2rem !important;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
 }
 /*bgContent*/
 #content .container {
@@ -105,11 +108,15 @@ header #banner :last-child {
 .graph-facets {
     background-color: var(--bgFacet) !important;
 }
-/*logo lodex*/
+/* nav lodex */
+#root nav {
+    box-shadow: 0px -3px 3px rgba(0, 0, 0, 0.2);
+}
 nav .container {
     padding-left: 0.5rem !important;
     padding-right: 0.5rem !important;
 }
+/*nav logo lodex*/
 nav.nav-bar-menu div.nav-bar-container > img {
     display: none;
 }
