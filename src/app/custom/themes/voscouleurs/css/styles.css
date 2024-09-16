@@ -35,6 +35,10 @@
 /*bgBody + text*/
 body {
     background-color: var(--bgBody);
+    background-image: var(--bgBodyUrl);
+    background-position: top center;
+    background-repeat: no-repeat;
+    background-size: contain;
     margin: 0;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
         'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji',
@@ -48,7 +52,11 @@ body {
 }
 /*bgHeader + --headerTitle*/
 header {
-    background: var(--bgHeader);
+    background-color: var(--bgBody);
+    background-image: var(--bgHeaderUrl);
+    background-position: top center;
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 header #banner.container {
     display: flex;
@@ -81,12 +89,11 @@ header #banner :last-child {
     max-width: var(--maxWidthXl);
     margin-right: auto;
     margin-left: auto;
-    padding-left: 0.5rem;
-    padding-right: 0.5rem;
+    padding-left: 2rem !important;
+    padding-right: 2rem !important;
 }
 /*bgContent*/
 #content .container {
-    padding: 30px 50px !important;
     background-color: var(--bgContent);
 }
 .drawer .search-content {
@@ -99,6 +106,10 @@ header #banner :last-child {
     background-color: var(--bgFacet) !important;
 }
 /*logo lodex*/
+nav .container {
+    padding-left: 0.5rem !important;
+    padding-right: 0.5rem !important;
+}
 nav.nav-bar-menu div.nav-bar-container > img {
     display: none;
 }
