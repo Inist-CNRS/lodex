@@ -1,7 +1,7 @@
 import fs from 'fs';
 import range from 'lodash/range';
 import rangeRight from 'lodash/rangeRight';
-import multiStream from 'multistream';
+import MultiStream from 'multistream';
 
 import composeAsync from '../../common/lib/composeAsync';
 import safePipe from './safePipe';
@@ -29,15 +29,15 @@ export const createWriteStream = (chunkname) => fs.createWriteStream(chunkname);
 export const createReadStream = (chunkname) => fs.createReadStream(chunkname);
 
 export const mergeChunksFactory =
-    (createReadStreamImpl, multiStreamImpl) => (filename, nbChunks) => {
+    (createReadStreamImpl) => (filename, nbChunks) => {
         const sourceStreams = range(1, nbChunks + 1)
             .map((nb) => `${filename}.${nb}`)
             .map((chunkname) => createReadStreamImpl(chunkname));
 
-        return multiStreamImpl(sourceStreams);
+        return new MultiStream(sourceStreams);
     };
 
-export const mergeChunks = mergeChunksFactory(createReadStream, multiStream);
+export const mergeChunks = mergeChunksFactory(createReadStream);
 
 export const getFileStats = (filename) =>
     new Promise((resolve, reject) => {

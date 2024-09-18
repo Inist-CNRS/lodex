@@ -3,7 +3,6 @@ import route from 'koa-route';
 import asyncBusboy from '@recuperateur/async-busboy';
 import config from 'config';
 import koaBodyParser from 'koa-bodyparser';
-import fs from 'fs';
 
 import progress from '../../services/progress';
 import { PENDING, UPLOADING_DATASET } from '../../../common/progressStatus';
@@ -11,6 +10,7 @@ import {
     saveStreamInFile,
     checkFileExists,
     getUploadedFileSize,
+    unlinkFile,
 } from '../../services/fsHelpers';
 
 import { v1 as uuid } from 'uuid';
@@ -19,13 +19,8 @@ import { IMPORT } from '../../workers/import';
 
 export const requestToStream = (asyncBusboyImpl) => async (req) => {
     const { files, fields } = await asyncBusboyImpl(req);
-
-    files[0].once('close', () => {
-        try {
-            fs.unlinkSync(files[0].path);
-        } catch (error) {
-            console.warn(error);
-        }
+    files[0].once('close', async () => {
+        await unlinkFile(files[0].path);
     });
     return { stream: files[0], fields };
 };

@@ -99,29 +99,4 @@ describe('fsHelpers', () => {
             });
         });
     });
-
-    describe('mergeChunksFactory', () => {
-        const createReadStreamImpl = jest.fn((v) => `read stream for ${v}`);
-        const multiStreamImpl = jest.fn(() => 'merged stream');
-        beforeAll(async () => {
-            await mergeChunksFactory(createReadStreamImpl, multiStreamImpl)(
-                'filename',
-                3,
-            );
-        });
-
-        it('should have called createReadStreamImpl with each generated chunkname', () => {
-            expect(createReadStreamImpl).toHaveBeenCalledWith('filename.1');
-            expect(createReadStreamImpl).toHaveBeenCalledWith('filename.2');
-            expect(createReadStreamImpl).toHaveBeenCalledWith('filename.3');
-        });
-
-        it('should have called multiStreamImpl with created array of readStream and write stream', () => {
-            expect(multiStreamImpl).toHaveBeenCalledWith([
-                'read stream for filename.1',
-                'read stream for filename.2',
-                'read stream for filename.3',
-            ]);
-        });
-    });
 });
