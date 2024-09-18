@@ -107,7 +107,7 @@ describe.skip('import', () => {
                 },
                 update: jest.fn(),
             },
-            getCustomLoader: jest.fn().mockImplementation(() => loader),
+            getCustomLoader: () => loader,
             mergeChunks: jest.fn().mockImplementation(() => 'stream'),
             clearChunks: jest.fn(),
             saveParsedStream: jest.fn(),

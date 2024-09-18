@@ -3,7 +3,6 @@ import route from 'koa-route';
 import asyncBusboy from '@recuperateur/async-busboy';
 import config from 'config';
 import koaBodyParser from 'koa-bodyparser';
-import fs from 'fs';
 
 import progress from '../../services/progress';
 import { PENDING, UPLOADING_DATASET } from '../../../common/progressStatus';
