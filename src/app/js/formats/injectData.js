@@ -117,7 +117,6 @@ export default (url = null, checkFormatLoaded = null, withUri = false) =>
                 }
 
                 const withFacets = !isHomePage(location);
-
                 loadFormatData({
                     ...this.props,
                     value,
