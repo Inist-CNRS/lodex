@@ -35,7 +35,7 @@ const iconStyle = {
 };
 
 const renderDetails = (polyglot, format = {}, value) => {
-    if (!format.name && value === undefined) {
+    if (format === null || !format.name) {
         return null;
     }
 
