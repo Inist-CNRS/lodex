@@ -29,7 +29,7 @@ describe('$NUMBER', () => {
                 output.push(chunk);
             })
             .on('end', () => {
-                expect(output).toHaveLengt(4);
+                expect(output).toHaveLength(4);
                 expect(output[0].a).toEqual(1);
                 expect(output[1].a).toEqual(2);
                 expect(output[2].a).toEqual(3);
