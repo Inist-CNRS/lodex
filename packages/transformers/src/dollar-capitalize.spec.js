@@ -29,7 +29,7 @@ describe('$CAPITALIZE', () => {
                 output.push(chunk);
             })
             .on('end', () => {
-                expect(output).toHaveLengt(4);
+                expect(output).toHaveLength(4);
                 expect(output[0].b).toEqual('Un deux');
                 expect(output[1].b).toEqual('Un trois');
                 expect(output[2].b).toEqual('Un quatre');

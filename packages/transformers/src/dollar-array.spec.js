@@ -29,7 +29,7 @@ describe('$ARRAY', () => {
                 output.push(chunk);
             })
             .on('end', () => {
-                expect(output).toHaveLengt(4);
+                expect(output).toHaveLength(4);
                 expect(output[0].b[0]).toEqual('un deux');
                 expect(output[1].b[0]).toEqual('un trois');
                 expect(output[2].b[0]).toEqual('un quatre');

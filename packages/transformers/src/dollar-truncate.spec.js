@@ -30,7 +30,7 @@ describe('$TRUNCATE', () => {
                 output.push(chunk);
             })
             .on('end', () => {
-                expect(output).toHaveLengt(4);
+                expect(output).toHaveLength(4);
                 expect(output[0].b).toEqual('un');
                 expect(output[1].b).toEqual('un');
                 expect(output[2].b).toEqual('un');

@@ -32,7 +32,7 @@ describe('$CONCAT_URI', () => {
                 output.push(chunk);
             })
             .on('end', () => {
-                expect(output).toHaveLengt(4);
+                expect(output).toHaveLength(4);
                 expect(output[0].d).toEqual('1%un');
                 expect(output[1].d).toEqual('2%deux');
                 expect(output[2].d).toEqual('3%trois');

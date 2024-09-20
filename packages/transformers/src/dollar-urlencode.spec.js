@@ -28,7 +28,7 @@ describe('$URLENCODE', () => {
                 res.push(chunk);
             })
             .on('end', () => {
-                expect(res).toHaveLengt(4);
+                expect(res).toHaveLength(4);
                 expect(res[0].b).toEqual('%C3%A9%20deux');
                 expect(res[1].b).toEqual('%C3%A9%20trois');
                 expect(res[2].b).toEqual('%C3%A9%20quatre');

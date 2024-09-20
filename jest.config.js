@@ -22,6 +22,11 @@ module.exports = {
             testMatch: ['/**/*.spec.js'],
         },
         {
+            displayName: 'transformers',
+            rootDir: `${__dirname}/packages/transformers`,
+            testMatch: ['/**/*.spec.js'],
+        },
+        {
             displayName: 'ezsLodex',
             rootDir: `${__dirname}/packages/ezsLodex`,
             modulePaths: ['<rootDir>/packages/ezsLodex/node_modules'],

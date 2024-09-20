@@ -30,7 +30,7 @@ describe('$TRUNCATE_WORDS', () => {
                 output.push(chunk);
             })
             .on('end', () => {
-                expect(output).toHaveLengt(4);
+                expect(output).toHaveLength(4);
                 expect(output[0].b).toEqual('un deux');
                 expect(output[1].b).toEqual('un trois');
                 expect(output[2].b).toEqual('un quatre');
