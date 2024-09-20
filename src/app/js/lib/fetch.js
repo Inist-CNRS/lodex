@@ -22,6 +22,11 @@ export default ({ url, ...config }, mode = 'json') => {
     if (url.startsWith('http') && fullUrl.indexOf(getHost()) == -1) {
         delete config.headers['X-Lodex-Tenant'];
     }
+    // when there alternative tenant (cf. lodex field)
+    if (url.indexOf('&tenant=') !== -1) {
+        const altTenant = new URL(url).searchParams.get('tenant');
+        config.headers['X-Lodex-Tenant'] = altTenant;
+    }
 
     return fetch(fullUrl, config).then(
         (response) => {

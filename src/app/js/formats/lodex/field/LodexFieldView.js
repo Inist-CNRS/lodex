@@ -217,23 +217,32 @@ export default compose(
         }
 
         if (!isURL(value)) {
-            return (
-                '/api/export/format/jsonallvalue?uri=' + resource[field.name]
-            );
+            const newValue =
+                '/api/export/format/jsonallvalue?uri=' + resource[field.name];
+            return newValue;
         }
 
         const source = URL.parse(value);
-        if (source.pathname.search(/^\/\w+:/) === 0) {
-            const uri = source.pathname.slice(1);
+        if (source.pathname.search(/(ark|uid):/) >= 0) {
+            const [check, tenant = 'default', scheme, identifier] = source.pathname.split('/').filter(Boolean);
+            let uri;
+            if (check === 'instance') {
+                // Lodex  >= 14
+                uri = `${scheme}/${identifier}`;
+            } else {
+                // lodex <= 12
+                uri = source.pathname.slice(1);
+            }
             const target = {
                 protocol: source.protocol,
                 hostname: source.hostname,
                 slashes: source.slashes,
                 port: source.port,
                 pathname: '/api/export/format/jsonallvalue',
-                search: '?uri=' + uri,
+                search: `?uri=${uri}&tenant=${tenant}`,
             };
-            return URL.format(target);
+            const newValue = URL.format(target);
+            return newValue;
         }
 
         return value;
