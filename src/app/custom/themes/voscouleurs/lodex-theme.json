@@ -27,7 +27,9 @@
             "font": {
                 "information": "utiliser strictement https://fonts.google.com/",
                 "family": "nom d'une famille de googlefont construit le lien dans head ",
-                "title": "nom de cette font pour les titres déclaration css"
+                "title": "nom de cette font pour les titres déclaration css",
+                "titleGraph": "nom de cette font pour les titres des graphiques",
+                "headerTitle": "nom de cette font pour les titres de la banière"
             },
             "color": {
                 "info-theme": "EN DEVELOPPEMENT : les trois couleurs suivantes permettent de mémoriser les codes hexadecimaux de 2 couleurs qui font l'identité de votre organisme",

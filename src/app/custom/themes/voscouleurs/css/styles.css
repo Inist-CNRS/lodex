@@ -61,6 +61,7 @@ header #banner.container {
 #banner h1,
 #banner p {
     color: var(--headerTitle) !important;
+    font-family: var(--font-headerTitle) !important;    
 }
 header a.logo,
 header a.logo img {
@@ -118,6 +119,7 @@ h2 {
 .property.format_fieldClone .property_label,
 .graph-results .MuiCardHeader-content {
     color: var(--titleGraph) !important;
+    font-family: var(--font-titleGraph) !important;
 }
 /*link in text*/
 a {
