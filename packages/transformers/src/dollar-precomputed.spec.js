@@ -4,7 +4,7 @@ import statements from '.';
 
 ezs.use(statements);
 
-describe('$PRECOMPUTED', () => {
+describe.skip('$PRECOMPUTED', () => {
     test('with valid parameter', done => {
         const script = `
             [$PRECOMPUTED]

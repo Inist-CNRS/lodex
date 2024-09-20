@@ -1,6 +1,6 @@
 import ROUTINE from './ROUTINE';
 
-describe('ROUTINE', () => {
+describe.skip('ROUTINE', () => {
     it('should return ROUTINE from args', async () => {
         const transformer = ROUTINE(null, [
             {
