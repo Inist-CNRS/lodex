@@ -84,7 +84,10 @@
         "doi-list",
         "tar-gz"
     ],
-    "exporters": ["csv", "ris"],
+    "exporters": [
+        "csv",
+        "json"
+    ],
     "formatExporters": ["jsonallvalue"],
     "datasetClass": "http://test.fr/datasetClass",
     "schemeForDatasetLink": "http://www.w3.org/2004/02/skos/core#inScheme",
