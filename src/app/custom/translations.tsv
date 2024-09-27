@@ -743,11 +743,11 @@
 "ws_post-v2-unpaywall-expand_title"	"doiEnrich Unpaywall - DOI enrichment via Unpaywall"	"doiEnrich Unpaywall - Enrichissement par DOI via Unpaywall"
 "ws_post-v2-unpaywall-expand_description"	"Retrieves the metadata of a scientific article in the Unpaywall database from a DOI."	"Récupère les métadonnées d’un article scientifique présent dans la base Unpaywall à partir d’un DOI."
 "ws_post-v2-conditor-expand_title"	"doiEnrich Conditor - DOI enrichment via Conditor"	"doiEnrich Conditor -Enrichissement par DOI via Conditor"
-"ws_post-v2-conditor-expand_description"	"Retrieves the metadata of a scientific article in the Conditor database from a DOI."	"Récupère les métadonnées d’un article scientifique présent dans la base Conditor à 
+"ws_post-v2-conditor-expand_description"	"Retrieves the metadata of a scientific article in the Conditor database from a DOI."	"Récupère les métadonnées d’un article scientifique présent dans la base Conditor à partir d’un DOI."
 "ws_post-v2-crossref-expand_title"	"doiEnrich Crossref - DOI enrichment via Crossref"	"doiEnrich Crossref -Enrichissement par DOI via Crossref"
-"ws_post-v2-crossref-expand_description"	"Retrieves the metadata of a scientific article in the Crossref database from a DOI."	"Récupère les métadonnées d’un article scientifique présent dans la base Crossref à 
+"ws_post-v2-crossref-expand_description"	"Retrieves the metadata of a scientific article in the Crossref database from a DOI."	"Récupère les métadonnées d’un article scientifique présent dans la base Crossref à  partir d’un DOI."
 "ws_post-v2-inspirehep-expand_title"	"doiEnrich Inspirehep - DOI enrichment via Inspirehep"	"doiEnrich Inspirehep - Enrichissement par DOI via Inspirehep"
-"ws_post-v2-inspirehep-expand_description"	"Retrieves the metadata of a scientific article in the Inspirehep database from a DOI."	"Récupère les métadonnées d’un article scientifique présent dans la base Inspirehep à 
+"ws_post-v2-inspirehep-expand_description"	"Retrieves the metadata of a scientific article in the Inspirehep database from a DOI."	"Récupère les métadonnées d’un article scientifique présent dans la base Inspirehep à  partir d’un DOI."
 "ws_post-v2-openalex-expand_title"	"doiEnrich OpenAlex - DOI enrichment via OpenAlex"	"doiEnrich OpenAlex -Enrichissement par DOI via OpenAlex"
 "ws_post-v2-openalex-expand_description"	"Retrieves the metadata of a scientific article in the OpenAlex database from a DOI."	"Récupère les métadonnées d’un article scientifique présent dans la base OpenAlex à partir d’un DOI."
 "ws_post-v2-istex-expand_title"	"doiEnrich ISTEX - DOI enrichment via ISTEX"	"doiEnrich ISTEX - Enrichissement par DOI via ISTEX"
