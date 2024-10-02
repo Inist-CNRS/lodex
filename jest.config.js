@@ -17,6 +17,16 @@ module.exports = {
             testMatch: ['/**/*.spec.js'],
         },
         {
+            displayName: 'api-e2e',
+            rootDir: `${__dirname}/src/api/e2e`,
+            testEnvironment: 'node',
+            testMatch: ['/**/*.spec.js'],
+            moduleDirectories: ['node_modules'],
+            transformIgnorePatterns: [
+                '<rootDir>/node_modules/',
+            ],
+        },
+        {
             displayName: 'common',
             rootDir: `${__dirname}/src/common`,
             testMatch: ['/**/*.spec.js'],
