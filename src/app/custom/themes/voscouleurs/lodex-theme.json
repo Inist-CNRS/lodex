@@ -28,8 +28,11 @@
                 "information": "utiliser strictement https://fonts.google.com/",
                 "family": "nom d'une famille de googlefont construit le lien dans head ",
                 "title": "nom de cette font pour les titres déclaration css",
+                "titleSize": "taille maximale de cette font pour les titres déclaration css",
                 "titleGraph": "nom de cette font pour les titres des graphiques",
-                "headerTitle": "nom de cette font pour les titres de la banière"
+                "titleGraphSize": "taille de cette font pour les titres des graphiques",
+                "titleHeader": "nom de cette font pour les titres de la banière",
+                "titleHeaderSize": "taille de cette font pour les titres de la banière"
             },
             "color": {
                 "info-theme": "EN DEVELOPPEMENT : les trois couleurs suivantes permettent de mémoriser les codes hexadecimaux de 2 couleurs qui font l'identité de votre organisme",
@@ -40,7 +43,7 @@
                 "bgBody": "black",
                 "bgContrast": "white",
                 "bgHeader": "",
-                "headerTitle": "",
+                "titleHeader": "",
                 "bgContent": "",
                 "bgFacet": "",
                 "titles": "",
