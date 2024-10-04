@@ -50,7 +50,7 @@ const getDefaultInitialState = (ctx, token, cookie, locale) => ({
         token,
         cookie,
     },
-    breadcrumb: ctx.configTenant.front.breadcrumb,
+    breadcrumb: ctx.configTenant.breadcrumb,
     menu: {
         leftMenu: ctx.configTenant.leftMenu,
         rightMenu: ctx.configTenant.rightMenu,
