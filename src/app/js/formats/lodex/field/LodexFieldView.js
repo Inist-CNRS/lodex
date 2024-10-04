@@ -226,19 +226,22 @@ export default compose(
         if (source.pathname.search(/(ark|uid):/) >= 0) {
             const [check, tenant = 'default', scheme, identifier] = source.pathname.split('/').filter(Boolean);
             let uri;
+            let pathname;
             if (check === 'instance') {
                 // Lodex  >= 14
                 uri = `${scheme}/${identifier}`;
+                pathname = '/api/export/format/jsonallvalue';
             } else {
                 // lodex <= 12
                 uri = source.pathname.slice(1);
+                pathname = '/api/export/jsonallvalue';
             }
             const target = {
                 protocol: source.protocol,
                 hostname: source.hostname,
                 slashes: source.slashes,
                 port: source.port,
-                pathname: '/api/export/format/jsonallvalue',
+                pathname,
                 search: `?uri=${uri}&tenant=${tenant}`,
             };
             const newValue = URL.format(target);
