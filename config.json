@@ -29,6 +29,7 @@
         "graph-by",
         "segments-precomputed",
         "segments-precomputed-nofilter",
+        "values-precomputed",
         "values-precomputed-nofilter",
         "group-and-sum-with",
         "hello-world",

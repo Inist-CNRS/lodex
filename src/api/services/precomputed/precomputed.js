@@ -5,6 +5,7 @@ import { unlinkFile } from '../fsHelpers.js';
 import streamToPromise from 'stream-to-promise';
 import fetch from 'fetch-with-proxy';
 import path from 'path';
+import url from 'url';
 import { tmpdir } from 'os';
 import { createReadStream } from 'fs';
 import ezs from '@ezs/core';
@@ -88,7 +89,6 @@ export const getComputedFromWebservice = async (ctx) => {
         return;
     }
     const { webServiceUrl, name: precomputedName } = precomputed;
-    const webServiceBaseURL = new RegExp('.*\\/').exec(webServiceUrl)[0];
     progress.initialize(tenant);
     progress.start(ctx.tenant, {
         status: PRECOMPUTING,
@@ -159,11 +159,15 @@ export const getComputedFromWebservice = async (ctx) => {
     jobLogger.info(askForPrecomputedJob, logData);
     notifyListeners(room, logData);
 
+    const webServiceRetrieveURL = new URL(webServiceUrl);
+    webServiceRetrieveURL.pathname = '/v1/retrieve-json';
+    webServiceRetrieveURL.search = '';
+    webServiceRetrieveURL.hash = '';
     const connectionStringURI = mongoConnectionString(tenant);
     const streamRetreiveWorflow = streamRetrieveInput
         .pipe(
             ezs('URLConnect', {
-                url: `${webServiceBaseURL}/retrieve-json`,
+                url: webServiceRetrieveURL.toString(),
                 streaming: true,
                 json: true,
                 encoder: 'transit',
