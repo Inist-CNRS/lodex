@@ -22,21 +22,24 @@
     <style>
     /* import palette */
         <%=theme.cssVariable %>
-    /* import config theme color */    
-        <% if (custom.font) {%> 
+    /* import config theme color */
+        <% if (custom.font) {%>
         :root {
         --font-title: <%= custom.font.title %>;
-        --font-headerTitle: <%= custom.font.headerTitle %>;
+        --fontSize-title: <%= custom.font.titleSize %>;
+        --font-titleHeader: <%= custom.font.titleHeader %>;
+        --fontSize-titleHeader: <%= custom.font.titleHeaderSize %>;
         --font-titleGraph: <%= custom.font.titleGraph %>;
+        --fontSize-titleGraph: <%= custom.font.titleGraphSize %>;
         }
         <% } %>
-    /* import config theme color */    
-        <% if (custom.color) {%> 
+    /* import config theme color */
+        <% if (custom.color) {%>
         :root {
         --bgBody: <%= custom.color.bgBody %>;
         --bgContrast: <%= custom.color.bgContrast %>;
         --bgHeader: <%= custom.color.bgHeader %>;
-        --headerTitle: <%= custom.color.headerTitle %>;
+        --titleHeader: <%= custom.color.titleHeader %>;
         --bgContent: <%= custom.color.bgContent %>;
         --bgFacet: <%= custom.color.bgFacet %>;
         --titles: <%= custom.color.titles %>;
@@ -48,7 +51,7 @@
         --buttonHover: <%= custom.color.buttonHover %>;
         --textContrast: <%= custom.color.textContrast %>;
         }
-        <% } %>        
+        <% } %>
     </style>
 </head>
 
