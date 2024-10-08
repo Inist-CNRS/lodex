@@ -224,7 +224,7 @@
         "type": "classification"
     },
     {
-        "id": "post-v1-noiseDetect",
+        "id": "post-v1-noise-lodex",
         "url": "https://text-clustering.services.istex.fr/v1/noise-lodex",
         "doc": "https://github.com/Inist-CNRS/web-services/tree/main/services/text-clustering",
         "swagger": "https://openapi.services.istex.fr/?urls.primaryName=text-clustering%20-%20Cr%C3%A9er%20diff%C3%A9rents%20clusters%20%C3%A0%20partir%20d%27un%20ensemble%20de%20textes%20courts%20ou%20d%27un%20ensemble%20de%20listes%20de%20mots-cl%C3%A9s.#/clustering/post-v1-noise",
