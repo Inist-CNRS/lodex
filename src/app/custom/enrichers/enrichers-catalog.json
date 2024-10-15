@@ -350,5 +350,5 @@
         "swagger": "https://openapi.services.istex.fr/?urls.primaryName=terms-extraction%20-%20Extraction%20de%20termes#/terms-extraction/post-v1-tools-normalize",
         "objectifTDM": "https://services.istex.fr/2022/01/12/normaliser-un-texte-ou-un-terme/",
         "type": "metadata"
-    },
+    }
 ]
