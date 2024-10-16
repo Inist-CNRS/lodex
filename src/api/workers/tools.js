@@ -61,7 +61,7 @@ export const getWaitingJobs = async (tenant) => {
 
 export const cancelJob = async (ctx, jobType, subLabel = null) => {
     const activeJob = await getActiveJob(ctx.tenant);
-    if (activeJob.data.fusible) {
+    if (activeJob?.data?.fusible) {
         await disableFusible(activeJob.data.fusible);
     }
     if (activeJob?.data?.jobType === jobType) {
