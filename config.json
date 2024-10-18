@@ -120,7 +120,6 @@
         "nougat",
         "inist",
         "istex",
-        "istex-devclassinterne",
         "istex-legacy"
     ],
     "timeout": 3600000
