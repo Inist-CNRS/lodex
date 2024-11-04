@@ -130,6 +130,7 @@ const SystemLoad = () => {
     const [storageTitle, setStorageTile] = useState('');
     const [storageUsage, setStorageUsage] = useState(0);
 
+    // @TODO :  use socket.io
     const fetchSystemLoad = () => {
         fetch('/rootAdmin/system', {
             credentials: 'include',
@@ -165,11 +166,11 @@ const SystemLoad = () => {
         fetchSystemLoad();
     }, []);
 
-    // Fetch evey 2 seconds
+    // Fetch evey 30 seconds
     useEffect(() => {
         const timer = setInterval(() => {
             fetchSystemLoad();
-        }, 2000);
+        }, 30000);
         return () => {
             clearInterval(timer);
         };
