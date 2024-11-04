@@ -1,4 +1,4 @@
-:root {--gris1:#f0f0f0;--gris2:#8f8f8f;--gris3:#4a4a4a;--noir:#1d1d1d;--vertistex:#c4d733;--vertfonce:#a9bb1e;--bleuistex:#458ca5;--bleudui:#458da6;}
+:root {--gris1:#f0f0f0;--gris2:#8f8f8f;--gris3:#4a4a4a;--noir:#1d1d1d;--vertistex:#c4d733;--vertfonce:#a9bb1e;--bleuistex:#458ca5;--bleudui:#458da6;--bleusurvol: #31768F;}
 *,::before,::after {box-sizing: border-box;}
 body {margin: 0;padding-top: 0px;font-family: 'Open sans', sans-serif !important;font-size:.875rem;color:var(--noir);background-color:var(--gris1);background-image: none;}
 ol, ul{margin-top: 0;margin-bottom: 10px;}
@@ -32,7 +32,8 @@ h5,.h5{font-size:.9375rem;}
 .baseline,.navigation-main a,.navigation-main span,#pageTitle{font-weight:bold;}
 .h1,.h2,.h3,.h4,.h5,.h6,h1,h2,h3,h4,h5,h6,.footer1,.tooltipDessous,#pageSubTitle,.breadcrumb-item-link{font-weight: 500;}
 .MuiTableCell-head{font-weight: 500!important;font-variant: small-caps;}
-a,.property_value p>a,.property_value p>a:hover,a.link_to_resource{color: var(--bleuistex)!important;}
+a, .property_value p>a, .property_value p>a:hover, a.link_to_resource {color: var(--bleuistex) !important;}
+a:hover, .property_value p>a:hover, a.link_to_resource:hover {color: var(--bleusurvol) !important;}
 a.property_value._1slu1mr,.value_sparql>a.link._1slu1mr,.istex-item-title>a.link._1slu1mr,a.link._1slu1mr:not(.graph-summary-link){color: var(--bleuistex);}
 a._cdr56k,a._cdr56k:hover,a._cdr56k:focus,a.search-result-link{color: inherit!important}
 h1,.h1,h2,.h2,h3,.h3,h4,.h4,h5,.h5{color:var(--noir)}
@@ -60,7 +61,7 @@ h1,.h1,h2,.h2,h3,.h3,h4,.h4,h5,.h5{color:var(--noir)}
 .navigation-main li:not(.new) > a,.navigation-main li:not(.new) > span{padding-bottom: 8.5px;}
 .navigation-main li:not(.new) > a{border-bottom: 3px solid transparent;}
 .navigation-main li:not(.new) > a:hover,.navigation-main li:not(.new) > a:focus{color:var(--noir);}
-.navigation-main li:not(.new) > a:hover,.navigation-main li:not(.new) > a:focus{border-bottom: 3px solid var(--vertistex);}
+.navigation-main li:not(.new) > a:hover,.navigation-main li:not(.new) > a:focus{border-bottom: 3px solid var(--vertistex); padding-bottom:0px;}
 @media only screen and (max-width:900px) {
     .inner-banniereIstex {grid-template-columns: repeat(5,1fr );align-items: center;padding: 0px 12px}
     .navigation-main{grid-column: auto}
@@ -157,3 +158,6 @@ button.edit-field{margin-left: .5rem;}
 .footerIstex>ul{list-style-type: none;display: flex;justify-content: center;flex-wrap: wrap;align-items: center;gap: 30px;margin: 0;}
 .fu{width: 150px}
 .footer1,.footer2,.footer3{padding-top: 30px;}
+
+/** section graphiques **/
+.graph-link svg{fill: var(--vertistex)}
