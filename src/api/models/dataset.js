@@ -159,10 +159,7 @@ export default (db) => {
     };
 
     collection.getColumns = async () => {
-        const result = await collection
-            .find({})
-            .limit(30) // The first 30 documents are considered representative of the entire dataset.
-            .toArray();
+        const result = await collection.getExcerpt();
         const columns = [];
         result.forEach((item) => {
             Object.keys(item).forEach((key) => {
