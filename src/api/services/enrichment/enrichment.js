@@ -216,7 +216,7 @@ const processEzsEnrichment = (entries, commands, ctx, preview = false) => {
                     }
                     return values.push({
                         id: sourceChunk?.id,
-                        error: error?.sourceError?.message,
+                        value: error?.sourceError?.message,
                     });
                 } else {
                     return values.push(data);
