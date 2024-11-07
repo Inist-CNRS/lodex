@@ -198,9 +198,13 @@ async function postcheck(data, feed) {
 const processEzsEnrichment = (entries, commands, ctx, preview = false) => {
     return new Promise((resolve, reject) => {
         const values = [];
+        const server = String(
+            process.env.WORKERS_URL || 'http://localhost:31976',
+        ).replace('http://', '');
+        const mode = preview ? 'dispatch' : 'delegate';
         from(entries)
             .pipe(ezs(preformat))
-            .pipe(ezs('delegate', { commands }, {}))
+            .pipe(ezs(mode, { commands, server }, {}))
             .pipe(ezs(postcheck, { preview }, ctx))
             .on('data', (data) => {
                 if (data instanceof Error) {
