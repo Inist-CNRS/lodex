@@ -112,7 +112,7 @@ export const getEnrichmentDataPreview = async (ctx) => {
     } catch (error) {
         const logger = getLogger(ctx.tenant);
         logger.error(`Error while processing enrichment preview`, error);
-        return [];
+        return [`Execution Error: ${error?.sourceError?.message}` ];
     }
     return result;
 };
@@ -216,7 +216,7 @@ const processEzsEnrichment = (entries, commands, ctx, preview = false) => {
                     }
                     return values.push({
                         id: sourceChunk?.id,
-                        error: error?.sourceError?.message,
+                        value: error?.message,
                     });
                 } else {
                     return values.push(data);
