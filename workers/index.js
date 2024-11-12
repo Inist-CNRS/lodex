@@ -9,6 +9,7 @@ import Storage from '@ezs/storage';
 import localConfig from '../config.json';
 
 ezs.settings.feed.timeout = Number(localConfig.timeout) || 120000;
+ezs.settings.rpcEnable = true;
 debug.enable('ezs');
 ezs.use(Basics);
 ezs.use(Analytics);
