@@ -30,7 +30,7 @@ describe('$GET', () => {
                 output.push(chunk);
             })
             .on('end', () => {
-                expect(output).toHaveLengt(4);
+                expect(output).toHaveLength(4);
                 expect(output[0].c).toEqual('OK');
                 expect(output[1].c).toEqual('OK');
                 expect(output[2].c).toEqual('OK');

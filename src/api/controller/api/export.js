@@ -82,18 +82,20 @@ const middlewareScript = (isFormatExporters = false) => {
 
         let facets = {};
 
-        for (const [facetName, facetValueIds] of Object.entries(
+        for (const [facetName, facetValueIds = []] of Object.entries(
             facetsWithValueIds,
         )) {
-            const facetValues = await Promise.all(
-                facetValueIds.map(async (facetValueId) => {
-                    const facetValue = await ctx.publishedFacet.findOne({
-                        _id: new ObjectId(facetValueId),
-                    });
-                    return facetValue.value;
-                }),
-            );
-            facets[facetName] = facetValues;
+            if (Array.isArray(facetValueIds)) {
+                const facetValues = await Promise.all(
+                    facetValueIds.map(async (facetValueId) => {
+                        const facetValue = await ctx.publishedFacet.findOne({
+                            _id: new ObjectId(facetValueId),
+                        });
+                        return facetValue.value;
+                    }),
+                );
+                facets[facetName] = facetValues;
+            }
         }
 
         const query = {

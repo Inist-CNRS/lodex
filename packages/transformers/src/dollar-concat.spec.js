@@ -31,7 +31,7 @@ describe('$CONCAT', () => {
                 output.push(chunk);
             })
             .on('end', () => {
-                expect(output).toHaveLengt(4);
+                expect(output).toHaveLength(4);
                 expect(output[0].d[0]).toEqual('1');
                 expect(output[0].d[1]).toEqual('un');
                 expect(output[1].d[0]).toEqual('2');

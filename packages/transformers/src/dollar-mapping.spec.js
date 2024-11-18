@@ -30,7 +30,7 @@ describe('$MAPPING', () => {
                 output.push(chunk);
             })
             .on('end', () => {
-                expect(output).toHaveLengt(4);
+                expect(output).toHaveLength(4);
                 expect(output[0].b).toEqual(
                     'INSB - Institut des sciences biologiques',
                 );

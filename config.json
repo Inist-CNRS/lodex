@@ -29,6 +29,7 @@
         "graph-by",
         "segments-precomputed",
         "segments-precomputed-nofilter",
+        "values-precomputed",
         "values-precomputed-nofilter",
         "group-and-sum-with",
         "hello-world",
@@ -84,7 +85,10 @@
         "doi-list",
         "tar-gz"
     ],
-    "exporters": ["csv", "ris"],
+    "exporters": [
+        "csv",
+        "json"
+    ],
     "formatExporters": ["jsonallvalue"],
     "datasetClass": "http://test.fr/datasetClass",
     "schemeForDatasetLink": "http://www.w3.org/2004/02/skos/core#inScheme",
@@ -116,7 +120,6 @@
         "nougat",
         "inist",
         "istex",
-        "istex-devclassinterne",
         "istex-legacy"
     ],
     "timeout": 3600000

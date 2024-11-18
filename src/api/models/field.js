@@ -157,34 +157,38 @@ export default async (db) => {
         const objectId = new ObjectID(id);
         const previousFieldVersion = await collection.findOneById(id);
 
-        if (previousFieldVersion.position > field.position) {
-            await collection.updateMany(
-                {
-                    _id: { $ne: objectId },
-                    position: {
-                        $gte: field.position,
-                        $lt: previousFieldVersion.position,
+        if (previousFieldVersion) {
+            if (previousFieldVersion.position > field.position) {
+                await collection.updateMany(
+                    {
+                        _id: { $ne: objectId },
+                        position: {
+                            $gte: field.position,
+                            $lt: previousFieldVersion.position,
+                        },
                     },
-                },
-                {
-                    $inc: { position: 1 },
-                },
-            );
-        }
+                    {
+                        $inc: { position: 1 },
+                    },
+                );
+            }
 
-        if (previousFieldVersion.position < field.position) {
-            await collection.updateMany(
-                {
-                    _id: { $ne: objectId },
-                    position: {
-                        $gt: previousFieldVersion.position,
-                        $lte: field.position,
+            if (previousFieldVersion.position < field.position) {
+                await collection.updateMany(
+                    {
+                        _id: { $ne: objectId },
+                        position: {
+                            $gt: previousFieldVersion.position,
+                            $lte: field.position,
+                        },
                     },
-                },
-                {
-                    $inc: { position: -1 },
-                },
-            );
+                    {
+                        $inc: { position: -1 },
+                    },
+                );
+            }
+        } else {
+            console.warn(`field #${id} is not found`);
         }
 
         return collection

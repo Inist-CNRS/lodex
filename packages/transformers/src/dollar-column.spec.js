@@ -30,7 +30,7 @@ describe('$COLUMN', () => {
                 output.push(chunk);
             })
             .on('end', () => {
-                expect(output).toHaveLengt(4);
+                expect(output).toHaveLength(4);
                 expect(output[0].d).toEqual('un');
                 expect(output[1].d).toEqual('deux');
                 expect(output[2].d).toEqual('trois');
@@ -68,7 +68,7 @@ describe('$COLUMN', () => {
                 output.push(chunk);
             })
             .on('end', () => {
-                expect(output).toHaveLengt(4);
+                expect(output).toHaveLength(4);
                 expect(output[0].d).toEqual('un');
                 expect(output[1].d).toEqual('deux');
                 expect(output[2].d).toEqual('trois');

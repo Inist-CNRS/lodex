@@ -30,7 +30,7 @@ describe('$REPLACE_REGEX', () => {
                 res.push(chunk);
             })
             .on('end', () => {
-                expect(res).toHaveLengt(4);
+                expect(res).toHaveLength(4);
                 expect(res[0].b).toEqual('1 deux');
                 expect(res[1].b).toEqual('1 trois');
                 expect(res[2].b).toEqual('1 quatre');

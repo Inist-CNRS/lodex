@@ -30,7 +30,7 @@ describe('$SHIFT', () => {
                 output.push(chunk);
             })
             .on('end', () => {
-                expect(output).toHaveLengt(4);
+                expect(output).toHaveLength(4);
                 expect(output[0].b).toHaveLength(1);
                 expect(output[0].b[0]).toEqual('trois');
                 expect(output[1].b).toHaveLength(1);

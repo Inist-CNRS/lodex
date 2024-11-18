@@ -2,6 +2,7 @@ import Koa from 'koa';
 import mount from 'koa-mount';
 import route from 'koa-route';
 import path from 'path';
+import merge from 'lodash/merge';
 import { simulatedLatency } from 'config';
 import api from './api';
 import front from './front';
@@ -15,6 +16,7 @@ import repositoryMiddleware, {
 } from '../services/repositoryMiddleware';
 import fs from 'fs';
 import { DEFAULT_TENANT } from '../../common/tools/tenantTools';
+import configTenantDefault from '../../../configTenant.json';
 
 const app = new Koa();
 
@@ -77,33 +79,41 @@ app.use(async (ctx, next) => {
 app.use(repositoryMiddleware);
 const configTenantInstanceMiddleware = async (ctx, next) => {
     const configTenant = await ctx.configTenantCollection.findLast();
-    if (!configTenant || !configTenant.front) {
-        await next();
-        return;
-    }
 
-    ctx.configTenant = configTenant;
-
-    ctx.configTenant.leftMenu = configTenant?.front.menu.filter(
-        ({ position }) => position === 'left',
-    );
-    ctx.configTenant.rightMenu = configTenant?.front.menu.filter(
-        ({ position }) => position === 'right',
-    );
-    ctx.configTenant.advancedMenu = configTenant?.front.menu.filter(
-        ({ position }) =>
-            position === 'advanced' ||
-            position === 'top' ||
-            position === 'bottom',
-    );
-
-    ctx.configTenant.customRoutes = configTenant?.front.menu
+    ctx.configTenant = merge(configTenantDefault, configTenant || {});
+    ctx.configTenant.leftMenu = Array()
+        .concat(configTenant?.front?.menu)
+        .filter(Boolean)
+        .filter((item) => item.position)
+        .filter(({ position }) => position === 'left');
+    ctx.configTenant.rightMenu = Array()
+        .concat(configTenant?.front?.menu)
+        .filter(Boolean)
+        .filter((item) => item.position)
+        .filter(({ position }) => position === 'right');
+    ctx.configTenant.advancedMenu = Array()
+        .concat(configTenant?.front?.menu)
+        .filter(Boolean)
+        .filter((item) => item.position)
+        .filter(
+            ({ position }) =>
+                position === 'advanced' ||
+                position === 'top' ||
+                position === 'bottom',
+        );
+    ctx.configTenant.customRoutes = Array()
+        .concat(configTenant?.front?.menu)
+        .filter(Boolean)
+        .filter((item) => item.role)
         .filter(({ role }) => role === 'custom')
         .map(({ link }) => link);
 
     ctx.configTenant.advancedMenuButton =
-        configTenant?.front.advancedMenuButton;
+        configTenant?.front?.advancedMenuButton;
 
+    ctx.configTenant.breadcrumb = Array()
+        .concat(configTenant?.front?.breadcrumb)
+        .filter(Boolean);
     await next();
 };
 

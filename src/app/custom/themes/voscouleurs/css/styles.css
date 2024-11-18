@@ -14,7 +14,7 @@
 /*"color": {
 --bgBody: <%= custom.color.bgBody %>;
 --bgHeader: <%= custom.color.bgHeader %>;
---headerTitle: <%= custom.color.headerTitle %>;
+--titleHeader: <%= custom.color.titleHeader %>;
 --bgContent: <%= custom.color.bgContent %>;
 --bgFacet: <%= custom.color.bgFacet %>;
 --titles: <%= custom.color.titles %>;
@@ -50,7 +50,7 @@ body {
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
     color: var(--text) !important;
 }
-/*bgHeader + --headerTitle*/
+/*bgHeader + --titleHeader*/
 header {
     background-color: var(--bgBody);
     background-image: var(--bgHeaderUrl);
@@ -68,7 +68,9 @@ header #banner.container {
 }
 #banner h1,
 #banner p {
-    color: var(--headerTitle) !important;
+    color: var(--titleHeader) !important;
+    font-family: var(--font-titleHeader) !important;
+    font-size: var(--fontSize-titleHeader) !important;
 }
 header a.logo,
 header a.logo img {
@@ -131,11 +133,14 @@ h5 {
 h1,
 h2 {
     color: var(--titles) !important;
+    font-size: var(--fontSize-title) !important;
 }
 /*titleGraph*/
 .property.format_fieldClone .property_label,
 .graph-results .MuiCardHeader-content {
     color: var(--titleGraph) !important;
+    font-family: var(--font-titleGraph) !important;
+    font-size: var(--fontSize-titleGraph) !important;
 }
 /*link in text*/
 a {

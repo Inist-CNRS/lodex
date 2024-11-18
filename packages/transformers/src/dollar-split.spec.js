@@ -30,7 +30,7 @@ describe('$SPLIT', () => {
                 output.push(chunk);
             })
             .on('end', () => {
-                expect(output).toHaveLengt(4);
+                expect(output).toHaveLength(4);
                 expect(output[0].b[1]).toEqual('deux');
                 expect(output[1].b[1]).toEqual('trois');
                 expect(output[2].b[1]).toEqual('quatre');

@@ -29,7 +29,7 @@ describe('$BOOLEAN', () => {
                 output.push(chunk);
             })
             .on('end', () => {
-                expect(output).toHaveLengt(4);
+                expect(output).toHaveLength(4);
                 expect(output[0].c).toEqual(true);
                 expect(output[1].c).toEqual(true);
                 expect(output[2].c).toEqual(true);
