@@ -499,6 +499,7 @@ span.property_label[style*='color: rgb(158, 158, 158)']:not(:empty) {
     font-family: var(--font-titre) !important;
     font-size: 1.4rem !important;
     text-align: initial;
+    margin-bottom: 0.5rem;
 }
 /*label semantique*/
 #content span.property_scheme a {

@@ -24,7 +24,7 @@ div[class*='HomeContentSidebar'] div[class*='designHomeContent'],
 div[class*='HomeSidebar'] {
     width: auto !important;
     margin-bottom: 0 !important;
-    padding: 3rem 1rem 6rem;
+    padding: 5rem 1rem 6rem;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -34,7 +34,6 @@ div[class*='HomeSidebar'] {
 div[class*='HomeContentSidebar'] div[class*='HomeContent'] {
     flex: 2;
     background-color: transparent !important;
-    /*padding: 0 20px 70px 20px;*/
 }
 /*contents home label = titre as h2*/
 /*a eviter car probleme indexation par robots cause pas de semantique html*/
@@ -125,18 +124,21 @@ li.resources-grid-item a > div {
 /* liste pave dans   */
 /* designHomeContent */
 /*********************/
-div[class*='designHomeContent']
-   /* [class*='ListePave']*/
-    li {
+div[class*='designHomeContent'] [class*='ListePave'] li {
     background-color: var(--contrast-light);
     border-color: var(--contrast-light);
     padding: 2rem;
 }
+div[class*='designHomeContent'] [class*='ListePave'] li a div {
+    padding-right: 1.5rem;
+}
 div[class*='designHomeContent']
-   /* [class*='ListePave']*/
-    li a
-    div[class*='contentTitle'] {
-    background: var(--contrast-light) url('../img/fleched.svg') no-repeat center
+    [class*='ListePave']
+    li
+    a
+    /*div[class*='contentTitle']*/
+    div:last-child {
+    background: var(--contrast-light) url('../img/fleched.svg') no-repeat bottom
         right 1.3rem;
 }
 div[class*='designHomeContent']
@@ -170,7 +172,7 @@ div[class*='HomeSidebar'] {
 }
 /*div[class*='HomeSidebar'] champs composant 1er niveau*/
 div[class*='HomeSidebar'] > .property_value_container > div .property {
-    margin-bottom: 1.5rem;
+    margin-bottom: 2.5rem;
 }
 /*espace titre-texte*/
 div[class*='HomeSidebar']
