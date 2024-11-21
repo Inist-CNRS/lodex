@@ -1,5 +1,5 @@
 :root {
-    /*couleur icon lien et bouton*/
+    /*couleur icon pour lien et bouton*/
     --filtreBleuMain: invert(55%) sepia(9%) saturate(2387%) hue-rotate(150deg)
         brightness(88%) contrast(81%);
     --filtreBleuHoverFocus: invert(39%) sepia(60%) saturate(480%)
@@ -187,6 +187,16 @@ div[class*='HomeSidebar'] div[class*='BoutonPrimaire'] a.property_value {
     color: var(--primary-main);
     background-color: var(--contrast-light);
     border: 1px solid var(--contrast-light);
+}
+/*BoutonPrimaire lodex*/
+div[class*='HomeSidebar'] button[class*='containedPrimary'] {
+    color: var(--primary-main) !important;
+    background-color: var(--contrast-light) !important;
+    border: 1px solid var(--contrast-light) !important;
+}
+div[class*='HomeSidebar'] button[class*='containedPrimary']:is(:hover, :focus) {
+    background-color: var(--contrast-main) !important;
+    border: 1px solid var(--contrast-main) !important;
 }
 /* les autres */
 div[class*='HomeSidebar']

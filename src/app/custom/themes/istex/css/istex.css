@@ -67,7 +67,7 @@ body {
     --font-titre: Montserrat, Arial, Helvetica, sans-serif;
     --font-titre-medium: Montserrat Medium, Arial, Helvetica, sans-serif;
     --font-texte: Inter, Arial, Helvetica, sans-serif;
-    --maxWidth: 1700px; /* .css-19r6kue-MuiContainer-root 19.08.2024*/
+    --maxWidth: 1200px; /* .css-19r6kue-MuiContainer-root 19.08.2024*/
 
     --canard0: #458ca5; /*canard 0 */
     --canard-1: #31768f; /*canard -1*/
@@ -499,6 +499,7 @@ span.property_label[style*='color: rgb(158, 158, 158)']:not(:empty) {
     font-family: var(--font-titre) !important;
     font-size: 1.4rem !important;
     text-align: initial;
+    margin-bottom: 0.5rem;
 }
 /*label semantique*/
 #content span.property_scheme a {

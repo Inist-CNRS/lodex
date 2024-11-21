@@ -1,3 +1,12 @@
+@font-face {
+    font-family: 'Quicksand';
+    font-display: swap;
+    src: url(../font/Quicksand/Quicksand-VariableFont_wght.ttf)
+        format('ttf-variations');
+    font-weight: 125 950;
+    font-stretch: 75% 125%;
+    font-style: oblique 0deg 20deg;
+}
 *,
 *::before,
 *::after {
@@ -35,20 +44,36 @@
 /*bgBody + text*/
 body {
     background-color: var(--bgBody);
+    background-image: var(--bgBodyUrl);
+    background-position: top center;
+    background-repeat: no-repeat;
+    background-size: contain;
     margin: 0;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
-        'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji',
-        'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
-    font-size: 14px;
-    font-weight: 400;
-    line-height: 1.5;
+}
+body * {
+    font-family:
+        Quicksand,
+        -apple-system,
+        BlinkMacSystemFont,
+        'Segoe UI',
+        Roboto,
+        'Helvetica Neue',
+        Arial,
+        'Noto Sans',
+        sans-serif,
+        'Apple Color Emoji',
+        'Segoe UI Emoji',
+        'Segoe UI Symbol',
+        'Noto Color Emoji';
+    font-optical-sizing: auto;
+    font-variation-settings: 'GRAD' 88;
     -webkit-text-size-adjust: 100%;
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
     color: var(--text) !important;
 }
 /*bgHeader + --titleHeader*/
 header {
-    background: var(--bgHeader);
+    background-color: var(--bgHeader);
 }
 header #banner.container {
     display: flex;
@@ -57,6 +82,7 @@ header #banner.container {
     gap: 5%;
     height: max-content;
     margin: 10px auto;
+    padding: 0;
 }
 #banner h1,
 #banner p {
@@ -68,7 +94,7 @@ header a.logo,
 header a.logo img {
     flex: 1;
 }
-header #banner :last-child {
+header #banner > :last-child {
     flex: 3;
     text-align: center;
 }
@@ -81,15 +107,19 @@ header #banner :last-child {
 .container-fluid {
     width: 100%;
     max-width: var(--maxWidthXl);
+    min-width: 360px;
     margin-right: auto;
     margin-left: auto;
-    padding-left: 0.5rem;
-    padding-right: 0.5rem;
+    padding-left: 2rem !important;
+    padding-right: 2rem !important;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
 }
 /*bgContent*/
 #content .container {
-    padding: 30px 50px !important;
+    background-color: transparent;
     background-color: var(--bgContent);
+    font-size: 1.2rem;
 }
 .drawer .search-content {
     padding-left: 1rem;
@@ -100,7 +130,17 @@ header #banner :last-child {
 .graph-facets {
     background-color: var(--bgFacet) !important;
 }
-/*logo lodex*/
+/* nav lodex */
+#root nav {
+    box-shadow: 0px -3px 3px rgba(0, 0, 0, 0.2);
+}
+nav .container {
+    padding-left: 0.5rem !important;
+    padding-right: 0.5rem !important;
+    color: initial;
+    fill: initial;
+}
+/*nav logo lodex*/
 nav.nav-bar-menu div.nav-bar-container > img {
     display: none;
 }
@@ -123,6 +163,13 @@ h2 {
     color: var(--titleGraph) !important;
     font-family: var(--font-titleGraph) !important;
     font-size: var(--fontSize-titleGraph) !important;
+}
+/*etiquette*/
+.property_label {
+    color: var(--titleGraph) !important;
+    text-transform: lowercase;
+    font-stretch: ultra-condensed;
+    font-weight: 450 !important;
 }
 /*link in text*/
 a {
