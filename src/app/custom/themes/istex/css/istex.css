@@ -187,6 +187,17 @@ header {
     background: #fff url(../img/fondistex.png) center center;
     background-size: cover;
     color: #ffffff;
+    height: 140px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+}
+.banner .container {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
 }
 .banner a {
     display: flex;
@@ -751,17 +762,10 @@ ul.MuiList-root.facets-list > li .facet-value-list svg {
 /*****************************/
 @media screen and (max-width: 760px) {
     .banner {
-        height: 100px;
-        padding-top: 10px;
+        height: 130px;
     }
     .banner img {
         height: 80%;
-    }
-    .banner h1.siteTitle {
-        font-size: 3rem;
-    }
-    .subTitle {
-        font-size: 1.5rem;
     }
 }
 @media screen and (max-width: 576px) {
@@ -774,14 +778,7 @@ ul.MuiList-root.facets-list > li .facet-value-list svg {
 }
 @media screen and (max-width: 530px) {
     .banner {
-        height: 120px;
-        padding-top: 30px;
-    }
-    .banner h1.siteTitle {
-        font-size: 30px;
-    }
-    .subTitle {
-        display: none;
+        height: 130px;
     }
     /*barre fonctionnelle*/
     .main-resource-section > div .MuiCardActions-root {
