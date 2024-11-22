@@ -24,7 +24,7 @@ div[class*='HomeContentSidebar'] div[class*='designHomeContent'],
 div[class*='HomeSidebar'] {
     width: auto !important;
     margin-bottom: 0 !important;
-    padding: 3rem 1rem 6rem;
+    padding: 5rem 1rem 6rem;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -34,7 +34,6 @@ div[class*='HomeSidebar'] {
 div[class*='HomeContentSidebar'] div[class*='HomeContent'] {
     flex: 2;
     background-color: transparent !important;
-    /*padding: 0 20px 70px 20px;*/
 }
 /*contents home label = titre as h2*/
 /*a eviter car probleme indexation par robots cause pas de semantique html*/
@@ -125,18 +124,21 @@ li.resources-grid-item a > div {
 /* liste pave dans   */
 /* designHomeContent */
 /*********************/
-div[class*='designHomeContent']
-   /* [class*='ListePave']*/
-    li {
+div[class*='designHomeContent'] [class*='ListePave'] li {
     background-color: var(--contrast-light);
     border-color: var(--contrast-light);
     padding: 2rem;
 }
+div[class*='designHomeContent'] [class*='ListePave'] li a div {
+    padding-right: 1.5rem;
+}
 div[class*='designHomeContent']
-   /* [class*='ListePave']*/
-    li a
-    div[class*='contentTitle'] {
-    background: var(--contrast-light) url('../img/fleched.svg') no-repeat center
+    [class*='ListePave']
+    li
+    a
+    /*div[class*='contentTitle']*/
+    div:last-child {
+    background: var(--contrast-light) url('../img/fleched.svg') no-repeat bottom
         right 1.3rem;
 }
 div[class*='designHomeContent']
@@ -170,7 +172,7 @@ div[class*='HomeSidebar'] {
 }
 /*div[class*='HomeSidebar'] champs composant 1er niveau*/
 div[class*='HomeSidebar'] > .property_value_container > div .property {
-    margin-bottom: 1.5rem;
+    margin-bottom: 2.5rem;
 }
 /*espace titre-texte*/
 div[class*='HomeSidebar']
@@ -220,82 +222,18 @@ div[class*='HomeCompteur'] div.content {
     filter: opacity(90%);
 }
 
-/*istex home promo en bas*/
-.backZoneSimple {
-    --height-backZoneSimple: 45rem;
-    --height-lodexZone: 3.7rem;
-    margin-bottom: 0;
-}
-.backZoneSimple .property_value_container * {
-    padding: 0;
-    margin: 0;
-}
-.backZoneSimple .property_value {
-    height: calc(var(--height-backZoneSimple) - 1rem);
+/*******************/
+/*  design ISTEX   */
+/*   Home bottom   */
+/*    banniere     */
+/* img full screen */
+/*******************/
+
+/*#TODO à revoir */
+.banniereSimple {
     width: 100%;
 }
-#backZoneContainer {
-    position: absolute;
-    bottom: var(--height-lodexZone);
-    left: 0;
-    width: 100% !important;
-    background-color: var(--primary-main);
-    background-image: url(../img/backZoneSimple-1.jpg);
-    background-position: center top;
-    background-color: var(--primary-main);
-    background-size: cover;
-    background-repeat: no-repeat;
-}
-#backZoneContainer #backZoneTexte {
-    border: 0 !important;
-    height: var(--height-backZoneSimple);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 2%;
-    width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
-}
-#backZoneContainer #backZoneTexte *:not(h2) {
-    padding: 0 !important;
-    border: 0 !important;
-    width: max-content;
-    color: var(--secondary-contrast-text) !important;
-    font-weight: 400;
-    font-family: var(--font-titre);
-    font-size: 2rem;
-}
-#backZoneContainer #backZoneTexte h2 {
-    color: #c4d733;
-    font-size: 4.3rem;
-    margin: 2rem 2rem 5rem;
-    text-align: center !important;
-}
-#backZoneContainer #backZoneTexte div#surtitre {
-    font-size: 2rem;
-}
-#backZoneContainer #backZoneTexte div#url {
-    font-size: 3rem;
-}
-#backZoneContainer #backZoneTexte div#url a:hover {
-    font-weight: bold;
-}
-/*autre version */
-
-/*************************/
-/* design Home bottom    */
-/* full screen           */
-/* content fond et promo */
-/*************************/
-/*istex home promo*/
-/* galaxieIstex */
-
-/*istex home promo*/
-/* galaxieIstex */
-/* #TODO faire template ejs */
-div[class*='designHomeGalaxieIstex'] {
+div[class*='designHomebanniereSimple'] {
     width: 100vw !important;
     background-image: url(../img/galaxie-istex-1.jpg);
     background-image: url(../img/galaxie-istex.jpg);
@@ -305,11 +243,11 @@ div[class*='designHomeGalaxieIstex'] {
     background-repeat: no-repeat;
     margin: 0 0 !important;
 }
-div[class*='designHomeGalaxieIstex'] div.MuiBox-root {
+div[class*='designHomebanniereSimple'] div.MuiBox-root {
     margin: 0 0 !important;
     padding: 0 0 !important;
 }
-#design-home-galaxieIstex-container #design-home-galaxieIstex-texte {
+#design-home-banniereSimple-container #design-home-banniereSimple-texte {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -320,31 +258,42 @@ div[class*='designHomeGalaxieIstex'] div.MuiBox-root {
     max-width: var(--maxWidth);
     margin: 0 auto;
 }
-#design-home-galaxieIstex-texte * {
+#design-home-banniereSimple-texte * {
     color: var(--secondary-contrast-text);
     margin: 0;
 }
-#design-home-galaxieIstex-texte span#surtitre {
+#design-home-banniereSimple-texte span#surtitre {
     display: block;
     font-weight: 400;
     font-family: var(--font-titre);
     font-size: 2rem;
     line-height: 4rem;
 }
-#design-home-galaxieIstex-texte h2 {
+#design-home-banniereSimple-texte h2 {
     text-align: center !important;
     color: #c4d733;
     font-size: 4.3rem;
     line-height: 5.3rem;
 }
-#design-home-galaxieIstex-texte div#texte {
+#design-home-banniereSimple-texte div#texte {
     font-size: 2rem;
     line-height: 3rem;
 }
-#design-home-galaxieIstex-texte div#url a {
+/* a est un bouton secondair*/
+#design-home-banniereSimple-texte div#url a {
     font-size: 1.6rem;
     line-height: 2rem;
 }
+
+/*******************/
+/*  design ISTEX   */
+/*   Home bottom   */
+/*    banniere     */
+/*   img + texte   */
+/*******************/
+/*div[class*='banniereDouble'] {
+}*/
+
 /*****************/
 /*page resource*/
 /*ex: tools explorer website*/

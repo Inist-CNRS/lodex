@@ -37,6 +37,7 @@
         <% if (custom.color) {%>
         :root {
         --bgBody: <%= custom.color.bgBody %>;
+        --bgBodyUrl: url('<%= custom.color.bgBody %>');
         --bgContrast: <%= custom.color.bgContrast %>;
         --bgHeader: <%= custom.color.bgHeader %>;
         --titleHeader: <%= custom.color.titleHeader %>;
@@ -56,6 +57,7 @@
 </head>
 
 <body>
+<% if (custom.siteTitle) { %>
     <header>
         <div id="banner" class="container">
             <div id="logos">
@@ -64,7 +66,7 @@
                 </a>
             </div>
             <div>
-            <% if (custom.siteTitle ) { %>
+            <% if (custom.siteTitle) { %>
 			    <h1><%= custom.siteTitle %></h1>
             <% } %>
             <% if (custom.summary) { %>
@@ -73,6 +75,7 @@
             </div>
         </div>
     </header>
+    <% } %>
     <div id="root"></div>
     <script>
         window.__PRELOADED_STATE__ = <%- lodex.preload %>;

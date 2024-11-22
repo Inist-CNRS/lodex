@@ -40,6 +40,30 @@
         "type": "homogeneisation"
     },
     {
+        "id": "post-v1-orcid-disambiguation-orcidDisambiguation-orcidDisambiguation?nameDepth=50",
+        "url": "https://authors-tools.services.inist.fr/v1/orcid-disambiguation/orcidDisambiguation?nameDepth=50",
+        "doc": "https://gitbucket.inist.fr/tdm/web-services/tree/master/authors-tools",
+        "swagger": "https://openapi.services.istex.fr/?urls.primaryName=authors-tools%20-%20Les%20web%20services%20qui%20se%20lancent%20sur%20le%20champs%20%27authors%27#/default/post_v1_orcid_disambiguation_orcidDisambiguation",
+        "objectifTDM": "https://services.istex.fr/2023/10/16/desambiguisation-dauteurs-via-orcid/",
+        "type": "homogeneisation"
+    },
+    {
+    "id": "post-v1-orcid-disambiguation-orcidDisambiguation-orcidDisambiguation?worksDepth=50",
+        "url": "https://authors-tools.services.inist.fr/v1/orcid-disambiguation/orcidDisambiguation?worksDepth=50",
+        "doc": "https://gitbucket.inist.fr/tdm/web-services/tree/master/authors-tools",
+        "swagger": "https://openapi.services.istex.fr/?urls.primaryName=authors-tools%20-%20Les%20web%20services%20qui%20se%20lancent%20sur%20le%20champs%20%27authors%27#/default/post_v1_orcid_disambiguation_orcidDisambiguation",
+        "objectifTDM": "https://services.istex.fr/2023/10/16/desambiguisation-dauteurs-via-orcid/",
+        "type": "homogeneisation"
+    },
+    {
+    "id": "post-v1-orcid-disambiguation-orcidDisambiguation-orcidDisambiguation?nameDepth=50&worksDepth=40",
+        "url": "https://authors-tools.services.inist.fr/v1/orcid-disambiguation/orcidDisambiguation?nameDepth=50&worksDepth=40",
+        "doc": "https://gitbucket.inist.fr/tdm/web-services/tree/master/authors-tools",
+        "swagger": "https://openapi.services.istex.fr/?urls.primaryName=authors-tools%20-%20Les%20web%20services%20qui%20se%20lancent%20sur%20le%20champs%20%27authors%27#/default/post_v1_orcid_disambiguation_orcidDisambiguation",
+        "objectifTDM": "https://services.istex.fr/2023/10/16/desambiguisation-dauteurs-via-orcid/",
+        "type": "homogeneisation"
+    },
+    {
         "id": "post-v1-perseeBaipTagger",
         "url": "https://ner-tagger.services.istex.fr/v1/perseeBaipTagger/tagger",
         "doc": "https://gitbucket.inist.fr/tdm/web-services/tree/master/ner-tagger#persee-baip-tagger",
@@ -50,6 +74,22 @@
     {
         "id": "post-v1-bibCheck",
         "url": "https://biblio-ref.services.istex.fr/v1/validate",
+        "doc": "https://github.com/Inist-CNRS/web-services/tree/main/services/biblio-ref",
+        "swagger": "https://openapi.services.istex.fr/?urls.primaryName=biblio-ref%20-%20Valide%20une%20r%C3%A9f%C3%A9rence%20bibliographique#/biblio-ref/post-v1-validate",
+        "objectifTDM": "https://services.istex.fr/validation-de-reference-bibliographique/",
+        "type": "validation"
+    },
+     {
+        "id": "post-v1-bibCheck-validate-pdf",
+        "url": "https://biblio-ref.services.istex.fr/v1/validate-pdf",
+        "doc": "https://github.com/Inist-CNRS/web-services/tree/main/services/biblio-ref",
+        "swagger": "https://openapi.services.istex.fr/?urls.primaryName=biblio-ref%20-%20Valide%20une%20r%C3%A9f%C3%A9rence%20bibliographique#/biblio-ref/post-v1-validate",
+        "objectifTDM": "https://services.istex.fr/validation-de-reference-bibliographique/",
+        "type": "validation"
+    },
+    {
+        "id": "post-v1-bibCheck-validate-url",
+        "url": "https://biblio-ref.services.istex.fr/v1/validate-url",
         "doc": "https://github.com/Inist-CNRS/web-services/tree/main/services/biblio-ref",
         "swagger": "https://openapi.services.istex.fr/?urls.primaryName=biblio-ref%20-%20Valide%20une%20r%C3%A9f%C3%A9rence%20bibliographique#/biblio-ref/post-v1-validate",
         "objectifTDM": "https://services.istex.fr/validation-de-reference-bibliographique/",
@@ -168,12 +208,20 @@
         "type": "tal"
     },
     {
-        "id": "post-v1-entityTag",
+        "id": "post-v1-entityTag-multiling",
         "url": "https://person-ner.services.istex.fr/v1/tagger",
         "doc": "https://github.com/Inist-CNRS/web-services/tree/main/services/person-ner",
         "swagger": "https://openapi.services.istex.fr/?urls.primaryName=person-ner%20-%20Extraction%20d%27entit%C3%A9%20nomm%C3%A9es%20de%20noms%20de%20personnes#/default/post_v1_tagger",
         "objectifTDM": "https://services.istex.fr/extraction-dentites-nommees-personnes-localisations-organismes-et-autres/",
-        "type": "entites nommees"
+        "type": "indexation"
+    },
+    {
+        "id": "post-v1-entityTag-eng",
+        "url": "https://person-ner.services.istex.fr/v1/tagger-en",
+        "doc": "https://github.com/Inist-CNRS/web-services/tree/main/services/person-ner",
+        "swagger": "https://openapi.services.istex.fr/?urls.primaryName=person-ner%20-%20Extraction%20d%27entit%C3%A9%20nomm%C3%A9es%20de%20noms%20de%20personnes#/default/post_v1_tagger",
+        "objectifTDM": "https://services.istex.fr/extraction-dentites-nommees-personnes-localisations-organismes-et-autres/",
+        "type": "indexation"
     },
     {
         "id": "post-v1-funderTag",
@@ -194,6 +242,14 @@
     {
         "id": "post-v1-en-classhalen",
         "url": "https://hal-classifier.services.istex.fr/v1/en/classhalen",
+        "doc": "https://gitbucket.inist.fr/tdm/web-services/tree/master/hal-classifier#v1%2fen%2fclasshalen",
+        "swagger": "https://openapi.services.istex.fr/?urls.primaryName=hal-classifier%20-%20Classification%20HAL#/Classification%20supervis%C3%A9e/post-v1-en-classhalen",
+        "objectifTDM": "https://services.istex.fr/2022/02/10/classification-dans-les-domaines-hal/",
+        "type": "classification"
+    },
+    {
+        "id": "post-v1-en-classhalfr",
+        "url": "https://hal-classifier.services.istex.fr/v1/en/classhalfr",
         "doc": "https://gitbucket.inist.fr/tdm/web-services/tree/master/hal-classifier#v1%2fen%2fclasshalen",
         "swagger": "https://openapi.services.istex.fr/?urls.primaryName=hal-classifier%20-%20Classification%20HAL#/Classification%20supervis%C3%A9e/post-v1-en-classhalen",
         "objectifTDM": "https://services.istex.fr/2022/02/10/classification-dans-les-domaines-hal/",
@@ -233,8 +289,32 @@
     },
     {
         "id": "post-v1-ldaClass",
+        "url": "https://data-computer.services.istex.fr/v1/lda",
+        "doc": "https://openapi.services.istex.fr/?urls.primaryName=data-computer%20-%20Calculs%20sur%20fichier%20corpus%20compress%C3%A9#/data-computer/post-v1-lda",
+        "swagger": "https://openapi.services.istex.fr/?urls.primaryName=data-computer%20-%20Calculs%20sur%20fichier%20corpus%20compress%C3%A9#/data-computer/post-v1-lda",
+        "objectifTDM": "https://services.istex.fr/creation-de-topics-sur-un-corpus-lda/",
+        "type": "classification"
+    },
+    {
+        "id": "post-v1-ldaClass-nb",
+        "url": "https://data-computer.services.istex.fr/v1/lda?nbTopic=8",
+        "doc": "https://openapi.services.istex.fr/?urls.primaryName=data-computer%20-%20Calculs%20sur%20fichier%20corpus%20compress%C3%A9#/data-computer/post-v1-lda",
+        "swagger": "https://openapi.services.istex.fr/?urls.primaryName=data-computer%20-%20Calculs%20sur%20fichier%20corpus%20compress%C3%A9#/data-computer/post-v1-lda",
+        "objectifTDM": "https://services.istex.fr/creation-de-topics-sur-un-corpus-lda/",
+        "type": "classification"
+    },
+    {
+        "id": "post-v1-lda-segment",
         "url": "https://data-computer.services.istex.fr/v1/lda-segment",
-        "doc": "hhttps://openapi.services.istex.fr/?urls.primaryName=data-computer%20-%20Calculs%20sur%20fichier%20corpus%20compress%C3%A9#/data-computer/post-v1-lda",
+        "doc": "https://openapi.services.istex.fr/?urls.primaryName=data-computer%20-%20Calculs%20sur%20fichier%20corpus%20compress%C3%A9#/data-computer/post-v1-lda",
+        "swagger": "https://openapi.services.istex.fr/?urls.primaryName=data-computer%20-%20Calculs%20sur%20fichier%20corpus%20compress%C3%A9#/data-computer/post-v1-lda",
+        "objectifTDM": "https://services.istex.fr/creation-de-topics-sur-un-corpus-lda/",
+        "type": "classification"
+    },
+    {
+        "id": "post-v1-lda-segment-nb",
+        "url": "https://data-computer.services.istex.fr/v1/lda-segment?nbTopic=8",
+        "doc": "https://openapi.services.istex.fr/?urls.primaryName=data-computer%20-%20Calculs%20sur%20fichier%20corpus%20compress%C3%A9#/data-computer/post-v1-lda",
         "swagger": "https://openapi.services.istex.fr/?urls.primaryName=data-computer%20-%20Calculs%20sur%20fichier%20corpus%20compress%C3%A9#/data-computer/post-v1-lda",
         "objectifTDM": "https://services.istex.fr/creation-de-topics-sur-un-corpus-lda/",
         "type": "classification"
@@ -248,8 +328,16 @@
         "type": "classification"
     },
     {
-        "id": "post-v1-en-classify",
+        "id": "post-v1-en-classify-3",
         "url": "https://domains-classifier.services.istex.fr/v1/en/classify",
+        "doc": "https://gitbucket.inist.fr/tdm/web-services/tree/master/domains-classifier",
+        "swagger": "https://openapi.services.istex.fr/?urls.primaryName=domains-classifier%20-%20Classification%20en%20domaines%20scientifiques#/default/post_v1_en_classify",
+        "objectifTDM": "https://services.istex.fr/2021/12/08/classification-en-domaines-scientifiques/",
+        "type": "classification"
+    },
+    {
+        "id": "post-v1-en-classify-2",
+        "url": "https://domains-classifier.services.istex.fr/v1/en/classify?deep2",
         "doc": "https://gitbucket.inist.fr/tdm/web-services/tree/master/domains-classifier",
         "swagger": "https://openapi.services.istex.fr/?urls.primaryName=domains-classifier%20-%20Classification%20en%20domaines%20scientifiques#/default/post_v1_en_classify",
         "objectifTDM": "https://services.istex.fr/2021/12/08/classification-en-domaines-scientifiques/",
@@ -261,7 +349,7 @@
         "doc": "https://github.com/Inist-CNRS/web-services/tree/main/services/terms-extraction/v1/quantity",
         "swagger": "https://openapi.services.istex.fr/?urls.primaryName=terms-extraction%20-%20Extraction%20de%20termes#/terms-extraction/post-v1-quantity-extract",
         "objectifTDM": "https://services.istex.fr/extraction-de-quantites/",
-        "type": "entites nommees"
+        "type": "entitées nommées"
     },
     {
         "id": "post-v1-rnsr-json",
@@ -269,7 +357,15 @@
         "doc": "https://github.com/Inist-CNRS/web-services/tree/main/services/affiliations-tools#v1rnsrjson",
         "swagger": "https://openapi.services.istex.fr/?urls.primaryName=affiliations-tools%20-%20Structuration%20et%20enrichissements%20d%27affiliations#/affiliations/post-v1-rnsr-json",
         "objectifTDM": "https://services.istex.fr/2021/12/09/identifiants-rnsr-adresse/",
-        "type": "affiliation"
+        "type": "homogénéisation"
+    },
+    {
+        "id": "post-v1-rnsr-info",
+        "url": "https://affiliations-tools.services.istex.fr/v1/rnsr/info",
+        "doc": "https://github.com/Inist-CNRS/web-services/tree/main/services/affiliations-tools#v1rnsrjson",
+        "swagger": "https://openapi.services.istex.fr/?urls.primaryName=affiliations-tools%20-%20Structuration%20et%20enrichissements%20d%27affiliations#/affiliations/post-v1-rnsr-json",
+        "objectifTDM": "https://services.istex.fr/2021/12/09/identifiants-rnsr-adresse/",
+        "type": "homogénéisation"
     },
     {
         "id": "post-v2-affiliation-rnsr",
@@ -277,7 +373,7 @@
         "doc": "https://github.com/Inist-CNRS/web-services/tree/main/services/affiliation-rnsr#readme",
         "swagger": "https://openapi.services.istex.fr/?urls.primaryName=affiliation-rnsr%20-%20Trouve%20un%20RNSR%20%C3%A0%20partir%20d%27une%20affiliation.#/default/post_v2_affiliation_rnsr",
         "objectifTDM": "https://services.istex.fr/2023/04/20/attribution-dun-rnsr-a-une-affiliation-apprentissage/",
-        "type": "affiliation"
+        "type": "homogénéisation"
     },
     {
         "id": "post-v3-affiliation-rnsr",
@@ -285,7 +381,7 @@
         "doc": "",
         "swagger": "https://openapi.services.istex.fr/?urls.primaryName=affiliation-rnsr%20-%20Trouve%20un%20RNSR%20%C3%A0%20partir%20d%27une%20affiliation.#/default/post_v3_affiliation_rnsr",
         "objectifTDM": "https://services.istex.fr/2023/04/20/attribution-dun-rnsr-a-une-affiliation-apprentissage/",
-        "type": "affiliation"
+        "type": "homogénéisation"
     },
     {
         "id": "ost-v1-sciencemetrixClass",
@@ -301,7 +397,7 @@
         "doc": "https://github.com/Inist-CNRS/web-services/tree/main/services/irc3-species",
         "swagger": "https://openapi.services.istex.fr/?urls.primaryName=irc3-species%20-%20Recherche%20de%20noms%20d%27esp%C3%A8ces#/default/post_v1_irc3sp",
         "objectifTDM": "https://services.istex.fr/2023/03/22/irc3-species-recherche-despeces-animales/",
-        "type": "entites nommees"
+        "type": "entitées nommées"
     },
     {
         "id": "post-v1-teeft-en",
@@ -312,8 +408,24 @@
         "type": "indexation"
     },
     {
+        "id": "post-v1-teeft-en-nb",
+        "url": "https://terms-extraction.services.istex.fr/v1/teeft/en?nb=10",
+        "doc": "https://gitbucket.inist.fr/tdm/web-services/tree/master/terms-extraction#v1%2fteeft%2fen",
+        "swagger": "https://openapi.services.istex.fr/?urls.primaryName=terms-extraction%20-%20Extraction%20de%20termes#/terms-extraction/post-v1-teeft-en",
+        "objectifTDM": "https://services.istex.fr/2021/12/20/extraction-de-termes-teeft/",
+        "type": "indexation"
+    },
+    {
         "id": "post-v1-teeft-fr",
         "url": "https://terms-extraction.services.istex.fr/v1/teeft/fr",
+        "doc": "https://gitbucket.inist.fr/tdm/web-services/tree/master/terms-extraction#v1%2fteeft%2ffr",
+        "swagger": "https://openapi.services.istex.fr/?urls.primaryName=terms-extraction%20-%20Extraction%20de%20termes#/terms-extraction/post-v1-teeft-fr",
+        "objectifTDM": "https://services.istex.fr/2021/12/20/extraction-de-termes-teeft/",
+        "type": "indexation"
+    },
+    {
+        "id": "post-v1-teeft-fr-nb",
+        "url": "https://terms-extraction.services.istex.fr/v1/teeft/fr?nb=10",
         "doc": "https://gitbucket.inist.fr/tdm/web-services/tree/master/terms-extraction#v1%2fteeft%2ffr",
         "swagger": "https://openapi.services.istex.fr/?urls.primaryName=terms-extraction%20-%20Extraction%20de%20termes#/terms-extraction/post-v1-teeft-fr",
         "objectifTDM": "https://services.istex.fr/2021/12/20/extraction-de-termes-teeft/",
@@ -350,5 +462,21 @@
         "swagger": "https://openapi.services.istex.fr/?urls.primaryName=terms-extraction%20-%20Extraction%20de%20termes#/terms-extraction/post-v1-tools-normalize",
         "objectifTDM": "https://services.istex.fr/2022/01/12/normaliser-un-texte-ou-un-terme/",
         "type": "metadata"
-    }
+    },
+    {
+        "id": "post-v1-topCitation",
+        "url": "https://data-topcitation.services.istex.fr/v1/topcitation",
+        "doc": "https://github.com/Inist-CNRS/web-services/tree/main/services/data-topcitation",
+        "swagger": "https://openapi.services.istex.fr/?urls.primaryName=data-topcitation%20-%20R%C3%A9f%C3%A9rence%20phare%20d%27un%20corpus#/",
+        "objectifTDM": "https://services.istex.fr/extraction-des-references-phares-dun-corpus/",
+        "type": "validation"
+        },
+    {
+        "id": "post-v1-topCitation-nb",
+        "url": "https://data-topcitation.services.istex.fr/v1/topcitation?nbCitations=4",
+        "doc": "https://github.com/Inist-CNRS/web-services/tree/main/services/data-topcitation",
+        "swagger": "https://openapi.services.istex.fr/?urls.primaryName=data-topcitation%20-%20R%C3%A9f%C3%A9rence%20phare%20d%27un%20corpus#/",
+        "objectifTDM": "https://services.istex.fr/extraction-des-references-phares-dun-corpus/",
+        "type": "validation"
+        }
 ]

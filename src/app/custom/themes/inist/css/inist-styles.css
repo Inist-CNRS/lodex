@@ -92,10 +92,11 @@ body {
     display: flex;
     flex-direction: column;
     background-image: url('../img/bg_projets.jpg');
-    background-repeat: repeat-x;
-    background-position: top left;
+    background-repeat: no-repeat;
+    background-position: top center;
     opacity: 1;
     gap: 0 !important;
+    background-size: contain;
 }
 /*header theme inist*/
 header {
@@ -384,6 +385,9 @@ ul.MuiList-root.facets-list {
     padding-right: 8px !important;
     flex: 1.2;
 }
+.css-1ikxdbu-MuiButtonBase-root-MuiCheckbox-root {
+    padding: 2px !important;
+}
 /*facette filtre*/
 ul.MuiList-root.facets-list > li {
     background-color: transparent;
@@ -414,13 +418,23 @@ ul.MuiList-root.facets-list
     svg {
     font-size: 1.8rem;
 }
-/*facet flitre list valeurs */
+/*facet filtre list valeurs */
 ul.MuiList-root.facets-list > li .facet-value-list {
     padding: 8px 16px 16px;
     background-color: var(--contrast-main);
 }
 ul.MuiList-root.facets-list > li .facet-value-list svg {
     font-size: 1.8rem;
+}
+/*facet input search filtre */
+.facet-value-list .MuiInput-root {
+    border: 1px solid var(--primary-main) !important;
+    border-radius: 4px;
+    background-color: var(--background-default);
+    padding: 1px 2px;
+}
+.facet-value-list input[value*=''] {
+    color: var(--primary-main);
 }
 /*drawer search-result*/
 .search.search-container .search-content {
