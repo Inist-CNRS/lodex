@@ -3,10 +3,6 @@
 plugin = basics
 plugin = analytics
 
-# Toggle ezs traces (see server stderr log)
-[debug]
-ezs = false
-
 # Group values to build a request for the webservice
 [expand]
 path = value.[[SOURCE COLUMN]].[[SUB PATH]]

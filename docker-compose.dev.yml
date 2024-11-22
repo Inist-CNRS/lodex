@@ -9,7 +9,7 @@ services:
             - .:/app
         working_dir: /app
         environment:
-            DEBUG: ${DEBUG}
+            DEBUG: ${DEBUG:-ezs:*,-ezs:debug,-ezs:trace}
             NODE_ENV: ${NODE_ENV}
             NODE_OPTIONS: ${NODE_OPTIONS}
             http_proxy: ${http_proxy}
@@ -59,7 +59,7 @@ services:
             - .:/app
         working_dir: /app
         environment:
-            DEBUG: ${DEBUG}
+            DEBUG: ${DEBUG:-ezs:*,-ezs:debug,-ezs:trace}
             NODE_ENV: ${NODE_ENV}
             NODE_OPTIONS: ${NODE_OPTIONS}
             http_proxy: ${http_proxy}
