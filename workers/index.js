@@ -9,7 +9,8 @@ import Storage from '@ezs/storage';
 import localConfig from '../config.json';
 
 ezs.settings.feed.timeout = Number(localConfig.timeout) || 120000;
-debug.enable('ezs');
+process.env.DEBUG_COLORS = 0;
+debug.enable('ezs:*,-ezs:debug,-ezs:trace');
 ezs.use(Basics);
 ezs.use(Analytics);
 ezs.use(Lodex);
