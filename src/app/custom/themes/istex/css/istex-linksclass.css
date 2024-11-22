@@ -12,7 +12,7 @@
         hue-rotate(327deg) brightness(107%) contrast(101%);
 }
 /* lien du content*/
-#content a {
+#content a:not(:empty, .property_value) {
     text-decoration: underline;
 }
 /*a avec url comme texte*/
@@ -34,21 +34,22 @@
     color: var(--link-dark);
 }
 /*lien externe icone couleur position*/
-.property a:not(:empty)[target='_blank'] {
+.property a:not(:empty, .property_value)[target='_blank'] {
     display: inline-flex;
 }
-.property a:not(:empty)[target='_blank']::after,
+.property a:not(:empty, .property_value)[target='_blank']::after,
 div[class*='Icon'] a::after {
     filter: var(--filtreBleuMain);
     color: black;
     display: inline-block;
 }
 /*link ext hover focus*/
-.property a:not(:empty, .property_value)[target='_blank']::after {
+.property a[target='_blank']:not(:empty, .property_value)::after {
     content: url('../img/suivre-le-lien-nouvel-onglet.png');
     padding-left: 5px;
 }
-.property a:is(:hover, :focus):not(:empty)[target='_blank']::after,
+.property
+    a:is(:hover, :focus):not(:empty, .property_value)[target='_blank']::after,
 div[class*='Icon'] a:is(:hover, :focus)::after {
     filter: var(--filtreBleuHoverFocus);
     color: black;
@@ -68,13 +69,17 @@ div[class*='HomeSidebar'] a:is(:hover, :focus, :active) {
 }
 /*link externe in text fond sombre*/
 /*link externe icon */
-div[class*='HomeSidebar'] a:not(:empty)[target='_blank']::after,
+div[class*='HomeSidebar']
+    a:not(:empty, .property_value)[target='_blank']::after,
 div[class*='HomeSidebar'] div[class*='Icon'] a::after {
     filter: var(--filtreBlancLight);
     color: black;
 }
 div[class*='HomeSidebar']
-    a:is(:hover, :focus, :active):not(:empty)[target='_blank']::after,
+    a:is(:hover, :focus, :active):not(
+        :empty,
+        .property_value
+    )[target='_blank']::after,
 div[class*='HomeSidebar']
     div[class*='Icon']
     a:is(:hover, :focus, :active)::after {
@@ -91,7 +96,7 @@ div[class*='Bouton'] a.property_value {
     font-family: var(--font-texte);
     font-size: 16px !important;
     text-decoration: none !important;
-    text-transform: uppercase;
+    text-transform: uppercase !important;
     padding: 12px 0;
     width: auto;
     line-height: auto;
