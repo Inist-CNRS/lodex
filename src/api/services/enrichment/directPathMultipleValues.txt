@@ -3,10 +3,6 @@
 plugin = basics
 plugin = analytics
 
-# Toggle ezs traces (see server stderr log)
-[debug]
-ezs = false
-
 # We sometime have a stringified value (like "{id:1, name: 'Bob'}"), and we want to parse it, if possible
 # This assign command aim is to do that, it update the [[SOURCE COLUMN]] to JSON.parse it if possible.
 # Can be simplified with the following statement : value = get('value.[[SOURCE COLUMN]]')
