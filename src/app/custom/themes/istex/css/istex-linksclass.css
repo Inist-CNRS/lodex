@@ -11,21 +11,27 @@
     --filtreBlancMainHFA: invert(100%) sepia(100%) saturate(0%)
         hue-rotate(327deg) brightness(107%) contrast(101%);
 }
-/* lien du content*/
+/************************/
+/* lien au fil du texte */
+/* lien du content      */
+/************************/
 #content a:not(:empty, .property_value) {
     text-decoration: underline;
+    cursor: pointer;
 }
-/*a avec url comme texte*/
+/*a avec url comme texte (pas bonne pratique*/
 .property div[class*='designHomeSidebar'] a.property_value {
     overflow-wrap: anywhere !important;
     word-break: break-all !important;
     hyphens: auto;
     width: inherit;
 }
-/* link in text fond clair*/
+/**************/
+/* fond clair */
+
 .property a {
     color: var(--primary-main);
-    cursor: pointer;
+    display: inline-flex;
 }
 .property a:is(:hover, :focus) {
     color: var(--link-secondary);
@@ -33,33 +39,25 @@
 .property a:active {
     color: var(--link-dark);
 }
-/*lien externe icone couleur position*/
-.property a:not(:empty, .property_value)[target='_blank'] {
-    display: inline-flex;
-}
-.property a:not(:empty, .property_value)[target='_blank']::after,
-div[class*='Icon'] a::after {
-    filter: var(--filtreBleuMain);
+/*lien externe = icone base noir filtre couleur position*/
+.property a:not(:empty, .property_value)[target='_blank']::after {
     color: black;
+    filter: var(--filtreBleuMain);
     display: inline-block;
-}
-/*link ext hover focus*/
-.property a[target='_blank']:not(:empty, .property_value)::after {
     content: url('../img/suivre-le-lien-nouvel-onglet.png');
     padding-left: 5px;
 }
 .property
-    a:is(:hover, :focus):not(:empty, .property_value)[target='_blank']::after,
-div[class*='Icon'] a:is(:hover, :focus)::after {
+    a:is(:hover, :focus):not(:empty, .property_value)[target='_blank']::after {
+    color: black;
     filter: var(--filtreBleuHoverFocus);
-    color: black;
 }
-.property a:active:not(:empty, .property_value)[target='_blank']::after,
-div[class*='Icon'] a:active::after {
+.property a:active:not(:empty, .property_value)[target='_blank']::after {
+    color: black;
     filter: var(--filtreBleuActive);
-    color: black;
 }
-/*link in text fond sombre*/
+/**************/
+/* fond sombre*/
 /*lien externe icon*/
 div[class*='HomeSidebar'] a {
     color: var(--contrast-light);
@@ -67,207 +65,17 @@ div[class*='HomeSidebar'] a {
 div[class*='HomeSidebar'] a:is(:hover, :focus, :active) {
     color: var(--contrast-main);
 }
-/*link externe in text fond sombre*/
-/*link externe icon */
+/*lien externe = icone base noir filtre couleur position*/
 div[class*='HomeSidebar']
-    a:not(:empty, .property_value)[target='_blank']::after,
-div[class*='HomeSidebar'] div[class*='Icon'] a::after {
-    filter: var(--filtreBlancLight);
+    a:not(:empty, .property_value)[target='_blank']::after {
     color: black;
+    filter: var(--filtreBlancLight);
 }
 div[class*='HomeSidebar']
     a:is(:hover, :focus, :active):not(
         :empty,
         .property_value
-    )[target='_blank']::after,
-div[class*='HomeSidebar']
-    div[class*='Icon']
-    a:is(:hover, :focus, :active)::after {
+    )[target='_blank']::after {
+    color: black;
     filter: var(--filtreBlancMainHFA);
-    color: black;
 }
-/*******************/
-/* boutons & links */
-/* prim,sec,ombre  */
-/*******************/
-/* la forme */
-div[class*='LinkIcon'] a.property_value,
-div[class*='Bouton'] a.property_value {
-    font-family: var(--font-texte);
-    font-size: 16px !important;
-    text-decoration: none !important;
-    text-transform: uppercase !important;
-    padding: 12px 0;
-    width: auto;
-    line-height: auto;
-    display: inline-flex;
-}
-div[class*='LinkIcon'] a.property_value {
-    font-weight: 700;
-    padding-right: 20px;
-}
-div[class*='Bouton'] a.property_value {
-    font-family: var(--font-texte);
-    border: 1px solid transparent;
-    border-radius: 8px;
-    cursor: pointer;
-    padding: 12px 20px;
-}
-div[class*='BoutonOmbre'] a.property_value {
-    border: none !important;
-    box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.15);
-}
-/*avec Icon*/
-div[class*='Icon'] a.property_value {
-    display: inline-flex;
-    gap: 10px;
-    padding-right: 20px;
-    padding-left: 20px;
-}
-div[class*='Icon'] a.property_value::after {
-    color: black;
-}
-/*Icon fleche droite */
-div[class*='IconFlecheDroite'] a.property_value.link::after {
-    content: url('../img/fleche-petite-droite.png');
-}
-/*Icon chevron droit*/
-div[class*='IconChevronDroit'] a.property_value::after {
-    content: url('../img/chevron-droit.png');
-}
-/*couleurs + bordures fond clair*/
-/* couleurs */
-/*BoutonPrimaire*/
-div[class*='BoutonPrimaire'] a.property_value {
-    color: var(--contrast-light);
-    background-color: var(--primary-main) !important;
-}
-/* les autres */
-div[class*='Bouton'] a.property_value {
-    background-color: transparent;
-}
-/*bordure :  BoutonPrimaire Bouton secondaire*/
-div[class*='Bouton'] a.property_value {
-    border: 1px solid var(--primary-main) !important;
-}
-/*hover&focus&active Bouton*/
-div:is([class*='BoutonPrimaire'], [class*='BoutonSecondaire'])
-    a.property_value:is(:hover, :focus) {
-    color: var(--contrast-main);
-    background-color: var(--link-secondary) !important;
-    border-color: var(--link-secondary) !important;
-}
-div[class*='BoutonOmbre'] a.property_value:is(:hover, :focus) {
-    background-color: var(--neutral-dark-very-light) !important;
-}
-/*tous les boutons actifs fond clair*/
-div[class*='Bouton'] a.property_value:active {
-    color: var(--contrast-main);
-    background-color: var(--link-dark) !important;
-    border-color: var(--link-dark) !important;
-}
-/*boutonIcon - linkIcon */
-/*spec*/
-/*fond clair*/
-div[class*='BoutonPrimaire'][class*='Icon'] a.property_value::after {
-    filter: var(--filtreBlancLight);
-}
-/*les autres = idem link externe + icon*/
-
-/*fond clair icon*/
-/*hover&focus*/ /*&active*/
-.property[class*='Bouton'][class*='Icon'] a:is(:hover, :focus)::after {
-    filter: var(--filtreBlancLight);
-    color: black;
-}
-/*[class*='Bouton'][class*='Icon'] a:active:not(:empty)[target='_blank']::after,*/
-[class*='Bouton'][class*='Icon'] a:active::after {
-    filter: var(--filtreBlancMainHFA);
-    color: black;
-}
-/*couleurs + bordures fond sombre*/
-/* couleurs */
-/*BoutonPrimaire*/
-div[class*='HomeSidebar'] div[class*='BoutonPrimaire'] a.property_value {
-    color: var(--primary-main);
-    background-color: var(--contrast-light);
-    border: 1px solid var(--contrast-light);
-}
-/*BoutonPrimaire lodex*/
-div[class*='HomeSidebar'] button[class*='containedPrimary'] {
-    color: var(--primary-main) !important;
-    background-color: var(--contrast-light) !important;
-    border: 1px solid var(--contrast-light) !important;
-}
-div[class*='HomeSidebar'] button[class*='containedPrimary']:is(:hover, :focus) {
-    background-color: var(--contrast-main) !important;
-    border: 1px solid var(--contrast-main) !important;
-}
-/* les autres */
-div[class*='HomeSidebar']
-    div:is([class*='LinkIcon'], [class*='Bouton'])
-    a.property_value {
-    background-color: transparent;
-}
-/*bordure :  Bouton secondaire*/
-div[class*='HomeSidebar'] div[class*='BoutonSecondaire'] a.property_value {
-    border: 1px solid var(--contrast-light) !important;
-}
-/*hover&focus&active*/
-div[class*='BoutonPrimaire'] a:is(:hover, :focus).property_value {
-    color: var(--contrast-main) !important;
-    background-color: var(--link-secondary) !important;
-    border: 1px solid var(--link-secondary) !important;
-}
-div[class*='BoutonPrimaire'] a.property_value:active {
-    color: var(--contrast-main);
-    background-color: var(--link-dark) !important;
-    border: 1px solid var(--link-secondary) !important;
-}
-/*les autres*/
-div[class*='HomeSidebar']
-    div[class*='BoutonSecondaire']
-    a:is(:hover, :focus, :active).property_value {
-    border-color: var(--contrast-main);
-}
-
-/*boutonIcon - linkIcon */
-/*fond sombre*/
-/*div[class*='BoutonPrimaire'] = idem que fond clair*/
-
-/*les autres*/
-div[class*='HomeSidebar']
-    div[class*='Bouton'][class*='Icon']
-    a.property_value::after {
-    filter: var(--filtreBlancLight);
-    color: black;
-}
-/*fond sombre icon*/
-/*hover&focus&active*/
-div[class*='HomeSidebar']
-    [class*='Bouton'][class*='Icon']
-    a:is(:hover, :focus, :active):not(:empty)[target='_blank']::after,
-[class*='Bouton'][class*='Icon'] a:is(:hover, :focus, :active)::after {
-    filter: var(--filtreBlancMainHFA);
-    color: black;
-}
-/*********************/
-/*liste liens en pave*/
-/*********************/
-[class*='ListePave'] div.property_value_container a {
-    text-decoration: none;
-}
-/*home designHomeContent*/
-/*div[class*='HomeContentSidebar']
-    div[class*='designHomeContent']*/
-
-/**.designHomeContent
-    .resources-grid-content
-    > div
-    > a
-    .lodex-resource-contentTitle {
-    font-size: 1.6rem;
-    line-height: 2rem;
-    font-weight: 700;
-    padding-bottom: 1rem;
-}*/
