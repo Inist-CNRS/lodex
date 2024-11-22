@@ -1,34 +1,31 @@
 :root {
-    /*couleur icon pour lien et bouton*/
-    --filtreBleuMain: invert(55%) sepia(9%) saturate(2387%) hue-rotate(150deg)
-        brightness(88%) contrast(81%);
-    --filtreBleuHoverFocus: invert(39%) sepia(60%) saturate(480%)
-        hue-rotate(150deg) brightness(90%) contrast(85%);
-    --filtreBleuActive: invert(24%) sepia(74%) saturate(509%) hue-rotate(150deg)
-        brightness(99%) contrast(88%);
-    --filtreBlancLight: invert(88%) sepia(54%) saturate(7152%)
-        hue-rotate(182deg) brightness(124%) contrast(89%);
-    --filtreBlancMainHFA: invert(100%) sepia(100%) saturate(0%)
-        hue-rotate(327deg) brightness(107%) contrast(101%);
+    /* Couleur icône pour lien et bouton */
+    --filtreBleuMain: invert(55%) sepia(9%) saturate(2387%) hue-rotate(150deg) brightness(88%) contrast(81%);
+    --filtreBleuHoverFocus: invert(39%) sepia(60%) saturate(480%) hue-rotate(150deg) brightness(90%) contrast(85%);
+    --filtreBleuActive: invert(24%) sepia(74%) saturate(509%) hue-rotate(150deg) brightness(99%) contrast(88%);
+    --filtreBlancLight: invert(88%) sepia(54%) saturate(7152%) hue-rotate(182deg) brightness(124%) contrast(89%);
+    --filtreBlancMainHFA: invert(100%) sepia(100%) saturate(0%) hue-rotate(327deg) brightness(107%) contrast(101%);
 }
 /************************/
-/* lien au fil du texte */
-/* lien du content      */
+/* Lien au fil du texte */
+/* Lien du contenu      */
 /************************/
 #content a:not(:empty, .property_value) {
     text-decoration: underline;
     cursor: pointer;
 }
-/*a avec url comme texte (pas bonne pratique*/
+
+/* Lien avec URL comme texte (pas une bonne pratique) */
 /*.property div[class*='designHomeSidebar'] a.property_value {
     overflow-wrap: anywhere !important;
     word-break: break-all !important;
     hyphens: auto;
     width: inherit;
 }*/
-/**************/
-/* fond clair */
 
+/**************/
+/* Fond clair */
+/**************/
 .property a:not(:empty, .property_value) {
     color: var(--primary-main);
     display: inline-flex;
@@ -39,7 +36,8 @@
 .property a:not(:empty, .property_value):active {
     color: var(--link-dark);
 }
-/*lien externe = icone base noir filtre couleur position*/
+
+/* Lien externe = icône base noire filtre couleur position */
 .property a:not(:empty, .property_value)[target='_blank']::after {
     color: black;
     filter: var(--filtreBleuMain);
@@ -47,8 +45,7 @@
     content: url('../img/suivre-le-lien-nouvel-onglet.png');
     padding-left: 5px;
 }
-.property
-    a:not(:empty, .property_value):is(:hover, :focus)[target='_blank']::after {
+.property a:not(:empty, .property_value):is(:hover, :focus)[target='_blank']::after {
     color: black;
     filter: var(--filtreBleuHoverFocus);
 }
@@ -56,44 +53,53 @@
     color: black;
     filter: var(--filtreBleuActive);
 }
-/**************/
-/* fond sombre*/
-/*lien externe icon*/
+
+/***************/
+/* Fond sombre */
+/***************/
 div[class*='HomeSidebar'] a:not(:empty, .property_value) {
     color: var(--contrast-light);
 }
-div[class*='HomeSidebar']
-    a:not(:empty, .property_value):is(:hover, :focus, :active) {
+div[class*='HomeSidebar'] a:not(:empty, .property_value):is(:hover, :focus, :active) {
     color: var(--contrast-main);
 }
-/*lien externe = icone base noir filtre couleur position*/
-div[class*='HomeSidebar']
-    a:not(:empty, .property_value)[target='_blank']::after {
+
+/* Lien externe = icône base noire filtre couleur position */
+div[class*='HomeSidebar'] a:not(:empty, .property_value)[target='_blank']::after {
     color: black;
     filter: var(--filtreBlancLight);
 }
-div[class*='HomeSidebar']
-    a:not(:empty, .property_value):is(
-        :hover,
-        :focus,
-        :active
-    )[target='_blank']::after {
+div[class*='HomeSidebar'] a:not(:empty, .property_value):is(:hover, :focus, :active)[target='_blank']::after {
     color: black;
     filter: var(--filtreBlancMainHFA);
 }
 
-/******************/
-/* boutons        */
-/* prim,sec,ombre */
-/******************/
-/*BoutonPrimaire lodex - MODAL*/
+/*******************************/
+/******** Boutons **************/
+/* Primaire, secondaire, ombre */
+/*******************************/
+/* Bouton Primaire lodex - MODAL */
 div[class*='HomeSidebar'] button[class*='containedPrimary'] {
     color: var(--primary-main) !important;
     background-color: var(--contrast-light) !important;
     border: 1px solid var(--contrast-light) !important;
 }
-div[class*='HomeSidebar']
-    button[class*='containedPrimary']:is(:hover, :focus, :active) {
+div[class*='HomeSidebar'] button[class*='containedPrimary']:is(:hover, :focus, :active) {
     background-color: var(--contrast-main) !important;
     border: 1px solid var(--contrast-main) !important;
+}
+
+/* Bouton Secondaire lodex - MODAL */
+div[class*='HomeSidebar'] button[class*='containedSecondary'] {
+    color: var(--contrast-light) !important;
+    background-color: var(--primary-main) !important;
+    border: 1px solid var(--primary-main) !important;
+}
+
+/* Bouton Ombre lodex - MODAL */
+div[class*='HomeSidebar'] button[class*='containedShadow'] {
+    color: var(--contrast-light) !important;
+    background-color: var(--primary-main) !important;
+    border: 1px solid var(--primary-main) !important;
+    box-shadow: 0 0 5px var(--contrast-light) !important;
 }
