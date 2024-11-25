@@ -45,14 +45,6 @@
         "type": "classification"
     },
     {
-        "id": "ost-v1-sciencemetrixClass",
-        "url": "https://sciencemetrix-classification.services.istex.fr/v1/classif",
-        "doc": "https://github.com/Inist-CNRS/web-services/tree/main/services/sciencemetrix-classification",
-        "swagger": "https://openapi.services.istex.fr/?urls.primaryName=sciencemetrix-classification%20-%20Classification%20en%20domaines%20scientifiques%20Science-Metrix#/sciencemetrix-classification/post_v1_classif",
-        "objectifTDM": "https://services.istex.fr/classification-en-domaines-scientifiques-science-metrix/",
-        "type": "classification"
-    },    
-    {
         "id": "post-v1-statistics",
         "url": "https://data-computer.services.istex.fr/v1/statistics",
         "doc": "https://gitbucket.inist.fr/tdm/web-services/tree/master/data-computer#v1%252ftree-segment"
