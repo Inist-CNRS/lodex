@@ -81,25 +81,50 @@ div[class*='HomeSidebar'] a:not(:empty, .property_value):is(:hover, :focus, :act
 /* Bouton Primaire lodex - MODAL */
 div[class*='HomeSidebar'] button[class*='containedPrimary'] {
     color: var(--primary-main) !important;
-    background-color: var(--contrast-light) !important;
-    border: 1px solid var(--contrast-light) !important;
+    background-color: var(--white) !important;
+    border: none !important;
+    box-shadow: 2px 2px 5px 0px #00000026;
 }
-div[class*='HomeSidebar'] button[class*='containedPrimary']:is(:hover, :focus, :active) {
-    background-color: var(--contrast-main) !important;
-    border: 1px solid var(--contrast-main) !important;
+div[class*='HomeSidebar'] button[class*='containedPrimary']:is(:hover, :focus) {
+    background-color: var(--canard3) !important;
+}
+
+div[class*='HomeSidebar'] button[class*='containedPrimary']:is(:active) {
+    background-color: var(--canard2) !important;
 }
 
 /* Bouton Secondaire lodex - MODAL */
-div[class*='HomeSidebar'] button[class*='containedSecondary'] {
-    color: var(--contrast-light) !important;
-    background-color: var(--primary-main) !important;
+button[class*='containedSecondary'] {
+    color: var(--primary-main) !important;
+    background-color: transparent !important;
     border: 1px solid var(--primary-main) !important;
 }
 
-/* Bouton Ombre lodex - MODAL */
-div[class*='HomeSidebar'] button[class*='containedShadow'] {
-    color: var(--contrast-light) !important;
+button[class*='containedSecondary']:is(:hover, :focus) {
     background-color: var(--primary-main) !important;
-    border: 1px solid var(--primary-main) !important;
-    box-shadow: 0 0 5px var(--contrast-light) !important;
+    color: var(--white) !important;
+    border: none !important;
+}
+
+button[class*='containedSecondary']:is(:active) {
+    background-color: var(--canard2) !important;
+    color: var(--white) !important;
+    border: none !important;
+}
+
+/* Bouton Ombre lodex - MODAL */
+button[class*='containedShadow'] {
+    color: var(--primary-main) !important;
+    background-color: var(--white) !important;
+    border: none !important;
+    box-shadow: 2px 2px 5px 0px #00000026 !important;
+}
+
+button[class*='containedShadow']:is(:hover, :focus) {
+    background-color: var(--canard2) !important;
+}
+
+button[class*='containedShadow']:is(:active) {
+    background-color: var(--primary-main) !important;
+    color: var(--white) !important;
 }
