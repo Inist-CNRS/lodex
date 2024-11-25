@@ -39,13 +39,18 @@
 }
 
 /* Lien externe = icône base noire filtre couleur position */
-.property a:not(:empty, .property_value)[target='_blank']::after {
+.property a:not(:empty, div[class*='buttonPrimary'] :is(button, a), div[class*='buttonSecondary'] :is(button, a), div[class*='buttonShadow'] :is(button, a))[target='_blank']::after {
     color: black;
     filter: var(--filtreBleuMain);
     display: inline-block;
     content: url('../img/suivre-le-lien-nouvel-onglet.png');
     padding-left: 5px;
 }
+
+div[class*='HomeSidebar'] .property a:not(:empty, div[class*='buttonPrimary'] :is(button, a), div[class*='buttonSecondary'] :is(button, a), div[class*='buttonShadow'] :is(button, a))[target='_blank']::after {
+    filter: var(--filtreBlancLight);
+}
+
 .property a:not(:empty, .property_value):is(:hover, :focus)[target='_blank']::after {
     color: black;
     filter: var(--filtreBleuHoverFocus);
