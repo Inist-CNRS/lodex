@@ -127,9 +127,6 @@ body {
 /*****************************/
 header {
     background-color: var(--contrast-light);
-    position: sticky;
-    top: 0;
-    z-index: 1000;
 }
 #nav-skip {
     background-color: #fff;
@@ -152,10 +149,18 @@ header {
     padding: 0.5rem;
 }
 .menuIstex {
+    position: sticky;
+    z-index: 1000;
+    top: 0;
+    background-color: var(--contrast-light);
     font-family: 'Inter', sans-serif;
     font-size: 1rem;
     line-height: 1.2rem;
     height: 34px;
+    justify-content: space-between;
+    text-transform: uppercase;
+}
+.menuIstex > div {
     justify-content: space-between;
     text-transform: uppercase;
 }

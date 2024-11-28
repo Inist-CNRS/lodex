@@ -21,9 +21,13 @@ La class interne (liste ci-après) est à saisir dans le champ 'nom interne' d'u
 
 ### class générales
 
--   **designCta2** : bouton clair sur fond sombre ou clair
+-   **buttonPrimary** : bouton foncé/blanc sur fond clair/foncé (sidebar)
+-   **buttonSecondary** : bouton bordure fond transparent sur fond sombre ou clair
+-   **buttonShadow** : bouton ombre
 
--   **blocExergue** : mise en avant d'un bloc par un léger ombrage (cf resource tools)
+-> voir les boutons : [https://](https://design.istex.fr/boutons/)
+
+-   **blocExergue** : mise en avant du contenu d'un bloc par un léger ombrage (cf resource tools)
 
 ### Page d'accueil
 
@@ -41,7 +45,9 @@ Le bloc _designHomeContentSidebar_ est un champs composé de deux blocs :
 
 Pour finir la page d'accueil [mise en oeuvre en cours de modification]
 
--   **backZoneSimple** : istex home promo en bas
+-   **designHomebanniereSimple** : istex texte sur img pleine page
+-   **designHomeBanniereDouble** : istex img + texte à droite
+-   **designHomeTryptique** : trois blocs
 
 ### Ressource principale
 
@@ -59,5 +65,4 @@ pour un bloc composé
 -   ajoute une couleur de fond bleu très clair
 -   Les blocs composants ce bloc apparaissent en pavé clair
 
-  ![exemple-class-interne-istex-tools-resource](https://github.com/Inist-CNRS/lodex/assets/122360177/252c3b1a-193f-4d90-9f35-75bfdddffc54)
-
+![exemple-class-interne-istex-tools-resource](https://github.com/Inist-CNRS/lodex/assets/122360177/252c3b1a-193f-4d90-9f35-75bfdddffc54)
