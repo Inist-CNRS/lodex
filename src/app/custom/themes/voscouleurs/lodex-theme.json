@@ -12,7 +12,7 @@
     "configuration": {
         "files": {
             "index": "index.ejs",
-            "palette": ""
+            "palette": "defaultTheme.js"
         },
         "variables": {
             "information": "toutes les configurations ci-dessous sont optionnelles.Pour les désactiver, supprimer \"le texte entre les guillemets\"",
@@ -40,8 +40,8 @@
                 "themeSecondary": "code hexa",
                 "themeRGBA": "code rgba de primary ou secondary",
                 "info-fond": "bg, pour 'background' en css, permet de mettre une couleur de fond sur les différents éléments de structure de vos pages. 'bgContrast' permet de visualiser tout objet (texte, icon,...) dans le bg.",
-                "bgBody": "black",
-                "bgContrast": "white",
+                "bgBody": "",
+                "bgContrast": "",
                 "bgHeader": "",
                 "titleHeader": "",
                 "bgContent": "",

@@ -163,11 +163,10 @@ h2 {
     color: var(--titleGraph) !important;
     font-family: var(--font-titleGraph) !important;
     font-size: var(--fontSize-titleGraph) !important;
+    font-stretch: normal;
 }
 /*etiquette*/
 .property_label {
-    color: var(--titleGraph) !important;
-    text-transform: lowercase;
     font-stretch: ultra-condensed;
     font-weight: 450 !important;
 }
