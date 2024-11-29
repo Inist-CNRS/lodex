@@ -78,11 +78,11 @@ a:not(:empty) {
     text-decoration: underline;
 }
 
-a:not(:empty):is(:hover, :focus) {
+a:not(:empty, .footer1 a):is(:hover, :focus) {
     color: var(--primary-secondary);
 }
 
-/* Lien URL en clair */
+/* Lien URL en clair dans sidebar */
 div[class*='HomeSidebar'] a:not(:empty) {
     overflow-wrap: anywhere !important;
     word-break: break-all !important;
@@ -99,6 +99,12 @@ div[class*='HomeSidebar'] a:not(:empty):is(:hover, :focus) {
 /******** Boutons **************/
 /* Primaire, secondaire, ombre */
 /*******************************/
+
+/* Tout les boutons */
+div[class*='Button'] div[class*='property_value'] :is(button, a) {
+    text-transform: uppercase;
+}
+
 /* Bouton Primaire Sidebar lodex - MODAL */
 div[class*='HomeSidebar'] div[class*='ButtonPrimary'] div[class*='property_value'] :is(button,a){
     background-color: var(--contrast-main) !important;
@@ -107,7 +113,7 @@ div[class*='HomeSidebar'] div[class*='ButtonPrimary'] div[class*='property_value
     box-shadow: 2px 2px 5px 0px #00000026;
 }
 
-div[class*='ButtonPrimary'] div[class*='property_value'] a, div[class*='ButtonSecondary'] div[class*='property_value'] a {
+div[class*='ButtonPrimary'] div[class*='property_value'] a, div[class*='ButtonSecondary'] div[class*='property_value'] a, div[class*='ButtonShadow'] div[class*='property_value'] a {
     display: inline-flex;
     -webkit-box-align: center;
     align-items: center;
