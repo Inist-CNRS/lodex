@@ -291,8 +291,59 @@ div[class*='designHomebanniereSimple'] div.MuiBox-root {
 /*    banniere     */
 /*   img + texte   */
 /*******************/
-/*div[class*='banniereDouble'] {
-}*/
+div.property[class*='designHomeBanniereDoubleImageTexte'] {
+    background-color: var(--primary-main);
+    margin-top: -1.5rem;
+    width: 100%;
+}
+div.property[class*='designHomeBanniereDoubleImageTexte']
+    div:is(.property_value_container, .property, .MuiBox-root) {
+    margin: 0 0 !important;
+    padding: 0 0 !important;
+}
+#content
+    #home-page
+    .dataset-characteristics
+    > div
+    > div.property[class*='designHomeBanniereDoubleImageTexte']
+    > div:is(.property_label_container, .property_value_container) {
+    max-width: 100% !important;
+    width: 100%;
+}
+#content
+    #home-page
+    .dataset-characteristics
+    div.property[class*='BanniereImage']
+    > .property_value_container {
+    height: 450px;
+    min-width: 600px;
+    position: relative;
+    left: 0;
+    background-image: url('../ICONO/dossierdoigt-rectangle-1920x1080.jpg');
+    background-size: cover;
+    background-position: left center;
+    background-repeat: no-repeat;
+}
+#content
+    #home-page
+    .dataset-characteristics
+    div.property[class*='BanniereTexte']
+    > .property_value_container
+    > div
+    > div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 450px;
+    max-width: 600px;
+}
+div[class*='BanniereTexte'] .property_value {
+    padding: 4rem;
+    color: var(--contrast-light) !important;
+}
+div[class*='BanniereTexte'] .property_value_container h2 {
+    color: var(--contrast-light) !important;
+}
 
 /*****************/
 /*page resource*/
