@@ -16,14 +16,6 @@
     cursor: pointer;
 }
 
-/* Lien avec URL comme texte (pas une bonne pratique) */
-/*.property div[class*='designHomeSidebar'] a.property_value {
-    overflow-wrap: anywhere !important;
-    word-break: break-all !important;
-    hyphens: auto;
-    width: inherit;
-}*/
-
 /**************/
 /* Fond clair */
 /**************/
@@ -90,8 +82,12 @@ a:not(:empty):is(:hover, :focus) {
     color: var(--primary-secondary);
 }
 
-/* Lien dans sidebar */
+/* Lien URL en clair */
 div[class*='HomeSidebar'] a:not(:empty) {
+    overflow-wrap: anywhere !important;
+    word-break: break-all !important;
+    hyphens: auto;
+    width: inherit;
     color: var(--contrast-light);
 }
 
