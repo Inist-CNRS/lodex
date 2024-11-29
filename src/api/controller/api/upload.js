@@ -154,7 +154,6 @@ export const uploadUrl = async (ctx) => {
 
 export const uploadText = async (ctx) => {
     const { text, loaderName, customLoader } = ctx.request.body;
-    try {
     await workerQueues[ctx.tenant].add(
         IMPORT, // Name of the job
         {
@@ -165,11 +164,7 @@ export const uploadText = async (ctx) => {
             jobType: IMPORT,
         },
         { jobId: uuid() },
-    )
-    } catch(e) {
-        console.error(e)
-        ctx.status = 500;
-    }
+    );
 };
 
 export const checkChunkMiddleware = async (ctx, loaderName) => {
