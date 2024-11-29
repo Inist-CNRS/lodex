@@ -23,6 +23,9 @@ export class Progress {
     }
 
     start(tenant, { status, target, symbol, label, subLabel, type }) {
+        if (!this[tenant]) {
+            this.initialize(tenant);
+        }
         this[tenant].status = status;
         this[tenant].target = target;
         this[tenant].progress = 0;
