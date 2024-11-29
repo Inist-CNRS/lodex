@@ -39,7 +39,7 @@
 }
 
 /* Lien externe = icône base noire filtre couleur position */
-.property a:not(:empty, div[class*='buttonPrimary'] :is(button, a), div[class*='buttonSecondary'] :is(button, a), div[class*='buttonShadow'] :is(button, a))[target='_blank']::after {
+.property a:not(:empty, div[class*='ButtonPrimary'] :is(button, a), div[class*='ButtonSecondary'] :is(button, a), div[class*='ButtonShadow'] :is(button, a))[target='_blank']::after {
     color: black;
     filter: var(--filtreBleuMain);
     display: inline-block;
@@ -47,7 +47,7 @@
     padding-left: 5px;
 }
 
-div[class*='HomeSidebar'] .property a:not(:empty, div[class*='buttonPrimary'] :is(button, a), div[class*='buttonSecondary'] :is(button, a), div[class*='buttonShadow'] :is(button, a))[target='_blank']::after {
+div[class*='HomeSidebar'] .property a:not(:empty, div[class*='ButtonPrimary'] :is(button, a), div[class*='ButtonSecondary'] :is(button, a), div[class*='ButtonShadow'] :is(button, a))[target='_blank']::after {
     filter: var(--filtreBlancLight);
 }
 
@@ -104,14 +104,14 @@ div[class*='HomeSidebar'] a:not(:empty):is(:hover, :focus) {
 /* Primaire, secondaire, ombre */
 /*******************************/
 /* Bouton Primaire Sidebar lodex - MODAL */
-div[class*='HomeSidebar'] div[class*='buttonPrimary'] div[class*='property_value'] :is(button,a){
+div[class*='HomeSidebar'] div[class*='ButtonPrimary'] div[class*='property_value'] :is(button,a){
     background-color: var(--contrast-main) !important;
     color: var(--primary-main) !important;
     border: 1px solid transparent !important;
     box-shadow: 2px 2px 5px 0px #00000026;
 }
 
-div[class*='buttonPrimary'] div[class*='property_value'] a, div[class*='buttonSecondary'] div[class*='property_value'] a {
+div[class*='ButtonPrimary'] div[class*='property_value'] a, div[class*='ButtonSecondary'] div[class*='property_value'] a {
     display: inline-flex;
     -webkit-box-align: center;
     align-items: center;
@@ -124,80 +124,80 @@ div[class*='buttonPrimary'] div[class*='property_value'] a, div[class*='buttonSe
     font-size: 1.6rem !important;
 }
 
-div[class*='HomeSidebar'] div[class*='buttonPrimary'] div[class*='property_value'] :is(button, a):is(:hover, :focus) {
+div[class*='HomeSidebar'] div[class*='ButtonPrimary'] div[class*='property_value'] :is(button, a):is(:hover, :focus) {
     background-color: var(--primary-secondary) !important;
     color: var(--contrast-main) !important;
 }
-div[class*='HomeSidebar'] div[class*='buttonPrimary'] div[class*='property_value'] :is(button, a):is(:active) {
+div[class*='HomeSidebar'] div[class*='ButtonPrimary'] div[class*='property_value'] :is(button, a):is(:active) {
     background-color: var(--link-dark) !important;
     color: var(--contrast-main) !important;
 }
 
 /* Bouton Secondaire Sidebar lodex - MODAL */
-div[class*='HomeSidebar'] div[class*='buttonSecondary'] div[class*='property_value'] :is(button, a) {
+div[class*='HomeSidebar'] div[class*='ButtonSecondary'] div[class*='property_value'] :is(button, a) {
     background-color: transparent !important;
     color: var(--contrast-main) !important;
     border: 1px solid var(--contrast-main) !important;
     box-shadow: none !important;
     text-decoration: none;
 }
-div[class*='HomeSidebar'] div[class*='buttonSecondary'] div[class*='property_value'] :is(button, a):is(:hover, :focus) {
+div[class*='HomeSidebar'] div[class*='ButtonSecondary'] div[class*='property_value'] :is(button, a):is(:hover, :focus) {
     background-color: var(--contrast-light) !important;
     color: var(--primary-main) !important;
     border: 1px solid transparent !important;
 }
-div[class*='HomeSidebar'] div[class*='buttonSecondary'] div[class*='property_value'] :is(button, a):is(:active) {
+div[class*='HomeSidebar'] div[class*='ButtonSecondary'] div[class*='property_value'] :is(button, a):is(:active) {
     background-color: var(--contrast-main) !important;
     color: var(--primary-main) !important;
 }
 
 /* Bouton Primaire lodex - MODAL */
-div[class*='buttonPrimary'] div[class*='property_value'] :is(button, a):not([class*='HomeSidebar']) {
+div[class*='ButtonPrimary'] div[class*='property_value'] :is(button, a):not([class*='HomeSidebar']) {
     background-color: var(--primary-main) !important;
     color: var(--contrast-main) !important;
     border: 1px solid transparent !important;
     box-shadow: 2px 2px 5px 0px #00000026;
     text-decoration: none;
 }
-div[class*='buttonPrimary'] div[class*='property_value'] :is(button, a):is(:hover, :focus):not([class*='HomeSidebar']) {
+div[class*='ButtonPrimary'] div[class*='property_value'] :is(button, a):is(:hover, :focus):not([class*='HomeSidebar']) {
     background-color: var(--primary-secondary) !important;
 }
-div[class*='buttonPrimary'] div[class*='property_value'] :is(button, a):is(:active):not([class*='HomeSidebar']) {
+div[class*='ButtonPrimary'] div[class*='property_value'] :is(button, a):is(:active):not([class*='HomeSidebar']) {
     background-color: var(--link-dark) !important;
     color: var(--contrast-main) !important;
 }
 
 /* Bouton Secondaire lodex - MODAL */
-div[class*='buttonSecondary'] div[class*='property_value'] :is(button, a):not([class*='HomeSidebar']) {
+div[class*='ButtonSecondary'] div[class*='property_value'] :is(button, a):not([class*='HomeSidebar']) {
     background-color: transparent !important;
     color: var(--primary-main) !important;
     border: 1px solid var(--primary-main) !important;
     box-shadow: none !important;
     text-decoration: none;
 }
-div[class*='buttonSecondary'] div[class*='property_value'] :is(button, a):is(:hover, :focus):not([class*='HomeSidebar']) {
+div[class*='ButtonSecondary'] div[class*='property_value'] :is(button, a):is(:hover, :focus):not([class*='HomeSidebar']) {
     background-color: var(--primary-main) !important;
     color: var(--contrast-main) !important;
     border: 1px solid transparent !important;
 }
-div[class*='buttonSecondary'] div[class*='property_value'] :is(button, a):is(:active):not([class*='HomeSidebar']) {
+div[class*='ButtonSecondary'] div[class*='property_value'] :is(button, a):is(:active):not([class*='HomeSidebar']) {
     background-color: var(--link-dark) !important;
     color: var(--contrast-main) !important;
     border: 1px solid transparent !important;
 }
 
 /* Bouton Ombre lodex - MODAL */
-div[class*='buttonShadow'] div[class*='property_value'] :is(button, a):not([class*='HomeSidebar']) {
+div[class*='ButtonShadow'] div[class*='property_value'] :is(button, a):not([class*='HomeSidebar']) {
     background-color: var(--contrast-main) !important;
     color: var(--primary-main) !important;
     border: 1px solid transparent !important;
     box-shadow: 2px 2px 5px 0px #00000026 !important;
     text-decoration: none;
 }
-div[class*='buttonShadow'] div[class*='property_value'] :is(button, a):is(:hover, :focus):not([class*='HomeSidebar']) {
+div[class*='ButtonShadow'] div[class*='property_value'] :is(button, a):is(:hover, :focus):not([class*='HomeSidebar']) {
     background-color: var(--primary-very-light) !important;
 }
-div[class*='buttonShadow'] div[class*='property_value'] :is(button, a):is(:active):not([class*='HomeSidebar']) {
+div[class*='ButtonShadow'] div[class*='property_value'] :is(button, a):is(:active):not([class*='HomeSidebar']) {
     background-color: var(--link-dark) !important;
     color: var(--contrast-main) !important;
 }
