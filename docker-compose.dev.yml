@@ -9,7 +9,7 @@ services:
             - .:/app
         working_dir: /app
         environment:
-            DEBUG: ${DEBUG:-ezs:*,-ezs:debug,-ezs:trace}
+            DEBUG: ${DEBUG:-ezs:*,-ezs:debug}
             NODE_ENV: ${NODE_ENV}
             NODE_OPTIONS: ${NODE_OPTIONS}
             http_proxy: ${http_proxy}
@@ -45,6 +45,7 @@ services:
 
     mongo:
         image: mongo:4.4.24-focal
+        command: --quiet
         ports:
             - "27017:27017"
 
@@ -59,7 +60,7 @@ services:
             - .:/app
         working_dir: /app
         environment:
-            DEBUG: ${DEBUG:-ezs:*,-ezs:debug,-ezs:trace}
+            DEBUG: ${DEBUG:-ezs:*,-ezs:debug}
             NODE_ENV: ${NODE_ENV}
             NODE_OPTIONS: ${NODE_OPTIONS}
             http_proxy: ${http_proxy}
@@ -72,7 +73,6 @@ services:
             EZS_CONTINUE_DELAY: '60'
             EZS_NSHARDS: '31'
             EZS_CACHE: 'false'
-            EZS_VERBOSE: 'true'
         ports:
             - "31976:31976"
         command: npm run production:workers
