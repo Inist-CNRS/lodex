@@ -35,7 +35,7 @@ export class Progress {
     }
 
     finish(tenant) {
-        if (this[tenant].status === ERROR) {
+        if (!this[tenant] || this[tenant].status === ERROR) {
             return;
         }
         this[tenant].status = PENDING;
