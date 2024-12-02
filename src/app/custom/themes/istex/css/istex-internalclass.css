@@ -367,7 +367,7 @@ div[class*='BanniereTexte'] .property_value_container h2 {
 div[class*='ResourceCompose'],
 .main-resource-section div[class*='HomeSidebar'] {
     padding: 1.5rem 3rem !important;
-    margin-bottom: 0 !;
+    margin-bottom: 0 !important;
 }
 .resource
     div[class*='HomeSidebar']
