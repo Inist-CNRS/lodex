@@ -238,7 +238,8 @@ div[class*='designHomebanniereSimple'] {
     background-image: url(../img/galaxie-istex-1.jpg);
     background-image: url(../img/galaxie-istex.jpg);
     background-image: url(../img/galaxie-istex-2.jpg);
-    background-position: center bottom;
+    background-image: url(../ICONO/hommebureau-banniere-1920x460.jpg);
+    background-position: center 27%;
     background-size: cover;
     background-repeat: no-repeat;
     margin: 0 0 !important;
@@ -247,42 +248,29 @@ div[class*='designHomebanniereSimple'] div.MuiBox-root {
     margin: 0 0 !important;
     padding: 0 0 !important;
 }
-#design-home-banniereSimple-container #design-home-banniereSimple-texte {
+div[class*='designHomebanniereSimple'] div.MuiBox-root > div {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 5rem;
+    margin: 0 auto 1rem;
+}
+div[class*='designHomebanniereSimple'] > .property_value_container {
     width: 100%;
-    height: 45rem;
+    height: 25rem;
     max-width: var(--maxWidth);
     margin: 0 auto;
 }
-#design-home-banniereSimple-texte * {
-    color: var(--secondary-contrast-text);
+div[class*='designHomebanniereSimple'] .property {
+    margin: 0 0 !important;
+}
+div[class*='designHomebanniereSimple'] * {
+    color: var(--secondary-contrast-text) !important;
     margin: 0;
 }
-#design-home-banniereSimple-texte span#surtitre {
-    display: block;
-    font-weight: 400;
-    font-family: var(--font-titre);
-    font-size: 2rem;
-    line-height: 4rem;
-}
-#design-home-banniereSimple-texte h2 {
-    text-align: center !important;
-    color: #c4d733;
-    font-size: 4.3rem;
-    line-height: 5.3rem;
-}
-#design-home-banniereSimple-texte div#texte {
-    font-size: 2rem;
-    line-height: 3rem;
-}
-/* a est un bouton secondair*/
-#design-home-banniereSimple-texte div#url a {
-    font-size: 1.6rem;
-    line-height: 2rem;
+div[class*='designHomebanniereSimple'] h2 {
+    color: var(--info-main) !important;
+    margin-bottom: 0 !important;
 }
 
 /*******************/
@@ -315,7 +303,7 @@ div.property[class*='designHomeBanniereDoubleImageTexte']
     .dataset-characteristics
     div.property[class*='BanniereImage']
     > .property_value_container {
-    height: 450px;
+    height: 250px;
     min-width: 600px;
     position: relative;
     left: 0;
@@ -334,7 +322,7 @@ div.property[class*='designHomeBanniereDoubleImageTexte']
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 450px;
+    height: 250px;
     max-width: 600px;
 }
 div[class*='BanniereTexte'] .property_value {
@@ -343,6 +331,54 @@ div[class*='BanniereTexte'] .property_value {
 }
 div[class*='BanniereTexte'] .property_value_container h2 {
     color: var(--contrast-light) !important;
+}
+/**************/
+/* triptyque */
+/**************/
+#content
+    #home-page
+    .dataset-characteristics
+    div.property[class*='designHomeTryptique']
+    div {
+    margin: 0 0;
+    padding: 0 0;
+}
+#content
+    #home-page
+    .dataset-characteristics
+    div.property[class*='designHomeTryptique']
+    > .property_value_container
+    > div.MuiBox-root
+    > div
+    > div {
+    position: relative;
+    z-index: 1000;
+    top: -6rem;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    width: 1200px;
+    border: 1px dotted black;
+}
+div.property[class*='designHomeTryptique'] .property[class*='compose'] {
+    width: 33.3%;
+    max-width: 400px;
+    height: auto;
+    color: var(--contrast-light);
+    height: 250px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+div.property[class*='designHomeTryptique'] .property[class*='Triptyque1'] {
+    background-color: var(--primary-main);
+}
+div.property[class*='designHomeTryptique'] .property[class*='Triptyque2'] {
+    background-color: var(--primary-light);
+}
+div.property[class*='designHomeTryptique'] .property[class*='Triptyque3'] {
+    background-color: var(--primary-lighter);
 }
 
 /*****************/
