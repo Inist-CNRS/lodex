@@ -110,8 +110,6 @@ li.resources-grid-item a > div {
     padding: 1.3rem !important;
     display: flex;
 }
-/*[class*='ListePave'] li a {
-}*/
 /* titre du bloc toutes liste */
 [class*='ListePave'] a div[class*='contentTitle'] {
     flex: 1;
@@ -225,124 +223,127 @@ div[class*='HomeCompteur'] div.content {
 /*******************/
 /*  design ISTEX   */
 /*   Home bottom   */
-/*    banniere     */
-/* img full screen */
+/*    bannieres    */
 /*******************/
 
-/*#TODO à revoir */
-.banniereSimple {
-    width: 100%;
-}
-div[class*='designHomebanniereSimple'] {
+/*******************/
+/* BanniereSimple  */
+/* img full screen */
+/*******************/
+div[class*='designHomeBanniereSimple'] {
     width: 100vw !important;
-    background-image: url(../img/galaxie-istex-1.jpg);
-    background-image: url(../img/galaxie-istex.jpg);
-    background-image: url(../img/galaxie-istex-2.jpg);
-    background-position: center bottom;
+    background-image: var(--banniereSimpleUrl);
+    background-position: center 27%;
     background-size: cover;
     background-repeat: no-repeat;
     margin: 0 0 !important;
 }
-div[class*='designHomebanniereSimple'] div.MuiBox-root {
+div[class*='designHomeBanniereSimple'] div.MuiBox-root {
     margin: 0 0 !important;
     padding: 0 0 !important;
 }
-#design-home-banniereSimple-container #design-home-banniereSimple-texte {
+div[class*='designHomeBanniereSimple'] div.MuiBox-root > div {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 5rem;
+    margin: 0 auto 1rem;
+}
+div[class*='designHomeBanniereSimple'] > .property_value_container {
     width: 100%;
-    height: 45rem;
+    height: 25rem;
     max-width: var(--maxWidth);
     margin: 0 auto;
 }
-#design-home-banniereSimple-texte * {
-    color: var(--secondary-contrast-text);
+div[class*='designHomeBanniereSimple'] .property {
+    margin: 0 0 !important;
+}
+div[class*='designHomeBanniereSimple'] * {
+    color: var(--secondary-contrast-text) !important;
     margin: 0;
 }
-#design-home-banniereSimple-texte span#surtitre {
-    display: block;
-    font-weight: 400;
-    font-family: var(--font-titre);
-    font-size: 2rem;
-    line-height: 4rem;
+div[class*='designHomeBanniereSimple'] h2 {
+    color: var(--info-main) !important;
+    margin-bottom: 0 !important;
 }
-#design-home-banniereSimple-texte h2 {
-    text-align: center !important;
-    color: #c4d733;
-    font-size: 4.3rem;
-    line-height: 5.3rem;
-}
-#design-home-banniereSimple-texte div#texte {
-    font-size: 2rem;
-    line-height: 3rem;
-}
-/* a est un bouton secondair*/
-#design-home-banniereSimple-texte div#url a {
-    font-size: 1.6rem;
-    line-height: 2rem;
-}
-
 /*******************/
-/*  design ISTEX   */
-/*   Home bottom   */
-/*    banniere     */
+/* BanniereDouble  */
 /*   img + texte   */
 /*******************/
 div.property[class*='designHomeBanniereDoubleImageTexte'] {
     background-color: var(--primary-main);
     margin-top: -1.5rem;
     width: 100%;
+    background-image: var(--banniereDoubleUrl);
+    background-size: 50%;
+    background-position: left;
+    background-repeat: no-repeat;
 }
 div.property[class*='designHomeBanniereDoubleImageTexte']
     div:is(.property_value_container, .property, .MuiBox-root) {
-    margin: 0 0 !important;
+    margin: 0 auto !important;
     padding: 0 0 !important;
 }
-#content
-    #home-page
-    .dataset-characteristics
-    > div
-    > div.property[class*='designHomeBanniereDoubleImageTexte']
-    > div:is(.property_label_container, .property_value_container) {
-    max-width: 100% !important;
-    width: 100%;
-}
-#content
-    #home-page
-    .dataset-characteristics
-    div.property[class*='BanniereImage']
-    > .property_value_container {
-    height: 450px;
-    min-width: 600px;
-    position: relative;
-    left: 0;
-    background-image: url('../ICONO/dossierdoigt-rectangle-1920x1080.jpg');
-    background-size: cover;
-    background-position: left center;
-    background-repeat: no-repeat;
-}
-#content
-    #home-page
-    .dataset-characteristics
-    div.property[class*='BanniereTexte']
+div.property[class*='designHomeBanniereDoubleImageTexte']
     > .property_value_container
+    > div.MuiBox-root
     > div
-    > div {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 450px;
-    max-width: 600px;
-}
-div[class*='BanniereTexte'] .property_value {
+    > div.property_value {
+    float: right;
+    max-width: 600px !important;
+    width: 50%;
     padding: 4rem;
     color: var(--contrast-light) !important;
 }
-div[class*='BanniereTexte'] .property_value_container h2 {
+div.property[class*='designHomeBanniereDoubleImageTexte'] .property_value h2 {
     color: var(--contrast-light) !important;
+}
+/**************/
+/* triptyque */
+/**************/
+#content
+    #home-page
+    .dataset-characteristics
+    div.property[class*='designHomeTryptique']
+    div {
+    margin: 0 0;
+    padding: 0 0;
+}
+#content
+    #home-page
+    .dataset-characteristics
+    div.property[class*='designHomeTryptique']
+    > .property_value_container
+    > div.MuiBox-root
+    > div
+    > div {
+    position: relative;
+    z-index: 1000;
+    top: -10rem;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    width: 1200px;
+}
+div.property[class*='designHomeTryptique'] .property[class*='compose'] {
+    width: 33.3%;
+    max-width: 400px;
+    height: auto;
+    color: var(--contrast-light);
+    height: 250px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+div.property[class*='designHomeTryptique'] .property[class*='Triptyque1'] {
+    background-color: var(--primary-main);
+}
+div.property[class*='designHomeTryptique'] .property[class*='Triptyque2'] {
+    background-color: var(--primary-light);
+}
+div.property[class*='designHomeTryptique'] .property[class*='Triptyque3'] {
+    background-color: var(--primary-lighter);
 }
 
 /*****************/
