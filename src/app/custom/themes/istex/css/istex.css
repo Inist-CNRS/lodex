@@ -655,7 +655,6 @@ ul.MuiList-root.facets-list > li .facet-value-list svg {
 /*a.search-result-link*/
 .search-result-list-container a {
     text-decoration: none;
-    flex: 1 0 325px;
     color: rgb(74, 74, 74);
     transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
     border-radius: 5px;
@@ -765,7 +764,7 @@ ul.MuiList-root.facets-list > li .facet-value-list svg {
 }
 /*barre fonctionnelle*/
 .main-resource-section > div .MuiCardActions-root {
-    margin-top: 5rem;
+    margin-top: 1rem;
 }
 
 /*****************************/

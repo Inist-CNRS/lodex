@@ -367,6 +367,7 @@ div[class*='BanniereTexte'] .property_value_container h2 {
 div[class*='ResourceCompose'],
 .main-resource-section div[class*='HomeSidebar'] {
     padding: 1.5rem 3rem !important;
+    margin-bottom: 0 !important;
 }
 .resource
     div[class*='HomeSidebar']
@@ -435,7 +436,7 @@ div[class*='ResourceCompose'] .property_value_container h2 {
 div[class*='Exergue'] {
     box-shadow: 0px 0px 20px var(--neutral-main);
     padding: 3rem 5rem;
-    margin: 5rem 0;
+    margin: 3rem 0;
 }
 div[class*='Exergue'] p {
     margin: 0 auto 1.5rem;
