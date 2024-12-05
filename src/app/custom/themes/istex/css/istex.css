@@ -59,8 +59,6 @@ html {
 }
 body {
     font-family: var(--font-texte);
-    font-size: 1rem;
-    line-height: 1.5;
     color: var(--text-main);
 }
 :root {
@@ -475,14 +473,9 @@ a img {
 .MuiPaper-root[role='dialog'] {
     border-radius: 10px;
 }
-.MuiPaper-root[role='dialog'] * {
-    font-family: var(--font-texte);
-}
 .MuiPaper-root[role='dialog'] > *:not(div) {
     background-color: var(--primary-main);
     color: var(--contrast-light);
-    font-size: 2rem;
-    line-height: 2.9rem;
     font-weight: 550;
 }
 /*bouton fermer x de modal lodex */
@@ -491,13 +484,6 @@ a img {
     width: 2rem;
     height: 2rem;
 }
-/*.MuiPaper-root[role='dialog'] h3 {
-    font-family: var(--font-texte);
-    color: var(--primary-main);
-    font-size: 1.6rem;
-    line-height: 1.93rem;
-    font-weight: 550;
-}*/
 /*****************/
 /* LODEX class & */
 /*   composants  */
@@ -761,7 +747,12 @@ li .facet-value-list .css-qtf05s-MuiButtonBase-root-MuiCheckbox-root {
 }
 /*barre fonctionnelle*/
 .main-resource-section > div .MuiCardActions-root {
-    margin-top: 5rem;
+    border: 1px solid var(--gris2);
+    border-width: 1px 0 1px;
+    justify-content: space-between !important;
+}
+.main-resource-section > div .MuiCardActions-root > button {
+    justify-self: flex-end;
 }
 
 /*****************************/
