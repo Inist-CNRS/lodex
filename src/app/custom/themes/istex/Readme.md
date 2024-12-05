@@ -13,6 +13,9 @@
 -   "BanniereSimple": "hommebureau",
 -   "BanniereDouble": "doigtdossier"
 
+  ![image](https://github.com/user-attachments/assets/bb59f59e-e070-4009-b7ef-67d71d1ac6da)
+
+
 # Class css internes : Usage
 
 Les class internes permettent de jouer la charte Istex sur les éléments Lodex.
