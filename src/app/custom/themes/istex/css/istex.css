@@ -66,6 +66,7 @@ body {
     --font-titre-medium: Montserrat Medium, Arial, Helvetica, sans-serif;
     --font-texte: Inter, Arial, Helvetica, sans-serif;
     --maxWidth: 1200px; /* .css-19r6kue-MuiContainer-root 19.08.2024*/
+    --font-size-texte: 0.875rem;
 
     --canard0: #458ca5; /*canard 0 */
     --canard-1: #31768f; /*canard -1*/
@@ -91,36 +92,6 @@ body {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-}
-.jcSb {
-    justify-content: space-between;
-}
-.jcC {
-    justify-content: center;
-}
-.flexcolumn {
-    display: flex;
-    flex-direction: column;
-}
-.fontInter {
-    font-size: 62.5%;
-    font-family:
-        'Inter',
-        sans serif;
-    font-size: 1.4rem;
-    line-height: 1.7rem;
-}
-.fontMontserrat {
-    font-size: 62.5%;
-    font-family:
-        'Montserrat',
-        sans serif;
-    font-size: 2rem;
-    line-height: 2.4rem;
-    font-weight: 700;
-}
-.noshow {
-    display: none;
 }
 /*****************************/
 /* Header  *******************/
@@ -298,7 +269,7 @@ footer.site-footer::after {
     min-height: 35vh;
     padding: 0 !important;
     font-family: var(--font-texte) !important;
-    font-size: 0.875rem;
+    font-size: var(--font-size-texte);
     color: var(--text-main);
 }
 .container,
@@ -423,7 +394,7 @@ button {
 #content li,
 #content div {
     font-family: var(--font-texte);
-    font-size: 0.875rem;
+    font-size: var(--font-size-texte);
 }
 a img {
     border: none;
@@ -505,7 +476,7 @@ div.property div.MuiBox-root > div > * + div {
 /* label */
 span.property_label[style*='color: rgb(158, 158, 158)']:not(:empty) {
     font-family: var(--font-titre) !important;
-    font-size: 1rem !important;
+    font-size: 1rem;
     line-height: 1;
     text-align: initial;
     margin-bottom: 0.5rem;

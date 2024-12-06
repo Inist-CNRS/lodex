@@ -242,13 +242,7 @@ div[class*='designHomebanniereSimple'] div.MuiBox-root {
     text-align: center !important;
     color: #c4d733;
 }
-#design-home-banniereSimple-texte div#texte {
-    font-size: 1.5rem;
-}
 /* a est un bouton secondaire*/
-#design-home-banniereSimple-texte div#url a {
-    font-size: 1.5rem;
-}
 
 /*******************/
 /*  design ISTEX   */
@@ -316,7 +310,6 @@ div[class*='BanniereTexte'] .property_value_container h2 {
 /*header-resource-section*/
 /* bloc titre label */
 .designResourceToolsHeader > div.property_label_container span.property_label {
-    font-size: 1.4rem;
     color: var(--primary-main) !important;
     border-bottom: 1px solid var(--primary-main);
     margin-bottom: 1rem;
