@@ -2,16 +2,14 @@ import set from 'lodash/set';
 import mongoDatabase from './mongoDatabase';
 
 /**
- * Take `Object` containing a MongoDB query and throw the result
+ * Take `Object` Request to precomputed collection
  *
- * The input object must contain a `connectionStringURI` property, containing
- * the connection string to MongoDB.
  *
- * @name LodexRunQuery
- * @param {String}  [collection="publishedDataset"]  collection to use
+ * @name LodexPRecomputedSelect
+ * @param {String}  [path=value]   Default path to set result
  * @param {Object}  [filter]       MongoDB filter
- * @param {Object}  [limit]        limit the result
- * @param {Object}  [skip]         limit the result
+ * @param {Number}  [limit]        limit the result
+ * @param {Number}  [skip]         skip the result
  * @returns {Object}
  */
 export const createFunction = () =>
@@ -35,6 +33,9 @@ export const createFunction = () =>
             .collection('precomputed')
             .find({ name: precomputedName })
             .toArray();
+        if (!precomputedObject || !precomputedObject._id) {
+            return feed.stop(new Error(`${precomputedName} is unknown`));
+        }
         const collectionName = `pc_${precomputedObject._id.toString()}`;
 
         const collection = db.collection(collectionName);
