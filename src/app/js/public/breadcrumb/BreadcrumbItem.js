@@ -33,28 +33,29 @@ const styles = stylesToClassname(
 
 const BreadcrumbItem = ({ value, p: polyglot }) => {
     const label = value.label[polyglot.currentLocale];
+    const to = String(value.url).trim() || './';
     let props = {
-        to: value.url,
+        to,
     };
 
-    if (value.url.startsWith('https://')) {
+    if (to.startsWith('https://')) {
         props = {
-            href: value.url,
+            href: to,
         };
     } else if (value.isExternal === true) {
         props = {
-            href: value.url,
+            href: to,
             target: '_blank',
             rel: 'noopener noreferrer',
         };
     } else if (
-        // if value.url contain .html, it's a static page. Use href instead of to with react-router default route
-        value.url.indexOf('.html') !== -1 &&
+        // if props.to contain .html, it's a static page. Use href instead of to with react-router default route
+        to.indexOf('.html') !== -1 &&
         typeof sessionStorage !== 'undefined'
     ) {
         const tenant = sessionStorage?.getItem('lodex-tenant');
         props = {
-            href: `/instance/${tenant}/${value.url}`,
+            href: `/instance/${tenant}/${to}`,
             rel: 'noopener noreferrer',
         };
     }
