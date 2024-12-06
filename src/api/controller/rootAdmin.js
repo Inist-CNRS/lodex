@@ -126,8 +126,15 @@ const deleteTenant = async (ctx) => {
         ctx.status = 403;
         ctx.body = { error: `Invalid name: "${name}"` };
     } else {
-        deleteWorkerQueue(tenantExists.name).then();
-        bullBoard.removeDashboardQueue(tenantExists.name);
+        try {
+            deleteWorkerQueue(tenantExists.name).then();
+            bullBoard.removeDashboardQueue(tenantExists.name);
+        } catch (e) {
+            console.warn(
+                `Failed to delete in queue for one tenant (${tenantExists.name})`,
+                e,
+            );
+        }
         if (deleteDatabase) {
             const db = await mongoClient(name);
             await db.dropDatabase();

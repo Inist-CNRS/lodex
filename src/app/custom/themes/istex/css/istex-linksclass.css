@@ -243,12 +243,14 @@ div[class*='ButtonSecondary']
     border: 1px solid transparent !important;
 }
 
-/* Bouton Ombre lodex - 
-button.MuiButton-text.MuiButton-textPrimary */
+/* Bouton Ombre lodex - EXPORT - LANGUE */
+button[class*='css-m9dicq'] {
+    margin: 0 0.5rem;
+}
+buttonbutton:is([class*='css-w9y1zr'], [class*='css-m9dicq']),
 div[class*='ButtonShadow']
     div[class*='property_value']
-    :is(button, a):not([class*='HomeSidebar']),
-button.MuiButton-text.MuiButton-textPrimary {
+    :is(button, a):not([class*='HomeSidebar']) {
     background-color: var(--contrast-main) !important;
     color: var(--primary-main) !important;
     border: 1px solid transparent !important;
@@ -256,16 +258,16 @@ button.MuiButton-text.MuiButton-textPrimary {
     text-decoration: none;
     text-align: center !important;
 }
+button:is([class*='css-w9y1zr'], [class*='css-m9dicq']):is(:hover, :focus),
 div[class*='ButtonShadow']
     div[class*='property_value']
-    :is(button, a):is(:hover, :focus):not([class*='HomeSidebar']),
-button.MuiButton-text.MuiButton-textPrimary:is(:hover, :focus) {
+    :is(button, a):is(:hover, :focus):not([class*='HomeSidebar']) {
     background-color: var(--primary-very-light) !important;
 }
+button:is([class*='css-w9y1zr'], [class*='css-m9dicq']):is(:active),
 div[class*='ButtonShadow']
     div[class*='property_value']
-    :is(button, a):is(:active):not([class*='HomeSidebar']),
-button.MuiButton-text.MuiButton-textPrimary:is(:active) {
+    :is(button, a):is(:active):not([class*='HomeSidebar']) {
     background-color: var(--link-dark) !important;
     color: var(--contrast-main) !important;
 }

@@ -607,7 +607,6 @@ li .facet-value-list .css-qtf05s-MuiButtonBase-root-MuiCheckbox-root {
 /*a.search-result-link*/
 .search-result-list-container a {
     text-decoration: none;
-    flex: 1 0 325px;
     color: rgb(74, 74, 74);
     transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
     border-radius: 5px;
@@ -724,6 +723,7 @@ li .facet-value-list .css-qtf05s-MuiButtonBase-root-MuiCheckbox-root {
 }
 .main-resource-section > div .MuiCardActions-root > button {
     justify-self: flex-end;
+    margin-top: 1rem;
 }
 
 /*****************************/

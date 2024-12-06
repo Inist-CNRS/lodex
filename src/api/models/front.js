@@ -104,6 +104,13 @@ const renderTemplate = (file, data) => {
  */
 export const renderPublic = (themeId, data) => {
     const lodexTheme = getTheme(themeId);
+    if (!lodexTheme) {
+        return new Promise((resolve) =>
+            resolve(
+                `<h1>The selected theme (${themeId}), no longer exists. Change it in <a href="./${data?.tenant}/admin#/config"> the configuration panel.</a></h1>`,
+            ),
+        );
+    }
     const theme = createMuiTheme(lodexTheme.muiTheme);
     const cssVariable = buildCssVariable(theme.palette);
     let themeFolder = themeId ?? 'default';

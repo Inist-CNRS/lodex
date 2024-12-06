@@ -1,5 +1,21 @@
 ### Thème Istex pour Lodex
 
+# Configuration du thème ISTEX
+
+**Les données ci-dessous sont à renseigner via la configuration du thème dans lodex**
+(les données saisies sont à titre d'exemple)
+
+-   "host": "/",
+-   "title": "Services",
+-   "summary": "Les technologies et les outils ISTEX pour les projets de recherche.",
+-   "matomoID": "39",
+-   "info: choix image bannieres": "datamining - doigtdossier - doigtecran - femmebureau - femmededos - filet - graph - hommebureau - mainAI - mainreseau - mainspirale - meeting - terre - translation",
+-   "BanniereSimple": "hommebureau",
+-   "BanniereDouble": "doigtdossier"
+
+  ![image](https://github.com/user-attachments/assets/bb59f59e-e070-4009-b7ef-67d71d1ac6da)
+
+
 # Class css internes : Usage
 
 Les class internes permettent de jouer la charte Istex sur les éléments Lodex.
@@ -15,54 +31,62 @@ Page d'accueil
 ou  
 Ressource principale
 
-La class interne (liste ci-après) est à saisir dans le champ 'nom interne' d'un bloc lodex.
+**La class interne est à saisir dans le champ 'nom interne' d'un bloc lodex.**
 
 ## Liste des class css internes
 
 ### class générales
 
--   **buttonPrimary** : bouton foncé/blanc sur fond clair/foncé (sidebar)
+-   **buttonPrimary** : bouton foncé/blanc sur fond clair/foncé /sidebar
 -   **buttonSecondary** : bouton bordure fond transparent sur fond sombre ou clair
 -   **buttonShadow** : bouton ombre
 
--> voir les boutons : [https://](https://design.istex.fr/boutons/)
+-> voir les boutons sur [design.istex.fr](https://design.istex.fr/boutons/)
 
--   **blocExergue** : mise en avant du contenu d'un bloc par un léger ombrage (cf resource tools)
+-   **blocExergue** : mise en avant du contenu d'un bloc par un léger ombrage (cf tools explorter/resource )
+
+##Insertion capture
+
+-   **designfilter** : filtre bleuté
+-   **designHomeCompteur** : compteur nb outils
 
 ### Page d'accueil
 
 ![exemple-class-interne-data-istex-home](https://github.com/Inist-CNRS/lodex/assets/122360177/023edf48-7be6-4f72-88d0-1f587162aca8)
 
--   **designHomeContentSidebar**  
-    Le bloc pleine largeur, fond avec décor graph sur blanc casse et une sidebar bleu istex
+#### le bloc de présentation du site
 
-Le bloc _designHomeContentSidebar_ est un champs composé de deux blocs :
+-   **designHomeContentSidebar**  
+    Bloc pleine largeur, fond blanc casse avec décor de graph et une sidebar bleu istex
+
+Ce bloc _designHomeContentSidebar_ est composé de deux blocs :
 
 -   **designHomeContent**
--   **designHomeSidebar**
+-   **designHomeSidebar**  
+    contenant lui-même
     -   **designHomeCompteur** : compteur nb outils
     -   **designfilter** : filtre bleuté sur img licence
 
-Pour finir la page d'accueil [mise en oeuvre en cours de modification]
+#### les bannières et le triptyque
 
--   **designHomebanniereSimple** : istex texte sur img pleine page
+-   **designHomeBanniereSimple** : istex texte sur img pleine page
+
 -   **designHomeBanniereDouble** : istex img + texte à droite
--   **designHomeTryptique** : trois blocs
+
+-   **designHomeTriptyque** : ce bloc est composé de trois blocs qui eux même sont composés des éléments bloc icone, texte, nombre, titre,...
+
+##Insertion capture
 
 ### Ressource principale
 
-_header-resource-section_
+div _header-resource-section_
 
 -   **designResourceToolsHeader** : design du titre de l'outil dans tools explorer
 
--   **designResourceCompose** :
+-   **designResourceCompose** : design des fonctionnalités d'un outils dans tools
 
-design des carateristiques d'un outils dans tools
-
-pour un bloc composé
-
--   enlève la bordure et le retrait à gauche
--   ajoute une couleur de fond bleu très clair
--   Les blocs composants ce bloc apparaissent en pavé clair
+        Bloc composé
+        -   couleur de fond bleu très clair
+        -   Les blocs composants ce bloc apparaissent en pavé clair
 
 ![exemple-class-interne-istex-tools-resource](https://github.com/Inist-CNRS/lodex/assets/122360177/252c3b1a-193f-4d90-9f35-75bfdddffc54)
