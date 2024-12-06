@@ -24,7 +24,7 @@ div[class*='HomeContentSidebar'] div[class*='designHomeContent'],
 div[class*='HomeSidebar'] {
     width: auto !important;
     margin-bottom: 0 !important;
-    padding: 5rem 1rem 6rem;
+    padding: 5rem 0 6rem;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -35,27 +35,6 @@ div[class*='HomeContentSidebar'] div[class*='HomeContent'] {
     flex: 2;
     background-color: transparent !important;
 }
-/*contents home label = titre as h2*/
-/*a eviter car probleme indexation par robots cause pas de semantique html*/
-/*.dataset-characteristics
-    div
-    span.property_label[style*='color: rgb(158, 158, 158)']:not(:empty) {
-    font-size: 2rem !important;
-    line-height: 3.4rem;
-    font-weight: 700 !important;
-    color: var(--text-main) !important;
-    padding: 3rem 0 20px;
-}*/
-/*sauf le premier titre*/
-/*div[class*='HomeContent']
-    > div.property_label_container
-    span.property_label[style*='color: rgb(158, 158, 158)'] {
-    font-size: 2.8rem !important;
-    padding: 0 0 3rem;
-}
-span.property_label:empty {
-    padding: 0;
-}*/
 /********************/
 /* home ou resource */
 /* liste en pave    */
@@ -86,9 +65,7 @@ li.resources-grid-item * {
 div[class*='ListePave'] li,
 li.resources-grid-item {
     width: 330px;
-    height: 100px;
     border-radius: 4px;
-    padding: 2rem !important;
 }
 div[class*='ListePave'] li a,
 li.resources-grid-item a {
@@ -113,10 +90,8 @@ li.resources-grid-item a > div {
 /* titre du bloc toutes liste */
 [class*='ListePave'] a div[class*='contentTitle'] {
     flex: 1;
-    font-family: var(--font-titre);
-    color: var(--text-main);
+    font-family: var(--font-titre) !important;
     font-weight: 700;
-    font-size: 1.6rem;
 }
 /*********************/
 /* liste pave dans   */
@@ -125,7 +100,6 @@ li.resources-grid-item a > div {
 div[class*='designHomeContent'] [class*='ListePave'] li {
     background-color: var(--contrast-light);
     border-color: var(--contrast-light);
-    padding: 2rem;
 }
 div[class*='designHomeContent'] [class*='ListePave'] li a div {
     padding-right: 1.5rem;
@@ -203,9 +177,6 @@ div[class*='HomeCompteur'] .MuiBox-root div {
 /*compteur nb outils .numberStroke*/
 div[class*='HomeCompteur'] div.content {
     font-family: var(--font-titre) !important;
-    font-size: 5rem !important;
-    font-weight: 700 !important;
-    line-height: 61px !important;
     color: var(--primary-main) !important;
     -webkit-text-stroke: 1px var(--secondary-contrast-text);
     padding-right: 5px;
@@ -266,6 +237,8 @@ div[class*='designHomeBanniereSimple'] h2 {
     color: var(--info-main) !important;
     margin-bottom: 0 !important;
 }
+/* a est un bouton secondaire*/
+
 /*******************/
 /* BanniereDouble  */
 /*   img + texte   */
@@ -352,7 +325,6 @@ div.property[class*='designHomeTryptique'] .property[class*='Triptyque3'] {
 /*header-resource-section*/
 /* bloc titre label */
 .designResourceToolsHeader > div.property_label_container span.property_label {
-    font-size: 1.4rem;
     color: var(--primary-main) !important;
     border-bottom: 1px solid var(--primary-main);
     margin-bottom: 1rem;
@@ -383,12 +355,6 @@ div[class*='ResourceCompose'] {
 /*titre*/
 div[class*='ResourceCompose'] .property_label_container {
     margin-top: 0rem !important;
-}
-div[class*='ResourceCompose'] > .property_label_container span.property_label {
-    color: var(--text-main) !important;
-    font-size: 1.8rem !important;
-    line-height: 2rem;
-    font-weight: 600 !important;
 }
 div[class*='ResourceCompose'] .property_value_container > div > div > div {
     margin-left: 0 !important;
@@ -436,8 +402,9 @@ div[class*='ResourceCompose'] .property_value_container h2 {
 /*ref bib = .blocExergue*/
 div[class*='Exergue'] {
     box-shadow: 0px 0px 20px var(--neutral-main);
-    padding: 3rem 5rem;
-    margin: 3rem 0;
+    padding: 3rem 3rem;
+    margin: 2rem 0;
+
 }
 div[class*='Exergue'] p {
     margin: 0 auto 1.5rem;

@@ -55,12 +55,10 @@
     box-sizing: border-box;
 }
 html {
-    font-size: 62.5%;
     width: 100%;
 }
 body {
     font-family: var(--font-texte);
-    font-size: 1.4rem;
     color: var(--text-main);
 }
 :root {
@@ -68,6 +66,7 @@ body {
     --font-titre-medium: Montserrat Medium, Arial, Helvetica, sans-serif;
     --font-texte: Inter, Arial, Helvetica, sans-serif;
     --maxWidth: 1200px; /* .css-19r6kue-MuiContainer-root 19.08.2024*/
+    --font-size-texte: 0.875rem;
 
     --canard0: #458ca5; /*canard 0 */
     --canard-1: #31768f; /*canard -1*/
@@ -93,34 +92,6 @@ body {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-}
-.jcSb {
-    justify-content: space-between;
-}
-.jcC {
-    justify-content: center;
-}
-.flexcolumn {
-    display: flex;
-    flex-direction: column;
-}
-.fontInter {
-    font-family:
-        'Inter',
-        sans serif;
-    font-size: 1.4rem;
-    line-height: 1.7rem;
-}
-.fontMontserrat {
-    font-family:
-        'Montserrat',
-        sans serif;
-    font-size: 2rem;
-    line-height: 2.4rem;
-    font-weight: 700;
-}
-.noshow {
-    display: none;
 }
 /*****************************/
 /* Header  *******************/
@@ -154,11 +125,11 @@ header {
     top: 0;
     background-color: var(--contrast-light);
     font-family: 'Inter', sans-serif;
-    font-size: 1rem;
-    line-height: 1.2rem;
-    height: 34px;
-    justify-content: space-between;
-    text-transform: uppercase;
+    font-size: 0.625rem;
+    box-shadow:
+        0px 2px 4px -1px rgba(0, 0, 0, 0.2),
+        0px 4px 5px 0px rgba(0, 0, 0, 0.14),
+        0px 1px 10px 0px rgba(0, 0, 0, 0.12);
 }
 .menuIstex > div {
     justify-content: space-between;
@@ -222,15 +193,16 @@ header {
     padding: 0 !important;
     font-family: var(--font-titre);
     color: var(--contrast-main);
-    font-size: 5rem;
-    line-height: 6rem;
+    font-size: 3rem;
+    line-height: 1.167;
     font-weight: 400;
     flex: 3;
 }
 .subTitle {
     flex-wrap: wrap;
     font-family: var(--font-titre);
-    font-size: 1.8rem;
+    /* font-size: 62.5%;
+    font-size: 1.8rem;*/
     width: 100%;
 }
 .banner a,
@@ -297,7 +269,7 @@ footer.site-footer::after {
     min-height: 35vh;
     padding: 0 !important;
     font-family: var(--font-texte) !important;
-    font-size: 1.4rem;
+    font-size: var(--font-size-texte);
     color: var(--text-main);
 }
 .container,
@@ -352,8 +324,8 @@ div.drawer {
 /*titre*/
 #content > .MuiPaper-root .MuiTypography-h5 {
     font-family: var(--font-titre);
-    font-size: 2.5rem !important;
-    font-weight: 400;
+    font-size: 1.5rem !important;
+    font-weight: bold;
     color: var(--neutral-dark-dark);
 }
 /*****************************/
@@ -377,50 +349,52 @@ nav.nav-bar-menu div.nav-bar-container > img {
 #content h3,
 #content h4,
 #content h5,
-#content h6 {
+#content h6,
+.footer1,
+.breadcrumb-trail,
+button {
     font-family: var(--font-titre) !important;
     margin-block-start: 0;
     color: var(--text-main);
     text-align: left !important;
 }
 #content h1 {
-    font-size: 4rem;
-    line-height: 3.6rem;
+    font-size: 1.7rem;
+    line-height: 1.5;
     font-weight: 700;
 }
 #content h2 {
-    font-size: 3.6rem;
-    line-height: 3.2rem;
+    font-size: 1.5rem;
+    line-height: 1.1;
+    margin-bottom: 0.35em;
     font-weight: 700;
     margin-block-end: 0.5em;
 }
 #content h3 {
-    font-size: 3.2rem;
-    line-height: 2.8rem;
+    font-size: 1.2rem;
+    line-height: 1rem;
 }
 #content h4 {
-    font-size: 2.8rem;
-    line-height: 2.4rem;
-    font-style: italic;
+    font-size: 1rem;
+    line-height: 0.8rem;
 }
 #content h5 {
-    font-size: 2.4rem;
-    line-height: 2rem;
+    font-size: 1rem;
+    line-height: 0.8rem;
+    font-weight: normal;
     font-style: italic;
 }
 #content h6 {
-    font-size: 2rem;
-    line-height: 1.6rem;
-    margin-bottom: 10px;
-    margin-top: 20px;
+    font-size: 1rem;
+    line-height: 0.6rem;
+    font-weight: normal;
     font-style: italic;
 }
 #content p,
 #content li,
-#content div,
-#content span:not(.property_label, .detail) {
+#content div {
     font-family: var(--font-texte);
-    font-size: 1.6rem;
+    font-size: var(--font-size-texte);
 }
 a img {
     border: none;
@@ -436,7 +410,6 @@ a img {
 }
 #content li {
     text-align: left;
-    padding-bottom: 1rem;
 }
 #content li p {
     padding: 0 !important;
@@ -449,17 +422,13 @@ a img {
 /* formulaires */
 /* color size  */
 /***************/
-.MuiButton-root,
-.MuiGrid-root {
-    font-size: 1.6rem !important;
-}
 * label,
 * input,
 * input::placeholder,
 * textarea::placeholder,
 * textarea {
     font-family: var(--font-texte) !important;
-    font-size: 1.4rem !important;
+    font-size: 1rem !important;
     text-align: left;
 }
 * input,
@@ -475,14 +444,9 @@ a img {
 .MuiPaper-root[role='dialog'] {
     border-radius: 10px;
 }
-.MuiPaper-root[role='dialog'] * {
-    font-family: var(--font-texte);
-}
 .MuiPaper-root[role='dialog'] > *:not(div) {
     background-color: var(--primary-main);
     color: var(--contrast-light);
-    font-size: 2rem;
-    line-height: 2.9rem;
     font-weight: 550;
 }
 /*bouton fermer x de modal lodex */
@@ -490,13 +454,6 @@ a img {
 .MuiPaper-root[role='dialog'] button svg {
     width: 2rem;
     height: 2rem;
-}
-.MuiPaper-root[role='dialog'] h3 {
-    font-family: var(--font-texte);
-    color: var(--primary-main);
-    font-size: 1.6rem;
-    line-height: 1.93rem;
-    font-weight: 550;
 }
 /*****************/
 /* LODEX class & */
@@ -519,7 +476,8 @@ div.property div.MuiBox-root > div > * + div {
 /* label */
 span.property_label[style*='color: rgb(158, 158, 158)']:not(:empty) {
     font-family: var(--font-titre) !important;
-    font-size: 1.4rem !important;
+    font-size: 1rem;
+    line-height: 1;
     text-align: initial;
     margin-bottom: 0.5rem;
 }
@@ -622,19 +580,14 @@ ul.MuiList-root.facets-list > li .MuiGrid-root.MuiGrid-container {
     padding: 0px 16px;
     /*min-height: 48px;*/
     color: var(--neutral-dark-very-dark) !important;
-    font-size: 1.4rem;
-    font-weight: 400;
     justify-content: space-between !important;
-}
-ul.MuiList-root.facets-list > li .MuiGrid-root.MuiGrid-container svg {
-    font-size: 2.5rem;
 }
 ul.MuiList-root.facets-list > li .facet-value-list {
     padding: 8px 16px 16px;
     background-color: white;
 }
-ul.MuiList-root.facets-list > li .facet-value-list svg {
-    font-size: 1.8rem;
+li .facet-value-list .css-qtf05s-MuiButtonBase-root-MuiCheckbox-root {
+    padding: 3px;
 }
 /*****************************/
 /* Recherche  results        */
@@ -643,7 +596,6 @@ ul.MuiList-root.facets-list > li .facet-value-list svg {
 /*stats + tris*/
 .search-results > div > div {
     height: max-content !important;
-    line-height: 2rem !important;
 }
 .search-result-list-container {
     margin-top: 8px;
@@ -677,6 +629,7 @@ ul.MuiList-root.facets-list > li .facet-value-list svg {
 .search-result-list-container a > div:active {
     border: 0px;
     background-color: transparent;
+    margin-bottom: 0;
 }
 .search-result-list-container a div.search-result-title {
     font-family: var(--font-titre);
@@ -764,6 +717,12 @@ ul.MuiList-root.facets-list > li .facet-value-list svg {
 }
 /*barre fonctionnelle*/
 .main-resource-section > div .MuiCardActions-root {
+    border: 1px solid var(--gris2);
+    border-width: 1px 0 1px;
+    justify-content: space-between !important;
+}
+.main-resource-section > div .MuiCardActions-root > button {
+    justify-self: flex-end;
     margin-top: 1rem;
 }
 

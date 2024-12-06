@@ -11,7 +11,6 @@
     --filtreBlancMainHFA: invert(100%) sepia(100%) saturate(0%)
         hue-rotate(327deg) brightness(107%) contrast(101%);
 }
-
 /************************/
 /* Lien au fil du texte */
 /* Lien du contenu      */
@@ -20,7 +19,6 @@
     text-decoration: underline;
     cursor: pointer;
 }
-
 /**************/
 /* Fond clair */
 /**************/
@@ -154,7 +152,6 @@ div[class*='ButtonShadow'] div[class*='property_value'] a {
     margin: 0;
     padding: 6px 16px;
     border-radius: 4px;
-    font-size: 1.6rem !important;
 }
 
 div[class*='HomeSidebar']
@@ -259,6 +256,7 @@ div[class*='ButtonShadow']
     border: 1px solid transparent !important;
     box-shadow: 2px 2px 5px 0px #00000026 !important;
     text-decoration: none;
+    text-align: center !important;
 }
 button:is([class*='css-w9y1zr'], [class*='css-m9dicq']):is(:hover, :focus),
 div[class*='ButtonShadow']
