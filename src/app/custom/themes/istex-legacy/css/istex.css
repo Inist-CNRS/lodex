@@ -21,7 +21,7 @@ h3,.h3{font-size: 1.5rem;line-height:1.8125rem;margin: 0;}
 .property_label,.MuiTypography-h5{font-size:1.5rem!important;line-height:1.8125rem!important;font-weight: 500!important;}
 .h4,.h5,.h6,h4,h5,h6{margin: 0;line-height: 1.1;}
 h4,.h4{font-size:1.125rem;}
-.lodex-resource-contentTitle,.lodex-resource-contentTitle:empty+.lodex-resource-contentParagraph{font-size: 1.25rem!important;line-height:1.5rem!important; padding-top: 30px; text-decoration: none; font-weight: bold !important; color: var(--noir);}
+.lodex-resource-contentTitle,.lodex-resource-contentTitle:empty+.lodex-resource-contentParagraph{font-size: 1.25rem!important;line-height:1.5rem!important; padding-top: 30px; text-decoration: none !important; font-weight: bold !important; color: var(--noir);}
 h5,.h5{font-size:.9375rem;}
 #pageTitle{font-size:2.5rem;line-height:3rem;}
 #pageSubTitle{font-size: 1.125rem;line-height: 1.8125rem;}
@@ -31,9 +31,10 @@ h5,.h5{font-size:.9375rem;}
 .baseline,.navigation-main a,.navigation-main span,#pageTitle{font-weight:bold;}
 .h1,.h2,.h3,.h4,.h5,.h6,h1,h2,h3,h4,h5,h6,.footer1,.tooltipDessous,#pageSubTitle,.breadcrumb-item-link{font-weight: 500;}
 .MuiTableCell-head{font-weight: 500!important;font-variant: small-caps;}
-a, .property_value p>a, .property_value p>a:hover, a.link_to_resource {color: var(--bleuistex) !important;}
+a:not(.graph-summary-label, .nav-item), .property_value p>a, .property_value p>a:hover, a.link_to_resource {color: var(--bleuistex) !important;}
+.graph-summary-label, .graph-summary-label:hover, .graph-summary-link, .graph-summary-link:hover {color: var(--vertistex) !important;}
 a:hover, .property_value p>a:hover, a.link_to_resource:hover {color: var(--bleusurvol) !important;}
-#content a:not(button){text-decoration: underline !important;}
+#content a:not(button, [class*="contentLink"], [class*="contentTitle"]){text-decoration: underline !important;}
 a.property_value._1slu1mr,.value_sparql>a.link._1slu1mr,.istex-item-title>a.link._1slu1mr,a.link._1slu1mr:not(.graph-summary-link){color: var(--bleuistex);}
 a._cdr56k,a._cdr56k:hover,a._cdr56k:focus,a.search-result-link{color: inherit!important}
 h1,.h1,h2,.h2,h3,.h3,h4,.h4,h5,.h5{color:var(--noir)}
