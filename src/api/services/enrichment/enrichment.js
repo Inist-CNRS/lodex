@@ -3,6 +3,7 @@ import path from 'path';
 import ezs from '@ezs/core';
 import progress from '../../services/progress';
 import localConfig from '../../../../config.json';
+import { mongoConnectionString } from '../mongoClient';
 
 import { ObjectId } from 'mongodb';
 import from from 'from';
@@ -197,10 +198,13 @@ async function postcheck(data, feed) {
 
 const processEzsEnrichment = (entries, commands, ctx, preview = false) => {
     return new Promise((resolve, reject) => {
+        const environment = {
+            connectionStringURI: mongoConnectionString(ctx.tenant),
+        };
         const values = [];
         from(entries)
             .pipe(ezs(preformat))
-            .pipe(ezs('delegate', { commands }, {}))
+            .pipe(ezs('delegate', { commands }, environment))
             .pipe(ezs(postcheck, { preview }, ctx))
             .on('data', (data) => {
                 if (data instanceof Error) {

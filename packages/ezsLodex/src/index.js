@@ -25,6 +25,7 @@ import buildContext from './buildContext';
 import aggregateQuery from './aggregateQuery';
 import LodexJoinQuery from './joinQuery';
 import saveDocuments from './saveDocuments.js';
+import precomputedSelect from './precomputedSelect.js';
 
 const funcs = {
     flattenPatch,
@@ -53,6 +54,7 @@ const funcs = {
     aggregateQuery,
     LodexJoinQuery,
     saveDocuments,
+    precomputedSelect,
     // aliases
     fixFlatten: flattenPatch.flattenPatch,
     LodexContext: disabled.disabled,
@@ -71,6 +73,7 @@ const funcs = {
     LodexInjectCountFrom: injectCountFrom.injectCountFrom,
     LodexAggregateQuery: aggregateQuery.aggregateQuery,
     LodexSaveDocuments: saveDocuments.saveDocuments,
+    LodexPrecomputedSelect: precomputedSelect.precomputedSelect,
 };
 
 export default funcs;
