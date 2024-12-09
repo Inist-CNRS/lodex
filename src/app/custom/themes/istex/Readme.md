@@ -52,7 +52,7 @@ Ressource principale
 
 ### Page d'accueil
 
-![exemple-class-interne-data-istex-home](https://github.com/Inist-CNRS/lodex/assets/122360177/023edf48-7be6-4f72-88d0-1f587162aca8)
+
 
 #### le bloc de présentation du site
 
