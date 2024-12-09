@@ -52,7 +52,8 @@ Ressource principale
 
 ### Page d'accueil
 
-![exemple-class-interne-data-istex-home](https://github.com/Inist-CNRS/lodex/assets/122360177/023edf48-7be6-4f72-88d0-1f587162aca8)
+![Clipboard01](https://github.com/user-attachments/assets/075525a1-52a8-4ba6-bb0c-6efc541cbd1f)
+
 
 #### le bloc de présentation du site
 
@@ -62,6 +63,8 @@ Ressource principale
 Ce bloc _designHomeContentSidebar_ est composé de deux blocs :
 
 -   **designHomeContent**
+    contenant lui-même
+    - **ListePave : affichage en bloc cliquable des données de syndication ou autres (liste arks)
 -   **designHomeSidebar**  
     contenant lui-même
     -   **designHomeCompteur** : compteur nb outils
