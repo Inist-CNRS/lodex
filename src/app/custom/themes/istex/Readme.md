@@ -13,7 +13,8 @@
 -   "BanniereSimple": "hommebureau",
 -   "BanniereDouble": "doigtdossier"
 
-  ![image](https://github.com/user-attachments/assets/bb59f59e-e070-4009-b7ef-67d71d1ac6da)
+![Capture d’écran 2024-12-09 154944](https://github.com/user-attachments/assets/0ba1d554-081c-4cb0-98bf-2424f74fb933)
+
 
 
 # Class css internes : Usage
@@ -69,6 +70,10 @@ Ce bloc _designHomeContentSidebar_ est composé de deux blocs :
     contenant lui-même
     -   **designHomeCompteur** : compteur nb outils
     -   **designfilter** : filtre bleuté sur img licence
+ 
+**ListePave** dans HomeContent  
+![image](https://github.com/user-attachments/assets/b09fe55c-e4d0-467e-a046-879e30e9e019)
+
 
 #### les bannières et le triptyque
 
