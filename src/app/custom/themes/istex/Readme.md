@@ -15,8 +15,6 @@
 
 ![Capture d’écran 2024-12-09 154944](https://github.com/user-attachments/assets/0ba1d554-081c-4cb0-98bf-2424f74fb933)
 
-
-
 # Class css internes : Usage
 
 Les class internes permettent de jouer la charte Istex sur les éléments Lodex.
@@ -55,7 +53,6 @@ Ressource principale
 
 ![Clipboard01](https://github.com/user-attachments/assets/075525a1-52a8-4ba6-bb0c-6efc541cbd1f)
 
-
 #### le bloc de présentation du site
 
 -   **designHomeContentSidebar**  
@@ -65,15 +62,14 @@ Ce bloc _designHomeContentSidebar_ est composé de deux blocs :
 
 -   **designHomeContent**
     contenant lui-même
-    - **ListePave : affichage en bloc cliquable des données de syndication ou autres (liste arks)
+
+    -   **ListePave** : affichage en bloc cliquable des données de syndication ou autres (liste arks)  
+        ![image](https://github.com/user-attachments/assets/b09fe55c-e4d0-467e-a046-879e30e9e019)
+
 -   **designHomeSidebar**  
     contenant lui-même
     -   **designHomeCompteur** : compteur nb outils
     -   **designfilter** : filtre bleuté sur img licence
- 
-**ListePave** dans HomeContent  
-![image](https://github.com/user-attachments/assets/b09fe55c-e4d0-467e-a046-879e30e9e019)
-
 
 #### les bannières et le triptyque
 
@@ -83,7 +79,7 @@ Ce bloc _designHomeContentSidebar_ est composé de deux blocs :
 
 -   **designHomeTriptyque** : ce bloc est composé de trois blocs qui eux même sont composés des éléments bloc icone, texte, nombre, titre,...
 
-##Insertion capture
+-> voir les bannières (en developpement) sur [design-istex.fr](http://viwp4.intra.inist.fr:40260/bannieres/)
 
 ### Ressource principale
 
