@@ -39,9 +39,7 @@ class Cartography extends BasicChart {
                     this.tooltip.value,
                 ];
             } else {
-                this.tooltip.category.field = 'properties.NAME_0';
                 this.model.encoding.tooltip = [
-                    this.tooltip.category,
                     {
                         field: 'properties.NAME_1',
                         type: 'nominal',
