@@ -73,9 +73,9 @@ Ce bloc _designHomeContentSidebar_ est composé de deux blocs :
 
 #### les bannières et le triptyque
 
--   **designHomeBanniereSimple** : istex texte sur img pleine page
+-   **designHomeBanniereSimple** : composé de surtitre titre texte et bouton sur img pleine page
 
--   **designHomeBanniereDouble** : istex img + texte à droite
+-   **designHomeBanniereDouble** : bloc avec bg img composé d'un titre d'une description et éventuellement d'un bouton
 
 -   **designHomeTriptyque** : ce bloc est composé de trois blocs qui eux même sont composés des éléments bloc icone, texte, nombre, titre,...
 
