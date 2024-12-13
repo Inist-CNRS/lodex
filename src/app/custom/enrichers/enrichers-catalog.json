@@ -4,7 +4,7 @@
         "url": "https://affiliations-tools.services.istex.fr/v1/addresses/parse",
         "doc": "https://github.com/Inist-CNRS/web-services/tree/main/services/affiliations-tools#v1addressesparse",
         "swagger": "https://openapi.services.istex.fr/?urls.primaryName=affiliations-tools%20-%20Structuration%20et%20enrichissements%20d%27affiliations#/adresses/post-v1-addresses-parse",
-        "objectifTDM": "https://services.istex.fr/2021/12/20/decoupage-dune-adresse/",
+        "objectifTDM": "https://services.istex.fr/decoupage-dune-adresse/",
         "type": "affiliation"
     },
     {
@@ -12,7 +12,7 @@
         "url": "https://loterre-resolvers.services.istex.fr/v1/9SD/identify",
         "doc": "https://github.com/Inist-CNRS/web-services/tree/main/services/loterre-resolvers",
         "swagger": "https://openapi.services.istex.fr/?urls.primaryName=loterre-resolvers%20-%20R%C3%A9solveurs%20pour%20des%20terminologies%20Loterre#/loterre-resolvers/post-v1-9SD-identify",
-        "objectifTDM": "https://services.istex.fr/2021/12/21/associer-un-pays-ou-subdivision-au-vocabulaire-loterre-correspondant/",
+        "objectifTDM": "https://services.istex.fr/associer-un-pays-ou-subdivision-au-vocabulaire-loterre-correspondant/",
         "type": "geography"
     },
     {
@@ -20,7 +20,7 @@
         "url": "https://loterre-resolvers.services.istex.fr/v1/D63/identify",
         "doc": "https://github.com/Inist-CNRS/web-services/tree/main/services/loterre-resolvers",
         "swagger": "https://openapi.services.istex.fr/?urls.primaryName=loterre-resolvers%20-%20R%C3%A9solveurs%20pour%20des%20terminologies%20Loterre#/loterre-resolvers/post-v1-D63-identify",
-        "objectifTDM": "https://services.istex.fr/2022/02/01/associer-un-terme-au-vocabulaire-des-communes-de-france/",
+        "objectifTDM": "https://services.istex.fr/associer-un-terme-au-vocabulaire-des-communes-de-france/",
         "type": "geography"
     },
     {
@@ -36,7 +36,7 @@
         "url": "https://authors-tools.services.istex.fr/v1/orcid-disambiguation/orcidDisambiguation",
         "doc": "https://github.com/Inist-CNRS/web-services/tree/main/services/authors-tools/v1/orcid-disambiguation",
         "swagger": "https://openapi.services.istex.fr/?urls.primaryName=authors-tools%20-%20Les%20web%20services%20qui%20se%20lancent%20sur%20le%20champs%20%27authors%27#/default/post_v1_orcid_disambiguation_orcidDisambiguation",
-        "objectifTDM": "https://services.istex.fr/2023/10/16/desambiguisation-dauteurs-via-orcid/",
+        "objectifTDM": "https://services.istex.fr/desambiguisation-dauteurs-via-orcid/",
         "type": "homogeneisation"
     },
     {
@@ -44,7 +44,7 @@
         "url": "https://authors-tools.services.inist.fr/v1/orcid-disambiguation/orcidDisambiguation?nameDepth=50",
         "doc": "https://github.com/Inist-CNRS/web-services/tree/main/services/authors-tools/v1/orcid-disambiguation",
         "swagger": "https://openapi.services.istex.fr/?urls.primaryName=authors-tools%20-%20Les%20web%20services%20qui%20se%20lancent%20sur%20le%20champs%20%27authors%27#/default/post_v1_orcid_disambiguation_orcidDisambiguation",
-        "objectifTDM": "https://services.istex.fr/2023/10/16/desambiguisation-dauteurs-via-orcid/",
+        "objectifTDM": "https://services.istex.fr/desambiguisation-dauteurs-via-orcid/",
         "type": "homogeneisation"
     },
     {
@@ -52,7 +52,7 @@
         "url": "https://authors-tools.services.inist.fr/v1/orcid-disambiguation/orcidDisambiguation?worksDepth=50",
         "doc": "https://github.com/Inist-CNRS/web-services/tree/main/services/authors-tools/v1/orcid-disambiguation",
         "swagger": "https://openapi.services.istex.fr/?urls.primaryName=authors-tools%20-%20Les%20web%20services%20qui%20se%20lancent%20sur%20le%20champs%20%27authors%27#/default/post_v1_orcid_disambiguation_orcidDisambiguation",
-        "objectifTDM": "https://services.istex.fr/2023/10/16/desambiguisation-dauteurs-via-orcid/",
+        "objectifTDM": "https://services.istex.fr/desambiguisation-dauteurs-via-orcid/",
         "type": "homogeneisation"
     },
     {
@@ -60,7 +60,7 @@
         "url": "https://authors-tools.services.inist.fr/v1/orcid-disambiguation/orcidDisambiguation?nameDepth=50&worksDepth=40",
         "doc": "https://github.com/Inist-CNRS/web-services/tree/main/services/authors-tools/v1/orcid-disambiguation",
         "swagger": "https://openapi.services.istex.fr/?urls.primaryName=authors-tools%20-%20Les%20web%20services%20qui%20se%20lancent%20sur%20le%20champs%20%27authors%27#/default/post_v1_orcid_disambiguation_orcidDisambiguation",
-        "objectifTDM": "https://services.istex.fr/2023/10/16/desambiguisation-dauteurs-via-orcid/",
+        "objectifTDM": "https://services.istex.fr/desambiguisation-dauteurs-via-orcid/",
         "type": "homogeneisation"
     },
     {
@@ -68,7 +68,7 @@
         "url": "https://ner-tagger.services.istex.fr/v1/perseeBaipTagger/tagger",
         "doc": "https://github.com/Inist-CNRS/web-services/tree/main/services/ner-tagger/v1/perseeBaipTagger",
         "swagger": "https://openapi.services.istex.fr/?urls.primaryName=ner-tagger#/default/post_v1_perseeBaipTagger_tagger",
-        "objectifTDM": "https://services.istex.fr/2022/03/29/detection-dentites-nommees-dans-les-bulletins-administratifs-de-linstruction-publique-persee/",
+        "objectifTDM": "https://services.istex.fr/detection-dentites-nommees-dans-les-bulletins-administratifs-de-linstruction-publique-persee/",
         "type": "geography"
     },
     {
@@ -108,7 +108,7 @@
         "url": "https://address-kit.services.istex.fr/v1/cnrsunit/cnrsunit",
         "doc": "https://github.com/Inist-CNRS/web-services/tree/main/services/address-kit/v1/cnrsunit",
         "swagger": "https://openapi.services.istex.fr/?urls.primaryName=address-kit%20-%20Informations%20sur%20des%20adresses%20d%27affiliations#/address/post-v1-cnrsunit",
-        "objectifTDM": "https://services.istex.fr/2022/11/09/detection-dunites-cnrs/",
+        "objectifTDM": "https://services.istex.fr/detection-dunites-cnrs/",
         "type": "affiliation"
     },
     {
@@ -140,7 +140,7 @@
         "url": "https://biblio-tools.services.istex.fr/v2/conditor/works/expand",
         "doc": "https://github.com/Inist-CNRS/web-services/tree/main/services/biblio-tools/v2",
         "swagger": "https://openapi.services.istex.fr/?urls.primaryName=biblio-tools%20-%20Outils%20pour%20r%C3%A9f%C3%A9rences%20bibliographiques#/biblio-tools/post-v2-conditor-works-expand",
-        "objectifTDM": "https://services.istex.fr/2022/02/09/enrichissement-par-doi/",
+        "objectifTDM": "https://services.istex.fr/enrichissement-par-doi/",
         "type": "metadata"
     },
     {
@@ -148,7 +148,7 @@
         "url": "https://biblio-tools.services.istex.fr/v2/hal/works/expand",
         "doc": "https://github.com/Inist-CNRS/web-services/tree/main/services/biblio-tools/v2",
         "swagger": "https://openapi.services.istex.fr/?urls.primaryName=biblio-tools%20-%20Outils%20pour%20r%C3%A9f%C3%A9rences%20bibliographiques#/biblio-tools/post-v2-hal-works-expand",
-        "objectifTDM": "https://services.istex.fr/2022/02/09/enrichissement-par-doi/",
+        "objectifTDM": "https://services.istex.fr/enrichissement-par-doi/",
         "type": "metadata"
     },
     {
@@ -156,7 +156,7 @@
         "url": "https://biblio-tools.services.istex.fr/v2/inspirehep/works/expand",
         "doc": "https://github.com/Inist-CNRS/web-services/tree/main/services/biblio-tools/v2",
         "swagger": "https://openapi.services.istex.fr/?urls.primaryName=biblio-tools%20-%20Outils%20pour%20r%C3%A9f%C3%A9rences%20bibliographiques#/biblio-tools/post-v2-inspirehep-works-expand",
-        "objectifTDM": "https://services.istex.fr/2022/02/09/enrichissement-par-doi/",
+        "objectifTDM": "https://services.istex.fr/enrichissement-par-doi/",
         "type": "metadata"
     },
     {
@@ -164,7 +164,7 @@
         "url": "https://biblio-tools.services.istex.fr/v2/istex/works/expand",
         "doc": "https://github.com/Inist-CNRS/web-services/tree/main/services/biblio-tools/v2",
         "swagger": "https://openapi.services.istex.fr/?urls.primaryName=biblio-tools%20-%20Outils%20pour%20r%C3%A9f%C3%A9rences%20bibliographiques#/biblio-tools/post-v2-istex-works-expand",
-        "objectifTDM": "https://services.istex.fr/2022/02/09/enrichissement-par-doi/",
+        "objectifTDM": "https://services.istex.fr/enrichissement-par-doi/",
         "type": "metadata"
     },
     {
@@ -172,7 +172,7 @@
         "url": "https://biblio-tools.services.istex.fr/v2/openalex/works/expand",
         "doc": "https://github.com/Inist-CNRS/web-services/tree/main/services/biblio-tools/v2",
         "swagger": "https://openapi.services.istex.fr/?urls.primaryName=biblio-tools%20-%20Outils%20pour%20r%C3%A9f%C3%A9rences%20bibliographiques#/biblio-tools/post-v2-openalex-works-expand",
-        "objectifTDM": "https://services.istex.fr/2022/02/09/enrichissement-par-doi/",
+        "objectifTDM": "https://services.istex.fr/enrichissement-par-doi/",
         "type": "metadata"
     },
     {
@@ -180,7 +180,7 @@
         "url": "https://biblio-tools.services.istex.fr/v2/unpaywall/works/expand",
         "doc": "https://github.com/Inist-CNRS/web-services/tree/main/services/biblio-tools/v2",
         "swagger": "https://openapi.services.istex.fr/?urls.primaryName=biblio-tools%20-%20Outils%20pour%20r%C3%A9f%C3%A9rences%20bibliographiques#/biblio-tools/post-v2-unpaywall-works-expand",
-        "objectifTDM": "https://services.istex.fr/2022/02/09/enrichissement-par-doi/",
+        "objectifTDM": "https://services.istex.fr/enrichissement-par-doi/",
         "type": "metadata"
     },
     {
@@ -188,7 +188,7 @@
         "url": "https://biblio-tools.services.istex.fr/v2/crossref/prefixes/expand",
         "doc": "https://github.com/Inist-CNRS/web-services/tree/main/services/biblio-tools/v2/crossref/prefixes",
         "swagger": "https://openapi.services.istex.fr/?urls.primaryName=biblio-tools%20-%20Outils%20pour%20r%C3%A9f%C3%A9rences%20bibliographiques#/biblio-tools/post-v2-crossref-prefixes-expand",
-        "objectifTDM": "https://services.istex.fr/2021/12/21/verbalisation-des-prefixes-de-doi/",
+        "objectifTDM": "https://services.istex.fr/verbalisation-des-prefixes-de-doi/",
         "type": "metadata"
     },
     {
@@ -196,7 +196,7 @@
         "url": "https://nlp-tools2.services.istex.fr/v1/lemma",
         "doc": "https://github.com/Inist-CNRS/web-services/tree/main/services/nlp-tools2/v1",
         "swagger": "https://openapi.services.istex.fr/?urls.primaryName=nlp-tools2%20-%20Outils%20de%20NLP#/NLP/post-v1-lemma",
-        "objectifTDM": "https://services.istex.fr/2023/04/19/lemmatiseur_eng/",
+        "objectifTDM": "https://services.istex.fr/lemmatiseur_eng/",
         "type": "tal"
     },
     {
@@ -228,7 +228,7 @@
         "url": "https://authors-tools.services.istex.fr/v1/first-name/gender",
         "doc": "https://github.com/Inist-CNRS/web-services/tree/main/services/authors-tools/v1/first-name",
         "swagger": "https://openapi.services.istex.fr/?urls.primaryName=authors-tools%20-%20Les%20web%20services%20qui%20se%20lancent%20sur%20le%20champs%20%27authors%27#/default/post_v1_first_name_gender",
-        "objectifTDM": "https://services.istex.fr/2023/04/26/detection-de-genre/",
+        "objectifTDM": "https://services.istex.fr/detection-de-genre/",
         "type": "classification"
     },
     {
@@ -236,7 +236,7 @@
         "url": "https://hal-classifier.services.istex.fr/v1/en/classhalen",
         "doc": "https://github.com/Inist-CNRS/web-services/tree/main/services/hal-classifier/v1/en",
         "swagger": "https://openapi.services.istex.fr/?urls.primaryName=hal-classifier%20-%20Classification%20HAL#/Classification%20supervis%C3%A9e/post-v1-en-classhalen",
-        "objectifTDM": "https://services.istex.fr/2022/02/10/classification-dans-les-domaines-hal/",
+        "objectifTDM": "https://services.istex.fr/classification-dans-les-domaines-hal/",
         "type": "classification"
     },
     {
@@ -244,7 +244,7 @@
         "url": "https://hal-classifier.services.istex.fr/v1/fr/classhalfr",
         "doc": "https://github.com/Inist-CNRS/web-services/tree/main/services/hal-classifier/v1/fr",
         "swagger": "https://openapi.services.istex.fr/?urls.primaryName=hal-classifier%20-%20Classification%20HAL#/Classification%20supervis%C3%A9e/post-v1-fr-classhalfr",
-        "objectifTDM": "https://services.istex.fr/2022/02/10/classification-dans-les-domaines-hal/",
+        "objectifTDM": "https://services.istex.fr/classification-dans-les-domaines-hal/",
         "type": "classification"
     },
     {
@@ -252,7 +252,7 @@
         "url": "https://ner-tagger.services.istex.fr/v1/geoTagger/geoTagger",
         "doc": "https://github.com/Inist-CNRS/web-services/tree/main/services/ner-tagger/v1/geoTagger",
         "swagger": "https://openapi.services.istex.fr/?urls.primaryName=ner-tagger#/default/post_v1_geoTagger_geoTagger",
-        "objectifTDM": "https://services.istex.fr/2022/03/08/detection-dentites-nommees/",
+        "objectifTDM": "https://services.istex.fr/detection-dentites-geographiques/",
         "type": "geography"
     },
     {
@@ -260,7 +260,7 @@
         "url": "https://mapping-tools.services.istex.fr/v1/hospital/affiliations",
         "doc": "https://gitbucket.inist.fr/tdm/web-services/tree/master/mapping-tools/v1/hospital",
         "swagger": "https://openapi.services.istex.fr/?urls.primaryName=mapping-tools%20-%20Utilisation%20de%20tables%20de%20correspondance#/default/post_v1_hospital_affiliations",
-        "objectifTDM": "https://services.istex.fr/2023/04/18/affiliations-hospitalieres/",
+        "objectifTDM": "https://services.istex.fr/affiliations-hospitalieres/",
         "type": "affiliation"
     },
     {
@@ -276,7 +276,7 @@
         "url": "https://nlp-tools2.services.istex.fr/v1/detect-lang",
         "doc": "https://github.com/Inist-CNRS/web-services/tree/main/services/nlp-tools2/v1",
         "swagger": "https://openapi.services.istex.fr/?urls.primaryName=nlp-tools2%20-%20Outils%20de%20NLP#/NLP/post-v1-detect-lang",
-        "objectifTDM": "https://services.istex.fr/2021/12/16/detection-de-la-llangue-dun-texte/",
+        "objectifTDM": "https://services.istex.fr/detection-de-la-llangue-dun-texte/",
         "type": "other"
     },
     {
@@ -284,7 +284,7 @@
         "url": "https://domains-classifier.services.istex.fr/v1/en/classify",
         "doc": "https://github.com/Inist-CNRS/web-services/tree/main/services/domains-classifier",
         "swagger": "https://openapi.services.istex.fr/?urls.primaryName=domains-classifier%20-%20Classification%20en%20domaines%20scientifiques#/default/post_v1_en_classify",
-        "objectifTDM": "https://services.istex.fr/2021/12/08/classification-en-domaines-scientifiques/",
+        "objectifTDM": "hhttps://services.istex.fr/classification-en-domaines-scientifiques/",
         "type": "classification"
     },
     {
@@ -292,7 +292,7 @@
         "url": "https://domains-classifier.services.istex.fr/v1/en/classify?deep2",
         "doc": "https://github.com/Inist-CNRS/web-services/tree/main/services/domains-classifier",
         "swagger": "https://openapi.services.istex.fr/?urls.primaryName=domains-classifier%20-%20Classification%20en%20domaines%20scientifiques#/default/post_v1_en_classify",
-        "objectifTDM": "https://services.istex.fr/2021/12/08/classification-en-domaines-scientifiques/",
+        "objectifTDM": "https://services.istex.fr/classification-en-domaines-scientifiques/",
         "type": "classification"
     },
     {
@@ -308,7 +308,7 @@
         "url": "https://affiliations-tools.services.istex.fr/v1/rnsr/json",
         "doc": "https://github.com/Inist-CNRS/web-services/tree/main/services/affiliations-tools#v1rnsrjson",
         "swagger": "https://openapi.services.istex.fr/?urls.primaryName=affiliations-tools%20-%20Structuration%20et%20enrichissements%20d%27affiliations#/affiliations/post-v1-rnsr-json",
-        "objectifTDM": "https://services.istex.fr/2021/12/09/identifiants-rnsr-adresse/",
+        "objectifTDM": "https://services.istex.fr/identifiants-rnsr-adresse/",
         "type": "homogénéisation"
     },
     {
@@ -316,7 +316,7 @@
         "url": "https://affiliations-tools.services.istex.fr/v1/rnsr/info",
         "doc": "https://github.com/Inist-CNRS/web-services/tree/main/services/affiliations-tools#v1rnsrjson",
         "swagger": "https://openapi.services.istex.fr/?urls.primaryName=affiliations-tools%20-%20Structuration%20et%20enrichissements%20d%27affiliations#/affiliations/post-v1-rnsr-json",
-        "objectifTDM": "https://services.istex.fr/2021/12/09/identifiants-rnsr-adresse/",
+        "objectifTDM": "https://services.istex.fr/identifiants-rnsr-adresse/",
         "type": "homogénéisation"
     },
     {
@@ -324,7 +324,7 @@
         "url": "https://affiliation-rnsr.services.istex.fr/v2/affiliation/rnsr",
         "doc": "https://github.com/Inist-CNRS/web-services/tree/main/services/affiliation-rnsr#readme",
         "swagger": "https://openapi.services.istex.fr/?urls.primaryName=affiliation-rnsr%20-%20Trouve%20un%20RNSR%20%C3%A0%20partir%20d%27une%20affiliation.#/default/post_v2_affiliation_rnsr",
-        "objectifTDM": "https://services.istex.fr/2023/04/20/attribution-dun-rnsr-a-une-affiliation-apprentissage/",
+        "objectifTDM": "https://services.istex.fr/attribution-dun-rnsr-a-une-affiliation-apprentissage/",
         "type": "homogénéisation"
     },
     {
@@ -332,7 +332,7 @@
         "url": "https://affiliation-rnsr.services.istex.fr/v3/affiliation/rnsr",
         "doc": "",
         "swagger": "https://openapi.services.istex.fr/?urls.primaryName=affiliation-rnsr%20-%20Trouve%20un%20RNSR%20%C3%A0%20partir%20d%27une%20affiliation.#/default/post_v3_affiliation_rnsr",
-        "objectifTDM": "https://services.istex.fr/2023/04/20/attribution-dun-rnsr-a-une-affiliation-apprentissage/",
+        "objectifTDM": "https://services.istex.fr/attribution-dun-rnsr-a-une-affiliation-apprentissage/",
         "type": "homogénéisation"
     },
     {
@@ -340,7 +340,7 @@
         "url": "https://irc3-species.services.istex.fr/v1/irc3sp",
         "doc": "https://github.com/Inist-CNRS/web-services/tree/main/services/irc3-species",
         "swagger": "https://openapi.services.istex.fr/?urls.primaryName=irc3-species%20-%20Recherche%20de%20noms%20d%27esp%C3%A8ces#/default/post_v1_irc3sp",
-        "objectifTDM": "https://services.istex.fr/2023/03/22/irc3-species-recherche-despeces-animales/",
+        "objectifTDM": "https://services.istex.fr/irc3-species-recherche-despeces-animales/",
         "type": "entitées nommées"
     },
     {
@@ -348,7 +348,7 @@
         "url": "https://terms-extraction.services.istex.fr/v1/teeft/en",
         "doc": "https://github.com/Inist-CNRS/web-services/tree/main/services/terms-extraction/v1/teeft",
         "swagger": "https://openapi.services.istex.fr/?urls.primaryName=terms-extraction%20-%20Extraction%20de%20termes#/terms-extraction/post-v1-teeft-en",
-        "objectifTDM": "https://services.istex.fr/2021/12/20/extraction-de-termes-teeft/",
+        "objectifTDM": "https://services.istex.fr/extraction-de-termes-teeft/",
         "type": "indexation"
     },
     {
@@ -356,7 +356,7 @@
         "url": "https://terms-extraction.services.istex.fr/v1/teeft/en?nb=10",
         "doc": "https://github.com/Inist-CNRS/web-services/tree/main/services/terms-extraction/v1/teeft",
         "swagger": "https://openapi.services.istex.fr/?urls.primaryName=terms-extraction%20-%20Extraction%20de%20termes#/terms-extraction/post-v1-teeft-en",
-        "objectifTDM": "https://services.istex.fr/2021/12/20/extraction-de-termes-teeft/",
+        "objectifTDM": "https://services.istex.fr/extraction-de-termes-teeft/",
         "type": "indexation"
     },
     {
@@ -364,7 +364,7 @@
         "url": "https://terms-extraction.services.istex.fr/v1/teeft/fr",
         "doc": "https://github.com/Inist-CNRS/web-services/tree/main/services/terms-extraction/v1/teeft",
         "swagger": "https://openapi.services.istex.fr/?urls.primaryName=terms-extraction%20-%20Extraction%20de%20termes#/terms-extraction/post-v1-teeft-fr",
-        "objectifTDM": "https://services.istex.fr/2021/12/20/extraction-de-termes-teeft/",
+        "objectifTDM": "https://services.istex.fr/extraction-de-termes-teeft/",
         "type": "indexation"
     },
     {
@@ -372,7 +372,7 @@
         "url": "https://terms-extraction.services.istex.fr/v1/teeft/fr?nb=10",
         "doc": "https://github.com/Inist-CNRS/web-services/tree/main/services/terms-extraction/v1/teeft",
         "swagger": "https://openapi.services.istex.fr/?urls.primaryName=terms-extraction%20-%20Extraction%20de%20termes#/terms-extraction/post-v1-teeft-fr",
-        "objectifTDM": "https://services.istex.fr/2021/12/20/extraction-de-termes-teeft/",
+        "objectifTDM": "https://services.istex.fr/extraction-de-termes-teeft/",
         "type": "indexation"
     },
     {
@@ -380,7 +380,7 @@
         "url": "https://terms-extraction.services.istex.fr/v1/teeft/with-numbers/en",
         "doc": "https://github.com/Inist-CNRS/web-services/tree/main/services/terms-extraction/v1/teeft",
         "swagger": "https://openapi.services.istex.fr/?urls.primaryName=terms-extraction%20-%20Extraction%20de%20termes#/terms-extraction/post-v1-teeft-with-numbers-en",
-        "objectifTDM": "https://services.istex.fr/2023/06/30/extraction-de-termes-via-teeft-nombres-compris/",
+        "objectifTDM": "https://services.istex.fr/extraction-de-termes-teeft/",
         "type": "indexation"
     },
     {
@@ -396,7 +396,7 @@
         "url": "https://terms-extraction.services.istex.fr/v1/tools/normalize",
         "doc": "https://github.com/Inist-CNRS/web-services/tree/main/services/terms-extraction",
         "swagger": "https://openapi.services.istex.fr/?urls.primaryName=terms-extraction%20-%20Extraction%20de%20termes#/terms-extraction/post-v1-tools-normalize",
-        "objectifTDM": "https://services.istex.fr/2022/01/12/normaliser-un-texte-ou-un-terme/",
+        "objectifTDM": "https://services.istex.fr/normaliser-un-texte-ou-un-terme/",
         "type": "metadata"
     }
 ]
