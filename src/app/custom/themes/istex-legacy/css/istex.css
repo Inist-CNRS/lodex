@@ -21,7 +21,7 @@ h3,.h3{font-size: 1.5rem;line-height:1.8125rem;margin: 0;}
 .property_label,.MuiTypography-h5{font-size:1.5rem!important;line-height:1.8125rem!important;font-weight: 500!important;}
 .h4,.h5,.h6,h4,h5,h6{margin: 0;line-height: 1.1;}
 h4,.h4{font-size:1.125rem;}
-.lodex-resource-contentTitle,.lodex-resource-contentTitle:empty+.lodex-resource-contentParagraph{font-size: 1.25rem!important;line-height:1.5rem!important; padding-top: 30px; text-decoration: none !important; font-weight: bold !important; color: var(--noir);}
+.lodex-resource-contentTitle,.lodex-resource-contentTitle:empty+.lodex-resource-contentParagraph{font-size: 1.25rem!important;line-height:1.5rem!important; padding-top: 30px; text-decoration: none !important; color: var(--noir);}
 h5,.h5{font-size:.9375rem;}
 #pageTitle{font-size:2.5rem;line-height:3rem;}
 #pageSubTitle{font-size: 1.125rem;line-height: 1.8125rem;}
