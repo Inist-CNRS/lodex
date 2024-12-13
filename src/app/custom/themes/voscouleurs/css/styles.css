@@ -15,26 +15,29 @@
 /* theme lodex 'voscouleurs' */
 /* modifiable depuis votre lodex/admin/configuration */
 /* author : helene creusot */
-/* developpeur : pierre marcolet */
+/* developpeur : helene creusot - pierre marcolet */
 /* pour nos partenaires */
 /* CNRS Inist - juin 2024 */
 
 /*config*/
 /*"color": {
 --bgBody: <%= custom.color.bgBody %>;
+--bgContrast: <%= custom.color.bgContrast %>;
 --bgHeader: <%= custom.color.bgHeader %>;
+--bgHeaderUrl: url('<%= custom.color.bgHeaderUrl %>');
 --titleHeader: <%= custom.color.titleHeader %>;
 --bgContent: <%= custom.color.bgContent %>;
 --bgFacet: <%= custom.color.bgFacet %>;
 --titles: <%= custom.color.titles %>;
 --titleGraph: <%= custom.color.titleGraph %>;
---text: <%= custom.color.text %>;
+--linkText: <%= custom.color.linkText %>;
+--linkTextHover: <%= custom.color.linkTextHover %>;
 --icon: <%= custom.color.icon %>;
 --iconHover: <%= custom.color.iconHover %>;
 --button: <%= custom.color.button %>;
 --buttonHover: <%= custom.color.buttonHover %>;
 --textContrast: <%= custom.color.textContrast %>;
---bgContrast: <%= custom.color.bgContrast %>;
+}
 */
 :root {
     /*search-results : couleur resultat visited*/
@@ -69,11 +72,13 @@ body * {
     font-variation-settings: 'GRAD' 88;
     -webkit-text-size-adjust: 100%;
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-    color: var(--text) !important;
 }
 /*bgHeader + --titleHeader*/
 header {
     background-color: var(--bgHeader);
+    background-image: var(--bgHeaderUrl);
+    background-position: top center;
+    background-size: cover;
 }
 header #banner.container {
     display: flex;
@@ -84,11 +89,14 @@ header #banner.container {
     margin: 10px auto;
     padding: 0;
 }
-#banner h1,
-#banner p {
+#banner h1 {
     color: var(--titleHeader) !important;
     font-family: var(--font-titleHeader) !important;
     font-size: var(--fontSize-titleHeader) !important;
+}
+#banner p {
+    color: var(--titleHeader) !important;
+    font-family: var(--font-titleHeader) !important;
 }
 header a.logo,
 header a.logo img {
@@ -117,7 +125,6 @@ header #banner > :last-child {
 }
 /*bgContent*/
 #content .container {
-    background-color: transparent;
     background-color: var(--bgContent);
     font-size: 1.2rem;
 }
@@ -168,15 +175,18 @@ h2 {
 /*etiquette*/
 .property_label {
     font-stretch: ultra-condensed;
-    font-weight: 450 !important;
+    font-weight: 500 !important;
+}
+/*texte*/
+.property_value {
+    text-align: initial !important;
 }
 /*link in text*/
 a {
-    color: var(--text);
+    color: var(--linkText);
 }
-a:hover {
-    color: var(--titles);
-    text-decoration: none;
+a:is(:hover, :focus) {
+    color: var(--linkTextHover);
 }
 /*icon : a+svg*/
 a.nav-item,

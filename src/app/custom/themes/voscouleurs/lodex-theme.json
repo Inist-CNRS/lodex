@@ -15,7 +15,7 @@
             "palette": "defaultTheme.js"
         },
         "variables": {
-            "information": "toutes les configurations ci-dessous sont optionnelles.Pour les désactiver, supprimer \"le texte entre les guillemets\"",
+            "information": "Par défaut, les couleurs sont celles du navigateurs.Toutes les configurations ci-dessous sont optionnelles. Pour les désactiver, supprimer \"le texte entre les guillemets\"",
             "siteTitle": "titre du site",
             "summary": "promesse du site, sous-titre",
             "logo": {
@@ -43,13 +43,15 @@
                 "bgBody": "",
                 "bgContrast": "",
                 "bgHeader": "",
+                "bgHeaderUrl": "",
                 "titleHeader": "",
                 "bgContent": "",
                 "bgFacet": "",
                 "titles": "",
                 "titleGraph": "",
-                "text": "",
-                "info-bouton": "ci-dessous, les couleurs des liens et boutons",
+                "info-bouton": "couleurs des liens, icons et boutons",
+                "linkText": "",
+                "linkTextHover": "",
                 "icon": "",
                 "iconHover": "",
                 "button": "",
