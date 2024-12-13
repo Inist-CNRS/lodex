@@ -45,6 +45,8 @@ services:
 
     mongo:
         image: mongo:4.4.24-focal
+        logging:
+            driver: none
         command: --quiet
         ports:
             - "27017:27017"
