@@ -219,6 +219,10 @@ div[class*='ButtonPrimary']
 }
 
 /* Bouton Secondaire lodex - MODAL */
+
+/*page search 'voir plus de résultats*/
+/*MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeMedium MuiButton-textSizeMedium MuiButton-fullWidth MuiButtonBase-root  css-1y2dusp-MuiButtonBase-root-MuiButton-root*/
+button.css-1y2dusp-MuiButtonBase-root-MuiButton-root,
 div[class*='ButtonSecondary']
     div[class*='property_value']
     :is(button, a):not([class*='HomeSidebar']) {
@@ -228,6 +232,7 @@ div[class*='ButtonSecondary']
     box-shadow: none !important;
     text-decoration: none;
 }
+button.css-1y2dusp-MuiButtonBase-root-MuiButton-root:is(:hover, :focus),
 div[class*='ButtonSecondary']
     div[class*='property_value']
     :is(button, a):is(:hover, :focus):not([class*='HomeSidebar']) {
@@ -235,6 +240,7 @@ div[class*='ButtonSecondary']
     color: var(--contrast-main) !important;
     border: 1px solid transparent !important;
 }
+button.css-1y2dusp-MuiButtonBase-root-MuiButton-root:is(:active),
 div[class*='ButtonSecondary']
     div[class*='property_value']
     :is(button, a):is(:active):not([class*='HomeSidebar']) {
@@ -247,7 +253,7 @@ div[class*='ButtonSecondary']
 button[class*='css-m9dicq'] {
     margin: 0 0.5rem;
 }
-buttonbutton:is([class*='css-w9y1zr'], [class*='css-m9dicq']),
+button:is([class*='css-w9y1zr'], [class*='css-m9dicq'], [class*='css-z37ji6']),
 div[class*='ButtonShadow']
     div[class*='property_value']
     :is(button, a):not([class*='HomeSidebar']) {

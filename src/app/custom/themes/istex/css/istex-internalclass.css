@@ -196,89 +196,105 @@ div[class*='HomeCompteur'] div.content {
 /*   Home bottom   */
 /*    bannieres    */
 /*******************/
+.dataset-characteristics div.property[class*='Banniere'] {
+    position: relative;
+    width: 100% !important;
+}
+/*si elle est en fin de homepage*/
+.dataset-characteristics div.property[class*='Banniere']:last-child {
+    margin: 0 0 !important;
+}
+/*si elle vient après homecontentsidebar*/
+.dataset-characteristics
+    > div
+    > div.property[class*='HomeContentSidebar']
+    + div
+    + div.property[class*='Banniere'] {
+    margin-top: -1.5rem !important;
+}
+div.property[class*='Banniere'] > .property_value_container div.MuiBox-root {
+    padding: 0 0 !important;
+}
+div.property[class*='Banniere']
+    > .property_value_container
+    > div.MuiBox-root
+    > div
+    > div {
+    flex-direction: column !important;
+    height: 25rem;
+    padding: 3rem;
+}
+div[class*='Banniere'] div.MuiBox-root > div * {
+    margin: 0 auto;
+    color: var(--secondary-contrast-text);
+}
 
 /*******************/
 /* BanniereSimple  */
 /* img full screen */
 /*******************/
-div[class*='designHomeBanniereSimple'] {
-    width: 100vw !important;
+div[class*='BanniereSimple'] {
     background-image: var(--banniereSimpleUrl);
     background-position: center 27%;
     background-size: cover;
     background-repeat: no-repeat;
-    margin: 0 0 !important;
 }
-div[class*='designHomeBanniereSimple'] div.MuiBox-root {
-    margin: 0 0 !important;
+div[class*='BanniereSimple'] div.MuiBox-root {
+    max-width: var(--maxWidth);
+    margin: 0 auto !important;
     padding: 0 0 !important;
 }
-div[class*='designHomeBanniereSimple'] div.MuiBox-root > div {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    margin: 0 auto 1rem;
+div[class*='BanniereSimple'] div.MuiBox-root > div * {
+    text-shadow: 0px 0px 2px rgba(0, 0, 0, 0.5);
 }
-div[class*='designHomeBanniereSimple'] > .property_value_container {
-    width: 100%;
-    height: 25rem;
-    max-width: var(--maxWidth);
-    margin: 0 auto;
+div.property[class*='Banniere']
+    > .property_value_container
+    > div.MuiBox-root
+    > div
+    > div {
+    justify-content: space-around;
 }
-div[class*='designHomeBanniereSimple'] .property {
-    margin: 0 0 !important;
-}
-div[class*='designHomeBanniereSimple'] * {
-    color: var(--secondary-contrast-text) !important;
-    margin: 0;
-}
-div[class*='designHomeBanniereSimple'] h2 {
+#content div[class*='BanniereSimple'] h2 {
     color: var(--info-main) !important;
     margin-bottom: 0 !important;
+    text-align: center !important;
+    text-shadow: 0px 0px 1px rgba(256, 256, 256, 1);
 }
-/* a est un bouton secondaire*/
+/* a est un bouton primaire*/
 
 /*******************/
 /* BanniereDouble  */
 /*   img + texte   */
 /*******************/
-div.property[class*='designHomeBanniereDoubleImageTexte'] {
+div.property[class*='BanniereDouble'] {
     background-color: var(--primary-main);
-    margin-top: -1.5rem;
-    width: 100%;
     background-image: var(--banniereDoubleUrl);
     background-size: 50%;
     background-position: left;
     background-repeat: no-repeat;
 }
-div.property[class*='designHomeBanniereDoubleImageTexte']
-    div:is(.property_value_container, .property, .MuiBox-root) {
-    margin: 0 auto !important;
-    padding: 0 0 !important;
-}
-div.property[class*='designHomeBanniereDoubleImageTexte']
+div.property[class*='BanniereDouble']
     > .property_value_container
     > div.MuiBox-root
     > div
-    > div.property_value {
-    float: right;
+    > div {
     max-width: 600px !important;
     width: 50%;
-    padding: 4rem;
-    color: var(--contrast-light) !important;
+    margin: 0 0 0 auto;
+    background-color: var(--primary-main);
+    justify-content: flex-start;
 }
-div.property[class*='designHomeBanniereDoubleImageTexte'] .property_value h2 {
+div.property[class*='BanniereDouble'] .property_value h2 {
     color: var(--contrast-light) !important;
+    margin-bottom: 2rem !important;
 }
 /**************/
 /* triptyque */
 /**************/
-#content
-    #home-page
-    .dataset-characteristics
-    div.property[class*='designHomeTryptique']
-    div {
+div.property[class*='Tryptique'] {
+    transform: translateY(-5.5rem);
+}
+div.property[class*='Tryptique'] div.MuiBox-root {
     margin: 0 0;
     padding: 0 0;
 }
@@ -290,24 +306,22 @@ div.property[class*='designHomeBanniereDoubleImageTexte'] .property_value h2 {
     > div.MuiBox-root
     > div
     > div {
-    position: relative;
     z-index: 1000;
-    top: -10rem;
     display: flex;
     justify-content: center;
     align-items: flex-start;
-    width: 1200px;
+    max-width: var(--maxWidth);
 }
 div.property[class*='designHomeTryptique'] .property[class*='compose'] {
     width: 33.3%;
     max-width: 400px;
-    height: auto;
     color: var(--contrast-light);
-    height: 250px;
+    height: 300px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    padding: 24px;
 }
 div.property[class*='designHomeTryptique'] .property[class*='Triptyque1'] {
     background-color: var(--primary-main);
@@ -404,7 +418,6 @@ div[class*='Exergue'] {
     box-shadow: 0px 0px 20px var(--neutral-main);
     padding: 3rem 3rem;
     margin: 2rem 0;
-
 }
 div[class*='Exergue'] p {
     margin: 0 auto 1.5rem;
