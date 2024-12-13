@@ -1,12 +1,12 @@
 # theme Voscouleurs
 
-**theme personnalisable dans la configuration de votre site**
+**theme personnalisable dans la configuration de votre lodex**
 
 ## variables
 
 ajouter dans votre lodex/admin/.../configuration ->  
 zone de saisie de la configuration  
--> dans "theme": { }
+-> dans `"theme": {... }`
 
     "information": "toutes les configurations ci-dessous sont optionnelles.Pour les désactiver, supprimer \"le texte entre les guillemets\"",
     "host": "/",
@@ -50,5 +50,3 @@ zone de saisie de la configuration
         "buttonHover": "",
         "TextContrast": "couleur contraste pour texte des boutons"
     }
-
-}
