@@ -6,7 +6,7 @@ import FormSourceCodeField from '../../lib/components/FormSourceCodeField';
 import EnrichmentLogsDialogComponent from './EnrichmentLogsDialog';
 import translate from 'redux-polyglot/translate';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
-import PropTypes from 'prop-types';
+import PropTypes, { func } from 'prop-types';
 import SubressourceFieldAutoComplete from '../subresource/SubressourceFieldAutoComplete';
 
 import { launchEnrichment, loadEnrichments } from '.';
@@ -364,7 +364,8 @@ export const EnrichmentForm = ({
     }, []);
 
     useEffect(() => {
-        handleSourcePreview(formValues);
+        const timeout = setTimeout(() => handleSourcePreview(formValues), 500);
+        return () => clearTimeout(timeout);
     }, [formValues?.rule, formValues?.sourceColumn, formValues?.subPath]);
 
     return (
