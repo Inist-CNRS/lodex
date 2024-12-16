@@ -16,8 +16,6 @@ services:
             BABEL_DISABLE_CACHE: 1
             REDIS_URL: 'redis://localhost:6379'
             WORKERS_URL: 'http://localhost:31976'
-        volumes:
-            - ./upload:/app/upload
         links:
             - mongo
         ports:
