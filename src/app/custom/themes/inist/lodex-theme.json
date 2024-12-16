@@ -15,7 +15,8 @@
             "palette": "inistTheme.js"
         },
         "variables": {
-            "siteTitle": "Titre a modifier/supprimer dans la config du theme"
+            "siteTitle": "Titre a modifier/supprimer dans la config du theme",
+            "matomoID": "39"
         }
     }
 }
