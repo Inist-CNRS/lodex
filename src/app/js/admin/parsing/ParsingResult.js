@@ -321,6 +321,7 @@ export const ParsingResultComponent = (props) => {
         }
         const { columnField, operatorValue, value } = filterModel.items[0];
         setFilter({ columnField, operatorValue, value });
+        setSkip(0);
     };
 
     const handleCellClick = (params) => {

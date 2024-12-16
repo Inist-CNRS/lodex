@@ -181,6 +181,37 @@ describe('Dataset Publication', () => {
                 ['"2"', '"Alain"', '"Chabat"', 'true'].join(''),
             );
         });
+
+        it('should return to first page when filtering rows', () => {
+            menu.openAdvancedDrawer();
+            menu.goToAdminDashboard();
+            cy.wait(300);
+            datasetImportPage.importDataset(
+                'dataset/twoPagesForFilterTests.json',
+            );
+
+            cy.get('[data-testid="KeyboardArrowRightIcon"]').click();
+
+            cy.get(
+                '[role=columnheader][data-field=firstName] [aria-label=Menu]',
+                {
+                    timeout: 500,
+                },
+            ).click({ force: true });
+
+            cy.wait(100);
+            cy.get('[role=menu] :nth-child(4)').click({ force: true });
+            cy.focused().type('Helga');
+
+            cy.get('.MuiTablePagination-displayedRows', {
+                timeout: 3000,
+            }).contains('1–1 of 1');
+
+            cy.get('[data-rowindex=0]', { timeout: 3000 }).should(
+                'contains.text',
+                ['"2"', '"Helga"', '"Rowe"'].join(''),
+            );
+        });
     });
 
     describe('Transformers upsert', () => {
@@ -191,9 +222,7 @@ describe('Dataset Publication', () => {
             datasetImportPage.importModel('model/simple.json');
 
             adminNavigation.goToDisplay();
-            cy.get('.sidebar')
-                .contains('Main resource')
-                .click();
+            cy.get('.sidebar').contains('Main resource').click();
 
             cy.contains('New field').click();
             cy.get('.wizard', { timeout: 10000 }).should('be.visible');
@@ -224,9 +253,7 @@ describe('Dataset Publication', () => {
             datasetImportPage.importModel('model/simple.json');
 
             adminNavigation.goToDisplay();
-            cy.get('.sidebar')
-                .contains('Main resource')
-                .click();
+            cy.get('.sidebar').contains('Main resource').click();
 
             cy.contains('New field').click();
             cy.get('.wizard', { timeout: 10000 }).should('be.visible');
@@ -250,15 +277,11 @@ describe('Dataset Publication', () => {
 
             cy.contains('Existing Column(s)').click();
             cy.get('[data-testid="source-value-from-columns"]').click();
-            cy.get('[role="listbox"]')
-                .contains('Column 1')
-                .click();
+            cy.get('[role="listbox"]').contains('Column 1').click();
             cy.contains('UPPERCASE').should('be.visible');
 
             cy.get('[data-testid="source-value-from-columns"]').click();
-            cy.get('[role="listbox"]')
-                .contains('Column 2')
-                .click();
+            cy.get('[role="listbox"]').contains('Column 2').click();
             cy.contains('UPPERCASE').should('be.visible');
 
             cy.get('.btn-save').click();
@@ -272,9 +295,7 @@ describe('Dataset Publication', () => {
             datasetImportPage.importModel('model/simple.json');
 
             adminNavigation.goToDisplay();
-            cy.get('.sidebar')
-                .contains('Main resource')
-                .click();
+            cy.get('.sidebar').contains('Main resource').click();
 
             cy.contains('New field').click();
             cy.get('.wizard', { timeout: 10000 }).should('be.visible');
@@ -325,9 +346,7 @@ describe('Dataset Publication', () => {
             menu.goToAdminDashboard();
             datasetImportPage.importDataset('dataset/simple.csv');
             adminNavigation.goToDisplay();
-            cy.get('.sidebar')
-                .contains('Main resource')
-                .click();
+            cy.get('.sidebar').contains('Main resource').click();
 
             datasetImportPage.addColumn('Column 1');
             cy.get('.btn-publish button', { timeout: 300 }).should(
@@ -341,9 +360,7 @@ describe('Dataset Publication', () => {
             datasetImportPage.importDataset('dataset/simple.csv');
             adminNavigation.goToDisplay();
 
-            cy.get('.sidebar')
-                .contains('Main resource')
-                .click();
+            cy.get('.sidebar').contains('Main resource').click();
 
             datasetImportPage.addColumn('Column 1');
 
@@ -367,9 +384,7 @@ describe('Dataset Publication', () => {
             datasetImportPage.importModel('model/concat.json');
 
             adminNavigation.goToDisplay();
-            cy.get('.sidebar')
-                .contains('Main resource')
-                .click();
+            cy.get('.sidebar').contains('Main resource').click();
 
             cy.contains('button', 'Published data').click();
 
@@ -471,11 +486,9 @@ describe('Dataset Publication', () => {
             datasetImportPage.publish();
             adminNavigation.goToResourcePage();
             cy.wait(2000);
-            cy.get('[aria-label="Title"]', { timeout: 3000 })
-                .eq(0)
-                .click({
-                    force: true,
-                });
+            cy.get('[aria-label="Title"]', { timeout: 3000 }).eq(0).click({
+                force: true,
+            });
             cy.get('.btn-save').click();
 
             cy.get('[aria-label="job-progress"]', { timeout: 3000 }).should(
@@ -492,11 +505,9 @@ describe('Dataset Publication', () => {
             datasetImportPage.publish();
             adminNavigation.goToResourcePage();
             cy.wait(2000);
-            cy.get('[aria-label="Title"]', { timeout: 3000 })
-                .eq(0)
-                .click({
-                    force: true,
-                });
+            cy.get('[aria-label="Title"]', { timeout: 3000 }).eq(0).click({
+                force: true,
+            });
             cy.contains('Remove').click({ force: true });
             cy.contains('Accept').click({ force: true });
 
