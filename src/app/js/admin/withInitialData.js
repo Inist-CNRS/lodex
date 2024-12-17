@@ -15,7 +15,6 @@ import {
     fromParsing,
     fromPublication,
     fromSubresources,
-    fromEnrichments,
     fromPrecomputed,
     fromConfigTenant,
 } from './selectors';
@@ -68,7 +67,6 @@ export default (BaseComponent) => {
             fromParsing.isParsingLoading(state) ||
             fromPublication.isPublicationLoading(state) ||
             fromSubresources.isLoading(state) ||
-            fromEnrichments.isLoading(state) ||
             fromPrecomputed.isLoading(state) ||
             fromConfigTenant.isLoading(state),
     });

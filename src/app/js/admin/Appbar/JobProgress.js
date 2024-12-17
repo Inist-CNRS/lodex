@@ -356,9 +356,9 @@ const mapDispatchToProps = {
     handlePublishError: (error) => publishError(error),
     handleCancelPublication: () => publicationCleared(),
     loadParsingResult,
-    handleRepublish: async () => {
-        await clearPublished();
-        await publish();
+    handleRepublish: () => {
+        clearPublished();
+        publish();
     },
     finishProgress,
     loadEnrichments,
