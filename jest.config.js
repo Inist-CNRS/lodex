@@ -56,7 +56,6 @@ module.exports = {
                 '/lodex/src/reducers/',
             ],
             coverageReporters: ['lcov', 'text-summary'],
-            preset: '@shelf/jest-mongodb',
             transformIgnorePatterns: [
                 '<rootDir>/node_modules/',
                 '/node_modules/(?!quick-lru)',
