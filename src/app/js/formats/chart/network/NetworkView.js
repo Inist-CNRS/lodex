@@ -21,8 +21,7 @@ const simulationOptions = {
     strength: {
         charge: ({ radius }) => -radius * 100,
     },
-    width: '1000px',
-    height: '1000px',
+    width: '100%',
 };
 
 const labelOffset = {
