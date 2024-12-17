@@ -6,7 +6,7 @@ import FormSourceCodeField from '../../lib/components/FormSourceCodeField';
 import EnrichmentLogsDialogComponent from './EnrichmentLogsDialog';
 import translate from 'redux-polyglot/translate';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
-import PropTypes, { func } from 'prop-types';
+import PropTypes from 'prop-types';
 import SubressourceFieldAutoComplete from '../subresource/SubressourceFieldAutoComplete';
 
 import { launchEnrichment, loadEnrichments } from '.';
