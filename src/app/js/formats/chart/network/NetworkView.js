@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { polyglot as polyglotPropTypes } from '../../../propTypes';
 import {
@@ -10,18 +10,18 @@ import {
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import get from 'lodash/get';
-import isEqual from 'lodash/isEqual';
 import { scaleLinear } from 'd3-scale';
 
 import injectData from '../../injectData';
-import MouseIcon from '../../utils/components/MouseIcon';
 import FormatFullScreenMode from '../../utils/components/FormatFullScreenMode';
+import MouseIcon from '../../utils/components/MouseIcon';
 
 const simulationOptions = {
     animate: true,
     strength: {
         charge: ({ radius }) => -radius * 100,
     },
+    width: '100%',
 };
 
 const labelOffset = {
@@ -38,65 +38,54 @@ const styles = {
 
 const zoomOptions = { minScale: 0.25, maxScale: 16 };
 
-class Network extends Component {
-    mouseIcon = '';
-    createSimulation = (options) => {
-        // extends react-vis-force createSimulation to get a reference on the simulation
-        this.simulation = createSimulation(options);
-
-        return this.simulation;
-    };
-
-    componentDidUpdate(prevProps) {
-        if (isEqual(prevProps, this.props)) {
+const Network = ({ nodes, links, colorSet, p }) => {
+    const [simulation, setSimulation] = useState();
+    useEffect(() => {
+        if (!simulation) {
             return;
         }
 
-        this.simulation.alpha(1).restart(); // reset simulation alpha and restart it to fix animation on node change
-    }
+        simulation.alpha(1).restart();
+    }, [simulation, nodes]);
 
-    UNSAFE_componentWillUpdate() {
-        // if the tooltip content is available before componentDidMount, the content prints weirdly in a corner of the page
-        this.mouseIcon = <MouseIcon polyglot={this.props.p} />;
-    }
+    return (
+        <FormatFullScreenMode>
+            <div style={styles.container}>
+                <InteractiveForceGraph
+                    simulationOptions={simulationOptions}
+                    zoom
+                    showLabels
+                    zoomOptions={zoomOptions}
+                    labelAttr="label"
+                    labelOffset={labelOffset}
+                    highlightDependencies
+                    createSimulation={(options) => {
+                        const sim = createSimulation(options);
+                        setSimulation(sim);
 
-    render() {
-        const { nodes, links, colorSet } = this.props;
+                        return sim;
+                    }}
+                >
+                    {nodes.map((node) => (
+                        <ForceGraphNode
+                            key={node.id}
+                            node={node}
+                            fill={colorSet[0]}
+                        />
+                    ))}
+                    {links.map((link, index) => (
+                        <ForceGraphLink
+                            key={`${link.source}_${link.target}_${index}`}
+                            link={link}
+                        />
+                    ))}
+                </InteractiveForceGraph>
 
-        return (
-            <FormatFullScreenMode>
-                <div style={styles.container}>
-                    <InteractiveForceGraph
-                        simulationOptions={simulationOptions}
-                        zoom
-                        showLabels
-                        zoomOptions={zoomOptions}
-                        labelAttr="label"
-                        labelOffset={labelOffset}
-                        highlightDependencies
-                        createSimulation={this.createSimulation}
-                    >
-                        {nodes.map((node) => (
-                            <ForceGraphNode
-                                key={node.id}
-                                node={node}
-                                fill={colorSet[0]}
-                            />
-                        ))}
-                        {links.map((link, index) => (
-                            <ForceGraphLink
-                                key={`${link.source}_${link.target}_${index}`}
-                                link={link}
-                            />
-                        ))}
-                    </InteractiveForceGraph>
-
-                    <div>{this.mouseIcon}</div>
-                </div>
-            </FormatFullScreenMode>
-        );
-    }
-}
+                <div>{<MouseIcon polyglot={p} />}</div>
+            </div>
+        </FormatFullScreenMode>
+    );
+};
 
 Network.propTypes = {
     colorSet: PropTypes.arrayOf(PropTypes.string),
