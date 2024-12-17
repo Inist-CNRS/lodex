@@ -43,15 +43,14 @@ const onPageChange =
             filter,
         });
 
-const onFilterChange =
-    (changeFacetValue, name, currentPage, perPage) => (e) => {
-        changeFacetValue({
-            name,
-            currentPage,
-            perPage,
-            filter: e.target.value,
-        });
-    };
+const onFilterChange = (changeFacetValue, name, perPage) => (e) => {
+    changeFacetValue({
+        name,
+        currentPage: 0,
+        perPage,
+        filter: e.target.value,
+    });
+};
 
 const onInvertChange = (invertFacet, name) => (_, inverted) =>
     invertFacet({ name, inverted });
@@ -95,12 +94,7 @@ export const FacetValueList = ({
                 placeholder={polyglot.t('filter_value', { field: label })}
                 value={filter}
                 fullWidth
-                onChange={onFilterChange(
-                    changeFacetValue,
-                    name,
-                    currentPage,
-                    perPage,
-                )}
+                onChange={onFilterChange(changeFacetValue, name, perPage)}
                 variant="standard"
             />
             <div>
