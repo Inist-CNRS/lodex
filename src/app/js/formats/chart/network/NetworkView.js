@@ -5,6 +5,7 @@ import {
     ForceGraphNode,
     ForceGraphLink,
     createSimulation,
+    updateSimulation,
 } from 'react-vis-force';
 import compose from 'recompose/compose';
 import get from 'lodash/get';
@@ -20,7 +21,8 @@ const simulationOptions = {
     strength: {
         charge: ({ radius }) => -radius * 100,
     },
-    width: '100%',
+    width: '1000px',
+    height: '1000px',
 };
 
 const labelOffset = {
@@ -119,6 +121,12 @@ const Network = ({ formatData, p, colorSet }) => {
                     highlightDependencies
                     createSimulation={(options) => {
                         const sim = createSimulation(options);
+                        setSimulation(sim);
+
+                        return sim;
+                    }}
+                    updateSimulation={(options, data) => {
+                        const sim = updateSimulation(options, data);
                         setSimulation(sim);
 
                         return sim;
