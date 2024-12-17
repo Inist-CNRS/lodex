@@ -52,25 +52,25 @@ export const withInitialDataHoc = (BaseComponent) =>
         }
     };
 
+export const mapStateToProps = (state) => ({
+    isLoading:
+        fromParsing.isParsingLoading(state) ||
+        fromPublication.isPublicationLoading(state) ||
+        fromSubresources.isLoading(state) ||
+        fromPrecomputed.isLoading(state) ||
+        fromConfigTenant.isLoading(state),
+});
+
+const mapDispatchToProps = {
+    loadParsingResult: loadParsingResultAction,
+    loadPublication: loadPublicationAction,
+    loadSubresources: loadSubresourcesAction,
+    loadEnrichments: loadEnrichmentsAction,
+    loadPrecomputed: loadPrecomputedAction,
+    loadConfigTenant: loadConfigTenantAction,
+};
+
 export default (BaseComponent) => {
-    const mapDispatchToProps = {
-        loadParsingResult: loadParsingResultAction,
-        loadPublication: loadPublicationAction,
-        loadSubresources: loadSubresourcesAction,
-        loadEnrichments: loadEnrichmentsAction,
-        loadPrecomputed: loadPrecomputedAction,
-        loadConfigTenant: loadConfigTenantAction,
-    };
-
-    const mapStateToProps = (state) => ({
-        isLoading:
-            fromParsing.isParsingLoading(state) ||
-            fromPublication.isPublicationLoading(state) ||
-            fromSubresources.isLoading(state) ||
-            fromPrecomputed.isLoading(state) ||
-            fromConfigTenant.isLoading(state),
-    });
-
     return compose(
         connect(mapStateToProps, mapDispatchToProps),
         translate,
