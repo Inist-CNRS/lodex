@@ -522,7 +522,10 @@ export const EnrichmentForm = ({
                             id={initialValues._id}
                             polyglot={polyglot}
                             onDeleteStart={() => setIsLoading(true)}
-                            onDeleteEnd={() => setIsLoading(false)}
+                            onDeleteEnd={() => {
+                                setIsLoading(false);
+                            }}
+                            history={history}
                         />
                     )}
                     <Box>
