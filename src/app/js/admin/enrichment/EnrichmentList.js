@@ -5,6 +5,7 @@ import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
 import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
+import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 
 import { connect } from 'react-redux';
 import { Box, Button, Tooltip } from '@mui/material';
@@ -22,6 +23,59 @@ import { renderRunButton, renderStatus } from './EnrichmentForm';
 import { FINISHED, IN_PROGRESS } from '../../../../common/taskStatus';
 import { launchEnrichment } from '.';
 import { toast } from '../../../../common/tools/toast';
+
+const CustomToolbar = ({ polyglot, enrichments, handleLaunchPrecomputed }) => {
+    return (
+        <GridToolbarContainer>
+            <Tooltip title={polyglot.t(`column_tooltip`)}>
+                <GridToolbarColumnsButton />
+            </Tooltip>
+            <GridToolbarFilterButton />
+            <Tooltip title={polyglot.t(`density_tooltip`)}>
+                <GridToolbarDensitySelector />
+            </Tooltip>
+            <Tooltip title={polyglot.t(`add_more_enrichment`)}>
+                <Button
+                    component={Link}
+                    to="/data/enrichment/add"
+                    startIcon={<AddBoxIcon />}
+                    size="small"
+                    sx={{
+                        '&.MuiButtonBase-root:hover': {
+                            color: 'primary.main',
+                        },
+                    }}
+                >
+                    {polyglot.t('add_more')}
+                </Button>
+            </Tooltip>
+            <Tooltip title={polyglot.t(`run_all`)}>
+                <Button
+                    startIcon={<PlayArrowIcon />}
+                    size="small"
+                    sx={{
+                        '&.MuiButtonBase-root:hover': {
+                            color: 'primary.main',
+                        },
+                    }}
+                    onClick={(event) => {
+                        enrichments.forEach((enrichment) => {
+                            handleLaunchPrecomputed(enrichment)(event);
+                        });
+                    }}
+                >
+                    {polyglot.t('run_all')}
+                </Button>
+            </Tooltip>
+        </GridToolbarContainer>
+    );
+};
+
+CustomToolbar.propTypes = {
+    polyglot: polyglotPropTypes.isRequired,
+    enrichments: PropTypes.array.isRequired,
+    handleLaunchPrecomputed: PropTypes.func,
+};
 
 export const EnrichmentList = ({
     enrichments,
@@ -47,35 +101,6 @@ export const EnrichmentList = ({
             id: params._id,
             action: params.status === FINISHED ? 'relaunch' : 'launch',
         });
-    };
-
-    const CustomToolbar = () => {
-        return (
-            <GridToolbarContainer>
-                <Tooltip title={polyglot.t(`column_tooltip`)}>
-                    <GridToolbarColumnsButton />
-                </Tooltip>
-                <GridToolbarFilterButton />
-                <Tooltip title={polyglot.t(`density_tooltip`)}>
-                    <GridToolbarDensitySelector />
-                </Tooltip>
-                <Tooltip title={polyglot.t(`add_more_enrichment`)}>
-                    <Button
-                        component={Link}
-                        to="/data/enrichment/add"
-                        startIcon={<AddBoxIcon />}
-                        size="small"
-                        sx={{
-                            '&.MuiButtonBase-root:hover': {
-                                color: 'primary.main',
-                            },
-                        }}
-                    >
-                        {polyglot.t('add_more')}
-                    </Button>
-                </Tooltip>
-            </GridToolbarContainer>
-        );
     };
 
     return (
@@ -138,7 +163,13 @@ export const EnrichmentList = ({
                 width="100%"
                 onRowClick={handleRowClick}
                 components={{
-                    Toolbar: CustomToolbar,
+                    Toolbar: () => (
+                        <CustomToolbar
+                            polyglot={polyglot}
+                            handleLaunchPrecomputed={handleLaunchPrecomputed}
+                            enrichments={enrichments}
+                        />
+                    ),
                 }}
                 sx={{
                     '& .MuiDataGrid-cell:hover': {
