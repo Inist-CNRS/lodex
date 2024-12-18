@@ -113,7 +113,7 @@ export const getEnrichmentDataPreview = async (ctx) => {
     } catch (error) {
         const logger = getLogger(ctx.tenant);
         logger.error(`Error while processing enrichment preview`, error);
-        return [`Execution Error: ${error?.sourceError?.message}` ];
+        return [`Execution Error: ${error?.sourceError?.message}`];
     }
     return result;
 };

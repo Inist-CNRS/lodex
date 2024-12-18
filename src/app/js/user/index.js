@@ -126,6 +126,12 @@ export const getEnrichmentActionRequest = (state, { action, id }) =>
         method: 'POST',
     });
 
+export const getEnrichmentLaunchAllRequest = (state) =>
+    getRequest(state, {
+        url: `/api/enrichment/launchAll`,
+        method: 'POST',
+    });
+
 export const getCreateSubresourceRequest = (state, body) =>
     getRequest(state, {
         url: '/api/subresource',
@@ -702,6 +708,7 @@ export const selectors = {
     getUpdateEnrichmentRequest,
     getDeleteEnrichmentRequest,
     getEnrichmentActionRequest,
+    getEnrichmentLaunchAllRequest,
     getLoadPrecomputedRequest,
     getCreatePrecomputedRequest,
     getUpdatePrecomputedRequest,
