@@ -364,7 +364,8 @@ export const EnrichmentForm = ({
     }, []);
 
     useEffect(() => {
-        handleSourcePreview(formValues);
+        const timeout = setTimeout(() => handleSourcePreview(formValues), 500);
+        return () => clearTimeout(timeout);
     }, [formValues?.rule, formValues?.sourceColumn, formValues?.subPath]);
 
     return (
