@@ -57,5 +57,40 @@
     window.ISTEX_API_URL = '<%= lodex.istexApi %>';
 </script>
 <script src="<%= lodex.base.href %>/index.js"></script>
+<!-- Piwik -->
+        <script>
+            var _paq = _paq || [];
+            _paq.push([
+                function () {
+                    var self = this;
+                    function getOriginalVisitorCookieTimeout() {
+                        var now = new Date(),
+                            nowTs = Math.round(now.getTime() / 1000),
+                            visitorInfo = self.getVisitorInfo();
+                        var createTs = parseInt(visitorInfo[2]);
+                        var cookieTimeout = 33696000;
+                        var originalTimeout = createTs + cookieTimeout - nowTs;
+                        return originalTimeout;
+                    }
+                    this.setVisitorCookieTimeout(getOriginalVisitorCookieTimeout());
+                }
+            ]);
+            _paq.push(["trackPageView"]);
+            _paq.push(["enableLinkTracking"]);
+            (function () {
+                var u = "https://piwik2.inist.fr/";
+                _paq.push(["setTrackerUrl", u + "piwik.php"]);
+                _paq.push(["setSiteId", "<%= custom.matomoID %>"]);
+                var d = document,
+                    g = d.createElement("script"),
+                    s = d.getElementsByTagName("script")[0];
+                g.type = "text/javascript";
+                g.async = true;
+                g.defer = true;
+                g.src = u + "piwik.js";
+                s.parentNode.insertBefore(g, s);
+            })();
+        </script>
+    <!-- End Piwik Code -->
 </body>
 </html>
