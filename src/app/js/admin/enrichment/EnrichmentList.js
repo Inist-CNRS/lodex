@@ -24,7 +24,7 @@ import { FINISHED, IN_PROGRESS } from '../../../../common/taskStatus';
 import { launchAllEnrichment, launchEnrichment } from '.';
 import { toast } from '../../../../common/tools/toast';
 
-const CustomToolbar = ({ polyglot, onLaunchAllEnrichment }) => {
+const EnrichmentListToolBar = ({ polyglot, onLaunchAllEnrichment }) => {
     return (
         <GridToolbarContainer>
             <Tooltip title={polyglot.t(`column_tooltip`)}>
@@ -69,7 +69,7 @@ const CustomToolbar = ({ polyglot, onLaunchAllEnrichment }) => {
     );
 };
 
-CustomToolbar.propTypes = {
+EnrichmentListToolBar.propTypes = {
     polyglot: polyglotPropTypes.isRequired,
     onLaunchAllEnrichment: PropTypes.func,
 };
@@ -162,7 +162,7 @@ export const EnrichmentList = ({
                 onRowClick={handleRowClick}
                 components={{
                     Toolbar: () => (
-                        <CustomToolbar
+                        <EnrichmentListToolBar
                             polyglot={polyglot}
                             onLaunchAllEnrichment={onLaunchAllEnrichment}
                         />
