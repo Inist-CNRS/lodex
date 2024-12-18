@@ -165,6 +165,32 @@ export const enrichmentDataPreview = async (ctx) => {
     }
 };
 
+export const launchAll = async (ctx) => {
+    const enrichments = await ctx.enrichment.findAll();
+
+    for (const enrichment of enrichments) {
+        if (enrichment.status === 'FINISHED') {
+            await ctx.dataset.removeAttribute(enrichment.name);
+        }
+        await workerQueues[ctx.tenant]
+            .add(
+                ENRICHER, // Name of the job
+                {
+                    id: enrichment._id,
+                    jobType: ENRICHER,
+                    tenant: ctx.tenant,
+                },
+                { jobId: uuid() },
+            )
+            .then((job) => {
+                setEnrichmentJobId(ctx, enrichment._id, job);
+            });
+    }
+    ctx.body = {
+        status: 'pending',
+    };
+};
+
 const app = new Koa();
 
 app.use(setup);
@@ -172,6 +198,7 @@ app.use(setup);
 app.use(route.get('/', getAllEnrichments));
 app.use(route.get('/:id', getEnrichment));
 app.use(koaBodyParser());
+app.use(route.post('/launchAll', launchAll));
 app.use(route.post('/', postEnrichment));
 app.use(route.put('/:id', putEnrichment));
 app.use(route.delete('/:id', deleteEnrichment));

@@ -21,10 +21,10 @@ import { useHistory } from 'react-router';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { renderRunButton, renderStatus } from './EnrichmentForm';
 import { FINISHED, IN_PROGRESS } from '../../../../common/taskStatus';
-import { launchEnrichment } from '.';
+import { launchAllEnrichment, launchEnrichment } from '.';
 import { toast } from '../../../../common/tools/toast';
 
-const CustomToolbar = ({ polyglot, enrichments, handleLaunchPrecomputed }) => {
+const CustomToolbar = ({ polyglot, onLaunchAllEnrichment }) => {
     return (
         <GridToolbarContainer>
             <Tooltip title={polyglot.t(`column_tooltip`)}>
@@ -58,10 +58,8 @@ const CustomToolbar = ({ polyglot, enrichments, handleLaunchPrecomputed }) => {
                             color: 'primary.main',
                         },
                     }}
-                    onClick={(event) => {
-                        enrichments.forEach((enrichment) => {
-                            handleLaunchPrecomputed(enrichment)(event);
-                        });
+                    onClick={() => {
+                        onLaunchAllEnrichment();
                     }}
                 >
                     {polyglot.t('run_all')}
@@ -73,14 +71,14 @@ const CustomToolbar = ({ polyglot, enrichments, handleLaunchPrecomputed }) => {
 
 CustomToolbar.propTypes = {
     polyglot: polyglotPropTypes.isRequired,
-    enrichments: PropTypes.array.isRequired,
-    handleLaunchPrecomputed: PropTypes.func,
+    onLaunchAllEnrichment: PropTypes.func,
 };
 
 export const EnrichmentList = ({
     enrichments,
     p: polyglot,
     onLaunchEnrichment,
+    onLaunchAllEnrichment,
 }) => {
     const history = useHistory();
     const isEnrichingRunning = enrichments.some(
@@ -166,8 +164,7 @@ export const EnrichmentList = ({
                     Toolbar: () => (
                         <CustomToolbar
                             polyglot={polyglot}
-                            handleLaunchPrecomputed={handleLaunchPrecomputed}
-                            enrichments={enrichments}
+                            onLaunchAllEnrichment={onLaunchAllEnrichment}
                         />
                     ),
                 }}
@@ -185,6 +182,7 @@ EnrichmentList.propTypes = {
     enrichments: PropTypes.array.isRequired,
     p: polyglotPropTypes.isRequired,
     onLaunchEnrichment: PropTypes.func.isRequired,
+    onLaunchAllEnrichment: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -193,6 +191,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
     onLaunchEnrichment: launchEnrichment,
+    onLaunchAllEnrichment: launchAllEnrichment,
 };
 
 export default compose(
