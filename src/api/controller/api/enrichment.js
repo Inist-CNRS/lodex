@@ -165,7 +165,7 @@ export const enrichmentDataPreview = async (ctx) => {
     }
 };
 
-export const launchAll = async (ctx) => {
+export const launchAllEnrichment = async (ctx) => {
     const enrichments = await ctx.enrichment.findAll();
 
     for (const enrichment of enrichments) {
@@ -182,9 +182,7 @@ export const launchAll = async (ctx) => {
                 },
                 { jobId: uuid() },
             )
-            .then((job) => {
-                setEnrichmentJobId(ctx, enrichment._id, job);
-            });
+            .then((job) => setEnrichmentJobId(ctx, enrichment._id, job));
     }
     ctx.body = {
         status: 'pending',
@@ -198,7 +196,7 @@ app.use(setup);
 app.use(route.get('/', getAllEnrichments));
 app.use(route.get('/:id', getEnrichment));
 app.use(koaBodyParser());
-app.use(route.post('/launchAll', launchAll));
+app.use(route.post('/launchAll', launchAllEnrichment));
 app.use(route.post('/', postEnrichment));
 app.use(route.put('/:id', putEnrichment));
 app.use(route.delete('/:id', deleteEnrichment));

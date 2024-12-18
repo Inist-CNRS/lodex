@@ -1,9 +1,20 @@
-import { postEnrichment, putEnrichment, deleteEnrichment } from './enrichment';
+import {
+    postEnrichment,
+    putEnrichment,
+    deleteEnrichment,
+    launchAllEnrichment,
+} from './enrichment';
 import { getActiveJob, cancelJob } from '../../workers/tools';
 
 jest.mock('../../workers/tools', () => ({
     getActiveJob: jest.fn(),
     cancelJob: jest.fn(),
+}));
+
+jest.mock('../../workers', () => ({
+    workerQueues: {
+        test: { add: jest.fn(async () => ({ id: 'job-id' })) },
+    },
 }));
 
 describe('Enrichment controller', () => {
@@ -144,6 +155,98 @@ describe('Enrichment controller', () => {
 
             expect(ctx.status).toBe(403);
             expect(ctx.body).toEqual({ error: 'ERROR!' });
+        });
+    });
+
+    describe('launchAllEnrichment', () => {
+        it('should retrieve all enrichments and create a job for each of them setting their status to pending', async () => {
+            jest.mock('../../workers', () => ({
+                workerQueues: {
+                    test: { add: jest.fn(async () => ({ id: 'job-id' })) },
+                },
+            }));
+            const ctx = {
+                enrichment: {
+                    findAll: jest.fn(() => [
+                        {
+                            _id: 1,
+                            status: 'PENDING',
+                        },
+                        {
+                            _id: 2,
+                            status: 'PENDING',
+                        },
+                    ]),
+                    updateStatus: jest.fn(async () => {}),
+                },
+                dataset: {
+                    removeAttribute: jest.fn(async () => {}),
+                },
+                tenant: 'test',
+            };
+
+            await launchAllEnrichment(ctx);
+
+            expect(ctx.enrichment.findAll).toHaveBeenCalled();
+            expect(ctx.dataset.removeAttribute).not.toHaveBeenCalled();
+            expect(ctx.enrichment.updateStatus).toHaveBeenCalledTimes(2);
+            expect(ctx.enrichment.updateStatus).toHaveBeenCalledWith(
+                1,
+                'PENDING',
+                { jobId: 'job-id' },
+            );
+            expect(ctx.enrichment.updateStatus).toHaveBeenCalledWith(
+                2,
+                'PENDING',
+                { jobId: 'job-id' },
+            );
+        });
+        it('should remove enrichmentAttribute from dataset when its status is FINISHED', async () => {
+            jest.mock('../../workers', () => ({
+                workerQueues: {
+                    test: { add: jest.fn(async () => ({ id: 'job-id' })) },
+                },
+            }));
+
+            const ctx = {
+                enrichment: {
+                    findAll: jest.fn(() => [
+                        {
+                            _id: 1,
+                            name: 'pending-attribute',
+                            status: 'PENDING',
+                        },
+                        {
+                            _id: 2,
+                            name: 'finished-attribute',
+                            status: 'FINISHED',
+                        },
+                    ]),
+                    updateStatus: jest.fn(async () => {}),
+                },
+                dataset: {
+                    removeAttribute: jest.fn(async () => {}),
+                },
+                tenant: 'test',
+            };
+
+            await launchAllEnrichment(ctx);
+
+            expect(ctx.enrichment.findAll).toHaveBeenCalled();
+            expect(ctx.dataset.removeAttribute).toHaveBeenCalledTimes(1);
+            expect(ctx.dataset.removeAttribute).toHaveBeenCalledWith(
+                'finished-attribute',
+            );
+            expect(ctx.enrichment.updateStatus).toHaveBeenCalledWith(
+                1,
+                'PENDING',
+                { jobId: 'job-id' },
+            );
+            expect(ctx.enrichment.updateStatus).toHaveBeenCalledWith(
+                2,
+                'PENDING',
+                { jobId: 'job-id' },
+            );
         });
     });
 });
