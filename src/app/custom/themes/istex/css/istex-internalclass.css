@@ -254,7 +254,7 @@ div.property[class*='Banniere']
     > div {
     justify-content: space-around;
 }
-#content div[class*='BanniereSimple'] h2 {
+#content div[class*='BanniereSimple'] *:is(h2, h3) {
     color: var(--info-main) !important;
     margin-bottom: 0 !important;
     text-align: center !important;
@@ -284,7 +284,7 @@ div.property[class*='BanniereDouble']
     background-color: var(--primary-main);
     justify-content: flex-start;
 }
-div.property[class*='BanniereDouble'] .property_value h2 {
+div.property[class*='BanniereDouble'] .property_value *:is(h2, h3) {
     color: var(--contrast-light) !important;
     margin-bottom: 2rem !important;
 }
