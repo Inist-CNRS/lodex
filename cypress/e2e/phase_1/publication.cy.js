@@ -155,6 +155,30 @@ describe('Dataset Publication', () => {
                 ['"4"', '"Rob"', '"Zombie"', 'false'].join(''),
             );
         });
+
+        it('should filter with diacritics', () => {
+            menu.openAdvancedDrawer();
+            menu.goToAdminDashboard();
+            cy.wait(300);
+            datasetImportPage.importDataset(
+                'dataset/simpleForFilterTests.json',
+            );
+            cy.get(
+                '[role=columnheader][data-field=firstName] [aria-label=Menu]',
+                {
+                    timeout: 500,
+                },
+            ).click({ force: true });
+            cy.wait(100);
+            cy.get('[role=menu] :nth-child(4)').click({ force: true });
+            cy.focused().type('öbby');
+
+            cy.get('[data-rowindex=0]', { timeout: 3000 }).should(
+                'contains.text',
+                ['"1"', '"Bobby"', '"Womack"', 'true'].join(''),
+            );
+        });
+
         it('should filter by boolean', () => {
             menu.openAdvancedDrawer();
             menu.goToAdminDashboard();
