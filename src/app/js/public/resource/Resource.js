@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
@@ -70,6 +70,10 @@ export class ResourceComponent extends React.Component {
         this.props.preLoadExporters();
     }
 
+    _getArkResourceUrl(naan, rest) {
+        return `${naan}/${rest}`;
+    }
+
     componentDidUpdate(prevProps) {
         const { match } = this.props;
 
@@ -91,6 +95,15 @@ export class ResourceComponent extends React.Component {
             match.params.uri !== this.state.lastResourceUri
         ) {
             this.setState({ lastResourceUri: match.params.uri });
+        } else if (match.params && match.params.naan && match.params.rest) {
+            // Ark resources
+            const lastResourceUri = this._getArkResourceUrl(
+                match.params.naan,
+                match.params.rest,
+            );
+            if (lastResourceUri !== this.state.lastResourceUri) {
+                this.setState({ lastResourceUri: lastResourceUri });
+            }
         }
     }
 
@@ -146,9 +159,14 @@ export class ResourceComponent extends React.Component {
                 </div>
             );
         }
+        const lastResourceUri = match.params
+            ? match.params.naan && match.params.rest
+                ? this._getArkResourceUrl(match.params.naan, match.params.rest)
+                : match.params.uri
+            : null;
 
         const goBackButton = this.state.lastResourceUri &&
-            this.state.lastResourceUri !== match.params.uri && (
+            this.state.lastResourceUri !== lastResourceUri && (
                 <Button
                     variant="text"
                     onClick={history.goBack}

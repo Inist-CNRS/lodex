@@ -5,7 +5,8 @@ import Loading from '../../lib/components/Loading';
 import { ResourceComponent } from './Resource';
 import Detail from './Detail';
 import RemovedDetail from './RemovedDetail';
-import { render } from '../../../../test-utils';
+import { render, screen } from '../../../../test-utils';
+import { ThemeProvider, createTheme } from '@mui/material';
 
 describe('<Resource />', () => {
     const defaultProps = {
@@ -151,5 +152,97 @@ describe('<Resource />', () => {
         );
 
         expect(preLoadResource).toHaveBeenCalledTimes(2);
+    });
+
+    it('should show the go back main resource when going to subresource for uris', () => {
+        const preLoadResource = jest.fn();
+        const props = {
+            ...defaultProps,
+            match: { params: { uri: 'GIR65CJ' } },
+            preLoadResource,
+            loading: false,
+            resource: {
+                uri: 'resource',
+            },
+        };
+
+        const theme = createTheme({});
+        const TestResourceComponent = (props) => (
+            <ThemeProvider theme={theme}>
+                <ResourceComponent {...props} />
+            </ThemeProvider>
+        );
+
+        const { rerender } = render(<TestResourceComponent {...props} />);
+
+        // Setting last uri state requires a rerender
+        rerender(<TestResourceComponent {...props} />);
+
+        expect(
+            screen.queryAllByRole('button', {
+                name: 'back_to_resource',
+            }),
+        ).toHaveLength(0);
+
+        rerender(
+            <TestResourceComponent
+                {...props}
+                match={{
+                    params: { uri: '38ef9f42fc3de6a85d3c434522c4f510' },
+                }}
+            />,
+        );
+
+        expect(
+            screen.getByRole('button', {
+                name: 'back_to_resource',
+            }),
+        ).toBeInTheDocument();
+    });
+
+    it('should show the go back main resource when going to subressource for ark ids', () => {
+        const preLoadResource = jest.fn();
+        const props = {
+            ...defaultProps,
+            match: { params: { naan: 'naan', rest: 'rest' } },
+            preLoadResource,
+            loading: false,
+            resource: {
+                uri: 'resource',
+            },
+        };
+
+        const theme = createTheme({});
+        const TestResourceComponent = (props) => (
+            <ThemeProvider theme={theme}>
+                <ResourceComponent {...props} />
+            </ThemeProvider>
+        );
+
+        const { rerender } = render(<TestResourceComponent {...props} />);
+
+        // Setting last uri state requires a rerender
+        rerender(<TestResourceComponent {...props} />);
+
+        expect(
+            screen.queryAllByRole('button', {
+                name: 'back_to_resource',
+            }),
+        ).toHaveLength(0);
+
+        rerender(
+            <TestResourceComponent
+                {...props}
+                match={{
+                    params: { uri: '38ef9f42fc3de6a85d3c434522c4f510' },
+                }}
+            />,
+        );
+
+        expect(
+            screen.getByRole('button', {
+                name: 'back_to_resource',
+            }),
+        ).toBeInTheDocument();
     });
 });

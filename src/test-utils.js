@@ -1,5 +1,6 @@
 import React from 'react';
 import { render } from '@testing-library/react';
+import '@testing-library/jest-dom/extend-expect';
 import { createMemoryHistory } from 'history';
 import { ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
 import { Provider } from 'react-redux';
