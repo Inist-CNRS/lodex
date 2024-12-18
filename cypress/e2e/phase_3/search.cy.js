@@ -3,19 +3,18 @@ import * as menu from '../../support/menu';
 import * as datasetImportPage from '../../support/datasetImportPage';
 import * as searchDrawer from '../../support/searchDrawer';
 
-const initSearchDataset = (
-    dataset = 'dataset/book_summary.csv',
-    model = 'model/book_summary.json',
-) => () => {
-    teardown();
-    menu.openAdvancedDrawer();
-    menu.goToAdminDashboard();
+const initSearchDataset =
+    (dataset = 'dataset/book_summary.csv', model = 'model/book_summary.json') =>
+    () => {
+        teardown();
+        menu.openAdvancedDrawer();
+        menu.goToAdminDashboard();
 
-    datasetImportPage.importDataset(dataset);
-    datasetImportPage.importModel(model);
-    datasetImportPage.publish();
-    datasetImportPage.goToPublishedResources();
-};
+        datasetImportPage.importDataset(dataset);
+        datasetImportPage.importModel(model);
+        datasetImportPage.publish();
+        datasetImportPage.goToPublishedResources();
+    };
 
 describe('Search', () => {
     describe('Basics', () => {
@@ -24,7 +23,7 @@ describe('Search', () => {
         it('should have the right information in the search results', () => {
             menu.openSearchDrawer();
             searchDrawer.checkResultsCount(10);
-            searchDrawer.checkMoreResultsCount(10, 12);
+            searchDrawer.checkMoreResultsCount(10, 13);
         });
 
         it('should export the dataset', () => {
@@ -56,24 +55,24 @@ describe('Search', () => {
         it('should be able to load more search results several times', () => {
             menu.openSearchDrawer();
 
-            searchDrawer.checkStatsCount(12, 12);
+            searchDrawer.checkStatsCount(13, 13);
             searchDrawer.checkResultsCount(10);
-            searchDrawer.checkMoreResultsCount(10, 12);
+            searchDrawer.checkMoreResultsCount(10, 13);
 
             searchDrawer.loadMore(); // Call load more for the first time
 
-            searchDrawer.checkResultsCount(12);
+            searchDrawer.checkResultsCount(13);
             searchDrawer.checkMoreResultsNotExist();
 
             searchDrawer.search('bezoar');
             searchDrawer.clearSearch();
 
             searchDrawer.checkResultsCount(10);
-            searchDrawer.checkMoreResultsCount(10, 12);
+            searchDrawer.checkMoreResultsCount(10, 13);
 
             searchDrawer.loadMore(); // Call load more for the second time
 
-            searchDrawer.checkResultsCount(12);
+            searchDrawer.checkResultsCount(13);
             searchDrawer.checkMoreResultsNotExist();
         });
 
@@ -115,7 +114,7 @@ describe('Search', () => {
         it.skip('should sort result by pertinence', () => {
             menu.openSearchDrawer();
             searchDrawer.search('medicine');
-            searchDrawer.checkStatsCount(2, 12);
+            searchDrawer.checkStatsCount(2, 13);
             searchDrawer.checkResultsCount(2);
 
             searchDrawer.checkResultList([
@@ -153,6 +152,15 @@ describe('Search', () => {
 
             searchDrawer.clearFacet('2014');
             searchDrawer.checkResultsCount(10);
+        });
+
+        it('should allow to filter search results by multiple facets', () => {
+            menu.openSearchDrawer();
+            searchDrawer.getFacet('Première mise en ligne en').click();
+            cy.wait(500);
+            cy.get('[data-testid="ChevronRightIcon"]').click();
+
+            searchDrawer.filterFacet('Première mise en ligne en', '1926');
         });
 
         it.skip('should allow to sort facet', () => {
