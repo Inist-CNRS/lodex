@@ -2,7 +2,7 @@ import Koa from 'koa';
 import route from 'koa-route';
 import koaBodyParser from 'koa-bodyparser';
 import getLogger from '../../services/logger';
-import fs from 'fs';
+import { createDiacriticSafeContainRegex } from '../../services/createDiacriticSafeContainRegex';
 
 const app = new Koa();
 
@@ -44,9 +44,7 @@ const buildQuery = (filterBy, filterOperator, filterValue) => {
             return { [filterBy]: { $lt: parseFloat(filterValue) } };
         default:
             return {
-                [filterBy]: new RegExp(
-                    `.*${filterValue.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}.*`,
-                ),
+                [filterBy]: createDiacriticSafeContainRegex(filterValue),
             };
     }
 };
