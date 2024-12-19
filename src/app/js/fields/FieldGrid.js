@@ -29,6 +29,7 @@ import { toast } from '../../../common/tools/toast';
 import { useLocation, useHistory } from 'react-router';
 import { SCOPE_DOCUMENT } from '../../../common/scope';
 import FieldRepresentation from './FieldRepresentation';
+import c from 'config';
 
 const ROOT_PADDING = 16;
 
@@ -46,11 +47,13 @@ const styles = {
         flex: 1,
     },
     property: {
-        border: '1px solid #ccc',
+        borderWidth: '1px',
+        borderColor: '#ccc',
         borderRadius: '3px',
         textAlign: 'center',
         fontWeight: 'bold',
         display: 'flex',
+        flexDirection: 'column',
         height: '100%',
         justifyContent: 'space-between',
         position: 'relative',
@@ -59,20 +62,17 @@ const styles = {
         '&:hover': {
             background: '#efefef',
             // display the duplicate icon and the settings icon
-            '& .MuiIconButton-root': {
+            '& .MuiIconButton-root, & .MuiSvgIcon-root': {
                 opacity: 1,
             },
         },
+        padding: '2px',
     },
     propertyHandle: {
         cursor: '-webkit-grab',
         margin: '0 5px',
         flex: 1,
         textAlign: 'left',
-    },
-    propertyLabel: {
-        marginRight: '10px',
-        cursor: 'copy',
     },
     fieldChildren: {
         pointerEvents: 'none',
@@ -152,29 +152,58 @@ const ItemGridLabel = connect((state, { field }) => ({
         onShowNameCopied();
     };
 
+    const rowCount = useMemo(() => {
+        let rowCount = 1;
+        if (completedField) {
+            rowCount++;
+        }
+        if (field.internalScopes || field.internalName) {
+            rowCount++;
+        }
+        return rowCount;
+    }, [field, completedField]);
+
     return (
-        <>
-            <Box
-                onClick={(e) => {
-                    handleCopyToClipboard(e, field.name);
-                }}
-                sx={{
-                    '& .MuiBox-root': {
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                    },
-                }}
-            >
-                <FieldRepresentation field={field} />
-                {completedField && (
-                    <span>
+        <Box
+            onClick={(e) => {
+                handleCopyToClipboard(e, field.name);
+            }}
+            display="grid"
+            gridTemplateColumns="1fr"
+            gridTemplateRows={`repeat(${rowCount}, 1fr)`}
+            alignItems="center"
+            height="100%"
+            width="100%"
+            maxWidth="min(100%, 300px)"
+        >
+            <FieldRepresentation field={field} />
+
+            {completedField && (
+                <Tooltip
+                    enterDelay={300}
+                    placement="top"
+                    arrow
+                    title={polyglot.t('completes_field_X', {
+                        field: completedField.label,
+                    })}
+                >
+                    <Box
+                        sx={{
+                            width: '100%',
+                            display: 'block',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            textWrap: 'nowrap',
+                            textAlign: 'left',
+                        }}
+                    >
                         {polyglot.t('completes_field_X', {
                             field: completedField.label,
                         })}
-                    </span>
-                )}
-            </Box>
-        </>
+                    </Box>
+                </Tooltip>
+            )}
+        </Box>
     );
 });
 
@@ -277,7 +306,7 @@ const DraggableItemGrid = compose(
                 layout={layout}
                 key={JSON.stringify(items)}
                 cols={10}
-                rowHeight={75}
+                rowHeight={120}
                 width={width - ROOT_PADDING}
                 onDragStop={handleLayoutChange}
                 onResizeStop={handleResize}
@@ -290,78 +319,71 @@ const DraggableItemGrid = compose(
                         sx={{
                             ...styles.property,
                             cursor: isFieldsLoading ? 'auto' : 'pointer',
+                            borderStyle: field.display ? 'solid' : 'dashed',
+                            opacity: field.display ? 1 : 0.7,
                         }}
                         onClick={() =>
                             handleEditField(field.name, filter, subresourceId)
                         }
                     >
+                        <ItemGridLabel
+                            field={field}
+                            polyglot={polyglot}
+                            onShowNameCopied={() =>
+                                toast(
+                                    polyglot.t(
+                                        'fieldidentifier_copied_clipboard',
+                                    ),
+                                    {
+                                        type: toast.TYPE.SUCCESS,
+                                    },
+                                )
+                            }
+                        />
+
                         <Box
                             sx={{
-                                ...styles.propertyHandle,
-                                ...styles.fieldChildren,
-                            }}
-                            className="draghandle"
-                        >
-                            <DragIndicatorIcon />
-                        </Box>
-                        <Box
-                            sx={styles.propertyLabel}
-                            data-field-name={field.name}
-                        >
-                            <ItemGridLabel
-                                field={field}
-                                polyglot={polyglot}
-                                onShowNameCopied={() =>
-                                    toast(
-                                        polyglot.t(
-                                            'fieldidentifier_copied_clipboard',
-                                        ),
-                                        {
-                                            type: toast.TYPE.SUCCESS,
-                                        },
-                                    )
-                                }
-                            />
-                        </Box>
-                        <Box
-                            sx={{
+                                width: '100%',
                                 display: 'flex',
+                                flexDirection: 'row',
+                                gap: 0.25,
                                 alignItems: 'center',
-                                justifyContent: 'flex-end',
-                                marginRight: '10px',
-                                flex: 1,
+                                justifyContent: 'flex-start',
                             }}
                         >
+                            <IconButton color="primary" size="small">
+                                <DragIndicatorIcon sx={styles.otherIcon} />
+                            </IconButton>
+
                             <Tooltip
                                 title={polyglot.t('duplicate_field_tooltip')}
                             >
-                                <Box>
-                                    <IconButton
-                                        sx={styles.otherIcon}
-                                        onClick={(e) => {
-                                            handleDuplicateField(e, field);
-                                        }}
-                                        aria-label={`duplicate-${field.label}`}
-                                        disabled={isFieldsLoading}
-                                    >
-                                        <FileCopyIcon />
-                                    </IconButton>
-                                </Box>
+                                <IconButton
+                                    sx={styles.otherIcon}
+                                    onClick={(e) => {
+                                        handleDuplicateField(e, field);
+                                    }}
+                                    aria-label={`duplicate-${field.label}`}
+                                    disabled={isFieldsLoading}
+                                    color="primary"
+                                    size="small"
+                                >
+                                    <FileCopyIcon />
+                                </IconButton>
                             </Tooltip>
                             <Tooltip
                                 title={polyglot.t('setting_field_tooltip')}
                             >
-                                <Box>
-                                    <IconButton
-                                        sx={styles.otherIcon}
-                                        aria-label={`edit-${field.label}`}
-                                        disabled={isFieldsLoading}
-                                    >
-                                        <SettingsIcon />
-                                    </IconButton>
-                                </Box>
+                                <IconButton
+                                    sx={styles.otherIcon}
+                                    aria-label={`edit-${field.label}`}
+                                    disabled={isFieldsLoading}
+                                    color="primary"
+                                    size="small"
+                                >
+                                    <SettingsIcon />
+                                </IconButton>
                             </Tooltip>
-                            {!field.display && <HiddenIcon />}
                         </Box>
                     </Box>
                 ))}

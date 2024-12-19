@@ -19,50 +19,98 @@ function FieldRepresentation({ field, shortMode = false, p: polyglot }) {
         );
     }
     return (
-        <Box display="flex" flexDirection="column">
-            <Box display="flex" flexDirection="row" maxWidth="300px">
-                {field.label && (
-                    <Tooltip title={field.label}>
-                        <Typography noWrap marginRight={1} variant="body2">
-                            {field.label}
-                        </Typography>
-                    </Tooltip>
-                )}
+        <>
+            <Box
+                width="100%"
+                maxWidth="100%"
+                display="grid"
+                gridTemplateColumns="auto 1fr"
+                gap={0.5}
+            >
                 {field.name && (
                     <Typography variant="body2" sx={{ color: 'info.main' }}>
                         [{field.name}]
                     </Typography>
                 )}
+
+                {field.label && (
+                    <Tooltip
+                        title={field.label}
+                        enterDelay={300}
+                        placement="top"
+                        arrow
+                    >
+                        <Typography
+                            variant="body2"
+                            sx={{
+                                display: 'block',
+                                overflow: 'hidden',
+                                textOverflow: 'ellipsis',
+                                textWrap: 'nowrap',
+                                textAlign: 'left',
+                            }}
+                        >
+                            {field.label}
+                        </Typography>
+                    </Tooltip>
+                )}
             </Box>
+
             {(field.internalScopes || field.internalName) && !shortMode && (
                 <Box
-                    display="flex"
-                    flexDirection="row"
-                    alignItems="flex-end"
-                    marginTop={1}
+                    width="100%"
+                    maxWidth="100%"
+                    display="grid"
+                    gridTemplateColumns={
+                        field.internalScopes && field.internalName
+                            ? 'auto 1fr'
+                            : '1fr'
+                    }
+                    gap={0.5}
                     color="text.secondary"
                 >
-                    <Box
-                        display="flex"
-                        flexDirection="row"
-                        alignItems="flex-end"
-                        marginRight={1}
-                    >
-                        {field.internalScopes &&
-                            field.internalScopes.map((internalScope) => (
+                    {field.internalScopes && (
+                        <Box
+                            display="flex"
+                            flexDirection="row"
+                            alignItems="flex-end"
+                            marginRight={1}
+                        >
+                            {field.internalScopes.map((internalScope) => (
                                 <FieldInternalIcon
                                     key={internalScope}
                                     scope={internalScope}
                                     fontSize="small"
                                 />
                             ))}
-                    </Box>
-                    <Typography variant="body2" sx={{ fontStyle: 'italic' }}>
-                        {field.internalName}
-                    </Typography>
+                        </Box>
+                    )}
+
+                    {field.internalName && (
+                        <Tooltip
+                            title={field.internalName}
+                            enterDelay={300}
+                            placement="top"
+                            arrow
+                        >
+                            <Typography
+                                variant="body2"
+                                sx={{
+                                    display: 'block',
+                                    overflow: 'hidden',
+                                    textOverflow: 'ellipsis',
+                                    textWrap: 'nowrap',
+                                    fontStyle: 'italic',
+                                    textAlign: 'left',
+                                }}
+                            >
+                                {field.internalName}
+                            </Typography>
+                        </Tooltip>
+                    )}
                 </Box>
             )}
-        </Box>
+        </>
     );
 }
 
