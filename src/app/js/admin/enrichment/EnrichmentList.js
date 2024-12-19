@@ -154,6 +154,20 @@ export const EnrichmentList = ({
                             );
                         },
                     },
+                    {
+                        field: 'errors',
+                        headerName: polyglot.t('errors'),
+                        flex: 1,
+                        renderCell: (params) => {
+                            return (
+                                <span>
+                                    {polyglot.t('enrichment_error_count', {
+                                        errorCount: params.row.errorCount ?? 0,
+                                    })}
+                                </span>
+                            );
+                        },
+                    },
                 ]}
                 rows={enrichments}
                 getRowId={(row) => row._id}
