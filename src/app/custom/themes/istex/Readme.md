@@ -36,9 +36,11 @@ Ressource principale
 
 ### class générales
 
--   **buttonPrimary** : bouton foncé/blanc sur fond clair/foncé /sidebar
--   **buttonSecondary** : bouton bordure fond transparent sur fond sombre ou clair
--   **buttonShadow** : bouton ombre
+-   **designButtonPrimary** : bouton foncé/blanc sur fond clair/foncé /sidebar
+-   **designButtonSecondary** : bouton bordure fond transparent sur fond sombre ou clair
+-   **designButtonShadow** : bouton ombre
+
+Dans lodex, créer un nouveau champ, mettre l'url dans valeur arbitraire, choisir le format 'url - lien externe' et écrire le texte du bouton après avoir sélectioner 'texte personnalisé.
 
 -> voir les boutons sur [design.istex.fr](https://design.istex.fr/boutons/)
 
@@ -63,7 +65,8 @@ Ce bloc _designHomeContentSidebar_ est composé de deux blocs :
 -   **designHomeContent**
     contenant lui-même
 
-    -   **ListePave** : affichage en bloc cliquable des données de syndication ou autres (liste arks)  
+    -   le titre h1 du site
+    -   **designListePave** : affichage en bloc cliquable des données de syndication ou autres (liste arks)  
         ![image](https://github.com/user-attachments/assets/b09fe55c-e4d0-467e-a046-879e30e9e019)
 
 -   **designHomeSidebar**  
@@ -72,6 +75,8 @@ Ce bloc _designHomeContentSidebar_ est composé de deux blocs :
     -   **designfilter** : filtre bleuté sur img licence
 
 #### les bannières et le triptyque
+
+Les Titres des textes des bannières sont des h2 ou h3.
 
 -   **designHomeBanniereSimple** : composé de **surtitre** **titre** **texte** et bouton (voir CI button) sur img pleine page
 

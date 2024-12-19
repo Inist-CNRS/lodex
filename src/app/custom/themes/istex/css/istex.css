@@ -60,6 +60,7 @@ html {
 body {
     font-family: var(--font-texte);
     color: var(--text-main);
+    line-height: 1.43;
 }
 :root {
     --font-titre: Montserrat, Arial, Helvetica, sans-serif;
@@ -97,7 +98,7 @@ body {
 /* Header  *******************/
 /*****************************/
 header {
-    background-color: var(--contrast-light);
+    background-color: var(--contrast-main);
 }
 #nav-skip {
     background-color: #fff;
