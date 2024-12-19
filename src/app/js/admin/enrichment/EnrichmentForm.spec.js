@@ -17,7 +17,7 @@ describe('<EnrichmentFormComponent />', () => {
         expect(wrapper).toHaveLength(1);
     });
 
-    it('should render a Field for name enricment', () => {
+    it('should render a Field for name enrichment', () => {
         const wrapper = shallow(
             <EnrichmentForm
                 p={{ t: () => {} }}

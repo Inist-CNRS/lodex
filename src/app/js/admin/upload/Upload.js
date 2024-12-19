@@ -32,9 +32,9 @@ import {
 } from './';
 import { fromUpload, fromLoaders } from '../selectors';
 import LoaderSelect from './LoaderSelect';
-import PopupConfirmUpload from './PopupConfirmUpload';
 import { toast } from '../../../../common/tools/toast';
 import FormSourceCodeField from '../../lib/components/FormSourceCodeField';
+import { ConfirmPopup } from '../../lib/components/ConfirmPopup';
 
 const styles = {
     button: {
@@ -378,11 +378,17 @@ export const UploadComponent = ({
                 {polyglot.t('upload_data')}
             </Button>
 
-            <PopupConfirmUpload
-                history={history}
-                onConfirm={handleConfirm}
+            <ConfirmPopup
+                cancelLabel={polyglot.t('Cancel')}
+                confirmLabel={polyglot.t('Accept')}
+                title={polyglot.t('info_upload')}
+                description={polyglot.t('info_publish_desc')}
                 isOpen={isOpenPopupConfirm}
-                setIsOpenPopupConfirm={setIsOpenPopupConfirm}
+                onCancel={() => setIsOpenPopupConfirm(false)}
+                onConfirm={() => {
+                    handleConfirm();
+                    setIsOpenPopupConfirm(false);
+                }}
             />
         </Box>
     );
