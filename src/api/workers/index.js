@@ -28,7 +28,7 @@ export const createWorkerQueue = (queueName, concurrency) => {
         },
     });
 
-    workerQueue.process('*', concurrency, async (job, done) => {
+    workerQueue.process('*', concurrency, (job, done) => {
         if (job.data.jobType === PUBLISHER) {
             processPublication(job, done);
         }
