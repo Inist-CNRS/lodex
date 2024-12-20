@@ -18,6 +18,9 @@ div[class*='HomeContentSidebar'] {
 div[class*='HomeContentSidebar'] .MuiBox-root.css-oa9bdm {
     padding: 0 !important;
 }
+div[class*='HomeContentSidebar'] .MuiBox-root.css-oa9bdm > div > div {
+    gap: 3rem;
+}
 /*Home div[class*='HomeContent'] et*/
 /*Home div[class*='HomeSidebar']*/
 div[class*='HomeContentSidebar'] div[class*='designHomeContent'],
