@@ -17,6 +17,7 @@ import DatasetOverviewSelect from '../../fields/DatasetOverviewSelect';
 import SubresourceOverviewSelect from '../../fields/SubresourceOverviewSelect';
 import FieldAddDropdownButtonConnected from './FieldAddDropdownButton';
 import { AddFieldButton } from './AddFieldButton';
+import { DeleteFieldsButton } from './DeleteFieldsButton';
 
 export const FieldsEditComponent = ({
     defaultTab = 'page',
@@ -28,6 +29,7 @@ export const FieldsEditComponent = ({
 }) => {
     const [tab, setTab] = useState(defaultTab);
     const [showAddFromColumnDialog, setAddFromColumnDialog] = useState(false);
+    const [selectedFields, setSelectedFields] = useState([]);
 
     useEffect(() => {
         if (showAddFromColumn) {
@@ -39,6 +41,14 @@ export const FieldsEditComponent = ({
     const handleCloseAddFromColumnDialog = () => {
         hideAddColumns();
         setAddFromColumnDialog(false);
+    };
+
+    const handleToggleSelectedField = (fieldName) => {
+        setSelectedFields((prev) =>
+            prev.includes(fieldName)
+                ? prev.filter((item) => item !== fieldName)
+                : [...prev, fieldName],
+        );
     };
 
     return (
@@ -89,21 +99,37 @@ export const FieldsEditComponent = ({
                                 subresourceId={subresourceId}
                             />
                         )}
-                        {filter === SCOPE_DOCUMENT && (
-                            <FieldAddDropdownButtonConnected
+
+                        <Box sx={{ display: 'flex', gap: 2 }}>
+                            <DeleteFieldsButton
+                                selectedFields={selectedFields}
+                                filter={filter}
                                 subresourceId={subresourceId}
                             />
-                        )}
-                        {filter !== SCOPE_DOCUMENT && !subresourceId && (
-                            <AddFieldButton />
-                        )}
-                        {showAddFromColumnDialog && (
-                            <AddFromColumnDialog
-                                onClose={handleCloseAddFromColumnDialog}
-                            />
-                        )}
+
+                            {filter === SCOPE_DOCUMENT && (
+                                <FieldAddDropdownButtonConnected
+                                    subresourceId={subresourceId}
+                                />
+                            )}
+
+                            {filter !== SCOPE_DOCUMENT && !subresourceId && (
+                                <AddFieldButton />
+                            )}
+
+                            {showAddFromColumnDialog && (
+                                <AddFromColumnDialog
+                                    onClose={handleCloseAddFromColumnDialog}
+                                />
+                            )}
+                        </Box>
                     </Box>
-                    <FieldGrid filter={filter} subresourceId={subresourceId} />
+                    <FieldGrid
+                        filter={filter}
+                        subresourceId={subresourceId}
+                        selectedFields={selectedFields}
+                        toggleSelectedField={handleToggleSelectedField}
+                    />
                     <Statistics filter={filter} subresourceId={subresourceId} />
                 </Box>
             )}

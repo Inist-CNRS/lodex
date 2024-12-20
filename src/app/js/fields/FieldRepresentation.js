@@ -1,11 +1,28 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Box, Tooltip, Typography } from '@mui/material';
+import { Box, Tooltip, Checkbox, Typography } from '@mui/material';
 import FieldInternalIcon from './FieldInternalIcon';
 import translate from 'redux-polyglot/translate';
+import copy from 'copy-to-clipboard';
 import { polyglot as polyglotPropTypes } from '../propTypes';
+import { toast } from '../../../common/tools/toast';
 
-function FieldRepresentation({ field, shortMode = false, p: polyglot }) {
+function FieldRepresentation({
+    field,
+    shortMode = false,
+    p: polyglot,
+    isFieldSelected,
+    handleToggleSelectedField,
+}) {
+    const handleCopyToClipboard = (event, text) => {
+        event.stopPropagation();
+        event.preventDefault();
+        copy(text);
+        toast(polyglot.t('fieldidentifier_copied_clipboard'), {
+            type: toast.TYPE.SUCCESS,
+        });
+    };
+
     if (!field) {
         return (
             <Typography
@@ -24,9 +41,33 @@ function FieldRepresentation({ field, shortMode = false, p: polyglot }) {
                 width="100%"
                 maxWidth="100%"
                 display="grid"
-                gridTemplateColumns="auto 1fr"
+                gridTemplateColumns={
+                    handleToggleSelectedField ? 'auto auto 1fr' : 'auto 1fr'
+                }
+                alignItems="center"
                 gap={0.5}
+                onClick={(e) => handleCopyToClipboard(e, field.name)}
             >
+                {handleToggleSelectedField && (
+                    <Checkbox
+                        checked={isFieldSelected}
+                        size="small"
+                        onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            handleToggleSelectedField();
+                        }}
+                        onMouseDown={(e) => e.stopPropagation()}
+                        onPointerDown={(e) => e.stopPropagation()}
+                        onTouchStart={(e) => e.stopPropagation()}
+                        sx={{
+                            paddingX: 0,
+                        }}
+                        disableRipple
+                        aria-label={polyglot.t('select_field')}
+                    />
+                )}
+
                 {field.name && (
                     <Typography variant="body2" sx={{ color: 'info.main' }}>
                         [{field.name}]
@@ -117,6 +158,8 @@ function FieldRepresentation({ field, shortMode = false, p: polyglot }) {
 FieldRepresentation.propTypes = {
     field: PropTypes.object.isRequired,
     shortMode: PropTypes.bool,
+    isFieldSelected: PropTypes.bool,
+    handleToggleSelectedField: PropTypes.func,
     p: polyglotPropTypes.isRequired,
 };
 

@@ -18,6 +18,7 @@ import {
 
 import {
     LOAD_FIELD_SUCCESS,
+    REMOVE_FIELD_LIST_SUCCESS,
     REMOVE_FIELD_SUCCESS,
     SAVE_FIELD_SUCCESS,
 } from '../../../fields';
@@ -71,7 +72,7 @@ export default function* watchComputePreview() {
     );
 
     yield takeLatest(
-        [SAVE_FIELD_SUCCESS, REMOVE_FIELD_SUCCESS],
+        [SAVE_FIELD_SUCCESS, REMOVE_FIELD_SUCCESS, REMOVE_FIELD_LIST_SUCCESS],
         handleRecomputePublication,
     );
 }
