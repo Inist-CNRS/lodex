@@ -311,6 +311,44 @@ describe('validateField', () => {
                 error: 'required',
             });
         });
+
+        it('should return valid result if no transformers and scope is graphic', () => {
+            expect(
+                validateTransformers({
+                    scope: SCOPE_GRAPHIC,
+                }),
+            ).toEqual({
+                name: 'transformers',
+                isValid: true,
+            });
+        });
+
+        it('should return valid result if no transformers and internalScopes include graphic', () => {
+            expect(
+                validateTransformers({
+                    internalScopes: [SCOPE_DOCUMENT, SCOPE_GRAPHIC],
+                }),
+            ).toEqual({
+                name: 'transformers',
+                isValid: true,
+            });
+        });
+
+        it('should return valid result if no transformers and isContribution is true', () => {
+            expect(validateTransformers({}, true)).toEqual({
+                name: 'transformers',
+                isValid: true,
+            });
+        });
+
+        it('should return valid result if no transformers and composedOf is set', () => {
+            expect(
+                validateTransformers({ composedOf: ['field1', 'field2'] }),
+            ).toEqual({
+                name: 'transformers',
+                isValid: true,
+            });
+        });
     });
 
     describe('validateTransformer', () => {
