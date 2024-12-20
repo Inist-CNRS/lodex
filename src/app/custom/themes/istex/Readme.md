@@ -82,7 +82,7 @@ Les Titres des textes des bannières sont des h1, h2 ou h3.
 
 -   **designHomeBanniereDouble** : champ avec bg img et composé d'un champ **titre**, d'un champ **description** et éventuellement d'un bouton
 
--> voir les bannières sur [design-istex.fr](http://viwp4.intra.inist.fr:40260/bannieres/)
+-> voir les bannières sur [design-istex.fr](https://design.istex.fr/bannieres/)
 
 -   **designHomeTriptyque** champ composé de trois champs:
 
