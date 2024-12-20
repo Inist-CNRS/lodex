@@ -64,7 +64,9 @@ li.resources-grid-item * {
 }
 div[class*='ListePave'] li,
 li.resources-grid-item {
-    width: 330px;
+    min-width: 300px;
+    max-width: 334px;
+    width: 33%;
     border-radius: 4px;
 }
 div[class*='ListePave'] li a,
@@ -291,17 +293,17 @@ div.property[class*='BanniereDouble'] .property_value *:is(h2, h3) {
 /**************/
 /* triptyque */
 /**************/
-div.property[class*='Tryptique'] {
+div.property[class*='Triptyque'] {
     transform: translateY(-5.5rem);
 }
-div.property[class*='Tryptique'] div.MuiBox-root {
+div.property[class*='Triptyque'] div.MuiBox-root {
     margin: 0 0;
     padding: 0 0;
 }
 #content
     #home-page
     .dataset-characteristics
-    div.property[class*='designHomeTryptique']
+    div.property[class*='designHomeTriptyque']
     > .property_value_container
     > div.MuiBox-root
     > div
@@ -312,7 +314,7 @@ div.property[class*='Tryptique'] div.MuiBox-root {
     align-items: flex-start;
     max-width: var(--maxWidth);
 }
-div.property[class*='designHomeTryptique'] .property[class*='compose'] {
+div.property[class*='designHomeTriptyque'] .property[class*='compose'] {
     width: 33.3%;
     max-width: 400px;
     color: var(--contrast-light);
@@ -323,13 +325,13 @@ div.property[class*='designHomeTryptique'] .property[class*='compose'] {
     align-items: center;
     padding: 24px;
 }
-div.property[class*='designHomeTryptique'] .property[class*='Triptyque1'] {
+div.property[class*='designHomeTriptyque'] .property[class*='Triptyque1'] {
     background-color: var(--primary-main);
 }
-div.property[class*='designHomeTryptique'] .property[class*='Triptyque2'] {
+div.property[class*='designHomeTriptyque'] .property[class*='Triptyque2'] {
     background-color: var(--primary-light);
 }
-div.property[class*='designHomeTryptique'] .property[class*='Triptyque3'] {
+div.property[class*='designHomeTriptyque'] .property[class*='Triptyque3'] {
     background-color: var(--primary-lighter);
 }
 

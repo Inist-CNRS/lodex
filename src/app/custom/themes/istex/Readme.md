@@ -17,11 +17,11 @@
 
 # Class css internes : Usage
 
-Les class internes permettent de jouer la charte Istex sur les éléments Lodex.
+Les class internes permettent de jouer la charte Istex sur les champs (blocs) Lodex.
 
-Les éléments de la charte Istex impliquent, pour beaucoup, l'utilisation du champ 'est composé de' de l'onglet 'Affichage' d'un bloc lodex
+Les éléments de la charte Istex impliquent, pour beaucoup, l'utilisation du paramètre 'est composé de' de l'onglet 'Affichage' d'un champs lodex.
 
-_Autrement dit, l'utilisation de 'la composition de page', comme au bon vieux temps de l'édition papier._
+_Autrement dit, l'utilisation de 'la composition de page', comme au temps de l'édition papier._
 
 ## En pratique
 
@@ -30,7 +30,7 @@ Page d'accueil
 ou  
 Ressource principale
 
-**La class interne est à saisir dans le champ 'nom interne' d'un bloc lodex.**
+**La class interne est à saisir dans la zone 'nom interne' d'un champs lodex.**
 
 ## Liste des class css internes
 
@@ -40,11 +40,11 @@ Ressource principale
 -   **designButtonSecondary** : bouton bordure fond transparent sur fond sombre ou clair
 -   **designButtonShadow** : bouton ombre
 
-Dans lodex, créer un nouveau champ, mettre l'url dans valeur arbitraire, choisir le format 'url - lien externe' et écrire le texte du bouton après avoir sélectioner 'texte personnalisé.
+Dans lodex, créer un nouveau champs, mettre l'url dans valeur arbitraire, choisir le format 'url - lien externe' et écrire le texte du bouton après avoir sélectioner 'texte personnalisé.
 
 -> voir les boutons sur [design.istex.fr](https://design.istex.fr/boutons/)
 
--   **blocExergue** : mise en avant du contenu d'un bloc par un léger ombrage (cf tools explorter/resource )
+-   **blocExergue** : mise en avant du contenu d'un champ par un léger ombrage (cf tools explorter/resource )
 
 ##Insertion capture
 
@@ -55,18 +55,18 @@ Dans lodex, créer un nouveau champ, mettre l'url dans valeur arbitraire, choisi
 
 ![Clipboard01](https://github.com/user-attachments/assets/075525a1-52a8-4ba6-bb0c-6efc541cbd1f)
 
-#### le bloc de présentation du site
+#### le champ de présentation du site
 
 -   **designHomeContentSidebar**  
-    Bloc pleine largeur, fond blanc casse avec décor de graph et une sidebar bleu istex
+    champ pleine largeur, fond blanc casse avec décor de graph et une sidebar bleu istex
 
-Ce bloc _designHomeContentSidebar_ est composé de deux blocs :
+Ce champ _designHomeContentSidebar_ est composé de deux champs :
 
 -   **designHomeContent**
     contenant lui-même
 
     -   le titre h1 du site
-    -   **designListePave** : affichage en bloc cliquable des données de syndication ou autres (liste arks)  
+    -   **designListePave** : affichage en blocs cliquables des données de syndication ou autres (liste arks)  
         ![image](https://github.com/user-attachments/assets/b09fe55c-e4d0-467e-a046-879e30e9e019)
 
 -   **designHomeSidebar**  
@@ -76,17 +76,20 @@ Ce bloc _designHomeContentSidebar_ est composé de deux blocs :
 
 #### les bannières et le triptyque
 
-Les Titres des textes des bannières sont des h2 ou h3.
+Les Titres des textes des bannières sont des h1, h2 ou h3.
 
 -   **designHomeBanniereSimple** : composé de **surtitre** **titre** **texte** et bouton (voir CI button) sur img pleine page
 
--   **designHomeBanniereDouble** : bloc avec bg img composé d'un **titre** d'une **description** et éventuellement d'un bouton
+-   **designHomeBanniereDouble** : champ avec bg img et composé d'un champ **titre**, d'un champ **description** et éventuellement d'un bouton
 
--   **designHomeTriptyque** bloc composé de trois blocs:
-    -- **tryptique1**, **tryptique2**, **tryptique3**
-    qui eux même sont composés des éléments bloc icone, texte, nombre, titre,...
+-> voir les bannières sur [design-istex.fr](http://viwp4.intra.inist.fr:40260/bannieres/)
 
--> voir les bannières (en developpement) sur [design-istex.fr](http://viwp4.intra.inist.fr:40260/bannieres/)
+-   **designHomeTriptyque** champ composé de trois champs:
+
+    -   **Triptyque1**, **Triptyque2**, **Triptyque3**  
+        qui sont eux même composés de champs contenant icone, texte, nombre, titre,...
+
+    **-> Le champ 'designHomeTriptyque' se place juste après une bannière.**
 
 ### Ressource principale
 
@@ -94,10 +97,8 @@ div _header-resource-section_
 
 -   **designResourceToolsHeader** : design du titre de l'outil dans tools explorer
 
--   **designResourceCompose** : design des fonctionnalités d'un outils dans tools
-
-        Bloc composé
-        -   couleur de fond bleu très clair
-        -   Les blocs composants ce bloc apparaissent en pavé clair
+-   **designResourceCompose** : design du champ 'Fonctionnalités/Features' d'un outils dans tools ; il est composé et apparait sous la forme :
+    -   couleur de fond bleu très clair
+    -   Les champs composants ce champs apparaissent en bloc fond clair
 
 ![exemple-class-interne-istex-tools-resource](https://github.com/Inist-CNRS/lodex/assets/122360177/252c3b1a-193f-4d90-9f35-75bfdddffc54)
