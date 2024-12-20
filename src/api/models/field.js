@@ -1,6 +1,6 @@
 import omit from 'lodash/omit';
 import pick from 'lodash/pick';
-import { ObjectID, ObjectId } from 'mongodb';
+import { ObjectId } from 'mongodb';
 
 import { validateField as validateFieldIsomorphic } from '../../common/validateFields';
 import { URI_FIELD_NAME } from '../../common/uris';
@@ -120,7 +120,7 @@ export default async (db) => {
     };
 
     collection.findOneById = (id) =>
-        collection.findOne({ _id: new ObjectID(id) });
+        collection.findOne({ _id: new ObjectId(id) });
 
     collection.findOneByName = (name) => collection.findOne({ name });
 
@@ -154,7 +154,7 @@ export default async (db) => {
     };
 
     collection.updateOneById = async (id, field) => {
-        const objectId = new ObjectID(id);
+        const objectId = new ObjectId(id);
         const previousFieldVersion = await collection.findOneById(id);
 
         if (previousFieldVersion) {
@@ -207,12 +207,12 @@ export default async (db) => {
     };
 
     collection.removeById = (id) =>
-        collection.remove({ _id: new ObjectID(id), name: { $ne: 'uri' } });
+        collection.remove({ _id: new ObjectId(id), name: { $ne: 'uri' } });
 
     collection.removeBySubresource = (subresourceId) =>
         collection.remove({
             $or: [
-                { subresourceId: new ObjectID(subresourceId) },
+                { subresourceId: new ObjectId(subresourceId) },
                 { subresourceId },
             ],
         });
