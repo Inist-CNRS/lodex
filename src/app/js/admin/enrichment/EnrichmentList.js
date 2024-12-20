@@ -21,7 +21,7 @@ import { useHistory } from 'react-router';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { renderRunButton, renderStatus } from './EnrichmentForm';
 import { FINISHED, IN_PROGRESS } from '../../../../common/taskStatus';
-import { launchAllEnrichment, launchEnrichment } from '.';
+import { launchAllEnrichment, launchEnrichment, retryEnrichment } from '.';
 import { toast } from '../../../../common/tools/toast';
 
 const EnrichmentListToolBar = ({ polyglot, onLaunchAllEnrichment }) => {
@@ -79,6 +79,7 @@ export const EnrichmentList = ({
     p: polyglot,
     onLaunchEnrichment,
     onLaunchAllEnrichment,
+    onRetryEnrichment,
 }) => {
     const history = useHistory();
     const isEnrichingRunning = enrichments.some(
@@ -160,11 +161,23 @@ export const EnrichmentList = ({
                         flex: 1,
                         renderCell: (params) => {
                             return (
-                                <span>
+                                <>
                                     {polyglot.t('enrichment_error_count', {
                                         errorCount: params.row.errorCount ?? 0,
                                     })}
-                                </span>
+                                    <Button
+                                        color="primary"
+                                        onClick={(event) => {
+                                            onRetryEnrichment({
+                                                id: params.id,
+                                            });
+                                            event.preventDefault();
+                                            event.stopPropagation();
+                                        }}
+                                    >
+                                        {polyglot.t('retry')}
+                                    </Button>
+                                </>
                             );
                         },
                     },
@@ -197,6 +210,7 @@ EnrichmentList.propTypes = {
     p: polyglotPropTypes.isRequired,
     onLaunchEnrichment: PropTypes.func.isRequired,
     onLaunchAllEnrichment: PropTypes.func.isRequired,
+    onRetryEnrichment: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -206,6 +220,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
     onLaunchEnrichment: launchEnrichment,
     onLaunchAllEnrichment: launchAllEnrichment,
+    onRetryEnrichment: retryEnrichment,
 };
 
 export default compose(
