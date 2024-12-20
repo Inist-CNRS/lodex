@@ -3,7 +3,7 @@ import route from 'koa-route';
 import koaBodyParser from 'koa-bodyparser';
 import { v1 as uuid } from 'uuid';
 
-import { ENRICHER } from '../../workers/enricher';
+import { ENRICHER, RETRY_ENRICHER } from '../../workers/enricher';
 import { workerQueues } from '../../workers';
 import {
     createEnrichmentRule,
@@ -189,6 +189,25 @@ export const launchAllEnrichment = async (ctx) => {
     };
 };
 
+export const retryEnrichmentOnFailedRow = async (ctx, id) => {
+    await workerQueues[ctx.tenant]
+        .add(
+            RETRY_ENRICHER, // Name of the job
+            {
+                id,
+                jobType: RETRY_ENRICHER,
+                tenant: ctx.tenant,
+            },
+            { jobId: uuid() },
+        )
+        .then((job) => {
+            setEnrichmentJobId(ctx, id, job);
+        });
+    ctx.body = {
+        status: 'pending',
+    };
+};
+
 const app = new Koa();
 
 app.use(setup);
@@ -200,6 +219,7 @@ app.use(route.post('/launchAll', launchAllEnrichment));
 app.use(route.post('/', postEnrichment));
 app.use(route.put('/:id', putEnrichment));
 app.use(route.delete('/:id', deleteEnrichment));
+app.use(route.post('/retry/:id', retryEnrichmentOnFailedRow));
 app.use(route.post('/:action/:id', enrichmentAction));
 app.use(route.post('/preview', enrichmentDataPreview));
 

@@ -7,9 +7,10 @@ import {
 import repositoryMiddleware from '../services/repositoryMiddleware';
 
 export const ENRICHER = 'enricher';
+export const RETRY_ENRICHER = 'retry-enricher';
 
-export const processEnrichment = (job, done) => {
-    startJobEnrichment(job)
+export const processEnrichment = (job, retryFailedOnly, done) => {
+    startJobEnrichment(job, retryFailedOnly)
         .then(async () => {
             job.progress(100);
             const isFailed = await job.isFailed();
@@ -25,12 +26,12 @@ export const processEnrichment = (job, done) => {
         });
 };
 
-const startJobEnrichment = async (job) => {
+const startJobEnrichment = async (job, retryFailedOnly) => {
     notifyListeners(`${job.data.tenant}-enricher`, {
         isEnriching: true,
         success: false,
     });
-    const ctx = await prepareContext({ job });
+    const ctx = await prepareContext({ job, retryFailedOnly });
     await startEnrichment(ctx);
 };
 

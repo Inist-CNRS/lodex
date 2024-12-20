@@ -182,6 +182,7 @@
 "column"	"Column"	"Colonne"
 "for_row"	"for row"	"pour la ligne"
 "enrichment"	"Enrichment"	"Enrichissements"
+"enrichment_error_count"	"%{errorCount} errors"	"%{errorCount} erreurs"
 "precomputed"	"Precomputed"	"Précalculs"
 "resource_share_export"	"Share/Export"	"Partager/Exporter"
 "resource_ontology"	"Ontology"	"Ontologie"

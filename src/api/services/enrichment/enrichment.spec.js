@@ -418,7 +418,7 @@ describe('enrichment', () => {
             };
 
             // WHEN
-            await processEnrichment(enrichment, ctx);
+            await processEnrichment(enrichment, false, ctx);
 
             // THEN
             expect(ctx.job.log).toHaveBeenCalledTimes(7);
@@ -495,7 +495,7 @@ describe('enrichment', () => {
             };
 
             // WHEN
-            await processEnrichment(enrichment, ctx);
+            await processEnrichment(enrichment, false, ctx);
 
             // THEN
             expect(ctx.job.log).toHaveBeenCalledTimes(7);

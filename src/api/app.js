@@ -174,4 +174,8 @@ app.use(async (ctx, next) => {
     await next();
 });
 
+app.on('uncaughtException', (error) => {
+    console.error('Uncaught Exception', error);
+});
+
 export default app;

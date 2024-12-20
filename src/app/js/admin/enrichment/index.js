@@ -5,12 +5,14 @@ export const LOAD_ENRICHMENTS_ERROR = 'LOAD_ENRICHMENTS_ERROR';
 export const LOAD_ENRICHMENTS_SUCCESS = 'LOAD_ENRICHMENTS_SUCCESS';
 export const LAUNCH_ENRICHMENT = 'LAUNCH_ENRICHMENT';
 export const LAUNCH_ALL_ENRICHMENT = 'LAUNCH_ALL_ENRICHMENT';
+export const RETRY_ENRICHMENT = 'RETRY_ENRICHMENT';
 
 export const loadEnrichments = createAction(LOAD_ENRICHMENTS);
 export const loadEnrichmentsError = createAction(LOAD_ENRICHMENTS_ERROR);
 export const loadEnrichmentsSuccess = createAction(LOAD_ENRICHMENTS_SUCCESS);
 export const launchEnrichment = createAction(LAUNCH_ENRICHMENT);
 export const launchAllEnrichment = createAction(LAUNCH_ALL_ENRICHMENT);
+export const retryEnrichment = createAction(RETRY_ENRICHMENT);
 
 export const initialState = {
     error: null,

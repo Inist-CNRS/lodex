@@ -231,7 +231,7 @@ const processEzsEnrichment = (entries, commands, ctx, preview = false) => {
     });
 };
 
-export const processEnrichment = async (enrichment, ctx) => {
+export const processEnrichment = async (enrichment, filter, ctx) => {
     const { enrichmentBatchSize } = ctx.configTenant;
     const BATCH_SIZE = Number(enrichmentBatchSize || 10);
     await ctx.enrichment.updateStatus(enrichment._id, IN_PROGRESS);
@@ -239,13 +239,13 @@ export const processEnrichment = async (enrichment, ctx) => {
 
     const room = `${ctx.tenant}-enrichment-job-${ctx.job.id}`;
     const commands = createEzsRuleCommands(enrichment.rule);
-    const dataSetSize = await ctx.dataset.count();
+    const dataSetSize = await ctx.dataset.count(filter);
     for (let index = 0; index < dataSetSize; index += BATCH_SIZE) {
         if (!(await ctx.job?.isActive())) {
             throw new CancelWorkerError('Job has been canceled');
         }
         const entries = await ctx.dataset
-            .find()
+            .find(filter)
             .skip(index)
             .limit(BATCH_SIZE)
             .toArray();
@@ -357,10 +357,17 @@ export const setEnrichmentJobId = async (ctx, enrichmentID, job) => {
     });
 };
 
-export const startEnrichment = async (ctx) => {
+export const startEnrichment = async (ctx, retryFailedOnly) => {
     const id = ctx.job?.data?.id;
     const enrichment = await ctx.enrichment.findOneById(id);
-    const dataSetSize = await ctx.dataset.count();
+
+    const filter = retryFailedOnly
+        ? {
+              [enrichment.name]: /^\[Error\]:/,
+          }
+        : undefined;
+
+    const dataSetSize = await ctx.dataset.count(filter);
     progress.initialize(ctx.tenant);
     progress.start(ctx.tenant, {
         status: ENRICHING,
@@ -373,13 +380,13 @@ export const startEnrichment = async (ctx) => {
     const room = `enrichment-job-${ctx.job.id}`;
     const logData = JSON.stringify({
         level: 'ok',
-        message: `[Instance: ${ctx.tenant}] Enrichement started`,
+        message: `[Instance: ${ctx.tenant}] Enrichment started`,
         timestamp: new Date(),
         status: IN_PROGRESS,
     });
     jobLogger.info(ctx.job, logData);
     notifyListeners(room, logData);
-    await processEnrichment(enrichment, ctx);
+    await processEnrichment(enrichment, filter, ctx);
 };
 
 export const setEnrichmentError = async (ctx, err) => {

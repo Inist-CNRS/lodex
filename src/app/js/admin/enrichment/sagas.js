@@ -7,6 +7,7 @@ import {
     LOAD_ENRICHMENTS,
     LAUNCH_ENRICHMENT,
     LAUNCH_ALL_ENRICHMENT,
+    RETRY_ENRICHMENT,
 } from '.';
 
 import { fromUser } from '../../sharedSelectors';
@@ -47,6 +48,19 @@ export function* handleLaunchAllEnrichment() {
     return yield put(loadEnrichments());
 }
 
+export function* handleRetryEnrichment({ payload: { id } }) {
+    const enrichmentRetryRequest = yield select(
+        fromUser.getEnrichmentRetryRequest,
+        {
+            id,
+        },
+    );
+
+    yield call(fetchSaga, enrichmentRetryRequest);
+
+    return yield put(loadEnrichments());
+}
+
 export function* watchLoadEnrichmentsRequest() {
     yield takeLatest([LOAD_ENRICHMENTS], handleLoadEnrichmentsRequest);
 }
@@ -58,9 +72,13 @@ export function* watchLaunchEnrichment() {
 export function* watchLaunchAllEnrichment() {
     yield takeLatest(LAUNCH_ALL_ENRICHMENT, handleLaunchAllEnrichment);
 }
+export function* watchRetryEnrichment() {
+    yield takeLatest(RETRY_ENRICHMENT, handleRetryEnrichment);
+}
 
 export default function* () {
     yield fork(watchLoadEnrichmentsRequest);
     yield fork(watchLaunchEnrichment);
     yield fork(watchLaunchAllEnrichment);
+    yield fork(watchRetryEnrichment);
 }
