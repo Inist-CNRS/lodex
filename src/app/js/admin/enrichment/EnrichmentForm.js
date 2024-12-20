@@ -32,7 +32,6 @@ import {
 import {
     createEnrichment,
     getPreviewEnrichment,
-    deleteEnrichment,
     updateEnrichment,
 } from '../api/enrichment';
 import { getJobLogs } from '../api/job';
@@ -49,6 +48,7 @@ import {
 import { io } from 'socket.io-client';
 import CancelButton from '../../lib/components/CancelButton';
 import { DEFAULT_TENANT } from '../../../../common/tools/tenantTools';
+import { DeleteEnrichmentButton } from './DeleteEnrichmentButton';
 
 // UTILITARY PART
 const ENRICHMENT_FORM = 'ENRICHMENT_FORM';
@@ -272,22 +272,6 @@ export const EnrichmentForm = ({
             await handleUpdateEnrichment();
         } else {
             await handleAddEnrichment();
-        }
-        setIsLoading(false);
-    };
-
-    const handleDeleteEnrichment = async () => {
-        setIsLoading(true);
-        const res = await deleteEnrichment(initialValues._id);
-        if (res.response) {
-            toast(polyglot.t('enrichment_deleted_success'), {
-                type: toast.TYPE.SUCCESS,
-            });
-            history.push('/data/enrichment');
-        } else {
-            toast(`${res.error}`, {
-                type: toast.TYPE.ERROR,
-            });
         }
         setIsLoading(false);
     };
@@ -529,19 +513,20 @@ export const EnrichmentForm = ({
                     justifyContent={isEditMode ? 'space-between' : 'flex-end'}
                 >
                     {isEditMode && (
-                        <Button
-                            variant="contained"
-                            color="warning"
-                            sx={{ height: '100%' }}
-                            onClick={handleDeleteEnrichment}
+                        <DeleteEnrichmentButton
                             disabled={
                                 enrichmentStatus === IN_PROGRESS ||
                                 enrichmentStatus === PENDING ||
                                 isLoading
                             }
-                        >
-                            {polyglot.t('delete')}
-                        </Button>
+                            id={initialValues._id}
+                            polyglot={polyglot}
+                            onDeleteStart={() => setIsLoading(true)}
+                            onDeleteEnd={() => {
+                                setIsLoading(false);
+                            }}
+                            history={history}
+                        />
                     )}
                     <Box>
                         <CancelButton
