@@ -222,9 +222,8 @@ div.property[class*='Banniere']
     > div.MuiBox-root
     > div
     > div {
-    flex-direction: column !important;
-    height: 25rem;
-    padding: 3rem;
+    min-height: 20rem;
+    padding: 3rem 3rem 4rem;
 }
 div[class*='Banniere'] div.MuiBox-root > div * {
     margin: 0 auto;
@@ -249,11 +248,12 @@ div[class*='BanniereSimple'] div.MuiBox-root {
 div[class*='BanniereSimple'] div.MuiBox-root > div * {
     text-shadow: 0px 0px 2px rgba(0, 0, 0, 0.5);
 }
-div.property[class*='Banniere']
+div.property[class*='BanniereSimple']
     > .property_value_container
     > div.MuiBox-root
     > div
     > div {
+    flex-direction: column !important;
     justify-content: space-around;
 }
 #content div[class*='BanniereSimple'] *:is(h2, h3) {
@@ -271,30 +271,46 @@ div.property[class*='Banniere']
 div.property[class*='BanniereDouble'] {
     background-color: var(--primary-main);
     background-image: var(--banniereDoubleUrl);
-    background-size: 50%;
+    background-size: 50% 30rem;
     background-position: left;
     background-repeat: no-repeat;
 }
+div.property[class*='BanniereDouble'] > .property_value_container > div > div {
+    display: flex;
+    justify-content: flex-end !important;
+    margin: 0;
+    background-color: transparent;
+}
+/*banniere double le texte*/
 div.property[class*='BanniereDouble']
     > .property_value_container
     > div.MuiBox-root
     > div
     > div {
-    max-width: 600px !important;
-    width: 50%;
-    margin: 0 0 0 auto;
+    max-width: 600px;
     background-color: var(--primary-main);
-    justify-content: flex-start;
+    flex-direction: column !important;
+    flex-flow: nowrap;
+    margin: 0 0 !important;
+    padding: 4rem 4rem 5rem !important;
 }
-div.property[class*='BanniereDouble'] .property_value *:is(h2, h3) {
+
+div.property[class*='BanniereDouble']
+    .property[class*='DoubleTexte']
+    .property_value
+    * {
+    color: var(--contrast-light) !important;
+}
+div.property[class*='BanniereDouble'] .property_value *:is(h1, h2, h3) {
     color: var(--contrast-light) !important;
     margin-bottom: 2rem !important;
 }
+
 /**************/
 /* triptyque */
 /**************/
 div.property[class*='Triptyque'] {
-    transform: translateY(-5.5rem);
+    transform: translateY(-3.5rem);
 }
 div.property[class*='Triptyque'] div.MuiBox-root {
     margin: 0 0;
@@ -308,8 +324,6 @@ div.property[class*='Triptyque'] div.MuiBox-root {
     > div.MuiBox-root
     > div
     > div {
-    z-index: 1000;
-    display: flex;
     justify-content: center;
     align-items: flex-start;
     max-width: var(--maxWidth);

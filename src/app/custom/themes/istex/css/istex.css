@@ -286,18 +286,22 @@ footer.site-footer::after {
     max-width: 100% !important;
     padding: 0 0 !important;
 }
-div:is(.graph-page.graph-container, .resource) {
+div:is(.drawer, .graph-page.graph-container, .resource) {
     width: 100%;
-    max-width: var(--maxWidth) !important;
     min-width: 360px;
-    padding: 2rem 5% 4rem;
-    margin: 0 auto 0;
+    margin: 0 auto;
 }
 div.drawer {
-    width: 100%;
-    min-width: 360px;
-    padding: 2rem 15% !important;
-    margin: 0 auto;
+    padding: 2rem 12% !important;
+}
+div:is(.graph-page.graph-container, .resource) {
+    padding: 2rem 0;
+}
+.graph-page.graph-container {
+    max-width: calc(var(--maxWidth) + 10%);
+}
+.resource {
+    max-width: var(--maxWidth);
 }
 /*stucture pour home-page*/
 /*property_label_container*/
@@ -604,6 +608,7 @@ li .facet-value-list .css-qtf05s-MuiButtonBase-root-MuiCheckbox-root {
     display: flex;
     flex-wrap: wrap;
     gap: 16px;
+    justify-content: space-between;
 }
 /*a.search-result-link*/
 .search-result-list-container a {
@@ -671,6 +676,14 @@ li .facet-value-list .css-qtf05s-MuiButtonBase-root-MuiCheckbox-root {
     margin-bottom: 0 !important;
     flex: 1;
 }
+
+.header-resource-section
+    div.property:first-of-type
+    > div.property_value_container
+    h1
+    + div {
+    padding-left: 4rem !important;
+}
 .header-resource-section
     div.property:first-of-type
     > div.property_value_container
@@ -679,10 +692,6 @@ li .facet-value-list .css-qtf05s-MuiButtonBase-root-MuiCheckbox-root {
     > div {
     justify-content: space-between;
     border-left: 0 !important;
-}
-/*bloc header-resource-section*/
-.header-resource-section .property * {
-    padding-left: 1rem;
 }
 /* resource titre*/
 .header-resource-section
