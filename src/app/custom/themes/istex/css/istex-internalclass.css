@@ -313,7 +313,8 @@ div.property[class*='BanniereDouble'] .property_value *:is(h1, h2, h3) {
 /* triptyque */
 /**************/
 div.property[class*='Triptyque'] {
-    transform: translateY(-3.5rem);
+    transform: translateY(-2.5rem);
+    margin-bottom: -2.5rem;
 }
 div.property[class*='Triptyque'] div.MuiBox-root {
     margin: 0 0;
@@ -335,7 +336,7 @@ div.property[class*='designHomeTriptyque'] .property[class*='compose'] {
     width: 33.3%;
     max-width: 400px;
     color: var(--contrast-light);
-    height: 300px;
+    min-height: 200px;
     display: flex;
     flex-direction: column;
     justify-content: center;
