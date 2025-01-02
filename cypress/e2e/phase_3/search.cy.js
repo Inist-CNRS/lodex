@@ -2,6 +2,7 @@ import { teardown } from '../../support/authentication';
 import * as menu from '../../support/menu';
 import * as datasetImportPage from '../../support/datasetImportPage';
 import * as searchDrawer from '../../support/searchDrawer';
+import * as ace from 'ace-builds';
 
 const initSearchDataset =
     (dataset = 'dataset/book_summary.csv', model = 'model/book_summary.json') =>
@@ -161,6 +162,138 @@ describe('Search', () => {
             cy.get('[data-testid="ChevronRightIcon"]').click();
 
             searchDrawer.filterFacet('Première mise en ligne en', '1926');
+        });
+
+        it('should only show facets that are available on user language', () => {
+            menu.openSearchDrawer();
+
+            cy.contains('Première mise en ligne').should('exist');
+            cy.contains('Dernière mise en ligne').should('exist');
+            cy.contains('Couverture').should('exist');
+            cy.contains('Editeur').should('exist');
+            cy.contains('Type').should('exist');
+
+            menu.openAdvancedDrawer();
+            menu.goToAdminDashboard();
+
+            cy.get('.css-gmuwbf > .MuiButtonBase-root').click();
+            cy.get('[aria-label="config"]').click();
+
+            cy.get('#ace-editor').then((editorElement) => {
+                const editor = ace.edit(editorElement[0]);
+                editor.setValue(`{
+  "front": {
+    "theme": {},
+    "breadcrumb": [],
+    "menu": [
+      {
+        "label": {
+          "en": "Home",
+          "fr": "Accueil"
+        },
+        "icon": "faHome",
+        "position": "left",
+        "role": "home"
+      },
+      {
+        "label": {
+          "en": "Graphs",
+          "fr": "Graphiques"
+        },
+        "icon": "faChartArea",
+        "position": "left",
+        "role": "graphs"
+      },
+      {
+        "label": {
+          "en": "Search",
+          "fr": "Recherche"
+        },
+        "icon": "faSearch",
+        "position": "left",
+        "role": "search"
+      },
+      {
+        "label": {
+          "en": "Admin",
+          "fr": "Admin"
+        },
+        "icon": "faCogs",
+        "position": "advanced",
+        "role": "admin"
+      },
+      {
+        "label": {
+          "en": "Sign in",
+          "fr": "Connexion"
+        },
+        "icon": "faSignInAlt",
+        "position": "advanced",
+        "role": "sign-in"
+      },
+      {
+        "label": {
+          "en": "Sign out",
+          "fr": "Déconnexion"
+        },
+        "icon": "faSignOutAlt",
+        "position": "advanced",
+        "role": "sign-out"
+      }
+    ],
+    "advancedMenuButton": {
+      "label": {
+        "en": "More",
+        "fr": "Voir Plus"
+      },
+      "icon": "faBars"
+    },
+    "PDFExportOptions": {
+      "display": false,
+      "maxSize": 100,
+      "logo": "",
+      "title": {
+        "en": "Published dataset",
+        "fr": "Données publiées"
+      },
+      "footer": {
+        "en": "Footer",
+        "fr": "Pied de page"
+      },
+      "highlightColor": "#00ade9"
+    },
+    "maxCheckAllFacetsValue": {
+      "dataset": 60,
+      "search": 200
+    },
+    "multilingual": true
+  }
+}`);
+            });
+
+            cy.get('.container > .MuiButton-contained').click();
+
+            //
+            cy.get('[href="#/display"] > :nth-child(2)').click();
+            cy.get('[href="#/display/document/main"]').click();
+
+            cy.contains('p', 'Type').trigger('mouseenter');
+            cy.get(
+                '[aria-label="edit-Type"] > [data-testid="SettingsIcon"]',
+            ).click();
+            cy.get('#tab-semantics').click();
+            cy.get('.MuiFormControl-root:nth-child(2)').click();
+            cy.get('[data-value="fr"]').click();
+            cy.get('[data-testid="SaveAsIcon"]').click();
+
+            datasetImportPage.goToPublishedResources();
+            menu.openSearchDrawer();
+
+            cy.contains('Première mise en ligne').should('exist');
+            cy.contains('Dernière mise en ligne').should('exist');
+            cy.contains('Couverture').should('exist');
+            cy.contains('Editeur').should('exist');
+            cy.contains('Type').should('not.exist');
         });
 
         it.skip('should allow to sort facet', () => {

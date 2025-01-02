@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
@@ -13,6 +13,7 @@ import { facetActions as searchActions } from '../search/reducer';
 import FacetActionsContext from './FacetActionsContext';
 import { fromFields } from '../../sharedSelectors';
 import FacetItem from './FacetItem';
+import { fromDisplayConfig, fromI18n } from '../selectors';
 
 const styles = stylesToClassname(
     {
@@ -60,6 +61,8 @@ const FacetList = ({
     openFacet,
     sortFacetValue,
     toggleFacetValue,
+    isMultilingual,
+    locale,
 }) => {
     if (!hasFacetFields) {
         return null;
@@ -73,6 +76,14 @@ const FacetList = ({
         toggleFacetValue,
     };
 
+    const filteredFieldsByLocale = useMemo(() => {
+        return fields.filter((field) => {
+            return (
+                !isMultilingual || !field.language || field.language === locale
+            );
+        });
+    }, [locale, fields]);
+
     return (
         <List
             className={classnames(className, styles.list, {
@@ -80,7 +91,7 @@ const FacetList = ({
             })}
         >
             <FacetActionsContext.Provider value={actions}>
-                {fields.map((field) => (
+                {filteredFieldsByLocale.map((field) => (
                     <FacetItem
                         key={`${page}-${field.name}`}
                         field={field}
@@ -111,6 +122,8 @@ FacetList.propTypes = {
 const mapStateToProps = (state) => ({
     hasFacetFields: fromFields.hasFacetFields(state),
     fields: fromFields.getFacetFields(state),
+    isMultilingual: fromDisplayConfig.isMultilingual(state),
+    locale: fromI18n.getLocale(state),
 });
 
 const actionsByPage = {
