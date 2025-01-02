@@ -1171,3 +1171,7 @@
 "treemap_flat_data_type"	"Data structure"	"Structure des données"
 "label_format_fullscreen"	"Full screen"	"Plein écran"
 "label_format_size"	"Size"	"Taille"
+"delete_selected_fields"	"Delete selected fields"	"Supprimer les champs sélectionnés"
+"delete_selected_fields_title"	"The following fields will be deleted"	"Les champs suivants seront supprimés"
+"cancel"	"Cancel"	"Annuler" 
+"select_field"	"Select field"	"Sélectionner le champ" 
