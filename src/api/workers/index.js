@@ -1,6 +1,6 @@
 import Queue from 'bull';
 import { processPublication, PUBLISHER } from './publisher';
-import { processEnrichment, ENRICHER } from './enricher';
+import { processEnrichment, ENRICHER, RETRY_ENRICHER } from './enricher';
 import { processPrecomputed, PRECOMPUTER } from './precomputer';
 import { processImport, IMPORT } from './import';
 
@@ -28,12 +28,15 @@ export const createWorkerQueue = (queueName, concurrency) => {
         },
     });
 
-    workerQueue.process('*', concurrency, async (job, done) => {
+    workerQueue.process('*', concurrency, (job, done) => {
         if (job.data.jobType === PUBLISHER) {
             processPublication(job, done);
         }
+        if (job.data.jobType === RETRY_ENRICHER) {
+            processEnrichment(job, true, done);
+        }
         if (job.data.jobType === ENRICHER) {
-            processEnrichment(job, done);
+            processEnrichment(job, false, done);
         }
         if (job.data.jobType === IMPORT) {
             processImport(job, done);

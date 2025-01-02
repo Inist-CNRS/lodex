@@ -3,8 +3,10 @@ import {
     putEnrichment,
     deleteEnrichment,
     launchAllEnrichment,
+    retryEnrichmentOnFailedRow,
 } from './enrichment';
 import { getActiveJob, cancelJob } from '../../workers/tools';
+import { workerQueues } from '../../workers';
 
 jest.mock('../../workers/tools', () => ({
     getActiveJob: jest.fn(),
@@ -18,6 +20,9 @@ jest.mock('../../workers', () => ({
 }));
 
 describe('Enrichment controller', () => {
+    beforeEach(() => {
+        jest.clearAllMocks();
+    });
     describe('postEnrichment', () => {
         it('should call enrichment create repository method', async () => {
             const ctx = {
@@ -246,6 +251,41 @@ describe('Enrichment controller', () => {
                 2,
                 'PENDING',
                 { jobId: 'job-id' },
+            );
+        });
+    });
+
+    describe('retryEnrichmentOnFailedRow', () => {
+        it('should retrieve given enrichments and create a job to retry failed dataset rows', async () => {
+            jest.mock('../../workers', () => ({
+                workerQueues: {
+                    test: { add: jest.fn(async () => ({ id: 'job-id' })) },
+                },
+            }));
+            const ctx = {
+                enrichment: {
+                    updateStatus: jest.fn(async () => {}),
+                },
+                dataset: {
+                    removeAttribute: jest.fn(async () => {}),
+                },
+                tenant: 'test',
+            };
+
+            await retryEnrichmentOnFailedRow(ctx, 1);
+
+            expect(ctx.dataset.removeAttribute).not.toHaveBeenCalled();
+            expect(ctx.enrichment.updateStatus).toHaveBeenCalledTimes(1);
+            expect(ctx.enrichment.updateStatus).toHaveBeenCalledWith(
+                1,
+                'PENDING',
+                { jobId: 'job-id' },
+            );
+            expect(workerQueues.test.add).toHaveBeenCalledTimes(1);
+            expect(workerQueues.test.add).toHaveBeenCalledWith(
+                'retry-enricher',
+                { id: 1, jobType: 'retry-enricher', tenant: 'test' },
+                { jobId: expect.any(String) },
             );
         });
     });
