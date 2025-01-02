@@ -4,6 +4,7 @@ module.exports = defineConfig({
     e2e: {
         baseUrl: 'http://localhost:3000',
         supportFile: false,
+        experimentalStudio: true,
     },
     viewportWidth: 1000,
     viewportHeight: 1200,
