@@ -146,6 +146,7 @@
         "mui-file-dropzone": "4.0.2",
         "multistream": "4.1.0",
         "node-polyglot": "^2.3.1",
+        "papaparse": "5.4.1",
         "pdfkit": "0.14.0",
         "pm2": "5.3.1",
         "prop-types": "15.8.1",
