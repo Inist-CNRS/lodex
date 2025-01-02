@@ -27,13 +27,15 @@
 </head>
 
 <body>
-<nav class="menuIstex" aria-label="Menu Istex">
-    <div class="container flexrow">
-        <a href="https://www.istex.fr" target="blank" class="accesIstex" title="accès Istex (lien externe)">
+<nav id="navigation-main" class="menuIstex navigation-main" role="navigation" aria-label="Menu Istex">
+        <ul class="menu container menu-haut flexrow">
+            <li
+                    class="accesIstex nav-main-item  menu-item menu-item-type-custom menu-item-object-custom current-menu-item current_page_item menu-item-home menu-item-2651">
+                <a href="https://www.istex.fr" target="blank" title="accès Istex (lien externe)">
             <img src="<%= theme.current.href %>/img/header/leftarrow.png" alt=""> Accès
             Istex.fr
-        </a>
-        <ul class="menu-haut flexrow">
+                </a>
+            </li>
             <li
                     class="nav-main-item  menu-item menu-item-type-custom menu-item-object-custom current-menu-item current_page_item menu-item-home menu-item-2651">
                 <a class="nav-main-link" href="<%= custom.host %>" title="Accueil">Accueil</a>
@@ -51,13 +53,12 @@
                     title="Corpus spécialisés (lien externe)">Corpus spécialisés</a>
             </li>
         </ul>
-    </div>
 </nav>
 <header>
     <div class="banner">
         <div class="container">
             <a href="/">
-                <img src="<%= theme.current.href %>/img/header/istex.png" alt="logo Istex">
+                <img src="<%= theme.current.href %>/img/header/istex.svg" alt="Istex">
                 <h1 class="siteTitle">
                     <%= custom.title %>
                 </h1>

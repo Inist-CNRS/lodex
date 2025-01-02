@@ -126,7 +126,9 @@ div[class*='HomeSidebar'] a:not(:empty):is(:hover, :focus) {
 
 /* Tout les boutons */
 div[class*='Button'] div[class*='property_value'] :is(button, a) {
+    display: inline-flex;
     text-transform: uppercase;
+    margin: 2rem 0.5rem 0;
 }
 
 /* Bouton Primaire Sidebar lodex - MODAL */
@@ -143,13 +145,11 @@ div[class*='HomeSidebar']
 div[class*='ButtonPrimary'] div[class*='property_value'] a,
 div[class*='ButtonSecondary'] div[class*='property_value'] a,
 div[class*='ButtonShadow'] div[class*='property_value'] a {
-    display: inline-flex;
     -webkit-box-align: center;
     align-items: center;
     justify-content: center;
     position: relative;
     box-sizing: border-box;
-    margin: 0;
     padding: 6px 16px;
     border-radius: 4px;
 }
@@ -169,8 +169,8 @@ div[class*='HomeSidebar']
     color: var(--contrast-main) !important;
 }
 
-/* Bouton Secondaire Sidebar lodex - MODAL */
-div[class*='HomeSidebar']
+/* Bouton Secondaire lodex Sidebar banniereDouble */
+div:is([class*='HomeSidebar'], [class*='BanniereDouble'])
     div[class*='ButtonSecondary']
     div[class*='property_value']
     :is(button, a) {
@@ -180,7 +180,7 @@ div[class*='HomeSidebar']
     box-shadow: none !important;
     text-decoration: none;
 }
-div[class*='HomeSidebar']
+div:is([class*='HomeSidebar'], [class*='BanniereDouble'])
     div[class*='ButtonSecondary']
     div[class*='property_value']
     :is(button, a):is(:hover, :focus) {
@@ -188,7 +188,7 @@ div[class*='HomeSidebar']
     color: var(--primary-main) !important;
     border: 1px solid transparent !important;
 }
-div[class*='HomeSidebar']
+div:is([class*='HomeSidebar'], [class*='BanniereDouble'])
     div[class*='ButtonSecondary']
     div[class*='property_value']
     :is(button, a):is(:active) {
@@ -218,7 +218,7 @@ div[class*='ButtonPrimary']
     color: var(--contrast-main) !important;
 }
 
-/* Bouton Secondaire lodex - MODAL */
+/* Bouton Secondaire lodex */
 
 /*page search 'voir plus de résultats*/
 /*MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeMedium MuiButton-textSizeMedium MuiButton-fullWidth MuiButtonBase-root  css-1y2dusp-MuiButtonBase-root-MuiButton-root*/
