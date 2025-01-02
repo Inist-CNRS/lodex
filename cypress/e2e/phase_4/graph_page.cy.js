@@ -3,13 +3,14 @@ import * as datasetImportPage from '../../support/datasetImportPage';
 import * as menu from '../../support/menu';
 import * as graphPage from '../../support/graphPage';
 import * as searchDrawer from '../../support/searchDrawer';
+import * as path from 'path';
 
 describe('Graph Page', () => {
     beforeEach(() => {
         // ResizeObserver doesn't like when the app has to many renders / re-renders
         // and throws an exception to say, "I wait for the next paint"
         // https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver#observation_errors
-        cy.on('uncaught:exception', error => {
+        cy.on('uncaught:exception', (error) => {
             return !error.message.includes('ResizeObserver');
         });
 
@@ -90,5 +91,18 @@ describe('Graph Page', () => {
             .getFacetExcludeItem('Publication Year')
             .find('input[type=checkbox]')
             .should('be.checked');
+    });
+
+    it('should support export as csv', () => {
+        menu.openChartDrawer();
+        menu.goToChart('Bar Chart');
+
+        cy.wait(1000);
+        cy.get('.vega-embed.has-actions details summary').click();
+        cy.get('.vega-export-csv').should('be.visible');
+        cy.get('.vega-export-csv').click();
+
+        const downloadsFolder = Cypress.config('downloadsFolder');
+        cy.readFile(path.join(downloadsFolder, 'export.csv')).should('exist');
     });
 });

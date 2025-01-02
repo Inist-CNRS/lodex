@@ -2,7 +2,6 @@ import { Vega } from 'react-vega';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { isAdmin } from '../../../../user';
 import deepClone from 'lodash/cloneDeep';
 import {
     VEGA_DATA_INJECT_TYPE_A,
@@ -11,6 +10,11 @@ import {
 } from '../../chartsUtils';
 import { ASPECT_RATIO_NONE, ASPECT_RATIOS } from '../../aspectRatio';
 import FormatFullScreenMode from '../FormatFullScreenMode';
+import { useVegaActions } from '../useVegaActions';
+import { useVegaCsvExport } from '../useVegaCsvExport';
+import translate from 'redux-polyglot/translate';
+import { polyglot as polyglotPropTypes } from '../../../../propTypes';
+import { compose } from 'recompose';
 
 /**
  * small component use to handle vega lite display
@@ -18,28 +22,8 @@ import FormatFullScreenMode from '../FormatFullScreenMode';
  * @returns {*} React-Vega component
  */
 function CustomActionVega(props) {
-    let actions;
-    if (isAdmin(props.user)) {
-        actions = {
-            export: {
-                svg: true,
-                png: true,
-            },
-            source: true,
-            compiled: true,
-            editor: true,
-        };
-    } else {
-        actions = {
-            export: {
-                svg: true,
-                png: true,
-            },
-            source: false,
-            compiled: false,
-            editor: false,
-        };
-    }
+    const actions = useVegaActions(props.user);
+    const graphParentRef = useVegaCsvExport(props.p, props.data);
 
     const spec = props.spec;
 
@@ -84,16 +68,18 @@ function CustomActionVega(props) {
     return (
         <FormatFullScreenMode>
             <style>{'#vg-tooltip-element {z-index:99999}'}</style>
-            <Vega
-                style={
-                    props.aspectRatio === ASPECT_RATIO_NONE
-                        ? { width: '100%' }
-                        : { width: '100%', aspectRatio: props.aspectRatio }
-                }
-                spec={deepClone(props.spec)}
-                actions={actions}
-                mode="vega"
-            />
+            <div ref={graphParentRef} style={{ width: '100%', height: '100%' }}>
+                <Vega
+                    style={
+                        props.aspectRatio === ASPECT_RATIO_NONE
+                            ? { width: '100%' }
+                            : { width: '100%', aspectRatio: props.aspectRatio }
+                    }
+                    spec={deepClone(props.spec)}
+                    actions={actions}
+                    mode="vega"
+                />
+            </div>
         </FormatFullScreenMode>
     );
 }
@@ -112,6 +98,7 @@ CustomActionVega.propTypes = {
     data: PropTypes.any,
     injectType: PropTypes.number.isRequired,
     aspectRatio: PropTypes.oneOf(ASPECT_RATIOS),
+    p: polyglotPropTypes.isRequired,
 };
 
 /**
@@ -125,4 +112,4 @@ const mapStateToProps = (state) => {
     };
 };
 
-export default connect(mapStateToProps)(CustomActionVega);
+export default compose(connect(mapStateToProps), translate)(CustomActionVega);
