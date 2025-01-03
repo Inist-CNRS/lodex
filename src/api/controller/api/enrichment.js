@@ -12,6 +12,8 @@ import {
 } from '../../services/enrichment/enrichment';
 import { cancelJob, getActiveJob } from '../../workers/tools';
 import { getLocale } from 'redux-polyglot/dist/selectors';
+import { orderEnrichmentsByDependencies } from '../../services/orderEnrichmentsByDependencies';
+import enrichment from '../../../app/js/admin/enrichment';
 
 export const setup = async (ctx, next) => {
     try {
@@ -167,8 +169,9 @@ export const enrichmentDataPreview = async (ctx) => {
 
 export const launchAllEnrichment = async (ctx) => {
     const enrichments = await ctx.enrichment.findAll();
+    const orderedEnrichments = orderEnrichmentsByDependencies(enrichments);
 
-    for (const enrichment of enrichments) {
+    for (const [i, enrichment] of orderedEnrichments.entries()) {
         if (enrichment.status === 'FINISHED') {
             await ctx.dataset.removeAttribute(enrichment.name);
         }
@@ -180,7 +183,7 @@ export const launchAllEnrichment = async (ctx) => {
                     jobType: ENRICHER,
                     tenant: ctx.tenant,
                 },
-                { jobId: uuid() },
+                { jobId: uuid(), lifo: false },
             )
             .then((job) => setEnrichmentJobId(ctx, enrichment._id, job));
     }
