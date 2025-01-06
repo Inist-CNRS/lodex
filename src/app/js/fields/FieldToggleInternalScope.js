@@ -18,12 +18,10 @@ export const FieldToggleInternalScopeComponent = ({ input, p: polyglot }) => {
 
     React.useEffect(() => {
         setValues((currentValues) => {
-            console.log('currentValues', currentValues);
             if (currentValues.length > 0) {
                 return currentValues;
             }
 
-            console.log('matches', matches);
             if (matches.params.filter === 'dataset') {
                 return ['home'];
             }
