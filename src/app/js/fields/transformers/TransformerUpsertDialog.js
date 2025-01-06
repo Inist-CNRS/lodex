@@ -17,11 +17,13 @@ import {
     Typography,
     DialogActions,
     ListItemButton,
+    Link,
 } from '@mui/material';
 
 import TransformerArg from './TransformerArg';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import CancelButton from '../../lib/components/CancelButton';
+import MenuBookIcon from '@mui/icons-material/MenuBook';
 
 const TransformerUpsertDialog = ({
     availableTransformers,
@@ -110,13 +112,29 @@ const TransformerUpsertDialog = ({
                                     }}
                                     selected={state.selected}
                                 >
-                                    <Typography>{option}</Typography>
+                                    <Typography
+                                        display="flex"
+                                        justifyContent="center"
+                                        gap={1}
+                                    >
+                                        {option.name}
+                                        <Link
+                                            href={option.docUrl}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            onClick={(e) => e.stopPropagation()}
+                                        >
+                                            <MenuBookIcon />
+                                        </Link>
+                                    </Typography>
                                     <Typography
                                         variant="body2"
                                         color="textSecondary"
                                         sx={{ width: '100%' }}
                                     >
-                                        {polyglot.t(`transformer_${option}`)}
+                                        {polyglot.t(
+                                            `transformer_${option.name}`,
+                                        )}
                                     </Typography>
                                 </ListItemButton>
                             );
@@ -168,9 +186,7 @@ TransformerUpsertDialog.propTypes = {
 };
 
 const mapStateToProps = (state, { type }) => ({
-    availableTransformers: fromFields
-        .getTransformers(state, type)
-        .map((transformer) => transformer.name),
+    availableTransformers: fromFields.getTransformers(state, type),
 });
 
 export default compose(
