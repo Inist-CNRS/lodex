@@ -1,4 +1,4 @@
-FROM node:18.19-alpine AS build
+FROM node:20.18-alpine AS build
 RUN apk add --no-cache make gcc g++ python3 bash git openssh jq
 WORKDIR /app
 COPY ./package.json /app
