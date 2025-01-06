@@ -122,20 +122,22 @@ const TransformerUpsertDialog = ({
                                             `transformer_${option.name}`,
                                         )}
                                     </Typography>
-                                    <Link
-                                        style={{
-                                            display: 'flex',
-                                            alignSelf: 'flex-end',
-                                        }}
-                                        justifyContent="flex-end"
-                                        display="flex"
-                                        href={option.docUrl}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        onClick={(e) => e.stopPropagation()}
-                                    >
-                                        <MenuBookIcon />
-                                    </Link>
+                                    {option.docUrl && (
+                                        <Link
+                                            style={{
+                                                display: 'flex',
+                                                alignSelf: 'flex-end',
+                                            }}
+                                            justifyContent="flex-end"
+                                            display="flex"
+                                            href={option.docUrl}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            onClick={(e) => e.stopPropagation()}
+                                        >
+                                            <MenuBookIcon />
+                                        </Link>
+                                    )}
                                 </ListItemButton>
                             );
                         }}
