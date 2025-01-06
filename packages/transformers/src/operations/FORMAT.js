@@ -1,6 +1,6 @@
 import { vsprintf } from 'sprintf-js';
 import { rawTransformerWithArg } from './transformer';
-import documentationByOperation from './documentationByOperation.json';
+import documentationByOperation from './documentationByOperation';
 
 export const format = (value, tpl) => {
     if (!value) {

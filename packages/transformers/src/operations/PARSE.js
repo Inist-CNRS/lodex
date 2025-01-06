@@ -1,5 +1,5 @@
 import { rawTransformerWithoutArg } from './transformer';
-import documentationByOperation from './documentationByOperation.json';
+import documentationByOperation from './documentationByOperation';
 
 export const parse = (value) => {
     if (typeof value !== 'string') {

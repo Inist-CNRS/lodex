@@ -1,4 +1,4 @@
-import documentationByOperation from './documentationByOperation.json';
+import documentationByOperation from './documentationByOperation';
 
 const transformation = (_, args) => {
     const sourceField = args.find((a) => a.name === 'column');

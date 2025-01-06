@@ -1,5 +1,5 @@
 import { transformer } from './transformer';
-import documentationByOperation from './documentationByOperation.json';
+import documentationByOperation from './documentationByOperation';
 
 export const valueToURLEncode = (value) =>
     typeof value === 'string' ? encodeURIComponent(value) : null;

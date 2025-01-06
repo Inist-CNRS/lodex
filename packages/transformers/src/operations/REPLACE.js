@@ -1,5 +1,5 @@
 import { transformerWithTwoArgs } from './transformer';
-import documentationByOperation from './documentationByOperation.json';
+import documentationByOperation from './documentationByOperation';
 
 export const replace = (value, searchValue, replaceValue) =>
     typeof value === 'string'

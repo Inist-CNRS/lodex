@@ -1,5 +1,5 @@
 import { transformerWithArg } from './transformer';
-import documentationByOperation from './documentationByOperation.json';
+import documentationByOperation from './documentationByOperation';
 
 export const truncateWords = (value, gap) => {
     const words = String(value).split(/\s+/);

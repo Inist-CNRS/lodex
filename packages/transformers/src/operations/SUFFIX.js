@@ -1,5 +1,5 @@
 import { transformerWithArg } from './transformer';
-import documentationByOperation from './documentationByOperation.json';
+import documentationByOperation from './documentationByOperation';
 
 export const suffix = (value, str) =>
     typeof value === 'string' ? value.concat(str) : value;

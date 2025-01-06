@@ -1,5 +1,5 @@
 import { rawTransformerWithArg } from './transformer';
-import documentationByOperation from './documentationByOperation.json';
+import documentationByOperation from './documentationByOperation';
 
 const isEmpty = (value) =>
     String(value).trim() === '' || value === null || value === undefined;

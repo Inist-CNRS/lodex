@@ -1,5 +1,5 @@
 import { transformer } from './transformer';
-import documentationByOperation from './documentationByOperation.json';
+import documentationByOperation from './documentationByOperation';
 
 export const valueToBoolean = (value) => {
     if (!value) {

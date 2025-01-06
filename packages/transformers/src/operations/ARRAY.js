@@ -1,5 +1,5 @@
 import { rawTransformerWithoutArg } from './transformer';
-import documentationByOperation from './documentationByOperation.json';
+import documentationByOperation from './documentationByOperation';
 
 export const valueToArray = (value) => {
     const arr = Array.isArray(value) ? value : [value];

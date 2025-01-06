@@ -1,7 +1,7 @@
 import CONCAT from './CONCAT';
 import JOIN from './JOIN';
 import composeTransformers from './composeTransformers';
-import documentationByOperation from './documentationByOperation.json';
+import documentationByOperation from './documentationByOperation';
 
 const transformation = (context, args) =>
     composeTransformers([

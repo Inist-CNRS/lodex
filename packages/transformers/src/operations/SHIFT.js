@@ -1,5 +1,5 @@
 import { rawTransformerWithArg } from './transformer';
-import documentationByOperation from './documentationByOperation.json';
+import documentationByOperation from './documentationByOperation';
 
 export const shift = (value, arg) => {
     if (!value) {
