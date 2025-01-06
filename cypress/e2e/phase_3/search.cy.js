@@ -2,6 +2,8 @@ import { teardown } from '../../support/authentication';
 import * as menu from '../../support/menu';
 import * as datasetImportPage from '../../support/datasetImportPage';
 import * as searchDrawer from '../../support/searchDrawer';
+import * as fields from '../../support/fields';
+import * as settings from '../../support/settings';
 
 const initSearchDataset =
     (dataset = 'dataset/book_summary.csv', model = 'model/book_summary.json') =>
@@ -161,6 +163,35 @@ describe('Search', () => {
             cy.get('[data-testid="ChevronRightIcon"]').click();
 
             searchDrawer.filterFacet('Première mise en ligne en', '1926');
+        });
+
+        it('should only show facets that are available on user language', () => {
+            menu.openSearchDrawer();
+
+            cy.contains('Première mise en ligne').should('exist');
+            cy.contains('Dernière mise en ligne').should('exist');
+            cy.contains('Couverture').should('exist');
+            cy.contains('Editeur').should('exist');
+            cy.contains('Type').should('exist');
+
+            menu.openAdvancedDrawer();
+            menu.goToAdminDashboard();
+
+            settings.enableMultilingual();
+
+            cy.get('[href="#/display"] > :nth-child(2)').click();
+            cy.get('[href="#/display/document/main"]').click();
+
+            fields.setFieldLanguage('Type', 'fr');
+
+            datasetImportPage.goToPublishedResources();
+            menu.openSearchDrawer();
+
+            cy.contains('Première mise en ligne').should('exist');
+            cy.contains('Dernière mise en ligne').should('exist');
+            cy.contains('Couverture').should('exist');
+            cy.contains('Editeur').should('exist');
+            cy.contains('Type').should('not.exist');
         });
 
         it.skip('should allow to sort facet', () => {
