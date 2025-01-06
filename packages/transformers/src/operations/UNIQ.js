@@ -1,6 +1,7 @@
 import uniq from 'lodash/uniq';
+import documentationByOperation from './documentationByOperation.json';
 
-export const uniqArray = value => {
+export const uniqArray = (value) => {
     if (value === null || typeof value === 'undefined') {
         return null;
     }
@@ -16,7 +17,7 @@ export const uniqArray = value => {
     return value;
 };
 
-const transformation = () => value =>
+const transformation = () => (value) =>
     new Promise((resolve, reject) => {
         try {
             resolve(uniqArray(value));
@@ -29,6 +30,7 @@ transformation.getMetas = () => ({
     name: 'UNIQ',
     type: 'transform',
     args: [],
+    docUrl: documentationByOperation['UNIQ'],
 });
 
 export default transformation;

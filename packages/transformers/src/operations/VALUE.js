@@ -1,9 +1,11 @@
-const isUndefinedOrEmpty = value =>
+import documentationByOperation from './documentationByOperation.json';
+
+const isUndefinedOrEmpty = (value) =>
     typeof value === 'undefined' || value === '';
 
 const transformation = (_, args) => () =>
     new Promise((resolve, reject) => {
-        const valueArg = args.find(a => a.name === 'value');
+        const valueArg = args.find((a) => a.name === 'value');
 
         if (!valueArg || isUndefinedOrEmpty(valueArg.value)) {
             return reject(
@@ -23,6 +25,7 @@ transformation.getMetas = () => ({
             type: 'string',
         },
     ],
+    docUrl: documentationByOperation['VALUE'],
 });
 
 export default transformation;

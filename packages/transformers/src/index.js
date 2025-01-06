@@ -173,5 +173,5 @@ export const transformersMetas = [
     MAPPING,
     PRECOMPUTED,
 ]
-    .map(transformation => transformation.getMetas())
+    .map((transformation) => transformation.getMetas())
     .sort((x, y) => x.name.localeCompare(y.name));

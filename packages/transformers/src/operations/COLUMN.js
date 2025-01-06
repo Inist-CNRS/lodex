@@ -1,11 +1,13 @@
+import documentationByOperation from './documentationByOperation.json';
+
 const transformation = (_, args) => {
-    const sourceField = args.find(a => a.name === 'column');
+    const sourceField = args.find((a) => a.name === 'column');
 
     if (!sourceField) {
         throw new Error('Invalid Argument for COLUMN transformation');
     }
 
-    return doc =>
+    return (doc) =>
         new Promise((resolve, reject) => {
             try {
                 if (!doc) {
@@ -28,6 +30,7 @@ transformation.getMetas = () => ({
             type: 'column',
         },
     ],
+    docUrl: documentationByOperation['COLUMN'],
 });
 
 export default transformation;

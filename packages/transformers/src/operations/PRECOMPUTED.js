@@ -1,9 +1,11 @@
-const isUndefinedOrEmpty = value =>
+import documentationByOperation from './documentationByOperation.json';
+
+const isUndefinedOrEmpty = (value) =>
     typeof value === 'undefined' || value === '';
 
 const transformation = (_, args) => () =>
     new Promise((resolve, reject) => {
-        const precomputedArg = args.find(a => a.name === 'precomputed');
+        const precomputedArg = args.find((a) => a.name === 'precomputed');
 
         if (!precomputedArg || isUndefinedOrEmpty(precomputedArg.value)) {
             return reject(
@@ -11,7 +13,7 @@ const transformation = (_, args) => () =>
             );
         }
 
-        const routineArg = args.find(a => a.name === 'routine');
+        const routineArg = args.find((a) => a.name === 'routine');
 
         if (!routineArg || isUndefinedOrEmpty(routineArg.value)) {
             return reject(
@@ -37,6 +39,7 @@ transformation.getMetas = () => ({
             type: 'string',
         },
     ],
+    docUrl: documentationByOperation['PRECOMPUTED'],
 });
 
 export default transformation;

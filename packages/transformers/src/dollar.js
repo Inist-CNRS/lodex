@@ -1,6 +1,12 @@
 import _ from 'lodash';
 
-export default async function dollar(statement, data, feed, transformer, useAllfields) {
+export default async function dollar(
+    statement,
+    data,
+    feed,
+    transformer,
+    useAllfields,
+) {
     if (statement.isLast()) {
         return feed.close();
     }
@@ -26,7 +32,10 @@ export default async function dollar(statement, data, feed, transformer, useAllf
     }
 
     const source = data.$origin || data;
-    const input = (useAllfields && source) || _.get(source, field) || _.get(data, field, null);
+    const input =
+        (useAllfields && source) ||
+        _.get(source, field) ||
+        _.get(data, field, null);
     const output = await transformer(input, statement.values)(input);
 
     if (!data.$origin) {

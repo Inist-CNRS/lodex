@@ -8,7 +8,7 @@ export const select = (value, path) => {
     return get(value, path, '');
 };
 
-const transformation = (_, args) => value =>
+const transformation = (_, args) => (value) =>
     rawTransformerWithArg(select, 'path', value, args);
 
 transformation.getMetas = () => ({
