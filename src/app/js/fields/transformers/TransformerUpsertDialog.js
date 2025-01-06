@@ -112,21 +112,7 @@ const TransformerUpsertDialog = ({
                                     }}
                                     selected={state.selected}
                                 >
-                                    <Typography
-                                        display="flex"
-                                        justifyContent="center"
-                                        gap={1}
-                                    >
-                                        {option.name}
-                                        <Link
-                                            href={option.docUrl}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            onClick={(e) => e.stopPropagation()}
-                                        >
-                                            <MenuBookIcon />
-                                        </Link>
-                                    </Typography>
+                                    <Typography>{option.name}</Typography>
                                     <Typography
                                         variant="body2"
                                         color="textSecondary"
@@ -136,6 +122,20 @@ const TransformerUpsertDialog = ({
                                             `transformer_${option.name}`,
                                         )}
                                     </Typography>
+                                    <Link
+                                        style={{
+                                            display: 'flex',
+                                            alignSelf: 'flex-end',
+                                        }}
+                                        justifyContent="flex-end"
+                                        display="flex"
+                                        href={option.docUrl}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        onClick={(e) => e.stopPropagation()}
+                                    >
+                                        <MenuBookIcon />
+                                    </Link>
                                 </ListItemButton>
                             );
                         }}
