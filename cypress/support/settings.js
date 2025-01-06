@@ -1,5 +1,3 @@
-import * as ace from 'ace-builds';
-
 export function enableMultilingual() {
     cy.get('.css-gmuwbf > .MuiButtonBase-root').click();
     cy.get('[aria-label="config"]').click();

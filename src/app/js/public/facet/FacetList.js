@@ -78,7 +78,6 @@ const FacetList = ({
 
     const filteredFieldsByLocale = useMemo(() => {
         return fields.filter((field) => {
-            console.log('field', isMultilingual, locale, field.language);
             return (
                 !isMultilingual || !field.language || field.language === locale
             );
