@@ -1171,3 +1171,4 @@
 "treemap_flat_data_type"	"Data structure"	"Structure des données"
 "label_format_fullscreen"	"Full screen"	"Plein écran"
 "label_format_size"	"Size"	"Taille"
+"export_csv"	"Save as CSV"	"Sauvegarder en CSV"
