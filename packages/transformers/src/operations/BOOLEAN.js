@@ -1,6 +1,7 @@
 import { transformer } from './transformer';
+import documentationByOperation from './documentationByOperation';
 
-export const valueToBoolean = value => {
+export const valueToBoolean = (value) => {
     if (!value) {
         return false;
     }
@@ -27,12 +28,13 @@ export const valueToBoolean = value => {
     return false;
 };
 
-const transformation = () => value => transformer(valueToBoolean, value);
+const transformation = () => (value) => transformer(valueToBoolean, value);
 
 transformation.getMetas = () => ({
     name: 'BOOLEAN',
     type: 'transform',
     args: [],
+    docUrl: documentationByOperation['BOOLEAN'],
 });
 
 export default transformation;

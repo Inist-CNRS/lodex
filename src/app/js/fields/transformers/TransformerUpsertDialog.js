@@ -17,14 +17,83 @@ import {
     Typography,
     DialogActions,
     ListItemButton,
+    Link,
 } from '@mui/material';
 
 import TransformerArg from './TransformerArg';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import CancelButton from '../../lib/components/CancelButton';
+import MenuBookIcon from '@mui/icons-material/MenuBook';
+
+export const TransformerItem = ({
+    selected,
+    name,
+    docUrl,
+    polyglot,
+    ...props
+}) => {
+    return (
+        <ListItemButton
+            {...props}
+            sx={{
+                cursor: 'pointer',
+                '&:hover': {
+                    backgroundColor: 'var(--neutral-dark-very-light)',
+                },
+                display: 'flex',
+                flexDirection: 'column',
+                borderBottom: `1px solid var(--neutral-dark-light)`,
+                '&:last-child': {
+                    borderBottom: 'none',
+                },
+                '&.MuiAutocomplete-option[aria-selected="true"].Mui-selected': {
+                    backgroundColor: 'var(--primary-secondary)',
+                    '&:hover': {
+                        backgroundColor: 'var(--primary-main)',
+                    },
+                },
+            }}
+            selected={selected}
+        >
+            <Typography>{name}</Typography>
+            <Typography
+                variant="body2"
+                color="textSecondary"
+                sx={{ width: '100%' }}
+            >
+                {polyglot.t(`transformer_${name}`)}
+            </Typography>
+            {docUrl && (
+                <Link
+                    style={{
+                        display: 'flex',
+                        alignSelf: 'flex-end',
+                    }}
+                    justifyContent="flex-end"
+                    display="flex"
+                    href={docUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={polyglot.t('tooltip_documentation')}
+                    onClick={(e) => e.stopPropagation()}
+                >
+                    <MenuBookIcon />
+                </Link>
+            )}
+        </ListItemButton>
+    );
+};
+
+TransformerItem.propTypes = {
+    selected: PropTypes.bool.isRequired,
+    name: PropTypes.string.isRequired,
+    docUrl: PropTypes.string,
+    polyglot: polyglotPropTypes.isRequired,
+};
 
 const TransformerUpsertDialog = ({
     availableTransformers,
+    docUrlByTransformer,
     fields,
     indexFieldToEdit = null,
     isOpen = false,
@@ -84,41 +153,14 @@ const TransformerUpsertDialog = ({
                         )}
                         renderOption={(props, option, state) => {
                             return (
-                                <ListItemButton
+                                <TransformerItem
                                     {...props}
-                                    sx={{
-                                        cursor: 'pointer',
-                                        '&:hover': {
-                                            backgroundColor:
-                                                'var(--neutral-dark-very-light)',
-                                        },
-                                        display: 'flex',
-                                        flexDirection: 'column',
-                                        borderBottom: `1px solid var(--neutral-dark-light)`,
-                                        '&:last-child': {
-                                            borderBottom: 'none',
-                                        },
-                                        '&.MuiAutocomplete-option[aria-selected="true"].Mui-selected':
-                                            {
-                                                backgroundColor:
-                                                    'var(--primary-secondary)',
-                                                '&:hover': {
-                                                    backgroundColor:
-                                                        'var(--primary-main)',
-                                                },
-                                            },
-                                    }}
+                                    key={option}
+                                    name={option}
+                                    docUrl={docUrlByTransformer[option]}
                                     selected={state.selected}
-                                >
-                                    <Typography>{option}</Typography>
-                                    <Typography
-                                        variant="body2"
-                                        color="textSecondary"
-                                        sx={{ width: '100%' }}
-                                    >
-                                        {polyglot.t(`transformer_${option}`)}
-                                    </Typography>
-                                </ListItemButton>
+                                    polyglot={polyglot}
+                                />
                             );
                         }}
                     />
@@ -156,6 +198,7 @@ const TransformerUpsertDialog = ({
 
 TransformerUpsertDialog.propTypes = {
     availableTransformers: PropTypes.array,
+    docUrlByTransformer: PropTypes.objectOf(PropTypes.string).isRequired,
     fields: PropTypes.shape({
         get: PropTypes.func.isRequired,
         push: PropTypes.func.isRequired,
@@ -167,11 +210,19 @@ TransformerUpsertDialog.propTypes = {
     p: polyglotPropTypes.isRequired,
 };
 
-const mapStateToProps = (state, { type }) => ({
-    availableTransformers: fromFields
-        .getTransformers(state, type)
-        .map((transformer) => transformer.name),
-});
+const mapStateToProps = (state, { type }) => {
+    const transformers = fromFields.getTransformers(state, type);
+    return {
+        availableTransformers: transformers.map(({ name }) => name),
+        docUrlByTransformer: transformers.reduce(
+            (acc, { name, docUrl }) => ({
+                ...acc,
+                [name]: docUrl,
+            }),
+            {},
+        ),
+    };
+};
 
 export default compose(
     connect(mapStateToProps, null),

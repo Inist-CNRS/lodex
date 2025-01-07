@@ -1,20 +1,22 @@
+import documentationByOperation from './documentationByOperation';
+
 const transformation = (_, args) => {
     const sourceFields = args
-        .filter(a => a.name.slice(0, 6) === 'column')
+        .filter((a) => a.name.slice(0, 6) === 'column')
         .map(({ value }) => value);
 
     if (!sourceFields) {
         throw new Error('Invalid Argument for CONCAT transformation');
     }
 
-    return doc =>
+    return (doc) =>
         new Promise((resolve, reject) => {
             try {
                 if (!doc) {
                     resolve(null);
                     return;
                 }
-                resolve(sourceFields.map(name => doc[name]));
+                resolve(sourceFields.map((name) => doc[name]));
             } catch (error) {
                 reject(error);
             }
@@ -34,6 +36,7 @@ transformation.getMetas = () => ({
             type: 'columns',
         },
     ],
+    docUrl: documentationByOperation['CONCAT'],
 });
 
 export default transformation;

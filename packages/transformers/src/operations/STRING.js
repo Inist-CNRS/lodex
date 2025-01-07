@@ -1,6 +1,7 @@
 import { transformer } from './transformer';
+import documentationByOperation from './documentationByOperation';
 
-export const valueToString = value => {
+export const valueToString = (value) => {
     if (value === null || typeof value === 'undefined') {
         return '';
     }
@@ -16,12 +17,13 @@ export const valueToString = value => {
     return String(value).trim();
 };
 
-const transformation = () => value => transformer(valueToString, value);
+const transformation = () => (value) => transformer(valueToString, value);
 
 transformation.getMetas = () => ({
     name: 'STRING',
     type: 'transform',
     args: [],
+    docUrl: documentationByOperation['STRING'],
 });
 
 export default transformation;

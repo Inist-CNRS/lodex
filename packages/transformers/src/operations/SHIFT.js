@@ -1,4 +1,5 @@
 import { rawTransformerWithArg } from './transformer';
+import documentationByOperation from './documentationByOperation';
 
 export const shift = (value, arg) => {
     if (!value) {
@@ -10,13 +11,14 @@ export const shift = (value, arg) => {
         : gap - value;
 };
 
-const transformation = (_, args) => value =>
+const transformation = (_, args) => (value) =>
     rawTransformerWithArg(shift, 'gap', value, args);
 
 transformation.getMetas = () => ({
     name: 'SHIFT',
     type: 'transform',
     args: [{ name: 'gap', type: 'number' }],
+    docUrl: documentationByOperation['SHIFT'],
 });
 
 export default transformation;

@@ -18,7 +18,7 @@ import {
     Tooltip,
     Link,
 } from '@mui/material';
-import SettingsEthernetIcon from '@mui/icons-material/SettingsEthernet';
+import MenuBookIcon from '@mui/icons-material/MenuBook';
 import CancelButton from '../lib/components/CancelButton';
 
 const FormatCatalogDescription = ({ format, polyglot }) => {
@@ -26,15 +26,15 @@ const FormatCatalogDescription = ({ format, polyglot }) => {
         <React.Fragment>
             <Typography>{polyglot.t(`${format.description}`)}</Typography>
             <Box justifyContent="flex-end" display="flex" mt={2}>
-                {format.doc && (
+                {format.docUrl && (
                     <Tooltip title={polyglot.t(`tooltip_documentation`)}>
                         <Link
-                            href={format.doc}
+                            href={format.docUrl}
                             target="_blank"
                             rel="noopener noreferrer"
                             onClick={(e) => e.stopPropagation()}
                         >
-                            <SettingsEthernetIcon />
+                            <MenuBookIcon />
                         </Link>
                     </Tooltip>
                 )}
@@ -175,7 +175,7 @@ export const FormatCatalog = ({
 FormatCatalogDescription.propTypes = {
     format: PropTypes.shape({
         description: PropTypes.string.isRequired,
-        doc: PropTypes.string,
+        docUrl: PropTypes.string,
     }).isRequired,
     polyglot: polyglotPropTypes.isRequired,
 };

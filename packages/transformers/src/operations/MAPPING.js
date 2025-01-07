@@ -1,5 +1,6 @@
 import JSON6 from 'json-6';
 import { transformerWithArg } from './transformer';
+import documentationByOperation from './documentationByOperation';
 
 export const mapping = (value, input) => {
     const template = typeof input === 'string' ? input : input.toString();
@@ -25,6 +26,7 @@ transformation.getMetas = () => ({
     name: 'MAPPING',
     type: 'transform',
     args: [{ name: 'list', type: 'string' }],
+    docUrl: documentationByOperation['MAPPING'],
 });
 
 export default transformation;
