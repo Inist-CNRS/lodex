@@ -706,7 +706,7 @@
 "cancelEnrichmentTitle"	"Cancel running enrichment ?"	"Annuler l'enrichissement en cours ?"
 "cancelEnrichmentContent"	"By cancelling running enrichment, you also clear already enriched data."	"En annulant l'enrichissement en cours, vous supprimerez également les données déjà enrichies."
 "confirm_enrichment_deletion_title"	"Are you sure you want to delete this enrichment ?"	"Êtes-vous sûr de vouloir supprimer cet enrichissement ?"
-"confirm_enrichment_deletion_description"	"By deleting this enrichment, you also clear corresponding enriched data."	"En annulant l'enrichissement en cours, vous supprimerez également les données enrichies correspondantes."
+"confirm_enrichment_deletion_description"	"By deleting this enrichment, you also clear corresponding enriched data."	"En supprimant cet enrichissement, vous supprimerez également les données enrichies correspondantes."
 "cancelPrecomputerTitle"	"Cancel running precomputing ?"	"Annuler le précalcul en cours ?"
 "cancelPrecomputerContent"	"Confirm cancelling of running precomputing."	"Confirmer l'annulation du précalcul en cours."
 "advancedModePreviewInfo"	"Source preview replaces [URLConnect] with [transit] and runs your ini file, as if all instructions were executed, except the call to web services."	"L'aperçu de la source remplace [URLConnect] par [transit] et exécute votre fichier ini, comme si toutes les instructions étaient exécutées, sauf l'appel aux services web."
