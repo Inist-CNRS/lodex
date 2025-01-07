@@ -344,7 +344,7 @@ class Hierarchy extends PureComponent {
                         (d._children ? ' node--collapsed' : '')
                     );
                 })
-                .on('click', (d) => {
+                .on('click', (_event, d) => {
                     this.click(d, this.tree);
                 })
                 .attr('transform', function (d) {
@@ -431,66 +431,65 @@ class Hierarchy extends PureComponent {
             // Animation functions for mouse on and off events.
             this.g()
                 .selectAll('.node--leaf-g')
-                .on('mouseover', (d, i, nodes) => {
-                    this.handleMouseOver(d, i, nodes);
+                .on('mouseover', (event, node) => {
+                    this.handleMouseOver(event, node);
                 })
-                .on('mouseout', (d, i, nodes) => {
-                    this.handleMouseOut(d, i, nodes);
+                .on('mouseout', (event, node) => {
+                    this.handleMouseOut(event, node);
                 });
 
             this.g()
                 .selectAll('.node--internal')
-                .on('mouseover', (d, i, nodes) => {
-                    this.handleMouseOverInternalNode(d, i, nodes);
+                .on('mouseover', (event, node) => {
+                    this.handleMouseOverInternalNode(event, node);
                 })
-                .on('mouseout', (d, i, nodes) => {
-                    this.handleMouseOutInternalNode(d, i, nodes);
+                .on('mouseout', (event, node) => {
+                    this.handleMouseOutInternalNode(event, node);
                 });
         }
     }
 
-    handleMouseOver(d, i, nodes) {
-        let leafG = d3.select(nodes[i]);
+    handleMouseOver(event, node) {
+        let leafG = d3.select(event.target);
 
         leafG.select('rect').attr('stroke-width', '2');
         this.tooltip().style('opacity', 1);
 
         this.tooltip()
-            .html(`${d.id} : ${d.data.weight.toFixed(0)} document(s)`)
-            .style('left', d3.event.layerX + 'px')
-            .style('top', d3.event.layerY - 28 + 'px');
+            .html(`${node.id} : ${node.data.weight.toFixed(0)} document(s)`)
+            .style('left', event.layerX + 'px')
+            .style('top', event.layerY - 28 + 'px');
     }
 
-    handleMouseOut(d, i, nodes) {
-        let leafG = d3.select(nodes[i]);
+    handleMouseOut(_event, node) {
+        let leafG = d3.select(event.target);
 
         leafG.select('rect').attr('stroke-width', '0');
         this.tooltip().style('opacity', 0);
     }
 
-    handleMouseOverInternalNode(d, i, nodes) {
-        let nodeG = d3.select(nodes[i]);
-        let text = nodeG.select('text');
+    handleMouseOverInternalNode(event, node) {
+        const nodeG = d3.select(event.target);
         this.tooltip().style('opacity', 1);
         this.tooltip()
             .html(
-                `${d.id}, ${this.props.p.t('poids')} : ${d.data.weight.toFixed(
+                `${node.id}, ${this.props.p.t('poids')} : ${node.data.weight.toFixed(
                     0,
                 )}`,
             )
             .style(
                 'left',
-                d3.event.layerX -
-                    text.node().getComputedTextLength() * 0.5 +
-                    'px',
+                event.layerX - nodeG.node()
+                    ? nodeG.node().getComputedTextLength() * 0.5
+                    : 0 + 'px',
             )
-            .style('top', d3.event.layerY - 28 + 'px');
+            .style('top', event.layerY - 28 + 'px');
         nodeG.select('circle').attr('r', 8);
     }
 
-    handleMouseOutInternalNode(d, i, nodes) {
+    handleMouseOutInternalNode(event) {
         this.tooltip().style('opacity', 0);
-        d3.select(nodes[i]).select('circle').attr('r', 4);
+        d3.select(event.target).select('circle').attr('r', 4);
     }
 
     collapse(d) {
@@ -616,8 +615,8 @@ class Hierarchy extends PureComponent {
         return data;
     }
 
-    zoom() {
-        this.g().attr('transform', d3.event.transform);
+    zoom(event) {
+        this.g().attr('transform', event.transform);
     }
 
     updateDimensions() {
@@ -684,8 +683,8 @@ class Hierarchy extends PureComponent {
             .translate(this.initialPosition.x, this.initialPosition.y)
             .scale(this.initialPosition.scale);
 
-        let zoomListener = d3.zoom().on('zoom', () => {
-            this.zoom();
+        let zoomListener = d3.zoom().on('zoom', (event) => {
+            this.zoom(event);
         });
 
         this.svg().call(zoomListener).call(zoomListener.transform, transform);
