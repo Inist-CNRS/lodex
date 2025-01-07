@@ -35,14 +35,7 @@ const styles = {
     },
 };
 
-export const IstexRefbibsView = ({
-    fieldStatus,
-    data,
-    error,
-    field,
-    resource,
-    p: polyglot,
-}) => (
+export const IstexRefbibsView = ({ fieldStatus, data, error, p: polyglot }) => (
     <div className="istex-list" style={styles.text(fieldStatus)}>
         <div style={styles.header}>
             <span style={styles.total}>

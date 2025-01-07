@@ -140,6 +140,7 @@ FetchFold.propTypes = {
     getData: PropTypes.func.isRequired,
     children: PropTypes.func.isRequired,
     count: PropTypes.number.isRequired,
+    skip: PropTypes.number,
 };
 
 export default FetchFold;

@@ -13,7 +13,6 @@ import {
 import { cancelJob, getActiveJob } from '../../workers/tools';
 import { getLocale } from 'redux-polyglot/dist/selectors';
 import { orderEnrichmentsByDependencies } from '../../services/orderEnrichmentsByDependencies';
-import enrichment from '../../../app/js/admin/enrichment';
 
 export const setup = async (ctx, next) => {
     try {
@@ -171,7 +170,7 @@ export const launchAllEnrichment = async (ctx) => {
     const enrichments = await ctx.enrichment.findAll();
     const orderedEnrichments = orderEnrichmentsByDependencies(enrichments);
 
-    for (const [i, enrichment] of orderedEnrichments.entries()) {
+    for (const [, enrichment] of orderedEnrichments.entries()) {
         if (enrichment.status === 'FINISHED') {
             await ctx.dataset.removeAttribute(enrichment.name);
         }

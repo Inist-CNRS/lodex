@@ -4,7 +4,6 @@ import {
     MenuItem,
     Checkbox,
     FormControlLabel,
-    Box,
     TextField,
     Switch,
     FormGroup,

@@ -9,7 +9,7 @@ export default (ctx) => {
     }
     try {
         return get(window, 'navigator.language', 'en').split('-')[0];
-    } catch (error) {
+    } catch (_error) {
         return 'en';
     }
 };

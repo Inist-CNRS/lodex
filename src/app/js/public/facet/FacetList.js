@@ -117,6 +117,8 @@ FacetList.propTypes = {
     openFacet: PropTypes.func.isRequired,
     sortFacetValue: PropTypes.func.isRequired,
     toggleFacetValue: PropTypes.func.isRequired,
+    isMultilingual: PropTypes.bool,
+    locale: PropTypes.string,
 };
 
 const mapStateToProps = (state) => ({

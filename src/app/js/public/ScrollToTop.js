@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { useEffect } from 'react';
 import { withRouter } from 'react-router';
 
@@ -8,6 +9,13 @@ const ScrollToTop = ({ children, location: { pathname } }) => {
     }, [pathname]);
 
     return children || null;
+};
+
+ScrollToTop.propTypes = {
+    children: PropTypes.node,
+    location: PropTypes.shape({
+        pathname: PropTypes.string,
+    }),
 };
 
 export default withRouter(ScrollToTop);

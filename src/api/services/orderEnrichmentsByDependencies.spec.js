@@ -33,7 +33,7 @@ describe('orderEnrichmentsByDependencies', () => {
         const A = { name: 'A' };
         const B = { name: 'B' };
         const C = { name: 'C', sourceColumn: 'D' };
-        expect(() => orderEnrichmentsByDependencies([A, B, C, D])).toThrow();
+        expect(() => orderEnrichmentsByDependencies([A, B, C])).toThrow();
     });
 
     it('should throw an error if there is a circular dependency', () => {

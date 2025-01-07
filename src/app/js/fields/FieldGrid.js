@@ -12,7 +12,6 @@ import copy from 'copy-to-clipboard';
 import {
     FileCopy as FileCopyIcon,
     Settings as SettingsIcon,
-    VisibilityOff as HiddenIcon,
 } from '@mui/icons-material';
 
 import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
@@ -29,7 +28,6 @@ import { toast } from '../../../common/tools/toast';
 import { useLocation, useHistory } from 'react-router';
 import { SCOPE_DOCUMENT } from '../../../common/scope';
 import FieldRepresentation from './FieldRepresentation';
-import c from 'config';
 
 const ROOT_PADDING = 16;
 
