@@ -8,7 +8,7 @@
  * @param {Enrichment[]} enrichments
  * @returns {Enrichment[]}
  */
-export function orderEnrichmentsByDependencies(enrichments) {
+export function orderEnrichmentsByDependencies(datasetColumns, enrichments) {
     /**
      * @type {Enrichment[]}
      */
@@ -17,7 +17,7 @@ export function orderEnrichmentsByDependencies(enrichments) {
     /**
      * @type {Set<string>}
      */
-    const visitedEnrichments = new Set();
+    const visitedEnrichments = new Set(datasetColumns);
 
     /**
      * @type {Enrichment[]}

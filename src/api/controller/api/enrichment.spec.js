@@ -185,6 +185,7 @@ describe('Enrichment controller', () => {
                     updateStatus: jest.fn(async () => {}),
                 },
                 dataset: {
+                    getColumns: jest.fn().mockResolvedValue([]),
                     removeAttribute: jest.fn(async () => {}),
                 },
                 tenant: 'test',
@@ -230,6 +231,7 @@ describe('Enrichment controller', () => {
                     updateStatus: jest.fn(async () => {}),
                 },
                 dataset: {
+                    getColumns: jest.fn().mockResolvedValue([]),
                     removeAttribute: jest.fn(async () => {}),
                 },
                 tenant: 'test',
@@ -267,6 +269,7 @@ describe('Enrichment controller', () => {
                     updateStatus: jest.fn(async () => {}),
                 },
                 dataset: {
+                    getColumns: jest.fn().mockResolvedValue([]),
                     removeAttribute: jest.fn(async () => {}),
                 },
                 tenant: 'test',
