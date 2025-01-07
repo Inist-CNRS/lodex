@@ -155,7 +155,8 @@ class Hierarchy extends PureComponent {
                     current.clientWidth / gBbox.width <
                     current.clientHeight / gBbox.height
                 ) {
-                    this.initialPosition.scale = current.clientWidth / gBbox.width;
+                    this.initialPosition.scale =
+                        current.clientWidth / gBbox.width;
                 } else {
                     this.initialPosition.scale =
                         current.clientHeight / gBbox.height;
@@ -176,8 +177,6 @@ class Hierarchy extends PureComponent {
                         `${polyglot.t('error_rendering_chart')}:<br>${error}`,
                     );
             }
-
-
         }
     }
 

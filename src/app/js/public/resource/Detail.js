@@ -196,6 +196,7 @@ DetailComponent.propTypes = {
     p: polyglotPropTypes.isRequired,
     resource: PropTypes.shape({
         uri: PropTypes.string.isRequired,
+        subresourceId: PropTypes.string.isRequired,
     }).isRequired,
     title: PropTypes.string,
     description: PropTypes.string,

@@ -1,8 +1,4 @@
-import {
-    clearChunksFactory,
-    getUploadedFileSizeFactory,
-    mergeChunksFactory,
-} from './fsHelpers';
+import { clearChunksFactory, getUploadedFileSizeFactory } from './fsHelpers';
 
 describe('fsHelpers', () => {
     describe('clearChunksFactory', () => {

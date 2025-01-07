@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
@@ -250,6 +250,8 @@ ResourceComponent.propTypes = {
     match: PropTypes.shape({
         params: PropTypes.shape({
             uri: PropTypes.string,
+            naan: PropTypes.string,
+            rest: PropTypes.string,
         }),
     }).isRequired,
     prevResource: PropTypes.object,
