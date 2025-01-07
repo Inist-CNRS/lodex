@@ -413,9 +413,9 @@ class Streamgraph extends PureComponent {
 
     setViewportEvents(svgViewport, vertical) {
         svgViewport
-            .on('mouseover', (d, i, nodes) => {
+            .on('mouseover', (_event, node) => {
                 if (this.mouseIsOverStream) {
-                    const mousex = d3.mouse(nodes[i])[0];
+                    const mousex = d3.mouse(node)[0];
                     const { tickPosition, tickValue } = findNearestTickPosition(
                         mousex,
                         this.uniqueId,
@@ -428,9 +428,9 @@ class Streamgraph extends PureComponent {
                     vertical.style('visibility', 'hidden');
                 }
             })
-            .on('mousemove', (d, i, nodes) => {
+            .on('mousemove', (_event, node) => {
                 if (this.mouseIsOverStream) {
-                    const mousex = d3.mouse(nodes[i])[0];
+                    const mousex = d3.mouse(node)[0];
                     const { tickPosition, tickValue } = findNearestTickPosition(
                         mousex,
                         this.uniqueId,
@@ -448,10 +448,10 @@ class Streamgraph extends PureComponent {
     setMouseMoveAndOverStreams(tooltip, colorNameList) {
         if (this.streams) {
             this.streams
-                .on('mousemove', (d, i, nodes) => {
+                .on('mousemove', (_event, node) => {
                     const date = this.nearestTickValue;
                     this.mouseIsOverStream = true;
-                    this.hoveredKey = d3.select(nodes[i]).attr('name');
+                    this.hoveredKey = d3.select(node).attr('name');
 
                     this.hoveredValue = d.find(
                         (elem) =>
@@ -462,7 +462,7 @@ class Streamgraph extends PureComponent {
                         (elem) => elem.name === this.hoveredKey,
                     ).color;
 
-                    d3.select(nodes[i]).classed('hover', true);
+                    d3.select(node).classed('hover', true);
                     tooltip
                         .html(
                             '<p>' +
@@ -488,12 +488,14 @@ class Streamgraph extends PureComponent {
                         currentLegendItem.style.opacity = index == i ? 1 : 0.3;
                     });
                 })
-                .on('mouseover', (d, i) => {
+                .on('mouseover', (event, node) => {
+                    console.log({ event, node });
                     this.mouseIsOverStream = true;
                     this.streams
                         .transition()
                         .duration(25)
                         .attr('opacity', (d, j) => {
+                            console.log({ d, j });
                             return j != i ? 0.3 : 1;
                         });
                 });
