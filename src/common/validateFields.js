@@ -70,7 +70,7 @@ export const validateTransformers = (field, isContribution) => {
     if (
         isContribution ||
         field.scope === SCOPE_GRAPHIC ||
-        field.internalScopes?.includes(SCOPE_GRAPHIC) ||
+        field.internalScopes?.includes('chart') ||
         field.composedOf
     ) {
         return result;

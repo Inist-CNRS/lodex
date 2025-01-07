@@ -326,7 +326,7 @@ describe('validateField', () => {
         it('should return valid result if no transformers and internalScopes include graphic', () => {
             expect(
                 validateTransformers({
-                    internalScopes: [SCOPE_DOCUMENT, SCOPE_GRAPHIC],
+                    internalScopes: ['document', 'chart'],
                 }),
             ).toEqual({
                 name: 'transformers',

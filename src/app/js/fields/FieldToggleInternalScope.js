@@ -9,7 +9,6 @@ import DocumentScannerIcon from '@mui/icons-material/DocumentScanner';
 import { ToggleButton, ToggleButtonGroup, Tooltip } from '@mui/material';
 import { FilterAlt } from '@mui/icons-material';
 import { useRouteMatch } from 'react-router';
-import { set } from 'lodash';
 
 export const FieldToggleInternalScopeComponent = ({ input, p: polyglot }) => {
     const matches = useRouteMatch();
