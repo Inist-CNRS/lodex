@@ -251,7 +251,7 @@
         "babel-jest": "^27.0.6",
         "compression-webpack-plugin": "10.0.0",
         "copy-webpack-plugin": "11.0.0",
-        "cypress": "13.6.4",
+        "cypress": "^13.17.0",
         "enzyme": "^3.11.0",
         "enzyme-adapter-react-16": "^1.15.8",
         "eslint": "^8.56.0",
