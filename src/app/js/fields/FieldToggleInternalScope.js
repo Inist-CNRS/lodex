@@ -8,9 +8,39 @@ import EqualizerIcon from '@mui/icons-material/Equalizer';
 import DocumentScannerIcon from '@mui/icons-material/DocumentScanner';
 import { ToggleButton, ToggleButtonGroup, Tooltip } from '@mui/material';
 import { FilterAlt } from '@mui/icons-material';
+import { useRouteMatch } from 'react-router';
+import { set } from 'lodash';
 
 export const FieldToggleInternalScopeComponent = ({ input, p: polyglot }) => {
+    const matches = useRouteMatch();
+
     const [values, setValues] = React.useState([]);
+
+    React.useEffect(() => {
+        setValues((currentValues) => {
+            if (currentValues.length > 0) {
+                return currentValues;
+            }
+
+            if (matches.params.filter === 'dataset') {
+                return ['home'];
+            }
+
+            if (matches.params.subresourceId) {
+                return ['subRessource'];
+            }
+
+            if (matches.params.filter === 'document') {
+                return ['document'];
+            }
+
+            if (matches.params.filter === 'graphic') {
+                return ['chart'];
+            }
+
+            return [];
+        });
+    }, [matches]);
 
     useEffect(() => {
         Array.isArray(input.value) && setValues(input.value);
