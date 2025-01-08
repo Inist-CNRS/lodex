@@ -61,3 +61,9 @@ stats.json
 /precomputedData/*
 !/precomputedData/.gitkeep
 src/app/custom/themes/istex/themeIstex.html
+src/app/custom/themes/istex/js/responsiveMenu-new.js
+src/app/custom/themes/istex/ICONO/hommebureau-banniere-1920x460.jpg:Zone.Identifier
+src/app/custom/themes/istex/ICONO/hommebureau-carre-1080x1080.jpg:Zone.Identifier
+src/app/custom/themes/istex/ICONO/hommebureau-rectangle-1920x1080.jpg:Zone.Identifier
+src/app/custom/themes/istex/ICONO/mainAI-banniere-1920x460.jpg:Zone.Identifier
+src/app/custom/themes/istex/ICONO/mainAI-carre-1080x1080.jpg:Zone.Identifier
