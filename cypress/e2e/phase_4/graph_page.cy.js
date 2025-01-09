@@ -4,6 +4,7 @@ import * as menu from '../../support/menu';
 import * as graphPage from '../../support/graphPage';
 import * as searchDrawer from '../../support/searchDrawer';
 import * as path from 'path';
+import { getExportDateFormat } from '../../../src/app/js/formats/utils/components/useVegaCsvExport';
 
 describe('Graph Page', () => {
     beforeEach(() => {
@@ -103,6 +104,8 @@ describe('Graph Page', () => {
         cy.get('.vega-export-csv').click();
 
         const downloadsFolder = Cypress.config('downloadsFolder');
-        cy.readFile(path.join(downloadsFolder, 'export.csv')).should('exist');
+        cy.readFile(
+            path.join(downloadsFolder, `Export ${getExportDateFormat()}.csv`),
+        ).should('exist');
     });
 });

@@ -1,15 +1,22 @@
 import { useEffect, useRef, useCallback } from 'react';
 import * as Papa from 'papaparse';
 
-function download(data) {
+function download(name, data) {
     const link = document.createElement('a');
     document.body.appendChild(link);
     link.href = data;
-    link.setAttribute('download', 'export.csv');
+    link.setAttribute('download', name);
     link.click();
     setTimeout(() => {
         document.body.removeChild(link);
     }, 0);
+}
+
+export function getExportDateFormat() {
+    const now = new Date();
+    const today = `${now.getUTCDate()}-${now.getUTCMonth() + 1}-${now.getUTCFullYear()}`;
+    const time = `${now.getUTCHours()}h${now.getUTCMinutes()}`;
+    return `${today} ${time}`;
 }
 
 export function useVegaCsvExport(polyglot, data) {
@@ -25,7 +32,7 @@ export function useVegaCsvExport(polyglot, data) {
         });
 
         const dataUrl = `data:text/csv,${encodeURI(csv)}`;
-        download(dataUrl);
+        download(`Export ${getExportDateFormat()}.csv`, dataUrl);
     }, [data]);
 
     useEffect(() => {
