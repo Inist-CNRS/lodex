@@ -218,9 +218,17 @@ const processEzsEnrichment = (entries, commands, ctx, preview = false) => {
                             logger.error(`Error while parsing sourceChunk`, e);
                         }
                     }
+                    // try to obtain only the lodash error message
+                    const errorMessage =
+                        Array()
+                            .concat(error?.traceback)
+                            .filter((x) => x.search(/Error:/) >= 0)
+                            .shift() || error?.message;
+
                     return values.push({
                         id: sourceChunk?.id,
-                        value: error?.message,
+                        value: errorMessage, // for the preview
+                        error: errorMessage, // for the log
                     });
                 } else {
                     return values.push(data);
@@ -283,7 +291,7 @@ export const processEnrichment = async (enrichment, filter, ctx) => {
             for (const enrichedValue of enrichedValues) {
                 let value;
                 if (enrichedValue.error) {
-                    value = `[Error] ${enrichedValue.error}`;
+                    value = `[Error]: ${enrichedValue.error}`; // cf. Mongo filter on line 374
                 } else if (
                     enrichedValue.value !== undefined &&
                     enrichedValue.value !== null
