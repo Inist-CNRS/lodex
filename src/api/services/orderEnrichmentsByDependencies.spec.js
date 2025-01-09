@@ -2,14 +2,14 @@ import { orderEnrichmentsByDependencies } from './orderEnrichmentsByDependencies
 
 describe('orderEnrichmentsByDependencies', () => {
     it('should return empty array if no enrichments', () => {
-        expect(orderEnrichmentsByDependencies([])).toStrictEqual([]);
+        expect(orderEnrichmentsByDependencies([], [])).toStrictEqual([]);
     });
 
     it('should not change order if no dependencies between enrichments', () => {
-        const A = { name: 'A' };
+        const A = { name: 'A', sourceColumn: '1' };
         const B = { name: 'B' };
         const C = { name: 'C' };
-        expect(orderEnrichmentsByDependencies([C, A, B])).toStrictEqual([
+        expect(orderEnrichmentsByDependencies(['1'], [C, A, B])).toStrictEqual([
             C,
             A,
             B,
@@ -21,7 +21,7 @@ describe('orderEnrichmentsByDependencies', () => {
         const B = { name: 'B' };
         const C = { name: 'C', sourceColumn: 'B' };
         const D = { name: 'D', sourceColumn: 'A' };
-        expect(orderEnrichmentsByDependencies([D, A, B, C])).toStrictEqual([
+        expect(orderEnrichmentsByDependencies([], [D, A, B, C])).toStrictEqual([
             A,
             B,
             C,
@@ -33,7 +33,9 @@ describe('orderEnrichmentsByDependencies', () => {
         const A = { name: 'A' };
         const B = { name: 'B' };
         const C = { name: 'C', sourceColumn: 'D' };
-        expect(() => orderEnrichmentsByDependencies([A, B, C, D])).toThrow();
+        expect(() =>
+            orderEnrichmentsByDependencies([], [A, B, C, D]),
+        ).toThrow();
     });
 
     it('should throw an error if there is a circular dependency', () => {
@@ -42,7 +44,11 @@ describe('orderEnrichmentsByDependencies', () => {
         const C = { name: 'C', sourceColumn: 'D' };
         const D = { name: 'D', sourceColumn: 'C' };
         const E = { name: 'E' };
-        expect(() => orderEnrichmentsByDependencies([A, B, C, D])).toThrow();
-        expect(() => orderEnrichmentsByDependencies([A, B, C, D, E])).toThrow();
+        expect(() =>
+            orderEnrichmentsByDependencies([], [A, B, C, D]),
+        ).toThrow();
+        expect(() =>
+            orderEnrichmentsByDependencies([], [A, B, C, D, E]),
+        ).toThrow();
     });
 });
