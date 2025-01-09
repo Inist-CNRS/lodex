@@ -213,8 +213,10 @@ export const validateTransformer = (
 
     const transformerMeta = transformerOperation.getMetas();
     const transformerArgs = transformer.args || [];
-    const filteredTransformerArgs = transformerArgs.filter(
-        ({ value }) => !isUndefinedOrEmpty(value),
+    const filteredTransformerArgs = transformerArgs.filter(({ value }) =>
+        transformer.operation === 'VALUE'
+            ? value !== undefined
+            : !isUndefinedOrEmpty(value),
     );
 
     if (transformerMeta.args.length > filteredTransformerArgs.length) {

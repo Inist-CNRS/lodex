@@ -37,6 +37,7 @@ const TRANSFORMERS_FORM_STATUS = new Map([
                     {
                         name: 'value',
                         type: 'string',
+                        value: '',
                     },
                 ],
             },
