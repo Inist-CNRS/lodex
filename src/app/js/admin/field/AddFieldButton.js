@@ -25,17 +25,9 @@ export const AddFieldButtonComponent = ({
             onClick={() => {
                 onAddNewField({ scope: filter });
             }}
-            className="btn-add-free-field"
-            sx={{
-                marginLeft: '10px',
-            }}
             disabled={isFieldsLoading}
+            startIcon={<AddNewIcon />}
         >
-            <AddNewIcon
-                sx={{
-                    marginRight: '10px',
-                }}
-            />
             {polyglot.t('new_field')}
         </Button>
     );

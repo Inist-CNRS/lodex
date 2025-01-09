@@ -541,5 +541,45 @@ describe('Dataset Publication', () => {
                 '1',
             );
         });
+
+        it('should re-publish dataset when deleting multiple fields', () => {
+            menu.openAdvancedDrawer();
+            menu.goToAdminDashboard();
+            datasetImportPage.importDataset('dataset/book_summary.csv');
+            datasetImportPage.importModel('model/book_summary.json');
+            datasetImportPage.publish();
+            adminNavigation.goToResourcePage();
+            cy.wait(2000);
+            cy.get('[aria-label="Select field"]', { timeout: 3000 })
+                .eq(0)
+                .click({
+                    force: true,
+                });
+
+            cy.get('[aria-label="Select field"]', { timeout: 3000 })
+                .eq(1)
+                .click({
+                    force: true,
+                });
+
+            cy.contains('Delete selected fields').click({ force: true });
+
+            cy.wait(1000);
+
+            cy.get('[aria-label="Delete"]').click({
+                force: true,
+            });
+
+            cy.wait(2000);
+
+            cy.contains('Title').should('not.exist');
+            cy.contains('URL').should('not.exist');
+
+            cy.get('[aria-label="job-progress"]', { timeout: 3000 }).should(
+                'have.css',
+                'opacity',
+                '1',
+            );
+        });
     });
 });

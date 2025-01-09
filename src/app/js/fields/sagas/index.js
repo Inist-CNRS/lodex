@@ -9,10 +9,12 @@ import loadPublication from './loadPublication';
 import configureField from './configureField';
 import addCharacteristic from './addCharacteristic';
 import addField from './addField';
+import removeFieldList from './removeFieldList';
 
 export default function* () {
     yield fork(loadFields);
     yield fork(removeField);
+    yield fork(removeFieldList);
     yield fork(saveField);
     yield fork(validation);
     yield fork(changePosition);
