@@ -3,7 +3,8 @@
         "target": "ES6",
         "module": "commonjs",
         "allowSyntheticDefaultImports": true,
-        "resolveJsonModule": true
+        "resolveJsonModule": true,
+        "jsx": "react"
     },
     "exclude": ["src/build", "node_modules"]
 }

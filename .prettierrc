@@ -3,5 +3,6 @@
     "singleQuote": true,
     "trailingComma": "all",
     "semi": true,
-    "htmlWhitespaceSensitivity": "ignore"
+    "htmlWhitespaceSensitivity": "ignore",
+    "organizeImportsSkipDestructiveCodeActions": true
 }

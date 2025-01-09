@@ -1,22 +1,23 @@
-import React, { useCallback, useMemo, useState } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import compose from 'recompose/compose';
-import translate from 'redux-polyglot/translate';
-import { polyglot as polyglotPropTypes } from '../../propTypes';
-import { fromFields } from '../../sharedSelectors';
+import { Delete as DeleteIcon } from '@mui/icons-material';
 import {
     Button,
     Dialog,
     DialogActions,
     DialogContent,
+    DialogContentText,
     DialogTitle,
     List,
     ListItem,
 } from '@mui/material';
-import { Delete as DeleteIcon } from '@mui/icons-material';
+import PropTypes from 'prop-types';
+import React, { useCallback, useMemo, useState } from 'react';
+import { connect } from 'react-redux';
+import compose from 'recompose/compose';
+import translate from 'redux-polyglot/translate';
 import { removeFieldList } from '../../fields';
 import FieldRepresentation from '../../fields/FieldRepresentation';
+import { polyglot as polyglotPropTypes } from '../../propTypes';
+import { fromFields } from '../../sharedSelectors';
 
 const DeleteFieldsButtonComponent = ({
     fields,
@@ -72,6 +73,11 @@ const DeleteFieldsButtonComponent = ({
                     {polyglot.t('delete_selected_fields_title')}
                 </DialogTitle>
                 <DialogContent>
+                    <DialogContentText>
+                        {polyglot.t('delete_selected_fields_helptext', {
+                            smart_count: fieldsToDelete.length,
+                        })}
+                    </DialogContentText>
                     <List>
                         {fieldsToDelete.map((field) => (
                             <ListItem
@@ -111,6 +117,7 @@ const DeleteFieldsButtonComponent = ({
 DeleteFieldsButtonComponent.propTypes = {
     fields: PropTypes.array,
     selectedFields: PropTypes.arrayOf(PropTypes.string).isRequired,
+    isFieldsLoading: PropTypes.bool.isRequired,
     filter: PropTypes.string,
     subresourceId: PropTypes.string,
     p: polyglotPropTypes.isRequired,
