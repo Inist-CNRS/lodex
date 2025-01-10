@@ -48,7 +48,7 @@ const multipleCharsMappings = {
     [`${singleCharsMappings.s}${singleCharsMappings.s}`]: `((${singleCharsMappings.s}${singleCharsMappings.s})|ß)`,
     [`${singleCharsMappings.t}${singleCharsMappings.h}`]: `((${singleCharsMappings.t}${singleCharsMappings.h})|þ)`,
     [`${singleCharsMappings.t}${singleCharsMappings.s}`]: `((${singleCharsMappings.t}${singleCharsMappings.s})|ƾ|ʦ|ʧ)`,
-    [`${singleCharsMappings.y}${singleCharsMappings.t}`]: `((${singleCharsMappings.y}${singleCharsMappings.t})|Ʀ)`,
+    [`${singleCharsMappings.y}${singleCharsMappings.r}`]: `((${singleCharsMappings.y}${singleCharsMappings.r})|Ʀ)`,
 };
 
 const composedCharactersMappings = {
