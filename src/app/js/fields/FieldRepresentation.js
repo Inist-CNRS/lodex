@@ -1,9 +1,9 @@
-import React from 'react';
+import { Box, Checkbox, Tooltip, Typography } from '@mui/material';
 import PropTypes from 'prop-types';
-import { Box, Tooltip, Checkbox, Typography } from '@mui/material';
-import FieldInternalIcon from './FieldInternalIcon';
+import React from 'react';
 import translate from 'redux-polyglot/translate';
 import { polyglot as polyglotPropTypes } from '../propTypes';
+import FieldInternalIcon from './FieldInternalIcon';
 
 function FieldRepresentation({
     field,
@@ -28,8 +28,6 @@ function FieldRepresentation({
     return (
         <>
             <Box
-                width="100%"
-                maxWidth="100%"
                 display="grid"
                 gridTemplateColumns={
                     handleToggleSelectedField ? 'auto auto 1fr' : 'auto 1fr'
@@ -64,32 +62,30 @@ function FieldRepresentation({
                 )}
 
                 {field.label && (
-                    <Tooltip
-                        title={field.label}
-                        enterDelay={300}
-                        placement="top"
-                        arrow
+                    <Typography
+                        variant="body2"
+                        sx={{
+                            display: 'block',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            textWrap: 'nowrap',
+                            textAlign: 'left',
+                        }}
                     >
-                        <Typography
-                            variant="body2"
-                            sx={{
-                                display: 'block',
-                                overflow: 'hidden',
-                                textOverflow: 'ellipsis',
-                                textWrap: 'nowrap',
-                                textAlign: 'left',
-                            }}
+                        <Tooltip
+                            title={field.label}
+                            enterDelay={300}
+                            placement="top"
+                            arrow
                         >
-                            {field.label}
-                        </Typography>
-                    </Tooltip>
+                            <span>{field.label}</span>
+                        </Tooltip>
+                    </Typography>
                 )}
             </Box>
 
             {(field.internalScopes || field.internalName) && !shortMode && (
                 <Box
-                    width="100%"
-                    maxWidth="100%"
                     display="grid"
                     gridTemplateColumns={
                         field.internalScopes && field.internalName
@@ -117,26 +113,26 @@ function FieldRepresentation({
                     )}
 
                     {field.internalName && (
-                        <Tooltip
-                            title={field.internalName}
-                            enterDelay={300}
-                            placement="top"
-                            arrow
+                        <Typography
+                            variant="body2"
+                            sx={{
+                                display: 'block',
+                                overflow: 'hidden',
+                                textOverflow: 'ellipsis',
+                                textWrap: 'nowrap',
+                                fontStyle: 'italic',
+                                textAlign: 'left',
+                            }}
                         >
-                            <Typography
-                                variant="body2"
-                                sx={{
-                                    display: 'block',
-                                    overflow: 'hidden',
-                                    textOverflow: 'ellipsis',
-                                    textWrap: 'nowrap',
-                                    fontStyle: 'italic',
-                                    textAlign: 'left',
-                                }}
+                            <Tooltip
+                                title={field.internalName}
+                                enterDelay={300}
+                                placement="top"
+                                arrow
                             >
-                                {field.internalName}
-                            </Typography>
-                        </Tooltip>
+                                <span>{field.internalName}</span>
+                            </Tooltip>
+                        </Typography>
                     )}
                 </Box>
             )}

@@ -1,13 +1,13 @@
-import React, { useEffect, useMemo, useState, useRef } from 'react';
-import { connect } from 'react-redux';
-import translate from 'redux-polyglot/translate';
+import { Box, IconButton, Tooltip } from '@mui/material';
+import copy from 'copy-to-clipboard';
 import compose from 'lodash/flowRight';
 import PropTypes from 'prop-types';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import GridLayout from 'react-grid-layout';
-import { Box, IconButton, Tooltip } from '@mui/material';
-import { useMeasure } from 'react-use';
 import 'react-grid-layout/css/styles.css';
-import copy from 'copy-to-clipboard';
+import { connect } from 'react-redux';
+import { useMeasure } from 'react-use';
+import translate from 'redux-polyglot/translate';
 
 import {
     FileCopy as FileCopyIcon,
@@ -16,17 +16,17 @@ import {
 
 import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
 
-import { polyglot as polyglotPropTypes } from '../propTypes';
-import { NoField } from './NoField';
 import { useDidUpdateEffect } from '../lib/useDidUpdateEffect';
+import { polyglot as polyglotPropTypes } from '../propTypes';
 import { fromFields } from '../sharedSelectors';
+import { NoField } from './NoField';
 
-import { loadField, changePositions, saveFieldFromData } from '../fields';
+import { changePositions, loadField, saveFieldFromData } from '../fields';
 
-import fieldApi from '../admin/api/field';
-import { toast } from '../../../common/tools/toast';
-import { useLocation, useHistory } from 'react-router';
+import { useHistory, useLocation } from 'react-router';
 import { SCOPE_DOCUMENT } from '../../../common/scope';
+import { toast } from '../../../common/tools/toast';
+import fieldApi from '../admin/api/field';
 import FieldRepresentation from './FieldRepresentation';
 
 const ROOT_PADDING = 16;
@@ -156,8 +156,14 @@ const FieldGridItem = connect((state, { field }) => ({
     }, [field, completedField]);
 
     const handleCopyToClipboard = (event, text) => {
+        // Only copy to clipboard if the user clicks on the field name
+        if (event.target.firstChild.nodeName !== '#text') {
+            return;
+        }
+
         event.stopPropagation();
         event.preventDefault();
+
         copy(text);
         toast(polyglot.t('fieldidentifier_copied_clipboard'), {
             type: toast.TYPE.SUCCESS,
@@ -187,29 +193,31 @@ const FieldGridItem = connect((state, { field }) => ({
             </Box>
 
             {completedField && (
-                <Tooltip
-                    enterDelay={300}
-                    placement="top"
-                    arrow
-                    title={polyglot.t('completes_field_X', {
-                        field: completedField.label,
-                    })}
+                <Box
+                    sx={{
+                        width: '100%',
+                        display: 'block',
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        textWrap: 'nowrap',
+                        textAlign: 'left',
+                    }}
                 >
-                    <Box
-                        sx={{
-                            width: '100%',
-                            display: 'block',
-                            overflow: 'hidden',
-                            textOverflow: 'ellipsis',
-                            textWrap: 'nowrap',
-                            textAlign: 'left',
-                        }}
-                    >
-                        {polyglot.t('completes_field_X', {
+                    <Tooltip
+                        enterDelay={300}
+                        placement="top"
+                        arrow
+                        title={polyglot.t('completes_field_X', {
                             field: completedField.label,
                         })}
-                    </Box>
-                </Tooltip>
+                    >
+                        <span>
+                            {polyglot.t('completes_field_X', {
+                                field: completedField.label,
+                            })}
+                        </span>
+                    </Tooltip>
+                </Box>
             )}
 
             <Box

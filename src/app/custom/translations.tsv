@@ -1173,6 +1173,7 @@
 "label_format_size"	"Size"	"Taille"
 "export_csv"	"Save as CSV"	"Sauvegarder en CSV"
 "delete_selected_fields"	"Delete selected fields"	"Supprimer les champs sélectionnés"
-"delete_selected_fields_title"	"The following fields will be deleted"	"Les champs suivants seront supprimés"
+"delete_selected_fields_title"	"Delete selected fields"	"Supprimer la sélection"
+"delete_selected_fields_helptext"	"Are you sure you want to delete the selected field ? |||| Are you sure you want to delete the %{smart_count} selected fields ?"	"Êtes-vous sûr de vouloir supprimer le champs sélectionné ? |||| Êtes-vous sûr de vouloir supprimer les %{smart_count} champs sélectionné ?"
 "cancel"	"Cancel"	"Annuler" 
 "select_field"	"Select field"	"Sélectionner le champ" 
