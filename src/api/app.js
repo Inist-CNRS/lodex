@@ -178,4 +178,12 @@ app.on('uncaughtException', (error) => {
     console.error('Uncaught Exception', error);
 });
 
+process.on('unhandledRejection', (error) => {
+    console.error('Uncaught Rejection', error);
+});
+
+process.on('uncaughtException', (error) => {
+    console.error('Uncaught Exception', error);
+});
+
 export default app;
