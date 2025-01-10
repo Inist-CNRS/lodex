@@ -80,7 +80,7 @@ const ParallelCoordinates = ({ fieldNames, data, width, height, colorSet }) => {
             .style('opacity', '0.5')
             .attr('data-html', true)
             .attr('data-tip', (d) => d.label)
-            .on('click', (d) => d.onClick())
+            .on('click', (_event, d) => d.onClick())
             .on('mouseover', highlight)
             .on('mouseleave', doNotHighlight);
 
