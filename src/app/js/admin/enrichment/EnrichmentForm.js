@@ -8,7 +8,7 @@ import translate from 'redux-polyglot/translate';
 import PropTypes from 'prop-types';
 import SubressourceFieldAutoComplete from '../subresource/SubressourceFieldAutoComplete';
 
-import { launchEnrichment, loadEnrichments } from '.';
+import { launchEnrichment, loadEnrichments, retryEnrichment } from '.';
 import { getKeys } from '../subresource/SubresourceForm';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
@@ -79,6 +79,8 @@ export const EnrichmentForm = ({
     p: polyglot,
     onChangeWebServiceUrl,
     onLoadEnrichments,
+    onRetryEnrichment,
+    isEnrichmentRunning,
 }) => {
     const [openCatalog, setOpenCatalog] = React.useState(false);
     const [openEnrichmentLogs, setOpenEnrichmentLogs] = React.useState(false);
@@ -213,6 +215,32 @@ export const EnrichmentForm = ({
                             />
                         )}
                     </Box>
+                    {isEditMode && (
+                        <Box
+                            display="flex"
+                            justifyContent="space-between"
+                            alignItems="center"
+                            gap={2}
+                            mb={2}
+                        >
+                            {polyglot.t('enrichment_error_count', {
+                                errorCount: initialValues.errorCount ?? 0,
+                            })}
+                            <Button
+                                color="primary"
+                                onClick={(event) => {
+                                    onRetryEnrichment({
+                                        id: initialValues._id,
+                                    });
+                                    event.preventDefault();
+                                    event.stopPropagation();
+                                }}
+                                disabled={(initialValues.errorCount ?? 0) === 0}
+                            >
+                                {polyglot.t('retry')}
+                            </Button>
+                        </Box>
+                    )}
                     {isEditMode && (
                         <Box
                             display="flex"
@@ -423,6 +451,7 @@ const mapDispatchToProps = {
         change(ENRICHMENT_FORM, 'webServiceUrl', value),
     onLaunchEnrichment: launchEnrichment,
     onLoadEnrichments: loadEnrichments,
+    onRetryEnrichment: retryEnrichment,
 };
 
 EnrichmentForm.propTypes = {
@@ -442,6 +471,7 @@ EnrichmentForm.propTypes = {
     onChangeWebServiceUrl: PropTypes.func.isRequired,
     onLaunchEnrichment: PropTypes.func.isRequired,
     onLoadEnrichments: PropTypes.func.isRequired,
+    onRetryEnrichment: PropTypes.func.isRequired,
     p: polyglotPropTypes.isRequired,
 };
 
