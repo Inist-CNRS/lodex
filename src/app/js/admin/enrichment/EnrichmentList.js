@@ -19,10 +19,10 @@ import {
 import { Link } from 'react-router-dom';
 import { useHistory } from 'react-router';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
-import { renderStatus, RunButton } from './EnrichmentForm';
-import { FINISHED, IN_PROGRESS } from '../../../../common/taskStatus';
-import { launchAllEnrichment, launchEnrichment, retryEnrichment } from '.';
-import { toast } from '../../../../common/tools/toast';
+import { renderStatus } from './EnrichmentForm';
+import { IN_PROGRESS } from '../../../../common/taskStatus';
+import { launchAllEnrichment, retryEnrichment } from '.';
+import RunButton from './RunButton';
 
 const EnrichmentListToolBar = ({
     polyglot,
@@ -83,7 +83,6 @@ EnrichmentListToolBar.propTypes = {
 export const EnrichmentList = ({
     enrichments,
     p: polyglot,
-    onLaunchEnrichment,
     onLaunchAllEnrichment,
     onRetryEnrichment,
 }) => {
@@ -93,19 +92,6 @@ export const EnrichmentList = ({
     );
     const handleRowClick = (params) => {
         history.push(`/data/enrichment/${params.row._id}`);
-    };
-
-    const handleLaunchPrecomputed = (params) => (event) => {
-        event.stopPropagation();
-        if (areEnrichmentsRunning) {
-            toast(polyglot.t('pending_enrichment'), {
-                type: toast.TYPE.INFO,
-            });
-        }
-        onLaunchEnrichment({
-            id: params._id,
-            action: params.status === FINISHED ? 'relaunch' : 'launch',
-        });
     };
 
     return (
@@ -155,10 +141,7 @@ export const EnrichmentList = ({
                         renderCell: (params) => {
                             return (
                                 <RunButton
-                                    handleLaunchEnrichment={handleLaunchPrecomputed(
-                                        params.row,
-                                    )}
-                                    enrichmentStatus={params.row.status}
+                                    id={params.row._id}
                                     polyglot={polyglot}
                                     variant="text"
                                 />
@@ -229,7 +212,6 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = {
-    onLaunchEnrichment: launchEnrichment,
     onLaunchAllEnrichment: launchAllEnrichment,
     onRetryEnrichment: retryEnrichment,
 };

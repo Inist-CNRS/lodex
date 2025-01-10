@@ -1,11 +1,10 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo } from 'react';
 
 import EnrichmentCatalogConnected from './EnrichmentCatalog';
 import EnrichmentPreview from './EnrichmentPreview';
 import FormSourceCodeField from '../../lib/components/FormSourceCodeField';
 import EnrichmentLogsDialogComponent from './EnrichmentLogsDialog';
 import translate from 'redux-polyglot/translate';
-import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import PropTypes from 'prop-types';
 import SubressourceFieldAutoComplete from '../subresource/SubressourceFieldAutoComplete';
 
@@ -43,10 +42,10 @@ import {
     ERROR,
     CANCELED,
     PAUSED,
-    ON_HOLD,
 } from '../../../../common/taskStatus';
 import CancelButton from '../../lib/components/CancelButton';
 import { DeleteEnrichmentButton } from './DeleteEnrichmentButton';
+import RunButton from './RunButton';
 
 // UTILITARY PART
 const ENRICHMENT_FORM = 'ENRICHMENT_FORM';
@@ -146,53 +145,6 @@ export const renderStatus = (status, polyglot) => {
     );
 };
 
-export const RunButton = ({
-    handleLaunchEnrichment,
-    enrichmentStatus,
-    polyglot,
-    variant,
-}) => {
-    const [isOngoing, setIsOngoing] = useState(false);
-    const handleClick = (event) => {
-        setIsOngoing(true);
-        handleLaunchEnrichment(event);
-    };
-
-    useEffect(() => {
-        if (['IN_PROGRESS', 'PENDING'].includes(enrichmentStatus)) {
-            setIsOngoing(true);
-            return;
-        }
-
-        return setIsOngoing(false);
-    }, [setIsOngoing, enrichmentStatus]);
-
-    return (
-        <Button
-            color="primary"
-            variant={variant || 'contained'}
-            sx={{ height: '100%' }}
-            startIcon={<PlayArrowIcon />}
-            onClick={handleClick}
-            disabled={isOngoing}
-        >
-            {polyglot.t('run')}
-        </Button>
-    );
-};
-
-RunButton.propTypes = {
-    handleLaunchEnrichment: PropTypes.func.isRequired,
-    enrichmentStatus: PropTypes.oneOf([
-        'IN_PROGRESS',
-        'PENDING',
-        'FINISHED',
-        'CANCELED',
-    ]).isRequired,
-    polyglot: polyglotPropTypes,
-    variant: PropTypes.string,
-};
-
 // COMPONENT PART
 export const EnrichmentForm = ({
     datasetFields,
@@ -202,9 +154,7 @@ export const EnrichmentForm = ({
     initialValues,
     p: polyglot,
     onChangeWebServiceUrl,
-    onLaunchEnrichment,
     onLoadEnrichments,
-    areEnrichmentsRunning,
 }) => {
     const [openCatalog, setOpenCatalog] = React.useState(false);
     const [openEnrichmentLogs, setOpenEnrichmentLogs] = React.useState(false);
@@ -292,18 +242,6 @@ export const EnrichmentForm = ({
         history.push('/data/enrichment');
     };
 
-    const handleLaunchEnrichment = () => {
-        if (areEnrichmentsRunning) {
-            toast(polyglot.t('pending_enrichment'), {
-                type: toast.TYPE.INFO,
-            });
-        }
-        onLaunchEnrichment({
-            id: initialValues._id,
-            action: initialValues?.status === FINISHED ? 'relaunch' : 'launch',
-        });
-    };
-
     const handleGetLogs = async () => {
         if (initialValues?.jobId) {
             getJobLogs(initialValues.jobId).then(
@@ -346,9 +284,8 @@ export const EnrichmentForm = ({
                         />
                         {isEditMode && (
                             <RunButton
-                                handleLaunchEnrichment={handleLaunchEnrichment}
-                                enrichmentStatus={initialValues?.status}
                                 polyglot={polyglot}
+                                id={initialValues?._id}
                             />
                         )}
                     </Box>
@@ -556,13 +493,6 @@ const mapStateToProps = (state, { match }) => ({
         .find((enrichment) => enrichment._id === match.params.enrichmentId),
     datasetFields: fromParsing.getParsedExcerptColumns(state),
     excerptLines: fromParsing.getExcerptLines(state),
-    areEnrichmentsRunning: !!fromEnrichments
-        .enrichments(state)
-        .find(
-            (enrichment) =>
-                enrichment.status === IN_PROGRESS ||
-                enrichment.status === ON_HOLD,
-        ),
 });
 const mapDispatchToProps = {
     onChangeWebServiceUrl: (value) =>
@@ -589,7 +519,6 @@ EnrichmentForm.propTypes = {
     onLaunchEnrichment: PropTypes.func.isRequired,
     onLoadEnrichments: PropTypes.func.isRequired,
     p: polyglotPropTypes.isRequired,
-    areEnrichmentsRunning: PropTypes.bool,
 };
 
 export default compose(
