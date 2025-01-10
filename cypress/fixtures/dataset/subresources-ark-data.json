@@ -1,0 +1,26 @@
+[
+    {
+        "uri": "ark:/67375/WNG-J6G37RM9-Q",
+        "name": "Publication n°1",
+        "most_found_animal_species": {
+            "id": 90,
+            "name": "Canidae"
+        }
+    },
+    {
+        "uri": "ark:/67375/WNG-J6G37RM9-R",
+        "name": "Publication n°2",
+        "most_found_animal_species": {
+            "id": 91,
+            "name": "Felinae"
+        }
+    },
+    {
+        "uri": "ark:/67375/WNG-J6G37RM9-S",
+        "name": "Publication n°3",
+        "most_found_animal_species": {
+            "id": 90,
+            "name": "Canidae"
+        }
+    }
+]
