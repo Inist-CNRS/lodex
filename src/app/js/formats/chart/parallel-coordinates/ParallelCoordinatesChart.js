@@ -46,29 +46,18 @@ const ParallelCoordinates = ({ fieldNames, data, width, height, colorSet }) => {
             );
         };
 
-        const highlight = (_, i) => {
-            d3.selectAll('.line')
-                .transition()
-                .duration(200)
-                .style('opacity', '0');
-            d3.selectAll('.l' + i)
-                .transition()
-                .duration(200)
-                .style('stroke', getColor(colorSet, i))
-                .style('opacity', '1');
-        };
-
-        const doNotHighlight = () => {
+        function doNotHighlight() {
             d3.selectAll('.line')
                 .transition()
                 .duration(200)
                 .delay(200)
                 .style('stroke', (_, i) => getColor(colorSet, i))
                 .style('opacity', '1');
-        };
+        }
 
         // Draw the lines
-        svg.selectAll('lines')
+        const lines = svg
+            .selectAll('lines')
             .data(data)
             .enter()
             .append('path')
@@ -79,9 +68,23 @@ const ParallelCoordinates = ({ fieldNames, data, width, height, colorSet }) => {
             .style('fill', 'none')
             .style('opacity', '0.5')
             .attr('data-html', true)
-            .attr('data-tip', (d) => d.label)
+            .attr('data-tip', (d) => d.label);
+
+        lines
             .on('click', (_event, d) => d.onClick())
-            .on('mouseover', highlight)
+            .on('mouseover', function highlight() {
+                const e = lines.nodes();
+                const i = e.indexOf(this);
+                d3.selectAll('.line')
+                    .transition()
+                    .duration(200)
+                    .style('opacity', '0');
+                d3.selectAll('.l' + i)
+                    .transition()
+                    .duration(200)
+                    .style('stroke', getColor(colorSet, i))
+                    .style('opacity', '1');
+            })
             .on('mouseleave', doNotHighlight);
 
         // Draw the axes

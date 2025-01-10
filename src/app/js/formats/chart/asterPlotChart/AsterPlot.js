@@ -122,7 +122,6 @@ const AsterPlot = ({ data, width, height, colorSet }) => {
                 return d.data.label;
             })
             .on('click', function (_event, d) {
-                console.log({ d });
                 d.data.onClick();
             });
 
