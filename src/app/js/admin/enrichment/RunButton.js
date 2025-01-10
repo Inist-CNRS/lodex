@@ -20,6 +20,16 @@ export const RunButton = ({
     id,
 }) => {
     const [isOngoing, setIsOngoing] = useState(false);
+
+    useEffect(() => {
+        if (['IN_PROGRESS', 'PENDING'].includes(enrichmentStatus)) {
+            setIsOngoing(true);
+            return;
+        }
+
+        return setIsOngoing(false);
+    }, [setIsOngoing, enrichmentStatus]);
+
     const handleClick = (event) => {
         event.preventDefault();
         event.stopPropagation();
@@ -34,15 +44,6 @@ export const RunButton = ({
             action: enrichmentStatus === FINISHED ? 'relaunch' : 'launch',
         });
     };
-
-    useEffect(() => {
-        if (['IN_PROGRESS', 'PENDING'].includes(enrichmentStatus)) {
-            setIsOngoing(true);
-            return;
-        }
-
-        return setIsOngoing(false);
-    }, [setIsOngoing, enrichmentStatus]);
 
     return (
         <Button
@@ -66,6 +67,7 @@ RunButton.propTypes = {
         'PENDING',
         'FINISHED',
         'CANCELED',
+        '',
     ]).isRequired,
     p: polyglotPropTypes,
     variant: PropTypes.string,
