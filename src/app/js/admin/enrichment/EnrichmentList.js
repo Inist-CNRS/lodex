@@ -171,6 +171,9 @@ export const EnrichmentList = ({
                                             event.preventDefault();
                                             event.stopPropagation();
                                         }}
+                                        disabled={
+                                            (params.row.errorCount ?? 0) === 0
+                                        }
                                     >
                                         {polyglot.t('retry')}
                                     </Button>
