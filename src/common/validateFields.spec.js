@@ -323,10 +323,12 @@ describe('validateField', () => {
             });
         });
 
-        it('should return valid result if no transformers and internalScopes include graphic', () => {
+        it('should return valid result if format name is fieldClone even if no transformers', () => {
             expect(
                 validateTransformers({
-                    internalScopes: ['document', 'chart'],
+                    format: {
+                        name: 'fieldClone',
+                    },
                 }),
             ).toEqual({
                 name: 'transformers',
