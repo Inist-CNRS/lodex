@@ -358,7 +358,7 @@ const DraggableItemGrid = compose(
     };
 
     return (
-        <Box sx={styles.layoutContainer} ref={gridLayoutRef}>
+        <Box sx={styles.layoutContainer} ref={gridLayoutRef} role="grid">
             <GridLayout
                 className="layout"
                 layout={layout}
@@ -373,6 +373,7 @@ const DraggableItemGrid = compose(
                 {fields.map((field) => (
                     <Box
                         key={field.name}
+                        role="gridcell"
                         aria-label={field.label}
                         sx={{
                             ...styles.property,

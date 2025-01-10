@@ -10,3 +10,25 @@ export function setFieldLanguage(fieldName, languageCode) {
 
     cy.wait(1000);
 }
+
+export function createNewField() {
+    cy.findByRole('button', {
+        name: /New field/,
+    }).click();
+
+    cy.findByRole('textbox', {
+        name: /Label/,
+    }).should('be.visible', {
+        timeout: 1000,
+    });
+
+    cy.findByRole('button', {
+        name: /Arbitrary value/,
+    }).click();
+
+    cy.findByPlaceholderText('Enter an arbitrary value').type('FIELD');
+
+    cy.findByRole('button', {
+        name: /Save/,
+    }).click();
+}
