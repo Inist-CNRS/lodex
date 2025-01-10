@@ -24,7 +24,11 @@ import { FINISHED, IN_PROGRESS } from '../../../../common/taskStatus';
 import { launchAllEnrichment, launchEnrichment, retryEnrichment } from '.';
 import { toast } from '../../../../common/tools/toast';
 
-const EnrichmentListToolBar = ({ polyglot, onLaunchAllEnrichment }) => {
+const EnrichmentListToolBar = ({
+    polyglot,
+    onLaunchAllEnrichment,
+    areEnrichmentsRunning,
+}) => {
     return (
         <GridToolbarContainer>
             <Tooltip title={polyglot.t(`column_tooltip`)}>
@@ -58,6 +62,7 @@ const EnrichmentListToolBar = ({ polyglot, onLaunchAllEnrichment }) => {
                             color: 'primary.main',
                         },
                     }}
+                    disabled={areEnrichmentsRunning}
                     onClick={() => {
                         onLaunchAllEnrichment();
                     }}
@@ -72,6 +77,7 @@ const EnrichmentListToolBar = ({ polyglot, onLaunchAllEnrichment }) => {
 EnrichmentListToolBar.propTypes = {
     polyglot: polyglotPropTypes.isRequired,
     onLaunchAllEnrichment: PropTypes.func,
+    areEnrichmentsRunning: PropTypes.bool.isRequired,
 };
 
 export const EnrichmentList = ({
@@ -82,7 +88,7 @@ export const EnrichmentList = ({
     onRetryEnrichment,
 }) => {
     const history = useHistory();
-    const isEnrichingRunning = enrichments.some(
+    const areEnrichmentsRunning = enrichments.some(
         (enrichment) => enrichment.status === IN_PROGRESS,
     );
     const handleRowClick = (params) => {
@@ -91,7 +97,7 @@ export const EnrichmentList = ({
 
     const handleLaunchPrecomputed = (params) => (event) => {
         event.stopPropagation();
-        if (isEnrichingRunning) {
+        if (areEnrichmentsRunning) {
             toast(polyglot.t('pending_enrichment'), {
                 type: toast.TYPE.INFO,
             });
@@ -196,6 +202,7 @@ export const EnrichmentList = ({
                         <EnrichmentListToolBar
                             polyglot={polyglot}
                             onLaunchAllEnrichment={onLaunchAllEnrichment}
+                            areEnrichmentsRunning={areEnrichmentsRunning}
                         />
                     ),
                 }}
