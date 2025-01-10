@@ -19,7 +19,7 @@ import {
 import { Link } from 'react-router-dom';
 import { useHistory } from 'react-router';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
-import { renderRunButton, renderStatus } from './EnrichmentForm';
+import { renderStatus, RunButton } from './EnrichmentForm';
 import { FINISHED, IN_PROGRESS } from '../../../../common/taskStatus';
 import { launchAllEnrichment, launchEnrichment, retryEnrichment } from '.';
 import { toast } from '../../../../common/tools/toast';
@@ -147,11 +147,15 @@ export const EnrichmentList = ({
                         headerName: polyglot.t('run'),
                         flex: 1,
                         renderCell: (params) => {
-                            return renderRunButton(
-                                handleLaunchPrecomputed(params.row),
-                                params.row.status,
-                                polyglot,
-                                'text',
+                            return (
+                                <RunButton
+                                    handleLaunchEnrichment={handleLaunchPrecomputed(
+                                        params.row,
+                                    )}
+                                    enrichmentStatus={params.row.status}
+                                    polyglot={polyglot}
+                                    variant="text"
+                                />
                             );
                         },
                     },

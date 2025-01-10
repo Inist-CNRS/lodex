@@ -146,25 +146,26 @@ export const renderStatus = (status, polyglot) => {
     );
 };
 
-export const renderRunButton = (
+export const RunButton = ({
     handleLaunchEnrichment,
     enrichmentStatus,
     polyglot,
     variant,
-) => {
+}) => {
     const [isOngoing, setIsOngoing] = useState(false);
     const handleClick = (event) => {
-        handleLaunchEnrichment(event);
         setIsOngoing(true);
+        handleLaunchEnrichment(event);
     };
 
     useEffect(() => {
         if (['IN_PROGRESS', 'PENDING'].includes(enrichmentStatus)) {
+            setIsOngoing(true);
             return;
         }
 
         return setIsOngoing(false);
-    }, [isOngoing, setIsOngoing, enrichmentStatus]);
+    }, [setIsOngoing, enrichmentStatus]);
 
     return (
         <Button
@@ -178,6 +179,18 @@ export const renderRunButton = (
             {polyglot.t('run')}
         </Button>
     );
+};
+
+RunButton.propTypes = {
+    handleLaunchEnrichment: PropTypes.func.isRequired,
+    enrichmentStatus: PropTypes.oneOf([
+        'IN_PROGRESS',
+        'PENDING',
+        'FINISHED',
+        'CANCELED',
+    ]).isRequired,
+    polyglot: polyglotPropTypes,
+    variant: PropTypes.string,
 };
 
 // COMPONENT PART
@@ -331,12 +344,13 @@ export const EnrichmentForm = ({
                             component={renderTextField}
                             label={polyglot.t('fieldName')}
                         />
-                        {isEditMode &&
-                            renderRunButton(
-                                handleLaunchEnrichment,
-                                initialValues?.status,
-                                polyglot,
-                            )}
+                        {isEditMode && (
+                            <RunButton
+                                handleLaunchEnrichment={handleLaunchEnrichment}
+                                enrichmentStatus={initialValues?.status}
+                                polyglot={polyglot}
+                            />
+                        )}
                     </Box>
                     {isEditMode && (
                         <Box
