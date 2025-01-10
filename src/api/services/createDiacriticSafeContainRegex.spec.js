@@ -3,61 +3,88 @@ import { createDiacriticSafeContainRegex } from './createDiacriticSafeContainReg
 describe('createDiacriticSafeContainRegex', () => {
     it('should replace a with diactrics proof regex', () => {
         expect(createDiacriticSafeContainRegex('hat')).toEqual(
-            /^.*h[aàáâãäåă]t.*$/gi,
+            /^.*[hĥħȟ][aàáâãäåāăąǎǟǡǻȁȃȧȺ][tţťŧƫƭƮțȶȾ].*$/gi,
         );
         expect(createDiacriticSafeContainRegex('à')).toEqual(
-            /^.*[aàáâãäåă].*$/gi,
+            /^.*[aàáâãäåāăąǎǟǡǻȁȃȧȺ].*$/gi,
         );
     });
 
     it('should replace c with diactrics proof regex', () => {
         expect(createDiacriticSafeContainRegex('hct')).toEqual(
-            /^.*h[cç]t.*$/gi,
+            /^.*[hĥħȟ][cçćĉċčƈȼ][tţťŧƫƭƮțȶȾ].*$/gi,
         );
-        expect(createDiacriticSafeContainRegex('ç')).toEqual(/^.*[cç].*$/gi);
+        expect(createDiacriticSafeContainRegex('ç')).toEqual(
+            /^.*[cçćĉċčƈȼ].*$/gi,
+        );
     });
 
     it('should replace e with diactrics proof regex', () => {
         expect(createDiacriticSafeContainRegex('het')).toEqual(
-            /^.*h[eèéêë]t.*$/gi,
+            /^.*[hĥħȟ][eèéêëėęěēƎƏƐǝȅȇȩɇɛƩƪ][tţťŧƫƭƮțȶȾ].*$/gi,
         );
-        expect(createDiacriticSafeContainRegex('é')).toEqual(/^.*[eèéêë].*$/gi);
+        expect(createDiacriticSafeContainRegex('é')).toEqual(
+            /^.*[eèéêëėęěēƎƏƐǝȅȇȩɇɛƩƪ].*$/gi,
+        );
     });
 
     it('should replace i with diactrics proof regex', () => {
         expect(createDiacriticSafeContainRegex('hit')).toEqual(
-            /^.*h[iìíîï]t.*$/gi,
+            /^.*[hĥħȟ][iìíîïĩĭįıƖƗǐȉȋ][tţťŧƫƭƮțȶȾ].*$/gi,
         );
-        expect(createDiacriticSafeContainRegex('ì')).toEqual(/^.*[iìíîï].*$/gi);
+        expect(createDiacriticSafeContainRegex('ì')).toEqual(
+            /^.*[iìíîïĩĭįıƖƗǐȉȋ].*$/gi,
+        );
     });
 
     it('should replace n with diactrics proof regex', () => {
         expect(createDiacriticSafeContainRegex('hnt')).toEqual(
-            /^.*h[nñ]t.*$/gi,
+            /^.*[hĥħȟ][nñńņňŉŋƞƝǹȵ][tţťŧƫƭƮțȶȾ].*$/gi,
         );
-        expect(createDiacriticSafeContainRegex('ñ')).toEqual(/^.*[nñ].*$/gi);
+        expect(createDiacriticSafeContainRegex('ñ')).toEqual(
+            /^.*[nñńņňŉŋƞƝǹȵ].*$/gi,
+        );
     });
 
     it('should replace o with diactrics proof regex', () => {
         expect(createDiacriticSafeContainRegex('hot')).toEqual(
-            /^.*h[oòóôõö]t.*$/gi,
+            /^.*[hĥħȟ][oòóôõöøǿōŏőǒȱƆƟơǫǭȍȏȫȭȯȱ][tţťŧƫƭƮțȶȾ].*$/gi,
         );
         expect(createDiacriticSafeContainRegex('ò')).toEqual(
-            /^.*[oòóôõö].*$/gi,
+            /^.*[oòóôõöøǿōŏőǒȱƆƟơǫǭȍȏȫȭȯȱ].*$/gi,
         );
     });
 
     it('should replace u with diactrics proof regex', () => {
         expect(createDiacriticSafeContainRegex('hut')).toEqual(
-            /^.*h[uùúûü]t.*$/gi,
+            /^.*[hĥħȟ][uùúûüũūŭůűųǔǖǘǚǜưƱȕȗɄυƱ][tţťŧƫƭƮțȶȾ].*$/gi,
         );
-        expect(createDiacriticSafeContainRegex('ù')).toEqual(/^.*[uùúûü].*$/gi);
+        expect(createDiacriticSafeContainRegex('ù')).toEqual(
+            /^.*[uùúûüũūŭůűųǔǖǘǚǜưƱȕȗɄυƱ].*$/gi,
+        );
     });
 
     it('should replace y with diactrics proof regex', () => {
-        expect(createDiacriticSafeContainRegex('hyt')).toEqual(
-            /^.*h[yýÿ]t.*$/gi,
+        expect(createDiacriticSafeContainRegex('hyp')).toEqual(
+            /^.*[hĥħȟ][yýÿŷȳƴɏȝ][pƿƥ].*$/gi,
         );
-        expect(createDiacriticSafeContainRegex('ÿ')).toEqual(/^.*[yýÿ].*$/gi);
+        expect(createDiacriticSafeContainRegex('ÿ')).toEqual(
+            /^.*[yýÿŷȳƴɏȝ].*$/gi,
+        );
+    });
+
+    it('should support multi characters regexes', () => {
+        expect(createDiacriticSafeContainRegex('haet')).toEqual(
+            /^.*[hĥħȟ](([aàáâãäåāăąǎǟǡǻȁȃȧȺ][eèéêëėęěēƎƏƐǝȅȇȩɇɛƩƪ])|æ|ǽ|ǣ)[tţťŧƫƭƮțȶȾ].*$/gi,
+        );
+        expect(createDiacriticSafeContainRegex('æ')).toEqual(
+            /^.*(([aàáâãäåāăąǎǟǡǻȁȃȧȺ][eèéêëėęěēƎƏƐǝȅȇȩɇɛƩƪ])|æ|ǽ|ǣ).*$/gi,
+        );
+    });
+
+    it('should replace composed characters', () => {
+        expect(createDiacriticSafeContainRegex('ß')).toEqual(
+            /^.*(([sśŝşšſƨșȿ][sśŝşšſƨșȿ])|ß).*$/gi,
+        );
     });
 });
