@@ -121,7 +121,8 @@ const AsterPlot = ({ data, width, height, colorSet }) => {
             .attr('data-tip', function (d) {
                 return d.data.label;
             })
-            .on('click', function (d) {
+            .on('click', function (_event, d) {
+                console.log({ d });
                 d.data.onClick();
             });
 
