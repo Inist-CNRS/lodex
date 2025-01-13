@@ -20,7 +20,6 @@ import { withRouter } from 'react-router';
 import {
     Box,
     Button,
-    Chip,
     FormControlLabel,
     FormGroup,
     ListItem,
@@ -35,17 +34,11 @@ import {
 } from '../api/enrichment';
 import { getJobLogs } from '../api/job';
 import { toast } from '../../../../common/tools/toast';
-import {
-    FINISHED,
-    IN_PROGRESS,
-    PENDING,
-    ERROR,
-    CANCELED,
-    PAUSED,
-} from '../../../../common/taskStatus';
+import { IN_PROGRESS, PENDING } from '../../../../common/taskStatus';
 import CancelButton from '../../lib/components/CancelButton';
 import { DeleteEnrichmentButton } from './DeleteEnrichmentButton';
 import RunButton from './RunButton';
+import EnrichmentStatus from './EnrichmentStatus';
 
 // UTILITARY PART
 const ENRICHMENT_FORM = 'ENRICHMENT_FORM';
@@ -75,75 +68,6 @@ const renderTextField = ({ input, label, meta: { touched, error } }) => (
         fullWidth
     />
 );
-
-export const renderStatus = (status, polyglot) => {
-    if (status === PENDING) {
-        return (
-            <Chip
-                component="span"
-                label={polyglot.t('enrichment_status_pending')}
-                color="warning"
-            />
-        );
-    }
-    if (status === IN_PROGRESS) {
-        return (
-            <Chip
-                component="span"
-                label={polyglot.t('enrichment_status_running')}
-                color="info"
-            />
-        );
-    }
-
-    if (status === PAUSED) {
-        return (
-            <Chip
-                component="span"
-                label={polyglot.t('enrichment_status_paused')}
-                color="info"
-            />
-        );
-    }
-
-    if (status === FINISHED) {
-        return (
-            <Chip
-                component="span"
-                label={polyglot.t('enrichment_status_done')}
-                color="success"
-            />
-        );
-    }
-
-    if (status === ERROR) {
-        return (
-            <Chip
-                component="span"
-                label={polyglot.t('enrichment_status_error')}
-                color="error"
-            />
-        );
-    }
-
-    if (status === CANCELED) {
-        return (
-            <Chip
-                component="span"
-                label={polyglot.t('enrichment_status_canceled')}
-                color="warning"
-            />
-        );
-    }
-
-    return (
-        <Chip
-            component="span"
-            label={polyglot.t('enrichment_status_not_started')}
-            sx={{ backgroundColor: 'neutral' }}
-        />
-    );
-};
 
 // COMPONENT PART
 export const EnrichmentForm = ({
@@ -298,7 +222,7 @@ export const EnrichmentForm = ({
                         >
                             <Typography>
                                 {polyglot.t('enrichment_status')} : &nbsp;
-                                {renderStatus(initialValues?.status, polyglot)}
+                                <EnrichmentStatus id={initialValues?._id} />
                             </Typography>
                             <Button
                                 variant="link"
