@@ -17,7 +17,7 @@ import { auth, istexApiUrl, jsHost, mongo, themesHost } from 'config';
 import pick from 'lodash/pick';
 import { createMemoryHistory } from 'history';
 
-import rootReducer from '../../app/js/public/reducers';
+import createRootReducer from '../../app/js/public/reducers';
 import sagas from '../../app/js/public/sagas';
 import configureStoreServer from '../../app/js/configureStoreServer';
 import Routes from '../../app/js/public/Routes';
@@ -113,7 +113,7 @@ export const getPreloadedState = async (
     ctx,
 ) => {
     const store = configureStoreServer(
-        rootReducer,
+        createRootReducer(history),
         sagas,
         await getInitialState(token, cookie, locale, ctx),
         history,

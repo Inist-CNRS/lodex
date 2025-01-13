@@ -8,13 +8,14 @@ import { ConnectedRouter } from 'connected-react-router';
 import PropTypes from 'prop-types';
 
 import configureStore from './app/js/configureStore';
-import rootReducer from './app/js/public/reducers';
+import createRootReducer from './app/js/public/reducers';
 import sagas from './app/js/admin/sagas';
 
 global.__DEBUG__ = false;
 
 const history = createMemoryHistory();
-const store = configureStore(rootReducer, sagas, {}, history);
+
+const store = configureStore(createRootReducer(history), sagas, {}, history);
 
 const Wrapper = ({ children }) => (
     <Provider store={store}>

@@ -1,4 +1,4 @@
-import { connectRouter, routerMiddleware } from 'connected-react-router';
+import { routerMiddleware } from 'connected-react-router';
 import { applyMiddleware, compose, createStore } from 'redux';
 import createSagaMiddleware from 'redux-saga';
 import persistState, { mergePersistedState } from 'redux-localstorage';
@@ -22,10 +22,7 @@ export default function configureStore(
           }
         : pureReducer;
 
-    const reducer = compose(
-        mergePersistedState(),
-        connectRouter(history),
-    )(rootReducer);
+    const reducer = compose(mergePersistedState())(rootReducer);
 
     const sessionStorage = compose(filter(['search', 'user']))(
         adapter(window.sessionStorage),

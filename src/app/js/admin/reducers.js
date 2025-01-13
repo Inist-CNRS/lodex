@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux';
 import { reducer as form } from 'redux-form';
 import { polyglotReducer as polyglot } from 'redux-polyglot';
+import { connectRouter } from 'connected-react-router';
 
 import fetchReducer from '../fetch';
 import fields from '../fields';
@@ -23,29 +24,31 @@ import enrichment from './enrichment';
 import precomputed from './precomputed';
 import configTenant from './configTenant';
 
-const reducer = combineReducers({
-    fetch: fetchReducer,
-    fields,
-    form,
-    i18n,
-    import: importReducer,
-    dump,
-    polyglot,
-    parsing,
-    publication,
-    preview,
-    publish: publishReducer,
-    removedResources,
-    upload,
-    user,
-    clear,
-    characteristic,
-    progress,
-    loaders,
-    subresource,
-    enrichment,
-    precomputed,
-    configTenant,
-});
+const reducer = (history) =>
+    combineReducers({
+        fetch: fetchReducer,
+        fields,
+        form,
+        i18n,
+        import: importReducer,
+        dump,
+        polyglot,
+        parsing,
+        publication,
+        preview,
+        publish: publishReducer,
+        removedResources,
+        upload,
+        user,
+        clear,
+        characteristic,
+        progress,
+        loaders,
+        subresource,
+        enrichment,
+        precomputed,
+        configTenant,
+        router: connectRouter(history),
+    });
 
 export default reducer;

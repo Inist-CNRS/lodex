@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux';
 import { reducer as form } from 'redux-form';
 import { polyglotReducer as polyglot } from 'redux-polyglot';
+import { connectRouter } from 'connected-react-router';
 
 import characteristic from '../characteristic';
 import dataset from './dataset';
@@ -17,23 +18,25 @@ import menu from './menu/reducer';
 import displayConfig from './displayConfig/reducer';
 import configTenant from '../admin/configTenant';
 
-const rootReducer = combineReducers({
-    characteristic,
-    dataset,
-    export: exportReducer,
-    fetch: fetchReducer,
-    form,
-    i18n,
-    polyglot,
-    fields,
-    resource,
-    format,
-    user,
-    search: searchReducer,
-    menu,
-    breadcrumb,
-    displayConfig,
-    configTenant,
-});
+const rootReducer = (history) =>
+    combineReducers({
+        characteristic,
+        dataset,
+        export: exportReducer,
+        fetch: fetchReducer,
+        form,
+        i18n,
+        polyglot,
+        fields,
+        resource,
+        format,
+        user,
+        search: searchReducer,
+        menu,
+        breadcrumb,
+        displayConfig,
+        configTenant,
+        router: connectRouter(history),
+    });
 
 export default rootReducer;
