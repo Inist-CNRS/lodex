@@ -5,7 +5,7 @@ import React from 'react';
 import { hydrate } from 'react-dom';
 import { Provider } from 'react-redux';
 
-import rootReducer from './reducers';
+import createRootReducer from './reducers';
 import Routes from './Routes';
 import sagas from './sagas';
 import configureStore from '../configureStore';
@@ -30,7 +30,7 @@ const history = createBrowserHistory({
 sessionStorage.setItem('lodex-tenant', tenant);
 
 const store = configureStore(
-    rootReducer,
+    createRootReducer(history),
     sagas,
     window.__PRELOADED_STATE__ || initialState,
     history,
