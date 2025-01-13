@@ -1,11 +1,10 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo } from 'react';
 
 import EnrichmentCatalogConnected from './EnrichmentCatalog';
 import EnrichmentPreview from './EnrichmentPreview';
 import FormSourceCodeField from '../../lib/components/FormSourceCodeField';
 import EnrichmentLogsDialogComponent from './EnrichmentLogsDialog';
 import translate from 'redux-polyglot/translate';
-import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import PropTypes from 'prop-types';
 import SubressourceFieldAutoComplete from '../subresource/SubressourceFieldAutoComplete';
 
@@ -21,7 +20,6 @@ import { withRouter } from 'react-router';
 import {
     Box,
     Button,
-    Chip,
     FormControlLabel,
     FormGroup,
     ListItem,
@@ -36,19 +34,11 @@ import {
 } from '../api/enrichment';
 import { getJobLogs } from '../api/job';
 import { toast } from '../../../../common/tools/toast';
-import {
-    FINISHED,
-    IN_PROGRESS,
-    PENDING,
-    ERROR,
-    CANCELED,
-    PAUSED,
-    ON_HOLD,
-} from '../../../../common/taskStatus';
-import { io } from 'socket.io-client';
+import { IN_PROGRESS, PENDING } from '../../../../common/taskStatus';
 import CancelButton from '../../lib/components/CancelButton';
-import { DEFAULT_TENANT } from '../../../../common/tools/tenantTools';
 import { DeleteEnrichmentButton } from './DeleteEnrichmentButton';
+import RunButton from './RunButton';
+import EnrichmentStatus from './EnrichmentStatus';
 
 // UTILITARY PART
 const ENRICHMENT_FORM = 'ENRICHMENT_FORM';
@@ -79,105 +69,6 @@ const renderTextField = ({ input, label, meta: { touched, error } }) => (
     />
 );
 
-export const renderStatus = (status, polyglot) => {
-    if (status === PENDING) {
-        return (
-            <Chip
-                component="span"
-                label={polyglot.t('enrichment_status_pending')}
-                color="warning"
-            />
-        );
-    }
-    if (status === IN_PROGRESS) {
-        return (
-            <Chip
-                component="span"
-                label={polyglot.t('enrichment_status_running')}
-                color="info"
-            />
-        );
-    }
-
-    if (status === PAUSED) {
-        return (
-            <Chip
-                component="span"
-                label={polyglot.t('enrichment_status_paused')}
-                color="info"
-            />
-        );
-    }
-
-    if (status === FINISHED) {
-        return (
-            <Chip
-                component="span"
-                label={polyglot.t('enrichment_status_done')}
-                color="success"
-            />
-        );
-    }
-
-    if (status === ERROR) {
-        return (
-            <Chip
-                component="span"
-                label={polyglot.t('enrichment_status_error')}
-                color="error"
-            />
-        );
-    }
-
-    if (status === CANCELED) {
-        return (
-            <Chip
-                component="span"
-                label={polyglot.t('enrichment_status_canceled')}
-                color="warning"
-            />
-        );
-    }
-
-    return (
-        <Chip
-            component="span"
-            label={polyglot.t('enrichment_status_not_started')}
-            sx={{ backgroundColor: 'neutral' }}
-        />
-    );
-};
-
-export const renderRunButton = (
-    handleLaunchEnrichment,
-    enrichmentStatus,
-    polyglot,
-    variant,
-) => {
-    const [isClicked, setIsClicked] = useState(false);
-    const handleClick = (event) => {
-        handleLaunchEnrichment(event);
-        setIsClicked(true);
-    };
-
-    return (
-        <Button
-            color="primary"
-            variant={variant || 'contained'}
-            sx={{ height: '100%' }}
-            startIcon={<PlayArrowIcon />}
-            onClick={handleClick}
-            disabled={
-                isClicked ||
-                enrichmentStatus === IN_PROGRESS ||
-                enrichmentStatus === PENDING
-            }
-        >
-            {polyglot.t('run')}
-        </Button>
-    );
-};
-
 // COMPONENT PART
 export const EnrichmentForm = ({
     datasetFields,
@@ -187,9 +78,7 @@ export const EnrichmentForm = ({
     initialValues,
     p: polyglot,
     onChangeWebServiceUrl,
-    onLaunchEnrichment,
     onLoadEnrichments,
-    isEnrichmentRunning,
 }) => {
     const [openCatalog, setOpenCatalog] = React.useState(false);
     const [openEnrichmentLogs, setOpenEnrichmentLogs] = React.useState(false);
@@ -198,9 +87,6 @@ export const EnrichmentForm = ({
         [],
     );
     const [enrichmentLogs, setEnrichmentLogs] = React.useState([]);
-    const [enrichmentStatus, setEnrichmentStatus] = React.useState(
-        initialValues?.status,
-    );
 
     const isEditMode = !!initialValues?._id;
 
@@ -280,18 +166,6 @@ export const EnrichmentForm = ({
         history.push('/data/enrichment');
     };
 
-    const handleLaunchEnrichment = () => {
-        if (isEnrichmentRunning) {
-            toast(polyglot.t('pending_enrichment'), {
-                type: toast.TYPE.INFO,
-            });
-        }
-        onLaunchEnrichment({
-            id: initialValues._id,
-            action: enrichmentStatus === FINISHED ? 'relaunch' : 'launch',
-        });
-    };
-
     const handleGetLogs = async () => {
         if (initialValues?.jobId) {
             getJobLogs(initialValues.jobId).then(
@@ -309,43 +183,7 @@ export const EnrichmentForm = ({
 
     useEffect(() => {
         handleGetLogs();
-        const socket = io();
-        const tenant = sessionStorage.getItem('lodex-tenant') || DEFAULT_TENANT;
-        const dbName = sessionStorage.getItem('lodex-dbName');
-        socket.on(
-            `${dbName}_${tenant}-enrichment-job-${initialValues?.jobId}`,
-            (data) => {
-                let lastLine;
-                let parsedData;
-                if (Array.isArray(data)) {
-                    setEnrichmentLogs((currentState) => [
-                        ...data,
-                        ...currentState,
-                    ]);
-                    lastLine = data[0];
-                } else {
-                    setEnrichmentLogs((currentState) => [
-                        data,
-                        ...currentState,
-                    ]);
-                    lastLine = data;
-                }
-                try {
-                    parsedData = JSON.parse(lastLine);
-                } catch {
-                    console.error('Error parsing data', lastLine);
-                }
-
-                if (parsedData && parsedData.status) {
-                    setEnrichmentStatus(parsedData.status);
-                }
-            },
-        );
-        socket.on('${tenant}-connect_error', () => {
-            handleGetLogs();
-        });
-        return () => socket.disconnect();
-    }, []);
+    }, [initialValues?.status]);
 
     useEffect(() => {
         const timeout = setTimeout(() => handleSourcePreview(formValues), 500);
@@ -368,12 +206,12 @@ export const EnrichmentForm = ({
                             component={renderTextField}
                             label={polyglot.t('fieldName')}
                         />
-                        {isEditMode &&
-                            renderRunButton(
-                                handleLaunchEnrichment,
-                                enrichmentStatus,
-                                polyglot,
-                            )}
+                        {isEditMode && (
+                            <RunButton
+                                polyglot={polyglot}
+                                id={initialValues?._id}
+                            />
+                        )}
                     </Box>
                     {isEditMode && (
                         <Box
@@ -384,7 +222,7 @@ export const EnrichmentForm = ({
                         >
                             <Typography>
                                 {polyglot.t('enrichment_status')} : &nbsp;
-                                {renderStatus(enrichmentStatus, polyglot)}
+                                <EnrichmentStatus id={initialValues?._id} />
                             </Typography>
                             <Button
                                 variant="link"
@@ -515,8 +353,8 @@ export const EnrichmentForm = ({
                     {isEditMode && (
                         <DeleteEnrichmentButton
                             disabled={
-                                enrichmentStatus === IN_PROGRESS ||
-                                enrichmentStatus === PENDING ||
+                                initialValues?.status === IN_PROGRESS ||
+                                initialValues?.status === PENDING ||
                                 isLoading
                             }
                             id={initialValues._id}
@@ -542,8 +380,8 @@ export const EnrichmentForm = ({
                             onClick={handleSubmit}
                             disabled={
                                 isLoading ||
-                                enrichmentStatus === IN_PROGRESS ||
-                                enrichmentStatus === PENDING
+                                initialValues?.status === IN_PROGRESS ||
+                                initialValues?.status === PENDING
                             }
                         >
                             {polyglot.t('save')}
@@ -579,13 +417,6 @@ const mapStateToProps = (state, { match }) => ({
         .find((enrichment) => enrichment._id === match.params.enrichmentId),
     datasetFields: fromParsing.getParsedExcerptColumns(state),
     excerptLines: fromParsing.getExcerptLines(state),
-    isEnrichmentRunning: !!fromEnrichments
-        .enrichments(state)
-        .find(
-            (enrichment) =>
-                enrichment.status === IN_PROGRESS ||
-                enrichment.status === ON_HOLD,
-        ),
 });
 const mapDispatchToProps = {
     onChangeWebServiceUrl: (value) =>
@@ -612,7 +443,6 @@ EnrichmentForm.propTypes = {
     onLaunchEnrichment: PropTypes.func.isRequired,
     onLoadEnrichments: PropTypes.func.isRequired,
     p: polyglotPropTypes.isRequired,
-    isEnrichmentRunning: PropTypes.bool,
 };
 
 export default compose(

@@ -19,12 +19,16 @@ import {
 import { Link } from 'react-router-dom';
 import { useHistory } from 'react-router';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
-import { renderRunButton, renderStatus } from './EnrichmentForm';
-import { FINISHED, IN_PROGRESS } from '../../../../common/taskStatus';
-import { launchAllEnrichment, launchEnrichment, retryEnrichment } from '.';
-import { toast } from '../../../../common/tools/toast';
+import EnrichmentStatus from './EnrichmentStatus';
+import { IN_PROGRESS } from '../../../../common/taskStatus';
+import { launchAllEnrichment, retryEnrichment } from '.';
+import RunButton from './RunButton';
 
-const EnrichmentListToolBar = ({ polyglot, onLaunchAllEnrichment }) => {
+const EnrichmentListToolBar = ({
+    polyglot,
+    onLaunchAllEnrichment,
+    areEnrichmentsRunning,
+}) => {
     return (
         <GridToolbarContainer>
             <Tooltip title={polyglot.t(`column_tooltip`)}>
@@ -58,6 +62,7 @@ const EnrichmentListToolBar = ({ polyglot, onLaunchAllEnrichment }) => {
                             color: 'primary.main',
                         },
                     }}
+                    disabled={areEnrichmentsRunning}
                     onClick={() => {
                         onLaunchAllEnrichment();
                     }}
@@ -72,34 +77,21 @@ const EnrichmentListToolBar = ({ polyglot, onLaunchAllEnrichment }) => {
 EnrichmentListToolBar.propTypes = {
     polyglot: polyglotPropTypes.isRequired,
     onLaunchAllEnrichment: PropTypes.func,
+    areEnrichmentsRunning: PropTypes.bool.isRequired,
 };
 
 export const EnrichmentList = ({
     enrichments,
     p: polyglot,
-    onLaunchEnrichment,
     onLaunchAllEnrichment,
     onRetryEnrichment,
 }) => {
     const history = useHistory();
-    const isEnrichingRunning = enrichments.some(
+    const areEnrichmentsRunning = enrichments.some(
         (enrichment) => enrichment.status === IN_PROGRESS,
     );
     const handleRowClick = (params) => {
         history.push(`/data/enrichment/${params.row._id}`);
-    };
-
-    const handleLaunchPrecomputed = (params) => (event) => {
-        event.stopPropagation();
-        if (isEnrichingRunning) {
-            toast(polyglot.t('pending_enrichment'), {
-                type: toast.TYPE.INFO,
-            });
-        }
-        onLaunchEnrichment({
-            id: params._id,
-            action: params.status === FINISHED ? 'relaunch' : 'launch',
-        });
     };
 
     return (
@@ -139,19 +131,24 @@ export const EnrichmentList = ({
                         field: 'status',
                         headerName: polyglot.t('enrichment_status'),
                         flex: 1,
-                        renderCell: (params) =>
-                            renderStatus(params.value, polyglot),
+                        renderCell: (params) => (
+                            <EnrichmentStatus
+                                polyglot={polyglot}
+                                id={params.row._id}
+                            />
+                        ),
                     },
                     {
                         field: 'run',
                         headerName: polyglot.t('run'),
                         flex: 1,
                         renderCell: (params) => {
-                            return renderRunButton(
-                                handleLaunchPrecomputed(params.row),
-                                params.row.status,
-                                polyglot,
-                                'text',
+                            return (
+                                <RunButton
+                                    id={params.row._id}
+                                    polyglot={polyglot}
+                                    variant="text"
+                                />
                             );
                         },
                     },
@@ -192,6 +189,7 @@ export const EnrichmentList = ({
                         <EnrichmentListToolBar
                             polyglot={polyglot}
                             onLaunchAllEnrichment={onLaunchAllEnrichment}
+                            areEnrichmentsRunning={areEnrichmentsRunning}
                         />
                     ),
                 }}
@@ -218,7 +216,6 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = {
-    onLaunchEnrichment: launchEnrichment,
     onLaunchAllEnrichment: launchAllEnrichment,
     onRetryEnrichment: retryEnrichment,
 };
