@@ -1,4 +1,4 @@
-import { call, put, select, takeLatest } from 'redux-saga/effects';
+import { all, call, put, select, takeLatest } from 'redux-saga/effects';
 
 import fetchSaga from '../../lib/sagas/fetchSaga';
 import { fromUser } from '../../sharedSelectors';
@@ -28,16 +28,18 @@ export default ({ actionTypes, actions, selectors }) => {
 
         const facetsValues = yield select(selectors.getFacetsValues);
 
-        for (const name of Object.keys(facetsValues)) {
-            yield put(
-                actions.changeFacetValue({
-                    name,
-                    perPage: facetsValues[name].perPage,
-                    currentPage: 0,
-                    filter: '',
-                }),
-            );
-        }
+        yield all(
+            Object.keys(facetsValues).map((name) =>
+                put(
+                    actions.changeFacetValue({
+                        name,
+                        perPage: facetsValues[name].perPage,
+                        currentPage: 0,
+                        filter: '',
+                    }),
+                ),
+            ),
+        );
     };
 
     return function* facetSagas() {
