@@ -365,11 +365,11 @@ export const setEnrichmentJobId = async (ctx, enrichmentID, job) => {
     });
 };
 
-export const startEnrichment = async (ctx, retryFailedOnly) => {
+export const startEnrichment = async (ctx) => {
     const id = ctx.job?.data?.id;
     const enrichment = await ctx.enrichment.findOneById(id);
 
-    const filter = retryFailedOnly
+    const filter = ctx.retryFailedOnly
         ? {
               [enrichment.name]: /^\[Error\]:/,
           }
