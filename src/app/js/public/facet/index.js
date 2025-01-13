@@ -1,5 +1,5 @@
 import omit from 'lodash/omit';
-import { createAction, handleActions, combineActions } from 'redux-actions';
+import { combineActions, createAction, handleActions } from 'redux-actions';
 
 import {
     createActionTypes as createFacetValueActionTypes,
