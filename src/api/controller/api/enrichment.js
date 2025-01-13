@@ -1,18 +1,18 @@
 import Koa from 'koa';
-import route from 'koa-route';
 import koaBodyParser from 'koa-bodyparser';
+import route from 'koa-route';
 import { v1 as uuid } from 'uuid';
 
-import { ENRICHER, RETRY_ENRICHER } from '../../workers/enricher';
-import { workerQueues } from '../../workers';
+import { getLocale } from 'redux-polyglot/dist/selectors';
 import {
     createEnrichmentRule,
     getEnrichmentDataPreview,
     setEnrichmentJobId,
 } from '../../services/enrichment/enrichment';
-import { cancelJob, getActiveJob } from '../../workers/tools';
-import { getLocale } from 'redux-polyglot/dist/selectors';
 import { orderEnrichmentsByDependencies } from '../../services/orderEnrichmentsByDependencies';
+import { workerQueues } from '../../workers';
+import { ENRICHER, RETRY_ENRICHER } from '../../workers/enricher';
+import { cancelJob, getActiveJob } from '../../workers/tools';
 
 export const setup = async (ctx, next) => {
     try {
@@ -167,32 +167,42 @@ export const enrichmentDataPreview = async (ctx) => {
 };
 
 export const launchAllEnrichment = async (ctx) => {
-    const datasetColumns = await ctx.dataset.getColumns();
-    const enrichments = await ctx.enrichment.findAll();
-    const orderedEnrichments = orderEnrichmentsByDependencies(
-        datasetColumns.map((column) => column.key),
-        enrichments,
-    );
+    try {
+        const datasetColumns = await ctx.dataset.getColumns();
+        const enrichments = await ctx.enrichment.findAll();
+        const orderedEnrichments = orderEnrichmentsByDependencies(
+            datasetColumns.map((column) => column.key),
+            enrichments,
+        );
 
-    for (const enrichment of orderedEnrichments) {
-        if (enrichment.status === 'FINISHED') {
-            await ctx.dataset.removeAttribute(enrichment.name);
+        for (const enrichment of orderedEnrichments) {
+            if (enrichment.status === 'FINISHED') {
+                await ctx.dataset.removeAttribute(enrichment.name);
+            }
+            await workerQueues[ctx.tenant]
+                .add(
+                    ENRICHER, // Name of the job
+                    {
+                        id: enrichment._id,
+                        jobType: ENRICHER,
+                        tenant: ctx.tenant,
+                    },
+                    { jobId: uuid(), lifo: false },
+                )
+                .then((job) => setEnrichmentJobId(ctx, enrichment._id, job));
         }
-        await workerQueues[ctx.tenant]
-            .add(
-                ENRICHER, // Name of the job
-                {
-                    id: enrichment._id,
-                    jobType: ENRICHER,
-                    tenant: ctx.tenant,
-                },
-                { jobId: uuid(), lifo: false },
-            )
-            .then((job) => setEnrichmentJobId(ctx, enrichment._id, job));
+        ctx.body = {
+            status: 'pending',
+        };
+    } catch (e) {
+        if (e.message === 'circular_dependency') {
+            ctx.status = 500;
+            ctx.body = { error: 'circular_dependency_error' };
+            return;
+        }
+        ctx.status = 500;
+        ctx.body = { error: 'internal_error' };
     }
-    ctx.body = {
-        status: 'pending',
-    };
 };
 
 export const retryEnrichmentOnFailedRow = async (ctx, id) => {

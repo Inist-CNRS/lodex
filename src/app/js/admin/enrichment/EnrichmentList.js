@@ -1,14 +1,21 @@
-import React from 'react';
-import compose from 'recompose/compose';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
-import PropTypes from 'prop-types';
-import translate from 'redux-polyglot/translate';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import PropTypes from 'prop-types';
+import React from 'react';
+import compose from 'recompose/compose';
+import translate from 'redux-polyglot/translate';
 
-import { connect } from 'react-redux';
-import { Box, Button, Tooltip } from '@mui/material';
+import {
+    Box,
+    Button,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
+    Tooltip,
+} from '@mui/material';
 import {
     DataGrid,
     GridToolbarColumnsButton,
@@ -16,61 +23,97 @@ import {
     GridToolbarDensitySelector,
     GridToolbarFilterButton,
 } from '@mui/x-data-grid';
-import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 import { useHistory } from 'react-router';
-import { polyglot as polyglotPropTypes } from '../../propTypes';
-import EnrichmentStatus from './EnrichmentStatus';
-import { IN_PROGRESS } from '../../../../common/taskStatus';
+import { Link } from 'react-router-dom';
 import { launchAllEnrichment, retryEnrichment } from '.';
-import RunButton from './RunButton';
+import { IN_PROGRESS } from '../../../../common/taskStatus';
+import { polyglot as polyglotPropTypes } from '../../propTypes';
+import { default as EnrichmentStatus } from './EnrichmentStatus';
+import { default as RunButton } from './RunButton';
 
 const EnrichmentListToolBar = ({
     polyglot,
     onLaunchAllEnrichment,
     areEnrichmentsRunning,
 }) => {
+    const [isConfirmOpen, setIsConfirmOpen] = React.useState(false);
+
+    const handleOpenDialog = () => {
+        setIsConfirmOpen(true);
+    };
+
+    const handleCloseDialog = () => {
+        setIsConfirmOpen(false);
+    };
+
+    const handleLaunchAllEnrichment = () => {
+        onLaunchAllEnrichment();
+        handleCloseDialog();
+    };
+
     return (
-        <GridToolbarContainer>
-            <Tooltip title={polyglot.t(`column_tooltip`)}>
-                <GridToolbarColumnsButton />
-            </Tooltip>
-            <GridToolbarFilterButton />
-            <Tooltip title={polyglot.t(`density_tooltip`)}>
-                <GridToolbarDensitySelector />
-            </Tooltip>
-            <Tooltip title={polyglot.t(`add_more_enrichment`)}>
-                <Button
-                    component={Link}
-                    to="/data/enrichment/add"
-                    startIcon={<AddBoxIcon />}
-                    size="small"
-                    sx={{
-                        '&.MuiButtonBase-root:hover': {
-                            color: 'primary.main',
-                        },
-                    }}
-                >
-                    {polyglot.t('add_more')}
-                </Button>
-            </Tooltip>
-            <Tooltip title={polyglot.t(`run_all`)}>
-                <Button
-                    startIcon={<PlayArrowIcon />}
-                    size="small"
-                    sx={{
-                        '&.MuiButtonBase-root:hover': {
-                            color: 'primary.main',
-                        },
-                    }}
-                    disabled={areEnrichmentsRunning}
-                    onClick={() => {
-                        onLaunchAllEnrichment();
-                    }}
-                >
-                    {polyglot.t('run_all')}
-                </Button>
-            </Tooltip>
-        </GridToolbarContainer>
+        <>
+            <Dialog open={isConfirmOpen} onClose={handleCloseDialog}>
+                <DialogTitle>
+                    {polyglot.t('run_all_enrichment_modal_title')}
+                </DialogTitle>
+                <DialogContent>
+                    {polyglot.t('run_all_enrichment_modal_content')}
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleCloseDialog}>
+                        {polyglot.t('cancel')}
+                    </Button>
+                    <Button
+                        onClick={handleLaunchAllEnrichment}
+                        variant="contained"
+                        color="primary"
+                    >
+                        {polyglot.t('run_all')}
+                    </Button>
+                </DialogActions>
+            </Dialog>
+            <GridToolbarContainer>
+                <Tooltip title={polyglot.t(`column_tooltip`)}>
+                    <GridToolbarColumnsButton />
+                </Tooltip>
+                <GridToolbarFilterButton />
+                <Tooltip title={polyglot.t(`density_tooltip`)}>
+                    <GridToolbarDensitySelector />
+                </Tooltip>
+                <Tooltip title={polyglot.t(`add_more_enrichment`)}>
+                    <Button
+                        component={Link}
+                        to="/data/enrichment/add"
+                        startIcon={<AddBoxIcon />}
+                        size="small"
+                        sx={{
+                            '&.MuiButtonBase-root:hover': {
+                                color: 'primary.main',
+                            },
+                        }}
+                    >
+                        {polyglot.t('add_more')}
+                    </Button>
+                </Tooltip>
+                <Tooltip title={polyglot.t(`run_all`)}>
+                    <Button
+                        startIcon={<PlayArrowIcon />}
+                        size="small"
+                        sx={{
+                            '&.MuiButtonBase-root:hover': {
+                                color: 'primary.main',
+                            },
+                        }}
+                        disabled={areEnrichmentsRunning}
+                        onClick={handleOpenDialog}
+                    >
+                        {polyglot.t('run_all')}
+                    </Button>
+                </Tooltip>
+            </GridToolbarContainer>
+        </>
     );
 };
 
@@ -82,14 +125,17 @@ EnrichmentListToolBar.propTypes = {
 
 export const EnrichmentList = ({
     enrichments,
+    isLoadEnrichmentsPending,
+    isRunAllEnrichmentPending,
     p: polyglot,
     onLaunchAllEnrichment,
     onRetryEnrichment,
 }) => {
     const history = useHistory();
-    const areEnrichmentsRunning = enrichments.some(
-        (enrichment) => enrichment.status === IN_PROGRESS,
-    );
+    const areEnrichmentsRunning =
+        enrichments.some((enrichment) => enrichment.status === IN_PROGRESS) ||
+        isLoadEnrichmentsPending ||
+        isRunAllEnrichmentPending;
     const handleRowClick = (params) => {
         history.push(`/data/enrichment/${params.row._id}`);
     };
@@ -209,13 +255,16 @@ export const EnrichmentList = ({
 EnrichmentList.propTypes = {
     enrichments: PropTypes.array.isRequired,
     p: polyglotPropTypes.isRequired,
-    onLaunchEnrichment: PropTypes.func.isRequired,
     onLaunchAllEnrichment: PropTypes.func.isRequired,
+    isLoadEnrichmentsPending: PropTypes.bool,
+    isRunAllEnrichmentPending: PropTypes.bool,
     onRetryEnrichment: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
     enrichments: state.enrichment.enrichments,
+    isLoadEnrichmentsPending: state.enrichment.isLoadEnrichmentsPending,
+    isRunAllEnrichmentPending: state.enrichment.isRunAllEnrichmentPending,
 });
 
 const mapDispatchToProps = {
