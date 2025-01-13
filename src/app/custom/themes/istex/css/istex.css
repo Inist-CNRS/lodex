@@ -502,16 +502,37 @@ div.property div.MuiBox-root > div > * + div {
     gap: 0%;
 }
 /* label */
-span.property_label[style*='color: rgb(158, 158, 158)']:not(:empty) {
+.property .property_label_container > div {
+    display: inline-flex !important;
+    line-height: 2.4;
+}
+.property span.property_label[style*='color: rgb(158, 158, 158)']:not(:empty) {
     font-family: var(--font-titre) !important;
     font-size: 1rem;
     line-height: 1;
     text-align: initial;
     margin-bottom: 0.5rem;
+    /*element flex-grow:2*/
+    flex-grow: initial !important;
 }
 /*label semantique*/
-#content span.property_scheme a {
+/*#content span.property_scheme a {
     text-decoration: none;
+}*/
+.property_scheme {
+    background: url(../img/information.png);
+    background-repeat: no-repeat;
+    background-size: 20px 20px;
+    background-position: left;
+    margin-left: 20px;
+    margin-bottom: 0.5rem;
+}
+.property_scheme a {
+    visibility: hidden;
+}
+.property_scheme:hover a {
+    visibility: visible;
+    padding-left: 30px;
 }
 /*input search*/
 .searchbar-container .MuiOutlinedInput-root fieldset,
@@ -673,15 +694,7 @@ li .facet-value-list .css-qtf05s-MuiButtonBase-root-MuiCheckbox-root {
 .resource .nav-button-root:is(:hover, focus, :active) {
     background-color: rgba(100%, 100%, 100%, 1);
 }
-/*labels en noir et soulignes*/
-.resource
-    .property
-    .property_value_container
-    .property
-    .property_label_container
-    > div {
-    width: max-content;
-}
+/*labels en noir*/
 .resource span.property_label[style*='color: rgb(158, 158, 158)'] {
     color: var(--neutral-dark-very-dark) !important;
 }
