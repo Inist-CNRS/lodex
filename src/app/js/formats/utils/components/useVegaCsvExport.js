@@ -1,5 +1,5 @@
-import { useEffect, useRef, useCallback } from 'react';
 import * as Papa from 'papaparse';
+import { useCallback, useEffect, useRef } from 'react';
 
 function download(name, data) {
     const link = document.createElement('a');
@@ -14,9 +14,24 @@ function download(name, data) {
 
 export function getExportDateFormat() {
     const now = new Date();
-    const today = `${now.getUTCDate()}-${now.getUTCMonth() + 1}-${now.getUTCFullYear()}`;
-    const time = `${now.getUTCHours()}h${now.getUTCMinutes()}`;
-    return `${today} ${time}`;
+    const today = `${now.getUTCFullYear()}-${now.getUTCMonth() + 1}-${now.getUTCDate()}`;
+    const time = `${now.getUTCHours()}${now.getUTCMinutes()}`;
+    return `${today}-${time}`;
+}
+
+function isGraphExportableInCSV(data) {
+    if (!data || !Array.isArray(data.values) || !data.values.length) {
+        return false;
+    }
+
+    const firstElement = data.values[0];
+
+    return (
+        ('_id' in firstElement && 'value' in firstElement) ||
+        ('source' in firstElement &&
+            'target' in firstElement &&
+            'weight' in firstElement)
+    );
 }
 
 export function useVegaCsvExport(polyglot, data) {
@@ -32,11 +47,15 @@ export function useVegaCsvExport(polyglot, data) {
         });
 
         const dataUrl = `data:text/csv,${encodeURI(csv)}`;
-        download(`Export ${getExportDateFormat()}.csv`, dataUrl);
+        download(`export_${getExportDateFormat()}.csv`, dataUrl);
     }, [data]);
 
     useEffect(() => {
         if (!graphParentRef.current) {
+            return;
+        }
+
+        if (!isGraphExportableInCSV(data)) {
             return;
         }
 
@@ -72,7 +91,7 @@ export function useVegaCsvExport(polyglot, data) {
                 vegaExportCsvButton.remove();
             }
         };
-    }, [graphParentRef.current, polyglot, exportData]);
+    }, [graphParentRef.current, polyglot, data, exportData]);
 
     return graphParentRef;
 }

@@ -1,10 +1,10 @@
-import { teardown } from '../../support/authentication';
-import * as datasetImportPage from '../../support/datasetImportPage';
-import * as menu from '../../support/menu';
-import * as graphPage from '../../support/graphPage';
-import * as searchDrawer from '../../support/searchDrawer';
 import * as path from 'path';
 import { getExportDateFormat } from '../../../src/app/js/formats/utils/components/useVegaCsvExport';
+import { teardown } from '../../support/authentication';
+import * as datasetImportPage from '../../support/datasetImportPage';
+import * as graphPage from '../../support/graphPage';
+import * as menu from '../../support/menu';
+import * as searchDrawer from '../../support/searchDrawer';
 
 describe('Graph Page', () => {
     beforeEach(() => {
@@ -105,7 +105,7 @@ describe('Graph Page', () => {
 
         const downloadsFolder = Cypress.config('downloadsFolder');
         cy.readFile(
-            path.join(downloadsFolder, `Export ${getExportDateFormat()}.csv`),
+            path.join(downloadsFolder, `export_${getExportDateFormat()}.csv`),
         ).should('exist');
     });
 });
