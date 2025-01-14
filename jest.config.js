@@ -1,3 +1,12 @@
+const transform = {
+    '\\.[jt]sx?$': [
+        'babel-jest',
+        {
+            configFile: `${__dirname}/babel.config.js`,
+        },
+    ],
+};
+
 module.exports = {
     projects: [
         {
@@ -8,6 +17,10 @@ module.exports = {
             moduleNameMapper: {
                 '\\.(css|less|scss|sass)$': 'identity-obj-proxy',
             },
+            moduleFileExtensions: ['js', 'json', 'jsx', 'mjs'],
+            transformIgnorePatterns: ['<rootDir>/node_modules/d3'],
+            transform,
+            testEnvironment: 'jsdom',
         },
         {
             displayName: 'api',
@@ -15,10 +28,12 @@ module.exports = {
             testEnvironment: 'node',
             testPathIgnorePatterns: ['e2e'],
             testMatch: ['/**/*.spec.js'],
+            transform,
         },
         {
             displayName: 'common',
             rootDir: `${__dirname}/src/common`,
+            transform,
             testMatch: ['/**/*.spec.js'],
         },
         {
