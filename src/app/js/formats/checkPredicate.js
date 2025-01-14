@@ -3,6 +3,8 @@ import get from 'lodash/get';
 import translate from 'redux-polyglot/translate';
 
 import InvalidFormat from './InvalidFormat';
+import PropTypes from 'prop-types';
+import { polyglot as polyglotPropTypes } from '../propTypes';
 
 export const isPrecomputed = (field) =>
     !!field?.transformers?.find((t) => t.operation === 'PRECOMPUTED');
@@ -11,6 +13,10 @@ export const getPrecomputedRoutineValue = (field) =>
     field.transformers
         .find((t) => t.operation === 'PRECOMPUTED')
         .args?.find((a) => a.name === 'routine')?.value;
+
+export const isClonedField = (field) => {
+    return field?.format?.name === 'fieldClone';
+};
 
 export default (predicate, Component, format, type) => {
     const CheckedComponent = ({
@@ -26,8 +32,9 @@ export default (predicate, Component, format, type) => {
                 ? get(meta, 'initial')
                 : isPrecomputed(field)
                   ? getPrecomputedRoutineValue(field)
-                  : get(resource, field.name);
-
+                  : isClonedField(field)
+                    ? ''
+                    : get(resource, field.name);
         if (typeof value === 'undefined') {
             return null;
         }
@@ -45,6 +52,14 @@ export default (predicate, Component, format, type) => {
                 field={field}
             />
         );
+    };
+
+    CheckedComponent.propTypes = {
+        meta: PropTypes.object.isRequired,
+        label: PropTypes.string.isRequired,
+        resource: PropTypes.string.isRequired,
+        field: PropTypes.object.isRequired,
+        p: polyglotPropTypes,
     };
 
     return translate(CheckedComponent);
