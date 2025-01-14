@@ -18,6 +18,22 @@ export const isClonedField = (field) => {
     return field?.format?.name === 'fieldClone';
 };
 
+export const getFieldValue = ({ type, field, meta, resource }) => {
+    if (type === 'edition') {
+        return get(meta, 'initial');
+    }
+
+    if (isClonedField(field)) {
+        return '';
+    }
+
+    if (isPrecomputed(field)) {
+        return getPrecomputedRoutineValue(field);
+    }
+
+    return get(resource, field.name);
+};
+
 export default (predicate, Component, format, type) => {
     const CheckedComponent = ({
         meta,
@@ -27,14 +43,12 @@ export default (predicate, Component, format, type) => {
         p: polyglot,
         ...props
     }) => {
-        const value =
-            type === 'edition'
-                ? get(meta, 'initial')
-                : isPrecomputed(field)
-                  ? getPrecomputedRoutineValue(field)
-                  : isClonedField(field)
-                    ? ''
-                    : get(resource, field.name);
+        const value = getFieldValue({
+            type,
+            field,
+            meta,
+            resource,
+        });
         if (typeof value === 'undefined') {
             return null;
         }
@@ -57,7 +71,7 @@ export default (predicate, Component, format, type) => {
     CheckedComponent.propTypes = {
         meta: PropTypes.object.isRequired,
         label: PropTypes.string.isRequired,
-        resource: PropTypes.string.isRequired,
+        resource: PropTypes.object.isRequired,
         field: PropTypes.object.isRequired,
         p: polyglotPropTypes,
     };
