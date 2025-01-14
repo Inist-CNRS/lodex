@@ -7,15 +7,7 @@ import React from 'react';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
 
-import {
-    Box,
-    Button,
-    Dialog,
-    DialogActions,
-    DialogContent,
-    DialogTitle,
-    Tooltip,
-} from '@mui/material';
+import { Box, Button, Tooltip } from '@mui/material';
 import {
     DataGrid,
     GridToolbarColumnsButton,
@@ -28,6 +20,7 @@ import { useHistory } from 'react-router';
 import { Link } from 'react-router-dom';
 import { launchAllEnrichment, retryEnrichment } from '.';
 import { IN_PROGRESS } from '../../../../common/taskStatus';
+import { ConfirmPopup } from '../../lib/components/ConfirmPopup';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { default as EnrichmentStatus } from './EnrichmentStatus';
 import { default as RunButton } from './RunButton';
@@ -54,26 +47,16 @@ const EnrichmentListToolBar = ({
 
     return (
         <>
-            <Dialog open={isConfirmOpen} onClose={handleCloseDialog}>
-                <DialogTitle>
-                    {polyglot.t('run_all_enrichment_modal_title')}
-                </DialogTitle>
-                <DialogContent>
-                    {polyglot.t('run_all_enrichment_modal_content')}
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleCloseDialog}>
-                        {polyglot.t('cancel')}
-                    </Button>
-                    <Button
-                        onClick={handleLaunchAllEnrichment}
-                        variant="contained"
-                        color="primary"
-                    >
-                        {polyglot.t('run_all')}
-                    </Button>
-                </DialogActions>
-            </Dialog>
+            <ConfirmPopup
+                isOpen={isConfirmOpen}
+                onClose={handleCloseDialog}
+                onConfirm={handleLaunchAllEnrichment}
+                title={polyglot.t('run_all_enrichment_modal_title')}
+                description={polyglot.t('run_all_enrichment_modal_content')}
+                confirmLabel={polyglot.t('run_all')}
+                cancelLabel={polyglot.t('cancel')}
+            />
+
             <GridToolbarContainer>
                 <Tooltip title={polyglot.t(`column_tooltip`)}>
                     <GridToolbarColumnsButton />

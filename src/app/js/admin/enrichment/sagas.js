@@ -57,11 +57,15 @@ export function* handleLaunchAllEnrichment() {
             const polyglot = getP(state);
 
             if (error.message === 'circular_dependency_error') {
-                toast(polyglot.t('run_all_enrichment_circular_dependency'), {
-                    type: toast.TYPE.ERROR,
-                });
+                yield call(
+                    toast,
+                    polyglot.t('run_all_enrichment_circular_dependency'),
+                    {
+                        type: toast.TYPE.ERROR,
+                    },
+                );
             } else {
-                toast(polyglot.t('run_all_enrichment_failed'), {
+                yield call(toast, polyglot.t('run_all_enrichment_failed'), {
                     type: toast.TYPE.ERROR,
                 });
             }
