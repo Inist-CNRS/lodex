@@ -17,7 +17,7 @@ import { auth, istexApiUrl, jsHost, mongo, themesHost } from 'config';
 import pick from 'lodash/pick';
 import { createMemoryHistory } from 'history';
 
-import createRootReducer from '../../app/js/public/reducers';
+import reducers from '../../app/js/public/reducers';
 import sagas from '../../app/js/public/sagas';
 import configureStoreServer from '../../app/js/configureStoreServer';
 import Routes from '../../app/js/public/Routes';
@@ -28,6 +28,7 @@ import { getPublication } from './api/publication';
 import getCatalogFromArray from '../../common/fields/getCatalogFromArray.js';
 import { DEFAULT_TENANT } from '../../common/tools/tenantTools';
 import { renderAdmin, renderPublic, renderRootAdmin } from '../models/front';
+import { Router } from 'react-router-dom';
 
 const getDefaultInitialState = (ctx, token, cookie, locale) => ({
     enableAutoPublication: ctx.configTenant.enableAutoPublication,
@@ -105,18 +106,18 @@ const getInitialState = async (token, cookie, locale, ctx) => {
 };
 
 export const getPreloadedState = async (
-    history,
+    unConnectedHistory,
     token,
     cookie,
     locale,
     url,
     ctx,
 ) => {
-    const store = configureStoreServer(
-        createRootReducer(history),
+    const { store, history } = configureStoreServer(
+        reducers,
         sagas,
         await getInitialState(token, cookie, locale, ctx),
-        history,
+        unConnectedHistory,
     );
 
     const sagaPromise = store.runSaga(sagas).done;
@@ -125,7 +126,9 @@ export const getPreloadedState = async (
         renderToString(
             <StaticRouter location={url} context={context}>
                 <Provider {...{ store }}>
-                    <Routes history={history} tenant={ctx.tenant} />
+                    <Router history={history}>
+                        <Routes history={history} tenant={ctx.tenant} />
+                    </Router>
                 </Provider>
             </StaticRouter>,
         ),

@@ -4,7 +4,6 @@ import '@testing-library/jest-dom/extend-expect';
 import { createMemoryHistory } from 'history';
 import { ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
 import { Provider } from 'react-redux';
-import { ConnectedRouter } from 'connected-react-router';
 import PropTypes from 'prop-types';
 
 import configureStore from './app/js/configureStore';
@@ -13,17 +12,18 @@ import sagas from './app/js/admin/sagas';
 
 global.__DEBUG__ = false;
 
-const history = createMemoryHistory();
+const memoryHistory = createMemoryHistory();
 
-const store = configureStore(createRootReducer(history), sagas, {}, history);
+const { store, history } = configureStore(
+    createRootReducer(history),
+    sagas,
+    {},
+    memoryHistory,
+);
 
 const Wrapper = ({ children }) => (
     <Provider store={store}>
-        <MuiThemeProvider>
-            <ConnectedRouter history={history} onUpdate={() => {}}>
-                {children}
-            </ConnectedRouter>
-        </MuiThemeProvider>
+        <MuiThemeProvider>{children}</MuiThemeProvider>
     </Provider>
 );
 

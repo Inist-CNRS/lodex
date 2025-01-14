@@ -47,12 +47,25 @@ const FieldEditionWizardComponent = ({
     p: polyglot,
 }) => {
     const [tabValue, setTabValue] = useState(0);
+
+    // handle page loading before the field has started loading
+    const [isInitialized, setIsInitialized] = useState(false);
+
+    useEffect(() => {
+        if (isInitialized) {
+            return;
+        }
+        if (isFieldsLoading) {
+            setIsInitialized(true);
+        }
+    }, [isInitialized, setIsInitialized, isFieldsLoading]);
     useEffect(() => {
         if (!fieldName) {
             history.push(`/display/${filter}`);
             return;
         }
-        if (!isFieldsLoading && !currentEditedField) {
+
+        if (isInitialized && !isFieldsLoading && !currentEditedField) {
             toast(polyglot.t('no_field', { fieldName }), {
                 type: toast.TYPE.ERROR,
             });
