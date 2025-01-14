@@ -5,7 +5,6 @@ import React from 'react';
 import { render } from 'react-dom';
 import { createHashHistory } from 'history';
 import { Provider } from 'react-redux';
-import { ConnectedRouter } from 'connected-react-router';
 import { Route, Redirect } from 'react-router';
 
 import {
@@ -13,7 +12,7 @@ import {
     ThemeProvider,
 } from '@mui/material/styles';
 
-import createRootReducer from './reducers';
+import reducers from './reducers';
 import sagas from './sagas';
 import configureStore from '../configureStore';
 import scrollToTop from '../lib/scrollToTop';
@@ -29,6 +28,7 @@ import LoginAdmin from './LoginAdmin';
 import { ConfigTenantRoute } from './ConfigTenantRoute';
 import '../../ace-webpack-loader';
 import defaultTheme from '../../custom/themes/default/defaultTheme';
+import { Router } from 'react-router-dom';
 
 const localesMUI = new Map([
     ['fr', { ...frFR, ...frFRDatagrid }],
@@ -43,12 +43,12 @@ const initialState = {
     },
 };
 
-const history = createHashHistory();
-export const store = configureStore(
-    createRootReducer(history),
+const hashHistory = createHashHistory();
+export const { store, history } = configureStore(
+    reducers,
     sagas,
     window.__PRELOADED_STATE__ || initialState,
-    history,
+    hashHistory,
 );
 
 if (process.env.NODE_ENV === 'e2e') {
@@ -65,7 +65,7 @@ render(
         <ThemeProvider
             theme={createThemeMui(defaultTheme, localesMUI.get(locale))}
         >
-            <ConnectedRouter history={history} onUpdate={scrollToTop}>
+            <Router history={history}>
                 <App tenant={window.__TENANT__}>
                     <Route
                         path="/"
@@ -80,7 +80,7 @@ render(
                     />
                     <Route path="/login" exact component={LoginAdmin} />
                 </App>
-            </ConnectedRouter>
+            </Router>
         </ThemeProvider>
     </Provider>,
     document.getElementById('root'),

@@ -1,6 +1,5 @@
 import { ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
 import { render } from '@testing-library/react';
-import { ConnectedRouter } from 'connected-react-router';
 import { createMemoryHistory } from 'history';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -12,17 +11,18 @@ import createRootReducer from './app/js/public/reducers';
 
 global.__DEBUG__ = false;
 
-const history = createMemoryHistory();
+const memoryHistory = createMemoryHistory();
 
-const store = configureStore(createRootReducer(history), sagas, {}, history);
+const { store, history } = configureStore(
+    createRootReducer(history),
+    sagas,
+    {},
+    memoryHistory,
+);
 
 const Wrapper = ({ children }) => (
     <Provider store={store}>
-        <MuiThemeProvider>
-            <ConnectedRouter history={history} onUpdate={() => {}}>
-                {children}
-            </ConnectedRouter>
-        </MuiThemeProvider>
+        <MuiThemeProvider>{children}</MuiThemeProvider>
     </Provider>
 );
 

@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { ConnectedRouter } from 'connected-react-router';
 
 import Home from './Home';
 import Resource from './resource/Resource';
@@ -13,7 +12,6 @@ import CustomPage from './CustomPage';
 import { loadMenu } from './menu/reducer';
 import { loadDisplayConfig } from './displayConfig/reducer';
 import { fromMenu } from './selectors';
-import scrollToTop from '../lib/scrollToTop';
 import ScrollToTop from './ScrollToTop';
 import Breadcrumb from './breadcrumb/Breadcrumb';
 import { initializeLanguage } from '../i18n';
@@ -45,7 +43,7 @@ const Routes = (props) => {
     };
 
     return (
-        <ConnectedRouter history={history} onUpdate={scrollToTop}>
+        <>
             <ScrollToTop />
             <Route path={notLogin} component={Breadcrumb} />
 
@@ -111,7 +109,7 @@ const Routes = (props) => {
             />
 
             <Version />
-        </ConnectedRouter>
+        </>
     );
 };
 

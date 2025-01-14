@@ -1,18 +1,21 @@
-import { routerMiddleware } from 'connected-react-router';
 import { applyMiddleware, compose, createStore } from 'redux';
 import createSagaMiddleware from 'redux-saga';
 import persistState, { mergePersistedState } from 'redux-localstorage';
 import adapter from 'redux-localstorage/lib/adapters/localStorage';
 import filter from 'redux-localstorage-filter';
+import { createReduxHistoryContext } from 'redux-first-history';
+import { combineReducers } from 'redux';
 
 const sagaMiddleware = createSagaMiddleware();
 
-export default function configureStore(
-    pureReducer,
-    sagas,
-    initialState,
-    history,
-) {
+export default function configureStore(reducers, sagas, initialState, history) {
+    const { createReduxHistory, routerMiddleware, routerReducer } =
+        createReduxHistoryContext({ history });
+
+    const pureReducer = combineReducers({
+        ...reducers,
+        router: routerReducer,
+    });
     const rootReducer = __DEBUG__
         ? (state, action) => {
               if (action.type == 'SET_STATE') {
@@ -28,10 +31,7 @@ export default function configureStore(
         adapter(window.sessionStorage),
     );
 
-    const middlewares = applyMiddleware(
-        routerMiddleware(history),
-        sagaMiddleware,
-    );
+    const middlewares = applyMiddleware(routerMiddleware, sagaMiddleware);
 
     const devtools =
         typeof window !== 'undefined' && window.__REDUX_DEVTOOLS_EXTENSION__
@@ -51,5 +51,5 @@ export default function configureStore(
         window.store = store;
     }
 
-    return store;
+    return { store, history: createReduxHistory(store) };
 }
