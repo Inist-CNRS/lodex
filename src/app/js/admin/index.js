@@ -13,7 +13,7 @@ import {
     ThemeProvider,
 } from '@mui/material/styles';
 
-import rootReducer from './reducers';
+import createRootReducer from './reducers';
 import sagas from './sagas';
 import configureStore from '../configureStore';
 import scrollToTop from '../lib/scrollToTop';
@@ -45,7 +45,7 @@ const initialState = {
 
 const history = createHashHistory();
 export const store = configureStore(
-    rootReducer,
+    createRootReducer(history),
     sagas,
     window.__PRELOADED_STATE__ || initialState,
     history,
