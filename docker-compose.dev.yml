@@ -44,7 +44,7 @@ services:
         command: npm run development:app
 
     mongo:
-        image: mongo:4.4.24-focal
+        image: mongodb/mongodb-community-server:7.0.9-ubi9
         logging:
             driver: none
         command: --quiet

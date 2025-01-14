@@ -1,7 +1,8 @@
 import chunk from 'lodash/chunk';
+import { getCreatedCollection } from './utils';
 
-export default (db) => {
-    const collection = db.collection('publishedFacet');
+export default async (db) => {
+    const collection = await getCreatedCollection(db, 'publishedFacet');
 
     collection.insertBatch = (documents) =>
         chunk(documents, 100).map((data) => collection.insertMany(data));
