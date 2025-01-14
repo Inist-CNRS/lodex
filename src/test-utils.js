@@ -1,15 +1,14 @@
-import React from 'react';
-import { render } from '@testing-library/react';
-import '@testing-library/jest-dom/extend-expect';
-import { createMemoryHistory } from 'history';
 import { ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
-import { Provider } from 'react-redux';
+import { render } from '@testing-library/react';
 import { ConnectedRouter } from 'connected-react-router';
+import { createMemoryHistory } from 'history';
 import PropTypes from 'prop-types';
+import React from 'react';
+import { Provider } from 'react-redux';
 
+import sagas from './app/js/admin/sagas';
 import configureStore from './app/js/configureStore';
 import createRootReducer from './app/js/public/reducers';
-import sagas from './app/js/admin/sagas';
 
 global.__DEBUG__ = false;
 
