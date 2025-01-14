@@ -1,8 +1,8 @@
 import { teardown } from '../../support/authentication';
-import * as menu from '../../support/menu';
 import * as datasetImportPage from '../../support/datasetImportPage';
-import * as searchDrawer from '../../support/searchDrawer';
 import * as fields from '../../support/fields';
+import * as menu from '../../support/menu';
+import * as searchDrawer from '../../support/searchDrawer';
 import * as settings from '../../support/settings';
 
 const initSearchDataset =
@@ -263,6 +263,70 @@ describe('Search', () => {
                 '2011',
                 '1988',
             ]);
+        });
+
+        it('should reset facets filter when clearing all facets', () => {
+            menu.openSearchDrawer();
+            searchDrawer.getFacet('Première mise en ligne en').click();
+            cy.wait(500);
+            cy.get('[data-testid="ChevronRightIcon"]').click();
+
+            searchDrawer.filterFacet('Première mise en ligne en', '1926');
+
+            cy.findByRole('checkbox', {
+                name: '1926',
+                timeout: 500,
+            }).click();
+
+            cy.findByRole('button', {
+                name: 'Clear All',
+                timeout: 500,
+            }).click();
+
+            cy.findByPlaceholderText(/Première mise en ligne en/).should(
+                'have.value',
+                '',
+            );
+
+            cy.findByRole('checkbox', {
+                name: '2011',
+                timeout: 500,
+            }).should('exist');
+        });
+
+        it('should not reset facets filter when clearing one facet', () => {
+            menu.openSearchDrawer();
+            searchDrawer.getFacet('Première mise en ligne en').click();
+            cy.wait(500);
+            cy.get('[data-testid="ChevronRightIcon"]').click();
+
+            searchDrawer.filterFacet('Première mise en ligne en', '1926');
+
+            cy.findByRole('checkbox', {
+                name: '1926',
+                timeout: 500,
+            }).click();
+
+            cy.findByRole('button', {
+                name: /Première mise en ligne en 1926/,
+                timeout: 500,
+            }).then((container) =>
+                cy
+                    .findByTestId('CancelIcon', {
+                        container,
+                    })
+                    .click(),
+            );
+
+            cy.findByPlaceholderText(/Première mise en ligne en/).should(
+                'have.value',
+                '1926',
+            );
+
+            cy.findByRole('checkbox', {
+                name: '2011',
+                timeout: 500,
+            }).should('not.exist');
         });
     });
 

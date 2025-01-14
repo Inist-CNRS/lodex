@@ -1,19 +1,19 @@
-import React, { useMemo } from 'react';
-import PropTypes from 'prop-types';
+import { List } from '@mui/material';
 import classnames from 'classnames';
+import PropTypes from 'prop-types';
+import React, { useMemo } from 'react';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import translate from 'redux-polyglot/translate';
-import { List } from '@mui/material';
 
-import { field as fieldPropTypes } from '../../propTypes';
 import stylesToClassname from '../../lib/stylesToClassName';
+import { field as fieldPropTypes } from '../../propTypes';
+import { fromFields } from '../../sharedSelectors';
 import { facetActions as datasetActions } from '../dataset';
 import { facetActions as searchActions } from '../search/reducer';
-import FacetActionsContext from './FacetActionsContext';
-import { fromFields } from '../../sharedSelectors';
-import FacetItem from './FacetItem';
 import { fromDisplayConfig, fromI18n } from '../selectors';
+import FacetActionsContext from './FacetActionsContext';
+import FacetItem from './FacetItem';
 
 const styles = stylesToClassname(
     {
@@ -117,6 +117,8 @@ FacetList.propTypes = {
     openFacet: PropTypes.func.isRequired,
     sortFacetValue: PropTypes.func.isRequired,
     toggleFacetValue: PropTypes.func.isRequired,
+    isMultilingual: PropTypes.bool.isRequired,
+    locale: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = (state) => ({
