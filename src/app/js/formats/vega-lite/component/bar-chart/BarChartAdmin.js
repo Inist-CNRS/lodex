@@ -5,7 +5,6 @@ import {
     MenuItem,
     Checkbox,
     FormControlLabel,
-    Box,
     Switch,
     FormGroup,
 } from '@mui/material';

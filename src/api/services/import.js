@@ -110,7 +110,7 @@ export const startImport = async (ctx) => {
         const parsedStream = parseStream(inputStream);
         const outputStream = parsedStream.pipe(ezs(breaker, { fusible }));
 
-        const insertedTotal = await ctx.saveParsedStream(ctx, outputStream);
+        await ctx.saveParsedStream(ctx, outputStream);
         progress.start(ctx.tenant, {
             status: INDEXATION,
             type: 'import',

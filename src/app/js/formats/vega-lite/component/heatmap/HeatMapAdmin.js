@@ -2,13 +2,7 @@ import React, { useEffect, useMemo } from 'react';
 import translate from 'redux-polyglot/translate';
 import { schemeOrRd } from 'd3-scale-chromatic';
 import PropTypes from 'prop-types';
-import {
-    Checkbox,
-    FormControlLabel,
-    Box,
-    Switch,
-    FormGroup,
-} from '@mui/material';
+import { Checkbox, FormControlLabel, Switch, FormGroup } from '@mui/material';
 
 import { polyglot as polyglotPropTypes } from '../../../../propTypes';
 import updateAdminArgs from '../../../utils/updateAdminArgs';

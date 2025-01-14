@@ -413,9 +413,9 @@ class Streamgraph extends PureComponent {
 
     setViewportEvents(svgViewport, vertical) {
         svgViewport
-            .on('mouseover', (d, i, nodes) => {
+            .on('mouseover', (event) => {
                 if (this.mouseIsOverStream) {
-                    const mousex = d3.mouse(nodes[i])[0];
+                    const mousex = d3.pointer(event)[0];
                     const { tickPosition, tickValue } = findNearestTickPosition(
                         mousex,
                         this.uniqueId,
@@ -428,9 +428,9 @@ class Streamgraph extends PureComponent {
                     vertical.style('visibility', 'hidden');
                 }
             })
-            .on('mousemove', (d, i, nodes) => {
+            .on('mousemove', (event) => {
                 if (this.mouseIsOverStream) {
-                    const mousex = d3.mouse(nodes[i])[0];
+                    const mousex = d3.pointer(event)[0];
                     const { tickPosition, tickValue } = findNearestTickPosition(
                         mousex,
                         this.uniqueId,
@@ -447,36 +447,42 @@ class Streamgraph extends PureComponent {
 
     setMouseMoveAndOverStreams(tooltip, colorNameList) {
         if (this.streams) {
+            const streams = this.streams;
+            const componentContext = this;
             this.streams
-                .on('mousemove', (d, i, nodes) => {
-                    const date = this.nearestTickValue;
-                    this.mouseIsOverStream = true;
-                    this.hoveredKey = d3.select(nodes[i]).attr('name');
+                .on('mousemove', function (event, nodes) {
+                    const e = streams.nodes();
+                    const i = e.indexOf(this);
+                    const date = componentContext.nearestTickValue;
+                    componentContext.mouseIsOverStream = true;
+                    componentContext.hoveredKey = d3
+                        .select(event.target)
+                        .attr('name');
 
-                    this.hoveredValue = d.find(
+                    componentContext.hoveredValue = nodes.find(
                         (elem) =>
                             elem.data.date.getFullYear() === parseInt(date),
-                    ).data[this.hoveredKey];
+                    ).data[componentContext.hoveredKey];
 
-                    this.hoveredColor = colorNameList.find(
-                        (elem) => elem.name === this.hoveredKey,
+                    componentContext.hoveredColor = colorNameList.find(
+                        (elem) => elem.name === componentContext.hoveredKey,
                     ).color;
 
-                    d3.select(nodes[i]).classed('hover', true);
+                    d3.select(event.target).classed('hover', true);
                     tooltip
                         .html(
                             '<p>' +
                                 '<svg width="15" height="15" style="vertical-align: middle; background-color: ' +
-                                this.hoveredColor +
+                                componentContext.hoveredColor +
                                 '"></svg>' +
                                 '<ul style="list-style: none;text-indent:-35px">' +
                                 '<li>' +
-                                this.hoveredKey +
+                                componentContext.hoveredKey +
                                 '</li>' +
                                 '<li>' +
                                 date +
                                 ' : ' +
-                                this.hoveredValue +
+                                componentContext.hoveredValue +
                                 '</li></ul></p>',
                         )
                         .style('visibility', 'visible');
@@ -488,9 +494,11 @@ class Streamgraph extends PureComponent {
                         currentLegendItem.style.opacity = index == i ? 1 : 0.3;
                     });
                 })
-                .on('mouseover', (d, i) => {
-                    this.mouseIsOverStream = true;
-                    this.streams
+                .on('mouseover', function () {
+                    const e = streams.nodes();
+                    const i = e.indexOf(this);
+                    componentContext.mouseIsOverStream = true;
+                    streams
                         .transition()
                         .duration(25)
                         .attr('opacity', (d, j) => {

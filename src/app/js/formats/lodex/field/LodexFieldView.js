@@ -224,7 +224,8 @@ export default compose(
 
         const source = URL.parse(value);
         if (source.pathname.search(/(ark|uid):/) >= 0) {
-            const [check, tenant = 'default', scheme, identifier] = source.pathname.split('/').filter(Boolean);
+            const [check, tenant = 'default', scheme, identifier] =
+                source.pathname.split('/').filter(Boolean);
             let uri;
             let pathname;
             if (check === 'instance') {

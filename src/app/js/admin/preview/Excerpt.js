@@ -97,7 +97,7 @@ export const ExcerptComponent = ({
                 )}
                 {lines.map((line, index) => (
                     <ExcerptLine
-                        key={`${line.uri}-${index}` || index}
+                        key={line ? `${line.uri}-${index}` : index}
                         line={line}
                         columns={columns}
                         readonly

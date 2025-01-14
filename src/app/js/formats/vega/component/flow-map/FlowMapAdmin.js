@@ -8,7 +8,7 @@ import VegaToolTips from '../../../utils/components/admin/VegaToolTips';
 import ColorPickerParamsAdmin from '../../../utils/components/admin/ColorPickerParamsAdmin';
 import { schemeBlues } from 'd3-scale-chromatic';
 import { GradientSchemeSelector } from '../../../../lib/components/ColorSchemeSelector';
-import { Box, FormControlLabel, FormGroup, Switch } from '@mui/material';
+import { FormControlLabel, FormGroup, Switch } from '@mui/material';
 import FlowMap from '../../models/FlowMap';
 import VegaAdvancedMode from '../../../utils/components/admin/VegaAdvancedMode';
 import VegaFieldPreview from '../../../utils/components/field-set/FormatFieldSetPreview';

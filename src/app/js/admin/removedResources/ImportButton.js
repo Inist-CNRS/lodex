@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { compose } from 'recompose';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import translate from 'redux-polyglot/translate';

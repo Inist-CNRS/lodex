@@ -15,7 +15,6 @@ import { fetch as fetchAction } from '../../fetch';
 import { formField as formFieldPropTypes } from '../../propTypes';
 
 const FormAutoCompleteField = ({
-    allowNewItem,
     handleComplete,
     handleValueChosen,
     dataSource,
@@ -23,7 +22,6 @@ const FormAutoCompleteField = ({
     label,
     meta: { error },
     p: polyglot,
-    ...props
 }) => {
     const source = dataSource || [];
 
@@ -78,7 +76,7 @@ const handleValueChosen =
     (event, value) => {
         // Material UI doc: index is the index in dataSource of the list item selected,
         // or -1 if enter is pressed in the TextField
-        if (!allowNewItem && index === -1) {
+        if (!allowNewItem) {
             return onChange('');
         }
 

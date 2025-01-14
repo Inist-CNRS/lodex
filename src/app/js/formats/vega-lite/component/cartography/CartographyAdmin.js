@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import translate from 'redux-polyglot/translate';
 import { schemeOrRd } from 'd3-scale-chromatic';
 import {
-    Box,
     FormControlLabel,
     FormGroup,
     MenuItem,
