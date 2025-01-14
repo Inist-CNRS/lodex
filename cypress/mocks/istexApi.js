@@ -15,7 +15,7 @@ const app = koaQs(new Koa());
 app.use(cors());
 
 app.use(
-    route.get('/document', async ctx => {
+    route.get('/document', async (ctx) => {
         if (get(ctx, 'query.q', '').match('host.issue.raw:')) {
             ctx.body = istexDocuments;
             return;
@@ -40,7 +40,7 @@ app.use(
 );
 
 app.use(
-    route.get('/nextPage', async ctx => {
+    route.get('/nextPage', async (ctx) => {
         ctx.body = nextPage;
     }),
 );
