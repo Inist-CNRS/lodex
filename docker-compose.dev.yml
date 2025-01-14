@@ -2,7 +2,7 @@ version: '3'
 
 services:
     node:
-        image: node:20.18-bookworm
+        image: node:22.12-bookworm
         extra_hosts: # for linux hosts since version 20.10
             - host.docker.internal:host-gateway
         volumes:
@@ -33,7 +33,7 @@ services:
         command: npm run development:api
 
     dev-server: ## Enable hot-reload in development
-        image: node:20.18-bookworm
+        image: node:22.12-bookworm
         volumes:
             - .:/app
         working_dir: /app
@@ -57,7 +57,7 @@ services:
             - "6379:6379"
 
     workers:
-        image: node:20.18-bookworm
+        image: node:22.12-bookworm
         volumes:
             - .:/app
         working_dir: /app
