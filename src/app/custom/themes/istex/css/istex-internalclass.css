@@ -18,7 +18,11 @@ div[class*='HomeContentSidebar'] {
 div[class*='HomeContentSidebar'] .MuiBox-root.css-oa9bdm {
     padding: 0 !important;
 }
-div[class*='HomeContentSidebar'] .MuiBox-root.css-oa9bdm > div > div {
+div[class*='HomeContentSidebar']
+    > div.property_value_container
+    > .MuiBox-root.css-oa9bdm
+    > div
+    > div {
     gap: 3rem;
 }
 /*Home div[class*='HomeContent'] et*/
@@ -221,7 +225,7 @@ div.property[class*='Banniere'] > .property_value_container div.MuiBox-root {
     padding: 0 0 !important;
 }
 div.property[class*='Banniere']
-    > .property_value_container
+    > div.property_value_container
     > div.MuiBox-root
     > div
     > div {
