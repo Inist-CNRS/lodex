@@ -7,7 +7,7 @@ import { facetActions } from '.';
 import { Box, Chip } from '@mui/material';
 import AppliedDatasetFacet from './AppliedDatasetFacet';
 import { compose } from 'recompose';
-import translate from 'redux-polyglot/translate';
+import { translate } from '../../i18n/I18NContext';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 
 export const AppliedDatasetFacetListComponent = ({

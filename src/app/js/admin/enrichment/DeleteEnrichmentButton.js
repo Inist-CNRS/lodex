@@ -3,8 +3,8 @@ import { Button } from '@mui/material';
 import { deleteEnrichment } from '../api/enrichment';
 import { toast } from 'react-toastify';
 import PropTypes from 'prop-types';
-import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { ConfirmPopup } from '../../lib/components/ConfirmPopup';
+import { useTranslate } from '../../i18n/I18NContext';
 
 export function DeleteEnrichmentButton({
     disabled,
@@ -12,8 +12,8 @@ export function DeleteEnrichmentButton({
     onDeleteEnd,
     id,
     history,
-    polyglot,
 }) {
+    const { translate } = useTranslate();
     const [isConfirmPopupOpen, setIsConfirmPopupOpen] = useState(false);
     const handleDeleteEnrichment = async () => {
         onDeleteStart();
@@ -63,7 +63,6 @@ export function DeleteEnrichmentButton({
 
 DeleteEnrichmentButton.propTypes = {
     disabled: PropTypes.bool,
-    polyglot: polyglotPropTypes,
     id: PropTypes.string.isRequired,
     onDeleteStart: PropTypes.func,
     onDeleteEnd: PropTypes.func,

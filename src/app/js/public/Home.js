@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
-import translate from 'redux-polyglot/translate';
 import { push } from 'redux-first-history';
 import { Helmet } from 'react-helmet';
 import { Card } from '@mui/material';
@@ -18,6 +17,7 @@ import getTitle from '../lib/getTitle';
 
 import { preLoadDatasetPage } from './dataset';
 import { preLoadExporters } from './export';
+import { translate } from '../i18n/I18NContext';
 
 export class HomeComponent extends Component {
     static defaultProps = {

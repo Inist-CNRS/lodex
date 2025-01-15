@@ -1,11 +1,10 @@
 import React from 'react';
-import translate from 'redux-polyglot/translate';
 import PreviewIcon from '@mui/icons-material/Preview';
 import PropTypes from 'prop-types';
 
 import { Box, Typography } from '@mui/material';
-import { compose } from 'recompose';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
+import { translate } from '../../i18n/I18NContext';
 
 const PrecomputedPreview = ({ lines, sourceColumns, p: polyglot }) => {
     return (
@@ -81,4 +80,4 @@ PrecomputedPreview.propTypes = {
     p: polyglotPropTypes.isRequired,
 };
 
-export default compose(translate)(PrecomputedPreview);
+export default translate(PrecomputedPreview);

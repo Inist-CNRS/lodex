@@ -15,7 +15,6 @@ import {
 import reducers from './reducers';
 import sagas from './sagas';
 import configureStore from '../configureStore';
-import scrollToTop from '../lib/scrollToTop';
 import phrasesFor from '../i18n/translations';
 import getLocale from '../../../common/getLocale';
 import App from './App';
@@ -29,6 +28,7 @@ import { ConfigTenantRoute } from './ConfigTenantRoute';
 import '../../ace-webpack-loader';
 import defaultTheme from '../../custom/themes/default/defaultTheme';
 import { Router } from 'react-router-dom';
+import { I18N } from '../i18n/I18NContext';
 
 const localesMUI = new Map([
     ['fr', { ...frFR, ...frFRDatagrid }],
@@ -37,7 +37,7 @@ const localesMUI = new Map([
 
 const locale = getLocale();
 const initialState = {
-    polyglot: {
+    i18n: {
         locale,
         phrases: phrasesFor(locale),
     },
@@ -65,22 +65,24 @@ render(
         <ThemeProvider
             theme={createThemeMui(defaultTheme, localesMUI.get(locale))}
         >
-            <Router history={history}>
-                <App tenant={window.__TENANT__}>
-                    <Route
-                        path="/"
-                        exact
-                        render={() => <Redirect to="/data" />}
-                    />
-                    <PrivateRoute path="/data" component={Data} />
-                    <PrivateRoute path="/display" component={Display} />
-                    <PrivateRoute
-                        path="/config"
-                        component={ConfigTenantRoute}
-                    />
-                    <Route path="/login" exact component={LoginAdmin} />
-                </App>
-            </Router>
+            <I18N>
+                <Router history={history}>
+                    <App tenant={window.__TENANT__}>
+                        <Route
+                            path="/"
+                            exact
+                            render={() => <Redirect to="/data" />}
+                        />
+                        <PrivateRoute path="/data" component={Data} />
+                        <PrivateRoute path="/display" component={Display} />
+                        <PrivateRoute
+                            path="/config"
+                            component={ConfigTenantRoute}
+                        />
+                        <Route path="/login" exact component={LoginAdmin} />
+                    </App>
+                </Router>
+            </I18N>
         </ThemeProvider>
     </Provider>,
     document.getElementById('root'),

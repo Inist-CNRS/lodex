@@ -1,4 +1,4 @@
-import translate from 'redux-polyglot/translate';
+import { translate } from '../../../i18n/I18NContext';
 
 import Component from './IstexSummaryView';
 import ListComponent from './IstexSummaryList';

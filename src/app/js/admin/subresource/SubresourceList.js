@@ -2,7 +2,6 @@ import React from 'react';
 import compose from 'recompose/compose';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import PropTypes from 'prop-types';
-import translate from 'redux-polyglot/translate';
 
 import { connect } from 'react-redux';
 import { Box, Button, Tooltip } from '@mui/material';
@@ -16,6 +15,7 @@ import {
 import { Link } from 'react-router-dom';
 import { useHistory } from 'react-router';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
+import { translate } from '../../i18n/I18NContext';
 
 export const SubresourceList = ({ subresources, p: polyglot }) => {
     const history = useHistory();

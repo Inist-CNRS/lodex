@@ -1,5 +1,5 @@
 import React from 'react';
-import translate from 'redux-polyglot/translate';
+import { translate } from '../../i18n/I18NContext';
 import PreviewIcon from '@mui/icons-material/Preview';
 import PropTypes from 'prop-types';
 
