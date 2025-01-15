@@ -68,10 +68,6 @@ LoginFormComponent.propTypes = {
 
 export default compose(
     translate,
-    reduxForm({
-        form: LOGIN_FORM_NAME,
-        validate,
-    }),
     withHandlers({
         handleKeyPress:
             ({ handleSubmit }) =>
@@ -80,5 +76,9 @@ export default compose(
                     handleSubmit();
                 }
             },
+    }),
+    reduxForm({
+        form: LOGIN_FORM_NAME,
+        validate,
     }),
 )(LoginFormComponent);
