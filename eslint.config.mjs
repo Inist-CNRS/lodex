@@ -64,7 +64,7 @@ export default [
 
             parserOptions: {
                 babelOptions: {
-                    configFile: '/home/thiery/dev/lodex/babel.config.js',
+                    configFile: path.resolve(__dirname, 'babel.config.js'),
                 },
             },
         },
