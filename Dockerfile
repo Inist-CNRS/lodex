@@ -18,7 +18,7 @@ RUN npm run build && \
     npm run clean  && \
     npm prune --production --legacy-peer-deps
 
-FROM node:18.19-alpine AS release
+FROM node:22.12-alpine AS release
 RUN apk add --no-cache su-exec redis
 
 # ezmasterizing of lodex

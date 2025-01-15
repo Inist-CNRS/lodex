@@ -75,7 +75,7 @@ describe('updatefacetValue', () => {
         );
     });
 
-    it.only('should work with multi values', async () => {
+    it('should work with multi values', async () => {
         const publishedFacet = {
             findOneAndUpdate: jest.fn().mockImplementation(() => ({
                 value: { count: 10 },
