@@ -8,6 +8,7 @@ const transform = {
 };
 
 module.exports = {
+    //preset: '@shelf/jest-mongodb',
     projects: [
         {
             displayName: 'frontend',
@@ -23,6 +24,7 @@ module.exports = {
             testEnvironment: 'jsdom',
         },
         {
+            preset: '@shelf/jest-mongodb',
             displayName: 'api',
             rootDir: `${__dirname}/src/api`,
             testEnvironment: 'node',
@@ -42,6 +44,7 @@ module.exports = {
             testMatch: ['/**/*.spec.js'],
         },
         {
+            preset: '@shelf/jest-mongodb',
             displayName: 'ezsLodex',
             rootDir: `${__dirname}/packages/ezsLodex`,
             modulePaths: ['<rootDir>/packages/ezsLodex/node_modules'],

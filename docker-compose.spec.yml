@@ -42,7 +42,7 @@ services:
         command: node --require @babel/register ./cypress/mocks/istexApi.js
 
     mongo:
-        image: mongo:4.4.24-focal
+        image: mongodb/mongodb-community-server:7.0.9-ubi9
         ports:
             - "27017:27017"
 

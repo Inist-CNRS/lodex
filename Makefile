@@ -153,20 +153,20 @@ mongo-shell-test: ## Start the mongo shell for the test database
 
 clear-database: ## Clear the whole database named by DB_TENANT (use "default" if missing)
 	docker compose exec mongo mongo lodex_${DB_TENANT} --eval " \
-		db.publishedDataset.remove({}); \
-		db.publishedCharacteristic.remove({}); \
-		db.field.remove({}); \
-		db.dataset.remove({}); \
-		db.publishedFacet.remove({}); \
-		db.subresource.remove({}); \
-		db.enrichment.remove({}); \
-		db.precomputed.remove({}); \
+		db.publishedDataset.drop(); \
+		db.publishedCharacteristic.drop(); \
+		db.field.drop(); \
+		db.dataset.drop(); \
+		db.publishedFacet.drop(); \
+		db.subresource.drop(); \
+		db.enrichment.drop(); \
+		db.precomputed.drop(); \
 	"
 clear-publication: ## Clear the published data, keep uploaded dataset and model in DB_TENANT (use "default" if missing)
 	docker compose exec mongo mongo lodex_${DB_TENANT} --eval " \
-		db.publishedDataset.remove({}); \
-		db.publishedCharacteristic.remove({}); \
-		db.publishedFacet.remove({}); \
+		db.publishedDataset.drop(); \
+		db.publishedCharacteristic.drop(); \
+		db.publishedFacet.drop(); \
 	"
 
 clear-tenants: ## Clear all tenants databases in mongo

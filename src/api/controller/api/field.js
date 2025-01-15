@@ -2,7 +2,6 @@ import Koa from 'koa';
 import route from 'koa-route';
 import koaBodyParser from 'koa-bodyparser';
 import asyncBusboy from '@recuperateur/async-busboy';
-import restore from 'mongodb-restore';
 import moment from 'moment';
 import streamToString from 'stream-to-string';
 
@@ -20,11 +19,12 @@ import {
 } from '../../../common/scope';
 import { dropJobs } from '../../workers/tools';
 import { ENRICHER } from '../../workers/enricher';
-import { ObjectID } from 'mongodb';
+import { ObjectId } from 'mongodb';
 import generateUid from '../../services/generateUid';
 import { restoreEnrichments } from '../../services/enrichment/enrichment';
 import { restorePrecomputed } from '../../services/precomputed/precomputed';
 import { PRECOMPUTER } from '../../workers/precomputer';
+import { restoreModel } from '../../services/restoreModel';
 
 const sortByFieldUri = (a, b) =>
     (a.name === 'uri' ? -1 : a.position) - (b.name === 'uri' ? -1 : b.position);
@@ -35,7 +35,7 @@ export const restoreFields = (fileStream, ctx) => {
             .then((fieldsString) => JSON.parse(fieldsString))
             .then((fields) => {
                 ctx.field
-                    .remove({})
+                    .drop()
                     .then(() =>
                         Promise.all(
                             fields
@@ -51,26 +51,17 @@ export const restoreFields = (fileStream, ctx) => {
     const restoreTask = () => {
         dropJobs(ctx.tenant, ENRICHER);
         dropJobs(ctx.tenant, PRECOMPUTER);
-        return new Promise((resolve, reject) =>
-            restore({
-                uri: mongoConnectionString(ctx.tenant),
-                stream: fileStream,
-                parser: 'json',
-                dropCollections: [
-                    'field',
-                    'subresource',
-                    'enrichment',
-                    'precomputed',
-                ],
-                callback: function (err) {
-                    err ? reject(err) : resolve();
-                },
-            }),
-        );
+
+        return restoreModel(mongoConnectionString(ctx.tenant), fileStream, [
+            'field',
+            'subresource',
+            'enrichment',
+            'precomputed',
+        ]);
     };
 
     return ctx.field
-        .remove({})
+        .drop()
         .then(restoreTask)
         .then(() =>
             Promise.all([
@@ -228,7 +219,7 @@ export const patchSearchableFields = async (ctx) => {
     const fields = ctx.request.body;
 
     try {
-        const ids = fields.map((field) => new ObjectID(field._id));
+        const ids = fields.map((field) => new ObjectId(field._id));
         await ctx.field.updateMany(
             { _id: { $in: ids } },
             { $set: { searchable: true } },

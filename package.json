@@ -80,7 +80,7 @@
         "@ezs/conditor": "2.13.1",
         "@ezs/core": "3.10.10",
         "@ezs/istex": "1.5.10",
-        "@ezs/lodex": "file:./packages/ezsLodex",
+        "@ezs/lodex": "file:packages/ezsLodex",
         "@ezs/sparql": "1.2.4",
         "@ezs/storage": "3.2.5",
         "@ezs/transformers": "file:./packages/transformers",
@@ -142,8 +142,7 @@
         "mime": "1.6.0",
         "mime-types": "2.1.35",
         "moment": "2.29.4",
-        "mongodb": "4.17.1",
-        "mongodb-restore": "1.6.2",
+        "mongodb": "6.12.0",
         "mui-file-dropzone": "4.0.2",
         "multistream": "4.1.0",
         "node-polyglot": "^2.3.1",
@@ -228,20 +227,13 @@
         "vega-wordcloud": "4.1.4",
         "winston": "^3.11.0"
     },
-    "overrides": {
-        "mongodb-restore@1.6.2": {
-            "bson": "1.1.6"
-        },
-        "mongodb-core@2.1.2": {
-            "bson": "1.1.6"
-        }
-    },
     "devDependencies": {
         "@babel/eslint-parser": "^7.26.5",
         "@eslint/compat": "^1.2.4",
         "globals": "^15.14.0",
         "@eslint/js": "^9.17.0",
         "@eslint/eslintrc": "^3.2.0",
+        "@shelf/jest-mongodb": "4.3.2",
         "@testing-library/jest-dom": "6.6.3",
         "@testing-library/react": "12.1.5",
         "@types/ejs": "3.1.5",
@@ -288,7 +280,7 @@
     },
     "config": {
         "mongodbMemoryServer": {
-            "version": "4.4.4"
+            "version": "7.0.9"
         }
     }
 }

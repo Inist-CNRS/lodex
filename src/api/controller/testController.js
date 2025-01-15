@@ -16,15 +16,15 @@ app.use(mongoRootAdminClient);
 
 app.use(
     route.delete('/fixtures', async (ctx) => {
-        await ctx.db.collection('publishedDataset').remove({});
-        await ctx.db.collection('publishedCharacteristic').remove({});
-        await ctx.db.collection('field').remove({});
-        await ctx.db.collection('dataset').remove({});
-        await ctx.db.collection('subresource').remove({});
-        await ctx.db.collection('enrichment').remove({});
+        await ctx.db.collection('publishedDataset').drop();
+        await ctx.db.collection('publishedCharacteristic').drop();
+        await ctx.db.collection('field').drop();
+        await ctx.db.collection('dataset').drop();
+        await ctx.db.collection('subresource').drop();
+        await ctx.db.collection('enrichment').drop();
         await ctx.rootAdminDb
             .collection('tenant')
-            .remove({ name: { $ne: DEFAULT_TENANT } });
+            .deleteOne({ name: { $ne: DEFAULT_TENANT } });
         ctx.body = { status: 'ok' };
     }),
 );

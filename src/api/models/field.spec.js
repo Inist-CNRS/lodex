@@ -6,6 +6,10 @@ import fieldFactory, {
 import { URI_FIELD_NAME } from '../../common/uris';
 import { SCOPE_DOCUMENT, SCOPE_COLLECTION } from '../../common/scope';
 
+const listCollections = {
+    toArray: () => [true],
+};
+
 describe('field', () => {
     describe('fieldFactory', () => {
         let fieldCollection;
@@ -20,7 +24,7 @@ describe('field', () => {
                 insertOne: jest.fn().mockImplementation(() => ({
                     insertedId: 'insertedId',
                 })),
-                update: jest.fn(),
+                updateOne: jest.fn(),
                 updateMany: jest.fn(),
                 find: jest.fn().mockImplementation(() => ({
                     sort: () => ({
@@ -42,6 +46,7 @@ describe('field', () => {
 
             db = {
                 collection: jest.fn().mockImplementation(() => fieldCollection),
+                listCollections: () => listCollections,
             };
 
             field = await fieldFactory(db);
@@ -204,7 +209,7 @@ describe('field', () => {
                     true,
                     'nameArg',
                 );
-                expect(fieldCollection.update).toHaveBeenCalledWith(
+                expect(fieldCollection.updateOne).toHaveBeenCalledWith(
                     {
                         name: 'this field name',
                         contribution: true,
@@ -232,7 +237,7 @@ describe('field', () => {
                     false,
                     'nameArg',
                 );
-                expect(fieldCollection.update).toHaveBeenCalledWith(
+                expect(fieldCollection.updateOne).toHaveBeenCalledWith(
                     {
                         name: 'this field name',
                         contribution: true,
@@ -285,10 +290,14 @@ describe('field', () => {
                         .mockImplementation(() => Promise.resolve({})),
                     insertOne: jest.fn(),
                 };
+                const listCollections = {
+                    toArray: () => [true],
+                };
                 const dbNoUri = {
                     collection: jest
                         .fn()
                         .mockImplementation(() => fieldCollectionNoUri),
+                    listCollections: () => listCollections,
                 };
 
                 const fieldNoUri = await fieldFactory(dbNoUri);
@@ -366,6 +375,7 @@ describe('field', () => {
                     collection: jest
                         .fn()
                         .mockImplementation(() => fieldCollection),
+                    listCollections: () => listCollections,
                 };
 
                 field = await fieldFactory(db);
@@ -399,6 +409,7 @@ describe('field', () => {
                     collection: jest
                         .fn()
                         .mockImplementation(() => fieldCollection),
+                    listCollections: () => listCollections,
                 };
 
                 field = await fieldFactory(db);
