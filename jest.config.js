@@ -8,7 +8,7 @@ const transform = {
 };
 
 module.exports = {
-    //preset: '@shelf/jest-mongodb',
+    workerIdleMemoryLimit: '512MB',
     projects: [
         {
             displayName: 'frontend',
