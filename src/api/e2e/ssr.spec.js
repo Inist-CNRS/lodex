@@ -111,7 +111,7 @@ describe('ssr', () => {
             });
         });
 
-        describe.only('not authentified', () => {
+        describe('not authentified', () => {
             beforeEach(async () => {
                 const response = await server
                     .get('/')
