@@ -8,4 +8,5 @@ module.exports = {
             },
         ],
     },
+    transformIgnorePatterns: ['<rootDir>/node_modules/d3'],
 };
