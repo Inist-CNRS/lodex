@@ -1,8 +1,8 @@
 import datasetFactory from '../../api/models/dataset';
+import fieldFactory from '../../api/models/field';
 import publishedCharacteristicFactory from '../../api/models/publishedCharacteristic';
 import publishedDatasetFactory from '../../api/models/publishedDataset';
 import publishedFacetFactory from '../../api/models/publishedFacet';
-import fieldFactory from '../../api/models/field';
 import mongoClient, { closeDb } from '../../api/services/mongoClient';
 import { DEFAULT_TENANT } from '../tools/tenantTools';
 
@@ -57,11 +57,11 @@ export async function clear() {
     }
 
     await Promise.all([
-        db.dataset.drop(),
-        db.field.drop(),
-        db.publishedCharacteristic.drop(),
-        db.publishedDataset.drop(),
-        db.publishedFacet.drop(),
+        db.dataset.deleteMany(),
+        db.field.deleteMany(),
+        db.publishedCharacteristic.deleteMany(),
+        db.publishedDataset.deleteMany(),
+        db.publishedFacet.deleteMany(),
     ]);
 
     return db;
