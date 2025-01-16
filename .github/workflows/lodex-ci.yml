@@ -12,8 +12,8 @@ jobs:
     test-unit:
         runs-on: ubuntu-22.04
 
-        # Set a timeout of 10 mins
-        timeout-minutes: 10
+        # Set a timeout of 20 mins
+        timeout-minutes: 20
 
         # Create a strategy matrix uses to test multiple versions of node
         strategy:
@@ -39,8 +39,6 @@ jobs:
 
             # Run unit test suite
             - run: npm run test:unit
-              env:
-                  NODE_OPTIONS: --max-old-space-size=8192
 
     # Job use to create the test environment and run e2e test suite
     test-e2e:
