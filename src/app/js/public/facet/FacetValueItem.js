@@ -8,7 +8,7 @@ import {
     ListItemText,
 } from '@mui/material';
 import ErrorIcon from '@mui/icons-material/Error';
-import { translate } from '../../i18n/I18NContext';
+import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
 import { polyglot as polyglotPropType } from '../../propTypes';
 

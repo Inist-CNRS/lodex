@@ -4,6 +4,7 @@ import compose from 'recompose/compose';
 import pure from 'recompose/pure';
 import withProps from 'recompose/withProps';
 import withHandlers from 'recompose/withHandlers';
+import translate from 'redux-polyglot/translate';
 import memoize from 'lodash/memoize';
 import {
     Table,
@@ -23,7 +24,6 @@ import ExcerptRemoveColumn from './ExcerptRemoveColumn';
 import ExcerptLine from './ExcerptLine';
 import getFieldClassName from '../../lib/getFieldClassName';
 import { URI_FIELD_NAME } from '../../../../common/uris';
-import { translate } from '../../i18n/I18NContext';
 
 const styles = {
     header: {

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { compose, withProps } from 'recompose';
-import { translate } from '../../i18n/I18NContext';
+import translate from 'redux-polyglot/translate';
 
 import { Box, Tabs, Tab } from '@mui/material';
 

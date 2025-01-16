@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { CardHeader, Card, CardContent } from '@mui/material';
 import moment from 'moment';
 import compose from 'recompose/compose';
-import { translate } from '../../i18n/I18NContext';
+import translate from 'redux-polyglot/translate';
 
 import { fromResource } from '../selectors';
 import { polyglot as polyglotPropTypes } from '../../propTypes';

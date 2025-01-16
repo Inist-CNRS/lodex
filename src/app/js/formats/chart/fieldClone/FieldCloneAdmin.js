@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
+import translate from 'redux-polyglot/translate';
 import { useParams } from 'react-router';
 
 import { MenuItem, TextField } from '@mui/material';
@@ -18,7 +19,6 @@ import {
 } from '../../../../../common/scope';
 import { FormatDefaultParamsFieldSet } from '../../utils/components/field-set/FormatFieldSets';
 import FormatGroupedFieldSet from '../../utils/components/field-set/FormatGroupedFieldSet';
-import { translate } from '../../../i18n/I18NContext';
 
 export const defaultArgs = {
     value: '',

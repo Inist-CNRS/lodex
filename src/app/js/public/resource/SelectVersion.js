@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Menu, MenuItem, Button } from '@mui/material';
 import { connect } from 'react-redux';
 import moment from 'moment';
-import { translate } from '../../i18n/I18NContext';
+import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
 import ArrowDown from '@mui/icons-material/KeyboardArrowDown';
 

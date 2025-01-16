@@ -1,6 +1,8 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
+import compose from 'recompose/compose';
 import { connect } from 'react-redux';
+import translate from 'redux-polyglot/translate';
 import {
     DataGrid,
     getGridNumericColumnOperators,
@@ -17,6 +19,7 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import RefreshIcon from '@mui/icons-material/Refresh';
 
+import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { fromEnrichments, fromParsing, fromPublication } from '../selectors';
 import datasetApi from '../api/dataset';
 import Loading from '../../lib/components/Loading';
@@ -38,7 +41,6 @@ import ParsingEditCell from './ParsingEditCell';
 import { AddBox as AddBoxIcon, Delete } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
 import ParsingDeleteRowDialogComponent from './ParsingDeleteRowDialog';
-import { useTranslate } from '../../i18n/I18NContext';
 
 const COLUMN_TYPE = {
     MAIN: 'main',
@@ -112,8 +114,12 @@ const getFiltersOperatorsForType = (type) => {
 };
 
 export const ParsingResultComponent = (props) => {
-    const { enrichments, loadingParsingResult, isPublished } = props;
-    const { translate } = useTranslate();
+    const {
+        p: polyglot,
+        enrichments,
+        loadingParsingResult,
+        isPublished,
+    } = props;
 
     const [showEnrichmentColumns, setShowEnrichmentColumns] = useState(true);
     const [showMainColumns, setShowMainColumns] = useState(true);
@@ -164,7 +170,7 @@ export const ParsingResultComponent = (props) => {
                 return {
                     field: key,
                     headerName: errorCount
-                        ? translate('header_name_with_errors', {
+                        ? polyglot.t('header_name_with_errors', {
                               name: key,
                               errorCount,
                           })
@@ -214,7 +220,7 @@ export const ParsingResultComponent = (props) => {
             hideable: false,
             renderCell: (params) => {
                 return (
-                    <Tooltip title={translate('parsing_delete_row_tooltip')}>
+                    <Tooltip title={polyglot.t('parsing_delete_row_tooltip')}>
                         <IconButton
                             aria-label="delete row"
                             onClick={(e) => handleDeleteRow(e, params.row)}
@@ -326,7 +332,7 @@ export const ParsingResultComponent = (props) => {
     if (loadingParsingResult) {
         return (
             <Loading className="admin">
-                {translate('loading_parsing_results')}
+                {polyglot.t('loading_parsing_results')}
             </Loading>
         );
     }
@@ -345,11 +351,11 @@ export const ParsingResultComponent = (props) => {
                         }}
                     >
                         <Box sx={styles.footerItemText}>
-                            {translate('parsing_summary_columns', {
+                            {polyglot.t('parsing_summary_columns', {
                                 smart_count: numberOfColumns(COLUMN_TYPE.MAIN),
                             })}
                         </Box>
-                        <Tooltip title={translate(`toggle_loaded`)}>
+                        <Tooltip title={polyglot.t(`toggle_loaded`)}>
                             {showMainColumns ? (
                                 <VisibilityIcon />
                             ) : (
@@ -369,13 +375,13 @@ export const ParsingResultComponent = (props) => {
                         }}
                     >
                         <Box sx={styles.footerItemText}>
-                            {translate('parsing_enriched_columns', {
+                            {polyglot.t('parsing_enriched_columns', {
                                 smart_count: numberOfColumns(
                                     COLUMN_TYPE.ENRICHMENT,
                                 ),
                             })}
                         </Box>
-                        <Tooltip title={translate(`toggle_enriched`)}>
+                        <Tooltip title={polyglot.t(`toggle_enriched`)}>
                             {showEnrichmentColumns ? (
                                 <VisibilityIcon />
                             ) : (
@@ -385,7 +391,7 @@ export const ParsingResultComponent = (props) => {
                     </Box>
                 </Box>
                 <Box display="flex">
-                    <Tooltip title={translate(`refresh_button`)}>
+                    <Tooltip title={polyglot.t(`refresh_button`)}>
                         <IconButton onClick={() => fetchDataset()}>
                             <RefreshIcon />
                         </IconButton>
@@ -402,7 +408,7 @@ export const ParsingResultComponent = (props) => {
                                             onPageChange(page)
                                         }
                                         rowsPerPageOptions={[25, 50, 100]}
-                                        labelRowsPerPage={translate(
+                                        labelRowsPerPage={polyglot.t(
                                             'rows_per_page',
                                         )}
                                         onRowsPerPageChange={
@@ -421,14 +427,14 @@ export const ParsingResultComponent = (props) => {
     const CustomToolbar = () => {
         return (
             <GridToolbarContainer>
-                <Tooltip title={translate(`column_tooltip`)}>
+                <Tooltip title={polyglot.t(`column_tooltip`)}>
                     <GridToolbarColumnsButton />
                 </Tooltip>
                 <GridToolbarFilterButton />
-                <Tooltip title={translate(`density_tooltip`)}>
+                <Tooltip title={polyglot.t(`density_tooltip`)}>
                     <GridToolbarDensitySelector />
                 </Tooltip>
-                <Tooltip title={translate(`add_more_data`)}>
+                <Tooltip title={polyglot.t(`add_more_data`)}>
                     <Button
                         component={Link}
                         to="/data/add"
@@ -440,7 +446,7 @@ export const ParsingResultComponent = (props) => {
                             },
                         }}
                     >
-                        {translate('add_more')}
+                        {polyglot.t('add_more')}
                     </Button>
                 </Tooltip>
             </GridToolbarContainer>
@@ -539,6 +545,7 @@ export const ParsingResultComponent = (props) => {
 };
 
 ParsingResultComponent.propTypes = {
+    p: polyglotPropTypes.isRequired,
     loadingParsingResult: PropTypes.bool.isRequired,
     enrichments: PropTypes.arrayOf(PropTypes.object),
     isPublished: PropTypes.bool.isRequired,
@@ -550,4 +557,7 @@ const mapStateToProps = (state) => ({
     isPublished: fromPublication.hasPublishedDataset(state),
 });
 
-export default connect(mapStateToProps)(ParsingResultComponent);
+export default compose(
+    connect(mapStateToProps),
+    translate,
+)(ParsingResultComponent);

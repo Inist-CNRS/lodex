@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Field } from 'redux-form';
+import translate from 'redux-polyglot/translate';
 
 import FormSelectField from '../lib/components/FormSelectField';
 import getFieldClassName from '../lib/getFieldClassName';
@@ -11,7 +12,6 @@ import {
 import { getFieldToAnnotateForSpecificScope } from '../../../common/scope';
 import { Box, MenuItem, Typography } from '@mui/material';
 import FieldRepresentation from './FieldRepresentation';
-import { translate } from '../i18n/I18NContext';
 
 const FieldAnnotation = ({ fields, scope, p: polyglot, subresourceId }) => (
     <Box mt={5}>

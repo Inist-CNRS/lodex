@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Menu, Button, MenuItem } from '@mui/material';
+import translate from 'redux-polyglot/translate';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import DownloadIcon from '@mui/icons-material/Download';
@@ -20,7 +21,6 @@ import stylesToClassname from '../lib/stylesToClassName';
 import { exportPublishedDataset as exportPublishedDatasetAction } from './export';
 
 import PDFApi from './api/exportPDF';
-import { translate } from '../i18n/I18NContext';
 
 const styles = stylesToClassname(
     {

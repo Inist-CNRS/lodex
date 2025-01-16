@@ -13,7 +13,6 @@ import phrasesFor from '../i18n/translations';
 import getLocale from '../../../common/getLocale';
 import LodexThemeProvider from './LodexThemeProvider';
 import { Router } from 'react-router-dom';
-import { I18N } from '../i18n/I18NContext';
 
 const locale = getLocale();
 const initialState = {
@@ -40,13 +39,11 @@ const { store, history } = configureStore(
 
 hydrate(
     <Provider {...{ store }}>
-        <I18N>
-            <Router history={history}>
-                <LodexThemeProvider>
-                    <Routes history={history} tenant={window.__TENANT__} />
-                </LodexThemeProvider>
-            </Router>
-        </I18N>
+        <Router history={history}>
+            <LodexThemeProvider>
+                <Routes history={history} tenant={window.__TENANT__} />
+            </LodexThemeProvider>
+        </Router>
     </Provider>,
     document.getElementById('root'),
 );

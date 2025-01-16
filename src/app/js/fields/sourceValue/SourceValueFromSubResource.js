@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import compose from 'recompose/compose';
 import PropTypes from 'prop-types';
+import translate from 'redux-polyglot/translate';
 import {
     Autocomplete,
     Box,
@@ -14,7 +15,6 @@ import { connect } from 'react-redux';
 import { fromParsing } from '../../admin/selectors';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import parseValue from '../../../../common/tools/parseValue';
-import { translate } from '../../i18n/I18NContext';
 
 export const GET_TRANSFORMERS_FROM_SUBRESOURCE = (
     subresources,

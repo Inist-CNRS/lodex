@@ -1,8 +1,8 @@
+import translate from 'redux-polyglot/translate';
 import { polyglot as polyglotPropTypes } from '../../../propTypes';
 import PropTypes from 'prop-types';
 import { Box } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import { translate } from '../../../i18n/I18NContext';
 
 const EJSEditor = ({ value, onChange }) => {
     const FormSourceCodeField =

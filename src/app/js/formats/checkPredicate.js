@@ -1,10 +1,10 @@
 import React from 'react';
 import get from 'lodash/get';
+import translate from 'redux-polyglot/translate';
 
 import InvalidFormat from './InvalidFormat';
 import PropTypes from 'prop-types';
 import { polyglot as polyglotPropTypes } from '../propTypes';
-import { translate } from '../i18n/I18NContext';
 
 export const isPrecomputed = (field) =>
     !!field?.transformers?.find((t) => t.operation === 'PRECOMPUTED');

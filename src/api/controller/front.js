@@ -43,7 +43,7 @@ const getDefaultInitialState = (ctx, token, cookie, locale) => ({
         configuredFieldName: null,
         published: true,
     },
-    i18n: {
+    polyglot: {
         locale,
         phrases: translations.getByLanguage(locale),
     },

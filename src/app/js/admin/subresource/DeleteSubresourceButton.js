@@ -1,10 +1,10 @@
 import React from 'react';
+import translate from 'redux-polyglot/translate';
 import PropTypes from 'prop-types';
 import { Button, Dialog, DialogTitle, DialogActions } from '@mui/material';
 import { compose, withState } from 'recompose';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import CancelButton from '../../lib/components/CancelButton';
-import { translate } from '../../i18n/I18NContext';
 
 export const DeleteSubresourceButtonComponent = ({
     p: polyglot,

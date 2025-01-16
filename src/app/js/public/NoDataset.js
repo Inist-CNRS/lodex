@@ -1,7 +1,7 @@
 import React from 'react';
+import translate from 'redux-polyglot/translate';
 import { CardContent, Card } from '@mui/material';
 import { polyglot as polyglotPropTypes } from '../propTypes';
-import { translate } from '../i18n/I18NContext';
 
 const NoDatasetComponent = ({ p: polyglot }) => (
     <Card sx={{ marginTop: '0.5rem' }}>

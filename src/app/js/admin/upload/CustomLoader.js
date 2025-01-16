@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import compose from 'recompose/compose';
 import PropTypes from 'prop-types';
+import translate from 'redux-polyglot/translate';
 import FormSourceCodeField from '../../lib/components/FormSourceCodeField';
 import {
     Box,
@@ -22,7 +23,6 @@ import {
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import loaderApi from '../api/loader';
 import CancelButton from '../../lib/components/CancelButton';
-import { translate } from '../../i18n/I18NContext';
 
 const CustomLoader = ({
     formValue,

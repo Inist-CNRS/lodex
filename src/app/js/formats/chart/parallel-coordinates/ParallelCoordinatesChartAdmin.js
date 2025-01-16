@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import translate from 'redux-polyglot/translate';
 
 import { polyglot as polyglotPropTypes } from '../../../propTypes';
 import updateAdminArgs from '../../utils/updateAdminArgs';
@@ -11,7 +12,6 @@ import {
     FormatChartParamsFieldSet,
     FormatDataParamsFieldSet,
 } from '../../utils/components/field-set/FormatFieldSets';
-import { translate } from '../../../i18n/I18NContext';
 
 const ParallelCoordinatesChartAdmin = ({
     p: polyglot,

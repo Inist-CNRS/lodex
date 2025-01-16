@@ -1,6 +1,8 @@
 import React from 'react';
+import translate from 'redux-polyglot/translate';
 import PropTypes from 'prop-types';
 import ReactJson from 'react-json-view';
+import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { Save as SaveIcon } from '@mui/icons-material';
 import datasetApi from '../api/dataset';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
@@ -16,7 +18,6 @@ import {
 } from '@mui/material';
 import { toast } from '../../../../common/tools/toast';
 import CancelButton from '../../lib/components/CancelButton';
-import { useTranslate } from '../../i18n/I18NContext';
 
 const style = {
     container: {
@@ -125,8 +126,7 @@ const isError = (value) => {
     );
 };
 
-const ButtonEditCellWithDropdown = ({ loading, handleChange }) => {
-    const { translate } = useTranslate();
+const ButtonEditCellWithDropdown = ({ polyglot, loading, handleChange }) => {
     const theme = useTheme();
     const [isOpen, setOpen] = React.useState(false);
     const anchorRef = React.useRef(null);
@@ -153,7 +153,7 @@ const ButtonEditCellWithDropdown = ({ loading, handleChange }) => {
                     ) : (
                         <SaveIcon sx={style.icon} />
                     )}
-                    {translate('save')}
+                    {polyglot.t('save')}
                 </Button>
                 <Button
                     variant="contained"
@@ -188,7 +188,7 @@ const ButtonEditCellWithDropdown = ({ loading, handleChange }) => {
                             setOpen(false);
                         }}
                     >
-                        {translate('save_as', {
+                        {polyglot.t('save_as', {
                             type: type,
                         })}
                     </MenuItem>
@@ -199,12 +199,12 @@ const ButtonEditCellWithDropdown = ({ loading, handleChange }) => {
 };
 
 ButtonEditCellWithDropdown.propTypes = {
+    polyglot: polyglotPropTypes.isRequired,
     loading: PropTypes.bool.isRequired,
     handleChange: PropTypes.func.isRequired,
 };
 
-const ParsingEditCell = ({ cell, setToggleDrawer }) => {
-    const { translate } = useTranslate();
+const ParsingEditCell = ({ cell, p: polyglot, setToggleDrawer }) => {
     const theme = useTheme();
     const [loading, setLoading] = React.useState(false);
     const [value, setValue] = React.useState(cell.value);
@@ -216,10 +216,10 @@ const ParsingEditCell = ({ cell, setToggleDrawer }) => {
             try {
                 valueToSave = getValueBySavingType(value, type, cell.value);
             } catch (e) {
-                toast(translate(e.message), {
+                toast(polyglot.t(e.message), {
                     type: toast.TYPE.ERROR,
                 });
-                throw new Error(translate(e.message));
+                throw new Error(polyglot.t(e.message));
             }
             await datasetApi.updateDataset({
                 uri: cell.row.uri,
@@ -227,7 +227,7 @@ const ParsingEditCell = ({ cell, setToggleDrawer }) => {
                 value: valueToSave,
             });
             cell.row[cell.field] = valueToSave;
-            toast(translate('dataset_edit_success'), {
+            toast(polyglot.t('dataset_edit_success'), {
                 type: toast.TYPE.SUCCESS,
             });
             setToggleDrawer(false);
@@ -248,7 +248,7 @@ const ParsingEditCell = ({ cell, setToggleDrawer }) => {
                         fontWeight: 'initial',
                     }}
                 >
-                    {translate('dataset_edit_enrichment_title', {
+                    {polyglot.t('dataset_edit_enrichment_title', {
                         column_name: cell.field,
                         row_name: cell?.row?.uri || cell?.row?.ark,
                     })}
@@ -261,11 +261,11 @@ const ParsingEditCell = ({ cell, setToggleDrawer }) => {
     return (
         <div>
             <h2 style={{ textAlign: 'center' }}>
-                {translate('column')}{' '}
+                {polyglot.t('column')}{' '}
                 <span style={{ color: theme.palette.primary.main }}>
                     {cell.field}
                 </span>{' '}
-                {translate('for_row')}{' '}
+                {polyglot.t('for_row')}{' '}
                 <span style={{ color: theme.palette.secondary.main }}>
                     {cell?.row?.uri || cell?.row?.ark}
                 </span>
@@ -317,11 +317,12 @@ const ParsingEditCell = ({ cell, setToggleDrawer }) => {
                         key="cancel"
                         onClick={() => setToggleDrawer(false)}
                     >
-                        {translate('cancel')}
+                        {polyglot.t('cancel')}
                     </CancelButton>
                     <ButtonEditCellWithDropdown
                         handleChange={handleChange}
                         loading={loading}
+                        polyglot={polyglot}
                     />
                 </Box>
             </div>
@@ -331,7 +332,8 @@ const ParsingEditCell = ({ cell, setToggleDrawer }) => {
 
 ParsingEditCell.propTypes = {
     cell: PropTypes.object.isRequired,
+    p: polyglotPropTypes.isRequired,
     setToggleDrawer: PropTypes.func.isRequired,
 };
 
-export default ParsingEditCell;
+export default translate(ParsingEditCell);

@@ -1,5 +1,5 @@
 import React from 'react';
-import { translate } from '../../../i18n/I18NContext';
+import translate from 'redux-polyglot/translate';
 import PropTypes from 'prop-types';
 import { polyglot as polyglotPropTypes } from '../../../propTypes';
 import RoutineParamsAdmin from '../../utils/components/admin/RoutineParamsAdmin';

@@ -8,7 +8,7 @@ import { bindActionCreators } from 'redux';
 import { grey } from '@mui/material/colors';
 import memoize from 'lodash/memoize';
 import get from 'lodash/get';
-import { translate } from '../../i18n/I18NContext';
+import translate from 'redux-polyglot/translate';
 
 import { fromDisplayConfig, fromResource } from '../selectors';
 import ModerateButton from './ModerateButton';

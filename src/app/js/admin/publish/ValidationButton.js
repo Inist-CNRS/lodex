@@ -14,10 +14,10 @@ import {
     polyglot as polyglotPropTypes,
 } from '../../propTypes';
 import { SCOPE_DOCUMENT } from '../../../../common/scope';
+import translate from 'redux-polyglot/translate';
 import { useHistory } from 'react-router-dom';
 import { getEditFieldRedirectUrl } from '../../fields/FieldGrid';
 import WarningIcon from '@mui/icons-material/Warning';
-import { translate } from '../../i18n/I18NContext';
 
 const anchorOrigin = { horizontal: 'right', vertical: 'top' };
 const targetOrigin = { horizontal: 'right', vertical: 'bottom' };

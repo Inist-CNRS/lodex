@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import compose from 'recompose/compose';
+import translate from 'redux-polyglot/translate';
 import { TableCell } from '@mui/material';
 import { connect } from 'react-redux';
 
@@ -10,7 +11,6 @@ import { isLongText, getShortText } from '../../lib/longTexts';
 import getFieldClassName from '../../lib/getFieldClassName';
 import { field as fieldPropTypes } from '../../propTypes';
 import parseValue from '../../../../common/tools/parseValue';
-import { translate } from '../../i18n/I18NContext';
 
 const styles = {
     cell: (readonly) => ({

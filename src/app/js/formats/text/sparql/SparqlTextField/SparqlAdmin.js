@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { translate } from '../../../../i18n/I18NContext';
+import translate from 'redux-polyglot/translate';
 import { Box, Checkbox, FormControlLabel, TextField } from '@mui/material';
 import ContentAdd from '@mui/icons-material/Add';
 import ContentClear from '@mui/icons-material/Clear';

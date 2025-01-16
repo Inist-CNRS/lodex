@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
+import translate from 'redux-polyglot/translate';
 import { ListSubheader } from '@mui/material';
 import { Field } from 'redux-form';
 
@@ -12,7 +13,6 @@ import {
     field as fieldPropTypes,
     polyglot as polyglotPropTypes,
 } from '../../propTypes';
-import { translate } from '../../i18n/I18NContext';
 
 const style = {
     list: {

@@ -4,6 +4,7 @@ import PrecomputedCatalogConnected from './PrecomputedCatalog';
 import PrecomputedPreview from './PrecomputedPreview';
 import PrecomputedFormLogsDialogComponent from './PrecomputedLogsDialog';
 import PrecomputedFormDataDialogComponent from './PrecomputedDataDialog';
+import translate from 'redux-polyglot/translate';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import PropTypes from 'prop-types';
 import SourceValueFromColumns from './SourceValueFromColumns';
@@ -20,6 +21,7 @@ import {
 } from 'redux-form';
 import { fromPrecomputed, fromParsing } from '../selectors';
 import { ListAlt as ListAltIcon } from '@mui/icons-material';
+import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { withRouter } from 'react-router';
 import {
     Box,
@@ -50,7 +52,6 @@ import { io } from 'socket.io-client';
 import CancelButton from '../../lib/components/CancelButton';
 import { DEFAULT_TENANT } from '../../../../common/tools/tenantTools';
 import getLocale from '../../../../common/getLocale';
-import { useTranslate } from '../../i18n/I18NContext';
 
 // UTILITARY PART
 const PRECOMPUTED_FORM = 'PRECOMPUTED_FORM';
@@ -100,11 +101,11 @@ function getDisplayTimeStartedAt(startedAt) {
     return timeSinceStarted;
 }
 
-export const renderStatus = (status, translate, startedAt = null) => {
+export const renderStatus = (status, polyglot, startedAt = null) => {
     if (status === PENDING) {
         return (
             <StatusChip
-                label={translate('precomputed_status_pending')}
+                label={polyglot.t('precomputed_status_pending')}
                 color="warning"
                 startedAt={startedAt}
             />
@@ -113,7 +114,7 @@ export const renderStatus = (status, translate, startedAt = null) => {
     if (status === IN_PROGRESS) {
         return (
             <StatusChip
-                label={translate('precomputed_status_running')}
+                label={polyglot.t('precomputed_status_running')}
                 color="info"
                 startedAt={startedAt}
             />
@@ -123,7 +124,7 @@ export const renderStatus = (status, translate, startedAt = null) => {
     if (status === PAUSED) {
         return (
             <StatusChip
-                label={translate('precomputed_status_paused')}
+                label={polyglot.t('precomputed_status_paused')}
                 color="info"
             />
         );
@@ -132,7 +133,7 @@ export const renderStatus = (status, translate, startedAt = null) => {
     if (status === FINISHED) {
         return (
             <StatusChip
-                label={translate('precomputed_status_done')}
+                label={polyglot.t('precomputed_status_done')}
                 color="success"
             />
         );
@@ -141,7 +142,7 @@ export const renderStatus = (status, translate, startedAt = null) => {
     if (status === ERROR) {
         return (
             <StatusChip
-                label={translate('precomputed_status_error')}
+                label={polyglot.t('precomputed_status_error')}
                 color="error"
             />
         );
@@ -150,7 +151,7 @@ export const renderStatus = (status, translate, startedAt = null) => {
     if (status === CANCELED) {
         return (
             <StatusChip
-                label={translate('precomputed_status_canceled')}
+                label={polyglot.t('precomputed_status_canceled')}
                 color="warning"
             />
         );
@@ -159,7 +160,7 @@ export const renderStatus = (status, translate, startedAt = null) => {
     if (status === ON_HOLD) {
         return (
             <StatusChip
-                label={translate('precomputed_status_hold')}
+                label={polyglot.t('precomputed_status_hold')}
                 sx={{ backgroundColor: '#539CE1', color: '#fff' }}
                 startedAt={startedAt}
             />
@@ -168,7 +169,7 @@ export const renderStatus = (status, translate, startedAt = null) => {
 
     return (
         <StatusChip
-            label={translate('precomputed_status_not_started')}
+            label={polyglot.t('precomputed_status_not_started')}
             sx={{ backgroundColor: 'neutral' }}
         />
     );
@@ -199,7 +200,7 @@ StatusChip.propTypes = {
 export const renderRunButton = (
     handleLaunchPrecomputed,
     precomputedStatus,
-    translate,
+    polyglot,
     variant,
 ) => {
     const [isClicked, setIsClicked] = useState(false);
@@ -222,7 +223,7 @@ export const renderRunButton = (
                 precomputedStatus === ON_HOLD
             }
         >
-            {translate('run')}
+            {polyglot.t('run')}
         </Button>
     );
 };
@@ -233,6 +234,7 @@ export const PrecomputedForm = ({
     formValues,
     history,
     initialValues,
+    p: polyglot,
     onChangeWebServiceUrl,
     onLaunchPrecomputed,
     onLoadPrecomputedData,
@@ -240,7 +242,6 @@ export const PrecomputedForm = ({
     handleSubmit: formHandleSubmit,
     submitting,
 }) => {
-    const { translate } = useTranslate();
     const [openCatalog, setOpenCatalog] = React.useState(false);
     const [openPrecomputedLogs, setOpenPrecomputedLogs] = React.useState(false);
     const [openPrecomputedData, setOpenPrecomputedData] = React.useState(false);
@@ -254,8 +255,8 @@ export const PrecomputedForm = ({
     );
 
     const requiredField = useMemo(
-        () => required(translate('error_field_required')),
-        [translate('error_field_required')],
+        () => required(polyglot.t('error_field_required')),
+        [polyglot.t('error_field_required')],
     );
 
     const isEditMode = !!initialValues?._id;
@@ -278,7 +279,7 @@ export const PrecomputedForm = ({
     const handleAddPrecomputed = async () => {
         const res = await createPrecomputed(formValues);
         if (res.response) {
-            toast(translate('precomputed_added_success'), {
+            toast(polyglot.t('precomputed_added_success'), {
                 type: toast.TYPE.SUCCESS,
             });
             history.push(`/data/precomputed/${res.response._id}`);
@@ -296,7 +297,7 @@ export const PrecomputedForm = ({
         };
         const res = await updatePrecomputed(precomputedDataToUpdate);
         if (res.response) {
-            toast(translate('precomputed_updated_success'), {
+            toast(polyglot.t('precomputed_updated_success'), {
                 type: toast.TYPE.SUCCESS,
             });
             onLoadPrecomputedData();
@@ -333,7 +334,7 @@ export const PrecomputedForm = ({
         setIsLoading(true);
         const res = await deletePrecomputed(initialValues._id);
         if (res.response) {
-            toast(translate('precomputed_deleted_success'), {
+            toast(polyglot.t('precomputed_deleted_success'), {
                 type: toast.TYPE.SUCCESS,
             });
             history.push('/data/precomputed');
@@ -352,7 +353,7 @@ export const PrecomputedForm = ({
     const handleLaunchPrecomputed = (event) => {
         event.preventDefault();
         if (isPrecomputedRunning) {
-            toast(translate('pending_precomputed'), {
+            toast(polyglot.t('pending_precomputed'), {
                 type: toast.TYPE.INFO,
             });
         }
@@ -369,7 +370,7 @@ export const PrecomputedForm = ({
                     setPrecomputedLogs(result.response.logs.reverse());
                 },
                 () => {
-                    toast(translate('logs_error'), {
+                    toast(polyglot.t('logs_error'), {
                         type: toast.TYPE.ERROR,
                     });
                 },
@@ -437,13 +438,13 @@ export const PrecomputedForm = ({
                                 name="name"
                                 validate={[requiredField]}
                                 component={renderTextField}
-                                label={translate('fieldName')}
+                                label={polyglot.t('fieldName')}
                             />
                             {isEditMode &&
                                 renderRunButton(
                                     handleLaunchPrecomputed,
                                     precomputedStatus,
-                                    translate,
+                                    polyglot,
                                 )}
                         </Box>
                         {isEditMode && (
@@ -455,10 +456,10 @@ export const PrecomputedForm = ({
                                 sx={{ marginBottom: 2 }}
                             >
                                 <Typography>
-                                    {translate('precomputed_status')} : &nbsp;
+                                    {polyglot.t('precomputed_status')} : &nbsp;
                                     {renderStatus(
                                         precomputedStatus,
-                                        translate,
+                                        polyglot,
                                         initialValues?.startedAt,
                                     )}
                                 </Typography>
@@ -474,7 +475,7 @@ export const PrecomputedForm = ({
                                             setOpenPrecomputedLogs(true)
                                         }
                                     >
-                                        {translate('see_logs')}
+                                        {polyglot.t('see_logs')}
                                     </Button>
                                     <PrecomputedFormLogsDialogComponent
                                         isOpen={openPrecomputedLogs}
@@ -501,7 +502,7 @@ export const PrecomputedForm = ({
                                                         )
                                                     }
                                                 >
-                                                    {translate('see_data')}
+                                                    {polyglot.t('see_data')}
                                                 </Button>
                                                 <PrecomputedFormDataDialogComponent
                                                     isOpen={openPrecomputedData}
@@ -533,7 +534,7 @@ export const PrecomputedForm = ({
                                 name="webServiceUrl"
                                 validate={[requiredField]}
                                 component={renderTextField}
-                                label={translate('webServiceUrl')}
+                                label={polyglot.t('webServiceUrl')}
                             />
                             <Button
                                 variant="contained"
@@ -556,7 +557,7 @@ export const PrecomputedForm = ({
                         <Box display="flex" gap={2} mb={2}>
                             <Field
                                 name="sourceColumns"
-                                label={translate('sourceColumns')}
+                                label={polyglot.t('sourceColumns')}
                                 validate={[requiredField]}
                                 component={SourceValueFromColumns}
                                 options={datasetFields}
@@ -590,7 +591,7 @@ export const PrecomputedForm = ({
                                 onClick={handleDeletePrecomputed}
                                 disabled={isLoading}
                             >
-                                {translate('delete')}
+                                {polyglot.t('delete')}
                             </Button>
                         )}
                         <Box>
@@ -598,7 +599,7 @@ export const PrecomputedForm = ({
                                 sx={{ height: '100%' }}
                                 onClick={handleBack}
                             >
-                                {translate('back')}
+                                {polyglot.t('back')}
                             </CancelButton>
                             <Button
                                 variant="contained"
@@ -612,7 +613,7 @@ export const PrecomputedForm = ({
                                     precomputedStatus === PENDING
                                 }
                             >
-                                {translate('save')}
+                                {polyglot.t('save')}
                             </Button>
                         </Box>
                     </Box>
@@ -664,12 +665,14 @@ PrecomputedForm.propTypes = {
     onChangeWebServiceUrl: PropTypes.func.isRequired,
     onLaunchPrecomputed: PropTypes.func.isRequired,
     onLoadPrecomputedData: PropTypes.func.isRequired,
+    p: polyglotPropTypes.isRequired,
     isPrecomputedRunning: PropTypes.bool,
     handleSubmit: PropTypes.func.isRequired,
     submitting: PropTypes.bool,
 };
 
 export default compose(
+    translate,
     withRouter,
     connect(mapStateToProps, mapDispatchToProps),
     reduxForm({

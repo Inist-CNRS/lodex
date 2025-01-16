@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import compose from 'recompose/compose';
+import translate from 'redux-polyglot/translate';
 import { TableCell, Button } from '@mui/material';
 
 import { removeField } from '../../fields';
@@ -11,7 +12,6 @@ import {
     field as fieldPropTypes,
 } from '../../propTypes';
 import getFieldClassName from '../../lib/getFieldClassName';
-import { translate } from '../../i18n/I18NContext';
 
 export const ExcerptRemoveColumnComponent = ({
     removeColumn,

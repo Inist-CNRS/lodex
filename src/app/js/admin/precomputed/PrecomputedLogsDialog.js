@@ -1,4 +1,6 @@
 import React from 'react';
+import compose from 'recompose/compose';
+import translate from 'redux-polyglot/translate';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import PropTypes from 'prop-types';
 import { FixedSizeList } from 'react-window';
@@ -13,7 +15,6 @@ import {
     Typography,
 } from '@mui/material';
 import CancelButton from '../../lib/components/CancelButton';
-import { translate } from '../../i18n/I18NContext';
 
 const styles = {
     info: {
@@ -146,4 +147,4 @@ PrecomputedLogsDialog.propTypes = {
     p: polyglotPropTypes.isRequired,
 };
 
-export default translate(PrecomputedLogsDialog);
+export default compose(translate)(PrecomputedLogsDialog);

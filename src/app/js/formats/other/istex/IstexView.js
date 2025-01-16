@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import memoize from 'lodash/memoize';
+import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
 import FileDownload from '@mui/icons-material/GetApp';
 import Link from '../../../lib/components/Link';
@@ -15,7 +16,6 @@ import {
 import { fetchForIstexFormat } from '../../utils/fetchIstexData';
 import IstexItem from './IstexItem';
 import { ISTEX_SITE_URL } from '../../../../../common/externals';
-import { translate } from '../../../i18n/I18NContext';
 
 const styles = {
     text: memoize((status) => ({

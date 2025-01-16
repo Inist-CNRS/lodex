@@ -11,6 +11,7 @@ import {
     setEnrichmentJobId,
 } from '../../services/enrichment/enrichment';
 import { cancelJob, getActiveJob } from '../../workers/tools';
+import { getLocale } from 'redux-polyglot/dist/selectors';
 import { orderEnrichmentsByDependencies } from '../../services/orderEnrichmentsByDependencies';
 
 export const setup = async (ctx, next) => {
@@ -42,8 +43,9 @@ export const postEnrichment = async (ctx) => {
         // if code error is 11000, it's a duplicate key error
         if (error.code === 11000) {
             // send message due to browser locale
+            const locale = getLocale(ctx);
             const errorMessage =
-                ctx.cookies.get('frontend_lang') === 'fr_FR'
+                locale === 'fr'
                     ? 'Un enrichissement avec ce nom existe déjà'
                     : 'A enrichment with this name already exists';
             ctx.body = { error: errorMessage };

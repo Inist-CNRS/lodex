@@ -1,10 +1,10 @@
 import AbstractTableAdmin from '../core/AbstractTableAdmin';
+import translate from 'redux-polyglot/translate';
 import { TextField } from '@mui/material';
 import TableColumnsParameters from '../core/TableColumnsParameters';
 import React from 'react';
 import { FormatDefaultParamsFieldSet } from '../../../utils/components/field-set/FormatFieldSets';
 import FormatGroupedFieldSet from '../../../utils/components/field-set/FormatGroupedFieldSet';
-import { translate } from '../../../../i18n/I18NContext';
 
 export const defaultArgs = {
     pageSize: 6,

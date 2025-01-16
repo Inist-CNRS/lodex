@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { translate } from '../../i18n/I18NContext';
+import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
 import { polyglot as polyglotPropType } from '../../propTypes';
 import { Box, Button } from '@mui/material';

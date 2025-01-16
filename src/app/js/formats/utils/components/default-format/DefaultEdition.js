@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import translate from 'redux-polyglot/translate';
 import { change } from 'redux-form';
 import get from 'lodash/get';
 import { connect } from 'react-redux';
@@ -7,7 +8,6 @@ import { Button } from '@mui/material';
 
 import { formField as formFieldPropTypes } from '../../../../propTypes';
 import FormTextField from '../../../../lib/components/FormTextField';
-import { translate } from '../../../../i18n/I18NContext';
 
 class DefaultEdition extends Component {
     convertValue = () => {

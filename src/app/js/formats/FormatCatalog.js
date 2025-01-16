@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import translate from 'redux-polyglot/translate';
+import compose from 'recompose/compose';
 import { polyglot as polyglotPropTypes } from '../propTypes';
 import FilterIcon from '@mui/icons-material/FilterList';
 import {
@@ -18,7 +20,6 @@ import {
 } from '@mui/material';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 import CancelButton from '../lib/components/CancelButton';
-import { translate } from '../i18n/I18NContext';
 
 const FormatCatalogDescription = ({ format, polyglot }) => {
     return (
@@ -188,4 +189,4 @@ FormatCatalog.propTypes = {
     currentValue: PropTypes.string,
 };
 
-export default translate(FormatCatalog);
+export default compose(translate)(FormatCatalog);

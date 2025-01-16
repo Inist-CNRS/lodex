@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo } from 'react';
 import PropTypes from 'prop-types';
-import { translate } from '../../../../i18n/I18NContext';
+import translate from 'redux-polyglot/translate';
 import { Checkbox, FormControlLabel, FormGroup, Switch } from '@mui/material';
 
 import { polyglot as polyglotPropTypes } from '../../../../propTypes';

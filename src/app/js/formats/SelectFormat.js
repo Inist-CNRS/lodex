@@ -2,9 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { MenuItem, Button, TextField, Box } from '@mui/material';
 import ListAltIcon from '@mui/icons-material/ListAlt';
+import translate from 'redux-polyglot/translate';
 import { polyglot as polyglotPropTypes } from '../propTypes';
 import FormatCatalogDialog from './FormatCatalog';
-import { translate } from '../i18n/I18NContext';
 
 const SelectFormat = ({ formats, value, onChange, p: polyglot }) => {
     const [openCatalog, setOpenCatalog] = React.useState(false);

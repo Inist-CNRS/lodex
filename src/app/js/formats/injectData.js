@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
 import { withRouter } from 'react-router';
 import isEqual from 'lodash/isEqual';
@@ -15,7 +16,6 @@ import { preLoadFormatData, loadFormatData, unLoadFormatData } from './reducer';
 import Loading from '../lib/components/Loading';
 import InvalidFormat from './InvalidFormat';
 import { CircularProgress } from '@mui/material';
-import { translate } from '../i18n/I18NContext.js';
 
 const styles = {
     message: {

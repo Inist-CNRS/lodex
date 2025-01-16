@@ -1,4 +1,5 @@
 import { reducer as form } from 'redux-form';
+import { polyglotReducer as polyglot } from 'redux-polyglot';
 
 import characteristic from '../characteristic';
 import dataset from './dataset';
@@ -22,6 +23,7 @@ const reducers = {
     fetch: fetchReducer,
     form,
     i18n,
+    polyglot,
     fields,
     resource,
     format,

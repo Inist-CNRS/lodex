@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
+import { compose } from 'recompose';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
+import translate from 'redux-polyglot/translate';
 import UploadIcon from '@mui/icons-material/Upload';
 import { Button, CircularProgress, styled } from '@mui/material';
 import { importHiddenResources } from '../api/hiddenResource';
 import { toast } from '../../../../common/tools/toast';
 import { useLocation, Redirect } from 'react-router-dom';
-import { translate } from '../../i18n/I18NContext';
 
 const VisuallyHiddenInput = styled('input')({
     clip: 'rect(0 0 0 0)',
@@ -72,4 +73,4 @@ ImportButton.propTypes = {
     p: polyglotPropTypes.isRequired,
 };
 
-export default translate(ImportButton);
+export default compose(translate)(ImportButton);

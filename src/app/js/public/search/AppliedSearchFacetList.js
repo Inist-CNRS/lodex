@@ -7,7 +7,7 @@ import { facetActions } from './reducer';
 import { Box, Chip } from '@mui/material';
 import AppliedSearchFacet from './AppliedSearchFacet';
 import { compose } from 'recompose';
-import { translate } from '../../i18n/I18NContext';
+import translate from 'redux-polyglot/translate';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 
 export const AppliedSearchFacetListComponent = ({

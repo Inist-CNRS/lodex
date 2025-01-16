@@ -4,7 +4,7 @@ import classnames from 'classnames';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import { withRouter } from 'react-router-dom';
-import { translate } from '../../i18n/I18NContext';
+import translate from 'redux-polyglot/translate';
 import HomeIcon from '@mui/icons-material/Home';
 import BackIcon from '@mui/icons-material/ArrowBack';
 import { CardContent, CardActions, Card, Button } from '@mui/material';

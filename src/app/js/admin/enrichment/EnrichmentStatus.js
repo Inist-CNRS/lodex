@@ -1,5 +1,6 @@
 import React from 'react';
 
+import translate from 'redux-polyglot/translate';
 import PropTypes from 'prop-types';
 
 import { connect } from 'react-redux';
@@ -15,7 +16,6 @@ import {
     CANCELED,
     PAUSED,
 } from '../../../../common/taskStatus';
-import { translate } from '../../i18n/I18NContext';
 
 export const EnrichmentStatus = ({ status, p: polyglot }) => {
     if (status === PENDING) {
