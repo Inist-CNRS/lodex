@@ -10,7 +10,7 @@ on:
 jobs:
     # Job use to create the test environment and run unit test suite
     test-unit:
-        runs-on: ubuntu-20.04
+        runs-on: ubuntu-22.04
 
         # Set a timeout of 10 mins
         timeout-minutes: 10
@@ -20,7 +20,7 @@ jobs:
             fail-fast: false
             matrix:
                 # See https://github.com/nodejs/Release
-                node-version: [18.x]
+                node-version: [22.x]
 
         steps:
             # Pull repository content
@@ -39,10 +39,12 @@ jobs:
 
             # Run unit test suite
             - run: npm run test:unit
+              env:
+                  NODE_OPTIONS: --max-old-space-size=8192
 
     # Job use to create the test environment and run api e2e test suite
     test-api-e2e:
-        runs-on: ubuntu-20.04
+        runs-on: ubuntu-22.04
 
         # Set a timeout of 10 mins
         timeout-minutes: 10
@@ -51,7 +53,7 @@ jobs:
         strategy:
             fail-fast: false
             matrix:
-                node-version: [18.x]
+                node-version: [22.x]
 
         steps:
             # Pull repository content
@@ -73,7 +75,7 @@ jobs:
 
     # Job use to create the test environment and run e2e test suite
     test-e2e:
-        runs-on: ubuntu-20.04
+        runs-on: ubuntu-22.04
 
         # Set a timeout of 30 mins
         timeout-minutes: 30
@@ -82,7 +84,7 @@ jobs:
         strategy:
             fail-fast: false
             matrix:
-                node-version: [18.x]
+                node-version: [22.x]
                 test-phase:
                     ['phase:one', 'phase:two', 'phase:three', 'phase:four']
                 # Use this line to ignore the phase system
