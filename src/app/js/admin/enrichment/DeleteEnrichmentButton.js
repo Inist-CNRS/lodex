@@ -19,7 +19,7 @@ export function DeleteEnrichmentButton({
         onDeleteStart();
         const res = await deleteEnrichment(id);
         if (res.response) {
-            toast(polyglot.t('enrichment_deleted_success'), {
+            toast(translate('enrichment_deleted_success'), {
                 type: toast.TYPE.SUCCESS,
             });
             history.push('/data/enrichment');
@@ -39,13 +39,13 @@ export function DeleteEnrichmentButton({
                 onClick={() => setIsConfirmPopupOpen(true)}
                 disabled={disabled}
             >
-                {polyglot.t('delete')}
+                {translate('delete')}
             </Button>
             <ConfirmPopup
-                cancelLabel={polyglot.t('Cancel')}
-                confirmLabel={polyglot.t('Accept')}
-                title={polyglot.t('confirm_enrichment_deletion_title')}
-                description={polyglot.t(
+                cancelLabel={translate('Cancel')}
+                confirmLabel={translate('Accept')}
+                title={translate('confirm_enrichment_deletion_title')}
+                description={translate(
                     'confirm_enrichment_deletion_description',
                 )}
                 isOpen={isConfirmPopupOpen}
