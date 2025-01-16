@@ -1,0 +1,16 @@
+{
+    "compilerOptions": {
+        "outDir": "./dist/",
+        "target": "ES6",
+        "module": "commonjs",
+        "allowSyntheticDefaultImports": true,
+        "resolveJsonModule": true,
+        "jsx": "react",
+        "types": ["cypress", "@testing-library/cypress"],
+        "strict": true,
+        "allowJs": true,
+        "checkJs": false
+    },
+    "include": ["src", "packages"],
+    "exclude": ["src/build", "node_modules"]
+}

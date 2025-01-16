@@ -9,8 +9,10 @@ module.exports = {
                 loose: true,
             },
         ],
+        '@babel/preset-typescript',
     ],
     plugins: [
+        '@babel/plugin-transform-typescript',
         '@babel/plugin-transform-modules-commonjs',
     ],
 };
