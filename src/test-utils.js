@@ -7,18 +7,13 @@ import { Provider } from 'react-redux';
 
 import sagas from './app/js/admin/sagas';
 import configureStore from './app/js/configureStore';
-import createRootReducer from './app/js/public/reducers';
+import reducers from './app/js/public/reducers';
 
 global.__DEBUG__ = false;
 
 const memoryHistory = createMemoryHistory();
 
-const { store, history } = configureStore(
-    createRootReducer(history),
-    sagas,
-    {},
-    memoryHistory,
-);
+const { store } = configureStore(reducers, sagas, {}, memoryHistory);
 
 const Wrapper = ({ children }) => (
     <Provider store={store}>
