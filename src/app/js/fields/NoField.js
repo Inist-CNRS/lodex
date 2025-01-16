@@ -1,7 +1,7 @@
 import React from 'react';
-import translate from 'redux-polyglot/translate';
 import PropTypes from 'prop-types';
 import { Box } from '@mui/material';
+import { translate } from '../i18n/I18NContext';
 
 const styles = {
     noFieldZone: {

@@ -4,7 +4,6 @@ import EnrichmentCatalogConnected from './EnrichmentCatalog';
 import EnrichmentPreview from './EnrichmentPreview';
 import FormSourceCodeField from '../../lib/components/FormSourceCodeField';
 import EnrichmentLogsDialogComponent from './EnrichmentLogsDialog';
-import translate from 'redux-polyglot/translate';
 import PropTypes from 'prop-types';
 import SubressourceFieldAutoComplete from '../subresource/SubressourceFieldAutoComplete';
 
@@ -15,7 +14,6 @@ import { compose } from 'recompose';
 import { Field, formValueSelector, reduxForm, change } from 'redux-form';
 import { fromEnrichments, fromParsing } from '../selectors';
 import { ListAlt as ListAltIcon } from '@mui/icons-material';
-import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { withRouter } from 'react-router';
 import {
     Box,
@@ -39,6 +37,7 @@ import CancelButton from '../../lib/components/CancelButton';
 import { DeleteEnrichmentButton } from './DeleteEnrichmentButton';
 import RunButton from './RunButton';
 import EnrichmentStatus from './EnrichmentStatus';
+import { useTranslate } from '../../i18n/I18NContext';
 
 // UTILITARY PART
 const ENRICHMENT_FORM = 'ENRICHMENT_FORM';
@@ -76,12 +75,11 @@ export const EnrichmentForm = ({
     formValues,
     history,
     initialValues,
-    p: polyglot,
     onChangeWebServiceUrl,
     onLoadEnrichments,
     onRetryEnrichment,
-    isEnrichmentRunning,
 }) => {
+    const { translate } = useTranslate();
     const [openCatalog, setOpenCatalog] = React.useState(false);
     const [openEnrichmentLogs, setOpenEnrichmentLogs] = React.useState(false);
     const [isLoading, setIsLoading] = React.useState(false);
@@ -125,7 +123,7 @@ export const EnrichmentForm = ({
     const handleAddEnrichment = async () => {
         const res = await createEnrichment(formValues);
         if (res.response) {
-            toast(polyglot.t('enrichment_added_success'), {
+            toast(translate('enrichment_added_success'), {
                 type: toast.TYPE.SUCCESS,
             });
             history.push(`/data/enrichment/${res.response._id}`);
@@ -143,7 +141,7 @@ export const EnrichmentForm = ({
         };
         const res = await updateEnrichment(enrichmentToUpdate);
         if (res.response) {
-            toast(polyglot.t('enrichment_updated_success'), {
+            toast(translate('enrichment_updated_success'), {
                 type: toast.TYPE.SUCCESS,
             });
             onLoadEnrichments();
@@ -175,7 +173,7 @@ export const EnrichmentForm = ({
                     setEnrichmentLogs(result.response.logs.reverse());
                 },
                 () => {
-                    toast(polyglot.t('logs_error'), {
+                    toast(translate('logs_error'), {
                         type: toast.TYPE.ERROR,
                     });
                 },
@@ -206,14 +204,9 @@ export const EnrichmentForm = ({
                         <Field
                             name="name"
                             component={renderTextField}
-                            label={polyglot.t('fieldName')}
+                            label={translate('fieldName')}
                         />
-                        {isEditMode && (
-                            <RunButton
-                                polyglot={polyglot}
-                                id={initialValues?._id}
-                            />
-                        )}
+                        {isEditMode && <RunButton id={initialValues?._id} />}
                     </Box>
                     {isEditMode && (
                         <Box
@@ -223,7 +216,7 @@ export const EnrichmentForm = ({
                             gap={2}
                             mb={2}
                         >
-                            {polyglot.t('enrichment_error_count', {
+                            {translate('enrichment_error_count', {
                                 errorCount: initialValues.errorCount ?? 0,
                             })}
                             <Button
@@ -237,7 +230,7 @@ export const EnrichmentForm = ({
                                 }}
                                 disabled={(initialValues.errorCount ?? 0) === 0}
                             >
-                                {polyglot.t('retry')}
+                                {translate('retry')}
                             </Button>
                         </Box>
                     )}
@@ -249,7 +242,7 @@ export const EnrichmentForm = ({
                             gap={2}
                         >
                             <Typography>
-                                {polyglot.t('enrichment_status')} : &nbsp;
+                                {translate('enrichment_status')} : &nbsp;
                                 <EnrichmentStatus id={initialValues?._id} />
                             </Typography>
                             <Button
@@ -261,7 +254,7 @@ export const EnrichmentForm = ({
                                 }}
                                 onClick={() => setOpenEnrichmentLogs(true)}
                             >
-                                {polyglot.t('see_logs')}
+                                {translate('see_logs')}
                             </Button>
                             <EnrichmentLogsDialogComponent
                                 isOpen={openEnrichmentLogs}
@@ -275,7 +268,7 @@ export const EnrichmentForm = ({
                     <Field
                         name="advancedMode"
                         component={renderSwitch}
-                        label={polyglot.t('advancedMode')}
+                        label={translate('advancedMode')}
                     />
                 </Box>
 
@@ -284,7 +277,7 @@ export const EnrichmentForm = ({
                         <Field
                             name="rule"
                             component={FormSourceCodeField}
-                            label={polyglot.t('expand_rules')}
+                            label={translate('expand_rules')}
                             width="100%"
                         />
                     </Box>
@@ -302,7 +295,7 @@ export const EnrichmentForm = ({
                             <Field
                                 name="webServiceUrl"
                                 component={renderTextField}
-                                label={polyglot.t('webServiceUrl')}
+                                label={translate('webServiceUrl')}
                             />
                             <Button
                                 variant="contained"
@@ -331,7 +324,7 @@ export const EnrichmentForm = ({
                                 renderInput={(params) => (
                                     <TextField
                                         {...params}
-                                        label={polyglot.t('sourceColumn')}
+                                        label={translate('sourceColumn')}
                                         variant="outlined"
                                         aria-label="input-path"
                                     />
@@ -356,7 +349,7 @@ export const EnrichmentForm = ({
                                 renderInput={(params) => (
                                     <TextField
                                         {...params}
-                                        label={polyglot.t('subPath')}
+                                        label={translate('subPath')}
                                         aria-label="subPath"
                                         variant="outlined"
                                     />
@@ -386,7 +379,7 @@ export const EnrichmentForm = ({
                                 isLoading
                             }
                             id={initialValues._id}
-                            polyglot={polyglot}
+                            translate={translate}
                             onDeleteStart={() => setIsLoading(true)}
                             onDeleteEnd={() => {
                                 setIsLoading(false);
@@ -399,7 +392,7 @@ export const EnrichmentForm = ({
                             sx={{ height: '100%' }}
                             onClick={handleCancel}
                         >
-                            {polyglot.t('cancel')}
+                            {translate('cancel')}
                         </CancelButton>
                         <Button
                             variant="contained"
@@ -412,7 +405,7 @@ export const EnrichmentForm = ({
                                 initialValues?.status === PENDING
                             }
                         >
-                            {polyglot.t('save')}
+                            {translate('save')}
                         </Button>
                     </Box>
                 </Box>
@@ -472,11 +465,10 @@ EnrichmentForm.propTypes = {
     onLaunchEnrichment: PropTypes.func.isRequired,
     onLoadEnrichments: PropTypes.func.isRequired,
     onRetryEnrichment: PropTypes.func.isRequired,
-    p: polyglotPropTypes.isRequired,
+    isEnrichmentRunning: PropTypes.bool,
 };
 
 export default compose(
-    translate,
     withRouter,
     connect(mapStateToProps, mapDispatchToProps),
     reduxForm({

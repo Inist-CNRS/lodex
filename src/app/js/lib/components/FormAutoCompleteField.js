@@ -9,7 +9,7 @@ import {
     TextField,
     Autocomplete,
 } from '@mui/material';
-import translate from 'redux-polyglot/translate';
+import { translate } from '../../i18n/I18NContext';
 
 import { fetch as fetchAction } from '../../fetch';
 import { formField as formFieldPropTypes } from '../../propTypes';

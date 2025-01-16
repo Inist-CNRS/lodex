@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import translate from 'redux-polyglot/translate';
+import { translate } from '../../../i18n/I18NContext';
 import { polyglot as polyglotPropTypes } from '../../../propTypes';
 import { TextField, MenuItem } from '@mui/material';
 import { FormatDefaultParamsFieldSet } from '../../utils/components/field-set/FormatFieldSets';

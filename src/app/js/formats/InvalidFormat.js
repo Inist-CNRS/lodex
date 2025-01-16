@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import translate from 'redux-polyglot/translate';
 import Warning from '@mui/icons-material/Warning';
 
 import { polyglot as polyglotPropTypes } from '../propTypes';
 import AdminOnlyAlert from '../lib/components/AdminOnlyAlert';
 import stylesToClassname from '../lib/stylesToClassName';
+import { translate } from '../i18n/I18NContext';
 
 const capitalize = (str) =>
     str ? str.charAt(0).toUpperCase() + str.slice(1) : '';

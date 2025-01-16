@@ -1,8 +1,6 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import compose from 'recompose/compose';
-import translate from 'redux-polyglot/translate';
 import {
     Dialog,
     TextField,
@@ -11,7 +9,6 @@ import {
     DialogTitle,
 } from '@mui/material';
 
-import { polyglot as polyglotPropTypes } from '../../propTypes';
 import ButtonWithStatus from '../../lib/components/ButtonWithStatus';
 
 import {
@@ -27,6 +24,7 @@ import { loadPublication } from '../publication';
 import CancelButton from '../../lib/components/CancelButton';
 import { loadSubresources } from '../subresource';
 import { extractTenantFromUrl } from '../../../../common/tools/tenantTools';
+import { useTranslate } from '../../i18n/I18NContext';
 
 const TRANSLATION_KEY = new Map([
     ['dataset', 'clear_dataset'],
@@ -35,10 +33,10 @@ const TRANSLATION_KEY = new Map([
 ]);
 
 const ClearDialogComponent = (props) => {
+    const { translate } = useTranslate();
     const [validName, setValidName] = React.useState(false);
     const {
         type,
-        p: polyglot,
         onClose,
         isLoading,
         hasFailed,
@@ -88,13 +86,13 @@ const ClearDialogComponent = (props) => {
             } else {
                 loadField();
                 loadSubResources();
-                toast(polyglot.t('model_cleared'), {
+                toast(translate('model_cleared'), {
                     type: toast.TYPE.SUCCESS,
                 });
                 onClose();
             }
         } else {
-            toast(polyglot.t('model_not_cleared'), {
+            toast(translate('model_not_cleared'), {
                 type: toast.TYPE.ERROR,
             });
         }
@@ -116,7 +114,7 @@ const ClearDialogComponent = (props) => {
     };
     const actions = [
         <CancelButton key="cancel" className="btn-cancel" onClick={onClose}>
-            {polyglot.t('cancel')}
+            {translate('cancel')}
         </CancelButton>,
         <ButtonWithStatus
             raised
@@ -128,30 +126,30 @@ const ClearDialogComponent = (props) => {
             disabled={!validName}
             loading={isLoading}
         >
-            {polyglot.t('confirm')}
+            {translate('confirm')}
         </ButtonWithStatus>,
     ];
 
     return (
         <Dialog open onClose={onClose}>
-            <DialogTitle>{polyglot.t(TRANSLATION_KEY.get(type))}</DialogTitle>
+            <DialogTitle>{translate(TRANSLATION_KEY.get(type))}</DialogTitle>
             <DialogContent>
                 <b>
                     {type === 'model'
-                        ? polyglot.t('listen_up_model')
-                        : polyglot.t('listen_up')}
+                        ? translate('listen_up_model')
+                        : translate('listen_up')}
                 </b>
                 <br />
                 <br />
                 <div>
-                    {polyglot.t('enter_name')} :<b> {instanceName}</b>
+                    {translate('enter_name')} :<b> {instanceName}</b>
                     <TextField
                         name="field-name-instance"
-                        placeholder={polyglot.t('instance_name')}
+                        placeholder={translate('instance_name')}
                         fullWidth
                         onChange={handleChangeField}
                         onKeyPress={(e) => handleKeyPress(e, type)}
-                        error={hasFailed && polyglot.t('error')}
+                        error={hasFailed && translate('error')}
                         variant="standard"
                     />
                 </div>
@@ -164,7 +162,6 @@ const ClearDialogComponent = (props) => {
 ClearDialogComponent.propTypes = {
     type: PropTypes.string.isRequired,
     succeeded: PropTypes.bool.isRequired,
-    p: polyglotPropTypes.isRequired,
     onClose: PropTypes.func.isRequired,
     clearDataset: PropTypes.func.isRequired,
     clearPublished: PropTypes.func.isRequired,
@@ -192,7 +189,7 @@ const mapDispatchToProps = {
     loadSubResources: loadSubresources,
 };
 
-export default compose(
-    translate,
-    connect(mapStateToProps, mapDispatchToProps),
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
 )(ClearDialogComponent);

@@ -2,9 +2,8 @@ import React from 'react';
 import { Button } from '@mui/material';
 import DownloadIcon from '@mui/icons-material/Download';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
-import { compose } from 'recompose';
-import translate from 'redux-polyglot/translate';
 import { exportHiddenResources } from '../api/hiddenResource';
+import { translate } from '../../i18n/I18NContext';
 
 const ExportButton = ({ p: polyglot }) => {
     const handleExport = async () => {
@@ -41,4 +40,4 @@ ExportButton.propTypes = {
     p: polyglotPropTypes.isRequired,
 };
 
-export default compose(translate)(ExportButton);
+export default translate(ExportButton);

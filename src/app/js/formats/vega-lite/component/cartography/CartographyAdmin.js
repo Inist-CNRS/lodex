@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo } from 'react';
 import PropTypes from 'prop-types';
-import translate from 'redux-polyglot/translate';
+import { translate } from '../../../../i18n/I18NContext';
 import { schemeOrRd } from 'd3-scale-chromatic';
 import {
     FormControlLabel,
