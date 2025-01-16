@@ -1,19 +1,19 @@
+import get from 'lodash/get';
 import omit from 'lodash/omit';
 import { createSelector } from 'reselect';
-import get from 'lodash/get';
 
 import * as overview from '../../../common/overview';
 import { getProps } from '../lib/selectors';
 
 import {
-    getTransformersMetas,
     getTransformerMetas,
+    getTransformersMetas,
 } from '../../../common/transformers';
 
 import {
     SCOPE_COLLECTION,
-    SCOPE_DOCUMENT,
     SCOPE_DATASET,
+    SCOPE_DOCUMENT,
     SCOPE_GRAPHIC,
 } from '../../../common/scope';
 
@@ -396,6 +396,10 @@ export const getFromName = createSelector(
     (fields, name) => fields[name] || null,
 );
 
+function isRemoveFieldListPending(state) {
+    return state.isRemoveFieldListPending;
+}
+
 export default {
     getFromName,
     areAllFieldsValid,
@@ -455,4 +459,5 @@ export default {
     getInvalidProperties,
     canBeSearched,
     getEditingFields,
+    isRemoveFieldListPending,
 };
