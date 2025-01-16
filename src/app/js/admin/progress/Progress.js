@@ -7,7 +7,6 @@ import {
     DialogContent,
 } from '@mui/material';
 import { connect } from 'react-redux';
-import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
 
 import { fromProgress } from '../selectors';
@@ -16,6 +15,7 @@ import { PENDING } from '../../../../common/progressStatus';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { io } from 'socket.io-client';
 import { DEFAULT_TENANT } from '../../../../common/tools/tenantTools';
+import { translate } from '../../i18n/I18NContext';
 
 const formatProgress = (progress, target, symbol, label) => {
     const formatedTarget = target ? ` / ${target}` : ``;

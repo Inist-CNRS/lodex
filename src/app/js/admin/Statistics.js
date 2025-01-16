@@ -1,13 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import compose from 'recompose/compose';
 import { connect } from 'react-redux';
-import translate from 'redux-polyglot/translate';
 import { Box, CircularProgress } from '@mui/material';
 
 import { fromPublicationPreview } from './selectors';
 import { fromFields } from '../sharedSelectors';
-import { polyglot as polyglotPropTypes } from '../propTypes';
+import { useTranslate } from '../i18n/I18NContext';
 
 const styles = {
     container: {
@@ -29,11 +27,8 @@ const styles = {
     },
 };
 
-export const StatisticsComponent = ({
-    isComputing,
-    p: polyglot,
-    totalPublishedFields,
-}) => {
+export const StatisticsComponent = ({ isComputing, totalPublishedFields }) => {
+    const { translate } = useTranslate();
     return (
         <Box sx={styles.container}>
             {isComputing && (
@@ -44,7 +39,7 @@ export const StatisticsComponent = ({
                 />
             )}
             <Box sx={styles.item}>
-                {polyglot.t('publication_summary_fields', {
+                {translate('publication_summary_fields', {
                     smart_count: totalPublishedFields,
                 })}
             </Box>
@@ -54,7 +49,6 @@ export const StatisticsComponent = ({
 
 StatisticsComponent.propTypes = {
     isComputing: PropTypes.bool.isRequired,
-    p: polyglotPropTypes.isRequired,
     totalPublishedFields: PropTypes.number.isRequired,
 };
 
@@ -66,7 +60,4 @@ const mapStateToProps = (state, { filter, subresourceId }) => ({
     }).length,
 });
 
-export default compose(
-    connect(mapStateToProps),
-    translate,
-)(StatisticsComponent);
+export default connect(mapStateToProps)(StatisticsComponent);

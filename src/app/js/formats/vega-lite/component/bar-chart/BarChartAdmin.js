@@ -8,7 +8,7 @@ import {
     Switch,
     FormGroup,
 } from '@mui/material';
-import translate from 'redux-polyglot/translate';
+import { translate } from '../../../../i18n/I18NContext';
 
 import { polyglot as polyglotPropTypes } from '../../../../propTypes';
 import updateAdminArgs from '../../../utils/updateAdminArgs';

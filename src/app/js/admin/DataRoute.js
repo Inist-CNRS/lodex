@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { compose, lifecycle } from 'recompose';
 import { connect } from 'react-redux';
-import translate from 'redux-polyglot/translate';
 
 import ParsingResult from './parsing/ParsingResult';
 import { fromParsing, fromPublication } from './selectors';
@@ -44,5 +43,4 @@ export const DataRoute = compose(
             this.props.preLoadLoaders();
         },
     }),
-    translate,
 )(DataRouteComponent);

@@ -13,10 +13,8 @@ import AceEditor from 'react-ace';
 import 'ace-builds/src-noconflict/mode-json';
 import 'ace-builds/src-noconflict/theme-monokai';
 
-import translate from 'redux-polyglot/translate';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
-import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { withRouter } from 'react-router';
 import {
     getConfigTenant,
@@ -28,6 +26,7 @@ import CancelButton from '../../lib/components/CancelButton';
 import { toast } from '../../../../common/tools/toast';
 import { loadConfigTenant } from '.';
 import { SaveAs } from '@mui/icons-material';
+import { useTranslate } from '../../i18n/I18NContext';
 
 const shake = keyframes`
 10%, 90% {
@@ -47,11 +46,8 @@ const shake = keyframes`
   }
 `;
 
-export const ConfigTenantForm = ({
-    p: polyglot,
-    history,
-    onLoadConfigTenant,
-}) => {
+export const ConfigTenantForm = ({ history, onLoadConfigTenant }) => {
+    const { translate, locale } = useTranslate();
     const [initialConfig, setInitialConfig] = useState('');
     const [configTenant, setConfigTenant] = useState('');
     const [enableAutoPublication, setEnableAutoPublication] = useState(false);
@@ -110,17 +106,17 @@ export const ConfigTenantForm = ({
 
             const res = await updateConfigTenant(configTenantToSave);
             if (res.error) {
-                toast(`${polyglot.t('error')} : ${res.error}`, {
+                toast(`${translate('error')} : ${res.error}`, {
                     type: toast.TYPE.ERROR,
                 });
             } else {
-                toast(polyglot.t('configTenantUpdated'), {
+                toast(translate('configTenantUpdated'), {
                     type: toast.TYPE.SUCCESS,
                 });
                 onLoadConfigTenant();
             }
         } catch (e) {
-            toast(`${polyglot.t('error')} : ${e}`, {
+            toast(`${translate('error')} : ${e}`, {
                 type: toast.TYPE.ERROR,
             });
         }
@@ -170,7 +166,7 @@ export const ConfigTenantForm = ({
 
     return (
         <Box className="container">
-            <h1>{polyglot.t('config_tenant')}</h1>
+            <h1>{translate('config_tenant')}</h1>
             <Box
                 sx={{
                     width: '100%',
@@ -178,7 +174,7 @@ export const ConfigTenantForm = ({
                     gap: 1,
                 }}
             >
-                <h2>{polyglot.t('enableAutoPublication')}</h2>
+                <h2>{translate('enableAutoPublication')}</h2>
                 <Checkbox
                     checked={enableAutoPublication}
                     onChange={(event) => {
@@ -194,7 +190,7 @@ export const ConfigTenantForm = ({
                     gap: 1,
                 }}
             >
-                <h2>{polyglot.t('user_auth')}</h2>
+                <h2>{translate('user_auth')}</h2>
                 <Checkbox
                     checked={userAuth?.active || false}
                     onChange={(event) => {
@@ -242,7 +238,7 @@ export const ConfigTenantForm = ({
                 />
             </Box>
 
-            <h2>{polyglot.t('theme')}</h2>
+            <h2>{translate('theme')}</h2>
             <Select
                 value={theme}
                 style={{
@@ -253,13 +249,12 @@ export const ConfigTenantForm = ({
             >
                 {themes.map((t) => (
                     <MenuItem key={t.value} value={t.value}>
-                        {t.name[polyglot.currentLocale]} -{' '}
-                        {t.description[polyglot.currentLocale]}
+                        {t.name[locale]} - {t.description[locale]}
                     </MenuItem>
                 ))}
             </Select>
 
-            <h2>{polyglot.t('other')}</h2>
+            <h2>{translate('other')}</h2>
             <TextField
                 label="Enrichment Batch Size"
                 value={enrichmentBatchSize || ''}
@@ -308,7 +303,7 @@ export const ConfigTenantForm = ({
                         sx={{ height: '100%' }}
                         onClick={handleCancel}
                     >
-                        {polyglot.t('cancel')}
+                        {translate('cancel')}
                     </CancelButton>
                     <Button
                         variant="contained"
@@ -317,7 +312,7 @@ export const ConfigTenantForm = ({
                         onClick={handleSave}
                         startIcon={
                             isFormModified && (
-                                <Tooltip title={polyglot.t('form_is_modified')}>
+                                <Tooltip title={translate('form_is_modified')}>
                                     <SaveAs />
                                 </Tooltip>
                             )
@@ -326,7 +321,7 @@ export const ConfigTenantForm = ({
                             animation: isFormModified ? `${shake} 1s ease` : '',
                         }}
                     >
-                        {polyglot.t('save')}
+                        {translate('save')}
                     </Button>
                 </Box>
             </Box>
@@ -340,13 +335,11 @@ const mapDispatchToProps = {
 };
 
 ConfigTenantForm.propTypes = {
-    p: polyglotPropTypes.isRequired,
     history: PropTypes.object.isRequired,
     onLoadConfigTenant: PropTypes.func.isRequired,
 };
 
 export default compose(
-    translate,
     withRouter,
     connect(mapStateToProps, mapDispatchToProps),
 )(ConfigTenantForm);

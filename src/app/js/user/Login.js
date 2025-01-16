@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
-import translate from 'redux-polyglot/translate';
 import { submit as submitAction, isSubmitting } from 'redux-form';
 import {
     Card,
@@ -23,6 +22,7 @@ import {
 import { fromUser } from '../sharedSelectors';
 import LoginForm from './LoginForm';
 import ButtonWithStatus from '../lib/components/ButtonWithStatus';
+import { translate } from '../i18n/I18NContext';
 
 const styles = {
     container: {
