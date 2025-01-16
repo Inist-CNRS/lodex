@@ -7,8 +7,10 @@ const transform = {
     ],
 };
 
+const workerIdleMemoryLimit = '1024MB';
+
 module.exports = {
-    workerIdleMemoryLimit: '512MB',
+    workerIdleMemoryLimit,
     projects: [
         {
             displayName: 'frontend',
@@ -22,6 +24,7 @@ module.exports = {
             transformIgnorePatterns: ['<rootDir>/node_modules/d3'],
             transform,
             testEnvironment: 'jsdom',
+            workerIdleMemoryLimit,
         },
         {
             preset: '@shelf/jest-mongodb',
@@ -31,17 +34,20 @@ module.exports = {
             testPathIgnorePatterns: ['e2e'],
             testMatch: ['/**/*.spec.js'],
             transform,
+            workerIdleMemoryLimit,
         },
         {
             displayName: 'common',
             rootDir: `${__dirname}/src/common`,
             transform,
             testMatch: ['/**/*.spec.js'],
+            workerIdleMemoryLimit,
         },
         {
             displayName: 'transformers',
             rootDir: `${__dirname}/packages/transformers`,
             testMatch: ['/**/*.spec.js'],
+            workerIdleMemoryLimit,
         },
         {
             preset: '@shelf/jest-mongodb',
@@ -79,6 +85,7 @@ module.exports = {
                 '/node_modules/(?!quick-lru)',
             ],
             testTimeout: 8000,
+            workerIdleMemoryLimit,
         },
     ],
 };
