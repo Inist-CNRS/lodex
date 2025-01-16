@@ -5,13 +5,14 @@ import React from 'react';
 import { hydrate } from 'react-dom';
 import { Provider } from 'react-redux';
 
-import createRootReducer from './reducers';
+import reducers from './reducers';
 import Routes from './Routes';
 import sagas from './sagas';
 import configureStore from '../configureStore';
 import phrasesFor from '../i18n/translations';
 import getLocale from '../../../common/getLocale';
 import LodexThemeProvider from './LodexThemeProvider';
+import { Router } from 'react-router-dom';
 
 const locale = getLocale();
 const initialState = {
@@ -23,24 +24,26 @@ const initialState = {
 
 const tenant = window.__TENANT__;
 
-const history = createBrowserHistory({
+const browserHistory = createBrowserHistory({
     basename: `/instance/${tenant}`,
 });
 
 sessionStorage.setItem('lodex-tenant', tenant);
 
-const store = configureStore(
-    createRootReducer(history),
+const { store, history } = configureStore(
+    reducers,
     sagas,
     window.__PRELOADED_STATE__ || initialState,
-    history,
+    browserHistory,
 );
 
 hydrate(
     <Provider {...{ store }}>
-        <LodexThemeProvider>
-            <Routes history={history} tenant={window.__TENANT__} />
-        </LodexThemeProvider>
+        <Router history={history}>
+            <LodexThemeProvider>
+                <Routes history={history} tenant={window.__TENANT__} />
+            </LodexThemeProvider>
+        </Router>
     </Provider>,
     document.getElementById('root'),
 );
