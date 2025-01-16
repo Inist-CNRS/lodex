@@ -2,6 +2,7 @@ import React from 'react';
 import { render, fireEvent, act } from '@testing-library/react';
 
 import { FieldAddDropdownButtonComponent as FieldAddDropdownButton } from './FieldAddDropdownButton';
+import { TestI18N } from '../../i18n/I18NContext';
 
 describe('<FieldAddDropdownButton />', () => {
     let mockAddField, mockShowAddFromColumn, polyglot;
@@ -18,11 +19,13 @@ describe('<FieldAddDropdownButton />', () => {
 
     it('should call addField on click', () => {
         const { getByText } = render(
-            <FieldAddDropdownButton
-                onAddNewField={mockAddField}
-                onShowExistingColumns={mockShowAddFromColumn}
-                p={polyglot}
-            />,
+            <TestI18N>
+                <FieldAddDropdownButton
+                    onAddNewField={mockAddField}
+                    onShowExistingColumns={mockShowAddFromColumn}
+                    p={polyglot}
+                />
+            </TestI18N>,
         );
 
         act(() => {
@@ -36,11 +39,13 @@ describe('<FieldAddDropdownButton />', () => {
 
     it('should call addField on click on blank field dropdown', () => {
         const { getByTestId, getByText } = render(
-            <FieldAddDropdownButton
-                onAddNewField={mockAddField}
-                onShowExistingColumns={mockShowAddFromColumn}
-                p={polyglot}
-            />,
+            <TestI18N>
+                <FieldAddDropdownButton
+                    onAddNewField={mockAddField}
+                    onShowExistingColumns={mockShowAddFromColumn}
+                    p={polyglot}
+                />
+            </TestI18N>,
         );
 
         act(() => {
@@ -57,11 +62,13 @@ describe('<FieldAddDropdownButton />', () => {
 
     it('should call showAddFromColumn on click on existing column dropdown', () => {
         const { getByTestId, getByText } = render(
-            <FieldAddDropdownButton
-                onAddNewField={mockAddField}
-                onShowExistingColumns={mockShowAddFromColumn}
-                p={polyglot}
-            />,
+            <TestI18N>
+                <FieldAddDropdownButton
+                    onAddNewField={mockAddField}
+                    onShowExistingColumns={mockShowAddFromColumn}
+                    p={polyglot}
+                />
+            </TestI18N>,
         );
 
         act(() => {
@@ -75,12 +82,14 @@ describe('<FieldAddDropdownButton />', () => {
 
     it('should call addField with subresourceId on click if subresourceId is defined', () => {
         const { getByText } = render(
-            <FieldAddDropdownButton
-                onAddNewField={mockAddField}
-                onShowExistingColumns={mockShowAddFromColumn}
-                p={polyglot}
-                subresourceId="1"
-            />,
+            <TestI18N>
+                <FieldAddDropdownButton
+                    onAddNewField={mockAddField}
+                    onShowExistingColumns={mockShowAddFromColumn}
+                    p={polyglot}
+                    subresourceId="1"
+                />
+            </TestI18N>,
         );
 
         act(() => {
@@ -94,12 +103,14 @@ describe('<FieldAddDropdownButton />', () => {
 
     it('should call addField with subresourceId on click on blank field dropdown if subresourceId is defined', () => {
         const { getByTestId, getByText } = render(
-            <FieldAddDropdownButton
-                onAddNewField={mockAddField}
-                onShowExistingColumns={mockShowAddFromColumn}
-                p={polyglot}
-                subresourceId="1"
-            />,
+            <TestI18N>
+                <FieldAddDropdownButton
+                    onAddNewField={mockAddField}
+                    onShowExistingColumns={mockShowAddFromColumn}
+                    p={polyglot}
+                    subresourceId="1"
+                />
+            </TestI18N>,
         );
 
         act(() => {

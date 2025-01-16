@@ -12,7 +12,6 @@ import MenuList from '@mui/material/MenuList';
 import PropTypes from 'prop-types';
 
 import { connect } from 'react-redux';
-import { compose } from 'recompose';
 import { Add } from '@mui/icons-material';
 import { ListItemIcon, ListItemText } from '@mui/material';
 import { showAddFromColumn } from '../parsing';

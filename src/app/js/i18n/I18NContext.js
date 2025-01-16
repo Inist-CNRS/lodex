@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 
 const I18NContext = createContext({ translate: () => '' });
 
-const I18NComponent = ({ locale, phrases, setLanguage, children }) => {
+export const I18NComponent = ({ locale, phrases, setLanguage, children }) => {
     const polyglot = new Polyglot({
         locale,
         phrases,
@@ -38,6 +38,18 @@ const mapDispatchToProps = {
 };
 
 export const I18N = connect(mapStateToProps, mapDispatchToProps)(I18NComponent);
+export const TestI18N = ({ children }) => {
+    return (
+        <I18NContext.Provider
+            value={{ translate: (v) => v, locale: 'en', setLanguage: () => {} }}
+        >
+            {children}
+        </I18NContext.Provider>
+    );
+};
+TestI18N.propTypes = {
+    children: PropTypes.node.isRequired,
+};
 
 export const useTranslate = () => {
     const context = useContext(I18NContext);
@@ -45,12 +57,15 @@ export const useTranslate = () => {
     return context;
 };
 
+const getDisplayName = (Component) =>
+    Component.displayName || Component.name || 'Component';
+
 /**
  * @deprecated hoc created for retro compatibility purpose.
  * Please use useTranslate hook instead
  */
 export const translate = (Component) => {
-    const ComponentWithTranslate = (props) => {
+    const Translated = (props) => {
         const { translate, locale } = useTranslate();
 
         return (
@@ -58,5 +73,8 @@ export const translate = (Component) => {
         );
     };
 
-    return ComponentWithTranslate;
+    // needed so that enzyme can detect the wrapped component properly
+    Translated.displayName = `Translated(${getDisplayName(Component)})`;
+
+    return Translated;
 };
