@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
+import translate from 'redux-polyglot/translate';
 import PropTypes from 'prop-types';
 import { TextField, MenuItem, Box } from '@mui/material';
 import * as overview from '../../../common/overview';
@@ -13,7 +14,6 @@ import { fromFields } from '../sharedSelectors';
 import { SCOPE_DATASET } from '../../../common/scope';
 import fieldApi from '../admin/api/field';
 import FieldRepresentation from './FieldRepresentation';
-import { translate } from '../i18n/I18NContext';
 
 export const DatasetOverviewSelectComponent = ({
     p: polyglot,

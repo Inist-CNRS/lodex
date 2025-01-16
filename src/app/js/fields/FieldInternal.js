@@ -1,4 +1,5 @@
 import React from 'react';
+import translate from 'redux-polyglot/translate';
 import { Box, Typography } from '@mui/material';
 import {
     field as fieldPropTypes,
@@ -8,7 +9,6 @@ import {
 import FieldToggleInternalScope from './FieldToggleInternalScope';
 import FieldInternalName from './FieldInternalName';
 import FieldInput from '../lib/components/FieldInput';
-import { translate } from '../i18n/I18NContext';
 
 export const FieldInternalComponent = ({ field, p: polyglot }) => {
     return (

@@ -6,6 +6,7 @@ import FromColumnsIcon from '@mui/icons-material/ViewColumn';
 import FromSubRessourceIcon from '@mui/icons-material/DocumentScanner';
 import ProcessingIcon from '@mui/icons-material/Settings';
 import PropTypes from 'prop-types';
+import translate from 'redux-polyglot/translate';
 import SourceValueArbitrary from './SourceValueArbitrary';
 import SourceValuePrecomputed from './SourceValuePrecomputed';
 import SourceValueFromColumns from './SourceValueFromColumns';
@@ -25,7 +26,6 @@ import {
 } from '@mui/material';
 import SourceValueFromSubResource from './SourceValueFromSubResource';
 import SourceValueRoutine from './SourceValueRoutine';
-import { translate } from '../../i18n/I18NContext';
 
 const TRANSFORMERS_FORM_STATUS = new Map([
     [

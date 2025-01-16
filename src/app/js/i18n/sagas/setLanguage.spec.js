@@ -1,6 +1,7 @@
 import { call, put } from 'redux-saga/effects';
+import { setLanguage } from 'redux-polyglot';
 
-import { setLanguageSuccess, setLanguageError, setLanguage } from '../';
+import { setLanguageSuccess, setLanguageError } from '../';
 
 import { loadPhrases, handleSetLanguage } from './setLanguage';
 

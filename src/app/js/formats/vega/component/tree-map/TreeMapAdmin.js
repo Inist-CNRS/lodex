@@ -1,4 +1,4 @@
-import { translate } from '../../../../i18n/I18NContext';
+import translate from 'redux-polyglot/translate';
 import { MULTICHROMATIC_DEFAULT_COLORSET_STREAMGRAPH } from '../../../utils/colorUtils';
 import { ASPECT_RATIO_8_5 } from '../../../utils/aspectRatio';
 import PropTypes from 'prop-types';

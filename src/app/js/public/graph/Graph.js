@@ -6,7 +6,7 @@ import { Card, CardHeader, Button, IconButton } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import compose from 'recompose/compose';
-import { translate } from '../../i18n/I18NContext';
+import translate from 'redux-polyglot/translate';
 import { grey } from '@mui/material/colors';
 
 import {

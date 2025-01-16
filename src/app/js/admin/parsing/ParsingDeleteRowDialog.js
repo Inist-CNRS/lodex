@@ -1,6 +1,9 @@
 import React from 'react';
+import compose from 'recompose/compose';
 import datasetApi from '../api/dataset';
 import publishApi from '../api/publish';
+import translate from 'redux-polyglot/translate';
+import { polyglot as polyglotPropTypes } from '../../propTypes';
 import PropTypes from 'prop-types';
 import {
     Box,
@@ -13,16 +16,15 @@ import {
 } from '@mui/material';
 import { toast } from '../../../../common/tools/toast';
 import CancelButton from '../../lib/components/CancelButton';
-import { useTranslate } from '../../i18n/I18NContext';
 
 export const ParsingDeleteRowDialog = ({
     isOpen,
+    p: polyglot,
     handleClose,
     selectedRowForDelete,
     reloadDataset,
     shouldRepublish,
 }) => {
-    const { translate } = useTranslate();
     const [isLoading, setIsLoading] = React.useState(false);
 
     const handleDelete = async () => {
@@ -32,7 +34,7 @@ export const ParsingDeleteRowDialog = ({
         );
 
         if (res.status === 'deleted') {
-            toast(translate('parsing_delete_row_success'), {
+            toast(polyglot.t('parsing_delete_row_success'), {
                 type: toast.TYPE.SUCCESS,
             });
             reloadDataset();
@@ -42,7 +44,7 @@ export const ParsingDeleteRowDialog = ({
             handleClose();
             setIsLoading(false);
         } else {
-            toast(translate('parsing_delete_row_error'), {
+            toast(polyglot.t('parsing_delete_row_error'), {
                 type: toast.TYPE.ERROR,
             });
         }
@@ -53,7 +55,7 @@ export const ParsingDeleteRowDialog = ({
     return (
         <Dialog open={isOpen} onClose={handleClose} scroll="body" maxWidth="lg">
             <DialogTitle>
-                {translate('parsing_delete_row_title')}:{' '}
+                {polyglot.t('parsing_delete_row_title')}:{' '}
                 {selectedRowForDelete?.uri}
             </DialogTitle>
             <DialogContent
@@ -63,13 +65,13 @@ export const ParsingDeleteRowDialog = ({
                 }}
             >
                 <Typography variant="body1">
-                    {translate('parsing_delete_row_description')}
+                    {polyglot.t('parsing_delete_row_description')}
                 </Typography>
             </DialogContent>
             <DialogActions>
                 <Box display="flex" justifyContent="flex-end">
                     <CancelButton onClick={handleClose}>
-                        {translate('cancel')}
+                        {polyglot.t('cancel')}
                     </CancelButton>
                     <Button
                         onClick={handleDelete}
@@ -77,8 +79,8 @@ export const ParsingDeleteRowDialog = ({
                         disabled={isLoading}
                     >
                         {isLoading
-                            ? translate('deleting')
-                            : translate('confirm')}
+                            ? polyglot.t('deleting')
+                            : polyglot.t('confirm')}
                     </Button>
                 </Box>
             </DialogActions>
@@ -89,9 +91,10 @@ export const ParsingDeleteRowDialog = ({
 ParsingDeleteRowDialog.propTypes = {
     isOpen: PropTypes.bool.isRequired,
     handleClose: PropTypes.func.isRequired,
+    p: polyglotPropTypes.isRequired,
     selectedRowForDelete: PropTypes.object,
     reloadDataset: PropTypes.func.isRequired,
     shouldRepublish: PropTypes.bool,
 };
 
-export default ParsingDeleteRowDialog;
+export default compose(translate)(ParsingDeleteRowDialog);

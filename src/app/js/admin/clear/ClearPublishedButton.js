@@ -1,15 +1,19 @@
 import React, { useState } from 'react';
 import { Button, Box } from '@mui/material';
 import { connect } from 'react-redux';
+import compose from 'recompose/compose';
+import translate from 'redux-polyglot/translate';
 import PropTypes from 'prop-types';
 import ClearAllIcon from '@mui/icons-material/ClearAll';
 
 import ClearDialog from '../Appbar/ClearDialog';
 import { fromPublication } from '../selectors';
-import { useTranslate } from '../../i18n/I18NContext';
+import { polyglot as polyglotPropTypes } from '../../propTypes';
 
-export const ClearPublishedButtonComponent = ({ hasPublishedDataset }) => {
-    const { translate } = useTranslate();
+export const ClearPublishedButtonComponent = ({
+    p: polyglot,
+    hasPublishedDataset,
+}) => {
     const [show, setShow] = useState(false);
 
     const handleShow = () => setShow(true);
@@ -37,7 +41,7 @@ export const ClearPublishedButtonComponent = ({ hasPublishedDataset }) => {
                 icon={<ClearAllIcon />}
                 color="neutral"
             >
-                {translate('clear_publish')}
+                {polyglot.t('clear_publish')}
             </Button>
             {show && <ClearDialog type="published" onClose={handleHide} />}
         </Box>
@@ -45,6 +49,7 @@ export const ClearPublishedButtonComponent = ({ hasPublishedDataset }) => {
 };
 
 ClearPublishedButtonComponent.propTypes = {
+    p: polyglotPropTypes.isRequired,
     hasPublishedDataset: PropTypes.bool.isRequired,
 };
 
@@ -52,6 +57,7 @@ const mapStateToProps = (state) => ({
     hasPublishedDataset: fromPublication.hasPublishedDataset(state),
 });
 
-export const ClearPublishedButton = connect(mapStateToProps)(
-    ClearPublishedButtonComponent,
-);
+export const ClearPublishedButton = compose(
+    translate,
+    connect(mapStateToProps),
+)(ClearPublishedButtonComponent);

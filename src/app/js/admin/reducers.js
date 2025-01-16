@@ -1,4 +1,5 @@
 import { reducer as form } from 'redux-form';
+import { polyglotReducer as polyglot } from 'redux-polyglot';
 
 import fetchReducer from '../fetch';
 import fields from '../fields';
@@ -28,6 +29,7 @@ const reducers = {
     i18n,
     import: importReducer,
     dump,
+    polyglot,
     parsing,
     publication,
     preview,

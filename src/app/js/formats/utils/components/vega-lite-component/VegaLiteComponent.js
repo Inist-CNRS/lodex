@@ -10,7 +10,7 @@ import {
 } from '../../chartsUtils';
 import { ASPECT_RATIO_NONE, ASPECT_RATIOS } from '../../aspectRatio';
 import FormatFullScreenMode from '../FormatFullScreenMode';
-import { translate } from '../../../../i18n/I18NContext';
+import translate from 'redux-polyglot/translate';
 import { polyglot as polyglotPropTypes } from '../../../../propTypes';
 import { compose } from 'recompose';
 import { useVegaCsvExport } from '../useVegaCsvExport';

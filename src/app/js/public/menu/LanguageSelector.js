@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
-import { translate } from '../../i18n/I18NContext';
+import translate from 'redux-polyglot/translate';
 import PropTypes from 'prop-types';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { fromI18n } from '../selectors';

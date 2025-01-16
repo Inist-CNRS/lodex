@@ -13,11 +13,11 @@ import PropTypes from 'prop-types';
 import React, { useCallback, useMemo, useState } from 'react';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
+import translate from 'redux-polyglot/translate';
 import { removeFieldList } from '../../fields';
 import FieldRepresentation from '../../fields/FieldRepresentation';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { fromFields } from '../../sharedSelectors';
-import { translate } from '../../i18n/I18NContext';
 
 const DeleteFieldsButtonComponent = ({
     fields,

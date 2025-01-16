@@ -6,7 +6,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import DialogContent from '@mui/material/DialogContent';
 import OpenInFullIcon from '@mui/icons-material/OpenInFull';
 import Tooltip from '@mui/material/Tooltip';
-import { translate } from '../../../i18n/I18NContext';
+import translate from 'redux-polyglot/translate';
 import { polyglot as polyglotPropTypes } from '../../../propTypes';
 
 const FormatFullScreenMode = ({ children, p }) => {

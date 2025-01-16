@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import translate from 'redux-polyglot/translate';
 
 import {
     Button,
@@ -12,7 +13,6 @@ import {
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import CancelButton from './CancelButton';
-import { translate } from '../../i18n/I18NContext';
 
 const dialogStyle = {
     container: {

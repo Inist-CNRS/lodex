@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { translate } from '../../../i18n/I18NContext';
+import translate from 'redux-polyglot/translate';
 import { polyglot as polyglotPropTypes } from '../../../propTypes';
 import { Checkbox, FormControlLabel, TextField } from '@mui/material';
 import FormatGroupedFieldSet from '../../utils/components/field-set/FormatGroupedFieldSet';

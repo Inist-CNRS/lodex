@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import translate from 'redux-polyglot/translate';
+import compose from 'recompose/compose';
 import ListAltIcon from '@mui/icons-material/ListAlt';
 import { Box, Button, MenuItem, TextField } from '@mui/material';
 import ListDialog from './ListDialog';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import CustomLoader from './CustomLoader';
 import CancelButton from '../../lib/components/CancelButton';
-import { translate } from '../../i18n/I18NContext';
 
 const styles = {
     disableUppercase: {
@@ -149,4 +150,4 @@ LoaderSelectComponent.defaultProps = {
     value: 'automatic',
 };
 
-export default translate(LoaderSelectComponent);
+export default compose(translate)(LoaderSelectComponent);

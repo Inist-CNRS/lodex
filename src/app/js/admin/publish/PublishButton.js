@@ -2,13 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
+import translate from 'redux-polyglot/translate';
 import { Button, Box } from '@mui/material';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { publish as publishAction } from './';
 import { fromFields } from '../../sharedSelectors';
 import { fromPublish } from '../selectors';
-import { translate } from '../../i18n/I18NContext';
 
 export const PublishButtonComponent = ({
     canPublish,

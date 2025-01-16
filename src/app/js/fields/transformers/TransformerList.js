@@ -3,7 +3,7 @@ import compose from 'recompose/compose';
 import memoize from 'lodash/memoize';
 import PropTypes from 'prop-types';
 import pure from 'recompose/pure';
-import { translate } from '../../i18n/I18NContext';
+import translate from 'redux-polyglot/translate';
 import TransformerListItem from './TransformerListItem';
 import TransformerUpsertDialog from './TransformerUpsertDialog';
 

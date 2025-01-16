@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
-import { translate } from '../../../i18n/I18NContext';
+import translate from 'redux-polyglot/translate';
 import classnames from 'classnames';
 import { Icon, IconButton, TextField } from '@mui/material';
 

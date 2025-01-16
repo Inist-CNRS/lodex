@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import withHandlers from 'recompose/withHandlers';
-import { translate } from '../../i18n/I18NContext';
+import translate from 'redux-polyglot/translate';
 import { MenuItem } from '@mui/material';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';

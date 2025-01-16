@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import React, { useMemo } from 'react';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
-import { translate } from '../../i18n/I18NContext';
+import translate from 'redux-polyglot/translate';
 
 import stylesToClassname from '../../lib/stylesToClassName';
 import { field as fieldPropTypes } from '../../propTypes';

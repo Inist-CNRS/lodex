@@ -3,6 +3,7 @@ import { compose } from 'recompose';
 import ListAltIcon from '@mui/icons-material/ListAlt';
 import PropTypes from 'prop-types';
 import RoutineCatalog from '../wizard/RoutineCatalog';
+import translate from 'redux-polyglot/translate';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { Box, Button, IconButton, Tooltip, Typography } from '@mui/material';
 import { fromFields } from '../../sharedSelectors';
@@ -13,7 +14,6 @@ import SearchAutocomplete from '../../admin/Search/SearchAutocomplete';
 import RoutineCatalogAutocomplete from '../wizard/RoutineCatalogAutocomplete';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { translate } from '../../i18n/I18NContext';
 
 const SourceValueRoutine = ({
     fields,

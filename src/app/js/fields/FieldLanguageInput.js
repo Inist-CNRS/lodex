@@ -1,4 +1,5 @@
 import React from 'react';
+import translate from 'redux-polyglot/translate';
 import { Field } from 'redux-form';
 import { MenuItem } from '@mui/material';
 
@@ -10,7 +11,6 @@ import {
     field as fieldPropTypes,
     polyglot as polyglotPropTypes,
 } from '../propTypes';
-import { translate } from '../i18n/I18NContext';
 
 export const FieldLanguageInputComponent = ({
     field,

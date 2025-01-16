@@ -1,4 +1,5 @@
 import React from 'react';
+import translate from 'redux-polyglot/translate';
 import PropTypes from 'prop-types';
 import { polyglot as polyglotPropTypes } from '../../../../propTypes';
 import { FormatDefaultParamsFieldSet } from '../../../utils/components/field-set/FormatFieldSets';
@@ -7,7 +8,6 @@ import FormatGroupedFieldSet from '../../../utils/components/field-set/FormatGro
 import MenuItem from '@mui/material/MenuItem';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
-import { translate } from '../../../../i18n/I18NContext';
 
 export const defaultArgs = {
     type: 'text',

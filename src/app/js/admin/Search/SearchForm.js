@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import fieldApi from '../../admin/api/field';
 import PropTypes from 'prop-types';
+import translate from 'redux-polyglot/translate';
 import SearchAutocomplete from './SearchAutocomplete';
 
 import { connect } from 'react-redux';
@@ -24,7 +25,6 @@ import { toast } from '../../../../common/tools/toast';
 import { getFieldForSpecificScope } from '../../../../common/scope';
 import FieldRepresentation from '../../fields/FieldRepresentation';
 import withInitialData from '../withInitialData';
-import { translate } from '../../i18n/I18NContext';
 
 const getSearchableFields = (fields) =>
     fields.filter((f) => f.searchable) || [];

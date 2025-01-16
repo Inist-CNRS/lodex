@@ -8,6 +8,7 @@ import {
     MenuItem,
     Chip,
 } from '@mui/material';
+import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import { change, formValueSelector } from 'redux-form';
@@ -38,7 +39,6 @@ import {
     useSensor,
     useSensors,
 } from '@dnd-kit/core';
-import { translate } from '../i18n/I18NContext';
 
 const SortableItem = ({ option, onDelete, isActive }) => {
     const { attributes, listeners, setNodeRef, transform, isDragging } =

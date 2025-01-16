@@ -1,5 +1,6 @@
 import React, { useMemo, useCallback } from 'react';
 import compose from 'recompose/compose';
+import translate from 'redux-polyglot/translate';
 import { propTypes as reduxFormPropTypes, Field } from 'redux-form';
 import PropTypes from 'prop-types';
 
@@ -16,7 +17,6 @@ import {
 } from '@mui/material';
 import CancelButton from '../../lib/components/CancelButton';
 import { useHistory } from 'react-router';
-import { translate } from '../../i18n/I18NContext';
 
 const TextField = ({
     label,

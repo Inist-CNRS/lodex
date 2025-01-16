@@ -1,4 +1,7 @@
 import React, { useEffect, useState } from 'react';
+import compose from 'recompose/compose';
+import translate from 'redux-polyglot/translate';
+import { polyglot as polyglotPropTypes } from '../../propTypes';
 import PropTypes from 'prop-types';
 import {
     Box,
@@ -14,14 +17,13 @@ import {
     exportPrecomputedData,
     previewPrecomputedData,
 } from '../api/precomputed';
-import { useTranslate } from '../../i18n/I18NContext';
 
 export const PrecomputedDataDialog = ({
     isOpen,
     precomputedID,
+    p: polyglot,
     handleClose,
 }) => {
-    const { translate } = useTranslate();
     const [previewData, setPreviewData] = useState(null);
     useEffect(() => {
         async function fetchData() {
@@ -46,7 +48,7 @@ export const PrecomputedDataDialog = ({
 
     return (
         <Dialog open={isOpen} onClose={handleClose} scroll="body" maxWidth="lg">
-            <DialogTitle>{translate('precomputed_data')}</DialogTitle>
+            <DialogTitle>{polyglot.t('precomputed_data')}</DialogTitle>
             <DialogContent
                 style={{
                     margin: 20,
@@ -59,20 +61,20 @@ export const PrecomputedDataDialog = ({
                 <Typography>{JSON.stringify(previewData)}</Typography>
                 <br />
                 <Typography sx={{ fontWeight: 'bold' }}>
-                    {translate('precomputed_data_limit')}
+                    {polyglot.t('precomputed_data_limit')}
                 </Typography>
             </DialogContent>
             <DialogActions>
                 <Box display="flex" justifyContent="flex-end">
                     <CancelButton onClick={handleClose}>
-                        {translate('close')}
+                        {polyglot.t('close')}
                     </CancelButton>
                     <Button
                         onClick={handleDownloadData}
                         color="primary"
                         variant="contained"
                     >
-                        {translate('download_data')}
+                        {polyglot.t('download_data')}
                     </Button>
                 </Box>
             </DialogActions>
@@ -84,6 +86,7 @@ PrecomputedDataDialog.propTypes = {
     isOpen: PropTypes.bool.isRequired,
     handleClose: PropTypes.func.isRequired,
     precomputedID: PropTypes.object.isRequired,
+    p: polyglotPropTypes.isRequired,
 };
 
-export default PrecomputedDataDialog;
+export default compose(translate)(PrecomputedDataDialog);

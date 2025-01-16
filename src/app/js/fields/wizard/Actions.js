@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Box, Button, keyframes, Tooltip } from '@mui/material';
-import { translate } from '../../i18n/I18NContext';
+import translate from 'redux-polyglot/translate';
 import { useParams } from 'react-router';
 
 import { FIELD_FORM_NAME } from '../';

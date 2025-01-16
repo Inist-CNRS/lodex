@@ -12,9 +12,9 @@ import { ASPECT_RATIO_NONE, ASPECT_RATIOS } from '../../aspectRatio';
 import FormatFullScreenMode from '../FormatFullScreenMode';
 import { useVegaActions } from '../useVegaActions';
 import { useVegaCsvExport } from '../useVegaCsvExport';
+import translate from 'redux-polyglot/translate';
 import { polyglot as polyglotPropTypes } from '../../../../propTypes';
 import { compose } from 'recompose';
-import { translate } from '../../../../i18n/I18NContext';
 
 /**
  * small component use to handle vega lite display

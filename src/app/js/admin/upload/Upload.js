@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
+import translate from 'redux-polyglot/translate';
 import { withRouter } from 'react-router';
 import { DropzoneAreaBase } from 'mui-file-dropzone';
 import Alert from '../../lib/components/Alert';
@@ -34,7 +35,6 @@ import LoaderSelect from './LoaderSelect';
 import { toast } from '../../../../common/tools/toast';
 import FormSourceCodeField from '../../lib/components/FormSourceCodeField';
 import { ConfirmPopup } from '../../lib/components/ConfirmPopup';
-import { translate } from '../../i18n/I18NContext';
 
 const styles = {
     button: {

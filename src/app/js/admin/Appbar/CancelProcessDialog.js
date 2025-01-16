@@ -8,22 +8,22 @@ import {
     DialogContent,
     DialogTitle,
 } from '@mui/material';
+import { polyglot as polyglotPropTypes } from '../../propTypes';
+import translate from 'redux-polyglot/translate';
 import CancelButton from '../../lib/components/CancelButton';
-import { useTranslate } from '../../i18n/I18NContext';
 
 const CancelProcessDialog = (props) => {
-    const { isOpen, title, content, onConfirm, onCancel } = props;
-    const { translate } = useTranslate();
+    const { p: polyglot, isOpen, title, content, onConfirm, onCancel } = props;
     return (
         <Dialog open={isOpen}>
-            <DialogTitle>{translate(title)}</DialogTitle>
-            <DialogContent>{translate(content)}</DialogContent>
+            <DialogTitle>{polyglot.t(title)}</DialogTitle>
+            <DialogContent>{polyglot.t(content)}</DialogContent>
             <DialogActions>
                 <CancelButton onClick={onCancel}>
-                    {translate('Cancel')}
+                    {polyglot.t('Cancel')}
                 </CancelButton>
                 <Button color="primary" variant="contained" onClick={onConfirm}>
-                    {translate('Accept')}
+                    {polyglot.t('Accept')}
                 </Button>
             </DialogActions>
         </Dialog>
@@ -31,10 +31,11 @@ const CancelProcessDialog = (props) => {
 };
 
 CancelProcessDialog.propTypes = {
+    p: polyglotPropTypes.isRequired,
     title: PropTypes.string.isRequired,
     content: PropTypes.string.isRequired,
     onConfirm: PropTypes.func.isRequired,
     onCancel: PropTypes.func.isRequired,
     isOpen: PropTypes.bool.isRequired,
 };
-export default CancelProcessDialog;
+export default translate(CancelProcessDialog);

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
+import translate from 'redux-polyglot/translate';
 import { formatAdminStyle } from '../../adminStyles';
 import { polyglot as polyglotPropTypes } from '../../../../propTypes';
 import { AllDataSets } from '../../dataSet';
@@ -10,7 +11,6 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Typography from '@mui/material/Typography';
-import { translate } from '../../../../i18n/I18NContext';
 
 const FormatFieldSetPreview = ({
     p,

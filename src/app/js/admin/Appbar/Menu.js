@@ -18,6 +18,8 @@ import StorageIcon from '@mui/icons-material/Storage';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import AddIcon from '@mui/icons-material/Add';
+import { polyglot as polyglotPropTypes } from '../../propTypes';
+import translate from 'redux-polyglot/translate';
 import { compose } from 'recompose';
 import { dumpDataset } from '../dump';
 import { connect } from 'react-redux';
@@ -35,7 +37,6 @@ import ImportHasRelaunchDialog from './ImportHasRelaunchDialog';
 import { withRouter } from 'react-router';
 import { DEFAULT_TENANT } from '../../../../common/tools/tenantTools';
 import SettingsIcon from '@mui/icons-material/Settings';
-import { useTranslate } from '../../i18n/I18NContext';
 
 const MenuComponent = ({
     dumpDataset,
@@ -49,9 +50,9 @@ const MenuComponent = ({
     importHasEnrichments,
     importHasPrecomputed,
     importFailed,
+    p: polyglot,
     history,
 }) => {
-    const { translate } = useTranslate();
     const [anchorEl, setAnchorEl] = useState(null);
     const [subMenuToShow, setSubMenuToShow] = useState(null);
 
@@ -66,11 +67,11 @@ const MenuComponent = ({
 
     useEffect(() => {
         if (importFailed) {
-            toast(translate('import_fields_failed'), {
+            toast(polyglot.t('import_fields_failed'), {
                 type: toast.TYPE.ERROR,
             });
         } else if (importSucceeded) {
-            toast(translate('model_imported_with_success'), {
+            toast(polyglot.t('model_imported_with_success'), {
                 type: toast.TYPE.SUCCESS,
             });
         }
@@ -120,7 +121,7 @@ const MenuComponent = ({
     const handleClearJobs = async () => {
         const result = await jobsApi.clearJobs();
         if (result.response.status === 'success') {
-            toast(translate('jobs_cleared'), {
+            toast(polyglot.t('jobs_cleared'), {
                 type: toast.TYPE.SUCCESS,
             });
         }
@@ -143,7 +144,7 @@ const MenuComponent = ({
             key="import_fields"
             title={
                 hasPublishedDataset
-                    ? translate('import_model_published')
+                    ? polyglot.t('import_model_published')
                     : undefined
             }
         >
@@ -153,7 +154,7 @@ const MenuComponent = ({
             >
                 <AddIcon />
                 <Box component="span" ml={1}>
-                    {translate('import_fields')}
+                    {polyglot.t('import_fields')}
                     {applyUploadInput && (
                         <input
                             name="file_model"
@@ -186,7 +187,7 @@ const MenuComponent = ({
         >
             <AspectRatioIcon />
             <Box component="span" ml={1}>
-                {translate('export_fields')}
+                {polyglot.t('export_fields')}
             </Box>
         </MenuItem>,
         <MenuItem
@@ -201,7 +202,7 @@ const MenuComponent = ({
         >
             <ClearAllIcon />
             <Box component="span" ml={1}>
-                {translate('clear_model')}
+                {polyglot.t('clear_model')}
             </Box>
         </MenuItem>,
     ];
@@ -214,7 +215,7 @@ const MenuComponent = ({
         >
             <StorageIcon />
             <Box component="span" ml={1}>
-                {translate('export_raw_dataset')}
+                {polyglot.t('export_raw_dataset')}
             </Box>
         </MenuItem>,
         <MenuItem
@@ -229,13 +230,13 @@ const MenuComponent = ({
         >
             <ClearAllIcon />
             <Box component="span" ml={1}>
-                {translate('clear_dataset')}
+                {polyglot.t('clear_dataset')}
             </Box>
         </MenuItem>,
         <MenuItem key="clear_jobs" onClick={handleClearJobs}>
             <DeleteSweepIcon />
             <Box component="span" ml={1}>
-                {translate('clear_jobs')}
+                {polyglot.t('clear_jobs')}
             </Box>
         </MenuItem>,
     ];
@@ -298,7 +299,7 @@ const MenuComponent = ({
                             }}
                         >
                             <Box component="span" mr={1}>
-                                {translate('model')}
+                                {polyglot.t('model')}
                             </Box>
                             <ChevronRightIcon />
                         </MenuItem>
@@ -328,7 +329,7 @@ const MenuComponent = ({
                             }}
                         >
                             <Box component="span" mr={1}>
-                                {translate('advanced')}
+                                {polyglot.t('advanced')}
                             </Box>
                             <ChevronRightIcon />
                         </MenuItem>
@@ -352,7 +353,7 @@ const MenuComponent = ({
                     >
                         <SettingsIcon />
                         <Box component="span" ml={1}>
-                            {translate('config_tenant')}
+                            {polyglot.t('config_tenant')}
                         </Box>
                     </MenuItem>
                     <MenuItem
@@ -362,7 +363,7 @@ const MenuComponent = ({
                     >
                         <ExitToAppIcon />
                         <Box component="span" ml={1}>
-                            {translate('sign_out')}
+                            {polyglot.t('sign_out')}
                         </Box>
                     </MenuItem>
                 </Menu>
@@ -400,6 +401,7 @@ MenuComponent.propTypes = {
     importHasEnrichments: PropTypes.bool.isRequired,
     importHasPrecomputed: PropTypes.bool.isRequired,
     importFailed: PropTypes.bool.isRequired,
+    p: polyglotPropTypes.isRequired,
     history: PropTypes.object.isRequired,
 };
 const mapDispatchToProps = (dispatch) =>
@@ -424,5 +426,6 @@ const mapStateToProps = (state) => ({
 });
 export default compose(
     connect(mapStateToProps, mapDispatchToProps),
+    translate,
     withRouter,
 )(MenuComponent);
