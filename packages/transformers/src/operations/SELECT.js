@@ -1,4 +1,5 @@
 import get from 'lodash/get';
+import documentationByOperation from './documentationByOperation';
 import { rawTransformerWithArg } from './transformer';
 
 export const select = (value, path) => {
@@ -15,6 +16,7 @@ transformation.getMetas = () => ({
     name: 'SELECT',
     type: 'transform',
     args: [{ name: 'path', type: 'string' }],
+    docUrl: documentationByOperation['SELECT'],
 });
 
 export default transformation;

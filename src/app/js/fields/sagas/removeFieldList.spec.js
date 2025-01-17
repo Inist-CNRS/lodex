@@ -2,7 +2,12 @@ import { call, put, select } from 'redux-saga/effects';
 
 import fetchSaga from '../../lib/sagas/fetchSaga';
 
-import { loadField, removeFieldListError, removeFieldListSuccess } from '../';
+import {
+    loadField,
+    removeFieldListError,
+    removeFieldListStarted,
+    removeFieldListSuccess,
+} from '../';
 import { fromFields, fromUser } from '../../sharedSelectors';
 import { handleRemoveFieldList } from './removeFieldList';
 
@@ -18,6 +23,8 @@ describe('fields saga', () => {
                     fields,
                 },
             });
+
+            expect(saga.next().value).toEqual(put(removeFieldListStarted()));
 
             expect(saga.next().value).toEqual(
                 select(fromFields.getFieldByName, fields[0].name),
@@ -58,6 +65,9 @@ describe('fields saga', () => {
             const failedSaga = handleRemoveFieldList({
                 payload: { fields },
             });
+            expect(failedSaga.next().value).toEqual(
+                put(removeFieldListStarted()),
+            );
             failedSaga.next();
             failedSaga.next('field');
             failedSaga.next();

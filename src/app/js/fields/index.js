@@ -1,12 +1,12 @@
 import omit from 'lodash/omit';
 import uniq from 'lodash/uniq';
-import { createAction, handleActions, combineActions } from 'redux-actions';
+import { combineActions, createAction, handleActions } from 'redux-actions';
 
 import getCatalogFromArray from '../../../common/fields/getCatalogFromArray';
 import { UPDATE_CHARACTERISTICS_SUCCESS } from '../characteristic';
 import {
-    SAVE_RESOURCE_SUCCESS,
     ADD_FIELD_TO_RESOURCE_SUCCESS,
+    SAVE_RESOURCE_SUCCESS,
 } from '../public/resource';
 import fieldSelectors, {
     NEW_CHARACTERISTIC_FORM_NAME as formName,
@@ -25,6 +25,7 @@ export const REMOVE_FIELD = 'REMOVE_FIELD';
 export const REMOVE_FIELD_ERROR = 'REMOVE_FIELD_ERROR';
 export const REMOVE_FIELD_SUCCESS = 'REMOVE_FIELD_SUCCESS';
 export const REMOVE_FIELD_LIST = 'REMOVE_FIELD_LIST';
+export const REMOVE_FIELD_LIST_STARTED = 'REMOVE_FIELD_LIST_STARTED';
 export const REMOVE_FIELD_LIST_ERROR = 'REMOVE_FIELD_LIST_ERROR';
 export const REMOVE_FIELD_LIST_SUCCESS = 'REMOVE_FIELD_LIST_SUCCESS';
 export const REFRESH_FIELD = 'REFRESH_FIELD';
@@ -66,6 +67,7 @@ export const removeField = createAction(REMOVE_FIELD);
 export const removeFieldError = createAction(REMOVE_FIELD_ERROR);
 export const removeFieldSuccess = createAction(REMOVE_FIELD_SUCCESS);
 export const removeFieldList = createAction(REMOVE_FIELD_LIST);
+export const removeFieldListStarted = createAction(REMOVE_FIELD_LIST_STARTED);
 export const removeFieldListError = createAction(REMOVE_FIELD_LIST_ERROR);
 export const removeFieldListSuccess = createAction(REMOVE_FIELD_LIST_SUCCESS);
 export const refreshField = createAction(REFRESH_FIELD);
@@ -348,6 +350,16 @@ export default handleActions(
             isAdding: false,
             error: null,
             invalidProperties: [],
+        }),
+        [REMOVE_FIELD_LIST_STARTED]: (state) => ({
+            ...state,
+            isRemoveFieldListPending: true,
+        }),
+        [combineActions(REMOVE_FIELD_LIST_ERROR, REMOVE_FIELD_LIST_SUCCESS)]: (
+            state,
+        ) => ({
+            ...state,
+            isRemoveFieldListPending: false,
         }),
     },
     defaultState,

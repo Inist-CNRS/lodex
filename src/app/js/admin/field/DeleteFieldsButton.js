@@ -1,6 +1,7 @@
 import { Delete as DeleteIcon } from '@mui/icons-material';
 import {
     Button,
+    CircularProgress,
     Dialog,
     DialogActions,
     DialogContent,
@@ -21,6 +22,7 @@ import { translate } from '../../i18n/I18NContext';
 
 const DeleteFieldsButtonComponent = ({
     fields,
+    isRemoveFieldListPending,
     isFieldsLoading,
     p: polyglot,
     selectedFields,
@@ -49,14 +51,22 @@ const DeleteFieldsButtonComponent = ({
         removeFieldList(fieldsToDelete);
     }, [fieldsToDelete, removeFieldList]);
 
+    const isLoading = isFieldsLoading || isRemoveFieldListPending;
+
     return (
         <>
             {fieldsToDelete.length > 0 && (
                 <Button
                     variant="outlined"
                     color="primary"
-                    disabled={isFieldsLoading}
-                    startIcon={<DeleteIcon />}
+                    disabled={isLoading}
+                    startIcon={
+                        isLoading ? (
+                            <CircularProgress color="primary" size="1em" />
+                        ) : (
+                            <DeleteIcon />
+                        )
+                    }
                     onClick={handleOpenModal}
                     aria-label={polyglot.t('delete_selected_fields')}
                 >
@@ -126,6 +136,7 @@ DeleteFieldsButtonComponent.propTypes = {
 };
 
 const mapStateToProps = (state, { subresourceId, filter }) => ({
+    isRemoveFieldListPending: fromFields.isRemoveFieldListPending(state),
     fields: fromFields.getEditingFields(state, { filter, subresourceId }),
     isFieldsLoading: fromFields.isLoading(state),
 });

@@ -20,6 +20,8 @@ consult the user documentation available at <https://lodex.inist.fr/docs/>.
 To use Lodex, you must install Docker and Docker Compose. You can install them both through the
 [Docker Desktop](https://www.docker.com/products/docker-desktop/) application.
 
+It is possible to run Lodex on modest Linux servers with at least 32 GB RAM and 64 GB hard disk and 4 CPUs corresponding to the 4 underlying middleware (web server, database, processing server, background task server).
+
 ### Development
 
 #### Clone and install
