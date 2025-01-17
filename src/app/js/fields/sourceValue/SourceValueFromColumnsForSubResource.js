@@ -7,6 +7,7 @@ import { fromParsing } from '../../admin/selectors';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import parseValue from '../../../../common/tools/parseValue';
 import { translate } from '../../i18n/I18NContext';
+import { fromI18n } from '../../public/selectors';
 
 const SourceValueFromColumnsForSubResource = ({
     datasetFields,
@@ -91,7 +92,7 @@ export const mapStateToProps = (state, { selectedSubresourceUri }) => {
                     ? subresourceData[0]
                     : subresourceData) || {},
             ),
-            ...[state.polyglot.phrases['other']],
+            ...[fromI18n.getPhrases(state)['other']],
         ].sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase())),
         subresourcePath: subresource.path,
     };
