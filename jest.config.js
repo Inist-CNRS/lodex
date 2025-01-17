@@ -1,5 +1,5 @@
 const transform = {
-    '\\.[jt]sx?$': [
+    '\\.[tj]sx?$': [
         'babel-jest',
         {
             configFile: `${__dirname}/babel.config.js`,
@@ -8,6 +8,7 @@ const transform = {
 };
 
 const workerIdleMemoryLimit = '1024MB';
+const testMatch = ['/**/*.spec.js', '/**/*.spec.ts', '/**/*.spec.tsx'];
 
 module.exports = {
     workerIdleMemoryLimit,
@@ -16,11 +17,19 @@ module.exports = {
             displayName: 'frontend',
             rootDir: `${__dirname}/src/app`,
             setupFiles: [`${__dirname}/src/app/setupTest.js`],
-            testMatch: ['/**/*.spec.js'],
+            testMatch,
             moduleNameMapper: {
                 '\\.(css|less|scss|sass)$': 'identity-obj-proxy',
             },
-            moduleFileExtensions: ['js', 'json', 'jsx', 'mjs'],
+            moduleFileExtensions: [
+                'js',
+                'json',
+                'jsx',
+                'mjs',
+                'ts',
+                'tsx',
+                'mts',
+            ],
             transformIgnorePatterns: ['<rootDir>/node_modules/d3'],
             transform,
             testEnvironment: 'jsdom',
@@ -32,7 +41,7 @@ module.exports = {
             rootDir: `${__dirname}/src/api`,
             testEnvironment: 'node',
             testPathIgnorePatterns: ['e2e'],
-            testMatch: ['/**/*.spec.js'],
+            testMatch,
             transform,
             workerIdleMemoryLimit,
         },
@@ -40,13 +49,13 @@ module.exports = {
             displayName: 'common',
             rootDir: `${__dirname}/src/common`,
             transform,
-            testMatch: ['/**/*.spec.js'],
+            testMatch,
             workerIdleMemoryLimit,
         },
         {
             displayName: 'transformers',
             rootDir: `${__dirname}/packages/transformers`,
-            testMatch: ['/**/*.spec.js'],
+            testMatch,
             workerIdleMemoryLimit,
         },
         {
