@@ -1,11 +1,7 @@
-import React from 'react';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
-import PropTypes from 'prop-types';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
-
-import { connect } from 'react-redux';
 import { Box, Button, Tooltip } from '@mui/material';
 import {
     DataGrid,
@@ -14,61 +10,90 @@ import {
     GridToolbarDensitySelector,
     GridToolbarFilterButton,
 } from '@mui/x-data-grid';
-import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import { default as React, default as React } from 'react';
+import { connect } from 'react-redux';
 import { useHistory } from 'react-router';
-import EnrichmentStatus from './EnrichmentStatus';
+import { Link } from 'react-router-dom';
 import { launchAllEnrichment, retryEnrichment } from '.';
-import RunButton from './RunButton';
 import { IN_PROGRESS } from '../../../../common/taskStatus';
 import { useTranslate } from '../../i18n/I18NContext';
+import { ConfirmPopup } from '../../lib/components/ConfirmPopup';
+import EnrichmentStatus from './EnrichmentStatus';
+import RunButton from './RunButton';
 
 const EnrichmentListToolBar = ({
     onLaunchAllEnrichment,
     areEnrichmentsRunning,
 }) => {
     const { translate } = useTranslate();
+    const [isConfirmOpen, setIsConfirmOpen] = React.useState(false);
+
+    const handleOpenDialog = () => {
+        setIsConfirmOpen(true);
+    };
+
+    const handleCloseDialog = () => {
+        setIsConfirmOpen(false);
+    };
+
+    const handleLaunchAllEnrichment = () => {
+        onLaunchAllEnrichment();
+        handleCloseDialog();
+    };
+
     return (
-        <GridToolbarContainer>
-            <Tooltip title={translate(`column_tooltip`)}>
-                <GridToolbarColumnsButton />
-            </Tooltip>
-            <GridToolbarFilterButton />
-            <Tooltip title={translate(`density_tooltip`)}>
-                <GridToolbarDensitySelector />
-            </Tooltip>
-            <Tooltip title={translate(`add_more_enrichment`)}>
-                <Button
-                    component={Link}
-                    to="/data/enrichment/add"
-                    startIcon={<AddBoxIcon />}
-                    size="small"
-                    sx={{
-                        '&.MuiButtonBase-root:hover': {
-                            color: 'primary.main',
-                        },
-                    }}
-                >
-                    {translate('add_more')}
-                </Button>
-            </Tooltip>
-            <Tooltip title={translate(`run_all`)}>
-                <Button
-                    startIcon={<PlayArrowIcon />}
-                    size="small"
-                    sx={{
-                        '&.MuiButtonBase-root:hover': {
-                            color: 'primary.main',
-                        },
-                    }}
-                    disabled={areEnrichmentsRunning}
-                    onClick={() => {
-                        onLaunchAllEnrichment();
-                    }}
-                >
-                    {translate('run_all')}
-                </Button>
-            </Tooltip>
-        </GridToolbarContainer>
+        <>
+            <ConfirmPopup
+                isOpen={isConfirmOpen}
+                onCancel={handleCloseDialog}
+                onConfirm={handleLaunchAllEnrichment}
+                title={translate('run_all_enrichment_modal_title')}
+                description={translate('run_all_enrichment_modal_content')}
+                confirmLabel={translate('run_all')}
+                cancelLabel={translate('cancel')}
+            />
+
+            <GridToolbarContainer>
+                <Tooltip title={translate(`column_tooltip`)}>
+                    <GridToolbarColumnsButton />
+                </Tooltip>
+                <GridToolbarFilterButton />
+                <Tooltip title={translate(`density_tooltip`)}>
+                    <GridToolbarDensitySelector />
+                </Tooltip>
+                <Tooltip title={translate(`add_more_enrichment`)}>
+                    <Button
+                        component={Link}
+                        to="/data/enrichment/add"
+                        startIcon={<AddBoxIcon />}
+                        size="small"
+                        sx={{
+                            '&.MuiButtonBase-root:hover': {
+                                color: 'primary.main',
+                            },
+                        }}
+                    >
+                        {translate('add_more')}
+                    </Button>
+                </Tooltip>
+                <Tooltip title={translate(`run_all`)}>
+                    <Button
+                        startIcon={<PlayArrowIcon />}
+                        size="small"
+                        sx={{
+                            '&.MuiButtonBase-root:hover': {
+                                color: 'primary.main',
+                            },
+                        }}
+                        disabled={areEnrichmentsRunning}
+                        onClick={handleOpenDialog}
+                    >
+                        {translate('run_all')}
+                    </Button>
+                </Tooltip>
+            </GridToolbarContainer>
+        </>
     );
 };
 
@@ -79,14 +104,17 @@ EnrichmentListToolBar.propTypes = {
 
 export const EnrichmentList = ({
     enrichments,
+    isLoadEnrichmentsPending,
+    isRunAllEnrichmentPending,
     onLaunchAllEnrichment,
     onRetryEnrichment,
 }) => {
     const { translate } = useTranslate();
     const history = useHistory();
-    const areEnrichmentsRunning = enrichments.some(
-        (enrichment) => enrichment.status === IN_PROGRESS,
-    );
+    const areEnrichmentsRunning =
+        enrichments.some((enrichment) => enrichment.status === IN_PROGRESS) ||
+        isLoadEnrichmentsPending ||
+        isRunAllEnrichmentPending;
     const handleRowClick = (params) => {
         history.push(`/data/enrichment/${params.row._id}`);
     };
@@ -199,11 +227,15 @@ EnrichmentList.propTypes = {
     enrichments: PropTypes.array.isRequired,
     onLaunchEnrichment: PropTypes.func.isRequired,
     onLaunchAllEnrichment: PropTypes.func.isRequired,
+    isLoadEnrichmentsPending: PropTypes.bool,
+    isRunAllEnrichmentPending: PropTypes.bool,
     onRetryEnrichment: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
     enrichments: state.enrichment.enrichments,
+    isLoadEnrichmentsPending: state.enrichment.isLoadEnrichmentsPending,
+    isRunAllEnrichmentPending: state.enrichment.isRunAllEnrichmentPending,
 });
 
 const mapDispatchToProps = {
