@@ -49,7 +49,7 @@ const EnrichmentListToolBar = ({
         <>
             <ConfirmPopup
                 isOpen={isConfirmOpen}
-                onClose={handleCloseDialog}
+                onCancel={handleCloseDialog}
                 onConfirm={handleLaunchAllEnrichment}
                 title={polyglot.t('run_all_enrichment_modal_title')}
                 description={polyglot.t('run_all_enrichment_modal_content')}
