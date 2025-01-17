@@ -1,5 +1,5 @@
 import { default as Enzyme } from 'enzyme';
-import { default as Adapter } from 'enzyme-adapter-react-16';
+import { default as Adapter } from '@wojtekmaj/enzyme-adapter-react-17';
 
 Enzyme.configure({ adapter: new Adapter() });
 
