@@ -1,7 +1,6 @@
-import { applyMiddleware, compose, createStore } from 'redux';
+import { applyMiddleware, compose, createStore, combineReducers } from 'redux';
 import createSagaMiddleware from 'redux-saga';
 import { createReduxHistoryContext } from 'redux-first-history';
-import { combineReducers } from 'redux';
 
 const sagaMiddleware = createSagaMiddleware();
 

@@ -1,5 +1,4 @@
-import { takeEvery, call, select, put } from 'redux-saga/effects';
-import { delay } from 'redux-saga';
+import { takeEvery, call, select, put, delay } from 'redux-saga/effects';
 
 import {
     updateProgress,
@@ -14,7 +13,7 @@ import { PENDING } from '../../../../common/progressStatus';
 import { CLEAR_PUBLISHED } from '../clear';
 
 export function* handleStartProgressSaga() {
-    yield call(delay, 1000);
+    yield delay(1000);
     const request = yield select(fromUser.getProgressRequest);
     const { error, response } = yield call(fetchSaga, request);
     if (error) {
