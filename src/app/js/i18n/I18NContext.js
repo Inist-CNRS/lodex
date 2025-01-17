@@ -41,7 +41,11 @@ export const I18N = connect(mapStateToProps, mapDispatchToProps)(I18NComponent);
 export const TestI18N = ({ children }) => {
     return (
         <I18NContext.Provider
-            value={{ translate: (v) => v, locale: 'en', setLanguage: () => {} }}
+            value={{
+                translate: (v) => v,
+                locale: 'en',
+                setLanguage: () => {},
+            }}
         >
             {children}
         </I18NContext.Provider>
