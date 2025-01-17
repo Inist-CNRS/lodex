@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import translate from 'redux-polyglot/translate';
 import { polyglot as polyglotPropTypes } from '../propTypes';
 import HomeIcon from '@mui/icons-material/Home';
 import ArticleIcon from '@mui/icons-material/Article';
@@ -8,6 +7,7 @@ import DocumentScannerIcon from '@mui/icons-material/DocumentScanner';
 import EqualizerIcon from '@mui/icons-material/Equalizer';
 import { Tooltip } from '@mui/material';
 import { FilterAlt } from '@mui/icons-material';
+import { translate } from '../i18n/I18NContext';
 
 function Icon({ scope, ...rest }) {
     switch (scope) {

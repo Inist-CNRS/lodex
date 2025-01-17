@@ -7,9 +7,9 @@ import { FINISHED, IN_PROGRESS, ON_HOLD } from '../../../../common/taskStatus';
 import { fromEnrichments } from '../selectors';
 import { launchEnrichment } from '.';
 import { compose } from 'recompose';
-import translate from 'redux-polyglot/translate';
 import { toast } from '../../../../common/tools/toast';
 import { connect } from 'react-redux';
+import { translate } from '../../i18n/I18NContext';
 
 export const RunButton = ({
     onLaunchEnrichment,

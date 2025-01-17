@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
 import withHandlers from 'recompose/withHandlers';
 import { submit as submitAction } from 'redux-form';
@@ -13,6 +12,7 @@ import { polyglot as polyglotPropTypes } from '../../propTypes';
 import ButtonWithDialog from './ButtonWithDialog';
 import stylesToClassname from '../../lib/stylesToClassName';
 import CancelButton from './CancelButton';
+import { translate } from '../../i18n/I18NContext';
 
 const styles = stylesToClassname(
     {

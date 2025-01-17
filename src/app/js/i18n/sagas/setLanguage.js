@@ -1,5 +1,4 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
-import { setLanguage } from 'redux-polyglot';
 
 import fetchSaga from '../../lib/sagas/fetchSaga';
 
@@ -26,8 +25,7 @@ export function* handleSetLanguage({ payload: language }) {
     try {
         const phrases = yield call(loadPhrases, language);
 
-        yield put(setLanguageSuccess(language));
-        yield put(setLanguage(language, phrases));
+        yield put(setLanguageSuccess({ language, phrases }));
     } catch (error) {
         yield put(setLanguageError(error));
     }

@@ -1,9 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import compose from 'recompose/compose';
-import translate from 'redux-polyglot/translate';
 
-import { polyglot as polyglotPropTypes } from '../../propTypes';
 import {
     Button,
     Dialog,
@@ -11,8 +8,10 @@ import {
     DialogContent,
     DialogTitle,
 } from '@mui/material';
+import { useTranslate } from '../../i18n/I18NContext';
 
-const ImportHasRelaunchDialog = ({ p: polyglot, onClose, data }) => {
+const ImportHasRelaunchDialog = ({ onClose, data }) => {
+    const { translate } = useTranslate();
     const actions = [
         <Button
             raised
@@ -22,7 +21,7 @@ const ImportHasRelaunchDialog = ({ p: polyglot, onClose, data }) => {
             color="primary"
             variant="contained"
         >
-            {polyglot.t('confirm')}
+            {translate('confirm')}
         </Button>,
     ];
 
@@ -48,9 +47,9 @@ const ImportHasRelaunchDialog = ({ p: polyglot, onClose, data }) => {
 
     return (
         <Dialog open onClose={onClose}>
-            <DialogTitle>{polyglot.t(returnTitleTranslationKey())}</DialogTitle>
+            <DialogTitle>{translate(returnTitleTranslationKey())}</DialogTitle>
             <DialogContent>
-                <b>{polyglot.t(returnDescriptionTranslationKey())}</b>
+                <b>{translate(returnDescriptionTranslationKey())}</b>
             </DialogContent>
             <DialogActions>{actions}</DialogActions>
         </Dialog>
@@ -58,7 +57,6 @@ const ImportHasRelaunchDialog = ({ p: polyglot, onClose, data }) => {
 };
 
 ImportHasRelaunchDialog.propTypes = {
-    p: polyglotPropTypes.isRequired,
     onClose: PropTypes.func.isRequired,
     data: PropTypes.shape({
         hasEnrichments: PropTypes.bool.isRequired,
@@ -66,4 +64,4 @@ ImportHasRelaunchDialog.propTypes = {
     }).isRequired,
 };
 
-export default compose(translate)(ImportHasRelaunchDialog);
+export default ImportHasRelaunchDialog;
