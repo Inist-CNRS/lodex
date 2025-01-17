@@ -11,12 +11,13 @@ import {
     GridToolbarFilterButton,
 } from '@mui/x-data-grid';
 import PropTypes from 'prop-types';
-import { default as React, default as React } from 'react';
+import { default as React, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { useHistory } from 'react-router';
 import { Link } from 'react-router-dom';
 import { launchAllEnrichment, retryEnrichment } from '.';
 import { IN_PROGRESS } from '../../../../common/taskStatus';
+import { toast } from '../../../../common/tools/toast';
 import { useTranslate } from '../../i18n/I18NContext';
 import { ConfirmPopup } from '../../lib/components/ConfirmPopup';
 import EnrichmentStatus from './EnrichmentStatus';
@@ -106,6 +107,7 @@ export const EnrichmentList = ({
     enrichments,
     isLoadEnrichmentsPending,
     isRunAllEnrichmentPending,
+    runAllEnrichmentError,
     onLaunchAllEnrichment,
     onRetryEnrichment,
 }) => {
@@ -118,6 +120,16 @@ export const EnrichmentList = ({
     const handleRowClick = (params) => {
         history.push(`/data/enrichment/${params.row._id}`);
     };
+
+    useEffect(() => {
+        if (!runAllEnrichmentError) {
+            return;
+        }
+
+        toast(translate(runAllEnrichmentError), {
+            type: toast.TYPE.ERROR,
+        });
+    }, [runAllEnrichmentError]);
 
     return (
         <Box>
@@ -229,6 +241,7 @@ EnrichmentList.propTypes = {
     onLaunchAllEnrichment: PropTypes.func.isRequired,
     isLoadEnrichmentsPending: PropTypes.bool,
     isRunAllEnrichmentPending: PropTypes.bool,
+    runAllEnrichmentError: PropTypes.string,
     onRetryEnrichment: PropTypes.func.isRequired,
 };
 
@@ -236,6 +249,7 @@ const mapStateToProps = (state) => ({
     enrichments: state.enrichment.enrichments,
     isLoadEnrichmentsPending: state.enrichment.isLoadEnrichmentsPending,
     isRunAllEnrichmentPending: state.enrichment.isRunAllEnrichmentPending,
+    runAllEnrichmentError: state.enrichment.runAllEnrichmentError,
 });
 
 const mapDispatchToProps = {
