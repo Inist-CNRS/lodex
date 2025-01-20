@@ -222,7 +222,8 @@
         "vega-view-transforms": "4.5.9",
         "vega-voronoi": "4.2.2",
         "vega-wordcloud": "4.1.4",
-        "winston": "^3.11.0"
+        "winston": "^3.11.0",
+        "zod": "^3.24.1"
     },
     "devDependencies": {
         "@babel/eslint-parser": "^7.26.5",

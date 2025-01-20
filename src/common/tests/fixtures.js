@@ -50,8 +50,6 @@ export function loadFixtures(fixtures) {
 }
 
 export async function clear() {
-    // await connect();
-
     if (!db) {
         return;
     }
@@ -62,6 +60,7 @@ export async function clear() {
         db.publishedCharacteristic.deleteMany(),
         db.publishedDataset.deleteMany(),
         db.publishedFacet.deleteMany(),
+        db.annotation.deleteMany(),
     ]);
 
     return db;

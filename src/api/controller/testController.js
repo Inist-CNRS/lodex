@@ -25,6 +25,7 @@ app.use(
         await ctx.db.collection('subresource').deleteMany();
         await ctx.db.collection('enrichment').deleteMany();
         await ctx.db.collection('precomputed').deleteMany();
+        await ctx.db.collection('annotation').deleteMany();
 
         await ctx.rootAdminDb
             .collection('tenant')

@@ -149,6 +149,7 @@ clear-database: ## Clear the whole database named by DB_TENANT (use "default" if
 		db.enrichment.deleteMany(); \
 		db.precomputed.deleteMany(); \
 		db.hiddenResource.deleteMany(); \
+		db.annotation.deleteMany(); \
 	"
 clear-publication: ## Clear the published data, keep uploaded dataset and model in DB_TENANT (use "default" if missing)
 	docker compose exec mongo mongo lodex_${DB_TENANT} --eval " \

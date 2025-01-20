@@ -1,0 +1,66 @@
+import { default as z } from 'zod';
+
+export const annotationSchema = z.object({
+    resourceId: z.string({
+        required_error: 'error_required',
+    }),
+    fieldId: z.string().nullish().default(null),
+    comment: z
+        .string({
+            required_error: 'error_required',
+        })
+        .min(1, {
+            message: 'annotation_comment_min_length',
+        }),
+});
+
+const annotationFilterableFields = z
+    .record(
+        z.enum(['resourceId', 'fieldId'], {
+            message: 'annotation_query_match_invalid_key',
+        }),
+        z
+            .string({
+                message: 'annotation_query_match_invalid_value',
+            })
+            .nullable(),
+    )
+    .optional()
+    .default({});
+
+const annotationSortableFields = z
+    .enum(['resourceId', 'fieldId', 'createdAt', 'updatedAt'], {
+        message: 'annotation_query_sortBy_invalid',
+    })
+    .default('createdAt');
+
+export const getAnnotationsQuerySchema = z.object({
+    page: z
+        .number({
+            message: 'error_invalid_number',
+        })
+        .min(0, {
+            message: 'error_page_invalid',
+        })
+        .optional()
+        .default(0),
+    perPage: z
+        .number({
+            message: 'error_invalid_number',
+        })
+        .min(1, {
+            message: 'annotation_query_perPage_length',
+        })
+        .max(100, {
+            message: 'annotation_query_perPage_length',
+        })
+        .optional()
+        .default(10),
+    match: annotationFilterableFields,
+    sortBy: annotationSortableFields,
+    sortDir: z
+        .enum(['ASC', 'DESC'], {
+            message: 'error_sortDir_invalid',
+        })
+        .default('DESC'),
+});
