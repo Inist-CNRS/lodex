@@ -39,7 +39,7 @@ export function orderEnrichmentsByDependencies(datasetColumns, enrichments) {
         const enrichment = enrichmentQueue.shift();
 
         if (enrichment === loopDetector) {
-            throw new Error('Circular dependency detected');
+            throw new Error('circular_dependency');
         }
 
         if (!enrichment.sourceColumn) {

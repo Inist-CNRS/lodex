@@ -268,10 +268,10 @@ describe('Search', () => {
         it('should reset facets filter when clearing all facets', () => {
             menu.openSearchDrawer();
             searchDrawer.getFacet('Première mise en ligne en').click();
-            cy.wait(500);
-            cy.get('[data-testid="ChevronRightIcon"]').click();
-
             searchDrawer.filterFacet('Première mise en ligne en', '1926');
+
+            searchDrawer.getFacet('Dernière mise en ligne en').click();
+            searchDrawer.filterFacet('Dernière mise en ligne en', '2013');
 
             cy.findByRole('checkbox', {
                 name: '1926',
@@ -283,24 +283,35 @@ describe('Search', () => {
                 timeout: 500,
             }).click();
 
+            // Première mise en ligne
             cy.findByPlaceholderText(/Première mise en ligne en/).should(
+                'have.value',
+                '',
+            );
+            cy.findByRole('checkbox', {
+                name: '2011',
+                timeout: 500,
+            }).should('exist');
+
+            // Dernière mise en ligne
+            cy.findByPlaceholderText(/Dernière mise en ligne en/).should(
                 'have.value',
                 '',
             );
 
             cy.findByRole('checkbox', {
-                name: '2011',
+                name: '2014',
                 timeout: 500,
             }).should('exist');
         });
 
-        it('should not reset facets filter when clearing one facet', () => {
+        it('should only reset the target facet filter when clearing one facet', () => {
             menu.openSearchDrawer();
             searchDrawer.getFacet('Première mise en ligne en').click();
-            cy.wait(500);
-            cy.get('[data-testid="ChevronRightIcon"]').click();
-
             searchDrawer.filterFacet('Première mise en ligne en', '1926');
+
+            searchDrawer.getFacet('Dernière mise en ligne en').click();
+            searchDrawer.filterFacet('Dernière mise en ligne en', '2013');
 
             cy.findByRole('checkbox', {
                 name: '1926',
@@ -318,13 +329,25 @@ describe('Search', () => {
                     .click(),
             );
 
+            // Première mise en ligne
             cy.findByPlaceholderText(/Première mise en ligne en/).should(
                 'have.value',
-                '1926',
+                '',
             );
 
             cy.findByRole('checkbox', {
                 name: '2011',
+                timeout: 500,
+            }).should('exist');
+
+            // Dernière mise en ligne
+            cy.findByPlaceholderText(/Dernière mise en ligne en/).should(
+                'have.value',
+                '2013',
+            );
+
+            cy.findByRole('checkbox', {
+                name: '2014',
                 timeout: 500,
             }).should('not.exist');
         });

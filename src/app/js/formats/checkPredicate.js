@@ -1,10 +1,10 @@
-import React from 'react';
 import get from 'lodash/get';
+import React from 'react';
 
-import InvalidFormat from './InvalidFormat';
 import PropTypes from 'prop-types';
-import { polyglot as polyglotPropTypes } from '../propTypes';
 import { translate } from '../i18n/I18NContext';
+import { polyglot as polyglotPropTypes } from '../propTypes';
+import InvalidFormat from './InvalidFormat';
 
 export const isPrecomputed = (field) =>
     !!field?.transformers?.find((t) => t.operation === 'PRECOMPUTED');
@@ -13,6 +13,26 @@ export const getPrecomputedRoutineValue = (field) =>
     field.transformers
         .find((t) => t.operation === 'PRECOMPUTED')
         .args?.find((a) => a.name === 'routine')?.value;
+
+export const isClonedField = (field) => {
+    return field?.format?.name === 'fieldClone';
+};
+
+export const getFieldValue = ({ type, field, meta, resource }) => {
+    if (type === 'edition') {
+        return get(meta, 'initial');
+    }
+
+    if (isClonedField(field)) {
+        return '';
+    }
+
+    if (isPrecomputed(field)) {
+        return getPrecomputedRoutineValue(field);
+    }
+
+    return get(resource, field.name);
+};
 
 export default (predicate, Component, format, type) => {
     const CheckedComponent = ({
@@ -23,13 +43,12 @@ export default (predicate, Component, format, type) => {
         p: polyglot,
         ...props
     }) => {
-        const value =
-            type === 'edition'
-                ? get(meta, 'initial')
-                : isPrecomputed(field)
-                  ? getPrecomputedRoutineValue(field)
-                  : get(resource, field.name);
-
+        const value = getFieldValue({
+            type,
+            field,
+            meta,
+            resource,
+        });
         if (typeof value === 'undefined') {
             return null;
         }
@@ -55,6 +74,7 @@ export default (predicate, Component, format, type) => {
         resource: PropTypes.string.isRequired,
         field: PropTypes.object.isRequired,
         p: polyglotPropTypes.isRequired,
+        resource: PropTypes.object.isRequired,
     };
 
     return translate(CheckedComponent);

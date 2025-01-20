@@ -1,4 +1,4 @@
-import { all, call, put, select, takeLatest } from 'redux-saga/effects';
+import { call, put, select, take, takeLatest } from 'redux-saga/effects';
 
 import fetchSaga from '../../lib/sagas/fetchSaga';
 import { fromUser } from '../../sharedSelectors';
@@ -21,25 +21,24 @@ export default ({ actionTypes, actions, selectors }) => {
     };
 
     const handleClearFacetsRequest = function* ({ payload }) {
-        // If payload is defined, we only clear one facet so we do not reset the fields filters
-        if (payload) {
-            return;
-        }
-
         const facetsValues = yield select(selectors.getFacetsValues);
 
-        yield all(
-            Object.keys(facetsValues).map((name) =>
-                put(
-                    actions.changeFacetValue({
-                        name,
-                        perPage: facetsValues[name].perPage,
-                        currentPage: 0,
-                        filter: '',
-                    }),
-                ),
-            ),
+        const facetsToReset = Object.keys(facetsValues).filter(
+            (name) => !payload || name === payload,
         );
+
+        for (const name of facetsToReset) {
+            yield put(
+                actions.changeFacetValue({
+                    name,
+                    perPage: facetsValues[name].perPage,
+                    currentPage: 0,
+                    filter: '',
+                }),
+            );
+
+            yield take([actionTypes.LOAD_FACET_VALUES_SUCCESS]);
+        }
     };
 
     return function* facetSagas() {

@@ -1,17 +1,20 @@
-import { call, put, select, takeLatest, fork } from 'redux-saga/effects';
+import { call, fork, put, select, takeLatest } from 'redux-saga/effects';
 
 import {
-    loadEnrichmentsSuccess,
-    loadEnrichmentsError,
-    loadEnrichments,
-    LOAD_ENRICHMENTS,
-    LAUNCH_ENRICHMENT,
     LAUNCH_ALL_ENRICHMENT,
+    LAUNCH_ENRICHMENT,
+    launchAllEnrichmentCompleted,
+    launchAllEnrichmentError,
+    launchAllEnrichmentStarted,
+    LOAD_ENRICHMENTS,
+    loadEnrichments,
+    loadEnrichmentsError,
+    loadEnrichmentsSuccess,
     RETRY_ENRICHMENT,
 } from '.';
 
-import { fromUser } from '../../sharedSelectors';
 import fetchSaga from '../../lib/sagas/fetchSaga';
+import { fromUser } from '../../sharedSelectors';
 
 export function* handleLoadEnrichmentsRequest() {
     const request = yield select(fromUser.getLoadEnrichmentsRequest);
@@ -39,13 +42,28 @@ export function* handleLaunchEnrichment({ payload: enrichment }) {
 }
 
 export function* handleLaunchAllEnrichment() {
-    const enrichmentLaunchAllRequest = yield select(
-        fromUser.getEnrichmentLaunchAllRequest,
-    );
+    yield put(launchAllEnrichmentStarted());
 
-    yield call(fetchSaga, enrichmentLaunchAllRequest);
+    try {
+        const enrichmentLaunchAllRequest = yield select(
+            fromUser.getEnrichmentLaunchAllRequest,
+        );
 
-    return yield put(loadEnrichments());
+        const { error } = yield call(fetchSaga, enrichmentLaunchAllRequest);
+
+        if (error) {
+            yield put(
+                launchAllEnrichmentError(
+                    error.message === 'circular_dependency_error'
+                        ? 'run_all_enrichment_circular_dependency'
+                        : 'run_all_enrichment_failed',
+                ),
+            );
+        }
+        return yield put(loadEnrichments());
+    } finally {
+        yield put(launchAllEnrichmentCompleted());
+    }
 }
 
 export function* handleRetryEnrichment({ payload: { id } }) {

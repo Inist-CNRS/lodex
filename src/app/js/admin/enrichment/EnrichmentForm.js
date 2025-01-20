@@ -1,20 +1,13 @@
 import React, { useEffect, useMemo } from 'react';
 
-import EnrichmentCatalogConnected from './EnrichmentCatalog';
-import EnrichmentPreview from './EnrichmentPreview';
-import FormSourceCodeField from '../../lib/components/FormSourceCodeField';
-import EnrichmentLogsDialogComponent from './EnrichmentLogsDialog';
 import PropTypes from 'prop-types';
+import FormSourceCodeField from '../../lib/components/FormSourceCodeField';
 import SubressourceFieldAutoComplete from '../subresource/SubressourceFieldAutoComplete';
+import EnrichmentCatalogConnected from './EnrichmentCatalog';
+import EnrichmentLogsDialogComponent from './EnrichmentLogsDialog';
+import EnrichmentPreview from './EnrichmentPreview';
 
-import { launchEnrichment, loadEnrichments, retryEnrichment } from '.';
-import { getKeys } from '../subresource/SubresourceForm';
-import { connect } from 'react-redux';
-import { compose } from 'recompose';
-import { Field, formValueSelector, reduxForm, change } from 'redux-form';
-import { fromEnrichments, fromParsing } from '../selectors';
 import { ListAlt as ListAltIcon } from '@mui/icons-material';
-import { withRouter } from 'react-router';
 import {
     Box,
     Button,
@@ -25,19 +18,26 @@ import {
     TextField,
     Typography,
 } from '@mui/material';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router';
+import { compose } from 'recompose';
+import { change, Field, formValueSelector, reduxForm } from 'redux-form';
+import { launchEnrichment, loadEnrichments, retryEnrichment } from '.';
+import { IN_PROGRESS, PENDING } from '../../../../common/taskStatus';
+import { toast } from '../../../../common/tools/toast';
+import { useTranslate } from '../../i18n/I18NContext';
+import CancelButton from '../../lib/components/CancelButton';
 import {
     createEnrichment,
     getPreviewEnrichment,
     updateEnrichment,
 } from '../api/enrichment';
 import { getJobLogs } from '../api/job';
-import { toast } from '../../../../common/tools/toast';
-import { IN_PROGRESS, PENDING } from '../../../../common/taskStatus';
-import CancelButton from '../../lib/components/CancelButton';
+import { fromEnrichments, fromParsing } from '../selectors';
+import { getKeys } from '../subresource/SubresourceForm';
 import { DeleteEnrichmentButton } from './DeleteEnrichmentButton';
-import RunButton from './RunButton';
 import EnrichmentStatus from './EnrichmentStatus';
-import { useTranslate } from '../../i18n/I18NContext';
+import RunButton from './RunButton';
 
 // UTILITARY PART
 const ENRICHMENT_FORM = 'ENRICHMENT_FORM';
