@@ -20,6 +20,7 @@ describe('mongoClient middleware', () => {
 
         expect(Object.keys(ctx)).toEqual([
             'db',
+            'annotation',
             'dataset',
             'field',
             'subresource',
