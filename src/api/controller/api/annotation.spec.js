@@ -5,7 +5,7 @@ const NOW = new Date();
 const ANNOTATIONS = [
     {
         resourceId: 'uid:/2a8d429f-8134-4502-b9d3-d20c571592fa',
-        fieldId: 'GvaF',
+        itemPath: ['GvaF'],
         authorName: 'Developer',
         authorEmail: 'developer@marmelab.com',
         comment: 'This is a comment',
@@ -14,7 +14,7 @@ const ANNOTATIONS = [
     },
     {
         resourceId: 'uid:/65257776-4e3c-44f6-8652-85502a97e5ac',
-        fieldId: null,
+        itemPath: null,
         authorName: 'John DOE',
         authorEmail: 'john.doe@marmelab.com',
         comment: 'This is another comment',
@@ -23,7 +23,7 @@ const ANNOTATIONS = [
     },
     {
         resourceId: 'uid:/d4f1e376-d5dd-4853-b515-b7f63b34d67d',
-        fieldId: null,
+        itemPath: null,
         authorName: 'Jane SMITH',
         authorEmail: 'jane.smith@marmelab.com',
         comment: 'The author list is incomplete: it should include Jane SMITH',
@@ -75,7 +75,7 @@ describe('annotation', () => {
         it('should create an annotation', async () => {
             const annotation = {
                 resourceId: 'uid:/a4f7a51f-7109-481e-86cc-0adb3a26faa6',
-                fieldId: 'Gb4a',
+                itemPath: ['Gb4a'],
                 comment: 'Hello world',
             };
 

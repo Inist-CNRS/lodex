@@ -8,7 +8,7 @@ describe('annotation.validator', () => {
         it('should validate an annotation', () => {
             const annotationPayload = {
                 resourceId: 'uid:/2a8d429f-8134-4502-b9d3-d20c571592fa',
-                fieldId: 'GvaF',
+                itemPath: ['GvaF'],
                 comment: 'This is a comment',
             };
 
@@ -18,7 +18,7 @@ describe('annotation.validator', () => {
             expect(validatedAnnotation).toStrictEqual(annotationPayload);
         });
 
-        it('should should support annotation without fieldId', () => {
+        it('should should support annotation without itemPath', () => {
             const annotationPayload = {
                 resourceId: 'uid:/2a8d429f-8134-4502-b9d3-d20c571592fa',
                 comment: 'This is a comment',
@@ -29,14 +29,14 @@ describe('annotation.validator', () => {
 
             expect(validatedAnnotation).toStrictEqual({
                 ...annotationPayload,
-                fieldId: null,
+                itemPath: null,
             });
         });
 
         it('should should support drop unsupported fields', () => {
             const annotationPayload = {
                 resourceId: 'uid:/2a8d429f-8134-4502-b9d3-d20c571592fa',
-                fieldId: null,
+                itemPath: null,
                 comment: 'This is a comment',
                 status: 'in_progress',
                 internal_comment: 'This is an internal comment',
@@ -47,7 +47,7 @@ describe('annotation.validator', () => {
 
             expect(validatedAnnotation).toStrictEqual({
                 resourceId: 'uid:/2a8d429f-8134-4502-b9d3-d20c571592fa',
-                fieldId: null,
+                itemPath: null,
                 comment: 'This is a comment',
             });
         });
@@ -59,10 +59,6 @@ describe('annotation.validator', () => {
 
             expect(success).toBe(false);
             expect(error.errors).toMatchObject([
-                {
-                    path: ['resourceId'],
-                    message: 'error_required',
-                },
                 {
                     path: ['comment'],
                     message: 'annotation_comment_min_length',

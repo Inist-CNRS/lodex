@@ -1,10 +1,11 @@
 import { default as z } from 'zod';
 
 export const annotationSchema = z.object({
-    resourceId: z.string({
-        required_error: 'error_required',
-    }),
-    fieldId: z.string().nullish().default(null),
+    resourceId: z.string().nullish().default(null),
+    // A path that points to the field / item of a field that the annotation is about.
+    // MUST be compatible with _.get
+    // See https://lodash.com/docs/4.17.15#get
+    itemPath: z.array(z.string()).nullish().default(null),
     comment: z
         .string({
             required_error: 'error_required',
