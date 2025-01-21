@@ -1,4 +1,7 @@
-import { ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
+import {
+    createTheme,
+    ThemeProvider as MuiThemeProvider,
+} from '@mui/material/styles';
 import { render } from '@testing-library/react';
 import { createMemoryHistory } from 'history';
 import PropTypes from 'prop-types';
@@ -8,16 +11,22 @@ import { Provider } from 'react-redux';
 import sagas from './app/js/admin/sagas';
 import configureStore from './app/js/configureStore';
 import reducers from './app/js/public/reducers';
+import defaultMuiTheme from './app/custom/themes/default/defaultTheme';
+
+// custom/themes/default/defaultTheme';
 
 global.__DEBUG__ = false;
 
 const memoryHistory = createMemoryHistory();
 
 const { store } = configureStore(reducers, sagas, {}, memoryHistory);
+const theme = createTheme(defaultMuiTheme, {
+    userAgent: navigator.userAgent,
+});
 
 const Wrapper = ({ children }) => (
     <Provider store={store}>
-        <MuiThemeProvider>{children}</MuiThemeProvider>
+        <MuiThemeProvider theme={theme}>{children}</MuiThemeProvider>
     </Provider>
 );
 
