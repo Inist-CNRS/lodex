@@ -91,17 +91,15 @@ const AppbarComponent = ({
                             <span>{translate('display')}</span>
                         </Button>
                     )}
-                    {hasLoadedDataset && (
-                        <Button
-                            component={NavLink}
-                            to="/annotations"
-                            variant="text"
-                            startIcon={<MapsUgcIcon />}
-                            sx={styles.button}
-                        >
-                            <span>{translate('annotations')}</span>
-                        </Button>
-                    )}
+                    <Button
+                        component={NavLink}
+                        to="/annotations"
+                        variant="text"
+                        startIcon={<MapsUgcIcon />}
+                        sx={styles.button}
+                    >
+                        <span>{translate('annotations')}</span>
+                    </Button>
                 </>
             )}
         </Box>
@@ -157,10 +155,12 @@ AppbarComponent.defaultProps = {
     isLoading: false,
 };
 
-export default connect((state) => ({
+const mapStateToProps = (state) => ({
     hasLoadedDataset: fromParsing.hasUploadedFile(state),
     isLoading: state.loading,
     isAdmin: fromUser.isAdmin(state),
     hasPublishedDataset: fromPublication.hasPublishedDataset(state),
     invalidFields: fromFields.getInvalidFields(state),
-}))(AppbarComponent);
+});
+
+export default connect(mapStateToProps)(AppbarComponent);

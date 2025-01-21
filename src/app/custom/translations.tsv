@@ -1200,3 +1200,5 @@
 "annotation_query_perPage_length"	"The number of elements per page must be between 1 and 100"	"Le nombre d'éléments par page doit être compris entre 1 et 100"
 "field_annotable"	"This field can be annotated"	"Ce champ peut être annoté"
 "annotations"	"Annotations"	"Annotations"
+"annotation.resourceId"	"Resource title"	"Titre de la ressource"
+"annotation_qery_error"	"Could not retrieve annotations"	"Impossible de récupérer les annotations"
