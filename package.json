@@ -284,5 +284,10 @@
         "mongodbMemoryServer": {
             "version": "7.0.9"
         }
+    },
+    "overrides": {
+        "@remix-run/server-runtime": {
+            "cookie": "0.7.2"
+        }
     }
 }
