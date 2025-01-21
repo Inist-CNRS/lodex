@@ -1,19 +1,20 @@
 import '@babel/polyfill';
-import 'url-api-polyfill';
 import { createBrowserHistory } from 'history';
 import React from 'react';
 import { hydrate } from 'react-dom';
 import { Provider } from 'react-redux';
+import 'url-api-polyfill';
 
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { Router } from 'react-router-dom';
+import getLocale from '../../../common/getLocale';
+import configureStore from '../configureStore';
+import { I18N } from '../i18n/I18NContext';
+import phrasesFor from '../i18n/translations';
+import LodexThemeProvider from './LodexThemeProvider';
 import reducers from './reducers';
 import Routes from './Routes';
 import sagas from './sagas';
-import configureStore from '../configureStore';
-import phrasesFor from '../i18n/translations';
-import getLocale from '../../../common/getLocale';
-import LodexThemeProvider from './LodexThemeProvider';
-import { Router } from 'react-router-dom';
-import { I18N } from '../i18n/I18NContext';
 
 const locale = getLocale();
 const initialState = {
@@ -38,14 +39,18 @@ const { store, history } = configureStore(
     browserHistory,
 );
 
+const queryClient = new QueryClient();
+
 hydrate(
     <Provider {...{ store }}>
         <I18N>
-            <Router history={history}>
-                <LodexThemeProvider>
-                    <Routes history={history} tenant={window.__TENANT__} />
-                </LodexThemeProvider>
-            </Router>
+            <QueryClientProvider client={queryClient}>
+                <Router history={history}>
+                    <LodexThemeProvider>
+                        <Routes history={history} tenant={window.__TENANT__} />
+                    </LodexThemeProvider>
+                </Router>
+            </QueryClientProvider>
         </I18N>
     </Provider>,
     document.getElementById('root'),

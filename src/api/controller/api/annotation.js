@@ -1,9 +1,11 @@
 import Koa from 'koa';
+import koaBodyParser from 'koa-bodyparser';
 import route from 'koa-route';
+
 import {
     annotationSchema,
     getAnnotationsQuerySchema,
-} from './annotation.validator';
+} from './../../../common/validator/annotation.validator';
 
 /**
  * @param {Koa.Context} ctx
@@ -73,7 +75,8 @@ export async function getAnnotations(ctx) {
 
 const app = new Koa();
 
-app.use(route.post('/', createAnnotation));
 app.use(route.get('/', getAnnotations));
+app.use(koaBodyParser());
+app.use(route.post('/', createAnnotation));
 
 export default app;

@@ -76,6 +76,7 @@ describe('annotation', () => {
             const annotation = {
                 resourceId: 'uid:/a4f7a51f-7109-481e-86cc-0adb3a26faa6',
                 itemPath: ['Gb4a'],
+                kind: 'comment',
                 comment: 'Hello world',
             };
 

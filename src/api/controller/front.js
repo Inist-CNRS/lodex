@@ -1,34 +1,35 @@
 /* eslint-disable no-useless-escape */
-import React from 'react';
 import { StyleSheetServer } from 'aphrodite/no-important';
+import React from 'react';
+import { renderToString } from 'react-dom/server';
 import { Provider } from 'react-redux';
 import { StaticRouter } from 'react-router';
-import { renderToString } from 'react-dom/server';
 
-import path from 'path';
-import Koa from 'koa';
-import serve from 'koa-static';
-import route from 'koa-route';
-import mount from 'koa-mount';
-import { END } from 'redux-saga';
-import jwt from 'koa-jwt';
-import jsonwebtoken from 'jsonwebtoken';
 import { auth, istexApiUrl, jsHost, mongo, themesHost } from 'config';
-import pick from 'lodash/pick';
 import { createMemoryHistory } from 'history';
+import jsonwebtoken from 'jsonwebtoken';
+import Koa from 'koa';
+import jwt from 'koa-jwt';
+import mount from 'koa-mount';
+import route from 'koa-route';
+import serve from 'koa-static';
+import pick from 'lodash/pick';
+import path from 'path';
+import { END } from 'redux-saga';
 
-import reducers from '../../app/js/public/reducers';
-import sagas from '../../app/js/public/sagas';
 import configureStoreServer from '../../app/js/configureStoreServer';
+import reducers from '../../app/js/public/reducers';
 import Routes from '../../app/js/public/Routes';
-import translations from '../services/translations';
+import sagas from '../../app/js/public/sagas';
 import getLocale from '../../common/getLocale';
+import translations from '../services/translations';
 
-import { getPublication } from './api/publication';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { Router } from 'react-router-dom';
 import getCatalogFromArray from '../../common/fields/getCatalogFromArray.js';
 import { DEFAULT_TENANT } from '../../common/tools/tenantTools';
 import { renderAdmin, renderPublic, renderRootAdmin } from '../models/front';
-import { Router } from 'react-router-dom';
+import { getPublication } from './api/publication';
 
 const getDefaultInitialState = (ctx, token, cookie, locale) => ({
     enableAutoPublication: ctx.configTenant.enableAutoPublication,
@@ -105,6 +106,8 @@ const getInitialState = async (token, cookie, locale, ctx) => {
     };
 };
 
+const queryClient = new QueryClient();
+
 export const getPreloadedState = async (
     unConnectedHistory,
     token,
@@ -126,9 +129,11 @@ export const getPreloadedState = async (
         renderToString(
             <StaticRouter location={url} context={context}>
                 <Provider {...{ store }}>
-                    <Router history={history}>
-                        <Routes history={history} tenant={ctx.tenant} />
-                    </Router>
+                    <QueryClientProvider client={queryClient}>
+                        <Router history={history}>
+                            <Routes history={history} tenant={ctx.tenant} />
+                        </Router>
+                    </QueryClientProvider>
                 </Provider>
             </StaticRouter>,
         ),

@@ -2,16 +2,23 @@ import { default as z } from 'zod';
 
 export const annotationSchema = z.object({
     resourceId: z.string().nullish().default(null),
+    kind: z.enum(['correction', 'comment']).nullish().default('comment'),
     // A path that points to the field / item of a field that the annotation is about.
     // MUST be compatible with _.get
     // See https://lodash.com/docs/4.17.15#get
-    itemPath: z.array(z.string()).nullish().default(null),
+    itemPath: z
+        .array(z.string(), {
+            message: 'annotation_itemPath_invalid',
+        })
+        .nullish()
+        .default(null),
     comment: z
         .string({
             required_error: 'error_required',
         })
+        .trim()
         .min(1, {
-            message: 'annotation_comment_min_length',
+            message: 'error_required',
         }),
 });
 
