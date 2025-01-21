@@ -208,6 +208,9 @@ export default async (db) => {
 
     collection.findByUri = (uri) => collection.findOne({ uri });
 
+    collection.findManyByUris = (uris) =>
+        collection.find({ uri: { $in: uris } });
+
     collection.addVersion = async (
         resource,
         newVersion,

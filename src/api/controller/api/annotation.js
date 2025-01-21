@@ -65,11 +65,23 @@ export async function getAnnotations(ctx) {
         ctx.annotation.count(query),
     ]);
 
+    const resources = await ctx.publishedDataset.findManyByUris(
+        annotations.map(({ resourceId }) => resourceId),
+    );
+
+    const resourceByUri = resources.reduce(
+        (acc, resource) => ({ ...acc, [resource.uri]: resource }),
+        {},
+    );
+
     ctx.response.status = 200;
     ctx.body = {
         total: annotations.length,
         fullTotal,
-        data: annotations,
+        data: annotations.map((annotation) => ({
+            ...annotation,
+            resource: resourceByUri[annotation.resourceId],
+        })),
     };
 }
 
