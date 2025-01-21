@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState, lazy, Suspense } from 'react';
 import { polyglot as polyglotPropTypes } from '../../../propTypes';
 import compose from 'recompose/compose';
 import get from 'lodash/get';
@@ -8,7 +8,10 @@ import injectData from '../../injectData';
 import FormatFullScreenMode from '../../utils/components/FormatFullScreenMode';
 import MouseIcon from '../../utils/components/MouseIcon';
 import PropTypes from 'prop-types';
-import ForceGraph2D from 'react-force-graph-2d';
+
+const ForceGraph2D = lazy(
+    () => import(/* webpackMode: "eager" */ 'react-force-graph-2d'),
+);
 
 const styles = {
     container: {
@@ -152,60 +155,63 @@ const Network = ({ formatData, p, colorSet }) => {
     return (
         <FormatFullScreenMode>
             <div style={styles.container}>
-                <ForceGraph2D
-                    graphData={{ nodes, links }}
-                    nodeCanvasObject={(node, ctx, globalScale) => {
-                        if (
-                            highlightedNodes.length === 0 ||
-                            highlightedNodes.some(
-                                (highlightNode) => highlightNode.id === node.id,
-                            )
-                        ) {
+                <Suspense fallback={<div>Loading...</div>}>
+                    <ForceGraph2D
+                        graphData={{ nodes, links }}
+                        nodeCanvasObject={(node, ctx, globalScale) => {
+                            if (
+                                highlightedNodes.length === 0 ||
+                                highlightedNodes.some(
+                                    (highlightNode) =>
+                                        highlightNode.id === node.id,
+                                )
+                            ) {
+                                ctx.globalAlpha = 1;
+                            } else {
+                                ctx.globalAlpha = 0.1;
+                            }
+                            const fontSize = 12 / globalScale;
+                            const circleRadius = node.radius;
+
+                            ctx.font = `${fontSize}px Sans-Serif`;
+                            ctx.textAlign = 'center';
+                            ctx.textBaseline = 'middle';
+                            ctx.fillStyle = 'black';
+                            ctx.fillText(
+                                node.label,
+                                node.x,
+                                node.y + circleRadius + fontSize,
+                            );
+
+                            ctx.fillStyle = colorSet[0];
+                            ctx.beginPath();
+                            ctx.arc(
+                                node.x,
+                                node.y,
+                                circleRadius,
+                                0,
+                                2 * Math.PI,
+                                false,
+                            );
+                            ctx.fill();
                             ctx.globalAlpha = 1;
-                        } else {
-                            ctx.globalAlpha = 0.1;
+                        }}
+                        linkVisibility={(link) =>
+                            highlightedLinks.length === 0 ||
+                            highlightedLinks.some(
+                                (highlightedLink) =>
+                                    highlightedLink.source === link.source &&
+                                    highlightedLink.target === link.target,
+                            )
+                                ? true
+                                : false
                         }
-                        const fontSize = 12 / globalScale;
-                        const circleRadius = node.radius;
-
-                        ctx.font = `${fontSize}px Sans-Serif`;
-                        ctx.textAlign = 'center';
-                        ctx.textBaseline = 'middle';
-                        ctx.fillStyle = 'black';
-                        ctx.fillText(
-                            node.label,
-                            node.x,
-                            node.y + circleRadius + fontSize,
-                        );
-
-                        ctx.fillStyle = colorSet[0];
-                        ctx.beginPath();
-                        ctx.arc(
-                            node.x,
-                            node.y,
-                            circleRadius,
-                            0,
-                            2 * Math.PI,
-                            false,
-                        );
-                        ctx.fill();
-                        ctx.globalAlpha = 1;
-                    }}
-                    linkVisibility={(link) =>
-                        highlightedLinks.length === 0 ||
-                        highlightedLinks.some(
-                            (highlightedLink) =>
-                                highlightedLink.source === link.source &&
-                                highlightedLink.target === link.target,
-                        )
-                            ? true
-                            : false
-                    }
-                    onNodeClick={handleNodeClick}
-                    onNodeHover={handleNodeHover}
-                    enableNodeDrag={false}
-                    cooldownTime={cooldownTime}
-                />
+                        onNodeClick={handleNodeClick}
+                        onNodeHover={handleNodeHover}
+                        enableNodeDrag={false}
+                        cooldownTime={cooldownTime}
+                    />
+                </Suspense>
 
                 <div>{<MouseIcon polyglot={p} />}</div>
             </div>
