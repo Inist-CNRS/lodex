@@ -21,6 +21,7 @@ import {
     Toolbar,
     Link as MuiLink,
 } from '@mui/material';
+import MapsUgcIcon from '@mui/icons-material/MapsUgc';
 import { useTranslate } from '../../i18n/I18NContext';
 
 const styles = {
@@ -88,6 +89,17 @@ const AppbarComponent = ({
                             sx={styles.button}
                         >
                             <span>{translate('display')}</span>
+                        </Button>
+                    )}
+                    {hasLoadedDataset && (
+                        <Button
+                            component={NavLink}
+                            to="/annotations"
+                            variant="text"
+                            startIcon={<MapsUgcIcon />}
+                            sx={styles.button}
+                        >
+                            <span>{translate('annotations')}</span>
                         </Button>
                     )}
                 </>
