@@ -26,9 +26,7 @@ const annotation = {
 jest.mock('../lib/fetch', () =>
     jest.fn().mockImplementation(() => {
         return Promise.resolve({
-            response: {
-                json: () => Promise.resolve({ annotation }),
-            },
+            response: { total: 1, data: annotation },
             error: null,
         });
     }),

@@ -1,7 +1,7 @@
 import { default as z } from 'zod';
 
 export const annotationSchema = z.object({
-    resourceId: z.string().nullish().default(null),
+    resourceUri: z.string().nullish().default(null),
     kind: z.enum(['correction', 'comment']).nullish().default('comment'),
     // A path that points to the field / item of a field that the annotation is about.
     // MUST be compatible with _.get
@@ -24,7 +24,7 @@ export const annotationSchema = z.object({
 
 const annotationFilterableFields = z
     .record(
-        z.enum(['resourceId', 'fieldId'], {
+        z.enum(['resourceUri', 'fieldId'], {
             message: 'annotation_query_match_invalid_key',
         }),
         z
@@ -37,7 +37,7 @@ const annotationFilterableFields = z
     .default({});
 
 const annotationSortableFields = z
-    .enum(['resourceId', 'fieldId', 'createdAt', 'updatedAt'], {
+    .enum(['resourceUri', 'fieldId', 'createdAt', 'updatedAt'], {
         message: 'annotation_query_sortBy_invalid',
     })
     .default('createdAt');

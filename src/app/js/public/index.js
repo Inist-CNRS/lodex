@@ -16,6 +16,8 @@ import reducers from './reducers';
 import Routes from './Routes';
 import sagas from './sagas';
 
+import 'react-toastify/dist/ReactToastify.css';
+
 const locale = getLocale();
 const initialState = {
     polyglot: {

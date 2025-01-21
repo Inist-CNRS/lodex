@@ -13,9 +13,7 @@ const queryClient = new QueryClient();
 jest.mock('../lib/fetch', () =>
     jest.fn().mockImplementation(({ body }) => {
         return Promise.resolve({
-            response: {
-                json: () => Promise.resolve(JSON.parse(body)),
-            },
+            response: { total: 1, data: body },
             error: null,
         });
     }),
@@ -102,7 +100,7 @@ describe('CreateAnnotationButton', () => {
             expect.objectContaining({
                 url: '/api/annotation',
                 method: 'POST',
-                body: '{"comment":"test","resourceId":"uid:/0579J7JN","itemPath":["1ddbe5dc-f945-4d38-9c5b-ef20f78cb0cc"]}',
+                body: '{"comment":"test","resourceUri":"uid:/0579J7JN","itemPath":["1ddbe5dc-f945-4d38-9c5b-ef20f78cb0cc"]}',
             }),
         );
     });

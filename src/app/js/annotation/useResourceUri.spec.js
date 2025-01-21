@@ -2,7 +2,7 @@ import { renderHook } from '@testing-library/react-hooks';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { MemoryRouter, Route, Switch } from 'react-router-dom';
-import { useResourceId } from './useResourceId';
+import { useResourceUri } from './useResourceUri';
 
 function TestRouter({ children, ...rest }) {
     return (
@@ -22,9 +22,9 @@ TestRouter.propTypes = {
     initialIndex: PropTypes.number,
 };
 
-describe('useResourceId', () => {
+describe('useResourceUri', () => {
     it('should return resource id for UID resources', () => {
-        const { result } = renderHook(() => useResourceId(), {
+        const { result } = renderHook(() => useResourceUri(), {
             wrapper: TestRouter,
             initialProps: {
                 initialEntries: ['/uid:/0579J7JN'],
@@ -36,7 +36,7 @@ describe('useResourceId', () => {
     });
 
     it('should return resource id for ARK resources', () => {
-        const { result } = renderHook(() => useResourceId(), {
+        const { result } = renderHook(() => useResourceUri(), {
             wrapper: TestRouter,
             initialProps: {
                 initialEntries: ['/ark:/67375/1BB-1JGMFXJK-2'],
@@ -48,7 +48,7 @@ describe('useResourceId', () => {
     });
 
     it('should return null otherwise', () => {
-        const { result } = renderHook(() => useResourceId(), {
+        const { result } = renderHook(() => useResourceUri(), {
             wrapper: TestRouter,
         });
 

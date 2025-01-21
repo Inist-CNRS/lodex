@@ -6,12 +6,12 @@ import React, { useCallback, useMemo, useState } from 'react';
 import { useTranslate } from '../i18n/I18NContext';
 import { CreateAnnotationModal } from './CreateAnnotationModal';
 import { useCreateAnnotation } from './useCreateAnnotation';
-import { useResourceId } from './useResourceId';
+import { useResourceUri } from './useResourceUri';
 
 export function CreateAnnotationButton({ field }) {
     const { translate } = useTranslate();
 
-    const resourceId = useResourceId();
+    const resourceUri = useResourceUri();
     const itemPath = useMemo(() => {
         if (field) {
             return [field._id];
@@ -36,7 +36,7 @@ export function CreateAnnotationButton({ field }) {
         async (annotation) => {
             await handleCreateAnnotation({
                 ...annotation,
-                resourceId,
+                resourceUri,
                 itemPath,
             });
 

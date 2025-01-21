@@ -26,22 +26,23 @@ export function useCreateAnnotation() {
                 throw error;
             }
 
-            return response.json();
+            return response.data;
+        },
+        onSuccess: () => {
+            toast(translate('annotation_create_success'), {
+                type: toast.TYPE.SUCCESS,
+            });
+        },
+        onError: () => {
+            toast(translate('annotation_create_error'), {
+                type: toast.TYPE.ERROR,
+            });
         },
     });
 
     const handleCreateAnnotation = useCallback(
         async (annotation) => {
-            try {
-                await mutation.mutateAsync(annotation);
-                toast(translate('annotation_create_success'), {
-                    type: toast.TYPE.SUCCESS,
-                });
-            } catch (e) {
-                toast(translate('annotation_create_error'), {
-                    type: toast.TYPE.ERROR,
-                });
-            }
+            return mutation.mutateAsync(annotation);
         },
         [mutation, translate],
     );

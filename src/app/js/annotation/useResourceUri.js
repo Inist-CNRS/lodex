@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { useRouteMatch } from 'react-router';
 
-export function useResourceId() {
+export function useResourceUri() {
     const routeMatch = useRouteMatch();
 
     return useMemo(() => {

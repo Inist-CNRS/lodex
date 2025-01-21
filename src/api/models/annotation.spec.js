@@ -8,7 +8,7 @@ const listCollections = {
 const NOW = new Date();
 const ANNOTATIONS = [
     {
-        resourceId: 'uid:/2a8d429f-8134-4502-b9d3-d20c571592fa',
+        resourceUri: 'uid:/2a8d429f-8134-4502-b9d3-d20c571592fa',
         itemPath: ['GvaF'],
         kind: 'comment',
         authorName: 'Developer',
@@ -18,7 +18,7 @@ const ANNOTATIONS = [
         internal_comment: 'This is an internal comment',
     },
     {
-        resourceId: 'uid:/65257776-4e3c-44f6-8652-85502a97e5ac',
+        resourceUri: 'uid:/65257776-4e3c-44f6-8652-85502a97e5ac',
         itemPath: null,
         kind: 'comment',
         authorName: 'John DOE',
@@ -28,7 +28,7 @@ const ANNOTATIONS = [
         internal_comment: null,
     },
     {
-        resourceId: 'uid:/d4f1e376-d5dd-4853-b515-b7f63b34d67d',
+        resourceUri: 'uid:/d4f1e376-d5dd-4853-b515-b7f63b34d67d',
         itemPath: null,
         kind: 'correction',
         authorName: 'Jane SMITH',
@@ -113,7 +113,7 @@ describe('annotation', () => {
     describe('create', () => {
         it('should create a new annotation', async () => {
             const annotation = {
-                resourceId: 'uid:/a4f7a51f-7109-481e-86cc-0adb3a26faa6',
+                resourceUri: 'uid:/a4f7a51f-7109-481e-86cc-0adb3a26faa6',
                 itemPath: ['Gb4a'],
                 kind: 'comment',
                 authorName: 'Rick HARRIS',
@@ -168,7 +168,7 @@ describe('annotation', () => {
     describe('count', () => {
         it('should return document count', async () => {
             const count = await annotationModel.count({
-                resourceId: 'uid:/2a8d429f-8134-4502-b9d3-d20c571592fa',
+                resourceUri: 'uid:/2a8d429f-8134-4502-b9d3-d20c571592fa',
             });
 
             expect(count).toBe(3);
