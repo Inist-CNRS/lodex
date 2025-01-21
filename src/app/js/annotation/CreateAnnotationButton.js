@@ -1,12 +1,16 @@
 import MapsUgcIcon from '@mui/icons-material/MapsUgc';
-import { IconButton } from '@mui/material';
+import { IconButton, Tooltip } from '@mui/material';
 import PropTypes from 'prop-types';
 import React, { useCallback, useMemo, useState } from 'react';
+
+import { useTranslate } from '../i18n/I18NContext';
 import { CreateAnnotationModal } from './CreateAnnotationModal';
 import { useCreateAnnotation } from './useCreateAnnotation';
 import { useResourceId } from './useResourceId';
 
 export function CreateAnnotationButton({ field }) {
+    const { translate } = useTranslate();
+
     const resourceId = useResourceId();
     const itemPath = useMemo(() => {
         if (field) {
@@ -41,6 +45,10 @@ export function CreateAnnotationButton({ field }) {
         [field],
     );
 
+    const buttonLabel = translate('annotation_create_button_label', {
+        field: field.label,
+    });
+
     return (
         <>
             <CreateAnnotationModal
@@ -50,13 +58,19 @@ export function CreateAnnotationButton({ field }) {
                 onSubmit={handleSubmitAnnotation}
             />
 
-            <IconButton color="primary" onClick={handleOpenModal}>
-                <MapsUgcIcon
-                    sx={{
-                        fontSize: '1.2rem',
-                    }}
-                />
-            </IconButton>
+            <Tooltip title={buttonLabel} arrow placement="top">
+                <IconButton
+                    color="primary"
+                    onClick={handleOpenModal}
+                    aria-label={buttonLabel}
+                >
+                    <MapsUgcIcon
+                        sx={{
+                            fontSize: '1.2rem',
+                        }}
+                    />
+                </IconButton>
+            </Tooltip>
         </>
     );
 }

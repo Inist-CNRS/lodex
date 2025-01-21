@@ -36,7 +36,6 @@ jest.mock('../lib/fetch', () =>
 
 describe('useCreateAnnotation', () => {
     beforeEach(() => {
-        jest.clearAllMocks();
         window.sessionStorage.setItem(
             'redux-localstorage',
             JSON.stringify({ user: { token: 'token' } }),
@@ -45,6 +44,7 @@ describe('useCreateAnnotation', () => {
 
     afterEach(() => {
         window.sessionStorage.clear();
+        jest.clearAllMocks();
     });
 
     it('should call POST /api/annotation with annotation body', async () => {

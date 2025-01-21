@@ -2,7 +2,7 @@ import '@testing-library/jest-dom';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import { act, fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { TestI18N } from '../i18n/I18NContext';
 import { CreateAnnotationModal } from './CreateAnnotationModal';
 
@@ -29,7 +29,7 @@ describe('CreateAnnotationModal', () => {
         onSubmit.mockClear();
     });
 
-    describe.skip('actions', () => {
+    describe('actions', () => {
         it('should enable actions when not submitting', () => {
             render(
                 <TestModal
@@ -65,7 +65,7 @@ describe('CreateAnnotationModal', () => {
             ).toBeDisabled();
         });
 
-        it('should call onClose when closing modal', () => {
+        it('should call onClose when closing modal', async () => {
             render(
                 <TestModal
                     onClose={onClose}
@@ -74,14 +74,14 @@ describe('CreateAnnotationModal', () => {
                 />,
             );
 
-            act(() => {
+            await waitFor(() => {
                 fireEvent.click(screen.getByRole('button', { name: 'cancel' }));
             });
 
             expect(onClose).toHaveBeenCalledTimes(1);
         });
 
-        it('should submit form values', () => {
+        it('should submit form values', async () => {
             render(
                 <TestModal
                     onClose={onClose}
@@ -90,11 +90,25 @@ describe('CreateAnnotationModal', () => {
                 />,
             );
 
-            act(() => {
-                fireEvent.click(screen.getByRole('button', { name: 'cancel' }));
+            await waitFor(() => {
+                fireEvent.change(
+                    screen.getByRole('textbox', { name: 'annotation_comment' }),
+                    {
+                        target: { value: 'test' },
+                    },
+                );
             });
 
-            expect(onClose).toHaveBeenCalledTimes(1);
+            await waitFor(() => {
+                fireEvent.click(
+                    screen.getByRole('button', { name: 'validate' }),
+                );
+            });
+
+            expect(onSubmit).toHaveBeenCalledTimes(1);
+            expect(onSubmit).toHaveBeenCalledWith({
+                comment: 'test',
+            });
         });
     });
 
@@ -116,7 +130,7 @@ describe('CreateAnnotationModal', () => {
             ).toBeInTheDocument();
         });
 
-        it('should not display an error when field is valid', () => {
+        it('should not display an error when field is valid', async () => {
             render(
                 <TestModal
                     onClose={onClose}
@@ -125,7 +139,7 @@ describe('CreateAnnotationModal', () => {
                 />,
             );
 
-            act(() => {
+            await waitFor(() => {
                 fireEvent.change(
                     screen.getByRole('textbox', { name: 'annotation_comment' }),
                     {
@@ -145,7 +159,7 @@ describe('CreateAnnotationModal', () => {
             expect(screen.queryAllByRole('error_required')).toHaveLength(0);
         });
 
-        it('should display an error when field is not valid', () => {
+        it('should display an error when field is not valid', async () => {
             render(
                 <TestModal
                     onClose={onClose}
@@ -154,7 +168,7 @@ describe('CreateAnnotationModal', () => {
                 />,
             );
 
-            act(() => {
+            await waitFor(() => {
                 fireEvent.change(
                     screen.getByRole('textbox', { name: 'annotation_comment' }),
                     {
@@ -167,7 +181,7 @@ describe('CreateAnnotationModal', () => {
                 screen.getByRole('textbox', { name: 'annotation_comment' }),
             ).toBeValid();
 
-            act(() => {
+            await waitFor(() => {
                 fireEvent.change(
                     screen.getByRole('textbox', { name: 'annotation_comment' }),
                     {

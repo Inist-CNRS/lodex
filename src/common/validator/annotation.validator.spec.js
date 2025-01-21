@@ -81,7 +81,7 @@ describe('annotation.validator', () => {
             expect(error.errors).toMatchObject([
                 {
                     path: ['comment'],
-                    message: 'annotation_comment_min_length',
+                    message: 'error_required',
                 },
             ]);
         });
