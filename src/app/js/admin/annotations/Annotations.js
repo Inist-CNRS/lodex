@@ -4,6 +4,7 @@ import Loading from '../../lib/components/Loading';
 import { useTranslate } from '../../i18n/I18NContext';
 import { DataGrid } from '@mui/x-data-grid';
 import AdminOnlyAlert from '../../lib/components/AdminOnlyAlert';
+import { ResourceCell } from './ResourceCell';
 
 export const Annotations = () => {
     const { translate } = useTranslate();
@@ -14,6 +15,7 @@ export const Annotations = () => {
     }
 
     if (error) {
+        console.error(error);
         return <AdminOnlyAlert>{translate('annotation_error')}</AdminOnlyAlert>;
     }
 
@@ -26,9 +28,12 @@ export const Annotations = () => {
                     flex: 1,
                 },
                 {
-                    field: 'resourceId',
-                    headerName: translate('annotation.resourceId'),
+                    field: 'resource',
+                    headerName: translate('annotation.resource'),
                     flex: 1,
+                    renderCell: ({ value }) => {
+                        return <ResourceCell resource={value} />;
+                    },
                 },
             ]}
             rows={data?.data}

@@ -1202,3 +1202,5 @@
 "annotations"	"Annotations"	"Annotations"
 "annotation.resourceId"	"Resource title"	"Titre de la ressource"
 "annotation_qery_error"	"Could not retrieve annotations"	"Impossible de récupérer les annotations"
+"annotation.resource"	"Resource"	"Ressource"
+"annotation_qery_error"	"Could not retrieve annotations"	"Impossible de récupérer les annotations"

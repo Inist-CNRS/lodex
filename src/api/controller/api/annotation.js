@@ -66,11 +66,21 @@ export async function getAnnotations(ctx) {
     ]);
 
     const resources = await ctx.publishedDataset.findManyByUris(
-        annotations.map(({ resourceId }) => resourceId),
+        annotations.map(({ resourceUri }) => resourceUri),
     );
 
-    const resourceByUri = resources.reduce(
-        (acc, resource) => ({ ...acc, [resource.uri]: resource }),
+    const titleField = await ctx.field.findTitle();
+
+    const resourceByUri = (resources || []).reduce(
+        (acc, resource) => ({
+            ...acc,
+            [resource.uri]: {
+                uri: resource.uri,
+                title: resource.versions[resource.versions.length - 1][
+                    titleField.name
+                ],
+            },
+        }),
         {},
     );
 
@@ -80,7 +90,7 @@ export async function getAnnotations(ctx) {
         fullTotal,
         data: annotations.map((annotation) => ({
             ...annotation,
-            resource: resourceByUri[annotation.resourceId],
+            resource: resourceByUri[annotation.resourceUri],
         })),
     };
 }

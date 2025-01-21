@@ -209,7 +209,7 @@ export default async (db) => {
     collection.findByUri = (uri) => collection.findOne({ uri });
 
     collection.findManyByUris = (uris) =>
-        collection.find({ uri: { $in: uris } });
+        collection.find({ uri: { $in: uris } }).toArray();
 
     collection.addVersion = async (
         resource,

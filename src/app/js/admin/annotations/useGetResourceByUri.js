@@ -3,7 +3,7 @@ import fetch from '../../lib/fetch';
 import { getUserSessionStorageInfo } from '../api/tools';
 import { getRequest } from '../../user';
 
-export function useGetAnnotations() {
+export function useGetResourceByUri(uri) {
     return useQuery({
         queryFn: async () => {
             const { token } = getUserSessionStorageInfo();
@@ -11,7 +11,7 @@ export function useGetAnnotations() {
                 { token },
                 {
                     method: 'GET',
-                    url: '/api/annotation',
+                    url: `/api/publishedDataset/ark?uri=${uri}`,
                 },
             );
             const { response, error } = await fetch(request);
