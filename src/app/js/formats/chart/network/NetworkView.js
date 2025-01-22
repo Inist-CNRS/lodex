@@ -8,6 +8,8 @@ import injectData from '../../injectData';
 import FormatFullScreenMode from '../../utils/components/FormatFullScreenMode';
 import MouseIcon from '../../utils/components/MouseIcon';
 import PropTypes from 'prop-types';
+import Loading from '../../../lib/components/Loading';
+import { useTranslate } from '../../../i18n/I18NContext';
 
 const ForceGraph2D = lazy(
     () => import(/* webpackMode: "eager" */ 'react-force-graph-2d'),
@@ -22,6 +24,7 @@ const styles = {
 };
 
 const Network = ({ formatData, p, colorSet }) => {
+    const { translate } = useTranslate();
     const [cooldownTime, setCooldownTime] = useState(10000);
     const [selectedNode, setSelectedNode] = useState(null);
     const [highlightedNodes, setHighlightedNodes] = useState([]);
@@ -155,7 +158,7 @@ const Network = ({ formatData, p, colorSet }) => {
     return (
         <FormatFullScreenMode>
             <div style={styles.container}>
-                <Suspense fallback={<div>Loading...</div>}>
+                <Suspense fallback={<Loading>{translate('loading')}</Loading>}>
                     <ForceGraph2D
                         graphData={{ nodes, links }}
                         nodeCanvasObject={(node, ctx, globalScale) => {
