@@ -6,6 +6,7 @@ import {
     annotationSchema,
     getAnnotationsQuerySchema,
 } from './../../../common/validator/annotation.validator';
+import { buildQuery } from './buildQuery';
 
 /**
  * @param {Koa.Context} ctx
@@ -48,11 +49,16 @@ export async function getAnnotations(ctx) {
     const {
         page,
         perPage: limit,
-        match: query,
         sortBy,
         sortDir,
+        filterBy,
+        filterValue,
+        filterOperator,
     } = validation.data;
+
     const skip = page * limit;
+
+    const query = buildQuery(filterBy, filterOperator, filterValue);
 
     const [annotations, fullTotal] = await Promise.all([
         ctx.annotation.findLimitFromSkip({

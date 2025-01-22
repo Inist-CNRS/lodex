@@ -21,13 +21,13 @@ export default async (db) => {
         limit = 10,
         query = {},
         sortBy = null,
-        sortDir = 'ASC',
+        sortDir = 'asc',
     } = {}) {
         return annotationCollection
             .find(query)
             .sort(
                 sortBy && sortDir
-                    ? { [sortBy]: sortDir === 'ASC' ? 1 : -1 }
+                    ? { [sortBy]: sortDir === 'asc' ? 1 : -1 }
                     : {},
             )
             .skip(skip)
