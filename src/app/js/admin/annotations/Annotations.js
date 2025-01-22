@@ -16,7 +16,11 @@ export const Annotations = () => {
 
     if (error) {
         console.error(error);
-        return <AdminOnlyAlert>{translate('annotation_error')}</AdminOnlyAlert>;
+        return (
+            <AdminOnlyAlert>
+                {translate('annotation_query_error')}
+            </AdminOnlyAlert>
+        );
     }
 
     return (
