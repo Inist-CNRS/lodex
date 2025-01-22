@@ -1204,3 +1204,4 @@
 "annotation_qery_error"	"Could not retrieve annotations"	"Impossible de récupérer les annotations"
 "annotation.resource"	"Resource"	"Ressource"
 "annotation_qery_error"	"Could not retrieve annotations"	"Impossible de récupérer les annotations"
+"annotation.createdAt"	"Submission date"	"Date de soumission"

@@ -35,6 +35,14 @@ export const Annotations = () => {
                         return <ResourceCell resource={value} />;
                     },
                 },
+                {
+                    field: 'createdAt',
+                    headerName: translate('annotation.createdAt'),
+                    flex: 1,
+                    renderCell: ({ value }) => {
+                        return new Date(value).toLocaleString();
+                    },
+                },
             ]}
             rows={data?.data}
             getRowId={({ _id }) => _id}
