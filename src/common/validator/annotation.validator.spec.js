@@ -93,21 +93,20 @@ describe('annotation.validator', () => {
                 getAnnotationsQuerySchema.parse({
                     page: 1,
                     perPage: 50,
-                    match: {
-                        resourceUri:
-                            'uid:/2a8d429f-8134-4502-b9d3-d20c571592fa',
-                    },
+                    filterBy: 'resourceUri',
+                    filterOperator: 'contains',
+                    filterValue: 'uid:/2a8d429f-8134-4502-b9d3-d20c571592fa',
                     sortBy: 'updatedAt',
-                    sortDir: 'ASC',
+                    sortDir: 'asc',
                 }),
             ).toStrictEqual({
                 page: 1,
                 perPage: 50,
-                match: {
-                    resourceUri: 'uid:/2a8d429f-8134-4502-b9d3-d20c571592fa',
-                },
+                filterBy: 'resourceUri',
+                filterOperator: 'contains',
+                filterValue: 'uid:/2a8d429f-8134-4502-b9d3-d20c571592fa',
                 sortBy: 'updatedAt',
-                sortDir: 'ASC',
+                sortDir: 'asc',
             });
         });
 
@@ -115,9 +114,8 @@ describe('annotation.validator', () => {
             expect(getAnnotationsQuerySchema.parse({})).toStrictEqual({
                 page: 0,
                 perPage: 10,
-                match: {},
                 sortBy: 'createdAt',
-                sortDir: 'DESC',
+                sortDir: 'desc',
             });
         });
 
@@ -125,9 +123,9 @@ describe('annotation.validator', () => {
             const { success, error } = getAnnotationsQuerySchema.safeParse({
                 page: 'INVALID',
                 perPage: 1000,
-                match: {
-                    toto: { $text: 'tata' },
-                },
+                filterBy: 'toto',
+                filterOperator: 'contains',
+                filterValue: 'tata',
                 sortBy: 'INVALID',
                 sortDir: 'INVALID',
             });
@@ -143,20 +141,30 @@ describe('annotation.validator', () => {
                     message: 'annotation_query_perPage_length',
                 },
                 {
-                    path: ['match', 'toto'],
-                    message: 'annotation_query_match_invalid_key',
+                    path: ['filterBy'],
+                    code: 'invalid_enum_value',
+                    message: 'annotation_query_filter_by_invalid_key',
+                    options: ['resourceUri', 'fieldId', 'comment', 'createdAt'],
                 },
                 {
-                    path: ['match', 'toto'],
-                    message: 'annotation_query_match_invalid_value',
-                },
-                {
+                    code: 'invalid_enum_value',
                     path: ['sortBy'],
                     message: 'annotation_query_sortBy_invalid',
+                    options: [
+                        'resourceUri',
+                        'fieldId',
+                        'createdAt',
+                        'updatedAt',
+                        'comment',
+                    ],
+                    received: 'INVALID',
                 },
                 {
                     path: ['sortDir'],
+                    code: 'invalid_enum_value',
                     message: 'error_sortDir_invalid',
+                    options: ['asc', 'desc'],
+                    received: 'INVALID',
                 },
             ]);
         });

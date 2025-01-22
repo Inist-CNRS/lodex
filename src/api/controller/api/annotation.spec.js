@@ -35,6 +35,8 @@ const ANNOTATIONS = [
 describe('annotation', () => {
     let annotationList;
     let annotationModel;
+    let publishedDatasetModel;
+    let fieldModel;
 
     beforeEach(async () => {
         annotationList = structuredClone(ANNOTATIONS).map((annotation) => ({
@@ -69,6 +71,19 @@ describe('annotation', () => {
                 return Promise.resolve(annotationList.length);
             }),
         };
+
+        publishedDatasetModel = {
+            findManyByUris: jest.fn().mockImplementation((uris) =>
+                uris.map((uri) => ({
+                    uri,
+                    versions: [{ title: `title of resource ${uri}` }],
+                })),
+            ),
+        };
+
+        fieldModel = {
+            findTitle: jest.fn().mockImplementation(() => ({ name: 'title' })),
+        };
     });
 
     describe('createAnnotation', () => {
@@ -86,6 +101,8 @@ describe('annotation', () => {
                 },
                 response: {},
                 annotation: annotationModel,
+                publishedDataset: publishedDatasetModel,
+                field: fieldModel,
             };
 
             await createAnnotation(ctx);
@@ -115,6 +132,8 @@ describe('annotation', () => {
                 },
                 response: {},
                 annotation: annotationModel,
+                publishedDataset: publishedDatasetModel,
+                field: fieldModel,
             };
 
             await createAnnotation(ctx);
@@ -135,13 +154,15 @@ describe('annotation', () => {
     });
 
     describe('getAnnotations', () => {
-        it('should list annotations', async () => {
+        it('should list annotations with their resource', async () => {
             const ctx = {
                 request: {
                     query: {},
                 },
                 response: {},
                 annotation: annotationModel,
+                publishedDataset: publishedDatasetModel,
+                field: fieldModel,
             };
 
             await getAnnotations(ctx);
@@ -158,10 +179,21 @@ describe('annotation', () => {
                 skip: 0,
                 query: {},
                 sortBy: 'createdAt',
-                sortDir: 'DESC',
+                sortDir: 'desc',
             });
 
             expect(ctx.annotation.count).toHaveBeenCalledWith({});
+            expect(ctx.body).toMatchObject({
+                total: 3,
+                fullTotal: 3,
+                data: ANNOTATIONS.map((annotation) => ({
+                    ...annotation,
+                    resource: {
+                        uri: annotation.resourceUri,
+                        title: `title of resource ${annotation.resourceUri}`,
+                    },
+                })),
+            });
         });
 
         it('should list annotations with pagination', async () => {
@@ -174,6 +206,8 @@ describe('annotation', () => {
                 },
                 response: {},
                 annotation: annotationModel,
+                publishedDataset: publishedDatasetModel,
+                field: fieldModel,
             };
 
             await getAnnotations(ctx);
@@ -190,10 +224,21 @@ describe('annotation', () => {
                 skip: 2,
                 query: {},
                 sortBy: 'createdAt',
-                sortDir: 'DESC',
+                sortDir: 'desc',
             });
 
             expect(ctx.annotation.count).toHaveBeenCalledWith({});
+            expect(ctx.body).toMatchObject({
+                total: 1,
+                fullTotal: 3,
+                data: [ANNOTATIONS[2]].map((annotation) => ({
+                    ...annotation,
+                    resource: {
+                        uri: annotation.resourceUri,
+                        title: `title of resource ${annotation.resourceUri}`,
+                    },
+                })),
+            });
         });
 
         it('should apply filters', async () => {
@@ -202,13 +247,15 @@ describe('annotation', () => {
                     query: {
                         page: 1,
                         perPage: 2,
-                        match: {
-                            resourceUri: 'test',
-                        },
+                        filterBy: 'resourceUri',
+                        filterOperator: 'contains',
+                        filterValue: 'test',
                     },
                 },
                 response: {},
                 annotation: annotationModel,
+                publishedDataset: publishedDatasetModel,
+                field: fieldModel,
             };
 
             await getAnnotations(ctx);
@@ -219,14 +266,27 @@ describe('annotation', () => {
                 limit: 2,
                 skip: 2,
                 query: {
-                    resourceUri: 'test',
+                    resourceUri:
+                        /^.*[tţťŧƫƭƮțȶȾ][eèéêëėęěēƎƏƐǝȅȇȩɇɛƩƪ][sśŝşšſƨșȿ][tţťŧƫƭƮțȶȾ].*$/gi,
                 },
                 sortBy: 'createdAt',
-                sortDir: 'DESC',
+                sortDir: 'desc',
             });
 
             expect(ctx.annotation.count).toHaveBeenCalledWith({
-                resourceUri: 'test',
+                resourceUri:
+                    /^.*[tţťŧƫƭƮțȶȾ][eèéêëėęěēƎƏƐǝȅȇȩɇɛƩƪ][sśŝşšſƨșȿ][tţťŧƫƭƮțȶȾ].*$/gi,
+            });
+            expect(ctx.body).toMatchObject({
+                total: 1,
+                fullTotal: 3,
+                data: [ANNOTATIONS[2]].map((annotation) => ({
+                    ...annotation,
+                    resource: {
+                        uri: annotation.resourceUri,
+                        title: `title of resource ${annotation.resourceUri}`,
+                    },
+                })),
             });
         });
 
@@ -235,23 +295,36 @@ describe('annotation', () => {
                 request: {
                     query: {
                         sortBy: 'resourceUri',
-                        sortDir: 'ASC',
+                        sortDir: 'asc',
                     },
                 },
                 response: {},
                 annotation: annotationModel,
+                publishedDataset: publishedDatasetModel,
+                field: fieldModel,
             };
 
             await getAnnotations(ctx);
 
             expect(ctx.response.status).toBe(200);
+            expect(ctx.body).toMatchObject({
+                total: 3,
+                fullTotal: 3,
+                data: ANNOTATIONS.map((annotation) => ({
+                    ...annotation,
+                    resource: {
+                        uri: annotation.resourceUri,
+                        title: `title of resource ${annotation.resourceUri}`,
+                    },
+                })),
+            });
 
             expect(ctx.annotation.findLimitFromSkip).toHaveBeenCalledWith({
                 limit: 10,
                 skip: 0,
                 query: {},
                 sortBy: 'resourceUri',
-                sortDir: 'ASC',
+                sortDir: 'asc',
             });
 
             expect(ctx.annotation.count).toHaveBeenCalledWith({});
@@ -263,13 +336,15 @@ describe('annotation', () => {
                     query: {
                         page: 1,
                         perPage: 2,
-                        match: {
-                            comment: 'test',
-                        },
+                        filterBy: 'test',
+                        filterOperator: 'contains',
+                        filterValue: 'test',
                     },
                 },
                 response: {},
                 annotation: annotationModel,
+                publishedDataset: publishedDatasetModel,
+                field: fieldModel,
             };
 
             await getAnnotations(ctx);
@@ -280,8 +355,8 @@ describe('annotation', () => {
                 fullTotal: 0,
                 errors: [
                     {
-                        message: 'annotation_query_match_invalid_key',
-                        path: ['match', 'comment'],
+                        message: 'annotation_query_filter_by_invalid_key',
+                        path: ['filterBy'],
                     },
                 ],
                 data: [],

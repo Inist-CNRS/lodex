@@ -24,7 +24,7 @@ export const annotationSchema = z.object({
 
 const annotationFilterableFields = z
     .enum(['resourceUri', 'fieldId', 'comment', 'createdAt'], {
-        message: 'annotation_query_match_invalid_key',
+        message: 'annotation_query_filter_by_invalid_key',
     })
     .optional();
 
@@ -59,7 +59,7 @@ export const getAnnotationsQuerySchema = z.object({
     filterBy: annotationFilterableFields,
     filterOperator: z
         .enum(['contains', 'is'], {
-            message: 'annotation_query_match_invalid_key',
+            message: 'annotation_query_filter_operator_invalid_key',
         })
         .optional(),
     filterValue: z.string().optional(),
