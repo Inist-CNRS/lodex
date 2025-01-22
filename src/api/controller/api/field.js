@@ -1,30 +1,30 @@
-import Koa from 'koa';
-import route from 'koa-route';
-import koaBodyParser from 'koa-bodyparser';
 import asyncBusboy from '@recuperateur/async-busboy';
+import Koa from 'koa';
+import koaBodyParser from 'koa-bodyparser';
+import route from 'koa-route';
 import moment from 'moment';
 import streamToString from 'stream-to-string';
 
 import { validateField } from '../../models/field';
-import publishFacets from './publishFacets';
 import indexSearchableFields from '../../services/indexSearchableFields';
 import { mongoConnectionString } from '../../services/mongoClient';
+import publishFacets from './publishFacets';
 const tar = require('tar-stream');
 
-import {
-    SCOPE_DATASET,
-    SCOPE_GRAPHIC,
-    SCOPE_COLLECTION,
-    SCOPE_DOCUMENT,
-} from '../../../common/scope';
-import { dropJobs } from '../../workers/tools';
-import { ENRICHER } from '../../workers/enricher';
 import { ObjectId } from 'mongodb';
-import generateUid from '../../services/generateUid';
+import {
+    SCOPE_COLLECTION,
+    SCOPE_DATASET,
+    SCOPE_DOCUMENT,
+    SCOPE_GRAPHIC,
+} from '../../../common/scope';
 import { restoreEnrichments } from '../../services/enrichment/enrichment';
+import generateUid from '../../services/generateUid';
 import { restorePrecomputed } from '../../services/precomputed/precomputed';
-import { PRECOMPUTER } from '../../workers/precomputer';
 import { restoreModel } from '../../services/restoreModel';
+import { ENRICHER } from '../../workers/enricher';
+import { PRECOMPUTER } from '../../workers/precomputer';
+import { dropJobs } from '../../workers/tools';
 
 const sortByFieldUri = (a, b) =>
     (a.name === 'uri' ? -1 : a.position) - (b.name === 'uri' ? -1 : b.position);
@@ -35,7 +35,7 @@ export const restoreFields = (fileStream, ctx) => {
             .then((fieldsString) => JSON.parse(fieldsString))
             .then((fields) => {
                 ctx.field
-                    .drop()
+                    .deleteMany({})
                     .then(() =>
                         Promise.all(
                             fields
@@ -61,7 +61,7 @@ export const restoreFields = (fileStream, ctx) => {
     };
 
     return ctx.field
-        .drop()
+        .deleteMany({})
         .then(restoreTask)
         .then(() =>
             Promise.all([
