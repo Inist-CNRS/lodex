@@ -1,10 +1,10 @@
+import { SCOPE_COLLECTION, SCOPE_DOCUMENT } from '../../common/scope';
+import { URI_FIELD_NAME } from '../../common/uris';
 import fieldFactory, {
-    validateField,
     buildInvalidPropertiesMessage,
     buildInvalidTransformersMessage,
+    validateField,
 } from './field';
-import { URI_FIELD_NAME } from '../../common/uris';
-import { SCOPE_DOCUMENT, SCOPE_COLLECTION } from '../../common/scope';
 
 const listCollections = {
     toArray: () => [true],
@@ -39,9 +39,7 @@ describe('field', () => {
                 })),
                 findOneAndUpdate: jest
                     .fn()
-                    .mockImplementation(() =>
-                        Promise.resolve({ value: 'result' }),
-                    ),
+                    .mockImplementation(() => Promise.resolve('result')),
             };
 
             db = {

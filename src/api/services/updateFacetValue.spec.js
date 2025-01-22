@@ -4,7 +4,7 @@ describe('updatefacetValue', () => {
     it('should call findOneAndUpdate to decrement count of field facet with oldValue and update to increment count of new value', async () => {
         const publishedFacet = {
             findOneAndUpdate: jest.fn().mockImplementation(() => ({
-                value: { count: 10 },
+                count: 10,
             })),
             updateOne: jest.fn(),
             deleteOne: jest.fn(),
@@ -35,11 +35,9 @@ describe('updatefacetValue', () => {
     it('should call remove if findOneAndUpdate returned an updated facet with count at 0 or less', async () => {
         const publishedFacet = {
             findOneAndUpdate: jest.fn().mockImplementation(() => ({
-                value: {
-                    field: 'fieldName',
-                    value: 'old',
-                    count: 0,
-                },
+                field: 'fieldName',
+                value: 'old',
+                count: 0,
             })),
             updateOne: jest.fn(),
             deleteOne: jest.fn(),
@@ -78,7 +76,7 @@ describe('updatefacetValue', () => {
     it('should work with multi values', async () => {
         const publishedFacet = {
             findOneAndUpdate: jest.fn().mockImplementation(() => ({
-                value: { count: 10 },
+                count: 10,
             })),
             updateOne: jest.fn(),
             deleteOne: jest.fn(),

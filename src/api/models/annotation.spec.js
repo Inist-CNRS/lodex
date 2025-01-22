@@ -89,7 +89,7 @@ describe('annotation', () => {
             })),
             findOneAndUpdate: jest
                 .fn()
-                .mockImplementation(() => Promise.resolve({ value: 'result' })),
+                .mockImplementation(() => Promise.resolve('result')),
             countDocuments: jest
                 .fn()
                 .mockImplementation(() =>

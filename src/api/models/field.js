@@ -191,19 +191,17 @@ export default async (db) => {
             console.warn(`field #${id} is not found`);
         }
 
-        return collection
-            .findOneAndUpdate(
-                {
-                    _id: objectId,
-                },
-                {
-                    $set: omit(field, ['_id']),
-                },
-                {
-                    returnOriginal: false,
-                },
-            )
-            .then((result) => result.value);
+        return collection.findOneAndUpdate(
+            {
+                _id: objectId,
+            },
+            {
+                $set: omit(field, ['_id']),
+            },
+            {
+                returnOriginal: false,
+            },
+        );
     };
 
     collection.removeById = (id) =>
@@ -386,13 +384,11 @@ export default async (db) => {
     };
 
     collection.updatePosition = async (name, position) =>
-        collection
-            .findOneAndUpdate(
-                { name },
-                { $set: { position } },
-                { returnOriginal: false },
-            )
-            .then(({ value }) => value);
+        collection.findOneAndUpdate(
+            { name },
+            { $set: { position } },
+            { returnOriginal: false },
+        );
 
     collection.findByNames = async (names) => {
         const fields = await collection

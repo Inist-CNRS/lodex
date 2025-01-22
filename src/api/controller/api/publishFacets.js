@@ -1,5 +1,5 @@
-import progress from '../../services/progress';
 import { PUBLISH_FACET } from '../../../common/progressStatus';
+import progress from '../../services/progress';
 import { jobLogger } from '../../workers/tools';
 
 export default async (ctx, fields, withProgress = false) => {
