@@ -83,7 +83,7 @@ export const Annotations = () => {
 
                     flex: 1,
                     renderCell: ({ value }) => {
-                        return new Date(value).toLocaleString();
+                        return new Date(value).toLocaleDateString();
                     },
                     filterable: false,
                 },
