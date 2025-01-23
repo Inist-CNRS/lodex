@@ -49,6 +49,10 @@ export function CreateAnnotationButton({ field }) {
         field: field.label,
     });
 
+    if (field.annotable === false) {
+        return null;
+    }
+
     return (
         <>
             <CreateAnnotationModal

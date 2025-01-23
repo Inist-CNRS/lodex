@@ -1,6 +1,7 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import '@testing-library/jest-dom';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import PropTypes from 'prop-types';
 import React from 'react';
 import { MemoryRouter, Route, Switch } from 'react-router-dom';
 
@@ -19,7 +20,7 @@ jest.mock('../lib/fetch', () =>
     }),
 );
 
-function TestButton() {
+function TestButton(props) {
     return (
         <QueryClientProvider client={queryClient}>
             <TestI18N>
@@ -33,6 +34,7 @@ function TestButton() {
                                 field={{
                                     _id: '1ddbe5dc-f945-4d38-9c5b-ef20f78cb0cc',
                                     label: 'Titre du corpus',
+                                    ...props,
                                 }}
                             />
                         </Route>
@@ -42,6 +44,10 @@ function TestButton() {
         </QueryClientProvider>
     );
 }
+
+TestButton.propTypes = {
+    annotable: PropTypes.bool,
+};
 
 describe('CreateAnnotationButton', () => {
     beforeEach(() => {
@@ -57,7 +63,7 @@ describe('CreateAnnotationButton', () => {
     });
 
     it('should open the modal when clicking on the button', async () => {
-        render(<TestButton />);
+        render(<TestButton annotable={true} />);
 
         await waitFor(() => {
             fireEvent.click(
@@ -103,5 +109,15 @@ describe('CreateAnnotationButton', () => {
                 body: '{"comment":"test","resourceUri":"uid:/0579J7JN","itemPath":["1ddbe5dc-f945-4d38-9c5b-ef20f78cb0cc"]}',
             }),
         );
+    });
+
+    it('should not display button if field is not annotable', async () => {
+        render(<TestButton annotable={false} />);
+
+        expect(
+            screen.queryAllByRole('button', {
+                name: 'annotation_create_button_label',
+            }),
+        ).toHaveLength(0);
     });
 });

@@ -1,5 +1,5 @@
-import { ObjectId } from 'mongodb';
 import omit from 'lodash/omit';
+import { ObjectId } from 'mongodb';
 import { castIdsFactory, getCreatedCollection } from './utils';
 
 export default async (db) => {
@@ -25,19 +25,17 @@ export default async (db) => {
     collection.update = async (id, data) => {
         const objectId = new ObjectId(id);
 
-        return collection
-            .findOneAndUpdate(
-                {
-                    $or: [{ _id: objectId }, { _id: id }],
-                },
-                {
-                    $set: omit(data, ['_id']),
-                },
-                {
-                    returnOriginal: false,
-                },
-            )
-            .then((result) => result.value);
+        return collection.findOneAndUpdate(
+            {
+                $or: [{ _id: objectId }, { _id: id }],
+            },
+            {
+                $set: omit(data, ['_id']),
+            },
+            {
+                returnOriginal: false,
+            },
+        );
     };
 
     collection.castIds = castIdsFactory(collection);
