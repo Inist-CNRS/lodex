@@ -1,9 +1,33 @@
 import React, { useState } from 'react';
 import { useGetAnnotations } from './useGetAnnotations';
 import { useTranslate } from '../../i18n/I18NContext';
-import { DataGrid, getGridStringOperators } from '@mui/x-data-grid';
+import {
+    DataGrid,
+    getGridStringOperators,
+    GridToolbarColumnsButton,
+    GridToolbarContainer,
+    GridToolbarDensitySelector,
+    GridToolbarFilterButton,
+} from '@mui/x-data-grid';
 import AdminOnlyAlert from '../../lib/components/AdminOnlyAlert';
 import { ResourceCell } from './ResourceCell';
+import { Tooltip } from '@mui/material';
+
+const AnnotationListToolBar = () => {
+    const { translate } = useTranslate();
+
+    return (
+        <GridToolbarContainer>
+            <Tooltip title={translate(`column_tooltip`)}>
+                <GridToolbarColumnsButton />
+            </Tooltip>
+            <GridToolbarFilterButton />
+            <Tooltip title={translate(`density_tooltip`)}>
+                <GridToolbarDensitySelector />
+            </Tooltip>
+        </GridToolbarContainer>
+    );
+};
 
 export const Annotations = () => {
     const { translate } = useTranslate();
@@ -85,7 +109,7 @@ export const Annotations = () => {
                     renderCell: ({ value }) => {
                         return new Date(value).toLocaleDateString();
                     },
-                    filterable: false,
+                    filterable: true,
                 },
             ]}
             rows={data?.data || []}
@@ -100,6 +124,9 @@ export const Annotations = () => {
             onSortModelChange={handleSortModelChange}
             onFilterModelChange={handleFilterModelChange}
             rowsPerPageOptions={[10, 25, 50]}
+            components={{
+                Toolbar: AnnotationListToolBar,
+            }}
         />
     );
 };
