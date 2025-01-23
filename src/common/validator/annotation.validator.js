@@ -58,7 +58,7 @@ export const getAnnotationsQuerySchema = z.object({
         .default(10),
     filterBy: annotationFilterableFields,
     filterOperator: z
-        .enum(['contains', 'is'], {
+        .enum(['contains', 'is', 'after', 'before'], {
             message: 'annotation_query_filter_operator_invalid_key',
         })
         .optional(),

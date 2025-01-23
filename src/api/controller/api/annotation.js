@@ -6,7 +6,6 @@ import {
     annotationSchema,
     getAnnotationsQuerySchema,
 } from './../../../common/validator/annotation.validator';
-import { buildQuery } from './buildQuery';
 
 /**
  * @param {Koa.Context} ctx
@@ -28,6 +27,48 @@ export async function createAnnotation(ctx) {
         data: await ctx.annotation.create(validation.data),
     };
 }
+
+export const buildQuery = (filterBy, filterOperator, filterValue) => {
+    if (!filterValue) {
+        return {};
+    }
+    switch (filterBy) {
+        case 'createdAt': {
+            const date = new Date(filterValue);
+            switch (filterOperator) {
+                case 'is': {
+                    return {
+                        [filterBy]: {
+                            $lt: new Date(
+                                new Date(date).setDate(date.getDate() + 1),
+                            ),
+                            $gte: date,
+                        },
+                    };
+                }
+                case 'after':
+                    return { [filterBy]: { $gte: date } };
+                case 'before':
+                    return { [filterBy]: { $lte: date } };
+                default:
+                    return {};
+            }
+        }
+        case 'comment': {
+            switch (filterOperator) {
+                case 'contains':
+                    return { [filterBy]: filterValue };
+                default:
+                    return {
+                        [filterBy]: filterValue,
+                    };
+            }
+        }
+        default: {
+            return {};
+        }
+    }
+};
 
 /**
  * @param {Koa.Context} ctx

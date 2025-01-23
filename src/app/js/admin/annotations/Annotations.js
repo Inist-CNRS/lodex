@@ -3,6 +3,7 @@ import { useGetAnnotations } from './useGetAnnotations';
 import { useTranslate } from '../../i18n/I18NContext';
 import {
     DataGrid,
+    getGridDateOperators,
     getGridStringOperators,
     GridToolbarColumnsButton,
     GridToolbarContainer,
@@ -109,6 +110,9 @@ export const Annotations = () => {
                     renderCell: ({ value }) => {
                         return new Date(value).toLocaleDateString();
                     },
+                    filterOperators: getGridDateOperators().filter((operator) =>
+                        ['is', 'after', 'before'].includes(operator.value),
+                    ),
                     filterable: true,
                 },
             ]}
