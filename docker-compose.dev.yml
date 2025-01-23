@@ -31,6 +31,11 @@ services:
             - "3000:3000"
             - "9229:9229" # Enable Nodemon inspect to attach to Docker Node
         command: npm run development:api
+        deploy:
+            resources:
+                limits:
+                    cpus: '2'
+                    memory: 2G
 
     dev-server: ## Enable hot-reload in development
         image: node:22.12-bookworm
@@ -42,6 +47,11 @@ services:
         ports:
             - "8080:8080"
         command: npm run development:app
+        deploy:
+            resources:
+                limits:
+                    cpus: '2'
+                    memory: 4G
 
     mongo:
         image: mongodb/mongodb-community-server:7.0.9-ubi9
@@ -50,11 +60,21 @@ services:
         command: --quiet
         ports:
             - "27017:27017"
+        deploy:
+            resources:
+                limits:
+                    cpus: '2'
+                    memory: 1G
 
     redis:
         image: redis:6
         ports:
             - "6379:6379"
+        deploy:
+            resources:
+                limits:
+                    cpus: '1'
+                    memory: 1G
 
     workers:
         image: node:22.12-bookworm
@@ -82,3 +102,8 @@ services:
             - mongo
         depends_on:
             - mongo
+        deploy:
+            resources:
+                limits:
+                    cpus: '2'
+                    memory: 2G

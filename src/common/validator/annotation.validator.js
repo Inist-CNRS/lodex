@@ -1,23 +1,30 @@
 import { default as z } from 'zod';
 
 export const annotationSchema = z.object({
-    resourceId: z.string().nullish().default(null),
+    resourceUri: z.string().nullish().default(null),
+    kind: z.enum(['correction', 'comment']).nullish().default('comment'),
     // A path that points to the field / item of a field that the annotation is about.
     // MUST be compatible with _.get
     // See https://lodash.com/docs/4.17.15#get
-    itemPath: z.array(z.string()).nullish().default(null),
+    itemPath: z
+        .array(z.string(), {
+            message: 'annotation_itemPath_invalid',
+        })
+        .nullish()
+        .default(null),
     comment: z
         .string({
             required_error: 'error_required',
         })
+        .trim()
         .min(1, {
-            message: 'annotation_comment_min_length',
+            message: 'error_required',
         }),
 });
 
 const annotationFilterableFields = z
     .record(
-        z.enum(['resourceId', 'fieldId'], {
+        z.enum(['resourceUri', 'fieldId'], {
             message: 'annotation_query_match_invalid_key',
         }),
         z
@@ -30,7 +37,7 @@ const annotationFilterableFields = z
     .default({});
 
 const annotationSortableFields = z
-    .enum(['resourceId', 'fieldId', 'createdAt', 'updatedAt'], {
+    .enum(['resourceUri', 'fieldId', 'createdAt', 'updatedAt'], {
         message: 'annotation_query_sortBy_invalid',
     })
     .default('createdAt');

@@ -1,14 +1,15 @@
-const {
+import {
     annotationSchema,
     getAnnotationsQuerySchema,
-} = require('./annotation.validator');
+} from './annotation.validator';
 
 describe('annotation.validator', () => {
     describe('annotationSchema', () => {
         it('should validate an annotation', () => {
             const annotationPayload = {
-                resourceId: 'uid:/2a8d429f-8134-4502-b9d3-d20c571592fa',
+                resourceUri: 'uid:/2a8d429f-8134-4502-b9d3-d20c571592fa',
                 itemPath: ['GvaF'],
+                kind: 'comment',
                 comment: 'This is a comment',
             };
 
@@ -18,9 +19,26 @@ describe('annotation.validator', () => {
             expect(validatedAnnotation).toStrictEqual(annotationPayload);
         });
 
+        it('should should support annotation without kind', () => {
+            const annotationPayload = {
+                resourceUri: 'uid:/2a8d429f-8134-4502-b9d3-d20c571592fa',
+                itemPath: ['GvaF', '0'],
+                comment: 'This is a comment',
+            };
+
+            const validatedAnnotation =
+                annotationSchema.parse(annotationPayload);
+
+            expect(validatedAnnotation).toStrictEqual({
+                ...annotationPayload,
+                kind: 'comment',
+            });
+        });
+
         it('should should support annotation without itemPath', () => {
             const annotationPayload = {
-                resourceId: 'uid:/2a8d429f-8134-4502-b9d3-d20c571592fa',
+                resourceUri: 'uid:/2a8d429f-8134-4502-b9d3-d20c571592fa',
+                kind: 'comment',
                 comment: 'This is a comment',
             };
 
@@ -35,7 +53,8 @@ describe('annotation.validator', () => {
 
         it('should should support drop unsupported fields', () => {
             const annotationPayload = {
-                resourceId: 'uid:/2a8d429f-8134-4502-b9d3-d20c571592fa',
+                resourceUri: 'uid:/2a8d429f-8134-4502-b9d3-d20c571592fa',
+                kind: 'correction',
                 itemPath: null,
                 comment: 'This is a comment',
                 status: 'in_progress',
@@ -46,7 +65,8 @@ describe('annotation.validator', () => {
                 annotationSchema.parse(annotationPayload);
 
             expect(validatedAnnotation).toStrictEqual({
-                resourceId: 'uid:/2a8d429f-8134-4502-b9d3-d20c571592fa',
+                resourceUri: 'uid:/2a8d429f-8134-4502-b9d3-d20c571592fa',
+                kind: 'correction',
                 itemPath: null,
                 comment: 'This is a comment',
             });
@@ -61,7 +81,7 @@ describe('annotation.validator', () => {
             expect(error.errors).toMatchObject([
                 {
                     path: ['comment'],
-                    message: 'annotation_comment_min_length',
+                    message: 'error_required',
                 },
             ]);
         });
@@ -74,7 +94,8 @@ describe('annotation.validator', () => {
                     page: 1,
                     perPage: 50,
                     match: {
-                        resourceId: 'uid:/2a8d429f-8134-4502-b9d3-d20c571592fa',
+                        resourceUri:
+                            'uid:/2a8d429f-8134-4502-b9d3-d20c571592fa',
                     },
                     sortBy: 'updatedAt',
                     sortDir: 'ASC',
@@ -83,7 +104,7 @@ describe('annotation.validator', () => {
                 page: 1,
                 perPage: 50,
                 match: {
-                    resourceId: 'uid:/2a8d429f-8134-4502-b9d3-d20c571592fa',
+                    resourceUri: 'uid:/2a8d429f-8134-4502-b9d3-d20c571592fa',
                 },
                 sortBy: 'updatedAt',
                 sortDir: 'ASC',
