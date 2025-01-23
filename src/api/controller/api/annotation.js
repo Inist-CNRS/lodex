@@ -28,7 +28,13 @@ export async function createAnnotation(ctx) {
     };
 }
 
-export const buildQuery = (filterBy, filterOperator, filterValue) => {
+export const buildQuery = async ({
+    filterBy,
+    filterOperator,
+    filterValue,
+    titleField,
+    ctx,
+}) => {
     if (!filterValue) {
         return {};
     }
@@ -59,9 +65,21 @@ export const buildQuery = (filterBy, filterOperator, filterValue) => {
                 case 'contains':
                     return { [filterBy]: filterValue };
                 default:
-                    return {
-                        [filterBy]: filterValue,
-                    };
+                    return {};
+            }
+        }
+        case 'resource.title': {
+            switch (filterOperator) {
+                case 'contains': {
+                    const uris = await ctx.publishedDataset.findUrisByTitle({
+                        value: filterValue,
+                        titleField,
+                    });
+
+                    return { resourceUri: { $in: uris } };
+                }
+                default:
+                    return {};
             }
         }
         default: {
@@ -98,8 +116,15 @@ export async function getAnnotations(ctx) {
     } = validation.data;
 
     const skip = page * limit;
+    const titleField = await ctx.field.findTitle();
 
-    const query = buildQuery(filterBy, filterOperator, filterValue);
+    const query = await buildQuery({
+        filterBy,
+        filterOperator,
+        filterValue,
+        ctx,
+        titleField,
+    });
 
     const [annotations, fullTotal] = await Promise.all([
         ctx.annotation.findLimitFromSkip({
@@ -115,8 +140,6 @@ export async function getAnnotations(ctx) {
     const resources = await ctx.publishedDataset.findManyByUris(
         annotations.map(({ resourceUri }) => resourceUri),
     );
-
-    const titleField = await ctx.field.findTitle();
 
     const resourceByUri = (resources || []).reduce(
         (acc, resource) => ({

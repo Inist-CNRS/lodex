@@ -65,7 +65,9 @@ export const Annotations = () => {
             return;
         }
         const { columnField, operatorValue, value } = filterModel.items[0];
-        setFilterBy(columnField);
+        setFilterBy(
+            columnField === 'resource' ? 'resource.title' : columnField,
+        );
         setFilterOperator(operatorValue);
         setFilterValue(value);
         setPage(0);
@@ -97,7 +99,9 @@ export const Annotations = () => {
                     headerName: translate('annotation.resource'),
                     flex: 1,
                     sortable: false,
-                    filterable: false,
+                    filterOperators: getGridStringOperators().filter(
+                        (operator) => operator.value === 'contains',
+                    ),
                     renderCell: ({ value }) => {
                         return <ResourceCell resource={value} />;
                     },

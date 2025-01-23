@@ -23,9 +23,12 @@ export const annotationSchema = z.object({
 });
 
 const annotationFilterableFields = z
-    .enum(['resourceUri', 'fieldId', 'comment', 'createdAt'], {
-        message: 'annotation_query_filter_by_invalid_key',
-    })
+    .enum(
+        ['resource.title', 'resourceUri', 'fieldId', 'comment', 'createdAt'],
+        {
+            message: 'annotation_query_filter_by_invalid_key',
+        },
+    )
     .optional();
 
 const annotationSortableFields = z
