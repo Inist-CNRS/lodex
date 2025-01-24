@@ -1,4 +1,4 @@
-import { call, put, select } from 'redux-saga/effects';
+import { all, call, put, select } from 'redux-saga/effects';
 
 import getDocumentTransformer from '../../../lib/getDocumentTransformer';
 import { fromFields, fromUser } from '../../../sharedSelectors';
@@ -72,7 +72,7 @@ describe('publication saga', () => {
 
         it('should call transformDocument for each lines', () => {
             expect(saga.next(transformDocument).value).toEqual(
-                lines.map((line) => call(transformDocument, line)),
+                all(lines.map((line) => call(transformDocument, line))),
             );
         });
 

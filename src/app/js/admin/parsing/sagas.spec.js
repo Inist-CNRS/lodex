@@ -11,8 +11,6 @@ import {
 import { fromUser } from '../../sharedSelectors';
 
 import { handleLoadParsingResult } from './sagas';
-import { UPLOAD_SUCCESS } from '../upload';
-import { delay } from 'redux-saga';
 
 describe('parsing saga', () => {
     describe('handleLoadParsingResult', () => {

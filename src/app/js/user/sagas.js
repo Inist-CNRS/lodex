@@ -1,7 +1,7 @@
 import qs from 'qs';
 import { call, put, select, takeEvery, fork } from 'redux-saga/effects';
 import { startSubmit, stopSubmit } from 'redux-form';
-import { push } from 'connected-react-router';
+import { push } from 'redux-first-history';
 
 import { LOGIN, LOGOUT, SIGNOUT, LOGIN_FORM_NAME, loginSuccess } from './';
 import { fromUser, getCurrentSearch } from '../sharedSelectors';

@@ -1,8 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import translate from 'redux-polyglot/translate';
-import compose from 'recompose/compose';
-import { polyglot as polyglotPropTypes } from '../../propTypes';
 import {
     List,
     ListItemText,
@@ -18,6 +15,7 @@ import {
 import precomputers from '../../../custom/precomputers/precomputers-catalog.json';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 import CancelButton from '../../lib/components/CancelButton';
+import { useTranslate } from '../../i18n/I18NContext';
 
 const styles = {
     item: {
@@ -38,15 +36,16 @@ const styles = {
     },
 };
 
-const PrecomputerDescription = ({ precomputer, polyglot }) => {
+const PrecomputerDescription = ({ precomputer }) => {
+    const { translate } = useTranslate();
     return (
         <>
             <Typography>
-                {polyglot.t(`pc_${precomputer.id}_description`)}
+                {translate(`pc_${precomputer.id}_description`)}
             </Typography>
             <Box justifyContent="flex-end" display="flex">
                 {precomputer.doc && (
-                    <Tooltip title={polyglot.t(`tooltip_documentation`)}>
+                    <Tooltip title={translate(`tooltip_documentation`)}>
                         <Link
                             href={precomputer.doc}
                             target="_blank"
@@ -64,12 +63,12 @@ const PrecomputerDescription = ({ precomputer, polyglot }) => {
 };
 
 export const PrecomputedCatalog = ({
-    p: polyglot,
     isOpen,
     handleClose,
     onChange,
     selectedWebServiceUrl,
 }) => {
+    const { translate } = useTranslate();
     const handleValueChange = (newValue) => {
         onChange(newValue);
         handleClose();
@@ -109,7 +108,7 @@ export const PrecomputedCatalog = ({
                                 disableTypography
                                 primary={
                                     <Typography sx={{ fontWeight: 'bold' }}>
-                                        {polyglot.t(
+                                        {translate(
                                             `pc_${precomputer.id}_title`,
                                         )}
                                     </Typography>
@@ -117,7 +116,6 @@ export const PrecomputedCatalog = ({
                                 secondary={
                                     <PrecomputerDescription
                                         precomputer={precomputer}
-                                        polyglot={polyglot}
                                     />
                                 }
                             />
@@ -127,7 +125,7 @@ export const PrecomputedCatalog = ({
             </DialogContent>
             <DialogActions>
                 <CancelButton key="cancel" onClick={handleClose}>
-                    {polyglot.t('cancel')}
+                    {translate('cancel')}
                 </CancelButton>
             </DialogActions>
         </Dialog>
@@ -137,7 +135,6 @@ export const PrecomputedCatalog = ({
 PrecomputedCatalog.propTypes = {
     isOpen: PropTypes.bool.isRequired,
     handleClose: PropTypes.func.isRequired,
-    p: polyglotPropTypes.isRequired,
     onChange: PropTypes.func.isRequired,
     selectedWebServiceUrl: PropTypes.string,
 };
@@ -147,7 +144,6 @@ PrecomputerDescription.propTypes = {
         id: PropTypes.string.isRequired,
         doc: PropTypes.string,
     }).isRequired,
-    polyglot: polyglotPropTypes.isRequired,
 };
 
-export default compose(translate)(PrecomputedCatalog);
+export default PrecomputedCatalog;

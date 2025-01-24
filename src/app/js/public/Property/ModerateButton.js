@@ -6,7 +6,7 @@ import ProposedIcon from '@mui/icons-material/Remove';
 import ValidatedIcon from '@mui/icons-material/Done';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
-import translate from 'redux-polyglot/translate';
+import { translate } from '../../i18n/I18NContext';
 import { red, yellow, green, grey } from '@mui/material/colors';
 import classnames from 'classnames';
 

@@ -1,5 +1,5 @@
-import progress from '../../services/progress';
 import { PUBLISH_FACET } from '../../../common/progressStatus';
+import progress from '../../services/progress';
 import { jobLogger } from '../../workers/tools';
 
 export default async (ctx, fields, withProgress = false) => {
@@ -19,7 +19,7 @@ export default async (ctx, fields, withProgress = false) => {
     jobLogger.info(ctx.job, 'Publishing facets');
 
     const names = fields.map(({ name }) => name);
-    await ctx.publishedFacet.remove({ field: { $in: names } });
+    await ctx.publishedFacet.deleteOne({ field: { $in: names } });
 
     await facetFields
         .reduce(

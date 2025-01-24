@@ -1,5 +1,5 @@
-import { useState, useCallback } from 'react';
 import debounce from 'lodash/debounce';
+import { useCallback, useEffect, useState } from 'react';
 
 const DEBOUNCE_TIMEOUT = 500;
 
@@ -17,6 +17,13 @@ const useSearchBar = (
         }, debounceTimeout),
         [],
     );
+
+    useEffect(() => {
+        if (query || !defaultQuery) {
+            return;
+        }
+        setQuery(defaultQuery);
+    }, [defaultQuery]);
 
     const search = (value) => {
         setQuery(value);

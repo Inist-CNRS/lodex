@@ -2,12 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
-import translate from 'redux-polyglot/translate';
 import get from 'lodash/get';
 
 import FormTextField from '../lib/components/FormTextField';
 import FieldInput from '../lib/components/FieldInput';
 import { fromFields } from '../sharedSelectors';
+import { translate } from '../i18n/I18NContext';
 
 export const uniqueField = (fields, polyglot) => (value, _, props) => {
     // retrieve previous label of the edited field if any (either in props.field of props.fieldToAdd)

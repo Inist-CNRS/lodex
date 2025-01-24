@@ -12,7 +12,9 @@ jest.mock('../../workers', () => ({
 describe.skip('publish', () => {
     describe('doPublish', () => {
         beforeAll(async () => {
-            await doPublish({});
+            await doPublish({
+                tenant: 'lodex_test',
+            });
         });
         it('should add event to publisher queue', () => {
             expect(workerQueues['lodex_test'].add).toHaveBeenCalledWith({

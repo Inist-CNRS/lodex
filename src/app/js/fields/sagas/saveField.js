@@ -17,7 +17,7 @@ import { fromFields, fromUser } from '../../sharedSelectors';
 
 import fetchSaga from '../../lib/sagas/fetchSaga';
 import { SCOPE_DOCUMENT } from '../../../../common/scope';
-import { push } from 'connected-react-router';
+import { push } from 'redux-first-history';
 
 export const sanitizeField = (fieldData) => {
     const valueOperation = get(fieldData, 'transformers[0].operation');

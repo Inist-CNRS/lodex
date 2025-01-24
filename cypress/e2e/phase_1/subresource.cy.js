@@ -13,9 +13,7 @@ describe('Subresource Page', () => {
         datasetImportPage.importDataset('dataset/subresources-data.json');
         navigationPage.goToDisplay();
 
-        cy.get('.sidebar')
-            .contains('Subresources')
-            .click();
+        cy.get('.sidebar').contains('Subresources').click();
     });
 
     it('should allow to add a subresource', () => {
@@ -35,9 +33,7 @@ describe('Subresource Page', () => {
                 );
             });
 
-        cy.get('.wizard')
-            .find('.btn-save')
-            .click();
+        cy.get('.wizard').find('.btn-save').click();
 
         cy.get('.wizard', { timeout: 2000 }).should('not.exist');
 
@@ -56,9 +52,7 @@ describe('Subresource Page', () => {
         subresourcePage.createSubresource();
         subresourcePage.addField('name', 'myField');
 
-        cy.get('.sidebar')
-            .contains('a', 'Main resource')
-            .click();
+        cy.get('.sidebar').contains('a', 'Main resource').click();
 
         cy.url().should('contain', '/display/document/main');
         cy.wait(200); // fix unexpected refresh after page change
@@ -76,21 +70,15 @@ describe('Subresource Page', () => {
 
         datasetImportPage.fillTabDisplayFormat('link');
 
-        cy.get('.wizard')
-            .find('.btn-save')
-            .click();
+        cy.get('.wizard').find('.btn-save').click();
 
         cy.get('.wizard').should('not.exist');
 
         datasetImportPage.addColumn('name', { syndication: 1 });
 
-        cy.get('.sidebar')
-            .contains('Search & Facet')
-            .click();
+        cy.get('.sidebar').contains('Search & Facet').click();
         cy.get('[data-testid="autocomplete_search_in_fields"]').click();
-        cy.get('[role="listbox"]')
-            .contains('Resource field')
-            .click();
+        cy.get('[role="listbox"]').contains('Resource field').click();
 
         navigationPage.publishAndGoToPublishedData();
 
@@ -107,9 +95,7 @@ describe('Subresource Page', () => {
         cy.contains('button', 'Published data').click();
         cy.contains('.publication-excerpt-column', 'Name').should('exist');
 
-        cy.get('.sidebar')
-            .contains('a', 'Main resource')
-            .click();
+        cy.get('.sidebar').contains('a', 'Main resource').click();
 
         cy.url().should('contain', '/display/document/main');
         cy.wait(200); // fix unexpected refresh after page change
@@ -119,21 +105,15 @@ describe('Subresource Page', () => {
         cy.contains('New field').click();
         cy.get('.wizard', { timeout: 10000 }).should('be.visible');
 
-        cy.get('input[name="label"]')
-            .clear()
-            .type('Animal crossing');
+        cy.get('input[name="label"]').clear().type('Animal crossing');
 
         cy.contains('From Subresource').click();
 
         cy.get('[data-testid="autocomplete-subresource-label"]').click();
 
-        cy.get('[role="listbox"]')
-            .contains('name')
-            .click();
+        cy.get('[role="listbox"]').contains('name').click();
 
-        cy.get('.wizard')
-            .find('.btn-save')
-            .click();
+        cy.get('.wizard').find('.btn-save').click();
 
         cy.get('.wizard').should('not.exist');
 
@@ -145,7 +125,7 @@ describe('Subresource Page', () => {
             .within(() => {
                 cy.get('span[data-field-name]')
                     .invoke('attr', 'data-field-name')
-                    .then(fieldNameAttrValue => {
+                    .then((fieldNameAttrValue) => {
                         fieldName = fieldNameAttrValue;
                     });
             });
@@ -156,9 +136,7 @@ describe('Subresource Page', () => {
         cy.contains('New field').click();
         cy.get('.wizard', { timeout: 10000 }).should('be.visible');
 
-        cy.get('input[name="label"]')
-            .clear()
-            .type('Animal link');
+        cy.get('input[name="label"]').clear().type('Animal link');
 
         cy.contains('From Subresource').click();
 
@@ -176,21 +154,15 @@ describe('Subresource Page', () => {
         cy.get('#format-edit-dialog')
             .contains('confirm', { matchCase: false })
             .click();
-        cy.get('.wizard')
-            .find('.btn-save')
-            .click();
+        cy.get('.wizard').find('.btn-save').click();
 
         cy.get('.wizard').should('not.exist');
 
         datasetImportPage.addColumn('name', { syndication: 1 });
 
-        cy.get('.sidebar')
-            .contains('Search & Facet')
-            .click();
+        cy.get('.sidebar').contains('Search & Facet').click();
         cy.get('[data-testid="autocomplete_search_in_fields"]').click();
-        cy.get('[role="listbox"]')
-            .contains('Animal link')
-            .click();
+        cy.get('[role="listbox"]').contains('Animal link').click();
 
         navigationPage.publishAndGoToPublishedData();
 

@@ -1,10 +1,9 @@
 import differenceBy from 'lodash/differenceBy';
-import * as d3 from 'd3';
 
-export function zoomFunction() {
+export function zoomFunction(event) {
     // create new scale ojects based on event
-    const new_xScale = d3.event.transform.rescaleX(this.xAxisScale);
-    const new_yScale = d3.event.transform.rescaleY(this.yAxisScale);
+    const new_xScale = event.transform.rescaleX(this.xAxisScale);
+    const new_yScale = event.transform.rescaleY(this.yAxisScale);
 
     // update axes
     this.gx.call(this.xAxis.scale(new_xScale));
@@ -12,7 +11,7 @@ export function zoomFunction() {
     this.gyl.call(this.yAxisL.scale(new_yScale));
 
     // update streams
-    this.streams.attr('transform', d3.event.transform);
+    this.streams.attr('transform', event.transform);
 }
 
 export function distinctColors(count) {

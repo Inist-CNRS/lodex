@@ -1,12 +1,11 @@
 import React from 'react';
-import translate from 'redux-polyglot/translate';
-import compose from 'recompose/compose';
 import { Box, IconButton, Tooltip } from '@mui/material';
-import { polyglot as polyglotPropTypes } from '../../propTypes';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import { DEFAULT_TENANT } from '../../../../common/tools/tenantTools';
+import { useTranslate } from '../../i18n/I18NContext';
 
-const GoToPublicationButtonComponent = ({ p: polyglot }) => {
+const GoToPublicationButtonComponent = ({}) => {
+    const { translate } = useTranslate();
     const handleGoToPublication = () => {
         const tenant = sessionStorage.getItem('lodex-tenant') || DEFAULT_TENANT;
         window.location.replace(window.location.origin + '/instance/' + tenant);
@@ -14,7 +13,7 @@ const GoToPublicationButtonComponent = ({ p: polyglot }) => {
 
     return (
         <Box display="flex" alignItems="center">
-            <Tooltip title={polyglot.t(`navigate_to_published_data`)}>
+            <Tooltip title={translate(`navigate_to_published_data`)}>
                 <IconButton
                     className="go-published-button"
                     onClick={handleGoToPublication}
@@ -27,8 +26,6 @@ const GoToPublicationButtonComponent = ({ p: polyglot }) => {
     );
 };
 
-GoToPublicationButtonComponent.propTypes = {
-    p: polyglotPropTypes.isRequired,
-};
+GoToPublicationButtonComponent.propTypes = {};
 
-export default compose(translate)(GoToPublicationButtonComponent);
+export default GoToPublicationButtonComponent;

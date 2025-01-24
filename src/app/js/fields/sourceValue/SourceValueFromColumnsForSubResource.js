@@ -1,12 +1,13 @@
 import React, { useEffect } from 'react';
 import compose from 'recompose/compose';
 import PropTypes from 'prop-types';
-import translate from 'redux-polyglot/translate';
 import { Autocomplete, Box, TextField } from '@mui/material';
 import { connect } from 'react-redux';
 import { fromParsing } from '../../admin/selectors';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import parseValue from '../../../../common/tools/parseValue';
+import { translate } from '../../i18n/I18NContext';
+import { fromI18n } from '../../public/selectors';
 
 const SourceValueFromColumnsForSubResource = ({
     datasetFields,
@@ -91,7 +92,7 @@ export const mapStateToProps = (state, { selectedSubresourceUri }) => {
                     ? subresourceData[0]
                     : subresourceData) || {},
             ),
-            ...[state.polyglot.phrases['other']],
+            ...[fromI18n.getPhrases(state)['other']],
         ].sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase())),
         subresourcePath: subresource.path,
     };

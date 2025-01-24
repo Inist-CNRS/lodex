@@ -1,13 +1,12 @@
+import React, { useEffect, useMemo, useState, useRef } from 'react';
 import { Box, IconButton, Tooltip } from '@mui/material';
 import copy from 'copy-to-clipboard';
+import { connect } from 'react-redux';
 import compose from 'lodash/flowRight';
 import PropTypes from 'prop-types';
-import React, { useEffect, useMemo, useRef, useState } from 'react';
 import GridLayout from 'react-grid-layout';
 import 'react-grid-layout/css/styles.css';
-import { connect } from 'react-redux';
 import { useMeasure } from 'react-use';
-import translate from 'redux-polyglot/translate';
 
 import {
     FileCopy as FileCopyIcon,
@@ -28,6 +27,7 @@ import { SCOPE_DOCUMENT } from '../../../common/scope';
 import { toast } from '../../../common/tools/toast';
 import fieldApi from '../admin/api/field';
 import FieldRepresentation from './FieldRepresentation';
+import { translate } from '../i18n/I18NContext';
 
 const ROOT_PADDING = 16;
 

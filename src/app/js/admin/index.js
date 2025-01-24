@@ -5,7 +5,6 @@ import React from 'react';
 import { render } from 'react-dom';
 import { createHashHistory } from 'history';
 import { Provider } from 'react-redux';
-import { ConnectedRouter } from 'connected-react-router';
 import { Route, Redirect } from 'react-router';
 
 import {
@@ -13,10 +12,9 @@ import {
     ThemeProvider,
 } from '@mui/material/styles';
 
-import rootReducer from './reducers';
+import reducers from './reducers';
 import sagas from './sagas';
 import configureStore from '../configureStore';
-import scrollToTop from '../lib/scrollToTop';
 import phrasesFor from '../i18n/translations';
 import getLocale from '../../../common/getLocale';
 import App from './App';
@@ -29,6 +27,8 @@ import LoginAdmin from './LoginAdmin';
 import { ConfigTenantRoute } from './ConfigTenantRoute';
 import '../../ace-webpack-loader';
 import defaultTheme from '../../custom/themes/default/defaultTheme';
+import { Router } from 'react-router-dom';
+import { I18N } from '../i18n/I18NContext';
 
 const localesMUI = new Map([
     ['fr', { ...frFR, ...frFRDatagrid }],
@@ -37,18 +37,18 @@ const localesMUI = new Map([
 
 const locale = getLocale();
 const initialState = {
-    polyglot: {
+    i18n: {
         locale,
         phrases: phrasesFor(locale),
     },
 };
 
-const history = createHashHistory();
-export const store = configureStore(
-    rootReducer,
+const hashHistory = createHashHistory();
+export const { store, history } = configureStore(
+    reducers,
     sagas,
     window.__PRELOADED_STATE__ || initialState,
-    history,
+    hashHistory,
 );
 
 if (process.env.NODE_ENV === 'e2e') {
@@ -65,22 +65,24 @@ render(
         <ThemeProvider
             theme={createThemeMui(defaultTheme, localesMUI.get(locale))}
         >
-            <ConnectedRouter history={history} onUpdate={scrollToTop}>
-                <App tenant={window.__TENANT__}>
-                    <Route
-                        path="/"
-                        exact
-                        render={() => <Redirect to="/data" />}
-                    />
-                    <PrivateRoute path="/data" component={Data} />
-                    <PrivateRoute path="/display" component={Display} />
-                    <PrivateRoute
-                        path="/config"
-                        component={ConfigTenantRoute}
-                    />
-                    <Route path="/login" exact component={LoginAdmin} />
-                </App>
-            </ConnectedRouter>
+            <I18N>
+                <Router history={history}>
+                    <App tenant={window.__TENANT__}>
+                        <Route
+                            path="/"
+                            exact
+                            render={() => <Redirect to="/data" />}
+                        />
+                        <PrivateRoute path="/data" component={Data} />
+                        <PrivateRoute path="/display" component={Display} />
+                        <PrivateRoute
+                            path="/config"
+                            component={ConfigTenantRoute}
+                        />
+                        <Route path="/login" exact component={LoginAdmin} />
+                    </App>
+                </Router>
+            </I18N>
         </ThemeProvider>
     </Provider>,
     document.getElementById('root'),

@@ -6,7 +6,7 @@ import { PROPOSED } from '../../../common/propositionStatus';
 import generateUri from '../../../common/transformers/AUTOGENERATE_URI';
 import ark from './ark';
 import updateFacetValue from '../../services/updateFacetValue';
-import { ObjectID } from 'mongodb';
+import { ObjectId } from 'mongodb';
 
 const app = new Koa();
 
@@ -29,7 +29,7 @@ export const getPage = async (ctx) => {
         const facetValues = await Promise.all(
             facetValueIds.map(async (facetValueId) => {
                 const facetValue = await ctx.publishedFacet.findOne({
-                    _id: new ObjectID(facetValueId),
+                    _id: new ObjectId(facetValueId),
                 });
                 return facetValue.value;
             }),

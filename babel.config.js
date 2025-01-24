@@ -15,6 +15,8 @@ module.exports = {
         '@babel/plugin-transform-class-properties',
         '@babel/plugin-transform-object-rest-spread',
         '@babel/plugin-transform-nullish-coalescing-operator',
+        '@babel/plugin-transform-modules-commonjs',
+        '@babel/plugin-transform-private-methods',
     ],
     env: {
         browser: {
@@ -35,6 +37,8 @@ module.exports = {
                 '@babel/plugin-transform-class-properties',
                 '@babel/plugin-transform-object-rest-spread',
                 '@babel/plugin-transform-nullish-coalescing-operator',
+                '@babel/plugin-transform-modules-commonjs',
+                '@babel/plugin-transform-private-methods',
             ],
         },
     },

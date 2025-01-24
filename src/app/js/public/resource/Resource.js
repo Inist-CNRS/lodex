@@ -1,30 +1,29 @@
-import React, { useMemo } from 'react';
-import PropTypes from 'prop-types';
-import classnames from 'classnames';
-import { connect } from 'react-redux';
-import compose from 'recompose/compose';
-import { withRouter } from 'react-router-dom';
-import translate from 'redux-polyglot/translate';
-import HomeIcon from '@mui/icons-material/Home';
 import BackIcon from '@mui/icons-material/ArrowBack';
-import { CardContent, CardActions, Card, Button } from '@mui/material';
+import HomeIcon from '@mui/icons-material/Home';
+import { Button, Card, CardActions, CardContent } from '@mui/material';
+import classnames from 'classnames';
+import PropTypes from 'prop-types';
+import React from 'react';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import { Swipeable } from 'react-swipeable';
+import compose from 'recompose/compose';
+import { translate } from '../../i18n/I18NContext';
 
+import get from 'lodash/get';
+import isEqual from 'lodash/isEqual';
+import { getResourceUri } from '../../../../common/uris';
+import { preLoadPublication } from '../../fields';
+import Link from '../../lib/components/Link';
+import Loading from '../../lib/components/Loading';
+import NavButton, { NEXT, PREV } from '../../lib/components/NavButton';
+import stylesToClassname from '../../lib/stylesToClassName';
+import { fromCharacteristic, fromFields } from '../../sharedSelectors';
+import { preLoadExporters } from '../export';
 import { fromResource, fromSearch } from '../selectors';
-import { fromFields, fromCharacteristic } from '../../sharedSelectors';
+import { preLoadResource } from './';
 import Detail from './Detail';
 import RemovedDetail from './RemovedDetail';
-import { polyglot as polyglotPropTypes } from '../../propTypes';
-import Loading from '../../lib/components/Loading';
-import { preLoadResource } from './';
-import { preLoadPublication } from '../../fields';
-import { preLoadExporters } from '../export';
-import Link from '../../lib/components/Link';
-import stylesToClassname from '../../lib/stylesToClassName';
-import NavButton, { NEXT, PREV } from '../../lib/components/NavButton';
-import isEqual from 'lodash/isEqual';
-import get from 'lodash/get';
-import { getResourceUri } from '../../../../common/uris';
 
 const navStyles = stylesToClassname(
     {
@@ -236,7 +235,6 @@ ResourceComponent.propTypes = {
         uri: PropTypes.string.isRequired,
         subresourceId: PropTypes.string,
     }),
-    p: polyglotPropTypes.isRequired,
     datasetTitleKey: PropTypes.string,
     loading: PropTypes.bool.isRequired,
     removed: PropTypes.bool.isRequired,
@@ -250,6 +248,8 @@ ResourceComponent.propTypes = {
     match: PropTypes.shape({
         params: PropTypes.shape({
             uri: PropTypes.string,
+            naan: PropTypes.string,
+            rest: PropTypes.string,
         }),
     }).isRequired,
     prevResource: PropTypes.object,

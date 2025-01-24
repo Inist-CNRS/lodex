@@ -5,7 +5,6 @@ import { unlinkFile } from '../fsHelpers.js';
 import streamToPromise from 'stream-to-promise';
 import fetch from 'fetch-with-proxy';
 import path from 'path';
-import url from 'url';
 import { tmpdir } from 'os';
 import { createReadStream } from 'fs';
 import ezs from '@ezs/core';

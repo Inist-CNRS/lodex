@@ -3,8 +3,8 @@ import { Button } from '@mui/material';
 import { deleteEnrichment } from '../api/enrichment';
 import { toast } from 'react-toastify';
 import PropTypes from 'prop-types';
-import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { ConfirmPopup } from '../../lib/components/ConfirmPopup';
+import { useTranslate } from '../../i18n/I18NContext';
 
 export function DeleteEnrichmentButton({
     disabled,
@@ -12,14 +12,14 @@ export function DeleteEnrichmentButton({
     onDeleteEnd,
     id,
     history,
-    polyglot,
 }) {
+    const { translate } = useTranslate();
     const [isConfirmPopupOpen, setIsConfirmPopupOpen] = useState(false);
     const handleDeleteEnrichment = async () => {
         onDeleteStart();
         const res = await deleteEnrichment(id);
         if (res.response) {
-            toast(polyglot.t('enrichment_deleted_success'), {
+            toast(translate('enrichment_deleted_success'), {
                 type: toast.TYPE.SUCCESS,
             });
             history.push('/data/enrichment');
@@ -39,13 +39,13 @@ export function DeleteEnrichmentButton({
                 onClick={() => setIsConfirmPopupOpen(true)}
                 disabled={disabled}
             >
-                {polyglot.t('delete')}
+                {translate('delete')}
             </Button>
             <ConfirmPopup
-                cancelLabel={polyglot.t('Cancel')}
-                confirmLabel={polyglot.t('Accept')}
-                title={polyglot.t('confirm_enrichment_deletion_title')}
-                description={polyglot.t(
+                cancelLabel={translate('Cancel')}
+                confirmLabel={translate('Accept')}
+                title={translate('confirm_enrichment_deletion_title')}
+                description={translate(
                     'confirm_enrichment_deletion_description',
                 )}
                 isOpen={isConfirmPopupOpen}
@@ -63,7 +63,6 @@ export function DeleteEnrichmentButton({
 
 DeleteEnrichmentButton.propTypes = {
     disabled: PropTypes.bool,
-    polyglot: polyglotPropTypes,
     id: PropTypes.string.isRequired,
     onDeleteStart: PropTypes.func,
     onDeleteEnd: PropTypes.func,

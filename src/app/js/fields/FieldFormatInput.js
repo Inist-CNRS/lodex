@@ -1,10 +1,10 @@
 import React from 'react';
-import translate from 'redux-polyglot/translate';
 import { polyglot as polyglotPropTypes } from '../propTypes';
 import { Box, Typography } from '@mui/material';
 
 import FormatEdition from '../formats/FormatEdition';
 import FieldInput from '../lib/components/FieldInput';
+import { translate } from '../i18n/I18NContext';
 
 const FieldFormatInput = ({ p: polyglot }) => (
     <Box mt={5} id="step-value-format">

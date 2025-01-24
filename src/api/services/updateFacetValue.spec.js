@@ -4,10 +4,10 @@ describe('updatefacetValue', () => {
     it('should call findOneAndUpdate to decrement count of field facet with oldValue and update to increment count of new value', async () => {
         const publishedFacet = {
             findOneAndUpdate: jest.fn().mockImplementation(() => ({
-                value: { count: 10 },
+                count: 10,
             })),
-            update: jest.fn(),
-            remove: jest.fn(),
+            updateOne: jest.fn(),
+            deleteOne: jest.fn(),
         };
         await updateFacetValue(publishedFacet)({
             field: 'fieldName',
@@ -20,9 +20,9 @@ describe('updatefacetValue', () => {
             { returnOriginal: false },
         );
 
-        expect(publishedFacet.remove).not.toHaveBeenCalled();
+        expect(publishedFacet.deleteOne).not.toHaveBeenCalled();
 
-        expect(publishedFacet.update).toHaveBeenCalledWith(
+        expect(publishedFacet.updateOne).toHaveBeenCalledWith(
             {
                 field: 'fieldName',
                 value: 'new',
@@ -35,14 +35,12 @@ describe('updatefacetValue', () => {
     it('should call remove if findOneAndUpdate returned an updated facet with count at 0 or less', async () => {
         const publishedFacet = {
             findOneAndUpdate: jest.fn().mockImplementation(() => ({
-                value: {
-                    field: 'fieldName',
-                    value: 'old',
-                    count: 0,
-                },
+                field: 'fieldName',
+                value: 'old',
+                count: 0,
             })),
-            update: jest.fn(),
-            remove: jest.fn(),
+            updateOne: jest.fn(),
+            deleteOne: jest.fn(),
         };
         await updateFacetValue(publishedFacet)({
             field: 'fieldName',
@@ -58,12 +56,12 @@ describe('updatefacetValue', () => {
             { returnOriginal: false },
         );
 
-        expect(publishedFacet.remove).toHaveBeenCalledWith({
+        expect(publishedFacet.deleteOne).toHaveBeenCalledWith({
             field: 'fieldName',
             value: 'old',
             count: 0,
         });
-        expect(publishedFacet.update).toHaveBeenCalledWith(
+        expect(publishedFacet.updateOne).toHaveBeenCalledWith(
             {
                 field: 'fieldName',
                 value: 'new',
@@ -78,10 +76,10 @@ describe('updatefacetValue', () => {
     it('should work with multi values', async () => {
         const publishedFacet = {
             findOneAndUpdate: jest.fn().mockImplementation(() => ({
-                value: { count: 10 },
+                count: 10,
             })),
-            update: jest.fn(),
-            remove: jest.fn(),
+            updateOne: jest.fn(),
+            deleteOne: jest.fn(),
         };
         await updateFacetValue(publishedFacet)({
             field: 'fieldName',
@@ -100,11 +98,11 @@ describe('updatefacetValue', () => {
             { returnOriginal: false },
         );
 
-        expect(publishedFacet.remove).not.toHaveBeenCalled();
+        expect(publishedFacet.deleteOne).not.toHaveBeenCalled();
 
-        expect(publishedFacet.update).toHaveBeenCalledTimes(2);
+        expect(publishedFacet.updateOne).toHaveBeenCalledTimes(2);
 
-        expect(publishedFacet.update).toHaveBeenCalledWith(
+        expect(publishedFacet.updateOne).toHaveBeenCalledWith(
             {
                 field: 'fieldName',
                 value: 'new1',
@@ -113,7 +111,7 @@ describe('updatefacetValue', () => {
             { upsert: true },
         );
 
-        expect(publishedFacet.update).toHaveBeenCalledWith(
+        expect(publishedFacet.updateOne).toHaveBeenCalledWith(
             {
                 field: 'fieldName',
                 value: 'new2',

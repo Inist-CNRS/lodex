@@ -1,8 +1,8 @@
-import { ObjectID } from 'mongodb';
-import { castIdsFactory } from './utils';
+import { ObjectId } from 'mongodb';
+import { castIdsFactory, getCreatedCollection } from './utils';
 
 export default async (db) => {
-    const collection = db.collection('hiddenResource');
+    const collection = await getCreatedCollection(db, 'hiddenResource');
     await collection.createIndex({ uri: 1 }, { unique: true });
 
     collection.findAll = async () => collection.find({}).toArray();
@@ -18,7 +18,7 @@ export default async (db) => {
     collection.deleteByUri = async (uri) => collection.deleteOne({ uri });
 
     collection.delete = async (id) =>
-        collection.remove({ _id: new ObjectID(id) });
+        collection.deleteOne({ _id: new ObjectId(id) });
 
     collection.castIds = castIdsFactory(collection);
 

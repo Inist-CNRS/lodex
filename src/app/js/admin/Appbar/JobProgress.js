@@ -7,12 +7,9 @@ import {
     Typography,
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { io } from 'socket.io-client';
-import translate from 'redux-polyglot/dist/translate';
 import { publish, publishSuccess, publishError } from '../publish';
 import { connect } from 'react-redux';
-import { compose } from 'recompose';
 import PropTypes from 'prop-types';
 import {
     PENDING,
@@ -32,6 +29,7 @@ import { finishProgress } from '../progress/reducer';
 import { loadEnrichments } from '../enrichment';
 import { loadPrecomputed } from '../precomputed';
 import { DEFAULT_TENANT } from '../../../../common/tools/tenantTools';
+import { useTranslate } from '../../i18n/I18NContext';
 
 const styles = {
     progress: {
@@ -77,7 +75,6 @@ const styles = {
 const JobProgressComponent = (props) => {
     const {
         hasPublishedDataset,
-        p: polyglot,
         handlePublishSuccess,
         handlePublishError,
         handleCancelPublication,
@@ -87,6 +84,7 @@ const JobProgressComponent = (props) => {
         loadEnrichments,
         loadPrecomputed,
     } = props;
+    const { translate } = useTranslate();
     const [progress, setProgress] = useState();
     const [isCancelDialogOpen, setIsCancelDialogOpen] = useState(false);
     const [hasLoadedParsingResult, setHasLoadedParsingResult] = useState(false);
@@ -117,11 +115,11 @@ const JobProgressComponent = (props) => {
             if (!data.success && !data.isPublishing && data.message) {
                 handlePublishError(data);
                 if (data.message === 'cancelled_publish') {
-                    toast(polyglot.t('cancelled_publish'), {
+                    toast(translate('cancelled_publish'), {
                         type: toast.TYPE.SUCCESS,
                     });
                 } else {
-                    toast(`${polyglot.t('error')} : ${data.message}`, {
+                    toast(`${translate('error')} : ${data.message}`, {
                         type: toast.TYPE.ERROR,
                     });
                 }
@@ -137,14 +135,14 @@ const JobProgressComponent = (props) => {
                 handleRepublish();
             }
             if (data.message && data.message !== 'cancelled_import') {
-                toast(`${polyglot.t('error')} : ${data.message}`, {
+                toast(`${translate('error')} : ${data.message}`, {
                     type: toast.TYPE.ERROR,
                 });
             }
             if (data.message === 'cancelled_import') {
                 loadParsingResult();
                 setHasLoadedParsingResult(false);
-                toast(polyglot.t('cancelled_import'), {
+                toast(translate('cancelled_import'), {
                     type: toast.TYPE.SUCCESS,
                 });
             }
@@ -155,12 +153,12 @@ const JobProgressComponent = (props) => {
                 loadEnrichments();
             }
             if (data.message && data.message !== 'cancelled_enricher') {
-                toast(`${polyglot.t('error')} : ${data.message}`, {
+                toast(`${translate('error')} : ${data.message}`, {
                     type: toast.TYPE.ERROR,
                 });
             }
             if (data.message === 'cancelled_enricher') {
-                toast(polyglot.t('cancelled_enricher'), {
+                toast(translate('cancelled_enricher'), {
                     type: toast.TYPE.SUCCESS,
                 });
             }
@@ -171,12 +169,12 @@ const JobProgressComponent = (props) => {
                 loadPrecomputed();
             }
             if (data.message && data.message !== 'cancelled_precomputer') {
-                toast(`${polyglot.t('error')} : ${data.message}`, {
+                toast(`${translate('error')} : ${data.message}`, {
                     type: toast.TYPE.ERROR,
                 });
             }
             if (data.message === 'cancelled_precomputer') {
-                toast(polyglot.t('cancelled_precomputer'), {
+                toast(translate('cancelled_precomputer'), {
                     type: toast.TYPE.SUCCESS,
                 });
             }
@@ -224,7 +222,7 @@ const JobProgressComponent = (props) => {
                         <Box sx={styles.progressLabel}>
                             {(progress?.label || progress?.status) && (
                                 <Typography variant="subtitle2">
-                                    {polyglot.t(
+                                    {translate(
                                         progress?.label || progress?.status,
                                     )}
                                 </Typography>
@@ -238,7 +236,7 @@ const JobProgressComponent = (props) => {
                                         sx={styles.progressStatus}
                                         noWrap={true}
                                     >
-                                        {polyglot.t(progress.status)}
+                                        {translate(progress.status)}
                                     </Typography>
                                 )}
 
@@ -251,7 +249,7 @@ const JobProgressComponent = (props) => {
                             {progress?.status === SAVING_DATASET &&
                                 progress?.subLabel && (
                                     <Typography variant="caption">
-                                        {`${progress.progress} ${polyglot.t(
+                                        {`${progress.progress} ${translate(
                                             progress.subLabel,
                                         )}`}
                                     </Typography>
@@ -311,7 +309,6 @@ const JobProgressComponent = (props) => {
 };
 JobProgressComponent.propTypes = {
     hasPublishedDataset: PropTypes.bool.isRequired,
-    p: polyglotPropTypes.isRequired,
     handlePublishSuccess: PropTypes.func.isRequired,
     handlePublishError: PropTypes.func.isRequired,
     handleCancelPublication: PropTypes.func.isRequired,
@@ -364,7 +361,7 @@ const mapDispatchToProps = {
     loadEnrichments,
     loadPrecomputed,
 };
-export default compose(
-    connect(mapStateToProps, mapDispatchToProps),
-    translate,
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
 )(JobProgressComponent);

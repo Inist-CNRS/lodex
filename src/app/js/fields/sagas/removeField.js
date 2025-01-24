@@ -1,5 +1,5 @@
 import { call, put, select, takeLatest } from 'redux-saga/effects';
-import { push } from 'connected-react-router';
+import { push } from 'redux-first-history';
 
 import { REMOVE_FIELD, removeFieldError, removeFieldSuccess } from '../';
 

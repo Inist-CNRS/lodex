@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import memoize from 'lodash/memoize';
-import translate from 'redux-polyglot/translate';
+import { translate } from '../../../i18n/I18NContext';
 import compose from 'recompose/compose';
 
 import fetchDataForComponent from './fetchDataForComponent';
@@ -35,14 +35,7 @@ const styles = {
     },
 };
 
-export const IstexRefbibsView = ({
-    fieldStatus,
-    data,
-    error,
-    field,
-    resource,
-    p: polyglot,
-}) => (
+export const IstexRefbibsView = ({ fieldStatus, data, error, p: polyglot }) => (
     <div className="istex-list" style={styles.text(fieldStatus)}>
         <div style={styles.header}>
             <span style={styles.total}>

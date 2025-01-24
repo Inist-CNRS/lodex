@@ -20,10 +20,14 @@ describe('i18n reducer', () => {
     });
 
     it('should handle the SET_LANGUAGE_REQUEST_SUCCESS action', () => {
-        const state = reducer({ loading: true }, setLanguageSuccess('foo'));
+        const state = reducer(
+            { loading: true },
+            setLanguageSuccess({ language: 'foo', phrases: 'phrases' }),
+        );
         expect(state).toEqual({
             loading: false,
             language: 'foo',
+            phrases: 'phrases',
         });
     });
 

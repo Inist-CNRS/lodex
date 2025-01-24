@@ -1,5 +1,5 @@
 import { race, call, take, put, select } from 'redux-saga/effects';
-import { replace } from 'connected-react-router';
+import { replace } from 'redux-first-history';
 
 import fetchSaga from './fetchSaga';
 import fetch from '../fetch';

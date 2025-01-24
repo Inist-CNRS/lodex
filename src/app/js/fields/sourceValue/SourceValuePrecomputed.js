@@ -3,13 +3,13 @@ import compose from 'recompose/compose';
 import ListAltIcon from '@mui/icons-material/ListAlt';
 import PropTypes from 'prop-types';
 import RoutineCatalog from '../wizard/RoutineCatalog';
-import translate from 'redux-polyglot/translate';
 import { connect } from 'react-redux';
 import { fromPrecomputed } from '../../admin/selectors';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { Autocomplete, Box, Button, TextField } from '@mui/material';
 import { toast } from 'react-toastify';
 import RoutineCatalogAutocomplete from '../wizard/RoutineCatalogAutocomplete';
+import { translate } from '../../i18n/I18NContext';
 
 const SourceValuePrecomputed = ({
     precomputedData,

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
-import translate from 'redux-polyglot/translate';
+import { translate } from '../../i18n/I18NContext';
 
 import { fromFields } from '../../sharedSelectors';
 

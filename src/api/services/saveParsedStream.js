@@ -41,8 +41,8 @@ export const saveParsedStream = async (ctx, parsedStream) => {
 
         return ctx.dataset.count();
     } catch (error) {
-        await ctx.dataset.remove({ lodex_published: { $exists: false } });
-        await ctx.publishedDataset.remove({
+        await ctx.dataset.deleteOne({ lodex_published: { $exists: false } });
+        await ctx.publishedDataset.deleteOne({
             lodex_published: { $exists: false },
         });
 

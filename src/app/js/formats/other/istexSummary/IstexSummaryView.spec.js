@@ -1,17 +1,17 @@
-import React from 'react';
-import { shallow } from 'enzyme';
 import { StyleSheetTestUtils } from 'aphrodite';
+import { shallow } from 'enzyme';
+import React from 'react';
 
-import { IstexSummaryView, IstexDocument } from './IstexSummaryView';
 import composeRenderProps from '../../../lib/composeRenderProps';
+import InvalidFormat from '../../InvalidFormat';
+import DecadeFold from './DecadeFold';
+import getDecadeFromData from './getDecadeFromData';
 import { parseYearData } from './getIstexData';
-import IstexList from './IstexList';
 import IssueFold from './IssueFold';
+import IstexList from './IstexList';
+import { IstexDocument, IstexSummaryView } from './IstexSummaryView';
 import VolumeFold from './VolumeFold';
 import YearFold from './YearFold';
-import DecadeFold from './DecadeFold';
-import InvalidFormat from '../../InvalidFormat';
-import getDecadeFromData from './getDecadeFromData';
 
 jest.mock('../../../lib/composeRenderProps');
 jest.mock('./getIstexData');
@@ -138,7 +138,6 @@ describe('IstexSummaryView', () => {
     });
 
     afterAll(() => {
-        parseYearData.resetMock();
-        composeRenderProps.resetMock();
+        jest.resetAllMocks();
     });
 });

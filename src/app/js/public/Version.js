@@ -1,10 +1,10 @@
 import React from 'react';
-import translate from 'redux-polyglot/translate';
 import compose from 'recompose/compose';
 
 import { polyglot as polyglotPropTypes } from '../propTypes';
 import Link from '../lib/components/Link';
 import Container from '@mui/material/Container';
+import { translate } from '../i18n/I18NContext';
 
 const { version } = require('../../../../package.json');
 

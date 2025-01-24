@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { config } from '@fortawesome/fontawesome-svg-core';
-import translate from 'redux-polyglot/translate';
+import { translate } from '../../i18n/I18NContext';
 import compose from 'recompose/compose';
 import classnames from 'classnames';
 

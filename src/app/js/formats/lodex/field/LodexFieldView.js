@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import translate from 'redux-polyglot/translate';
+import { translate } from '../../../i18n/I18NContext';
 import compose from 'recompose/compose';
 import URL from 'url';
 
@@ -224,7 +224,8 @@ export default compose(
 
         const source = URL.parse(value);
         if (source.pathname.search(/(ark|uid):/) >= 0) {
-            const [check, tenant = 'default', scheme, identifier] = source.pathname.split('/').filter(Boolean);
+            const [check, tenant = 'default', scheme, identifier] =
+                source.pathname.split('/').filter(Boolean);
             let uri;
             let pathname;
             if (check === 'instance') {

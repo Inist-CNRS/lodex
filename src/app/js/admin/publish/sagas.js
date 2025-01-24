@@ -15,7 +15,7 @@ export function* handlePublishRequest() {
             return;
         }
     } catch (e) {
-        console.log(e);
+        global.console.log(e);
     }
 }
 

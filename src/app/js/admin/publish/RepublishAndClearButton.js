@@ -13,7 +13,6 @@ import {
 } from '@mui/material';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
-import translate from 'redux-polyglot/translate';
 import PropTypes from 'prop-types';
 import ClearAllIcon from '@mui/icons-material/ClearAll';
 import PublishedWithChangesIcon from '@mui/icons-material/PublishedWithChanges';
@@ -22,6 +21,7 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ClearDialog from '../Appbar/ClearDialog';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { publish } from '.';
+import { translate } from '../../i18n/I18NContext';
 
 const options = [
     { label: 'republish', icon: <PublishedWithChangesIcon /> },

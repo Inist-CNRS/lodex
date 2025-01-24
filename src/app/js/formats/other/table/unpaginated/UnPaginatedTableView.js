@@ -1,10 +1,10 @@
 import compose from 'recompose/compose';
 import injectData from '../../../injectData';
 import { connect } from 'react-redux';
-import translate from 'redux-polyglot/translate';
 import AbstractTableView from '../core/AbstractTableView';
 import { Table, TableBody, TableContainer, TableRow } from '@mui/material';
 import React from 'react';
+import { translate } from '../../../../i18n/I18NContext';
 
 class UnPaginatedTableView extends AbstractTableView {
     render() {

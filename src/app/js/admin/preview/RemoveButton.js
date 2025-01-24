@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import compose from 'recompose/compose';
-import translate from 'redux-polyglot/translate';
 import { Button, Dialog, DialogActions, DialogTitle } from '@mui/material';
 
 import { removeField } from '../../fields';
@@ -13,6 +12,7 @@ import {
     field as fieldPropTypes,
 } from '../../propTypes';
 import CancelButton from '../../lib/components/CancelButton';
+import { translate } from '../../i18n/I18NContext';
 
 export const RemoveButtonComponent = ({ onRemove, p: polyglot }) => {
     const [showDialog, setShowDialog] = useState(false);

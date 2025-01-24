@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
-import translate from 'redux-polyglot/translate';
 import { connect } from 'react-redux';
 import memoize from 'lodash/memoize';
 import HiddenIcon from '@mui/icons-material/VisibilityOff';
@@ -17,6 +16,7 @@ import {
     field as fieldPropTypes,
 } from '../../propTypes';
 import FieldInternalIcon from '../../fields/FieldInternalIcon';
+import { translate } from '../../i18n/I18NContext';
 
 const getStyle = memoize((field) => {
     if (field.scope === SCOPE_DATASET) {

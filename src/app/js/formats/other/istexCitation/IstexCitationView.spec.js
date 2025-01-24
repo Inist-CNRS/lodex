@@ -1,14 +1,14 @@
-import React from 'react';
-import { shallow } from 'enzyme';
 import { StyleSheetTestUtils } from 'aphrodite';
+import { shallow } from 'enzyme';
+import React from 'react';
 
-import { IstexCitationView, IstexDocument } from './IstexCitationView';
 import composeRenderProps from '../../../lib/composeRenderProps';
-import { parseCitationData } from './getIstexCitationData';
-import IstexCitationList from './IstexCitationList';
-import JournalFold from './JournalFold';
 import InvalidFormat from '../../InvalidFormat';
 import { CUSTOM_ISTEX_QUERY } from '../istexSummary/constants';
+import { parseCitationData } from './getIstexCitationData';
+import IstexCitationList from './IstexCitationList';
+import { IstexCitationView, IstexDocument } from './IstexCitationView';
+import JournalFold from './JournalFold';
 
 jest.mock('../../../lib/composeRenderProps');
 jest.mock('./getIstexCitationData');
@@ -85,7 +85,6 @@ describe('IstexCitationView', () => {
     });
 
     afterAll(() => {
-        parseCitationData.resetMock();
-        composeRenderProps.resetMock();
+        jest.resetAllMocks();
     });
 });

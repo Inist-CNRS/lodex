@@ -11,7 +11,6 @@ import EqualizerIcon from '@mui/icons-material/Equalizer';
 import ArticleIcon from '@mui/icons-material/Article';
 import DocumentScannerIcon from '@mui/icons-material/DocumentScanner';
 import ManageSearchIcon from '@mui/icons-material/ManageSearch';
-import translate from 'redux-polyglot/translate';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
@@ -24,6 +23,7 @@ import {
     SCOPE_GRAPHIC,
 } from '../../../../common/scope';
 import { MenuItemLink } from './MenuItemLink';
+import { translate } from '../../i18n/I18NContext';
 
 const DRAWER_CLOSED_WIDTH = 50;
 const DRAWER_OPEN_WIDTH = 205;

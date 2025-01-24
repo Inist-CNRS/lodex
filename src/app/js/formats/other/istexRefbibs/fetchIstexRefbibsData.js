@@ -104,7 +104,7 @@ const parseFetchResult = (fetchResult) => {
         throw new Error(fetchResult.error);
     }
     const {
-        response: { total, hits, aggregations, nextPageURI },
+        response: { aggregations, nextPageURI },
     } = fetchResult;
     const buckets = get(aggregations, ['refBibs.title', 'buckets'], []);
     let istexArticles = [];

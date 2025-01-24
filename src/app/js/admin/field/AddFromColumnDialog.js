@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import translate from 'redux-polyglot/translate';
 import {
     Dialog,
     DialogActions,
@@ -9,11 +8,13 @@ import {
     Box,
 } from '@mui/material';
 
-import { polyglot as polyglotPropTypes } from '../../propTypes';
 import ParsingExcerpt from '../parsing/ParsingExcerpt';
 import CancelButton from '../../lib/components/CancelButton';
+import { useTranslate } from '../../i18n/I18NContext';
 
-export const AddFromColumnDialogComponent = ({ p: polyglot, onClose }) => {
+export const AddFromColumnDialogComponent = ({ onClose }) => {
+    const { translate } = useTranslate();
+
     return (
         <Dialog
             open
@@ -21,7 +22,7 @@ export const AddFromColumnDialogComponent = ({ p: polyglot, onClose }) => {
             maxWidth="xl"
             PaperProps={{ sx: { height: '90vh' } }}
         >
-            <DialogTitle> {polyglot.t('a_column')}</DialogTitle>
+            <DialogTitle> {translate('a_column')}</DialogTitle>
             <DialogContent>
                 <Box display="flex" p={2} width="1000px">
                     <ParsingExcerpt showAddFromColumn onAddField={onClose} />
@@ -29,7 +30,7 @@ export const AddFromColumnDialogComponent = ({ p: polyglot, onClose }) => {
             </DialogContent>
             <DialogActions>
                 <CancelButton onClick={onClose}>
-                    {polyglot.t('Cancel')}
+                    {translate('Cancel')}
                 </CancelButton>
             </DialogActions>
         </Dialog>
@@ -37,8 +38,7 @@ export const AddFromColumnDialogComponent = ({ p: polyglot, onClose }) => {
 };
 
 AddFromColumnDialogComponent.propTypes = {
-    p: polyglotPropTypes.isRequired,
     onClose: PropTypes.func.isRequired,
 };
 
-export default translate(AddFromColumnDialogComponent);
+export default AddFromColumnDialogComponent;

@@ -1,13 +1,12 @@
 import React from 'react';
-import translate from 'redux-polyglot/translate';
 import PreviewIcon from '@mui/icons-material/Preview';
 import PropTypes from 'prop-types';
 
 import { Box, Typography } from '@mui/material';
-import { compose } from 'recompose';
-import { polyglot as polyglotPropTypes } from '../../propTypes';
+import { useTranslate } from '../../i18n/I18NContext';
 
-const EnrichmentPreview = ({ lines, sourceColumn, p: polyglot }) => {
+const EnrichmentPreview = ({ lines, sourceColumn }) => {
+    const { translate } = useTranslate();
     return (
         <Box
             id="value-preview"
@@ -25,7 +24,7 @@ const EnrichmentPreview = ({ lines, sourceColumn, p: polyglot }) => {
             >
                 <PreviewIcon mr={1} />
                 <Typography variant="h6">
-                    {polyglot.t('value_preview_title')}
+                    {translate('value_preview_title')}
                 </Typography>
             </Box>
 
@@ -56,14 +55,14 @@ const EnrichmentPreview = ({ lines, sourceColumn, p: polyglot }) => {
                 {lines.length === 0 && (
                     <Box textAlign={'center'} mb={2}>
                         <Typography variant="body1">
-                            {polyglot.t('preview_no_data')}
+                            {translate('preview_no_data')}
                         </Typography>
                     </Box>
                 )}
             </Box>
             <Box mb={1}>
                 <Typography variant="body1" sx={{ fontStyle: 'italic' }}>
-                    {polyglot.t('enrichment_preview_description')}
+                    {translate('enrichment_preview_description')}
                 </Typography>
             </Box>
         </Box>
@@ -73,7 +72,6 @@ const EnrichmentPreview = ({ lines, sourceColumn, p: polyglot }) => {
 EnrichmentPreview.propTypes = {
     lines: PropTypes.array.isRequired,
     sourceColumn: PropTypes.string,
-    p: polyglotPropTypes.isRequired,
 };
 
-export default compose(translate)(EnrichmentPreview);
+export default EnrichmentPreview;

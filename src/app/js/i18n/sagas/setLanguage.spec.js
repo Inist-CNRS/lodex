@@ -1,5 +1,4 @@
 import { call, put } from 'redux-saga/effects';
-import { setLanguage } from 'redux-polyglot';
 
 import { setLanguageSuccess, setLanguageError } from '../';
 
@@ -7,21 +6,18 @@ import { loadPhrases, handleSetLanguage } from './setLanguage';
 
 describe('i18n saga', () => {
     describe('handleSetLanguage', () => {
-        const saga = handleSetLanguage({ payload: 'fr' });
-
-        it('should call loadPhrases with language from action', () => {
-            expect(saga.next().value).toEqual(call(loadPhrases, 'fr'));
-        });
-
-        it('should put setLanguageSuccess action with the phrases from loadPhrases', () => {
-            expect(saga.next({ key: 'value' }).value).toEqual(
-                put(setLanguageSuccess('fr')),
-            );
-        });
-
         it('should put setLanguage action with language and phrases', () => {
+            const saga = handleSetLanguage({ payload: 'fr' });
             expect(saga.next({ key: 'value' }).value).toEqual(
-                put(setLanguage('fr', { key: 'value' })),
+                call(loadPhrases, 'fr'),
+            );
+            expect(saga.next(['phrases']).value).toEqual(
+                put(
+                    setLanguageSuccess(
+                        { phrases: ['phrases'], language: 'fr' },
+                        { key: 'value' },
+                    ),
+                ),
             );
         });
 

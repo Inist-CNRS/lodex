@@ -9,18 +9,16 @@ import Paper from '@mui/material/Paper';
 import Popper from '@mui/material/Popper';
 import MenuItem from '@mui/material/MenuItem';
 import MenuList from '@mui/material/MenuList';
-import translate from 'redux-polyglot/translate';
 import PropTypes from 'prop-types';
 
 import { connect } from 'react-redux';
-import { compose } from 'recompose';
 import { Add } from '@mui/icons-material';
 import { ListItemIcon, ListItemText } from '@mui/material';
 import { showAddFromColumn } from '../parsing';
 import { fromFields } from '../../sharedSelectors';
 import { addField } from '../../fields';
-import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { SCOPE_DOCUMENT } from '../../../../common/scope';
+import { useTranslate } from '../../i18n/I18NContext';
 
 const options = [
     { label: 'new_field', icon: <Add /> },
@@ -33,8 +31,8 @@ export const FieldAddDropdownButtonComponent = ({
     onShowExistingColumns,
     isFieldsLoading,
     subresourceId,
-    p: polyglot,
 }) => {
+    const { translate } = useTranslate();
     const [open, setOpen] = React.useState(false);
     const anchorRef = React.useRef();
 
@@ -74,7 +72,7 @@ export const FieldAddDropdownButtonComponent = ({
                     onClick={() => handleClick(0)}
                     startIcon={options[0].icon}
                 >
-                    {polyglot.t(options[0].label)}
+                    {translate(options[0].label)}
                 </Button>
                 <Button
                     size="small"
@@ -127,7 +125,7 @@ export const FieldAddDropdownButtonComponent = ({
                                                         {option.icon}
                                                     </ListItemIcon>
                                                     <ListItemText>
-                                                        {polyglot.t(
+                                                        {translate(
                                                             option.label,
                                                         )}
                                                     </ListItemText>
@@ -157,12 +155,11 @@ const mapDispatchToProps = {
 FieldAddDropdownButtonComponent.propTypes = {
     onAddNewField: PropTypes.func.isRequired,
     onShowExistingColumns: PropTypes.func.isRequired,
-    p: polyglotPropTypes.isRequired,
     isFieldsLoading: PropTypes.bool,
     subresourceId: PropTypes.string,
 };
 
-export default compose(
-    connect(mapStateToProps, mapDispatchToProps),
-    translate,
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
 )(FieldAddDropdownButtonComponent);

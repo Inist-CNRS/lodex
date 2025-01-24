@@ -1,5 +1,4 @@
 import React from 'react';
-import translate from 'redux-polyglot/translate';
 import {
     field as fieldPropTypes,
     polyglot as polyglotPropTypes,
@@ -7,6 +6,7 @@ import {
 
 import FormTextField from '../lib/components/FormTextField';
 import FieldInput from '../lib/components/FieldInput';
+import { translate } from '../i18n/I18NContext';
 
 export const FieldInternalNameComponent = () => (
     <FieldInput

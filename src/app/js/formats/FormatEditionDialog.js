@@ -11,11 +11,11 @@ import {
     IconButton,
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
-import translate from 'redux-polyglot/translate';
 import { polyglot as polyglotPropTypes } from '../propTypes';
 import SelectFormat from './SelectFormat';
 import { getAdminComponent, getFormatInitialArgs } from '.';
 import CancelButton from '../lib/components/CancelButton';
+import { translate } from '../i18n/I18NContext';
 
 const FormatEditionDialog = ({
     p: polyglot,

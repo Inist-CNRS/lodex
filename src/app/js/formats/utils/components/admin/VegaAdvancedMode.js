@@ -1,5 +1,4 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import translate from 'redux-polyglot/translate';
 import PropTypes from 'prop-types';
 import { Button, Tooltip, Box } from '@mui/material';
 import ReportProblemIcon from '@mui/icons-material/ReportProblem';
@@ -7,6 +6,7 @@ import CachedIcon from '@mui/icons-material/Cached';
 import isEqual from 'lodash/isEqual';
 
 import { polyglot as polyglotPropTypes } from '../../../../propTypes';
+import { translate } from '../../../../i18n/I18NContext';
 
 const styles = {
     error: {

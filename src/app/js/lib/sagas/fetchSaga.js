@@ -1,5 +1,5 @@
 import { call, put, race, select, take } from 'redux-saga/effects';
-import { replace } from 'connected-react-router';
+import { replace } from 'redux-first-history';
 import fetch from '../fetch';
 import { logout } from '../../user';
 import { getCurrentQuery } from '../../sharedSelectors';

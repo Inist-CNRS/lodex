@@ -8,6 +8,7 @@ export const LAUNCH_ALL_ENRICHMENT = 'LAUNCH_ALL_ENRICHMENT';
 export const LAUNCH_ALL_ENRICHMENT_STARTED = 'LAUNCH_ALL_ENRICHMENT_STARTED';
 export const LAUNCH_ALL_ENRICHMENT_COMPLETED =
     'LAUNCH_ALL_ENRICHMENT_COMPLETED';
+export const LAUNCH_ALL_ENRICHMENT_ERROR = 'LAUNCH_ALL_ENRICHMENT_ERROR';
 export const RETRY_ENRICHMENT = 'RETRY_ENRICHMENT';
 
 export const loadEnrichments = createAction(LOAD_ENRICHMENTS);
@@ -21,6 +22,9 @@ export const launchAllEnrichmentStarted = createAction(
 );
 export const launchAllEnrichmentCompleted = createAction(
     LAUNCH_ALL_ENRICHMENT_COMPLETED,
+);
+export const launchAllEnrichmentError = createAction(
+    LAUNCH_ALL_ENRICHMENT_ERROR,
 );
 
 export const initialState = {
@@ -50,6 +54,11 @@ export default handleActions(
         LAUNCH_ALL_ENRICHMENT_STARTED: (state) => ({
             ...state,
             isRunAllEnrichmentPending: true,
+            runAllEnrichmentError: null,
+        }),
+        LAUNCH_ALL_ENRICHMENT_ERROR: (state, { payload: error }) => ({
+            ...state,
+            runAllEnrichmentError: error,
         }),
         LAUNCH_ALL_ENRICHMENT_COMPLETED: (state) => ({
             ...state,

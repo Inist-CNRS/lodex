@@ -10,9 +10,8 @@ jest.mock('../../admin/api/field', () => ({
     patchOverview: jest.fn(),
 }));
 
-// eslint-disable-next-line react/display-name, react/prop-types
+// eslint-disable-next-line react/display-name
 jest.mock('../../fields/FieldRepresentation', () => () => (
-    // eslint-disable-next-line react/prop-types
     <div>FieldRepresentation</div>
 ));
 

@@ -2,11 +2,11 @@ import omit from 'lodash/omit';
 import pick from 'lodash/pick';
 import { ObjectId } from 'mongodb';
 
-import { validateField as validateFieldIsomorphic } from '../../common/validateFields';
+import { SCOPE_COLLECTION, SCOPE_DOCUMENT } from '../../common/scope';
 import { URI_FIELD_NAME } from '../../common/uris';
-import { SCOPE_DOCUMENT, SCOPE_COLLECTION } from '../../common/scope';
+import { validateField as validateFieldIsomorphic } from '../../common/validateFields';
 import generateUid from '../services/generateUid';
-import { castIdsFactory } from './utils';
+import { castIdsFactory, getCreatedCollection } from './utils';
 
 export const buildInvalidPropertiesMessage = (name) =>
     `Invalid data for field ${name} which need a name, a label, a scope, a valid scheme if specified and a transformers array`;
@@ -96,7 +96,7 @@ const createSubresourceUriField = (subresource) => ({
 });
 
 export default async (db) => {
-    const collection = db.collection('field');
+    const collection = await getCreatedCollection(db, 'field');
 
     await collection.createIndex({ name: 1 }, { unique: true });
 
@@ -191,26 +191,24 @@ export default async (db) => {
             console.warn(`field #${id} is not found`);
         }
 
-        return collection
-            .findOneAndUpdate(
-                {
-                    _id: objectId,
-                },
-                {
-                    $set: omit(field, ['_id']),
-                },
-                {
-                    returnOriginal: false,
-                },
-            )
-            .then((result) => result.value);
+        return collection.findOneAndUpdate(
+            {
+                _id: objectId,
+            },
+            {
+                $set: omit(field, ['_id']),
+            },
+            {
+                returnOriginal: false,
+            },
+        );
     };
 
     collection.removeById = (id) =>
-        collection.remove({ _id: new ObjectId(id), name: { $ne: 'uri' } });
+        collection.deleteOne({ _id: new ObjectId(id), name: { $ne: 'uri' } });
 
     collection.removeBySubresource = (subresourceId) =>
-        collection.remove({
+        collection.deleteOne({
             $or: [
                 { subresourceId: new ObjectId(subresourceId) },
                 { subresourceId },
@@ -265,7 +263,7 @@ export default async (db) => {
         }
 
         if (isLogged) {
-            await collection.update(
+            await collection.updateOne(
                 {
                     name,
                     contribution: true,
@@ -282,7 +280,7 @@ export default async (db) => {
             return name;
         }
 
-        await collection.update(
+        await collection.updateOne(
             {
                 name,
                 contribution: true,
@@ -386,13 +384,11 @@ export default async (db) => {
     };
 
     collection.updatePosition = async (name, position) =>
-        collection
-            .findOneAndUpdate(
-                { name },
-                { $set: { position } },
-                { returnOriginal: false },
-            )
-            .then(({ value }) => value);
+        collection.findOneAndUpdate(
+            { name },
+            { $set: { position } },
+            { returnOriginal: false },
+        );
 
     collection.findByNames = async (names) => {
         const fields = await collection

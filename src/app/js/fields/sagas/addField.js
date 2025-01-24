@@ -1,5 +1,5 @@
 import { put, takeLatest } from 'redux-saga/effects';
-import { push } from 'connected-react-router';
+import { push } from 'redux-first-history';
 
 import { ADD_FIELD } from '../';
 import { SCOPE_DOCUMENT } from '../../../../common/scope';

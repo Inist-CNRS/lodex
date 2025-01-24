@@ -2,7 +2,7 @@ import React from 'react';
 import compose from 'recompose/compose';
 import withHandlers from 'recompose/withHandlers';
 import { connect } from 'react-redux';
-import translate from 'redux-polyglot/translate';
+import { translate } from '../../i18n/I18NContext';
 import { Field, reduxForm, propTypes as reduxFormPropTypes } from 'redux-form';
 
 import {

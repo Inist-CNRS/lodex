@@ -1,7 +1,4 @@
 import React from 'react';
-import compose from 'recompose/compose';
-import translate from 'redux-polyglot/translate';
-import { polyglot as polyglotPropTypes } from '../../propTypes';
 import PropTypes from 'prop-types';
 import { FixedSizeList } from 'react-window';
 import { useMeasure } from 'react-use';
@@ -15,6 +12,7 @@ import {
     Typography,
 } from '@mui/material';
 import CancelButton from '../../lib/components/CancelButton';
+import { useTranslate } from '../../i18n/I18NContext';
 
 const styles = {
     info: {
@@ -80,12 +78,8 @@ LogLine.propTypes = {
     style: PropTypes.object.isRequired,
 };
 
-export const EnrichmentLogsDialog = ({
-    isOpen,
-    logs,
-    p: polyglot,
-    handleClose,
-}) => {
+export const EnrichmentLogsDialog = ({ isOpen, logs, handleClose }) => {
+    const { translate } = useTranslate();
     const [logsContainerRef, { width }] = useMeasure();
 
     const handleDownloadLogs = () => {
@@ -101,7 +95,7 @@ export const EnrichmentLogsDialog = ({
 
     return (
         <Dialog open={isOpen} onClose={handleClose} scroll="body" maxWidth="lg">
-            <DialogTitle>{polyglot.t('enrichment_logs')}</DialogTitle>
+            <DialogTitle>{translate('enrichment_logs')}</DialogTitle>
             <DialogContent
                 style={{
                     margin: 20,
@@ -125,14 +119,14 @@ export const EnrichmentLogsDialog = ({
             <DialogActions>
                 <Box display="flex" justifyContent="flex-end">
                     <CancelButton onClick={handleClose}>
-                        {polyglot.t('close')}
+                        {translate('close')}
                     </CancelButton>
                     <Button
                         onClick={handleDownloadLogs}
                         color="primary"
                         variant="contained"
                     >
-                        {polyglot.t('download_logs')}
+                        {translate('download_logs')}
                     </Button>
                 </Box>
             </DialogActions>
@@ -144,7 +138,6 @@ EnrichmentLogsDialog.propTypes = {
     isOpen: PropTypes.bool.isRequired,
     handleClose: PropTypes.func.isRequired,
     logs: PropTypes.arrayOf(PropTypes.string).isRequired,
-    p: polyglotPropTypes.isRequired,
 };
 
-export default compose(translate)(EnrichmentLogsDialog);
+export default EnrichmentLogsDialog;

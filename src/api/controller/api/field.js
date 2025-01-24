@@ -1,30 +1,30 @@
-import Koa from 'koa';
-import route from 'koa-route';
-import koaBodyParser from 'koa-bodyparser';
 import asyncBusboy from '@recuperateur/async-busboy';
-import restore from 'mongodb-restore';
+import Koa from 'koa';
+import koaBodyParser from 'koa-bodyparser';
+import route from 'koa-route';
 import moment from 'moment';
 import streamToString from 'stream-to-string';
 
 import { validateField } from '../../models/field';
-import publishFacets from './publishFacets';
 import indexSearchableFields from '../../services/indexSearchableFields';
 import { mongoConnectionString } from '../../services/mongoClient';
+import publishFacets from './publishFacets';
 const tar = require('tar-stream');
 
+import { ObjectId } from 'mongodb';
 import {
-    SCOPE_DATASET,
-    SCOPE_GRAPHIC,
     SCOPE_COLLECTION,
+    SCOPE_DATASET,
     SCOPE_DOCUMENT,
+    SCOPE_GRAPHIC,
 } from '../../../common/scope';
-import { dropJobs } from '../../workers/tools';
-import { ENRICHER } from '../../workers/enricher';
-import { ObjectID } from 'mongodb';
-import generateUid from '../../services/generateUid';
 import { restoreEnrichments } from '../../services/enrichment/enrichment';
+import generateUid from '../../services/generateUid';
 import { restorePrecomputed } from '../../services/precomputed/precomputed';
+import { restoreModel } from '../../services/restoreModel';
+import { ENRICHER } from '../../workers/enricher';
 import { PRECOMPUTER } from '../../workers/precomputer';
+import { dropJobs } from '../../workers/tools';
 
 const sortByFieldUri = (a, b) =>
     (a.name === 'uri' ? -1 : a.position) - (b.name === 'uri' ? -1 : b.position);
@@ -35,7 +35,7 @@ export const restoreFields = (fileStream, ctx) => {
             .then((fieldsString) => JSON.parse(fieldsString))
             .then((fields) => {
                 ctx.field
-                    .remove({})
+                    .deleteMany({})
                     .then(() =>
                         Promise.all(
                             fields
@@ -51,26 +51,17 @@ export const restoreFields = (fileStream, ctx) => {
     const restoreTask = () => {
         dropJobs(ctx.tenant, ENRICHER);
         dropJobs(ctx.tenant, PRECOMPUTER);
-        return new Promise((resolve, reject) =>
-            restore({
-                uri: mongoConnectionString(ctx.tenant),
-                stream: fileStream,
-                parser: 'json',
-                dropCollections: [
-                    'field',
-                    'subresource',
-                    'enrichment',
-                    'precomputed',
-                ],
-                callback: function (err) {
-                    err ? reject(err) : resolve();
-                },
-            }),
-        );
+
+        return restoreModel(mongoConnectionString(ctx.tenant), fileStream, [
+            'field',
+            'subresource',
+            'enrichment',
+            'precomputed',
+        ]);
     };
 
     return ctx.field
-        .remove({})
+        .deleteMany({})
         .then(restoreTask)
         .then(() =>
             Promise.all([
@@ -228,7 +219,7 @@ export const patchSearchableFields = async (ctx) => {
     const fields = ctx.request.body;
 
     try {
-        const ids = fields.map((field) => new ObjectID(field._id));
+        const ids = fields.map((field) => new ObjectId(field._id));
         await ctx.field.updateMany(
             { _id: { $in: ids } },
             { $set: { searchable: true } },

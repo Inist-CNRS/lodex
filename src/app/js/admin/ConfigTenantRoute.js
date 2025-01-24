@@ -1,7 +1,5 @@
 import React from 'react';
 
-import { compose } from 'recompose';
-import translate from 'redux-polyglot/translate';
 import withInitialData from './withInitialData';
 
 import { Route, useRouteMatch, Switch } from 'react-router';
@@ -19,7 +17,4 @@ export const ConfigTenantRouteComponent = () => {
     );
 };
 
-export const ConfigTenantRoute = compose(
-    withInitialData,
-    translate,
-)(ConfigTenantRouteComponent);
+export const ConfigTenantRoute = withInitialData(ConfigTenantRouteComponent);

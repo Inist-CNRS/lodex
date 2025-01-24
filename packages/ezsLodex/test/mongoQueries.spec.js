@@ -1,29 +1,28 @@
-import from from 'from';
-import { MongoClient } from 'mongodb';
-import _ from 'lodash';
 import ezs from '@ezs/core';
+import from from 'from';
+import _ from 'lodash';
+import { MongoClient } from 'mongodb';
 import ezsLodex from '../src';
 import { handles } from '../src/mongoDatabase';
+import field from './fixture.field.json';
+import publishedCharacteristic from './fixture.publishedCharacteristic.json';
 import publishedDataset from './fixture.publishedDataset.json';
 import publishedDatasetWithSubResource from './lodexV12.publishedDataset.json';
 import precomputedDataset from './lodexV14.precomputedDataset.json';
-import publishedCharacteristic from './fixture.publishedCharacteristic.json';
-import field from './fixture.field.json';
 
 ezs.use(ezsLodex);
 
-// @TODO: either migrate to use real mongo database, or wait for memory mongo to support ubuntu 24
-describe.skip('mongo queries', () => {
+describe('mongo queries', () => {
     const connectionStringURI = process.env.MONGO_URL;
     let connection;
     let db;
 
     beforeAll(async () => {
-        connection = await MongoClient.connect(process.env.MONGO_URL, {
+        connection = await MongoClient.connect(connectionStringURI, {
             useNewUrlParser: true,
             useUnifiedTopology: true,
         });
-        db = await connection.db();
+        db = connection.db();
     });
 
     afterAll(async () => {
@@ -44,8 +43,10 @@ describe.skip('mongo queries', () => {
     const drop = () => db.dropDatabase();
 
     describe('getCharacteristics', () => {
-        beforeEach(() => initDb(connectionStringURI, publishedCharacteristic));
-        afterEach(() => drop());
+        beforeEach(async () =>
+            initDb(connectionStringURI, publishedCharacteristic),
+        );
+        afterEach(async () => drop());
 
         it('should return characteristics', (done) => {
             let res = [];
@@ -92,8 +93,8 @@ describe.skip('mongo queries', () => {
     });
 
     describe('getFields', () => {
-        beforeEach(() => initDb(connectionStringURI, field));
-        afterEach(() => drop());
+        beforeEach(async () => initDb(connectionStringURI, field));
+        afterEach(async () => drop());
 
         it('should return the fields', (done) => {
             let res = [];
@@ -136,8 +137,8 @@ describe.skip('mongo queries', () => {
     });
 
     describe('runQuery', () => {
-        beforeEach(() => initDb(connectionStringURI, publishedDataset));
-        afterEach(() => drop());
+        beforeEach(async () => initDb(connectionStringURI, publishedDataset));
+        afterEach(async () => drop());
 
         it('should return results', (done) => {
             let res = [];
@@ -276,7 +277,7 @@ describe.skip('mongo queries', () => {
                 .on('end', () => {
                     expect(res).toHaveLength(2);
                     expect(res[0].uri).toBeDefined();
-                    expect(res[0].versions).not.toBeDefined();
+                    expect(res[0].versions).toBeUndefined();
                     done();
                 });
         });
@@ -298,15 +299,15 @@ describe.skip('mongo queries', () => {
                 .on('end', () => {
                     expect(res).toHaveLength(2);
                     expect(res[0].uri).toBeDefined();
-                    expect(res[0].versions).not.toBeDefined();
+                    expect(res[0].versions).toBeUndefined();
                     done();
                 });
         });
     });
 
     describe('reduceQuery', () => {
-        beforeEach(() => initDb(connectionStringURI, publishedDataset));
-        afterEach(() => drop());
+        beforeEach(async () => initDb(connectionStringURI, publishedDataset));
+        afterEach(async () => drop());
 
         it('should throw when no reducer is given', (done) => {
             from([
@@ -359,6 +360,8 @@ describe.skip('mongo queries', () => {
                         field: 'publicationDate',
                     }),
                 )
+                .pipe(ezs.catch())
+                .on('error', done)
                 .on('data', (data) => {
                     res = [...res, data];
                 })
@@ -489,8 +492,8 @@ describe.skip('mongo queries', () => {
                     })
                     .on('end', () => {
                         expect(res).toHaveLength(10);
-                        expect(res[0].total).toEqual(10);
-                        expect(res[0].value).toEqual(1);
+                        expect(res[0].total).toBe(10);
+                        expect(res[0].value).toBe(1);
                         expect(res[0]._id).toMatch(/^ark:\//);
                         done();
                     });
@@ -499,13 +502,13 @@ describe.skip('mongo queries', () => {
     });
 
     describe('injectSyndicationFrom', () => {
-        beforeEach(() =>
+        beforeEach(async () =>
             Promise.all([
                 initDb(connectionStringURI, publishedDataset),
                 initDb(connectionStringURI, field),
             ]),
         );
-        afterEach(() => drop());
+        afterEach(async () => drop());
 
         it('should inject title & summary in each item', (done) => {
             const res = [];
@@ -532,18 +535,18 @@ describe.skip('mongo queries', () => {
                 })
                 .on('end', () => {
                     expect(res).toHaveLength(3);
-                    expect(res[0].source).toEqual('ark:/67375/XTP-1JC4F85T-7');
-                    expect(res[0].source_title).toEqual('research-article');
+                    expect(res[0].source).toBe('ark:/67375/XTP-1JC4F85T-7');
+                    expect(res[0].source_title).toBe('research-article');
                     expect(res[0].source_summary).toContain(
                         'Il s’agit d’une source primaire. ',
                     );
-                    expect(res[1].source).toEqual('ark:/67375/XTP-HPN7T1Q2-R');
-                    expect(res[1].source_title).toEqual('abstract');
+                    expect(res[1].source).toBe('ark:/67375/XTP-HPN7T1Q2-R');
+                    expect(res[1].source_title).toBe('abstract');
                     expect(res[1].source_summary).toContain(
                         'Résumé d’un papier ou ',
                     );
-                    expect(res[2].source).toEqual('ark:/67375/XTP-HPN7T1Q2-R');
-                    expect(res[2].source_title).toEqual('abstract');
+                    expect(res[2].source).toBe('ark:/67375/XTP-HPN7T1Q2-R');
+                    expect(res[2].source_title).toBe('abstract');
                     expect(res[2].source_summary).toEqual(
                         'Résumé d’un papier ou d’une présentation qui a été ' +
                             'présentée ou publiée séparément.',
@@ -554,8 +557,10 @@ describe.skip('mongo queries', () => {
     });
 
     describe('injectDatasetFields', () => {
-        beforeEach(() => initDb(connectionStringURI, publishedCharacteristic));
-        afterEach(() => drop());
+        beforeEach(async () =>
+            initDb(connectionStringURI, publishedCharacteristic),
+        );
+        afterEach(async () => drop());
 
         it('should inject dataset fiels in each item', (done) => {
             const res = [];
@@ -580,20 +585,20 @@ describe.skip('mongo queries', () => {
                 })
                 .on('end', () => {
                     expect(res).toHaveLength(3);
-                    expect(res[0].item).toEqual(1);
-                    expect(res[0].PJTS).toEqual('ISTEX');
-                    expect(res[1].item).toEqual(2);
-                    expect(res[1].PJTS).toEqual('ISTEX');
-                    expect(res[2].item).toEqual(3);
-                    expect(res[2].PJTS).toEqual('ISTEX');
+                    expect(res[0].item).toBe(1);
+                    expect(res[0].PJTS).toBe('ISTEX');
+                    expect(res[1].item).toBe(2);
+                    expect(res[1].PJTS).toBe('ISTEX');
+                    expect(res[2].item).toBe(3);
+                    expect(res[2].PJTS).toBe('ISTEX');
                     done();
                 });
         });
     });
 
     describe('labelizeFieldID', () => {
-        beforeEach(() => initDb(connectionStringURI, field));
-        afterEach(() => drop());
+        beforeEach(async () => initDb(connectionStringURI, field));
+        afterEach(async () => drop());
 
         const input = [
             {
@@ -626,15 +631,15 @@ describe.skip('mongo queries', () => {
                 })
                 .on('end', () => {
                     expect(res).toHaveLength(3);
-                    expect(res[0].titre).toEqual(1);
-                    expect(res[0]['définition anglais']).toEqual('A');
-                    expect(res[0].toto).toEqual(true);
-                    expect(res[1].titre).toEqual(2);
-                    expect(res[1]['définition anglais']).toEqual('B');
-                    expect(res[1].toto).toEqual(true);
-                    expect(res[2].titre).toEqual(3);
-                    expect(res[2]['définition anglais']).toEqual('C');
-                    expect(res[2].toto).toEqual(true);
+                    expect(res[0].titre).toBe(1);
+                    expect(res[0]['définition anglais']).toBe('A');
+                    expect(res[0].toto).toBe(true);
+                    expect(res[1].titre).toBe(2);
+                    expect(res[1]['définition anglais']).toBe('B');
+                    expect(res[1].toto).toBe(true);
+                    expect(res[2].titre).toBe(3);
+                    expect(res[2]['définition anglais']).toBe('C');
+                    expect(res[2].toto).toBe(true);
                     done();
                 });
         });
@@ -653,22 +658,22 @@ describe.skip('mongo queries', () => {
                 })
                 .on('end', () => {
                     expect(res).toHaveLength(3);
-                    expect(res[0]['titre - tfFF']).toEqual(1);
-                    expect(res[0]['définition anglais - BoJb']).toEqual('A');
-                    expect(res[0].toto).toEqual(true);
-                    expect(res[1]['titre - tfFF']).toEqual(2);
-                    expect(res[1]['définition anglais - BoJb']).toEqual('B');
-                    expect(res[1].toto).toEqual(true);
-                    expect(res[2]['titre - tfFF']).toEqual(3);
-                    expect(res[2]['définition anglais - BoJb']).toEqual('C');
-                    expect(res[2].toto).toEqual(true);
+                    expect(res[0]['titre - tfFF']).toBe(1);
+                    expect(res[0]['définition anglais - BoJb']).toBe('A');
+                    expect(res[0].toto).toBe(true);
+                    expect(res[1]['titre - tfFF']).toBe(2);
+                    expect(res[1]['définition anglais - BoJb']).toBe('B');
+                    expect(res[1].toto).toBe(true);
+                    expect(res[2]['titre - tfFF']).toBe(3);
+                    expect(res[2]['définition anglais - BoJb']).toBe('C');
+                    expect(res[2].toto).toBe(true);
                     done();
                 });
         });
     });
     describe('buildContext', () => {
-        beforeEach(() => initDb(connectionStringURI, field));
-        afterEach(() => drop());
+        beforeEach(async () => initDb(connectionStringURI, field));
+        afterEach(async () => drop());
 
         it('with a standard context', (done) => {
             const res = [];
@@ -692,7 +697,7 @@ describe.skip('mongo queries', () => {
                     expect(res).toHaveLength(1);
                     expect(res[0].maxSize).toEqual(context.maxSize);
                     expect(res[0].orderBy).toEqual(context.orderBy);
-                    expect(res[0].$query).not.toBeDefined();
+                    expect(res[0].$query).toBeUndefined();
                     expect(res[0].fields).toHaveLength(20);
                     expect(res[0].filter).toEqual({
                         removedAt: {
@@ -744,8 +749,8 @@ describe.skip('mongo queries', () => {
     });
 
     describe('countField', () => {
-        beforeEach(() => initDb(connectionStringURI, publishedDataset));
-        afterEach(() => drop());
+        beforeEach(async () => initDb(connectionStringURI, publishedDataset));
+        afterEach(async () => drop());
 
         it('should return results', (done) => {
             let res = [];
@@ -775,8 +780,8 @@ describe.skip('mongo queries', () => {
     });
 
     describe('aggregateQuery', () => {
-        beforeEach(() => initDb(connectionStringURI, publishedDataset));
-        afterEach(() => drop());
+        beforeEach(async () => initDb(connectionStringURI, publishedDataset));
+        afterEach(async () => drop());
 
         it('should return results', (done) => {
             let res = [];
@@ -897,10 +902,10 @@ describe.skip('mongo queries', () => {
     });
 
     describe('#joinQuery', () => {
-        beforeEach(() =>
+        beforeEach(async () =>
             initDb(connectionStringURI, publishedDatasetWithSubResource),
         );
-        afterEach(() => drop());
+        afterEach(async () => drop());
 
         it('should return no results with parameters matchField, matchValue, joinField as empty string', (done) => {
             const results = [];
@@ -1096,7 +1101,7 @@ describe.skip('mongo queries', () => {
             await initDb(connectionStringURI, precomputedDataset);
         });
 
-        afterEach(() => drop());
+        afterEach(async () => drop());
 
         it('should return 5 result for segments precomputed', (done) => {
             const results = [];
@@ -1203,45 +1208,47 @@ describe.skip('mongo queries', () => {
                 });
         });
 
-        it('should returns 50 000 documents', (done) => {
-            jest.setTimeout(2 * 60 * 1000); // 2 mins
+        it(
+            'should returns 50 000 documents',
+            (done) => {
+                const bigPrecomputedDataset = [];
 
-            const bigPrecomputedDataset = [];
-
-            // Generate 50 000 documents
-            for (let i = 0; i < 50000; i++) {
-                bigPrecomputedDataset.push({
-                    id: `____${i}_${i}____`,
-                    value: `____${i}_${Math.random()}_${i}____`,
-                });
-            }
-
-            initDb(connectionStringURI, {
-                pc_big_values_precomputed: bigPrecomputedDataset,
-            }).then(() => {
-                const results = [];
-                from([
-                    {
-                        connectionStringURI,
-                        filter: {},
-                        precomputedId: 'big_values_precomputed',
-                        orderBy: 'label/asc',
-                    },
-                ])
-                    .pipe(
-                        ezs('LodexRunQueryPrecomputed', {
-                            valueFieldName: 'value',
-                            labelFieldName: 'id',
-                        }),
-                    )
-                    .pipe(ezs.catch())
-                    .on('error', done)
-                    .on('data', (data) => results.push(data))
-                    .on('end', () => {
-                        expect(results).toHaveLength(50000);
-                        done();
+                // Generate 50 000 documents
+                for (let i = 0; i < 50000; i++) {
+                    bigPrecomputedDataset.push({
+                        id: `____${i}_${i}____`,
+                        value: `____${i}_${Math.random()}_${i}____`,
                     });
-            });
-        });
+                }
+
+                initDb(connectionStringURI, {
+                    pc_big_values_precomputed: bigPrecomputedDataset,
+                }).then(() => {
+                    const results = [];
+                    from([
+                        {
+                            connectionStringURI,
+                            filter: {},
+                            precomputedId: 'big_values_precomputed',
+                            orderBy: 'label/asc',
+                        },
+                    ])
+                        .pipe(
+                            ezs('LodexRunQueryPrecomputed', {
+                                valueFieldName: 'value',
+                                labelFieldName: 'id',
+                            }),
+                        )
+                        .pipe(ezs.catch())
+                        .on('error', done)
+                        .on('data', (data) => results.push(data))
+                        .on('end', () => {
+                            expect(results).toHaveLength(50000);
+                            done();
+                        });
+                });
+            },
+            2 * 60 * 1000, // 2 mins
+        );
     });
 });

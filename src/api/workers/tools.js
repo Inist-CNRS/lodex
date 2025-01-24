@@ -1,11 +1,10 @@
-import { cleanWaitingJobsOfType, workerQueues } from '.';
+import { cleanWaitingJobsOfType, workerQueues, CancelWorkerError } from '.';
 import { disableFusible } from '@ezs/core/lib/fusible';
 
 import { ERROR } from '../../common/progressStatus';
 import getLogger from '../services/logger';
 import progress from '../services/progress';
 import { notifyListeners } from './import';
-import { CancelWorkerError } from '.';
 import { handleEnrichmentError } from './enricher';
 
 export const jobLogger = {

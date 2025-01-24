@@ -1,5 +1,5 @@
 import AbstractTableAdmin from '../core/AbstractTableAdmin';
-import translate from 'redux-polyglot/translate';
+import { translate } from '../../../../i18n/I18NContext';
 import RoutineParamsAdmin from '../../../utils/components/admin/RoutineParamsAdmin';
 import TableColumnsParameters from '../core/TableColumnsParameters';
 import React from 'react';

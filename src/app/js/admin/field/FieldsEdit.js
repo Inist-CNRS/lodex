@@ -2,31 +2,29 @@ import React, { useEffect, useState } from 'react';
 import { Tab, Tabs, Box } from '@mui/material';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { compose } from 'recompose';
 
 import AddFromColumnDialog from './AddFromColumnDialog';
 import PublicationPreview from '../preview/publication/PublicationPreview';
 import Statistics from '../Statistics';
-import translate from 'redux-polyglot/translate';
 import { fromParsing } from '../selectors';
 import { FieldGrid } from '../../fields/FieldGrid';
 import { hideAddColumns } from '../parsing';
-import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { SCOPE_DATASET, SCOPE_DOCUMENT } from '../../../../common/scope';
 import DatasetOverviewSelect from '../../fields/DatasetOverviewSelect';
 import SubresourceOverviewSelect from '../../fields/SubresourceOverviewSelect';
 import FieldAddDropdownButtonConnected from './FieldAddDropdownButton';
 import { AddFieldButton } from './AddFieldButton';
 import { DeleteFieldsButton } from './DeleteFieldsButton';
+import { useTranslate } from '../../i18n/I18NContext';
 
 export const FieldsEditComponent = ({
     defaultTab = 'page',
     filter,
     hideAddColumns,
-    p: polyglot,
     showAddFromColumn,
     subresourceId,
 }) => {
+    const { translate } = useTranslate();
     const [tab, setTab] = useState(defaultTab);
     const [showAddFromColumnDialog, setAddFromColumnDialog] = useState(false);
     const [selectedFields, setSelectedFields] = useState([]);
@@ -75,7 +73,7 @@ export const FieldsEditComponent = ({
                     <Tab value="page" label="Page" />
                     <Tab
                         value="published"
-                        label={polyglot.t('published_data')}
+                        label={translate('published_data')}
                     />
                 </Tabs>
             </Box>
@@ -151,7 +149,6 @@ FieldsEditComponent.propTypes = {
     defaultTab: PropTypes.oneOf(['page', 'published']),
     filter: PropTypes.string,
     hideAddColumns: PropTypes.func.isRequired,
-    p: polyglotPropTypes.isRequired,
     showAddFromColumn: PropTypes.bool.isRequired,
     subresourceId: PropTypes.string,
 };
@@ -164,7 +161,7 @@ const mapDispatchToProps = {
     hideAddColumns,
 };
 
-export const FieldsEdit = compose(
-    connect(mapStateToProps, mapDispatchToProps),
-    translate,
+export const FieldsEdit = connect(
+    mapStateToProps,
+    mapDispatchToProps,
 )(FieldsEditComponent);

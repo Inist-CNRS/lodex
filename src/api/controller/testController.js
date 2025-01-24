@@ -1,13 +1,13 @@
-import path from 'path';
 import koa from 'koa';
+import mount from 'koa-mount';
 import route from 'koa-route';
 import serve from 'koa-static';
-import mount from 'koa-mount';
+import path from 'path';
 
+import { DEFAULT_TENANT } from '../../common/tools/tenantTools';
 import repositoryMiddleware, {
     mongoRootAdminClient,
 } from '../services/repositoryMiddleware';
-import { DEFAULT_TENANT } from '../../common/tools/tenantTools';
 
 const app = new koa();
 
@@ -16,15 +16,20 @@ app.use(mongoRootAdminClient);
 
 app.use(
     route.delete('/fixtures', async (ctx) => {
-        await ctx.db.collection('publishedDataset').remove({});
-        await ctx.db.collection('publishedCharacteristic').remove({});
-        await ctx.db.collection('field').remove({});
-        await ctx.db.collection('dataset').remove({});
-        await ctx.db.collection('subresource').remove({});
-        await ctx.db.collection('enrichment').remove({});
+        await ctx.db.collection('publishedFacet').deleteMany();
+        await ctx.db.collection('publishedDataset').deleteMany();
+        await ctx.db.collection('publishedCharacteristic').deleteMany();
+        await ctx.db.collection('hiddenResource').deleteMany();
+        await ctx.db.collection('field').deleteMany();
+        await ctx.db.collection('dataset').deleteMany();
+        await ctx.db.collection('subresource').deleteMany();
+        await ctx.db.collection('enrichment').deleteMany();
+        await ctx.db.collection('precomputed').deleteMany();
+        await ctx.db.collection('annotation').deleteMany();
+
         await ctx.rootAdminDb
             .collection('tenant')
-            .remove({ name: { $ne: DEFAULT_TENANT } });
+            .deleteOne({ name: { $ne: DEFAULT_TENANT } });
         ctx.body = { status: 'ok' };
     }),
 );

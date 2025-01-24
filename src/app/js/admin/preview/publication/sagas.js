@@ -1,4 +1,4 @@
-import { call, put, select, takeLatest } from 'redux-saga/effects';
+import { call, put, select, takeLatest, all } from 'redux-saga/effects';
 
 import getDocumentTransformer from '../../../lib/getDocumentTransformer';
 import { fromUser, fromFields } from '../../../sharedSelectors';
@@ -37,9 +37,10 @@ export function* handleComputePublicationPreview() {
             token,
         );
 
-        const preview = yield lines.map((line) =>
-            call(transformDocument, line),
+        const preview = yield all(
+            lines.map((line) => call(transformDocument, line)),
         );
+
         yield put(computePublicationPreviewSuccess(preview));
     } catch (error) {
         yield put(computePublicationPreviewError(error));

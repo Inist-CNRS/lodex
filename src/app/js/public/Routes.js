@@ -1,24 +1,23 @@
-import React, { useEffect, useState } from 'react';
-import { Route } from 'react-router-dom';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { ConnectedRouter } from 'connected-react-router';
+import React, { useEffect, useState } from 'react';
+import { connect } from 'react-redux';
+import { Route } from 'react-router-dom';
 
-import Home from './Home';
-import Resource from './resource/Resource';
-import Login from '../user/Login';
-import GraphPage from './graph/GraphPage';
-import NavBar from './menu/NavBar';
-import CustomPage from './CustomPage';
-import { loadMenu } from './menu/reducer';
-import { loadDisplayConfig } from './displayConfig/reducer';
-import { fromMenu } from './selectors';
-import scrollToTop from '../lib/scrollToTop';
-import ScrollToTop from './ScrollToTop';
-import Breadcrumb from './breadcrumb/Breadcrumb';
-import { initializeLanguage } from '../i18n';
-import Version from './Version';
 import Container from '@mui/material/Container';
+import { ToastContainer } from 'react-toastify';
+import { initializeLanguage } from '../i18n';
+import Login from '../user/Login';
+import { default as CustomPage } from './CustomPage';
+import Home from './Home';
+import ScrollToTop from './ScrollToTop';
+import Version from './Version';
+import { default as Breadcrumb } from './breadcrumb/Breadcrumb';
+import { loadDisplayConfig } from './displayConfig/reducer';
+import GraphPage from './graph/GraphPage';
+import { default as NavBar } from './menu/NavBar';
+import { loadMenu } from './menu/reducer';
+import Resource from './resource/Resource';
+import { fromMenu } from './selectors';
 
 const notLogin = new RegExp('^(?!.*(/login)).*$');
 
@@ -31,7 +30,7 @@ const Routes = (props) => {
         props.initializeLanguage();
     }, []);
 
-    const { customRoutes, history, tenant } = props;
+    const { customRoutes, tenant } = props;
     if (!customRoutes) {
         return null;
     }
@@ -45,7 +44,7 @@ const Routes = (props) => {
     };
 
     return (
-        <ConnectedRouter history={history} onUpdate={scrollToTop}>
+        <>
             <ScrollToTop />
             <Route path={notLogin} component={Breadcrumb} />
 
@@ -96,6 +95,22 @@ const Routes = (props) => {
                         />
                     ))}
                 </Container>
+
+                <ToastContainer
+                    position="bottom-left"
+                    autoClose={5000}
+                    hideProgressBar
+                    newestOnTop={false}
+                    closeOnClick
+                    rtl={false}
+                    pauseOnFocusLoss
+                    draggable
+                    pauseOnHover
+                    theme="colored"
+                    style={{
+                        bottom: '72px',
+                    }}
+                />
             </div>
 
             {/* Nav Bar and version footer */}
@@ -111,7 +126,7 @@ const Routes = (props) => {
             />
 
             <Version />
-        </ConnectedRouter>
+        </>
     );
 };
 

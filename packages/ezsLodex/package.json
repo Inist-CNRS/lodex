@@ -2,10 +2,10 @@
     "private": true,
     "name": "@ezs/lodex",
     "description": "ezs dedicated statements for Lodex",
-    "version": "1.16.4",
+    "version": "1.17.0",
     "dependencies": {
         "lodash": "4.17.21",
-        "mongodb": "4.17.0",
+        "mongodb": "6.12.0",
         "node-object-hash": "2.3.10",
         "quick-lru": "4.0.1",
         "relaxed-json": "1.0.3",

@@ -2,8 +2,12 @@ import { mongoClientFactory } from './repositoryMiddleware';
 
 describe('mongoClient middleware', () => {
     it('it should add db and collections to ctx', async () => {
+        const listCollections = {
+            toArray: () => [true],
+        };
         const db = {
             collection: () => ({ createIndex: () => {} }),
+            listCollections: () => listCollections,
         };
 
         const next = () => Promise.resolve();
@@ -16,6 +20,7 @@ describe('mongoClient middleware', () => {
 
         expect(Object.keys(ctx)).toEqual([
             'db',
+            'annotation',
             'dataset',
             'field',
             'subresource',

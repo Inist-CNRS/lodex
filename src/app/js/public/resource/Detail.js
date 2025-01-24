@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import translate from 'redux-polyglot/translate';
+import { translate } from '../../i18n/I18NContext';
 import compose from 'recompose/compose';
 import { CardActions } from '@mui/material';
 import { grey } from '@mui/material/colors';
@@ -196,6 +196,7 @@ DetailComponent.propTypes = {
     p: polyglotPropTypes.isRequired,
     resource: PropTypes.shape({
         uri: PropTypes.string.isRequired,
+        subresourceId: PropTypes.string.isRequired,
     }).isRequired,
     title: PropTypes.string,
     description: PropTypes.string,

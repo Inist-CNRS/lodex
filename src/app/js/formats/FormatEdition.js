@@ -10,9 +10,9 @@ import {
     Edit as EditIcon,
     ListAlt as ListAltIcon,
 } from '@mui/icons-material';
-import translate from 'redux-polyglot/translate';
 import FormatCatalogDialog from './FormatCatalog';
 import FormatEditionDialog from './FormatEditionDialog';
+import { translate } from '../i18n/I18NContext';
 
 const FormatEdition = ({ p: polyglot, ...props }) => {
     const { input } = props;
