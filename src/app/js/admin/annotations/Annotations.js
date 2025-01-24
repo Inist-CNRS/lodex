@@ -88,7 +88,7 @@ export const Annotations = () => {
             columns={[
                 {
                     field: 'comment',
-                    headerName: translate('annotation.comment'),
+                    headerName: translate('annotation_comment'),
                     filterOperators: getGridStringOperators().filter(
                         (operator) => operator.value === 'contains',
                     ),
@@ -96,7 +96,7 @@ export const Annotations = () => {
                 },
                 {
                     field: 'resource',
-                    headerName: translate('annotation.resource'),
+                    headerName: translate('annotation_resource'),
                     flex: 1,
                     sortable: false,
                     filterOperators: getGridStringOperators().filter(
@@ -108,7 +108,7 @@ export const Annotations = () => {
                 },
                 {
                     field: 'createdAt',
-                    headerName: translate('annotation.createdAt'),
+                    headerName: translate('annotation_created_at'),
 
                     flex: 1,
                     renderCell: ({ value }) => {

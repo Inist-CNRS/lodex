@@ -10,7 +10,7 @@ const tenant = sessionStorage.getItem('lodex-tenant') || DEFAULT_TENANT;
 export const ResourceCell = ({ resource }) => {
     const { translate } = useTranslate();
     if (!resource) {
-        return <>{translate('annotation.resource_not_found')}</>;
+        return <>{translate('annotation_resource_not_found')}</>;
     }
 
     return (
@@ -26,7 +26,7 @@ export const ResourceCell = ({ resource }) => {
                 </Typography>
             </Tooltip>
             <Link
-                title={translate('annotation.resource_link')}
+                title={translate('annotation_resource_link')}
                 href={`/instance/${tenant}/${resource.uri}`}
                 target="_blank"
             >
