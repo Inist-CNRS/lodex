@@ -9,11 +9,7 @@ import { CreateAnnotationModal } from './CreateAnnotationModal';
 function TestModal(props) {
     return (
         <TestI18N>
-            <CreateAnnotationModal
-                {...props}
-                isOpen={true}
-                anchorEl={document.createElement('div')}
-            />
+            <CreateAnnotationModal {...props} isOpen={true} />
         </TestI18N>
     );
 }
