@@ -6,6 +6,7 @@ import { getFullResourceUri } from '../../common/uris';
 import getPublishedDatasetFilter from './getPublishedDatasetFilter';
 import { VALIDATED, PROPOSED } from '../../common/propositionStatus';
 import { getCreatedCollection } from './utils';
+import { createDiacriticSafeContainRegex } from '../services/createDiacriticSafeContainRegex';
 
 const getMeta = (match, searchableFieldNames) => {
     if (!match || !searchableFieldNames || !searchableFieldNames.length) {
@@ -207,6 +208,9 @@ export default async (db) => {
     };
 
     collection.findByUri = (uri) => collection.findOne({ uri });
+
+    collection.findManyByUris = (uris) =>
+        collection.find({ uri: { $in: uris } }).toArray();
 
     collection.addVersion = async (
         resource,
@@ -418,6 +422,26 @@ export default async (db) => {
                 name: 'match_index',
             });
         }
+    };
+
+    collection.findUrisByTitle = async ({ titleField, value }) => {
+        const resources = await collection
+            .find(
+                {
+                    versions: {
+                        $elemMatch: {
+                            [titleField.name]:
+                                createDiacriticSafeContainRegex(value),
+                        },
+                    },
+                },
+                {
+                    uri: true,
+                },
+            )
+            .toArray();
+
+        return resources.map(({ uri }) => uri);
     };
 
     return collection;

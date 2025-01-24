@@ -23,27 +23,22 @@ export const annotationSchema = z.object({
 });
 
 const annotationFilterableFields = z
-    .record(
-        z.enum(['resourceUri', 'fieldId'], {
-            message: 'annotation_query_match_invalid_key',
-        }),
-        z
-            .string({
-                message: 'annotation_query_match_invalid_value',
-            })
-            .nullable(),
+    .enum(
+        ['resource.title', 'resourceUri', 'fieldId', 'comment', 'createdAt'],
+        {
+            message: 'annotation_query_filter_by_invalid_key',
+        },
     )
-    .optional()
-    .default({});
+    .optional();
 
 const annotationSortableFields = z
-    .enum(['resourceUri', 'fieldId', 'createdAt', 'updatedAt'], {
+    .enum(['resourceUri', 'fieldId', 'createdAt', 'updatedAt', 'comment'], {
         message: 'annotation_query_sortBy_invalid',
     })
     .default('createdAt');
 
 export const getAnnotationsQuerySchema = z.object({
-    page: z
+    page: z.coerce
         .number({
             message: 'error_invalid_number',
         })
@@ -52,7 +47,7 @@ export const getAnnotationsQuerySchema = z.object({
         })
         .optional()
         .default(0),
-    perPage: z
+    perPage: z.coerce
         .number({
             message: 'error_invalid_number',
         })
@@ -64,11 +59,17 @@ export const getAnnotationsQuerySchema = z.object({
         })
         .optional()
         .default(10),
-    match: annotationFilterableFields,
+    filterBy: annotationFilterableFields,
+    filterOperator: z
+        .enum(['contains', 'is', 'after', 'before'], {
+            message: 'annotation_query_filter_operator_invalid_key',
+        })
+        .optional(),
+    filterValue: z.string().optional(),
     sortBy: annotationSortableFields,
     sortDir: z
-        .enum(['ASC', 'DESC'], {
+        .enum(['asc', 'desc'], {
             message: 'error_sortDir_invalid',
         })
-        .default('DESC'),
+        .default('desc'),
 });

@@ -1,25 +1,31 @@
-const { ObjectId } = require('mongodb');
-const { createAnnotation, getAnnotations } = require('./annotation');
+import { createAnnotation, getAnnotations } from './annotation';
+import { MongoClient } from 'mongodb';
+import createAnnotationModel from '../../models/annotation';
+import createFieldModel from '../../models/field';
+import createPublishedDatasetModel from '../../models/publishedDataset';
 
-const NOW = new Date();
 const ANNOTATIONS = [
     {
-        resourceUri: 'uid:/2a8d429f-8134-4502-b9d3-d20c571592fa',
+        resourceUri: 'uid:/65257776-4e3c-44f6-8652-85502a97e5ac',
         itemPath: ['GvaF'],
         authorName: 'Developer',
         authorEmail: 'developer@marmelab.com',
         comment: 'This is a comment',
         status: 'in_progress',
-        internal_comment: 'This is an internal comment',
+        internal_comment: null,
+        createdAt: new Date('03-01-2025'),
+        updatedAt: new Date('03-01-2025'),
     },
     {
-        resourceUri: 'uid:/65257776-4e3c-44f6-8652-85502a97e5ac',
+        resourceUri: 'uid:/2a8d429f-8134-4502-b9d3-d20c571592fa',
         itemPath: null,
         authorName: 'John DOE',
         authorEmail: 'john.doe@marmelab.com',
         comment: 'This is another comment',
         status: 'to_review',
         internal_comment: null,
+        createdAt: new Date('02-01-2025'),
+        updatedAt: new Date('02-01-2025'),
     },
     {
         resourceUri: 'uid:/d4f1e376-d5dd-4853-b515-b7f63b34d67d',
@@ -28,48 +34,35 @@ const ANNOTATIONS = [
         authorEmail: 'jane.smith@marmelab.com',
         comment: 'The author list is incomplete: it should include Jane SMITH',
         status: 'rejected',
-        internal_comment: 'Jane SMITH is not an author of this document',
+        internal_comment: null,
+        createdAt: new Date('01-01-2025'),
+        updatedAt: new Date('01-01-2025'),
     },
 ];
 
 describe('annotation', () => {
-    let annotationList;
+    const connectionStringURI = process.env.MONGO_URL;
     let annotationModel;
-
-    beforeEach(async () => {
-        annotationList = structuredClone(ANNOTATIONS).map((annotation) => ({
-            ...annotation,
-            _id: new ObjectId(),
-            createdAt: NOW,
-            updatedAt: NOW,
-        }));
-
-        annotationModel = {
-            create: jest.fn().mockImplementation((payload) => {
-                const now = new Date();
-                const createdAnnotation = {
-                    ...payload,
-                    _id: new ObjectId(),
-                    status: 'to_review',
-                    internal_comment: null,
-                    createdAt: now,
-                    updatedAt: now,
-                };
-                annotationList.push(createdAnnotation);
-                return Promise.resolve(createdAnnotation);
-            }),
-            findLimitFromSkip: jest
-                .fn()
-                .mockImplementation(({ skip, limit }) => {
-                    return Promise.resolve(
-                        annotationList.slice(skip, skip + limit),
-                    );
-                }),
-            count: jest.fn().mockImplementation(() => {
-                return Promise.resolve(annotationList.length);
-            }),
-        };
+    let publishedDatasetModel;
+    let fieldModel;
+    let connection;
+    let db;
+    beforeAll(async () => {
+        connection = await MongoClient.connect(connectionStringURI, {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+        });
+        db = connection.db();
+        annotationModel = await createAnnotationModel(db);
+        fieldModel = await createFieldModel(db);
+        publishedDatasetModel = await createPublishedDatasetModel(db);
     });
+
+    afterAll(async () => {
+        await connection.close();
+    });
+
+    beforeEach(async () => db.dropDatabase());
 
     describe('createAnnotation', () => {
         it('should create an annotation', async () => {
@@ -86,11 +79,11 @@ describe('annotation', () => {
                 },
                 response: {},
                 annotation: annotationModel,
+                publishedDataset: publishedDatasetModel,
+                field: fieldModel,
             };
 
             await createAnnotation(ctx);
-
-            expect(ctx.annotation.create).toHaveBeenCalledWith(annotation);
 
             expect(ctx.response.status).toBe(200);
             expect(ctx.body).toMatchObject({
@@ -101,6 +94,10 @@ describe('annotation', () => {
                     internal_comment: null,
                 },
             });
+
+            expect(await annotationModel.findLimitFromSkip()).toStrictEqual([
+                ctx.body.data,
+            ]);
         });
 
         it('should return an error if annotation is not valid', async () => {
@@ -115,11 +112,11 @@ describe('annotation', () => {
                 },
                 response: {},
                 annotation: annotationModel,
+                publishedDataset: publishedDatasetModel,
+                field: fieldModel,
             };
 
             await createAnnotation(ctx);
-
-            expect(ctx.annotation.create).not.toHaveBeenCalled();
 
             expect(ctx.response.status).toBe(400);
             expect(ctx.body).toMatchObject({
@@ -131,37 +128,84 @@ describe('annotation', () => {
                     },
                 ],
             });
+            expect(await annotationModel.findLimitFromSkip()).toStrictEqual([]);
         });
     });
 
     describe('getAnnotations', () => {
-        it('should list annotations', async () => {
+        let annotationList;
+
+        beforeEach(async () => {
+            annotationList = await Promise.all(
+                ANNOTATIONS.map((annotation) =>
+                    annotationModel.create(annotation),
+                ),
+            );
+
+            await fieldModel.create(
+                {
+                    overview: 1,
+                    position: 0,
+                },
+                'tItl3',
+            );
+
+            await publishedDatasetModel.insertBatch([
+                {
+                    uri: ANNOTATIONS[0].resourceUri,
+                    versions: [
+                        {
+                            tItl3: 'Developer resource',
+                        },
+                    ],
+                },
+                {
+                    uri: ANNOTATIONS[2].resourceUri,
+                    versions: [
+                        {
+                            tItl3: 'Resource with incomplete author',
+                        },
+                    ],
+                },
+            ]);
+        });
+
+        it('should list annotations with their resource', async () => {
             const ctx = {
                 request: {
                     query: {},
                 },
                 response: {},
                 annotation: annotationModel,
+                publishedDataset: publishedDatasetModel,
+                field: fieldModel,
             };
 
             await getAnnotations(ctx);
 
             expect(ctx.response.status).toBe(200);
-            expect(ctx.body).toMatchObject({
+
+            expect(ctx.body).toStrictEqual({
                 total: 3,
                 fullTotal: 3,
-                data: annotationList,
+                data: [
+                    {
+                        ...annotationList[0],
+                        resource: {
+                            uri: ANNOTATIONS[0].resourceUri,
+                            title: 'Developer resource',
+                        },
+                    },
+                    { ...annotationList[1], resource: undefined },
+                    {
+                        ...annotationList[2],
+                        resource: {
+                            uri: annotationList[2].resourceUri,
+                            title: 'Resource with incomplete author',
+                        },
+                    },
+                ],
             });
-
-            expect(ctx.annotation.findLimitFromSkip).toHaveBeenCalledWith({
-                limit: 10,
-                skip: 0,
-                query: {},
-                sortBy: 'createdAt',
-                sortDir: 'DESC',
-            });
-
-            expect(ctx.annotation.count).toHaveBeenCalledWith({});
         });
 
         it('should list annotations with pagination', async () => {
@@ -174,26 +218,26 @@ describe('annotation', () => {
                 },
                 response: {},
                 annotation: annotationModel,
+                publishedDataset: publishedDatasetModel,
+                field: fieldModel,
             };
 
             await getAnnotations(ctx);
 
             expect(ctx.response.status).toBe(200);
-            expect(ctx.body).toMatchObject({
+            expect(ctx.body).toStrictEqual({
                 total: 1,
                 fullTotal: 3,
-                data: [annotationList[2]],
+                data: [
+                    {
+                        ...annotationList[2],
+                        resource: {
+                            uri: annotationList[2].resourceUri,
+                            title: 'Resource with incomplete author',
+                        },
+                    },
+                ],
             });
-
-            expect(ctx.annotation.findLimitFromSkip).toHaveBeenCalledWith({
-                limit: 2,
-                skip: 2,
-                query: {},
-                sortBy: 'createdAt',
-                sortDir: 'DESC',
-            });
-
-            expect(ctx.annotation.count).toHaveBeenCalledWith({});
         });
 
         it('should apply filters', async () => {
@@ -202,31 +246,33 @@ describe('annotation', () => {
                     query: {
                         page: 1,
                         perPage: 2,
-                        match: {
-                            resourceUri: 'test',
-                        },
+                        filterBy: 'resourceUri',
+                        filterOperator: 'contains',
+                        filterValue: 'test',
                     },
                 },
                 response: {},
                 annotation: annotationModel,
+                publishedDataset: publishedDatasetModel,
+                field: fieldModel,
             };
 
             await getAnnotations(ctx);
 
             expect(ctx.response.status).toBe(200);
 
-            expect(ctx.annotation.findLimitFromSkip).toHaveBeenCalledWith({
-                limit: 2,
-                skip: 2,
-                query: {
-                    resourceUri: 'test',
-                },
-                sortBy: 'createdAt',
-                sortDir: 'DESC',
-            });
-
-            expect(ctx.annotation.count).toHaveBeenCalledWith({
-                resourceUri: 'test',
+            expect(ctx.body).toStrictEqual({
+                total: 1,
+                fullTotal: 3,
+                data: [
+                    {
+                        ...annotationList[2],
+                        resource: {
+                            uri: annotationList[2].resourceUri,
+                            title: 'Resource with incomplete author',
+                        },
+                    },
+                ],
             });
         });
 
@@ -235,26 +281,39 @@ describe('annotation', () => {
                 request: {
                     query: {
                         sortBy: 'resourceUri',
-                        sortDir: 'ASC',
+                        sortDir: 'asc',
                     },
                 },
                 response: {},
                 annotation: annotationModel,
+                publishedDataset: publishedDatasetModel,
+                field: fieldModel,
             };
 
             await getAnnotations(ctx);
 
             expect(ctx.response.status).toBe(200);
-
-            expect(ctx.annotation.findLimitFromSkip).toHaveBeenCalledWith({
-                limit: 10,
-                skip: 0,
-                query: {},
-                sortBy: 'resourceUri',
-                sortDir: 'ASC',
+            expect(ctx.body).toStrictEqual({
+                total: 3,
+                fullTotal: 3,
+                data: [
+                    { ...annotationList[1], resource: undefined },
+                    {
+                        ...annotationList[0],
+                        resource: {
+                            uri: annotationList[0].resourceUri,
+                            title: 'Developer resource',
+                        },
+                    },
+                    {
+                        ...annotationList[2],
+                        resource: {
+                            uri: annotationList[2].resourceUri,
+                            title: 'Resource with incomplete author',
+                        },
+                    },
+                ],
             });
-
-            expect(ctx.annotation.count).toHaveBeenCalledWith({});
         });
 
         it('should return an error if query is not valid', async () => {
@@ -263,33 +322,40 @@ describe('annotation', () => {
                     query: {
                         page: 1,
                         perPage: 2,
-                        match: {
-                            comment: 'test',
-                        },
+                        filterBy: 'test',
+                        filterOperator: 'contains',
+                        filterValue: 'test',
                     },
                 },
                 response: {},
                 annotation: annotationModel,
+                publishedDataset: publishedDatasetModel,
+                field: fieldModel,
             };
 
             await getAnnotations(ctx);
 
             expect(ctx.response.status).toBe(400);
-            expect(ctx.body).toMatchObject({
+            expect(ctx.body).toStrictEqual({
                 total: 0,
                 fullTotal: 0,
                 errors: [
                     {
-                        message: 'annotation_query_match_invalid_key',
-                        path: ['match', 'comment'],
+                        code: 'invalid_enum_value',
+                        message: 'annotation_query_filter_by_invalid_key',
+                        path: ['filterBy'],
+                        options: [
+                            'resource.title',
+                            'resourceUri',
+                            'fieldId',
+                            'comment',
+                            'createdAt',
+                        ],
+                        received: 'test',
                     },
                 ],
                 data: [],
             });
-
-            expect(ctx.annotation.findLimitFromSkip).not.toHaveBeenCalled();
-
-            expect(ctx.annotation.count).not.toHaveBeenCalled();
         });
     });
 });

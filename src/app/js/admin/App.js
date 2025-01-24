@@ -2,7 +2,7 @@ import React, { useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import PropTypes from 'prop-types';
 
-import AppBar from './Appbar';
+import AppBar from './Appbar/AppBar';
 import getTitle from '../lib/getTitle';
 import { Progress } from './progress/Progress';
 import { SidebarContext } from './Sidebar/SidebarContext';

@@ -3,6 +3,7 @@ import route from 'koa-route';
 import koaBodyParser from 'koa-bodyparser';
 import getLogger from '../../services/logger';
 import { createDiacriticSafeContainRegex } from '../../services/createDiacriticSafeContainRegex';
+import { buildQuery } from './buildQuery';
 
 const app = new Koa();
 
@@ -27,25 +28,6 @@ export const clearDataset = async (ctx) => {
             error,
         });
         ctx.body = { status: 'error', error };
-    }
-};
-const buildQuery = (filterBy, filterOperator, filterValue) => {
-    if (!filterValue) {
-        return {};
-    }
-    switch (filterOperator) {
-        case 'is':
-            return { [filterBy]: { $eq: filterValue === 'true' } };
-        case '=':
-            return { [filterBy]: { $eq: parseFloat(filterValue) } };
-        case '>':
-            return { [filterBy]: { $gt: parseFloat(filterValue) } };
-        case '<':
-            return { [filterBy]: { $lt: parseFloat(filterValue) } };
-        default:
-            return {
-                [filterBy]: createDiacriticSafeContainRegex(filterValue),
-            };
     }
 };
 

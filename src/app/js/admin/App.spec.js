@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import AppBar from './Appbar';
+import AppBar from './Appbar/AppBar';
 
 import { AppComponent } from './App';
 
