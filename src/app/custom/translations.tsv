@@ -1192,7 +1192,7 @@
 "annotation_create_success"	"Annotation created successfully"	"Annotation créée avec succès"
 "annotation_create_error"	"Failed to create annotation"	"Une erreur est survenue lors de la création de l'annotation"
 "annotation_add_comment"	"Add a comment"	"Ajouter un commentaire"
-"annotation_comment"	"Comment"	"Commentaire"
+"annotation.comment"	"Comment"	"Commentaire"
 "annotation_itemPath_invalid"	"The item path must be null or an array of string"	"Le chemin de l'élément doit être null ou un tableau de chaînes de caractères"
 "annotation_query_match_invalid_key"	"This query key is not supported"	"Cette clé de requête n'est pas supportée"
 "annotation_query_match_invalid_value"	"The query value must be a string"	"La valeur de la requête doit être une chaîne de caractères"
