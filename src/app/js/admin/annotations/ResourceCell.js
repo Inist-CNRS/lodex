@@ -25,7 +25,11 @@ export const ResourceCell = ({ resource }) => {
                     {resource.title}
                 </Typography>
             </Tooltip>
-            <Link href={`/instance/${tenant}/${resource.uri}`} target="_blank">
+            <Link
+                title={translate('annotation.resource_link')}
+                href={`/instance/${tenant}/${resource.uri}`}
+                target="_blank"
+            >
                 <OpenInNewIcon />
             </Link>
         </Stack>
