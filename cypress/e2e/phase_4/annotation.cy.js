@@ -59,7 +59,11 @@ describe('Annotation', () => {
             cy.findAllByRole('columnheader').then((headers) => {
                 expect(
                     headers.toArray().map((header) => header.textContent),
-                ).to.deep.equal(['Comment', 'Resource', 'Submission date']);
+                ).to.deep.equal([
+                    'Comment',
+                    'Resource title',
+                    'Submission date',
+                ]);
             });
 
             cy.findAllByRole('cell').then((cells) => {

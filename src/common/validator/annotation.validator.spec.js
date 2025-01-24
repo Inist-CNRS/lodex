@@ -144,7 +144,13 @@ describe('annotation.validator', () => {
                     path: ['filterBy'],
                     code: 'invalid_enum_value',
                     message: 'annotation_query_filter_by_invalid_key',
-                    options: ['resourceUri', 'fieldId', 'comment', 'createdAt'],
+                    options: [
+                        'resource.title',
+                        'resourceUri',
+                        'fieldId',
+                        'comment',
+                        'createdAt',
+                    ],
                 },
                 {
                     code: 'invalid_enum_value',

@@ -13,7 +13,7 @@ describe('ResourceCell', () => {
         );
 
         expect(
-            wrapper.queryByText('annotation.resource_not_found'),
+            wrapper.queryByText('annotation_resource_not_found'),
         ).toBeInTheDocument();
     });
 
@@ -30,7 +30,7 @@ describe('ResourceCell', () => {
         );
 
         expect(
-            wrapper.queryByText('annotation.resource_not_found'),
+            wrapper.queryByText('annotation_resource_not_found'),
         ).not.toBeInTheDocument();
 
         expect(wrapper.queryByText('The resource title')).toBeInTheDocument();
@@ -42,18 +42,18 @@ describe('ResourceCell', () => {
                 <ResourceCell
                     resource={{
                         title: 'The resource title',
-                        uri: '/uid:/qsdf',
+                        uri: 'uid:/qsdf',
                     }}
                 />
             </TestI18N>,
         );
 
         expect(
-            wrapper.queryByTitle('annotation.resource_link'),
+            wrapper.queryByTitle('annotation_resource_link'),
         ).toBeInTheDocument();
 
         expect(
-            wrapper.queryByTitle('annotation.resource_link'),
+            wrapper.queryByTitle('annotation_resource_link'),
         ).toHaveAttribute('href', '/instance/default/uid:/qsdf');
     });
 });
