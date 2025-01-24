@@ -2,13 +2,12 @@ import SaveIcon from '@mui/icons-material/Save';
 import {
     Button,
     CircularProgress,
-    Dialog,
-    DialogActions,
-    DialogContent,
-    DialogTitle,
     FormControl,
     FormHelperText,
+    Popover,
+    Stack,
     TextField,
+    Typography,
 } from '@mui/material';
 import { useForm } from '@tanstack/react-form';
 import PropTypes from 'prop-types';
@@ -22,6 +21,7 @@ export function CreateAnnotationModal({
     isSubmitting,
     onClose,
     onSubmit,
+    anchorEl,
 }) {
     const { translate } = useTranslate();
     const form = useForm({
@@ -48,11 +48,18 @@ export function CreateAnnotationModal({
     };
 
     return (
-        <Dialog
+        <Popover
             open={isOpen}
+            anchorEl={anchorEl}
             onClose={handleClose}
-            fullWidth
-            maxWidth="lg"
+            anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+            }}
+            transformOrigin={{
+                vertical: 'top',
+                horizontal: 'left',
+            }}
             PaperProps={{
                 component: 'form',
                 onSubmit: (event) => {
@@ -61,10 +68,19 @@ export function CreateAnnotationModal({
 
                     form.handleSubmit();
                 },
+                sx: {
+                    maxWidth: 'sm',
+                    width: '100%',
+                    padding: 2,
+                },
             }}
+            role="dialog"
         >
-            <DialogTitle>{translate('annotation_add_comment')}</DialogTitle>
-            <DialogContent>
+            <Stack gap={2}>
+                <Typography variant="h6" color="text.gray">
+                    {translate('annotation_add_comment')}
+                </Typography>
+
                 <form.Field name="comment">
                     {(field) => {
                         const hasErrors = !!(
@@ -82,7 +98,8 @@ export function CreateAnnotationModal({
                                     onChange={(e) =>
                                         field.handleChange(e.target.value)
                                     }
-                                    rows={5}
+                                    minRows={5}
+                                    maxRows={10}
                                     multiline
                                     sx={{ marginTop: 1 }}
                                     error={hasErrors}
@@ -97,28 +114,33 @@ export function CreateAnnotationModal({
                         );
                     }}
                 </form.Field>
-            </DialogContent>
-            <DialogActions>
-                <Button onClick={onClose} disabled={isSubmitting}>
-                    {translate('cancel')}
-                </Button>
-                <Button
-                    type="submit"
-                    variant="contained"
-                    color="primary"
-                    disabled={isSubmitting}
-                    startIcon={
-                        isSubmitting ? (
-                            <CircularProgress color="primary" size="1em" />
-                        ) : (
-                            <SaveIcon />
-                        )
-                    }
+
+                <Stack
+                    direction="row"
+                    spacing={2}
+                    justifyContent={'space-between'}
                 >
-                    {translate('validate')}
-                </Button>
-            </DialogActions>
-        </Dialog>
+                    <Button onClick={onClose} disabled={isSubmitting}>
+                        {translate('cancel')}
+                    </Button>
+                    <Button
+                        type="submit"
+                        variant="contained"
+                        color="primary"
+                        disabled={isSubmitting}
+                        startIcon={
+                            isSubmitting ? (
+                                <CircularProgress color="primary" size="1em" />
+                            ) : (
+                                <SaveIcon />
+                            )
+                        }
+                    >
+                        {translate('validate')}
+                    </Button>
+                </Stack>
+            </Stack>
+        </Popover>
     );
 }
 
@@ -127,4 +149,5 @@ CreateAnnotationModal.propTypes = {
     isSubmitting: PropTypes.bool.isRequired,
     onClose: PropTypes.func.isRequired,
     onSubmit: PropTypes.func.isRequired,
+    anchorEl: PropTypes.object.isRequired,
 };
