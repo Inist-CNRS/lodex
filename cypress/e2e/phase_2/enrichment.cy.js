@@ -1,8 +1,8 @@
-import { teardown } from '../../support/authentication';
-import * as menu from '../../support/menu';
 import * as adminNavigation from '../../support/adminNavigation';
+import { teardown } from '../../support/authentication';
 import * as datasetImportPage from '../../support/datasetImportPage';
 import * as enrichmentFormPage from '../../support/enrichmentFormPage';
+import * as menu from '../../support/menu';
 
 describe('Enrichment', () => {
     beforeEach(teardown);
@@ -22,7 +22,7 @@ describe('Enrichment', () => {
             enrichmentFormPage.fillAdvancedEnrichment();
             // We test here that we do not spam preview when filling the advanced rule input
             cy.get('@preview.all').then((interceptions) => {
-                expect(interceptions).to.have.length(2);
+                expect(interceptions).to.have.length(3);
             });
             enrichmentFormPage.updateNameEnrichment();
             enrichmentFormPage.runEnrichment();
