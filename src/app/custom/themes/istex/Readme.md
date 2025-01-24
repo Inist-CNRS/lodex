@@ -9,7 +9,7 @@
 -   "title": "Services",
 -   "summary": "Les technologies et les outils ISTEX pour les projets de recherche.",
 -   "matomoID": "39",
--   "info: choix image bannieres": "datamining - doigtdossier - doigtecran - femmebureau - femmededos - filet - graph - hommebureau - mainAI - mainreseau - mainspirale - meeting - terre - translation",
+-   "info: choix image bannieres": "datamining - doigtdossier - doigtecran - femmebureau - femmededos - filet - graph - graphLodex - hommebureau - mainAI - mainreseau - mainspirale - meeting - terre - translation",
 -   "BanniereSimple": "hommebureau",
 -   "BanniereDouble": "doigtdossier"
 
