@@ -2,16 +2,23 @@ import countNotUnique, { countUniqueConcatenation } from './countNotUnique';
 
 describe('countNotUnique', () => {
     it('should call collection.count and collection.distinct, and return distinct.length === count', async () => {
-        const collection = {
-            count: jest.fn().mockImplementation(() => Promise.resolve(10)),
-            distinct: jest
+        const aggregateResult = {
+            toArray: jest
                 .fn()
-                .mockImplementation(() => Promise.resolve({ length: 10 })),
+                .mockImplementation(() => [
+                    { distinct: 'result1' },
+                    { distinct: 'result2' },
+                ]),
+        };
+
+        const collection = {
+            count: jest.fn().mockImplementation(() => Promise.resolve(2)),
+            aggregate: jest.fn().mockImplementation(() => aggregateResult),
         };
         expect(await countNotUnique(collection)('fieldName')).toBe(0);
 
         expect(collection.count).toHaveBeenCalled();
-        expect(collection.distinct).toHaveBeenCalled();
+        expect(collection.aggregate).toHaveBeenCalled();
     });
 
     describe('countUniqueConcatenation', () => {
