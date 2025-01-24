@@ -1,7 +1,7 @@
 import MapsUgcIcon from '@mui/icons-material/MapsUgc';
 import { IconButton, Tooltip } from '@mui/material';
 import PropTypes from 'prop-types';
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useRef, useState } from 'react';
 
 import { useTranslate } from '../i18n/I18NContext';
 import { CreateAnnotationModal } from './CreateAnnotationModal';
@@ -10,6 +10,7 @@ import { useResourceUri } from './useResourceUri';
 
 export function CreateAnnotationButton({ field }) {
     const { translate } = useTranslate();
+    const anchorButton = useRef(null);
 
     const resourceUri = useResourceUri();
     const itemPath = useMemo(() => {
@@ -55,18 +56,12 @@ export function CreateAnnotationButton({ field }) {
 
     return (
         <>
-            <CreateAnnotationModal
-                isOpen={isModalOpen}
-                isSubmitting={isSubmitting}
-                onClose={handleCloseModal}
-                onSubmit={handleSubmitAnnotation}
-            />
-
             <Tooltip title={buttonLabel} arrow placement="top">
                 <IconButton
                     color="primary"
                     onClick={handleOpenModal}
                     aria-label={buttonLabel}
+                    ref={anchorButton}
                 >
                     <MapsUgcIcon
                         sx={{
@@ -75,6 +70,16 @@ export function CreateAnnotationButton({ field }) {
                     />
                 </IconButton>
             </Tooltip>
+
+            {anchorButton.current && (
+                <CreateAnnotationModal
+                    isOpen={isModalOpen}
+                    isSubmitting={isSubmitting}
+                    onClose={handleCloseModal}
+                    onSubmit={handleSubmitAnnotation}
+                    anchorEl={anchorButton.current}
+                />
+            )}
         </>
     );
 }
