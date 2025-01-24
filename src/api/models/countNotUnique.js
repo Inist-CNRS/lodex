@@ -16,7 +16,13 @@ const countNotUnique = (collection) => async (fieldName) => {
     const count = await collection.count();
     const distinct = Array.isArray(fieldName)
         ? await countUniqueConcatenation(collection)(fieldName)
-        : (await collection.distinct(fieldName)).length;
+        : // Distinct can cause an OOM on big datasets so we use aggregate here instead
+          (
+              await collection
+                  .aggregate([{ $group: { _id: `$${fieldName}` } }])
+                  .toArray()
+          ).length;
+
     return count - distinct;
 };
 

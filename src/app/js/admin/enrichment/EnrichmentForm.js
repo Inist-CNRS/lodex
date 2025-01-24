@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo } from 'react';
 
 import PropTypes from 'prop-types';
 import FormSourceCodeField from '../../lib/components/FormSourceCodeField';
@@ -36,8 +36,8 @@ import { getJobLogs } from '../api/job';
 import { fromEnrichments, fromParsing } from '../selectors';
 import { getKeys } from '../subresource/SubresourceForm';
 import { DeleteEnrichmentButton } from './DeleteEnrichmentButton';
-import EnrichmentStatus from './EnrichmentStatus';
-import RunButton from './RunButton';
+import { default as EnrichmentStatus } from './EnrichmentStatus';
+import { default as RunButton } from './RunButton';
 
 // UTILITARY PART
 const ENRICHMENT_FORM = 'ENRICHMENT_FORM';
@@ -78,6 +78,7 @@ export const EnrichmentForm = ({
     onChangeWebServiceUrl,
     onLoadEnrichments,
     onRetryEnrichment,
+    status,
 }) => {
     const { translate } = useTranslate();
     const [openCatalog, setOpenCatalog] = React.useState(false);
@@ -96,7 +97,7 @@ export const EnrichmentForm = ({
         return getKeys(firstExcerptLine);
     }, [excerptLines, formValues?.sourceColumn]);
 
-    const handleSourcePreview = async (formValues) => {
+    const handleSourcePreview = useCallback(async () => {
         if (formValues?.advancedMode && !formValues?.rule) {
             return;
         }
@@ -118,7 +119,7 @@ export const EnrichmentForm = ({
         } else {
             setDataPreviewEnrichment([]);
         }
-    };
+    }, [formValues]);
 
     const handleAddEnrichment = async () => {
         const res = await createEnrichment(formValues);
@@ -153,6 +154,7 @@ export const EnrichmentForm = ({
     };
 
     const handleSubmit = async () => {
+        handleSourcePreview();
         setIsLoading(true);
         if (isEditMode) {
             await handleUpdateEnrichment();
@@ -186,9 +188,19 @@ export const EnrichmentForm = ({
     }, [initialValues?.status]);
 
     useEffect(() => {
-        const timeout = setTimeout(() => handleSourcePreview(formValues), 500);
+        // We skip preview update if the enrichment has not completed
+        if (status === IN_PROGRESS) {
+            return;
+        }
+
+        const timeout = setTimeout(handleSourcePreview, 500);
         return () => clearTimeout(timeout);
-    }, [formValues?.rule, formValues?.sourceColumn, formValues?.subPath]);
+    }, [
+        formValues?.rule,
+        formValues?.sourceColumn,
+        formValues?.subPath,
+        status,
+    ]);
 
     return (
         <Box mt={3} display="flex" gap={6}>
@@ -423,22 +435,26 @@ export const EnrichmentForm = ({
 // REDUX PART
 const formSelector = formValueSelector(ENRICHMENT_FORM);
 
-const mapStateToProps = (state, { match }) => ({
-    formValues: formSelector(
-        state,
-        'sourceColumn',
-        'subPath',
-        'rule',
-        'name',
-        'webServiceUrl',
-        'advancedMode',
-    ),
-    initialValues: fromEnrichments
+const mapStateToProps = (state, { match }) => {
+    const enrichment = fromEnrichments
         .enrichments(state)
-        .find((enrichment) => enrichment._id === match.params.enrichmentId),
-    datasetFields: fromParsing.getParsedExcerptColumns(state),
-    excerptLines: fromParsing.getExcerptLines(state),
-});
+        .find((enrichment) => enrichment._id === match.params.enrichmentId);
+    return {
+        formValues: formSelector(
+            state,
+            'sourceColumn',
+            'subPath',
+            'rule',
+            'name',
+            'webServiceUrl',
+            'advancedMode',
+        ),
+        initialValues: enrichment,
+        status: enrichment?.status,
+        datasetFields: fromParsing.getParsedExcerptColumns(state),
+        excerptLines: fromParsing.getExcerptLines(state),
+    };
+};
 const mapDispatchToProps = {
     onChangeWebServiceUrl: (value) =>
         change(ENRICHMENT_FORM, 'webServiceUrl', value),
@@ -466,6 +482,7 @@ EnrichmentForm.propTypes = {
     onLoadEnrichments: PropTypes.func.isRequired,
     onRetryEnrichment: PropTypes.func.isRequired,
     isEnrichmentRunning: PropTypes.bool,
+    status: PropTypes.string,
 };
 
 export default compose(
