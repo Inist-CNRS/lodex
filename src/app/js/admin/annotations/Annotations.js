@@ -36,17 +36,13 @@ export const Annotations = () => {
     const [perPage, setPerPage] = useState(25);
     const [sortBy, setSortBy] = useState('createdAt');
     const [sortDir, setSortDir] = useState('desc');
-    const [filterBy, setFilterBy] = useState(null);
-    const [filterOperator, setFilterOperator] = useState(null);
-    const [filterValue, setFilterValue] = useState(null);
+    const [filter, setFilter] = useState({});
     const { isPending, error, data, isFetching } = useGetAnnotations({
         page,
         perPage,
         sortDir,
         sortBy,
-        filterBy,
-        filterOperator,
-        filterValue,
+        filter,
     });
 
     const onPageChange = (page) => {
@@ -59,17 +55,16 @@ export const Annotations = () => {
 
     const handleFilterModelChange = (filterModel) => {
         if (filterModel.items.length === 0) {
-            setFilterBy(null);
-            setFilterOperator(null);
-            setFilterValue(null);
+            setFilter({});
             return;
         }
         const { columnField, operatorValue, value } = filterModel.items[0];
-        setFilterBy(
-            columnField === 'resource' ? 'resource.title' : columnField,
-        );
-        setFilterOperator(operatorValue);
-        setFilterValue(value);
+        setFilter({
+            filterBy:
+                columnField === 'resource' ? 'resource.title' : columnField,
+            filterOperator: operatorValue,
+            filterValue: value,
+        });
         setPage(0);
     };
 

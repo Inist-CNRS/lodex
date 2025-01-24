@@ -6,6 +6,7 @@ import {
     annotationSchema,
     getAnnotationsQuerySchema,
 } from './../../../common/validator/annotation.validator';
+import { createDiacriticSafeContainRegex } from '../../services/createDiacriticSafeContainRegex';
 
 /**
  * @param {Koa.Context} ctx
@@ -63,7 +64,10 @@ export const buildQuery = async ({
         case 'comment': {
             switch (filterOperator) {
                 case 'contains':
-                    return { [filterBy]: filterValue };
+                    return {
+                        [filterBy]:
+                            createDiacriticSafeContainRegex(filterValue),
+                    };
                 default:
                     return {};
             }

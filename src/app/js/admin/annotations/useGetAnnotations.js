@@ -5,26 +5,9 @@ import { getUserSessionStorageInfo } from '../api/tools';
 import { getRequest } from '../../user';
 import { omitBy } from 'lodash';
 
-export function useGetAnnotations({
-    page,
-    perPage,
-    sortBy,
-    sortDir,
-    filterBy,
-    filterOperator,
-    filterValue,
-}) {
+export function useGetAnnotations({ page, perPage, sortBy, sortDir, filter }) {
     return useQuery({
-        queryKey: [
-            'get-annotations',
-            page,
-            perPage,
-            sortBy,
-            sortDir,
-            filterBy,
-            filterOperator,
-            filterValue,
-        ],
+        queryKey: ['get-annotations', page, perPage, sortBy, sortDir, filter],
         queryFn: async () => {
             const query = qs.stringify(
                 omitBy(
@@ -33,9 +16,7 @@ export function useGetAnnotations({
                         perPage,
                         sortBy,
                         sortDir,
-                        filterBy,
-                        filterOperator,
-                        filterValue,
+                        ...filter,
                     },
                     (value) => value === null || value === '',
                 ),

@@ -34,20 +34,8 @@ describe('Annotation', () => {
         datasetImportPage.goToPublishedResources();
     });
 
-    // const getRowObject = (rowIndex) => {
-    //     return cy
-    //         .get(`[role='cell'][data-rowindex='${rowIndex}']`)
-    //         .then((values) => {
-    //             let rowObject = {};
-    //             values.map((i, elem) => {
-    //                 rowObject[headers[i]] = Cypress.$(elem).text();
-    //             });
-    //             return rowObject;
-    //         });
-    // };
-
     describe('createAnnotation', () => {
-        it.only('should create an annotation on resource field', () => {
+        it('should create an annotation on resource field', () => {
             cy.findByText('Search').click();
             searchDrawer.search('Terminator 2');
             searchDrawer.waitForLoading();
