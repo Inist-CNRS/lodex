@@ -38,6 +38,8 @@ describe('Annotation', () => {
             annotation.createAnnotation({
                 fieldLabel: 'Nombre de films',
                 comment: 'This is a comment',
+                authorName: 'John Doe',
+                authorEmail: 'john.doe@example.org',
             });
         });
 

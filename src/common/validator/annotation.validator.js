@@ -20,6 +20,24 @@ export const annotationSchema = z.object({
         .min(1, {
             message: 'error_required',
         }),
+    authorName: z
+        .string({
+            required_error: 'error_required',
+        })
+        .trim()
+        .min(1, {
+            message: 'error_required',
+        }),
+    authorEmail: z
+        .union([
+            z.literal(''),
+            z.string().email({
+                message: 'error_invalid_email',
+            }),
+        ])
+        .nullish()
+        .default(null)
+        .transform((value) => (value === '' ? null : value)),
 });
 
 const annotationFilterableFields = z
