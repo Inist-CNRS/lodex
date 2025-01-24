@@ -11,6 +11,8 @@ describe('annotation.validator', () => {
                 itemPath: ['GvaF'],
                 kind: 'comment',
                 comment: 'This is a comment',
+                authorName: 'John Doe',
+                authorEmail: null,
             };
 
             const validatedAnnotation =
@@ -24,6 +26,8 @@ describe('annotation.validator', () => {
                 resourceUri: 'uid:/2a8d429f-8134-4502-b9d3-d20c571592fa',
                 itemPath: ['GvaF', '0'],
                 comment: 'This is a comment',
+                authorName: 'John Doe',
+                authorEmail: null,
             };
 
             const validatedAnnotation =
@@ -40,6 +44,8 @@ describe('annotation.validator', () => {
                 resourceUri: 'uid:/2a8d429f-8134-4502-b9d3-d20c571592fa',
                 kind: 'comment',
                 comment: 'This is a comment',
+                authorName: 'John Doe',
+                authorEmail: null,
             };
 
             const validatedAnnotation =
@@ -51,6 +57,24 @@ describe('annotation.validator', () => {
             });
         });
 
+        it('should should support annotation without authorEmail', () => {
+            const annotationPayload = {
+                resourceUri: 'uid:/2a8d429f-8134-4502-b9d3-d20c571592fa',
+                itemPath: ['GvaF', '0'],
+                kind: 'comment',
+                comment: 'This is a comment',
+                authorName: 'John Doe',
+            };
+
+            const validatedAnnotation =
+                annotationSchema.parse(annotationPayload);
+
+            expect(validatedAnnotation).toStrictEqual({
+                ...annotationPayload,
+                authorEmail: null,
+            });
+        });
+
         it('should should support drop unsupported fields', () => {
             const annotationPayload = {
                 resourceUri: 'uid:/2a8d429f-8134-4502-b9d3-d20c571592fa',
@@ -59,6 +83,8 @@ describe('annotation.validator', () => {
                 comment: 'This is a comment',
                 status: 'in_progress',
                 internal_comment: 'This is an internal comment',
+                authorName: 'John Doe',
+                authorEmail: '',
             };
 
             const validatedAnnotation =
@@ -69,6 +95,8 @@ describe('annotation.validator', () => {
                 kind: 'correction',
                 itemPath: null,
                 comment: 'This is a comment',
+                authorName: 'John Doe',
+                authorEmail: null,
             });
         });
 
@@ -81,6 +109,10 @@ describe('annotation.validator', () => {
             expect(error.errors).toMatchObject([
                 {
                     path: ['comment'],
+                    message: 'error_required',
+                },
+                {
+                    path: ['authorName'],
                     message: 'error_required',
                 },
             ]);

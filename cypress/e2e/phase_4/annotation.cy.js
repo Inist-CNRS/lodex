@@ -1,8 +1,8 @@
 import * as annotation from '../../support/annotation';
 import { teardown } from '../../support/authentication';
 import * as datasetImportPage from '../../support/datasetImportPage';
-import * as searchDrawer from '../../support/searchDrawer';
 import * as menu from '../../support/menu';
+import * as searchDrawer from '../../support/searchDrawer';
 
 describe('Annotation', () => {
     beforeEach(() => {
@@ -43,7 +43,10 @@ describe('Annotation', () => {
             annotation.createAnnotation({
                 fieldLabel: 'actors',
                 comment: 'This is a comment',
+                authorName: 'John Doe',
+                authorEmail: 'john.doe@example.org',
             });
+
             cy.findByText('Search').click();
             searchDrawer.search('RoboCop');
             searchDrawer.waitForLoading();
@@ -51,6 +54,8 @@ describe('Annotation', () => {
             annotation.createAnnotation({
                 fieldLabel: 'rating',
                 comment: 'This is another comment',
+                authorName: 'John Doe',
+                authorEmail: 'john.doe@example.org',
             });
             cy.findByText('More').click();
             menu.goToAdminDashboard();
@@ -72,10 +77,10 @@ describe('Annotation', () => {
                 ).to.deep.equal([
                     'This is another comment',
                     'RoboCop',
-                    '1/24/2025',
+                    new Date().toLocaleDateString(),
                     'This is a comment',
                     'Terminator 2',
-                    '1/24/2025',
+                    new Date().toLocaleDateString(),
                 ]);
             });
         });

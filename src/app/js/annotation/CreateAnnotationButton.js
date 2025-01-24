@@ -71,9 +71,8 @@ export function CreateAnnotationButton({ field }) {
                 </IconButton>
             </Tooltip>
 
-            {anchorButton.current && (
+            {anchorButton.current && isModalOpen && (
                 <CreateAnnotationModal
-                    isOpen={isModalOpen}
                     isSubmitting={isSubmitting}
                     onClose={handleCloseModal}
                     onSubmit={handleSubmitAnnotation}
