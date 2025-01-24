@@ -9,8 +9,8 @@ export default async (db) => {
             ...annotationPayload,
             status: 'to_review',
             internal_comment: null,
-            createdAt: now,
-            updatedAt: now,
+            createdAt: annotationPayload.createdAt ?? now,
+            updatedAt: annotationPayload.updatedAt ?? now,
         });
 
         return annotationCollection.findOne({ _id: insertedId });
@@ -20,8 +20,8 @@ export default async (db) => {
         skip = 0,
         limit = 10,
         query = {},
-        sortBy = null,
-        sortDir = 'asc',
+        sortBy = 'createdAt',
+        sortDir = 'desc',
     } = {}) {
         return annotationCollection
             .find(query)
