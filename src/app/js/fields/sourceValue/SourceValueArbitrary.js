@@ -1,9 +1,9 @@
 import React from 'react';
 import compose from 'recompose/compose';
 import PropTypes from 'prop-types';
-import translate from 'redux-polyglot/translate';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { Box, TextField } from '@mui/material';
+import { translate } from '../../i18n/I18NContext';
 
 const SourceValueArbitrary = ({
     updateDefaultValueTransformers,

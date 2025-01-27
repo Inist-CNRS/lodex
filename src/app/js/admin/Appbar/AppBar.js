@@ -2,15 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link, NavLink } from 'react-router-dom';
-import translate from 'redux-polyglot/translate';
-import compose from 'recompose/compose';
 import StorageIcon from '@mui/icons-material/Storage';
 import AspectRatioIcon from '@mui/icons-material/AspectRatio';
 
 import PublicationButton from '../publish/PublicationButton';
 import { fromFields, fromUser } from '../../sharedSelectors';
 import { fromParsing, fromPublication } from '../selectors';
-import { polyglot as polyglotPropTypes } from '../../propTypes';
 import SidebarToggleButton from './SidebarToggleButton';
 import Menu from './Menu';
 import GoToPublicationButton from './GoToPublicationButton';
@@ -24,6 +21,8 @@ import {
     Toolbar,
     Link as MuiLink,
 } from '@mui/material';
+import MapsUgcIcon from '@mui/icons-material/MapsUgc';
+import { useTranslate } from '../../i18n/I18NContext';
 
 const styles = {
     linksContainer: {
@@ -64,10 +63,10 @@ const AppbarComponent = ({
     hasLoadedDataset,
     isLoading,
     isAdmin,
-    p: polyglot,
     hasPublishedDataset,
     invalidFields,
 }) => {
+    const { translate } = useTranslate();
     const leftElement = (
         <Box sx={{ display: 'flex', paddingLeft: '80px' }}>
             {isAdmin && (
@@ -79,7 +78,7 @@ const AppbarComponent = ({
                         startIcon={<StorageIcon />}
                         sx={styles.button}
                     >
-                        <span>{polyglot.t('data')}</span>
+                        <span>{translate('data')}</span>
                     </Button>
                     {hasLoadedDataset && (
                         <Button
@@ -89,9 +88,18 @@ const AppbarComponent = ({
                             startIcon={<AspectRatioIcon />}
                             sx={styles.button}
                         >
-                            <span>{polyglot.t('display')}</span>
+                            <span>{translate('display')}</span>
                         </Button>
                     )}
+                    <Button
+                        component={NavLink}
+                        to="/annotations"
+                        variant="text"
+                        startIcon={<MapsUgcIcon />}
+                        sx={styles.button}
+                    >
+                        <span>{translate('annotations')}</span>
+                    </Button>
                 </>
             )}
         </Box>
@@ -139,7 +147,6 @@ AppbarComponent.propTypes = {
     hasLoadedDataset: PropTypes.bool.isRequired,
     isLoading: PropTypes.bool,
     isAdmin: PropTypes.bool.isRequired,
-    p: polyglotPropTypes.isRequired,
     hasPublishedDataset: PropTypes.bool,
     invalidFields: PropTypes.arrayOf(PropTypes.object),
 };
@@ -148,13 +155,12 @@ AppbarComponent.defaultProps = {
     isLoading: false,
 };
 
-export default compose(
-    translate,
-    connect((state) => ({
-        hasLoadedDataset: fromParsing.hasUploadedFile(state),
-        isLoading: state.loading,
-        isAdmin: fromUser.isAdmin(state),
-        hasPublishedDataset: fromPublication.hasPublishedDataset(state),
-        invalidFields: fromFields.getInvalidFields(state),
-    })),
-)(AppbarComponent);
+const mapStateToProps = (state) => ({
+    hasLoadedDataset: fromParsing.hasUploadedFile(state),
+    isLoading: state.loading,
+    isAdmin: fromUser.isAdmin(state),
+    hasPublishedDataset: fromPublication.hasPublishedDataset(state),
+    invalidFields: fromFields.getInvalidFields(state),
+});
+
+export default connect(mapStateToProps)(AppbarComponent);

@@ -1,13 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import compose from 'recompose/compose';
-import translate from 'redux-polyglot/translate';
 import { Dialog, Button, DialogContent, DialogActions } from '@mui/material';
 
 import { importFields as importFieldsAction } from './import';
-import { polyglot as polyglotPropTypes } from '../propTypes';
 import CancelButton from '../lib/components/CancelButton';
+import { useTranslate } from '../i18n/I18NContext';
 
 const styles = {
     input: {
@@ -22,7 +20,8 @@ const styles = {
     },
 };
 
-const ImportModelDialogComponent = ({ onClose, p: polyglot, importFields }) => {
+const ImportModelDialogComponent = ({ onClose, importFields }) => {
+    const { translate } = useTranslate();
     const handleFileUpload = (event) => {
         importFields(event.target.files[0]);
         onClose();
@@ -37,7 +36,7 @@ const ImportModelDialogComponent = ({ onClose, p: polyglot, importFields }) => {
                 marginTop: '12px',
             }}
         >
-            {polyglot.t('cancel')}
+            {translate('cancel')}
         </CancelButton>,
         <Button
             variant="contained"
@@ -49,7 +48,7 @@ const ImportModelDialogComponent = ({ onClose, p: polyglot, importFields }) => {
                 marginTop: '12px',
             }}
         >
-            {polyglot.t('confirm')}
+            {translate('confirm')}
             <input
                 name="file_model"
                 type="file"
@@ -70,7 +69,7 @@ const ImportModelDialogComponent = ({ onClose, p: polyglot, importFields }) => {
                 },
             }}
         >
-            <DialogContent>{polyglot.t('confirm_import_fields')}</DialogContent>
+            <DialogContent>{translate('confirm_import_fields')}</DialogContent>
             <DialogActions>{actions}</DialogActions>
         </Dialog>
     );
@@ -79,7 +78,6 @@ const ImportModelDialogComponent = ({ onClose, p: polyglot, importFields }) => {
 ImportModelDialogComponent.propTypes = {
     importFields: PropTypes.func.isRequired,
     onClose: PropTypes.func.isRequired,
-    p: polyglotPropTypes.isRequired,
 };
 
 const mapStateToProps = () => ({});
@@ -88,7 +86,7 @@ const mapDispatchToProps = {
     importFields: importFieldsAction,
 };
 
-export default compose(
-    translate,
-    connect(mapStateToProps, mapDispatchToProps),
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
 )(ImportModelDialogComponent);

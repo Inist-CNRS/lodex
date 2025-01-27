@@ -1,10 +1,12 @@
-import { ObjectID } from 'mongodb';
+import { ObjectId } from 'mongodb';
 import chunk from 'lodash/chunk';
 import omit from 'lodash/omit';
 
 import { getFullResourceUri } from '../../common/uris';
 import getPublishedDatasetFilter from './getPublishedDatasetFilter';
 import { VALIDATED, PROPOSED } from '../../common/propositionStatus';
+import { getCreatedCollection } from './utils';
+import { createDiacriticSafeContainRegex } from '../services/createDiacriticSafeContainRegex';
 
 const getMeta = (match, searchableFieldNames) => {
     if (!match || !searchableFieldNames || !searchableFieldNames.length) {
@@ -35,7 +37,7 @@ const getSort = (sortBy, sortDir, match, searchableFieldNames) => {
 };
 
 export default async (db) => {
-    const collection = db.collection('publishedDataset');
+    const collection = await getCreatedCollection(db, 'publishedDataset');
 
     await collection.createIndex({ uri: 1 }, { unique: true });
 
@@ -52,7 +54,7 @@ export default async (db) => {
     collection.insertBatchIgnoreDuplicate = (documents) =>
         Promise.all(
             chunk(documents, 1000).map((data) =>
-                collection.insert(data, { ordered: false }).catch((e) => {
+                collection.insertMany(data, { ordered: false }).catch((e) => {
                     if (e.code === 11000 /* duplicate error */) {
                         return;
                     }
@@ -201,11 +203,14 @@ export default async (db) => {
     };
 
     collection.findById = async (id) => {
-        const oid = new ObjectID(id);
+        const oid = new ObjectId(id);
         return collection.findOne({ _id: oid });
     };
 
     collection.findByUri = (uri) => collection.findOne({ uri });
+
+    collection.findManyByUris = (uris) =>
+        collection.find({ uri: { $in: uris } }).toArray();
 
     collection.addVersion = async (
         resource,
@@ -222,13 +227,11 @@ export default async (db) => {
                     },
                 },
             },
-            {
-                returnOriginal: false,
-            },
+            { returnDocument: 'after' },
         );
 
     collection.hide = async (uri, reason, date = new Date()) => {
-        await collection.update(
+        await collection.updateOne(
             { uri },
             {
                 $set: {
@@ -242,7 +245,7 @@ export default async (db) => {
     };
 
     collection.restore = async (uri) =>
-        collection.update(
+        collection.updateOne(
             { uri },
             { $unset: { removedAt: true, reason: true } },
         );
@@ -262,7 +265,7 @@ export default async (db) => {
             publicationDate,
         };
 
-        return collection.update(
+        return collection.updateOne(
             { uri },
             {
                 $addToSet: {
@@ -312,7 +315,7 @@ export default async (db) => {
             return { result: 'noChange' };
         }
 
-        await collection.update(
+        await collection.updateOne(
             {
                 uri,
                 'contributions.fieldName': name,
@@ -417,6 +420,26 @@ export default async (db) => {
                 name: 'match_index',
             });
         }
+    };
+
+    collection.findUrisByTitle = async ({ titleField, value }) => {
+        const resources = await collection
+            .find(
+                {
+                    versions: {
+                        $elemMatch: {
+                            [titleField.name]:
+                                createDiacriticSafeContainRegex(value),
+                        },
+                    },
+                },
+                {
+                    uri: true,
+                },
+            )
+            .toArray();
+
+        return resources.map(({ uri }) => uri);
     };
 
     return collection;

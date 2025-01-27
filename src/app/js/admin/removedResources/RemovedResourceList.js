@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
-import translate from 'redux-polyglot/translate';
 import moment from 'moment';
 
 import {
@@ -25,6 +24,7 @@ import {
 
 import { fromRemovedResources } from '../selectors';
 import { fromFields } from '../../sharedSelectors';
+import { translate } from '../../i18n/I18NContext';
 
 const styles = {
     table: {

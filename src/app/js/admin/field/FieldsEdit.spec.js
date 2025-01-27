@@ -67,7 +67,7 @@ describe('<FieldsEdit />', () => {
 
         expect(
             wrapper.find(
-                'Translated(FieldGridComponent) + Connect(Translated(StatisticsComponent))',
+                'Translated(Connect(FieldGridComponent)) + Connect(StatisticsComponent)',
             ),
         ).toHaveLength(1);
     });
@@ -85,7 +85,7 @@ describe('<FieldsEdit />', () => {
 
         expect(
             wrapper.find(
-                'Connect(PublicationPreviewComponent) + Connect(Translated(StatisticsComponent))',
+                'Connect(PublicationPreviewComponent) + Connect(StatisticsComponent)',
             ),
         ).toHaveLength(1);
     });

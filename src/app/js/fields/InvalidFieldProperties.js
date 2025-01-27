@@ -1,12 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import translate from 'redux-polyglot/translate';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 
 import Alert from '../lib/components/Alert';
 import { fromFields } from '../sharedSelectors';
 import { field as fieldPropTypes } from '../propTypes';
+import { translate } from '../i18n/I18NContext';
 
 const InvalidFieldProperties = ({ invalidProperties, p: polyglot }) => {
     if (!invalidProperties.length) {

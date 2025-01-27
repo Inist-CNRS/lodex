@@ -1,6 +1,4 @@
-import { combineReducers } from 'redux';
 import { reducer as form } from 'redux-form';
-import { polyglotReducer as polyglot } from 'redux-polyglot';
 
 import fetchReducer from '../fetch';
 import fields from '../fields';
@@ -23,14 +21,13 @@ import enrichment from './enrichment';
 import precomputed from './precomputed';
 import configTenant from './configTenant';
 
-const reducer = combineReducers({
+const reducers = {
     fetch: fetchReducer,
     fields,
     form,
     i18n,
     import: importReducer,
     dump,
-    polyglot,
     parsing,
     publication,
     preview,
@@ -46,6 +43,6 @@ const reducer = combineReducers({
     enrichment,
     precomputed,
     configTenant,
-});
+};
 
-export default reducer;
+export default reducers;

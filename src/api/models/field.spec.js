@@ -1,10 +1,14 @@
+import { SCOPE_COLLECTION, SCOPE_DOCUMENT } from '../../common/scope';
+import { URI_FIELD_NAME } from '../../common/uris';
 import fieldFactory, {
-    validateField,
     buildInvalidPropertiesMessage,
     buildInvalidTransformersMessage,
+    validateField,
 } from './field';
-import { URI_FIELD_NAME } from '../../common/uris';
-import { SCOPE_DOCUMENT, SCOPE_COLLECTION } from '../../common/scope';
+
+const listCollections = {
+    toArray: () => [true],
+};
 
 describe('field', () => {
     describe('fieldFactory', () => {
@@ -20,7 +24,7 @@ describe('field', () => {
                 insertOne: jest.fn().mockImplementation(() => ({
                     insertedId: 'insertedId',
                 })),
-                update: jest.fn(),
+                updateOne: jest.fn(),
                 updateMany: jest.fn(),
                 find: jest.fn().mockImplementation(() => ({
                     sort: () => ({
@@ -35,13 +39,12 @@ describe('field', () => {
                 })),
                 findOneAndUpdate: jest
                     .fn()
-                    .mockImplementation(() =>
-                        Promise.resolve({ value: 'result' }),
-                    ),
+                    .mockImplementation(() => Promise.resolve('result')),
             };
 
             db = {
                 collection: jest.fn().mockImplementation(() => fieldCollection),
+                listCollections: () => listCollections,
             };
 
             field = await fieldFactory(db);
@@ -204,7 +207,7 @@ describe('field', () => {
                     true,
                     'nameArg',
                 );
-                expect(fieldCollection.update).toHaveBeenCalledWith(
+                expect(fieldCollection.updateOne).toHaveBeenCalledWith(
                     {
                         name: 'this field name',
                         contribution: true,
@@ -232,7 +235,7 @@ describe('field', () => {
                     false,
                     'nameArg',
                 );
-                expect(fieldCollection.update).toHaveBeenCalledWith(
+                expect(fieldCollection.updateOne).toHaveBeenCalledWith(
                     {
                         name: 'this field name',
                         contribution: true,
@@ -285,10 +288,14 @@ describe('field', () => {
                         .mockImplementation(() => Promise.resolve({})),
                     insertOne: jest.fn(),
                 };
+                const listCollections = {
+                    toArray: () => [true],
+                };
                 const dbNoUri = {
                     collection: jest
                         .fn()
                         .mockImplementation(() => fieldCollectionNoUri),
+                    listCollections: () => listCollections,
                 };
 
                 const fieldNoUri = await fieldFactory(dbNoUri);
@@ -342,7 +349,7 @@ describe('field', () => {
                         $set: { position: 'position' },
                     },
                     {
-                        returnOriginal: false,
+                        returnDocument: 'after',
                     },
                 );
             });
@@ -366,6 +373,7 @@ describe('field', () => {
                     collection: jest
                         .fn()
                         .mockImplementation(() => fieldCollection),
+                    listCollections: () => listCollections,
                 };
 
                 field = await fieldFactory(db);
@@ -399,6 +407,7 @@ describe('field', () => {
                     collection: jest
                         .fn()
                         .mockImplementation(() => fieldCollection),
+                    listCollections: () => listCollections,
                 };
 
                 field = await fieldFactory(db);
@@ -406,6 +415,35 @@ describe('field', () => {
 
                 expect(fieldCollection.find).toHaveBeenCalledWith({
                     name: { $in: ['b'] },
+                });
+            });
+        });
+
+        describe('findTitle', () => {
+            it('should call find with overview = 1', async () => {
+                fieldCollection = {
+                    createIndex: jest.fn(),
+                    findOne: jest
+                        .fn()
+                        .mockImplementation(() =>
+                            Promise.resolve({ name: 'a', overview: 1 }),
+                        ),
+                };
+                db = {
+                    collection: jest
+                        .fn()
+                        .mockImplementation(() => fieldCollection),
+                    listCollections: () => listCollections,
+                };
+
+                field = await fieldFactory(db);
+                expect(await field.findTitle()).toEqual({
+                    name: 'a',
+                    overview: 1,
+                });
+
+                expect(fieldCollection.findOne).toHaveBeenCalledWith({
+                    overview: 1,
                 });
             });
         });

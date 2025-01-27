@@ -1,12 +1,12 @@
-import { ObjectID } from 'mongodb';
 import omit from 'lodash/omit';
-import { castIdsFactory } from './utils';
+import { ObjectId } from 'mongodb';
+import { castIdsFactory, getCreatedCollection } from './utils';
 
 export default async (db) => {
-    const collection = db.collection('tenant');
+    const collection = await getCreatedCollection(db, 'tenant');
 
     collection.findOneById = async (id) =>
-        collection.findOne({ $or: [{ _id: new ObjectID(id) }, { _id: id }] });
+        collection.findOne({ $or: [{ _id: new ObjectId(id) }, { _id: id }] });
 
     collection.findOneByName = async (name) => collection.findOne({ name });
 
@@ -20,24 +20,20 @@ export default async (db) => {
     };
 
     collection.delete = async (id) =>
-        collection.remove({ $or: [{ _id: new ObjectID(id) }, { _id: id }] });
+        collection.deleteOne({ $or: [{ _id: new ObjectId(id) }, { _id: id }] });
 
     collection.update = async (id, data) => {
-        const objectId = new ObjectID(id);
+        const objectId = new ObjectId(id);
 
-        return collection
-            .findOneAndUpdate(
-                {
-                    $or: [{ _id: objectId }, { _id: id }],
-                },
-                {
-                    $set: omit(data, ['_id']),
-                },
-                {
-                    returnOriginal: false,
-                },
-            )
-            .then((result) => result.value);
+        return collection.findOneAndUpdate(
+            {
+                $or: [{ _id: objectId }, { _id: id }],
+            },
+            {
+                $set: omit(data, ['_id']),
+            },
+            { returnDocument: 'after' },
+        );
     };
 
     collection.castIds = castIdsFactory(collection);

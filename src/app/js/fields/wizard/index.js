@@ -1,34 +1,34 @@
-import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { compose, withProps } from 'recompose';
-import translate from 'redux-polyglot/translate';
+import { translate } from '../../i18n/I18NContext';
 
-import { Box, Tabs, Tab } from '@mui/material';
+import { Box, Tab, Tabs } from '@mui/material';
 
 import { FIELD_FORM_NAME, saveField as saveFieldAction } from '../';
 
-import { hideAddColumns } from '../../admin/parsing';
-import {
-    polyglot as polyglotPropTypes,
-    field as fieldPropTypes,
-} from '../../propTypes';
-import { fromFields } from '../../sharedSelectors';
-import Uri from './Uri';
-import TabGeneral from './TabGeneral';
-import TabDisplay from './TabDisplay';
-import TabSemantics from './TabSemantics';
-import Actions from './Actions';
+import { withRouter } from 'react-router';
+import { reduxForm } from 'redux-form';
 import {
     SCOPE_DATASET,
     SCOPE_DOCUMENT,
     SCOPE_GRAPHIC,
 } from '../../../../common/scope';
-import { URI_FIELD_NAME } from '../../../../common/uris';
-import { TabPanel } from './TabPanel';
-import { reduxForm } from 'redux-form';
-import { withRouter } from 'react-router';
 import { toast } from '../../../../common/tools/toast';
+import { URI_FIELD_NAME } from '../../../../common/uris';
+import { hideAddColumns } from '../../admin/parsing';
+import {
+    field as fieldPropTypes,
+    polyglot as polyglotPropTypes,
+} from '../../propTypes';
+import { fromFields } from '../../sharedSelectors';
+import Actions from './Actions';
+import TabDisplay from './TabDisplay';
+import TabGeneral from './TabGeneral';
+import { TabPanel } from './TabPanel';
+import TabSemantics from './TabSemantics';
+import Uri from './Uri';
 import ValuePreviewConnected from './ValuePreview';
 
 const ACTIONS_BAR_HEIGHT = 70;
@@ -47,12 +47,25 @@ const FieldEditionWizardComponent = ({
     p: polyglot,
 }) => {
     const [tabValue, setTabValue] = useState(0);
+
+    // handle page loading before the field has started loading
+    const [isInitialized, setIsInitialized] = useState(false);
+
+    useEffect(() => {
+        if (isInitialized) {
+            return;
+        }
+        if (isFieldsLoading) {
+            setIsInitialized(true);
+        }
+    }, [isInitialized, setIsInitialized, isFieldsLoading]);
     useEffect(() => {
         if (!fieldName) {
             history.push(`/display/${filter}`);
             return;
         }
-        if (!isFieldsLoading && !currentEditedField) {
+
+        if (isInitialized && !isFieldsLoading && !currentEditedField) {
             toast(polyglot.t('no_field', { fieldName }), {
                 type: toast.TYPE.ERROR,
             });
@@ -306,7 +319,11 @@ export default compose(
             : {};
 
         return {
-            initialValues: { ...currentEditedField, ...fieldFilterAttributes },
+            initialValues: {
+                ...currentEditedField,
+                ...fieldFilterAttributes,
+                annotable: currentEditedField?.annotable ?? true,
+            },
         };
     }),
     reduxForm({

@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import translate from 'redux-polyglot/translate';
 import { polyglot as polyglotPropTypes } from '../../../propTypes';
-import { Box, TextField, MenuItem } from '@mui/material';
+import { TextField, MenuItem } from '@mui/material';
 import {
     FormatDataParamsFieldSet,
     FormatDefaultParamsFieldSet,
 } from '../../utils/components/field-set/FormatFieldSets';
 import FormatGroupedFieldSet from '../../utils/components/field-set/FormatGroupedFieldSet';
+import { translate } from '../../../i18n/I18NContext';
 
 export const defaultArgs = {
     type: 'value',

@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
 import { polyglot as polyglotPropTypes } from '../../../propTypes';
-import translate from 'redux-polyglot/translate';
 import RoutineParamsAdmin from '../../utils/components/admin/RoutineParamsAdmin';
 import React from 'react';
 import {
@@ -13,6 +12,7 @@ import FormatFieldSetPreview from '../../utils/components/field-set/FormatFieldS
 import { AllDataSets } from '../../utils/dataSet';
 import { EJSAdminView } from './EJSView';
 import FormatGroupedFieldSet from '../../utils/components/field-set/FormatGroupedFieldSet';
+import { translate } from '../../../i18n/I18NContext';
 
 export const defaultArgs = {
     params: {

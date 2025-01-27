@@ -1,6 +1,4 @@
-import { combineReducers } from 'redux';
 import { reducer as form } from 'redux-form';
-import { polyglotReducer as polyglot } from 'redux-polyglot';
 
 import characteristic from '../characteristic';
 import dataset from './dataset';
@@ -17,14 +15,13 @@ import menu from './menu/reducer';
 import displayConfig from './displayConfig/reducer';
 import configTenant from '../admin/configTenant';
 
-const rootReducer = combineReducers({
+const reducers = {
     characteristic,
     dataset,
     export: exportReducer,
     fetch: fetchReducer,
     form,
     i18n,
-    polyglot,
     fields,
     resource,
     format,
@@ -34,6 +31,6 @@ const rootReducer = combineReducers({
     breadcrumb,
     displayConfig,
     configTenant,
-});
+};
 
-export default rootReducer;
+export default reducers;

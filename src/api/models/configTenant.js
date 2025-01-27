@@ -1,9 +1,9 @@
 import { ObjectId } from 'mongodb';
 import omit from 'lodash/omit';
-import { castIdsFactory } from './utils';
+import { castIdsFactory, getCreatedCollection } from './utils';
 
 export default async (db) => {
-    const collection = db.collection('configTenant');
+    const collection = await getCreatedCollection(db, 'configTenant');
 
     collection.findOneById = async (id) =>
         collection.findOne({ $or: [{ _id: new ObjectId(id) }, { _id: id }] });
@@ -28,7 +28,7 @@ export default async (db) => {
     };
 
     collection.delete = async (id) =>
-        collection.remove({ $or: [{ _id: new ObjectId(id) }, { _id: id }] });
+        collection.deleteOne({ $or: [{ _id: new ObjectId(id) }, { _id: id }] });
 
     collection.update = async (id, data) => {
         const objectId = new ObjectId(id);
@@ -38,9 +38,7 @@ export default async (db) => {
                     $or: [{ _id: objectId }, { _id: id }],
                 },
                 omit(data, ['_id']),
-                {
-                    returnOriginal: false,
-                },
+                { returnDocument: 'after' },
             )
             .then((result) => result.value);
     };

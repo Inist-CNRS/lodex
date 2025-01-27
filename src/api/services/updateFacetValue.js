@@ -1,19 +1,19 @@
 import difference from 'lodash/difference';
 
 const removeOldValue = (publishedFacet, field) => async (oldValue) => {
-    const { value: updatedFacet } = await publishedFacet.findOneAndUpdate(
+    const updatedFacet = await publishedFacet.findOneAndUpdate(
         { field, value: oldValue },
         { $inc: { count: -1 } },
-        { returnOriginal: false },
+        { returnDocument: 'after' },
     );
 
     if (updatedFacet.count <= 0) {
-        await publishedFacet.remove(updatedFacet);
+        await publishedFacet.deleteOne(updatedFacet);
     }
 };
 
 const addNewValue = (publishedFacet, field) => async (newValue) => {
-    await publishedFacet.update(
+    await publishedFacet.updateOne(
         { field, value: newValue },
         { $inc: { count: 1 } },
         { upsert: true },

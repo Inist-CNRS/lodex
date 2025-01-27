@@ -1,9 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { polyglot as polyglotPropTypes } from '../propTypes';
 import { compose, lifecycle } from 'recompose';
 import { connect } from 'react-redux';
-import translate from 'redux-polyglot/translate';
 
 import Upload from './upload/Upload';
 import { fromParsing } from './selectors';
@@ -16,7 +14,6 @@ export const DataAddRouteComponent = ({ canUploadFile }) => {
 
 DataAddRouteComponent.propTypes = {
     canUploadFile: PropTypes.bool.isRequired,
-    p: polyglotPropTypes.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -35,5 +32,4 @@ export const DataAddRoute = compose(
             this.props.preLoadLoaders();
         },
     }),
-    translate,
 )(DataAddRouteComponent);

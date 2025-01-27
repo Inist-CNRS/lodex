@@ -7,8 +7,12 @@ describe('publishedDataset', () => {
             createIndex: jest.fn(),
             findOneAndUpdate: jest.fn(),
         };
+        const listCollections = {
+            toArray: () => [true],
+        };
         const db = {
             collection: () => collection,
+            listCollections: () => listCollections,
         };
         let publishedDatasetCollection;
 
@@ -38,9 +42,7 @@ describe('publishedDataset', () => {
                         },
                     },
                 },
-                {
-                    returnOriginal: false,
-                },
+                { returnDocument: 'after' },
             );
         });
     });
@@ -56,11 +58,15 @@ describe('publishedDataset', () => {
         };
         const collection = {
             findOne: jest.fn().mockImplementation(() => previousResource),
-            update: jest.fn(),
+            updateOne: jest.fn(),
             createIndex: jest.fn(),
+        };
+        const listCollections = {
+            toArray: () => [true],
         };
         const db = {
             collection: () => collection,
+            listCollections: () => listCollections,
         };
 
         let publishedDatasetCollection;
@@ -90,7 +96,7 @@ describe('publishedDataset', () => {
                 );
 
                 expect(collection.findOne).toHaveBeenCalledWith({ uri: 'uri' });
-                expect(collection.update).toHaveBeenCalledWith(
+                expect(collection.updateOne).toHaveBeenCalledWith(
                     { uri: 'uri' },
                     {
                         $addToSet: {
@@ -136,7 +142,7 @@ describe('publishedDataset', () => {
                 );
 
                 expect(collection.findOne).toHaveBeenCalledWith({ uri: 'uri' });
-                expect(collection.update).toHaveBeenCalledWith(
+                expect(collection.updateOne).toHaveBeenCalledWith(
                     { uri: 'uri' },
                     {
                         $addToSet: {
@@ -171,11 +177,15 @@ describe('publishedDataset', () => {
         };
         const collection = {
             aggregate: jest.fn().mockImplementation(() => aggregateResult),
-            update: jest.fn(),
+            updateOne: jest.fn(),
             createIndex: jest.fn(),
+        };
+        const listCollections = {
+            toArray: () => [true],
         };
         const db = {
             collection: () => collection,
+            listCollections: () => listCollections,
         };
 
         let publishedDatasetCollection;
@@ -204,7 +214,7 @@ describe('publishedDataset', () => {
                 'name',
                 'status',
             );
-            expect(collection.update).toHaveBeenCalledWith(
+            expect(collection.updateOne).toHaveBeenCalledWith(
                 { uri: 'uri', 'contributions.fieldName': 'name' },
                 {
                     $set: { 'contributions.$.status': 'status' },
@@ -235,11 +245,15 @@ describe('publishedDataset', () => {
             skip,
             count,
         }));
+        const listCollections = {
+            toArray: () => [true],
+        };
         const db = {
             collection: () => ({
                 find,
                 createIndex: jest.fn(),
             }),
+            listCollections: () => listCollections,
         };
 
         let publishedDatasetCollection;
@@ -301,11 +315,15 @@ describe('publishedDataset', () => {
                 count,
             }));
 
+            const listCollections = {
+                toArray: () => [true],
+            };
             publishedDatasetCollection = await publishedDataset({
                 collection: () => ({
                     find: emptyFind,
                     createIndex: jest.fn(),
                 }),
+                listCollections: () => listCollections,
             });
 
             await publishedDatasetCollection.findPage({
@@ -404,11 +422,15 @@ describe('publishedDataset', () => {
 
     describe('create', () => {
         const insertOne = jest.fn().mockImplementation(() => 'inserted');
+        const listCollections = {
+            toArray: () => [true],
+        };
         const db = {
             collection: () => ({
                 insertOne,
                 createIndex: jest.fn(),
             }),
+            listCollections: () => listCollections,
         };
 
         let publishedDatasetCollection;
@@ -434,6 +456,44 @@ describe('publishedDataset', () => {
                     },
                 ],
             });
+        });
+    });
+
+    describe('findManyByUris', () => {
+        let publishedDatasetCollection;
+        let find;
+        let toArray;
+
+        beforeEach(async () => {
+            toArray = jest.fn().mockImplementation(() => ['result']);
+
+            find = jest.fn().mockImplementation(() => ({
+                toArray,
+            }));
+            const listCollections = {
+                toArray: () => [true],
+            };
+            const db = {
+                collection: () => ({
+                    find,
+                    createIndex: jest.fn(),
+                }),
+                listCollections: () => listCollections,
+            };
+            publishedDatasetCollection = await publishedDataset(db);
+        });
+
+        it('should call find with uri = $in uris', async () => {
+            const result = await publishedDatasetCollection.findManyByUris([
+                'uri1',
+                'uri2',
+            ]);
+
+            expect(result).toStrictEqual(['result']);
+            expect(find).toHaveBeenCalledWith({
+                uri: { $in: ['uri1', 'uri2'] },
+            });
+            expect(toArray).toHaveBeenCalledWith();
         });
     });
 });

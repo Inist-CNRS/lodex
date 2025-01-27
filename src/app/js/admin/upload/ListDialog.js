@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import translate from 'redux-polyglot/translate';
-import compose from 'recompose/compose';
 import {
     Button,
     Grid,
@@ -16,6 +14,7 @@ import {
 import FilterIcon from '@mui/icons-material/FilterList';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
+import { translate } from '../../i18n/I18NContext';
 
 const styles = {
     item: {
@@ -231,4 +230,4 @@ FilterComponent.defaultProps = {
     loaders: [],
 };
 
-export default compose(translate)(ListDialogComponent);
+export default translate(ListDialogComponent);

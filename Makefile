@@ -74,18 +74,6 @@ npm: ## allow to run dockerized npm command eg make npm 'install koa --save'
 
 ## Tests =======================================================================
 
-test-api-e2e: ## Run the API E2E tests
-	NODE_ENV=test \
-	EZMASTER_PUBLIC_URL="http://localhost:3010" \
-	docker compose -f docker-compose.dev.yml run --rm -p "3010:3010" node \
-		npm run test:api:e2e
-
-test-api-e2e-watch: ## Run the API E2E tests in watch mode
-	NODE_ENV=test \
-	EZMASTER_PUBLIC_URL="http://localhost:3010" \
-	docker compose -f docker-compose.dev.yml run --rm -p "3010:3010" node \
-		npm run test:api:e2e:watch
-
 test-unit: ## Run the unit tests, usage : JEST_OPTIONS=myfile.to.test.spec.js make test-unit
 ## You can use other Jest options (https://jestjs.io/fr/docs/cli)
 	NODE_ENV=test docker compose -f docker-compose.dev.yml run --no-deps --rm node npm run test:unit -- $(JEST_OPTIONS)
@@ -137,7 +125,6 @@ endif
 
 test: ## Run all tests
 	$(MAKE) test-unit
-	$(MAKE) test-api-e2e
 	CI=true $(MAKE) test-e2e
 
 ## Data ========================================================================
@@ -146,27 +133,29 @@ mongo: ## Start the mongo database
 	docker compose up -d mongo
 
 mongo-shell: ## Start the mongo shell
-	docker compose exec mongo mongo lodex_${DB_TENANT}
+	docker compose exec mongo mongosh lodex_${DB_TENANT}
 
 mongo-shell-test: ## Start the mongo shell for the test database
-	docker compose exec mongo mongo lodex_test_${DB_TENANT}
+	docker compose exec mongo mongosh lodex_test_${DB_TENANT}
 
 clear-database: ## Clear the whole database named by DB_TENANT (use "default" if missing)
 	docker compose exec mongo mongo lodex_${DB_TENANT} --eval " \
-		db.publishedDataset.remove({}); \
-		db.publishedCharacteristic.remove({}); \
-		db.field.remove({}); \
-		db.dataset.remove({}); \
-		db.publishedFacet.remove({}); \
-		db.subresource.remove({}); \
-		db.enrichment.remove({}); \
-		db.precomputed.remove({}); \
+		db.publishedDataset.deleteMany(); \
+		db.publishedCharacteristic.deleteMany(); \
+		db.field.deleteMany(); \
+		db.dataset.deleteMany(); \
+		db.publishedFacet.deleteMany(); \
+		db.subresource.deleteMany(); \
+		db.enrichment.deleteMany(); \
+		db.precomputed.deleteMany(); \
+		db.hiddenResource.deleteMany(); \
+		db.annotation.deleteMany(); \
 	"
 clear-publication: ## Clear the published data, keep uploaded dataset and model in DB_TENANT (use "default" if missing)
 	docker compose exec mongo mongo lodex_${DB_TENANT} --eval " \
-		db.publishedDataset.remove({}); \
-		db.publishedCharacteristic.remove({}); \
-		db.publishedFacet.remove({}); \
+		db.publishedDataset.deleteMany(); \
+		db.publishedCharacteristic.deleteMany(); \
+		db.publishedFacet.deleteMany(); \
 	"
 
 clear-tenants: ## Clear all tenants databases in mongo

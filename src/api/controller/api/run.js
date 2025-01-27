@@ -127,6 +127,6 @@ app.use(async (ctx, next) => {
 
 app.use(route.get('/', getScripts));
 app.use(route.get('/:scriptNameCalled', middlewareScript));
-app.use(route.get('/:scriptNameCalled/*', middlewareScript));
+app.use(route.get('/:scriptNameCalled/(.*)', middlewareScript));
 
 export default app;

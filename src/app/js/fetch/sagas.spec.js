@@ -1,5 +1,4 @@
-import { race, call, put, take } from 'redux-saga/effects';
-import { delay } from 'redux-saga';
+import { race, call, put, take, delay } from 'redux-saga/effects';
 
 import fetchSaga from '../lib/sagas/fetchSaga';
 
@@ -16,7 +15,7 @@ describe('fetch', () => {
             });
 
             it('should delay(200)', () => {
-                expect(saga.next().value).toEqual(call(delay, 200));
+                expect(saga.next().value).toEqual(delay(200));
             });
 
             it('should race a call to fetchSaga and cancel filterAction', () => {
