@@ -438,7 +438,7 @@ export default async (db) => {
             )
             .toArray();
 
-        return fields.map(({ _id }) => _id);
+        return fields.map(({ _id }) => _id.toString());
     };
 
     collection.findIdsByInternalName = async (internalName) => {
@@ -451,7 +451,7 @@ export default async (db) => {
             )
             .toArray();
 
-        return fields.map(({ _id }) => _id);
+        return fields.map(({ _id }) => _id.toString());
     };
 
     collection.findIdsByName = async (name) => {
@@ -464,7 +464,7 @@ export default async (db) => {
             )
             .toArray();
 
-        return fields.map(({ _id }) => _id);
+        return fields.map(({ _id }) => _id.toString());
     };
 
     collection.findIdsByScope = async (scope) => {
@@ -477,7 +477,7 @@ export default async (db) => {
             )
             .toArray();
 
-        return fields.map(({ _id }) => _id);
+        return fields.map(({ _id }) => _id.toString());
     };
 
     return collection;

@@ -8,6 +8,7 @@ import {
     getAnnotationsQuerySchema,
 } from './../../../common/validator/annotation.validator';
 import { uniq } from 'lodash';
+import { ObjectId } from 'mongodb';
 
 /**
  * @param {Koa.Context} ctx
@@ -217,7 +218,11 @@ export async function getAnnotations(ctx) {
     );
 
     const fieldById = await ctx.field.findManyByIds(
-        uniq(annotations.map(({ fieldId }) => fieldId).filter((v) => !!v)),
+        uniq(
+            annotations
+                .map(({ fieldId }) => fieldId && new ObjectId(fieldId))
+                .filter((v) => !!v),
+        ),
     );
 
     ctx.response.status = 200;

@@ -82,14 +82,6 @@ export const AnnotationList = () => {
             loading={isPending || isFetching}
             columns={[
                 {
-                    field: 'comment',
-                    headerName: translate('annotation_comment'),
-                    filterOperators: getGridStringOperators().filter(
-                        (operator) => operator.value === 'contains',
-                    ),
-                    flex: 1,
-                },
-                {
                     field: 'resource',
                     headerName: translate('annotation_resource'),
                     flex: 1,
@@ -102,6 +94,21 @@ export const AnnotationList = () => {
                     },
                 },
                 {
+                    field: 'field.name',
+                    headerName: translate('annotation_field_name'),
+                    valueGetter: ({ row }) => row?.field?.name,
+                    filterOperators: getGridStringOperators().filter(
+                        (operator) => operator.value === 'contains',
+                    ),
+                    renderCell: ({ value }) => {
+                        return value
+                            ? `[${value}]`
+                            : translate('annotation_field_not_found');
+                    },
+                    flex: 1,
+                    sortable: false,
+                },
+                {
                     field: 'authorName',
                     headerName: translate('annotation_authorName'),
                     flex: 1,
@@ -109,6 +116,14 @@ export const AnnotationList = () => {
                     filterOperators: getGridStringOperators().filter(
                         (operator) => operator.value === 'contains',
                     ),
+                },
+                {
+                    field: 'comment',
+                    headerName: translate('annotation_comment'),
+                    filterOperators: getGridStringOperators().filter(
+                        (operator) => operator.value === 'contains',
+                    ),
+                    flex: 1,
                 },
                 {
                     field: 'createdAt',
