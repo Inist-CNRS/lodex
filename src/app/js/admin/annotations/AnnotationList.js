@@ -94,6 +94,19 @@ export const AnnotationList = () => {
                     },
                 },
                 {
+                    field: 'field.label',
+                    headerName: translate('annotation_field_label'),
+                    valueGetter: ({ row }) => row?.field?.label,
+                    filterOperators: getGridStringOperators().filter(
+                        (operator) => operator.value === 'contains',
+                    ),
+                    renderCell: ({ value }) => {
+                        return value ?? translate('annotation_field_not_found');
+                    },
+                    flex: 1,
+                    sortable: false,
+                },
+                {
                     field: 'field.name',
                     headerName: translate('annotation_field_name'),
                     valueGetter: ({ row }) => row?.field?.name,
