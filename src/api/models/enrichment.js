@@ -29,9 +29,7 @@ export default async (db) => {
             {
                 $set: omit(data, ['_id']),
             },
-            {
-                returnOriginal: false,
-            },
+            { returnDocument: 'after' },
         );
     };
 

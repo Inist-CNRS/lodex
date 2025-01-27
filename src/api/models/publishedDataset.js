@@ -227,9 +227,7 @@ export default async (db) => {
                     },
                 },
             },
-            {
-                returnOriginal: false,
-            },
+            { returnDocument: 'after' },
         );
 
     collection.hide = async (uri, reason, date = new Date()) => {

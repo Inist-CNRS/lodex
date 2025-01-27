@@ -198,9 +198,7 @@ export default async (db) => {
             {
                 $set: omit(field, ['_id']),
             },
-            {
-                returnOriginal: false,
-            },
+            { returnDocument: 'after' },
         );
     };
 
@@ -387,7 +385,7 @@ export default async (db) => {
         collection.findOneAndUpdate(
             { name },
             { $set: { position } },
-            { returnOriginal: false },
+            { returnDocument: 'after' },
         );
 
     collection.findByNames = async (names) => {

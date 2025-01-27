@@ -349,7 +349,7 @@ describe('field', () => {
                         $set: { position: 'position' },
                     },
                     {
-                        returnOriginal: false,
+                        returnDocument: 'after',
                     },
                 );
             });

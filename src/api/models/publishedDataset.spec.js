@@ -42,9 +42,7 @@ describe('publishedDataset', () => {
                         },
                     },
                 },
-                {
-                    returnOriginal: false,
-                },
+                { returnDocument: 'after' },
             );
         });
     });

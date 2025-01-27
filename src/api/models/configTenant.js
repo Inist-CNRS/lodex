@@ -38,9 +38,7 @@ export default async (db) => {
                     $or: [{ _id: objectId }, { _id: id }],
                 },
                 omit(data, ['_id']),
-                {
-                    returnOriginal: false,
-                },
+                { returnDocument: 'after' },
             )
             .then((result) => result.value);
     };
