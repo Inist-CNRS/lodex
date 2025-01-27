@@ -62,6 +62,7 @@ export const buildQuery = async ({
                     return {};
             }
         }
+        case 'resourceUri':
         case 'comment': {
             switch (filterOperator) {
                 case 'contains':
@@ -93,6 +94,51 @@ export const buildQuery = async ({
                     });
 
                     return { resourceUri: { $in: uris } };
+                }
+                default:
+                    return {};
+            }
+        }
+        case 'field.label': {
+            switch (filterOperator) {
+                case 'contains': {
+                    const ids = await ctx.field.findIdsByLabel(filterValue);
+
+                    return { fieldId: { $in: ids } };
+                }
+                default:
+                    return {};
+            }
+        }
+        case 'field.name': {
+            switch (filterOperator) {
+                case 'contains': {
+                    const ids = await ctx.field.findIdsByName(filterValue);
+
+                    return { fieldId: { $in: ids } };
+                }
+                default:
+                    return {};
+            }
+        }
+        case 'field.internalName': {
+            switch (filterOperator) {
+                case 'contains': {
+                    const ids =
+                        await ctx.field.findIdsByInternalName(filterValue);
+
+                    return { fieldId: { $in: ids } };
+                }
+                default:
+                    return {};
+            }
+        }
+        case 'field.scope': {
+            switch (filterOperator) {
+                case 'contains': {
+                    const ids = await ctx.field.findIdsByScope(filterValue);
+
+                    return { fieldId: { $in: ids } };
                 }
                 default:
                     return {};
@@ -171,9 +217,7 @@ export async function getAnnotations(ctx) {
     );
 
     const fieldById = await ctx.field.findManyByIds(
-        uniq(
-            annotations.map(({ itemPath }) => itemPath?.[0]).filter((v) => !!v),
-        ),
+        uniq(annotations.map(({ fieldId }) => fieldId).filter((v) => !!v)),
     );
 
     ctx.response.status = 200;
@@ -183,10 +227,7 @@ export async function getAnnotations(ctx) {
         data: annotations.map((annotation) => ({
             ...annotation,
             resource: resourceByUri[annotation.resourceUri],
-            field:
-                annotation?.itemPath?.length >= 1
-                    ? fieldById[annotation.itemPath[0]] ?? null
-                    : null,
+            field: fieldById[annotation.fieldId] ?? null,
         })),
     };
 }

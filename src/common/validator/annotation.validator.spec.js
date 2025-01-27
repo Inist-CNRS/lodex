@@ -8,7 +8,8 @@ describe('annotation.validator', () => {
         it('should validate an annotation', () => {
             const annotationPayload = {
                 resourceUri: 'uid:/2a8d429f-8134-4502-b9d3-d20c571592fa',
-                itemPath: ['GvaF'],
+                fieldId: 'GvaF',
+                itemPath: [],
                 kind: 'comment',
                 comment: 'This is a comment',
                 authorName: 'John Doe',
@@ -24,7 +25,8 @@ describe('annotation.validator', () => {
         it('should should support annotation without kind', () => {
             const annotationPayload = {
                 resourceUri: 'uid:/2a8d429f-8134-4502-b9d3-d20c571592fa',
-                itemPath: ['GvaF', '0'],
+                fieldId: 'GvaF',
+                itemPath: ['0'],
                 comment: 'This is a comment',
                 authorName: 'John Doe',
                 authorEmail: null,
@@ -183,6 +185,10 @@ describe('annotation.validator', () => {
                         'fieldId',
                         'comment',
                         'createdAt',
+                        'field.label',
+                        'field.name',
+                        'field.internalName',
+                        'field.scope',
                     ],
                 },
                 {

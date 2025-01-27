@@ -1,7 +1,7 @@
 import MapsUgcIcon from '@mui/icons-material/MapsUgc';
 import { IconButton, Tooltip } from '@mui/material';
 import PropTypes from 'prop-types';
-import React, { useCallback, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 
 import { useTranslate } from '../i18n/I18NContext';
 import { CreateAnnotationModal } from './CreateAnnotationModal';
@@ -13,13 +13,6 @@ export function CreateAnnotationButton({ field }) {
     const anchorButton = useRef(null);
 
     const resourceUri = useResourceUri();
-    const itemPath = useMemo(() => {
-        if (field) {
-            return [field._id];
-        }
-
-        return null;
-    });
 
     const { handleCreateAnnotation, isSubmitting } = useCreateAnnotation();
 
@@ -38,7 +31,8 @@ export function CreateAnnotationButton({ field }) {
             await handleCreateAnnotation({
                 ...annotation,
                 resourceUri,
-                itemPath,
+                itemPath: null,
+                fieldId: field ? field._id : null,
             });
 
             handleCloseModal();
