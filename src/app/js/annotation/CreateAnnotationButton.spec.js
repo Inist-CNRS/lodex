@@ -91,11 +91,44 @@ describe('CreateAnnotationButton', () => {
 
         await waitFor(() => {
             fireEvent.change(
-                screen.getByRole('textbox', { name: 'annotation_comment' }),
+                screen.getByRole('textbox', { name: 'annotation.comment *' }),
                 {
                     target: { value: 'test' },
                 },
             );
+        });
+
+        await waitFor(() => {
+            fireEvent.click(screen.getByRole('button', { name: 'next' }));
+        });
+
+        await waitFor(() => {
+            fireEvent.change(
+                screen.getByRole('textbox', {
+                    name: 'annotation.authorName *',
+                }),
+                {
+                    target: { value: 'author' },
+                },
+            );
+        });
+
+        await waitFor(() => {
+            fireEvent.change(
+                screen.getByRole('textbox', {
+                    name: 'annotation.authorEmail',
+                }),
+                {
+                    target: { value: 'email@example.org' },
+                },
+            );
+        });
+
+        // Wait for the submit button to be enabled
+        await waitFor(() => {
+            expect(
+                screen.getByRole('button', { name: 'validate' }),
+            ).toBeEnabled();
         });
 
         await waitFor(() => {
@@ -106,7 +139,7 @@ describe('CreateAnnotationButton', () => {
             expect.objectContaining({
                 url: '/api/annotation',
                 method: 'POST',
-                body: '{"comment":"test","resourceUri":"uid:/0579J7JN","itemPath":["1ddbe5dc-f945-4d38-9c5b-ef20f78cb0cc"]}',
+                body: '{"comment":"test","authorName":"author","authorEmail":"email@example.org","resourceUri":"uid:/0579J7JN","itemPath":["1ddbe5dc-f945-4d38-9c5b-ef20f78cb0cc"]}',
             }),
         );
     });

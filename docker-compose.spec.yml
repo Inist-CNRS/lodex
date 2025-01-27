@@ -32,7 +32,7 @@ services:
             resources:
                 limits:
                     cpus: '2'
-                    memory: 2G
+                    memory: 4G
 
     istex-api:
         image: node:22.12-bookworm

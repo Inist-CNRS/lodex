@@ -1,8 +1,8 @@
-import { createAnnotation, getAnnotations } from './annotation';
 import { MongoClient } from 'mongodb';
 import createAnnotationModel from '../../models/annotation';
 import createFieldModel from '../../models/field';
 import createPublishedDatasetModel from '../../models/publishedDataset';
+import { createAnnotation, getAnnotations } from './annotation';
 
 const ANNOTATIONS = [
     {
@@ -71,6 +71,7 @@ describe('annotation', () => {
                 itemPath: ['Gb4a'],
                 kind: 'comment',
                 comment: 'Hello world',
+                authorName: 'John DOE',
             };
 
             const ctx = {
@@ -92,6 +93,7 @@ describe('annotation', () => {
                     ...annotation,
                     status: 'to_review',
                     internal_comment: null,
+                    authorEmail: null,
                 },
             });
 
@@ -124,6 +126,10 @@ describe('annotation', () => {
                 errors: [
                     {
                         path: ['comment'],
+                        message: 'error_required',
+                    },
+                    {
+                        path: ['authorName'],
                         message: 'error_required',
                     },
                 ],
