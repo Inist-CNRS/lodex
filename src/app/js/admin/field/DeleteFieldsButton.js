@@ -80,7 +80,9 @@ const DeleteFieldsButtonComponent = ({
                 aria-describedby="delete-selected-fields-dialog-description"
             >
                 <DialogTitle id="delete-selected-fields-dialog-title">
-                    {polyglot.t('delete_selected_fields_title')}
+                    {polyglot.t('delete_selected_fields_title', {
+                        smart_count: fieldsToDelete.length,
+                    })}
                 </DialogTitle>
                 <DialogContent>
                     <DialogContentText>
