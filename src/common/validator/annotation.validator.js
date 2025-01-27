@@ -42,7 +42,14 @@ export const annotationSchema = z.object({
 
 const annotationFilterableFields = z
     .enum(
-        ['resource.title', 'resourceUri', 'fieldId', 'comment', 'createdAt'],
+        [
+            'resource.title',
+            'authorName',
+            'resourceUri',
+            'fieldId',
+            'comment',
+            'createdAt',
+        ],
         {
             message: 'annotation_query_filter_by_invalid_key',
         },

@@ -2,11 +2,11 @@ import Koa from 'koa';
 import koaBodyParser from 'koa-bodyparser';
 import route from 'koa-route';
 
+import { createDiacriticSafeContainRegex } from '../../services/createDiacriticSafeContainRegex';
 import {
     annotationSchema,
     getAnnotationsQuerySchema,
 } from './../../../common/validator/annotation.validator';
-import { createDiacriticSafeContainRegex } from '../../services/createDiacriticSafeContainRegex';
 
 /**
  * @param {Koa.Context} ctx
@@ -62,6 +62,17 @@ export const buildQuery = async ({
             }
         }
         case 'comment': {
+            switch (filterOperator) {
+                case 'contains':
+                    return {
+                        [filterBy]:
+                            createDiacriticSafeContainRegex(filterValue),
+                    };
+                default:
+                    return {};
+            }
+        }
+        case 'authorName': {
             switch (filterOperator) {
                 case 'contains':
                     return {

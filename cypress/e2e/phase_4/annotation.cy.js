@@ -54,8 +54,8 @@ describe('Annotation', () => {
             annotation.createAnnotation({
                 fieldLabel: 'rating',
                 comment: 'This is another comment',
-                authorName: 'John Doe',
-                authorEmail: 'john.doe@example.org',
+                authorName: 'Jane Smith',
+                authorEmail: 'jane.smith@example.org',
             });
             cy.findByText('More').click();
             menu.goToAdminDashboard();
@@ -67,6 +67,7 @@ describe('Annotation', () => {
                 ).to.deep.equal([
                     'Comment',
                     'Resource title',
+                    'Contributor',
                     'Submission date',
                 ]);
             });
@@ -77,9 +78,11 @@ describe('Annotation', () => {
                 ).to.deep.equal([
                     'This is another comment',
                     'RoboCop',
+                    'Jane Smith',
                     new Date().toLocaleDateString(),
                     'This is a comment',
                     'Terminator 2',
+                    'John Doe',
                     new Date().toLocaleDateString(),
                 ]);
             });
