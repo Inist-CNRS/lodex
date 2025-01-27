@@ -7,6 +7,7 @@ import { URI_FIELD_NAME } from '../../common/uris';
 import { validateField as validateFieldIsomorphic } from '../../common/validateFields';
 import generateUid from '../services/generateUid';
 import { castIdsFactory, getCreatedCollection } from './utils';
+import { createDiacriticSafeContainRegex } from '../services/createDiacriticSafeContainRegex';
 
 export const buildInvalidPropertiesMessage = (name) =>
     `Invalid data for field ${name} which need a name, a label, a scope, a valid scheme if specified and a transformers array`;
@@ -425,6 +426,58 @@ export default async (db) => {
 
     collection.findTitle = async () => {
         return collection.findOne({ overview: 1 });
+    };
+
+    collection.findIdsByLabel = async (label) => {
+        const fields = await collection
+            .find(
+                {
+                    label: createDiacriticSafeContainRegex(label),
+                },
+                { _id: true },
+            )
+            .toArray();
+
+        return fields.map(({ _id }) => _id);
+    };
+
+    collection.findIdsByInternalName = async (internalName) => {
+        const fields = await collection
+            .find(
+                {
+                    internalName: createDiacriticSafeContainRegex(internalName),
+                },
+                { _id: true },
+            )
+            .toArray();
+
+        return fields.map(({ _id }) => _id);
+    };
+
+    collection.findIdsByName = async (name) => {
+        const fields = await collection
+            .find(
+                {
+                    name,
+                },
+                { _id: true },
+            )
+            .toArray();
+
+        return fields.map(({ _id }) => _id);
+    };
+
+    collection.findIdsByScope = async (scope) => {
+        const fields = await collection
+            .find(
+                {
+                    scope,
+                },
+                { _id: true },
+            )
+            .toArray();
+
+        return fields.map(({ _id }) => _id);
     };
 
     return collection;

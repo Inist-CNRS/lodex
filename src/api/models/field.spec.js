@@ -523,6 +523,120 @@ describe('field', () => {
                 });
             });
         });
+
+        describe('findIdsByLabel', () => {
+            it('should return a list of ids for every fields matching given label', async () => {
+                const field1 = await fieldCollection.create({
+                    position: 1,
+                    label: 'a label',
+                });
+                const field2 = await fieldCollection.create({
+                    position: 2,
+                    label: 'another label',
+                });
+                const field3 = await fieldCollection.create({
+                    position: 2,
+                    label: 'something else',
+                });
+
+                expect(
+                    await fieldCollection.findIdsByLabel('label'),
+                ).toStrictEqual([field1._id, field2._id]);
+                expect(
+                    await fieldCollection.findIdsByLabel('else'),
+                ).toStrictEqual([field3._id]);
+                expect(
+                    await fieldCollection.findIdsByLabel('not found'),
+                ).toStrictEqual([]);
+            });
+        });
+
+        describe('findIdsByName', () => {
+            it('should return a list of ids for every fields matching given internalName', async () => {
+                const field1 = await fieldCollection.create({
+                    position: 1,
+                    internalName: 'an internal name',
+                });
+                const field2 = await fieldCollection.create({
+                    position: 2,
+                    internalName: 'another internal name',
+                });
+                const field3 = await fieldCollection.create({
+                    position: 2,
+                    internalName: 'something else',
+                });
+
+                expect(
+                    await fieldCollection.findIdsByInternalName('internal'),
+                ).toStrictEqual([field1._id, field2._id]);
+                expect(
+                    await fieldCollection.findIdsByInternalName('else'),
+                ).toStrictEqual([field3._id]);
+                expect(
+                    await fieldCollection.findIdsByInternalName('not found'),
+                ).toStrictEqual([]);
+            });
+        });
+
+        describe('findIdsByName', () => {
+            it('should return a list of ids for every fields with given name', async () => {
+                const field1 = await fieldCollection.create(
+                    {
+                        position: 1,
+                    },
+                    'nAmE',
+                );
+                const field2 = await fieldCollection.create(
+                    {
+                        position: 2,
+                    },
+                    'hGaV',
+                );
+                await fieldCollection.create(
+                    {
+                        position: 3,
+                    },
+                    'Yhko',
+                );
+
+                expect(
+                    await fieldCollection.findIdsByName('nAmE'),
+                ).toStrictEqual([field1._id]);
+                expect(
+                    await fieldCollection.findIdsByName('hGaV'),
+                ).toStrictEqual([field2._id]);
+                expect(
+                    await fieldCollection.findIdsByName('not found'),
+                ).toStrictEqual([]);
+            });
+        });
+
+        describe('findIdsByScope', () => {
+            it('should return a list of ids for every fields matching given scope', async () => {
+                const field1 = await fieldCollection.create({
+                    position: 1,
+                    scope: 'dataset',
+                });
+                const field2 = await fieldCollection.create({
+                    position: 2,
+                    scope: 'document',
+                });
+                const field3 = await fieldCollection.create({
+                    position: 2,
+                    scope: 'dataset',
+                });
+
+                expect(
+                    await fieldCollection.findIdsByScope('dataset'),
+                ).toStrictEqual([field1._id, field3._id]);
+                expect(
+                    await fieldCollection.findIdsByScope('document'),
+                ).toStrictEqual([field2._id]);
+                expect(
+                    await fieldCollection.findIdsByScope('chart'),
+                ).toStrictEqual([]);
+            });
+        });
     });
 
     describe('validateField', () => {
