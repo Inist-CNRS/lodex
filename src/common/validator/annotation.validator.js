@@ -59,7 +59,7 @@ const annotationFilterableFields = z
             'field.label',
             'field.name',
             'field.internalName',
-            'field.scope',
+            'field.internalScopes',
         ],
         {
             message: 'annotation_query_filter_by_invalid_key',

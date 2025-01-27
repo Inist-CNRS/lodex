@@ -1212,6 +1212,7 @@
 "annotation_created_at"	"Submission date"	"Date de soumission"
 "annotation_field_name"	"Field Id"	"Id du champ"
 "annotation_field_label"	"Field label"	"Etiquette du champ"
+"annotation_field_internal_scopes"	"Field Icons"	"Icônes du champ"
 "annotation_resource_link"	"Open the resource"	"Ouvrir la resource"
 "annotation.resourceId"	"Resource title"	"Titre de la ressource"
 "annotation.resource"	"Resource"	"Ressource"

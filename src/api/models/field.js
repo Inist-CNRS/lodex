@@ -467,11 +467,11 @@ export default async (db) => {
         return fields.map(({ _id }) => _id.toString());
     };
 
-    collection.findIdsByScope = async (scope) => {
+    collection.findIdsByInternalScope = async (internalScope) => {
         const fields = await collection
             .find(
                 {
-                    scope,
+                    internalScope,
                 },
                 { _id: true },
             )

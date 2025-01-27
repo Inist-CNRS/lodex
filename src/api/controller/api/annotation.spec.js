@@ -626,13 +626,13 @@ describe('annotation', () => {
             });
         });
 
-        it('should allow to filter by field scope', async () => {
+        it('should allow to filter by field internalScopes', async () => {
             const ctx = {
                 request: {
                     query: {
                         page: 0,
                         perPage: 2,
-                        filterBy: 'field.scope',
+                        filterBy: 'field.internalScopes',
                         filterOperator: 'contains',
                         filterValue: 'document',
                     },
@@ -743,7 +743,7 @@ describe('annotation', () => {
                             'field.label',
                             'field.name',
                             'field.internalName',
-                            'field.scope',
+                            'field.internalScope',
                         ],
                         received: 'test',
                     },

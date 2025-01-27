@@ -13,6 +13,7 @@ import { useTranslate } from '../../i18n/I18NContext';
 import AdminOnlyAlert from '../../lib/components/AdminOnlyAlert';
 import { ResourceCell } from './ResourceCell';
 import { useGetAnnotations } from './useGetAnnotations';
+import FieldInternalIcon from '../../fields/FieldInternalIcon';
 
 const AnnotationListToolBar = () => {
     const { translate } = useTranslate();
@@ -117,6 +118,33 @@ export const AnnotationList = () => {
                         return value
                             ? `[${value}]`
                             : translate('annotation_field_not_found');
+                    },
+                    flex: 1,
+                    sortable: false,
+                },
+                {
+                    field: 'field.internalScopes',
+                    headerName: translate('annotation_field_internal_scopes'),
+                    valueGetter: ({ row }) =>
+                        row?.field ? row.field?.internalScopes ?? [] : null,
+                    filterOperators: getGridStringOperators().filter(
+                        (operator) => operator.value === 'contains',
+                    ),
+                    renderCell: ({ value }) => {
+                        if (!value) {
+                            return translate('annotation_field_not_found');
+                        }
+                        return (
+                            <>
+                                {value.map((scope) => (
+                                    <FieldInternalIcon
+                                        key={scope}
+                                        scope={scope}
+                                        p={{ t: translate }}
+                                    />
+                                ))}
+                            </>
+                        );
                     },
                     flex: 1,
                     sortable: false,

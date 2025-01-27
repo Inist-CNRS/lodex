@@ -541,10 +541,10 @@ describe('field', () => {
 
                 expect(
                     await fieldCollection.findIdsByLabel('label'),
-                ).toStrictEqual([field1._id, field2._id]);
+                ).toStrictEqual([field1._id.toString(), field2._id.toString()]);
                 expect(
                     await fieldCollection.findIdsByLabel('else'),
-                ).toStrictEqual([field3._id]);
+                ).toStrictEqual([field3._id.toString()]);
                 expect(
                     await fieldCollection.findIdsByLabel('not found'),
                 ).toStrictEqual([]);
@@ -568,10 +568,10 @@ describe('field', () => {
 
                 expect(
                     await fieldCollection.findIdsByInternalName('internal'),
-                ).toStrictEqual([field1._id, field2._id]);
+                ).toStrictEqual([field1._id.toString(), field2._id.toString()]);
                 expect(
                     await fieldCollection.findIdsByInternalName('else'),
-                ).toStrictEqual([field3._id]);
+                ).toStrictEqual([field3._id.toString()]);
                 expect(
                     await fieldCollection.findIdsByInternalName('not found'),
                 ).toStrictEqual([]);
@@ -601,39 +601,39 @@ describe('field', () => {
 
                 expect(
                     await fieldCollection.findIdsByName('nAmE'),
-                ).toStrictEqual([field1._id]);
+                ).toStrictEqual([field1._id.toString()]);
                 expect(
                     await fieldCollection.findIdsByName('hGaV'),
-                ).toStrictEqual([field2._id]);
+                ).toStrictEqual([field2._id.toString()]);
                 expect(
                     await fieldCollection.findIdsByName('not found'),
                 ).toStrictEqual([]);
             });
         });
 
-        describe('findIdsByScope', () => {
+        describe('findIdsByInternalScope', () => {
             it('should return a list of ids for every fields matching given scope', async () => {
                 const field1 = await fieldCollection.create({
                     position: 1,
-                    scope: 'dataset',
+                    internalScope: ['dataset', 'document'],
                 });
-                const field2 = await fieldCollection.create({
+                await fieldCollection.create({
                     position: 2,
-                    scope: 'document',
+                    internalScope: [],
                 });
                 const field3 = await fieldCollection.create({
                     position: 2,
-                    scope: 'dataset',
+                    internalScope: ['home', 'document'],
                 });
 
                 expect(
-                    await fieldCollection.findIdsByScope('dataset'),
-                ).toStrictEqual([field1._id, field3._id]);
+                    await fieldCollection.findIdsByInternalScope('document'),
+                ).toStrictEqual([field1._id.toString(), field3._id.toString()]);
                 expect(
-                    await fieldCollection.findIdsByScope('document'),
-                ).toStrictEqual([field2._id]);
+                    await fieldCollection.findIdsByInternalScope('dataset'),
+                ).toStrictEqual([field1._id.toString()]);
                 expect(
-                    await fieldCollection.findIdsByScope('chart'),
+                    await fieldCollection.findIdsByInternalScope('chart'),
                 ).toStrictEqual([]);
             });
         });
