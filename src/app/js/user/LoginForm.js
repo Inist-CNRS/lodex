@@ -4,10 +4,10 @@ import withHandlers from 'recompose/withHandlers';
 import { Field, reduxForm, propTypes as reduxFormPropTypes } from 'redux-form';
 import FormTextField from '../lib/components/FormTextField';
 
+import { translate } from '../i18n/I18NContext';
+import Alert from '../lib/components/Alert';
 import { polyglot as polyglotPropTypes } from '../propTypes';
 import { LOGIN_FORM_NAME } from './';
-import Alert from '../lib/components/Alert';
-import { translate } from '../i18n/I18NContext';
 
 const validate = (values, { p: polyglot }) => {
     const errors = ['username', 'password'].reduce((currentErrors, field) => {
@@ -68,6 +68,10 @@ LoginFormComponent.propTypes = {
 
 export default compose(
     translate,
+    reduxForm({
+        form: LOGIN_FORM_NAME,
+        validate,
+    }),
     withHandlers({
         handleKeyPress:
             ({ handleSubmit }) =>
@@ -76,9 +80,5 @@ export default compose(
                     handleSubmit();
                 }
             },
-    }),
-    reduxForm({
-        form: LOGIN_FORM_NAME,
-        validate,
     }),
 )(LoginFormComponent);
