@@ -7,6 +7,7 @@ import {
     annotationSchema,
     getAnnotationsQuerySchema,
 } from './../../../common/validator/annotation.validator';
+import { uniq } from 'lodash';
 
 /**
  * @param {Koa.Context} ctx
@@ -153,7 +154,7 @@ export async function getAnnotations(ctx) {
     ]);
 
     const resources = await ctx.publishedDataset.findManyByUris(
-        annotations.map(({ resourceUri }) => resourceUri),
+        uniq(annotations.map(({ resourceUri }) => resourceUri)),
     );
 
     const resourceByUri = (resources || []).reduce(
@@ -169,6 +170,12 @@ export async function getAnnotations(ctx) {
         {},
     );
 
+    const fieldById = await ctx.field.findManyByIds(
+        uniq(
+            annotations.map(({ itemPath }) => itemPath?.[0]).filter((v) => !!v),
+        ),
+    );
+
     ctx.response.status = 200;
     ctx.body = {
         total: annotations.length,
@@ -176,6 +183,10 @@ export async function getAnnotations(ctx) {
         data: annotations.map((annotation) => ({
             ...annotation,
             resource: resourceByUri[annotation.resourceUri],
+            field:
+                annotation?.itemPath?.length >= 1
+                    ? fieldById[annotation.itemPath[0]] ?? null
+                    : null,
         })),
     };
 }

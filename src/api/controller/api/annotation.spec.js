@@ -1,4 +1,5 @@
-import { MongoClient } from 'mongodb';
+import { createAnnotation, getAnnotations } from './annotation';
+import { MongoClient, ObjectId } from 'mongodb';
 import createAnnotationModel from '../../models/annotation';
 import createFieldModel from '../../models/field';
 import createPublishedDatasetModel from '../../models/publishedDataset';
@@ -29,7 +30,7 @@ const ANNOTATIONS = [
     },
     {
         resourceUri: 'uid:/d4f1e376-d5dd-4853-b515-b7f63b34d67d',
-        itemPath: null,
+        itemPath: [],
         authorName: 'Jane SMITH',
         authorEmail: 'jane.smith@marmelab.com',
         comment: 'The author list is incomplete: it should include Jane SMITH',
@@ -142,12 +143,6 @@ describe('annotation', () => {
         let annotationList;
 
         beforeEach(async () => {
-            annotationList = await Promise.all(
-                ANNOTATIONS.map((annotation) =>
-                    annotationModel.create(annotation),
-                ),
-            );
-
             await fieldModel.create(
                 {
                     overview: 1,
@@ -155,6 +150,33 @@ describe('annotation', () => {
                 },
                 'tItl3',
             );
+
+            const field1 = await fieldModel.create(
+                {
+                    position: 1,
+                    label: 'field 1',
+                },
+                'field1',
+            );
+
+            const field2 = await fieldModel.create(
+                {
+                    position: 2,
+                    label: 'field 2',
+                },
+                'field2',
+            );
+            annotationList = await Promise.all([
+                annotationModel.create({
+                    ...ANNOTATIONS[0],
+                    itemPath: [field1._id],
+                }),
+                annotationModel.create(ANNOTATIONS[1]),
+                annotationModel.create({
+                    ...ANNOTATIONS[2],
+                    itemPath: [field2._id],
+                }),
+            ]);
 
             await publishedDatasetModel.insertBatch([
                 {
@@ -176,7 +198,7 @@ describe('annotation', () => {
             ]);
         });
 
-        it('should list annotations with their resource', async () => {
+        it('should list annotations with their resource and field', async () => {
             const ctx = {
                 request: {
                     query: {},
@@ -201,13 +223,25 @@ describe('annotation', () => {
                             uri: ANNOTATIONS[0].resourceUri,
                             title: 'Developer resource',
                         },
+                        field: {
+                            _id: expect.any(ObjectId),
+                            label: 'field 1',
+                            name: 'field1',
+                            position: 1,
+                        },
                     },
-                    { ...annotationList[1], resource: undefined },
+                    { ...annotationList[1], resource: undefined, field: null },
                     {
                         ...annotationList[2],
                         resource: {
                             uri: annotationList[2].resourceUri,
                             title: 'Resource with incomplete author',
+                        },
+                        field: {
+                            _id: expect.any(ObjectId),
+                            label: 'field 2',
+                            name: 'field2',
+                            position: 2,
                         },
                     },
                 ],
@@ -240,6 +274,12 @@ describe('annotation', () => {
                         resource: {
                             uri: annotationList[2].resourceUri,
                             title: 'Resource with incomplete author',
+                        },
+                        field: {
+                            _id: expect.any(ObjectId),
+                            label: 'field 2',
+                            name: 'field2',
+                            position: 2,
                         },
                     },
                 ],
@@ -277,6 +317,12 @@ describe('annotation', () => {
                             uri: annotationList[2].resourceUri,
                             title: 'Resource with incomplete author',
                         },
+                        field: {
+                            _id: expect.any(ObjectId),
+                            label: 'field 2',
+                            name: 'field2',
+                            position: 2,
+                        },
                     },
                 ],
             });
@@ -303,12 +349,18 @@ describe('annotation', () => {
                 total: 3,
                 fullTotal: 3,
                 data: [
-                    { ...annotationList[1], resource: undefined },
+                    { ...annotationList[1], resource: undefined, field: null },
                     {
                         ...annotationList[0],
                         resource: {
                             uri: annotationList[0].resourceUri,
                             title: 'Developer resource',
+                        },
+                        field: {
+                            _id: expect.any(ObjectId),
+                            label: 'field 1',
+                            name: 'field1',
+                            position: 1,
                         },
                     },
                     {
@@ -316,6 +368,12 @@ describe('annotation', () => {
                         resource: {
                             uri: annotationList[2].resourceUri,
                             title: 'Resource with incomplete author',
+                        },
+                        field: {
+                            _id: expect.any(ObjectId),
+                            label: 'field 2',
+                            name: 'field2',
+                            position: 2,
                         },
                     },
                 ],
