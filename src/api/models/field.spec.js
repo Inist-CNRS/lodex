@@ -611,29 +611,29 @@ describe('field', () => {
             });
         });
 
-        describe('findIdsByInternalScope', () => {
+        describe('findIdsByInternalScopes', () => {
             it('should return a list of ids for every fields matching given scope', async () => {
                 const field1 = await fieldCollection.create({
                     position: 1,
-                    internalScope: ['dataset', 'document'],
+                    internalScopes: ['dataset', 'document'],
                 });
                 await fieldCollection.create({
                     position: 2,
-                    internalScope: [],
+                    internalScopes: [],
                 });
                 const field3 = await fieldCollection.create({
                     position: 2,
-                    internalScope: ['home', 'document'],
+                    internalScopes: ['home', 'document'],
                 });
 
                 expect(
-                    await fieldCollection.findIdsByInternalScope('document'),
+                    await fieldCollection.findIdsByInternalScopes('document'),
                 ).toStrictEqual([field1._id.toString(), field3._id.toString()]);
                 expect(
-                    await fieldCollection.findIdsByInternalScope('dataset'),
+                    await fieldCollection.findIdsByInternalScopes('dataset'),
                 ).toStrictEqual([field1._id.toString()]);
                 expect(
-                    await fieldCollection.findIdsByInternalScope('chart'),
+                    await fieldCollection.findIdsByInternalScopes('chart'),
                 ).toStrictEqual([]);
             });
         });

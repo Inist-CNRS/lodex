@@ -3,7 +3,6 @@ import { MongoClient } from 'mongodb';
 import createAnnotationModel from '../../models/annotation';
 import createFieldModel from '../../models/field';
 import createPublishedDatasetModel from '../../models/publishedDataset';
-import { createAnnotation, getAnnotations } from './annotation';
 
 const ANNOTATIONS = [
     {
@@ -162,7 +161,7 @@ describe('annotation', () => {
                     position: 1,
                     label: 'field 1',
                     internalName: 'field_1',
-                    document: 'chart',
+                    internalScopes: ['chart'],
                 },
                 'field1',
             );
@@ -172,19 +171,19 @@ describe('annotation', () => {
                     position: 2,
                     label: 'field 2',
                     internalName: 'field_2',
-                    scope: 'document',
+                    internalScopes: ['document'],
                 },
                 'field2',
             );
             annotationList = await Promise.all([
                 annotationModel.create({
                     ...ANNOTATIONS[0],
-                    fieldId: field1._id,
+                    fieldId: field1._id.toString(),
                 }),
                 annotationModel.create(ANNOTATIONS[1]),
                 annotationModel.create({
                     ...ANNOTATIONS[2],
-                    fieldId: field2._id,
+                    fieldId: field2._id.toString(),
                 }),
             ]);
 
@@ -743,7 +742,7 @@ describe('annotation', () => {
                             'field.label',
                             'field.name',
                             'field.internalName',
-                            'field.internalScope',
+                            'field.internalScopes',
                         ],
                         received: 'test',
                     },

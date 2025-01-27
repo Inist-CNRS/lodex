@@ -65,9 +65,13 @@ describe('Annotation', () => {
                 expect(
                     headers.toArray().map((header) => header.textContent),
                 ).to.deep.equal([
-                    'Comment',
                     'Resource title',
+                    'Field label',
+                    'Field Id',
+                    'Field Icons',
+                    'Field Internal Name',
                     'Contributor',
+                    'Comment',
                     'Submission date',
                 ]);
             });
@@ -76,13 +80,21 @@ describe('Annotation', () => {
                 expect(
                     cells.toArray().map((cell) => cell.textContent),
                 ).to.deep.equal([
-                    'This is another comment',
                     'RoboCop',
+                    'rating',
+                    '[bZE+]',
+                    '',
+                    'n/a',
                     'Jane Smith',
+                    'This is another comment',
                     new Date().toLocaleDateString(),
-                    'This is a comment',
                     'Terminator 2',
+                    'actors',
+                    '[K8Lu]',
+                    '',
+                    'n/a',
                     'John Doe',
+                    'This is a comment',
                     new Date().toLocaleDateString(),
                 ]);
             });

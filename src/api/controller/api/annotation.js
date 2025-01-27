@@ -137,7 +137,8 @@ export const buildQuery = async ({
         case 'field.internalScopes': {
             switch (filterOperator) {
                 case 'contains': {
-                    const ids = await ctx.field.findIdsByScope(filterValue);
+                    const ids =
+                        await ctx.field.findIdsByInternalScopes(filterValue);
 
                     return { fieldId: { $in: ids } };
                 }

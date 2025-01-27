@@ -188,7 +188,7 @@ describe('annotation.validator', () => {
                         'field.label',
                         'field.name',
                         'field.internalName',
-                        'field.scope',
+                        'field.internalScopes',
                     ],
                 },
                 {
