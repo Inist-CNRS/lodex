@@ -411,5 +411,9 @@ export default async (db) => {
 
     collection.castIds = castIdsFactory(collection);
 
+    collection.findTitle = async () => {
+        return collection.findOne({ overview: 1 });
+    };
+
     return collection;
 };

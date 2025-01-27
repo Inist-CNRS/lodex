@@ -49,15 +49,11 @@ export const fillTabDisplayFormat = (format, save = true) => {
 };
 
 export const fillSyndication = (syndication, columnName) => {
-    cy.get('.sidebar')
-        .contains('Search & Facet')
-        .click();
+    cy.get('.sidebar').contains('Search & Facet').click();
     cy.get(
         `[data-testid="autocomplete_search_syndication_${syndication}"]`,
     ).click();
-    cy.get('[role="listbox"]')
-        .contains(columnName)
-        .click({ force: true });
+    cy.get('[role="listbox"]').contains(columnName).click({ force: true });
 };
 
 export const addColumn = (columnName, options = {}) => {
@@ -73,11 +69,9 @@ export const addColumn = (columnName, options = {}) => {
         cy.contains('Existing Column(s)').click();
         cy.get('[data-testid="source-value-from-columns"]').click();
 
-        options.composedOf.map(value => {
+        options.composedOf.map((value) => {
             if (value !== columnName) {
-                cy.get('[role="listbox"]')
-                    .contains(value)
-                    .click();
+                cy.get('[role="listbox"]').contains(value).click();
             }
         });
     }
@@ -97,13 +91,9 @@ export const addColumn = (columnName, options = {}) => {
     cy.wait(1000);
 
     if (options.searchable) {
-        cy.get('.sidebar')
-            .contains('Search & Facet')
-            .click();
+        cy.get('.sidebar').contains('Search & Facet').click();
         cy.get('[data-testid="autocomplete_search_in_fields"]').click();
-        cy.get('[role="listbox"]')
-            .contains(columnName)
-            .click();
+        cy.get('[role="listbox"]').contains(columnName).click();
     }
 
     if (options.syndication) {
@@ -136,9 +126,7 @@ export const goToPublishedResources = () => {
 export const goToModel = () => {
     adminNavigation.goToDisplay();
 
-    cy.get('button')
-        .contains('add characteristic')
-        .should('be.visible');
+    cy.get('button').contains('add characteristic').should('be.visible');
 };
 
 export const importModel = (filename, mimeType = 'application/json') => {
@@ -150,11 +138,8 @@ export const importModel = (filename, mimeType = 'application/json') => {
     cy.wait(300);
 };
 
-const checkLoaderItem = label => {
-    cy.get('li>div')
-        .contains(label)
-        .scrollIntoView()
-        .should('be.visible');
+const checkLoaderItem = (label) => {
+    cy.get('li>div').contains(label).scrollIntoView().should('be.visible');
 };
 
 export const checkListOfSupportedFileFormats = () => {
@@ -165,21 +150,15 @@ export const checkListOfSupportedFileFormats = () => {
     checkLoaderItem('XML - TEI document');
     checkLoaderItem('JSON - from Lodex API');
     checkLoaderItem('XML - ATOM feed');
-    cy.get('button')
-        .contains('Cancel')
-        .click({ force: true });
+    cy.get('button').contains('Cancel').click({ force: true });
 };
 
 export const checkListOfFiltererFileFormats = () => {
     cy.get('.open-loaders').click({ force: true });
     cy.wait(500);
-    cy.get('button')
-        .contains('TSV')
-        .click();
+    cy.get('button').contains('TSV').click();
     cy.get('li>div>span').should('have.length', 4);
-    cy.get('button')
-        .contains('Cancel')
-        .click({ force: true });
+    cy.get('button').contains('Cancel').click({ force: true });
 };
 export const addFile = (filename, mimeType = 'text/csv') => {
     fillInputWithFixture('input[type=file]', filename, mimeType);
@@ -193,8 +172,6 @@ export const addFileWithoutClick = (filename, mimeType = 'text/csv') => {
 };
 
 export const selectLoader = (loaderName = 'automatic') => {
-    cy.get('.select-loader')
-        .first()
-        .click();
+    cy.get('.select-loader').first().click();
     cy.get(`[role="listbox"] li[data-value="${loaderName}"]`).click();
 };

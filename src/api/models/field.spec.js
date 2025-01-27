@@ -418,6 +418,35 @@ describe('field', () => {
                 });
             });
         });
+
+        describe('findTitle', () => {
+            it('should call find with overview = 1', async () => {
+                fieldCollection = {
+                    createIndex: jest.fn(),
+                    findOne: jest
+                        .fn()
+                        .mockImplementation(() =>
+                            Promise.resolve({ name: 'a', overview: 1 }),
+                        ),
+                };
+                db = {
+                    collection: jest
+                        .fn()
+                        .mockImplementation(() => fieldCollection),
+                    listCollections: () => listCollections,
+                };
+
+                field = await fieldFactory(db);
+                expect(await field.findTitle()).toEqual({
+                    name: 'a',
+                    overview: 1,
+                });
+
+                expect(fieldCollection.findOne).toHaveBeenCalledWith({
+                    overview: 1,
+                });
+            });
+        });
     });
 
     describe('validateField', () => {

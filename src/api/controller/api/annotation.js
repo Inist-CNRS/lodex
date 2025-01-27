@@ -6,6 +6,7 @@ import {
     annotationSchema,
     getAnnotationsQuerySchema,
 } from './../../../common/validator/annotation.validator';
+import { createDiacriticSafeContainRegex } from '../../services/createDiacriticSafeContainRegex';
 
 /**
  * @param {Koa.Context} ctx
@@ -28,6 +29,69 @@ export async function createAnnotation(ctx) {
     };
 }
 
+export const buildQuery = async ({
+    filterBy,
+    filterOperator,
+    filterValue,
+    titleField,
+    ctx,
+}) => {
+    if (!filterValue) {
+        return {};
+    }
+    switch (filterBy) {
+        case 'createdAt': {
+            const date = new Date(filterValue);
+            switch (filterOperator) {
+                case 'is': {
+                    return {
+                        [filterBy]: {
+                            $lt: new Date(
+                                new Date(date).setDate(date.getDate() + 1),
+                            ),
+                            $gte: date,
+                        },
+                    };
+                }
+                case 'after':
+                    return { [filterBy]: { $gte: date } };
+                case 'before':
+                    return { [filterBy]: { $lte: date } };
+                default:
+                    return {};
+            }
+        }
+        case 'comment': {
+            switch (filterOperator) {
+                case 'contains':
+                    return {
+                        [filterBy]:
+                            createDiacriticSafeContainRegex(filterValue),
+                    };
+                default:
+                    return {};
+            }
+        }
+        case 'resource.title': {
+            switch (filterOperator) {
+                case 'contains': {
+                    const uris = await ctx.publishedDataset.findUrisByTitle({
+                        value: filterValue,
+                        titleField,
+                    });
+
+                    return { resourceUri: { $in: uris } };
+                }
+                default:
+                    return {};
+            }
+        }
+        default: {
+            return {};
+        }
+    }
+};
+
 /**
  * @param {Koa.Context} ctx
  */
@@ -48,11 +112,23 @@ export async function getAnnotations(ctx) {
     const {
         page,
         perPage: limit,
-        match: query,
         sortBy,
         sortDir,
+        filterBy,
+        filterValue,
+        filterOperator,
     } = validation.data;
+
     const skip = page * limit;
+    const titleField = await ctx.field.findTitle();
+
+    const query = await buildQuery({
+        filterBy,
+        filterOperator,
+        filterValue,
+        ctx,
+        titleField,
+    });
 
     const [annotations, fullTotal] = await Promise.all([
         ctx.annotation.findLimitFromSkip({
@@ -65,11 +141,31 @@ export async function getAnnotations(ctx) {
         ctx.annotation.count(query),
     ]);
 
+    const resources = await ctx.publishedDataset.findManyByUris(
+        annotations.map(({ resourceUri }) => resourceUri),
+    );
+
+    const resourceByUri = (resources || []).reduce(
+        (acc, resource) => ({
+            ...acc,
+            [resource.uri]: {
+                uri: resource.uri,
+                title: resource.versions[resource.versions.length - 1][
+                    titleField.name
+                ],
+            },
+        }),
+        {},
+    );
+
     ctx.response.status = 200;
     ctx.body = {
         total: annotations.length,
         fullTotal,
-        data: annotations,
+        data: annotations.map((annotation) => ({
+            ...annotation,
+            resource: resourceByUri[annotation.resourceUri],
+        })),
     };
 }
 

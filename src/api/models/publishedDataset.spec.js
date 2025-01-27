@@ -460,4 +460,42 @@ describe('publishedDataset', () => {
             });
         });
     });
+
+    describe('findManyByUris', () => {
+        let publishedDatasetCollection;
+        let find;
+        let toArray;
+
+        beforeEach(async () => {
+            toArray = jest.fn().mockImplementation(() => ['result']);
+
+            find = jest.fn().mockImplementation(() => ({
+                toArray,
+            }));
+            const listCollections = {
+                toArray: () => [true],
+            };
+            const db = {
+                collection: () => ({
+                    find,
+                    createIndex: jest.fn(),
+                }),
+                listCollections: () => listCollections,
+            };
+            publishedDatasetCollection = await publishedDataset(db);
+        });
+
+        it('should call find with uri = $in uris', async () => {
+            const result = await publishedDatasetCollection.findManyByUris([
+                'uri1',
+                'uri2',
+            ]);
+
+            expect(result).toStrictEqual(['result']);
+            expect(find).toHaveBeenCalledWith({
+                uri: { $in: ['uri1', 'uri2'] },
+            });
+            expect(toArray).toHaveBeenCalledWith();
+        });
+    });
 });

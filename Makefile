@@ -133,10 +133,10 @@ mongo: ## Start the mongo database
 	docker compose up -d mongo
 
 mongo-shell: ## Start the mongo shell
-	docker compose exec mongo mongo lodex_${DB_TENANT}
+	docker compose exec mongo mongosh lodex_${DB_TENANT}
 
 mongo-shell-test: ## Start the mongo shell for the test database
-	docker compose exec mongo mongo lodex_test_${DB_TENANT}
+	docker compose exec mongo mongosh lodex_test_${DB_TENANT}
 
 clear-database: ## Clear the whole database named by DB_TENANT (use "default" if missing)
 	docker compose exec mongo mongo lodex_${DB_TENANT} --eval " \
