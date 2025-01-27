@@ -30,7 +30,7 @@ const AnnotationListToolBar = () => {
     );
 };
 
-export const Annotations = () => {
+export const AnnotationList = () => {
     const { translate } = useTranslate();
     const [page, setPage] = useState(0);
     const [perPage, setPerPage] = useState(25);
