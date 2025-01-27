@@ -150,6 +150,20 @@ export const AnnotationList = () => {
                     sortable: false,
                 },
                 {
+                    field: 'field.internalName',
+                    headerName: translate('annotation_field_internal_name'),
+                    valueGetter: ({ row }) =>
+                        row?.field ? row?.field?.internalName ?? 'n/a' : null,
+                    filterOperators: getGridStringOperators().filter(
+                        (operator) => operator.value === 'contains',
+                    ),
+                    renderCell: ({ value }) => {
+                        return value ?? translate('annotation_field_not_found');
+                    },
+                    flex: 1,
+                    sortable: false,
+                },
+                {
                     field: 'authorName',
                     headerName: translate('annotation_authorName'),
                     flex: 1,
