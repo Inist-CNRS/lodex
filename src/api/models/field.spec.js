@@ -495,6 +495,34 @@ describe('field', () => {
                 expect(await fieldCollection.findTitle()).toBeNull();
             });
         });
+
+        describe('findManyByIds', () => {
+            it('should return an empty object when no fields found', async () => {
+                expect(await fieldCollection.findManyByIds([])).toStrictEqual(
+                    {},
+                );
+            });
+            it('should return matching field by their ids', async () => {
+                const field1 = await fieldCollection.create({
+                    position: 1,
+                });
+                const field2 = await fieldCollection.create({
+                    position: 2,
+                });
+                await fieldCollection.create({
+                    position: 3,
+                });
+                expect(
+                    await fieldCollection.findManyByIds([
+                        field2._id,
+                        field1._id,
+                    ]),
+                ).toStrictEqual({
+                    [field1._id]: field1,
+                    [field2._id]: field2,
+                });
+            });
+        });
     });
 
     describe('validateField', () => {

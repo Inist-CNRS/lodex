@@ -122,6 +122,20 @@ export default async (db) => {
     collection.findOneById = (id) =>
         collection.findOne({ _id: new ObjectId(id) });
 
+    collection.findManyByIds = async (ids) => {
+        const fields = await collection
+            .find({ _id: { $in: ids.map((id) => id) } })
+            .toArray();
+
+        return fields.reduce(
+            (acc, field) => ({
+                ...acc,
+                [field._id]: field,
+            }),
+            {},
+        );
+    };
+
     collection.findOneByName = (name) => collection.findOne({ name });
 
     collection.create = async (
