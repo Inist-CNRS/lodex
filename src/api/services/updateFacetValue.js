@@ -4,7 +4,7 @@ const removeOldValue = (publishedFacet, field) => async (oldValue) => {
     const updatedFacet = await publishedFacet.findOneAndUpdate(
         { field, value: oldValue },
         { $inc: { count: -1 } },
-        { returnOriginal: false },
+        { returnDocument: 'after' },
     );
 
     if (updatedFacet.count <= 0) {

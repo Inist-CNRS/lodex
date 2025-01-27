@@ -17,7 +17,7 @@ describe('updatefacetValue', () => {
         expect(publishedFacet.findOneAndUpdate).toHaveBeenCalledWith(
             { field: 'fieldName', value: 'old' },
             { $inc: { count: -1 } },
-            { returnOriginal: false },
+            { returnDocument: 'after' },
         );
 
         expect(publishedFacet.deleteOne).not.toHaveBeenCalled();
@@ -53,7 +53,7 @@ describe('updatefacetValue', () => {
                 value: 'old',
             },
             { $inc: { count: -1 } },
-            { returnOriginal: false },
+            { returnDocument: 'after' },
         );
 
         expect(publishedFacet.deleteOne).toHaveBeenCalledWith({
@@ -90,12 +90,12 @@ describe('updatefacetValue', () => {
         expect(publishedFacet.findOneAndUpdate).toHaveBeenCalledWith(
             { field: 'fieldName', value: 'old1' },
             { $inc: { count: -1 } },
-            { returnOriginal: false },
+            { returnDocument: 'after' },
         );
         expect(publishedFacet.findOneAndUpdate).toHaveBeenCalledWith(
             { field: 'fieldName', value: 'old2' },
             { $inc: { count: -1 } },
-            { returnOriginal: false },
+            { returnDocument: 'after' },
         );
 
         expect(publishedFacet.deleteOne).not.toHaveBeenCalled();
