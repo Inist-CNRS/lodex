@@ -9,11 +9,12 @@ import {
     GridToolbarFilterButton,
 } from '@mui/x-data-grid';
 import React, { useState } from 'react';
+import FieldInternalIcon from '../../fields/FieldInternalIcon';
 import { useTranslate } from '../../i18n/I18NContext';
 import AdminOnlyAlert from '../../lib/components/AdminOnlyAlert';
-import { ResourceCell } from './ResourceCell';
+import { ResourceTitleCell } from './ResourceTitleCell';
+import { ResourceUriCell } from './ResourceUriCell';
 import { useGetAnnotations } from './useGetAnnotations';
-import FieldInternalIcon from '../../fields/FieldInternalIcon';
 
 const AnnotationListToolBar = () => {
     const { translate } = useTranslate();
@@ -83,6 +84,17 @@ export const AnnotationList = () => {
             loading={isPending || isFetching}
             columns={[
                 {
+                    field: 'resourceUri',
+                    headerName: translate('annotation_resource_uri'),
+                    flex: 1,
+                    filterOperators: getGridStringOperators().filter(
+                        (operator) => operator.value === 'contains',
+                    ),
+                    renderCell({ row }) {
+                        return <ResourceUriCell row={row} />;
+                    },
+                },
+                {
                     field: 'resource',
                     headerName: translate('annotation_resource'),
                     flex: 1,
@@ -90,8 +102,8 @@ export const AnnotationList = () => {
                     filterOperators: getGridStringOperators().filter(
                         (operator) => operator.value === 'contains',
                     ),
-                    renderCell: ({ value }) => {
-                        return <ResourceCell resource={value} />;
+                    renderCell: ({ row }) => {
+                        return <ResourceTitleCell row={row} />;
                     },
                 },
                 {
