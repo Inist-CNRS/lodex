@@ -139,7 +139,7 @@ describe('CreateAnnotationButton', () => {
             expect.objectContaining({
                 url: '/api/annotation',
                 method: 'POST',
-                body: '{"comment":"test","authorName":"author","authorEmail":"email@example.org","resourceUri":"uid:/0579J7JN","itemPath":["1ddbe5dc-f945-4d38-9c5b-ef20f78cb0cc"]}',
+                body: '{"comment":"test","authorName":"author","authorEmail":"email@example.org","resourceUri":"uid:/0579J7JN","itemPath":null,"fieldId":"1ddbe5dc-f945-4d38-9c5b-ef20f78cb0cc"}',
             }),
         );
     });

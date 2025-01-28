@@ -13,6 +13,7 @@ import { useTranslate } from '../../i18n/I18NContext';
 import AdminOnlyAlert from '../../lib/components/AdminOnlyAlert';
 import { ResourceCell } from './ResourceCell';
 import { useGetAnnotations } from './useGetAnnotations';
+import FieldInternalIcon from '../../fields/FieldInternalIcon';
 
 const AnnotationListToolBar = () => {
     const { translate } = useTranslate();
@@ -30,7 +31,7 @@ const AnnotationListToolBar = () => {
     );
 };
 
-export const Annotations = () => {
+export const AnnotationList = () => {
     const { translate } = useTranslate();
     const [page, setPage] = useState(0);
     const [perPage, setPerPage] = useState(25);
@@ -82,14 +83,6 @@ export const Annotations = () => {
             loading={isPending || isFetching}
             columns={[
                 {
-                    field: 'comment',
-                    headerName: translate('annotation_comment'),
-                    filterOperators: getGridStringOperators().filter(
-                        (operator) => operator.value === 'contains',
-                    ),
-                    flex: 1,
-                },
-                {
                     field: 'resource',
                     headerName: translate('annotation_resource'),
                     flex: 1,
@@ -102,6 +95,75 @@ export const Annotations = () => {
                     },
                 },
                 {
+                    field: 'field.label',
+                    headerName: translate('annotation_field_label'),
+                    valueGetter: ({ row }) => row?.field?.label,
+                    filterOperators: getGridStringOperators().filter(
+                        (operator) => operator.value === 'contains',
+                    ),
+                    renderCell: ({ value }) => {
+                        return value ?? translate('annotation_field_not_found');
+                    },
+                    flex: 1,
+                    sortable: false,
+                },
+                {
+                    field: 'field.name',
+                    headerName: translate('annotation_field_name'),
+                    valueGetter: ({ row }) => row?.field?.name,
+                    filterOperators: getGridStringOperators().filter(
+                        (operator) => operator.value === 'contains',
+                    ),
+                    renderCell: ({ value }) => {
+                        return value
+                            ? `[${value}]`
+                            : translate('annotation_field_not_found');
+                    },
+                    flex: 1,
+                    sortable: false,
+                },
+                {
+                    field: 'field.internalScopes',
+                    headerName: translate('annotation_field_internal_scopes'),
+                    valueGetter: ({ row }) =>
+                        row?.field ? row.field?.internalScopes ?? [] : null,
+                    filterOperators: getGridStringOperators().filter(
+                        (operator) => operator.value === 'contains',
+                    ),
+                    renderCell: ({ value }) => {
+                        if (!value) {
+                            return translate('annotation_field_not_found');
+                        }
+                        return (
+                            <>
+                                {value.map((scope) => (
+                                    <FieldInternalIcon
+                                        key={scope}
+                                        scope={scope}
+                                        p={{ t: translate }}
+                                    />
+                                ))}
+                            </>
+                        );
+                    },
+                    flex: 1,
+                    sortable: false,
+                },
+                {
+                    field: 'field.internalName',
+                    headerName: translate('annotation_field_internal_name'),
+                    valueGetter: ({ row }) =>
+                        row?.field ? row?.field?.internalName ?? 'n/a' : null,
+                    filterOperators: getGridStringOperators().filter(
+                        (operator) => operator.value === 'contains',
+                    ),
+                    renderCell: ({ value }) => {
+                        return value ?? translate('annotation_field_not_found');
+                    },
+                    flex: 1,
+                    sortable: false,
+                },
+                {
                     field: 'authorName',
                     headerName: translate('annotation_authorName'),
                     flex: 1,
@@ -109,6 +171,14 @@ export const Annotations = () => {
                     filterOperators: getGridStringOperators().filter(
                         (operator) => operator.value === 'contains',
                     ),
+                },
+                {
+                    field: 'comment',
+                    headerName: translate('annotation_comment'),
+                    filterOperators: getGridStringOperators().filter(
+                        (operator) => operator.value === 'contains',
+                    ),
+                    flex: 1,
                 },
                 {
                     field: 'createdAt',

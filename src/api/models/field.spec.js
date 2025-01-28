@@ -1,450 +1,640 @@
-import { SCOPE_COLLECTION, SCOPE_DOCUMENT } from '../../common/scope';
-import { URI_FIELD_NAME } from '../../common/uris';
+import { MongoClient, ObjectId } from 'mongodb';
+import { SCOPE_DOCUMENT } from '../../common/scope';
 import fieldFactory, {
     buildInvalidPropertiesMessage,
     buildInvalidTransformersMessage,
     validateField,
 } from './field';
 
-const listCollections = {
-    toArray: () => [true],
-};
-
 describe('field', () => {
     describe('fieldFactory', () => {
+        const connectionStringURI = process.env.MONGO_URL;
         let fieldCollection;
         let db;
-        let field;
+        let connection;
+
+        beforeAll(async () => {
+            connection = await MongoClient.connect(connectionStringURI, {
+                useNewUrlParser: true,
+                useUnifiedTopology: true,
+            });
+            db = connection.db();
+        });
+
+        afterAll(async () => {
+            await connection.close();
+        });
+
         beforeEach(async () => {
-            fieldCollection = {
-                createIndex: jest.fn(),
-                findOne: jest
-                    .fn()
-                    .mockImplementation(() => Promise.resolve(null)),
-                insertOne: jest.fn().mockImplementation(() => ({
-                    insertedId: 'insertedId',
-                })),
-                updateOne: jest.fn(),
-                updateMany: jest.fn(),
-                find: jest.fn().mockImplementation(() => ({
-                    sort: () => ({
-                        limit: () => ({
-                            toArray: () => [
-                                {
-                                    position: 9,
-                                },
-                            ],
-                        }),
-                    }),
-                })),
-                findOneAndUpdate: jest
-                    .fn()
-                    .mockImplementation(() => Promise.resolve('result')),
-            };
-
-            db = {
-                collection: jest.fn().mockImplementation(() => fieldCollection),
-                listCollections: () => listCollections,
-            };
-
-            field = await fieldFactory(db);
-
-            fieldCollection.insertOne.mockClear();
-            fieldCollection.findOne.mockClear();
-            fieldCollection.findOneAndUpdate.mockClear();
+            await db.dropDatabase();
+            fieldCollection = await fieldFactory(db);
         });
 
-        it('should call db.collection with `field`', () => {
-            expect(db.collection).toHaveBeenCalledWith('field');
-        });
-
-        it('should call fieldCollection.createIndex', () => {
-            expect(fieldCollection.createIndex).toHaveBeenCalledWith(
-                { name: 1 },
-                { unique: true },
+        it('should index _id and name', async () => {
+            expect(await fieldCollection.listIndexes().toArray()).toStrictEqual(
+                [
+                    {
+                        key: {
+                            _id: 1,
+                        },
+                        name: '_id_',
+                        v: 2,
+                    },
+                    {
+                        key: {
+                            name: 1,
+                        },
+                        name: 'name_1',
+                        unique: true,
+                        v: 2,
+                    },
+                ],
             );
         });
 
         describe('field.create', () => {
-            it('should call collection.inserOne with given data and a random uid', async () => {
-                await field.create({ field: 'data', position: 10 });
+            it('should call collection.inserOne with given data and a random name', async () => {
+                const createdField = await fieldCollection.create({
+                    field: 'data',
+                    position: 10,
+                });
 
-                expect(fieldCollection.insertOne).toHaveBeenCalledTimes(1);
-                expect(fieldCollection.insertOne.mock.calls[0]).toMatchObject([
+                expect(createdField).toStrictEqual({
+                    _id: expect.any(ObjectId),
+                    name: expect.stringMatching(/^[A-Za-z0-9+/]{4}$/),
+                    field: 'data',
+                    position: 10,
+                });
+
+                expect(await fieldCollection.find().toArray()).toStrictEqual([
+                    createdField,
+                ]);
+            });
+            it('should call collection.inserOne with given data second argument as name', async () => {
+                const createdField = await fieldCollection.create(
                     {
-                        name: /^[A-Za-z0-9+/]{4}$/,
                         field: 'data',
                         position: 10,
                     },
+                    'notrandom',
+                );
+
+                expect(createdField).toStrictEqual({
+                    _id: expect.any(ObjectId),
+                    name: 'notrandom',
+                    field: 'data',
+                    position: 10,
+                });
+
+                expect(await fieldCollection.find().toArray()).toStrictEqual([
+                    createdField,
                 ]);
             });
 
-            it('should call collection.inserOne with given data and random uid when given position', async () => {
-                await field.create({ field: 'data', position: 15 });
+            it('should update the position of all field with greater or equal position', async () => {
+                const field1 = await fieldCollection.create({
+                    field: 'field1',
+                    position: 10,
+                });
+                const field2 = await fieldCollection.create({
+                    field: 'field2',
+                    position: 15,
+                });
+                const field3 = await fieldCollection.create({
+                    field: 'field3',
+                    position: 16,
+                });
+                const field4 = await fieldCollection.create({
+                    field: 'field4',
+                    position: 15,
+                });
 
-                expect(fieldCollection.insertOne).toHaveBeenCalledTimes(1);
-                expect(fieldCollection.insertOne.mock.calls[0]).toMatchObject([
+                expect(
+                    await fieldCollection
+                        .find(
+                            {},
+                            {
+                                sort: { position: 1 },
+                            },
+                        )
+                        .toArray(),
+                ).toStrictEqual([
+                    field1,
+                    field4,
+                    { ...field2, position: 16 },
+                    { ...field3, position: 17 },
+                ]);
+            });
+
+            it('should not update other field position if third argument is false', async () => {
+                const field1 = await fieldCollection.create({
+                    field: 'field1',
+                    position: 10,
+                });
+                const field2 = await fieldCollection.create({
+                    field: 'field2',
+                    position: 15,
+                });
+                const field3 = await fieldCollection.create({
+                    field: 'field3',
+                    position: 16,
+                });
+                const field4 = await fieldCollection.create(
                     {
-                        name: /^[A-Za-z0-9+/]{4}$/,
-                        field: 'data',
+                        field: 'field4',
                         position: 15,
                     },
-                ]);
-            });
-
-            it('should call collection.updateMany to update existing columns indexes', async () => {
-                await field.create({ field: 'data', position: 15 });
-
-                expect(fieldCollection.updateMany).toHaveBeenCalledWith(
-                    {
-                        position: { $gte: 15 },
-                    },
-                    {
-                        $inc: { position: 1 },
-                    },
-                );
-            });
-
-            it('should not call collection.updateMany if third argument is false', async () => {
-                await field.create(
-                    { field: 'data', position: 15 },
-                    undefined,
+                    null,
                     false,
                 );
 
-                expect(fieldCollection.updateMany).toHaveBeenCalledTimes(0);
-            });
-
-            it('should call collection.findOne with insertedId', async () => {
-                await field.create({ field: 'data', position: 15 });
-
-                expect(fieldCollection.findOne).toHaveBeenCalledWith({
-                    _id: 'insertedId',
-                });
+                expect(
+                    await fieldCollection
+                        .find(
+                            {},
+                            {
+                                sort: { position: 1 },
+                            },
+                        )
+                        .toArray(),
+                ).toStrictEqual([field1, field2, field4, field3]);
             });
         });
 
         describe('field.addContributionField', () => {
-            it('should call insertOne if no field name when logged', async () => {
+            it('should create a new field if no field name when logged using field arg', async () => {
                 const fieldData = {
                     label: 'label',
                 };
 
                 const contributor = { contributor: 'data' };
 
-                await field.addContributionField(
+                const name = await fieldCollection.addContributionField(
                     fieldData,
                     contributor,
                     true,
                     'nameArg',
                 );
 
-                expect(fieldCollection.insertOne).toHaveBeenCalledWith({
-                    label: 'label',
-                    name: 'nameArg',
-                    scope: SCOPE_DOCUMENT,
-                    contribution: true,
-                    position: 10,
-                    transformers: [
-                        {
-                            operation: 'COLUMN',
-                            args: [
-                                {
-                                    name: 'column',
-                                    type: 'column',
-                                    value: 'label',
-                                },
-                            ],
-                        },
-                    ],
-                });
+                expect(name).toBe('nameArg');
+
+                expect(await fieldCollection.find({}).toArray()).toStrictEqual([
+                    {
+                        _id: expect.any(ObjectId),
+                        label: 'label',
+                        name: 'nameArg',
+                        scope: SCOPE_DOCUMENT,
+                        contribution: true,
+                        position: 1,
+                        transformers: [
+                            {
+                                operation: 'COLUMN',
+                                args: [
+                                    {
+                                        name: 'column',
+                                        type: 'column',
+                                        value: 'label',
+                                    },
+                                ],
+                            },
+                        ],
+                    },
+                ]);
             });
 
-            it('should call insertOne if no field name with contributor when not logged', async () => {
+            it('should create a new field if no field name with contributor when not logged', async () => {
                 const fieldData = {
                     label: 'label',
                     value: 'field value',
                 };
                 const contributor = { contributor: 'data' };
-                await field.addContributionField(
+                const name = await fieldCollection.addContributionField(
                     fieldData,
                     contributor,
                     false,
                     'nameArg',
                 );
-                expect(fieldCollection.insertOne).toHaveBeenCalledWith({
-                    label: 'label',
-                    name: 'nameArg',
-                    scope: SCOPE_DOCUMENT,
-                    contribution: true,
-                    contributors: [contributor],
-                    position: 10,
-                    transformers: [
-                        {
-                            operation: 'COLUMN',
-                            args: [
-                                {
-                                    name: 'column',
-                                    type: 'column',
-                                    value: 'label',
-                                },
-                            ],
-                        },
-                    ],
-                });
+                expect(name).toBe('nameArg');
+
+                expect(await fieldCollection.find({}).toArray()).toStrictEqual([
+                    {
+                        _id: expect.any(ObjectId),
+                        label: 'label',
+                        name: 'nameArg',
+                        scope: SCOPE_DOCUMENT,
+                        contribution: true,
+                        contributors: [
+                            {
+                                contributor: 'data',
+                            },
+                        ],
+                        position: 1,
+                        transformers: [
+                            {
+                                operation: 'COLUMN',
+                                args: [
+                                    {
+                                        name: 'column',
+                                        type: 'column',
+                                        value: 'label',
+                                    },
+                                ],
+                            },
+                        ],
+                    },
+                ]);
             });
 
-            it('should call update if field has a name when logged', async () => {
+            it('should update existing with given name name and it is already a contribution, but when logged does not update the contributor', async () => {
+                const existingField = await fieldCollection.create({
+                    label: 'existing label',
+                    position: 1,
+                    contribution: true,
+                    contributors: [{ contributor: 'data' }],
+                });
                 const fieldData = {
-                    label: 'label',
+                    label: 'new label',
                     value: 'field value',
-                    name: 'this field name',
+                    name: existingField.name,
                 };
+                await fieldCollection.addContributionField(
+                    fieldData,
+                    { contributor: 'updated data' },
+                    true,
+                );
+                expect(await fieldCollection.find({}).toArray()).toStrictEqual([
+                    {
+                        ...existingField,
+                        label: 'new label',
+                        scope: 'document',
+                    },
+                ]);
+            });
+
+            it('should not update existing with given name name when logged but it is not a contribution', async () => {
                 const contributor = { contributor: 'data' };
-                await field.addContributionField(
+                const existingField = await fieldCollection.create({
+                    label: 'existing label',
+                    position: 1,
+                    contribution: false,
+                });
+                const fieldData = {
+                    label: 'new label',
+                    value: 'field value',
+                    name: existingField.name,
+                };
+                await fieldCollection.addContributionField(
                     fieldData,
                     contributor,
                     true,
-                    'nameArg',
                 );
-                expect(fieldCollection.updateOne).toHaveBeenCalledWith(
-                    {
-                        name: 'this field name',
-                        contribution: true,
-                    },
-                    {
-                        $set: {
-                            label: 'label',
-                            scope: SCOPE_DOCUMENT,
-                            contribution: true,
-                        },
-                    },
-                );
+                expect(await fieldCollection.find({}).toArray()).toStrictEqual([
+                    existingField,
+                ]);
             });
 
-            it('should call update if field has a name and adding contributor when not logged', async () => {
+            it('should update existing if field has a name and adding contributor when not logged', async () => {
+                const existingField = await fieldCollection.create({
+                    label: 'existing label',
+                    position: 1,
+                    contribution: true,
+                    contributors: [{ contributor: 'old contributor' }],
+                });
                 const fieldData = {
-                    label: 'label',
+                    label: 'new label',
                     value: 'field value',
-                    name: 'this field name',
+                    name: existingField.name,
                 };
-                const contributor = { contributor: 'data' };
-                await field.addContributionField(
+                await fieldCollection.addContributionField(
                     fieldData,
-                    contributor,
+                    { contributor: 'new contributor' },
                     false,
-                    'nameArg',
                 );
-                expect(fieldCollection.updateOne).toHaveBeenCalledWith(
+                expect(await fieldCollection.find({}).toArray()).toStrictEqual([
                     {
-                        name: 'this field name',
-                        contribution: true,
+                        ...existingField,
+                        contributors: [
+                            { contributor: 'old contributor' },
+                            { contributor: 'new contributor' },
+                        ],
+                        label: 'new label',
+                        scope: 'document',
                     },
-                    {
-                        $set: {
-                            label: 'label',
-                            scope: SCOPE_DOCUMENT,
-                            contribution: true,
-                        },
-                        $addToSet: {
-                            contributors: contributor,
-                        },
-                    },
-                );
+                ]);
             });
         });
 
         describe('field.initializeModel', () => {
-            it('should try to find an existing uri field', async () => {
-                await field.initializeModel();
-
-                expect(fieldCollection.findOne).toHaveBeenCalledWith({
-                    name: URI_FIELD_NAME,
-                });
+            it('should create a new uri field if none exists', async () => {
+                expect(await fieldCollection.find({}).toArray()).toStrictEqual(
+                    [],
+                );
+                await fieldCollection.initializeModel();
+                expect(await fieldCollection.find({}).toArray()).toStrictEqual([
+                    {
+                        _id: expect.any(ObjectId),
+                        label: 'uri',
+                        name: 'uri',
+                        position: 0,
+                        scope: 'collection',
+                        transformers: [
+                            {
+                                args: [],
+                                operation: 'AUTOGENERATE_URI',
+                            },
+                        ],
+                    },
+                ]);
             });
 
-            it('should create a new uri field if not present', async () => {
-                await field.initializeModel();
+            it('should not create a new uri field if one is present', async () => {
+                const uriField = await fieldCollection.create(
+                    {
+                        label: 'uri',
+                        position: 0,
+                        scope: 'collection',
+                        transformers: [
+                            {
+                                args: [],
+                                operation: 'AUTOGENERATE_URI',
+                            },
+                        ],
+                    },
+                    'uri',
+                );
 
-                expect(fieldCollection.insertOne).toHaveBeenCalledWith({
-                    scope: SCOPE_COLLECTION,
-                    label: URI_FIELD_NAME,
-                    name: URI_FIELD_NAME,
-                    transformers: [
-                        {
-                            operation: 'AUTOGENERATE_URI',
-                            args: [],
-                        },
-                    ],
-                    position: 0,
-                });
-            });
-
-            it('should not create a new uri field if present', async () => {
-                const fieldCollectionNoUri = {
-                    createIndex: jest.fn(),
-                    findOne: jest
-                        .fn()
-                        .mockImplementation(() => Promise.resolve({})),
-                    insertOne: jest.fn(),
-                };
-                const listCollections = {
-                    toArray: () => [true],
-                };
-                const dbNoUri = {
-                    collection: jest
-                        .fn()
-                        .mockImplementation(() => fieldCollectionNoUri),
-                    listCollections: () => listCollections,
-                };
-
-                const fieldNoUri = await fieldFactory(dbNoUri);
-
-                await fieldNoUri.initializeModel();
-
-                expect(fieldCollectionNoUri.insertOne).not.toHaveBeenCalled();
+                expect(await fieldCollection.find({}).toArray()).toStrictEqual([
+                    uriField,
+                ]);
+                await fieldCollection.initializeModel();
+                expect(await fieldCollection.find({}).toArray()).toStrictEqual([
+                    uriField,
+                ]);
             });
         });
 
         describe('field.getHighestPosition', () => {
-            it('should get the highest position field and returns its position', async () => {
-                const position = await field.getHighestPosition();
+            it('should return the position of the field with the highest one', async () => {
+                await fieldCollection.create({ position: 1 });
+                await fieldCollection.create({ position: 10 });
+                const position = await fieldCollection.getHighestPosition();
 
-                expect(position).toBe(9);
-                expect(fieldCollection.find).toHaveBeenCalledWith(
-                    {},
-                    { position: 1 },
-                );
+                expect(position).toBe(10);
             });
 
             it('should return 0 if there is no field', async () => {
-                fieldCollection.find = jest.fn().mockImplementation(() => ({
-                    sort: () => ({
-                        limit: () => ({
-                            toArray: () => [],
-                        }),
-                    }),
-                }));
-
-                const position = await field.getHighestPosition();
+                const position = await fieldCollection.getHighestPosition();
 
                 expect(position).toBe(0);
-                expect(fieldCollection.find).toHaveBeenCalledWith(
-                    {},
-                    { position: 1 },
-                );
             });
         });
 
         describe('updatePosition', () => {
-            it('should call findOneAndUpdate with to update position of named field', async () => {
-                expect(await field.updatePosition('name', 'position')).toBe(
-                    'result',
+            it('should update position of named field', async () => {
+                const field = await fieldCollection.create({
+                    position: 1,
+                });
+                const updatedField = await fieldCollection.updatePosition(
+                    field.name,
+                    42,
                 );
-                expect(fieldCollection.findOneAndUpdate).toHaveBeenCalledWith(
-                    {
-                        name: 'name',
-                    },
-                    {
-                        $set: { position: 'position' },
-                    },
-                    {
-                        returnDocument: 'after',
-                    },
-                );
+                expect(await fieldCollection.find({}).toArray()).toStrictEqual([
+                    { ...field, position: 42 },
+                ]);
+                expect(updatedField).toStrictEqual({
+                    ...field,
+                    position: 42,
+                });
             });
         });
 
         describe('findByNames', () => {
             it('should call find all field with names and make a name dictionary', async () => {
-                fieldCollection = {
-                    createIndex: jest.fn(),
-                    find: jest.fn().mockImplementation(() => ({
-                        toArray: () =>
-                            Promise.resolve([
-                                { name: 'a' },
-                                { name: 'b' },
-                                { name: 'c' },
-                            ]),
-                    })),
-                };
-
-                db = {
-                    collection: jest
-                        .fn()
-                        .mockImplementation(() => fieldCollection),
-                    listCollections: () => listCollections,
-                };
-
-                field = await fieldFactory(db);
-                expect(await field.findByNames(['b', 'a', 'c'])).toEqual({
-                    a: { name: 'a' },
-                    b: { name: 'b' },
-                    c: { name: 'c' },
-                });
-
-                expect(fieldCollection.find).toHaveBeenCalledWith({
-                    name: { $in: ['b', 'a', 'c'] },
+                const fieldA = await fieldCollection.create(
+                    {
+                        position: 1,
+                    },
+                    'a',
+                );
+                const fieldB = await fieldCollection.create(
+                    {
+                        position: 2,
+                    },
+                    'b',
+                );
+                const fieldC = await fieldCollection.create(
+                    {
+                        position: 3,
+                    },
+                    'c',
+                );
+                await fieldCollection.create(
+                    {
+                        position: 4,
+                    },
+                    'd',
+                );
+                expect(
+                    await fieldCollection.findByNames(['b', 'a', 'c']),
+                ).toStrictEqual({
+                    a: fieldA,
+                    b: fieldB,
+                    c: fieldC,
                 });
             });
         });
 
         describe('findByName', () => {
-            it('should call find the field with the right name', async () => {
-                fieldCollection = {
-                    createIndex: jest.fn(),
-                    find: jest.fn().mockImplementation(() => ({
-                        toArray: () =>
-                            Promise.resolve([
-                                { name: 'a' },
-                                { name: 'b' },
-                                { name: 'c' },
-                            ]),
-                    })),
-                };
-
-                db = {
-                    collection: jest
-                        .fn()
-                        .mockImplementation(() => fieldCollection),
-                    listCollections: () => listCollections,
-                };
-
-                field = await fieldFactory(db);
-                expect(await field.findByName('b')).toEqual({ name: 'b' });
-
-                expect(fieldCollection.find).toHaveBeenCalledWith({
-                    name: { $in: ['b'] },
+            it('should find the field with the right name', async () => {
+                const field1 = await fieldCollection.create({
+                    position: 1,
                 });
+                const field2 = await fieldCollection.create({
+                    position: 2,
+                });
+                expect(
+                    await fieldCollection.findByName(field1.name),
+                ).toStrictEqual(field1);
+                expect(
+                    await fieldCollection.findByName(field2.name),
+                ).toStrictEqual(field2);
+            });
+            it('should return undefined if no field with the given name exist', async () => {
+                await fieldCollection.create({
+                    position: 1,
+                });
+                expect(await fieldCollection.findByName('404')).toBeUndefined();
             });
         });
 
         describe('findTitle', () => {
-            it('should call find with overview = 1', async () => {
-                fieldCollection = {
-                    createIndex: jest.fn(),
-                    findOne: jest
-                        .fn()
-                        .mockImplementation(() =>
-                            Promise.resolve({ name: 'a', overview: 1 }),
-                        ),
-                };
-                db = {
-                    collection: jest
-                        .fn()
-                        .mockImplementation(() => fieldCollection),
-                    listCollections: () => listCollections,
-                };
-
-                field = await fieldFactory(db);
-                expect(await field.findTitle()).toEqual({
-                    name: 'a',
+            it('should return the field with overview 1', async () => {
+                const titleField = await fieldCollection.create({
+                    position: 1,
+                    labe: 'title',
                     overview: 1,
                 });
-
-                expect(fieldCollection.findOne).toHaveBeenCalledWith({
-                    overview: 1,
+                await fieldCollection.create({
+                    position: 2,
+                    overview: 0,
                 });
+                expect(await fieldCollection.findTitle()).toStrictEqual(
+                    titleField,
+                );
+            });
+
+            it('should return null if no field as overviw at 1', async () => {
+                await fieldCollection.create({
+                    position: 1,
+                    overview: 2,
+                });
+                await fieldCollection.create({
+                    position: 2,
+                    overview: 0,
+                });
+                expect(await fieldCollection.findTitle()).toBeNull();
+            });
+        });
+
+        describe('findManyByIds', () => {
+            it('should return an empty object when no fields found', async () => {
+                expect(await fieldCollection.findManyByIds([])).toStrictEqual(
+                    {},
+                );
+            });
+            it('should return matching field by their ids', async () => {
+                const field1 = await fieldCollection.create({
+                    position: 1,
+                });
+                const field2 = await fieldCollection.create({
+                    position: 2,
+                });
+                await fieldCollection.create({
+                    position: 3,
+                });
+                expect(
+                    await fieldCollection.findManyByIds([
+                        field2._id,
+                        field1._id,
+                    ]),
+                ).toStrictEqual({
+                    [field1._id]: field1,
+                    [field2._id]: field2,
+                });
+            });
+        });
+
+        describe('findIdsByLabel', () => {
+            it('should return a list of ids for every fields matching given label', async () => {
+                const field1 = await fieldCollection.create({
+                    position: 1,
+                    label: 'a label',
+                });
+                const field2 = await fieldCollection.create({
+                    position: 2,
+                    label: 'another label',
+                });
+                const field3 = await fieldCollection.create({
+                    position: 2,
+                    label: 'something else',
+                });
+
+                expect(
+                    await fieldCollection.findIdsByLabel('label'),
+                ).toStrictEqual([field1._id.toString(), field2._id.toString()]);
+                expect(
+                    await fieldCollection.findIdsByLabel('else'),
+                ).toStrictEqual([field3._id.toString()]);
+                expect(
+                    await fieldCollection.findIdsByLabel('not found'),
+                ).toStrictEqual([]);
+            });
+        });
+
+        describe('findIdsByName', () => {
+            it('should return a list of ids for every fields matching given internalName', async () => {
+                const field1 = await fieldCollection.create({
+                    position: 1,
+                    internalName: 'an internal name',
+                });
+                const field2 = await fieldCollection.create({
+                    position: 2,
+                    internalName: 'another internal name',
+                });
+                const field3 = await fieldCollection.create({
+                    position: 2,
+                    internalName: 'something else',
+                });
+
+                expect(
+                    await fieldCollection.findIdsByInternalName('internal'),
+                ).toStrictEqual([field1._id.toString(), field2._id.toString()]);
+                expect(
+                    await fieldCollection.findIdsByInternalName('else'),
+                ).toStrictEqual([field3._id.toString()]);
+                expect(
+                    await fieldCollection.findIdsByInternalName('not found'),
+                ).toStrictEqual([]);
+            });
+        });
+
+        describe('findIdsByName', () => {
+            it('should return a list of ids for every fields with given name', async () => {
+                const field1 = await fieldCollection.create(
+                    {
+                        position: 1,
+                    },
+                    'nAmE',
+                );
+                const field2 = await fieldCollection.create(
+                    {
+                        position: 2,
+                    },
+                    'hGaV',
+                );
+                await fieldCollection.create(
+                    {
+                        position: 3,
+                    },
+                    'Yhko',
+                );
+
+                expect(
+                    await fieldCollection.findIdsByName('nAmE'),
+                ).toStrictEqual([field1._id.toString()]);
+                expect(
+                    await fieldCollection.findIdsByName('hGaV'),
+                ).toStrictEqual([field2._id.toString()]);
+                expect(
+                    await fieldCollection.findIdsByName('not found'),
+                ).toStrictEqual([]);
+            });
+        });
+
+        describe('findIdsByInternalScopes', () => {
+            it('should return a list of ids for every fields matching given scope', async () => {
+                const field1 = await fieldCollection.create({
+                    position: 1,
+                    internalScopes: ['dataset', 'document'],
+                });
+                await fieldCollection.create({
+                    position: 2,
+                    internalScopes: [],
+                });
+                const field3 = await fieldCollection.create({
+                    position: 2,
+                    internalScopes: ['home', 'document'],
+                });
+
+                expect(
+                    await fieldCollection.findIdsByInternalScopes('document'),
+                ).toStrictEqual([field1._id.toString(), field3._id.toString()]);
+                expect(
+                    await fieldCollection.findIdsByInternalScopes('dataset'),
+                ).toStrictEqual([field1._id.toString()]);
+                expect(
+                    await fieldCollection.findIdsByInternalScopes('chart'),
+                ).toStrictEqual([]);
             });
         });
     });

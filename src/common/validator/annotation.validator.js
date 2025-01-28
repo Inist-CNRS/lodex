@@ -3,6 +3,13 @@ import { default as z } from 'zod';
 export const annotationSchema = z.object({
     resourceUri: z.string().nullish().default(null),
     kind: z.enum(['correction', 'comment']).nullish().default('comment'),
+    fieldId: z
+        .string()
+        .trim()
+        .min(1, {
+            message: 'error_required',
+        })
+        .optional(),
     // A path that points to the field / item of a field that the annotation is about.
     // MUST be compatible with _.get
     // See https://lodash.com/docs/4.17.15#get
@@ -49,6 +56,10 @@ const annotationFilterableFields = z
             'fieldId',
             'comment',
             'createdAt',
+            'field.label',
+            'field.name',
+            'field.internalName',
+            'field.internalScopes',
         ],
         {
             message: 'annotation_query_filter_by_invalid_key',

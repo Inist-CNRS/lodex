@@ -1,13 +1,14 @@
+import { createAnnotation, getAnnotations } from './annotation';
 import { MongoClient } from 'mongodb';
 import createAnnotationModel from '../../models/annotation';
 import createFieldModel from '../../models/field';
 import createPublishedDatasetModel from '../../models/publishedDataset';
-import { createAnnotation, getAnnotations } from './annotation';
 
 const ANNOTATIONS = [
     {
         resourceUri: 'uid:/65257776-4e3c-44f6-8652-85502a97e5ac',
-        itemPath: ['GvaF'],
+        itemPath: [],
+        fieldId: 'GvaF',
         authorName: 'Developer',
         authorEmail: 'developer@marmelab.com',
         comment: 'This is a comment',
@@ -18,7 +19,8 @@ const ANNOTATIONS = [
     },
     {
         resourceUri: 'uid:/2a8d429f-8134-4502-b9d3-d20c571592fa',
-        itemPath: null,
+        itemPath: [],
+        fieldId: null,
         authorName: 'John DOE',
         authorEmail: 'john.doe@marmelab.com',
         comment: 'This is another comment',
@@ -29,7 +31,8 @@ const ANNOTATIONS = [
     },
     {
         resourceUri: 'uid:/d4f1e376-d5dd-4853-b515-b7f63b34d67d',
-        itemPath: null,
+        itemPath: [],
+        fieldId: null,
         authorName: 'Jane SMITH',
         authorEmail: 'jane.smith@marmelab.com',
         comment: 'The author list is incomplete: it should include Jane SMITH',
@@ -68,7 +71,8 @@ describe('annotation', () => {
         it('should create an annotation', async () => {
             const annotation = {
                 resourceUri: 'uid:/a4f7a51f-7109-481e-86cc-0adb3a26faa6',
-                itemPath: ['Gb4a'],
+                itemPath: [],
+                fieldId: 'Gb4a',
                 kind: 'comment',
                 comment: 'Hello world',
                 authorName: 'John DOE',
@@ -140,14 +144,10 @@ describe('annotation', () => {
 
     describe('getAnnotations', () => {
         let annotationList;
+        let field1;
+        let field2;
 
         beforeEach(async () => {
-            annotationList = await Promise.all(
-                ANNOTATIONS.map((annotation) =>
-                    annotationModel.create(annotation),
-                ),
-            );
-
             await fieldModel.create(
                 {
                     overview: 1,
@@ -155,6 +155,37 @@ describe('annotation', () => {
                 },
                 'tItl3',
             );
+
+            field1 = await fieldModel.create(
+                {
+                    position: 1,
+                    label: 'field 1',
+                    internalName: 'field_1',
+                    internalScopes: ['chart'],
+                },
+                'field1',
+            );
+
+            field2 = await fieldModel.create(
+                {
+                    position: 2,
+                    label: 'field 2',
+                    internalName: 'field_2',
+                    internalScopes: ['document'],
+                },
+                'field2',
+            );
+            annotationList = await Promise.all([
+                annotationModel.create({
+                    ...ANNOTATIONS[0],
+                    fieldId: field1._id.toString(),
+                }),
+                annotationModel.create(ANNOTATIONS[1]),
+                annotationModel.create({
+                    ...ANNOTATIONS[2],
+                    fieldId: field2._id.toString(),
+                }),
+            ]);
 
             await publishedDatasetModel.insertBatch([
                 {
@@ -176,7 +207,7 @@ describe('annotation', () => {
             ]);
         });
 
-        it('should list annotations with their resource', async () => {
+        it('should list annotations with their resource and field', async () => {
             const ctx = {
                 request: {
                     query: {},
@@ -201,14 +232,16 @@ describe('annotation', () => {
                             uri: ANNOTATIONS[0].resourceUri,
                             title: 'Developer resource',
                         },
+                        field: field1,
                     },
-                    { ...annotationList[1], resource: undefined },
+                    { ...annotationList[1], resource: undefined, field: null },
                     {
                         ...annotationList[2],
                         resource: {
                             uri: annotationList[2].resourceUri,
                             title: 'Resource with incomplete author',
                         },
+                        field: field2,
                     },
                 ],
             });
@@ -241,20 +274,21 @@ describe('annotation', () => {
                             uri: annotationList[2].resourceUri,
                             title: 'Resource with incomplete author',
                         },
+                        field: field2,
                     },
                 ],
             });
         });
 
-        it('should apply filters', async () => {
+        it('should allow to filter by resourceUri', async () => {
             const ctx = {
                 request: {
                     query: {
-                        page: 1,
+                        page: 0,
                         perPage: 2,
                         filterBy: 'resourceUri',
                         filterOperator: 'contains',
-                        filterValue: 'test',
+                        filterValue: ANNOTATIONS[0].resourceUri,
                     },
                 },
                 response: {},
@@ -269,7 +303,241 @@ describe('annotation', () => {
 
             expect(ctx.body).toStrictEqual({
                 total: 1,
-                fullTotal: 3,
+                fullTotal: 1,
+                data: [
+                    {
+                        ...annotationList[0],
+                        resource: {
+                            uri: annotationList[0].resourceUri,
+                            title: 'Developer resource',
+                        },
+                        field: field1,
+                    },
+                ],
+            });
+        });
+
+        it('should allow to filter by resource.title', async () => {
+            const ctx = {
+                request: {
+                    query: {
+                        page: 0,
+                        perPage: 2,
+                        filterBy: 'resource.title',
+                        filterOperator: 'contains',
+                        filterValue: 'Developer resource',
+                    },
+                },
+                response: {},
+                annotation: annotationModel,
+                publishedDataset: publishedDatasetModel,
+                field: fieldModel,
+            };
+
+            await getAnnotations(ctx);
+
+            expect(ctx.response.status).toBe(200);
+
+            expect(ctx.body).toStrictEqual({
+                total: 1,
+                fullTotal: 1,
+                data: [
+                    {
+                        ...annotationList[0],
+                        resource: {
+                            uri: annotationList[0].resourceUri,
+                            title: 'Developer resource',
+                        },
+                        field: field1,
+                    },
+                ],
+            });
+        });
+
+        it('should allow to filter by comment', async () => {
+            const ctx = {
+                request: {
+                    query: {
+                        page: 0,
+                        perPage: 2,
+                        filterBy: 'comment',
+                        filterOperator: 'contains',
+                        filterValue: 'comment',
+                    },
+                },
+                response: {},
+                annotation: annotationModel,
+                publishedDataset: publishedDatasetModel,
+                field: fieldModel,
+            };
+
+            await getAnnotations(ctx);
+
+            expect(ctx.response.status).toBe(200);
+
+            expect(ctx.body).toStrictEqual({
+                total: 2,
+                fullTotal: 2,
+                data: [
+                    {
+                        ...annotationList[0],
+                        resource: {
+                            uri: annotationList[0].resourceUri,
+                            title: 'Developer resource',
+                        },
+                        field: field1,
+                    },
+                    {
+                        ...annotationList[1],
+                        resource: undefined,
+                        field: null,
+                    },
+                ],
+            });
+        });
+
+        it('should allow to filter by createdAt (is)', async () => {
+            const ctx = {
+                request: {
+                    query: {
+                        page: 0,
+                        perPage: 2,
+                        filterBy: 'createdAt',
+                        filterOperator: 'is',
+                        filterValue: '02-01-2025',
+                    },
+                },
+                response: {},
+                annotation: annotationModel,
+                publishedDataset: publishedDatasetModel,
+                field: fieldModel,
+            };
+
+            await getAnnotations(ctx);
+
+            expect(ctx.response.status).toBe(200);
+
+            expect(ctx.body).toStrictEqual({
+                total: 1,
+                fullTotal: 1,
+                data: [
+                    {
+                        ...annotationList[1],
+                        resource: undefined,
+                        field: null,
+                    },
+                ],
+            });
+        });
+
+        it('should allow to filter by createdAt (after)', async () => {
+            const ctx = {
+                request: {
+                    query: {
+                        page: 0,
+                        perPage: 2,
+                        filterBy: 'createdAt',
+                        filterOperator: 'after',
+                        filterValue: '02-01-2025',
+                    },
+                },
+                response: {},
+                annotation: annotationModel,
+                publishedDataset: publishedDatasetModel,
+                field: fieldModel,
+            };
+
+            await getAnnotations(ctx);
+
+            expect(ctx.response.status).toBe(200);
+
+            expect(ctx.body).toStrictEqual({
+                total: 2,
+                fullTotal: 2,
+                data: [
+                    {
+                        ...annotationList[0],
+                        resource: {
+                            uri: annotationList[0].resourceUri,
+                            title: 'Developer resource',
+                        },
+                        field: field1,
+                    },
+                    {
+                        ...annotationList[1],
+                        resource: undefined,
+                        field: null,
+                    },
+                ],
+            });
+        });
+
+        it('should allow to filter by createdAt (before)', async () => {
+            const ctx = {
+                request: {
+                    query: {
+                        page: 0,
+                        perPage: 2,
+                        filterBy: 'createdAt',
+                        filterOperator: 'before',
+                        filterValue: '02-01-2025',
+                    },
+                },
+                response: {},
+                annotation: annotationModel,
+                publishedDataset: publishedDatasetModel,
+                field: fieldModel,
+            };
+
+            await getAnnotations(ctx);
+
+            expect(ctx.response.status).toBe(200);
+
+            expect(ctx.body).toStrictEqual({
+                total: 2,
+                fullTotal: 2,
+                data: [
+                    {
+                        ...annotationList[1],
+                        resource: undefined,
+                        field: null,
+                    },
+                    {
+                        ...annotationList[2],
+                        resource: {
+                            uri: annotationList[2].resourceUri,
+                            title: 'Resource with incomplete author',
+                        },
+                        field: field2,
+                    },
+                ],
+            });
+        });
+
+        it('should allow to filter by field label', async () => {
+            const ctx = {
+                request: {
+                    query: {
+                        page: 0,
+                        perPage: 2,
+                        filterBy: 'field.label',
+                        filterOperator: 'contains',
+                        filterValue: 'field 2',
+                    },
+                },
+                response: {},
+                annotation: annotationModel,
+                publishedDataset: publishedDatasetModel,
+                field: fieldModel,
+            };
+
+            await getAnnotations(ctx);
+
+            expect(ctx.response.status).toBe(200);
+
+            expect(ctx.body).toStrictEqual({
+                total: 1,
+                fullTotal: 1,
                 data: [
                     {
                         ...annotationList[2],
@@ -277,6 +545,118 @@ describe('annotation', () => {
                             uri: annotationList[2].resourceUri,
                             title: 'Resource with incomplete author',
                         },
+                        field: field2,
+                    },
+                ],
+            });
+        });
+
+        it('should allow to filter by field name', async () => {
+            const ctx = {
+                request: {
+                    query: {
+                        page: 0,
+                        perPage: 2,
+                        filterBy: 'field.name',
+                        filterOperator: 'contains',
+                        filterValue: 'field1',
+                    },
+                },
+                response: {},
+                annotation: annotationModel,
+                publishedDataset: publishedDatasetModel,
+                field: fieldModel,
+            };
+
+            await getAnnotations(ctx);
+
+            expect(ctx.response.status).toBe(200);
+
+            expect(ctx.body).toStrictEqual({
+                total: 1,
+                fullTotal: 1,
+                data: [
+                    {
+                        ...annotationList[0],
+                        resource: {
+                            uri: annotationList[0].resourceUri,
+                            title: 'Developer resource',
+                        },
+                        field: field1,
+                    },
+                ],
+            });
+        });
+
+        it('should allow to filter by field internalName', async () => {
+            const ctx = {
+                request: {
+                    query: {
+                        page: 0,
+                        perPage: 2,
+                        filterBy: 'field.internalName',
+                        filterOperator: 'contains',
+                        filterValue: 'field_2',
+                    },
+                },
+                response: {},
+                annotation: annotationModel,
+                publishedDataset: publishedDatasetModel,
+                field: fieldModel,
+            };
+
+            await getAnnotations(ctx);
+
+            expect(ctx.response.status).toBe(200);
+
+            expect(ctx.body).toStrictEqual({
+                total: 1,
+                fullTotal: 1,
+                data: [
+                    {
+                        ...annotationList[2],
+                        resource: {
+                            uri: annotationList[2].resourceUri,
+                            title: 'Resource with incomplete author',
+                        },
+                        field: field2,
+                    },
+                ],
+            });
+        });
+
+        it('should allow to filter by field internalScopes', async () => {
+            const ctx = {
+                request: {
+                    query: {
+                        page: 0,
+                        perPage: 2,
+                        filterBy: 'field.internalScopes',
+                        filterOperator: 'contains',
+                        filterValue: 'document',
+                    },
+                },
+                response: {},
+                annotation: annotationModel,
+                publishedDataset: publishedDatasetModel,
+                field: fieldModel,
+            };
+
+            await getAnnotations(ctx);
+
+            expect(ctx.response.status).toBe(200);
+
+            expect(ctx.body).toStrictEqual({
+                total: 1,
+                fullTotal: 1,
+                data: [
+                    {
+                        ...annotationList[2],
+                        resource: {
+                            uri: annotationList[2].resourceUri,
+                            title: 'Resource with incomplete author',
+                        },
+                        field: field2,
                     },
                 ],
             });
@@ -303,13 +683,14 @@ describe('annotation', () => {
                 total: 3,
                 fullTotal: 3,
                 data: [
-                    { ...annotationList[1], resource: undefined },
+                    { ...annotationList[1], resource: undefined, field: null },
                     {
                         ...annotationList[0],
                         resource: {
                             uri: annotationList[0].resourceUri,
                             title: 'Developer resource',
                         },
+                        field: field1,
                     },
                     {
                         ...annotationList[2],
@@ -317,6 +698,7 @@ describe('annotation', () => {
                             uri: annotationList[2].resourceUri,
                             title: 'Resource with incomplete author',
                         },
+                        field: field2,
                     },
                 ],
             });
@@ -357,6 +739,10 @@ describe('annotation', () => {
                             'fieldId',
                             'comment',
                             'createdAt',
+                            'field.label',
+                            'field.name',
+                            'field.internalName',
+                            'field.internalScopes',
                         ],
                         received: 'test',
                     },

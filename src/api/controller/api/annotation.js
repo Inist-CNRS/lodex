@@ -7,6 +7,8 @@ import {
     annotationSchema,
     getAnnotationsQuerySchema,
 } from './../../../common/validator/annotation.validator';
+import { uniq } from 'lodash';
+import { ObjectId } from 'mongodb';
 
 /**
  * @param {Koa.Context} ctx
@@ -61,6 +63,7 @@ export const buildQuery = async ({
                     return {};
             }
         }
+        case 'resourceUri':
         case 'comment': {
             switch (filterOperator) {
                 case 'contains':
@@ -92,6 +95,52 @@ export const buildQuery = async ({
                     });
 
                     return { resourceUri: { $in: uris } };
+                }
+                default:
+                    return {};
+            }
+        }
+        case 'field.label': {
+            switch (filterOperator) {
+                case 'contains': {
+                    const ids = await ctx.field.findIdsByLabel(filterValue);
+
+                    return { fieldId: { $in: ids } };
+                }
+                default:
+                    return {};
+            }
+        }
+        case 'field.name': {
+            switch (filterOperator) {
+                case 'contains': {
+                    const ids = await ctx.field.findIdsByName(filterValue);
+
+                    return { fieldId: { $in: ids } };
+                }
+                default:
+                    return {};
+            }
+        }
+        case 'field.internalName': {
+            switch (filterOperator) {
+                case 'contains': {
+                    const ids =
+                        await ctx.field.findIdsByInternalName(filterValue);
+
+                    return { fieldId: { $in: ids } };
+                }
+                default:
+                    return {};
+            }
+        }
+        case 'field.internalScopes': {
+            switch (filterOperator) {
+                case 'contains': {
+                    const ids =
+                        await ctx.field.findIdsByInternalScopes(filterValue);
+
+                    return { fieldId: { $in: ids } };
                 }
                 default:
                     return {};
@@ -153,7 +202,7 @@ export async function getAnnotations(ctx) {
     ]);
 
     const resources = await ctx.publishedDataset.findManyByUris(
-        annotations.map(({ resourceUri }) => resourceUri),
+        uniq(annotations.map(({ resourceUri }) => resourceUri)),
     );
 
     const resourceByUri = (resources || []).reduce(
@@ -169,6 +218,14 @@ export async function getAnnotations(ctx) {
         {},
     );
 
+    const fieldById = await ctx.field.findManyByIds(
+        uniq(
+            annotations
+                .map(({ fieldId }) => fieldId && new ObjectId(fieldId))
+                .filter((v) => !!v),
+        ),
+    );
+
     ctx.response.status = 200;
     ctx.body = {
         total: annotations.length,
@@ -176,6 +233,7 @@ export async function getAnnotations(ctx) {
         data: annotations.map((annotation) => ({
             ...annotation,
             resource: resourceByUri[annotation.resourceUri],
+            field: fieldById[annotation.fieldId] ?? null,
         })),
     };
 }

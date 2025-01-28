@@ -7,6 +7,7 @@ import { URI_FIELD_NAME } from '../../common/uris';
 import { validateField as validateFieldIsomorphic } from '../../common/validateFields';
 import generateUid from '../services/generateUid';
 import { castIdsFactory, getCreatedCollection } from './utils';
+import { createDiacriticSafeContainRegex } from '../services/createDiacriticSafeContainRegex';
 
 export const buildInvalidPropertiesMessage = (name) =>
     `Invalid data for field ${name} which need a name, a label, a scope, a valid scheme if specified and a transformers array`;
@@ -121,6 +122,20 @@ export default async (db) => {
 
     collection.findOneById = (id) =>
         collection.findOne({ _id: new ObjectId(id) });
+
+    collection.findManyByIds = async (ids) => {
+        const fields = await collection
+            .find({ _id: { $in: ids.map((id) => id) } })
+            .toArray();
+
+        return fields.reduce(
+            (acc, field) => ({
+                ...acc,
+                [field._id]: field,
+            }),
+            {},
+        );
+    };
 
     collection.findOneByName = (name) => collection.findOne({ name });
 
@@ -411,6 +426,58 @@ export default async (db) => {
 
     collection.findTitle = async () => {
         return collection.findOne({ overview: 1 });
+    };
+
+    collection.findIdsByLabel = async (label) => {
+        const fields = await collection
+            .find(
+                {
+                    label: createDiacriticSafeContainRegex(label),
+                },
+                { _id: true },
+            )
+            .toArray();
+
+        return fields.map(({ _id }) => _id.toString());
+    };
+
+    collection.findIdsByInternalName = async (internalName) => {
+        const fields = await collection
+            .find(
+                {
+                    internalName: createDiacriticSafeContainRegex(internalName),
+                },
+                { _id: true },
+            )
+            .toArray();
+
+        return fields.map(({ _id }) => _id.toString());
+    };
+
+    collection.findIdsByName = async (name) => {
+        const fields = await collection
+            .find(
+                {
+                    name,
+                },
+                { _id: true },
+            )
+            .toArray();
+
+        return fields.map(({ _id }) => _id.toString());
+    };
+
+    collection.findIdsByInternalScopes = async (internalScopes) => {
+        const fields = await collection
+            .find(
+                {
+                    internalScopes,
+                },
+                { _id: true },
+            )
+            .toArray();
+
+        return fields.map(({ _id }) => _id.toString());
     };
 
     return collection;

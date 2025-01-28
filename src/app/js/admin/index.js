@@ -20,7 +20,7 @@ import getLocale from '../../../common/getLocale';
 import App from './App';
 import PrivateRoute from './PrivateRoute';
 import { Display } from './Display';
-import { Annotations } from './annotations/Annotations';
+import { AnnotationList } from './annotations/AnnotationList';
 import { Data } from './Data';
 import { frFR as frFRDatagrid, enUS as enUSDatagrid } from '@mui/x-data-grid';
 import { frFR, enUS } from '@mui/material/locale';
@@ -82,7 +82,7 @@ render(
                             <PrivateRoute path="/display" component={Display} />
                             <PrivateRoute
                                 path="/annotations"
-                                component={Annotations}
+                                component={AnnotationList}
                             />
                             <PrivateRoute
                                 path="/config"
