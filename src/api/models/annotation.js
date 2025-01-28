@@ -4,6 +4,7 @@ export default async (db) => {
     const annotationCollection = await getCreatedCollection(db, 'annotation');
 
     async function create(annotationPayload) {
+        console.log('annotationPayload', annotationPayload);
         const now = new Date();
         const { insertedId } = await annotationCollection.insertOne({
             ...annotationPayload,

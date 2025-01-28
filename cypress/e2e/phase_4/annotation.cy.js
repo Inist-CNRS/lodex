@@ -65,6 +65,7 @@ describe('Annotation', () => {
                 expect(
                     headers.toArray().map((header) => header.textContent),
                 ).to.deep.equal([
+                    'Resource URI',
                     'Resource title',
                     'Field label',
                     'Field Id',
@@ -77,9 +78,16 @@ describe('Annotation', () => {
             });
 
             cy.findAllByRole('cell').then((cells) => {
+                const firstUri = cells[0].textContent;
+                const secondUri = cells[9].textContent;
+
+                expect(firstUri).to.match(/uid:\//);
+                expect(secondUri).to.match(/uid:\//);
+
                 expect(
                     cells.toArray().map((cell) => cell.textContent),
                 ).to.deep.equal([
+                    firstUri,
                     'RoboCop',
                     'rating',
                     '[bZE+]',
@@ -88,6 +96,7 @@ describe('Annotation', () => {
                     'Jane Smith',
                     'This is another comment',
                     new Date().toLocaleDateString(),
+                    secondUri,
                     'Terminator 2',
                     'actors',
                     '[K8Lu]',

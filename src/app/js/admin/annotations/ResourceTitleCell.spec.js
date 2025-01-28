@@ -1,0 +1,61 @@
+import '@testing-library/jest-dom';
+import React from 'react';
+import { render } from '../../../../test-utils';
+import { TestI18N } from '../../i18n/I18NContext';
+import { ResourceTitleCell } from './ResourceTitleCell';
+
+describe('ResourceTitleCell', () => {
+    it('should render annotation_home_page message when resourceUri is null', () => {
+        const wrapper = render(
+            <TestI18N>
+                <ResourceTitleCell
+                    row={{
+                        resourceUri: null,
+                        resource: null,
+                    }}
+                />
+            </TestI18N>,
+        );
+
+        expect(wrapper.queryByText('annotation_home_page')).toBeInTheDocument();
+    });
+
+    it('should render annotation_resource_not_found message when resource is null', () => {
+        const wrapper = render(
+            <TestI18N>
+                <ResourceTitleCell
+                    row={{
+                        resourceUri: 'uid:/qsdf',
+                        resource: null,
+                    }}
+                />
+            </TestI18N>,
+        );
+
+        expect(
+            wrapper.queryByText('annotation_resource_not_found'),
+        ).toBeInTheDocument();
+    });
+
+    it('should render the resource title', () => {
+        const wrapper = render(
+            <TestI18N>
+                <ResourceTitleCell
+                    row={{
+                        resourceUri: 'uid:/qsdf',
+                        resource: {
+                            title: 'The resource title',
+                            uri: 'uid:/qsdf',
+                        },
+                    }}
+                />
+            </TestI18N>,
+        );
+
+        expect(
+            wrapper.queryByText('annotation_resource_not_found'),
+        ).not.toBeInTheDocument();
+
+        expect(wrapper.queryByText('The resource title')).toBeInTheDocument();
+    });
+});
