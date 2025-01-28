@@ -1206,6 +1206,7 @@
 "annotation_resource_not_found"	"Resource has been removed"	"La resource a été supprimée"
 "annotation_resource"	"Resource title"	"Titre de la ressource"
 "annotation_comment"	"Comment"	"Commentaire"
+"annotation_authorName"	"Contributor"	"Contributeur"
 "annotation_query_error"	"Could not retrieve annotations"	"Impossible de récupérer les annotations"
 "annotation_created_at"	"Submission date"	"Date de soumission"
 "annotation_resource_link"	"Open the resource"	"Ouvrir la resource"

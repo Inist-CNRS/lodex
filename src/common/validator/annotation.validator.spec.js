@@ -178,6 +178,7 @@ describe('annotation.validator', () => {
                     message: 'annotation_query_filter_by_invalid_key',
                     options: [
                         'resource.title',
+                        'authorName',
                         'resourceUri',
                         'fieldId',
                         'comment',

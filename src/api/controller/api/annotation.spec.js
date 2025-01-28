@@ -352,6 +352,7 @@ describe('annotation', () => {
                         path: ['filterBy'],
                         options: [
                             'resource.title',
+                            'authorName',
                             'resourceUri',
                             'fieldId',
                             'comment',

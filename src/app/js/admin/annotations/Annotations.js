@@ -1,6 +1,4 @@
-import React, { useState } from 'react';
-import { useGetAnnotations } from './useGetAnnotations';
-import { useTranslate } from '../../i18n/I18NContext';
+import { Tooltip } from '@mui/material';
 import {
     DataGrid,
     getGridDateOperators,
@@ -10,9 +8,11 @@ import {
     GridToolbarDensitySelector,
     GridToolbarFilterButton,
 } from '@mui/x-data-grid';
+import React, { useState } from 'react';
+import { useTranslate } from '../../i18n/I18NContext';
 import AdminOnlyAlert from '../../lib/components/AdminOnlyAlert';
 import { ResourceCell } from './ResourceCell';
-import { Tooltip } from '@mui/material';
+import { useGetAnnotations } from './useGetAnnotations';
 
 const AnnotationListToolBar = () => {
     const { translate } = useTranslate();
@@ -100,6 +100,15 @@ export const Annotations = () => {
                     renderCell: ({ value }) => {
                         return <ResourceCell resource={value} />;
                     },
+                },
+                {
+                    field: 'authorName',
+                    headerName: translate('annotation_authorName'),
+                    flex: 1,
+                    sortable: false,
+                    filterOperators: getGridStringOperators().filter(
+                        (operator) => operator.value === 'contains',
+                    ),
                 },
                 {
                     field: 'createdAt',
