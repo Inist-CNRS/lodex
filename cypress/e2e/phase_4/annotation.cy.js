@@ -76,9 +76,10 @@ describe('Annotation', () => {
                     'Submission date',
                 ]);
             });
+            let firstUri;
 
             cy.findAllByRole('cell').then((cells) => {
-                const firstUri = cells[0].textContent;
+                firstUri = cells[0].textContent;
                 const secondUri = cells[9].textContent;
 
                 expect(firstUri).to.match(/uid:\//);
@@ -107,6 +108,25 @@ describe('Annotation', () => {
                     new Date().toLocaleDateString(),
                 ]);
             });
+
+            cy.findByText('RoboCop').click();
+
+            cy.findByText('Annotation: RoboCop').should('be.visible');
+            cy.findByText(firstUri).should('be.visible');
+
+            cy.findByLabelText('Field Id').should('have.text', '[bZE+]');
+            cy.findByLabelText('Field label').should('have.text', 'rating');
+            cy.findByLabelText('Field Internal Name').should('have.text', '');
+
+            cy.findByLabelText('Comment').should(
+                'have.text',
+                'This is another comment',
+            );
+
+            cy.findByLabelText('Submission date').should(
+                'have.text',
+                new Date().toLocaleDateString(),
+            );
         });
 
         it('should hide annotation button when field does not support annotations', () => {
