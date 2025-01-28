@@ -40,5 +40,9 @@ export default async (db) => {
         return annotationCollection.countDocuments(query);
     }
 
-    return { create, findLimitFromSkip, count };
+    async function findOneById(id) {
+        return annotationCollection.findOne({ _id: id });
+    }
+
+    return { create, findLimitFromSkip, count, findOneById };
 };
