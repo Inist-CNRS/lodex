@@ -26,13 +26,24 @@ const getAnnotationResourceTitle = (annotation, translate) => {
 export const AnnotationItem = () => {
     const match = useRouteMatch();
     const { translate } = useTranslate();
-    const { data: annotation, isLoading } = useGetAnnotation(
-        match.params.annotationId,
-    );
+    const {
+        data: annotation,
+        error,
+        isLoading,
+    } = useGetAnnotation(match.params.annotationId);
     const theme = useTheme();
 
     if (isLoading) {
         return <Loading>{translate('loading')}</Loading>;
+    }
+
+    if (error) {
+        console.error(error);
+        return (
+            <AdminOnlyAlert>
+                {translate('annotation_query_error')}
+            </AdminOnlyAlert>
+        );
     }
 
     if (!annotation) {
@@ -46,14 +57,26 @@ export const AnnotationItem = () => {
                     {translate('annotation_header')}{' '}
                     {getAnnotationResourceTitle(annotation, translate)}
                 </Typography>
-                {annotation.resourceUri && (
+                {annotation.resourceUri ? (
                     <Stack direction="row">
                         <Typography>{annotation.resourceUri}</Typography>
+                        {annotation.resource && (
+                            <Link
+                                title={translate('annotation_resource_link')}
+                                href={`/instance/${tenant}/${annotation.resourceUri}`}
+                                target="_blank"
+                            >
+                                <OpenInNewIcon />
+                            </Link>
+                        )}
+                    </Stack>
+                ) : (
+                    <Stack direction="row">
+                        <Typography>/</Typography>
                         <Link
                             title={translate('annotation_resource_link')}
-                            href={`/instance/${tenant}/${annotation.resourceUri}`}
+                            href={`/instance/${tenant}`}
                             target="_blank"
-                            disabled={!annotation.resource}
                         >
                             <OpenInNewIcon />
                         </Link>
