@@ -1,3 +1,4 @@
+import { ObjectId } from 'mongodb';
 import { getCreatedCollection } from './utils';
 
 export default async (db) => {
@@ -41,7 +42,7 @@ export default async (db) => {
     }
 
     async function findOneById(id) {
-        return annotationCollection.findOne({ _id: id });
+        return annotationCollection.findOne({ _id: new ObjectId(id) });
     }
 
     return { create, findLimitFromSkip, count, findOneById };
