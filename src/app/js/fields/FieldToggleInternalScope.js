@@ -13,7 +13,7 @@ import { polyglot as polyglotPropTypes } from '../propTypes';
 export const FieldToggleInternalScopeComponent = ({ input, p: polyglot }) => {
     const matches = useRouteMatch();
 
-    const [values, setValues] = React.useState([]);
+    const [values, setValues] = React.useState(input?.value || []);
 
     React.useEffect(() => {
         if (!input) {
