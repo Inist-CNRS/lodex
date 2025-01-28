@@ -10,6 +10,7 @@ import {
 } from '@mui/x-data-grid';
 import React, { useState } from 'react';
 import FieldInternalIcon from '../../fields/FieldInternalIcon';
+import { useHistory } from 'react-router';
 import { useTranslate } from '../../i18n/I18NContext';
 import AdminOnlyAlert from '../../lib/components/AdminOnlyAlert';
 import { ResourceTitleCell } from './ResourceTitleCell';
@@ -33,6 +34,7 @@ const AnnotationListToolBar = () => {
 };
 
 export const AnnotationList = () => {
+    const history = useHistory();
     const { translate } = useTranslate();
     const [page, setPage] = useState(0);
     const [perPage, setPerPage] = useState(25);
@@ -68,6 +70,9 @@ export const AnnotationList = () => {
             filterValue: value,
         });
         setPage(0);
+    };
+    const handleRowClick = (params) => {
+        history.push(`/annotations/${params.row._id}`);
     };
 
     if (error) {
@@ -221,6 +226,7 @@ export const AnnotationList = () => {
             components={{
                 Toolbar: AnnotationListToolBar,
             }}
+            onRowClick={handleRowClick}
         />
     );
 };
