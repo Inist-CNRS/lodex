@@ -146,7 +146,7 @@ export function CreateAnnotationModal({
                 horizontal: 'right',
             }}
             transformOrigin={{
-                vertical: 'top',
+                vertical: 'bottom',
                 horizontal: 'left',
             }}
             PaperProps={{

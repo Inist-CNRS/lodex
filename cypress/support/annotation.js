@@ -28,7 +28,8 @@ export function createAnnotation({
 
     cy.findByRole('button', { name: 'Validate', timeout: 1500 }).click();
 
-    cy.findByText('Annotation created successfully', { timeout: 1500 }).should(
-        'be.visible',
-    );
+    cy.findByText(
+        'Your suggestion has been sent. We thank you for your contribution.',
+        { timeout: 1500 },
+    ).should('be.visible');
 }
