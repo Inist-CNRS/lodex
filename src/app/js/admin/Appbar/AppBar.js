@@ -60,7 +60,6 @@ const styles = {
 };
 
 const AppbarComponent = ({
-    hasLoadedDataset,
     isLoading,
     isAdmin,
     hasPublishedDataset,
@@ -80,17 +79,15 @@ const AppbarComponent = ({
                     >
                         <span>{translate('data')}</span>
                     </Button>
-                    {hasLoadedDataset && (
-                        <Button
-                            component={NavLink}
-                            to="/display"
-                            variant="text"
-                            startIcon={<AspectRatioIcon />}
-                            sx={styles.button}
-                        >
-                            <span>{translate('display')}</span>
-                        </Button>
-                    )}
+                    <Button
+                        component={NavLink}
+                        to="/display"
+                        variant="text"
+                        startIcon={<AspectRatioIcon />}
+                        sx={styles.button}
+                    >
+                        <span>{translate('display')}</span>
+                    </Button>
                     <Button
                         component={NavLink}
                         to="/annotations"
@@ -144,7 +141,6 @@ const AppbarComponent = ({
 };
 
 AppbarComponent.propTypes = {
-    hasLoadedDataset: PropTypes.bool.isRequired,
     isLoading: PropTypes.bool,
     isAdmin: PropTypes.bool.isRequired,
     hasPublishedDataset: PropTypes.bool,
@@ -156,7 +152,6 @@ AppbarComponent.defaultProps = {
 };
 
 const mapStateToProps = (state) => ({
-    hasLoadedDataset: fromParsing.hasUploadedFile(state),
     isLoading: state.loading,
     isAdmin: fromUser.isAdmin(state),
     hasPublishedDataset: fromPublication.hasPublishedDataset(state),
