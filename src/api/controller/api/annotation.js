@@ -6,7 +6,7 @@ import { uniq } from 'lodash';
 import { ObjectId } from 'mongodb';
 import { createDiacriticSafeContainRegex } from '../../services/createDiacriticSafeContainRegex';
 import {
-    annotationSchema,
+    annotationCreationSchema,
     getAnnotationsQuerySchema,
 } from './../../../common/validator/annotation.validator';
 
@@ -14,7 +14,7 @@ import {
  * @param {Koa.Context} ctx
  */
 export async function createAnnotation(ctx) {
-    const validation = annotationSchema.safeParse(ctx.request.body);
+    const validation = annotationCreationSchema.safeParse(ctx.request.body);
     if (!validation.success) {
         ctx.response.status = 400;
         ctx.body = {

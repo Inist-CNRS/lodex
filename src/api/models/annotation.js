@@ -9,7 +9,7 @@ export default async (db) => {
         const { insertedId } = await annotationCollection.insertOne({
             ...annotationPayload,
             status: 'to_review',
-            internal_comment: null,
+            internalComment: null,
             createdAt: annotationPayload.createdAt ?? now,
             updatedAt: annotationPayload.updatedAt ?? now,
         });

@@ -1,10 +1,11 @@
 import {
-    annotationSchema,
+    annotationCreationSchema,
+    annotationUpdateSchema,
     getAnnotationsQuerySchema,
 } from './annotation.validator';
 
 describe('annotation.validator', () => {
-    describe('annotationSchema', () => {
+    describe('annotationCreationSchema', () => {
         it('should validate an annotation', () => {
             const annotationPayload = {
                 resourceUri: 'uid:/2a8d429f-8134-4502-b9d3-d20c571592fa',
@@ -19,7 +20,7 @@ describe('annotation.validator', () => {
             };
 
             const validatedAnnotation =
-                annotationSchema.parse(annotationPayload);
+                annotationCreationSchema.parse(annotationPayload);
 
             expect(validatedAnnotation).toStrictEqual(annotationPayload);
         });
@@ -37,7 +38,7 @@ describe('annotation.validator', () => {
             };
 
             const validatedAnnotation =
-                annotationSchema.parse(annotationPayload);
+                annotationCreationSchema.parse(annotationPayload);
 
             expect(validatedAnnotation).toStrictEqual({
                 ...annotationPayload,
@@ -57,7 +58,7 @@ describe('annotation.validator', () => {
             };
 
             const validatedAnnotation =
-                annotationSchema.parse(annotationPayload);
+                annotationCreationSchema.parse(annotationPayload);
 
             expect(validatedAnnotation).toStrictEqual({
                 ...annotationPayload,
@@ -77,7 +78,7 @@ describe('annotation.validator', () => {
             };
 
             const validatedAnnotation =
-                annotationSchema.parse(annotationPayload);
+                annotationCreationSchema.parse(annotationPayload);
 
             expect(validatedAnnotation).toStrictEqual({
                 ...annotationPayload,
@@ -133,14 +134,14 @@ describe('annotation.validator', () => {
                 itemPath: null,
                 comment: 'This is a comment',
                 status: 'in_progress',
-                internal_comment: 'This is an internal comment',
+                internalComment: 'This is an internal comment',
                 authorName: 'John Doe',
                 authorEmail: '',
                 initialValue: 'initial value',
             };
 
             const validatedAnnotation =
-                annotationSchema.parse(annotationPayload);
+                annotationCreationSchema.parse(annotationPayload);
 
             expect(validatedAnnotation).toStrictEqual({
                 resourceUri: 'uid:/2a8d429f-8134-4502-b9d3-d20c571592fa',
@@ -155,7 +156,7 @@ describe('annotation.validator', () => {
         });
 
         it('should return parsing errors', () => {
-            const { success, error } = annotationSchema.safeParse({
+            const { success, error } = annotationCreationSchema.safeParse({
                 comment: '',
             });
 
@@ -170,6 +171,123 @@ describe('annotation.validator', () => {
                     message: 'error_required',
                 },
             ]);
+        });
+    });
+
+    describe('annotationUpdateSchema', () => {
+        it('should validate annotation update data', () => {
+            const annotationPayload = {
+                status: 'to_process',
+                internalComment: 'Need to test this annotation thoroughly',
+                administrator: 'The tester',
+            };
+
+            const validatedAnnotation =
+                annotationUpdateSchema.parse(annotationPayload);
+
+            expect(validatedAnnotation).toStrictEqual(annotationPayload);
+        });
+        it('should reject status not in the enum', () => {
+            const annotationPayload = {
+                status: 'to-test',
+                internalComment: 'Need to test this annotation thoroughly',
+                administrator: 'The tester',
+            };
+
+            const { success, error } =
+                annotationUpdateSchema.safeParse(annotationPayload);
+            expect(success).toBe(false);
+
+            expect(error.errors).toStrictEqual([
+                {
+                    code: 'invalid_enum_value',
+                    message:
+                        "Invalid enum value. Expected 'to_process' | 'ongoing' | 'validated' | 'rejected', received 'to-test'",
+                    options: ['to_process', 'ongoing', 'validated', 'rejected'],
+                    path: ['status'],
+                    received: 'to-test',
+                },
+            ]);
+        });
+        it('should reject no status', () => {
+            const annotationPayload = {
+                status: null,
+                internalComment: 'Need to test this annotation thoroughly',
+                administrator: 'The tester',
+            };
+
+            const { success, error } =
+                annotationUpdateSchema.safeParse(annotationPayload);
+            expect(success).toBe(false);
+
+            expect(error.errors).toStrictEqual([
+                {
+                    code: 'invalid_type',
+                    expected:
+                        "'to_process' | 'ongoing' | 'validated' | 'rejected'",
+                    message:
+                        "Expected 'to_process' | 'ongoing' | 'validated' | 'rejected', received null",
+
+                    path: ['status'],
+                    received: 'null',
+                },
+            ]);
+        });
+        it('should reject when internalComment is null', () => {
+            const annotationPayload = {
+                status: 'to_process',
+                internalComment: null,
+                administrator: 'The tester',
+            };
+
+            const { success, error } =
+                annotationUpdateSchema.safeParse(annotationPayload);
+            expect(success).toBe(false);
+
+            expect(error.errors).toStrictEqual([
+                {
+                    code: 'invalid_type',
+                    expected: 'string',
+                    message: 'Expected string, received null',
+                    path: ['internalComment'],
+                    received: 'null',
+                },
+            ]);
+        });
+        it('should reject when internalComment is empty', () => {
+            const annotationPayload = {
+                status: 'to_process',
+                internalComment: '',
+                administrator: 'The tester',
+            };
+
+            const { success, error } =
+                annotationUpdateSchema.safeParse(annotationPayload);
+            expect(success).toBe(false);
+
+            expect(error.errors).toStrictEqual([
+                {
+                    code: 'too_small',
+                    exact: false,
+                    inclusive: true,
+                    message: 'error_required',
+                    minimum: 1,
+                    path: ['internalComment'],
+                    type: 'string',
+                },
+            ]);
+        });
+        it('should accept no administrator', () => {
+            const annotationPayload = {
+                status: 'to_process',
+                internalComment: 'Need to test this annotation thoroughly',
+                administrator: null,
+            };
+
+            const validatedAnnotation =
+                annotationUpdateSchema.parse(annotationPayload);
+
+            expect(validatedAnnotation).toStrictEqual(annotationPayload);
         });
     });
 
