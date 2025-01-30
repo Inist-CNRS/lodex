@@ -8,6 +8,7 @@ import { Redirect } from 'react-router';
 import { DEFAULT_TENANT } from '../../../../common/tools/tenantTools';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import FieldInternalIcon from '../../fields/FieldInternalIcon';
+import AdminOnlyAlert from '../../lib/components/AdminOnlyAlert';
 
 const tenant = sessionStorage.getItem('lodex-tenant') || DEFAULT_TENANT;
 

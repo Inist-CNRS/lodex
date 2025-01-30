@@ -4,8 +4,10 @@ import fetch from '../../lib/fetch';
 import { getUserSessionStorageInfo } from '../api/tools';
 import { getRequest } from '../../user';
 import { omitBy } from 'lodash';
+import { useHistory } from 'react-router-dom';
 
 export function useGetAnnotations({ page, perPage, sortBy, sortDir, filter }) {
+    const history = useHistory();
     return useQuery({
         queryKey: ['get-annotations', page, perPage, sortBy, sortDir, filter],
         queryFn: async () => {
@@ -31,6 +33,11 @@ export function useGetAnnotations({ page, perPage, sortBy, sortDir, filter }) {
                 },
             );
             const { response, error } = await fetch(request);
+
+            if (error?.code === 401) {
+                history.push('/login');
+                return;
+            }
 
             if (error) {
                 throw error;
