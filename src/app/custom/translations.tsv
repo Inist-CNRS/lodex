@@ -1190,7 +1190,7 @@
 "error_page_invalid"	"The page is not valid"	"La page n'est pas valide"
 "error_sortDir_invalid"	"The sort order is not valid"	"L'ordre de tri n'est pas valide"
 "annotation_create_button_label"	"Add an annotation to %{field} field"	"Ajouter une annotation au champ %{field}"
-"annotation_create_success"	"Annotation created successfully"	"Annotation créée avec succès"
+"annotation_create_success"	"Your suggestion has been sent. We thank you for your contribution."	"Votre suggestion a bien été transmise. Nous vous remercions pour votre contribution."
 "annotation_create_error"	"Failed to create annotation"	"Une erreur est survenue lors de la création de l'annotation"
 "annotation_add_comment"	"Add a comment"	"Ajouter un commentaire"
 "annotation.comment"	"Comment"	"Commentaire"
