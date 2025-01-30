@@ -202,7 +202,7 @@ export default async (db) => {
         }
     };
 
-    collection.deleteOne = async (id) =>
+    collection.deleteOneById = async (id) =>
         collection.deleteOne({ _id: new ObjectId(id) });
 
     return collection;
