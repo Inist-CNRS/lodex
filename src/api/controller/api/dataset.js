@@ -77,7 +77,7 @@ export const updateDataset = async (ctx) => {
 
 export const deleteDatasetRow = async (ctx, id) => {
     try {
-        await ctx.dataset.deleteOne(id);
+        await ctx.dataset.deleteOneById(id);
         ctx.body = { status: 'deleted' };
     } catch (error) {
         const logger = getLogger(ctx.tenant);
