@@ -177,7 +177,7 @@ describe('annotation.validator', () => {
     describe('annotationUpdateSchema', () => {
         it('should validate annotation update data', () => {
             const annotationPayload = {
-                status: 'to_process',
+                status: 'to_review',
                 internalComment: 'Need to test this annotation thoroughly',
                 administrator: 'The tester',
             };
@@ -202,8 +202,8 @@ describe('annotation.validator', () => {
                 {
                     code: 'invalid_enum_value',
                     message:
-                        "Invalid enum value. Expected 'to_process' | 'ongoing' | 'validated' | 'rejected', received 'to-test'",
-                    options: ['to_process', 'ongoing', 'validated', 'rejected'],
+                        "Invalid enum value. Expected 'to_review' | 'ongoing' | 'validated' | 'rejected', received 'to-test'",
+                    options: ['to_review', 'ongoing', 'validated', 'rejected'],
                     path: ['status'],
                     received: 'to-test',
                 },
@@ -224,9 +224,9 @@ describe('annotation.validator', () => {
                 {
                     code: 'invalid_type',
                     expected:
-                        "'to_process' | 'ongoing' | 'validated' | 'rejected'",
+                        "'to_review' | 'ongoing' | 'validated' | 'rejected'",
                     message:
-                        "Expected 'to_process' | 'ongoing' | 'validated' | 'rejected', received null",
+                        "Expected 'to_review' | 'ongoing' | 'validated' | 'rejected', received null",
 
                     path: ['status'],
                     received: 'null',
@@ -235,7 +235,7 @@ describe('annotation.validator', () => {
         });
         it('should reject when internalComment is null', () => {
             const annotationPayload = {
-                status: 'to_process',
+                status: 'to_review',
                 internalComment: null,
                 administrator: 'The tester',
             };
@@ -256,7 +256,7 @@ describe('annotation.validator', () => {
         });
         it('should reject when internalComment is empty', () => {
             const annotationPayload = {
-                status: 'to_process',
+                status: 'to_review',
                 internalComment: '',
                 administrator: 'The tester',
             };
@@ -279,7 +279,7 @@ describe('annotation.validator', () => {
         });
         it('should accept no administrator', () => {
             const annotationPayload = {
-                status: 'to_process',
+                status: 'to_review',
                 internalComment: 'Need to test this annotation thoroughly',
                 administrator: null,
             };

@@ -50,7 +50,7 @@ export const annotationCreationSchema = z.object({
 });
 
 export const annotationUpdateSchema = z.object({
-    status: z.enum(['to_process', 'ongoing', 'validated', 'rejected']),
+    status: z.enum(['to_review', 'ongoing', 'validated', 'rejected']),
     internalComment: z
         .string({
             required_error: 'error_required',

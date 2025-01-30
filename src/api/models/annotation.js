@@ -17,6 +17,25 @@ export default async (db) => {
         return annotationCollection.findOne({ _id: insertedId });
     }
 
+    async function updateOneById(
+        id,
+        annotationPayload,
+        updatedAt = new Date(),
+    ) {
+        return annotationCollection.findOneAndUpdate(
+            {
+                _id: id,
+            },
+            {
+                $set: {
+                    ...annotationPayload,
+                    updatedAt,
+                },
+            },
+            { returnDocument: 'after' },
+        );
+    }
+
     async function findLimitFromSkip({
         skip = 0,
         limit = 10,
@@ -47,5 +66,5 @@ export default async (db) => {
         return annotationCollection.findOne({ _id: new ObjectId(id) });
     }
 
-    return { create, findLimitFromSkip, count, findOneById };
+    return { create, updateOneById, findLimitFromSkip, count, findOneById };
 };

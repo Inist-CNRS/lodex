@@ -50,6 +50,60 @@ describe('annotation', () => {
         });
     });
 
+    describe('updateOneById', () => {
+        it('should update target annotation', async () => {
+            const date = new Date();
+            const annotation = await annotationModel.create({
+                resourceUri: 'uid:/a4f7a51f-7109-481e-86cc-0adb3a26faa6',
+                itemPath: [],
+                fieldId: 'Gb4a',
+                kind: 'comment',
+                authorName: 'Rick HARRIS',
+                authorEmail: 'rick.harris@marmelab.com',
+                comment: 'Hello world',
+            });
+
+            const result = await annotationModel.updateOneById(
+                annotation._id,
+                {
+                    status: 'ongoing',
+                    internalComment: 'To test thoroughly',
+                    administrator: 'The Tester',
+                },
+                date,
+            );
+
+            expect(result).toStrictEqual({
+                ...annotation,
+                updatedAt: date,
+                status: 'ongoing',
+                internalComment: 'To test thoroughly',
+                administrator: 'The Tester',
+            });
+
+            expect(await annotationModel.findLimitFromSkip()).toStrictEqual([
+                result,
+            ]);
+        });
+        it('should return null and do nothing if target does not exists', async () => {
+            const date = new Date();
+
+            const result = await annotationModel.updateOneById(
+                '404',
+                {
+                    status: 'ongoing',
+                    internalComment: 'To test thoroughly',
+                    administrator: 'The Tester',
+                },
+                date,
+            );
+
+            expect(result).toBeNull();
+
+            expect(await annotationModel.findLimitFromSkip()).toStrictEqual([]);
+        });
+    });
+
     describe('findLimitFromSkip', () => {
         let annotationList;
         beforeEach(async () => {
