@@ -2,10 +2,10 @@ name: Lodex CI
 
 # Run this ci only on pull request who targets master and on master branch only
 on:
-    push:
-        branches: [master, v15]
-    pull_request:
-        branches: [master, v15]
+  push:
+    branches: [ master, v14 ]
+  pull_request:
+    branches: [ master, v14 ]
 
 jobs:
     # Job use to create the test environment and run unit test suite
