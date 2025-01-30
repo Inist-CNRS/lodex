@@ -31,6 +31,7 @@ import defaultTheme from '../../custom/themes/default/defaultTheme';
 import { Router } from 'react-router-dom';
 import { I18N } from '../i18n/I18NContext';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { AnnotationItem } from './annotations/AnnotationItem';
 
 const localesMUI = new Map([
     ['fr', { ...frFR, ...frFRDatagrid }],
@@ -81,8 +82,13 @@ render(
                             <PrivateRoute path="/data" component={Data} />
                             <PrivateRoute path="/display" component={Display} />
                             <PrivateRoute
+                                path="/annotations/:annotationId"
+                                component={AnnotationItem}
+                            />
+                            <PrivateRoute
                                 path="/annotations"
                                 component={AnnotationList}
+                                exact
                             />
                             <PrivateRoute
                                 path="/config"

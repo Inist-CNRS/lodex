@@ -1,4 +1,4 @@
-import { createAnnotation, getAnnotations } from './annotation';
+import { createAnnotation, getAnnotation, getAnnotations } from './annotation';
 import { MongoClient } from 'mongodb';
 import createAnnotationModel from '../../models/annotation';
 import createFieldModel from '../../models/field';
@@ -748,6 +748,180 @@ describe('annotation', () => {
                     },
                 ],
                 data: [],
+            });
+        });
+    });
+
+    describe('/annotations/:id', () => {
+        let annotation;
+        let field;
+        beforeEach(async () => {
+            await fieldModel.create({ position: 1, overview: 1 }, 'tItL3');
+
+            field = await fieldModel.create(
+                {
+                    position: 2,
+                    label: 'Annotated field',
+                },
+                'GvaF',
+            );
+
+            await publishedDatasetModel.create({
+                uri: 'uid:/1234',
+                tItL3: 'resource title',
+            });
+
+            annotation = await annotationModel.create({
+                resourceUri: 'uid:/1234',
+                itemPath: [],
+                fieldId: field._id,
+                authorName: 'Developer',
+                authorEmail: 'developer@marmelab.com',
+                comment: 'This is a comment',
+                status: 'in_progress',
+                internal_comment: null,
+                createdAt: new Date('03-01-2025'),
+                updatedAt: new Date('03-01-2025'),
+            });
+        });
+
+        it('should return target annotation with resource and field', async () => {
+            const ctx = {
+                annotation: annotationModel,
+                field: fieldModel,
+                publishedDataset: publishedDatasetModel,
+                response: {},
+            };
+
+            await getAnnotation(ctx, annotation._id);
+
+            expect(ctx.response).toStrictEqual({
+                body: {
+                    _id: annotation._id,
+                    authorEmail: 'developer@marmelab.com',
+                    authorName: 'Developer',
+                    comment: 'This is a comment',
+                    createdAt: expect.any(Date),
+                    field: {
+                        _id: field._id,
+                        label: 'Annotated field',
+                        name: 'GvaF',
+                        position: 2,
+                    },
+                    fieldId: field._id,
+                    internal_comment: null,
+                    itemPath: [],
+                    resource: {
+                        title: 'resource title',
+                        uri: 'uid:/1234',
+                    },
+                    resourceUri: 'uid:/1234',
+                    status: 'to_review',
+                    updatedAt: expect.any(Date),
+                },
+                status: 200,
+            });
+        });
+
+        it('should return target annotation with field at null when it does not exists', async () => {
+            annotation = await annotationModel.create({
+                resourceUri: 'uid:/1234',
+                itemPath: [],
+                fieldId: '404',
+                authorName: 'Developer',
+                authorEmail: 'developer@marmelab.com',
+                comment: 'This is a comment',
+                status: 'in_progress',
+                internal_comment: null,
+                createdAt: new Date('03-01-2025'),
+                updatedAt: new Date('03-01-2025'),
+            });
+            const ctx = {
+                annotation: annotationModel,
+                field: fieldModel,
+                publishedDataset: publishedDatasetModel,
+                response: {},
+            };
+
+            await getAnnotation(ctx, annotation._id);
+
+            expect(ctx.response).toStrictEqual({
+                body: {
+                    _id: annotation._id,
+                    authorEmail: 'developer@marmelab.com',
+                    authorName: 'Developer',
+                    comment: 'This is a comment',
+                    createdAt: expect.any(Date),
+                    field: null,
+                    fieldId: '404',
+                    internal_comment: null,
+                    itemPath: [],
+                    resource: {
+                        title: 'resource title',
+                        uri: 'uid:/1234',
+                    },
+                    resourceUri: 'uid:/1234',
+                    status: 'to_review',
+                    updatedAt: expect.any(Date),
+                },
+                status: 200,
+            });
+        });
+
+        it('should return target annotation with resource at null when it does not exists', async () => {
+            annotation = await annotationModel.create({
+                resourceUri: 'uid:/404',
+                itemPath: [],
+                fieldId: field._id,
+                authorName: 'Developer',
+                authorEmail: 'developer@marmelab.com',
+                comment: 'This is a comment',
+                status: 'in_progress',
+                internal_comment: null,
+                createdAt: new Date('03-01-2025'),
+                updatedAt: new Date('03-01-2025'),
+            });
+            const ctx = {
+                annotation: annotationModel,
+                field: fieldModel,
+                publishedDataset: publishedDatasetModel,
+                response: {},
+            };
+
+            await getAnnotation(ctx, annotation._id);
+
+            expect(ctx.response).toStrictEqual({
+                body: {
+                    _id: annotation._id,
+                    authorEmail: 'developer@marmelab.com',
+                    authorName: 'Developer',
+                    comment: 'This is a comment',
+                    createdAt: expect.any(Date),
+                    field,
+                    fieldId: field._id,
+                    internal_comment: null,
+                    itemPath: [],
+                    resource: null,
+                    resourceUri: 'uid:/404',
+                    status: 'to_review',
+                    updatedAt: expect.any(Date),
+                },
+                status: 200,
+            });
+        });
+
+        it('should return 404 status when target annotation does not exists', async () => {
+            const ctx = {
+                annotation: annotationModel,
+                field: fieldModel,
+                publishedDataset: publishedDatasetModel,
+                response: {},
+            };
+
+            await getAnnotation(ctx, '404');
+
+            expect(ctx.response).toStrictEqual({
+                status: 404,
             });
         });
     });

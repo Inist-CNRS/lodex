@@ -1,10 +1,10 @@
+import { ObjectId } from 'mongodb';
 import { getCreatedCollection } from './utils';
 
 export default async (db) => {
     const annotationCollection = await getCreatedCollection(db, 'annotation');
 
     async function create(annotationPayload) {
-        console.log('annotationPayload', annotationPayload);
         const now = new Date();
         const { insertedId } = await annotationCollection.insertOne({
             ...annotationPayload,
@@ -40,5 +40,12 @@ export default async (db) => {
         return annotationCollection.countDocuments(query);
     }
 
-    return { create, findLimitFromSkip, count };
+    async function findOneById(id) {
+        if (!ObjectId.isValid(id)) {
+            return null;
+        }
+        return annotationCollection.findOne({ _id: new ObjectId(id) });
+    }
+
+    return { create, findLimitFromSkip, count, findOneById };
 };

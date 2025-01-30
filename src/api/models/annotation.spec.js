@@ -162,4 +162,35 @@ describe('annotation', () => {
             ).toBe(1);
         });
     });
+
+    describe('findOneById', () => {
+        it('should return target annotation', async () => {
+            const annotation = await annotationModel.create({
+                comment: 'target annotation',
+            });
+            await annotationModel.create({
+                comment: 'another annotation',
+            });
+
+            expect(
+                await annotationModel.findOneById(annotation._id),
+            ).toStrictEqual(annotation);
+        });
+        it('should return null if target annotation does not exists', async () => {
+            await annotationModel.create({
+                comment: 'another annotation',
+            });
+
+            expect(
+                await annotationModel.findOneById('404404404404404404404404'),
+            ).toBeNull();
+        });
+        it('should return null if id is not a valid ObjectId format', async () => {
+            await annotationModel.create({
+                comment: 'another annotation',
+            });
+
+            expect(await annotationModel.findOneById('404')).toBeNull();
+        });
+    });
 });

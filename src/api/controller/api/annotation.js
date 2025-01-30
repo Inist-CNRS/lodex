@@ -237,10 +237,47 @@ export async function getAnnotations(ctx) {
         })),
     };
 }
+/**
+ * @param {Koa.Context} ctx
+ */
+export async function getAnnotation(ctx, id) {
+    const annotation = await ctx.annotation.findOneById(id);
+
+    if (!annotation) {
+        ctx.response.status = 404;
+
+        return;
+    }
+
+    const titleField = await ctx.field.findTitle();
+
+    const resource = annotation.resourceUri
+        ? await ctx.publishedDataset.findByUri(annotation.resourceUri)
+        : null;
+
+    const field = annotation.fieldId
+        ? await ctx.field.findOneById(annotation.fieldId)
+        : null;
+
+    ctx.response.status = 200;
+    ctx.response.body = {
+        ...annotation,
+        field,
+        resource: resource
+            ? {
+                  title: resource.versions[resource.versions.length - 1][
+                      titleField.name
+                  ],
+                  uri: resource.uri,
+              }
+            : null,
+    };
+}
 
 const app = new Koa();
 
 app.use(route.get('/', getAnnotations));
+app.use(route.get('/:id', getAnnotation));
 app.use(koaBodyParser());
 app.use(route.post('/', createAnnotation));
 

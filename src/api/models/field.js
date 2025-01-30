@@ -120,8 +120,12 @@ export default async (db) => {
         return searchableFields.map(({ name }) => name);
     };
 
-    collection.findOneById = (id) =>
-        collection.findOne({ _id: new ObjectId(id) });
+    collection.findOneById = (id) => {
+        if (!ObjectId.isValid(id)) {
+            return null;
+        }
+        return collection.findOne({ _id: new ObjectId(id) });
+    };
 
     collection.findManyByIds = async (ids) => {
         const fields = await collection
