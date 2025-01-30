@@ -3,7 +3,6 @@ import { MongoClient } from 'mongodb';
 import createAnnotationModel from '../../models/annotation';
 import createFieldModel from '../../models/field';
 import createPublishedDatasetModel from '../../models/publishedDataset';
-import { field } from 'vega';
 
 const ANNOTATIONS = [
     {
@@ -757,10 +756,7 @@ describe('annotation', () => {
         let annotation;
         let field;
         beforeEach(async () => {
-            const titleField = await fieldModel.create(
-                { position: 1, overview: 1 },
-                'tItL3',
-            );
+            await fieldModel.create({ position: 1, overview: 1 }, 'tItL3');
 
             field = await fieldModel.create(
                 {
@@ -770,7 +766,7 @@ describe('annotation', () => {
                 'GvaF',
             );
 
-            const resource = await publishedDatasetModel.create({
+            await publishedDatasetModel.create({
                 uri: 'uid:/1234',
                 tItL3: 'resource title',
             });

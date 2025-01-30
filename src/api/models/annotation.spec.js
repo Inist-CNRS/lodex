@@ -181,6 +181,15 @@ describe('annotation', () => {
                 comment: 'another annotation',
             });
 
+            expect(
+                await annotationModel.findOneById('404404404404404404404404'),
+            ).toBeNull();
+        });
+        it('should return null if id is not a valid ObjectId format', async () => {
+            await annotationModel.create({
+                comment: 'another annotation',
+            });
+
             expect(await annotationModel.findOneById('404')).toBeNull();
         });
     });

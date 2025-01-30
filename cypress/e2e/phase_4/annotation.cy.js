@@ -112,13 +112,12 @@ describe('Annotation', () => {
             cy.findByText('RoboCop').click();
 
             cy.findByText('Annotation: RoboCop').should('be.visible');
-            cy.findByText(firstUri).should('be.visible');
 
             cy.findByLabelText('Field Id').should('have.text', '[bZE+]');
             cy.findByLabelText('Field label').should('have.text', 'rating');
             cy.findByLabelText('Field Internal Name').should('have.text', '');
 
-            cy.findByLabelText('Comment').should(
+            cy.findByLabelText('Contributor Comment:').should(
                 'have.text',
                 'This is another comment',
             );

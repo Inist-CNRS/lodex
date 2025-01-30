@@ -5,7 +5,6 @@ export default async (db) => {
     const annotationCollection = await getCreatedCollection(db, 'annotation');
 
     async function create(annotationPayload) {
-        console.log('annotationPayload', annotationPayload);
         const now = new Date();
         const { insertedId } = await annotationCollection.insertOne({
             ...annotationPayload,
@@ -42,6 +41,9 @@ export default async (db) => {
     }
 
     async function findOneById(id) {
+        if (!ObjectId.isValid(id)) {
+            return null;
+        }
         return annotationCollection.findOne({ _id: new ObjectId(id) });
     }
 
