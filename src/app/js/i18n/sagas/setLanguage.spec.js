@@ -14,7 +14,7 @@ describe('i18n saga', () => {
             expect(saga.next(['phrases']).value).toEqual(
                 put(
                     setLanguageSuccess(
-                        { phrases: ['phrases'], language: 'fr' },
+                        { phrases: ['phrases'], locale: 'fr' },
                         { key: 'value' },
                     ),
                 ),

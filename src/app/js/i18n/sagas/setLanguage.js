@@ -21,11 +21,11 @@ export function* loadPhrases(locale) {
     return response;
 }
 
-export function* handleSetLanguage({ payload: language }) {
+export function* handleSetLanguage({ payload: locale }) {
     try {
-        const phrases = yield call(loadPhrases, language);
+        const phrases = yield call(loadPhrases, locale);
 
-        yield put(setLanguageSuccess({ language, phrases }));
+        yield put(setLanguageSuccess({ locale, phrases }));
     } catch (error) {
         yield put(setLanguageError(error));
     }
