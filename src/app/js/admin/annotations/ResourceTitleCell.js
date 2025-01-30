@@ -1,41 +1,45 @@
-import { Stack, Tooltip, Typography } from '@mui/material';
+import { Tooltip, Typography } from '@mui/material';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { useTranslate } from '../../i18n/I18NContext';
 
+function ResourceTitleCellInternal({ label, italic }) {
+    return (
+        <Tooltip title={label}>
+            <Typography
+                sx={{
+                    textOverflow: 'ellipsis',
+                    overflow: 'hidden',
+                    fontStyle: italic ? 'italic' : undefined,
+                }}
+            >
+                {label}
+            </Typography>
+        </Tooltip>
+    );
+}
+
+ResourceTitleCellInternal.propTypes = {
+    label: PropTypes.string.isRequired,
+    italic: PropTypes.bool,
+};
+
 export const ResourceTitleCell = ({ row }) => {
     const { translate } = useTranslate();
 
-    if (!row.resourceUri) {
-        return <Typography>{translate('annotation_home_page')}</Typography>;
+    if (row.field?.scope === 'graphic' || !row.resourceUri) {
+        return null;
     }
 
     if (!row.resource) {
         return (
-            <Typography
-                sx={{
-                    textDecoration: 'italic',
-                }}
-            >
-                {translate('annotation_resource_not_found')}
-            </Typography>
+            <ResourceTitleCellInternal
+                label={translate('annotation_resource_not_found')}
+            />
         );
     }
 
-    return (
-        <Stack direction="row" gap={2} sx={{ width: '100%' }}>
-            <Tooltip title={row.resource.title}>
-                <Typography
-                    sx={{
-                        textOverflow: 'ellipsis',
-                        overflow: 'hidden',
-                    }}
-                >
-                    {row.resource.title}
-                </Typography>
-            </Tooltip>
-        </Stack>
-    );
+    return <ResourceTitleCellInternal label={row.resource.title} />;
 };
 
 ResourceTitleCell.propTypes = {
@@ -43,6 +47,10 @@ ResourceTitleCell.propTypes = {
         resourceUri: PropTypes.string,
         resource: PropTypes.shape({
             title: PropTypes.string.isRequired,
+        }),
+        field: PropTypes.shape({
+            label: PropTypes.string.isRequired,
+            scope: PropTypes.string.isRequired,
         }),
     }),
 };

@@ -1220,6 +1220,7 @@
 "annotation_field_internal_name"	"Field Internal Name"	"Nom interne du champ"
 "annotation_resource_link"	"Open the resource"	"Ouvrir la resource"
 "annotation_home_page"	"Home page"	"Page d'accueil"
+"annotation_graph_page"	"Chart page"	"Page graphique"
 "annotation.resourceId"	"Resource title"	"Titre de la ressource"
 "annotation.resource"	"Resource"	"Ressource"
 "annotation.createdAt"	"Submission date"	"Date de soumission"

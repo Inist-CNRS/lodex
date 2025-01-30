@@ -467,7 +467,7 @@ describe('field', () => {
             });
         });
 
-        describe('findTitle', () => {
+        describe('findResourceTitle', () => {
             it('should return the field with overview 1', async () => {
                 const titleField = await fieldCollection.create({
                     position: 1,
@@ -478,7 +478,7 @@ describe('field', () => {
                     position: 2,
                     overview: 0,
                 });
-                expect(await fieldCollection.findTitle()).toStrictEqual(
+                expect(await fieldCollection.findResourceTitle()).toStrictEqual(
                     titleField,
                 );
             });
@@ -492,7 +492,38 @@ describe('field', () => {
                     position: 2,
                     overview: 0,
                 });
-                expect(await fieldCollection.findTitle()).toBeNull();
+                expect(await fieldCollection.findResourceTitle()).toBeNull();
+            });
+        });
+
+        describe('findSubResourceTitles', () => {
+            it('should return many fields with overview 5', async () => {
+                const titleField = await fieldCollection.create({
+                    position: 1,
+                    labe: 'title',
+                    overview: 5,
+                });
+                await fieldCollection.create({
+                    position: 2,
+                    overview: 0,
+                });
+                expect(
+                    await fieldCollection.findSubResourceTitles(),
+                ).toStrictEqual([titleField]);
+            });
+
+            it('should return an empty array if no fields with overview 5', async () => {
+                await fieldCollection.create({
+                    position: 1,
+                    overview: 2,
+                });
+                await fieldCollection.create({
+                    position: 2,
+                    overview: 0,
+                });
+                expect(
+                    await fieldCollection.findSubResourceTitles(),
+                ).toHaveLength(0);
             });
         });
 

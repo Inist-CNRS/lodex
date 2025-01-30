@@ -5,9 +5,9 @@ import { ObjectId } from 'mongodb';
 import { SCOPE_COLLECTION, SCOPE_DOCUMENT } from '../../common/scope';
 import { URI_FIELD_NAME } from '../../common/uris';
 import { validateField as validateFieldIsomorphic } from '../../common/validateFields';
+import { createDiacriticSafeContainRegex } from '../services/createDiacriticSafeContainRegex';
 import generateUid from '../services/generateUid';
 import { castIdsFactory, getCreatedCollection } from './utils';
-import { createDiacriticSafeContainRegex } from '../services/createDiacriticSafeContainRegex';
 
 export const buildInvalidPropertiesMessage = (name) =>
     `Invalid data for field ${name} which need a name, a label, a scope, a valid scheme if specified and a transformers array`;
@@ -428,8 +428,12 @@ export default async (db) => {
 
     collection.castIds = castIdsFactory(collection);
 
-    collection.findTitle = async () => {
+    collection.findResourceTitle = async () => {
         return collection.findOne({ overview: 1 });
+    };
+
+    collection.findSubResourceTitles = async () => {
+        return collection.find({ overview: 5 }).toArray();
     };
 
     collection.findIdsByLabel = async (label) => {

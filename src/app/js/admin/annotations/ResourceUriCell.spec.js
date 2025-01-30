@@ -20,6 +20,27 @@ describe('ResourceUriCell', () => {
         expect(wrapper.queryByText('annotation_home_page')).toBeInTheDocument();
     });
 
+    it('should display annotation_graph_page if  field scope is graphic', () => {
+        const wrapper = render(
+            <TestI18N>
+                <ResourceUriCell
+                    row={{
+                        resourceUri: null,
+                        resource: null,
+                        field: {
+                            name: 'HDpz',
+                            scope: 'graphic',
+                        },
+                    }}
+                />
+            </TestI18N>,
+        );
+
+        expect(
+            wrapper.queryByText('annotation_graph_page'),
+        ).toBeInTheDocument();
+    });
+
     it('should display the resourceUri with a button to the resource if the resource still exist', () => {
         const wrapper = render(
             <TestI18N>

@@ -5,7 +5,7 @@ import { TestI18N } from '../../i18n/I18NContext';
 import { ResourceTitleCell } from './ResourceTitleCell';
 
 describe('ResourceTitleCell', () => {
-    it('should render annotation_home_page message when resourceUri is null', () => {
+    it('should render be empty when resourceUri is null', () => {
         const wrapper = render(
             <TestI18N>
                 <ResourceTitleCell
@@ -17,7 +17,26 @@ describe('ResourceTitleCell', () => {
             </TestI18N>,
         );
 
-        expect(wrapper.queryByText('annotation_home_page')).toBeInTheDocument();
+        expect(wrapper.container).toBeEmptyDOMElement();
+    });
+
+    it('should render be empty when field scope is graphic', () => {
+        const wrapper = render(
+            <TestI18N>
+                <ResourceTitleCell
+                    row={{
+                        resourceUri: 'uid:/qsdf',
+                        resource: null,
+                        field: {
+                            label: 'Field label',
+                            scope: 'graphic',
+                        },
+                    }}
+                />
+            </TestI18N>,
+        );
+
+        expect(wrapper.container).toBeEmptyDOMElement();
     });
 
     it('should render annotation_resource_not_found message when resource is null', () => {
