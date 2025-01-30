@@ -2,7 +2,12 @@ import { MongoClient } from 'mongodb';
 import createAnnotationModel from '../../models/annotation';
 import createFieldModel from '../../models/field';
 import createPublishedDatasetModel from '../../models/publishedDataset';
-import { createAnnotation, getAnnotation, getAnnotations } from './annotation';
+import {
+    createAnnotation,
+    getAnnotation,
+    getAnnotations,
+    updateAnnotation,
+} from './annotation';
 
 const ANNOTATIONS = [
     {
@@ -815,7 +820,7 @@ describe('annotation', () => {
         });
     });
 
-    describe('/annotations/:id', () => {
+    describe('GET /annotations/:id', () => {
         let annotation;
         let field;
         beforeEach(async () => {
@@ -1035,6 +1040,137 @@ describe('annotation', () => {
                 },
                 status: 200,
             });
+        });
+    });
+
+    describe('PUT /annotations/:id', () => {
+        let annotation;
+        let field;
+        beforeEach(async () => {
+            await fieldModel.create({ position: 1, overview: 1 }, 'tItL3');
+
+            field = await fieldModel.create(
+                {
+                    position: 2,
+                    label: 'Annotated field',
+                },
+                'GvaF',
+            );
+
+            await publishedDatasetModel.create({
+                uri: 'uid:/1234',
+                tItL3: 'resource title',
+            });
+
+            annotation = await annotationModel.create({
+                resourceUri: 'uid:/1234',
+                itemPath: [],
+                fieldId: field._id,
+                authorName: 'Developer',
+                authorEmail: 'developer@marmelab.com',
+                comment: 'This is a comment',
+                status: 'in_progress',
+                internalComment: null,
+                createdAt: new Date('03-01-2025'),
+                updatedAt: new Date('03-01-2025'),
+            });
+        });
+
+        it('should update target annotation', async () => {
+            const ctx = {
+                request: {
+                    body: {
+                        status: 'validated',
+                        internalComment: 'All done',
+                        administrator: 'The Tester',
+                    },
+                },
+                response: {},
+                annotation: annotationModel,
+                publishedDataset: publishedDatasetModel,
+                field: fieldModel,
+            };
+
+            await updateAnnotation(ctx, annotation._id);
+
+            expect(ctx.response).toStrictEqual({
+                status: 200,
+                body: {
+                    data: {
+                        ...annotation,
+                        status: 'validated',
+                        internalComment: 'All done',
+                        administrator: 'The Tester',
+                        updatedAt: expect.any(Date),
+                    },
+                },
+            });
+            expect(await annotationModel.findLimitFromSkip()).toStrictEqual([
+                ctx.response.body.data,
+            ]);
+        });
+
+        it('should fail with a 404 if target annotation does not exists', async () => {
+            const ctx = {
+                request: {
+                    body: {
+                        status: 'validated',
+                        internalComment: 'All done',
+                        administrator: 'The Tester',
+                    },
+                },
+                response: {},
+                annotation: annotationModel,
+                publishedDataset: publishedDatasetModel,
+                field: fieldModel,
+            };
+            await updateAnnotation(ctx, '404');
+
+            expect(ctx.response).toStrictEqual({
+                status: 404,
+            });
+            expect(await annotationModel.findLimitFromSkip()).toStrictEqual([
+                annotation,
+            ]);
+        });
+
+        it('should fail with a 400 if data does not pass validation', async () => {
+            const ctx = {
+                request: {
+                    body: {},
+                },
+                response: {},
+                annotation: annotationModel,
+                publishedDataset: publishedDatasetModel,
+                field: fieldModel,
+            };
+            await updateAnnotation(ctx, annotation._id);
+
+            expect(ctx.response).toStrictEqual({
+                status: 400,
+                body: {
+                    errors: [
+                        {
+                            code: 'invalid_type',
+                            expected:
+                                "'to_review' | 'ongoing' | 'validated' | 'rejected'",
+                            message: 'Required',
+                            path: ['status'],
+                            received: 'undefined',
+                        },
+                        {
+                            code: 'invalid_type',
+                            expected: 'string',
+                            message: 'error_required',
+                            path: ['internalComment'],
+                            received: 'undefined',
+                        },
+                    ],
+                },
+            });
+            expect(await annotationModel.findLimitFromSkip()).toStrictEqual([
+                annotation,
+            ]);
         });
     });
 });

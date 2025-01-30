@@ -7,6 +7,7 @@ import { ObjectId } from 'mongodb';
 import { createDiacriticSafeContainRegex } from '../../services/createDiacriticSafeContainRegex';
 import {
     annotationCreationSchema,
+    annotationUpdateSchema,
     getAnnotationsQuerySchema,
 } from './../../../common/validator/annotation.validator';
 
@@ -283,6 +284,33 @@ export async function getAnnotation(ctx, id) {
     };
 }
 
+/**
+ * @param {Koa.Context} ctx
+ */
+export async function updateAnnotation(ctx, id) {
+    const validation = annotationUpdateSchema.safeParse(ctx.request.body);
+    if (!validation.success) {
+        ctx.response.status = 400;
+        ctx.response.body = {
+            errors: validation.error.errors,
+        };
+        return;
+    }
+
+    const updatedAnnotation = await ctx.annotation.updateOneById(
+        id,
+        validation.data,
+    );
+
+    if (!updatedAnnotation) {
+        ctx.response.status = 404;
+        return;
+    }
+
+    ctx.response.status = 200;
+    ctx.response.body = { data: updatedAnnotation };
+}
+
 function getResourceTitle(resource, titleField, subResourceTitleFields) {
     const lastVersion = resource.versions[resource.versions.length - 1];
     const currentResourceTitleField = resource.subresourceId
@@ -299,6 +327,7 @@ const app = new Koa();
 app.use(route.get('/', getAnnotations));
 app.use(route.get('/:id', getAnnotation));
 app.use(koaBodyParser());
+app.use(route.put('/:id', updateAnnotation));
 app.use(route.post('/', createAnnotation));
 
 export default app;
