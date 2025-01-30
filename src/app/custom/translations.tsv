@@ -1204,7 +1204,7 @@
 "annotation_step_author"	"Author input"	"Saisie de l'auteur"
 "annotations"	"Annotations"	"Annotations"
 "annotation_resource_not_found"	"Resource has been removed"	"La resource a été supprimée"
-"annotation_field_not_found"	"Field has been removed"	"le champ a été supprimée"
+"annotation_field_not_found"	"Field has been removed"	"Le champ a été supprimé"
 "annotation_resource"	"Resource title"	"Titre de la ressource"
 "annotation_comment"	"Comment"	"Commentaire"
 "annotation_authorName"	"Contributor"	"Contributeur"
