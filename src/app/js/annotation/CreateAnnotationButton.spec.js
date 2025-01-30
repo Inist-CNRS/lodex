@@ -51,14 +51,14 @@ TestButton.propTypes = {
 
 describe('CreateAnnotationButton', () => {
     beforeEach(() => {
-        window.sessionStorage.setItem(
+        window.localStorage.setItem(
             'redux-localstorage',
             JSON.stringify({ user: { token: 'token' } }),
         );
     });
 
     afterEach(() => {
-        window.sessionStorage.clear();
+        window.localStorage.clear();
         jest.clearAllMocks();
     });
 

@@ -1,10 +1,9 @@
-import { applyMiddleware, compose, createStore } from 'redux';
+import { applyMiddleware, compose, combineReducers, createStore } from 'redux';
 import createSagaMiddleware from 'redux-saga';
 import persistState, { mergePersistedState } from 'redux-localstorage';
 import adapter from 'redux-localstorage/lib/adapters/localStorage';
 import filter from 'redux-localstorage-filter';
 import { createReduxHistoryContext } from 'redux-first-history';
-import { combineReducers } from 'redux';
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -27,9 +26,10 @@ export default function configureStore(reducers, sagas, initialState, history) {
 
     const reducer = compose(mergePersistedState())(rootReducer);
 
-    const sessionStorage = compose(filter(['search', 'user']))(
+    const searchStorage = compose(filter(['search']))(
         adapter(window.sessionStorage),
     );
+    const userStorage = compose(filter(['user']))(adapter(window.localStorage));
 
     const middlewares = applyMiddleware(routerMiddleware, sagaMiddleware);
 
@@ -38,12 +38,18 @@ export default function configureStore(reducers, sagas, initialState, history) {
             ? window.__REDUX_DEVTOOLS_EXTENSION__()
             : (f) => f;
 
-    const persistSessionStateEnhancer = persistState(sessionStorage);
+    const persistSearchStateEnhancer = persistState(searchStorage);
+    const persistUserStateEnhancer = persistState(userStorage);
 
     const store = createStore(
         reducer,
         initialState,
-        compose(middlewares, persistSessionStateEnhancer, devtools),
+        compose(
+            middlewares,
+            persistSearchStateEnhancer,
+            persistUserStateEnhancer,
+            devtools,
+        ),
     );
 
     sagaMiddleware.run(sagas);
