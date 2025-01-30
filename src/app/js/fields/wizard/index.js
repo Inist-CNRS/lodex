@@ -128,7 +128,7 @@ const FieldEditionWizardComponent = ({
                 />
             ),
         },
-        !currentEditedField.subresourceId && {
+        {
             label: 'field_wizard_tab_semantic',
             id: 'tab-semantics',
             component: <TabSemantics currentEditedField={currentEditedField} />,

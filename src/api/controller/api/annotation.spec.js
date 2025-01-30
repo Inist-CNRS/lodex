@@ -1,8 +1,8 @@
-import { createAnnotation, getAnnotation, getAnnotations } from './annotation';
 import { MongoClient } from 'mongodb';
 import createAnnotationModel from '../../models/annotation';
 import createFieldModel from '../../models/field';
 import createPublishedDatasetModel from '../../models/publishedDataset';
+import { createAnnotation, getAnnotation, getAnnotations } from './annotation';
 
 const ANNOTATIONS = [
     {
@@ -40,6 +40,18 @@ const ANNOTATIONS = [
         internal_comment: null,
         createdAt: new Date('01-01-2025'),
         updatedAt: new Date('01-01-2025'),
+    },
+    {
+        resourceUri: 'uid:/783f398d-0675-48d6-b851-137302820cf6',
+        itemPath: [],
+        fieldId: null,
+        authorName: 'Jane SMITH',
+        authorEmail: 'jane.smith@marmelab.com',
+        comment: 'You shall not pass!',
+        status: 'to_review',
+        internal_comment: null,
+        createdAt: new Date('04-01-2025'),
+        updatedAt: new Date('04-01-2025'),
     },
 ];
 
@@ -146,6 +158,7 @@ describe('annotation', () => {
         let annotationList;
         let field1;
         let field2;
+        let field3;
 
         beforeEach(async () => {
             await fieldModel.create(
@@ -175,6 +188,19 @@ describe('annotation', () => {
                 },
                 'field2',
             );
+
+            field3 = await fieldModel.create(
+                {
+                    position: 3,
+                    label: 'field 3',
+                    internalName: 'field_3',
+                    internalScopes: ['home'],
+                    subresourceId: '2dee944d-efb0-4b0f-be12-7f5938db7f8a',
+                    overview: 5,
+                },
+                'hzBla',
+            );
+
             annotationList = await Promise.all([
                 annotationModel.create({
                     ...ANNOTATIONS[0],
@@ -184,6 +210,10 @@ describe('annotation', () => {
                 annotationModel.create({
                     ...ANNOTATIONS[2],
                     fieldId: field2._id.toString(),
+                }),
+                annotationModel.create({
+                    ...ANNOTATIONS[3],
+                    fieldId: field3._id.toString(),
                 }),
             ]);
 
@@ -195,6 +225,15 @@ describe('annotation', () => {
                             tItl3: 'Developer resource',
                         },
                     ],
+                },
+                {
+                    uri: ANNOTATIONS[3].resourceUri,
+                    versions: [
+                        {
+                            hzBla: 'A subresource',
+                        },
+                    ],
+                    subresourceId: '2dee944d-efb0-4b0f-be12-7f5938db7f8a',
                 },
                 {
                     uri: ANNOTATIONS[2].resourceUri,
@@ -223,9 +262,17 @@ describe('annotation', () => {
             expect(ctx.response.status).toBe(200);
 
             expect(ctx.body).toStrictEqual({
-                total: 3,
-                fullTotal: 3,
+                total: 4,
+                fullTotal: 4,
                 data: [
+                    {
+                        ...annotationList[3],
+                        resource: {
+                            uri: annotationList[3].resourceUri,
+                            title: 'A subresource',
+                        },
+                        field: field3,
+                    },
                     {
                         ...annotationList[0],
                         resource: {
@@ -265,9 +312,14 @@ describe('annotation', () => {
 
             expect(ctx.response.status).toBe(200);
             expect(ctx.body).toStrictEqual({
-                total: 1,
-                fullTotal: 3,
+                total: 2,
+                fullTotal: 4,
                 data: [
+                    {
+                        ...annotationList[1],
+                        resource: undefined,
+                        field: null,
+                    },
                     {
                         ...annotationList[2],
                         resource: {
@@ -453,8 +505,16 @@ describe('annotation', () => {
 
             expect(ctx.body).toStrictEqual({
                 total: 2,
-                fullTotal: 2,
+                fullTotal: 3,
                 data: [
+                    {
+                        ...annotationList[3],
+                        resource: {
+                            uri: annotationList[3].resourceUri,
+                            title: 'A subresource',
+                        },
+                        field: field3,
+                    },
                     {
                         ...annotationList[0],
                         resource: {
@@ -462,11 +522,6 @@ describe('annotation', () => {
                             title: 'Developer resource',
                         },
                         field: field1,
-                    },
-                    {
-                        ...annotationList[1],
-                        resource: undefined,
-                        field: null,
                     },
                 ],
             });
@@ -680,8 +735,8 @@ describe('annotation', () => {
 
             expect(ctx.response.status).toBe(200);
             expect(ctx.body).toStrictEqual({
-                total: 3,
-                fullTotal: 3,
+                total: 4,
+                fullTotal: 4,
                 data: [
                     { ...annotationList[1], resource: undefined, field: null },
                     {
@@ -691,6 +746,14 @@ describe('annotation', () => {
                             title: 'Developer resource',
                         },
                         field: field1,
+                    },
+                    {
+                        ...annotationList[3],
+                        resource: {
+                            uri: annotationList[3].resourceUri,
+                            title: 'A subresource',
+                        },
+                        field: field3,
                     },
                     {
                         ...annotationList[2],
@@ -922,6 +985,55 @@ describe('annotation', () => {
 
             expect(ctx.response).toStrictEqual({
                 status: 404,
+            });
+        });
+
+        it('should return target annotation with subresource and field', async () => {
+            const ctx = {
+                annotation: annotationModel,
+                field: fieldModel,
+                publishedDataset: publishedDatasetModel,
+                response: {},
+            };
+
+            await ctx.field.create(
+                {
+                    position: 3,
+                    label: 'field 3',
+                    internalName: 'field_3',
+                    internalScopes: ['home'],
+                    subresourceId: '2dee944d-efb0-4b0f-be12-7f5938db7f8a',
+                    overview: 5,
+                },
+                'hzBla',
+            );
+
+            await ctx.publishedDataset.insertBatch([
+                {
+                    uri: ANNOTATIONS[3].resourceUri,
+                    versions: [
+                        {
+                            hzBla: 'A subresource',
+                        },
+                    ],
+                    subresourceId: '2dee944d-efb0-4b0f-be12-7f5938db7f8a',
+                },
+            ]);
+
+            const annotation = await ctx.annotation.create(ANNOTATIONS[3]);
+
+            await getAnnotation(ctx, annotation._id);
+
+            expect(ctx.response).toMatchObject({
+                body: {
+                    ...ANNOTATIONS[3],
+                    field: null,
+                    resource: {
+                        uri: ANNOTATIONS[3].resourceUri,
+                        title: 'A subresource',
+                    },
+                },
+                status: 200,
             });
         });
     });

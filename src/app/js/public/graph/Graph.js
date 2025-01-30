@@ -1,36 +1,37 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import classnames from 'classnames';
-import { connect } from 'react-redux';
-import { Card, CardHeader, Button, IconButton } from '@mui/material';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Button, Card, CardHeader, IconButton } from '@mui/material';
+import { grey } from '@mui/material/colors';
+import classnames from 'classnames';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import { translate } from '../../i18n/I18NContext';
-import { grey } from '@mui/material/colors';
 
 import {
     field as fieldPropTypes,
     polyglot as polyglotPropTypes,
 } from '../../propTypes';
 
+import { Settings } from '@mui/icons-material';
+import { CreateAnnotationButton } from '../../annotation/CreateAnnotationButton';
+import { preLoadPublication } from '../../fields';
+import stylesToClassname from '../../lib/stylesToClassName';
 import {
-    fromFields,
     fromCharacteristic,
+    fromFields,
     fromUser,
 } from '../../sharedSelectors';
-import Format from '../Format';
-import FacetList from '../facet/FacetList';
-import DatasetSearchBar from '../dataset/DatasetSearchBar';
-import AppliedFacetList from '../dataset/AppliedDatasetFacetList';
-import PropertyLinkedFields from '../Property/PropertyLinkedFields';
-import CompositeProperty from '../Property/CompositeProperty';
-import DatasetStats from '../dataset/DatasetStats';
-import stylesToClassname from '../../lib/stylesToClassName';
-import { preLoadPublication } from '../../fields';
 import { preLoadDatasetPage as preLoadDatasetPageAction } from '../dataset';
+import AppliedFacetList from '../dataset/AppliedDatasetFacetList';
+import DatasetSearchBar from '../dataset/DatasetSearchBar';
+import DatasetStats from '../dataset/DatasetStats';
+import FacetList from '../facet/FacetList';
+import Format from '../Format';
 import { getEditFieldRedirectUrl } from '../Property';
-import { Settings } from '@mui/icons-material';
+import CompositeProperty from '../Property/CompositeProperty';
+import PropertyLinkedFields from '../Property/PropertyLinkedFields';
 
 const styles = stylesToClassname(
     {
@@ -168,6 +169,9 @@ class Graph extends Component {
                                                     />
                                                 </IconButton>
                                             )}
+                                            <CreateAnnotationButton
+                                                field={graphField}
+                                            />
                                         </>
                                     }
                                 />

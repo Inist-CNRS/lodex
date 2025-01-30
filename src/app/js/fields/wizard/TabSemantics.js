@@ -8,8 +8,12 @@ import FieldSchemeInput from '../FieldSchemeInput';
 export const TabSemanticsComponent = ({ currentEditedField }) => {
     return (
         <>
-            <FieldSchemeInput />
-            <FieldLanguageInput field={currentEditedField} />
+            {!currentEditedField.subresourceId && (
+                <>
+                    <FieldSchemeInput />
+                    <FieldLanguageInput field={currentEditedField} />
+                </>
+            )}
             <FieldAnnotableInput />
         </>
     );

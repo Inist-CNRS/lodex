@@ -2,13 +2,13 @@ import Koa from 'koa';
 import koaBodyParser from 'koa-bodyparser';
 import route from 'koa-route';
 
+import { uniq } from 'lodash';
+import { ObjectId } from 'mongodb';
 import { createDiacriticSafeContainRegex } from '../../services/createDiacriticSafeContainRegex';
 import {
     annotationSchema,
     getAnnotationsQuerySchema,
 } from './../../../common/validator/annotation.validator';
-import { uniq } from 'lodash';
-import { ObjectId } from 'mongodb';
 
 /**
  * @param {Koa.Context} ctx
@@ -180,7 +180,10 @@ export async function getAnnotations(ctx) {
     } = validation.data;
 
     const skip = page * limit;
-    const titleField = await ctx.field.findTitle();
+    const [titleField, subResourceTitleFields] = await Promise.all([
+        ctx.field.findResourceTitle(),
+        ctx.field.findSubResourceTitles(),
+    ]);
 
     const query = await buildQuery({
         filterBy,
@@ -205,18 +208,19 @@ export async function getAnnotations(ctx) {
         uniq(annotations.map(({ resourceUri }) => resourceUri)),
     );
 
-    const resourceByUri = (resources || []).reduce(
-        (acc, resource) => ({
+    const resourceByUri = (resources || []).reduce((acc, resource) => {
+        return {
             ...acc,
             [resource.uri]: {
                 uri: resource.uri,
-                title: resource.versions[resource.versions.length - 1][
-                    titleField.name
-                ],
+                title: getResourceTitle(
+                    resource,
+                    titleField,
+                    subResourceTitleFields,
+                ),
             },
-        }),
-        {},
-    );
+        };
+    }, {});
 
     const fieldById = await ctx.field.findManyByIds(
         uniq(
@@ -249,7 +253,10 @@ export async function getAnnotation(ctx, id) {
         return;
     }
 
-    const titleField = await ctx.field.findTitle();
+    const [titleField, subResourceTitleFields] = await Promise.all([
+        ctx.field.findResourceTitle(),
+        ctx.field.findSubResourceTitles(),
+    ]);
 
     const resource = annotation.resourceUri
         ? await ctx.publishedDataset.findByUri(annotation.resourceUri)
@@ -265,13 +272,26 @@ export async function getAnnotation(ctx, id) {
         field,
         resource: resource
             ? {
-                  title: resource.versions[resource.versions.length - 1][
-                      titleField.name
-                  ],
+                  title: getResourceTitle(
+                      resource,
+                      titleField,
+                      subResourceTitleFields,
+                  ),
                   uri: resource.uri,
               }
             : null,
     };
+}
+
+function getResourceTitle(resource, titleField, subResourceTitleFields) {
+    const lastVersion = resource.versions[resource.versions.length - 1];
+    const currentResourceTitleField = resource.subresourceId
+        ? subResourceTitleFields.find(
+              ({ subresourceId }) => subresourceId === resource.subresourceId,
+          )
+        : titleField;
+
+    return lastVersion[currentResourceTitleField?.name];
 }
 
 const app = new Koa();
