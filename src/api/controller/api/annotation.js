@@ -43,6 +43,7 @@ export const buildQuery = async ({
         return {};
     }
     switch (filterBy) {
+        case 'updatedAt':
         case 'createdAt': {
             const date = new Date(filterValue);
             switch (filterOperator) {

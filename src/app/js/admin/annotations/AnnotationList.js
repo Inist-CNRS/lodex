@@ -230,6 +230,19 @@ export const AnnotationList = () => {
                     ),
                     filterable: true,
                 },
+                {
+                    field: 'updatedAt',
+                    headerName: translate('annotation_updated_at'),
+
+                    flex: 1,
+                    renderCell: ({ value }) => {
+                        return new Date(value).toLocaleDateString();
+                    },
+                    filterOperators: getGridDateOperators().filter((operator) =>
+                        ['is', 'after', 'before'].includes(operator.value),
+                    ),
+                    filterable: true,
+                },
             ]}
             rows={data?.data || []}
             getRowId={({ _id }) => _id}

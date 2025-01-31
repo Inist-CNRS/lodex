@@ -574,6 +574,127 @@ describe('annotation', () => {
             });
         });
 
+        it('should allow to filter by updatedAt (is)', async () => {
+            const ctx = {
+                request: {
+                    query: {
+                        page: 0,
+                        perPage: 2,
+                        filterBy: 'updatedAt',
+                        filterOperator: 'is',
+                        filterValue: '02-01-2025',
+                    },
+                },
+                response: {},
+                annotation: annotationModel,
+                publishedDataset: publishedDatasetModel,
+                field: fieldModel,
+            };
+
+            await getAnnotations(ctx);
+
+            expect(ctx.response.status).toBe(200);
+
+            expect(ctx.body).toStrictEqual({
+                total: 1,
+                fullTotal: 1,
+                data: [
+                    {
+                        ...annotationList[1],
+                        resource: undefined,
+                        field: null,
+                    },
+                ],
+            });
+        });
+
+        it('should allow to filter by updatedAt (after)', async () => {
+            const ctx = {
+                request: {
+                    query: {
+                        page: 0,
+                        perPage: 2,
+                        filterBy: 'updatedAt',
+                        filterOperator: 'after',
+                        filterValue: '02-01-2025',
+                    },
+                },
+                response: {},
+                annotation: annotationModel,
+                publishedDataset: publishedDatasetModel,
+                field: fieldModel,
+            };
+
+            await getAnnotations(ctx);
+
+            expect(ctx.response.status).toBe(200);
+
+            expect(ctx.body).toStrictEqual({
+                total: 2,
+                fullTotal: 3,
+                data: [
+                    {
+                        ...annotationList[3],
+                        resource: {
+                            uri: annotationList[3].resourceUri,
+                            title: 'A subresource',
+                        },
+                        field: field3,
+                    },
+                    {
+                        ...annotationList[0],
+                        resource: {
+                            uri: annotationList[0].resourceUri,
+                            title: 'Developer resource',
+                        },
+                        field: field1,
+                    },
+                ],
+            });
+        });
+
+        it('should allow to filter by updatedAt (before)', async () => {
+            const ctx = {
+                request: {
+                    query: {
+                        page: 0,
+                        perPage: 2,
+                        filterBy: 'updatedAt',
+                        filterOperator: 'before',
+                        filterValue: '02-01-2025',
+                    },
+                },
+                response: {},
+                annotation: annotationModel,
+                publishedDataset: publishedDatasetModel,
+                field: fieldModel,
+            };
+
+            await getAnnotations(ctx);
+
+            expect(ctx.response.status).toBe(200);
+
+            expect(ctx.body).toStrictEqual({
+                total: 2,
+                fullTotal: 2,
+                data: [
+                    {
+                        ...annotationList[1],
+                        resource: undefined,
+                        field: null,
+                    },
+                    {
+                        ...annotationList[2],
+                        resource: {
+                            uri: annotationList[2].resourceUri,
+                            title: 'Resource with incomplete author',
+                        },
+                        field: field2,
+                    },
+                ],
+            });
+        });
+
         it('should allow to filter by field label', async () => {
             const ctx = {
                 request: {
@@ -807,6 +928,7 @@ describe('annotation', () => {
                             'fieldId',
                             'comment',
                             'createdAt',
+                            'updatedAt',
                             'field.label',
                             'field.name',
                             'field.internalName',

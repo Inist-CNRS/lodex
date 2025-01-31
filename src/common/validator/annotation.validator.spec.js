@@ -355,6 +355,7 @@ describe('annotation.validator', () => {
                         'fieldId',
                         'comment',
                         'createdAt',
+                        'updatedAt',
                         'field.label',
                         'field.name',
                         'field.internalName',
