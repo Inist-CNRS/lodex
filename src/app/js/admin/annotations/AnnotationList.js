@@ -223,6 +223,15 @@ export const AnnotationList = () => {
                     sortable: true,
                 },
                 {
+                    field: 'administrator',
+                    headerName: translate('annotation_administrator'),
+                    filterOperators: getGridStringOperators().filter(
+                        (operator) => operator.value === 'contains',
+                    ),
+                    flex: 1,
+                    sortable: true,
+                },
+                {
                     field: 'authorName',
                     headerName: translate('annotation_authorName'),
                     flex: 1,

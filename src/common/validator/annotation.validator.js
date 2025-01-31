@@ -86,6 +86,7 @@ const annotationFilterableFields = z
             'comment',
             'status',
             'internalComment',
+            'administrator',
             'createdAt',
             'updatedAt',
             'field.label',
@@ -100,9 +101,21 @@ const annotationFilterableFields = z
     .optional();
 
 const annotationSortableFields = z
-    .enum(['resourceUri', 'fieldId', 'createdAt', 'updatedAt', 'comment'], {
-        message: 'annotation_query_sortBy_invalid',
-    })
+    .enum(
+        [
+            'resourceUri',
+            'fieldId',
+            'createdAt',
+            'updatedAt',
+            'comment',
+            'status',
+            'internalComment',
+            'administrator',
+        ],
+        {
+            message: 'annotation_query_sortBy_invalid',
+        },
+    )
     .default('createdAt');
 
 export const getAnnotationsQuerySchema = z.object({

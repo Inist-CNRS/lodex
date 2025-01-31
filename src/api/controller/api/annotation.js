@@ -66,8 +66,9 @@ export const buildQuery = async ({
             }
         }
         case 'resourceUri':
-        case 'internalComment':
         case 'status':
+        case 'internalComment':
+        case 'administrator':
         case 'comment': {
             switch (filterOperator) {
                 case 'contains':
