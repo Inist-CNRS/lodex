@@ -23,6 +23,8 @@ describe('AnnotationItem', () => {
                     internalName: 'annotated_field',
                     internalScopes: ['resource'],
                 },
+                authorName: 'Count Ributor',
+                authorEmail: 'ributor@gmail.com',
                 createdAt: new Date('01-01-2025').toISOString(),
             },
             isLoading: false,
@@ -61,6 +63,14 @@ describe('AnnotationItem', () => {
         expect(
             wrapper.queryByLabelText('annotation_comment_section'),
         ).toHaveTextContent('Just testing the annotation system');
+
+        expect(
+            wrapper.queryByLabelText('annotation_field_author_name'),
+        ).toHaveTextContent('Count Ributor');
+
+        expect(
+            wrapper.queryByLabelText('annotation_field_author_email'),
+        ).toHaveTextContent('ributor@gmail.com');
 
         expect(
             wrapper.queryByLabelText('annotation_created_at'),
@@ -163,7 +173,6 @@ describe('AnnotationItem', () => {
             </TestI18N>,
         );
 
-        wrapper.debug();
         expect(
             wrapper.queryByText('annotation_header The resource title'),
         ).toBeInTheDocument();

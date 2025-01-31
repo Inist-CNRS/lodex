@@ -194,6 +194,54 @@ export const AnnotationItem = () => {
 
             <Stack gap={2}>
                 <Typography variant="h6">
+                    {translate('annotation_contributor_section')}
+                </Typography>
+                <Grid container spacing={2} columns={2}>
+                    <Grid item xs={1}>
+                        <Typography
+                            id="annotation_field_author_name"
+                            sx={{
+                                fontWeight: 800,
+                                color: theme.palette.text.secondary,
+                            }}
+                        >
+                            {translate('annotation_field_author_name')}
+                        </Typography>
+                    </Grid>
+                    <Grid item xs={1}>
+                        <Typography
+                            variant="body1"
+                            aria-labelledby="annotation_field_author_name"
+                        >
+                            {annotation.authorName}
+                        </Typography>
+                    </Grid>
+                </Grid>
+                <Grid container spacing={2} columns={2}>
+                    <Grid item xs={1}>
+                        <Typography
+                            id="annotation_field_author_email"
+                            sx={{
+                                fontWeight: 800,
+                                color: theme.palette.text.secondary,
+                            }}
+                        >
+                            {translate('annotation_field_author_email')}
+                        </Typography>
+                    </Grid>
+                    <Grid item xs={1}>
+                        <Typography
+                            variant="body1"
+                            aria-labelledby="annotation_field_author_email"
+                        >
+                            {annotation.authorEmail}
+                        </Typography>
+                    </Grid>
+                </Grid>
+            </Stack>
+
+            <Stack gap={2}>
+                <Typography variant="h6">
                     {translate('annotation_complementary_infos_section')}
                 </Typography>
                 <Grid container spacing={2} columns={2}>

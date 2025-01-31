@@ -156,6 +156,13 @@ describe('Annotation', () => {
                     'This is another comment',
                 );
 
+                cy.findByLabelText('Name').should('have.text', 'Jane Smith');
+
+                cy.findByLabelText('Email').should(
+                    'have.text',
+                    'jane.smith@example.org',
+                );
+
                 cy.findByLabelText('Submission date').should(
                     'have.text',
                     new Date().toLocaleDateString(),
