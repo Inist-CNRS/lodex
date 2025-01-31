@@ -6,9 +6,9 @@ import { annotationUpdateSchema } from '../../../../common/validator/annotation.
 import SaveIcon from '@mui/icons-material/Save';
 import {
     Button,
+    Chip,
     CircularProgress,
     FormControl,
-    InputLabel,
     MenuItem,
     Select,
     Stack,
@@ -18,7 +18,28 @@ import {
 import { useTranslate } from '../../i18n/I18NContext';
 import PropTypes from 'prop-types';
 
-const statuses = ['to_review', 'ongoing', 'validated', 'rejected'];
+const statuses = [
+    {
+        value: 'to_review',
+        label: 'annotation_status_to_review',
+        color: 'warning',
+    },
+    {
+        value: 'ongoing',
+        label: 'annotation_status_ongoing',
+        color: 'info',
+    },
+    {
+        value: 'validated',
+        label: 'annotation_status_validated',
+        color: 'success',
+    },
+    {
+        value: 'rejected',
+        label: 'annotation_status_rejected',
+        color: 'error',
+    },
+];
 
 export const AnnotationForm = ({ annotation }) => {
     const { translate } = useTranslate();
@@ -69,11 +90,12 @@ export const AnnotationForm = ({ annotation }) => {
                                     }
                                     value={field.state.value}
                                 >
-                                    {statuses.map((status) => (
-                                        <MenuItem key={status} value={status}>
-                                            {translate(
-                                                `annotation_status_${status}`,
-                                            )}
+                                    {statuses.map(({ value, label, color }) => (
+                                        <MenuItem key={value} value={value}>
+                                            <Chip
+                                                color={color}
+                                                label={translate(label)}
+                                            />
                                         </MenuItem>
                                     ))}
                                 </Select>
@@ -96,7 +118,6 @@ export const AnnotationForm = ({ annotation }) => {
                                     {translate('annotation_internal_comment')} *
                                 </Typography>
                                 <TextField
-                                    // label={`${translate('annotation_internal_comment')} *`}
                                     aria-labelledby="annotation_internal_comment"
                                     name={field.name}
                                     value={field.state.value}
