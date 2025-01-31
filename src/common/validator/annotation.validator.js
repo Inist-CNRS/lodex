@@ -85,6 +85,7 @@ const annotationFilterableFields = z
             'fieldId',
             'comment',
             'status',
+            'internalComment',
             'createdAt',
             'updatedAt',
             'field.label',
