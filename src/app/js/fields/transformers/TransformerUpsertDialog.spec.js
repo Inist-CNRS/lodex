@@ -1,7 +1,6 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 import { TransformerItem } from './TransformerUpsertDialog';
-import '@testing-library/jest-dom';
 
 describe('TransformerUpsertDialog', () => {
     describe('TransformerItem', () => {

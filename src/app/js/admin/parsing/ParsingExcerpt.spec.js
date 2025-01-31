@@ -1,13 +1,11 @@
 import React from 'react';
 import { render, fireEvent } from '../../../../test-utils';
-import '@testing-library/jest-dom';
 
 import {
     ParsingExcerptComponent as ParsingExcerpt,
     getEnrichmentsNames,
     getColumnStyle,
 } from './ParsingExcerpt';
-import ParsingExcerptAddColumn from './ParsingExcerptAddColumn';
 import { TestI18N } from '../../i18n/I18NContext';
 
 let mockedParams = {

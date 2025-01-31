@@ -123,13 +123,16 @@ export const AnnotationForm = ({ annotation }) => {
                                     {translate('annotation_administrator')}
                                 </Typography>
                                 <TextField
-                                    aria-labelledby="annotation_administrator"
                                     name={field.name}
                                     value={field.state.value}
                                     onBlur={field.handleBlur}
                                     onChange={(e) =>
                                         field.handleChange(e.target.value)
                                     }
+                                    inputProps={{
+                                        'aria-labelledby':
+                                            'annotation_administrator',
+                                    }}
                                     error={hasErrors}
                                 />
                             </FormControl>

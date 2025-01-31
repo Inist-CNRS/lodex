@@ -1,4 +1,3 @@
-import '@testing-library/jest-dom';
 import PropTypes from 'prop-types';
 import React from 'react';
 
