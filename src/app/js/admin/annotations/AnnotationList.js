@@ -1,4 +1,4 @@
-import { Tooltip } from '@mui/material';
+import { Tooltip, Typography } from '@mui/material';
 import {
     DataGrid,
     getGridDateOperators,
@@ -9,8 +9,8 @@ import {
     GridToolbarFilterButton,
 } from '@mui/x-data-grid';
 import React, { useState } from 'react';
-import FieldInternalIcon from '../../fields/FieldInternalIcon';
 import { useHistory } from 'react-router';
+import FieldInternalIcon from '../../fields/FieldInternalIcon';
 import { useTranslate } from '../../i18n/I18NContext';
 import AdminOnlyAlert from '../../lib/components/AdminOnlyAlert';
 import { ResourceTitleCell } from './ResourceTitleCell';
@@ -179,6 +179,26 @@ export const AnnotationList = () => {
                     },
                     flex: 1,
                     sortable: false,
+                },
+                {
+                    field: 'initialValue',
+                    headerName: translate('annotation_initialValue'),
+                    flex: 1,
+                    sortable: false,
+                    renderCell: ({ value }) => {
+                        return (
+                            <Tooltip title={value}>
+                                <Typography
+                                    sx={{
+                                        textOverflow: 'ellipsis',
+                                        overflow: 'hidden',
+                                    }}
+                                >
+                                    {value}
+                                </Typography>
+                            </Tooltip>
+                        );
+                    },
                 },
                 {
                     field: 'authorName',

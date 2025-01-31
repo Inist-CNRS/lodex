@@ -2,6 +2,7 @@ import { default as z } from 'zod';
 
 export const annotationSchema = z.object({
     resourceUri: z.string().nullish().default(null),
+    target: z.enum(['title', 'value']).nullish().default('title'),
     kind: z.enum(['correction', 'comment']).nullish().default('comment'),
     fieldId: z
         .string()
@@ -45,6 +46,7 @@ export const annotationSchema = z.object({
         .nullish()
         .default(null)
         .transform((value) => (value === '' ? null : value)),
+    initialValue: z.string().nullish().default(null),
 });
 
 const annotationFilterableFields = z

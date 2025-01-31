@@ -1,10 +1,13 @@
-import React from 'react';
+import { Typography } from '@mui/material';
 import PropTypes from 'prop-types';
+import React from 'react';
+import { CreateAnnotationButton } from '../../../annotation/CreateAnnotationButton';
 import { field as fieldPropTypes } from '../../../propTypes';
 
-const TitleView = ({ resource, field, level, colors }) => {
-    const value = resource[field.name];
+const TitleViewInternal = ({ level, value, colors }) => {
     const style = {
+        display: 'inline-block',
+        width: 'fit-content',
         color: colors.split(' ')[0],
     };
     switch (level) {
@@ -22,6 +25,32 @@ const TitleView = ({ resource, field, level, colors }) => {
         default:
             return <h1 style={style}>{value}</h1>;
     }
+};
+TitleViewInternal.propTypes = {
+    value: PropTypes.string.isRequired,
+    level: PropTypes.oneOf([1, 2, 3, 4, 5, 6]).isRequired,
+    colors: PropTypes.string.isRequired,
+};
+
+const TitleView = ({ resource, field, level, colors }) => {
+    const value = resource[field.name];
+    return (
+        <Typography
+            className="property_value_item property_value_heading"
+            sx={{
+                position: 'relative',
+                display: 'inline-block',
+                width: 'fit-content',
+            }}
+        >
+            <TitleViewInternal level={level} value={value} colors={colors} />
+            <CreateAnnotationButton
+                field={field}
+                target="value"
+                initialValue={value}
+            />
+        </Typography>
+    );
 };
 
 TitleView.propTypes = {

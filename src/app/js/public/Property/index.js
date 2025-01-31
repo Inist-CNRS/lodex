@@ -95,14 +95,14 @@ const styles = {
         display: 'flex',
         alignItems: 'center',
     },
-    value: (dense) => ({
+    value: (dense, isListFormat) => ({
         flexGrow: 2,
         width: '100%',
         padding: {
             xs: dense ? '0' : '0.75rem 0.75rem 0.75rem 0',
             sm: dense ? '0.5rem 0.5rem 0.5rem 0' : '0.75rem 0.75rem 0.75rem 0',
         },
-        textAlign: 'justify',
+        textAlign: isListFormat ? undefined : 'justify',
     }),
 };
 
@@ -237,7 +237,9 @@ export const PropertyComponent = ({
                 className={classnames('property_value_container')}
                 style={styles.valueContainer}
             >
-                <Box sx={styles.value(dense)}>{format}</Box>
+                <Box sx={styles.value(dense, formatName === 'list')}>
+                    {format}
+                </Box>
                 {field.language && !isMultilingual && (
                     <span
                         className={classnames(

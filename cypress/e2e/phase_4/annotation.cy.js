@@ -36,7 +36,7 @@ describe('Annotation', () => {
 
     describe('homepage', () => {
         it('should support annotations on home page', () => {
-            annotation.createAnnotation({
+            annotation.createTitleAnnotation({
                 fieldLabel: 'Dataset Description',
                 comment: 'This is a comment',
                 authorName: 'John Doe',
@@ -57,6 +57,37 @@ describe('Annotation', () => {
                     '[Doay]',
                     '',
                     'n/a',
+                    '',
+                    'John Doe',
+                    'This is a comment',
+                    new Date().toLocaleDateString(),
+                ]);
+            });
+        });
+
+        it('should create annotation on field value', () => {
+            annotation.createValueAnnotation({
+                fieldLabel: 'Dataset Description',
+                comment: 'This is a comment',
+                authorName: 'John Doe',
+                authorEmail: 'john.doe@example.org',
+            });
+
+            cy.findByText('More').click();
+            menu.goToAdminDashboard();
+            cy.findByText('Annotations').click();
+
+            cy.findAllByRole('cell').then((cells) => {
+                expect(
+                    cells.toArray().map((cell) => cell.textContent),
+                ).to.deep.equal([
+                    'Home page',
+                    '',
+                    'Dataset Description',
+                    '[Doay]',
+                    '',
+                    'n/a',
+                    "Cette collection n'a pas d'autre but que de présenter un manière d’utiliser l'application Lodex pour mettre en ligne des données.",
                     'John Doe',
                     'This is a comment',
                     new Date().toLocaleDateString(),
@@ -72,7 +103,7 @@ describe('Annotation', () => {
                 searchDrawer.search('Terminator 2');
                 searchDrawer.waitForLoading();
                 cy.findAllByText('Terminator 2').eq(1).click();
-                annotation.createAnnotation({
+                annotation.createTitleAnnotation({
                     fieldLabel: 'actors',
                     comment: 'This is a comment',
                     authorName: 'John Doe',
@@ -83,7 +114,7 @@ describe('Annotation', () => {
                 searchDrawer.search('RoboCop');
                 searchDrawer.waitForLoading();
                 cy.findAllByText('RoboCop').eq(0).click();
-                annotation.createAnnotation({
+                annotation.createTitleAnnotation({
                     fieldLabel: 'rating',
                     comment: 'This is another comment',
                     authorName: 'Jane Smith',
@@ -103,6 +134,7 @@ describe('Annotation', () => {
                         'Field Id',
                         'Field Icons',
                         'Field Internal Name',
+                        'Initial value',
                         'Contributor',
                         'Comment',
                         'Submission date',
@@ -111,7 +143,7 @@ describe('Annotation', () => {
 
                 cy.findAllByRole('cell').then((cells) => {
                     const firstUri = cells[0].textContent;
-                    const secondUri = cells[9].textContent;
+                    const secondUri = cells[10].textContent;
 
                     expect(firstUri).to.match(/uid:\//);
                     expect(secondUri).to.match(/uid:\//);
@@ -125,6 +157,7 @@ describe('Annotation', () => {
                         '[bZE+]',
                         '',
                         'n/a',
+                        '',
                         'Jane Smith',
                         'This is another comment',
                         new Date().toLocaleDateString(),
@@ -134,6 +167,7 @@ describe('Annotation', () => {
                         '[K8Lu]',
                         '',
                         'n/a',
+                        '',
                         'John Doe',
                         'This is a comment',
                         new Date().toLocaleDateString(),
@@ -184,7 +218,7 @@ describe('Annotation', () => {
                 name: 'Répartition par réalisateurs uniques',
             }).click();
 
-            annotation.createAnnotation({
+            annotation.createTitleAnnotation({
                 fieldLabel: 'Répartition par réalisateurs uniques',
                 comment: 'This is a comment',
                 authorName: 'John Doe',
@@ -205,6 +239,7 @@ describe('Annotation', () => {
                     '[xkoP]',
                     '',
                     'n/a',
+                    '',
                     'John Doe',
                     'This is a comment',
                     new Date().toLocaleDateString(),

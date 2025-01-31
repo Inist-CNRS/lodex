@@ -1,14 +1,14 @@
+import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import { Grid, Link, Stack, Typography, useTheme } from '@mui/material';
 import React from 'react';
-import { useGetAnnotation } from './useGetAnnotation';
-import Loading from '../../lib/components/Loading';
-import { useTranslate } from '../../i18n/I18NContext';
-import { useRouteMatch } from 'react-router-dom';
 import { Redirect } from 'react-router';
+import { useRouteMatch } from 'react-router-dom';
 import { DEFAULT_TENANT } from '../../../../common/tools/tenantTools';
-import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import FieldInternalIcon from '../../fields/FieldInternalIcon';
+import { useTranslate } from '../../i18n/I18NContext';
 import AdminOnlyAlert from '../../lib/components/AdminOnlyAlert';
+import Loading from '../../lib/components/Loading';
+import { useGetAnnotation } from './useGetAnnotation';
 
 const tenant = sessionStorage.getItem('lodex-tenant') || DEFAULT_TENANT;
 
@@ -175,6 +175,26 @@ export const AnnotationItem = () => {
                                         />
                                     ),
                                 )}
+                            </Typography>
+                        </Grid>
+
+                        <Grid item xs={1}>
+                            <Typography
+                                id="annotation_initialValue"
+                                sx={{
+                                    fontWeight: 800,
+                                    color: theme.palette.text.secondary,
+                                }}
+                            >
+                                {translate('annotation_initialValue')}
+                            </Typography>
+                        </Grid>
+                        <Grid item xs={1}>
+                            <Typography
+                                variant="body1"
+                                aria-labelledby="annotation_initialValue"
+                            >
+                                {annotation.initialValue}
                             </Typography>
                         </Grid>
                     </Grid>

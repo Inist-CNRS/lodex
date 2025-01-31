@@ -8,7 +8,12 @@ import { CreateAnnotationModal } from './CreateAnnotationModal';
 import { useCreateAnnotation } from './useCreateAnnotation';
 import { useResourceUri } from './useResourceUri';
 
-export function CreateAnnotationButton({ field }) {
+export function CreateAnnotationButton({
+    field,
+    target = 'title',
+    itemPath = null,
+    initialValue = null,
+}) {
     const { translate } = useTranslate();
     const anchorButton = useRef(null);
 
@@ -17,6 +22,7 @@ export function CreateAnnotationButton({ field }) {
     const { handleCreateAnnotation, isSubmitting } = useCreateAnnotation();
 
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isTooltipOpen, setIsTooltipOpen] = useState(false);
 
     const handleOpenModal = () => {
         setIsModalOpen(true);
@@ -31,16 +37,26 @@ export function CreateAnnotationButton({ field }) {
             await handleCreateAnnotation({
                 ...annotation,
                 resourceUri,
-                itemPath: null,
+                target,
+                itemPath,
                 fieldId: field ? field._id : null,
+                initialValue,
             });
 
             handleCloseModal();
         },
-        [field],
+        [field, itemPath],
     );
 
-    const buttonLabel = translate('annotation_create_button_label', {
+    const handleShowTooltip = () => {
+        setIsTooltipOpen(true);
+    };
+
+    const handleHideTooltip = () => {
+        setIsTooltipOpen(false);
+    };
+
+    const buttonLabel = translate(`annotation_create_button_${target}_label`, {
         field: field.label,
     });
 
@@ -48,14 +64,43 @@ export function CreateAnnotationButton({ field }) {
         return null;
     }
 
+    const forceButtonDisplay = isTooltipOpen || isModalOpen;
+
     return (
         <>
-            <Tooltip title={buttonLabel} arrow placement="top">
+            <Tooltip
+                title={buttonLabel}
+                placement="top"
+                arrow
+                open={isTooltipOpen}
+            >
                 <IconButton
                     color="primary"
                     onClick={handleOpenModal}
                     aria-label={buttonLabel}
                     ref={anchorButton}
+                    sx={{
+                        '.property_value_item &': {
+                            position: 'absolute',
+                            opacity: forceButtonDisplay ? 1 : 0,
+                            top: '-8px',
+                            right: '-40px',
+                            transition: 'opacity 0.5s ease-out',
+                            zIndex: 1,
+                        },
+                        'li:hover &, .property_value_item:hover &': {
+                            opacity: 1,
+                        },
+                        '.list-format-unordered_flat_li &': {
+                            backgroundColor: (theme) =>
+                                theme.palette.background.default,
+                        },
+                        '.property_value_heading &': {
+                            top: 'calc(50% - 16px)',
+                        },
+                    }}
+                    onMouseEnter={handleShowTooltip}
+                    onMouseLeave={handleHideTooltip}
                 >
                     <MapsUgcIcon
                         sx={{
@@ -79,4 +124,7 @@ export function CreateAnnotationButton({ field }) {
 
 CreateAnnotationButton.propTypes = {
     field: PropTypes.object,
+    target: PropTypes.oneOf(['title', 'value']),
+    initialValue: PropTypes.string,
+    itemPath: PropTypes.arrayOf(PropTypes.string),
 };
