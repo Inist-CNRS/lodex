@@ -84,6 +84,7 @@ const annotationFilterableFields = z
             'resourceUri',
             'fieldId',
             'comment',
+            'status',
             'createdAt',
             'updatedAt',
             'field.label',

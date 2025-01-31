@@ -16,6 +16,7 @@ import AdminOnlyAlert from '../../lib/components/AdminOnlyAlert';
 import { ResourceTitleCell } from './ResourceTitleCell';
 import { ResourceUriCell } from './ResourceUriCell';
 import { useGetAnnotations } from './useGetAnnotations';
+import { AnnotationStatus } from './AnnotationStatus';
 
 const AnnotationListToolBar = () => {
     const { translate } = useTranslate();
@@ -199,6 +200,18 @@ export const AnnotationList = () => {
                             </Tooltip>
                         );
                     },
+                },
+                {
+                    field: 'status',
+                    headerName: translate('annotation_status'),
+                    filterOperators: getGridStringOperators().filter(
+                        (operator) => operator.value === 'contains',
+                    ),
+                    renderCell: ({ value }) => {
+                        return <AnnotationStatus status={value} />;
+                    },
+                    flex: 1,
+                    sortable: true,
                 },
                 {
                     field: 'authorName',

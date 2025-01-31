@@ -66,6 +66,7 @@ export const buildQuery = async ({
             }
         }
         case 'resourceUri':
+        case 'status':
         case 'comment': {
             switch (filterOperator) {
                 case 'contains':

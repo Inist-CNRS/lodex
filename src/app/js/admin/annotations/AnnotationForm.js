@@ -6,7 +6,6 @@ import { annotationUpdateSchema } from '../../../../common/validator/annotation.
 import SaveIcon from '@mui/icons-material/Save';
 import {
     Button,
-    Chip,
     CircularProgress,
     FormControl,
     MenuItem,
@@ -17,29 +16,7 @@ import {
 } from '@mui/material';
 import { useTranslate } from '../../i18n/I18NContext';
 import PropTypes from 'prop-types';
-
-const statuses = [
-    {
-        value: 'to_review',
-        label: 'annotation_status_to_review',
-        color: 'default',
-    },
-    {
-        value: 'ongoing',
-        label: 'annotation_status_ongoing',
-        color: 'info',
-    },
-    {
-        value: 'validated',
-        label: 'annotation_status_validated',
-        color: 'success',
-    },
-    {
-        value: 'rejected',
-        label: 'annotation_status_rejected',
-        color: 'error',
-    },
-];
+import { AnnotationStatus, statuses } from './AnnotationStatus';
 
 export const AnnotationForm = ({ annotation }) => {
     const { translate } = useTranslate();
@@ -90,12 +67,9 @@ export const AnnotationForm = ({ annotation }) => {
                                     }
                                     value={field.state.value}
                                 >
-                                    {statuses.map(({ value, label, color }) => (
-                                        <MenuItem key={value} value={value}>
-                                            <Chip
-                                                color={color}
-                                                label={translate(label)}
-                                            />
+                                    {statuses.map((status) => (
+                                        <MenuItem key={status} value={status}>
+                                            <AnnotationStatus status={status} />
                                         </MenuItem>
                                     ))}
                                 </Select>
@@ -184,7 +158,7 @@ export const AnnotationForm = ({ annotation }) => {
 
 AnnotationForm.propTypes = {
     annotation: PropTypes.shape({
-        status: PropTypes.oneOf(status).isRequired,
+        status: PropTypes.oneOf(statuses).isRequired,
         internalComment: PropTypes.string,
         administrator: PropTypes.string,
     }),
