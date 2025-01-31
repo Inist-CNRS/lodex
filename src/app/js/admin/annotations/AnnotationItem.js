@@ -313,6 +313,29 @@ export const AnnotationItem = () => {
                                     </Typography>
                                 </Grid>
                             </Grid>
+                            <Grid container spacing={2} columns={2}>
+                                <Grid item xs={1}>
+                                    <Typography
+                                        id="annotation_updated_at"
+                                        sx={{
+                                            fontWeight: 800,
+                                            color: theme.palette.text.secondary,
+                                        }}
+                                    >
+                                        {translate('annotation_updated_at')}
+                                    </Typography>
+                                </Grid>
+                                <Grid item xs={1}>
+                                    <Typography
+                                        variant="body1"
+                                        aria-labelledby="annotation_updated_at"
+                                    >
+                                        {new Date(
+                                            annotation.updatedAt,
+                                        ).toLocaleDateString()}
+                                    </Typography>
+                                </Grid>
+                            </Grid>
                         </Stack>
                     </Stack>
                 </Grid>

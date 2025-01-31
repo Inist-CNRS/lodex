@@ -7,6 +7,12 @@ import { useGetAnnotation } from './useGetAnnotation';
 import { AnnotationItem } from './AnnotationItem';
 
 jest.mock('./useGetAnnotation', () => ({ useGetAnnotation: jest.fn() }));
+jest.mock('./useUpdateAnnotation', () => ({
+    useUpdateAnnotation: jest.fn().mockReturnValue({
+        handleUpdateAnnotation: jest.fn(),
+        isSubmitting: false,
+    }),
+}));
 
 describe('AnnotationItem', () => {
     it('should render the annotation with its field and resource', () => {
@@ -26,6 +32,7 @@ describe('AnnotationItem', () => {
                 authorName: 'Count Ributor',
                 authorEmail: 'ributor@gmail.com',
                 createdAt: new Date('01-01-2025').toISOString(),
+                updatedAt: new Date('10-01-2025').toISOString(),
             },
             isLoading: false,
             error: null,
@@ -75,6 +82,9 @@ describe('AnnotationItem', () => {
         expect(
             wrapper.queryByLabelText('annotation_created_at'),
         ).toHaveTextContent('1/1/2025');
+        expect(
+            wrapper.queryByLabelText('annotation_updated_at'),
+        ).toHaveTextContent('10/1/2025');
     });
 
     it('should render the annotation with no resource', () => {

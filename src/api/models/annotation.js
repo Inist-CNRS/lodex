@@ -22,6 +22,9 @@ export default async (db) => {
         annotationPayload,
         updatedAt = new Date(),
     ) {
+        if (!ObjectId.isValid(id)) {
+            return null;
+        }
         return annotationCollection.findOneAndUpdate(
             {
                 _id: new ObjectId(id),

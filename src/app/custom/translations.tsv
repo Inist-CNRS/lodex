@@ -1213,6 +1213,7 @@
 "annotation_resource_uri"	"Resource URI"	"URI de la ressource"
 "annotation_query_error"	"Could not retrieve annotations"	"Impossible de récupérer les annotations"
 "annotation_created_at"	"Submission date"	"Date de soumission"
+"annotation_updated_at"	"Last modified on"	"Derniére modification"
 "annotation_field_name"	"Field Id"	"Id du champ"
 "annotation_field_label"	"Field label"	"Etiquette du champ"
 "annotation_field_section"	"Field:"	"Champ :"

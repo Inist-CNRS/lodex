@@ -22,7 +22,7 @@ const statuses = [
     {
         value: 'to_review',
         label: 'annotation_status_to_review',
-        color: 'warning',
+        color: 'default',
     },
     {
         value: 'ongoing',
