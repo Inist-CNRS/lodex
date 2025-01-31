@@ -1193,6 +1193,8 @@
 "annotation_create_button_value_label"	"Add an annotation to the %{field} field value"	"Ajouter une annotation à la valeur du champ %{field}"
 "annotation_create_success"	"Your suggestion has been sent. We thank you for your contribution."	"Votre suggestion a bien été transmise. Nous vous remercions pour votre contribution."
 "annotation_create_error"	"Failed to create annotation"	"Une erreur est survenue lors de la création de l'annotation"
+"annotation_update_success"	"The suggestion has been updated."	"La suggestion a bien été mise à jour."
+"annotation_update_error"	"Failed to update annotation"	"Une erreur est survenue lors de la mise à jour de l'annotation"
 "annotation_add_comment"	"Add a comment"	"Ajouter un commentaire"
 "annotation.comment"	"Comment"	"Commentaire"
 "annotation_itemPath_invalid"	"The item path must be null or an array of string"	"Le chemin de l'élément doit être null ou un tableau de chaînes de caractères"

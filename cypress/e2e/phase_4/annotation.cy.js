@@ -97,7 +97,7 @@ describe('Annotation', () => {
     });
 
     describe('resources', () => {
-        describe('createAnnotation', () => {
+        describe('create list and update an Annotation', () => {
             it('should create an annotation on resource field', () => {
                 cy.findByText('Search').click();
                 searchDrawer.search('Terminator 2');
@@ -135,15 +135,19 @@ describe('Annotation', () => {
                         'Field Icons',
                         'Field Internal Name',
                         'Initial value',
+                        'Status',
+                        'Internal Comment',
+                        'Administrator',
                         'Contributor',
                         'Comment',
                         'Submission date',
+                        'Last modified on',
                     ]);
                 });
 
                 cy.findAllByRole('cell').then((cells) => {
                     const firstUri = cells[0].textContent;
-                    const secondUri = cells[10].textContent;
+                    const secondUri = cells[13].textContent;
 
                     expect(firstUri).to.match(/uid:\//);
                     expect(secondUri).to.match(/uid:\//);
@@ -158,8 +162,12 @@ describe('Annotation', () => {
                         '',
                         'n/a',
                         '',
+                        'To Review',
+                        '',
+                        '',
                         'Jane Smith',
                         'This is another comment',
+                        new Date().toLocaleDateString(),
                         new Date().toLocaleDateString(),
                         secondUri,
                         'Terminator 2',
@@ -168,8 +176,12 @@ describe('Annotation', () => {
                         '',
                         'n/a',
                         '',
+                        'To Review',
+                        '',
+                        '',
                         'John Doe',
                         'This is a comment',
+                        new Date().toLocaleDateString(),
                         new Date().toLocaleDateString(),
                     ]);
                 });
@@ -201,6 +213,57 @@ describe('Annotation', () => {
                     'have.text',
                     new Date().toLocaleDateString(),
                 );
+
+                cy.findByLabelText('Status').should('have.text', 'To Review​');
+                cy.findByLabelText('Status').click();
+                cy.findByLabelText('Validated​').click();
+                cy.findByLabelText('Internal Comment *').type('Return applied');
+                cy.findByLabelText('Administrator').type('John Doe');
+                cy.findByText('Save').click();
+                cy.findByText('The suggestion has been updated.').should(
+                    'exist',
+                );
+
+                cy.findByText('Annotations').click();
+
+                cy.findAllByRole('cell').then((cells) => {
+                    const firstUri = cells[0].textContent;
+                    const secondUri = cells[13].textContent;
+
+                    expect(firstUri).to.match(/uid:\//);
+                    expect(secondUri).to.match(/uid:\//);
+
+                    expect(
+                        cells.toArray().map((cell) => cell.textContent),
+                    ).to.deep.equal([
+                        firstUri,
+                        'RoboCop',
+                        'rating',
+                        '[bZE+]',
+                        '',
+                        'n/a',
+                        'Validated',
+                        'Return applied',
+                        'John Doe',
+                        'Jane Smith',
+                        'This is another comment',
+                        new Date().toLocaleDateString(),
+                        new Date().toLocaleDateString(),
+                        secondUri,
+                        'Terminator 2',
+                        'actors',
+                        '[K8Lu]',
+                        '',
+                        'n/a',
+                        'To Review',
+                        '',
+                        '',
+                        'John Doe',
+                        'This is a comment',
+                        new Date().toLocaleDateString(),
+                        new Date().toLocaleDateString(),
+                    ]);
+                });
             });
 
             it('should hide annotation button when field does not support annotations', () => {
