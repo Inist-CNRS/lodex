@@ -5,13 +5,14 @@ import { getUserSessionStorageInfo } from '../api/tools';
 import { getRequest } from '../../user';
 import { toast } from 'react-toastify';
 import { useHistory } from 'react-router-dom';
+import fetch from '../../lib/fetch';
 
 export function useUpdateAnnotation() {
     const { translate } = useTranslate();
     const history = useHistory();
 
     const mutation = useMutation({
-        mutationFn: async (id, annotation) => {
+        mutationFn: async ({ id, annotation }) => {
             const { token } = getUserSessionStorageInfo();
             const request = getRequest(
                 { token },
@@ -22,6 +23,7 @@ export function useUpdateAnnotation() {
                 },
             );
             const { response, error } = await fetch(request);
+
             if (error?.code === 401) {
                 history.push('/login');
                 return;
@@ -47,7 +49,7 @@ export function useUpdateAnnotation() {
 
     const handleUpdateAnnotation = useCallback(
         async (id, annotation) => {
-            return mutation.mutateAsync(id, annotation);
+            return mutation.mutateAsync({ id, annotation });
         },
         [mutation, translate],
     );

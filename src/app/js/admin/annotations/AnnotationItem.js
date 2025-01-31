@@ -9,7 +9,7 @@ import { useTranslate } from '../../i18n/I18NContext';
 import AdminOnlyAlert from '../../lib/components/AdminOnlyAlert';
 import Loading from '../../lib/components/Loading';
 import { useGetAnnotation } from './useGetAnnotation';
-import { useUpdateAnnotation } from './useUpdateAnnotation';
+import { AnnotationForm } from './AnnotationForm';
 
 const tenant = sessionStorage.getItem('lodex-tenant') || DEFAULT_TENANT;
 
@@ -34,7 +34,6 @@ export const AnnotationItem = () => {
         isLoading,
     } = useGetAnnotation(match.params.annotationId);
 
-    const { handleUpdateAnnotation, isSubmitting } = useUpdateAnnotation();
     const theme = useTheme();
 
     if (isLoading) {
@@ -322,9 +321,10 @@ export const AnnotationItem = () => {
                     xs={1}
                     sx={{
                         borderLeft: '1px solid grey',
+                        padding: '1em',
                     }}
                 >
-                    SOON
+                    <AnnotationForm annotation={annotation} />
                 </Grid>
             </Grid>
         </Stack>

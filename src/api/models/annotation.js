@@ -24,7 +24,7 @@ export default async (db) => {
     ) {
         return annotationCollection.findOneAndUpdate(
             {
-                _id: id,
+                _id: new ObjectId(id),
             },
             {
                 $set: {
