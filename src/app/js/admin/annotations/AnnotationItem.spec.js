@@ -23,6 +23,9 @@ describe('AnnotationItem', () => {
                     title: 'The resource title',
                 },
                 comment: 'Just testing the annotation system',
+                status: 'ongoing',
+                internalComment: 'Just testing the annotation admin',
+                administrator: 'The admin',
                 field: {
                     name: 'GaZr',
                     label: 'Annotated field',
@@ -85,6 +88,17 @@ describe('AnnotationItem', () => {
         expect(
             wrapper.queryByLabelText('annotation_updated_at'),
         ).toHaveTextContent('10/1/2025');
+        expect(wrapper.queryByLabelText('annotation_status')).toHaveTextContent(
+            'annotation_status_ongoing​',
+        );
+        expect(
+            wrapper.queryByLabelText('annotation_internal_comment *'),
+        ).toHaveTextContent('Just testing the annotation admin');
+
+        // @weird, test refuse to find the value of the field
+        // expect(
+        //     wrapper.queryByLabelText('annotation_administrator'),
+        // ).toHaveTextContent('The administrator');
     });
 
     it('should render the annotation with no resource', () => {

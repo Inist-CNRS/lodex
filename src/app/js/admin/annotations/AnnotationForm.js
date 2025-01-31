@@ -120,7 +120,7 @@ export const AnnotationForm = ({ annotation }) => {
                                     id="annotation_administrator"
                                     variant="h6"
                                 >
-                                    {translate('annotation_administrator')} *
+                                    {translate('annotation_administrator')}
                                 </Typography>
                                 <TextField
                                     aria-labelledby="annotation_administrator"
