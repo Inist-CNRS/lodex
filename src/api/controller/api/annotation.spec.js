@@ -17,8 +17,9 @@ const ANNOTATIONS = [
         authorName: 'Developer',
         authorEmail: 'developer@marmelab.com',
         comment: 'This is a comment',
-        status: 'in_progress',
+        status: 'ongoing',
         internalComment: null,
+        administrator: 'Sandrine',
         createdAt: new Date('03-01-2025'),
         updatedAt: new Date('03-01-2025'),
     },
@@ -30,7 +31,7 @@ const ANNOTATIONS = [
         authorEmail: 'john.doe@marmelab.com',
         comment: 'This is another comment',
         status: 'to_review',
-        internalComment: null,
+        internalComment: 'I asked for further details',
         createdAt: new Date('02-01-2025'),
         updatedAt: new Date('02-01-2025'),
     },
@@ -843,6 +844,114 @@ describe('annotation', () => {
             });
         });
 
+        it('should allow to filter by status', async () => {
+            const ctx = {
+                request: {
+                    query: {
+                        page: 0,
+                        perPage: 2,
+                        filterBy: 'status',
+                        filterOperator: 'contains',
+                        filterValue: 'ongoing',
+                    },
+                },
+                response: {},
+                annotation: annotationModel,
+                publishedDataset: publishedDatasetModel,
+                field: fieldModel,
+            };
+
+            await getAnnotations(ctx);
+
+            expect(ctx.response.status).toBe(200);
+
+            expect(ctx.body).toStrictEqual({
+                total: 1,
+                fullTotal: 1,
+                data: [
+                    {
+                        ...annotationList[0],
+                        resource: {
+                            uri: annotationList[0].resourceUri,
+                            title: 'Developer resource',
+                        },
+                        field: field1,
+                    },
+                ],
+            });
+        });
+
+        it('should allow to filter by internal comment', async () => {
+            const ctx = {
+                request: {
+                    query: {
+                        page: 0,
+                        perPage: 2,
+                        filterBy: 'internalComment',
+                        filterOperator: 'contains',
+                        filterValue: 'further details',
+                    },
+                },
+                response: {},
+                annotation: annotationModel,
+                publishedDataset: publishedDatasetModel,
+                field: fieldModel,
+            };
+
+            await getAnnotations(ctx);
+
+            expect(ctx.response.status).toBe(200);
+
+            expect(ctx.body).toStrictEqual({
+                total: 1,
+                fullTotal: 1,
+                data: [
+                    {
+                        ...annotationList[1],
+                        resource: undefined,
+                        field: null,
+                    },
+                ],
+            });
+        });
+
+        it('should allow to filter by administrator', async () => {
+            const ctx = {
+                request: {
+                    query: {
+                        page: 0,
+                        perPage: 2,
+                        filterBy: 'administrator',
+                        filterOperator: 'contains',
+                        filterValue: 'Sandrine',
+                    },
+                },
+                response: {},
+                annotation: annotationModel,
+                publishedDataset: publishedDatasetModel,
+                field: fieldModel,
+            };
+
+            await getAnnotations(ctx);
+
+            expect(ctx.response.status).toBe(200);
+
+            expect(ctx.body).toStrictEqual({
+                total: 1,
+                fullTotal: 1,
+                data: [
+                    {
+                        ...annotationList[0],
+                        resource: {
+                            uri: annotationList[0].resourceUri,
+                            title: 'Developer resource',
+                        },
+                        field: field1,
+                    },
+                ],
+            });
+        });
+
         it('should order results', async () => {
             const ctx = {
                 request: {
@@ -927,6 +1036,9 @@ describe('annotation', () => {
                             'resourceUri',
                             'fieldId',
                             'comment',
+                            'status',
+                            'internalComment',
+                            'administrator',
                             'createdAt',
                             'updatedAt',
                             'field.label',
@@ -968,7 +1080,7 @@ describe('annotation', () => {
                 authorName: 'Developer',
                 authorEmail: 'developer@marmelab.com',
                 comment: 'This is a comment',
-                status: 'in_progress',
+                status: 'ongoing',
                 internalComment: null,
                 createdAt: new Date('03-01-2025'),
                 updatedAt: new Date('03-01-2025'),
@@ -1006,7 +1118,7 @@ describe('annotation', () => {
                         uri: 'uid:/1234',
                     },
                     resourceUri: 'uid:/1234',
-                    status: 'to_review',
+                    status: 'ongoing',
                     updatedAt: expect.any(Date),
                 },
                 status: 200,
@@ -1021,7 +1133,7 @@ describe('annotation', () => {
                 authorName: 'Developer',
                 authorEmail: 'developer@marmelab.com',
                 comment: 'This is a comment',
-                status: 'in_progress',
+                status: 'ongoing',
                 internalComment: null,
                 createdAt: new Date('03-01-2025'),
                 updatedAt: new Date('03-01-2025'),
@@ -1051,7 +1163,7 @@ describe('annotation', () => {
                         uri: 'uid:/1234',
                     },
                     resourceUri: 'uid:/1234',
-                    status: 'to_review',
+                    status: 'ongoing',
                     updatedAt: expect.any(Date),
                 },
                 status: 200,
@@ -1066,7 +1178,7 @@ describe('annotation', () => {
                 authorName: 'Developer',
                 authorEmail: 'developer@marmelab.com',
                 comment: 'This is a comment',
-                status: 'in_progress',
+                status: 'ongoing',
                 internalComment: null,
                 createdAt: new Date('03-01-2025'),
                 updatedAt: new Date('03-01-2025'),
@@ -1093,7 +1205,7 @@ describe('annotation', () => {
                     itemPath: [],
                     resource: null,
                     resourceUri: 'uid:/404',
-                    status: 'to_review',
+                    status: 'ongoing',
                     updatedAt: expect.any(Date),
                 },
                 status: 200,
@@ -1191,7 +1303,7 @@ describe('annotation', () => {
                 authorName: 'Developer',
                 authorEmail: 'developer@marmelab.com',
                 comment: 'This is a comment',
-                status: 'in_progress',
+                status: 'ongoing',
                 internalComment: null,
                 createdAt: new Date('03-01-2025'),
                 updatedAt: new Date('03-01-2025'),
