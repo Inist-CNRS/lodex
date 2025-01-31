@@ -219,6 +219,20 @@ export const AnnotationList = () => {
                     filterOperators: getGridStringOperators().filter(
                         (operator) => operator.value === 'contains',
                     ),
+                    renderCell: ({ value }) => {
+                        return (
+                            <Tooltip title={value}>
+                                <Typography
+                                    sx={{
+                                        textOverflow: 'ellipsis',
+                                        overflow: 'hidden',
+                                    }}
+                                >
+                                    {value}
+                                </Typography>
+                            </Tooltip>
+                        );
+                    },
                     flex: 1,
                     sortable: true,
                 },
@@ -247,6 +261,20 @@ export const AnnotationList = () => {
                         (operator) => operator.value === 'contains',
                     ),
                     flex: 1,
+                    renderCell: ({ value }) => {
+                        return (
+                            <Tooltip title={value}>
+                                <Typography
+                                    sx={{
+                                        textOverflow: 'ellipsis',
+                                        overflow: 'hidden',
+                                    }}
+                                >
+                                    {value}
+                                </Typography>
+                            </Tooltip>
+                        );
+                    },
                 },
                 {
                     field: 'createdAt',
