@@ -8,13 +8,35 @@ export default async (db) => {
         const now = new Date();
         const { insertedId } = await annotationCollection.insertOne({
             ...annotationPayload,
-            status: 'to_review',
-            internal_comment: null,
+            status: annotationPayload.status ?? 'to_review',
+            internalComment: annotationPayload.internalComment ?? null,
             createdAt: annotationPayload.createdAt ?? now,
             updatedAt: annotationPayload.updatedAt ?? now,
         });
 
         return annotationCollection.findOne({ _id: insertedId });
+    }
+
+    async function updateOneById(
+        id,
+        annotationPayload,
+        updatedAt = new Date(),
+    ) {
+        if (!ObjectId.isValid(id)) {
+            return null;
+        }
+        return annotationCollection.findOneAndUpdate(
+            {
+                _id: new ObjectId(id),
+            },
+            {
+                $set: {
+                    ...annotationPayload,
+                    updatedAt,
+                },
+            },
+            { returnDocument: 'after' },
+        );
     }
 
     async function findLimitFromSkip({
@@ -47,5 +69,5 @@ export default async (db) => {
         return annotationCollection.findOne({ _id: new ObjectId(id) });
     }
 
-    return { create, findLimitFromSkip, count, findOneById };
+    return { create, updateOneById, findLimitFromSkip, count, findOneById };
 };

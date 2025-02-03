@@ -3,7 +3,6 @@ import { render, fireEvent, act } from '@testing-library/react';
 import datasetApi from '../api/dataset';
 import publishApi from '../api/publish';
 import { ParsingDeleteRowDialog } from './ParsingDeleteRowDialog';
-import '@testing-library/jest-dom';
 import { TestI18N } from '../../i18n/I18NContext';
 
 jest.mock('../api/dataset');

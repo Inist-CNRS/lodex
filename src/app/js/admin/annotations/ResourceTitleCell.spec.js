@@ -1,4 +1,3 @@
-import '@testing-library/jest-dom';
 import React from 'react';
 import { render } from '../../../../test-utils';
 import { TestI18N } from '../../i18n/I18NContext';

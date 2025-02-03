@@ -16,6 +16,7 @@ import AdminOnlyAlert from '../../lib/components/AdminOnlyAlert';
 import { ResourceTitleCell } from './ResourceTitleCell';
 import { ResourceUriCell } from './ResourceUriCell';
 import { useGetAnnotations } from './useGetAnnotations';
+import { AnnotationStatus } from './AnnotationStatus';
 
 const AnnotationListToolBar = () => {
     const { translate } = useTranslate();
@@ -201,6 +202,50 @@ export const AnnotationList = () => {
                     },
                 },
                 {
+                    field: 'status',
+                    headerName: translate('annotation_status'),
+                    filterOperators: getGridStringOperators().filter(
+                        (operator) => operator.value === 'contains',
+                    ),
+                    renderCell: ({ value }) => {
+                        return <AnnotationStatus status={value} />;
+                    },
+                    flex: 1,
+                    sortable: true,
+                },
+                {
+                    field: 'internalComment',
+                    headerName: translate('annotation_internal_comment'),
+                    filterOperators: getGridStringOperators().filter(
+                        (operator) => operator.value === 'contains',
+                    ),
+                    renderCell: ({ value }) => {
+                        return (
+                            <Tooltip title={value}>
+                                <Typography
+                                    sx={{
+                                        textOverflow: 'ellipsis',
+                                        overflow: 'hidden',
+                                    }}
+                                >
+                                    {value}
+                                </Typography>
+                            </Tooltip>
+                        );
+                    },
+                    flex: 1,
+                    sortable: true,
+                },
+                {
+                    field: 'administrator',
+                    headerName: translate('annotation_administrator'),
+                    filterOperators: getGridStringOperators().filter(
+                        (operator) => operator.value === 'contains',
+                    ),
+                    flex: 1,
+                    sortable: true,
+                },
+                {
                     field: 'authorName',
                     headerName: translate('annotation_authorName'),
                     flex: 1,
@@ -216,10 +261,37 @@ export const AnnotationList = () => {
                         (operator) => operator.value === 'contains',
                     ),
                     flex: 1,
+                    renderCell: ({ value }) => {
+                        return (
+                            <Tooltip title={value}>
+                                <Typography
+                                    sx={{
+                                        textOverflow: 'ellipsis',
+                                        overflow: 'hidden',
+                                    }}
+                                >
+                                    {value}
+                                </Typography>
+                            </Tooltip>
+                        );
+                    },
                 },
                 {
                     field: 'createdAt',
                     headerName: translate('annotation_created_at'),
+
+                    flex: 1,
+                    renderCell: ({ value }) => {
+                        return new Date(value).toLocaleDateString();
+                    },
+                    filterOperators: getGridDateOperators().filter((operator) =>
+                        ['is', 'after', 'before'].includes(operator.value),
+                    ),
+                    filterable: true,
+                },
+                {
+                    field: 'updatedAt',
+                    headerName: translate('annotation_updated_at'),
 
                     flex: 1,
                     renderCell: ({ value }) => {

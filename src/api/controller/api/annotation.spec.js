@@ -2,7 +2,12 @@ import { MongoClient } from 'mongodb';
 import createAnnotationModel from '../../models/annotation';
 import createFieldModel from '../../models/field';
 import createPublishedDatasetModel from '../../models/publishedDataset';
-import { createAnnotation, getAnnotation, getAnnotations } from './annotation';
+import {
+    createAnnotation,
+    getAnnotation,
+    getAnnotations,
+    updateAnnotation,
+} from './annotation';
 
 const ANNOTATIONS = [
     {
@@ -12,8 +17,9 @@ const ANNOTATIONS = [
         authorName: 'Developer',
         authorEmail: 'developer@marmelab.com',
         comment: 'This is a comment',
-        status: 'in_progress',
-        internal_comment: null,
+        status: 'ongoing',
+        internalComment: null,
+        administrator: 'Sandrine',
         createdAt: new Date('03-01-2025'),
         updatedAt: new Date('03-01-2025'),
     },
@@ -25,7 +31,7 @@ const ANNOTATIONS = [
         authorEmail: 'john.doe@marmelab.com',
         comment: 'This is another comment',
         status: 'to_review',
-        internal_comment: null,
+        internalComment: 'I asked for further details',
         createdAt: new Date('02-01-2025'),
         updatedAt: new Date('02-01-2025'),
     },
@@ -37,7 +43,7 @@ const ANNOTATIONS = [
         authorEmail: 'jane.smith@marmelab.com',
         comment: 'The author list is incomplete: it should include Jane SMITH',
         status: 'rejected',
-        internal_comment: null,
+        internalComment: null,
         createdAt: new Date('01-01-2025'),
         updatedAt: new Date('01-01-2025'),
     },
@@ -49,7 +55,7 @@ const ANNOTATIONS = [
         authorEmail: 'jane.smith@marmelab.com',
         comment: 'You shall not pass!',
         status: 'to_review',
-        internal_comment: null,
+        internalComment: null,
         createdAt: new Date('04-01-2025'),
         updatedAt: new Date('04-01-2025'),
     },
@@ -108,7 +114,7 @@ describe('annotation', () => {
                 data: {
                     ...annotation,
                     status: 'to_review',
-                    internal_comment: null,
+                    internalComment: null,
                     authorEmail: null,
                 },
             });
@@ -569,6 +575,127 @@ describe('annotation', () => {
             });
         });
 
+        it('should allow to filter by updatedAt (is)', async () => {
+            const ctx = {
+                request: {
+                    query: {
+                        page: 0,
+                        perPage: 2,
+                        filterBy: 'updatedAt',
+                        filterOperator: 'is',
+                        filterValue: '02-01-2025',
+                    },
+                },
+                response: {},
+                annotation: annotationModel,
+                publishedDataset: publishedDatasetModel,
+                field: fieldModel,
+            };
+
+            await getAnnotations(ctx);
+
+            expect(ctx.response.status).toBe(200);
+
+            expect(ctx.body).toStrictEqual({
+                total: 1,
+                fullTotal: 1,
+                data: [
+                    {
+                        ...annotationList[1],
+                        resource: undefined,
+                        field: null,
+                    },
+                ],
+            });
+        });
+
+        it('should allow to filter by updatedAt (after)', async () => {
+            const ctx = {
+                request: {
+                    query: {
+                        page: 0,
+                        perPage: 2,
+                        filterBy: 'updatedAt',
+                        filterOperator: 'after',
+                        filterValue: '02-01-2025',
+                    },
+                },
+                response: {},
+                annotation: annotationModel,
+                publishedDataset: publishedDatasetModel,
+                field: fieldModel,
+            };
+
+            await getAnnotations(ctx);
+
+            expect(ctx.response.status).toBe(200);
+
+            expect(ctx.body).toStrictEqual({
+                total: 2,
+                fullTotal: 3,
+                data: [
+                    {
+                        ...annotationList[3],
+                        resource: {
+                            uri: annotationList[3].resourceUri,
+                            title: 'A subresource',
+                        },
+                        field: field3,
+                    },
+                    {
+                        ...annotationList[0],
+                        resource: {
+                            uri: annotationList[0].resourceUri,
+                            title: 'Developer resource',
+                        },
+                        field: field1,
+                    },
+                ],
+            });
+        });
+
+        it('should allow to filter by updatedAt (before)', async () => {
+            const ctx = {
+                request: {
+                    query: {
+                        page: 0,
+                        perPage: 2,
+                        filterBy: 'updatedAt',
+                        filterOperator: 'before',
+                        filterValue: '02-01-2025',
+                    },
+                },
+                response: {},
+                annotation: annotationModel,
+                publishedDataset: publishedDatasetModel,
+                field: fieldModel,
+            };
+
+            await getAnnotations(ctx);
+
+            expect(ctx.response.status).toBe(200);
+
+            expect(ctx.body).toStrictEqual({
+                total: 2,
+                fullTotal: 2,
+                data: [
+                    {
+                        ...annotationList[1],
+                        resource: undefined,
+                        field: null,
+                    },
+                    {
+                        ...annotationList[2],
+                        resource: {
+                            uri: annotationList[2].resourceUri,
+                            title: 'Resource with incomplete author',
+                        },
+                        field: field2,
+                    },
+                ],
+            });
+        });
+
         it('should allow to filter by field label', async () => {
             const ctx = {
                 request: {
@@ -717,6 +844,114 @@ describe('annotation', () => {
             });
         });
 
+        it('should allow to filter by status', async () => {
+            const ctx = {
+                request: {
+                    query: {
+                        page: 0,
+                        perPage: 2,
+                        filterBy: 'status',
+                        filterOperator: 'contains',
+                        filterValue: 'ongoing',
+                    },
+                },
+                response: {},
+                annotation: annotationModel,
+                publishedDataset: publishedDatasetModel,
+                field: fieldModel,
+            };
+
+            await getAnnotations(ctx);
+
+            expect(ctx.response.status).toBe(200);
+
+            expect(ctx.body).toStrictEqual({
+                total: 1,
+                fullTotal: 1,
+                data: [
+                    {
+                        ...annotationList[0],
+                        resource: {
+                            uri: annotationList[0].resourceUri,
+                            title: 'Developer resource',
+                        },
+                        field: field1,
+                    },
+                ],
+            });
+        });
+
+        it('should allow to filter by internal comment', async () => {
+            const ctx = {
+                request: {
+                    query: {
+                        page: 0,
+                        perPage: 2,
+                        filterBy: 'internalComment',
+                        filterOperator: 'contains',
+                        filterValue: 'further details',
+                    },
+                },
+                response: {},
+                annotation: annotationModel,
+                publishedDataset: publishedDatasetModel,
+                field: fieldModel,
+            };
+
+            await getAnnotations(ctx);
+
+            expect(ctx.response.status).toBe(200);
+
+            expect(ctx.body).toStrictEqual({
+                total: 1,
+                fullTotal: 1,
+                data: [
+                    {
+                        ...annotationList[1],
+                        resource: undefined,
+                        field: null,
+                    },
+                ],
+            });
+        });
+
+        it('should allow to filter by administrator', async () => {
+            const ctx = {
+                request: {
+                    query: {
+                        page: 0,
+                        perPage: 2,
+                        filterBy: 'administrator',
+                        filterOperator: 'contains',
+                        filterValue: 'Sandrine',
+                    },
+                },
+                response: {},
+                annotation: annotationModel,
+                publishedDataset: publishedDatasetModel,
+                field: fieldModel,
+            };
+
+            await getAnnotations(ctx);
+
+            expect(ctx.response.status).toBe(200);
+
+            expect(ctx.body).toStrictEqual({
+                total: 1,
+                fullTotal: 1,
+                data: [
+                    {
+                        ...annotationList[0],
+                        resource: {
+                            uri: annotationList[0].resourceUri,
+                            title: 'Developer resource',
+                        },
+                        field: field1,
+                    },
+                ],
+            });
+        });
+
         it('should order results', async () => {
             const ctx = {
                 request: {
@@ -801,7 +1036,11 @@ describe('annotation', () => {
                             'resourceUri',
                             'fieldId',
                             'comment',
+                            'status',
+                            'internalComment',
+                            'administrator',
                             'createdAt',
+                            'updatedAt',
                             'field.label',
                             'field.name',
                             'field.internalName',
@@ -815,7 +1054,7 @@ describe('annotation', () => {
         });
     });
 
-    describe('/annotations/:id', () => {
+    describe('GET /annotations/:id', () => {
         let annotation;
         let field;
         beforeEach(async () => {
@@ -841,8 +1080,8 @@ describe('annotation', () => {
                 authorName: 'Developer',
                 authorEmail: 'developer@marmelab.com',
                 comment: 'This is a comment',
-                status: 'in_progress',
-                internal_comment: null,
+                status: 'ongoing',
+                internalComment: null,
                 createdAt: new Date('03-01-2025'),
                 updatedAt: new Date('03-01-2025'),
             });
@@ -872,14 +1111,14 @@ describe('annotation', () => {
                         position: 2,
                     },
                     fieldId: field._id,
-                    internal_comment: null,
+                    internalComment: null,
                     itemPath: [],
                     resource: {
                         title: 'resource title',
                         uri: 'uid:/1234',
                     },
                     resourceUri: 'uid:/1234',
-                    status: 'to_review',
+                    status: 'ongoing',
                     updatedAt: expect.any(Date),
                 },
                 status: 200,
@@ -894,8 +1133,8 @@ describe('annotation', () => {
                 authorName: 'Developer',
                 authorEmail: 'developer@marmelab.com',
                 comment: 'This is a comment',
-                status: 'in_progress',
-                internal_comment: null,
+                status: 'ongoing',
+                internalComment: null,
                 createdAt: new Date('03-01-2025'),
                 updatedAt: new Date('03-01-2025'),
             });
@@ -917,14 +1156,14 @@ describe('annotation', () => {
                     createdAt: expect.any(Date),
                     field: null,
                     fieldId: '404',
-                    internal_comment: null,
+                    internalComment: null,
                     itemPath: [],
                     resource: {
                         title: 'resource title',
                         uri: 'uid:/1234',
                     },
                     resourceUri: 'uid:/1234',
-                    status: 'to_review',
+                    status: 'ongoing',
                     updatedAt: expect.any(Date),
                 },
                 status: 200,
@@ -939,8 +1178,8 @@ describe('annotation', () => {
                 authorName: 'Developer',
                 authorEmail: 'developer@marmelab.com',
                 comment: 'This is a comment',
-                status: 'in_progress',
-                internal_comment: null,
+                status: 'ongoing',
+                internalComment: null,
                 createdAt: new Date('03-01-2025'),
                 updatedAt: new Date('03-01-2025'),
             });
@@ -962,11 +1201,11 @@ describe('annotation', () => {
                     createdAt: expect.any(Date),
                     field,
                     fieldId: field._id,
-                    internal_comment: null,
+                    internalComment: null,
                     itemPath: [],
                     resource: null,
                     resourceUri: 'uid:/404',
-                    status: 'to_review',
+                    status: 'ongoing',
                     updatedAt: expect.any(Date),
                 },
                 status: 200,
@@ -1035,6 +1274,137 @@ describe('annotation', () => {
                 },
                 status: 200,
             });
+        });
+    });
+
+    describe('PUT /annotations/:id', () => {
+        let annotation;
+        let field;
+        beforeEach(async () => {
+            await fieldModel.create({ position: 1, overview: 1 }, 'tItL3');
+
+            field = await fieldModel.create(
+                {
+                    position: 2,
+                    label: 'Annotated field',
+                },
+                'GvaF',
+            );
+
+            await publishedDatasetModel.create({
+                uri: 'uid:/1234',
+                tItL3: 'resource title',
+            });
+
+            annotation = await annotationModel.create({
+                resourceUri: 'uid:/1234',
+                itemPath: [],
+                fieldId: field._id,
+                authorName: 'Developer',
+                authorEmail: 'developer@marmelab.com',
+                comment: 'This is a comment',
+                status: 'ongoing',
+                internalComment: null,
+                createdAt: new Date('03-01-2025'),
+                updatedAt: new Date('03-01-2025'),
+            });
+        });
+
+        it('should update target annotation', async () => {
+            const ctx = {
+                request: {
+                    body: {
+                        status: 'validated',
+                        internalComment: 'All done',
+                        administrator: 'The Tester',
+                    },
+                },
+                response: {},
+                annotation: annotationModel,
+                publishedDataset: publishedDatasetModel,
+                field: fieldModel,
+            };
+
+            await updateAnnotation(ctx, annotation._id);
+
+            expect(ctx.response).toStrictEqual({
+                status: 200,
+                body: {
+                    data: {
+                        ...annotation,
+                        status: 'validated',
+                        internalComment: 'All done',
+                        administrator: 'The Tester',
+                        updatedAt: expect.any(Date),
+                    },
+                },
+            });
+            expect(await annotationModel.findLimitFromSkip()).toStrictEqual([
+                ctx.response.body.data,
+            ]);
+        });
+
+        it('should fail with a 404 if target annotation does not exists', async () => {
+            const ctx = {
+                request: {
+                    body: {
+                        status: 'validated',
+                        internalComment: 'All done',
+                        administrator: 'The Tester',
+                    },
+                },
+                response: {},
+                annotation: annotationModel,
+                publishedDataset: publishedDatasetModel,
+                field: fieldModel,
+            };
+            await updateAnnotation(ctx, '404');
+
+            expect(ctx.response).toStrictEqual({
+                status: 404,
+            });
+            expect(await annotationModel.findLimitFromSkip()).toStrictEqual([
+                annotation,
+            ]);
+        });
+
+        it('should fail with a 400 if data does not pass validation', async () => {
+            const ctx = {
+                request: {
+                    body: {},
+                },
+                response: {},
+                annotation: annotationModel,
+                publishedDataset: publishedDatasetModel,
+                field: fieldModel,
+            };
+            await updateAnnotation(ctx, annotation._id);
+
+            expect(ctx.response).toStrictEqual({
+                status: 400,
+                body: {
+                    errors: [
+                        {
+                            code: 'invalid_type',
+                            expected:
+                                "'to_review' | 'ongoing' | 'validated' | 'rejected'",
+                            message: 'Required',
+                            path: ['status'],
+                            received: 'undefined',
+                        },
+                        {
+                            code: 'invalid_type',
+                            expected: 'string',
+                            message: 'error_required',
+                            path: ['internalComment'],
+                            received: 'undefined',
+                        },
+                    ],
+                },
+            });
+            expect(await annotationModel.findLimitFromSkip()).toStrictEqual([
+                annotation,
+            ]);
         });
     });
 });

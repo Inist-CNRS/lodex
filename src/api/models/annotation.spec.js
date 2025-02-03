@@ -38,7 +38,7 @@ describe('annotation', () => {
             expect(result).toStrictEqual({
                 ...annotation,
                 _id: expect.any(ObjectId),
-                internal_comment: null,
+                internalComment: null,
                 createdAt: expect.any(Date),
                 updatedAt: expect.any(Date),
                 status: 'to_review',
@@ -47,6 +47,60 @@ describe('annotation', () => {
             expect(await annotationModel.findLimitFromSkip()).toStrictEqual([
                 result,
             ]);
+        });
+    });
+
+    describe('updateOneById', () => {
+        it('should update target annotation', async () => {
+            const date = new Date();
+            const annotation = await annotationModel.create({
+                resourceUri: 'uid:/a4f7a51f-7109-481e-86cc-0adb3a26faa6',
+                itemPath: [],
+                fieldId: 'Gb4a',
+                kind: 'comment',
+                authorName: 'Rick HARRIS',
+                authorEmail: 'rick.harris@marmelab.com',
+                comment: 'Hello world',
+            });
+
+            const result = await annotationModel.updateOneById(
+                annotation._id,
+                {
+                    status: 'ongoing',
+                    internalComment: 'To test thoroughly',
+                    administrator: 'The Tester',
+                },
+                date,
+            );
+
+            expect(result).toStrictEqual({
+                ...annotation,
+                updatedAt: date,
+                status: 'ongoing',
+                internalComment: 'To test thoroughly',
+                administrator: 'The Tester',
+            });
+
+            expect(await annotationModel.findLimitFromSkip()).toStrictEqual([
+                result,
+            ]);
+        });
+        it('should return null and do nothing if target does not exists', async () => {
+            const date = new Date();
+
+            const result = await annotationModel.updateOneById(
+                '404',
+                {
+                    status: 'ongoing',
+                    internalComment: 'To test thoroughly',
+                    administrator: 'The Tester',
+                },
+                date,
+            );
+
+            expect(result).toBeNull();
+
+            expect(await annotationModel.findLimitFromSkip()).toStrictEqual([]);
         });
     });
 
@@ -65,7 +119,7 @@ describe('annotation', () => {
                         authorEmail: 'developer@marmelab.com',
                         comment: 'This is a comment',
                         status: 'in_progress',
-                        internal_comment: 'This is an internal comment',
+                        internalComment: 'This is an internal comment',
                         createdAt: new Date('03-01-2025'),
                     },
                     {
@@ -78,7 +132,7 @@ describe('annotation', () => {
                         authorEmail: 'john.doe@marmelab.com',
                         comment: 'This is another comment',
                         status: 'to_review',
-                        internal_comment: null,
+                        internalComment: null,
                         createdAt: new Date('02-01-2025'),
                     },
                     {
@@ -92,7 +146,7 @@ describe('annotation', () => {
                         comment:
                             'The author list is incomplete: it should include Jane SMITH',
                         status: 'rejected',
-                        internal_comment:
+                        internalComment:
                             'Jane SMITH is not an author of this document',
                         createdAt: new Date('01-01-2025'),
                     },
@@ -137,7 +191,7 @@ describe('annotation', () => {
                 authorEmail: 'developer@marmelab.com',
                 comment: 'This is a comment',
                 status: 'in_progress',
-                internal_comment: 'This is an internal comment',
+                internalComment: 'This is an internal comment',
                 createdAt: new Date('03-01-2025'),
             });
 
@@ -151,7 +205,7 @@ describe('annotation', () => {
                 authorEmail: 'john.doe@marmelab.com',
                 comment: 'This is another comment',
                 status: 'to_review',
-                internal_comment: null,
+                internalComment: null,
                 createdAt: new Date('02-01-2025'),
             });
             expect(await annotationModel.count({})).toBe(2);

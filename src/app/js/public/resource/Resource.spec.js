@@ -1,5 +1,4 @@
 import { ThemeProvider, createTheme } from '@mui/material';
-import '@testing-library/jest-dom';
 import { screen } from '@testing-library/react';
 import { shallow } from 'enzyme';
 import React from 'react';

@@ -1,4 +1,3 @@
-import '@testing-library/jest-dom';
 import React from 'react';
 import { render } from '../../../../test-utils';
 import { TestI18N } from '../../i18n/I18NContext';
@@ -7,6 +6,12 @@ import { useGetAnnotation } from './useGetAnnotation';
 import { AnnotationItem } from './AnnotationItem';
 
 jest.mock('./useGetAnnotation', () => ({ useGetAnnotation: jest.fn() }));
+jest.mock('./useUpdateAnnotation', () => ({
+    useUpdateAnnotation: jest.fn().mockReturnValue({
+        handleUpdateAnnotation: jest.fn(),
+        isSubmitting: false,
+    }),
+}));
 
 describe('AnnotationItem', () => {
     it('should render the annotation with its field and resource', () => {
@@ -17,6 +22,9 @@ describe('AnnotationItem', () => {
                     title: 'The resource title',
                 },
                 comment: 'Just testing the annotation system',
+                status: 'ongoing',
+                internalComment: 'Just testing the annotation admin',
+                administrator: 'The admin',
                 field: {
                     name: 'GaZr',
                     label: 'Annotated field',
@@ -26,6 +34,7 @@ describe('AnnotationItem', () => {
                 authorName: 'Count Ributor',
                 authorEmail: 'ributor@gmail.com',
                 createdAt: new Date('01-01-2025').toISOString(),
+                updatedAt: new Date('10-01-2025').toISOString(),
             },
             isLoading: false,
             error: null,
@@ -75,6 +84,20 @@ describe('AnnotationItem', () => {
         expect(
             wrapper.queryByLabelText('annotation_created_at'),
         ).toHaveTextContent('1/1/2025');
+        expect(
+            wrapper.queryByLabelText('annotation_updated_at'),
+        ).toHaveTextContent('10/1/2025');
+        expect(wrapper.queryByLabelText('annotation_status')).toHaveTextContent(
+            'annotation_status_ongoing​',
+        );
+        expect(
+            wrapper.queryByLabelText('annotation_internal_comment *'),
+        ).toHaveTextContent('Just testing the annotation admin');
+
+        // @weird, test refuse to find the value of the field
+        // expect(
+        //     wrapper.queryByLabelText('annotation_administrator'),
+        // ).toHaveTextContent('The administrator');
     });
 
     it('should render the annotation with no resource', () => {

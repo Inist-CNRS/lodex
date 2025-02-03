@@ -16,6 +16,7 @@ module.exports = {
             displayName: 'frontend',
             rootDir: `${__dirname}/src/app`,
             setupFiles: [`${__dirname}/src/app/setupTest.js`],
+            setupFilesAfterEnv: [`${__dirname}/src/app/setupTestAfterEnv.js`],
             testMatch: ['/**/*.spec.js'],
             moduleNameMapper: {
                 '\\.(css|less|scss|sass)$': 'identity-obj-proxy',

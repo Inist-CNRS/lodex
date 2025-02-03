@@ -1,6 +1,6 @@
 import { default as z } from 'zod';
 
-export const annotationSchema = z.object({
+export const annotationCreationSchema = z.object({
     resourceUri: z.string().nullish().default(null),
     target: z.enum(['title', 'value']).nullish().default('title'),
     kind: z.enum(['correction', 'comment']).nullish().default('comment'),
@@ -49,6 +49,33 @@ export const annotationSchema = z.object({
     initialValue: z.string().nullish().default(null),
 });
 
+export const annotationUpdateSchema = z.object({
+    status: z.enum(['to_review', 'ongoing', 'validated', 'rejected']),
+    internalComment: z
+        .string({
+            required_error: 'error_required',
+        })
+        .trim()
+        .min(1, {
+            message: 'error_required',
+        }),
+    administrator: z
+        .union([
+            z.literal(''),
+            z
+                .string({
+                    required_error: 'error_required',
+                })
+                .trim()
+                .min(1, {
+                    message: 'error_required',
+                }),
+        ])
+        .nullish()
+        .default(null)
+        .transform((value) => (value === '' ? null : value)),
+});
+
 const annotationFilterableFields = z
     .enum(
         [
@@ -57,7 +84,11 @@ const annotationFilterableFields = z
             'resourceUri',
             'fieldId',
             'comment',
+            'status',
+            'internalComment',
+            'administrator',
             'createdAt',
+            'updatedAt',
             'field.label',
             'field.name',
             'field.internalName',
@@ -70,9 +101,21 @@ const annotationFilterableFields = z
     .optional();
 
 const annotationSortableFields = z
-    .enum(['resourceUri', 'fieldId', 'createdAt', 'updatedAt', 'comment'], {
-        message: 'annotation_query_sortBy_invalid',
-    })
+    .enum(
+        [
+            'resourceUri',
+            'fieldId',
+            'createdAt',
+            'updatedAt',
+            'comment',
+            'status',
+            'internalComment',
+            'administrator',
+        ],
+        {
+            message: 'annotation_query_sortBy_invalid',
+        },
+    )
     .default('createdAt');
 
 export const getAnnotationsQuerySchema = z.object({

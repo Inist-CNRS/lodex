@@ -1,0 +1,47 @@
+import React from 'react';
+import { Chip } from '@mui/material';
+import { useTranslate } from '../../i18n/I18NContext';
+import PropTypes from 'prop-types';
+
+export const statuses = ['to_review', 'ongoing', 'validated', 'rejected'];
+
+export const AnnotationStatus = ({ status }) => {
+    const { translate } = useTranslate();
+
+    switch (status) {
+        case 'to_review':
+            return (
+                <Chip
+                    color="default"
+                    label={translate('annotation_status_to_review')}
+                />
+            );
+        case 'ongoing':
+            return (
+                <Chip
+                    color="info"
+                    label={translate('annotation_status_ongoing')}
+                />
+            );
+        case 'validated':
+            return (
+                <Chip
+                    color="success"
+                    label={translate('annotation_status_validated')}
+                />
+            );
+        case 'rejected':
+            return (
+                <Chip
+                    color="error"
+                    label={translate('annotation_status_rejected')}
+                />
+            );
+        default:
+            return null;
+    }
+};
+
+AnnotationStatus.propTypes = {
+    status: PropTypes.oneOf([statuses]),
+};

@@ -13,7 +13,7 @@ import { useForm, useStore } from '@tanstack/react-form';
 import PropTypes from 'prop-types';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
-import { annotationSchema } from '../../../common/validator/annotation.validator';
+import { annotationCreationSchema } from '../../../common/validator/annotation.validator';
 import { useTranslate } from '../i18n/I18NContext';
 import { AuthorEmailField } from './fields/AuthorEmailField';
 import { AuthorNameField } from './fields/AuthorNameField';
@@ -42,7 +42,7 @@ export function CreateAnnotationModal({
             resetForm();
         },
         validators: {
-            onChange: annotationSchema,
+            onChange: annotationCreationSchema,
         },
     });
 
