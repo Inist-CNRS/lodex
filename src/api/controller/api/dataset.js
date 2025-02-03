@@ -1,8 +1,7 @@
 import Koa from 'koa';
-import route from 'koa-route';
 import koaBodyParser from 'koa-bodyparser';
+import route from 'koa-route';
 import getLogger from '../../services/logger';
-import { createDiacriticSafeContainRegex } from '../../services/createDiacriticSafeContainRegex';
 import { buildQuery } from './buildQuery';
 
 const app = new Koa();
@@ -77,7 +76,12 @@ export const updateDataset = async (ctx) => {
 
 export const deleteDatasetRow = async (ctx, id) => {
     try {
-        await ctx.dataset.deleteOneById(id);
+        const { acknowledged, deletedCount } =
+            await ctx.dataset.deleteOneById(id);
+        if (!acknowledged || deletedCount === 0) {
+            throw new Error('Dataset row not found');
+        }
+
         ctx.body = { status: 'deleted' };
     } catch (error) {
         const logger = getLogger(ctx.tenant);

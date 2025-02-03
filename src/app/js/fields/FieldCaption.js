@@ -1,27 +1,27 @@
-import React from 'react';
 import PropTypes from 'prop-types';
+import React from 'react';
 import { Field } from 'redux-form';
 
+import { Box, MenuItem, Typography } from '@mui/material';
+import { getFieldToCaptionForSpecificScope } from '../../../common/scope';
+import { translate } from '../i18n/I18NContext';
 import FormSelectField from '../lib/components/FormSelectField';
 import getFieldClassName from '../lib/getFieldClassName';
 import {
-    polyglot as polyglotPropTypes,
     field as fieldPropTypes,
+    polyglot as polyglotPropTypes,
 } from '../propTypes';
-import { getFieldToAnnotateForSpecificScope } from '../../../common/scope';
-import { Box, MenuItem, Typography } from '@mui/material';
 import FieldRepresentation from './FieldRepresentation';
-import { translate } from '../i18n/I18NContext';
 
-const FieldAnnotation = ({ fields, scope, p: polyglot, subresourceId }) => (
+const FieldCaption = ({ fields, scope, p: polyglot, subresourceId }) => (
     <Box mt={5}>
         <Typography variant="subtitle1" sx={{ marginBottom: 2 }}>
-            {polyglot.t('annotate_field')}
+            {polyglot.t('caption_field')}
         </Typography>
         <Field
             className="completes"
             name="completes"
-            label={polyglot.t('field_to_annotate')}
+            label={polyglot.t('field_to_caption')}
             component={FormSelectField}
             fullWidth
             SelectProps={{
@@ -36,7 +36,7 @@ const FieldAnnotation = ({ fields, scope, p: polyglot, subresourceId }) => (
             <MenuItem value={null}>
                 {polyglot.t('completes_field_none')}
             </MenuItem>
-            {getFieldToAnnotateForSpecificScope(
+            {getFieldToCaptionForSpecificScope(
                 fields,
                 scope,
                 subresourceId,
@@ -58,11 +58,11 @@ const FieldAnnotation = ({ fields, scope, p: polyglot, subresourceId }) => (
     </Box>
 );
 
-FieldAnnotation.propTypes = {
+FieldCaption.propTypes = {
     fields: PropTypes.arrayOf(fieldPropTypes).isRequired,
     scope: PropTypes.string.isRequired,
     p: polyglotPropTypes.isRequired,
     subresourceId: PropTypes.string,
 };
 
-export default translate(FieldAnnotation);
+export default translate(FieldCaption);

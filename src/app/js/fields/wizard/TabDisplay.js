@@ -1,12 +1,12 @@
-import React from 'react';
 import PropTypes from 'prop-types';
+import React from 'react';
 
-import FieldFormatInput from '../FieldFormatInput';
-import FieldDisplayInput from '../FieldDisplay';
-import FieldWidthInput from '../FieldWidthInput';
-import FieldComposedOf from '../FieldComposedOf';
-import FieldAnnotation from '../FieldAnnotation';
 import { field as fieldPropTypes } from '../../propTypes';
+import FieldCaption from '../FieldCaption';
+import FieldComposedOf from '../FieldComposedOf';
+import FieldDisplayInput from '../FieldDisplay';
+import FieldFormatInput from '../FieldFormatInput';
+import FieldWidthInput from '../FieldWidthInput';
 
 export const TabDisplayComponent = ({
     keepMeta = true,
@@ -18,7 +18,7 @@ export const TabDisplayComponent = ({
         {keepMeta && <FieldDisplayInput />}
         <FieldFormatInput />
         <FieldWidthInput />
-        <FieldAnnotation
+        <FieldCaption
             fields={fields}
             scope={filter}
             subresourceId={subresourceId}

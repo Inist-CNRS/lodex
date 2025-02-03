@@ -192,6 +192,16 @@ describe('Search', () => {
             cy.contains('Couverture').should('exist');
             cy.contains('Editeur').should('exist');
             cy.contains('Type').should('not.exist');
+
+            cy.findByRole('link', {
+                name: 'More',
+            }).click();
+
+            cy.findByRole('link', {
+                name: 'Admin',
+            }).click();
+
+            settings.disableMultilingual();
         });
 
         it.skip('should allow to sort facet', () => {

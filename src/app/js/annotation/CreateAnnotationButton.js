@@ -95,7 +95,7 @@ export function CreateAnnotationButton({
                             backgroundColor: (theme) =>
                                 theme.palette.background.default,
                         },
-                        '.property_value_heading &': {
+                        '.property_value_heading &, .property_value_ribbon &': {
                             top: 'calc(50% - 16px)',
                         },
                     }}

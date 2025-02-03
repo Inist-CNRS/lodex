@@ -102,6 +102,40 @@ describe('Annotation', () => {
                 ]);
             });
         });
+
+        it('should create annotation on ribbon field value', () => {
+            annotation.createValueAnnotation({
+                fieldLabel: 'Nombre de films',
+                comment: 'This is a comment',
+                authorName: 'John Doe',
+                authorEmail: 'john.doe@example.org',
+            });
+
+            cy.findByText('More').click();
+            menu.goToAdminDashboard();
+            cy.findByText('Annotations').click();
+
+            cy.findAllByRole('cell').then((cells) => {
+                expect(
+                    cells.toArray().map((cell) => cell.textContent),
+                ).to.deep.equal([
+                    'Home page',
+                    '',
+                    'Nombre de films',
+                    '[MzM2]',
+                    '',
+                    'n/a',
+                    '30',
+                    'To Review',
+                    '',
+                    '',
+                    'John Doe',
+                    'This is a comment',
+                    new Date().toLocaleDateString(),
+                    new Date().toLocaleDateString(),
+                ]);
+            });
+        });
     });
 
     describe('resources', () => {
@@ -110,7 +144,7 @@ describe('Annotation', () => {
                 cy.findByText('Search').click();
                 searchDrawer.search('Terminator 2');
                 searchDrawer.waitForLoading();
-                cy.findAllByText('Terminator 2').eq(1).click();
+                cy.findByTitle('Terminator 2').click();
                 annotation.createTitleAnnotation({
                     fieldLabel: 'actors',
                     comment: 'This is a comment',
@@ -121,7 +155,7 @@ describe('Annotation', () => {
                 cy.findByText('Search').click();
                 searchDrawer.search('RoboCop');
                 searchDrawer.waitForLoading();
-                cy.findAllByText('RoboCop').eq(0).click();
+                cy.findByTitle('RoboCop').click();
                 annotation.createTitleAnnotation({
                     fieldLabel: 'rating',
                     comment: 'This is another comment',
