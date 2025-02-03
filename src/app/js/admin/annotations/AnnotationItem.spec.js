@@ -74,11 +74,11 @@ describe('AnnotationItem', () => {
         ).toHaveTextContent('Just testing the annotation system');
 
         expect(
-            wrapper.queryByLabelText('annotation_field_author_name'),
+            wrapper.queryByLabelText('annotation_author_name'),
         ).toHaveTextContent('Count Ributor');
 
         expect(
-            wrapper.queryByLabelText('annotation_field_author_email'),
+            wrapper.queryByLabelText('annotation_author_email'),
         ).toHaveTextContent('ributor@gmail.com');
 
         expect(
