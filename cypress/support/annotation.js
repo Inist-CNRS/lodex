@@ -1,11 +1,6 @@
-export function createAnnotation({
-    fieldLabel,
-    comment,
-    authorName,
-    authorEmail,
-}) {
+function createAnnotation({ buttonLabel, comment, authorName, authorEmail }) {
     cy.findByRole('button', {
-        name: `Add an annotation to ${fieldLabel} field`,
+        name: buttonLabel,
     }).click();
 
     cy.findByRole('textbox', { name: 'Comment *', timeout: 1500 }).type(
@@ -32,4 +27,39 @@ export function createAnnotation({
         'Your suggestion has been sent. We thank you for your contribution.',
         { timeout: 1500 },
     ).should('be.visible');
+}
+
+export function createTitleAnnotation({
+    fieldLabel,
+    comment,
+    authorName,
+    authorEmail,
+}) {
+    createAnnotation({
+        buttonLabel: `Add an annotation to the ${fieldLabel} field title`,
+        fieldLabel,
+        comment,
+        authorName,
+        authorEmail,
+    });
+}
+
+export function createValueAnnotation({
+    fieldLabel,
+    comment,
+    authorName,
+    authorEmail,
+}) {
+    const buttonLabel = `Add an annotation to the ${fieldLabel} field value`;
+    cy.findByRole('button', {
+        name: buttonLabel,
+    }).trigger('mouseenter');
+
+    createAnnotation({
+        buttonLabel,
+        fieldLabel,
+        comment,
+        authorName,
+        authorEmail,
+    });
 }

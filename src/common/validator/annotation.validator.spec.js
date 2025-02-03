@@ -8,12 +8,14 @@ describe('annotation.validator', () => {
         it('should validate an annotation', () => {
             const annotationPayload = {
                 resourceUri: 'uid:/2a8d429f-8134-4502-b9d3-d20c571592fa',
+                target: 'value',
                 fieldId: 'GvaF',
                 itemPath: [],
                 kind: 'comment',
                 comment: 'This is a comment',
                 authorName: 'John Doe',
                 authorEmail: null,
+                initialValue: null,
             };
 
             const validatedAnnotation =
@@ -25,11 +27,13 @@ describe('annotation.validator', () => {
         it('should should support annotation without kind', () => {
             const annotationPayload = {
                 resourceUri: 'uid:/2a8d429f-8134-4502-b9d3-d20c571592fa',
+                target: 'title',
                 fieldId: 'GvaF',
                 itemPath: ['0'],
                 comment: 'This is a comment',
                 authorName: 'John Doe',
                 authorEmail: null,
+                initialValue: null,
             };
 
             const validatedAnnotation =
@@ -44,10 +48,12 @@ describe('annotation.validator', () => {
         it('should should support annotation without itemPath', () => {
             const annotationPayload = {
                 resourceUri: 'uid:/2a8d429f-8134-4502-b9d3-d20c571592fa',
+                target: 'value',
                 kind: 'comment',
                 comment: 'This is a comment',
                 authorName: 'John Doe',
                 authorEmail: null,
+                initialValue: null,
             };
 
             const validatedAnnotation =
@@ -62,10 +68,12 @@ describe('annotation.validator', () => {
         it('should should support annotation without authorEmail', () => {
             const annotationPayload = {
                 resourceUri: 'uid:/2a8d429f-8134-4502-b9d3-d20c571592fa',
+                target: 'value',
                 itemPath: ['GvaF', '0'],
                 kind: 'comment',
                 comment: 'This is a comment',
                 authorName: 'John Doe',
+                initialValue: null,
             };
 
             const validatedAnnotation =
@@ -77,16 +85,58 @@ describe('annotation.validator', () => {
             });
         });
 
+        it('should should support annotation without target', () => {
+            const annotationPayload = {
+                resourceUri: 'uid:/2a8d429f-8134-4502-b9d3-d20c571592fa',
+                itemPath: ['GvaF', '0'],
+                kind: 'comment',
+                comment: 'This is a comment',
+                authorName: 'John Doe',
+                authorEmail: 'john.doe@marmelab.com',
+                initialValue: null,
+            };
+
+            const validatedAnnotation =
+                annotationSchema.parse(annotationPayload);
+
+            expect(validatedAnnotation).toStrictEqual({
+                ...annotationPayload,
+                target: 'title',
+            });
+        });
+
+        it('should should support annotation without initialValue', () => {
+            const annotationPayload = {
+                resourceUri: 'uid:/2a8d429f-8134-4502-b9d3-d20c571592fa',
+                itemPath: ['GvaF', '0'],
+                kind: 'comment',
+                comment: 'This is a comment',
+                authorName: 'John Doe',
+                authorEmail: 'john.doe@marmelab.com',
+                target: 'title',
+            };
+
+            const validatedAnnotation =
+                annotationSchema.parse(annotationPayload);
+
+            expect(validatedAnnotation).toStrictEqual({
+                ...annotationPayload,
+                initialValue: null,
+            });
+        });
+
         it('should should support drop unsupported fields', () => {
             const annotationPayload = {
                 resourceUri: 'uid:/2a8d429f-8134-4502-b9d3-d20c571592fa',
                 kind: 'correction',
+                target: 'value',
                 itemPath: null,
                 comment: 'This is a comment',
                 status: 'in_progress',
                 internal_comment: 'This is an internal comment',
                 authorName: 'John Doe',
                 authorEmail: '',
+                initialValue: 'initial value',
             };
 
             const validatedAnnotation =
@@ -95,10 +145,12 @@ describe('annotation.validator', () => {
             expect(validatedAnnotation).toStrictEqual({
                 resourceUri: 'uid:/2a8d429f-8134-4502-b9d3-d20c571592fa',
                 kind: 'correction',
+                target: 'value',
                 itemPath: null,
                 comment: 'This is a comment',
                 authorName: 'John Doe',
                 authorEmail: null,
+                initialValue: 'initial value',
             });
         });
 

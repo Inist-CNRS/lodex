@@ -1,19 +1,21 @@
-import React from 'react';
 import PropTypes from 'prop-types';
+import React from 'react';
 
-import { field as fieldPropTypes } from '../../../../propTypes';
-import { isLongText, getShortText } from '../../../../lib/longTexts';
+import { Typography } from '@mui/material';
 import {
-    isURL,
-    isLocalURL,
-    canonicalURL,
-} from '../../../../../../common/uris.js';
-import {
-    REJECTED,
     PROPOSED,
+    REJECTED,
     VALIDATED,
 } from '../../../../../../common/propositionStatus';
+import {
+    canonicalURL,
+    isLocalURL,
+    isURL,
+} from '../../../../../../common/uris.js';
+import { CreateAnnotationButton } from '../../../../annotation/CreateAnnotationButton';
 import Link from '../../../../lib/components/Link';
+import { getShortText, isLongText } from '../../../../lib/longTexts';
+import { field as fieldPropTypes } from '../../../../propTypes';
 
 const styles = {
     [REJECTED]: {
@@ -31,7 +33,9 @@ const styles = {
 };
 
 const DefaultView = ({ className, resource, field, fieldStatus, shrink }) => {
+    const isList = Array.isArray(resource[field.name]);
     let value = resource[field.name];
+
     if (isURL(value)) {
         return (
             <Link style={styles[fieldStatus]} href={`${value}`}>
@@ -46,14 +50,31 @@ const DefaultView = ({ className, resource, field, fieldStatus, shrink }) => {
             </Link>
         );
     }
+
+    const text = shrink && isLongText(value) ? getShortText(value) : value;
     return (
-        <span style={styles[fieldStatus]}>
-            {shrink && isLongText(value) ? (
-                <span className={className}>{getShortText(value)}</span>
-            ) : (
-                <span className={className}>{value}</span>
-            )}
-        </span>
+        <Typography
+            component="span"
+            className="property_value_item"
+            sx={{
+                ...styles[fieldStatus],
+                position: 'relative',
+                display: 'inline-block',
+                width: 'fit-content',
+                'li &:hover': {
+                    color: 'primary.main',
+                },
+            }}
+        >
+            <span className={className}>{text}</span>
+
+            <CreateAnnotationButton
+                field={field}
+                target="value"
+                itemPath={isList ? [field.name] : null}
+                initialValue={text}
+            />
+        </Typography>
     );
 };
 

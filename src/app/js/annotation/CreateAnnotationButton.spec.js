@@ -20,7 +20,7 @@ jest.mock('../lib/fetch', () =>
     }),
 );
 
-function TestButton(props) {
+function TestButton({ annotable, ...props }) {
     return (
         <QueryClientProvider client={queryClient}>
             <TestI18N>
@@ -34,8 +34,9 @@ function TestButton(props) {
                                 field={{
                                     _id: '1ddbe5dc-f945-4d38-9c5b-ef20f78cb0cc',
                                     label: 'Titre du corpus',
-                                    ...props,
+                                    annotable: annotable,
                                 }}
+                                {...props}
                             />
                         </Route>
                     </Switch>
@@ -46,6 +47,7 @@ function TestButton(props) {
 }
 
 TestButton.propTypes = {
+    ...CreateAnnotationButton.propTypes,
     annotable: PropTypes.bool,
 };
 
@@ -68,7 +70,7 @@ describe('CreateAnnotationButton', () => {
         await waitFor(() => {
             fireEvent.click(
                 screen.getByRole('button', {
-                    name: 'annotation_create_button_label',
+                    name: 'annotation_create_button_title_label',
                 }),
             );
         });
@@ -76,80 +78,96 @@ describe('CreateAnnotationButton', () => {
         expect(screen.getByRole('dialog')).toBeInTheDocument();
     });
 
-    it('should call api when submiting annotation form', async () => {
-        render(<TestButton />);
+    it.each([
+        [
+            {},
+            '{"comment":"test","authorName":"author","authorEmail":"email@example.org","resourceUri":"uid:/0579J7JN","target":"title","itemPath":null,"fieldId":"1ddbe5dc-f945-4d38-9c5b-ef20f78cb0cc","initialValue":null}',
+        ],
+        [
+            { target: 'value', itemPath: ['1'], initialValue: 'a b c' },
+            '{"comment":"test","authorName":"author","authorEmail":"email@example.org","resourceUri":"uid:/0579J7JN","target":"value","itemPath":["1"],"fieldId":"1ddbe5dc-f945-4d38-9c5b-ef20f78cb0cc","initialValue":"a b c"}',
+        ],
+    ])(
+        'should call api when submiting annotation form for annotation',
+        async (props, expectedBody) => {
+            render(<TestButton {...props} />);
 
-        await waitFor(() => {
-            fireEvent.click(
-                screen.getByRole('button', {
-                    name: 'annotation_create_button_label',
+            await waitFor(() => {
+                fireEvent.click(
+                    screen.getByRole('button', {
+                        name: `annotation_create_button_${props?.target ?? 'title'}_label`,
+                    }),
+                );
+            });
+
+            expect(screen.getByRole('dialog')).toBeInTheDocument();
+
+            await waitFor(() => {
+                fireEvent.change(
+                    screen.getByRole('textbox', {
+                        name: 'annotation.comment *',
+                    }),
+                    {
+                        target: { value: 'test' },
+                    },
+                );
+            });
+
+            await waitFor(() => {
+                fireEvent.click(screen.getByRole('button', { name: 'next' }));
+            });
+
+            await waitFor(() => {
+                fireEvent.change(
+                    screen.getByRole('textbox', {
+                        name: 'annotation.authorName *',
+                    }),
+                    {
+                        target: { value: 'author' },
+                    },
+                );
+            });
+
+            await waitFor(() => {
+                fireEvent.change(
+                    screen.getByRole('textbox', {
+                        name: 'annotation.authorEmail',
+                    }),
+                    {
+                        target: { value: 'email@example.org' },
+                    },
+                );
+            });
+
+            // Wait for the submit button to be enabled
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('button', { name: 'validate' }),
+                ).toBeEnabled();
+            });
+
+            await waitFor(() => {
+                fireEvent.click(
+                    screen.getByRole('button', { name: 'validate' }),
+                );
+            });
+
+            expect(fetch).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    url: '/api/annotation',
+                    method: 'POST',
+                    body: expectedBody,
                 }),
             );
-        });
-
-        expect(screen.getByRole('dialog')).toBeInTheDocument();
-
-        await waitFor(() => {
-            fireEvent.change(
-                screen.getByRole('textbox', { name: 'annotation.comment *' }),
-                {
-                    target: { value: 'test' },
-                },
-            );
-        });
-
-        await waitFor(() => {
-            fireEvent.click(screen.getByRole('button', { name: 'next' }));
-        });
-
-        await waitFor(() => {
-            fireEvent.change(
-                screen.getByRole('textbox', {
-                    name: 'annotation.authorName *',
-                }),
-                {
-                    target: { value: 'author' },
-                },
-            );
-        });
-
-        await waitFor(() => {
-            fireEvent.change(
-                screen.getByRole('textbox', {
-                    name: 'annotation.authorEmail',
-                }),
-                {
-                    target: { value: 'email@example.org' },
-                },
-            );
-        });
-
-        // Wait for the submit button to be enabled
-        await waitFor(() => {
-            expect(
-                screen.getByRole('button', { name: 'validate' }),
-            ).toBeEnabled();
-        });
-
-        await waitFor(() => {
-            fireEvent.click(screen.getByRole('button', { name: 'validate' }));
-        });
-
-        expect(fetch).toHaveBeenCalledWith(
-            expect.objectContaining({
-                url: '/api/annotation',
-                method: 'POST',
-                body: '{"comment":"test","authorName":"author","authorEmail":"email@example.org","resourceUri":"uid:/0579J7JN","itemPath":null,"fieldId":"1ddbe5dc-f945-4d38-9c5b-ef20f78cb0cc"}',
-            }),
-        );
-    });
+        },
+    );
 
     it('should not display button if field is not annotable', async () => {
         render(<TestButton annotable={false} />);
 
         expect(
             screen.queryAllByRole('button', {
-                name: 'annotation_create_button_label',
+                name: 'annotation_create_button_title_label',
             }),
         ).toHaveLength(0);
     });
