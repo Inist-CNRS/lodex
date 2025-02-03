@@ -98,7 +98,7 @@ describe('annotation.validator', () => {
             };
 
             const validatedAnnotation =
-                annotationSchema.parse(annotationPayload);
+                annotationCreationSchema.parse(annotationPayload);
 
             expect(validatedAnnotation).toStrictEqual({
                 ...annotationPayload,
@@ -118,7 +118,7 @@ describe('annotation.validator', () => {
             };
 
             const validatedAnnotation =
-                annotationSchema.parse(annotationPayload);
+                annotationCreationSchema.parse(annotationPayload);
 
             expect(validatedAnnotation).toStrictEqual({
                 ...annotationPayload,

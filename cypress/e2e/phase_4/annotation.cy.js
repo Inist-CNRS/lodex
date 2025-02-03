@@ -58,8 +58,12 @@ describe('Annotation', () => {
                     '',
                     'n/a',
                     '',
+                    'To Review',
+                    '',
+                    '',
                     'John Doe',
                     'This is a comment',
+                    new Date().toLocaleDateString(),
                     new Date().toLocaleDateString(),
                 ]);
             });
@@ -88,8 +92,12 @@ describe('Annotation', () => {
                     '',
                     'n/a',
                     "Cette collection n'a pas d'autre but que de présenter un manière d’utiliser l'application Lodex pour mettre en ligne des données.",
+                    'To Review',
+                    '',
+                    '',
                     'John Doe',
                     'This is a comment',
+                    new Date().toLocaleDateString(),
                     new Date().toLocaleDateString(),
                 ]);
             });
@@ -147,7 +155,7 @@ describe('Annotation', () => {
 
                 cy.findAllByRole('cell').then((cells) => {
                     const firstUri = cells[0].textContent;
-                    const secondUri = cells[13].textContent;
+                    const secondUri = cells[14].textContent;
 
                     expect(firstUri).to.match(/uid:\//);
                     expect(secondUri).to.match(/uid:\//);
@@ -216,7 +224,7 @@ describe('Annotation', () => {
 
                 cy.findByLabelText('Status').should('have.text', 'To Review​');
                 cy.findByLabelText('Status').click();
-                cy.findByLabelText('Validated​').click();
+                cy.findByText('Validated').click();
                 cy.findByLabelText('Internal Comment *').type('Return applied');
                 cy.findByLabelText('Administrator').type('John Doe');
                 cy.findByText('Save').click();
@@ -228,7 +236,7 @@ describe('Annotation', () => {
 
                 cy.findAllByRole('cell').then((cells) => {
                     const firstUri = cells[0].textContent;
-                    const secondUri = cells[13].textContent;
+                    const secondUri = cells[14].textContent;
 
                     expect(firstUri).to.match(/uid:\//);
                     expect(secondUri).to.match(/uid:\//);
@@ -242,6 +250,7 @@ describe('Annotation', () => {
                         '[bZE+]',
                         '',
                         'n/a',
+                        '',
                         'Validated',
                         'Return applied',
                         'John Doe',
@@ -255,6 +264,7 @@ describe('Annotation', () => {
                         '[K8Lu]',
                         '',
                         'n/a',
+                        '',
                         'To Review',
                         '',
                         '',
@@ -303,8 +313,12 @@ describe('Annotation', () => {
                     '',
                     'n/a',
                     '',
+                    'To Review',
+                    '',
+                    '',
                     'John Doe',
                     'This is a comment',
+                    new Date().toLocaleDateString(),
                     new Date().toLocaleDateString(),
                 ]);
             });
