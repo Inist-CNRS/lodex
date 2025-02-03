@@ -1,5 +1,5 @@
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
-import { Grid, Link, Stack, Typography, useTheme } from '@mui/material';
+import { Grid, Link, Stack, Typography } from '@mui/material';
 import React from 'react';
 import { Redirect } from 'react-router';
 import { useRouteMatch } from 'react-router-dom';
@@ -10,6 +10,7 @@ import AdminOnlyAlert from '../../lib/components/AdminOnlyAlert';
 import Loading from '../../lib/components/Loading';
 import { useGetAnnotation } from './useGetAnnotation';
 import { AnnotationForm } from './AnnotationForm';
+import { AnnotationValue } from './AnnotationValue';
 
 const tenant = sessionStorage.getItem('lodex-tenant') || DEFAULT_TENANT;
 
@@ -33,8 +34,6 @@ export const AnnotationItem = () => {
         error,
         isLoading,
     } = useGetAnnotation(match.params.annotationId);
-
-    const theme = useTheme();
 
     if (isLoading) {
         return <Loading>{translate('loading')}</Loading>;
@@ -95,125 +94,35 @@ export const AnnotationItem = () => {
                             </Typography>
                             {annotation.field ? (
                                 <Grid container columns={2} spacing={2}>
-                                    <Grid item xs={1}>
-                                        <Typography
-                                            sx={{
-                                                fontWeight: 800,
-                                                color: theme.palette.text
-                                                    .secondary,
-                                            }}
-                                            id="annotation_field_label"
-                                        >
-                                            {translate(
-                                                'annotation_field_label',
-                                            )}
-                                        </Typography>
-                                    </Grid>
-                                    <Grid item xs={1}>
-                                        <Typography
-                                            variant="body1"
-                                            aria-labelledby="annotation_field_label"
-                                        >
-                                            {annotation.field.label}
-                                        </Typography>
-                                    </Grid>
-                                    <Grid item xs={1}>
-                                        <Typography
-                                            id="annotation_field_name"
-                                            sx={{
-                                                fontWeight: 800,
-                                                color: theme.palette.text
-                                                    .secondary,
-                                            }}
-                                        >
-                                            {translate('annotation_field_name')}
-                                        </Typography>
-                                    </Grid>
-                                    <Grid item xs={1}>
-                                        <Typography
-                                            variant="body1"
-                                            aria-labelledby="annotation_field_name"
-                                        >
-                                            {annotation.field.name
-                                                ? `[${annotation.field.name}]`
-                                                : ''}
-                                        </Typography>
-                                    </Grid>
-                                    <Grid item xs={1}>
-                                        <Typography
-                                            id="annotation_field_internal_name"
-                                            sx={{
-                                                fontWeight: 800,
-                                                color: theme.palette.text
-                                                    .secondary,
-                                            }}
-                                        >
-                                            {translate(
-                                                'annotation_field_internal_name',
-                                            )}
-                                        </Typography>
-                                    </Grid>
-                                    <Grid item xs={1}>
-                                        <Typography
-                                            variant="body1"
-                                            aria-labelledby="annotation_field_internal_name"
-                                        >
-                                            {annotation.field.internalName}
-                                        </Typography>
-                                    </Grid>
-                                    <Grid item xs={1}>
-                                        <Typography
-                                            id="annotation_field_internal_scopes"
-                                            sx={{
-                                                fontWeight: 800,
-                                                color: theme.palette.text
-                                                    .secondary,
-                                            }}
-                                        >
-                                            {translate(
-                                                'annotation_field_internal_scopes',
-                                            )}
-                                        </Typography>
-                                    </Grid>
-                                    <Grid item xs={1}>
-                                        <Typography
-                                            variant="body1"
-                                            aria-labelledby="annotation_field_internal_scopes"
-                                        >
-                                            {(
-                                                annotation.field
-                                                    .internalScopes || []
-                                            ).map((scope) => (
-                                                <FieldInternalIcon
-                                                    key={scope}
-                                                    scope={scope}
-                                                    p={{ t: translate }}
-                                                />
-                                            ))}
-                                        </Typography>
-                                    </Grid>
-                                    <Grid item xs={1}>
-                                        <Typography
-                                            id="annotation_initialValue"
-                                            sx={{
-                                                fontWeight: 800,
-                                                color: theme.palette.text
-                                                    .secondary,
-                                            }}
-                                        >
-                                            {translate(
-                                                'annotation_initialValue',
-                                            )}
-                                        </Typography>
-                                    </Grid>
-                                    <Grid item xs={1}>
-                                        <Typography
-                                            variant="body1"
-                                            aria-labelledby="annotation_initialValue"
-                                        >
-                                            {annotation.initialValue}
-                                        </Typography>
-                                    </Grid>
+                                    <AnnotationValue
+                                        label="annotation_field_label"
+                                        value={annotation.field.label}
+                                    />
+                                    <AnnotationValue
+                                        label="annotation_field_name"
+                                        value={`[${annotation.field.name}]`}
+                                    />
+                                    <AnnotationValue
+                                        label="annotation_field_internal_name"
+                                        value={annotation.field.internalName}
+                                    />
+                                    <AnnotationValue
+                                        label="annotation_field_internal_scopes"
+                                        value={(
+                                            annotation.field.internalScopes ||
+                                            []
+                                        ).map((scope) => (
+                                            <FieldInternalIcon
+                                                key={scope}
+                                                scope={scope}
+                                                p={{ t: translate }}
+                                            />
+                                        ))}
+                                    />
+                                    <AnnotationValue
+                                        label="annotation_initialValue"
+                                        value={annotation.initialValue}
+                                    />
                                 </Grid>
                             ) : (
                                 translate('annotation_field_not_found')
@@ -237,50 +146,14 @@ export const AnnotationItem = () => {
                                 {translate('annotation_contributor_section')}
                             </Typography>
                             <Grid container spacing={2} columns={2}>
-                                <Grid item xs={1}>
-                                    <Typography
-                                        id="annotation_field_author_name"
-                                        sx={{
-                                            fontWeight: 800,
-                                            color: theme.palette.text.secondary,
-                                        }}
-                                    >
-                                        {translate(
-                                            'annotation_field_author_name',
-                                        )}
-                                    </Typography>
-                                </Grid>
-                                <Grid item xs={1}>
-                                    <Typography
-                                        variant="body1"
-                                        aria-labelledby="annotation_field_author_name"
-                                    >
-                                        {annotation.authorName}
-                                    </Typography>
-                                </Grid>
-                            </Grid>
-                            <Grid container spacing={2} columns={2}>
-                                <Grid item xs={1}>
-                                    <Typography
-                                        id="annotation_field_author_email"
-                                        sx={{
-                                            fontWeight: 800,
-                                            color: theme.palette.text.secondary,
-                                        }}
-                                    >
-                                        {translate(
-                                            'annotation_field_author_email',
-                                        )}
-                                    </Typography>
-                                </Grid>
-                                <Grid item xs={1}>
-                                    <Typography
-                                        variant="body1"
-                                        aria-labelledby="annotation_field_author_email"
-                                    >
-                                        {annotation.authorEmail}
-                                    </Typography>
-                                </Grid>
+                                <AnnotationValue
+                                    label="annotation_author_name"
+                                    value={annotation.authorName}
+                                />
+                                <AnnotationValue
+                                    label="annotation_author_email"
+                                    value={annotation.authorEmail}
+                                />
                             </Grid>
                         </Stack>
 
@@ -291,50 +164,18 @@ export const AnnotationItem = () => {
                                 )}
                             </Typography>
                             <Grid container spacing={2} columns={2}>
-                                <Grid item xs={1}>
-                                    <Typography
-                                        id="annotation_created_at"
-                                        sx={{
-                                            fontWeight: 800,
-                                            color: theme.palette.text.secondary,
-                                        }}
-                                    >
-                                        {translate('annotation_created_at')}
-                                    </Typography>
-                                </Grid>
-                                <Grid item xs={1}>
-                                    <Typography
-                                        variant="body1"
-                                        aria-labelledby="annotation_created_at"
-                                    >
-                                        {new Date(
-                                            annotation.createdAt,
-                                        ).toLocaleDateString()}
-                                    </Typography>
-                                </Grid>
-                            </Grid>
-                            <Grid container spacing={2} columns={2}>
-                                <Grid item xs={1}>
-                                    <Typography
-                                        id="annotation_updated_at"
-                                        sx={{
-                                            fontWeight: 800,
-                                            color: theme.palette.text.secondary,
-                                        }}
-                                    >
-                                        {translate('annotation_updated_at')}
-                                    </Typography>
-                                </Grid>
-                                <Grid item xs={1}>
-                                    <Typography
-                                        variant="body1"
-                                        aria-labelledby="annotation_updated_at"
-                                    >
-                                        {new Date(
-                                            annotation.updatedAt,
-                                        ).toLocaleDateString()}
-                                    </Typography>
-                                </Grid>
+                                <AnnotationValue
+                                    label="annotation_created_at"
+                                    value={new Date(
+                                        annotation.createdAt,
+                                    ).toLocaleDateString()}
+                                />
+                                <AnnotationValue
+                                    label="annotation_updated_at"
+                                    value={new Date(
+                                        annotation.updatedAt,
+                                    ).toLocaleDateString()}
+                                />
                             </Grid>
                         </Stack>
                     </Stack>
