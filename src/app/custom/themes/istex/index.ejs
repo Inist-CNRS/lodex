@@ -18,139 +18,139 @@
     <style><%= theme.cssVariable %>
     /* import config theme edito */
         <% if (custom) {%>
-        :root {
-        --banniereSimpleUrl: url('../ICONO/<%= custom.BanniereSimple %>-banniere-1920x460.jpg');        
-        --banniereDoubleUrl: url('../ICONO/<%= custom.BanniereDouble %>-rectangle-1920x1080.jpg');
-        }
-        <% } %>
+            :root {
+                --banniereSimpleUrl: url('../ICONO/<%= custom.BanniereSimple %>-banniere-1920x460.jpg');
+                --banniereDoubleUrl: url('../ICONO/<%= custom.BanniereDouble %>-rectangle-1920x1080.jpg');
+            }
+            <% } %>
     </style>
 </head>
 
 <body>
-<nav id="navigation-main" class="menuIstex navigation-main" role="navigation" aria-label="Menu Istex">
+    <nav id="navigation-main" class="menuIstex navigation-main" role="navigation" aria-label="Menu Istex">
         <ul class="menu container menu-haut flexrow">
             <li
-                    class="accesIstex nav-main-item  menu-item menu-item-type-custom menu-item-object-custom current-menu-item current_page_item menu-item-home menu-item-2651">
+                class="accesIstex nav-main-item  menu-item menu-item-type-custom menu-item-object-custom current-menu-item current_page_item menu-item-home menu-item-2651">
                 <a href="https://www.istex.fr" target="blank" title="accès Istex (lien externe)">
-            <img src="<%= theme.current.href %>/img/header/leftarrow.png" alt=""> Accès
-            Istex.fr
+                    <img src="<%= theme.current.href %>/img/header/leftarrow.png" alt=""> Accès
+                    Istex.fr
                 </a>
             </li>
             <li
-                    class="nav-main-item  menu-item menu-item-type-custom menu-item-object-custom current-menu-item current_page_item menu-item-home menu-item-2651">
+                class="nav-main-item  menu-item menu-item-type-custom menu-item-object-custom current-menu-item current_page_item menu-item-home menu-item-2651">
                 <a class="nav-main-link" href="<%= custom.host %>" title="Accueil">Accueil</a>
             </li>
             <li class="nav-main-item  menu-item menu-item-type-custom menu-item-object-custom menu-item-2652">
                 <a class="nav-main-link" href="https://www.loterre.fr/" target="_blank"
-                    title="Loterre (lien externe)">Loterre</a>
+                                                                        title="Loterre (lien externe)">Loterre</a>
             </li>
             <li class="nav-main-item  menu-item menu-item-type-custom menu-item-object-custom menu-item-2653">
                 <a class="nav-main-link" href="https://www.istex.fr/category/actualites/" target="_blank"
-                    title="Actualités (lien externe)">Actualités</a>
+                                                                                          title="Actualités (lien externe)">Actualités</a>
             </li>
             <li class="nav-main-item  menu-item menu-item-type-custom menu-item-object-custom menu-item-2654">
                 <a class="nav-main-link" href="https://scientific-corpus.data.istex.fr/" target="_blank"
-                    title="Corpus spécialisés (lien externe)">Corpus spécialisés</a>
+                                                                                         title="Corpus spécialisés (lien externe)">Corpus spécialisés</a>
             </li>
         </ul>
-</nav>
-<header>
-    <div class="banner">
-        <div class="container">
-            <a href="/">
-                <img src="<%= theme.current.href %>/img/header/istex.svg" alt="Istex">
-                <h1 class="siteTitle">
-                    <%= custom.title %>
-                </h1>
-                <div class="subTitle">
-                    <%= custom.summary %>
-                </div>
-            </a>
+    </nav>
+    <header>
+        <div class="banner">
+            <div class="container">
+                <a href="<%= custom.host %>">
+                    <img src="<%= theme.current.href %>/img/header/istex.svg" alt="Istex">
+                    <h1 class="siteTitle">
+                        <%= custom.title %>
+                    </h1>
+                    <div class="subTitle">
+                        <%= custom.summary %>
+                    </div>
+                </a>
+            </div>
         </div>
-    </div>
-</header>
+    </header>
     <div id="root"></div>
-<footer class="site-footer">
-    <nav>
-        <ul class="footer1 flexrow container">
-            <li><a href="https://www.istex.fr/politique-de-confidentialite/">Confidentialité</a></li>
-            <li><a href="https://www.istex.fr/accessibilite/">Accessibilité</a></li>
-            <li><a href="https://www.istex.fr/mentions-legales/">Mentions légales</a></li>
-            <li><a href="https://www.istex.fr/plan-du-site/">Plan du site</a></li>
-            <li><a href="https://stats.uptimerobot.com/Lg8APTkMmW">Météo des services</a></li>
-        </ul>
-    </nav>
-    <nav>
-        <ul class="footer3 flexrow container">
-            <li><a href="https://www.enseignementsup-recherche.gouv.fr/"><img
-                            src="https://www.istex.fr/wp-content/themes/istex/img/mesr.svg"
-                            alt="ministère de l'enseignement supérieur et de la recherche"></a></li>
-            <li><a href="https://www.cnrs.fr/"><img src="https://www.istex.fr/wp-content/themes/istex/img/cnrs.svg"
-                                                    alt="cnrs"></a></li>
-            <li><a href="https://www.abes.fr/"><img src="https://www.istex.fr/wp-content/themes/istex/img/abes.png"
-                                                    alt="abes : agence bibliographique de l'enseignement supérieur"></a>
-            </li>
-            <li><a href="https://www.couperin.org/"><img
-                            src="https://www.istex.fr/wp-content/themes/istex/img/couperin.png" alt="couperin.org"></a>
-            </li>
-            <li><a href="https://franceuniversites.fr/"><img class="fu"
-                                                             src="https://www.istex.fr/wp-content/themes/istex/img/france_universites_logo.svg"
-                                                             alt="France universités"></a></li>
-            <li><a href="https://www.univ-lorraine.fr/"><img
-                            src="https://www.istex.fr/wp-content/themes/istex/img/ul.svg"
-                            alt="université de lorraine"></a>
-            </li>
-        </ul>
-    </nav>
-    <div class="footer4 container"><img src="https://www.istex.fr/wp-content/themes/istex/img/investissement.png"
-                                     alt="investissement d'avenir">
-        <p class="mt0">Financement : ANR-10-IDEX-0004-02</p>
-    </div>
-</footer>
-<!-- Footer - bloc-8 END -->
-<script src="<%= theme.current.href %>/js/jquery-3.6.0.min.js"></script>
-<script src="<%= theme.current.href %>/js/responsiveMenu.js"></script>
-<script src="<%= theme.current.href %>/js/tooltip.js"></script>
-<script>
-    window.__PRELOADED_STATE__ = <%- lodex.preload %>;
-    window.__TENANT__ = '<%= lodex.tenant %>';
-    window.ISTEX_API_URL = '<%= lodex.istexApi %>';
-</script>
-<script src="<%= lodex.base.href %>/index.js"></script>       
-<!-- Piwik -->
-        <script>
-            var _paq = _paq || [];
-            _paq.push([
-                function () {
-                    var self = this;
-                    function getOriginalVisitorCookieTimeout() {
-                        var now = new Date(),
-                            nowTs = Math.round(now.getTime() / 1000),
-                            visitorInfo = self.getVisitorInfo();
-                        var createTs = parseInt(visitorInfo[2]);
-                        var cookieTimeout = 33696000;
-                        var originalTimeout = createTs + cookieTimeout - nowTs;
-                        return originalTimeout;
-                    }
-                    this.setVisitorCookieTimeout(getOriginalVisitorCookieTimeout());
+    <footer class="site-footer">
+        <nav>
+            <ul class="footer1 flexrow container">
+                <li><a href="https://www.istex.fr/politique-de-confidentialite/">Confidentialité</a></li>
+                <li><a href="https://www.istex.fr/accessibilite/">Accessibilité</a></li>
+                <li><a href="https://www.istex.fr/mentions-legales/">Mentions légales</a></li>
+                <li><a href="https://www.istex.fr/plan-du-site/">Plan du site</a></li>
+                <li><a href="https://stats.uptimerobot.com/Lg8APTkMmW">Météo des services</a></li>
+            </ul>
+        </nav>
+        <nav>
+            <ul class="footer3 flexrow container">
+                <li><a href="https://www.enseignementsup-recherche.gouv.fr/"><img
+                       src="https://www.istex.fr/wp-content/themes/istex/img/mesr.svg"
+                       alt="ministère de l'enseignement supérieur et de la recherche"></a></li>
+                <li><a href="https://www.cnrs.fr/"><img src="https://www.istex.fr/wp-content/themes/istex/img/cnrs.svg"
+                                                        alt="cnrs"></a></li>
+                <li><a href="https://www.abes.fr/"><img src="https://www.istex.fr/wp-content/themes/istex/img/abes.png"
+                                                        alt="abes : agence bibliographique de l'enseignement supérieur"></a>
+                </li>
+                <li><a href="https://www.couperin.org/"><img
+                       src="https://www.istex.fr/wp-content/themes/istex/img/couperin.png" alt="couperin.org"></a>
+                </li>
+                <li><a href="https://franceuniversites.fr/"><img class="fu"
+                                                                 src="https://www.istex.fr/wp-content/themes/istex/img/france_universites_logo.svg"
+                                                                 alt="France universités"></a></li>
+                <li><a href="https://www.univ-lorraine.fr/"><img
+                       src="https://www.istex.fr/wp-content/themes/istex/img/ul.svg"
+                       alt="université de lorraine"></a>
+                </li>
+            </ul>
+        </nav>
+        <div class="footer4 container"><img src="https://www.istex.fr/wp-content/themes/istex/img/investissement.png"
+                                            alt="investissement d'avenir">
+            <p class="mt0">Financement : ANR-10-IDEX-0004-02</p>
+        </div>
+    </footer>
+    <!-- Footer - bloc-8 END -->
+    <script src="<%= theme.current.href %>/js/jquery-3.6.0.min.js"></script>
+    <script src="<%= theme.current.href %>/js/responsiveMenu.js"></script>
+    <script src="<%= theme.current.href %>/js/tooltip.js"></script>
+    <script>
+        window.__PRELOADED_STATE__ = <%- lodex.preload %>;
+        window.__TENANT__ = '<%= lodex.tenant %>';
+        window.ISTEX_API_URL = '<%= lodex.istexApi %>';
+    </script>
+    <script src="<%= lodex.base.href %>/index.js"></script>
+    <!-- Piwik -->
+    <script>
+        var _paq = _paq || [];
+        _paq.push([
+            function () {
+                var self = this;
+                function getOriginalVisitorCookieTimeout() {
+                    var now = new Date(),
+                        nowTs = Math.round(now.getTime() / 1000),
+                        visitorInfo = self.getVisitorInfo();
+                    var createTs = parseInt(visitorInfo[2]);
+                    var cookieTimeout = 33696000;
+                    var originalTimeout = createTs + cookieTimeout - nowTs;
+                    return originalTimeout;
                 }
-            ]);
-            _paq.push(["trackPageView"]);
-            _paq.push(["enableLinkTracking"]);
-            (function () {
-                var u = "https://piwik2.inist.fr/";
-                _paq.push(["setTrackerUrl", u + "piwik.php"]);
-                _paq.push(["setSiteId", "<%= custom.matomoID %>"]);
-                var d = document,
-                    g = d.createElement("script"),
-                    s = d.getElementsByTagName("script")[0];
-                g.type = "text/javascript";
-                g.async = true;
-                g.defer = true;
-                g.src = u + "piwik.js";
-                s.parentNode.insertBefore(g, s);
-            })();
-        </script>
+                this.setVisitorCookieTimeout(getOriginalVisitorCookieTimeout());
+            }
+        ]);
+        _paq.push(["trackPageView"]);
+        _paq.push(["enableLinkTracking"]);
+        (function () {
+            var u = "https://piwik2.inist.fr/";
+            _paq.push(["setTrackerUrl", u + "piwik.php"]);
+            _paq.push(["setSiteId", "<%= custom.matomoID %>"]);
+            var d = document,
+                g = d.createElement("script"),
+                s = d.getElementsByTagName("script")[0];
+            g.type = "text/javascript";
+            g.async = true;
+            g.defer = true;
+            g.src = u + "piwik.js";
+            s.parentNode.insertBefore(g, s);
+        })();
+    </script>
     <!-- End Piwik Code -->
-    </body>
+</body>
 </html>
