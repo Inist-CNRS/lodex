@@ -1,5 +1,5 @@
 import { useCallback, useMemo } from 'react';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useTranslate } from '../../i18n/I18NContext';
 import { getUserSessionStorageInfo } from '../api/tools';
 import { getRequest } from '../../user';
@@ -10,6 +10,7 @@ import fetch from '../../lib/fetch';
 export function useUpdateAnnotation() {
     const { translate } = useTranslate();
     const history = useHistory();
+    const queryClient = useQueryClient();
 
     const mutation = useMutation({
         mutationFn: async ({ id, annotation }) => {
@@ -35,13 +36,17 @@ export function useUpdateAnnotation() {
 
             return response.data;
         },
-        onSuccess: () => {
-            toast(translate('annotation_create_success'), {
+        onSuccess: (data) => {
+            queryClient.setQueryData(['get-annotation', data._id], data);
+            queryClient.invalidateQueries({
+                predicate: (query) => query.queryKey[0] === 'get-annotations',
+            });
+            toast(translate('annotation_update_success'), {
                 type: toast.TYPE.SUCCESS,
             });
         },
         onError: () => {
-            toast(translate('annotation_create_error'), {
+            toast(translate('annotation_update_error'), {
                 type: toast.TYPE.ERROR,
             });
         },

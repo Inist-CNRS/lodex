@@ -234,6 +234,9 @@ describe('Annotation', () => {
 
                 cy.findByText('Annotations').click();
 
+                cy.wait(1000);
+                cy.findByRole('progressbar').should('not.exist');
+
                 cy.findAllByRole('cell').then((cells) => {
                     const firstUri = cells[0].textContent;
                     const secondUri = cells[14].textContent;
