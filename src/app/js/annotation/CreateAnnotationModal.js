@@ -140,7 +140,6 @@ export function CreateAnnotationModal({
         <Popover
             open={true}
             anchorEl={anchorEl}
-            onClose={handleClose}
             anchorOrigin={{
                 vertical: 'top',
                 horizontal: 'right',
