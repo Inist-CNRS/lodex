@@ -21,7 +21,7 @@ const FormatFullScreenMode = ({ children, p }) => {
 
     return (
         <>
-            {children}
+            {open === false && children}
 
             <Tooltip title={p.t('fullscreen')} placement="left">
                 <IconButton
@@ -36,35 +36,37 @@ const FormatFullScreenMode = ({ children, p }) => {
                 </IconButton>
             </Tooltip>
 
-            <Dialog fullScreen={true} open={open} onClose={handleClose}>
-                <IconButton
-                    aria-label="close"
-                    onClick={handleClose}
-                    sx={{
-                        position: 'absolute',
-                        right: 8,
-                        top: 8,
-                        color: 'var(--text-main)',
-                        backgroundColor: 'rgba(0,0,0,0.025)',
-                        zIndex: 99999,
-                    }}
-                >
-                    <CloseIcon />
-                </IconButton>
-                <DialogContent dividers>
-                    <fieldset
-                        style={{
-                            borderRadius: '5px',
-                            margin: '24px',
-                            height: '100%',
-                            maxHeight: 'calc(100% - 48px)',
-                            overflow: 'scroll',
+            {open && (
+                <Dialog fullScreen={true} open={open} onClose={handleClose}>
+                    <IconButton
+                        aria-label="close"
+                        onClick={handleClose}
+                        sx={{
+                            position: 'absolute',
+                            right: 8,
+                            top: 8,
+                            color: 'var(--text-main)',
+                            backgroundColor: 'rgba(0,0,0,0.025)',
+                            zIndex: 99999,
                         }}
                     >
-                        {children}
-                    </fieldset>
-                </DialogContent>
-            </Dialog>
+                        <CloseIcon />
+                    </IconButton>
+                    <DialogContent dividers>
+                        <fieldset
+                            style={{
+                                borderRadius: '5px',
+                                margin: '24px',
+                                height: '100%',
+                                maxHeight: 'calc(100% - 48px)',
+                                overflow: 'scroll',
+                            }}
+                        >
+                            {children}
+                        </fieldset>
+                    </DialogContent>
+                </Dialog>
+            )}
         </>
     );
 };
