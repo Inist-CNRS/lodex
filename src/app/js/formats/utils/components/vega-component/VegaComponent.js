@@ -23,6 +23,7 @@ import { translate } from '../../../../i18n/I18NContext';
  */
 function CustomActionVega(props) {
     const actions = useVegaActions(props.user);
+    const polyglot = props.p;
     const graphParentRef = useVegaCsvExport(props.p, props.data);
 
     const spec = props.spec;
@@ -78,6 +79,16 @@ function CustomActionVega(props) {
                     spec={deepClone(props.spec)}
                     actions={actions}
                     mode="vega"
+                    i18n={{
+                        SVG_ACTION: polyglot.t('vega_export_svg'),
+                        PNG_ACTION: polyglot.t('vega_export_png'),
+                        CLICK_TO_VIEW_ACTIONS: polyglot.t(
+                            'vega_click_to_view_actions',
+                        ),
+                        COMPILED_ACTION: polyglot.t('vega_compiled_action'),
+                        EDITOR_ACTION: polyglot.t('vega_editor_action'),
+                        SOURCE_ACTION: polyglot.t('vega_source_action'),
+                    }}
                 />
             </div>
         </FormatFullScreenMode>

@@ -9,6 +9,7 @@ export function useVegaActions(user) {
                       export: {
                           svg: true,
                           png: true,
+                          csv: true,
                       },
                       source: true,
                       compiled: true,
@@ -18,6 +19,7 @@ export function useVegaActions(user) {
                       export: {
                           svg: true,
                           png: true,
+                          csv: true,
                       },
                       source: false,
                       compiled: false,
