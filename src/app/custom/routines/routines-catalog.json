@@ -196,5 +196,11 @@
         "url": "/api/run/close-by/",
         "doc": "https://lodex.inist.fr/docs/partie-2-2/les-routines-et-graphes/les-routines/",
         "recommendedWith": ["AsterPlot"]
+    },
+    {
+        "id": "r-distinct-with",
+        "url": "/api/run/distinct-with/",
+        "doc": "https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/les-routines-et-graphes/les-routines/#distinct-with",
+        "recommendedWith": ["AsterPlot", "ParallelCoordinates"]
     }
 ]
