@@ -8,13 +8,17 @@ import FieldInternalIcon from '../../fields/FieldInternalIcon';
 import { useTranslate } from '../../i18n/I18NContext';
 import AdminOnlyAlert from '../../lib/components/AdminOnlyAlert';
 import Loading from '../../lib/components/Loading';
-import { useGetAnnotation } from './useGetAnnotation';
 import { AnnotationForm } from './AnnotationForm';
 import { AnnotationValue } from './AnnotationValue';
+import { useGetAnnotation } from './useGetAnnotation';
 
 const tenant = sessionStorage.getItem('lodex-tenant') || DEFAULT_TENANT;
 
 const getAnnotationResourceTitle = (annotation, translate) => {
+    if (annotation.field?.scope === 'graphic') {
+        return translate('annotation_graph_page');
+    }
+
     if (!annotation.resourceUri) {
         return translate('annotation_home_page');
     }
@@ -59,7 +63,18 @@ export const AnnotationItem = () => {
                     {translate('annotation_header')}{' '}
                     {getAnnotationResourceTitle(annotation, translate)}
                 </Typography>
-                {annotation.resourceUri ? (
+                {annotation.field?.scope === 'graphic' ? (
+                    <Stack direction="row">
+                        <Typography>{annotation.field.label}</Typography>
+                        <Link
+                            title={translate('annotation_resource_link')}
+                            href={`/instance/${tenant}/graph/${annotation.field.name}`}
+                            target="_blank"
+                        >
+                            <OpenInNewIcon />
+                        </Link>
+                    </Stack>
+                ) : annotation.resourceUri ? (
                     <Stack direction="row">
                         <Typography>{annotation.resourceUri}</Typography>
                         {annotation.resource && (
