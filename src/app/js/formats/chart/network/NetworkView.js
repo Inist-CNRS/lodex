@@ -1,4 +1,11 @@
-import React, { useEffect, useMemo, useState, lazy, Suspense } from 'react';
+import React, {
+    useEffect,
+    useMemo,
+    useState,
+    lazy,
+    Suspense,
+    useCallback,
+} from 'react';
 import { polyglot as polyglotPropTypes } from '../../../propTypes';
 import compose from 'recompose/compose';
 import get from 'lodash/get';
@@ -20,15 +27,33 @@ const styles = {
         overflow: 'hidden',
         userSelect: 'none',
         width: '100%',
+        height: '100%',
+        maxHeight: typeof window !== 'undefined' ? window.innerHeight - 96 : 0,
     },
 };
 
 const Network = ({ formatData, p, colorSet }) => {
     const { translate } = useTranslate();
+    const [{ width, height }, setDimensions] = useState({
+        width: 0,
+        height: 0,
+    });
     const [cooldownTime, setCooldownTime] = useState(10000);
     const [selectedNode, setSelectedNode] = useState(null);
     const [highlightedNodes, setHighlightedNodes] = useState([]);
     const [highlightedLinks, setHighlightedLinks] = useState([]);
+
+    const containerRef = useCallback((node) => {
+        if (!node) return;
+        const resizeObserver = new ResizeObserver(() => {
+            if (node)
+                setDimensions({
+                    width: node.clientWidth,
+                    height: node.clientHeight,
+                });
+        });
+        resizeObserver.observe(node);
+    }, []);
 
     useEffect(() => {
         setCooldownTime(10000);
@@ -156,69 +181,76 @@ const Network = ({ formatData, p, colorSet }) => {
     };
 
     return (
-        <FormatFullScreenMode>
-            <div style={styles.container}>
-                <Suspense fallback={<Loading>{translate('loading')}</Loading>}>
-                    <ForceGraph2D
-                        graphData={{ nodes, links }}
-                        nodeCanvasObject={(node, ctx, globalScale) => {
-                            if (
-                                highlightedNodes.length === 0 ||
-                                highlightedNodes.some(
-                                    (highlightNode) =>
-                                        highlightNode.id === node.id,
-                                )
-                            ) {
+        <div style={{ height: `500px` }}>
+            <FormatFullScreenMode>
+                <div style={styles.container} ref={containerRef}>
+                    <Suspense
+                        fallback={<Loading>{translate('loading')}</Loading>}
+                    >
+                        <ForceGraph2D
+                            width={width}
+                            height={height}
+                            graphData={{ nodes, links }}
+                            nodeCanvasObject={(node, ctx, globalScale) => {
+                                if (
+                                    highlightedNodes.length === 0 ||
+                                    highlightedNodes.some(
+                                        (highlightNode) =>
+                                            highlightNode.id === node.id,
+                                    )
+                                ) {
+                                    ctx.globalAlpha = 1;
+                                } else {
+                                    ctx.globalAlpha = 0.1;
+                                }
+                                const fontSize = 12 / globalScale;
+                                const circleRadius = node.radius;
+
+                                ctx.font = `${fontSize}px Sans-Serif`;
+                                ctx.textAlign = 'center';
+                                ctx.textBaseline = 'middle';
+                                ctx.fillStyle = 'black';
+                                ctx.fillText(
+                                    node.label,
+                                    node.x,
+                                    node.y + circleRadius + fontSize,
+                                );
+
+                                ctx.fillStyle = colorSet[0];
+                                ctx.beginPath();
+                                ctx.arc(
+                                    node.x,
+                                    node.y,
+                                    circleRadius,
+                                    0,
+                                    2 * Math.PI,
+                                    false,
+                                );
+                                ctx.fill();
                                 ctx.globalAlpha = 1;
-                            } else {
-                                ctx.globalAlpha = 0.1;
+                            }}
+                            linkVisibility={(link) =>
+                                highlightedLinks.length === 0 ||
+                                highlightedLinks.some(
+                                    (highlightedLink) =>
+                                        highlightedLink.source ===
+                                            link.source &&
+                                        highlightedLink.target === link.target,
+                                )
+                                    ? true
+                                    : false
                             }
-                            const fontSize = 12 / globalScale;
-                            const circleRadius = node.radius;
+                            onNodeClick={handleNodeClick}
+                            onNodeHover={handleNodeHover}
+                            enableNodeDrag={false}
+                            cooldownTime={cooldownTime}
+                        />
+                    </Suspense>
 
-                            ctx.font = `${fontSize}px Sans-Serif`;
-                            ctx.textAlign = 'center';
-                            ctx.textBaseline = 'middle';
-                            ctx.fillStyle = 'black';
-                            ctx.fillText(
-                                node.label,
-                                node.x,
-                                node.y + circleRadius + fontSize,
-                            );
-
-                            ctx.fillStyle = colorSet[0];
-                            ctx.beginPath();
-                            ctx.arc(
-                                node.x,
-                                node.y,
-                                circleRadius,
-                                0,
-                                2 * Math.PI,
-                                false,
-                            );
-                            ctx.fill();
-                            ctx.globalAlpha = 1;
-                        }}
-                        linkVisibility={(link) =>
-                            highlightedLinks.length === 0 ||
-                            highlightedLinks.some(
-                                (highlightedLink) =>
-                                    highlightedLink.source === link.source &&
-                                    highlightedLink.target === link.target,
-                            )
-                                ? true
-                                : false
-                        }
-                        onNodeClick={handleNodeClick}
-                        onNodeHover={handleNodeHover}
-                        enableNodeDrag={false}
-                        cooldownTime={cooldownTime}
-                    />
-                </Suspense>
-
-                <div>{<MouseIcon polyglot={p} />}</div>
-            </div>
-        </FormatFullScreenMode>
+                    <div>{<MouseIcon polyglot={p} />}</div>
+                </div>
+            </FormatFullScreenMode>
+        </div>
     );
 };
 
