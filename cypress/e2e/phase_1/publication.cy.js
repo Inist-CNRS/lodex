@@ -562,7 +562,7 @@ describe('Dataset Publication', () => {
                     force: true,
                 });
 
-            cy.contains('Delete selected fields').click({ force: true });
+            cy.contains('Delete selected field(s)').click({ force: true });
 
             cy.wait(1000);
 
