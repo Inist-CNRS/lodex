@@ -1,12 +1,13 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { translate } from '../../../i18n/I18NContext';
 import commaNumber from 'comma-number';
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import compose from 'recompose/compose';
+import { translate } from '../../../i18n/I18NContext';
 
+import { CreateAnnotationButton } from '../../../annotation/CreateAnnotationButton';
 import { field as fieldPropTypes } from '../../../propTypes';
-import Bigbold from './Bigbold';
 import injectData from '../../injectData';
+import Bigbold from './Bigbold';
 
 function getNumber(numb) {
     if (Number.isInteger(numb)) {
@@ -40,11 +41,22 @@ class EmphasedNumberView extends Component {
 
         const value = getNumber(formatData || resource[field.name]);
         return (
-            <div className={className}>
+            <div
+                className={`${className} property_value_item property_value_ribbon`}
+                style={{
+                    display: 'inline-block',
+                    position: 'relative',
+                }}
+            >
                 <Bigbold
                     value={commaNumber(value, ' ')}
                     colors={colors}
                     size={size}
+                />
+                <CreateAnnotationButton
+                    field={field}
+                    target="value"
+                    initialValue={commaNumber(value, ' ')}
                 />
             </div>
         );
