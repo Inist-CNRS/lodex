@@ -67,7 +67,7 @@ export const createFunction = () =>
             map: map.toString(),
             reduce: reduce.toString(),
             query: filter,
-            finalize,
+            finalize: finalize.toString(),
             out: {
                 replace: collName,
             },
