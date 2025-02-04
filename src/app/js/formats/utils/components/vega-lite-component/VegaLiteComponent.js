@@ -71,6 +71,16 @@ function CustomActionVegaLite({
                         spec={deepClone(specWithData)}
                         actions={actions}
                         mode="vega-lite"
+                        i18n={{
+                            SVG_ACTION: polyglot.t('vega_export_svg'),
+                            PNG_ACTION: polyglot.t('vega_export_png'),
+                            CLICK_TO_VIEW_ACTIONS: polyglot.t(
+                                'vega_click_to_view_actions',
+                            ),
+                            COMPILED_ACTION: polyglot.t('vega_compiled_action'),
+                            EDITOR_ACTION: polyglot.t('vega_editor_action'),
+                            SOURCE_ACTION: polyglot.t('vega_source_action'),
+                        }}
                     />
                 </div>
             ) : (
@@ -88,6 +98,18 @@ function CustomActionVegaLite({
                             spec={deepClone(specWithData)}
                             actions={actions}
                             mode="vega-lite"
+                            i18n={{
+                                SVG_ACTION: polyglot.t('vega_export_svg'),
+                                PNG_ACTION: polyglot.t('vega_export_png'),
+                                CLICK_TO_VIEW_ACTIONS: polyglot.t(
+                                    'vega_click_to_view_actions',
+                                ),
+                                COMPILED_ACTION: polyglot.t(
+                                    'vega_compiled_action',
+                                ),
+                                EDITOR_ACTION: polyglot.t('vega_editor_action'),
+                                SOURCE_ACTION: polyglot.t('vega_source_action'),
+                            }}
                         />
                     </div>
                 </FormatFullScreenMode>
