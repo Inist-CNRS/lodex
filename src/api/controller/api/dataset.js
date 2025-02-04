@@ -78,8 +78,11 @@ export const deleteDatasetRow = async (ctx, id) => {
     try {
         const { acknowledged, deletedCount } =
             await ctx.dataset.deleteOneById(id);
+
         if (!acknowledged || deletedCount === 0) {
-            throw new Error('Dataset row not found');
+            ctx.status = 404;
+            ctx.body = { status: 'error', error: `Dataset not found: ${id}` };
+            return;
         }
 
         ctx.body = { status: 'deleted' };
