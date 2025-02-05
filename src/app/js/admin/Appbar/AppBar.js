@@ -7,7 +7,7 @@ import AspectRatioIcon from '@mui/icons-material/AspectRatio';
 
 import PublicationButton from '../publish/PublicationButton';
 import { fromFields, fromUser } from '../../sharedSelectors';
-import { fromParsing, fromPublication } from '../selectors';
+import { fromPublication } from '../selectors';
 import SidebarToggleButton from './SidebarToggleButton';
 import Menu from './Menu';
 import GoToPublicationButton from './GoToPublicationButton';
