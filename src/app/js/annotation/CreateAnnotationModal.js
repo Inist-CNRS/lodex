@@ -19,10 +19,18 @@ import { AuthorEmailField } from './fields/AuthorEmailField';
 import { AuthorNameField } from './fields/AuthorNameField';
 import { CommentField } from './fields/CommentField';
 
-const LAST_STEP_INDEX = 1;
+const COMMENT_STEP = 'COMMENT_STEP';
+const AUTHOR_STEP = 'AUTHOR_STEP';
 
-const COMMENT_STEP = 0;
-const AUTHOR_STEP = 1;
+const nextStepByStep = {
+    [COMMENT_STEP]: AUTHOR_STEP,
+    [AUTHOR_STEP]: AUTHOR_STEP,
+};
+
+const previousStepByStep = {
+    [COMMENT_STEP]: COMMENT_STEP,
+    [AUTHOR_STEP]: COMMENT_STEP,
+};
 
 export function CreateAnnotationModal({
     isSubmitting,
@@ -45,7 +53,7 @@ export function CreateAnnotationModal({
         },
     });
 
-    const [currentStep, setCurrentStep] = useState(0);
+    const [currentStep, setCurrentStep] = useState(COMMENT_STEP);
     // This is used to avoid submitting the form when the user clicks on the next button if the form is valid
     const [disableSubmit, setDisableSubmit] = useState(false);
 
@@ -64,13 +72,11 @@ export function CreateAnnotationModal({
         e.preventDefault();
         e.stopPropagation();
 
-        setCurrentStep((currentStep) => Math.max(0, currentStep - 1));
+        setCurrentStep((currentStep) => previousStepByStep[currentStep]);
     };
 
     const handleNext = () => {
-        setCurrentStep((currentStep) =>
-            Math.min(LAST_STEP_INDEX, currentStep + 1),
-        );
+        setCurrentStep((currentStep) => nextStepByStep[currentStep]);
     };
 
     const isRequiredFieldValid = useCallback((formState, fieldName) => {
@@ -119,7 +125,7 @@ export function CreateAnnotationModal({
     }, [currentStep, isCommentStepValid]);
 
     useEffect(() => {
-        if (currentStep !== LAST_STEP_INDEX) {
+        if (currentStep !== AUTHOR_STEP) {
             return;
         }
         setDisableSubmit(true);
@@ -173,7 +179,7 @@ export function CreateAnnotationModal({
                 </Typography>
 
                 <Box fullWidth role="tabpanel">
-                    {currentStep === 0 && (
+                    {currentStep === COMMENT_STEP && (
                         <Stack
                             spacing={2}
                             aria-hidden={!isCurrentStepCommentStep}
@@ -187,7 +193,7 @@ export function CreateAnnotationModal({
                         </Stack>
                     )}
 
-                    {currentStep === 1 && (
+                    {currentStep === AUTHOR_STEP && (
                         <Stack
                             spacing={2}
                             aria-hidden={!isCurrentStepAuthorStep}
@@ -211,7 +217,7 @@ export function CreateAnnotationModal({
                     spacing={2}
                     justifyContent={'space-between'}
                 >
-                    {currentStep === 0 ? (
+                    {currentStep === COMMENT_STEP ? (
                         <Button
                             type="button"
                             onClick={handleClose}
@@ -230,7 +236,7 @@ export function CreateAnnotationModal({
                         </Button>
                     )}
 
-                    {currentStep === LAST_STEP_INDEX ? (
+                    {currentStep === AUTHOR_STEP ? (
                         <Button
                             type="submit"
                             variant="contained"
