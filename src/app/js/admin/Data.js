@@ -1,7 +1,5 @@
 import React from 'react';
 import { Switch, Route, useRouteMatch, Redirect } from 'react-router';
-import { connect } from 'react-redux';
-import withInitialData from './withInitialData';
 
 import { DataRoute } from './DataRoute';
 import { DataAddRoute } from './DataAddRoute';
@@ -45,7 +43,4 @@ const DataComponent = () => {
     );
 };
 
-const mapStateToProps = () => ({
-    withInitialData,
-});
-export const Data = connect(mapStateToProps)(DataComponent);
+export const Data = DataComponent;
