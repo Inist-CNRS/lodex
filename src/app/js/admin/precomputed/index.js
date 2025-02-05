@@ -12,6 +12,7 @@ export const launchPrecomputed = createAction(LAUNCH_PRECOMPUTED);
 
 export const initialState = {
     error: null,
+    initialized: false,
     loading: false,
     dataPreviewLoading: false,
     precomputed: [],
@@ -20,7 +21,11 @@ export const initialState = {
 
 export default handleActions(
     {
-        LOAD_PRECOMPUTED: (state) => ({ ...state, loading: true }),
+        LOAD_PRECOMPUTED: (state) => ({
+            ...state,
+            loading: true,
+            initialized: true,
+        }),
         LOAD_PRECOMPUTED_ERROR: (state, { payload: error }) => ({
             ...state,
             error,
@@ -37,6 +42,7 @@ export default handleActions(
 
 export const isDataPreviewLoading = (state) => state.dataPreviewLoading;
 export const isLoading = (state) => state.loading;
+export const isInitialized = (state) => state.initialized;
 export const precomputed = (state) => state.precomputed;
 export const dataPreviewPrecomputed = (state) => state.dataPreviewPrecomputed;
 export const getError = (state) => state.error;
@@ -44,6 +50,7 @@ export const getError = (state) => state.error;
 export const selectors = {
     isDataPreviewLoading,
     isLoading,
+    isInitialized,
     precomputed,
     dataPreviewPrecomputed,
     getError,

@@ -17,7 +17,10 @@ import {
     fromConfigTenant,
 } from './selectors';
 
-export const withInitialDataHoc = (BaseComponent) =>
+export const withInitialDataHoc = (
+    BaseComponent,
+    onlyLoadIfNotInitialized = false,
+) =>
     class HocComponent extends Component {
         static propTypes = {
             loadParsingResult: PropTypes.func.isRequired,
@@ -27,9 +30,13 @@ export const withInitialDataHoc = (BaseComponent) =>
             loadPrecomputed: PropTypes.func.isRequired,
             loadConfigTenant: PropTypes.func.isRequired,
             isLoading: PropTypes.bool.isRequired,
+            isInitialized: PropTypes.bool.isRequired,
         };
 
         UNSAFE_componentWillMount() {
+            if (this.props.isInitialized && onlyLoadIfNotInitialized) {
+                return;
+            }
             this.props.loadPublication();
             this.props.loadParsingResult();
             this.props.loadSubresources();
@@ -51,6 +58,12 @@ export const withInitialDataHoc = (BaseComponent) =>
     };
 
 export const mapStateToProps = (state) => ({
+    isInitialized:
+        fromParsing.isInitialized(state) ||
+        fromPublication.isInitialized(state) ||
+        fromSubresources.isInitialized(state) ||
+        fromPrecomputed.isInitialized(state) ||
+        fromConfigTenant.isInitialized(state),
     isLoading:
         fromParsing.isParsingLoading(state) ||
         fromPublication.isPublicationLoading(state) ||
@@ -68,9 +81,9 @@ const mapDispatchToProps = {
     loadConfigTenant: loadConfigTenantAction,
 };
 
-export default (BaseComponent) => {
+export default (BaseComponent, onlyLoadIfNotInitialized = false) => {
     return connect(
         mapStateToProps,
         mapDispatchToProps,
-    )(withInitialDataHoc(BaseComponent));
+    )(withInitialDataHoc(BaseComponent, onlyLoadIfNotInitialized));
 };

@@ -24,13 +24,18 @@ export const deleteSubresource = createAction(DELETE_SUBRESOURCE);
 
 export const initialState = {
     error: null,
+    initialized: false,
     loading: false,
     subresources: [],
 };
 
 export default handleActions(
     {
-        LOAD_SUBRESOURCES: (state) => ({ ...state, loading: true }),
+        LOAD_SUBRESOURCES: (state) => ({
+            ...state,
+            loading: true,
+            initialized: true,
+        }),
         LOAD_SUBRESOURCES_ERROR: (state, { payload: error }) => ({
             ...state,
             error,
@@ -60,9 +65,11 @@ export default handleActions(
 );
 
 export const isLoading = (state) => state.loading;
+export const isInitialized = (state) => state.initialized;
 export const getSubresources = (state) => state.subresources;
 
 export const selectors = {
     isLoading,
     getSubresources,
+    isInitialized,
 };

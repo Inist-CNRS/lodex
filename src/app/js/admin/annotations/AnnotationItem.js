@@ -211,4 +211,4 @@ export const AnnotationItem = () => {
     );
 };
 
-export default withInitialData(AnnotationItem);
+export default withInitialData(AnnotationItem, true);

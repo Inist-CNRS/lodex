@@ -344,4 +344,4 @@ export const AnnotationList = () => {
     );
 };
 
-export default withInitialData(AnnotationList);
+export default withInitialData(AnnotationList, true);
