@@ -6,9 +6,9 @@ import HomeIcon from '@mui/icons-material/Home';
 import { ToggleButton, ToggleButtonGroup, Tooltip } from '@mui/material';
 import PropTypes from 'prop-types';
 import React, { useEffect } from 'react';
-import { polyglot as polyglotPropTypes } from '../propTypes';
-import { translate } from '../i18n/I18NContext';
 import { useRouteMatch } from 'react-router-dom';
+import { translate } from '../i18n/I18NContext';
+import { polyglot as polyglotPropTypes } from '../propTypes';
 
 export const FieldToggleInternalScopeComponent = ({ input, p: polyglot }) => {
     const matches = useRouteMatch();
@@ -16,7 +16,11 @@ export const FieldToggleInternalScopeComponent = ({ input, p: polyglot }) => {
     const [values, setValues] = React.useState(input?.value || []);
 
     React.useEffect(() => {
-        if (!input) {
+        if (
+            !input ||
+            input.value !== '' ||
+            matches.params.fieldName !== 'new'
+        ) {
             return;
         }
 

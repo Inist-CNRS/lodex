@@ -13,10 +13,10 @@ import { useHistory } from 'react-router';
 import FieldInternalIcon from '../../fields/FieldInternalIcon';
 import { useTranslate } from '../../i18n/I18NContext';
 import AdminOnlyAlert from '../../lib/components/AdminOnlyAlert';
+import { AnnotationStatus } from './AnnotationStatus';
 import { ResourceTitleCell } from './ResourceTitleCell';
 import { ResourceUriCell } from './ResourceUriCell';
 import { useGetAnnotations } from './useGetAnnotations';
-import { AnnotationStatus } from './AnnotationStatus';
 
 const AnnotationListToolBar = () => {
     const { translate } = useTranslate();
@@ -120,7 +120,12 @@ export const AnnotationList = () => {
                         (operator) => operator.value === 'contains',
                     ),
                     renderCell: ({ value }) => {
-                        return value ?? translate('annotation_field_not_found');
+                        return (
+                            <Typography>
+                                {value ??
+                                    translate('annotation_field_not_found')}
+                            </Typography>
+                        );
                     },
                     flex: 1,
                     sortable: false,
@@ -133,9 +138,10 @@ export const AnnotationList = () => {
                         (operator) => operator.value === 'contains',
                     ),
                     renderCell: ({ value }) => {
-                        return value
-                            ? `[${value}]`
-                            : translate('annotation_field_not_found');
+                        if (!value) {
+                            return null;
+                        }
+                        return <Typography>[{value}]</Typography>;
                     },
                     flex: 1,
                     sortable: false,
@@ -150,8 +156,9 @@ export const AnnotationList = () => {
                     ),
                     renderCell: ({ value }) => {
                         if (!value) {
-                            return translate('annotation_field_not_found');
+                            return null;
                         }
+
                         return (
                             <>
                                 {value.map((scope) => (
@@ -169,14 +176,13 @@ export const AnnotationList = () => {
                 },
                 {
                     field: 'field.internalName',
+                    valueGetter: ({ row }) => row?.field,
                     headerName: translate('annotation_field_internal_name'),
-                    valueGetter: ({ row }) =>
-                        row?.field ? row?.field?.internalName ?? 'n/a' : null,
                     filterOperators: getGridStringOperators().filter(
                         (operator) => operator.value === 'contains',
                     ),
                     renderCell: ({ value }) => {
-                        return value ?? translate('annotation_field_not_found');
+                        return <Typography>{value?.internalName}</Typography>;
                     },
                     flex: 1,
                     sortable: false,
@@ -244,6 +250,9 @@ export const AnnotationList = () => {
                     ),
                     flex: 1,
                     sortable: true,
+                    renderCell({ value }) {
+                        return <Typography>{value}</Typography>;
+                    },
                 },
                 {
                     field: 'authorName',
@@ -253,6 +262,9 @@ export const AnnotationList = () => {
                     filterOperators: getGridStringOperators().filter(
                         (operator) => operator.value === 'contains',
                     ),
+                    renderCell({ value }) {
+                        return <Typography>{value}</Typography>;
+                    },
                 },
                 {
                     field: 'comment',
@@ -282,7 +294,11 @@ export const AnnotationList = () => {
 
                     flex: 1,
                     renderCell: ({ value }) => {
-                        return new Date(value).toLocaleDateString();
+                        return (
+                            <Typography>
+                                {new Date(value).toLocaleDateString()}
+                            </Typography>
+                        );
                     },
                     filterOperators: getGridDateOperators().filter((operator) =>
                         ['is', 'after', 'before'].includes(operator.value),
@@ -295,7 +311,11 @@ export const AnnotationList = () => {
 
                     flex: 1,
                     renderCell: ({ value }) => {
-                        return new Date(value).toLocaleDateString();
+                        return (
+                            <Typography>
+                                {new Date(value).toLocaleDateString()}
+                            </Typography>
+                        );
                     },
                     filterOperators: getGridDateOperators().filter((operator) =>
                         ['is', 'after', 'before'].includes(operator.value),
