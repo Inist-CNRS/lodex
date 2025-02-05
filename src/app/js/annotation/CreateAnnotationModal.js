@@ -20,10 +20,9 @@ import { AuthorNameField } from './fields/AuthorNameField';
 import { CommentField } from './fields/CommentField';
 
 const LAST_STEP_INDEX = 1;
-const STEP_COUNT = LAST_STEP_INDEX + 1;
 
 const COMMENT_STEP = 0;
-const AUTHOR_STEP = COMMENT_STEP + 1;
+const AUTHOR_STEP = 1;
 
 export function CreateAnnotationModal({
     isSubmitting,
@@ -173,25 +172,8 @@ export function CreateAnnotationModal({
                     {translate('annotation_add_comment')}
                 </Typography>
 
-                <Box
-                    sx={{
-                        overflow: 'hidden',
-                    }}
-                    fullWidth
-                    role="tabpanel"
-                >
-                    <Box
-                        sx={{
-                            width: `calc(${STEP_COUNT} * 100%)`,
-                            display: 'grid',
-                            gridTemplateColumns: `repeat(${STEP_COUNT}, 1fr)`,
-                            gridTemplateRows: 'auto',
-                            overflow: 'hidden',
-                            transform: `translateX(-${currentStep * (100 / STEP_COUNT)}%)`,
-                            transition: 'transform 0.3s ease',
-                            paddingTop: 1,
-                        }}
-                    >
+                <Box fullWidth role="tabpanel">
+                    {currentStep === 0 && (
                         <Stack
                             spacing={2}
                             aria-hidden={!isCurrentStepCommentStep}
@@ -203,7 +185,9 @@ export function CreateAnnotationModal({
                                 active={isCurrentStepCommentStep}
                             />
                         </Stack>
+                    )}
 
+                    {currentStep === 1 && (
                         <Stack
                             spacing={2}
                             aria-hidden={!isCurrentStepAuthorStep}
@@ -219,7 +203,7 @@ export function CreateAnnotationModal({
                                 active={isCurrentStepAuthorStep}
                             />
                         </Stack>
-                    </Box>
+                    )}
                 </Box>
 
                 <Stack
