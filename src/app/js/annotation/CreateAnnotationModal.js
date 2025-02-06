@@ -7,6 +7,7 @@ import {
     CircularProgress,
     Popover,
     Stack,
+    Tooltip,
     Typography,
 } from '@mui/material';
 import { useForm, useStore } from '@tanstack/react-form';
@@ -221,11 +222,27 @@ export function CreateAnnotationModal({
                             role="tab"
                         >
                             {annotationInitialValue && (
-                                <Typography>
-                                    {translate('annotation_correct_value', {
-                                        value: annotationInitialValue,
-                                    })}
-                                </Typography>
+                                <Tooltip
+                                    title={annotationInitialValue.replace(
+                                        /<[^>]*>/g,
+                                        '',
+                                    )}
+                                >
+                                    <Typography
+                                        sx={{
+                                            whiteSpace: 'nowrap',
+                                            textOverflow: 'ellipsis',
+                                            overflow: 'hidden',
+                                        }}
+                                    >
+                                        {translate('annotation_correct_value', {
+                                            value: annotationInitialValue.replace(
+                                                /<[^>]*>/g,
+                                                '',
+                                            ),
+                                        })}
+                                    </Typography>
+                                </Tooltip>
                             )}
                             <CommentField
                                 form={form}
