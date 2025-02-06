@@ -24,6 +24,7 @@ export function TargetField({ form, initialValue, goToStep }) {
                         <MenuItem
                             onClick={() => {
                                 field.handleChange('title');
+                                initialValueField.handleChange(null);
                                 goToStep(COMMENT_STEP);
                             }}
                         >
@@ -33,6 +34,7 @@ export function TargetField({ form, initialValue, goToStep }) {
                             onClick={() => {
                                 field.handleChange('value');
                                 if (isList) {
+                                    initialValueField.handleChange(null);
                                     goToStep(VALUE_STEP);
                                     return;
                                 }

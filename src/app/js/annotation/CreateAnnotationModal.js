@@ -11,7 +11,7 @@ import {
 } from '@mui/material';
 import { useForm, useStore } from '@tanstack/react-form';
 import PropTypes from 'prop-types';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 
 import { annotationCreationSchema } from '../../../common/validator/annotation.validator';
 import { useTranslate } from '../i18n/I18NContext';
@@ -27,6 +27,25 @@ import {
     TARGET_STEP,
     VALUE_STEP,
 } from './steps';
+import { ValueField } from './fields/ValueField';
+
+const isRequiredFieldValid = (formState, fieldName) => {
+    const fieldState = formState.fieldMeta[fieldName];
+    if (!fieldState) {
+        return false;
+    }
+
+    return fieldState.isTouched && fieldState.errors.length === 0;
+};
+
+const isOptionalFieldValid = (formState, fieldName) => {
+    const fieldState = formState.fieldMeta[fieldName];
+    if (!fieldState) {
+        return false;
+    }
+
+    return !fieldState.isTouched || fieldState.errors.length === 0;
+};
 
 export function CreateAnnotationModal({
     isSubmitting,
@@ -76,23 +95,14 @@ export function CreateAnnotationModal({
         setCurrentStep((currentStep) => nextStepByStep[currentStep]);
     };
 
-    const isRequiredFieldValid = useCallback((formState, fieldName) => {
-        const fieldState = formState.fieldMeta[fieldName];
-        if (!fieldState) {
-            return false;
+    const isValueStepValid = useStore(form.store, (state) => {
+        if (currentStep !== VALUE_STEP) {
+            return true;
         }
 
-        return fieldState.isTouched && fieldState.errors.length === 0;
-    }, []);
-
-    const isOptionalFieldValid = useCallback((formState, fieldName) => {
-        const fieldState = formState.fieldMeta[fieldName];
-        if (!fieldState) {
-            return false;
-        }
-
-        return !fieldState.isTouched || fieldState.errors.length === 0;
-    }, []);
+        // tanstack form does not support conditional validation (e.g. validation using superRefine to depend on another field value)
+        return !!state.values.initialValue;
+    });
 
     const isCommentStepValid = useStore(form.store, (state) => {
         if (currentStep !== COMMENT_STEP) {
@@ -112,14 +122,20 @@ export function CreateAnnotationModal({
             isOptionalFieldValid(state, 'authorEmail')
         );
     });
+    const annotationInitialValue = useStore(form.store, (state) => {
+        return state.values.initialValue;
+    });
 
     const enableNextButton = useMemo(() => {
         if (currentStep === COMMENT_STEP) {
             return isCommentStepValid;
         }
+        if (currentStep === VALUE_STEP) {
+            return isValueStepValid;
+        }
 
         return false;
-    }, [currentStep, isCommentStepValid]);
+    }, [currentStep, isCommentStepValid, isValueStepValid]);
 
     useEffect(() => {
         if (currentStep !== AUTHOR_STEP) {
@@ -195,7 +211,7 @@ export function CreateAnnotationModal({
                             aria-label={translate('annotation_step_value')}
                             role="tab"
                         >
-                            SOON
+                            <ValueField choices={initialValue} form={form} />
                         </Stack>
                     )}
                     {currentStep === COMMENT_STEP && (
@@ -204,6 +220,13 @@ export function CreateAnnotationModal({
                             aria-label={translate('annotation_step_comment')}
                             role="tab"
                         >
+                            {annotationInitialValue && (
+                                <Typography>
+                                    {translate('annotation_correct_value', {
+                                        value: annotationInitialValue,
+                                    })}
+                                </Typography>
+                            )}
                             <CommentField
                                 form={form}
                                 active={isCurrentStepCommentStep}

@@ -135,7 +135,7 @@ export const AnnotationItem = () => {
                                         ))}
                                     />
                                     <AnnotationValue
-                                        label="annotation_initialValue"
+                                        label="annotation_initial_value"
                                         value={annotation.initialValue}
                                     />
                                 </Grid>
