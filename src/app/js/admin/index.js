@@ -1,37 +1,37 @@
 import '@babel/polyfill';
 import 'url-api-polyfill';
 
+import { createHashHistory } from 'history';
 import React from 'react';
 import { render } from 'react-dom';
-import { createHashHistory } from 'history';
 import { Provider } from 'react-redux';
-import { Route, Redirect } from 'react-router';
+import { Redirect, Route } from 'react-router';
 
 import {
     createTheme as createThemeMui,
     ThemeProvider,
 } from '@mui/material/styles';
 
-import reducers from './reducers';
-import sagas from './sagas';
-import configureStore from '../configureStore';
-import phrasesFor from '../i18n/translations';
+import { enUS, frFR } from '@mui/material/locale';
+import { enUS as enUSDatagrid, frFR as frFRDatagrid } from '@mui/x-data-grid';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { Router } from 'react-router-dom';
 import getLocale from '../../../common/getLocale';
-import App from './App';
-import PrivateRoute from './PrivateRoute';
-import { Display } from './Display';
-import AnnotationList from './annotations/AnnotationList';
-import { Data } from './Data';
-import { frFR as frFRDatagrid, enUS as enUSDatagrid } from '@mui/x-data-grid';
-import { frFR, enUS } from '@mui/material/locale';
-import LoginAdmin from './LoginAdmin';
-import { ConfigTenantRoute } from './ConfigTenantRoute';
 import '../../ace-webpack-loader';
 import defaultTheme from '../../custom/themes/default/defaultTheme';
-import { Router } from 'react-router-dom';
+import configureStore from '../configureStore';
 import { I18N } from '../i18n/I18NContext';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import AnnotationItem from './annotations/AnnotationItem';
+import phrasesFor from '../i18n/translations';
+import { default as AnnotationDetail } from './annotations/AnnotationDetail';
+import { default as AnnotationList } from './annotations/AnnotationList';
+import App from './App';
+import { ConfigTenantRoute } from './ConfigTenantRoute';
+import { Data } from './Data';
+import { Display } from './Display';
+import LoginAdmin from './LoginAdmin';
+import PrivateRoute from './PrivateRoute';
+import reducers from './reducers';
+import sagas from './sagas';
 
 const localesMUI = new Map([
     ['fr', { ...frFR, ...frFRDatagrid }],
@@ -83,7 +83,7 @@ render(
                             <PrivateRoute path="/display" component={Display} />
                             <PrivateRoute
                                 path="/annotations/:annotationId"
-                                component={AnnotationItem}
+                                component={AnnotationDetail}
                             />
                             <PrivateRoute
                                 path="/annotations"
