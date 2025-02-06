@@ -284,7 +284,7 @@
         "url": "https://domains-classifier.services.istex.fr/v1/en/classify",
         "doc": "https://github.com/Inist-CNRS/web-services/tree/main/services/domains-classifier",
         "swagger": "https://openapi.services.istex.fr/?urls.primaryName=domains-classifier%20-%20Classification%20en%20domaines%20scientifiques#/default/post_v1_en_classify",
-        "objectifTDM": "hhttps://services.istex.fr/classification-en-domaines-scientifiques/",
+        "objectifTDM": "https://services.istex.fr/classification-en-domaines-scientifiques/",
         "type": "classification"
     },
     {
@@ -336,6 +336,14 @@
         "type": "homogénéisation"
     },
     {
+        "id": "post-v1-sciencemetrixClass",
+        "url": "https://sciencemetrix-classification.services.istex.fr/v1/classif",
+        "doc": "https://github.com/Inist-CNRS/web-services/tree/main/services/sciencemetrix-classification",
+        "swagger": "https://openapi.services.istex.fr/?urls.primaryName=sciencemetrix-classification%20-%20Classification%20en%20domaines%20scientifiques%20Science-Metrix#/sciencemetrix-classification/post_v1_classif",
+        "objectifTDM": "https://services.istex.fr/classification-en-domaines-scientifiques-science-metrix/",
+        "type": "classification"
+    },
+    {
         "id": "post-v1-irc3sp",
         "url": "https://irc3-species.services.istex.fr/v1/irc3sp",
         "doc": "https://github.com/Inist-CNRS/web-services/tree/main/services/irc3-species",
@@ -344,42 +352,42 @@
         "type": "entitées nommées"
     },
     {
-        "id": "post-v1-teeft-en",
-        "url": "https://terms-extraction.services.istex.fr/v1/teeft/en",
-        "doc": "https://github.com/Inist-CNRS/web-services/tree/main/services/terms-extraction/v1/teeft",
-        "swagger": "https://openapi.services.istex.fr/?urls.primaryName=terms-extraction%20-%20Extraction%20de%20termes#/terms-extraction/post-v1-teeft-en",
+        "id": "post-v2-teeft-en",
+        "url": "https://terms-extraction.services.istex.fr/v2/teeft/en",
+        "doc": "https://github.com/Inist-CNRS/web-services/tree/main/services/terms-extraction/v2/teeft",
+        "swagger": "https://openapi.services.istex.fr/?urls.primaryName=terms-extraction%20-%20Extraction%20de%20termes#/terms-extraction/post-v2-teeft-en",
         "objectifTDM": "https://services.istex.fr/extraction-de-termes-teeft/",
         "type": "indexation"
     },
     {
-        "id": "post-v1-teeft-en-nb",
-        "url": "https://terms-extraction.services.istex.fr/v1/teeft/en?nb=10",
-        "doc": "https://github.com/Inist-CNRS/web-services/tree/main/services/terms-extraction/v1/teeft",
-        "swagger": "https://openapi.services.istex.fr/?urls.primaryName=terms-extraction%20-%20Extraction%20de%20termes#/terms-extraction/post-v1-teeft-en",
+        "id": "post-v2-teeft-en-nb",
+        "url": "https://terms-extraction.services.istex.fr/v2/teeft/en?nb=10",
+        "doc": "https://github.com/Inist-CNRS/web-services/tree/main/services/terms-extraction/v2/teeft",
+        "swagger": "https://openapi.services.istex.fr/?urls.primaryName=terms-extraction%20-%20Extraction%20de%20termes#/terms-extraction/post-v2-teeft-en",
         "objectifTDM": "https://services.istex.fr/extraction-de-termes-teeft/",
         "type": "indexation"
     },
     {
-        "id": "post-v1-teeft-fr",
-        "url": "https://terms-extraction.services.istex.fr/v1/teeft/fr",
-        "doc": "https://github.com/Inist-CNRS/web-services/tree/main/services/terms-extraction/v1/teeft",
-        "swagger": "https://openapi.services.istex.fr/?urls.primaryName=terms-extraction%20-%20Extraction%20de%20termes#/terms-extraction/post-v1-teeft-fr",
+        "id": "post-v2-teeft-fr",
+        "url": "https://terms-extraction.services.istex.fr/v2/teeft/fr",
+        "doc": "https://github.com/Inist-CNRS/web-services/tree/main/services/terms-extraction/v2/teeft",
+        "swagger": "https://openapi.services.istex.fr/?urls.primaryName=terms-extraction%20-%20Extraction%20de%20termes#/terms-extraction/post-v2-teeft-fr",
         "objectifTDM": "https://services.istex.fr/extraction-de-termes-teeft/",
         "type": "indexation"
     },
     {
-        "id": "post-v1-teeft-fr-nb",
-        "url": "https://terms-extraction.services.istex.fr/v1/teeft/fr?nb=10",
-        "doc": "https://github.com/Inist-CNRS/web-services/tree/main/services/terms-extraction/v1/teeft",
-        "swagger": "https://openapi.services.istex.fr/?urls.primaryName=terms-extraction%20-%20Extraction%20de%20termes#/terms-extraction/post-v1-teeft-fr",
+        "id": "post-v2-teeft-fr-nb",
+        "url": "https://terms-extraction.services.istex.fr/v2/teeft/fr?nb=10",
+        "doc": "https://github.com/Inist-CNRS/web-services/tree/main/services/terms-extraction/v2/teeft",
+        "swagger": "https://openapi.services.istex.fr/?urls.primaryName=terms-extraction%20-%20Extraction%20de%20termes#/terms-extraction/post-v2-teeft-fr",
         "objectifTDM": "https://services.istex.fr/extraction-de-termes-teeft/",
         "type": "indexation"
     },
     {
-        "id": "post-v1-teeft-with-numbers-en",
-        "url": "https://terms-extraction.services.istex.fr/v1/teeft/with-numbers/en",
-        "doc": "https://github.com/Inist-CNRS/web-services/tree/main/services/terms-extraction/v1/teeft",
-        "swagger": "https://openapi.services.istex.fr/?urls.primaryName=terms-extraction%20-%20Extraction%20de%20termes#/terms-extraction/post-v1-teeft-with-numbers-en",
+        "id": "post-v2-teeft-with-numbers-en",
+        "url": "https://terms-extraction.services.istex.fr/v2/teeft/with-numbers/en",
+        "doc": "https://github.com/Inist-CNRS/web-services/tree/main/services/terms-extraction/v2/teeft",
+        "swagger": "https://openapi.services.istex.fr/?urls.primaryName=terms-extraction%20-%20Extraction%20de%20termes#/terms-extraction/post-v2-teeft-with-numbers-en",
         "objectifTDM": "https://services.istex.fr/extraction-de-termes-teeft/",
         "type": "indexation"
     },
