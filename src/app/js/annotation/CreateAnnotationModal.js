@@ -70,7 +70,9 @@ export function CreateAnnotationModal({
         },
     });
 
-    const [currentStep, setCurrentStep] = useState(TARGET_STEP);
+    const [currentStep, setCurrentStep] = useState(
+        initialValue === null ? COMMENT_STEP : TARGET_STEP,
+    );
     // This is used to avoid submitting the form when the user clicks on the next button if the form is valid
     const [disableSubmit, setDisableSubmit] = useState(false);
 
@@ -270,7 +272,8 @@ export function CreateAnnotationModal({
                 </Box>
 
                 <Box>
-                    {currentStep === TARGET_STEP ? (
+                    {currentStep === TARGET_STEP ||
+                    (currentStep === COMMENT_STEP && initialValue === null) ? (
                         <Button
                             type="button"
                             onClick={handleClose}
