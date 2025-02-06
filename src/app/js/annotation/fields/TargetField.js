@@ -1,4 +1,4 @@
-import { Button, FormControl } from '@mui/material';
+import { MenuItem, MenuList } from '@mui/material';
 import PropTypes from 'prop-types';
 import React from 'react';
 
@@ -11,24 +11,24 @@ export function TargetField({ form, goToStep }) {
         <form.Field name="target">
             {(field) => {
                 return (
-                    <FormControl fullWidth>
-                        <Button
+                    <MenuList>
+                        <MenuItem
                             onClick={() => {
                                 field.handleChange('title');
                                 goToStep(COMMENT_STEP);
                             }}
                         >
                             {translate('annotation_comment_target_title')}
-                        </Button>
-                        <Button
+                        </MenuItem>
+                        <MenuItem
                             onClick={() => {
                                 field.handleChange('value');
                                 goToStep(COMMENT_STEP);
                             }}
                         >
                             {translate('annotation_comment_target_value')}
-                        </Button>
-                    </FormControl>
+                        </MenuItem>
+                    </MenuList>
                 );
             }}
         </form.Field>

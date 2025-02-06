@@ -25,6 +25,7 @@ import {
     nextStepByStep,
     previousStepByStep,
     TARGET_STEP,
+    VALUE_STEP,
 } from './steps';
 
 export function CreateAnnotationModal({
@@ -177,8 +178,7 @@ export function CreateAnnotationModal({
                     {currentStep === TARGET_STEP && (
                         <Stack
                             spacing={2}
-                            aria-hidden={!isCurrentStepCommentStep}
-                            aria-label={translate('annotation_step_comment')}
+                            aria-label={translate('annotation_step_target')}
                             role="tab"
                         >
                             <TargetField
@@ -187,10 +187,18 @@ export function CreateAnnotationModal({
                             />
                         </Stack>
                     )}
+                    {currentStep === VALUE_STEP && (
+                        <Stack
+                            spacing={2}
+                            aria-label={translate('annotation_step_value')}
+                            role="tab"
+                        >
+                            SOON
+                        </Stack>
+                    )}
                     {currentStep === COMMENT_STEP && (
                         <Stack
                             spacing={2}
-                            aria-hidden={!isCurrentStepCommentStep}
                             aria-label={translate('annotation_step_comment')}
                             role="tab"
                         >
@@ -204,7 +212,6 @@ export function CreateAnnotationModal({
                     {currentStep === AUTHOR_STEP && (
                         <Stack
                             spacing={2}
-                            aria-hidden={!isCurrentStepAuthorStep}
                             aria-label={translate('annotation_step_author')}
                             role="tab"
                         >
@@ -220,11 +227,7 @@ export function CreateAnnotationModal({
                     )}
                 </Box>
 
-                <Stack
-                    direction="row"
-                    spacing={2}
-                    justifyContent={'space-between'}
-                >
+                <Box>
                     {currentStep === TARGET_STEP ? (
                         <Button
                             type="button"
@@ -244,7 +247,7 @@ export function CreateAnnotationModal({
                         </Button>
                     )}
 
-                    {currentStep === AUTHOR_STEP ? (
+                    {currentStep === AUTHOR_STEP && (
                         <Button
                             type="submit"
                             variant="contained"
@@ -267,7 +270,8 @@ export function CreateAnnotationModal({
                         >
                             {translate('validate')}
                         </Button>
-                    ) : (
+                    )}
+                    {[COMMENT_STEP, VALUE_STEP].includes(currentStep) && (
                         <Button
                             type="button"
                             onClick={handleNext}
@@ -277,7 +281,7 @@ export function CreateAnnotationModal({
                             {translate('next')}
                         </Button>
                     )}
-                </Stack>
+                </Box>
             </Stack>
         </Popover>
     );
