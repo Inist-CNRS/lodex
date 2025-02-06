@@ -53,7 +53,14 @@ export const annotationCreationSchema = z
         if (data.target === 'value' && !data.initialValue) {
             refineContext.addIssue({
                 code: 'error_required',
-                message: 'error_required',
+                message: 'annotation_error_required_initial_value',
+                path: ['initialValue'],
+            });
+        }
+        if (data.target === 'title' && data.initialValue) {
+            refineContext.addIssue({
+                code: 'error_empty',
+                message: 'annotation_error_empty_initial_value',
                 path: ['initialValue'],
             });
         }

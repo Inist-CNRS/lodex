@@ -1254,3 +1254,5 @@
 "annotation_status_rejected"	"Rejected"	"Refusée"
 "annotation_correct_value"	Correct "%{value}"	"Corriger "%{value}"
 "annotation_choose_value"	"Choose value to comment"	"Choisir la valeur à commenter"
+"annotation_error_empty_initial_value"	"This field must be empty when comment target the field"	"Ce champ doit rester vide quant le commentaire cible le champ"
+"annotation_error_required_initial_value"	"This field is required when comment target the value"	"Ce champ est requis quant le commentaire cible la valeur"
