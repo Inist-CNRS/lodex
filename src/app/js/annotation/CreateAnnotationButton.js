@@ -10,7 +10,6 @@ import { useResourceUri } from './useResourceUri';
 
 export function CreateAnnotationButton({
     field,
-    target = 'title',
     itemPath = null,
     initialValue = null,
 }) {
@@ -37,7 +36,6 @@ export function CreateAnnotationButton({
             await handleCreateAnnotation({
                 ...annotation,
                 resourceUri,
-                target,
                 itemPath,
                 fieldId: field ? field._id : null,
                 initialValue,
@@ -56,7 +54,7 @@ export function CreateAnnotationButton({
         setIsTooltipOpen(false);
     };
 
-    const buttonLabel = translate(`annotation_create_button_${target}_label`, {
+    const buttonLabel = translate(`annotation_create_button_label`, {
         field: field.label,
     });
 
@@ -124,7 +122,6 @@ export function CreateAnnotationButton({
 
 CreateAnnotationButton.propTypes = {
     field: PropTypes.object,
-    target: PropTypes.oneOf(['title', 'value']),
     initialValue: PropTypes.string,
     itemPath: PropTypes.arrayOf(PropTypes.string),
 };

@@ -69,7 +69,7 @@ describe('CreateAnnotationButton', () => {
         await waitFor(() => {
             fireEvent.click(
                 screen.getByRole('button', {
-                    name: 'annotation_create_button_title_label',
+                    name: 'annotation_create_button_label',
                 }),
             );
         });
@@ -94,7 +94,7 @@ describe('CreateAnnotationButton', () => {
             await waitFor(() => {
                 fireEvent.click(
                     screen.getByRole('button', {
-                        name: `annotation_create_button_${props?.target ?? 'title'}_label`,
+                        name: `annotation_create_button_label`,
                     }),
                 );
             });
@@ -166,7 +166,7 @@ describe('CreateAnnotationButton', () => {
 
         expect(
             screen.queryAllByRole('button', {
-                name: 'annotation_create_button_title_label',
+                name: 'annotation_create_button_label',
             }),
         ).toHaveLength(0);
     });

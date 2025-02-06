@@ -18,19 +18,14 @@ import { useTranslate } from '../i18n/I18NContext';
 import { AuthorEmailField } from './fields/AuthorEmailField';
 import { AuthorNameField } from './fields/AuthorNameField';
 import { CommentField } from './fields/CommentField';
-
-const COMMENT_STEP = 'COMMENT_STEP';
-const AUTHOR_STEP = 'AUTHOR_STEP';
-
-const nextStepByStep = {
-    [COMMENT_STEP]: AUTHOR_STEP,
-    [AUTHOR_STEP]: AUTHOR_STEP,
-};
-
-const previousStepByStep = {
-    [COMMENT_STEP]: COMMENT_STEP,
-    [AUTHOR_STEP]: COMMENT_STEP,
-};
+import { TargetField } from './fields/TargetField';
+import {
+    AUTHOR_STEP,
+    COMMENT_STEP,
+    nextStepByStep,
+    previousStepByStep,
+    TARGET_STEP,
+} from './steps';
 
 export function CreateAnnotationModal({
     isSubmitting,
@@ -53,7 +48,7 @@ export function CreateAnnotationModal({
         },
     });
 
-    const [currentStep, setCurrentStep] = useState(COMMENT_STEP);
+    const [currentStep, setCurrentStep] = useState(TARGET_STEP);
     // This is used to avoid submitting the form when the user clicks on the next button if the form is valid
     const [disableSubmit, setDisableSubmit] = useState(false);
 
@@ -179,6 +174,19 @@ export function CreateAnnotationModal({
                 </Typography>
 
                 <Box fullWidth role="tabpanel">
+                    {currentStep === TARGET_STEP && (
+                        <Stack
+                            spacing={2}
+                            aria-hidden={!isCurrentStepCommentStep}
+                            aria-label={translate('annotation_step_comment')}
+                            role="tab"
+                        >
+                            <TargetField
+                                form={form}
+                                goToStep={setCurrentStep}
+                            />
+                        </Stack>
+                    )}
                     {currentStep === COMMENT_STEP && (
                         <Stack
                             spacing={2}
@@ -217,7 +225,7 @@ export function CreateAnnotationModal({
                     spacing={2}
                     justifyContent={'space-between'}
                 >
-                    {currentStep === COMMENT_STEP ? (
+                    {currentStep === TARGET_STEP ? (
                         <Button
                             type="button"
                             onClick={handleClose}
