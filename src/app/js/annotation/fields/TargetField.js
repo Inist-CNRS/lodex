@@ -3,10 +3,19 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 import { useTranslate } from '../../i18n/I18NContext';
-import { COMMENT_STEP } from '../steps';
+import { COMMENT_STEP, VALUE_STEP } from '../steps';
+import { useField } from '@tanstack/react-form';
 
-export function TargetField({ form, goToStep }) {
+export function TargetField({ form, initialValue, goToStep }) {
     const { translate } = useTranslate();
+
+    const initialValueField = useField({
+        name: 'initialValue',
+        form,
+    });
+
+    const isList = Array.isArray(initialValue);
+
     return (
         <form.Field name="target">
             {(field) => {
@@ -23,6 +32,11 @@ export function TargetField({ form, goToStep }) {
                         <MenuItem
                             onClick={() => {
                                 field.handleChange('value');
+                                if (isList) {
+                                    goToStep(VALUE_STEP);
+                                    return;
+                                }
+                                initialValueField.handleChange(initialValue);
                                 goToStep(COMMENT_STEP);
                             }}
                         >
@@ -37,5 +51,6 @@ export function TargetField({ form, goToStep }) {
 
 TargetField.propTypes = {
     form: PropTypes.object.isRequired,
+    initialValue: PropTypes.any,
     goToStep: PropTypes.func.isRequired,
 };

@@ -38,7 +38,6 @@ export function CreateAnnotationButton({
                 resourceUri,
                 itemPath,
                 fieldId: field ? field._id : null,
-                initialValue,
             });
 
             handleCloseModal();
@@ -114,6 +113,7 @@ export function CreateAnnotationButton({
                     onClose={handleCloseModal}
                     onSubmit={handleSubmitAnnotation}
                     anchorEl={anchorButton.current}
+                    initialValue={initialValue}
                 />
             )}
         </>

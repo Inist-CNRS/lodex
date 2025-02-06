@@ -214,7 +214,10 @@ export const PropertyComponent = ({
                                 />
                             </IconButton>
                         )}
-                        <CreateAnnotationButton field={field} />
+                        <CreateAnnotationButton
+                            initialValue={resource[field.name]}
+                            field={field}
+                        />
                     </span>
                     <span
                         className={classnames(

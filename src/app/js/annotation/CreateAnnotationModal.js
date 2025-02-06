@@ -33,6 +33,7 @@ export function CreateAnnotationModal({
     onClose,
     onSubmit,
     anchorEl,
+    initialValue,
 }) {
     const { translate } = useTranslate();
 
@@ -184,6 +185,7 @@ export function CreateAnnotationModal({
                             <TargetField
                                 form={form}
                                 goToStep={setCurrentStep}
+                                initialValue={initialValue}
                             />
                         </Stack>
                     )}
@@ -292,4 +294,5 @@ CreateAnnotationModal.propTypes = {
     onClose: PropTypes.func.isRequired,
     onSubmit: PropTypes.func.isRequired,
     anchorEl: PropTypes.object.isRequired,
+    initialValue: PropTypes.any,
 };
