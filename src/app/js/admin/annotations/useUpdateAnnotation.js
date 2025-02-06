@@ -37,7 +37,15 @@ export function useUpdateAnnotation() {
             return response.data;
         },
         onSuccess: (data) => {
-            queryClient.setQueryData(['get-annotation', data._id], data);
+            const currentData = queryClient.getQueryData([
+                'get-annotation',
+                data._id,
+            ]);
+            queryClient.setQueryData(['get-annotation', data._id], {
+                field: currentData.field,
+                resource: currentData.resource,
+                ...data,
+            });
             queryClient.invalidateQueries({
                 predicate: (query) => query.queryKey[0] === 'get-annotations',
             });
