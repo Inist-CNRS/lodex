@@ -10,7 +10,7 @@ import {
     polyglot as polyglotPropTypes,
 } from '../../propTypes';
 import { ArrowUpward } from '@mui/icons-material';
-import translate from 'redux-polyglot/translate';
+import { translate } from '../../i18n/I18NContext';
 
 const styles = stylesToClassname(
     {

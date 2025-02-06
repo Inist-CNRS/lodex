@@ -2,11 +2,6 @@ import AddBoxIcon from '@mui/icons-material/AddBox';
 import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
-import PropTypes from 'prop-types';
-import React from 'react';
-import compose from 'recompose/compose';
-import translate from 'redux-polyglot/translate';
-
 import { Box, Button, Tooltip } from '@mui/material';
 import {
     DataGrid,
@@ -15,21 +10,24 @@ import {
     GridToolbarDensitySelector,
     GridToolbarFilterButton,
 } from '@mui/x-data-grid';
+import PropTypes from 'prop-types';
+import { default as React, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { useHistory } from 'react-router';
 import { Link } from 'react-router-dom';
 import { launchAllEnrichment, retryEnrichment } from '.';
 import { IN_PROGRESS } from '../../../../common/taskStatus';
+import { toast } from '../../../../common/tools/toast';
+import { useTranslate } from '../../i18n/I18NContext';
 import { ConfirmPopup } from '../../lib/components/ConfirmPopup';
-import { polyglot as polyglotPropTypes } from '../../propTypes';
-import { default as EnrichmentStatus } from './EnrichmentStatus';
-import { default as RunButton } from './RunButton';
+import EnrichmentStatus from './EnrichmentStatus';
+import RunButton from './RunButton';
 
 const EnrichmentListToolBar = ({
-    polyglot,
     onLaunchAllEnrichment,
     areEnrichmentsRunning,
 }) => {
+    const { translate } = useTranslate();
     const [isConfirmOpen, setIsConfirmOpen] = React.useState(false);
 
     const handleOpenDialog = () => {
@@ -51,21 +49,21 @@ const EnrichmentListToolBar = ({
                 isOpen={isConfirmOpen}
                 onCancel={handleCloseDialog}
                 onConfirm={handleLaunchAllEnrichment}
-                title={polyglot.t('run_all_enrichment_modal_title')}
-                description={polyglot.t('run_all_enrichment_modal_content')}
-                confirmLabel={polyglot.t('run_all')}
-                cancelLabel={polyglot.t('cancel')}
+                title={translate('run_all_enrichment_modal_title')}
+                description={translate('run_all_enrichment_modal_content')}
+                confirmLabel={translate('run_all')}
+                cancelLabel={translate('cancel')}
             />
 
             <GridToolbarContainer>
-                <Tooltip title={polyglot.t(`column_tooltip`)}>
+                <Tooltip title={translate(`column_tooltip`)}>
                     <GridToolbarColumnsButton />
                 </Tooltip>
                 <GridToolbarFilterButton />
-                <Tooltip title={polyglot.t(`density_tooltip`)}>
+                <Tooltip title={translate(`density_tooltip`)}>
                     <GridToolbarDensitySelector />
                 </Tooltip>
-                <Tooltip title={polyglot.t(`add_more_enrichment`)}>
+                <Tooltip title={translate(`add_more_enrichment`)}>
                     <Button
                         component={Link}
                         to="/data/enrichment/add"
@@ -77,10 +75,10 @@ const EnrichmentListToolBar = ({
                             },
                         }}
                     >
-                        {polyglot.t('add_more')}
+                        {translate('add_more')}
                     </Button>
                 </Tooltip>
-                <Tooltip title={polyglot.t(`run_all`)}>
+                <Tooltip title={translate(`run_all`)}>
                     <Button
                         startIcon={<PlayArrowIcon />}
                         size="small"
@@ -92,7 +90,7 @@ const EnrichmentListToolBar = ({
                         disabled={areEnrichmentsRunning}
                         onClick={handleOpenDialog}
                     >
-                        {polyglot.t('run_all')}
+                        {translate('run_all')}
                     </Button>
                 </Tooltip>
             </GridToolbarContainer>
@@ -101,7 +99,6 @@ const EnrichmentListToolBar = ({
 };
 
 EnrichmentListToolBar.propTypes = {
-    polyglot: polyglotPropTypes.isRequired,
     onLaunchAllEnrichment: PropTypes.func,
     areEnrichmentsRunning: PropTypes.bool.isRequired,
 };
@@ -110,10 +107,11 @@ export const EnrichmentList = ({
     enrichments,
     isLoadEnrichmentsPending,
     isRunAllEnrichmentPending,
-    p: polyglot,
+    runAllEnrichmentError,
     onLaunchAllEnrichment,
     onRetryEnrichment,
 }) => {
+    const { translate } = useTranslate();
     const history = useHistory();
     const areEnrichmentsRunning =
         enrichments.some((enrichment) => enrichment.status === IN_PROGRESS) ||
@@ -123,18 +121,28 @@ export const EnrichmentList = ({
         history.push(`/data/enrichment/${params.row._id}`);
     };
 
+    useEffect(() => {
+        if (!runAllEnrichmentError) {
+            return;
+        }
+
+        toast(translate(runAllEnrichmentError), {
+            type: toast.TYPE.ERROR,
+        });
+    }, [runAllEnrichmentError]);
+
     return (
         <Box>
             <DataGrid
                 columns={[
                     {
                         field: 'name',
-                        headerName: polyglot.t('fieldName'),
+                        headerName: translate('fieldName'),
                         flex: 1,
                     },
                     {
                         field: 'sourceColumn',
-                        headerName: polyglot.t('sourceColumn'),
+                        headerName: translate('sourceColumn'),
                         flex: 1,
                         renderCell: (params) => {
                             return params.value ? params.value : '-';
@@ -142,7 +150,7 @@ export const EnrichmentList = ({
                     },
                     {
                         field: 'subPath',
-                        headerName: polyglot.t('subPath'),
+                        headerName: translate('subPath'),
                         flex: 1,
                         renderCell: (params) => {
                             return params.value ? params.value : '-';
@@ -150,7 +158,7 @@ export const EnrichmentList = ({
                     },
                     {
                         field: 'advancedMode',
-                        headerName: polyglot.t('advancedMode'),
+                        headerName: translate('advancedMode'),
                         flex: 1,
                         renderCell: (params) => {
                             return params.value ? <CheckIcon /> : <CloseIcon />;
@@ -158,37 +166,30 @@ export const EnrichmentList = ({
                     },
                     {
                         field: 'status',
-                        headerName: polyglot.t('enrichment_status'),
+                        headerName: translate('enrichment_status'),
                         flex: 1,
                         renderCell: (params) => (
-                            <EnrichmentStatus
-                                polyglot={polyglot}
-                                id={params.row._id}
-                            />
+                            <EnrichmentStatus id={params.row._id} />
                         ),
                     },
                     {
                         field: 'run',
-                        headerName: polyglot.t('run'),
+                        headerName: translate('run'),
                         flex: 1,
                         renderCell: (params) => {
                             return (
-                                <RunButton
-                                    id={params.row._id}
-                                    polyglot={polyglot}
-                                    variant="text"
-                                />
+                                <RunButton id={params.row._id} variant="text" />
                             );
                         },
                     },
                     {
                         field: 'errors',
-                        headerName: polyglot.t('errors'),
+                        headerName: translate('errors'),
                         flex: 1,
                         renderCell: (params) => {
                             return (
                                 <>
-                                    {polyglot.t('enrichment_error_count', {
+                                    {translate('enrichment_error_count', {
                                         errorCount: params.row.errorCount ?? 0,
                                     })}
                                     <Button
@@ -204,7 +205,7 @@ export const EnrichmentList = ({
                                             (params.row.errorCount ?? 0) === 0
                                         }
                                     >
-                                        {polyglot.t('retry')}
+                                        {translate('retry')}
                                     </Button>
                                 </>
                             );
@@ -219,7 +220,6 @@ export const EnrichmentList = ({
                 components={{
                     Toolbar: () => (
                         <EnrichmentListToolBar
-                            polyglot={polyglot}
                             onLaunchAllEnrichment={onLaunchAllEnrichment}
                             areEnrichmentsRunning={areEnrichmentsRunning}
                         />
@@ -237,10 +237,11 @@ export const EnrichmentList = ({
 
 EnrichmentList.propTypes = {
     enrichments: PropTypes.array.isRequired,
-    p: polyglotPropTypes.isRequired,
+    onLaunchEnrichment: PropTypes.func.isRequired,
     onLaunchAllEnrichment: PropTypes.func.isRequired,
     isLoadEnrichmentsPending: PropTypes.bool,
     isRunAllEnrichmentPending: PropTypes.bool,
+    runAllEnrichmentError: PropTypes.string,
     onRetryEnrichment: PropTypes.func.isRequired,
 };
 
@@ -248,6 +249,7 @@ const mapStateToProps = (state) => ({
     enrichments: state.enrichment.enrichments,
     isLoadEnrichmentsPending: state.enrichment.isLoadEnrichmentsPending,
     isRunAllEnrichmentPending: state.enrichment.isRunAllEnrichmentPending,
+    runAllEnrichmentError: state.enrichment.runAllEnrichmentError,
 });
 
 const mapDispatchToProps = {
@@ -255,7 +257,4 @@ const mapDispatchToProps = {
     onRetryEnrichment: retryEnrichment,
 };
 
-export default compose(
-    translate,
-    connect(mapStateToProps, mapDispatchToProps),
-)(EnrichmentList);
+export default connect(mapStateToProps, mapDispatchToProps)(EnrichmentList);

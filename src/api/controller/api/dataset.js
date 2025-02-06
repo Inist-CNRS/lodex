@@ -1,8 +1,8 @@
 import Koa from 'koa';
-import route from 'koa-route';
 import koaBodyParser from 'koa-bodyparser';
+import route from 'koa-route';
 import getLogger from '../../services/logger';
-import { createDiacriticSafeContainRegex } from '../../services/createDiacriticSafeContainRegex';
+import { buildQuery } from './buildQuery';
 
 const app = new Koa();
 
@@ -27,25 +27,6 @@ export const clearDataset = async (ctx) => {
             error,
         });
         ctx.body = { status: 'error', error };
-    }
-};
-const buildQuery = (filterBy, filterOperator, filterValue) => {
-    if (!filterValue) {
-        return {};
-    }
-    switch (filterOperator) {
-        case 'is':
-            return { [filterBy]: { $eq: filterValue === 'true' } };
-        case '=':
-            return { [filterBy]: { $eq: parseFloat(filterValue) } };
-        case '>':
-            return { [filterBy]: { $gt: parseFloat(filterValue) } };
-        case '<':
-            return { [filterBy]: { $lt: parseFloat(filterValue) } };
-        default:
-            return {
-                [filterBy]: createDiacriticSafeContainRegex(filterValue),
-            };
     }
 };
 
@@ -95,7 +76,15 @@ export const updateDataset = async (ctx) => {
 
 export const deleteDatasetRow = async (ctx, id) => {
     try {
-        await ctx.dataset.deleteOne(id);
+        const { acknowledged, deletedCount } =
+            await ctx.dataset.deleteOneById(id);
+
+        if (!acknowledged || deletedCount === 0) {
+            ctx.status = 404;
+            ctx.body = { status: 'error', error: `Dataset not found: ${id}` };
+            return;
+        }
+
         ctx.body = { status: 'deleted' };
     } catch (error) {
         const logger = getLogger(ctx.tenant);

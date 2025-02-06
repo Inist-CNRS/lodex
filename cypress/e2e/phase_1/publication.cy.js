@@ -1,7 +1,7 @@
-import { teardown } from '../../support/authentication';
-import * as menu from '../../support/menu';
-import * as datasetImportPage from '../../support/datasetImportPage';
 import * as adminNavigation from '../../support/adminNavigation';
+import { teardown } from '../../support/authentication';
+import * as datasetImportPage from '../../support/datasetImportPage';
+import * as menu from '../../support/menu';
 
 describe('Dataset Publication', () => {
     beforeEach(teardown);
@@ -562,7 +562,7 @@ describe('Dataset Publication', () => {
                     force: true,
                 });
 
-            cy.contains('Delete selected fields').click({ force: true });
+            cy.contains('Delete selected field(s)').click({ force: true });
 
             cy.wait(1000);
 
@@ -574,6 +574,7 @@ describe('Dataset Publication', () => {
 
             cy.contains('Title').should('not.exist');
             cy.contains('URL').should('not.exist');
+            cy.contains('ISSN').should('exist');
 
             cy.get('[aria-label="job-progress"]', { timeout: 3000 }).should(
                 'have.css',

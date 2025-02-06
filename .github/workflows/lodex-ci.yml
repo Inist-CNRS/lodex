@@ -3,119 +3,89 @@ name: Lodex CI
 # Run this ci only on pull request who targets master and on master branch only
 on:
   push:
-    branches: [ master ]
+    branches: [ master, v14 ]
   pull_request:
-    branches: [ master ]
+    branches: [ master, v14 ]
 
 jobs:
-  # Job use to create the test environment and run unit test suite
-  test-unit:
-    runs-on: ubuntu-20.04
+    # Job use to create the test environment and run unit test suite
+    test-unit:
+        runs-on: ubuntu-22.04
 
-    # Set a timeout of 10 mins
-    timeout-minutes: 10
+        # Set a timeout of 20 mins
+        timeout-minutes: 20
 
-    # Create a strategy matrix uses to test multiple versions of node
-    strategy:
-      fail-fast: false
-      matrix:
-        # See https://github.com/nodejs/Release
-        node-version: [ 18.x ]
+        # Create a strategy matrix uses to test multiple versions of node
+        strategy:
+            fail-fast: false
+            matrix:
+                # See https://github.com/nodejs/Release
+                node-version: [22.x]
 
-    steps:
-      # Pull repository content
-      - uses: actions/checkout@v4
+        steps:
+            # Pull repository content
+            - uses: actions/checkout@v4
 
-      # Setup NodeJS
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ matrix.node-version }}
-          cache: 'npm'
+            # Setup NodeJS
+            - name: Use Node.js ${{ matrix.node-version }}
+              uses: actions/setup-node@v3
+              with:
+                  node-version: ${{ matrix.node-version }}
+                  cache: 'npm'
 
-      # Install project dependencies (equivalent to make install)
-      - run: make copy-conf
-      - run: npm ci --legacy-peer-deps
+            # Install project dependencies (equivalent to make install)
+            - run: make copy-conf
+            - run: npm ci --legacy-peer-deps
 
-      # Run unit test suite
-      - run: npm run test:unit
+            # Run unit test suite
+            - run: npm run test:unit
 
-  # Job use to create the test environment and run api e2e test suite
-  test-api-e2e:
-    runs-on: ubuntu-20.04
+    # Job use to create the test environment and run e2e test suite
+    test-e2e:
+        runs-on: ubuntu-22.04
 
-    # Set a timeout of 10 mins
-    timeout-minutes: 10
+        # Set a timeout of 30 mins
+        timeout-minutes: 30
 
-    # Create a strategy matrix uses to test multiple versions of node
-    strategy:
-      fail-fast: false
-      matrix:
-        node-version: [ 18.x ]
+        # Create a strategy matrix uses to test multiple versions of node and multiple subset tests
+        strategy:
+            fail-fast: false
+            matrix:
+                node-version: [22.x]
+                test-phase:
+                    ['phase:one', 'phase:two', 'phase:three', 'phase:four']
+                # Use this line to ignore the phase system
+                # test-phase: [ 'all' ]
 
-    steps:
-      # Pull repository content
-      - uses: actions/checkout@v4
+        steps:
+            # Pull repository content
+            - uses: actions/checkout@v4
 
-      # Setup NodeJS
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ matrix.node-version }}
-          cache: 'npm'
+            # Setup NodeJS
+            - name: Use Node.js ${{ matrix.node-version }}
+              uses: actions/setup-node@v3
+              with:
+                  node-version: ${{ matrix.node-version }}
+                  cache: 'npm'
 
-      # Install project dependencies (equivalent to make install)
-      - run: make copy-conf
-      - run: npm ci --legacy-peer-deps
+            # Install project dependencies (equivalent to make install)
+            - run: make copy-conf
+            - run: npm ci --legacy-peer-deps
 
-      # Run api e2e test suite
-      - run: make test-api-e2e
+            # Start e2e environment
+            - run: make test-e2e-start-dockers
 
-  # Job use to create the test environment and run e2e test suite
-  test-e2e:
-    runs-on: ubuntu-20.04
+            # Wait for the e2e environment to start and then run e2e subset tests suite
+            - run: ./bin/wait-for -t 60 localhost:3000
+            - run: npm run test:e2e:${{ matrix.test-phase }}
 
-    # Set a timeout of 30 mins
-    timeout-minutes: 30
+            # Stop e2e environment
+            - run: make test-e2e-stop-dockers
 
-    # Create a strategy matrix uses to test multiple versions of node and multiple subset tests
-    strategy:
-      fail-fast: false
-      matrix:
-        node-version: [ 18.x ]
-        test-phase: [ 'phase:one', 'phase:two', 'phase:three', 'phase:four' ]
-        # Use this line to ignore the phase system
-        # test-phase: [ 'all' ]
-
-    steps:
-      # Pull repository content
-      - uses: actions/checkout@v4
-
-      # Setup NodeJS
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ matrix.node-version }}
-          cache: 'npm'
-
-      # Install project dependencies (equivalent to make install)
-      - run: make copy-conf
-      - run: npm ci --legacy-peer-deps
-
-      # Start e2e environment
-      - run: make test-e2e-start-dockers
-
-      # Wait for the e2e environment to start and then run e2e subset tests suite
-      - run: ./bin/wait-for -t 60 localhost:3000
-      - run: npm run test:e2e:${{ matrix.test-phase }}
-
-      # Stop e2e environment
-      - run: make test-e2e-stop-dockers
-
-      # Upload debug screenshots on failure
-      - name: Upload screenshots
-        uses: actions/upload-artifact@v4
-        if: failure()
-        with:
-          name: cypress-screenshots
-          path: cypress/screenshots
+            # Upload debug screenshots on failure
+            - name: Upload screenshots
+              uses: actions/upload-artifact@v4
+              if: failure()
+              with:
+                  name: cypress-screenshots
+                  path: cypress/screenshots

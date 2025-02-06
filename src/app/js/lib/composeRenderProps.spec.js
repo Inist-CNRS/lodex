@@ -1,19 +1,19 @@
 import React from 'react';
-import { mount } from 'enzyme';
+import { render } from '@testing-library/react';
 import PropTypes from 'prop-types';
 
 import composeRenderProps, { concat, neutral } from './composeRenderProps';
 
 describe('composeRenderProps', () => {
-    const Div = ({ children, ...props }) => <div>{children(props)}</div>;
+    const Div = ({ children, ...props }) => <div>Div({children(props)})</div>;
     Div.propTypes = {
         children: PropTypes.func.isRequired,
     };
-    const P = ({ children, ...props }) => <p>{children(props)}</p>;
+    const P = ({ children, ...props }) => <p>P({children(props)})</p>;
     P.propTypes = {
         children: PropTypes.func.isRequired,
     };
-    const Span = ({ name }) => <span>{name}</span>;
+    const Span = ({ name }) => <span>Span({name})</span>;
     Span.propTypes = {
         name: PropTypes.string.isRequired,
     };
@@ -21,36 +21,37 @@ describe('composeRenderProps', () => {
         const composedComponent = composeRenderProps([Div, P, Span])({
             name: 'nested',
         });
-        const wrapper = mount(composedComponent);
-        expect(wrapper.html()).toBe('<div><p><span>nested</span></p></div>');
+        const wrapper = render(composedComponent);
+        expect(wrapper.container.textContent).toBe('Div(P(Span(nested)))');
     });
 
     describe('concat', () => {
         it('should be associative', () => {
-            expect(mount(P({ children: Span, name: 'children' })).html()).toBe(
-                '<p><span>children</span></p>',
-            );
+            expect(
+                render(P({ children: Span, name: 'children' })).container
+                    .textContent,
+            ).toBe('P(Span(children))');
 
             expect(
-                mount(
-                    concat(Span, concat(P, Div))({ name: 'children' }),
-                ).html(),
-            ).toBe('<div><p><span>children</span></p></div>');
+                render(concat(Span, concat(P, Div))({ name: 'children' }))
+                    .container.textContent,
+            ).toBe('Div(P(Span(children)))');
 
             expect(
-                mount(
-                    concat(concat(Span, P), Div)({ name: 'children' }),
-                ).html(),
-            ).toBe('<div><p><span>children</span></p></div>');
+                render(concat(concat(Span, P), Div)({ name: 'children' }))
+                    .container.textContent,
+            ).toBe('Div(P(Span(children)))');
         });
 
         it('should have a neutral element', () => {
             expect(
-                mount(concat(neutral, Span)({ name: 'children' })).html(),
-            ).toBe('<span>children</span>');
+                render(concat(neutral, Span)({ name: 'children' })).container
+                    .textContent,
+            ).toBe('Span(children)');
             expect(
-                mount(concat(Span, neutral)({ name: 'children' })).html(),
-            ).toBe('<span>children</span>');
+                render(concat(Span, neutral)({ name: 'children' })).container
+                    .textContent,
+            ).toBe('Span(children)');
         });
     });
 });

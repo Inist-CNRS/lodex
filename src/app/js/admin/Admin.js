@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { compose, lifecycle } from 'recompose';
 import { connect } from 'react-redux';
-import translate from 'redux-polyglot/translate';
 import { Card } from '@mui/material';
 
 /**
@@ -10,7 +9,6 @@ import { Card } from '@mui/material';
  * THis file is useless now but we keep it to reproduce features
  */
 
-import { polyglot as polyglotPropTypes } from '../propTypes';
 import withInitialData from './withInitialData';
 import { fromParsing, fromPublication, fromUpload } from './selectors';
 import ParsingResult from './parsing/ParsingResult';
@@ -18,6 +16,7 @@ import PublicationPreview from './preview/publication/PublicationPreview';
 import Upload from './upload/Upload';
 import Loading from '../lib/components/Loading';
 import { preLoadLoaders } from './loader/';
+import { useTranslate } from '../i18n/I18NContext';
 
 const styles = {
     punchLine: {
@@ -27,15 +26,12 @@ const styles = {
     },
 };
 
-export const AdminComponent = ({
-    loadingParsingResult,
-    canUploadFile,
-    p: polyglot,
-}) => {
+export const AdminComponent = ({ loadingParsingResult, canUploadFile }) => {
+    const { translate } = useTranslate();
     if (loadingParsingResult) {
         return (
             <Loading className="admin">
-                {polyglot.t('loading_parsing_results')}
+                {translate('loading_parsing_results')}
             </Loading>
         );
     }
@@ -48,9 +44,7 @@ export const AdminComponent = ({
         <Card className="admin">
             <ParsingResult />
             <PublicationPreview />
-            <div style={styles.punchLine}>
-                {polyglot.t('publish-punchline')}
-            </div>
+            <div style={styles.punchLine}>{translate('publish-punchline')}</div>
         </Card>
     );
 };
@@ -59,7 +53,6 @@ AdminComponent.propTypes = {
     loadingParsingResult: PropTypes.bool.isRequired,
     hasPublishedDataset: PropTypes.bool.isRequired,
     canUploadFile: PropTypes.bool.isRequired,
-    p: polyglotPropTypes.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -82,5 +75,4 @@ export default compose(
             this.props.preLoadLoaders();
         },
     }),
-    translate,
 )(AdminComponent);

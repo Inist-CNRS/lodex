@@ -14,8 +14,9 @@ export const setLanguageError = createAction(SET_LANGUAGE_REQUEST_ERROR);
 
 export const defaultState = {
     error: null,
-    language: 'en',
+    locale: 'en',
     loading: false,
+    phrases: [],
 };
 
 export default handleActions(
@@ -24,9 +25,13 @@ export default handleActions(
             ...state,
             loading: true,
         }),
-        SET_LANGUAGE_REQUEST_SUCCESS: (state, { payload: language }) => ({
+        SET_LANGUAGE_REQUEST_SUCCESS: (
+            state,
+            { payload: { locale, phrases } },
+        ) => ({
             ...state,
-            language,
+            locale,
+            phrases,
             loading: false,
         }),
         SET_LANGUAGE_REQUEST_ERROR: (state, { payload: error }) => ({
@@ -38,8 +43,10 @@ export default handleActions(
     defaultState,
 );
 
-const getLocale = (state) => state.language;
+const getLocale = (state) => state.locale;
+const getPhrases = (state) => state.phrases;
 
 export const fromI18n = {
     getLocale,
+    getPhrases,
 };

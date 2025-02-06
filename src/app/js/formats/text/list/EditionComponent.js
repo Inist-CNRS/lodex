@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { FieldArray } from 'redux-form';
-import translate from 'redux-polyglot/translate';
+import { translate } from '../../../i18n/I18NContext';
 
 import { getEditionComponent } from '../../index';
 import {

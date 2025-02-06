@@ -1,46 +1,47 @@
-import React from 'react';
+import { grey } from '@mui/material/colors';
+import classnames from 'classnames';
+import get from 'lodash/get';
+import memoize from 'lodash/memoize';
 import PropTypes from 'prop-types';
+import React from 'react';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import withProps from 'recompose/withProps';
-import classnames from 'classnames';
 import { bindActionCreators } from 'redux';
-import { grey } from '@mui/material/colors';
-import memoize from 'lodash/memoize';
-import get from 'lodash/get';
-import translate from 'redux-polyglot/translate';
+import { translate } from '../../i18n/I18NContext';
 
-import { fromDisplayConfig, fromResource } from '../selectors';
-import ModerateButton from './ModerateButton';
-import { changeFieldStatus } from '../resource';
-import PropertyContributor from './PropertyContributor';
-import PropertyLinkedFields from './PropertyLinkedFields';
-import { fromUser } from '../../sharedSelectors';
-import getFieldClassName from '../../lib/getFieldClassName';
-import addSchemePrefix from '../../lib/addSchemePrefix';
-import Format from '../Format';
-import GraphLink from '../graph/GraphLink';
-import Link from '../../lib/components/Link';
-import { getPredicate } from '../../formats';
-import shouldDisplayField from '../../fields/shouldDisplayField';
 import {
-    SCOPE_GRAPHIC,
     SCOPE_DATASET,
     SCOPE_DOCUMENT,
+    SCOPE_GRAPHIC,
 } from '../../../../common/scope';
+import shouldDisplayField from '../../fields/shouldDisplayField';
+import { getPredicate } from '../../formats';
+import addSchemePrefix from '../../lib/addSchemePrefix';
+import Link from '../../lib/components/Link';
+import getFieldClassName from '../../lib/getFieldClassName';
+import { fromUser } from '../../sharedSelectors';
+import Format from '../Format';
+import GraphLink from '../graph/GraphLink';
+import { changeFieldStatus } from '../resource';
+import { fromDisplayConfig, fromResource } from '../selectors';
 import CompositeProperty from './CompositeProperty';
+import ModerateButton from './ModerateButton';
+import PropertyContributor from './PropertyContributor';
+import PropertyLinkedFields from './PropertyLinkedFields';
 
 import propositionStatus, {
     REJECTED,
 } from '../../../../common/propositionStatus';
 
+import { Settings } from '@mui/icons-material';
+import { Box, IconButton } from '@mui/material';
+import { extractTenantFromUrl } from '../../../../common/tools/tenantTools';
+import { CreateAnnotationButton } from '../../annotation/CreateAnnotationButton';
 import {
     field as fieldPropTypes,
     polyglot as polyglotPropTypes,
 } from '../../propTypes';
-import { Box, IconButton } from '@mui/material';
-import { Settings } from '@mui/icons-material';
-import { extractTenantFromUrl } from '../../../../common/tools/tenantTools';
 
 const styles = {
     container: memoize(
@@ -66,6 +67,10 @@ const styles = {
         fontSize: isSub === true ? '1rem' : '1.25rem',
         textDecoration: status === REJECTED ? 'line-through' : 'none',
         fontFamily: 'Quicksand, sans-serif',
+        display: 'flex',
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+        gap: '8px',
     }),
     language: {
         marginRight: '1rem',
@@ -90,14 +95,14 @@ const styles = {
         display: 'flex',
         alignItems: 'center',
     },
-    value: (dense) => ({
+    value: (dense, isListFormat) => ({
         flexGrow: 2,
         width: '100%',
         padding: {
             xs: dense ? '0' : '0.75rem 0.75rem 0.75rem 0',
             sm: dense ? '0.5rem 0.5rem 0.5rem 0' : '0.75rem 0.75rem 0.75rem 0',
         },
-        textAlign: 'justify',
+        textAlign: isListFormat ? undefined : 'justify',
     }),
 };
 
@@ -209,6 +214,7 @@ export const PropertyComponent = ({
                                 />
                             </IconButton>
                         )}
+                        <CreateAnnotationButton field={field} />
                     </span>
                     <span
                         className={classnames(
@@ -231,7 +237,9 @@ export const PropertyComponent = ({
                 className={classnames('property_value_container')}
                 style={styles.valueContainer}
             >
-                <Box sx={styles.value(dense)}>{format}</Box>
+                <Box sx={styles.value(dense, formatName === 'list')}>
+                    {format}
+                </Box>
                 {field.language && !isMultilingual && (
                     <span
                         className={classnames(

@@ -28,9 +28,14 @@ services:
             - "3000:3000"
         volumes:
             - ./cypress/mocks/external:/app/external
+        deploy:
+            resources:
+                limits:
+                    cpus: '2'
+                    memory: 4G
 
     istex-api:
-        image: node:20.18-bookworm
+        image: node:22.12-bookworm
         volumes:
             - .:/app
             - ./.cache:/root/.cache
@@ -40,19 +45,34 @@ services:
         ports:
             - "3011:3011"
         command: node --require @babel/register ./cypress/mocks/istexApi.js
+        deploy:
+            resources:
+                limits:
+                    cpus: '2'
+                    memory: 2G
 
     mongo:
-        image: mongo:4.4.24-focal
+        image: mongodb/mongodb-community-server:7.0.9-ubi9
         ports:
             - "27017:27017"
+        deploy:
+            resources:
+                limits:
+                    cpus: '2'
+                    memory: 1G
 
     redis:
         image: redis:6
         ports:
             - "6379:6379"
+        deploy:
+            resources:
+                limits:
+                    cpus: '2'
+                    memory: 1G
 
     workers:
-        image: node:20.18-bookworm
+        image: node:22.12-bookworm
         volumes:
             - .:/app
             - ./.cache:/root/.cache
@@ -79,3 +99,8 @@ services:
             - mongo
         depends_on:
             - mongo
+        deploy:
+            resources:
+                limits:
+                    cpus: '2'
+                    memory: 2G

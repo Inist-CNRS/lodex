@@ -3,7 +3,7 @@ import { MenuItem, TextField } from '@mui/material';
 import React, { useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
 import { polyglot as polyglotPropTypes } from '../../../../propTypes';
-import translate from 'redux-polyglot/translate';
+import { translate } from '../../../../i18n/I18NContext';
 
 const AspectRatioSelector = ({ value, onChange, p }) => {
     const [aspectRatio, setAspectRatio] = useState(value);

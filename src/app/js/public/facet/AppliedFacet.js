@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Chip } from '@mui/material';
-import translate from 'redux-polyglot/translate';
+import { translate } from '../../i18n/I18NContext';
 
 import {
     field as fieldPropTypes,

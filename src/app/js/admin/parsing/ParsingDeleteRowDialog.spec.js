@@ -3,7 +3,7 @@ import { render, fireEvent, act } from '@testing-library/react';
 import datasetApi from '../api/dataset';
 import publishApi from '../api/publish';
 import { ParsingDeleteRowDialog } from './ParsingDeleteRowDialog';
-import '@testing-library/jest-dom';
+import { TestI18N } from '../../i18n/I18NContext';
 
 jest.mock('../api/dataset');
 jest.mock('../api/publish', () => ({
@@ -33,13 +33,15 @@ describe('ParsingDeleteRowDialog component', () => {
 
     it('renders the dialog when isOpen is true', () => {
         const { getByText } = render(
-            <ParsingDeleteRowDialog
-                isOpen={isOpen}
-                handleClose={mockHandleClose}
-                p={polyglot}
-                selectedRowForDelete={selectedRowForDelete}
-                reloadDataset={mockReloadDataset}
-            />,
+            <TestI18N>
+                <ParsingDeleteRowDialog
+                    isOpen={isOpen}
+                    handleClose={mockHandleClose}
+                    p={polyglot}
+                    selectedRowForDelete={selectedRowForDelete}
+                    reloadDataset={mockReloadDataset}
+                />
+            </TestI18N>,
         );
 
         expect(getByText(/dataset.csv/)).toBeInTheDocument();
@@ -50,13 +52,15 @@ describe('ParsingDeleteRowDialog component', () => {
 
     it('calls handleClose when close button is clicked', () => {
         const { getByText } = render(
-            <ParsingDeleteRowDialog
-                isOpen={isOpen}
-                handleClose={mockHandleClose}
-                p={polyglot}
-                selectedRowForDelete={selectedRowForDelete}
-                reloadDataset={mockReloadDataset}
-            />,
+            <TestI18N>
+                <ParsingDeleteRowDialog
+                    isOpen={isOpen}
+                    handleClose={mockHandleClose}
+                    p={polyglot}
+                    selectedRowForDelete={selectedRowForDelete}
+                    reloadDataset={mockReloadDataset}
+                />
+            </TestI18N>,
         );
 
         act(() => {
@@ -69,13 +73,15 @@ describe('ParsingDeleteRowDialog component', () => {
         datasetApi.deleteDatasetRow.mockResolvedValue({ status: 'deleted' });
 
         const { getByText } = render(
-            <ParsingDeleteRowDialog
-                isOpen={isOpen}
-                handleClose={mockHandleClose}
-                p={polyglot}
-                selectedRowForDelete={selectedRowForDelete}
-                reloadDataset={mockReloadDataset}
-            />,
+            <TestI18N>
+                <ParsingDeleteRowDialog
+                    isOpen={isOpen}
+                    handleClose={mockHandleClose}
+                    p={polyglot}
+                    selectedRowForDelete={selectedRowForDelete}
+                    reloadDataset={mockReloadDataset}
+                />
+            </TestI18N>,
         );
 
         await act(async () => {
@@ -90,14 +96,16 @@ describe('ParsingDeleteRowDialog component', () => {
         datasetApi.deleteDatasetRow.mockResolvedValue({ status: 'deleted' });
 
         const { getByText } = render(
-            <ParsingDeleteRowDialog
-                isOpen={isOpen}
-                handleClose={mockHandleClose}
-                p={polyglot}
-                selectedRowForDelete={selectedRowForDelete}
-                reloadDataset={mockReloadDataset}
-                shouldRepublish={false}
-            />,
+            <TestI18N>
+                <ParsingDeleteRowDialog
+                    isOpen={isOpen}
+                    handleClose={mockHandleClose}
+                    p={polyglot}
+                    selectedRowForDelete={selectedRowForDelete}
+                    reloadDataset={mockReloadDataset}
+                    shouldRepublish={false}
+                />
+            </TestI18N>,
         );
 
         await act(async () => {
@@ -111,14 +119,16 @@ describe('ParsingDeleteRowDialog component', () => {
         datasetApi.deleteDatasetRow.mockResolvedValue({ status: 'deleted' });
 
         const { getByText } = render(
-            <ParsingDeleteRowDialog
-                isOpen={isOpen}
-                handleClose={mockHandleClose}
-                p={polyglot}
-                selectedRowForDelete={selectedRowForDelete}
-                reloadDataset={mockReloadDataset}
-                shouldRepublish={true}
-            />,
+            <TestI18N>
+                <ParsingDeleteRowDialog
+                    isOpen={isOpen}
+                    handleClose={mockHandleClose}
+                    p={polyglot}
+                    selectedRowForDelete={selectedRowForDelete}
+                    reloadDataset={mockReloadDataset}
+                    shouldRepublish={true}
+                />
+            </TestI18N>,
         );
 
         await act(async () => {

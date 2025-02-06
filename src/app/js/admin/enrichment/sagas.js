@@ -4,6 +4,7 @@ import {
     LAUNCH_ALL_ENRICHMENT,
     LAUNCH_ENRICHMENT,
     launchAllEnrichmentCompleted,
+    launchAllEnrichmentError,
     launchAllEnrichmentStarted,
     LOAD_ENRICHMENTS,
     loadEnrichments,
@@ -12,8 +13,6 @@ import {
     RETRY_ENRICHMENT,
 } from '.';
 
-import { getP } from 'redux-polyglot/dist/selectors';
-import { toast } from '../../../../common/tools/toast';
 import fetchSaga from '../../lib/sagas/fetchSaga';
 import { fromUser } from '../../sharedSelectors';
 
@@ -53,22 +52,13 @@ export function* handleLaunchAllEnrichment() {
         const { error } = yield call(fetchSaga, enrichmentLaunchAllRequest);
 
         if (error) {
-            const state = yield select();
-            const polyglot = getP(state);
-
-            if (error.message === 'circular_dependency_error') {
-                yield call(
-                    toast,
-                    polyglot.t('run_all_enrichment_circular_dependency'),
-                    {
-                        type: toast.TYPE.ERROR,
-                    },
-                );
-            } else {
-                yield call(toast, polyglot.t('run_all_enrichment_failed'), {
-                    type: toast.TYPE.ERROR,
-                });
-            }
+            yield put(
+                launchAllEnrichmentError(
+                    error.message === 'circular_dependency_error'
+                        ? 'run_all_enrichment_circular_dependency'
+                        : 'run_all_enrichment_failed',
+                ),
+            );
         }
         return yield put(loadEnrichments());
     } finally {

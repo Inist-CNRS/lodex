@@ -1,12 +1,12 @@
-import React from 'react';
+import { ThemeProvider, createTheme } from '@mui/material';
+import { screen } from '@testing-library/react';
 import { shallow } from 'enzyme';
-
+import React from 'react';
+import { render } from '../../../../test-utils';
 import Loading from '../../lib/components/Loading';
-import { ResourceComponent } from './Resource';
 import Detail from './Detail';
 import RemovedDetail from './RemovedDetail';
-import { render, screen } from '../../../../test-utils';
-import { ThemeProvider, createTheme } from '@mui/material';
+import { ResourceComponent } from './Resource';
 
 describe('<Resource />', () => {
     const defaultProps = {

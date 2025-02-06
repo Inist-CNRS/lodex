@@ -2,12 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
-import translate from 'redux-polyglot/translate';
 import { Field } from 'redux-form';
 import { MenuItem, Box } from '@mui/material';
 
 import { polyglot as polyglotPropTypes } from '../propTypes';
 import FormAutoCompleteField from '../lib/components/FormAutoCompleteField';
+import { translate } from '../i18n/I18NContext';
 
 export const FieldSchemeInputComponent = ({
     className,

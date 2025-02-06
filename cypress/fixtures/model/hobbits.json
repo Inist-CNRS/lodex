@@ -1,0 +1,84 @@
+[
+    {
+        "name": "uri",
+        "transformers": [
+            {
+                "operation": "COLUMN",
+                "args": [{ "name": "column", "type": "column", "value": "id" }]
+            }
+        ],
+        "label": "URI",
+        "scope": "collection",
+        "scheme": "http://uri4uri.net/vocab",
+        "position": 0
+    },
+    {
+        "name": "fullname",
+        "label": "Full name",
+        "transformers": [
+            {
+                "operation": "COLUMN",
+                "args": [
+                    { "name": "column", "type": "column", "value": "fullname" }
+                ]
+            },
+            { "operation": "UPPERCASE", "args": [] }
+        ],
+        "scope": "collection",
+        "scheme": "http://www.w3.org/ns/person",
+        "position": 1
+    },
+    {
+        "name": "email",
+        "label": "Email",
+        "transformers": [
+            {
+                "operation": "COLUMN",
+                "args": [
+                    { "name": "column", "type": "column", "value": "email" }
+                ]
+            }
+        ],
+        "scope": "collection",
+        "scheme": "http://uri4uri.net/vocab",
+        "position": 2
+    },
+    {
+        "name": "title",
+        "label": "Title",
+        "transformers": [
+            {
+                "operation": "VALUE",
+                "args": [
+                    {
+                        "name": "value",
+                        "type": "string",
+                        "value": "The hobbits"
+                    }
+                ]
+            }
+        ],
+        "scope": "dataset",
+        "scheme": "http://www.w3.org/ns/person",
+        "position": 3
+    },
+    {
+        "name": "author",
+        "label": "Author",
+        "transformers": [
+            {
+                "operation": "VALUE",
+                "args": [
+                    {
+                        "name": "value",
+                        "type": "string",
+                        "value": "Tester"
+                    }
+                ]
+            }
+        ],
+        "scope": "dataset",
+        "scheme": "http://www.w3.org/ns/person",
+        "position": 4
+    }
+]

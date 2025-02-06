@@ -1,8 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import translate from 'redux-polyglot/translate';
-import compose from 'recompose/compose';
-import { polyglot as polyglotPropTypes } from '../../propTypes';
 import {
     List,
     ListItemText,
@@ -22,6 +19,7 @@ import FilterIcon from '@mui/icons-material/FilterList';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 import SettingsEthernetIcon from '@mui/icons-material/SettingsEthernet';
 import CancelButton from '../../lib/components/CancelButton';
+import { useTranslate } from '../../i18n/I18NContext';
 
 const styles = {
     item: {
@@ -42,15 +40,16 @@ const styles = {
     },
 };
 
-const EnricherDescription = ({ enricher, polyglot }) => {
+const EnricherDescription = ({ enricher }) => {
+    const { translate } = useTranslate();
     return (
         <React.Fragment>
             <Typography>
-                {polyglot.t(`ws_${enricher.id}_description`)}
+                {translate(`ws_${enricher.id}_description`)}
             </Typography>
             <Box justifyContent="flex-end" display="flex">
                 {enricher.objectifTDM && (
-                    <Tooltip title={polyglot.t(`tooltip_objectifTDM`)}>
+                    <Tooltip title={translate(`tooltip_objectifTDM`)}>
                         <Link
                             href={enricher.objectifTDM}
                             target="_blank"
@@ -63,7 +62,7 @@ const EnricherDescription = ({ enricher, polyglot }) => {
                     </Tooltip>
                 )}
                 {enricher.swagger && (
-                    <Tooltip title={polyglot.t(`tooltip_swagger`)}>
+                    <Tooltip title={translate(`tooltip_swagger`)}>
                         <Link
                             href={enricher.swagger}
                             target="_blank"
@@ -80,14 +79,14 @@ const EnricherDescription = ({ enricher, polyglot }) => {
 };
 
 export const EnrichmentCatalog = ({
-    p: polyglot,
     isOpen,
     handleClose,
     onChange,
     selectedWebServiceUrl,
 }) => {
+    const { translate } = useTranslate();
     const filters = [...new Set(enrichers.map((item) => item.type))].sort(
-        (x, y) => polyglot.t(x).localeCompare(polyglot.t(y)),
+        (x, y) => translate(x).localeCompare(translate(y)),
     );
     filters.unshift('all');
     filters.push(filters.splice(filters.indexOf('other'), 1)[0]);
@@ -147,7 +146,7 @@ export const EnrichmentCatalog = ({
                                         : 'outlined'
                                 }
                             >
-                                {polyglot.t(filter)}
+                                {translate(filter)}
                             </Button>
                         </Box>
                     ))}
@@ -177,14 +176,11 @@ export const EnrichmentCatalog = ({
                                 disableTypography
                                 primary={
                                     <Typography sx={{ fontWeight: 'bold' }}>
-                                        {polyglot.t(`ws_${enricher.id}_title`)}
+                                        {translate(`ws_${enricher.id}_title`)}
                                     </Typography>
                                 }
                                 secondary={
-                                    <EnricherDescription
-                                        enricher={enricher}
-                                        polyglot={polyglot}
-                                    />
+                                    <EnricherDescription enricher={enricher} />
                                 }
                             />
                         </ListItem>
@@ -193,7 +189,7 @@ export const EnrichmentCatalog = ({
             </DialogContent>
             <DialogActions>
                 <CancelButton key="cancel" onClick={handleClose}>
-                    {polyglot.t('cancel')}
+                    {translate('cancel')}
                 </CancelButton>
             </DialogActions>
         </Dialog>
@@ -203,7 +199,6 @@ export const EnrichmentCatalog = ({
 EnrichmentCatalog.propTypes = {
     isOpen: PropTypes.bool.isRequired,
     handleClose: PropTypes.func.isRequired,
-    p: polyglotPropTypes.isRequired,
     onChange: PropTypes.func.isRequired,
     selectedWebServiceUrl: PropTypes.string,
 };
@@ -215,7 +210,6 @@ EnricherDescription.propTypes = {
         swagger: PropTypes.string,
         objectifTDM: PropTypes.string,
     }).isRequired,
-    polyglot: polyglotPropTypes.isRequired,
 };
 
-export default compose(translate)(EnrichmentCatalog);
+export default EnrichmentCatalog;

@@ -1,7 +1,6 @@
 import React from 'react';
 import { render, fireEvent, act } from '@testing-library/react';
 import { RunButton } from './RunButton';
-import '@testing-library/jest-dom';
 import { FINISHED, IN_PROGRESS, PENDING } from '../../../../common/taskStatus';
 import { toast } from '../../../../common/tools/toast';
 

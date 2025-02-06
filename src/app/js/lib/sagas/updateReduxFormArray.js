@@ -1,4 +1,4 @@
-import { put, select } from 'redux-saga/effects';
+import { put, select, all } from 'redux-saga/effects';
 import { change, arrayRemove, formValueSelector } from 'redux-form';
 
 // redux-form do not allow to change whole array of field at once, if one of the field has been changed
@@ -9,8 +9,10 @@ export default function* updateArray(formName, fieldName, values) {
     const newArrayLength = values.length;
 
     // change each item individually
-    yield values.map((item, i) =>
-        put(change(formName, `${fieldName}[${i}]`, item)),
+    yield all(
+        values.map((item, i) =>
+            put(change(formName, `${fieldName}[${i}]`, item)),
+        ),
     );
 
     // manually remove any items if the new list is shorter than the old list

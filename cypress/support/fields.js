@@ -11,7 +11,7 @@ export function setFieldLanguage(fieldName, languageCode) {
     cy.wait(1000);
 }
 
-export function createNewField() {
+export function createNewField({ fieldIcons = [] } = {}) {
     cy.findByRole('button', {
         name: /New field/,
     }).click();
@@ -21,6 +21,12 @@ export function createNewField() {
     }).should('be.visible', {
         timeout: 1000,
     });
+
+    if (fieldIcons.length > 0) {
+        fieldIcons.forEach((label) => {
+            cy.get(`button > [aria-label="${label}"]`).click();
+        });
+    }
 
     cy.findByRole('button', {
         name: /Arbitrary value/,

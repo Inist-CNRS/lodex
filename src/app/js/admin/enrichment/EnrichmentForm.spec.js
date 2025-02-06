@@ -85,8 +85,6 @@ describe('<EnrichmentFormComponent />', () => {
                 excerptLines={EXCERPT_LINES}
             />,
         );
-        expect(wrapper.find('Translated(EnrichmentLogsDialog)')).toHaveLength(
-            1,
-        );
+        expect(wrapper.find('EnrichmentLogsDialog')).toHaveLength(1);
     });
 });

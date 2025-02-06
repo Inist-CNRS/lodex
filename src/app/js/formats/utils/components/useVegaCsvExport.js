@@ -68,7 +68,7 @@ export function useVegaCsvExport(polyglot, data) {
             // @see https://github.com/vega/vega-embed/issues/156
             const exportCsvAction = document.createElement('a');
             exportCsvAction.className = 'vega-export-csv';
-            exportCsvAction.innerText = polyglot.t('export_csv');
+            exportCsvAction.innerText = polyglot.t('vega_export_csv');
             exportCsvAction.href = '#';
             exportCsvAction.addEventListener('click', (e) => {
                 e.preventDefault();

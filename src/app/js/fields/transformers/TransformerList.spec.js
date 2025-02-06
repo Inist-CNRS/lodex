@@ -1,7 +1,6 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 import { TransformerListComponent as TransformerList } from './TransformerList';
-import '@testing-library/jest-dom';
 
 // eslint-disable-next-line react/display-name, react/prop-types
 jest.mock('./TransformerListItem', () => ({ transformer, show }) => (

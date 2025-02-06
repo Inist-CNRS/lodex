@@ -1,25 +1,25 @@
-import publishFacets from './publishFacets';
 import { validateField } from '../../models/field';
 import indexSearchableFields from '../../services/indexSearchableFields';
+import publishFacets from './publishFacets';
 
 import {
-    setup,
-    getAllField,
     exportFields,
+    getAllField,
     importFields,
-    postField,
     patchField,
+    patchOverview,
+    postField,
     removeField,
     reorderField,
     restoreFields,
-    patchOverview,
+    setup,
 } from './field';
 
 import {
-    SCOPE_DATASET,
-    SCOPE_GRAPHIC,
     SCOPE_COLLECTION,
+    SCOPE_DATASET,
     SCOPE_DOCUMENT,
+    SCOPE_GRAPHIC,
 } from '../../../common/scope';
 
 jest.mock('../../services/indexSearchableFields');
@@ -269,7 +269,7 @@ describe('field routes', () => {
             expect(ctx.field.updateOneById).toHaveBeenCalledWith('id', {
                 label: 'new label',
             });
-            expect(ctx.body).toContain(['update result']);
+            expect(ctx.body).toContain('update result');
         });
 
         it('update the published facets', async () => {
@@ -360,7 +360,7 @@ describe('field routes', () => {
             expect(ctx.field.updateOneById).toHaveBeenCalledWith('id', {
                 overview: 200,
             });
-            expect(ctx.body).toContain(['update result']);
+            expect(ctx.body).toContain('update result');
         });
 
         it('should not update field overview if id is null', async () => {

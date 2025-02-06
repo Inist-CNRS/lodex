@@ -4,14 +4,15 @@ import omit from 'lodash/omit';
 import uniqWith from 'lodash/uniqWith';
 import JSONStream from 'jsonstream';
 import { Transform } from 'stream';
-import { ObjectID } from 'mongodb';
+import { ObjectId } from 'mongodb';
+import { getCreatedCollection } from './utils';
 
 import { URI_FIELD_NAME, moveUriToFirstPosition } from '../../common/uris';
 import countNotUnique from './countNotUnique';
 import countNotUniqueSubresources from './countNotUniqueSubresources';
 
-export default (db) => {
-    const collection = db.collection('dataset');
+export default async (db) => {
+    const collection = await getCreatedCollection(db, 'dataset');
     collection.insertBatch = (documents) => {
         return Promise.all(
             chunk(documents, 100).map((data) => {
@@ -141,7 +142,11 @@ export default (db) => {
     };
 
     collection.removeAttribute = async (attribute) =>
-        collection.update({}, { $unset: { [attribute]: 1 } }, { multi: true });
+        collection.updateOne(
+            {},
+            { $unset: { [attribute]: 1 } },
+            { multi: true },
+        );
 
     collection.findBy = async (fieldName, value) => {
         if (!(await collection.ensureIsUnique(fieldName))) {
@@ -197,8 +202,8 @@ export default (db) => {
         }
     };
 
-    collection.deleteOne = async (id) =>
-        collection.remove({ _id: new ObjectID(id) });
+    collection.deleteOneById = async (id) =>
+        collection.deleteOne({ _id: new ObjectId(id) });
 
     return collection;
 };

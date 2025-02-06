@@ -1,17 +1,22 @@
 import '@babel/polyfill';
-import 'url-api-polyfill';
 import { createBrowserHistory } from 'history';
 import React from 'react';
 import { hydrate } from 'react-dom';
 import { Provider } from 'react-redux';
+import 'url-api-polyfill';
 
-import rootReducer from './reducers';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { Router } from 'react-router-dom';
+import getLocale from '../../../common/getLocale';
+import configureStore from '../configureStore';
+import { I18N } from '../i18n/I18NContext';
+import phrasesFor from '../i18n/translations';
+import LodexThemeProvider from './LodexThemeProvider';
+import reducers from './reducers';
 import Routes from './Routes';
 import sagas from './sagas';
-import configureStore from '../configureStore';
-import phrasesFor from '../i18n/translations';
-import getLocale from '../../../common/getLocale';
-import LodexThemeProvider from './LodexThemeProvider';
+
+import 'react-toastify/dist/ReactToastify.css';
 
 const locale = getLocale();
 const initialState = {
@@ -23,24 +28,32 @@ const initialState = {
 
 const tenant = window.__TENANT__;
 
-const history = createBrowserHistory({
+const browserHistory = createBrowserHistory({
     basename: `/instance/${tenant}`,
 });
 
 sessionStorage.setItem('lodex-tenant', tenant);
 
-const store = configureStore(
-    rootReducer,
+const { store, history } = configureStore(
+    reducers,
     sagas,
     window.__PRELOADED_STATE__ || initialState,
-    history,
+    browserHistory,
 );
+
+const queryClient = new QueryClient();
 
 hydrate(
     <Provider {...{ store }}>
-        <LodexThemeProvider>
-            <Routes history={history} tenant={window.__TENANT__} />
-        </LodexThemeProvider>
+        <I18N>
+            <QueryClientProvider client={queryClient}>
+                <Router history={history}>
+                    <LodexThemeProvider>
+                        <Routes history={history} tenant={window.__TENANT__} />
+                    </LodexThemeProvider>
+                </Router>
+            </QueryClientProvider>
+        </I18N>
     </Provider>,
     document.getElementById('root'),
 );

@@ -1,6 +1,6 @@
 import { call, put, select } from 'redux-saga/effects';
 import { startSubmit, stopSubmit } from 'redux-form';
-import { push } from 'connected-react-router';
+import { push } from 'redux-first-history';
 
 import fetchSaga from '../lib/sagas/fetchSaga';
 import { LOGIN_FORM_NAME, loginSuccess } from './';

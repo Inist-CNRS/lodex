@@ -1,6 +1,6 @@
-import { ObjectId } from 'mongodb';
 import omit from 'lodash/omit';
-import { castIdsFactory } from './utils';
+import { ObjectId } from 'mongodb';
+import { castIdsFactory, getCreatedCollection } from './utils';
 
 const checkMissingFields = (data) =>
     !data.name ||
@@ -9,7 +9,7 @@ const checkMissingFields = (data) =>
     (data.sourceColumns instanceof Array && data.sourceColumns.length === 0);
 
 export default async (db) => {
-    const collection = db.collection('precomputed');
+    const collection = await getCreatedCollection(db, 'precomputed');
     await collection.createIndex({ name: 1 }, { unique: true });
 
     collection.findOneById = async (id) =>
@@ -35,7 +35,7 @@ export default async (db) => {
             // Collection does not exist, no big deal
             console.warn(`Failed to drop collection 'pc_${id}'`);
         }
-        return collection.remove({
+        return collection.deleteOne({
             $or: [{ _id: new ObjectId(id) }, { _id: id }],
         });
     };
@@ -46,19 +46,15 @@ export default async (db) => {
         }
         const objectId = new ObjectId(id);
 
-        return collection
-            .findOneAndUpdate(
-                {
-                    $or: [{ _id: objectId }, { _id: id }],
-                },
-                {
-                    $set: omit(data, ['_id']),
-                },
-                {
-                    returnOriginal: false,
-                },
-            )
-            .then((result) => result.value);
+        return collection.findOneAndUpdate(
+            {
+                $or: [{ _id: objectId }, { _id: id }],
+            },
+            {
+                $set: omit(data, ['_id']),
+            },
+            { returnDocument: 'after' },
+        );
     };
 
     collection.updateStatus = async (id, status, data = {}) => {

@@ -64,7 +64,7 @@ export const getFieldForSpecificScope = (
     return fields;
 };
 
-export const getFieldToAnnotateForSpecificScope = (
+export const getFieldToCaptionForSpecificScope = (
     fields,
     scope,
     subresourceId = undefined,

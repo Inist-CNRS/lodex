@@ -1,8 +1,8 @@
 import datasetFactory from '../../api/models/dataset';
+import fieldFactory from '../../api/models/field';
 import publishedCharacteristicFactory from '../../api/models/publishedCharacteristic';
 import publishedDatasetFactory from '../../api/models/publishedDataset';
 import publishedFacetFactory from '../../api/models/publishedFacet';
-import fieldFactory from '../../api/models/field';
 import mongoClient, { closeDb } from '../../api/services/mongoClient';
 import { DEFAULT_TENANT } from '../tools/tenantTools';
 
@@ -50,18 +50,17 @@ export function loadFixtures(fixtures) {
 }
 
 export async function clear() {
-    // await connect();
-
     if (!db) {
         return;
     }
 
     await Promise.all([
-        db.dataset.remove({}),
-        db.field.remove({}),
-        db.publishedCharacteristic.remove({}),
-        db.publishedDataset.remove({}),
-        db.publishedFacet.remove({}),
+        db.dataset.deleteMany(),
+        db.field.deleteMany(),
+        db.publishedCharacteristic.deleteMany(),
+        db.publishedDataset.deleteMany(),
+        db.publishedFacet.deleteMany(),
+        db.annotation.deleteMany(),
     ]);
 
     return db;

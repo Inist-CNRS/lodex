@@ -1,15 +1,12 @@
 import React from 'react';
-import { shallow, mount } from 'enzyme';
-
-import ParsingExcerptColumn from './ParsingExcerptColumn';
-import ParsingExcerptHeaderColumn from './ParsingExcerptHeaderColumn';
+import { render, fireEvent } from '../../../../test-utils';
 
 import {
     ParsingExcerptComponent as ParsingExcerpt,
     getEnrichmentsNames,
     getColumnStyle,
 } from './ParsingExcerpt';
-import ParsingExcerptAddColumn from './ParsingExcerptAddColumn';
+import { TestI18N } from '../../i18n/I18NContext';
 
 let mockedParams = {
     filter: undefined,
@@ -20,10 +17,6 @@ jest.mock('react-router', () => ({
     ...jest.requireActual('react-router'),
     useParams: () => mockedParams,
 }));
-// eslint-disable-next-line react/display-name, react/prop-types
-jest.mock('./ParsingExcerptAddColumn', () => ({ onAddColumn, name }) => (
-    <button onClick={() => onAddColumn(name)} />
-));
 
 describe('<ParsingExcerpt />', () => {
     beforeEach(() => {
@@ -77,19 +70,15 @@ describe('<ParsingExcerpt />', () => {
             { foo: 'foo1', bar: 'bar1' },
             { foo: 'foo2', bar: 'bar2' },
         ];
-        const wrapper = shallow(
+        const wrapper = render(
             <ParsingExcerpt
                 columns={columns}
                 lines={lines}
                 subresources={[]}
             />,
         );
-        expect(
-            wrapper.find(ParsingExcerptHeaderColumn).at(0).prop('column'),
-        ).toBe('foo');
-        expect(
-            wrapper.find(ParsingExcerptHeaderColumn).at(1).prop('column'),
-        ).toBe('bar');
+        expect(wrapper.queryByText('foo')).toBeInTheDocument();
+        expect(wrapper.queryByText('bar')).toBeInTheDocument();
     });
 
     it('should render lines', () => {
@@ -98,25 +87,17 @@ describe('<ParsingExcerpt />', () => {
             { foo: 'foo1', bar: 'bar1' },
             { foo: 'foo2', bar: 'bar2' },
         ];
-        const wrapper = shallow(
+        const wrapper = render(
             <ParsingExcerpt
                 columns={columns}
                 lines={lines}
                 subresources={[]}
             />,
         );
-        expect(wrapper.find(ParsingExcerptColumn).at(0).prop('value')).toBe(
-            '"foo1"',
-        );
-        expect(wrapper.find(ParsingExcerptColumn).at(1).prop('value')).toBe(
-            '"bar1"',
-        );
-        expect(wrapper.find(ParsingExcerptColumn).at(2).prop('value')).toBe(
-            '"foo2"',
-        );
-        expect(wrapper.find(ParsingExcerptColumn).at(3).prop('value')).toBe(
-            '"bar2"',
-        );
+        expect(wrapper.queryByText('"foo1"')).toBeInTheDocument();
+        expect(wrapper.queryByText('"foo2"')).toBeInTheDocument();
+        expect(wrapper.queryByText('"bar1"')).toBeInTheDocument();
+        expect(wrapper.queryByText('"bar2"')).toBeInTheDocument();
     });
 
     it('should render headers with subresource', () => {
@@ -153,19 +134,15 @@ describe('<ParsingExcerpt />', () => {
             },
         ];
 
-        const wrapper = shallow(
+        const wrapper = render(
             <ParsingExcerpt
                 columns={columns}
                 lines={lines}
                 subresources={subresources}
             />,
         );
-        expect(
-            wrapper.find(ParsingExcerptHeaderColumn).at(0).prop('column'),
-        ).toBe('column1');
-        expect(
-            wrapper.find(ParsingExcerptHeaderColumn).at(1).prop('column'),
-        ).toBe('column2');
+        expect(wrapper.queryByText('column1')).toBeInTheDocument();
+        expect(wrapper.queryByText('column2')).toBeInTheDocument();
     });
 
     it('should render lines with subresource', () => {
@@ -201,25 +178,17 @@ describe('<ParsingExcerpt />', () => {
                 ],
             },
         ];
-        const wrapper = shallow(
+        const wrapper = render(
             <ParsingExcerpt
                 columns={columns}
                 lines={lines}
                 subresources={subresources}
             />,
         );
-        expect(wrapper.find(ParsingExcerptColumn).at(0).prop('value')).toBe(
-            '["value1","value3"]',
-        );
-        expect(wrapper.find(ParsingExcerptColumn).at(1).prop('value')).toBe(
-            '["value2","value4"]',
-        );
-        expect(wrapper.find(ParsingExcerptColumn).at(2).prop('value')).toBe(
-            '["value5","value7"]',
-        );
-        expect(wrapper.find(ParsingExcerptColumn).at(3).prop('value')).toBe(
-            '["value6","value8"]',
-        );
+        expect(wrapper.queryByText('["value1","value3"]')).toBeInTheDocument();
+        expect(wrapper.queryByText('["value2","value4"]')).toBeInTheDocument();
+        expect(wrapper.queryByText('["value5","value7"]')).toBeInTheDocument();
+        expect(wrapper.queryByText('["value6","value8"]')).toBeInTheDocument();
     });
 
     it('should render ParsingExcerptAddColumn when showAddFromColumn is true', () => {
@@ -228,15 +197,17 @@ describe('<ParsingExcerpt />', () => {
             { foo: 'foo1', bar: 'bar1' },
             { foo: 'foo2', bar: 'bar2' },
         ];
-        const wrapper = shallow(
-            <ParsingExcerpt
-                columns={columns}
-                lines={lines}
-                subresources={[]}
-                showAddFromColumn
-            />,
+        const wrapper = render(
+            <TestI18N>
+                <ParsingExcerpt
+                    columns={columns}
+                    lines={lines}
+                    subresources={[]}
+                    showAddFromColumn
+                />
+            </TestI18N>,
         );
-        expect(wrapper.find(ParsingExcerptAddColumn).exists()).toBe(true);
+        expect(wrapper.queryAllByText('add_to_publication')).toHaveLength(2);
     });
 
     it('should call handleAddColumn without subresourcePath when ParsingExcerptAddColumn is clicked and this not a subresource', () => {
@@ -250,16 +221,20 @@ describe('<ParsingExcerpt />', () => {
             { foo: 'foo1', bar: 'bar1' },
             { foo: 'foo2', bar: 'bar2' },
         ];
-        const wrapper = mount(
-            <ParsingExcerpt
-                columns={columns}
-                lines={lines}
-                subresources={[]}
-                showAddFromColumn
-                handleAddColumn={handleAddColumn}
-            />,
+        const wrapper = render(
+            <TestI18N>
+                <ParsingExcerpt
+                    columns={columns}
+                    lines={lines}
+                    subresources={[]}
+                    showAddFromColumn
+                    handleAddColumn={handleAddColumn}
+                />
+            </TestI18N>,
         );
-        wrapper.find(ParsingExcerptAddColumn).at(0).simulate('click');
+
+        expect(wrapper.queryAllByText('add_to_publication')).toHaveLength(2);
+        fireEvent.click(wrapper.queryAllByText('add_to_publication')[0]);
         expect(handleAddColumn).toHaveBeenCalledWith({
             name: 'foo',
             scope: 'document',
@@ -302,16 +277,19 @@ describe('<ParsingExcerpt />', () => {
                 ],
             },
         ];
-        const wrapper = mount(
-            <ParsingExcerpt
-                columns={columns}
-                lines={lines}
-                subresources={subresources}
-                showAddFromColumn
-                handleAddColumn={handleAddColumn}
-            />,
+        const wrapper = render(
+            <TestI18N>
+                <ParsingExcerpt
+                    columns={columns}
+                    lines={lines}
+                    subresources={subresources}
+                    showAddFromColumn
+                    handleAddColumn={handleAddColumn}
+                />
+            </TestI18N>,
         );
-        wrapper.find(ParsingExcerptAddColumn).at(0).simulate('click');
+        expect(wrapper.queryAllByText('add_to_publication')).toHaveLength(2);
+        fireEvent.click(wrapper.queryAllByText('add_to_publication')[0]);
         expect(handleAddColumn).toHaveBeenCalledWith({
             name: 'column1',
             scope: 'document',

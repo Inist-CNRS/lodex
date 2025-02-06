@@ -10,7 +10,7 @@ import {
 } from '../../chartsUtils';
 import { ASPECT_RATIO_NONE, ASPECT_RATIOS } from '../../aspectRatio';
 import FormatFullScreenMode from '../FormatFullScreenMode';
-import translate from 'redux-polyglot/translate';
+import { translate } from '../../../../i18n/I18NContext';
 import { polyglot as polyglotPropTypes } from '../../../../propTypes';
 import { compose } from 'recompose';
 import { useVegaCsvExport } from '../useVegaCsvExport';
@@ -71,6 +71,16 @@ function CustomActionVegaLite({
                         spec={deepClone(specWithData)}
                         actions={actions}
                         mode="vega-lite"
+                        i18n={{
+                            SVG_ACTION: polyglot.t('vega_export_svg'),
+                            PNG_ACTION: polyglot.t('vega_export_png'),
+                            CLICK_TO_VIEW_ACTIONS: polyglot.t(
+                                'vega_click_to_view_actions',
+                            ),
+                            COMPILED_ACTION: polyglot.t('vega_compiled_action'),
+                            EDITOR_ACTION: polyglot.t('vega_editor_action'),
+                            SOURCE_ACTION: polyglot.t('vega_source_action'),
+                        }}
                     />
                 </div>
             ) : (
@@ -88,6 +98,18 @@ function CustomActionVegaLite({
                             spec={deepClone(specWithData)}
                             actions={actions}
                             mode="vega-lite"
+                            i18n={{
+                                SVG_ACTION: polyglot.t('vega_export_svg'),
+                                PNG_ACTION: polyglot.t('vega_export_png'),
+                                CLICK_TO_VIEW_ACTIONS: polyglot.t(
+                                    'vega_click_to_view_actions',
+                                ),
+                                COMPILED_ACTION: polyglot.t(
+                                    'vega_compiled_action',
+                                ),
+                                EDITOR_ACTION: polyglot.t('vega_editor_action'),
+                                SOURCE_ACTION: polyglot.t('vega_source_action'),
+                            }}
                         />
                     </div>
                 </FormatFullScreenMode>

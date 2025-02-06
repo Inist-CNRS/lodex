@@ -1,11 +1,11 @@
 import React from 'react';
 import compose from 'recompose/compose';
 import PropTypes from 'prop-types';
-import translate from 'redux-polyglot/translate';
 
 import { connect } from 'react-redux';
 import { Box, TextField } from '@mui/material';
 import { fromFields } from '../../sharedSelectors';
+import { translate } from '../../i18n/I18NContext';
 
 const TransformerArgs = ({ availableArgs, onChange, transformerArgs }) => {
     if (!availableArgs) {

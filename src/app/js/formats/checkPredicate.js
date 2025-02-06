@@ -1,10 +1,10 @@
-import React from 'react';
 import get from 'lodash/get';
-import translate from 'redux-polyglot/translate';
+import React from 'react';
 
-import InvalidFormat from './InvalidFormat';
 import PropTypes from 'prop-types';
+import { translate } from '../i18n/I18NContext';
 import { polyglot as polyglotPropTypes } from '../propTypes';
+import InvalidFormat from './InvalidFormat';
 
 export const isPrecomputed = (field) =>
     !!field?.transformers?.find((t) => t.operation === 'PRECOMPUTED');
@@ -71,9 +71,10 @@ export default (predicate, Component, format, type) => {
     CheckedComponent.propTypes = {
         meta: PropTypes.object.isRequired,
         label: PropTypes.string.isRequired,
-        resource: PropTypes.object.isRequired,
+        resource: PropTypes.string.isRequired,
         field: PropTypes.object.isRequired,
-        p: polyglotPropTypes,
+        p: polyglotPropTypes.isRequired,
+        resource: PropTypes.object.isRequired,
     };
 
     return translate(CheckedComponent);

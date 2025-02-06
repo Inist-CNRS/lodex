@@ -6,9 +6,10 @@ export const truncate = (value, arg) => {
         return value;
     }
     const gap = Number(arg);
-    return Array.isArray(value) || typeof value === 'string'
-        ? value.slice(0, gap)
-        : gap + value;
+
+    const normalizedValue = Array.isArray(value) ? value : value.toString();
+
+    return normalizedValue.slice(0, gap);
 };
 
 const transformation = (_, args) => (value) =>

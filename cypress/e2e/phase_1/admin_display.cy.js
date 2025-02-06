@@ -57,4 +57,57 @@ describe('Home Page', () => {
                 }).should('be.visible');
             });
     });
+
+    it('should not select any icon when editing field if field has no icon', () => {
+        cy.findByRole('link', {
+            name: /Display/,
+        }).click();
+
+        fields.createNewField({
+            // This unselects home
+            fieldIcons: ['Home'],
+        });
+
+        cy.findByRole('gridcell', {
+            name: /newField/,
+            timeout: 1000,
+        }).click();
+
+        cy.get(`button[value="home"]`).should('not.have.class', 'Mui-selected');
+    });
+
+    it('should select bound icons when editing a field', () => {
+        cy.findByRole('link', {
+            name: /Display/,
+        }).click();
+
+        fields.createNewField({
+            fieldIcons: ['Ressource'],
+        });
+
+        cy.findByRole('gridcell', {
+            name: /newField/,
+            timeout: 1000,
+        })
+            .should('be.visible')
+            .then((parent) => {
+                cy.findByTestId('HomeIcon', {
+                    container: parent,
+                    timeout: 500,
+                }).should('be.visible');
+
+                cy.findByTestId('ArticleIcon', {
+                    container: parent,
+                    timeout: 500,
+                }).should('be.visible');
+            });
+
+        cy.findByRole('gridcell', {
+            name: /newField/,
+            timeout: 1000,
+        }).click();
+
+        cy.get(`button[value="home"]`).should('have.class', 'Mui-selected');
+        cy.get(`button[value="document"]`).should('have.class', 'Mui-selected');
+    });
 });

@@ -14,10 +14,10 @@ export default async (ctx, triggeredFromPublication) => {
         { multi: true },
     );
     progress.incrementProgress(ctx.tenant, 25);
-    await ctx.publishedDataset.remove({});
+    await ctx.publishedDataset.deleteMany({});
     progress.incrementProgress(ctx.tenant, 25);
-    await ctx.publishedCharacteristic.remove({});
+    await ctx.publishedCharacteristic.deleteMany({});
     progress.incrementProgress(ctx.tenant, 25);
-    await ctx.publishedFacet.remove({});
+    await ctx.publishedFacet.deleteMany({});
     progress.finish(ctx.tenant);
 };
