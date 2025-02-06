@@ -35,7 +35,7 @@ describe('Annotation', () => {
     });
 
     describe('homepage', () => {
-        it('should support annotations on home page', () => {
+        it('should support annotations on field on home page', () => {
             annotation.createTitleAnnotation({
                 fieldLabel: 'Dataset Description',
                 comment: 'This is a comment',
@@ -72,7 +72,7 @@ describe('Annotation', () => {
 
     describe('resources', () => {
         describe('create list and update an Annotation', () => {
-            it('should create an annotation on resource field', () => {
+            it('should create annotation on resource field', () => {
                 cy.findByText('Search').click();
                 searchDrawer.search('Terminator 2');
                 searchDrawer.waitForLoading();
@@ -88,7 +88,7 @@ describe('Annotation', () => {
                 searchDrawer.search('RoboCop');
                 searchDrawer.waitForLoading();
                 cy.findByTitle('RoboCop').click();
-                annotation.createTitleAnnotation({
+                annotation.createSingleValueAnnotation({
                     fieldLabel: 'rating',
                     comment: 'This is another comment',
                     authorName: 'Jane Smith',
@@ -135,7 +135,7 @@ describe('Annotation', () => {
                         '[bZE+]',
                         '',
                         '',
-                        '',
+                        '7,5',
                         'To Review',
                         '',
                         '',
@@ -219,7 +219,7 @@ describe('Annotation', () => {
                         '[bZE+]',
                         '',
                         '',
-                        '',
+                        '7,5',
                         'Validated',
                         'Return applied',
                         'John Doe',
@@ -247,7 +247,7 @@ describe('Annotation', () => {
 
             it('should hide annotation button when field does not support annotations', () => {
                 cy.findByRole('button', {
-                    name: `Add an annotation to Liste des films field`,
+                    name: `Add an annotation to Liste des films`,
                 }).should('not.exist');
             });
         });
@@ -260,7 +260,7 @@ describe('Annotation', () => {
                 name: 'Répartition par réalisateurs uniques',
             }).click();
 
-            annotation.createTitleAnnotation({
+            annotation.createAnnotationOnFieldWithNoValue({
                 fieldLabel: 'Répartition par réalisateurs uniques',
                 comment: 'This is a comment',
                 authorName: 'John Doe',
