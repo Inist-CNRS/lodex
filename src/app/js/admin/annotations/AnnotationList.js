@@ -16,7 +16,7 @@ import AdminOnlyAlert from '../../lib/components/AdminOnlyAlert';
 import { AnnotationStatus } from './AnnotationStatus';
 import { ResourceTitleCell } from './ResourceTitleCell';
 import { ResourceUriCell } from './ResourceUriCell';
-import { useGetAnnotations } from './useGetAnnotations';
+import { useGetAnnotations } from './hooks/useGetAnnotations';
 
 const AnnotationListToolBar = () => {
     const { translate } = useTranslate();

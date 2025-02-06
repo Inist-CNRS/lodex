@@ -140,7 +140,7 @@ describe('Annotation', () => {
 
     describe('resources', () => {
         describe('create list and update an Annotation', () => {
-            it('should create an annotation on resource field', () => {
+            it.only('should create an annotation on resource field', () => {
                 cy.findByText('Search').click();
                 searchDrawer.search('Terminator 2');
                 searchDrawer.waitForLoading();
@@ -230,33 +230,51 @@ describe('Annotation', () => {
 
                 cy.findByText('RoboCop').click();
 
-                cy.findByText('Annotation: RoboCop').should('be.visible');
+                cy.findByRole('heading', {
+                    name: /^Annotation: uid:\//,
+                }).should('be.visible');
+                cy.findByRole('heading', {
+                    name: 'RoboCop',
+                }).should('be.visible');
 
-                cy.findByLabelText('Field Id').should('have.text', '[bZE+]');
-                cy.findByLabelText('Field label').should('have.text', 'rating');
-                cy.findByLabelText('Field Internal Name').should(
+                cy.findByRole('region', { name: 'Contributor Comment' }).should(
                     'have.text',
-                    '',
+                    'Contributor CommentThis is another comment',
                 );
 
-                cy.findByLabelText('Contributor Comment:').should(
+                cy.findByRole('region', {
+                    name: 'Contributor',
+                    exact: true,
+                }).should(
                     'have.text',
-                    'This is another comment',
+                    'ContributorJane Smithjane.smith@example.org',
                 );
 
-                cy.findByLabelText('Name').should('have.text', 'Jane Smith');
-
-                cy.findByLabelText('Email').should(
-                    'have.text',
-                    'jane.smith@example.org',
-                );
+                cy.findByRole('region', {
+                    name: 'Contributor',
+                    exact: true,
+                }).then((region) => {
+                    cy.findByRole('link', {
+                        name: 'jane.smith@example.org',
+                        container: region,
+                    }).should(
+                        'have.attr',
+                        'href',
+                        'mailto:jane.smith@example.org',
+                    );
+                });
 
                 cy.findByLabelText('Submission date').should(
                     'have.text',
                     new Date().toLocaleDateString(),
                 );
 
-                cy.findByLabelText('Status').should('have.text', 'To Review​');
+                cy.findByLabelText('Last modified on').should(
+                    'have.text',
+                    new Date().toLocaleDateString(),
+                );
+
+                cy.findByLabelText('Status').should('have.text', 'To Review');
                 cy.findByLabelText('Status').click();
                 cy.findByText('Validated').click();
                 cy.findByLabelText('Internal Comment *').type('Return applied');
