@@ -16,6 +16,7 @@ export const defaultState = {
     error: false,
     excerptLines: [],
     precomputed: [],
+    initialized: false,
     loading: false,
     parsing: false,
     allowUpload: true,
@@ -30,6 +31,7 @@ export default handleActions(
             ...state,
             allowUpload: false,
             loading: true,
+            initialized: true,
         }),
         LOAD_PARSING_RESULT_ERROR: (state, { payload }) => ({
             ...state,
@@ -78,6 +80,7 @@ export const hasUploadedFile = ({ totalLoadedLines }) => !!totalLoadedLines;
 export const canUpload = ({ allowUpload }) => !!allowUpload;
 
 export const isParsingLoading = ({ loading }) => loading;
+export const isInitialized = ({ initialized }) => initialized;
 
 export const getTotalLoadedLines = ({ totalLoadedLines }) => totalLoadedLines;
 
@@ -89,6 +92,7 @@ export const selectors = {
     hasUploadedFile,
     canUpload,
     isParsingLoading,
+    isInitialized,
     getTotalLoadedLines,
     showAddFromColumn: getshowAddFromColumn,
 };

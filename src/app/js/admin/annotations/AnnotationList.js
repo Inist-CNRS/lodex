@@ -17,6 +17,7 @@ import { AnnotationStatus } from './AnnotationStatus';
 import { ResourceTitleCell } from './ResourceTitleCell';
 import { ResourceUriCell } from './ResourceUriCell';
 import { useGetAnnotations } from './useGetAnnotations';
+import withInitialData from '../withInitialData';
 
 const AnnotationListToolBar = () => {
     const { translate } = useTranslate();
@@ -342,3 +343,5 @@ export const AnnotationList = () => {
         />
     );
 };
+
+export default withInitialData(AnnotationList, true);

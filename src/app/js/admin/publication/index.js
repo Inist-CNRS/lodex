@@ -16,6 +16,7 @@ export const publicationCleared = createAction(PUBLICATION_CLEARED);
 export const selectField = createAction(SELECT_FIELD);
 
 export const defaultState = {
+    initialized: false,
     loading: false,
     fields: [],
     published: false,
@@ -25,6 +26,7 @@ export default handleActions(
     {
         LOAD_PUBLICATION: (state) => ({
             ...state,
+            initialized: true,
             error: null,
             loading: true,
         }),
@@ -57,8 +59,10 @@ export default handleActions(
 
 export const hasPublishedDataset = ({ published }) => published;
 export const isPublicationLoading = ({ loading }) => loading;
+export const isInitialized = ({ initialized }) => initialized;
 
 export const selectors = {
     hasPublishedDataset,
     isPublicationLoading,
+    isInitialized,
 };

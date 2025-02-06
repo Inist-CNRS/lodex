@@ -29,6 +29,7 @@ export const launchAllEnrichmentError = createAction(
 
 export const initialState = {
     error: null,
+    initialized: false,
     loading: false,
     dataPreviewLoading: false,
     enrichments: [],
@@ -40,6 +41,7 @@ export default handleActions(
         LOAD_ENRICHMENTS: (state) => ({
             ...state,
             isLoadEnrichmentsPending: true,
+            initialized: true,
         }),
         LOAD_ENRICHMENTS_ERROR: (state, { payload: error }) => ({
             ...state,
@@ -69,12 +71,14 @@ export default handleActions(
 );
 
 export const isDataPreviewLoading = (state) => state.dataPreviewLoading;
+export const isInitialized = (state) => state.initialized;
 export const enrichments = (state) => state.enrichments;
 export const dataPreviewEnrichment = (state) => state.dataPreviewEnrichment;
 export const getError = (state) => state.error;
 
 export const selectors = {
     isDataPreviewLoading,
+    isInitialized,
     enrichments,
     dataPreviewEnrichment,
     getError,

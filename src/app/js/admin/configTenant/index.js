@@ -10,13 +10,18 @@ export const loadConfigTenantSuccess = createAction(LOAD_CONFIG_TENANT_SUCCESS);
 
 export const initialState = {
     error: null,
+    initialized: false,
     loading: false,
     configTenant: {},
 };
 
 export default handleActions(
     {
-        LOAD_CONFIG_TENANT: (state) => ({ ...state, loading: true }),
+        LOAD_CONFIG_TENANT: (state) => ({
+            ...state,
+            loading: true,
+            initialized: true,
+        }),
         LOAD_CONFIG_TENANT_ERROR: (state, { payload: error }) => ({
             ...state,
             error,
@@ -32,6 +37,7 @@ export default handleActions(
 );
 
 export const isLoading = (state) => state.loading;
+export const isInitialized = (state) => state.initialized;
 export const configTenant = (state) => state.configTenant;
 export const isEnableAutoPublication = (state) =>
     state.configTenant?.enableAutoPublication;
@@ -39,6 +45,7 @@ export const getError = (state) => state.error;
 
 export const selectors = {
     isLoading,
+    isInitialized,
     getError,
     configTenant,
     isEnableAutoPublication,

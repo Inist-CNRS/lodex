@@ -20,7 +20,7 @@ import getLocale from '../../../common/getLocale';
 import App from './App';
 import PrivateRoute from './PrivateRoute';
 import { Display } from './Display';
-import { AnnotationList } from './annotations/AnnotationList';
+import AnnotationList from './annotations/AnnotationList';
 import { Data } from './Data';
 import { frFR as frFRDatagrid, enUS as enUSDatagrid } from '@mui/x-data-grid';
 import { frFR, enUS } from '@mui/material/locale';
@@ -31,7 +31,7 @@ import defaultTheme from '../../custom/themes/default/defaultTheme';
 import { Router } from 'react-router-dom';
 import { I18N } from '../i18n/I18NContext';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { AnnotationItem } from './annotations/AnnotationItem';
+import AnnotationItem from './annotations/AnnotationItem';
 
 const localesMUI = new Map([
     ['fr', { ...frFR, ...frFRDatagrid }],

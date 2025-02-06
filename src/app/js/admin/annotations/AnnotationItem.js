@@ -11,6 +11,7 @@ import Loading from '../../lib/components/Loading';
 import { AnnotationForm } from './AnnotationForm';
 import { AnnotationValue } from './AnnotationValue';
 import { useGetAnnotation } from './useGetAnnotation';
+import withInitialData from '../withInitialData';
 
 const tenant = sessionStorage.getItem('lodex-tenant') || DEFAULT_TENANT;
 
@@ -209,3 +210,5 @@ export const AnnotationItem = () => {
         </Stack>
     );
 };
+
+export default withInitialData(AnnotationItem, true);
