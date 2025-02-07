@@ -354,6 +354,7 @@ describe('annotation.validator', () => {
                         'resourceUri',
                         'fieldId',
                         'comment',
+                        'initialValue',
                         'status',
                         'internalComment',
                         'administrator',

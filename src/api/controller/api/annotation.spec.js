@@ -1036,6 +1036,7 @@ describe('annotation', () => {
                             'resourceUri',
                             'fieldId',
                             'comment',
+                            'initialValue',
                             'status',
                             'internalComment',
                             'administrator',
