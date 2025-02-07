@@ -69,5 +69,22 @@ export default async (db) => {
         return annotationCollection.findOne({ _id: new ObjectId(id) });
     }
 
-    return { create, updateOneById, findLimitFromSkip, count, findOneById };
+    async function deleteOneById(id) {
+        if (!ObjectId.isValid(id)) {
+            return 0;
+        }
+        const { deletedCount } = await annotationCollection.deleteOne({
+            _id: new ObjectId(id),
+        });
+        return +deletedCount;
+    }
+
+    return {
+        create,
+        updateOneById,
+        findLimitFromSkip,
+        count,
+        findOneById,
+        deleteOneById,
+    };
 };

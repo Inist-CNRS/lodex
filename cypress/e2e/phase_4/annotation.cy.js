@@ -113,7 +113,7 @@ describe('Annotation', () => {
                         'Internal Comment',
                         'Administrator',
                         'Contributor',
-                        'Comment',
+                        'Contributor Comment',
                         'Submission date',
                         'Last modified on',
                     ]);
@@ -216,7 +216,9 @@ describe('Annotation', () => {
                     'exist',
                 );
 
-                cy.findByText('Annotations').click();
+                cy.findByRole('link', {
+                    name: 'Cancel',
+                }).click();
 
                 cy.wait(1000);
                 cy.findByRole('progressbar').should('not.exist');
@@ -267,6 +269,123 @@ describe('Annotation', () => {
                 cy.findByRole('button', {
                     name: `Add an annotation to Liste des films`,
                 }).should('not.exist');
+            });
+
+            it('should delete an annotation on resource field', () => {
+                cy.findByText('Search').click();
+                searchDrawer.search('Terminator 2');
+                searchDrawer.waitForLoading();
+                cy.findByTitle('Terminator 2').click();
+                annotation.createTitleAnnotation({
+                    fieldLabel: 'actors',
+                    comment: 'This is a comment',
+                    authorName: 'John Doe',
+                    authorEmail: 'john.doe@example.org',
+                });
+
+                cy.findByText('Search').click();
+                searchDrawer.search('RoboCop');
+                searchDrawer.waitForLoading();
+                cy.findByTitle('RoboCop').click();
+                annotation.createTitleAnnotation({
+                    fieldLabel: 'rating',
+                    comment: 'This is another comment',
+                    authorName: 'Jane Smith',
+                    authorEmail: 'jane.smith@example.org',
+                });
+                cy.findByText('More').click();
+                menu.goToAdminDashboard();
+                cy.findByText('Annotations').click();
+
+                cy.findAllByRole('cell').then((cells) => {
+                    const firstUri = cells[0].textContent;
+                    const secondUri = cells[14].textContent;
+
+                    expect(firstUri).to.match(/uid:\//);
+                    expect(secondUri).to.match(/uid:\//);
+
+                    expect(
+                        cells.toArray().map((cell) => cell.textContent),
+                    ).to.deep.equal([
+                        firstUri,
+                        'RoboCop',
+                        'rating',
+                        '[bZE+]',
+                        '',
+                        '',
+                        '',
+                        'To Review',
+                        '',
+                        '',
+                        'Jane Smith',
+                        'This is another comment',
+                        new Date().toLocaleDateString(),
+                        new Date().toLocaleDateString(),
+                        secondUri,
+                        'Terminator 2',
+                        'actors',
+                        '[K8Lu]',
+                        '',
+                        '',
+                        '',
+                        'To Review',
+                        '',
+                        '',
+                        'John Doe',
+                        'This is a comment',
+                        new Date().toLocaleDateString(),
+                        new Date().toLocaleDateString(),
+                    ]);
+                });
+
+                cy.findByText('Terminator 2').click();
+
+                cy.findByRole('heading', {
+                    name: /^Annotation: uid:\//,
+                }).should('be.visible');
+                cy.findByRole('heading', {
+                    name: 'Terminator 2',
+                }).should('be.visible');
+
+                cy.findByRole('button', {
+                    name: 'Delete the annotation',
+                }).click();
+
+                cy.findByRole('button', {
+                    name: 'Delete',
+                }).click();
+
+                cy.findByRole('alert', {}).should(
+                    'have.text',
+                    'The annotation has been deleted.',
+                );
+
+                cy.wait(500);
+
+                cy.findAllByRole('cell').then((cells) => {
+                    const firstUri = cells[0].textContent;
+
+                    expect(firstUri).to.match(/uid:\//);
+
+                    expect(
+                        cells.toArray().map((cell) => cell.textContent),
+                    ).to.deep.equal([
+                        firstUri,
+                        'RoboCop',
+                        'rating',
+                        '[bZE+]',
+                        '',
+                        '',
+                        '',
+                        'To Review',
+                        '',
+                        '',
+                        'Jane Smith',
+                        'This is another comment',
+                        new Date().toLocaleDateString(),
+                        new Date().toLocaleDateString(),
+                    ]);
+                });
             });
         });
     });
