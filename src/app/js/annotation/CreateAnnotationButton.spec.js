@@ -77,89 +77,161 @@ describe('CreateAnnotationButton', () => {
         expect(screen.getByRole('dialog')).toBeInTheDocument();
     });
 
-    it.each([
-        [
-            {},
-            '{"comment":"test","authorName":"author","authorEmail":"email@example.org","resourceUri":"uid:/0579J7JN","target":"title","itemPath":null,"fieldId":"1ddbe5dc-f945-4d38-9c5b-ef20f78cb0cc","initialValue":null}',
-        ],
-        [
-            { target: 'value', itemPath: ['1'], initialValue: 'a b c' },
-            '{"comment":"test","authorName":"author","authorEmail":"email@example.org","resourceUri":"uid:/0579J7JN","target":"value","itemPath":["1"],"fieldId":"1ddbe5dc-f945-4d38-9c5b-ef20f78cb0cc","initialValue":"a b c"}',
-        ],
-    ])(
-        'should call api when submiting annotation form for annotation',
-        async (props, expectedBody) => {
-            render(<TestButton {...props} />);
+    it('should call api when submitting annotation form for annotation on title', async () => {
+        render(<TestButton />);
 
-            await waitFor(() => {
-                fireEvent.click(
-                    screen.getByRole('button', {
-                        name: `annotation_create_button_label`,
-                    }),
-                );
-            });
-
-            expect(screen.getByRole('dialog')).toBeInTheDocument();
-
-            await waitFor(() => {
-                fireEvent.change(
-                    screen.getByRole('textbox', {
-                        name: 'annotation.comment *',
-                    }),
-                    {
-                        target: { value: 'test' },
-                    },
-                );
-            });
-
-            await waitFor(() => {
-                fireEvent.click(screen.getByRole('button', { name: 'next' }));
-            });
-
-            await waitFor(() => {
-                fireEvent.change(
-                    screen.getByRole('textbox', {
-                        name: 'annotation.authorName *',
-                    }),
-                    {
-                        target: { value: 'author' },
-                    },
-                );
-            });
-
-            await waitFor(() => {
-                fireEvent.change(
-                    screen.getByRole('textbox', {
-                        name: 'annotation.authorEmail',
-                    }),
-                    {
-                        target: { value: 'email@example.org' },
-                    },
-                );
-            });
-
-            // Wait for the submit button to be enabled
-            await waitFor(() => {
-                expect(
-                    screen.getByRole('button', { name: 'validate' }),
-                ).toBeEnabled();
-            });
-
-            await waitFor(() => {
-                fireEvent.click(
-                    screen.getByRole('button', { name: 'validate' }),
-                );
-            });
-
-            expect(fetch).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    url: '/api/annotation',
-                    method: 'POST',
-                    body: expectedBody,
+        await waitFor(() => {
+            fireEvent.click(
+                screen.getByRole('button', {
+                    name: `annotation_create_button_label`,
                 }),
             );
-        },
-    );
+        });
+
+        expect(screen.getByRole('dialog')).toBeInTheDocument();
+
+        await waitFor(() => {
+            fireEvent.change(
+                screen.getByRole('textbox', {
+                    name: 'annotation.comment *',
+                }),
+                {
+                    target: { value: 'test' },
+                },
+            );
+        });
+
+        await waitFor(() => {
+            fireEvent.click(screen.getByRole('button', { name: 'next' }));
+        });
+
+        await waitFor(() => {
+            fireEvent.change(
+                screen.getByRole('textbox', {
+                    name: 'annotation.authorName *',
+                }),
+                {
+                    target: { value: 'author' },
+                },
+            );
+        });
+
+        await waitFor(() => {
+            fireEvent.change(
+                screen.getByRole('textbox', {
+                    name: 'annotation.authorEmail',
+                }),
+                {
+                    target: { value: 'email@example.org' },
+                },
+            );
+        });
+
+        // Wait for the submit button to be enabled
+        await waitFor(() => {
+            expect(
+                screen.getByRole('button', { name: 'validate' }),
+            ).toBeEnabled();
+        });
+
+        await waitFor(() => {
+            fireEvent.click(screen.getByRole('button', { name: 'validate' }));
+        });
+
+        expect(fetch).toHaveBeenCalledWith(
+            expect.objectContaining({
+                url: '/api/annotation',
+                method: 'POST',
+                body: '{"comment":"test","authorName":"author","authorEmail":"email@example.org","resourceUri":"uid:/0579J7JN","itemPath":null,"fieldId":"1ddbe5dc-f945-4d38-9c5b-ef20f78cb0cc"}',
+            }),
+        );
+    });
+
+    it('should call api when submiting annotation form for annotation', async () => {
+        render(
+            <TestButton
+                {...{
+                    target: 'value',
+                    itemPath: ['1'],
+                    initialValue: 'a b c',
+                }}
+            />,
+        );
+
+        await waitFor(() => {
+            fireEvent.click(
+                screen.getByRole('button', {
+                    name: `annotation_create_button_label`,
+                }),
+            );
+        });
+
+        expect(screen.getByRole('dialog')).toBeInTheDocument();
+
+        await waitFor(() => {
+            fireEvent.click(
+                screen.getByRole('menuitem', {
+                    name: 'annotation_comment_target_value',
+                }),
+            );
+        });
+
+        await waitFor(() => {
+            fireEvent.change(
+                screen.getByRole('textbox', {
+                    name: 'annotation.comment *',
+                }),
+                {
+                    target: { value: 'test' },
+                },
+            );
+        });
+
+        await waitFor(() => {
+            fireEvent.click(screen.getByRole('button', { name: 'next' }));
+        });
+
+        await waitFor(() => {
+            fireEvent.change(
+                screen.getByRole('textbox', {
+                    name: 'annotation.authorName *',
+                }),
+                {
+                    target: { value: 'author' },
+                },
+            );
+        });
+
+        await waitFor(() => {
+            fireEvent.change(
+                screen.getByRole('textbox', {
+                    name: 'annotation.authorEmail',
+                }),
+                {
+                    target: { value: 'email@example.org' },
+                },
+            );
+        });
+
+        // Wait for the submit button to be enabled
+        await waitFor(() => {
+            expect(
+                screen.getByRole('button', { name: 'validate' }),
+            ).toBeEnabled();
+        });
+
+        await waitFor(() => {
+            fireEvent.click(screen.getByRole('button', { name: 'validate' }));
+        });
+
+        expect(fetch).toHaveBeenCalledWith(
+            expect.objectContaining({
+                url: '/api/annotation',
+                method: 'POST',
+                body: '{"comment":"test","target":"value","initialValue":"a b c","authorName":"author","authorEmail":"email@example.org","resourceUri":"uid:/0579J7JN","itemPath":["1"],"fieldId":"1ddbe5dc-f945-4d38-9c5b-ef20f78cb0cc"}',
+            }),
+        );
+    });
 
     it('should not display button if field is not annotable', async () => {
         render(<TestButton annotable={false} />);
