@@ -1,12 +1,10 @@
 import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
-import DialogTitle from '@mui/material/DialogTitle';
 
-import DialogActions from '@mui/material/DialogActions';
 import PropTypes from 'prop-types';
 import React from 'react';
 
 import { useTranslate } from '../../../i18n/I18NContext';
+import { ConfirmPopup } from '../../../lib/components/ConfirmPopup';
 import { useDeleteAnnotation } from '../hooks/useDeleteAnnotation';
 
 export function AnnotationDeleteButton({ id, isSubmitting }) {
@@ -40,24 +38,14 @@ export function AnnotationDeleteButton({ id, isSubmitting }) {
                 {translate('delete')}
             </Button>
 
-            <Dialog open={isDialogOpen} onClose={handleCloseDialog}>
-                <DialogTitle>
-                    {translate('annotation_delete_modal_title')}
-                </DialogTitle>
-                <DialogActions>
-                    <Button type="button" onClick={handleCloseDialog}>
-                        {translate('cancel')}
-                    </Button>
-                    <Button
-                        type="button"
-                        color="warning"
-                        variant="contained"
-                        onClick={handleDelete}
-                    >
-                        {translate('delete')}
-                    </Button>
-                </DialogActions>
-            </Dialog>
+            <ConfirmPopup
+                isOpen={isDialogOpen}
+                onCancel={handleCloseDialog}
+                onConfirm={handleDelete}
+                title={translate('annotation_delete_modal_title')}
+                cancelLabel={translate('cancel')}
+                confirmLabel={translate('delete')}
+            />
         </>
     );
 }

@@ -1,3 +1,4 @@
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { fireEvent, render, waitFor } from '../../../../../test-utils';
@@ -12,36 +13,40 @@ jest.mock('./../hooks/useUpdateAnnotation', () => ({
     }),
 }));
 
+const queryClient = new QueryClient();
+
 describe('AnnotationForm', () => {
     it('should render annotation items', () => {
         const wrapper = render(
-            <TestI18N>
-                <MemoryRouter>
-                    <AnnotationForm
-                        annotation={{
-                            resourceUri: 'uid:/1234',
-                            resource: {
-                                title: 'The resource title',
-                            },
-                            comment: 'Just testing the annotation system',
-                            status: 'ongoing',
-                            internalComment:
-                                'Just testing the annotation admin',
-                            administrator: 'The administrator',
-                            field: {
-                                name: 'GaZr',
-                                label: 'Annotated field',
-                                internalName: 'annotated_field',
-                                internalScopes: ['home'],
-                            },
-                            authorName: 'Count Ributor',
-                            authorEmail: 'ributor@gmail.com',
-                            createdAt: new Date('01-01-2025').toISOString(),
-                            updatedAt: new Date('10-01-2025').toISOString(),
-                        }}
-                    />
-                </MemoryRouter>
-            </TestI18N>,
+            <QueryClientProvider client={queryClient}>
+                <TestI18N>
+                    <MemoryRouter>
+                        <AnnotationForm
+                            annotation={{
+                                resourceUri: 'uid:/1234',
+                                resource: {
+                                    title: 'The resource title',
+                                },
+                                comment: 'Just testing the annotation system',
+                                status: 'ongoing',
+                                internalComment:
+                                    'Just testing the annotation admin',
+                                administrator: 'The administrator',
+                                field: {
+                                    name: 'GaZr',
+                                    label: 'Annotated field',
+                                    internalName: 'annotated_field',
+                                    internalScopes: ['home'],
+                                },
+                                authorName: 'Count Ributor',
+                                authorEmail: 'ributor@gmail.com',
+                                createdAt: new Date('01-01-2025').toISOString(),
+                                updatedAt: new Date('10-01-2025').toISOString(),
+                            }}
+                        />
+                    </MemoryRouter>
+                </TestI18N>
+            </QueryClientProvider>,
         );
 
         expect(
@@ -127,33 +132,35 @@ describe('AnnotationForm', () => {
 
     it('should render annotation edit form', () => {
         const wrapper = render(
-            <TestI18N>
-                <MemoryRouter>
-                    <AnnotationForm
-                        annotation={{
-                            resourceUri: 'uid:/1234',
-                            resource: {
-                                title: 'The resource title',
-                            },
-                            comment: 'Just testing the annotation system',
-                            status: 'ongoing',
-                            internalComment:
-                                'Just testing the annotation admin',
-                            administrator: 'The administrator',
-                            field: {
-                                name: 'GaZr',
-                                label: 'Annotated field',
-                                internalName: 'annotated_field',
-                                internalScopes: ['home'],
-                            },
-                            authorName: 'Count Ributor',
-                            authorEmail: 'ributor@gmail.com',
-                            createdAt: new Date('01-01-2025').toISOString(),
-                            updatedAt: new Date('10-01-2025').toISOString(),
-                        }}
-                    />
-                </MemoryRouter>
-            </TestI18N>,
+            <QueryClientProvider client={queryClient}>
+                <TestI18N>
+                    <MemoryRouter>
+                        <AnnotationForm
+                            annotation={{
+                                resourceUri: 'uid:/1234',
+                                resource: {
+                                    title: 'The resource title',
+                                },
+                                comment: 'Just testing the annotation system',
+                                status: 'ongoing',
+                                internalComment:
+                                    'Just testing the annotation admin',
+                                administrator: 'The administrator',
+                                field: {
+                                    name: 'GaZr',
+                                    label: 'Annotated field',
+                                    internalName: 'annotated_field',
+                                    internalScopes: ['home'],
+                                },
+                                authorName: 'Count Ributor',
+                                authorEmail: 'ributor@gmail.com',
+                                createdAt: new Date('01-01-2025').toISOString(),
+                                updatedAt: new Date('10-01-2025').toISOString(),
+                            }}
+                        />
+                    </MemoryRouter>
+                </TestI18N>
+            </QueryClientProvider>,
         );
 
         const inputsRegion = wrapper.getByRole('group', {
@@ -187,33 +194,35 @@ describe('AnnotationForm', () => {
         }));
 
         const wrapper = render(
-            <TestI18N>
-                <MemoryRouter>
-                    <AnnotationForm
-                        annotation={{
-                            _id: '1e4ada92-abb4-4b52-b3e7-77e070d9f596',
-                            resourceUri: 'uid:/1234',
-                            resource: {
-                                title: 'The resource title',
-                            },
-                            comment: 'Just testing the annotation system',
-                            status: 'to_review',
-                            internalComment: null,
-                            administrator: null,
-                            field: {
-                                name: 'GaZr',
-                                label: 'Annotated field',
-                                internalName: 'annotated_field',
-                                internalScopes: ['home'],
-                            },
-                            authorName: 'Count Ributor',
-                            authorEmail: 'ributor@gmail.com',
-                            createdAt: new Date('01-01-2025').toISOString(),
-                            updatedAt: new Date('10-01-2025').toISOString(),
-                        }}
-                    />
-                </MemoryRouter>
-            </TestI18N>,
+            <QueryClientProvider client={queryClient}>
+                <TestI18N>
+                    <MemoryRouter>
+                        <AnnotationForm
+                            annotation={{
+                                _id: '1e4ada92-abb4-4b52-b3e7-77e070d9f596',
+                                resourceUri: 'uid:/1234',
+                                resource: {
+                                    title: 'The resource title',
+                                },
+                                comment: 'Just testing the annotation system',
+                                status: 'to_review',
+                                internalComment: null,
+                                administrator: null,
+                                field: {
+                                    name: 'GaZr',
+                                    label: 'Annotated field',
+                                    internalName: 'annotated_field',
+                                    internalScopes: ['home'],
+                                },
+                                authorName: 'Count Ributor',
+                                authorEmail: 'ributor@gmail.com',
+                                createdAt: new Date('01-01-2025').toISOString(),
+                                updatedAt: new Date('10-01-2025').toISOString(),
+                            }}
+                        />
+                    </MemoryRouter>
+                </TestI18N>
+            </QueryClientProvider>,
         );
 
         const inputsRegion = wrapper.getByRole('group', {

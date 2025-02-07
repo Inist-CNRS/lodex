@@ -1,13 +1,13 @@
-import React from 'react';
-import PropTypes from 'prop-types';
 import {
-    Dialog,
-    Button,
-    DialogTitle,
-    DialogContent,
-    DialogActions,
     Box,
+    Button,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
 } from '@mui/material';
+import PropTypes from 'prop-types';
+import React from 'react';
 
 import CancelButton from './CancelButton';
 
@@ -29,11 +29,13 @@ export const ConfirmPopup = ({
     return (
         <Dialog open={isOpen} onClose={onCancel}>
             <DialogTitle>{title}</DialogTitle>
-            <DialogContent>
-                <Box sx={styles.container} id="confirm-upload">
-                    {description}
-                </Box>
-            </DialogContent>
+            {description && (
+                <DialogContent>
+                    <Box sx={styles.container} id="confirm-upload">
+                        {description}
+                    </Box>
+                </DialogContent>
+            )}
             <DialogActions>
                 <CancelButton key="cancel" onClick={onCancel}>
                     {cancelLabel}
@@ -53,7 +55,7 @@ export const ConfirmPopup = ({
 
 ConfirmPopup.propTypes = {
     title: PropTypes.string.isRequired,
-    description: PropTypes.string.isRequired,
+    description: PropTypes.string,
     cancelLabel: PropTypes.string.isRequired,
     confirmLabel: PropTypes.string.isRequired,
     onConfirm: PropTypes.func.isRequired,

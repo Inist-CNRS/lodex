@@ -1,3 +1,4 @@
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { render } from '../../../../test-utils';
@@ -13,7 +14,25 @@ jest.mock('./hooks/useUpdateAnnotation', () => ({
     }),
 }));
 
+const queryClient = new QueryClient();
+
+function TestAnnotationDetail() {
+    return (
+        <QueryClientProvider client={queryClient}>
+            <TestI18N>
+                <MemoryRouter>
+                    <AnnotationDetail />
+                </MemoryRouter>
+            </TestI18N>
+        </QueryClientProvider>
+    );
+}
+
 describe('AnnotationDetail', () => {
+    afterEach(() => {
+        jest.clearAllMocks();
+    });
+
     it('should render the annotation with its field and resource', () => {
         jest.mocked(useGetAnnotation).mockImplementation(() => ({
             data: {
@@ -39,13 +58,7 @@ describe('AnnotationDetail', () => {
             isLoading: false,
             error: null,
         }));
-        const wrapper = render(
-            <TestI18N>
-                <MemoryRouter>
-                    <AnnotationDetail />
-                </MemoryRouter>
-            </TestI18N>,
-        );
+        const wrapper = render(<TestAnnotationDetail />);
 
         expect(
             wrapper.getByRole('heading', {
@@ -167,13 +180,8 @@ describe('AnnotationDetail', () => {
             isLoading: false,
             error: null,
         }));
-        const wrapper = render(
-            <TestI18N>
-                <MemoryRouter>
-                    <AnnotationDetail />
-                </MemoryRouter>
-            </TestI18N>,
-        );
+
+        const wrapper = render(<TestAnnotationDetail />);
 
         expect(
             wrapper.getByRole('heading', {
@@ -203,13 +211,8 @@ describe('AnnotationDetail', () => {
             isLoading: false,
             error: null,
         }));
-        const wrapper = render(
-            <TestI18N>
-                <MemoryRouter>
-                    <AnnotationDetail />
-                </MemoryRouter>
-            </TestI18N>,
-        );
+
+        const wrapper = render(<TestAnnotationDetail />);
 
         expect(
             wrapper.getByRole('heading', {
@@ -242,13 +245,9 @@ describe('AnnotationDetail', () => {
             isLoading: false,
             error: null,
         }));
-        const wrapper = render(
-            <TestI18N>
-                <MemoryRouter>
-                    <AnnotationDetail />
-                </MemoryRouter>
-            </TestI18N>,
-        );
+
+        const wrapper = render(<TestAnnotationDetail />);
+
         expect(
             wrapper.getByRole('heading', {
                 name: 'annotation_header uid:/1234',
@@ -274,13 +273,8 @@ describe('AnnotationDetail', () => {
             isLoading: true,
             error: null,
         }));
-        const wrapper = render(
-            <TestI18N>
-                <MemoryRouter>
-                    <AnnotationDetail />
-                </MemoryRouter>
-            </TestI18N>,
-        );
+
+        const wrapper = render(<TestAnnotationDetail />);
 
         expect(
             wrapper.queryByRole('heading', {
