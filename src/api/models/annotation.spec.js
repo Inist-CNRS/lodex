@@ -247,4 +247,42 @@ describe('annotation', () => {
             expect(await annotationModel.findOneById('404')).toBeNull();
         });
     });
+
+    describe('deleteOneById', () => {
+        it('should delete an annotation', async () => {
+            const annotation = await annotationModel.create({
+                comment: 'target annotation',
+            });
+
+            expect(await annotationModel.count({})).toBe(1);
+
+            await expect(
+                annotationModel.deleteOneById(annotation._id),
+            ).resolves.toBe(1);
+
+            expect(await annotationModel.count({})).toBe(0);
+        });
+
+        it('should return 0 if target annotation does not exists', async () => {
+            await annotationModel.create({
+                comment: 'another annotation',
+            });
+
+            await expect(
+                annotationModel.deleteOneById('404404404404404404404404'),
+            ).resolves.toBe(0);
+
+            expect(await annotationModel.count({})).toBe(1);
+        });
+
+        it('should return 0 if id is not a valid ObjectId format', async () => {
+            await annotationModel.create({
+                comment: 'another annotation',
+            });
+
+            await expect(annotationModel.deleteOneById('404')).resolves.toBe(0);
+
+            expect(await annotationModel.count({})).toBe(1);
+        });
+    });
 });

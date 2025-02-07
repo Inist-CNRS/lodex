@@ -1,7 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
-import fetch from '../../lib/fetch';
-import { getUserSessionStorageInfo } from '../api/tools';
-import { getRequest } from '../../user';
+
+import fetch from '../../../lib/fetch';
+import { getRequest } from '../../../user';
+import { getUserSessionStorageInfo } from '../../api/tools';
 
 export function useGetResourceByUri(uri) {
     return useQuery({

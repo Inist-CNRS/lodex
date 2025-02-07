@@ -13,14 +13,14 @@ import { useHistory } from 'react-router';
 import FieldInternalIcon from '../../fields/FieldInternalIcon';
 import { useTranslate } from '../../i18n/I18NContext';
 import AdminOnlyAlert from '../../lib/components/AdminOnlyAlert';
+import withInitialData from '../withInitialData';
 import { AnnotationStatus } from './AnnotationStatus';
+import { CellWithTooltip } from './CellWithTooltip';
+import { FieldScopeFilter } from './filters/FieldScopeFilter';
+import { StatusFilter } from './filters/StatusFilter';
+import { useGetAnnotations } from './hooks/useGetAnnotations';
 import { ResourceTitleCell } from './ResourceTitleCell';
 import { ResourceUriCell } from './ResourceUriCell';
-import { useGetAnnotations } from './useGetAnnotations';
-import withInitialData from '../withInitialData';
-import { StatusFilter } from './filters/StatusFilter';
-import { FieldScopeFilter } from './filters/FieldScopeFilter';
-import { CellWithTooltip } from './CellWithTooltip';
 
 const AnnotationListToolBar = () => {
     const { translate } = useTranslate();

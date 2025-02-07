@@ -1,7 +1,7 @@
-import React from 'react';
 import { Chip } from '@mui/material';
-import { useTranslate } from '../../i18n/I18NContext';
 import PropTypes from 'prop-types';
+import React from 'react';
+import { useTranslate } from '../../i18n/I18NContext';
 
 export const statuses = ['to_review', 'ongoing', 'validated', 'rejected'];
 
@@ -43,5 +43,5 @@ export const AnnotationStatus = ({ status }) => {
 };
 
 AnnotationStatus.propTypes = {
-    status: PropTypes.oneOf([statuses]),
+    status: PropTypes.oneOf(statuses),
 };

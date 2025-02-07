@@ -1,11 +1,12 @@
-import { useCallback, useMemo } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useTranslate } from '../../i18n/I18NContext';
-import { getUserSessionStorageInfo } from '../api/tools';
-import { getRequest } from '../../user';
-import { toast } from 'react-toastify';
+import { useCallback, useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
-import fetch from '../../lib/fetch';
+import { toast } from 'react-toastify';
+
+import { useTranslate } from '../../../i18n/I18NContext';
+import fetch from '../../../lib/fetch';
+import { getRequest } from '../../../user';
+import { getUserSessionStorageInfo } from '../../api/tools';
 
 export function useUpdateAnnotation() {
     const { translate } = useTranslate();

@@ -1,10 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
-import qs from 'qs';
-import fetch from '../../lib/fetch';
-import { getUserSessionStorageInfo } from '../api/tools';
-import { getRequest } from '../../user';
 import { omitBy } from 'lodash';
+import qs from 'qs';
 import { useHistory } from 'react-router-dom';
+
+import fetch from '../../../lib/fetch';
+import { getRequest } from '../../../user';
+import { getUserSessionStorageInfo } from '../../api/tools';
 
 export function useGetAnnotations({ page, perPage, sortBy, sortDir, filter }) {
     const history = useHistory();

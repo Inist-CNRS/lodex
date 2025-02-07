@@ -1,9 +1,9 @@
 import { Box, Checkbox, Tooltip, Typography } from '@mui/material';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { translate } from '../i18n/I18NContext';
 import { polyglot as polyglotPropTypes } from '../propTypes';
 import FieldInternalIcon from './FieldInternalIcon';
-import { translate } from '../i18n/I18NContext';
 
 function FieldRepresentation({
     field,
@@ -95,7 +95,7 @@ function FieldRepresentation({
                     gap={0.5}
                     color="text.secondary"
                 >
-                    {field.internalScopes && (
+                    {field.internalScopes?.length && (
                         <Box
                             display="flex"
                             flexDirection="row"
