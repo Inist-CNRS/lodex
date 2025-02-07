@@ -466,7 +466,7 @@ export default async (db) => {
         const fields = await collection
             .find(
                 {
-                    name,
+                    name: new RegExp(`^.*${name}.*$`, 'gi'),
                 },
                 { _id: true },
             )
