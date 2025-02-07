@@ -851,7 +851,7 @@ describe('annotation', () => {
                         page: 0,
                         perPage: 2,
                         filterBy: 'status',
-                        filterOperator: 'contains',
+                        filterOperator: 'equals',
                         filterValue: 'ongoing',
                     },
                 },

@@ -19,6 +19,7 @@ import { ResourceUriCell } from './ResourceUriCell';
 import { useGetAnnotations } from './useGetAnnotations';
 import withInitialData from '../withInitialData';
 import { StatusFilter } from './filters/StatusFilter';
+import { FieldScopeFilter } from './filters/FieldScopeFilter';
 
 const AnnotationListToolBar = () => {
     const { translate } = useTranslate();
@@ -153,9 +154,12 @@ export const AnnotationList = () => {
                     headerName: translate('annotation_field_internal_scopes'),
                     valueGetter: ({ row }) =>
                         row?.field ? row.field?.internalScopes ?? [] : null,
-                    filterOperators: getGridStringOperators().filter(
-                        (operator) => operator.value === 'contains',
-                    ),
+                    filterOperators: getGridStringOperators()
+                        .filter((operator) => operator.value === 'contains')
+                        .map((operator) => ({
+                            ...operator,
+                            InputComponent: FieldScopeFilter,
+                        })),
                     renderCell: ({ value }) => {
                         if (!value) {
                             return null;
