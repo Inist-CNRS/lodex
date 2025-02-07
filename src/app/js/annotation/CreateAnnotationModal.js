@@ -21,6 +21,7 @@ import { AuthorNameField } from './fields/AuthorNameField';
 import { CommentField } from './fields/CommentField';
 import { TargetField } from './fields/TargetField';
 import {
+    KIND_STEP,
     AUTHOR_STEP,
     COMMENT_STEP,
     nextStepByStep,
@@ -29,6 +30,7 @@ import {
     VALUE_STEP,
 } from './steps';
 import { ValueField } from './fields/ValueField';
+import { KindField } from './fields/KindField';
 
 const isRequiredFieldValid = (formState, fieldName) => {
     const fieldState = formState.fieldMeta[fieldName];
@@ -208,6 +210,15 @@ export function CreateAnnotationModal({
                             />
                         </Stack>
                     )}
+                    {currentStep === KIND_STEP && (
+                        <Stack
+                            spacing={2}
+                            aria-label={translate('annotation_step_target')}
+                            role="tab"
+                        >
+                            <KindField form={form} goToStep={setCurrentStep} />
+                        </Stack>
+                    )}
                     {currentStep === VALUE_STEP && (
                         <Stack
                             spacing={2}
@@ -285,6 +296,19 @@ export function CreateAnnotationModal({
                         <Button
                             type="button"
                             onClick={handleBack}
+                            disabled={isSubmitting}
+                            startIcon={<ChevronLeftIcon />}
+                        >
+                            {translate('back')}
+                        </Button>
+                    )}
+                    {currentStep === KIND_STEP && (
+                        <Button
+                            type="button"
+                            onClick={() => {
+                                handleBack();
+                                form.reset();
+                            }}
                             disabled={isSubmitting}
                             startIcon={<ChevronLeftIcon />}
                         >

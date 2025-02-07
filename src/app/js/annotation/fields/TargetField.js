@@ -4,7 +4,7 @@ import React from 'react';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 
 import { useTranslate } from '../../i18n/I18NContext';
-import { COMMENT_STEP, VALUE_STEP } from '../steps';
+import { COMMENT_STEP, KIND_STEP } from '../steps';
 import { useField } from '@tanstack/react-form';
 
 export function TargetField({ form, initialValue, goToStep }) {
@@ -59,11 +59,11 @@ export function TargetField({ form, initialValue, goToStep }) {
                                 field.handleChange('value');
                                 if (isList) {
                                     initialValueField.handleChange(null);
-                                    goToStep(VALUE_STEP);
+                                    goToStep(KIND_STEP);
                                     return;
                                 }
                                 initialValueField.handleChange(initialValue);
-                                goToStep(COMMENT_STEP);
+                                goToStep(KIND_STEP);
                             }}
                         >
                             {translate('annotation_comment_target_value')}

@@ -1254,16 +1254,13 @@
 "annotation_status_ongoing"	"Ongoing"	"En cours"
 "annotation_status_validated"	"Validated"	"Validée"
 "annotation_status_rejected"	"Rejected"	"Refusée"
-<<<<<<< HEAD
 "annotation_correct_value"	Correct "%{value}"	Corriger "%{value}"
 "annotation_choose_value"	"Choose value to comment"	"Choisir la valeur à commenter"
 "annotation_error_empty_initial_value"	"This field must be empty when comment targets the field"	"Ce champ doit rester vide quand le commentaire cible le champ"
 "annotation_error_required_initial_value"	"This field is required when comment targets the value"	"Ce champ est requis quand le commentaire cible la valeur"
 "annotation_form_title"	"Edit annotation"	"Modifier l'annotation"
-=======
-"annotation_form_title"	"Edit annotation"	"Modifier l'annotation"
 "annotation_delete_button_label"	"Delete the annotation"	"Supprimer l'annotation"
 "annotation_delete_modal_title"	"Are you sure you want to delete this annotation ?"	"Êtes-vous sûr de vouloir supprimer cette annotation ?"
 "annotation_delete_success"	"The annotation has been deleted."	"L'annotation a été supprimée."
 "annotation_delete_error"	"An error occured while deleteing this annotation, please try again later."	"Une erreur est survenue lors de la supression de l'annotation, merci de réessayer ultérieurement."
->>>>>>> 7dc52990c (Feat(annotation): Add annotation deletion support)
+"annotation_remove_content"	"Remove some content"	"Retirer du contenu"
