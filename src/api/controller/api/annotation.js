@@ -66,10 +66,10 @@ export const buildQuery = async ({
             }
         }
         case 'resourceUri':
-        case 'status':
         case 'internalComment':
         case 'administrator':
         case 'initialValue':
+        case 'authorName':
         case 'comment': {
             switch (filterOperator) {
                 case 'contains':
@@ -81,17 +81,17 @@ export const buildQuery = async ({
                     return {};
             }
         }
-        case 'authorName': {
+        case 'status': {
             switch (filterOperator) {
-                case 'contains':
+                case 'equals':
                     return {
-                        [filterBy]:
-                            createDiacriticSafeContainRegex(filterValue),
+                        [filterBy]: filterValue,
                     };
                 default:
                     return {};
             }
         }
+
         case 'resource.title': {
             switch (filterOperator) {
                 case 'contains': {

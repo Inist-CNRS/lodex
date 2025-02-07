@@ -18,6 +18,7 @@ import { ResourceTitleCell } from './ResourceTitleCell';
 import { ResourceUriCell } from './ResourceUriCell';
 import { useGetAnnotations } from './useGetAnnotations';
 import withInitialData from '../withInitialData';
+import { StatusFilter } from './filters/StatusFilter';
 
 const AnnotationListToolBar = () => {
     const { translate } = useTranslate();
@@ -211,9 +212,12 @@ export const AnnotationList = () => {
                 {
                     field: 'status',
                     headerName: translate('annotation_status'),
-                    filterOperators: getGridStringOperators().filter(
-                        (operator) => operator.value === 'contains',
-                    ),
+                    filterOperators: getGridStringOperators()
+                        .filter((operator) => operator.value === 'equals')
+                        .map((operator) => ({
+                            ...operator,
+                            InputComponent: StatusFilter,
+                        })),
                     renderCell: ({ value }) => {
                         return <AnnotationStatus status={value} />;
                     },
