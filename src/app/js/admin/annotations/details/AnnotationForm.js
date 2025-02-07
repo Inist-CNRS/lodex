@@ -6,10 +6,12 @@ import Stack from '@mui/material/Stack';
 import { useForm } from '@tanstack/react-form';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 import { annotationUpdateSchema } from '../../../../../common/validator/annotation.validator';
 import { useTranslate } from '../../../i18n/I18NContext';
 import { useUpdateAnnotation } from '../hooks/useUpdateAnnotation';
+import { AnnotationDeleteButton } from './AnnotationDeleteButton';
 import { AnnotationHeader } from './AnnotationHeader';
 import { AnnotationInputs } from './AnnotationInputs';
 import { AnnotationItems } from './AnnotationItems';
@@ -97,16 +99,17 @@ export const AnnotationForm = ({ annotation }) => {
                 className="mui-fixed"
             >
                 <Stack direction="row" justifyContent="space-between">
-                    <Button
-                        type="button"
-                        color="warning"
-                        variant="contained"
-                        disabled={isSubmitting}
-                    >
-                        {translate('delete')}
-                    </Button>
+                    <AnnotationDeleteButton
+                        id={annotation._id}
+                        isSubmitting={isSubmitting}
+                    />
                     <Stack direction="row" gap={1}>
-                        <Button type="button" disabled={isSubmitting}>
+                        <Button
+                            type="button"
+                            disabled={isSubmitting}
+                            component={Link}
+                            to="/annotations"
+                        >
                             {translate('cancel')}
                         </Button>
                         <Button

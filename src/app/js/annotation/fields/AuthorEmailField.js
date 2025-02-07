@@ -27,9 +27,14 @@ export function AuthorEmailField({ form, active }) {
                                 inputProps: active ? {} : { tabIndex: -1 },
                             }}
                         />
-                        {hasErrors && (
+
+                        {hasErrors ? (
                             <FormHelperText error role="alert">
                                 {translate(field.state.meta.errors[0])}
+                            </FormHelperText>
+                        ) : (
+                            <FormHelperText>
+                                {translate('annotation.authorEmail_helpText')}
                             </FormHelperText>
                         )}
                     </FormControl>

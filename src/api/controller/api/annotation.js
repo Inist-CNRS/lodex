@@ -246,18 +246,8 @@ export async function getAnnotations(ctx) {
         })),
     };
 }
-/**
- * @param {Koa.Context} ctx
- */
-export async function getAnnotation(ctx, id) {
-    const annotation = await ctx.annotation.findOneById(id);
 
-    if (!annotation) {
-        ctx.response.status = 404;
-
-        return;
-    }
-
+async function bindResourceAndFieldToAnnnotation(ctx, annotation) {
     const [titleField, subResourceTitleFields] = await Promise.all([
         ctx.field.findResourceTitle(),
         ctx.field.findSubResourceTitles(),
@@ -271,8 +261,7 @@ export async function getAnnotation(ctx, id) {
         ? await ctx.field.findOneById(annotation.fieldId)
         : null;
 
-    ctx.response.status = 200;
-    ctx.response.body = {
+    return {
         ...annotation,
         field,
         resource: resource
@@ -286,6 +275,25 @@ export async function getAnnotation(ctx, id) {
               }
             : null,
     };
+}
+
+/**
+ * @param {Koa.Context} ctx
+ */
+export async function getAnnotation(ctx, id) {
+    const annotation = await ctx.annotation.findOneById(id);
+
+    if (!annotation) {
+        ctx.response.status = 404;
+
+        return;
+    }
+
+    ctx.response.status = 200;
+    ctx.response.body = await bindResourceAndFieldToAnnnotation(
+        ctx,
+        annotation,
+    );
 }
 
 /**
@@ -312,7 +320,22 @@ export async function updateAnnotation(ctx, id) {
     }
 
     ctx.response.status = 200;
-    ctx.response.body = { data: updatedAnnotation };
+    ctx.response.body = {
+        data: await bindResourceAndFieldToAnnnotation(ctx, updatedAnnotation),
+    };
+}
+
+export async function deleteAnnotation(ctx, id) {
+    const deletedCount = await ctx.annotation.deleteOneById(id);
+    if (deletedCount === 0) {
+        ctx.response.status = 404;
+        return;
+    }
+
+    ctx.response.status = 200;
+    ctx.response.body = {
+        success: true,
+    };
 }
 
 function getResourceTitle(resource, titleField, subResourceTitleFields) {
@@ -332,6 +355,7 @@ app.use(route.get('/', getAnnotations));
 app.use(route.get('/:id', getAnnotation));
 app.use(koaBodyParser());
 app.use(route.put('/:id', updateAnnotation));
+app.use(route.del('/:id', deleteAnnotation));
 app.use(route.post('/', createAnnotation));
 
 export default app;

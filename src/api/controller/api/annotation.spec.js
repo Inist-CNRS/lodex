@@ -4,6 +4,7 @@ import createFieldModel from '../../models/field';
 import createPublishedDatasetModel from '../../models/publishedDataset';
 import {
     createAnnotation,
+    deleteAnnotation,
     getAnnotation,
     getAnnotations,
     updateAnnotation,
@@ -1336,11 +1337,27 @@ describe('annotation', () => {
                         internalComment: 'All done',
                         administrator: 'The Tester',
                         updatedAt: expect.any(Date),
+                        field: {
+                            _id: field._id,
+                            label: 'Annotated field',
+                            name: 'GvaF',
+                            position: 2,
+                        },
+                        resource: {
+                            title: 'resource title',
+                            uri: 'uid:/1234',
+                        },
                     },
                 },
             });
             expect(await annotationModel.findLimitFromSkip()).toStrictEqual([
-                ctx.response.body.data,
+                {
+                    ...annotation,
+                    status: 'validated',
+                    internalComment: 'All done',
+                    administrator: 'The Tester',
+                    updatedAt: expect.any(Date),
+                },
             ]);
         });
 
@@ -1402,6 +1419,69 @@ describe('annotation', () => {
                     ],
                 },
             });
+            expect(await annotationModel.findLimitFromSkip()).toStrictEqual([
+                annotation,
+            ]);
+        });
+    });
+
+    describe('DELETE /annotations/:id', () => {
+        let annotation;
+        beforeEach(async () => {
+            annotation = await annotationModel.create({
+                resourceUri: null,
+                itemPath: [],
+                fieldId: null,
+                authorName: 'Developer',
+                authorEmail: 'developer@marmelab.com',
+                comment: 'This is a comment',
+                status: 'ongoing',
+                internalComment: null,
+                createdAt: new Date('03-01-2025'),
+                updatedAt: new Date('03-01-2025'),
+            });
+        });
+
+        it('should succeed with a 200 if annotation does not exist', async () => {
+            const ctx = {
+                request: {
+                    body: {},
+                },
+                response: {},
+                annotation: annotationModel,
+                publishedDataset: publishedDatasetModel,
+                field: fieldModel,
+            };
+
+            await deleteAnnotation(ctx, annotation._id);
+
+            expect(ctx.response).toStrictEqual({
+                status: 200,
+                body: {
+                    success: true,
+                },
+            });
+
+            expect(await annotationModel.findLimitFromSkip()).toStrictEqual([]);
+        });
+
+        it('should fail with a 404 if annotation does not exist', async () => {
+            const ctx = {
+                request: {
+                    body: {},
+                },
+                response: {},
+                annotation: annotationModel,
+                publishedDataset: publishedDatasetModel,
+                field: fieldModel,
+            };
+
+            await deleteAnnotation(ctx, '404404404404404404404404');
+
+            expect(ctx.response).toStrictEqual({
+                status: 404,
+            });
+
             expect(await annotationModel.findLimitFromSkip()).toStrictEqual([
                 annotation,
             ]);

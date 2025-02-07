@@ -71,6 +71,10 @@ describe('Home Page', () => {
         cy.findByRole('gridcell', {
             name: /newField/,
             timeout: 1000,
+        }).trigger('mouseenter');
+
+        cy.findByRole('button', {
+            name: /edit-newField/,
         }).click();
 
         cy.get(`button[value="home"]`).should('not.have.class', 'Mui-selected');

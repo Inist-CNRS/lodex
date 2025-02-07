@@ -11,9 +11,10 @@ function createAnnotation({ buttonLabel, comment, authorName, authorEmail }) {
 
     cy.wait(350);
 
-    cy.findByRole('textbox', { name: 'Name *', timeout: 1500 }).type(
-        authorName,
-    );
+    cy.findByRole('textbox', {
+        name: 'Last name, First name *',
+        timeout: 1500,
+    }).type(authorName);
 
     if (authorEmail) {
         cy.findByRole('textbox', { name: /Email/, timeout: 1500 }).type(
