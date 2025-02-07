@@ -4,7 +4,6 @@ import React, { Component } from 'react';
 import compose from 'recompose/compose';
 import { translate } from '../../../i18n/I18NContext';
 
-import { CreateAnnotationButton } from '../../../annotation/CreateAnnotationButton';
 import { field as fieldPropTypes } from '../../../propTypes';
 import injectData from '../../injectData';
 import Bigbold from './Bigbold';
@@ -52,11 +51,6 @@ class EmphasedNumberView extends Component {
                     value={commaNumber(value, ' ')}
                     colors={colors}
                     size={size}
-                />
-                <CreateAnnotationButton
-                    field={field}
-                    target="value"
-                    initialValue={commaNumber(value, ' ')}
                 />
             </div>
         );

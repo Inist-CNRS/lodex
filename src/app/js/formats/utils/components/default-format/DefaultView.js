@@ -12,7 +12,6 @@ import {
     isLocalURL,
     isURL,
 } from '../../../../../../common/uris.js';
-import { CreateAnnotationButton } from '../../../../annotation/CreateAnnotationButton';
 import Link from '../../../../lib/components/Link';
 import { getShortText, isLongText } from '../../../../lib/longTexts';
 import { field as fieldPropTypes } from '../../../../propTypes';
@@ -33,7 +32,6 @@ const styles = {
 };
 
 const DefaultView = ({ className, resource, field, fieldStatus, shrink }) => {
-    const isList = Array.isArray(resource[field.name]);
     let value = resource[field.name];
 
     if (isURL(value)) {
@@ -67,13 +65,6 @@ const DefaultView = ({ className, resource, field, fieldStatus, shrink }) => {
             }}
         >
             <span className={className}>{text}</span>
-
-            <CreateAnnotationButton
-                field={field}
-                target="value"
-                itemPath={isList ? [field.name] : null}
-                initialValue={text}
-            />
         </Typography>
     );
 };

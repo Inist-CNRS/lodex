@@ -1,53 +1,70 @@
 import { default as z } from 'zod';
 
-export const annotationCreationSchema = z.object({
-    resourceUri: z.string().nullish().default(null),
-    target: z.enum(['title', 'value']).nullish().default('title'),
-    kind: z.enum(['correction', 'comment']).nullish().default('comment'),
-    fieldId: z
-        .string()
-        .trim()
-        .min(1, {
-            message: 'error_required',
-        })
-        .optional(),
-    // A path that points to the field / item of a field that the annotation is about.
-    // MUST be compatible with _.get
-    // See https://lodash.com/docs/4.17.15#get
-    itemPath: z
-        .array(z.string(), {
-            message: 'annotation_itemPath_invalid',
-        })
-        .nullish()
-        .default(null),
-    comment: z
-        .string({
-            required_error: 'error_required',
-        })
-        .trim()
-        .min(1, {
-            message: 'error_required',
-        }),
-    authorName: z
-        .string({
-            required_error: 'error_required',
-        })
-        .trim()
-        .min(1, {
-            message: 'error_required',
-        }),
-    authorEmail: z
-        .union([
-            z.literal(''),
-            z.string().email({
-                message: 'error_invalid_email',
+export const annotationCreationSchema = z
+    .object({
+        resourceUri: z.string().nullish().default(null),
+        target: z.enum(['title', 'value']).nullish().default('title'),
+        kind: z.enum(['correction', 'comment']).nullish().default('comment'),
+        fieldId: z
+            .string()
+            .trim()
+            .min(1, {
+                message: 'error_required',
+            })
+            .optional(),
+        // A path that points to the field / item of a field that the annotation is about.
+        // MUST be compatible with _.get
+        // See https://lodash.com/docs/4.17.15#get
+        itemPath: z
+            .array(z.string(), {
+                message: 'annotation_itemPath_invalid',
+            })
+            .nullish()
+            .default(null),
+        comment: z
+            .string({
+                required_error: 'error_required',
+            })
+            .trim()
+            .min(1, {
+                message: 'error_required',
             }),
-        ])
-        .nullish()
-        .default(null)
-        .transform((value) => (value === '' ? null : value)),
-    initialValue: z.string().nullish().default(null),
-});
+        authorName: z
+            .string({
+                required_error: 'error_required',
+            })
+            .trim()
+            .min(1, {
+                message: 'error_required',
+            }),
+        authorEmail: z
+            .union([
+                z.literal(''),
+                z.string().email({
+                    message: 'error_invalid_email',
+                }),
+            ])
+            .nullish()
+            .default(null)
+            .transform((value) => (value === '' ? null : value)),
+        initialValue: z.string().nullish().default(null),
+    })
+    .superRefine((data, refineContext) => {
+        if (data.target === 'value' && !data.initialValue) {
+            refineContext.addIssue({
+                code: 'error_required',
+                message: 'annotation_error_required_initial_value',
+                path: ['initialValue'],
+            });
+        }
+        if (data.target === 'title' && data.initialValue) {
+            refineContext.addIssue({
+                code: 'error_empty',
+                message: 'annotation_error_empty_initial_value',
+                path: ['initialValue'],
+            });
+        }
+    });
 
 export const annotationUpdateSchema = z.object({
     status: z.enum(['to_review', 'ongoing', 'validated', 'rejected']),

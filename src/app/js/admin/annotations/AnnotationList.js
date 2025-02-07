@@ -195,7 +195,7 @@ export const AnnotationList = () => {
                 },
                 {
                     field: 'initialValue',
-                    headerName: translate('annotation_initialValue'),
+                    headerName: translate('annotation_initial_value'),
                     flex: 1,
                     sortable: false,
                     renderCell: ({ value }) => {

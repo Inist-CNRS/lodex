@@ -1,16 +1,41 @@
-function createAnnotation({ buttonLabel, comment, authorName, authorEmail }) {
+function openAnnotationModalForField(fieldLabel) {
+    const buttonLabel = `Add an annotation to the ${fieldLabel} field`;
     cy.findByRole('button', {
         name: buttonLabel,
     }).click();
+}
 
+function targetValue() {
+    cy.findByRole('menuitem', {
+        name: 'Comment a value',
+        timeout: 1500,
+    }).click();
+}
+
+function targetSection() {
+    cy.findByRole('menuitem', {
+        name: 'Comment the section',
+        timeout: 1500,
+    }).click();
+}
+
+function goToNextStep() {
+    cy.findByRole('button', { name: 'Next', timeout: 1500 }).click();
+    cy.wait(350);
+}
+
+function chooseValueToComment(value) {
+    cy.findByLabelText('Choose value to comment *').click();
+    cy.findByText(value).click();
+}
+
+function fillComment(comment) {
     cy.findByRole('textbox', { name: 'Comment *', timeout: 1500 }).type(
         comment,
     );
+}
 
-    cy.findByRole('button', { name: 'Next', timeout: 1500 }).click();
-
-    cy.wait(350);
-
+function fillAuthor({ authorName, authorEmail }) {
     cy.findByRole('textbox', { name: 'Name *', timeout: 1500 }).type(
         authorName,
     );
@@ -20,13 +45,31 @@ function createAnnotation({ buttonLabel, comment, authorName, authorEmail }) {
             authorEmail,
         );
     }
+}
 
+function submitAnnotation() {
     cy.findByRole('button', { name: 'Validate', timeout: 1500 }).click();
-
     cy.findByText(
         'Your suggestion has been sent. We thank you for your contribution.',
         { timeout: 1500 },
     ).should('be.visible');
+}
+
+export function createAnnotationOnFieldWithNoValue({
+    fieldLabel,
+    comment,
+    authorName,
+    authorEmail,
+}) {
+    openAnnotationModalForField(fieldLabel);
+
+    fillComment(comment);
+
+    goToNextStep();
+
+    fillAuthor({ authorName, authorEmail });
+
+    submitAnnotation();
 }
 
 export function createTitleAnnotation({
@@ -35,31 +78,50 @@ export function createTitleAnnotation({
     authorName,
     authorEmail,
 }) {
-    createAnnotation({
-        buttonLabel: `Add an annotation to the ${fieldLabel} field title`,
-        fieldLabel,
-        comment,
-        authorName,
-        authorEmail,
-    });
+    openAnnotationModalForField(fieldLabel);
+
+    targetSection();
+
+    fillComment(comment);
+    goToNextStep();
+    fillAuthor({ authorName, authorEmail });
+
+    submitAnnotation();
 }
 
-export function createValueAnnotation({
+export function createSingleValueAnnotation({
     fieldLabel,
     comment,
     authorName,
     authorEmail,
 }) {
-    const buttonLabel = `Add an annotation to the ${fieldLabel} field value`;
-    cy.findByRole('button', {
-        name: buttonLabel,
-    }).trigger('mouseenter');
+    openAnnotationModalForField(fieldLabel);
 
-    createAnnotation({
-        buttonLabel,
-        fieldLabel,
-        comment,
-        authorName,
-        authorEmail,
-    });
+    targetValue();
+
+    fillComment(comment);
+    goToNextStep();
+    fillAuthor({ authorName, authorEmail });
+
+    submitAnnotation();
+}
+
+export function createMultiValueAnnotation({
+    fieldLabel,
+    comment,
+    value,
+    authorName,
+    authorEmail,
+}) {
+    openAnnotationModalForField(fieldLabel);
+
+    targetValue();
+
+    chooseValueToComment(value);
+
+    fillComment(comment);
+    goToNextStep();
+    fillAuthor({ authorName, authorEmail });
+
+    submitAnnotation();
 }

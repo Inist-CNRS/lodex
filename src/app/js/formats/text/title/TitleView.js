@@ -1,7 +1,6 @@
 import { Typography } from '@mui/material';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { CreateAnnotationButton } from '../../../annotation/CreateAnnotationButton';
 import { field as fieldPropTypes } from '../../../propTypes';
 
 const TitleViewInternal = ({ level, value, colors }) => {
@@ -44,11 +43,6 @@ const TitleView = ({ resource, field, level, colors }) => {
             }}
         >
             <TitleViewInternal level={level} value={value} colors={colors} />
-            <CreateAnnotationButton
-                field={field}
-                target="value"
-                initialValue={value}
-            />
         </Typography>
     );
 };

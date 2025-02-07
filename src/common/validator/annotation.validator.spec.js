@@ -16,7 +16,7 @@ describe('annotation.validator', () => {
                 comment: 'This is a comment',
                 authorName: 'John Doe',
                 authorEmail: null,
-                initialValue: null,
+                initialValue: 'initial value',
             };
 
             const validatedAnnotation =
@@ -25,7 +25,7 @@ describe('annotation.validator', () => {
             expect(validatedAnnotation).toStrictEqual(annotationPayload);
         });
 
-        it('should should support annotation without kind', () => {
+        it('should support annotation without kind', () => {
             const annotationPayload = {
                 resourceUri: 'uid:/2a8d429f-8134-4502-b9d3-d20c571592fa',
                 target: 'title',
@@ -46,7 +46,7 @@ describe('annotation.validator', () => {
             });
         });
 
-        it('should should support annotation without itemPath', () => {
+        it('should support annotation without itemPath', () => {
             const annotationPayload = {
                 resourceUri: 'uid:/2a8d429f-8134-4502-b9d3-d20c571592fa',
                 target: 'value',
@@ -54,7 +54,7 @@ describe('annotation.validator', () => {
                 comment: 'This is a comment',
                 authorName: 'John Doe',
                 authorEmail: null,
-                initialValue: null,
+                initialValue: 'initial value',
             };
 
             const validatedAnnotation =
@@ -66,10 +66,10 @@ describe('annotation.validator', () => {
             });
         });
 
-        it('should should support annotation without authorEmail', () => {
+        it('should support annotation without authorEmail when it target title', () => {
             const annotationPayload = {
                 resourceUri: 'uid:/2a8d429f-8134-4502-b9d3-d20c571592fa',
-                target: 'value',
+                target: 'title',
                 itemPath: ['GvaF', '0'],
                 kind: 'comment',
                 comment: 'This is a comment',
@@ -86,7 +86,7 @@ describe('annotation.validator', () => {
             });
         });
 
-        it('should should support annotation without target', () => {
+        it('should support annotation without target', () => {
             const annotationPayload = {
                 resourceUri: 'uid:/2a8d429f-8134-4502-b9d3-d20c571592fa',
                 itemPath: ['GvaF', '0'],
@@ -106,7 +106,7 @@ describe('annotation.validator', () => {
             });
         });
 
-        it('should should support annotation without initialValue', () => {
+        it('should accept annotation without initialValue when target is title', () => {
             const annotationPayload = {
                 resourceUri: 'uid:/2a8d429f-8134-4502-b9d3-d20c571592fa',
                 itemPath: ['GvaF', '0'],
@@ -126,7 +126,75 @@ describe('annotation.validator', () => {
             });
         });
 
-        it('should should support drop unsupported fields', () => {
+        it('should reject annotation with initialValue when target is title', () => {
+            const annotationPayload = {
+                resourceUri: 'uid:/2a8d429f-8134-4502-b9d3-d20c571592fa',
+                itemPath: ['GvaF', '0'],
+                kind: 'comment',
+                comment: 'This is a comment',
+                authorName: 'John Doe',
+                authorEmail: 'john.doe@marmelab.com',
+                target: 'title',
+                initialValue: 'initial value',
+            };
+
+            const { success, error } =
+                annotationCreationSchema.safeParse(annotationPayload);
+
+            expect(success).toBe(false);
+            expect(error.errors).toStrictEqual([
+                {
+                    code: 'error_empty',
+                    message: 'annotation_error_empty_initial_value',
+                    path: ['initialValue'],
+                },
+            ]);
+        });
+
+        it('should accept annotation with initialValue when target is value', () => {
+            const annotationPayload = {
+                resourceUri: 'uid:/2a8d429f-8134-4502-b9d3-d20c571592fa',
+                itemPath: ['GvaF', '0'],
+                kind: 'comment',
+                comment: 'This is a comment',
+                authorName: 'John Doe',
+                authorEmail: 'john.doe@marmelab.com',
+                target: 'value',
+                initialValue: 'initial value',
+            };
+
+            const validatedAnnotation =
+                annotationCreationSchema.parse(annotationPayload);
+
+            expect(validatedAnnotation).toStrictEqual(annotationPayload);
+        });
+
+        it('should reject annotation without initialValue when target is value', () => {
+            const annotationPayload = {
+                resourceUri: 'uid:/2a8d429f-8134-4502-b9d3-d20c571592fa',
+                itemPath: ['GvaF', '0'],
+                kind: 'comment',
+                comment: 'This is a comment',
+                authorName: 'John Doe',
+                authorEmail: 'john.doe@marmelab.com',
+                target: 'value',
+                initialValue: null,
+            };
+
+            const { success, error } =
+                annotationCreationSchema.safeParse(annotationPayload);
+
+            expect(success).toBe(false);
+            expect(error.errors).toStrictEqual([
+                {
+                    code: 'error_required',
+                    message: 'annotation_error_required_initial_value',
+                    path: ['initialValue'],
+                },
+            ]);
+        });
+
+        it('should support drop unsupported fields', () => {
             const annotationPayload = {
                 resourceUri: 'uid:/2a8d429f-8134-4502-b9d3-d20c571592fa',
                 kind: 'correction',
