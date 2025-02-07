@@ -1,4 +1,4 @@
-import { Tooltip, Typography } from '@mui/material';
+import { Tooltip } from '@mui/material';
 import {
     DataGrid,
     getGridDateOperators,
@@ -20,6 +20,7 @@ import { useGetAnnotations } from './useGetAnnotations';
 import withInitialData from '../withInitialData';
 import { StatusFilter } from './filters/StatusFilter';
 import { FieldScopeFilter } from './filters/FieldScopeFilter';
+import { CellWithTooltip } from './CellWithTooltip';
 
 const AnnotationListToolBar = () => {
     const { translate } = useTranslate();
@@ -124,10 +125,12 @@ export const AnnotationList = () => {
                     ),
                     renderCell: ({ value }) => {
                         return (
-                            <Typography>
-                                {value ??
-                                    translate('annotation_field_not_found')}
-                            </Typography>
+                            <CellWithTooltip
+                                value={
+                                    value ??
+                                    translate('annotation_field_not_found')
+                                }
+                            />
                         );
                     },
                     flex: 1,
@@ -144,7 +147,7 @@ export const AnnotationList = () => {
                         if (!value) {
                             return null;
                         }
-                        return <Typography>[{value}]</Typography>;
+                        return <CellWithTooltip value={`[${value}]`} />;
                     },
                     flex: 1,
                     sortable: false,
@@ -188,7 +191,7 @@ export const AnnotationList = () => {
                         (operator) => operator.value === 'contains',
                     ),
                     renderCell: ({ value }) => {
-                        return <Typography>{value?.internalName}</Typography>;
+                        return <CellWithTooltip value={value?.internalName} />;
                     },
                     flex: 1,
                     sortable: false,
@@ -199,18 +202,7 @@ export const AnnotationList = () => {
                     flex: 1,
                     sortable: false,
                     renderCell: ({ value }) => {
-                        return (
-                            <Tooltip title={value}>
-                                <Typography
-                                    sx={{
-                                        textOverflow: 'ellipsis',
-                                        overflow: 'hidden',
-                                    }}
-                                >
-                                    {value}
-                                </Typography>
-                            </Tooltip>
-                        );
+                        return <CellWithTooltip value={value} />;
                     },
                 },
                 {
@@ -235,18 +227,7 @@ export const AnnotationList = () => {
                         (operator) => operator.value === 'contains',
                     ),
                     renderCell: ({ value }) => {
-                        return (
-                            <Tooltip title={value}>
-                                <Typography
-                                    sx={{
-                                        textOverflow: 'ellipsis',
-                                        overflow: 'hidden',
-                                    }}
-                                >
-                                    {value}
-                                </Typography>
-                            </Tooltip>
-                        );
+                        return <CellWithTooltip value={value} />;
                     },
                     flex: 1,
                     sortable: true,
@@ -260,7 +241,7 @@ export const AnnotationList = () => {
                     flex: 1,
                     sortable: true,
                     renderCell({ value }) {
-                        return <Typography>{value}</Typography>;
+                        return <CellWithTooltip value={value} />;
                     },
                 },
                 {
@@ -272,7 +253,7 @@ export const AnnotationList = () => {
                         (operator) => operator.value === 'contains',
                     ),
                     renderCell({ value }) {
-                        return <Typography>{value}</Typography>;
+                        return <CellWithTooltip value={value} />;
                     },
                 },
                 {
@@ -283,18 +264,7 @@ export const AnnotationList = () => {
                     ),
                     flex: 1,
                     renderCell: ({ value }) => {
-                        return (
-                            <Tooltip title={value}>
-                                <Typography
-                                    sx={{
-                                        textOverflow: 'ellipsis',
-                                        overflow: 'hidden',
-                                    }}
-                                >
-                                    {value}
-                                </Typography>
-                            </Tooltip>
-                        );
+                        return <CellWithTooltip value={value} />;
                     },
                 },
                 {
@@ -304,9 +274,9 @@ export const AnnotationList = () => {
                     flex: 1,
                     renderCell: ({ value }) => {
                         return (
-                            <Typography>
-                                {new Date(value).toLocaleDateString()}
-                            </Typography>
+                            <CellWithTooltip
+                                value={new Date(value).toLocaleDateString()}
+                            />
                         );
                     },
                     filterOperators: getGridDateOperators().filter((operator) =>
@@ -321,9 +291,9 @@ export const AnnotationList = () => {
                     flex: 1,
                     renderCell: ({ value }) => {
                         return (
-                            <Typography>
-                                {new Date(value).toLocaleDateString()}
-                            </Typography>
+                            <CellWithTooltip
+                                value={new Date(value).toLocaleDateString()}
+                            />
                         );
                     },
                     filterOperators: getGridDateOperators().filter((operator) =>
