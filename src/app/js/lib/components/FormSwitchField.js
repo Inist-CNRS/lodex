@@ -15,6 +15,7 @@ const FormSwitchField = ({ input, label, meta, ...custom }) => (
     <FormControlLabel
         control={
             <Switch
+                sx={{ marginLeft: 2 }}
                 checked={isChecked(input.value)}
                 onChange={input.onChange}
                 {...custom}
