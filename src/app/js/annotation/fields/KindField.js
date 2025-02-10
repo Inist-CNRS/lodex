@@ -4,9 +4,9 @@ import React from 'react';
 import RemoveIcon from '@mui/icons-material/Remove';
 
 import { useTranslate } from '../../i18n/I18NContext';
-import { COMMENT_STEP } from '../steps';
+import { COMMENT_STEP, VALUE_STEP } from '../steps';
 
-export function KindField({ form, goToStep }) {
+export function KindField({ form, initialValue, goToStep }) {
     const theme = useTheme();
     const { translate } = useTranslate();
 
@@ -30,6 +30,11 @@ export function KindField({ form, goToStep }) {
                             }}
                             onClick={() => {
                                 field.handleChange('removal');
+
+                                if (Array.isArray(initialValue)) {
+                                    goToStep(VALUE_STEP);
+                                    return;
+                                }
                                 goToStep(COMMENT_STEP);
                             }}
                         >
@@ -49,4 +54,5 @@ export function KindField({ form, goToStep }) {
 KindField.propTypes = {
     form: PropTypes.object.isRequired,
     goToStep: PropTypes.func.isRequired,
+    initialValue: PropTypes.any,
 };
