@@ -1,17 +1,7 @@
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import SaveIcon from '@mui/icons-material/Save';
-import {
-    Box,
-    Button,
-    CircularProgress,
-    Popover,
-    Stack,
-    Tooltip,
-    Typography,
-} from '@mui/material';
+import { Box, Popover, Stack, Tooltip, Typography } from '@mui/material';
 import { useForm, useStore } from '@tanstack/react-form';
 import PropTypes from 'prop-types';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { annotationCreationSchema } from '../../../common/validator/annotation.validator';
 import { useTranslate } from '../i18n/I18NContext';
@@ -23,31 +13,13 @@ import {
     KIND_STEP,
     AUTHOR_STEP,
     COMMENT_STEP,
-    nextStepByStep,
     TARGET_STEP,
     VALUE_STEP,
 } from './steps';
 import { ValueField } from './fields/ValueField';
 import { KindField } from './fields/KindField';
 import { PreviousButton } from './PreviousButton';
-
-const isRequiredFieldValid = (formState, fieldName) => {
-    const fieldState = formState.fieldMeta[fieldName];
-    if (!fieldState) {
-        return false;
-    }
-
-    return fieldState.isTouched && fieldState.errors.length === 0;
-};
-
-const isOptionalFieldValid = (formState, fieldName) => {
-    const fieldState = formState.fieldMeta[fieldName];
-    if (!fieldState) {
-        return false;
-    }
-
-    return !fieldState.isTouched || fieldState.errors.length === 0;
-};
+import { NextButton } from './NextButton';
 
 export function CreateAnnotationModal({
     isSubmitting,
@@ -88,51 +60,9 @@ export function CreateAnnotationModal({
         onClose();
     };
 
-    const handleNext = () => {
-        setCurrentStep((currentStep) => nextStepByStep[currentStep]);
-    };
-
-    const isValueStepValid = useStore(form.store, (state) => {
-        if (currentStep !== VALUE_STEP) {
-            return true;
-        }
-
-        // tanstack form does not support conditional validation (e.g. validation using superRefine to depend on another field value)
-        return !!state.values.initialValue;
-    });
-
-    const isCommentStepValid = useStore(form.store, (state) => {
-        if (currentStep !== COMMENT_STEP) {
-            return true;
-        }
-
-        return isRequiredFieldValid(state, 'comment');
-    });
-
-    const isAuthorStepValid = useStore(form.store, (state) => {
-        if (currentStep !== AUTHOR_STEP) {
-            return true;
-        }
-
-        return (
-            isRequiredFieldValid(state, 'authorName') &&
-            isOptionalFieldValid(state, 'authorEmail')
-        );
-    });
     const annotationInitialValue = useStore(form.store, (state) => {
         return state.values.initialValue;
     });
-
-    const enableNextButton = useMemo(() => {
-        if (currentStep === COMMENT_STEP) {
-            return isCommentStepValid;
-        }
-        if (currentStep === VALUE_STEP) {
-            return isValueStepValid;
-        }
-
-        return false;
-    }, [currentStep, isCommentStepValid, isValueStepValid]);
 
     useEffect(() => {
         if (currentStep !== AUTHOR_STEP) {
@@ -147,9 +77,6 @@ export function CreateAnnotationModal({
             timer && clearTimeout(timer);
         };
     }, [currentStep]);
-
-    const isCurrentStepCommentStep = currentStep === COMMENT_STEP;
-    const isCurrentStepAuthorStep = currentStep === AUTHOR_STEP;
 
     return (
         <Popover
@@ -249,10 +176,7 @@ export function CreateAnnotationModal({
                                     </Typography>
                                 </Tooltip>
                             )}
-                            <CommentField
-                                form={form}
-                                active={isCurrentStepCommentStep}
-                            />
+                            <CommentField form={form} />
                         </Stack>
                     )}
 
@@ -262,14 +186,8 @@ export function CreateAnnotationModal({
                             aria-label={translate('annotation_step_author')}
                             role="tab"
                         >
-                            <AuthorNameField
-                                form={form}
-                                active={isCurrentStepAuthorStep}
-                            />
-                            <AuthorEmailField
-                                form={form}
-                                active={isCurrentStepAuthorStep}
-                            />
+                            <AuthorNameField form={form} />
+                            <AuthorEmailField form={form} />
                         </Stack>
                     )}
                 </Box>
@@ -283,40 +201,14 @@ export function CreateAnnotationModal({
                         onCancel={handleClose}
                     />
 
-                    {currentStep === AUTHOR_STEP && (
-                        <Button
-                            type="submit"
-                            variant="contained"
-                            color="primary"
-                            disabled={
-                                disableSubmit ||
-                                isSubmitting ||
-                                !isAuthorStepValid
-                            }
-                            startIcon={
-                                isSubmitting ? (
-                                    <CircularProgress
-                                        color="primary"
-                                        size="1em"
-                                    />
-                                ) : (
-                                    <SaveIcon />
-                                )
-                            }
-                        >
-                            {translate('validate')}
-                        </Button>
-                    )}
-                    {[COMMENT_STEP, VALUE_STEP].includes(currentStep) && (
-                        <Button
-                            type="button"
-                            onClick={handleNext}
-                            disabled={!enableNextButton}
-                            endIcon={<ChevronRightIcon />}
-                        >
-                            {translate('next')}
-                        </Button>
-                    )}
+                    <NextButton
+                        currentStep={currentStep}
+                        goToStep={setCurrentStep}
+                        initialValue={initialValue}
+                        isSubmitting={isSubmitting}
+                        disableSubmit={disableSubmit}
+                        form={form}
+                    />
                 </Box>
             </Stack>
         </Popover>
