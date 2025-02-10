@@ -21,6 +21,24 @@ import { KindField } from './fields/KindField';
 import { PreviousButton } from './PreviousButton';
 import { NextButton } from './NextButton';
 
+const isRequiredFieldValid = (formState, fieldName) => {
+    const fieldState = formState.fieldMeta[fieldName];
+    if (!fieldState) {
+        return false;
+    }
+
+    return fieldState.isTouched && fieldState.errors.length === 0;
+};
+
+const isOptionalFieldValid = (formState, fieldName) => {
+    const fieldState = formState.fieldMeta[fieldName];
+    if (!fieldState) {
+        return false;
+    }
+
+    return !fieldState.isTouched || fieldState.errors.length === 0;
+};
+
 export function CreateAnnotationModal({
     isSubmitting,
     onSubmit,
@@ -44,10 +62,38 @@ export function CreateAnnotationModal({
             onChange: annotationCreationSchema,
         },
     });
-
     const [currentStep, setCurrentStep] = useState(
         initialValue === null ? COMMENT_STEP : TARGET_STEP,
     );
+
+    const isValueStepValid = useStore(form.store, (state) => {
+        if (currentStep !== VALUE_STEP) {
+            return true;
+        }
+
+        // tanstack form does not support conditional validation (e.g. validation using superRefine to depend on another field value)
+        return !!state.values.initialValue;
+    });
+
+    const isCommentStepValid = useStore(form.store, (state) => {
+        if (currentStep !== COMMENT_STEP) {
+            return true;
+        }
+
+        return isRequiredFieldValid(state, 'comment');
+    });
+
+    const isAuthorStepValid = useStore(form.store, (state) => {
+        if (currentStep !== AUTHOR_STEP) {
+            return true;
+        }
+
+        return (
+            isRequiredFieldValid(state, 'authorName') &&
+            isOptionalFieldValid(state, 'authorEmail')
+        );
+    });
+
     // This is used to avoid submitting the form when the user clicks on the next button if the form is valid
     const [disableSubmit, setDisableSubmit] = useState(false);
 
@@ -209,6 +255,9 @@ export function CreateAnnotationModal({
                     />
 
                     <NextButton
+                        isAuthorStepValid={isAuthorStepValid}
+                        isCommentStepValid={isCommentStepValid}
+                        isValueStepValid={isValueStepValid}
                         currentStep={currentStep}
                         goToStep={setCurrentStep}
                         initialValue={initialValue}
