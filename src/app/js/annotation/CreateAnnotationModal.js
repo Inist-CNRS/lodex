@@ -112,6 +112,10 @@ export function CreateAnnotationModal({
         return state.values.initialValue;
     });
 
+    const kind = useStore(form.store, (state) => {
+        return state.values.kind;
+    });
+
     useEffect(() => {
         if (currentStep !== AUTHOR_STEP) {
             return;
@@ -219,12 +223,26 @@ export function CreateAnnotationModal({
                                             overflow: 'hidden',
                                         }}
                                     >
-                                        {translate('annotation_correct_value', {
-                                            value: annotationInitialValue.replace(
-                                                /<[^>]*>/g,
-                                                '',
-                                            ),
-                                        })}
+                                        {kind === 'removal' &&
+                                            translate(
+                                                'annotation_remove_value',
+                                                {
+                                                    value: annotationInitialValue.replace(
+                                                        /<[^>]*>/g,
+                                                        '',
+                                                    ),
+                                                },
+                                            )}
+                                        {kind === 'comment' &&
+                                            translate(
+                                                'annotation_correct_value',
+                                                {
+                                                    value: annotationInitialValue.replace(
+                                                        /<[^>]*>/g,
+                                                        '',
+                                                    ),
+                                                },
+                                            )}
                                     </Typography>
                                 </Tooltip>
                             )}
