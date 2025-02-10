@@ -54,7 +54,7 @@ export function AnnotationHeader({ annotation }) {
         <Stack gap={1}>
             <Stack direction="row" gap={1} alignItems="center">
                 <Typography variant="h1" fontSize={24} fontWeight={700}>
-                    {translate('annotation_header')}{' '}
+                    {translate(`annotation_header_${annotation.kind}`)}{' '}
                     {getAnnotationResourceTitle(annotation, translate)}
                 </Typography>
 
