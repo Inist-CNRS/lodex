@@ -1,10 +1,12 @@
 import { default as z } from 'zod';
 
+export const kinds = ['removal', 'comment'];
+
 export const annotationCreationSchema = z
     .object({
         resourceUri: z.string().nullish().default(null),
         target: z.enum(['title', 'value']).nullish().default('title'),
-        kind: z.enum(['correction', 'comment']).nullish().default('comment'),
+        kind: z.enum(kinds).nullish().default('comment'),
         fieldId: z
             .string()
             .trim()
@@ -97,6 +99,7 @@ const annotationFilterableFields = z
     .enum(
         [
             'resource.title',
+            'kind',
             'authorName',
             'resourceUri',
             'fieldId',
@@ -129,6 +132,7 @@ const annotationSortableFields = z
             'status',
             'internalComment',
             'administrator',
+            'kind',
         ],
         {
             message: 'annotation_query_sortBy_invalid',

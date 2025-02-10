@@ -1247,6 +1247,7 @@
 "annotation.authorEmail"	"Email address"	"Adresse e-mail"
 "annotation.authorEmail_helpText"	"The email address will allow us to contact you if needed"	"L'e-mail permettra d'être contacté en cas de besoin"
 "annotation_status"	"Status"	"Statut"
+"annotation_kind"	"Type"	"Type"
 "annotation_internal_comment"	"Internal Comment"	"Commentaire interne"
 "annotation_administrator"	"Administrator"	"Gestionnaire"
 "annotation_header"	"Annotation:"	"Annotation :"
@@ -1264,3 +1265,5 @@
 "annotation_delete_success"	"The annotation has been deleted."	"L'annotation a été supprimée."
 "annotation_delete_error"	"An error occured while deleteing this annotation, please try again later."	"Une erreur est survenue lors de la supression de l'annotation, merci de réessayer ultérieurement."
 "annotation_remove_content"	"Remove some content"	"Retirer du contenu"
+"removal"	"Removal"	"suppression"
+"comment"	"Comment"	"Commentaire"

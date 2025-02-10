@@ -42,7 +42,7 @@ export function TargetField({ form, initialValue, goToStep }) {
                             }}
                             onClick={() => {
                                 field.handleChange('title');
-                                kindField.handleChange(null);
+                                kindField.handleChange('comment');
                                 initialValueField.handleChange(null);
                                 goToStep(COMMENT_STEP);
                             }}
