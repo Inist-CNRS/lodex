@@ -11,6 +11,7 @@ import {
 } from './steps';
 import { useTranslate } from '../i18n/I18NContext';
 import PropTypes from 'prop-types';
+import { useStore } from '@tanstack/react-form';
 
 export const PreviousButton = ({
     currentStep,
@@ -18,8 +19,14 @@ export const PreviousButton = ({
     goToStep,
     onCancel,
     isSubmitting,
+    form,
 }) => {
     const { translate } = useTranslate();
+
+    const target = useStore(form.store, (state) => {
+        return state.values.target;
+    });
+
     const handleBack = useCallback(
         (event) => {
             event.preventDefault();
@@ -34,11 +41,18 @@ export const PreviousButton = ({
                     return;
                 }
                 case COMMENT_STEP: {
-                    if (initialValue) {
-                        goToStep(KIND_STEP);
+                    if (!initialValue) {
                         return;
                     }
-                    goToStep(VALUE_STEP);
+                    if (target === 'title') {
+                        goToStep(TARGET_STEP);
+                        return;
+                    }
+                    if (Array.isArray(initialValue)) {
+                        goToStep(VALUE_STEP);
+                        return;
+                    }
+                    goToStep(KIND_STEP);
                     return;
                 }
                 case AUTHOR_STEP: {
@@ -49,7 +63,7 @@ export const PreviousButton = ({
                     return;
             }
         },
-        [currentStep, goToStep, initialValue],
+        [currentStep, goToStep, initialValue, target],
     );
     if (
         currentStep === TARGET_STEP ||
@@ -80,6 +94,7 @@ export const PreviousButton = ({
 };
 
 PreviousButton.propTypes = {
+    form: PropTypes.object.isRequired,
     goToStep: PropTypes.func.isRequired,
     onCancel: PropTypes.func.isRequired,
     currentStep: PropTypes.string.isRequired,

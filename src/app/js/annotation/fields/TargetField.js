@@ -15,6 +15,10 @@ export function TargetField({ form, initialValue, goToStep }) {
         name: 'initialValue',
         form,
     });
+    const kindField = useField({
+        name: 'kind',
+        form,
+    });
 
     const isList = Array.isArray(initialValue);
 
@@ -38,6 +42,7 @@ export function TargetField({ form, initialValue, goToStep }) {
                             }}
                             onClick={() => {
                                 field.handleChange('title');
+                                kindField.handleChange(null);
                                 initialValueField.handleChange(null);
                                 goToStep(COMMENT_STEP);
                             }}

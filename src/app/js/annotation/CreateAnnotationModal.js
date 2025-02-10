@@ -194,6 +194,7 @@ export function CreateAnnotationModal({
 
                 <Box>
                     <PreviousButton
+                        form={form}
                         currentStep={currentStep}
                         goToStep={setCurrentStep}
                         initialValue={initialValue}
