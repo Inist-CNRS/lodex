@@ -167,7 +167,7 @@ describe('Annotation', () => {
                 cy.findByText('RoboCop').click();
 
                 cy.findByRole('heading', {
-                    name: /^Annotation: uid:\//,
+                    name: /^Removal: uid:\//,
                 }).should('be.visible');
                 cy.findByRole('heading', {
                     name: 'RoboCop',
@@ -349,7 +349,7 @@ describe('Annotation', () => {
                 cy.findByText('Terminator 2').click();
 
                 cy.findByRole('heading', {
-                    name: /^Annotation: uid:\//,
+                    name: /^Comment: uid:\//,
                 }).should('be.visible');
                 cy.findByRole('heading', {
                     name: 'Terminator 2',
