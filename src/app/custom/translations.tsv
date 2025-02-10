@@ -1267,5 +1267,5 @@
 "annotation_delete_success"	"The annotation has been deleted."	"L'annotation a été supprimée."
 "annotation_delete_error"	"An error occured while deleteing this annotation, please try again later."	"Une erreur est survenue lors de la supression de l'annotation, merci de réessayer ultérieurement."
 "annotation_remove_content"	"Remove some content"	"Retirer du contenu"
-"removal"	"Removal"	"suppression"
+"removal"	"Removal"	"Suppression"
 "comment"	"Comment"	"Commentaire"

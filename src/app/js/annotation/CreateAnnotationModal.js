@@ -262,7 +262,7 @@ export function CreateAnnotationModal({
                     )}
                 </Box>
 
-                <Box>
+                <Box display="flex" justifyContent="space-between">
                     <PreviousButton
                         form={form}
                         currentStep={currentStep}
