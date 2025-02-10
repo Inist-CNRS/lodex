@@ -1,4 +1,3 @@
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import SaveIcon from '@mui/icons-material/Save';
 import {
@@ -25,12 +24,12 @@ import {
     AUTHOR_STEP,
     COMMENT_STEP,
     nextStepByStep,
-    previousStepByStep,
     TARGET_STEP,
     VALUE_STEP,
 } from './steps';
 import { ValueField } from './fields/ValueField';
 import { KindField } from './fields/KindField';
+import { PreviousButton } from './PreviousButton';
 
 const isRequiredFieldValid = (formState, fieldName) => {
     const fieldState = formState.fieldMeta[fieldName];
@@ -52,9 +51,9 @@ const isOptionalFieldValid = (formState, fieldName) => {
 
 export function CreateAnnotationModal({
     isSubmitting,
-    onClose,
     onSubmit,
     anchorEl,
+    onClose,
     initialValue,
 }) {
     const { translate } = useTranslate();
@@ -87,13 +86,6 @@ export function CreateAnnotationModal({
     const handleClose = () => {
         resetForm();
         onClose();
-    };
-
-    const handleBack = (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-
-        setCurrentStep((currentStep) => previousStepByStep[currentStep]);
     };
 
     const handleNext = () => {
@@ -283,38 +275,13 @@ export function CreateAnnotationModal({
                 </Box>
 
                 <Box>
-                    {currentStep === TARGET_STEP ||
-                    (currentStep === COMMENT_STEP && initialValue === null) ? (
-                        <Button
-                            type="button"
-                            onClick={handleClose}
-                            disabled={isSubmitting}
-                        >
-                            {translate('cancel')}
-                        </Button>
-                    ) : (
-                        <Button
-                            type="button"
-                            onClick={handleBack}
-                            disabled={isSubmitting}
-                            startIcon={<ChevronLeftIcon />}
-                        >
-                            {translate('back')}
-                        </Button>
-                    )}
-                    {currentStep === KIND_STEP && (
-                        <Button
-                            type="button"
-                            onClick={() => {
-                                handleBack();
-                                form.reset();
-                            }}
-                            disabled={isSubmitting}
-                            startIcon={<ChevronLeftIcon />}
-                        >
-                            {translate('back')}
-                        </Button>
-                    )}
+                    <PreviousButton
+                        currentStep={currentStep}
+                        goToStep={setCurrentStep}
+                        initialValue={initialValue}
+                        isSubmitting={isSubmitting}
+                        onCancel={handleClose}
+                    />
 
                     {currentStep === AUTHOR_STEP && (
                         <Button
