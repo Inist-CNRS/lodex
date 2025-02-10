@@ -13,6 +13,7 @@ import {
 const ANNOTATIONS = [
     {
         resourceUri: 'uid:/65257776-4e3c-44f6-8652-85502a97e5ac',
+        kind: 'comment',
         itemPath: [],
         fieldId: 'GvaF',
         authorName: 'Developer',
@@ -26,6 +27,7 @@ const ANNOTATIONS = [
     },
     {
         resourceUri: 'uid:/2a8d429f-8134-4502-b9d3-d20c571592fa',
+        kind: 'comment',
         itemPath: [],
         fieldId: null,
         authorName: 'John DOE',
@@ -38,6 +40,7 @@ const ANNOTATIONS = [
     },
     {
         resourceUri: 'uid:/d4f1e376-d5dd-4853-b515-b7f63b34d67d',
+        kind: 'comment',
         itemPath: [],
         fieldId: null,
         authorName: 'Jane SMITH',
@@ -50,6 +53,7 @@ const ANNOTATIONS = [
     },
     {
         resourceUri: 'uid:/783f398d-0675-48d6-b851-137302820cf6',
+        kind: 'removal',
         itemPath: [],
         fieldId: null,
         authorName: 'Jane SMITH',
@@ -1033,6 +1037,7 @@ describe('annotation', () => {
                         path: ['filterBy'],
                         options: [
                             'resource.title',
+                            'kind',
                             'authorName',
                             'resourceUri',
                             'fieldId',
@@ -1052,6 +1057,43 @@ describe('annotation', () => {
                     },
                 ],
                 data: [],
+            });
+        });
+
+        it('should allow to filter by kind', async () => {
+            const ctx = {
+                request: {
+                    query: {
+                        page: 0,
+                        perPage: 2,
+                        filterBy: 'kind',
+                        filterOperator: 'equals',
+                        filterValue: 'removal',
+                    },
+                },
+                response: {},
+                annotation: annotationModel,
+                publishedDataset: publishedDatasetModel,
+                field: fieldModel,
+            };
+
+            await getAnnotations(ctx);
+
+            expect(ctx.response.status).toBe(200);
+
+            expect(ctx.body).toStrictEqual({
+                total: 1,
+                fullTotal: 1,
+                data: [
+                    {
+                        ...annotationList[3],
+                        resource: {
+                            uri: annotationList[3].resourceUri,
+                            title: 'A subresource',
+                        },
+                        field: field3,
+                    },
+                ],
             });
         });
     });
