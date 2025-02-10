@@ -65,6 +65,7 @@ export const PreviousButton = ({
         },
         [currentStep, goToStep, initialValue, target],
     );
+
     if (
         currentStep === TARGET_STEP ||
         (currentStep === COMMENT_STEP && !initialValue)
