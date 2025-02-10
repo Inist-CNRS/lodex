@@ -12,6 +12,13 @@ function targetValue() {
     }).click();
 }
 
+function chooseKindRemoval() {
+    cy.findByRole('menuitem', {
+        name: 'Remove some content',
+        timeout: 1500,
+    }).click();
+}
+
 function targetSection() {
     cy.findByRole('menuitem', {
         name: 'Comment the section',
@@ -99,6 +106,8 @@ export function createSingleValueAnnotation({
     openAnnotationModalForField(fieldLabel);
 
     targetValue();
+
+    chooseKindRemoval();
 
     fillComment(comment);
     goToNextStep();

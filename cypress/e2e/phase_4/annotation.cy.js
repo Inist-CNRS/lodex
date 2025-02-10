@@ -53,6 +53,7 @@ describe('Annotation', () => {
                 ).to.deep.equal([
                     'Home page',
                     '',
+                    'comment',
                     'Dataset Description',
                     '[Doay]',
                     '',
@@ -104,6 +105,7 @@ describe('Annotation', () => {
                     ).to.deep.equal([
                         'Resource URI',
                         'Resource title',
+                        'Type',
                         'Field label',
                         'Field Id',
                         'Field Icons',
@@ -121,7 +123,7 @@ describe('Annotation', () => {
 
                 cy.findAllByRole('cell').then((cells) => {
                     const firstUri = cells[0].textContent;
-                    const secondUri = cells[14].textContent;
+                    const secondUri = cells[15].textContent;
 
                     expect(firstUri).to.match(/uid:\//);
                     expect(secondUri).to.match(/uid:\//);
@@ -131,6 +133,7 @@ describe('Annotation', () => {
                     ).to.deep.equal([
                         firstUri,
                         'RoboCop',
+                        'removal',
                         'rating',
                         '[bZE+]',
                         '',
@@ -145,6 +148,7 @@ describe('Annotation', () => {
                         new Date().toLocaleDateString(),
                         secondUri,
                         'Terminator 2',
+                        'comment',
                         'actors',
                         '[K8Lu]',
                         '',
@@ -225,7 +229,7 @@ describe('Annotation', () => {
 
                 cy.findAllByRole('cell').then((cells) => {
                     const firstUri = cells[0].textContent;
-                    const secondUri = cells[14].textContent;
+                    const secondUri = cells[15].textContent;
 
                     expect(firstUri).to.match(/uid:\//);
                     expect(secondUri).to.match(/uid:\//);
@@ -235,6 +239,7 @@ describe('Annotation', () => {
                     ).to.deep.equal([
                         firstUri,
                         'RoboCop',
+                        'removal',
                         'rating',
                         '[bZE+]',
                         '',
@@ -249,6 +254,7 @@ describe('Annotation', () => {
                         new Date().toLocaleDateString(),
                         secondUri,
                         'Terminator 2',
+                        'comment',
                         'actors',
                         '[K8Lu]',
                         '',
@@ -299,7 +305,7 @@ describe('Annotation', () => {
 
                 cy.findAllByRole('cell').then((cells) => {
                     const firstUri = cells[0].textContent;
-                    const secondUri = cells[14].textContent;
+                    const secondUri = cells[15].textContent;
 
                     expect(firstUri).to.match(/uid:\//);
                     expect(secondUri).to.match(/uid:\//);
@@ -309,6 +315,7 @@ describe('Annotation', () => {
                     ).to.deep.equal([
                         firstUri,
                         'RoboCop',
+                        'comment',
                         'rating',
                         '[bZE+]',
                         '',
@@ -323,6 +330,7 @@ describe('Annotation', () => {
                         new Date().toLocaleDateString(),
                         secondUri,
                         'Terminator 2',
+                        'comment',
                         'actors',
                         '[K8Lu]',
                         '',
@@ -372,6 +380,7 @@ describe('Annotation', () => {
                     ).to.deep.equal([
                         firstUri,
                         'RoboCop',
+                        'comment',
                         'rating',
                         '[bZE+]',
                         '',
@@ -414,6 +423,7 @@ describe('Annotation', () => {
                 ).to.deep.equal([
                     'Chart page',
                     '',
+                    'comment',
                     'Répartition par réalisateurs uniques',
                     '[xkoP]',
                     '',
