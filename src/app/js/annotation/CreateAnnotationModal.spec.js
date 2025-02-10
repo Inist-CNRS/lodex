@@ -99,25 +99,15 @@ describe('CreateAnnotationModal', () => {
                 );
             });
 
-            await waitFor(() => {
-                fireEvent.click(screen.getByRole('button', { name: 'next' }));
-            });
-
-            await waitFor(() => {
-                fireEvent.change(
-                    screen.getByRole('textbox', {
-                        name: 'annotation.authorName *',
-                    }),
-                    {
-                        target: { value: 'author' },
-                    },
-                );
-            });
-
-            expect(screen.getByRole('button', { name: 'back' })).toBeDisabled();
-
             expect(
-                screen.getByRole('button', { name: 'validate' }),
+                screen.getByRole('textbox', {
+                    name: 'annotation.comment *',
+                }),
+            ).toHaveValue('test');
+
+            expect(screen.getByRole('button', { name: 'next' })).toBeDisabled();
+            expect(
+                screen.getByRole('button', { name: 'cancel' }),
             ).toBeDisabled();
         });
 
@@ -197,6 +187,8 @@ describe('CreateAnnotationModal', () => {
                 comment: 'test',
                 authorName: 'author',
                 authorEmail: 'email@example.org',
+                target: 'title',
+                kind: 'comment',
             });
         });
     });
@@ -286,6 +278,14 @@ describe('CreateAnnotationModal', () => {
                 fireEvent.click(
                     screen.getByRole('menuitem', {
                         name: 'annotation_comment_target_value',
+                    }),
+                );
+            });
+
+            await waitFor(() => {
+                fireEvent.click(
+                    screen.getByRole('menuitem', {
+                        name: 'annotation_remove_content',
                     }),
                 );
             });
@@ -685,6 +685,8 @@ describe('CreateAnnotationModal', () => {
         expect(onSubmit).toHaveBeenCalledWith({
             authorName: 'author',
             comment: 'test',
+            kind: 'comment',
+            target: 'title',
         });
     });
 
@@ -743,6 +745,7 @@ describe('CreateAnnotationModal', () => {
             comment: 'test',
             initialValue: null,
             target: 'title',
+            kind: 'comment',
         });
     });
 
@@ -761,6 +764,14 @@ describe('CreateAnnotationModal', () => {
                 name: 'annotation_comment_target_value',
             }),
         );
+
+        await waitFor(() => {
+            fireEvent.click(
+                screen.getByRole('menuitem', {
+                    name: 'annotation_remove_content',
+                }),
+            );
+        });
 
         await waitFor(() => {
             fireEvent.change(
@@ -801,6 +812,7 @@ describe('CreateAnnotationModal', () => {
             comment: 'test',
             initialValue: 'initialValue',
             target: 'value',
+            kind: 'removal',
         });
     });
 
@@ -819,6 +831,14 @@ describe('CreateAnnotationModal', () => {
                 name: 'annotation_comment_target_value',
             }),
         );
+
+        await waitFor(() => {
+            fireEvent.click(
+                screen.getByRole('menuitem', {
+                    name: 'annotation_remove_content',
+                }),
+            );
+        });
 
         await waitFor(() => {
             fireEvent.mouseDown(
@@ -875,6 +895,7 @@ describe('CreateAnnotationModal', () => {
             comment: 'test',
             initialValue: 'secondValue',
             target: 'value',
+            kind: 'removal',
         });
     });
 });

@@ -33,6 +33,8 @@ export function CreateAnnotationModal({
     const form = useForm({
         defaultValues: {
             comment: '',
+            target: 'title',
+            kind: 'comment',
         },
         onSubmit: async ({ value }) => {
             await onSubmit(value);
@@ -135,7 +137,11 @@ export function CreateAnnotationModal({
                             aria-label={translate('annotation_step_target')}
                             role="tab"
                         >
-                            <KindField form={form} goToStep={setCurrentStep} />
+                            <KindField
+                                form={form}
+                                goToStep={setCurrentStep}
+                                initialValue={initialValue}
+                            />
                         </Stack>
                     )}
                     {currentStep === VALUE_STEP && (
