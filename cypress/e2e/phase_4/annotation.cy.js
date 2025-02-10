@@ -1,40 +1,44 @@
+import * as path from 'path';
+
 import * as annotation from '../../support/annotation';
 import { teardown } from '../../support/authentication';
 import * as datasetImportPage from '../../support/datasetImportPage';
 import * as menu from '../../support/menu';
 import * as searchDrawer from '../../support/searchDrawer';
 
-describe('Annotation', () => {
-    beforeEach(() => {
-        // ResizeObserver doesn't like when the app has to many renders / re-renders
-        // and throws an exception to say, "I wait for the next paint"
-        // https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver#observation_errors
-        cy.on('uncaught:exception', (error) => {
-            return !error.message.includes('ResizeObserver');
-        });
-
-        teardown();
-        menu.openAdvancedDrawer();
-        menu.goToAdminDashboard();
-        datasetImportPage.importDataset('dataset/film.csv');
-        datasetImportPage.importModel('model/film-obsolete.json');
-
-        cy.findByRole('gridcell', { name: 'Liste des films' }).trigger(
-            'mouseenter',
-        );
-        cy.findByRole('button', { name: 'edit-Liste des films' }).click();
-
-        cy.findByRole('tab', { name: 'Semantics' }).click();
-        cy.findByRole('checkbox', {
-            name: 'This field can be annotated',
-        }).click();
-        cy.findByRole('button', { name: 'Save' }).click();
-
-        datasetImportPage.publish();
-        datasetImportPage.goToPublishedResources();
+function loadFilmDataset() {
+    // ResizeObserver doesn't like when the app has to many renders / re-renders
+    // and throws an exception to say, "I wait for the next paint"
+    // https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver#observation_errors
+    cy.on('uncaught:exception', (error) => {
+        return !error.message.includes('ResizeObserver');
     });
 
+    teardown();
+    menu.openAdvancedDrawer();
+    menu.goToAdminDashboard();
+    datasetImportPage.importDataset('dataset/film.csv');
+    datasetImportPage.importModel('model/film-obsolete.json');
+
+    cy.findByRole('gridcell', { name: 'Liste des films' }).trigger(
+        'mouseenter',
+    );
+    cy.findByRole('button', { name: 'edit-Liste des films' }).click();
+
+    cy.findByRole('tab', { name: 'Semantics' }).click();
+    cy.findByRole('checkbox', {
+        name: 'This field can be annotated',
+    }).click();
+    cy.findByRole('button', { name: 'Save' }).click();
+
+    datasetImportPage.publish();
+    datasetImportPage.goToPublishedResources();
+}
+
+describe('Annotation', () => {
     describe('homepage', () => {
+        beforeEach(loadFilmDataset);
+
         it('should support annotations on field on home page', () => {
             annotation.createTitleAnnotation({
                 fieldLabel: 'Dataset Description',
@@ -72,6 +76,7 @@ describe('Annotation', () => {
     });
 
     describe('resources', () => {
+        beforeEach(loadFilmDataset);
         describe('create list and update an Annotation', () => {
             it('should create annotation on resource field', () => {
                 cy.findByText('Search').click();
@@ -400,6 +405,8 @@ describe('Annotation', () => {
     });
 
     describe('charts', () => {
+        beforeEach(loadFilmDataset);
+
         it('should support annotations on charts', () => {
             cy.findByRole('link', { name: 'Graphs' }).click();
             cy.findByRole('link', {
@@ -438,6 +445,66 @@ describe('Annotation', () => {
                     new Date().toLocaleDateString(),
                 ]);
             });
+        });
+    });
+
+    describe('export', () => {
+        beforeEach(loadFilmDataset);
+
+        it.only('should export annotations', async () => {
+            annotation.createTitleAnnotation({
+                fieldLabel: 'Dataset Description',
+                comment: 'This is a comment',
+                authorName: 'John Doe',
+                authorEmail: 'john.doe@example.org',
+            });
+
+            cy.findByText('More').click();
+            menu.goToAdminDashboard();
+            cy.findByText('Annotations').click();
+
+            cy.findByLabelText('Open menu').click();
+
+            cy.findByRole('menuitem', { name: /Annotations/ }).trigger(
+                'mouseover',
+            );
+
+            cy.findAllByRole('menuitem', {
+                name: 'Export the annotations',
+            }).click();
+
+            cy.wait(1000);
+
+            const downloadsFolder = Cypress.config('downloadsFolder');
+            const files = (await cy.task('getFiles', downloadsFolder)).filter(
+                (name) =>
+                    name.match(/annotations_\d{4}-\d{2}-\d{2}-\d{6}.json/),
+            );
+
+            expect(files).to.have.length(1);
+
+            const [annotationExport] = files;
+
+            const filePath = path.join(downloadsFolder, annotationExport);
+
+            cy.readFile(filePath)
+                .should('exist')
+                .then((content) => {
+                    expect(content.at(0)).to.include({
+                        resourceUri: null,
+                        target: 'title',
+                        kind: 'comment',
+                        itemPath: null,
+                        comment: 'This is a comment',
+                        authorName: 'John Doe',
+                        authorEmail: 'john.doe@example.org',
+                        initialValue: null,
+                        status: 'to_review',
+                        internalComment: null,
+                    });
+                });
+
+            cy.task('removeFile', filePath);
         });
     });
 });

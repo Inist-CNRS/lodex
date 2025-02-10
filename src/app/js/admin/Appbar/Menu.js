@@ -1,50 +1,37 @@
-import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
-import {
-    Box,
-    IconButton,
-    MenuItem,
-    Menu,
-    Divider,
-    Fade,
-    MenuList,
-    Paper,
-} from '@mui/material';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
-import AspectRatioIcon from '@mui/icons-material/AspectRatio';
-import ClearAllIcon from '@mui/icons-material/ClearAll';
-import DeleteSweepIcon from '@mui/icons-material/DeleteSweep';
-import StorageIcon from '@mui/icons-material/Storage';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import AddIcon from '@mui/icons-material/Add';
-import { compose } from 'recompose';
-import { dumpDataset } from '../dump';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { signOut } from '../../user';
-import { exportFields } from '../../exportFields';
-import { fromParsing, fromPublication, fromImport } from '../selectors';
-import { fromFields } from '../../sharedSelectors';
-import { importFields } from '../import';
-import ClearDialog from './ClearDialog';
-import jobsApi from '../api/job';
-import { toast } from '../../../../common/tools/toast';
-import ImportModelDialog from '../ImportModelDialog';
-import ImportHasRelaunchDialog from './ImportHasRelaunchDialog';
-import { withRouter } from 'react-router';
-import { DEFAULT_TENANT } from '../../../../common/tools/tenantTools';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
 import SettingsIcon from '@mui/icons-material/Settings';
+import { Box, Divider, IconButton } from '@mui/material';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import PropTypes from 'prop-types';
+import React, { useCallback, useEffect, useState } from 'react';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router';
+import { compose } from 'recompose';
+import { bindActionCreators } from 'redux';
+import { DEFAULT_TENANT } from '../../../../common/tools/tenantTools';
+import { toast } from '../../../../common/tools/toast';
 import { useTranslate } from '../../i18n/I18NContext';
+import { signOut } from '../../user';
+import ImportModelDialog from '../ImportModelDialog';
+import { fromImport, fromPublication } from '../selectors';
+import ClearDialog from './ClearDialog';
+import ImportHasRelaunchDialog from './ImportHasRelaunchDialog';
+import { AdvancedNestedMenu } from './menu/AdvancedNestedMenu';
+import { AnnotationNestedMenu } from './menu/AnnotationNestedMenu';
+import { ModelNestedMenu } from './menu/ModelNestedMenu';
+import { NestedMenu } from './menu/NestedMenu';
+
+const NESTED_MENU_ANNOTATIONS = 'annotations';
+const NESTED_MENU_ADVANCED = 'advanced';
+const NESTED_MENU_MODEL = 'model';
 
 const MenuComponent = ({
-    dumpDataset,
-    exportFields,
-    hasLoadedDataset,
     hasPublishedDataset,
     onSignOut,
-    importFields,
-    nbFields,
     importSucceeded,
     importHasEnrichments,
     importHasPrecomputed,
@@ -62,8 +49,6 @@ const MenuComponent = ({
     const [showRelaunchDialog, setShowRelaunchDialog] = useState(false);
     const [dataRelaunchDialog, setDataRelaunchDialog] = useState(null);
 
-    const [applyUploadInput, setApplyUploadInput] = useState(false);
-
     useEffect(() => {
         if (importFailed) {
             toast(translate('import_fields_failed'), {
@@ -75,14 +60,6 @@ const MenuComponent = ({
             });
         }
     }, [importSucceeded, importFailed]);
-
-    useEffect(() => {
-        if (nbFields === 0) {
-            setApplyUploadInput(true);
-        } else {
-            setApplyUploadInput(false);
-        }
-    }, [nbFields]);
 
     useEffect(() => {
         if (importHasEnrichments || importHasPrecomputed) {
@@ -100,145 +77,31 @@ const MenuComponent = ({
         setAnchorEl(event.currentTarget);
     };
 
-    const handleCloseMenu = (callback) => {
+    const handleCloseMenu = useCallback((callback) => {
         setAnchorEl(null);
         typeof callback === 'function' && callback();
-    };
+    }, []);
 
-    const handleOpenModelMenu = () => {
-        setSubMenuToShow('model');
-    };
-
-    const handleOpenAdvancedMenu = () => {
-        setSubMenuToShow('advanced');
-    };
-
-    const handleCloseSubMenu = () => {
+    const handleCloseSubMenu = useCallback(() => {
         setSubMenuToShow(null);
-    };
-
-    const handleClearJobs = async () => {
-        const result = await jobsApi.clearJobs();
-        if (result.response.status === 'success') {
-            toast(translate('jobs_cleared'), {
-                type: toast.TYPE.SUCCESS,
-            });
-        }
-        setAnchorEl(null);
-    };
-
-    const handleImportFieldsClick = () => {
-        if (!applyUploadInput) {
-            setShowImportFieldsConfirmation(true);
-            handleCloseMenu();
-        }
-    };
+    }, []);
 
     const onConfig = () => {
         history.push('/config');
     };
 
-    const modelMenuItems = [
-        <div
-            key="import_fields"
-            title={
-                hasPublishedDataset
-                    ? translate('import_model_published')
-                    : undefined
-            }
-        >
-            <MenuItem
-                onClick={handleImportFieldsClick}
-                disabled={hasPublishedDataset || !hasLoadedDataset}
-            >
-                <AddIcon />
-                <Box component="span" ml={1}>
-                    {translate('import_fields')}
-                    {applyUploadInput && (
-                        <input
-                            name="file_model"
-                            type="file"
-                            onChange={(event) =>
-                                handleCloseMenu(
-                                    importFields(event.target.files[0]),
-                                )
-                            }
-                            style={{
-                                position: 'absolute',
-                                top: 0,
-                                left: 0,
-                                right: 0,
-                                bottom: 0,
-                                opacity: 0,
-                                width: '100%',
-                                cursor: 'pointer',
-                                fontSize: 0,
-                            }}
-                        />
-                    )}
-                </Box>
-            </MenuItem>
-        </div>,
-        <MenuItem
-            key="export_fields"
-            onClick={() => handleCloseMenu(exportFields)}
-            disabled={!hasLoadedDataset}
-        >
-            <AspectRatioIcon />
-            <Box component="span" ml={1}>
-                {translate('export_fields')}
-            </Box>
-        </MenuItem>,
-        <MenuItem
-            key="clear_model"
-            onClick={() =>
-                handleCloseMenu(() => {
-                    setClearDialogType('model');
-                    setShowClearDialog(!showClearDialog);
-                })
-            }
-            disabled={!hasLoadedDataset}
-        >
-            <ClearAllIcon />
-            <Box component="span" ml={1}>
-                {translate('clear_model')}
-            </Box>
-        </MenuItem>,
-    ];
+    const handleShowClearDialog = useCallback((type) => {
+        setClearDialogType(type);
+        setShowClearDialog(true);
+    }, []);
 
-    const advancedMenuItems = [
-        <MenuItem
-            key="export_raw_dataset"
-            onClick={() => handleCloseMenu(dumpDataset)}
-            disabled={!hasLoadedDataset}
-        >
-            <StorageIcon />
-            <Box component="span" ml={1}>
-                {translate('export_raw_dataset')}
-            </Box>
-        </MenuItem>,
-        <MenuItem
-            key="clear_dataset"
-            onClick={() =>
-                handleCloseMenu(() => {
-                    setClearDialogType('dataset');
-                    setShowClearDialog(!showClearDialog);
-                })
-            }
-            disabled={!hasLoadedDataset}
-        >
-            <ClearAllIcon />
-            <Box component="span" ml={1}>
-                {translate('clear_dataset')}
-            </Box>
-        </MenuItem>,
-        <MenuItem key="clear_jobs" onClick={handleClearJobs}>
-            <DeleteSweepIcon />
-            <Box component="span" ml={1}>
-                {translate('clear_jobs')}
-            </Box>
-        </MenuItem>,
-    ];
+    const showModelClearDialog = useCallback(() => {
+        handleShowClearDialog('model');
+    }, [handleShowClearDialog]);
+
+    const showDatasetClearDialog = useCallback(() => {
+        handleShowClearDialog('dataset');
+    }, [handleShowClearDialog]);
 
     return (
         <>
@@ -251,13 +114,13 @@ const MenuComponent = ({
             >
                 <IconButton
                     color="inherit"
-                    aria-label="Open menu"
+                    aria-label={translate('open_menu')}
                     onClick={handleOpenMenu}
                 >
                     <MoreVertIcon />
                 </IconButton>
+
                 <Menu
-                    id="long-menu"
                     sx={{
                         display: 'flex',
                         '& > .MuiPaper-root': {
@@ -266,9 +129,6 @@ const MenuComponent = ({
                             borderTopRightRadius: '0',
                             overflow: 'visible',
                         },
-                    }}
-                    MenuListProps={{
-                        'aria-labelledby': 'long-button',
                     }}
                     anchorEl={anchorEl}
                     open={open}
@@ -284,100 +144,83 @@ const MenuComponent = ({
                         {sessionStorage.getItem('lodex-tenant') ||
                             DEFAULT_TENANT}
                     </Box>
+
                     <Divider />
-                    <Box
-                        onMouseEnter={handleOpenModelMenu}
-                        onMouseLeave={handleCloseSubMenu}
-                        sx={{
-                            position: 'relative',
-                        }}
-                    >
-                        <MenuItem
-                            sx={{
-                                justifyContent: 'space-between',
-                            }}
-                        >
-                            <Box component="span" mr={1}>
-                                {translate('model')}
-                            </Box>
-                            <ChevronRightIcon />
-                        </MenuItem>
-                        <Fade in={subMenuToShow === 'model'}>
-                            <Paper
-                                elevation={8}
-                                sx={{
-                                    position: 'absolute',
-                                    top: 0,
-                                    transform: 'translateX(-100%)',
-                                }}
-                            >
-                                <MenuList>{modelMenuItems}</MenuList>
-                            </Paper>
-                        </Fade>
-                    </Box>
-                    <Box
-                        onMouseEnter={handleOpenAdvancedMenu}
-                        onMouseLeave={handleCloseSubMenu}
-                        sx={{
-                            position: 'relative',
-                        }}
-                    >
-                        <MenuItem
-                            sx={{
-                                justifyContent: 'space-between',
-                            }}
-                        >
-                            <Box component="span" mr={1}>
-                                {translate('advanced')}
-                            </Box>
-                            <ChevronRightIcon />
-                        </MenuItem>
-                        <Fade in={subMenuToShow === 'advanced'}>
-                            <Paper
-                                elevation={8}
-                                sx={{
-                                    position: 'absolute',
-                                    top: 0,
-                                    transform: 'translateX(-100%)',
-                                }}
-                            >
-                                <MenuList>{advancedMenuItems}</MenuList>
-                            </Paper>
-                        </Fade>
-                    </Box>
+
+                    <NestedMenu
+                        isOpen={subMenuToShow === NESTED_MENU_MODEL}
+                        onOpen={() => setSubMenuToShow(NESTED_MENU_MODEL)}
+                        onClose={handleCloseSubMenu}
+                        label={translate('model')}
+                        menu={
+                            <ModelNestedMenu
+                                onClose={handleCloseMenu}
+                                showModelClearDialog={showModelClearDialog}
+                            />
+                        }
+                    />
+
+                    <NestedMenu
+                        isOpen={subMenuToShow === NESTED_MENU_ANNOTATIONS}
+                        onOpen={() => setSubMenuToShow(NESTED_MENU_ANNOTATIONS)}
+                        onClose={handleCloseSubMenu}
+                        label={translate('annotations')}
+                        menu={
+                            <AnnotationNestedMenu onClose={handleCloseMenu} />
+                        }
+                    />
+
+                    <NestedMenu
+                        isOpen={subMenuToShow === NESTED_MENU_ADVANCED}
+                        onOpen={() => setSubMenuToShow(NESTED_MENU_ADVANCED)}
+                        onClose={handleCloseSubMenu}
+                        label={translate('advanced')}
+                        menu={
+                            <AdvancedNestedMenu
+                                onClose={handleCloseMenu}
+                                showDatasetClearDialog={showDatasetClearDialog}
+                            />
+                        }
+                    />
+
                     <Divider />
                     <MenuItem
                         onClick={() => handleCloseMenu(onConfig)}
-                        aria-label="config"
+                        aria-label={translate('config_tenant')}
                     >
-                        <SettingsIcon />
-                        <Box component="span" ml={1}>
-                            {translate('config_tenant')}
-                        </Box>
+                        <ListItemIcon>
+                            <SettingsIcon />
+                        </ListItemIcon>
+
+                        <ListItemText primary={translate('config_tenant')} />
                     </MenuItem>
+
                     <MenuItem
                         onClick={() => handleCloseMenu(onSignOut)}
-                        aria-label="signout"
+                        aria-label={translate('sign_out')}
                         sx={{ color: 'danger.main' }}
                     >
-                        <ExitToAppIcon />
-                        <Box component="span" ml={1}>
-                            {translate('sign_out')}
-                        </Box>
+                        <ListItemIcon sx={{ color: 'inherit' }}>
+                            <ExitToAppIcon />
+                        </ListItemIcon>
+                        <ListItemText primary={translate('sign_out')} />
                     </MenuItem>
                 </Menu>
             </Box>
+
             {showClearDialog && (
                 <ClearDialog
                     type={clearDialogType}
                     onClose={() => setShowClearDialog(!showClearDialog)}
                 />
             )}
+
             {!hasPublishedDataset && showImportFieldsConfirmation && (
                 <ImportModelDialog
                     onClose={() => setShowImportFieldsConfirmation(false)}
                 />
             )}
+
             {showRelaunchDialog && (
                 <ImportHasRelaunchDialog
                     onClose={() => setShowRelaunchDialog(false)}
@@ -389,13 +232,8 @@ const MenuComponent = ({
 };
 
 MenuComponent.propTypes = {
-    dumpDataset: PropTypes.func.isRequired,
-    exportFields: PropTypes.func.isRequired,
-    hasLoadedDataset: PropTypes.bool.isRequired,
     hasPublishedDataset: PropTypes.bool.isRequired,
     onSignOut: PropTypes.func.isRequired,
-    importFields: PropTypes.func.isRequired,
-    nbFields: PropTypes.number.isRequired,
     importSucceeded: PropTypes.bool.isRequired,
     importHasEnrichments: PropTypes.bool.isRequired,
     importHasPrecomputed: PropTypes.bool.isRequired,
@@ -405,18 +243,12 @@ MenuComponent.propTypes = {
 const mapDispatchToProps = (dispatch) =>
     bindActionCreators(
         {
-            dumpDataset,
-            exportFields,
             onSignOut: signOut,
-            importFields,
         },
         dispatch,
     );
 const mapStateToProps = (state) => ({
-    hasLoadedDataset: fromParsing.hasUploadedFile(state),
     hasPublishedDataset: fromPublication.hasPublishedDataset(state),
-    nbFields: fromFields.getAllListFields(state).filter((f) => f.name !== 'uri')
-        .length,
     importSucceeded: fromImport.hasImportSucceeded(state),
     importHasEnrichments: fromImport.hasEnrichments(state),
     importHasPrecomputed: fromImport.hasPrecomputed(state),

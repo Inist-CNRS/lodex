@@ -1,4 +1,13 @@
 const { defineConfig } = require('cypress');
+const fs = require('fs');
+
+const getFiles = (path) => {
+    return fs.readdirSync(path);
+};
+
+const removeFile = (path) => {
+    return fs.rmSync(path);
+};
 
 module.exports = defineConfig({
     e2e: {
@@ -6,6 +15,17 @@ module.exports = defineConfig({
         supportFile: 'cypress/support/index.js',
         experimentalStudio: true,
         retries: process.env.CI ? 2 : 0,
+        setupNodeEvents(on) {
+            on('task', {
+                getFiles(path) {
+                    return getFiles(path);
+                },
+                removeFile(path) {
+                    removeFile(path);
+                    return null;
+                },
+            });
+        },
     },
     viewportWidth: 1920,
     viewportHeight: 1080,
