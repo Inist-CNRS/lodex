@@ -2,12 +2,16 @@ import { JsonStreamStringify } from 'json-stream-stringify';
 import Koa from 'koa';
 import koaBodyParser from 'koa-bodyparser';
 import route from 'koa-route';
+import { default as _ } from 'lodash';
 
+import asyncBusboy from '@recuperateur/async-busboy';
 import { uniq } from 'lodash';
 import { ObjectId } from 'mongodb';
+import streamToString from 'stream-to-string';
 import { createDiacriticSafeContainRegex } from '../../services/createDiacriticSafeContainRegex';
 import {
     annotationCreationSchema,
+    annotationImportSchema,
     annotationUpdateSchema,
     getAnnotationsQuerySchema,
 } from './../../../common/validator/annotation.validator';
@@ -30,6 +34,75 @@ export async function createAnnotation(ctx) {
     ctx.body = {
         total: 1,
         data: await ctx.annotation.create(validation.data),
+    };
+}
+
+const BATCH_SIZE = 100;
+
+export function importAnnotations(asyncBusboyImpl) {
+    return async (ctx) => {
+        const { files } = await asyncBusboyImpl(ctx.req);
+        const fileStream = files[0];
+
+        const annotations = await streamToString(fileStream).then(
+            (fieldsString) => JSON.parse(fieldsString),
+        );
+        const failedImports = [];
+
+        if (!Array.isArray(annotations)) {
+            ctx.response.status = 400;
+            ctx.body = {
+                total: 0,
+                failedImports: [],
+            };
+        }
+
+        const chunks = _.chunk(annotations, BATCH_SIZE);
+        for (const chunk of chunks) {
+            const importResults = await Promise.all(
+                chunk.map(async (annotation) => {
+                    try {
+                        const { success, data, error } =
+                            annotationImportSchema.safeParse(annotation);
+
+                        if (!success) {
+                            return {
+                                success: false,
+                                annotation,
+                                errors: error.errors,
+                            };
+                        }
+
+                        await ctx.annotation.create(data);
+
+                        return {
+                            success: true,
+                        };
+                    } catch (e) {
+                        return {
+                            success: false,
+                            annotation,
+                            errors: [{ message: e.message ?? e.toString() }],
+                        };
+                    }
+                }),
+            );
+
+            for (const result of importResults) {
+                if (!result.success) {
+                    failedImports.push({
+                        annotation: result.annotation,
+                        errors: result.errors,
+                    });
+                }
+            }
+        }
+
+        ctx.response.status = 200;
+        ctx.body = {
+            total: annotations.length,
+            failedImports,
+        };
     };
 }
 
@@ -372,5 +445,6 @@ app.use(koaBodyParser());
 app.use(route.put('/:id', updateAnnotation));
 app.use(route.del('/:id', deleteAnnotation));
 app.use(route.post('/', createAnnotation));
+app.use(route.post('/import', importAnnotations(asyncBusboy)));
 
 export default app;

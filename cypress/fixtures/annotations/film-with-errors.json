@@ -1,0 +1,32 @@
+[
+    {
+        "_id": "67ab09f4927fdd8c4c72a1c5",
+        "resourceUri": null,
+        "target": "title",
+        "kind": "comment",
+        "fieldId": "67ab09ef927fdd8c4c72a189",
+        "comment": "This is a comment",
+        "authorName": "John Doe",
+        "authorEmail": "john.doe@example.org",
+        "initialValue": null,
+        "status": "to_review",
+        "internalComment": null,
+        "createdAt": "2025-02-11T08:27:32.873Z",
+        "updatedAt": "2025-02-11T08:27:32.873Z"
+    },
+    {
+        "_id": "67ab09f4927fdd8c4c72a1c5",
+        "resourceUri": null,
+        "target": "title",
+        "kind": "unknown",
+        "fieldId": "67ab09ef927fdd8c4c72a189",
+        "comment": "This is a comment",
+        "authorName": "John Doe",
+        "authorEmail": "john.doe@example.org",
+        "initialValue": null,
+        "status": "to_review",
+        "internalComment": null,
+        "createdAt": "2025-02-11T08:27:32.873Z",
+        "updatedAt": "2025-02-11T08:27:32.873Z"
+    }
+]

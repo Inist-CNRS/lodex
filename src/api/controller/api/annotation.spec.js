@@ -17,7 +17,6 @@ const ANNOTATIONS = [
     {
         resourceUri: 'uid:/65257776-4e3c-44f6-8652-85502a97e5ac',
         kind: 'comment',
-        itemPath: [],
         fieldId: 'GvaF',
         authorName: 'Developer',
         authorEmail: 'developer@marmelab.com',
@@ -31,7 +30,6 @@ const ANNOTATIONS = [
     {
         resourceUri: 'uid:/2a8d429f-8134-4502-b9d3-d20c571592fa',
         kind: 'comment',
-        itemPath: [],
         fieldId: null,
         authorName: 'John DOE',
         authorEmail: 'john.doe@marmelab.com',
@@ -44,7 +42,6 @@ const ANNOTATIONS = [
     {
         resourceUri: 'uid:/d4f1e376-d5dd-4853-b515-b7f63b34d67d',
         kind: 'comment',
-        itemPath: [],
         fieldId: null,
         authorName: 'Jane SMITH',
         authorEmail: 'jane.smith@marmelab.com',
@@ -57,7 +54,6 @@ const ANNOTATIONS = [
     {
         resourceUri: 'uid:/783f398d-0675-48d6-b851-137302820cf6',
         kind: 'removal',
-        itemPath: [],
         fieldId: null,
         authorName: 'Jane SMITH',
         authorEmail: 'jane.smith@marmelab.com',
@@ -87,17 +83,21 @@ describe('annotation', () => {
         publishedDatasetModel = await createPublishedDatasetModel(db);
     });
 
-    afterAll(async () => {
-        await connection.close();
+    beforeEach(async () => {
+        await db.collection('publishedDataset').deleteMany({});
+        await db.collection('field').deleteMany({});
+        await db.collection('annotation').deleteMany({});
     });
 
-    beforeEach(async () => db.dropDatabase());
+    afterAll(async () => {
+        await db.dropDatabase();
+        await connection.close();
+    });
 
     describe('createAnnotation', () => {
         it('should create an annotation', async () => {
             const annotation = {
                 resourceUri: 'uid:/a4f7a51f-7109-481e-86cc-0adb3a26faa6',
-                itemPath: [],
                 fieldId: 'Gb4a',
                 kind: 'comment',
                 comment: 'Hello world',
@@ -1107,7 +1107,6 @@ describe('annotation', () => {
             {
                 resourceUri: 'uid:/2a8d429f-8134-4502-b9d3-d20c571592fa',
                 fieldId: 'GvaF',
-                itemPath: [],
                 kind: 'comment',
                 authorName: 'Developer',
                 authorEmail: 'developer@marmelab.com',
@@ -1119,7 +1118,6 @@ describe('annotation', () => {
             {
                 resourceUri: 'uid:/65257776-4e3c-44f6-8652-85502a97e5ac',
                 fieldId: null,
-                itemPath: null,
                 kind: 'comment',
                 authorName: 'John DOE',
                 authorEmail: 'john.doe@marmelab.com',
@@ -1131,7 +1129,6 @@ describe('annotation', () => {
             {
                 resourceUri: 'uid:/d4f1e376-d5dd-4853-b515-b7f63b34d67d',
                 fieldId: null,
-                itemPath: null,
                 kind: 'correction',
                 authorName: 'Jane SMITH',
                 authorEmail: 'jane.smith@marmelab.com',
@@ -1150,7 +1147,7 @@ describe('annotation', () => {
             );
         });
 
-        it.only('should export annotations without their _id', async () => {
+        it('should export annotations without their _id', async () => {
             const ctx = {
                 response: {
                     attachment: jest.fn(),
@@ -1204,7 +1201,6 @@ describe('annotation', () => {
 
             annotation = await annotationModel.create({
                 resourceUri: 'uid:/1234',
-                itemPath: [],
                 fieldId: field._id,
                 authorName: 'Developer',
                 authorEmail: 'developer@marmelab.com',
@@ -1241,7 +1237,6 @@ describe('annotation', () => {
                     },
                     fieldId: field._id,
                     internalComment: null,
-                    itemPath: [],
                     resource: {
                         title: 'resource title',
                         uri: 'uid:/1234',
@@ -1257,7 +1252,6 @@ describe('annotation', () => {
         it('should return target annotation with field at null when it does not exists', async () => {
             annotation = await annotationModel.create({
                 resourceUri: 'uid:/1234',
-                itemPath: [],
                 fieldId: '404',
                 authorName: 'Developer',
                 authorEmail: 'developer@marmelab.com',
@@ -1286,7 +1280,6 @@ describe('annotation', () => {
                     field: null,
                     fieldId: '404',
                     internalComment: null,
-                    itemPath: [],
                     resource: {
                         title: 'resource title',
                         uri: 'uid:/1234',
@@ -1302,7 +1295,6 @@ describe('annotation', () => {
         it('should return target annotation with resource at null when it does not exists', async () => {
             annotation = await annotationModel.create({
                 resourceUri: 'uid:/404',
-                itemPath: [],
                 fieldId: field._id,
                 authorName: 'Developer',
                 authorEmail: 'developer@marmelab.com',
@@ -1331,7 +1323,6 @@ describe('annotation', () => {
                     field,
                     fieldId: field._id,
                     internalComment: null,
-                    itemPath: [],
                     resource: null,
                     resourceUri: 'uid:/404',
                     status: 'ongoing',
@@ -1427,7 +1418,6 @@ describe('annotation', () => {
 
             annotation = await annotationModel.create({
                 resourceUri: 'uid:/1234',
-                itemPath: [],
                 fieldId: field._id,
                 authorName: 'Developer',
                 authorEmail: 'developer@marmelab.com',
@@ -1558,7 +1548,6 @@ describe('annotation', () => {
         beforeEach(async () => {
             annotation = await annotationModel.create({
                 resourceUri: null,
-                itemPath: [],
                 fieldId: null,
                 authorName: 'Developer',
                 authorEmail: 'developer@marmelab.com',

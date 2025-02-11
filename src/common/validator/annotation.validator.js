@@ -14,15 +14,6 @@ export const annotationCreationSchema = z
                 message: 'error_required',
             })
             .optional(),
-        // A path that points to the field / item of a field that the annotation is about.
-        // MUST be compatible with _.get
-        // See https://lodash.com/docs/4.17.15#get
-        itemPath: z
-            .array(z.string(), {
-                message: 'annotation_itemPath_invalid',
-            })
-            .nullish()
-            .default(null),
         comment: z
             .string({
                 required_error: 'error_required',
@@ -123,6 +114,33 @@ export const annotationUpdateSchema = z.object({
         .default(null)
         .transform((value) => (value === '' ? null : value)),
 });
+
+const annotationUpdateNullishSchema = z.object(
+    [...Object.entries(annotationUpdateSchema.shape)].reduce(
+        (acc, [key, value]) => {
+            acc[key] = value
+                .nullish()
+                .default(key === 'status' ? 'to_review' : null);
+            return acc;
+        },
+        {},
+    ),
+);
+
+export const annotationImportSchema = annotationCreationSchema
+    .and(annotationUpdateNullishSchema)
+    .and(
+        z.object({
+            createdAt: z.coerce
+                .date()
+                .nullish()
+                .default(() => new Date()),
+            updatedAt: z.coerce
+                .date()
+                .nullish()
+                .default(() => new Date()),
+        }),
+    );
 
 const annotationFilterableFields = z
     .enum(

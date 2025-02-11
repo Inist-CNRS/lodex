@@ -2,7 +2,7 @@ export const fillInputWithFixture = (selector, filename, mimeType) => {
     cy.fixture(filename)
         .as('data')
         .get(selector, { timeout: 6000 })
-        .then(function(element) {
+        .then(function (element) {
             const dataString =
                 typeof this.data === 'string'
                     ? this.data

@@ -5,9 +5,11 @@ import { useHistory } from 'react-router-dom';
 import fetch from '../../../lib/fetch';
 import { getRequest } from '../../../user';
 import { getUserSessionStorageInfo } from '../../api/tools';
+import { useDownloader } from '../../commons/useDownloader';
 
 export function useExportAnnotations() {
     const history = useHistory();
+    const { download } = useDownloader();
 
     const mutation = useMutation({
         mutationFn: async () => {
@@ -33,18 +35,7 @@ export function useExportAnnotations() {
             return response;
         },
         onSuccess: (blob) => {
-            const date = new Date()
-                .toISOString()
-                .replaceAll('T', '-')
-                .replaceAll(':', '')
-                .split('.')[0];
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `annotations_${date}.json`;
-            document.body.appendChild(a);
-            a.click();
-            a.remove();
+            download('annotations', blob);
         },
         onError: () => {},
     });
