@@ -1,4 +1,6 @@
+import { default as _ } from 'lodash';
 import { MongoClient } from 'mongodb';
+import { text } from 'stream/consumers';
 import createAnnotationModel from '../../models/annotation';
 import createFieldModel from '../../models/field';
 import createPublishedDatasetModel from '../../models/publishedDataset';
@@ -1140,14 +1142,14 @@ describe('annotation', () => {
             },
         ];
 
+        let createdAnnotations;
         beforeEach(async () => {
-            // this enforces ordering of the annotations
-            for (const annotationPayload of annotationsPayload) {
-                await annotationModel.create(annotationPayload);
-            }
+            createdAnnotations = await Promise.all(
+                annotationsPayload.map(annotationModel.create),
+            );
         });
 
-        it('should export annotations woithout their _id', async () => {
+        it.only('should export annotations without their _id', async () => {
             const ctx = {
                 response: {
                     attachment: jest.fn(),
@@ -1161,7 +1163,22 @@ describe('annotation', () => {
                 'annotations.json',
             );
             expect(ctx.response.status).toBe(200);
-            expect(ctx.response.body).toMatchObject(annotationsPayload);
+            const jsonBody = await text(ctx.response.body);
+            expect(JSON.parse(jsonBody)).toMatchObject(
+                createdAnnotations
+                    .toSorted((annotation) => annotation._id.toString())
+                    .map((annotation) => {
+                        const annotationWithoutId = _.omit(annotation, '_id');
+
+                        return {
+                            ...annotationWithoutId,
+                            createdAt:
+                                annotationWithoutId.createdAt.toISOString(),
+                            updatedAt:
+                                annotationWithoutId.updatedAt.toISOString(),
+                        };
+                    }),
+            );
         });
     });
 

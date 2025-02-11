@@ -145,20 +145,21 @@ describe('annotation', () => {
             },
         ];
 
-        const createdAnnotations = [];
+        let createdAnnotations;
         beforeEach(async () => {
-            // this enforces ordering of the annotations
-            for (const annotationPayload of annotationsPayload) {
-                createdAnnotations.push(
-                    await annotationModel.create(annotationPayload),
-                );
-            }
+            createdAnnotations = await Promise.all(
+                annotationsPayload.map(annotationModel.create),
+            );
         });
 
         it('should return an array of annotations', async () => {
-            const result = await annotationModel.findAll();
+            const result = await annotationModel
+                .findAll()
+                .then((cursor) => cursor.toArray());
 
-            expect(result).toEqual(createdAnnotations);
+            expect(
+                result.toSorted((annotation) => annotation._id.toString()),
+            ).toEqual(createdAnnotations);
         });
     });
 

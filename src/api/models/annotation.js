@@ -40,7 +40,9 @@ export default async (db) => {
     }
 
     async function findAll() {
-        return annotationCollection.find().toArray();
+        return annotationCollection.find().sort({
+            _id: 1,
+        });
     }
 
     async function findLimitFromSkip({
