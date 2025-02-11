@@ -36,10 +36,14 @@ export function AnnotationCommentStep({ form }) {
                             translate('annotation_correct_value', {
                                 value: annotationInitialValue,
                             })}
+                        {kind === 'addition' &&
+                            translate('annotation_add_value')}
                     </Typography>
                 </Tooltip>
             )}
-            {kind === 'correct' && <ProposedValueField form={form} />}
+            {['correct', 'addition'].includes(kind) && (
+                <ProposedValueField form={form} />
+            )}
             <CommentField form={form} />
         </>
     );

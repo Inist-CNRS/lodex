@@ -68,4 +68,16 @@ describe('AnnotationCommentStep', () => {
             wrapper.queryByLabelText('annotation.proposedValue *'),
         ).toBeInTheDocument();
     });
+
+    it('should render the comment and proposedValue input when kind is addition', () => {
+        const wrapper = renderAnnotationCommentStep({ kind: 'addition' });
+        wrapper.debug();
+        expect(wrapper.queryByText('annotation_add_value')).toBeInTheDocument();
+        expect(
+            wrapper.queryByLabelText('annotation.comment *'),
+        ).toBeInTheDocument();
+        expect(
+            wrapper.queryByLabelText('annotation.proposedValue *'),
+        ).toBeInTheDocument();
+    });
 });

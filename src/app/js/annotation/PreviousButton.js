@@ -27,6 +27,10 @@ export const PreviousButton = ({
         return state.values.target;
     });
 
+    const kind = useStore(form.store, (state) => {
+        return state.values.kind;
+    });
+
     const handleBack = useCallback(
         (event) => {
             event.preventDefault();
@@ -48,7 +52,7 @@ export const PreviousButton = ({
                         goToStep(TARGET_STEP);
                         return;
                     }
-                    if (Array.isArray(initialValue)) {
+                    if (Array.isArray(initialValue) && kind !== 'addition') {
                         goToStep(VALUE_STEP);
                         return;
                     }
