@@ -59,6 +59,7 @@ describe('Annotation', () => {
                     '',
                     '',
                     '',
+                    '',
                     'To Review',
                     '',
                     '',
@@ -111,6 +112,7 @@ describe('Annotation', () => {
                         'Field Icons',
                         'Field Internal Name',
                         'Initial value',
+                        'Proposed value',
                         'Status',
                         'Internal Comment',
                         'Administrator',
@@ -123,7 +125,7 @@ describe('Annotation', () => {
 
                 cy.findAllByRole('cell').then((cells) => {
                     const firstUri = cells[0].textContent;
-                    const secondUri = cells[15].textContent;
+                    const secondUri = cells[16].textContent;
 
                     expect(firstUri).to.match(/uid:\//);
                     expect(secondUri).to.match(/uid:\//);
@@ -139,6 +141,7 @@ describe('Annotation', () => {
                         '',
                         '',
                         '7,5',
+                        '',
                         'To Review',
                         '',
                         '',
@@ -151,6 +154,7 @@ describe('Annotation', () => {
                         'comment',
                         'actors',
                         '[K8Lu]',
+                        '',
                         '',
                         '',
                         '',
@@ -229,7 +233,7 @@ describe('Annotation', () => {
 
                 cy.findAllByRole('cell').then((cells) => {
                     const firstUri = cells[0].textContent;
-                    const secondUri = cells[15].textContent;
+                    const secondUri = cells[16].textContent;
 
                     expect(firstUri).to.match(/uid:\//);
                     expect(secondUri).to.match(/uid:\//);
@@ -245,6 +249,7 @@ describe('Annotation', () => {
                         '',
                         '',
                         '7,5',
+                        '',
                         'Validated',
                         'Return applied',
                         'John Doe',
@@ -257,6 +262,7 @@ describe('Annotation', () => {
                         'comment',
                         'actors',
                         '[K8Lu]',
+                        '',
                         '',
                         '',
                         '',
@@ -305,7 +311,7 @@ describe('Annotation', () => {
 
                 cy.findAllByRole('cell').then((cells) => {
                     const firstUri = cells[0].textContent;
-                    const secondUri = cells[15].textContent;
+                    const secondUri = cells[16].textContent;
 
                     expect(firstUri).to.match(/uid:\//);
                     expect(secondUri).to.match(/uid:\//);
@@ -321,6 +327,7 @@ describe('Annotation', () => {
                         '',
                         '',
                         '',
+                        '',
                         'To Review',
                         '',
                         '',
@@ -333,6 +340,7 @@ describe('Annotation', () => {
                         'comment',
                         'actors',
                         '[K8Lu]',
+                        '',
                         '',
                         '',
                         '',
@@ -386,6 +394,7 @@ describe('Annotation', () => {
                         '',
                         '',
                         '',
+                        '',
                         'To Review',
                         '',
                         '',
@@ -426,6 +435,7 @@ describe('Annotation', () => {
                     'comment',
                     'Répartition par réalisateurs uniques',
                     '[xkoP]',
+                    '',
                     '',
                     '',
                     '',
