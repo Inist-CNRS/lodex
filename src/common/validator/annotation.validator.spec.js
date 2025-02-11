@@ -646,6 +646,7 @@ describe('annotation.validator', () => {
                         'fieldId',
                         'comment',
                         'initialValue',
+                        'proposedValue',
                         'status',
                         'internalComment',
                         'administrator',

@@ -134,6 +134,7 @@ const annotationFilterableFields = z
             'fieldId',
             'comment',
             'initialValue',
+            'proposedValue',
             'status',
             'internalComment',
             'administrator',
