@@ -59,9 +59,7 @@ export function TextField({
                             </FormHelperText>
                         ) : (
                             helperText && (
-                                <FormHelperText error role="alert">
-                                    {helperText}
-                                </FormHelperText>
+                                <FormHelperText>{helperText}</FormHelperText>
                             )
                         )}
                     </FormControl>
