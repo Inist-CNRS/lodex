@@ -1,43 +1,18 @@
-import { FormControl, FormHelperText, TextField } from '@mui/material';
 import PropTypes from 'prop-types';
 import React from 'react';
 
 import { useTranslate } from '../../i18n/I18NContext';
+import { TextField } from './TextField';
 
 export function AuthorEmailField({ form }) {
     const { translate } = useTranslate();
     return (
-        <form.Field name="authorEmail">
-            {(field) => {
-                const hasErrors = !!(
-                    field.state.meta.isTouched &&
-                    field.state.meta.errors?.length
-                );
-
-                return (
-                    <FormControl fullWidth>
-                        <TextField
-                            label={`${translate('annotation.authorEmail')}`}
-                            name={field.name}
-                            value={field.state.value ?? ''}
-                            onBlur={field.handleBlur}
-                            onChange={(e) => field.handleChange(e.target.value)}
-                            error={hasErrors}
-                        />
-
-                        {hasErrors ? (
-                            <FormHelperText error role="alert">
-                                {translate(field.state.meta.errors[0])}
-                            </FormHelperText>
-                        ) : (
-                            <FormHelperText>
-                                {translate('annotation.authorEmail_helpText')}
-                            </FormHelperText>
-                        )}
-                    </FormControl>
-                );
-            }}
-        </form.Field>
+        <TextField
+            form={form}
+            name="authorEmail"
+            label={translate('annotation.authorEmail')}
+            helperText={translate('annotation.authorEmail_helpText')}
+        />
     );
 }
 
