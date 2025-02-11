@@ -47,7 +47,7 @@ export function AnnotationItems({ annotation }) {
             {annotation.initialValue && (
                 <Section label="annotation_initial_value">
                     <Typography
-                        aria-labelledby="annotation_comment_section"
+                        aria-labelledby="annotation_initial_value"
                         component="pre"
                         whiteSpace="pre-wrap"
                         sx={{
@@ -55,6 +55,21 @@ export function AnnotationItems({ annotation }) {
                         }}
                     >
                         {annotation.initialValue}
+                    </Typography>
+                </Section>
+            )}
+
+            {annotation.proposedValue && (
+                <Section label="annotation_proposed_value">
+                    <Typography
+                        aria-labelledby="annotation_proposed_value"
+                        component="pre"
+                        whiteSpace="pre-wrap"
+                        sx={{
+                            textAlign: 'justify',
+                        }}
+                    >
+                        {annotation.proposedValue}
                     </Typography>
                 </Section>
             )}
