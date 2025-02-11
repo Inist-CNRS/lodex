@@ -80,6 +80,13 @@ export function CreateAnnotationModal({
             return true;
         }
 
+        if (state.values.kind === 'correct') {
+            return (
+                !!state.values.proposedValue &&
+                isRequiredFieldValid(state, 'comment')
+            );
+        }
+
         return isRequiredFieldValid(state, 'comment');
     });
 

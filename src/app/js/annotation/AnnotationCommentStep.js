@@ -5,11 +5,12 @@ import PropTypes from 'prop-types';
 import { CommentField } from './fields/CommentField';
 import { Tooltip, Typography } from '@mui/material';
 import { useTranslate } from '../i18n/I18NContext';
+import { ProposedValueField } from './fields/ProposedValueField';
 
 export function AnnotationCommentStep({ form }) {
     const { translate } = useTranslate();
     const annotationInitialValue = useStore(form.store, (state) => {
-        return state.values.initialValue.replace(/<[^>]*>/g, '');
+        return state.values.initialValue?.replace(/<[^>]*>/g, '');
     });
 
     const kind = useStore(form.store, (state) => {
@@ -19,7 +20,7 @@ export function AnnotationCommentStep({ form }) {
     return (
         <>
             {annotationInitialValue && (
-                <Tooltip title={annotationInitialValue.replace(/<[^>]*>/g, '')}>
+                <Tooltip title={annotationInitialValue}>
                     <Typography
                         sx={{
                             whiteSpace: 'nowrap',
@@ -29,21 +30,16 @@ export function AnnotationCommentStep({ form }) {
                     >
                         {kind === 'removal' &&
                             translate('annotation_remove_value', {
-                                value: annotationInitialValue.replace(
-                                    /<[^>]*>/g,
-                                    '',
-                                ),
+                                value: annotationInitialValue,
                             })}
                         {kind === 'comment' &&
                             translate('annotation_correct_value', {
-                                value: annotationInitialValue.replace(
-                                    /<[^>]*>/g,
-                                    '',
-                                ),
+                                value: annotationInitialValue,
                             })}
                     </Typography>
                 </Tooltip>
             )}
+            {kind === 'correct' && <ProposedValueField form={form} />}
             <CommentField form={form} />
         </>
     );
