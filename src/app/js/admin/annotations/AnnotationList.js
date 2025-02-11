@@ -222,6 +222,15 @@ export const AnnotationList = () => {
                     },
                 },
                 {
+                    field: 'proposedValue',
+                    headerName: translate('annotation_proposed_value'),
+                    flex: 1,
+                    sortable: false,
+                    renderCell: ({ value }) => {
+                        return <CellWithTooltip value={value} />;
+                    },
+                },
+                {
                     field: 'status',
                     headerName: translate('annotation_status'),
                     filterOperators: getGridStringOperators()

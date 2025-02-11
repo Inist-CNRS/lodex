@@ -320,7 +320,7 @@ describe('CreateAnnotationModal', () => {
     });
 
     describe('comment tab', () => {
-        beforeEach(async () => {
+        beforeEach(() => {
             render(
                 <TestModal
                     onClose={onClose}
@@ -344,7 +344,7 @@ describe('CreateAnnotationModal', () => {
         });
 
         describe('comments', () => {
-            it('should render comments field', () => {
+            it('should render comments field (but no proposedValue field)', () => {
                 expect(
                     screen.getByRole('heading', {
                         name: 'annotation_add_comment',
@@ -355,6 +355,11 @@ describe('CreateAnnotationModal', () => {
                         name: 'annotation.comment *',
                     }),
                 ).toBeInTheDocument();
+                expect(
+                    screen.queryByRole('textbox', {
+                        name: 'annotation.proposedValue *',
+                    }),
+                ).not.toBeInTheDocument();
             });
 
             it('should not display an error when field is valid', async () => {
@@ -420,6 +425,74 @@ describe('CreateAnnotationModal', () => {
                 ).not.toBeValid();
 
                 expect(screen.getByText('error_required')).toHaveRole('alert');
+            });
+        });
+
+        describe('correction comment', () => {
+            beforeEach(() => {
+                render(
+                    <TestModal
+                        onClose={onClose}
+                        onSubmit={onSubmit}
+                        isSubmitting={false}
+                        initialValue="initialValue"
+                    />,
+                );
+
+                fireEvent.click(
+                    screen.queryByText('annotation_comment_target_value'),
+                );
+                fireEvent.click(
+                    screen.queryByText('annotation_correct_content'),
+                );
+                expect(
+                    screen.queryByRole('tab', {
+                        name: 'annotation_step_comment',
+                    }),
+                ).toBeInTheDocument();
+            });
+
+            it('should render required proposedValue and comment field', () => {
+                expect(
+                    screen.getByRole('heading', {
+                        name: 'annotation_add_comment',
+                    }),
+                ).toBeInTheDocument();
+                expect(
+                    screen.getByRole('textbox', {
+                        name: 'annotation.proposedValue *',
+                    }),
+                ).toBeInTheDocument();
+                expect(
+                    screen.getByRole('textbox', {
+                        name: 'annotation.comment *',
+                    }),
+                ).toBeInTheDocument();
+                expect(
+                    screen.getByRole('button', { name: 'next' }),
+                ).toBeDisabled();
+                fireEvent.change(
+                    screen.getByRole('textbox', {
+                        name: 'annotation.comment *',
+                    }),
+                    {
+                        target: { value: 'comment' },
+                    },
+                );
+                expect(
+                    screen.getByRole('button', { name: 'next' }),
+                ).toBeDisabled();
+                fireEvent.change(
+                    screen.getByRole('textbox', {
+                        name: 'annotation.proposedValue *',
+                    }),
+                    {
+                        target: { value: 'proposedValue' },
+                    },
+                );
+                expect(
+                    screen.getByRole('button', { name: 'next' }),
+                ).not.toBeDisabled();
             });
         });
     });
@@ -638,7 +711,7 @@ describe('CreateAnnotationModal', () => {
         });
     });
 
-    it('should allow to create a comment on the field when there is no initial value', async () => {
+    it('should allow to create a comment annotation on the field when there is no initial value', async () => {
         render(
             <TestModal
                 onClose={onClose}
@@ -690,7 +763,7 @@ describe('CreateAnnotationModal', () => {
         });
     });
 
-    it('should allow to create a comment on the field when there is an initial value', async () => {
+    it('should allow to create a comment annotation on the field when there is an initial value', async () => {
         render(
             <TestModal
                 onClose={onClose}
@@ -749,7 +822,7 @@ describe('CreateAnnotationModal', () => {
         });
     });
 
-    it('should allow to create a comment on the value when there is a single initial value', async () => {
+    it('should allow to create a removal annotation on the value when there is a single initial value', async () => {
         render(
             <TestModal
                 onClose={onClose}
@@ -816,7 +889,7 @@ describe('CreateAnnotationModal', () => {
         });
     });
 
-    it('should allow to create a comment on a selected value when there is multiple initial value', async () => {
+    it('should allow to create a removal annotation on a selected value when there is multiple initial value', async () => {
         render(
             <TestModal
                 onClose={onClose}
@@ -896,6 +969,180 @@ describe('CreateAnnotationModal', () => {
             initialValue: 'secondValue',
             target: 'value',
             kind: 'removal',
+        });
+    });
+
+    it('should allow to create a correct annotation on the value when there is a single initial value', async () => {
+        render(
+            <TestModal
+                onClose={onClose}
+                onSubmit={onSubmit}
+                isSubmitting={false}
+                initialValue="initialValue"
+            />,
+        );
+
+        fireEvent.click(
+            screen.getByRole('menuitem', {
+                name: 'annotation_comment_target_value',
+            }),
+        );
+
+        await waitFor(() => {
+            fireEvent.click(
+                screen.getByRole('menuitem', {
+                    name: 'annotation_correct_content',
+                }),
+            );
+        });
+
+        await waitFor(() => {
+            fireEvent.change(
+                screen.getByRole('textbox', {
+                    name: 'annotation.comment *',
+                }),
+                {
+                    target: { value: 'test' },
+                },
+            );
+        });
+
+        await waitFor(() => {
+            fireEvent.change(
+                screen.getByRole('textbox', {
+                    name: 'annotation.proposedValue *',
+                }),
+                {
+                    target: { value: 'proposedValue' },
+                },
+            );
+        });
+
+        await waitFor(() => {
+            fireEvent.click(screen.getByRole('button', { name: 'next' }));
+        });
+
+        await waitFor(() => {
+            fireEvent.change(
+                screen.getByRole('textbox', {
+                    name: 'annotation.authorName *',
+                }),
+                {
+                    target: { value: 'author' },
+                },
+            );
+        });
+
+        // Wait for the submit button to be enabled
+        await waitFor(() => setTimeout(500));
+
+        await waitFor(() => {
+            fireEvent.click(screen.getByRole('button', { name: 'validate' }));
+        });
+
+        expect(onSubmit).toHaveBeenCalledTimes(1);
+        expect(onSubmit).toHaveBeenCalledWith({
+            authorName: 'author',
+            comment: 'test',
+            initialValue: 'initialValue',
+            proposedValue: 'proposedValue',
+            target: 'value',
+            kind: 'correct',
+        });
+    });
+
+    it('should allow to create a correct annotation on a selected value when there is multiple initial value', async () => {
+        render(
+            <TestModal
+                onClose={onClose}
+                onSubmit={onSubmit}
+                isSubmitting={false}
+                initialValue={['firstValue', 'secondValue']}
+            />,
+        );
+
+        fireEvent.click(
+            screen.getByRole('menuitem', {
+                name: 'annotation_comment_target_value',
+            }),
+        );
+
+        await waitFor(() => {
+            fireEvent.click(
+                screen.getByRole('menuitem', {
+                    name: 'annotation_correct_content',
+                }),
+            );
+        });
+
+        await waitFor(() => {
+            fireEvent.mouseDown(
+                screen.getByLabelText('annotation_choose_value *'),
+            );
+        });
+
+        await waitFor(() => {
+            fireEvent.click(
+                screen.getByRole('option', { name: 'secondValue' }),
+            );
+        });
+
+        await waitFor(() => {
+            fireEvent.click(screen.getByRole('button', { name: 'next' }));
+        });
+
+        await waitFor(() => {
+            fireEvent.change(
+                screen.getByRole('textbox', {
+                    name: 'annotation.proposedValue *',
+                }),
+                {
+                    target: { value: 'proposedValue' },
+                },
+            );
+        });
+
+        await waitFor(() => {
+            fireEvent.change(
+                screen.getByRole('textbox', {
+                    name: 'annotation.comment *',
+                }),
+                {
+                    target: { value: 'test' },
+                },
+            );
+        });
+
+        await waitFor(() => {
+            fireEvent.click(screen.getByRole('button', { name: 'next' }));
+        });
+
+        await waitFor(() => {
+            fireEvent.change(
+                screen.getByRole('textbox', {
+                    name: 'annotation.authorName *',
+                }),
+                {
+                    target: { value: 'author' },
+                },
+            );
+        });
+
+        // Wait for the submit button to be enabled
+        await waitFor(() => setTimeout(500));
+
+        await waitFor(() => {
+            fireEvent.click(screen.getByRole('button', { name: 'validate' }));
+        });
+
+        expect(onSubmit).toHaveBeenCalledTimes(1);
+        expect(onSubmit).toHaveBeenCalledWith({
+            authorName: 'author',
+            comment: 'test',
+            initialValue: 'secondValue',
+            proposedValue: 'proposedValue',
+            target: 'value',
+            kind: 'correct',
         });
     });
 });

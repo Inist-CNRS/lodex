@@ -1046,6 +1046,7 @@ describe('annotation', () => {
                             'fieldId',
                             'comment',
                             'initialValue',
+                            'proposedValue',
                             'status',
                             'internalComment',
                             'administrator',

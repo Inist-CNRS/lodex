@@ -29,34 +29,64 @@ const renderKindField = (props) => {
     };
 };
 
-describe('TargetField', () => {
-    it('should display choice to remove a value', async () => {
+describe('KindField', () => {
+    it('should display choices', async () => {
         renderKindField({});
         expect(
             screen.getByText('annotation_remove_content'),
         ).toBeInTheDocument();
+        expect(
+            screen.getByText('annotation_correct_content'),
+        ).toBeInTheDocument();
     });
 
-    it('should call goToStep with COMMENT_STEP when removing a value and there is a single value', async () => {
-        const goToStep = jest.fn();
-        const { form } = renderKindField({ goToStep });
-        fireEvent.click(screen.getByText('annotation_remove_content'));
-        expect(goToStep).toHaveBeenCalledWith(COMMENT_STEP);
-        expect(form.state.values).toStrictEqual({
-            kind: 'removal',
+    describe('removal', () => {
+        it('should call goToStep with COMMENT_STEP when removing a value and there is a single value', async () => {
+            const goToStep = jest.fn();
+            const { form } = renderKindField({ goToStep });
+            fireEvent.click(screen.getByText('annotation_remove_content'));
+            expect(goToStep).toHaveBeenCalledWith(COMMENT_STEP);
+            expect(form.state.values).toStrictEqual({
+                kind: 'removal',
+            });
+        });
+
+        it('should call goToStep with VALUE_STEP when removing a value and there are multiple values', async () => {
+            const goToStep = jest.fn();
+            const { form } = renderKindField({
+                goToStep,
+                initialValue: ['a', 'b'],
+            });
+            fireEvent.click(screen.getByText('annotation_remove_content'));
+            expect(goToStep).toHaveBeenCalledWith(VALUE_STEP);
+            expect(form.state.values).toStrictEqual({
+                kind: 'removal',
+            });
         });
     });
 
-    it('should call goToStep with VALUE_STEP when removing a value and there are multiple values', async () => {
-        const goToStep = jest.fn();
-        const { form } = renderKindField({
-            goToStep,
-            initialValue: ['a', 'b'],
+    describe('correct', () => {
+        it('should call goToStep with COMMENT_STEP when removing a value and there is a single value', async () => {
+            const goToStep = jest.fn();
+            const { form } = renderKindField({ goToStep });
+            fireEvent.click(screen.getByText('annotation_correct_content'));
+            expect(goToStep).toHaveBeenCalledWith(COMMENT_STEP);
+            expect(form.state.values).toStrictEqual({
+                kind: 'correct',
+            });
         });
-        fireEvent.click(screen.getByText('annotation_remove_content'));
-        expect(goToStep).toHaveBeenCalledWith(VALUE_STEP);
-        expect(form.state.values).toStrictEqual({
-            kind: 'removal',
+
+        it('should call goToStep with VALUE_STEP when removing a value and there are multiple values', async () => {
+            const goToStep = jest.fn();
+            const { form } = renderKindField({
+                goToStep,
+                initialValue: ['a', 'b'],
+            });
+            fireEvent.click(screen.getByText('annotation_correct_content'));
+            expect(goToStep).toHaveBeenCalledWith(VALUE_STEP);
+            expect(form.state.values).toStrictEqual({
+                kind: 'correct',
+            });
         });
     });
 });

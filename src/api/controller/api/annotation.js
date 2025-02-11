@@ -70,6 +70,7 @@ export const buildQuery = async ({
         case 'internalComment':
         case 'administrator':
         case 'initialValue':
+        case 'proposedValue':
         case 'authorName':
         case 'comment': {
             switch (filterOperator) {
