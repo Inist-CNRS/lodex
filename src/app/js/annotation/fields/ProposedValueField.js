@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 import { useTranslate } from '../../i18n/I18NContext';
-import { TextField } from './TextField';
+import { TextField } from '../../../../common/fields/TextField';
 
 export function ProposedValueField({ form }) {
     const { translate } = useTranslate();
