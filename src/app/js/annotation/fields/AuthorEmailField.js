@@ -4,7 +4,7 @@ import React from 'react';
 
 import { useTranslate } from '../../i18n/I18NContext';
 
-export function AuthorEmailField({ form, active }) {
+export function AuthorEmailField({ form }) {
     const { translate } = useTranslate();
     return (
         <form.Field name="authorEmail">
@@ -23,9 +23,6 @@ export function AuthorEmailField({ form, active }) {
                             onBlur={field.handleBlur}
                             onChange={(e) => field.handleChange(e.target.value)}
                             error={hasErrors}
-                            InputProps={{
-                                inputProps: active ? {} : { tabIndex: -1 },
-                            }}
                         />
 
                         {hasErrors ? (
@@ -46,5 +43,4 @@ export function AuthorEmailField({ form, active }) {
 
 AuthorEmailField.propTypes = {
     form: PropTypes.object.isRequired,
-    active: PropTypes.bool.isRequired,
 };

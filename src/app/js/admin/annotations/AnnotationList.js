@@ -21,6 +21,7 @@ import { StatusFilter } from './filters/StatusFilter';
 import { useGetAnnotations } from './hooks/useGetAnnotations';
 import { ResourceTitleCell } from './ResourceTitleCell';
 import { ResourceUriCell } from './ResourceUriCell';
+import { KindFilter } from './filters/KindFilter';
 
 const AnnotationListToolBar = () => {
     const { translate } = useTranslate();
@@ -114,6 +115,21 @@ export const AnnotationList = () => {
                     ),
                     renderCell: ({ row }) => {
                         return <ResourceTitleCell row={row} />;
+                    },
+                },
+                {
+                    field: 'kind',
+                    headerName: translate('annotation_kind'),
+                    flex: 1,
+                    sortable: true,
+                    filterOperators: getGridStringOperators()
+                        .filter((operator) => operator.value === 'equals')
+                        .map((operator) => ({
+                            ...operator,
+                            InputComponent: KindFilter,
+                        })),
+                    renderCell: ({ value }) => {
+                        return <CellWithTooltip value={value} />;
                     },
                 },
                 {

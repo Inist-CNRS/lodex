@@ -4,7 +4,7 @@ import React from 'react';
 
 import { useTranslate } from '../../i18n/I18NContext';
 
-export function CommentField({ form, active }) {
+export function CommentField({ form }) {
     const { translate } = useTranslate();
     return (
         <form.Field name="comment">
@@ -26,9 +26,6 @@ export function CommentField({ form, active }) {
                             maxRows={10}
                             multiline
                             error={hasErrors}
-                            InputProps={{
-                                inputProps: active ? {} : { tabIndex: -1 },
-                            }}
                         />
                         {hasErrors && (
                             <FormHelperText error role="alert">
@@ -44,5 +41,4 @@ export function CommentField({ form, active }) {
 
 CommentField.propTypes = {
     form: PropTypes.object.isRequired,
-    active: PropTypes.bool.isRequired,
 };

@@ -27,6 +27,7 @@ describe('AnnotationForm', () => {
                                 resource: {
                                     title: 'The resource title',
                                 },
+                                kind: 'comment',
                                 comment: 'Just testing the annotation system',
                                 status: 'ongoing',
                                 internalComment:
@@ -51,7 +52,7 @@ describe('AnnotationForm', () => {
 
         expect(
             wrapper.getByRole('heading', {
-                name: 'annotation_header uid:/1234',
+                name: 'annotation_header_comment uid:/1234',
             }),
         ).toBeInTheDocument();
 
@@ -141,6 +142,7 @@ describe('AnnotationForm', () => {
                                 resource: {
                                     title: 'The resource title',
                                 },
+                                kind: 'comment',
                                 comment: 'Just testing the annotation system',
                                 status: 'ongoing',
                                 internalComment:
@@ -204,6 +206,7 @@ describe('AnnotationForm', () => {
                                 resource: {
                                     title: 'The resource title',
                                 },
+                                kind: 'comment',
                                 comment: 'Just testing the annotation system',
                                 status: 'to_review',
                                 internalComment: null,

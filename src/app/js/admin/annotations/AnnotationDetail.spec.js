@@ -40,6 +40,7 @@ describe('AnnotationDetail', () => {
                 resource: {
                     title: 'The resource title',
                 },
+                kind: 'comment',
                 comment: 'Just testing the annotation system',
                 status: 'ongoing',
                 internalComment: 'Just testing the annotation admin',
@@ -62,7 +63,7 @@ describe('AnnotationDetail', () => {
 
         expect(
             wrapper.getByRole('heading', {
-                name: 'annotation_header uid:/1234',
+                name: 'annotation_header_comment uid:/1234',
             }),
         ).toBeInTheDocument();
 
@@ -168,6 +169,7 @@ describe('AnnotationDetail', () => {
             data: {
                 resourceUri: null,
                 resource: null,
+                kind: 'comment',
                 comment: 'Just testing the annotation system',
                 field: {
                     name: 'GaZr',
@@ -185,7 +187,7 @@ describe('AnnotationDetail', () => {
 
         expect(
             wrapper.getByRole('heading', {
-                name: 'annotation_header annotation_home_page',
+                name: 'annotation_header_comment annotation_home_page',
             }),
         ).toBeInTheDocument();
 
@@ -199,6 +201,7 @@ describe('AnnotationDetail', () => {
             data: {
                 resourceUri: 'uid:/404',
                 resource: null,
+                kind: 'comment',
                 comment: 'Just testing the annotation system',
                 field: {
                     name: 'GaZr',
@@ -216,7 +219,7 @@ describe('AnnotationDetail', () => {
 
         expect(
             wrapper.getByRole('heading', {
-                name: 'annotation_header uid:/404',
+                name: 'annotation_header_comment uid:/404',
             }),
         ).toBeInTheDocument();
 
@@ -238,6 +241,7 @@ describe('AnnotationDetail', () => {
                 resource: {
                     title: 'The resource title',
                 },
+                kind: 'comment',
                 comment: 'Just testing the annotation system',
                 field: null,
                 createdAt: new Date('01-01-2025').toISOString(),
@@ -250,7 +254,7 @@ describe('AnnotationDetail', () => {
 
         expect(
             wrapper.getByRole('heading', {
-                name: 'annotation_header uid:/1234',
+                name: 'annotation_header_comment uid:/1234',
             }),
         ).toBeInTheDocument();
 
@@ -278,7 +282,7 @@ describe('AnnotationDetail', () => {
 
         expect(
             wrapper.queryByRole('heading', {
-                name: 'annotation_header uid:/1234',
+                name: 'annotation_header_comment uid:/1234',
             }),
         ).not.toBeInTheDocument();
 

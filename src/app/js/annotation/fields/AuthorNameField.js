@@ -4,7 +4,7 @@ import React from 'react';
 
 import { useTranslate } from '../../i18n/I18NContext';
 
-export function AuthorNameField({ form, active }) {
+export function AuthorNameField({ form }) {
     const { translate } = useTranslate();
 
     return (
@@ -24,9 +24,6 @@ export function AuthorNameField({ form, active }) {
                             onBlur={field.handleBlur}
                             onChange={(e) => field.handleChange(e.target.value)}
                             error={hasErrors}
-                            InputProps={{
-                                inputProps: active ? {} : { tabIndex: -1 },
-                            }}
                         />
                         {hasErrors && (
                             <FormHelperText error role="alert">

@@ -11,6 +11,7 @@ describe('AnnotationHeader', () => {
                     annotation={{
                         resourceUri: null,
                         resource: null,
+                        kind: 'comment',
                         comment: 'Just testing the annotation system',
                         status: 'ongoing',
                         internalComment: 'Just testing the annotation admin',
@@ -32,7 +33,7 @@ describe('AnnotationHeader', () => {
 
         expect(
             wrapper.getByRole('heading', {
-                name: 'annotation_header annotation_home_page',
+                name: 'annotation_header_comment annotation_home_page',
             }),
         ).toBeInTheDocument();
 
@@ -48,6 +49,7 @@ describe('AnnotationHeader', () => {
                     annotation={{
                         resourceUri: null,
                         resource: null,
+                        kind: 'comment',
                         comment: 'Just testing the annotation system',
                         field: {
                             name: 'GaZr',
@@ -64,7 +66,7 @@ describe('AnnotationHeader', () => {
 
         expect(
             wrapper.getByRole('heading', {
-                name: 'annotation_header annotation_graph_page',
+                name: 'annotation_header_comment annotation_graph_page',
             }),
         ).toBeInTheDocument();
 
@@ -88,6 +90,7 @@ describe('AnnotationHeader', () => {
                         resource: {
                             title: 'The resource title',
                         },
+                        kind: 'comment',
                         comment: 'Just testing the annotation system',
                         status: 'ongoing',
                         internalComment: 'Just testing the annotation admin',
@@ -109,7 +112,7 @@ describe('AnnotationHeader', () => {
 
         expect(
             wrapper.getByRole('heading', {
-                name: 'annotation_header uid:/1234',
+                name: 'annotation_header_comment uid:/1234',
             }),
         ).toBeInTheDocument();
 
@@ -124,13 +127,16 @@ describe('AnnotationHeader', () => {
         ).toHaveAttribute('href', '/instance/default/uid:/1234');
     });
 
-    it('should render header for deleted resource', () => {
+    it('should render title prefixed with comment when kind is comment', () => {
         const wrapper = render(
             <TestI18N>
                 <AnnotationHeader
                     annotation={{
                         resourceUri: 'uid:/1234',
-                        resource: null,
+                        resource: {
+                            title: 'The resource title',
+                        },
+                        kind: 'comment',
                         comment: 'Just testing the annotation system',
                         status: 'ongoing',
                         internalComment: 'Just testing the annotation admin',
@@ -152,7 +158,77 @@ describe('AnnotationHeader', () => {
 
         expect(
             wrapper.getByRole('heading', {
-                name: 'annotation_header uid:/1234',
+                name: 'annotation_header_comment uid:/1234',
+            }),
+        ).toBeInTheDocument();
+    });
+
+    it('should render title prefixed with removal when kind is removal', () => {
+        const wrapper = render(
+            <TestI18N>
+                <AnnotationHeader
+                    annotation={{
+                        resourceUri: 'uid:/1234',
+                        resource: {
+                            title: 'The resource title',
+                        },
+                        kind: 'removal',
+                        comment: 'Just testing the annotation system',
+                        status: 'ongoing',
+                        internalComment: 'Just testing the annotation admin',
+                        administrator: 'The administrator',
+                        field: {
+                            name: 'GaZr',
+                            label: 'Annotated field',
+                            internalName: 'annotated_field',
+                            internalScopes: ['home'],
+                        },
+                        authorName: 'Count Ributor',
+                        authorEmail: 'ributor@gmail.com',
+                        createdAt: new Date('01-01-2025').toISOString(),
+                        updatedAt: new Date('10-01-2025').toISOString(),
+                    }}
+                />
+            </TestI18N>,
+        );
+
+        expect(
+            wrapper.getByRole('heading', {
+                name: 'annotation_header_removal uid:/1234',
+            }),
+        ).toBeInTheDocument();
+    });
+
+    it('should render header for deleted resource', () => {
+        const wrapper = render(
+            <TestI18N>
+                <AnnotationHeader
+                    annotation={{
+                        resourceUri: 'uid:/1234',
+                        resource: null,
+                        kind: 'comment',
+                        comment: 'Just testing the annotation system',
+                        status: 'ongoing',
+                        internalComment: 'Just testing the annotation admin',
+                        administrator: 'The administrator',
+                        field: {
+                            name: 'GaZr',
+                            label: 'Annotated field',
+                            internalName: 'annotated_field',
+                            internalScopes: ['home'],
+                        },
+                        authorName: 'Count Ributor',
+                        authorEmail: 'ributor@gmail.com',
+                        createdAt: new Date('01-01-2025').toISOString(),
+                        updatedAt: new Date('10-01-2025').toISOString(),
+                    }}
+                />
+            </TestI18N>,
+        );
+
+        expect(
+            wrapper.getByRole('heading', {
+                name: 'annotation_header_comment uid:/1234',
             }),
         ).toBeInTheDocument();
 

@@ -3,7 +3,7 @@ import React from 'react';
 import { TestI18N } from '../../i18n/I18NContext';
 import { TargetField } from './TargetField';
 import { useForm } from '@tanstack/react-form';
-import { COMMENT_STEP, VALUE_STEP } from '../steps';
+import { COMMENT_STEP, KIND_STEP } from '../steps';
 
 const renderTargetField = (props) => {
     let form;
@@ -47,32 +47,33 @@ describe('TargetField', () => {
         expect(goToStep).toHaveBeenCalledWith(COMMENT_STEP);
         expect(form.state.values).toStrictEqual({
             target: 'title',
+            kind: 'comment',
             initialValue: null,
         });
     });
 
-    it('should call goToStep with COMMENT_STEP when targeting value and initialValue is not an array and set initialValue', async () => {
+    it('should call goToStep with KIND_STEP when targeting value and initialValue is not an array and set initialValue', async () => {
         const goToStep = jest.fn();
         const { form } = renderTargetField({
             goToStep,
             initialValue: 'initial value',
         });
         fireEvent.click(screen.getByText('annotation_comment_target_value'));
-        expect(goToStep).toHaveBeenCalledWith(COMMENT_STEP);
+        expect(goToStep).toHaveBeenCalledWith(KIND_STEP);
         expect(form.state.values).toStrictEqual({
             target: 'value',
             initialValue: 'initial value',
         });
     });
 
-    it('should call goToStep with VALUE_STEP when targeting value an initialValue is an array but not set any initialValue', async () => {
+    it('should call goToStep with KIND_STEP when targeting value an initialValue is an array but not set any initialValue', async () => {
         const goToStep = jest.fn();
         const { form } = renderTargetField({
             goToStep,
             initialValue: ['a', 'b'],
         });
         fireEvent.click(screen.getByText('annotation_comment_target_value'));
-        expect(goToStep).toHaveBeenCalledWith(VALUE_STEP);
+        expect(goToStep).toHaveBeenCalledWith(KIND_STEP);
         expect(form.state.values).toStrictEqual({
             target: 'value',
             initialValue: null,

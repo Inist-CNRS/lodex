@@ -142,12 +142,12 @@ describe('CreateAnnotationButton', () => {
             expect.objectContaining({
                 url: '/api/annotation',
                 method: 'POST',
-                body: '{"comment":"test","authorName":"author","authorEmail":"email@example.org","resourceUri":"uid:/0579J7JN","itemPath":null,"fieldId":"1ddbe5dc-f945-4d38-9c5b-ef20f78cb0cc"}',
+                body: '{"comment":"test","target":"title","kind":"comment","authorName":"author","authorEmail":"email@example.org","resourceUri":"uid:/0579J7JN","itemPath":null,"fieldId":"1ddbe5dc-f945-4d38-9c5b-ef20f78cb0cc"}',
             }),
         );
     });
 
-    it('should call api when submiting annotation form for annotation', async () => {
+    it('should call api when submiting annotation form for value', async () => {
         render(
             <TestButton
                 {...{
@@ -172,6 +172,14 @@ describe('CreateAnnotationButton', () => {
             fireEvent.click(
                 screen.getByRole('menuitem', {
                     name: 'annotation_comment_target_value',
+                }),
+            );
+        });
+
+        await waitFor(() => {
+            fireEvent.click(
+                screen.getByRole('menuitem', {
+                    name: 'annotation_remove_content',
                 }),
             );
         });
@@ -228,7 +236,7 @@ describe('CreateAnnotationButton', () => {
             expect.objectContaining({
                 url: '/api/annotation',
                 method: 'POST',
-                body: '{"comment":"test","target":"value","initialValue":"a b c","authorName":"author","authorEmail":"email@example.org","resourceUri":"uid:/0579J7JN","itemPath":["1"],"fieldId":"1ddbe5dc-f945-4d38-9c5b-ef20f78cb0cc"}',
+                body: '{"comment":"test","target":"value","kind":"removal","initialValue":"a b c","authorName":"author","authorEmail":"email@example.org","resourceUri":"uid:/0579J7JN","itemPath":["1"],"fieldId":"1ddbe5dc-f945-4d38-9c5b-ef20f78cb0cc"}',
             }),
         );
     });

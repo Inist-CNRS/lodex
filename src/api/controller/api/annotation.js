@@ -81,6 +81,7 @@ export const buildQuery = async ({
                     return {};
             }
         }
+        case 'kind':
         case 'status': {
             switch (filterOperator) {
                 case 'equals':

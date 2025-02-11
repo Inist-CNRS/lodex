@@ -194,10 +194,10 @@ describe('annotation.validator', () => {
             ]);
         });
 
-        it('should support drop unsupported fields', () => {
+        it('should drop unsupported fields', () => {
             const annotationPayload = {
                 resourceUri: 'uid:/2a8d429f-8134-4502-b9d3-d20c571592fa',
-                kind: 'correction',
+                kind: 'comment',
                 target: 'value',
                 itemPath: null,
                 comment: 'This is a comment',
@@ -213,7 +213,7 @@ describe('annotation.validator', () => {
 
             expect(validatedAnnotation).toStrictEqual({
                 resourceUri: 'uid:/2a8d429f-8134-4502-b9d3-d20c571592fa',
-                kind: 'correction',
+                kind: 'comment',
                 target: 'value',
                 itemPath: null,
                 comment: 'This is a comment',
@@ -418,6 +418,7 @@ describe('annotation.validator', () => {
                     message: 'annotation_query_filter_by_invalid_key',
                     options: [
                         'resource.title',
+                        'kind',
                         'authorName',
                         'resourceUri',
                         'fieldId',
@@ -447,6 +448,7 @@ describe('annotation.validator', () => {
                         'status',
                         'internalComment',
                         'administrator',
+                        'kind',
                     ],
                     received: 'INVALID',
                 },
