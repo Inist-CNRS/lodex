@@ -451,7 +451,7 @@ describe('Annotation', () => {
     describe('export', () => {
         beforeEach(loadFilmDataset);
 
-        it.only('should export annotations', async () => {
+        it('should export annotations', () => {
             annotation.createTitleAnnotation({
                 fieldLabel: 'Dataset Description',
                 comment: 'This is a comment',
@@ -465,46 +465,50 @@ describe('Annotation', () => {
 
             cy.findByLabelText('Open menu').click();
 
-            cy.findByRole('menuitem', { name: /Annotations/ }).trigger(
-                'mouseover',
-            );
+            cy.findByRole('menuitem', { name: /Annotations/ })
+                .should('exist')
+                .trigger('mouseover');
 
             cy.findAllByRole('menuitem', {
                 name: 'Export the annotations',
-            }).click();
+            })
+                .should('exist')
+                .click();
 
             cy.wait(1000);
 
             const downloadsFolder = Cypress.config('downloadsFolder');
-            const files = (await cy.task('getFiles', downloadsFolder)).filter(
-                (name) =>
+
+            cy.task('getFiles', downloadsFolder).then((downloadedFiles) => {
+                const downloadedAnnotations = downloadedFiles.filter((name) =>
                     name.match(/annotations_\d{4}-\d{2}-\d{2}-\d{6}.json/),
-            );
+                );
 
-            expect(files).to.have.length(1);
+                expect(downloadedAnnotations).to.have.length(1);
 
-            const [annotationExport] = files;
+                const [annotationExport] = downloadedAnnotations;
 
-            const filePath = path.join(downloadsFolder, annotationExport);
+                const filePath = path.join(downloadsFolder, annotationExport);
 
-            cy.readFile(filePath)
-                .should('exist')
-                .then((content) => {
-                    expect(content.at(0)).to.include({
-                        resourceUri: null,
-                        target: 'title',
-                        kind: 'comment',
-                        itemPath: null,
-                        comment: 'This is a comment',
-                        authorName: 'John Doe',
-                        authorEmail: 'john.doe@example.org',
-                        initialValue: null,
-                        status: 'to_review',
-                        internalComment: null,
+                cy.readFile(filePath)
+                    .should('exist')
+                    .then((content) => {
+                        expect(content.at(0)).to.include({
+                            resourceUri: null,
+                            target: 'title',
+                            kind: 'comment',
+                            itemPath: null,
+                            comment: 'This is a comment',
+                            authorName: 'John Doe',
+                            authorEmail: 'john.doe@example.org',
+                            initialValue: null,
+                            status: 'to_review',
+                            internalComment: null,
+                        });
                     });
-                });
 
-            cy.task('removeFile', filePath);
+                cy.task('removeFile', filePath);
+            });
         });
     });
 });
