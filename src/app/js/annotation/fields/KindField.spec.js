@@ -89,4 +89,31 @@ describe('KindField', () => {
             });
         });
     });
+
+    describe('addition', () => {
+        it('should call goToStep with COMMENT_STEP and set initialValue to null when adding a value and there is a single value', async () => {
+            const goToStep = jest.fn();
+            const { form } = renderKindField({ goToStep });
+            fireEvent.click(screen.getByText('annotation_add_content'));
+            expect(goToStep).toHaveBeenCalledWith(COMMENT_STEP);
+            expect(form.state.values).toStrictEqual({
+                kind: 'addition',
+                initialValue: null,
+            });
+        });
+
+        it('should call goToStep with COMMENT_STEP and set initialValue to null when adding a value and there are multiple values', async () => {
+            const goToStep = jest.fn();
+            const { form } = renderKindField({
+                goToStep,
+                initialValue: ['a', 'b'],
+            });
+            fireEvent.click(screen.getByText('annotation_add_content'));
+            expect(goToStep).toHaveBeenCalledWith(COMMENT_STEP);
+            expect(form.state.values).toStrictEqual({
+                kind: 'addition',
+                initialValue: null,
+            });
+        });
+    });
 });

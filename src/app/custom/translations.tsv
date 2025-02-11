@@ -1276,6 +1276,8 @@
 "annotation_delete_error"	"An error occured while deleteing this annotation, please try again later."	"Une erreur est survenue lors de la supression de l'annotation, merci de réessayer ultérieurement."
 "annotation_remove_content"	"Remove some content"	"Retirer du contenu"
 "annotation_correct_content"	"Correct some content"	"Corriger du contenu"
+"annotation_add_content"	"Add some content"	"Ajouter du contenu"
 "removal"	"Removal"	"Suppression"
 "comment"	"Comment"	"Commentaire"
 "correction"	"Correction"	"Correction"
+"Addition"	"Addition"	"Ajout"
