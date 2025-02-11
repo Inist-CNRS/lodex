@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 import { useTranslate } from '../../i18n/I18NContext';
-import { TextField } from '../../../../common/fields/TextField';
+import { TextField } from '../../lib/components/TextField';
 
 export function CommentField({ form }) {
     const { translate } = useTranslate();

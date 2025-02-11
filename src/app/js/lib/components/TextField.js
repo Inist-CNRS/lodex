@@ -6,7 +6,7 @@ import {
 import PropTypes from 'prop-types';
 import React, { useMemo } from 'react';
 
-import { useTranslate } from '../../app/js/i18n/I18NContext';
+import { useTranslate } from '../../i18n/I18NContext';
 
 // TextField component to use tanstack react form with material ui text field
 export function TextField({
@@ -34,11 +34,6 @@ export function TextField({
                         ? field.state.meta.errors[0]
                         : null;
                 }, [field.state]);
-
-                !!(
-                    field.state.meta.isTouched &&
-                    field.state.meta.errors?.length
-                );
 
                 return (
                     <FormControl fullWidth>
