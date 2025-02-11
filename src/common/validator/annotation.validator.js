@@ -81,6 +81,20 @@ export const annotationCreationSchema = z
                 path: ['proposedValue'],
             });
         }
+        if (data.target === 'title' && data.kind !== 'comment') {
+            refineContext.addIssue({
+                code: 'error_invalid',
+                message: 'annotation_error_title_invalid_kind',
+                path: ['kind'],
+            });
+        }
+        if (data.target === 'value' && data.kind === 'comment') {
+            refineContext.addIssue({
+                code: 'error_invalid',
+                message: 'annotation_error_value_invalid_kind',
+                path: ['kind'],
+            });
+        }
     });
 
 export const annotationUpdateSchema = z.object({
