@@ -1260,6 +1260,7 @@
 "annotation_status_rejected"	"Rejected"	"Refusée"
 "annotation_correct_value"	Correct "%{value}"	Corriger "%{value}"
 "annotation_remove_value"	Remove "%{value}"	Retirer "%{value}"
+"annotation_comment_value"	"General commentary"	"Commentaire Général"
 "annotation_choose_value"	"Choose value to comment"	"Choisir la valeur à commenter"
 "annotation_error_empty_initial_value"	"This field must be empty when comment targets the field"	"Ce champ doit rester vide quand le commentaire cible le champ"
 "annotation_error_empty_proposed_value"	"This field must be empty when comment type is not correct"	"Ce champ doit rester vide quand le commentaire type n'est pas une correction"

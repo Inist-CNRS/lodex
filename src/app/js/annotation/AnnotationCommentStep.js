@@ -32,7 +32,7 @@ export function AnnotationCommentStep({ form }) {
                             translate('annotation_remove_value', {
                                 value: annotationInitialValue,
                             })}
-                        {kind === 'comment' &&
+                        {kind === 'correct' &&
                             translate('annotation_correct_value', {
                                 value: annotationInitialValue,
                             })}
