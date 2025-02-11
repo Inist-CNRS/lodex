@@ -50,6 +50,7 @@ export const annotationCreationSchema = z
             .default(null)
             .transform((value) => (value === '' ? null : value)),
         initialValue: z.string().nullish().default(null),
+        proposedValue: z.string().nullish().default(null),
     })
     .superRefine((data, refineContext) => {
         if (data.target === 'value' && !data.initialValue) {
@@ -64,6 +65,20 @@ export const annotationCreationSchema = z
                 code: 'error_empty',
                 message: 'annotation_error_empty_initial_value',
                 path: ['initialValue'],
+            });
+        }
+        if (data.kind === 'correct' && !data.proposedValue) {
+            refineContext.addIssue({
+                code: 'error_required',
+                message: 'annotation_error_required_proposed_value',
+                path: ['proposedValue'],
+            });
+        }
+        if (data.kind !== 'correct' && data.proposedValue) {
+            refineContext.addIssue({
+                code: 'error_empty',
+                message: 'annotation_error_empty_proposed_value',
+                path: ['proposedValue'],
             });
         }
     });
