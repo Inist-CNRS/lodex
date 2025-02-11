@@ -1,4 +1,4 @@
-import { Box, Popover, Stack, Tooltip, Typography } from '@mui/material';
+import { Box, Popover, Stack, Typography } from '@mui/material';
 import { useForm, useStore } from '@tanstack/react-form';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
@@ -7,7 +7,6 @@ import { annotationCreationSchema } from '../../../common/validator/annotation.v
 import { useTranslate } from '../i18n/I18NContext';
 import { AuthorEmailField } from './fields/AuthorEmailField';
 import { AuthorNameField } from './fields/AuthorNameField';
-import { CommentField } from './fields/CommentField';
 import { TargetField } from './fields/TargetField';
 import {
     KIND_STEP,
@@ -20,6 +19,7 @@ import { ValueField } from './fields/ValueField';
 import { KindField } from './fields/KindField';
 import { PreviousButton } from './PreviousButton';
 import { NextButton } from './NextButton';
+import { AnnotationCommentStep } from './AnnotationCommentStep';
 
 const isRequiredFieldValid = (formState, fieldName) => {
     const fieldState = formState.fieldMeta[fieldName];
@@ -107,14 +107,6 @@ export function CreateAnnotationModal({
         resetForm();
         onClose();
     };
-
-    const annotationInitialValue = useStore(form.store, (state) => {
-        return state.values.initialValue;
-    });
-
-    const kind = useStore(form.store, (state) => {
-        return state.values.kind;
-    });
 
     useEffect(() => {
         if (currentStep !== AUTHOR_STEP) {
@@ -209,44 +201,7 @@ export function CreateAnnotationModal({
                             aria-label={translate('annotation_step_comment')}
                             role="tab"
                         >
-                            {annotationInitialValue && (
-                                <Tooltip
-                                    title={annotationInitialValue.replace(
-                                        /<[^>]*>/g,
-                                        '',
-                                    )}
-                                >
-                                    <Typography
-                                        sx={{
-                                            whiteSpace: 'nowrap',
-                                            textOverflow: 'ellipsis',
-                                            overflow: 'hidden',
-                                        }}
-                                    >
-                                        {kind === 'removal' &&
-                                            translate(
-                                                'annotation_remove_value',
-                                                {
-                                                    value: annotationInitialValue.replace(
-                                                        /<[^>]*>/g,
-                                                        '',
-                                                    ),
-                                                },
-                                            )}
-                                        {kind === 'comment' &&
-                                            translate(
-                                                'annotation_correct_value',
-                                                {
-                                                    value: annotationInitialValue.replace(
-                                                        /<[^>]*>/g,
-                                                        '',
-                                                    ),
-                                                },
-                                            )}
-                                    </Typography>
-                                </Tooltip>
-                            )}
-                            <CommentField form={form} />
+                            <AnnotationCommentStep form={form} />
                         </Stack>
                     )}
 
