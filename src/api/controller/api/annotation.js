@@ -1,3 +1,4 @@
+import { JsonStreamStringify } from 'json-stream-stringify';
 import Koa from 'koa';
 import koaBodyParser from 'koa-bodyparser';
 import route from 'koa-route';
@@ -249,6 +250,16 @@ export async function getAnnotations(ctx) {
     };
 }
 
+export async function exportAnnotations(ctx) {
+    const annotationStream = await ctx.annotation
+        .findAll()
+        .then((cursor) => cursor.stream());
+
+    ctx.response.attachment('annotations.json');
+    ctx.response.status = 200;
+    ctx.response.body = new JsonStreamStringify(annotationStream);
+}
+
 async function bindResourceAndFieldToAnnnotation(ctx, annotation) {
     const [titleField, subResourceTitleFields] = await Promise.all([
         ctx.field.findResourceTitle(),
@@ -354,6 +365,7 @@ function getResourceTitle(resource, titleField, subResourceTitleFields) {
 const app = new Koa();
 
 app.use(route.get('/', getAnnotations));
+app.use(route.get('/export', exportAnnotations));
 app.use(route.get('/:id', getAnnotation));
 app.use(koaBodyParser());
 app.use(route.put('/:id', updateAnnotation));

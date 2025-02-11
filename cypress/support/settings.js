@@ -1,6 +1,6 @@
 export function enableMultilingual() {
     cy.get('.css-gmuwbf > .MuiButtonBase-root').click();
-    cy.get('[aria-label="config"]').click();
+    cy.get('[aria-label="Settings"]').click();
 
     cy.get('.ace_content').type(
         '{selectAll}{rightArrow}{upArrow}{leftArrow}{leftArrow}{backspace}{backspace}{backspace}{backspace}{backspace}true',
@@ -13,7 +13,7 @@ export function enableMultilingual() {
 
 export function disableMultilingual() {
     cy.get('.css-gmuwbf > .MuiButtonBase-root').click();
-    cy.get('[aria-label="config"]').click();
+    cy.get('[aria-label="Settings"]').click();
 
     cy.get('.ace_content').type(
         '{selectAll}{rightArrow}{upArrow}{leftArrow}{leftArrow}{backspace}{backspace}{backspace}{backspace}false',

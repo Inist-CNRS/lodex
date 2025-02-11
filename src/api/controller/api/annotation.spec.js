@@ -1,10 +1,13 @@
+import { default as _ } from 'lodash';
 import { MongoClient } from 'mongodb';
+import { text } from 'stream/consumers';
 import createAnnotationModel from '../../models/annotation';
 import createFieldModel from '../../models/field';
 import createPublishedDatasetModel from '../../models/publishedDataset';
 import {
     createAnnotation,
     deleteAnnotation,
+    exportAnnotations,
     getAnnotation,
     getAnnotations,
     updateAnnotation,
@@ -1095,6 +1098,87 @@ describe('annotation', () => {
                     },
                 ],
             });
+        });
+    });
+
+    describe('GET /annotations/export', () => {
+        const annotationsPayload = [
+            {
+                resourceUri: 'uid:/2a8d429f-8134-4502-b9d3-d20c571592fa',
+                fieldId: 'GvaF',
+                itemPath: [],
+                kind: 'comment',
+                authorName: 'Developer',
+                authorEmail: 'developer@marmelab.com',
+                comment: 'This is a comment',
+                status: 'in_progress',
+                internalComment: 'This is an internal comment',
+                createdAt: new Date('03-01-2025'),
+            },
+            {
+                resourceUri: 'uid:/65257776-4e3c-44f6-8652-85502a97e5ac',
+                fieldId: null,
+                itemPath: null,
+                kind: 'comment',
+                authorName: 'John DOE',
+                authorEmail: 'john.doe@marmelab.com',
+                comment: 'This is another comment',
+                status: 'to_review',
+                internalComment: null,
+                createdAt: new Date('02-01-2025'),
+            },
+            {
+                resourceUri: 'uid:/d4f1e376-d5dd-4853-b515-b7f63b34d67d',
+                fieldId: null,
+                itemPath: null,
+                kind: 'correction',
+                authorName: 'Jane SMITH',
+                authorEmail: 'jane.smith@marmelab.com',
+                comment:
+                    'The author list is incomplete: it should include Jane SMITH',
+                status: 'rejected',
+                internalComment: 'Jane SMITH is not an author of this document',
+                createdAt: new Date('01-01-2025'),
+            },
+        ];
+
+        let createdAnnotations;
+        beforeEach(async () => {
+            createdAnnotations = await Promise.all(
+                annotationsPayload.map(annotationModel.create),
+            );
+        });
+
+        it.only('should export annotations without their _id', async () => {
+            const ctx = {
+                response: {
+                    attachment: jest.fn(),
+                },
+                annotation: annotationModel,
+            };
+
+            await exportAnnotations(ctx);
+
+            expect(ctx.response.attachment).toHaveBeenCalledWith(
+                'annotations.json',
+            );
+            expect(ctx.response.status).toBe(200);
+            const jsonBody = await text(ctx.response.body);
+            expect(JSON.parse(jsonBody)).toMatchObject(
+                createdAnnotations
+                    .toSorted((annotation) => annotation._id.toString())
+                    .map((annotation) => {
+                        const annotationWithoutId = _.omit(annotation, '_id');
+
+                        return {
+                            ...annotationWithoutId,
+                            createdAt:
+                                annotationWithoutId.createdAt.toISOString(),
+                            updatedAt:
+                                annotationWithoutId.updatedAt.toISOString(),
+                        };
+                    }),
+            );
         });
     });
 

@@ -1197,6 +1197,8 @@
 "error_invalid_email"	"This field must be a valid email addresse"	"Ce champ doit contenir une adresse e-mail valide"
 "error_page_invalid"	"The page is not valid"	"La page n'est pas valide"
 "error_sortDir_invalid"	"The sort order is not valid"	"L'ordre de tri n'est pas valide"
+"annotations"	"Annotations"	"Annotations"
+"annotations_export"	"Export the annotations"	"Exporter les annotations"
 "annotation_create_button_label"	"Add an annotation to the %{field} field"	"Ajouter une annotation au champ %{field}"
 "annotation_create_success"	"Your suggestion has been sent. We thank you for your contribution."	"Votre suggestion a bien été transmise. Nous vous remercions pour votre contribution."
 "annotation_create_error"	"Failed to create annotation"	"Une erreur est survenue lors de la création de l'annotation"

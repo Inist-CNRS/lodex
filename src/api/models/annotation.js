@@ -39,6 +39,12 @@ export default async (db) => {
         );
     }
 
+    async function findAll() {
+        return annotationCollection.find().sort({
+            _id: 1,
+        });
+    }
+
     async function findLimitFromSkip({
         skip = 0,
         limit = 10,
@@ -82,6 +88,7 @@ export default async (db) => {
     return {
         create,
         updateOneById,
+        findAll,
         findLimitFromSkip,
         count,
         findOneById,
