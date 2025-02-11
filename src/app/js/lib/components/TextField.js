@@ -1,7 +1,7 @@
 import {
     FormControl,
     FormHelperText,
-    TextField as RaTextField,
+    TextField as MuiTextField,
 } from '@mui/material';
 import PropTypes from 'prop-types';
 import React, { useMemo } from 'react';
@@ -37,7 +37,7 @@ export function TextField({
 
                 return (
                     <FormControl fullWidth>
-                        <RaTextField
+                        <MuiTextField
                             label={label}
                             name={field.name}
                             value={field.state.value}
