@@ -1,6 +1,6 @@
 import { default as z } from 'zod';
 
-export const kinds = ['removal', 'comment'];
+export const kinds = ['removal', 'comment', 'correct'];
 
 export const annotationCreationSchema = z
     .object({
