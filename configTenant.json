@@ -5,6 +5,11 @@
         "password": "secret",
         "active": true
     },
+    "contributorAuth": {
+        "username": "contributor",
+        "password": "secret",
+        "active": false
+    },
     "enrichmentBatchSize": 10,
     "front": {
         "theme": {},

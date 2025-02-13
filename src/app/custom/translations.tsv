@@ -1115,6 +1115,7 @@
 "configTenantUpdated"	"Settings updated"	"Configuration mise à jour"
 "republish"	"Republish"	"Republier"
 "user_auth"	"User authentication"	"Authentification utilisateur"
+"contributor_auth"	"Contributor authentication"	"Authentification contributeur"
 "enableAutoPublication"	"Auto Publishing"	"Publication automatique"
 "vega_variable_list"	"You can use these variables to set the size dynamically:"	"Vous pouvez utiliser ces variables pour définir la taille de manière dynamique :"
 "vega_variable_width"	"Replace with the width of the chart container"	"Remplacée par la largeur du conteneur du graphique"

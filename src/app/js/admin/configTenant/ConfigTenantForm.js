@@ -52,6 +52,7 @@ export const ConfigTenantForm = ({ history, onLoadConfigTenant }) => {
     const [configTenant, setConfigTenant] = useState('');
     const [enableAutoPublication, setEnableAutoPublication] = useState(false);
     const [userAuth, setUserAuth] = useState({});
+    const [contributorAuth, setContributorAuth] = useState({});
     const [enrichmentBatchSize, setEnrichmentBatchSize] = useState(0);
     const [id, setId] = useState('');
     const [isFormModified, setIsFormModified] = useState(false);
@@ -75,6 +76,7 @@ export const ConfigTenantForm = ({ history, onLoadConfigTenant }) => {
         async function fetchData() {
             const { response } = await getConfigTenant();
             setUserAuth(response.userAuth);
+            setContributorAuth(response.contributorAuth);
             setEnrichmentBatchSize(response.enrichmentBatchSize);
             setId(response._id);
             setEnableAutoPublication(response.enableAutoPublication);
@@ -99,6 +101,7 @@ export const ConfigTenantForm = ({ history, onLoadConfigTenant }) => {
         try {
             const configTenantToSave = JSON.parse(configTenant);
             configTenantToSave.userAuth = userAuth;
+            configTenantToSave.contributorAuth = contributorAuth;
             configTenantToSave.enrichmentBatchSize = enrichmentBatchSize;
             configTenantToSave._id = id;
             configTenantToSave.enableAutoPublication = enableAutoPublication;
@@ -232,6 +235,60 @@ export const ConfigTenantForm = ({ history, onLoadConfigTenant }) => {
                         setIsFormModified(true);
                         setUserAuth({
                             ...userAuth,
+                            password: event.target.value,
+                        });
+                    }}
+                />
+            </Box>
+            <Box
+                sx={{
+                    width: '100%',
+                    display: 'flex',
+                    gap: 1,
+                }}
+            >
+                <h2>{translate('contributor_auth')}</h2>
+                <Checkbox
+                    checked={contributorAuth?.active || false}
+                    onChange={(event) => {
+                        setIsFormModified(true);
+                        setContributorAuth({
+                            ...contributorAuth,
+                            active: event.target.checked,
+                        });
+                    }}
+                />
+            </Box>
+
+            <Box
+                sx={{
+                    width: '100%',
+                    display: 'flex',
+                    gap: 2,
+                    mb: 4,
+                }}
+            >
+                <TextField
+                    label="Username"
+                    value={contributorAuth?.username || ''}
+                    disabled={!contributorAuth?.active}
+                    onChange={(event) => {
+                        setIsFormModified(true);
+                        setContributorAuth({
+                            ...userAuth,
+                            username: event.target.value,
+                        });
+                    }}
+                />
+
+                <TextField
+                    label="Password"
+                    value={contributorAuth?.password || ''}
+                    disabled={!contributorAuth?.active}
+                    onChange={(event) => {
+                        setIsFormModified(true);
+                        setContributorAuth({
+                            ...contributorAuth,
                             password: event.target.value,
                         });
                     }}
