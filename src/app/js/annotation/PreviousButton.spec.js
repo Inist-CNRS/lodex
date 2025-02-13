@@ -11,13 +11,14 @@ import {
     VALUE_STEP,
 } from './steps';
 
-const renderPreviousButton = ({ formTarget, ...props }) => {
+const renderPreviousButton = ({ formTarget, formKind, ...props }) => {
     let form;
 
     function TestPreviousButton(props) {
         form = useForm({
             defaultValues: {
                 target: formTarget,
+                kind: formKind,
             },
         });
         return (
@@ -118,6 +119,21 @@ describe('PreviousButton', () => {
         fireEvent.click(screen.queryByText('back'));
         expect(goToStep).toHaveBeenCalledTimes(1);
         expect(goToStep).toHaveBeenCalledWith(VALUE_STEP);
+    });
+    it('should display back button returning to KIND_STEP when currentStep is COMMENT_STEP and kind is addition even when initialValue is an array', async () => {
+        const goToStep = jest.fn();
+
+        renderPreviousButton({
+            currentStep: COMMENT_STEP,
+            initialValue: ['a', 'b'],
+            goToStep,
+            formKind: 'addition',
+        });
+        expect(screen.queryByText('back')).toBeInTheDocument();
+        expect(screen.queryByText('cancel')).not.toBeInTheDocument();
+        fireEvent.click(screen.queryByText('back'));
+        expect(goToStep).toHaveBeenCalledTimes(1);
+        expect(goToStep).toHaveBeenCalledWith(KIND_STEP);
     });
     it('should display back button returning to KIND_STEP when currentStep is COMMENT_STEP and initialValue is not an array', async () => {
         const goToStep = jest.fn();

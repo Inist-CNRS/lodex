@@ -1,6 +1,6 @@
 import { default as z } from 'zod';
 
-export const kinds = ['removal', 'comment', 'correct'];
+export const kinds = ['removal', 'comment', 'correct', 'addition'];
 
 export const annotationCreationSchema = z
     .object({
@@ -53,28 +53,38 @@ export const annotationCreationSchema = z
         proposedValue: z.string().nullish().default(null),
     })
     .superRefine((data, refineContext) => {
-        if (data.target === 'value' && !data.initialValue) {
+        if (
+            data.target === 'value' &&
+            data.kind !== 'addition' &&
+            !data.initialValue
+        ) {
             refineContext.addIssue({
                 code: 'error_required',
                 message: 'annotation_error_required_initial_value',
                 path: ['initialValue'],
             });
         }
-        if (data.target === 'title' && data.initialValue) {
+        if (
+            (data.target === 'title' && data.initialValue) ||
+            (data.kind === 'addition' && data.initialValue)
+        ) {
             refineContext.addIssue({
                 code: 'error_empty',
                 message: 'annotation_error_empty_initial_value',
                 path: ['initialValue'],
             });
         }
-        if (data.kind === 'correct' && !data.proposedValue) {
+        if (
+            ['correct', 'addition'].includes(data.kind) &&
+            !data.proposedValue
+        ) {
             refineContext.addIssue({
                 code: 'error_required',
                 message: 'annotation_error_required_proposed_value',
                 path: ['proposedValue'],
             });
         }
-        if (data.kind !== 'correct' && data.proposedValue) {
+        if (data.kind === 'removal' && data.proposedValue) {
             refineContext.addIssue({
                 code: 'error_empty',
                 message: 'annotation_error_empty_proposed_value',

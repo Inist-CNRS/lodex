@@ -62,6 +62,7 @@ export function CreateAnnotationModal({
             onChange: annotationCreationSchema,
         },
     });
+
     const [currentStep, setCurrentStep] = useState(
         initialValue === null ? COMMENT_STEP : TARGET_STEP,
     );
@@ -80,7 +81,7 @@ export function CreateAnnotationModal({
             return true;
         }
 
-        if (state.values.kind === 'correct') {
+        if (['correct', 'addition'].includes(state.values.kind)) {
             return (
                 !!state.values.proposedValue &&
                 isRequiredFieldValid(state, 'comment')

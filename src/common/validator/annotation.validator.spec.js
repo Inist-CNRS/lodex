@@ -219,6 +219,24 @@ describe('annotation.validator', () => {
             expect(result).toStrictEqual(annotationPayload);
         });
 
+        it('should accept annotation with proposedValue when kind is addition', () => {
+            const annotationPayload = {
+                resourceUri: 'uid:/2a8d429f-8134-4502-b9d3-d20c571592fa',
+                itemPath: ['GvaF', '0'],
+                kind: 'addition',
+                comment: 'This is a comment',
+                authorName: 'John Doe',
+                authorEmail: 'john.doe@marmelab.com',
+                target: 'value',
+                initialValue: null,
+                proposedValue: 'proposedValue',
+            };
+
+            const result = annotationCreationSchema.parse(annotationPayload);
+
+            expect(result).toStrictEqual(annotationPayload);
+        });
+
         it('should reject annotation with proposedValue when kind is not "correct"', () => {
             const annotationPayload = {
                 resourceUri: 'uid:/2a8d429f-8134-4502-b9d3-d20c571592fa',
@@ -289,6 +307,32 @@ describe('annotation.validator', () => {
             ]);
         });
 
+        it('should reject annotation with no proposedValue when kind is "addition"', () => {
+            const annotationPayload = {
+                resourceUri: 'uid:/2a8d429f-8134-4502-b9d3-d20c571592fa',
+                itemPath: ['GvaF', '0'],
+                kind: 'addition',
+                comment: 'This is a comment',
+                authorName: 'John Doe',
+                authorEmail: 'john.doe@marmelab.com',
+                target: 'value',
+                initialValue: null,
+                proposedValue: null,
+            };
+
+            const { success, error } =
+                annotationCreationSchema.safeParse(annotationPayload);
+
+            expect(success).toBe(false);
+            expect(error.errors).toStrictEqual([
+                {
+                    code: 'error_required',
+                    message: 'annotation_error_required_proposed_value',
+                    path: ['proposedValue'],
+                },
+            ]);
+        });
+
         it('should accept annotation with kind "comment" when target is "title"', () => {
             const annotationPayload = {
                 resourceUri: 'uid:/2a8d429f-8134-4502-b9d3-d20c571592fa',
@@ -336,6 +380,31 @@ describe('annotation.validator', () => {
                 resourceUri: 'uid:/2a8d429f-8134-4502-b9d3-d20c571592fa',
                 itemPath: ['GvaF', '0'],
                 kind: 'correct',
+                comment: 'This is a comment',
+                authorName: 'John Doe',
+                authorEmail: 'john.doe@marmelab.com',
+                target: 'title',
+                initialValue: null,
+                proposedValue: 'proposedValue',
+            };
+
+            const { success, error } =
+                annotationCreationSchema.safeParse(annotationPayload);
+            expect(success).toBe(false);
+            expect(error.errors).toStrictEqual([
+                {
+                    code: 'error_invalid',
+                    message: 'annotation_error_title_invalid_kind',
+                    path: ['kind'],
+                },
+            ]);
+        });
+
+        it('should reject annotation with kind "addition" when target is "title"', () => {
+            const annotationPayload = {
+                resourceUri: 'uid:/2a8d429f-8134-4502-b9d3-d20c571592fa',
+                itemPath: ['GvaF', '0'],
+                kind: 'addition',
                 comment: 'This is a comment',
                 authorName: 'John Doe',
                 authorEmail: 'john.doe@marmelab.com',
