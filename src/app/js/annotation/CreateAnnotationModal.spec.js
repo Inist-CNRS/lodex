@@ -495,6 +495,72 @@ describe('CreateAnnotationModal', () => {
                 ).not.toBeDisabled();
             });
         });
+
+        describe('addition comment', () => {
+            beforeEach(() => {
+                render(
+                    <TestModal
+                        onClose={onClose}
+                        onSubmit={onSubmit}
+                        isSubmitting={false}
+                        initialValue="initialValue"
+                    />,
+                );
+
+                fireEvent.click(
+                    screen.queryByText('annotation_comment_target_value'),
+                );
+                fireEvent.click(screen.queryByText('annotation_add_content'));
+                expect(
+                    screen.queryByRole('tab', {
+                        name: 'annotation_step_comment',
+                    }),
+                ).toBeInTheDocument();
+            });
+
+            it('should render required proposedValue and comment field', () => {
+                expect(
+                    screen.getByRole('heading', {
+                        name: 'annotation_add_comment',
+                    }),
+                ).toBeInTheDocument();
+                expect(
+                    screen.getByRole('textbox', {
+                        name: 'annotation.proposedValue *',
+                    }),
+                ).toBeInTheDocument();
+                expect(
+                    screen.getByRole('textbox', {
+                        name: 'annotation.comment *',
+                    }),
+                ).toBeInTheDocument();
+                expect(
+                    screen.getByRole('button', { name: 'next' }),
+                ).toBeDisabled();
+                fireEvent.change(
+                    screen.getByRole('textbox', {
+                        name: 'annotation.comment *',
+                    }),
+                    {
+                        target: { value: 'comment' },
+                    },
+                );
+                expect(
+                    screen.getByRole('button', { name: 'next' }),
+                ).toBeDisabled();
+                fireEvent.change(
+                    screen.getByRole('textbox', {
+                        name: 'annotation.proposedValue *',
+                    }),
+                    {
+                        target: { value: 'proposedValue' },
+                    },
+                );
+                expect(
+                    screen.getByRole('button', { name: 'next' }),
+                ).not.toBeDisabled();
+            });
+        });
     });
 
     describe('author tab', () => {
