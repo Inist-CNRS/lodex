@@ -1228,6 +1228,8 @@
 "annotation_authorName"	"Contributor"	"Contributeur"
 "annotation_resource_uri"	"Resource URI"	"URI de la ressource"
 "annotation_query_error"	"Could not retrieve annotations"	"Impossible de récupérer les annotations"
+"config_tenant_query_error"	"Could not retrieve config tenant"	"Impossible de récupérer la configuration"
+"available_themes_query_error"	"Could not retrieve available themes"	"Impossible de récupérer les thémes disponible"
 "annotation_created_at"	"Submission date"	"Date de soumission"
 "annotation_updated_at"	"Last modified on"	"Dernière modification"
 "annotation_field_name"	"Field Id"	"Id du champ"

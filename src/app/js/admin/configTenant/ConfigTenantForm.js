@@ -16,21 +16,17 @@ import 'ace-builds/src-noconflict/theme-monokai';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
-import {
-    getConfigTenant,
-    getConfigTenantAvailableTheme,
-    updateConfigTenant,
-} from '../api/configTenant';
+import { updateConfigTenant } from '../api/configTenant';
 import PropTypes from 'prop-types';
 import CancelButton from '../../lib/components/CancelButton';
 import { toast } from '../../../../common/tools/toast';
 import { loadConfigTenant } from '.';
 import { SaveAs } from '@mui/icons-material';
 import { useTranslate } from '../../i18n/I18NContext';
-import { useForm } from '@tanstack/react-form';
 import Loading from '../../lib/components/Loading';
 import { omit } from 'lodash';
 import { useGetConfigTenant } from './useGetConfigTenant';
+import { useGetAvailableThemes } from './useGetAvailableThemes';
 
 const shake = keyframes`
 10%, 90% {
@@ -77,6 +73,7 @@ export const ConfigTenantForm = ({ history, onLoadConfigTenant }) => {
     ]);
 
     const { data, error, isLoading } = useGetConfigTenant();
+    const availableThemesResponse = useGetAvailableThemes();
 
     useEffect(() => {
         async function fetchData() {
@@ -101,11 +98,10 @@ export const ConfigTenantForm = ({ history, onLoadConfigTenant }) => {
             setInitialConfig(stringified);
             setConfigTenant(stringified);
 
-            const themesResponse = await getConfigTenantAvailableTheme();
-            setThemes(themesResponse.response);
+            setThemes(availableThemesResponse.data);
         }
         fetchData();
-    }, [data]);
+    }, [data, availableThemesResponse.data]);
 
     const handleSave = async () => {
         try {
@@ -177,7 +173,7 @@ export const ConfigTenantForm = ({ history, onLoadConfigTenant }) => {
         }
     };
 
-    if (isLoading) {
+    if (isLoading || availableThemesResponse.isLoading) {
         return <Loading>{translate('loading')}</Loading>;
     }
 
@@ -185,7 +181,15 @@ export const ConfigTenantForm = ({ history, onLoadConfigTenant }) => {
         console.error(error);
         return (
             <AdminOnlyAlert>
-                {translate('annotation_query_error')}
+                {translate('config_tenant_query_error')}
+            </AdminOnlyAlert>
+        );
+    }
+    if (availableThemesResponse.error) {
+        console.error(availableThemesResponse.error);
+        return (
+            <AdminOnlyAlert>
+                {translate('available_themes_query_error')}
             </AdminOnlyAlert>
         );
     }
