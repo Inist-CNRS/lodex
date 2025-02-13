@@ -59,15 +59,25 @@ const configTenantSchema = z.object({
     enableAutoPublication: z.boolean(),
     userAuth: z.object({
         active: z.boolean(),
-        password: z.string(),
-        username: z.string(),
+        password: z.string().min(1, {
+            message: 'error_required',
+        }),
+        username: z.string().min(1, {
+            message: 'error_required',
+        }),
     }),
     contributorAuth: z.object({
         active: z.boolean(),
-        password: z.string(),
-        username: z.string(),
+        password: z.string().min(1, {
+            message: 'error_required',
+        }),
+        username: z.string().min(1, {
+            message: 'error_required',
+        }),
     }),
-    theme: z.string(),
+    theme: z.string().min(1, {
+        message: 'error_required',
+    }),
     enrichmentBatchSize: z.number(),
 });
 
