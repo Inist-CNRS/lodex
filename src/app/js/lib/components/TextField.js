@@ -13,6 +13,7 @@ export function TextField({
     form,
     name,
     label,
+    disabled,
     helperText,
     multiline,
     required,
@@ -76,4 +77,5 @@ TextField.propTypes = {
     helperText: PropTypes.string,
     multiline: PropTypes.bool,
     required: PropTypes.bool,
+    disabled: PropTypes.bool,
 };

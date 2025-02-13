@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import {
     Box,
     Button,
     Checkbox,
     MenuItem,
     Select,
-    TextField,
     Tooltip,
     keyframes,
 } from '@mui/material';
@@ -27,6 +26,8 @@ import Loading from '../../lib/components/Loading';
 import { omit } from 'lodash';
 import { useGetConfigTenant } from './useGetConfigTenant';
 import { useGetAvailableThemes } from './useGetAvailableThemes';
+import { useField, useForm, useStore } from '@tanstack/react-form';
+import { TextField } from '../../lib/components/TextField';
 
 const shake = keyframes`
 10%, 90% {
@@ -46,153 +47,70 @@ const shake = keyframes`
   }
 `;
 
-export const ConfigTenantForm = ({ history, onLoadConfigTenant }) => {
+export const ConfigTenantFormView = ({
+    initialConfig: {
+        enableAutoPublication,
+        userAuth,
+        contributorAuth,
+        theme,
+        enrichmentBatchSize,
+        ...config
+    },
+    availableThemes,
+    handleCancel,
+    handleSave,
+}) => {
     const { translate, locale } = useTranslate();
-    const [initialConfig, setInitialConfig] = useState('');
-    const [configTenant, setConfigTenant] = useState('');
-    const [enableAutoPublication, setEnableAutoPublication] = useState(false);
-    const [userAuth, setUserAuth] = useState({});
-    const [contributorAuth, setContributorAuth] = useState({});
-    const [enrichmentBatchSize, setEnrichmentBatchSize] = useState(0);
-    const [id, setId] = useState('');
-    const [isFormModified, setIsFormModified] = useState(false);
-    const [theme, setTheme] = useState('default');
-    const [themes, setThemes] = useState([
-        {
-            defaultVariables: {},
-            name: {
-                fr: 'Classique',
-                en: 'Classic',
-            },
-            description: {
-                fr: 'Thème Lodex Classique',
-                en: 'Lodex Classic theme',
-            },
-            value: 'default',
+
+    const form = useForm({
+        defaultValues: {
+            enableAutoPublication,
+            userAuth,
+            contributorAuth,
+            theme,
+            enrichmentBatchSize,
+            config,
         },
-    ]);
 
-    const { data, error, isLoading } = useGetConfigTenant();
-    const availableThemesResponse = useGetAvailableThemes();
-
-    useEffect(() => {
-        async function fetchData() {
-            setUserAuth(data.userAuth);
-            setContributorAuth(data.contributorAuth);
-            setEnrichmentBatchSize(data.enrichmentBatchSize);
-            setId(data._id);
-            setEnableAutoPublication(data.enableAutoPublication);
-            setTheme(data.theme ?? 'default');
-
-            const stringified = JSON.stringify(
-                omit(data, [
-                    'userAuth',
-                    'enrichmentBatchSize',
-                    '_id',
-                    'enableAutoPublication',
-                    'theme',
-                ]),
-                null,
-                2,
-            );
-            setInitialConfig(stringified);
-            setConfigTenant(stringified);
-
-            setThemes(availableThemesResponse.data);
-        }
-        fetchData();
-    }, [data, availableThemesResponse.data]);
-
-    const handleSave = async () => {
-        try {
-            const configTenantToSave = JSON.parse(configTenant);
-            configTenantToSave.userAuth = userAuth;
-            configTenantToSave.contributorAuth = contributorAuth;
-            configTenantToSave.enrichmentBatchSize = enrichmentBatchSize;
-            configTenantToSave._id = id;
-            configTenantToSave.enableAutoPublication = enableAutoPublication;
-            configTenantToSave.theme = theme;
-
-            const res = await updateConfigTenant(configTenantToSave);
-            if (res.error) {
-                toast(`${translate('error')} : ${res.error}`, {
-                    type: toast.TYPE.ERROR,
-                });
-            } else {
-                toast(translate('configTenantUpdated'), {
-                    type: toast.TYPE.SUCCESS,
-                });
-                onLoadConfigTenant();
-            }
-        } catch (e) {
-            toast(`${translate('error')} : ${e}`, {
-                type: toast.TYPE.ERROR,
+        onSubmit: async ({ value }) => {
+            const {
+                enableAutoPublication,
+                userAuth,
+                contributorAuth,
+                theme,
+                enrichmentBatchSize,
+                config,
+            } = value;
+            await handleSave({
+                ...config,
+                enableAutoPublication,
+                userAuth,
+                contributorAuth,
+                theme,
+                enrichmentBatchSize,
             });
-        }
-    };
+        },
+    });
 
-    const handleCancel = () => {
-        history.push('/data');
-    };
+    const userAuthActive = useStore(form.store, (state) => {
+        return state.values.userAuth.active;
+    });
 
-    const handleConfigTenantChange = (newConfigTenant) => {
-        setIsFormModified(true);
-        setConfigTenant(newConfigTenant);
-    };
+    const currentConfig = useStore(form.store, (state) => {
+        return state.values.config;
+    });
 
-    const handleThemeChange = (event) => {
-        setIsFormModified(true);
-        setTheme(event.target.value);
+    const contributorAuthActive = useStore(form.store, (state) => {
+        return state.values.contributorAuth.active;
+    });
+    const configTenantField = useField({
+        name: 'configTenant',
+        form,
+    });
 
-        try {
-            const themeValue = themes.find(
-                (value) => value.value === event.target.value,
-            );
-
-            try {
-                const parsedConfig = JSON.parse(configTenant);
-
-                if (parsedConfig.front) {
-                    parsedConfig.front.theme = themeValue.defaultVariables;
-                }
-
-                setConfigTenant(JSON.stringify(parsedConfig, null, 2));
-            } catch (_) {
-                // If we can't parse the actual config fallback to the initial
-
-                const parsedConfig = JSON.parse(initialConfig);
-
-                if (parsedConfig.front) {
-                    parsedConfig.front.theme = themeValue.defaultVariables;
-                }
-
-                setConfigTenant(JSON.stringify(parsedConfig, null, 2));
-            }
-        } catch (_) {
-            /* empty */
-        }
-    };
-
-    if (isLoading || availableThemesResponse.isLoading) {
-        return <Loading>{translate('loading')}</Loading>;
-    }
-
-    if (error) {
-        console.error(error);
-        return (
-            <AdminOnlyAlert>
-                {translate('config_tenant_query_error')}
-            </AdminOnlyAlert>
-        );
-    }
-    if (availableThemesResponse.error) {
-        console.error(availableThemesResponse.error);
-        return (
-            <AdminOnlyAlert>
-                {translate('available_themes_query_error')}
-            </AdminOnlyAlert>
-        );
-    }
+    const isFormModified = useStore(form.store, (state) => {
+        return state.isDirty;
+    });
 
     return (
         <Box className="container">
@@ -205,13 +123,16 @@ export const ConfigTenantForm = ({ history, onLoadConfigTenant }) => {
                 }}
             >
                 <h2>{translate('enableAutoPublication')}</h2>
-                <Checkbox
-                    checked={enableAutoPublication}
-                    onChange={(event) => {
-                        setIsFormModified(true);
-                        setEnableAutoPublication(event.target.checked);
-                    }}
-                />
+                <form.Field name="enableAutoPublication">
+                    {(field) => (
+                        <Checkbox
+                            checked={field.state.value}
+                            onChange={(event) => {
+                                field.handleChange(event.target.checked);
+                            }}
+                        />
+                    )}
+                </form.Field>
             </Box>
             <Box
                 sx={{
@@ -221,16 +142,16 @@ export const ConfigTenantForm = ({ history, onLoadConfigTenant }) => {
                 }}
             >
                 <h2>{translate('user_auth')}</h2>
-                <Checkbox
-                    checked={userAuth?.active || false}
-                    onChange={(event) => {
-                        setIsFormModified(true);
-                        setUserAuth({
-                            ...userAuth,
-                            active: event.target.checked,
-                        });
-                    }}
-                />
+                <form.Field name="userAuth.active">
+                    {(field) => (
+                        <Checkbox
+                            checked={field.state.value}
+                            onChange={(event) => {
+                                field.handleChange(event.target.checked);
+                            }}
+                        />
+                    )}
+                </form.Field>
             </Box>
 
             <Box
@@ -243,28 +164,16 @@ export const ConfigTenantForm = ({ history, onLoadConfigTenant }) => {
             >
                 <TextField
                     label="Username"
-                    value={userAuth?.username || ''}
-                    disabled={!userAuth?.active}
-                    onChange={(event) => {
-                        setIsFormModified(true);
-                        setUserAuth({
-                            ...userAuth,
-                            username: event.target.value,
-                        });
-                    }}
+                    name="userAuth.username"
+                    form={form}
+                    disabled={!userAuthActive}
                 />
 
                 <TextField
                     label="Password"
-                    value={userAuth?.password || ''}
-                    disabled={!userAuth?.active}
-                    onChange={(event) => {
-                        setIsFormModified(true);
-                        setUserAuth({
-                            ...userAuth,
-                            password: event.target.value,
-                        });
-                    }}
+                    name="userAuth.password"
+                    form={form}
+                    disabled={!userAuthActive}
                 />
             </Box>
             <Box
@@ -275,16 +184,16 @@ export const ConfigTenantForm = ({ history, onLoadConfigTenant }) => {
                 }}
             >
                 <h2>{translate('contributor_auth')}</h2>
-                <Checkbox
-                    checked={contributorAuth?.active || false}
-                    onChange={(event) => {
-                        setIsFormModified(true);
-                        setContributorAuth({
-                            ...contributorAuth,
-                            active: event.target.checked,
-                        });
-                    }}
-                />
+                <form.Field name="contributorAuth.active">
+                    {(field) => (
+                        <Checkbox
+                            checked={field.state.value}
+                            onChange={(event) => {
+                                field.handleChange(event.target.checked);
+                            }}
+                        />
+                    )}
+                </form.Field>
             </Box>
 
             <Box
@@ -297,75 +206,95 @@ export const ConfigTenantForm = ({ history, onLoadConfigTenant }) => {
             >
                 <TextField
                     label="Username"
-                    value={contributorAuth?.username || ''}
-                    disabled={!contributorAuth?.active}
-                    onChange={(event) => {
-                        setIsFormModified(true);
-                        setContributorAuth({
-                            ...userAuth,
-                            username: event.target.value,
-                        });
-                    }}
+                    name="contributorAuth.username"
+                    form={form}
+                    disabled={!contributorAuthActive}
                 />
 
                 <TextField
                     label="Password"
-                    value={contributorAuth?.password || ''}
-                    disabled={!contributorAuth?.active}
-                    onChange={(event) => {
-                        setIsFormModified(true);
-                        setContributorAuth({
-                            ...contributorAuth,
-                            password: event.target.value,
-                        });
-                    }}
+                    name="contributorAuth.password"
+                    form={form}
+                    disabled={!contributorAuthActive}
                 />
             </Box>
 
             <h2>{translate('theme')}</h2>
-            <Select
-                value={theme}
-                style={{
-                    width: 'min(505px, 100%)',
-                }}
-                sx={{ mb: 2 }}
-                onChange={handleThemeChange}
-            >
-                {themes.map((t) => (
-                    <MenuItem key={t.value} value={t.value}>
-                        {t.name[locale]} - {t.description[locale]}
-                    </MenuItem>
-                ))}
-            </Select>
+            <form.Field name="theme">
+                {(field) => (
+                    <Select
+                        value={field.state.value}
+                        style={{
+                            width: 'min(505px, 100%)',
+                        }}
+                        sx={{ mb: 2 }}
+                        onChange={(event) => {
+                            field.handleChange(event.target.value);
+
+                            try {
+                                const themeValue = availableThemes.find(
+                                    (value) =>
+                                        value.value === event.target.value,
+                                );
+
+                                configTenantField.handleChange({
+                                    ...defaultConfig,
+                                    front: {
+                                        ...defaultConfig.front,
+                                        theme: themeValue.defaultVariables,
+                                    },
+                                });
+                            } catch (_) {
+                                /* empty */
+                            }
+                        }}
+                    >
+                        {availableThemes.map((t) => (
+                            <MenuItem key={t.value} value={t.value}>
+                                {t.name[locale]} - {t.description[locale]}
+                            </MenuItem>
+                        ))}
+                    </Select>
+                )}
+            </form.Field>
 
             <h2>{translate('other')}</h2>
             <TextField
                 label="Enrichment Batch Size"
-                value={enrichmentBatchSize || ''}
+                name="enrichmentBatchSize"
+                form={form}
                 type="number"
                 sx={{ mb: 2 }}
-                onChange={(event) => {
-                    setIsFormModified(true);
-                    setEnrichmentBatchSize(Number(event.target.value));
-                }}
             />
             <Box sx={{ mb: 10 }}>
-                <AceEditor
-                    placeholder="Placeholder Text"
-                    mode="json"
-                    fontSize={16}
-                    theme="monokai"
-                    showPrintMargin={false}
-                    wrapEnabled={true}
-                    showGutter={true}
-                    value={configTenant}
-                    onChange={handleConfigTenantChange}
-                    width="100%"
-                    setOptions={{
-                        showLineNumbers: true,
-                        tabSize: 2,
-                    }}
-                />
+                <form.Field name="config">
+                    {(field) => (
+                        <AceEditor
+                            placeholder="Placeholder Text"
+                            mode="json"
+                            fontSize={16}
+                            theme="monokai"
+                            showPrintMargin={false}
+                            wrapEnabled={true}
+                            showGutter={true}
+                            value={
+                                field.state.value
+                                    ? JSON.stringify(field.state.value, null, 2)
+                                    : ''
+                            }
+                            onChange={(value) => {
+                                field.handleChange(
+                                    value ? JSON.parse(value) : null,
+                                );
+                            }}
+                            width="100%"
+                            setOptions={{
+                                showLineNumbers: true,
+                                tabSize: 2,
+                            }}
+                        />
+                    )}
+                </form.Field>
             </Box>
             <Box
                 sx={{
@@ -393,7 +322,7 @@ export const ConfigTenantForm = ({ history, onLoadConfigTenant }) => {
                         variant="contained"
                         className="btn-save"
                         color="primary"
-                        onClick={handleSave}
+                        type="submit"
                         startIcon={
                             isFormModified && (
                                 <Tooltip title={translate('form_is_modified')}>
@@ -410,6 +339,67 @@ export const ConfigTenantForm = ({ history, onLoadConfigTenant }) => {
                 </Box>
             </Box>
         </Box>
+    );
+};
+
+export const ConfigTenantForm = ({ history, onLoadConfigTenant }) => {
+    const { translate, locale } = useTranslate();
+
+    const { data, error, isLoading } = useGetConfigTenant();
+    const availableThemesResponse = useGetAvailableThemes();
+
+    const handleSave = async (data) => {
+        try {
+            const res = await updateConfigTenant(data);
+            if (res.error) {
+                toast(`${translate('error')} : ${res.error}`, {
+                    type: toast.TYPE.ERROR,
+                });
+            } else {
+                toast(translate('configTenantUpdated'), {
+                    type: toast.TYPE.SUCCESS,
+                });
+                onLoadConfigTenant();
+            }
+        } catch (e) {
+            toast(`${translate('error')} : ${e}`, {
+                type: toast.TYPE.ERROR,
+            });
+        }
+    };
+
+    const handleCancel = () => {
+        history.push('/data');
+    };
+
+    if (isLoading || availableThemesResponse.isLoading) {
+        return <Loading>{translate('loading')}</Loading>;
+    }
+
+    if (error) {
+        console.error(error);
+        return (
+            <AdminOnlyAlert>
+                {translate('config_tenant_query_error')}
+            </AdminOnlyAlert>
+        );
+    }
+    if (availableThemesResponse.error) {
+        console.error(availableThemesResponse.error);
+        return (
+            <AdminOnlyAlert>
+                {translate('available_themes_query_error')}
+            </AdminOnlyAlert>
+        );
+    }
+
+    return (
+        <ConfigTenantFormView
+            initialConfig={data}
+            availableThemes={availableThemesResponse.data}
+            handleSave={handleSave}
+            handleCancel={handleCancel}
+        />
     );
 };
 
