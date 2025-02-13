@@ -28,6 +28,8 @@ import { useGetConfigTenant } from './useGetConfigTenant';
 import { useGetAvailableThemes } from './useGetAvailableThemes';
 import { useField, useForm, useStore } from '@tanstack/react-form';
 import { TextField } from '../../lib/components/TextField';
+import { ConfigField } from './fields/ConfigField';
+import { z } from 'zod';
 
 const shake = keyframes`
 10%, 90% {
@@ -46,6 +48,28 @@ const shake = keyframes`
     transform: translate3d(6px, 0, 0);
   }
 `;
+
+const configTenantSchema = z.object({
+    config: z.object(
+        {},
+        {
+            message: 'error_invalid_json',
+        },
+    ),
+    enableAutoPublication: z.boolean(),
+    userAuth: z.object({
+        active: z.boolean(),
+        password: z.string(),
+        username: z.string(),
+    }),
+    contributorAuth: z.object({
+        active: z.boolean(),
+        password: z.string(),
+        username: z.string(),
+    }),
+    theme: z.string(),
+    enrichmentBatchSize: z.number(),
+});
 
 export const ConfigTenantFormView = ({
     initialConfig: {
@@ -89,6 +113,9 @@ export const ConfigTenantFormView = ({
                 theme,
                 enrichmentBatchSize,
             });
+        },
+        validators: {
+            onChange: configTenantSchema,
         },
     });
 
@@ -238,9 +265,9 @@ export const ConfigTenantFormView = ({
                                 );
 
                                 configTenantField.handleChange({
-                                    ...defaultConfig,
+                                    ...currentConfig,
                                     front: {
-                                        ...defaultConfig.front,
+                                        ...currentConfig.front,
                                         theme: themeValue.defaultVariables,
                                     },
                                 });
@@ -268,32 +295,7 @@ export const ConfigTenantFormView = ({
             />
             <Box sx={{ mb: 10 }}>
                 <form.Field name="config">
-                    {(field) => (
-                        <AceEditor
-                            placeholder="Placeholder Text"
-                            mode="json"
-                            fontSize={16}
-                            theme="monokai"
-                            showPrintMargin={false}
-                            wrapEnabled={true}
-                            showGutter={true}
-                            value={
-                                field.state.value
-                                    ? JSON.stringify(field.state.value, null, 2)
-                                    : ''
-                            }
-                            onChange={(value) => {
-                                field.handleChange(
-                                    value ? JSON.parse(value) : null,
-                                );
-                            }}
-                            width="100%"
-                            setOptions={{
-                                showLineNumbers: true,
-                                tabSize: 2,
-                            }}
-                        />
-                    )}
+                    {(field) => <ConfigField field={field} form={form} />}
                 </form.Field>
             </Box>
             <Box
