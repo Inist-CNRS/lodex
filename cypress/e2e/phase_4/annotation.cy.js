@@ -591,8 +591,8 @@ describe('Annotation', () => {
                     '',
                     'John Doe',
                     'This is a comment',
-                    '11/02/2025',
-                    '11/02/2025',
+                    new Date(2025, 1, 11).toLocaleDateString(),
+                    new Date(2025, 1, 11).toLocaleDateString(),
                 ]);
             });
         });
@@ -635,8 +635,8 @@ describe('Annotation', () => {
                     '',
                     'John Doe',
                     'This is a comment',
-                    '11/02/2025',
-                    '11/02/2025',
+                    new Date(2025, 1, 11).toLocaleDateString(),
+                    new Date(2025, 1, 11).toLocaleDateString(),
                 ]);
             });
 
