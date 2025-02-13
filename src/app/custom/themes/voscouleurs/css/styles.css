@@ -15,7 +15,7 @@
 /* theme lodex 'voscouleurs' */
 /* modifiable depuis votre lodex/admin/configuration */
 /* author : helene creusot */
-/* developpeur : helene creusot - pierre marcolet */
+/* developpeur : helene creusot */
 /* pour nos partenaires */
 /* CNRS Inist - juin 2024 */
 
@@ -24,7 +24,6 @@
 --bgBody: <%= custom.color.bgBody %>;
 --bgContrast: <%= custom.color.bgContrast %>;
 --bgHeader: <%= custom.color.bgHeader %>;
---bgHeaderUrl: url('<%= custom.color.bgHeaderUrl %>');
 --titleHeader: <%= custom.color.titleHeader %>;
 --bgContent: <%= custom.color.bgContent %>;
 --bgFacet: <%= custom.color.bgFacet %>;
@@ -240,6 +239,8 @@ a.graph-link.graph-summary-link:hover {
 .MuiButton-textPrimary:hover,
 .MuiButton-textPrimary:hover svg {
     background-color: var(--bgContrast) !important;
+    color: var(--buttonHover) !important;
+    fill: var(--buttonHover) !important;
 }
 /*facettes : search in facettes*/
 .css-134m6vv-MuiInputBase-root-MuiInput-root::after {
