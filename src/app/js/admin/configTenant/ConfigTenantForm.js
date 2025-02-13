@@ -27,6 +27,10 @@ import { toast } from '../../../../common/tools/toast';
 import { loadConfigTenant } from '.';
 import { SaveAs } from '@mui/icons-material';
 import { useTranslate } from '../../i18n/I18NContext';
+import { useForm } from '@tanstack/react-form';
+import Loading from '../../lib/components/Loading';
+import { omit } from 'lodash';
+import { useGetConfigTenant } from './useGetConfigTenant';
 
 const shake = keyframes`
 10%, 90% {
@@ -72,22 +76,28 @@ export const ConfigTenantForm = ({ history, onLoadConfigTenant }) => {
         },
     ]);
 
+    const { data, error, isLoading } = useGetConfigTenant();
+
     useEffect(() => {
         async function fetchData() {
-            const { response } = await getConfigTenant();
-            setUserAuth(response.userAuth);
-            setContributorAuth(response.contributorAuth);
-            setEnrichmentBatchSize(response.enrichmentBatchSize);
-            setId(response._id);
-            setEnableAutoPublication(response.enableAutoPublication);
-            setTheme(response.theme ?? 'default');
-            delete response.userAuth;
-            delete response.enrichmentBatchSize;
-            delete response._id;
-            delete response.enableAutoPublication;
-            delete response.theme;
+            setUserAuth(data.userAuth);
+            setContributorAuth(data.contributorAuth);
+            setEnrichmentBatchSize(data.enrichmentBatchSize);
+            setId(data._id);
+            setEnableAutoPublication(data.enableAutoPublication);
+            setTheme(data.theme ?? 'default');
 
-            const stringified = JSON.stringify(response, null, 2);
+            const stringified = JSON.stringify(
+                omit(data, [
+                    'userAuth',
+                    'enrichmentBatchSize',
+                    '_id',
+                    'enableAutoPublication',
+                    'theme',
+                ]),
+                null,
+                2,
+            );
             setInitialConfig(stringified);
             setConfigTenant(stringified);
 
@@ -95,7 +105,7 @@ export const ConfigTenantForm = ({ history, onLoadConfigTenant }) => {
             setThemes(themesResponse.response);
         }
         fetchData();
-    }, []);
+    }, [data]);
 
     const handleSave = async () => {
         try {
@@ -166,6 +176,19 @@ export const ConfigTenantForm = ({ history, onLoadConfigTenant }) => {
             /* empty */
         }
     };
+
+    if (isLoading) {
+        return <Loading>{translate('loading')}</Loading>;
+    }
+
+    if (error) {
+        console.error(error);
+        return (
+            <AdminOnlyAlert>
+                {translate('annotation_query_error')}
+            </AdminOnlyAlert>
+        );
+    }
 
     return (
         <Box className="container">
