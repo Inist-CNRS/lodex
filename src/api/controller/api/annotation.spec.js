@@ -5,6 +5,7 @@ import createAnnotationModel from '../../models/annotation';
 import createFieldModel from '../../models/field';
 import createPublishedDatasetModel from '../../models/publishedDataset';
 import {
+    canAnnotate,
     createAnnotation,
     deleteAnnotation,
     deleteManyAnnotation,
@@ -13,6 +14,7 @@ import {
     getAnnotations,
     updateAnnotation,
 } from './annotation';
+import configTenant from '../../models/configTenant';
 
 const ANNOTATIONS = [
     {
@@ -70,6 +72,7 @@ describe('annotation', () => {
     const connectionStringURI = process.env.MONGO_URL;
     let annotationModel;
     let publishedDatasetModel;
+    let configTenantModel;
     let fieldModel;
     let connection;
     let db;
@@ -82,6 +85,7 @@ describe('annotation', () => {
         annotationModel = await createAnnotationModel(db);
         fieldModel = await createFieldModel(db);
         publishedDatasetModel = await createPublishedDatasetModel(db);
+        configTenantModel = await configTenant(db);
     });
 
     beforeEach(async () => {
@@ -1693,5 +1697,91 @@ describe('annotation', () => {
                 annotation,
             ]);
         });
+    });
+
+    describe('GET /annotations/can-access', () => {
+        it('should return true when role is contributor and contributorAuth is active', async () => {
+            await configTenantModel.create({
+                contributorAuth: {
+                    active: true,
+                },
+            });
+            const ctx = {
+                state: {
+                    header: {
+                        role: 'contributor',
+                    },
+                },
+                configTenantCollection: configTenantModel,
+            };
+
+            await canAnnotate(ctx);
+
+            expect(ctx.status).toBe(200);
+            expect(ctx.body).toBe(true);
+        });
+        it('should return true when role is admin and contributorAuth is active', async () => {
+            await configTenantModel.create({
+                contributorAuth: {
+                    active: true,
+                },
+            });
+            const ctx = {
+                state: {
+                    header: {
+                        role: 'admin',
+                    },
+                },
+                configTenantCollection: configTenantModel,
+            };
+
+            await canAnnotate(ctx);
+
+            expect(ctx.status).toBe(200);
+            expect(ctx.body).toBe(true);
+        });
+        it('should return false when role is user and contributorAuth is active', async () => {
+            await configTenantModel.create({
+                contributorAuth: {
+                    active: true,
+                },
+            });
+            const ctx = {
+                state: {
+                    header: {
+                        role: 'user',
+                    },
+                },
+                configTenantCollection: configTenantModel,
+            };
+
+            await canAnnotate(ctx);
+
+            expect(ctx.status).toBe(200);
+            expect(ctx.body).toBe(false);
+        });
+        it.each(['user', 'contributor', 'admin'])(
+            'should return true when contributorAuth is not active and role is %s',
+            async (role) => {
+                await configTenantModel.create({
+                    contributorAuth: {
+                        active: false,
+                    },
+                });
+                const ctx = {
+                    state: {
+                        header: {
+                            role,
+                        },
+                    },
+                    configTenantCollection: configTenantModel,
+                };
+
+                await canAnnotate(ctx);
+
+                expect(ctx.status).toBe(200);
+                expect(ctx.body).toBe(true);
+            },
+        );
     });
 });
