@@ -126,15 +126,12 @@ export const annotationUpdateSchema = z.object({
 });
 
 const annotationUpdateNullishSchema = z.object(
-    [...Object.entries(annotationUpdateSchema.shape)].reduce(
-        (acc, [key, value]) => {
-            acc[key] = value
-                .nullish()
-                .default(key === 'status' ? 'to_review' : null);
-            return acc;
-        },
-        {},
-    ),
+    Object.entries(annotationUpdateSchema.shape).reduce((acc, [key, value]) => {
+        acc[key] = value
+            .nullish()
+            .default(key === 'status' ? 'to_review' : null);
+        return acc;
+    }, {}),
 );
 
 export const annotationImportSchema = annotationCreationSchema
@@ -234,3 +231,5 @@ export const getAnnotationsQuerySchema = z.object({
         })
         .default('desc'),
 });
+
+export const deleteManyAnnotationsSchema = z.array(z.string()).min(1);

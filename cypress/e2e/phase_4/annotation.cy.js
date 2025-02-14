@@ -54,6 +54,7 @@ describe('Annotation', () => {
                 expect(
                     cells.toArray().map((cell) => cell.textContent),
                 ).to.deep.equal([
+                    '',
                     'Home page',
                     '',
                     'comment',
@@ -108,6 +109,7 @@ describe('Annotation', () => {
                     expect(
                         headers.toArray().map((header) => header.textContent),
                     ).to.deep.equal([
+                        '',
                         'Resource URI',
                         'Resource title',
                         'Type',
@@ -128,8 +130,8 @@ describe('Annotation', () => {
                 });
 
                 cy.findAllByRole('cell').then((cells) => {
-                    const firstUri = cells[0].textContent;
-                    const secondUri = cells[16].textContent;
+                    const firstUri = cells[1].textContent;
+                    const secondUri = cells[18].textContent;
 
                     expect(firstUri).to.match(/uid:\//);
                     expect(secondUri).to.match(/uid:\//);
@@ -137,6 +139,7 @@ describe('Annotation', () => {
                     expect(
                         cells.toArray().map((cell) => cell.textContent),
                     ).to.deep.equal([
+                        '',
                         firstUri,
                         'RoboCop',
                         'removal',
@@ -153,6 +156,7 @@ describe('Annotation', () => {
                         'This is another comment',
                         new Date().toLocaleDateString(),
                         new Date().toLocaleDateString(),
+                        '',
                         secondUri,
                         'Terminator 2',
                         'comment',
@@ -236,8 +240,8 @@ describe('Annotation', () => {
                 cy.findByRole('progressbar').should('not.exist');
 
                 cy.findAllByRole('cell').then((cells) => {
-                    const firstUri = cells[0].textContent;
-                    const secondUri = cells[16].textContent;
+                    const firstUri = cells[1].textContent;
+                    const secondUri = cells[18].textContent;
 
                     expect(firstUri).to.match(/uid:\//);
                     expect(secondUri).to.match(/uid:\//);
@@ -245,6 +249,7 @@ describe('Annotation', () => {
                     expect(
                         cells.toArray().map((cell) => cell.textContent),
                     ).to.deep.equal([
+                        '',
                         firstUri,
                         'RoboCop',
                         'removal',
@@ -261,6 +266,7 @@ describe('Annotation', () => {
                         'This is another comment',
                         new Date().toLocaleDateString(),
                         new Date().toLocaleDateString(),
+                        '',
                         secondUri,
                         'Terminator 2',
                         'comment',
@@ -314,8 +320,8 @@ describe('Annotation', () => {
                 cy.findByText('Annotations').click();
 
                 cy.findAllByRole('cell').then((cells) => {
-                    const firstUri = cells[0].textContent;
-                    const secondUri = cells[16].textContent;
+                    const firstUri = cells[1].textContent;
+                    const secondUri = cells[18].textContent;
 
                     expect(firstUri).to.match(/uid:\//);
                     expect(secondUri).to.match(/uid:\//);
@@ -323,6 +329,7 @@ describe('Annotation', () => {
                     expect(
                         cells.toArray().map((cell) => cell.textContent),
                     ).to.deep.equal([
+                        '',
                         firstUri,
                         'RoboCop',
                         'comment',
@@ -339,6 +346,7 @@ describe('Annotation', () => {
                         'This is another comment',
                         new Date().toLocaleDateString(),
                         new Date().toLocaleDateString(),
+                        '',
                         secondUri,
                         'Terminator 2',
                         'comment',
@@ -383,13 +391,14 @@ describe('Annotation', () => {
                 cy.wait(500);
 
                 cy.findAllByRole('cell').then((cells) => {
-                    const firstUri = cells[0].textContent;
+                    const firstUri = cells[1].textContent;
 
                     expect(firstUri).to.match(/uid:\//);
 
                     expect(
                         cells.toArray().map((cell) => cell.textContent),
                     ).to.deep.equal([
+                        '',
                         firstUri,
                         'RoboCop',
                         'comment',
@@ -436,6 +445,7 @@ describe('Annotation', () => {
                 expect(
                     cells.toArray().map((cell) => cell.textContent),
                 ).to.deep.equal([
+                    '',
                     'Chart page',
                     '',
                     'comment',
@@ -577,6 +587,7 @@ describe('Annotation', () => {
                 expect(
                     cells.toArray().map((cell) => cell.textContent),
                 ).to.deep.equal([
+                    '',
                     'Home page',
                     '',
                     'comment',
@@ -621,6 +632,7 @@ describe('Annotation', () => {
                 expect(
                     cells.toArray().map((cell) => cell.textContent),
                 ).to.deep.equal([
+                    '',
                     'Home page',
                     '',
                     'comment',
@@ -663,6 +675,125 @@ describe('Annotation', () => {
 
                 expect(errors[0].errors).to.be.an('array').with.length(1);
             });
+        });
+    });
+
+    describe('delete many', () => {
+        beforeEach(() => {
+            // ResizeObserver doesn't like when the app has to many renders / re-renders
+            // and throws an exception to say, "I wait for the next paint"
+            // https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver#observation_errors
+            cy.on('uncaught:exception', (error) => {
+                return !error.message.includes('ResizeObserver');
+            });
+
+            teardown();
+            menu.openAdvancedDrawer();
+            menu.goToAdminDashboard();
+            datasetImportPage.importDataset('dataset/film.csv');
+            datasetImportPage.importModel('model/film-with-field-id.tar');
+
+            cy.findByRole('gridcell', { name: 'Liste des films' }).trigger(
+                'mouseenter',
+            );
+            cy.findByRole('button', { name: 'edit-Liste des films' }).click();
+
+            cy.findByRole('tab', { name: 'Semantics' }).click();
+            cy.findByRole('checkbox', {
+                name: 'This field can be annotated',
+            }).click();
+            cy.findByRole('button', { name: 'Save' }).click();
+
+            datasetImportPage.publish();
+
+            cy.findByRole('button', {
+                name: 'Open menu',
+            }).click();
+
+            cy.findByRole('menuitem', {
+                name: 'Model',
+            }).trigger('mouseleave');
+
+            cy.findByRole('menuitem', {
+                name: 'Annotations',
+            }).trigger('mouseenter');
+
+            cy.wait(500);
+
+            fillInputWithFixture(
+                'input[name="import_annotations"]',
+                'annotations/films-many-annotations.json',
+                'application/json',
+            );
+
+            cy.wait(1000);
+
+            cy.findByText('Annotations').click();
+        });
+
+        it('should delete many annotations', () => {
+            cy.findAllByRole('checkbox').eq(1).click();
+            cy.findAllByRole('checkbox').eq(2).click();
+
+            cy.findByRole('button', {
+                name: 'Delete the selected annotation(s)',
+            }).click();
+
+            cy.findByRole('button', {
+                name: 'Delete',
+            }).click();
+
+            cy.wait(500);
+
+            cy.findAllByRole('cell', {
+                timeout: 2000,
+            }).then((cells) => {
+                expect(
+                    cells.toArray().map((cell) => cell.textContent),
+                ).to.deep.equal([
+                    '',
+                    'Home page',
+                    '',
+                    'correct',
+                    'Nombre de films',
+                    '[MzM2]',
+                    '',
+                    '',
+                    '/api/run/count-all/',
+                    '35',
+                    'To Review',
+                    '',
+                    '',
+                    'John DOE',
+                    'You should add more films!',
+                    new Date(2025, 1, 14).toLocaleDateString(),
+                    new Date(2025, 1, 14).toLocaleDateString(),
+                ]);
+            });
+        });
+
+        it('should support cancel', () => {
+            cy.findAllByRole('checkbox').eq(1).click();
+            cy.findAllByRole('checkbox').eq(2).click();
+
+            cy.findByRole('button', {
+                name: 'Delete the selected annotation(s)',
+                timeout: 2000,
+            }).click();
+
+            cy.findByRole('button', {
+                name: 'Cancel',
+                timeout: 2000,
+            }).click();
+
+            cy.findAllByRole('checkbox', {
+                timeout: 2000,
+            })
+                .eq(1)
+                .should('be.checked');
+            cy.findAllByRole('checkbox').eq(2).should('be.checked');
+
+            cy.findAllByRole('cell').should('have.length', 51);
         });
     });
 });

@@ -25,6 +25,7 @@ export const ConfirmPopup = ({
     description,
     onConfirm,
     onCancel,
+    isLoading = false,
 }) => {
     return (
         <Dialog open={isOpen} onClose={onCancel}>
@@ -37,7 +38,11 @@ export const ConfirmPopup = ({
                 </DialogContent>
             )}
             <DialogActions>
-                <CancelButton key="cancel" onClick={onCancel}>
+                <CancelButton
+                    key="cancel"
+                    onClick={onCancel}
+                    disabled={isLoading}
+                >
                     {cancelLabel}
                 </CancelButton>
                 <Button
@@ -45,6 +50,7 @@ export const ConfirmPopup = ({
                     color="primary"
                     key="confirm"
                     onClick={onConfirm}
+                    disabled={isLoading}
                 >
                     {confirmLabel}
                 </Button>
@@ -61,4 +67,5 @@ ConfirmPopup.propTypes = {
     onConfirm: PropTypes.func.isRequired,
     isOpen: PropTypes.bool.isRequired,
     onCancel: PropTypes.func.isRequired,
+    isLoading: PropTypes.bool,
 };

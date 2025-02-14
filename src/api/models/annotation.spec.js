@@ -334,4 +334,58 @@ describe('annotation', () => {
             expect(await annotationModel.count({})).toBe(1);
         });
     });
+
+    describe('deleteManyById', () => {
+        let firstAnnotation, secondAnnotation;
+        beforeEach(async () => {
+            firstAnnotation = await annotationModel.create({
+                comment: 'target annotation',
+            });
+            secondAnnotation = await annotationModel.create({
+                comment: 'another annotation',
+            });
+        });
+
+        it('should delete a list of annotations', async () => {
+            expect(await annotationModel.count({})).toBe(2);
+
+            await expect(
+                annotationModel.deleteManyById([
+                    firstAnnotation._id.toString(),
+                ]),
+            ).resolves.toBe(1);
+
+            expect(await annotationModel.findLimitFromSkip()).toMatchObject([
+                secondAnnotation,
+            ]);
+        });
+
+        it('should delete a list of annotations', async () => {
+            expect(await annotationModel.count({})).toBe(2);
+
+            await expect(
+                annotationModel.deleteManyById([
+                    firstAnnotation._id.toString(),
+                    secondAnnotation._id.toString(),
+                ]),
+            ).resolves.toBe(2);
+
+            expect(await annotationModel.count({})).toBe(0);
+        });
+
+        it('should skip invalid ids', async () => {
+            expect(await annotationModel.count({})).toBe(2);
+
+            await expect(
+                annotationModel.deleteManyById([
+                    '404',
+                    secondAnnotation._id.toString(),
+                ]),
+            ).resolves.toBe(1);
+
+            expect(await annotationModel.findLimitFromSkip()).toMatchObject([
+                firstAnnotation,
+            ]);
+        });
+    });
 });

@@ -1288,3 +1288,7 @@
 "comment"	"Comment"	"Commentaire"
 "correction"	"Correction"	"Correction"
 "addition"	"Addition"	"Ajout"
+"annotation_delete_many_button_label"	"Delete the selected annotation(s)"	" Supprimer le(s) annotation(s) sélectionnée(s)"
+"annotation_delete_many_modal_title"	"Are your sure you want to delete the selected annotation? |||| Are you sure you want to delete the %{smart_count} selected annotations"	"Êtes-vous sûr de vouloir supprimer l'annotation sélectionnée ? |||| Êtes-vous sûr de vouloir supprimer les %{smart_count} annotations sélectionnées ?"
+"annotation_delete_many_success"	"%{smart_count} annotation have been deleted. |||| %{smart_count} annotations have been deleted."	"%{smart_count} annotation a été supprimée. |||| %{smart_count} annotations ont été supprimées."
+"annotation_delete_many_error"	"An error occured while deleting annotations, please try again later."	"Une erreur est survenue lors de la suppression des annotations, merci de réessayer ultérieurement."

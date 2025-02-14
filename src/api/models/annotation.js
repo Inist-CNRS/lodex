@@ -85,6 +85,17 @@ export default async (db) => {
         return +deletedCount;
     }
 
+    async function deleteManyById(ids) {
+        const { deletedCount } = await annotationCollection.deleteMany({
+            _id: {
+                $in: ids
+                    .filter((id) => ObjectId.isValid(id))
+                    .map((id) => new ObjectId(id)),
+            },
+        });
+        return +deletedCount;
+    }
+
     return {
         create,
         updateOneById,
@@ -93,5 +104,6 @@ export default async (db) => {
         count,
         findOneById,
         deleteOneById,
+        deleteManyById,
     };
 };

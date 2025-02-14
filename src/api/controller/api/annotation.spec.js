@@ -7,6 +7,7 @@ import createPublishedDatasetModel from '../../models/publishedDataset';
 import {
     createAnnotation,
     deleteAnnotation,
+    deleteManyAnnotation,
     exportAnnotations,
     getAnnotation,
     getAnnotations,
@@ -1541,6 +1542,95 @@ describe('annotation', () => {
                 annotation,
             ]);
         });
+    });
+
+    describe('DELETE /annotations', () => {
+        let firstAnnotation, secondAnnotation;
+        beforeEach(async () => {
+            firstAnnotation = await annotationModel.create({
+                comment: 'target annotation',
+            });
+            secondAnnotation = await annotationModel.create({
+                comment: 'another annotation',
+            });
+        });
+
+        it('should succeed with a 200 with deleted annotations', async () => {
+            const ctx = {
+                request: {
+                    body: ['404', firstAnnotation._id.toString()],
+                },
+                response: {},
+                annotation: annotationModel,
+                publishedDataset: publishedDatasetModel,
+                field: fieldModel,
+            };
+
+            await deleteManyAnnotation(ctx);
+
+            expect(ctx.response).toStrictEqual({
+                status: 200,
+                body: {
+                    deletedCount: 1,
+                },
+            });
+
+            expect(await annotationModel.findLimitFromSkip()).toStrictEqual([
+                secondAnnotation,
+            ]);
+        });
+
+        it.each([
+            [
+                [],
+                [
+                    {
+                        code: 'too_small',
+                        exact: false,
+                        inclusive: true,
+                        message: 'Array must contain at least 1 element(s)',
+                        minimum: 1,
+                        path: [],
+                        type: 'array',
+                    },
+                ],
+            ],
+            [
+                [1],
+                [
+                    {
+                        code: 'invalid_type',
+                        expected: 'string',
+                        message: 'Expected string, received number',
+                        path: [0],
+                        received: 'number',
+                    },
+                ],
+            ],
+        ])(
+            'should fail with a 400 if ids is not valid',
+            async (body, errors) => {
+                const ctx = {
+                    request: {
+                        body,
+                    },
+                    response: {},
+                    annotation: annotationModel,
+                    publishedDataset: publishedDatasetModel,
+                    field: fieldModel,
+                };
+
+                await deleteManyAnnotation(ctx);
+
+                expect(ctx.response).toStrictEqual({
+                    status: 400,
+                    body: {
+                        deletedCount: 0,
+                        errors,
+                    },
+                });
+            },
+        );
     });
 
     describe('DELETE /annotations/:id', () => {
