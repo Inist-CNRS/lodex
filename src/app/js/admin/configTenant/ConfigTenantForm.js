@@ -16,6 +16,7 @@ import PropTypes from 'prop-types';
 import CancelButton from '../../lib/components/CancelButton';
 import { loadConfigTenant } from '.';
 import { SaveAs } from '@mui/icons-material';
+import HelpIcon from '@mui/icons-material/HelpOutline';
 import { useTranslate } from '../../i18n/I18NContext';
 import Loading from '../../lib/components/Loading';
 import { useGetConfigTenant } from './useGetConfigTenant';
@@ -185,9 +186,13 @@ export const ConfigTenantFormView = ({
                     width: '100%',
                     display: 'flex',
                     gap: 1,
+                    alignItems: 'center',
                 }}
             >
                 <h2>{translate('user_auth')}</h2>
+                <Tooltip title={translate('user_auth_help')}>
+                    <HelpIcon />
+                </Tooltip>
                 <form.Field name="userAuth.active">
                     {(field) => (
                         <Checkbox
@@ -227,9 +232,13 @@ export const ConfigTenantFormView = ({
                     width: '100%',
                     display: 'flex',
                     gap: 1,
+                    alignItems: 'center',
                 }}
             >
                 <h2>{translate('contributor_auth')}</h2>
+                <Tooltip title={translate('contributor_auth_help')}>
+                    <HelpIcon />
+                </Tooltip>
                 <form.Field name="contributorAuth.active">
                     {(field) => (
                         <Checkbox
