@@ -193,7 +193,6 @@ describe('annotation.validator', () => {
         it('should accept annotation with proposedValue when kind is addition', () => {
             const annotationPayload = {
                 resourceUri: 'uid:/2a8d429f-8134-4502-b9d3-d20c571592fa',
-                itemPath: ['GvaF', '0'],
                 kind: 'addition',
                 comment: 'This is a comment',
                 authorName: 'John Doe',
@@ -278,7 +277,6 @@ describe('annotation.validator', () => {
         it('should reject annotation with no proposedValue when kind is "addition"', () => {
             const annotationPayload = {
                 resourceUri: 'uid:/2a8d429f-8134-4502-b9d3-d20c571592fa',
-                itemPath: ['GvaF', '0'],
                 kind: 'addition',
                 comment: 'This is a comment',
                 authorName: 'John Doe',
@@ -368,7 +366,6 @@ describe('annotation.validator', () => {
         it('should reject annotation with kind "addition" when target is "title"', () => {
             const annotationPayload = {
                 resourceUri: 'uid:/2a8d429f-8134-4502-b9d3-d20c571592fa',
-                itemPath: ['GvaF', '0'],
                 kind: 'addition',
                 comment: 'This is a comment',
                 authorName: 'John Doe',
