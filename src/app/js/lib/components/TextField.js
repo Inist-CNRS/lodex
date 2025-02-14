@@ -18,6 +18,7 @@ export function TextField({
     helperText,
     multiline,
     required,
+    sx,
 }) {
     const { translate } = useTranslate();
     const field = useField({ name, form });
@@ -35,7 +36,7 @@ export function TextField({
     }, [field.state]);
 
     return (
-        <FormControl fullWidth>
+        <FormControl fullWidth sx={sx}>
             <MuiTextField
                 label={label}
                 name={field.name}
@@ -72,4 +73,5 @@ TextField.propTypes = {
     multiline: PropTypes.bool,
     required: PropTypes.bool,
     disabled: PropTypes.bool,
+    sx: PropTypes.object,
 };

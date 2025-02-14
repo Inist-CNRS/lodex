@@ -48,3 +48,7 @@ export const ConfigField = ({ form }) => {
         </>
     );
 };
+
+ConfigField.propTypes = {
+    form: PropTypes.object.isRequired,
+};

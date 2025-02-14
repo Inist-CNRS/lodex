@@ -365,6 +365,14 @@ export const ConfigTenantFormView = ({
     );
 };
 
+ConfigTenantFormView.propTypes = {
+    initialConfig: PropTypes.object.isRequired,
+    availableThemes: PropTypes.array.isRequired,
+    handleCancel: PropTypes.func.isRequired,
+    handleSave: PropTypes.func.isRequired,
+    isSubmitting: PropTypes.bool.isRequired,
+};
+
 export const ConfigTenantForm = ({ history }) => {
     const { translate } = useTranslate();
 
