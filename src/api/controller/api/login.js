@@ -25,6 +25,7 @@ export const postLogin = (date) => async (ctx) => {
 
     const { username, password } = ctx.request.body;
     const userAuth = get(ctx, 'configTenant.userAuth', {});
+    const contributorAuth = get(ctx, 'configTenant.contributorAuth', {});
     const rootAuth = get(ctx, 'ezMasterConfig.rootAuth', {});
 
     let role;
@@ -38,6 +39,14 @@ export const postLogin = (date) => async (ctx) => {
         password === userAuth.password
     ) {
         role = 'user';
+    }
+
+    if (
+        contributorAuth &&
+        username === contributorAuth.username &&
+        password === contributorAuth.password
+    ) {
+        role = 'contributor';
     }
 
     if (

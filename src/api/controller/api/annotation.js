@@ -487,10 +487,31 @@ function getResourceTitle(resource, titleField, subResourceTitleFields) {
     return lastVersion[currentResourceTitleField?.name];
 }
 
+export const canAnnotate = async (ctx) => {
+    const role = ctx?.state?.header?.role;
+    const configTenant = await ctx.configTenantCollection.findLast();
+
+    if (!configTenant) {
+        ctx.status = 404;
+        ctx.body = { error: 'Not found' };
+        return;
+    }
+
+    ctx.status = 200;
+
+    if (configTenant.contributorAuth.active) {
+        ctx.body = ['contributor', 'admin'].includes(role);
+        return;
+    }
+
+    ctx.body = true;
+};
+
 const app = new Koa();
 
 app.use(route.get('/', getAnnotations));
 app.use(route.get('/export', exportAnnotations));
+app.use(route.get('/can-annotate', canAnnotate));
 app.use(route.get('/:id', getAnnotation));
 app.use(koaBodyParser());
 app.use(route.put('/:id', updateAnnotation));

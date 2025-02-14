@@ -128,6 +128,14 @@ app.use(async (ctx, next) => {
     }
 
     if (
+        get(ctx, 'state.cookie.role') === 'contributor' &&
+        get(ctx, 'state.header.role') === 'contributor'
+    ) {
+        ctx.status = 404;
+        return;
+    }
+
+    if (
         get(ctx, 'state.cookie.role') !== ADMIN_ROLE ||
         get(ctx, 'state.header.role') !== ADMIN_ROLE
     ) {

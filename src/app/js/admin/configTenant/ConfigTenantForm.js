@@ -27,6 +27,7 @@ import { ConfigField } from './fields/ConfigField';
 import { z } from 'zod';
 import { useUpdateConfigTenant } from './useUpdateConfigTenant';
 import { useHistory } from 'react-router-dom';
+import AdminOnlyAlert from '../../lib/components/AdminOnlyAlert';
 
 const shake = keyframes`
 10%, 90% {
