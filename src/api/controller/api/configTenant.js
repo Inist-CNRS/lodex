@@ -15,11 +15,13 @@ export const putConfigTenant = async (ctx, id) => {
 
     try {
         const configTenant = await ctx.configTenantCollection.findOneById(id);
+
         if (!configTenant) {
             ctx.status = 404;
             ctx.body = { error: 'Not found' };
             return;
         }
+
         ctx.body = await ctx.configTenantCollection.update(id, newConfigTenant);
     } catch (error) {
         ctx.status = 403;

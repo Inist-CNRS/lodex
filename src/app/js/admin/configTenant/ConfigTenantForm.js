@@ -8,28 +8,25 @@ import {
     Tooltip,
     keyframes,
 } from '@mui/material';
-import AceEditor from 'react-ace';
 import 'ace-builds/src-noconflict/mode-json';
 import 'ace-builds/src-noconflict/theme-monokai';
 
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
-import { updateConfigTenant } from '../api/configTenant';
 import PropTypes from 'prop-types';
 import CancelButton from '../../lib/components/CancelButton';
-import { toast } from '../../../../common/tools/toast';
 import { loadConfigTenant } from '.';
 import { SaveAs } from '@mui/icons-material';
 import { useTranslate } from '../../i18n/I18NContext';
 import Loading from '../../lib/components/Loading';
-import { omit } from 'lodash';
 import { useGetConfigTenant } from './useGetConfigTenant';
 import { useGetAvailableThemes } from './useGetAvailableThemes';
 import { useField, useForm, useStore } from '@tanstack/react-form';
 import { TextField } from '../../lib/components/TextField';
 import { ConfigField } from './fields/ConfigField';
 import { z } from 'zod';
+import { useUpdateConfigTenant } from './useUpdateConfigTenant';
 
 const shake = keyframes`
 10%, 90% {
@@ -83,6 +80,7 @@ const configTenantSchema = z.object({
 
 export const ConfigTenantFormView = ({
     initialConfig: {
+        _id,
         enableAutoPublication,
         userAuth,
         contributorAuth,
@@ -93,11 +91,13 @@ export const ConfigTenantFormView = ({
     availableThemes,
     handleCancel,
     handleSave,
+    isSubmitting,
 }) => {
     const { translate, locale } = useTranslate();
 
     const form = useForm({
         defaultValues: {
+            _id,
             enableAutoPublication,
             userAuth,
             contributorAuth,
@@ -113,10 +113,12 @@ export const ConfigTenantFormView = ({
                 contributorAuth,
                 theme,
                 enrichmentBatchSize,
+                _id,
                 config,
             } = value;
             await handleSave({
                 ...config,
+                _id,
                 enableAutoPublication,
                 userAuth,
                 contributorAuth,
@@ -150,7 +152,15 @@ export const ConfigTenantFormView = ({
     });
 
     return (
-        <Box className="container">
+        <Box
+            className="container"
+            component="form"
+            onSubmit={(event) => {
+                event.preventDefault();
+                event.stopPropagation();
+                form.handleSubmit();
+            }}
+        >
             <h1>{translate('config_tenant')}</h1>
             <Box
                 sx={{
@@ -335,6 +345,7 @@ export const ConfigTenantFormView = ({
                         className="btn-save"
                         color="primary"
                         type="submit"
+                        disabled={isSubmitting}
                         startIcon={
                             isFormModified && (
                                 <Tooltip title={translate('form_is_modified')}>
@@ -354,31 +365,13 @@ export const ConfigTenantFormView = ({
     );
 };
 
-export const ConfigTenantForm = ({ history, onLoadConfigTenant }) => {
-    const { translate, locale } = useTranslate();
+export const ConfigTenantForm = ({ history }) => {
+    const { translate } = useTranslate();
 
     const { data, error, isLoading } = useGetConfigTenant();
     const availableThemesResponse = useGetAvailableThemes();
 
-    const handleSave = async (data) => {
-        try {
-            const res = await updateConfigTenant(data);
-            if (res.error) {
-                toast(`${translate('error')} : ${res.error}`, {
-                    type: toast.TYPE.ERROR,
-                });
-            } else {
-                toast(translate('configTenantUpdated'), {
-                    type: toast.TYPE.SUCCESS,
-                });
-                onLoadConfigTenant();
-            }
-        } catch (e) {
-            toast(`${translate('error')} : ${e}`, {
-                type: toast.TYPE.ERROR,
-            });
-        }
-    };
+    const { handleUpdateConfigTenant, isSubmitting } = useUpdateConfigTenant();
 
     const handleCancel = () => {
         history.push('/data');
@@ -409,8 +402,9 @@ export const ConfigTenantForm = ({ history, onLoadConfigTenant }) => {
         <ConfigTenantFormView
             initialConfig={data}
             availableThemes={availableThemesResponse.data}
-            handleSave={handleSave}
+            handleSave={handleUpdateConfigTenant}
             handleCancel={handleCancel}
+            isSubmitting={isSubmitting}
         />
     );
 };
