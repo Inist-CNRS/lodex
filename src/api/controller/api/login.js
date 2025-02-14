@@ -58,7 +58,6 @@ export const postLogin = (date) => async (ctx) => {
     ) {
         role = ROOT_ROLE;
     }
-
     if (!role) {
         ctx.status = 401;
         return;
@@ -81,6 +80,7 @@ export const postLogin = (date) => async (ctx) => {
     const cookieToken = jwt.sign(tokenData, auth.cookieSecret);
     const headerToken = jwt.sign(tokenData, auth.headerSecret);
 
+    ctx.status = 200;
     ctx.cookies.set(
         role === ROOT_ROLE ? 'lodex_token_root' : `lodex_token_${ctx.tenant}`,
         cookieToken,
