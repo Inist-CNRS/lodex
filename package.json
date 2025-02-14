@@ -196,7 +196,7 @@
         "url": "0.11.3",
         "url-api-polyfill": "^1.1.0",
         "uuid": "8.3.2",
-        "vega": "5.25.0",
+        "vega": "5.26.0",
         "vega-crossfilter": "4.1.1",
         "vega-dataflow": "5.7.5",
         "vega-embed": "6.19.1",
