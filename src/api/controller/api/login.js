@@ -35,6 +35,7 @@ export const postLogin = (date) => async (ctx) => {
 
     if (
         userAuth &&
+        userAuth.active &&
         username === userAuth.username &&
         password === userAuth.password
     ) {
@@ -43,6 +44,7 @@ export const postLogin = (date) => async (ctx) => {
 
     if (
         contributorAuth &&
+        contributorAuth.active &&
         username === contributorAuth.username &&
         password === contributorAuth.password
     ) {
