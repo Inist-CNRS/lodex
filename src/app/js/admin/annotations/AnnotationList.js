@@ -1,4 +1,4 @@
-import { Tooltip } from '@mui/material';
+import { Box, Checkbox, Tooltip } from '@mui/material';
 import {
     DataGrid,
     getGridDateOperators,
@@ -8,7 +8,8 @@ import {
     GridToolbarDensitySelector,
     GridToolbarFilterButton,
 } from '@mui/x-data-grid';
-import React, { useState } from 'react';
+import PropTypes from 'prop-types';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
 import FieldInternalIcon from '../../fields/FieldInternalIcon';
 import { useTranslate } from '../../i18n/I18NContext';
@@ -16,14 +17,15 @@ import AdminOnlyAlert from '../../lib/components/AdminOnlyAlert';
 import withInitialData from '../withInitialData';
 import { AnnotationStatus } from './AnnotationStatus';
 import { CellWithTooltip } from './CellWithTooltip';
+import { DeleteManyButton } from './DeleteManyButton';
 import { FieldScopeFilter } from './filters/FieldScopeFilter';
+import { KindFilter } from './filters/KindFilter';
 import { StatusFilter } from './filters/StatusFilter';
 import { useGetAnnotations } from './hooks/useGetAnnotations';
 import { ResourceTitleCell } from './ResourceTitleCell';
 import { ResourceUriCell } from './ResourceUriCell';
-import { KindFilter } from './filters/KindFilter';
 
-const AnnotationListToolBar = () => {
+const AnnotationListToolBar = ({ deleteButton }) => {
     const { translate } = useTranslate();
 
     return (
@@ -35,8 +37,16 @@ const AnnotationListToolBar = () => {
             <Tooltip title={translate(`density_tooltip`)}>
                 <GridToolbarDensitySelector />
             </Tooltip>
+
+            <Box sx={{ flexGrow: 1 }} />
+
+            {deleteButton}
         </GridToolbarContainer>
     );
+};
+
+AnnotationListToolBar.propTypes = {
+    deleteButton: PropTypes.node.isRequired,
 };
 
 export const AnnotationList = () => {
@@ -47,6 +57,12 @@ export const AnnotationList = () => {
     const [sortBy, setSortBy] = useState('createdAt');
     const [sortDir, setSortDir] = useState('desc');
     const [filter, setFilter] = useState({});
+
+    const [selectionState, setSelectionState] = useState({
+        allSelected: false,
+        selectedRows: [],
+    });
+
     const { isPending, error, data, isFetching } = useGetAnnotations({
         page,
         perPage,
@@ -77,9 +93,62 @@ export const AnnotationList = () => {
         });
         setPage(0);
     };
+
     const handleRowClick = (params) => {
         history.push(`/annotations/${params.row._id}`);
     };
+
+    const handleSelectAll = useCallback(
+        (event) => {
+            event.stopPropagation();
+            event.preventDefault();
+
+            setSelectionState(({ allSelected }) => {
+                const newAllSelected = !allSelected;
+
+                return {
+                    allSelected: newAllSelected,
+                    selectedRows: newAllSelected
+                        ? data?.data.map((row) => row._id)
+                        : [],
+                };
+            });
+        },
+        [data?.data],
+    );
+
+    const handleCheckboxChange = useCallback(
+        (event, id) => {
+            event.stopPropagation();
+            event.preventDefault();
+
+            setSelectionState(({ selectedRows: currentSelectedRows }) => {
+                if (currentSelectedRows.includes(id)) {
+                    return {
+                        allSelected: false,
+                        selectedRows: currentSelectedRows.filter(
+                            (rowId) => rowId !== id,
+                        ),
+                    };
+                } else {
+                    const newSelectedRows = [...currentSelectedRows, id];
+                    return {
+                        allSelected:
+                            data?.data.length === newSelectedRows.length,
+                        selectedRows: newSelectedRows,
+                    };
+                }
+            });
+        },
+        [data?.data],
+    );
+
+    useEffect(() => {
+        setSelectionState({
+            allSelected: false,
+            selectedRows: [],
+        });
+    }, [data?.data]);
 
     if (error) {
         console.error(error);
@@ -94,6 +163,31 @@ export const AnnotationList = () => {
         <DataGrid
             loading={isPending || isFetching}
             columns={[
+                {
+                    field: '_#_checkbox_#_',
+                    sortable: false,
+                    flex: 0,
+                    renderHeader() {
+                        return (
+                            <Checkbox
+                                onClick={handleSelectAll}
+                                checked={selectionState.allSelected}
+                            />
+                        );
+                    },
+                    renderCell({ row }) {
+                        return (
+                            <Checkbox
+                                checked={selectionState.selectedRows.includes(
+                                    row._id,
+                                )}
+                                onClick={(e) =>
+                                    handleCheckboxChange(e, row._id)
+                                }
+                            />
+                        );
+                    },
+                },
                 {
                     field: 'resourceUri',
                     headerName: translate('annotation_resource_uri'),
@@ -340,7 +434,15 @@ export const AnnotationList = () => {
             onFilterModelChange={handleFilterModelChange}
             rowsPerPageOptions={[10, 25, 50]}
             components={{
-                Toolbar: AnnotationListToolBar,
+                Toolbar: () => (
+                    <AnnotationListToolBar
+                        deleteButton={
+                            <DeleteManyButton
+                                selectedRows={selectionState.selectedRows}
+                            />
+                        }
+                    />
+                ),
             }}
             onRowClick={handleRowClick}
         />

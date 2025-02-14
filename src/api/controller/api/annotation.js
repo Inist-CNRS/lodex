@@ -9,10 +9,12 @@ import { uniq } from 'lodash';
 import { ObjectId } from 'mongodb';
 import streamToString from 'stream-to-string';
 import { createDiacriticSafeContainRegex } from '../../services/createDiacriticSafeContainRegex';
+import getLogger from '../../services/logger';
 import {
     annotationCreationSchema,
     annotationImportSchema,
     annotationUpdateSchema,
+    deleteManyAnnotationsSchema,
     getAnnotationsQuerySchema,
 } from './../../../common/validator/annotation.validator';
 
@@ -44,65 +46,96 @@ export function importAnnotations(asyncBusboyImpl) {
         const { files } = await asyncBusboyImpl(ctx.req);
         const fileStream = files[0];
 
-        const annotations = await streamToString(fileStream).then(
-            (fieldsString) => JSON.parse(fieldsString),
-        );
-        const failedImports = [];
+        try {
+            const annotations = await streamToString(fileStream).then(
+                (fieldsString) => JSON.parse(fieldsString),
+            );
+            const failedImports = [];
 
-        if (!Array.isArray(annotations)) {
-            ctx.response.status = 400;
-            ctx.body = {
-                total: 0,
-                failedImports: [],
-            };
-        }
+            if (!Array.isArray(annotations)) {
+                ctx.response.status = 400;
+                ctx.body = {
+                    total: 0,
+                    failedImports: [],
+                };
+            }
 
-        const chunks = _.chunk(annotations, BATCH_SIZE);
-        for (const chunk of chunks) {
-            const importResults = await Promise.all(
-                chunk.map(async (annotation) => {
-                    try {
-                        const { success, data, error } =
-                            annotationImportSchema.safeParse(annotation);
+            const chunks = _.chunk(annotations, BATCH_SIZE);
+            for (const chunk of chunks) {
+                const importResults = await Promise.all(
+                    chunk.map(async (annotation) => {
+                        try {
+                            const { success, data, error } =
+                                annotationImportSchema.safeParse(annotation);
 
-                        if (!success) {
+                            if (!success) {
+                                return {
+                                    success: false,
+                                    annotation,
+                                    errors: error.errors,
+                                };
+                            }
+
+                            await ctx.annotation.create(data);
+
+                            return {
+                                success: true,
+                            };
+                        } catch (e) {
                             return {
                                 success: false,
                                 annotation,
-                                errors: error.errors,
+                                errors: [
+                                    { message: e.message ?? e.toString() },
+                                ],
                             };
                         }
+                    }),
+                );
 
-                        await ctx.annotation.create(data);
-
-                        return {
-                            success: true,
-                        };
-                    } catch (e) {
-                        return {
-                            success: false,
-                            annotation,
-                            errors: [{ message: e.message ?? e.toString() }],
-                        };
+                for (const result of importResults) {
+                    if (!result.success) {
+                        failedImports.push({
+                            annotation: result.annotation,
+                            errors: result.errors,
+                        });
                     }
-                }),
-            );
-
-            for (const result of importResults) {
-                if (!result.success) {
-                    failedImports.push({
-                        annotation: result.annotation,
-                        errors: result.errors,
-                    });
                 }
             }
-        }
 
-        ctx.response.status = 200;
-        ctx.body = {
-            total: annotations.length,
-            failedImports,
-        };
+            ctx.response.status = 200;
+            ctx.body = {
+                total: annotations.length,
+                failedImports,
+            };
+        } catch (e) {
+            // JSON parsing error
+            if (e.constructor?.name === 'SyntaxError') {
+                ctx.response.status = 400;
+                ctx.body = {
+                    success: false,
+                    errors: [
+                        {
+                            message: 'Invalid JSON File',
+                        },
+                    ],
+                };
+                return;
+            }
+
+            const logger = getLogger(ctx.tenant);
+            logger.error(`An error occured while importing annotations`, e);
+
+            ctx.response.status = 500;
+            ctx.body = {
+                success: false,
+                errors: [
+                    {
+                        message: 'Internal Server Error',
+                    },
+                ],
+            };
+        }
     };
 }
 
@@ -425,6 +458,24 @@ export async function deleteAnnotation(ctx, id) {
     };
 }
 
+export async function deleteManyAnnotation(ctx) {
+    const validation = deleteManyAnnotationsSchema.safeParse(ctx.request.body);
+
+    if (!validation.success) {
+        ctx.response.status = 400;
+        ctx.response.body = {
+            deletedCount: 0,
+            errors: validation.error.errors,
+        };
+        return;
+    }
+
+    ctx.response.status = 200;
+    ctx.response.body = {
+        deletedCount: await ctx.annotation.deleteManyById(validation.data),
+    };
+}
+
 function getResourceTitle(resource, titleField, subResourceTitleFields) {
     const lastVersion = resource.versions[resource.versions.length - 1];
     const currentResourceTitleField = resource.subresourceId
@@ -444,6 +495,7 @@ app.use(route.get('/:id', getAnnotation));
 app.use(koaBodyParser());
 app.use(route.put('/:id', updateAnnotation));
 app.use(route.del('/:id', deleteAnnotation));
+app.use(route.del('/', deleteManyAnnotation));
 app.use(route.post('/', createAnnotation));
 app.use(route.post('/import', importAnnotations(asyncBusboy)));
 

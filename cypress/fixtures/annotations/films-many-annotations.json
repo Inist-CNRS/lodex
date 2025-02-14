@@ -1,0 +1,50 @@
+[
+    {
+        "_id": "67aefd870e0c345d7824b7ef",
+        "resourceUri": null,
+        "target": "value",
+        "kind": "correct",
+        "fieldId": "67ab09ef927fdd8c4c72a18b",
+        "comment": "You should add more films!",
+        "authorName": "John DOE",
+        "authorEmail": null,
+        "initialValue": "/api/run/count-all/",
+        "proposedValue": "35",
+        "status": "to_review",
+        "internalComment": null,
+        "createdAt": "2025-02-14T08:23:35.598Z",
+        "updatedAt": "2025-02-14T08:23:35.598Z"
+    },
+    {
+        "_id": "67aefdb80e0c345d7824b7f0",
+        "resourceUri": null,
+        "target": "title",
+        "kind": "comment",
+        "fieldId": "67ab09ef927fdd8c4c72a197",
+        "comment": "Je trouve ce type graphique non représentatif",
+        "authorName": "John DOE",
+        "authorEmail": null,
+        "initialValue": null,
+        "proposedValue": null,
+        "status": "to_review",
+        "internalComment": null,
+        "createdAt": "2025-02-14T08:24:24.069Z",
+        "updatedAt": "2025-02-14T08:24:24.069Z"
+    },
+    {
+        "_id": "67aefe1a0e0c345d7824b7f1",
+        "resourceUri": "uid:/3sxnMSj8W",
+        "target": "value",
+        "kind": "correct",
+        "fieldId": "67ab09ef927fdd8c4c72a18d",
+        "comment": "The value is not up to date",
+        "authorName": "Jane SMITH",
+        "authorEmail": null,
+        "initialValue": "6,4",
+        "proposedValue": "7.5",
+        "status": "to_review",
+        "internalComment": null,
+        "createdAt": "2025-02-14T08:26:02.160Z",
+        "updatedAt": "2025-02-14T08:26:02.160Z"
+    }
+]
