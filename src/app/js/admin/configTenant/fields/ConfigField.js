@@ -1,6 +1,6 @@
 import { Typography } from '@mui/material';
 import { useField, useStore } from '@tanstack/react-form';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import AceEditor from 'react-ace';
 import { useTranslate } from '../../../i18n/I18NContext';
 import PropTypes from 'prop-types';
@@ -11,6 +11,15 @@ export const ConfigField = ({ form }) => {
     const [json, setJson] = useState(
         field.state.value ? JSON.stringify(field.state.value, null, 2) : '',
     );
+
+    useEffect(() => {
+        if (field.state.value === 'invalid_json') {
+            return;
+        }
+        setJson(
+            field.state.value ? JSON.stringify(field.state.value, null, 2) : '',
+        );
+    }, [field.state.value]);
 
     const onChange = (newJson) => {
         setJson(newJson);

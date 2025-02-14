@@ -143,10 +143,6 @@ export const ConfigTenantFormView = ({
     const contributorAuthActive = useStore(form.store, (state) => {
         return state.values.contributorAuth.active;
     });
-    const configTenantField = useField({
-        name: 'configTenant',
-        form,
-    });
 
     const isFormModified = useStore(form.store, (state) => {
         return state.isDirty;
@@ -291,13 +287,19 @@ export const ConfigTenantFormView = ({
                                 (value) => value.value === event.target.value,
                             );
 
-                            configTenantField.handleChange({
-                                ...(currentConfig || {}),
+                            const configToUpdate =
+                                currentConfig === 'invalid_json'
+                                    ? config
+                                    : currentConfig;
+
+                            form.setFieldValue('config', {
+                                ...(configToUpdate || {}),
                                 front: {
-                                    ...(currentConfig?.front || {}),
+                                    ...(configToUpdate?.front || {}),
                                     theme: themeValue.defaultVariables,
                                 },
                             });
+                            form.validateField('config');
                         }}
                     >
                         {availableThemes.map((t) => (
