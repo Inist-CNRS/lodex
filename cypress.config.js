@@ -17,12 +17,19 @@ module.exports = defineConfig({
         retries: process.env.CI ? 2 : 0,
         setupNodeEvents(on) {
             on('task', {
-                getFiles(path) {
-                    return getFiles(path);
-                },
-                removeFile(path) {
+                getFileContent(directory, pattern) {
+                    const file = getFiles('cypress/downloads').find((file) =>
+                        file.match(pattern),
+                    );
+
+                    const path = `${directory}/${file}`;
+                    if (!file) {
+                        return null;
+                    }
+
+                    const content = fs.readFileSync(path, 'utf8');
                     removeFile(path);
-                    return null;
+                    return content;
                 },
             });
         },

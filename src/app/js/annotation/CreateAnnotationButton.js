@@ -8,11 +8,7 @@ import { CreateAnnotationModal } from './CreateAnnotationModal';
 import { useCreateAnnotation } from './useCreateAnnotation';
 import { useResourceUri } from './useResourceUri';
 
-export function CreateAnnotationButton({
-    field,
-    itemPath = null,
-    initialValue = null,
-}) {
+export function CreateAnnotationButton({ field, initialValue = null }) {
     const { translate } = useTranslate();
     const anchorButton = useRef(null);
 
@@ -36,13 +32,12 @@ export function CreateAnnotationButton({
             await handleCreateAnnotation({
                 ...annotation,
                 resourceUri,
-                itemPath,
                 fieldId: field ? field._id : null,
             });
 
             handleCloseModal();
         },
-        [field, itemPath],
+        [field],
     );
 
     const handleShowTooltip = () => {
@@ -123,5 +118,4 @@ export function CreateAnnotationButton({
 CreateAnnotationButton.propTypes = {
     field: PropTypes.object,
     initialValue: PropTypes.string,
-    itemPath: PropTypes.arrayOf(PropTypes.string),
 };

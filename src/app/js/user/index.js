@@ -1,9 +1,9 @@
+import omit from 'lodash/omit';
 import { createAction, handleActions } from 'redux-actions';
 import { createSelector } from 'reselect';
-import omit from 'lodash/omit';
 
-import getQueryString from '../lib/getQueryString';
 import { ADMIN_ROLE } from '../../../common/tools/tenantTools';
+import getQueryString from '../lib/getQueryString';
 
 export const LOGIN_FORM_NAME = 'login';
 export const TOGGLE_LOGIN = 'TOGGLE_LOGIN';
@@ -83,7 +83,7 @@ export const getRequest = createSelector(
         if (auth) {
             head['Authorization'] = `Bearer ${token}`;
         }
-        if (typeof body == 'object') {
+        if (typeof body === 'object' && !(body instanceof Blob)) {
             body = JSON.stringify(body);
         }
 

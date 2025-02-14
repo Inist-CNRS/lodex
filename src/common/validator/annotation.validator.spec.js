@@ -1,5 +1,6 @@
 import {
     annotationCreationSchema,
+    annotationImportSchema,
     annotationUpdateSchema,
     getAnnotationsQuerySchema,
 } from './annotation.validator';
@@ -11,7 +12,6 @@ describe('annotation.validator', () => {
                 resourceUri: 'uid:/2a8d429f-8134-4502-b9d3-d20c571592fa',
                 target: 'value',
                 fieldId: 'GvaF',
-                itemPath: [],
                 kind: 'removal',
                 comment: 'This is a comment',
                 authorName: 'John Doe',
@@ -31,7 +31,6 @@ describe('annotation.validator', () => {
                 resourceUri: 'uid:/2a8d429f-8134-4502-b9d3-d20c571592fa',
                 target: 'title',
                 fieldId: 'GvaF',
-                itemPath: ['0'],
                 comment: 'This is a comment',
                 authorName: 'John Doe',
                 authorEmail: null,
@@ -48,32 +47,10 @@ describe('annotation.validator', () => {
             });
         });
 
-        it('should support annotation without itemPath', () => {
-            const annotationPayload = {
-                resourceUri: 'uid:/2a8d429f-8134-4502-b9d3-d20c571592fa',
-                target: 'value',
-                kind: 'removal',
-                comment: 'This is a comment',
-                authorName: 'John Doe',
-                authorEmail: null,
-                initialValue: 'initial value',
-                proposedValue: null,
-            };
-
-            const validatedAnnotation =
-                annotationCreationSchema.parse(annotationPayload);
-
-            expect(validatedAnnotation).toStrictEqual({
-                ...annotationPayload,
-                itemPath: null,
-            });
-        });
-
         it('should support annotation without authorEmail when it target title', () => {
             const annotationPayload = {
                 resourceUri: 'uid:/2a8d429f-8134-4502-b9d3-d20c571592fa',
                 target: 'title',
-                itemPath: ['GvaF', '0'],
                 kind: 'comment',
                 comment: 'This is a comment',
                 authorName: 'John Doe',
@@ -93,7 +70,6 @@ describe('annotation.validator', () => {
         it('should support annotation without target', () => {
             const annotationPayload = {
                 resourceUri: 'uid:/2a8d429f-8134-4502-b9d3-d20c571592fa',
-                itemPath: ['GvaF', '0'],
                 kind: 'comment',
                 comment: 'This is a comment',
                 authorName: 'John Doe',
@@ -114,7 +90,6 @@ describe('annotation.validator', () => {
         it('should accept annotation without initialValue when target is title', () => {
             const annotationPayload = {
                 resourceUri: 'uid:/2a8d429f-8134-4502-b9d3-d20c571592fa',
-                itemPath: ['GvaF', '0'],
                 kind: 'comment',
                 comment: 'This is a comment',
                 authorName: 'John Doe',
@@ -135,7 +110,6 @@ describe('annotation.validator', () => {
         it('should reject annotation with initialValue when target is title', () => {
             const annotationPayload = {
                 resourceUri: 'uid:/2a8d429f-8134-4502-b9d3-d20c571592fa',
-                itemPath: ['GvaF', '0'],
                 kind: 'comment',
                 comment: 'This is a comment',
                 authorName: 'John Doe',
@@ -160,7 +134,6 @@ describe('annotation.validator', () => {
         it('should accept annotation with initialValue when target is value', () => {
             const annotationPayload = {
                 resourceUri: 'uid:/2a8d429f-8134-4502-b9d3-d20c571592fa',
-                itemPath: ['GvaF', '0'],
                 kind: 'removal',
                 comment: 'This is a comment',
                 authorName: 'John Doe',
@@ -179,7 +152,6 @@ describe('annotation.validator', () => {
         it('should reject annotation without initialValue when target is value', () => {
             const annotationPayload = {
                 resourceUri: 'uid:/2a8d429f-8134-4502-b9d3-d20c571592fa',
-                itemPath: ['GvaF', '0'],
                 kind: 'removal',
                 comment: 'This is a comment',
                 authorName: 'John Doe',
@@ -204,7 +176,6 @@ describe('annotation.validator', () => {
         it('should accept annotation with proposedValue when kind is correct', () => {
             const annotationPayload = {
                 resourceUri: 'uid:/2a8d429f-8134-4502-b9d3-d20c571592fa',
-                itemPath: ['GvaF', '0'],
                 kind: 'correct',
                 comment: 'This is a comment',
                 authorName: 'John Doe',
@@ -240,7 +211,6 @@ describe('annotation.validator', () => {
         it('should reject annotation with proposedValue when kind is not "correct"', () => {
             const annotationPayload = {
                 resourceUri: 'uid:/2a8d429f-8134-4502-b9d3-d20c571592fa',
-                itemPath: ['GvaF', '0'],
                 kind: 'removal',
                 comment: 'This is a comment',
                 authorName: 'John Doe',
@@ -266,7 +236,6 @@ describe('annotation.validator', () => {
         it('should accept annotation with no proposedValue when kind is not correct', () => {
             const annotationPayload = {
                 resourceUri: 'uid:/2a8d429f-8134-4502-b9d3-d20c571592fa',
-                itemPath: ['GvaF', '0'],
                 kind: 'removal',
                 comment: 'This is a comment',
                 authorName: 'John Doe',
@@ -284,7 +253,6 @@ describe('annotation.validator', () => {
         it('should reject annotation with no proposedValue when kind is "correct"', () => {
             const annotationPayload = {
                 resourceUri: 'uid:/2a8d429f-8134-4502-b9d3-d20c571592fa',
-                itemPath: ['GvaF', '0'],
                 kind: 'correct',
                 comment: 'This is a comment',
                 authorName: 'John Doe',
@@ -336,7 +304,6 @@ describe('annotation.validator', () => {
         it('should accept annotation with kind "comment" when target is "title"', () => {
             const annotationPayload = {
                 resourceUri: 'uid:/2a8d429f-8134-4502-b9d3-d20c571592fa',
-                itemPath: ['GvaF', '0'],
                 kind: 'comment',
                 comment: 'This is a comment',
                 authorName: 'John Doe',
@@ -353,7 +320,6 @@ describe('annotation.validator', () => {
         it('should reject annotation with kind "removal" when target is "title"', () => {
             const annotationPayload = {
                 resourceUri: 'uid:/2a8d429f-8134-4502-b9d3-d20c571592fa',
-                itemPath: ['GvaF', '0'],
                 kind: 'removal',
                 comment: 'This is a comment',
                 authorName: 'John Doe',
@@ -378,7 +344,6 @@ describe('annotation.validator', () => {
         it('should reject annotation with kind "correct" when target is "title"', () => {
             const annotationPayload = {
                 resourceUri: 'uid:/2a8d429f-8134-4502-b9d3-d20c571592fa',
-                itemPath: ['GvaF', '0'],
                 kind: 'correct',
                 comment: 'This is a comment',
                 authorName: 'John Doe',
@@ -428,7 +393,6 @@ describe('annotation.validator', () => {
         it('should reject annotation with kind "comment" when target is "value"', () => {
             const annotationPayload = {
                 resourceUri: 'uid:/2a8d429f-8134-4502-b9d3-d20c571592fa',
-                itemPath: ['GvaF', '0'],
                 kind: 'comment',
                 comment: 'This is a comment',
                 authorName: 'John Doe',
@@ -453,7 +417,6 @@ describe('annotation.validator', () => {
         it('should accept annotation with kind "correct" when target is "value"', () => {
             const annotationPayload = {
                 resourceUri: 'uid:/2a8d429f-8134-4502-b9d3-d20c571592fa',
-                itemPath: ['GvaF', '0'],
                 kind: 'correct',
                 comment: 'This is a comment',
                 authorName: 'John Doe',
@@ -470,7 +433,6 @@ describe('annotation.validator', () => {
         it('should accept annotation with kind "removal" when target is "value"', () => {
             const annotationPayload = {
                 resourceUri: 'uid:/2a8d429f-8134-4502-b9d3-d20c571592fa',
-                itemPath: ['GvaF', '0'],
                 kind: 'removal',
                 comment: 'This is a comment',
                 authorName: 'John Doe',
@@ -489,7 +451,6 @@ describe('annotation.validator', () => {
                 resourceUri: 'uid:/2a8d429f-8134-4502-b9d3-d20c571592fa',
                 kind: 'removal',
                 target: 'value',
-                itemPath: null,
                 comment: 'This is a comment',
                 status: 'in_progress',
                 internalComment: 'This is an internal comment',
@@ -505,7 +466,6 @@ describe('annotation.validator', () => {
                 resourceUri: 'uid:/2a8d429f-8134-4502-b9d3-d20c571592fa',
                 kind: 'removal',
                 target: 'value',
-                itemPath: null,
                 comment: 'This is a comment',
                 authorName: 'John Doe',
                 authorEmail: null,
@@ -750,6 +710,139 @@ describe('annotation.validator', () => {
                     message: 'error_sortDir_invalid',
                     options: ['asc', 'desc'],
                     received: 'INVALID',
+                },
+            ]);
+        });
+    });
+
+    describe('annotationCreateBatchSchema', () => {
+        it('should validate an array of annotations', () => {
+            const payload = [
+                {
+                    resourceUri: null,
+                    fieldId: 'kzB6',
+                    kind: 'comment',
+                    authorName: 'Jane DOE',
+                    authorEmail: 'jane@marmelab.com',
+                    comment: 'There is a typo',
+                    status: 'ongoing',
+                    internalComment: 'Test comment',
+                    administrator: 'paul',
+                    createdAt: '2025-01-10T21:49:14.000Z',
+                    updatedAt: '2025-01-10T21:49:14.000Z',
+                },
+            ];
+
+            expect(
+                annotationImportSchema.safeParse({
+                    resourceUri: null,
+                    fieldId: 'kzB6',
+                    kind: 'comment',
+                    authorName: 'Jane DOE',
+                    authorEmail: 'jane@marmelab.com',
+                    comment: 'There is a typo',
+                    status: 'ongoing',
+                    internalComment: 'Test comment',
+                    administrator: 'paul',
+                    createdAt: '2025-01-10T21:49:14.000Z',
+                    updatedAt: '2025-01-10T21:49:14.000Z',
+                }),
+            ).toMatchObject({
+                success: true,
+                data: {
+                    resourceUri: null,
+                    fieldId: 'kzB6',
+                    kind: 'comment',
+                    authorName: 'Jane DOE',
+                    authorEmail: 'jane@marmelab.com',
+                    comment: 'There is a typo',
+                    status: 'ongoing',
+                    internalComment: 'Test comment',
+                    administrator: 'paul',
+                    createdAt: new Date('2025-01-10T21:49:14.000Z'),
+                    updatedAt: new Date('2025-01-10T21:49:14.000Z'),
+                },
+            });
+        });
+
+        it('should annotations in to_review mode', () => {
+            expect(
+                annotationImportSchema.safeParse({
+                    resourceUri: 'uid:/a4f7a51f-7109-481e-86cc-0adb3a26faa6',
+                    fieldId: 'Gb4a',
+                    kind: 'comment',
+                    authorName: 'Rick HARRIS',
+                    authorEmail: 'rick.harris@marmelab.com',
+                    comment: 'Hello world',
+                    status: 'to_review',
+                    internalComment: null,
+                    administrator: null,
+                    createdAt: '2025-01-10T21:50:27.000Z',
+                    updatedAt: '2025-01-10T21:23:09.000Z',
+                }),
+            ).toMatchObject({
+                success: true,
+                data: {
+                    resourceUri: 'uid:/a4f7a51f-7109-481e-86cc-0adb3a26faa6',
+                    fieldId: 'Gb4a',
+                    kind: 'comment',
+                    authorName: 'Rick HARRIS',
+                    authorEmail: 'rick.harris@marmelab.com',
+                    comment: 'Hello world',
+                    status: 'to_review',
+                    internalComment: null,
+                    administrator: null,
+                    createdAt: new Date('2025-01-10T21:50:27.000Z'),
+                    updatedAt: new Date('2025-01-10T21:23:09.000Z'),
+                },
+            });
+        });
+
+        it('should support partial annotations', () => {
+            expect(
+                annotationImportSchema.safeParse({
+                    resourceUri: 'uid:/a4f7a51f-7109-481e-86cc-0adb3a26faa6',
+                    fieldId: 'Gb4a',
+                    kind: 'comment',
+                    authorName: 'Rick HARRIS',
+                    authorEmail: 'rick.harris@marmelab.com',
+                    comment: 'Hello world',
+                }),
+            ).toMatchObject({
+                success: true,
+                data: {
+                    resourceUri: 'uid:/a4f7a51f-7109-481e-86cc-0adb3a26faa6',
+                    fieldId: 'Gb4a',
+                    kind: 'comment',
+                    authorName: 'Rick HARRIS',
+                    authorEmail: 'rick.harris@marmelab.com',
+                    comment: 'Hello world',
+                    status: 'to_review',
+                    internalComment: null,
+                    administrator: null,
+                    createdAt: expect.any(Date),
+                    updatedAt: expect.any(Date),
+                },
+            });
+        });
+
+        it('should fail if annotation is not valid', () => {
+            const { success, error } = annotationImportSchema.safeParse({
+                resourceUri: 'uid:/a4f7a51f-7109-481e-86cc-0adb3a26faa6',
+                fieldId: 'Gb4a',
+                kind: 'comment',
+                authorEmail: 'rick.harris@marmelab.com',
+                comment: 'Hello world',
+            });
+
+            expect(success).toBe(false);
+            expect(error.errors).toMatchObject([
+                {
+                    code: 'invalid_type',
+                    expected: 'string',
+                    received: 'undefined',
+                    path: ['authorName'],
+                    message: 'error_required',
                 },
             ]);
         });

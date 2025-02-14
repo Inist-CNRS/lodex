@@ -1,8 +1,7 @@
-import * as path from 'path';
-
 import * as annotation from '../../support/annotation';
 import { teardown } from '../../support/authentication';
 import * as datasetImportPage from '../../support/datasetImportPage';
+import { fillInputWithFixture } from '../../support/forms';
 import * as menu from '../../support/menu';
 import * as searchDrawer from '../../support/searchDrawer';
 
@@ -487,37 +486,182 @@ describe('Annotation', () => {
 
             cy.wait(1000);
 
-            const downloadsFolder = Cypress.config('downloadsFolder');
+            cy.task(
+                'getFileContent',
+                Cypress.config('downloadsFolder'),
+                /annotations_\d{4}-\d{2}-\d{2}-\d{6}.json/,
+            ).then((content) => {
+                expect(content).not.to.equal(null);
 
-            cy.task('getFiles', downloadsFolder).then((downloadedFiles) => {
-                const downloadedAnnotations = downloadedFiles.filter((name) =>
-                    name.match(/annotations_\d{4}-\d{2}-\d{2}-\d{6}.json/),
-                );
+                const annotations = JSON.parse(content);
+                expect(annotations).to.be.an('array').with.length(1);
+                expect(annotations[0]).to.include({
+                    resourceUri: null,
+                    target: 'title',
+                    kind: 'comment',
+                    comment: 'This is a comment',
+                    authorName: 'John Doe',
+                    authorEmail: 'john.doe@example.org',
+                    initialValue: null,
+                    status: 'to_review',
+                    internalComment: null,
+                });
+            });
+        });
+    });
 
-                expect(downloadedAnnotations).to.have.length(1);
+    describe('import', () => {
+        beforeEach(() => {
+            // ResizeObserver doesn't like when the app has to many renders / re-renders
+            // and throws an exception to say, "I wait for the next paint"
+            // https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver#observation_errors
+            cy.on('uncaught:exception', (error) => {
+                return !error.message.includes('ResizeObserver');
+            });
 
-                const [annotationExport] = downloadedAnnotations;
+            teardown();
+            menu.openAdvancedDrawer();
+            menu.goToAdminDashboard();
+            datasetImportPage.importDataset('dataset/film.csv');
+            datasetImportPage.importModel('model/film-with-field-id.tar');
 
-                const filePath = path.join(downloadsFolder, annotationExport);
+            cy.findByRole('gridcell', { name: 'Liste des films' }).trigger(
+                'mouseenter',
+            );
+            cy.findByRole('button', { name: 'edit-Liste des films' }).click();
 
-                cy.readFile(filePath)
-                    .should('exist')
-                    .then((content) => {
-                        expect(content.at(0)).to.include({
-                            resourceUri: null,
-                            target: 'title',
-                            kind: 'comment',
-                            itemPath: null,
-                            comment: 'This is a comment',
-                            authorName: 'John Doe',
-                            authorEmail: 'john.doe@example.org',
-                            initialValue: null,
-                            status: 'to_review',
-                            internalComment: null,
-                        });
-                    });
+            cy.findByRole('tab', { name: 'Semantics' }).click();
+            cy.findByRole('checkbox', {
+                name: 'This field can be annotated',
+            }).click();
+            cy.findByRole('button', { name: 'Save' }).click();
 
-                cy.task('removeFile', filePath);
+            datasetImportPage.publish();
+
+            cy.findByRole('button', {
+                name: 'Open menu',
+            }).click();
+
+            cy.findByRole('menuitem', {
+                name: 'Model',
+            }).trigger('mouseleave');
+
+            cy.findByRole('menuitem', {
+                name: 'Annotations',
+            }).trigger('mouseenter');
+
+            cy.wait(500);
+        });
+
+        it('should import annotations from an annotation export', () => {
+            fillInputWithFixture(
+                'input[name="import_annotations"]',
+                'annotations/film-with-field-id.json',
+                'application/json',
+            );
+
+            cy.findByText(
+                'annotations/film-with-field-id.json file have been imported successfully.',
+                {
+                    timeout: 2000,
+                },
+            ).should('exist');
+
+            cy.wait(1000);
+
+            cy.findByText('Annotations').click();
+
+            cy.findAllByRole('cell', {
+                timeout: 2000,
+            }).then((cells) => {
+                expect(
+                    cells.toArray().map((cell) => cell.textContent),
+                ).to.deep.equal([
+                    'Home page',
+                    '',
+                    'comment',
+                    'Dataset Description',
+                    '[Doay]',
+                    '',
+                    '',
+                    '',
+                    '',
+                    'To Review',
+                    '',
+                    '',
+                    'John Doe',
+                    'This is a comment',
+                    new Date(2025, 1, 11).toLocaleDateString(),
+                    new Date(2025, 1, 11).toLocaleDateString(),
+                ]);
+            });
+        });
+
+        it('should only imports valid annotations', () => {
+            fillInputWithFixture(
+                'input[name="import_annotations"]',
+                'annotations/film-with-errors.json',
+                'application/json',
+            );
+
+            cy.findByText(
+                /1 annotation failed to be imported: annotations_import_error/,
+                {
+                    timeout: 2000,
+                },
+            ).should('exist');
+
+            cy.wait(1000);
+
+            cy.findByText('Annotations').click();
+
+            cy.findAllByRole('cell', {
+                timeout: 2000,
+            }).then((cells) => {
+                expect(
+                    cells.toArray().map((cell) => cell.textContent),
+                ).to.deep.equal([
+                    'Home page',
+                    '',
+                    'comment',
+                    'Dataset Description',
+                    '[Doay]',
+                    '',
+                    '',
+                    '',
+                    '',
+                    'To Review',
+                    '',
+                    '',
+                    'John Doe',
+                    'This is a comment',
+                    new Date(2025, 1, 11).toLocaleDateString(),
+                    new Date(2025, 1, 11).toLocaleDateString(),
+                ]);
+            });
+
+            cy.task(
+                'getFileContent',
+                Cypress.config('downloadsFolder'),
+                /annotations_import_error_\d{4}-\d{2}-\d{2}-\d{6}.json/,
+            ).then((content) => {
+                expect(content).not.to.equal(null);
+
+                const errors = JSON.parse(content);
+                expect(errors).to.be.an('array').with.length(1);
+                expect(errors[0].annotation).to.include({
+                    resourceUri: null,
+                    target: 'title',
+                    kind: 'unknown',
+                    comment: 'This is a comment',
+                    authorName: 'John Doe',
+                    authorEmail: 'john.doe@example.org',
+                    initialValue: null,
+                    status: 'to_review',
+                    internalComment: null,
+                });
+
+                expect(errors[0].errors).to.be.an('array').with.length(1);
             });
         });
     });
