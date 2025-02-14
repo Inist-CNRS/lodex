@@ -3,6 +3,7 @@ import { useField, useStore } from '@tanstack/react-form';
 import React, { useState } from 'react';
 import AceEditor from 'react-ace';
 import { useTranslate } from '../../../i18n/I18NContext';
+import PropTypes from 'prop-types';
 
 export const ConfigField = ({ form }) => {
     const { translate } = useTranslate();

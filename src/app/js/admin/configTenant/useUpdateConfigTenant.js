@@ -16,8 +16,6 @@ export function useUpdateConfigTenant() {
             const { response, error, rest } =
                 await updateConfigTenant(configTenant);
 
-            console.log({ response, error, rest });
-
             if (error?.code === 401) {
                 history.push('/login');
                 return;
@@ -30,14 +28,12 @@ export function useUpdateConfigTenant() {
             return response.data;
         },
         onSuccess: (data) => {
-            console.log({ data });
             queryClient.setQueryData(['get-config-tenant'], data);
             toast(translate('config_tenant_update_success'), {
                 type: toast.TYPE.SUCCESS,
             });
         },
         onError: (error) => {
-            console.error({ error });
             toast(translate('config_tenant_update_error'), {
                 type: toast.TYPE.ERROR,
             });

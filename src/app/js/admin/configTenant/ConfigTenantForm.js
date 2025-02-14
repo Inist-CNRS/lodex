@@ -11,9 +11,7 @@ import {
 import 'ace-builds/src-noconflict/mode-json';
 import 'ace-builds/src-noconflict/theme-monokai';
 
-import { compose } from 'recompose';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router';
 import PropTypes from 'prop-types';
 import CancelButton from '../../lib/components/CancelButton';
 import { loadConfigTenant } from '.';
@@ -27,6 +25,7 @@ import { TextField } from '../../lib/components/TextField';
 import { ConfigField } from './fields/ConfigField';
 import { z } from 'zod';
 import { useUpdateConfigTenant } from './useUpdateConfigTenant';
+import { useHistory } from 'react-router-dom';
 
 const shake = keyframes`
 10%, 90% {
@@ -373,7 +372,8 @@ ConfigTenantFormView.propTypes = {
     isSubmitting: PropTypes.bool.isRequired,
 };
 
-export const ConfigTenantForm = ({ history }) => {
+export const ConfigTenantForm = ({ loadConfigTenant }) => {
+    const history = useHistory();
     const { translate } = useTranslate();
 
     const { data, error, isLoading } = useGetConfigTenant();
@@ -410,7 +410,11 @@ export const ConfigTenantForm = ({ history }) => {
         <ConfigTenantFormView
             initialConfig={data}
             availableThemes={availableThemesResponse.data}
-            handleSave={handleUpdateConfigTenant}
+            handleSave={(data) => {
+                handleUpdateConfigTenant(data);
+                // update configTenant in redux store
+                loadConfigTenant();
+            }}
             handleCancel={handleCancel}
             isSubmitting={isSubmitting}
         />
@@ -419,15 +423,11 @@ export const ConfigTenantForm = ({ history }) => {
 
 const mapStateToProps = () => ({});
 const mapDispatchToProps = {
-    onLoadConfigTenant: loadConfigTenant,
+    loadConfigTenant: loadConfigTenant,
 };
 
 ConfigTenantForm.propTypes = {
-    history: PropTypes.object.isRequired,
-    onLoadConfigTenant: PropTypes.func.isRequired,
+    loadConfigTenant: PropTypes.func.isRequired,
 };
 
-export default compose(
-    withRouter,
-    connect(mapStateToProps, mapDispatchToProps),
-)(ConfigTenantForm);
+export default connect(mapStateToProps, mapDispatchToProps)(ConfigTenantForm);
