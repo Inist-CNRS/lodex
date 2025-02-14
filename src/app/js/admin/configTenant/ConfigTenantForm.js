@@ -287,22 +287,17 @@ export const ConfigTenantFormView = ({
                         onChange={(event) => {
                             field.handleChange(event.target.value);
 
-                            try {
-                                const themeValue = availableThemes.find(
-                                    (value) =>
-                                        value.value === event.target.value,
-                                );
+                            const themeValue = availableThemes.find(
+                                (value) => value.value === event.target.value,
+                            );
 
-                                configTenantField.handleChange({
-                                    ...currentConfig,
-                                    front: {
-                                        ...currentConfig.front,
-                                        theme: themeValue.defaultVariables,
-                                    },
-                                });
-                            } catch (_) {
-                                /* empty */
-                            }
+                            configTenantField.handleChange({
+                                ...(currentConfig || {}),
+                                front: {
+                                    ...(currentConfig?.front || {}),
+                                    theme: themeValue.defaultVariables,
+                                },
+                            });
                         }}
                     >
                         {availableThemes.map((t) => (
