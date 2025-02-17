@@ -10,10 +10,6 @@ export function useCanAnnotate() {
     const { data } = useQuery({
         queryKey: ['can-annotate'],
         queryFn: async () => {
-            const canAnnotate = sessionStorage.getItem('can-annotate');
-            if (canAnnotate) {
-                return canAnnotate === 'true';
-            }
             const { token } = getUserSessionStorageInfo();
             const request = getRequest(
                 { token },
@@ -32,8 +28,6 @@ export function useCanAnnotate() {
             if (error) {
                 throw error;
             }
-
-            sessionStorage.setItem('can-annotate', !!response);
 
             return !!response;
         },
