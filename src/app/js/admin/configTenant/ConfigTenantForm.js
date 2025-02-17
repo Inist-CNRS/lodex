@@ -8,8 +8,6 @@ import {
     Tooltip,
     keyframes,
 } from '@mui/material';
-import 'ace-builds/src-noconflict/mode-json';
-import 'ace-builds/src-noconflict/theme-monokai';
 
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -21,7 +19,7 @@ import { useTranslate } from '../../i18n/I18NContext';
 import Loading from '../../lib/components/Loading';
 import { useGetConfigTenant } from './useGetConfigTenant';
 import { useGetAvailableThemes } from './useGetAvailableThemes';
-import { useField, useForm, useStore } from '@tanstack/react-form';
+import { useForm, useStore } from '@tanstack/react-form';
 import { TextField } from '../../lib/components/TextField';
 import { ConfigField } from './fields/ConfigField';
 import { z } from 'zod';
@@ -76,7 +74,7 @@ const configTenantSchema = z.object({
     theme: z.string().min(1, {
         message: 'error_required',
     }),
-    enrichmentBatchSize: z.number(),
+    enrichmentBatchSize: z.coerce.number(),
 });
 
 export const ConfigTenantFormView = ({
@@ -166,11 +164,16 @@ export const ConfigTenantFormView = ({
                     gap: 1,
                 }}
             >
-                <h2>{translate('enableAutoPublication')}</h2>
+                <h2 id="enableAutoPublication">
+                    {translate('enableAutoPublication')}
+                </h2>
                 <form.Field name="enableAutoPublication">
                     {(field) => (
                         <Checkbox
                             checked={field.state.value}
+                            inputProps={{
+                                'aria-labelledby': 'enableAutoPublication',
+                            }}
                             onChange={(event) => {
                                 field.handleChange(event.target.checked);
                             }}
@@ -186,7 +189,7 @@ export const ConfigTenantFormView = ({
                     alignItems: 'center',
                 }}
             >
-                <h2>{translate('user_auth')}</h2>
+                <h2 id="user_auth">{translate('user_auth')}</h2>
                 <Tooltip title={translate('user_auth_help')}>
                     <HelpIcon />
                 </Tooltip>
@@ -196,6 +199,9 @@ export const ConfigTenantFormView = ({
                             checked={field.state.value}
                             onChange={(event) => {
                                 field.handleChange(event.target.checked);
+                            }}
+                            inputProps={{
+                                'aria-labelledby': 'user_auth',
                             }}
                         />
                     )}
@@ -211,14 +217,14 @@ export const ConfigTenantFormView = ({
                 }}
             >
                 <TextField
-                    label="Username"
+                    label={translate('Username')}
                     name="userAuth.username"
                     form={form}
                     disabled={!userAuthActive}
                 />
 
                 <TextField
-                    label="Password"
+                    label={translate('Password')}
                     name="userAuth.password"
                     form={form}
                     disabled={!userAuthActive}
@@ -232,7 +238,7 @@ export const ConfigTenantFormView = ({
                     alignItems: 'center',
                 }}
             >
-                <h2>{translate('contributor_auth')}</h2>
+                <h2 id="contributor_auth">{translate('contributor_auth')}</h2>
                 <Tooltip title={translate('contributor_auth_help')}>
                     <HelpIcon />
                 </Tooltip>
@@ -242,6 +248,9 @@ export const ConfigTenantFormView = ({
                             checked={field.state.value}
                             onChange={(event) => {
                                 field.handleChange(event.target.checked);
+                            }}
+                            inputProps={{
+                                'aria-labelledby': 'contributor_auth',
                             }}
                         />
                     )}
@@ -257,21 +266,21 @@ export const ConfigTenantFormView = ({
                 }}
             >
                 <TextField
-                    label="Username"
+                    label={translate('Username')}
                     name="contributorAuth.username"
                     form={form}
                     disabled={!contributorAuthActive}
                 />
 
                 <TextField
-                    label="Password"
+                    label={translate('Password')}
                     name="contributorAuth.password"
                     form={form}
                     disabled={!contributorAuthActive}
                 />
             </Box>
 
-            <h2>{translate('theme')}</h2>
+            <h2 id="theme">{translate('theme')}</h2>
             <form.Field name="theme">
                 {(field) => (
                     <Select
@@ -280,6 +289,9 @@ export const ConfigTenantFormView = ({
                             width: 'min(505px, 100%)',
                         }}
                         sx={{ mb: 2 }}
+                        inputProps={{
+                            'aria-labelledby': 'theme',
+                        }}
                         onChange={(event) => {
                             field.handleChange(event.target.value);
 
@@ -313,7 +325,7 @@ export const ConfigTenantFormView = ({
 
             <h2>{translate('other')}</h2>
             <TextField
-                label="Enrichment Batch Size"
+                label={translate('enrichment_batch_size')}
                 name="enrichmentBatchSize"
                 form={form}
                 type="number"

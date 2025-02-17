@@ -13,6 +13,8 @@
 "Accept"	"Accept"	"Accepter"
 "Username"	"Username"	"Nom d'utilisateur"
 "Password"	"Password"	"Mot de passe"
+"enrichment_batch_size"	"Enrichment Batch Size"	"Taille du lot d’enrichissement"
+"config"	"Configuration"	"Configuration"
 "line"	"line"	"ligne"
 "formatCode"	"Text - Code"	"Texte - Code"
 "formatCodeDescription"	"Syntactically color the value of the field following the syntax of the language given in parameter (among XML, JSON, INI, Shell, SQL, Javascript)."	"Colore syntaxiquement la valeur du champ en suivant la syntaxe du langage donné en paramètre (parmi XML, JSON, INI, Shell, SQL, Javascript)."

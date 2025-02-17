@@ -96,5 +96,6 @@
             "search": 200
         },
         "multilingual": false
-    }
+    },
+    "theme": "default"
 }

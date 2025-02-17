@@ -4,6 +4,8 @@ import React, { useEffect, useState } from 'react';
 import AceEditor from 'react-ace';
 import { useTranslate } from '../../../i18n/I18NContext';
 import PropTypes from 'prop-types';
+import 'ace-builds/src-noconflict/mode-json';
+import 'ace-builds/src-noconflict/theme-monokai';
 
 export const ConfigField = ({ form }) => {
     const { translate } = useTranslate();
@@ -41,6 +43,10 @@ export const ConfigField = ({ form }) => {
         <>
             <AceEditor
                 mode="json"
+                onLoad={(editor) => {
+                    editor.textInput.getElement().ariaLabel =
+                        translate('config');
+                }}
                 fontSize={16}
                 theme="monokai"
                 showPrintMargin={false}

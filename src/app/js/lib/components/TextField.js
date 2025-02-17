@@ -18,6 +18,7 @@ export function TextField({
     helperText,
     multiline,
     required,
+    type,
     sx,
 }) {
     const { translate } = useTranslate();
@@ -43,7 +44,10 @@ export function TextField({
                 value={field.state.value}
                 onBlur={field.handleBlur}
                 disabled={disabled}
-                onChange={(e) => field.handleChange(e.target.value)}
+                type={type}
+                onChange={(e) => {
+                    field.handleChange(e.target.value);
+                }}
                 {...(multiline
                     ? {
                           multiline: true,
