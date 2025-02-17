@@ -18,10 +18,35 @@ import {
     getAnnotationsQuerySchema,
 } from './../../../common/validator/annotation.validator';
 
+export const canAnnotate = async (ctx) => {
+    const role = ctx?.state?.header?.role;
+    const configTenant = await ctx.configTenantCollection.findLast();
+
+    if (!configTenant) {
+        return false;
+    }
+
+    ctx.status = 200;
+
+    if (configTenant.contributorAuth.active) {
+        return ['contributor', 'admin'].includes(role);
+    }
+};
+
+export const canAnnotateRoute = async (ctx) => {
+    ctx.status = 200;
+
+    ctx.body = await canAnnotate(ctx);
+};
+
 /**
  * @param {Koa.Context} ctx
  */
 export async function createAnnotation(ctx) {
+    if (canAnnotate(ctx) === false) {
+        ctx.response.status = 403;
+        return;
+    }
     const validation = annotationCreationSchema.safeParse(ctx.request.body);
     if (!validation.success) {
         ctx.response.status = 400;
@@ -486,26 +511,6 @@ function getResourceTitle(resource, titleField, subResourceTitleFields) {
 
     return lastVersion[currentResourceTitleField?.name];
 }
-
-export const canAnnotate = async (ctx) => {
-    const role = ctx?.state?.header?.role;
-    const configTenant = await ctx.configTenantCollection.findLast();
-
-    if (!configTenant) {
-        ctx.status = 404;
-        ctx.body = { error: 'Not found' };
-        return;
-    }
-
-    ctx.status = 200;
-
-    if (configTenant.contributorAuth.active) {
-        ctx.body = ['contributor', 'admin'].includes(role);
-        return;
-    }
-
-    ctx.body = true;
-};
 
 const app = new Koa();
 
