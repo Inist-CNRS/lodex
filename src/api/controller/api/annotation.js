@@ -26,16 +26,15 @@ export const canAnnotate = async (ctx) => {
         return false;
     }
 
-    ctx.status = 200;
-
     if (configTenant.contributorAuth.active) {
         return ['contributor', 'admin'].includes(role);
     }
+
+    return true;
 };
 
 export const canAnnotateRoute = async (ctx) => {
     ctx.status = 200;
-
     ctx.body = await canAnnotate(ctx);
 };
 
@@ -43,7 +42,7 @@ export const canAnnotateRoute = async (ctx) => {
  * @param {Koa.Context} ctx
  */
 export async function createAnnotation(ctx) {
-    if (canAnnotate(ctx) === false) {
+    if ((await canAnnotate(ctx)) === false) {
         ctx.response.status = 403;
         return;
     }
@@ -516,7 +515,7 @@ const app = new Koa();
 
 app.use(route.get('/', getAnnotations));
 app.use(route.get('/export', exportAnnotations));
-app.use(route.get('/can-annotate', canAnnotate));
+app.use(route.get('/can-annotate', canAnnotateRoute));
 app.use(route.get('/:id', getAnnotation));
 app.use(koaBodyParser());
 app.use(route.put('/:id', updateAnnotation));
