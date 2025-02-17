@@ -5,7 +5,11 @@ import mount from 'koa-mount';
 import route from 'koa-route';
 import get from 'lodash/get';
 
-import { ADMIN_ROLE } from '../../../common/tools/tenantTools';
+import {
+    ADMIN_ROLE,
+    CONTRIBUTOR_ROLE,
+    USER_ROLE,
+} from '../../../common/tools/tenantTools';
 import tenant from '../../models/tenant';
 import ezMasterConfig from '../../services/ezMasterConfig';
 import mongoClient from '../../services/mongoClient';
@@ -120,16 +124,16 @@ app.use(async (ctx, next) => {
     }
 
     if (
-        get(ctx, 'state.cookie.role') === 'user' &&
-        get(ctx, 'state.header.role') === 'user'
+        get(ctx, 'state.cookie.role') === USER_ROLE &&
+        get(ctx, 'state.header.role') === USER_ROLE
     ) {
         ctx.status = 404;
         return;
     }
 
     if (
-        get(ctx, 'state.cookie.role') === 'contributor' &&
-        get(ctx, 'state.header.role') === 'contributor'
+        get(ctx, 'state.cookie.role') === CONTRIBUTOR_ROLE &&
+        get(ctx, 'state.header.role') === CONTRIBUTOR_ROLE
     ) {
         ctx.status = 404;
         return;

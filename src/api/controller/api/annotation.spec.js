@@ -15,6 +15,11 @@ import {
     updateAnnotation,
 } from './annotation';
 import configTenant from '../../models/configTenant';
+import {
+    ADMIN_ROLE,
+    CONTRIBUTOR_ROLE,
+    USER_ROLE,
+} from '../../../common/tools/tenantTools';
 
 const ANNOTATIONS = [
     {
@@ -193,7 +198,7 @@ describe('annotation', () => {
                 },
                 state: {
                     header: {
-                        role: 'contributor',
+                        role: CONTRIBUTOR_ROLE,
                     },
                 },
                 response: {},
@@ -1828,7 +1833,7 @@ describe('annotation', () => {
             const ctx = {
                 state: {
                     header: {
-                        role: 'contributor',
+                        role: CONTRIBUTOR_ROLE,
                     },
                 },
                 configTenantCollection: configTenantModel,
@@ -1868,7 +1873,7 @@ describe('annotation', () => {
             const ctx = {
                 state: {
                     header: {
-                        role: 'user',
+                        role: USER_ROLE,
                     },
                 },
                 configTenantCollection: configTenantModel,
@@ -1879,7 +1884,7 @@ describe('annotation', () => {
             expect(ctx.status).toBe(200);
             expect(ctx.body).toBe(false);
         });
-        it.each(['user', 'contributor', 'admin'])(
+        it.each([USER_ROLE, CONTRIBUTOR_ROLE, ADMIN_ROLE])(
             'should return true when contributorAuth is not active and role is %s',
             async (role) => {
                 await configTenantModel.create({

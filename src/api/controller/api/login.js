@@ -5,7 +5,12 @@ import get from 'lodash/get';
 
 import { auth } from 'config';
 import jwt from 'jsonwebtoken';
-import { ADMIN_ROLE, ROOT_ROLE } from '../../../common/tools/tenantTools';
+import {
+    ADMIN_ROLE,
+    CONTRIBUTOR_ROLE,
+    ROOT_ROLE,
+    USER_ROLE,
+} from '../../../common/tools/tenantTools';
 
 export const postLogin = (date) => async (ctx) => {
     if (!ctx.ezMasterConfig) {
@@ -39,7 +44,7 @@ export const postLogin = (date) => async (ctx) => {
         username === userAuth.username &&
         password === userAuth.password
     ) {
-        role = 'user';
+        role = USER_ROLE;
     }
 
     if (
@@ -48,7 +53,7 @@ export const postLogin = (date) => async (ctx) => {
         username === contributorAuth.username &&
         password === contributorAuth.password
     ) {
-        role = 'contributor';
+        role = CONTRIBUTOR_ROLE;
     }
 
     if (

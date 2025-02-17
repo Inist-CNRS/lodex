@@ -2,7 +2,10 @@ import { auth } from 'config';
 import jwt from 'jsonwebtoken';
 
 import { postLogin as login } from './login';
-import { ADMIN_ROLE } from '../../../common/tools/tenantTools';
+import {
+    ADMIN_ROLE,
+    CONTRIBUTOR_ROLE,
+} from '../../../common/tools/tenantTools';
 import ezMasterConfig from '../../services/ezMasterConfig';
 
 const expDate = Date.now();
@@ -433,19 +436,19 @@ describe('login', () => {
                 token: jwt.sign(
                     {
                         username: 'contributor',
-                        role: 'contributor',
+                        role: CONTRIBUTOR_ROLE,
                         exp: Math.ceil(expDate / 1000) + auth.expiresIn,
                     },
                     auth.headerSecret,
                 ),
-                role: 'contributor',
+                role: CONTRIBUTOR_ROLE,
             });
             expect(setCookies).toHaveBeenCalledWith(
                 'lodex_token_default',
                 jwt.sign(
                     {
                         username: 'contributor',
-                        role: 'contributor',
+                        role: CONTRIBUTOR_ROLE,
                         exp: Math.ceil(expDate / 1000) + auth.expiresIn,
                     },
                     auth.cookieSecret,

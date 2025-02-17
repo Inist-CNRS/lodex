@@ -17,6 +17,10 @@ import {
     deleteManyAnnotationsSchema,
     getAnnotationsQuerySchema,
 } from './../../../common/validator/annotation.validator';
+import {
+    ADMIN_ROLE,
+    CONTRIBUTOR_ROLE,
+} from '../../../common/tools/tenantTools';
 
 export const canAnnotate = async (ctx) => {
     const role = ctx?.state?.header?.role;
@@ -27,7 +31,7 @@ export const canAnnotate = async (ctx) => {
     }
 
     if (configTenant.contributorAuth.active) {
-        return ['contributor', 'admin'].includes(role);
+        return [CONTRIBUTOR_ROLE, ADMIN_ROLE].includes(role);
     }
 
     return true;

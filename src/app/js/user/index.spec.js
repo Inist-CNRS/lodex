@@ -1,4 +1,4 @@
-import { ADMIN_ROLE } from '../../../common/tools/tenantTools';
+import { ADMIN_ROLE, USER_ROLE } from '../../../common/tools/tenantTools';
 import reducer, {
     defaultState,
     getToken,
@@ -54,7 +54,7 @@ describe('user reducer', () => {
         });
 
         it('should return false if state role is not admin', () => {
-            const result = isAdmin({ role: 'user' });
+            const result = isAdmin({ role: USER_ROLE });
             expect(result).toBe(false);
         });
 
