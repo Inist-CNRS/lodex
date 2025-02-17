@@ -115,6 +115,7 @@ export function CreateAnnotationButton({ field, initialValue = null }) {
                     onSubmit={handleSubmitAnnotation}
                     anchorEl={anchorButton.current}
                     initialValue={initialValue}
+                    field={field}
                 />
             )}
         </>

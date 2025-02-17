@@ -11,7 +11,7 @@ import { useTranslate } from '../i18n/I18NContext';
 import { CommentField } from './fields/CommentField';
 import { ProposedValueField } from './fields/ProposedValueField';
 
-export function AnnotationCommentStep({ form }) {
+export function AnnotationCommentStep({ field, form }) {
     const { translate } = useTranslate();
     const annotationInitialValue = useStore(form.store, (state) => {
         return state.values.initialValue?.replace(/<[^>]*>/g, '');
@@ -47,14 +47,15 @@ export function AnnotationCommentStep({ form }) {
             )}
             {[ANNOTATION_KIND_CORRECTION, ANNOTATION_KIND_ADDITION].includes(
                 kind,
-            ) && <ProposedValueField form={form} />}
+            ) && <ProposedValueField form={form} field={field} />}
+            or annotations)
             <CommentField form={form} />
         </>
     );
 }
 
 AnnotationCommentStep.propTypes = {
+    field: PropTypes.object.isRequired,
     form: PropTypes.object.isRequired,
     initialValue: PropTypes.string,
-    goToStep: PropTypes.func.isRequired,
 };

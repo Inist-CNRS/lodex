@@ -1303,3 +1303,8 @@
 "user_auth_help"	"By checking “User”, only people connected with the information below will be able to access the front"	"En cochant “Utilisateur”, uniquement les personnes connectées avec les informations ci-dessous pourront accéder au front"
 "contributor_auth_help"	"By checking “Contributor”, only people connected with the information below will be able to annotate the content. By unchecking “Contributor”, everyone accessing the front will be able to contribute."	"En cochant “Contributeur”, uniquement les personnes connectées avec les informations ci-dessous pourront annoter le contenu.En décochant “Contributeur”, toutes les personnes accédant au front pourront contribuer."
 "checkbox"	"Checkbox"	"Case à cocher"
+"field_annotation_format"	"Annotation format"	"Format de l'annotation"
+"field_annotation_format_text"	"Free text"	"Texte libre"
+"field_annotation_format_list"	"Predefined values list"	"Liste de valeurs prédéfinies"
+"field_annotation_format_list_options"	"Predefined values"	"Valeurs prédéfinies"
+"field_annotation_format_list_options_helptext"	"Enter one value per line"	"Entrez une valeur par ligne"

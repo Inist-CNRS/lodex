@@ -19,6 +19,9 @@ const renderAnnotationCommentStep = ({ kind, ...props }) => {
                 <AnnotationCommentStep
                     form={form}
                     initialValue="initialValue"
+                    field={{
+                        annotationFormat: 'text',
+                    }}
                     {...props}
                 />
             </TestI18N>
@@ -39,7 +42,9 @@ describe('AnnotationCommentStep', () => {
             wrapper.queryByLabelText('annotation.comment *'),
         ).toBeInTheDocument();
         expect(
-            wrapper.queryByLabelText('annotation.proposedValue *'),
+            wrapper.queryByRole('textbox', {
+                name: 'annotation.proposedValue *',
+            }),
         ).not.toBeInTheDocument();
     });
     it('should render only the comment input when kind is removal', () => {
@@ -51,7 +56,9 @@ describe('AnnotationCommentStep', () => {
             wrapper.queryByLabelText('annotation.comment *'),
         ).toBeInTheDocument();
         expect(
-            wrapper.queryByLabelText('annotation.proposedValue *'),
+            wrapper.queryByRole('textbox', {
+                name: 'annotation.proposedValue *',
+            }),
         ).not.toBeInTheDocument();
     });
 
@@ -65,7 +72,9 @@ describe('AnnotationCommentStep', () => {
             wrapper.queryByLabelText('annotation.comment *'),
         ).toBeInTheDocument();
         expect(
-            wrapper.queryByLabelText('annotation.proposedValue *'),
+            wrapper.queryByRole('textbox', {
+                name: 'annotation.proposedValue *',
+            }),
         ).toBeInTheDocument();
     });
 
@@ -77,7 +86,29 @@ describe('AnnotationCommentStep', () => {
             wrapper.queryByLabelText('annotation.comment *'),
         ).toBeInTheDocument();
         expect(
-            wrapper.queryByLabelText('annotation.proposedValue *'),
+            wrapper.queryByRole('textbox', {
+                name: 'annotation.proposedValue *',
+            }),
+        ).toBeInTheDocument();
+    });
+
+    it('should render the proposedValue as select if field is a list', () => {
+        const wrapper = renderAnnotationCommentStep({
+            kind: 'addition',
+            field: {
+                annotationFormat: 'list',
+                annotationFormatListOptions: `option 1`,
+            },
+        });
+        wrapper.debug();
+        expect(wrapper.queryByText('annotation_add_value')).toBeInTheDocument();
+        expect(
+            wrapper.queryByLabelText('annotation.comment *'),
+        ).toBeInTheDocument();
+        expect(
+            wrapper.queryByRole('combobox', {
+                name: 'annotation.proposedValue *',
+            }),
         ).toBeInTheDocument();
     });
 });

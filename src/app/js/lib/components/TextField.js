@@ -6,8 +6,8 @@ import {
 import PropTypes from 'prop-types';
 import React, { useMemo } from 'react';
 
-import { useTranslate } from '../../i18n/I18NContext';
 import { useField } from '@tanstack/react-form';
+import { useTranslate } from '../../i18n/I18NContext';
 
 // TextField component to use tanstack react form with material ui text field
 export function TextField({
