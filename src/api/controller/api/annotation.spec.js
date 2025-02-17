@@ -5,6 +5,7 @@ import createAnnotationModel from '../../models/annotation';
 import createFieldModel from '../../models/field';
 import createPublishedDatasetModel from '../../models/publishedDataset';
 import {
+    canAnnotateRoute,
     createAnnotation,
     deleteAnnotation,
     deleteManyAnnotation,
@@ -13,6 +14,12 @@ import {
     getAnnotations,
     updateAnnotation,
 } from './annotation';
+import configTenant from '../../models/configTenant';
+import {
+    ADMIN_ROLE,
+    CONTRIBUTOR_ROLE,
+    USER_ROLE,
+} from '../../../common/tools/tenantTools';
 
 const ANNOTATIONS = [
     {
@@ -70,6 +77,7 @@ describe('annotation', () => {
     const connectionStringURI = process.env.MONGO_URL;
     let annotationModel;
     let publishedDatasetModel;
+    let configTenantModel;
     let fieldModel;
     let connection;
     let db;
@@ -82,6 +90,7 @@ describe('annotation', () => {
         annotationModel = await createAnnotationModel(db);
         fieldModel = await createFieldModel(db);
         publishedDatasetModel = await createPublishedDatasetModel(db);
+        configTenantModel = await configTenant(db);
     });
 
     beforeEach(async () => {
@@ -97,6 +106,11 @@ describe('annotation', () => {
 
     describe('createAnnotation', () => {
         it('should create an annotation', async () => {
+            await configTenantModel.create({
+                contributorAuth: {
+                    active: false,
+                },
+            });
             const annotation = {
                 resourceUri: 'uid:/a4f7a51f-7109-481e-86cc-0adb3a26faa6',
                 fieldId: 'Gb4a',
@@ -113,6 +127,7 @@ describe('annotation', () => {
                 annotation: annotationModel,
                 publishedDataset: publishedDatasetModel,
                 field: fieldModel,
+                configTenantCollection: configTenantModel,
             };
 
             await createAnnotation(ctx);
@@ -132,8 +147,120 @@ describe('annotation', () => {
                 ctx.body.data,
             ]);
         });
+        it('should forbid to create an annotation if contributorAuth is active and user role is not contributor nor admin', async () => {
+            await configTenantModel.create({
+                contributorAuth: {
+                    active: true,
+                },
+            });
+            const annotation = {
+                resourceUri: 'uid:/a4f7a51f-7109-481e-86cc-0adb3a26faa6',
+                fieldId: 'Gb4a',
+                kind: 'comment',
+                comment: 'Hello world',
+                authorName: 'John DOE',
+            };
+
+            const ctx = {
+                request: {
+                    body: annotation,
+                },
+                response: {},
+                annotation: annotationModel,
+                publishedDataset: publishedDatasetModel,
+                field: fieldModel,
+                configTenantCollection: configTenantModel,
+            };
+
+            await createAnnotation(ctx);
+
+            expect(ctx.response.status).toBe(403);
+
+            expect(await annotationModel.findLimitFromSkip()).toStrictEqual([]);
+        });
+        it('should create an annotation if contributorAuth is active and user role is contributor', async () => {
+            await configTenantModel.create({
+                contributorAuth: {
+                    active: true,
+                },
+            });
+            const annotation = {
+                resourceUri: 'uid:/a4f7a51f-7109-481e-86cc-0adb3a26faa6',
+                fieldId: 'Gb4a',
+                kind: 'comment',
+                comment: 'Hello world',
+                authorName: 'John DOE',
+            };
+
+            const ctx = {
+                request: {
+                    body: annotation,
+                },
+                state: {
+                    header: {
+                        role: CONTRIBUTOR_ROLE,
+                    },
+                },
+                response: {},
+                annotation: annotationModel,
+                publishedDataset: publishedDatasetModel,
+                field: fieldModel,
+                configTenantCollection: configTenantModel,
+            };
+
+            await createAnnotation(ctx);
+
+            expect(ctx.response.status).toBe(200);
+
+            expect(await annotationModel.findLimitFromSkip()).toStrictEqual([
+                ctx.body.data,
+            ]);
+        });
+        it('should create an annotation if contributorAuth is active and user role is admin', async () => {
+            await configTenantModel.create({
+                contributorAuth: {
+                    active: true,
+                },
+            });
+            const annotation = {
+                resourceUri: 'uid:/a4f7a51f-7109-481e-86cc-0adb3a26faa6',
+                fieldId: 'Gb4a',
+                kind: 'comment',
+                comment: 'Hello world',
+                authorName: 'John DOE',
+            };
+
+            const ctx = {
+                request: {
+                    body: annotation,
+                },
+                state: {
+                    header: {
+                        role: 'admin',
+                    },
+                },
+                response: {},
+                annotation: annotationModel,
+                publishedDataset: publishedDatasetModel,
+                field: fieldModel,
+                configTenantCollection: configTenantModel,
+            };
+
+            await createAnnotation(ctx);
+
+            expect(ctx.response.status).toBe(200);
+
+            expect(await annotationModel.findLimitFromSkip()).toStrictEqual([
+                ctx.body.data,
+            ]);
+        });
 
         it('should return an error if annotation is not valid', async () => {
+            await configTenantModel.create({
+                contributorAuth: {
+                    active: false,
+                },
+            });
             const annotation = {
                 resourceUri: 'uid:/a4f7a51f-7109-481e-86cc-0adb3a26faa6',
                 comment: '',
@@ -146,6 +273,7 @@ describe('annotation', () => {
                 response: {},
                 annotation: annotationModel,
                 publishedDataset: publishedDatasetModel,
+                configTenantCollection: configTenantModel,
                 field: fieldModel,
             };
 
@@ -1693,5 +1821,91 @@ describe('annotation', () => {
                 annotation,
             ]);
         });
+    });
+
+    describe('GET /annotations/can-access', () => {
+        it('should return true when role is contributor and contributorAuth is active', async () => {
+            await configTenantModel.create({
+                contributorAuth: {
+                    active: true,
+                },
+            });
+            const ctx = {
+                state: {
+                    header: {
+                        role: CONTRIBUTOR_ROLE,
+                    },
+                },
+                configTenantCollection: configTenantModel,
+            };
+
+            await canAnnotateRoute(ctx);
+
+            expect(ctx.status).toBe(200);
+            expect(ctx.body).toBe(true);
+        });
+        it('should return true when role is admin and contributorAuth is active', async () => {
+            await configTenantModel.create({
+                contributorAuth: {
+                    active: true,
+                },
+            });
+            const ctx = {
+                state: {
+                    header: {
+                        role: 'admin',
+                    },
+                },
+                configTenantCollection: configTenantModel,
+            };
+
+            await canAnnotateRoute(ctx);
+
+            expect(ctx.status).toBe(200);
+            expect(ctx.body).toBe(true);
+        });
+        it('should return false when role is user and contributorAuth is active', async () => {
+            await configTenantModel.create({
+                contributorAuth: {
+                    active: true,
+                },
+            });
+            const ctx = {
+                state: {
+                    header: {
+                        role: USER_ROLE,
+                    },
+                },
+                configTenantCollection: configTenantModel,
+            };
+
+            await canAnnotateRoute(ctx);
+
+            expect(ctx.status).toBe(200);
+            expect(ctx.body).toBe(false);
+        });
+        it.each([USER_ROLE, CONTRIBUTOR_ROLE, ADMIN_ROLE])(
+            'should return true when contributorAuth is not active and role is %s',
+            async (role) => {
+                await configTenantModel.create({
+                    contributorAuth: {
+                        active: false,
+                    },
+                });
+                const ctx = {
+                    state: {
+                        header: {
+                            role,
+                        },
+                    },
+                    configTenantCollection: configTenantModel,
+                };
+
+                await canAnnotateRoute(ctx);
+
+                expect(ctx.status).toBe(200);
+                expect(ctx.body).toBe(true);
+            },
+        );
     });
 });

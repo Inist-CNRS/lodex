@@ -17,11 +17,39 @@ import {
     deleteManyAnnotationsSchema,
     getAnnotationsQuerySchema,
 } from './../../../common/validator/annotation.validator';
+import {
+    ADMIN_ROLE,
+    CONTRIBUTOR_ROLE,
+} from '../../../common/tools/tenantTools';
+
+export const canAnnotate = async (ctx) => {
+    const role = ctx?.state?.header?.role;
+    const configTenant = await ctx.configTenantCollection.findLast();
+
+    if (!configTenant) {
+        return false;
+    }
+
+    if (configTenant.contributorAuth.active) {
+        return [CONTRIBUTOR_ROLE, ADMIN_ROLE].includes(role);
+    }
+
+    return true;
+};
+
+export const canAnnotateRoute = async (ctx) => {
+    ctx.status = 200;
+    ctx.body = await canAnnotate(ctx);
+};
 
 /**
  * @param {Koa.Context} ctx
  */
 export async function createAnnotation(ctx) {
+    if ((await canAnnotate(ctx)) === false) {
+        ctx.response.status = 403;
+        return;
+    }
     const validation = annotationCreationSchema.safeParse(ctx.request.body);
     if (!validation.success) {
         ctx.response.status = 400;
@@ -491,6 +519,7 @@ const app = new Koa();
 
 app.use(route.get('/', getAnnotations));
 app.use(route.get('/export', exportAnnotations));
+app.use(route.get('/can-annotate', canAnnotateRoute));
 app.use(route.get('/:id', getAnnotation));
 app.use(koaBodyParser());
 app.use(route.put('/:id', updateAnnotation));

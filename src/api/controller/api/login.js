@@ -5,7 +5,12 @@ import get from 'lodash/get';
 
 import { auth } from 'config';
 import jwt from 'jsonwebtoken';
-import { ADMIN_ROLE, ROOT_ROLE } from '../../../common/tools/tenantTools';
+import {
+    ADMIN_ROLE,
+    CONTRIBUTOR_ROLE,
+    ROOT_ROLE,
+    USER_ROLE,
+} from '../../../common/tools/tenantTools';
 
 export const postLogin = (date) => async (ctx) => {
     if (!ctx.ezMasterConfig) {
@@ -25,6 +30,7 @@ export const postLogin = (date) => async (ctx) => {
 
     const { username, password } = ctx.request.body;
     const userAuth = get(ctx, 'configTenant.userAuth', {});
+    const contributorAuth = get(ctx, 'configTenant.contributorAuth', {});
     const rootAuth = get(ctx, 'ezMasterConfig.rootAuth', {});
 
     let role;
@@ -34,10 +40,20 @@ export const postLogin = (date) => async (ctx) => {
 
     if (
         userAuth &&
+        userAuth.active &&
         username === userAuth.username &&
         password === userAuth.password
     ) {
-        role = 'user';
+        role = USER_ROLE;
+    }
+
+    if (
+        contributorAuth &&
+        contributorAuth.active &&
+        username === contributorAuth.username &&
+        password === contributorAuth.password
+    ) {
+        role = CONTRIBUTOR_ROLE;
     }
 
     if (
@@ -47,7 +63,6 @@ export const postLogin = (date) => async (ctx) => {
     ) {
         role = ROOT_ROLE;
     }
-
     if (!role) {
         ctx.status = 401;
         return;
@@ -70,6 +85,7 @@ export const postLogin = (date) => async (ctx) => {
     const cookieToken = jwt.sign(tokenData, auth.cookieSecret);
     const headerToken = jwt.sign(tokenData, auth.headerSecret);
 
+    ctx.status = 200;
     ctx.cookies.set(
         role === ROOT_ROLE ? 'lodex_token_root' : `lodex_token_${ctx.tenant}`,
         cookieToken,

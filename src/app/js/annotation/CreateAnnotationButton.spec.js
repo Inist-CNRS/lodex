@@ -7,6 +7,7 @@ import { MemoryRouter, Route, Switch } from 'react-router-dom';
 import { TestI18N } from '../i18n/I18NContext';
 import fetch from '../lib/fetch';
 import { CreateAnnotationButton } from './CreateAnnotationButton';
+import { useCanAnnotate } from './useCanAnnotate';
 
 const queryClient = new QueryClient();
 
@@ -18,6 +19,10 @@ jest.mock('../lib/fetch', () =>
         });
     }),
 );
+
+jest.mock('./useCanAnnotate', () => ({
+    useCanAnnotate: jest.fn().mockReturnValue(true),
+}));
 
 function TestButton({ annotable, ...props }) {
     return (
@@ -56,11 +61,22 @@ describe('CreateAnnotationButton', () => {
             'redux-localstorage',
             JSON.stringify({ user: { token: 'token' } }),
         );
+        useCanAnnotate.mockReturnValue(true);
     });
 
     afterEach(() => {
         window.localStorage.clear();
         jest.clearAllMocks();
+    });
+
+    it('should not render the button if useCanAccess return false', async () => {
+        useCanAnnotate.mockReturnValue(false);
+        render(<TestButton />);
+        expect(
+            screen.queryByRole('button', {
+                name: 'annotation_create_button_label',
+            }),
+        ).not.toBeInTheDocument();
     });
 
     it('should open the modal when clicking on the button', async () => {

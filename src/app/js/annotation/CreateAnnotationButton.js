@@ -7,9 +7,11 @@ import { useTranslate } from '../i18n/I18NContext';
 import { CreateAnnotationModal } from './CreateAnnotationModal';
 import { useCreateAnnotation } from './useCreateAnnotation';
 import { useResourceUri } from './useResourceUri';
+import { useCanAnnotate } from './useCanAnnotate';
 
 export function CreateAnnotationButton({ field, initialValue = null }) {
     const { translate } = useTranslate();
+    const canAnnotate = useCanAnnotate();
     const anchorButton = useRef(null);
 
     const resourceUri = useResourceUri();
@@ -57,6 +59,10 @@ export function CreateAnnotationButton({ field, initialValue = null }) {
     }
 
     const forceButtonDisplay = isTooltipOpen || isModalOpen;
+
+    if (!canAnnotate) {
+        return null;
+    }
 
     return (
         <>

@@ -32,15 +32,13 @@ export default async (db) => {
 
     collection.update = async (id, data) => {
         const objectId = new ObjectId(id);
-        return collection
-            .findOneAndReplace(
-                {
-                    $or: [{ _id: objectId }, { _id: id }],
-                },
-                omit(data, ['_id']),
-                { returnDocument: 'after' },
-            )
-            .then((result) => result.value);
+        return collection.findOneAndReplace(
+            {
+                $or: [{ _id: objectId }, { _id: id }],
+            },
+            omit(data, ['_id']),
+            { returnDocument: 'after' },
+        );
     };
 
     collection.castIds = castIdsFactory(collection);
