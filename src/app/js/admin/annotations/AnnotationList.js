@@ -164,8 +164,10 @@ export const AnnotationList = () => {
             loading={isPending || isFetching}
             columns={[
                 {
-                    field: '_#_checkbox_#_',
+                    field: translate('checkbox'),
                     sortable: false,
+                    filterable: false,
+                    hideable: false,
                     flex: 0,
                     renderHeader() {
                         return (
@@ -223,7 +225,7 @@ export const AnnotationList = () => {
                             InputComponent: KindFilter,
                         })),
                     renderCell: ({ value }) => {
-                        return <CellWithTooltip value={value} />;
+                        return <CellWithTooltip value={translate(value)} />;
                     },
                 },
                 {

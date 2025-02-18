@@ -1,7 +1,7 @@
+import { useForm } from '@tanstack/react-form';
 import { fireEvent, render, screen } from '@testing-library/react';
 import React from 'react';
 import { TestI18N } from '../../i18n/I18NContext';
-import { useForm } from '@tanstack/react-form';
 import { COMMENT_STEP, VALUE_STEP } from '../steps';
 import { KindField } from './KindField';
 
@@ -65,14 +65,14 @@ describe('KindField', () => {
         });
     });
 
-    describe('correct', () => {
+    describe('correction', () => {
         it('should call goToStep with COMMENT_STEP when removing a value and there is a single value', async () => {
             const goToStep = jest.fn();
             const { form } = renderKindField({ goToStep });
             fireEvent.click(screen.getByText('annotation_correct_content'));
             expect(goToStep).toHaveBeenCalledWith(COMMENT_STEP);
             expect(form.state.values).toStrictEqual({
-                kind: 'correct',
+                kind: 'correction',
             });
         });
 
@@ -85,7 +85,7 @@ describe('KindField', () => {
             fireEvent.click(screen.getByText('annotation_correct_content'));
             expect(goToStep).toHaveBeenCalledWith(VALUE_STEP);
             expect(form.state.values).toStrictEqual({
-                kind: 'correct',
+                kind: 'correction',
             });
         });
     });

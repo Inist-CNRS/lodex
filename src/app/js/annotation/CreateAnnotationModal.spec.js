@@ -1113,7 +1113,7 @@ describe('CreateAnnotationModal', () => {
             initialValue: 'initialValue',
             proposedValue: 'proposedValue',
             target: 'value',
-            kind: 'correct',
+            kind: 'correction',
         });
     });
 
@@ -1208,7 +1208,7 @@ describe('CreateAnnotationModal', () => {
             initialValue: 'secondValue',
             proposedValue: 'proposedValue',
             target: 'value',
-            kind: 'correct',
+            kind: 'correction',
         });
     });
 

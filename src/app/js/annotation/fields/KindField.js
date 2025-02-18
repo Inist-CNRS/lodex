@@ -1,13 +1,18 @@
+import AddIcon from '@mui/icons-material/Add';
+import EditIcon from '@mui/icons-material/Edit';
+import RemoveIcon from '@mui/icons-material/Remove';
 import { MenuItem, MenuList, useTheme } from '@mui/material';
 import PropTypes from 'prop-types';
 import React from 'react';
-import RemoveIcon from '@mui/icons-material/Remove';
-import AddIcon from '@mui/icons-material/Add';
-import EditIcon from '@mui/icons-material/Edit';
 
+import { useField } from '@tanstack/react-form';
+import {
+    ANNOTATION_KIND_ADDITION,
+    ANNOTATION_KIND_CORRECTION,
+    ANNOTATION_KIND_REMOVAL,
+} from '../../../../common/validator/annotation.validator';
 import { useTranslate } from '../../i18n/I18NContext';
 import { COMMENT_STEP, VALUE_STEP } from '../steps';
-import { useField } from '@tanstack/react-form';
 
 export function KindField({ form, initialValue, goToStep }) {
     const theme = useTheme();
@@ -37,7 +42,7 @@ export function KindField({ form, initialValue, goToStep }) {
                                 fontWeight: 'bold',
                             }}
                             onClick={() => {
-                                field.handleChange('correct');
+                                field.handleChange(ANNOTATION_KIND_CORRECTION);
 
                                 if (Array.isArray(initialValue)) {
                                     goToStep(VALUE_STEP);
@@ -61,7 +66,7 @@ export function KindField({ form, initialValue, goToStep }) {
                             }}
                             onClick={() => {
                                 initialValueField.handleChange(null);
-                                field.handleChange('addition');
+                                field.handleChange(ANNOTATION_KIND_ADDITION);
 
                                 goToStep(COMMENT_STEP);
                             }}
@@ -80,7 +85,7 @@ export function KindField({ form, initialValue, goToStep }) {
                                 fontWeight: 'bold',
                             }}
                             onClick={() => {
-                                field.handleChange('removal');
+                                field.handleChange(ANNOTATION_KIND_REMOVAL);
 
                                 if (Array.isArray(initialValue)) {
                                     goToStep(VALUE_STEP);
