@@ -835,7 +835,7 @@ Revue`);
             datasetImportPage.goToPublishedResources();
         });
 
-        it.only('should support enforcing a list of values', () => {
+        it('should support enforcing a list of values', () => {
             annotation.createAddValueWithProposedValueChoiceAnnotation({
                 fieldLabel: 'Liste des films',
                 proposedValue: 'Book',
@@ -855,7 +855,7 @@ Revue`);
                     '',
                     'Home page',
                     '',
-                    'addition',
+                    'Addition',
                     'Liste des films',
                     '[vPYU]',
                     '',

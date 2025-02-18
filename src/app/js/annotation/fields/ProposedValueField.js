@@ -7,7 +7,7 @@ import { ProposedValueFieldText } from './ProposedValueFieldText';
 export function ProposedValueField({ form, field }) {
     if (
         field.annotationFormat === 'list' &&
-        field.annotationFormatListOptions?.trim().length
+        field.annotationFormatListOptions?.length
     ) {
         return (
             <ProposedValueFieldList

@@ -1,23 +1,23 @@
-import { call, put, select, takeLatest } from 'redux-saga/effects';
-import { destroy } from 'redux-form';
-import set from 'lodash/set';
 import get from 'lodash/get';
+import set from 'lodash/set';
+import { destroy } from 'redux-form';
+import { call, put, select, takeLatest } from 'redux-saga/effects';
 
 import {
-    loadField,
-    saveFieldError,
-    saveFieldSuccess,
     FIELD_FORM_NAME,
+    loadField,
     SAVE_FIELD,
     SAVE_FIELD_FROM_DATA,
+    saveFieldError,
+    saveFieldSuccess,
 } from '../';
 
-import { getFieldFormData } from '../selectors';
 import { fromFields, fromUser } from '../../sharedSelectors';
+import { getFieldFormData } from '../selectors';
 
-import fetchSaga from '../../lib/sagas/fetchSaga';
-import { SCOPE_DOCUMENT } from '../../../../common/scope';
 import { push } from 'redux-first-history';
+import { SCOPE_DOCUMENT } from '../../../../common/scope';
+import fetchSaga from '../../lib/sagas/fetchSaga';
 
 export const sanitizeField = (fieldData) => {
     const valueOperation = get(fieldData, 'transformers[0].operation');

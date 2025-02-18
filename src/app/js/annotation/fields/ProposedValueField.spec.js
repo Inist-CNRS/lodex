@@ -19,8 +19,7 @@ describe('ProposedValueField', () => {
         it('should render ProposedValueFieldList if annotationFormat is list', () => {
             const field = {
                 annotationFormat: 'list',
-                annotationFormatListOptions: `option 1
-option2`,
+                annotationFormatListOptions: ['option 1', 'option 2'],
             };
             const wrapper = render(<TestProposedValueField field={field} />);
 
@@ -34,7 +33,7 @@ option2`,
         it('should render as text field if annotation list options is empty', () => {
             const field = {
                 annotationFormat: 'list',
-                annotationFormatListOptions: ' ',
+                annotationFormatListOptions: [],
             };
             const wrapper = render(<TestProposedValueField field={field} />);
 

@@ -18,7 +18,7 @@ describe('ProposedValueFieldList', () => {
     it('should render as text field if annotationFormat is text', () => {
         const wrapper = render(
             <TestProposedValueFieldList
-                options={'option1\noption2\noption3'}
+                options={['option1', 'option2', 'option3']}
             />,
         );
 
@@ -32,7 +32,7 @@ describe('ProposedValueFieldList', () => {
     it('should support value change', async () => {
         const wrapper = render(
             <TestProposedValueFieldList
-                options={'option1\noption2\noption3'}
+                options={['option1', 'option2', 'option3']}
             />,
         );
 

@@ -48,7 +48,6 @@ export function AnnotationCommentStep({ field, form }) {
             {[ANNOTATION_KIND_CORRECTION, ANNOTATION_KIND_ADDITION].includes(
                 kind,
             ) && <ProposedValueField form={form} field={field} />}
-            or annotations)
             <CommentField form={form} />
         </>
     );

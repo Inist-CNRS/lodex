@@ -97,7 +97,7 @@ describe('AnnotationCommentStep', () => {
             kind: 'addition',
             field: {
                 annotationFormat: 'list',
-                annotationFormatListOptions: `option 1`,
+                annotationFormatListOptions: ['option 1'],
             },
         });
         wrapper.debug();
