@@ -24,6 +24,12 @@ import {
     TARGET_STEP,
     VALUE_STEP,
 } from './steps';
+import { ValueField } from './fields/ValueField';
+import { KindField } from './fields/KindField';
+import { PreviousButton } from './PreviousButton';
+import { NextButton } from './NextButton';
+import { AnnotationCommentStep } from './AnnotationCommentStep';
+import { OpenHistoricButton } from './OpenHistoricButton';
 
 const isRequiredFieldValid = (formState, fieldName) => {
     const fieldState = formState.fieldMeta[fieldName];
@@ -50,6 +56,7 @@ export function CreateAnnotationModal({
     onClose,
     initialValue,
     field,
+    resourceUri,
 }) {
     const { translate } = useTranslate();
 
@@ -183,6 +190,10 @@ export function CreateAnnotationModal({
                             aria-label={translate('annotation_step_target')}
                             role="tab"
                         >
+                            <OpenHistoricButton
+                                field={field}
+                                resourceUri={resourceUri}
+                            />
                             <TargetField
                                 form={form}
                                 goToStep={setCurrentStep}
@@ -218,7 +229,20 @@ export function CreateAnnotationModal({
                             aria-label={translate('annotation_step_comment')}
                             role="tab"
                         >
-                            <AnnotationCommentStep form={form} field={field} />
+                            {!initialValue && (
+                                <Stack spacing={2}>
+                                    <OpenHistoricButton
+                                        field={field}
+                                        resourceUri={resourceUri}
+                                    />
+                                </Stack>
+                            )}
+                            <Stack spacing={2}>
+                                <AnnotationCommentStep
+                                    form={form}
+                                    field={field}
+                                />
+                            </Stack>
                         </Stack>
                     )}
 
@@ -267,5 +291,6 @@ CreateAnnotationModal.propTypes = {
     onSubmit: PropTypes.func.isRequired,
     anchorEl: PropTypes.object.isRequired,
     initialValue: PropTypes.any,
-    field: PropTypes.object,
+    field: PropTypes.object.isRequired,
+    resourceUri: PropTypes.string,
 };

@@ -1232,6 +1232,7 @@
 "annotation_authorName"	"Contributor"	"Contributeur"
 "annotation_resource_uri"	"Resource URI"	"URI de la ressource"
 "annotation_query_error"	"Could not retrieve annotations"	"Impossible de récupérer les annotations"
+"field_annotation_query_error"	"Could not retrieve this field annotations"	"Impossible de récupérer les annotations pour ce champ"
 "config_tenant_query_error"	"Could not retrieve tenant config"	"Impossible de récupérer la configuration"
 "available_themes_query_error"	"Could not retrieve available themes"	"Impossible de récupérer les thémes disponible"
 "annotation_created_at"	"Submission date"	"Date de soumission"
@@ -1308,3 +1309,5 @@
 "field_annotation_format_list"	"Predefined values list"	"Liste de valeurs prédéfinies"
 "field_annotation_format_list_options"	"Predefined values"	"Valeurs prédéfinies"
 "field_annotation_format_list_options_helptext"	"Enter one value per line"	"Entrez une valeur par ligne"
+"annotation_open_historic"	"See %{smart_count} annotation |||| See %{smart_count} annotations"	"Voir %{smart_count} annotation |||| Voir les %{smart_count} annotations"
+"annotation_no_historic"	"No annotations on this field yet"	"Aucune annotation sur che champ pour l'instant"

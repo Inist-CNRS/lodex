@@ -116,6 +116,7 @@ export function CreateAnnotationButton({ field, initialValue = null }) {
                     anchorEl={anchorButton.current}
                     initialValue={initialValue}
                     field={field}
+                    resourceUri={resourceUri}
                 />
             )}
         </>
