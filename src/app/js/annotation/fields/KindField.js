@@ -48,6 +48,7 @@ export function KindField({ form, initialValue, goToStep }) {
                                     goToStep(VALUE_STEP);
                                     return;
                                 }
+                                initialValueField.handleChange(initialValue);
                                 goToStep(COMMENT_STEP);
                             }}
                         >
@@ -91,6 +92,7 @@ export function KindField({ form, initialValue, goToStep }) {
                                     goToStep(VALUE_STEP);
                                     return;
                                 }
+                                initialValueField.handleChange(initialValue);
                                 goToStep(COMMENT_STEP);
                             }}
                         >
