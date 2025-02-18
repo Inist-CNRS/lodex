@@ -39,7 +39,6 @@
         --bgBody: <%= custom.color.bgBody %>;
         --bgContrast: <%= custom.color.bgContrast %>;
         --bgHeader: <%= custom.color.bgHeader %>;
-        --bgHeaderUrl: url('<%= custom.color.bgHeaderUrl %>');
         --titleHeader: <%= custom.color.titleHeader %>;
         --bgContent: <%= custom.color.bgContent %>;
         --bgFacet: <%= custom.color.bgFacet %>;
@@ -58,14 +57,16 @@
 </head>
 
 <body>
-<% if (custom.siteTitle) { %>
+<% if (custom.siteTitle || custom.logo.url) { %>
     <header>
         <div id="banner" class="container">
+        <% if (custom.logo.url) { %>
             <div id="logos">
                 <a class="logo" href="<%= custom.logo.url %>" target="_blank">
                     <img src="<%= custom.logo.file %>" alt="<%= custom.logo.alt %>" width="<%= custom.logo.size %>" />
                 </a>
             </div>
+        <% } %>
             <div>
             <% if (custom.siteTitle) { %>
 			    <h1><%= custom.siteTitle %></h1>
