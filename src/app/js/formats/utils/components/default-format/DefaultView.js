@@ -59,9 +59,6 @@ const DefaultView = ({ className, resource, field, fieldStatus, shrink }) => {
                 position: 'relative',
                 display: 'inline-block',
                 width: 'fit-content',
-                'li &:hover': {
-                    color: 'primary.main',
-                },
             }}
         >
             <span className={className}>{text}</span>

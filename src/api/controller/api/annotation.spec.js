@@ -1,7 +1,13 @@
 import { default as _ } from 'lodash';
 import { MongoClient } from 'mongodb';
 import { text } from 'stream/consumers';
+import {
+    ADMIN_ROLE,
+    CONTRIBUTOR_ROLE,
+    USER_ROLE,
+} from '../../../common/tools/tenantTools';
 import createAnnotationModel from '../../models/annotation';
+import configTenant from '../../models/configTenant';
 import createFieldModel from '../../models/field';
 import createPublishedDatasetModel from '../../models/publishedDataset';
 import {
@@ -14,12 +20,6 @@ import {
     getAnnotations,
     updateAnnotation,
 } from './annotation';
-import configTenant from '../../models/configTenant';
-import {
-    ADMIN_ROLE,
-    CONTRIBUTOR_ROLE,
-    USER_ROLE,
-} from '../../../common/tools/tenantTools';
 
 const ANNOTATIONS = [
     {
@@ -1258,7 +1258,7 @@ describe('annotation', () => {
             {
                 resourceUri: 'uid:/d4f1e376-d5dd-4853-b515-b7f63b34d67d',
                 fieldId: null,
-                kind: 'correction',
+                kind: 'correct',
                 authorName: 'Jane SMITH',
                 authorEmail: 'jane.smith@marmelab.com',
                 comment:

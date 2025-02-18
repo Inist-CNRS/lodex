@@ -129,7 +129,7 @@ describe('annotation', () => {
             {
                 resourceUri: 'uid:/d4f1e376-d5dd-4853-b515-b7f63b34d67d',
                 fieldId: null,
-                kind: 'correction',
+                kind: 'correct',
                 authorName: 'Jane SMITH',
                 authorEmail: 'jane.smith@marmelab.com',
                 comment:
@@ -191,7 +191,7 @@ describe('annotation', () => {
                         resourceUri:
                             'uid:/d4f1e376-d5dd-4853-b515-b7f63b34d67d',
                         fieldId: null,
-                        kind: 'correction',
+                        kind: 'correct',
                         authorName: 'Jane SMITH',
                         authorEmail: 'jane.smith@marmelab.com',
                         comment:
