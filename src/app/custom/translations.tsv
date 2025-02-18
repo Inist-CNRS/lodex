@@ -1311,3 +1311,6 @@
 "field_annotation_format_list_options_helptext"	"Enter one value per line"	"Entrez une valeur par ligne"
 "annotation_open_historic"	"See %{smart_count} annotation |||| See %{smart_count} annotations"	"Voir %{smart_count} annotation |||| Voir les %{smart_count} annotations"
 "annotation_no_historic"	"No annotations on this field yet"	"Aucune annotation sur che champ pour l'instant"
+"annotation_open_history"	"See %{smart_count} annotation |||| See %{smart_count} annotations"	"Voir %{smart_count} annotation |||| Voir les %{smart_count} annotations"
+"annotation_no_history"	"No annotations on this field yet"	"Aucune annotation sur che champ pour l'instant"
+"annotation_history"	Annotation history for "%{fieldLabel}"	Historique des annotations de "%{fieldLabel}"
