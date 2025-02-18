@@ -5,7 +5,7 @@ import fetch from '../lib/fetch';
 
 export const useGetFieldAnnotation = (fieldId, resourceUri) => {
     return useQuery({
-        queryKey: ['field-annotation', fieldId, resourceUri],
+        queryKey: ['field-annotations', fieldId, resourceUri],
         queryFn: async () => {
             const { token } = getUserSessionStorageInfo();
             const request = getRequest(

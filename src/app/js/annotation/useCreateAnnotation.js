@@ -1,4 +1,4 @@
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useCallback, useMemo } from 'react';
 import { toast } from '../../../common/tools/toast';
 import { getUserSessionStorageInfo } from '../admin/api/tools';
@@ -8,6 +8,7 @@ import { getRequest } from '../user';
 
 export function useCreateAnnotation() {
     const { translate } = useTranslate();
+    const queryClient = useQueryClient();
 
     const mutation = useMutation({
         mutationFn: async (annotation) => {
@@ -25,6 +26,10 @@ export function useCreateAnnotation() {
             if (error) {
                 throw error;
             }
+
+            queryClient.invalidateQueries({
+                queryKey: ['field-annotations', annotation.fieldId],
+            });
 
             return response.data;
         },
