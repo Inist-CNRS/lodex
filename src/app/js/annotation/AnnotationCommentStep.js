@@ -7,9 +7,12 @@ import {
     ANNOTATION_KIND_ADDITION,
     ANNOTATION_KIND_CORRECTION,
 } from '../../../common/validator/annotation.validator';
+import { CommentField } from './fields/CommentField';
+import { Stack, Tooltip, Typography } from '@mui/material';
 import { useTranslate } from '../i18n/I18NContext';
 import { CommentField } from './fields/CommentField';
 import { ProposedValueField } from './fields/ProposedValueField';
+import HelpIcon from '@mui/icons-material/HelpOutline';
 
 export function AnnotationCommentStep({ field, form }) {
     const { translate } = useTranslate();
@@ -23,7 +26,7 @@ export function AnnotationCommentStep({ field, form }) {
 
     return (
         <>
-            {annotationInitialValue && (
+            <Stack direction="row">
                 <Tooltip title={annotationInitialValue}>
                     <Typography
                         sx={{
@@ -42,10 +45,15 @@ export function AnnotationCommentStep({ field, form }) {
                             })}
                         {kind === 'addition' &&
                             translate('annotation_add_value')}
+                        {kind === 'comment' &&
+                            translate('annotation_general_comment')}
                     </Typography>
                 </Tooltip>
-            )}
-            {[ANNOTATION_KIND_CORRECTION, ANNOTATION_KIND_ADDITION].includes(
+                <Tooltip title={translate('public_annotation')}>
+                    <HelpIcon />
+                </Tooltip>
+            </Stack>
+            {[ANNOTATION_KIND_CORRECTION, ANNOTATION_KIND_CORRECTION].includes(
                 kind,
             ) && <ProposedValueField form={form} field={field} />}
             <CommentField form={form} />

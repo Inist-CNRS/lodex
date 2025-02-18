@@ -1,4 +1,4 @@
-import { Box, Popover, Stack, Typography } from '@mui/material';
+import { Box, Popover, Stack, Tooltip, Typography } from '@mui/material';
 import { useForm, useStore } from '@tanstack/react-form';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
@@ -30,6 +30,7 @@ import { PreviousButton } from './PreviousButton';
 import { NextButton } from './NextButton';
 import { AnnotationCommentStep } from './AnnotationCommentStep';
 import { OpenHistoricButton } from './OpenHistoricButton';
+import HelpIcon from '@mui/icons-material/HelpOutline';
 
 const isRequiredFieldValid = (formState, fieldName) => {
     const fieldState = formState.fieldMeta[fieldName];
@@ -252,6 +253,20 @@ export function CreateAnnotationModal({
                             aria-label={translate('annotation_step_author')}
                             role="tab"
                         >
+                            <Stack direction="row">
+                                <Typography>
+                                    {translate(
+                                        'annotation_personal_information',
+                                    )}
+                                </Typography>
+                                <Tooltip
+                                    title={translate(
+                                        'annotation_personal_information_tooltip',
+                                    )}
+                                >
+                                    <HelpIcon />
+                                </Tooltip>
+                            </Stack>
                             <AuthorNameField form={form} />
                             <AuthorEmailField form={form} />
                         </Stack>
