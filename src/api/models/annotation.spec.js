@@ -388,4 +388,101 @@ describe('annotation', () => {
             ]);
         });
     });
+
+    describe('findManyByFieldAndResource', () => {
+        let annotationList;
+        beforeEach(async () => {
+            annotationList = await Promise.all(
+                [
+                    {
+                        resourceUri:
+                            'uid:/2a8d429f-8134-4502-b9d3-d20c571592fa',
+                        fieldId: 'GvaF',
+                        kind: 'comment',
+                        authorName: 'Developer',
+                        authorEmail: 'developer@marmelab.com',
+                        comment: 'This is a comment',
+                        status: 'in_progress',
+                        internalComment: 'This is an internal comment',
+                        createdAt: new Date('03-01-2025'),
+                    },
+                    {
+                        resourceUri:
+                            'uid:/2a8d429f-8134-4502-b9d3-d20c571592fa',
+                        fieldId: 'GvaF',
+                        kind: 'correct',
+                        authorName: 'Developer',
+                        authorEmail: 'developer@marmelab.com',
+                        comment: 'This is a correction',
+                        status: 'to_review',
+                        internalComment: null,
+                        createdAt: new Date('04-01-2025'),
+                    },
+                    {
+                        resourceUri: null,
+                        fieldId: 'GvaF',
+                        kind: 'comment',
+                        authorName: 'John DOE',
+                        authorEmail: 'john.doe@marmelab.com',
+                        comment: 'This is another comment',
+                        status: 'to_review',
+                        internalComment: null,
+                        createdAt: new Date('02-01-2025'),
+                    },
+                    {
+                        resourceUri:
+                            'uid:/2a8d429f-8134-4502-b9d3-d20c571592fa',
+                        fieldId: 'AvaF',
+                        kind: 'correction',
+                        authorName: 'Jane SMITH',
+                        authorEmail: 'jane.smith@marmelab.com',
+                        comment:
+                            'The author list is incomplete: it should include Jane SMITH',
+                        status: 'rejected',
+                        internalComment:
+                            'Jane SMITH is not an author of this document',
+                        createdAt: new Date('01-01-2025'),
+                    },
+                    {
+                        resourceUri:
+                            'uid:/7a8d429f-8134-4502-b9d3-d20c571592fa',
+                        fieldId: 'GvaF',
+                        kind: 'correction',
+                        authorName: 'Jane SMITH',
+                        authorEmail: 'jane.smith@marmelab.com',
+                        comment:
+                            'The author list is incomplete: it should include Jane SMITH',
+                        status: 'rejected',
+                        internalComment:
+                            'Jane SMITH is not an author of this document',
+                        createdAt: new Date('01-01-2025'),
+                    },
+                ].map(annotationModel.create),
+            );
+        });
+
+        it('should return an array of annotations for given fieldName and resourceUri sorted from newest to oldest (createdAt)', async () => {
+            expect(
+                await annotationModel.findManyByFieldAndResource(
+                    'GvaF',
+                    'uid:/2a8d429f-8134-4502-b9d3-d20c571592fa',
+                ),
+            ).toEqual([annotationList[1], annotationList[0]]);
+        });
+
+        it('should return an array of annotations for given fieldName and no resourceUri when resourceUri is null', async () => {
+            expect(
+                await annotationModel.findManyByFieldAndResource('GvaF', null),
+            ).toEqual([annotationList[2]]);
+        });
+
+        it('should return an empty array when no annotations matches query', async () => {
+            expect(
+                await annotationModel.findManyByFieldAndResource(
+                    'AvaF',
+                    'uid:/7a8d429f-8134-4502-b9d3-d20c571592fa',
+                ),
+            ).toEqual([]);
+        });
+    });
 });

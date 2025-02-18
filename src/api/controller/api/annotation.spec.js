@@ -18,6 +18,7 @@ import {
     exportAnnotations,
     getAnnotation,
     getAnnotations,
+    getFieldAnnotations,
     updateAnnotation,
 } from './annotation';
 
@@ -1967,5 +1968,178 @@ describe('annotation', () => {
                 expect(ctx.body).toBe(true);
             },
         );
+    });
+
+    describe('GET /annotations/field-annotations', () => {
+        let field;
+        let otherField;
+        let fieldAnnotations;
+        let otherFieldAnnotations;
+        let resource1;
+        let resource2;
+        beforeEach(async () => {
+            await fieldModel.create(
+                {
+                    overview: 1,
+                    position: 0,
+                },
+                'tItl3',
+            );
+            field = await fieldModel.create(
+                {
+                    position: 1,
+                    label: 'field',
+                    internalName: 'field',
+                    internalScopes: ['chart'],
+                },
+                'field',
+            );
+
+            otherField = await fieldModel.create(
+                {
+                    position: 2,
+                    label: 'other field',
+                    internalName: 'other_field',
+                    internalScopes: ['document'],
+                },
+                'otherField',
+            );
+
+            resource1 = await publishedDatasetModel.create({
+                uri: '/resource/1',
+                tItl3: 'Resource 1',
+            });
+
+            resource2 = await publishedDatasetModel.create({
+                uri: '/resource/2',
+                tItl3: 'Resource 2',
+            });
+
+            fieldAnnotations = await Promise.all([
+                annotationModel.create({
+                    resourceUri: '/resource/1',
+                    fieldId: field._id,
+                }),
+                annotationModel.create({
+                    resourceUri: '/resource/2',
+                    fieldId: field._id,
+                }),
+                annotationModel.create({
+                    resourceUri: null,
+                    fieldId: field._id,
+                }),
+            ]);
+
+            otherFieldAnnotations = await Promise.all([
+                annotationModel.create({
+                    resourceUri: '/resource/1',
+                    fieldId: otherField._id,
+                }),
+                annotationModel.create({
+                    resourceUri: '/resource/2',
+                    fieldId: otherField._id,
+                }),
+                annotationModel.create({
+                    resourceUri: null,
+                    fieldId: otherField._id,
+                }),
+            ]);
+        });
+        it('should return all annotations for a field and no resource', async () => {
+            const ctx = {
+                request: {
+                    query: {
+                        fieldId: field._id,
+                        resourceUri: null,
+                    },
+                },
+                response: {},
+                annotation: annotationModel,
+                field: fieldModel,
+                publishedDataset: publishedDatasetModel,
+            };
+
+            await getFieldAnnotations(ctx);
+
+            expect(ctx.response).toStrictEqual({
+                status: 200,
+                body: [{ ...fieldAnnotations[2], field, resource: null }],
+            });
+        });
+
+        it('should return all annotations for a field and a resource', async () => {
+            const ctx = {
+                request: {
+                    query: {
+                        fieldId: field._id,
+                        resourceUri: '/resource/1',
+                    },
+                },
+                response: {},
+                annotation: annotationModel,
+                field: fieldModel,
+                publishedDataset: publishedDatasetModel,
+            };
+
+            await getFieldAnnotations(ctx);
+
+            expect(ctx.response).toStrictEqual({
+                status: 200,
+                body: [
+                    {
+                        ...fieldAnnotations[0],
+                        field,
+                        resource: {
+                            title: 'Resource 1',
+                            uri: '/resource/1',
+                        },
+                    },
+                ],
+            });
+        });
+
+        it('should return an empty array if no annotations are found', async () => {
+            const ctx = {
+                request: {
+                    query: {
+                        fieldId: field._id,
+                        resourceUri: '/resource/3',
+                    },
+                },
+                response: {},
+                annotation: annotationModel,
+                field: fieldModel,
+                publishedDataset: publishedDatasetModel,
+            };
+
+            await getFieldAnnotations(ctx);
+
+            expect(ctx.response).toStrictEqual({
+                status: 200,
+                body: [],
+            });
+        });
+
+        it('should return an empty array if the field does not exist', async () => {
+            const ctx = {
+                request: {
+                    query: {
+                        fieldName: 'unknown',
+                        resourceUri: '/resource/1',
+                    },
+                },
+                response: {},
+                annotation: annotationModel,
+                field: fieldModel,
+                publishedDataset: publishedDatasetModel,
+            };
+
+            await getFieldAnnotations(ctx);
+
+            expect(ctx.response).toStrictEqual({
+                status: 200,
+                body: [],
+            });
+        });
     });
 });

@@ -406,6 +406,41 @@ export async function getAnnotations(ctx) {
     };
 }
 
+export const getFieldAnnotations = async (ctx) => {
+    const { fieldId, resourceUri } = ctx.request.query;
+    const [titleField, subResourceTitleFields] = await Promise.all([
+        ctx.field.findResourceTitle(),
+        ctx.field.findSubResourceTitles(),
+    ]);
+
+    const annotations = await ctx.annotation.findManyByFieldAndResource(
+        fieldId,
+        resourceUri || null,
+    );
+
+    const field = await ctx.field.findOneById(fieldId);
+
+    const resource = resourceUri
+        ? await ctx.publishedDataset.findByUri(resourceUri)
+        : null;
+
+    ctx.response.status = 200;
+    ctx.response.body = annotations.map((annotation) => ({
+        ...annotation,
+        field,
+        resource: resource
+            ? {
+                  title: getResourceTitle(
+                      resource,
+                      titleField,
+                      subResourceTitleFields,
+                  ),
+                  uri: resource.uri,
+              }
+            : null,
+    }));
+};
+
 export async function exportAnnotations(ctx) {
     const annotationStream = await ctx.annotation
         .findAll()
@@ -539,6 +574,7 @@ function getResourceTitle(resource, titleField, subResourceTitleFields) {
 const app = new Koa();
 
 app.use(route.get('/', getAnnotations));
+app.use(route.get('/field-annotations', getFieldAnnotations));
 app.use(route.get('/export', exportAnnotations));
 app.use(route.get('/can-annotate', canAnnotateRoute));
 app.use(route.get('/:id', getAnnotation));
