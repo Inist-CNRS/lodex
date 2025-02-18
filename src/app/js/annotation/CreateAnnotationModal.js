@@ -3,23 +3,27 @@ import { useForm, useStore } from '@tanstack/react-form';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 
-import { annotationCreationSchema } from '../../../common/validator/annotation.validator';
+import {
+    ANNOTATION_KIND_ADDITION,
+    ANNOTATION_KIND_CORRECTION,
+    annotationCreationSchema,
+} from '../../../common/validator/annotation.validator';
 import { useTranslate } from '../i18n/I18NContext';
+import { AnnotationCommentStep } from './AnnotationCommentStep';
 import { AuthorEmailField } from './fields/AuthorEmailField';
 import { AuthorNameField } from './fields/AuthorNameField';
+import { KindField } from './fields/KindField';
 import { TargetField } from './fields/TargetField';
+import { ValueField } from './fields/ValueField';
+import { NextButton } from './NextButton';
+import { PreviousButton } from './PreviousButton';
 import {
-    KIND_STEP,
     AUTHOR_STEP,
     COMMENT_STEP,
+    KIND_STEP,
     TARGET_STEP,
     VALUE_STEP,
 } from './steps';
-import { ValueField } from './fields/ValueField';
-import { KindField } from './fields/KindField';
-import { PreviousButton } from './PreviousButton';
-import { NextButton } from './NextButton';
-import { AnnotationCommentStep } from './AnnotationCommentStep';
 
 const isRequiredFieldValid = (formState, fieldName) => {
     const fieldState = formState.fieldMeta[fieldName];
@@ -81,7 +85,11 @@ export function CreateAnnotationModal({
             return true;
         }
 
-        if (['correct', 'addition'].includes(state.values.kind)) {
+        if (
+            [ANNOTATION_KIND_CORRECTION, ANNOTATION_KIND_ADDITION].includes(
+                state.values.kind,
+            )
+        ) {
             return (
                 !!state.values.proposedValue &&
                 isRequiredFieldValid(state, 'comment')

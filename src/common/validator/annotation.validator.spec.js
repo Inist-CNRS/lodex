@@ -173,10 +173,30 @@ describe('annotation.validator', () => {
             ]);
         });
 
-        it('should accept annotation with proposedValue when kind is correct', () => {
+        it('should rewrite correct kind to correction', () => {
             const annotationPayload = {
                 resourceUri: 'uid:/2a8d429f-8134-4502-b9d3-d20c571592fa',
                 kind: 'correct',
+                comment: 'This is a comment',
+                authorName: 'John Doe',
+                authorEmail: 'john.doe@marmelab.com',
+                target: 'value',
+                initialValue: 'initialValue',
+                proposedValue: 'proposedValue',
+            };
+
+            const result = annotationCreationSchema.parse(annotationPayload);
+
+            expect(result).toStrictEqual({
+                ...annotationPayload,
+                kind: 'correction',
+            });
+        });
+
+        it('should accept annotation with proposedValue when kind is correction', () => {
+            const annotationPayload = {
+                resourceUri: 'uid:/2a8d429f-8134-4502-b9d3-d20c571592fa',
+                kind: 'correction',
                 comment: 'This is a comment',
                 authorName: 'John Doe',
                 authorEmail: 'john.doe@marmelab.com',
@@ -207,7 +227,7 @@ describe('annotation.validator', () => {
             expect(result).toStrictEqual(annotationPayload);
         });
 
-        it('should reject annotation with proposedValue when kind is not "correct"', () => {
+        it('should reject annotation with proposedValue when kind is not "correction"', () => {
             const annotationPayload = {
                 resourceUri: 'uid:/2a8d429f-8134-4502-b9d3-d20c571592fa',
                 kind: 'removal',
@@ -232,7 +252,7 @@ describe('annotation.validator', () => {
             ]);
         });
 
-        it('should accept annotation with no proposedValue when kind is not correct', () => {
+        it('should accept annotation with no proposedValue when kind is not correction', () => {
             const annotationPayload = {
                 resourceUri: 'uid:/2a8d429f-8134-4502-b9d3-d20c571592fa',
                 kind: 'removal',
@@ -249,10 +269,10 @@ describe('annotation.validator', () => {
             expect(result).toStrictEqual(annotationPayload);
         });
 
-        it('should reject annotation with no proposedValue when kind is "correct"', () => {
+        it('should reject annotation with no proposedValue when kind is "correction"', () => {
             const annotationPayload = {
                 resourceUri: 'uid:/2a8d429f-8134-4502-b9d3-d20c571592fa',
-                kind: 'correct',
+                kind: 'correction',
                 comment: 'This is a comment',
                 authorName: 'John Doe',
                 authorEmail: 'john.doe@marmelab.com',
@@ -339,10 +359,10 @@ describe('annotation.validator', () => {
             ]);
         });
 
-        it('should reject annotation with kind "correct" when target is "title"', () => {
+        it('should reject annotation with kind "correction" when target is "title"', () => {
             const annotationPayload = {
                 resourceUri: 'uid:/2a8d429f-8134-4502-b9d3-d20c571592fa',
-                kind: 'correct',
+                kind: 'correction',
                 comment: 'This is a comment',
                 authorName: 'John Doe',
                 authorEmail: 'john.doe@marmelab.com',
@@ -411,10 +431,10 @@ describe('annotation.validator', () => {
             ]);
         });
 
-        it('should accept annotation with kind "correct" when target is "value"', () => {
+        it('should accept annotation with kind "correction" when target is "value"', () => {
             const annotationPayload = {
                 resourceUri: 'uid:/2a8d429f-8134-4502-b9d3-d20c571592fa',
-                kind: 'correct',
+                kind: 'correction',
                 comment: 'This is a comment',
                 authorName: 'John Doe',
                 authorEmail: 'john.doe@marmelab.com',

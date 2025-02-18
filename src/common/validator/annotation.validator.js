@@ -1,12 +1,33 @@
 import { default as z } from 'zod';
 
-export const kinds = ['removal', 'comment', 'correct', 'addition'];
+export const ANNOTATION_KIND_REMOVAL = 'removal';
+export const ANNOTATION_KIND_COMMENT = 'comment';
+export const ANNOTATION_KIND_CORRECTION = 'correction';
+export const ANNOTATION_KIND_ADDITION = 'addition';
+export const ANNOTATION_KIND_CORRECT = 'correct';
+
+export const kinds = [
+    ANNOTATION_KIND_REMOVAL,
+    ANNOTATION_KIND_COMMENT,
+    ANNOTATION_KIND_CORRECTION,
+    ANNOTATION_KIND_ADDITION,
+    // This is supported for legacy purposes
+    ANNOTATION_KIND_CORRECT,
+];
 
 export const annotationCreationSchema = z
     .object({
         resourceUri: z.string().nullish().default(null),
         target: z.enum(['title', 'value']).nullish().default('title'),
-        kind: z.enum(kinds).nullish().default('comment'),
+        kind: z
+            .enum(kinds)
+            .nullish()
+            .default(ANNOTATION_KIND_COMMENT)
+            .transform((kind) =>
+                kind === ANNOTATION_KIND_CORRECT
+                    ? ANNOTATION_KIND_CORRECTION
+                    : kind,
+            ),
         fieldId: z
             .string()
             .trim()
@@ -66,7 +87,9 @@ export const annotationCreationSchema = z
             });
         }
         if (
-            ['correct', 'addition'].includes(data.kind) &&
+            [ANNOTATION_KIND_CORRECTION, ANNOTATION_KIND_ADDITION].includes(
+                data.kind,
+            ) &&
             !data.proposedValue
         ) {
             refineContext.addIssue({
@@ -82,14 +105,14 @@ export const annotationCreationSchema = z
                 path: ['proposedValue'],
             });
         }
-        if (data.target === 'title' && data.kind !== 'comment') {
+        if (data.target === 'title' && data.kind !== ANNOTATION_KIND_COMMENT) {
             refineContext.addIssue({
                 code: 'error_invalid',
                 message: 'annotation_error_title_invalid_kind',
                 path: ['kind'],
             });
         }
-        if (data.target === 'value' && data.kind === 'comment') {
+        if (data.target === 'value' && data.kind === ANNOTATION_KIND_COMMENT) {
             refineContext.addIssue({
                 code: 'error_invalid',
                 message: 'annotation_error_value_invalid_kind',

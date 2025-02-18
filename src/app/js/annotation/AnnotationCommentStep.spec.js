@@ -1,8 +1,8 @@
-import React from 'react';
-import { AnnotationCommentStep } from './AnnotationCommentStep';
-import { render } from '../../../test-utils';
 import { useForm } from '@tanstack/react-form';
+import React from 'react';
+import { render } from '../../../test-utils';
 import { TestI18N } from '../i18n/I18NContext';
+import { AnnotationCommentStep } from './AnnotationCommentStep';
 
 const renderAnnotationCommentStep = ({ kind, ...props }) => {
     let form;
@@ -55,8 +55,8 @@ describe('AnnotationCommentStep', () => {
         ).not.toBeInTheDocument();
     });
 
-    it('should render the comment and proposedValue input when kind is correct', () => {
-        const wrapper = renderAnnotationCommentStep({ kind: 'correct' });
+    it('should render the comment and proposedValue input when kind is correction', () => {
+        const wrapper = renderAnnotationCommentStep({ kind: 'correction' });
         wrapper.debug();
         expect(
             wrapper.queryByText('annotation_correct_value'),

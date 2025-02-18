@@ -1,4 +1,3 @@
-import React from 'react';
 import {
     Box,
     Button,
@@ -8,24 +7,25 @@ import {
     Tooltip,
     keyframes,
 } from '@mui/material';
+import React from 'react';
 
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
-import CancelButton from '../../lib/components/CancelButton';
-import { loadConfigTenant } from '.';
 import { SaveAs } from '@mui/icons-material';
 import HelpIcon from '@mui/icons-material/HelpOutline';
-import { useTranslate } from '../../i18n/I18NContext';
-import Loading from '../../lib/components/Loading';
-import { useGetConfigTenant } from './useGetConfigTenant';
-import { useGetAvailableThemes } from './useGetAvailableThemes';
 import { useForm, useStore } from '@tanstack/react-form';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { useHistory } from 'react-router-dom';
+import { z } from 'zod';
+import { loadConfigTenant } from '.';
+import { useTranslate } from '../../i18n/I18NContext';
+import AdminOnlyAlert from '../../lib/components/AdminOnlyAlert';
+import CancelButton from '../../lib/components/CancelButton';
+import Loading from '../../lib/components/Loading';
 import { TextField } from '../../lib/components/TextField';
 import { ConfigField } from './fields/ConfigField';
-import { z } from 'zod';
+import { useGetAvailableThemes } from './useGetAvailableThemes';
+import { useGetConfigTenant } from './useGetConfigTenant';
 import { useUpdateConfigTenant } from './useUpdateConfigTenant';
-import { useHistory } from 'react-router-dom';
-import AdminOnlyAlert from '../../lib/components/AdminOnlyAlert';
 
 const shake = keyframes`
 10%, 90% {
@@ -139,7 +139,7 @@ export const ConfigTenantFormView = ({
     });
 
     const contributorAuthActive = useStore(form.store, (state) => {
-        return state.values.contributorAuth.active;
+        return state.values.contributorAuth?.active;
     });
 
     const isFormModified = useStore(form.store, (state) => {
