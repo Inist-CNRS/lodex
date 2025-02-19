@@ -1,10 +1,7 @@
 import { FormControl, InputLabel, NativeSelect } from '@mui/material';
 import PropTypes from 'prop-types';
 import React from 'react';
-import {
-    ANNOTATION_KIND_CORRECT,
-    kinds,
-} from '../../../../../common/validator/annotation.validator';
+import { kinds } from '../../../../../common/validator/annotation.validator';
 import { useTranslate } from '../../../i18n/I18NContext';
 
 export const KindFilter = ({ applyValue, item }) => {
@@ -24,13 +21,11 @@ export const KindFilter = ({ applyValue, item }) => {
                 value={null}
             >
                 <option value={null}></option>
-                {kinds
-                    .filter((kind) => kind !== ANNOTATION_KIND_CORRECT)
-                    .map((kind) => (
-                        <option key={kind} value={kind}>
-                            {translate(kind)}
-                        </option>
-                    ))}
+                {kinds.map((kind) => (
+                    <option key={kind} value={kind}>
+                        {translate(kind)}
+                    </option>
+                ))}
             </NativeSelect>
         </FormControl>
     );

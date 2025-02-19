@@ -15,8 +15,6 @@ import {
 import { createDiacriticSafeContainRegex } from '../../services/createDiacriticSafeContainRegex';
 import getLogger from '../../services/logger';
 import {
-    ANNOTATION_KIND_CORRECT,
-    ANNOTATION_KIND_CORRECTION,
     annotationCreationSchema,
     annotationImportSchema,
     annotationUpdateSchema,
@@ -220,25 +218,6 @@ export const buildQuery = async ({
             }
         }
         case 'kind':
-            if (filterOperator !== 'equals') {
-                return {};
-            }
-
-            switch (filterValue) {
-                case ANNOTATION_KIND_CORRECTION:
-                    return {
-                        [filterBy]: {
-                            $in: [
-                                ANNOTATION_KIND_CORRECTION,
-                                ANNOTATION_KIND_CORRECT,
-                            ],
-                        },
-                    };
-                default:
-                    return {
-                        [filterBy]: filterValue,
-                    };
-            }
         case 'status': {
             switch (filterOperator) {
                 case 'equals':

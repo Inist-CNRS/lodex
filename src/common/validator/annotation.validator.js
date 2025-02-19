@@ -4,30 +4,19 @@ export const ANNOTATION_KIND_REMOVAL = 'removal';
 export const ANNOTATION_KIND_COMMENT = 'comment';
 export const ANNOTATION_KIND_CORRECTION = 'correction';
 export const ANNOTATION_KIND_ADDITION = 'addition';
-export const ANNOTATION_KIND_CORRECT = 'correct';
 
 export const kinds = [
     ANNOTATION_KIND_REMOVAL,
     ANNOTATION_KIND_COMMENT,
     ANNOTATION_KIND_CORRECTION,
     ANNOTATION_KIND_ADDITION,
-    // This is supported for legacy purposes
-    ANNOTATION_KIND_CORRECT,
 ];
 
 export const annotationCreationSchema = z
     .object({
         resourceUri: z.string().nullish().default(null),
         target: z.enum(['title', 'value']).nullish().default('title'),
-        kind: z
-            .enum(kinds)
-            .nullish()
-            .default(ANNOTATION_KIND_COMMENT)
-            .transform((kind) =>
-                kind === ANNOTATION_KIND_CORRECT
-                    ? ANNOTATION_KIND_CORRECTION
-                    : kind,
-            ),
+        kind: z.enum(kinds).nullish().default(ANNOTATION_KIND_COMMENT),
         fieldId: z
             .string()
             .trim()
