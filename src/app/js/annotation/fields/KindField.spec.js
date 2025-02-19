@@ -48,6 +48,7 @@ describe('KindField', () => {
             expect(goToStep).toHaveBeenCalledWith(COMMENT_STEP);
             expect(form.state.values).toStrictEqual({
                 kind: 'removal',
+                initialValue: 'initial value',
             });
         });
 
@@ -73,6 +74,7 @@ describe('KindField', () => {
             expect(goToStep).toHaveBeenCalledWith(COMMENT_STEP);
             expect(form.state.values).toStrictEqual({
                 kind: 'correction',
+                initialValue: 'initial value',
             });
         });
 

@@ -141,9 +141,9 @@ export const AnnotationList = ({ annotations, field }) => {
                                         id="annotation_proposed_value"
                                     >
                                         {translate('annotation_proposed_value')}
-                                        <Typography aria-labelledby="annotation_proposed_value">
-                                            {annotation.proposedValue}
-                                        </Typography>
+                                    </Typography>
+                                    <Typography aria-labelledby="annotation_proposed_value">
+                                        {annotation.proposedValue}
                                     </Typography>
                                 </Box>
                                 <Box>
@@ -154,9 +154,9 @@ export const AnnotationList = ({ annotations, field }) => {
                                         {translate(
                                             'annotation_comment_section',
                                         )}
-                                        <Typography aria-labelledby="annotation_comment_section">
-                                            {annotation.comment}
-                                        </Typography>
+                                    </Typography>
+                                    <Typography aria-labelledby="annotation_comment_section">
+                                        {annotation.comment}
                                     </Typography>
                                 </Box>
                                 <Box>
