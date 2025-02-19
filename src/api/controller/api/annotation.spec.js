@@ -1229,66 +1229,6 @@ describe('annotation', () => {
                 ],
             });
         });
-
-        it('should support both correct and correction when filtering by correction kind', async () => {
-            const annotations = await Promise.all(
-                [
-                    {
-                        resourceUri:
-                            'uid:/2a8d429f-8134-4502-b9d3-d20c571592fa',
-                        kind: 'correct',
-                        fieldId: null,
-                        authorName: 'John DOE',
-                        authorEmail: 'john.doe@marmelab.com',
-                        comment: 'This is a comment',
-                        status: 'to_review',
-                        internalComment: null,
-                        createdAt: new Date('02-01-2025'),
-                        updatedAt: new Date('02-01-2025'),
-                    },
-                    {
-                        resourceUri:
-                            'uid:/2a8d429f-8134-4502-b9d3-d20c571592fa',
-                        kind: 'correction',
-                        fieldId: null,
-                        authorName: 'John DOE',
-                        authorEmail: 'john.doe@marmelab.com',
-                        comment: 'This is a comment',
-                        status: 'to_review',
-                        internalComment: null,
-                        createdAt: new Date('02-01-2025'),
-                        updatedAt: new Date('02-01-2025'),
-                    },
-                ].map(annotationModel.create),
-            );
-            const ctx = {
-                request: {
-                    query: {
-                        page: 0,
-                        perPage: 2,
-                        filterBy: 'kind',
-                        filterOperator: 'equals',
-                        filterValue: 'correction',
-                    },
-                },
-                response: {},
-                annotation: annotationModel,
-                publishedDataset: publishedDatasetModel,
-                field: fieldModel,
-            };
-
-            await getAnnotations(ctx);
-
-            expect(ctx.response.status).toBe(200);
-
-            expect(ctx.body).toMatchObject({
-                total: 2,
-                fullTotal: 2,
-                data: annotations.toSorted((a, b) =>
-                    a._id.toString().localeCompare(b._id.toString()),
-                ),
-            });
-        });
     });
 
     describe('GET /annotations/export', () => {

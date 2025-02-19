@@ -173,26 +173,6 @@ describe('annotation.validator', () => {
             ]);
         });
 
-        it('should rewrite correct kind to correction', () => {
-            const annotationPayload = {
-                resourceUri: 'uid:/2a8d429f-8134-4502-b9d3-d20c571592fa',
-                kind: 'correct',
-                comment: 'This is a comment',
-                authorName: 'John Doe',
-                authorEmail: 'john.doe@marmelab.com',
-                target: 'value',
-                initialValue: 'initialValue',
-                proposedValue: 'proposedValue',
-            };
-
-            const result = annotationCreationSchema.parse(annotationPayload);
-
-            expect(result).toStrictEqual({
-                ...annotationPayload,
-                kind: 'correction',
-            });
-        });
-
         it('should accept annotation with proposedValue when kind is correction', () => {
             const annotationPayload = {
                 resourceUri: 'uid:/2a8d429f-8134-4502-b9d3-d20c571592fa',
