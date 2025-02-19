@@ -16,7 +16,7 @@ import { AnnotationValue } from '../admin/annotations/AnnotationValue';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import PropTypes from 'prop-types';
 
-const getAnnotationSummaryValue = (annotation) => {
+export const getAnnotationSummaryValue = (annotation) => {
     switch (annotation.kind) {
         case 'comment':
             return annotation.comment;
@@ -31,16 +31,16 @@ const getAnnotationSummaryValue = (annotation) => {
     }
 };
 
-const getAnnotationTitle = (annotation, translate) => {
+export const getAnnotationTitle = (annotation, translate) => {
     if (!annotation) {
         return null;
     }
 
-    if (!annotation.resourceUri) {
-        return translate('annotation_home_page');
-    }
     if (annotation.field?.scope === 'graphic') {
         return translate('annotation_graph_page');
+    }
+    if (!annotation.resourceUri) {
+        return translate('annotation_home_page');
     }
 
     if (!annotation.resource) {
