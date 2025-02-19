@@ -1,7 +1,9 @@
 import {
     FormControl,
     FormHelperText,
-    TextField as MuiTextField,
+    InputLabel,
+    MenuItem,
+    Select,
 } from '@mui/material';
 import PropTypes from 'prop-types';
 import React, { useMemo } from 'react';
@@ -10,19 +12,17 @@ import { useField } from '@tanstack/react-form';
 import { useTranslate } from '../../i18n/I18NContext';
 
 // TextField component to use tanstack react form with material ui text field
-export function TextField({
+export function SelectField({
     form,
     name,
     label,
-    disabled,
     helperText,
-    multiline,
     required,
-    type,
-    sx,
+    options,
 }) {
     const { translate } = useTranslate();
     const field = useField({ name, form });
+
     const error = useMemo(() => {
         // required is used for optionally required field based on a condition
         // since tanstack form does not support multi field validation on the field side
@@ -36,28 +36,38 @@ export function TextField({
             : null;
     }, [field.state]);
 
+    const value = field.state.value ?? '';
+
+    const labelId = `select-${name}-label`;
+    const testId = `select-${name}-input`;
+
     return (
-        <FormControl fullWidth sx={sx}>
-            <MuiTextField
+        <FormControl fullWidth>
+            <InputLabel id={labelId}>{label}</InputLabel>
+            <Select
                 label={label}
                 name={field.name}
-                value={field.state.value}
+                value={value}
                 onBlur={field.handleBlur}
-                disabled={disabled}
-                type={type}
-                onChange={(e) => {
-                    field.handleChange(e.target.value);
-                }}
-                {...(multiline
-                    ? {
-                          multiline: true,
-                          minRows: 5,
-                          maxRows: 10,
-                      }
-                    : {})}
-                multiline={multiline}
+                onChange={(e) => field.handleChange(e.target.value)}
                 error={!!error}
-            />
+                SelectDisplayProps={{
+                    role: 'combobox',
+                    'aria-labelledby': labelId,
+                    'aria-valuetext': value,
+                    'aria-valuenow': value,
+                }}
+                inputProps={{
+                    'data-testid': testId,
+                }}
+            >
+                <MenuItem value={''}>&nbsp;</MenuItem>
+                {options.map((option) => (
+                    <MenuItem key={option.value} value={option.value}>
+                        {option.label}
+                    </MenuItem>
+                ))}
+            </Select>
             {error ? (
                 <FormHelperText error role="alert">
                     {translate(error)}
@@ -69,13 +79,16 @@ export function TextField({
     );
 }
 
-TextField.propTypes = {
+SelectField.propTypes = {
     form: PropTypes.object.isRequired,
     name: PropTypes.string.isRequired,
     label: PropTypes.string.isRequired,
     helperText: PropTypes.string,
-    multiline: PropTypes.bool,
     required: PropTypes.bool,
-    disabled: PropTypes.bool,
-    sx: PropTypes.object,
+    options: PropTypes.arrayOf(
+        PropTypes.shape({
+            value: PropTypes.string.isRequired,
+            label: PropTypes.string.isRequired,
+        }),
+    ),
 };

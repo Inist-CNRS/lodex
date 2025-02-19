@@ -18,6 +18,8 @@ import {
 } from '../../../common/scope';
 
 import { URI_FIELD_NAME } from '../../../common/uris';
+import { FIELD_ANNOTATION_FORMAT_LIST } from './FieldAnnotationFormat';
+import { splitAnnotationFormatListOptions } from './annotations';
 
 export const NEW_CHARACTERISTIC_FORM_NAME = 'NEW_CHARACTERISTIC_FORM_NAME';
 
@@ -192,7 +194,18 @@ export const getFieldOntologyFormData = (state) =>
 
 export const getFieldFormData = (state) => {
     try {
-        return state.form.field.values;
+        const values = state.form.field.values;
+        return {
+            ...values,
+            annotationFormat: values.annotable ? values.annotationFormat : null,
+            annotationFormatListOptions:
+                values.annotable &&
+                values.annotationFormat === FIELD_ANNOTATION_FORMAT_LIST
+                    ? splitAnnotationFormatListOptions(
+                          values.annotationFormatListOptions,
+                      )
+                    : null,
+        };
     } catch (error) {
         return undefined;
     }

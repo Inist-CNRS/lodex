@@ -11,6 +11,9 @@ function TestModal(props) {
         <TestI18N>
             <CreateAnnotationModal
                 initialValue={null}
+                field={{
+                    annotationFormat: 'text',
+                }}
                 {...props}
                 anchorEl={document.createElement('div')}
             />

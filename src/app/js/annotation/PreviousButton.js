@@ -1,7 +1,9 @@
-import { Button } from '@mui/material';
-import React, { useCallback } from 'react';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import { Button } from '@mui/material';
+import { useStore } from '@tanstack/react-form';
+import PropTypes from 'prop-types';
+import React, { useCallback } from 'react';
+import { useTranslate } from '../i18n/I18NContext';
 import {
     AUTHOR_STEP,
     COMMENT_STEP,
@@ -9,9 +11,6 @@ import {
     TARGET_STEP,
     VALUE_STEP,
 } from './steps';
-import { useTranslate } from '../i18n/I18NContext';
-import PropTypes from 'prop-types';
-import { useStore } from '@tanstack/react-form';
 
 export const PreviousButton = ({
     currentStep,
@@ -79,7 +78,7 @@ export const PreviousButton = ({
                 type="button"
                 onClick={onCancel}
                 disabled={isSubmitting}
-                startIcon={<ChevronRightIcon />}
+                startIcon={<ChevronLeftIcon />}
             >
                 {translate('cancel')}
             </Button>

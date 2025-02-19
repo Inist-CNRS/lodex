@@ -1,21 +1,26 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import { useTranslate } from '../../i18n/I18NContext';
-import { TextField } from '../../lib/components/TextField';
+import { ProposedValueFieldList } from './ProposedValueFieldList';
+import { ProposedValueFieldText } from './ProposedValueFieldText';
 
-export function ProposedValueField({ form }) {
-    const { translate } = useTranslate();
-    return (
-        <TextField
-            form={form}
-            name="proposedValue"
-            label={`${translate('annotation.proposedValue')} *`}
-            required
-        />
-    );
+export function ProposedValueField({ form, field }) {
+    if (
+        field.annotationFormat === 'list' &&
+        field.annotationFormatListOptions?.length
+    ) {
+        return (
+            <ProposedValueFieldList
+                form={form}
+                options={field.annotationFormatListOptions}
+            />
+        );
+    }
+
+    return <ProposedValueFieldText form={form} />;
 }
 
 ProposedValueField.propTypes = {
+    field: PropTypes.object.isRequired,
     form: PropTypes.object.isRequired,
 };

@@ -19,6 +19,13 @@ function chooseKindRemoval() {
     }).click();
 }
 
+function chooseKindAdd() {
+    cy.findByRole('menuitem', {
+        name: 'Add some content',
+        timeout: 1500,
+    }).click();
+}
+
 function targetSection() {
     cy.findByRole('menuitem', {
         name: 'Comment the section',
@@ -128,6 +135,29 @@ export function createMultiValueAnnotation({
     targetValue();
 
     chooseValueToComment(value);
+
+    fillComment(comment);
+    goToNextStep();
+    fillAuthor({ authorName, authorEmail });
+
+    submitAnnotation();
+}
+
+export function createAddValueWithProposedValueChoiceAnnotation({
+    fieldLabel,
+    proposedValue,
+    comment,
+    authorName,
+    authorEmail,
+}) {
+    openAnnotationModalForField(fieldLabel);
+
+    targetValue();
+
+    chooseKindAdd();
+
+    cy.findByLabelText('Proposed Value *').click();
+    cy.findByRole('option', { name: proposedValue }).click();
 
     fillComment(comment);
     goToNextStep();

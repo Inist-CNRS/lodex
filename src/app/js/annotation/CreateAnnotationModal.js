@@ -49,6 +49,7 @@ export function CreateAnnotationModal({
     anchorEl,
     onClose,
     initialValue,
+    field,
 }) {
     const { translate } = useTranslate();
 
@@ -217,7 +218,7 @@ export function CreateAnnotationModal({
                             aria-label={translate('annotation_step_comment')}
                             role="tab"
                         >
-                            <AnnotationCommentStep form={form} />
+                            <AnnotationCommentStep form={form} field={field} />
                         </Stack>
                     )}
 
@@ -266,4 +267,5 @@ CreateAnnotationModal.propTypes = {
     onSubmit: PropTypes.func.isRequired,
     anchorEl: PropTypes.object.isRequired,
     initialValue: PropTypes.any,
+    field: PropTypes.object,
 };

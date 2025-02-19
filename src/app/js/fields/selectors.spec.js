@@ -1,12 +1,13 @@
 import selectors, {
-    isACompositeFields,
-    getLineColGetterFromAllFields,
     areAllFieldsValid,
+    getFieldFormData,
+    getLineColGetterFromAllFields,
+    isACompositeFields,
 } from './selectors';
 
 import {
-    SCOPE_DATASET,
     SCOPE_COLLECTION,
+    SCOPE_DATASET,
     SCOPE_DOCUMENT,
 } from '../../../common/scope';
 
@@ -122,6 +123,68 @@ describe('field selectors', () => {
                     },
                 }),
             ).toEqual([{ name: 'second', foo: 'bar2', scope: 'dataset' }]);
+        });
+    });
+
+    describe('getFieldFormData', () => {
+        it('should split annotationFormatListOptions', () => {
+            expect(
+                getFieldFormData({
+                    form: {
+                        field: {
+                            values: {
+                                annotable: true,
+                                annotationFormat: 'list',
+                                annotationFormatListOptions: 'a\nb\nc',
+                            },
+                        },
+                    },
+                }),
+            ).toStrictEqual({
+                annotable: true,
+                annotationFormat: 'list',
+                annotationFormatListOptions: ['a', 'b', 'c'],
+            });
+        });
+
+        it('should set annotationFormatListOptions to null if field is not annotable', () => {
+            expect(
+                getFieldFormData({
+                    form: {
+                        field: {
+                            values: {
+                                annotable: false,
+                                annotationFormat: 'list',
+                                annotationFormatListOptions: 'a\nb\nc',
+                            },
+                        },
+                    },
+                }),
+            ).toStrictEqual({
+                annotable: false,
+                annotationFormat: null,
+                annotationFormatListOptions: null,
+            });
+        });
+
+        it('should set annotationFormatListOptions to null if annotationFormat is text', () => {
+            expect(
+                getFieldFormData({
+                    form: {
+                        field: {
+                            values: {
+                                annotable: true,
+                                annotationFormat: 'text',
+                                annotationFormatListOptions: 'a\nb\nc',
+                            },
+                        },
+                    },
+                }),
+            ).toStrictEqual({
+                annotable: true,
+                annotationFormat: 'text',
+                annotationFormatListOptions: null,
+            });
         });
     });
 
