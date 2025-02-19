@@ -1317,3 +1317,4 @@
 "public_annotation"	"The annotation will be visible to other contributors"	"L’annotation sera visible par les autres contributeurs"
 "private_personal_information"	"Personal information will not be visible to other contributors"	"Les informations personnelles ne seront pas visibles par les autres contributeurs"
 "annotation_personal_information"	"Personal informations"	"Informations personnelles"
+"annotation_summary_value"	"Annotation summary"	"Résumé de l'annotation"

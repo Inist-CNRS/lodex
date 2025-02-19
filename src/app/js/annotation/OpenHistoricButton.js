@@ -1,4 +1,4 @@
-import { Button, Drawer, Typography } from '@mui/material';
+import { Box, Button, Drawer, IconButton, Typography } from '@mui/material';
 import React, { useState } from 'react';
 import { useTranslate } from '../i18n/I18NContext';
 import { useGetFieldAnnotation } from './useGetFieldAnnotation';
@@ -6,6 +6,7 @@ import AdminOnlyAlert from '../lib/components/AdminOnlyAlert';
 import { AnnotationList } from './AnnotationList';
 import PropTypes from 'prop-types';
 import { useTheme } from '@emotion/react';
+import CloseIcon from '@mui/icons-material/Close';
 
 export const OpenHistoricButton = ({ field, resourceUri }) => {
     const { translate } = useTranslate();
@@ -63,9 +64,19 @@ export const OpenHistoricButton = ({ field, resourceUri }) => {
                     sx: {
                         width: '40%',
                         minWidth: '600px',
+                        backgroundColor: theme.palette.grey[100],
                     },
                 }}
             >
+                <Box display="flex" justifyContent="flex-start">
+                    <IconButton
+                        aria-label={translate('close')}
+                        size="small"
+                        onClick={() => setIsHistoryOpen(false)}
+                    >
+                        <CloseIcon fontSize="1rem" />
+                    </IconButton>
+                </Box>
                 <AnnotationList annotations={data} field={field} />
             </Drawer>
         </>

@@ -104,6 +104,61 @@ export function createTitleAnnotation({
     submitAnnotation();
 }
 
+export function checkFieldAnnotations({
+    fieldLabel,
+    expectedAnnotations,
+    resourceTitle,
+}) {
+    openAnnotationModalForField(fieldLabel);
+
+    if (expectedAnnotations.length === 0) {
+        cy.findByText('No annotations on this field yet').should('be.visible');
+        return;
+    }
+
+    cy.findByText(
+        expectedAnnotations.length === 1
+            ? `See 1 annotation`
+            : `See ${expectedAnnotations.length} annotations`,
+    ).should('be.visible');
+    cy.findByText(
+        expectedAnnotations.length === 1
+            ? `See 1 annotation`
+            : `See ${expectedAnnotations.length} annotations`,
+    ).click();
+
+    cy.findByLabelText('Resource title').should('have.text', resourceTitle);
+    cy.findAllByLabelText('Type').should(
+        'have.length',
+        expectedAnnotations.length,
+    );
+    cy.findAllByLabelText('Annotation summary').should(
+        'have.length',
+        expectedAnnotations.length,
+    );
+    cy.findAllByLabelText('Status').should(
+        'have.length',
+        expectedAnnotations.length,
+    );
+
+    expectedAnnotations.forEach((annotation, index) => {
+        cy.findAllByLabelText('Type')
+            .eq(index)
+            .should('have.text', annotation.kind);
+
+        cy.findAllByLabelText('Annotation summary')
+            .eq(index)
+            .should('have.text', annotation.summaryValue);
+
+        cy.findAllByLabelText('Status')
+            .eq(index)
+            .should('have.text', annotation.status);
+    });
+
+    cy.findByLabelText('close').click();
+    cy.findByText('Cancel').click();
+}
+
 export function createSingleValueAnnotation({
     fieldLabel,
     comment,

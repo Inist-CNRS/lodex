@@ -46,6 +46,17 @@ describe('Annotation', () => {
                 authorEmail: 'john.doe@example.org',
             });
 
+            annotation.checkFieldAnnotations({
+                fieldLabel: 'Dataset Description',
+                expectedAnnotations: [
+                    {
+                        kind: 'comment',
+                        summaryValue: 'This is a comment',
+                        status: 'Ongoing',
+                    },
+                ],
+                resourceTitle: 'Home page',
+            });
             cy.findByText('More').click();
             menu.goToAdminDashboard();
             cy.findByText('Annotations').click();
@@ -90,6 +101,17 @@ describe('Annotation', () => {
                     authorName: 'John Doe',
                     authorEmail: 'john.doe@example.org',
                 });
+                annotation.checkFieldAnnotations({
+                    fieldLabel: 'actors',
+                    expectedAnnotations: [
+                        {
+                            kind: 'comment',
+                            summaryValue: 'This is a comment',
+                            status: 'Ongoing',
+                        },
+                    ],
+                    resourceTitle: 'Terminator 2',
+                });
 
                 cy.findByText('Search').click();
                 searchDrawer.search('RoboCop');
@@ -100,6 +122,17 @@ describe('Annotation', () => {
                     comment: 'This is another comment',
                     authorName: 'Jane Smith',
                     authorEmail: 'jane.smith@example.org',
+                });
+                annotation.checkFieldAnnotations({
+                    fieldLabel: 'rating',
+                    expectedAnnotations: [
+                        {
+                            kind: 'removal',
+                            summaryValue: '7,5',
+                            status: 'Ongoing',
+                        },
+                    ],
+                    resourceTitle: 'RoboCop',
                 });
                 cy.findByText('More').click();
                 menu.goToAdminDashboard();
@@ -435,6 +468,18 @@ describe('Annotation', () => {
                 comment: 'This is a comment',
                 authorName: 'John Doe',
                 authorEmail: 'john.doe@example.org',
+            });
+
+            annotation.checkFieldAnnotations({
+                fieldLabel: 'Répartition par réalisateurs uniques',
+                expectedAnnotations: [
+                    {
+                        kind: 'comment',
+                        summaryValue: 'This is a comment',
+                        status: 'Ongoing',
+                    },
+                ],
+                resourceTitle: 'Chart page',
             });
 
             cy.findByText('More').click();
