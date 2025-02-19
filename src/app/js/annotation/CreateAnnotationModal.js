@@ -24,11 +24,6 @@ import {
     TARGET_STEP,
     VALUE_STEP,
 } from './steps';
-import { ValueField } from './fields/ValueField';
-import { KindField } from './fields/KindField';
-import { PreviousButton } from './PreviousButton';
-import { NextButton } from './NextButton';
-import { AnnotationCommentStep } from './AnnotationCommentStep';
 import { OpenHistoricButton } from './OpenHistoricButton';
 import HelpIcon from '@mui/icons-material/HelpOutline';
 

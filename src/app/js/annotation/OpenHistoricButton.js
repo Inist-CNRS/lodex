@@ -5,9 +5,11 @@ import { useGetFieldAnnotation } from './useGetFieldAnnotation';
 import AdminOnlyAlert from '../lib/components/AdminOnlyAlert';
 import { AnnotationList } from './AnnotationList';
 import PropTypes from 'prop-types';
+import { useTheme } from '@emotion/react';
 
 export const OpenHistoricButton = ({ field, resourceUri }) => {
     const { translate } = useTranslate();
+    const theme = useTheme();
     const { data, isLoading, error } = useGetFieldAnnotation(
         field._id,
         resourceUri,
@@ -29,6 +31,14 @@ export const OpenHistoricButton = ({ field, resourceUri }) => {
                 (data.length ? (
                     <Button
                         variant="link"
+                        sx={{
+                            padding: 0,
+                            margin: 0,
+                            textTransform: 'none',
+                            textDecoration: 'underline',
+                            justifyContent: 'left',
+                            color: theme.palette.primary.main,
+                        }}
                         onClick={() => {
                             setIsHistoryOpen(true);
                         }}

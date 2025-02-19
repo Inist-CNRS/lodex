@@ -1,16 +1,11 @@
 import React from 'react';
 
-import { Tooltip, Typography } from '@mui/material';
+import { Stack, Tooltip, Typography } from '@mui/material';
 import { useStore } from '@tanstack/react-form';
 import PropTypes from 'prop-types';
-import {
-    ANNOTATION_KIND_ADDITION,
-    ANNOTATION_KIND_CORRECTION,
-} from '../../../common/validator/annotation.validator';
+import { ANNOTATION_KIND_CORRECTION } from '../../../common/validator/annotation.validator';
 import { CommentField } from './fields/CommentField';
-import { Stack, Tooltip, Typography } from '@mui/material';
 import { useTranslate } from '../i18n/I18NContext';
-import { CommentField } from './fields/CommentField';
 import { ProposedValueField } from './fields/ProposedValueField';
 import HelpIcon from '@mui/icons-material/HelpOutline';
 

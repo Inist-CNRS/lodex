@@ -3,7 +3,6 @@ import { fireEvent, render, waitFor } from '../../../test-utils';
 import { OpenHistoricButton } from './OpenHistoricButton';
 import { useGetFieldAnnotation } from './useGetFieldAnnotation';
 import { TestI18N } from '../i18n/I18NContext';
-import uri from '../formats/url/uri';
 
 jest.mock('./useGetFieldAnnotation', () => ({
     useGetFieldAnnotation: jest.fn().mockReturnValue({
