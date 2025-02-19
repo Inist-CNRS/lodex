@@ -7,14 +7,16 @@ import React from 'react';
 
 import FieldRepresentation from '../../../fields/FieldRepresentation';
 import { useTranslate } from '../../../i18n/I18NContext';
+import { hasFieldMultipleValues } from '../helpers/field';
+import { AnnotationProposedValue } from './AnnotationProposedValue';
 import { ANNOTATION_GRID_COLUMNS, AnnotationValue } from './AnnotationValue';
 
 const ANNOTATION_GRID_SPACING = 1;
 
-function Section({ label, children }) {
+function Section({ label, children, translateOptions = {} }) {
     const { translate } = useTranslate();
 
-    const translatedLabel = translate(label);
+    const translatedLabel = translate(label, translateOptions);
 
     return (
         <Stack gap={1} aria-label={translatedLabel} role="region">
@@ -29,6 +31,7 @@ function Section({ label, children }) {
 Section.propTypes = {
     label: PropTypes.string.isRequired,
     children: PropTypes.node.isRequired,
+    translateOptions: PropTypes.object,
 };
 
 export function AnnotationItems({ annotation }) {
@@ -60,17 +63,18 @@ export function AnnotationItems({ annotation }) {
             )}
 
             {annotation.proposedValue && (
-                <Section label="annotation_proposed_value">
-                    <Typography
-                        aria-labelledby="annotation_proposed_value"
-                        component="pre"
-                        whiteSpace="pre-wrap"
-                        sx={{
-                            textAlign: 'justify',
-                        }}
-                    >
-                        {annotation.proposedValue}
-                    </Typography>
+                <Section
+                    label="annotation_proposed_value"
+                    translateOptions={{
+                        smart_count: hasFieldMultipleValues(annotation.field)
+                            ? annotation.proposedValue.length
+                            : 1,
+                    }}
+                >
+                    <AnnotationProposedValue
+                        proposedValue={annotation.proposedValue}
+                        field={annotation.field}
+                    />
                 </Section>
             )}
 

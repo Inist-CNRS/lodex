@@ -325,6 +325,8 @@ export default compose(
                 annotable: currentEditedField?.annotable ?? true,
                 annotationFormat:
                     currentEditedField?.annotationFormat ?? 'text',
+                annotationFormatListKind:
+                    currentEditedField?.annotationFormatListKind ?? 'single',
             },
         };
     }),
