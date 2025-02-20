@@ -57,6 +57,7 @@ TestButton.propTypes = {
 
 describe('CreateAnnotationButton', () => {
     beforeEach(() => {
+        localStorage.clear();
         window.localStorage.setItem(
             'redux-localstorage',
             JSON.stringify({ user: { token: 'token' } }),
@@ -79,13 +80,31 @@ describe('CreateAnnotationButton', () => {
         ).not.toBeInTheDocument();
     });
 
+    it('should render the number of annotations sent by the user when it is greater than 0', async () => {
+        window.localStorage.setItem(
+            'annotation_1ddbe5dc-f945-4d38-9c5b-ef20f78cb0cc_uid:/0579J7JN',
+            '["1","2","3"]',
+        );
+        render(<TestButton annotable={true} />);
+        expect(
+            screen.getByText('annotation_sent_count+{"smart_count":3}'),
+        ).toBeInTheDocument();
+    });
+
+    it('should not render the number of annotations sent by the user when there is none', async () => {
+        render(<TestButton annotable={true} />);
+        expect(
+            screen.queryByText('annotation_sent_count+{"smart_count":0}'),
+        ).not.toBeInTheDocument();
+    });
+
     it('should open the modal when clicking on the button', async () => {
         render(<TestButton annotable={true} />);
 
         await waitFor(() => {
             fireEvent.click(
                 screen.getByRole('button', {
-                    name: 'annotation_create_button_label',
+                    name: 'annotation_create_button_label+{"field":"Titre du corpus"}',
                 }),
             );
         });
@@ -99,7 +118,7 @@ describe('CreateAnnotationButton', () => {
         await waitFor(() => {
             fireEvent.click(
                 screen.getByRole('button', {
-                    name: `annotation_create_button_label`,
+                    name: `annotation_create_button_label+{"field":"Titre du corpus"}`,
                 }),
             );
         });
@@ -176,7 +195,7 @@ describe('CreateAnnotationButton', () => {
         await waitFor(() => {
             fireEvent.click(
                 screen.getByRole('button', {
-                    name: `annotation_create_button_label`,
+                    name: `annotation_create_button_label+{"field":"Titre du corpus"}`,
                 }),
             );
         });

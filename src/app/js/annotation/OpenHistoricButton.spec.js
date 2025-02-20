@@ -32,7 +32,7 @@ describe('OpenHistoricButton', () => {
         const wrapper = render(
             <TestI18N>
                 <OpenHistoricButton
-                    field={{ _id: 'fieldId' }}
+                    field={{ _id: 'fieldId', label: 'fieldLabel' }}
                     resourceUri="resourceUri"
                 />
             </TestI18N>,
@@ -42,15 +42,23 @@ describe('OpenHistoricButton', () => {
             'resourceUri',
         );
 
-        expect(wrapper.queryByText('annotation_history')).toBeInTheDocument();
         expect(
-            wrapper.queryByText('annotation_open_history'),
+            wrapper.queryByText(
+                'annotation_history+{"fieldLabel":"fieldLabel"}',
+            ),
         ).toBeInTheDocument();
         expect(
-            wrapper.queryByText('annotation_open_history'),
+            wrapper.queryByText('annotation_open_history+{"smart_count":1}'),
+        ).toBeInTheDocument();
+        expect(
+            wrapper.queryByText('annotation_open_history+{"smart_count":1}'),
         ).not.toBeDisabled();
         await waitFor(() => {
-            fireEvent.click(wrapper.queryByText('annotation_open_history'));
+            fireEvent.click(
+                wrapper.queryByText(
+                    'annotation_open_history+{"smart_count":1}',
+                ),
+            );
         });
         expect(wrapper.getByLabelText('annotation_resource')).toHaveTextContent(
             'resourceTitle',
@@ -78,7 +86,7 @@ describe('OpenHistoricButton', () => {
         const wrapper = render(
             <TestI18N>
                 <OpenHistoricButton
-                    field={{ _id: 'fieldId' }}
+                    field={{ _id: 'fieldId', label: 'fieldLabel' }}
                     resourceUri="resourceUri"
                 />
             </TestI18N>,
@@ -88,7 +96,11 @@ describe('OpenHistoricButton', () => {
             'resourceUri',
         );
 
-        expect(wrapper.queryByText('annotation_history')).toBeInTheDocument();
+        expect(
+            wrapper.queryByText(
+                'annotation_history+{"fieldLabel":"fieldLabel"}',
+            ),
+        ).toBeInTheDocument();
         expect(
             wrapper.queryByText('annotation_no_history'),
         ).toBeInTheDocument();
@@ -103,7 +115,7 @@ describe('OpenHistoricButton', () => {
         const wrapper = render(
             <TestI18N>
                 <OpenHistoricButton
-                    field={{ _id: 'fieldId' }}
+                    field={{ _id: 'fieldId', label: 'fieldLabel' }}
                     resourceUri="resourceUri"
                 />
             </TestI18N>,
@@ -113,7 +125,11 @@ describe('OpenHistoricButton', () => {
             'resourceUri',
         );
 
-        expect(wrapper.queryByText('annotation_history')).toBeInTheDocument();
+        expect(
+            wrapper.queryByText(
+                'annotation_history+{"fieldLabel":"fieldLabel"}',
+            ),
+        ).toBeInTheDocument();
         expect(wrapper.queryByText('loading')).toBeInTheDocument();
     });
 });

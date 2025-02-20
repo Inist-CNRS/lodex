@@ -42,7 +42,8 @@ export const TestI18N = ({ children }) => {
     return (
         <I18NContext.Provider
             value={{
-                translate: (v) => v,
+                translate: (v, options) =>
+                    options ? `${v}+${JSON.stringify(options)}` : v,
                 locale: 'en',
                 setLanguage: () => {},
             }}

@@ -145,7 +145,9 @@ describe('AnnotationList', () => {
                 <TestAnnotationList annotations={annotations} field={field} />,
             );
             expect(
-                wrapper.queryByText('annotation_history'),
+                wrapper.queryByText(
+                    'annotation_history+{"fieldLabel":"fieldLabel"}',
+                ),
             ).toBeInTheDocument();
             expect(
                 wrapper.queryByLabelText('annotation_resource'),

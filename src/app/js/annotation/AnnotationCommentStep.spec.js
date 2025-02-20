@@ -50,7 +50,9 @@ describe('AnnotationCommentStep', () => {
     it('should render only the comment input when kind is removal', () => {
         const wrapper = renderAnnotationCommentStep({ kind: 'removal' });
         expect(
-            wrapper.queryByText('annotation_remove_value'),
+            wrapper.queryByText(
+                'annotation_remove_value+{"value":"initialValue"}',
+            ),
         ).toBeInTheDocument();
         expect(
             wrapper.queryByLabelText('annotation.comment *'),
@@ -66,7 +68,9 @@ describe('AnnotationCommentStep', () => {
         const wrapper = renderAnnotationCommentStep({ kind: 'correction' });
         wrapper.debug();
         expect(
-            wrapper.queryByText('annotation_correct_value'),
+            wrapper.queryByText(
+                'annotation_correct_value+{"value":"initialValue"}',
+            ),
         ).toBeInTheDocument();
         expect(
             wrapper.queryByLabelText('annotation.comment *'),
