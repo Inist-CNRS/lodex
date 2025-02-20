@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { getUserSessionStorageInfo } from '../admin/api/tools';
 import { getRequest } from '../user';
 import fetch from '../lib/fetch';
+import { getFieldAnnotationIds } from './annotationStorage';
 
 export const useGetFieldAnnotation = (fieldId, resourceUri) => {
     return useQuery({
@@ -26,7 +27,15 @@ export const useGetFieldAnnotation = (fieldId, resourceUri) => {
                 throw error;
             }
 
-            return response;
+            const storedAnnotationIds = getFieldAnnotationIds({
+                fieldId,
+                resourceUri,
+            });
+
+            return response.map((annotation) => ({
+                ...annotation,
+                isMine: storedAnnotationIds.includes(annotation._id),
+            }));
         },
     });
 };
