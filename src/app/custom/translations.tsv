@@ -1261,6 +1261,7 @@
 "annotation_kind"	"Type"	"Type"
 "annotation_internal_comment"	"Internal Comment"	"Commentaire interne"
 "annotation_administrator"	"Administrator"	"Gestionnaire"
+"annotation_header_addition"	"Addition:"	"Ajout :"
 "annotation_header_removal"	"Removal:"	"Suppression :"
 "annotation_header_comment"	"Comment:"	"Commentaire :"
 "annotation_header_correction"	"Correction:"	"Correction :"
