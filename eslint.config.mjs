@@ -105,6 +105,13 @@ export default [
                 },
             ],
         },
-        extends: ['plugin:react-hooks/recommended'],
+    },
+    {
+        plugins: {
+            'react-hooks': reactHooks,
+        },
+        rules: {
+            ...reactHooks.configs.recommended.rules,
+        },
     },
 ];
