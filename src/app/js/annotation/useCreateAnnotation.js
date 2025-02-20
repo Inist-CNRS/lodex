@@ -5,6 +5,7 @@ import { getUserSessionStorageInfo } from '../admin/api/tools';
 import { useTranslate } from '../i18n/I18NContext';
 import fetch from '../lib/fetch';
 import { getRequest } from '../user';
+import { saveAnnotationId } from './annotationStorage';
 
 export function useCreateAnnotation() {
     const { translate } = useTranslate();
@@ -33,7 +34,8 @@ export function useCreateAnnotation() {
 
             return response.data;
         },
-        onSuccess: () => {
+        onSuccess: (data) => {
+            saveAnnotationId(data);
             toast(translate('annotation_create_success'), {
                 type: toast.TYPE.SUCCESS,
             });

@@ -46,6 +46,7 @@ describe('CreateAnnotationModal', () => {
     beforeEach(() => {
         onClose.mockClear();
         onSubmit.mockClear();
+        localStorage.clear();
     });
 
     describe('actions', () => {
