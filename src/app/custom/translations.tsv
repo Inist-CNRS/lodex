@@ -1324,3 +1324,6 @@
 "field_annotation_format_list_kind_single"	"Single choice"	"Choix unique"
 "field_annotation_format_list_kind_multiple"	"Multiple choice"	"Choix multiple"
 "own_annotation"	"You are this annotation contributor"	"Vous êtes le contributeur de cette annotation"
+"all_annotation"	"All"	"Tous"
+"annotation_sent_by_me"	"Sent by me"	"Envoyées par moi"
+"annotation_deleted_by_admin"	"Some annotations have been deleted by the administrator"	"Des annotations ont été supprimées par l'administrateur"

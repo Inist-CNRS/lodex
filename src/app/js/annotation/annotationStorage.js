@@ -8,6 +8,13 @@ export const getFieldAnnotationIds = ({ fieldId, resourceUri }) => {
     return JSON.parse(annotationIds);
 };
 
+export const setFieldAnnotationIds = ({ fieldId, resourceUri, ids }) => {
+    localStorage.setItem(
+        `annotation_${fieldId}_${resourceUri ?? 'none'}`,
+        JSON.stringify(ids || []),
+    );
+};
+
 export const saveAnnotationId = ({ fieldId, resourceUri, _id }) => {
     const currentAnnotationIds = getFieldAnnotationIds({
         fieldId,

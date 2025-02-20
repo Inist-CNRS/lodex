@@ -2,9 +2,15 @@ import { useQuery } from '@tanstack/react-query';
 import { getUserSessionStorageInfo } from '../admin/api/tools';
 import { getRequest } from '../user';
 import fetch from '../lib/fetch';
-import { getFieldAnnotationIds } from './annotationStorage';
+import {
+    getFieldAnnotationIds,
+    setFieldAnnotationIds,
+} from './annotationStorage';
+import { toast } from '../../../common/tools/toast';
+import { useTranslate } from '../i18n/I18NContext';
 
 export const useGetFieldAnnotation = (fieldId, resourceUri) => {
+    const { translate } = useTranslate();
     return useQuery({
         queryKey: ['field-annotations', fieldId, resourceUri],
         queryFn: async () => {
@@ -31,6 +37,22 @@ export const useGetFieldAnnotation = (fieldId, resourceUri) => {
                 fieldId,
                 resourceUri,
             });
+
+            const existingAnnotationIds = storedAnnotationIds.filter((id) =>
+                response.some((annotation) => annotation._id === id),
+            );
+
+            if (existingAnnotationIds.length !== storedAnnotationIds.length) {
+                setFieldAnnotationIds({
+                    fieldId,
+                    resourceUri,
+                    ids: existingAnnotationIds,
+                });
+
+                toast(translate('annotation_deleted_by_admin'), {
+                    type: toast.TYPE.INFO,
+                });
+            }
 
             return response.map((annotation) => ({
                 ...annotation,

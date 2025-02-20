@@ -3,13 +3,15 @@ import {
     AccordionDetails,
     AccordionSummary,
     Box,
+    Button,
+    ButtonGroup,
     Grid,
     Stack,
     Tooltip,
     Typography,
     useTheme,
 } from '@mui/material';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { AnnotationStatus } from '../admin/annotations/AnnotationStatus';
 import { useTranslate } from '../i18n/I18NContext';
 import { AnnotationValue } from '../admin/annotations/AnnotationValue';
@@ -61,6 +63,11 @@ export const getAnnotationTitle = (annotation, translate) => {
 export const AnnotationList = ({ annotations, field }) => {
     const { translate } = useTranslate();
     const theme = useTheme();
+    const [mode, setMode] = React.useState('all');
+
+    const myAnnotations = useMemo(() => {
+        return annotations.filter((annotation) => annotation.isMine);
+    }, [annotations]);
 
     return (
         <Stack
@@ -80,148 +87,176 @@ export const AnnotationList = ({ annotations, field }) => {
                     {getAnnotationTitle(annotations[0], translate)}
                 </Typography>
             </Stack>
+            <ButtonGroup>
+                <Button
+                    onClick={() => setMode('all')}
+                    variant={mode === 'all' ? 'contained' : 'outlined'}
+                >
+                    {translate('all_annotation')}
+                </Button>
+                <Button
+                    onClick={() => {
+                        setMode('mine');
+                    }}
+                    endIcon={<AttributionIcon />}
+                    variant={mode === 'mine' ? 'contained' : 'outlined'}
+                    disabled={myAnnotations.length === 0}
+                >
+                    {translate('annotation_sent_by_me')}
+                </Button>
+            </ButtonGroup>
             <Box>
-                {annotations.map((annotation) => (
-                    <Accordion defaultExpanded={annotations.length === 1}>
-                        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                            <Grid container columns={12} gap={2}>
-                                <Grid item xs={2}>
-                                    <Typography
-                                        aria-label={translate(
-                                            'annotation_kind',
-                                        )}
-                                    >
-                                        {annotation.kind}
-                                    </Typography>
-                                </Grid>
-                                <Grid item xs={6}>
-                                    <Tooltip
-                                        title={getAnnotationSummaryValue(
-                                            annotation,
-                                        )}
-                                    >
+                {(mode === 'all' ? annotations : myAnnotations).map(
+                    (annotation) => (
+                        <Accordion defaultExpanded={annotations.length === 1}>
+                            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                                <Grid container columns={12} gap={2}>
+                                    <Grid item xs={2}>
                                         <Typography
-                                            sx={{
-                                                textOverflow: 'ellipsis',
-                                                overflow: 'hidden',
-                                                whiteSpace: 'nowrap',
-                                            }}
                                             aria-label={translate(
-                                                'annotation_summary_value',
+                                                'annotation_kind',
                                             )}
                                         >
-                                            {getAnnotationSummaryValue(
+                                            {annotation.kind}
+                                        </Typography>
+                                    </Grid>
+                                    <Grid item xs={6}>
+                                        <Tooltip
+                                            title={getAnnotationSummaryValue(
                                                 annotation,
                                             )}
-                                        </Typography>
-                                    </Tooltip>
-                                </Grid>
-                                <Grid item xs={2}>
-                                    <AnnotationStatus
-                                        arialLabel={translate(
-                                            'annotation_status',
-                                        )}
-                                        status={
-                                            annotation.status === 'to_review'
-                                                ? 'ongoing'
-                                                : annotation.status
-                                        }
-                                    />
-                                </Grid>
-                                <Grid item xs={1}>
-                                    {annotation.isMine && (
-                                        <Tooltip
-                                            aria-label={translate(
-                                                'own_annotation',
-                                            )}
-                                            title={translate('own_annotation')}
                                         >
-                                            <AttributionIcon />
+                                            <Typography
+                                                sx={{
+                                                    textOverflow: 'ellipsis',
+                                                    overflow: 'hidden',
+                                                    whiteSpace: 'nowrap',
+                                                }}
+                                                aria-label={translate(
+                                                    'annotation_summary_value',
+                                                )}
+                                            >
+                                                {getAnnotationSummaryValue(
+                                                    annotation,
+                                                )}
+                                            </Typography>
                                         </Tooltip>
-                                    )}
-                                </Grid>
-                            </Grid>
-                        </AccordionSummary>
-                        <AccordionDetails>
-                            <Stack gap={2}>
-                                {annotation.isMine && (
-                                    <Stack
-                                        direction="row"
-                                        gap={1}
-                                        sx={{
-                                            border: '1px solid',
-                                            borderColor:
-                                                theme.palette.primary.main,
-                                            padding: '5px',
-                                            color: theme.palette.primary.main,
-                                        }}
-                                    >
-                                        <InfoOutlinedIcon />
-                                        <Typography>
-                                            {translate('own_annotation')}
-                                        </Typography>
-                                    </Stack>
-                                )}
-                                <Box>
-                                    <Typography
-                                        variant="h6"
-                                        id="annotation_initial_value"
-                                    >
-                                        {translate('annotation_initial_value')}
-                                    </Typography>
-                                    <Typography aria-labelledby="annotation_initial_value">
-                                        {annotation.initialValue}
-                                    </Typography>
-                                </Box>
-                                <Box>
-                                    <Typography
-                                        variant="h6"
-                                        id="annotation_proposed_value"
-                                    >
-                                        {translate('annotation_proposed_value')}
-                                    </Typography>
-                                    <Typography aria-labelledby="annotation_proposed_value">
-                                        {annotation.proposedValue}
-                                    </Typography>
-                                </Box>
-                                <Box>
-                                    <Typography
-                                        variant="h6"
-                                        id="annotation_comment_section"
-                                    >
-                                        {translate(
-                                            'annotation_comment_section',
-                                        )}
-                                    </Typography>
-                                    <Typography aria-labelledby="annotation_comment_section">
-                                        {annotation.comment}
-                                    </Typography>
-                                </Box>
-                                <Box>
-                                    <Typography variant="h6">
-                                        {translate(
-                                            'annotation_complementary_infos_section',
-                                        )}
-                                    </Typography>
-                                    <Grid container columns={2}>
-                                        <AnnotationValue
-                                            label="annotation_updated_at"
-                                            value={new Date(
-                                                annotation.updatedAt,
-                                            ).toLocaleDateString()}
-                                        />
-                                        <AnnotationValue
-                                            label="annotation_created_at"
-                                            value={new Date(
-                                                annotation.createdAt,
-                                            ).toLocaleDateString()}
+                                    </Grid>
+                                    <Grid item xs={2}>
+                                        <AnnotationStatus
+                                            arialLabel={translate(
+                                                'annotation_status',
+                                            )}
+                                            status={
+                                                annotation.status ===
+                                                'to_review'
+                                                    ? 'ongoing'
+                                                    : annotation.status
+                                            }
                                         />
                                     </Grid>
-                                </Box>
-                            </Stack>
-                        </AccordionDetails>
-                    </Accordion>
-                ))}
+                                    <Grid item xs={1}>
+                                        {annotation.isMine && (
+                                            <Tooltip
+                                                aria-label={translate(
+                                                    'own_annotation',
+                                                )}
+                                                title={translate(
+                                                    'own_annotation',
+                                                )}
+                                            >
+                                                <AttributionIcon />
+                                            </Tooltip>
+                                        )}
+                                    </Grid>
+                                </Grid>
+                            </AccordionSummary>
+                            <AccordionDetails>
+                                <Stack gap={2}>
+                                    {annotation.isMine && (
+                                        <Stack
+                                            direction="row"
+                                            gap={1}
+                                            sx={{
+                                                border: '1px solid',
+                                                borderColor:
+                                                    theme.palette.primary.main,
+                                                padding: '5px',
+                                                color: theme.palette.primary
+                                                    .main,
+                                            }}
+                                        >
+                                            <InfoOutlinedIcon />
+                                            <Typography>
+                                                {translate('own_annotation')}
+                                            </Typography>
+                                        </Stack>
+                                    )}
+                                    <Box>
+                                        <Typography
+                                            variant="h6"
+                                            id="annotation_initial_value"
+                                        >
+                                            {translate(
+                                                'annotation_initial_value',
+                                            )}
+                                        </Typography>
+                                        <Typography aria-labelledby="annotation_initial_value">
+                                            {annotation.initialValue}
+                                        </Typography>
+                                    </Box>
+                                    <Box>
+                                        <Typography
+                                            variant="h6"
+                                            id="annotation_proposed_value"
+                                        >
+                                            {translate(
+                                                'annotation_proposed_value',
+                                            )}
+                                        </Typography>
+                                        <Typography aria-labelledby="annotation_proposed_value">
+                                            {annotation.proposedValue}
+                                        </Typography>
+                                    </Box>
+                                    <Box>
+                                        <Typography
+                                            variant="h6"
+                                            id="annotation_comment_section"
+                                        >
+                                            {translate(
+                                                'annotation_comment_section',
+                                            )}
+                                        </Typography>
+                                        <Typography aria-labelledby="annotation_comment_section">
+                                            {annotation.comment}
+                                        </Typography>
+                                    </Box>
+                                    <Box>
+                                        <Typography variant="h6">
+                                            {translate(
+                                                'annotation_complementary_infos_section',
+                                            )}
+                                        </Typography>
+                                        <Grid container columns={2}>
+                                            <AnnotationValue
+                                                label="annotation_updated_at"
+                                                value={new Date(
+                                                    annotation.updatedAt,
+                                                ).toLocaleDateString()}
+                                            />
+                                            <AnnotationValue
+                                                label="annotation_created_at"
+                                                value={new Date(
+                                                    annotation.createdAt,
+                                                ).toLocaleDateString()}
+                                            />
+                                        </Grid>
+                                    </Box>
+                                </Stack>
+                            </AccordionDetails>
+                        </Accordion>
+                    ),
+                )}
             </Box>
         </Stack>
     );
