@@ -13,6 +13,7 @@ export function ProposedValueField({ form, field }) {
             <ProposedValueFieldList
                 form={form}
                 options={field.annotationFormatListOptions}
+                multiple={field.annotationFormatListKind === 'multiple'}
             />
         );
     }

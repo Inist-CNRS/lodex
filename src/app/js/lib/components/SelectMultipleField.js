@@ -1,7 +1,9 @@
 import {
+    Checkbox,
     FormControl,
     FormHelperText,
     InputLabel,
+    ListItemText,
     MenuItem,
     Select,
 } from '@mui/material';
@@ -12,7 +14,7 @@ import { useField } from '@tanstack/react-form';
 import { useTranslate } from '../../i18n/I18NContext';
 
 // TextField component to use tanstack react form with material ui text field
-export function SelectField({
+export function SelectMultipleField({
     form,
     name,
     label,
@@ -27,7 +29,7 @@ export function SelectField({
         // required is used for optionally required field based on a condition
         // since tanstack form does not support multi field validation on the field side
         if (required) {
-            return field.state.meta.isTouched && !field.state.value
+            return field.state.meta.isTouched && !field.state.value?.length
                 ? 'error_field_required'
                 : null;
         }
@@ -36,7 +38,7 @@ export function SelectField({
             : null;
     }, [field.state]);
 
-    const value = field.state.value ?? '';
+    const values = field.state.value ?? [];
 
     const labelId = `select-${name}-label`;
     const testId = `select-${name}-input`;
@@ -49,24 +51,27 @@ export function SelectField({
             <Select
                 label={label}
                 name={field.name}
-                value={value}
+                value={values}
                 onBlur={field.handleBlur}
-                onChange={(e) => field.handleChange(e.target.value)}
+                onChange={(e) => {
+                    console.log('e.target.value', e.target.value);
+                    field.handleChange(e.target.value);
+                }}
                 error={!!error}
                 SelectDisplayProps={{
                     role: 'combobox',
                     'aria-labelledby': labelId,
-                    'aria-valuetext': value,
-                    'aria-valuenow': value,
                 }}
                 inputProps={{
                     'data-testid': testId,
                 }}
+                renderValue={(selected) => selected.join(', ')}
+                multiple
             >
-                <MenuItem value={''}>&nbsp;</MenuItem>
                 {options.map((option) => (
                     <MenuItem key={option.value} value={option.value}>
-                        {option.label}
+                        <Checkbox checked={values.includes(option.value)} />
+                        <ListItemText primary={option.label} />
                     </MenuItem>
                 ))}
             </Select>
@@ -81,7 +86,7 @@ export function SelectField({
     );
 }
 
-SelectField.propTypes = {
+SelectMultipleField.propTypes = {
     form: PropTypes.object.isRequired,
     name: PropTypes.string.isRequired,
     label: PropTypes.string.isRequired,

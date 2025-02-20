@@ -18,8 +18,12 @@ import {
 } from '../../../common/scope';
 
 import { URI_FIELD_NAME } from '../../../common/uris';
-import { FIELD_ANNOTATION_FORMAT_LIST } from './FieldAnnotationFormat';
 import { splitAnnotationFormatListOptions } from './annotations';
+import {
+    FIELD_ANNOTATION_FORMAT_LIST,
+    FIELD_ANNOTATION_FORMAT_TEXT,
+} from './FieldAnnotationFormat';
+import { FIELD_ANNOTATION_FORMAT_LIST_KIND_SINGLE } from './FieldAnnotationFormatListKind';
 
 export const NEW_CHARACTERISTIC_FORM_NAME = 'NEW_CHARACTERISTIC_FORM_NAME';
 
@@ -197,14 +201,22 @@ export const getFieldFormData = (state) => {
         const values = state.form.field.values;
         return {
             ...values,
-            annotationFormat: values.annotable ? values.annotationFormat : null,
+            annotationFormat: values.annotable
+                ? values.annotationFormat
+                : FIELD_ANNOTATION_FORMAT_TEXT,
             annotationFormatListOptions:
                 values.annotable &&
                 values.annotationFormat === FIELD_ANNOTATION_FORMAT_LIST
                     ? splitAnnotationFormatListOptions(
                           values.annotationFormatListOptions,
                       )
-                    : null,
+                    : [],
+            annotationFormatListKind:
+                values.annotable &&
+                values.annotationFormat === FIELD_ANNOTATION_FORMAT_LIST
+                    ? values.annotationFormatListKind ??
+                      FIELD_ANNOTATION_FORMAT_LIST_KIND_SINGLE
+                    : FIELD_ANNOTATION_FORMAT_LIST_KIND_SINGLE,
         };
     } catch (error) {
         return undefined;

@@ -15,6 +15,7 @@ import FieldInternalIcon from '../../fields/FieldInternalIcon';
 import { useTranslate } from '../../i18n/I18NContext';
 import AdminOnlyAlert from '../../lib/components/AdminOnlyAlert';
 import withInitialData from '../withInitialData';
+import { AnnotationProposedValue } from './AnnotationProposedValue';
 import { AnnotationStatus } from './AnnotationStatus';
 import { CellWithTooltip } from './CellWithTooltip';
 import { DeleteManyButton } from './DeleteManyButton';
@@ -319,11 +320,18 @@ export const AnnotationList = () => {
                 },
                 {
                     field: 'proposedValue',
-                    headerName: translate('annotation_proposed_value'),
+                    headerName: translate('annotation_proposed_value', {
+                        smart_count: 2,
+                    }),
                     flex: 1,
                     sortable: false,
-                    renderCell: ({ value }) => {
-                        return <CellWithTooltip value={value} />;
+                    renderCell: ({ row, value }) => {
+                        return (
+                            <AnnotationProposedValue
+                                proposedValue={value}
+                                field={row.field}
+                            />
+                        );
                     },
                 },
                 {

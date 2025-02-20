@@ -1,6 +1,8 @@
 import selectors, {
     areAllFieldsValid,
+    getCollectionFields,
     getFieldFormData,
+    getFields,
     getLineColGetterFromAllFields,
     isACompositeFields,
 } from './selectors';
@@ -23,11 +25,7 @@ describe('field selectors', () => {
                     name4: 'field4',
                 },
             };
-            expect(selectors.getFields(state)).toEqual([
-                'field1',
-                'field2',
-                'field3',
-            ]);
+            expect(getFields(state)).toEqual(['field1', 'field2', 'field3']);
         });
     });
 
@@ -85,7 +83,7 @@ describe('field selectors', () => {
     describe('getCollectionFields', () => {
         it('should return the model', () => {
             expect(
-                selectors.getCollectionFields({
+                getCollectionFields({
                     list: ['first', 'second'],
                     byName: {
                         first: {
@@ -135,6 +133,7 @@ describe('field selectors', () => {
                             values: {
                                 annotable: true,
                                 annotationFormat: 'list',
+                                annotationFormatListKind: 'multiple',
                                 annotationFormatListOptions: 'a\nb\nc',
                             },
                         },
@@ -143,17 +142,18 @@ describe('field selectors', () => {
             ).toStrictEqual({
                 annotable: true,
                 annotationFormat: 'list',
+                annotationFormatListKind: 'multiple',
                 annotationFormatListOptions: ['a', 'b', 'c'],
             });
         });
 
-        it('should set annotationFormatListOptions to null if field is not annotable', () => {
+        it('should support field without annotationFormatListKind', () => {
             expect(
                 getFieldFormData({
                     form: {
                         field: {
                             values: {
-                                annotable: false,
+                                annotable: true,
                                 annotationFormat: 'list',
                                 annotationFormatListOptions: 'a\nb\nc',
                             },
@@ -161,13 +161,36 @@ describe('field selectors', () => {
                     },
                 }),
             ).toStrictEqual({
-                annotable: false,
-                annotationFormat: null,
-                annotationFormatListOptions: null,
+                annotable: true,
+                annotationFormat: 'list',
+                annotationFormatListKind: 'single',
+                annotationFormatListOptions: ['a', 'b', 'c'],
             });
         });
 
-        it('should set annotationFormatListOptions to null if annotationFormat is text', () => {
+        it('should set annotationFormatListOptions to an empty array if field is not annotable', () => {
+            expect(
+                getFieldFormData({
+                    form: {
+                        field: {
+                            values: {
+                                annotable: false,
+                                annotationFormat: 'list',
+                                annotationFormatListKind: 'single',
+                                annotationFormatListOptions: 'a\nb\nc',
+                            },
+                        },
+                    },
+                }),
+            ).toStrictEqual({
+                annotable: false,
+                annotationFormat: 'text',
+                annotationFormatListOptions: [],
+                annotationFormatListKind: 'single',
+            });
+        });
+
+        it('should set annotationFormatListOptions to an empty array if annotationFormat is text', () => {
             expect(
                 getFieldFormData({
                     form: {
@@ -183,7 +206,30 @@ describe('field selectors', () => {
             ).toStrictEqual({
                 annotable: true,
                 annotationFormat: 'text',
-                annotationFormatListOptions: null,
+                annotationFormatListOptions: [],
+                annotationFormatListKind: 'single',
+            });
+        });
+
+        it('should set annotationFormatListKind to single if field is not annotable', () => {
+            expect(
+                getFieldFormData({
+                    form: {
+                        field: {
+                            values: {
+                                annotable: false,
+                                annotationFormat: 'list',
+                                annotationFormatListKind: 'single',
+                                annotationFormatListOptions: 'a\nb\nc',
+                            },
+                        },
+                    },
+                }),
+            ).toStrictEqual({
+                annotable: false,
+                annotationFormat: 'text',
+                annotationFormatListOptions: [],
+                annotationFormatListKind: 'single',
             });
         });
     });
