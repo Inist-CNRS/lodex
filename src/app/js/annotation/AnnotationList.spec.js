@@ -1,5 +1,5 @@
 import React from 'react';
-import { fireEvent, render } from '../../../test-utils';
+import { render } from '../../../test-utils';
 import {
     AnnotationList,
     getAnnotationSummaryValue,

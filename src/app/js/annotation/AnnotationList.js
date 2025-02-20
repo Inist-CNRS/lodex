@@ -15,16 +15,22 @@ import { useTranslate } from '../i18n/I18NContext';
 import { AnnotationValue } from '../admin/annotations/AnnotationValue';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import PropTypes from 'prop-types';
+import {
+    ANNOTATION_KIND_ADDITION,
+    ANNOTATION_KIND_COMMENT,
+    ANNOTATION_KIND_CORRECTION,
+    ANNOTATION_KIND_REMOVAL,
+} from '../../../common/validator/annotation.validator';
 
 export const getAnnotationSummaryValue = (annotation) => {
     switch (annotation.kind) {
-        case 'comment':
+        case ANNOTATION_KIND_COMMENT:
             return annotation.comment;
-        case 'correction':
+        case ANNOTATION_KIND_CORRECTION:
             return `${annotation.initialValue} -> ${annotation.proposedValue}`;
-        case 'removal':
+        case ANNOTATION_KIND_REMOVAL:
             return annotation.initialValue;
-        case 'addition':
+        case ANNOTATION_KIND_ADDITION:
             return annotation.proposedValue;
         default:
             return '';
