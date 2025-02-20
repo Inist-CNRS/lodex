@@ -30,10 +30,23 @@ export const getAnnotationSummaryValue = (annotation) => {
     switch (annotation.kind) {
         case ANNOTATION_KIND_COMMENT:
             return annotation.comment;
-        case ANNOTATION_KIND_CORRECTION:
-            return `${annotation.initialValue} -> ${annotation.proposedValue}`;
+        case ANNOTATION_KIND_CORRECTION: {
+            const initialValue = annotation.initialValue.replace(
+                /<[^>]*>/g,
+                '',
+            );
+            const truncatedInitialValue =
+                initialValue.length > 16
+                    ? `${initialValue.slice(0, 16)} ...`
+                    : initialValue;
+            const truncatedProposedValue =
+                annotation.proposedValue.length > 16
+                    ? `${annotation.proposedValue.slice(0, 16)} ...`
+                    : annotation.proposedValue;
+            return `${truncatedInitialValue} -> ${truncatedProposedValue}`;
+        }
         case ANNOTATION_KIND_REMOVAL:
-            return annotation.initialValue;
+            return annotation.initialValue.replace(/<[^>]*>/g, '');
         case ANNOTATION_KIND_ADDITION:
             return annotation.proposedValue;
         default:
@@ -110,7 +123,7 @@ export const AnnotationList = ({ annotations, field }) => {
                     (annotation) => (
                         <Accordion defaultExpanded={annotations.length === 1}>
                             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                                <Grid container columns={12} gap={2}>
+                                <Grid container columns={12}>
                                     <Grid item xs={2}>
                                         <Typography
                                             aria-label={translate(
@@ -120,7 +133,7 @@ export const AnnotationList = ({ annotations, field }) => {
                                             {annotation.kind}
                                         </Typography>
                                     </Grid>
-                                    <Grid item xs={6}>
+                                    <Grid item xs={8}>
                                         <Tooltip
                                             title={getAnnotationSummaryValue(
                                                 annotation,
@@ -131,6 +144,7 @@ export const AnnotationList = ({ annotations, field }) => {
                                                     textOverflow: 'ellipsis',
                                                     overflow: 'hidden',
                                                     whiteSpace: 'nowrap',
+                                                    width: '100%',
                                                 }}
                                                 aria-label={translate(
                                                     'annotation_summary_value',
@@ -138,7 +152,7 @@ export const AnnotationList = ({ annotations, field }) => {
                                             >
                                                 {getAnnotationSummaryValue(
                                                     annotation,
-                                                )}
+                                                ).slice(0, 50)}
                                             </Typography>
                                         </Tooltip>
                                     </Grid>
@@ -155,7 +169,9 @@ export const AnnotationList = ({ annotations, field }) => {
                                             }
                                         />
                                     </Grid>
-                                    <Grid item xs={1}>
+                                </Grid>
+                                {myAnnotations.length > 0 && (
+                                    <Box sx={{ width: '2em' }}>
                                         {annotation.isMine && (
                                             <Tooltip
                                                 aria-label={translate(
@@ -168,8 +184,8 @@ export const AnnotationList = ({ annotations, field }) => {
                                                 <AttributionIcon />
                                             </Tooltip>
                                         )}
-                                    </Grid>
-                                </Grid>
+                                    </Box>
+                                )}
                             </AccordionSummary>
                             <AccordionDetails>
                                 <Stack gap={2}>

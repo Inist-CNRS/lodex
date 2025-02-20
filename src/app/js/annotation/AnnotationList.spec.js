@@ -31,6 +31,18 @@ describe('AnnotationList', () => {
                 'initialValue -> proposedValue',
             );
         });
+        it('should should truncate the initialValue and proposed Value when they are longer than 16 characters', () => {
+            const annotation = {
+                kind: 'correction',
+                initialValue:
+                    'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
+                proposedValue:
+                    'cogito ergo sum, vini vidi vici, alea jacta est',
+            };
+            expect(getAnnotationSummaryValue(annotation)).toBe(
+                'Lorem ipsum dolo ... -> cogito ergo sum, ...',
+            );
+        });
         it('should return the initialValue when the annotation kind is removal', () => {
             const annotation = {
                 kind: 'removal',
