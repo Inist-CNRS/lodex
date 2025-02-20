@@ -1327,3 +1327,4 @@
 "all_annotation"	"All"	"Tous"
 "annotation_sent_by_me"	"Sent by me"	"Envoyées par moi"
 "annotation_deleted_by_admin"	"Some annotations have been deleted by the administrator"	"Des annotations ont été supprimées par l'administrateur"
+"annotation_sent_count"	"(%{smart_count} sent)||||(%{smart_count} sent)"	"(%{smart_count} envoyée)||||(%{smart_count} envoyées)"
