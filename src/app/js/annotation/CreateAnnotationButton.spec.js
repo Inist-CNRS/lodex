@@ -1,5 +1,5 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '../../../test-utils';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { MemoryRouter, Route, Switch } from 'react-router-dom';

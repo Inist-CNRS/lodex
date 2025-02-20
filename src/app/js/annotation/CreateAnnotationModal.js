@@ -1,4 +1,4 @@
-import { Box, Popover, Stack, Typography } from '@mui/material';
+import { Box, Popover, Stack, Tooltip, Typography } from '@mui/material';
 import { useForm, useStore } from '@tanstack/react-form';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
@@ -24,6 +24,8 @@ import {
     TARGET_STEP,
     VALUE_STEP,
 } from './steps';
+import { OpenHistoricButton } from './OpenHistoricButton';
+import HelpIcon from '@mui/icons-material/HelpOutline';
 
 const isRequiredFieldValid = (formState, fieldName) => {
     const fieldState = formState.fieldMeta[fieldName];
@@ -50,6 +52,7 @@ export function CreateAnnotationModal({
     onClose,
     initialValue,
     field,
+    resourceUri,
 }) {
     const { translate } = useTranslate();
 
@@ -183,6 +186,10 @@ export function CreateAnnotationModal({
                             aria-label={translate('annotation_step_target')}
                             role="tab"
                         >
+                            <OpenHistoricButton
+                                field={field}
+                                resourceUri={resourceUri}
+                            />
                             <TargetField
                                 form={form}
                                 goToStep={setCurrentStep}
@@ -218,7 +225,20 @@ export function CreateAnnotationModal({
                             aria-label={translate('annotation_step_comment')}
                             role="tab"
                         >
-                            <AnnotationCommentStep form={form} field={field} />
+                            {!initialValue && (
+                                <Stack spacing={2}>
+                                    <OpenHistoricButton
+                                        field={field}
+                                        resourceUri={resourceUri}
+                                    />
+                                </Stack>
+                            )}
+                            <Stack spacing={2}>
+                                <AnnotationCommentStep
+                                    form={form}
+                                    field={field}
+                                />
+                            </Stack>
                         </Stack>
                     )}
 
@@ -228,6 +248,20 @@ export function CreateAnnotationModal({
                             aria-label={translate('annotation_step_author')}
                             role="tab"
                         >
+                            <Stack direction="row">
+                                <Typography>
+                                    {translate(
+                                        'annotation_personal_information',
+                                    )}
+                                </Typography>
+                                <Tooltip
+                                    title={translate(
+                                        'annotation_personal_information_tooltip',
+                                    )}
+                                >
+                                    <HelpIcon />
+                                </Tooltip>
+                            </Stack>
                             <AuthorNameField form={form} />
                             <AuthorEmailField form={form} />
                         </Stack>
@@ -267,5 +301,6 @@ CreateAnnotationModal.propTypes = {
     onSubmit: PropTypes.func.isRequired,
     anchorEl: PropTypes.object.isRequired,
     initialValue: PropTypes.any,
-    field: PropTypes.object,
+    field: PropTypes.object.isRequired,
+    resourceUri: PropTypes.string,
 };

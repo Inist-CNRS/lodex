@@ -96,7 +96,17 @@ export default async (db) => {
         return +deletedCount;
     }
 
+    async function findManyByFieldAndResource(fieldId, resourceUri) {
+        return await annotationCollection
+            .find({ fieldId, resourceUri })
+            .sort({
+                createdAt: -1,
+            })
+            .toArray();
+    }
+
     return {
+        find: (...args) => annotationCollection.find(...args),
         create,
         updateOneById,
         findAll,
@@ -105,5 +115,6 @@ export default async (db) => {
         findOneById,
         deleteOneById,
         deleteManyById,
+        findManyByFieldAndResource,
     };
 };
