@@ -1323,3 +1323,4 @@
 "field_annotation_format_list_kind"	"Select *"	"Sélecteur *"
 "field_annotation_format_list_kind_single"	"Single choice"	"Choix unique"
 "field_annotation_format_list_kind_multiple"	"Multiple choice"	"Choix multiple"
+"own_annotation"	"You are this annotation contributor"	"Vous êtes le contributeur de cette annotation"

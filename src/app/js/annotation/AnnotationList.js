@@ -21,6 +21,8 @@ import {
     ANNOTATION_KIND_CORRECTION,
     ANNOTATION_KIND_REMOVAL,
 } from '../../../common/validator/annotation.validator';
+import AttributionIcon from '@mui/icons-material/Attribution';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 
 export const getAnnotationSummaryValue = (annotation) => {
     switch (annotation.kind) {
@@ -82,8 +84,8 @@ export const AnnotationList = ({ annotations, field }) => {
                 {annotations.map((annotation) => (
                     <Accordion defaultExpanded={annotations.length === 1}>
                         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                            <Grid container columns={8} gap={2}>
-                                <Grid item xs={1}>
+                            <Grid container columns={12} gap={2}>
+                                <Grid item xs={2}>
                                     <Typography
                                         aria-label={translate(
                                             'annotation_kind',
@@ -92,7 +94,7 @@ export const AnnotationList = ({ annotations, field }) => {
                                         {annotation.kind}
                                     </Typography>
                                 </Grid>
-                                <Grid item xs={5}>
+                                <Grid item xs={6}>
                                     <Tooltip
                                         title={getAnnotationSummaryValue(
                                             annotation,
@@ -114,7 +116,7 @@ export const AnnotationList = ({ annotations, field }) => {
                                         </Typography>
                                     </Tooltip>
                                 </Grid>
-                                <Grid item xs={1}>
+                                <Grid item xs={2}>
                                     <AnnotationStatus
                                         arialLabel={translate(
                                             'annotation_status',
@@ -126,10 +128,40 @@ export const AnnotationList = ({ annotations, field }) => {
                                         }
                                     />
                                 </Grid>
+                                <Grid item xs={1}>
+                                    {annotation.isMine && (
+                                        <Tooltip
+                                            aria-label={translate(
+                                                'own_annotation',
+                                            )}
+                                            title={translate('own_annotation')}
+                                        >
+                                            <AttributionIcon />
+                                        </Tooltip>
+                                    )}
+                                </Grid>
                             </Grid>
                         </AccordionSummary>
                         <AccordionDetails>
                             <Stack gap={2}>
+                                {annotation.isMine && (
+                                    <Stack
+                                        direction="row"
+                                        gap={1}
+                                        sx={{
+                                            border: '1px solid',
+                                            borderColor:
+                                                theme.palette.primary.main,
+                                            padding: '5px',
+                                            color: theme.palette.primary.main,
+                                        }}
+                                    >
+                                        <InfoOutlinedIcon />
+                                        <Typography>
+                                            {translate('own_annotation')}
+                                        </Typography>
+                                    </Stack>
+                                )}
                                 <Box>
                                     <Typography
                                         variant="h6"
