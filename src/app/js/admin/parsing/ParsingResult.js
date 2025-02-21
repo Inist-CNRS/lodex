@@ -39,6 +39,7 @@ import { AddBox as AddBoxIcon, Delete } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
 import ParsingDeleteRowDialogComponent from './ParsingDeleteRowDialog';
 import { useTranslate } from '../../i18n/I18NContext';
+import { useDatagridSelection } from '../../lib/hooks/useDatagridSelection';
 
 const COLUMN_TYPE = {
     MAIN: 'main',
@@ -323,6 +324,8 @@ export const ParsingResultComponent = (props) => {
         setToggleDrawer(true);
     };
 
+    const { selectedRows, selectionColumn } = useDatagridSelection(rows);
+
     if (loadingParsingResult) {
         return (
             <Loading className="admin">
@@ -450,7 +453,7 @@ export const ParsingResultComponent = (props) => {
     return (
         <Box sx={styles.container}>
             <DataGrid
-                columns={columnsToShow}
+                columns={[selectionColumn, ...columnsToShow]}
                 rows={rows}
                 rowCount={rowCount}
                 pageSize={limit}

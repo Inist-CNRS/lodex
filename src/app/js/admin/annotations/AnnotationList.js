@@ -1,4 +1,4 @@
-import { Box, Checkbox, Tooltip } from '@mui/material';
+import { Box, Tooltip } from '@mui/material';
 import {
     DataGrid,
     getGridDateOperators,
@@ -9,7 +9,7 @@ import {
     GridToolbarFilterButton,
 } from '@mui/x-data-grid';
 import PropTypes from 'prop-types';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useHistory } from 'react-router';
 import FieldInternalIcon from '../../fields/FieldInternalIcon';
 import { useTranslate } from '../../i18n/I18NContext';
@@ -25,6 +25,7 @@ import { StatusFilter } from './filters/StatusFilter';
 import { useGetAnnotations } from './hooks/useGetAnnotations';
 import { ResourceTitleCell } from './ResourceTitleCell';
 import { ResourceUriCell } from './ResourceUriCell';
+import { useDatagridSelection } from '../../lib/hooks/useDatagridSelection';
 
 const AnnotationListToolBar = ({ deleteButton }) => {
     const { translate } = useTranslate();
@@ -59,11 +60,6 @@ export const AnnotationList = () => {
     const [sortDir, setSortDir] = useState('desc');
     const [filter, setFilter] = useState({});
 
-    const [selectionState, setSelectionState] = useState({
-        allSelected: false,
-        selectedRows: [],
-    });
-
     const { isPending, error, data, isFetching } = useGetAnnotations({
         page,
         perPage,
@@ -71,6 +67,7 @@ export const AnnotationList = () => {
         sortBy,
         filter,
     });
+    const { selectedRows, selectionColumn } = useDatagridSelection(data?.data);
 
     const onPageChange = (page) => {
         setPage(page);
@@ -99,58 +96,6 @@ export const AnnotationList = () => {
         history.push(`/annotations/${params.row._id}`);
     };
 
-    const handleSelectAll = useCallback(
-        (event) => {
-            event.stopPropagation();
-            event.preventDefault();
-
-            setSelectionState(({ allSelected }) => {
-                const newAllSelected = !allSelected;
-
-                return {
-                    allSelected: newAllSelected,
-                    selectedRows: newAllSelected
-                        ? data?.data.map((row) => row._id)
-                        : [],
-                };
-            });
-        },
-        [data?.data],
-    );
-
-    const handleCheckboxChange = useCallback(
-        (event, id) => {
-            event.stopPropagation();
-            event.preventDefault();
-
-            setSelectionState(({ selectedRows: currentSelectedRows }) => {
-                if (currentSelectedRows.includes(id)) {
-                    return {
-                        allSelected: false,
-                        selectedRows: currentSelectedRows.filter(
-                            (rowId) => rowId !== id,
-                        ),
-                    };
-                } else {
-                    const newSelectedRows = [...currentSelectedRows, id];
-                    return {
-                        allSelected:
-                            data?.data.length === newSelectedRows.length,
-                        selectedRows: newSelectedRows,
-                    };
-                }
-            });
-        },
-        [data?.data],
-    );
-
-    useEffect(() => {
-        setSelectionState({
-            allSelected: false,
-            selectedRows: [],
-        });
-    }, [data?.data]);
-
     if (error) {
         console.error(error);
         return (
@@ -164,33 +109,7 @@ export const AnnotationList = () => {
         <DataGrid
             loading={isPending || isFetching}
             columns={[
-                {
-                    field: translate('checkbox'),
-                    sortable: false,
-                    filterable: false,
-                    hideable: false,
-                    flex: 0,
-                    renderHeader() {
-                        return (
-                            <Checkbox
-                                onClick={handleSelectAll}
-                                checked={selectionState.allSelected}
-                            />
-                        );
-                    },
-                    renderCell({ row }) {
-                        return (
-                            <Checkbox
-                                checked={selectionState.selectedRows.includes(
-                                    row._id,
-                                )}
-                                onClick={(e) =>
-                                    handleCheckboxChange(e, row._id)
-                                }
-                            />
-                        );
-                    },
-                },
+                selectionColumn,
                 {
                     field: 'resourceUri',
                     headerName: translate('annotation_resource_uri'),
@@ -447,9 +366,7 @@ export const AnnotationList = () => {
                 Toolbar: () => (
                     <AnnotationListToolBar
                         deleteButton={
-                            <DeleteManyButton
-                                selectedRows={selectionState.selectedRows}
-                            />
+                            <DeleteManyButton selectedRows={selectedRows} />
                         }
                     />
                 ),
