@@ -12,6 +12,7 @@ import sagas from './app/js/admin/sagas';
 import configureStore from './app/js/configureStore';
 import reducers from './app/js/public/reducers';
 import defaultMuiTheme from './app/custom/themes/default/defaultTheme';
+import { AnnotationStorageProvider } from './app/js/annotation/annotationStorage';
 
 // custom/themes/default/defaultTheme';
 
@@ -26,7 +27,9 @@ const theme = createTheme(defaultMuiTheme, {
 
 const Wrapper = ({ children }) => (
     <Provider store={store}>
-        <MuiThemeProvider theme={theme}>{children}</MuiThemeProvider>
+        <AnnotationStorageProvider>
+            <MuiThemeProvider theme={theme}>{children}</MuiThemeProvider>
+        </AnnotationStorageProvider>
     </Provider>
 );
 

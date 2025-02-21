@@ -1,14 +1,14 @@
 import MapsUgcIcon from '@mui/icons-material/MapsUgc';
 import { IconButton, Stack, Tooltip, Typography } from '@mui/material';
 import PropTypes from 'prop-types';
-import React, { useCallback, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 
 import { useTranslate } from '../i18n/I18NContext';
 import { CreateAnnotationModal } from './CreateAnnotationModal';
 import { useCreateAnnotation } from './useCreateAnnotation';
 import { useResourceUri } from './useResourceUri';
 import { useCanAnnotate } from './useCanAnnotate';
-import { getFieldAnnotationIds } from './annotationStorage';
+import { useGetFieldAnnotationIds } from './annotationStorage';
 
 export function CreateAnnotationButton({ field, initialValue = null }) {
     const { translate } = useTranslate();
@@ -55,12 +55,10 @@ export function CreateAnnotationButton({ field, initialValue = null }) {
         field: field.label,
     });
 
-    const ownAnnotationCount = useMemo(() => {
-        return getFieldAnnotationIds({
-            fieldId: field._id,
-            resourceUri,
-        }).length;
-    }, [field._id, resourceUri]);
+    const fieldAnnotationIds = useGetFieldAnnotationIds({
+        fieldId: field._id,
+        resourceUri,
+    });
 
     if (field.annotable === false) {
         return null;
@@ -117,10 +115,10 @@ export function CreateAnnotationButton({ field, initialValue = null }) {
                         />
                     </IconButton>
                 </Tooltip>
-                {ownAnnotationCount > 0 && (
+                {fieldAnnotationIds.length > 0 && (
                     <Typography color="primary" variant="caption">
                         {translate('annotation_sent_count', {
-                            smart_count: ownAnnotationCount,
+                            smart_count: fieldAnnotationIds.length,
                         })}
                     </Typography>
                 )}

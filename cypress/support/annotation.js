@@ -109,6 +109,11 @@ export function checkFieldAnnotations({
     expectedAnnotations,
     resourceTitle,
 }) {
+    if (expectedAnnotations.length > 0) {
+        cy.findByText(`${expectedAnnotations.length} sent`).should(
+            'be.visible',
+        );
+    }
     openAnnotationModalForField(fieldLabel);
 
     if (expectedAnnotations.length === 0) {

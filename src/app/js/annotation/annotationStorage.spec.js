@@ -17,7 +17,7 @@ describe('annotationStorage', () => {
             const annotationIds = localStorage.getItem(
                 'annotation_fieldId_resourceUri',
             );
-            expect(annotationIds).toEqual('["_id"]');
+            expect(annotationIds).toBe('["_id"]');
         });
 
         it('should add the annotation id to the existing annotation ids', () => {
@@ -30,7 +30,7 @@ describe('annotationStorage', () => {
             const annotationIds = localStorage.getItem(
                 'annotation_fieldId_resourceUri',
             );
-            expect(annotationIds).toStrictEqual('["id1","_id"]');
+            expect(annotationIds).toBe('["id1","_id"]');
         });
         it('should save the annotation id under annotation_fieldId_none if resourceUri is not provided', () => {
             saveAnnotationId({
@@ -40,7 +40,7 @@ describe('annotationStorage', () => {
             const annotationIds = localStorage.getItem(
                 'annotation_fieldId_none',
             );
-            expect(annotationIds).toEqual('["_id"]');
+            expect(annotationIds).toBe('["_id"]');
         });
     });
     describe('getFieldAnnotationIds', () => {

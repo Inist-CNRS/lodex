@@ -5,11 +5,13 @@ import { getUserSessionStorageInfo } from '../admin/api/tools';
 import { useTranslate } from '../i18n/I18NContext';
 import fetch from '../lib/fetch';
 import { getRequest } from '../user';
-import { saveAnnotationId } from './annotationStorage';
+import { useSaveAnnotationId } from './annotationStorage';
 
 export function useCreateAnnotation() {
     const { translate } = useTranslate();
     const queryClient = useQueryClient();
+
+    const saveAnnotationId = useSaveAnnotationId();
 
     const mutation = useMutation({
         mutationFn: async (annotation) => {
@@ -51,7 +53,7 @@ export function useCreateAnnotation() {
         async (annotation) => {
             return mutation.mutateAsync(annotation);
         },
-        [mutation, translate],
+        [mutation],
     );
 
     return useMemo(

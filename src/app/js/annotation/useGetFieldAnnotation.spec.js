@@ -6,6 +6,8 @@ import { useGetFieldAnnotation } from './useGetFieldAnnotation';
 import { waitFor } from '@testing-library/react';
 import { toast } from '../../../common/tools/toast';
 import { TestI18N } from '../i18n/I18NContext';
+import { AnnotationStorageProvider } from './annotationStorage';
+import PropTypes from 'prop-types';
 
 jest.mock('../../../common/tools/toast');
 
@@ -16,15 +18,22 @@ const createWrapper = () => {
         },
     });
 
-    return function TestWrapper({ children }) {
+    function TestWrapper({ children }) {
         return (
             <TestI18N>
-                <QueryClientProvider client={queryClient}>
-                    {children}
-                </QueryClientProvider>
+                <AnnotationStorageProvider>
+                    <QueryClientProvider client={queryClient}>
+                        {children}
+                    </QueryClientProvider>
+                </AnnotationStorageProvider>
             </TestI18N>
         );
+    }
+    TestWrapper.propTypes = {
+        children: PropTypes.node,
     };
+
+    return TestWrapper;
 };
 
 const annotations = [
