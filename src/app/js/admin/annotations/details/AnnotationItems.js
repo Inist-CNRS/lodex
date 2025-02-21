@@ -13,7 +13,7 @@ import { ANNOTATION_GRID_COLUMNS, AnnotationValue } from './AnnotationValue';
 
 const ANNOTATION_GRID_SPACING = 1;
 
-function Section({ label, children, translateOptions = {} }) {
+function Section({ label, children, translateOptions }) {
     const { translate } = useTranslate();
 
     const translatedLabel = translate(label, translateOptions);
