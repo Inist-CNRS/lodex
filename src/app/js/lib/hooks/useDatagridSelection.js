@@ -4,7 +4,7 @@ import { Checkbox } from '@mui/material';
 export const useDatagridSelection = (data) => {
     const [selectionState, setSelectionState] = useState({
         allSelected: false,
-        selectedRows: [],
+        selectedRowIds: [],
     });
 
     const handleSelectAll = useCallback(
@@ -20,7 +20,7 @@ export const useDatagridSelection = (data) => {
 
                 return {
                     allSelected: newAllSelected,
-                    selectedRows: newAllSelected
+                    selectedRowIds: newAllSelected
                         ? data.map((row) => row._id)
                         : [],
                 };
@@ -37,19 +37,19 @@ export const useDatagridSelection = (data) => {
                 return;
             }
 
-            setSelectionState(({ selectedRows: currentSelectedRows }) => {
-                if (currentSelectedRows.includes(id)) {
+            setSelectionState(({ selectedRowIds: currentSelectedRowIds }) => {
+                if (currentSelectedRowIds.includes(id)) {
                     return {
                         allSelected: false,
-                        selectedRows: currentSelectedRows.filter(
+                        selectedRowIds: currentSelectedRowIds.filter(
                             (rowId) => rowId !== id,
                         ),
                     };
                 } else {
-                    const newSelectedRows = [...currentSelectedRows, id];
+                    const newSelectedRowIds = [...currentSelectedRowIds, id];
                     return {
-                        allSelected: data.length === newSelectedRows.length,
-                        selectedRows: newSelectedRows,
+                        allSelected: data.length === newSelectedRowIds.length,
+                        selectedRowIds: newSelectedRowIds,
                     };
                 }
             });
@@ -60,7 +60,7 @@ export const useDatagridSelection = (data) => {
     useEffect(() => {
         setSelectionState({
             allSelected: false,
-            selectedRows: [],
+            selectedRowIds: [],
         });
     }, [data]);
 
@@ -83,12 +83,14 @@ export const useDatagridSelection = (data) => {
             renderCell({ row }) {
                 return (
                     <Checkbox
-                        checked={selectionState.selectedRows.includes(row._id)}
+                        checked={selectionState.selectedRowIds.includes(
+                            row._id,
+                        )}
                         onClick={(e) => handleCheckboxChange(e, row._id)}
                     />
                 );
             },
         },
-        selectedRows: selectionState.selectedRows,
+        selectedRowIds: selectionState.selectedRowIds,
     };
 };

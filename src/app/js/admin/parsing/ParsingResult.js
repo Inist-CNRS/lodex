@@ -36,9 +36,9 @@ import {
 import ParsingEditCell from './ParsingEditCell';
 import { AddBox as AddBoxIcon } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
-import ParsingDeleteRowDialogComponent from './ParsingDeleteRowDialog';
 import { useTranslate } from '../../i18n/I18NContext';
 import { useDatagridSelection } from '../../lib/hooks/useDatagridSelection';
+import { DeleteManyButton } from './DeleteManyButton';
 
 const COLUMN_TYPE = {
     MAIN: 'main',
@@ -112,7 +112,7 @@ const getFiltersOperatorsForType = (type) => {
 };
 
 export const ParsingResultComponent = (props) => {
-    const { enrichments, loadingParsingResult } = props;
+    const { enrichments, loadingParsingResult, isPublished } = props;
     const { translate } = useTranslate();
 
     const [showEnrichmentColumns, setShowEnrichmentColumns] = useState(true);
@@ -306,7 +306,7 @@ export const ParsingResultComponent = (props) => {
         setToggleDrawer(true);
     };
 
-    const { selectedRows, selectionColumn } = useDatagridSelection(rows);
+    const { selectedRowIds, selectionColumn } = useDatagridSelection(rows);
 
     if (loadingParsingResult) {
         return (
@@ -428,6 +428,11 @@ export const ParsingResultComponent = (props) => {
                         {translate('add_more')}
                     </Button>
                 </Tooltip>
+                <DeleteManyButton
+                    selectedRowIds={selectedRowIds}
+                    reloadDataset={fetchDataset}
+                    isPublished={isPublished}
+                />
             </GridToolbarContainer>
         );
     };

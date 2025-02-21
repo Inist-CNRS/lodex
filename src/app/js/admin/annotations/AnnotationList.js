@@ -67,7 +67,9 @@ export const AnnotationList = () => {
         sortBy,
         filter,
     });
-    const { selectedRows, selectionColumn } = useDatagridSelection(data?.data);
+    const { selectedRowIds, selectionColumn } = useDatagridSelection(
+        data?.data,
+    );
 
     const onPageChange = (page) => {
         setPage(page);
@@ -366,7 +368,7 @@ export const AnnotationList = () => {
                 Toolbar: () => (
                     <AnnotationListToolBar
                         deleteButton={
-                            <DeleteManyButton selectedRows={selectedRows} />
+                            <DeleteManyButton selectedRowIds={selectedRowIds} />
                         }
                     />
                 ),
