@@ -5,55 +5,95 @@ import React from 'react';
 import { TestI18N } from '../../i18n/I18NContext';
 import { ProposedValueFieldList } from './ProposedValueFieldList';
 
-function TestProposedValueFieldList({ options }) {
+function TestProposedValueFieldList(props) {
     const form = useForm();
     return (
         <TestI18N>
-            <ProposedValueFieldList options={options} form={form} />
+            <ProposedValueFieldList {...props} form={form} />
         </TestI18N>
     );
 }
 
+TestProposedValueFieldList.propTypes = {
+    options: ProposedValueFieldList.propTypes.options,
+    multiple: ProposedValueFieldList.propTypes.multiple,
+};
+
 describe('ProposedValueFieldList', () => {
-    it('should render as text field if annotationFormat is text', () => {
+    it('should support value change when options are defined', async () => {
         const wrapper = render(
             <TestProposedValueFieldList
                 options={['option1', 'option2', 'option3']}
             />,
         );
 
-        expect(
-            wrapper.getByRole('combobox', {
-                name: 'annotation.proposedValue *',
-            }),
-        ).toBeInTheDocument();
-    });
-
-    it('should support value change', async () => {
-        const wrapper = render(
-            <TestProposedValueFieldList
-                options={['option1', 'option2', 'option3']}
-            />,
-        );
-
-        const combobox = wrapper.getByRole('combobox', {
+        const textbox = wrapper.getByRole('textbox', {
             name: 'annotation.proposedValue *',
         });
 
-        const input = wrapper.queryByTestId('select-proposedValue-input', {
-            hidden: true,
+        await waitFor(() => {
+            fireEvent.mouseDown(textbox);
         });
 
-        expect(combobox).toBeInTheDocument();
+        const option = wrapper.getByRole('option', {
+            name: 'option2',
+        });
 
-        expect(input).toHaveValue('');
+        expect(option).toBeInTheDocument();
 
         await waitFor(() => {
-            fireEvent.change(input, {
-                target: { value: 'option2' },
-            });
+            fireEvent.click(option);
         });
 
-        expect(input).toHaveValue('option2');
+        expect(textbox).toHaveValue('option2');
+    });
+
+    it('should support mutiple values change when options are defined', async () => {
+        const wrapper = render(
+            <TestProposedValueFieldList
+                options={['option1', 'option2', 'option3']}
+                multiple
+            />,
+        );
+
+        const textbox = wrapper.getByRole('textbox', {
+            name: 'annotation.proposedValue *',
+        });
+
+        await waitFor(() => {
+            fireEvent.mouseDown(textbox);
+        });
+
+        await waitFor(() => {
+            fireEvent.click(
+                wrapper.getByRole('option', {
+                    name: 'option1',
+                }),
+            );
+        });
+
+        await waitFor(() => {
+            fireEvent.mouseDown(textbox);
+        });
+
+        await waitFor(() => {
+            fireEvent.click(
+                wrapper.getByRole('option', {
+                    name: 'option2',
+                }),
+            );
+        });
+
+        expect(
+            wrapper.getByRole('button', {
+                name: 'option1',
+            }),
+        ).toBeInTheDocument();
+
+        expect(
+            wrapper.getByRole('button', {
+                name: 'option2',
+            }),
+        ).toBeInTheDocument();
     });
 });

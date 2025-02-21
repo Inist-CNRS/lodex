@@ -4,9 +4,10 @@ import Stack from '@mui/material/Stack';
 import useTheme from '@mui/material/styles/useTheme';
 import { field as fieldPropTypes } from '../../propTypes';
 import FieldAnnotableInput from '../FieldAnnotableInput';
-import FieldAnnotationFormat from '../FieldAnnotationFormat';
-import FieldAnnotationFormatListKind from '../FieldAnnotationFormatListKind';
-import FieldAnnotationFormatListOptions from '../FieldAnnotationFormatListOptions';
+import { default as FieldAnnotationFormat } from '../FieldAnnotationFormat';
+import { default as FieldAnnotationFormatListKind } from '../FieldAnnotationFormatListKind';
+import { default as FieldAnnotationFormatListOptions } from '../FieldAnnotationFormatListOptions';
+import { default as FieldAnnotationFormatListSupportsNewValues } from '../FieldAnnotationFormatListSupportsNewValues';
 import FieldLanguageInput from '../FieldLanguageInput';
 import FieldSchemeInput from '../FieldSchemeInput';
 
@@ -34,6 +35,7 @@ export const TabSemanticsComponent = ({ currentEditedField }) => {
                 <FieldAnnotationFormat />
                 <FieldAnnotationFormatListOptions />
                 <FieldAnnotationFormatListKind />
+                <FieldAnnotationFormatListSupportsNewValues />
             </Stack>
         </>
     );

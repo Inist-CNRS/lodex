@@ -14,6 +14,9 @@ export function ProposedValueField({ form, field }) {
                 form={form}
                 options={field.annotationFormatListOptions}
                 multiple={field.annotationFormatListKind === 'multiple'}
+                supportsNewValues={
+                    field.annotationFormatListSupportsNewValues !== false
+                }
             />
         );
     }
