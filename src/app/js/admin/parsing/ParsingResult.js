@@ -112,7 +112,7 @@ const getFiltersOperatorsForType = (type) => {
 };
 
 export const ParsingResultComponent = (props) => {
-    const { enrichments, loadingParsingResult, isPublished } = props;
+    const { enrichments, loadingParsingResult } = props;
     const { translate } = useTranslate();
 
     const [showEnrichmentColumns, setShowEnrichmentColumns] = useState(true);
@@ -122,8 +122,6 @@ export const ParsingResultComponent = (props) => {
     const [columns, setColumns] = useState([]);
     const [toggleDrawer, setToggleDrawer] = useState(false);
     const [selectedCell, setSelectedCell] = useState(null);
-
-    const [openDialogDeleteRow, setOpenDialogDeleteRow] = useState(false);
 
     const columnsToShow = useMemo(() => {
         const getColumnsToShow = () => {
@@ -472,13 +470,6 @@ export const ParsingResultComponent = (props) => {
                     />
                 ) : null}
             </Drawer>
-            <ParsingDeleteRowDialogComponent
-                isOpen={openDialogDeleteRow}
-                handleClose={() => setOpenDialogDeleteRow(false)}
-                selectedRowForDelete={selectedRows}
-                reloadDataset={() => fetchDataset()}
-                shouldRepublish={isPublished}
-            />
         </Box>
     );
 };
