@@ -3,6 +3,7 @@ import { useForm, useStore } from '@tanstack/react-form';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 
+import HelpIcon from '@mui/icons-material/HelpOutline';
 import {
     ANNOTATION_KIND_ADDITION,
     ANNOTATION_KIND_CORRECTION,
@@ -12,10 +13,12 @@ import { useTranslate } from '../i18n/I18NContext';
 import { AnnotationCommentStep } from './AnnotationCommentStep';
 import { AuthorEmailField } from './fields/AuthorEmailField';
 import { AuthorNameField } from './fields/AuthorNameField';
+import { AuthorRememberMeField } from './fields/AuthorRememberMeField';
 import { KindField } from './fields/KindField';
 import { TargetField } from './fields/TargetField';
 import { ValueField } from './fields/ValueField';
 import { NextButton } from './NextButton';
+import { OpenHistoricButton } from './OpenHistoricButton';
 import { PreviousButton } from './PreviousButton';
 import {
     AUTHOR_STEP,
@@ -24,8 +27,7 @@ import {
     TARGET_STEP,
     VALUE_STEP,
 } from './steps';
-import { OpenHistoricButton } from './OpenHistoricButton';
-import HelpIcon from '@mui/icons-material/HelpOutline';
+import { useContributorCache } from './useContributorCache';
 
 const isRequiredFieldValid = (formState, fieldName) => {
     const fieldState = formState.fieldMeta[fieldName];
@@ -56,6 +58,8 @@ export function CreateAnnotationModal({
 }) {
     const { translate } = useTranslate();
 
+    const { contributor, updateContributorCache } = useContributorCache();
+
     const form = useForm({
         defaultValues: {
             comment: '',
@@ -63,6 +67,7 @@ export function CreateAnnotationModal({
             kind: 'comment',
         },
         onSubmit: async ({ value }) => {
+            updateContributorCache(value);
             await onSubmit(value);
             resetForm();
         },
@@ -70,6 +75,13 @@ export function CreateAnnotationModal({
             onChange: annotationCreationSchema,
         },
     });
+
+    // Using an effect triggers field validation on form initialization to enable submit button
+    useEffect(() => {
+        for (const [key, value] of Object.entries(contributor || {})) {
+            form.setFieldValue(key, value);
+        }
+    }, [form, contributor]);
 
     const [currentStep, setCurrentStep] = useState(
         initialValue === null ? COMMENT_STEP : TARGET_STEP,
@@ -264,6 +276,7 @@ export function CreateAnnotationModal({
                             </Stack>
                             <AuthorNameField form={form} />
                             <AuthorEmailField form={form} />
+                            <AuthorRememberMeField form={form} />
                         </Stack>
                     )}
                 </Box>

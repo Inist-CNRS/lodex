@@ -1255,6 +1255,7 @@
 "annotation.authorName"	"Last name, First name"	"Nom, Prénom"
 "annotation.authorEmail"	"Email address"	"Adresse e-mail"
 "annotation.authorEmail_helpText"	"The email address will allow us to contact you if needed"	"L'e-mail permettra d'être contacté en cas de besoin"
+"annotation.authorRememberMe"	"Remember my information"	"Se souvenir de mes informations"
 "annotation_status"	"Status"	"Statut"
 "annotation_kind"	"Type"	"Type"
 "annotation_internal_comment"	"Internal Comment"	"Commentaire interne"
