@@ -205,5 +205,15 @@ export default async (db) => {
     collection.deleteOneById = async (id) =>
         collection.deleteOne({ _id: new ObjectId(id) });
 
+    collection.deleteManyById = async (ids) => {
+        return collection.deleteMany({
+            _id: {
+                $in: ids
+                    .filter((id) => ObjectId.isValid(id))
+                    .map((id) => new ObjectId(id)),
+            },
+        });
+    };
+
     return collection;
 };

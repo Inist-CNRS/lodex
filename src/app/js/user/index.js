@@ -4,7 +4,6 @@ import { createSelector } from 'reselect';
 
 import { ADMIN_ROLE } from '../../../common/tools/tenantTools';
 import getQueryString from '../lib/getQueryString';
-import qs from 'qs';
 
 export const LOGIN_FORM_NAME = 'login';
 export const TOGGLE_LOGIN = 'TOGGLE_LOGIN';
@@ -396,7 +395,7 @@ export const getGetDatasetColumnsRequest = (state) => {
 
 export const getDeleteManyDatasetRowRequest = (state, ids) => {
     return getRequest(state, {
-        url: `/api/dataset/?ids=${qs.stringify({ ids })}`,
+        url: `/api/dataset/batch-delete?ids=${ids.join(',')}`,
         method: 'DELETE',
     });
 };

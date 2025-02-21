@@ -74,21 +74,27 @@ export const updateDataset = async (ctx) => {
     ctx.body = { status: 'success' };
 };
 
-export const deleteDatasetRow = async (ctx, id) => {
+export const deleteManyDatasetRow = async (ctx) => {
+    const ids = ctx.request.query.ids && ctx.request.query.ids.split(',');
+    if (!ids || !Array.isArray(ids) || ids.length === 0) {
+        ctx.status = 400;
+        ctx.body = { status: 'error', error: 'ids parameter is missing' };
+        return;
+    }
     try {
         const { acknowledged, deletedCount } =
-            await ctx.dataset.deleteOneById(id);
+            await ctx.dataset.deleteManyById(ids);
 
         if (!acknowledged || deletedCount === 0) {
             ctx.status = 404;
-            ctx.body = { status: 'error', error: `Dataset not found: ${id}` };
+            ctx.body = { status: 'error', error: `Could not delete Ids` };
             return;
         }
 
         ctx.body = { status: 'deleted' };
     } catch (error) {
         const logger = getLogger(ctx.tenant);
-        logger.error(`Delete dataset row error`, {
+        logger.error(`Delete dataset rows error`, {
             error,
         });
         ctx.body = { status: 'error', error };
@@ -98,7 +104,7 @@ export const deleteDatasetRow = async (ctx, id) => {
 app.use(route.delete('/', clearDataset));
 app.use(route.get('/columns', getDatasetColumns));
 app.use(route.get('/', getDataset));
-app.use(route.delete('/:id', deleteDatasetRow));
+app.use(route.delete('/batch-delete', deleteManyDatasetRow));
 app.use(koaBodyParser());
 app.use(route.put('/', updateDataset));
 
