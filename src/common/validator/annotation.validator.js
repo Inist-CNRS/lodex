@@ -51,7 +51,36 @@ export const annotationCreationSchema = z
             .default(null)
             .transform((value) => (value === '' ? null : value)),
         initialValue: z.string().nullish().default(null),
-        proposedValue: z.string().nullish().default(null),
+        proposedValue: z
+            .string()
+            .trim()
+            .min(1, {
+                message: 'error_required',
+            })
+            .or(
+                z
+                    .array(
+                        z.string().trim().min(1, {
+                            message: 'error_required',
+                        }),
+                    )
+                    .nonempty({
+                        message: 'error_required',
+                    }),
+            )
+            .nullish()
+            .default(null)
+            .transform((value) => {
+                if (value == null) {
+                    return null;
+                }
+
+                if (Array.isArray(value)) {
+                    return value;
+                }
+
+                return [value];
+            }),
     })
     .superRefine((data, refineContext) => {
         if (
@@ -79,7 +108,7 @@ export const annotationCreationSchema = z
             [ANNOTATION_KIND_CORRECTION, ANNOTATION_KIND_ADDITION].includes(
                 data.kind,
             ) &&
-            !data.proposedValue
+            !data.proposedValue?.length
         ) {
             refineContext.addIssue({
                 code: 'error_required',
@@ -87,7 +116,7 @@ export const annotationCreationSchema = z
                 path: ['proposedValue'],
             });
         }
-        if (data.kind === 'removal' && data.proposedValue) {
+        if (data.kind === ANNOTATION_KIND_REMOVAL && data.proposedValue) {
             refineContext.addIssue({
                 code: 'error_empty',
                 message: 'annotation_error_empty_proposed_value',

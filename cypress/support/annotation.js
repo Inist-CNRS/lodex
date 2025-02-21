@@ -198,7 +198,7 @@ export function createMultiValueAnnotation({
     submitAnnotation();
 }
 
-export function createAddValueWithProposedValueChoiceAnnotation({
+export function createAddValueWithSingleProposedValueChoiceAnnotation({
     fieldLabel,
     proposedValue,
     comment,
@@ -213,6 +213,33 @@ export function createAddValueWithProposedValueChoiceAnnotation({
 
     cy.findByLabelText('Proposed Value *').click();
     cy.findByRole('option', { name: proposedValue }).click();
+
+    fillComment(comment);
+    goToNextStep();
+    fillAuthor({ authorName, authorEmail });
+
+    submitAnnotation();
+}
+
+export function createAddValueWithMultipleProposedValuesChoiceAnnotation({
+    fieldLabel,
+    proposedValues,
+    comment,
+    authorName,
+    authorEmail,
+}) {
+    openAnnotationModalForField(fieldLabel);
+
+    targetValue();
+
+    chooseKindAdd();
+
+    cy.findByLabelText('Proposed Value *').click();
+    for (const proposedValue of proposedValues) {
+        cy.findByRole('option', { name: proposedValue }).click();
+    }
+
+    cy.findByRole('presentation').click();
 
     fillComment(comment);
     goToNextStep();

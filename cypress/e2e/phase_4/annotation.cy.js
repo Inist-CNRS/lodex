@@ -151,7 +151,7 @@ describe('Annotation', () => {
                         'Field Icons',
                         'Field Internal Name',
                         'Initial value',
-                        'Proposed value',
+                        'Proposed values',
                         'Status',
                         'Internal Comment',
                         'Administrator',
@@ -842,7 +842,7 @@ describe('Annotation', () => {
         });
     });
 
-    describe('suggested value list', () => {
+    describe('suggested value list with a single value', () => {
         beforeEach(() => {
             // ResizeObserver doesn't like when the app has to many renders / re-renders
             // and throws an exception to say, "I wait for the next paint"
@@ -881,7 +881,7 @@ Revue`);
         });
 
         it('should support enforcing a list of values', () => {
-            annotation.createAddValueWithProposedValueChoiceAnnotation({
+            annotation.createAddValueWithSingleProposedValueChoiceAnnotation({
                 fieldLabel: 'Liste des films',
                 proposedValue: 'Book',
                 comment: 'This is a comment',
@@ -907,6 +907,92 @@ Revue`);
                     '',
                     '',
                     'Book',
+                    'To Review',
+                    '',
+                    '',
+                    'John Doe',
+                    'This is a comment',
+                    new Date().toLocaleDateString(),
+                    new Date().toLocaleDateString(),
+                ]);
+            });
+        });
+    });
+
+    describe.only('suggested value list with multiple values', () => {
+        beforeEach(() => {
+            // ResizeObserver doesn't like when the app has to many renders / re-renders
+            // and throws an exception to say, "I wait for the next paint"
+            // https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver#observation_errors
+            cy.on('uncaught:exception', (error) => {
+                return !error.message.includes('ResizeObserver');
+            });
+
+            teardown();
+            menu.openAdvancedDrawer();
+            menu.goToAdminDashboard();
+            datasetImportPage.importDataset('dataset/film.csv');
+            datasetImportPage.importModel('model/film-obsolete.json');
+
+            cy.findByRole('gridcell', { name: 'Liste des films' }).trigger(
+                'mouseenter',
+            );
+            cy.findByRole('button', { name: 'edit-Liste des films' }).click();
+
+            cy.findByRole('tab', { name: 'Semantics' }).click();
+            cy.findByLabelText('Annotation format').click();
+
+            cy.findByRole('option', {
+                name: 'Predefined values list',
+            }).click();
+
+            cy.findByRole('textbox', {
+                name: 'Predefined values',
+            }).type(`Article
+Book
+Revue`);
+
+            cy.findByLabelText('Select *').click();
+
+            cy.findByRole('option', {
+                name: 'Multiple choice',
+            }).click();
+
+            cy.findByRole('button', { name: 'Save' }).click();
+
+            datasetImportPage.publish();
+            datasetImportPage.goToPublishedResources();
+        });
+
+        it('should support enforcing a list of values', () => {
+            annotation.createAddValueWithMultipleProposedValuesChoiceAnnotation(
+                {
+                    fieldLabel: 'Liste des films',
+                    proposedValues: ['Book', 'Revue'],
+                    comment: 'This is a comment',
+                    authorName: 'John Doe',
+                    authorEmail: 'john.doe@example.org',
+                },
+            );
+
+            cy.findByText('More').click();
+            menu.goToAdminDashboard();
+            cy.findByText('Annotations').click();
+
+            cy.findAllByRole('cell').then((cells) => {
+                expect(
+                    cells.toArray().map((cell) => cell.textContent),
+                ).to.deep.equal([
+                    '',
+                    'Home page',
+                    '',
+                    'Addition',
+                    'Liste des films',
+                    '[vPYU]',
+                    '',
+                    '',
+                    '',
+                    '[ Book, Revue ]',
                     'To Review',
                     '',
                     '',
