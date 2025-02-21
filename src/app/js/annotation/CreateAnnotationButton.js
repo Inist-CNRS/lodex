@@ -4,11 +4,11 @@ import PropTypes from 'prop-types';
 import React, { useCallback, useRef, useState } from 'react';
 
 import { useTranslate } from '../i18n/I18NContext';
+import { useGetFieldAnnotationIds } from './annotationStorage';
 import { CreateAnnotationModal } from './CreateAnnotationModal';
+import { useCanAnnotate } from './useCanAnnotate';
 import { useCreateAnnotation } from './useCreateAnnotation';
 import { useResourceUri } from './useResourceUri';
-import { useCanAnnotate } from './useCanAnnotate';
-import { useGetFieldAnnotationIds } from './annotationStorage';
 
 export function CreateAnnotationButton({ field, initialValue = null }) {
     const { translate } = useTranslate();

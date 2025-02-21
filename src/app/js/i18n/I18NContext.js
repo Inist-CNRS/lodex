@@ -1,11 +1,11 @@
-import React, { createContext, useContext } from 'react';
 import Polyglot from 'node-polyglot';
-import { fromI18n } from '../public/selectors';
-import { connect } from 'react-redux';
-import { setLanguage as setLanguageAction } from './index';
 import PropTypes from 'prop-types';
+import React, { createContext, useContext } from 'react';
+import { connect } from 'react-redux';
+import { fromI18n } from '../public/selectors';
+import { setLanguage as setLanguageAction } from './index';
 
-const I18NContext = createContext({ translate: () => '' });
+const I18NContext = createContext({ translate: (_label) => '' });
 
 export const I18NComponent = ({ locale, phrases, setLanguage, children }) => {
     const polyglot = new Polyglot({

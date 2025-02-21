@@ -8,7 +8,6 @@ import { compose } from 'recompose';
 import { useTranslate } from '../i18n/I18NContext';
 import FieldInput from '../lib/components/FieldInput';
 import { FIELD_ANNOTATION_FORMAT_LIST } from './FieldAnnotationFormat';
-import { splitAnnotationFormatListOptions } from './annotations';
 
 function FieldAnnotationFormatListOptionsField({
     input,
@@ -22,10 +21,6 @@ function FieldAnnotationFormatListOptionsField({
 
         return (input.value ?? []).join('\n');
     }, [input]);
-
-    const predefinedValues = useMemo(() => {
-        return splitAnnotationFormatListOptions(fieldValue);
-    }, [fieldValue]);
 
     return (
         <>
@@ -45,6 +40,12 @@ function FieldAnnotationFormatListOptionsField({
         </>
     );
 }
+
+FieldAnnotationFormatListOptionsField.propTypes = {
+    input: PropTypes.object.isRequired,
+    label: PropTypes.string.isRequired,
+    meta: PropTypes.object.isRequired,
+};
 
 export function FieldAnnotationFormatListOptions({
     isFieldAnnotable,
@@ -74,6 +75,7 @@ export function FieldAnnotationFormatListOptions({
 
 FieldAnnotationFormatListOptions.propTypes = {
     isFieldAnnotable: PropTypes.bool.isRequired,
+    fieldAnnotationFormat: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = (state) => {
