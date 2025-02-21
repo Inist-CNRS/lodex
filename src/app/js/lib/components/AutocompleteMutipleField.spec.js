@@ -150,7 +150,7 @@ describe('AutocompleteMultipleField', () => {
 
             await waitFor(() => {
                 const option = wrapper.getByRole('option', {
-                    name: 'autocomplete_add',
+                    name: 'autocomplete_add+{"option":"Franck"}',
                 });
 
                 expect(option).toBeInTheDocument();
