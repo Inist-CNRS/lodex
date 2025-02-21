@@ -296,6 +296,7 @@ describe('AnnotationForm', () => {
             {
                 status: 'ongoing',
                 internalComment: 'Just testing the annotation admin',
+                adminComment: '',
                 administrator: 'Jonathan',
             },
         );
