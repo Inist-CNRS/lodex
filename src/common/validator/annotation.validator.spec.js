@@ -605,6 +605,7 @@ describe('annotation.validator', () => {
                 status: 'to_review',
                 internalComment: 'Need to test this annotation thoroughly',
                 administrator: 'The tester',
+                adminComment: 'I will do it next week',
             };
 
             const validatedAnnotation =
@@ -707,6 +708,20 @@ describe('annotation.validator', () => {
                 status: 'to_review',
                 internalComment: 'Need to test this annotation thoroughly',
                 administrator: null,
+                adminComment: 'I will do it next week',
+            };
+
+            const validatedAnnotation =
+                annotationUpdateSchema.parse(annotationPayload);
+
+            expect(validatedAnnotation).toStrictEqual(annotationPayload);
+        });
+        it('should accept no adminComment', () => {
+            const annotationPayload = {
+                status: 'to_review',
+                internalComment: 'Need to test this annotation thoroughly',
+                administrator: null,
+                adminComment: null,
             };
 
             const validatedAnnotation =
