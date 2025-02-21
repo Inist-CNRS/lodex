@@ -15,6 +15,8 @@ function TestAnnotationList({ field, annotations }) {
     );
 }
 
+TestAnnotationList.propTypes = AnnotationList.propTypes;
+
 describe('AnnotationList', () => {
     describe('getAnnotationSummaryValue', () => {
         it('should return the comment when the annotation kind is comment', () => {
@@ -67,7 +69,7 @@ describe('AnnotationList', () => {
 
     describe('getAnnotationTitle', () => {
         it('should return null when receiving no annotation', () => {
-            expect(getAnnotationTitle(null, (v) => v)).toBe(null);
+            expect(getAnnotationTitle(null, (v) => v)).toBeNull();
         });
         it('should return the annotation_home_page translation when the annotation has no resourceUri', () => {
             expect(getAnnotationTitle({ resourceUri: null }, (v) => v)).toBe(
@@ -227,6 +229,7 @@ describe('AnnotationList', () => {
                     _id: 'annotationId',
                     kind: 'correction',
                     comment: 'replace this with that',
+                    adminComment: 'Can you please provide more context?',
                     proposedValue: 'that',
                     initialValue: 'this',
                     resourceUri: 'resourceUri',
@@ -248,12 +251,18 @@ describe('AnnotationList', () => {
             expect(
                 wrapper.queryByLabelText('annotation_initial_value'),
             ).toHaveTextContent('this');
+            wrapper.debug();
             expect(
-                wrapper.queryByLabelText('annotation_proposed_value'),
+                wrapper.queryByLabelText(
+                    'annotation_proposed_value+{"smart_count":1}',
+                ),
             ).toHaveTextContent('that');
             expect(
                 wrapper.queryByLabelText('annotation_comment_section'),
             ).toHaveTextContent('replace this with that');
+            expect(
+                wrapper.queryByLabelText('annotation_admin_comment_section'),
+            ).toHaveTextContent('Can you please provide more context?');
             expect(
                 wrapper.queryByLabelText('annotation_updated_at'),
             ).toHaveTextContent('10/1/2025');
