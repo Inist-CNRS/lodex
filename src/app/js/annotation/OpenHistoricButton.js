@@ -77,7 +77,7 @@ export const OpenHistoricButton = ({ field, resourceUri }) => {
                         <CloseIcon fontSize="1rem" />
                     </IconButton>
                 </Box>
-                <AnnotationList annotations={data} field={field} />
+                {data && <AnnotationList annotations={data} field={field} />}
             </Drawer>
         </>
     );

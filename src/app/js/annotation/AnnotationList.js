@@ -121,7 +121,10 @@ export const AnnotationList = ({ annotations, field }) => {
             <Box>
                 {(mode === 'all' ? annotations : myAnnotations).map(
                     (annotation) => (
-                        <Accordion defaultExpanded={annotations.length === 1}>
+                        <Accordion
+                            key={annotation._id}
+                            defaultExpanded={annotations.length === 1}
+                        >
                             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                                 <Grid container columns={12}>
                                     <Grid item xs={2}>

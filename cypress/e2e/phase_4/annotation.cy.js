@@ -919,7 +919,7 @@ Revue`);
         });
     });
 
-    describe.only('suggested value list with multiple values', () => {
+    describe('suggested value list with multiple values', () => {
         beforeEach(() => {
             // ResizeObserver doesn't like when the app has to many renders / re-renders
             // and throws an exception to say, "I wait for the next paint"
@@ -933,7 +933,6 @@ Revue`);
             menu.goToAdminDashboard();
             datasetImportPage.importDataset('dataset/film.csv');
             datasetImportPage.importModel('model/film-obsolete.json');
-
             cy.findByRole('gridcell', { name: 'Liste des films' }).trigger(
                 'mouseenter',
             );
@@ -1002,6 +1001,118 @@ Revue`);
                     new Date().toLocaleDateString(),
                 ]);
             });
+        });
+    });
+    describe('see own annotations', () => {
+        beforeEach(() => {
+            // ResizeObserver doesn't like when the app has to many renders / re-renders
+            // and throws an exception to say, "I wait for the next paint"
+            // https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver#observation_errors
+            cy.on('uncaught:exception', (error) => {
+                return !error.message.includes('ResizeObserver');
+            });
+
+            teardown();
+            menu.openAdvancedDrawer();
+            menu.goToAdminDashboard();
+            datasetImportPage.importDataset('dataset/film.csv');
+            datasetImportPage.importModel('model/film-with-field-id.tar');
+            cy.findByRole('gridcell', { name: 'Liste des films' }).trigger(
+                'mouseenter',
+            );
+            cy.findByRole('button', { name: 'edit-Liste des films' }).click();
+
+            cy.findByRole('tab', { name: 'Semantics' }).click();
+            cy.findByRole('checkbox', {
+                name: 'This field can be annotated',
+            }).click();
+            cy.findByRole('button', { name: 'Save' }).click();
+
+            datasetImportPage.publish();
+
+            cy.findByRole('button', {
+                name: 'Open menu',
+            }).click();
+
+            cy.findByRole('menuitem', {
+                name: 'Model',
+            }).trigger('mouseleave');
+
+            cy.findByRole('menuitem', {
+                name: 'Annotations',
+            }).trigger('mouseenter');
+
+            cy.wait(500);
+
+            datasetImportPage.importAnnotations(
+                'annotations/film-with-field-id.json',
+            );
+
+            datasetImportPage.goToPublishedResources();
+        });
+
+        it('should see own annotations', () => {
+            annotation.checkFieldAnnotations({
+                fieldLabel: 'Dataset Description',
+                expectedAnnotations: [
+                    {
+                        kind: 'comment',
+                        summaryValue: 'This is a comment',
+                        status: 'Ongoing',
+                    },
+                ],
+                resourceTitle: 'Home page',
+            });
+            annotation.createTitleAnnotation({
+                fieldLabel: 'Dataset Description',
+                comment: 'This is my comment',
+                authorName: 'Me',
+                authorEmail: 'me@myself.org',
+            });
+
+            cy.findByText(`(1 sent)`).should('be.visible');
+
+            annotation.openAnnotationModalForField('Dataset Description');
+            cy.findByText(`See 2 annotations`).should('be.visible');
+            cy.findByText(`See 2 annotations`).click();
+
+            cy.findByLabelText('Resource title').should(
+                'have.text',
+                'Home page',
+            );
+
+            cy.findByText('All').should('be.visible');
+            cy.findByText('Sent by me').should('be.visible');
+            cy.findByText('Sent by me').should('be.enabled');
+
+            cy.findAllByLabelText('Type').should('have.length', 2);
+            cy.findAllByLabelText('Annotation summary').should(
+                'have.length',
+                2,
+            );
+            cy.findAllByLabelText('Status').should('have.length', 2);
+
+            cy.findByText('Sent by me').click();
+
+            cy.findAllByLabelText('Type').should('have.length', 1);
+            cy.findAllByLabelText('Annotation summary').should(
+                'have.length',
+                1,
+            );
+            cy.findAllByLabelText('Status').should('have.length', 1);
+            cy.findByLabelText('Type').should('have.text', 'comment');
+
+            cy.findByLabelText('Annotation summary').should(
+                'have.text',
+                'This is my comment',
+            );
+            cy.findByLabelText('Status').should('have.text', 'Ongoing');
+
+            cy.findByLabelText('Annotation summary').click();
+
+            cy.findByText('You are this annotation contributor').should(
+                'be.visible',
+            );
         });
     });
 });
