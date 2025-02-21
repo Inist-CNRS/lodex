@@ -1,9 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Checkbox } from '@mui/material';
-import { useTranslate } from '../../i18n/I18NContext';
 
 export const useDatagridSelection = (data) => {
-    const { translate } = useTranslate();
     const [selectionState, setSelectionState] = useState({
         allSelected: false,
         selectedRows: [],
@@ -68,7 +66,7 @@ export const useDatagridSelection = (data) => {
 
     return {
         selectionColumn: {
-            field: translate('checkbox'),
+            field: 'checkbox',
             sortable: false,
             filterable: false,
             hideable: false,

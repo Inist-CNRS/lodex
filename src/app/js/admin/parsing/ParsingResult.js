@@ -123,7 +123,6 @@ export const ParsingResultComponent = (props) => {
     const [toggleDrawer, setToggleDrawer] = useState(false);
     const [selectedCell, setSelectedCell] = useState(null);
 
-    const [selectedRowForDelete, setSelectedRowForDelete] = useState(null);
     const [openDialogDeleteRow, setOpenDialogDeleteRow] = useState(false);
 
     const columnsToShow = useMemo(() => {
@@ -302,6 +301,9 @@ export const ParsingResultComponent = (props) => {
     };
 
     const handleCellClick = (params) => {
+        if (params.field === 'checkbox') {
+            return;
+        }
         setSelectedCell(params);
         setToggleDrawer(true);
     };
@@ -473,7 +475,7 @@ export const ParsingResultComponent = (props) => {
             <ParsingDeleteRowDialogComponent
                 isOpen={openDialogDeleteRow}
                 handleClose={() => setOpenDialogDeleteRow(false)}
-                selectedRowForDelete={selectedRowForDelete}
+                selectedRowForDelete={selectedRows}
                 reloadDataset={() => fetchDataset()}
                 shouldRepublish={isPublished}
             />
