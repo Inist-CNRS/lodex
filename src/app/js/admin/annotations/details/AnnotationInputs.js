@@ -67,6 +67,27 @@ export function AnnotationInputs({ form }) {
                     );
                 }}
             </form.Field>
+            <form.Field name="adminComment">
+                {(field) => {
+                    const hasErrors = !!(
+                        field.state.meta.isTouched &&
+                        field.state.meta.errors?.length
+                    );
+                    return (
+                        <TextField
+                            label={translate('annotation_admin_comment')}
+                            name={field.name}
+                            value={field.state.value}
+                            onBlur={field.handleBlur}
+                            onChange={(e) => field.handleChange(e.target.value)}
+                            minRows={5}
+                            maxRows={10}
+                            multiline
+                            error={hasErrors}
+                        />
+                    );
+                }}
+            </form.Field>
 
             <form.Field name="administrator">
                 {(field) => {

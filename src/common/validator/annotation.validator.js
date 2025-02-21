@@ -149,6 +149,11 @@ export const annotationUpdateSchema = z.object({
         .min(1, {
             message: 'error_required',
         }),
+    adminComment: z
+        .string()
+        .nullish()
+        .default(null)
+        .transform((value) => (value === '' ? null : value)),
     administrator: z
         .union([
             z.literal(''),

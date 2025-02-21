@@ -123,7 +123,11 @@ export const AnnotationList = ({ annotations, field }) => {
                     (annotation) => (
                         <Accordion
                             key={annotation._id}
-                            defaultExpanded={annotations.length === 1}
+                            defaultExpanded={
+                                mode === 'all'
+                                    ? annotations.length === 1
+                                    : myAnnotations.length === 1
+                            }
                         >
                             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                                 <Grid container columns={12}>
@@ -231,6 +235,15 @@ export const AnnotationList = ({ annotations, field }) => {
                                         >
                                             {translate(
                                                 'annotation_proposed_value',
+                                                {
+                                                    smart_count: Array.isArray(
+                                                        annotation.proposedValue,
+                                                    )
+                                                        ? annotation
+                                                              .proposedValue
+                                                              .length
+                                                        : 1,
+                                                },
                                             )}
                                         </Typography>
                                         <Typography aria-labelledby="annotation_proposed_value">
@@ -241,6 +254,7 @@ export const AnnotationList = ({ annotations, field }) => {
                                         <Typography
                                             variant="h6"
                                             id="annotation_comment_section"
+                                            component="pre"
                                         >
                                             {translate(
                                                 'annotation_comment_section',
@@ -248,6 +262,22 @@ export const AnnotationList = ({ annotations, field }) => {
                                         </Typography>
                                         <Typography aria-labelledby="annotation_comment_section">
                                             {annotation.comment}
+                                        </Typography>
+                                    </Box>
+                                    <Box>
+                                        <Typography
+                                            variant="h6"
+                                            id="annotation_admin_comment_section"
+                                        >
+                                            {translate(
+                                                'annotation_admin_comment_section',
+                                            )}
+                                        </Typography>
+                                        <Typography
+                                            component="pre"
+                                            aria-labelledby="annotation_admin_comment_section"
+                                        >
+                                            {annotation.adminComment}
                                         </Typography>
                                     </Box>
                                     <Box>

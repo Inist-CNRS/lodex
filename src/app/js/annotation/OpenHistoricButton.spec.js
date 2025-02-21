@@ -71,7 +71,9 @@ describe('OpenHistoricButton', () => {
             wrapper.getByLabelText('annotation_initial_value'),
         ).toHaveTextContent('initialValue');
         expect(
-            wrapper.getByLabelText('annotation_proposed_value'),
+            wrapper.getByLabelText(
+                'annotation_proposed_value+{"smart_count":1}',
+            ),
         ).toHaveTextContent('proposedValue');
         expect(
             wrapper.getByLabelText('annotation_comment_section'),

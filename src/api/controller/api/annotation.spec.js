@@ -1565,6 +1565,7 @@ describe('annotation', () => {
                     body: {
                         status: 'validated',
                         internalComment: 'All done',
+                        adminComment: 'Your comment has been accepted',
                         administrator: 'The Tester',
                     },
                 },
@@ -1583,6 +1584,7 @@ describe('annotation', () => {
                         ...annotation,
                         status: 'validated',
                         internalComment: 'All done',
+                        adminComment: 'Your comment has been accepted',
                         administrator: 'The Tester',
                         updatedAt: expect.any(Date),
                         field: {
@@ -1603,6 +1605,7 @@ describe('annotation', () => {
                     ...annotation,
                     status: 'validated',
                     internalComment: 'All done',
+                    adminComment: 'Your comment has been accepted',
                     administrator: 'The Tester',
                     updatedAt: expect.any(Date),
                 },
@@ -1914,9 +1917,6 @@ describe('annotation', () => {
         let field;
         let otherField;
         let fieldAnnotations;
-        let otherFieldAnnotations;
-        let resource1;
-        let resource2;
         beforeEach(async () => {
             await fieldModel.create(
                 {
@@ -1945,12 +1945,12 @@ describe('annotation', () => {
                 'otherField',
             );
 
-            resource1 = await publishedDatasetModel.create({
+            await publishedDatasetModel.create({
                 uri: '/resource/1',
                 tItl3: 'Resource 1',
             });
 
-            resource2 = await publishedDatasetModel.create({
+            await publishedDatasetModel.create({
                 uri: '/resource/2',
                 tItl3: 'Resource 2',
             });
@@ -1970,7 +1970,7 @@ describe('annotation', () => {
                 }),
             ]);
 
-            otherFieldAnnotations = await Promise.all([
+            await Promise.all([
                 annotationModel.create({
                     resourceUri: '/resource/1',
                     fieldId: otherField._id,
