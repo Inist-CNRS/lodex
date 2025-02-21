@@ -25,6 +25,7 @@ export const AnnotationForm = ({ annotation }) => {
         defaultValues: {
             status: annotation.status ?? 'to_review',
             internalComment: annotation.internalComment ?? '',
+            adminComment: annotation.adminComment ?? '',
             administrator: annotation.administrator ?? '',
         },
         onSubmit: async ({ value }) => {

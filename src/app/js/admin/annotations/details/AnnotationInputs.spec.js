@@ -17,6 +17,7 @@ const TestForm = ({ annotation }) => {
             status: annotation.status,
             internalComment: annotation.internalComment,
             administrator: annotation.administrator,
+            adminComment: annotation.adminComment,
         },
         onSubmit: () => {},
     });
@@ -32,7 +33,7 @@ TestForm.propTypes = {
 };
 
 describe('AnnotationInputs', () => {
-    it('should render form for status internalComment and administrator', () => {
+    it('should render form for status, internalComment, adminComment and administrator', () => {
         const handleUpdateAnnotation = jest.fn();
         jest.mocked(useUpdateAnnotation).mockImplementation(() => ({
             handleUpdateAnnotation,
@@ -46,6 +47,8 @@ describe('AnnotationInputs', () => {
                             status: 'to_review',
                             administrator: 'Admin',
                             internalComment: 'Internal test comment',
+                            adminComment:
+                                'Admin comment visible to contributors',
                         }}
                     />
                 </MemoryRouter>
@@ -67,6 +70,12 @@ describe('AnnotationInputs', () => {
                 container: inputsRegion,
             }),
         ).toHaveValue('Internal test comment');
+        expect(
+            wrapper.getByRole('textbox', {
+                name: 'annotation_admin_comment',
+                container: inputsRegion,
+            }),
+        ).toHaveValue('Admin comment visible to contributors');
         expect(
             wrapper.getByRole('textbox', {
                 name: 'annotation_administrator',
