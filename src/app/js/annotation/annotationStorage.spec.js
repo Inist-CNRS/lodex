@@ -1,7 +1,7 @@
-const {
+import {
     saveAnnotationId,
     getFieldAnnotationIds,
-} = require('./annotationStorage');
+} from './annotationStorage';
 
 describe('annotationStorage', () => {
     beforeEach(() => {
