@@ -17,6 +17,7 @@ import Routes from './Routes';
 import sagas from './sagas';
 
 import 'react-toastify/dist/ReactToastify.css';
+import { AnnotationStorageProvider } from '../annotation/annotationStorage';
 
 const locale = getLocale();
 const initialState = {
@@ -47,11 +48,16 @@ hydrate(
     <Provider {...{ store }}>
         <I18N>
             <QueryClientProvider client={queryClient}>
-                <Router history={history}>
-                    <LodexThemeProvider>
-                        <Routes history={history} tenant={window.__TENANT__} />
-                    </LodexThemeProvider>
-                </Router>
+                <AnnotationStorageProvider>
+                    <Router history={history}>
+                        <LodexThemeProvider>
+                            <Routes
+                                history={history}
+                                tenant={window.__TENANT__}
+                            />
+                        </LodexThemeProvider>
+                    </Router>
+                </AnnotationStorageProvider>
             </QueryClientProvider>
         </I18N>
     </Provider>,

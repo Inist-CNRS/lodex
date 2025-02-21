@@ -4,14 +4,17 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import fetch from '../lib/fetch';
 import { useCreateAnnotation } from './useCreateAnnotation';
+import { AnnotationStorageProvider } from './annotationStorage';
 
 const queryClient = new QueryClient();
 
 function TestWrapper({ children }) {
     return (
-        <QueryClientProvider client={queryClient}>
-            {children}
-        </QueryClientProvider>
+        <AnnotationStorageProvider>
+            <QueryClientProvider client={queryClient}>
+                {children}
+            </QueryClientProvider>
+        </AnnotationStorageProvider>
     );
 }
 

@@ -31,6 +31,18 @@ describe('AnnotationList', () => {
                 'initialValue -> proposedValue',
             );
         });
+        it('should should truncate the initialValue and proposed Value when they are longer than 16 characters', () => {
+            const annotation = {
+                kind: 'correction',
+                initialValue:
+                    'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
+                proposedValue:
+                    'cogito ergo sum, vini vidi vici, alea jacta est',
+            };
+            expect(getAnnotationSummaryValue(annotation)).toBe(
+                'Lorem ipsum dolo ... -> cogito ergo sum, ...',
+            );
+        });
         it('should return the initialValue when the annotation kind is removal', () => {
             const annotation = {
                 kind: 'removal',
@@ -101,6 +113,7 @@ describe('AnnotationList', () => {
                     field: { label: 'fieldLabel', scope: 'resource' },
                     resource: { title: 'resourceTitle', uri: 'resourceUri' },
                     status: 'to_review',
+                    isMine: false,
                 },
                 {
                     _id: 'annotationId',
@@ -112,6 +125,7 @@ describe('AnnotationList', () => {
                     field: { label: 'fieldLabel', scope: 'resource' },
                     resource: { title: 'resourceTitle', uri: 'resourceUri' },
                     status: 'ongoing',
+                    isMine: true,
                 },
                 {
                     _id: 'annotationId',
@@ -123,6 +137,7 @@ describe('AnnotationList', () => {
                     field: { label: 'fieldLabel', scope: 'resource' },
                     resource: { title: 'resourceTitle', uri: 'resourceUri' },
                     status: 'validated',
+                    isMine: false,
                 },
                 {
                     _id: 'annotationId',
@@ -134,6 +149,7 @@ describe('AnnotationList', () => {
                     field: { label: 'fieldLabel', scope: 'resource' },
                     resource: { title: 'resourceTitle', uri: 'resourceUri' },
                     status: 'rejected',
+                    isMine: false,
                 },
             ];
             const field = { label: 'fieldLabel' };
@@ -141,7 +157,9 @@ describe('AnnotationList', () => {
                 <TestAnnotationList annotations={annotations} field={field} />,
             );
             expect(
-                wrapper.queryByText('annotation_history'),
+                wrapper.queryByText(
+                    'annotation_history+{"fieldLabel":"fieldLabel"}',
+                ),
             ).toBeInTheDocument();
             expect(
                 wrapper.queryByLabelText('annotation_resource'),
@@ -158,6 +176,10 @@ describe('AnnotationList', () => {
             expect(
                 wrapper.queryAllByLabelText('annotation_status'),
             ).toHaveLength(4);
+
+            expect(wrapper.queryAllByLabelText('own_annotation')).toHaveLength(
+                1,
+            );
 
             expect(
                 wrapper.queryAllByLabelText('annotation_kind')[0],
@@ -213,12 +235,16 @@ describe('AnnotationList', () => {
                     status: 'to_review',
                     createdAt: '2025-09-01T00:00:00.000Z',
                     updatedAt: '2025-10-01T00:00:00.000Z',
+                    isMine: false,
                 },
             ];
             const field = { label: 'fieldLabel' };
             const wrapper = render(
                 <TestAnnotationList annotations={annotations} field={field} />,
             );
+            expect(
+                wrapper.queryByText('own_annotation'),
+            ).not.toBeInTheDocument();
             expect(
                 wrapper.queryByLabelText('annotation_initial_value'),
             ).toHaveTextContent('this');
@@ -234,6 +260,29 @@ describe('AnnotationList', () => {
             expect(
                 wrapper.queryByLabelText('annotation_created_at'),
             ).toHaveTextContent('9/1/2025');
+        });
+        it('should display own_annotation when isMine is true', () => {
+            const annotations = [
+                {
+                    _id: 'annotationId',
+                    kind: 'correction',
+                    comment: 'replace this with that',
+                    proposedValue: 'that',
+                    initialValue: 'this',
+                    resourceUri: 'resourceUri',
+                    field: { label: 'fieldLabel', scope: 'resource' },
+                    resource: { title: 'resourceTitle', uri: 'resourceUri' },
+                    status: 'to_review',
+                    createdAt: '2025-09-01T00:00:00.000Z',
+                    updatedAt: '2025-10-01T00:00:00.000Z',
+                    isMine: true,
+                },
+            ];
+            const field = { label: 'fieldLabel' };
+            const wrapper = render(
+                <TestAnnotationList annotations={annotations} field={field} />,
+            );
+            expect(wrapper.queryByText('own_annotation')).toBeInTheDocument();
         });
 
         it('should convert to_review status to ongoing', () => {

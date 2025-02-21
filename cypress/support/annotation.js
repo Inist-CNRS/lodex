@@ -1,4 +1,4 @@
-function openAnnotationModalForField(fieldLabel) {
+export function openAnnotationModalForField(fieldLabel) {
     const buttonLabel = `Add an annotation to the ${fieldLabel} field`;
     cy.findByRole('button', {
         name: buttonLabel,

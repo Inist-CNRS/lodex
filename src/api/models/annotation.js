@@ -3,6 +3,8 @@ import { getCreatedCollection } from './utils';
 
 export default async (db) => {
     const annotationCollection = await getCreatedCollection(db, 'annotation');
+    await annotationCollection.createIndex({ fieldId: 1 });
+    await annotationCollection.createIndex({ resourceUri: 1 });
 
     async function create(annotationPayload) {
         const now = new Date();
