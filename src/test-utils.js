@@ -8,11 +8,12 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Provider } from 'react-redux';
 
+import userEvent from '@testing-library/user-event';
+import defaultMuiTheme from './app/custom/themes/default/defaultTheme';
 import sagas from './app/js/admin/sagas';
+import { AnnotationStorageProvider } from './app/js/annotation/annotationStorage';
 import configureStore from './app/js/configureStore';
 import reducers from './app/js/public/reducers';
-import defaultMuiTheme from './app/custom/themes/default/defaultTheme';
-import { AnnotationStorageProvider } from './app/js/annotation/annotationStorage';
 
 // custom/themes/default/defaultTheme';
 
@@ -117,4 +118,4 @@ export {
     within,
 } from '@testing-library/react';
 
-export { customRender as render };
+export { customRender as render, userEvent };

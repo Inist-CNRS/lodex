@@ -211,7 +211,7 @@ export function createAddValueWithSingleProposedValueChoiceAnnotation({
 
     chooseKindAdd();
 
-    cy.findByLabelText('Proposed Value *').click();
+    cy.findByRole('combobox', { name: 'Proposed Value *' }).click();
     cy.findByRole('option', { name: proposedValue }).click();
 
     fillComment(comment);
@@ -234,12 +234,12 @@ export function createAddValueWithMultipleProposedValuesChoiceAnnotation({
 
     chooseKindAdd();
 
-    cy.findByLabelText('Proposed Value *').click();
     for (const proposedValue of proposedValues) {
+        cy.findByRole('combobox', { name: 'Proposed Value *' }).click();
         cy.findByRole('option', { name: proposedValue }).click();
-    }
 
-    cy.findByRole('presentation').click();
+        cy.findByRole('button', { name: proposedValue }).should('be.visible');
+    }
 
     fillComment(comment);
     goToNextStep();

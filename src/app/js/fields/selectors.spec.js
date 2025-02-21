@@ -135,6 +135,7 @@ describe('field selectors', () => {
                                 annotationFormat: 'list',
                                 annotationFormatListKind: 'multiple',
                                 annotationFormatListOptions: 'a\nb\nc',
+                                annotationFormatListSupportsNewValues: false,
                             },
                         },
                     },
@@ -144,6 +145,7 @@ describe('field selectors', () => {
                 annotationFormat: 'list',
                 annotationFormatListKind: 'multiple',
                 annotationFormatListOptions: ['a', 'b', 'c'],
+                annotationFormatListSupportsNewValues: false,
             });
         });
 
@@ -156,6 +158,7 @@ describe('field selectors', () => {
                                 annotable: true,
                                 annotationFormat: 'list',
                                 annotationFormatListOptions: 'a\nb\nc',
+                                annotationFormatListSupportsNewValues: false,
                             },
                         },
                     },
@@ -165,6 +168,7 @@ describe('field selectors', () => {
                 annotationFormat: 'list',
                 annotationFormatListKind: 'single',
                 annotationFormatListOptions: ['a', 'b', 'c'],
+                annotationFormatListSupportsNewValues: false,
             });
         });
 
@@ -178,6 +182,7 @@ describe('field selectors', () => {
                                 annotationFormat: 'list',
                                 annotationFormatListKind: 'single',
                                 annotationFormatListOptions: 'a\nb\nc',
+                                annotationFormatListSupportsNewValues: false,
                             },
                         },
                     },
@@ -187,6 +192,7 @@ describe('field selectors', () => {
                 annotationFormat: 'text',
                 annotationFormatListOptions: [],
                 annotationFormatListKind: 'single',
+                annotationFormatListSupportsNewValues: false,
             });
         });
 
@@ -199,6 +205,7 @@ describe('field selectors', () => {
                                 annotable: true,
                                 annotationFormat: 'text',
                                 annotationFormatListOptions: 'a\nb\nc',
+                                annotationFormatListSupportsNewValues: false,
                             },
                         },
                     },
@@ -208,10 +215,59 @@ describe('field selectors', () => {
                 annotationFormat: 'text',
                 annotationFormatListOptions: [],
                 annotationFormatListKind: 'single',
+                annotationFormatListSupportsNewValues: false,
             });
         });
 
         it('should set annotationFormatListKind to single if field is not annotable', () => {
+            expect(
+                getFieldFormData({
+                    form: {
+                        field: {
+                            values: {
+                                annotable: false,
+                                annotationFormat: 'list',
+                                annotationFormatListKind: 'single',
+                                annotationFormatListOptions: 'a\nb\nc',
+                                annotationFormatListSupportsNewValues: true,
+                            },
+                        },
+                    },
+                }),
+            ).toStrictEqual({
+                annotable: false,
+                annotationFormat: 'text',
+                annotationFormatListOptions: [],
+                annotationFormatListKind: 'single',
+                annotationFormatListSupportsNewValues: false,
+            });
+        });
+
+        it('should support annotationFormatListSupportsNewValues', () => {
+            expect(
+                getFieldFormData({
+                    form: {
+                        field: {
+                            values: {
+                                annotable: true,
+                                annotationFormat: 'list',
+                                annotationFormatListKind: 'single',
+                                annotationFormatListOptions: 'a\nb\nc',
+                                annotationFormatListSupportsNewValues: true,
+                            },
+                        },
+                    },
+                }),
+            ).toStrictEqual({
+                annotable: true,
+                annotationFormat: 'list',
+                annotationFormatListOptions: ['a', 'b', 'c'],
+                annotationFormatListKind: 'single',
+                annotationFormatListSupportsNewValues: true,
+            });
+        });
+
+        it('should set annotationFormatListSupportsNewValues to false if absent', () => {
             expect(
                 getFieldFormData({
                     form: {
@@ -230,6 +286,55 @@ describe('field selectors', () => {
                 annotationFormat: 'text',
                 annotationFormatListOptions: [],
                 annotationFormatListKind: 'single',
+                annotationFormatListSupportsNewValues: false,
+            });
+        });
+
+        it('should set annotationFormatListSupportsNewValues to false if annotationFormat is text', () => {
+            expect(
+                getFieldFormData({
+                    form: {
+                        field: {
+                            values: {
+                                annotable: true,
+                                annotationFormat: 'text',
+                                annotationFormatListKind: 'single',
+                                annotationFormatListOptions: 'a\nb\nc',
+                                annotationFormatListSupportsNewValues: true,
+                            },
+                        },
+                    },
+                }),
+            ).toStrictEqual({
+                annotable: true,
+                annotationFormat: 'text',
+                annotationFormatListOptions: [],
+                annotationFormatListKind: 'single',
+                annotationFormatListSupportsNewValues: false,
+            });
+        });
+
+        it('should set annotationFormatListSupportsNewValues to false if field is not annotable', () => {
+            expect(
+                getFieldFormData({
+                    form: {
+                        field: {
+                            values: {
+                                annotable: false,
+                                annotationFormat: 'list',
+                                annotationFormatListKind: 'single',
+                                annotationFormatListOptions: 'a\nb\nc',
+                                annotationFormatListSupportsNewValues: true,
+                            },
+                        },
+                    },
+                }),
+            ).toStrictEqual({
+                annotable: false,
+                annotationFormat: 'text',
+                annotationFormatListOptions: [],
+                annotationFormatListKind: 'single',
+                annotationFormatListSupportsNewValues: false,
             });
         });
     });

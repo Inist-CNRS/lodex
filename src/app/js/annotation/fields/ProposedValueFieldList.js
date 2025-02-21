@@ -1,42 +1,41 @@
 import PropTypes from 'prop-types';
-import React, { useMemo } from 'react';
+import React from 'react';
 
 import { useTranslate } from '../../i18n/I18NContext';
-import { SelectField } from '../../lib/components/SelectField';
-import { SelectMultipleField } from '../../lib/components/SelectMultipleField';
+import { AutocompleteField } from '../../lib/components/AutocompleteField';
+import { AutocompleteMultipleField } from '../../lib/components/AutocompleteMultipleField';
 
 const NAME = 'proposedValue';
 
-export function ProposedValueFieldList({ form, options, multiple }) {
+export function ProposedValueFieldList({
+    form,
+    options,
+    multiple,
+    supportsNewValues,
+}) {
     const { translate } = useTranslate();
     const label = `${translate('annotation.proposedValue')} *`;
-    const selectOptions = useMemo(
-        () =>
-            options.map((option) => ({
-                value: option,
-                label: option,
-            })),
-        [options],
-    );
+
     if (multiple) {
         return (
-            <SelectMultipleField
+            <AutocompleteMultipleField
                 form={form}
                 name={NAME}
                 label={label}
-                options={selectOptions}
+                options={options}
                 required
             />
         );
     }
 
     return (
-        <SelectField
+        <AutocompleteField
             form={form}
             name={NAME}
             label={label}
-            options={selectOptions}
+            options={options}
             required
+            freeSolo={supportsNewValues}
         />
     );
 }
@@ -45,4 +44,5 @@ ProposedValueFieldList.propTypes = {
     form: PropTypes.object.isRequired,
     options: PropTypes.arrayOf(PropTypes.string).isRequired,
     multiple: PropTypes.bool,
+    supportsNewValues: PropTypes.bool,
 };

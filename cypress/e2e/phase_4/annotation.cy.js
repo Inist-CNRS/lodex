@@ -963,7 +963,7 @@ Revue`);
             datasetImportPage.goToPublishedResources();
         });
 
-        it('should support enforcing a list of values', () => {
+        it('should support enforcing a list of values and selecting multiple options', () => {
             annotation.createAddValueWithMultipleProposedValuesChoiceAnnotation(
                 {
                     fieldLabel: 'Liste des films',

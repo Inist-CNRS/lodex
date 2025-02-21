@@ -2,6 +2,7 @@ import { useForm } from '@tanstack/react-form';
 import { render } from '@testing-library/react';
 import React from 'react';
 
+import PropTypes from 'prop-types';
 import { TestI18N } from '../../i18n/I18NContext';
 import { ProposedValueField } from './ProposedValueField';
 
@@ -13,6 +14,10 @@ function TestProposedValueField({ field }) {
         </TestI18N>
     );
 }
+
+TestProposedValueField.propTypes = {
+    field: PropTypes.object.isRequired,
+};
 
 describe('ProposedValueField', () => {
     describe('list', () => {
