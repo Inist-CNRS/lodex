@@ -1012,7 +1012,7 @@
 "syndication_error"	"Error while updating syndication"	"Erreur lors de la mise à jour de la syndication"
 "blank_space"	"Blank space"	"Espace"
 "parsing_delete_filtered_button_label"	"Delete the filtered row(s)"	" Supprimer le(s) ligne(s) filtrée(s)"
-"parsing_delete_filtered_modal_title"	"Are your sure you want to delete all rows matching the current filter?"	"Êtes-vous sûr de vouloir supprimer toute les lignes correspondant au filtre courant?"
+"parsing_delete_filtered_modal_title"	"Are your sure you want to delete all rows matching the current filter?"	"Êtes-vous sûr de vouloir supprimer toutes les lignes correspondant au filtre courant?"
 "parsing_delete_many_button_label"	"Delete the selected row(s)"	" Supprimer le(s) ligne(s) sélectionnée(s)"
 "parsing_delete_many_modal_title"	"Are your sure you want to delete the selected row? |||| Are you sure you want to delete the %{smart_count} selected rows"	"Êtes-vous sûr de vouloir supprimer l'annotation sélectionnée ? |||| Êtes-vous sûr de vouloir supprimer les %{smart_count} lignes sélectionnées ?"
 "parsing_delete_rows_success"	"Row(s) deleted with success"	"ligne(s) supprimée(s) avec succés ?"
