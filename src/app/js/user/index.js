@@ -395,7 +395,17 @@ export const getGetDatasetColumnsRequest = (state) => {
 
 export const getDeleteManyDatasetRowRequest = (state, ids) => {
     return getRequest(state, {
-        url: `/api/dataset/batch-delete?ids=${ids.join(',')}`,
+        url: `/api/dataset/batch-delete-id?ids=${ids.join(',')}`,
+        method: 'DELETE',
+    });
+};
+
+export const getDeleteFilteredDatasetRowRequest = (
+    state,
+    { columnField, operatorValue, value },
+) => {
+    return getRequest(state, {
+        url: `/api/dataset/batch-delete-filter?filterBy=${columnField}&filterOperator=${operatorValue}&filterValue=${value}`,
         method: 'DELETE',
     });
 };

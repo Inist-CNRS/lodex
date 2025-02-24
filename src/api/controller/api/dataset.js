@@ -77,7 +77,7 @@ export const updateDataset = async (ctx) => {
     ctx.body = { status: 'success' };
 };
 
-export const deleteManyDatasetRow = async (ctx) => {
+export const deleteManyDatasetRowByIds = async (ctx) => {
     const ids = ctx.request.query.ids && ctx.request.query.ids.split(',');
     if (!ids || !Array.isArray(ids) || ids.length === 0) {
         ctx.status = 400;
@@ -112,10 +112,47 @@ export const deleteManyDatasetRow = async (ctx) => {
     }
 };
 
+export const deleteManyDatasetRowByFilter = async (ctx) => {
+    const { filterBy, filterOperator, filterValue } = ctx.request.query;
+    if (!filterBy || !filterOperator || !filterValue) {
+        ctx.status = 400;
+        ctx.body = { status: 'error', error: 'filter parameter is incomplete' };
+        return;
+    }
+    try {
+        const query = buildQuery(filterBy, filterOperator, filterValue);
+        const { acknowledged, deletedCount } =
+            await ctx.dataset.deleteMany(query);
+
+        if (!acknowledged || deletedCount === 0) {
+            ctx.status = 404;
+            ctx.body = { status: 'error', error: `Could not delete Ids` };
+            return;
+        }
+
+        if ((await ctx.publishedDataset.countAll()) > 0) {
+            await workerQueues[ctx.tenant].add(
+                PUBLISHER, // Name of the job
+                { jobType: PUBLISHER, tenant: ctx.tenant },
+                { jobId: uuid() },
+            );
+        }
+
+        ctx.body = { status: 'deleted' };
+    } catch (error) {
+        const logger = getLogger(ctx.tenant);
+        logger.error(`Delete dataset rows error`, {
+            error,
+        });
+        ctx.body = { status: 'error', error };
+    }
+};
+
 app.use(route.delete('/', clearDataset));
 app.use(route.get('/columns', getDatasetColumns));
 app.use(route.get('/', getDataset));
-app.use(route.delete('/batch-delete', deleteManyDatasetRow));
+app.use(route.delete('/batch-delete-id', deleteManyDatasetRowByIds));
+app.use(route.delete('/batch-delete-filter', deleteManyDatasetRowByFilter));
 app.use(koaBodyParser());
 app.use(route.put('/', updateDataset));
 

@@ -39,6 +39,7 @@ import { Link } from 'react-router-dom';
 import { useTranslate } from '../../i18n/I18NContext';
 import { useDatagridSelection } from '../../lib/hooks/useDatagridSelection';
 import { DeleteManyButton } from './DeleteManyButton';
+import { DeleteFilteredButton } from './DeleteFilteredButton';
 
 const COLUMN_TYPE = {
     MAIN: 'main',
@@ -430,6 +431,10 @@ export const ParsingResultComponent = (props) => {
                 </Tooltip>
                 <DeleteManyButton
                     selectedRowIds={selectedRowIds}
+                    reloadDataset={fetchDataset}
+                />
+                <DeleteFilteredButton
+                    filter={filter}
                     reloadDataset={fetchDataset}
                 />
             </GridToolbarContainer>

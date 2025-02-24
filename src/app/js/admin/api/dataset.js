@@ -4,6 +4,7 @@ const {
     getGetDatasetColumnsRequest,
     putUpdateDataset,
     getDeleteManyDatasetRowRequest,
+    getDeleteFilteredDatasetRowRequest,
 } = require('../../user');
 const { getUserSessionStorageInfo } = require('./tools');
 
@@ -57,9 +58,22 @@ const deleteManyDatasetRows = async (ids) => {
     });
 };
 
+const deleteFilteredDatasetRows = async (filter) => {
+    const { token } = getUserSessionStorageInfo();
+
+    const request = getDeleteFilteredDatasetRowRequest({ token }, filter);
+    return fetch(request).then(({ response, error }) => {
+        if (error) {
+            return [];
+        }
+        return response;
+    });
+};
+
 export default {
     getDataset,
     getDatasetColumns,
     updateDataset,
     deleteManyDatasetRows,
+    deleteFilteredDatasetRows,
 };
