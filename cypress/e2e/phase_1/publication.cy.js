@@ -205,6 +205,33 @@ describe('Dataset Publication', () => {
                 ['"2"', '"Alain"', '"Chabat"', 'true'].join(''),
             );
         });
+        it('should allow to delete all filtered rows', () => {
+            menu.openAdvancedDrawer();
+            menu.goToAdminDashboard();
+            cy.wait(300);
+            datasetImportPage.importDataset(
+                'dataset/simpleForFilterTests.json',
+            );
+            cy.get('[role=columnheader][data-field=uri] [aria-label=Menu]', {
+                timeout: 500,
+            }).click({ force: true });
+            cy.get('[role=menu] :nth-child(4)').click();
+            cy.focused().type('2');
+
+            cy.get('[data-rowindex=0]', { timeout: 3000 }).should(
+                'contains.text',
+                ['"2"', '"Alain"', '"Chabat"', 'true'].join(''),
+            );
+
+            cy.findByText('Delete the filtered row(s)').should('be.visible');
+            cy.findByText('Delete the filtered row(s)').click();
+            cy.findByText(
+                'Are your sure you want to delete all rows matching the current filter?',
+            ).should('be.visible');
+            cy.findByText('Delete').click();
+            cy.findByText('Row(s) deleted with success').should('be.visible');
+            cy.findByText('No rows').should('be.visible');
+        });
 
         it('should return to first page when filtering rows', () => {
             menu.openAdvancedDrawer();
@@ -234,6 +261,62 @@ describe('Dataset Publication', () => {
             cy.get('[data-rowindex=0]', { timeout: 3000 }).should(
                 'contains.text',
                 ['"2"', '"Helga"', '"Rowe"'].join(''),
+            );
+        });
+    });
+
+    describe('Dataset Delete selection', () => {
+        it('should allow to delete selected rows', () => {
+            menu.openAdvancedDrawer();
+            menu.goToAdminDashboard();
+            cy.wait(300);
+            datasetImportPage.importDataset(
+                'dataset/simpleForFilterTests.json',
+            );
+
+            cy.findByText('1–4 of 4').should('be.visible');
+
+            cy.get('[data-rowindex=0]', { timeout: 3000 }).should(
+                'contains.text',
+                ['"1"', '"Bobby"', '"Womack"'].join(''),
+            );
+
+            cy.get('[data-rowindex=1]', { timeout: 3000 }).should(
+                'contains.text',
+                ['"2"', '"Alain"', '"Chabat"'].join(''),
+            );
+
+            cy.get('[data-rowindex=2]', { timeout: 3000 }).should(
+                'contains.text',
+                ['"3"', '"General"', '"Elektriks"'].join(''),
+            );
+
+            cy.get('[data-rowindex=3]', { timeout: 3000 }).should(
+                'contains.text',
+                ['"4"', '"Rob"', '"Zombie"'].join(''),
+            );
+
+            cy.get('[type="checkbox"]').eq(1).click();
+            cy.get('[type="checkbox"]').eq(3).click();
+
+            cy.findByText('Delete the selected row(s)').click();
+            cy.findByText(
+                'Are you sure you want to delete the 2 selected rows',
+            ).should('be.visible');
+            cy.findByText('Delete').click();
+            cy.findByText('Row(s) deleted with success').should('be.visible');
+            cy.findByText('Row(s) deleted with success').should('be.visible');
+
+            cy.findByText('1–2 of 2').should('be.visible');
+
+            cy.get('[data-rowindex=0]', { timeout: 3000 }).should(
+                'contains.text',
+                ['"2"', '"Alain"', '"Chabat"'].join(''),
+            );
+
+            cy.get('[data-rowindex=1]', { timeout: 3000 }).should(
+                'contains.text',
+                ['"4"', '"Rob"', '"Zombie"'].join(''),
             );
         });
     });

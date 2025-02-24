@@ -35,14 +35,14 @@ export function DeleteFilteredButton({ filter, reloadDataset }) {
         const res = await datasetApi.deleteFilteredDatasetRows(filter);
 
         if (res.status === 'deleted') {
-            toast(translate('parsing_delete_row_success'), {
+            toast(translate('parsing_delete_rows_success'), {
                 type: toast.TYPE.SUCCESS,
             });
             reloadDataset();
             handleCloseModal();
             setIsLoading(false);
         } else {
-            toast(translate('parsing_delete_row_error'), {
+            toast(translate('parsing_delete_rows_error'), {
                 type: toast.TYPE.ERROR,
             });
         }
