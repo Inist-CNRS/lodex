@@ -6,7 +6,7 @@ import { useTranslate } from '../../i18n/I18NContext';
 import { ConfirmPopup } from '../../lib/components/ConfirmPopup';
 import { useDeleteManyAnnotation } from './hooks/useDeleteManyAnnotation';
 
-export function DeleteManyButton({ selectedRows }) {
+export function DeleteManyButton({ selectedRowIds }) {
     const { translate } = useTranslate();
     const { mutate, isLoading } = useDeleteManyAnnotation();
 
@@ -14,7 +14,7 @@ export function DeleteManyButton({ selectedRows }) {
 
     useEffect(() => {
         setIsModalOpen(false);
-    }, [selectedRows]);
+    }, [selectedRowIds]);
 
     const handleButtonClick = () => {
         setIsModalOpen(true);
@@ -29,10 +29,10 @@ export function DeleteManyButton({ selectedRows }) {
     };
 
     const handleDeleteAnnotations = async () => {
-        mutate(selectedRows);
+        mutate(selectedRowIds);
     };
 
-    if (selectedRows.length === 0) {
+    if (selectedRowIds.length === 0) {
         return null;
     }
 
@@ -51,7 +51,7 @@ export function DeleteManyButton({ selectedRows }) {
                 cancelLabel={translate('cancel')}
                 confirmLabel={translate('delete')}
                 title={translate('annotation_delete_many_modal_title', {
-                    smart_count: selectedRows.length,
+                    smart_count: selectedRowIds.length,
                 })}
                 onCancel={handleCloseModal}
                 onConfirm={handleDeleteAnnotations}
@@ -62,5 +62,5 @@ export function DeleteManyButton({ selectedRows }) {
 }
 
 DeleteManyButton.propTypes = {
-    selectedRows: PropTypes.arrayOf(PropTypes.string).isRequired,
+    selectedRowIds: PropTypes.arrayOf(PropTypes.string).isRequired,
 };

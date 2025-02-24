@@ -393,9 +393,19 @@ export const getGetDatasetColumnsRequest = (state) => {
     });
 };
 
-export const getDeleteDatasetRowRequest = (state, id) => {
+export const getDeleteManyDatasetRowRequest = (state, ids) => {
     return getRequest(state, {
-        url: `/api/dataset/${id}`,
+        url: `/api/dataset/batch-delete-id?ids=${ids.join(',')}`,
+        method: 'DELETE',
+    });
+};
+
+export const getDeleteFilteredDatasetRowRequest = (
+    state,
+    { columnField, operatorValue, value },
+) => {
+    return getRequest(state, {
+        url: `/api/dataset/batch-delete-filter?filterBy=${columnField}&filterOperator=${operatorValue}&filterValue=${value}`,
         method: 'DELETE',
     });
 };
@@ -741,7 +751,7 @@ export const selectors = {
     postDuplicateField,
     clearModelRequest,
     getPatchSearchableFieldsRequest,
-    getDeleteDatasetRowRequest,
+    getDeleteManyDatasetRowRequest,
     getExportPDFRequest,
     getDisplayConfigRequest,
     getConfigTenantRequest,

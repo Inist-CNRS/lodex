@@ -1,0 +1,84 @@
+import React, { useEffect, useState } from 'react';
+import { Button } from '@mui/material';
+import PropTypes from 'prop-types';
+import DeleteIcon from '@mui/icons-material/Delete';
+
+import datasetApi from '../api/dataset';
+import { useTranslate } from '../../i18n/I18NContext';
+import { ConfirmPopup } from '../../lib/components/ConfirmPopup';
+import { toast } from '../../../../common/tools/toast';
+
+export function DeleteFilteredButton({ filter, reloadDataset }) {
+    const { translate } = useTranslate();
+
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+
+    useEffect(() => {
+        setIsModalOpen(false);
+    }, [filter]);
+
+    const handleButtonClick = () => {
+        setIsModalOpen(true);
+    };
+
+    const handleCloseModal = () => {
+        if (isLoading) {
+            return false;
+        }
+
+        setIsModalOpen(false);
+    };
+
+    const handleDelete = async () => {
+        setIsLoading(true);
+        const res = await datasetApi.deleteFilteredDatasetRows(filter);
+
+        if (res.status === 'deleted') {
+            toast(translate('parsing_delete_rows_success'), {
+                type: toast.TYPE.SUCCESS,
+            });
+            reloadDataset();
+            handleCloseModal();
+            setIsLoading(false);
+        } else {
+            toast(translate('parsing_delete_rows_error'), {
+                type: toast.TYPE.ERROR,
+            });
+        }
+        setIsLoading(false);
+        handleCloseModal();
+    };
+
+    if (filter.value === undefined) {
+        return null;
+    }
+
+    return (
+        <>
+            <Button
+                onClick={handleButtonClick}
+                variant="text"
+                startIcon={<DeleteIcon />}
+                color="primary"
+                size="small"
+            >
+                {translate('parsing_delete_filtered_button_label')}
+            </Button>
+            <ConfirmPopup
+                isOpen={isModalOpen}
+                cancelLabel={translate('cancel')}
+                confirmLabel={translate('delete')}
+                title={translate('parsing_delete_filtered_modal_title')}
+                onCancel={handleCloseModal}
+                onConfirm={handleDelete}
+                isLoading={isLoading}
+            />
+        </>
+    );
+}
+
+DeleteFilteredButton.propTypes = {
+    filter: PropTypes.object.isRequired,
+    reloadDataset: PropTypes.func.isRequired,
+};
