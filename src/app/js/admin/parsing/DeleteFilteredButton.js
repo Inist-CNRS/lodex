@@ -50,7 +50,7 @@ export function DeleteFilteredButton({ filter, reloadDataset }) {
         handleCloseModal();
     };
 
-    if (!Object.keys(filter).length) {
+    if (filter.value === undefined) {
         return null;
     }
 
