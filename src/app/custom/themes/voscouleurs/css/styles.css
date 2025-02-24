@@ -46,7 +46,6 @@
 /*bgBody + text*/
 body {
     background-color: var(--bgBody);
-    background-image: var(--bgBodyUrl);
     background-position: top center;
     background-repeat: no-repeat;
     background-size: contain;
@@ -75,7 +74,6 @@ body * {
 /*bgHeader + --titleHeader*/
 header {
     background-color: var(--bgHeader);
-    background-image: var(--bgHeaderUrl);
     background-position: top center;
     background-size: cover;
 }
@@ -125,7 +123,7 @@ header #banner > :last-child {
 /*bgContent*/
 #content .container {
     background-color: var(--bgContent);
-    font-size: 1.2rem;
+    font-size: 1rem;
 }
 .drawer .search-content {
     padding-left: 1rem;
