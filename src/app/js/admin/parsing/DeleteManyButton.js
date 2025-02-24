@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Button } from '@mui/material';
 import PropTypes from 'prop-types';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 import datasetApi from '../api/dataset';
 import publishApi from '../api/publish';
@@ -65,7 +66,8 @@ export function DeleteManyButton({
         <>
             <Button
                 onClick={handleButtonClick}
-                variant="outlined"
+                variant="text"
+                startIcon={<DeleteIcon />}
                 color="primary"
                 size="small"
             >
