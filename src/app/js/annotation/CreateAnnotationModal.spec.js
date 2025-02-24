@@ -1,12 +1,11 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import { fireEvent, render, screen, waitFor } from '../../../test-utils';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { setTimeout } from 'node:timers/promises';
+import { fireEvent, render, screen, waitFor } from '../../../test-utils';
 import { TestI18N } from '../i18n/I18NContext';
 import { CreateAnnotationModal } from './CreateAnnotationModal';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { useGetFieldAnnotation } from './useGetFieldAnnotation';
 
 jest.mock('./useGetFieldAnnotation', () => ({
     useGetFieldAnnotation: jest.fn().mockReturnValue({
@@ -205,6 +204,7 @@ describe('CreateAnnotationModal', () => {
                 authorEmail: 'email@example.org',
                 target: 'title',
                 kind: 'comment',
+                reCaptchaToken: null,
             });
         });
     });
@@ -842,6 +842,7 @@ describe('CreateAnnotationModal', () => {
             comment: 'test',
             kind: 'comment',
             target: 'title',
+            reCaptchaToken: null,
         });
     });
 
@@ -901,6 +902,7 @@ describe('CreateAnnotationModal', () => {
             initialValue: null,
             target: 'title',
             kind: 'comment',
+            reCaptchaToken: null,
         });
     });
 
@@ -968,6 +970,7 @@ describe('CreateAnnotationModal', () => {
             initialValue: 'initialValue',
             target: 'value',
             kind: 'removal',
+            reCaptchaToken: null,
         });
     });
 
@@ -1051,6 +1054,7 @@ describe('CreateAnnotationModal', () => {
             initialValue: 'secondValue',
             target: 'value',
             kind: 'removal',
+            reCaptchaToken: null,
         });
     });
 
@@ -1128,6 +1132,7 @@ describe('CreateAnnotationModal', () => {
             comment: 'test',
             initialValue: 'initialValue',
             proposedValue: 'proposedValue',
+            reCaptchaToken: null,
             target: 'value',
             kind: 'correction',
         });
@@ -1223,6 +1228,7 @@ describe('CreateAnnotationModal', () => {
             comment: 'test',
             initialValue: 'secondValue',
             proposedValue: 'proposedValue',
+            reCaptchaToken: null,
             target: 'value',
             kind: 'correction',
         });
@@ -1302,6 +1308,7 @@ describe('CreateAnnotationModal', () => {
             comment: 'test',
             initialValue: null,
             proposedValue: 'proposedValue',
+            reCaptchaToken: null,
             target: 'value',
             kind: 'addition',
         });
@@ -1384,6 +1391,7 @@ describe('CreateAnnotationModal', () => {
             comment: 'test',
             initialValue: null,
             proposedValue: 'proposedValue',
+            reCaptchaToken: null,
             target: 'value',
             kind: 'addition',
         });

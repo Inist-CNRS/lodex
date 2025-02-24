@@ -47,6 +47,34 @@ describe('annotation', () => {
                 result,
             ]);
         });
+
+        it('should not persist reCaptchaToken', async () => {
+            const annotation = {
+                resourceUri: 'uid:/a4f7a51f-7109-481e-86cc-0adb3a26faa6',
+                fieldId: 'Gb4a',
+                kind: 'comment',
+                authorName: 'Rick HARRIS',
+                authorEmail: 'rick.harris@marmelab.com',
+                comment: 'Hello world',
+            };
+
+            const result = await annotationModel.create({
+                ...annotation,
+                reCaptchaToken: 'recaptcha.token',
+            });
+            expect(result).toStrictEqual({
+                ...annotation,
+                _id: expect.any(ObjectId),
+                internalComment: null,
+                createdAt: expect.any(Date),
+                updatedAt: expect.any(Date),
+                status: 'to_review',
+            });
+
+            expect(await annotationModel.findLimitFromSkip()).toStrictEqual([
+                result,
+            ]);
+        });
     });
 
     describe('updateOneById', () => {

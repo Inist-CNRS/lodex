@@ -1,10 +1,10 @@
 import { createTheme } from '@mui/material/styles';
-import { assign, escape } from 'lodash';
-import { getTheme } from './themes';
-import { version } from '../../../package.json';
 import ejs from 'ejs';
+import { assign, escape } from 'lodash';
 import path from 'path';
+import { version } from '../../../package.json';
 import rootTheme from '../../app/custom/themes/rootTheme';
+import { getTheme } from './themes';
 
 /**
  * @param {string} key
@@ -139,6 +139,7 @@ export const renderPublic = (themeId, data) => {
                 href: `${data.themesHost ?? ''}/themes`,
             },
         },
+        recaptchaClientKey: data.recaptchaClientKey,
     };
 
     try {

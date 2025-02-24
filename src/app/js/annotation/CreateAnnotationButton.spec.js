@@ -1,8 +1,8 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { fireEvent, render, screen, waitFor } from '../../../test-utils';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { MemoryRouter, Route, Switch } from 'react-router-dom';
+import { fireEvent, render, screen, waitFor } from '../../../test-utils';
 
 import { TestI18N } from '../i18n/I18NContext';
 import fetch from '../lib/fetch';
@@ -177,7 +177,7 @@ describe('CreateAnnotationButton', () => {
             expect.objectContaining({
                 url: '/api/annotation',
                 method: 'POST',
-                body: '{"comment":"test","target":"title","kind":"comment","authorName":"author","authorEmail":"email@example.org","resourceUri":"uid:/0579J7JN","fieldId":"1ddbe5dc-f945-4d38-9c5b-ef20f78cb0cc"}',
+                body: '{"comment":"test","target":"title","kind":"comment","authorName":"author","authorEmail":"email@example.org","reCaptchaToken":null,"resourceUri":"uid:/0579J7JN","fieldId":"1ddbe5dc-f945-4d38-9c5b-ef20f78cb0cc"}',
             }),
         );
     });
@@ -270,7 +270,7 @@ describe('CreateAnnotationButton', () => {
             expect.objectContaining({
                 url: '/api/annotation',
                 method: 'POST',
-                body: '{"comment":"test","target":"value","kind":"removal","initialValue":"a b c","authorName":"author","authorEmail":"email@example.org","resourceUri":"uid:/0579J7JN","fieldId":"1ddbe5dc-f945-4d38-9c5b-ef20f78cb0cc"}',
+                body: '{"comment":"test","target":"value","kind":"removal","initialValue":"a b c","authorName":"author","authorEmail":"email@example.org","reCaptchaToken":null,"resourceUri":"uid:/0579J7JN","fieldId":"1ddbe5dc-f945-4d38-9c5b-ef20f78cb0cc"}',
             }),
         );
     });

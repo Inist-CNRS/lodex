@@ -1,11 +1,9 @@
+import asyncBusboy from '@recuperateur/async-busboy';
 import { JsonStreamStringify } from 'json-stream-stringify';
 import Koa from 'koa';
 import koaBodyParser from 'koa-bodyparser';
 import route from 'koa-route';
-import { default as _ } from 'lodash';
-
-import asyncBusboy from '@recuperateur/async-busboy';
-import { uniq } from 'lodash';
+import { default as _, uniq } from 'lodash';
 import { ObjectId } from 'mongodb';
 import streamToString from 'stream-to-string';
 import {
@@ -21,6 +19,7 @@ import {
     deleteManyAnnotationsSchema,
     getAnnotationsQuerySchema,
 } from './../../../common/validator/annotation.validator';
+import { verifyReCaptchaToken } from './recaptcha';
 
 export const canAnnotate = async (ctx) => {
     const role = ctx?.state?.header?.role;
@@ -56,6 +55,20 @@ export async function createAnnotation(ctx) {
         ctx.body = {
             total: 0,
             errors: validation.error.errors,
+        };
+        return;
+    }
+
+    const tokenVerification = await verifyReCaptchaToken(ctx, validation.data);
+    if (!tokenVerification.success) {
+        ctx.response.status = 400;
+        ctx.body = {
+            total: 0,
+            errors: [
+                {
+                    message: 'error_recaptcha_verification_failed',
+                },
+            ],
         };
         return;
     }
