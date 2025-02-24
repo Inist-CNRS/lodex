@@ -16,7 +16,7 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import RefreshIcon from '@mui/icons-material/Refresh';
 
-import { fromEnrichments, fromParsing, fromPublication } from '../selectors';
+import { fromEnrichments, fromParsing } from '../selectors';
 import datasetApi from '../api/dataset';
 import Loading from '../../lib/components/Loading';
 import {
@@ -112,7 +112,7 @@ const getFiltersOperatorsForType = (type) => {
 };
 
 export const ParsingResultComponent = (props) => {
-    const { enrichments, loadingParsingResult, isPublished } = props;
+    const { enrichments, loadingParsingResult } = props;
     const { translate } = useTranslate();
 
     const [showEnrichmentColumns, setShowEnrichmentColumns] = useState(true);
@@ -431,7 +431,6 @@ export const ParsingResultComponent = (props) => {
                 <DeleteManyButton
                     selectedRowIds={selectedRowIds}
                     reloadDataset={fetchDataset}
-                    isPublished={isPublished}
                 />
             </GridToolbarContainer>
         );
@@ -482,13 +481,11 @@ export const ParsingResultComponent = (props) => {
 ParsingResultComponent.propTypes = {
     loadingParsingResult: PropTypes.bool.isRequired,
     enrichments: PropTypes.arrayOf(PropTypes.object),
-    isPublished: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = (state) => ({
     loadingParsingResult: fromParsing.isParsingLoading(state),
     enrichments: fromEnrichments.enrichments(state),
-    isPublished: fromPublication.hasPublishedDataset(state),
 });
 
 export default connect(mapStateToProps)(ParsingResultComponent);

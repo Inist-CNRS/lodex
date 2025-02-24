@@ -4,16 +4,11 @@ import PropTypes from 'prop-types';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 import datasetApi from '../api/dataset';
-import publishApi from '../api/publish';
 import { useTranslate } from '../../i18n/I18NContext';
 import { ConfirmPopup } from '../../lib/components/ConfirmPopup';
 import { toast } from '../../../../common/tools/toast';
 
-export function DeleteManyButton({
-    selectedRowIds,
-    reloadDataset,
-    isPublished,
-}) {
+export function DeleteManyButton({ selectedRowIds, reloadDataset }) {
     const { translate } = useTranslate();
 
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -44,9 +39,6 @@ export function DeleteManyButton({
                 type: toast.TYPE.SUCCESS,
             });
             reloadDataset();
-            if (isPublished) {
-                publishApi.publish();
-            }
             handleCloseModal();
             setIsLoading(false);
         } else {
@@ -91,5 +83,4 @@ export function DeleteManyButton({
 DeleteManyButton.propTypes = {
     selectedRowIds: PropTypes.arrayOf(PropTypes.string).isRequired,
     reloadDataset: PropTypes.func.isRequired,
-    isPublished: PropTypes.bool.isRequired,
 };
