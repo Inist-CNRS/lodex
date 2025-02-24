@@ -1,11 +1,9 @@
+import asyncBusboy from '@recuperateur/async-busboy';
 import { JsonStreamStringify } from 'json-stream-stringify';
 import Koa from 'koa';
 import koaBodyParser from 'koa-bodyparser';
 import route from 'koa-route';
-import { default as _ } from 'lodash';
-
-import asyncBusboy from '@recuperateur/async-busboy';
-import { uniq } from 'lodash';
+import { default as _, uniq } from 'lodash';
 import { ObjectId } from 'mongodb';
 import streamToString from 'stream-to-string';
 import {
@@ -14,6 +12,8 @@ import {
 } from '../../../common/tools/tenantTools';
 import { createDiacriticSafeContainRegex } from '../../services/createDiacriticSafeContainRegex';
 import getLogger from '../../services/logger';
+import { getAnnotationNotificationMail } from '../../services/mail/getAnnotationNotificationMail';
+import { sendMail } from '../../services/mail/mailer';
 import {
     annotationCreationSchema,
     annotationImportSchema,
@@ -21,8 +21,7 @@ import {
     deleteManyAnnotationsSchema,
     getAnnotationsQuerySchema,
 } from './../../../common/validator/annotation.validator';
-import { sendMail } from '../../services/mail/mailer';
-import { getAnnotationNotificationMail } from '../../services/mail/getAnnotationNotificationMail';
+import { verifyReCaptchaToken } from './recaptcha';
 
 async function bindResourceAndFieldToAnnotation(ctx, annotation) {
     const [titleField, subResourceTitleFields] = await Promise.all([
@@ -93,8 +92,21 @@ export async function createAnnotation(ctx) {
         return;
     }
 
-    const createdAnnotation = await ctx.annotation.create(validation.data);
+    const tokenVerification = await verifyReCaptchaToken(ctx, validation.data);
+    if (!tokenVerification.success) {
+        ctx.response.status = 400;
+        ctx.body = {
+            total: 0,
+            errors: [
+                {
+                    message: 'error_recaptcha_verification_failed',
+                },
+            ],
+        };
+        return;
+    }
 
+    const createdAnnotation = await ctx.annotation.create(validation.data);
     const config = await ctx.configTenantCollection.findLast();
 
     if (config?.notificationEmail) {

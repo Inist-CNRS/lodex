@@ -62,15 +62,24 @@ const configTenantSchema = z.object({
             message: 'error_required',
         }),
     }),
-    contributorAuth: z.object({
-        active: z.boolean(),
-        password: z.string().min(1, {
-            message: 'error_required',
-        }),
-        username: z.string().min(1, {
-            message: 'error_required',
-        }),
-    }),
+    contributorAuth: z
+        .object({
+            active: z.boolean(),
+            password: z.string().min(1, {
+                message: 'error_required',
+            }),
+            username: z.string().min(1, {
+                message: 'error_required',
+            }),
+        })
+        .optional(),
+    antispamFilter: z
+        .object({
+            active: z.boolean(),
+            recaptchaClientKey: z.string(),
+            recaptchaSecretKey: z.string(),
+        })
+        .optional(),
     theme: z.string().min(1, {
         message: 'error_required',
     }),
@@ -90,6 +99,7 @@ export const ConfigTenantFormView = ({
         userAuth,
         contributorAuth,
         theme,
+        antispamFilter,
         enrichmentBatchSize,
         notificationEmail,
         ...config
@@ -108,6 +118,7 @@ export const ConfigTenantFormView = ({
             userAuth,
             contributorAuth,
             theme,
+            antispamFilter,
             enrichmentBatchSize,
             notificationEmail,
             config,
@@ -119,11 +130,13 @@ export const ConfigTenantFormView = ({
                 userAuth,
                 contributorAuth,
                 theme,
+                antispamFilter,
                 enrichmentBatchSize,
                 _id,
                 notificationEmail,
                 config,
             } = value;
+
             await handleSave({
                 ...config,
                 _id,
@@ -131,6 +144,7 @@ export const ConfigTenantFormView = ({
                 userAuth,
                 contributorAuth,
                 theme,
+                antispamFilter,
                 enrichmentBatchSize,
                 notificationEmail,
             });
@@ -150,6 +164,10 @@ export const ConfigTenantFormView = ({
 
     const contributorAuthActive = useStore(form.store, (state) => {
         return state.values.contributorAuth?.active;
+    });
+
+    const antispamFilterActive = useStore(form.store, (state) => {
+        return state.values.antispamFilter?.active;
     });
 
     const isFormModified = useStore(form.store, (state) => {
@@ -341,6 +359,54 @@ export const ConfigTenantFormView = ({
                     </Select>
                 )}
             </form.Field>
+
+            <Box
+                sx={{
+                    width: '100%',
+                    display: 'flex',
+                    gap: 1,
+                    alignItems: 'center',
+                }}
+            >
+                <h2 id="antispam_filter">{translate('antispam_filter')}</h2>
+                <form.Field name="antispamFilter.active">
+                    {(field) => (
+                        <Checkbox
+                            checked={field.state.value}
+                            onChange={(event) => {
+                                field.handleChange(event.target.checked);
+                            }}
+                            inputProps={{
+                                'aria-labelledby': 'antispam_filter',
+                            }}
+                        />
+                    )}
+                </form.Field>
+            </Box>
+
+            <Box
+                sx={{
+                    width: '100%',
+                    display: 'flex',
+                    gap: 2,
+                    mb: 4,
+                }}
+            >
+                <TextField
+                    label={translate('recaptcha_client_key')}
+                    name="antispamFilter.recaptchaClientKey"
+                    form={form}
+                    disabled={!antispamFilterActive}
+                />
+
+                <TextField
+                    label={translate('recaptcha_secret_key')}
+                    name="antispamFilter.recaptchaSecretKey"
+                    form={form}
+                    disabled={!antispamFilterActive}
+                    type="password"
+                />
+            </Box>
 
             <h2>{translate('other')}</h2>
             <TextField

@@ -6,7 +6,7 @@ export default async (db) => {
     await annotationCollection.createIndex({ fieldId: 1 });
     await annotationCollection.createIndex({ resourceUri: 1 });
 
-    async function create(annotationPayload) {
+    async function create({ reCaptchaToken, ...annotationPayload }) {
         const now = new Date();
         const { insertedId } = await annotationCollection.insertOne({
             ...annotationPayload,
