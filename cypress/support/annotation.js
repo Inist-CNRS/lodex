@@ -77,9 +77,9 @@ function fillAuthor({ authorName, authorEmail, authorRememberMe }) {
         authorEmailField().type(authorEmail);
     }
 
-    if (authorRememberMe) {
+    if (authorRememberMe === true) {
         authorRememberMeField().check();
-    } else {
+    } else if (authorRememberMe === false) {
         authorRememberMeField().uncheck();
     }
 }
@@ -97,6 +97,7 @@ export function createAnnotationOnFieldWithNoValue({
     comment,
     authorName,
     authorEmail,
+    authorRememberMe,
 }) {
     openAnnotationModalForField(fieldLabel);
 
@@ -104,7 +105,7 @@ export function createAnnotationOnFieldWithNoValue({
 
     goToNextStep();
 
-    fillAuthor({ authorName, authorEmail });
+    fillAuthor({ authorName, authorEmail, authorRememberMe });
 
     submitAnnotation();
 }
@@ -114,7 +115,7 @@ export function createTitleAnnotation({
     comment,
     authorName,
     authorEmail,
-    authorRememberMe = false,
+    authorRememberMe,
 }) {
     openAnnotationModalForField(fieldLabel);
 
@@ -187,6 +188,7 @@ export function createSingleValueAnnotation({
     comment,
     authorName,
     authorEmail,
+    authorRememberMe,
 }) {
     openAnnotationModalForField(fieldLabel);
 
@@ -196,7 +198,7 @@ export function createSingleValueAnnotation({
 
     fillComment(comment);
     goToNextStep();
-    fillAuthor({ authorName, authorEmail });
+    fillAuthor({ authorName, authorEmail, authorRememberMe });
 
     submitAnnotation();
 }
@@ -207,6 +209,7 @@ export function createMultiValueAnnotation({
     value,
     authorName,
     authorEmail,
+    authorRememberMe,
 }) {
     openAnnotationModalForField(fieldLabel);
 
@@ -216,7 +219,7 @@ export function createMultiValueAnnotation({
 
     fillComment(comment);
     goToNextStep();
-    fillAuthor({ authorName, authorEmail });
+    fillAuthor({ authorName, authorEmail, authorRememberMe });
 
     submitAnnotation();
 }
@@ -227,6 +230,7 @@ export function createAddValueWithSingleProposedValueChoiceAnnotation({
     comment,
     authorName,
     authorEmail,
+    authorRememberMe,
 }) {
     openAnnotationModalForField(fieldLabel);
 
@@ -239,7 +243,7 @@ export function createAddValueWithSingleProposedValueChoiceAnnotation({
 
     fillComment(comment);
     goToNextStep();
-    fillAuthor({ authorName, authorEmail });
+    fillAuthor({ authorName, authorEmail, authorRememberMe });
 
     submitAnnotation();
 }
@@ -250,6 +254,7 @@ export function createAddValueWithMultipleProposedValuesChoiceAnnotation({
     comment,
     authorName,
     authorEmail,
+    authorRememberMe,
 }) {
     openAnnotationModalForField(fieldLabel);
 
@@ -266,7 +271,7 @@ export function createAddValueWithMultipleProposedValuesChoiceAnnotation({
 
     fillComment(comment);
     goToNextStep();
-    fillAuthor({ authorName, authorEmail });
+    fillAuthor({ authorName, authorEmail, authorRememberMe });
 
     submitAnnotation();
 }
