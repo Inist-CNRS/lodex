@@ -1083,12 +1083,6 @@
 "ws_post-v1-bibCheck-validate-pdf_description"	"Checks bibliographic references of a PDF document, checking their presence in Crossref while ensuring that the associated articles are not retracted."	"Contrôle des références bibliographiques d'un document au format PDF, en vérifiant leur présence dans Crossref tout en s’assurant que les articles associés ne sont pas rétractés"
 "ws_post-v1-bibCheck-validate-url_title"	"bibCheck - Checking bibliographic references from the url of the article"	"bibCheck - Contrôle des références bibliographiques d’un article à partir d’une URL de ce dernier."
 "ws_post-v1-bibCheck-validate-url_description"	"Checks bibliographic references from the url of the article, checking their presence in Crossref while ensuring that thes associated articles are not retracted."	"Contrôle des références bibliographiques d’un article à partir d’une URL de ce dernier, en vérifiant leur présence dans Crossref tout en s’assurant que les articles associés ne sont pas rétractés"
-
-
-
-
-
-
 "ws_post-v1-countryDetect_title"	"countryDetect - Detecting the country of an affiliation"	"countryDetect - Détection du pays d’une affiliation"
 "ws_post-v1-countryDetect_description"	"Detects the country of origin of an affiliation-address, whether present or absent in it"	"Détecte le pays d’origine d’une affiliation-adresse, qu’il soit présent ou absent dans celle-ci"
 "ws_post-v1-funderTag_title"	"funderTag - Extracting funders in an article"	"funderTag - Extraction de financeurs dans un article"
@@ -1109,6 +1103,8 @@
 "r-sub-resources-co-occurrences_description"	"Identifies sub-resources that co-occur with a given sub-resource and calculates the number of these co-occurrences."	"Identifie les sous-ressources co-occurrentes avec une sous-ressource donnée et calcule le nombre de ces co-occurrences."
 "r-close-by_title"	"close-by"	"close-by"
 "r-close-by_description"	"Is used to create the graph aster plot."	"Est utilisée pour créer le graphique aster plot."
+"r-distinct-with_title"	"distinct-with"	"distinct-with"
+"r-distinct-with_description"	"Is used to create the graph parallel coordinates."	"Est utilisée pour créer le graphique des coordonnées parallèles"
 "regenerate_vega_lite_spec"	"Regenerate Vega Lite specifications"	"Régénérer la spécification Vega Lite"
 "regenerate_vega_spec"	"Regenerate Vega specifications"	"Régénérer la spécification Vega"
 "vega_json_error"	"The json syntax of Vega Lite specification is wrong!"	"La syntaxe json de la spécification Vega Lite est erronée !"
