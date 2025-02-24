@@ -13,8 +13,7 @@ export function useUpdateConfigTenant() {
 
     const mutation = useMutation({
         mutationFn: async (configTenant) => {
-            const { response, error, rest } =
-                await updateConfigTenant(configTenant);
+            const { response, error } = await updateConfigTenant(configTenant);
 
             if (error?.code === 401) {
                 history.push('/login');
@@ -33,7 +32,7 @@ export function useUpdateConfigTenant() {
                 type: toast.TYPE.SUCCESS,
             });
         },
-        onError: (error) => {
+        onError: () => {
             toast(translate('config_tenant_update_error'), {
                 type: toast.TYPE.ERROR,
             });

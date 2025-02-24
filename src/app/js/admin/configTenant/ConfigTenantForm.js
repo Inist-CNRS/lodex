@@ -75,6 +75,12 @@ const configTenantSchema = z.object({
         message: 'error_required',
     }),
     enrichmentBatchSize: z.coerce.number(),
+    notificationEmail: z
+        .string()
+        .email({
+            message: 'error_invalid_email',
+        })
+        .optional(),
 });
 
 export const ConfigTenantFormView = ({
@@ -85,6 +91,7 @@ export const ConfigTenantFormView = ({
         contributorAuth,
         theme,
         enrichmentBatchSize,
+        notificationEmail,
         ...config
     },
     availableThemes,
@@ -102,6 +109,7 @@ export const ConfigTenantFormView = ({
             contributorAuth,
             theme,
             enrichmentBatchSize,
+            notificationEmail,
             config,
         },
 
@@ -113,6 +121,7 @@ export const ConfigTenantFormView = ({
                 theme,
                 enrichmentBatchSize,
                 _id,
+                notificationEmail,
                 config,
             } = value;
             await handleSave({
@@ -123,6 +132,7 @@ export const ConfigTenantFormView = ({
                 contributorAuth,
                 theme,
                 enrichmentBatchSize,
+                notificationEmail,
             });
         },
         validators: {
@@ -277,6 +287,15 @@ export const ConfigTenantFormView = ({
                     name="contributorAuth.password"
                     form={form}
                     disabled={!contributorAuthActive}
+                />
+            </Box>
+
+            <Box>
+                <h2>{translate('notifications')}</h2>
+                <TextField
+                    label={translate('notification_email')}
+                    name="notificationEmail"
+                    form={form}
                 />
             </Box>
 

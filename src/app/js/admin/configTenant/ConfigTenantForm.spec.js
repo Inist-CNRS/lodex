@@ -4,7 +4,6 @@ import { TestI18N } from '../../i18n/I18NContext';
 import { fireEvent, render, waitFor } from '../../../../test-utils';
 
 import configTenant from '../../../../../configTenant.json';
-import user from '../../user';
 
 function TestConfigTenantFormView(props) {
     return (
@@ -79,6 +78,11 @@ describe('ConfigTenantForm', () => {
         expect(wrapper.getByLabelText('contributor_auth')).not.toBeChecked();
 
         expect(
+            wrapper.getByLabelText('notification_email'),
+        ).toBeInTheDocument();
+        expect(wrapper.getByLabelText('notification_email')).toHaveValue('');
+
+        expect(
             wrapper.getAllByLabelText('Username', {}).at(1),
         ).toBeInTheDocument();
         expect(wrapper.getAllByLabelText('Username').at(1)).toHaveValue(
@@ -148,6 +152,39 @@ describe('ConfigTenantForm', () => {
             },
         });
     });
+
+    it('should reject invalid notification email', async () => {
+        const handleSave = jest.fn();
+        const wrapper = render(
+            <TestConfigTenantFormView
+                initialConfig={configTenant}
+                availableThemes={availableThemes}
+                handleCancel={() => {}}
+                handleSave={handleSave}
+            />,
+        );
+
+        await waitFor(() => {
+            fireEvent.change(
+                wrapper.getAllByLabelText('notification_email').at(0),
+                {
+                    target: { value: 'invalidEmail' },
+                },
+            );
+        });
+        expect(
+            wrapper.getAllByLabelText('notification_email').at(0),
+        ).toHaveValue('invalidEmail');
+        expect(wrapper.getByText('error_invalid_email')).toBeInTheDocument();
+
+        expect(wrapper.getByText('save')).toBeInTheDocument();
+
+        await waitFor(() => {
+            fireEvent.click(wrapper.getByText('save'));
+        });
+
+        expect(handleSave).toHaveBeenCalledTimes(0);
+    });
     it('should allow to update everything', async () => {
         const handleSave = jest.fn();
         const wrapper = render(
@@ -216,6 +253,18 @@ describe('ConfigTenantForm', () => {
         );
 
         await waitFor(() => {
+            fireEvent.change(
+                wrapper.getAllByLabelText('notification_email').at(0),
+                {
+                    target: { value: 'admin@inist.fr' },
+                },
+            );
+        });
+        expect(
+            wrapper.getAllByLabelText('notification_email').at(0),
+        ).toHaveValue('admin@inist.fr');
+
+        await waitFor(() => {
             fireEvent.change(wrapper.getByLabelText('theme'), {
                 target: { value: 'nougat' },
             });
@@ -250,6 +299,7 @@ describe('ConfigTenantForm', () => {
                 username: 'newContributor',
                 password: 'contributorSecret',
             },
+            notificationEmail: 'admin@inist.fr',
             enrichmentBatchSize: '20',
             theme: 'nougat',
             front: {
