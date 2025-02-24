@@ -1115,4 +1115,83 @@ Revue`);
             );
         });
     });
+
+    describe('remind me', () => {
+        beforeEach(() => {
+            // ResizeObserver doesn't like when the app has to many renders / re-renders
+            // and throws an exception to say, "I wait for the next paint"
+            // https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver#observation_errors
+            cy.on('uncaught:exception', (error) => {
+                return !error.message.includes('ResizeObserver');
+            });
+
+            teardown();
+            menu.openAdvancedDrawer();
+            menu.goToAdminDashboard();
+            datasetImportPage.importDataset('dataset/film.csv');
+            datasetImportPage.importModel('model/film-with-field-id.tar');
+            cy.findByRole('gridcell', { name: 'Liste des films' }).trigger(
+                'mouseenter',
+            );
+            cy.findByRole('button', { name: 'edit-Liste des films' }).click();
+
+            cy.findByRole('tab', { name: 'Semantics' }).click();
+            cy.findByRole('checkbox', {
+                name: 'This field can be annotated',
+            }).click();
+            cy.findByRole('button', { name: 'Save' }).click();
+
+            datasetImportPage.publish();
+
+            cy.findByRole('button', {
+                name: 'Open menu',
+            }).click();
+
+            cy.findByRole('menuitem', {
+                name: 'Model',
+            }).trigger('mouseleave');
+
+            cy.findByRole('menuitem', {
+                name: 'Annotations',
+            }).trigger('mouseenter');
+
+            cy.wait(500);
+
+            datasetImportPage.importAnnotations(
+                'annotations/film-with-field-id.json',
+            );
+
+            datasetImportPage.goToPublishedResources();
+        });
+
+        it('should remind author of an annotation', () => {
+            annotation.createTitleAnnotation({
+                fieldLabel: 'Dataset Description',
+                comment: 'This is my comment',
+                authorName: 'Me',
+                authorEmail: 'me@myself.org',
+                authorRememberMe: true,
+            });
+
+            annotation.openAnnotationModalForField('Dataset Description');
+            annotation.targetSection();
+            annotation.fillComment('This is another comment');
+            annotation.goToNextStep();
+
+            annotation.authorNameField().should('have.value', 'Me');
+            annotation.authorEmailField().should('have.value', 'me@myself.org');
+            annotation.authorRememberMeField().should('be.checked').uncheck();
+
+            annotation.submitAnnotation();
+
+            annotation.openAnnotationModalForField('Dataset Description');
+            annotation.targetSection();
+            annotation.fillComment('This is another comment');
+            annotation.goToNextStep();
+
+            annotation.authorNameField().should('have.value', '');
+            annotation.authorEmailField().should('have.value', '');
+            annotation.authorRememberMeField().should('not.be.checked');
+        });
+    });
 });
