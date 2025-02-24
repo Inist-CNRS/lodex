@@ -34,14 +34,14 @@ export function TextField({
         return field.state.meta.isTouched && field.state.meta.errors?.length
             ? field.state.meta.errors[0]
             : null;
-    }, [field.state]);
+    }, [field.state, required]);
 
     return (
         <FormControl fullWidth sx={sx}>
             <MuiTextField
                 label={label}
                 name={field.name}
-                value={field.state.value}
+                value={field.state.value ?? ''}
                 onBlur={field.handleBlur}
                 disabled={disabled}
                 type={type}
@@ -71,6 +71,7 @@ export function TextField({
 
 TextField.propTypes = {
     form: PropTypes.object.isRequired,
+    type: PropTypes.string,
     name: PropTypes.string.isRequired,
     label: PropTypes.string.isRequired,
     helperText: PropTypes.string,

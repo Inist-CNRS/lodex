@@ -17,12 +17,6 @@ export function useContributorCache() {
 
     const updateContributorCache = useCallback(
         ({ authorName, authorEmail, authorRememberMe }) => {
-            console.log(
-                'updateContributorCache',
-                authorName,
-                authorEmail,
-                authorRememberMe,
-            );
             if (!authorRememberMe) {
                 localStorage.removeItem(CONTRIBUTOR_LOCALSTORAGE_KEY);
                 return;

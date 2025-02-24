@@ -69,8 +69,8 @@ export function AutocompleteField({
             <Autocomplete
                 value={value}
                 onBlur={field.handleBlur}
-                onChange={(_, { value }) => {
-                    field.handleChange(value);
+                onChange={(_, val) => {
+                    field.handleChange(val?.value ?? '');
                 }}
                 options={mappedOptions}
                 renderInput={(params) => (

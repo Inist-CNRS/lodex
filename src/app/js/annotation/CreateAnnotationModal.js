@@ -66,8 +66,8 @@ export function CreateAnnotationModal({
             target: 'title',
             kind: 'comment',
         },
-        onSubmit: async ({ value }) => {
-            updateContributorCache(value);
+        onSubmit: async ({ value: { authorRememberMe, ...value } }) => {
+            updateContributorCache({ authorRememberMe, ...value });
             await onSubmit(value);
             resetForm();
         },
@@ -76,16 +76,22 @@ export function CreateAnnotationModal({
         },
     });
 
-    // Using an effect triggers field validation on form initialization to enable submit button
-    useEffect(() => {
-        for (const [key, value] of Object.entries(contributor || {})) {
-            form.setFieldValue(key, value);
-        }
-    }, [form, contributor]);
-
     const [currentStep, setCurrentStep] = useState(
         initialValue === null ? COMMENT_STEP : TARGET_STEP,
     );
+
+    // Using an effect triggers field validation on form initialization to enable submit button
+    // We need to bind the values at the author step, otherwise the form cannot be submitted for some obscure reason
+    useEffect(() => {
+        if (currentStep !== AUTHOR_STEP || !contributor?.authorRememberMe) {
+            return;
+        }
+
+        for (const [key, value] of Object.entries(contributor || {})) {
+            form.setFieldValue(key, value);
+        }
+        form.validate();
+    }, [currentStep, form, contributor]);
 
     const isValueStepValid = useStore(form.store, (state) => {
         if (currentStep !== VALUE_STEP) {

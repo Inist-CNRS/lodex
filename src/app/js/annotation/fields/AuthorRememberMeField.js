@@ -1,7 +1,12 @@
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { useMemo } from 'react';
 
-import { Checkbox, FormControlLabel } from '@mui/material';
+import {
+    Checkbox,
+    FormControl,
+    FormControlLabel,
+    FormHelperText,
+} from '@mui/material';
 import { useField } from '@tanstack/react-form';
 import { useTranslate } from '../../i18n/I18NContext';
 
@@ -13,16 +18,29 @@ export function AuthorRememberMeField({ form }) {
         field.handleChange(event.target.checked);
     };
 
+    const error = useMemo(() => {
+        return field.state.meta.isTouched && field.state.meta.errors?.length
+            ? field.state.meta.errors[0]
+            : null;
+    }, [field.state]);
+
     return (
-        <FormControlLabel
-            control={
-                <Checkbox
-                    checked={field.state.value}
-                    onChange={handleCheckboxChange}
-                />
-            }
-            label={translate('annotation.authorRememberMe')}
-        />
+        <FormControl>
+            <FormControlLabel
+                control={
+                    <Checkbox
+                        checked={field.state.value ?? false}
+                        onChange={handleCheckboxChange}
+                    />
+                }
+                label={translate('annotation.authorRememberMe')}
+            />
+            {error && (
+                <FormHelperText error role="alert">
+                    {translate(error)}
+                </FormHelperText>
+            )}
+        </FormControl>
     );
 }
 
