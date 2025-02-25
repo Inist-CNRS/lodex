@@ -27,6 +27,7 @@ export const annotationCreationSchema = z
         comment: z
             .string({
                 required_error: 'error_required',
+                invalid_type_error: 'error_required',
             })
             .trim()
             .min(1, {
@@ -35,6 +36,7 @@ export const annotationCreationSchema = z
         authorName: z
             .string({
                 required_error: 'error_required',
+                invalid_type_error: 'error_required',
             })
             .trim()
             .min(1, {

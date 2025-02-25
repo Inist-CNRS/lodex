@@ -6,7 +6,6 @@ import { setTimeout } from 'node:timers/promises';
 import { TestI18N } from '../i18n/I18NContext';
 import { CreateAnnotationModal } from './CreateAnnotationModal';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { useGetFieldAnnotation } from './useGetFieldAnnotation';
 
 jest.mock('./useGetFieldAnnotation', () => ({
     useGetFieldAnnotation: jest.fn().mockReturnValue({
