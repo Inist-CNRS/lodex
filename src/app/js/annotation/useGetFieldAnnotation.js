@@ -1,15 +1,15 @@
 import { useQuery } from '@tanstack/react-query';
+import { toast } from '../../../common/tools/toast';
 import { getUserSessionStorageInfo } from '../admin/api/tools';
-import { getRequest } from '../user';
+import { useTranslate } from '../i18n/I18NContext';
 import fetch from '../lib/fetch';
+import { getRequest } from '../user';
 import {
     useGetFieldAnnotationIds,
     useSetFieldAnnotationIds,
 } from './annotationStorage';
-import { toast } from '../../../common/tools/toast';
-import { useTranslate } from '../i18n/I18NContext';
 
-export const useGetFieldAnnotation = (fieldId, resourceUri) => {
+export const useGetFieldAnnotation = (fieldId, resourceUri, enabled = true) => {
     const { translate } = useTranslate();
     const storedAnnotationIds = useGetFieldAnnotationIds({
         fieldId,
@@ -58,5 +58,6 @@ export const useGetFieldAnnotation = (fieldId, resourceUri) => {
                 isMine: storedAnnotationIds.includes(annotation._id),
             }));
         },
+        enabled,
     });
 };

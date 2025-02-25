@@ -11,6 +11,7 @@ import {
 } from '../../../common/validator/annotation.validator';
 import { useTranslate } from '../i18n/I18NContext';
 import { AnnotationCommentStep } from './AnnotationCommentStep';
+import { useAnnotationContext } from './AnnotationContext';
 import { AuthorEmailField } from './fields/AuthorEmailField';
 import { AuthorNameField } from './fields/AuthorNameField';
 import { AuthorRememberMeField } from './fields/AuthorRememberMeField';
@@ -18,7 +19,7 @@ import { KindField } from './fields/KindField';
 import { TargetField } from './fields/TargetField';
 import { ValueField } from './fields/ValueField';
 import { NextButton } from './NextButton';
-import { OpenHistoricButton } from './OpenHistoricButton';
+import { OpenHistoryButton } from './OpenHistoryButton';
 import { PreviousButton } from './PreviousButton';
 import {
     AUTHOR_STEP,
@@ -53,10 +54,10 @@ export function CreateAnnotationModal({
     anchorEl,
     onClose,
     initialValue,
-    field,
-    resourceUri,
 }) {
     const { translate } = useTranslate();
+
+    const { field, resourceUri } = useAnnotationContext();
 
     const { contributor, updateContributorCache } = useContributorCache();
 
@@ -204,7 +205,7 @@ export function CreateAnnotationModal({
                             aria-label={translate('annotation_step_target')}
                             role="tab"
                         >
-                            <OpenHistoricButton
+                            <OpenHistoryButton
                                 field={field}
                                 resourceUri={resourceUri}
                             />
@@ -245,7 +246,7 @@ export function CreateAnnotationModal({
                         >
                             {!initialValue && (
                                 <Stack spacing={2}>
-                                    <OpenHistoricButton
+                                    <OpenHistoryButton
                                         field={field}
                                         resourceUri={resourceUri}
                                     />
