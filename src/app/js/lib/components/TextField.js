@@ -46,7 +46,7 @@ export function TextField({
                 disabled={disabled}
                 type={type}
                 onChange={(e) => {
-                    field.handleChange(e.target.value);
+                    field.handleChange(e.target.value ? e.target.value : null);
                 }}
                 {...(multiline
                     ? {

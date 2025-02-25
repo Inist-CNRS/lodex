@@ -21,6 +21,11 @@ import {
     getFieldAnnotations,
     updateAnnotation,
 } from './annotation';
+import { sendMail } from '../../services/mail/mailer';
+
+jest.mock('../../services/mail/mailer', () => ({
+    sendMail: jest.fn(),
+}));
 
 const ANNOTATIONS = [
     {
@@ -106,6 +111,10 @@ describe('annotation', () => {
     });
 
     describe('createAnnotation', () => {
+        beforeEach(() => {
+            sendMail.mockClear();
+        });
+
         it('should create an annotation', async () => {
             await configTenantModel.create({
                 contributorAuth: {
@@ -147,7 +156,132 @@ describe('annotation', () => {
             expect(await annotationModel.findLimitFromSkip()).toStrictEqual([
                 ctx.body.data,
             ]);
+
+            expect(sendMail).not.toHaveBeenCalled();
         });
+
+        it('should create an annotation and send a french notification when when a notificationEmail is set and locale is fr', async () => {
+            await configTenantModel.create({
+                contributorAuth: {
+                    active: false,
+                },
+                notificationEmail: 'admin@inist.fr',
+            });
+            const annotation = {
+                resourceUri: 'uid:/a4f7a51f-7109-481e-86cc-0adb3a26faa6',
+                fieldId: 'Gb4a',
+                kind: 'comment',
+                comment: 'Hello world',
+                authorName: 'John DOE',
+            };
+
+            const ctx = {
+                request: {
+                    body: annotation,
+                    query: {
+                        locale: 'en',
+                    },
+                    header: {
+                        origin: 'http://localhost:3000',
+                    },
+                },
+                tenant: 'instance-name',
+                response: {},
+                annotation: annotationModel,
+                publishedDataset: publishedDatasetModel,
+                field: fieldModel,
+                configTenantCollection: configTenantModel,
+            };
+
+            await createAnnotation(ctx);
+
+            expect(ctx.response.status).toBe(200);
+            expect(ctx.body).toMatchObject({
+                total: 1,
+                data: {
+                    ...annotation,
+                    status: 'to_review',
+                    internalComment: null,
+                    authorEmail: null,
+                },
+            });
+
+            expect(await annotationModel.findLimitFromSkip()).toStrictEqual([
+                ctx.body.data,
+            ]);
+
+            expect(sendMail).toHaveBeenCalledWith({
+                subject: 'An annotation has been added on « instance-name »',
+                to: 'admin@inist.fr',
+                text: `An annotation has been added on « instance-name »
+Type : comment
+Contributor: John DOE
+Contributor comment: Hello world
+See annotation: http://localhost:3000/instance/instance-name/admin#/annotations`,
+            });
+        });
+
+        it('should create an annotation and send a notification when when a notificationEmail is set', async () => {
+            await configTenantModel.create({
+                contributorAuth: {
+                    active: false,
+                },
+                notificationEmail: 'admin@inist.fr',
+            });
+            const annotation = {
+                resourceUri: 'uid:/a4f7a51f-7109-481e-86cc-0adb3a26faa6',
+                fieldId: 'Gb4a',
+                kind: 'comment',
+                comment: 'Hello world',
+                authorName: 'John DOE',
+            };
+
+            const ctx = {
+                request: {
+                    body: annotation,
+                    query: {
+                        locale: 'fr',
+                    },
+                    header: {
+                        origin: 'http://localhost:3000',
+                    },
+                },
+                tenant: 'instance-name',
+                response: {},
+                annotation: annotationModel,
+                publishedDataset: publishedDatasetModel,
+                field: fieldModel,
+                configTenantCollection: configTenantModel,
+            };
+
+            await createAnnotation(ctx);
+
+            expect(ctx.response.status).toBe(200);
+            expect(ctx.body).toMatchObject({
+                total: 1,
+                data: {
+                    ...annotation,
+                    status: 'to_review',
+                    internalComment: null,
+                    authorEmail: null,
+                },
+            });
+
+            expect(await annotationModel.findLimitFromSkip()).toStrictEqual([
+                ctx.body.data,
+            ]);
+
+            expect(sendMail).toHaveBeenCalledWith({
+                subject: 'Une annotation a été ajoutée sur « instance-name »',
+                to: 'admin@inist.fr',
+                text: `Une annotation a été ajoutée sur « instance-name »
+Type : comment
+Contributeur : John DOE
+Commentaire du contributeur : Hello world
+Voir l'annotation : http://localhost:3000/instance/instance-name/admin#/annotations`,
+            });
+        });
+
         it('should forbid to create an annotation if contributorAuth is active and user role is not contributor nor admin', async () => {
             await configTenantModel.create({
                 contributorAuth: {

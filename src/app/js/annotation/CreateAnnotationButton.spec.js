@@ -175,7 +175,7 @@ describe('CreateAnnotationButton', () => {
 
         expect(fetch).toHaveBeenCalledWith(
             expect.objectContaining({
-                url: '/api/annotation',
+                url: '/api/annotation?locale=en',
                 method: 'POST',
                 body: '{"comment":"test","target":"title","kind":"comment","authorName":"author","authorEmail":"email@example.org","resourceUri":"uid:/0579J7JN","fieldId":"1ddbe5dc-f945-4d38-9c5b-ef20f78cb0cc"}',
             }),
@@ -268,7 +268,7 @@ describe('CreateAnnotationButton', () => {
 
         expect(fetch).toHaveBeenCalledWith(
             expect.objectContaining({
-                url: '/api/annotation',
+                url: '/api/annotation?locale=en',
                 method: 'POST',
                 body: '{"comment":"test","target":"value","kind":"removal","initialValue":"a b c","authorName":"author","authorEmail":"email@example.org","resourceUri":"uid:/0579J7JN","fieldId":"1ddbe5dc-f945-4d38-9c5b-ef20f78cb0cc"}',
             }),

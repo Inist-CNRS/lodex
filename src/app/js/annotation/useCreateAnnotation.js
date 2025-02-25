@@ -8,7 +8,7 @@ import { getRequest } from '../user';
 import { useSaveAnnotationId } from './annotationStorage';
 
 export function useCreateAnnotation() {
-    const { translate } = useTranslate();
+    const { translate, locale } = useTranslate();
     const queryClient = useQueryClient();
 
     const saveAnnotationId = useSaveAnnotationId();
@@ -20,7 +20,7 @@ export function useCreateAnnotation() {
                 { token },
                 {
                     method: 'POST',
-                    url: '/api/annotation',
+                    url: `/api/annotation?locale=${locale}`,
                     body: annotation,
                 },
             );

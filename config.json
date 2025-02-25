@@ -85,10 +85,7 @@
         "doi-list",
         "tar-gz"
     ],
-    "exporters": [
-        "csv",
-        "json"
-    ],
+    "exporters": ["csv", "json"],
     "formatExporters": ["jsonallvalue"],
     "datasetClass": "http://test.fr/datasetClass",
     "schemeForDatasetLink": "http://www.w3.org/2004/02/skos/core#inScheme",
@@ -122,5 +119,10 @@
         "istex",
         "istex-legacy"
     ],
-    "timeout": 3600000
+    "timeout": 3600000,
+    "mail": {
+        "host": "smtpout.intra.inist.fr",
+        "port": 25,
+        "from": "noreply@inist.fr"
+    }
 }
