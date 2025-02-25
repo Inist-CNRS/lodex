@@ -249,7 +249,13 @@ export const AnnotationList = ({ annotations, field }) => {
                                             )}
                                         </Typography>
                                         <Typography aria-labelledby="annotation_proposed_value">
-                                            {annotation.proposedValue}
+                                            {Array.isArray(
+                                                annotation.proposedValue,
+                                            )
+                                                ? annotation.proposedValue.join(
+                                                      ' ',
+                                                  )
+                                                : annotation.proposedValue}
                                         </Typography>
                                     </Box>
                                     <Box>
