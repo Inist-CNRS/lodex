@@ -31,26 +31,31 @@ export const getAnnotationSummaryValue = (annotation) => {
         case ANNOTATION_KIND_COMMENT:
             return annotation.comment;
         case ANNOTATION_KIND_CORRECTION: {
-            const initialValue =
-                typeof annotation.initialValue === 'string'
-                    ? annotation.initialValue.replace(/<[^>]*>/g, '')
-                    : annotation.initialValue.toString();
+            const initialValue = annotation.initialValue
+                .toString()
+                .replace(/<[^>]*>/g, '');
             const truncatedInitialValue =
                 initialValue.length > 16
                     ? `${initialValue.slice(0, 16)} ...`
                     : initialValue;
+            const proposedValue = Array.isArray(annotation.proposedValue)
+                ? annotation.proposedValue.join(' ')
+                : annotation.proposedValue.toString();
             const truncatedProposedValue =
-                annotation.proposedValue.length > 16
-                    ? `${annotation.proposedValue.slice(0, 16)} ...`
-                    : annotation.proposedValue;
+                proposedValue.length > 16
+                    ? `${proposedValue.slice(0, 16)} ...`
+                    : proposedValue;
             return `${truncatedInitialValue} -> ${truncatedProposedValue}`;
         }
         case ANNOTATION_KIND_REMOVAL:
-            return typeof annotation.initialValue === 'string'
-                ? annotation.initialValue.replace(/<[^>]*>/g, '')
-                : annotation.initialValue;
+            if (Array.isArray(annotation.initialValue)) {
+                return annotation.initialValue.join(' ');
+            }
+            return annotation.initialValue.toString().replace(/<[^>]*>/g, '');
         case ANNOTATION_KIND_ADDITION:
-            return annotation.proposedValue;
+            return Array.isArray(annotation.proposedValue)
+                ? annotation.proposedValue.join(' ')
+                : annotation.proposedValue;
         default:
             return '';
     }
@@ -249,7 +254,19 @@ export const AnnotationList = ({ annotations, field }) => {
                                             )}
                                         </Typography>
                                         <Typography aria-labelledby="annotation_proposed_value">
-                                            {annotation.proposedValue}
+                                            {Array.isArray(
+                                                annotation.proposedValue,
+                                            )
+                                                ? annotation.proposedValue.map(
+                                                      (value) => (
+                                                          <Typography
+                                                              key={value}
+                                                          >
+                                                              {value}
+                                                          </Typography>
+                                                      ),
+                                                  )
+                                                : annotation.proposedValue}
                                         </Typography>
                                     </Box>
                                     <Box>

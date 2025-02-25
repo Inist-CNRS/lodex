@@ -41,6 +41,16 @@ describe('AnnotationList', () => {
             };
             expect(getAnnotationSummaryValue(annotation)).toBe('42 -> 19');
         });
+        it('should return the initialValue -> proposed value when the annotation kind is correction when proposedValue is an array', () => {
+            const annotation = {
+                kind: 'correction',
+                initialValue: 'foo',
+                proposedValue: ['bar', 'baz'],
+            };
+            expect(getAnnotationSummaryValue(annotation)).toBe(
+                'foo -> bar baz',
+            );
+        });
         it('should should truncate the initialValue and proposed Value when they are longer than 16 characters', () => {
             const annotation = {
                 kind: 'correction',
@@ -67,7 +77,15 @@ describe('AnnotationList', () => {
                 initialValue: 42,
                 proposedValue: 'proposedValue',
             };
-            expect(getAnnotationSummaryValue(annotation)).toBe(42);
+            expect(getAnnotationSummaryValue(annotation)).toBe('42');
+        });
+        it('should return the array initialValue when the annotation kind is removal', () => {
+            const annotation = {
+                kind: 'removal',
+                initialValue: [42, 'value'],
+                proposedValue: 'proposedValue',
+            };
+            expect(getAnnotationSummaryValue(annotation)).toBe('42 value');
         });
         it('should return the proposedValue when the annotation kind is addition', () => {
             const annotation = {
@@ -76,6 +94,14 @@ describe('AnnotationList', () => {
                 proposedValue: 'proposedValue',
             };
             expect(getAnnotationSummaryValue(annotation)).toBe('proposedValue');
+        });
+        it('should return the proposedValues separated by space when the annotation kind is addition and proposed value is an array', () => {
+            const annotation = {
+                kind: 'addition',
+                initialValue: 'initialValue',
+                proposedValue: ['foo', 'bar', 'baz'],
+            };
+            expect(getAnnotationSummaryValue(annotation)).toBe('foo bar baz');
         });
         it('should return an empty string as a fallback otherwise', () => {
             const annotation = {};
