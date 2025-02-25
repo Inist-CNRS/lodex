@@ -80,3 +80,10 @@ export const getEditionComponent = (field) =>
     getComponent(field).EditionComponent;
 export const getIconComponent = (name) => getComponent(name).Icon;
 export const getPredicate = (name) => getComponent(name).predicate;
+
+export const getIsFieldValueAnnotable = (name) => {
+    return (
+        FORMATS_CATALOG.find((i) => i.componentName === name)
+            ?.isValueAnnotable ?? false
+    );
+};

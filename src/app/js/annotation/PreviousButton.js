@@ -19,6 +19,7 @@ export const PreviousButton = ({
     onCancel,
     isSubmitting,
     form,
+    isFieldValueAnnotable,
 }) => {
     const { translate } = useTranslate();
 
@@ -44,7 +45,7 @@ export const PreviousButton = ({
                     return;
                 }
                 case COMMENT_STEP: {
-                    if (!initialValue) {
+                    if (!isFieldValueAnnotable) {
                         return;
                     }
                     if (target === 'title') {
@@ -66,12 +67,19 @@ export const PreviousButton = ({
                     return;
             }
         },
-        [currentStep, goToStep, initialValue, target],
+        [
+            currentStep,
+            goToStep,
+            initialValue,
+            kind,
+            target,
+            isFieldValueAnnotable,
+        ],
     );
 
     if (
         currentStep === TARGET_STEP ||
-        (currentStep === COMMENT_STEP && !initialValue)
+        (currentStep === COMMENT_STEP && !isFieldValueAnnotable)
     ) {
         return (
             <Button
@@ -104,4 +112,5 @@ PreviousButton.propTypes = {
     currentStep: PropTypes.string.isRequired,
     initialValue: PropTypes.string,
     isSubmitting: PropTypes.bool.isRequired,
+    isFieldValueAnnotable: PropTypes.bool.isRequired,
 };
