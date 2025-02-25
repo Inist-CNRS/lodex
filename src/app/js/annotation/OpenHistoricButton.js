@@ -1,12 +1,19 @@
-import { Box, Button, Drawer, IconButton, Typography } from '@mui/material';
-import React, { useState } from 'react';
-import { useTranslate } from '../i18n/I18NContext';
-import { useGetFieldAnnotation } from './useGetFieldAnnotation';
-import AdminOnlyAlert from '../lib/components/AdminOnlyAlert';
-import { AnnotationList } from './AnnotationList';
-import PropTypes from 'prop-types';
 import { useTheme } from '@emotion/react';
 import CloseIcon from '@mui/icons-material/Close';
+import {
+    Box,
+    Drawer,
+    IconButton,
+    Link,
+    Stack,
+    Typography,
+} from '@mui/material';
+import PropTypes from 'prop-types';
+import React, { useState } from 'react';
+import { useTranslate } from '../i18n/I18NContext';
+import AdminOnlyAlert from '../lib/components/AdminOnlyAlert';
+import { AnnotationList } from './AnnotationList';
+import { useGetFieldAnnotation } from './useGetFieldAnnotation';
 
 export const OpenHistoricButton = ({ field, resourceUri }) => {
     const { translate } = useTranslate();
@@ -19,40 +26,60 @@ export const OpenHistoricButton = ({ field, resourceUri }) => {
 
     return (
         <>
-            <Typography variant="h6">
-                {translate('annotation_history', { fieldLabel: field.label })}
-            </Typography>
-            {isLoading && <Typography>{translate('loading')}</Typography>}
-            {!isLoading && error && (
-                <AdminOnlyAlert>
-                    {translate('field_annotation_query_error')}
-                </AdminOnlyAlert>
-            )}
-            {!isLoading &&
-                (data.length ? (
-                    <Button
-                        variant="link"
-                        sx={{
-                            padding: 0,
-                            margin: 0,
-                            textTransform: 'none',
-                            textDecoration: 'underline',
-                            justifyContent: 'left',
-                            color: theme.palette.primary.main,
-                        }}
-                        onClick={() => {
-                            setIsHistoryOpen(true);
-                        }}
-                    >
-                        {translate('annotation_open_history', {
-                            smart_count: data.length,
-                        })}
-                    </Button>
-                ) : (
-                    <Button variant="link" disabled>
-                        {translate('annotation_no_history')}
-                    </Button>
-                ))}
+            <Stack
+                gap={0.5}
+                paddingBlockEnd={2}
+                borderBottom={1}
+                borderColor={theme.palette.grey[500]}
+            >
+                <Typography
+                    variant="h6"
+                    sx={{
+                        fontSize: '1rem',
+                    }}
+                >
+                    {translate('annotation_history', {
+                        fieldLabel: field.label,
+                    })}
+                </Typography>
+                {isLoading && <Typography>{translate('loading')}</Typography>}
+                {!isLoading && error && (
+                    <AdminOnlyAlert>
+                        {translate('field_annotation_query_error')}
+                    </AdminOnlyAlert>
+                )}
+                {!isLoading &&
+                    (data.length ? (
+                        <Link
+                            sx={{
+                                color: theme.palette.primary.main,
+                                fontSize: '1rem',
+                                '&:hover': {
+                                    color: theme.palette.primary.main,
+                                    textDecoration: 'none',
+                                },
+                            }}
+                            href="#"
+                            onClick={(e) => {
+                                e.preventDefault();
+                                setIsHistoryOpen(true);
+                            }}
+                        >
+                            {translate('annotation_open_history', {
+                                smart_count: data.length,
+                            })}
+                        </Link>
+                    ) : (
+                        <Typography
+                            color="text.secondary"
+                            sx={{
+                                fontSize: '1rem',
+                            }}
+                        >
+                            {translate('annotation_no_history')}
+                        </Typography>
+                    ))}
+            </Stack>
             <Drawer
                 anchor="right"
                 open={isHistoryOpen}

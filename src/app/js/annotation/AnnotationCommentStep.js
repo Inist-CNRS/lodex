@@ -1,5 +1,6 @@
 import React from 'react';
 
+import HelpIcon from '@mui/icons-material/HelpOutline';
 import { Stack, Tooltip, Typography } from '@mui/material';
 import { useStore } from '@tanstack/react-form';
 import PropTypes from 'prop-types';
@@ -7,10 +8,9 @@ import {
     ANNOTATION_KIND_ADDITION,
     ANNOTATION_KIND_CORRECTION,
 } from '../../../common/validator/annotation.validator';
-import { CommentField } from './fields/CommentField';
 import { useTranslate } from '../i18n/I18NContext';
+import { CommentField } from './fields/CommentField';
 import { ProposedValueField } from './fields/ProposedValueField';
-import HelpIcon from '@mui/icons-material/HelpOutline';
 
 export function AnnotationCommentStep({ field, form }) {
     const { translate } = useTranslate();
@@ -24,7 +24,7 @@ export function AnnotationCommentStep({ field, form }) {
 
     return (
         <>
-            <Stack direction="row">
+            <Stack direction="row" gap={1} alignItems="center">
                 <Tooltip title={annotationInitialValue}>
                     <Typography
                         sx={{
@@ -48,7 +48,7 @@ export function AnnotationCommentStep({ field, form }) {
                     </Typography>
                 </Tooltip>
                 <Tooltip title={translate('public_annotation')}>
-                    <HelpIcon />
+                    <HelpIcon fontSize="1.125rem" />
                 </Tooltip>
             </Stack>
             {[ANNOTATION_KIND_CORRECTION, ANNOTATION_KIND_ADDITION].includes(

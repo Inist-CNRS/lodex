@@ -273,7 +273,7 @@ export function CreateAnnotationModal({
                             aria-label={translate('annotation_step_author')}
                             role="tab"
                         >
-                            <Stack direction="row">
+                            <Stack direction="row" gap={1} alignItems="center">
                                 <Typography>
                                     {translate(
                                         'annotation_personal_information',
@@ -284,7 +284,7 @@ export function CreateAnnotationModal({
                                         'annotation_personal_information_tooltip',
                                     )}
                                 >
-                                    <HelpIcon />
+                                    <HelpIcon fontSize="1.125rem" />
                                 </Tooltip>
                             </Stack>
                             <AuthorNameField form={form} />
