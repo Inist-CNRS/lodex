@@ -128,6 +128,13 @@ export function createTitleAnnotation({
     submitAnnotation();
 }
 
+const ANNOTATION_KIND_TRANSLATION = {
+    removal: 'Removal',
+    comment: 'Comment',
+    correction: 'Correction',
+    addition: 'Addition',
+};
+
 export function checkFieldAnnotations({
     fieldLabel,
     expectedAnnotations,
@@ -168,7 +175,7 @@ export function checkFieldAnnotations({
     expectedAnnotations.forEach((annotation, index) => {
         cy.findAllByLabelText('Type')
             .eq(index)
-            .should('have.text', annotation.kind);
+            .should('have.text', ANNOTATION_KIND_TRANSLATION[annotation.kind]);
 
         cy.findAllByLabelText('Annotation summary')
             .eq(index)

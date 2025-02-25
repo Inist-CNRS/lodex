@@ -1051,7 +1051,7 @@ Revue`);
             datasetImportPage.goToPublishedResources();
         });
 
-        it('should see own annotations', () => {
+        it('should see own annotations from create annotation button', () => {
             annotation.checkFieldAnnotations({
                 fieldLabel: 'Dataset Description',
                 expectedAnnotations: [
@@ -1083,7 +1083,6 @@ Revue`);
 
             cy.findByText('All').should('be.visible');
             cy.findByText('Sent by me').should('be.visible');
-            cy.findByText('Sent by me').should('be.enabled');
 
             cy.findAllByLabelText('Type').should('have.length', 2);
             cy.findAllByLabelText('Annotation summary').should(
@@ -1100,7 +1099,7 @@ Revue`);
                 1,
             );
             cy.findAllByLabelText('Status').should('have.length', 1);
-            cy.findByLabelText('Type').should('have.text', 'comment');
+            cy.findByLabelText('Type').should('have.text', 'Comment');
 
             cy.findByLabelText('Annotation summary').should(
                 'have.text',
@@ -1112,6 +1111,26 @@ Revue`);
 
             cy.findByText('You are this annotation contributor').should(
                 'be.visible',
+            );
+        });
+
+        it('should see own annotations from annotation count on field', () => {
+            annotation.createTitleAnnotation({
+                fieldLabel: 'Dataset Description',
+                comment: 'This is my comment',
+                authorName: 'Me',
+                authorEmail: 'me@myself.org',
+            });
+
+            cy.findByText(`(1 sent)`).click();
+
+            cy.findByText('All').should('be.visible');
+            cy.findByText('Sent by me').should('be.visible');
+
+            cy.findAllByLabelText('Type').should('have.length', 2);
+            cy.findAllByLabelText('Annotation summary').should(
+                'have.length',
+                2,
             );
         });
     });

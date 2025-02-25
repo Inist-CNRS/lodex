@@ -1,11 +1,12 @@
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { setTimeout } from 'node:timers/promises';
 import PropTypes from 'prop-types';
 import React from 'react';
 
 import { fireEvent, render, screen, waitFor } from '../../../test-utils';
-import { setTimeout } from 'node:timers/promises';
 import { TestI18N } from '../i18n/I18NContext';
+import { AnnotationContextProvider } from './AnnotationContext';
 import { CreateAnnotationModal } from './CreateAnnotationModal';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 jest.mock('./useGetFieldAnnotation', () => ({
     useGetFieldAnnotation: jest.fn().mockReturnValue({
@@ -21,12 +22,15 @@ function TestModal(props) {
     return (
         <TestI18N>
             <QueryClientProvider client={queryClient}>
-                <CreateAnnotationModal
-                    initialValue={null}
+                <AnnotationContextProvider
                     field={{ _id: '87a3b1c0-0b1b-4b1b-8b1b-1b1b1b1b1b1b' }}
-                    {...props}
-                    anchorEl={document.createElement('div')}
-                />
+                >
+                    <CreateAnnotationModal
+                        initialValue={null}
+                        {...props}
+                        anchorEl={document.createElement('div')}
+                    />
+                </AnnotationContextProvider>
             </QueryClientProvider>
         </TestI18N>
     );

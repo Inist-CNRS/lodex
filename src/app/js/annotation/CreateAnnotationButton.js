@@ -1,14 +1,66 @@
 import MapsUgcIcon from '@mui/icons-material/MapsUgc';
-import { IconButton, Stack, Tooltip, Typography } from '@mui/material';
+import {
+    IconButton,
+    Link,
+    Stack,
+    Tooltip,
+    Typography,
+    useTheme,
+} from '@mui/material';
 import PropTypes from 'prop-types';
 import React, { useCallback, useRef, useState } from 'react';
 
 import { useTranslate } from '../i18n/I18NContext';
+import {
+    AnnotationContextProvider,
+    useAnnotationContext,
+} from './AnnotationContext';
 import { useGetFieldAnnotationIds } from './annotationStorage';
 import { CreateAnnotationModal } from './CreateAnnotationModal';
 import { useCanAnnotate } from './useCanAnnotate';
 import { useCreateAnnotation } from './useCreateAnnotation';
 import { useResourceUri } from './useResourceUri';
+
+function UserAnnotationCount({ fieldAnnotationIds }) {
+    const { translate } = useTranslate();
+    const theme = useTheme();
+    const { openHistoryModal } = useAnnotationContext();
+
+    const handleOpenHistory = (e) => {
+        e.preventDefault();
+        openHistoryModal();
+    };
+
+    if (!fieldAnnotationIds.length) {
+        return null;
+    }
+
+    return (
+        <Typography
+            color="primary"
+            onClick={handleOpenHistory}
+            component={Link}
+            sx={{
+                fontSize: '1rem',
+                fontWeight: 'normal',
+                color: theme.palette.primary.main,
+                '&:hover': {
+                    color: theme.palette.primary.main,
+                    textDecoration: 'none',
+                    cursor: 'pointer',
+                },
+            }}
+        >
+            {translate('annotation_sent_count', {
+                smart_count: fieldAnnotationIds.length,
+            })}
+        </Typography>
+    );
+}
+
+UserAnnotationCount.propTypes = {
+    fieldAnnotationIds: PropTypes.arrayOf(PropTypes.string).isRequired,
+};
 
 export function CreateAnnotationButton({ field, initialValue = null }) {
     const { translate } = useTranslate();
@@ -71,7 +123,7 @@ export function CreateAnnotationButton({ field, initialValue = null }) {
     }
 
     return (
-        <>
+        <AnnotationContextProvider field={field} resourceUri={resourceUri}>
             <Stack direction="row" alignItems="center">
                 <Tooltip
                     title={buttonLabel}
@@ -115,13 +167,8 @@ export function CreateAnnotationButton({ field, initialValue = null }) {
                         />
                     </IconButton>
                 </Tooltip>
-                {fieldAnnotationIds.length > 0 && (
-                    <Typography color="primary" variant="caption">
-                        {translate('annotation_sent_count', {
-                            smart_count: fieldAnnotationIds.length,
-                        })}
-                    </Typography>
-                )}
+
+                <UserAnnotationCount fieldAnnotationIds={fieldAnnotationIds} />
             </Stack>
 
             {anchorButton.current && isModalOpen && (
@@ -131,11 +178,9 @@ export function CreateAnnotationButton({ field, initialValue = null }) {
                     onSubmit={handleSubmitAnnotation}
                     anchorEl={anchorButton.current}
                     initialValue={initialValue}
-                    field={field}
-                    resourceUri={resourceUri}
                 />
             )}
-        </>
+        </AnnotationContextProvider>
     );
 }
 
