@@ -21,6 +21,38 @@ import {
     deleteManyAnnotationsSchema,
     getAnnotationsQuerySchema,
 } from './../../../common/validator/annotation.validator';
+import { sendMail } from '../../services/mail/mailer';
+import { getAnnotationNotificationMail } from '../../services/mail/getAnnotationNotificationMail';
+
+async function bindResourceAndFieldToAnnotation(ctx, annotation) {
+    const [titleField, subResourceTitleFields] = await Promise.all([
+        ctx.field.findResourceTitle(),
+        ctx.field.findSubResourceTitles(),
+    ]);
+
+    const resource = annotation.resourceUri
+        ? await ctx.publishedDataset.findByUri(annotation.resourceUri)
+        : null;
+
+    const field = annotation.fieldId
+        ? await ctx.field.findOneById(annotation.fieldId)
+        : null;
+
+    return {
+        ...annotation,
+        field,
+        resource: resource
+            ? {
+                  title: getResourceTitle(
+                      resource,
+                      titleField,
+                      subResourceTitleFields,
+                  ),
+                  uri: resource.uri,
+              }
+            : null,
+    };
+}
 
 export const canAnnotate = async (ctx) => {
     const role = ctx?.state?.header?.role;
@@ -50,6 +82,7 @@ export async function createAnnotation(ctx) {
         ctx.response.status = 403;
         return;
     }
+
     const validation = annotationCreationSchema.safeParse(ctx.request.body);
     if (!validation.success) {
         ctx.response.status = 400;
@@ -60,10 +93,36 @@ export async function createAnnotation(ctx) {
         return;
     }
 
+    const createdAnnotation = await ctx.annotation.create(validation.data);
+
+    const config = await ctx.configTenantCollection.findLast();
+
+    if (config?.notificationEmail) {
+        const locale = ctx.request.query.locale ?? 'en';
+
+        const annotationWithDetails = await bindResourceAndFieldToAnnotation(
+            ctx,
+            createdAnnotation,
+        );
+
+        const { subject, text } = getAnnotationNotificationMail({
+            locale,
+            tenant: ctx.tenant,
+            annotationWithDetails,
+            origin: ctx.request.header.origin,
+        });
+
+        await sendMail({
+            to: config.notificationEmail,
+            subject,
+            text,
+        });
+    }
+
     ctx.response.status = 200;
     ctx.body = {
         total: 1,
-        data: await ctx.annotation.create(validation.data),
+        data: createdAnnotation,
     };
 }
 
@@ -430,36 +489,6 @@ export async function exportAnnotations(ctx) {
     ctx.response.body = new JsonStreamStringify(annotationStream);
 }
 
-async function bindResourceAndFieldToAnnnotation(ctx, annotation) {
-    const [titleField, subResourceTitleFields] = await Promise.all([
-        ctx.field.findResourceTitle(),
-        ctx.field.findSubResourceTitles(),
-    ]);
-
-    const resource = annotation.resourceUri
-        ? await ctx.publishedDataset.findByUri(annotation.resourceUri)
-        : null;
-
-    const field = annotation.fieldId
-        ? await ctx.field.findOneById(annotation.fieldId)
-        : null;
-
-    return {
-        ...annotation,
-        field,
-        resource: resource
-            ? {
-                  title: getResourceTitle(
-                      resource,
-                      titleField,
-                      subResourceTitleFields,
-                  ),
-                  uri: resource.uri,
-              }
-            : null,
-    };
-}
-
 /**
  * @param {Koa.Context} ctx
  */
@@ -473,10 +502,7 @@ export async function getAnnotation(ctx, id) {
     }
 
     ctx.response.status = 200;
-    ctx.response.body = await bindResourceAndFieldToAnnnotation(
-        ctx,
-        annotation,
-    );
+    ctx.response.body = await bindResourceAndFieldToAnnotation(ctx, annotation);
 }
 
 /**
@@ -504,7 +530,7 @@ export async function updateAnnotation(ctx, id) {
 
     ctx.response.status = 200;
     ctx.response.body = {
-        data: await bindResourceAndFieldToAnnnotation(ctx, updatedAnnotation),
+        data: await bindResourceAndFieldToAnnotation(ctx, updatedAnnotation),
     };
 }
 

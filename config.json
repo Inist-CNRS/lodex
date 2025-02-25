@@ -121,8 +121,8 @@
     ],
     "timeout": 3600000,
     "mail": {
-        "smtp": "smtpout.intra.inist.fr",
-        "smtp_port": 25,
-        "sendmail_from": "noreply@inist.fr"
+        "host": "smtpout.intra.inist.fr",
+        "port": 25,
+        "from": "noreply@inist.fr"
     }
 }
