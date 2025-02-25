@@ -1338,7 +1338,7 @@
 "notification_email"	"Email to be notified of annotations"	"Email pour être notifié des annotations"
 "notifications"	"Notifications"	"Notifications"
 "notification_new_annotation_email_subject"	"An annotation has been added on « %{tenant} »"	"Une annotation a été ajoutée sur « %{tenant} »"
-"notification_new_annotation_email_resource"	"Resource: %{resource}"	"Ressource: %{resource}"
+"notification_new_annotation_email_resource"	"Resource: %{resource}"	"Ressource : %{resource}"
 "notification_new_annotation_email_type"	"Type : %{type}"	"Type : %{type}"
 "notification_new_annotation_email_field"	"Field: %{field}"	"Champ : %{field}"
 "notification_new_annotation_email_initial_value"	"Initial value: %{initialValue}"	"Valeur d'origine : %{initialValue}"

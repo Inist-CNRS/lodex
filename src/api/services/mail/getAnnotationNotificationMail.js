@@ -21,7 +21,7 @@ export const getAnnotationNotificationMail = ({
         subject,
         annotationWithDetails.resource
             ? polyglot.t('notification_new_annotation_email_resource', {
-                  resource: annotationWithDetails.resource,
+                  resource: annotationWithDetails.resource.title,
               })
             : null,
         polyglot.t('notification_new_annotation_email_type', {
