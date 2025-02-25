@@ -112,7 +112,9 @@ export const AnnotationList = ({ annotations, field }) => {
                     onClick={() => setMode('all')}
                     variant={mode === 'all' ? 'contained' : 'outlined'}
                 >
-                    {translate('all_annotation')}
+                    {translate('all_annotation', {
+                        smart_count: annotations.length,
+                    })}
                 </Button>
                 <Button
                     onClick={() => {
@@ -122,7 +124,9 @@ export const AnnotationList = ({ annotations, field }) => {
                     variant={mode === 'mine' ? 'contained' : 'outlined'}
                     disabled={myAnnotations.length === 0}
                 >
-                    {translate('annotation_sent_by_me')}
+                    {translate('annotation_sent_by_me', {
+                        smart_count: myAnnotations.length,
+                    })}
                 </Button>
             </ButtonGroup>
             <Box>

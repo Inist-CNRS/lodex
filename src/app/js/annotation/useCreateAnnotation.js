@@ -30,13 +30,18 @@ export function useCreateAnnotation() {
                 throw error;
             }
 
-            queryClient.invalidateQueries({
-                queryKey: ['field-annotations', annotation.fieldId],
-            });
-
             return response.data;
         },
-        onSuccess: (data) => {
+        onSuccess: async (data) => {
+            await queryClient.resetQueries({
+                predicate: (query) => {
+                    return (
+                        query.queryKey[0] === 'field-annotations' &&
+                        query.queryKey[1] === data.fieldId
+                    );
+                },
+            });
+
             saveAnnotationId(data);
             toast(translate('annotation_create_success'), {
                 type: toast.TYPE.SUCCESS,

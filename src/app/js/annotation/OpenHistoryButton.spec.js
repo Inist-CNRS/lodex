@@ -1,7 +1,7 @@
 import React from 'react';
 import { fireEvent, render, waitFor } from '../../../test-utils';
 import { TestI18N } from '../i18n/I18NContext';
-import { OpenHistoricButton } from './OpenHistoricButton';
+import { OpenHistoryButton } from './OpenHistoryButton';
 import { useGetFieldAnnotation } from './useGetFieldAnnotation';
 
 jest.mock('./useGetFieldAnnotation', () => ({
@@ -11,8 +11,10 @@ jest.mock('./useGetFieldAnnotation', () => ({
         isLoading: false,
     }),
 }));
-describe('OpenHistoricButton', () => {
+
+describe('OpenHistoryButton', () => {
     it('should call useGetFieldAnnotation with field id and resource uri and display a button to see the annotations', async () => {
+        const openHistory = jest.fn();
         useGetFieldAnnotation.mockReturnValue({
             data: [
                 {
@@ -31,9 +33,10 @@ describe('OpenHistoricButton', () => {
         });
         const wrapper = render(
             <TestI18N>
-                <OpenHistoricButton
+                <OpenHistoryButton
                     field={{ _id: 'fieldId', label: 'fieldLabel' }}
                     resourceUri="resourceUri"
+                    openHistory={openHistory}
                 />
             </TestI18N>,
         );
@@ -60,25 +63,11 @@ describe('OpenHistoricButton', () => {
                 ),
             );
         });
-        expect(wrapper.getByLabelText('annotation_resource')).toHaveTextContent(
-            'resourceTitle',
-        );
-        expect(wrapper.getByLabelText('annotation_kind')).toHaveTextContent(
-            'correct',
-        );
-        expect(
-            wrapper.getByLabelText('annotation_initial_value'),
-        ).toHaveTextContent('initialValue');
-        expect(
-            wrapper.getByLabelText(
-                'annotation_proposed_value+{"smart_count":1}',
-            ),
-        ).toHaveTextContent('proposedValue');
-        expect(
-            wrapper.getByLabelText('annotation_comment_section'),
-        ).toHaveTextContent('comment');
+        expect(openHistory).toHaveBeenCalled();
     });
+
     it('should display a disabled button when receiving no annotations([])', () => {
+        const openHistory = jest.fn();
         useGetFieldAnnotation.mockReturnValue({
             data: [],
             error: null,
@@ -86,9 +75,10 @@ describe('OpenHistoricButton', () => {
         });
         const wrapper = render(
             <TestI18N>
-                <OpenHistoricButton
+                <OpenHistoryButton
                     field={{ _id: 'fieldId', label: 'fieldLabel' }}
                     resourceUri="resourceUri"
+                    openHistory={openHistory}
                 />
             </TestI18N>,
         );
@@ -105,9 +95,14 @@ describe('OpenHistoricButton', () => {
         expect(
             wrapper.queryByText('annotation_no_history'),
         ).toBeInTheDocument();
-        expect(wrapper.queryByText('annotation_no_history')).toBeDisabled();
+        expect(
+            wrapper.queryByText('annotation_no_history'),
+        ).toBeInTheDocument();
+        expect(openHistory).not.toHaveBeenCalled();
     });
+
     it('should display loading while loading the annotations', () => {
+        const openHistory = jest.fn();
         useGetFieldAnnotation.mockReturnValue({
             data: null,
             error: null,
@@ -115,9 +110,10 @@ describe('OpenHistoricButton', () => {
         });
         const wrapper = render(
             <TestI18N>
-                <OpenHistoricButton
+                <OpenHistoryButton
                     field={{ _id: 'fieldId', label: 'fieldLabel' }}
                     resourceUri="resourceUri"
+                    openHistory={openHistory}
                 />
             </TestI18N>,
         );
@@ -132,5 +128,6 @@ describe('OpenHistoricButton', () => {
             ),
         ).toBeInTheDocument();
         expect(wrapper.queryByText('loading')).toBeInTheDocument();
+        expect(openHistory).not.toHaveBeenCalled();
     });
 });

@@ -18,7 +18,7 @@ import { KindField } from './fields/KindField';
 import { TargetField } from './fields/TargetField';
 import { ValueField } from './fields/ValueField';
 import { NextButton } from './NextButton';
-import { OpenHistoricButton } from './OpenHistoricButton';
+import { OpenHistoryButton } from './OpenHistoryButton';
 import { PreviousButton } from './PreviousButton';
 import {
     AUTHOR_STEP,
@@ -57,6 +57,7 @@ export function CreateAnnotationModal({
     field,
     resourceUri,
     isFieldValueAnnotable,
+    openHistory,
 }) {
     const { translate } = useTranslate();
     const { requestReCaptchaToken } = useReCaptcha();
@@ -211,9 +212,10 @@ export function CreateAnnotationModal({
                             aria-label={translate('annotation_step_target')}
                             role="tab"
                         >
-                            <OpenHistoricButton
+                            <OpenHistoryButton
                                 field={field}
                                 resourceUri={resourceUri}
+                                openHistory={openHistory}
                             />
                             <TargetField
                                 form={form}
@@ -252,9 +254,10 @@ export function CreateAnnotationModal({
                         >
                             {!initialValue && (
                                 <Stack spacing={2}>
-                                    <OpenHistoricButton
+                                    <OpenHistoryButton
                                         field={field}
                                         resourceUri={resourceUri}
+                                        openHistory={openHistory}
                                     />
                                 </Stack>
                             )}
@@ -330,4 +333,5 @@ CreateAnnotationModal.propTypes = {
     field: PropTypes.object.isRequired,
     resourceUri: PropTypes.string,
     isFieldValueAnnotable: PropTypes.bool.isRequired,
+    openHistory: PropTypes.func.isRequired,
 };
