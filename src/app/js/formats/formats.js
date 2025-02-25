@@ -53,6 +53,7 @@ export const FORMATS_CATALOG = [
         componentName: 'asterPlotChart',
         component: asterPlotChart,
         type: 'chart',
+        isValueAnnotable: false,
         docUrl: 'https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/appliquer-un-format/#graphique-aster-plot',
     },
     {
@@ -61,6 +62,7 @@ export const FORMATS_CATALOG = [
         componentName: 'code',
         component: code,
         type: 'text',
+        isValueAnnotable: true,
         docUrl: 'https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/appliquer-un-format/#texte-code',
     },
     {
@@ -69,6 +71,7 @@ export const FORMATS_CATALOG = [
         componentName: 'globalBarchart',
         component: globalBarchart,
         type: 'chart',
+        isValueAnnotable: false,
         docUrl: 'https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/appliquer-un-format/#graphique-diagramme-en-barres',
     },
     {
@@ -77,6 +80,7 @@ export const FORMATS_CATALOG = [
         componentName: 'globalPiechart',
         component: globalPiechart,
         type: 'chart',
+        isValueAnnotable: false,
         docUrl: 'https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/appliquer-un-format/#graphique-diagramme-circulaire',
     },
     {
@@ -85,6 +89,7 @@ export const FORMATS_CATALOG = [
         componentName: 'globalRadarchart',
         component: globalRadarchart,
         type: 'chart',
+        isValueAnnotable: false,
         docUrl: 'https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/appliquer-un-format/#graphique-diagramme-radar',
     },
     {
@@ -93,6 +98,7 @@ export const FORMATS_CATALOG = [
         componentName: 'Treemap',
         component: TreeMap,
         type: 'chart',
+        isValueAnnotable: false,
         docUrl: 'https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/appliquer-un-format/#graphique-graphique-hi%C3%A9rarchique',
     },
     {
@@ -101,6 +107,7 @@ export const FORMATS_CATALOG = [
         componentName: 'emphasedNumber',
         component: emphasedNumber,
         type: 'text',
+        isValueAnnotable: true,
         docUrl: 'https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/appliquer-un-format/#texte-chiffre-en-gras',
     },
     {
@@ -109,6 +116,7 @@ export const FORMATS_CATALOG = [
         componentName: 'identifierBadge',
         component: identifierBadge,
         type: 'text',
+        isValueAnnotable: true,
         docUrl: 'https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/appliquer-un-format/#texte-badge-pour-identifiant',
     },
     {
@@ -117,6 +125,7 @@ export const FORMATS_CATALOG = [
         componentName: 'email',
         component: email,
         type: 'url',
+        isValueAnnotable: true,
         docUrl: 'https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/appliquer-un-format/#url-lien-courriel',
     },
     {
@@ -125,6 +134,7 @@ export const FORMATS_CATALOG = [
         componentName: 'fieldClone',
         component: fieldClone,
         type: 'chart',
+        isValueAnnotable: false,
         docUrl: 'https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/appliquer-un-format/#copie-d%E2%80%99un-champ-existant',
     },
     {
@@ -133,6 +143,7 @@ export const FORMATS_CATALOG = [
         componentName: 'html',
         component: html,
         type: 'text',
+        isValueAnnotable: true,
         docUrl: 'https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/appliquer-un-format/#texte-balises-html',
     },
     {
@@ -141,6 +152,7 @@ export const FORMATS_CATALOG = [
         componentName: 'image',
         component: image,
         type: 'url',
+        isValueAnnotable: true,
         docUrl: 'https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/appliquer-un-format/#autre-url-d%E2%80%99une-image',
     },
     {
@@ -149,6 +161,7 @@ export const FORMATS_CATALOG = [
         componentName: 'pdf',
         component: pdf,
         type: 'url',
+        isValueAnnotable: true,
         docUrl: 'https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/appliquer-un-format/#autre-url-d%E2%80%99un-pdf',
     },
     {
@@ -157,6 +170,7 @@ export const FORMATS_CATALOG = [
         componentName: 'latex',
         component: latex,
         type: 'text',
+        isValueAnnotable: true,
         docUrl: 'https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/appliquer-un-format/#texte-latex',
     },
     {
@@ -165,6 +179,7 @@ export const FORMATS_CATALOG = [
         componentName: 'ejs',
         component: ejs,
         type: 'text',
+        isValueAnnotable: true,
         docUrl: 'https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/appliquer-un-format/', // format missing from documentation
     },
     {
@@ -173,6 +188,7 @@ export const FORMATS_CATALOG = [
         componentName: 'istex',
         component: istex,
         type: 'other',
+        isValueAnnotable: true,
         docUrl: 'https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/appliquer-un-format/#autre-requ%C3%AAte-istex',
     },
     {
@@ -181,6 +197,7 @@ export const FORMATS_CATALOG = [
         componentName: 'link',
         component: link,
         type: 'url',
+        isValueAnnotable: true,
         docUrl: 'https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/appliquer-un-format/#url-lien-interne',
     },
     {
@@ -189,6 +206,7 @@ export const FORMATS_CATALOG = [
         componentName: 'linkImage',
         component: linkImage,
         type: 'url',
+        isValueAnnotable: true,
         docUrl: 'https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/appliquer-un-format/#autre-lien-image',
     },
     {
@@ -197,6 +215,7 @@ export const FORMATS_CATALOG = [
         componentName: 'list',
         component: list,
         type: 'text',
+        isValueAnnotable: true,
         docUrl: 'https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/appliquer-un-format/#texte-liste-de-valeurs',
     },
     {
@@ -205,6 +224,7 @@ export const FORMATS_CATALOG = [
         componentName: 'markdown',
         component: markdown,
         type: 'text',
+        isValueAnnotable: true,
         docUrl: 'https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/appliquer-un-format/#texte-syntaxe-markdown',
     },
     {
@@ -213,6 +233,7 @@ export const FORMATS_CATALOG = [
         componentName: 'markdownModal',
         component: markdownModal,
         type: 'text',
+        isValueAnnotable: true,
         docUrl: 'https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/appliquer-un-format/#texte-syntaxe-markdown',
     },
     {
@@ -221,6 +242,7 @@ export const FORMATS_CATALOG = [
         componentName: 'uri',
         component: uri,
         type: 'url',
+        isValueAnnotable: true,
         docUrl: 'https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/appliquer-un-format/#url-externe',
     },
     {
@@ -229,6 +251,7 @@ export const FORMATS_CATALOG = [
         componentName: 'title',
         component: title,
         type: 'text',
+        isValueAnnotable: true,
         docUrl: 'https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/appliquer-un-format/#texte-titre',
     },
     {
@@ -237,6 +260,7 @@ export const FORMATS_CATALOG = [
         componentName: 'paragraph',
         component: paragraph,
         type: 'text',
+        isValueAnnotable: true,
         docUrl: 'https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/appliquer-un-format/#texte-paragraphe',
     },
     {
@@ -245,6 +269,7 @@ export const FORMATS_CATALOG = [
         componentName: 'parallelCoordinatesChart',
         component: parallelCoordinatesChart,
         type: 'chart',
+        isValueAnnotable: false,
         docUrl: 'https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/appliquer-un-format/#graphique-coordonn%C3%A9es-parall%C3%A8les',
     },
     {
@@ -253,6 +278,7 @@ export const FORMATS_CATALOG = [
         componentName: 'sentence',
         component: sentence,
         type: 'text',
+        isValueAnnotable: true,
         docUrl: 'https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/appliquer-un-format/#texte-phrase',
     },
     {
@@ -261,6 +287,7 @@ export const FORMATS_CATALOG = [
         componentName: 'vegaLite',
         component: vegaLite,
         type: 'chart',
+        isValueAnnotable: false,
         docUrl: 'https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/appliquer-un-format/#graphique-syntaxe-vega-lite',
     },
     {
@@ -269,6 +296,7 @@ export const FORMATS_CATALOG = [
         componentName: 'resource',
         component: resource,
         type: 'lodex',
+        isValueAnnotable: true,
         docUrl: 'https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/appliquer-un-format/#lodex-ressource',
     },
     {
@@ -277,6 +305,7 @@ export const FORMATS_CATALOG = [
         componentName: 'lodexField',
         component: lodexField,
         type: 'lodex',
+        isValueAnnotable: true,
         docUrl: 'https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/appliquer-un-format/#lodex-champ',
     },
     {
@@ -285,6 +314,7 @@ export const FORMATS_CATALOG = [
         componentName: 'resourcesGrid',
         component: resourcesGrid,
         type: 'other',
+        isValueAnnotable: true,
         docUrl: 'https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/appliquer-un-format/#autre-grille-de-ressources',
     },
     {
@@ -293,6 +323,7 @@ export const FORMATS_CATALOG = [
         componentName: 'paginatedTable',
         component: paginatedTable,
         type: 'other',
+        isValueAnnotable: true,
         docUrl: 'https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/appliquer-un-format/#autre-tableau-pagin%C3%A9',
     },
     {
@@ -301,6 +332,7 @@ export const FORMATS_CATALOG = [
         componentName: 'unpaginatedTable',
         component: unpaginatedTable,
         type: 'other',
+        isValueAnnotable: true,
         docUrl: 'https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/appliquer-un-format/#autre-tableau-non-pagin%C3%A9',
     },
     {
@@ -309,6 +341,7 @@ export const FORMATS_CATALOG = [
         componentName: 'bubblePlot',
         component: bubblePlot,
         type: 'chart',
+        isValueAnnotable: false,
         docUrl: 'https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/appliquer-un-format/#graphique-diagrammes-%C3%A0-bulles',
     },
     {
@@ -317,6 +350,7 @@ export const FORMATS_CATALOG = [
         componentName: 'cartography',
         component: cartography,
         type: 'chart',
+        isValueAnnotable: false,
         docUrl: 'https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/appliquer-un-format/#graphique-cartographie',
     },
     {
@@ -325,6 +359,7 @@ export const FORMATS_CATALOG = [
         componentName: 'heatmap',
         component: heatmap,
         type: 'chart',
+        isValueAnnotable: false,
         docUrl: 'https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/appliquer-un-format/#graphique-carte-de-chaleur',
     },
     {
@@ -333,6 +368,7 @@ export const FORMATS_CATALOG = [
         componentName: 'network',
         component: network,
         type: 'chart',
+        isValueAnnotable: false,
         docUrl: 'https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/appliquer-un-format/#graphique-r%C3%A9seaux',
     },
     {
@@ -341,6 +377,7 @@ export const FORMATS_CATALOG = [
         componentName: 'bubbleChart',
         component: bubbleChart,
         type: 'chart',
+        isValueAnnotable: false,
         docUrl: 'https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/appliquer-un-format/#graphique-graphe-%C3%A0-bulles',
     },
     {
@@ -349,6 +386,7 @@ export const FORMATS_CATALOG = [
         componentName: 'redirect',
         component: redirect,
         type: 'url',
+        isValueAnnotable: true,
         docUrl: 'https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/appliquer-un-format/#url-redirection-automatique',
     },
     {
@@ -357,6 +395,7 @@ export const FORMATS_CATALOG = [
         componentName: 'sparqlTextField',
         component: sparqlTextField,
         type: 'text',
+        isValueAnnotable: true,
         docUrl: 'https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/appliquer-un-format/#sparql-texte',
     },
     {
@@ -365,6 +404,7 @@ export const FORMATS_CATALOG = [
         componentName: 'istexSummary',
         component: istexSummary,
         type: 'other',
+        isValueAnnotable: true,
         docUrl: 'https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/appliquer-un-format/#autre-sommaire-istex',
     },
     {
@@ -373,6 +413,7 @@ export const FORMATS_CATALOG = [
         componentName: 'streamgraph',
         component: streamgraph,
         type: 'chart',
+        isValueAnnotable: false,
         docUrl: 'https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/appliquer-un-format/#graphique-graphique-de-flux',
     },
     {
@@ -381,6 +422,7 @@ export const FORMATS_CATALOG = [
         componentName: 'hierarchy',
         component: hierarchy,
         type: 'chart',
+        isValueAnnotable: false,
         docUrl: 'https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/appliquer-un-format/#graphique-graphique-hi%C3%A9rarchique',
     },
     {
@@ -389,6 +431,7 @@ export const FORMATS_CATALOG = [
         componentName: 'istexCitation',
         component: istexCitation,
         type: 'other',
+        isValueAnnotable: true,
         docUrl: 'https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/appliquer-un-format/#autre-article-citant',
     },
     {
@@ -397,6 +440,7 @@ export const FORMATS_CATALOG = [
         componentName: 'istexRefbibs',
         component: istexRefbibs,
         type: 'other',
+        isValueAnnotable: true,
         docUrl: 'https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/appliquer-un-format/', // format missing from documentation
     },
     {
@@ -405,6 +449,7 @@ export const FORMATS_CATALOG = [
         componentName: 'flowMap',
         component: flowMap,
         type: 'chart',
+        isValueAnnotable: false,
         docUrl: 'https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/appliquer-un-format/#graphique-cartographie-de-flux',
     },
     {
@@ -413,6 +458,7 @@ export const FORMATS_CATALOG = [
         componentName: 'clusteredChart',
         component: clusteredChart,
         type: 'chart',
+        isValueAnnotable: false,
         docUrl: 'https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/appliquer-un-format/', // format missing from documentation
     },
     {
@@ -421,6 +467,7 @@ export const FORMATS_CATALOG = [
         componentName: 'json',
         component: json,
         type: 'other',
+        isValueAnnotable: true,
         docUrl: 'https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/appliquer-un-format/', // format missing from documentation
     },
 ];

@@ -43,15 +43,23 @@ const renderPreviousButton = ({ formTarget, formKind, ...props }) => {
 describe('PreviousButton', () => {
     it('should display cancel button when currentStep is TARGET_STEP', async () => {
         const onCancel = jest.fn();
-        renderPreviousButton({ currentStep: TARGET_STEP, onCancel });
+        renderPreviousButton({
+            currentStep: TARGET_STEP,
+            onCancel,
+            isFieldValueAnnotable: true,
+        });
         expect(screen.queryByText('cancel')).toBeInTheDocument();
         expect(screen.queryByText('back')).not.toBeInTheDocument();
         fireEvent.click(screen.queryByText('cancel'));
         expect(onCancel).toHaveBeenCalledTimes(1);
     });
-    it('should display cancel button when currentStep is COMMENT_STEP and there is no initial Value', async () => {
+    it('should display cancel button when currentStep is COMMENT_STEP and isFieldValueAnnotable is false', async () => {
         const onCancel = jest.fn();
-        renderPreviousButton({ currentStep: TARGET_STEP, onCancel });
+        renderPreviousButton({
+            currentStep: TARGET_STEP,
+            onCancel,
+            isFieldValueAnnotable: false,
+        });
         expect(screen.queryByText('cancel')).toBeInTheDocument();
         expect(screen.queryByText('back')).not.toBeInTheDocument();
         fireEvent.click(screen.queryByText('cancel'));
@@ -60,7 +68,11 @@ describe('PreviousButton', () => {
     it('should display back button returning to TARGET_STEP when currentStep is KIND_STEP', async () => {
         const goToStep = jest.fn();
 
-        renderPreviousButton({ currentStep: KIND_STEP, goToStep });
+        renderPreviousButton({
+            currentStep: KIND_STEP,
+            goToStep,
+            isFieldValueAnnotable: true,
+        });
         expect(screen.queryByText('back')).toBeInTheDocument();
         expect(screen.queryByText('cancel')).not.toBeInTheDocument();
         fireEvent.click(screen.queryByText('back'));
@@ -70,7 +82,11 @@ describe('PreviousButton', () => {
     it('should display back button returning to KIND_STEP when currentStep is VALUE_STEP', async () => {
         const goToStep = jest.fn();
 
-        renderPreviousButton({ currentStep: VALUE_STEP, goToStep });
+        renderPreviousButton({
+            currentStep: VALUE_STEP,
+            goToStep,
+            isFieldValueAnnotable: true,
+        });
         expect(screen.queryByText('back')).toBeInTheDocument();
         expect(screen.queryByText('cancel')).not.toBeInTheDocument();
         fireEvent.click(screen.queryByText('back'));
@@ -84,6 +100,7 @@ describe('PreviousButton', () => {
             currentStep: COMMENT_STEP,
             goToStep,
             formTarget: 'title',
+            isFieldValueAnnotable: true,
         });
         expect(screen.queryByText('back')).toBeInTheDocument();
         expect(screen.queryByText('cancel')).not.toBeInTheDocument();
@@ -99,6 +116,7 @@ describe('PreviousButton', () => {
             goToStep,
             formTarget: 'title',
             initialValue: ['a', 'b'],
+            isFieldValueAnnotable: true,
         });
         expect(screen.queryByText('back')).toBeInTheDocument();
         expect(screen.queryByText('cancel')).not.toBeInTheDocument();
@@ -113,6 +131,7 @@ describe('PreviousButton', () => {
             currentStep: COMMENT_STEP,
             initialValue: ['a', 'b'],
             goToStep,
+            isFieldValueAnnotable: true,
         });
         expect(screen.queryByText('back')).toBeInTheDocument();
         expect(screen.queryByText('cancel')).not.toBeInTheDocument();
@@ -128,6 +147,7 @@ describe('PreviousButton', () => {
             initialValue: ['a', 'b'],
             goToStep,
             formKind: 'addition',
+            isFieldValueAnnotable: true,
         });
         expect(screen.queryByText('back')).toBeInTheDocument();
         expect(screen.queryByText('cancel')).not.toBeInTheDocument();
@@ -142,6 +162,7 @@ describe('PreviousButton', () => {
             currentStep: COMMENT_STEP,
             initialValue: 'initialValue',
             goToStep,
+            isFieldValueAnnotable: true,
         });
         expect(screen.queryByText('back')).toBeInTheDocument();
         expect(screen.queryByText('cancel')).not.toBeInTheDocument();
@@ -155,6 +176,7 @@ describe('PreviousButton', () => {
         renderPreviousButton({
             currentStep: AUTHOR_STEP,
             goToStep,
+            isFieldValueAnnotable: true,
         });
         expect(screen.queryByText('back')).toBeInTheDocument();
         expect(screen.queryByText('cancel')).not.toBeInTheDocument();
@@ -166,6 +188,7 @@ describe('PreviousButton', () => {
         renderPreviousButton({
             currentStep: TARGET_STEP,
             isSubmitting: true,
+            isFieldValueAnnotable: true,
         });
         expect(screen.queryByText('cancel')).toBeInTheDocument();
         expect(screen.queryByText('cancel')).toBeDisabled();
@@ -175,6 +198,7 @@ describe('PreviousButton', () => {
         renderPreviousButton({
             currentStep: AUTHOR_STEP,
             isSubmitting: true,
+            isFieldValueAnnotable: true,
         });
         expect(screen.queryByText('back')).toBeInTheDocument();
         expect(screen.queryByText('back')).toBeDisabled();
