@@ -1,11 +1,12 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { fireEvent, render, screen, waitFor } from '../../../test-utils';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { MemoryRouter, Route, Switch } from 'react-router-dom';
+import { fireEvent, render, screen, waitFor } from '../../../test-utils';
 
 import { TestI18N } from '../i18n/I18NContext';
 import fetch from '../lib/fetch';
+import { getFieldKey, getStorageKey } from './annotationStorage';
 import { CreateAnnotationButton } from './CreateAnnotationButton';
 import { useCanAnnotate } from './useCanAnnotate';
 
@@ -82,8 +83,13 @@ describe('CreateAnnotationButton', () => {
 
     it('should render the number of annotations sent by the user when it is greater than 0', async () => {
         window.localStorage.setItem(
-            'annotation_1ddbe5dc-f945-4d38-9c5b-ef20f78cb0cc_uid:/0579J7JN',
-            '["1","2","3"]',
+            getStorageKey(),
+            JSON.stringify({
+                [getFieldKey({
+                    fieldId: '1ddbe5dc-f945-4d38-9c5b-ef20f78cb0cc',
+                    resourceUri: 'uid:/0579J7JN',
+                })]: ['1', '2', '3'],
+            }),
         );
         render(<TestButton annotable={true} />);
         expect(

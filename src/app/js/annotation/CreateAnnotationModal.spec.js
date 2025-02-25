@@ -1,11 +1,11 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import { fireEvent, render, screen, waitFor } from '../../../test-utils';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { setTimeout } from 'node:timers/promises';
+import { fireEvent, render, screen, waitFor } from '../../../test-utils';
 import { TestI18N } from '../i18n/I18NContext';
 import { CreateAnnotationModal } from './CreateAnnotationModal';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 jest.mock('./useGetFieldAnnotation', () => ({
     useGetFieldAnnotation: jest.fn().mockReturnValue({

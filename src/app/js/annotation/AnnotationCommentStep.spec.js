@@ -66,7 +66,6 @@ describe('AnnotationCommentStep', () => {
 
     it('should render the comment and proposedValue input when kind is correction', () => {
         const wrapper = renderAnnotationCommentStep({ kind: 'correction' });
-        wrapper.debug();
         expect(
             wrapper.queryByText(
                 'annotation_correct_value+{"value":"initialValue"}',
@@ -84,7 +83,6 @@ describe('AnnotationCommentStep', () => {
 
     it('should render the comment and proposedValue input when kind is addition', () => {
         const wrapper = renderAnnotationCommentStep({ kind: 'addition' });
-        wrapper.debug();
         expect(wrapper.queryByText('annotation_add_value')).toBeInTheDocument();
         expect(
             wrapper.queryByLabelText('annotation.comment *'),
@@ -104,7 +102,6 @@ describe('AnnotationCommentStep', () => {
                 annotationFormatListOptions: ['option 1'],
             },
         });
-        wrapper.debug();
         expect(wrapper.queryByText('annotation_add_value')).toBeInTheDocument();
         expect(
             wrapper.queryByLabelText('annotation.comment *'),

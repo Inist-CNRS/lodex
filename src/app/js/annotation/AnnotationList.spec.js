@@ -1,11 +1,11 @@
 import React from 'react';
 import { render } from '../../../test-utils';
+import { TestI18N } from '../i18n/I18NContext';
 import {
     AnnotationList,
     getAnnotationSummaryValue,
     getAnnotationTitle,
 } from './AnnotationList';
-import { TestI18N } from '../i18n/I18NContext';
 
 function TestAnnotationList({ field, annotations }) {
     return (
@@ -293,7 +293,6 @@ describe('AnnotationList', () => {
             expect(
                 wrapper.queryByLabelText('annotation_initial_value'),
             ).toHaveTextContent('this');
-            wrapper.debug();
             expect(
                 wrapper.queryByLabelText(
                     'annotation_proposed_value+{"smart_count":1}',

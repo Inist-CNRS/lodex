@@ -1,8 +1,8 @@
 import React from 'react';
 import { fireEvent, render, waitFor } from '../../../test-utils';
+import { TestI18N } from '../i18n/I18NContext';
 import { OpenHistoricButton } from './OpenHistoricButton';
 import { useGetFieldAnnotation } from './useGetFieldAnnotation';
-import { TestI18N } from '../i18n/I18NContext';
 
 jest.mock('./useGetFieldAnnotation', () => ({
     useGetFieldAnnotation: jest.fn().mockReturnValue({
@@ -66,7 +66,6 @@ describe('OpenHistoricButton', () => {
         expect(wrapper.getByLabelText('annotation_kind')).toHaveTextContent(
             'correct',
         );
-        wrapper.debug();
         expect(
             wrapper.getByLabelText('annotation_initial_value'),
         ).toHaveTextContent('initialValue');
