@@ -33,6 +33,14 @@ describe('AnnotationList', () => {
                 'initialValue -> proposedValue',
             );
         });
+        it('should return the initialValue -> proposed value when the annotation kind is correction when they are number', () => {
+            const annotation = {
+                kind: 'correction',
+                initialValue: 42,
+                proposedValue: 19,
+            };
+            expect(getAnnotationSummaryValue(annotation)).toBe('42 -> 19');
+        });
         it('should should truncate the initialValue and proposed Value when they are longer than 16 characters', () => {
             const annotation = {
                 kind: 'correction',
@@ -52,6 +60,14 @@ describe('AnnotationList', () => {
                 proposedValue: 'proposedValue',
             };
             expect(getAnnotationSummaryValue(annotation)).toBe('initialValue');
+        });
+        it('should return the number initialValue when the annotation kind is removal', () => {
+            const annotation = {
+                kind: 'removal',
+                initialValue: 42,
+                proposedValue: 'proposedValue',
+            };
+            expect(getAnnotationSummaryValue(annotation)).toBe(42);
         });
         it('should return the proposedValue when the annotation kind is addition', () => {
             const annotation = {

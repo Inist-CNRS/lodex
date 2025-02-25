@@ -31,10 +31,10 @@ export const getAnnotationSummaryValue = (annotation) => {
         case ANNOTATION_KIND_COMMENT:
             return annotation.comment;
         case ANNOTATION_KIND_CORRECTION: {
-            const initialValue = annotation.initialValue.replace(
-                /<[^>]*>/g,
-                '',
-            );
+            const initialValue =
+                typeof annotation.initialValue === 'string'
+                    ? annotation.initialValue.replace(/<[^>]*>/g, '')
+                    : annotation.initialValue.toString();
             const truncatedInitialValue =
                 initialValue.length > 16
                     ? `${initialValue.slice(0, 16)} ...`
@@ -46,7 +46,9 @@ export const getAnnotationSummaryValue = (annotation) => {
             return `${truncatedInitialValue} -> ${truncatedProposedValue}`;
         }
         case ANNOTATION_KIND_REMOVAL:
-            return annotation.initialValue.replace(/<[^>]*>/g, '');
+            return typeof annotation.initialValue === 'string'
+                ? annotation.initialValue.replace(/<[^>]*>/g, '')
+                : annotation.initialValue;
         case ANNOTATION_KIND_ADDITION:
             return annotation.proposedValue;
         default:
