@@ -81,7 +81,7 @@ describe('CreateAnnotationButton', () => {
         ).not.toBeInTheDocument();
     });
 
-    it.only('should render the number of annotations sent by the user when it is greater than 0', async () => {
+    it('should render the number of annotations sent by the user when it is greater than 0', async () => {
         window.localStorage.setItem(
             getStorageKey(),
             JSON.stringify({
