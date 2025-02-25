@@ -142,7 +142,7 @@ export default async (db) => {
     };
 
     collection.removeAttribute = async (attribute) =>
-        collection.updateOne(
+        collection.updateMany(
             {},
             { $unset: { [attribute]: 1 } },
             { multi: true },

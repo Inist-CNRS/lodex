@@ -58,4 +58,35 @@ describe('Dataset Model', () => {
             ]);
         });
     });
+
+    describe('removeAttribute', () => {
+        let datasets;
+        beforeEach(async () => {
+            await db.collection('dataset').insertMany([
+                { name: '1', enrichedColumn: 'enriched1' },
+                { name: '2', enrichedColumn: 'enriched2' },
+                { name: '3', enrichedColumn: 'enriched3' },
+                { name: '4', enrichedColumn: 'enriched4' },
+                { name: '5', enrichedColumn: 'enriched5' },
+            ]);
+
+            datasets = await db.collection('dataset').find().toArray();
+        });
+
+        it('should remove given attribute from all dataset', async () => {
+            await datasetModel.removeAttribute('enrichedColumn');
+
+            const remainingDatasets = await db
+                .collection('dataset')
+                .find()
+                .toArray();
+            expect(remainingDatasets).toStrictEqual([
+                { _id: datasets[0]._id, name: '1' },
+                { _id: datasets[1]._id, name: '2' },
+                { _id: datasets[2]._id, name: '3' },
+                { _id: datasets[3]._id, name: '4' },
+                { _id: datasets[4]._id, name: '5' },
+            ]);
+        });
+    });
 });
