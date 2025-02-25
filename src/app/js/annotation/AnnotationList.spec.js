@@ -33,7 +33,7 @@ describe('AnnotationList', () => {
                 'initialValue -> proposedValue',
             );
         });
-        it('should return the initialValue -> proposed value when the annotation kind is correction when tehy are number', () => {
+        it('should return the initialValue -> proposed value when the annotation kind is correction when they are number', () => {
             const annotation = {
                 kind: 'correction',
                 initialValue: 42,
