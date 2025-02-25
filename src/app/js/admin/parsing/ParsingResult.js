@@ -207,6 +207,7 @@ export const ParsingResultComponent = (props) => {
 
             return res;
         };
+
         return getColumnsToShow(
             columns,
             showEnrichmentColumns,
@@ -461,6 +462,10 @@ export const ParsingResultComponent = (props) => {
                 components={{
                     Footer: CustomFooter,
                     Toolbar: CustomToolbar,
+                }}
+                sx={{
+                    ['& .error-header']: styles.errorHeader,
+                    ['& .enriched-column']: styles.enrichedColumn,
                 }}
             />
             <Drawer
