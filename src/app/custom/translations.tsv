@@ -1285,7 +1285,7 @@
 "annotation_error_value_invalid_kind"	"This field cannot be comment when target is value"	"Ce champ ne peut être comment quand la cible est la valeur"
 "annotation_form_title"	"Edit annotation"	"Modifier l'annotation"
 "annotation_delete_button_label"	"Delete the annotation"	"Supprimer l'annotation"
-"annotation_delete_modal_title"	"Are you sure you want to delete this annotation ?"	"Êtes-vous sûr de vouloir supprimer cette annotation ?"
+"annotation_delete_modal_title"	"Are you sure you want to delete this contributor annotation?"	"Êtes-vous sûr de vouloir supprimer cette annotation du contributeur ?"
 "annotation_delete_success"	"The annotation has been deleted."	"L'annotation a été supprimée."
 "annotation_delete_error"	"An error occured while deleteing this annotation, please try again later."	"Une erreur est survenue lors de la supression de l'annotation, merci de réessayer ultérieurement."
 "annotations_import"	"Import annotations"	"Importer des annotations"
