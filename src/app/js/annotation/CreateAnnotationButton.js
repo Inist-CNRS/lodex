@@ -64,8 +64,8 @@ export function CreateAnnotationButton({ field, initialValue = null }) {
         if (!initialValue) {
             return false;
         }
-        return getIsFieldValueAnnotable(field.format.name);
-    }, [field.format.name, initialValue]);
+        return getIsFieldValueAnnotable(field.format?.name);
+    }, [field.format?.name, initialValue]);
 
     if (field.annotable === false) {
         return null;
