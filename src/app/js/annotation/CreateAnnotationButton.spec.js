@@ -25,7 +25,11 @@ jest.mock('./useCanAnnotate', () => ({
     useCanAnnotate: jest.fn().mockReturnValue(true),
 }));
 
-function TestButton({ annotable, ...props }) {
+function TestButton({
+    annotable,
+    fieldFormatName = 'formatParagraph',
+    ...props
+}) {
     return (
         <QueryClientProvider client={queryClient}>
             <TestI18N>
@@ -39,7 +43,10 @@ function TestButton({ annotable, ...props }) {
                                 field={{
                                     _id: '1ddbe5dc-f945-4d38-9c5b-ef20f78cb0cc',
                                     label: 'Titre du corpus',
-                                    annotable: annotable,
+                                    annotable,
+                                    format: {
+                                        name: fieldFormatName,
+                                    },
                                 }}
                                 {...props}
                             />
@@ -194,6 +201,7 @@ describe('CreateAnnotationButton', () => {
                 {...{
                     target: 'value',
                     initialValue: 'a b c',
+                    fieldFormatName: 'paragraph',
                 }}
             />,
         );

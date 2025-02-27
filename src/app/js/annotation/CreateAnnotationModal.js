@@ -56,6 +56,7 @@ export function CreateAnnotationModal({
     initialValue,
     field,
     resourceUri,
+    isFieldValueAnnotable,
 }) {
     const { translate } = useTranslate();
     const { requestReCaptchaToken } = useReCaptcha();
@@ -83,7 +84,7 @@ export function CreateAnnotationModal({
     });
 
     const [currentStep, setCurrentStep] = useState(
-        initialValue === null ? COMMENT_STEP : TARGET_STEP,
+        isFieldValueAnnotable ? TARGET_STEP : COMMENT_STEP,
     );
 
     // Using an effect triggers field validation on form initialization to enable submit button
@@ -301,6 +302,7 @@ export function CreateAnnotationModal({
                         initialValue={initialValue}
                         isSubmitting={isSubmitting}
                         onCancel={handleClose}
+                        isFieldValueAnnotable={isFieldValueAnnotable}
                     />
 
                     <NextButton
@@ -309,7 +311,6 @@ export function CreateAnnotationModal({
                         isValueStepValid={isValueStepValid}
                         currentStep={currentStep}
                         goToStep={setCurrentStep}
-                        initialValue={initialValue}
                         isSubmitting={isSubmitting}
                         disableSubmit={disableSubmit}
                         form={form}
@@ -328,4 +329,5 @@ CreateAnnotationModal.propTypes = {
     initialValue: PropTypes.any,
     field: PropTypes.object.isRequired,
     resourceUri: PropTypes.string,
+    isFieldValueAnnotable: PropTypes.bool.isRequired,
 };

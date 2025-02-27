@@ -24,6 +24,7 @@ function TestModal(props) {
                 <CreateAnnotationModal
                     initialValue={null}
                     field={{ _id: '87a3b1c0-0b1b-4b1b-8b1b-1b1b1b1b1b1b' }}
+                    isFieldValueAnnotable={false}
                     {...props}
                     anchorEl={document.createElement('div')}
                 />
@@ -210,12 +211,13 @@ describe('CreateAnnotationModal', () => {
     });
 
     describe('step orders', () => {
-        it('should start on COMMENT_STEP when initialValue is null', () => {
+        it('should start on COMMENT_STEP when isFieldValueAnnotable is false', () => {
             const wrapper = render(
                 <TestModal
                     onClose={onClose}
                     onSubmit={onSubmit}
                     isSubmitting={false}
+                    isFieldValueAnnotable={false}
                 />,
             );
 
@@ -243,13 +245,14 @@ describe('CreateAnnotationModal', () => {
                 }),
             ).not.toBeInTheDocument();
         });
-        it('should start on TARGET_STEP when initialValue is not null', () => {
+        it('should start on TARGET_STEP when isFieldValueAnnotable is true', () => {
             const wrapper = render(
                 <TestModal
                     onClose={onClose}
                     onSubmit={onSubmit}
                     isSubmitting={false}
                     initialValue="initialValue"
+                    isFieldValueAnnotable={true}
                 />,
             );
 
@@ -287,6 +290,7 @@ describe('CreateAnnotationModal', () => {
                     onSubmit={onSubmit}
                     isSubmitting={false}
                     initialValue={['firstValue', 'secondValue']}
+                    isFieldValueAnnotable={true}
                 />,
             );
 
@@ -452,6 +456,7 @@ describe('CreateAnnotationModal', () => {
                         onSubmit={onSubmit}
                         isSubmitting={false}
                         initialValue="initialValue"
+                        isFieldValueAnnotable={true}
                     />,
                 );
 
@@ -520,6 +525,7 @@ describe('CreateAnnotationModal', () => {
                         onSubmit={onSubmit}
                         isSubmitting={false}
                         initialValue="initialValue"
+                        isFieldValueAnnotable={true}
                     />,
                 );
 
@@ -793,13 +799,14 @@ describe('CreateAnnotationModal', () => {
         });
     });
 
-    it('should allow to create a comment annotation on the field when there is no initial value', async () => {
+    it('should allow to create a comment annotation on the field when field value is not editable', async () => {
         render(
             <TestModal
                 onClose={onClose}
                 onSubmit={onSubmit}
                 isSubmitting={false}
-                initialValue={null}
+                initialValue="initialValue"
+                isFieldValueAnnotable={false}
             />,
         );
 
@@ -853,6 +860,7 @@ describe('CreateAnnotationModal', () => {
                 onSubmit={onSubmit}
                 isSubmitting={false}
                 initialValue="initialValue"
+                isFieldValueAnnotable={true}
             />,
         );
 
@@ -913,6 +921,7 @@ describe('CreateAnnotationModal', () => {
                 onSubmit={onSubmit}
                 isSubmitting={false}
                 initialValue="initialValue"
+                isFieldValueAnnotable={true}
             />,
         );
 
@@ -981,6 +990,7 @@ describe('CreateAnnotationModal', () => {
                 onSubmit={onSubmit}
                 isSubmitting={false}
                 initialValue={['firstValue', 'secondValue']}
+                isFieldValueAnnotable={true}
             />,
         );
 
@@ -1065,6 +1075,7 @@ describe('CreateAnnotationModal', () => {
                 onSubmit={onSubmit}
                 isSubmitting={false}
                 initialValue="initialValue"
+                isFieldValueAnnotable={true}
             />,
         );
 
@@ -1145,6 +1156,7 @@ describe('CreateAnnotationModal', () => {
                 onSubmit={onSubmit}
                 isSubmitting={false}
                 initialValue={['firstValue', 'secondValue']}
+                isFieldValueAnnotable={true}
             />,
         );
 
@@ -1241,6 +1253,7 @@ describe('CreateAnnotationModal', () => {
                 onSubmit={onSubmit}
                 isSubmitting={false}
                 initialValue="initialValue"
+                isFieldValueAnnotable={true}
             />,
         );
 
@@ -1320,6 +1333,7 @@ describe('CreateAnnotationModal', () => {
                 onSubmit={onSubmit}
                 isSubmitting={false}
                 initialValue={['firstValue', 'secondValue']}
+                isFieldValueAnnotable={true}
             />,
         );
 

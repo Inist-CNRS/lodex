@@ -1,7 +1,7 @@
 import MapsUgcIcon from '@mui/icons-material/MapsUgc';
 import { IconButton, Stack, Tooltip, Typography } from '@mui/material';
 import PropTypes from 'prop-types';
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useMemo, useRef, useState } from 'react';
 
 import { useTranslate } from '../i18n/I18NContext';
 import { useGetFieldAnnotationIds } from './annotationStorage';
@@ -9,6 +9,7 @@ import { CreateAnnotationModal } from './CreateAnnotationModal';
 import { useCanAnnotate } from './useCanAnnotate';
 import { useCreateAnnotation } from './useCreateAnnotation';
 import { useResourceUri } from './useResourceUri';
+import { getIsFieldValueAnnotable } from '../formats';
 
 export function CreateAnnotationButton({ field, initialValue = null }) {
     const { translate } = useTranslate();
@@ -59,6 +60,12 @@ export function CreateAnnotationButton({ field, initialValue = null }) {
         fieldId: field._id,
         resourceUri,
     });
+    const isFieldValueAnnotable = useMemo(() => {
+        if (!initialValue) {
+            return false;
+        }
+        return getIsFieldValueAnnotable(field.format?.name);
+    }, [field.format?.name, initialValue]);
 
     if (field.annotable === false) {
         return null;
@@ -131,6 +138,7 @@ export function CreateAnnotationButton({ field, initialValue = null }) {
                     onSubmit={handleSubmitAnnotation}
                     anchorEl={anchorButton.current}
                     initialValue={initialValue}
+                    isFieldValueAnnotable={isFieldValueAnnotable}
                     field={field}
                     resourceUri={resourceUri}
                 />
