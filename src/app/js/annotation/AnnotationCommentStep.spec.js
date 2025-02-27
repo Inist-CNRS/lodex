@@ -4,7 +4,11 @@ import { render } from '../../../test-utils';
 import { TestI18N } from '../i18n/I18NContext';
 import { AnnotationCommentStep } from './AnnotationCommentStep';
 
-const renderAnnotationCommentStep = ({ kind, ...props }) => {
+const renderAnnotationCommentStep = ({
+    kind,
+    formatName = 'formatParagraph',
+    ...props
+}) => {
     let form;
 
     function TestAnnotationCommentStep({ ...props }) {
@@ -21,6 +25,7 @@ const renderAnnotationCommentStep = ({ kind, ...props }) => {
                     initialValue="initialValue"
                     field={{
                         annotationFormat: 'text',
+                        format: { name: formatName },
                     }}
                     {...props}
                 />
@@ -64,6 +69,16 @@ describe('AnnotationCommentStep', () => {
         ).not.toBeInTheDocument();
     });
 
+    it('should render annotation_remove_content instead of annotation_remove_value when field format is for url and kind is removal', () => {
+        const wrapper = renderAnnotationCommentStep({
+            kind: 'removal',
+            formatName: 'sparqlTextField',
+        });
+        expect(
+            wrapper.queryByText('annotation_remove_content'),
+        ).toBeInTheDocument();
+    });
+
     it('should render the comment and proposedValue input when kind is correction', () => {
         const wrapper = renderAnnotationCommentStep({ kind: 'correction' });
         wrapper.debug();
@@ -79,6 +94,16 @@ describe('AnnotationCommentStep', () => {
             wrapper.queryByRole('textbox', {
                 name: 'annotation.proposedValue *',
             }),
+        ).toBeInTheDocument();
+    });
+
+    it('should render annotation_add_content instead of annotation_remove_value when field format is for url and kind is correction', () => {
+        const wrapper = renderAnnotationCommentStep({
+            kind: 'correction',
+            formatName: 'sparqlTextField',
+        });
+        expect(
+            wrapper.queryByText('annotation_correct_content'),
         ).toBeInTheDocument();
     });
 
