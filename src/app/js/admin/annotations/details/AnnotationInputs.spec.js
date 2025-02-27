@@ -83,4 +83,53 @@ describe('AnnotationInputs', () => {
             }),
         ).toHaveValue('Admin');
     });
+
+    it.each([
+        [true, 'validated'],
+        [true, 'rejected'],
+        [false, 'to_review'],
+        [false, 'ongoing'],
+    ])(
+        `should set require={%s} on internalComment when status is %s`,
+        (required, status) => {
+            const handleUpdateAnnotation = jest.fn();
+            jest.mocked(useUpdateAnnotation).mockImplementation(() => ({
+                handleUpdateAnnotation,
+                isSubmitting: false,
+            }));
+            const wrapper = render(
+                <TestI18N>
+                    <MemoryRouter>
+                        <TestForm
+                            annotation={{
+                                status,
+                                administrator: 'Admin',
+                                internalComment: 'Internal test comment',
+                                adminComment:
+                                    'Admin comment visible to contributors',
+                            }}
+                        />
+                    </MemoryRouter>
+                </TestI18N>,
+            );
+
+            const inputsRegion = wrapper.getByRole('group', {
+                name: 'annotation_form_title',
+            });
+
+            required
+                ? expect(
+                      wrapper.getByRole('textbox', {
+                          name: 'annotation_internal_comment',
+                          container: inputsRegion,
+                      }),
+                  ).toHaveAttribute('required')
+                : expect(
+                      wrapper.getByRole('textbox', {
+                          name: 'annotation_internal_comment',
+                          container: inputsRegion,
+                      }),
+                  ).not.toHaveAttribute('required');
+        },
+    );
 });

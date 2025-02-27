@@ -6,13 +6,16 @@ import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { useStore } from '@tanstack/react-form';
 
 import { useTranslate } from '../../../i18n/I18NContext';
 import { AnnotationStatus, statuses } from '../AnnotationStatus';
 
 export function AnnotationInputs({ form }) {
     const { translate } = useTranslate();
-
+    const isInternalCommentRequired = useStore(form.store, (state) => {
+        return ['validated', 'rejected'].includes(state.values.status);
+    });
     return (
         <Stack
             gap={5}
@@ -62,7 +65,7 @@ export function AnnotationInputs({ form }) {
                             maxRows={10}
                             multiline
                             error={hasErrors}
-                            required
+                            required={isInternalCommentRequired}
                         />
                     );
                 }}
