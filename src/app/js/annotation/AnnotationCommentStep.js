@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
 import { Stack, Tooltip, Typography } from '@mui/material';
 import { useStore } from '@tanstack/react-form';
@@ -11,12 +11,18 @@ import { CommentField } from './fields/CommentField';
 import { useTranslate } from '../i18n/I18NContext';
 import { ProposedValueField } from './fields/ProposedValueField';
 import HelpIcon from '@mui/icons-material/HelpOutline';
+import { getIsFieldValueAnUrl } from '../formats';
 
 export function AnnotationCommentStep({ field, form }) {
     const { translate } = useTranslate();
     const annotationInitialValue = useStore(form.store, (state) => {
         return state.values.initialValue?.replace(/<[^>]*>/g, '');
     });
+
+    const isFieldAnUrl = useMemo(
+        () => getIsFieldValueAnUrl(field.format?.name),
+        [field.format?.name],
+    );
 
     const kind = useStore(form.store, (state) => {
         return state.values.kind;
@@ -34,13 +40,17 @@ export function AnnotationCommentStep({ field, form }) {
                         }}
                     >
                         {kind === 'removal' &&
-                            translate('annotation_remove_value', {
-                                value: annotationInitialValue,
-                            })}
+                            (isFieldAnUrl
+                                ? translate('annotation_remove_content')
+                                : translate('annotation_remove_value', {
+                                      value: annotationInitialValue,
+                                  }))}
                         {kind === ANNOTATION_KIND_CORRECTION &&
-                            translate('annotation_correct_value', {
-                                value: annotationInitialValue,
-                            })}
+                            (isFieldAnUrl
+                                ? translate('annotation_correct_content')
+                                : translate('annotation_correct_value', {
+                                      value: annotationInitialValue,
+                                  }))}
                         {kind === 'addition' &&
                             translate('annotation_add_value')}
                         {kind === 'comment' &&
