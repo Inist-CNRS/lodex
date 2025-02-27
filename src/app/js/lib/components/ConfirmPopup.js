@@ -28,7 +28,7 @@ export const ConfirmPopup = ({
     isLoading = false,
 }) => {
     return (
-        <Dialog open={isOpen} onClose={onCancel}>
+        <Dialog maxWidth="xl" open={isOpen} onClose={onCancel}>
             <DialogTitle>{title}</DialogTitle>
             {description && (
                 <DialogContent>

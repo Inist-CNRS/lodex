@@ -143,8 +143,8 @@ describe('Annotation', () => {
                         headers.toArray().map((header) => header.textContent),
                     ).to.deep.equal([
                         '',
-                        'Resource URI',
-                        'Resource title',
+                        'URI',
+                        'Title',
                         'Type',
                         'Field label',
                         'Field Id',
@@ -1076,10 +1076,7 @@ Revue`);
             cy.findByText(`See 2 annotations`).should('be.visible');
             cy.findByText(`See 2 annotations`).click();
 
-            cy.findByLabelText('Resource title').should(
-                'have.text',
-                'Home page',
-            );
+            cy.findByLabelText('Title').should('have.text', 'Home page');
 
             cy.findByText('All').should('be.visible');
             cy.findByText('Sent by me').should('be.visible');
