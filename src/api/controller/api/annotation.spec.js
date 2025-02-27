@@ -10,6 +10,7 @@ import createAnnotationModel from '../../models/annotation';
 import configTenant from '../../models/configTenant';
 import createFieldModel from '../../models/field';
 import createPublishedDatasetModel from '../../models/publishedDataset';
+import { sendMail } from '../../services/mail/mailer';
 import {
     canAnnotateRoute,
     createAnnotation,
@@ -21,7 +22,7 @@ import {
     getFieldAnnotations,
     updateAnnotation,
 } from './annotation';
-import { sendMail } from '../../services/mail/mailer';
+import { verifyReCaptchaToken } from './recaptcha';
 
 jest.mock('../../services/mail/mailer', () => ({
     sendMail: jest.fn(),
@@ -79,6 +80,10 @@ const ANNOTATIONS = [
     },
 ];
 
+jest.mock('./recaptcha.js', () => ({
+    verifyReCaptchaToken: jest.fn(),
+}));
+
 describe('annotation', () => {
     const connectionStringURI = process.env.MONGO_URL;
     let annotationModel;
@@ -103,6 +108,7 @@ describe('annotation', () => {
         await db.collection('publishedDataset').deleteMany({});
         await db.collection('field').deleteMany({});
         await db.collection('annotation').deleteMany({});
+        jest.clearAllMocks();
     });
 
     afterAll(async () => {
@@ -116,6 +122,9 @@ describe('annotation', () => {
         });
 
         it('should create an annotation', async () => {
+            jest.mocked(verifyReCaptchaToken).mockResolvedValue({
+                success: true,
+            });
             await configTenantModel.create({
                 contributorAuth: {
                     active: false,
@@ -157,6 +166,10 @@ describe('annotation', () => {
                 ctx.body.data,
             ]);
 
+            expect(verifyReCaptchaToken).toHaveBeenCalledWith(
+                ctx,
+                expect.objectContaining(annotation),
+            );
             expect(sendMail).not.toHaveBeenCalled();
         });
 
@@ -283,6 +296,9 @@ Voir l'annotation : http://localhost:3000/instance/instance-name/admin#/annotati
         });
 
         it('should forbid to create an annotation if contributorAuth is active and user role is not contributor nor admin', async () => {
+            jest.mocked(verifyReCaptchaToken).mockResolvedValue({
+                success: true,
+            });
             await configTenantModel.create({
                 contributorAuth: {
                     active: true,
@@ -314,6 +330,9 @@ Voir l'annotation : http://localhost:3000/instance/instance-name/admin#/annotati
             expect(await annotationModel.findLimitFromSkip()).toStrictEqual([]);
         });
         it('should create an annotation if contributorAuth is active and user role is contributor', async () => {
+            jest.mocked(verifyReCaptchaToken).mockResolvedValue({
+                success: true,
+            });
             await configTenantModel.create({
                 contributorAuth: {
                     active: true,
@@ -352,6 +371,9 @@ Voir l'annotation : http://localhost:3000/instance/instance-name/admin#/annotati
             ]);
         });
         it('should create an annotation if contributorAuth is active and user role is admin', async () => {
+            jest.mocked(verifyReCaptchaToken).mockResolvedValue({
+                success: true,
+            });
             await configTenantModel.create({
                 contributorAuth: {
                     active: true,
@@ -389,8 +411,10 @@ Voir l'annotation : http://localhost:3000/instance/instance-name/admin#/annotati
                 ctx.body.data,
             ]);
         });
-
         it('should return an error if annotation is not valid', async () => {
+            jest.mocked(verifyReCaptchaToken).mockResolvedValue({
+                success: true,
+            });
             await configTenantModel.create({
                 contributorAuth: {
                     active: false,
@@ -429,6 +453,54 @@ Voir l'annotation : http://localhost:3000/instance/instance-name/admin#/annotati
                 ],
             });
             expect(await annotationModel.findLimitFromSkip()).toStrictEqual([]);
+        });
+        it('should return a 400 error if recaptcha token validation fails', async () => {
+            jest.mocked(verifyReCaptchaToken).mockResolvedValue({
+                success: false,
+            });
+
+            await configTenantModel.create({
+                contributorAuth: {
+                    active: false,
+                },
+            });
+            const annotation = {
+                resourceUri: 'uid:/a4f7a51f-7109-481e-86cc-0adb3a26faa6',
+                fieldId: 'Gb4a',
+                kind: 'comment',
+                comment: 'Hello world',
+                authorName: 'John DOE',
+            };
+
+            const ctx = {
+                request: {
+                    body: annotation,
+                },
+                response: {},
+                annotation: annotationModel,
+                publishedDataset: publishedDatasetModel,
+                field: fieldModel,
+                configTenantCollection: configTenantModel,
+            };
+
+            await createAnnotation(ctx);
+
+            expect(ctx.response.status).toBe(400);
+            expect(ctx.body).toMatchObject({
+                total: 0,
+                errors: [
+                    {
+                        message: 'error_recaptcha_verification_failed',
+                    },
+                ],
+            });
+
+            expect(await annotationModel.findLimitFromSkip()).toStrictEqual([]);
+
+            expect(verifyReCaptchaToken).toHaveBeenCalledWith(
+                ctx,
+                expect.objectContaining(annotation),
+            );
         });
     });
 

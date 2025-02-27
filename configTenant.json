@@ -10,6 +10,11 @@
         "password": "secret",
         "active": false
     },
+    "antispamFilter": {
+        "active": false,
+        "recaptchaClientKey": "",
+        "recaptchaSecretKey": ""
+    },
     "enrichmentBatchSize": 10,
     "front": {
         "theme": {},

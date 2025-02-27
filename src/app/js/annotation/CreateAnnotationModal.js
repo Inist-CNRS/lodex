@@ -28,6 +28,7 @@ import {
     VALUE_STEP,
 } from './steps';
 import { useContributorCache } from './useContributorCache';
+import { useReCaptcha } from './useReCaptacha';
 
 const isRequiredFieldValid = (formState, fieldName) => {
     const fieldState = formState.fieldMeta[fieldName];
@@ -57,6 +58,7 @@ export function CreateAnnotationModal({
     resourceUri,
 }) {
     const { translate } = useTranslate();
+    const { requestReCaptchaToken } = useReCaptcha();
 
     const { contributor, updateContributorCache } = useContributorCache();
 
@@ -67,8 +69,12 @@ export function CreateAnnotationModal({
             kind: 'comment',
         },
         onSubmit: async ({ value: { authorRememberMe, ...value } }) => {
+            const reCaptchaToken = await requestReCaptchaToken();
             updateContributorCache({ authorRememberMe, ...value });
-            await onSubmit(value);
+            await onSubmit({
+                ...value,
+                reCaptchaToken,
+            });
             resetForm();
         },
         validators: {

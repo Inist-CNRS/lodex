@@ -83,6 +83,7 @@ export const annotationCreationSchema = z
 
                 return [value];
             }),
+        reCaptchaToken: z.string().nullish().default(undefined),
     })
     .superRefine((data, refineContext) => {
         if (

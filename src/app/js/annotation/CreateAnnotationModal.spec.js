@@ -204,6 +204,7 @@ describe('CreateAnnotationModal', () => {
                 authorEmail: 'email@example.org',
                 target: 'title',
                 kind: 'comment',
+                reCaptchaToken: null,
             });
         });
     });
@@ -841,6 +842,7 @@ describe('CreateAnnotationModal', () => {
             comment: 'test',
             kind: 'comment',
             target: 'title',
+            reCaptchaToken: null,
         });
     });
 
@@ -900,6 +902,7 @@ describe('CreateAnnotationModal', () => {
             initialValue: null,
             target: 'title',
             kind: 'comment',
+            reCaptchaToken: null,
         });
     });
 
@@ -967,6 +970,7 @@ describe('CreateAnnotationModal', () => {
             initialValue: 'initialValue',
             target: 'value',
             kind: 'removal',
+            reCaptchaToken: null,
         });
     });
 
@@ -1050,6 +1054,7 @@ describe('CreateAnnotationModal', () => {
             initialValue: 'secondValue',
             target: 'value',
             kind: 'removal',
+            reCaptchaToken: null,
         });
     });
 
@@ -1127,6 +1132,7 @@ describe('CreateAnnotationModal', () => {
             comment: 'test',
             initialValue: 'initialValue',
             proposedValue: 'proposedValue',
+            reCaptchaToken: null,
             target: 'value',
             kind: 'correction',
         });
@@ -1222,6 +1228,7 @@ describe('CreateAnnotationModal', () => {
             comment: 'test',
             initialValue: 'secondValue',
             proposedValue: 'proposedValue',
+            reCaptchaToken: null,
             target: 'value',
             kind: 'correction',
         });
@@ -1301,6 +1308,7 @@ describe('CreateAnnotationModal', () => {
             comment: 'test',
             initialValue: null,
             proposedValue: 'proposedValue',
+            reCaptchaToken: null,
             target: 'value',
             kind: 'addition',
         });
@@ -1383,6 +1391,7 @@ describe('CreateAnnotationModal', () => {
             comment: 'test',
             initialValue: null,
             proposedValue: 'proposedValue',
+            reCaptchaToken: null,
             target: 'value',
             kind: 'addition',
         });
