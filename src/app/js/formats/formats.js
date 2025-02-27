@@ -56,6 +56,7 @@ export const FORMATS_CATALOG = [
         type: 'chart',
         isValueAnnotable: false,
         docUrl: 'https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/appliquer-un-format/#graphique-aster-plot',
+        isUrlValue: false,
     },
     {
         name: 'formatCode',
@@ -65,6 +66,7 @@ export const FORMATS_CATALOG = [
         type: 'text',
         isValueAnnotable: true,
         docUrl: 'https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/appliquer-un-format/#texte-code',
+        isUrlValue: false,
     },
     {
         name: 'formatGlobalBarchart',
@@ -74,6 +76,7 @@ export const FORMATS_CATALOG = [
         type: 'chart',
         isValueAnnotable: false,
         docUrl: 'https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/appliquer-un-format/#graphique-diagramme-en-barres',
+        isUrlValue: false,
     },
     {
         name: 'formatGlobalPiechart',
@@ -83,6 +86,7 @@ export const FORMATS_CATALOG = [
         type: 'chart',
         isValueAnnotable: false,
         docUrl: 'https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/appliquer-un-format/#graphique-diagramme-circulaire',
+        isUrlValue: false,
     },
     {
         name: 'formatGlobalRadarchart',
@@ -92,6 +96,7 @@ export const FORMATS_CATALOG = [
         type: 'chart',
         isValueAnnotable: false,
         docUrl: 'https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/appliquer-un-format/#graphique-diagramme-radar',
+        isUrlValue: false,
     },
     {
         name: 'formatTreemap',
@@ -101,6 +106,7 @@ export const FORMATS_CATALOG = [
         type: 'chart',
         isValueAnnotable: false,
         docUrl: 'https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/appliquer-un-format/#graphique-graphique-hi%C3%A9rarchique',
+        isUrlValue: false,
     },
     {
         name: 'formatEmphasedNumber',
@@ -110,6 +116,7 @@ export const FORMATS_CATALOG = [
         type: 'text',
         isValueAnnotable: true,
         docUrl: 'https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/appliquer-un-format/#texte-chiffre-en-gras',
+        isUrlValue: false,
     },
     {
         name: 'formatIdentifierBadge',
@@ -119,6 +126,7 @@ export const FORMATS_CATALOG = [
         type: 'text',
         isValueAnnotable: true,
         docUrl: 'https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/appliquer-un-format/#texte-badge-pour-identifiant',
+        isUrlValue: false,
     },
     {
         name: 'formatEmail',
@@ -128,6 +136,7 @@ export const FORMATS_CATALOG = [
         type: 'url',
         isValueAnnotable: true,
         docUrl: 'https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/appliquer-un-format/#url-lien-courriel',
+        isUrlValue: false,
     },
     {
         name: 'formatFieldClone',
@@ -137,6 +146,7 @@ export const FORMATS_CATALOG = [
         type: 'chart',
         isValueAnnotable: false,
         docUrl: 'https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/appliquer-un-format/#copie-d%E2%80%99un-champ-existant',
+        isUrlValue: false,
     },
     {
         name: 'formatHtml',
@@ -146,6 +156,7 @@ export const FORMATS_CATALOG = [
         type: 'text',
         isValueAnnotable: true,
         docUrl: 'https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/appliquer-un-format/#texte-balises-html',
+        isUrlValue: false,
     },
     {
         name: 'formatImage',
@@ -155,6 +166,7 @@ export const FORMATS_CATALOG = [
         type: 'url',
         isValueAnnotable: true,
         docUrl: 'https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/appliquer-un-format/#autre-url-d%E2%80%99une-image',
+        isUrlValue: true,
     },
     {
         name: 'formatPdf',
@@ -164,6 +176,7 @@ export const FORMATS_CATALOG = [
         type: 'url',
         isValueAnnotable: true,
         docUrl: 'https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/appliquer-un-format/#autre-url-d%E2%80%99un-pdf',
+        isUrlValue: false,
     },
     {
         name: 'formatLatex',
@@ -173,6 +186,7 @@ export const FORMATS_CATALOG = [
         type: 'text',
         isValueAnnotable: true,
         docUrl: 'https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/appliquer-un-format/#texte-latex',
+        isUrlValue: true,
     },
     {
         name: 'formatEJS',
@@ -182,6 +196,7 @@ export const FORMATS_CATALOG = [
         type: 'text',
         isValueAnnotable: true,
         docUrl: 'https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/appliquer-un-format/', // format missing from documentation
+        isUrlValue: false,
     },
     {
         name: 'formatIstex',
@@ -191,6 +206,7 @@ export const FORMATS_CATALOG = [
         type: 'other',
         isValueAnnotable: true,
         docUrl: 'https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/appliquer-un-format/#autre-requ%C3%AAte-istex',
+        isUrlValue: true,
     },
     {
         name: 'formatLink',
@@ -200,6 +216,7 @@ export const FORMATS_CATALOG = [
         type: 'url',
         isValueAnnotable: true,
         docUrl: 'https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/appliquer-un-format/#url-lien-interne',
+        isUrlValue: false,
     },
     {
         name: 'formatLinkImage',
@@ -209,6 +226,7 @@ export const FORMATS_CATALOG = [
         type: 'url',
         isValueAnnotable: true,
         docUrl: 'https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/appliquer-un-format/#autre-lien-image',
+        isUrlValue: true,
     },
     {
         name: 'formatList',
@@ -218,6 +236,7 @@ export const FORMATS_CATALOG = [
         type: 'text',
         isValueAnnotable: true,
         docUrl: 'https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/appliquer-un-format/#texte-liste-de-valeurs',
+        isUrlValue: false,
     },
     {
         name: 'formatMarkdown',
@@ -227,6 +246,7 @@ export const FORMATS_CATALOG = [
         type: 'text',
         isValueAnnotable: true,
         docUrl: 'https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/appliquer-un-format/#texte-syntaxe-markdown',
+        isUrlValue: false,
     },
     {
         name: 'formatMarkdownModal',
@@ -236,6 +256,7 @@ export const FORMATS_CATALOG = [
         type: 'text',
         isValueAnnotable: true,
         docUrl: 'https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/appliquer-un-format/#texte-syntaxe-markdown',
+        isUrlValue: false,
     },
     {
         name: 'formatUri',
@@ -245,6 +266,7 @@ export const FORMATS_CATALOG = [
         type: 'url',
         isValueAnnotable: true,
         docUrl: 'https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/appliquer-un-format/#url-externe',
+        isUrlValue: true,
     },
     {
         name: 'formatTitle',
@@ -254,6 +276,7 @@ export const FORMATS_CATALOG = [
         type: 'text',
         isValueAnnotable: true,
         docUrl: 'https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/appliquer-un-format/#texte-titre',
+        isUrlValue: false,
     },
     {
         name: 'formatParagraph',
@@ -263,6 +286,7 @@ export const FORMATS_CATALOG = [
         type: 'text',
         isValueAnnotable: true,
         docUrl: 'https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/appliquer-un-format/#texte-paragraphe',
+        isUrlValue: false,
     },
     {
         name: 'formatParallelCoordinatesChart',
@@ -272,6 +296,7 @@ export const FORMATS_CATALOG = [
         type: 'chart',
         isValueAnnotable: false,
         docUrl: 'https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/appliquer-un-format/#graphique-coordonn%C3%A9es-parall%C3%A8les',
+        isUrlValue: false,
     },
     {
         name: 'formatSentence',
@@ -281,6 +306,7 @@ export const FORMATS_CATALOG = [
         type: 'text',
         isValueAnnotable: true,
         docUrl: 'https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/appliquer-un-format/#texte-phrase',
+        isUrlValue: false,
     },
     {
         name: 'formatVegaLite',
@@ -290,6 +316,7 @@ export const FORMATS_CATALOG = [
         type: 'chart',
         isValueAnnotable: false,
         docUrl: 'https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/appliquer-un-format/#graphique-syntaxe-vega-lite',
+        isUrlValue: false,
     },
     {
         name: 'formatResource',
@@ -299,6 +326,7 @@ export const FORMATS_CATALOG = [
         type: 'lodex',
         isValueAnnotable: true,
         docUrl: 'https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/appliquer-un-format/#lodex-ressource',
+        isUrlValue: true,
     },
     {
         name: 'formatLodexField',
@@ -308,6 +336,7 @@ export const FORMATS_CATALOG = [
         type: 'lodex',
         isValueAnnotable: true,
         docUrl: 'https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/appliquer-un-format/#lodex-champ',
+        isUrlValue: true,
     },
     {
         name: 'formatResourcesGrid',
@@ -317,6 +346,7 @@ export const FORMATS_CATALOG = [
         type: 'other',
         isValueAnnotable: true,
         docUrl: 'https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/appliquer-un-format/#autre-grille-de-ressources',
+        isUrlValue: true,
     },
     {
         name: 'formatPaginatedTable',
@@ -326,6 +356,7 @@ export const FORMATS_CATALOG = [
         type: 'other',
         isValueAnnotable: true,
         docUrl: 'https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/appliquer-un-format/#autre-tableau-pagin%C3%A9',
+        isUrlValue: true,
     },
     {
         name: 'formatUnpaginatedTable',
@@ -335,6 +366,7 @@ export const FORMATS_CATALOG = [
         type: 'other',
         isValueAnnotable: true,
         docUrl: 'https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/appliquer-un-format/#autre-tableau-non-pagin%C3%A9',
+        isUrlValue: true,
     },
     {
         name: 'formatBubblePlot',
@@ -344,6 +376,7 @@ export const FORMATS_CATALOG = [
         type: 'chart',
         isValueAnnotable: false,
         docUrl: 'https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/appliquer-un-format/#graphique-diagrammes-%C3%A0-bulles',
+        isUrlValue: false,
     },
     {
         name: 'formatCartography',
@@ -353,6 +386,7 @@ export const FORMATS_CATALOG = [
         type: 'chart',
         isValueAnnotable: false,
         docUrl: 'https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/appliquer-un-format/#graphique-cartographie',
+        isUrlValue: false,
     },
     {
         name: 'formatHeatmap',
@@ -362,6 +396,7 @@ export const FORMATS_CATALOG = [
         type: 'chart',
         isValueAnnotable: false,
         docUrl: 'https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/appliquer-un-format/#graphique-carte-de-chaleur',
+        isUrlValue: false,
     },
     {
         name: 'formatNetwork',
@@ -371,6 +406,7 @@ export const FORMATS_CATALOG = [
         type: 'chart',
         isValueAnnotable: false,
         docUrl: 'https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/appliquer-un-format/#graphique-r%C3%A9seaux',
+        isUrlValue: false,
     },
     {
         name: 'formatVenn',
@@ -389,6 +425,7 @@ export const FORMATS_CATALOG = [
         type: 'chart',
         isValueAnnotable: false,
         docUrl: 'https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/appliquer-un-format/#graphique-graphe-%C3%A0-bulles',
+        isUrlValue: false,
     },
     {
         name: 'formatRedirect',
@@ -396,8 +433,9 @@ export const FORMATS_CATALOG = [
         componentName: 'redirect',
         component: redirect,
         type: 'url',
-        isValueAnnotable: true,
+        isValueAnnotable: false,
         docUrl: 'https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/appliquer-un-format/#url-redirection-automatique',
+        isUrlValue: true,
     },
     {
         name: 'formatSparqlTextField',
@@ -407,6 +445,7 @@ export const FORMATS_CATALOG = [
         type: 'text',
         isValueAnnotable: true,
         docUrl: 'https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/appliquer-un-format/#sparql-texte',
+        isUrlValue: true,
     },
     {
         name: 'formatIstexSummary',
@@ -416,6 +455,7 @@ export const FORMATS_CATALOG = [
         type: 'other',
         isValueAnnotable: true,
         docUrl: 'https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/appliquer-un-format/#autre-sommaire-istex',
+        isUrlValue: true,
     },
     {
         name: 'formatStreamgraph',
@@ -425,6 +465,7 @@ export const FORMATS_CATALOG = [
         type: 'chart',
         isValueAnnotable: false,
         docUrl: 'https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/appliquer-un-format/#graphique-graphique-de-flux',
+        isUrlValue: false,
     },
     {
         name: 'formatHierarchy',
@@ -434,6 +475,7 @@ export const FORMATS_CATALOG = [
         type: 'chart',
         isValueAnnotable: false,
         docUrl: 'https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/appliquer-un-format/#graphique-graphique-hi%C3%A9rarchique',
+        isUrlValue: false,
     },
     {
         name: 'formatIstexCitation',
@@ -443,6 +485,7 @@ export const FORMATS_CATALOG = [
         type: 'other',
         isValueAnnotable: true,
         docUrl: 'https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/appliquer-un-format/#autre-article-citant',
+        isUrlValue: true,
     },
     {
         name: 'formatIstexRefbibs',
@@ -452,6 +495,7 @@ export const FORMATS_CATALOG = [
         type: 'other',
         isValueAnnotable: true,
         docUrl: 'https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/appliquer-un-format/', // format missing from documentation
+        isUrlValue: true,
     },
     {
         name: 'formatFlowMap',
@@ -461,6 +505,7 @@ export const FORMATS_CATALOG = [
         type: 'chart',
         isValueAnnotable: false,
         docUrl: 'https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/appliquer-un-format/#graphique-cartographie-de-flux',
+        isUrlValue: false,
     },
     {
         name: 'formatClusteredChart',
@@ -470,6 +515,7 @@ export const FORMATS_CATALOG = [
         type: 'chart',
         isValueAnnotable: false,
         docUrl: 'https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/appliquer-un-format/', // format missing from documentation
+        isUrlValue: false,
     },
     {
         name: 'formatJsonDebug',
@@ -479,5 +525,6 @@ export const FORMATS_CATALOG = [
         type: 'other',
         isValueAnnotable: true,
         docUrl: 'https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/appliquer-un-format/', // format missing from documentation
+        isUrlValue: true,
     },
 ];
