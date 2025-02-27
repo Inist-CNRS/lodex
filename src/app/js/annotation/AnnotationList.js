@@ -1,3 +1,5 @@
+import AttributionIcon from '@mui/icons-material/Attribution';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import {
     Accordion,
     AccordionDetails,
@@ -11,20 +13,17 @@ import {
     Typography,
     useTheme,
 } from '@mui/material';
-import React, { useMemo } from 'react';
-import { AnnotationStatus } from '../admin/annotations/AnnotationStatus';
-import { useTranslate } from '../i18n/I18NContext';
-import { AnnotationValue } from '../admin/annotations/AnnotationValue';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import PropTypes from 'prop-types';
+import React, { useMemo } from 'react';
 import {
     ANNOTATION_KIND_ADDITION,
     ANNOTATION_KIND_COMMENT,
     ANNOTATION_KIND_CORRECTION,
     ANNOTATION_KIND_REMOVAL,
 } from '../../../common/validator/annotation.validator';
-import AttributionIcon from '@mui/icons-material/Attribution';
-import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+import { AnnotationStatus } from '../admin/annotations/AnnotationStatus';
+import { AnnotationValue } from '../admin/annotations/AnnotationValue';
+import { useTranslate } from '../i18n/I18NContext';
 
 export const getAnnotationSummaryValue = (annotation) => {
     switch (annotation.kind) {
@@ -93,7 +92,8 @@ export const AnnotationList = ({ annotations, field }) => {
         <Stack
             gap={2}
             sx={{
-                margin: theme.spacing(1),
+                padding: theme.spacing(2),
+                paddingTop: 0,
                 backgroundColor: theme.palette.grey[100],
             }}
         >
@@ -112,17 +112,21 @@ export const AnnotationList = ({ annotations, field }) => {
                     onClick={() => setMode('all')}
                     variant={mode === 'all' ? 'contained' : 'outlined'}
                 >
-                    {translate('all_annotation')}
+                    {translate('all_annotation', {
+                        smart_count: annotations.length,
+                    })}
                 </Button>
                 <Button
                     onClick={() => {
                         setMode('mine');
                     }}
-                    endIcon={<AttributionIcon />}
+                    startIcon={<AttributionIcon />}
                     variant={mode === 'mine' ? 'contained' : 'outlined'}
                     disabled={myAnnotations.length === 0}
                 >
-                    {translate('annotation_sent_by_me')}
+                    {translate('annotation_sent_by_me', {
+                        smart_count: myAnnotations.length,
+                    })}
                 </Button>
             </ButtonGroup>
             <Box>
@@ -138,16 +142,26 @@ export const AnnotationList = ({ annotations, field }) => {
                         >
                             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                                 <Grid container columns={12}>
-                                    <Grid item xs={2}>
+                                    <Grid
+                                        item
+                                        xs={2}
+                                        alignItems="center"
+                                        display="flex"
+                                    >
                                         <Typography
                                             aria-label={translate(
                                                 'annotation_kind',
                                             )}
                                         >
-                                            {annotation.kind}
+                                            {translate(annotation.kind)}
                                         </Typography>
                                     </Grid>
-                                    <Grid item xs={8}>
+                                    <Grid
+                                        item
+                                        xs={myAnnotations.length > 0 ? 7 : 8}
+                                        alignItems="center"
+                                        display="flex"
+                                    >
                                         <Tooltip
                                             title={getAnnotationSummaryValue(
                                                 annotation,
@@ -170,7 +184,34 @@ export const AnnotationList = ({ annotations, field }) => {
                                             </Typography>
                                         </Tooltip>
                                     </Grid>
-                                    <Grid item xs={2}>
+
+                                    {myAnnotations.length && (
+                                        <Grid
+                                            item
+                                            xs={1}
+                                            alignItems="center"
+                                            display="flex"
+                                        >
+                                            {annotation.isMine && (
+                                                <Tooltip
+                                                    aria-label={translate(
+                                                        'own_annotation',
+                                                    )}
+                                                    title={translate(
+                                                        'own_annotation',
+                                                    )}
+                                                >
+                                                    <AttributionIcon />
+                                                </Tooltip>
+                                            )}
+                                        </Grid>
+                                    )}
+                                    <Grid
+                                        item
+                                        xs={2}
+                                        alignItems="center"
+                                        display="flex"
+                                    >
                                         <AnnotationStatus
                                             arialLabel={translate(
                                                 'annotation_status',
@@ -184,22 +225,6 @@ export const AnnotationList = ({ annotations, field }) => {
                                         />
                                     </Grid>
                                 </Grid>
-                                {myAnnotations.length > 0 && (
-                                    <Box sx={{ width: '2em' }}>
-                                        {annotation.isMine && (
-                                            <Tooltip
-                                                aria-label={translate(
-                                                    'own_annotation',
-                                                )}
-                                                title={translate(
-                                                    'own_annotation',
-                                                )}
-                                            >
-                                                <AttributionIcon />
-                                            </Tooltip>
-                                        )}
-                                    </Box>
-                                )}
                             </AccordionSummary>
                             <AccordionDetails>
                                 <Stack gap={2}>
@@ -216,59 +241,64 @@ export const AnnotationList = ({ annotations, field }) => {
                                                     .main,
                                             }}
                                         >
-                                            <InfoOutlinedIcon />
+                                            <AttributionIcon />
                                             <Typography>
                                                 {translate('own_annotation')}
                                             </Typography>
                                         </Stack>
                                     )}
-                                    <Box>
-                                        <Typography
-                                            variant="h6"
-                                            id="annotation_initial_value"
-                                        >
-                                            {translate(
-                                                'annotation_initial_value',
-                                            )}
-                                        </Typography>
-                                        <Typography aria-labelledby="annotation_initial_value">
-                                            {annotation.initialValue}
-                                        </Typography>
-                                    </Box>
-                                    <Box>
-                                        <Typography
-                                            variant="h6"
-                                            id="annotation_proposed_value"
-                                        >
-                                            {translate(
-                                                'annotation_proposed_value',
-                                                {
-                                                    smart_count: Array.isArray(
-                                                        annotation.proposedValue,
-                                                    )
-                                                        ? annotation
-                                                              .proposedValue
-                                                              .length
-                                                        : 1,
-                                                },
-                                            )}
-                                        </Typography>
-                                        <Typography aria-labelledby="annotation_proposed_value">
-                                            {Array.isArray(
-                                                annotation.proposedValue,
-                                            )
-                                                ? annotation.proposedValue.map(
-                                                      (value) => (
-                                                          <Typography
-                                                              key={value}
-                                                          >
-                                                              {value}
-                                                          </Typography>
-                                                      ),
-                                                  )
-                                                : annotation.proposedValue}
-                                        </Typography>
-                                    </Box>
+                                    {annotation.initialValue && (
+                                        <Box>
+                                            <Typography
+                                                variant="h6"
+                                                id="annotation_initial_value"
+                                            >
+                                                {translate(
+                                                    'annotation_initial_value',
+                                                )}
+                                            </Typography>
+                                            <Typography aria-labelledby="annotation_initial_value">
+                                                {annotation.initialValue}
+                                            </Typography>
+                                        </Box>
+                                    )}
+                                    {annotation.proposedValue?.length && (
+                                        <Box>
+                                            <Typography
+                                                variant="h6"
+                                                id="annotation_proposed_value"
+                                            >
+                                                {translate(
+                                                    'annotation_proposed_value',
+                                                    {
+                                                        smart_count:
+                                                            Array.isArray(
+                                                                annotation.proposedValue,
+                                                            )
+                                                                ? annotation
+                                                                      .proposedValue
+                                                                      .length
+                                                                : 1,
+                                                    },
+                                                )}
+                                            </Typography>
+                                            <Typography aria-labelledby="annotation_proposed_value">
+                                                {Array.isArray(
+                                                    annotation.proposedValue,
+                                                )
+                                                    ? annotation.proposedValue.map(
+                                                          (value) => (
+                                                              <Typography
+                                                                  key={value}
+                                                              >
+                                                                  {value}
+                                                              </Typography>
+                                                          ),
+                                                      )
+                                                    : annotation.proposedValue}
+                                            </Typography>
+                                        </Box>
+                                    )}
                                     <Box>
                                         <Typography
                                             variant="h6"
@@ -283,22 +313,24 @@ export const AnnotationList = ({ annotations, field }) => {
                                             {annotation.comment}
                                         </Typography>
                                     </Box>
-                                    <Box>
-                                        <Typography
-                                            variant="h6"
-                                            id="annotation_admin_comment_section"
-                                        >
-                                            {translate(
-                                                'annotation_admin_comment_section',
-                                            )}
-                                        </Typography>
-                                        <Typography
-                                            component="pre"
-                                            aria-labelledby="annotation_admin_comment_section"
-                                        >
-                                            {annotation.adminComment}
-                                        </Typography>
-                                    </Box>
+                                    {annotation.adminComment && (
+                                        <Box>
+                                            <Typography
+                                                variant="h6"
+                                                id="annotation_admin_comment_section"
+                                            >
+                                                {translate(
+                                                    'annotation_admin_comment_section',
+                                                )}
+                                            </Typography>
+                                            <Typography
+                                                component="pre"
+                                                aria-labelledby="annotation_admin_comment_section"
+                                            >
+                                                {annotation.adminComment}
+                                            </Typography>
+                                        </Box>
+                                    )}
                                     <Box>
                                         <Typography variant="h6">
                                             {translate(

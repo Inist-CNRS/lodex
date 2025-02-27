@@ -10,7 +10,7 @@ import {
     useSetFieldAnnotationIds,
 } from './annotationStorage';
 
-export const useGetFieldAnnotation = (fieldId, resourceUri) => {
+export const useGetFieldAnnotation = (fieldId, resourceUri, enabled = true) => {
     const { translate } = useTranslate();
     const storedAnnotationIds = useGetFieldAnnotationIds({
         fieldId,
@@ -21,7 +21,7 @@ export const useGetFieldAnnotation = (fieldId, resourceUri) => {
         resourceUri,
     });
 
-    const { data, ...rest } = useQuery({
+    const { data, isLoading, ...rest } = useQuery({
         queryKey: ['field-annotations', fieldId, resourceUri],
         queryFn: async () => {
             const { token } = getUserSessionStorageInfo();
@@ -48,10 +48,11 @@ export const useGetFieldAnnotation = (fieldId, resourceUri) => {
                 isMine: storedAnnotationIds.includes(annotation._id),
             }));
         },
+        enabled,
     });
 
     useEffect(() => {
-        if (!data?.length) {
+        if (!data?.length || isLoading || !enabled) {
             return;
         }
 
@@ -66,10 +67,19 @@ export const useGetFieldAnnotation = (fieldId, resourceUri) => {
                 type: toast.TYPE.INFO,
             });
         }
-    }, [data, storedAnnotationIds, setFieldAnnotationIds, translate]);
+    }, [
+        data,
+        isLoading,
+        storedAnnotationIds,
+        setFieldAnnotationIds,
+        translate,
+        enabled,
+        fieldId,
+    ]);
 
     return {
         ...rest,
+        isLoading,
         data,
     };
 };
