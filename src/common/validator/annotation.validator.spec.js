@@ -680,9 +680,9 @@ describe('annotation.validator', () => {
                 },
             ]);
         });
-        it('should reject when internalComment is empty', () => {
+        it('should reject when internalComment is empty and status validated', () => {
             const annotationPayload = {
-                status: 'to_review',
+                status: 'validated',
                 internalComment: '',
                 administrator: 'The tester',
             };
@@ -693,15 +693,56 @@ describe('annotation.validator', () => {
 
             expect(error.errors).toStrictEqual([
                 {
-                    code: 'too_small',
-                    exact: false,
-                    inclusive: true,
                     message: 'error_required',
-                    minimum: 1,
+                    code: 'error_required',
                     path: ['internalComment'],
-                    type: 'string',
                 },
             ]);
+        });
+        it('should reject when internalComment is empty and status rejected', () => {
+            const annotationPayload = {
+                status: 'rejected',
+                internalComment: '',
+                administrator: 'The tester',
+            };
+
+            const { success, error } =
+                annotationUpdateSchema.safeParse(annotationPayload);
+            expect(success).toBe(false);
+
+            expect(error.errors).toStrictEqual([
+                {
+                    message: 'error_required',
+                    code: 'error_required',
+                    path: ['internalComment'],
+                },
+            ]);
+        });
+        it('should accept when internalComment is empty and status to_review', () => {
+            const annotationPayload = {
+                status: 'to_review',
+                internalComment: '',
+                administrator: 'The tester',
+            };
+
+            const { success, error } =
+                annotationUpdateSchema.safeParse(annotationPayload);
+            expect(success).toBe(true);
+
+            expect(error).toBeUndefined();
+        });
+        it('should accept when internalComment is empty and status ongoing', () => {
+            const annotationPayload = {
+                status: 'ongoing',
+                internalComment: '',
+                administrator: 'The tester',
+            };
+
+            const { success, error } =
+                annotationUpdateSchema.safeParse(annotationPayload);
+            expect(success).toBe(true);
+
+            expect(error).toBeUndefined();
         });
         it('should accept no administrator', () => {
             const annotationPayload = {
