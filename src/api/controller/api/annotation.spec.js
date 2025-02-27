@@ -1866,13 +1866,6 @@ Voir l'annotation : http://localhost:3000/instance/instance-name/admin#/annotati
                             path: ['status'],
                             received: 'undefined',
                         },
-                        {
-                            code: 'invalid_type',
-                            expected: 'string',
-                            message: 'error_required',
-                            path: ['internalComment'],
-                            received: 'undefined',
-                        },
                     ],
                 },
             });

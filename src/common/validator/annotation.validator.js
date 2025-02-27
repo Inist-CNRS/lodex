@@ -142,16 +142,9 @@ export const annotationCreationSchema = z
         }
     });
 
-export const annotationUpdateSchema = z.object({
+const unrefinedAnnotationUpdateSchema = z.object({
     status: z.enum(['to_review', 'ongoing', 'validated', 'rejected']),
-    internalComment: z
-        .string({
-            required_error: 'error_required',
-        })
-        .trim()
-        .min(1, {
-            message: 'error_required',
-        }),
+    internalComment: z.string().trim().optional(),
     adminComment: z
         .string()
         .nullish()
@@ -174,13 +167,30 @@ export const annotationUpdateSchema = z.object({
         .transform((value) => (value === '' ? null : value)),
 });
 
+export const annotationUpdateSchema =
+    unrefinedAnnotationUpdateSchema.superRefine((data, refineContext) => {
+        if (
+            ['validated', 'rejected'].includes(data.status) &&
+            !data.internalComment
+        ) {
+            refineContext.addIssue({
+                code: 'error_required',
+                message: 'error_required',
+                path: ['internalComment'],
+            });
+        }
+    });
+
 const annotationUpdateNullishSchema = z.object(
-    Object.entries(annotationUpdateSchema.shape).reduce((acc, [key, value]) => {
-        acc[key] = value
-            .nullish()
-            .default(key === 'status' ? 'to_review' : null);
-        return acc;
-    }, {}),
+    Object.entries(unrefinedAnnotationUpdateSchema.shape).reduce(
+        (acc, [key, value]) => {
+            acc[key] = value
+                .nullish()
+                .default(key === 'status' ? 'to_review' : null);
+            return acc;
+        },
+        {},
+    ),
 );
 
 export const annotationImportSchema = annotationCreationSchema
