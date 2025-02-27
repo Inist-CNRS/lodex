@@ -23,13 +23,21 @@
         "objectifTDM": "https://services.istex.fr/associer-un-terme-au-vocabulaire-des-communes-de-france/",
         "type": "geography"
     },
-    {
+        {
         "id": "post-v1-astroTag",
         "url": "https://astro-ner.services.istex.fr/v1/tagger",
         "doc": "https://github.com/Inist-CNRS/web-services/tree/main/services/astro-ner/v1",
         "swagger": "https://openapi.services.istex.fr/?urls.primaryName=astro-ner%20-%20Cette%20instance%20propose%20un%20outil%20de%20reconnaissance%20d%27entit%C3%A9s%20nomm%C3%A9es%20en%20astronomie#/default/post_v1_tagger",
         "objectifTDM": "https://services.istex.fr/detection-dentites-nommees-en-astronomie/",
         "type": "entites nommees"
+    },
+    {
+        "id": "post-v1-aiAbstract-check",
+        "url": "https://aiabstract-check.services.istex.fr/v1/AiAbstract-check",
+        "doc": "https://github.com/Inist-CNRS/web-services/tree/main/services/aiabstract-check",
+        "swagger": "https://openapi.services.istex.fr/?urls.primaryName=aiabstract-check%20-%20Detection%20d%27abstract%20scientifique%20g%C3%A9n%C3%A9r%C3%A9%20par%20IA",
+        "objectifTDM": "https://services.istex.fr/detection-de-resume-scientifique-genere-par-ia/",
+        "type": "validation"
     },
     {
         "id": "post-v1-orcid-disambiguation-orcidDisambiguation",
@@ -399,6 +407,22 @@
         "objectifTDM": "https://services.istex.fr/extraction-du-texte-epure-de-pdf/",
         "type": "pretraitement"
     },
+      {
+        "id": "post-v1-textSummarize-en",
+        "url": "https://text-summarize.services.istex.fr/v1/en",
+        "doc": "https://github.com/Inist-CNRS/web-services/tree/main/services/text-summarize",
+        "swagger": "https://openapi.services.istex.fr/?urls.primaryName=text-summarize%20-%20G%C3%A9n%C3%A8re%20un%20r%C3%A9sum%C3%A9%20d%27un%20article%20scientifique.#/",
+        "objectifTDM": "https://services.istex.fr/resume-automatique-dun-article-scientifique/",
+        "type": "indexation"
+    },  
+          {
+        "id": "post-v1-textSummarize-multilingual",
+        "url": "https://text-summarize.services.istex.fr/v1/multilingual",
+        "doc": "https://github.com/Inist-CNRS/web-services/tree/main/services/text-summarize",
+        "swagger": "https://openapi.services.istex.fr/?urls.primaryName=text-summarize%20-%20G%C3%A9n%C3%A8re%20un%20r%C3%A9sum%C3%A9%20d%27un%20article%20scientifique.#/",
+        "objectifTDM": "https://services.istex.fr/resume-automatique-dun-article-scientifique/",
+        "type": "indexation"
+    },  
     {
         "id": "post-v1-tools",
         "url": "https://terms-extraction.services.istex.fr/v1/tools/normalize",
