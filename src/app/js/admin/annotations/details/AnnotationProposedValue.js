@@ -10,10 +10,10 @@ export function AnnotationProposedValue({ proposedValue, field }) {
 
     if (hasFieldMultipleValues(field)) {
         return (
-            <List>
+            <List dense>
                 {proposedValueAsArray.map((value) => (
-                    <ListItem key={value}>
-                        <ListItemText primary={value} />
+                    <ListItem sx={{ padding: 0 }} key={value}>
+                        <ListItemText sx={{ margin: 0 }} primary={value} />
                     </ListItem>
                 ))}
             </List>

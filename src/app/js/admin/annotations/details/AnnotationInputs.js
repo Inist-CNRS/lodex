@@ -10,6 +10,7 @@ import { useStore } from '@tanstack/react-form';
 
 import { useTranslate } from '../../../i18n/I18NContext';
 import { AnnotationStatus, statuses } from '../AnnotationStatus';
+import { FormHelperText } from '@mui/material';
 
 export function AnnotationInputs({ form }) {
     const { translate } = useTranslate();
@@ -44,6 +45,9 @@ export function AnnotationInputs({ form }) {
                                     </MenuItem>
                                 ))}
                             </Select>
+                            <FormHelperText>
+                                {translate('annotation_status_help')}
+                            </FormHelperText>
                         </FormControl>
                     );
                 }}

@@ -125,7 +125,7 @@ export const AnnotationList = () => {
                 },
                 {
                     field: 'resource',
-                    headerName: translate('annotation_resource'),
+                    headerName: translate('annotation_resource_header'),
                     flex: 1,
                     sortable: false,
                     filterOperators: getGridStringOperators().filter(
