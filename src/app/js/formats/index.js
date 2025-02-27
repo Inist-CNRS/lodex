@@ -82,6 +82,9 @@ export const getIconComponent = (name) => getComponent(name).Icon;
 export const getPredicate = (name) => getComponent(name).predicate;
 
 export const getIsFieldValueAnnotable = (name) => {
+    if (!name) {
+        return true;
+    }
     return (
         FORMATS_CATALOG.find((i) => i.componentName === name)
             ?.isValueAnnotable ?? false
