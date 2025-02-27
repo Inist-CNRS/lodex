@@ -1350,3 +1350,4 @@
 "notification_new_annotation_email_author"	"Contributor: %{authorName}"	"Contributeur : %{authorName}"
 "notification_new_annotation_email_comment"	"Contributor comment: %{comment}"	"Commentaire du contributeur : %{comment}"
 "notification_new_annotation_email_see_annotation"	"See annotation: %{annotationUrl}"	"Voir l'annotation : %{annotationUrl}"
+"annotation_status_help"	"Modifying the status do not modify the data"	"Modifier l'état ne modifie pas les données"
