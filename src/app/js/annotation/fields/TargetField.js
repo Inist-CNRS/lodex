@@ -169,7 +169,7 @@ export function TargetField({ form, initialValue, goToStep }) {
                                         htmlColor={theme.palette.primary.main}
                                     />
                                 </ListItemIcon>
-                                {translate('annotation_remove_content')}
+                                {translate('annotation_remove_content_choice')}
                             </Stack>
                             <ArrowForwardIosIcon
                                 color={theme.palette.primary.main}

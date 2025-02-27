@@ -93,3 +93,12 @@ export const getIsFieldValueAnnotable = (name) => {
             ?.isValueAnnotable ?? false
     );
 };
+export const getIsFieldValueAnUrl = (name) => {
+    if (!name) {
+        return false;
+    }
+    return (
+        FORMATS_CATALOG.find((i) => i.componentName === name)?.isUrlValue ??
+        false
+    );
+};

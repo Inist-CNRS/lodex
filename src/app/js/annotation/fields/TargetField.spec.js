@@ -41,7 +41,7 @@ describe('TargetField', () => {
         ).toBeInTheDocument();
         expect(screen.getByText('annotation_add_content')).toBeInTheDocument();
         expect(
-            screen.getByText('annotation_remove_content'),
+            screen.getByText('annotation_remove_content_choice'),
         ).toBeInTheDocument();
     });
 
@@ -97,14 +97,16 @@ describe('TargetField', () => {
         });
     });
 
-    it('should call goToStep with COMMENT_STEP when there is a single value and clicking on annotation_remove_content, and set target to value, kind to removal, initialValue to "initial value"', () => {
+    it('should call goToStep with COMMENT_STEP when there is a single value and clicking on annotation_remove_content_choice, and set target to value, kind to removal, initialValue to "initial value"', () => {
         const goToStep = jest.fn();
         const { form } = renderTargetField({
             goToStep,
             initialValue: 'initial value',
         });
         act(() => {
-            fireEvent.click(screen.getByText('annotation_remove_content'));
+            fireEvent.click(
+                screen.getByText('annotation_remove_content_choice'),
+            );
         });
         expect(goToStep).toHaveBeenCalledWith(COMMENT_STEP);
         expect(form.state.values).toStrictEqual({
@@ -114,14 +116,16 @@ describe('TargetField', () => {
         });
     });
 
-    it('should call goToStep with VALUE_STEP when there is an array of values and clicking on annotation_remove_content, and set target to value, kind to removal', () => {
+    it('should call goToStep with VALUE_STEP when there is an array of values and clicking on annotation_remove_content_choice, and set target to value, kind to removal', () => {
         const goToStep = jest.fn();
         const { form } = renderTargetField({
             goToStep,
             initialValue: ['initial', 'value'],
         });
         act(() => {
-            fireEvent.click(screen.getByText('annotation_remove_content'));
+            fireEvent.click(
+                screen.getByText('annotation_remove_content_choice'),
+            );
         });
         expect(goToStep).toHaveBeenCalledWith(VALUE_STEP);
         expect(form.state.values).toStrictEqual({

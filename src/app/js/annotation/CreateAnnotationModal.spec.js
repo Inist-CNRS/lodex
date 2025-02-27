@@ -328,7 +328,7 @@ describe('CreateAnnotationModal', () => {
             await waitFor(() => {
                 fireEvent.click(
                     screen.getByRole('menuitem', {
-                        name: 'annotation_remove_content',
+                        name: 'annotation_remove_content_choice',
                     }),
                 );
             });
@@ -947,7 +947,7 @@ describe('CreateAnnotationModal', () => {
         await waitFor(() => {
             fireEvent.click(
                 screen.getByRole('menuitem', {
-                    name: 'annotation_remove_content',
+                    name: 'annotation_remove_content_choice',
                 }),
             );
         });
@@ -1011,7 +1011,7 @@ describe('CreateAnnotationModal', () => {
         await waitFor(() => {
             fireEvent.click(
                 screen.getByRole('menuitem', {
-                    name: 'annotation_remove_content',
+                    name: 'annotation_remove_content_choice',
                 }),
             );
         });
