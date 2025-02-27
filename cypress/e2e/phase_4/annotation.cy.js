@@ -148,7 +148,7 @@ describe('Annotation', () => {
                         'Type',
                         'Field label',
                         'Field Id',
-                        'Field Icons',
+                        'Field Icon(s)',
                         'Field Internal Name',
                         'Initial value',
                         'Proposed values',
@@ -1076,7 +1076,10 @@ Revue`);
             cy.findByText(`See 2 annotations`).should('be.visible');
             cy.findByText(`See 2 annotations`).click();
 
-            cy.findByLabelText('Title').should('have.text', 'Home page');
+            cy.findByLabelText('Resource title').should(
+                'have.text',
+                'Home page',
+            );
 
             cy.findByText('All').should('be.visible');
             cy.findByText('Sent by me').should('be.visible');

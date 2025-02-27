@@ -151,7 +151,7 @@ export function checkFieldAnnotations({
             : `See ${expectedAnnotations.length} annotations`,
     ).click();
 
-    cy.findByLabelText('Title').should('have.text', resourceTitle);
+    cy.findByLabelText('Resource title').should('have.text', resourceTitle);
     cy.findAllByLabelText('Type').should(
         'have.length',
         expectedAnnotations.length,
