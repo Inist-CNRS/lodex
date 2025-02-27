@@ -85,6 +85,9 @@ export const getIsFieldValueAnnotable = (name) => {
     if (!name) {
         return true;
     }
+    if (name === 'None') {
+        return true;
+    }
     return (
         FORMATS_CATALOG.find((i) => i.componentName === name)
             ?.isValueAnnotable ?? false
