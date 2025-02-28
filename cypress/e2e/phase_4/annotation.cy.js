@@ -70,17 +70,12 @@ describe('Annotation', () => {
                     '',
                     'Comment',
                     'Dataset Description',
-                    '[Doay]',
-                    '',
                     '',
                     '',
                     '',
                     'To Review',
                     '',
-                    '',
                     'John Doe',
-                    'This is a comment',
-                    new Date().toLocaleDateString(),
                     new Date().toLocaleDateString(),
                 ]);
             });
@@ -147,24 +142,19 @@ describe('Annotation', () => {
                         'Title',
                         'Type',
                         'Field label',
-                        'Field Id',
                         'Field Icon(s)',
-                        'Field Internal Name',
                         'Initial value',
                         'Proposed values',
                         'Status',
-                        'Internal Comment',
                         'Administrator',
                         'Contributor',
-                        'Contributor Comment',
                         'Submission date',
-                        'Last modified on',
                     ]);
                 });
 
                 cy.findAllByRole('cell').then((cells) => {
                     const firstUri = cells[1].textContent;
-                    const secondUri = cells[18].textContent;
+                    const secondUri = cells[13].textContent;
 
                     expect(firstUri).to.match(/uid:\//);
                     expect(secondUri).to.match(/uid:\//);
@@ -177,34 +167,24 @@ describe('Annotation', () => {
                         'RoboCop',
                         'Removal',
                         'rating',
-                        '[bZE+]',
-                        '',
                         '',
                         '7,5',
                         '',
                         'To Review',
                         '',
-                        '',
                         'Jane Smith',
-                        'This is another comment',
-                        new Date().toLocaleDateString(),
                         new Date().toLocaleDateString(),
                         '',
                         secondUri,
                         'Terminator 2',
                         'Comment',
                         'actors',
-                        '[K8Lu]',
-                        '',
                         '',
                         '',
                         '',
                         'To Review',
                         '',
-                        '',
                         'John Doe',
-                        'This is a comment',
-                        new Date().toLocaleDateString(),
                         new Date().toLocaleDateString(),
                     ]);
                 });
@@ -274,7 +254,7 @@ describe('Annotation', () => {
 
                 cy.findAllByRole('cell').then((cells) => {
                     const firstUri = cells[1].textContent;
-                    const secondUri = cells[18].textContent;
+                    const secondUri = cells[13].textContent;
 
                     expect(firstUri).to.match(/uid:\//);
                     expect(secondUri).to.match(/uid:\//);
@@ -287,34 +267,24 @@ describe('Annotation', () => {
                         'RoboCop',
                         'Removal',
                         'rating',
-                        '[bZE+]',
-                        '',
                         '',
                         '7,5',
                         '',
                         'Validated',
-                        'Return applied',
                         'John Doe',
                         'Jane Smith',
-                        'This is another comment',
-                        new Date().toLocaleDateString(),
                         new Date().toLocaleDateString(),
                         '',
                         secondUri,
                         'Terminator 2',
                         'Comment',
                         'actors',
-                        '[K8Lu]',
-                        '',
                         '',
                         '',
                         '',
                         'To Review',
                         '',
-                        '',
                         'John Doe',
-                        'This is a comment',
-                        new Date().toLocaleDateString(),
                         new Date().toLocaleDateString(),
                     ]);
                 });
@@ -354,7 +324,7 @@ describe('Annotation', () => {
 
                 cy.findAllByRole('cell').then((cells) => {
                     const firstUri = cells[1].textContent;
-                    const secondUri = cells[18].textContent;
+                    const secondUri = cells[13].textContent;
 
                     expect(firstUri).to.match(/uid:\//);
                     expect(secondUri).to.match(/uid:\//);
@@ -367,34 +337,24 @@ describe('Annotation', () => {
                         'RoboCop',
                         'Comment',
                         'rating',
-                        '[bZE+]',
-                        '',
                         '',
                         '',
                         '',
                         'To Review',
                         '',
-                        '',
                         'Jane Smith',
-                        'This is another comment',
-                        new Date().toLocaleDateString(),
                         new Date().toLocaleDateString(),
                         '',
                         secondUri,
                         'Terminator 2',
                         'Comment',
                         'actors',
-                        '[K8Lu]',
-                        '',
                         '',
                         '',
                         '',
                         'To Review',
                         '',
-                        '',
                         'John Doe',
-                        'This is a comment',
-                        new Date().toLocaleDateString(),
                         new Date().toLocaleDateString(),
                     ]);
                 });
@@ -436,17 +396,12 @@ describe('Annotation', () => {
                         'RoboCop',
                         'Comment',
                         'rating',
-                        '[bZE+]',
-                        '',
                         '',
                         '',
                         '',
                         'To Review',
                         '',
-                        '',
                         'Jane Smith',
-                        'This is another comment',
-                        new Date().toLocaleDateString(),
                         new Date().toLocaleDateString(),
                     ]);
                 });
@@ -495,17 +450,12 @@ describe('Annotation', () => {
                     '',
                     'Comment',
                     'Répartition par réalisateurs uniques',
-                    '[xkoP]',
-                    '',
                     '',
                     '',
                     '',
                     'To Review',
                     '',
-                    '',
                     'John Doe',
-                    'This is a comment',
-                    new Date().toLocaleDateString(),
                     new Date().toLocaleDateString(),
                 ]);
             });
@@ -637,17 +587,12 @@ describe('Annotation', () => {
                     '',
                     'Comment',
                     'Dataset Description',
-                    '[Doay]',
-                    '',
                     '',
                     '',
                     '',
                     'To Review',
                     '',
-                    '',
                     'John Doe',
-                    'This is a comment',
-                    new Date(2025, 1, 11).toLocaleDateString(),
                     new Date(2025, 1, 11).toLocaleDateString(),
                 ]);
             });
@@ -682,17 +627,12 @@ describe('Annotation', () => {
                     '',
                     'Comment',
                     'Dataset Description',
-                    '[Doay]',
-                    '',
                     '',
                     '',
                     '',
                     'To Review',
                     '',
-                    '',
                     'John Doe',
-                    'This is a comment',
-                    new Date(2025, 1, 11).toLocaleDateString(),
                     new Date(2025, 1, 11).toLocaleDateString(),
                 ]);
             });
@@ -802,17 +742,12 @@ describe('Annotation', () => {
                     '',
                     'Correction',
                     'Nombre de films',
-                    '[MzM2]',
-                    '',
                     '',
                     '/api/run/count-all/',
                     '35',
                     'To Review',
                     '',
-                    '',
                     'John DOE',
-                    'You should add more films!',
-                    new Date(2025, 1, 14).toLocaleDateString(),
                     new Date(2025, 1, 14).toLocaleDateString(),
                 ]);
             });
@@ -839,7 +774,7 @@ describe('Annotation', () => {
                 .should('be.checked');
             cy.findAllByRole('checkbox').eq(2).should('be.checked');
 
-            cy.findAllByRole('cell').should('have.length', 51);
+            cy.findAllByRole('cell').should('have.length', 36);
         });
     });
 
@@ -903,17 +838,12 @@ Revue`);
                     '',
                     'Addition',
                     'Liste des films',
-                    '[vPYU]',
-                    '',
                     '',
                     '',
                     'Book',
                     'To Review',
                     '',
-                    '',
                     'John Doe',
-                    'This is a comment',
-                    new Date().toLocaleDateString(),
                     new Date().toLocaleDateString(),
                 ]);
             });
@@ -988,17 +918,12 @@ Revue`);
                     '',
                     'Addition',
                     'Liste des films',
-                    '[vPYU]',
-                    '',
                     '',
                     '',
                     '[ Book, Revue ]',
                     'To Review',
                     '',
-                    '',
                     'John Doe',
-                    'This is a comment',
-                    new Date().toLocaleDateString(),
                     new Date().toLocaleDateString(),
                 ]);
             });

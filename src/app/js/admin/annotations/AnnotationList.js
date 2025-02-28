@@ -376,6 +376,17 @@ export const AnnotationList = () => {
                 ),
             }}
             onRowClick={handleRowClick}
+            initialState={{
+                columns: {
+                    columnVisibilityModel: {
+                        'field.name': false,
+                        'field.internalName': false,
+                        comment: false,
+                        internalComment: false,
+                        updatedAt: false,
+                    },
+                },
+            }}
         />
     );
 };
