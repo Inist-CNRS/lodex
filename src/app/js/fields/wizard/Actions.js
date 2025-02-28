@@ -42,7 +42,7 @@ export const ActionsComponent = ({
                 >
                     {polyglot.t('cancel')}
                 </CancelButton>
-                <SaveButton onSave={onSave} isFormModified={isFormModified} />
+                <SaveButton onClick={onSave} isFormModified={isFormModified} />
             </Box>
         </Box>
     );
