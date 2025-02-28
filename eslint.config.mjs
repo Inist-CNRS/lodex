@@ -5,6 +5,7 @@ import js from '@eslint/js';
 import cypress from 'eslint-plugin-cypress';
 import _import from 'eslint-plugin-import';
 import jest from 'eslint-plugin-jest';
+import noOnlyTests from 'eslint-plugin-no-only-tests';
 import prettier from 'eslint-plugin-prettier';
 import react from 'eslint-plugin-react';
 import reactHooks from 'eslint-plugin-react-hooks';
@@ -42,6 +43,7 @@ export default [
             prettier,
             cypress,
             jest: fixupPluginRules(jest),
+            'no-only-tests': noOnlyTests,
         },
 
         languageOptions: {
@@ -104,6 +106,7 @@ export default [
                     caughtErrors: 'none',
                 },
             ],
+            'no-only-tests/no-only-tests': 'error',
         },
     },
     {
