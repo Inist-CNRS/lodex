@@ -23,10 +23,10 @@ function TestModal(props) {
             <QueryClientProvider client={queryClient}>
                 <CreateAnnotationModal
                     initialValue={null}
-                    {...props}
                     resourceUri="/"
                     field={{ _id: '87a3b1c0-0b1b-4b1b-8b1b-1b1b1b1b1b1b' }}
                     isFieldValueAnnotable={false}
+                    openHistory={jest.fn()}
                     {...props}
                     anchorEl={document.createElement('div')}
                 />
@@ -39,6 +39,7 @@ TestModal.propTypes = {
     onClose: PropTypes.func.isRequired,
     onSubmit: PropTypes.func.isRequired,
     isSubmitting: PropTypes.bool.isRequired,
+    openHistory: PropTypes.func,
 };
 
 describe('CreateAnnotationModal', () => {
@@ -129,7 +130,7 @@ describe('CreateAnnotationModal', () => {
             ).toBeDisabled();
         });
 
-        it('should call onClose when closing modal', async () => {
+        it('should call onClose when clicking on cancel button', async () => {
             render(
                 <TestModal
                     onClose={onClose}
@@ -140,6 +141,30 @@ describe('CreateAnnotationModal', () => {
 
             await waitFor(() => {
                 fireEvent.click(screen.getByRole('button', { name: 'cancel' }));
+            });
+
+            await waitFor(() => {
+                fireEvent.click(screen.getByRole('button', { name: 'close' }));
+            });
+
+            expect(onClose).toHaveBeenCalledTimes(1);
+        });
+
+        it('should call onClose when clicking on close button', async () => {
+            render(
+                <TestModal
+                    onClose={onClose}
+                    onSubmit={onSubmit}
+                    isSubmitting={false}
+                />,
+            );
+
+            await waitFor(() => {
+                fireEvent.click(screen.getByLabelText('close'));
+            });
+
+            await waitFor(() => {
+                fireEvent.click(screen.getByRole('button', { name: 'close' }));
             });
 
             expect(onClose).toHaveBeenCalledTimes(1);
