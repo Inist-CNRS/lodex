@@ -3,6 +3,7 @@ import {
     annotationImportSchema,
     annotationUpdateSchema,
     getAnnotationsQuerySchema,
+    statuses,
 } from './annotation.validator';
 
 describe('annotation.validator', () => {
@@ -629,13 +630,7 @@ describe('annotation.validator', () => {
                     code: 'invalid_enum_value',
                     message:
                         "Invalid enum value. Expected 'to_review' | 'ongoing' | 'validated' | 'rejected' | 'parking', received 'to-test'",
-                    options: [
-                        'to_review',
-                        'ongoing',
-                        'validated',
-                        'rejected',
-                        'parking',
-                    ],
+                    options: statuses,
                     path: ['status'],
                     received: 'to-test',
                 },
