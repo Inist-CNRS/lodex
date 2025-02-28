@@ -498,9 +498,9 @@ describe('annotation', () => {
             ).toEqual([annotationList[1], annotationList[0]]);
         });
 
-        it('should return an array of annotations for given fieldName and no resourceUri when resourceUri is null', async () => {
+        it('should return an array of annotations for given fieldName and no resourceUri when resourceUri is /', async () => {
             expect(
-                await annotationModel.findManyByFieldAndResource('GvaF', null),
+                await annotationModel.findManyByFieldAndResource('GvaF', '/'),
             ).toEqual([annotationList[2]]);
         });
 
