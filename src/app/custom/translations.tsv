@@ -1348,6 +1348,7 @@
 "autocomplete_add"	"Add %{option}"	"Ajouter %{option}"
 "annotation_admin_comment"	"Comment visible to contributors"	"Commentaire visible par les contributeurs"
 "notification_email"	"Email to be notified of annotations"	"Email pour être notifié des annotations"
+"notification_email_help"	"A SMTP server must be configured to allow sending mail"	"Un serveur SMTP doit être configuré pour permettre l'envoi de mail"
 "notifications"	"Notifications"	"Notifications"
 "notification_new_annotation_email_subject"	"An annotation has been added on « %{tenant} »"	"Une annotation a été ajoutée sur « %{tenant} »"
 "notification_new_annotation_email_resource"	"Resource: %{resource}"	"Ressource : %{resource}"
