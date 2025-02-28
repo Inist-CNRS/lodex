@@ -32,6 +32,7 @@ import lodexField from './lodex/field';
 import cartography from './vega-lite/component/cartography';
 import heatmap from './vega-lite/component/heatmap';
 import network from './chart/network';
+import venn from './chart/venn';
 import redirect from './url/redirect';
 import bubbleChart from './chart/bubbleChart';
 import sparqlTextField from './text/sparql/SparqlTextField/';
@@ -370,6 +371,15 @@ export const FORMATS_CATALOG = [
         type: 'chart',
         isValueAnnotable: false,
         docUrl: 'https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/appliquer-un-format/#graphique-r%C3%A9seaux',
+    },
+    {
+        name: 'formatVenn',
+        description: 'formatVennDescription',
+        componentName: 'venn',
+        component: venn,
+        type: 'chart',
+        isValueAnnotable: false,
+        docUrl: 'https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/appliquer-un-format/#graphique-de-venn',
     },
     {
         name: 'formatBubbleChart',
