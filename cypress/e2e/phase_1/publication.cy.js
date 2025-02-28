@@ -234,7 +234,7 @@ describe('Dataset Publication', () => {
             cy.findByText('No rows').should('be.visible');
         });
 
-        it.only('should allow not display the "delete all filtered rows" if no rows match the filter', () => {
+        it('should allow not display the "delete all filtered rows" if no rows match the filter', () => {
             menu.openAdvancedDrawer();
             menu.goToAdminDashboard();
             cy.wait(300);
