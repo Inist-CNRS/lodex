@@ -272,6 +272,19 @@ export const buildQuery = async ({
             }
         }
         case 'resourceUri':
+            switch (filterOperator) {
+                case 'equals':
+                    return {
+                        [filterBy]: filterValue,
+                    };
+                case 'contains':
+                    return {
+                        [filterBy]:
+                            createDiacriticSafeContainRegex(filterValue),
+                    };
+                default:
+                    return {};
+            }
         case 'internalComment':
         case 'administrator':
         case 'initialValue':

@@ -14,6 +14,7 @@ import { useHistory } from 'react-router';
 import FieldInternalIcon from '../../fields/FieldInternalIcon';
 import { useTranslate } from '../../i18n/I18NContext';
 import AdminOnlyAlert from '../../lib/components/AdminOnlyAlert';
+import { useDatagridSelection } from '../../lib/hooks/useDatagridSelection';
 import withInitialData from '../withInitialData';
 import { AnnotationProposedValue } from './AnnotationProposedValue';
 import { AnnotationStatus } from './AnnotationStatus';
@@ -25,7 +26,6 @@ import { StatusFilter } from './filters/StatusFilter';
 import { useGetAnnotations } from './hooks/useGetAnnotations';
 import { ResourceTitleCell } from './ResourceTitleCell';
 import { ResourceUriCell } from './ResourceUriCell';
-import { useDatagridSelection } from '../../lib/hooks/useDatagridSelection';
 
 const AnnotationListToolBar = ({ deleteButton }) => {
     const { translate } = useTranslate();
@@ -117,7 +117,9 @@ export const AnnotationList = () => {
                     headerName: translate('annotation_resource_uri'),
                     flex: 1,
                     filterOperators: getGridStringOperators().filter(
-                        (operator) => operator.value === 'contains',
+                        (operator) =>
+                            operator.value === 'contains' ||
+                            operator.value === 'equals',
                     ),
                     renderCell({ row }) {
                         return <ResourceUriCell row={row} />;

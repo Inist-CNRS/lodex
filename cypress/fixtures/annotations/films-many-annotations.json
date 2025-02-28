@@ -1,7 +1,7 @@
 [
     {
         "_id": "67aefd870e0c345d7824b7ef",
-        "resourceUri": null,
+        "resourceUri": "/",
         "target": "value",
         "kind": "correction",
         "fieldId": "67ab09ef927fdd8c4c72a18b",
@@ -17,7 +17,7 @@
     },
     {
         "_id": "67aefdb80e0c345d7824b7f0",
-        "resourceUri": null,
+        "resourceUri": "/graph/TK2J",
         "target": "title",
         "kind": "comment",
         "fieldId": "67ab09ef927fdd8c4c72a197",

@@ -66,7 +66,7 @@ describe('Annotation', () => {
                     cells.toArray().map((cell) => cell.textContent),
                 ).to.deep.equal([
                     '',
-                    'Home page',
+                    '/',
                     '',
                     'Comment',
                     'Dataset Description',
@@ -491,7 +491,7 @@ describe('Annotation', () => {
                     cells.toArray().map((cell) => cell.textContent),
                 ).to.deep.equal([
                     '',
-                    'Chart page',
+                    '/graph/xkoP',
                     '',
                     'Comment',
                     'Répartition par réalisateurs uniques',
@@ -551,7 +551,7 @@ describe('Annotation', () => {
                 const annotations = JSON.parse(content);
                 expect(annotations).to.be.an('array').with.length(1);
                 expect(annotations[0]).to.include({
-                    resourceUri: null,
+                    resourceUri: '/',
                     target: 'title',
                     kind: 'comment',
                     comment: 'This is a comment',
@@ -633,7 +633,7 @@ describe('Annotation', () => {
                     cells.toArray().map((cell) => cell.textContent),
                 ).to.deep.equal([
                     '',
-                    'Home page',
+                    '/',
                     '',
                     'Comment',
                     'Dataset Description',
@@ -678,7 +678,7 @@ describe('Annotation', () => {
                     cells.toArray().map((cell) => cell.textContent),
                 ).to.deep.equal([
                     '',
-                    'Home page',
+                    '/',
                     '',
                     'Comment',
                     'Dataset Description',
@@ -706,8 +706,9 @@ describe('Annotation', () => {
 
                 const errors = JSON.parse(content);
                 expect(errors).to.be.an('array').with.length(1);
+                cy.log('errors', errors);
                 expect(errors[0].annotation).to.include({
-                    resourceUri: null,
+                    resourceUri: '/',
                     target: 'title',
                     kind: 'unknown',
                     comment: 'This is a comment',
@@ -797,7 +798,7 @@ describe('Annotation', () => {
                     cells.toArray().map((cell) => cell.textContent),
                 ).to.deep.equal([
                     '',
-                    'Home page',
+                    '/',
                     '',
                     'Correction',
                     'Nombre de films',
@@ -898,7 +899,7 @@ Revue`);
                     cells.toArray().map((cell) => cell.textContent),
                 ).to.deep.equal([
                     '',
-                    'Home page',
+                    '/',
                     '',
                     'Addition',
                     'Liste des films',
@@ -983,7 +984,7 @@ Revue`);
                     cells.toArray().map((cell) => cell.textContent),
                 ).to.deep.equal([
                     '',
-                    'Home page',
+                    '/',
                     '',
                     'Addition',
                     'Liste des films',

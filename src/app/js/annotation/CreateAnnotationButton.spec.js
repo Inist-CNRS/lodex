@@ -190,7 +190,7 @@ describe('CreateAnnotationButton', () => {
             expect.objectContaining({
                 url: '/api/annotation?locale=en',
                 method: 'POST',
-                body: '{"comment":"test","target":"title","kind":"comment","authorName":"author","authorEmail":"email@example.org","reCaptchaToken":null,"resourceUri":"uid:/0579J7JN","fieldId":"1ddbe5dc-f945-4d38-9c5b-ef20f78cb0cc"}',
+                body: '{"resourceUri":"uid:/0579J7JN","comment":"test","target":"title","kind":"comment","authorName":"author","authorEmail":"email@example.org","reCaptchaToken":null,"fieldId":"1ddbe5dc-f945-4d38-9c5b-ef20f78cb0cc"}',
             }),
         );
     });
@@ -284,7 +284,7 @@ describe('CreateAnnotationButton', () => {
             expect.objectContaining({
                 url: '/api/annotation?locale=en',
                 method: 'POST',
-                body: '{"comment":"test","target":"value","kind":"removal","initialValue":"a b c","authorName":"author","authorEmail":"email@example.org","reCaptchaToken":null,"resourceUri":"uid:/0579J7JN","fieldId":"1ddbe5dc-f945-4d38-9c5b-ef20f78cb0cc"}',
+                body: '{"resourceUri":"uid:/0579J7JN","comment":"test","target":"value","kind":"removal","initialValue":"a b c","authorName":"author","authorEmail":"email@example.org","reCaptchaToken":null,"fieldId":"1ddbe5dc-f945-4d38-9c5b-ef20f78cb0cc"}',
             }),
         );
     });

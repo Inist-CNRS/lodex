@@ -682,7 +682,7 @@ Voir l'annotation : http://localhost:3000/instance/instance-name/admin#/annotati
             });
         });
 
-        it('should allow to filter by resourceUri', async () => {
+        it('should allow to filter by resourceUri using contains', async () => {
             const ctx = {
                 request: {
                     query: {
@@ -690,6 +690,43 @@ Voir l'annotation : http://localhost:3000/instance/instance-name/admin#/annotati
                         perPage: 2,
                         filterBy: 'resourceUri',
                         filterOperator: 'contains',
+                        filterValue: '85502a97e5ac',
+                    },
+                },
+                response: {},
+                annotation: annotationModel,
+                publishedDataset: publishedDatasetModel,
+                field: fieldModel,
+            };
+
+            await getAnnotations(ctx);
+
+            expect(ctx.response.status).toBe(200);
+
+            expect(ctx.body).toStrictEqual({
+                total: 1,
+                fullTotal: 1,
+                data: [
+                    {
+                        ...annotationList[0],
+                        resource: {
+                            uri: annotationList[0].resourceUri,
+                            title: 'Developer resource',
+                        },
+                        field: field1,
+                    },
+                ],
+            });
+        });
+
+        it('should allow to filter by resourceUri using equals', async () => {
+            const ctx = {
+                request: {
+                    query: {
+                        page: 0,
+                        perPage: 2,
+                        filterBy: 'resourceUri',
+                        filterOperator: 'equals',
                         filterValue: ANNOTATIONS[0].resourceUri,
                     },
                 },
@@ -1968,7 +2005,7 @@ Voir l'annotation : http://localhost:3000/instance/instance-name/admin#/annotati
         let annotation;
         beforeEach(async () => {
             annotation = await annotationModel.create({
-                resourceUri: null,
+                resourceUri: '/',
                 fieldId: null,
                 authorName: 'Developer',
                 authorEmail: 'developer@marmelab.com',
@@ -2164,7 +2201,7 @@ Voir l'annotation : http://localhost:3000/instance/instance-name/admin#/annotati
                     fieldId: field._id,
                 }),
                 annotationModel.create({
-                    resourceUri: null,
+                    resourceUri: '/',
                     fieldId: field._id,
                 }),
             ]);
@@ -2179,7 +2216,7 @@ Voir l'annotation : http://localhost:3000/instance/instance-name/admin#/annotati
                     fieldId: otherField._id,
                 }),
                 annotationModel.create({
-                    resourceUri: null,
+                    resourceUri: '/',
                     fieldId: otherField._id,
                 }),
             ]);
@@ -2189,7 +2226,7 @@ Voir l'annotation : http://localhost:3000/instance/instance-name/admin#/annotati
                 request: {
                     query: {
                         fieldId: field._id,
-                        resourceUri: null,
+                        resourceUri: '/',
                     },
                 },
                 response: {},
