@@ -1,14 +1,22 @@
-import React, { useEffect, useState } from 'react';
+import DeleteIcon from '@mui/icons-material/Delete';
 import { Button } from '@mui/material';
 import PropTypes from 'prop-types';
-import DeleteIcon from '@mui/icons-material/Delete';
+import React, { useEffect, useState } from 'react';
 
-import datasetApi from '../api/dataset';
+import {
+    gridRowCountSelector,
+    useGridApiContext,
+    useGridSelector,
+} from '@mui/x-data-grid';
+import { toast } from '../../../../common/tools/toast';
 import { useTranslate } from '../../i18n/I18NContext';
 import { ConfirmPopup } from '../../lib/components/ConfirmPopup';
-import { toast } from '../../../../common/tools/toast';
+import datasetApi from '../api/dataset';
 
 export function DeleteFilteredButton({ filter, reloadDataset }) {
+    const apiRef = useGridApiContext();
+    const rowCount = useGridSelector(apiRef, gridRowCountSelector);
+
     const { translate } = useTranslate();
 
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -50,7 +58,7 @@ export function DeleteFilteredButton({ filter, reloadDataset }) {
         handleCloseModal();
     };
 
-    if (filter.value === undefined) {
+    if (filter.value === undefined || rowCount === 0) {
         return null;
     }
 
