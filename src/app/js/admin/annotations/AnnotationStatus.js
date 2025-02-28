@@ -46,7 +46,7 @@ export const AnnotationStatus = ({ status, arialLabel }) => {
                 <Chip
                     aria-label={arialLabel}
                     color="default"
-                    sx={{ backgroundColor: grey[900] }}
+                    sx={{ backgroundColor: grey[900], color: 'white' }}
                     label={translate('annotation_status_parking')}
                 />
             );
