@@ -90,6 +90,7 @@ export function submitAnnotation() {
         'Your suggestion has been sent. We thank you for your contribution.',
         { timeout: 1500 },
     ).should('be.visible');
+    cy.findByLabelText('close').click();
 }
 
 export function createAnnotationOnFieldWithNoValue({
