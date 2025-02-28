@@ -205,6 +205,7 @@ describe('Dataset Publication', () => {
                 ['"2"', '"Alain"', '"Chabat"', 'true'].join(''),
             );
         });
+
         it('should allow to delete all filtered rows', () => {
             menu.openAdvancedDrawer();
             menu.goToAdminDashboard();
@@ -231,6 +232,23 @@ describe('Dataset Publication', () => {
             cy.findByText('Delete').click();
             cy.findByText('Row(s) deleted with success').should('be.visible');
             cy.findByText('No rows').should('be.visible');
+        });
+
+        it.only('should allow not display the "delete all filtered rows" if no rows match the filter', () => {
+            menu.openAdvancedDrawer();
+            menu.goToAdminDashboard();
+            cy.wait(300);
+            datasetImportPage.importDataset(
+                'dataset/simpleForFilterTests.json',
+            );
+            cy.get('[role=columnheader][data-field=uri] [aria-label=Menu]', {
+                timeout: 500,
+            }).click({ force: true });
+            cy.get('[role=menu] :nth-child(4)').click();
+            cy.focused().type('259');
+
+            cy.findByText('No rows').should('be.visible');
+            cy.findByText('Delete the filtered row(s)').should('not.exist');
         });
 
         it('should return to first page when filtering rows', () => {
