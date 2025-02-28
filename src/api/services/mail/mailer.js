@@ -9,11 +9,17 @@ const transporterConfig =
               port: 1025,
           };
 
-const transporter = nodemailer.createTransport(transporterConfig);
+const transporter = transporterConfig
+    ? nodemailer.createTransport(transporterConfig)
+    : null;
 
 const from = config.mail.from;
 
 export async function sendMail({ to, subject, text }) {
+    if (!transporter) {
+        console.error('Mail not configured');
+        return;
+    }
     return await transporter.sendMail({
         from,
         to,
