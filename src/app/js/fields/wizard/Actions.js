@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Box, Button, keyframes, Tooltip } from '@mui/material';
+import { Box } from '@mui/material';
 import { translate } from '../../i18n/I18NContext';
 import { useParams } from 'react-router';
 
@@ -16,25 +16,7 @@ import isEqual from 'lodash/isEqual';
 import { getFormValues } from 'redux-form';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
-import { SaveAs } from '@mui/icons-material';
-
-const shake = keyframes`
-10%, 90% {
-    transform: translate3d(-1px, 0, 0);
-  }
-  
-  20%, 80% {
-    transform: translate3d(4px, 0, 0);
-  }
-
-  30%, 50%, 70% {
-    transform: translate3d(-6px, 0, 0);
-  }
-
-  40%, 60% {
-    transform: translate3d(6px, 0, 0);
-  }
-`;
+import { SaveButton } from '../../lib/components/SaveButton';
 
 export const ActionsComponent = ({
     currentEditedField,
@@ -60,24 +42,7 @@ export const ActionsComponent = ({
                 >
                     {polyglot.t('cancel')}
                 </CancelButton>
-                <Button
-                    variant="contained"
-                    className="btn-save"
-                    color="primary"
-                    onClick={onSave}
-                    startIcon={
-                        isFormModified && (
-                            <Tooltip title={polyglot.t('form_is_modified')}>
-                                <SaveAs />
-                            </Tooltip>
-                        )
-                    }
-                    sx={{
-                        animation: isFormModified ? `${shake} 1s ease` : '',
-                    }}
-                >
-                    {polyglot.t('save')}
-                </Button>
+                <SaveButton onSave={onSave} isFormModified={isFormModified} />
             </Box>
         </Box>
     );
