@@ -1861,7 +1861,7 @@ Voir l'annotation : http://localhost:3000/instance/instance-name/admin#/annotati
                         {
                             code: 'invalid_type',
                             expected:
-                                "'to_review' | 'ongoing' | 'validated' | 'rejected'",
+                                "'to_review' | 'ongoing' | 'validated' | 'rejected' | 'parking'",
                             message: 'Required',
                             path: ['status'],
                             received: 'undefined',
