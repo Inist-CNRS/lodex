@@ -1,9 +1,8 @@
-import SaveIcon from '@mui/icons-material/SaveOutlined';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
-import { useForm } from '@tanstack/react-form';
+import { useForm, useStore } from '@tanstack/react-form';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Link } from 'react-router-dom';
@@ -15,6 +14,7 @@ import { AnnotationDeleteButton } from './AnnotationDeleteButton';
 import { AnnotationHeader } from './AnnotationHeader';
 import { AnnotationInputs } from './AnnotationInputs';
 import { AnnotationItems } from './AnnotationItems';
+import { SaveButton } from '../../../lib/components/SaveButton';
 
 export const AnnotationForm = ({ annotation }) => {
     const { translate } = useTranslate();
@@ -35,6 +35,8 @@ export const AnnotationForm = ({ annotation }) => {
             onChange: annotationUpdateSchema,
         },
     });
+
+    const isFormModified = useStore(form.store, (state) => state.isDirty);
 
     return (
         <Stack
@@ -113,15 +115,11 @@ export const AnnotationForm = ({ annotation }) => {
                         >
                             {translate('cancel')}
                         </Button>
-                        <Button
+                        <SaveButton
                             type="submit"
-                            color="primary"
-                            variant="contained"
-                            startIcon={<SaveIcon />}
                             disabled={isSubmitting}
-                        >
-                            {translate('save')}
-                        </Button>
+                            isFormModified={isFormModified}
+                        />
                     </Stack>
                 </Stack>
             </Box>
