@@ -22,7 +22,7 @@ const shake = keyframes`
   }
 `;
 
-export const SaveButton = ({ onSave, isFormModified }) => {
+export const SaveButton = ({ onClick, type, isFormModified, disabled }) => {
     const { translate } = useTranslate();
 
     return (
@@ -30,7 +30,9 @@ export const SaveButton = ({ onSave, isFormModified }) => {
             variant="contained"
             className="btn-save"
             color="primary"
-            onClick={onSave}
+            onClick={onClick}
+            type={type}
+            disabled={disabled}
             startIcon={
                 isFormModified && (
                     <Tooltip title={translate('form_is_modified')}>
@@ -48,6 +50,8 @@ export const SaveButton = ({ onSave, isFormModified }) => {
 };
 
 SaveButton.propTypes = {
-    onSave: PropTypes.func.isRequired,
+    onClick: PropTypes.func,
+    type: PropTypes.string,
     isFormModified: PropTypes.bool.isRequired,
+    disabled: PropTypes.bool,
 };
