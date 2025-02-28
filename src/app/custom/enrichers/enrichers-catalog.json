@@ -32,6 +32,14 @@
         "type": "entites nommees"
     },
     {
+        "id": "post-v1-aiAbstract-check",
+        "url": "https://aiabstract-check.services.istex.fr/v1/AiAbstract-check",
+        "doc": "https://github.com/Inist-CNRS/web-services/tree/main/services/aiabstract-check",
+        "swagger": "https://openapi.services.istex.fr/?urls.primaryName=aiabstract-check%20-%20Detection%20d%27abstract%20scientifique%20g%C3%A9n%C3%A9r%C3%A9%20par%20IA",
+        "objectifTDM": "https://services.istex.fr/detection-de-resume-scientifique-genere-par-ia/",
+        "type": "validation"
+    },
+    {
         "id": "post-v1-orcid-disambiguation-orcidDisambiguation",
         "url": "https://authors-tools.services.istex.fr/v1/orcid-disambiguation/orcidDisambiguation",
         "doc": "https://github.com/Inist-CNRS/web-services/tree/main/services/authors-tools/v1/orcid-disambiguation",
@@ -399,6 +407,22 @@
         "objectifTDM": "https://services.istex.fr/extraction-du-texte-epure-de-pdf/",
         "type": "pretraitement"
     },
+    {
+        "id": "post-v1-textSummarize-en",
+        "url": "https://text-summarize.services.istex.fr/v1/en",
+        "doc": "https://github.com/Inist-CNRS/web-services/tree/main/services/text-summarize",
+        "swagger": "https://openapi.services.istex.fr/?urls.primaryName=text-summarize%20-%20G%C3%A9n%C3%A8re%20un%20r%C3%A9sum%C3%A9%20d%27un%20article%20scientifique.#/",
+        "objectifTDM": "https://services.istex.fr/resume-automatique-dun-article-scientifique/",
+        "type": "indexation"
+    },
+    {
+        "id": "post-v1-textSummarize-multilingual",
+        "url": "https://text-summarize.services.istex.fr/v1/multilingual",
+        "doc": "https://github.com/Inist-CNRS/web-services/tree/main/services/text-summarize",
+        "swagger": "https://openapi.services.istex.fr/?urls.primaryName=text-summarize%20-%20G%C3%A9n%C3%A8re%20un%20r%C3%A9sum%C3%A9%20d%27un%20article%20scientifique.#/",
+        "objectifTDM": "https://services.istex.fr/resume-automatique-dun-article-scientifique/",
+        "type": "indexation"
+    },  
     {
         "id": "post-v1-tools",
         "url": "https://terms-extraction.services.istex.fr/v1/tools/normalize",
