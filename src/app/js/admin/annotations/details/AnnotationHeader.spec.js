@@ -4,12 +4,12 @@ import { TestI18N } from '../../../i18n/I18NContext';
 import { AnnotationHeader } from './AnnotationHeader';
 
 describe('AnnotationHeader', () => {
-    it('should render header for home page', () => {
+    it('should render header for home page if resourceUri is "/"', () => {
         const wrapper = render(
             <TestI18N>
                 <AnnotationHeader
                     annotation={{
-                        resourceUri: null,
+                        resourceUri: '/',
                         resource: null,
                         kind: 'comment',
                         comment: 'Just testing the annotation system',
@@ -42,12 +42,89 @@ describe('AnnotationHeader', () => {
         ).toHaveAttribute('href', '/instance/default');
     });
 
-    it('should render header for graphic page', () => {
+    it('should render header for home page if resourceUri is null', () => {
         const wrapper = render(
             <TestI18N>
                 <AnnotationHeader
                     annotation={{
-                        resourceUri: null,
+                        resourceUri: '/',
+                        resource: null,
+                        kind: 'comment',
+                        comment: 'Just testing the annotation system',
+                        status: 'ongoing',
+                        internalComment: 'Just testing the annotation admin',
+                        administrator: 'The administrator',
+                        field: {
+                            name: 'GaZr',
+                            label: 'Annotated field',
+                            internalName: 'annotated_field',
+                            internalScopes: ['home'],
+                        },
+                        authorName: 'Count Ributor',
+                        authorEmail: 'ributor@gmail.com',
+                        createdAt: new Date('01-01-2025').toISOString(),
+                        updatedAt: new Date('10-01-2025').toISOString(),
+                    }}
+                />
+            </TestI18N>,
+        );
+
+        expect(
+            wrapper.getByRole('heading', {
+                name: 'annotation_header_comment annotation_home_page',
+            }),
+        ).toBeInTheDocument();
+
+        expect(
+            wrapper.getByRole('link', { name: 'annotation_resource_link' }),
+        ).toHaveAttribute('href', '/instance/default');
+    });
+
+    it('should render header for graphic page if resourceUri is a graph URI', () => {
+        const wrapper = render(
+            <TestI18N>
+                <AnnotationHeader
+                    annotation={{
+                        resourceUri: '/graph/GaZr',
+                        resource: null,
+                        kind: 'comment',
+                        comment: 'Just testing the annotation system',
+                        field: {
+                            name: 'GaZr',
+                            label: 'Annotated field',
+                            internalName: 'annotated_field',
+                            internalScopes: ['home'],
+                            scope: 'graphic',
+                        },
+                        createdAt: new Date('01-01-2025').toISOString(),
+                    }}
+                />
+            </TestI18N>,
+        );
+
+        expect(
+            wrapper.getByRole('heading', {
+                name: 'annotation_header_comment annotation_graph_page',
+            }),
+        ).toBeInTheDocument();
+
+        expect(
+            wrapper.getByRole('heading', {
+                name: 'Annotated field',
+            }),
+        ).toBeInTheDocument();
+
+        expect(
+            wrapper.getByRole('link', { name: 'annotation_resource_link' }),
+        ).toHaveAttribute('href', '/instance/default/graph/GaZr');
+    });
+
+    it('should render header for graphic page if resourceUri is null', () => {
+        const wrapper = render(
+            <TestI18N>
+                <AnnotationHeader
+                    annotation={{
+                        resourceUri: '/graph/GaZr',
                         resource: null,
                         kind: 'comment',
                         comment: 'Just testing the annotation system',

@@ -1,6 +1,6 @@
 import Polyglot from 'node-polyglot';
 import PropTypes from 'prop-types';
-import React, { createContext, useContext } from 'react';
+import React, { createContext, useContext, useMemo } from 'react';
 import { connect } from 'react-redux';
 import { fromI18n } from '../public/selectors';
 import { setLanguage as setLanguageAction } from './index';
@@ -8,12 +8,14 @@ import { setLanguage as setLanguageAction } from './index';
 const I18NContext = createContext({ translate: (_label) => '' });
 
 export const I18NComponent = ({ locale, phrases, setLanguage, children }) => {
-    const polyglot = new Polyglot({
-        locale,
-        phrases,
-    });
+    const translate = useMemo(() => {
+        const polyglot = new Polyglot({
+            locale,
+            phrases,
+        });
+        return polyglot.t.bind(polyglot);
+    }, [locale, phrases]);
 
-    const translate = polyglot.t.bind(polyglot);
     return (
         <I18NContext.Provider value={{ translate, locale, setLanguage }}>
             {children}

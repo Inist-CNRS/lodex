@@ -14,7 +14,7 @@ export const kinds = [
 
 export const annotationCreationSchema = z
     .object({
-        resourceUri: z.string().nullish().default(null),
+        resourceUri: z.string(),
         target: z.enum(['title', 'value']).nullish().default('title'),
         kind: z.enum(kinds).nullish().default(ANNOTATION_KIND_COMMENT),
         fieldId: z

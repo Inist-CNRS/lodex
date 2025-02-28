@@ -1,7 +1,7 @@
 [
     {
         "_id": "67ab09f4927fdd8c4c72a1c5",
-        "resourceUri": null,
+        "resourceUri": "/",
         "target": "title",
         "kind": "comment",
         "fieldId": "67ab09ef927fdd8c4c72a189",
@@ -16,7 +16,7 @@
     },
     {
         "_id": "67ab09f4927fdd8c4c72a1c5",
-        "resourceUri": null,
+        "resourceUri": "/",
         "target": "title",
         "kind": "unknown",
         "fieldId": "67ab09ef927fdd8c4c72a189",

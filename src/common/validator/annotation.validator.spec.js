@@ -582,6 +582,7 @@ describe('annotation.validator', () => {
 
         it('should return parsing errors', () => {
             const { success, error } = annotationCreationSchema.safeParse({
+                resourceUri: '/',
                 comment: '',
             });
 
@@ -881,7 +882,7 @@ describe('annotation.validator', () => {
         it('should validate an imported annotation', () => {
             expect(
                 annotationImportSchema.safeParse({
-                    resourceUri: null,
+                    resourceUri: '/graph/kzB6',
                     fieldId: 'kzB6',
                     kind: 'comment',
                     authorName: 'Jane DOE',
@@ -896,7 +897,7 @@ describe('annotation.validator', () => {
             ).toMatchObject({
                 success: true,
                 data: {
-                    resourceUri: null,
+                    resourceUri: '/graph/kzB6',
                     fieldId: 'kzB6',
                     kind: 'comment',
                     authorName: 'Jane DOE',

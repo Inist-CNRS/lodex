@@ -66,6 +66,7 @@ export function CreateAnnotationModal({
 
     const form = useForm({
         defaultValues: {
+            resourceUri,
             comment: '',
             target: 'title',
             kind: 'comment',
@@ -200,6 +201,11 @@ export function CreateAnnotationModal({
             }}
             role="dialog"
         >
+            <form.Field name="resourceUri">
+                {(field) => (
+                    <input type="hidden" value={field.state.value} readOnly />
+                )}
+            </form.Field>
             <Stack gap={2}>
                 <Typography variant="h6" color="text.gray">
                     {translate('annotation_add_comment')}

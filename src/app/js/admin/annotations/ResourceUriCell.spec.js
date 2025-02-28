@@ -9,7 +9,7 @@ describe('ResourceUriCell', () => {
             <TestI18N>
                 <ResourceUriCell
                     row={{
-                        resourceUri: null,
+                        resourceUri: '/',
                         resource: null,
                     }}
                 />
@@ -24,7 +24,7 @@ describe('ResourceUriCell', () => {
             <TestI18N>
                 <ResourceUriCell
                     row={{
-                        resourceUri: null,
+                        resourceUri: '/',
                         resource: null,
                         field: {
                             name: 'HDpz',

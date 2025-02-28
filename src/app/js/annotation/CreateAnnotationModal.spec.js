@@ -24,6 +24,7 @@ function TestModal(props) {
                 <CreateAnnotationModal
                     initialValue={null}
                     {...props}
+                    resourceUri="/"
                     field={{ _id: '87a3b1c0-0b1b-4b1b-8b1b-1b1b1b1b1b1b' }}
                     isFieldValueAnnotable={false}
                     {...props}
@@ -206,6 +207,7 @@ describe('CreateAnnotationModal', () => {
                 authorEmail: 'email@example.org',
                 target: 'title',
                 kind: 'comment',
+                resourceUri: '/',
                 reCaptchaToken: null,
             });
         });
@@ -850,6 +852,7 @@ describe('CreateAnnotationModal', () => {
             comment: 'test',
             kind: 'comment',
             target: 'title',
+            resourceUri: '/',
             reCaptchaToken: null,
         });
     });
@@ -911,6 +914,7 @@ describe('CreateAnnotationModal', () => {
             initialValue: null,
             target: 'title',
             kind: 'comment',
+            resourceUri: '/',
             reCaptchaToken: null,
         });
     });
@@ -980,6 +984,7 @@ describe('CreateAnnotationModal', () => {
             initialValue: 'initialValue',
             target: 'value',
             kind: 'removal',
+            resourceUri: '/',
             reCaptchaToken: null,
         });
     });
@@ -1065,6 +1070,7 @@ describe('CreateAnnotationModal', () => {
             initialValue: 'secondValue',
             target: 'value',
             kind: 'removal',
+            resourceUri: '/',
             reCaptchaToken: null,
         });
     });
@@ -1144,6 +1150,7 @@ describe('CreateAnnotationModal', () => {
             comment: 'test',
             initialValue: 'initialValue',
             proposedValue: 'proposedValue',
+            resourceUri: '/',
             reCaptchaToken: null,
             target: 'value',
             kind: 'correction',
@@ -1241,6 +1248,7 @@ describe('CreateAnnotationModal', () => {
             comment: 'test',
             initialValue: 'secondValue',
             proposedValue: 'proposedValue',
+            resourceUri: '/',
             reCaptchaToken: null,
             target: 'value',
             kind: 'correction',
@@ -1322,6 +1330,7 @@ describe('CreateAnnotationModal', () => {
             comment: 'test',
             initialValue: null,
             proposedValue: 'proposedValue',
+            resourceUri: '/',
             reCaptchaToken: null,
             target: 'value',
             kind: 'addition',
@@ -1406,6 +1415,7 @@ describe('CreateAnnotationModal', () => {
             comment: 'test',
             initialValue: null,
             proposedValue: 'proposedValue',
+            resourceUri: '/',
             reCaptchaToken: null,
             target: 'value',
             kind: 'addition',

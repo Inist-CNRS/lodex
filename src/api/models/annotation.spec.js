@@ -447,7 +447,7 @@ describe('annotation', () => {
                         createdAt: new Date('04-01-2025'),
                     },
                     {
-                        resourceUri: null,
+                        resourceUri: '/',
                         fieldId: 'GvaF',
                         kind: 'comment',
                         authorName: 'John DOE',

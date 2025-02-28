@@ -167,7 +167,7 @@ describe('AnnotationDetail', () => {
     it('should render the annotation with no resource', () => {
         jest.mocked(useGetAnnotation).mockImplementation(() => ({
             data: {
-                resourceUri: null,
+                resourceUri: '/',
                 resource: null,
                 kind: 'comment',
                 comment: 'Just testing the annotation system',
