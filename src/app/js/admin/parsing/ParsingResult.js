@@ -440,8 +440,6 @@ export const ParsingResultComponent = (props) => {
         );
     };
 
-    console.log({ selectedRowIds });
-
     return (
         <Box sx={styles.container}>
             <DataGrid
