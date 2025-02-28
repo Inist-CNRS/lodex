@@ -1,9 +1,9 @@
 import { Chip } from '@mui/material';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { grey } from '@mui/material/colors';
 import { useTranslate } from '../../i18n/I18NContext';
-
-export const statuses = ['to_review', 'ongoing', 'validated', 'rejected'];
+import { statuses } from '../../../../common/validator/annotation.validator';
 
 export const AnnotationStatus = ({ status, arialLabel }) => {
     const { translate } = useTranslate();
@@ -39,6 +39,15 @@ export const AnnotationStatus = ({ status, arialLabel }) => {
                     aria-label={arialLabel}
                     color="error"
                     label={translate('annotation_status_rejected')}
+                />
+            );
+        case 'parking':
+            return (
+                <Chip
+                    aria-label={arialLabel}
+                    color="default"
+                    sx={{ backgroundColor: grey[900] }}
+                    label={translate('annotation_status_parking')}
                 />
             );
         default:

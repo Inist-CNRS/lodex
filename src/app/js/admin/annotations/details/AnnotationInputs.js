@@ -9,8 +9,9 @@ import React from 'react';
 import { useStore } from '@tanstack/react-form';
 
 import { useTranslate } from '../../../i18n/I18NContext';
-import { AnnotationStatus, statuses } from '../AnnotationStatus';
+import { AnnotationStatus } from '../AnnotationStatus';
 import { FormHelperText } from '@mui/material';
+import { statuses } from '../../../../../common/validator/annotation.validator';
 
 export function AnnotationInputs({ form }) {
     const { translate } = useTranslate();
