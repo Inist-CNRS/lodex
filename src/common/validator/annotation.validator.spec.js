@@ -628,8 +628,14 @@ describe('annotation.validator', () => {
                 {
                     code: 'invalid_enum_value',
                     message:
-                        "Invalid enum value. Expected 'to_review' | 'ongoing' | 'validated' | 'rejected', received 'to-test'",
-                    options: ['to_review', 'ongoing', 'validated', 'rejected'],
+                        "Invalid enum value. Expected 'to_review' | 'ongoing' | 'validated' | 'rejected' | 'parking', received 'to-test'",
+                    options: [
+                        'to_review',
+                        'ongoing',
+                        'validated',
+                        'rejected',
+                        'parking',
+                    ],
                     path: ['status'],
                     received: 'to-test',
                 },
@@ -650,9 +656,9 @@ describe('annotation.validator', () => {
                 {
                     code: 'invalid_type',
                     expected:
-                        "'to_review' | 'ongoing' | 'validated' | 'rejected'",
+                        "'to_review' | 'ongoing' | 'validated' | 'rejected' | 'parking'",
                     message:
-                        "Expected 'to_review' | 'ongoing' | 'validated' | 'rejected', received null",
+                        "Expected 'to_review' | 'ongoing' | 'validated' | 'rejected' | 'parking', received null",
 
                     path: ['status'],
                     received: 'null',

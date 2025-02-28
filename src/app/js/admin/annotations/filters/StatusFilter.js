@@ -1,8 +1,8 @@
 import { FormControl, InputLabel, NativeSelect } from '@mui/material';
 import React from 'react';
-import { statuses } from '../AnnotationStatus';
 import { useTranslate } from '../../../i18n/I18NContext';
 import PropTypes from 'prop-types';
+import { statuses } from '../../../../../common/validator/annotation.validator';
 
 export const StatusFilter = ({ applyValue, item }) => {
     const { translate } = useTranslate();

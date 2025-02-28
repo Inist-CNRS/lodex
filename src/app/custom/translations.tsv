@@ -1282,6 +1282,7 @@
 "annotation_status_ongoing"	"Ongoing"	"En cours"
 "annotation_status_validated"	"Validated"	"Validée"
 "annotation_status_rejected"	"Rejected"	"Refusée"
+"annotation_status_parking"	"Parking"	"Parking"
 "annotation_correct_value"	Correct "%{value}"	Corriger "%{value}"
 "annotation_remove_value"	Remove "%{value}"	Retirer "%{value}"
 "annotation_add_value"	"Add Value"	"Ajouter une valeur"

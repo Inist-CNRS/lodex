@@ -12,6 +12,14 @@ export const kinds = [
     ANNOTATION_KIND_ADDITION,
 ];
 
+export const statuses = [
+    'to_review',
+    'ongoing',
+    'validated',
+    'rejected',
+    'parking',
+];
+
 export const annotationCreationSchema = z
     .object({
         resourceUri: z.string().nullish().default(null),
@@ -143,7 +151,7 @@ export const annotationCreationSchema = z
     });
 
 const unrefinedAnnotationUpdateSchema = z.object({
-    status: z.enum(['to_review', 'ongoing', 'validated', 'rejected']),
+    status: z.enum(statuses),
     internalComment: z.string().trim().optional(),
     adminComment: z
         .string()
