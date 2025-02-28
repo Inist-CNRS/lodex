@@ -5,6 +5,7 @@ import React from 'react';
 
 import { DEFAULT_TENANT } from '../../../../common/tools/tenantTools';
 import { useTranslate } from '../../i18n/I18NContext';
+import { getResourceType } from './helpers/resourceType';
 
 const tenant = sessionStorage.getItem('lodex-tenant') || DEFAULT_TENANT;
 
@@ -60,23 +61,22 @@ ResourceUriCellInternal.propTypes = {
 
 export function ResourceUriCell({ row }) {
     const { translate } = useTranslate();
+    const resourceType = getResourceType(row.resourceUri, row.field);
 
-    if (row.field?.scope === 'graphic') {
+    if (resourceType === 'graph') {
         return (
             <ResourceUriCellInternal
-                label={translate('annotation_graph_page')}
+                label={row.resourceUri ?? `/graph/${row.field.name}`}
                 linkUrl={`/instance/${tenant}/graph/${row.field.name}`}
-                italic
             />
         );
     }
 
-    if (!row.resourceUri) {
+    if (resourceType === 'home') {
         return (
             <ResourceUriCellInternal
-                label={translate('annotation_home_page')}
+                label={row.resourceUri ?? '/'}
                 linkUrl={`/instance/${tenant}`}
-                italic
             />
         );
     }

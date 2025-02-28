@@ -9,7 +9,7 @@ describe('ResourceTitleCell', () => {
             <TestI18N>
                 <ResourceTitleCell
                     row={{
-                        resourceUri: null,
+                        resourceUri: '/',
                         resource: null,
                     }}
                 />

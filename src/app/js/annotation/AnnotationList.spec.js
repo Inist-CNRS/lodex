@@ -113,11 +113,17 @@ describe('AnnotationList', () => {
         it('should return null when receiving no annotation', () => {
             expect(getAnnotationTitle(null, (v) => v)).toBeNull();
         });
-        it('should return the annotation_home_page translation when the annotation has no resourceUri', () => {
+
+        it('should return the "annotation_home_page" when the annotation target the home page', () => {
+            expect(getAnnotationTitle({ resourceUri: '/' }, (v) => v)).toBe(
+                'annotation_home_page',
+            );
+
             expect(getAnnotationTitle({ resourceUri: null }, (v) => v)).toBe(
                 'annotation_home_page',
             );
         });
+
         it('should return the annotation_resource_not_found translation when the annotation has no resource', () => {
             expect(
                 getAnnotationTitle(
@@ -128,9 +134,16 @@ describe('AnnotationList', () => {
         });
         it('should return the annotation_graph_page translation when the annotation field scope is graphic', () => {
             expect(
-                getAnnotationTitle({ field: { scope: 'graphic' } }, (v) => v),
+                getAnnotationTitle(
+                    { field: { name: 'gaVf', scope: 'graphic' } },
+                    (v) => v,
+                ),
+            ).toBe('annotation_graph_page');
+            expect(
+                getAnnotationTitle({ resourceUri: '/graph/gaVf' }, (v) => v),
             ).toBe('annotation_graph_page');
         });
+
         it('should return the resource title when the annotation has a resource', () => {
             expect(
                 getAnnotationTitle(

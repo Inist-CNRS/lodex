@@ -9,8 +9,10 @@ function TestRouter({ children, ...rest }) {
         <MemoryRouter {...rest}>
             <Switch>
                 <Route exact path="/" render={() => children} />
+                <Route exact path="/graph/:name" render={() => children} />
                 <Route exact path="/uid:/:uri" render={() => children} />
                 <Route exact path="/ark:/:naan/:rest" render={() => children} />
+                <Route exact path="/other" render={() => children} />
             </Switch>
         </MemoryRouter>
     );
@@ -47,9 +49,37 @@ describe('useResourceUri', () => {
         expect(result.current).toBe('ark:/67375/1BB-1JGMFXJK-2');
     });
 
+    it('should return "/graph/:name" for graph', () => {
+        const { result } = renderHook(() => useResourceUri(), {
+            wrapper: TestRouter,
+            initialProps: {
+                initialEntries: ['/graph/gavF'],
+                initialIndex: 0,
+            },
+        });
+
+        expect(result.current).toBe('/graph/gavF');
+    });
+
+    it('should return "/" for home', () => {
+        const { result } = renderHook(() => useResourceUri(), {
+            wrapper: TestRouter,
+            initialProps: {
+                initialEntries: ['/'],
+                initialIndex: 0,
+            },
+        });
+
+        expect(result.current).toBe('/');
+    });
+
     it('should return null otherwise', () => {
         const { result } = renderHook(() => useResourceUri(), {
             wrapper: TestRouter,
+            initialProps: {
+                initialEntries: ['/other'],
+                initialIndex: 0,
+            },
         });
 
         expect(result.current).toBeNull();

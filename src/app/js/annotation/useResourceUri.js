@@ -15,6 +15,14 @@ export function useResourceUri() {
             return `ark:/${params.naan}/${params.rest}`;
         }
 
+        if (path === '/graph/:name') {
+            return `/graph/${params.name}`;
+        }
+
+        if (path === '/') {
+            return '/';
+        }
+
         return null;
     }, [routeMatch]);
 }

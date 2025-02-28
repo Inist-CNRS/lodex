@@ -23,6 +23,7 @@ import {
 } from '../../../common/validator/annotation.validator';
 import { AnnotationStatus } from '../admin/annotations/AnnotationStatus';
 import { AnnotationValue } from '../admin/annotations/AnnotationValue';
+import { getResourceType } from '../admin/annotations/helpers/resourceType';
 import { useTranslate } from '../i18n/I18NContext';
 
 export const getAnnotationSummaryValue = (annotation) => {
@@ -65,10 +66,16 @@ export const getAnnotationTitle = (annotation, translate) => {
         return null;
     }
 
-    if (annotation.field?.scope === 'graphic') {
+    const resourceType = getResourceType(
+        annotation.resourceUri,
+        annotation.field,
+    );
+
+    if (resourceType === 'graph') {
         return translate('annotation_graph_page');
     }
-    if (!annotation.resourceUri) {
+
+    if (resourceType === 'home') {
         return translate('annotation_home_page');
     }
 

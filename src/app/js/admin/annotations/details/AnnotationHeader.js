@@ -7,48 +7,55 @@ import PropTypes from 'prop-types';
 import React, { useMemo } from 'react';
 import { DEFAULT_TENANT } from '../../../../../common/tools/tenantTools';
 import { useTranslate } from '../../../i18n/I18NContext';
+import { getResourceType } from '../helpers/resourceType';
 
 const tenant = sessionStorage.getItem('lodex-tenant') || DEFAULT_TENANT;
 
-const getAnnotationResourceTitle = (annotation, translate) => {
-    if (annotation.field?.scope === 'graphic') {
+const getAnnotationResourceTitle = ({ resourceUri, field }, translate) => {
+    const resourceType = getResourceType(resourceUri, field);
+    if (resourceType === 'graph') {
         return translate('annotation_graph_page');
     }
 
-    if (!annotation.resourceUri) {
+    if (resourceType === 'home') {
         return translate('annotation_home_page');
     }
 
-    return annotation.resourceUri;
+    return resourceUri;
 };
 
 export function AnnotationHeader({ annotation }) {
     const { translate } = useTranslate();
 
     const { subtitle, linkUrl } = useMemo(() => {
-        if (annotation.field?.scope === 'graphic') {
+        const resourceType = getResourceType(
+            annotation.resourceUri,
+            annotation.field,
+        );
+
+        if (resourceType === 'graph') {
             return {
                 subtitle: annotation.field.label,
                 linkUrl: `/instance/${tenant}/graph/${annotation.field.name}`,
             };
         }
 
-        if (annotation.resourceUri) {
+        if (resourceType === 'home') {
             return {
-                subtitle:
-                    annotation.resource?.title ??
-                    translate('annotation_resource_not_found'),
-                linkUrl: annotation.resource
-                    ? `/instance/${tenant}/${annotation.resourceUri}`
-                    : null,
+                subtitle: '',
+                linkUrl: `/instance/${tenant}`,
             };
         }
 
         return {
-            subtitle: '',
-            linkUrl: `/instance/${tenant}`,
+            subtitle:
+                annotation.resource?.title ??
+                translate('annotation_resource_not_found'),
+            linkUrl: annotation.resource
+                ? `/instance/${tenant}/${annotation.resourceUri}`
+                : null,
         };
-    }, [annotation]);
+    }, [translate, annotation]);
 
     return (
         <Stack gap={1}>
