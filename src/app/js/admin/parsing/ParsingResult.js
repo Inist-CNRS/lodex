@@ -301,7 +301,7 @@ export const ParsingResultComponent = (props) => {
     };
 
     const handleCellClick = (params) => {
-        if (params.field === 'checkbox') {
+        if (params.field === '__check__') {
             return;
         }
         setSelectedCell(params);
