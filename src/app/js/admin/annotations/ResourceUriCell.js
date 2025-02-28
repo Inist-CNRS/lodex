@@ -61,8 +61,9 @@ ResourceUriCellInternal.propTypes = {
 
 export function ResourceUriCell({ row }) {
     const { translate } = useTranslate();
+    const resourceType = getResourceType(row.resourceUri, row.field);
 
-    if (getResourceType(row.resourceUri, row.field) === 'graph') {
+    if (resourceType === 'graph') {
         return (
             <ResourceUriCellInternal
                 label={row.resourceUri ?? `/graph/${row.field.name}`}
@@ -71,7 +72,7 @@ export function ResourceUriCell({ row }) {
         );
     }
 
-    if (getResourceType(row.resourceUri, row.field) === 'home') {
+    if (resourceType === 'home') {
         return (
             <ResourceUriCellInternal
                 label={row.resourceUri ?? '/'}

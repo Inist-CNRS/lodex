@@ -114,13 +114,13 @@ describe('AnnotationList', () => {
             expect(getAnnotationTitle(null, (v) => v)).toBeNull();
         });
 
-        it('should return the "/" when the annotation target the home page', () => {
+        it('should return the "annotation_home_page" when the annotation target the home page', () => {
             expect(getAnnotationTitle({ resourceUri: '/' }, (v) => v)).toBe(
-                '/',
+                'annotation_home_page',
             );
 
             expect(getAnnotationTitle({ resourceUri: null }, (v) => v)).toBe(
-                '/',
+                'annotation_home_page',
             );
         });
 
@@ -138,10 +138,10 @@ describe('AnnotationList', () => {
                     { field: { name: 'gaVf', scope: 'graphic' } },
                     (v) => v,
                 ),
-            ).toBe('/graph/gaVf');
+            ).toBe('annotation_graph_page');
             expect(
                 getAnnotationTitle({ resourceUri: '/graph/gaVf' }, (v) => v),
-            ).toBe('/graph/gaVf');
+            ).toBe('annotation_graph_page');
         });
 
         it('should return the resource title when the annotation has a resource', () => {

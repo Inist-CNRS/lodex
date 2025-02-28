@@ -66,13 +66,16 @@ export const getAnnotationTitle = (annotation, translate) => {
         return null;
     }
 
-    const { resourceUri, field } = annotation;
+    const resourceType = getResourceType(
+        annotation.resourceUri,
+        annotation.field,
+    );
 
-    if (getResourceType(resourceUri, field) === 'graph') {
+    if (resourceType === 'graph') {
         return translate('annotation_graph_page');
     }
 
-    if (getResourceType(resourceUri, field) === 'home') {
+    if (resourceType === 'home') {
         return translate('annotation_home_page');
     }
 

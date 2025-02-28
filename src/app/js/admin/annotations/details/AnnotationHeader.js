@@ -12,11 +12,12 @@ import { getResourceType } from '../helpers/resourceType';
 const tenant = sessionStorage.getItem('lodex-tenant') || DEFAULT_TENANT;
 
 const getAnnotationResourceTitle = ({ resourceUri, field }, translate) => {
-    if (getResourceType(resourceUri, field) === 'graph') {
+    const resourceType = getResourceType(resourceUri, field);
+    if (resourceType === 'graph') {
         return translate('annotation_graph_page');
     }
 
-    if (getResourceType(resourceUri, field) === 'home') {
+    if (resourceType === 'home') {
         return translate('annotation_home_page');
     }
 
@@ -27,16 +28,19 @@ export function AnnotationHeader({ annotation }) {
     const { translate } = useTranslate();
 
     const { subtitle, linkUrl } = useMemo(() => {
-        const { resourceUri, field } = annotation;
+        const resourceType = getResourceType(
+            annotation.resourceUri,
+            annotation.field,
+        );
 
-        if (getResourceType(resourceUri, field) === 'graph') {
+        if (resourceType === 'graph') {
             return {
                 subtitle: annotation.field.label,
                 linkUrl: `/instance/${tenant}/graph/${annotation.field.name}`,
             };
         }
 
-        if (getResourceType(resourceUri, field) === 'home') {
+        if (resourceType === 'home') {
             return {
                 subtitle: '',
                 linkUrl: `/instance/${tenant}`,
