@@ -53,6 +53,8 @@ export function useUpdateAnnotation() {
             toast(translate('annotation_update_success'), {
                 type: toast.TYPE.SUCCESS,
             });
+
+            history.push('/annotations');
         },
         onError: () => {
             toast(translate('annotation_update_error'), {
@@ -65,7 +67,7 @@ export function useUpdateAnnotation() {
         async (id, annotation) => {
             return mutation.mutateAsync({ id, annotation });
         },
-        [mutation, translate],
+        [mutation],
     );
 
     return useMemo(
