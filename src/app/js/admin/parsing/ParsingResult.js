@@ -37,7 +37,6 @@ import ParsingEditCell from './ParsingEditCell';
 import { AddBox as AddBoxIcon } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
 import { useTranslate } from '../../i18n/I18NContext';
-import { useDatagridSelection } from '../../lib/hooks/useDatagridSelection';
 import { DeleteManyButton } from './DeleteManyButton';
 import { DeleteFilteredButton } from './DeleteFilteredButton';
 
@@ -118,6 +117,7 @@ export const ParsingResultComponent = (props) => {
 
     const [showEnrichmentColumns, setShowEnrichmentColumns] = useState(true);
     const [showMainColumns, setShowMainColumns] = useState(true);
+    const [selectedRowIds, setSelectedRowIds] = useState([]);
 
     const [datas, setDatas] = useState([]);
     const [columns, setColumns] = useState([]);
@@ -308,8 +308,6 @@ export const ParsingResultComponent = (props) => {
         setToggleDrawer(true);
     };
 
-    const { selectedRowIds, selectionColumn } = useDatagridSelection(rows);
-
     if (loadingParsingResult) {
         return (
             <Loading className="admin">
@@ -442,13 +440,16 @@ export const ParsingResultComponent = (props) => {
         );
     };
 
+    console.log({ selectedRowIds });
+
     return (
         <Box sx={styles.container}>
             <DataGrid
-                columns={[selectionColumn, ...columnsToShow]}
+                columns={columnsToShow}
                 rows={rows}
                 rowCount={rowCount}
                 pageSize={limit}
+                checkboxSelection
                 paginationMode="server"
                 onPageChange={onPageChange}
                 onPageSizeChange={setLimit}
@@ -459,6 +460,8 @@ export const ParsingResultComponent = (props) => {
                 rowsPerPageOptions={[10, 25, 50]}
                 disableSelectionOnClick={true}
                 onCellClick={handleCellClick}
+                selectionModel={selectedRowIds}
+                onSelectionModelChange={setSelectedRowIds}
                 components={{
                     Footer: CustomFooter,
                     Toolbar: CustomToolbar,
