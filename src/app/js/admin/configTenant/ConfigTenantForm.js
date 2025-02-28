@@ -2,6 +2,7 @@ import {
     Box,
     Button,
     Checkbox,
+    FormHelperText,
     MenuItem,
     Select,
     Tooltip,
@@ -315,6 +316,9 @@ export const ConfigTenantFormView = ({
                     name="notificationEmail"
                     form={form}
                 />
+                <FormHelperText>
+                    {translate('notification_email_help')}
+                </FormHelperText>
             </Box>
 
             <h2 id="theme">{translate('theme')}</h2>
