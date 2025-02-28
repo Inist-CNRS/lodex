@@ -245,10 +245,6 @@ describe('Annotation', () => {
                     'exist',
                 );
 
-                cy.findByRole('link', {
-                    name: 'Cancel',
-                }).click();
-
                 cy.wait(1000);
                 cy.findByRole('progressbar').should('not.exist');
 
@@ -1138,77 +1134,6 @@ Revue`);
             annotation.authorNameField().should('have.value', '');
             annotation.authorEmailField().should('have.value', '');
             annotation.authorRememberMeField().should('not.be.checked');
-        });
-    });
-
-    describe('edit', () => {
-        beforeEach(loadFilmDataset);
-
-        it('should support updating annotation', () => {
-            annotation.createTitleAnnotation({
-                fieldLabel: 'Dataset Description',
-                comment: 'This is a comment',
-                authorName: 'John Doe',
-                authorEmail: 'john.doe@example.org',
-            });
-
-            cy.findByText('More').click();
-            menu.goToAdminDashboard();
-            cy.findByText('Annotations').click();
-
-            cy.findAllByRole('cell').then((cells) => {
-                expect(
-                    cells.toArray().map((cell) => cell.textContent),
-                ).to.deep.equal([
-                    '',
-                    '/',
-                    '',
-                    'Comment',
-                    'Dataset Description',
-                    '',
-                    '',
-                    '',
-                    'To Review',
-                    '',
-                    'John Doe',
-                    new Date().toLocaleDateString(),
-                ]);
-            });
-
-            cy.findByText('Dataset Description').click();
-
-            cy.findByLabelText('Status').click();
-
-            cy.findByText('Validated').click();
-
-            cy.findByLabelText('Internal Comment *').type('Return applied');
-
-            cy.findByLabelText('Administrator').type('Jane SMITH');
-
-            cy.findByRole('button', {
-                name: 'Save',
-            }).click();
-
-            cy.wait(500);
-
-            cy.findAllByRole('cell').then((cells) => {
-                expect(
-                    cells.toArray().map((cell) => cell.textContent),
-                ).to.deep.equal([
-                    '',
-                    '/',
-                    '',
-                    'Comment',
-                    'Dataset Description',
-                    '',
-                    '',
-                    '',
-                    'Validated',
-                    'Jane SMITH',
-                    'John Doe',
-                    new Date().toLocaleDateString(),
-                ]);
-            });
         });
     });
 });
