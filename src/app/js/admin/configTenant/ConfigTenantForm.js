@@ -1,16 +1,13 @@
 import {
     Box,
-    Button,
     Checkbox,
     FormHelperText,
     MenuItem,
     Select,
     Tooltip,
-    keyframes,
 } from '@mui/material';
 import React from 'react';
 
-import { SaveAs } from '@mui/icons-material';
 import HelpIcon from '@mui/icons-material/HelpOutline';
 import { useForm, useStore } from '@tanstack/react-form';
 import PropTypes from 'prop-types';
@@ -27,24 +24,7 @@ import { ConfigField } from './fields/ConfigField';
 import { useGetAvailableThemes } from './useGetAvailableThemes';
 import { useGetConfigTenant } from './useGetConfigTenant';
 import { useUpdateConfigTenant } from './useUpdateConfigTenant';
-
-const shake = keyframes`
-10%, 90% {
-    transform: translate3d(-1px, 0, 0);
-  }
-  
-  20%, 80% {
-    transform: translate3d(4px, 0, 0);
-  }
-
-  30%, 50%, 70% {
-    transform: translate3d(-6px, 0, 0);
-  }
-
-  40%, 60% {
-    transform: translate3d(6px, 0, 0);
-  }
-`;
+import { SaveButton } from '../../lib/components/SaveButton';
 
 const configTenantSchema = z.object({
     config: z.object(
@@ -447,25 +427,11 @@ export const ConfigTenantFormView = ({
                     >
                         {translate('cancel')}
                     </CancelButton>
-                    <Button
-                        variant="contained"
-                        className="btn-save"
-                        color="primary"
+                    <SaveButton
+                        isFormModified={isFormModified}
                         type="submit"
                         disabled={isSubmitting}
-                        startIcon={
-                            isFormModified && (
-                                <Tooltip title={translate('form_is_modified')}>
-                                    <SaveAs />
-                                </Tooltip>
-                            )
-                        }
-                        sx={{
-                            animation: isFormModified ? `${shake} 1s ease` : '',
-                        }}
-                    >
-                        {translate('save')}
-                    </Button>
+                    />
                 </Box>
             </Box>
         </Box>
