@@ -23,7 +23,7 @@
         "objectifTDM": "https://services.istex.fr/associer-un-terme-au-vocabulaire-des-communes-de-france/",
         "type": "geography"
     },
-        {
+    {
         "id": "post-v1-astroTag",
         "url": "https://astro-ner.services.istex.fr/v1/tagger",
         "doc": "https://github.com/Inist-CNRS/web-services/tree/main/services/astro-ner/v1",
