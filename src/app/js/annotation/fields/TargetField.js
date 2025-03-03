@@ -3,6 +3,7 @@ import {
     MenuItem,
     MenuList,
     Stack,
+    Tooltip,
     useTheme,
 } from '@mui/material';
 import PropTypes from 'prop-types';
@@ -46,34 +47,44 @@ export function TargetField({ form, initialValue, goToStep }) {
                             gap: 2,
                         }}
                     >
-                        <MenuItem
-                            sx={{
-                                border: `1px solid ${theme.palette.primary.main}`,
-                                display: 'flex',
-                                justifyContent: 'space-between',
-                                fontWeight: 'bold',
-                            }}
-                            onClick={() => {
-                                field.handleChange('title');
-                                kindField.handleChange('comment');
-                                initialValueField.handleChange(null);
-                                goToStep(COMMENT_STEP);
-                            }}
+                        <Tooltip
+                            title={translate(
+                                'annotation_annotate_field_choice_tooltip',
+                            )}
                         >
-                            <Stack direction="row" spacing={1}>
-                                <ListItemIcon>
-                                    <CommentIcon
-                                        color={theme.palette.primary.main}
-                                        htmlColor={theme.palette.primary.main}
-                                    />
-                                </ListItemIcon>
-                                {translate('annotation_comment_target_title')}
-                            </Stack>
-                            <ArrowForwardIosIcon
-                                color={theme.palette.primary.main}
-                                htmlColor={theme.palette.primary.main}
-                            />
-                        </MenuItem>
+                            <MenuItem
+                                sx={{
+                                    border: `1px solid ${theme.palette.primary.main}`,
+                                    display: 'flex',
+                                    justifyContent: 'space-between',
+                                    fontWeight: 'bold',
+                                }}
+                                onClick={() => {
+                                    field.handleChange('title');
+                                    kindField.handleChange('comment');
+                                    initialValueField.handleChange(null);
+                                    goToStep(COMMENT_STEP);
+                                }}
+                            >
+                                <Stack direction="row" spacing={1}>
+                                    <ListItemIcon>
+                                        <CommentIcon
+                                            color={theme.palette.primary.main}
+                                            htmlColor={
+                                                theme.palette.primary.main
+                                            }
+                                        />
+                                    </ListItemIcon>
+                                    {translate(
+                                        'annotation_annotate_field_choice',
+                                    )}
+                                </Stack>
+                                <ArrowForwardIosIcon
+                                    color={theme.palette.primary.main}
+                                    htmlColor={theme.palette.primary.main}
+                                />
+                            </MenuItem>
+                        </Tooltip>
                         <MenuItem
                             sx={{
                                 border: `1px solid ${theme.palette.primary.main}`,
