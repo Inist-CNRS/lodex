@@ -26,7 +26,7 @@ function TestAutocompleteField(props) {
 }
 
 TestAutocompleteField.propTypes = {
-    freeSolo: AutocompleteField.propTypes.freeSolo,
+    supportsNewValues: AutocompleteField.propTypes.supportsNewValues,
 };
 
 describe('AutocompleteField', () => {
@@ -86,7 +86,7 @@ describe('AutocompleteField', () => {
 
     describe('free solo support', () => {
         it('should support to add a new value', async () => {
-            const wrapper = render(<TestAutocompleteField freeSolo />);
+            const wrapper = render(<TestAutocompleteField supportsNewValues />);
 
             const textbox = wrapper.getByRole('textbox', {
                 name: 'Name',
@@ -113,7 +113,7 @@ describe('AutocompleteField', () => {
             expect(textbox).toHaveValue('Franck');
         });
 
-        it('should not support to have a new value if not freeSolo', async () => {
+        it('should not support to have a new value if does not support new values', async () => {
             const wrapper = render(<TestAutocompleteField />);
 
             const textbox = wrapper.getByRole('textbox', {
