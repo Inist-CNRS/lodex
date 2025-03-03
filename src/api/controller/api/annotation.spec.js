@@ -227,7 +227,7 @@ describe('annotation', () => {
                 subject: 'An annotation has been added on « instance-name »',
                 to: 'admin@inist.fr',
                 text: `An annotation has been added on « instance-name »
-Type : comment
+Type : Comment
 Contributor: John DOE
 Contributor comment: Hello world
 See annotation: http://localhost:3000/instance/instance-name/admin#/annotations`,
@@ -288,7 +288,7 @@ See annotation: http://localhost:3000/instance/instance-name/admin#/annotations`
                 subject: 'Une annotation a été ajoutée sur « instance-name »',
                 to: 'admin@inist.fr',
                 text: `Une annotation a été ajoutée sur « instance-name »
-Type : comment
+Type : Commentaire
 Contributeur : John DOE
 Commentaire du contributeur : Hello world
 Voir l'annotation : http://localhost:3000/instance/instance-name/admin#/annotations`,
