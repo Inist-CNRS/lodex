@@ -21,6 +21,10 @@ export const PreviousButton = ({
         return state.values.kind;
     });
 
+    const target = useStore(form.store, (state) => {
+        return state.values.target;
+    });
+
     const handleBack = useCallback(
         (event) => {
             event.preventDefault();
@@ -32,6 +36,10 @@ export const PreviousButton = ({
                 }
                 case COMMENT_STEP: {
                     if (!isFieldValueAnnotable) {
+                        return;
+                    }
+                    if (target === 'title') {
+                        goToStep(TARGET_STEP);
                         return;
                     }
                     if (Array.isArray(initialValue) && kind !== 'addition') {
@@ -49,7 +57,14 @@ export const PreviousButton = ({
                     return;
             }
         },
-        [currentStep, goToStep, initialValue, kind, isFieldValueAnnotable],
+        [
+            currentStep,
+            goToStep,
+            isFieldValueAnnotable,
+            target,
+            initialValue,
+            kind,
+        ],
     );
 
     if (
