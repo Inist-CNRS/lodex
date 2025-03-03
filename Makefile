@@ -54,8 +54,8 @@ build:
 ## Deploy =================================================================
 
 publish: build  ## publish version to docker hub
-	docker build -t cnrsinist/lodex:15.4.0 --build-arg http_proxy --build-arg https_proxy .
-	docker push cnrsinist/lodex:15.4.0
+	docker build -t cnrsinist/lodex:15.4.1 --build-arg http_proxy --build-arg https_proxy .
+	docker push cnrsinist/lodex:15.4.1
 
 ## Development =================================================================
 
