@@ -245,10 +245,6 @@ describe('Annotation', () => {
                     'exist',
                 );
 
-                cy.findByRole('link', {
-                    name: 'Cancel',
-                }).click();
-
                 cy.wait(1000);
                 cy.findByRole('progressbar').should('not.exist');
 
@@ -929,6 +925,7 @@ Revue`);
             });
         });
     });
+
     describe('see own annotations', () => {
         beforeEach(() => {
             // ResizeObserver doesn't like when the app has to many renders / re-renders
