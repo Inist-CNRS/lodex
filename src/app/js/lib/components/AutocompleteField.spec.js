@@ -112,5 +112,39 @@ describe('AutocompleteField', () => {
 
             expect(textbox).toHaveValue('Franck');
         });
+
+        it('should not support to have a new value if not freeSolo', async () => {
+            const wrapper = render(<TestAutocompleteField />);
+
+            const textbox = wrapper.getByRole('textbox', {
+                name: 'Name',
+            });
+
+            await waitFor(() => {
+                fireEvent.mouseDown(textbox);
+            });
+
+            await waitFor(() => {
+                return userEvent.type(textbox, 'Franck');
+            });
+
+            await waitFor(() => {
+                expect(
+                    wrapper.getByText('autocomplete_no_options'),
+                ).toBeInTheDocument();
+            });
+
+            expect(
+                wrapper.queryByRole('option', {
+                    name: 'autocomplete_add+{"option":"Franck"}',
+                }),
+            ).not.toBeInTheDocument();
+
+            await waitFor(() => {
+                return fireEvent.blur(textbox);
+            });
+
+            expect(textbox).toHaveValue('');
+        });
     });
 });

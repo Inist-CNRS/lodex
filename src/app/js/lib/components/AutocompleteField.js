@@ -93,7 +93,7 @@ export function AutocompleteField({
                     const isExisting = options.some(
                         (option) => inputValue === option.title,
                     );
-                    if (inputValue !== '' && !isExisting) {
+                    if (inputValue !== '' && !isExisting && freeSolo) {
                         filtered.push({
                             value: inputValue,
                             title: translate('autocomplete_add', {

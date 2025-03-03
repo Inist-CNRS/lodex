@@ -24,6 +24,7 @@ export function ProposedValueFieldList({
                 label={label}
                 options={options}
                 required
+                freeSolo={supportsNewValues}
             />
         );
     }
