@@ -495,9 +495,9 @@ describe('CreateAnnotationModal', () => {
 
             it('should render required proposedValue and comment field', () => {
                 expect(
-                    screen.getByRole('heading', {
-                        name: 'annotation_title_annotate_field+{"field":"Field Label"}',
-                    }),
+                    screen.getByText(
+                        'annotation_title_annotate_field+{"field":"Field Label"}',
+                    ),
                 ).toBeInTheDocument();
                 expect(
                     screen.getByRole('textbox', {
@@ -559,9 +559,9 @@ describe('CreateAnnotationModal', () => {
 
             it('should render required proposedValue and comment field', () => {
                 expect(
-                    screen.getByRole('heading', {
-                        name: 'annotation_title_annotate_field+{"field":"Field Label"}',
-                    }),
+                    screen.getByText(
+                        'annotation_title_annotate_field+{"field":"Field Label"}',
+                    ),
                 ).toBeInTheDocument();
                 expect(
                     screen.getByRole('textbox', {
@@ -884,7 +884,7 @@ describe('CreateAnnotationModal', () => {
 
         fireEvent.click(
             screen.getByRole('menuitem', {
-                name: 'annotation_title_annotate_field',
+                name: 'annotation_annotate_field_choice',
             }),
         );
 

@@ -14,7 +14,7 @@ export const CreateAnnotationTitle = ({ fieldLabel, step, form }) => {
 
     if (step === TARGET_STEP || target === 'title') {
         return (
-            <Typography variant="h6" color="text.gray">
+            <Typography role="heading" variant="h6" color="text.gray">
                 {fieldLabel
                     ? translate('annotation_title_annotate_field', {
                           field: fieldLabel,
@@ -27,7 +27,7 @@ export const CreateAnnotationTitle = ({ fieldLabel, step, form }) => {
     }
 
     return (
-        <Typography variant="h6" color="text.gray">
+        <Typography role="heading" variant="h6" color="text.gray">
             {fieldLabel
                 ? translate('annotation_title_annotate_content', {
                       field: fieldLabel,
