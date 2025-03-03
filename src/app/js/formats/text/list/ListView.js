@@ -1,10 +1,10 @@
-import React from 'react';
-import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import PropTypes from 'prop-types';
+import React from 'react';
 
+import stylesToClassname from '../../../lib/stylesToClassName';
 import { field as fieldPropTypes } from '../../../propTypes';
 import { getViewComponent } from '../../index';
-import stylesToClassname from '../../../lib/stylesToClassName';
 
 const styles = stylesToClassname(
     {
