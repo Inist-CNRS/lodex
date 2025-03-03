@@ -5,13 +5,6 @@ export function openAnnotationModalForField(fieldLabel) {
     }).click();
 }
 
-function targetValue() {
-    cy.findByRole('menuitem', {
-        name: 'Comment a value',
-        timeout: 1500,
-    }).click();
-}
-
 function chooseKindRemoval() {
     cy.findByRole('menuitem', {
         name: 'Remove some content',
@@ -203,8 +196,6 @@ export function createSingleValueAnnotation({
 }) {
     openAnnotationModalForField(fieldLabel);
 
-    targetValue();
-
     chooseKindRemoval();
 
     fillComment(comment);
@@ -224,8 +215,6 @@ export function createMultiValueAnnotation({
 }) {
     openAnnotationModalForField(fieldLabel);
 
-    targetValue();
-
     chooseValueToComment(value);
 
     fillComment(comment);
@@ -244,8 +233,6 @@ export function createAddValueWithSingleProposedValueChoiceAnnotation({
     authorRememberMe,
 }) {
     openAnnotationModalForField(fieldLabel);
-
-    targetValue();
 
     chooseKindAdd();
 
@@ -268,8 +255,6 @@ export function createAddValueWithMultipleProposedValuesChoiceAnnotation({
     authorRememberMe,
 }) {
     openAnnotationModalForField(fieldLabel);
-
-    targetValue();
 
     chooseKindAdd();
 
