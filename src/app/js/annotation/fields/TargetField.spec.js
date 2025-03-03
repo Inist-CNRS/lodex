@@ -3,7 +3,8 @@ import React from 'react';
 import { TestI18N } from '../../i18n/I18NContext';
 import { TargetField } from './TargetField';
 import { useForm } from '@tanstack/react-form';
-import { COMMENT_STEP, KIND_STEP } from '../steps';
+import { COMMENT_STEP, VALUE_STEP } from '../steps';
+import { act } from 'react-dom/test-utils';
 
 const renderTargetField = (props) => {
     let form;
@@ -30,20 +31,31 @@ const renderTargetField = (props) => {
 };
 
 describe('TargetField', () => {
-    it('should display choice to target value or whole section', async () => {
+    it('should display choice to comment, correct, add or remove', () => {
         renderTargetField({});
         expect(
             screen.getByText('annotation_comment_target_title'),
         ).toBeInTheDocument();
         expect(
-            screen.getByText('annotation_comment_target_value'),
+            screen.getByText('annotation_correct_content'),
+        ).toBeInTheDocument();
+        expect(screen.getByText('annotation_add_content')).toBeInTheDocument();
+        expect(
+            screen.getByText('annotation_remove_content'),
         ).toBeInTheDocument();
     });
 
-    it('should call goToStep with COMMENT_STEP when targeting title and set target to title, initialValue to null', async () => {
+    it('should call goToStep with COMMENT_STEP when targeting title and set target to title, kind to comment, initialValue to null', () => {
         const goToStep = jest.fn();
-        const { form } = renderTargetField({ goToStep });
-        fireEvent.click(screen.getByText('annotation_comment_target_title'));
+        const { form } = renderTargetField({
+            goToStep,
+            initialValue: 'initial value',
+        });
+        act(() => {
+            fireEvent.click(
+                screen.getByText('annotation_comment_target_title'),
+            );
+        });
         expect(goToStep).toHaveBeenCalledWith(COMMENT_STEP);
         expect(form.state.values).toStrictEqual({
             target: 'title',
@@ -52,30 +64,102 @@ describe('TargetField', () => {
         });
     });
 
-    it('should call goToStep with KIND_STEP when targeting value and initialValue is not an array and set initialValue', async () => {
+    it('should call goToStep with COMMENT_STEP when there is a single value and clicking on annotation_correct_content, and set target to value, kind to correction, initialValue to "initialValue"', () => {
         const goToStep = jest.fn();
         const { form } = renderTargetField({
             goToStep,
             initialValue: 'initial value',
         });
-        fireEvent.click(screen.getByText('annotation_comment_target_value'));
-        expect(goToStep).toHaveBeenCalledWith(KIND_STEP);
+        act(() => {
+            fireEvent.click(screen.getByText('annotation_correct_content'));
+        });
+        expect(goToStep).toHaveBeenCalledWith(COMMENT_STEP);
         expect(form.state.values).toStrictEqual({
             target: 'value',
+            kind: 'correction',
             initialValue: 'initial value',
         });
     });
 
-    it('should call goToStep with KIND_STEP when targeting value an initialValue is an array but not set any initialValue', async () => {
+    it('should call goToStep with VALUE_STEP when there is an array of values and clicking on annotation_correct_content, and set target to value, kind to correction', () => {
         const goToStep = jest.fn();
         const { form } = renderTargetField({
             goToStep,
-            initialValue: ['a', 'b'],
+            initialValue: ['initial', 'value'],
         });
-        fireEvent.click(screen.getByText('annotation_comment_target_value'));
-        expect(goToStep).toHaveBeenCalledWith(KIND_STEP);
+        act(() => {
+            fireEvent.click(screen.getByText('annotation_correct_content'));
+        });
+        expect(goToStep).toHaveBeenCalledWith(VALUE_STEP);
         expect(form.state.values).toStrictEqual({
             target: 'value',
+            kind: 'correction',
+        });
+    });
+
+    it('should call goToStep with COMMENT_STEP when there is a single value and clicking on annotation_remove_content, and set target to value, kind to removal, initialValue to "initial value"', () => {
+        const goToStep = jest.fn();
+        const { form } = renderTargetField({
+            goToStep,
+            initialValue: 'initial value',
+        });
+        act(() => {
+            fireEvent.click(screen.getByText('annotation_remove_content'));
+        });
+        expect(goToStep).toHaveBeenCalledWith(COMMENT_STEP);
+        expect(form.state.values).toStrictEqual({
+            target: 'value',
+            kind: 'removal',
+            initialValue: 'initial value',
+        });
+    });
+
+    it('should call goToStep with VALUE_STEP when there is an array of values and clicking on annotation_remove_content, and set target to value, kind to removal', () => {
+        const goToStep = jest.fn();
+        const { form } = renderTargetField({
+            goToStep,
+            initialValue: ['initial', 'value'],
+        });
+        act(() => {
+            fireEvent.click(screen.getByText('annotation_remove_content'));
+        });
+        expect(goToStep).toHaveBeenCalledWith(VALUE_STEP);
+        expect(form.state.values).toStrictEqual({
+            target: 'value',
+            kind: 'removal',
+        });
+    });
+
+    it('should call goToStep with COMMENT_STEP when there is a single value and clicking on annotation_add_content, and set target to value, kind to addition, initialValue to null', () => {
+        const goToStep = jest.fn();
+        const { form } = renderTargetField({
+            goToStep,
+            initialValue: 'initial value',
+        });
+        act(() => {
+            fireEvent.click(screen.getByText('annotation_add_content'));
+        });
+        expect(goToStep).toHaveBeenCalledWith(COMMENT_STEP);
+        expect(form.state.values).toStrictEqual({
+            target: 'value',
+            kind: 'addition',
+            initialValue: null,
+        });
+    });
+
+    it('should call goToStep with COMMENT_STEP when there is an array of values and clicking on annotation_add_content, and set target to value, kind to addition, initialValue to null', () => {
+        const goToStep = jest.fn();
+        const { form } = renderTargetField({
+            goToStep,
+            initialValue: ['initial', 'value'],
+        });
+        act(() => {
+            fireEvent.click(screen.getByText('annotation_add_content'));
+        });
+        expect(goToStep).toHaveBeenCalledWith(COMMENT_STEP);
+        expect(form.state.values).toStrictEqual({
+            target: 'value',
+            kind: 'addition',
             initialValue: null,
         });
     });
