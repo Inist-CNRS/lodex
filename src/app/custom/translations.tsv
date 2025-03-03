@@ -1218,7 +1218,7 @@
 "annotation_update_success"	"The suggestion has been updated."	"La suggestion a bien été mise à jour."
 "config_tenant_update_success"	"The tenant config has been updated."	"La configuration a bien été mise à jour."
 "annotation_update_error"	"Failed to update annotation"	"Une erreur est survenue lors de la mise à jour de l'annotation"
-"annotation_add_comment"	"Add a comment"	"Ajouter un commentaire"
+"annotation_annotate_field"	Annotate the field "%{field}"	Annoter le champ "%{field}"
 "annotation.comment"	"Comment"	"Commentaire"
 "annotation_query_match_invalid_key"	"This query key is not supported"	"Cette clé de requête n'est pas supportée"
 "annotation_query_match_invalid_value"	"The query value must be a string"	"La valeur de la requête doit être une chaîne de caractères"
