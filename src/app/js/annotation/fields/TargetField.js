@@ -1,4 +1,10 @@
-import { MenuItem, MenuList, useTheme } from '@mui/material';
+import {
+    ListItemIcon,
+    MenuItem,
+    MenuList,
+    Stack,
+    useTheme,
+} from '@mui/material';
 import PropTypes from 'prop-types';
 import React from 'react';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
@@ -14,6 +20,7 @@ import {
     ANNOTATION_KIND_CORRECTION,
     ANNOTATION_KIND_REMOVAL,
 } from '../../../../common/validator/annotation.validator';
+import CommentIcon from '@mui/icons-material/Comment';
 
 export function TargetField({ form, initialValue, goToStep }) {
     const theme = useTheme();
@@ -53,7 +60,15 @@ export function TargetField({ form, initialValue, goToStep }) {
                                 goToStep(COMMENT_STEP);
                             }}
                         >
-                            {translate('annotation_comment_target_title')}
+                            <Stack direction="row" spacing={1}>
+                                <ListItemIcon>
+                                    <CommentIcon
+                                        color={theme.palette.primary.main}
+                                        htmlColor={theme.palette.primary.main}
+                                    />
+                                </ListItemIcon>
+                                {translate('annotation_comment_target_title')}
+                            </Stack>
                             <ArrowForwardIosIcon
                                 color={theme.palette.primary.main}
                                 htmlColor={theme.palette.primary.main}
@@ -63,6 +78,7 @@ export function TargetField({ form, initialValue, goToStep }) {
                             sx={{
                                 border: `1px solid ${theme.palette.primary.main}`,
                                 display: 'flex',
+                                justifyContent: 'space-between',
                                 gap: 1,
                                 fontWeight: 'bold',
                             }}
@@ -80,16 +96,25 @@ export function TargetField({ form, initialValue, goToStep }) {
                                 goToStep(COMMENT_STEP);
                             }}
                         >
-                            <EditIcon
+                            <Stack direction="row" spacing={1}>
+                                <ListItemIcon>
+                                    <EditIcon
+                                        color={theme.palette.primary.main}
+                                        htmlColor={theme.palette.primary.main}
+                                    />
+                                </ListItemIcon>
+                                {translate('annotation_correct_content')}
+                            </Stack>
+                            <ArrowForwardIosIcon
                                 color={theme.palette.primary.main}
                                 htmlColor={theme.palette.primary.main}
                             />
-                            {translate('annotation_correct_content')}
                         </MenuItem>
                         <MenuItem
                             sx={{
                                 border: `1px solid ${theme.palette.primary.main}`,
                                 display: 'flex',
+                                justifyContent: 'space-between',
                                 gap: 1,
                                 fontWeight: 'bold',
                             }}
@@ -103,16 +128,25 @@ export function TargetField({ form, initialValue, goToStep }) {
                                 goToStep(COMMENT_STEP);
                             }}
                         >
-                            <AddIcon
+                            <Stack direction="row" spacing={1}>
+                                <ListItemIcon>
+                                    <AddIcon
+                                        color={theme.palette.primary.main}
+                                        htmlColor={theme.palette.primary.main}
+                                    />
+                                </ListItemIcon>
+                                {translate('annotation_add_content')}
+                            </Stack>
+                            <ArrowForwardIosIcon
                                 color={theme.palette.primary.main}
                                 htmlColor={theme.palette.primary.main}
                             />
-                            {translate('annotation_add_content')}
                         </MenuItem>
                         <MenuItem
                             sx={{
                                 border: `1px solid ${theme.palette.primary.main}`,
                                 display: 'flex',
+                                justifyContent: 'space-between',
                                 gap: 1,
                                 fontWeight: 'bold',
                             }}
@@ -128,11 +162,19 @@ export function TargetField({ form, initialValue, goToStep }) {
                                 goToStep(COMMENT_STEP);
                             }}
                         >
-                            <RemoveIcon
+                            <Stack direction="row" spacing={1}>
+                                <ListItemIcon>
+                                    <RemoveIcon
+                                        color={theme.palette.primary.main}
+                                        htmlColor={theme.palette.primary.main}
+                                    />
+                                </ListItemIcon>
+                                {translate('annotation_remove_content')}
+                            </Stack>
+                            <ArrowForwardIosIcon
                                 color={theme.palette.primary.main}
                                 htmlColor={theme.palette.primary.main}
                             />
-                            {translate('annotation_remove_content')}
                         </MenuItem>
                     </MenuList>
                 );
