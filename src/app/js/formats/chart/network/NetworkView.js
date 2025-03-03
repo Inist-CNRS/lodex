@@ -1,22 +1,22 @@
+import { scaleLinear } from 'd3-scale';
+import get from 'lodash/get';
 import React, {
-    useEffect,
-    useMemo,
-    useState,
     lazy,
     Suspense,
     useCallback,
+    useEffect,
+    useMemo,
+    useState,
 } from 'react';
-import { polyglot as polyglotPropTypes } from '../../../propTypes';
 import compose from 'recompose/compose';
-import get from 'lodash/get';
-import { scaleLinear } from 'd3-scale';
+import { polyglot as polyglotPropTypes } from '../../../propTypes';
 
+import PropTypes from 'prop-types';
+import { useTranslate } from '../../../i18n/I18NContext';
+import Loading from '../../../lib/components/Loading';
 import injectData from '../../injectData';
 import FormatFullScreenMode from '../../utils/components/FormatFullScreenMode';
 import MouseIcon from '../../utils/components/MouseIcon';
-import PropTypes from 'prop-types';
-import Loading from '../../../lib/components/Loading';
-import { useTranslate } from '../../../i18n/I18NContext';
 
 const ForceGraph2D = lazy(
     () => import(/* webpackMode: "eager" */ 'react-force-graph-2d'),
@@ -181,7 +181,7 @@ const Network = ({ formatData, p, colorSet }) => {
     };
 
     return (
-        <div style={{ height: `500px` }}>
+        <div style={{ height: `500px`, position: 'relative' }}>
             <FormatFullScreenMode>
                 <div style={styles.container} ref={containerRef}>
                     <Suspense
@@ -247,7 +247,15 @@ const Network = ({ formatData, p, colorSet }) => {
                         />
                     </Suspense>
 
-                    <div>{<MouseIcon polyglot={p} />}</div>
+                    <div
+                        style={{
+                            position: 'absolute',
+                            bottom: 0,
+                            left: 0,
+                        }}
+                    >
+                        {<MouseIcon polyglot={p} />}
+                    </div>
                 </div>
             </FormatFullScreenMode>
         </div>
