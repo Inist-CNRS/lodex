@@ -22,19 +22,12 @@ import { AnnotationCommentStep } from './AnnotationCommentStep';
 import { AuthorEmailField } from './fields/AuthorEmailField';
 import { AuthorNameField } from './fields/AuthorNameField';
 import { AuthorRememberMeField } from './fields/AuthorRememberMeField';
-import { KindField } from './fields/KindField';
 import { TargetField } from './fields/TargetField';
 import { ValueField } from './fields/ValueField';
 import { NextButton } from './NextButton';
 import { OpenHistoryButton } from './OpenHistoryButton';
 import { PreviousButton } from './PreviousButton';
-import {
-    AUTHOR_STEP,
-    COMMENT_STEP,
-    KIND_STEP,
-    TARGET_STEP,
-    VALUE_STEP,
-} from './steps';
+import { AUTHOR_STEP, COMMENT_STEP, TARGET_STEP, VALUE_STEP } from './steps';
 import { useContributorCache } from './useContributorCache';
 import { useReCaptcha } from './useReCaptacha';
 
@@ -271,19 +264,6 @@ export function CreateAnnotationModal({
                                     openHistory={openHistory}
                                 />
                                 <TargetField
-                                    form={form}
-                                    goToStep={setCurrentStep}
-                                    initialValue={initialValue}
-                                />
-                            </Stack>
-                        )}
-                        {currentStep === KIND_STEP && (
-                            <Stack
-                                spacing={2}
-                                aria-label={translate('annotation_step_target')}
-                                role="tab"
-                            >
-                                <KindField
                                     form={form}
                                     goToStep={setCurrentStep}
                                     initialValue={initialValue}

@@ -2,13 +2,7 @@ import { Button, CircularProgress } from '@mui/material';
 import React, { useCallback, useMemo } from 'react';
 import SaveIcon from '@mui/icons-material/Save';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import {
-    AUTHOR_STEP,
-    COMMENT_STEP,
-    KIND_STEP,
-    TARGET_STEP,
-    VALUE_STEP,
-} from './steps';
+import { AUTHOR_STEP, COMMENT_STEP, TARGET_STEP, VALUE_STEP } from './steps';
 import { useTranslate } from '../i18n/I18NContext';
 import PropTypes from 'prop-types';
 
@@ -53,7 +47,7 @@ export const NextButton = ({
         return false;
     }, [currentStep, isCommentStepValid, isValueStepValid]);
 
-    if ([TARGET_STEP, KIND_STEP].includes(currentStep)) {
+    if ([TARGET_STEP].includes(currentStep)) {
         return null;
     }
 
