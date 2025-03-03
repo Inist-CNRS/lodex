@@ -21,7 +21,7 @@ function chooseKindAdd() {
 
 export function targetSection() {
     cy.findByRole('menuitem', {
-        name: 'Comment the section',
+        name: 'Annotate the field',
         timeout: 1500,
     }).click();
 }

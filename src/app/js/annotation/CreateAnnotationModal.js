@@ -30,6 +30,7 @@ import { PreviousButton } from './PreviousButton';
 import { AUTHOR_STEP, COMMENT_STEP, TARGET_STEP, VALUE_STEP } from './steps';
 import { useContributorCache } from './useContributorCache';
 import { useReCaptcha } from './useReCaptacha';
+import { CreateAnnotationTitle } from './CreateannotationTitle';
 
 const isRequiredFieldValid = (formState, fieldName) => {
     const fieldState = formState.fieldMeta[fieldName];
@@ -239,11 +240,11 @@ export function CreateAnnotationModal({
                 </form.Field>
                 <Stack gap={2}>
                     <Stack gap={1} direction="row" alignItems="center">
-                        <Typography variant="h6" color="text.gray">
-                            {translate('annotation_annotate_field', {
-                                field: field.label,
-                            })}
-                        </Typography>
+                        <CreateAnnotationTitle
+                            fieldLabel={field.label}
+                            form={form}
+                            step={currentStep}
+                        />
                         <Box flexGrow={1} />
                         <IconButton
                             onClick={handleOpenConfirm}
