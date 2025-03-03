@@ -187,8 +187,11 @@ export function checkFieldAnnotations({
             .should('have.text', annotation.status);
     });
 
-    cy.findByLabelText('close').click();
+    cy.findAllByLabelText('close').then((elements) => {
+        cy.wrap(elements[elements.length - 1]).click();
+    });
     cy.findByText('Cancel').click();
+    cy.findByRole('button', { name: 'close' }).click();
 }
 
 export function createSingleValueAnnotation({

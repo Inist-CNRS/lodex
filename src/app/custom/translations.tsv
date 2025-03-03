@@ -1210,6 +1210,8 @@
 "error_sortDir_invalid"	"The sort order is not valid"	"L'ordre de tri n'est pas valide"
 "annotations"	"Annotations"	"Annotations"
 "annotations_export"	"Export the annotations"	"Exporter les annotations"
+"annotation_cancel_confirm_title"	"Cancel the creation of the annotation"	"Annuler la création de l'annotation"
+"annotation_cancel_confirm_content"	"The data entered will be lost. Are you sure you want to cancel the creation of the annotation?"	"Les données saisies seront perdues. Êtes-vous sûr de vouloir annuler la création de l'annotation ?"
 "annotation_create_button_label"	"Add an annotation to the %{field} field"	"Ajouter une annotation au champ %{field}"
 "annotation_create_success"	"Your suggestion has been sent. We thank you for your contribution."	"Votre suggestion a bien été transmise. Nous vous remercions pour votre contribution."
 "annotation_create_error"	"Failed to create annotation"	"Une erreur est survenue lors de la création de l'annotation"
