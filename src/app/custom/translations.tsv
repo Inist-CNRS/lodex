@@ -1236,7 +1236,6 @@
 "annotation_resource"	"Resource title"	"Titre de la ressource"
 "annotation_comment"	"Contributor Comment"	"Commentaire du contributeur"
 "annotation_comment_target_title"	"Comment the section"	"Commenter la section"
-"annotation_comment_target_value"	"Comment a value"	"Commenter une valeur"
 "annotation_initial_value"	"Initial value"	"Valeur d'origine"
 "annotation_proposed_value"	"Proposed value |||| Proposed values"	"Valeur proposée |||| Valeurs proposées"
 "annotation_authorName"	"Contributor"	"Contributeur"
