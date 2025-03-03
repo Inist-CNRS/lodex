@@ -1,13 +1,7 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import React from 'react';
 import { TestI18N } from '../i18n/I18NContext';
-import {
-    AUTHOR_STEP,
-    COMMENT_STEP,
-    KIND_STEP,
-    TARGET_STEP,
-    VALUE_STEP,
-} from './steps';
+import { AUTHOR_STEP, COMMENT_STEP, TARGET_STEP, VALUE_STEP } from './steps';
 import { NextButton } from './NextButton';
 
 const renderNextButton = (props) => {
@@ -38,15 +32,6 @@ describe('NextButton', () => {
         });
     });
 
-    describe('KIND_STEP', () => {
-        it('should render no button when currentStep is KIND_STEP', () => {
-            renderNextButton({
-                currentStep: KIND_STEP,
-            });
-            expect(screen.queryByText('validate')).not.toBeInTheDocument();
-            expect(screen.queryByText('next')).not.toBeInTheDocument();
-        });
-    });
     describe('AUTHOR_STEP', () => {
         it('should display enabled validate button when and isAuthorStepValid is true', async () => {
             renderNextButton({
