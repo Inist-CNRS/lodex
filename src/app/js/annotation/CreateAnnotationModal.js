@@ -240,7 +240,9 @@ export function CreateAnnotationModal({
                 <Stack gap={2}>
                     <Stack gap={1} direction="row" alignItems="center">
                         <Typography variant="h6" color="text.gray">
-                            {translate('annotation_add_comment')}
+                            {translate('annotation_annotate_field', {
+                                field: field.label,
+                            })}
                         </Typography>
                         <Box flexGrow={1} />
                         <IconButton
