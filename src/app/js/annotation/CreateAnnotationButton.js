@@ -129,8 +129,6 @@ export function CreateAnnotationButton({ field, initialValue = null }) {
         return null;
     }
 
-    const forceButtonDisplay = isTooltipOpen || isModalOpen;
-
     if (!canAnnotate) {
         return null;
     }
@@ -149,27 +147,6 @@ export function CreateAnnotationButton({ field, initialValue = null }) {
                         onClick={handleOpenModal}
                         aria-label={buttonLabel}
                         ref={anchorButton}
-                        sx={{
-                            '.property_value_item &': {
-                                position: 'absolute',
-                                opacity: forceButtonDisplay ? 1 : 0,
-                                top: '-8px',
-                                right: '-40px',
-                                transition: 'opacity 0.5s ease-out',
-                                zIndex: 1,
-                            },
-                            'li:hover &, .property_value_item:hover &': {
-                                opacity: 1,
-                            },
-                            '.list-format-unordered_flat_li &': {
-                                backgroundColor: (theme) =>
-                                    theme.palette.background.default,
-                            },
-                            '.property_value_heading &, .property_value_ribbon &':
-                                {
-                                    top: 'calc(50% - 16px)',
-                                },
-                        }}
                         onMouseEnter={handleShowTooltip}
                         onMouseLeave={handleHideTooltip}
                     >
