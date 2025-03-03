@@ -325,14 +325,6 @@ describe('CreateAnnotationModal', () => {
             await waitFor(() => {
                 fireEvent.click(
                     screen.getByRole('menuitem', {
-                        name: 'annotation_comment_target_value',
-                    }),
-                );
-            });
-
-            await waitFor(() => {
-                fireEvent.click(
-                    screen.getByRole('menuitem', {
                         name: 'annotation_remove_content',
                     }),
                 );
@@ -489,9 +481,6 @@ describe('CreateAnnotationModal', () => {
                 );
 
                 fireEvent.click(
-                    screen.queryByText('annotation_comment_target_value'),
-                );
-                fireEvent.click(
                     screen.queryByText('annotation_correct_content'),
                 );
                 expect(
@@ -557,9 +546,6 @@ describe('CreateAnnotationModal', () => {
                     />,
                 );
 
-                fireEvent.click(
-                    screen.queryByText('annotation_comment_target_value'),
-                );
                 fireEvent.click(screen.queryByText('annotation_add_content'));
                 expect(
                     screen.queryByRole('tab', {
@@ -955,12 +941,6 @@ describe('CreateAnnotationModal', () => {
             />,
         );
 
-        fireEvent.click(
-            screen.getByRole('menuitem', {
-                name: 'annotation_comment_target_value',
-            }),
-        );
-
         await waitFor(() => {
             fireEvent.click(
                 screen.getByRole('menuitem', {
@@ -1023,12 +1003,6 @@ describe('CreateAnnotationModal', () => {
                 initialValue={['firstValue', 'secondValue']}
                 isFieldValueAnnotable={true}
             />,
-        );
-
-        fireEvent.click(
-            screen.getByRole('menuitem', {
-                name: 'annotation_comment_target_value',
-            }),
         );
 
         await waitFor(() => {
@@ -1111,12 +1085,6 @@ describe('CreateAnnotationModal', () => {
             />,
         );
 
-        fireEvent.click(
-            screen.getByRole('menuitem', {
-                name: 'annotation_comment_target_value',
-            }),
-        );
-
         await waitFor(() => {
             fireEvent.click(
                 screen.getByRole('menuitem', {
@@ -1191,12 +1159,6 @@ describe('CreateAnnotationModal', () => {
                 initialValue={['firstValue', 'secondValue']}
                 isFieldValueAnnotable={true}
             />,
-        );
-
-        fireEvent.click(
-            screen.getByRole('menuitem', {
-                name: 'annotation_comment_target_value',
-            }),
         );
 
         await waitFor(() => {
@@ -1291,12 +1253,6 @@ describe('CreateAnnotationModal', () => {
             />,
         );
 
-        fireEvent.click(
-            screen.getByRole('menuitem', {
-                name: 'annotation_comment_target_value',
-            }),
-        );
-
         await waitFor(() => {
             fireEvent.click(
                 screen.getByRole('menuitem', {
@@ -1370,12 +1326,6 @@ describe('CreateAnnotationModal', () => {
                 initialValue={['firstValue', 'secondValue']}
                 isFieldValueAnnotable={true}
             />,
-        );
-
-        fireEvent.click(
-            screen.getByRole('menuitem', {
-                name: 'annotation_comment_target_value',
-            }),
         );
 
         await waitFor(() => {
