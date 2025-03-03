@@ -30,7 +30,7 @@ import { PreviousButton } from './PreviousButton';
 import { AUTHOR_STEP, COMMENT_STEP, TARGET_STEP, VALUE_STEP } from './steps';
 import { useContributorCache } from './useContributorCache';
 import { useReCaptcha } from './useReCaptacha';
-import { CreateAnnotationTitle } from './CreateannotationTitle';
+import { CreateAnnotationTitle } from './CreateAnnotationTitle';
 
 const isRequiredFieldValid = (formState, fieldName) => {
     const fieldState = formState.fieldMeta[fieldName];
