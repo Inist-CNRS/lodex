@@ -219,14 +219,6 @@ describe('CreateAnnotationButton', () => {
         await waitFor(() => {
             fireEvent.click(
                 screen.getByRole('menuitem', {
-                    name: 'annotation_comment_target_value',
-                }),
-            );
-        });
-
-        await waitFor(() => {
-            fireEvent.click(
-                screen.getByRole('menuitem', {
                     name: 'annotation_remove_content',
                 }),
             );
