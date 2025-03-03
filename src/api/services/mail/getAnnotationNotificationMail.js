@@ -1,5 +1,5 @@
-import translations from '../translations';
 import Polyglot from 'node-polyglot';
+import translations from '../translations';
 
 export const getAnnotationNotificationMail = ({
     locale = 'en',
@@ -25,7 +25,7 @@ export const getAnnotationNotificationMail = ({
               })
             : null,
         polyglot.t('notification_new_annotation_email_type', {
-            type: annotationWithDetails.kind,
+            type: polyglot.t(annotationWithDetails.kind),
         }),
         annotationWithDetails.field
             ? polyglot.t('notification_new_annotation_email_field', {
