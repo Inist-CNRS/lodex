@@ -114,28 +114,33 @@ export const AnnotationList = ({ annotations, field }) => {
                     {getAnnotationTitle(annotations[0], translate)}
                 </Typography>
             </Stack>
-            <ButtonGroup>
-                <Button
-                    onClick={() => setMode('all')}
-                    variant={mode === 'all' ? 'contained' : 'outlined'}
-                >
-                    {translate('all_annotation', {
-                        smart_count: annotations.length,
-                    })}
-                </Button>
-                <Button
-                    onClick={() => {
-                        setMode('mine');
-                    }}
-                    startIcon={<AttributionIcon />}
-                    variant={mode === 'mine' ? 'contained' : 'outlined'}
-                    disabled={myAnnotations.length === 0}
-                >
-                    {translate('annotation_sent_by_me', {
-                        smart_count: myAnnotations.length,
-                    })}
-                </Button>
-            </ButtonGroup>
+            <Stack direction="row" gap={1} alignItems="center">
+                <Typography>
+                    {translate('annotation_filter_by_sender')}
+                </Typography>
+                <ButtonGroup>
+                    <Button
+                        onClick={() => setMode('all')}
+                        variant={mode === 'all' ? 'contained' : 'outlined'}
+                    >
+                        {translate('all_annotation', {
+                            smart_count: annotations.length,
+                        })}
+                    </Button>
+                    <Button
+                        onClick={() => {
+                            setMode('mine');
+                        }}
+                        startIcon={<AttributionIcon />}
+                        variant={mode === 'mine' ? 'contained' : 'outlined'}
+                        disabled={myAnnotations.length === 0}
+                    >
+                        {translate('annotation_sent_by_me', {
+                            smart_count: myAnnotations.length,
+                        })}
+                    </Button>
+                </ButtonGroup>
+            </Stack>
             <Box>
                 {(mode === 'all' ? annotations : myAnnotations).map(
                     (annotation) => (
