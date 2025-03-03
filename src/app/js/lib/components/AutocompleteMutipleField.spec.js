@@ -26,7 +26,7 @@ function TestAutocompleteMultipleField(props) {
 }
 
 TestAutocompleteMultipleField.propTypes = {
-    freeSolo: AutocompleteMultipleField.propTypes.freeSolo,
+    supportsNewValues: AutocompleteMultipleField.propTypes.supportsNewValues,
 };
 
 describe('AutocompleteMultipleField', () => {
@@ -134,7 +134,9 @@ describe('AutocompleteMultipleField', () => {
 
     describe('free solo support', () => {
         it('should support to add a new value', async () => {
-            const wrapper = render(<TestAutocompleteMultipleField freeSolo />);
+            const wrapper = render(
+                <TestAutocompleteMultipleField supportsNewValues />,
+            );
 
             const textbox = wrapper.getByRole('textbox', {
                 name: 'Name',
@@ -165,7 +167,7 @@ describe('AutocompleteMultipleField', () => {
             ).toBeInTheDocument();
         });
 
-        it('should not support to have a new value if not freeSolo', async () => {
+        it('should not support to have a new value if does not support new values', async () => {
             const wrapper = render(<TestAutocompleteMultipleField />);
 
             const textbox = wrapper.getByRole('textbox', {

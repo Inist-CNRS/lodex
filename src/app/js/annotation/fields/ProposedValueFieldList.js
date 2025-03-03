@@ -24,7 +24,7 @@ export function ProposedValueFieldList({
                 label={label}
                 options={options}
                 required
-                freeSolo={supportsNewValues}
+                supportsNewValues={supportsNewValues}
             />
         );
     }
@@ -36,7 +36,7 @@ export function ProposedValueFieldList({
             label={label}
             options={options}
             required
-            freeSolo={supportsNewValues}
+            supportsNewValues={supportsNewValues}
         />
     );
 }
