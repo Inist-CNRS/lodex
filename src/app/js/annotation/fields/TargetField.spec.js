@@ -34,7 +34,7 @@ describe('TargetField', () => {
     it('should display choice to comment, correct, add or remove', () => {
         renderTargetField({});
         expect(
-            screen.getByText('annotation_comment_target_title'),
+            screen.getByText('annotation_annotate_field_choice'),
         ).toBeInTheDocument();
         expect(
             screen.getByText('annotation_correct_content'),
@@ -53,7 +53,7 @@ describe('TargetField', () => {
         });
         act(() => {
             fireEvent.click(
-                screen.getByText('annotation_comment_target_title'),
+                screen.getByText('annotation_annotate_field_choice'),
             );
         });
         expect(goToStep).toHaveBeenCalledWith(COMMENT_STEP);
