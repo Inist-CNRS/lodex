@@ -306,6 +306,7 @@ export function CreateAnnotationModal({
                                     <AnnotationCommentStep
                                         form={form}
                                         field={field}
+                                        initialValue={initialValue}
                                     />
                                 </Stack>
                             </Stack>

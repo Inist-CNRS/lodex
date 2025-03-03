@@ -51,6 +51,25 @@ describe('AnnotationCommentStep', () => {
         const wrapper = renderAnnotationCommentStep({ kind: 'removal' });
         expect(
             wrapper.queryByText(
+                'annotation_remove_content+{"value":"initialValue"}',
+            ),
+        ).toBeInTheDocument();
+        expect(
+            wrapper.queryByLabelText('annotation.comment *'),
+        ).toBeInTheDocument();
+        expect(
+            wrapper.queryByRole('textbox', {
+                name: 'annotation.proposedValue *',
+            }),
+        ).not.toBeInTheDocument();
+    });
+    it('should render annotate value message when initialValue is an array', () => {
+        const wrapper = renderAnnotationCommentStep({
+            kind: 'removal',
+            initialValue: ['initial', 'value'],
+        });
+        expect(
+            wrapper.queryByText(
                 'annotation_remove_value+{"value":"initialValue"}',
             ),
         ).toBeInTheDocument();
