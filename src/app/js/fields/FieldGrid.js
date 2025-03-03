@@ -191,7 +191,6 @@ const FieldGridItem = connect((state, { field }) => ({
                         handleToggleSelectedField={handleToggleSelectedField}
                     />
                 </Box>
-                <Box flexGrow={1} />
                 {field.annotable === false && (
                     <Tooltip title={translate('annotation_disabled_tooltip')}>
                         <Box
