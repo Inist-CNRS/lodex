@@ -1231,7 +1231,7 @@
 "annotation_query_perPage_length"	"The number of elements per page must be between 1 and 100"	"Le nombre d'éléments par page doit être compris entre 1 et 100"
 "field_annotable"	"This field can be annotated"	"Ce champ peut être annoté"
 "annotation_step_target"	"Target choice"	"Choix de la cible"
-"annotation_step_value"	"Value choice"	"Choix de la valeur"
+"annotation_step_value"	"Choose the value to annotate"	"Choisir la valeur à annoter"
 "annotation_step_comment"	"Comment input"	"Saisie du commentaire"
 "annotation_step_author"	"Author input"	"Saisie de l'auteur"
 "annotations"	"Annotations"	"Annotations"
