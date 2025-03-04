@@ -3,7 +3,7 @@
         "node": ">= 16"
     },
     "name": "lodex",
-    "version": "15.4.4",
+    "version": "15.4.5",
     "description": "",
     "main": "src/api/index.js",
     "browser": {
