@@ -2,7 +2,10 @@ import { useForm } from '@tanstack/react-form';
 import React from 'react';
 import { render } from '../../../test-utils';
 import { TestI18N } from '../i18n/I18NContext';
-import { AnnotationCommentStep } from './AnnotationCommentStep';
+import {
+    AnnotationCommentStep,
+    CommentDescription,
+} from './AnnotationCommentStep';
 
 const renderAnnotationCommentStep = ({
     kind,
@@ -56,7 +59,7 @@ describe('AnnotationCommentStep', () => {
         const wrapper = renderAnnotationCommentStep({ kind: 'removal' });
         expect(
             wrapper.queryByText(
-                'annotation_remove_content+{"value":"initialValue"}',
+                'annotation_remove_content_from+{"value":"initialValue"}',
             ),
         ).toBeInTheDocument();
         expect(
@@ -155,5 +158,135 @@ describe('AnnotationCommentStep', () => {
                 name: 'annotation.proposedValue *',
             }),
         ).toBeInTheDocument();
+    });
+
+    describe('CommentDescription', () => {
+        function TestCommentDescription(props) {
+            return (
+                <TestI18N>
+                    <CommentDescription {...props} />
+                </TestI18N>
+            );
+        }
+
+        TestCommentDescription.propTypes = CommentDescription.propTypes;
+
+        it('should render annotation_remove_content_from when kind is removal field not an url and initialValue not an array', () => {
+            const wrapper = render(
+                <TestCommentDescription
+                    kind="removal"
+                    annotationInitialValue="initialValue"
+                    fieldInitialValue="initialValue"
+                    isFieldAnUrl={false}
+                />,
+            );
+            expect(
+                wrapper.queryByText(
+                    'annotation_remove_content_from+{"value":"initialValue"}',
+                ),
+            ).toBeInTheDocument();
+        });
+
+        it('should render annotation_remove_value when kind is removal field not an url and initialValue is an array', () => {
+            const wrapper = render(
+                <TestCommentDescription
+                    kind="removal"
+                    annotationInitialValue="initial"
+                    fieldInitialValue={['initial', 'value']}
+                    isFieldAnUrl={false}
+                />,
+            );
+            expect(
+                wrapper.queryByText(
+                    'annotation_remove_value+{"value":"initial"}',
+                ),
+            ).toBeInTheDocument();
+        });
+
+        it('should render annotation_remove_content when kind is removal field is an url', () => {
+            const wrapper = render(
+                <TestCommentDescription
+                    kind="removal"
+                    annotationInitialValue="initialValue"
+                    fieldInitialValue="initialValue"
+                    isFieldAnUrl
+                />,
+            );
+            expect(
+                wrapper.queryByText('annotation_remove_content'),
+            ).toBeInTheDocument();
+        });
+
+        it('should render annotation_remove_content when kind is removal field is an url even when initialValue is an array', () => {
+            const wrapper = render(
+                <TestCommentDescription
+                    kind="removal"
+                    annotationInitialValue={['initialValue']}
+                    fieldInitialValue="initialValue"
+                    isFieldAnUrl
+                />,
+            );
+            expect(
+                wrapper.queryByText('annotation_remove_content'),
+            ).toBeInTheDocument();
+        });
+
+        it('should render annotation_correct_content when kind is correction and field is an url', () => {
+            const wrapper = render(
+                <TestCommentDescription
+                    kind="correction"
+                    annotationInitialValue="initialValue"
+                    fieldInitialValue="initialValue"
+                    isFieldAnUrl
+                />,
+            );
+            expect(
+                wrapper.queryByText('annotation_correct_content'),
+            ).toBeInTheDocument();
+        });
+
+        it('should render annotation_correct_value when kind is correction and field not an url', () => {
+            const wrapper = render(
+                <TestCommentDescription
+                    kind="correction"
+                    annotationInitialValue="initialValue"
+                    fieldInitialValue="initialValue"
+                    isFieldAnUrl={false}
+                />,
+            );
+            expect(
+                wrapper.queryByText(
+                    'annotation_correct_value+{"value":"initialValue"}',
+                ),
+            ).toBeInTheDocument();
+        });
+
+        it('should render annotation_add_value when kind is addition', () => {
+            const wrapper = render(
+                <TestCommentDescription
+                    kind="addition"
+                    annotationInitialValue="initialValue"
+                    fieldInitialValue="initialValue"
+                    isFieldAnUrl
+                />,
+            );
+            expect(
+                wrapper.queryByText('annotation_add_value'),
+            ).toBeInTheDocument();
+        });
+
+        it('should render annotation_general_comment when kind is comment', () => {
+            const wrapper = render(
+                <TestCommentDescription
+                    kind="comment"
+                    annotationInitialValue="initialValue"
+                    fieldInitialValue="initialValue"
+                    isFieldAnUrl={false}
+                />,
+            );
+            expect(
+                wrapper.queryByText('annotation_general_comment'),
+            ).toBeInTheDocument();
+        });
     });
 });

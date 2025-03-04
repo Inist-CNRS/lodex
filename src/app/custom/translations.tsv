@@ -1288,7 +1288,8 @@
 "annotation_status_parking"	"Parking"	"Parking"
 "annotation_correct_value"	Correct "%{value}"	Corriger "%{value}"
 "annotation_remove_value"	Remove "%{value}"	Retirer "%{value}"
-"annotation_remove_content"	Remove content from "%{value}"	Retirer du contenu de "%{value}"
+"annotation_remove_content"	Remove content	Retirer du contenu
+"annotation_remove_content_from"	Remove content from "%{value}"	Retirer du contenu de "%{value}"
 "annotation_add_value"	"Add Value"	"Ajouter une valeur"
 "annotation_general_comment"	"General commentary"	"Commentaire général"
 "annotation_choose_value"	"Choose value to annotate"	"Choisir la valeur à annoter"
