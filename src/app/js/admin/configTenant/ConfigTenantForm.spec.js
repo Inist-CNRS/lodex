@@ -185,6 +185,48 @@ describe('ConfigTenantForm', () => {
 
         expect(handleSave).toHaveBeenCalledTimes(0);
     });
+
+    it('should accept no notification email', async () => {
+        const handleSave = jest.fn();
+        const wrapper = render(
+            <TestConfigTenantFormView
+                initialConfig={{
+                    ...configTenant,
+                    notificationEmail: 'admin@inist.fr',
+                }}
+                availableThemes={availableThemes}
+                handleCancel={() => {}}
+                handleSave={handleSave}
+            />,
+        );
+
+        await waitFor(() => {
+            fireEvent.change(
+                wrapper.getAllByLabelText('notification_email').at(0),
+                {
+                    target: { value: '' },
+                },
+            );
+        });
+        expect(
+            wrapper.getAllByLabelText('notification_email').at(0),
+        ).toHaveValue('');
+        expect(
+            wrapper.queryByText('error_invalid_email'),
+        ).not.toBeInTheDocument();
+
+        expect(wrapper.queryByText('save')).toBeInTheDocument();
+
+        await waitFor(() => {
+            fireEvent.click(wrapper.getByText('save'));
+        });
+
+        expect(handleSave).toHaveBeenCalledTimes(1);
+        expect(handleSave).toHaveBeenCalledWith({
+            ...configTenant,
+            notificationEmail: null,
+        });
+    });
     it('should allow to update everything', async () => {
         const handleSave = jest.fn();
         const wrapper = render(

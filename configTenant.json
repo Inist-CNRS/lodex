@@ -15,6 +15,7 @@
         "recaptchaClientKey": "",
         "recaptchaSecretKey": ""
     },
+    "notification_email": null,
     "enrichmentBatchSize": 10,
     "front": {
         "theme": {},
