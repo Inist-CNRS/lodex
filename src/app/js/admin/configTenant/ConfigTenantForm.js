@@ -70,7 +70,7 @@ const configTenantSchema = z.object({
         .email({
             message: 'error_invalid_email',
         })
-        .optional(),
+        .nullish(),
 });
 
 export const ConfigTenantFormView = ({
