@@ -1286,7 +1286,8 @@
 "annotation_status_parking"	"Parking"	"Parking"
 "annotation_correct_value"	Correct "%{value}"	Corriger "%{value}"
 "annotation_remove_value"	Remove "%{value}"	Retirer "%{value}"
-"annotation_remove_content"	Remove content from "%{value}"	Retirer du contenu de "%{value}"
+"annotation_remove_content"	Remove content	Retirer du contenu
+"annotation_remove_content_from"	Remove content from "%{value}"	Retirer du contenu de "%{value}"
 "annotation_add_value"	"Add Value"	"Ajouter une valeur"
 "annotation_general_comment"	"General commentary"	"Commentaire général"
 "annotation_choose_value"	"Choose value to annotate"	"Choisir la valeur à annoter"
@@ -1305,7 +1306,7 @@
 "annotations_import_success"	"%{filename} file have been imported successfully."	"Le fichier %{filename} a été importé avec succès."
 "annotations_import_failed_imports"	"%{smart_count} annotation failed to be imported: %{filename}. |||| %{smart_count} annotations failed to be imported: %{filename}."	"%{smart_count} annotation n'a pas pu être importée : %{filename} |||| %{smart_count} annotations n'ont pas pu être importées : %{filename}."
 "annotations_import_error"	"An error occured while importing annotations, please try again later."	"Une erreur est survenue lors de l'import des annotations, merci de réessayer ultérieurement."
-"annotation_remove_content"	"Remove some content"	"Retirer du contenu"
+"annotation_remove_content_choice"	"Remove some content"	"Retirer du contenu"
 "annotation_correct_content"	"Correct some content"	"Corriger du contenu"
 "annotation_add_content"	"Add some content"	"Ajouter du contenu"
 "annotation_annotate_field_choice"	"Annotate the field"	"Annoter le champ"
