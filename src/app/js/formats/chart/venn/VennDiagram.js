@@ -24,8 +24,6 @@ const VennDiagram = ({ input, width, height, colorSet }) => {
             }
             return {sets: [item.source, item.target], size: item.weight };
         });
-    console.dir(sets);
-
     useEffect(() => {
         const buildVenn = venn.VennDiagram().width(width).height(height);
 
