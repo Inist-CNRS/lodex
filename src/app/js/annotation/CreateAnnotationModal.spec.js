@@ -133,46 +133,6 @@ describe('CreateAnnotationModal', () => {
             ).toBeDisabled();
         });
 
-        it('should call onClose when clicking on cancel button', async () => {
-            render(
-                <TestModal
-                    onClose={onClose}
-                    onSubmit={onSubmit}
-                    isSubmitting={false}
-                />,
-            );
-
-            await waitFor(() => {
-                fireEvent.click(screen.getByRole('button', { name: 'cancel' }));
-            });
-
-            await waitFor(() => {
-                fireEvent.click(screen.getByRole('button', { name: 'close' }));
-            });
-
-            expect(onClose).toHaveBeenCalledTimes(1);
-        });
-
-        it('should call onClose when clicking on close button', async () => {
-            render(
-                <TestModal
-                    onClose={onClose}
-                    onSubmit={onSubmit}
-                    isSubmitting={false}
-                />,
-            );
-
-            await waitFor(() => {
-                fireEvent.click(screen.getByLabelText('close'));
-            });
-
-            await waitFor(() => {
-                fireEvent.click(screen.getByRole('button', { name: 'close' }));
-            });
-
-            expect(onClose).toHaveBeenCalledTimes(1);
-        });
-
         it('should submit form values', async () => {
             render(
                 <TestModal
@@ -360,6 +320,64 @@ describe('CreateAnnotationModal', () => {
                 screen.getByRole('button', { name: 'next' }),
             ).not.toBeDisabled();
         });
+    });
+
+    describe('close / cancel', () => {
+        it.each([['close', 'cancel']])(
+            'should call onClose when clicking on %s button when form is not dirty',
+            async (label) => {
+                render(
+                    <TestModal
+                        onClose={onClose}
+                        onSubmit={onSubmit}
+                        isSubmitting={false}
+                        isFieldValueAnnotable={true}
+                    />,
+                );
+
+                await waitFor(() => {
+                    fireEvent.click(screen.getByLabelText(label));
+                });
+
+                expect(onClose).toHaveBeenCalledTimes(1);
+            },
+        );
+
+        it.each([['close', 'cancel']])(
+            'should call onClose after confirm when clicking on %s button when form is dirty',
+            async (label) => {
+                render(
+                    <TestModal
+                        onClose={onClose}
+                        onSubmit={onSubmit}
+                        isSubmitting={false}
+                        isFieldValueAnnotable={true}
+                    />,
+                );
+
+                await waitFor(() => {
+                    fireEvent.click(
+                        screen.getByText('annotation_annotate_field_choice'),
+                    );
+                });
+
+                await waitFor(() => {
+                    fireEvent.click(screen.getByText('back'));
+                });
+
+                await waitFor(() => {
+                    fireEvent.click(screen.getByLabelText(label));
+                });
+
+                await waitFor(() => {
+                    fireEvent.click(
+                        screen.getByRole('button', { name: 'close' }),
+                    );
+                });
+
+                expect(onClose).toHaveBeenCalledTimes(1);
+            },
+        );
     });
 
     describe('comment tab', () => {

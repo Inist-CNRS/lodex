@@ -1254,7 +1254,7 @@
 "annotation_field_internal_name"	"Field Internal Name"	"Nom interne du champ"
 "annotation_field_section"	"Field"	"Champ"
 "annotation_comment_section"	"Contributor Comment"	"Commentaire du contributeur"
-"annotation_admin_comment_section"	"Administrator Comment"	"Commentaire de l'admin"
+"annotation_admin_comment_section"	"Administrator Comment"	"Commentaire de l'administrateur"
 "annotation_contributor_section"	"Contributor"	"Contributeur"
 "annotation_complementary_infos_section"	"Complementary Informations"	"Informations complémentaires"
 "annotation_author_email"	"Email"	"E-mail"

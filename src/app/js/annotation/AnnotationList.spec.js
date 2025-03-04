@@ -55,7 +55,7 @@ describe('AnnotationList', () => {
                 proposedValue: ['bar', 'baz'],
             };
             expect(getAnnotationSummaryValue(annotation)).toBe(
-                'foo -> bar baz',
+                'foo -> bar | baz',
             );
         });
         it('should should truncate the initialValue and proposed Value when they are longer than 16 characters', () => {
@@ -92,7 +92,7 @@ describe('AnnotationList', () => {
                 initialValue: [42, 'value'],
                 proposedValue: 'proposedValue',
             };
-            expect(getAnnotationSummaryValue(annotation)).toBe('42 value');
+            expect(getAnnotationSummaryValue(annotation)).toBe('42 | value');
         });
         it('should return the proposedValue when the annotation kind is addition', () => {
             const annotation = {
@@ -108,7 +108,9 @@ describe('AnnotationList', () => {
                 initialValue: 'initialValue',
                 proposedValue: ['foo', 'bar', 'baz'],
             };
-            expect(getAnnotationSummaryValue(annotation)).toBe('foo bar baz');
+            expect(getAnnotationSummaryValue(annotation)).toBe(
+                'foo | bar | baz',
+            );
         });
         it('should return an empty string as a fallback otherwise', () => {
             const annotation = {};
