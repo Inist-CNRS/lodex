@@ -297,14 +297,12 @@ export function CreateAnnotationModal({
                                 )}
                                 role="tab"
                             >
-                                {!initialValue && (
-                                    <Stack spacing={2}>
-                                        <OpenHistoryButton
-                                            field={field}
-                                            resourceUri={resourceUri}
-                                            openHistory={openHistory}
-                                        />
-                                    </Stack>
+                                {!isFieldValueAnnotable && (
+                                    <OpenHistoryButton
+                                        field={field}
+                                        resourceUri={resourceUri}
+                                        openHistory={openHistory}
+                                    />
                                 )}
                                 <Stack spacing={2}>
                                     <AnnotationCommentStep
