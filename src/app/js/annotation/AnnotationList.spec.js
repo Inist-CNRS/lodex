@@ -6,11 +6,18 @@ import {
     getAnnotationSummaryValue,
     getAnnotationTitle,
 } from './AnnotationList';
+import { MODE_ALL } from './HistoryDrawer.const';
 
 function TestAnnotationList({ field, annotations }) {
+    const [mode, setMode] = React.useState(MODE_ALL);
     return (
         <TestI18N>
-            <AnnotationList annotations={annotations} field={field} />
+            <AnnotationList
+                mode={mode}
+                setMode={setMode}
+                annotations={annotations}
+                field={field}
+            />
         </TestI18N>
     );
 }
@@ -161,7 +168,7 @@ describe('AnnotationList', () => {
         it('should display the annotation summaries', () => {
             const annotations = [
                 {
-                    _id: 'annotationId',
+                    _id: 'annotationId1',
                     kind: 'comment',
                     comment: 'A comment',
                     proposedValue: null,
@@ -173,7 +180,7 @@ describe('AnnotationList', () => {
                     isMine: false,
                 },
                 {
-                    _id: 'annotationId',
+                    _id: 'annotationId2',
                     kind: 'addition',
                     comment: 'Add this',
                     proposedValue: 'this',
@@ -185,7 +192,7 @@ describe('AnnotationList', () => {
                     isMine: true,
                 },
                 {
-                    _id: 'annotationId',
+                    _id: 'annotationId3',
                     kind: 'removal',
                     comment: 'remove that',
                     proposedValue: null,
@@ -197,7 +204,7 @@ describe('AnnotationList', () => {
                     isMine: false,
                 },
                 {
-                    _id: 'annotationId',
+                    _id: 'annotationId4',
                     kind: 'correction',
                     comment: 'correct that with this',
                     proposedValue: 'this',

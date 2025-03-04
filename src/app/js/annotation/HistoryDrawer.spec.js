@@ -1,10 +1,10 @@
 import { createTheme, ThemeProvider } from '@mui/material';
 import { render } from '@testing-library/react';
-import PropTypes from 'prop-types';
 import React from 'react';
 import defaultTheme from '../../custom/themes/default/defaultTheme';
 import { TestI18N } from '../i18n/I18NContext';
 import { HistoryDrawer } from './HistoryDrawer';
+import { MODE_ALL, MODE_CLOSED } from './HistoryDrawer.const';
 import { useGetFieldAnnotation } from './useGetFieldAnnotation';
 
 jest.mock('./useGetFieldAnnotation', () => ({
@@ -17,15 +17,16 @@ jest.mock('./useGetFieldAnnotation', () => ({
 
 const theme = createTheme(defaultTheme);
 
-function TestHistoryDrawer({ open, onClose }) {
+function TestHistoryDrawer({ mode: defaultMode }) {
+    const [mode, setMode] = React.useState(defaultMode);
     return (
         <ThemeProvider theme={theme}>
             <TestI18N>
                 <HistoryDrawer
                     field={{ _id: 'fieldId', label: 'fieldLabel' }}
                     resourceUri="resourceUri"
-                    open={open}
-                    onClose={onClose}
+                    mode={mode}
+                    setMode={setMode}
                 />
             </TestI18N>
         </ThemeProvider>
@@ -33,8 +34,7 @@ function TestHistoryDrawer({ open, onClose }) {
 }
 
 TestHistoryDrawer.propTypes = {
-    open: PropTypes.bool.isRequired,
-    onClose: PropTypes.func.isRequired,
+    mode: HistoryDrawer.propTypes.mode,
 };
 
 describe('HistoryDrawer', () => {
@@ -46,7 +46,7 @@ describe('HistoryDrawer', () => {
             isLoading: false,
         });
         const wrapper = render(
-            <TestHistoryDrawer open={false} onClose={onClose} />,
+            <TestHistoryDrawer mode={MODE_CLOSED} onClose={onClose} />,
         );
         expect(useGetFieldAnnotation).toHaveBeenCalledWith(
             'fieldId',
@@ -56,12 +56,11 @@ describe('HistoryDrawer', () => {
         expect(wrapper.queryByText('loading')).not.toBeInTheDocument();
     });
 
-    it('should show annotations when open', () => {
-        const onClose = jest.fn();
+    it('should show annotations when mode is all', () => {
         useGetFieldAnnotation.mockReturnValue({
             data: [
                 {
-                    _id: 'annotationId',
+                    _id: 'annotationId1',
                     kind: 'comment',
                     comment: 'A comment',
                     proposedValue: null,
@@ -73,7 +72,7 @@ describe('HistoryDrawer', () => {
                     isMine: false,
                 },
                 {
-                    _id: 'annotationId',
+                    _id: 'annotationId2',
                     kind: 'addition',
                     comment: 'Add this',
                     proposedValue: 'this',
@@ -85,7 +84,7 @@ describe('HistoryDrawer', () => {
                     isMine: true,
                 },
                 {
-                    _id: 'annotationId',
+                    _id: 'annotationId3',
                     kind: 'removal',
                     comment: 'remove that',
                     proposedValue: null,
@@ -97,7 +96,7 @@ describe('HistoryDrawer', () => {
                     isMine: false,
                 },
                 {
-                    _id: 'annotationId',
+                    _id: 'annotationId4',
                     kind: 'correction',
                     comment: 'correct that with this',
                     proposedValue: 'this',
@@ -113,7 +112,9 @@ describe('HistoryDrawer', () => {
             isLoading: false,
         });
 
-        const wrapper = render(<TestHistoryDrawer open onClose={onClose} />);
+        const wrapper = render(<TestHistoryDrawer mode={MODE_ALL} />);
+        expect(wrapper.queryByRole('presentation')).toBeInTheDocument();
+
         expect(useGetFieldAnnotation).toHaveBeenCalledWith(
             'fieldId',
             'resourceUri',
@@ -184,13 +185,12 @@ describe('HistoryDrawer', () => {
     });
 
     it('should close the drawer when clicking on close button', () => {
-        const onClose = jest.fn();
         useGetFieldAnnotation.mockReturnValue({
             data: [],
             error: null,
             isLoading: false,
         });
-        const wrapper = render(<TestHistoryDrawer open onClose={onClose} />);
+        const wrapper = render(<TestHistoryDrawer mode={MODE_ALL} />);
         expect(useGetFieldAnnotation).toHaveBeenCalledWith(
             'fieldId',
             'resourceUri',
@@ -203,6 +203,6 @@ describe('HistoryDrawer', () => {
             })
             .click();
 
-        expect(onClose).toHaveBeenCalled();
+        expect(wrapper.queryByRole('presentation')).not.toBeInTheDocument();
     });
 });
