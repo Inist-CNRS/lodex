@@ -26,7 +26,7 @@ function TestAutocompleteMultipleField(props) {
 }
 
 TestAutocompleteMultipleField.propTypes = {
-    freeSolo: AutocompleteMultipleField.propTypes.freeSolo,
+    supportsNewValues: AutocompleteMultipleField.propTypes.supportsNewValues,
 };
 
 describe('AutocompleteMultipleField', () => {
@@ -134,7 +134,9 @@ describe('AutocompleteMultipleField', () => {
 
     describe('free solo support', () => {
         it('should support to add a new value', async () => {
-            const wrapper = render(<TestAutocompleteMultipleField freeSolo />);
+            const wrapper = render(
+                <TestAutocompleteMultipleField supportsNewValues />,
+            );
 
             const textbox = wrapper.getByRole('textbox', {
                 name: 'Name',
@@ -163,6 +165,44 @@ describe('AutocompleteMultipleField', () => {
                     name: 'Franck',
                 }),
             ).toBeInTheDocument();
+        });
+
+        it('should not support to have a new value if does not support new values', async () => {
+            const wrapper = render(<TestAutocompleteMultipleField />);
+
+            const textbox = wrapper.getByRole('textbox', {
+                name: 'Name',
+            });
+
+            await waitFor(() => {
+                fireEvent.mouseDown(textbox);
+            });
+
+            await waitFor(() => {
+                return userEvent.type(textbox, 'Franck');
+            });
+
+            await waitFor(() => {
+                expect(
+                    wrapper.getByText('autocomplete_no_options'),
+                ).toBeInTheDocument();
+            });
+
+            expect(
+                wrapper.queryByRole('option', {
+                    name: 'autocomplete_add+{"option":"Franck"}',
+                }),
+            ).not.toBeInTheDocument();
+
+            await waitFor(() => {
+                return fireEvent.blur(textbox);
+            });
+
+            expect(
+                wrapper.queryAllByRole('button', {
+                    name: 'Franck',
+                }),
+            ).toHaveLength(0);
         });
     });
 });

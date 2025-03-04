@@ -32,7 +32,7 @@ export function AutocompleteMultipleField({
     helperText,
     required,
     options,
-    freeSolo,
+    supportsNewValues,
 }) {
     const { translate } = useTranslate();
     const field = useField({ name, form });
@@ -84,7 +84,7 @@ export function AutocompleteMultipleField({
                         error={!!error}
                     />
                 )}
-                freeSolo={freeSolo}
+                freeSolo={supportsNewValues}
                 filterOptions={(options, params) => {
                     const filtered = filter(options, params);
 
@@ -92,7 +92,7 @@ export function AutocompleteMultipleField({
                     const isExisting = options.some(
                         (option) => inputValue === option.title,
                     );
-                    if (inputValue !== '' && !isExisting) {
+                    if (inputValue !== '' && !isExisting && supportsNewValues) {
                         filtered.push({
                             value: inputValue,
                             title: translate('autocomplete_add', {
@@ -136,5 +136,5 @@ AutocompleteMultipleField.propTypes = {
     helperText: PropTypes.string,
     required: PropTypes.bool,
     options: PropTypes.arrayOf(PropTypes.string),
-    freeSolo: PropTypes.bool,
+    supportsNewValues: PropTypes.bool,
 };
