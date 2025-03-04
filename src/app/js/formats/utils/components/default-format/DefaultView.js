@@ -54,12 +54,7 @@ const DefaultView = ({ className, resource, field, fieldStatus, shrink }) => {
         <Typography
             component="span"
             className="property_value_item"
-            sx={{
-                ...styles[fieldStatus],
-                position: 'relative',
-                display: 'inline-block',
-                width: 'fit-content',
-            }}
+            sx={styles[fieldStatus]}
         >
             <span className={className}>{text}</span>
         </Typography>
