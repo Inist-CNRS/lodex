@@ -8,9 +8,8 @@ import {
     ListItemText,
 } from '@mui/material';
 import ErrorIcon from '@mui/icons-material/Error';
-import { translate } from '../../i18n/I18NContext';
+import { translate, useTranslate } from '../../i18n/I18NContext';
 import compose from 'recompose/compose';
-import { polyglot as polyglotPropType } from '../../propTypes';
 
 import FacetActionsContext from './FacetActionsContext';
 import { fromFacet } from '../selectors';
@@ -34,14 +33,15 @@ const styles = {
 const onCheck = (toggleFacetValue, name, facetValue) => () =>
     toggleFacetValue({ name, facetValue });
 
-const FacetValueItem = ({ name, facetValue, isChecked, p: polyglot }) => {
+export const FacetValueItemView = ({ name, facetValue, isChecked }) => {
+    const { translate } = useTranslate();
     if (facetValue.value instanceof Object) {
         return (
             <ListItem className="facet-value-item" sx={styles.listItem}>
                 <ListItemText>
                     <div style={{ display: 'flex' }}>
                         <ErrorIcon sx={{ marginRight: 6 }} />
-                        {polyglot.t('facet_invalid_format')}
+                        {translate('facet_invalid_format')}
                     </div>
                 </ListItemText>
             </ListItem>
@@ -66,12 +66,16 @@ const FacetValueItem = ({ name, facetValue, isChecked, p: polyglot }) => {
                                     />
                                 }
                                 label={
-                                    facetValue.value === ''
-                                        ? polyglot.t('empty')
+                                    facetValue.value === '' ||
+                                    facetValue.value === null
+                                        ? translate('empty')
                                         : facetValue.value
                                 }
-                            />
-                            <span style={styles.count}>{facetValue.count}</span>
+                            >
+                                <span style={styles.count}>
+                                    {facetValue.count}
+                                </span>
+                            </FormControlLabel>
                         </div>
                     </ListItemText>
                 </ListItem>
@@ -80,11 +84,9 @@ const FacetValueItem = ({ name, facetValue, isChecked, p: polyglot }) => {
     );
 };
 
-FacetValueItem.propTypes = {
+FacetValueItemView.propTypes = {
     name: PropTypes.string.isRequired,
     isChecked: PropTypes.bool.isRequired,
-    page: PropTypes.oneOf(['dataset', 'search']).isRequired,
-    p: polyglotPropType.isRequired,
     facetValue: PropTypes.shape({
         value: PropTypes.string,
         count: PropTypes.number,
@@ -99,4 +101,4 @@ const mapStateToProps = (state, { name, facetValue, page }) => ({
     }),
 });
 
-export default compose(translate, connect(mapStateToProps))(FacetValueItem);
+export default compose(translate, connect(mapStateToProps))(FacetValueItemView);
