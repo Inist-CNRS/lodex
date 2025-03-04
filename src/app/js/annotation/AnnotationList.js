@@ -25,6 +25,7 @@ import { AnnotationStatus } from '../admin/annotations/AnnotationStatus';
 import { AnnotationValue } from '../admin/annotations/AnnotationValue';
 import { getResourceType } from '../admin/annotations/helpers/resourceType';
 import { useTranslate } from '../i18n/I18NContext';
+import { MODE_ALL, MODE_CLOSED, MODE_MINE, MODES } from './HistoryDrawer.const';
 
 export const getAnnotationSummaryValue = (annotation) => {
     switch (annotation.kind) {
@@ -86,14 +87,17 @@ export const getAnnotationTitle = (annotation, translate) => {
     return annotation.resource.title;
 };
 
-export const AnnotationList = ({ annotations, field }) => {
+export const AnnotationList = ({ mode, setMode, annotations, field }) => {
     const { translate } = useTranslate();
     const theme = useTheme();
-    const [mode, setMode] = React.useState('all');
 
     const myAnnotations = useMemo(() => {
         return annotations.filter((annotation) => annotation.isMine);
     }, [annotations]);
+
+    if (mode === MODE_CLOSED) {
+        return null;
+    }
 
     return (
         <Stack
@@ -120,8 +124,8 @@ export const AnnotationList = ({ annotations, field }) => {
                 </Typography>
                 <ButtonGroup>
                     <Button
-                        onClick={() => setMode('all')}
-                        variant={mode === 'all' ? 'contained' : 'outlined'}
+                        onClick={() => setMode(MODE_ALL)}
+                        variant={mode === MODE_ALL ? 'contained' : 'outlined'}
                     >
                         {translate('all_annotation', {
                             smart_count: annotations.length,
@@ -129,10 +133,10 @@ export const AnnotationList = ({ annotations, field }) => {
                     </Button>
                     <Button
                         onClick={() => {
-                            setMode('mine');
+                            setMode(MODE_MINE);
                         }}
                         startIcon={<AttributionIcon />}
-                        variant={mode === 'mine' ? 'contained' : 'outlined'}
+                        variant={mode === MODE_MINE ? 'contained' : 'outlined'}
                         disabled={myAnnotations.length === 0}
                     >
                         {translate('annotation_sent_by_me', {
@@ -142,12 +146,12 @@ export const AnnotationList = ({ annotations, field }) => {
                 </ButtonGroup>
             </Stack>
             <Box>
-                {(mode === 'all' ? annotations : myAnnotations).map(
+                {(mode === MODE_ALL ? annotations : myAnnotations).map(
                     (annotation) => (
                         <Accordion
                             key={annotation._id}
                             defaultExpanded={
-                                mode === 'all'
+                                mode === MODE_ALL
                                     ? annotations.length === 1
                                     : myAnnotations.length === 1
                             }
@@ -197,7 +201,7 @@ export const AnnotationList = ({ annotations, field }) => {
                                         </Tooltip>
                                     </Grid>
 
-                                    {myAnnotations.length && (
+                                    {myAnnotations.length > 0 && (
                                         <Grid
                                             item
                                             xs={1}
@@ -377,4 +381,6 @@ export const AnnotationList = ({ annotations, field }) => {
 AnnotationList.propTypes = {
     annotations: PropTypes.array.isRequired,
     field: PropTypes.object.isRequired,
+    mode: PropTypes.oneOf(MODES).isRequired,
+    setMode: PropTypes.func.isRequired,
 };

@@ -1050,10 +1050,10 @@ Revue`);
             cy.findByText('All contributors').should('be.visible');
             cy.findByText('Only me').should('be.visible');
 
-            cy.findAllByLabelText('Type').should('have.length', 2);
+            cy.findAllByLabelText('Type').should('have.length', 1);
             cy.findAllByLabelText('Annotation summary').should(
                 'have.length',
-                2,
+                1,
             );
         });
     });

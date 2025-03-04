@@ -15,6 +15,7 @@ import { useTranslate } from '../i18n/I18NContext';
 import { useGetFieldAnnotationIds } from './annotationStorage';
 import { CreateAnnotationModal } from './CreateAnnotationModal';
 import { HistoryDrawer } from './HistoryDrawer';
+import { MODE_ALL, MODE_CLOSED, MODE_MINE } from './HistoryDrawer.const';
 import { useCanAnnotate } from './useCanAnnotate';
 import { useCreateAnnotation } from './useCreateAnnotation';
 import { useResourceUri } from './useResourceUri';
@@ -25,7 +26,7 @@ function UserAnnotationCount({ fieldAnnotationIds, openHistory }) {
 
     const handleOpenHistory = (e) => {
         e.preventDefault();
-        openHistory();
+        openHistory(MODE_MINE);
     };
 
     if (!fieldAnnotationIds.length) {
@@ -71,7 +72,7 @@ export function CreateAnnotationButton({ field, initialValue = null }) {
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isTooltipOpen, setIsTooltipOpen] = useState(false);
-    const [isHistoryDrawerOpen, setIsHistoryDrawerOpen] = useState(false);
+    const [historyDrawerMode, setHistoryDrawerMode] = useState(MODE_CLOSED);
 
     const handleOpenModal = () => {
         setIsModalOpen(true);
@@ -94,12 +95,8 @@ export function CreateAnnotationButton({ field, initialValue = null }) {
         [field, handleCreateAnnotation, handleCloseModal, resourceUri],
     );
 
-    const handleOpenHistory = useCallback(() => {
-        setIsHistoryDrawerOpen(true);
-    }, []);
-
-    const handleCloseHistory = useCallback(() => {
-        setIsHistoryDrawerOpen(false);
+    const handleOpenHistory = useCallback((mode = MODE_ALL) => {
+        setHistoryDrawerMode(mode);
     }, []);
 
     const handleShowTooltip = () => {
@@ -179,8 +176,8 @@ export function CreateAnnotationButton({ field, initialValue = null }) {
             )}
 
             <HistoryDrawer
-                open={isHistoryDrawerOpen}
-                onClose={handleCloseHistory}
+                mode={historyDrawerMode}
+                setMode={setHistoryDrawerMode}
                 field={field}
                 resourceUri={resourceUri}
             />
