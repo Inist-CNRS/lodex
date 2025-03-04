@@ -184,7 +184,6 @@ export function checkFieldAnnotations({
         cy.wrap(elements[elements.length - 1]).click();
     });
     cy.findByText('Cancel').click();
-    cy.findByRole('button', { name: 'close' }).click();
 }
 
 export function createSingleValueAnnotation({

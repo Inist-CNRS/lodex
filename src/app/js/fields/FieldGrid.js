@@ -22,13 +22,11 @@ import { NoField } from './NoField';
 
 import { changePositions, loadField, saveFieldFromData } from '../fields';
 
-import { useTheme } from '@emotion/react';
 import { useHistory, useLocation } from 'react-router';
 import { SCOPE_DOCUMENT } from '../../../common/scope';
 import { toast } from '../../../common/tools/toast';
 import fieldApi from '../admin/api/field';
-import { AnnotationDisabledIcon } from '../annotation/AnnotationDisabledIcon';
-import { translate, useTranslate } from '../i18n/I18NContext';
+import { translate } from '../i18n/I18NContext';
 import FieldRepresentation from './FieldRepresentation';
 
 const ROOT_PADDING = 16;
@@ -146,8 +144,6 @@ const FieldGridItem = connect((state, { field }) => ({
     handleToggleSelectedField,
     handleDuplicateField,
 }) => {
-    const { translate } = useTranslate();
-    const theme = useTheme();
     const rowCount = useMemo(() => {
         let rowCount = 2;
         if (completedField) {
@@ -189,26 +185,9 @@ const FieldGridItem = connect((state, { field }) => ({
                         field={field}
                         isFieldSelected={isFieldSelected}
                         handleToggleSelectedField={handleToggleSelectedField}
+                        showNotAnnotableIcon
                     />
                 </Box>
-                {field.annotable === false && (
-                    <Tooltip title={translate('annotation_disabled_tooltip')}>
-                        <Box
-                            sx={{
-                                width: 20,
-                                height: 20,
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                marginTop: -0.5,
-                            }}
-                        >
-                            <AnnotationDisabledIcon
-                                fill={theme.palette.grey[500]}
-                            />
-                        </Box>
-                    </Tooltip>
-                )}
             </Stack>
 
             {completedField && (

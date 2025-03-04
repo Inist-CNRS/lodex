@@ -19,6 +19,7 @@ import {
 import { useTranslate } from '../i18n/I18NContext';
 import { ConfirmPopup } from '../lib/components/ConfirmPopup';
 import { AnnotationCommentStep } from './AnnotationCommentStep';
+import { CreateAnnotationTitle } from './CreateAnnotationTitle';
 import { AuthorEmailField } from './fields/AuthorEmailField';
 import { AuthorNameField } from './fields/AuthorNameField';
 import { AuthorRememberMeField } from './fields/AuthorRememberMeField';
@@ -30,7 +31,6 @@ import { PreviousButton } from './PreviousButton';
 import { AUTHOR_STEP, COMMENT_STEP, TARGET_STEP, VALUE_STEP } from './steps';
 import { useContributorCache } from './useContributorCache';
 import { useReCaptcha } from './useReCaptacha';
-import { CreateAnnotationTitle } from './CreateAnnotationTitle';
 
 const isRequiredFieldValid = (formState, fieldName) => {
     const fieldState = formState.fieldMeta[fieldName];
@@ -155,6 +155,10 @@ export function CreateAnnotationModal({
     };
 
     const handleOpenConfirm = () => {
+        if (!form.state.isDirty) {
+            return handleClose();
+        }
+
         setIsConfirmOpen(true);
     };
 
@@ -224,7 +228,7 @@ export function CreateAnnotationModal({
                 }}
                 BackdropProps={{
                     sx: {
-                        backgroundColor: 'rgba(0, 0, 0, 0.05)',
+                        backgroundColor: 'rgba(0, 0, 0, 0.5)',
                     },
                 }}
                 role="dialog"

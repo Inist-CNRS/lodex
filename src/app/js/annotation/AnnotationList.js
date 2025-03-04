@@ -28,6 +28,7 @@ import { useTranslate } from '../i18n/I18NContext';
 import { MODE_ALL, MODE_CLOSED, MODE_MINE, MODES } from './HistoryDrawer.const';
 
 export const getAnnotationSummaryValue = (annotation) => {
+    const JOIN_SEPARATOR = ' | ';
     switch (annotation.kind) {
         case ANNOTATION_KIND_COMMENT:
             return annotation.comment;
@@ -40,7 +41,7 @@ export const getAnnotationSummaryValue = (annotation) => {
                     ? `${initialValue.slice(0, 16)} ...`
                     : initialValue;
             const proposedValue = Array.isArray(annotation.proposedValue)
-                ? annotation.proposedValue.join(' ')
+                ? annotation.proposedValue.join(JOIN_SEPARATOR)
                 : annotation.proposedValue.toString();
             const truncatedProposedValue =
                 proposedValue.length > 16
@@ -50,12 +51,12 @@ export const getAnnotationSummaryValue = (annotation) => {
         }
         case ANNOTATION_KIND_REMOVAL:
             if (Array.isArray(annotation.initialValue)) {
-                return annotation.initialValue.join(' ');
+                return annotation.initialValue.join(JOIN_SEPARATOR);
             }
             return annotation.initialValue.toString().replace(/<[^>]*>/g, '');
         case ANNOTATION_KIND_ADDITION:
             return Array.isArray(annotation.proposedValue)
-                ? annotation.proposedValue.join(' ')
+                ? annotation.proposedValue.join(JOIN_SEPARATOR)
                 : annotation.proposedValue;
         default:
             return '';
@@ -160,7 +161,7 @@ export const AnnotationList = ({ mode, setMode, annotations, field }) => {
                                 <Grid container columns={12}>
                                     <Grid
                                         item
-                                        xs={2}
+                                        xs={3}
                                         alignItems="center"
                                         display="flex"
                                     >
@@ -174,7 +175,7 @@ export const AnnotationList = ({ mode, setMode, annotations, field }) => {
                                     </Grid>
                                     <Grid
                                         item
-                                        xs={myAnnotations.length > 0 ? 7 : 8}
+                                        xs={myAnnotations.length > 0 ? 6 : 7}
                                         alignItems="center"
                                         display="flex"
                                     >
