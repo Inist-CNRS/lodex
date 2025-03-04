@@ -64,10 +64,6 @@ const FacetList = ({
     isMultilingual,
     locale,
 }) => {
-    if (!hasFacetFields) {
-        return null;
-    }
-
     const actions = {
         changeFacetValue,
         invertFacet,
@@ -82,7 +78,11 @@ const FacetList = ({
                 !isMultilingual || !field.language || field.language === locale
             );
         });
-    }, [locale, fields]);
+    }, [fields, isMultilingual, locale]);
+
+    if (!hasFacetFields) {
+        return null;
+    }
 
     return (
         <List
