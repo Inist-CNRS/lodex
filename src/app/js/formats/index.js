@@ -74,6 +74,13 @@ export const getViewComponent = (field, isList) => {
         args,
     };
 };
+export const getReadableValue = ({ field, resource }) => {
+    const { getReadableValue, defaultArgs } = getComponent(field);
+
+    const args = merge(defaultArgs, get(field, 'format.args', {}));
+
+    return getReadableValue({ field, resource, ...args });
+};
 
 export const getAdminComponent = (name) => getComponent(name).AdminComponent;
 export const getEditionComponent = (field) =>

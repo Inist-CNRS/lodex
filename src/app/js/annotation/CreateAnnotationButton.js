@@ -10,7 +10,7 @@ import {
 import PropTypes from 'prop-types';
 import React, { useCallback, useMemo, useRef, useState } from 'react';
 
-import { getIsFieldValueAnnotable } from '../formats';
+import { getIsFieldValueAnnotable, getReadableValue } from '../formats';
 import { useTranslate } from '../i18n/I18NContext';
 import { useGetFieldAnnotationIds } from './annotationStorage';
 import { CreateAnnotationModal } from './CreateAnnotationModal';
@@ -61,8 +61,12 @@ UserAnnotationCount.propTypes = {
     openHistory: PropTypes.func.isRequired,
 };
 
-export function CreateAnnotationButton({ field, initialValue = null }) {
+export function CreateAnnotationButton({ field, resource }) {
     const { translate } = useTranslate();
+    const readableInitialValue = getReadableValue({
+        field,
+        resource,
+    });
     const canAnnotate = useCanAnnotate();
     const anchorButton = useRef(null);
 
@@ -116,11 +120,11 @@ export function CreateAnnotationButton({ field, initialValue = null }) {
         resourceUri,
     });
     const isFieldValueAnnotable = useMemo(() => {
-        if (!initialValue) {
+        if (!readableInitialValue) {
             return false;
         }
         return getIsFieldValueAnnotable(field.format?.name);
-    }, [field.format?.name, initialValue]);
+    }, [field.format?.name, readableInitialValue]);
 
     if (field.annotable === false) {
         return null;
@@ -167,7 +171,7 @@ export function CreateAnnotationButton({ field, initialValue = null }) {
                     onClose={handleCloseModal}
                     onSubmit={handleSubmitAnnotation}
                     anchorEl={anchorButton.current}
-                    initialValue={initialValue}
+                    initialValue={readableInitialValue}
                     isFieldValueAnnotable={isFieldValueAnnotable}
                     field={field}
                     resourceUri={resourceUri}
@@ -187,5 +191,5 @@ export function CreateAnnotationButton({ field, initialValue = null }) {
 
 CreateAnnotationButton.propTypes = {
     field: PropTypes.object,
-    initialValue: PropTypes.string,
+    resource: PropTypes.object,
 };

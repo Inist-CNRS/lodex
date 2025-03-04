@@ -273,6 +273,7 @@ export function CreateAnnotationModal({
                                 <TargetField
                                     form={form}
                                     goToStep={setCurrentStep}
+                                    field={field}
                                     initialValue={initialValue}
                                 />
                             </Stack>
