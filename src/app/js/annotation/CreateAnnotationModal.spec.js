@@ -259,6 +259,12 @@ describe('CreateAnnotationModal', () => {
             ).toBeInTheDocument();
 
             expect(
+                wrapper.getByText(
+                    'annotation_history+{"fieldLabel":"Field Label"}',
+                ),
+            ).toBeInTheDocument();
+
+            expect(
                 wrapper.queryByRole('tab', {
                     name: 'annotation_step_target',
                 }),
@@ -817,7 +823,7 @@ describe('CreateAnnotationModal', () => {
     });
 
     it('should allow to create a comment annotation on the field when field value is not editable', async () => {
-        render(
+        const wrapper = render(
             <TestModal
                 onClose={onClose}
                 onSubmit={onSubmit}
@@ -829,7 +835,7 @@ describe('CreateAnnotationModal', () => {
 
         await waitFor(() => {
             fireEvent.change(
-                screen.getByRole('textbox', {
+                wrapper.getByRole('textbox', {
                     name: 'annotation.comment *',
                 }),
                 {
@@ -839,12 +845,12 @@ describe('CreateAnnotationModal', () => {
         });
 
         await waitFor(() => {
-            fireEvent.click(screen.getByRole('button', { name: 'next' }));
+            fireEvent.click(wrapper.getByRole('button', { name: 'next' }));
         });
 
         await waitFor(() => {
             fireEvent.change(
-                screen.getByRole('textbox', {
+                wrapper.getByRole('textbox', {
                     name: 'annotation.authorName *',
                 }),
                 {
@@ -857,7 +863,7 @@ describe('CreateAnnotationModal', () => {
         await waitFor(() => setTimeout(500));
 
         await waitFor(() => {
-            fireEvent.click(screen.getByRole('button', { name: 'validate' }));
+            fireEvent.click(wrapper.getByRole('button', { name: 'validate' }));
         });
 
         expect(onSubmit).toHaveBeenCalledTimes(1);
