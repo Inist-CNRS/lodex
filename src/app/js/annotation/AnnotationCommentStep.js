@@ -12,7 +12,7 @@ import { useTranslate } from '../i18n/I18NContext';
 import { CommentField } from './fields/CommentField';
 import { ProposedValueField } from './fields/ProposedValueField';
 
-export function AnnotationCommentStep({ field, form }) {
+export function AnnotationCommentStep({ field, form, initialValue }) {
     const { translate } = useTranslate();
     const annotationInitialValue = useStore(form.store, (state) => {
         return state.values.initialValue?.replace(/<[^>]*>/g, '');
@@ -34,9 +34,13 @@ export function AnnotationCommentStep({ field, form }) {
                         }}
                     >
                         {kind === 'removal' &&
-                            translate('annotation_remove_value', {
-                                value: annotationInitialValue,
-                            })}
+                            (Array.isArray(initialValue)
+                                ? translate('annotation_remove_value', {
+                                      value: annotationInitialValue,
+                                  })
+                                : translate('annotation_remove_content', {
+                                      value: annotationInitialValue,
+                                  }))}
                         {kind === ANNOTATION_KIND_CORRECTION &&
                             translate('annotation_correct_value', {
                                 value: annotationInitialValue,

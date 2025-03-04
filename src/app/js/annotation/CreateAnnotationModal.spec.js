@@ -24,7 +24,10 @@ function TestModal(props) {
                 <CreateAnnotationModal
                     initialValue={null}
                     resourceUri="/"
-                    field={{ _id: '87a3b1c0-0b1b-4b1b-8b1b-1b1b1b1b1b1b' }}
+                    field={{
+                        _id: '87a3b1c0-0b1b-4b1b-8b1b-1b1b1b1b1b1b',
+                        label: 'Field Label',
+                    }}
                     isFieldValueAnnotable={false}
                     openHistory={jest.fn()}
                     {...props}
@@ -387,7 +390,7 @@ describe('CreateAnnotationModal', () => {
             it('should render comments field (but no proposedValue field)', () => {
                 expect(
                     screen.getByRole('heading', {
-                        name: 'annotation_add_comment',
+                        name: 'annotation_title_annotate_field+{"field":"Field Label"}',
                     }),
                 ).toBeInTheDocument();
                 expect(
@@ -492,9 +495,9 @@ describe('CreateAnnotationModal', () => {
 
             it('should render required proposedValue and comment field', () => {
                 expect(
-                    screen.getByRole('heading', {
-                        name: 'annotation_add_comment',
-                    }),
+                    screen.getByText(
+                        'annotation_title_annotate_field+{"field":"Field Label"}',
+                    ),
                 ).toBeInTheDocument();
                 expect(
                     screen.getByRole('textbox', {
@@ -556,9 +559,9 @@ describe('CreateAnnotationModal', () => {
 
             it('should render required proposedValue and comment field', () => {
                 expect(
-                    screen.getByRole('heading', {
-                        name: 'annotation_add_comment',
-                    }),
+                    screen.getByText(
+                        'annotation_title_annotate_field+{"field":"Field Label"}',
+                    ),
                 ).toBeInTheDocument();
                 expect(
                     screen.getByRole('textbox', {
@@ -645,7 +648,7 @@ describe('CreateAnnotationModal', () => {
             it('should render authorName field', () => {
                 expect(
                     screen.getByRole('heading', {
-                        name: 'annotation_add_comment',
+                        name: 'annotation_title_annotate_field+{"field":"Field Label"}',
                     }),
                 ).toBeInTheDocument();
                 expect(
@@ -725,7 +728,7 @@ describe('CreateAnnotationModal', () => {
             it('should render authorEmail field', () => {
                 expect(
                     screen.getByRole('heading', {
-                        name: 'annotation_add_comment',
+                        name: 'annotation_title_annotate_field+{"field":"Field Label"}',
                     }),
                 ).toBeInTheDocument();
 
@@ -881,7 +884,7 @@ describe('CreateAnnotationModal', () => {
 
         fireEvent.click(
             screen.getByRole('menuitem', {
-                name: 'annotation_comment_target_title',
+                name: 'annotation_annotate_field_choice',
             }),
         );
 

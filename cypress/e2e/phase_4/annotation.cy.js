@@ -1004,8 +1004,8 @@ Revue`);
                 'Home page',
             );
 
-            cy.findByText('Sent by all contributors').should('be.visible');
-            cy.findByText('Sent by me').should('be.visible');
+            cy.findByText('All contributors').should('be.visible');
+            cy.findByText('Only me').should('be.visible');
 
             cy.findAllByLabelText('Type').should('have.length', 2);
             cy.findAllByLabelText('Annotation summary').should(
@@ -1014,7 +1014,7 @@ Revue`);
             );
             cy.findAllByLabelText('Status').should('have.length', 2);
 
-            cy.findByText('Sent by me').click();
+            cy.findByText('Only me').click();
 
             cy.findAllByLabelText('Type').should('have.length', 1);
             cy.findAllByLabelText('Annotation summary').should(
@@ -1047,8 +1047,8 @@ Revue`);
 
             cy.findByText(`(1 sent)`).click();
 
-            cy.findByText('Sent by all contributors').should('be.visible');
-            cy.findByText('Sent by me').should('be.visible');
+            cy.findByText('All contributors').should('be.visible');
+            cy.findByText('Only me').should('be.visible');
 
             cy.findAllByLabelText('Type').should('have.length', 2);
             cy.findAllByLabelText('Annotation summary').should(

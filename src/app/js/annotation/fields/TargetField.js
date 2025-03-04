@@ -67,7 +67,7 @@ export function TargetField({ form, initialValue, goToStep }) {
                                         htmlColor={theme.palette.primary.main}
                                     />
                                 </ListItemIcon>
-                                {translate('annotation_comment_target_title')}
+                                {translate('annotation_annotate_field_choice')}
                             </Stack>
                             <ArrowForwardIosIcon
                                 color={theme.palette.primary.main}
