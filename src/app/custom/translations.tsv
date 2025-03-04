@@ -438,6 +438,8 @@
 "text_color"	"Text Color"	"Couleur du texte"
 "formatNetwork"	"Graph - Network"	"Graphique - Réseaux"
 "formatNetworkDescription"	"Allows to visualize networks as for example the countries which publish between them (in affiliation)..."	"Permet de visualiser des réseaux comme par exemple les pays qui publient entre eux (dans affiliation)…"
+"formatVenn"	"Graph - Venn"	"Graphique - Venn"
+"formatVennDescription"	"Graph showing in the form of circles the logical relationships between all values in a collection."	"Graphique montrant sous forme de cercles les relations logiques entre toutes valeurs d'une collection."
 "formatParallelCoordinatesChart"	"Graph - Parallel Coordinates"	"Graphique - Coordonnées parallèles"
 "formatParallelCoordinatesChartDescription"	"Graph format on several monovalent or multivalent, textual or numerical fields and as for the asterplot it is a graph that is displayed in a resource and not on a data set."	"Format de graphique  sur plusieurs champs monovalués ou multivalués, textuels ou numériques et comme pour l’asterplot c’est un graphique qui s’affiche dans une ressource et non sur un jeu de données."
 "formatAsterPlotChart"	"Graph - Aster Plot"	"Graphique - Aster Plot"
