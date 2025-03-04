@@ -171,6 +171,7 @@ class Graph extends Component {
                                             )}
                                             <CreateAnnotationButton
                                                 field={graphField}
+                                                resource={resource}
                                             />
                                         </>
                                     }

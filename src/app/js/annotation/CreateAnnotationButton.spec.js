@@ -43,10 +43,14 @@ function TestButton({
                                 field={{
                                     _id: '1ddbe5dc-f945-4d38-9c5b-ef20f78cb0cc',
                                     label: 'Titre du corpus',
+                                    name: 'title',
                                     annotable,
                                     format: {
                                         name: fieldFormatName,
                                     },
+                                }}
+                                resource={{
+                                    title: 'Corpus title',
                                 }}
                                 {...props}
                             />
@@ -200,7 +204,7 @@ describe('CreateAnnotationButton', () => {
             <TestButton
                 {...{
                     target: 'value',
-                    initialValue: 'a b c',
+                    resource: { title: 'a b c' },
                     fieldFormatName: 'paragraph',
                 }}
             />,

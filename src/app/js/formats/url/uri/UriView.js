@@ -56,3 +56,25 @@ UriView.defaultProps = {
 };
 
 export default UriView;
+
+export const getReadableValue = ({ resource, field, type, value }) => {
+    const uri = resource[field.name];
+
+    if (Array.isArray(uri)) {
+        return uri.map((uriItem, index) => {
+            const label = getLabel(field, resource, null, type, value);
+
+            const currentLabel = Array.isArray(label) ? label[index] : label;
+
+            return currentLabel;
+        });
+    }
+
+    if (!uri || typeof uri !== 'string') {
+        return uri;
+    }
+
+    const label = getLabel(field, resource, null, type, value);
+
+    return label;
+};
