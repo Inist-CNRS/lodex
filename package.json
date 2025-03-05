@@ -227,6 +227,7 @@
         "vega-view-transforms": "4.5.9",
         "vega-voronoi": "4.2.2",
         "vega-wordcloud": "4.1.4",
+        "venn.js": "0.2.20",
         "winston": "^3.11.0",
         "zod": "^3.24.1"
     },
@@ -292,6 +293,8 @@
     "overrides": {
         "@remix-run/server-runtime": {
             "cookie": "0.7.2"
-        }
+        },
+        "d3-color": "3.1.0",
+        "rollup": "2.79.2"
     }
 }
