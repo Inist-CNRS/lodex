@@ -16,3 +16,10 @@ export const previousStepByStep = {
     [COMMENT_STEP]: TARGET_STEP,
     [AUTHOR_STEP]: COMMENT_STEP,
 };
+
+export const progressByStep = {
+    [TARGET_STEP]: 25,
+    [VALUE_STEP]: 50,
+    [COMMENT_STEP]: 75,
+    [AUTHOR_STEP]: 100,
+};

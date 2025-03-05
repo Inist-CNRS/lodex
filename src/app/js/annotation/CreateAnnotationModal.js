@@ -3,6 +3,7 @@ import HelpIcon from '@mui/icons-material/HelpOutline';
 import {
     Box,
     IconButton,
+    LinearProgress,
     Popover,
     Stack,
     Tooltip,
@@ -28,7 +29,13 @@ import { ValueField } from './fields/ValueField';
 import { NextButton } from './NextButton';
 import { OpenHistoryButton } from './OpenHistoryButton';
 import { PreviousButton } from './PreviousButton';
-import { AUTHOR_STEP, COMMENT_STEP, TARGET_STEP, VALUE_STEP } from './steps';
+import {
+    AUTHOR_STEP,
+    COMMENT_STEP,
+    progressByStep,
+    TARGET_STEP,
+    VALUE_STEP,
+} from './steps';
 import { useContributorCache } from './useContributorCache';
 import { useReCaptcha } from './useReCaptacha';
 
@@ -243,6 +250,10 @@ export function CreateAnnotationModal({
                     )}
                 </form.Field>
                 <Stack gap={2}>
+                    <LinearProgress
+                        variant="determinate"
+                        value={progressByStep[currentStep]}
+                    />
                     <Stack gap={1} direction="row" alignItems="center">
                         <CreateAnnotationTitle
                             fieldLabel={field.label}
