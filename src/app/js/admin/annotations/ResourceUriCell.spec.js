@@ -22,27 +22,43 @@ describe('ResourceUriCell', () => {
         },
     );
 
-    it.each([[null], ['/graph/HDpz']])(
-        'should display /graph/name if field is a graph',
-        (resourceUri) => {
-            const wrapper = render(
-                <TestI18N>
-                    <ResourceUriCell
-                        row={{
-                            resourceUri,
-                            resource: null,
-                            field: {
-                                name: 'HDpz',
-                                scope: 'graphic',
-                            },
-                        }}
-                    />
-                </TestI18N>,
-            );
+    it('should display resourceUri when set if field is a graph', () => {
+        const wrapper = render(
+            <TestI18N>
+                <ResourceUriCell
+                    row={{
+                        resourceUri: '/graph/HDpz',
+                        resource: null,
+                        field: {
+                            name: 'OtHr',
+                            scope: 'graphic',
+                        },
+                    }}
+                />
+            </TestI18N>,
+        );
 
-            expect(wrapper.queryByText('/graph/HDpz')).toBeInTheDocument();
-        },
-    );
+        expect(wrapper.queryByText('/graph/HDpz')).toBeInTheDocument();
+    });
+
+    it('should construct graph uri from field when resourceUri is not set', () => {
+        const wrapper = render(
+            <TestI18N>
+                <ResourceUriCell
+                    row={{
+                        resourceUri: null,
+                        resource: null,
+                        field: {
+                            name: 'HDpz',
+                            scope: 'graphic',
+                        },
+                    }}
+                />
+            </TestI18N>,
+        );
+
+        expect(wrapper.queryByText('/graph/HDpz')).toBeInTheDocument();
+    });
 
     it('should display the resourceUri with a button to the resource if the resource still exist', () => {
         const wrapper = render(
