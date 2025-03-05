@@ -36,7 +36,9 @@ export function AnnotationHeader({ annotation }) {
         if (resourceType === 'graph') {
             return {
                 subtitle: annotation.field.label,
-                linkUrl: `/instance/${tenant}/graph/${annotation.field.name}`,
+                linkUrl: annotation.resourceUri
+                    ? `/instance/${tenant}${annotation.resourceUri}`
+                    : `/instance/${tenant}/graph/${annotation.field.name}`,
             };
         }
 

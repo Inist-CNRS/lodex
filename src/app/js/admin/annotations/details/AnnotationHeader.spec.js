@@ -90,7 +90,7 @@ describe('AnnotationHeader', () => {
                         kind: 'comment',
                         comment: 'Just testing the annotation system',
                         field: {
-                            name: 'GaZr',
+                            name: 'OthR',
                             label: 'Annotated field',
                             internalName: 'annotated_field',
                             internalScopes: ['home'],
