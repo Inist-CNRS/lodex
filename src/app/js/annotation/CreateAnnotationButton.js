@@ -120,11 +120,8 @@ export function CreateAnnotationButton({ field, resource }) {
         resourceUri,
     });
     const isFieldValueAnnotable = useMemo(() => {
-        if (!readableInitialValue) {
-            return false;
-        }
         return getIsFieldValueAnnotable(field.format?.name);
-    }, [field.format?.name, readableInitialValue]);
+    }, [field.format?.name]);
 
     if (field.annotable === false) {
         return null;
