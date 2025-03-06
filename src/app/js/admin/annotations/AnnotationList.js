@@ -18,6 +18,7 @@ import withInitialData from '../withInitialData';
 import { AnnotationProposedValue } from './AnnotationProposedValue';
 import { AnnotationStatus } from './AnnotationStatus';
 import { CellWithTooltip } from './CellWithTooltip';
+import { DeleteFilteredButton } from './DeleteFilteredButton';
 import { DeleteManyButton } from './DeleteManyButton';
 import { FieldScopeFilter } from './filters/FieldScopeFilter';
 import { KindFilter } from './filters/KindFilter';
@@ -30,7 +31,7 @@ const AnnotationListToolBar = ({ deleteButton }) => {
     const { translate } = useTranslate();
 
     return (
-        <GridToolbarContainer>
+        <GridToolbarContainer sx={{ gap: 1 }}>
             <Tooltip title={translate(`column_tooltip`)}>
                 <GridToolbarColumnsButton />
             </Tooltip>
@@ -41,6 +42,7 @@ const AnnotationListToolBar = ({ deleteButton }) => {
 
             <Box sx={{ flexGrow: 1 }} />
 
+            <DeleteFilteredButton />
             {deleteButton}
         </GridToolbarContainer>
     );

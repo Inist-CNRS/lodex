@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import DeleteIcon from '@mui/icons-material/Delete';
 import { Button } from '@mui/material';
 import PropTypes from 'prop-types';
-import DeleteIcon from '@mui/icons-material/Delete';
+import React, { useEffect, useState } from 'react';
 
-import datasetApi from '../api/dataset';
+import { toast } from '../../../../common/tools/toast';
 import { useTranslate } from '../../i18n/I18NContext';
 import { ConfirmPopup } from '../../lib/components/ConfirmPopup';
-import { toast } from '../../../../common/tools/toast';
+import datasetApi from '../api/dataset';
 
 export function DeleteManyButton({ selectedRowIds, reloadDataset }) {
     const { translate } = useTranslate();
@@ -58,7 +58,7 @@ export function DeleteManyButton({ selectedRowIds, reloadDataset }) {
         <>
             <Button
                 onClick={handleButtonClick}
-                variant="text"
+                variant="outlined"
                 startIcon={<DeleteIcon />}
                 color="primary"
                 size="small"

@@ -1,44 +1,44 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import {
-    DataGrid,
-    getGridNumericColumnOperators,
-    getGridStringOperators,
-    getGridBooleanOperators,
-    GridToolbarContainer,
-    GridToolbarColumnsButton,
-    GridToolbarFilterButton,
-    GridToolbarDensitySelector,
-} from '@mui/x-data-grid';
-import { IN_PROGRESS } from '../../../../common/taskStatus';
+import RefreshIcon from '@mui/icons-material/Refresh';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
-import RefreshIcon from '@mui/icons-material/Refresh';
+import {
+    DataGrid,
+    getGridBooleanOperators,
+    getGridNumericColumnOperators,
+    getGridStringOperators,
+    GridToolbarColumnsButton,
+    GridToolbarContainer,
+    GridToolbarDensitySelector,
+    GridToolbarFilterButton,
+} from '@mui/x-data-grid';
+import PropTypes from 'prop-types';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { connect } from 'react-redux';
+import { IN_PROGRESS } from '../../../../common/taskStatus';
 
-import { fromEnrichments, fromParsing } from '../selectors';
-import datasetApi from '../api/dataset';
-import Loading from '../../lib/components/Loading';
+import { AddBox as AddBoxIcon } from '@mui/icons-material';
 import {
     Box,
+    Button,
     Chip,
     CircularProgress,
     Drawer,
     IconButton,
-    Tooltip,
-    Button,
     Table,
     TableBody,
     TableContainer,
     TablePagination,
     TableRow,
+    Tooltip,
 } from '@mui/material';
-import ParsingEditCell from './ParsingEditCell';
-import { AddBox as AddBoxIcon } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
 import { useTranslate } from '../../i18n/I18NContext';
-import { DeleteManyButton } from './DeleteManyButton';
+import Loading from '../../lib/components/Loading';
+import datasetApi from '../api/dataset';
+import { fromEnrichments, fromParsing } from '../selectors';
 import { DeleteFilteredButton } from './DeleteFilteredButton';
+import { DeleteManyButton } from './DeleteManyButton';
+import ParsingEditCell from './ParsingEditCell';
 
 const COLUMN_TYPE = {
     MAIN: 'main',
@@ -284,6 +284,10 @@ export const ParsingResultComponent = (props) => {
         fetchDataset();
     }, [skip, limit, filter, sort, fetchDataset]);
 
+    const handleFilteredRowsDeleted = useCallback(() => {
+        setFilter({});
+    }, []);
+
     const handleSortModelChange = (sortModel) => {
         setSort({
             sortBy: sortModel[0]?.field,
@@ -405,7 +409,7 @@ export const ParsingResultComponent = (props) => {
 
     const CustomToolbar = () => {
         return (
-            <GridToolbarContainer>
+            <GridToolbarContainer sx={{ gap: 1 }}>
                 <Tooltip title={translate(`column_tooltip`)}>
                     <GridToolbarColumnsButton />
                 </Tooltip>
@@ -428,13 +432,16 @@ export const ParsingResultComponent = (props) => {
                         {translate('add_more')}
                     </Button>
                 </Tooltip>
+
+                <Box sx={{ flexGrow: 1 }} />
+
                 <DeleteManyButton
                     selectedRowIds={selectedRowIds}
                     reloadDataset={fetchDataset}
                 />
                 <DeleteFilteredButton
                     filter={filter}
-                    reloadDataset={fetchDataset}
+                    reloadDataset={handleFilteredRowsDeleted}
                 />
             </GridToolbarContainer>
         );

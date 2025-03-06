@@ -1,68 +1,65 @@
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Button } from '@mui/material';
-import PropTypes from 'prop-types';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 import {
+    gridFilterModelSelector,
     gridRowCountSelector,
     useGridApiContext,
     useGridSelector,
 } from '@mui/x-data-grid';
-import { toast } from '../../../../common/tools/toast';
 import { useTranslate } from '../../i18n/I18NContext';
 import { ConfirmPopup } from '../../lib/components/ConfirmPopup';
-import datasetApi from '../api/dataset';
+import { useDeleteFilteredAnnotation } from './hooks/useDeleteFilteredAnnotation';
 
-export function DeleteFilteredButton({ filter, reloadDataset }) {
+export function DeleteFilteredButton() {
+    const { translate } = useTranslate();
+    const { mutateAsync, isLoading } = useDeleteFilteredAnnotation();
+
     const apiRef = useGridApiContext();
     const rowCount = useGridSelector(apiRef, gridRowCountSelector);
+    const filters = useGridSelector(apiRef, gridFilterModelSelector);
 
-    const { translate } = useTranslate();
+    const filter = useMemo(() => {
+        return filters?.items?.at(0);
+    }, [filters]);
 
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         setIsModalOpen(false);
     }, [filter]);
 
-    const handleButtonClick = () => {
+    const handleButtonClick = useCallback(() => {
         setIsModalOpen(true);
-    };
+    }, []);
 
-    const handleCloseModal = () => {
+    const handleCloseModal = useCallback(() => {
         if (isLoading) {
-            return false;
+            return;
         }
 
         setIsModalOpen(false);
-    };
+    }, [isLoading]);
 
-    const handleDelete = async () => {
-        setIsLoading(true);
-        const res = await datasetApi.deleteFilteredDatasetRows(filter);
-
-        if (res.status === 'deleted') {
-            toast(translate('parsing_delete_rows_success'), {
-                type: toast.TYPE.SUCCESS,
+    const handleDelete = useCallback(async () => {
+        try {
+            await mutateAsync({
+                filterBy: filter?.columnField,
+                filterOperator: filter?.operatorValue,
+                filterValue: filter?.value,
             });
+
             apiRef.current.setFilterModel({
                 items: [],
                 linkOperator: 'and',
             });
-            reloadDataset();
-            handleCloseModal();
-            setIsLoading(false);
-        } else {
-            toast(translate('parsing_delete_rows_error'), {
-                type: toast.TYPE.ERROR,
-            });
+        } finally {
+            setIsModalOpen(false);
         }
-        setIsLoading(false);
-        handleCloseModal();
-    };
+    }, [filter, mutateAsync, apiRef]);
 
-    if (filter.value === undefined || rowCount === 0) {
+    if (!filter?.value || rowCount === 0) {
         return null;
     }
 
@@ -75,13 +72,13 @@ export function DeleteFilteredButton({ filter, reloadDataset }) {
                 color="primary"
                 size="small"
             >
-                {translate('parsing_delete_filtered_button_label')}
+                {translate('annotation_delete_filtered_button_label')}
             </Button>
             <ConfirmPopup
                 isOpen={isModalOpen}
                 cancelLabel={translate('cancel')}
                 confirmLabel={translate('delete')}
-                title={translate('parsing_delete_filtered_modal_title')}
+                title={translate('annotation_delete_filtered_modal_title')}
                 onCancel={handleCloseModal}
                 onConfirm={handleDelete}
                 isLoading={isLoading}
@@ -90,7 +87,4 @@ export function DeleteFilteredButton({ filter, reloadDataset }) {
     );
 }
 
-DeleteFilteredButton.propTypes = {
-    filter: PropTypes.object.isRequired,
-    reloadDataset: PropTypes.func.isRequired,
-};
+DeleteFilteredButton.propTypes = {};

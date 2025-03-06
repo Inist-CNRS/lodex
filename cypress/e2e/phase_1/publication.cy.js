@@ -231,7 +231,23 @@ describe('Dataset Publication', () => {
             ).should('be.visible');
             cy.findByText('Delete').click();
             cy.findByText('Row(s) deleted with success').should('be.visible');
-            cy.findByText('No rows').should('be.visible');
+
+            cy.findByText('No rows', { timeout: 1000 }).should('not.exist');
+
+            cy.get('[data-rowindex=0]', { timeout: 500 }).should(
+                'contains.text',
+                ['"1"', '"Bobby"', '"Womack"', 'true'].join(''),
+            );
+
+            cy.get('[data-rowindex=1]', { timeout: 500 }).should(
+                'contains.text',
+                ['"3"', '"General"', '"Elektriks"', 'false'].join(''),
+            );
+
+            cy.get('[data-rowindex=2]', { timeout: 500 }).should(
+                'contains.text',
+                ['"4"', '"Rob"', '"Zombie"', 'false'].join(''),
+            );
         });
 
         it('should allow not display the "delete all filtered rows" if no rows match the filter', () => {

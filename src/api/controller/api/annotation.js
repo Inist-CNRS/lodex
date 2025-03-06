@@ -572,7 +572,7 @@ export async function deleteAnnotation(ctx, id) {
     };
 }
 
-export async function deleteManyAnnotation(ctx) {
+export async function deleteManyAnnotationById(ctx) {
     const validation = deleteManyAnnotationsSchema.safeParse(ctx.request.body);
 
     if (!validation.success) {
@@ -588,6 +588,64 @@ export async function deleteManyAnnotation(ctx) {
     ctx.response.body = {
         deletedCount: await ctx.annotation.deleteManyById(validation.data),
     };
+}
+
+export async function deleteManyAnnotationByFilter(ctx) {
+    const { filterBy, filterOperator, filterValue } = ctx.request.query;
+    if (!filterBy || !filterOperator || !filterValue) {
+        ctx.response.status = 400;
+        ctx.response.body = {
+            status: 'error',
+            error: 'filter parameter is incomplete',
+            deletedCount: 0,
+        };
+        return;
+    }
+
+    try {
+        const titleField = await ctx.field.findResourceTitle();
+
+        const query = await buildQuery({
+            filterBy,
+            filterOperator,
+            filterValue,
+            ctx,
+            titleField,
+        });
+
+        const { acknowledged, deletedCount } =
+            await ctx.annotation.deleteMany(query);
+
+        if (!acknowledged) {
+            ctx.response.status = 500;
+            ctx.response.body = {
+                status: 'error',
+                error: 'failed to execute query',
+                deletedCount: 0,
+            };
+            return;
+        }
+
+        if (deletedCount === 0) {
+            ctx.response.status = 404;
+            ctx.response.body = {
+                status: 'error',
+                error: `no row match the filter`,
+                deletedCount: 0,
+            };
+            return;
+        }
+
+        ctx.response.status = 200;
+        ctx.response.body = { status: 'deleted', deletedCount };
+    } catch (error) {
+        const logger = getLogger(ctx.tenant);
+        logger.error(`Delete dataset rows error`, {
+            error,
+        });
+        ctx.response.status = 500;
+        ctx.response.body = { status: 'error', error, deletedCount: 0 };
+    }
 }
 
 function getResourceTitle(resource, titleField, subResourceTitleFields) {
@@ -610,8 +668,9 @@ app.use(route.get('/can-annotate', canAnnotateRoute));
 app.use(route.get('/:id', getAnnotation));
 app.use(koaBodyParser());
 app.use(route.put('/:id', updateAnnotation));
+app.use(route.del('/batch-delete-filter', deleteManyAnnotationByFilter));
 app.use(route.del('/:id', deleteAnnotation));
-app.use(route.del('/', deleteManyAnnotation));
+app.use(route.del('/', deleteManyAnnotationById));
 app.use(route.post('/', createAnnotation));
 app.use(route.post('/import', importAnnotations(asyncBusboy)));
 

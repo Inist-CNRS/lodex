@@ -774,6 +774,134 @@ describe('Annotation', () => {
         });
     });
 
+    describe('delete filtered rows', () => {
+        beforeEach(() => {
+            // ResizeObserver doesn't like when the app has to many renders / re-renders
+            // and throws an exception to say, "I wait for the next paint"
+            // https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver#observation_errors
+            cy.on('uncaught:exception', (error) => {
+                return !error.message.includes('ResizeObserver');
+            });
+
+            teardown();
+            menu.openAdvancedDrawer();
+            menu.goToAdminDashboard();
+            datasetImportPage.importDataset('dataset/film.csv');
+            datasetImportPage.importModel('model/film-with-field-id.tar');
+
+            cy.findByRole('gridcell', { name: 'Liste des films' }).trigger(
+                'mouseenter',
+            );
+            cy.findByRole('button', { name: 'edit-Liste des films' }).click();
+
+            cy.findByRole('tab', { name: 'Semantics' }).click();
+            cy.findByRole('checkbox', {
+                name: 'This field can be annotated',
+            }).click();
+            cy.findByRole('button', { name: 'Save' }).click();
+
+            datasetImportPage.publish();
+
+            cy.findByRole('button', {
+                name: 'Open menu',
+            }).click();
+
+            cy.findByRole('menuitem', {
+                name: 'Model',
+            }).trigger('mouseleave');
+
+            cy.findByRole('menuitem', {
+                name: 'Annotations',
+            }).trigger('mouseenter');
+
+            cy.wait(500);
+
+            fillInputWithFixture(
+                'input[name="import_annotations"]',
+                'annotations/films-many-annotations.json',
+                'application/json',
+            );
+
+            cy.wait(1000);
+
+            cy.findByText('Annotations').click();
+        });
+
+        it('should delete filtered annotations', () => {
+            cy.findByText('Filters').click();
+            cy.findByPlaceholderText('Filter value').type('/graph');
+
+            cy.findByRole('button', {
+                name: 'Delete the filtered annotations',
+            }).click();
+
+            cy.findByRole('button', {
+                name: 'Delete',
+            }).click();
+
+            cy.findByText('1 annotation have been deleted.').should('exist');
+
+            cy.findByText('No rows', {
+                timeout: 1500,
+            }).should('not.exist');
+
+            cy.wait(500);
+
+            cy.findAllByRole('cell', {
+                timeout: 2000,
+            }).then((cells) => {
+                const firstUri = cells[1].textContent;
+
+                expect(firstUri).to.match(/uid:\//);
+
+                expect(
+                    cells.toArray().map((cell) => cell.textContent),
+                ).to.deep.equal([
+                    '',
+                    firstUri,
+                    'Resource has been removed',
+                    'Correction',
+                    'rating',
+                    '',
+                    '6,4',
+                    '7.5',
+                    'To Review',
+                    '',
+                    'Jane SMITH',
+                    new Date(2025, 1, 14).toLocaleDateString(),
+                    '',
+                    '/',
+                    '',
+                    'Correction',
+                    'Nombre de films',
+                    '',
+                    '/api/run/count-all/',
+                    '35',
+                    'To Review',
+                    '',
+                    'John DOE',
+                    new Date(2025, 1, 14).toLocaleDateString(),
+                ]);
+            });
+        });
+
+        it('should support cancel', () => {
+            cy.findByText('Filters').click();
+            cy.findByPlaceholderText('Filter value').type('/graph');
+
+            cy.findByRole('button', {
+                name: 'Delete the filtered annotations',
+            }).click();
+
+            cy.findByRole('button', {
+                name: 'Cancel',
+                timeout: 2000,
+            }).click();
+
+            cy.findAllByRole('cell').should('have.length', 12);
+        });
+    });
+
     describe('suggested value list with a single value', () => {
         beforeEach(() => {
             // ResizeObserver doesn't like when the app has to many renders / re-renders

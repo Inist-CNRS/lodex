@@ -1317,6 +1317,8 @@
 "correction"	"Correction"	"Correction"
 "correct"	"Correction"	"Correction"
 "addition"	"Addition"	"Ajout"
+"annotation_delete_filtered_button_label"	"Delete the filtered annotations"	"Supprimer les annotations filtrées"
+"annotation_delete_filtered_modal_title"	"Are you sure you want to delete the filtered annotations?"	"Êtes-vous sûr de vouloir supprimer les annotations filtrées ?"
 "annotation_delete_many_button_label"	"Delete the selected annotation(s)"	" Supprimer l(es) annotation(s) sélectionnée(s)"
 "annotation_delete_many_modal_title"	"Are your sure you want to delete this contributor annotation? |||| Are you sure you want to delete the %{smart_count} selected annotations?"	"Êtes-vous sûr de vouloir supprimer cette annotation du contributeur ? |||| Êtes-vous sûr de vouloir supprimer les %{smart_count} annotations sélectionnées ?"
 "annotation_delete_many_success"	"%{smart_count} annotation have been deleted. |||| %{smart_count} annotations have been deleted."	"%{smart_count} annotation a été supprimée. |||| %{smart_count} annotations ont été supprimées."

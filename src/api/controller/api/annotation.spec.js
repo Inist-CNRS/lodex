@@ -15,7 +15,8 @@ import {
     canAnnotateRoute,
     createAnnotation,
     deleteAnnotation,
-    deleteManyAnnotation,
+    deleteManyAnnotationByFilter,
+    deleteManyAnnotationById,
     exportAnnotations,
     getAnnotation,
     getAnnotations,
@@ -1934,7 +1935,7 @@ Voir l'annotation : http://localhost:3000/instance/instance-name/admin#/annotati
                 field: fieldModel,
             };
 
-            await deleteManyAnnotation(ctx);
+            await deleteManyAnnotationById(ctx);
 
             expect(ctx.response).toStrictEqual({
                 status: 200,
@@ -1988,7 +1989,7 @@ Voir l'annotation : http://localhost:3000/instance/instance-name/admin#/annotati
                     field: fieldModel,
                 };
 
-                await deleteManyAnnotation(ctx);
+                await deleteManyAnnotationById(ctx);
 
                 expect(ctx.response).toStrictEqual({
                     status: 400,
@@ -1999,6 +2000,100 @@ Voir l'annotation : http://localhost:3000/instance/instance-name/admin#/annotati
                 });
             },
         );
+    });
+
+    describe('DELETE /annotations/batch-delete-filter', () => {
+        beforeEach(async () => {
+            await Promise.all([
+                annotationModel.create({
+                    comment: 'target annotation',
+                }),
+                annotationModel.create({
+                    comment: 'another annotation',
+                }),
+            ]);
+        });
+
+        it('should succeed with a 200 with deleted annotations', async () => {
+            const ctx = {
+                request: {
+                    query: {
+                        filterBy: 'comment',
+                        filterOperator: 'contains',
+                        filterValue: 'target',
+                    },
+                },
+                response: {},
+                annotation: annotationModel,
+                publishedDataset: publishedDatasetModel,
+                field: fieldModel,
+            };
+
+            await deleteManyAnnotationByFilter(ctx);
+
+            expect(ctx.response).toStrictEqual({
+                status: 200,
+                body: { status: 'deleted', deletedCount: 1 },
+            });
+
+            expect(await annotationModel.findLimitFromSkip()).toMatchObject([
+                {
+                    comment: 'another annotation',
+                },
+            ]);
+        });
+
+        it('should fail with a 400 if filter is empty', async () => {
+            const ctx = {
+                request: {
+                    query: {},
+                },
+                response: {},
+                annotation: annotationModel,
+                publishedDataset: publishedDatasetModel,
+                field: fieldModel,
+            };
+
+            await deleteManyAnnotationByFilter(ctx);
+
+            expect(ctx.response).toStrictEqual({
+                status: 400,
+                body: {
+                    status: 'error',
+                    error: 'filter parameter is incomplete',
+                    deletedCount: 0,
+                },
+            });
+        });
+
+        it('should fail with a 404 if not row has been deleted', async () => {
+            const ctx = {
+                request: {
+                    query: {
+                        filterBy: 'comment',
+                        filterOperator: 'contains',
+                        filterValue: 'target2',
+                    },
+                },
+                response: {},
+                annotation: annotationModel,
+                publishedDataset: publishedDatasetModel,
+                field: fieldModel,
+            };
+
+            await deleteManyAnnotationByFilter(ctx);
+
+            expect(ctx.response).toStrictEqual({
+                status: 404,
+                body: {
+                    status: 'error',
+                    error: `no row match the filter`,
+                    deletedCount: 0,
+                },
+            });
+
+            expect(await annotationModel.count({})).toBe(2);
+        });
     });
 
     describe('DELETE /annotations/:id', () => {
