@@ -247,7 +247,6 @@ const SearchResult = ({ fields, fieldNames, result, closeDrawer }) => {
 SearchResult.propTypes = {
     fields: PropTypes.arrayOf(fieldPropTypes).isRequired,
     fieldNames: PropTypes.shape({
-        uri: PropTypes.string,
         title: PropTypes.string,
         description: PropTypes.string,
         detail1: PropTypes.string,
