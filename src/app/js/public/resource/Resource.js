@@ -89,7 +89,6 @@ export const ResourceComponent = ({
     }, [match.params]);
 
     useEffect(() => {
-        preLoadResource();
         preLoadPublication();
         preLoadExporters();
     }, [preLoadExporters, preLoadPublication, preLoadResource]);
