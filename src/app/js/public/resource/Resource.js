@@ -3,15 +3,13 @@ import HomeIcon from '@mui/icons-material/Home';
 import { Button, Card, CardActions, CardContent } from '@mui/material';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { Swipeable } from 'react-swipeable';
 import compose from 'recompose/compose';
-import { translate } from '../../i18n/I18NContext';
+import { translate, useTranslate } from '../../i18n/I18NContext';
 
-import get from 'lodash/get';
-import isEqual from 'lodash/isEqual';
 import { getResourceUri } from '../../../../common/uris';
 import { preLoadPublication } from '../../fields';
 import Link from '../../lib/components/Link';
@@ -57,166 +55,159 @@ const buildLocationFromResource = (resource) =>
 
 const navigate = (history, location) => history.push(location);
 
-export class ResourceComponent extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = { lastResourceUri: null };
-    }
+const getArkResourceUrl = (naan, rest) => {
+    return `${naan}/${rest}`;
+};
 
-    UNSAFE_componentWillMount() {
-        this.props.preLoadResource();
-        this.props.preLoadPublication();
-        this.props.preLoadExporters();
-    }
+export const ResourceComponent = ({
+    history,
+    resource,
+    datasetTitleKey,
+    characteristics,
+    loading,
+    removed,
+    prevResource,
+    nextResource,
+    match,
+    tenant,
+    preLoadResource,
+    preLoadPublication,
+    preLoadExporters,
+}) => {
+    const { translate } = useTranslate();
 
-    _getArkResourceUrl(naan, rest) {
-        return `${naan}/${rest}`;
-    }
+    const [lastResourceUri, setLastResourceUri] = useState(null);
 
-    componentDidUpdate(prevProps) {
-        const { match } = this.props;
+    const newLastResourceUri = useMemo(() => {
+        return match.params
+            ? match.params.naan && match.params.rest
+                ? getArkResourceUrl(match.params.naan, match.params.rest)
+                : match.params.uri
+            : null;
+    }, [match.params]);
 
-        if (
-            !isEqual(
-                get(match, 'params', {}),
-                get(prevProps, 'match.params', {}),
-            )
-        ) {
-            this.props.preLoadResource();
-        }
+    useEffect(() => {
+        preLoadResource();
+        preLoadPublication();
+        preLoadExporters();
+    }, [preLoadExporters, preLoadPublication, preLoadResource]);
 
+    useEffect(() => {
+        preLoadResource();
+    }, [match.params, preLoadResource]);
+
+    useEffect(() => {
         // Is not a subresource
         if (
             match.params &&
             match.params.uri &&
             match.params.uri.length !== 32 &&
             !match.params.uri.includes('%2F') && // md5 length for subresources uuid
-            match.params.uri !== this.state.lastResourceUri
+            match.params.uri !== lastResourceUri
         ) {
-            this.setState({ lastResourceUri: match.params.uri });
+            setLastResourceUri(match.params.uri);
         } else if (match.params && match.params.naan && match.params.rest) {
             // Ark resources
-            const lastResourceUri = this._getArkResourceUrl(
+            const newLastResourceUri = getArkResourceUrl(
                 match.params.naan,
                 match.params.rest,
             );
-            if (lastResourceUri !== this.state.lastResourceUri) {
-                this.setState({ lastResourceUri: lastResourceUri });
+            if (newLastResourceUri !== lastResourceUri) {
+                setLastResourceUri(newLastResourceUri);
             }
         }
+    }, [lastResourceUri, match.params]);
+
+    if (loading) {
+        return (
+            <Loading className="resource">
+                {translate('loading_resource')}
+            </Loading>
+        );
     }
 
-    render() {
-        const {
-            history,
-            resource,
-            datasetTitleKey,
-            characteristics,
-            loading,
-            removed,
-            p: polyglot,
-            prevResource,
-            nextResource,
-            match,
-            tenant,
-        } = this.props;
+    const backToListLabel =
+        (datasetTitleKey && characteristics[datasetTitleKey]) ||
+        translate('back_to_list');
 
-        if (loading) {
-            return (
-                <Loading className="resource">
-                    {polyglot.t('loading_resource')}
-                </Loading>
-            );
-        }
+    const backToListButton = (
+        <Button
+            variant="text"
+            className="btn-back-to-list"
+            component={(props) => <Link to="/graph" {...props} />}
+            startIcon={<HomeIcon />}
+        >
+            {backToListLabel}
+        </Button>
+    );
 
-        const backToListLabel =
-            (datasetTitleKey && characteristics[datasetTitleKey]) ||
-            polyglot.t('back_to_list');
+    if (!resource && !loading) {
+        return (
+            <div className="not-found">
+                <Card sx={{ marginTop: '0.5rem' }}>
+                    <CardActions>{backToListButton}</CardActions>
+                </Card>
+                <Card sx={{ marginTop: '0.5rem' }}>
+                    <CardContent>
+                        <h1>{translate('not_found')}</h1>
+                    </CardContent>
+                </Card>
+            </div>
+        );
+    }
 
-        const backToListButton = (
+    const goBackButton = lastResourceUri &&
+        lastResourceUri !== newLastResourceUri && (
             <Button
                 variant="text"
-                className="btn-back-to-list"
-                component={(props) => <Link to="/graph" {...props} />}
-                startIcon={<HomeIcon />}
+                onClick={history.goBack}
+                startIcon={<BackIcon />}
             >
-                {backToListLabel}
+                {translate('back_to_resource')}
             </Button>
         );
 
-        if (!resource && !loading) {
-            return (
-                <div className="not-found">
-                    <Card sx={{ marginTop: '0.5rem' }}>
-                        <CardActions>{backToListButton}</CardActions>
-                    </Card>
-                    <Card sx={{ marginTop: '0.5rem' }}>
-                        <CardContent>
-                            <h1>{polyglot.t('not_found')}</h1>
-                        </CardContent>
-                    </Card>
+    const swipeableConfig = {
+        preventDefaultTouchmoveEvent: true,
+        trackMouse: false,
+    };
+
+    const prevLocation = buildLocationFromResource(prevResource);
+    const nextLocation = buildLocationFromResource(nextResource);
+
+    const navigatePrev = () => navigate(history, prevLocation);
+    const navigateNext = () => navigate(history, nextLocation);
+
+    return (
+        <Swipeable
+            id="resource-page"
+            className="resource"
+            {...swipeableConfig}
+            onSwipedRight={navigatePrev}
+            onSwipedLeft={navigateNext}
+        >
+            {removed && <RemovedDetail />}
+            {!removed && (
+                <Detail backToListLabel={backToListLabel} tenant={tenant} />
+            )}
+            {prevResource && (
+                <div className={classnames(navStyles.nav, navStyles.left)}>
+                    <NavButton direction={PREV} navigate={navigatePrev} />
                 </div>
-            );
-        }
-        const lastResourceUri = match.params
-            ? match.params.naan && match.params.rest
-                ? this._getArkResourceUrl(match.params.naan, match.params.rest)
-                : match.params.uri
-            : null;
-
-        const goBackButton = this.state.lastResourceUri &&
-            this.state.lastResourceUri !== lastResourceUri && (
-                <Button
-                    variant="text"
-                    onClick={history.goBack}
-                    startIcon={<BackIcon />}
-                >
-                    {polyglot.t('back_to_resource')}
-                </Button>
-            );
-
-        const swipeableConfig = {
-            preventDefaultTouchmoveEvent: true,
-            trackMouse: false,
-        };
-
-        const prevLocation = buildLocationFromResource(prevResource);
-        const nextLocation = buildLocationFromResource(nextResource);
-
-        const navigatePrev = () => navigate(history, prevLocation);
-        const navigateNext = () => navigate(history, nextLocation);
-
-        return (
-            <Swipeable
-                id="resource-page"
-                className="resource"
-                {...swipeableConfig}
-                onSwipedRight={navigatePrev}
-                onSwipedLeft={navigateNext}
-            >
-                {removed && <RemovedDetail />}
-                {!removed && (
-                    <Detail backToListLabel={backToListLabel} tenant={tenant} />
-                )}
-                {prevResource && (
-                    <div className={classnames(navStyles.nav, navStyles.left)}>
-                        <NavButton direction={PREV} navigate={navigatePrev} />
-                    </div>
-                )}
-                {nextResource && (
-                    <div className={classnames(navStyles.nav, navStyles.right)}>
-                        <NavButton direction={NEXT} navigate={navigateNext} />
-                    </div>
-                )}
-                {goBackButton && (
-                    <Card sx={{ marginTop: '0.5rem' }}>
-                        <CardActions>{goBackButton}</CardActions>
-                    </Card>
-                )}
-            </Swipeable>
-        );
-    }
-}
+            )}
+            {nextResource && (
+                <div className={classnames(navStyles.nav, navStyles.right)}>
+                    <NavButton direction={NEXT} navigate={navigateNext} />
+                </div>
+            )}
+            {goBackButton && (
+                <Card sx={{ marginTop: '0.5rem' }}>
+                    <CardActions>{goBackButton}</CardActions>
+                </Card>
+            )}
+        </Swipeable>
+    );
+};
 
 ResourceComponent.defaultProps = {
     characteristics: null,
