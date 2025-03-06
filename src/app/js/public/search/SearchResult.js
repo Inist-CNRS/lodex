@@ -11,6 +11,7 @@ import { isURL, getResourceUri } from '../../../../common/uris';
 import stylesToClassname from '../../lib/stylesToClassName';
 import { Box } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { useIsVisited } from '../resource/useRememberVisit';
 
 const ellipsis = {
     whiteSpace: 'nowrap',
@@ -76,6 +77,7 @@ const styles = stylesToClassname(
 );
 
 const SearchResult = ({ fields, fieldNames, result, closeDrawer }) => {
+    const isVisited = useIsVisited(result);
     const [showMore, setShowMore] = React.useState(false);
     const titleField = fields.find((field) => field.name === fieldNames.title);
     const descriptionField = fields.find(
@@ -99,14 +101,16 @@ const SearchResult = ({ fields, fieldNames, result, closeDrawer }) => {
     const linkProps = isURL(result.uri)
         ? { href: result.uri }
         : { to: getResourceUri(result) };
-
     return (
         <Link
             {...linkProps}
             routeAware
-            className={classnames('search-result-link', styles.link)}
+            className={classnames(
+                'search-result-link',
+                styles.link,
+                isVisited && styles.activeLink,
+            )}
             onClick={closeDrawer}
-            activeClassName={styles.activeLink}
         >
             <div
                 id={`search-result-${result.uri}`}

@@ -22,6 +22,7 @@ import { fromResource, fromSearch } from '../selectors';
 import { preLoadResource } from './';
 import Detail from './Detail';
 import RemovedDetail from './RemovedDetail';
+import { useRememberVisit } from './useRememberVisit';
 
 const navStyles = stylesToClassname(
     {
@@ -74,6 +75,7 @@ export const ResourceComponent = ({
     preLoadPublication,
     preLoadExporters,
 }) => {
+    useRememberVisit(resource);
     const { translate } = useTranslate();
 
     const [lastResourceUri, setLastResourceUri] = useState(null);
