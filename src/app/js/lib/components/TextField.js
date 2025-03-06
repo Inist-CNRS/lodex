@@ -4,7 +4,7 @@ import {
     TextField as MuiTextField,
 } from '@mui/material';
 import PropTypes from 'prop-types';
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 
 import { useField } from '@tanstack/react-form';
 import { useTranslate } from '../../i18n/I18NContext';
@@ -20,9 +20,17 @@ export function TextField({
     required,
     type,
     sx,
+    initialValue,
 }) {
     const { translate } = useTranslate();
     const field = useField({ name, form });
+
+    useEffect(() => {
+        if (initialValue) {
+            field.handleChange(initialValue);
+        }
+    }, [initialValue, field]);
+
     const error = useMemo(() => {
         // required is used for optionally required field based on a condition
         // since tanstack form does not support multi field validation on the field side
@@ -79,4 +87,5 @@ TextField.propTypes = {
     required: PropTypes.bool,
     disabled: PropTypes.bool,
     sx: PropTypes.object,
+    initialValue: PropTypes.string,
 };

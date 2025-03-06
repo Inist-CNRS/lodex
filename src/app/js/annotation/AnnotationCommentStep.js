@@ -162,7 +162,13 @@ export function AnnotationCommentStep({ field, form, initialValue }) {
             </Stack>
             {[ANNOTATION_KIND_CORRECTION, ANNOTATION_KIND_ADDITION].includes(
                 kind,
-            ) && <ProposedValueField form={form} field={field} />}
+            ) && (
+                <ProposedValueField
+                    form={form}
+                    field={field}
+                    initialValue={annotationInitialValue}
+                />
+            )}
             <CommentField form={form} />
         </>
     );
