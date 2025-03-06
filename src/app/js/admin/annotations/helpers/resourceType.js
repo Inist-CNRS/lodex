@@ -7,5 +7,5 @@ export function getResourceType(resourceUri, field) {
         return 'home';
     }
 
-    return resourceUri;
+    return 'resource';
 }

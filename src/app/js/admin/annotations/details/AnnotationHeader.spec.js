@@ -36,10 +36,6 @@ describe('AnnotationHeader', () => {
                 name: 'annotation_header_comment annotation_home_page',
             }),
         ).toBeInTheDocument();
-
-        expect(
-            wrapper.getByRole('link', { name: 'annotation_resource_link' }),
-        ).toHaveAttribute('href', '/instance/default');
     });
 
     it('should render header for home page if resourceUri is null', () => {
@@ -74,10 +70,6 @@ describe('AnnotationHeader', () => {
                 name: 'annotation_header_comment annotation_home_page',
             }),
         ).toBeInTheDocument();
-
-        expect(
-            wrapper.getByRole('link', { name: 'annotation_resource_link' }),
-        ).toHaveAttribute('href', '/instance/default');
     });
 
     it('should render header for graphic page if resourceUri is a graph URI', () => {
@@ -113,10 +105,6 @@ describe('AnnotationHeader', () => {
                 name: 'Annotated field',
             }),
         ).toBeInTheDocument();
-
-        expect(
-            wrapper.getByRole('link', { name: 'annotation_resource_link' }),
-        ).toHaveAttribute('href', '/instance/default/graph/GaZr');
     });
 
     it('should render header for graphic page if resourceUri is null', () => {
@@ -152,10 +140,6 @@ describe('AnnotationHeader', () => {
                 name: 'Annotated field',
             }),
         ).toBeInTheDocument();
-
-        expect(
-            wrapper.getByRole('link', { name: 'annotation_resource_link' }),
-        ).toHaveAttribute('href', '/instance/default/graph/GaZr');
     });
 
     it('should render header for resource page', () => {
@@ -198,10 +182,6 @@ describe('AnnotationHeader', () => {
                 name: 'The resource title',
             }),
         ).toBeInTheDocument();
-
-        expect(
-            wrapper.getByRole('link', { name: 'annotation_resource_link' }),
-        ).toHaveAttribute('href', '/instance/default/uid:/1234');
     });
 
     it('should render title prefixed with comment when kind is comment', () => {
@@ -314,9 +294,5 @@ describe('AnnotationHeader', () => {
                 name: 'annotation_resource_not_found',
             }),
         ).toBeInTheDocument();
-
-        expect(
-            wrapper.queryByRole('link', { name: 'annotation_resource_link' }),
-        ).not.toBeInDocument;
     });
 });

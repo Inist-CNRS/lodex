@@ -31,7 +31,7 @@ import {
     TableRow,
     Tooltip,
 } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useTranslate } from '../../i18n/I18NContext';
 import Loading from '../../lib/components/Loading';
 import datasetApi from '../api/dataset';
@@ -114,6 +114,29 @@ const getFiltersOperatorsForType = (type) => {
 export const ParsingResultComponent = (props) => {
     const { enrichments, loadingParsingResult } = props;
     const { translate } = useTranslate();
+
+    const { search } = useLocation();
+    const searchParams = useMemo(() => {
+        return new URLSearchParams(search);
+    }, [search]);
+
+    const initialFilter = useMemo(() => {
+        const searchParamsFilteredUri = searchParams.get('uri');
+
+        if (searchParamsFilteredUri) {
+            return {
+                columnField: 'uri',
+                operatorValue: 'contains',
+                value: searchParamsFilteredUri,
+            };
+        }
+
+        return {
+            columnField: 'uri',
+            operatorValue: 'contains',
+            value: '',
+        };
+    }, [searchParams]);
 
     const [showEnrichmentColumns, setShowEnrichmentColumns] = useState(true);
     const [showMainColumns, setShowMainColumns] = useState(true);
@@ -251,7 +274,7 @@ export const ParsingResultComponent = (props) => {
     const [skip, setSkip] = useState(0);
     const [limit, setLimit] = useState(25);
     const [sort, setSort] = useState({});
-    const [filter, setFilter] = useState({});
+    const [filter, setFilter] = useState(initialFilter);
 
     const fetchDataset = useCallback(async () => {
         const { count: datasCount, datas } = await datasetApi.getDataset({
@@ -461,6 +484,7 @@ export const ParsingResultComponent = (props) => {
                 sortingMode="server"
                 onSortModelChange={handleSortModelChange}
                 filterMode="server"
+                filterModel={{ items: [filter] }}
                 onFilterModelChange={handleFilterModelChange}
                 rowsPerPageOptions={[10, 25, 50]}
                 disableSelectionOnClick={true}

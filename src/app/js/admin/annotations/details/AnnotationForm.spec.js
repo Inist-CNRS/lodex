@@ -63,8 +63,15 @@ describe('AnnotationForm', () => {
         ).toBeInTheDocument();
 
         expect(
-            wrapper.getByRole('link', { name: 'annotation_resource_link' }),
+            wrapper.getByRole('link', { name: 'annotation_see_resource' }),
         ).toHaveAttribute('href', '/instance/default/uid:/1234');
+
+        expect(
+            wrapper.getByRole('link', { name: 'annotation_update_resource' }),
+        ).toHaveAttribute(
+            'href',
+            '/instance/default/admin#/data/existing?uri=uid%3A%2F1234',
+        );
 
         // Field region
         const fieldRegion = wrapper.getByRole('region', {
