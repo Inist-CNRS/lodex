@@ -2,19 +2,21 @@ import { useEffect, useMemo } from 'react';
 import { DEFAULT_TENANT } from '../../../../common/tools/tenantTools';
 import { isURL } from '../../../../common/uris';
 
-const tenant = sessionStorage.getItem('lodex-tenant') || DEFAULT_TENANT;
-
 export const useRememberVisit = (resource) => {
-    const setViewedResources = (resources) =>
+    const setViewedResources = (resources) => {
+        const tenant = sessionStorage.getItem('lodex-tenant') || DEFAULT_TENANT;
         localStorage.setItem(
             `${tenant}-viewed-resources`,
             JSON.stringify(resources),
         );
+    };
 
     useEffect(() => {
         if (!resource?.uri) {
             return;
         }
+
+        const tenant = sessionStorage.getItem('lodex-tenant') || DEFAULT_TENANT;
         const viewedResources =
             JSON.parse(localStorage.getItem(`${tenant}-viewed-resources`)) ||
             [];
@@ -29,6 +31,8 @@ export const useIsVisited = (resource) => {
         if (isURL(resource.uri)) {
             return false;
         }
+
+        const tenant = sessionStorage.getItem('lodex-tenant') || DEFAULT_TENANT;
         const viewedResources =
             JSON.parse(localStorage.getItem(`${tenant}-viewed-resources`)) ||
             [];
