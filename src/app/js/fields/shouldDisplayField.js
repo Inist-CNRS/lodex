@@ -3,7 +3,7 @@ import get from 'lodash/get';
 import { REJECTED } from '../../../common/propositionStatus';
 import isEmpty from '../../../common/lib/isEmpty';
 
-export default (
+export const shouldDisplayField = (
     resource,
     field,
     fieldStatus,
@@ -18,10 +18,15 @@ export default (
         return false;
     }
 
+    if (field.format?.name === 'fieldClone') {
+        return !isEmpty(resource[field.format.args.value]);
+    }
+
     const value = resource[field.name];
     const isFieldEmpty = isEmpty(value);
 
     const isComposedField = Boolean(field.composedOf);
+
     if (!isComposedField) {
         return !isFieldEmpty && predicate(value);
     }

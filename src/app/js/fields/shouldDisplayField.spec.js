@@ -1,4 +1,4 @@
-import shouldDisplayField from './shouldDisplayField';
+import { shouldDisplayField } from './shouldDisplayField';
 
 import { VALIDATED, REJECTED } from '../../../common/propositionStatus';
 
@@ -305,6 +305,71 @@ describe('shouldDisplayField', () => {
             const fieldStatus = VALIDATED;
             const predicate = () => true;
             const isAdmin = undefined;
+
+            expect(
+                shouldDisplayField(
+                    resource,
+                    field,
+                    fieldStatus,
+                    predicate,
+                    isAdmin,
+                ),
+            ).toBe(true);
+        });
+    });
+
+    describe('with cloned field', () => {
+        it('should return true if the field is a clone and the value of the clone is not empty', () => {
+            const field = {
+                name: 'title',
+                format: { name: 'fieldClone', args: { value: 'clonedField' } },
+            };
+            const resource = { title: 'Title', clonedField: 'cloned value' };
+            const fieldStatus = VALIDATED;
+            const predicate = () => true;
+            const isAdmin = false;
+
+            expect(
+                shouldDisplayField(
+                    resource,
+                    field,
+                    fieldStatus,
+                    predicate,
+                    isAdmin,
+                ),
+            ).toBe(true);
+        });
+
+        it('should return false if the field is a clone and the value of the clone is empty', () => {
+            const field = {
+                name: 'title',
+                format: { name: 'fieldClone', args: { value: 'clonedField' } },
+            };
+            const resource = { title: 'Title', clonedField: '' };
+            const fieldStatus = VALIDATED;
+            const predicate = () => true;
+            const isAdmin = false;
+
+            expect(
+                shouldDisplayField(
+                    resource,
+                    field,
+                    fieldStatus,
+                    predicate,
+                    isAdmin,
+                ),
+            ).toBe(false);
+        });
+
+        it('should return true even if the field is a clone and the value of the clone is empty when isAdmin is true', () => {
+            const field = {
+                name: 'title',
+                format: { name: 'fieldClone', args: { value: 'clonedField' } },
+            };
+            const resource = { title: 'Title', clonedField: '' };
+            const fieldStatus = VALIDATED;
+            const predicate = () => true;
+            const isAdmin = true;
 
             expect(
                 shouldDisplayField(

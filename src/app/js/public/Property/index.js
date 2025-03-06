@@ -15,7 +15,7 @@ import {
     SCOPE_DOCUMENT,
     SCOPE_GRAPHIC,
 } from '../../../../common/scope';
-import shouldDisplayField from '../../fields/shouldDisplayField';
+import { shouldDisplayField } from '../../fields/shouldDisplayField';
 import { getPredicate } from '../../formats';
 import addSchemePrefix from '../../lib/addSchemePrefix';
 import Link from '../../lib/components/Link';
