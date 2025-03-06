@@ -1,12 +1,15 @@
 import {
     FormControl,
     FormHelperText,
+    IconButton,
+    InputAdornment,
     TextField as MuiTextField,
 } from '@mui/material';
 import PropTypes from 'prop-types';
 import React, { useEffect, useMemo } from 'react';
-
+import ClearIcon from '@mui/icons-material/Clear';
 import { useField } from '@tanstack/react-form';
+
 import { useTranslate } from '../../i18n/I18NContext';
 
 // TextField component to use tanstack react form with material ui text field
@@ -21,12 +24,13 @@ export function TextField({
     type,
     sx,
     initialValue,
+    clearable,
 }) {
     const { translate } = useTranslate();
     const field = useField({ name, form });
 
     useEffect(() => {
-        if (initialValue) {
+        if (initialValue && !field.state.value) {
             field.handleChange(initialValue);
         }
     }, [initialValue, field]);
@@ -65,6 +69,20 @@ export function TextField({
                     : {})}
                 multiline={multiline}
                 error={!!error}
+                InputProps={{
+                    endAdornment: clearable && field.state.value && (
+                        <InputAdornment position="end">
+                            <IconButton
+                                aria-label={translate('clear')}
+                                onClick={() => {
+                                    field.handleChange(null);
+                                }}
+                            >
+                                <ClearIcon />
+                            </IconButton>
+                        </InputAdornment>
+                    ),
+                }}
             />
             {error ? (
                 <FormHelperText error role="alert">
@@ -88,4 +106,5 @@ TextField.propTypes = {
     disabled: PropTypes.bool,
     sx: PropTypes.object,
     initialValue: PropTypes.string,
+    clearable: PropTypes.bool,
 };

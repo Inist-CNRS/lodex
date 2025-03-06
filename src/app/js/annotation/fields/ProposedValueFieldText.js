@@ -15,6 +15,7 @@ export function ProposedValueFieldText({ form, initialValue }) {
             required
             initialValue={initialValue}
             multiline
+            clearable
         />
     );
 }
