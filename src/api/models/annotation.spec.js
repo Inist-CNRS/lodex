@@ -417,6 +417,38 @@ describe('annotation', () => {
         });
     });
 
+    describe('deleteMany', () => {
+        beforeEach(async () => {
+            await Promise.all([
+                annotationModel.create({
+                    comment: 'target annotation',
+                }),
+                annotationModel.create({
+                    comment: 'another annotation',
+                }),
+            ]);
+        });
+
+        it('should delete annotations matching the filter', async () => {
+            expect(await annotationModel.count({})).toBe(2);
+
+            await expect(
+                annotationModel.deleteMany({
+                    comment: new RegExp(`^.*target.*$`, 'gi'),
+                }),
+            ).resolves.toStrictEqual({
+                acknowledged: true,
+                deletedCount: 1,
+            });
+
+            expect(await annotationModel.findLimitFromSkip({})).toMatchObject([
+                {
+                    comment: 'another annotation',
+                },
+            ]);
+        });
+    });
+
     describe('findManyByFieldAndResource', () => {
         let annotationList;
         beforeEach(async () => {

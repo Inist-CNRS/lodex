@@ -87,6 +87,10 @@ export default async (db) => {
         return +deletedCount;
     }
 
+    async function deleteMany(filter = {}) {
+        return annotationCollection.deleteMany(filter);
+    }
+
     async function deleteManyById(ids) {
         const { deletedCount } = await annotationCollection.deleteMany({
             _id: {
@@ -116,6 +120,7 @@ export default async (db) => {
         count,
         findOneById,
         deleteOneById,
+        deleteMany,
         deleteManyById,
         findManyByFieldAndResource,
     };

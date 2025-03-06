@@ -1,3 +1,4 @@
+import DeleteIcon from '@mui/icons-material/Delete';
 import { Button } from '@mui/material';
 import PropTypes from 'prop-types';
 import React, { useEffect } from 'react';
@@ -43,6 +44,7 @@ export function DeleteManyButton({ selectedRowIds }) {
                 variant="outlined"
                 color="primary"
                 size="small"
+                startIcon={<DeleteIcon />}
             >
                 {translate('annotation_delete_many_button_label')}
             </Button>
