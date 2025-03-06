@@ -67,7 +67,7 @@ export function ResourceUriCell({ row }) {
         return (
             <ResourceUriCellInternal
                 label={row.resourceUri ?? `/graph/${row.field.name}`}
-                linkUrl={`/instance/${tenant}/graph/${row.field.name}`}
+                linkUrl={`/instance/${tenant}${row.resourceUri ?? `/graph/${row.field.name}`}`}
             />
         );
     }
