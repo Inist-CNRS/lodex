@@ -433,15 +433,15 @@ export const AnnotationList = ({ mode, setMode, annotations, field }) => {
                                         </Typography>
                                         <Grid container columns={2}>
                                             <AnnotationValue
-                                                label="annotation_updated_at"
-                                                value={new Date(
-                                                    annotation.updatedAt,
-                                                ).toLocaleDateString()}
-                                            />
-                                            <AnnotationValue
                                                 label="annotation_created_at"
                                                 value={new Date(
                                                     annotation.createdAt,
+                                                ).toLocaleDateString()}
+                                            />
+                                            <AnnotationValue
+                                                label="annotation_updated_at"
+                                                value={new Date(
+                                                    annotation.updatedAt,
                                                 ).toLocaleDateString()}
                                             />
                                         </Grid>
