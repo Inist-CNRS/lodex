@@ -295,6 +295,15 @@ export const ParsingResultComponent = (props) => {
         setSkip(0);
     };
 
+    const handleFilterModelChange = useCallback((filterModel) => {
+        setFilterModel(filterModel);
+        setSkip(0);
+    }, []);
+
+    const handleFilteredRowsDeleted = useCallback(() => {
+        handleFilterModelChange({ items: [] });
+    }, [handleFilterModelChange]);
+
     useEffect(() => {
         const fetchDataColumns = async () => {
             const { columns } = await datasetApi.getDatasetColumns();
@@ -315,15 +324,6 @@ export const ParsingResultComponent = (props) => {
             sortDir: sortModel[0]?.sort,
         });
     };
-
-    const handleFilterModelChange = useCallback((filterModel) => {
-        setFilterModel(filterModel);
-        setSkip(0);
-    }, []);
-
-    const handleFilteredRowsDeleted = useCallback(() => {
-        handleFilterModelChange({ items: [] });
-    }, [handleFilterModelChange]);
 
     const handleCellClick = (params) => {
         if (params.field === '__check__') {
