@@ -177,5 +177,5 @@ export function AnnotationCommentStep({ field, form, initialValue }) {
 AnnotationCommentStep.propTypes = {
     field: PropTypes.object.isRequired,
     form: PropTypes.object.isRequired,
-    initialValue: PropTypes.string,
+    initialValue: PropTypes.any,
 };

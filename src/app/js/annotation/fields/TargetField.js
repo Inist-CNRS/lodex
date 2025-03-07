@@ -92,7 +92,9 @@ export function TargetField({ form, initialValue, goToStep }) {
                                     goToStep(VALUE_STEP);
                                     return;
                                 }
-                                initialValueField.handleChange(initialValue);
+                                initialValueField.handleChange(
+                                    initialValue?.toString(),
+                                );
                                 goToStep(COMMENT_STEP);
                             }}
                         >
@@ -158,7 +160,9 @@ export function TargetField({ form, initialValue, goToStep }) {
                                     goToStep(VALUE_STEP);
                                     return;
                                 }
-                                initialValueField.handleChange(initialValue);
+                                initialValueField.handleChange(
+                                    initialValue?.toString(),
+                                );
                                 goToStep(COMMENT_STEP);
                             }}
                         >
