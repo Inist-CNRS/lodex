@@ -13,7 +13,7 @@ import CancelButton from './CancelButton';
 
 const styles = {
     container: {
-        paddingBottom: '1rem',
+        paddingTop: '1rem',
     },
 };
 

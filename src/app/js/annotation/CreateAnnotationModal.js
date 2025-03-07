@@ -196,8 +196,8 @@ export function CreateAnnotationModal({
         <>
             <ConfirmPopup
                 isOpen={isConfirmOpen}
-                cancelLabel={translate('cancel')}
-                confirmLabel={translate('close')}
+                cancelLabel={translate('continue_annotation')}
+                confirmLabel={translate('confirm_and_close')}
                 title={translate('annotation_cancel_confirm_title')}
                 description={translate('annotation_cancel_confirm_content')}
                 onCancel={handleCloseConfirm}
