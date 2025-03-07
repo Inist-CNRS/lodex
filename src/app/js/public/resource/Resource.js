@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { Swipeable } from 'react-swipeable';
 import compose from 'recompose/compose';
-import { translate, useTranslate } from '../../i18n/I18NContext';
+import { useTranslate } from '../../i18n/I18NContext';
 
 import { getResourceUri } from '../../../../common/uris';
 import { preLoadPublication } from '../../fields';
@@ -272,6 +272,5 @@ const mapDispatchToProps = {
 
 export default compose(
     connect(mapStateToProps, mapDispatchToProps),
-    translate,
     withRouter,
 )(ResourceComponent);

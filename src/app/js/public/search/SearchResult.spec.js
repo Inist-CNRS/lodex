@@ -49,7 +49,7 @@ describe('SearchResult', () => {
         expect(screen.getByText('Resource Detail 3')).toBeInTheDocument();
     });
 
-    it('should render the search result with no active class when resource uri is not in localStroage', () => {
+    it('should render the search result with no active class when resource uri is not in localStorage', () => {
         localStorage.setItem('default-viewed-resources', JSON.stringify([]));
         const { container } = render(
             <MemoryRouter>
@@ -88,7 +88,7 @@ describe('SearchResult', () => {
         );
     });
 
-    it('should render the search result with active class when resource uri is in localStroage', () => {
+    it('should render the search result with active class when resource uri is in localStorage', () => {
         localStorage.setItem(
             'default-viewed-resources',
             JSON.stringify(['resource/uri']),
