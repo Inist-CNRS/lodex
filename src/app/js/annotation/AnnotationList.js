@@ -320,7 +320,10 @@ export const AnnotationList = ({ mode, setMode, annotations, field }) => {
                                     </Grid>
                                 </Grid>
                             </AccordionSummary>
-                            <AccordionDetails>
+                            <AccordionDetails
+                                hidden={!annotationsOpen[annotation._id]}
+                                aria-hidden={!annotationsOpen[annotation._id]}
+                            >
                                 <Stack gap={2}>
                                     {annotation.isMine && (
                                         <Stack

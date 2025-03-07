@@ -1,5 +1,5 @@
 import React from 'react';
-import { render } from '../../../test-utils';
+import { act, render } from '../../../test-utils';
 import { TestI18N } from '../i18n/I18NContext';
 import {
     AnnotationList,
@@ -22,7 +22,10 @@ function TestAnnotationList({ field, annotations }) {
     );
 }
 
-TestAnnotationList.propTypes = AnnotationList.propTypes;
+TestAnnotationList.propTypes = {
+    field: AnnotationList.propTypes.field,
+    annotations: AnnotationList.propTypes.annotations,
+};
 
 describe('AnnotationList', () => {
     describe('getAnnotationSummaryValue', () => {
@@ -332,6 +335,163 @@ describe('AnnotationList', () => {
             expect(
                 wrapper.queryByLabelText('annotation_created_at'),
             ).toHaveTextContent('9/1/2025');
+        });
+
+        it('should display all annotation details when clicking on expand_all_annotations', async () => {
+            const annotations = [
+                {
+                    _id: 'annotationId1',
+                    kind: 'comment',
+                    comment: 'A comment',
+                    proposedValue: null,
+                    initialValue: null,
+                    resourceUri: 'resourceUri',
+                    field: { label: 'fieldLabel', scope: 'resource' },
+                    resource: { title: 'resourceTitle', uri: 'resourceUri' },
+                    status: 'to_review',
+                    isMine: false,
+                },
+                {
+                    _id: 'annotationId2',
+                    kind: 'addition',
+                    comment: 'Add this',
+                    proposedValue: 'this',
+                    initialValue: null,
+                    resourceUri: 'resourceUri',
+                    field: { label: 'fieldLabel', scope: 'resource' },
+                    resource: { title: 'resourceTitle', uri: 'resourceUri' },
+                    status: 'ongoing',
+                    isMine: true,
+                },
+                {
+                    _id: 'annotationId3',
+                    kind: 'removal',
+                    comment: 'remove that',
+                    proposedValue: null,
+                    initialValue: 'that',
+                    resourceUri: 'resourceUri',
+                    field: { label: 'fieldLabel', scope: 'resource' },
+                    resource: { title: 'resourceTitle', uri: 'resourceUri' },
+                    status: 'validated',
+                    isMine: false,
+                },
+                {
+                    _id: 'annotationId4',
+                    kind: 'correction',
+                    comment: 'correct that with this',
+                    proposedValue: 'this',
+                    initialValue: 'that',
+                    resourceUri: 'resourceUri',
+                    field: { label: 'fieldLabel', scope: 'resource' },
+                    resource: { title: 'resourceTitle', uri: 'resourceUri' },
+                    status: 'rejected',
+                    isMine: false,
+                },
+            ];
+            const field = { label: 'fieldLabel' };
+            const wrapper = render(
+                <TestAnnotationList annotations={annotations} field={field} />,
+            );
+
+            await act(async () => {
+                wrapper.getByLabelText('collapse_all_annotations').click();
+            });
+
+            expect(
+                wrapper.queryAllByLabelText('annotation_initial_value'),
+            ).toHaveLength(2);
+            wrapper
+                .queryAllByLabelText('annotation_initial_value')
+                .forEach((element) => {
+                    expect(element).not.toBeVisible();
+                });
+            expect(
+                wrapper.queryAllByLabelText(
+                    'annotation_proposed_value+{"smart_count":1}',
+                ),
+            ).toHaveLength(2);
+
+            wrapper
+                .queryAllByLabelText(
+                    'annotation_proposed_value+{"smart_count":1}',
+                )
+                .forEach((element) => {
+                    expect(element).not.toBeVisible();
+                });
+            expect(
+                wrapper.queryAllByLabelText('annotation_comment_section'),
+            ).toHaveLength(4);
+            wrapper
+                .queryAllByLabelText('annotation_comment_section')
+                .forEach((element) => {
+                    expect(element).not.toBeVisible();
+                });
+            expect(
+                wrapper.queryAllByLabelText('annotation_updated_at'),
+            ).toHaveLength(4);
+            wrapper
+                .queryAllByLabelText('annotation_updated_at')
+                .forEach((element) => {
+                    expect(element).not.toBeVisible();
+                });
+            expect(
+                wrapper.queryAllByLabelText('annotation_created_at'),
+            ).toHaveLength(4);
+            wrapper
+                .queryAllByLabelText('annotation_created_at')
+                .forEach((element) => {
+                    expect(element).not.toBeVisible();
+                });
+
+            await act(async () => {
+                wrapper.getByLabelText('expand_all_annotations').click();
+            });
+
+            expect(
+                wrapper.queryAllByLabelText('annotation_initial_value'),
+            ).toHaveLength(2);
+            wrapper
+                .queryAllByLabelText('annotation_initial_value')
+                .forEach((element) => {
+                    expect(element).toBeVisible();
+                });
+            expect(
+                wrapper.queryAllByLabelText(
+                    'annotation_proposed_value+{"smart_count":1}',
+                ),
+            ).toHaveLength(2);
+
+            wrapper
+                .queryAllByLabelText(
+                    'annotation_proposed_value+{"smart_count":1}',
+                )
+                .forEach((element) => {
+                    expect(element).toBeVisible();
+                });
+            expect(
+                wrapper.queryAllByLabelText('annotation_comment_section'),
+            ).toHaveLength(4);
+            wrapper
+                .queryAllByLabelText('annotation_comment_section')
+                .forEach((element) => {
+                    expect(element).toBeVisible();
+                });
+            expect(
+                wrapper.queryAllByLabelText('annotation_updated_at'),
+            ).toHaveLength(4);
+            wrapper
+                .queryAllByLabelText('annotation_updated_at')
+                .forEach((element) => {
+                    expect(element).toBeVisible();
+                });
+            expect(
+                wrapper.queryAllByLabelText('annotation_created_at'),
+            ).toHaveLength(4);
+            wrapper
+                .queryAllByLabelText('annotation_created_at')
+                .forEach((element) => {
+                    expect(element).toBeVisible();
+                });
         });
         it('should display own_annotation when isMine is true', () => {
             const annotations = [
