@@ -5,3 +5,7 @@ export function hasFieldMultipleValues(field) {
         field.annotationFormatListKind === 'multiple'
     );
 }
+
+export function getRedirectFieldHash(field) {
+    return field?.name ? `#field-${field.name}` : '';
+}

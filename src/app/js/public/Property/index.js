@@ -200,6 +200,7 @@ export const PropertyComponent = ({
                     <span
                         className={classnames('property_label', fieldClassName)}
                         style={styles.label(fieldStatus, isSub)}
+                        id={`field-${field.name}`}
                     >
                         {field.label}
                         {isAdmin && (

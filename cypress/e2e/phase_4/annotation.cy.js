@@ -704,7 +704,7 @@ describe('Annotation', () => {
 
             fillInputWithFixture(
                 'input[name="import_annotations"]',
-                'annotations/films-many-annotations.json',
+                'annotations/film-many-annotations.json',
                 'application/json',
             );
 
@@ -818,7 +818,7 @@ describe('Annotation', () => {
 
             fillInputWithFixture(
                 'input[name="import_annotations"]',
-                'annotations/films-many-annotations.json',
+                'annotations/film-many-annotations.json',
                 'application/json',
             );
 
@@ -1262,6 +1262,143 @@ Revue`);
             annotation.authorNameField().should('have.value', '');
             annotation.authorEmailField().should('have.value', '');
             annotation.authorRememberMeField().should('not.be.checked');
+        });
+    });
+
+    describe('annotation details actions', () => {
+        beforeEach(() => {
+            // ResizeObserver doesn't like when the app has to many renders / re-renders
+            // and throws an exception to say, "I wait for the next paint"
+            // https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver#observation_errors
+            cy.on('uncaught:exception', (error) => {
+                return !error.message.includes('ResizeObserver');
+            });
+
+            teardown();
+            menu.openAdvancedDrawer();
+            menu.goToAdminDashboard();
+            datasetImportPage.importDataset('dataset/film.csv');
+            datasetImportPage.importModel('model/film-with-field-id.tar');
+            datasetImportPage.publish();
+
+            cy.findByRole('button', {
+                name: 'Open menu',
+            }).click();
+
+            cy.findByRole('menuitem', {
+                name: 'Model',
+            }).trigger('mouseleave');
+
+            cy.findByRole('menuitem', {
+                name: 'Annotations',
+            }).trigger('mouseenter');
+
+            cy.wait(500);
+
+            datasetImportPage.importAnnotations(
+                'annotations/film-many-annotations.json',
+            );
+            datasetImportPage.goToPublishedResources();
+
+            cy.findByText('Search').click();
+            searchDrawer.search('Terminator 2');
+            searchDrawer.waitForLoading();
+            cy.findByTitle('Terminator 2').click();
+            annotation.createTitleAnnotation({
+                fieldLabel: 'actors',
+                comment: 'This is a comment',
+                authorName: 'John Doe',
+                authorEmail: 'john.doe@example.org',
+            });
+
+            cy.findByText('More').click();
+            menu.goToAdminDashboard();
+            cy.findByRole('link', { name: 'Annotations' }).click();
+        });
+
+        it('should redirect to the resource if exists', () => {
+            cy.findByText('Terminator 2').click();
+
+            cy.findByText('See the resource', {
+                timeout: 1000,
+            })
+                .should('be.visible')
+                .should('not.be.disabled')
+                .should('have.attr', 'target', '_blank')
+                .invoke('removeAttr', 'target')
+                .click();
+
+            cy.findByText('actors', {
+                timeout: 1000,
+            }).should('be.visible');
+        });
+
+        it('should redirect to the data list with filtered uri', () => {
+            cy.findByText('Terminator 2').click();
+
+            cy.findByText('Update data', {
+                timeout: 1000,
+            })
+                .should('be.visible')
+                .should('not.be.disabled')
+                .should('have.attr', 'target', '_blank')
+                .invoke('removeAttr', 'target')
+                .click();
+
+            cy.wait(1000);
+
+            cy.findByText('Filters', {
+                timeout: 1000,
+            })
+                .should('be.visible')
+                .click();
+
+            cy.findByLabelText('value').should('not.be.empty');
+
+            cy.findAllByRole('cell').should('have.length', 11);
+        });
+
+        it('should disable the "See the resource" button if the resource does not exist', () => {
+            cy.findByText('rating').click();
+
+            cy.findByText('See the resource', {
+                timeout: 1000,
+            })
+                .should('be.visible')
+                .should('be.disabled');
+        });
+
+        it('should redirect to the home page', () => {
+            cy.findByText('Nombre de films').click();
+
+            cy.findByText('See home page', {
+                timeout: 1000,
+            })
+                .should('be.visible')
+                .should('not.be.disabled')
+                .should('have.attr', 'target', '_blank')
+                .invoke('removeAttr', 'target')
+                .click();
+
+            cy.findByRole('heading', {
+                name: 'Une collection de films célébres',
+                timeout: 1000,
+            }).should('exist');
+        });
+
+        it('should redirect to the graph page', () => {
+            cy.findByText('/graph/TK2J').click();
+
+            cy.findByText('See the graph', {
+                timeout: 1000,
+            })
+                .should('be.visible')
+                .should('not.be.disabled')
+                .should('have.attr', 'target', '_blank')
+                .invoke('removeAttr', 'target')
+                .click();
+
+            cy.findByText('rating').should('exist');
         });
     });
 });

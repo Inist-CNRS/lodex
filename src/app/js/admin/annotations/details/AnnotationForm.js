@@ -4,22 +4,63 @@ import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
 import { useForm, useStore } from '@tanstack/react-form';
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 
+import { Tooltip } from '@mui/material';
+import { DEFAULT_TENANT } from '../../../../../common/tools/tenantTools';
 import { annotationUpdateSchema } from '../../../../../common/validator/annotation.validator';
 import { useTranslate } from '../../../i18n/I18NContext';
+import { SaveButton } from '../../../lib/components/SaveButton';
+import { getRedirectFieldHash } from '../helpers/field';
+import { getResourceType } from '../helpers/resourceType';
 import { useUpdateAnnotation } from '../hooks/useUpdateAnnotation';
 import { AnnotationDeleteButton } from './AnnotationDeleteButton';
 import { AnnotationHeader } from './AnnotationHeader';
 import { AnnotationInputs } from './AnnotationInputs';
 import { AnnotationItems } from './AnnotationItems';
-import { SaveButton } from '../../../lib/components/SaveButton';
+
+const tenant = sessionStorage.getItem('lodex-tenant') || DEFAULT_TENANT;
 
 export const AnnotationForm = ({ annotation }) => {
     const { translate } = useTranslate();
 
     const { handleUpdateAnnotation, isSubmitting } = useUpdateAnnotation();
+
+    const { resourceType, frontUrl, adminUrl } = useMemo(() => {
+        const resourceType = getResourceType(
+            annotation.resourceUri,
+            annotation.field,
+        );
+
+        const redirectFieldHash = getRedirectFieldHash(annotation.field);
+
+        if (resourceType === 'graph') {
+            return {
+                resourceType,
+                frontUrl: annotation.resourceUri
+                    ? `/instance/${tenant}${annotation.resourceUri}`
+                    : `/instance/${tenant}/graph/${annotation.field.name}`,
+            };
+        }
+
+        if (resourceType === 'home') {
+            return {
+                resourceType,
+                frontUrl: `/instance/${tenant}${redirectFieldHash}`,
+            };
+        }
+
+        return {
+            resourceType,
+            frontUrl: annotation.resource
+                ? `/instance/${tenant}/${annotation.resourceUri}${redirectFieldHash}`
+                : null,
+            adminUrl: annotation.resource
+                ? `/instance/${tenant}/admin#/data/existing?uri=${encodeURIComponent(annotation.resourceUri)}`
+                : null,
+        };
+    }, [annotation]);
 
     const form = useForm({
         defaultValues: {
@@ -85,7 +126,50 @@ export const AnnotationForm = ({ annotation }) => {
                         borderLeftColor: 'text.secondary',
                     }}
                 >
-                    <AnnotationInputs form={form} />
+                    <Stack gap={4}>
+                        <Stack direction="row" gap={2}>
+                            <Tooltip
+                                title={translate(
+                                    'annotation_resource_not_found',
+                                )}
+                                open={frontUrl ? false : undefined}
+                            >
+                                <span>
+                                    <Button
+                                        variant="outlined"
+                                        href={frontUrl}
+                                        target="_blank"
+                                        disabled={!frontUrl}
+                                        sx={{
+                                            '&:hover': {
+                                                color: 'primary.main',
+                                            },
+                                        }}
+                                    >
+                                        {translate(
+                                            `annotation_see_${resourceType}`,
+                                        )}
+                                    </Button>
+                                </span>
+                            </Tooltip>
+
+                            {adminUrl && (
+                                <Button
+                                    variant="outlined"
+                                    href={adminUrl}
+                                    target="_blank"
+                                    sx={{
+                                        '&:hover': {
+                                            color: 'primary.main',
+                                        },
+                                    }}
+                                >
+                                    {translate('annotation_update_resource')}
+                                </Button>
+                            )}
+                        </Stack>
+                        <AnnotationInputs form={form} />
+                    </Stack>
                 </Grid>
             </Grid>
             <Box

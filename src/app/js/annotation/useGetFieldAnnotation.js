@@ -52,7 +52,7 @@ export const useGetFieldAnnotation = (fieldId, resourceUri, enabled = true) => {
     });
 
     useEffect(() => {
-        if (!data?.length || isLoading || !enabled) {
+        if (!data || isLoading || !enabled) {
             return;
         }
 

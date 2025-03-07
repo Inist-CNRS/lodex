@@ -31,7 +31,7 @@ import {
     TableRow,
     Tooltip,
 } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useTranslate } from '../../i18n/I18NContext';
 import Loading from '../../lib/components/Loading';
 import datasetApi from '../api/dataset';
@@ -114,6 +114,25 @@ const getFiltersOperatorsForType = (type) => {
 export const ParsingResultComponent = (props) => {
     const { enrichments, loadingParsingResult } = props;
     const { translate } = useTranslate();
+
+    const { search } = useLocation();
+    const initialFilterModel = useMemo(() => {
+        const searchParams = new URLSearchParams(search);
+        const searchParamsFilteredUri = searchParams.get('uri');
+        if (searchParamsFilteredUri) {
+            return {
+                items: [
+                    {
+                        columnField: 'uri',
+                        operatorValue: 'contains',
+                        value: searchParamsFilteredUri,
+                    },
+                ],
+            };
+        }
+
+        return { items: [] };
+    }, [search]);
 
     const [showEnrichmentColumns, setShowEnrichmentColumns] = useState(true);
     const [showMainColumns, setShowMainColumns] = useState(true);
@@ -251,18 +270,18 @@ export const ParsingResultComponent = (props) => {
     const [skip, setSkip] = useState(0);
     const [limit, setLimit] = useState(25);
     const [sort, setSort] = useState({});
-    const [filter, setFilter] = useState({});
+    const [filterModel, setFilterModel] = useState(initialFilterModel);
 
     const fetchDataset = useCallback(async () => {
         const { count: datasCount, datas } = await datasetApi.getDataset({
             skip,
             limit,
-            filter,
+            filter: filterModel.items.at(0),
             sort,
         });
         setRowCount(datasCount);
         setDatas(datas);
-    }, [skip, limit, filter, sort]);
+    }, [skip, limit, filterModel, sort]);
 
     const onPageChange = (page) => {
         setSkip(page * limit);
@@ -273,35 +292,34 @@ export const ParsingResultComponent = (props) => {
         setSkip(0);
     };
 
+    const handleFilterModelChange = useCallback((filterModel) => {
+        setFilterModel(filterModel);
+        setSkip(0);
+    }, []);
+
+    const handleFilteredRowsDeleted = useCallback(() => {
+        handleFilterModelChange({ items: [] });
+    }, [handleFilterModelChange]);
+
     useEffect(() => {
         const fetchDataColumns = async () => {
             const { columns } = await datasetApi.getDatasetColumns();
             setColumns(columns);
+            // We need to initialize the filter model with the columns otherwise it gets erased by MUI datagrid somehow.
+            handleFilterModelChange(initialFilterModel);
         };
         fetchDataColumns();
-    }, []);
+    }, [handleFilterModelChange, initialFilterModel]);
+
     useEffect(() => {
         fetchDataset();
-    }, [skip, limit, filter, sort, fetchDataset]);
-
-    const handleFilteredRowsDeleted = useCallback(() => {
-        setFilter({});
-    }, []);
+    }, [skip, limit, filterModel, sort, fetchDataset]);
 
     const handleSortModelChange = (sortModel) => {
         setSort({
             sortBy: sortModel[0]?.field,
             sortDir: sortModel[0]?.sort,
         });
-    };
-
-    const handleFilterModelChange = (filterModel) => {
-        if (filterModel.items.length === 0) {
-            return;
-        }
-        const { columnField, operatorValue, value } = filterModel.items[0];
-        setFilter({ columnField, operatorValue, value });
-        setSkip(0);
     };
 
     const handleCellClick = (params) => {
@@ -439,10 +457,12 @@ export const ParsingResultComponent = (props) => {
                     selectedRowIds={selectedRowIds}
                     reloadDataset={fetchDataset}
                 />
-                <DeleteFilteredButton
-                    filter={filter}
-                    reloadDataset={handleFilteredRowsDeleted}
-                />
+                {filterModel.items.length && (
+                    <DeleteFilteredButton
+                        filter={filterModel.items[0]}
+                        reloadDataset={handleFilteredRowsDeleted}
+                    />
+                )}
             </GridToolbarContainer>
         );
     };
@@ -461,6 +481,7 @@ export const ParsingResultComponent = (props) => {
                 sortingMode="server"
                 onSortModelChange={handleSortModelChange}
                 filterMode="server"
+                filterModel={filterModel}
                 onFilterModelChange={handleFilterModelChange}
                 rowsPerPageOptions={[10, 25, 50]}
                 disableSelectionOnClick={true}
