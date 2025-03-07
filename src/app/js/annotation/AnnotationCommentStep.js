@@ -1,7 +1,6 @@
 import React from 'react';
 
-import HelpIcon from '@mui/icons-material/HelpOutline';
-import { Stack, Tooltip, Typography } from '@mui/material';
+import { Tooltip, Typography } from '@mui/material';
 import { useStore } from '@tanstack/react-form';
 import PropTypes from 'prop-types';
 import {
@@ -136,7 +135,6 @@ CommentDescription.propTypes = {
 };
 
 export function AnnotationCommentStep({ field, form, initialValue }) {
-    const { translate } = useTranslate();
     const isFieldAnUrl = getIsFieldValueAnUrl(field.format?.name);
 
     const annotationInitialValue = useStore(form.store, (state) => {
@@ -149,17 +147,12 @@ export function AnnotationCommentStep({ field, form, initialValue }) {
 
     return (
         <>
-            <Stack direction="row" gap={1} alignItems="center">
-                <CommentDescription
-                    annotationInitialValue={annotationInitialValue}
-                    fieldInitialValue={initialValue}
-                    isFieldAnUrl={isFieldAnUrl}
-                    kind={kind}
-                />
-                <Tooltip title={translate('public_annotation')}>
-                    <HelpIcon fontSize="1.125rem" />
-                </Tooltip>
-            </Stack>
+            <CommentDescription
+                annotationInitialValue={annotationInitialValue}
+                fieldInitialValue={initialValue}
+                isFieldAnUrl={isFieldAnUrl}
+                kind={kind}
+            />
             {[ANNOTATION_KIND_CORRECTION, ANNOTATION_KIND_ADDITION].includes(
                 kind,
             ) && (

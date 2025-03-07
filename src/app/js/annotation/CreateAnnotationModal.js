@@ -260,6 +260,12 @@ export function CreateAnnotationModal({
                             form={form}
                             step={currentStep}
                         />
+
+                        {currentStep === COMMENT_STEP && (
+                            <Tooltip title={translate('public_annotation')}>
+                                <HelpIcon fontSize="1.125rem" />
+                            </Tooltip>
+                        )}
                         <Box flexGrow={1} />
                         <IconButton
                             onClick={handleOpenConfirm}
