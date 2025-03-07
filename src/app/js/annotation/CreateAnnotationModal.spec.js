@@ -530,6 +530,11 @@ describe('CreateAnnotationModal', () => {
                 ).toBeInTheDocument();
                 expect(
                     screen.getByRole('textbox', {
+                        name: 'annotation.proposedValue *',
+                    }),
+                ).toHaveValue('initialValue');
+                expect(
+                    screen.getByRole('textbox', {
                         name: 'annotation.comment *',
                     }),
                 ).toBeInTheDocument();
@@ -542,6 +547,17 @@ describe('CreateAnnotationModal', () => {
                     }),
                     {
                         target: { value: 'comment' },
+                    },
+                );
+                expect(
+                    screen.getByRole('button', { name: 'next' }),
+                ).not.toBeDisabled();
+                fireEvent.change(
+                    screen.getByRole('textbox', {
+                        name: 'annotation.proposedValue *',
+                    }),
+                    {
+                        target: { value: '' },
                     },
                 );
                 expect(

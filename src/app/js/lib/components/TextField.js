@@ -1,12 +1,15 @@
 import {
     FormControl,
     FormHelperText,
+    IconButton,
+    InputAdornment,
     TextField as MuiTextField,
 } from '@mui/material';
 import PropTypes from 'prop-types';
-import React, { useMemo } from 'react';
-
+import React, { useEffect, useMemo } from 'react';
+import ClearIcon from '@mui/icons-material/Clear';
 import { useField } from '@tanstack/react-form';
+
 import { useTranslate } from '../../i18n/I18NContext';
 
 // TextField component to use tanstack react form with material ui text field
@@ -20,9 +23,18 @@ export function TextField({
     required,
     type,
     sx,
+    initialValue,
+    clearable,
 }) {
     const { translate } = useTranslate();
     const field = useField({ name, form });
+
+    useEffect(() => {
+        if (initialValue && !field.state.value) {
+            field.handleChange(initialValue);
+        }
+    }, [initialValue, field]);
+
     const error = useMemo(() => {
         // required is used for optionally required field based on a condition
         // since tanstack form does not support multi field validation on the field side
@@ -57,6 +69,20 @@ export function TextField({
                     : {})}
                 multiline={multiline}
                 error={!!error}
+                InputProps={{
+                    endAdornment: clearable && field.state.value && (
+                        <InputAdornment position="end">
+                            <IconButton
+                                aria-label={translate('clear')}
+                                onClick={() => {
+                                    field.handleChange(null);
+                                }}
+                            >
+                                <ClearIcon />
+                            </IconButton>
+                        </InputAdornment>
+                    ),
+                }}
             />
             {error ? (
                 <FormHelperText error role="alert">
@@ -79,4 +105,6 @@ TextField.propTypes = {
     required: PropTypes.bool,
     disabled: PropTypes.bool,
     sx: PropTypes.object,
+    initialValue: PropTypes.string,
+    clearable: PropTypes.bool,
 };
