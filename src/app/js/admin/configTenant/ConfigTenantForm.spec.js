@@ -59,8 +59,8 @@ describe('ConfigTenantForm', () => {
         ).toBeInTheDocument();
         expect(wrapper.getByLabelText('enableAutoPublication')).toBeChecked();
 
-        expect(wrapper.getByLabelText('user_auth')).toBeInTheDocument();
-        expect(wrapper.getByLabelText('user_auth')).toBeChecked();
+        expect(wrapper.getByLabelText('user')).toBeInTheDocument();
+        expect(wrapper.getByLabelText('user')).toBeChecked();
 
         expect(
             wrapper.getAllByLabelText('Username', {}).at(0),
@@ -74,8 +74,8 @@ describe('ConfigTenantForm', () => {
             'secret',
         );
 
-        expect(wrapper.getByLabelText('contributor_auth')).toBeInTheDocument();
-        expect(wrapper.getByLabelText('contributor_auth')).not.toBeChecked();
+        expect(wrapper.getByLabelText('contributor')).toBeInTheDocument();
+        expect(wrapper.getByLabelText('contributor')).not.toBeChecked();
 
         expect(
             wrapper.getByLabelText('notification_email'),
@@ -152,6 +152,39 @@ describe('ConfigTenantForm', () => {
             },
         });
     });
+
+    it.each([
+        ['instance_is_private only_contributor_can_annotate', true, true],
+        ['instance_is_public only_contributor_can_annotate', false, true],
+        ['instance_is_private everyone_can_contribute', true, false],
+        ['instance_is_public everyone_can_contribute', false, false],
+    ])(
+        'should display "%s" when userAuth.active is %s and contributorAuth.active is %s',
+        async (message, userAuthActive, contributorAuthActive) => {
+            const handleSave = jest.fn();
+            const wrapper = render(
+                <TestConfigTenantFormView
+                    initialConfig={{
+                        ...configTenant,
+                        userAuth: {
+                            active: userAuthActive,
+                            username: null,
+                            password: null,
+                        },
+                        contributorAuth: {
+                            active: contributorAuthActive,
+                            username: null,
+                            password: null,
+                        },
+                    }}
+                    availableThemes={availableThemes}
+                    handleCancel={() => {}}
+                    handleSave={handleSave}
+                />,
+            );
+            expect(wrapper.getByText(message)).toBeInTheDocument();
+        },
+    );
 
     it('should reject invalid notification email', async () => {
         const handleSave = jest.fn();
@@ -249,9 +282,9 @@ describe('ConfigTenantForm', () => {
         ).not.toBeChecked();
 
         await waitFor(() => {
-            fireEvent.click(wrapper.getByLabelText('user_auth'));
+            fireEvent.click(wrapper.getByLabelText('user'));
         });
-        expect(wrapper.getByLabelText('user_auth')).not.toBeChecked();
+        expect(wrapper.getByLabelText('user')).not.toBeChecked();
 
         await waitFor(() => {
             fireEvent.change(wrapper.getAllByLabelText('Username').at(0), {
@@ -272,9 +305,9 @@ describe('ConfigTenantForm', () => {
         );
 
         await waitFor(() => {
-            fireEvent.click(wrapper.getByLabelText('contributor_auth'));
+            fireEvent.click(wrapper.getByLabelText('contributor'));
         });
-        expect(wrapper.getByLabelText('contributor_auth')).toBeChecked();
+        expect(wrapper.getByLabelText('contributor')).toBeChecked();
 
         await waitFor(() => {
             fireEvent.change(wrapper.getAllByLabelText('Username').at(1), {

@@ -469,7 +469,7 @@ ConfigTenantFormView.propTypes = {
     availableThemes: PropTypes.array.isRequired,
     handleCancel: PropTypes.func.isRequired,
     handleSave: PropTypes.func.isRequired,
-    isSubmitting: PropTypes.bool.isRequired,
+    isSubmitting: PropTypes.bool,
 };
 
 export const ConfigTenantForm = ({ loadConfigTenant }) => {
