@@ -1349,7 +1349,7 @@
 "field_annotation_format_list_kind_single"	"Single choice"	"Choix unique"
 "field_annotation_format_list_kind_multiple"	"Multiple choice"	"Choix multiple"
 "annotation_filter_by_sender"	"Sent by"	"Envoyée(s) par"
-"own_annotation"	"You are this annotation contributor"	"You are this annotation contributor"
+"own_annotation"	"You are the contributor of this annotation"	"Vous êtes le contributeur de cette annotation"
 "all_annotation"	"All contributors"	"Tous les contributeurs"
 "annotation_personal_information_tooltip"	"Personal information will not be visible to other contributors"	"Les informations personnelles ne seront pas visibles par les autres contributeurs"
 "annotation_sent_by_me"	"Only me"	"Uniquement moi"
