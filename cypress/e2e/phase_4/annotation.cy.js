@@ -1160,7 +1160,7 @@ Revue`);
 
             cy.findByLabelText('Annotation summary').click();
 
-            cy.findByText('You are this annotation contributor').should(
+            cy.findByText('You are the contributor of this annotation').should(
                 'be.visible',
             );
         });

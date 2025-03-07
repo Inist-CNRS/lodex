@@ -218,11 +218,7 @@ describe('CreateAnnotationModal', () => {
                 }),
             ).toBeInTheDocument();
 
-            expect(
-                wrapper.getByText(
-                    'annotation_history+{"fieldLabel":"Field Label"}',
-                ),
-            ).toBeInTheDocument();
+            expect(wrapper.getByText('annotation_history')).toBeInTheDocument();
 
             expect(
                 wrapper.queryByRole('tab', {
@@ -313,7 +309,9 @@ describe('CreateAnnotationModal', () => {
         it('should enable the next button when a value is selected', async () => {
             await waitFor(() => {
                 fireEvent.mouseDown(
-                    screen.getByLabelText('annotation_choose_value *'),
+                    screen.getByLabelText(
+                        'annotation_choose_value_to_remove *',
+                    ),
                 );
             });
 
@@ -377,7 +375,9 @@ describe('CreateAnnotationModal', () => {
 
                 await waitFor(() => {
                     fireEvent.click(
-                        screen.getByRole('button', { name: 'close' }),
+                        screen.getByRole('button', {
+                            name: 'confirm_and_close',
+                        }),
                     );
                 });
 
@@ -1122,7 +1122,7 @@ describe('CreateAnnotationModal', () => {
 
         await waitFor(() => {
             fireEvent.mouseDown(
-                screen.getByLabelText('annotation_choose_value *'),
+                screen.getByLabelText('annotation_choose_value_to_remove *'),
             );
         });
 
@@ -1202,7 +1202,7 @@ describe('CreateAnnotationModal', () => {
 
         await waitFor(() => {
             fireEvent.mouseDown(
-                screen.getByLabelText('annotation_choose_value *'),
+                screen.getByLabelText('annotation_choose_value_to_remove *'),
             );
         });
 
@@ -1432,7 +1432,7 @@ describe('CreateAnnotationModal', () => {
 
         await waitFor(() => {
             fireEvent.mouseDown(
-                screen.getByLabelText('annotation_choose_value *'),
+                screen.getByLabelText('annotation_choose_value_to_correct *'),
             );
         });
 
@@ -1524,7 +1524,7 @@ describe('CreateAnnotationModal', () => {
 
         await waitFor(() => {
             fireEvent.mouseDown(
-                screen.getByLabelText('annotation_choose_value *'),
+                screen.getByLabelText('annotation_choose_value_to_correct *'),
             );
         });
 

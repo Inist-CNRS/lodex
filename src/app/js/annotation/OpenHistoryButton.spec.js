@@ -45,11 +45,7 @@ describe('OpenHistoryButton', () => {
             'resourceUri',
         );
 
-        expect(
-            wrapper.queryByText(
-                'annotation_history+{"fieldLabel":"fieldLabel"}',
-            ),
-        ).toBeInTheDocument();
+        expect(wrapper.queryByText('annotation_history')).toBeInTheDocument();
         expect(
             wrapper.queryByText('annotation_open_history+{"smart_count":1}'),
         ).toBeInTheDocument();
@@ -87,11 +83,7 @@ describe('OpenHistoryButton', () => {
             'resourceUri',
         );
 
-        expect(
-            wrapper.queryByText(
-                'annotation_history+{"fieldLabel":"fieldLabel"}',
-            ),
-        ).toBeInTheDocument();
+        expect(wrapper.queryByText('annotation_history')).toBeInTheDocument();
         expect(
             wrapper.queryByText('annotation_no_history'),
         ).toBeInTheDocument();
@@ -122,11 +114,7 @@ describe('OpenHistoryButton', () => {
             'resourceUri',
         );
 
-        expect(
-            wrapper.queryByText(
-                'annotation_history+{"fieldLabel":"fieldLabel"}',
-            ),
-        ).toBeInTheDocument();
+        expect(wrapper.queryByText('annotation_history')).toBeInTheDocument();
         expect(wrapper.queryByText('loading')).toBeInTheDocument();
         expect(openHistory).not.toHaveBeenCalled();
     });
