@@ -379,7 +379,9 @@ describe('CreateAnnotationModal', () => {
 
                 await waitFor(() => {
                     fireEvent.click(
-                        screen.getByRole('button', { name: 'close' }),
+                        screen.getByRole('button', {
+                            name: 'confirm_and_close',
+                        }),
                     );
                 });
 
