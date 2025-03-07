@@ -1,9 +1,12 @@
 import React from 'react';
 import { MemoryRouter, Route } from 'react-router-dom';
 import { render } from '../../../../test-utils';
-import { ParsingResultComponent as ParsingResult } from './ParsingResult';
+import { ParsingResultComponent } from './ParsingResult';
 
-jest.mock('../api/dataset');
+jest.mock('../api/dataset', () => ({
+    getDatasetColumns: jest.fn(() => Promise.resolve({ columns: [] })),
+    getDataset: jest.fn(() => Promise.resolve({ count: 0, datas: [] })),
+}));
 
 describe('<ParsingResult />', () => {
     it('should render the DataGrid', () => {
@@ -13,7 +16,7 @@ describe('<ParsingResult />', () => {
                     exact
                     path="/data/existing"
                     render={() => (
-                        <ParsingResult
+                        <ParsingResultComponent
                             enrichments={[]}
                             p={{ t: () => {} }}
                             loadingParsingResult={false}

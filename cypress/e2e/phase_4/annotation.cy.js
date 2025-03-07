@@ -818,7 +818,7 @@ describe('Annotation', () => {
 
             fillInputWithFixture(
                 'input[name="import_annotations"]',
-                'annotations/films-many-annotations.json',
+                'annotations/film-many-annotations.json',
                 'application/json',
             );
 
