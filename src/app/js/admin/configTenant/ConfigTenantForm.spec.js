@@ -227,6 +227,94 @@ describe('ConfigTenantForm', () => {
             notificationEmail: null,
         });
     });
+
+    it('should reject null recaptchaClientKey and null recaptchaSecretKey when antispamFilter.active is true', async () => {
+        const handleSave = jest.fn();
+        const wrapper = render(
+            <TestConfigTenantFormView
+                initialConfig={{
+                    ...configTenant,
+                    antispamFilter: {
+                        active: true,
+                        recaptchaClientKey: null,
+                        recaptchaSecretKey: null,
+                    },
+                }}
+                availableThemes={availableThemes}
+                handleCancel={() => {}}
+                handleSave={handleSave}
+            />,
+        );
+
+        expect(wrapper.getByLabelText('antispam_filter')).toBeInTheDocument();
+        expect(wrapper.getByLabelText('antispam_filter')).toBeChecked();
+
+        expect(
+            wrapper.getByLabelText('recaptcha_client_key'),
+        ).toBeInTheDocument();
+        expect(wrapper.getByLabelText('recaptcha_client_key')).toHaveValue('');
+
+        expect(
+            wrapper.getByLabelText('recaptcha_secret_key'),
+        ).toBeInTheDocument();
+        expect(wrapper.getByLabelText('recaptcha_secret_key')).toHaveValue('');
+
+        expect(wrapper.getByText('save')).toBeInTheDocument();
+
+        await waitFor(() => {
+            fireEvent.click(wrapper.getByText('save'));
+        });
+
+        expect(handleSave).toHaveBeenCalledTimes(0);
+    });
+
+    it('should accept null recaptchaClientKey and null recaptchaSecretKey when antispamFilter.active is false', async () => {
+        const handleSave = jest.fn();
+        const wrapper = render(
+            <TestConfigTenantFormView
+                initialConfig={{
+                    ...configTenant,
+                    antispamFilter: {
+                        active: false,
+                        recaptchaClientKey: null,
+                        recaptchaSecretKey: null,
+                    },
+                }}
+                availableThemes={availableThemes}
+                handleCancel={() => {}}
+                handleSave={handleSave}
+            />,
+        );
+
+        expect(wrapper.getByLabelText('antispam_filter')).toBeInTheDocument();
+        expect(wrapper.getByLabelText('antispam_filter')).not.toBeChecked();
+
+        expect(
+            wrapper.getByLabelText('recaptcha_client_key'),
+        ).toBeInTheDocument();
+        expect(wrapper.getByLabelText('recaptcha_client_key')).toHaveValue('');
+
+        expect(
+            wrapper.getByLabelText('recaptcha_secret_key'),
+        ).toBeInTheDocument();
+        expect(wrapper.getByLabelText('recaptcha_secret_key')).toHaveValue('');
+
+        expect(wrapper.getByText('save')).toBeInTheDocument();
+
+        await waitFor(() => {
+            fireEvent.click(wrapper.getByText('save'));
+        });
+
+        expect(handleSave).toHaveBeenCalledTimes(1);
+        expect(handleSave).toHaveBeenCalledWith({
+            ...configTenant,
+            antispamFilter: {
+                active: false,
+                recaptchaClientKey: null,
+                recaptchaSecretKey: null,
+            },
+        });
+    });
     it('should allow to update everything', async () => {
         const handleSave = jest.fn();
         const wrapper = render(
