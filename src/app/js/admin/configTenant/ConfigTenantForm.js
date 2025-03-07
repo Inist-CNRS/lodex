@@ -4,7 +4,9 @@ import {
     FormHelperText,
     MenuItem,
     Select,
+    Stack,
     Tooltip,
+    Typography,
 } from '@mui/material';
 import React from 'react';
 
@@ -190,104 +192,128 @@ export const ConfigTenantFormView = ({
                     )}
                 </form.Field>
             </Box>
-            <Box
-                sx={{
-                    width: '100%',
-                    display: 'flex',
-                    gap: 1,
-                    alignItems: 'center',
-                }}
-            >
-                <h2 id="user_auth">{translate('user_auth')}</h2>
-                <Tooltip title={translate('user_auth_help')}>
-                    <HelpIcon />
-                </Tooltip>
-                <form.Field name="userAuth.active">
-                    {(field) => (
-                        <Checkbox
-                            checked={field.state.value}
-                            onChange={(event) => {
-                                field.handleChange(event.target.checked);
-                            }}
-                            inputProps={{
-                                'aria-labelledby': 'user_auth',
-                            }}
+            <Stack>
+                <h2>{translate('user_auth')}</h2>
+                <Stack>
+                    <Box
+                        sx={{
+                            width: '100%',
+                            display: 'flex',
+                            gap: 1,
+                            alignItems: 'center',
+                        }}
+                    >
+                        <h3 id="user">{translate('user')}</h3>
+                        <Tooltip title={translate('user_auth_help')}>
+                            <HelpIcon />
+                        </Tooltip>
+                        <form.Field name="userAuth.active">
+                            {(field) => (
+                                <Checkbox
+                                    checked={field.state.value}
+                                    onChange={(event) => {
+                                        field.handleChange(
+                                            event.target.checked,
+                                        );
+                                    }}
+                                    inputProps={{
+                                        'aria-labelledby': 'user',
+                                    }}
+                                />
+                            )}
+                        </form.Field>
+                    </Box>
+
+                    <Box
+                        sx={{
+                            width: '100%',
+                            display: 'flex',
+                            gap: 2,
+                            mb: 2,
+                        }}
+                    >
+                        <TextField
+                            label={translate('Username')}
+                            name="userAuth.username"
+                            form={form}
+                            disabled={!userAuthActive}
                         />
-                    )}
-                </form.Field>
-            </Box>
 
-            <Box
-                sx={{
-                    width: '100%',
-                    display: 'flex',
-                    gap: 2,
-                    mb: 4,
-                }}
-            >
-                <TextField
-                    label={translate('Username')}
-                    name="userAuth.username"
-                    form={form}
-                    disabled={!userAuthActive}
-                />
-
-                <TextField
-                    label={translate('Password')}
-                    name="userAuth.password"
-                    form={form}
-                    disabled={!userAuthActive}
-                />
-            </Box>
-            <Box
-                sx={{
-                    width: '100%',
-                    display: 'flex',
-                    gap: 1,
-                    alignItems: 'center',
-                }}
-            >
-                <h2 id="contributor_auth">{translate('contributor_auth')}</h2>
-                <Tooltip title={translate('contributor_auth_help')}>
-                    <HelpIcon />
-                </Tooltip>
-                <form.Field name="contributorAuth.active">
-                    {(field) => (
-                        <Checkbox
-                            checked={field.state.value}
-                            onChange={(event) => {
-                                field.handleChange(event.target.checked);
-                            }}
-                            inputProps={{
-                                'aria-labelledby': 'contributor_auth',
-                            }}
+                        <TextField
+                            label={translate('Password')}
+                            name="userAuth.password"
+                            form={form}
+                            disabled={!userAuthActive}
                         />
+                    </Box>
+                </Stack>
+                <Stack>
+                    <Box
+                        sx={{
+                            width: '100%',
+                            display: 'flex',
+                            gap: 1,
+                            alignItems: 'center',
+                        }}
+                    >
+                        <h3 id="contributor">{translate('contributor')}</h3>
+                        <Tooltip title={translate('contributor_auth_help')}>
+                            <HelpIcon />
+                        </Tooltip>
+                        <form.Field name="contributorAuth.active">
+                            {(field) => (
+                                <Checkbox
+                                    checked={field.state.value}
+                                    onChange={(event) => {
+                                        field.handleChange(
+                                            event.target.checked,
+                                        );
+                                    }}
+                                    inputProps={{
+                                        'aria-labelledby': 'contributor',
+                                    }}
+                                />
+                            )}
+                        </form.Field>
+                    </Box>
+
+                    <Box
+                        sx={{
+                            width: '100%',
+                            display: 'flex',
+                            gap: 2,
+                            mb: 2,
+                        }}
+                    >
+                        <TextField
+                            label={translate('Username')}
+                            name="contributorAuth.username"
+                            form={form}
+                            disabled={!contributorAuthActive}
+                        />
+
+                        <TextField
+                            label={translate('Password')}
+                            name="contributorAuth.password"
+                            form={form}
+                            disabled={!contributorAuthActive}
+                        />
+                    </Box>
+                </Stack>
+
+                <Typography>
+                    {translate(
+                        userAuthActive
+                            ? 'instance_is_private'
+                            : 'instance_is_public',
+                    )}{' '}
+                    {translate(
+                        contributorAuthActive
+                            ? 'only_contributor_can_annotate'
+                            : 'everyone_can_contribute',
                     )}
-                </form.Field>
-            </Box>
-
-            <Box
-                sx={{
-                    width: '100%',
-                    display: 'flex',
-                    gap: 2,
-                    mb: 4,
-                }}
-            >
-                <TextField
-                    label={translate('Username')}
-                    name="contributorAuth.username"
-                    form={form}
-                    disabled={!contributorAuthActive}
-                />
-
-                <TextField
-                    label={translate('Password')}
-                    name="contributorAuth.password"
-                    form={form}
-                    disabled={!contributorAuthActive}
-                />
-            </Box>
+                </Typography>
+            </Stack>
 
             <Box>
                 <h2>{translate('notifications')}</h2>
@@ -443,7 +469,7 @@ ConfigTenantFormView.propTypes = {
     availableThemes: PropTypes.array.isRequired,
     handleCancel: PropTypes.func.isRequired,
     handleSave: PropTypes.func.isRequired,
-    isSubmitting: PropTypes.bool.isRequired,
+    isSubmitting: PropTypes.bool,
 };
 
 export const ConfigTenantForm = ({ loadConfigTenant }) => {
