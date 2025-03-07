@@ -6,12 +6,14 @@ import { streamEnd } from '../../services/streamHelper';
 import { unlinkFile } from '../../services/fsHelpers.js';
 
 export default async (ctx) => {
+    const { fields } = ctx.query;
+    const fieldsArray = fields ? fields.split(',') : [];
     const filename = `dataset_${moment().format('YYYY-MM-DD-HHmmss')}.jsonl`;
 
     const pathname = `${os.tmpdir()}/${filename}`;
     const fileWriter = fs.createWriteStream(pathname);
 
-    const stream = await ctx.dataset.dumpAsJsonLStream();
+    const stream = await ctx.dataset.dumpAsJsonLStream(fieldsArray);
     await streamEnd(stream.pipe(fileWriter));
 
     const mimetype = mime.lookup(pathname);
