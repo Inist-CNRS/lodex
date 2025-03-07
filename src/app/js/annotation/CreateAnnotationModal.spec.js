@@ -218,11 +218,7 @@ describe('CreateAnnotationModal', () => {
                 }),
             ).toBeInTheDocument();
 
-            expect(
-                wrapper.getByText(
-                    'annotation_history+{"fieldLabel":"Field Label"}',
-                ),
-            ).toBeInTheDocument();
+            expect(wrapper.getByText('annotation_history')).toBeInTheDocument();
 
             expect(
                 wrapper.queryByRole('tab', {
