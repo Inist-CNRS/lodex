@@ -42,16 +42,23 @@ const VennDiagram = ({ input, width, height, colorSet }) => {
             .style("font-size", "32px")
             .style("font-weight", "100");
 
-        // remove labels
-        d3.select("#venn").selectAll("text").remove();
 
         let tooltip = d3.select("body").append("div").attr("class", "venntooltip");
         d3.selectAll(".venn-area")
             .on("mouseover", function (d, i) {
                 // sort all the areas relative to the current item
-                venn.sortAreas(vennChart, i);
+                venn.sortAreas(svg, i);
+                // highlight the current path
+                const selection = d3.select(this).transition("tooltip").duration(400);
+                selection.select("path")
+                    .style("fill-opacity", .1)
+                    .style("stroke-width", 10)
+                    .style("stroke-opacity", 1);
             })
             .on("mousemove", function (event, d) {
+                tooltip.style("left", (event.pageX) + "px")
+                    .style("top", (event.pageY - 28) + "px");
+
                 // Display a tooltip with the current size
                 tooltip.transition().duration(400).style("opacity", "0.9");
                 tooltip.text(d.size);
@@ -61,28 +68,25 @@ const VennDiagram = ({ input, width, height, colorSet }) => {
                     .style("top", event.pageY - 28 + "px");
             })
             .on("mouseout", function (d, i) {
-                let node = d3.select(this).transition();
-                tooltip.transition().duration(400).style("opacity", "0");
-                d3.select(this).transition("tooltip").duration(400);
-                node
-                    .select("text")
-                    .style("font-weight", "150")
-                    .style("font-size", "32px");
+                tooltip.transition().duration(400).style("opacity", 0);
+                const selection = d3.select(this).transition("tooltip").duration(400);
+                selection.select("path")
+                    .style("fill-opacity", 0)
+                    .style("stroke-width", 10)
+                    .style("stroke-opacity", .5);
             });
 
     }, [ref, sets]);
 
     return (
-        <>
-            <svg
-                className="venn-chart"
-                ref={ref}
-                width={chartWidth + margin.left + margin.right}
-                height={chartHeight + margin.top + margin.bottom}
-                preserveAspectRatio="xMidYMid meet"
-                xmlns="http://www.w3.org/2000/svg"
-            />
-        </>
+        <svg
+            className="venn-chart"
+            ref={ref}
+            width={chartWidth + margin.left + margin.right}
+            height={chartHeight + margin.top + margin.bottom}
+            preserveAspectRatio="xMidYMid meet"
+            xmlns="http://www.w3.org/2000/svg"
+        />
     );
 }
 VennDiagram.propTypes = {

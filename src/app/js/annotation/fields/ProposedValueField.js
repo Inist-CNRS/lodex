@@ -4,7 +4,7 @@ import React from 'react';
 import { ProposedValueFieldList } from './ProposedValueFieldList';
 import { ProposedValueFieldText } from './ProposedValueFieldText';
 
-export function ProposedValueField({ form, field }) {
+export function ProposedValueField({ form, field, initialValue }) {
     if (
         field.annotationFormat === 'list' &&
         field.annotationFormatListOptions?.length
@@ -21,10 +21,11 @@ export function ProposedValueField({ form, field }) {
         );
     }
 
-    return <ProposedValueFieldText form={form} />;
+    return <ProposedValueFieldText form={form} initialValue={initialValue} />;
 }
 
 ProposedValueField.propTypes = {
     field: PropTypes.object.isRequired,
     form: PropTypes.object.isRequired,
+    initialValue: PropTypes.string,
 };

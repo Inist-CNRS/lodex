@@ -31,7 +31,9 @@ export function ValueField({ form, choices }) {
                             name={field.name}
                             value={field.state.value}
                             onBlur={field.handleBlur}
-                            onChange={(e) => field.handleChange(e.target.value)}
+                            onChange={(e) =>
+                                field.handleChange(e.target.value.toString())
+                            }
                             minRows={5}
                             maxRows={10}
                             multiline

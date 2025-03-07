@@ -1,22 +1,27 @@
 import { useForm } from '@tanstack/react-form';
-import { render } from '@testing-library/react';
+import { render, screen, act } from '@testing-library/react';
 import React from 'react';
 
 import PropTypes from 'prop-types';
 import { TestI18N } from '../../i18n/I18NContext';
 import { ProposedValueField } from './ProposedValueField';
 
-function TestProposedValueField({ field }) {
+function TestProposedValueField({ field, initialValue }) {
     const form = useForm();
     return (
         <TestI18N>
-            <ProposedValueField field={field} form={form} />
+            <ProposedValueField
+                field={field}
+                form={form}
+                initialValue={initialValue}
+            />
         </TestI18N>
     );
 }
 
 TestProposedValueField.propTypes = {
     field: PropTypes.object.isRequired,
+    initialValue: PropTypes.string,
 };
 
 describe('ProposedValueField', () => {
@@ -62,6 +67,27 @@ describe('ProposedValueField', () => {
                     name: 'annotation.proposedValue *',
                 }),
             ).toBeInTheDocument();
+        });
+
+        it('should pass initialValue to ProposedValueFieldText', async () => {
+            const field = {
+                annotationFormat: 'text',
+            };
+            const initialValue = 'initial value';
+            await act(async () => {
+                render(
+                    <TestProposedValueField
+                        field={field}
+                        initialValue={initialValue}
+                    />,
+                );
+            });
+
+            expect(
+                screen.getByRole('textbox', {
+                    name: 'annotation.proposedValue *',
+                }),
+            ).toHaveValue(initialValue);
         });
     });
 });

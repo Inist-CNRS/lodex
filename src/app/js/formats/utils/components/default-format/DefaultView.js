@@ -76,3 +76,7 @@ DefaultView.defaultProps = {
 };
 
 export default DefaultView;
+
+export const getReadableValue = ({ resource, field }) => {
+    return resource[field.name];
+};
