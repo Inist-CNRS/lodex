@@ -29,9 +29,7 @@ export const OpenHistoryButton = ({ field, resourceUri, openHistory }) => {
                         fontSize: '1rem',
                     }}
                 >
-                    {translate('annotation_history', {
-                        fieldLabel: field.label,
-                    })}
+                    {translate('annotation_history')}
                 </Typography>
                 {isLoading && <Typography>{translate('loading')}</Typography>}
                 {!isLoading && error && (
