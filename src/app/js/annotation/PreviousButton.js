@@ -100,7 +100,7 @@ PreviousButton.propTypes = {
     goToStep: PropTypes.func.isRequired,
     onCancel: PropTypes.func.isRequired,
     currentStep: PropTypes.string.isRequired,
-    initialValue: PropTypes.string,
+    initialValue: PropTypes.any,
     isSubmitting: PropTypes.bool.isRequired,
     isFieldValueAnnotable: PropTypes.bool.isRequired,
 };
