@@ -54,13 +54,22 @@ const configTenantSchema = z.object({
             }),
         })
         .optional(),
-    antispamFilter: z
-        .object({
-            active: z.boolean(),
-            recaptchaClientKey: z.string(),
-            recaptchaSecretKey: z.string(),
-        })
-        .optional(),
+    antispamFilter: z.discriminatedUnion('active', [
+        z.object({
+            active: z.literal(true),
+            recaptchaClientKey: z.string().min(1, {
+                message: 'error_required',
+            }),
+            recaptchaSecretKey: z.string().min(1, {
+                message: 'error_required',
+            }),
+        }),
+        z.object({
+            active: z.literal(false),
+            recaptchaClientKey: z.string().nullish(),
+            recaptchaSecretKey: z.string().nullish(),
+        }),
+    ]),
     theme: z.string().min(1, {
         message: 'error_required',
     }),
