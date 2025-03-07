@@ -111,7 +111,7 @@ export const AnnotationList = ({ mode, setMode, annotations, field }) => {
 
     const openAllAnnotations = () => {
         setAnnotationsOpen((annotationsOpen) =>
-            (mode === MODE_MINE ? myAnnotations : annotations).reduce(
+            annotations.reduce(
                 (acc, annotation) => ({
                     ...acc,
                     [annotation._id]: true,
@@ -123,7 +123,7 @@ export const AnnotationList = ({ mode, setMode, annotations, field }) => {
 
     const closeAllAnnotations = () => {
         setAnnotationsOpen((annotationsOpen) =>
-            (mode === MODE_MINE ? myAnnotations : annotations).reduce(
+            annotations.reduce(
                 (acc, annotation) => ({
                     ...acc,
                     [annotation._id]: false,
