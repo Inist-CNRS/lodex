@@ -313,7 +313,9 @@ describe('CreateAnnotationModal', () => {
         it('should enable the next button when a value is selected', async () => {
             await waitFor(() => {
                 fireEvent.mouseDown(
-                    screen.getByLabelText('annotation_choose_value *'),
+                    screen.getByLabelText(
+                        'annotation_choose_value_to_remove *',
+                    ),
                 );
             });
 
@@ -1122,7 +1124,7 @@ describe('CreateAnnotationModal', () => {
 
         await waitFor(() => {
             fireEvent.mouseDown(
-                screen.getByLabelText('annotation_choose_value *'),
+                screen.getByLabelText('annotation_choose_value_to_remove *'),
             );
         });
 
@@ -1202,7 +1204,7 @@ describe('CreateAnnotationModal', () => {
 
         await waitFor(() => {
             fireEvent.mouseDown(
-                screen.getByLabelText('annotation_choose_value *'),
+                screen.getByLabelText('annotation_choose_value_to_remove *'),
             );
         });
 
@@ -1432,7 +1434,7 @@ describe('CreateAnnotationModal', () => {
 
         await waitFor(() => {
             fireEvent.mouseDown(
-                screen.getByLabelText('annotation_choose_value *'),
+                screen.getByLabelText('annotation_choose_value_to_correct *'),
             );
         });
 
@@ -1524,7 +1526,7 @@ describe('CreateAnnotationModal', () => {
 
         await waitFor(() => {
             fireEvent.mouseDown(
-                screen.getByLabelText('annotation_choose_value *'),
+                screen.getByLabelText('annotation_choose_value_to_correct *'),
             );
         });
 
