@@ -1351,6 +1351,7 @@
 "annotation_sent_count"	"(%{smart_count} sent)||||(%{smart_count} sent)"	"(%{smart_count} envoyée)||||(%{smart_count} envoyées)"
 "annotation_disabled_tooltip"	"Annotations are disabled on this field"	"Les annotations sont désactivées sur ce champ"
 "field_annotation_format_list_supports_new_values"	"Ability to add a new value"	"Possibilité d'ajouter une nouvelle valeur"
+"annotation_user_provided_value"	"New user provided value: %{value}"	"Nouvelle valeur fournie par l'utilisateur : %{value}"
 "autocomplete_open"	"Open"	"Ouvrir"
 "autocomplete_close"	"Close"	"Fermer"
 "autocomplete_clear"	"Clear"	"Vider"
