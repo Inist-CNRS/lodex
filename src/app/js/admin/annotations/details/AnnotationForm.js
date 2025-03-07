@@ -12,6 +12,7 @@ import { DEFAULT_TENANT } from '../../../../../common/tools/tenantTools';
 import { annotationUpdateSchema } from '../../../../../common/validator/annotation.validator';
 import { useTranslate } from '../../../i18n/I18NContext';
 import { SaveButton } from '../../../lib/components/SaveButton';
+import { getRedirectFieldHash } from '../helpers/field';
 import { getResourceType } from '../helpers/resourceType';
 import { useUpdateAnnotation } from '../hooks/useUpdateAnnotation';
 import { AnnotationDeleteButton } from './AnnotationDeleteButton';
@@ -32,6 +33,8 @@ export const AnnotationForm = ({ annotation }) => {
             annotation.field,
         );
 
+        const redirectFieldHash = getRedirectFieldHash(annotation.field);
+
         if (resourceType === 'graph') {
             return {
                 resourceType,
@@ -44,14 +47,14 @@ export const AnnotationForm = ({ annotation }) => {
         if (resourceType === 'home') {
             return {
                 resourceType,
-                frontUrl: `/instance/${tenant}`,
+                frontUrl: `/instance/${tenant}${redirectFieldHash}`,
             };
         }
 
         return {
             resourceType,
             frontUrl: annotation.resource
-                ? `/instance/${tenant}/${annotation.resourceUri}`
+                ? `/instance/${tenant}/${annotation.resourceUri}${redirectFieldHash}`
                 : null,
             adminUrl: annotation.resource
                 ? `/instance/${tenant}/admin#/data/existing?uri=${encodeURIComponent(annotation.resourceUri)}`

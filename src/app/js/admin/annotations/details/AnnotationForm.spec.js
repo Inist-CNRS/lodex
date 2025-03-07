@@ -64,7 +64,7 @@ describe('AnnotationForm', () => {
 
         expect(
             wrapper.getByRole('link', { name: 'annotation_see_resource' }),
-        ).toHaveAttribute('href', '/instance/default/uid:/1234');
+        ).toHaveAttribute('href', '/instance/default/uid:/1234#field-GaZr');
 
         expect(
             wrapper.getByRole('link', { name: 'annotation_update_resource' }),

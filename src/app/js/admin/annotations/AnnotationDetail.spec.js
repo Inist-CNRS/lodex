@@ -75,7 +75,7 @@ describe('AnnotationDetail', () => {
 
         expect(
             wrapper.getByRole('link', { name: 'annotation_see_resource' }),
-        ).toHaveAttribute('href', '/instance/default/uid:/1234');
+        ).toHaveAttribute('href', '/instance/default/uid:/1234#field-GaZr');
 
         // Field region
         const fieldRegion = wrapper.getByRole('region', {
@@ -193,7 +193,7 @@ describe('AnnotationDetail', () => {
 
         expect(
             wrapper.getByRole('link', { name: 'annotation_see_home' }),
-        ).toHaveAttribute('href', '/instance/default');
+        ).toHaveAttribute('href', '/instance/default#field-GaZr');
     });
 
     it('should render an annotation with a resourceUri but a resource that could not be found', () => {
