@@ -116,11 +116,8 @@ export const ParsingResultComponent = (props) => {
     const { translate } = useTranslate();
 
     const { search } = useLocation();
-    const searchParams = useMemo(() => {
-        return new URLSearchParams(search);
-    }, [search]);
-
     const initialFilterModel = useMemo(() => {
+        const searchParams = new URLSearchParams(search);
         const searchParamsFilteredUri = searchParams.get('uri');
         if (searchParamsFilteredUri) {
             return {
@@ -135,7 +132,7 @@ export const ParsingResultComponent = (props) => {
         }
 
         return { items: [] };
-    }, [searchParams]);
+    }, [search]);
 
     const [showEnrichmentColumns, setShowEnrichmentColumns] = useState(true);
     const [showMainColumns, setShowMainColumns] = useState(true);
