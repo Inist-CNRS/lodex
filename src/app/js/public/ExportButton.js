@@ -55,10 +55,6 @@ const ExportButton = ({
     invertedFacets,
     sort,
 }) => {
-    if (!exporters || !exporters.length) {
-        return null;
-    }
-
     const [popover, setPopover] = useState({ open: false });
 
     const handleOpen = (event) => {
@@ -122,6 +118,10 @@ const ExportButton = ({
 
     const buttonLabel = polyglot.t('export');
     const menuTitle = polyglot.t(uri ? 'export_resource' : 'export_results');
+
+    if (!exporters || !exporters.length) {
+        return null;
+    }
 
     return (
         <>
