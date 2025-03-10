@@ -107,6 +107,7 @@ export default [
                 },
             ],
             'no-only-tests/no-only-tests': 'error',
+            'no-use-before-define': 'error',
         },
     },
     {

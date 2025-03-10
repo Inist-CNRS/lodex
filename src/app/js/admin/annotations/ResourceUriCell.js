@@ -5,6 +5,7 @@ import React from 'react';
 
 import { DEFAULT_TENANT } from '../../../../common/tools/tenantTools';
 import { useTranslate } from '../../i18n/I18NContext';
+import { getRedirectFieldHash } from './helpers/field';
 import { getResourceType } from './helpers/resourceType';
 
 const tenant = sessionStorage.getItem('lodex-tenant') || DEFAULT_TENANT;
@@ -62,6 +63,7 @@ ResourceUriCellInternal.propTypes = {
 export function ResourceUriCell({ row }) {
     const { translate } = useTranslate();
     const resourceType = getResourceType(row.resourceUri, row.field);
+    const redirectFieldHash = getRedirectFieldHash(row.field);
 
     if (resourceType === 'graph') {
         return (
@@ -76,7 +78,7 @@ export function ResourceUriCell({ row }) {
         return (
             <ResourceUriCellInternal
                 label={row.resourceUri ?? '/'}
-                linkUrl={`/instance/${tenant}`}
+                linkUrl={`/instance/${tenant}${redirectFieldHash}`}
             />
         );
     }
@@ -85,7 +87,9 @@ export function ResourceUriCell({ row }) {
         <ResourceUriCellInternal
             label={row.resourceUri}
             linkUrl={
-                row.resource ? `/instance/${tenant}/${row.resourceUri}` : null
+                row.resource
+                    ? `/instance/${tenant}/${row.resourceUri}${redirectFieldHash}`
+                    : null
             }
             linkLabel={translate('annotation_resource_link')}
             color={row.resource ? 'text.primary' : 'text.secondary'}
