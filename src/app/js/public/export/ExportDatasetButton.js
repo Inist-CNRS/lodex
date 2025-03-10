@@ -200,7 +200,9 @@ export const ExportDatasetButtonWithFetch = (props) => {
     useEffect(() => {
         const fetchDataColumns = async () => {
             const { columns } = await datasetApi.getDatasetColumns();
-            setChoices(columns.map(({ key }) => key));
+            setChoices(
+                columns.map(({ key }) => key).filter((name) => name !== '_id'),
+            );
         };
         fetchDataColumns();
     }, []);
