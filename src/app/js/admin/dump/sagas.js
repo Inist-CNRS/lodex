@@ -6,10 +6,7 @@ import fetchSaga from '../../lib/sagas/fetchSaga';
 import downloadFile from '../../lib/downloadFile';
 
 export function* handleDumpDatasetRequest({ payload }) {
-    const request = yield select(
-        fromUser.getDumpDatasetRequest,
-        payload.map((field) => field.value),
-    );
+    const request = yield select(fromUser.getDumpDatasetRequest, payload);
     const { response, filename } = yield call(fetchSaga, request, [], 'blob');
 
     try {
