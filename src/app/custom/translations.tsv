@@ -1391,3 +1391,4 @@
 "only_contributor_can_annotate"	"Only peoples logged as contributor can annotate."	"Uniquement les personnes connectées en tant que contributeur peuvent annoter."
 "what_data_do_you_want_to_export"	"What data do you want to export?"	"Quelles données souhaitez-vous exporter ?"
 "export_choose_fields"	"Select data"	"Sélectionner les données"
+"remove_field_from_export"	Remove field "%{field}" from export	retirer le champ "%{field}" de l'export

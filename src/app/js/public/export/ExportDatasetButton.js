@@ -17,10 +17,10 @@ import {
     Select,
     Stack,
 } from '@mui/material';
+import CancelIcon from '@mui/material/internal/svg-icons/Cancel';
 import PropTypes from 'prop-types';
 
 import { dumpDataset } from '../../admin/dump';
-import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { fromDump } from '../../admin/selectors';
 import CancelButton from '../../lib/components/CancelButton';
 import { useTranslate } from '../../i18n/I18NContext';
@@ -29,7 +29,7 @@ import StorageIcon from '@mui/icons-material/Storage';
 import ClearIcon from '@mui/icons-material/Clear';
 import DoneAllIcon from '@mui/icons-material/DoneAll';
 
-const ExportDatasetButtonComponent = ({
+export const ExportDatasetButtonComponent = ({
     dumpDataset,
     loading,
     fields,
@@ -118,6 +118,19 @@ const ExportDatasetButtonComponent = ({
                                                     e.stopPropagation();
                                                     e.preventDefault();
                                                 }}
+                                                deleteIcon={
+                                                    // overriding the default delete icon with itself to remove aria-hidden, add an aria-label and make it focusable
+                                                    <CancelIcon
+                                                        aria-hidden={false}
+                                                        aria-label={translate(
+                                                            'remove_field_from_export',
+                                                            {
+                                                                field: field.label,
+                                                            },
+                                                        )}
+                                                        focusable
+                                                    />
+                                                }
                                                 onDelete={(e) => {
                                                     e.stopPropagation();
                                                     e.preventDefault();
@@ -182,7 +195,9 @@ const ExportDatasetButtonComponent = ({
                         key="confirm"
                         disabled={!selectedFields.length}
                         onClick={() => {
-                            dumpDataset(selectedFields);
+                            dumpDataset(
+                                selectedFields.map(({ value }) => value),
+                            );
                             onClose();
                             onDone();
                         }}
@@ -197,10 +212,9 @@ const ExportDatasetButtonComponent = ({
 
 ExportDatasetButtonComponent.propTypes = {
     dumpDataset: PropTypes.func.isRequired,
-    p: polyglotPropTypes.isRequired,
-    loading: PropTypes.bool.isRequired,
+    loading: PropTypes.bool,
     fields: PropTypes.array.isRequired,
-    disabled: PropTypes.bool.isRequired,
+    disabled: PropTypes.bool,
     onDone: PropTypes.func.isRequired,
 };
 
