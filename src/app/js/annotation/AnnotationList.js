@@ -163,7 +163,7 @@ export const AnnotationList = ({ mode, setMode, annotations, field }) => {
         >
             <Stack>
                 <Typography variant="h5">
-                    {translate('annotation_history', {
+                    {translate('annotation_history_for_field', {
                         fieldLabel: field.label,
                     })}
                 </Typography>

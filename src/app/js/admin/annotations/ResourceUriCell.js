@@ -1,5 +1,5 @@
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
-import { Box, Link, Tooltip, Typography } from '@mui/material';
+import { Box, Link, Typography } from '@mui/material';
 import PropTypes from 'prop-types';
 import React from 'react';
 
@@ -20,19 +20,18 @@ function ResourceUriCellInternal({ label, linkLabel, linkUrl, italic, color }) {
                 alignItems: 'center',
             }}
         >
-            <Tooltip title={label}>
-                <Typography
-                    sx={{
-                        fontStyle: italic ? 'italic' : undefined,
-                        color: color ?? 'text.primary',
-                        display: 'block',
-                        overflow: 'hidden',
-                        textOverflow: 'ellipsis',
-                    }}
-                >
-                    {label}
-                </Typography>
-            </Tooltip>
+            <Typography
+                title={label}
+                sx={{
+                    fontStyle: italic ? 'italic' : undefined,
+                    color: color ?? 'text.primary',
+                    display: 'block',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                }}
+            >
+                {label}
+            </Typography>
 
             {!!linkUrl && (
                 <Link

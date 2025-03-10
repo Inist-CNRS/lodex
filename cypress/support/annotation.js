@@ -137,7 +137,7 @@ export function checkFieldAnnotations({
     openAnnotationModalForField(fieldLabel);
 
     if (expectedAnnotations.length === 0) {
-        cy.findByText('No annotations on this field yet').should('be.visible');
+        cy.findByText('No annotations yet').should('be.visible');
         return;
     }
 
