@@ -430,9 +430,9 @@ export const getClearDatasetRequest = (state) =>
         method: 'DELETE',
     });
 
-export const getDumpDatasetRequest = (state) =>
+export const getDumpDatasetRequest = (state, fields) =>
     getRequest(state, {
-        url: '/api/dump',
+        url: '/api/dump?fields=' + fields.join(','),
         method: 'GET',
     });
 
