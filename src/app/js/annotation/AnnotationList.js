@@ -8,13 +8,14 @@ import {
     Button,
     ButtonGroup,
     Grid,
+    IconButton,
     Stack,
     Tooltip,
     Typography,
     useTheme,
 } from '@mui/material';
 import PropTypes from 'prop-types';
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import {
     ANNOTATION_KIND_ADDITION,
     ANNOTATION_KIND_COMMENT,
@@ -26,6 +27,8 @@ import { AnnotationValue } from '../admin/annotations/AnnotationValue';
 import { getResourceType } from '../admin/annotations/helpers/resourceType';
 import { useTranslate } from '../i18n/I18NContext';
 import { MODE_ALL, MODE_CLOSED, MODE_MINE, MODES } from './HistoryDrawer.const';
+import { OpenAllIcon } from '../lib/components/icons/OpenAllIcon';
+import { CloseAllIcon } from '../lib/components/icons/CloseAllIcon';
 
 export const getAnnotationSummaryValue = (annotation) => {
     const JOIN_SEPARATOR = ' | ';
@@ -96,6 +99,55 @@ export const AnnotationList = ({ mode, setMode, annotations, field }) => {
         return annotations.filter((annotation) => annotation.isMine);
     }, [annotations]);
 
+    const [annotationsOpen, setAnnotationsOpen] = useState(
+        annotations.reduce(
+            (acc, annotation) => ({
+                ...acc,
+                [annotation._id]: false,
+            }),
+            {},
+        ),
+    );
+
+    const openAllAnnotations = () => {
+        setAnnotationsOpen((annotationsOpen) =>
+            annotations.reduce(
+                (acc, annotation) => ({
+                    ...acc,
+                    [annotation._id]: true,
+                }),
+                annotationsOpen,
+            ),
+        );
+    };
+
+    const closeAllAnnotations = () => {
+        setAnnotationsOpen((annotationsOpen) =>
+            annotations.reduce(
+                (acc, annotation) => ({
+                    ...acc,
+                    [annotation._id]: false,
+                }),
+                annotationsOpen,
+            ),
+        );
+    };
+
+    useEffect(() => {
+        if (mode === MODE_ALL && annotations.length > 0) {
+            setAnnotationsOpen((annotationsOpen) => ({
+                ...annotationsOpen,
+                [annotations[0]._id]: true,
+            }));
+        }
+        if (mode === MODE_MINE && myAnnotations.length > 0) {
+            setAnnotationsOpen((annotationsOpen) => ({
+                ...annotationsOpen,
+                [myAnnotations[0]._id]: true,
+            }));
+        }
+    }, [annotations, mode, myAnnotations]);
+
     if (mode === MODE_CLOSED) {
         return null;
     }
@@ -119,43 +171,68 @@ export const AnnotationList = ({ mode, setMode, annotations, field }) => {
                     {getAnnotationTitle(annotations[0], translate)}
                 </Typography>
             </Stack>
-            <Stack direction="row" gap={1} alignItems="center">
-                <Typography>
-                    {translate('annotation_filter_by_sender')}
-                </Typography>
-                <ButtonGroup>
-                    <Button
-                        onClick={() => setMode(MODE_ALL)}
-                        variant={mode === MODE_ALL ? 'contained' : 'outlined'}
+            <Stack direction="row" justifyContent="space-between">
+                <Stack direction="row" gap={1} alignItems="center">
+                    <Typography>
+                        {translate('annotation_filter_by_sender')}
+                    </Typography>
+                    <ButtonGroup>
+                        <Button
+                            onClick={() => setMode(MODE_ALL)}
+                            variant={
+                                mode === MODE_ALL ? 'contained' : 'outlined'
+                            }
+                        >
+                            {translate('all_annotation', {
+                                smart_count: annotations.length,
+                            })}
+                        </Button>
+                        <Button
+                            onClick={() => {
+                                setMode(MODE_MINE);
+                            }}
+                            startIcon={<AttributionIcon />}
+                            variant={
+                                mode === MODE_MINE ? 'contained' : 'outlined'
+                            }
+                            disabled={myAnnotations.length === 0}
+                        >
+                            {translate('annotation_sent_by_me', {
+                                smart_count: myAnnotations.length,
+                            })}
+                        </Button>
+                    </ButtonGroup>
+                </Stack>
+                <Stack direction="row" alignItems="center">
+                    <IconButton
+                        title={translate('collapse_all_annotations')}
+                        aria-label={translate('collapse_all_annotations')}
+                        onClick={closeAllAnnotations}
                     >
-                        {translate('all_annotation', {
-                            smart_count: annotations.length,
-                        })}
-                    </Button>
-                    <Button
-                        onClick={() => {
-                            setMode(MODE_MINE);
-                        }}
-                        startIcon={<AttributionIcon />}
-                        variant={mode === MODE_MINE ? 'contained' : 'outlined'}
-                        disabled={myAnnotations.length === 0}
+                        <CloseAllIcon fill={theme.palette.primary.main} />
+                    </IconButton>
+                    <IconButton
+                        title={translate('expand_all_annotations')}
+                        aria-label={translate('expand_all_annotations')}
+                        onClick={openAllAnnotations}
                     >
-                        {translate('annotation_sent_by_me', {
-                            smart_count: myAnnotations.length,
-                        })}
-                    </Button>
-                </ButtonGroup>
+                        <OpenAllIcon fill={theme.palette.primary.main} />
+                    </IconButton>
+                </Stack>
             </Stack>
             <Box>
                 {(mode === MODE_ALL ? annotations : myAnnotations).map(
                     (annotation) => (
                         <Accordion
                             key={annotation._id}
-                            defaultExpanded={
-                                mode === MODE_ALL
-                                    ? annotations.length === 1
-                                    : myAnnotations.length === 1
-                            }
+                            expanded={annotationsOpen[annotation._id]}
+                            onChange={() => {
+                                setAnnotationsOpen((annotationsOpen) => ({
+                                    ...annotationsOpen,
+                                    [annotation._id]:
+                                        !annotationsOpen[annotation._id],
+                                }));
+                            }}
                         >
                             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                                 <Grid container columns={12}>
@@ -243,7 +320,10 @@ export const AnnotationList = ({ mode, setMode, annotations, field }) => {
                                     </Grid>
                                 </Grid>
                             </AccordionSummary>
-                            <AccordionDetails>
+                            <AccordionDetails
+                                hidden={!annotationsOpen[annotation._id]}
+                                aria-hidden={!annotationsOpen[annotation._id]}
+                            >
                                 <Stack gap={2}>
                                     {annotation.isMine && (
                                         <Stack
@@ -356,15 +436,15 @@ export const AnnotationList = ({ mode, setMode, annotations, field }) => {
                                         </Typography>
                                         <Grid container columns={2}>
                                             <AnnotationValue
-                                                label="annotation_updated_at"
-                                                value={new Date(
-                                                    annotation.updatedAt,
-                                                ).toLocaleDateString()}
-                                            />
-                                            <AnnotationValue
                                                 label="annotation_created_at"
                                                 value={new Date(
                                                     annotation.createdAt,
+                                                ).toLocaleDateString()}
+                                            />
+                                            <AnnotationValue
+                                                label="annotation_updated_at"
+                                                value={new Date(
+                                                    annotation.updatedAt,
                                                 ).toLocaleDateString()}
                                             />
                                         </Grid>
