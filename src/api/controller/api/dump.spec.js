@@ -1,7 +1,6 @@
 import dump from './dump';
 import createDatasetModel from '../../models/dataset';
 import { MongoClient } from 'mongodb';
-import { ServerResponse } from 'http';
 import { Writable } from 'stream';
 
 describe('API: Dump', () => {

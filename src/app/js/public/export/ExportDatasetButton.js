@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import {
     Button,
@@ -24,28 +24,22 @@ import { dumpDataset } from '../../admin/dump';
 import { fromDump } from '../../admin/selectors';
 import CancelButton from '../../lib/components/CancelButton';
 import { useTranslate } from '../../i18n/I18NContext';
-import { fromFields } from '../../sharedSelectors';
 import StorageIcon from '@mui/icons-material/Storage';
 import ClearIcon from '@mui/icons-material/Clear';
 import DoneAllIcon from '@mui/icons-material/DoneAll';
 
+import datasetApi from '../../admin/api/dataset';
+
 export const ExportDatasetButtonComponent = ({
     dumpDataset,
     loading,
-    fields,
     disabled,
     onDone,
+    choices,
 }) => {
     const { translate } = useTranslate();
     const [isOpen, setIsOpen] = React.useState(false);
-    const choices = useMemo(
-        () =>
-            fields.map((field) => ({
-                value: field.name,
-                label: field.label || field.name,
-            })),
-        [fields],
-    );
+
     const [selectedFields, setSelectedFields] = useState(choices);
 
     const onClose = () => setIsOpen(false);
@@ -82,16 +76,16 @@ export const ExportDatasetButtonComponent = ({
                                     if (
                                         currentSelectedFields.some(
                                             (selectedField) =>
-                                                selectedField.value ===
+                                                selectedField ===
                                                 // eslint-disable-next-line react/prop-types
-                                                props.value.value,
+                                                props.value,
                                         )
                                     ) {
                                         return currentSelectedFields.filter(
                                             (selectedField) =>
-                                                selectedField.value !==
+                                                selectedField !==
                                                 // eslint-disable-next-line react/prop-types
-                                                props.value.value,
+                                                props.value,
                                         );
                                     }
                                     return [
@@ -112,8 +106,8 @@ export const ExportDatasetButtonComponent = ({
                                     >
                                         {selected.map((field) => (
                                             <Chip
-                                                key={field.value}
-                                                label={field.label}
+                                                key={field}
+                                                label={field}
                                                 onMouseDown={(e) => {
                                                     e.stopPropagation();
                                                     e.preventDefault();
@@ -125,7 +119,7 @@ export const ExportDatasetButtonComponent = ({
                                                         aria-label={translate(
                                                             'remove_field_from_export',
                                                             {
-                                                                field: field.label,
+                                                                field,
                                                             },
                                                         )}
                                                         focusable
@@ -137,8 +131,8 @@ export const ExportDatasetButtonComponent = ({
                                                     setSelectedFields(
                                                         selectedFields.filter(
                                                             (selectedField) =>
-                                                                selectedField.value !==
-                                                                field.value,
+                                                                selectedField !==
+                                                                field,
                                                         ),
                                                     );
                                                 }}
@@ -149,21 +143,14 @@ export const ExportDatasetButtonComponent = ({
                             }}
                         >
                             {choices.map((field) => (
-                                <MenuItem
-                                    key={field.value}
-                                    value={{
-                                        value: field.value,
-                                        label: field.label,
-                                    }}
-                                >
+                                <MenuItem key={field} value={field}>
                                     <Checkbox
                                         checked={selectedFields.some(
                                             (selectedField) =>
-                                                selectedField.value ===
-                                                field.value,
+                                                selectedField === field,
                                         )}
                                     />
-                                    <ListItemText primary={field.label} />
+                                    <ListItemText primary={field} />
                                 </MenuItem>
                             ))}
                         </Select>
@@ -195,9 +182,7 @@ export const ExportDatasetButtonComponent = ({
                         key="confirm"
                         disabled={!selectedFields.length}
                         onClick={() => {
-                            dumpDataset(
-                                selectedFields.map(({ value }) => value),
-                            );
+                            dumpDataset(selectedFields);
                             onClose();
                             onDone();
                         }}
@@ -210,20 +195,36 @@ export const ExportDatasetButtonComponent = ({
     );
 };
 
+export const ExportDatasetButtonWithFetch = (props) => {
+    const [choices, setChoices] = useState(null);
+    useEffect(() => {
+        const fetchDataColumns = async () => {
+            const { columns } = await datasetApi.getDatasetColumns();
+            setChoices(columns.map(({ key }) => key));
+        };
+        fetchDataColumns();
+    }, []);
+
+    if (!choices) {
+        return null;
+    }
+
+    return <ExportDatasetButtonComponent {...props} choices={choices} />;
+};
+
 ExportDatasetButtonComponent.propTypes = {
     dumpDataset: PropTypes.func.isRequired,
     loading: PropTypes.bool,
-    fields: PropTypes.array.isRequired,
     disabled: PropTypes.bool,
     onDone: PropTypes.func.isRequired,
+    choices: PropTypes.array,
 };
 
 export const ExportDatasetButton = connect(
     (state) => ({
         loading: fromDump.isDumpLoading(state),
-        fields: fromFields.getFields(state),
     }),
     {
         dumpDataset,
     },
-)(ExportDatasetButtonComponent);
+)(ExportDatasetButtonWithFetch);
