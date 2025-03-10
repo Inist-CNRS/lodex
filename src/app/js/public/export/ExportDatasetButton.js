@@ -9,6 +9,7 @@ import {
     DialogContent,
     DialogTitle,
     FormControl,
+    IconButton,
     InputLabel,
     ListItemIcon,
     ListItemText,
@@ -25,6 +26,8 @@ import CancelButton from '../../lib/components/CancelButton';
 import { useTranslate } from '../../i18n/I18NContext';
 import { fromFields } from '../../sharedSelectors';
 import StorageIcon from '@mui/icons-material/Storage';
+import ClearIcon from '@mui/icons-material/Clear';
+import DoneAllIcon from '@mui/icons-material/DoneAll';
 
 const ExportDatasetButtonComponent = ({
     dumpDataset,
@@ -60,7 +63,7 @@ const ExportDatasetButtonComponent = ({
                 </ListItemIcon>
                 <ListItemText primary={translate('export_raw_dataset')} />
             </MenuItem>
-            <Dialog maxWidth="xl" open={isOpen} onClose={onClose}>
+            <Dialog maxWidth="lg" fullWidth open={isOpen} onClose={onClose}>
                 <DialogTitle>
                     {translate('what_data_do_you_want_to_export')}
                 </DialogTitle>
@@ -111,6 +114,21 @@ const ExportDatasetButtonComponent = ({
                                             <Chip
                                                 key={field.value}
                                                 label={field.label}
+                                                onMouseDown={(e) => {
+                                                    e.stopPropagation();
+                                                    e.preventDefault();
+                                                }}
+                                                onDelete={(e) => {
+                                                    e.stopPropagation();
+                                                    e.preventDefault();
+                                                    setSelectedFields(
+                                                        selectedFields.filter(
+                                                            (selectedField) =>
+                                                                selectedField.value !==
+                                                                field.value,
+                                                        ),
+                                                    );
+                                                }}
                                             />
                                         ))}
                                     </Stack>
@@ -137,6 +155,18 @@ const ExportDatasetButtonComponent = ({
                             ))}
                         </Select>
                     </FormControl>
+                    <IconButton
+                        title={translate('clear_all')}
+                        onClick={() => setSelectedFields([])}
+                    >
+                        <ClearIcon />
+                    </IconButton>
+                    <IconButton
+                        title={translate('select_all')}
+                        onClick={() => setSelectedFields(choices)}
+                    >
+                        <DoneAllIcon />
+                    </IconButton>
                 </DialogContent>
                 <DialogActions>
                     <CancelButton
@@ -150,6 +180,7 @@ const ExportDatasetButtonComponent = ({
                         variant="contained"
                         color="primary"
                         key="confirm"
+                        disabled={!selectedFields.length}
                         onClick={() => {
                             dumpDataset(selectedFields);
                             onClose();

@@ -604,6 +604,7 @@
 "max_char_number_in_legends"	"Maximum character number in legends"	"Nombre max de caractères dans les légendes"
 "browse_results"	"Browse results"	"Parcourir les résultats"
 "clear_all"	"Clear All"	"Tout supprimer"
+"select_all"	"Select All"	"Tout sélectionner"
 "similar"	"similar"	"similaire"
 "toggle_tooltip"	"Display tooltip"	"Afficher l'info-bulle"
 "tooltip_category"	"Tooltip: Category title"	"Info-bulle : Titre des catégories"
