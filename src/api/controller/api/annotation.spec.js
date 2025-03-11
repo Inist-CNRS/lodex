@@ -464,7 +464,7 @@ Voir l'annotation : http://localhost:3000/instance/instance-name/admin#/annotati
             [false, 1.0],
             [true, 0.49],
         ])(
-            'should return a 400 error if recaptcha token validation fails',
+            'should return a 400 error if recaptcha token validation fails when success is %s and score is %s',
             async (success, score) => {
                 jest.mocked(verifyReCaptchaToken).mockResolvedValue({
                     success,
