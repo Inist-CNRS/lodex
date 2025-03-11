@@ -1,4 +1,4 @@
-import { Tooltip, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { useTranslate } from '../../i18n/I18NContext';
@@ -6,17 +6,16 @@ import { getResourceType } from './helpers/resourceType';
 
 function ResourceTitleCellInternal({ label, italic }) {
     return (
-        <Tooltip title={label}>
-            <Typography
-                sx={{
-                    textOverflow: 'ellipsis',
-                    overflow: 'hidden',
-                    fontStyle: italic ? 'italic' : undefined,
-                }}
-            >
-                {label}
-            </Typography>
-        </Tooltip>
+        <Typography
+            title={label}
+            sx={{
+                textOverflow: 'ellipsis',
+                overflow: 'hidden',
+                fontStyle: italic ? 'italic' : undefined,
+            }}
+        >
+            {label}
+        </Typography>
     );
 }
 

@@ -1158,7 +1158,7 @@ Revue`);
             );
             cy.findByLabelText('Status').should('have.text', 'Ongoing');
 
-            cy.findByText('You are this annotation contributor').should(
+            cy.findByText('You are the contributor of this annotation').should(
                 'be.visible',
             );
         });
@@ -1343,13 +1343,9 @@ Revue`);
                 .invoke('removeAttr', 'target')
                 .click();
 
-            cy.wait(1000);
+            cy.findByText('1–1 of 1').should('be.visible');
 
-            cy.findByText('Filters', {
-                timeout: 1000,
-            })
-                .should('be.visible')
-                .click();
+            cy.findByText('Filters').click();
 
             cy.findByLabelText('value').should('not.be.empty');
 

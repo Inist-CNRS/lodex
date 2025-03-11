@@ -196,8 +196,8 @@ export function CreateAnnotationModal({
         <>
             <ConfirmPopup
                 isOpen={isConfirmOpen}
-                cancelLabel={translate('cancel')}
-                confirmLabel={translate('close')}
+                cancelLabel={translate('continue_annotation')}
+                confirmLabel={translate('confirm_and_close')}
                 title={translate('annotation_cancel_confirm_title')}
                 description={translate('annotation_cancel_confirm_content')}
                 onCancel={handleCloseConfirm}
@@ -260,6 +260,12 @@ export function CreateAnnotationModal({
                             form={form}
                             step={currentStep}
                         />
+
+                        {currentStep === COMMENT_STEP && (
+                            <Tooltip title={translate('public_annotation')}>
+                                <HelpIcon fontSize="1.125rem" />
+                            </Tooltip>
+                        )}
                         <Box flexGrow={1} />
                         <IconButton
                             onClick={handleOpenConfirm}

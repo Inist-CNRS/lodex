@@ -227,7 +227,7 @@ describe('AnnotationList', () => {
             );
             expect(
                 wrapper.queryByText(
-                    'annotation_history+{"fieldLabel":"fieldLabel"}',
+                    'annotation_history_for_field+{"fieldLabel":"fieldLabel"}',
                 ),
             ).toBeInTheDocument();
             expect(
