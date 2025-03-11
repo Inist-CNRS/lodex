@@ -1,22 +1,23 @@
+import { simulatedLatency } from 'config';
 import Koa from 'koa';
 import mount from 'koa-mount';
 import route from 'koa-route';
-import path from 'path';
 import merge from 'lodash/merge';
-import { simulatedLatency } from 'config';
+import path from 'path';
 import api from './api';
-import front from './front';
-import embedded from './embedded';
 import customPage from './customPage';
-import webhook from './webhook';
+import embedded from './embedded';
+import front from './front';
 import rootAdmin from './rootAdmin';
+import webhook from './webhook';
 
+import fs from 'fs';
+import { cloneDeep } from 'lodash';
+import configTenantDefault from '../../../configTenant.json';
+import { DEFAULT_TENANT } from '../../common/tools/tenantTools';
 import repositoryMiddleware, {
     mongoRootAdminClient,
 } from '../services/repositoryMiddleware';
-import fs from 'fs';
-import { DEFAULT_TENANT } from '../../common/tools/tenantTools';
-import configTenantDefault from '../../../configTenant.json';
 
 const app = new Koa();
 
@@ -80,7 +81,11 @@ app.use(repositoryMiddleware);
 const configTenantInstanceMiddleware = async (ctx, next) => {
     const configTenant = await ctx.configTenantCollection.findLast();
 
-    ctx.configTenant = merge(configTenantDefault, configTenant || {});
+    ctx.configTenant = merge(
+        cloneDeep(configTenantDefault),
+        configTenant || {},
+    );
+
     ctx.configTenant.leftMenu = Array()
         .concat(configTenant?.front?.menu)
         .filter(Boolean)

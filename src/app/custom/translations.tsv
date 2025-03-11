@@ -1127,6 +1127,7 @@
 "antispam_filter"	"Antispam filter"	"Filtre antispam"
 "recaptcha_client_key"	"ReCaptcha client key (public)"	"Clé client ReCaptcha (publique)"
 "recaptcha_secret_key"	"ReCaptcha secret key"	"Clé secrète ReCaptcha"
+"recaptcha_test_configuration"	"After filter configuration, please try to create an annotation."	"Suite à la configuration du filtre, veuillez tester l'envoi d'une annotation."
 "enableAutoPublication"	"Auto Publishing"	"Publication automatique"
 "vega_variable_list"	"You can use these variables to set the size dynamically:"	"Vous pouvez utiliser ces variables pour définir la taille de manière dynamique :"
 "vega_variable_width"	"Replace with the width of the chart container"	"Remplacée par la largeur du conteneur du graphique"

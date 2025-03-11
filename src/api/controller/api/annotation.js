@@ -23,6 +23,17 @@ import {
 } from './../../../common/validator/annotation.validator';
 import { verifyReCaptchaToken } from './recaptcha';
 
+function getResourceTitle(resource, titleField, subResourceTitleFields) {
+    const lastVersion = resource.versions[resource.versions.length - 1];
+    const currentResourceTitleField = resource.subresourceId
+        ? subResourceTitleFields.find(
+              ({ subresourceId }) => subresourceId === resource.subresourceId,
+          )
+        : titleField;
+
+    return lastVersion[currentResourceTitleField?.name];
+}
+
 async function bindResourceAndFieldToAnnotation(ctx, annotation) {
     const [titleField, subResourceTitleFields] = await Promise.all([
         ctx.field.findResourceTitle(),
@@ -93,7 +104,7 @@ export async function createAnnotation(ctx) {
     }
 
     const tokenVerification = await verifyReCaptchaToken(ctx, validation.data);
-    if (!tokenVerification.success) {
+    if (!tokenVerification.success || tokenVerification.score < 0.5) {
         ctx.response.status = 400;
         ctx.body = {
             total: 0,
@@ -646,17 +657,6 @@ export async function deleteManyAnnotationByFilter(ctx) {
         ctx.response.status = 500;
         ctx.response.body = { status: 'error', error, deletedCount: 0 };
     }
-}
-
-function getResourceTitle(resource, titleField, subResourceTitleFields) {
-    const lastVersion = resource.versions[resource.versions.length - 1];
-    const currentResourceTitleField = resource.subresourceId
-        ? subResourceTitleFields.find(
-              ({ subresourceId }) => subresourceId === resource.subresourceId,
-          )
-        : titleField;
-
-    return lastVersion[currentResourceTitleField?.name];
 }
 
 const app = new Koa();

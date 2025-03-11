@@ -125,6 +125,7 @@ describe('annotation', () => {
         it('should create an annotation', async () => {
             jest.mocked(verifyReCaptchaToken).mockResolvedValue({
                 success: true,
+                score: 1.0,
             });
             await configTenantModel.create({
                 contributorAuth: {
@@ -299,6 +300,7 @@ Voir l'annotation : http://localhost:3000/instance/instance-name/admin#/annotati
         it('should forbid to create an annotation if contributorAuth is active and user role is not contributor nor admin', async () => {
             jest.mocked(verifyReCaptchaToken).mockResolvedValue({
                 success: true,
+                score: 1.0,
             });
             await configTenantModel.create({
                 contributorAuth: {
@@ -333,6 +335,7 @@ Voir l'annotation : http://localhost:3000/instance/instance-name/admin#/annotati
         it('should create an annotation if contributorAuth is active and user role is contributor', async () => {
             jest.mocked(verifyReCaptchaToken).mockResolvedValue({
                 success: true,
+                score: 1.0,
             });
             await configTenantModel.create({
                 contributorAuth: {
@@ -374,6 +377,7 @@ Voir l'annotation : http://localhost:3000/instance/instance-name/admin#/annotati
         it('should create an annotation if contributorAuth is active and user role is admin', async () => {
             jest.mocked(verifyReCaptchaToken).mockResolvedValue({
                 success: true,
+                score: 1.0,
             });
             await configTenantModel.create({
                 contributorAuth: {
@@ -415,6 +419,7 @@ Voir l'annotation : http://localhost:3000/instance/instance-name/admin#/annotati
         it('should return an error if annotation is not valid', async () => {
             jest.mocked(verifyReCaptchaToken).mockResolvedValue({
                 success: true,
+                score: 1.0,
             });
             await configTenantModel.create({
                 contributorAuth: {
@@ -455,54 +460,63 @@ Voir l'annotation : http://localhost:3000/instance/instance-name/admin#/annotati
             });
             expect(await annotationModel.findLimitFromSkip()).toStrictEqual([]);
         });
-        it('should return a 400 error if recaptcha token validation fails', async () => {
-            jest.mocked(verifyReCaptchaToken).mockResolvedValue({
-                success: false,
-            });
+        it.each([
+            [false, 1.0],
+            [true, 0.49],
+        ])(
+            'should return a 400 error if recaptcha token validation fails',
+            async (success, score) => {
+                jest.mocked(verifyReCaptchaToken).mockResolvedValue({
+                    success,
+                    score,
+                });
 
-            await configTenantModel.create({
-                contributorAuth: {
-                    active: false,
-                },
-            });
-            const annotation = {
-                resourceUri: 'uid:/a4f7a51f-7109-481e-86cc-0adb3a26faa6',
-                fieldId: 'Gb4a',
-                kind: 'comment',
-                comment: 'Hello world',
-                authorName: 'John DOE',
-            };
-
-            const ctx = {
-                request: {
-                    body: annotation,
-                },
-                response: {},
-                annotation: annotationModel,
-                publishedDataset: publishedDatasetModel,
-                field: fieldModel,
-                configTenantCollection: configTenantModel,
-            };
-
-            await createAnnotation(ctx);
-
-            expect(ctx.response.status).toBe(400);
-            expect(ctx.body).toMatchObject({
-                total: 0,
-                errors: [
-                    {
-                        message: 'error_recaptcha_verification_failed',
+                await configTenantModel.create({
+                    contributorAuth: {
+                        active: false,
                     },
-                ],
-            });
+                });
+                const annotation = {
+                    resourceUri: 'uid:/a4f7a51f-7109-481e-86cc-0adb3a26faa6',
+                    fieldId: 'Gb4a',
+                    kind: 'comment',
+                    comment: 'Hello world',
+                    authorName: 'John DOE',
+                };
 
-            expect(await annotationModel.findLimitFromSkip()).toStrictEqual([]);
+                const ctx = {
+                    request: {
+                        body: annotation,
+                    },
+                    response: {},
+                    annotation: annotationModel,
+                    publishedDataset: publishedDatasetModel,
+                    field: fieldModel,
+                    configTenantCollection: configTenantModel,
+                };
 
-            expect(verifyReCaptchaToken).toHaveBeenCalledWith(
-                ctx,
-                expect.objectContaining(annotation),
-            );
-        });
+                await createAnnotation(ctx);
+
+                expect(ctx.response.status).toBe(400);
+                expect(ctx.body).toMatchObject({
+                    total: 0,
+                    errors: [
+                        {
+                            message: 'error_recaptcha_verification_failed',
+                        },
+                    ],
+                });
+
+                expect(await annotationModel.findLimitFromSkip()).toStrictEqual(
+                    [],
+                );
+
+                expect(verifyReCaptchaToken).toHaveBeenCalledWith(
+                    ctx,
+                    expect.objectContaining(annotation),
+                );
+            },
+        );
     });
 
     describe('getAnnotations', () => {

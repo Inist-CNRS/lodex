@@ -4,7 +4,7 @@ export async function verifyReCaptchaToken(ctx, { reCaptchaToken }) {
         !antispamFilterConfig?.active ||
         !antispamFilterConfig?.recaptchaSecretKey
     ) {
-        return { success: true };
+        return { success: true, score: 1.0 };
     }
 
     const formData = new FormData();
