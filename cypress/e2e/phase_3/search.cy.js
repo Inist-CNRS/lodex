@@ -284,7 +284,7 @@ describe('Search', () => {
             searchDrawer.filterFacet('Dernière mise en ligne en', '2013');
 
             cy.findByRole('checkbox', {
-                name: '1926',
+                name: '1926 (1)',
                 timeout: 500,
             }).click();
 
@@ -299,7 +299,7 @@ describe('Search', () => {
                 '',
             );
             cy.findByRole('checkbox', {
-                name: '2011',
+                name: '2011 (2)',
                 timeout: 500,
             }).should('exist');
 
@@ -310,7 +310,7 @@ describe('Search', () => {
             );
 
             cy.findByRole('checkbox', {
-                name: '2014',
+                name: '2014 (1)',
                 timeout: 500,
             }).should('exist');
         });
@@ -324,7 +324,7 @@ describe('Search', () => {
             searchDrawer.filterFacet('Dernière mise en ligne en', '2013');
 
             cy.findByRole('checkbox', {
-                name: '1926',
+                name: '1926 (1)',
                 timeout: 500,
             }).click();
 
@@ -346,7 +346,7 @@ describe('Search', () => {
             );
 
             cy.findByRole('checkbox', {
-                name: '2011',
+                name: '2011 (2)',
                 timeout: 500,
             }).should('exist');
 
@@ -357,7 +357,7 @@ describe('Search', () => {
             );
 
             cy.findByRole('checkbox', {
-                name: '2014',
+                name: '2014 (1)',
                 timeout: 500,
             }).should('not.exist');
         });
