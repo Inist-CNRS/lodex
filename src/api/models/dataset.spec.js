@@ -89,4 +89,98 @@ describe('Dataset Model', () => {
             ]);
         });
     });
+
+    describe('dumpAsJsonLStream', () => {
+        it('should dump all dataset as json stream omitting _id', async () => {
+            await db.collection('dataset').insertMany([
+                { name: 'superman', power: 'fly', realName: 'Clark Kent' },
+                { name: 'batman', power: 'none', realName: 'Bruce Wayne' },
+                {
+                    name: 'spiderman',
+                    power: 'spider',
+                    realName: 'Peter Parker',
+                },
+                { name: 'ironman', power: 'armor', realName: 'Tony Stark' },
+                { name: 'hulk', power: 'anger', realName: 'Bruce Banner' },
+                { name: 'thor', power: 'hammer', realName: 'Thor' },
+            ]);
+
+            const stream = await datasetModel.dumpAsJsonLStream();
+            const dumpedDatasets = await new Promise((resolve) => {
+                const dumpedDatasets = [];
+                stream.on('data', (data) => dumpedDatasets.push(data));
+                stream.on('end', () => resolve(dumpedDatasets));
+            });
+
+            expect(dumpedDatasets).toStrictEqual([
+                '{"name":"superman","power":"fly","realName":"Clark Kent"}\n',
+                '{"name":"batman","power":"none","realName":"Bruce Wayne"}\n',
+                '{"name":"spiderman","power":"spider","realName":"Peter Parker"}\n',
+                '{"name":"ironman","power":"armor","realName":"Tony Stark"}\n',
+                '{"name":"hulk","power":"anger","realName":"Bruce Banner"}\n',
+                '{"name":"thor","power":"hammer","realName":"Thor"}\n',
+            ]);
+        });
+        it('should dump given fields only from dataset as json stream omitting _id', async () => {
+            await db.collection('dataset').insertMany([
+                { name: 'superman', power: 'fly', realName: 'Clark Kent' },
+                { name: 'batman', power: 'none', realName: 'Bruce Wayne' },
+                {
+                    name: 'spiderman',
+                    power: 'spider',
+                    realName: 'Peter Parker',
+                },
+                { name: 'ironman', power: 'armor', realName: 'Tony Stark' },
+                { name: 'hulk', power: 'anger', realName: 'Bruce Banner' },
+                { name: 'thor', power: 'hammer', realName: 'Thor' },
+            ]);
+
+            const stream = await datasetModel.dumpAsJsonLStream(['name']);
+            const dumpedDatasets = await new Promise((resolve) => {
+                const dumpedDatasets = [];
+                stream.on('data', (data) => dumpedDatasets.push(data));
+                stream.on('end', () => resolve(dumpedDatasets));
+            });
+
+            expect(dumpedDatasets).toStrictEqual([
+                '{"name":"superman"}\n',
+                '{"name":"batman"}\n',
+                '{"name":"spiderman"}\n',
+                '{"name":"ironman"}\n',
+                '{"name":"hulk"}\n',
+                '{"name":"thor"}\n',
+            ]);
+        });
+
+        it('should dump all dataset empty object if requested field is not in any document', async () => {
+            await db.collection('dataset').insertMany([
+                { name: 'superman', power: 'fly', realName: 'Clark Kent' },
+                { name: 'batman', power: 'none', realName: 'Bruce Wayne' },
+                {
+                    name: 'spiderman',
+                    power: 'spider',
+                    realName: 'Peter Parker',
+                },
+                { name: 'ironman', power: 'armor', realName: 'Tony Stark' },
+                { name: 'hulk', power: 'anger', realName: 'Bruce Banner' },
+                { name: 'thor', power: 'hammer', realName: 'Thor' },
+            ]);
+
+            const stream = await datasetModel.dumpAsJsonLStream(['weakPoint']);
+            const dumpedDatasets = await new Promise((resolve) => {
+                const dumpedDatasets = [];
+                stream.on('data', (data) => dumpedDatasets.push(data));
+                stream.on('end', () => resolve(dumpedDatasets));
+            });
+
+            expect(dumpedDatasets).toStrictEqual([
+                '{}\n',
+                '{}\n',
+                '{}\n',
+                '{}\n',
+                '{}\n',
+                '{}\n',
+            ]);
+        });
+    });
 });

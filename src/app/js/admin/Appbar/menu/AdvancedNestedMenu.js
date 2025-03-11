@@ -1,6 +1,5 @@
 import ClearAllIcon from '@mui/icons-material/ClearAll';
 import DeleteSweepIcon from '@mui/icons-material/DeleteSweep';
-import StorageIcon from '@mui/icons-material/Storage';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import MenuItem from '@mui/material/MenuItem';
@@ -9,26 +8,20 @@ import { default as React } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { compose } from 'recompose';
-import { bindActionCreators } from 'redux';
 
 import { toast } from '../../../../../common/tools/toast';
 import { useTranslate } from '../../../i18n/I18NContext';
 import jobsApi from '../../api/job';
-import { dumpDataset } from '../../dump';
 import { fromParsing } from '../../selectors';
+import { ExportDatasetButton } from '../../../public/export/ExportDatasetButton';
 
 export const AdvancedNestedMenuComponent = React.memo(
     function AnnotationNestedMenu({
         onClose,
         showDatasetClearDialog,
-        dumpDataset,
         hasLoadedDataset,
     }) {
         const { translate } = useTranslate();
-
-        const handleExportDataset = () => {
-            onClose(dumpDataset);
-        };
 
         const handleClearJobs = async () => {
             const result = await jobsApi.clearJobs();
@@ -42,16 +35,11 @@ export const AdvancedNestedMenuComponent = React.memo(
 
         return (
             <>
-                <MenuItem
+                <ExportDatasetButton
                     key="export_raw_dataset"
-                    onClick={handleExportDataset}
+                    onDone={() => onClose()}
                     disabled={!hasLoadedDataset}
-                >
-                    <ListItemIcon>
-                        <StorageIcon />
-                    </ListItemIcon>
-                    <ListItemText primary={translate('export_raw_dataset')} />
-                </MenuItem>
+                />
                 <MenuItem
                     key="clear_dataset"
                     onClick={showDatasetClearDialog}
@@ -80,19 +68,11 @@ AdvancedNestedMenuComponent.propTypes = {
     showDatasetClearDialog: PropTypes.func.isRequired,
 };
 
-const mapDispatchToProps = (dispatch) =>
-    bindActionCreators(
-        {
-            dumpDataset,
-        },
-        dispatch,
-    );
-
 const mapStateToProps = (state) => ({
     hasLoadedDataset: fromParsing.hasUploadedFile(state),
 });
 
 export const AdvancedNestedMenu = compose(
-    connect(mapStateToProps, mapDispatchToProps),
+    connect(mapStateToProps),
     withRouter,
 )(AdvancedNestedMenuComponent);

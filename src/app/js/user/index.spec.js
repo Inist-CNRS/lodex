@@ -7,6 +7,7 @@ import reducer, {
     logout,
     toggleLogin,
     getRequest,
+    getDumpDatasetRequest,
 } from './';
 
 describe('user reducer', () => {
@@ -88,6 +89,28 @@ describe('user reducer', () => {
                     Cookie: undefined,
                 },
                 method: 'method',
+            });
+        });
+    });
+
+    describe('getDumpDatasetRequest selector', () => {
+        it('should select the dump dataset request with given token, and fields', () => {
+            const result = getDumpDatasetRequest({ token: 'token' }, [
+                'field1',
+                'field2',
+                'field3',
+            ]);
+            expect(result).toEqual({
+                url: '/api/dump?fields=field1,field2,field3',
+                method: 'GET',
+                credentials: 'same-origin',
+                body: undefined,
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                    Authorization: 'Bearer token',
+                    Cookie: undefined,
+                },
             });
         });
     });
