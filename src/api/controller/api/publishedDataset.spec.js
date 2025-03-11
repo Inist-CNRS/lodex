@@ -41,11 +41,14 @@ describe('publishedDataset', () => {
                 })),
             },
             request: {
-                query: {
+                body: {
                     page: 1,
                     perPage: 100,
                     match: 'match',
-                    facet1: ['64130aaeb844aa0021b2960f'],
+                    facets: {
+                        facet1: ['64130aaeb844aa0021b2960f'],
+                    },
+                    sort: {},
                 },
             },
         };

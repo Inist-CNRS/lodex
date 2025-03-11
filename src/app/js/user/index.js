@@ -349,10 +349,10 @@ export const getAddCharacteristicRequest = (state, newCharacteristics) =>
     });
 
 export const getLoadDatasetPageRequest = (state, params = {}) => {
-    const paramString = getQueryString(params);
-
     return getRequest(state, {
-        url: `/api/publishedDataset?${paramString}`,
+        url: `/api/publishedDataset`,
+        method: 'POST',
+        body: params,
     });
 };
 
