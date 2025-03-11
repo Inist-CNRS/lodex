@@ -361,6 +361,32 @@ describe('Search', () => {
                 timeout: 500,
             }).should('not.exist');
         });
+
+        it('should allow to define default search order', () => {
+            cy.findByRole('link', { name: 'More' }).click();
+            cy.findByRole('link', { name: 'Admin' }).click();
+            cy.findByRole('link', { name: 'Display' }).click();
+            cy.findByRole('menuitem', { name: 'Search & Facets' }).click();
+
+            cy.findByLabelText('Resource sort field').click();
+            cy.findByRole('option', { name: /Première mise/ }).click();
+
+            cy.findByLabelText('Sort order').click();
+            cy.findByRole('option', { name: /Descending/ }).click();
+
+            datasetImportPage.goToPublishedResources();
+
+            cy.findByRole('link', { name: 'Search' }).click();
+            cy.findByRole('button', {
+                name: 'Sort by Première mise en ligne en Descending',
+            })
+                .should('be.visible')
+                .click();
+            cy.findByRole('menuitem', {
+                name: 'Première mise en ligne en',
+            }).should('have.attr', 'aria-current', 'true');
+            cy.findByTestId('ArrowUpwardIcon').should('be.visible');
+        });
     });
 
     // @TODO Investigate why this test fails (due to publication of exotic-search-dataset)

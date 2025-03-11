@@ -1,4 +1,4 @@
-import { createAction, handleActions, combineActions } from 'redux-actions';
+import { combineActions, createAction, handleActions } from 'redux-actions';
 
 import { createGlobalSelectors } from '../../lib/selectors';
 import createFacetReducer from '../facet';
@@ -13,12 +13,14 @@ export const SEARCH_LOAD_MORE_SUCCESS = 'SEARCH_LOAD_MORE_SUCCESS';
 export const SEARCH_LOAD_MORE_ERROR = 'SEARCH_LOAD_MORE_ERROR';
 
 export const SEARCH_SORT = 'SEARCH_SORT';
+export const SEARCH_SORT_INIT = 'SEARCH_SORT_INIT';
 
 export const search = createAction(SEARCH);
 export const searchSucceed = createAction(SEARCH_RESULTS);
 export const searchFailed = createAction(SEARCH_ERROR);
 
 export const sort = createAction(SEARCH_SORT);
+export const initSort = createAction(SEARCH_SORT_INIT);
 
 export const loadMore = createAction(SEARCH_LOAD_MORE);
 export const loadMoreSucceed = createAction(SEARCH_LOAD_MORE_SUCCESS);
@@ -111,6 +113,16 @@ export default handleActions(
                 sort: {
                     sortBy: nextSortBy,
                     sortDir: nextSortDir,
+                },
+            };
+        },
+        [SEARCH_SORT_INIT]: (state, { payload: { sortBy, sortDir } }) => {
+            return {
+                ...state,
+                page: 0,
+                sort: {
+                    sortBy,
+                    sortDir,
                 },
             };
         },

@@ -1,4 +1,8 @@
-import { validateField } from '../../models/field';
+import { MongoClient } from 'mongodb';
+import { default as enrichmentFactory } from '../../models/enrichment';
+import { default as fieldFactory, validateField } from '../../models/field';
+import { default as precomputedFactory } from '../../models/precomputed';
+import { default as publishedDatasetModelFactory } from '../../models/publishedDataset';
 import indexSearchableFields from '../../services/indexSearchableFields';
 import publishFacets from './publishFacets';
 
@@ -8,6 +12,8 @@ import {
     importFields,
     patchField,
     patchOverview,
+    patchSortField,
+    patchSortOrder,
     postField,
     removeField,
     reorderField,
@@ -15,6 +21,8 @@ import {
     setup,
 } from './field';
 
+import _ from 'lodash';
+import { RESOURCE_DETAIL_1 } from '../../../common/overview';
 import {
     SCOPE_COLLECTION,
     SCOPE_DATASET,
@@ -25,8 +33,101 @@ import {
 jest.mock('../../services/indexSearchableFields');
 
 describe('field routes', () => {
-    beforeAll(() => {
+    const connectionStringURI = process.env.MONGO_URL;
+    let fieldModel, enrichmentModel, precomputedModel, publishedDatasetModel;
+    let insertedFields;
+    let db;
+    let connection;
+
+    beforeAll(async () => {
+        connection = await MongoClient.connect(connectionStringURI, {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+        });
+        db = connection.db();
         indexSearchableFields.mockImplementation(() => null);
+    });
+
+    afterAll(async () => {
+        await db.dropDatabase();
+        await connection.close();
+        indexSearchableFields.mockClear();
+    });
+
+    beforeEach(async () => {
+        await Promise.all([
+            db.collection('field').deleteMany({}),
+            db.collection('enrichment').deleteMany({}),
+            db.collection('precomputed').deleteMany({}),
+            db.collection('publishedDataset').deleteMany({}),
+        ]);
+
+        fieldModel = await fieldFactory(db);
+        enrichmentModel = await enrichmentFactory(db);
+        precomputedModel = await precomputedFactory(db);
+        publishedDatasetModel = await publishedDatasetModelFactory(db);
+
+        insertedFields = await Promise.all([
+            fieldModel.create(
+                {
+                    scope: SCOPE_DATASET,
+                    label: 'Dataset Name',
+                    searchable: true,
+                    transformers: [
+                        {
+                            operation: 'VALUE',
+                            args: [
+                                {
+                                    name: 'value',
+                                    type: 'string',
+                                    value: 'Une collection de films célébres',
+                                },
+                            ],
+                        },
+                    ],
+                    position: 2,
+                    scheme: 'http://purl.org/dc/terms/title',
+                    language: 'fr',
+                    format: {
+                        name: 'title',
+                    },
+                    name: 'WXc1',
+                    count: 0,
+                    display: true,
+                    overview: RESOURCE_DETAIL_1,
+                    isDefaultSortField: true,
+                    sortOrder: 'asc',
+                },
+                '5Hvs',
+            ),
+            fieldModel.create(
+                {
+                    scope: SCOPE_DATASET,
+                    label: 'A Field',
+                    transformers: [
+                        {
+                            operation: 'AUTOGENERATE_URI',
+                            args: [],
+                        },
+                    ],
+                    scheme: 'http://purl.org/dc/terms/identifier',
+                    format: {
+                        args: {
+                            type: 'value',
+                            value: '',
+                        },
+                        name: 'test',
+                    },
+                    position: 1,
+                    name: 'uri',
+                },
+                'GaV6',
+            ),
+        ]).then((fields) =>
+            fields.toSorted((a, b) => {
+                return a.position - b.position;
+            }),
+        );
     });
 
     describe('setup', () => {
@@ -64,18 +165,11 @@ describe('field routes', () => {
     describe('getAllField', () => {
         it('should call ctx.field.findAll and pass the result to ctx.body', async () => {
             const ctx = {
-                field: {
-                    findAll: jest
-                        .fn()
-                        .mockImplementation(() =>
-                            Promise.resolve('all fields'),
-                        ),
-                },
+                field: fieldModel,
             };
 
             await getAllField(ctx);
-            expect(ctx.field.findAll).toHaveBeenCalled();
-            expect(ctx.body).toBe('all fields');
+            expect(ctx.body).toMatchObject(insertedFields);
         });
     });
 
@@ -119,31 +213,19 @@ describe('field routes', () => {
             restoreFields: jest
                 .fn()
                 .mockImplementation(() => Promise.resolve('RESTORE OK')),
-            enrichment: {
-                findAll: jest.fn(),
-            },
-            precomputed: {
-                findAll: jest.fn(),
-            },
         };
         beforeEach(() => {
             ctx.restoreFields.mockClear();
             ctx.set.mockClear();
-            ctx.enrichment.findAll.mockClear();
-            ctx.precomputed.findAll.mockClear();
+
+            ctx.enrichment = enrichmentModel;
+            ctx.precomputed = precomputedModel;
         });
 
         it('should import fields without enrichments', async () => {
             const asyncBusboyImpl = jest.fn().mockImplementation(() => ({
                 files: ['file0'],
             }));
-
-            ctx.enrichment.findAll.mockImplementation(() =>
-                Promise.resolve([]),
-            );
-            ctx.precomputed.findAll.mockImplementation(() =>
-                Promise.resolve([]),
-            );
 
             await importFields(asyncBusboyImpl)(ctx);
             expect(asyncBusboyImpl).toHaveBeenCalledWith('request');
@@ -157,9 +239,7 @@ describe('field routes', () => {
                 files: ['file0'],
             }));
 
-            ctx.enrichment.findAll.mockImplementation(() =>
-                Promise.resolve(['id: 1']),
-            );
+            await enrichmentModel.create({});
 
             await importFields(asyncBusboyImpl)(ctx);
             expect(asyncBusboyImpl).toHaveBeenCalledWith('request');
@@ -173,9 +253,11 @@ describe('field routes', () => {
                 files: ['file0'],
             }));
 
-            ctx.precomputed.findAll.mockImplementation(() =>
-                Promise.resolve(['id: 1']),
-            );
+            await precomputedModel.create({
+                name: 'A',
+                webServiceUrl: 'http://lodex.fr',
+                sourceColumns: ['source'],
+            });
 
             await importFields(asyncBusboyImpl)(ctx);
             expect(asyncBusboyImpl).toHaveBeenCalledWith('request');
@@ -189,13 +271,14 @@ describe('field routes', () => {
                 files: ['file0'],
             }));
 
-            ctx.precomputed.findAll.mockImplementation(() =>
-                Promise.resolve(['id: 1']),
-            );
-
-            ctx.enrichment.findAll.mockImplementation(() =>
-                Promise.resolve(['id: 1']),
-            );
+            await Promise.all([
+                enrichmentModel.create({}),
+                precomputedModel.create({
+                    name: 'A',
+                    webServiceUrl: 'http://lodex.fr',
+                    sourceColumns: ['source'],
+                }),
+            ]);
 
             await importFields(asyncBusboyImpl)(ctx);
             expect(asyncBusboyImpl).toHaveBeenCalledWith('request');
@@ -222,69 +305,93 @@ describe('field routes', () => {
 
     describe('postField', () => {
         it('should insert the new field', async () => {
+            const fieldData = {
+                scope: 'dataset',
+                label: 'Dataset Description',
+                searchable: true,
+                transformers: [
+                    {
+                        operation: 'VALUE',
+                        args: [
+                            {
+                                name: 'value',
+                                type: 'string',
+                                value: "Cette collection n'a pas d'autre but que de présenter un manière d’utiliser l'application Lodex pour mettre en ligne des données.",
+                            },
+                        ],
+                    },
+                ],
+                position: 2,
+                scheme: 'http://purl.org/dc/terms/description',
+                language: 'fr',
+                format: {
+                    args: {
+                        paragraphWidth: '80%',
+                    },
+                    name: 'None',
+                },
+                count: 0,
+                display: true,
+                overview: 200,
+            };
             const ctx = {
                 request: {
-                    body: 'new field data',
+                    body: fieldData,
                 },
-                field: {
-                    create: jest
-                        .fn()
-                        .mockImplementation(() =>
-                            Promise.resolve('inserted item'),
-                        ),
-                },
+                field: fieldModel,
             };
 
             await postField(ctx);
-            expect(ctx.field.create).toHaveBeenCalledWith('new field data');
-            expect(ctx.body).toBe('inserted item');
+            expect(ctx.body).toMatchObject(fieldData);
+            expect(ctx.body).toHaveProperty('_id');
+            expect(await fieldModel.findOneById(ctx.body._id)).toMatchObject(
+                fieldData,
+            );
         });
     });
 
     describe('patchField', () => {
+        const label = 'new label';
         const ctx = {
             request: {
                 body: {
-                    label: 'new label',
+                    label,
                 },
             },
-            field: {
-                updateOneById: jest
-                    .fn()
-                    .mockImplementation(() => Promise.resolve('update result')),
-            },
             publishFacets: jest.fn(),
-            publishedDataset: {
-                countAll: jest.fn(() => Promise.resolve(1000)),
-            },
         };
 
         beforeEach(() => {
-            ctx.field.updateOneById.mockClear();
             ctx.publishFacets.mockClear();
+            ctx.field = fieldModel;
+            ctx.publishedDataset = publishedDatasetModel;
         });
 
         it('should validateField and then update field', async () => {
-            await patchField(ctx, 'id');
-            expect(ctx.field.updateOneById).toHaveBeenCalledWith('id', {
-                label: 'new label',
+            await patchField(ctx, insertedFields[0]._id);
+            expect(ctx.body).toStrictEqual({
+                ...insertedFields[0],
+                label,
             });
-            expect(ctx.body).toContain('update result');
         });
 
         it('update the published facets', async () => {
-            await patchField(ctx, 'id');
+            await publishedDatasetModel.create({});
+            await patchField(ctx, insertedFields[0]._id);
             expect(ctx.publishFacets).toHaveBeenCalledWith(
                 ctx,
-                ['update result'],
+                expect.objectContaining([
+                    {
+                        ...insertedFields[0],
+                        label,
+                    },
+                ]),
                 false,
             );
         });
 
         it('should not update the published facets if dataset is not published (publishedDataset = 0)', async () => {
-            ctx.publishedDataset.countAll.mockImplementation(() =>
-                Promise.resolve(0),
-            );
+            await patchField(ctx, insertedFields[0]._id);
             expect(ctx.publishFacets).toHaveBeenCalledTimes(0);
         });
     });
@@ -294,73 +401,108 @@ describe('field routes', () => {
             const ctx = {
                 request: {
                     body: {
-                        _id: 'id',
-                        overview: 200,
+                        _id: insertedFields[0]._id.toString(),
+                        overview: RESOURCE_DETAIL_1,
                     },
                 },
-                field: {
-                    updateMany: jest.fn(),
-                    updateOneById: jest
-                        .fn()
-                        .mockImplementation(() =>
-                            Promise.resolve('update result'),
-                        ),
-                },
+                field: fieldModel,
             };
             await patchOverview(ctx);
-            expect(ctx.field.updateMany).toHaveBeenCalledWith(
-                { overview: 200 },
-                { $unset: { overview: '' } },
+            expect(ctx.body).toStrictEqual({
+                ...insertedFields[0],
+                overview: RESOURCE_DETAIL_1,
+            });
+
+            await expect(
+                fieldModel.findOneById(insertedFields[0]._id),
+            ).resolves.toStrictEqual({
+                ...insertedFields[0],
+                overview: RESOURCE_DETAIL_1,
+            });
+
+            await expect(
+                fieldModel.findOneById(insertedFields[1]._id),
+            ).resolves.toStrictEqual(
+                _.omit(
+                    insertedFields[1],
+                    'overview',
+                    'isDefaultSortField',
+                    'sortOrder',
+                ),
             );
         });
 
         it('should remove overview from other field with same overview and same subresourceId if subresourceId is set', async () => {
+            await fieldModel.updateMany(
+                {},
+                { $set: { subresourceId: 'subresourceId' } },
+            );
+
             const ctx = {
                 request: {
                     body: {
-                        _id: 'id',
-                        overview: 200,
+                        _id: insertedFields[0]._id.toString(),
+                        overview: RESOURCE_DETAIL_1,
                         subresourceId: 'subresourceId',
                     },
                 },
-                field: {
-                    updateMany: jest.fn(),
-                    updateOneById: jest
-                        .fn()
-                        .mockImplementation(() =>
-                            Promise.resolve('update result'),
-                        ),
-                },
+                field: fieldModel,
             };
             await patchOverview(ctx);
-            expect(ctx.field.updateMany).toHaveBeenCalledWith(
-                { overview: 200, subresourceId: 'subresourceId' },
-                { $unset: { overview: '' } },
-            );
+            expect(ctx.body).toStrictEqual({
+                ...insertedFields[0],
+                overview: RESOURCE_DETAIL_1,
+                subresourceId: 'subresourceId',
+            });
+
+            await expect(
+                fieldModel.findOneById(insertedFields[0]._id),
+            ).resolves.toStrictEqual({
+                ...insertedFields[0],
+                overview: RESOURCE_DETAIL_1,
+                subresourceId: 'subresourceId',
+            });
+
+            await expect(
+                fieldModel.findOneById(insertedFields[1]._id),
+            ).resolves.toStrictEqual({
+                ..._.omit(
+                    insertedFields[1],
+                    'overview',
+                    'isDefaultSortField',
+                    'sortOrder',
+                ),
+                subresourceId: 'subresourceId',
+            });
         });
 
         it('should update field overview if id is set', async () => {
             const ctx = {
                 request: {
                     body: {
-                        _id: 'id',
+                        _id: insertedFields[0]._id.toString(),
                         overview: 200,
                     },
                 },
-                field: {
-                    updateMany: jest.fn(),
-                    updateOneById: jest
-                        .fn()
-                        .mockImplementation(() =>
-                            Promise.resolve('update result'),
-                        ),
-                },
+                field: fieldModel,
             };
+
             await patchOverview(ctx);
-            expect(ctx.field.updateOneById).toHaveBeenCalledWith('id', {
+            expect(ctx.body).toMatchObject({
+                ...insertedFields[0],
                 overview: 200,
             });
-            expect(ctx.body).toContain('update result');
+
+            await expect(
+                fieldModel.findOneById(insertedFields[0]._id),
+            ).resolves.toMatchObject({
+                ...insertedFields[0],
+                overview: 200,
+            });
+
+            await expect(
+                fieldModel.findOneById(insertedFields[1]._id),
+            ).resolves.toMatchObject(insertedFields[1]);
         });
 
         it('should not update field overview if id is null', async () => {
@@ -368,171 +510,414 @@ describe('field routes', () => {
                 request: {
                     body: {
                         _id: null,
+                        overview: RESOURCE_DETAIL_1,
+                    },
+                },
+                field: fieldModel,
+            };
+            await patchOverview(ctx);
+            expect(ctx.body).toStrictEqual({ status: 'success' });
+
+            await expect(
+                fieldModel.findOneById(insertedFields[0]._id),
+            ).resolves.toStrictEqual(insertedFields[0]);
+
+            await expect(
+                fieldModel.findOneById(insertedFields[1]._id),
+            ).resolves.toStrictEqual(
+                _.omit(
+                    insertedFields[1],
+                    'overview',
+                    'isDefaultSortField',
+                    'sortOrder',
+                ),
+            );
+        });
+
+        it('should reset default sort if field is no longer sortable', async () => {
+            const ctx = {
+                request: {
+                    body: {
+                        _id: insertedFields[1]._id.toString(),
                         overview: 200,
                     },
                 },
-                field: {
-                    updateMany: jest.fn(),
-                    updateOneById: jest
-                        .fn()
-                        .mockImplementation(() =>
-                            Promise.resolve('update result'),
-                        ),
-                },
+                field: fieldModel,
             };
             await patchOverview(ctx);
-            expect(ctx.field.updateOneById).not.toHaveBeenCalled();
-            expect(ctx.body).toContain('ok');
+            expect(ctx.body).toStrictEqual({
+                ..._.omit(insertedFields[1], 'isDefaultSortField', 'sortOrder'),
+                overview: 200,
+            });
+
+            await expect(
+                fieldModel.findOneById(insertedFields[0]._id),
+            ).resolves.toStrictEqual(insertedFields[0]);
+
+            await expect(
+                fieldModel.findOneById(insertedFields[1]._id),
+            ).resolves.toStrictEqual({
+                ..._.omit(insertedFields[1], 'isDefaultSortField', 'sortOrder'),
+                overview: 200,
+            });
+        });
+    });
+
+    describe('patchSortField', () => {
+        it('should update the sort field', async () => {
+            const ctx = {
+                request: {
+                    body: {
+                        _id: insertedFields[0]._id.toString(),
+                        sortOrder: 'desc',
+                    },
+                },
+                field: fieldModel,
+            };
+
+            await patchSortField(ctx);
+
+            await expect(
+                fieldModel.findOneById(insertedFields[0]._id),
+            ).resolves.toStrictEqual({
+                ...insertedFields[0],
+                isDefaultSortField: true,
+                sortOrder: 'desc',
+            });
+
+            await expect(
+                fieldModel.findOneById(insertedFields[1]._id),
+            ).resolves.toStrictEqual(
+                _.omit(insertedFields[1], 'isDefaultSortField', 'sortOrder'),
+            );
+        });
+
+        it('should reset sort field if no id is provided', async () => {
+            const ctx = {
+                request: {
+                    body: {
+                        _id: null,
+                        sortOrder: 'desc',
+                    },
+                },
+                field: fieldModel,
+            };
+
+            await patchSortField(ctx);
+
+            await expect(
+                fieldModel.findOneById(insertedFields[0]._id),
+            ).resolves.toStrictEqual(insertedFields[0]);
+
+            await expect(
+                fieldModel.findOneById(insertedFields[1]._id),
+            ).resolves.toStrictEqual(
+                _.omit(insertedFields[1], 'isDefaultSortField', 'sortOrder'),
+            );
+        });
+    });
+
+    describe('patchSortOrder', () => {
+        it('should update field sortOrder', async () => {
+            const ctx = {
+                request: {
+                    body: {
+                        sortOrder: 'desc',
+                    },
+                },
+                field: fieldModel,
+            };
+
+            await patchSortOrder(ctx);
+
+            await expect(
+                fieldModel.findOneById(insertedFields[0]._id),
+            ).resolves.toStrictEqual(insertedFields[0]);
+
+            await expect(
+                fieldModel.findOneById(insertedFields[1]._id),
+            ).resolves.toStrictEqual({
+                ...insertedFields[1],
+                sortOrder: 'desc',
+            });
         });
     });
 
     describe('removeField', () => {
         it('should validateField and then update field', async () => {
             const ctx = {
-                request: {
-                    body: 'updated field data',
-                },
-                field: {
-                    removeById: jest
-                        .fn()
-                        .mockImplementation(() =>
-                            Promise.resolve('deletion result'),
-                        ),
-                },
+                request: { body: {} },
+                field: fieldModel,
             };
 
-            await removeField(ctx, 'id');
-            expect(ctx.field.removeById).toHaveBeenCalledWith('id');
-            expect(ctx.body).toBe('deletion result');
+            await removeField(ctx, insertedFields[0]._id);
+            expect(ctx.body).toStrictEqual({
+                acknowledged: true,
+                deletedCount: 1,
+            });
+
+            await expect(
+                fieldModel.findOneById(insertedFields[0]._id),
+            ).resolves.toBeNull();
+
+            await expect(
+                fieldModel.findOneById(insertedFields[1]._id),
+            ).resolves.toMatchObject(insertedFields[1]);
         });
     });
 
     describe('reorderField', () => {
+        beforeEach(() => {
+            jest.spyOn(fieldModel, 'updatePosition');
+        });
+
+        afterEach(() => {
+            jest.clearAllMocks();
+        });
+
         it('should update field position based on index in array when all scope are dataset', async () => {
-            const fieldsByName = {
-                a: { scope: SCOPE_DATASET },
-                b: { scope: SCOPE_DATASET },
-                c: { scope: SCOPE_DATASET },
-            };
             const ctx = {
                 request: {
                     body: {
-                        fields: ['a', 'b', 'c'],
+                        fields: [
+                            insertedFields[1].name,
+                            insertedFields[0].name,
+                        ],
                     },
                 },
-                field: {
-                    updatePosition: jest
-                        .fn()
-                        .mockImplementation((name) =>
-                            Promise.resolve(`updated ${name}`),
-                        ),
-                    findByNames: jest
-                        .fn()
-                        .mockImplementation(() => fieldsByName),
-                },
+                field: fieldModel,
             };
 
-            await reorderField(ctx, 'id');
+            await reorderField(ctx);
 
-            expect(ctx.field.updatePosition).toHaveBeenCalledWith('a', 1);
-            expect(ctx.field.updatePosition).toHaveBeenCalledWith('b', 2);
-            expect(ctx.field.updatePosition).toHaveBeenCalledWith('c', 3);
+            await expect(
+                fieldModel.findOneById(insertedFields[0]._id),
+            ).resolves.toMatchObject({
+                ...insertedFields[0],
+                position: 2,
+            });
 
-            expect(ctx.body).toEqual(['updated a', 'updated b', 'updated c']);
+            await expect(
+                fieldModel.findOneById(insertedFields[1]._id),
+            ).resolves.toMatchObject({
+                ...insertedFields[1],
+                position: 1,
+            });
+
+            expect(ctx.body).toMatchObject([
+                {
+                    ...insertedFields[1],
+                    position: 1,
+                },
+                {
+                    ...insertedFields[0],
+                    position: 2,
+                },
+            ]);
         });
 
         it('should update field position based on index in array when all scope are collection or document and first one is uri', async () => {
-            const fieldsByName = {
-                a: { scope: SCOPE_COLLECTION, name: 'uri' },
-                b: { scope: SCOPE_DOCUMENT },
-                c: { scope: SCOPE_COLLECTION },
-            };
+            await fieldModel.updateMany(
+                {},
+                { $set: { scope: SCOPE_COLLECTION } },
+            );
+
+            const field3 = await fieldModel.create(
+                {
+                    scope: SCOPE_DOCUMENT,
+                    label: 'Hello World',
+                    transformers: [
+                        {
+                            operation: 'AUTOGENERATE_URI',
+                            args: [],
+                        },
+                    ],
+                    scheme: 'http://purl.org/dc/terms/identifier',
+                    format: {
+                        args: {
+                            type: 'value',
+                            value: '',
+                        },
+                        name: 'hello',
+                    },
+                    position: 1,
+                    name: 'uri',
+                },
+                '5Kab',
+            );
+
             const ctx = {
                 request: {
                     body: {
-                        fields: ['a', 'b', 'c'],
+                        fields: [
+                            insertedFields[1].name,
+                            field3.name,
+                            insertedFields[0].name,
+                        ],
                     },
                 },
-                field: {
-                    updatePosition: jest
-                        .fn()
-                        .mockImplementation((name) =>
-                            Promise.resolve(`updated ${name}`),
-                        ),
-                    findByNames: jest
-                        .fn()
-                        .mockImplementation(() => fieldsByName),
-                },
+                field: fieldModel,
             };
 
-            await reorderField(ctx, 'id');
+            await reorderField(ctx);
 
-            expect(ctx.field.updatePosition).toHaveBeenCalledWith('a', 1);
-            expect(ctx.field.updatePosition).toHaveBeenCalledWith('b', 2);
-            expect(ctx.field.updatePosition).toHaveBeenCalledWith('c', 3);
-
-            expect(ctx.body).toEqual(['updated a', 'updated b', 'updated c']);
+            expect(
+                ctx.body.toSorted((a, b) => a.position - b.position),
+            ).toMatchObject([
+                {
+                    ...insertedFields[1],
+                    position: 1,
+                    scope: SCOPE_COLLECTION,
+                },
+                {
+                    ...field3,
+                    position: 2,
+                },
+                {
+                    ...insertedFields[0],
+                    position: 3,
+                    scope: SCOPE_COLLECTION,
+                },
+            ]);
         });
 
         it('should throw an error if dataset is mixed with other scope', async () => {
-            const fieldsByName = {
-                a: { scope: SCOPE_DATASET },
-                b: { scope: SCOPE_DOCUMENT },
-                c: { scope: SCOPE_COLLECTION },
-            };
+            const fields = await Promise.all([
+                fieldModel.create(
+                    {
+                        scope: SCOPE_DOCUMENT,
+                        label: 'Hello World',
+                        transformers: [
+                            {
+                                operation: 'AUTOGENERATE_URI',
+                                args: [],
+                            },
+                        ],
+                        scheme: 'http://purl.org/dc/terms/identifier',
+                        format: {
+                            args: {
+                                type: 'value',
+                                value: '',
+                            },
+                            name: 'hello',
+                        },
+                        position: 1,
+                        name: 'uri',
+                    },
+                    '5Kab',
+                ),
+                fieldModel.create(
+                    {
+                        scope: SCOPE_COLLECTION,
+                        label: 'Hello World',
+                        transformers: [
+                            {
+                                operation: 'AUTOGENERATE_URI',
+                                args: [],
+                            },
+                        ],
+                        scheme: 'http://purl.org/dc/terms/identifier',
+                        format: {
+                            args: {
+                                type: 'value',
+                                value: '',
+                            },
+                            name: 'hello',
+                        },
+                        position: 1,
+                        name: 'uri',
+                    },
+                    'la9n',
+                ),
+            ]);
+
             const ctx = {
                 request: {
                     body: {
-                        fields: ['a', 'b', 'c'],
+                        fields: [
+                            insertedFields[0].name,
+                            fields[0].name,
+                            fields[1].name,
+                        ],
                     },
                 },
-                field: {
-                    updatePosition: jest
-                        .fn()
-                        .mockImplementation(() =>
-                            Promise.resolve(`updated field`),
-                        ),
-                    findByNames: jest
-                        .fn()
-                        .mockImplementation(() => fieldsByName),
-                },
+                field: fieldModel,
             };
 
-            await reorderField(ctx, 'id');
+            await reorderField(ctx);
 
             expect(ctx.status).toBe(400);
             expect(ctx.body.error).toBe(
                 'Bad scope: trying to mix home fields with other fields',
             );
 
-            expect(ctx.field.updatePosition).not.toHaveBeenCalled();
+            expect(fieldModel.updatePosition).not.toHaveBeenCalled();
         });
 
         it('should throw an error if graphic is mixed with other scope', async () => {
-            const fieldsByName = {
-                a: { scope: SCOPE_GRAPHIC },
-                b: { scope: SCOPE_DOCUMENT },
-                c: { scope: SCOPE_DATASET },
-            };
+            const fields = await Promise.all([
+                fieldModel.create(
+                    {
+                        scope: SCOPE_DOCUMENT,
+                        label: 'Hello World',
+                        transformers: [
+                            {
+                                operation: 'AUTOGENERATE_URI',
+                                args: [],
+                            },
+                        ],
+                        scheme: 'http://purl.org/dc/terms/identifier',
+                        format: {
+                            args: {
+                                type: 'value',
+                                value: '',
+                            },
+                            name: 'hello',
+                        },
+                        position: 1,
+                        name: 'uri',
+                    },
+                    '5Kab',
+                ),
+                fieldModel.create(
+                    {
+                        scope: SCOPE_GRAPHIC,
+                        label: 'Hello World',
+                        transformers: [
+                            {
+                                operation: 'AUTOGENERATE_URI',
+                                args: [],
+                            },
+                        ],
+                        scheme: 'http://purl.org/dc/terms/identifier',
+                        format: {
+                            args: {
+                                type: 'value',
+                                value: '',
+                            },
+                            name: 'hello',
+                        },
+                        position: 1,
+                        name: 'uri',
+                    },
+                    'la9n',
+                ),
+            ]);
+
             const ctx = {
                 request: {
                     body: {
-                        fields: ['a', 'b', 'c'],
+                        fields: [
+                            fields[1].name,
+                            insertedFields[0].name,
+                            fields[0].name,
+                        ],
                     },
                 },
-                field: {
-                    updatePosition: jest
-                        .fn()
-                        .mockImplementation(() =>
-                            Promise.resolve(`updated field`),
-                        ),
-                    findByNames: jest
-                        .fn()
-                        .mockImplementation(() => fieldsByName),
-                },
+                field: fieldModel,
             };
 
-            await reorderField(ctx, 'id');
+            await reorderField(ctx);
 
             expect(ctx.status).toBe(400);
             expect(ctx.body.error).toBe(
@@ -541,8 +926,5 @@ describe('field routes', () => {
 
             expect(ctx.field.updatePosition).not.toHaveBeenCalled();
         });
-    });
-    afterAll(() => {
-        indexSearchableFields.mockClear();
     });
 });

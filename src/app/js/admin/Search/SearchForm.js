@@ -1,30 +1,34 @@
-import React, { useEffect } from 'react';
-import fieldApi from '../../admin/api/field';
 import PropTypes from 'prop-types';
+import React, { useEffect, useMemo } from 'react';
+import fieldApi from '../../admin/api/field';
 import SearchAutocomplete from './SearchAutocomplete';
 
-import { connect } from 'react-redux';
-import { compose } from 'recompose';
-import { fromFields } from '../../sharedSelectors';
-import { loadField } from '../../fields';
-import { polyglot as polyglotPropTypes } from '../../propTypes';
-import { Box } from '@mui/system';
 import {
     Checkbox,
+    FormControl,
+    InputLabel,
     List,
     ListItem,
     ListItemButton,
     ListItemIcon,
     ListItemText,
+    MenuItem,
+    Select,
     Typography,
 } from '@mui/material';
+import { Box } from '@mui/system';
+import { connect } from 'react-redux';
+import { compose } from 'recompose';
+import { loadField } from '../../fields';
+import { polyglot as polyglotPropTypes } from '../../propTypes';
+import { fromFields } from '../../sharedSelectors';
 
 import * as overview from '../../../../common/overview';
-import { toast } from '../../../../common/tools/toast';
 import { getFieldForSpecificScope } from '../../../../common/scope';
+import { toast } from '../../../../common/tools/toast';
 import FieldRepresentation from '../../fields/FieldRepresentation';
-import withInitialData from '../withInitialData';
 import { translate } from '../../i18n/I18NContext';
+import withInitialData from '../withInitialData';
 
 const getSearchableFields = (fields) =>
     fields.filter((f) => f.searchable) || [];
@@ -41,6 +45,10 @@ const getResourceDetailSecond = (fields) =>
     fields?.find((f) => f.overview === overview.RESOURCE_DETAIL_2) || null;
 const getResourceDetailThird = (fields) =>
     fields?.find((f) => f.overview === overview.RESOURCE_DETAIL_3) || null;
+const getResourceSortField = (fields) =>
+    fields?.find((f) => f.isDefaultSortField) || null;
+const getResourceSortOrder = (fields) =>
+    getResourceSortField(fields)?.sortOrder || 'asc';
 
 export const SearchForm = ({ fields, loadField, p: polyglot }) => {
     const fieldsResource = React.useMemo(
@@ -54,7 +62,7 @@ export const SearchForm = ({ fields, loadField, p: polyglot }) => {
             label: polyglot.t('none'),
         });
         return filteredFields;
-    }, [fields]);
+    }, [polyglot, fields]);
 
     const [searchInFields, setSearchInFields] = React.useState(
         getSearchableFields(fieldsResource),
@@ -64,42 +72,57 @@ export const SearchForm = ({ fields, loadField, p: polyglot }) => {
         getFacetFields(fieldsResource),
     );
 
-    const [resourceTitle, setResourceTitle] = React.useState(
-        getResourceTitle(fieldsForResourceSyndication),
-    );
-    const [resourceDescription, setResourceDescription] = React.useState(
-        getResourceDescription(fieldsForResourceSyndication),
-    );
-    const [resourceDetailFirst, setResourceDetailFirst] = React.useState(
-        getResourceDetailFirst(fieldsForResourceSyndication),
-    );
-    const [resourceDetailSecond, setResourceDetailSecond] = React.useState(
-        getResourceDetailSecond(fieldsForResourceSyndication),
-    );
-    const [resourceDetailThird, setResourceDetailThird] = React.useState(
-        getResourceDetailThird(fieldsForResourceSyndication),
-    );
+    const {
+        resourceTitle,
+        resourceDescription,
+        resourceDetailFirst,
+        resourceDetailSecond,
+        resourceDetailThird,
+        resourceSortField,
+        resourceSortOrder,
+        sortableFields,
+    } = useMemo(() => {
+        const resourceTitle = getResourceTitle(fieldsForResourceSyndication);
+        const resourceDescription = getResourceDescription(
+            fieldsForResourceSyndication,
+        );
+        const resourceDetailFirst = getResourceDetailFirst(
+            fieldsForResourceSyndication,
+        );
+        const resourceDetailSecond = getResourceDetailSecond(
+            fieldsForResourceSyndication,
+        );
+        const resourceDetailThird = getResourceDetailThird(
+            fieldsForResourceSyndication,
+        );
+
+        const sortableFields = [
+            resourceTitle,
+            resourceDescription,
+            resourceDetailFirst,
+            resourceDetailSecond,
+            resourceDetailThird,
+        ].filter((field) => field);
+
+        return {
+            resourceTitle,
+            resourceDescription,
+            resourceDetailFirst,
+            resourceDetailSecond,
+            resourceDetailThird,
+            resourceSortField: getResourceSortField(sortableFields),
+            resourceSortOrder: getResourceSortOrder(sortableFields),
+            sortableFields,
+        };
+    }, [fieldsForResourceSyndication]);
 
     useEffect(() => {
         loadField();
-    }, []);
+    }, [loadField]);
 
     useEffect(() => {
         setFacetChecked(getFacetFields(fieldsResource));
         setSearchInFields(getSearchableFields(fieldsResource));
-        setResourceTitle(getResourceTitle(fieldsForResourceSyndication));
-        setResourceDescription(
-            getResourceDescription(fieldsForResourceSyndication),
-        );
-        setResourceDetailFirst(
-            getResourceDetailFirst(fieldsForResourceSyndication),
-        );
-        setResourceDetailSecond(
-            getResourceDetailSecond(fieldsForResourceSyndication),
-        );
-        setResourceDetailThird(
-            getResourceDetailThird(fieldsForResourceSyndication),
-        );
     }, [fieldsResource]);
 
     // We could lower the complexity with only one map. But it's more readable like this. And the performance is not a problem here.
@@ -126,20 +149,43 @@ export const SearchForm = ({ fields, loadField, p: polyglot }) => {
         }
     };
 
-    const handleSResourceTitle = async (event, value) => {
+    const handleSResourceTitle = async (_event, value) => {
         saveSyndication(value, overview.RESOURCE_TITLE);
     };
-    const handleSResourceDescription = async (event, value) => {
+    const handleSResourceDescription = async (_event, value) => {
         saveSyndication(value, overview.RESOURCE_DESCRIPTION);
     };
-    const handleSResourceDetailFirst = async (event, value) => {
+    const handleSResourceDetailFirst = async (_event, value) => {
         saveSyndication(value, overview.RESOURCE_DETAIL_1);
     };
-    const handleSResourceDetailSecond = async (event, value) => {
+    const handleSResourceDetailSecond = async (_event, value) => {
         saveSyndication(value, overview.RESOURCE_DETAIL_2);
     };
-    const handleSResourceDetailThird = async (event, value) => {
+    const handleSResourceDetailThird = async (_event, value) => {
         saveSyndication(value, overview.RESOURCE_DETAIL_3);
+    };
+
+    const handleResourceSortFieldChange = async (_event, value) => {
+        const res = await fieldApi.patchSortField({
+            _id: value?._id,
+            sortOrder: resourceSortOrder,
+        });
+        if (!res.ok) {
+            toast(polyglot.t('syndication_error'), {
+                type: toast.TYPE.ERROR,
+            });
+        }
+    };
+
+    const handleResourceSortOrderChange = async (event) => {
+        const res = await fieldApi.patchSortOrder({
+            sortOrder: event.target.value,
+        });
+        if (!res.ok) {
+            toast(polyglot.t('syndication_error'), {
+                type: toast.TYPE.ERROR,
+            });
+        }
     };
 
     const handleFacetCheckedChange = async (value) => {
@@ -327,6 +373,36 @@ export const SearchForm = ({ fields, loadField, p: polyglot }) => {
                                 value={resourceDetailThird}
                                 clearText={polyglot.t('clear')}
                             />
+                        </Box>
+
+                        <Box display="flex" gap={2}>
+                            <SearchAutocomplete
+                                testId={`autocomplete_resource_sort_field`}
+                                translation={polyglot.t('resource_sort_field')}
+                                fields={sortableFields}
+                                onChange={handleResourceSortFieldChange}
+                                value={resourceSortField}
+                                clearText={polyglot.t('clear')}
+                            />
+
+                            <FormControl fullWidth>
+                                <InputLabel id="sort-order-label">
+                                    {polyglot.t('resource_sort_order')}
+                                </InputLabel>
+                                <Select
+                                    labelId="sort-order-label"
+                                    value={resourceSortOrder}
+                                    label={polyglot.t('resource_sort_order')}
+                                    onChange={handleResourceSortOrderChange}
+                                >
+                                    <MenuItem value="asc">
+                                        {polyglot.t('asc')}
+                                    </MenuItem>
+                                    <MenuItem value="desc">
+                                        {polyglot.t('desc')}
+                                    </MenuItem>
+                                </Select>
+                            </FormControl>
                         </Box>
                     </Box>
                 </Box>
