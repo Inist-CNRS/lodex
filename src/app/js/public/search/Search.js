@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import { translate } from '../../i18n/I18NContext';
 import classnames from 'classnames';
-import { CircularProgress, Button } from '@mui/material';
+import { CircularProgress, Button, Stack } from '@mui/material';
 
 import {
     facetActions,
@@ -28,6 +28,7 @@ import SearchResultList from './SearchResultList';
 import SearchResultSort from './SearchResultSort';
 import SearchSearchBar from './SearchSearchBar';
 import SearchResultHeader from './SearchResultHeader';
+import MyAnnotationsFilter from './MyAnnotationsFilter';
 
 const styles = stylesToClassname(
     {
@@ -38,6 +39,7 @@ const styles = stylesToClassname(
             display: 'flex',
             flexDirection: 'column',
             marginBottom: '15px',
+            gap: '1rem',
         },
         advanced: {
             display: 'flex',
@@ -210,6 +212,9 @@ class Search extends Component {
                         withFacets={withFacets}
                         onToggleFacets={this.handleToggleFacets}
                     />
+                    <Stack direction="row" justifyContent="center">
+                        <MyAnnotationsFilter />
+                    </Stack>
                 </div>
                 {withFacets && <AppliedFacetList />}
                 <div className={styles.content}>

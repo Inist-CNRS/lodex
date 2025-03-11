@@ -5,6 +5,7 @@ import createFacetReducer from '../facet';
 import facetSelectors from '../facet/selectors';
 
 export const SEARCH = 'SEARCH';
+export const SEARCH_MY_ANNOTATIONS = 'SEARCH_MY_ANNOTATIONS';
 export const SEARCH_RESULTS = 'SEARCH_RESULTS';
 export const SEARCH_ERROR = 'SEARCH_ERROR';
 
@@ -16,6 +17,7 @@ export const SEARCH_SORT = 'SEARCH_SORT';
 export const SEARCH_SORT_INIT = 'SEARCH_SORT_INIT';
 
 export const search = createAction(SEARCH);
+export const searchMyAnnotations = createAction(SEARCH_MY_ANNOTATIONS);
 export const searchSucceed = createAction(SEARCH_RESULTS);
 export const searchFailed = createAction(SEARCH_ERROR);
 
@@ -36,6 +38,7 @@ export const fromSearch = {
     getPage: (state) => state.page,
     getTotal: (state) => state.total,
     getQuery: (state) => state.query,
+    getMyAnnotationsFilter: (state) => state.filter?.myAnnotations,
     getPrevResource: (state, currentResource) => {
         if (!currentResource || !currentResource.uri) {
             return null;
@@ -82,6 +85,7 @@ export const defaultState = {
     total: 0,
     query: null,
     facet: facetReducer(undefined, {}),
+    filter: {},
 };
 
 export default handleActions(
@@ -100,6 +104,13 @@ export default handleActions(
             page: 0,
             total: 0,
             query: payload.query,
+        }),
+        [SEARCH_MY_ANNOTATIONS]: (state, { payload }) => ({
+            ...state,
+            filter: {
+                ...state.filter,
+                myAnnotations: payload.myAnnotations,
+            },
         }),
         [SEARCH_SORT]: (state, { payload: { sortBy: nextSortBy } }) => {
             const { sortBy, sortDir } = state.sort;
