@@ -1,16 +1,16 @@
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
-import { Menu, Button, MenuItem } from '@mui/material';
-import SortIcon from '@mui/icons-material/Sort';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import SortIcon from '@mui/icons-material/Sort';
+import { Button, Menu, MenuItem } from '@mui/material';
+import PropTypes from 'prop-types';
+import React, { useState } from 'react';
 
+import { ArrowUpward } from '@mui/icons-material';
+import { translate } from '../../i18n/I18NContext';
 import stylesToClassname from '../../lib/stylesToClassName';
 import {
     field as fieldPropTypes,
     polyglot as polyglotPropTypes,
 } from '../../propTypes';
-import { ArrowUpward } from '@mui/icons-material';
-import { translate } from '../../i18n/I18NContext';
 
 const styles = stylesToClassname(
     {
@@ -121,6 +121,7 @@ const SearchResultSort = ({
                         <MenuItem
                             key={field.name}
                             onClick={() => handleSort(field.name)}
+                            aria-current={sortBy === field.name ? 'true' : null}
                         >
                             {field.label}
                             {sortBy === field.name && (

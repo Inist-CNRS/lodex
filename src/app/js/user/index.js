@@ -275,6 +275,20 @@ export const getPatchOverviewRequest = (state, fieldData) =>
         method: 'PATCH',
     });
 
+export const getPatchSortFieldRequest = (state, body) =>
+    getRequest(state, {
+        url: `/api/field/sort-field`,
+        body,
+        method: 'PATCH',
+    });
+
+export const getPatchSortOrderRequest = (state, body) =>
+    getRequest(state, {
+        url: `/api/field/sort-order`,
+        body,
+        method: 'PATCH',
+    });
+
 export const getSaveFieldRequest = (state, fieldData) => {
     if (fieldData.name === 'new') {
         return getCreateFieldRequest(state, omit(fieldData, ['name']));

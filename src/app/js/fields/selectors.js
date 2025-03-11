@@ -360,6 +360,17 @@ const getResourceDetail3FieldName = createSelector(
     findFieldWithOverviewID(overview.RESOURCE_DETAIL_3),
 );
 
+const getResourceSortFieldName = createSelector(getAllListFields, (fields) => {
+    return fields.find((f) => f.isDefaultSortField)?.name ?? null;
+});
+
+const getResourceSortDir = createSelector(getAllListFields, (fields) => {
+    return (
+        fields.find((f) => f.isDefaultSortField)?.sortOrder?.toUpperCase() ??
+        'ASC'
+    );
+});
+
 const getPublishData = ({ error, published, editedFieldIndex, loading }) => ({
     published,
     editedFieldIndex,
@@ -470,6 +481,8 @@ export default {
     getResourceDetail1FieldName,
     getResourceDetail2FieldName,
     getResourceDetail3FieldName,
+    getResourceSortFieldName,
+    getResourceSortDir,
     getPublishData,
     isLoading,
     isSaving,
