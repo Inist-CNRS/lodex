@@ -1158,8 +1158,6 @@ Revue`);
             );
             cy.findByLabelText('Status').should('have.text', 'Ongoing');
 
-            cy.findByLabelText('Annotation summary').click();
-
             cy.findByText('You are the contributor of this annotation').should(
                 'be.visible',
             );
