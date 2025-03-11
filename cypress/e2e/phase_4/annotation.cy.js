@@ -1343,7 +1343,15 @@ Revue`);
                 .invoke('removeAttr', 'target')
                 .click();
 
+            cy.waitForNetworkIdle(1000);
+            cy.findByRole('progressbar').should('not.exist');
+
             cy.findByText('1–1 of 1').should('be.visible');
+
+            cy.findByText('"Terminator 2"').should('be.visible');
+
+            cy.waitForNetworkIdle(1000);
+            cy.findByRole('progressbar').should('not.exist');
 
             cy.findByText('Filters').click();
 
