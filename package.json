@@ -15,7 +15,7 @@
         "production:workers": "node --require @babel/register workers",
         "build": "BABEL_ENV=browser node --max_old_space_size=4096 --max-http-header-size=32768 ./node_modules/.bin/webpack --config=./src/app/webpack.config.babel.js",
         "analyze": "BABEL_ENV=browser NODE_ENV=analyze npx webpack --config=./src/app/webpack.config.babel.js --profile --json > stats.json",
-        "development:api": "nodemon --inspect=0.0.0.0:9229 --max-http-header-size=32768 --require @babel/register --watch src/api --watch src/common src/api",
+        "development:api": "nodemon --inspect=0.0.0.0:9229 --max-http-header-size=32768 --require @babel/register --watch src/api --watch src/common --watch src/app/custom --watch src/app/js/public src/api",
         "development:app": "BABEL_ENV=browser npx webpack-dev-server --config=./src/app/webpack.config.babel.js --port=8080 --host=0.0.0.0",
         "postversion": "git push && git push --tags",
         "lint": "eslint \"src/**/*.{jsx,js}\" --fix",
