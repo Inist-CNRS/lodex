@@ -193,10 +193,18 @@ const handleRender = async (ctx, next) => {
         customTemplateVariables = ctx.configTenant.front.theme;
     }
 
-    const antiSpamFilterConfig = ctx.configTenant.antispamFilter;
-    const recaptchaClientKey = antiSpamFilterConfig?.active
-        ? antiSpamFilterConfig.recaptchaClientKey
-        : null;
+    const antiSpamFilterConfig = ctx.configTenant.antispamFilter || {};
+    const recaptchaClientKeyConfig =
+        antiSpamFilterConfig?.recaptchaClientKey?.trim();
+    const recaptchaSecretKeyConfig =
+        antiSpamFilterConfig?.recaptchaSecretKey?.trim();
+
+    const recaptchaClientKey =
+        antiSpamFilterConfig?.active &&
+        recaptchaClientKeyConfig &&
+        recaptchaSecretKeyConfig
+            ? recaptchaClientKeyConfig
+            : null;
 
     renderPublic(ctx.configTenant.theme, {
         preload: JSON.stringify(preloadedState),

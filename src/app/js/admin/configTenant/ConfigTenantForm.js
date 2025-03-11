@@ -1,6 +1,7 @@
 import {
     Box,
     Checkbox,
+    FormControl,
     FormHelperText,
     MenuItem,
     Select,
@@ -21,12 +22,12 @@ import { useTranslate } from '../../i18n/I18NContext';
 import AdminOnlyAlert from '../../lib/components/AdminOnlyAlert';
 import CancelButton from '../../lib/components/CancelButton';
 import Loading from '../../lib/components/Loading';
+import { SaveButton } from '../../lib/components/SaveButton';
 import { TextField } from '../../lib/components/TextField';
 import { ConfigField } from './fields/ConfigField';
 import { useGetAvailableThemes } from './useGetAvailableThemes';
 import { useGetConfigTenant } from './useGetConfigTenant';
 import { useUpdateConfigTenant } from './useUpdateConfigTenant';
-import { SaveButton } from '../../lib/components/SaveButton';
 
 const configTenantSchema = z.object({
     config: z.object(
@@ -59,17 +60,17 @@ const configTenantSchema = z.object({
     antispamFilter: z.discriminatedUnion('active', [
         z.object({
             active: z.literal(true),
-            recaptchaClientKey: z.string().min(1, {
+            recaptchaClientKey: z.string().trim().min(1, {
                 message: 'error_required',
             }),
-            recaptchaSecretKey: z.string().min(1, {
+            recaptchaSecretKey: z.string().trim().min(1, {
                 message: 'error_required',
             }),
         }),
         z.object({
             active: z.literal(false),
-            recaptchaClientKey: z.string().nullish(),
-            recaptchaSecretKey: z.string().nullish(),
+            recaptchaClientKey: z.string().trim().nullish(),
+            recaptchaSecretKey: z.string().trim().nullish(),
         }),
     ]),
     theme: z.string().min(1, {
@@ -326,14 +327,17 @@ export const ConfigTenantFormView = ({
 
             <Box>
                 <h2>{translate('notifications')}</h2>
-                <TextField
-                    label={translate('notification_email')}
-                    name="notificationEmail"
-                    form={form}
-                />
-                <FormHelperText>
-                    {translate('notification_email_help')}
-                </FormHelperText>
+
+                <FormControl fullWidth>
+                    <TextField
+                        label={translate('notification_email')}
+                        name="notificationEmail"
+                        form={form}
+                    />
+                    <FormHelperText>
+                        {translate('notification_email_help')}
+                    </FormHelperText>
+                </FormControl>
             </Box>
 
             <h2 id="theme">{translate('theme')}</h2>
@@ -411,12 +415,17 @@ export const ConfigTenantFormView = ({
                     mb: 4,
                 }}
             >
-                <TextField
-                    label={translate('recaptcha_client_key')}
-                    name="antispamFilter.recaptchaClientKey"
-                    form={form}
-                    disabled={!antispamFilterActive}
-                />
+                <FormControl fullWidth>
+                    <TextField
+                        label={translate('recaptcha_client_key')}
+                        name="antispamFilter.recaptchaClientKey"
+                        form={form}
+                        disabled={!antispamFilterActive}
+                    />
+                    <FormHelperText>
+                        {translate('recaptcha_test_configuration')}
+                    </FormHelperText>
+                </FormControl>
 
                 <TextField
                     label={translate('recaptcha_secret_key')}
@@ -424,6 +433,7 @@ export const ConfigTenantFormView = ({
                     form={form}
                     disabled={!antispamFilterActive}
                     type="password"
+                    fullWidth
                 />
             </Box>
 
