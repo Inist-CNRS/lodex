@@ -1,18 +1,18 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import ErrorIcon from '@mui/icons-material/Error';
 import {
-    ListItem,
     Checkbox,
     FormControlLabel,
+    ListItem,
     ListItemText,
 } from '@mui/material';
-import ErrorIcon from '@mui/icons-material/Error';
-import { translate, useTranslate } from '../../i18n/I18NContext';
+import PropTypes from 'prop-types';
+import React from 'react';
+import { connect } from 'react-redux';
 import compose from 'recompose/compose';
+import { translate, useTranslate } from '../../i18n/I18NContext';
 
-import FacetActionsContext from './FacetActionsContext';
 import { fromFacet } from '../selectors';
+import FacetActionsContext from './FacetActionsContext';
 
 const styles = {
     container: {
@@ -35,6 +35,7 @@ const onCheck = (toggleFacetValue, name, facetValue) => () =>
 
 export const FacetValueItemView = ({ name, facetValue, isChecked }) => {
     const { translate } = useTranslate();
+
     if (facetValue.value instanceof Object) {
         return (
             <ListItem className="facet-value-item" sx={styles.listItem}>
@@ -47,6 +48,11 @@ export const FacetValueItemView = ({ name, facetValue, isChecked }) => {
             </ListItem>
         );
     }
+
+    const label =
+        facetValue.value === '' || facetValue.value === null
+            ? translate('empty')
+            : facetValue.value;
 
     return (
         <FacetActionsContext.Consumer>
@@ -65,17 +71,8 @@ export const FacetValueItemView = ({ name, facetValue, isChecked }) => {
                                         )}
                                     />
                                 }
-                                label={
-                                    facetValue.value === '' ||
-                                    facetValue.value === null
-                                        ? translate('empty')
-                                        : facetValue.value
-                                }
-                            >
-                                <span style={styles.count}>
-                                    {facetValue.count}
-                                </span>
-                            </FormControlLabel>
+                                label={`${label} (${facetValue.count})`}
+                            />
                         </div>
                     </ListItemText>
                 </ListItem>

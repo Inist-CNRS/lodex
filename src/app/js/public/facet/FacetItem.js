@@ -1,16 +1,16 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import classnames from 'classnames';
-import { ListItem, Grid, ListItemText } from '@mui/material';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { Grid, ListItem, ListItemText } from '@mui/material';
+import classnames from 'classnames';
+import PropTypes from 'prop-types';
+import React from 'react';
 import { connect } from 'react-redux';
 
+import getFieldClassName from '../../lib/getFieldClassName';
 import { field as fieldPropType } from '../../propTypes';
 import { fromFacet } from '../selectors';
-import getFieldClassName from '../../lib/getFieldClassName';
-import FacetValueListComponent from './FacetValueList';
 import FacetActionsContext from './FacetActionsContext';
+import FacetValueListComponent from './FacetValueList';
 
 const onClick = (openFacet, field) => () => openFacet({ name: field.name });
 
