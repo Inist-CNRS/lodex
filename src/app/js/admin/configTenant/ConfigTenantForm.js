@@ -60,17 +60,23 @@ const configTenantSchema = z.object({
     antispamFilter: z.discriminatedUnion('active', [
         z.object({
             active: z.literal(true),
-            recaptchaClientKey: z.string().trim().min(1, {
-                message: 'error_required',
-            }),
-            recaptchaSecretKey: z.string().trim().min(1, {
-                message: 'error_required',
-            }),
+            recaptchaClientKey: z
+                .string({ invalid_type_error: 'error_required' })
+                .trim()
+                .min(1, {
+                    message: 'error_required',
+                }),
+            recaptchaSecretKey: z
+                .string({ invalid_type_error: 'error_required' })
+                .trim()
+                .min(1, {
+                    message: 'error_required',
+                }),
         }),
         z.object({
             active: z.literal(false),
-            recaptchaClientKey: z.string().trim().nullish(),
-            recaptchaSecretKey: z.string().trim().nullish(),
+            recaptchaClientKey: z.string().trim().min(0).nullish(),
+            recaptchaSecretKey: z.string().trim().min(0).nullish(),
         }),
     ]),
     theme: z.string().min(1, {
@@ -398,6 +404,14 @@ export const ConfigTenantFormView = ({
                             checked={field.state.value}
                             onChange={(event) => {
                                 field.handleChange(event.target.checked);
+                                if (!event.target.checked) {
+                                    form.validateField(
+                                        'antispamFilter.recaptchaClientKey',
+                                    );
+                                    form.validateField(
+                                        'antispamFilter.recaptchaSecretKey',
+                                    );
+                                }
                             }}
                             inputProps={{
                                 'aria-labelledby': 'antispam_filter',
