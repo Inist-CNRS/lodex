@@ -3,7 +3,8 @@ import React from 'react';
 import { useTranslate } from '../../i18n/I18NContext';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { fromSearch, searchMyAnnotations } from './reducer';
+import { searchMyAnnotations } from './reducer';
+import { fromSearch } from '../selectors';
 
 export const MyAnnotationsFilterComponent = ({ filter, onFilterChange }) => {
     const { translate } = useTranslate();
@@ -42,7 +43,7 @@ MyAnnotationsFilterComponent.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-    filters: fromSearch.getMyAnnotationsFilter(state),
+    filter: fromSearch.getMyAnnotationsFilter(state),
 });
 
 const mapDispatchToProps = {
