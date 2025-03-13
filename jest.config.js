@@ -7,7 +7,7 @@ const transform = {
     ],
 };
 
-const workerIdleMemoryLimit = '1024MB';
+const workerIdleMemoryLimit = '2048MB';
 
 module.exports = {
     workerIdleMemoryLimit,
