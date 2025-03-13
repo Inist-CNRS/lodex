@@ -504,7 +504,6 @@ div.property div.MuiBox-root > div > * + div {
 /* label */
 .property div.property_label_container > div {
     justify-content: flex-start !important;
-    margin-bottom: 0.5rem;
 }
 .property span.property_label[style*='color: rgb(158, 158, 158)']:not(:empty) {
     font-family: var(--font-titre) !important;
@@ -519,9 +518,9 @@ div.property div.MuiBox-root > div > * + div {
 }
 #content span.property_scheme {
     display: inline-flex;
+    align-self: center !important;
     visibility: hidden;
     margin-left: 0.5rem;
-    margin-bottom: 0.2rem;
 }
 .property_scheme a:not(:empty)::before {
     visibility: visible;
