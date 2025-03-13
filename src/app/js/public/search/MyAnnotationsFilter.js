@@ -8,6 +8,8 @@ import { fromSearch, searchMyAnnotations } from './reducer';
 export const MyAnnotationsFilterComponent = ({ filter, onFilterChange }) => {
     const { translate } = useTranslate();
 
+    // @TODO retrieve all resourceIds with annotations from localStorage
+
     return (
         <FormControl>
             <InputLabel htmlFor="my-annotations-filter">
