@@ -13,7 +13,7 @@ export const MyAnnotationsFilterComponent = ({ filter, onFilterChange }) => {
     const resourceUris = useGetAnnotatedResourceUris();
     return (
         <FormControl>
-            <InputLabel htmlFor="my-annotations-filter">
+            <InputLabel id="my-annotations-filter">
                 {translate('my_annotations_filter')}
             </InputLabel>
             <Select
@@ -21,6 +21,7 @@ export const MyAnnotationsFilterComponent = ({ filter, onFilterChange }) => {
                 labelId="my-annotations-filter"
                 label={translate('my-annotations-filter')}
                 value={filter}
+                inputProps={{ 'aria-labelled-by': 'my-annotations-filter' }}
                 onChange={(e) =>
                     onFilterChange({ mode: e.target.value, resourceUris })
                 }

@@ -140,6 +140,7 @@ export default async (db) => {
             searchableFieldNames,
             facets,
             facetFieldNames,
+            filters,
             regexSearch: true,
             excludeSubresources,
         });
