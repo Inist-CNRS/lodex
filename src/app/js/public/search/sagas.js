@@ -33,7 +33,7 @@ import { getAnnotatedResourceUris } from '../../annotation/annotationStorage';
 
 const PER_PAGE = 10;
 
-const doSearchRequest = function* (page = 0) {
+export const doSearchRequest = function* (page = 0) {
     const query = yield select(fromSearch.getQuery);
     const isMyAnnotations = yield select(fromSearch.getMyAnnotationsFilter);
     const sort = yield select(fromSearch.getSort);
@@ -54,8 +54,8 @@ const doSearchRequest = function* (page = 0) {
         facets,
         invertedFacets,
         filter: {
-            ...(isMyAnnotations === true ? { resourceUris } : {}),
-            ...(isMyAnnotations === false
+            ...(isMyAnnotations === 'my-annotations' ? { resourceUris } : {}),
+            ...(isMyAnnotations === 'not-my-annotations'
                 ? { excludeResourceUris: resourceUris }
                 : {}),
         },
