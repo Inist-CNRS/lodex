@@ -4,6 +4,7 @@ import {
     FormControlLabel,
     ListItem,
     ListItemText,
+    Typography,
 } from '@mui/material';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -15,11 +16,6 @@ import { fromFacet } from '../selectors';
 import FacetActionsContext from './FacetActionsContext';
 
 const styles = {
-    container: {
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-    },
     count: {
         alignSelf: 'flex-start',
         paddingTop: '5px',
@@ -58,22 +54,53 @@ export const FacetValueItemView = ({ name, facetValue, isChecked }) => {
         <FacetActionsContext.Consumer>
             {({ toggleFacetValue }) => (
                 <ListItem className="facet-value-item" sx={styles.listItem}>
-                    <ListItemText>
-                        <div style={styles.container}>
-                            <FormControlLabel
-                                control={
-                                    <Checkbox
-                                        checked={isChecked}
-                                        onChange={onCheck(
-                                            toggleFacetValue,
-                                            name,
-                                            facetValue,
-                                        )}
-                                    />
-                                }
-                                label={`${label} (${facetValue.count})`}
-                            />
-                        </div>
+                    <ListItemText
+                        primaryTypographyProps={{
+                            component: 'div',
+                            sx: {
+                                display: 'flex',
+                            },
+                        }}
+                    >
+                        <FormControlLabel
+                            control={
+                                <Checkbox
+                                    checked={isChecked}
+                                    onChange={onCheck(
+                                        toggleFacetValue,
+                                        name,
+                                        facetValue,
+                                    )}
+                                    inputProps={{
+                                        'aria-label': label,
+                                    }}
+                                />
+                            }
+                            label={
+                                <>
+                                    <Typography component="span" flexGrow={1}>
+                                        {label}
+                                    </Typography>
+                                    <Typography component="span">
+                                        {facetValue.count}
+                                    </Typography>
+                                </>
+                            }
+                            sx={{
+                                flex: 1,
+                            }}
+                            componentsProps={{
+                                typography: {
+                                    component: 'div',
+                                    sx: {
+                                        display: 'flex',
+                                        flexDirection: 'row',
+                                        gap: 1,
+                                        flex: 1,
+                                    },
+                                },
+                            }}
+                        />
                     </ListItemText>
                 </ListItem>
             )}

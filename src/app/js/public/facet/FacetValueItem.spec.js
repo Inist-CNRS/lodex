@@ -18,7 +18,8 @@ describe('FacetValueItem', () => {
             </TestI18N>,
         );
 
-        expect(screen.getByText('empty (10)')).toBeInTheDocument();
+        expect(screen.getByText('empty')).toBeInTheDocument();
+        expect(screen.getByText('10')).toBeInTheDocument();
     });
     it('should render a "" facet value as empty', () => {
         render(
@@ -34,7 +35,8 @@ describe('FacetValueItem', () => {
             </TestI18N>,
         );
 
-        expect(screen.getByText('empty (10)')).toBeInTheDocument();
+        expect(screen.getByText('empty')).toBeInTheDocument();
+        expect(screen.getByText('10')).toBeInTheDocument();
     });
     it('should render facet.value otherwise', () => {
         render(
@@ -50,6 +52,7 @@ describe('FacetValueItem', () => {
             </TestI18N>,
         );
 
-        expect(screen.getByText('facet value (10)')).toBeInTheDocument();
+        expect(screen.getByText('facet value')).toBeInTheDocument();
+        expect(screen.getByText('10')).toBeInTheDocument();
     });
 });
