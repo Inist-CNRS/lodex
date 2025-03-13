@@ -4,10 +4,11 @@ import {
     IconButton,
     InputAdornment,
     TextField as MuiTextField,
+    Tooltip,
 } from '@mui/material';
 import PropTypes from 'prop-types';
 import React, { useEffect, useMemo } from 'react';
-import ClearIcon from '@mui/icons-material/Clear';
+import DeleteIcon from '@mui/icons-material/Delete';
 import { useField } from '@tanstack/react-form';
 
 import { useTranslate } from '../../i18n/I18NContext';
@@ -72,14 +73,16 @@ export function TextField({
                 InputProps={{
                     endAdornment: clearable && field.state.value && (
                         <InputAdornment position="end">
-                            <IconButton
-                                aria-label={translate('clear')}
-                                onClick={() => {
-                                    field.handleChange(null);
-                                }}
-                            >
-                                <ClearIcon />
-                            </IconButton>
+                            <Tooltip title={translate('clear')}>
+                                <IconButton
+                                    aria-label={translate('clear')}
+                                    onClick={() => {
+                                        field.handleChange(null);
+                                    }}
+                                >
+                                    <DeleteIcon />
+                                </IconButton>
+                            </Tooltip>
                         </InputAdornment>
                     ),
                 }}
