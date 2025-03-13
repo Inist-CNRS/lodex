@@ -38,7 +38,10 @@ export const fromSearch = {
     getPage: (state) => state.page,
     getTotal: (state) => state.total,
     getQuery: (state) => state.query,
-    getMyAnnotationsFilter: (state) => state.filters?.myAnnotations,
+    getResourceUrisFilter: (state) => state.filters?.resourceUris,
+    getExcludedResourceUrisFilter: (state) =>
+        state.filters?.excludedResourceUris,
+    getFilters: (state) => state.filters,
     getPrevResource: (state, currentResource) => {
         if (!currentResource || !currentResource.uri) {
             return null;
@@ -105,13 +108,44 @@ export default handleActions(
             total: 0,
             query: payload.query,
         }),
-        [SEARCH_MY_ANNOTATIONS]: (state, { payload }) => ({
-            ...state,
-            filters: {
-                ...state.filters,
-                myAnnotations: payload,
-            },
-        }),
+        [SEARCH_MY_ANNOTATIONS]: (
+            state,
+            { payload: { mode, resourceUris } },
+        ) => {
+            if (mode === null) {
+                return {
+                    ...state,
+                    filters: {
+                        ...state.filters,
+                        resourceUris: undefined,
+                        excludedResourceUris: undefined,
+                    },
+                };
+            }
+            if (mode === 'my-annotations') {
+                return {
+                    ...state,
+                    filters: {
+                        ...state.filters,
+                        resourceUris,
+                        excludedResourceUris: undefined,
+                    },
+                };
+            }
+
+            if (mode === 'not-my-annotations') {
+                return {
+                    ...state,
+                    filters: {
+                        ...state.filters,
+                        excludedResourceUris: resourceUris,
+                        resourceUris: undefined,
+                    },
+                };
+            }
+
+            return state;
+        },
         [SEARCH_SORT]: (state, { payload: { sortBy: nextSortBy } }) => {
             const { sortBy, sortDir } = state.sort;
 

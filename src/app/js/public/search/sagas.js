@@ -29,13 +29,15 @@ import { fromFields, fromUser } from '../../sharedSelectors';
 import facetSagasFactory from '../facet/sagas';
 import { LOAD_RESOURCE_SUCCESS } from '../resource';
 import { fromResource, fromSearch } from '../selectors';
-import { getAnnotatedResourceUris } from '../../annotation/annotationStorage';
 
 const PER_PAGE = 10;
 
 export const doSearchRequest = function* (page = 0) {
     const query = yield select(fromSearch.getQuery);
-    const isMyAnnotations = yield select(fromSearch.getMyAnnotationsFilter);
+    const resourceUris = yield select(fromSearch.getResourceUrisFilter);
+    const excludedResourceUris = yield select(
+        fromSearch.getExcludedResourceUrisFilter,
+    );
     const sort = yield select(fromSearch.getSort);
     let facets = yield select(fromSearch.getAppliedFacets);
     facets = Object.keys(facets).reduce((acc, facetName) => {
@@ -43,8 +45,6 @@ export const doSearchRequest = function* (page = 0) {
         return acc;
     }, {});
     const invertedFacets = yield select(fromSearch.getInvertedFacetKeys);
-
-    const resourceUris = yield call(getAnnotatedResourceUris);
 
     const request = yield select(fromUser.getLoadDatasetPageRequest, {
         match: query || '',
@@ -54,10 +54,8 @@ export const doSearchRequest = function* (page = 0) {
         facets,
         invertedFacets,
         filters: {
-            ...(isMyAnnotations === 'my-annotations' ? { resourceUris } : {}),
-            ...(isMyAnnotations === 'not-my-annotations'
-                ? { excludedResourceUris: resourceUris }
-                : {}),
+            resourceUris,
+            excludedResourceUris,
         },
     });
 

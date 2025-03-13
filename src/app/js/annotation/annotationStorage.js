@@ -95,3 +95,8 @@ export const getAnnotatedResourceUris = () => {
 
     return Object.keys(annotations);
 };
+export const useGetAnnotatedResourceUris = () => {
+    const { annotations } = useContext(AnnotationStorageContext);
+
+    return useMemo(() => Object.keys(annotations), [annotations]);
+};
