@@ -6,12 +6,15 @@ import { useTranslate } from '../i18n/I18NContext';
 import fetch from '../lib/fetch';
 import { getRequest } from '../user';
 import { useSaveAnnotationId } from './annotationStorage';
+import { useDispatch } from 'react-redux';
+import { annotationAdded } from '../public/search/reducer';
 
 export function useCreateAnnotation() {
     const { translate, locale } = useTranslate();
     const queryClient = useQueryClient();
 
     const saveAnnotationId = useSaveAnnotationId();
+    const dispatch = useDispatch();
 
     const mutation = useMutation({
         mutationFn: async (annotation) => {
@@ -43,6 +46,13 @@ export function useCreateAnnotation() {
             });
 
             saveAnnotationId(data);
+            if (data.resourceUri) {
+                dispatch(
+                    annotationAdded({
+                        resourceUri: data.resourceUri,
+                    }),
+                );
+            }
             toast(translate('annotation_create_success'), {
                 type: toast.TYPE.SUCCESS,
             });

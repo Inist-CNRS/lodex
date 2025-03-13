@@ -1,5 +1,5 @@
 import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
-import React, { useMemo } from 'react';
+import React from 'react';
 import { useTranslate } from '../../i18n/I18NContext';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -7,22 +7,10 @@ import { searchMyAnnotations } from './reducer';
 import { fromSearch } from '../selectors';
 import { useGetAnnotatedResourceUris } from '../../annotation/annotationStorage';
 
-export const MyAnnotationsFilterComponent = ({ filters, onFilterChange }) => {
+export const MyAnnotationsFilterComponent = ({ filter, onFilterChange }) => {
     const { translate } = useTranslate();
 
     const resourceUris = useGetAnnotatedResourceUris();
-    const value = useMemo(() => {
-        if (filters.resourceUris) {
-            return 'my-annotations';
-        }
-
-        if (filters.excludedResourceUris) {
-            return 'not-my-annotations';
-        }
-
-        return null;
-    }, [filters]);
-
     return (
         <FormControl>
             <InputLabel htmlFor="my-annotations-filter">
@@ -32,7 +20,7 @@ export const MyAnnotationsFilterComponent = ({ filters, onFilterChange }) => {
                 sx={{ width: 200 }}
                 labelId="my-annotations-filter"
                 label={translate('my-annotations-filter')}
-                value={value}
+                value={filter}
                 onChange={(e) =>
                     onFilterChange({ mode: e.target.value, resourceUris })
                 }
@@ -54,15 +42,12 @@ export const MyAnnotationsFilterComponent = ({ filters, onFilterChange }) => {
 };
 
 MyAnnotationsFilterComponent.propTypes = {
-    filters: PropTypes.shape({
-        resourceUris: PropTypes.array,
-        excludedResourceUris: PropTypes.array,
-    }).isRequired,
+    filter: PropTypes.string,
     onFilterChange: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
-    filters: fromSearch.getFilters(state),
+    filter: fromSearch.getMyAnnotationsFilter(state),
 });
 
 const mapDispatchToProps = {

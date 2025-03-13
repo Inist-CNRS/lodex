@@ -15,6 +15,7 @@ import {
     loadMoreFailed,
     loadMoreSucceed,
     SEARCH,
+    SEARCH_ANNOTATION_ADDED,
     SEARCH_LOAD_MORE,
     SEARCH_MY_ANNOTATIONS,
     SEARCH_SORT,
@@ -34,10 +35,11 @@ const PER_PAGE = 10;
 
 export const doSearchRequest = function* (page = 0) {
     const query = yield select(fromSearch.getQuery);
-    const resourceUris = yield select(fromSearch.getResourceUrisFilter);
-    const excludedResourceUris = yield select(
-        fromSearch.getExcludedResourceUrisFilter,
+    const myAnnotationsFilter = yield select(fromSearch.getMyAnnotationsFilter);
+    const resourceUrisWithAnnotation = yield select(
+        fromSearch.getResourceUrisWithAnnotationFilter,
     );
+
     const sort = yield select(fromSearch.getSort);
     let facets = yield select(fromSearch.getAppliedFacets);
     facets = Object.keys(facets).reduce((acc, facetName) => {
@@ -54,8 +56,12 @@ export const doSearchRequest = function* (page = 0) {
         facets,
         invertedFacets,
         filters: {
-            resourceUris,
-            excludedResourceUris,
+            ...(myAnnotationsFilter === 'my-annotations'
+                ? { resourceUris: resourceUrisWithAnnotation }
+                : {}),
+            ...(myAnnotationsFilter === 'not-my-annotations'
+                ? { excludedResourceUris: resourceUrisWithAnnotation }
+                : {}),
         },
     });
 
@@ -158,6 +164,7 @@ export default function* () {
         [
             SEARCH,
             SEARCH_MY_ANNOTATIONS,
+            SEARCH_ANNOTATION_ADDED,
             SEARCH_SORT,
             SEARCH_SORT_INIT,
             facetActionTypes.TOGGLE_FACET_VALUE,

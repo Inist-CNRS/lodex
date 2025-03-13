@@ -16,10 +16,13 @@ export const SEARCH_LOAD_MORE_ERROR = 'SEARCH_LOAD_MORE_ERROR';
 export const SEARCH_SORT = 'SEARCH_SORT';
 export const SEARCH_SORT_INIT = 'SEARCH_SORT_INIT';
 
+export const SEARCH_ANNOTATION_ADDED = 'SEARCH_ANNOTATION_ADDED';
+
 export const search = createAction(SEARCH);
 export const searchMyAnnotations = createAction(SEARCH_MY_ANNOTATIONS);
 export const searchSucceed = createAction(SEARCH_RESULTS);
 export const searchFailed = createAction(SEARCH_ERROR);
+export const annotationAdded = createAction(SEARCH_ANNOTATION_ADDED);
 
 export const sort = createAction(SEARCH_SORT);
 export const initSort = createAction(SEARCH_SORT_INIT);
@@ -38,9 +41,9 @@ export const fromSearch = {
     getPage: (state) => state.page,
     getTotal: (state) => state.total,
     getQuery: (state) => state.query,
-    getResourceUrisFilter: (state) => state.filters?.resourceUris,
-    getExcludedResourceUrisFilter: (state) =>
-        state.filters?.excludedResourceUris,
+    getResourceUrisWithAnnotationFilter: (state) =>
+        state.filters?.resourceUrisWithAnnotation,
+    getMyAnnotationsFilter: (state) => state.filters?.myAnnotations,
     getFilters: (state) => state.filters,
     getPrevResource: (state, currentResource) => {
         if (!currentResource || !currentResource.uri) {
@@ -117,8 +120,8 @@ export default handleActions(
                     ...state,
                     filters: {
                         ...state.filters,
-                        resourceUris: undefined,
-                        excludedResourceUris: undefined,
+                        myAnnotations: null,
+                        resourceUrisWithAnnotation: undefined,
                     },
                 };
             }
@@ -127,8 +130,8 @@ export default handleActions(
                     ...state,
                     filters: {
                         ...state.filters,
-                        resourceUris,
-                        excludedResourceUris: undefined,
+                        myAnnotations: mode,
+                        resourceUrisWithAnnotation: resourceUris,
                     },
                 };
             }
@@ -138,12 +141,30 @@ export default handleActions(
                     ...state,
                     filters: {
                         ...state.filters,
-                        excludedResourceUris: resourceUris,
-                        resourceUris: undefined,
+                        myAnnotations: mode,
+                        resourceUrisWithAnnotation: resourceUris,
                     },
                 };
             }
 
+            return state;
+        },
+        [SEARCH_ANNOTATION_ADDED]: (state, { payload: { resourceUri } }) => {
+            if (
+                state.filters.resourceUrisWithAnnotation &&
+                !state.filters.resourceUrisWithAnnotation.includes(resourceUri)
+            ) {
+                return {
+                    ...state,
+                    filters: {
+                        ...state.filters,
+                        resourceUrisWithAnnotation:
+                            state.filters.resourceUrisWithAnnotation.concat(
+                                resourceUri,
+                            ),
+                    },
+                };
+            }
             return state;
         },
         [SEARCH_SORT]: (state, { payload: { sortBy: nextSortBy } }) => {
