@@ -1,11 +1,8 @@
-const { select, call } = require('redux-saga/effects');
-const { fromSearch } = require('../selectors');
-const { doSearchRequest } = require('./sagas');
-const {
-    getAnnotatedResourceUris,
-} = require('../../annotation/annotationStorage');
-const { fromUser } = require('../../sharedSelectors');
-const { default: fetchSaga } = require('../../lib/sagas/fetchSaga');
+import { select, call } from 'redux-saga/effects';
+import { doSearchRequest } from './sagas';
+import { fromUser } from '../../sharedSelectors';
+import fetchSaga from '../../lib/sagas/fetchSaga';
+import { fromSearch } from '../selectors';
 
 describe('search sagas', () => {
     describe('doSearchRequest', () => {
@@ -15,39 +12,10 @@ describe('search sagas', () => {
             expect(gen.next('queryValue').value).toEqual(
                 select(fromSearch.getMyAnnotationsFilter),
             );
-            expect(gen.next(null).value).toEqual(select(fromSearch.getSort));
-            expect(gen.next('sortData').value).toEqual(
-                select(fromSearch.getAppliedFacets),
-            );
-            expect(gen.next({}).value).toEqual(
-                select(fromSearch.getInvertedFacetKeys),
-            );
-            expect(gen.next(['inverted', 'facet', 'keys']).value).toEqual(
-                call(getAnnotatedResourceUris),
+            expect(gen.next(null).value).toEqual(
+                select(fromSearch.getResourceUrisWithAnnotationFilter),
             );
             expect(gen.next(['uri1', 'uri2']).value).toEqual(
-                select(fromUser.getLoadDatasetPageRequest, {
-                    match: 'queryValue',
-                    sort: 'sortData',
-                    perPage: 10,
-                    page: 0,
-                    facets: {},
-                    invertedFacets: ['inverted', 'facet', 'keys'],
-                    filter: {},
-                }),
-            );
-            expect(gen.next('request object').value).toEqual(
-                call(fetchSaga, 'request object'),
-            );
-            expect(gen.next().done).toBe(true);
-        });
-        it('should add resourceUris filter when getMyAnnotationsFilter selector return my-annotations', () => {
-            const gen = doSearchRequest();
-            expect(gen.next().value).toEqual(select(fromSearch.getQuery));
-            expect(gen.next('queryValue').value).toEqual(
-                select(fromSearch.getMyAnnotationsFilter),
-            );
-            expect(gen.next('my-annotations').value).toEqual(
                 select(fromSearch.getSort),
             );
             expect(gen.next('sortData').value).toEqual(
@@ -57,9 +25,6 @@ describe('search sagas', () => {
                 select(fromSearch.getInvertedFacetKeys),
             );
             expect(gen.next(['inverted', 'facet', 'keys']).value).toEqual(
-                call(getAnnotatedResourceUris),
-            );
-            expect(gen.next(['uri1', 'uri2']).value).toEqual(
                 select(fromUser.getLoadDatasetPageRequest, {
                     match: 'queryValue',
                     sort: 'sortData',
@@ -67,7 +32,42 @@ describe('search sagas', () => {
                     page: 0,
                     facets: {},
                     invertedFacets: ['inverted', 'facet', 'keys'],
-                    filter: {
+                    filters: {},
+                }),
+            );
+            expect(gen.next('request object').value).toEqual(
+                call(fetchSaga, 'request object'),
+            );
+            expect(gen.next().done).toBe(true);
+        });
+
+        it('should add resourceUris filter when getMyAnnotationsFilter selector return my-annotations', () => {
+            const gen = doSearchRequest();
+            expect(gen.next().value).toEqual(select(fromSearch.getQuery));
+            expect(gen.next('queryValue').value).toEqual(
+                select(fromSearch.getMyAnnotationsFilter),
+            );
+            expect(gen.next('my-annotations').value).toEqual(
+                select(fromSearch.getResourceUrisWithAnnotationFilter),
+            );
+            expect(gen.next(['uri1', 'uri2']).value).toEqual(
+                select(fromSearch.getSort),
+            );
+            expect(gen.next('sortData').value).toEqual(
+                select(fromSearch.getAppliedFacets),
+            );
+            expect(gen.next({}).value).toEqual(
+                select(fromSearch.getInvertedFacetKeys),
+            );
+            expect(gen.next(['inverted', 'facet', 'keys']).value).toEqual(
+                select(fromUser.getLoadDatasetPageRequest, {
+                    match: 'queryValue',
+                    sort: 'sortData',
+                    perPage: 10,
+                    page: 0,
+                    facets: {},
+                    invertedFacets: ['inverted', 'facet', 'keys'],
+                    filters: {
                         resourceUris: ['uri1', 'uri2'],
                     },
                 }),
@@ -85,6 +85,9 @@ describe('search sagas', () => {
                 select(fromSearch.getMyAnnotationsFilter),
             );
             expect(gen.next('not-my-annotations').value).toEqual(
+                select(fromSearch.getResourceUrisWithAnnotationFilter),
+            );
+            expect(gen.next(['uri1', 'uri2']).value).toEqual(
                 select(fromSearch.getSort),
             );
             expect(gen.next('sortData').value).toEqual(
@@ -94,9 +97,6 @@ describe('search sagas', () => {
                 select(fromSearch.getInvertedFacetKeys),
             );
             expect(gen.next(['inverted', 'facet', 'keys']).value).toEqual(
-                call(getAnnotatedResourceUris),
-            );
-            expect(gen.next(['uri1', 'uri2']).value).toEqual(
                 select(fromUser.getLoadDatasetPageRequest, {
                     match: 'queryValue',
                     sort: 'sortData',
@@ -104,7 +104,7 @@ describe('search sagas', () => {
                     page: 0,
                     facets: {},
                     invertedFacets: ['inverted', 'facet', 'keys'],
-                    filter: {
+                    filters: {
                         excludedResourceUris: ['uri1', 'uri2'],
                     },
                 }),
@@ -121,6 +121,9 @@ describe('search sagas', () => {
             expect(gen.next('queryValue').value).toEqual(
                 select(fromSearch.getMyAnnotationsFilter),
             );
+            expect(gen.next(null).value).toEqual(
+                select(fromSearch.getResourceUrisWithAnnotationFilter),
+            );
             expect(gen.next().value).toEqual(select(fromSearch.getSort));
             expect(gen.next('sortData').value).toEqual(
                 select(fromSearch.getAppliedFacets),
@@ -132,9 +135,6 @@ describe('search sagas', () => {
                 }).value,
             ).toEqual(select(fromSearch.getInvertedFacetKeys));
             expect(gen.next(['inverted', 'facet', 'keys']).value).toEqual(
-                call(getAnnotatedResourceUris),
-            );
-            expect(gen.next(['uri1', 'uri2']).value).toEqual(
                 select(fromUser.getLoadDatasetPageRequest, {
                     match: 'queryValue',
                     sort: 'sortData',
@@ -145,7 +145,7 @@ describe('search sagas', () => {
                         appliedFacet2: ['3', '4'],
                     },
                     invertedFacets: ['inverted', 'facet', 'keys'],
-                    filter: {},
+                    filters: {},
                 }),
             );
             expect(gen.next('request object').value).toEqual(
