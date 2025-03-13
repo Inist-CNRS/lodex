@@ -118,6 +118,7 @@ export default handleActions(
             if (mode === null) {
                 return {
                     ...state,
+                    page: 0,
                     filters: {
                         ...state.filters,
                         myAnnotations: null,
@@ -128,6 +129,7 @@ export default handleActions(
             if (mode === 'my-annotations') {
                 return {
                     ...state,
+                    page: 0,
                     filters: {
                         ...state.filters,
                         myAnnotations: mode,
@@ -139,6 +141,7 @@ export default handleActions(
             if (mode === 'not-my-annotations') {
                 return {
                     ...state,
+                    page: 0,
                     filters: {
                         ...state.filters,
                         myAnnotations: mode,
