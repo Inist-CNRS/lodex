@@ -86,3 +86,12 @@ export const useSetFieldAnnotationIds = ({ fieldId, resourceUri }) => {
         [setAnnotations, fieldId, resourceUri],
     );
 };
+
+// not a hook, since this need to be use inside saga
+export const getAnnotatedResourceUris = () => {
+    const annotations = JSON.parse(
+        localStorage.getItem(getStorageKey()) || '{}',
+    );
+
+    return Object.keys(annotations);
+};

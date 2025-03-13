@@ -5,6 +5,7 @@ import React from 'react';
 import { waitFor } from '@testing-library/react';
 import {
     AnnotationStorageProvider,
+    getAnnotatedResourceUris,
     getStorageKey,
     useGetFieldAnnotationIds,
     useSaveAnnotationId,
@@ -156,6 +157,39 @@ describe('annotationStorage', () => {
                     fieldId: ['annotation3', 'annotation4'],
                 },
             });
+        });
+    });
+
+    describe('getAnnotatedResourceUris', () => {
+        it('should return the resourceUris that have annotations', () => {
+            localStorage.setItem(
+                getStorageKey(),
+                JSON.stringify({
+                    resourceUri: {
+                        fieldId: ['annotation1', 'annotation2'],
+                    },
+                    resourceUri2: {
+                        fieldId: ['annotation3', 'annotation4'],
+                    },
+                    resourceUri3: {
+                        fieldId: ['annotation5', 'annotation6'],
+                    },
+                }),
+            );
+            const result = getAnnotatedResourceUris();
+
+            expect(result).toStrictEqual([
+                'resourceUri',
+                'resourceUri2',
+                'resourceUri3',
+            ]);
+        });
+
+        it('should return an empty array if no resourceUri has annotations', () => {
+            localStorage.clear();
+            const result = getAnnotatedResourceUris();
+
+            expect(result).toStrictEqual([]);
         });
     });
 });
