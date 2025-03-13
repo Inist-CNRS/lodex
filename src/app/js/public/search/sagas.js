@@ -53,10 +53,10 @@ export const doSearchRequest = function* (page = 0) {
         page,
         facets,
         invertedFacets,
-        filter: {
+        filters: {
             ...(isMyAnnotations === 'my-annotations' ? { resourceUris } : {}),
             ...(isMyAnnotations === 'not-my-annotations'
-                ? { excludeResourceUris: resourceUris }
+                ? { excludedResourceUris: resourceUris }
                 : {}),
         },
     });

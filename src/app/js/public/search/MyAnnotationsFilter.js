@@ -8,8 +8,6 @@ import { fromSearch, searchMyAnnotations } from './reducer';
 export const MyAnnotationsFilterComponent = ({ filter, onFilterChange }) => {
     const { translate } = useTranslate();
 
-    // @TODO retrieve all resourceIds with annotations from localStorage
-
     return (
         <FormControl>
             <InputLabel htmlFor="my-annotations-filter">
@@ -44,11 +42,11 @@ MyAnnotationsFilterComponent.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-    filter: fromSearch.getMyAnnotationsFilter(state),
+    filters: fromSearch.getMyAnnotationsFilter(state),
 });
 
 const mapDispatchToProps = {
-    onFilterChange: (value) => searchMyAnnotations({ query: value }),
+    onFilterChange: (value) => searchMyAnnotations(value),
 };
 
 export default connect(

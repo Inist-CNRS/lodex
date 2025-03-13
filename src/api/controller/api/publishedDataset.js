@@ -17,6 +17,7 @@ export const getPage = async (ctx) => {
         match,
         sort: { sortBy, sortDir },
         invertedFacets = [],
+        filters,
         facets: facetsWithValueIds,
     } = ctx.request.body;
 
@@ -49,6 +50,7 @@ export const getPage = async (ctx) => {
         sortDir,
         match,
         facets,
+        filters,
         invertedFacets,
         searchableFieldNames,
         facetFieldNames,

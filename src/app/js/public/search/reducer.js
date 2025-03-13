@@ -38,7 +38,7 @@ export const fromSearch = {
     getPage: (state) => state.page,
     getTotal: (state) => state.total,
     getQuery: (state) => state.query,
-    getMyAnnotationsFilter: (state) => state.filter?.myAnnotations,
+    getMyAnnotationsFilter: (state) => state.filters?.myAnnotations,
     getPrevResource: (state, currentResource) => {
         if (!currentResource || !currentResource.uri) {
             return null;
@@ -85,7 +85,7 @@ export const defaultState = {
     total: 0,
     query: null,
     facet: facetReducer(undefined, {}),
-    filter: {},
+    filters: {},
 };
 
 export default handleActions(
@@ -107,9 +107,9 @@ export default handleActions(
         }),
         [SEARCH_MY_ANNOTATIONS]: (state, { payload }) => ({
             ...state,
-            filter: {
-                ...state.filter,
-                myAnnotations: payload.myAnnotations,
+            filters: {
+                ...state.filters,
+                myAnnotations: payload,
             },
         }),
         [SEARCH_SORT]: (state, { payload: { sortBy: nextSortBy } }) => {

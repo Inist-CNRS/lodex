@@ -89,6 +89,32 @@ export const addFacetToFilters =
         };
     };
 
+export const getUriFilter = ({ resourceUris, excludedResourceUris }) => {
+    if (!resourceUris && !excludedResourceUris) {
+        return {};
+    }
+
+    return {
+        uri: {
+            ...(resourceUris ? { $in: resourceUris } : {}),
+            ...(excludedResourceUris ? { $nin: excludedResourceUris } : {}),
+        },
+    };
+};
+
+export const addFilters = (filters) => (previewFilters) => {
+    if (!filters) {
+        return previewFilters;
+    }
+
+    return {
+        ...previewFilters,
+        ...(filters.resourceUris || filters.excludedResourceUris
+            ? getUriFilter(filters)
+            : {}),
+    };
+};
+
 export const addKeyToFilters = (key, value) => (filters) => {
     if (!value) {
         return filters;
@@ -108,6 +134,7 @@ const getPublishedDatasetFilter = ({
     facets,
     facetFieldNames,
     invertedFacets,
+    filters,
     regexSearch = false,
     excludeSubresources = false,
 }) => {
@@ -115,18 +142,19 @@ const getPublishedDatasetFilter = ({
         ? addRegexToFilters
         : addMatchToFilters;
 
-    const filters = compose(
+    const publishedDatasetFilters = compose(
         addKeyToFilters('uri', uri),
         addFieldsToFilters(matchableFields),
         addSearchFilters(match, searchableFieldNames),
         addFacetToFilters(facets, facetFieldNames, invertedFacets),
+        addFilters(filters),
     )({ removedAt: { $exists: false } });
 
     if (excludeSubresources) {
-        filters.subresourceId = null;
+        publishedDatasetFilters.subresourceId = null;
     }
 
-    return filters;
+    return publishedDatasetFilters;
 };
 
 export default getPublishedDatasetFilter;

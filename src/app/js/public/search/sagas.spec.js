@@ -78,7 +78,7 @@ describe('search sagas', () => {
             expect(gen.next().done).toBe(true);
         });
 
-        it('should add excludeResourceUris filter when getMyAnnotationsFilter selector return not-my-annotations', () => {
+        it('should add excludedResourceUris filter when getMyAnnotationsFilter selector return not-my-annotations', () => {
             const gen = doSearchRequest();
             expect(gen.next().value).toEqual(select(fromSearch.getQuery));
             expect(gen.next('queryValue').value).toEqual(
@@ -105,7 +105,7 @@ describe('search sagas', () => {
                     facets: {},
                     invertedFacets: ['inverted', 'facet', 'keys'],
                     filter: {
-                        excludeResourceUris: ['uri1', 'uri2'],
+                        excludedResourceUris: ['uri1', 'uri2'],
                     },
                 }),
             );
