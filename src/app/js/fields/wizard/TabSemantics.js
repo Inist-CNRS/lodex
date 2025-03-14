@@ -5,7 +5,7 @@ import FieldLanguageInput from '../FieldLanguageInput';
 import FieldSchemeInput from '../FieldSchemeInput';
 
 export const TabSemanticsComponent = ({ currentEditedField }) => {
-    if (!currentEditedField.subresourceId) {
+    if (currentEditedField.subresourceId) {
         return null;
     }
     return (
