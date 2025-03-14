@@ -1,3 +1,4 @@
+import { MongoClient } from 'mongodb';
 import {
     getPage,
     getRemovedPage,
@@ -5,7 +6,9 @@ import {
     removeResource,
     restoreResource,
     createResource,
+    completeFilters,
 } from './publishedDataset';
+import createAnnotationModel from '../../models/annotation';
 
 describe('publishedDataset', () => {
     describe('getPage', () => {
@@ -431,6 +434,206 @@ describe('publishedDataset', () => {
                 'the uri',
             );
             expect(ctx.publishedDataset.create).not.toHaveBeenCalled();
+        });
+    });
+
+    describe('completeFilters', () => {
+        const connectionStringURI = process.env.MONGO_URL;
+        let db;
+        let connection;
+        let annotationModel;
+
+        beforeAll(async () => {
+            connection = await MongoClient.connect(connectionStringURI, {
+                useNewUrlParser: true,
+                useUnifiedTopology: true,
+            });
+            db = connection.db();
+            annotationModel = await createAnnotationModel(db);
+        });
+
+        afterAll(async () => {
+            await connection.close();
+        });
+
+        it('should return an empty object if filters is null', async () => {
+            const result = await completeFilters(null);
+
+            expect(result).toEqual({});
+        });
+
+        it('should add and empty resourceUris filter if annotated is true and not annotations exists', async () => {
+            const result = await completeFilters(
+                {
+                    annotated: true,
+                },
+                { annotation: annotationModel },
+            );
+
+            expect(result).toEqual({
+                resourceUris: [],
+            });
+        });
+
+        it('should add and empty excludedResourceUris filter if annotated is false and not annotations exists', async () => {
+            const result = await completeFilters(
+                {
+                    annotated: false,
+                },
+                { annotation: annotationModel },
+            );
+
+            expect(result).toEqual({
+                excludedResourceUris: [],
+            });
+        });
+
+        it('should and a resourceUris filter with all annotated resourceUris if annotated is true', async () => {
+            await Promise.all(
+                [
+                    {
+                        resourceUri: 'uri1',
+                        fieldId: 'field1',
+                    },
+                    {
+                        resourceUri: 'uri1',
+                        fieldId: 'field2',
+                    },
+                    {
+                        resourceUri: 'uri2',
+                        fieldId: 'field1',
+                    },
+                    {
+                        resourceUri: 'uri3',
+                        fieldId: 'field1',
+                    },
+                ].map(annotationModel.create),
+            );
+
+            const result = await completeFilters(
+                {
+                    annotated: true,
+                },
+                { annotation: annotationModel },
+            );
+
+            expect(result).toEqual({
+                resourceUris: ['uri1', 'uri2', 'uri3'],
+            });
+        });
+
+        it('should add annotatedResourceUris to resourceUris filter if present when annotated is true', async () => {
+            await Promise.all(
+                [
+                    {
+                        resourceUri: 'uri1',
+                        fieldId: 'field1',
+                    },
+                    {
+                        resourceUri: 'uri1',
+                        fieldId: 'field2',
+                    },
+                    {
+                        resourceUri: 'uri2',
+                        fieldId: 'field1',
+                    },
+                    {
+                        resourceUri: 'uri3',
+                        fieldId: 'field1',
+                    },
+                ].map(annotationModel.create),
+            );
+
+            const result = await completeFilters(
+                {
+                    annotated: true,
+                    resourceUris: ['uri1', 'uri7'],
+                    excludedResourceUris: ['uri100', 'uri200'],
+                },
+                { annotation: annotationModel },
+            );
+
+            expect(result).toEqual({
+                resourceUris: ['uri1', 'uri7', 'uri2', 'uri3'],
+                excludedResourceUris: ['uri100', 'uri200'],
+            });
+        });
+
+        it('should and a excludedResourceUris filter with all annotated resourceUris if annotated is false', async () => {
+            await Promise.all(
+                [
+                    {
+                        resourceUri: 'uri1',
+                        fieldId: 'field1',
+                    },
+                    {
+                        resourceUri: 'uri1',
+                        fieldId: 'field2',
+                    },
+                    {
+                        resourceUri: 'uri2',
+                        fieldId: 'field1',
+                    },
+                    {
+                        resourceUri: 'uri3',
+                        fieldId: 'field1',
+                    },
+                ].map(annotationModel.create),
+            );
+
+            const result = await completeFilters(
+                {
+                    annotated: false,
+                },
+                { annotation: annotationModel },
+            );
+
+            expect(result).toEqual({
+                excludedResourceUris: ['uri1', 'uri2', 'uri3'],
+            });
+        });
+
+        it('should add annotatedResourceUris to excludedResourceUris filter if present when annotated is false', async () => {
+            await Promise.all(
+                [
+                    {
+                        resourceUri: 'uri1',
+                        fieldId: 'field1',
+                    },
+                    {
+                        resourceUri: 'uri1',
+                        fieldId: 'field2',
+                    },
+                    {
+                        resourceUri: 'uri2',
+                        fieldId: 'field1',
+                    },
+                    {
+                        resourceUri: 'uri3',
+                        fieldId: 'field1',
+                    },
+                ].map(annotationModel.create),
+            );
+
+            const result = await completeFilters(
+                {
+                    annotated: false,
+                    resourceUris: ['uri1', 'uri7'],
+                    excludedResourceUris: ['uri100', 'uri200'],
+                },
+                { annotation: annotationModel },
+            );
+
+            expect(result).toEqual({
+                resourceUris: ['uri1', 'uri7'],
+                excludedResourceUris: [
+                    'uri100',
+                    'uri200',
+                    'uri1',
+                    'uri2',
+                    'uri3',
+                ],
+            });
         });
     });
 });

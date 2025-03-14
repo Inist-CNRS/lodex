@@ -11,12 +11,14 @@ import { uniq } from 'lodash';
 
 const app = new Koa();
 
-export const completeFilters = async ({ annotated, ...filters } = {}, ctx) => {
+export const completeFilters = async (filters = {}, ctx) => {
     if (!filters) {
         return {};
     }
 
-    if (annotated == undefined) {
+    const { annotated, ...restFilters } = filters;
+
+    if (annotated === undefined) {
         return filters;
     }
 
@@ -25,7 +27,7 @@ export const completeFilters = async ({ annotated, ...filters } = {}, ctx) => {
 
     if (annotated === true) {
         return {
-            ...filters,
+            ...restFilters,
             resourceUris: filters.resourceUris
                 ? uniq(filters.resourceUris.concat(annotatedResourceUris))
                 : annotatedResourceUris,
@@ -34,9 +36,13 @@ export const completeFilters = async ({ annotated, ...filters } = {}, ctx) => {
 
     if (annotated === false) {
         return {
-            ...filters,
-            excludedResourceUris: filters.resourceUris
-                ? uniq(filters.resourceUris.concat(annotatedResourceUris))
+            ...restFilters,
+            excludedResourceUris: filters.excludedResourceUris
+                ? uniq(
+                      filters.excludedResourceUris.concat(
+                          annotatedResourceUris,
+                      ),
+                  )
                 : annotatedResourceUris,
         };
     }
