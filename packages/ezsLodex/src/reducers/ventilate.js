@@ -29,12 +29,21 @@ module.exports.reduce = function (key, values) {
 };
 
 module.exports.finalize = function finalize(key, value) {
-    return value;
+    var vector = JSON.parse(key);
+    var obj = {
+        source: vector[0],
+        target: vector[1],
+        weight: value,
+    }
+    return obj;
 };
 
 module.exports.fieldname = function (name) {
     if (name === 'value') {
-        return 'value';
+        return 'value.weight';
+    }
+    if (name === 'label') {
+        return 'value.source';
     }
     return '_id';
 };

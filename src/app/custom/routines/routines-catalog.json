@@ -84,6 +84,15 @@
         ]
     },
     {
+        "id": "r-ventilate-by",
+        "url": "/api/run/ventilate-by/",
+        "doc": "https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/les-routines-et-graphes/les-routines/#ventilate-by",
+        "recommendedWith": [
+            "Network",
+            "HeatMap"
+        ]
+    },
+    {
         "id": "r-distinct-by-field",
         "url": "/api/run/distinct-by-field/",
         "doc": "https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/les-routines-et-graphes/les-routines/#distinct-by-field",
