@@ -175,3 +175,17 @@ export const selectLoader = (loaderName = 'automatic') => {
     cy.get('.select-loader').first().click();
     cy.get(`[role="listbox"] li[data-value="${loaderName}"]`).click();
 };
+
+export const importAnnotations = (filename) => {
+    fillInputWithFixture(
+        'input[name="import_annotations"]',
+        filename,
+        'application/json',
+    );
+
+    cy.findByText(`${filename} file have been imported successfully.`, {
+        timeout: 2000,
+    }).should('exist');
+
+    cy.wait(1000);
+};

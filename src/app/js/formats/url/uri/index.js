@@ -1,4 +1,4 @@
-import Component from './UriView';
+import Component, { getReadableValue } from './UriView';
 import AdminComponent, { defaultArgs } from '../DefaultUrlAdmin';
 import DefaultFormat from '../../utils/components/default-format';
 import { isLink } from '../../../../../common/uris';
@@ -7,6 +7,7 @@ export default {
     ...DefaultFormat,
     Component,
     ListComponent: Component,
+    getReadableValue,
     AdminComponent,
     defaultArgs,
     predicate: (value) =>

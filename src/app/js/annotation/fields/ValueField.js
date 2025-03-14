@@ -9,9 +9,15 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 import { useTranslate } from '../../i18n/I18NContext';
+import { useStore } from '@tanstack/react-form';
 
 export function ValueField({ form, choices }) {
     const { translate } = useTranslate();
+
+    const kind = useStore(form.store, (state) => {
+        return state.values.kind;
+    });
+
     return (
         <form.Field name="initialValue">
             {(field) => {
@@ -23,7 +29,7 @@ export function ValueField({ form, choices }) {
                 return (
                     <FormControl fullWidth>
                         <InputLabel id="annotation_choose_value">
-                            {`${translate('annotation_choose_value')} *`}
+                            {`${translate(kind === 'correction' ? 'annotation_choose_value_to_correct' : 'annotation_choose_value_to_remove')} *`}
                         </InputLabel>
                         <Select
                             label={`${translate('annotation_choose_value')} *`}
@@ -31,7 +37,9 @@ export function ValueField({ form, choices }) {
                             name={field.name}
                             value={field.state.value}
                             onBlur={field.handleBlur}
-                            onChange={(e) => field.handleChange(e.target.value)}
+                            onChange={(e) =>
+                                field.handleChange(e.target.value.toString())
+                            }
                             minRows={5}
                             maxRows={10}
                             multiline

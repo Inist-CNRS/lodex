@@ -15,7 +15,7 @@
 /* theme lodex 'voscouleurs' */
 /* modifiable depuis votre lodex/admin/configuration */
 /* author : helene creusot */
-/* developpeur : helene creusot - pierre marcolet */
+/* developpeur : helene creusot */
 /* pour nos partenaires */
 /* CNRS Inist - juin 2024 */
 
@@ -24,7 +24,6 @@
 --bgBody: <%= custom.color.bgBody %>;
 --bgContrast: <%= custom.color.bgContrast %>;
 --bgHeader: <%= custom.color.bgHeader %>;
---bgHeaderUrl: url('<%= custom.color.bgHeaderUrl %>');
 --titleHeader: <%= custom.color.titleHeader %>;
 --bgContent: <%= custom.color.bgContent %>;
 --bgFacet: <%= custom.color.bgFacet %>;
@@ -47,7 +46,6 @@
 /*bgBody + text*/
 body {
     background-color: var(--bgBody);
-    background-image: var(--bgBodyUrl);
     background-position: top center;
     background-repeat: no-repeat;
     background-size: contain;
@@ -76,7 +74,6 @@ body * {
 /*bgHeader + --titleHeader*/
 header {
     background-color: var(--bgHeader);
-    background-image: var(--bgHeaderUrl);
     background-position: top center;
     background-size: cover;
 }
@@ -239,6 +236,8 @@ a.graph-link.graph-summary-link:hover {
 .MuiButton-textPrimary:hover,
 .MuiButton-textPrimary:hover svg {
     background-color: var(--bgContrast) !important;
+    color: var(--buttonHover) !important;
+    fill: var(--buttonHover) !important;
 }
 /*facettes : search in facettes*/
 .css-134m6vv-MuiInputBase-root-MuiInput-root::after {

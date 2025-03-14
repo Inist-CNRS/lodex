@@ -15,7 +15,7 @@ import {
     SCOPE_DOCUMENT,
     SCOPE_GRAPHIC,
 } from '../../../../common/scope';
-import shouldDisplayField from '../../fields/shouldDisplayField';
+import { shouldDisplayField } from '../../fields/shouldDisplayField';
 import { getPredicate } from '../../formats';
 import addSchemePrefix from '../../lib/addSchemePrefix';
 import Link from '../../lib/components/Link';
@@ -200,6 +200,7 @@ export const PropertyComponent = ({
                     <span
                         className={classnames('property_label', fieldClassName)}
                         style={styles.label(fieldStatus, isSub)}
+                        id={`field-${field.name}`}
                     >
                         {field.label}
                         {isAdmin && (
@@ -215,8 +216,8 @@ export const PropertyComponent = ({
                             </IconButton>
                         )}
                         <CreateAnnotationButton
-                            initialValue={resource[field.name]}
                             field={field}
+                            resource={resource}
                         />
                     </span>
                     <span

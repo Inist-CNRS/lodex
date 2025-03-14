@@ -20,10 +20,12 @@ services:
             - mongo
             - redis
             - workers
+            - maildev
         depends_on:
             - mongo
             - redis
             - workers
+            - maildev
         ports:
             - "3000:3000"
         volumes:
@@ -104,3 +106,9 @@ services:
                 limits:
                     cpus: '2'
                     memory: 2G
+
+    maildev:
+        image: maildev/maildev
+        ports:
+            - "1080:1080"
+            - "1025:1025"

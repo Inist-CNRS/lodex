@@ -323,6 +323,13 @@ export default compose(
                 ...currentEditedField,
                 ...fieldFilterAttributes,
                 annotable: currentEditedField?.annotable ?? true,
+                annotationFormat:
+                    currentEditedField?.annotationFormat ?? 'text',
+                annotationFormatListKind:
+                    currentEditedField?.annotationFormatListKind ?? 'single',
+                annotationFormatListSupportsNewValues:
+                    currentEditedField?.annotationFormatListSupportsNewValues ??
+                    true,
             },
         };
     }),

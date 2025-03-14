@@ -193,6 +193,19 @@ const handleRender = async (ctx, next) => {
         customTemplateVariables = ctx.configTenant.front.theme;
     }
 
+    const antiSpamFilterConfig = ctx.configTenant.antispamFilter || {};
+    const recaptchaClientKeyConfig =
+        antiSpamFilterConfig?.recaptchaClientKey?.trim();
+    const recaptchaSecretKeyConfig =
+        antiSpamFilterConfig?.recaptchaSecretKey?.trim();
+
+    const recaptchaClientKey =
+        antiSpamFilterConfig?.active &&
+        recaptchaClientKeyConfig &&
+        recaptchaSecretKeyConfig
+            ? recaptchaClientKeyConfig
+            : null;
+
     renderPublic(ctx.configTenant.theme, {
         preload: JSON.stringify(preloadedState),
         tenant: ctx.tenant,
@@ -200,8 +213,17 @@ const handleRender = async (ctx, next) => {
         themesHost: themesHost,
         istexApi: istexApiUrl,
         customTemplateVariables,
+        recaptchaClientKey,
     }).then((html) => {
-        ctx.body = html;
+        // If recaptcha is enabled for this instance we inject it just before the closing body tag
+        ctx.body = recaptchaClientKey
+            ? html.replace(
+                  '</body>',
+                  `<script>window.RECAPTCHA_CLIENT_KEY="${recaptchaClientKey}";</script>
+<script src="https://www.google.com/recaptcha/api.js?render=${recaptchaClientKey}"></script>
+</body>`,
+              )
+            : html;
     });
 };
 

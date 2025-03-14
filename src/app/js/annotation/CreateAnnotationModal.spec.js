@@ -1,19 +1,39 @@
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { setTimeout } from 'node:timers/promises';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import { setTimeout } from 'node:timers/promises';
+import { fireEvent, render, screen, waitFor } from '../../../test-utils';
 import { TestI18N } from '../i18n/I18NContext';
 import { CreateAnnotationModal } from './CreateAnnotationModal';
+
+jest.mock('./useGetFieldAnnotation', () => ({
+    useGetFieldAnnotation: jest.fn().mockReturnValue({
+        data: [],
+        error: null,
+        isLoading: false,
+    }),
+}));
+
+const queryClient = new QueryClient();
 
 function TestModal(props) {
     return (
         <TestI18N>
-            <CreateAnnotationModal
-                initialValue={null}
-                {...props}
-                anchorEl={document.createElement('div')}
-            />
+            <QueryClientProvider client={queryClient}>
+                <CreateAnnotationModal
+                    initialValue={null}
+                    resourceUri="/"
+                    field={{
+                        _id: '87a3b1c0-0b1b-4b1b-8b1b-1b1b1b1b1b1b',
+                        label: 'Field Label',
+                    }}
+                    isFieldValueAnnotable={false}
+                    openHistory={jest.fn()}
+                    {...props}
+                    anchorEl={document.createElement('div')}
+                />
+            </QueryClientProvider>
         </TestI18N>
     );
 }
@@ -22,6 +42,7 @@ TestModal.propTypes = {
     onClose: PropTypes.func.isRequired,
     onSubmit: PropTypes.func.isRequired,
     isSubmitting: PropTypes.bool.isRequired,
+    openHistory: PropTypes.func,
 };
 
 describe('CreateAnnotationModal', () => {
@@ -31,6 +52,7 @@ describe('CreateAnnotationModal', () => {
     beforeEach(() => {
         onClose.mockClear();
         onSubmit.mockClear();
+        localStorage.clear();
     });
 
     describe('actions', () => {
@@ -111,22 +133,6 @@ describe('CreateAnnotationModal', () => {
             ).toBeDisabled();
         });
 
-        it('should call onClose when closing modal', async () => {
-            render(
-                <TestModal
-                    onClose={onClose}
-                    onSubmit={onSubmit}
-                    isSubmitting={false}
-                />,
-            );
-
-            await waitFor(() => {
-                fireEvent.click(screen.getByRole('button', { name: 'cancel' }));
-            });
-
-            expect(onClose).toHaveBeenCalledTimes(1);
-        });
-
         it('should submit form values', async () => {
             render(
                 <TestModal
@@ -189,17 +195,20 @@ describe('CreateAnnotationModal', () => {
                 authorEmail: 'email@example.org',
                 target: 'title',
                 kind: 'comment',
+                resourceUri: '/',
+                reCaptchaToken: null,
             });
         });
     });
 
     describe('step orders', () => {
-        it('should start on COMMENT_STEP when initialValue is null', () => {
+        it('should start on COMMENT_STEP when isFieldValueAnnotable is false', () => {
             const wrapper = render(
                 <TestModal
                     onClose={onClose}
                     onSubmit={onSubmit}
                     isSubmitting={false}
+                    isFieldValueAnnotable={false}
                 />,
             );
 
@@ -208,6 +217,8 @@ describe('CreateAnnotationModal', () => {
                     name: 'annotation_step_comment',
                 }),
             ).toBeInTheDocument();
+
+            expect(wrapper.getByText('annotation_history')).toBeInTheDocument();
 
             expect(
                 wrapper.queryByRole('tab', {
@@ -227,13 +238,14 @@ describe('CreateAnnotationModal', () => {
                 }),
             ).not.toBeInTheDocument();
         });
-        it('should start on TARGET_STEP when initialValue is not null', () => {
+        it('should start on TARGET_STEP when isFieldValueAnnotable is true', () => {
             const wrapper = render(
                 <TestModal
                     onClose={onClose}
                     onSubmit={onSubmit}
                     isSubmitting={false}
                     initialValue="initialValue"
+                    isFieldValueAnnotable={true}
                 />,
             );
 
@@ -271,21 +283,14 @@ describe('CreateAnnotationModal', () => {
                     onSubmit={onSubmit}
                     isSubmitting={false}
                     initialValue={['firstValue', 'secondValue']}
+                    isFieldValueAnnotable={true}
                 />,
             );
 
             await waitFor(() => {
                 fireEvent.click(
                     screen.getByRole('menuitem', {
-                        name: 'annotation_comment_target_value',
-                    }),
-                );
-            });
-
-            await waitFor(() => {
-                fireEvent.click(
-                    screen.getByRole('menuitem', {
-                        name: 'annotation_remove_content',
+                        name: 'annotation_remove_content_choice',
                     }),
                 );
             });
@@ -304,7 +309,9 @@ describe('CreateAnnotationModal', () => {
         it('should enable the next button when a value is selected', async () => {
             await waitFor(() => {
                 fireEvent.mouseDown(
-                    screen.getByLabelText('annotation_choose_value *'),
+                    screen.getByLabelText(
+                        'annotation_choose_value_to_remove *',
+                    ),
                 );
             });
 
@@ -317,6 +324,66 @@ describe('CreateAnnotationModal', () => {
                 screen.getByRole('button', { name: 'next' }),
             ).not.toBeDisabled();
         });
+    });
+
+    describe('close / cancel', () => {
+        it.each([['close', 'cancel']])(
+            'should call onClose when clicking on %s button when form is not dirty',
+            async (label) => {
+                render(
+                    <TestModal
+                        onClose={onClose}
+                        onSubmit={onSubmit}
+                        isSubmitting={false}
+                        isFieldValueAnnotable={true}
+                    />,
+                );
+
+                await waitFor(() => {
+                    fireEvent.click(screen.getByLabelText(label));
+                });
+
+                expect(onClose).toHaveBeenCalledTimes(1);
+            },
+        );
+
+        it.each([['close', 'cancel']])(
+            'should call onClose after confirm when clicking on %s button when form is dirty',
+            async (label) => {
+                render(
+                    <TestModal
+                        onClose={onClose}
+                        onSubmit={onSubmit}
+                        isSubmitting={false}
+                        isFieldValueAnnotable={true}
+                    />,
+                );
+
+                await waitFor(() => {
+                    fireEvent.click(
+                        screen.getByText('annotation_annotate_field_choice'),
+                    );
+                });
+
+                await waitFor(() => {
+                    fireEvent.click(screen.getByText('back'));
+                });
+
+                await waitFor(() => {
+                    fireEvent.click(screen.getByLabelText(label));
+                });
+
+                await waitFor(() => {
+                    fireEvent.click(
+                        screen.getByRole('button', {
+                            name: 'confirm_and_close',
+                        }),
+                    );
+                });
+
+                expect(onClose).toHaveBeenCalledTimes(1);
+            },
+        );
     });
 
     describe('comment tab', () => {
@@ -347,7 +414,7 @@ describe('CreateAnnotationModal', () => {
             it('should render comments field (but no proposedValue field)', () => {
                 expect(
                     screen.getByRole('heading', {
-                        name: 'annotation_add_comment',
+                        name: 'annotation_title_annotate_field+{"field":"Field Label"}',
                     }),
                 ).toBeInTheDocument();
                 expect(
@@ -436,12 +503,10 @@ describe('CreateAnnotationModal', () => {
                         onSubmit={onSubmit}
                         isSubmitting={false}
                         initialValue="initialValue"
+                        isFieldValueAnnotable={true}
                     />,
                 );
 
-                fireEvent.click(
-                    screen.queryByText('annotation_comment_target_value'),
-                );
                 fireEvent.click(
                     screen.queryByText('annotation_correct_content'),
                 );
@@ -454,15 +519,20 @@ describe('CreateAnnotationModal', () => {
 
             it('should render required proposedValue and comment field', () => {
                 expect(
-                    screen.getByRole('heading', {
-                        name: 'annotation_add_comment',
-                    }),
+                    screen.getByText(
+                        'annotation_title_annotate_field+{"field":"Field Label"}',
+                    ),
                 ).toBeInTheDocument();
                 expect(
                     screen.getByRole('textbox', {
                         name: 'annotation.proposedValue *',
                     }),
                 ).toBeInTheDocument();
+                expect(
+                    screen.getByRole('textbox', {
+                        name: 'annotation.proposedValue *',
+                    }),
+                ).toHaveValue('initialValue');
                 expect(
                     screen.getByRole('textbox', {
                         name: 'annotation.comment *',
@@ -477,6 +547,17 @@ describe('CreateAnnotationModal', () => {
                     }),
                     {
                         target: { value: 'comment' },
+                    },
+                );
+                expect(
+                    screen.getByRole('button', { name: 'next' }),
+                ).not.toBeDisabled();
+                fireEvent.change(
+                    screen.getByRole('textbox', {
+                        name: 'annotation.proposedValue *',
+                    }),
+                    {
+                        target: { value: '' },
                     },
                 );
                 expect(
@@ -504,12 +585,10 @@ describe('CreateAnnotationModal', () => {
                         onSubmit={onSubmit}
                         isSubmitting={false}
                         initialValue="initialValue"
+                        isFieldValueAnnotable={true}
                     />,
                 );
 
-                fireEvent.click(
-                    screen.queryByText('annotation_comment_target_value'),
-                );
                 fireEvent.click(screen.queryByText('annotation_add_content'));
                 expect(
                     screen.queryByRole('tab', {
@@ -520,9 +599,9 @@ describe('CreateAnnotationModal', () => {
 
             it('should render required proposedValue and comment field', () => {
                 expect(
-                    screen.getByRole('heading', {
-                        name: 'annotation_add_comment',
-                    }),
+                    screen.getByText(
+                        'annotation_title_annotate_field+{"field":"Field Label"}',
+                    ),
                 ).toBeInTheDocument();
                 expect(
                     screen.getByRole('textbox', {
@@ -609,7 +688,7 @@ describe('CreateAnnotationModal', () => {
             it('should render authorName field', () => {
                 expect(
                     screen.getByRole('heading', {
-                        name: 'annotation_add_comment',
+                        name: 'annotation_title_annotate_field+{"field":"Field Label"}',
                     }),
                 ).toBeInTheDocument();
                 expect(
@@ -689,7 +768,7 @@ describe('CreateAnnotationModal', () => {
             it('should render authorEmail field', () => {
                 expect(
                     screen.getByRole('heading', {
-                        name: 'annotation_add_comment',
+                        name: 'annotation_title_annotate_field+{"field":"Field Label"}',
                     }),
                 ).toBeInTheDocument();
 
@@ -777,19 +856,20 @@ describe('CreateAnnotationModal', () => {
         });
     });
 
-    it('should allow to create a comment annotation on the field when there is no initial value', async () => {
-        render(
+    it('should allow to create a comment annotation on the field when field value is not editable', async () => {
+        const wrapper = render(
             <TestModal
                 onClose={onClose}
                 onSubmit={onSubmit}
                 isSubmitting={false}
-                initialValue={null}
+                initialValue="initialValue"
+                isFieldValueAnnotable={false}
             />,
         );
 
         await waitFor(() => {
             fireEvent.change(
-                screen.getByRole('textbox', {
+                wrapper.getByRole('textbox', {
                     name: 'annotation.comment *',
                 }),
                 {
@@ -799,12 +879,12 @@ describe('CreateAnnotationModal', () => {
         });
 
         await waitFor(() => {
-            fireEvent.click(screen.getByRole('button', { name: 'next' }));
+            fireEvent.click(wrapper.getByRole('button', { name: 'next' }));
         });
 
         await waitFor(() => {
             fireEvent.change(
-                screen.getByRole('textbox', {
+                wrapper.getByRole('textbox', {
                     name: 'annotation.authorName *',
                 }),
                 {
@@ -817,7 +897,7 @@ describe('CreateAnnotationModal', () => {
         await waitFor(() => setTimeout(500));
 
         await waitFor(() => {
-            fireEvent.click(screen.getByRole('button', { name: 'validate' }));
+            fireEvent.click(wrapper.getByRole('button', { name: 'validate' }));
         });
 
         expect(onSubmit).toHaveBeenCalledTimes(1);
@@ -826,6 +906,8 @@ describe('CreateAnnotationModal', () => {
             comment: 'test',
             kind: 'comment',
             target: 'title',
+            resourceUri: '/',
+            reCaptchaToken: null,
         });
     });
 
@@ -836,12 +918,13 @@ describe('CreateAnnotationModal', () => {
                 onSubmit={onSubmit}
                 isSubmitting={false}
                 initialValue="initialValue"
+                isFieldValueAnnotable={true}
             />,
         );
 
         fireEvent.click(
             screen.getByRole('menuitem', {
-                name: 'annotation_comment_target_title',
+                name: 'annotation_annotate_field_choice',
             }),
         );
 
@@ -885,6 +968,8 @@ describe('CreateAnnotationModal', () => {
             initialValue: null,
             target: 'title',
             kind: 'comment',
+            resourceUri: '/',
+            reCaptchaToken: null,
         });
     });
 
@@ -895,19 +980,14 @@ describe('CreateAnnotationModal', () => {
                 onSubmit={onSubmit}
                 isSubmitting={false}
                 initialValue="initialValue"
+                isFieldValueAnnotable={true}
             />,
-        );
-
-        fireEvent.click(
-            screen.getByRole('menuitem', {
-                name: 'annotation_comment_target_value',
-            }),
         );
 
         await waitFor(() => {
             fireEvent.click(
                 screen.getByRole('menuitem', {
-                    name: 'annotation_remove_content',
+                    name: 'annotation_remove_content_choice',
                 }),
             );
         });
@@ -952,6 +1032,72 @@ describe('CreateAnnotationModal', () => {
             initialValue: 'initialValue',
             target: 'value',
             kind: 'removal',
+            resourceUri: '/',
+            reCaptchaToken: null,
+        });
+    });
+
+    it('should allow to create a removal annotation on the value when initial value is a number', async () => {
+        render(
+            <TestModal
+                onClose={onClose}
+                onSubmit={onSubmit}
+                isSubmitting={false}
+                initialValue={42}
+                isFieldValueAnnotable={true}
+            />,
+        );
+
+        await waitFor(() => {
+            fireEvent.click(
+                screen.getByRole('menuitem', {
+                    name: 'annotation_remove_content_choice',
+                }),
+            );
+        });
+
+        await waitFor(() => {
+            fireEvent.change(
+                screen.getByRole('textbox', {
+                    name: 'annotation.comment *',
+                }),
+                {
+                    target: { value: 'test' },
+                },
+            );
+        });
+
+        await waitFor(() => {
+            fireEvent.click(screen.getByRole('button', { name: 'next' }));
+        });
+
+        await waitFor(() => {
+            fireEvent.change(
+                screen.getByRole('textbox', {
+                    name: 'annotation.authorName *',
+                }),
+                {
+                    target: { value: 'author' },
+                },
+            );
+        });
+
+        // Wait for the submit button to be enabled
+        await waitFor(() => setTimeout(500));
+
+        await waitFor(() => {
+            fireEvent.click(screen.getByRole('button', { name: 'validate' }));
+        });
+
+        expect(onSubmit).toHaveBeenCalledTimes(1);
+        expect(onSubmit).toHaveBeenCalledWith({
+            authorName: 'author',
+            comment: 'test',
+            initialValue: '42',
+            target: 'value',
+            kind: 'removal',
+            resourceUri: '/',
+            reCaptchaToken: null,
         });
     });
 
@@ -962,26 +1108,21 @@ describe('CreateAnnotationModal', () => {
                 onSubmit={onSubmit}
                 isSubmitting={false}
                 initialValue={['firstValue', 'secondValue']}
+                isFieldValueAnnotable={true}
             />,
-        );
-
-        fireEvent.click(
-            screen.getByRole('menuitem', {
-                name: 'annotation_comment_target_value',
-            }),
         );
 
         await waitFor(() => {
             fireEvent.click(
                 screen.getByRole('menuitem', {
-                    name: 'annotation_remove_content',
+                    name: 'annotation_remove_content_choice',
                 }),
             );
         });
 
         await waitFor(() => {
             fireEvent.mouseDown(
-                screen.getByLabelText('annotation_choose_value *'),
+                screen.getByLabelText('annotation_choose_value_to_remove *'),
             );
         });
 
@@ -1035,6 +1176,86 @@ describe('CreateAnnotationModal', () => {
             initialValue: 'secondValue',
             target: 'value',
             kind: 'removal',
+            resourceUri: '/',
+            reCaptchaToken: null,
+        });
+    });
+
+    it('should allow to create a removal annotation on a selected value when initial value is an array of number', async () => {
+        render(
+            <TestModal
+                onClose={onClose}
+                onSubmit={onSubmit}
+                isSubmitting={false}
+                initialValue={[1, 2, 3]}
+                isFieldValueAnnotable={true}
+            />,
+        );
+
+        await waitFor(() => {
+            fireEvent.click(
+                screen.getByRole('menuitem', {
+                    name: 'annotation_remove_content_choice',
+                }),
+            );
+        });
+
+        await waitFor(() => {
+            fireEvent.mouseDown(
+                screen.getByLabelText('annotation_choose_value_to_remove *'),
+            );
+        });
+
+        await waitFor(() => {
+            fireEvent.click(screen.getByRole('option', { name: '2' }));
+        });
+
+        await waitFor(() => {
+            fireEvent.click(screen.getByRole('button', { name: 'next' }));
+        });
+
+        await waitFor(() => {
+            fireEvent.change(
+                screen.getByRole('textbox', {
+                    name: 'annotation.comment *',
+                }),
+                {
+                    target: { value: 'test' },
+                },
+            );
+        });
+
+        await waitFor(() => {
+            fireEvent.click(screen.getByRole('button', { name: 'next' }));
+        });
+
+        await waitFor(() => {
+            fireEvent.change(
+                screen.getByRole('textbox', {
+                    name: 'annotation.authorName *',
+                }),
+                {
+                    target: { value: 'author' },
+                },
+            );
+        });
+
+        // Wait for the submit button to be enabled
+        await waitFor(() => setTimeout(500));
+
+        await waitFor(() => {
+            fireEvent.click(screen.getByRole('button', { name: 'validate' }));
+        });
+
+        expect(onSubmit).toHaveBeenCalledTimes(1);
+        expect(onSubmit).toHaveBeenCalledWith({
+            authorName: 'author',
+            comment: 'test',
+            initialValue: '2',
+            target: 'value',
+            kind: 'removal',
+            resourceUri: '/',
+            reCaptchaToken: null,
         });
     });
 
@@ -1045,13 +1266,8 @@ describe('CreateAnnotationModal', () => {
                 onSubmit={onSubmit}
                 isSubmitting={false}
                 initialValue="initialValue"
+                isFieldValueAnnotable={true}
             />,
-        );
-
-        fireEvent.click(
-            screen.getByRole('menuitem', {
-                name: 'annotation_comment_target_value',
-            }),
         );
 
         await waitFor(() => {
@@ -1112,8 +1328,86 @@ describe('CreateAnnotationModal', () => {
             comment: 'test',
             initialValue: 'initialValue',
             proposedValue: 'proposedValue',
+            resourceUri: '/',
+            reCaptchaToken: null,
             target: 'value',
-            kind: 'correct',
+            kind: 'correction',
+        });
+    });
+
+    it('should allow to create a correct annotation on the value when initial value is a number', async () => {
+        render(
+            <TestModal
+                onClose={onClose}
+                onSubmit={onSubmit}
+                isSubmitting={false}
+                initialValue={42}
+                isFieldValueAnnotable={true}
+            />,
+        );
+
+        await waitFor(() => {
+            fireEvent.click(
+                screen.getByRole('menuitem', {
+                    name: 'annotation_correct_content',
+                }),
+            );
+        });
+
+        await waitFor(() => {
+            fireEvent.change(
+                screen.getByRole('textbox', {
+                    name: 'annotation.comment *',
+                }),
+                {
+                    target: { value: 'test' },
+                },
+            );
+        });
+
+        await waitFor(() => {
+            fireEvent.change(
+                screen.getByRole('textbox', {
+                    name: 'annotation.proposedValue *',
+                }),
+                {
+                    target: { value: 'proposedValue' },
+                },
+            );
+        });
+
+        await waitFor(() => {
+            fireEvent.click(screen.getByRole('button', { name: 'next' }));
+        });
+
+        await waitFor(() => {
+            fireEvent.change(
+                screen.getByRole('textbox', {
+                    name: 'annotation.authorName *',
+                }),
+                {
+                    target: { value: 'author' },
+                },
+            );
+        });
+
+        // Wait for the submit button to be enabled
+        await waitFor(() => setTimeout(500));
+
+        await waitFor(() => {
+            fireEvent.click(screen.getByRole('button', { name: 'validate' }));
+        });
+
+        expect(onSubmit).toHaveBeenCalledTimes(1);
+        expect(onSubmit).toHaveBeenCalledWith({
+            authorName: 'author',
+            comment: 'test',
+            initialValue: '42',
+            proposedValue: 'proposedValue',
+            resourceUri: '/',
+            reCaptchaToken: null,
+            target: 'value',
+            kind: 'correction',
         });
     });
 
@@ -1124,13 +1418,8 @@ describe('CreateAnnotationModal', () => {
                 onSubmit={onSubmit}
                 isSubmitting={false}
                 initialValue={['firstValue', 'secondValue']}
+                isFieldValueAnnotable={true}
             />,
-        );
-
-        fireEvent.click(
-            screen.getByRole('menuitem', {
-                name: 'annotation_comment_target_value',
-            }),
         );
 
         await waitFor(() => {
@@ -1143,7 +1432,7 @@ describe('CreateAnnotationModal', () => {
 
         await waitFor(() => {
             fireEvent.mouseDown(
-                screen.getByLabelText('annotation_choose_value *'),
+                screen.getByLabelText('annotation_choose_value_to_correct *'),
             );
         });
 
@@ -1207,8 +1496,100 @@ describe('CreateAnnotationModal', () => {
             comment: 'test',
             initialValue: 'secondValue',
             proposedValue: 'proposedValue',
+            resourceUri: '/',
+            reCaptchaToken: null,
             target: 'value',
-            kind: 'correct',
+            kind: 'correction',
+        });
+    });
+
+    it('should allow to create a correct annotation on a selected value when initial value is an array of number', async () => {
+        render(
+            <TestModal
+                onClose={onClose}
+                onSubmit={onSubmit}
+                isSubmitting={false}
+                initialValue={[1, 2, 3]}
+                isFieldValueAnnotable={true}
+            />,
+        );
+
+        await waitFor(() => {
+            fireEvent.click(
+                screen.getByRole('menuitem', {
+                    name: 'annotation_correct_content',
+                }),
+            );
+        });
+
+        await waitFor(() => {
+            fireEvent.mouseDown(
+                screen.getByLabelText('annotation_choose_value_to_correct *'),
+            );
+        });
+
+        await waitFor(() => {
+            fireEvent.click(screen.getByRole('option', { name: '2' }));
+        });
+
+        await waitFor(() => {
+            fireEvent.click(screen.getByRole('button', { name: 'next' }));
+        });
+
+        await waitFor(() => {
+            fireEvent.change(
+                screen.getByRole('textbox', {
+                    name: 'annotation.proposedValue *',
+                }),
+                {
+                    target: { value: 'proposedValue' },
+                },
+            );
+        });
+
+        await waitFor(() => {
+            fireEvent.change(
+                screen.getByRole('textbox', {
+                    name: 'annotation.comment *',
+                }),
+                {
+                    target: { value: 'test' },
+                },
+            );
+        });
+
+        await waitFor(() => {
+            fireEvent.click(screen.getByRole('button', { name: 'next' }));
+        });
+
+        await waitFor(() => {
+            fireEvent.change(
+                screen.getByRole('textbox', {
+                    name: 'annotation.authorName *',
+                }),
+                {
+                    target: { value: 'author' },
+                },
+            );
+        });
+
+        // Wait for the submit button to be enabled
+        await waitFor(() => setTimeout(500));
+
+        await waitFor(() => {
+            fireEvent.click(screen.getByRole('button', { name: 'validate' }));
+        });
+
+        expect(onSubmit).toHaveBeenCalledTimes(1);
+        expect(onSubmit).toHaveBeenCalledWith({
+            authorName: 'author',
+            comment: 'test',
+            initialValue: '2',
+            proposedValue: 'proposedValue',
+            resourceUri: '/',
+            reCaptchaToken: null,
+            target: 'value',
+            kind: 'correction',
         });
     });
 
@@ -1219,13 +1600,8 @@ describe('CreateAnnotationModal', () => {
                 onSubmit={onSubmit}
                 isSubmitting={false}
                 initialValue="initialValue"
+                isFieldValueAnnotable={true}
             />,
-        );
-
-        fireEvent.click(
-            screen.getByRole('menuitem', {
-                name: 'annotation_comment_target_value',
-            }),
         );
 
         await waitFor(() => {
@@ -1286,6 +1662,83 @@ describe('CreateAnnotationModal', () => {
             comment: 'test',
             initialValue: null,
             proposedValue: 'proposedValue',
+            resourceUri: '/',
+            reCaptchaToken: null,
+            target: 'value',
+            kind: 'addition',
+        });
+    });
+    it('should allow to create an add annotation when initial value is a number', async () => {
+        render(
+            <TestModal
+                onClose={onClose}
+                onSubmit={onSubmit}
+                isSubmitting={false}
+                initialValue={42}
+                isFieldValueAnnotable={true}
+            />,
+        );
+
+        await waitFor(() => {
+            fireEvent.click(
+                screen.getByRole('menuitem', {
+                    name: 'annotation_add_content',
+                }),
+            );
+        });
+
+        await waitFor(() => {
+            fireEvent.change(
+                screen.getByRole('textbox', {
+                    name: 'annotation.comment *',
+                }),
+                {
+                    target: { value: 'test' },
+                },
+            );
+        });
+
+        await waitFor(() => {
+            fireEvent.change(
+                screen.getByRole('textbox', {
+                    name: 'annotation.proposedValue *',
+                }),
+                {
+                    target: { value: 'proposedValue' },
+                },
+            );
+        });
+
+        await waitFor(() => {
+            fireEvent.click(screen.getByRole('button', { name: 'next' }));
+        });
+
+        await waitFor(() => {
+            fireEvent.change(
+                screen.getByRole('textbox', {
+                    name: 'annotation.authorName *',
+                }),
+                {
+                    target: { value: 'author' },
+                },
+            );
+        });
+
+        // Wait for the submit button to be enabled
+        await waitFor(() => setTimeout(500));
+
+        await waitFor(() => {
+            fireEvent.click(screen.getByRole('button', { name: 'validate' }));
+        });
+
+        expect(onSubmit).toHaveBeenCalledTimes(1);
+        expect(onSubmit).toHaveBeenCalledWith({
+            authorName: 'author',
+            comment: 'test',
+            initialValue: null,
+            proposedValue: 'proposedValue',
+            resourceUri: '/',
+            reCaptchaToken: null,
             target: 'value',
             kind: 'addition',
         });
@@ -1297,13 +1750,8 @@ describe('CreateAnnotationModal', () => {
                 onSubmit={onSubmit}
                 isSubmitting={false}
                 initialValue={['firstValue', 'secondValue']}
+                isFieldValueAnnotable={true}
             />,
-        );
-
-        fireEvent.click(
-            screen.getByRole('menuitem', {
-                name: 'annotation_comment_target_value',
-            }),
         );
 
         await waitFor(() => {
@@ -1368,6 +1816,87 @@ describe('CreateAnnotationModal', () => {
             comment: 'test',
             initialValue: null,
             proposedValue: 'proposedValue',
+            resourceUri: '/',
+            reCaptchaToken: null,
+            target: 'value',
+            kind: 'addition',
+        });
+    });
+    it('should allow to create a add annotation when initial value is an array of number', async () => {
+        render(
+            <TestModal
+                onClose={onClose}
+                onSubmit={onSubmit}
+                isSubmitting={false}
+                initialValue={[1, 2, 3]}
+                isFieldValueAnnotable={true}
+            />,
+        );
+
+        await waitFor(() => {
+            fireEvent.click(
+                screen.getByRole('menuitem', {
+                    name: 'annotation_add_content',
+                }),
+            );
+        });
+
+        await waitFor(() => {
+            fireEvent.click(screen.getByRole('button', { name: 'next' }));
+        });
+
+        await waitFor(() => {
+            fireEvent.change(
+                screen.getByRole('textbox', {
+                    name: 'annotation.proposedValue *',
+                }),
+                {
+                    target: { value: 'proposedValue' },
+                },
+            );
+        });
+
+        await waitFor(() => {
+            fireEvent.change(
+                screen.getByRole('textbox', {
+                    name: 'annotation.comment *',
+                }),
+                {
+                    target: { value: 'test' },
+                },
+            );
+        });
+
+        await waitFor(() => {
+            fireEvent.click(screen.getByRole('button', { name: 'next' }));
+        });
+
+        await waitFor(() => {
+            fireEvent.change(
+                screen.getByRole('textbox', {
+                    name: 'annotation.authorName *',
+                }),
+                {
+                    target: { value: 'author' },
+                },
+            );
+        });
+
+        // Wait for the submit button to be enabled
+        await waitFor(() => setTimeout(500));
+
+        await waitFor(() => {
+            fireEvent.click(screen.getByRole('button', { name: 'validate' }));
+        });
+
+        expect(onSubmit).toHaveBeenCalledTimes(1);
+        expect(onSubmit).toHaveBeenCalledWith({
+            authorName: 'author',
+            comment: 'test',
+            initialValue: null,
+            proposedValue: 'proposedValue',
+            resourceUri: '/',
+            reCaptchaToken: null,
             target: 'value',
             kind: 'addition',
         });

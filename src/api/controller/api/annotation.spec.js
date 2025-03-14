@@ -1,18 +1,33 @@
 import { default as _ } from 'lodash';
 import { MongoClient } from 'mongodb';
 import { text } from 'stream/consumers';
+import {
+    ADMIN_ROLE,
+    CONTRIBUTOR_ROLE,
+    USER_ROLE,
+} from '../../../common/tools/tenantTools';
 import createAnnotationModel from '../../models/annotation';
+import configTenant from '../../models/configTenant';
 import createFieldModel from '../../models/field';
 import createPublishedDatasetModel from '../../models/publishedDataset';
+import { sendMail } from '../../services/mail/mailer';
 import {
+    canAnnotateRoute,
     createAnnotation,
     deleteAnnotation,
-    deleteManyAnnotation,
+    deleteManyAnnotationByFilter,
+    deleteManyAnnotationById,
     exportAnnotations,
     getAnnotation,
     getAnnotations,
+    getFieldAnnotations,
     updateAnnotation,
 } from './annotation';
+import { verifyReCaptchaToken } from './recaptcha';
+
+jest.mock('../../services/mail/mailer', () => ({
+    sendMail: jest.fn(),
+}));
 
 const ANNOTATIONS = [
     {
@@ -66,10 +81,15 @@ const ANNOTATIONS = [
     },
 ];
 
+jest.mock('./recaptcha.js', () => ({
+    verifyReCaptchaToken: jest.fn(),
+}));
+
 describe('annotation', () => {
     const connectionStringURI = process.env.MONGO_URL;
     let annotationModel;
     let publishedDatasetModel;
+    let configTenantModel;
     let fieldModel;
     let connection;
     let db;
@@ -82,12 +102,14 @@ describe('annotation', () => {
         annotationModel = await createAnnotationModel(db);
         fieldModel = await createFieldModel(db);
         publishedDatasetModel = await createPublishedDatasetModel(db);
+        configTenantModel = await configTenant(db);
     });
 
     beforeEach(async () => {
         await db.collection('publishedDataset').deleteMany({});
         await db.collection('field').deleteMany({});
         await db.collection('annotation').deleteMany({});
+        jest.clearAllMocks();
     });
 
     afterAll(async () => {
@@ -96,7 +118,20 @@ describe('annotation', () => {
     });
 
     describe('createAnnotation', () => {
+        beforeEach(() => {
+            sendMail.mockClear();
+        });
+
         it('should create an annotation', async () => {
+            jest.mocked(verifyReCaptchaToken).mockResolvedValue({
+                success: true,
+                score: 1.0,
+            });
+            await configTenantModel.create({
+                contributorAuth: {
+                    active: false,
+                },
+            });
             const annotation = {
                 resourceUri: 'uid:/a4f7a51f-7109-481e-86cc-0adb3a26faa6',
                 fieldId: 'Gb4a',
@@ -113,6 +148,7 @@ describe('annotation', () => {
                 annotation: annotationModel,
                 publishedDataset: publishedDatasetModel,
                 field: fieldModel,
+                configTenantCollection: configTenantModel,
             };
 
             await createAnnotation(ctx);
@@ -131,9 +167,265 @@ describe('annotation', () => {
             expect(await annotationModel.findLimitFromSkip()).toStrictEqual([
                 ctx.body.data,
             ]);
+
+            expect(verifyReCaptchaToken).toHaveBeenCalledWith(
+                ctx,
+                expect.objectContaining(annotation),
+            );
+            expect(sendMail).not.toHaveBeenCalled();
         });
 
+        it('should create an annotation and send a french notification when when a notificationEmail is set and locale is fr', async () => {
+            await configTenantModel.create({
+                contributorAuth: {
+                    active: false,
+                },
+                notificationEmail: 'admin@inist.fr',
+            });
+            const annotation = {
+                resourceUri: 'uid:/a4f7a51f-7109-481e-86cc-0adb3a26faa6',
+                fieldId: 'Gb4a',
+                kind: 'comment',
+                comment: 'Hello world',
+                authorName: 'John DOE',
+            };
+
+            const ctx = {
+                request: {
+                    body: annotation,
+                    query: {
+                        locale: 'en',
+                    },
+                    header: {
+                        origin: 'http://localhost:3000',
+                    },
+                },
+                tenant: 'instance-name',
+                response: {},
+                annotation: annotationModel,
+                publishedDataset: publishedDatasetModel,
+                field: fieldModel,
+                configTenantCollection: configTenantModel,
+            };
+
+            await createAnnotation(ctx);
+
+            expect(ctx.response.status).toBe(200);
+            expect(ctx.body).toMatchObject({
+                total: 1,
+                data: {
+                    ...annotation,
+                    status: 'to_review',
+                    internalComment: null,
+                    authorEmail: null,
+                },
+            });
+
+            expect(await annotationModel.findLimitFromSkip()).toStrictEqual([
+                ctx.body.data,
+            ]);
+
+            expect(sendMail).toHaveBeenCalledWith({
+                subject: 'An annotation has been added on « instance-name »',
+                to: 'admin@inist.fr',
+                text: `An annotation has been added on « instance-name »
+Type : Comment
+Contributor: John DOE
+Contributor comment: Hello world
+See annotation: http://localhost:3000/instance/instance-name/admin#/annotations`,
+            });
+        });
+
+        it('should create an annotation and send a notification when when a notificationEmail is set', async () => {
+            await configTenantModel.create({
+                contributorAuth: {
+                    active: false,
+                },
+                notificationEmail: 'admin@inist.fr',
+            });
+            const annotation = {
+                resourceUri: 'uid:/a4f7a51f-7109-481e-86cc-0adb3a26faa6',
+                fieldId: 'Gb4a',
+                kind: 'comment',
+                comment: 'Hello world',
+                authorName: 'John DOE',
+            };
+
+            const ctx = {
+                request: {
+                    body: annotation,
+                    query: {
+                        locale: 'fr',
+                    },
+                    header: {
+                        origin: 'http://localhost:3000',
+                    },
+                },
+                tenant: 'instance-name',
+                response: {},
+                annotation: annotationModel,
+                publishedDataset: publishedDatasetModel,
+                field: fieldModel,
+                configTenantCollection: configTenantModel,
+            };
+
+            await createAnnotation(ctx);
+
+            expect(ctx.response.status).toBe(200);
+            expect(ctx.body).toMatchObject({
+                total: 1,
+                data: {
+                    ...annotation,
+                    status: 'to_review',
+                    internalComment: null,
+                    authorEmail: null,
+                },
+            });
+
+            expect(await annotationModel.findLimitFromSkip()).toStrictEqual([
+                ctx.body.data,
+            ]);
+
+            expect(sendMail).toHaveBeenCalledWith({
+                subject: 'Une annotation a été ajoutée sur « instance-name »',
+                to: 'admin@inist.fr',
+                text: `Une annotation a été ajoutée sur « instance-name »
+Type : Commentaire
+Contributeur : John DOE
+Commentaire du contributeur : Hello world
+Voir l'annotation : http://localhost:3000/instance/instance-name/admin#/annotations`,
+            });
+        });
+
+        it('should forbid to create an annotation if contributorAuth is active and user role is not contributor nor admin', async () => {
+            jest.mocked(verifyReCaptchaToken).mockResolvedValue({
+                success: true,
+                score: 1.0,
+            });
+            await configTenantModel.create({
+                contributorAuth: {
+                    active: true,
+                },
+            });
+            const annotation = {
+                resourceUri: 'uid:/a4f7a51f-7109-481e-86cc-0adb3a26faa6',
+                fieldId: 'Gb4a',
+                kind: 'comment',
+                comment: 'Hello world',
+                authorName: 'John DOE',
+            };
+
+            const ctx = {
+                request: {
+                    body: annotation,
+                },
+                response: {},
+                annotation: annotationModel,
+                publishedDataset: publishedDatasetModel,
+                field: fieldModel,
+                configTenantCollection: configTenantModel,
+            };
+
+            await createAnnotation(ctx);
+
+            expect(ctx.response.status).toBe(403);
+
+            expect(await annotationModel.findLimitFromSkip()).toStrictEqual([]);
+        });
+        it('should create an annotation if contributorAuth is active and user role is contributor', async () => {
+            jest.mocked(verifyReCaptchaToken).mockResolvedValue({
+                success: true,
+                score: 1.0,
+            });
+            await configTenantModel.create({
+                contributorAuth: {
+                    active: true,
+                },
+            });
+            const annotation = {
+                resourceUri: 'uid:/a4f7a51f-7109-481e-86cc-0adb3a26faa6',
+                fieldId: 'Gb4a',
+                kind: 'comment',
+                comment: 'Hello world',
+                authorName: 'John DOE',
+            };
+
+            const ctx = {
+                request: {
+                    body: annotation,
+                },
+                state: {
+                    header: {
+                        role: CONTRIBUTOR_ROLE,
+                    },
+                },
+                response: {},
+                annotation: annotationModel,
+                publishedDataset: publishedDatasetModel,
+                field: fieldModel,
+                configTenantCollection: configTenantModel,
+            };
+
+            await createAnnotation(ctx);
+
+            expect(ctx.response.status).toBe(200);
+
+            expect(await annotationModel.findLimitFromSkip()).toStrictEqual([
+                ctx.body.data,
+            ]);
+        });
+        it('should create an annotation if contributorAuth is active and user role is admin', async () => {
+            jest.mocked(verifyReCaptchaToken).mockResolvedValue({
+                success: true,
+                score: 1.0,
+            });
+            await configTenantModel.create({
+                contributorAuth: {
+                    active: true,
+                },
+            });
+            const annotation = {
+                resourceUri: 'uid:/a4f7a51f-7109-481e-86cc-0adb3a26faa6',
+                fieldId: 'Gb4a',
+                kind: 'comment',
+                comment: 'Hello world',
+                authorName: 'John DOE',
+            };
+
+            const ctx = {
+                request: {
+                    body: annotation,
+                },
+                state: {
+                    header: {
+                        role: 'admin',
+                    },
+                },
+                response: {},
+                annotation: annotationModel,
+                publishedDataset: publishedDatasetModel,
+                field: fieldModel,
+                configTenantCollection: configTenantModel,
+            };
+
+            await createAnnotation(ctx);
+
+            expect(ctx.response.status).toBe(200);
+
+            expect(await annotationModel.findLimitFromSkip()).toStrictEqual([
+                ctx.body.data,
+            ]);
+        });
         it('should return an error if annotation is not valid', async () => {
+            jest.mocked(verifyReCaptchaToken).mockResolvedValue({
+                success: true,
+                score: 1.0,
+            });
+            await configTenantModel.create({
+                contributorAuth: {
+                    active: false,
+                },
+            });
             const annotation = {
                 resourceUri: 'uid:/a4f7a51f-7109-481e-86cc-0adb3a26faa6',
                 comment: '',
@@ -146,6 +438,7 @@ describe('annotation', () => {
                 response: {},
                 annotation: annotationModel,
                 publishedDataset: publishedDatasetModel,
+                configTenantCollection: configTenantModel,
                 field: fieldModel,
             };
 
@@ -167,6 +460,63 @@ describe('annotation', () => {
             });
             expect(await annotationModel.findLimitFromSkip()).toStrictEqual([]);
         });
+        it.each([
+            [false, 1.0],
+            [true, 0.49],
+        ])(
+            'should return a 400 error if recaptcha token validation fails when success is %s and score is %s',
+            async (success, score) => {
+                jest.mocked(verifyReCaptchaToken).mockResolvedValue({
+                    success,
+                    score,
+                });
+
+                await configTenantModel.create({
+                    contributorAuth: {
+                        active: false,
+                    },
+                });
+                const annotation = {
+                    resourceUri: 'uid:/a4f7a51f-7109-481e-86cc-0adb3a26faa6',
+                    fieldId: 'Gb4a',
+                    kind: 'comment',
+                    comment: 'Hello world',
+                    authorName: 'John DOE',
+                };
+
+                const ctx = {
+                    request: {
+                        body: annotation,
+                    },
+                    response: {},
+                    annotation: annotationModel,
+                    publishedDataset: publishedDatasetModel,
+                    field: fieldModel,
+                    configTenantCollection: configTenantModel,
+                };
+
+                await createAnnotation(ctx);
+
+                expect(ctx.response.status).toBe(400);
+                expect(ctx.body).toMatchObject({
+                    total: 0,
+                    errors: [
+                        {
+                            message: 'error_recaptcha_verification_failed',
+                        },
+                    ],
+                });
+
+                expect(await annotationModel.findLimitFromSkip()).toStrictEqual(
+                    [],
+                );
+
+                expect(verifyReCaptchaToken).toHaveBeenCalledWith(
+                    ctx,
+                    expect.objectContaining(annotation),
+                );
+            },
+        );
     });
 
     describe('getAnnotations', () => {
@@ -347,7 +697,7 @@ describe('annotation', () => {
             });
         });
 
-        it('should allow to filter by resourceUri', async () => {
+        it('should allow to filter by resourceUri using contains', async () => {
             const ctx = {
                 request: {
                     query: {
@@ -355,6 +705,43 @@ describe('annotation', () => {
                         perPage: 2,
                         filterBy: 'resourceUri',
                         filterOperator: 'contains',
+                        filterValue: '85502a97e5ac',
+                    },
+                },
+                response: {},
+                annotation: annotationModel,
+                publishedDataset: publishedDatasetModel,
+                field: fieldModel,
+            };
+
+            await getAnnotations(ctx);
+
+            expect(ctx.response.status).toBe(200);
+
+            expect(ctx.body).toStrictEqual({
+                total: 1,
+                fullTotal: 1,
+                data: [
+                    {
+                        ...annotationList[0],
+                        resource: {
+                            uri: annotationList[0].resourceUri,
+                            title: 'Developer resource',
+                        },
+                        field: field1,
+                    },
+                ],
+            });
+        });
+
+        it('should allow to filter by resourceUri using equals', async () => {
+            const ctx = {
+                request: {
+                    query: {
+                        page: 0,
+                        perPage: 2,
+                        filterBy: 'resourceUri',
+                        filterOperator: 'equals',
                         filterValue: ANNOTATIONS[0].resourceUri,
                     },
                 },
@@ -1436,6 +1823,7 @@ describe('annotation', () => {
                     body: {
                         status: 'validated',
                         internalComment: 'All done',
+                        adminComment: 'Your comment has been accepted',
                         administrator: 'The Tester',
                     },
                 },
@@ -1454,6 +1842,7 @@ describe('annotation', () => {
                         ...annotation,
                         status: 'validated',
                         internalComment: 'All done',
+                        adminComment: 'Your comment has been accepted',
                         administrator: 'The Tester',
                         updatedAt: expect.any(Date),
                         field: {
@@ -1474,6 +1863,7 @@ describe('annotation', () => {
                     ...annotation,
                     status: 'validated',
                     internalComment: 'All done',
+                    adminComment: 'Your comment has been accepted',
                     administrator: 'The Tester',
                     updatedAt: expect.any(Date),
                 },
@@ -1523,16 +1913,9 @@ describe('annotation', () => {
                         {
                             code: 'invalid_type',
                             expected:
-                                "'to_review' | 'ongoing' | 'validated' | 'rejected'",
+                                "'to_review' | 'ongoing' | 'validated' | 'rejected' | 'parking'",
                             message: 'Required',
                             path: ['status'],
-                            received: 'undefined',
-                        },
-                        {
-                            code: 'invalid_type',
-                            expected: 'string',
-                            message: 'error_required',
-                            path: ['internalComment'],
                             received: 'undefined',
                         },
                     ],
@@ -1566,7 +1949,7 @@ describe('annotation', () => {
                 field: fieldModel,
             };
 
-            await deleteManyAnnotation(ctx);
+            await deleteManyAnnotationById(ctx);
 
             expect(ctx.response).toStrictEqual({
                 status: 200,
@@ -1620,7 +2003,7 @@ describe('annotation', () => {
                     field: fieldModel,
                 };
 
-                await deleteManyAnnotation(ctx);
+                await deleteManyAnnotationById(ctx);
 
                 expect(ctx.response).toStrictEqual({
                     status: 400,
@@ -1633,11 +2016,105 @@ describe('annotation', () => {
         );
     });
 
+    describe('DELETE /annotations/batch-delete-filter', () => {
+        beforeEach(async () => {
+            await Promise.all([
+                annotationModel.create({
+                    comment: 'target annotation',
+                }),
+                annotationModel.create({
+                    comment: 'another annotation',
+                }),
+            ]);
+        });
+
+        it('should succeed with a 200 with deleted annotations', async () => {
+            const ctx = {
+                request: {
+                    query: {
+                        filterBy: 'comment',
+                        filterOperator: 'contains',
+                        filterValue: 'target',
+                    },
+                },
+                response: {},
+                annotation: annotationModel,
+                publishedDataset: publishedDatasetModel,
+                field: fieldModel,
+            };
+
+            await deleteManyAnnotationByFilter(ctx);
+
+            expect(ctx.response).toStrictEqual({
+                status: 200,
+                body: { status: 'deleted', deletedCount: 1 },
+            });
+
+            expect(await annotationModel.findLimitFromSkip()).toMatchObject([
+                {
+                    comment: 'another annotation',
+                },
+            ]);
+        });
+
+        it('should fail with a 400 if filter is empty', async () => {
+            const ctx = {
+                request: {
+                    query: {},
+                },
+                response: {},
+                annotation: annotationModel,
+                publishedDataset: publishedDatasetModel,
+                field: fieldModel,
+            };
+
+            await deleteManyAnnotationByFilter(ctx);
+
+            expect(ctx.response).toStrictEqual({
+                status: 400,
+                body: {
+                    status: 'error',
+                    error: 'filter parameter is incomplete',
+                    deletedCount: 0,
+                },
+            });
+        });
+
+        it('should fail with a 404 if not row has been deleted', async () => {
+            const ctx = {
+                request: {
+                    query: {
+                        filterBy: 'comment',
+                        filterOperator: 'contains',
+                        filterValue: 'target2',
+                    },
+                },
+                response: {},
+                annotation: annotationModel,
+                publishedDataset: publishedDatasetModel,
+                field: fieldModel,
+            };
+
+            await deleteManyAnnotationByFilter(ctx);
+
+            expect(ctx.response).toStrictEqual({
+                status: 404,
+                body: {
+                    status: 'error',
+                    error: `no row match the filter`,
+                    deletedCount: 0,
+                },
+            });
+
+            expect(await annotationModel.count({})).toBe(2);
+        });
+    });
+
     describe('DELETE /annotations/:id', () => {
         let annotation;
         beforeEach(async () => {
             annotation = await annotationModel.create({
-                resourceUri: null,
+                resourceUri: '/',
                 fieldId: null,
                 authorName: 'Developer',
                 authorEmail: 'developer@marmelab.com',
@@ -1692,6 +2169,262 @@ describe('annotation', () => {
             expect(await annotationModel.findLimitFromSkip()).toStrictEqual([
                 annotation,
             ]);
+        });
+    });
+
+    describe('GET /annotations/can-access', () => {
+        it('should return true when role is contributor and contributorAuth is active', async () => {
+            await configTenantModel.create({
+                contributorAuth: {
+                    active: true,
+                },
+            });
+            const ctx = {
+                state: {
+                    header: {
+                        role: CONTRIBUTOR_ROLE,
+                    },
+                },
+                configTenantCollection: configTenantModel,
+            };
+
+            await canAnnotateRoute(ctx);
+
+            expect(ctx.status).toBe(200);
+            expect(ctx.body).toBe(true);
+        });
+        it('should return true when role is admin and contributorAuth is active', async () => {
+            await configTenantModel.create({
+                contributorAuth: {
+                    active: true,
+                },
+            });
+            const ctx = {
+                state: {
+                    header: {
+                        role: 'admin',
+                    },
+                },
+                configTenantCollection: configTenantModel,
+            };
+
+            await canAnnotateRoute(ctx);
+
+            expect(ctx.status).toBe(200);
+            expect(ctx.body).toBe(true);
+        });
+        it('should return false when role is user and contributorAuth is active', async () => {
+            await configTenantModel.create({
+                contributorAuth: {
+                    active: true,
+                },
+            });
+            const ctx = {
+                state: {
+                    header: {
+                        role: USER_ROLE,
+                    },
+                },
+                configTenantCollection: configTenantModel,
+            };
+
+            await canAnnotateRoute(ctx);
+
+            expect(ctx.status).toBe(200);
+            expect(ctx.body).toBe(false);
+        });
+        it.each([USER_ROLE, CONTRIBUTOR_ROLE, ADMIN_ROLE])(
+            'should return true when contributorAuth is not active and role is %s',
+            async (role) => {
+                await configTenantModel.create({
+                    contributorAuth: {
+                        active: false,
+                    },
+                });
+                const ctx = {
+                    state: {
+                        header: {
+                            role,
+                        },
+                    },
+                    configTenantCollection: configTenantModel,
+                };
+
+                await canAnnotateRoute(ctx);
+
+                expect(ctx.status).toBe(200);
+                expect(ctx.body).toBe(true);
+            },
+        );
+    });
+
+    describe('GET /annotations/field-annotations', () => {
+        let field;
+        let otherField;
+        let fieldAnnotations;
+        beforeEach(async () => {
+            await fieldModel.create(
+                {
+                    overview: 1,
+                    position: 0,
+                },
+                'tItl3',
+            );
+            field = await fieldModel.create(
+                {
+                    position: 1,
+                    label: 'field',
+                    internalName: 'field',
+                    internalScopes: ['chart'],
+                },
+                'field',
+            );
+
+            otherField = await fieldModel.create(
+                {
+                    position: 2,
+                    label: 'other field',
+                    internalName: 'other_field',
+                    internalScopes: ['document'],
+                },
+                'otherField',
+            );
+
+            await publishedDatasetModel.create({
+                uri: '/resource/1',
+                tItl3: 'Resource 1',
+            });
+
+            await publishedDatasetModel.create({
+                uri: '/resource/2',
+                tItl3: 'Resource 2',
+            });
+
+            fieldAnnotations = await Promise.all([
+                annotationModel.create({
+                    resourceUri: '/resource/1',
+                    fieldId: field._id,
+                }),
+                annotationModel.create({
+                    resourceUri: '/resource/2',
+                    fieldId: field._id,
+                }),
+                annotationModel.create({
+                    resourceUri: '/',
+                    fieldId: field._id,
+                }),
+            ]);
+
+            await Promise.all([
+                annotationModel.create({
+                    resourceUri: '/resource/1',
+                    fieldId: otherField._id,
+                }),
+                annotationModel.create({
+                    resourceUri: '/resource/2',
+                    fieldId: otherField._id,
+                }),
+                annotationModel.create({
+                    resourceUri: '/',
+                    fieldId: otherField._id,
+                }),
+            ]);
+        });
+        it('should return all annotations for a field and no resource', async () => {
+            const ctx = {
+                request: {
+                    query: {
+                        fieldId: field._id,
+                        resourceUri: '/',
+                    },
+                },
+                response: {},
+                annotation: annotationModel,
+                field: fieldModel,
+                publishedDataset: publishedDatasetModel,
+            };
+
+            await getFieldAnnotations(ctx);
+
+            expect(ctx.response).toStrictEqual({
+                status: 200,
+                body: [{ ...fieldAnnotations[2], field, resource: null }],
+            });
+        });
+
+        it('should return all annotations for a field and a resource', async () => {
+            const ctx = {
+                request: {
+                    query: {
+                        fieldId: field._id,
+                        resourceUri: '/resource/1',
+                    },
+                },
+                response: {},
+                annotation: annotationModel,
+                field: fieldModel,
+                publishedDataset: publishedDatasetModel,
+            };
+
+            await getFieldAnnotations(ctx);
+
+            expect(ctx.response).toStrictEqual({
+                status: 200,
+                body: [
+                    {
+                        ...fieldAnnotations[0],
+                        field,
+                        resource: {
+                            title: 'Resource 1',
+                            uri: '/resource/1',
+                        },
+                    },
+                ],
+            });
+        });
+
+        it('should return an empty array if no annotations are found', async () => {
+            const ctx = {
+                request: {
+                    query: {
+                        fieldId: field._id,
+                        resourceUri: '/resource/3',
+                    },
+                },
+                response: {},
+                annotation: annotationModel,
+                field: fieldModel,
+                publishedDataset: publishedDatasetModel,
+            };
+
+            await getFieldAnnotations(ctx);
+
+            expect(ctx.response).toStrictEqual({
+                status: 200,
+                body: [],
+            });
+        });
+
+        it('should return an empty array if the field does not exist', async () => {
+            const ctx = {
+                request: {
+                    query: {
+                        fieldName: 'unknown',
+                        resourceUri: '/resource/1',
+                    },
+                },
+                response: {},
+                annotation: annotationModel,
+                field: fieldModel,
+                publishedDataset: publishedDatasetModel,
+            };
+
+            await getFieldAnnotations(ctx);
+
+            expect(ctx.response).toStrictEqual({
+                status: 200,
+                body: [],
+            });
         });
     });
 });

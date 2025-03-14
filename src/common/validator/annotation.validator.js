@@ -1,12 +1,30 @@
 import { default as z } from 'zod';
 
-export const kinds = ['removal', 'comment', 'correct', 'addition'];
+export const ANNOTATION_KIND_REMOVAL = 'removal';
+export const ANNOTATION_KIND_COMMENT = 'comment';
+export const ANNOTATION_KIND_CORRECTION = 'correction';
+export const ANNOTATION_KIND_ADDITION = 'addition';
+
+export const kinds = [
+    ANNOTATION_KIND_REMOVAL,
+    ANNOTATION_KIND_COMMENT,
+    ANNOTATION_KIND_CORRECTION,
+    ANNOTATION_KIND_ADDITION,
+];
+
+export const statuses = [
+    'to_review',
+    'ongoing',
+    'validated',
+    'rejected',
+    'parking',
+];
 
 export const annotationCreationSchema = z
     .object({
-        resourceUri: z.string().nullish().default(null),
+        resourceUri: z.string(),
         target: z.enum(['title', 'value']).nullish().default('title'),
-        kind: z.enum(kinds).nullish().default('comment'),
+        kind: z.enum(kinds).nullish().default(ANNOTATION_KIND_COMMENT),
         fieldId: z
             .string()
             .trim()
@@ -17,6 +35,7 @@ export const annotationCreationSchema = z
         comment: z
             .string({
                 required_error: 'error_required',
+                invalid_type_error: 'error_required',
             })
             .trim()
             .min(1, {
@@ -25,6 +44,7 @@ export const annotationCreationSchema = z
         authorName: z
             .string({
                 required_error: 'error_required',
+                invalid_type_error: 'error_required',
             })
             .trim()
             .min(1, {
@@ -41,7 +61,37 @@ export const annotationCreationSchema = z
             .default(null)
             .transform((value) => (value === '' ? null : value)),
         initialValue: z.string().nullish().default(null),
-        proposedValue: z.string().nullish().default(null),
+        proposedValue: z
+            .string()
+            .trim()
+            .min(1, {
+                message: 'error_required',
+            })
+            .or(
+                z
+                    .array(
+                        z.string().trim().min(1, {
+                            message: 'error_required',
+                        }),
+                    )
+                    .nonempty({
+                        message: 'error_required',
+                    }),
+            )
+            .nullish()
+            .default(null)
+            .transform((value) => {
+                if (value == null) {
+                    return null;
+                }
+
+                if (Array.isArray(value)) {
+                    return value;
+                }
+
+                return [value];
+            }),
+        reCaptchaToken: z.string().nullish().default(undefined),
     })
     .superRefine((data, refineContext) => {
         if (
@@ -66,8 +116,10 @@ export const annotationCreationSchema = z
             });
         }
         if (
-            ['correct', 'addition'].includes(data.kind) &&
-            !data.proposedValue
+            [ANNOTATION_KIND_CORRECTION, ANNOTATION_KIND_ADDITION].includes(
+                data.kind,
+            ) &&
+            !data.proposedValue?.length
         ) {
             refineContext.addIssue({
                 code: 'error_required',
@@ -75,21 +127,21 @@ export const annotationCreationSchema = z
                 path: ['proposedValue'],
             });
         }
-        if (data.kind === 'removal' && data.proposedValue) {
+        if (data.kind === ANNOTATION_KIND_REMOVAL && data.proposedValue) {
             refineContext.addIssue({
                 code: 'error_empty',
                 message: 'annotation_error_empty_proposed_value',
                 path: ['proposedValue'],
             });
         }
-        if (data.target === 'title' && data.kind !== 'comment') {
+        if (data.target === 'title' && data.kind !== ANNOTATION_KIND_COMMENT) {
             refineContext.addIssue({
                 code: 'error_invalid',
                 message: 'annotation_error_title_invalid_kind',
                 path: ['kind'],
             });
         }
-        if (data.target === 'value' && data.kind === 'comment') {
+        if (data.target === 'value' && data.kind === ANNOTATION_KIND_COMMENT) {
             refineContext.addIssue({
                 code: 'error_invalid',
                 message: 'annotation_error_value_invalid_kind',
@@ -98,16 +150,14 @@ export const annotationCreationSchema = z
         }
     });
 
-export const annotationUpdateSchema = z.object({
-    status: z.enum(['to_review', 'ongoing', 'validated', 'rejected']),
-    internalComment: z
-        .string({
-            required_error: 'error_required',
-        })
-        .trim()
-        .min(1, {
-            message: 'error_required',
-        }),
+const unrefinedAnnotationUpdateSchema = z.object({
+    status: z.enum(statuses),
+    internalComment: z.string().trim().optional(),
+    adminComment: z
+        .string()
+        .nullish()
+        .default(null)
+        .transform((value) => (value === '' ? null : value)),
     administrator: z
         .union([
             z.literal(''),
@@ -125,13 +175,30 @@ export const annotationUpdateSchema = z.object({
         .transform((value) => (value === '' ? null : value)),
 });
 
+export const annotationUpdateSchema =
+    unrefinedAnnotationUpdateSchema.superRefine((data, refineContext) => {
+        if (
+            ['validated', 'rejected'].includes(data.status) &&
+            !data.internalComment
+        ) {
+            refineContext.addIssue({
+                code: 'error_required',
+                message: 'error_required',
+                path: ['internalComment'],
+            });
+        }
+    });
+
 const annotationUpdateNullishSchema = z.object(
-    Object.entries(annotationUpdateSchema.shape).reduce((acc, [key, value]) => {
-        acc[key] = value
-            .nullish()
-            .default(key === 'status' ? 'to_review' : null);
-        return acc;
-    }, {}),
+    Object.entries(unrefinedAnnotationUpdateSchema.shape).reduce(
+        (acc, [key, value]) => {
+            acc[key] = value
+                .nullish()
+                .default(key === 'status' ? 'to_review' : null);
+            return acc;
+        },
+        {},
+    ),
 );
 
 export const annotationImportSchema = annotationCreationSchema

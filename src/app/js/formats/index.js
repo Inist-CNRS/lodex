@@ -74,9 +74,38 @@ export const getViewComponent = (field, isList) => {
         args,
     };
 };
+export const getReadableValue = ({ field, resource }) => {
+    const { getReadableValue, defaultArgs } = getComponent(field);
+
+    const args = merge(defaultArgs, get(field, 'format.args', {}));
+
+    return getReadableValue({ field, resource, ...args });
+};
 
 export const getAdminComponent = (name) => getComponent(name).AdminComponent;
 export const getEditionComponent = (field) =>
     getComponent(field).EditionComponent;
 export const getIconComponent = (name) => getComponent(name).Icon;
 export const getPredicate = (name) => getComponent(name).predicate;
+
+export const getIsFieldValueAnnotable = (name) => {
+    if (!name) {
+        return true;
+    }
+    if (name === 'None') {
+        return true;
+    }
+    return (
+        FORMATS_CATALOG.find((i) => i.componentName === name)
+            ?.isValueAnnotable ?? false
+    );
+};
+export const getIsFieldValueAnUrl = (name) => {
+    if (!name) {
+        return false;
+    }
+    return (
+        FORMATS_CATALOG.find((i) => i.componentName === name)?.isUrlValue ??
+        false
+    );
+};

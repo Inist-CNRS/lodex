@@ -1,54 +1,45 @@
-import OpenInNewIcon from '@mui/icons-material/OpenInNew';
-import IconButton from '@mui/material/IconButton';
-import Link from '@mui/material/Link';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import PropTypes from 'prop-types';
 import React, { useMemo } from 'react';
-import { DEFAULT_TENANT } from '../../../../../common/tools/tenantTools';
 import { useTranslate } from '../../../i18n/I18NContext';
+import { getResourceType } from '../helpers/resourceType';
 
-const tenant = sessionStorage.getItem('lodex-tenant') || DEFAULT_TENANT;
-
-const getAnnotationResourceTitle = (annotation, translate) => {
-    if (annotation.field?.scope === 'graphic') {
+const getAnnotationResourceTitle = ({ resourceUri, field }, translate) => {
+    const resourceType = getResourceType(resourceUri, field);
+    if (resourceType === 'graph') {
         return translate('annotation_graph_page');
     }
 
-    if (!annotation.resourceUri) {
+    if (resourceType === 'home') {
         return translate('annotation_home_page');
     }
 
-    return annotation.resourceUri;
+    return resourceUri;
 };
 
 export function AnnotationHeader({ annotation }) {
     const { translate } = useTranslate();
 
-    const { subtitle, linkUrl } = useMemo(() => {
-        if (annotation.field?.scope === 'graphic') {
-            return {
-                subtitle: annotation.field.label,
-                linkUrl: `/instance/${tenant}/graph/${annotation.field.name}`,
-            };
+    const subtitle = useMemo(() => {
+        const resourceType = getResourceType(
+            annotation.resourceUri,
+            annotation.field,
+        );
+
+        if (resourceType === 'graph') {
+            return annotation.field.label;
         }
 
-        if (annotation.resourceUri) {
-            return {
-                subtitle:
-                    annotation.resource?.title ??
-                    translate('annotation_resource_not_found'),
-                linkUrl: annotation.resource
-                    ? `/instance/${tenant}/${annotation.resourceUri}`
-                    : null,
-            };
+        if (resourceType === 'home') {
+            return '';
         }
 
-        return {
-            subtitle: '',
-            linkUrl: `/instance/${tenant}`,
-        };
-    }, [annotation]);
+        return (
+            annotation.resource?.title ??
+            translate('annotation_resource_not_found')
+        );
+    }, [translate, annotation]);
 
     return (
         <Stack gap={1}>
@@ -57,23 +48,6 @@ export function AnnotationHeader({ annotation }) {
                     {translate(`annotation_header_${annotation.kind}`)}{' '}
                     {getAnnotationResourceTitle(annotation, translate)}
                 </Typography>
-
-                {linkUrl && (
-                    <IconButton
-                        component={Link}
-                        title={translate('annotation_resource_link')}
-                        href={linkUrl}
-                        color="primary"
-                        size="small"
-                        target="_blank"
-                    >
-                        <OpenInNewIcon
-                            sx={{
-                                fontSize: '1.1rem',
-                            }}
-                        />
-                    </IconButton>
-                )}
             </Stack>
 
             {subtitle && (

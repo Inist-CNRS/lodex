@@ -1,12 +1,15 @@
 import selectors, {
-    isACompositeFields,
-    getLineColGetterFromAllFields,
     areAllFieldsValid,
+    getCollectionFields,
+    getFieldFormData,
+    getFields,
+    getLineColGetterFromAllFields,
+    isACompositeFields,
 } from './selectors';
 
 import {
-    SCOPE_DATASET,
     SCOPE_COLLECTION,
+    SCOPE_DATASET,
     SCOPE_DOCUMENT,
 } from '../../../common/scope';
 
@@ -22,11 +25,7 @@ describe('field selectors', () => {
                     name4: 'field4',
                 },
             };
-            expect(selectors.getFields(state)).toEqual([
-                'field1',
-                'field2',
-                'field3',
-            ]);
+            expect(getFields(state)).toEqual(['field1', 'field2', 'field3']);
         });
     });
 
@@ -84,7 +83,7 @@ describe('field selectors', () => {
     describe('getCollectionFields', () => {
         it('should return the model', () => {
             expect(
-                selectors.getCollectionFields({
+                getCollectionFields({
                     list: ['first', 'second'],
                     byName: {
                         first: {
@@ -122,6 +121,221 @@ describe('field selectors', () => {
                     },
                 }),
             ).toEqual([{ name: 'second', foo: 'bar2', scope: 'dataset' }]);
+        });
+    });
+
+    describe('getFieldFormData', () => {
+        it('should split annotationFormatListOptions', () => {
+            expect(
+                getFieldFormData({
+                    form: {
+                        field: {
+                            values: {
+                                annotable: true,
+                                annotationFormat: 'list',
+                                annotationFormatListKind: 'multiple',
+                                annotationFormatListOptions: 'a\nb\nc',
+                                annotationFormatListSupportsNewValues: false,
+                            },
+                        },
+                    },
+                }),
+            ).toStrictEqual({
+                annotable: true,
+                annotationFormat: 'list',
+                annotationFormatListKind: 'multiple',
+                annotationFormatListOptions: ['a', 'b', 'c'],
+                annotationFormatListSupportsNewValues: false,
+            });
+        });
+
+        it('should support field without annotationFormatListKind', () => {
+            expect(
+                getFieldFormData({
+                    form: {
+                        field: {
+                            values: {
+                                annotable: true,
+                                annotationFormat: 'list',
+                                annotationFormatListOptions: 'a\nb\nc',
+                                annotationFormatListSupportsNewValues: false,
+                            },
+                        },
+                    },
+                }),
+            ).toStrictEqual({
+                annotable: true,
+                annotationFormat: 'list',
+                annotationFormatListKind: 'single',
+                annotationFormatListOptions: ['a', 'b', 'c'],
+                annotationFormatListSupportsNewValues: false,
+            });
+        });
+
+        it('should set annotationFormatListOptions to an empty array if field is not annotable', () => {
+            expect(
+                getFieldFormData({
+                    form: {
+                        field: {
+                            values: {
+                                annotable: false,
+                                annotationFormat: 'list',
+                                annotationFormatListKind: 'single',
+                                annotationFormatListOptions: 'a\nb\nc',
+                                annotationFormatListSupportsNewValues: false,
+                            },
+                        },
+                    },
+                }),
+            ).toStrictEqual({
+                annotable: false,
+                annotationFormat: 'text',
+                annotationFormatListOptions: [],
+                annotationFormatListKind: 'single',
+                annotationFormatListSupportsNewValues: false,
+            });
+        });
+
+        it('should set annotationFormatListOptions to an empty array if annotationFormat is text', () => {
+            expect(
+                getFieldFormData({
+                    form: {
+                        field: {
+                            values: {
+                                annotable: true,
+                                annotationFormat: 'text',
+                                annotationFormatListOptions: 'a\nb\nc',
+                                annotationFormatListSupportsNewValues: false,
+                            },
+                        },
+                    },
+                }),
+            ).toStrictEqual({
+                annotable: true,
+                annotationFormat: 'text',
+                annotationFormatListOptions: [],
+                annotationFormatListKind: 'single',
+                annotationFormatListSupportsNewValues: false,
+            });
+        });
+
+        it('should set annotationFormatListKind to single if field is not annotable', () => {
+            expect(
+                getFieldFormData({
+                    form: {
+                        field: {
+                            values: {
+                                annotable: false,
+                                annotationFormat: 'list',
+                                annotationFormatListKind: 'single',
+                                annotationFormatListOptions: 'a\nb\nc',
+                                annotationFormatListSupportsNewValues: true,
+                            },
+                        },
+                    },
+                }),
+            ).toStrictEqual({
+                annotable: false,
+                annotationFormat: 'text',
+                annotationFormatListOptions: [],
+                annotationFormatListKind: 'single',
+                annotationFormatListSupportsNewValues: false,
+            });
+        });
+
+        it('should support annotationFormatListSupportsNewValues', () => {
+            expect(
+                getFieldFormData({
+                    form: {
+                        field: {
+                            values: {
+                                annotable: true,
+                                annotationFormat: 'list',
+                                annotationFormatListKind: 'single',
+                                annotationFormatListOptions: 'a\nb\nc',
+                                annotationFormatListSupportsNewValues: true,
+                            },
+                        },
+                    },
+                }),
+            ).toStrictEqual({
+                annotable: true,
+                annotationFormat: 'list',
+                annotationFormatListOptions: ['a', 'b', 'c'],
+                annotationFormatListKind: 'single',
+                annotationFormatListSupportsNewValues: true,
+            });
+        });
+
+        it('should set annotationFormatListSupportsNewValues to false if absent', () => {
+            expect(
+                getFieldFormData({
+                    form: {
+                        field: {
+                            values: {
+                                annotable: false,
+                                annotationFormat: 'list',
+                                annotationFormatListKind: 'single',
+                                annotationFormatListOptions: 'a\nb\nc',
+                            },
+                        },
+                    },
+                }),
+            ).toStrictEqual({
+                annotable: false,
+                annotationFormat: 'text',
+                annotationFormatListOptions: [],
+                annotationFormatListKind: 'single',
+                annotationFormatListSupportsNewValues: false,
+            });
+        });
+
+        it('should set annotationFormatListSupportsNewValues to false if annotationFormat is text', () => {
+            expect(
+                getFieldFormData({
+                    form: {
+                        field: {
+                            values: {
+                                annotable: true,
+                                annotationFormat: 'text',
+                                annotationFormatListKind: 'single',
+                                annotationFormatListOptions: 'a\nb\nc',
+                                annotationFormatListSupportsNewValues: true,
+                            },
+                        },
+                    },
+                }),
+            ).toStrictEqual({
+                annotable: true,
+                annotationFormat: 'text',
+                annotationFormatListOptions: [],
+                annotationFormatListKind: 'single',
+                annotationFormatListSupportsNewValues: false,
+            });
+        });
+
+        it('should set annotationFormatListSupportsNewValues to false if field is not annotable', () => {
+            expect(
+                getFieldFormData({
+                    form: {
+                        field: {
+                            values: {
+                                annotable: false,
+                                annotationFormat: 'list',
+                                annotationFormatListKind: 'single',
+                                annotationFormatListOptions: 'a\nb\nc',
+                                annotationFormatListSupportsNewValues: true,
+                            },
+                        },
+                    },
+                }),
+            ).toStrictEqual({
+                annotable: false,
+                annotationFormat: 'text',
+                annotationFormatListOptions: [],
+                annotationFormatListKind: 'single',
+                annotationFormatListSupportsNewValues: false,
+            });
         });
     });
 

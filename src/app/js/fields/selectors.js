@@ -18,6 +18,12 @@ import {
 } from '../../../common/scope';
 
 import { URI_FIELD_NAME } from '../../../common/uris';
+import { splitAnnotationFormatListOptions } from './annotations';
+import {
+    FIELD_ANNOTATION_FORMAT_LIST,
+    FIELD_ANNOTATION_FORMAT_TEXT,
+} from './FieldAnnotationFormat';
+import { FIELD_ANNOTATION_FORMAT_LIST_KIND_SINGLE } from './FieldAnnotationFormatListKind';
 
 export const NEW_CHARACTERISTIC_FORM_NAME = 'NEW_CHARACTERISTIC_FORM_NAME';
 
@@ -192,7 +198,31 @@ export const getFieldOntologyFormData = (state) =>
 
 export const getFieldFormData = (state) => {
     try {
-        return state.form.field.values;
+        const values = state.form.field.values;
+        return {
+            ...values,
+            annotationFormat: values.annotable
+                ? values.annotationFormat
+                : FIELD_ANNOTATION_FORMAT_TEXT,
+            annotationFormatListOptions:
+                values.annotable &&
+                values.annotationFormat === FIELD_ANNOTATION_FORMAT_LIST
+                    ? splitAnnotationFormatListOptions(
+                          values.annotationFormatListOptions,
+                      )
+                    : [],
+            annotationFormatListKind:
+                values.annotable &&
+                values.annotationFormat === FIELD_ANNOTATION_FORMAT_LIST
+                    ? values.annotationFormatListKind ??
+                      FIELD_ANNOTATION_FORMAT_LIST_KIND_SINGLE
+                    : FIELD_ANNOTATION_FORMAT_LIST_KIND_SINGLE,
+            annotationFormatListSupportsNewValues:
+                values.annotable &&
+                values.annotationFormat === FIELD_ANNOTATION_FORMAT_LIST
+                    ? values.annotationFormatListSupportsNewValues ?? true
+                    : false,
+        };
     } catch (error) {
         return undefined;
     }
@@ -330,6 +360,17 @@ const getResourceDetail3FieldName = createSelector(
     findFieldWithOverviewID(overview.RESOURCE_DETAIL_3),
 );
 
+const getResourceSortFieldName = createSelector(getAllListFields, (fields) => {
+    return fields.find((f) => f.isDefaultSortField)?.name ?? null;
+});
+
+const getResourceSortDir = createSelector(getAllListFields, (fields) => {
+    return (
+        fields.find((f) => f.isDefaultSortField)?.sortOrder?.toUpperCase() ??
+        'ASC'
+    );
+});
+
 const getPublishData = ({ error, published, editedFieldIndex, loading }) => ({
     published,
     editedFieldIndex,
@@ -440,6 +481,8 @@ export default {
     getResourceDetail1FieldName,
     getResourceDetail2FieldName,
     getResourceDetail3FieldName,
+    getResourceSortFieldName,
+    getResourceSortDir,
     getPublishData,
     isLoading,
     isSaving,

@@ -1,8 +1,8 @@
 import { FormControl, InputLabel, NativeSelect } from '@mui/material';
-import React from 'react';
-import { useTranslate } from '../../../i18n/I18NContext';
 import PropTypes from 'prop-types';
+import React from 'react';
 import { kinds } from '../../../../../common/validator/annotation.validator';
+import { useTranslate } from '../../../i18n/I18NContext';
 
 export const KindFilter = ({ applyValue, item }) => {
     const { translate } = useTranslate();

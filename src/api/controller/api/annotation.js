@@ -1,15 +1,19 @@
+import asyncBusboy from '@recuperateur/async-busboy';
 import { JsonStreamStringify } from 'json-stream-stringify';
 import Koa from 'koa';
 import koaBodyParser from 'koa-bodyparser';
 import route from 'koa-route';
-import { default as _ } from 'lodash';
-
-import asyncBusboy from '@recuperateur/async-busboy';
-import { uniq } from 'lodash';
+import { default as _, uniq } from 'lodash';
 import { ObjectId } from 'mongodb';
 import streamToString from 'stream-to-string';
+import {
+    ADMIN_ROLE,
+    CONTRIBUTOR_ROLE,
+} from '../../../common/tools/tenantTools';
 import { createDiacriticSafeContainRegex } from '../../services/createDiacriticSafeContainRegex';
 import getLogger from '../../services/logger';
+import { getAnnotationNotificationMail } from '../../services/mail/getAnnotationNotificationMail';
+import { sendMail } from '../../services/mail/mailer';
 import {
     annotationCreationSchema,
     annotationImportSchema,
@@ -17,11 +21,78 @@ import {
     deleteManyAnnotationsSchema,
     getAnnotationsQuerySchema,
 } from './../../../common/validator/annotation.validator';
+import { verifyReCaptchaToken } from './recaptcha';
+
+function getResourceTitle(resource, titleField, subResourceTitleFields) {
+    const lastVersion = resource.versions[resource.versions.length - 1];
+    const currentResourceTitleField = resource.subresourceId
+        ? subResourceTitleFields.find(
+              ({ subresourceId }) => subresourceId === resource.subresourceId,
+          )
+        : titleField;
+
+    return lastVersion[currentResourceTitleField?.name];
+}
+
+async function bindResourceAndFieldToAnnotation(ctx, annotation) {
+    const [titleField, subResourceTitleFields] = await Promise.all([
+        ctx.field.findResourceTitle(),
+        ctx.field.findSubResourceTitles(),
+    ]);
+
+    const resource = annotation.resourceUri
+        ? await ctx.publishedDataset.findByUri(annotation.resourceUri)
+        : null;
+
+    const field = annotation.fieldId
+        ? await ctx.field.findOneById(annotation.fieldId)
+        : null;
+
+    return {
+        ...annotation,
+        field,
+        resource: resource
+            ? {
+                  title: getResourceTitle(
+                      resource,
+                      titleField,
+                      subResourceTitleFields,
+                  ),
+                  uri: resource.uri,
+              }
+            : null,
+    };
+}
+
+export const canAnnotate = async (ctx) => {
+    const role = ctx?.state?.header?.role;
+    const configTenant = await ctx.configTenantCollection.findLast();
+
+    if (!configTenant) {
+        return false;
+    }
+
+    if (configTenant.contributorAuth?.active) {
+        return [CONTRIBUTOR_ROLE, ADMIN_ROLE].includes(role);
+    }
+
+    return true;
+};
+
+export const canAnnotateRoute = async (ctx) => {
+    ctx.status = 200;
+    ctx.body = await canAnnotate(ctx);
+};
 
 /**
  * @param {Koa.Context} ctx
  */
 export async function createAnnotation(ctx) {
+    if ((await canAnnotate(ctx)) === false) {
+        ctx.response.status = 403;
+        return;
+    }
+
     const validation = annotationCreationSchema.safeParse(ctx.request.body);
     if (!validation.success) {
         ctx.response.status = 400;
@@ -32,10 +103,49 @@ export async function createAnnotation(ctx) {
         return;
     }
 
+    const tokenVerification = await verifyReCaptchaToken(ctx, validation.data);
+    if (!tokenVerification.success || tokenVerification.score < 0.5) {
+        ctx.response.status = 400;
+        ctx.body = {
+            total: 0,
+            errors: [
+                {
+                    message: 'error_recaptcha_verification_failed',
+                },
+            ],
+        };
+        return;
+    }
+
+    const createdAnnotation = await ctx.annotation.create(validation.data);
+    const config = await ctx.configTenantCollection.findLast();
+
+    if (config?.notificationEmail) {
+        const locale = ctx.request.query.locale ?? 'en';
+
+        const annotationWithDetails = await bindResourceAndFieldToAnnotation(
+            ctx,
+            createdAnnotation,
+        );
+
+        const { subject, text } = getAnnotationNotificationMail({
+            locale,
+            tenant: ctx.tenant,
+            annotationWithDetails,
+            origin: ctx.request.header.origin,
+        });
+
+        await sendMail({
+            to: config.notificationEmail,
+            subject,
+            text,
+        });
+    }
+
     ctx.response.status = 200;
     ctx.body = {
         total: 1,
-        data: await ctx.annotation.create(validation.data),
+        data: createdAnnotation,
     };
 }
 
@@ -173,6 +283,19 @@ export const buildQuery = async ({
             }
         }
         case 'resourceUri':
+            switch (filterOperator) {
+                case 'equals':
+                    return {
+                        [filterBy]: filterValue,
+                    };
+                case 'contains':
+                    return {
+                        [filterBy]:
+                            createDiacriticSafeContainRegex(filterValue),
+                    };
+                default:
+                    return {};
+            }
         case 'internalComment':
         case 'administrator':
         case 'initialValue':
@@ -357,31 +480,26 @@ export async function getAnnotations(ctx) {
     };
 }
 
-export async function exportAnnotations(ctx) {
-    const annotationStream = await ctx.annotation
-        .findAll()
-        .then((cursor) => cursor.stream());
-
-    ctx.response.attachment('annotations.json');
-    ctx.response.status = 200;
-    ctx.response.body = new JsonStreamStringify(annotationStream);
-}
-
-async function bindResourceAndFieldToAnnnotation(ctx, annotation) {
+export const getFieldAnnotations = async (ctx) => {
+    const { fieldId, resourceUri } = ctx.request.query;
     const [titleField, subResourceTitleFields] = await Promise.all([
         ctx.field.findResourceTitle(),
         ctx.field.findSubResourceTitles(),
     ]);
 
-    const resource = annotation.resourceUri
-        ? await ctx.publishedDataset.findByUri(annotation.resourceUri)
+    const annotations = await ctx.annotation.findManyByFieldAndResource(
+        fieldId,
+        resourceUri || null,
+    );
+
+    const field = await ctx.field.findOneById(fieldId);
+
+    const resource = resourceUri
+        ? await ctx.publishedDataset.findByUri(resourceUri)
         : null;
 
-    const field = annotation.fieldId
-        ? await ctx.field.findOneById(annotation.fieldId)
-        : null;
-
-    return {
+    ctx.response.status = 200;
+    ctx.response.body = annotations.map((annotation) => ({
         ...annotation,
         field,
         resource: resource
@@ -394,7 +512,17 @@ async function bindResourceAndFieldToAnnnotation(ctx, annotation) {
                   uri: resource.uri,
               }
             : null,
-    };
+    }));
+};
+
+export async function exportAnnotations(ctx) {
+    const annotationStream = await ctx.annotation
+        .findAll()
+        .then((cursor) => cursor.stream());
+
+    ctx.response.attachment('annotations.json');
+    ctx.response.status = 200;
+    ctx.response.body = new JsonStreamStringify(annotationStream);
 }
 
 /**
@@ -410,10 +538,7 @@ export async function getAnnotation(ctx, id) {
     }
 
     ctx.response.status = 200;
-    ctx.response.body = await bindResourceAndFieldToAnnnotation(
-        ctx,
-        annotation,
-    );
+    ctx.response.body = await bindResourceAndFieldToAnnotation(ctx, annotation);
 }
 
 /**
@@ -441,7 +566,7 @@ export async function updateAnnotation(ctx, id) {
 
     ctx.response.status = 200;
     ctx.response.body = {
-        data: await bindResourceAndFieldToAnnnotation(ctx, updatedAnnotation),
+        data: await bindResourceAndFieldToAnnotation(ctx, updatedAnnotation),
     };
 }
 
@@ -458,7 +583,7 @@ export async function deleteAnnotation(ctx, id) {
     };
 }
 
-export async function deleteManyAnnotation(ctx) {
+export async function deleteManyAnnotationById(ctx) {
     const validation = deleteManyAnnotationsSchema.safeParse(ctx.request.body);
 
     if (!validation.success) {
@@ -476,26 +601,76 @@ export async function deleteManyAnnotation(ctx) {
     };
 }
 
-function getResourceTitle(resource, titleField, subResourceTitleFields) {
-    const lastVersion = resource.versions[resource.versions.length - 1];
-    const currentResourceTitleField = resource.subresourceId
-        ? subResourceTitleFields.find(
-              ({ subresourceId }) => subresourceId === resource.subresourceId,
-          )
-        : titleField;
+export async function deleteManyAnnotationByFilter(ctx) {
+    const { filterBy, filterOperator, filterValue } = ctx.request.query;
+    if (!filterBy || !filterOperator || !filterValue) {
+        ctx.response.status = 400;
+        ctx.response.body = {
+            status: 'error',
+            error: 'filter parameter is incomplete',
+            deletedCount: 0,
+        };
+        return;
+    }
 
-    return lastVersion[currentResourceTitleField?.name];
+    try {
+        const titleField = await ctx.field.findResourceTitle();
+
+        const query = await buildQuery({
+            filterBy,
+            filterOperator,
+            filterValue,
+            ctx,
+            titleField,
+        });
+
+        const { acknowledged, deletedCount } =
+            await ctx.annotation.deleteMany(query);
+
+        if (!acknowledged) {
+            ctx.response.status = 500;
+            ctx.response.body = {
+                status: 'error',
+                error: 'failed to execute query',
+                deletedCount: 0,
+            };
+            return;
+        }
+
+        if (deletedCount === 0) {
+            ctx.response.status = 404;
+            ctx.response.body = {
+                status: 'error',
+                error: `no row match the filter`,
+                deletedCount: 0,
+            };
+            return;
+        }
+
+        ctx.response.status = 200;
+        ctx.response.body = { status: 'deleted', deletedCount };
+    } catch (error) {
+        const logger = getLogger(ctx.tenant);
+        logger.error(`Delete dataset rows error`, {
+            error,
+        });
+        ctx.response.status = 500;
+        ctx.response.body = { status: 'error', error, deletedCount: 0 };
+    }
 }
 
 const app = new Koa();
 
 app.use(route.get('/', getAnnotations));
+app.use(route.get('/field-annotations', getFieldAnnotations));
 app.use(route.get('/export', exportAnnotations));
+app.use(route.get('/can-annotate', canAnnotateRoute));
 app.use(route.get('/:id', getAnnotation));
 app.use(koaBodyParser());
 app.use(route.put('/:id', updateAnnotation));
+app.use(route.del('/batch-delete-filter', deleteManyAnnotationByFilter));
 app.use(route.del('/:id', deleteAnnotation));
-app.use(route.del('/', deleteManyAnnotation));
+app.use(route.del('/', deleteManyAnnotationById));
 app.use(route.post('/', createAnnotation));
 app.use(route.post('/import', importAnnotations(asyncBusboy)));
 

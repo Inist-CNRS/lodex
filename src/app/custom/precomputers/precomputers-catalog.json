@@ -1,4 +1,12 @@
 [
+    {
+        "id": "post-v1-dataHomogenise",
+        "url": "https://data-homogenise.services.istex.fr/v1/homogenise",
+        "doc": "https://github.com/Inist-CNRS/web-services/tree/main/services/data-homogenise",
+        "swagger": "https://openapi.services.istex.fr/?urls.primaryName=data-homogenise%20-%20Homog%C3%A9n%C3%A9ise%20les%20valeurs%20d%27un%20champ#/homogenise/post-v1-homogenise",
+        "objectifTDM": "https://services.istex.fr/homogeneisation-automatique-de-mots-cles/",
+        "type": "homogénéisation"
+    },
         {
         "id": "post-v1-graph-segment",
         "url": "https://data-computer.services.istex.fr/v1/graph-segment",

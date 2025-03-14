@@ -15,11 +15,10 @@ export const getPage = async (ctx) => {
         page = 0,
         perPage = 10,
         match,
-        sortBy,
-        sortDir,
+        sort: { sortBy, sortDir },
         invertedFacets = [],
-        ...facetsWithValueIds
-    } = ctx.request.query;
+        facets: facetsWithValueIds,
+    } = ctx.request.body;
 
     let facets = {};
 
@@ -214,7 +213,7 @@ export const createResource = async (ctx) => {
 
 app.use(koaBodyParser());
 app.use(route.get('/removed', getRemovedPage));
-app.use(route.get('/', getPage));
+app.use(route.post('/', getPage));
 app.use(route.put('/add_field', addFieldToResource));
 app.use(route.get('/ark', ark));
 app.use(async (ctx, next) => {

@@ -1,17 +1,10 @@
-import { Button } from '@mui/material';
-import React, { useCallback } from 'react';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import {
-    AUTHOR_STEP,
-    COMMENT_STEP,
-    KIND_STEP,
-    TARGET_STEP,
-    VALUE_STEP,
-} from './steps';
-import { useTranslate } from '../i18n/I18NContext';
-import PropTypes from 'prop-types';
+import { Button } from '@mui/material';
 import { useStore } from '@tanstack/react-form';
+import PropTypes from 'prop-types';
+import React, { useCallback } from 'react';
+import { useTranslate } from '../i18n/I18NContext';
+import { AUTHOR_STEP, COMMENT_STEP, TARGET_STEP, VALUE_STEP } from './steps';
 
 export const PreviousButton = ({
     currentStep,
@@ -20,15 +13,16 @@ export const PreviousButton = ({
     onCancel,
     isSubmitting,
     form,
+    isFieldValueAnnotable,
 }) => {
     const { translate } = useTranslate();
 
-    const target = useStore(form.store, (state) => {
-        return state.values.target;
-    });
-
     const kind = useStore(form.store, (state) => {
         return state.values.kind;
+    });
+
+    const target = useStore(form.store, (state) => {
+        return state.values.target;
     });
 
     const handleBack = useCallback(
@@ -36,16 +30,12 @@ export const PreviousButton = ({
             event.preventDefault();
             event.stopPropagation();
             switch (currentStep) {
-                case KIND_STEP: {
+                case VALUE_STEP: {
                     goToStep(TARGET_STEP);
                     return;
                 }
-                case VALUE_STEP: {
-                    goToStep(KIND_STEP);
-                    return;
-                }
                 case COMMENT_STEP: {
-                    if (!initialValue) {
+                    if (!isFieldValueAnnotable) {
                         return;
                     }
                     if (target === 'title') {
@@ -56,7 +46,7 @@ export const PreviousButton = ({
                         goToStep(VALUE_STEP);
                         return;
                     }
-                    goToStep(KIND_STEP);
+                    goToStep(TARGET_STEP);
                     return;
                 }
                 case AUTHOR_STEP: {
@@ -67,19 +57,26 @@ export const PreviousButton = ({
                     return;
             }
         },
-        [currentStep, goToStep, initialValue, target],
+        [
+            currentStep,
+            goToStep,
+            isFieldValueAnnotable,
+            target,
+            initialValue,
+            kind,
+        ],
     );
 
     if (
         currentStep === TARGET_STEP ||
-        (currentStep === COMMENT_STEP && !initialValue)
+        (currentStep === COMMENT_STEP && !isFieldValueAnnotable)
     ) {
         return (
             <Button
                 type="button"
                 onClick={onCancel}
                 disabled={isSubmitting}
-                startIcon={<ChevronRightIcon />}
+                startIcon={<ChevronLeftIcon />}
             >
                 {translate('cancel')}
             </Button>
@@ -103,6 +100,7 @@ PreviousButton.propTypes = {
     goToStep: PropTypes.func.isRequired,
     onCancel: PropTypes.func.isRequired,
     currentStep: PropTypes.string.isRequired,
-    initialValue: PropTypes.string,
+    initialValue: PropTypes.any,
     isSubmitting: PropTypes.bool.isRequired,
+    isFieldValueAnnotable: PropTypes.bool.isRequired,
 };

@@ -17,6 +17,7 @@ const TestForm = ({ annotation }) => {
             status: annotation.status,
             internalComment: annotation.internalComment,
             administrator: annotation.administrator,
+            adminComment: annotation.adminComment,
         },
         onSubmit: () => {},
     });
@@ -32,7 +33,7 @@ TestForm.propTypes = {
 };
 
 describe('AnnotationInputs', () => {
-    it('should render form for status internalComment and administrator', () => {
+    it('should render form for status, internalComment, adminComment and administrator', () => {
         const handleUpdateAnnotation = jest.fn();
         jest.mocked(useUpdateAnnotation).mockImplementation(() => ({
             handleUpdateAnnotation,
@@ -46,6 +47,8 @@ describe('AnnotationInputs', () => {
                             status: 'to_review',
                             administrator: 'Admin',
                             internalComment: 'Internal test comment',
+                            adminComment:
+                                'Admin comment visible to contributors',
                         }}
                     />
                 </MemoryRouter>
@@ -69,9 +72,64 @@ describe('AnnotationInputs', () => {
         ).toHaveValue('Internal test comment');
         expect(
             wrapper.getByRole('textbox', {
+                name: 'annotation_admin_comment',
+                container: inputsRegion,
+            }),
+        ).toHaveValue('Admin comment visible to contributors');
+        expect(
+            wrapper.getByRole('textbox', {
                 name: 'annotation_administrator',
                 container: inputsRegion,
             }),
         ).toHaveValue('Admin');
     });
+
+    it.each([
+        [true, 'validated'],
+        [true, 'rejected'],
+        [false, 'to_review'],
+        [false, 'ongoing'],
+    ])(
+        `should set require={%s} on internalComment when status is %s`,
+        (required, status) => {
+            const handleUpdateAnnotation = jest.fn();
+            jest.mocked(useUpdateAnnotation).mockImplementation(() => ({
+                handleUpdateAnnotation,
+                isSubmitting: false,
+            }));
+            const wrapper = render(
+                <TestI18N>
+                    <MemoryRouter>
+                        <TestForm
+                            annotation={{
+                                status,
+                                administrator: 'Admin',
+                                internalComment: 'Internal test comment',
+                                adminComment:
+                                    'Admin comment visible to contributors',
+                            }}
+                        />
+                    </MemoryRouter>
+                </TestI18N>,
+            );
+
+            const inputsRegion = wrapper.getByRole('group', {
+                name: 'annotation_form_title',
+            });
+
+            required
+                ? expect(
+                      wrapper.getByRole('textbox', {
+                          name: 'annotation_internal_comment',
+                          container: inputsRegion,
+                      }),
+                  ).toHaveAttribute('required')
+                : expect(
+                      wrapper.getByRole('textbox', {
+                          name: 'annotation_internal_comment',
+                          container: inputsRegion,
+                      }),
+                  ).not.toHaveAttribute('required');
+        },
+    );
 });

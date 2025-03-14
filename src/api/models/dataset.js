@@ -131,18 +131,30 @@ export default async (db) => {
             .pipe(JSONStream.stringify());
     };
 
-    collection.dumpAsJsonLStream = async () => {
-        const omitMongoId = new Transform({ objectMode: true });
-        omitMongoId._transform = function (data, enc, cb) {
-            this.push(JSON.stringify(omit(data, ['_id'])).concat('\n'));
+    collection.dumpAsJsonLStream = async (fieldsToExports = []) => {
+        const stringify = new Transform({ objectMode: true });
+        stringify._transform = function (data, enc, cb) {
+            this.push(JSON.stringify(data).concat('\n'));
             cb();
         };
 
-        return (await collection.find({}).stream()).pipe(omitMongoId);
+        return (
+            await collection
+                .find(
+                    {},
+                    {
+                        projection: fieldsToExports.reduce(
+                            (acc, field) => ({ ...acc, [field]: 1 }),
+                            { _id: 0 },
+                        ),
+                    },
+                )
+                .stream()
+        ).pipe(stringify);
     };
 
     collection.removeAttribute = async (attribute) =>
-        collection.updateOne(
+        collection.updateMany(
             {},
             { $unset: { [attribute]: 1 } },
             { multi: true },
@@ -204,6 +216,16 @@ export default async (db) => {
 
     collection.deleteOneById = async (id) =>
         collection.deleteOne({ _id: new ObjectId(id) });
+
+    collection.deleteManyById = async (ids) => {
+        return collection.deleteMany({
+            _id: {
+                $in: ids
+                    .filter((id) => ObjectId.isValid(id))
+                    .map((id) => new ObjectId(id)),
+            },
+        });
+    };
 
     return collection;
 };

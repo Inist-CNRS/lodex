@@ -1,11 +1,11 @@
-import React, { useEffect, useMemo, useState, useRef } from 'react';
-import { Box, IconButton, Tooltip } from '@mui/material';
+import { Box, IconButton, Stack, Tooltip } from '@mui/material';
 import copy from 'copy-to-clipboard';
-import { connect } from 'react-redux';
 import compose from 'lodash/flowRight';
 import PropTypes from 'prop-types';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import GridLayout from 'react-grid-layout';
 import 'react-grid-layout/css/styles.css';
+import { connect } from 'react-redux';
 import { useMeasure } from 'react-use';
 
 import {
@@ -26,8 +26,8 @@ import { useHistory, useLocation } from 'react-router';
 import { SCOPE_DOCUMENT } from '../../../common/scope';
 import { toast } from '../../../common/tools/toast';
 import fieldApi from '../admin/api/field';
-import FieldRepresentation from './FieldRepresentation';
 import { translate } from '../i18n/I18NContext';
+import FieldRepresentation from './FieldRepresentation';
 
 const ROOT_PADDING = 16;
 
@@ -179,18 +179,16 @@ const FieldGridItem = connect((state, { field }) => ({
             height="100%"
             width="100%"
         >
-            <Box
-                sx={{
-                    display: 'contents',
-                }}
-                onClick={(e) => handleCopyToClipboard(e, field.name)}
-            >
-                <FieldRepresentation
-                    field={field}
-                    isFieldSelected={isFieldSelected}
-                    handleToggleSelectedField={handleToggleSelectedField}
-                />
-            </Box>
+            <Stack direction="row" gap={1} alignItems="center">
+                <Box onClick={(e) => handleCopyToClipboard(e, field.name)}>
+                    <FieldRepresentation
+                        field={field}
+                        isFieldSelected={isFieldSelected}
+                        handleToggleSelectedField={handleToggleSelectedField}
+                        showNotAnnotableIcon
+                    />
+                </Box>
+            </Stack>
 
             {completedField && (
                 <Box

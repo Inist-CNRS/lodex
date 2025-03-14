@@ -1,171 +1,188 @@
-import React, { useEffect, useState } from 'react';
 import {
     Box,
-    Button,
     Checkbox,
+    FormControl,
+    FormHelperText,
     MenuItem,
     Select,
-    TextField,
+    Stack,
     Tooltip,
-    keyframes,
+    Typography,
 } from '@mui/material';
-import AceEditor from 'react-ace';
-import 'ace-builds/src-noconflict/mode-json';
-import 'ace-builds/src-noconflict/theme-monokai';
+import React from 'react';
 
-import { compose } from 'recompose';
-import { connect } from 'react-redux';
-import { withRouter } from 'react-router';
-import {
-    getConfigTenant,
-    getConfigTenantAvailableTheme,
-    updateConfigTenant,
-} from '../api/configTenant';
+import HelpIcon from '@mui/icons-material/HelpOutline';
+import { useForm, useStore } from '@tanstack/react-form';
 import PropTypes from 'prop-types';
-import CancelButton from '../../lib/components/CancelButton';
-import { toast } from '../../../../common/tools/toast';
+import { connect } from 'react-redux';
+import { useHistory } from 'react-router-dom';
+import { z } from 'zod';
 import { loadConfigTenant } from '.';
-import { SaveAs } from '@mui/icons-material';
 import { useTranslate } from '../../i18n/I18NContext';
+import AdminOnlyAlert from '../../lib/components/AdminOnlyAlert';
+import CancelButton from '../../lib/components/CancelButton';
+import Loading from '../../lib/components/Loading';
+import { SaveButton } from '../../lib/components/SaveButton';
+import { TextField } from '../../lib/components/TextField';
+import { ConfigField } from './fields/ConfigField';
+import { useGetAvailableThemes } from './useGetAvailableThemes';
+import { useGetConfigTenant } from './useGetConfigTenant';
+import { useUpdateConfigTenant } from './useUpdateConfigTenant';
 
-const shake = keyframes`
-10%, 90% {
-    transform: translate3d(-1px, 0, 0);
-  }
-  
-  20%, 80% {
-    transform: translate3d(4px, 0, 0);
-  }
-
-  30%, 50%, 70% {
-    transform: translate3d(-6px, 0, 0);
-  }
-
-  40%, 60% {
-    transform: translate3d(6px, 0, 0);
-  }
-`;
-
-export const ConfigTenantForm = ({ history, onLoadConfigTenant }) => {
-    const { translate, locale } = useTranslate();
-    const [initialConfig, setInitialConfig] = useState('');
-    const [configTenant, setConfigTenant] = useState('');
-    const [enableAutoPublication, setEnableAutoPublication] = useState(false);
-    const [userAuth, setUserAuth] = useState({});
-    const [enrichmentBatchSize, setEnrichmentBatchSize] = useState(0);
-    const [id, setId] = useState('');
-    const [isFormModified, setIsFormModified] = useState(false);
-    const [theme, setTheme] = useState('default');
-    const [themes, setThemes] = useState([
+const configTenantSchema = z.object({
+    config: z.object(
+        {},
         {
-            defaultVariables: {},
-            name: {
-                fr: 'Classique',
-                en: 'Classic',
-            },
-            description: {
-                fr: 'Thème Lodex Classique',
-                en: 'Lodex Classic theme',
-            },
-            value: 'default',
+            message: 'error_invalid_json',
         },
-    ]);
+    ),
+    enableAutoPublication: z.boolean(),
+    userAuth: z.object({
+        active: z.boolean(),
+        password: z.string().min(1, {
+            message: 'error_required',
+        }),
+        username: z.string().min(1, {
+            message: 'error_required',
+        }),
+    }),
+    contributorAuth: z
+        .object({
+            active: z.boolean(),
+            password: z.string().min(1, {
+                message: 'error_required',
+            }),
+            username: z.string().min(1, {
+                message: 'error_required',
+            }),
+        })
+        .optional(),
+    antispamFilter: z.discriminatedUnion('active', [
+        z.object({
+            active: z.literal(true),
+            recaptchaClientKey: z
+                .string({ invalid_type_error: 'error_required' })
+                .trim()
+                .min(1, {
+                    message: 'error_required',
+                }),
+            recaptchaSecretKey: z
+                .string({ invalid_type_error: 'error_required' })
+                .trim()
+                .min(1, {
+                    message: 'error_required',
+                }),
+        }),
+        z.object({
+            active: z.literal(false),
+            recaptchaClientKey: z.string().trim().min(0).nullish(),
+            recaptchaSecretKey: z.string().trim().min(0).nullish(),
+        }),
+    ]),
+    theme: z.string().min(1, {
+        message: 'error_required',
+    }),
+    enrichmentBatchSize: z.coerce.number(),
+    notificationEmail: z
+        .string()
+        .email({
+            message: 'error_invalid_email',
+        })
+        .nullish(),
+});
 
-    useEffect(() => {
-        async function fetchData() {
-            const { response } = await getConfigTenant();
-            setUserAuth(response.userAuth);
-            setEnrichmentBatchSize(response.enrichmentBatchSize);
-            setId(response._id);
-            setEnableAutoPublication(response.enableAutoPublication);
-            setTheme(response.theme ?? 'default');
-            delete response.userAuth;
-            delete response.enrichmentBatchSize;
-            delete response._id;
-            delete response.enableAutoPublication;
-            delete response.theme;
+export const ConfigTenantFormView = ({
+    initialConfig: {
+        _id,
+        enableAutoPublication,
+        userAuth,
+        contributorAuth,
+        theme,
+        antispamFilter,
+        enrichmentBatchSize,
+        notificationEmail,
+        ...config
+    },
+    availableThemes,
+    handleCancel,
+    handleSave,
+    isSubmitting,
+}) => {
+    const { translate, locale } = useTranslate();
 
-            const stringified = JSON.stringify(response, null, 2);
-            setInitialConfig(stringified);
-            setConfigTenant(stringified);
+    const form = useForm({
+        defaultValues: {
+            _id,
+            enableAutoPublication,
+            userAuth,
+            contributorAuth,
+            theme,
+            antispamFilter,
+            enrichmentBatchSize,
+            notificationEmail,
+            config,
+        },
 
-            const themesResponse = await getConfigTenantAvailableTheme();
-            setThemes(themesResponse.response);
-        }
-        fetchData();
-    }, []);
+        onSubmit: async ({ value }) => {
+            const {
+                enableAutoPublication,
+                userAuth,
+                contributorAuth,
+                theme,
+                antispamFilter,
+                enrichmentBatchSize,
+                _id,
+                notificationEmail,
+                config,
+            } = value;
 
-    const handleSave = async () => {
-        try {
-            const configTenantToSave = JSON.parse(configTenant);
-            configTenantToSave.userAuth = userAuth;
-            configTenantToSave.enrichmentBatchSize = enrichmentBatchSize;
-            configTenantToSave._id = id;
-            configTenantToSave.enableAutoPublication = enableAutoPublication;
-            configTenantToSave.theme = theme;
-
-            const res = await updateConfigTenant(configTenantToSave);
-            if (res.error) {
-                toast(`${translate('error')} : ${res.error}`, {
-                    type: toast.TYPE.ERROR,
-                });
-            } else {
-                toast(translate('configTenantUpdated'), {
-                    type: toast.TYPE.SUCCESS,
-                });
-                onLoadConfigTenant();
-            }
-        } catch (e) {
-            toast(`${translate('error')} : ${e}`, {
-                type: toast.TYPE.ERROR,
+            await handleSave({
+                ...config,
+                _id,
+                enableAutoPublication,
+                userAuth,
+                contributorAuth,
+                theme,
+                antispamFilter,
+                enrichmentBatchSize,
+                notificationEmail,
             });
-        }
-    };
+        },
+        validators: {
+            onChange: configTenantSchema,
+        },
+    });
 
-    const handleCancel = () => {
-        history.push('/data');
-    };
+    const userAuthActive = useStore(form.store, (state) => {
+        return state.values.userAuth.active;
+    });
 
-    const handleConfigTenantChange = (newConfigTenant) => {
-        setIsFormModified(true);
-        setConfigTenant(newConfigTenant);
-    };
+    const currentConfig = useStore(form.store, (state) => {
+        return state.values.config;
+    });
 
-    const handleThemeChange = (event) => {
-        setIsFormModified(true);
-        setTheme(event.target.value);
+    const contributorAuthActive = useStore(form.store, (state) => {
+        return state.values.contributorAuth?.active;
+    });
 
-        try {
-            const themeValue = themes.find(
-                (value) => value.value === event.target.value,
-            );
+    const antispamFilterActive = useStore(form.store, (state) => {
+        return state.values.antispamFilter?.active;
+    });
 
-            try {
-                const parsedConfig = JSON.parse(configTenant);
-
-                if (parsedConfig.front) {
-                    parsedConfig.front.theme = themeValue.defaultVariables;
-                }
-
-                setConfigTenant(JSON.stringify(parsedConfig, null, 2));
-            } catch (_) {
-                // If we can't parse the actual config fallback to the initial
-
-                const parsedConfig = JSON.parse(initialConfig);
-
-                if (parsedConfig.front) {
-                    parsedConfig.front.theme = themeValue.defaultVariables;
-                }
-
-                setConfigTenant(JSON.stringify(parsedConfig, null, 2));
-            }
-        } catch (_) {
-            /* empty */
-        }
-    };
+    const isFormModified = useStore(form.store, (state) => {
+        return state.isDirty;
+    });
 
     return (
-        <Box className="container">
+        <Box
+            className="container"
+            component="form"
+            onSubmit={(event) => {
+                event.preventDefault();
+                event.stopPropagation();
+                form.handleSubmit();
+            }}
+        >
             <h1>{translate('config_tenant')}</h1>
             <Box
                 sx={{
@@ -174,33 +191,234 @@ export const ConfigTenantForm = ({ history, onLoadConfigTenant }) => {
                     gap: 1,
                 }}
             >
-                <h2>{translate('enableAutoPublication')}</h2>
-                <Checkbox
-                    checked={enableAutoPublication}
-                    onChange={(event) => {
-                        setIsFormModified(true);
-                        setEnableAutoPublication(event.target.checked);
-                    }}
-                />
+                <h2 id="enableAutoPublication">
+                    {translate('enableAutoPublication')}
+                </h2>
+                <form.Field name="enableAutoPublication">
+                    {(field) => (
+                        <Checkbox
+                            checked={field.state.value}
+                            inputProps={{
+                                'aria-labelledby': 'enableAutoPublication',
+                            }}
+                            onChange={(event) => {
+                                field.handleChange(event.target.checked);
+                            }}
+                        />
+                    )}
+                </form.Field>
             </Box>
+            <Stack>
+                <h2>{translate('user_auth')}</h2>
+                <Stack>
+                    <Box
+                        sx={{
+                            width: '100%',
+                            display: 'flex',
+                            gap: 1,
+                            alignItems: 'center',
+                        }}
+                    >
+                        <h3 id="user">{translate('user')}</h3>
+                        <Tooltip title={translate('user_auth_help')}>
+                            <HelpIcon />
+                        </Tooltip>
+                        <form.Field name="userAuth.active">
+                            {(field) => (
+                                <Checkbox
+                                    checked={field.state.value}
+                                    onChange={(event) => {
+                                        field.handleChange(
+                                            event.target.checked,
+                                        );
+                                    }}
+                                    inputProps={{
+                                        'aria-labelledby': 'user',
+                                    }}
+                                />
+                            )}
+                        </form.Field>
+                    </Box>
+
+                    <Box
+                        sx={{
+                            width: '100%',
+                            display: 'flex',
+                            gap: 2,
+                            mb: 2,
+                        }}
+                    >
+                        <TextField
+                            label={translate('Username')}
+                            name="userAuth.username"
+                            form={form}
+                            disabled={!userAuthActive}
+                        />
+
+                        <TextField
+                            label={translate('Password')}
+                            name="userAuth.password"
+                            form={form}
+                            disabled={!userAuthActive}
+                        />
+                    </Box>
+                </Stack>
+                <Stack>
+                    <Box
+                        sx={{
+                            width: '100%',
+                            display: 'flex',
+                            gap: 1,
+                            alignItems: 'center',
+                        }}
+                    >
+                        <h3 id="contributor">{translate('contributor')}</h3>
+                        <Tooltip title={translate('contributor_auth_help')}>
+                            <HelpIcon />
+                        </Tooltip>
+                        <form.Field name="contributorAuth.active">
+                            {(field) => (
+                                <Checkbox
+                                    checked={field.state.value}
+                                    onChange={(event) => {
+                                        field.handleChange(
+                                            event.target.checked,
+                                        );
+                                    }}
+                                    inputProps={{
+                                        'aria-labelledby': 'contributor',
+                                    }}
+                                />
+                            )}
+                        </form.Field>
+                    </Box>
+
+                    <Box
+                        sx={{
+                            width: '100%',
+                            display: 'flex',
+                            gap: 2,
+                            mb: 2,
+                        }}
+                    >
+                        <TextField
+                            label={translate('Username')}
+                            name="contributorAuth.username"
+                            form={form}
+                            disabled={!contributorAuthActive}
+                        />
+
+                        <TextField
+                            label={translate('Password')}
+                            name="contributorAuth.password"
+                            form={form}
+                            disabled={!contributorAuthActive}
+                        />
+                    </Box>
+                </Stack>
+
+                <Typography>
+                    {translate(
+                        userAuthActive
+                            ? 'instance_is_private'
+                            : 'instance_is_public',
+                    )}{' '}
+                    {translate(
+                        contributorAuthActive
+                            ? 'only_contributor_can_annotate'
+                            : 'everyone_can_contribute',
+                    )}
+                </Typography>
+            </Stack>
+
+            <Box>
+                <h2>{translate('notifications')}</h2>
+
+                <FormControl fullWidth>
+                    <TextField
+                        label={translate('notification_email')}
+                        name="notificationEmail"
+                        form={form}
+                    />
+                    <FormHelperText>
+                        {translate('notification_email_help')}
+                    </FormHelperText>
+                </FormControl>
+            </Box>
+
+            <h2 id="theme">{translate('theme')}</h2>
+            <form.Field name="theme">
+                {(field) => (
+                    <Select
+                        value={field.state.value}
+                        style={{
+                            width: 'min(505px, 100%)',
+                        }}
+                        sx={{ mb: 2 }}
+                        inputProps={{
+                            'aria-labelledby': 'theme',
+                        }}
+                        onChange={(event) => {
+                            field.handleChange(event.target.value);
+
+                            const themeValue = availableThemes.find(
+                                (value) => value.value === event.target.value,
+                            );
+
+                            const configToUpdate =
+                                currentConfig === 'invalid_json'
+                                    ? config
+                                    : currentConfig;
+
+                            form.setFieldValue('config', {
+                                ...(configToUpdate || {}),
+                                front: {
+                                    ...(configToUpdate?.front || {}),
+                                    theme: themeValue.defaultVariables,
+                                },
+                            });
+                            form.validateField('config');
+                        }}
+                    >
+                        {availableThemes.map((t) => (
+                            <MenuItem key={t.value} value={t.value}>
+                                {t.name[locale]} - {t.description[locale]}
+                            </MenuItem>
+                        ))}
+                    </Select>
+                )}
+            </form.Field>
+
             <Box
                 sx={{
                     width: '100%',
                     display: 'flex',
                     gap: 1,
+                    alignItems: 'center',
                 }}
             >
-                <h2>{translate('user_auth')}</h2>
-                <Checkbox
-                    checked={userAuth?.active || false}
-                    onChange={(event) => {
-                        setIsFormModified(true);
-                        setUserAuth({
-                            ...userAuth,
-                            active: event.target.checked,
-                        });
-                    }}
-                />
+                <h2 id="antispam_filter">{translate('antispam_filter')}</h2>
+                <form.Field name="antispamFilter.active">
+                    {(field) => (
+                        <Checkbox
+                            checked={field.state.value}
+                            onChange={(event) => {
+                                field.handleChange(event.target.checked);
+                                if (!event.target.checked) {
+                                    form.validateField(
+                                        'antispamFilter.recaptchaClientKey',
+                                    );
+                                    form.validateField(
+                                        'antispamFilter.recaptchaSecretKey',
+                                    );
+                                }
+                            }}
+                            inputProps={{
+                                'aria-labelledby': 'antispam_filter',
+                            }}
+                        />
+                    )}
+                </form.Field>
             </Box>
 
             <Box
@@ -211,77 +429,40 @@ export const ConfigTenantForm = ({ history, onLoadConfigTenant }) => {
                     mb: 4,
                 }}
             >
-                <TextField
-                    label="Username"
-                    value={userAuth?.username || ''}
-                    disabled={!userAuth?.active}
-                    onChange={(event) => {
-                        setIsFormModified(true);
-                        setUserAuth({
-                            ...userAuth,
-                            username: event.target.value,
-                        });
-                    }}
-                />
+                <FormControl fullWidth>
+                    <TextField
+                        label={translate('recaptcha_client_key')}
+                        name="antispamFilter.recaptchaClientKey"
+                        form={form}
+                        disabled={!antispamFilterActive}
+                    />
+                    <FormHelperText>
+                        {translate('recaptcha_test_configuration')}
+                    </FormHelperText>
+                </FormControl>
 
                 <TextField
-                    label="Password"
-                    value={userAuth?.password || ''}
-                    disabled={!userAuth?.active}
-                    onChange={(event) => {
-                        setIsFormModified(true);
-                        setUserAuth({
-                            ...userAuth,
-                            password: event.target.value,
-                        });
-                    }}
+                    label={translate('recaptcha_secret_key')}
+                    name="antispamFilter.recaptchaSecretKey"
+                    form={form}
+                    disabled={!antispamFilterActive}
+                    type="password"
+                    fullWidth
                 />
             </Box>
 
-            <h2>{translate('theme')}</h2>
-            <Select
-                value={theme}
-                style={{
-                    width: 'min(505px, 100%)',
-                }}
-                sx={{ mb: 2 }}
-                onChange={handleThemeChange}
-            >
-                {themes.map((t) => (
-                    <MenuItem key={t.value} value={t.value}>
-                        {t.name[locale]} - {t.description[locale]}
-                    </MenuItem>
-                ))}
-            </Select>
-
             <h2>{translate('other')}</h2>
             <TextField
-                label="Enrichment Batch Size"
-                value={enrichmentBatchSize || ''}
+                label={translate('enrichment_batch_size')}
+                name="enrichmentBatchSize"
+                form={form}
                 type="number"
                 sx={{ mb: 2 }}
-                onChange={(event) => {
-                    setIsFormModified(true);
-                    setEnrichmentBatchSize(Number(event.target.value));
-                }}
             />
             <Box sx={{ mb: 10 }}>
-                <AceEditor
-                    placeholder="Placeholder Text"
-                    mode="json"
-                    fontSize={16}
-                    theme="monokai"
-                    showPrintMargin={false}
-                    wrapEnabled={true}
-                    showGutter={true}
-                    value={configTenant}
-                    onChange={handleConfigTenantChange}
-                    width="100%"
-                    setOptions={{
-                        showLineNumbers: true,
-                        tabSize: 2,
-                    }}
-                />
+                <form.Field name="config">
+                    {(field) => <ConfigField field={field} form={form} />}
+                </form.Field>
             </Box>
             <Box
                 sx={{
@@ -305,41 +486,81 @@ export const ConfigTenantForm = ({ history, onLoadConfigTenant }) => {
                     >
                         {translate('cancel')}
                     </CancelButton>
-                    <Button
-                        variant="contained"
-                        className="btn-save"
-                        color="primary"
-                        onClick={handleSave}
-                        startIcon={
-                            isFormModified && (
-                                <Tooltip title={translate('form_is_modified')}>
-                                    <SaveAs />
-                                </Tooltip>
-                            )
-                        }
-                        sx={{
-                            animation: isFormModified ? `${shake} 1s ease` : '',
-                        }}
-                    >
-                        {translate('save')}
-                    </Button>
+                    <SaveButton
+                        isFormModified={isFormModified}
+                        type="submit"
+                        disabled={isSubmitting}
+                    />
                 </Box>
             </Box>
         </Box>
     );
 };
 
+ConfigTenantFormView.propTypes = {
+    initialConfig: PropTypes.object.isRequired,
+    availableThemes: PropTypes.array.isRequired,
+    handleCancel: PropTypes.func.isRequired,
+    handleSave: PropTypes.func.isRequired,
+    isSubmitting: PropTypes.bool,
+};
+
+export const ConfigTenantForm = ({ loadConfigTenant }) => {
+    const history = useHistory();
+    const { translate } = useTranslate();
+
+    const { data, error, isLoading } = useGetConfigTenant();
+    const availableThemesResponse = useGetAvailableThemes();
+
+    const { handleUpdateConfigTenant, isSubmitting } = useUpdateConfigTenant();
+
+    const handleCancel = () => {
+        history.push('/data');
+    };
+
+    if (isLoading || availableThemesResponse.isLoading) {
+        return <Loading>{translate('loading')}</Loading>;
+    }
+
+    if (error) {
+        console.error(error);
+        return (
+            <AdminOnlyAlert>
+                {translate('config_tenant_query_error')}
+            </AdminOnlyAlert>
+        );
+    }
+    if (availableThemesResponse.error) {
+        console.error(availableThemesResponse.error);
+        return (
+            <AdminOnlyAlert>
+                {translate('available_themes_query_error')}
+            </AdminOnlyAlert>
+        );
+    }
+
+    return (
+        <ConfigTenantFormView
+            initialConfig={data}
+            availableThemes={availableThemesResponse.data}
+            handleSave={(data) => {
+                handleUpdateConfigTenant(data);
+                // update configTenant in redux store
+                loadConfigTenant();
+            }}
+            handleCancel={handleCancel}
+            isSubmitting={isSubmitting}
+        />
+    );
+};
+
 const mapStateToProps = () => ({});
 const mapDispatchToProps = {
-    onLoadConfigTenant: loadConfigTenant,
+    loadConfigTenant: loadConfigTenant,
 };
 
 ConfigTenantForm.propTypes = {
-    history: PropTypes.object.isRequired,
-    onLoadConfigTenant: PropTypes.func.isRequired,
+    loadConfigTenant: PropTypes.func.isRequired,
 };
 
-export default compose(
-    withRouter,
-    connect(mapStateToProps, mapDispatchToProps),
-)(ConfigTenantForm);
+export default connect(mapStateToProps, mapDispatchToProps)(ConfigTenantForm);

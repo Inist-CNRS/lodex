@@ -6,13 +6,18 @@ import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { useStore } from '@tanstack/react-form';
 
 import { useTranslate } from '../../../i18n/I18NContext';
-import { AnnotationStatus, statuses } from '../AnnotationStatus';
+import { AnnotationStatus } from '../AnnotationStatus';
+import { FormHelperText } from '@mui/material';
+import { statuses } from '../../../../../common/validator/annotation.validator';
 
 export function AnnotationInputs({ form }) {
     const { translate } = useTranslate();
-
+    const isInternalCommentRequired = useStore(form.store, (state) => {
+        return ['validated', 'rejected'].includes(state.values.status);
+    });
     return (
         <Stack
             gap={5}
@@ -41,6 +46,9 @@ export function AnnotationInputs({ form }) {
                                     </MenuItem>
                                 ))}
                             </Select>
+                            <FormHelperText>
+                                {translate('annotation_status_help')}
+                            </FormHelperText>
                         </FormControl>
                     );
                 }}
@@ -62,7 +70,28 @@ export function AnnotationInputs({ form }) {
                             maxRows={10}
                             multiline
                             error={hasErrors}
-                            required
+                            required={isInternalCommentRequired}
+                        />
+                    );
+                }}
+            </form.Field>
+            <form.Field name="adminComment">
+                {(field) => {
+                    const hasErrors = !!(
+                        field.state.meta.isTouched &&
+                        field.state.meta.errors?.length
+                    );
+                    return (
+                        <TextField
+                            label={translate('annotation_admin_comment')}
+                            name={field.name}
+                            value={field.state.value}
+                            onBlur={field.handleBlur}
+                            onChange={(e) => field.handleChange(e.target.value)}
+                            minRows={5}
+                            maxRows={10}
+                            multiline
+                            error={hasErrors}
                         />
                     );
                 }}

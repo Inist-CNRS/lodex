@@ -3,8 +3,10 @@ import { getCreatedCollection } from './utils';
 
 export default async (db) => {
     const annotationCollection = await getCreatedCollection(db, 'annotation');
+    await annotationCollection.createIndex({ fieldId: 1 });
+    await annotationCollection.createIndex({ resourceUri: 1 });
 
-    async function create(annotationPayload) {
+    async function create({ reCaptchaToken, ...annotationPayload }) {
         const now = new Date();
         const { insertedId } = await annotationCollection.insertOne({
             ...annotationPayload,
@@ -85,6 +87,10 @@ export default async (db) => {
         return +deletedCount;
     }
 
+    async function deleteMany(filter = {}) {
+        return annotationCollection.deleteMany(filter);
+    }
+
     async function deleteManyById(ids) {
         const { deletedCount } = await annotationCollection.deleteMany({
             _id: {
@@ -96,7 +102,17 @@ export default async (db) => {
         return +deletedCount;
     }
 
+    async function findManyByFieldAndResource(fieldId, resourceUri) {
+        return await annotationCollection
+            .find({ fieldId, resourceUri })
+            .sort({
+                createdAt: -1,
+            })
+            .toArray();
+    }
+
     return {
+        find: (...args) => annotationCollection.find(...args),
         create,
         updateOneById,
         findAll,
@@ -104,6 +120,8 @@ export default async (db) => {
         count,
         findOneById,
         deleteOneById,
+        deleteMany,
         deleteManyById,
+        findManyByFieldAndResource,
     };
 };

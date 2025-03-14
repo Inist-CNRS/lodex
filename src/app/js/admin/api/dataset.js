@@ -3,7 +3,8 @@ const {
     getGetDatasetRequest,
     getGetDatasetColumnsRequest,
     putUpdateDataset,
-    getDeleteDatasetRowRequest,
+    getDeleteManyDatasetRowRequest,
+    getDeleteFilteredDatasetRowRequest,
 } = require('../../user');
 const { getUserSessionStorageInfo } = require('./tools');
 
@@ -45,10 +46,22 @@ const updateDataset = async ({ uri, field, value }) => {
     });
 };
 
-const deleteDatasetRow = async (id) => {
+const deleteManyDatasetRows = async (ids) => {
     const { token } = getUserSessionStorageInfo();
 
-    const request = getDeleteDatasetRowRequest({ token }, id);
+    const request = getDeleteManyDatasetRowRequest({ token }, ids);
+    return fetch(request).then(({ response, error }) => {
+        if (error) {
+            return [];
+        }
+        return response;
+    });
+};
+
+const deleteFilteredDatasetRows = async (filter) => {
+    const { token } = getUserSessionStorageInfo();
+
+    const request = getDeleteFilteredDatasetRowRequest({ token }, filter);
     return fetch(request).then(({ response, error }) => {
         if (error) {
             return [];
@@ -61,5 +74,6 @@ export default {
     getDataset,
     getDatasetColumns,
     updateDataset,
-    deleteDatasetRow,
+    deleteManyDatasetRows,
+    deleteFilteredDatasetRows,
 };

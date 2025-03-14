@@ -1,12 +1,14 @@
 import { ThemeProvider, createTheme } from '@mui/material';
-import { screen } from '@testing-library/react';
-import { shallow } from 'enzyme';
 import React from 'react';
-import { render } from '../../../../test-utils';
+import { render, screen } from '../../../../test-utils';
 import Loading from '../../lib/components/Loading';
 import Detail from './Detail';
 import RemovedDetail from './RemovedDetail';
 import { ResourceComponent } from './Resource';
+import { TestI18N } from '../../i18n/I18NContext';
+import { StyleSheetTestUtils } from 'aphrodite';
+import { MemoryRouter } from 'react-router-dom';
+import { shallow } from 'enzyme';
 
 describe('<Resource />', () => {
     const defaultProps = {
@@ -15,9 +17,13 @@ describe('<Resource />', () => {
         preLoadPublication: () => null,
         preLoadExporters: () => null,
         p: { t: (v) => v },
-        history: { goBack: () => {} },
+        history: { goBack: () => {}, push: () => {} },
         match: { params: { uri: 'FOO' } },
     };
+    beforeEach(() => {
+        StyleSheetTestUtils.suppressStyleInjection();
+        localStorage.clear();
+    });
 
     it('should display Loading if loading prop is true', () => {
         const props = {
@@ -25,8 +31,12 @@ describe('<Resource />', () => {
             loading: true,
         };
 
-        const wrapper = shallow(<ResourceComponent {...props} />);
-        expect(wrapper.find(Loading)).toHaveLength(1);
+        const wrapper = render(
+            <TestI18N>
+                <ResourceComponent {...props} />
+            </TestI18N>,
+        );
+        expect(wrapper.queryByText('loading_resource')).toBeInTheDocument();
     });
 
     it('should display not found message if no resource', () => {
@@ -35,16 +45,22 @@ describe('<Resource />', () => {
             loading: false,
         };
 
-        const wrapper = shallow(<ResourceComponent {...props} />);
-        expect(wrapper.find(Loading)).toHaveLength(0);
-        expect(wrapper.find('.not-found')).toHaveLength(1);
+        const wrapper = render(
+            <TestI18N>
+                <MemoryRouter>
+                    <ResourceComponent {...props} />
+                </MemoryRouter>
+            </TestI18N>,
+        );
+        expect(wrapper.queryByText('loading_resource')).not.toBeInTheDocument();
+        expect(wrapper.queryByText('not_found')).toBeInTheDocument();
     });
 
     it('should display Detail if resource', () => {
         const props = {
             ...defaultProps,
             loading: false,
-            resource: 'resource',
+            resource: {},
         };
 
         const wrapper = shallow(<ResourceComponent {...props} />);
@@ -58,7 +74,7 @@ describe('<Resource />', () => {
             ...defaultProps,
             removed: true,
             loading: false,
-            resource: 'resource',
+            resource: {},
         };
 
         const wrapper = shallow(<ResourceComponent {...props} />);
@@ -66,25 +82,11 @@ describe('<Resource />', () => {
         expect(wrapper.find(Detail)).toHaveLength(0);
     });
 
-    it('should display back to list in link if no datasetTitle', () => {
-        const props = {
-            ...defaultProps,
-            loading: false,
-            resource: 'resource',
-            datasetTitle: null,
-        };
-
-        const wrapper = shallow(<ResourceComponent {...props} />);
-        expect(wrapper.find(Detail).prop('backToListLabel')).toBe(
-            'back_to_list',
-        );
-    });
-
     it('should display datasetTitle in link', () => {
         const props = {
             ...defaultProps,
             loading: false,
-            resource: 'resource',
+            resource: {},
             datasetTitleKey: 'dataset_title',
             characteristics: { dataset_title: 'dataset title' },
         };
@@ -102,7 +104,7 @@ describe('<Resource />', () => {
             match: { params: { uri: 'uri' } },
             preLoadExporters,
             loading: false,
-            resource: 'resource',
+            resource: {},
         };
 
         render(<ResourceComponent {...props} />);
@@ -116,7 +118,7 @@ describe('<Resource />', () => {
             match: { params: { uri: 'uri' } },
             preLoadResource,
             loading: false,
-            resource: 'resource',
+            resource: {},
         };
 
         const { rerender } = render(<ResourceComponent {...props} />);
@@ -138,7 +140,7 @@ describe('<Resource />', () => {
             match: { params: { naan: 'naan', rest: 'rest' } },
             preLoadResource,
             loading: false,
-            resource: 'resource',
+            resource: {},
         };
 
         const { rerender } = render(<ResourceComponent {...props} />);
@@ -169,7 +171,9 @@ describe('<Resource />', () => {
         const theme = createTheme({});
         const TestResourceComponent = (props) => (
             <ThemeProvider theme={theme}>
-                <ResourceComponent {...props} />
+                <TestI18N>
+                    <ResourceComponent {...props} />
+                </TestI18N>
             </ThemeProvider>
         );
 
@@ -215,7 +219,9 @@ describe('<Resource />', () => {
         const theme = createTheme({});
         const TestResourceComponent = (props) => (
             <ThemeProvider theme={theme}>
-                <ResourceComponent {...props} />
+                <TestI18N>
+                    <ResourceComponent {...props} />
+                </TestI18N>
             </ThemeProvider>
         );
 
@@ -244,5 +250,21 @@ describe('<Resource />', () => {
                 name: 'back_to_resource',
             }),
         ).toBeInTheDocument();
+    });
+
+    it('should store resource uri in local storage', () => {
+        const preLoadResource = jest.fn();
+        const props = {
+            ...defaultProps,
+            match: { params: { uri: 'uri' } },
+            preLoadResource,
+            loading: false,
+            resource: { uri: 'resource/uri' },
+        };
+
+        render(<ResourceComponent {...props} />);
+        expect(localStorage.getItem('default-viewed-resources')).toBe(
+            '["resource/uri"]',
+        );
     });
 });

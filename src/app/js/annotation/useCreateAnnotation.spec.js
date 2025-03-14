@@ -4,14 +4,20 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import fetch from '../lib/fetch';
 import { useCreateAnnotation } from './useCreateAnnotation';
+import { AnnotationStorageProvider } from './annotationStorage';
+import { TestI18N } from '../i18n/I18NContext';
 
 const queryClient = new QueryClient();
 
 function TestWrapper({ children }) {
     return (
-        <QueryClientProvider client={queryClient}>
-            {children}
-        </QueryClientProvider>
+        <AnnotationStorageProvider>
+            <TestI18N>
+                <QueryClientProvider client={queryClient}>
+                    {children}
+                </QueryClientProvider>
+            </TestI18N>
+        </AnnotationStorageProvider>
     );
 }
 
@@ -54,7 +60,7 @@ describe('useCreateAnnotation', () => {
 
         expect(fetch).toHaveBeenCalledWith(
             expect.objectContaining({
-                url: '/api/annotation',
+                url: '/api/annotation?locale=en',
                 method: 'POST',
                 body: '{"comment":"test"}',
             }),

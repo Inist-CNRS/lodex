@@ -275,6 +275,20 @@ export const getPatchOverviewRequest = (state, fieldData) =>
         method: 'PATCH',
     });
 
+export const getPatchSortFieldRequest = (state, body) =>
+    getRequest(state, {
+        url: `/api/field/sort-field`,
+        body,
+        method: 'PATCH',
+    });
+
+export const getPatchSortOrderRequest = (state, body) =>
+    getRequest(state, {
+        url: `/api/field/sort-order`,
+        body,
+        method: 'PATCH',
+    });
+
 export const getSaveFieldRequest = (state, fieldData) => {
     if (fieldData.name === 'new') {
         return getCreateFieldRequest(state, omit(fieldData, ['name']));
@@ -335,10 +349,10 @@ export const getAddCharacteristicRequest = (state, newCharacteristics) =>
     });
 
 export const getLoadDatasetPageRequest = (state, params = {}) => {
-    const paramString = getQueryString(params);
-
     return getRequest(state, {
-        url: `/api/publishedDataset?${paramString}`,
+        url: `/api/publishedDataset`,
+        method: 'POST',
+        body: params,
     });
 };
 
@@ -393,9 +407,19 @@ export const getGetDatasetColumnsRequest = (state) => {
     });
 };
 
-export const getDeleteDatasetRowRequest = (state, id) => {
+export const getDeleteManyDatasetRowRequest = (state, ids) => {
     return getRequest(state, {
-        url: `/api/dataset/${id}`,
+        url: `/api/dataset/batch-delete-id?ids=${ids.join(',')}`,
+        method: 'DELETE',
+    });
+};
+
+export const getDeleteFilteredDatasetRowRequest = (
+    state,
+    { columnField, operatorValue, value },
+) => {
+    return getRequest(state, {
+        url: `/api/dataset/batch-delete-filter?filterBy=${columnField}&filterOperator=${operatorValue}&filterValue=${value}`,
         method: 'DELETE',
     });
 };
@@ -406,9 +430,9 @@ export const getClearDatasetRequest = (state) =>
         method: 'DELETE',
     });
 
-export const getDumpDatasetRequest = (state) =>
+export const getDumpDatasetRequest = (state, fields) =>
     getRequest(state, {
-        url: '/api/dump',
+        url: '/api/dump?fields=' + fields.join(','),
         method: 'GET',
     });
 
@@ -741,7 +765,7 @@ export const selectors = {
     postDuplicateField,
     clearModelRequest,
     getPatchSearchableFieldsRequest,
-    getDeleteDatasetRowRequest,
+    getDeleteManyDatasetRowRequest,
     getExportPDFRequest,
     getDisplayConfigRequest,
     getConfigTenantRequest,

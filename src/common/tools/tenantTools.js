@@ -2,6 +2,8 @@ import config from 'config';
 export const DEFAULT_TENANT = 'default';
 export const ROOT_ROLE = 'root';
 export const ADMIN_ROLE = 'admin';
+export const USER_ROLE = 'user';
+export const CONTRIBUTOR_ROLE = 'contributor';
 export const MAX_DB_NAME_SIZE = 63;
 
 export const INVALID_NAMES = [ADMIN_ROLE, ROOT_ROLE, DEFAULT_TENANT];

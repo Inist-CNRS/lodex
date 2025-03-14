@@ -54,15 +54,7 @@ const DefaultView = ({ className, resource, field, fieldStatus, shrink }) => {
         <Typography
             component="span"
             className="property_value_item"
-            sx={{
-                ...styles[fieldStatus],
-                position: 'relative',
-                display: 'inline-block',
-                width: 'fit-content',
-                'li &:hover': {
-                    color: 'primary.main',
-                },
-            }}
+            sx={styles[fieldStatus]}
         >
             <span className={className}>{text}</span>
         </Typography>
@@ -84,3 +76,7 @@ DefaultView.defaultProps = {
 };
 
 export default DefaultView;
+
+export const getReadableValue = ({ resource, field }) => {
+    return resource[field.name];
+};

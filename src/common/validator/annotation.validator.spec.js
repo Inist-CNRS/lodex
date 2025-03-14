@@ -3,6 +3,7 @@ import {
     annotationImportSchema,
     annotationUpdateSchema,
     getAnnotationsQuerySchema,
+    statuses,
 } from './annotation.validator';
 
 describe('annotation.validator', () => {
@@ -140,7 +141,7 @@ describe('annotation.validator', () => {
                 authorEmail: 'john.doe@marmelab.com',
                 target: 'value',
                 initialValue: 'initial value',
-                proposedValue: '',
+                proposedValue: null,
             };
 
             const validatedAnnotation =
@@ -173,10 +174,10 @@ describe('annotation.validator', () => {
             ]);
         });
 
-        it('should accept annotation with proposedValue when kind is correct', () => {
+        it('should accept annotation with proposedValue when kind is correction', () => {
             const annotationPayload = {
                 resourceUri: 'uid:/2a8d429f-8134-4502-b9d3-d20c571592fa',
-                kind: 'correct',
+                kind: 'correction',
                 comment: 'This is a comment',
                 authorName: 'John Doe',
                 authorEmail: 'john.doe@marmelab.com',
@@ -187,7 +188,10 @@ describe('annotation.validator', () => {
 
             const result = annotationCreationSchema.parse(annotationPayload);
 
-            expect(result).toStrictEqual(annotationPayload);
+            expect(result).toStrictEqual({
+                ...annotationPayload,
+                proposedValue: [annotationPayload.proposedValue],
+            });
         });
 
         it('should accept annotation with proposedValue when kind is addition', () => {
@@ -204,10 +208,13 @@ describe('annotation.validator', () => {
 
             const result = annotationCreationSchema.parse(annotationPayload);
 
-            expect(result).toStrictEqual(annotationPayload);
+            expect(result).toStrictEqual({
+                ...annotationPayload,
+                proposedValue: [annotationPayload.proposedValue],
+            });
         });
 
-        it('should reject annotation with proposedValue when kind is not "correct"', () => {
+        it('should reject annotation with proposedValue when kind is not "correction"', () => {
             const annotationPayload = {
                 resourceUri: 'uid:/2a8d429f-8134-4502-b9d3-d20c571592fa',
                 kind: 'removal',
@@ -232,7 +239,7 @@ describe('annotation.validator', () => {
             ]);
         });
 
-        it('should accept annotation with no proposedValue when kind is not correct', () => {
+        it('should accept annotation with no proposedValue when kind is not correction', () => {
             const annotationPayload = {
                 resourceUri: 'uid:/2a8d429f-8134-4502-b9d3-d20c571592fa',
                 kind: 'removal',
@@ -249,10 +256,10 @@ describe('annotation.validator', () => {
             expect(result).toStrictEqual(annotationPayload);
         });
 
-        it('should reject annotation with no proposedValue when kind is "correct"', () => {
+        it('should reject annotation with no proposedValue when kind is "correction"', () => {
             const annotationPayload = {
                 resourceUri: 'uid:/2a8d429f-8134-4502-b9d3-d20c571592fa',
-                kind: 'correct',
+                kind: 'correction',
                 comment: 'This is a comment',
                 authorName: 'John Doe',
                 authorEmail: 'john.doe@marmelab.com',
@@ -299,6 +306,106 @@ describe('annotation.validator', () => {
             ]);
         });
 
+        it('should support string for proposedValue', () => {
+            const annotationPayload = {
+                resourceUri: 'uid:/2a8d429f-8134-4502-b9d3-d20c571592fa',
+                kind: 'correction',
+                comment: 'This is a comment',
+                authorName: 'John Doe',
+                authorEmail: 'john.doe@marmelab.com',
+                target: 'value',
+                initialValue: 'initialValue',
+                proposedValue: 'proposedValue',
+            };
+
+            const result = annotationCreationSchema.parse(annotationPayload);
+
+            expect(result).toStrictEqual({
+                ...annotationPayload,
+                proposedValue: [annotationPayload.proposedValue],
+            });
+        });
+
+        it('should support array for proposedValue', () => {
+            const annotationPayload = {
+                resourceUri: 'uid:/2a8d429f-8134-4502-b9d3-d20c571592fa',
+                kind: 'correction',
+                comment: 'This is a comment',
+                authorName: 'John Doe',
+                authorEmail: 'john.doe@marmelab.com',
+                target: 'value',
+                initialValue: 'initialValue',
+                proposedValue: ['proposedValue'],
+            };
+
+            const result = annotationCreationSchema.parse(annotationPayload);
+
+            expect(result).toStrictEqual(annotationPayload);
+        });
+
+        it('should not support empty array for proposedValue', () => {
+            const annotationPayload = {
+                resourceUri: 'uid:/2a8d429f-8134-4502-b9d3-d20c571592fa',
+                kind: 'correction',
+                comment: 'This is a comment',
+                authorName: 'John Doe',
+                authorEmail: 'john.doe@marmelab.com',
+                target: 'value',
+                initialValue: 'initialValue',
+                proposedValue: [],
+            };
+
+            const result =
+                annotationCreationSchema.safeParse(annotationPayload);
+
+            expect(result.success).toBe(false);
+            expect(result.error.errors).toStrictEqual([
+                {
+                    code: 'too_small',
+                    minimum: 1,
+                    type: 'array',
+                    inclusive: true,
+                    exact: false,
+                    message: 'error_required',
+                    path: ['proposedValue'],
+                },
+                {
+                    code: 'error_required',
+                    message: 'annotation_error_required_proposed_value',
+                    path: ['proposedValue'],
+                },
+            ]);
+        });
+
+        it('should not support empty string for proposedValue array', () => {
+            const annotationPayload = {
+                resourceUri: 'uid:/2a8d429f-8134-4502-b9d3-d20c571592fa',
+                kind: 'correction',
+                comment: 'This is a comment',
+                authorName: 'John Doe',
+                authorEmail: 'john.doe@marmelab.com',
+                target: 'value',
+                initialValue: 'initialValue',
+                proposedValue: [''],
+            };
+
+            const result =
+                annotationCreationSchema.safeParse(annotationPayload);
+
+            expect(result.success).toBe(false);
+            expect(result.error.errors).toStrictEqual([
+                {
+                    code: 'too_small',
+                    minimum: 1,
+                    inclusive: true,
+                    exact: false,
+                    message: 'error_required',
+                    path: ['proposedValue', 0],
+                    type: 'string',
+                },
+            ]);
+        });
+
         it('should accept annotation with kind "comment" when target is "title"', () => {
             const annotationPayload = {
                 resourceUri: 'uid:/2a8d429f-8134-4502-b9d3-d20c571592fa',
@@ -339,10 +446,10 @@ describe('annotation.validator', () => {
             ]);
         });
 
-        it('should reject annotation with kind "correct" when target is "title"', () => {
+        it('should reject annotation with kind "correction" when target is "title"', () => {
             const annotationPayload = {
                 resourceUri: 'uid:/2a8d429f-8134-4502-b9d3-d20c571592fa',
-                kind: 'correct',
+                kind: 'correction',
                 comment: 'This is a comment',
                 authorName: 'John Doe',
                 authorEmail: 'john.doe@marmelab.com',
@@ -411,10 +518,10 @@ describe('annotation.validator', () => {
             ]);
         });
 
-        it('should accept annotation with kind "correct" when target is "value"', () => {
+        it('should accept annotation with kind "correction" when target is "value"', () => {
             const annotationPayload = {
                 resourceUri: 'uid:/2a8d429f-8134-4502-b9d3-d20c571592fa',
-                kind: 'correct',
+                kind: 'correction',
                 comment: 'This is a comment',
                 authorName: 'John Doe',
                 authorEmail: 'john.doe@marmelab.com',
@@ -424,7 +531,10 @@ describe('annotation.validator', () => {
             };
 
             const result = annotationCreationSchema.parse(annotationPayload);
-            expect(result).toStrictEqual(annotationPayload);
+            expect(result).toStrictEqual({
+                ...annotationPayload,
+                proposedValue: [annotationPayload.proposedValue],
+            });
         });
 
         it('should accept annotation with kind "removal" when target is "value"', () => {
@@ -473,6 +583,7 @@ describe('annotation.validator', () => {
 
         it('should return parsing errors', () => {
             const { success, error } = annotationCreationSchema.safeParse({
+                resourceUri: '/',
                 comment: '',
             });
 
@@ -496,6 +607,7 @@ describe('annotation.validator', () => {
                 status: 'to_review',
                 internalComment: 'Need to test this annotation thoroughly',
                 administrator: 'The tester',
+                adminComment: 'I will do it next week',
             };
 
             const validatedAnnotation =
@@ -518,8 +630,8 @@ describe('annotation.validator', () => {
                 {
                     code: 'invalid_enum_value',
                     message:
-                        "Invalid enum value. Expected 'to_review' | 'ongoing' | 'validated' | 'rejected', received 'to-test'",
-                    options: ['to_review', 'ongoing', 'validated', 'rejected'],
+                        "Invalid enum value. Expected 'to_review' | 'ongoing' | 'validated' | 'rejected' | 'parking', received 'to-test'",
+                    options: statuses,
                     path: ['status'],
                     received: 'to-test',
                 },
@@ -540,9 +652,9 @@ describe('annotation.validator', () => {
                 {
                     code: 'invalid_type',
                     expected:
-                        "'to_review' | 'ongoing' | 'validated' | 'rejected'",
+                        "'to_review' | 'ongoing' | 'validated' | 'rejected' | 'parking'",
                     message:
-                        "Expected 'to_review' | 'ongoing' | 'validated' | 'rejected', received null",
+                        "Expected 'to_review' | 'ongoing' | 'validated' | 'rejected' | 'parking', received null",
 
                     path: ['status'],
                     received: 'null',
@@ -570,34 +682,64 @@ describe('annotation.validator', () => {
                 },
             ]);
         });
-        it('should reject when internalComment is empty', () => {
-            const annotationPayload = {
-                status: 'to_review',
-                internalComment: '',
-                administrator: 'The tester',
-            };
+        it.each(['validated', 'rejected'])(
+            'should reject when internalComment is empty and status %s',
+            (status) => {
+                const annotationPayload = {
+                    status,
+                    internalComment: '',
+                    administrator: 'The tester',
+                };
 
-            const { success, error } =
-                annotationUpdateSchema.safeParse(annotationPayload);
-            expect(success).toBe(false);
+                const { success, error } =
+                    annotationUpdateSchema.safeParse(annotationPayload);
+                expect(success).toBe(false);
 
-            expect(error.errors).toStrictEqual([
-                {
-                    code: 'too_small',
-                    exact: false,
-                    inclusive: true,
-                    message: 'error_required',
-                    minimum: 1,
-                    path: ['internalComment'],
-                    type: 'string',
-                },
-            ]);
-        });
+                expect(error.errors).toStrictEqual([
+                    {
+                        message: 'error_required',
+                        code: 'error_required',
+                        path: ['internalComment'],
+                    },
+                ]);
+            },
+        );
+
+        it.each(['to_review', 'ongoing', 'parking'])(
+            'should accept when internalComment is empty and status %s',
+            (status) => {
+                const annotationPayload = {
+                    status,
+                    internalComment: '',
+                    administrator: 'The tester',
+                };
+
+                const { success, error } =
+                    annotationUpdateSchema.safeParse(annotationPayload);
+                expect(success).toBe(true);
+
+                expect(error).toBeUndefined();
+            },
+        );
         it('should accept no administrator', () => {
             const annotationPayload = {
                 status: 'to_review',
                 internalComment: 'Need to test this annotation thoroughly',
                 administrator: null,
+                adminComment: 'I will do it next week',
+            };
+
+            const validatedAnnotation =
+                annotationUpdateSchema.parse(annotationPayload);
+
+            expect(validatedAnnotation).toStrictEqual(annotationPayload);
+        });
+        it('should accept no adminComment', () => {
+            const annotationPayload = {
+                status: 'to_review',
+                internalComment: 'Need to test this annotation thoroughly',
+                administrator: null,
+                adminComment: null,
             };
 
             const validatedAnnotation =
@@ -713,26 +855,10 @@ describe('annotation.validator', () => {
     });
 
     describe('annotationCreateBatchSchema', () => {
-        it('should validate an array of annotations', () => {
-            const payload = [
-                {
-                    resourceUri: null,
-                    fieldId: 'kzB6',
-                    kind: 'comment',
-                    authorName: 'Jane DOE',
-                    authorEmail: 'jane@marmelab.com',
-                    comment: 'There is a typo',
-                    status: 'ongoing',
-                    internalComment: 'Test comment',
-                    administrator: 'paul',
-                    createdAt: '2025-01-10T21:49:14.000Z',
-                    updatedAt: '2025-01-10T21:49:14.000Z',
-                },
-            ];
-
+        it('should validate an imported annotation', () => {
             expect(
                 annotationImportSchema.safeParse({
-                    resourceUri: null,
+                    resourceUri: '/graph/kzB6',
                     fieldId: 'kzB6',
                     kind: 'comment',
                     authorName: 'Jane DOE',
@@ -747,7 +873,7 @@ describe('annotation.validator', () => {
             ).toMatchObject({
                 success: true,
                 data: {
-                    resourceUri: null,
+                    resourceUri: '/graph/kzB6',
                     fieldId: 'kzB6',
                     kind: 'comment',
                     authorName: 'Jane DOE',

@@ -6,10 +6,10 @@ import { useDeleteManyAnnotation } from './hooks/useDeleteManyAnnotation';
 
 jest.mock('./hooks/useDeleteManyAnnotation');
 
-function TestButton({ selectedRows }) {
+function TestButton({ selectedRowIds }) {
     return (
         <TestI18N>
-            <DeleteManyButton selectedRows={selectedRows} />
+            <DeleteManyButton selectedRowIds={selectedRowIds} />
         </TestI18N>
     );
 }
@@ -23,7 +23,7 @@ describe('DeleteManyButton', () => {
             isLoading: false,
         }));
 
-        const wrapper = render(<TestButton selectedRows={[]} />);
+        const wrapper = render(<TestButton selectedRowIds={[]} />);
 
         expect(wrapper.container).toBeEmptyDOMElement();
     });
@@ -36,7 +36,7 @@ describe('DeleteManyButton', () => {
             isLoading: false,
         }));
 
-        const wrapper = render(<TestButton selectedRows={['1', '2']} />);
+        const wrapper = render(<TestButton selectedRowIds={['1', '2']} />);
 
         wrapper
             .getByRole('button', {
@@ -61,7 +61,7 @@ describe('DeleteManyButton', () => {
             isLoading: false,
         }));
 
-        const wrapper = render(<TestButton selectedRows={['1', '2']} />);
+        const wrapper = render(<TestButton selectedRowIds={['1', '2']} />);
 
         wrapper
             .getByRole('button', {
@@ -86,7 +86,7 @@ describe('DeleteManyButton', () => {
             isLoading: true,
         }));
 
-        const wrapper = render(<TestButton selectedRows={['1', '2']} />);
+        const wrapper = render(<TestButton selectedRowIds={['1', '2']} />);
 
         wrapper
             .getByRole('button', {

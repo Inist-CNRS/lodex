@@ -31,5 +31,5 @@ export const AnnotationValue = ({ value, label }) => {
 
 AnnotationValue.propTypes = {
     label: PropTypes.string.isRequired,
-    value: PropTypes.element,
+    value: PropTypes.node,
 };

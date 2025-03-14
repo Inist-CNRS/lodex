@@ -74,8 +74,8 @@ describe('AnnotationDetail', () => {
         ).toBeInTheDocument();
 
         expect(
-            wrapper.getByRole('link', { name: 'annotation_resource_link' }),
-        ).toHaveAttribute('href', '/instance/default/uid:/1234');
+            wrapper.getByRole('link', { name: 'annotation_see_resource' }),
+        ).toHaveAttribute('href', '/instance/default/uid:/1234#field-GaZr');
 
         // Field region
         const fieldRegion = wrapper.getByRole('region', {
@@ -164,10 +164,10 @@ describe('AnnotationDetail', () => {
         ).toHaveValue('The administrator');
     });
 
-    it('should render the annotation with no resource', () => {
+    it('should render the annotation targeting home', () => {
         jest.mocked(useGetAnnotation).mockImplementation(() => ({
             data: {
-                resourceUri: null,
+                resourceUri: '/',
                 resource: null,
                 kind: 'comment',
                 comment: 'Just testing the annotation system',
@@ -192,8 +192,8 @@ describe('AnnotationDetail', () => {
         ).toBeInTheDocument();
 
         expect(
-            wrapper.getByRole('link', { name: 'annotation_resource_link' }),
-        ).toHaveAttribute('href', '/instance/default');
+            wrapper.getByRole('link', { name: 'annotation_see_home' }),
+        ).toHaveAttribute('href', '/instance/default#field-GaZr');
     });
 
     it('should render an annotation with a resourceUri but a resource that could not be found', () => {

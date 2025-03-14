@@ -1,14 +1,7 @@
-function openAnnotationModalForField(fieldLabel) {
+export function openAnnotationModalForField(fieldLabel) {
     const buttonLabel = `Add an annotation to the ${fieldLabel} field`;
     cy.findByRole('button', {
         name: buttonLabel,
-    }).click();
-}
-
-function targetValue() {
-    cy.findByRole('menuitem', {
-        name: 'Comment a value',
-        timeout: 1500,
     }).click();
 }
 
@@ -19,14 +12,21 @@ function chooseKindRemoval() {
     }).click();
 }
 
-function targetSection() {
+function chooseKindAdd() {
     cy.findByRole('menuitem', {
-        name: 'Comment the section',
+        name: 'Add some content',
         timeout: 1500,
     }).click();
 }
 
-function goToNextStep() {
+export function targetSection() {
+    cy.findByRole('menuitem', {
+        name: 'Annotate the field',
+        timeout: 1500,
+    }).click();
+}
+
+export function goToNextStep() {
     cy.findByRole('button', { name: 'Next', timeout: 1500 }).click();
     cy.wait(350);
 }
@@ -36,31 +36,54 @@ function chooseValueToComment(value) {
     cy.findByText(value).click();
 }
 
-function fillComment(comment) {
+export function fillComment(comment) {
     cy.findByRole('textbox', { name: 'Comment *', timeout: 1500 }).type(
         comment,
     );
 }
 
-function fillAuthor({ authorName, authorEmail }) {
-    cy.findByRole('textbox', {
+export function authorNameField() {
+    return cy.findByRole('textbox', {
         name: 'Last name, First name *',
         timeout: 1500,
-    }).type(authorName);
+    });
+}
+
+export function authorEmailField() {
+    return cy.findByRole('textbox', {
+        name: 'Email address',
+        timeout: 1500,
+    });
+}
+
+export function authorRememberMeField() {
+    return cy.findByRole('checkbox', {
+        name: 'Remember my information',
+        timeout: 1500,
+    });
+}
+
+function fillAuthor({ authorName, authorEmail, authorRememberMe }) {
+    authorNameField().type(authorName);
 
     if (authorEmail) {
-        cy.findByRole('textbox', { name: /Email/, timeout: 1500 }).type(
-            authorEmail,
-        );
+        authorEmailField().type(authorEmail);
+    }
+
+    if (authorRememberMe === true) {
+        authorRememberMeField().check();
+    } else if (authorRememberMe === false) {
+        authorRememberMeField().uncheck();
     }
 }
 
-function submitAnnotation() {
+export function submitAnnotation() {
     cy.findByRole('button', { name: 'Validate', timeout: 1500 }).click();
     cy.findByText(
         'Your suggestion has been sent. We thank you for your contribution.',
         { timeout: 1500 },
     ).should('be.visible');
+    cy.findByLabelText('close').click();
 }
 
 export function createAnnotationOnFieldWithNoValue({
@@ -68,6 +91,7 @@ export function createAnnotationOnFieldWithNoValue({
     comment,
     authorName,
     authorEmail,
+    authorRememberMe,
 }) {
     openAnnotationModalForField(fieldLabel);
 
@@ -75,7 +99,7 @@ export function createAnnotationOnFieldWithNoValue({
 
     goToNextStep();
 
-    fillAuthor({ authorName, authorEmail });
+    fillAuthor({ authorName, authorEmail, authorRememberMe });
 
     submitAnnotation();
 }
@@ -85,6 +109,7 @@ export function createTitleAnnotation({
     comment,
     authorName,
     authorEmail,
+    authorRememberMe,
 }) {
     openAnnotationModalForField(fieldLabel);
 
@@ -92,9 +117,73 @@ export function createTitleAnnotation({
 
     fillComment(comment);
     goToNextStep();
-    fillAuthor({ authorName, authorEmail });
+    fillAuthor({ authorName, authorEmail, authorRememberMe });
 
     submitAnnotation();
+}
+
+const ANNOTATION_KIND_TRANSLATION = {
+    removal: 'Removal',
+    comment: 'Comment',
+    correction: 'Correction',
+    addition: 'Addition',
+};
+
+export function checkFieldAnnotations({
+    fieldLabel,
+    expectedAnnotations,
+    resourceTitle,
+}) {
+    openAnnotationModalForField(fieldLabel);
+
+    if (expectedAnnotations.length === 0) {
+        cy.findByText('No annotations yet').should('be.visible');
+        return;
+    }
+
+    cy.findByText(
+        expectedAnnotations.length === 1
+            ? `See 1 annotation`
+            : `See ${expectedAnnotations.length} annotations`,
+    ).should('be.visible');
+    cy.findByText(
+        expectedAnnotations.length === 1
+            ? `See 1 annotation`
+            : `See ${expectedAnnotations.length} annotations`,
+    ).click();
+
+    cy.findByLabelText('Resource title').should('have.text', resourceTitle);
+    cy.findAllByLabelText('Type').should(
+        'have.length',
+        expectedAnnotations.length,
+    );
+    cy.findAllByLabelText('Annotation summary').should(
+        'have.length',
+        expectedAnnotations.length,
+    );
+    cy.findAllByLabelText('Status').should(
+        'have.length',
+        expectedAnnotations.length,
+    );
+
+    expectedAnnotations.forEach((annotation, index) => {
+        cy.findAllByLabelText('Type')
+            .eq(index)
+            .should('have.text', ANNOTATION_KIND_TRANSLATION[annotation.kind]);
+
+        cy.findAllByLabelText('Annotation summary')
+            .eq(index)
+            .should('have.text', annotation.summaryValue);
+
+        cy.findAllByLabelText('Status')
+            .eq(index)
+            .should('have.text', annotation.status);
+    });
+
+    cy.findAllByLabelText('close').then((elements) => {
+        cy.wrap(elements[elements.length - 1]).click();
+    });
+    cy.findByText('Cancel').click();
 }
 
 export function createSingleValueAnnotation({
@@ -102,16 +191,15 @@ export function createSingleValueAnnotation({
     comment,
     authorName,
     authorEmail,
+    authorRememberMe,
 }) {
     openAnnotationModalForField(fieldLabel);
-
-    targetValue();
 
     chooseKindRemoval();
 
     fillComment(comment);
     goToNextStep();
-    fillAuthor({ authorName, authorEmail });
+    fillAuthor({ authorName, authorEmail, authorRememberMe });
 
     submitAnnotation();
 }
@@ -122,16 +210,63 @@ export function createMultiValueAnnotation({
     value,
     authorName,
     authorEmail,
+    authorRememberMe,
 }) {
     openAnnotationModalForField(fieldLabel);
-
-    targetValue();
 
     chooseValueToComment(value);
 
     fillComment(comment);
     goToNextStep();
-    fillAuthor({ authorName, authorEmail });
+    fillAuthor({ authorName, authorEmail, authorRememberMe });
+
+    submitAnnotation();
+}
+
+export function createAddValueWithSingleProposedValueChoiceAnnotation({
+    fieldLabel,
+    proposedValue,
+    comment,
+    authorName,
+    authorEmail,
+    authorRememberMe,
+}) {
+    openAnnotationModalForField(fieldLabel);
+
+    chooseKindAdd();
+
+    cy.findByRole('combobox', { name: 'Proposed Value *' }).click();
+    cy.findByRole('option', { name: proposedValue }).click();
+
+    fillComment(comment);
+    goToNextStep();
+    fillAuthor({ authorName, authorEmail, authorRememberMe });
+
+    submitAnnotation();
+}
+
+export function createAddValueWithMultipleProposedValuesChoiceAnnotation({
+    fieldLabel,
+    proposedValues,
+    comment,
+    authorName,
+    authorEmail,
+    authorRememberMe,
+}) {
+    openAnnotationModalForField(fieldLabel);
+
+    chooseKindAdd();
+
+    for (const proposedValue of proposedValues) {
+        cy.findByRole('combobox', { name: 'Proposed Value *' }).click();
+        cy.findByRole('option', { name: proposedValue }).click();
+
+        cy.findByRole('button', { name: proposedValue }).should('be.visible');
+    }
+
+    fillComment(comment);
+    goToNextStep();
+    fillAuthor({ authorName, authorEmail, authorRememberMe });
 
     submitAnnotation();
 }

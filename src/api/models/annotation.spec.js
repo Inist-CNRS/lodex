@@ -47,6 +47,34 @@ describe('annotation', () => {
                 result,
             ]);
         });
+
+        it('should not persist reCaptchaToken', async () => {
+            const annotation = {
+                resourceUri: 'uid:/a4f7a51f-7109-481e-86cc-0adb3a26faa6',
+                fieldId: 'Gb4a',
+                kind: 'comment',
+                authorName: 'Rick HARRIS',
+                authorEmail: 'rick.harris@marmelab.com',
+                comment: 'Hello world',
+            };
+
+            const result = await annotationModel.create({
+                ...annotation,
+                reCaptchaToken: 'recaptcha.token',
+            });
+            expect(result).toStrictEqual({
+                ...annotation,
+                _id: expect.any(ObjectId),
+                internalComment: null,
+                createdAt: expect.any(Date),
+                updatedAt: expect.any(Date),
+                status: 'to_review',
+            });
+
+            expect(await annotationModel.findLimitFromSkip()).toStrictEqual([
+                result,
+            ]);
+        });
     });
 
     describe('updateOneById', () => {
@@ -386,6 +414,135 @@ describe('annotation', () => {
             expect(await annotationModel.findLimitFromSkip()).toMatchObject([
                 firstAnnotation,
             ]);
+        });
+    });
+
+    describe('deleteMany', () => {
+        beforeEach(async () => {
+            await Promise.all([
+                annotationModel.create({
+                    comment: 'target annotation',
+                }),
+                annotationModel.create({
+                    comment: 'another annotation',
+                }),
+            ]);
+        });
+
+        it('should delete annotations matching the filter', async () => {
+            expect(await annotationModel.count({})).toBe(2);
+
+            await expect(
+                annotationModel.deleteMany({
+                    comment: new RegExp(`^.*target.*$`, 'gi'),
+                }),
+            ).resolves.toStrictEqual({
+                acknowledged: true,
+                deletedCount: 1,
+            });
+
+            expect(await annotationModel.findLimitFromSkip({})).toMatchObject([
+                {
+                    comment: 'another annotation',
+                },
+            ]);
+        });
+    });
+
+    describe('findManyByFieldAndResource', () => {
+        let annotationList;
+        beforeEach(async () => {
+            annotationList = await Promise.all(
+                [
+                    {
+                        resourceUri:
+                            'uid:/2a8d429f-8134-4502-b9d3-d20c571592fa',
+                        fieldId: 'GvaF',
+                        kind: 'comment',
+                        authorName: 'Developer',
+                        authorEmail: 'developer@marmelab.com',
+                        comment: 'This is a comment',
+                        status: 'in_progress',
+                        internalComment: 'This is an internal comment',
+                        createdAt: new Date('03-01-2025'),
+                    },
+                    {
+                        resourceUri:
+                            'uid:/2a8d429f-8134-4502-b9d3-d20c571592fa',
+                        fieldId: 'GvaF',
+                        kind: 'correct',
+                        authorName: 'Developer',
+                        authorEmail: 'developer@marmelab.com',
+                        comment: 'This is a correction',
+                        status: 'to_review',
+                        internalComment: null,
+                        createdAt: new Date('04-01-2025'),
+                    },
+                    {
+                        resourceUri: '/',
+                        fieldId: 'GvaF',
+                        kind: 'comment',
+                        authorName: 'John DOE',
+                        authorEmail: 'john.doe@marmelab.com',
+                        comment: 'This is another comment',
+                        status: 'to_review',
+                        internalComment: null,
+                        createdAt: new Date('02-01-2025'),
+                    },
+                    {
+                        resourceUri:
+                            'uid:/2a8d429f-8134-4502-b9d3-d20c571592fa',
+                        fieldId: 'AvaF',
+                        kind: 'correction',
+                        authorName: 'Jane SMITH',
+                        authorEmail: 'jane.smith@marmelab.com',
+                        comment:
+                            'The author list is incomplete: it should include Jane SMITH',
+                        status: 'rejected',
+                        internalComment:
+                            'Jane SMITH is not an author of this document',
+                        createdAt: new Date('01-01-2025'),
+                    },
+                    {
+                        resourceUri:
+                            'uid:/7a8d429f-8134-4502-b9d3-d20c571592fa',
+                        fieldId: 'GvaF',
+                        kind: 'correction',
+                        authorName: 'Jane SMITH',
+                        authorEmail: 'jane.smith@marmelab.com',
+                        comment:
+                            'The author list is incomplete: it should include Jane SMITH',
+                        status: 'rejected',
+                        internalComment:
+                            'Jane SMITH is not an author of this document',
+                        createdAt: new Date('01-01-2025'),
+                    },
+                ].map(annotationModel.create),
+            );
+        });
+
+        it('should return an array of annotations for given fieldName and resourceUri sorted from newest to oldest (createdAt)', async () => {
+            expect(
+                await annotationModel.findManyByFieldAndResource(
+                    'GvaF',
+                    'uid:/2a8d429f-8134-4502-b9d3-d20c571592fa',
+                ),
+            ).toEqual([annotationList[1], annotationList[0]]);
+        });
+
+        it('should return an array of annotations for given fieldName and no resourceUri when resourceUri is /', async () => {
+            expect(
+                await annotationModel.findManyByFieldAndResource('GvaF', '/'),
+            ).toEqual([annotationList[2]]);
+        });
+
+        it('should return an empty array when no annotations matches query', async () => {
+            expect(
+                await annotationModel.findManyByFieldAndResource(
+                    'AvaF',
+                    'uid:/7a8d429f-8134-4502-b9d3-d20c571592fa',
+                ),
+            ).toEqual([]);
         });
     });
 });

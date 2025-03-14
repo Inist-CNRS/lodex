@@ -1,17 +1,21 @@
-import { Box, Checkbox, Tooltip, Typography } from '@mui/material';
+import { Box, Checkbox, Tooltip, Typography, useTheme } from '@mui/material';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { translate } from '../i18n/I18NContext';
+import { AnnotationDisabledIcon } from '../annotation/AnnotationDisabledIcon';
+import { translate, useTranslate } from '../i18n/I18NContext';
 import { polyglot as polyglotPropTypes } from '../propTypes';
 import FieldInternalIcon from './FieldInternalIcon';
 
 function FieldRepresentation({
     field,
     shortMode = false,
+    showNotAnnotableIcon = false,
     p: polyglot,
     isFieldSelected,
     handleToggleSelectedField,
 }) {
+    const { translate } = useTranslate();
+    const theme = useTheme();
     if (!field) {
         return (
             <Typography
@@ -29,9 +33,7 @@ function FieldRepresentation({
         <>
             <Box
                 display="grid"
-                gridTemplateColumns={
-                    handleToggleSelectedField ? 'auto auto 1fr' : 'auto 1fr'
-                }
+                gridTemplateColumns={`${handleToggleSelectedField ? 'auto ' : ''}auto 1fr ${showNotAnnotableIcon ? ' auto' : ''}`}
                 alignItems="center"
                 gap={0.5}
             >
@@ -81,6 +83,25 @@ function FieldRepresentation({
                             <span>{field.label}</span>
                         </Tooltip>
                     </Typography>
+                )}
+
+                {showNotAnnotableIcon && field.annotable === false && (
+                    <Tooltip title={translate('annotation_disabled_tooltip')}>
+                        <Box
+                            sx={{
+                                width: 20,
+                                height: 20,
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                marginTop: -0.5,
+                            }}
+                        >
+                            <AnnotationDisabledIcon
+                                fill={theme.palette.grey[500]}
+                            />
+                        </Box>
+                    </Tooltip>
                 )}
             </Box>
 
@@ -146,6 +167,7 @@ FieldRepresentation.propTypes = {
     isFieldSelected: PropTypes.bool,
     handleToggleSelectedField: PropTypes.func,
     p: polyglotPropTypes.isRequired,
+    showNotAnnotableIcon: PropTypes.bool,
 };
 
 export default translate(FieldRepresentation);

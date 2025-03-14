@@ -4,22 +4,44 @@ import { TestI18N } from '../../i18n/I18NContext';
 import { ResourceUriCell } from './ResourceUriCell';
 
 describe('ResourceUriCell', () => {
-    it('should display resource_home_page if resourceUri is null', () => {
+    it.each([[null], ['/']])(
+        'should not display "/" for home page',
+        (resourceUri) => {
+            const wrapper = render(
+                <TestI18N>
+                    <ResourceUriCell
+                        row={{
+                            resourceUri,
+                            resource: null,
+                        }}
+                    />
+                </TestI18N>,
+            );
+
+            expect(wrapper.queryByText('/')).toBeInTheDocument();
+        },
+    );
+
+    it('should display resourceUri when set if field is a graph', () => {
         const wrapper = render(
             <TestI18N>
                 <ResourceUriCell
                     row={{
-                        resourceUri: null,
+                        resourceUri: '/graph/HDpz',
                         resource: null,
+                        field: {
+                            name: 'OtHr',
+                            scope: 'graphic',
+                        },
                     }}
                 />
             </TestI18N>,
         );
 
-        expect(wrapper.queryByText('annotation_home_page')).toBeInTheDocument();
+        expect(wrapper.queryByText('/graph/HDpz')).toBeInTheDocument();
     });
 
-    it('should display annotation_graph_page if  field scope is graphic', () => {
+    it('should construct graph uri from field when resourceUri is not set', () => {
         const wrapper = render(
             <TestI18N>
                 <ResourceUriCell
@@ -35,9 +57,7 @@ describe('ResourceUriCell', () => {
             </TestI18N>,
         );
 
-        expect(
-            wrapper.queryByText('annotation_graph_page'),
-        ).toBeInTheDocument();
+        expect(wrapper.queryByText('/graph/HDpz')).toBeInTheDocument();
     });
 
     it('should display the resourceUri with a button to the resource if the resource still exist', () => {

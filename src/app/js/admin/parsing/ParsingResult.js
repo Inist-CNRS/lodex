@@ -1,44 +1,44 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import {
-    DataGrid,
-    getGridNumericColumnOperators,
-    getGridStringOperators,
-    getGridBooleanOperators,
-    gridClasses,
-    GridToolbarContainer,
-    GridToolbarColumnsButton,
-    GridToolbarFilterButton,
-    GridToolbarDensitySelector,
-} from '@mui/x-data-grid';
-import { IN_PROGRESS } from '../../../../common/taskStatus';
+import RefreshIcon from '@mui/icons-material/Refresh';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
-import RefreshIcon from '@mui/icons-material/Refresh';
+import {
+    DataGrid,
+    getGridBooleanOperators,
+    getGridNumericColumnOperators,
+    getGridStringOperators,
+    GridToolbarColumnsButton,
+    GridToolbarContainer,
+    GridToolbarDensitySelector,
+    GridToolbarFilterButton,
+} from '@mui/x-data-grid';
+import PropTypes from 'prop-types';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { connect } from 'react-redux';
+import { IN_PROGRESS } from '../../../../common/taskStatus';
 
-import { fromEnrichments, fromParsing, fromPublication } from '../selectors';
-import datasetApi from '../api/dataset';
-import Loading from '../../lib/components/Loading';
+import { AddBox as AddBoxIcon } from '@mui/icons-material';
 import {
     Box,
+    Button,
     Chip,
     CircularProgress,
     Drawer,
     IconButton,
-    Tooltip,
-    Button,
     Table,
     TableBody,
     TableContainer,
     TablePagination,
     TableRow,
+    Tooltip,
 } from '@mui/material';
-import ParsingEditCell from './ParsingEditCell';
-import { AddBox as AddBoxIcon, Delete } from '@mui/icons-material';
-import { Link } from 'react-router-dom';
-import ParsingDeleteRowDialogComponent from './ParsingDeleteRowDialog';
+import { Link, useLocation } from 'react-router-dom';
 import { useTranslate } from '../../i18n/I18NContext';
+import Loading from '../../lib/components/Loading';
+import datasetApi from '../api/dataset';
+import { fromEnrichments, fromParsing } from '../selectors';
+import { DeleteFilteredButton } from './DeleteFilteredButton';
+import { DeleteManyButton } from './DeleteManyButton';
+import ParsingEditCell from './ParsingEditCell';
 
 const COLUMN_TYPE = {
     MAIN: 'main',
@@ -112,133 +112,134 @@ const getFiltersOperatorsForType = (type) => {
 };
 
 export const ParsingResultComponent = (props) => {
-    const { enrichments, loadingParsingResult, isPublished } = props;
+    const { enrichments, loadingParsingResult } = props;
     const { translate } = useTranslate();
+
+    const { search } = useLocation();
+    const initialFilterModel = useMemo(() => {
+        const searchParams = new URLSearchParams(search);
+        const searchParamsFilteredUri = searchParams.get('uri');
+        if (searchParamsFilteredUri) {
+            return {
+                items: [
+                    {
+                        columnField: 'uri',
+                        operatorValue: 'contains',
+                        value: searchParamsFilteredUri,
+                    },
+                ],
+            };
+        }
+
+        return { items: [] };
+    }, [search]);
 
     const [showEnrichmentColumns, setShowEnrichmentColumns] = useState(true);
     const [showMainColumns, setShowMainColumns] = useState(true);
+    const [selectedRowIds, setSelectedRowIds] = useState([]);
 
     const [datas, setDatas] = useState([]);
     const [columns, setColumns] = useState([]);
     const [toggleDrawer, setToggleDrawer] = useState(false);
     const [selectedCell, setSelectedCell] = useState(null);
 
-    const [selectedRowForDelete, setSelectedRowForDelete] = useState(null);
-    const [openDialogDeleteRow, setOpenDialogDeleteRow] = useState(false);
+    const columnsToShow = useMemo(() => {
+        const getColumnsToShow = () => {
+            const enrichmentsNames = enrichments.map(
+                (enrichment) => enrichment.name,
+            );
 
-    const handleDeleteRow = (event, row) => {
-        event.preventDefault();
-        event.stopPropagation();
-        setSelectedRowForDelete(row);
-        setOpenDialogDeleteRow(true);
-    };
-
-    const getColumnsToShow = () => {
-        const enrichmentsNames = enrichments.map(
-            (enrichment) => enrichment.name,
-        );
-
-        const res = columns
-            .filter(({ key }) => {
-                const isEnrichment = enrichmentsNames.includes(key);
-                return (
-                    key !== '_id' &&
-                    (key === 'uri' ||
-                        (showEnrichmentColumns && isEnrichment) ||
-                        (showMainColumns && !enrichmentsNames.includes(key)))
-                );
-            })
-            .map(({ key, type }) => {
-                const isEnrichment = enrichmentsNames.includes(key);
-                const isEnrichmentLoading =
-                    isEnrichment &&
-                    enrichments.some(
-                        (enrichment) =>
-                            enrichment.name === key &&
-                            enrichment.status === IN_PROGRESS,
+            const res = columns
+                .filter(({ key }) => {
+                    const isEnrichment = enrichmentsNames.includes(key);
+                    return (
+                        key !== '_id' &&
+                        (key === 'uri' ||
+                            (showEnrichmentColumns && isEnrichment) ||
+                            (showMainColumns &&
+                                !enrichmentsNames.includes(key)))
                     );
-                const errorCount = isEnrichment
-                    ? enrichments.find((enrichment) => enrichment.name === key)
-                          ?.errorCount
-                    : null;
-                return {
-                    field: key,
-                    headerName: errorCount
-                        ? translate('header_name_with_errors', {
-                              name: key,
-                              errorCount,
-                          })
-                        : key,
-                    headerClassName: errorCount && 'error-header',
-                    cellClassName: isEnrichment && 'enriched-column',
-                    width: 150,
-                    filterable: type !== 'object',
-                    sortable: type !== 'object',
-                    filterOperators: getFiltersOperatorsForType(type),
-                    type,
-                    renderCell: (params) => {
-                        if (isEnrichmentLoading && params.value === undefined)
-                            return (
-                                <CircularProgress
-                                    variant="indeterminate"
-                                    size={20}
-                                />
-                            );
-                        if (params.value === undefined) {
-                            return <Chip label="undefined" />;
-                        }
-                        if (params.value === null) {
-                            return <Chip label="null" />;
-                        }
-                        if (
-                            typeof params.value === 'string' &&
-                            (params.value.startsWith('[Error]') ||
-                                params.value.startsWith('ERROR'))
-                        ) {
-                            return <Chip sx={styles.errorChip} label="Error" />;
-                        }
-                        return (
-                            <div title={JSON.stringify(params.value)}>
-                                {JSON.stringify(params.value)}
-                            </div>
+                })
+                .map(({ key, type }) => {
+                    const isEnrichment = enrichmentsNames.includes(key);
+                    const isEnrichmentLoading =
+                        isEnrichment &&
+                        enrichments.some(
+                            (enrichment) =>
+                                enrichment.name === key &&
+                                enrichment.status === IN_PROGRESS,
                         );
-                    },
-                };
-            });
-        res.unshift({
-            field: 'delete-row',
-            headerName: 'delete-row',
-            width: 150,
-            filterable: false,
-            sortable: false,
-            hideable: false,
-            renderCell: (params) => {
-                return (
-                    <Tooltip title={translate('parsing_delete_row_tooltip')}>
-                        <IconButton
-                            aria-label="delete row"
-                            onClick={(e) => handleDeleteRow(e, params.row)}
-                        >
-                            <Delete color="warning" />
-                        </IconButton>
-                    </Tooltip>
-                );
-            },
-        });
+                    const errorCount = isEnrichment
+                        ? enrichments.find(
+                              (enrichment) => enrichment.name === key,
+                          )?.errorCount
+                        : null;
+                    return {
+                        field: key,
+                        headerName: errorCount
+                            ? translate('header_name_with_errors', {
+                                  name: key,
+                                  errorCount,
+                              })
+                            : key,
+                        headerClassName: errorCount && 'error-header',
+                        cellClassName: isEnrichment && 'enriched-column',
+                        width: 150,
+                        filterable: type !== 'object',
+                        sortable: type !== 'object',
+                        filterOperators: getFiltersOperatorsForType(type),
+                        type,
+                        renderCell: (params) => {
+                            if (
+                                isEnrichmentLoading &&
+                                params.value === undefined
+                            )
+                                return (
+                                    <CircularProgress
+                                        variant="indeterminate"
+                                        size={20}
+                                    />
+                                );
+                            if (params.value === undefined) {
+                                return <Chip label="undefined" />;
+                            }
+                            if (params.value === null) {
+                                return <Chip label="null" />;
+                            }
+                            if (
+                                typeof params.value === 'string' &&
+                                (params.value.startsWith('[Error]') ||
+                                    params.value.startsWith('ERROR'))
+                            ) {
+                                return (
+                                    <Chip sx={styles.errorChip} label="Error" />
+                                );
+                            }
+                            return (
+                                <div title={JSON.stringify(params.value)}>
+                                    {JSON.stringify(params.value)}
+                                </div>
+                            );
+                        },
+                    };
+                });
 
-        return res;
-    };
+            return res;
+        };
 
-    const columnsToShow = useMemo(
-        () =>
-            getColumnsToShow(
-                columns,
-                showEnrichmentColumns,
-                showMainColumns,
-                enrichments,
-            ),
-        [columns, showEnrichmentColumns, showMainColumns, enrichments],
-    );
+        return getColumnsToShow(
+            columns,
+            showEnrichmentColumns,
+            showMainColumns,
+            enrichments,
+        );
+    }, [
+        columns,
+        showEnrichmentColumns,
+        showMainColumns,
+        enrichments,
+        translate,
+    ]);
 
     const numberOfColumns = useCallback(
         (columnType) => {
@@ -269,18 +270,18 @@ export const ParsingResultComponent = (props) => {
     const [skip, setSkip] = useState(0);
     const [limit, setLimit] = useState(25);
     const [sort, setSort] = useState({});
-    const [filter, setFilter] = useState({});
+    const [filterModel, setFilterModel] = useState(initialFilterModel);
 
-    const fetchDataset = async () => {
+    const fetchDataset = useCallback(async () => {
         const { count: datasCount, datas } = await datasetApi.getDataset({
             skip,
             limit,
-            filter,
+            filter: filterModel.items.at(0),
             sort,
         });
         setRowCount(datasCount);
         setDatas(datas);
-    };
+    }, [skip, limit, filterModel, sort]);
 
     const onPageChange = (page) => {
         setSkip(page * limit);
@@ -291,16 +292,28 @@ export const ParsingResultComponent = (props) => {
         setSkip(0);
     };
 
+    const handleFilterModelChange = useCallback((filterModel) => {
+        setFilterModel(filterModel);
+        setSkip(0);
+    }, []);
+
+    const handleFilteredRowsDeleted = useCallback(() => {
+        handleFilterModelChange({ items: [] });
+    }, [handleFilterModelChange]);
+
     useEffect(() => {
         const fetchDataColumns = async () => {
             const { columns } = await datasetApi.getDatasetColumns();
             setColumns(columns);
+            // We need to initialize the filter model with the columns otherwise it gets erased by MUI datagrid somehow.
+            handleFilterModelChange(initialFilterModel);
         };
         fetchDataColumns();
-    }, []);
+    }, [handleFilterModelChange, initialFilterModel]);
+
     useEffect(() => {
         fetchDataset();
-    }, [skip, limit, filter, sort]);
+    }, [skip, limit, filterModel, sort, fetchDataset]);
 
     const handleSortModelChange = (sortModel) => {
         setSort({
@@ -309,16 +322,10 @@ export const ParsingResultComponent = (props) => {
         });
     };
 
-    const handleFilterModelChange = (filterModel) => {
-        if (filterModel.items.length === 0) {
+    const handleCellClick = (params) => {
+        if (params.field === '__check__') {
             return;
         }
-        const { columnField, operatorValue, value } = filterModel.items[0];
-        setFilter({ columnField, operatorValue, value });
-        setSkip(0);
-    };
-
-    const handleCellClick = (params) => {
         setSelectedCell(params);
         setToggleDrawer(true);
     };
@@ -420,7 +427,7 @@ export const ParsingResultComponent = (props) => {
 
     const CustomToolbar = () => {
         return (
-            <GridToolbarContainer>
+            <GridToolbarContainer sx={{ gap: 1 }}>
                 <Tooltip title={translate(`column_tooltip`)}>
                     <GridToolbarColumnsButton />
                 </Tooltip>
@@ -443,6 +450,19 @@ export const ParsingResultComponent = (props) => {
                         {translate('add_more')}
                     </Button>
                 </Tooltip>
+
+                <Box sx={{ flexGrow: 1 }} />
+
+                <DeleteManyButton
+                    selectedRowIds={selectedRowIds}
+                    reloadDataset={fetchDataset}
+                />
+                {filterModel.items.length && (
+                    <DeleteFilteredButton
+                        filter={filterModel.items[0]}
+                        reloadDataset={handleFilteredRowsDeleted}
+                    />
+                )}
             </GridToolbarContainer>
         );
     };
@@ -454,59 +474,25 @@ export const ParsingResultComponent = (props) => {
                 rows={rows}
                 rowCount={rowCount}
                 pageSize={limit}
+                checkboxSelection
                 paginationMode="server"
                 onPageChange={onPageChange}
                 onPageSizeChange={setLimit}
                 sortingMode="server"
                 onSortModelChange={handleSortModelChange}
                 filterMode="server"
+                filterModel={filterModel}
                 onFilterModelChange={handleFilterModelChange}
                 rowsPerPageOptions={[10, 25, 50]}
                 disableSelectionOnClick={true}
                 onCellClick={handleCellClick}
+                selectionModel={selectedRowIds}
+                onSelectionModelChange={setSelectedRowIds}
                 components={{
                     Footer: CustomFooter,
                     Toolbar: CustomToolbar,
                 }}
-                componentsProps={{
-                    panel: {
-                        sx: {
-                            // hide delete-row in column hide/display panel
-                            '& .MuiDataGrid-columnsPanelRow:first-child': {
-                                display: 'none',
-                            },
-                        },
-                    },
-                }}
                 sx={{
-                    [`& .${gridClasses.columnHeaderTitleContainer} .${gridClasses.iconButtonContainer}`]:
-                        {
-                            visibility: 'visible',
-                            width: 'auto',
-                        },
-                    // hide the `delete-row` column and disable the `delete-row` button on row hover
-                    [`& .${gridClasses.row} .${gridClasses.cellWithRenderer} .${gridClasses.iconButtonContainer}`]:
-                        {
-                            visibility: 'hidden',
-                        },
-                    [`& .MuiDataGrid-columnHeader[data-field="delete-row"]`]: {
-                        display: 'none',
-                    },
-                    [`& .MuiDataGrid-cell[data-field="delete-row"]`]: {
-                        position: 'absolute',
-                        left: 0,
-                        visibility: 'hidden',
-                        opacity: 0,
-                        transform: 'translateX(-100%)',
-                        backgroundColor: 'contrast.main',
-                    },
-                    [`& .MuiDataGrid-row:hover > .MuiDataGrid-cell[data-field="delete-row"]`]:
-                        {
-                            visibility: 'visible',
-                            transition: 'all 0.3s ease-in-out',
-                            opacity: 1,
-                            transform: 'translateX(0)',
-                        },
                     ['& .error-header']: styles.errorHeader,
                     ['& .enriched-column']: styles.enrichedColumn,
                 }}
@@ -527,13 +513,6 @@ export const ParsingResultComponent = (props) => {
                     />
                 ) : null}
             </Drawer>
-            <ParsingDeleteRowDialogComponent
-                isOpen={openDialogDeleteRow}
-                handleClose={() => setOpenDialogDeleteRow(false)}
-                selectedRowForDelete={selectedRowForDelete}
-                reloadDataset={() => fetchDataset()}
-                shouldRepublish={isPublished}
-            />
         </Box>
     );
 };
@@ -541,13 +520,11 @@ export const ParsingResultComponent = (props) => {
 ParsingResultComponent.propTypes = {
     loadingParsingResult: PropTypes.bool.isRequired,
     enrichments: PropTypes.arrayOf(PropTypes.object),
-    isPublished: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = (state) => ({
     loadingParsingResult: fromParsing.isParsingLoading(state),
     enrichments: fromEnrichments.enrichments(state),
-    isPublished: fromPublication.hasPublishedDataset(state),
 });
 
 export default connect(mapStateToProps)(ParsingResultComponent);

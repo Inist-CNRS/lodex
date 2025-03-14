@@ -13,6 +13,13 @@ const tar = require('tar-stream');
 
 import { ObjectId } from 'mongodb';
 import {
+    RESOURCE_DESCRIPTION,
+    RESOURCE_DETAIL_1,
+    RESOURCE_DETAIL_2,
+    RESOURCE_DETAIL_3,
+    RESOURCE_TITLE,
+} from '../../../common/overview';
+import {
     SCOPE_COLLECTION,
     SCOPE_DATASET,
     SCOPE_DOCUMENT,
@@ -192,10 +199,30 @@ export const patchField = async (ctx, id) => {
     }
 };
 
+const SORTABLE_FIELDS = [
+    RESOURCE_TITLE,
+    RESOURCE_DESCRIPTION,
+    RESOURCE_DETAIL_1,
+    RESOURCE_DETAIL_2,
+    RESOURCE_DETAIL_3,
+];
+
 export const patchOverview = async (ctx) => {
     const { _id, overview, subresourceId } = ctx.request.body;
 
     try {
+        if (_id && !SORTABLE_FIELDS.includes(overview)) {
+            await ctx.field.updateOne(
+                { _id: new ObjectId(_id) },
+                { $unset: { isDefaultSortField: '', sortOrder: '' } },
+            );
+        } else {
+            await ctx.field.updateOne(
+                { overview, subresourceId, _id: { $ne: _id } },
+                { $unset: { isDefaultSortField: '', sortOrder: '' } },
+            );
+        }
+
         await ctx.field.updateMany(
             {
                 overview,
@@ -206,11 +233,57 @@ export const patchOverview = async (ctx) => {
         if (_id) {
             ctx.body = await ctx.field.updateOneById(_id, { overview });
         } else {
-            ctx.body = 'ok';
+            ctx.body = { status: 'success' };
         }
     } catch (error) {
         ctx.status = 403;
         ctx.body = { error: error.message };
+        return;
+    }
+};
+
+export const patchSortField = async (ctx) => {
+    const { _id, sortOrder = 'asc' } = ctx.request.body;
+
+    try {
+        await ctx.field.updateMany(
+            {},
+            {
+                $unset: { isDefaultSortField: '', sortOrder: '' },
+            },
+        );
+        if (_id) {
+            ctx.body = await ctx.field.updateOneById(_id, {
+                isDefaultSortField: true,
+                sortOrder,
+            });
+        } else {
+            ctx.body = { status: 'success' };
+        }
+    } catch (error) {
+        ctx.status = 400;
+        ctx.body = { status: 'error', error: error.message };
+        return;
+    }
+};
+
+export const patchSortOrder = async (ctx) => {
+    const { sortOrder } = ctx.request.body;
+
+    try {
+        await ctx.field.updateOne(
+            {
+                isDefaultSortField: true,
+            },
+            {
+                $set: { sortOrder },
+            },
+        );
+
+        ctx.body = { status: 'success' };
+    } catch (error) {
+        ctx.status = 400;
+        ctx.body = { status: 'error', error: error.message };
         return;
     }
 };
@@ -427,6 +500,8 @@ app.use(route.post('/duplicate', duplicateField));
 app.use(route.put('/reorder', reorderField));
 app.use(route.patch('/searchable', patchSearchableFields));
 app.use(route.patch('/overview', patchOverview));
+app.use(route.patch('/sort-field', patchSortField));
+app.use(route.patch('/sort-order', patchSortOrder));
 app.use(route.patch('/:id', patchField));
 app.use(route.del('/:id', removeField));
 

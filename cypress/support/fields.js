@@ -4,7 +4,7 @@ export function setFieldLanguage(fieldName, languageCode) {
         `[aria-label="edit-${fieldName}"] > [data-testid="SettingsIcon"]`,
     ).click();
     cy.get('#tab-semantics').click();
-    cy.get('.MuiFormControl-root:nth-child(2)').click();
+    cy.findByLabelText('Language').click();
     cy.get(`[data-value="${languageCode}"]`).click();
     cy.get('[data-testid="SaveAsIcon"]').click();
 

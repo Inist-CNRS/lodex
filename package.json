@@ -3,7 +3,7 @@
         "node": ">= 16"
     },
     "name": "lodex",
-    "version": "15.1.0",
+    "version": "15.6.0",
     "description": "",
     "main": "src/api/index.js",
     "browser": {
@@ -15,7 +15,7 @@
         "production:workers": "node --require @babel/register workers",
         "build": "BABEL_ENV=browser node --max_old_space_size=4096 --max-http-header-size=32768 ./node_modules/.bin/webpack --config=./src/app/webpack.config.babel.js",
         "analyze": "BABEL_ENV=browser NODE_ENV=analyze npx webpack --config=./src/app/webpack.config.babel.js --profile --json > stats.json",
-        "development:api": "nodemon --inspect=0.0.0.0:9229 --max-http-header-size=32768 --require @babel/register --watch src/api src/api",
+        "development:api": "nodemon --inspect=0.0.0.0:9229 --max-http-header-size=32768 --require @babel/register --watch src/api --watch src/common --watch src/app/custom --watch src/app/js/public src/api",
         "development:app": "BABEL_ENV=browser npx webpack-dev-server --config=./src/app/webpack.config.babel.js --port=8080 --host=0.0.0.0",
         "postversion": "git push && git push --tags",
         "lint": "eslint \"src/**/*.{jsx,js}\" --fix",
@@ -24,7 +24,7 @@
         "clean:modules": "modclean -Pr -n ./modclean.config.js:*",
         "clean:workers": "modclean -Pr -n ./modclean.config.js:* -D workers",
         "clean:packages": "modclean -Pr -n ./modclean.config.js:* -D packages",
-        "test:unit": "NODE_OPTIONS='--max_old_space_size=8192' ./node_modules/jest/bin/jest.js --force-exit --detectOpenHandles --colors",
+        "test:unit": "NODE_OPTIONS='--max_old_space_size=8192' ./node_modules/jest/bin/jest.js --force-exit --colors --maxWorkers=1",
         "test:unit:watch": "NODE_OPTIONS='--max_old_space_size=8192' ./node_modules/jest/bin/jest.js --watchAll --colors",
         "test:e2e:phase:one": "cypress run --browser chrome --config-file cypress.config.js  --spec \"cypress/e2e/phase_1/*.cy.js\"",
         "test:e2e:phase:two": "cypress run --browser chrome --config-file cypress.config.js  --spec \"cypress/e2e/phase_2/*.cy.js\"",
@@ -147,6 +147,7 @@
         "mui-file-dropzone": "4.0.2",
         "multistream": "4.1.0",
         "node-polyglot": "^2.3.1",
+        "nodemailer": "^6.10.0",
         "papaparse": "5.4.1",
         "pdfkit": "0.14.0",
         "pm2": "^5.4.3",
@@ -226,6 +227,7 @@
         "vega-view-transforms": "4.5.9",
         "vega-voronoi": "4.2.2",
         "vega-wordcloud": "4.1.4",
+        "venn.js": "0.2.20",
         "winston": "^3.11.0",
         "zod": "^3.24.1"
     },
@@ -239,6 +241,7 @@
         "@testing-library/jest-dom": "6.6.3",
         "@testing-library/react": "12.1.5",
         "@testing-library/react-hooks": "^8.0.1",
+        "@testing-library/user-event": "14.6.1",
         "@types/ejs": "3.1.5",
         "@types/jest": "29.5.14",
         "@types/node": "18.18.9",
@@ -251,6 +254,7 @@
         "compression-webpack-plugin": "^11.1.0",
         "copy-webpack-plugin": "^12.0.2",
         "cypress": "^13.17.0",
+        "cypress-network-idle": "^1.15.0",
         "@testing-library/cypress": "10.0.2",
         "enzyme": "^3.11.0",
         "@wojtekmaj/enzyme-adapter-react-17": "^0.8.0",
@@ -261,6 +265,7 @@
         "eslint-plugin-import": "^2.31.0",
         "eslint-plugin-jest": "^28.10.0",
         "eslint-plugin-jsx-a11y": "^6.10.2",
+        "eslint-plugin-no-only-tests": "^3.3.0",
         "eslint-plugin-prettier": "^5.2.1",
         "eslint-plugin-react": "^7.37.3",
         "eslint-plugin-react-hooks": "^5.1.0",
@@ -289,6 +294,8 @@
     "overrides": {
         "@remix-run/server-runtime": {
             "cookie": "0.7.2"
-        }
+        },
+        "d3-color": "3.1.0",
+        "rollup": "2.79.2"
     }
 }

@@ -5,6 +5,17 @@
         "password": "secret",
         "active": true
     },
+    "contributorAuth": {
+        "username": "contributor",
+        "password": "secret",
+        "active": false
+    },
+    "antispamFilter": {
+        "active": false,
+        "recaptchaClientKey": "",
+        "recaptchaSecretKey": ""
+    },
+    "notification_email": null,
     "enrichmentBatchSize": 10,
     "front": {
         "theme": {},
@@ -91,5 +102,6 @@
             "search": 200
         },
         "multilingual": false
-    }
+    },
+    "theme": "default"
 }

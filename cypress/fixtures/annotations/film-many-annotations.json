@@ -1,9 +1,9 @@
 [
     {
         "_id": "67aefd870e0c345d7824b7ef",
-        "resourceUri": null,
+        "resourceUri": "/",
         "target": "value",
-        "kind": "correct",
+        "kind": "correction",
         "fieldId": "67ab09ef927fdd8c4c72a18b",
         "comment": "You should add more films!",
         "authorName": "John DOE",
@@ -17,7 +17,7 @@
     },
     {
         "_id": "67aefdb80e0c345d7824b7f0",
-        "resourceUri": null,
+        "resourceUri": "/graph/TK2J",
         "target": "title",
         "kind": "comment",
         "fieldId": "67ab09ef927fdd8c4c72a197",
@@ -35,7 +35,7 @@
         "_id": "67aefe1a0e0c345d7824b7f1",
         "resourceUri": "uid:/3sxnMSj8W",
         "target": "value",
-        "kind": "correct",
+        "kind": "correction",
         "fieldId": "67ab09ef927fdd8c4c72a18d",
         "comment": "The value is not up to date",
         "authorName": "Jane SMITH",

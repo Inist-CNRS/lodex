@@ -46,6 +46,17 @@ describe('Annotation', () => {
                 authorEmail: 'john.doe@example.org',
             });
 
+            annotation.checkFieldAnnotations({
+                fieldLabel: 'Dataset Description',
+                expectedAnnotations: [
+                    {
+                        kind: 'comment',
+                        summaryValue: 'This is a comment',
+                        status: 'Ongoing',
+                    },
+                ],
+                resourceTitle: 'Home page',
+            });
             cy.findByText('More').click();
             menu.goToAdminDashboard();
             cy.findByText('Annotations').click();
@@ -55,21 +66,16 @@ describe('Annotation', () => {
                     cells.toArray().map((cell) => cell.textContent),
                 ).to.deep.equal([
                     '',
-                    'Home page',
+                    '/',
                     '',
-                    'comment',
+                    'Comment',
                     'Dataset Description',
-                    '[Doay]',
-                    '',
                     '',
                     '',
                     '',
                     'To Review',
                     '',
-                    '',
                     'John Doe',
-                    'This is a comment',
-                    new Date().toLocaleDateString(),
                     new Date().toLocaleDateString(),
                 ]);
             });
@@ -90,6 +96,17 @@ describe('Annotation', () => {
                     authorName: 'John Doe',
                     authorEmail: 'john.doe@example.org',
                 });
+                annotation.checkFieldAnnotations({
+                    fieldLabel: 'actors',
+                    expectedAnnotations: [
+                        {
+                            kind: 'comment',
+                            summaryValue: 'This is a comment',
+                            status: 'Ongoing',
+                        },
+                    ],
+                    resourceTitle: 'Terminator 2',
+                });
 
                 cy.findByText('Search').click();
                 searchDrawer.search('RoboCop');
@@ -101,6 +118,17 @@ describe('Annotation', () => {
                     authorName: 'Jane Smith',
                     authorEmail: 'jane.smith@example.org',
                 });
+                annotation.checkFieldAnnotations({
+                    fieldLabel: 'rating',
+                    expectedAnnotations: [
+                        {
+                            kind: 'removal',
+                            summaryValue: '7,5',
+                            status: 'Ongoing',
+                        },
+                    ],
+                    resourceTitle: 'RoboCop',
+                });
                 cy.findByText('More').click();
                 menu.goToAdminDashboard();
                 cy.findByText('Annotations').click();
@@ -110,28 +138,23 @@ describe('Annotation', () => {
                         headers.toArray().map((header) => header.textContent),
                     ).to.deep.equal([
                         '',
-                        'Resource URI',
-                        'Resource title',
+                        'URI',
+                        'Title',
                         'Type',
                         'Field label',
-                        'Field Id',
-                        'Field Icons',
-                        'Field Internal Name',
+                        'Field Icon(s)',
                         'Initial value',
-                        'Proposed value',
+                        'Proposed values',
                         'Status',
-                        'Internal Comment',
                         'Administrator',
                         'Contributor',
-                        'Contributor Comment',
                         'Submission date',
-                        'Last modified on',
                     ]);
                 });
 
                 cy.findAllByRole('cell').then((cells) => {
                     const firstUri = cells[1].textContent;
-                    const secondUri = cells[18].textContent;
+                    const secondUri = cells[13].textContent;
 
                     expect(firstUri).to.match(/uid:\//);
                     expect(secondUri).to.match(/uid:\//);
@@ -142,36 +165,26 @@ describe('Annotation', () => {
                         '',
                         firstUri,
                         'RoboCop',
-                        'removal',
+                        'Removal',
                         'rating',
-                        '[bZE+]',
-                        '',
                         '',
                         '7,5',
                         '',
                         'To Review',
                         '',
-                        '',
                         'Jane Smith',
-                        'This is another comment',
-                        new Date().toLocaleDateString(),
                         new Date().toLocaleDateString(),
                         '',
                         secondUri,
                         'Terminator 2',
-                        'comment',
+                        'Comment',
                         'actors',
-                        '[K8Lu]',
-                        '',
                         '',
                         '',
                         '',
                         'To Review',
                         '',
-                        '',
                         'John Doe',
-                        'This is a comment',
-                        new Date().toLocaleDateString(),
                         new Date().toLocaleDateString(),
                     ]);
                 });
@@ -232,16 +245,12 @@ describe('Annotation', () => {
                     'exist',
                 );
 
-                cy.findByRole('link', {
-                    name: 'Cancel',
-                }).click();
-
                 cy.wait(1000);
                 cy.findByRole('progressbar').should('not.exist');
 
                 cy.findAllByRole('cell').then((cells) => {
                     const firstUri = cells[1].textContent;
-                    const secondUri = cells[18].textContent;
+                    const secondUri = cells[13].textContent;
 
                     expect(firstUri).to.match(/uid:\//);
                     expect(secondUri).to.match(/uid:\//);
@@ -252,36 +261,26 @@ describe('Annotation', () => {
                         '',
                         firstUri,
                         'RoboCop',
-                        'removal',
+                        'Removal',
                         'rating',
-                        '[bZE+]',
-                        '',
                         '',
                         '7,5',
                         '',
                         'Validated',
-                        'Return applied',
                         'John Doe',
                         'Jane Smith',
-                        'This is another comment',
-                        new Date().toLocaleDateString(),
                         new Date().toLocaleDateString(),
                         '',
                         secondUri,
                         'Terminator 2',
-                        'comment',
+                        'Comment',
                         'actors',
-                        '[K8Lu]',
-                        '',
                         '',
                         '',
                         '',
                         'To Review',
                         '',
-                        '',
                         'John Doe',
-                        'This is a comment',
-                        new Date().toLocaleDateString(),
                         new Date().toLocaleDateString(),
                     ]);
                 });
@@ -321,7 +320,7 @@ describe('Annotation', () => {
 
                 cy.findAllByRole('cell').then((cells) => {
                     const firstUri = cells[1].textContent;
-                    const secondUri = cells[18].textContent;
+                    const secondUri = cells[13].textContent;
 
                     expect(firstUri).to.match(/uid:\//);
                     expect(secondUri).to.match(/uid:\//);
@@ -332,36 +331,26 @@ describe('Annotation', () => {
                         '',
                         firstUri,
                         'RoboCop',
-                        'comment',
+                        'Comment',
                         'rating',
-                        '[bZE+]',
-                        '',
                         '',
                         '',
                         '',
                         'To Review',
                         '',
-                        '',
                         'Jane Smith',
-                        'This is another comment',
-                        new Date().toLocaleDateString(),
                         new Date().toLocaleDateString(),
                         '',
                         secondUri,
                         'Terminator 2',
-                        'comment',
+                        'Comment',
                         'actors',
-                        '[K8Lu]',
-                        '',
                         '',
                         '',
                         '',
                         'To Review',
                         '',
-                        '',
                         'John Doe',
-                        'This is a comment',
-                        new Date().toLocaleDateString(),
                         new Date().toLocaleDateString(),
                     ]);
                 });
@@ -401,19 +390,14 @@ describe('Annotation', () => {
                         '',
                         firstUri,
                         'RoboCop',
-                        'comment',
+                        'Comment',
                         'rating',
-                        '[bZE+]',
-                        '',
                         '',
                         '',
                         '',
                         'To Review',
                         '',
-                        '',
                         'Jane Smith',
-                        'This is another comment',
-                        new Date().toLocaleDateString(),
                         new Date().toLocaleDateString(),
                     ]);
                 });
@@ -437,6 +421,18 @@ describe('Annotation', () => {
                 authorEmail: 'john.doe@example.org',
             });
 
+            annotation.checkFieldAnnotations({
+                fieldLabel: 'Répartition par réalisateurs uniques',
+                expectedAnnotations: [
+                    {
+                        kind: 'comment',
+                        summaryValue: 'This is a comment',
+                        status: 'Ongoing',
+                    },
+                ],
+                resourceTitle: 'Chart page',
+            });
+
             cy.findByText('More').click();
             menu.goToAdminDashboard();
             cy.findByText('Annotations').click();
@@ -446,21 +442,16 @@ describe('Annotation', () => {
                     cells.toArray().map((cell) => cell.textContent),
                 ).to.deep.equal([
                     '',
-                    'Chart page',
+                    '/graph/xkoP',
                     '',
-                    'comment',
+                    'Comment',
                     'Répartition par réalisateurs uniques',
-                    '[xkoP]',
-                    '',
                     '',
                     '',
                     '',
                     'To Review',
                     '',
-                    '',
                     'John Doe',
-                    'This is a comment',
-                    new Date().toLocaleDateString(),
                     new Date().toLocaleDateString(),
                 ]);
             });
@@ -506,7 +497,7 @@ describe('Annotation', () => {
                 const annotations = JSON.parse(content);
                 expect(annotations).to.be.an('array').with.length(1);
                 expect(annotations[0]).to.include({
-                    resourceUri: null,
+                    resourceUri: '/',
                     target: 'title',
                     kind: 'comment',
                     comment: 'This is a comment',
@@ -588,21 +579,16 @@ describe('Annotation', () => {
                     cells.toArray().map((cell) => cell.textContent),
                 ).to.deep.equal([
                     '',
-                    'Home page',
+                    '/',
                     '',
-                    'comment',
+                    'Comment',
                     'Dataset Description',
-                    '[Doay]',
-                    '',
                     '',
                     '',
                     '',
                     'To Review',
                     '',
-                    '',
                     'John Doe',
-                    'This is a comment',
-                    new Date(2025, 1, 11).toLocaleDateString(),
                     new Date(2025, 1, 11).toLocaleDateString(),
                 ]);
             });
@@ -633,21 +619,16 @@ describe('Annotation', () => {
                     cells.toArray().map((cell) => cell.textContent),
                 ).to.deep.equal([
                     '',
-                    'Home page',
+                    '/',
                     '',
-                    'comment',
+                    'Comment',
                     'Dataset Description',
-                    '[Doay]',
-                    '',
                     '',
                     '',
                     '',
                     'To Review',
                     '',
-                    '',
                     'John Doe',
-                    'This is a comment',
-                    new Date(2025, 1, 11).toLocaleDateString(),
                     new Date(2025, 1, 11).toLocaleDateString(),
                 ]);
             });
@@ -661,8 +642,9 @@ describe('Annotation', () => {
 
                 const errors = JSON.parse(content);
                 expect(errors).to.be.an('array').with.length(1);
+                cy.log('errors', errors);
                 expect(errors[0].annotation).to.include({
-                    resourceUri: null,
+                    resourceUri: '/',
                     target: 'title',
                     kind: 'unknown',
                     comment: 'This is a comment',
@@ -722,7 +704,7 @@ describe('Annotation', () => {
 
             fillInputWithFixture(
                 'input[name="import_annotations"]',
-                'annotations/films-many-annotations.json',
+                'annotations/film-many-annotations.json',
                 'application/json',
             );
 
@@ -752,21 +734,16 @@ describe('Annotation', () => {
                     cells.toArray().map((cell) => cell.textContent),
                 ).to.deep.equal([
                     '',
-                    'Home page',
+                    '/',
                     '',
-                    'correct',
+                    'Correction',
                     'Nombre de films',
-                    '[MzM2]',
-                    '',
                     '',
                     '/api/run/count-all/',
                     '35',
                     'To Review',
                     '',
-                    '',
                     'John DOE',
-                    'You should add more films!',
-                    new Date(2025, 1, 14).toLocaleDateString(),
                     new Date(2025, 1, 14).toLocaleDateString(),
                 ]);
             });
@@ -793,7 +770,637 @@ describe('Annotation', () => {
                 .should('be.checked');
             cy.findAllByRole('checkbox').eq(2).should('be.checked');
 
-            cy.findAllByRole('cell').should('have.length', 51);
+            cy.findAllByRole('cell').should('have.length', 36);
+        });
+    });
+
+    describe('delete filtered rows', () => {
+        beforeEach(() => {
+            // ResizeObserver doesn't like when the app has to many renders / re-renders
+            // and throws an exception to say, "I wait for the next paint"
+            // https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver#observation_errors
+            cy.on('uncaught:exception', (error) => {
+                return !error.message.includes('ResizeObserver');
+            });
+
+            teardown();
+            menu.openAdvancedDrawer();
+            menu.goToAdminDashboard();
+            datasetImportPage.importDataset('dataset/film.csv');
+            datasetImportPage.importModel('model/film-with-field-id.tar');
+
+            cy.findByRole('gridcell', { name: 'Liste des films' }).trigger(
+                'mouseenter',
+            );
+            cy.findByRole('button', { name: 'edit-Liste des films' }).click();
+
+            cy.findByRole('tab', { name: 'Semantics' }).click();
+            cy.findByRole('checkbox', {
+                name: 'This field can be annotated',
+            }).click();
+            cy.findByRole('button', { name: 'Save' }).click();
+
+            datasetImportPage.publish();
+
+            cy.findByRole('button', {
+                name: 'Open menu',
+            }).click();
+
+            cy.findByRole('menuitem', {
+                name: 'Model',
+            }).trigger('mouseleave');
+
+            cy.findByRole('menuitem', {
+                name: 'Annotations',
+            }).trigger('mouseenter');
+
+            cy.wait(500);
+
+            fillInputWithFixture(
+                'input[name="import_annotations"]',
+                'annotations/film-many-annotations.json',
+                'application/json',
+            );
+
+            cy.wait(1000);
+
+            cy.findByText('Annotations').click();
+        });
+
+        it('should delete filtered annotations', () => {
+            cy.findByText('Filters').click();
+            cy.findByPlaceholderText('Filter value').type('/graph');
+
+            cy.findByRole('button', {
+                name: 'Delete the filtered annotations',
+            }).click();
+
+            cy.findByRole('button', {
+                name: 'Delete',
+            }).click();
+
+            cy.findByText('1 annotation have been deleted.').should('exist');
+
+            cy.findByText('No rows', {
+                timeout: 1500,
+            }).should('not.exist');
+
+            cy.wait(500);
+
+            cy.findAllByRole('cell', {
+                timeout: 2000,
+            }).then((cells) => {
+                const firstUri = cells[1].textContent;
+
+                expect(firstUri).to.match(/uid:\//);
+
+                expect(
+                    cells.toArray().map((cell) => cell.textContent),
+                ).to.deep.equal([
+                    '',
+                    firstUri,
+                    'Resource has been removed',
+                    'Correction',
+                    'rating',
+                    '',
+                    '6,4',
+                    '7.5',
+                    'To Review',
+                    '',
+                    'Jane SMITH',
+                    new Date(2025, 1, 14).toLocaleDateString(),
+                    '',
+                    '/',
+                    '',
+                    'Correction',
+                    'Nombre de films',
+                    '',
+                    '/api/run/count-all/',
+                    '35',
+                    'To Review',
+                    '',
+                    'John DOE',
+                    new Date(2025, 1, 14).toLocaleDateString(),
+                ]);
+            });
+        });
+
+        it('should support cancel', () => {
+            cy.findByText('Filters').click();
+            cy.findByPlaceholderText('Filter value').type('/graph');
+
+            cy.findByRole('button', {
+                name: 'Delete the filtered annotations',
+            }).click();
+
+            cy.findByRole('button', {
+                name: 'Cancel',
+                timeout: 2000,
+            }).click();
+
+            cy.findAllByRole('cell').should('have.length', 12);
+        });
+    });
+
+    describe('suggested value list with a single value', () => {
+        beforeEach(() => {
+            // ResizeObserver doesn't like when the app has to many renders / re-renders
+            // and throws an exception to say, "I wait for the next paint"
+            // https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver#observation_errors
+            cy.on('uncaught:exception', (error) => {
+                return !error.message.includes('ResizeObserver');
+            });
+
+            teardown();
+            menu.openAdvancedDrawer();
+            menu.goToAdminDashboard();
+            datasetImportPage.importDataset('dataset/film.csv');
+            datasetImportPage.importModel('model/film-obsolete.json');
+
+            cy.findByRole('gridcell', { name: 'Liste des films' }).trigger(
+                'mouseenter',
+            );
+            cy.findByRole('button', { name: 'edit-Liste des films' }).click();
+
+            cy.findByRole('tab', { name: 'Semantics' }).click();
+            cy.findByLabelText('Annotation format').click();
+
+            cy.findByRole('option', {
+                name: 'Predefined values list',
+            }).click();
+
+            cy.findByRole('textbox', {
+                name: 'Predefined values',
+            }).type(`Article
+Book
+Revue`);
+            cy.findByRole('button', { name: 'Save' }).click();
+
+            datasetImportPage.publish();
+            datasetImportPage.goToPublishedResources();
+        });
+
+        it('should support enforcing a list of values', () => {
+            annotation.createAddValueWithSingleProposedValueChoiceAnnotation({
+                fieldLabel: 'Liste des films',
+                proposedValue: 'Book',
+                comment: 'This is a comment',
+                authorName: 'John Doe',
+                authorEmail: 'john.doe@example.org',
+            });
+
+            cy.findByText('More').click();
+            menu.goToAdminDashboard();
+            cy.findByText('Annotations').click();
+
+            cy.findAllByRole('cell').then((cells) => {
+                expect(
+                    cells.toArray().map((cell) => cell.textContent),
+                ).to.deep.equal([
+                    '',
+                    '/',
+                    '',
+                    'Addition',
+                    'Liste des films',
+                    '',
+                    '',
+                    'Book',
+                    'To Review',
+                    '',
+                    'John Doe',
+                    new Date().toLocaleDateString(),
+                ]);
+            });
+        });
+    });
+
+    describe('suggested value list with multiple values', () => {
+        beforeEach(() => {
+            // ResizeObserver doesn't like when the app has to many renders / re-renders
+            // and throws an exception to say, "I wait for the next paint"
+            // https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver#observation_errors
+            cy.on('uncaught:exception', (error) => {
+                return !error.message.includes('ResizeObserver');
+            });
+
+            teardown();
+            menu.openAdvancedDrawer();
+            menu.goToAdminDashboard();
+            datasetImportPage.importDataset('dataset/film.csv');
+            datasetImportPage.importModel('model/film-obsolete.json');
+            cy.findByRole('gridcell', { name: 'Liste des films' }).trigger(
+                'mouseenter',
+            );
+            cy.findByRole('button', { name: 'edit-Liste des films' }).click();
+
+            cy.findByRole('tab', { name: 'Semantics' }).click();
+            cy.findByLabelText('Annotation format').click();
+
+            cy.findByRole('option', {
+                name: 'Predefined values list',
+            }).click();
+
+            cy.findByRole('textbox', {
+                name: 'Predefined values',
+            }).type(`Article
+Book
+Revue`);
+
+            cy.findByLabelText('Select *').click();
+
+            cy.findByRole('option', {
+                name: 'Multiple choice',
+            }).click();
+
+            cy.findByRole('button', { name: 'Save' }).click();
+
+            datasetImportPage.publish();
+            datasetImportPage.goToPublishedResources();
+        });
+
+        it('should support enforcing a list of values and selecting multiple options', () => {
+            annotation.createAddValueWithMultipleProposedValuesChoiceAnnotation(
+                {
+                    fieldLabel: 'Liste des films',
+                    proposedValues: ['Book', 'Revue'],
+                    comment: 'This is a comment',
+                    authorName: 'John Doe',
+                    authorEmail: 'john.doe@example.org',
+                },
+            );
+
+            cy.findByText('More').click();
+            menu.goToAdminDashboard();
+            cy.findByText('Annotations').click();
+
+            cy.findAllByRole('cell').then((cells) => {
+                expect(
+                    cells.toArray().map((cell) => cell.textContent),
+                ).to.deep.equal([
+                    '',
+                    '/',
+                    '',
+                    'Addition',
+                    'Liste des films',
+                    '',
+                    '',
+                    '[ Book, Revue ]',
+                    'To Review',
+                    '',
+                    'John Doe',
+                    new Date().toLocaleDateString(),
+                ]);
+            });
+        });
+    });
+
+    describe('see own annotations', () => {
+        beforeEach(() => {
+            // ResizeObserver doesn't like when the app has to many renders / re-renders
+            // and throws an exception to say, "I wait for the next paint"
+            // https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver#observation_errors
+            cy.on('uncaught:exception', (error) => {
+                return !error.message.includes('ResizeObserver');
+            });
+
+            teardown();
+            menu.openAdvancedDrawer();
+            menu.goToAdminDashboard();
+            datasetImportPage.importDataset('dataset/film.csv');
+            datasetImportPage.importModel('model/film-with-field-id.tar');
+            cy.findByRole('gridcell', { name: 'Liste des films' }).trigger(
+                'mouseenter',
+            );
+            cy.findByRole('button', { name: 'edit-Liste des films' }).click();
+
+            cy.findByRole('tab', { name: 'Semantics' }).click();
+            cy.findByRole('checkbox', {
+                name: 'This field can be annotated',
+            }).click();
+            cy.findByRole('button', { name: 'Save' }).click();
+
+            datasetImportPage.publish();
+
+            cy.findByRole('button', {
+                name: 'Open menu',
+            }).click();
+
+            cy.findByRole('menuitem', {
+                name: 'Model',
+            }).trigger('mouseleave');
+
+            cy.findByRole('menuitem', {
+                name: 'Annotations',
+            }).trigger('mouseenter');
+
+            cy.wait(500);
+
+            datasetImportPage.importAnnotations(
+                'annotations/film-with-field-id.json',
+            );
+
+            datasetImportPage.goToPublishedResources();
+        });
+
+        it('should see own annotations from create annotation button', () => {
+            annotation.checkFieldAnnotations({
+                fieldLabel: 'Dataset Description',
+                expectedAnnotations: [
+                    {
+                        kind: 'comment',
+                        summaryValue: 'This is a comment',
+                        status: 'Ongoing',
+                    },
+                ],
+                resourceTitle: 'Home page',
+            });
+            annotation.createTitleAnnotation({
+                fieldLabel: 'Dataset Description',
+                comment: 'This is my comment',
+                authorName: 'Me',
+                authorEmail: 'me@myself.org',
+            });
+
+            cy.findByText(`(1 sent)`).should('be.visible');
+
+            annotation.openAnnotationModalForField('Dataset Description');
+            cy.findByText(`See 2 annotations`).should('be.visible');
+            cy.findByText(`See 2 annotations`).click();
+
+            cy.findByLabelText('Resource title').should(
+                'have.text',
+                'Home page',
+            );
+
+            cy.findByText('All contributors').should('be.visible');
+            cy.findByText('Only me').should('be.visible');
+
+            cy.findAllByLabelText('Type').should('have.length', 2);
+            cy.findAllByLabelText('Annotation summary').should(
+                'have.length',
+                2,
+            );
+            cy.findAllByLabelText('Status').should('have.length', 2);
+
+            cy.findByText('Only me').click();
+
+            cy.findAllByLabelText('Type').should('have.length', 1);
+            cy.findAllByLabelText('Annotation summary').should(
+                'have.length',
+                1,
+            );
+            cy.findAllByLabelText('Status').should('have.length', 1);
+            cy.findByLabelText('Type').should('have.text', 'Comment');
+
+            cy.findByLabelText('Annotation summary').should(
+                'have.text',
+                'This is my comment',
+            );
+            cy.findByLabelText('Status').should('have.text', 'Ongoing');
+
+            cy.findByText('You are the contributor of this annotation').should(
+                'be.visible',
+            );
+        });
+
+        it('should see own annotations from annotation count on field', () => {
+            annotation.createTitleAnnotation({
+                fieldLabel: 'Dataset Description',
+                comment: 'This is my comment',
+                authorName: 'Me',
+                authorEmail: 'me@myself.org',
+            });
+
+            cy.findByText(`(1 sent)`).click();
+
+            cy.findByText('All contributors').should('be.visible');
+            cy.findByText('Only me').should('be.visible');
+
+            cy.findAllByLabelText('Type').should('have.length', 1);
+            cy.findAllByLabelText('Annotation summary').should(
+                'have.length',
+                1,
+            );
+        });
+    });
+
+    describe('remind me', () => {
+        beforeEach(() => {
+            // ResizeObserver doesn't like when the app has to many renders / re-renders
+            // and throws an exception to say, "I wait for the next paint"
+            // https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver#observation_errors
+            cy.on('uncaught:exception', (error) => {
+                return !error.message.includes('ResizeObserver');
+            });
+
+            teardown();
+            menu.openAdvancedDrawer();
+            menu.goToAdminDashboard();
+            datasetImportPage.importDataset('dataset/film.csv');
+            datasetImportPage.importModel('model/film-with-field-id.tar');
+            cy.findByRole('gridcell', { name: 'Liste des films' }).trigger(
+                'mouseenter',
+            );
+            cy.findByRole('button', { name: 'edit-Liste des films' }).click();
+
+            cy.findByRole('tab', { name: 'Semantics' }).click();
+            cy.findByRole('checkbox', {
+                name: 'This field can be annotated',
+            }).click();
+            cy.findByRole('button', { name: 'Save' }).click();
+
+            datasetImportPage.publish();
+
+            cy.findByRole('button', {
+                name: 'Open menu',
+            }).click();
+
+            cy.findByRole('menuitem', {
+                name: 'Model',
+            }).trigger('mouseleave');
+
+            cy.findByRole('menuitem', {
+                name: 'Annotations',
+            }).trigger('mouseenter');
+
+            cy.wait(500);
+
+            datasetImportPage.importAnnotations(
+                'annotations/film-with-field-id.json',
+            );
+
+            datasetImportPage.goToPublishedResources();
+        });
+
+        it('should remind author of an annotation', () => {
+            annotation.createTitleAnnotation({
+                fieldLabel: 'Dataset Description',
+                comment: 'This is my comment',
+                authorName: 'Me',
+                authorEmail: 'me@myself.org',
+                authorRememberMe: true,
+            });
+
+            annotation.openAnnotationModalForField('Dataset Description');
+            annotation.targetSection();
+            annotation.fillComment('This is another comment');
+            annotation.goToNextStep();
+
+            annotation.authorNameField().should('have.value', 'Me');
+            annotation.authorEmailField().should('have.value', 'me@myself.org');
+            annotation.authorRememberMeField().should('be.checked').uncheck();
+
+            annotation.submitAnnotation();
+
+            annotation.openAnnotationModalForField('Dataset Description');
+            annotation.targetSection();
+            annotation.fillComment('This is another comment');
+            annotation.goToNextStep();
+
+            annotation.authorNameField().should('have.value', '');
+            annotation.authorEmailField().should('have.value', '');
+            annotation.authorRememberMeField().should('not.be.checked');
+        });
+    });
+
+    describe('annotation details actions', () => {
+        beforeEach(() => {
+            // ResizeObserver doesn't like when the app has to many renders / re-renders
+            // and throws an exception to say, "I wait for the next paint"
+            // https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver#observation_errors
+            cy.on('uncaught:exception', (error) => {
+                return !error.message.includes('ResizeObserver');
+            });
+
+            teardown();
+            menu.openAdvancedDrawer();
+            menu.goToAdminDashboard();
+            datasetImportPage.importDataset('dataset/film.csv');
+            datasetImportPage.importModel('model/film-with-field-id.tar');
+            datasetImportPage.publish();
+
+            cy.findByRole('button', {
+                name: 'Open menu',
+            }).click();
+
+            cy.findByRole('menuitem', {
+                name: 'Model',
+            }).trigger('mouseleave');
+
+            cy.findByRole('menuitem', {
+                name: 'Annotations',
+            }).trigger('mouseenter');
+
+            cy.wait(500);
+
+            datasetImportPage.importAnnotations(
+                'annotations/film-many-annotations.json',
+            );
+            datasetImportPage.goToPublishedResources();
+
+            cy.findByText('Search').click();
+            searchDrawer.search('Terminator 2');
+            searchDrawer.waitForLoading();
+            cy.findByTitle('Terminator 2').click();
+            annotation.createTitleAnnotation({
+                fieldLabel: 'actors',
+                comment: 'This is a comment',
+                authorName: 'John Doe',
+                authorEmail: 'john.doe@example.org',
+            });
+
+            cy.findByText('More').click();
+            menu.goToAdminDashboard();
+            cy.findByRole('link', { name: 'Annotations' }).click();
+        });
+
+        it('should redirect to the resource if exists', () => {
+            cy.findByText('Terminator 2').click();
+
+            cy.findByText('See the resource', {
+                timeout: 1000,
+            })
+                .should('be.visible')
+                .should('not.be.disabled')
+                .should('have.attr', 'target', '_blank')
+                .invoke('removeAttr', 'target')
+                .click();
+
+            cy.findByText('actors', {
+                timeout: 1000,
+            }).should('be.visible');
+        });
+
+        it('should redirect to the data list with filtered uri', () => {
+            cy.findByText('Terminator 2').click();
+
+            cy.findByText('Update data', {
+                timeout: 1000,
+            })
+                .should('be.visible')
+                .should('not.be.disabled')
+                .should('have.attr', 'target', '_blank')
+                .invoke('removeAttr', 'target')
+                .click();
+
+            cy.waitForNetworkIdle(1000);
+            cy.findByRole('progressbar').should('not.exist');
+
+            cy.findByText('1–1 of 1').should('be.visible');
+
+            cy.findByText('"Terminator 2"').should('be.visible');
+
+            cy.waitForNetworkIdle(1000);
+            cy.findByRole('progressbar').should('not.exist');
+
+            cy.findByText('Filters').click();
+
+            cy.findByLabelText('value').should('not.be.empty');
+
+            cy.findAllByRole('cell').should('have.length', 11);
+        });
+
+        it('should disable the "See the resource" button if the resource does not exist', () => {
+            cy.findByText('rating').click();
+
+            cy.findByText('See the resource', {
+                timeout: 1000,
+            })
+                .should('be.visible')
+                .should('be.disabled');
+        });
+
+        it('should redirect to the home page', () => {
+            cy.findByText('Nombre de films').click();
+
+            cy.findByText('See home page', {
+                timeout: 1000,
+            })
+                .should('be.visible')
+                .should('not.be.disabled')
+                .should('have.attr', 'target', '_blank')
+                .invoke('removeAttr', 'target')
+                .click();
+
+            cy.findByRole('heading', {
+                name: 'Une collection de films célébres',
+                timeout: 1000,
+            }).should('exist');
+        });
+
+        it('should redirect to the graph page', () => {
+            cy.findByText('/graph/TK2J').click();
+
+            cy.findByText('See the graph', {
+                timeout: 1000,
+            })
+                .should('be.visible')
+                .should('not.be.disabled')
+                .should('have.attr', 'target', '_blank')
+                .invoke('removeAttr', 'target')
+                .click();
+
+            cy.findByText('rating').should('exist');
         });
     });
 });

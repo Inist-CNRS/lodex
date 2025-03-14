@@ -1,21 +1,21 @@
-import { Tooltip, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { useTranslate } from '../../i18n/I18NContext';
+import { getResourceType } from './helpers/resourceType';
 
 function ResourceTitleCellInternal({ label, italic }) {
     return (
-        <Tooltip title={label}>
-            <Typography
-                sx={{
-                    textOverflow: 'ellipsis',
-                    overflow: 'hidden',
-                    fontStyle: italic ? 'italic' : undefined,
-                }}
-            >
-                {label}
-            </Typography>
-        </Tooltip>
+        <Typography
+            title={label}
+            sx={{
+                textOverflow: 'ellipsis',
+                overflow: 'hidden',
+                fontStyle: italic ? 'italic' : undefined,
+            }}
+        >
+            {label}
+        </Typography>
     );
 }
 
@@ -27,7 +27,9 @@ ResourceTitleCellInternal.propTypes = {
 export const ResourceTitleCell = ({ row }) => {
     const { translate } = useTranslate();
 
-    if (row.field?.scope === 'graphic' || !row.resourceUri) {
+    if (
+        ['home', 'graph'].includes(getResourceType(row.resourceUri, row.field))
+    ) {
         return null;
     }
 
@@ -35,6 +37,7 @@ export const ResourceTitleCell = ({ row }) => {
         return (
             <ResourceTitleCellInternal
                 label={translate('annotation_resource_not_found')}
+                italic
             />
         );
     }

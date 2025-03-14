@@ -4,12 +4,14 @@ const {
     getUpdateFieldRequest,
     getPatchSearchableFieldsRequest,
     getPatchOverviewRequest,
+    getPatchSortFieldRequest,
+    getPatchSortOrderRequest,
 } = require('../../user');
 
-import { getUserSessionStorageInfo } from './tools';
-import fetch from '../../lib/fetch';
-import { saveFieldSuccess } from '../../fields';
 import { store } from '..';
+import { saveFieldSuccess } from '../../fields';
+import fetch from '../../lib/fetch';
+import { getUserSessionStorageInfo } from './tools';
 
 const duplicateField = async ({ fieldId }) => {
     const { token } = getUserSessionStorageInfo();
@@ -56,6 +58,30 @@ const patchOverview = async (field) => {
     });
 };
 
+const patchSortField = async (field) => {
+    const { token } = getUserSessionStorageInfo();
+    const request = getPatchSortFieldRequest({ token }, field);
+    return fetch(request).then(({ error }) => {
+        if (error) {
+            return { ok: false };
+        }
+        store.dispatch(saveFieldSuccess());
+        return { ok: true };
+    });
+};
+
+const patchSortOrder = async (order) => {
+    const { token } = getUserSessionStorageInfo();
+    const request = getPatchSortOrderRequest({ token }, order);
+    return fetch(request).then(({ error }) => {
+        if (error) {
+            return { ok: false };
+        }
+        store.dispatch(saveFieldSuccess());
+        return { ok: true };
+    });
+};
+
 const patchSearchableFields = async (fields) => {
     const { token } = getUserSessionStorageInfo();
     const request = getPatchSearchableFieldsRequest({ token }, fields);
@@ -73,5 +99,7 @@ export default {
     clearModel,
     patchField,
     patchOverview,
+    patchSortField,
+    patchSortOrder,
     patchSearchableFields,
 };

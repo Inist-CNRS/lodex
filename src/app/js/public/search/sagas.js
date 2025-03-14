@@ -1,31 +1,33 @@
 import {
-    take,
+    call,
+    fork,
     put,
     select,
-    call,
+    take,
     takeEvery,
     takeLatest,
-    fork,
 } from 'redux-saga/effects';
 
 import {
+    facetActions,
+    facetActionTypes,
+    initSort,
     loadMoreFailed,
     loadMoreSucceed,
-    SEARCH_LOAD_MORE,
     SEARCH,
+    SEARCH_LOAD_MORE,
     SEARCH_SORT,
+    SEARCH_SORT_INIT,
     searchFailed,
     searchSucceed,
-    facetActionTypes,
-    facetActions,
 } from './reducer';
 
-import { fromSearch, fromResource } from '../selectors';
 import { LOAD_PUBLICATION_SUCCESS } from '../../fields';
-import { LOAD_RESOURCE_SUCCESS } from '../resource';
-import { fromUser, fromFields } from '../../sharedSelectors';
 import fetchSaga from '../../lib/sagas/fetchSaga';
+import { fromFields, fromUser } from '../../sharedSelectors';
 import facetSagasFactory from '../facet/sagas';
+import { LOAD_RESOURCE_SUCCESS } from '../resource';
+import { fromResource, fromSearch } from '../selectors';
 
 const PER_PAGE = 10;
 
@@ -130,11 +132,24 @@ const facetSagas = facetSagasFactory({
     selectors: fromSearch,
 });
 
+function* initSortSagas() {
+    const sortBy = yield select(fromFields.getResourceSortFieldName);
+    const sortDir = yield select(fromFields.getResourceSortDir);
+    if (!sortBy) {
+        return;
+    }
+
+    yield put(initSort({ sortBy, sortDir }));
+}
+
 export default function* () {
+    yield fork(initSortSagas);
+
     yield takeLatest(
         [
             SEARCH,
             SEARCH_SORT,
+            SEARCH_SORT_INIT,
             facetActionTypes.TOGGLE_FACET_VALUE,
             facetActionTypes.SET_ALL_VALUE_FOR_FACET,
             facetActionTypes.INVERT_FACET,

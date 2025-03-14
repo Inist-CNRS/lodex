@@ -1,13 +1,17 @@
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useCallback, useMemo } from 'react';
 import { toast } from '../../../common/tools/toast';
 import { getUserSessionStorageInfo } from '../admin/api/tools';
 import { useTranslate } from '../i18n/I18NContext';
 import fetch from '../lib/fetch';
 import { getRequest } from '../user';
+import { useSaveAnnotationId } from './annotationStorage';
 
 export function useCreateAnnotation() {
-    const { translate } = useTranslate();
+    const { translate, locale } = useTranslate();
+    const queryClient = useQueryClient();
+
+    const saveAnnotationId = useSaveAnnotationId();
 
     const mutation = useMutation({
         mutationFn: async (annotation) => {
@@ -16,7 +20,7 @@ export function useCreateAnnotation() {
                 { token },
                 {
                     method: 'POST',
-                    url: '/api/annotation',
+                    url: `/api/annotation?locale=${locale}`,
                     body: annotation,
                 },
             );
@@ -28,7 +32,17 @@ export function useCreateAnnotation() {
 
             return response.data;
         },
-        onSuccess: () => {
+        onSuccess: async (data) => {
+            await queryClient.resetQueries({
+                predicate: (query) => {
+                    return (
+                        query.queryKey[0] === 'field-annotations' &&
+                        query.queryKey[1] === data.fieldId
+                    );
+                },
+            });
+
+            saveAnnotationId(data);
             toast(translate('annotation_create_success'), {
                 type: toast.TYPE.SUCCESS,
             });
@@ -44,7 +58,7 @@ export function useCreateAnnotation() {
         async (annotation) => {
             return mutation.mutateAsync(annotation);
         },
-        [mutation, translate],
+        [mutation],
     );
 
     return useMemo(
