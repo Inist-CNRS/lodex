@@ -57,7 +57,9 @@ export function AnnotationItems({ annotation }) {
                             textAlign: 'justify',
                         }}
                     >
-                        {annotation.initialValue}
+                        {[null, undefined, ''].includes(annotation.initialValue)
+                            ? '""'
+                            : annotation.initialValue.toString()}
                     </Typography>
                 </Section>
             )}

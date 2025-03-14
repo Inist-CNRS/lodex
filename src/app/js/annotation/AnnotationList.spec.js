@@ -51,6 +51,44 @@ describe('AnnotationList', () => {
             };
             expect(getAnnotationSummaryValue(annotation)).toBe('42 -> 19');
         });
+        it('should return the initialValue -> proposed value when the annotation kind is correction when they are boolean', () => {
+            const annotation = {
+                kind: 'correction',
+                initialValue: false,
+                proposedValue: true,
+            };
+            expect(getAnnotationSummaryValue(annotation)).toBe('false -> true');
+        });
+        it('should return the initialValue -> proposed value when the annotation kind is correction even when initial value is null', () => {
+            const annotation = {
+                kind: 'correction',
+                initialValue: null,
+                proposedValue: 'proposedValue',
+            };
+            expect(getAnnotationSummaryValue(annotation)).toBe(
+                '"" -> proposedValue',
+            );
+        });
+        it('should return the initialValue -> proposed value when the annotation kind is correction even when initial value is undefined', () => {
+            const annotation = {
+                kind: 'correction',
+                initialValue: undefined,
+                proposedValue: 'proposedValue',
+            };
+            expect(getAnnotationSummaryValue(annotation)).toBe(
+                '"" -> proposedValue',
+            );
+        });
+        it('should return the initialValue -> proposed value when the annotation kind is correction even when initial value is ""', () => {
+            const annotation = {
+                kind: 'correction',
+                initialValue: '',
+                proposedValue: 'proposedValue',
+            };
+            expect(getAnnotationSummaryValue(annotation)).toBe(
+                '"" -> proposedValue',
+            );
+        });
         it('should return the initialValue -> proposed value when the annotation kind is correction when proposedValue is an array', () => {
             const annotation = {
                 kind: 'correction',
@@ -81,6 +119,30 @@ describe('AnnotationList', () => {
             };
             expect(getAnnotationSummaryValue(annotation)).toBe('initialValue');
         });
+        it('should return the initialValue even when null when the annotation kind is removal', () => {
+            const annotation = {
+                kind: 'removal',
+                initialValue: null,
+                proposedValue: 'proposedValue',
+            };
+            expect(getAnnotationSummaryValue(annotation)).toBe('""');
+        });
+        it('should return the initialValue even when undefined when the annotation kind is removal', () => {
+            const annotation = {
+                kind: 'removal',
+                initialValue: undefined,
+                proposedValue: 'proposedValue',
+            };
+            expect(getAnnotationSummaryValue(annotation)).toBe('""');
+        });
+        it('should return the initialValue even when "" when the annotation kind is removal', () => {
+            const annotation = {
+                kind: 'removal',
+                initialValue: '',
+                proposedValue: 'proposedValue',
+            };
+            expect(getAnnotationSummaryValue(annotation)).toBe('""');
+        });
         it('should return the number initialValue when the annotation kind is removal', () => {
             const annotation = {
                 kind: 'removal',
@@ -89,13 +151,23 @@ describe('AnnotationList', () => {
             };
             expect(getAnnotationSummaryValue(annotation)).toBe('42');
         });
+        it('should return the boolean initialValue when the annotation kind is removal', () => {
+            const annotation = {
+                kind: 'removal',
+                initialValue: false,
+                proposedValue: 'proposedValue',
+            };
+            expect(getAnnotationSummaryValue(annotation)).toBe('false');
+        });
         it('should return the array initialValue when the annotation kind is removal', () => {
             const annotation = {
                 kind: 'removal',
-                initialValue: [42, 'value'],
+                initialValue: [true, false, 42, 'value', null, undefined, ''],
                 proposedValue: 'proposedValue',
             };
-            expect(getAnnotationSummaryValue(annotation)).toBe('42 | value');
+            expect(getAnnotationSummaryValue(annotation)).toBe(
+                'true | false | 42 | value | "" | "" | ""',
+            );
         });
         it('should return the proposedValue when the annotation kind is addition', () => {
             const annotation = {
@@ -105,7 +177,7 @@ describe('AnnotationList', () => {
             };
             expect(getAnnotationSummaryValue(annotation)).toBe('proposedValue');
         });
-        it('should return the proposedValues separated by space when the annotation kind is addition and proposed value is an array', () => {
+        it('should return the proposedValues separated by | when the annotation kind is addition and proposed value is an array', () => {
             const annotation = {
                 kind: 'addition',
                 initialValue: 'initialValue',
@@ -336,6 +408,100 @@ describe('AnnotationList', () => {
                 wrapper.queryByLabelText('annotation_created_at'),
             ).toHaveTextContent('9/1/2025');
         });
+        it('should hide initial value when kind is addition', () => {
+            const annotations = [
+                {
+                    _id: 'annotationId',
+                    kind: 'addition',
+                    comment: 'replace this with that',
+                    adminComment: 'Can you please provide more context?',
+                    proposedValue: 'that',
+                    initialValue: 'this',
+                    resourceUri: 'resourceUri',
+                    field: { label: 'fieldLabel', scope: 'resource' },
+                    resource: { title: 'resourceTitle', uri: 'resourceUri' },
+                    status: 'to_review',
+                    createdAt: '2025-09-01T00:00:00.000Z',
+                    updatedAt: '2025-10-01T00:00:00.000Z',
+                    isMine: false,
+                },
+            ];
+            const field = { label: 'fieldLabel' };
+            const wrapper = render(
+                <TestAnnotationList annotations={annotations} field={field} />,
+            );
+            expect(
+                wrapper.queryByLabelText('annotation_initial_value'),
+            ).not.toBeInTheDocument();
+        });
+        it('should hide initial value when kind is comment', () => {
+            const annotations = [
+                {
+                    _id: 'annotationId',
+                    kind: 'comment',
+                    comment: 'replace this with that',
+                    adminComment: 'Can you please provide more context?',
+                    proposedValue: 'that',
+                    initialValue: 'this',
+                    resourceUri: 'resourceUri',
+                    field: { label: 'fieldLabel', scope: 'resource' },
+                    resource: { title: 'resourceTitle', uri: 'resourceUri' },
+                    status: 'to_review',
+                    createdAt: '2025-09-01T00:00:00.000Z',
+                    updatedAt: '2025-10-01T00:00:00.000Z',
+                    isMine: false,
+                },
+            ];
+            const field = { label: 'fieldLabel' };
+            const wrapper = render(
+                <TestAnnotationList annotations={annotations} field={field} />,
+            );
+            expect(
+                wrapper.queryByLabelText('annotation_initial_value'),
+            ).not.toBeInTheDocument();
+        });
+        it.each([
+            ['correction', null],
+            ['correction', undefined],
+            ['correction', ''],
+            ['removal', null],
+            ['removal', undefined],
+            ['removal', ''],
+        ])(
+            'should show initial value when kind is %s even when %s',
+            (kind, initialValue) => {
+                const annotations = [
+                    {
+                        _id: 'annotationId',
+                        kind,
+                        comment: 'replace this with that',
+                        adminComment: 'Can you please provide more context?',
+                        proposedValue: 'that',
+                        initialValue,
+                        resourceUri: 'resourceUri',
+                        field: { label: 'fieldLabel', scope: 'resource' },
+                        resource: {
+                            title: 'resourceTitle',
+                            uri: 'resourceUri',
+                        },
+                        status: 'to_review',
+                        createdAt: '2025-09-01T00:00:00.000Z',
+                        updatedAt: '2025-10-01T00:00:00.000Z',
+                        isMine: false,
+                    },
+                ];
+                const field = { label: 'fieldLabel' };
+                const wrapper = render(
+                    <TestAnnotationList
+                        annotations={annotations}
+                        field={field}
+                    />,
+                );
+                expect(
+                    wrapper.queryByLabelText('annotation_initial_value'),
+                ).toHaveTextContent('""');
+            },
+        );
 
         it('should display all annotation details when clicking on expand_all_annotations', async () => {
             const annotations = [
