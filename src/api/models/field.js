@@ -128,9 +128,7 @@ export default async (db) => {
     };
 
     collection.findManyByIds = async (ids) => {
-        const fields = await collection
-            .find({ _id: { $in: ids.map((id) => id) } })
-            .toArray();
+        const fields = await collection.find({ _id: { $in: ids } }).toArray();
 
         return fields.reduce(
             (acc, field) => ({
