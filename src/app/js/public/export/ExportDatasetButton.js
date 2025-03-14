@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { connect } from 'react-redux';
 import {
+    Autocomplete,
     Button,
     Checkbox,
     Chip,
@@ -10,23 +9,24 @@ import {
     DialogTitle,
     FormControl,
     IconButton,
-    InputLabel,
+    ListItem,
     ListItemIcon,
     ListItemText,
     MenuItem,
-    Select,
-    Stack,
+    TextField,
 } from '@mui/material';
 import CancelIcon from '@mui/material/internal/svg-icons/Cancel';
 import PropTypes from 'prop-types';
+import React, { useEffect, useState } from 'react';
+import { connect } from 'react-redux';
 
-import { dumpDataset } from '../../admin/dump';
-import { fromDump } from '../../admin/selectors';
-import CancelButton from '../../lib/components/CancelButton';
-import { useTranslate } from '../../i18n/I18NContext';
-import StorageIcon from '@mui/icons-material/Storage';
 import ClearIcon from '@mui/icons-material/Clear';
 import DoneAllIcon from '@mui/icons-material/DoneAll';
+import StorageIcon from '@mui/icons-material/Storage';
+import { dumpDataset } from '../../admin/dump';
+import { fromDump } from '../../admin/selectors';
+import { useTranslate } from '../../i18n/I18NContext';
+import CancelButton from '../../lib/components/CancelButton';
 
 import datasetApi from '../../admin/api/dataset';
 
@@ -63,97 +63,55 @@ export const ExportDatasetButtonComponent = ({
                 </DialogTitle>
                 <DialogContent sx={{ paddingTop: '1rem!important' }}>
                     <FormControl fullWidth>
-                        <InputLabel id="export_choose_fields">
-                            {translate('export_choose_fields')}
-                        </InputLabel>
-                        <Select
-                            label={`${translate('export_choose_fields')} *`}
-                            labelId={'export_choose_fields'}
-                            value={selectedFields}
+                        <Autocomplete
                             multiple
-                            onChange={(e, { props }) => {
-                                setSelectedFields((currentSelectedFields) => {
-                                    if (
-                                        currentSelectedFields.some(
-                                            (selectedField) =>
-                                                selectedField ===
-                                                // eslint-disable-next-line react/prop-types
-                                                props.value,
-                                        )
-                                    ) {
-                                        return currentSelectedFields.filter(
-                                            (selectedField) =>
-                                                selectedField !==
-                                                // eslint-disable-next-line react/prop-types
-                                                props.value,
-                                        );
-                                    }
-                                    return [
-                                        ...currentSelectedFields,
-                                        // eslint-disable-next-line react/prop-types
-                                        props.value,
-                                    ];
-                                });
+                            options={choices}
+                            value={selectedFields}
+                            onChange={(event, newValue) => {
+                                setSelectedFields(newValue);
                             }}
-                            minRows={500}
-                            multiline
-                            renderValue={(selected) => {
-                                return (
-                                    <Stack
-                                        direction={'row'}
-                                        flexWrap={'wrap'}
-                                        gap={1}
-                                    >
-                                        {selected.map((field) => (
-                                            <Chip
-                                                key={field}
-                                                label={field}
-                                                onMouseDown={(e) => {
-                                                    e.stopPropagation();
-                                                    e.preventDefault();
-                                                }}
-                                                deleteIcon={
-                                                    // overriding the default delete icon with itself to remove aria-hidden, add an aria-label and make it focusable
-                                                    <CancelIcon
-                                                        aria-hidden={false}
-                                                        aria-label={translate(
-                                                            'remove_field_from_export',
-                                                            {
-                                                                field,
-                                                            },
-                                                        )}
-                                                        focusable
-                                                    />
-                                                }
-                                                onDelete={(e) => {
-                                                    e.stopPropagation();
-                                                    e.preventDefault();
-                                                    setSelectedFields(
-                                                        selectedFields.filter(
-                                                            (selectedField) =>
-                                                                selectedField !==
-                                                                field,
-                                                        ),
-                                                    );
-                                                }}
+                            renderTags={(value, getTagProps) =>
+                                value.map((option, index) => (
+                                    <Chip
+                                        key={option}
+                                        label={option}
+                                        {...getTagProps({ index })}
+                                        deleteIcon={
+                                            <CancelIcon
+                                                aria-hidden={false}
+                                                aria-label={translate(
+                                                    'remove_field_from_export',
+                                                    {
+                                                        field: option,
+                                                    },
+                                                )}
+                                                focusable
                                             />
-                                        ))}
-                                    </Stack>
+                                        }
+                                    />
+                                ))
+                            }
+                            renderInput={(params) => (
+                                <TextField
+                                    {...params}
+                                    label={translate('export_choose_fields')}
+                                    placeholder={translate('choose_fields')}
+                                />
+                            )}
+                            renderOption={(props, option, { selected }) => {
+                                return (
+                                    <ListItem
+                                        {...props}
+                                        key={option}
+                                        role="option"
+                                        aria-label={option}
+                                    >
+                                        <Checkbox checked={selected} />
+                                        <ListItemText primary={option} />
+                                    </ListItem>
                                 );
                             }}
-                        >
-                            {choices.map((field) => (
-                                <MenuItem key={field} value={field}>
-                                    <Checkbox
-                                        checked={selectedFields.some(
-                                            (selectedField) =>
-                                                selectedField === field,
-                                        )}
-                                    />
-                                    <ListItemText primary={field} />
-                                </MenuItem>
-                            ))}
-                        </Select>
+                        />
                     </FormControl>
                     <IconButton
                         title={translate('clear_all')}
