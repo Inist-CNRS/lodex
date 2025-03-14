@@ -6,11 +6,11 @@ import { fromSearch } from '../selectors';
 
 describe('search sagas', () => {
     describe('doSearchRequest', () => {
-        it('should keep filter empty when getMyAnnotationsFilter selector return null', () => {
+        it('should keep filter empty when getAnnotationsFilter selector return null', () => {
             const gen = doSearchRequest();
             expect(gen.next().value).toEqual(select(fromSearch.getQuery));
             expect(gen.next('queryValue').value).toEqual(
-                select(fromSearch.getMyAnnotationsFilter),
+                select(fromSearch.getAnnotationsFilter),
             );
             expect(gen.next(null).value).toEqual(
                 select(fromSearch.getResourceUrisWithAnnotationFilter),
@@ -41,11 +41,11 @@ describe('search sagas', () => {
             expect(gen.next().done).toBe(true);
         });
 
-        it('should add resourceUris filter when getMyAnnotationsFilter selector return my-annotations', () => {
+        it('should add resourceUris filter when getAnnotationsFilter selector return my-annotations', () => {
             const gen = doSearchRequest();
             expect(gen.next().value).toEqual(select(fromSearch.getQuery));
             expect(gen.next('queryValue').value).toEqual(
-                select(fromSearch.getMyAnnotationsFilter),
+                select(fromSearch.getAnnotationsFilter),
             );
             expect(gen.next('my-annotations').value).toEqual(
                 select(fromSearch.getResourceUrisWithAnnotationFilter),
@@ -78,11 +78,11 @@ describe('search sagas', () => {
             expect(gen.next().done).toBe(true);
         });
 
-        it('should add excludedResourceUris filter when getMyAnnotationsFilter selector return not-my-annotations', () => {
+        it('should add excludedResourceUris filter when getAnnotationsFilter selector return not-my-annotations', () => {
             const gen = doSearchRequest();
             expect(gen.next().value).toEqual(select(fromSearch.getQuery));
             expect(gen.next('queryValue').value).toEqual(
-                select(fromSearch.getMyAnnotationsFilter),
+                select(fromSearch.getAnnotationsFilter),
             );
             expect(gen.next('not-my-annotations').value).toEqual(
                 select(fromSearch.getResourceUrisWithAnnotationFilter),
@@ -119,7 +119,7 @@ describe('search sagas', () => {
             const gen = doSearchRequest();
             expect(gen.next().value).toEqual(select(fromSearch.getQuery));
             expect(gen.next('queryValue').value).toEqual(
-                select(fromSearch.getMyAnnotationsFilter),
+                select(fromSearch.getAnnotationsFilter),
             );
             expect(gen.next(null).value).toEqual(
                 select(fromSearch.getResourceUrisWithAnnotationFilter),

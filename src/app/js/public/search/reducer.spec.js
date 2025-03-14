@@ -1,7 +1,7 @@
-const { default: reducer, SEARCH_MY_ANNOTATIONS } = require('./reducer');
+const { default: reducer, SEARCH_ANNOTATIONS } = require('./reducer');
 
 describe('search reducer', () => {
-    describe('SEARCH_MY_ANNOTATIONS', () => {
+    describe('SEARCH_ANNOTATIONS', () => {
         it('should handle mode === null removing resourceUris', () => {
             const state = {
                 filters: {
@@ -10,7 +10,7 @@ describe('search reducer', () => {
                 },
             };
             const action = {
-                type: SEARCH_MY_ANNOTATIONS,
+                type: SEARCH_ANNOTATIONS,
                 payload: { mode: null, resourceUris: ['uri1', 'uri2'] },
             };
             const newState = reducer(state, action);
@@ -31,7 +31,7 @@ describe('search reducer', () => {
                 },
             };
             const action = {
-                type: SEARCH_MY_ANNOTATIONS,
+                type: SEARCH_ANNOTATIONS,
                 payload: {
                     mode: 'my-annotations',
                     resourceUris: ['uri1', 'uri2'],
@@ -55,7 +55,7 @@ describe('search reducer', () => {
                 },
             };
             const action = {
-                type: SEARCH_MY_ANNOTATIONS,
+                type: SEARCH_ANNOTATIONS,
                 payload: {
                     mode: 'not-my-annotations',
                     resourceUris: ['uri1', 'uri2'],

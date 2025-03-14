@@ -13,8 +13,8 @@ import useSearchBar from '../../lib/components/searchbar/useSearchBar';
 import ToggleFacetsButton from '../../lib/components/searchbar/ToggleFacetsButton';
 import { Box, Stack } from '@mui/material';
 import stylesToClassName from '../../lib/stylesToClassName';
-import MyAnnotationsFilter from './MyAnnotationsFilter';
 import { useCanAnnotate } from '../../annotation/useCanAnnotate';
+import AnnotationsFilter from './AnnotationsFilter';
 
 const styles = stylesToClassName(
     {
@@ -64,7 +64,7 @@ const SearchSearchBar = ({
                 )}
             </Box>
             <Stack direction="row" justifyContent="center">
-                {canAnnotate && <MyAnnotationsFilter />}
+                {canAnnotate && <AnnotationsFilter />}
             </Stack>
         </>
     );

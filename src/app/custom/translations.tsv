@@ -1393,7 +1393,10 @@
 "what_data_do_you_want_to_export"	"What data do you want to export?"	"Quelles données souhaitez-vous exporter ?"
 "export_choose_fields"	"Select data"	"Sélectionner les données"
 "remove_field_from_export"	Remove field "%{field}" from export	retirer le champ "%{field}" de l'export
-"my_annotations_filter"	"My annotations"	"Mes annotations"
-"my_annotations_filter_null_choice"	"All resources"	"Toutes les resources"
-"my_annotations_filter_annotated_by_me_choice"	"I have annotated"	"J'ai annoté"
-"my_annotations_filter_not_annotated_by_me_choice"	"I have not annotated"	"Je n'ai pas annoté"
+"annotations_filter"	"Annotations"	"Annotations"
+"annotations_filter_null_choice"	"All resources"	"Toutes les resources"
+"annotations_filter_annotated_by_me_choice"	"Resources that I have annotated"	"Ressources que j'ai annotées"
+"annotations_filter_not_annotated_by_me_choice"	"Resources that I have not annotated"	"Ressources que je n'ai pas annotées"
+"annotations_filter_annotated_choice"	"Annotated resources"	"Ressources annotées"
+"annotations_filter_not_annotated_choice"	"Unannotated resources"	"Ressources non annotées"
+
