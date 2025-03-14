@@ -7,8 +7,42 @@ import generateUri from '../../../common/transformers/AUTOGENERATE_URI';
 import ark from './ark';
 import updateFacetValue from '../../services/updateFacetValue';
 import { ObjectId } from 'mongodb';
+import { uniq } from 'lodash';
 
 const app = new Koa();
+
+export const completeFilters = async ({ annotated, ...filters } = {}, ctx) => {
+    if (!filters) {
+        return {};
+    }
+
+    if (annotated == undefined) {
+        return filters;
+    }
+
+    const annotatedResourceUris =
+        await ctx.annotation.getAnnotatedResourceUris();
+
+    if (annotated === true) {
+        return {
+            ...filters,
+            resourceUris: filters.resourceUris
+                ? uniq(filters.resourceUris.concat(annotatedResourceUris))
+                : annotatedResourceUris,
+        };
+    }
+
+    if (annotated === false) {
+        return {
+            ...filters,
+            excludedResourceUris: filters.resourceUris
+                ? uniq(filters.resourceUris.concat(annotatedResourceUris))
+                : annotatedResourceUris,
+        };
+    }
+
+    return undefined;
+};
 
 export const getPage = async (ctx) => {
     const {
@@ -23,9 +57,14 @@ export const getPage = async (ctx) => {
 
     let facets = {};
 
+    const completedFilters = await completeFilters(filters, ctx);
+
     // mongo ignore $in filter with empty array and would return all results
     // also we already know the result will be empty
-    if (filters?.resourceUris && filters?.resourceUris?.length === 0) {
+    if (
+        completedFilters?.resourceUris &&
+        completedFilters?.resourceUris?.length === 0
+    ) {
         ctx.body = {
             total: 0,
             fullTotal: 0,
@@ -61,7 +100,7 @@ export const getPage = async (ctx) => {
         sortDir,
         match,
         facets,
-        filters,
+        filters: completedFilters,
         invertedFacets,
         searchableFieldNames,
         facetFieldNames,

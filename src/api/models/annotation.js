@@ -111,6 +111,10 @@ export default async (db) => {
             .toArray();
     }
 
+    async function getAnnotatedResourceUris() {
+        return annotationCollection.distinct('resourceUri');
+    }
+
     return {
         find: (...args) => annotationCollection.find(...args),
         create,
@@ -123,5 +127,6 @@ export default async (db) => {
         deleteMany,
         deleteManyById,
         findManyByFieldAndResource,
+        getAnnotatedResourceUris,
     };
 };
