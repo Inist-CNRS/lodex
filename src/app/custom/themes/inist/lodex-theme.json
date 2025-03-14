@@ -16,7 +16,8 @@
         },
         "variables": {
             "siteTitle": "Titre a modifier/supprimer dans la config du theme",
-            "matomoID": "39"
+            "matomoID": "39",
+            "matomoHost": "https://piwik2.inist.fr/"
         }
     }
 }
