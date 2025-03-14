@@ -18,7 +18,8 @@
             "host": "/",
             "title": "Services",
             "summary": "Les technologies et les outils ISTEX pour les projets de recherche.",
-            "matomoID": "39"
+            "matomoID": "39",
+            "matomoHost": "https://piwik2.inist.fr/"
         }
     }
 }

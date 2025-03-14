@@ -57,7 +57,8 @@
     window.ISTEX_API_URL = '<%= lodex.istexApi %>';
 </script>
 <script src="<%= lodex.base.href %>/index.js"></script>
-<!-- Piwik -->
+    <% if (custom.matomoID && custom.matomoHost) { %>
+        <!-- Piwik -->
         <script>
             var _paq = _paq || [];
             _paq.push([
@@ -78,7 +79,7 @@
             _paq.push(["trackPageView"]);
             _paq.push(["enableLinkTracking"]);
             (function () {
-                var u = "https://piwik2.inist.fr/";
+                var u = "<%= custom.matomoHost %>";
                 _paq.push(["setTrackerUrl", u + "piwik.php"]);
                 _paq.push(["setSiteId", "<%= custom.matomoID %>"]);
                 var d = document,
@@ -91,6 +92,7 @@
                 s.parentNode.insertBefore(g, s);
             })();
         </script>
-    <!-- End Piwik Code -->
+        <!-- End Piwik Code -->
+    <% } %>
 </body>
 </html>

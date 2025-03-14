@@ -55,7 +55,9 @@
                 "button": "#7cbc41",
                 "buttonHover": "darkorange",
                 "textContrast": "white"
-            }
+            },
+            "matomoID": "39",
+            "matomoHost": "https://piwik2.inist.fr/"
         }
     }
 }
