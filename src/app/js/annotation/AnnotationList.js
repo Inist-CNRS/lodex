@@ -36,9 +36,11 @@ export const getAnnotationSummaryValue = (annotation) => {
         case ANNOTATION_KIND_COMMENT:
             return annotation.comment;
         case ANNOTATION_KIND_CORRECTION: {
-            const initialValue = annotation.initialValue
-                .toString()
-                .replace(/<[^>]*>/g, '');
+            const initialValue = [null, undefined, ''].includes(
+                annotation.initialValue,
+            )
+                ? '""'
+                : annotation.initialValue.toString().replace(/<[^>]*>/g, '');
             const truncatedInitialValue =
                 initialValue.length > 16
                     ? `${initialValue.slice(0, 16)} ...`
@@ -54,9 +56,15 @@ export const getAnnotationSummaryValue = (annotation) => {
         }
         case ANNOTATION_KIND_REMOVAL:
             if (Array.isArray(annotation.initialValue)) {
-                return annotation.initialValue.join(JOIN_SEPARATOR);
+                return annotation.initialValue
+                    .map((value) =>
+                        [null, undefined, ''].includes(value) ? '""' : value,
+                    )
+                    .join(JOIN_SEPARATOR);
             }
-            return annotation.initialValue.toString().replace(/<[^>]*>/g, '');
+            return [null, undefined, ''].includes(annotation.initialValue)
+                ? '""'
+                : annotation.initialValue.toString().replace(/<[^>]*>/g, '');
         case ANNOTATION_KIND_ADDITION:
             return Array.isArray(annotation.proposedValue)
                 ? annotation.proposedValue.join(JOIN_SEPARATOR)
@@ -344,7 +352,9 @@ export const AnnotationList = ({ mode, setMode, annotations, field }) => {
                                             </Typography>
                                         </Stack>
                                     )}
-                                    {annotation.initialValue && (
+                                    {['correction', 'removal'].includes(
+                                        annotation.kind,
+                                    ) && (
                                         <Box>
                                             <Typography
                                                 variant="h6"
@@ -355,7 +365,11 @@ export const AnnotationList = ({ mode, setMode, annotations, field }) => {
                                                 )}
                                             </Typography>
                                             <Typography aria-labelledby="annotation_initial_value">
-                                                {annotation.initialValue}
+                                                {['', null, undefined].includes(
+                                                    annotation.initialValue,
+                                                )
+                                                    ? '""'
+                                                    : annotation.initialValue.toString()}
                                             </Typography>
                                         </Box>
                                     )}

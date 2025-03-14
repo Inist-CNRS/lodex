@@ -47,7 +47,7 @@ export function AnnotationItems({ annotation }) {
                 )}
             </Section>
 
-            {annotation.initialValue && (
+            {['removal', 'correction'].includes(annotation.kind) && (
                 <Section label="annotation_initial_value">
                     <Typography
                         aria-labelledby="annotation_initial_value"
@@ -57,7 +57,9 @@ export function AnnotationItems({ annotation }) {
                             textAlign: 'justify',
                         }}
                     >
-                        {annotation.initialValue}
+                        {[null, undefined, ''].includes(annotation.initialValue)
+                            ? '""'
+                            : annotation.initialValue.toString()}
                     </Typography>
                 </Section>
             )}

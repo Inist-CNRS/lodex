@@ -95,17 +95,6 @@ export const annotationCreationSchema = z
     })
     .superRefine((data, refineContext) => {
         if (
-            data.target === 'value' &&
-            data.kind !== 'addition' &&
-            !data.initialValue
-        ) {
-            refineContext.addIssue({
-                code: 'error_required',
-                message: 'annotation_error_required_initial_value',
-                path: ['initialValue'],
-            });
-        }
-        if (
             (data.target === 'title' && data.initialValue) ||
             (data.kind === 'addition' && data.initialValue)
         ) {
