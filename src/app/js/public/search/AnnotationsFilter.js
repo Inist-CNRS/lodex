@@ -17,7 +17,7 @@ export const AnnotationsFilterComponent = ({ filter, onFilterChange }) => {
                 {translate('annotations_filter')}
             </InputLabel>
             <Select
-                sx={{ width: 200 }}
+                sx={{ width: 300 }}
                 labelId="annotations-filter"
                 label={translate('annotations-filter')}
                 value={filter}
