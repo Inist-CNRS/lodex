@@ -5,7 +5,7 @@ describe('search reducer', () => {
         it('should handle mode === null removing resourceUris', () => {
             const state = {
                 filters: {
-                    myAnnotations: 'my-annotations',
+                    annotations: 'my-annotations',
                     resourceUrisWithAnnotation: ['uri1', 'uri2'],
                 },
             };
@@ -17,7 +17,31 @@ describe('search reducer', () => {
             expect(newState).toEqual({
                 page: 0,
                 filters: {
-                    myAnnotations: null,
+                    annotations: null,
+                    resourceUrisWithAnnotation: undefined,
+                },
+            });
+        });
+
+        it('should handle mode === annotated', () => {
+            const state = {
+                filters: {
+                    annotations: null,
+                    resourceUrisWithAnnotation: undefined,
+                },
+            };
+            const action = {
+                type: SEARCH_ANNOTATIONS,
+                payload: {
+                    mode: 'annotated',
+                    resourceUris: ['uri1', 'uri2'],
+                },
+            };
+            const newState = reducer(state, action);
+            expect(newState).toEqual({
+                page: 0,
+                filters: {
+                    annotations: 'annotated',
                     resourceUrisWithAnnotation: undefined,
                 },
             });
@@ -26,7 +50,7 @@ describe('search reducer', () => {
         it('should handle mode === my-annotations', () => {
             const state = {
                 filters: {
-                    myAnnotations: null,
+                    annotations: null,
                     resourceUrisWithAnnotation: undefined,
                 },
             };
@@ -41,7 +65,7 @@ describe('search reducer', () => {
             expect(newState).toEqual({
                 page: 0,
                 filters: {
-                    myAnnotations: 'my-annotations',
+                    annotations: 'my-annotations',
                     resourceUrisWithAnnotation: ['uri1', 'uri2'],
                 },
             });
@@ -50,7 +74,7 @@ describe('search reducer', () => {
         it('should handle mode === not-my-annotations', () => {
             const state = {
                 filters: {
-                    myAnnotations: null,
+                    annotations: null,
                     resourceUrisWithAnnotation: undefined,
                 },
             };
@@ -65,8 +89,32 @@ describe('search reducer', () => {
             expect(newState).toEqual({
                 page: 0,
                 filters: {
-                    myAnnotations: 'not-my-annotations',
+                    annotations: 'not-my-annotations',
                     resourceUrisWithAnnotation: ['uri1', 'uri2'],
+                },
+            });
+        });
+
+        it('should handle mode === not-annotated', () => {
+            const state = {
+                filters: {
+                    annotations: null,
+                    resourceUrisWithAnnotation: undefined,
+                },
+            };
+            const action = {
+                type: SEARCH_ANNOTATIONS,
+                payload: {
+                    mode: 'not-annotated',
+                    resourceUris: ['uri1', 'uri2'],
+                },
+            };
+            const newState = reducer(state, action);
+            expect(newState).toEqual({
+                page: 0,
+                filters: {
+                    annotations: 'not-annotated',
+                    resourceUrisWithAnnotation: undefined,
                 },
             });
         });
