@@ -28,7 +28,7 @@ import SearchResultList from './SearchResultList';
 import SearchResultSort from './SearchResultSort';
 import SearchSearchBar from './SearchSearchBar';
 import SearchResultHeader from './SearchResultHeader';
-import MyAnnotationsFilter from './MyAnnotationsFilter';
+import MyAnnotationsFilter from './AnnotationsFilter';
 
 const styles = stylesToClassname(
     {
@@ -212,9 +212,6 @@ class Search extends Component {
                         withFacets={withFacets}
                         onToggleFacets={this.handleToggleFacets}
                     />
-                    <Stack direction="row" justifyContent="center">
-                        <MyAnnotationsFilter />
-                    </Stack>
                 </div>
                 {withFacets && <AppliedFacetList />}
                 <div className={styles.content}>

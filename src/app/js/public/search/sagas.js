@@ -17,7 +17,7 @@ import {
     SEARCH,
     SEARCH_ANNOTATION_ADDED,
     SEARCH_LOAD_MORE,
-    SEARCH_MY_ANNOTATIONS,
+    SEARCH_ANNOTATIONS,
     SEARCH_SORT,
     SEARCH_SORT_INIT,
     searchFailed,
@@ -35,7 +35,8 @@ const PER_PAGE = 10;
 
 export const doSearchRequest = function* (page = 0) {
     const query = yield select(fromSearch.getQuery);
-    const myAnnotationsFilter = yield select(fromSearch.getMyAnnotationsFilter);
+    const annotationsFilter = yield select(fromSearch.getAnnotationsFilter);
+
     const resourceUrisWithAnnotation = yield select(
         fromSearch.getResourceUrisWithAnnotationFilter,
     );
@@ -56,10 +57,13 @@ export const doSearchRequest = function* (page = 0) {
         facets,
         invertedFacets,
         filters: {
-            ...(myAnnotationsFilter === 'my-annotations'
+            ...(['annotated', 'not-annotated'].includes(annotationsFilter)
+                ? { annotated: annotationsFilter === 'annotated' }
+                : {}),
+            ...(annotationsFilter === 'my-annotations'
                 ? { resourceUris: resourceUrisWithAnnotation }
                 : {}),
-            ...(myAnnotationsFilter === 'not-my-annotations'
+            ...(annotationsFilter === 'not-my-annotations'
                 ? { excludedResourceUris: resourceUrisWithAnnotation }
                 : {}),
         },
@@ -163,7 +167,7 @@ export default function* () {
     yield takeLatest(
         [
             SEARCH,
-            SEARCH_MY_ANNOTATIONS,
+            SEARCH_ANNOTATIONS,
             SEARCH_ANNOTATION_ADDED,
             SEARCH_SORT,
             SEARCH_SORT_INIT,

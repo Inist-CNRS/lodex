@@ -3,59 +3,63 @@ import React from 'react';
 import { useTranslate } from '../../i18n/I18NContext';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { searchMyAnnotations } from './reducer';
+import { searchAnnotations } from './reducer';
 import { fromSearch } from '../selectors';
 import { useGetAnnotatedResourceUris } from '../../annotation/annotationStorage';
 
-export const MyAnnotationsFilterComponent = ({ filter, onFilterChange }) => {
+export const AnnotationsFilterComponent = ({ filter, onFilterChange }) => {
     const { translate } = useTranslate();
 
     const resourceUris = useGetAnnotatedResourceUris();
     return (
         <FormControl>
-            <InputLabel id="my-annotations-filter">
-                {translate('my_annotations_filter')}
+            <InputLabel id="annotations-filter">
+                {translate('annotations_filter')}
             </InputLabel>
             <Select
-                sx={{ width: 200 }}
-                labelId="my-annotations-filter"
-                label={translate('my-annotations-filter')}
+                sx={{ width: 300 }}
+                labelId="annotations-filter"
+                label={translate('annotations-filter')}
                 value={filter}
-                inputProps={{ 'aria-labelled-by': 'my-annotations-filter' }}
+                inputProps={{ 'aria-labelled-by': 'annotations-filter' }}
                 onChange={(e) =>
                     onFilterChange({ mode: e.target.value, resourceUris })
                 }
             >
                 <MenuItem value={null}>
-                    {translate('my_annotations_filter_null_choice')}
+                    {translate('annotations_filter_null_choice')}
+                </MenuItem>
+                <MenuItem value={'annotated'}>
+                    {translate('annotations_filter_annotated_choice')}
                 </MenuItem>
                 <MenuItem value={'my-annotations'}>
-                    {translate('my_annotations_filter_annotated_by_me_choice')}
+                    {translate('annotations_filter_annotated_by_me_choice')}
                 </MenuItem>
                 <MenuItem value={'not-my-annotations'}>
-                    {translate(
-                        'my_annotations_filter_not_annotated_by_me_choice',
-                    )}
+                    {translate('annotations_filter_not_annotated_by_me_choice')}
+                </MenuItem>
+                <MenuItem value={'not-annotated'}>
+                    {translate('annotations_filter_not_annotated_choice')}
                 </MenuItem>
             </Select>
         </FormControl>
     );
 };
 
-MyAnnotationsFilterComponent.propTypes = {
+AnnotationsFilterComponent.propTypes = {
     filter: PropTypes.string,
     onFilterChange: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
-    filter: fromSearch.getMyAnnotationsFilter(state),
+    filter: fromSearch.getAnnotationsFilter(state),
 });
 
 const mapDispatchToProps = {
-    onFilterChange: (value) => searchMyAnnotations(value),
+    onFilterChange: (value) => searchAnnotations(value),
 };
 
 export default connect(
     mapStateToProps,
     mapDispatchToProps,
-)(MyAnnotationsFilterComponent);
+)(AnnotationsFilterComponent);

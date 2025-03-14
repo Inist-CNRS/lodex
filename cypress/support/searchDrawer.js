@@ -9,11 +9,15 @@ export const search = (value) => {
 
 export const filterShowResourcesIAnnotated = () => {
     cy.findByLabelText('My annotations').click();
-    cy.findByRole('option', { name: 'I have annotated' }).click();
+    cy.findByRole('option', {
+        name: 'Resources that I have annotated',
+    }).click();
 };
 export const filterShowResourcesIHaveNotAnnotated = () => {
     cy.findByLabelText('My annotations').click();
-    cy.findByRole('option', { name: 'I have not annotated' }).click();
+    cy.findByRole('option', {
+        name: 'Resources that I have not annotated',
+    }).click();
 };
 export const filterClearMyAnnotationsFilter = () => {
     cy.findByLabelText('My annotations').click();
