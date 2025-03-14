@@ -9,6 +9,7 @@ import {
     completeFilters,
 } from './publishedDataset';
 import createAnnotationModel from '../../models/annotation';
+import createPublishedDatasetModel from '../../models/publishedDataset';
 
 describe('publishedDataset', () => {
     describe('getPage', () => {
@@ -98,6 +99,441 @@ describe('publishedDataset', () => {
                 ],
                 total: 42,
                 fullTotal: 'fullTotal',
+            });
+        });
+        describe('integration', () => {
+            let connection;
+            let db;
+            let annotationModel;
+            let publishedDatasetModel;
+
+            beforeAll(async () => {
+                connection = await MongoClient.connect(process.env.MONGO_URL, {
+                    useNewUrlParser: true,
+                    useUnifiedTopology: true,
+                });
+                db = connection.db();
+                annotationModel = await createAnnotationModel(db);
+                publishedDatasetModel = await createPublishedDatasetModel(db);
+            });
+
+            afterAll(async () => {
+                await connection.close();
+            });
+
+            beforeEach(async () => {
+                await annotationModel.deleteMany({});
+                await publishedDatasetModel.deleteMany({});
+                await publishedDatasetModel.insertBatch([
+                    {
+                        uri: 'uri1',
+                        versions: [
+                            {
+                                title: 'title1',
+                                description: 'description1',
+                                details: 'details1',
+                            },
+                        ],
+                    },
+                    {
+                        uri: 'uri2',
+                        versions: [
+                            {
+                                title: 'title2',
+                                description: 'description2',
+                                details: 'details2',
+                            },
+                        ],
+                    },
+                    {
+                        uri: 'uri3',
+                        versions: [
+                            {
+                                title: 'title3',
+                                description: 'description3',
+                                details: 'details3',
+                            },
+                        ],
+                    },
+                    {
+                        uri: 'uri4',
+                        versions: [
+                            {
+                                title: 'title4',
+                                description: 'description4',
+                                details: 'details4',
+                            },
+                        ],
+                    },
+
+                    {
+                        uri: 'uri5',
+                        versions: [
+                            {
+                                title: 'title5',
+                                description: 'description5',
+                                details: 'details5',
+                            },
+                        ],
+                    },
+
+                    {
+                        uri: 'uri6',
+                        versions: [
+                            {
+                                title: 'title6',
+                                description: 'description6',
+                                details: 'details6',
+                            },
+                        ],
+                    },
+
+                    {
+                        uri: 'uri7',
+                        versions: [
+                            {
+                                title: 'title7',
+                                description: 'description7',
+                                details: 'details7',
+                            },
+                        ],
+                    },
+
+                    {
+                        uri: 'uri8',
+                        versions: [
+                            {
+                                title: 'title8',
+                                description: 'description8',
+                                details: 'details8',
+                            },
+                        ],
+                    },
+
+                    {
+                        uri: 'uri9',
+                        versions: [
+                            {
+                                title: 'title9',
+                                description: 'description9',
+                                details: 'details9',
+                            },
+                        ],
+                    },
+                ]);
+            });
+
+            it('should return paginated publishedDataset', async () => {
+                const ctx = {
+                    publishedDataset: publishedDatasetModel,
+                    field: {
+                        findFacetNames: jest.fn().mockImplementation(() => []),
+                        findSearchableNames: jest
+                            .fn()
+                            .mockImplementation(() => []),
+                    },
+                    request: {
+                        body: {
+                            page: 0,
+                            perPage: 5,
+                            match: null,
+                            facets: {},
+                            sort: {},
+                            filters: {},
+                        },
+                    },
+                };
+
+                await getPage(ctx);
+
+                expect(ctx.body).toEqual({
+                    data: [
+                        {
+                            uri: 'uri1',
+                            title: 'title1',
+                            description: 'description1',
+                            details: 'details1',
+                        },
+                        {
+                            uri: 'uri2',
+                            title: 'title2',
+                            description: 'description2',
+                            details: 'details2',
+                        },
+                        {
+                            uri: 'uri3',
+                            title: 'title3',
+                            description: 'description3',
+                            details: 'details3',
+                        },
+                        {
+                            uri: 'uri4',
+                            title: 'title4',
+                            description: 'description4',
+                            details: 'details4',
+                        },
+                        {
+                            uri: 'uri5',
+                            title: 'title5',
+                            description: 'description5',
+                            details: 'details5',
+                        },
+                    ],
+                    total: 9,
+                    fullTotal: 9,
+                });
+            });
+
+            it('should support resourceUris filter', async () => {
+                const ctx = {
+                    publishedDataset: publishedDatasetModel,
+                    field: {
+                        findFacetNames: jest.fn().mockImplementation(() => []),
+                        findSearchableNames: jest
+                            .fn()
+                            .mockImplementation(() => []),
+                    },
+                    request: {
+                        body: {
+                            page: 0,
+                            perPage: 5,
+                            match: null,
+                            facets: {},
+                            sort: {},
+                            filters: {
+                                resourceUris: ['uri1', 'uri2', 'uri3'],
+                            },
+                        },
+                    },
+                };
+
+                await getPage(ctx);
+
+                expect(ctx.body).toEqual({
+                    data: [
+                        {
+                            uri: 'uri1',
+                            title: 'title1',
+                            description: 'description1',
+                            details: 'details1',
+                        },
+                        {
+                            uri: 'uri2',
+                            title: 'title2',
+                            description: 'description2',
+                            details: 'details2',
+                        },
+                        {
+                            uri: 'uri3',
+                            title: 'title3',
+                            description: 'description3',
+                            details: 'details3',
+                        },
+                    ],
+                    total: 3,
+                    fullTotal: 9,
+                });
+            });
+
+            it('should support excludedResourceUris filter', async () => {
+                const ctx = {
+                    publishedDataset: publishedDatasetModel,
+                    field: {
+                        findFacetNames: jest.fn().mockImplementation(() => []),
+                        findSearchableNames: jest
+                            .fn()
+                            .mockImplementation(() => []),
+                    },
+                    request: {
+                        body: {
+                            page: 0,
+                            perPage: 9,
+                            match: null,
+                            facets: {},
+                            sort: {},
+                            filters: {
+                                excludedResourceUris: ['uri1', 'uri2', 'uri3'],
+                            },
+                        },
+                    },
+                };
+
+                await getPage(ctx);
+
+                expect(ctx.body).toEqual({
+                    data: [
+                        {
+                            uri: 'uri4',
+                            title: 'title4',
+                            description: 'description4',
+                            details: 'details4',
+                        },
+                        {
+                            uri: 'uri5',
+                            title: 'title5',
+                            description: 'description5',
+                            details: 'details5',
+                        },
+                        {
+                            uri: 'uri6',
+                            title: 'title6',
+                            description: 'description6',
+                            details: 'details6',
+                        },
+                        {
+                            uri: 'uri7',
+                            title: 'title7',
+                            description: 'description7',
+                            details: 'details7',
+                        },
+                        {
+                            uri: 'uri8',
+                            title: 'title8',
+                            description: 'description8',
+                            details: 'details8',
+                        },
+                        {
+                            uri: 'uri9',
+                            title: 'title9',
+                            description: 'description9',
+                            details: 'details9',
+                        },
+                    ],
+                    total: 6,
+                    fullTotal: 9,
+                });
+            });
+
+            it('should support annotated: true filter', async () => {
+                await annotationModel.create({
+                    resourceUri: 'uri1',
+                    fieldId: 'field1',
+                });
+
+                const ctx = {
+                    publishedDataset: publishedDatasetModel,
+                    field: {
+                        findFacetNames: jest.fn().mockImplementation(() => []),
+                        findSearchableNames: jest
+                            .fn()
+                            .mockImplementation(() => []),
+                    },
+                    annotation: annotationModel,
+                    request: {
+                        body: {
+                            page: 0,
+                            perPage: 5,
+                            match: null,
+                            facets: {},
+                            sort: {},
+                            filters: {
+                                annotated: true,
+                            },
+                        },
+                    },
+                };
+
+                await getPage(ctx);
+
+                expect(ctx.body).toEqual({
+                    data: [
+                        {
+                            uri: 'uri1',
+                            title: 'title1',
+                            description: 'description1',
+                            details: 'details1',
+                        },
+                    ],
+                    total: 1,
+                    fullTotal: 9,
+                });
+            });
+
+            it('should support annotated: false filter', async () => {
+                await annotationModel.create({
+                    resourceUri: 'uri1',
+                    fieldId: 'field1',
+                });
+
+                const ctx = {
+                    publishedDataset: publishedDatasetModel,
+                    field: {
+                        findFacetNames: jest.fn().mockImplementation(() => []),
+                        findSearchableNames: jest
+                            .fn()
+                            .mockImplementation(() => []),
+                    },
+                    annotation: annotationModel,
+                    request: {
+                        body: {
+                            page: 0,
+                            perPage: 9,
+                            match: null,
+                            facets: {},
+                            sort: {},
+                            filters: {
+                                annotated: false,
+                            },
+                        },
+                    },
+                };
+
+                await getPage(ctx);
+
+                expect(ctx.body).toEqual({
+                    data: [
+                        {
+                            uri: 'uri2',
+                            title: 'title2',
+                            description: 'description2',
+                            details: 'details2',
+                        },
+                        {
+                            uri: 'uri3',
+                            title: 'title3',
+                            description: 'description3',
+                            details: 'details3',
+                        },
+                        {
+                            uri: 'uri4',
+                            title: 'title4',
+                            description: 'description4',
+                            details: 'details4',
+                        },
+                        {
+                            uri: 'uri5',
+                            title: 'title5',
+                            description: 'description5',
+                            details: 'details5',
+                        },
+                        {
+                            uri: 'uri6',
+                            title: 'title6',
+                            description: 'description6',
+                            details: 'details6',
+                        },
+                        {
+                            uri: 'uri7',
+                            title: 'title7',
+                            description: 'description7',
+                            details: 'details7',
+                        },
+                        {
+                            uri: 'uri8',
+                            title: 'title8',
+                            description: 'description8',
+                            details: 'details8',
+                        },
+                        {
+                            uri: 'uri9',
+                            title: 'title9',
+                            description: 'description9',
+                            details: 'details9',
+                        },
+                    ],
+                    total: 8,
+                    fullTotal: 9,
+                });
             });
         });
     });
@@ -454,6 +890,10 @@ describe('publishedDataset', () => {
 
         afterAll(async () => {
             await connection.close();
+        });
+
+        beforeEach(async () => {
+            await annotationModel.deleteMany({});
         });
 
         it('should return an empty object if filters is null', async () => {
