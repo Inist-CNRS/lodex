@@ -73,9 +73,9 @@ describe('Annotation', () => {
                     '',
                     '',
                     '',
+                    'John Doe',
                     'To Review',
                     '',
-                    'John Doe',
                     new Date().toLocaleDateString(),
                 ]);
             });
@@ -139,8 +139,9 @@ describe('Annotation', () => {
                 cy.findByText('Search').click();
                 searchDrawer.clearSearch();
                 searchDrawer.filterShowResourcesIAnnotated();
+
                 searchDrawer.checkResultsCount(2);
-                searchDrawer.checkResultList(['Terminator 2']);
+                searchDrawer.checkResultList(['RoboCop', 'Terminator 2']);
 
                 cy.findByText('More').click();
                 menu.goToAdminDashboard();
@@ -158,9 +159,9 @@ describe('Annotation', () => {
                         'Field Icon(s)',
                         'Initial value',
                         'Proposed values',
+                        'Contributor',
                         'Status',
                         'Administrator',
-                        'Contributor',
                         'Submission date',
                     ]);
                 });
@@ -183,9 +184,9 @@ describe('Annotation', () => {
                         '',
                         '7,5',
                         '',
+                        'Jane Smith',
                         'To Review',
                         '',
-                        'Jane Smith',
                         new Date().toLocaleDateString(),
                         '',
                         secondUri,
@@ -195,9 +196,9 @@ describe('Annotation', () => {
                         '',
                         '',
                         '',
+                        'John Doe',
                         'To Review',
                         '',
-                        'John Doe',
                         new Date().toLocaleDateString(),
                     ]);
                 });
@@ -279,9 +280,9 @@ describe('Annotation', () => {
                         '',
                         '7,5',
                         '',
+                        'Jane Smith',
                         'Validated',
                         'John Doe',
-                        'Jane Smith',
                         new Date().toLocaleDateString(),
                         '',
                         secondUri,
@@ -291,9 +292,9 @@ describe('Annotation', () => {
                         '',
                         '',
                         '',
+                        'John Doe',
                         'To Review',
                         '',
-                        'John Doe',
                         new Date().toLocaleDateString(),
                     ]);
                 });
@@ -349,9 +350,9 @@ describe('Annotation', () => {
                         '',
                         '',
                         '',
+                        'Jane Smith',
                         'To Review',
                         '',
-                        'Jane Smith',
                         new Date().toLocaleDateString(),
                         '',
                         secondUri,
@@ -361,9 +362,9 @@ describe('Annotation', () => {
                         '',
                         '',
                         '',
+                        'John Doe',
                         'To Review',
                         '',
-                        'John Doe',
                         new Date().toLocaleDateString(),
                     ]);
                 });
@@ -408,9 +409,9 @@ describe('Annotation', () => {
                         '',
                         '',
                         '',
+                        'Jane Smith',
                         'To Review',
                         '',
-                        'Jane Smith',
                         new Date().toLocaleDateString(),
                     ]);
                 });
@@ -462,9 +463,9 @@ describe('Annotation', () => {
                     '',
                     '',
                     '',
+                    'John Doe',
                     'To Review',
                     '',
-                    'John Doe',
                     new Date().toLocaleDateString(),
                 ]);
             });
@@ -599,9 +600,9 @@ describe('Annotation', () => {
                     '',
                     '',
                     '',
+                    'John Doe',
                     'To Review',
                     '',
-                    'John Doe',
                     new Date(2025, 1, 11).toLocaleDateString(),
                 ]);
             });
@@ -639,9 +640,9 @@ describe('Annotation', () => {
                     '',
                     '',
                     '',
+                    'John Doe',
                     'To Review',
                     '',
-                    'John Doe',
                     new Date(2025, 1, 11).toLocaleDateString(),
                 ]);
             });
@@ -754,9 +755,9 @@ describe('Annotation', () => {
                     '',
                     '/api/run/count-all/',
                     '35',
+                    'John DOE',
                     'To Review',
                     '',
-                    'John DOE',
                     new Date(2025, 1, 14).toLocaleDateString(),
                 ]);
             });
@@ -878,9 +879,9 @@ describe('Annotation', () => {
                     '',
                     '6,4',
                     '7.5',
+                    'Jane SMITH',
                     'To Review',
                     '',
-                    'Jane SMITH',
                     new Date(2025, 1, 14).toLocaleDateString(),
                     '',
                     '/',
@@ -890,9 +891,9 @@ describe('Annotation', () => {
                     '',
                     '/api/run/count-all/',
                     '35',
+                    'John DOE',
                     'To Review',
                     '',
-                    'John DOE',
                     new Date(2025, 1, 14).toLocaleDateString(),
                 ]);
             });
@@ -978,9 +979,9 @@ Revue`);
                     '',
                     '',
                     'Book',
+                    'John Doe',
                     'To Review',
                     '',
-                    'John Doe',
                     new Date().toLocaleDateString(),
                 ]);
             });
@@ -1058,9 +1059,9 @@ Revue`);
                     '',
                     '',
                     '[ Book, Revue ]',
+                    'John Doe',
                     'To Review',
                     '',
-                    'John Doe',
                     new Date().toLocaleDateString(),
                 ]);
             });

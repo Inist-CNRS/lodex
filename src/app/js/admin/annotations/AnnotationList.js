@@ -244,45 +244,6 @@ export const AnnotationList = () => {
                 },
             },
             {
-                field: 'status',
-                headerName: translate('annotation_status'),
-                filterOperators: getGridStringOperators()
-                    .filter((operator) => operator.value === 'equals')
-                    .map((operator) => ({
-                        ...operator,
-                        InputComponent: StatusFilter,
-                    })),
-                renderCell: ({ value }) => {
-                    return <AnnotationStatus status={value} />;
-                },
-                flex: 1,
-                sortable: true,
-            },
-            {
-                field: 'internalComment',
-                headerName: translate('annotation_internal_comment'),
-                filterOperators: getGridStringOperators().filter(
-                    (operator) => operator.value === 'contains',
-                ),
-                renderCell: ({ value }) => {
-                    return <CellWithTooltip value={value} />;
-                },
-                flex: 1,
-                sortable: true,
-            },
-            {
-                field: 'administrator',
-                headerName: translate('annotation_administrator'),
-                filterOperators: getGridStringOperators().filter(
-                    (operator) => operator.value === 'contains',
-                ),
-                flex: 1,
-                sortable: true,
-                renderCell({ value }) {
-                    return <CellWithTooltip value={value} />;
-                },
-            },
-            {
                 field: 'authorName',
                 headerName: translate('annotation_authorName'),
                 flex: 1,
@@ -304,6 +265,45 @@ export const AnnotationList = () => {
                 renderCell: ({ value }) => {
                     return <CellWithTooltip value={value} />;
                 },
+            },
+            {
+                field: 'status',
+                headerName: translate('annotation_status'),
+                filterOperators: getGridStringOperators()
+                    .filter((operator) => operator.value === 'equals')
+                    .map((operator) => ({
+                        ...operator,
+                        InputComponent: StatusFilter,
+                    })),
+                renderCell: ({ value }) => {
+                    return <AnnotationStatus status={value} />;
+                },
+                flex: 1,
+                sortable: true,
+            },
+            {
+                field: 'administrator',
+                headerName: translate('annotation_administrator'),
+                filterOperators: getGridStringOperators().filter(
+                    (operator) => operator.value === 'contains',
+                ),
+                flex: 1,
+                sortable: true,
+                renderCell({ value }) {
+                    return <CellWithTooltip value={value} />;
+                },
+            },
+            {
+                field: 'internalComment',
+                headerName: translate('annotation_internal_comment'),
+                filterOperators: getGridStringOperators().filter(
+                    (operator) => operator.value === 'contains',
+                ),
+                renderCell: ({ value }) => {
+                    return <CellWithTooltip value={value} />;
+                },
+                flex: 1,
+                sortable: true,
             },
             {
                 field: 'createdAt',
