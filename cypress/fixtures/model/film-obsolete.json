@@ -100,6 +100,8 @@
         },
         "searchable": true,
         "position": 3,
+        "isDefaultSortField": true,
+        "sortOrder": "asc",
         "name": "Q98n",
         "count": 29,
         "overview": 1
