@@ -29,6 +29,9 @@ import { toast } from '../../../../common/tools/toast';
 import FieldRepresentation from '../../fields/FieldRepresentation';
 import { translate } from '../../i18n/I18NContext';
 import withInitialData from '../withInitialData';
+import { usePatchFieldOverview } from './usePatchFieldOverview';
+import { usePatchSortField } from './usePatchSortField';
+import { usePatchSortOrder } from './usePatchSortOrder';
 
 const getSearchableFields = (fields) =>
     fields.filter((f) => f.searchable) || [];
@@ -79,7 +82,7 @@ export const SearchForm = ({ fields, loadField, p: polyglot }) => {
         resourceDetailSecond,
         resourceDetailThird,
         resourceSortField,
-        resourceSortOrder,
+        resourceSortOrder: initialResourceSortOrder,
         sortableFields,
     } = useMemo(() => {
         const resourceTitle = getResourceTitle(fieldsForResourceSyndication);
@@ -116,6 +119,10 @@ export const SearchForm = ({ fields, loadField, p: polyglot }) => {
         };
     }, [fieldsForResourceSyndication]);
 
+    const [resourceSortOrder, setResourceSortOrder] = React.useState(
+        initialResourceSortOrder,
+    );
+
     useEffect(() => {
         loadField();
     }, [loadField]);
@@ -124,6 +131,10 @@ export const SearchForm = ({ fields, loadField, p: polyglot }) => {
         setFacetChecked(getFacetFields(fieldsResource));
         setSearchInFields(getSearchableFields(fieldsResource));
     }, [fieldsResource]);
+
+    useEffect(() => {
+        setResourceSortOrder(initialResourceSortOrder);
+    }, [initialResourceSortOrder]);
 
     // We could lower the complexity with only one map. But it's more readable like this. And the performance is not a problem here.
 
@@ -137,55 +148,60 @@ export const SearchForm = ({ fields, loadField, p: polyglot }) => {
         }
     };
 
-    const saveSyndication = async (value, overview) => {
-        const res = await fieldApi.patchOverview({
-            _id: value?._id,
-            overview,
-        });
-        if (!res) {
-            toast(polyglot.t('syndication_error'), {
-                type: toast.TYPE.ERROR,
-            });
-        }
-    };
+    const patchFieldOverviewMutation = usePatchFieldOverview();
+    const patchSortFieldMutation = usePatchSortField();
+    const patchSortOrderMutation = usePatchSortOrder();
 
     const handleSResourceTitle = async (_event, value) => {
-        saveSyndication(value, overview.RESOURCE_TITLE);
+        patchFieldOverviewMutation.mutate({
+            _id: value?._id,
+            overview: overview.RESOURCE_TITLE,
+        });
     };
     const handleSResourceDescription = async (_event, value) => {
-        saveSyndication(value, overview.RESOURCE_DESCRIPTION);
-    };
-    const handleSResourceDetailFirst = async (_event, value) => {
-        saveSyndication(value, overview.RESOURCE_DETAIL_1);
-    };
-    const handleSResourceDetailSecond = async (_event, value) => {
-        saveSyndication(value, overview.RESOURCE_DETAIL_2);
-    };
-    const handleSResourceDetailThird = async (_event, value) => {
-        saveSyndication(value, overview.RESOURCE_DETAIL_3);
+        patchFieldOverviewMutation.mutate({
+            _id: value?._id,
+            overview: overview.RESOURCE_DESCRIPTION,
+        });
     };
 
+    const handleSResourceDetailFirst = async (_event, value) => {
+        patchFieldOverviewMutation.mutate({
+            _id: value?._id,
+            overview: overview.RESOURCE_DETAIL_1,
+        });
+    };
+
+    const handleSResourceDetailSecond = async (_event, value) => {
+        patchFieldOverviewMutation.mutate({
+            _id: value?._id,
+            overview: overview.RESOURCE_DETAIL_2,
+        });
+    };
+    const handleSResourceDetailThird = async (_event, value) => {
+        patchFieldOverviewMutation.mutate({
+            _id: value?._id,
+            overview: overview.RESOURCE_DETAIL_3,
+        });
+    };
+
+    const isPending =
+        patchFieldOverviewMutation.isLoading ||
+        patchSortFieldMutation.isLoading ||
+        patchSortOrderMutation.isLoading;
+
     const handleResourceSortFieldChange = async (_event, value) => {
-        const res = await fieldApi.patchSortField({
+        patchSortFieldMutation.mutate({
             _id: value?._id,
             sortOrder: resourceSortOrder,
         });
-        if (!res.ok) {
-            toast(polyglot.t('syndication_error'), {
-                type: toast.TYPE.ERROR,
-            });
-        }
     };
 
     const handleResourceSortOrderChange = async (event) => {
-        const res = await fieldApi.patchSortOrder({
+        setResourceSortOrder(event.target.value);
+        patchSortOrderMutation.mutate({
             sortOrder: event.target.value,
         });
-        if (!res.ok) {
-            toast(polyglot.t('syndication_error'), {
-                type: toast.TYPE.ERROR,
-            });
-        }
     };
 
     const handleFacetCheckedChange = async (value) => {
@@ -333,6 +349,7 @@ export const SearchForm = ({ fields, loadField, p: polyglot }) => {
                             onChange={handleSResourceTitle}
                             value={resourceTitle}
                             clearText={polyglot.t('clear')}
+                            isLoading={isPending}
                         />
                         <SearchAutocomplete
                             testId={`autocomplete_search_syndication_${overview.RESOURCE_DESCRIPTION}`}
@@ -341,6 +358,7 @@ export const SearchForm = ({ fields, loadField, p: polyglot }) => {
                             onChange={handleSResourceDescription}
                             value={resourceDescription}
                             clearText={polyglot.t('clear')}
+                            isLoading={isPending}
                         />
                         <Box display="flex" gap={2}>
                             <SearchAutocomplete
@@ -352,6 +370,7 @@ export const SearchForm = ({ fields, loadField, p: polyglot }) => {
                                 onChange={handleSResourceDetailFirst}
                                 value={resourceDetailFirst}
                                 clearText={polyglot.t('clear')}
+                                isLoading={isPending}
                             />
                             <SearchAutocomplete
                                 testId={`autocomplete_search_syndication_${overview.RESOURCE_DETAIL_2}`}
@@ -362,6 +381,7 @@ export const SearchForm = ({ fields, loadField, p: polyglot }) => {
                                 onChange={handleSResourceDetailSecond}
                                 value={resourceDetailSecond}
                                 clearText={polyglot.t('clear')}
+                                isLoading={isPending}
                             />
                             <SearchAutocomplete
                                 testId={`autocomplete_search_syndication_${overview.RESOURCE_DETAIL_3}`}
@@ -372,6 +392,7 @@ export const SearchForm = ({ fields, loadField, p: polyglot }) => {
                                 onChange={handleSResourceDetailThird}
                                 value={resourceDetailThird}
                                 clearText={polyglot.t('clear')}
+                                isLoading={isPending}
                             />
                         </Box>
 
@@ -383,6 +404,7 @@ export const SearchForm = ({ fields, loadField, p: polyglot }) => {
                                 onChange={handleResourceSortFieldChange}
                                 value={resourceSortField}
                                 clearText={polyglot.t('clear')}
+                                isLoading={isPending}
                             />
 
                             <FormControl fullWidth>
@@ -394,6 +416,7 @@ export const SearchForm = ({ fields, loadField, p: polyglot }) => {
                                     value={resourceSortOrder}
                                     label={polyglot.t('resource_sort_order')}
                                     onChange={handleResourceSortOrderChange}
+                                    disabled={isPending}
                                 >
                                     <MenuItem value="asc">
                                         {polyglot.t('asc')}

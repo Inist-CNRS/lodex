@@ -1,7 +1,14 @@
-import React, { useEffect } from 'react';
-import { Autocomplete, Checkbox, MenuItem, TextField } from '@mui/material';
-import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
+import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
+import {
+    Autocomplete,
+    Checkbox,
+    CircularProgress,
+    InputAdornment,
+    MenuItem,
+    TextField,
+} from '@mui/material';
+import React, { useEffect } from 'react';
 
 import PropTypes from 'prop-types';
 import FieldRepresentation from '../../fields/FieldRepresentation';
@@ -49,6 +56,7 @@ const SearchAutocomplete = ({
     multiple = false,
     clearText = 'Clear',
     limitTags = 6,
+    isLoading = false,
 }) => {
     const [autocompleteValue, setAutocompleteValue] = React.useState(value);
 
@@ -75,6 +83,15 @@ const SearchAutocomplete = ({
                     {...params}
                     label={translation}
                     placeholder={translation}
+                    disabled={isLoading}
+                    InputProps={{
+                        ...params.InputProps,
+                        startAdornment: isLoading && (
+                            <InputAdornment>
+                                <CircularProgress size={16} />
+                            </InputAdornment>
+                        ),
+                    }}
                 />
             )}
             getOptionLabel={(option) =>
@@ -104,6 +121,7 @@ SearchAutocomplete.propTypes = {
     testId: PropTypes.string,
     clearText: PropTypes.string,
     limitTags: PropTypes.number,
+    isLoading: PropTypes.bool,
 };
 
 export default SearchAutocomplete;
