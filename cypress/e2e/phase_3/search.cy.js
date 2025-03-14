@@ -370,8 +370,12 @@ describe('Search', () => {
 
             cy.findByLabelText('Resource sort field').click();
             cy.findByRole('option', { name: /Première mise/ }).click();
+            cy.waitForNetworkIdle(1000);
 
             cy.findByLabelText('Sort order').click();
+            cy.findByRole('option', { name: /Descending/ }).should(
+                'be.visible',
+            );
             cy.findByRole('option', { name: /Descending/ }).click();
 
             datasetImportPage.goToPublishedResources();
