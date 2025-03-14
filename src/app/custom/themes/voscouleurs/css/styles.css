@@ -123,7 +123,6 @@ header #banner > :last-child {
 /*bgContent*/
 #content .container {
     background-color: var(--bgContent);
-    font-size: 1rem;
 }
 .drawer .search-content {
     padding-left: 1rem;
