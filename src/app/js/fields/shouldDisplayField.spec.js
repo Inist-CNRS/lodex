@@ -1,6 +1,6 @@
 import { shouldDisplayField } from './shouldDisplayField';
 
-import { VALIDATED, REJECTED } from '../../../common/propositionStatus';
+import { REJECTED, VALIDATED } from '../../../common/propositionStatus';
 
 describe('shouldDisplayField', () => {
     describe('with an empty field', () => {
@@ -18,6 +18,26 @@ describe('shouldDisplayField', () => {
                     fieldStatus,
                     predicate,
                     isAdmin,
+                ),
+            ).toBe(true);
+        });
+
+        it('should display an empty field for a contributor', () => {
+            const field = { name: 'empty' };
+            const resource = {};
+            const fieldStatus = VALIDATED;
+            const predicate = () => true;
+            const isAdmin = true;
+            const canAnnotate = true;
+
+            expect(
+                shouldDisplayField(
+                    resource,
+                    field,
+                    fieldStatus,
+                    predicate,
+                    isAdmin,
+                    canAnnotate,
                 ),
             ).toBe(true);
         });

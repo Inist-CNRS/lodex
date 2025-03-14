@@ -1,7 +1,7 @@
 import get from 'lodash/get';
 
-import { REJECTED } from '../../../common/propositionStatus';
 import isEmpty from '../../../common/lib/isEmpty';
+import { REJECTED } from '../../../common/propositionStatus';
 
 export const shouldDisplayField = (
     resource,
@@ -9,8 +9,9 @@ export const shouldDisplayField = (
     fieldStatus,
     predicate = () => true,
     isAdmin = false,
+    canAnnotate = false,
 ) => {
-    if (isAdmin) {
+    if (isAdmin || canAnnotate) {
         return true;
     }
 
