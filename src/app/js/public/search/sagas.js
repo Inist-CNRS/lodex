@@ -15,7 +15,9 @@ import {
     loadMoreFailed,
     loadMoreSucceed,
     SEARCH,
+    SEARCH_ANNOTATION_ADDED,
     SEARCH_LOAD_MORE,
+    SEARCH_MY_ANNOTATIONS,
     SEARCH_SORT,
     SEARCH_SORT_INIT,
     searchFailed,
@@ -31,8 +33,13 @@ import { fromResource, fromSearch } from '../selectors';
 
 const PER_PAGE = 10;
 
-const doSearchRequest = function* (page = 0) {
+export const doSearchRequest = function* (page = 0) {
     const query = yield select(fromSearch.getQuery);
+    const myAnnotationsFilter = yield select(fromSearch.getMyAnnotationsFilter);
+    const resourceUrisWithAnnotation = yield select(
+        fromSearch.getResourceUrisWithAnnotationFilter,
+    );
+
     const sort = yield select(fromSearch.getSort);
     let facets = yield select(fromSearch.getAppliedFacets);
     facets = Object.keys(facets).reduce((acc, facetName) => {
@@ -48,6 +55,14 @@ const doSearchRequest = function* (page = 0) {
         page,
         facets,
         invertedFacets,
+        filters: {
+            ...(myAnnotationsFilter === 'my-annotations'
+                ? { resourceUris: resourceUrisWithAnnotation }
+                : {}),
+            ...(myAnnotationsFilter === 'not-my-annotations'
+                ? { excludedResourceUris: resourceUrisWithAnnotation }
+                : {}),
+        },
     });
 
     return yield call(fetchSaga, request);
@@ -148,6 +163,8 @@ export default function* () {
     yield takeLatest(
         [
             SEARCH,
+            SEARCH_MY_ANNOTATIONS,
+            SEARCH_ANNOTATION_ADDED,
             SEARCH_SORT,
             SEARCH_SORT_INIT,
             facetActionTypes.TOGGLE_FACET_VALUE,

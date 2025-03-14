@@ -49,6 +49,9 @@ describe('publishedDataset', () => {
                         facet1: ['64130aaeb844aa0021b2960f'],
                     },
                     sort: {},
+                    filters: {
+                        resourceUris: ['uri1', 'uri2'],
+                    },
                 },
             },
         };
@@ -66,6 +69,9 @@ describe('publishedDataset', () => {
                 invertedFacets: [],
                 searchableFieldNames: ['searchable1', 'searchable2'],
                 facetFieldNames: ['facet1', 'facet2'],
+                filters: {
+                    resourceUris: ['uri1', 'uri2'],
+                },
                 excludeSubresources: true,
             });
         });

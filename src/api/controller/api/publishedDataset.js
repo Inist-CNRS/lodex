@@ -17,10 +17,22 @@ export const getPage = async (ctx) => {
         match,
         sort: { sortBy, sortDir },
         invertedFacets = [],
+        filters,
         facets: facetsWithValueIds,
     } = ctx.request.body;
 
     let facets = {};
+
+    // mongo ignore $in filter with empty array and would return all results
+    // also we already know the result will be empty
+    if (filters?.resourceUris && filters?.resourceUris?.length === 0) {
+        ctx.body = {
+            total: 0,
+            fullTotal: 0,
+            data: [],
+        };
+        return;
+    }
 
     for (const [facetName, facetValueIds] of Object.entries(
         facetsWithValueIds,
@@ -49,6 +61,7 @@ export const getPage = async (ctx) => {
         sortDir,
         match,
         facets,
+        filters,
         invertedFacets,
         searchableFieldNames,
         facetFieldNames,

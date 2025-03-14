@@ -6,7 +6,7 @@ import { fireEvent, render, screen, waitFor } from '../../../test-utils';
 
 import { TestI18N } from '../i18n/I18NContext';
 import fetch from '../lib/fetch';
-import { getFieldKey, getStorageKey } from './annotationStorage';
+import { getStorageKey } from './annotationStorage';
 import { CreateAnnotationButton } from './CreateAnnotationButton';
 import { useCanAnnotate } from './useCanAnnotate';
 
@@ -96,10 +96,9 @@ describe('CreateAnnotationButton', () => {
         window.localStorage.setItem(
             getStorageKey(),
             JSON.stringify({
-                [getFieldKey({
-                    fieldId: '1ddbe5dc-f945-4d38-9c5b-ef20f78cb0cc',
-                    resourceUri: 'uid:/0579J7JN',
-                })]: ['1', '2', '3'],
+                'uid:/0579J7JN': {
+                    '1ddbe5dc-f945-4d38-9c5b-ef20f78cb0cc': ['1', '2', '3'],
+                },
             }),
         );
         render(<TestButton annotable={true} />);

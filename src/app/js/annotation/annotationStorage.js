@@ -11,9 +11,6 @@ import React, {
 export const getStorageKey = () =>
     `${window.__TENANT__ || 'default'}:annotation`;
 
-export const getFieldKey = ({ fieldId, resourceUri }) =>
-    `${fieldId}:${resourceUri ?? 'none'}`;
-
 const AnnotationStorageContext = createContext({
     annotations: {},
 });
@@ -47,9 +44,11 @@ AnnotationStorageProvider.propTypes = {
 
 export const useGetFieldAnnotationIds = ({ fieldId, resourceUri }) => {
     const { annotations } = useContext(AnnotationStorageContext);
-    const key = getFieldKey({ fieldId, resourceUri });
 
-    return useMemo(() => annotations[key] || [], [annotations, key]);
+    return useMemo(
+        () => annotations[resourceUri]?.[fieldId] || [],
+        [annotations, resourceUri, fieldId],
+    );
 };
 
 export const useSaveAnnotationId = () => {
@@ -57,10 +56,14 @@ export const useSaveAnnotationId = () => {
 
     return useCallback(
         ({ fieldId, resourceUri, _id }) => {
-            const key = getFieldKey({ fieldId, resourceUri });
             setAnnotations((annotations) => ({
                 ...annotations,
-                [key]: (annotations[key] || []).concat(_id),
+                [resourceUri]: {
+                    ...(annotations[resourceUri] ?? {}),
+                    [fieldId]: (
+                        annotations[resourceUri]?.[fieldId] || []
+                    ).concat(_id),
+                },
             }));
         },
         [setAnnotations],
@@ -74,9 +77,26 @@ export const useSetFieldAnnotationIds = ({ fieldId, resourceUri }) => {
         (ids) => {
             setAnnotations((annotations) => ({
                 ...annotations,
-                [getFieldKey({ fieldId, resourceUri })]: ids,
+                [resourceUri]: {
+                    ...(annotations[resourceUri] ?? {}),
+                    [fieldId]: ids,
+                },
             }));
         },
         [setAnnotations, fieldId, resourceUri],
     );
+};
+
+// not a hook, since this need to be use inside saga
+export const getAnnotatedResourceUris = () => {
+    const annotations = JSON.parse(
+        localStorage.getItem(getStorageKey()) || '{}',
+    );
+
+    return Object.keys(annotations);
+};
+export const useGetAnnotatedResourceUris = () => {
+    const { annotations } = useContext(AnnotationStorageContext);
+
+    return useMemo(() => Object.keys(annotations), [annotations]);
 };

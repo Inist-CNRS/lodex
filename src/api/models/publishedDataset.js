@@ -103,6 +103,7 @@ export default async (db) => {
         invertedFacets,
         searchableFieldNames,
         facetFieldNames,
+        filters,
         excludeSubresources = false,
     }) => {
         const filter = getPublishedDatasetFilter({
@@ -111,6 +112,7 @@ export default async (db) => {
             facets,
             facetFieldNames,
             invertedFacets,
+            filters,
             excludeSubresources,
         });
 
@@ -138,6 +140,7 @@ export default async (db) => {
             searchableFieldNames,
             facets,
             facetFieldNames,
+            filters,
             regexSearch: true,
             excludeSubresources,
         });

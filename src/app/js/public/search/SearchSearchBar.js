@@ -32,14 +32,14 @@ const SearchSearchBar = ({
     onToggleFacets,
     withFacets,
 }) => {
-    if (!hasSearchableFields) {
-        return null;
-    }
-
     const [localQuery, handleSearch, handleClearSearch] = useSearchBar(
         defaultQuery,
         search,
     );
+
+    if (!hasSearchableFields) {
+        return null;
+    }
 
     return (
         <Box display="flex" paddingX={1}>

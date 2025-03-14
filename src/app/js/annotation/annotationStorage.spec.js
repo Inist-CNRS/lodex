@@ -5,7 +5,7 @@ import React from 'react';
 import { waitFor } from '@testing-library/react';
 import {
     AnnotationStorageProvider,
-    getFieldKey,
+    useGetAnnotatedResourceUris,
     getStorageKey,
     useGetFieldAnnotationIds,
     useSaveAnnotationId,
@@ -26,10 +26,9 @@ describe('annotationStorage', () => {
         localStorage.setItem(
             getStorageKey(),
             JSON.stringify({
-                [getFieldKey({
-                    fieldId: 'fieldId',
-                    resourceUri: 'resourceUri',
-                })]: ['annotation1', 'annotation2'],
+                resourceUri: {
+                    fieldId: ['annotation1', 'annotation2'],
+                },
             }),
         );
     });
@@ -95,10 +94,9 @@ describe('annotationStorage', () => {
             expect(
                 JSON.parse(localStorage.getItem(getStorageKey())),
             ).toStrictEqual({
-                [getFieldKey({
-                    fieldId: 'fieldId',
-                    resourceUri: 'resourceUri',
-                })]: ['annotation1', 'annotation2', 'annotation3'],
+                resourceUri: {
+                    fieldId: ['annotation1', 'annotation2', 'annotation3'],
+                },
             });
         });
 
@@ -123,14 +121,12 @@ describe('annotationStorage', () => {
             expect(
                 JSON.parse(localStorage.getItem(getStorageKey())),
             ).toStrictEqual({
-                [getFieldKey({
-                    fieldId: 'fieldId',
-                    resourceUri: 'resourceUri',
-                })]: ['annotation1', 'annotation2'],
-                [getFieldKey({
-                    fieldId: 'fieldId2',
-                    resourceUri: 'resourceUri2',
-                })]: ['annotation3'],
+                resourceUri: {
+                    fieldId: ['annotation1', 'annotation2'],
+                },
+                resourceUri2: {
+                    fieldId2: ['annotation3'],
+                },
             });
         });
     });
@@ -157,11 +153,48 @@ describe('annotationStorage', () => {
             expect(
                 JSON.parse(localStorage.getItem(getStorageKey())),
             ).toStrictEqual({
-                [getFieldKey({
-                    fieldId: 'fieldId',
-                    resourceUri: 'resourceUri',
-                })]: ['annotation3', 'annotation4'],
+                resourceUri: {
+                    fieldId: ['annotation3', 'annotation4'],
+                },
             });
+        });
+    });
+
+    describe('useGetAnnotatedResourceUris', () => {
+        it('should return the resourceUris that have annotations', () => {
+            localStorage.setItem(
+                getStorageKey(),
+                JSON.stringify({
+                    resourceUri: {
+                        fieldId: ['annotation1', 'annotation2'],
+                    },
+                    resourceUri2: {
+                        fieldId: ['annotation3', 'annotation4'],
+                    },
+                    resourceUri3: {
+                        fieldId: ['annotation5', 'annotation6'],
+                    },
+                }),
+            );
+
+            const { result } = renderHook(() => useGetAnnotatedResourceUris(), {
+                wrapper: TestWrapper,
+            });
+
+            expect(result.current).toStrictEqual([
+                'resourceUri',
+                'resourceUri2',
+                'resourceUri3',
+            ]);
+        });
+
+        it('should return an empty array if no resourceUri has annotations', () => {
+            localStorage.clear();
+            const { result } = renderHook(() => useGetAnnotatedResourceUris(), {
+                wrapper: TestWrapper,
+            });
+
+            expect(result.current).toStrictEqual([]);
         });
     });
 });

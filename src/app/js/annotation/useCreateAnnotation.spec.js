@@ -2,22 +2,39 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { renderHook } from '@testing-library/react-hooks';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { Provider } from 'react-redux';
+
 import fetch from '../lib/fetch';
 import { useCreateAnnotation } from './useCreateAnnotation';
 import { AnnotationStorageProvider } from './annotationStorage';
 import { TestI18N } from '../i18n/I18NContext';
+import configureStore from '../configureStore';
+import reducers from '../public/reducers';
+import { createMemoryHistory } from 'history';
 
+global.__DEBUG__ = false;
+
+const memoryHistory = createMemoryHistory();
+
+const { store } = configureStore(
+    reducers,
+    function* sagas() {},
+    {},
+    memoryHistory,
+);
 const queryClient = new QueryClient();
 
 function TestWrapper({ children }) {
     return (
-        <AnnotationStorageProvider>
-            <TestI18N>
-                <QueryClientProvider client={queryClient}>
-                    {children}
-                </QueryClientProvider>
-            </TestI18N>
-        </AnnotationStorageProvider>
+        <Provider store={store}>
+            <AnnotationStorageProvider>
+                <TestI18N>
+                    <QueryClientProvider client={queryClient}>
+                        {children}
+                    </QueryClientProvider>
+                </TestI18N>
+            </AnnotationStorageProvider>
+        </Provider>
     );
 }
 

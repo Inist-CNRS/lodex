@@ -109,6 +109,12 @@ describe('Annotation', () => {
                 });
 
                 cy.findByText('Search').click();
+
+                searchDrawer.filterShowResourcesIAnnotated();
+                searchDrawer.checkResultsCount(1);
+                searchDrawer.checkResultList(['Terminator 2']);
+
+                searchDrawer.filterShowResourcesIHaveNotAnnotated();
                 searchDrawer.search('RoboCop');
                 searchDrawer.waitForLoading();
                 cy.findByTitle('RoboCop').click();
@@ -129,6 +135,13 @@ describe('Annotation', () => {
                     ],
                     resourceTitle: 'RoboCop',
                 });
+
+                cy.findByText('Search').click();
+                searchDrawer.clearSearch();
+                searchDrawer.filterShowResourcesIAnnotated();
+                searchDrawer.checkResultsCount(2);
+                searchDrawer.checkResultList(['Terminator 2']);
+
                 cy.findByText('More').click();
                 menu.goToAdminDashboard();
                 cy.findByText('Annotations').click();

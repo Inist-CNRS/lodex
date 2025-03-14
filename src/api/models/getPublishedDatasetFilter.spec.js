@@ -4,6 +4,7 @@ import {
     addRegexToFilters,
     addKeyToFilters,
     getValueQueryFragment,
+    addFilters,
 } from './getPublishedDatasetFilter';
 
 describe('getPublishedDatasetFilter', () => {
@@ -272,6 +273,61 @@ describe('getPublishedDatasetFilter', () => {
                     'key',
                     null,
                 )({
+                    filter: 'data',
+                }),
+            ).toEqual({
+                filter: 'data',
+            });
+        });
+    });
+
+    describe('addFilters', () => {
+        it('should add uri filter to received filters', () => {
+            const filters = {
+                resourceUris: ['uri1', 'uri2'],
+                excludedResourceUris: ['uri3', 'uri4'],
+            };
+            expect(
+                addFilters(filters)({
+                    filter: 'data',
+                }),
+            ).toEqual({
+                filter: 'data',
+                uri: { $in: ['uri1', 'uri2'], $nin: ['uri3', 'uri4'] },
+            });
+        });
+        it('should add uri $in filter to received filters if resourceUris is set', () => {
+            const filters = {
+                resourceUris: ['uri1', 'uri2'],
+            };
+            expect(
+                addFilters(filters)({
+                    filter: 'data',
+                }),
+            ).toEqual({
+                filter: 'data',
+                uri: { $in: ['uri1', 'uri2'] },
+            });
+        });
+
+        it('should add uri $nin filter to received filters if excludedResourceUris is set', () => {
+            const filters = {
+                excludedResourceUris: ['uri3', 'uri4'],
+            };
+            expect(
+                addFilters(filters)({
+                    filter: 'data',
+                }),
+            ).toEqual({
+                filter: 'data',
+                uri: { $nin: ['uri3', 'uri4'] },
+            });
+        });
+
+        it('should return received filters if no filters', () => {
+            const filters = null;
+            expect(
+                addFilters(filters)({
                     filter: 'data',
                 }),
             ).toEqual({

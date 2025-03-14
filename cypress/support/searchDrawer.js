@@ -7,6 +7,18 @@ export const search = (value) => {
     cy.wait(500); // Wait for the debounce
 };
 
+export const filterShowResourcesIAnnotated = () => {
+    cy.findByLabelText('My annotations').click();
+    cy.findByRole('option', { name: 'I have annotated' }).click();
+};
+export const filterShowResourcesIHaveNotAnnotated = () => {
+    cy.findByLabelText('My annotations').click();
+    cy.findByRole('option', { name: 'I have not annotated' }).click();
+};
+export const filterClearMyAnnotationsFilter = () => {
+    cy.findByLabelText('My annotations').click();
+    cy.findByRole('option', { name: 'All resources' }).click();
+};
 export const clearSearch = () =>
     cy.get('.search .search-searchbar button.searchbar-clear').click();
 

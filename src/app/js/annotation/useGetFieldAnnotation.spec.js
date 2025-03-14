@@ -6,11 +6,7 @@ import React from 'react';
 import { toast } from '../../../common/tools/toast';
 import { TestI18N } from '../i18n/I18NContext';
 import fetch from '../lib/fetch';
-import {
-    AnnotationStorageProvider,
-    getFieldKey,
-    getStorageKey,
-} from './annotationStorage';
+import { AnnotationStorageProvider, getStorageKey } from './annotationStorage';
 import { useGetFieldAnnotation } from './useGetFieldAnnotation';
 
 jest.mock('../../../common/tools/toast');
@@ -73,14 +69,14 @@ describe('useGetFieldAnnotation', () => {
         localStorage.setItem(
             storageKey,
             JSON.stringify({
-                [getFieldKey({
-                    fieldId: 'fieldId2',
-                    resourceUri: 'resourceUri',
-                })]: ['annotation1', 'annotation3'],
-                [getFieldKey({
-                    fieldId: 'fieldId',
-                    resourceUri: 'resourceUri',
-                })]: ['annotation2', 'annotation4', 'deletedAnnotation'],
+                resourceUri: {
+                    fieldId: [
+                        'annotation2',
+                        'annotation4',
+                        'deletedAnnotation',
+                    ],
+                    fieldId2: ['annotation1', 'annotation3'],
+                },
             }),
         );
     });
@@ -165,14 +161,10 @@ describe('useGetFieldAnnotation', () => {
 
         expect(localStorage.getItem(getStorageKey())).toBe(
             JSON.stringify({
-                [getFieldKey({
-                    fieldId: 'fieldId2',
-                    resourceUri: 'resourceUri',
-                })]: ['annotation1', 'annotation3'],
-                [getFieldKey({
-                    fieldId: 'fieldId',
-                    resourceUri: 'resourceUri',
-                })]: ['annotation2', 'annotation4'],
+                resourceUri: {
+                    fieldId: ['annotation2', 'annotation4'],
+                    fieldId2: ['annotation1', 'annotation3'],
+                },
             }),
         );
         expect(toast).toHaveBeenCalledWith('annotation_deleted_by_admin', {

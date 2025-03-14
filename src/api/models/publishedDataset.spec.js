@@ -260,6 +260,7 @@ describe('publishedDataset', () => {
 
         beforeEach(async () => {
             publishedDatasetCollection = await publishedDataset(db);
+            find.mockClear();
         });
 
         it('should return total and data', async () => {
@@ -298,6 +299,30 @@ describe('publishedDataset', () => {
                 },
                 { score: { $meta: 'textScore' } },
             );
+        });
+
+        it('should be able to do a research on filters.resourceUris', async () => {
+            await publishedDatasetCollection.findPage({
+                perPage: 'perPage',
+                page: 'page',
+                filters: { resourceUris: ['uri1', 'uri2'] },
+            });
+            expect(find).toHaveBeenCalledWith({
+                removedAt: { $exists: false },
+                uri: { $in: ['uri1', 'uri2'] },
+            });
+        });
+
+        it('should be able to do a research on filters.excludedResourceUris', async () => {
+            await publishedDatasetCollection.findPage({
+                perPage: 'perPage',
+                page: 'page',
+                filters: { excludedResourceUris: ['uri1', 'uri2'] },
+            });
+            expect(find).toHaveBeenCalledWith({
+                removedAt: { $exists: false },
+                uri: { $nin: ['uri1', 'uri2'] },
+            });
         });
 
         it('should fallback to regex search if text-based search returns nothing', async () => {
