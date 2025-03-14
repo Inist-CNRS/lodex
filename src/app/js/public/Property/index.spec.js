@@ -1,8 +1,11 @@
-import React from 'react';
 import { shallow } from 'enzyme';
+import React from 'react';
 
-import { PropertyComponent } from './index';
 import { REJECTED, VALIDATED } from '../../../../common/propositionStatus';
+import { useCanAnnotate } from '../../annotation/useCanAnnotate';
+import { PropertyComponent } from './index';
+
+jest.mock('../../annotation/useCanAnnotate');
 
 describe('Property', () => {
     const defaultProps = {
@@ -17,7 +20,15 @@ describe('Property', () => {
         parents: [],
     };
 
+    beforeEach(() => {
+        jest.clearAllMocks();
+    });
+
     describe('is not admin', () => {
+        beforeEach(() => {
+            jest.mocked(useCanAnnotate).mockReturnValue(false);
+        });
+
         it('should render nothing if resource[field.name] is null', () => {
             const wrapper = shallow(
                 <PropertyComponent
@@ -122,6 +133,10 @@ describe('Property', () => {
     });
 
     describe('is admin', () => {
+        beforeEach(() => {
+            jest.mocked(useCanAnnotate).mockReturnValue(false);
+        });
+
         it('should always render something', () => {
             [null, undefined, '', [], 'value', ['value1', 'value2']].forEach(
                 (value) => {
@@ -130,6 +145,29 @@ describe('Property', () => {
                             {...defaultProps}
                             p={{ t: (x) => x }}
                             isAdmin={true}
+                            resource={{ field: value }}
+                        />,
+                    );
+
+                    expect(wrapper.getElement()).not.toBeNull();
+                },
+            );
+        });
+    });
+
+    describe('can annotate', () => {
+        beforeEach(() => {
+            jest.mocked(useCanAnnotate).mockReturnValue(true);
+        });
+
+        it('should always render something', () => {
+            [null, undefined, '', [], 'value', ['value1', 'value2']].forEach(
+                (value) => {
+                    const wrapper = shallow(
+                        <PropertyComponent
+                            {...defaultProps}
+                            p={{ t: (x) => x }}
+                            isAdmin={false}
                             resource={{ field: value }}
                         />,
                     );

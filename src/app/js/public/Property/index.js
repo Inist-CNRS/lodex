@@ -38,6 +38,7 @@ import { Settings } from '@mui/icons-material';
 import { Box, IconButton } from '@mui/material';
 import { extractTenantFromUrl } from '../../../../common/tools/tenantTools';
 import { CreateAnnotationButton } from '../../annotation/CreateAnnotationButton';
+import { useCanAnnotate } from '../../annotation/useCanAnnotate';
 import {
     field as fieldPropTypes,
     polyglot as polyglotPropTypes,
@@ -134,7 +135,17 @@ export const PropertyComponent = ({
     dense,
     isMultilingual,
 }) => {
-    if (!shouldDisplayField(resource, field, fieldStatus, predicate, isAdmin)) {
+    const canAnnotate = useCanAnnotate();
+    if (
+        !shouldDisplayField(
+            resource,
+            field,
+            fieldStatus,
+            predicate,
+            isAdmin,
+            canAnnotate,
+        )
+    ) {
         return null;
     }
 
