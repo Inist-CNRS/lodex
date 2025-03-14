@@ -159,19 +159,15 @@ describe('annotation.validator', () => {
                 authorEmail: 'john.doe@marmelab.com',
                 target: 'value',
                 initialValue: null,
+                proposedValue: null,
             };
 
-            const { success, error } =
+            const { success, error, data } =
                 annotationCreationSchema.safeParse(annotationPayload);
 
-            expect(success).toBe(false);
-            expect(error.errors).toStrictEqual([
-                {
-                    code: 'error_required',
-                    message: 'annotation_error_required_initial_value',
-                    path: ['initialValue'],
-                },
-            ]);
+            expect(success).toBe(true);
+            expect(error).toBeUndefined();
+            expect(data).toStrictEqual(annotationPayload);
         });
 
         it('should accept annotation with proposedValue when kind is correction', () => {
