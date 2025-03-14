@@ -212,9 +212,6 @@ class Search extends Component {
                         withFacets={withFacets}
                         onToggleFacets={this.handleToggleFacets}
                     />
-                    <Stack direction="row" justifyContent="center">
-                        <MyAnnotationsFilter />
-                    </Stack>
                 </div>
                 {withFacets && <AppliedFacetList />}
                 <div className={styles.content}>
