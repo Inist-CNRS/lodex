@@ -24,7 +24,7 @@ function loadFilmDataset() {
     );
     cy.findByRole('button', { name: 'edit-Liste des films' }).click();
 
-    cy.findByRole('tab', { name: 'Semantics' }).click();
+    cy.findByRole('tab', { name: 'Annotations' }).click();
     cy.findByRole('checkbox', {
         name: 'This field can be annotated',
     }).click();
@@ -545,7 +545,7 @@ describe('Annotation', () => {
             );
             cy.findByRole('button', { name: 'edit-Liste des films' }).click();
 
-            cy.findByRole('tab', { name: 'Semantics' }).click();
+            cy.findByRole('tab', { name: 'Annotations' }).click();
             cy.findByRole('checkbox', {
                 name: 'This field can be annotated',
             }).click();
@@ -694,7 +694,7 @@ describe('Annotation', () => {
             );
             cy.findByRole('button', { name: 'edit-Liste des films' }).click();
 
-            cy.findByRole('tab', { name: 'Semantics' }).click();
+            cy.findByRole('tab', { name: 'Annotations' }).click();
             cy.findByRole('checkbox', {
                 name: 'This field can be annotated',
             }).click();
@@ -808,7 +808,7 @@ describe('Annotation', () => {
             );
             cy.findByRole('button', { name: 'edit-Liste des films' }).click();
 
-            cy.findByRole('tab', { name: 'Semantics' }).click();
+            cy.findByRole('tab', { name: 'Annotations' }).click();
             cy.findByRole('checkbox', {
                 name: 'This field can be annotated',
             }).click();
@@ -936,7 +936,7 @@ describe('Annotation', () => {
             );
             cy.findByRole('button', { name: 'edit-Liste des films' }).click();
 
-            cy.findByRole('tab', { name: 'Semantics' }).click();
+            cy.findByRole('tab', { name: 'Annotations' }).click();
             cy.findByLabelText('Annotation format').click();
 
             cy.findByRole('option', {
@@ -1007,7 +1007,7 @@ Revue`);
             );
             cy.findByRole('button', { name: 'edit-Liste des films' }).click();
 
-            cy.findByRole('tab', { name: 'Semantics' }).click();
+            cy.findByRole('tab', { name: 'Annotations' }).click();
             cy.findByLabelText('Annotation format').click();
 
             cy.findByRole('option', {
@@ -1087,7 +1087,7 @@ Revue`);
             );
             cy.findByRole('button', { name: 'edit-Liste des films' }).click();
 
-            cy.findByRole('tab', { name: 'Semantics' }).click();
+            cy.findByRole('tab', { name: 'Annotations' }).click();
             cy.findByRole('checkbox', {
                 name: 'This field can be annotated',
             }).click();
@@ -1217,7 +1217,7 @@ Revue`);
             );
             cy.findByRole('button', { name: 'edit-Liste des films' }).click();
 
-            cy.findByRole('tab', { name: 'Semantics' }).click();
+            cy.findByRole('tab', { name: 'Annotations' }).click();
             cy.findByRole('checkbox', {
                 name: 'This field can be annotated',
             }).click();

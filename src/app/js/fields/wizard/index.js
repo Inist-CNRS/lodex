@@ -24,6 +24,7 @@ import {
 } from '../../propTypes';
 import { fromFields } from '../../sharedSelectors';
 import Actions from './Actions';
+import TabAnnotations from './TabAnnotations';
 import TabDisplay from './TabDisplay';
 import TabGeneral from './TabGeneral';
 import { TabPanel } from './TabPanel';
@@ -80,7 +81,16 @@ const FieldEditionWizardComponent = ({
             });
             history.push(`/display/${filter}`);
         }
-    }, [fieldName, currentEditedField, filter]);
+    }, [
+        fieldName,
+        currentEditedField,
+        filter,
+        isInitialized,
+        isFieldsLoading,
+        fieldsFromFilter,
+        history,
+        polyglot,
+    ]);
 
     const handleChange = (_, newValue) => {
         setTabValue(newValue);
@@ -132,6 +142,11 @@ const FieldEditionWizardComponent = ({
             label: 'field_wizard_tab_semantic',
             id: 'tab-semantics',
             component: <TabSemantics currentEditedField={currentEditedField} />,
+        },
+        {
+            label: 'field_wizard_tab_annotations',
+            id: 'tab-annotations',
+            component: <TabAnnotations />,
         },
     ].filter((x) => x);
 

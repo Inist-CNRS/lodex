@@ -1,22 +1,22 @@
-import React from 'react';
-import PropTypes from 'prop-types';
 import { Box } from '@mui/material';
-import { translate } from '../../i18n/I18NContext';
+import PropTypes from 'prop-types';
+import React from 'react';
 import { useParams } from 'react-router';
+import { translate } from '../../i18n/I18NContext';
 
 import { FIELD_FORM_NAME } from '../';
 
-import {
-    polyglot as polyglotPropTypes,
-    field as fieldPropTypes,
-} from '../../propTypes';
+import isEqual from 'lodash/isEqual';
+import { connect } from 'react-redux';
+import compose from 'recompose/compose';
+import { getFormValues } from 'redux-form';
 import RemoveButton from '../../admin/preview/RemoveButton';
 import CancelButton from '../../lib/components/CancelButton';
-import isEqual from 'lodash/isEqual';
-import { getFormValues } from 'redux-form';
-import compose from 'recompose/compose';
-import { connect } from 'react-redux';
 import { SaveButton } from '../../lib/components/SaveButton';
+import {
+    field as fieldPropTypes,
+    polyglot as polyglotPropTypes,
+} from '../../propTypes';
 
 export const ActionsComponent = ({
     currentEditedField,
