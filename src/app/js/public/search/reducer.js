@@ -18,6 +18,7 @@ export const SEARCH_SORT = 'SEARCH_SORT';
 export const SEARCH_SORT_INIT = 'SEARCH_SORT_INIT';
 
 export const SEARCH_ANNOTATION_ADDED = 'SEARCH_ANNOTATION_ADDED';
+export const SEARCH_NEW_RESOURCE_VISITED = 'SEARCH_NEW_RESOURCE_VISITED';
 
 export const search = createAction(SEARCH);
 export const searchAnnotations = createAction(SEARCH_ANNOTATIONS);
@@ -25,6 +26,7 @@ export const searchVisited = createAction(SEARCH_VISITED);
 export const searchSucceed = createAction(SEARCH_RESULTS);
 export const searchFailed = createAction(SEARCH_ERROR);
 export const annotationAdded = createAction(SEARCH_ANNOTATION_ADDED);
+export const newResourceVisited = createAction(SEARCH_NEW_RESOURCE_VISITED);
 
 export const sort = createAction(SEARCH_SORT);
 export const initSort = createAction(SEARCH_SORT_INIT);
@@ -45,7 +47,6 @@ export const fromSearch = {
     getQuery: (state) => state.query,
     getResourceUrisWithAnnotationFilter: (state) =>
         state.filters?.resourceUrisWithAnnotation,
-    getVisitedResourceUrisFilter: (state) => state.filters?.visitedResourceUris,
     getAnnotationsFilter: (state) => state.filters?.annotations,
     getVisitedFilter: (state) => state.filters?.visited,
     getFilters: (state) => state.filters,
@@ -179,67 +180,33 @@ export default handleActions(
                     return state;
             }
         },
-        [SEARCH_VISITED]: (state, { payload: { mode, resourceUris } }) => {
-            switch (mode) {
-                case null: {
-                    return {
-                        ...state,
-                        page: 0,
-                        filters: {
-                            ...state.filters,
-                            visited: null,
-                            visitedResourceUris: undefined,
-                        },
-                    };
-                }
-                case 'visited': {
-                    return {
-                        ...state,
-                        page: 0,
-                        filters: {
-                            ...state.filters,
-                            visited: mode,
-                            visitedResourceUris: resourceUris,
-                        },
-                    };
-                }
-                case 'not-visited': {
-                    return {
-                        ...state,
-                        page: 0,
-                        filters: {
-                            ...state.filters,
-                            visited: mode,
-                            visitedResourceUris: resourceUris,
-                        },
-                    };
-                }
-                default:
-                    return state;
-            }
-        },
-        [SEARCH_ANNOTATION_ADDED]: (state, { payload: { resourceUri } }) => {
-            const resourceUrisWithAnnotation =
-                state.filters.resourceUrisWithAnnotation &&
-                state.filters.resourceUrisWithAnnotation.includes(resourceUri)
-                    ? state.filters.resourceUrisWithAnnotation
-                    : (state.filters.resourceUrisWithAnnotation || []).concat(
-                          resourceUri,
-                      );
-
-            const visitedResourceUris =
-                !state.filters.visitedResourceUris ||
-                state.filters.visitedResourceUris.includes(resourceUri)
-                    ? state.filters.visitedResourceUris
-                    : state.filters.visitedResourceUris.concat(resourceUri);
+        [SEARCH_VISITED]: (state, { payload: { value } }) => {
             return {
                 ...state,
+                page: 0,
                 filters: {
                     ...state.filters,
-                    resourceUrisWithAnnotation,
-                    visitedResourceUris,
+                    visited: value,
                 },
             };
+        },
+        [SEARCH_ANNOTATION_ADDED]: (state, { payload: { resourceUri } }) => {
+            if (
+                state.filters.resourceUrisWithAnnotation &&
+                !state.filters.resourceUrisWithAnnotation.includes(resourceUri)
+            ) {
+                return {
+                    ...state,
+                    filters: {
+                        ...state.filters,
+                        resourceUrisWithAnnotation:
+                            state.filters.resourceUrisWithAnnotation.concat(
+                                resourceUri,
+                            ),
+                    },
+                };
+            }
+            return state;
         },
         [SEARCH_SORT]: (state, { payload: { sortBy: nextSortBy } }) => {
             const { sortBy, sortDir } = state.sort;

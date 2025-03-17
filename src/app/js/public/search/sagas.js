@@ -23,6 +23,7 @@ import {
     searchFailed,
     searchSucceed,
     SEARCH_VISITED,
+    SEARCH_NEW_RESOURCE_VISITED,
 } from './reducer';
 
 import { LOAD_PUBLICATION_SUCCESS } from '../../fields';
@@ -32,6 +33,7 @@ import facetSagasFactory from '../facet/sagas';
 import { LOAD_RESOURCE_SUCCESS } from '../resource';
 import { fromResource, fromSearch } from '../selectors';
 import { uniq } from 'lodash';
+import { getVisitedUris } from '../resource/useRememberVisit';
 
 const PER_PAGE = 10;
 
@@ -106,9 +108,7 @@ export const doSearchRequest = function* (page = 0) {
         fromSearch.getResourceUrisWithAnnotationFilter,
     );
 
-    const visitedResourceUris = yield select(
-        fromSearch.getVisitedResourceUrisFilter,
-    );
+    const visitedResourceUris = yield call(getVisitedUris);
 
     const sort = yield select(fromSearch.getSort);
     let facets = yield select(fromSearch.getAppliedFacets);
@@ -231,6 +231,15 @@ function* initSortSagas() {
     yield put(initSort({ sortBy, sortDir }));
 }
 
+function* handleNewResourceVisited() {
+    const visitedFilter = yield select(fromSearch.getVisitedFilter);
+
+    if (!visitedFilter) {
+        return;
+    }
+    yield call(handleSearch);
+}
+
 export default function* () {
     yield fork(initSortSagas);
 
@@ -252,5 +261,6 @@ export default function* () {
     );
     yield takeEvery([SEARCH_LOAD_MORE], handleLoadMore);
     yield takeEvery([LOAD_RESOURCE_SUCCESS], handleLoadNextResource);
+    yield takeEvery([SEARCH_NEW_RESOURCE_VISITED], handleNewResourceVisited);
     yield fork(facetSagas);
 }

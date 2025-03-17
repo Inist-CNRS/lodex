@@ -5,12 +5,10 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { searchVisited } from './reducer';
 import { fromSearch } from '../selectors';
-import { useVisitedUris } from '../resource/useRememberVisit';
 
 export const VisitedResourcesFilterComponent = ({ filter, onFilterChange }) => {
     const { translate } = useTranslate();
 
-    const resourceUris = useVisitedUris();
     return (
         <FormControl>
             <InputLabel id="visited-filter">
@@ -22,9 +20,7 @@ export const VisitedResourcesFilterComponent = ({ filter, onFilterChange }) => {
                 label={translate('visited_filter')}
                 value={filter}
                 inputProps={{ 'aria-labelled-by': 'visited-filter' }}
-                onChange={(e) =>
-                    onFilterChange({ mode: e.target.value, resourceUris })
-                }
+                onChange={(e) => onFilterChange({ value: e.target.value })}
             >
                 <MenuItem value={null}>
                     {translate('visited_filter_null_choice')}
