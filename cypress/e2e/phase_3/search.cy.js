@@ -389,6 +389,36 @@ describe('Search', () => {
         });
     });
 
+    describe('Visited Resources search', () => {
+        beforeEach(initSearchDataset());
+        it('should filter search results by visited resources', () => {
+            menu.openSearchDrawer();
+            cy.findByText('Sort Ascending').click();
+            cy.findByRole('menuitem', { name: 'Title' }).click();
+            cy.waitForNetworkIdle(500);
+            searchDrawer.checkResultsCount(10);
+
+            searchDrawer.filterShowVisitedResources();
+            searchDrawer.checkResultsCount(0);
+            cy.findByText('No matching resource found').should('exist');
+
+            searchDrawer.filterShowUnVisitedResources();
+            searchDrawer.checkResultsCount(10);
+            cy.findByText('Found 13 on 13').should('exist');
+
+            cy.findByTitle('Acupuncture in medicine').click();
+            cy.waitForNetworkIdle(500);
+
+            menu.openSearchDrawer();
+            cy.findByText('Found 12 on 13').should('exist');
+
+            searchDrawer.filterShowVisitedResources();
+            searchDrawer.checkResultsCount(1);
+            cy.findByText('Found 1 on 13').should('exist');
+
+            searchDrawer.checkResultList(['Acupuncture in medicine']);
+        });
+    });
     // @TODO Investigate why this test fails (due to publication of exotic-search-dataset)
     // describe('Edge Cases', () => {
     //     beforeEach(

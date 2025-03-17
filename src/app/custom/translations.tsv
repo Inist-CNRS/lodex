@@ -1401,6 +1401,6 @@
 "annotations_filter_not_annotated_choice"	"Unannotated resources"	"Ressources non annotées"
 "visited_filter"	"Visited resources"	"Ressources Visitées"
 "visited_filter_null_choice"	"All resources"	"Toutes les ressources"
-"visited_filter_visited_choice"	"Visited resources"	"Ressources visitées"
-"visited_filter_not_visited_choice"	"Unvisited resources"	"Ressources non visitées"
+"visited_filter_visited_choice"	"I have already seen"	"J'ai déjà vu"
+"visited_filter_not_visited_choice"	"I did not see"	"Je n'ai pas vu"
 

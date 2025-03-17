@@ -23,6 +23,21 @@ export const filterClearMyAnnotationsFilter = () => {
     cy.findByLabelText('Annotations').click();
     cy.findByRole('option', { name: 'All resources' }).click();
 };
+
+export const filterShowVisitedResources = () => {
+    cy.findByLabelText('Visited resources').click();
+    cy.findByRole('option', {
+        name: 'I have already seen',
+    }).click();
+};
+
+export const filterShowUnVisitedResources = () => {
+    cy.findByLabelText('Visited resources').click();
+    cy.findByRole('option', {
+        name: 'I did not see',
+    }).click();
+};
+
 export const clearSearch = () =>
     cy.get('.search .search-searchbar button.searchbar-clear').click();
 
