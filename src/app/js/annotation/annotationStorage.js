@@ -60,14 +60,10 @@ export const useSaveAnnotationId = () => {
     return useCallback(
         ({ fieldId, resourceUri, _id }) => {
             setAnnotations((annotations) => {
-                if (
-                    annotations[resourceUri]?.[fieldId] &&
-                    annotations[resourceUri]?.[fieldId].includes(_id)
-                ) {
-                    return annotations;
+                if (!annotations[resourceUri]) {
+                    dispatch(newResourceAnnotated({ resourceUri }));
                 }
 
-                dispatch(newResourceAnnotated({ resourceUri }));
                 return {
                     ...annotations,
                     [resourceUri]: {
