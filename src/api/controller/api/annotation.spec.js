@@ -1528,10 +1528,23 @@ Voir l'annotation : http://localhost:3000/instance/instance-name/admin#/annotati
             },
         ];
 
+        let createdField;
         let createdAnnotations;
         beforeEach(async () => {
+            createdField = await fieldModel.create({
+                label: 'Annotated field',
+                name: 'GvaF',
+                position: 2,
+            });
+
             createdAnnotations = await Promise.all(
-                annotationsPayload.map(annotationModel.create),
+                annotationsPayload.map((annotation) => {
+                    if (annotation.fieldId) {
+                        annotation.fieldId = createdField._id.toString();
+                    }
+
+                    return annotationModel.create(annotation);
+                }),
             );
         });
 
@@ -1541,6 +1554,7 @@ Voir l'annotation : http://localhost:3000/instance/instance-name/admin#/annotati
                     attachment: jest.fn(),
                 },
                 annotation: annotationModel,
+                field: fieldModel,
             };
 
             await exportAnnotations(ctx);
@@ -1555,9 +1569,16 @@ Voir l'annotation : http://localhost:3000/instance/instance-name/admin#/annotati
                     .toSorted((annotation) => annotation._id.toString())
                     .map((annotation) => {
                         const annotationWithoutId = _.omit(annotation, '_id');
+                        const field = annotation.fieldId
+                            ? {
+                                  name: createdField.name,
+                                  label: createdField.label,
+                              }
+                            : null;
 
                         return {
                             ...annotationWithoutId,
+                            field,
                             createdAt:
                                 annotationWithoutId.createdAt.toISOString(),
                             updatedAt:

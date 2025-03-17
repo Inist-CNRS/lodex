@@ -516,9 +516,29 @@ export const getFieldAnnotations = async (ctx) => {
 };
 
 export async function exportAnnotations(ctx) {
-    const annotationStream = await ctx.annotation
-        .findAll()
-        .then((cursor) => cursor.stream());
+    const fields = await ctx.field.find({}).toArray();
+    const fieldById = (fields || []).reduce((acc, field) => {
+        return {
+            ...acc,
+            [field._id]: {
+                name: field.name,
+                label: field.label,
+                internalName: field.internalName,
+                internalScopes: field.internalScopes,
+            },
+        };
+    }, {});
+
+    const annotationStream = await ctx.annotation.findAll().then((cursor) =>
+        cursor.stream({
+            transform(annotation) {
+                return {
+                    ...annotation,
+                    field: fieldById[annotation.fieldId] ?? null,
+                };
+            },
+        }),
+    );
 
     ctx.response.attachment('annotations.json');
     ctx.response.status = 200;
