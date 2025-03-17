@@ -11,7 +11,7 @@ import {
 } from '@mui/material';
 import { useForm, useStore } from '@tanstack/react-form';
 import PropTypes from 'prop-types';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import {
     ANNOTATION_KIND_ADDITION,
     ANNOTATION_KIND_CORRECTION,
@@ -96,8 +96,22 @@ export function CreateAnnotationModal({
         },
     });
 
+    const skipAnnotationKindStep = useMemo(() => {
+        const {
+            enableAnnotationKindCorrection,
+            enableAnnotationKindAddition,
+            enableAnnotationKindRemoval,
+        } = field;
+        return (
+            !isFieldValueAnnotable ||
+            (enableAnnotationKindCorrection === false &&
+                enableAnnotationKindAddition === false &&
+                enableAnnotationKindRemoval === false)
+        );
+    }, [isFieldValueAnnotable, field]);
+
     const [currentStep, setCurrentStep] = useState(
-        isFieldValueAnnotable ? TARGET_STEP : COMMENT_STEP,
+        skipAnnotationKindStep ? COMMENT_STEP : TARGET_STEP,
     );
 
     // Using an effect triggers field validation on form initialization to enable submit button
@@ -161,6 +175,11 @@ export function CreateAnnotationModal({
         setCurrentStep(0);
     };
 
+    const handleClose = () => {
+        resetForm();
+        onClose();
+    };
+
     const handleOpenConfirm = () => {
         if (!form.state.isDirty) {
             return handleClose();
@@ -171,11 +190,6 @@ export function CreateAnnotationModal({
 
     const handleCloseConfirm = () => {
         setIsConfirmOpen(false);
-    };
-
-    const handleClose = () => {
-        resetForm();
-        onClose();
     };
 
     useEffect(() => {
@@ -250,10 +264,21 @@ export function CreateAnnotationModal({
                     )}
                 </form.Field>
                 <Stack gap={2}>
-                    <LinearProgress
-                        variant="determinate"
-                        value={progressByStep[currentStep]}
-                    />
+                    <Stack direction="row" alignItems="center" gap={1}>
+                        <Box flexGrow={1}>
+                            <LinearProgress
+                                variant="determinate"
+                                value={progressByStep[currentStep]}
+                            />
+                        </Box>
+
+                        <IconButton
+                            onClick={handleOpenConfirm}
+                            aria-label={translate('close')}
+                        >
+                            <CloseIcon />
+                        </IconButton>
+                    </Stack>
                     <Stack gap={1} direction="row" alignItems="center">
                         <CreateAnnotationTitle
                             fieldLabel={field.label}
@@ -266,13 +291,6 @@ export function CreateAnnotationModal({
                                 <HelpIcon fontSize="1.125rem" />
                             </Tooltip>
                         )}
-                        <Box flexGrow={1} />
-                        <IconButton
-                            onClick={handleOpenConfirm}
-                            aria-label={translate('close')}
-                        >
-                            <CloseIcon />
-                        </IconButton>
                     </Stack>
 
                     <Box fullWidth role="tabpanel">
@@ -315,7 +333,7 @@ export function CreateAnnotationModal({
                                 )}
                                 role="tab"
                             >
-                                {!isFieldValueAnnotable && (
+                                {skipAnnotationKindStep && (
                                     <OpenHistoryButton
                                         field={field}
                                         resourceUri={resourceUri}
@@ -371,7 +389,7 @@ export function CreateAnnotationModal({
                             initialValue={initialValue}
                             isSubmitting={isSubmitting}
                             onCancel={handleOpenConfirm}
-                            isFieldValueAnnotable={isFieldValueAnnotable}
+                            skipAnnotationKindStep={skipAnnotationKindStep}
                         />
 
                         <NextButton

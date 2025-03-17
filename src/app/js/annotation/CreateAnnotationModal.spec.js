@@ -17,7 +17,7 @@ jest.mock('./useGetFieldAnnotation', () => ({
 
 const queryClient = new QueryClient();
 
-function TestModal(props) {
+function TestModal({ field, ...props }) {
     return (
         <TestI18N>
             <QueryClientProvider client={queryClient}>
@@ -27,6 +27,7 @@ function TestModal(props) {
                     field={{
                         _id: '87a3b1c0-0b1b-4b1b-8b1b-1b1b1b1b1b1b',
                         label: 'Field Label',
+                        ...field,
                     }}
                     isFieldValueAnnotable={false}
                     openHistory={jest.fn()}
@@ -43,6 +44,7 @@ TestModal.propTypes = {
     onSubmit: PropTypes.func.isRequired,
     isSubmitting: PropTypes.bool.isRequired,
     openHistory: PropTypes.func,
+    field: PropTypes.object,
 };
 
 describe('CreateAnnotationModal', () => {
@@ -273,6 +275,47 @@ describe('CreateAnnotationModal', () => {
                 }),
             ).not.toBeInTheDocument();
         });
+
+        it('should start on COMMENT_STEP when no annotation kind other than comment is enabled', () => {
+            const wrapper = render(
+                <TestModal
+                    onClose={onClose}
+                    onSubmit={onSubmit}
+                    isSubmitting={false}
+                    initialValue="initialValue"
+                    isFieldValueAnnotable={true}
+                    field={{
+                        enableAnnotationKindAddition: false,
+                        enableAnnotationKindCorrection: false,
+                        enableAnnotationKindRemoval: false,
+                    }}
+                />,
+            );
+
+            expect(
+                wrapper.queryByRole('tab', {
+                    name: 'annotation_step_target',
+                }),
+            ).not.toBeInTheDocument();
+
+            expect(
+                wrapper.queryByRole('tab', {
+                    name: 'annotation_step_comment',
+                }),
+            ).toBeInTheDocument();
+
+            expect(
+                wrapper.queryByRole('tab', {
+                    name: 'annotation_step_author',
+                }),
+            ).not.toBeInTheDocument();
+
+            expect(
+                wrapper.queryByRole('tab', {
+                    name: 'annotation_step_value',
+                }),
+            ).not.toBeInTheDocument();
+        });
     });
 
     describe('value tab', () => {
@@ -386,6 +429,116 @@ describe('CreateAnnotationModal', () => {
         );
     });
 
+    describe('target tab', () => {
+        it('should not display add value button if disabled', () => {
+            const wrapper = render(
+                <TestModal
+                    onClose={onClose}
+                    onSubmit={onSubmit}
+                    isSubmitting={false}
+                    isFieldValueAnnotable={true}
+                    field={{ enableAnnotationKindAddition: false }}
+                />,
+            );
+
+            expect(
+                wrapper.queryByRole('tab', {
+                    name: 'annotation_step_target',
+                }),
+            ).toBeInTheDocument();
+
+            expect(
+                wrapper.queryByRole('menuitem', {
+                    name: 'annotation_add_content',
+                }),
+            ).not.toBeInTheDocument();
+
+            expect(
+                wrapper.queryByRole('menuitem', {
+                    name: 'annotation_correct_content',
+                }),
+            ).toBeInTheDocument();
+
+            expect(
+                wrapper.queryByRole('menuitem', {
+                    name: 'annotation_remove_content_choice',
+                }),
+            ).toBeInTheDocument();
+        });
+
+        it('should not display correct value button if disabled', () => {
+            const wrapper = render(
+                <TestModal
+                    onClose={onClose}
+                    onSubmit={onSubmit}
+                    isSubmitting={false}
+                    isFieldValueAnnotable={true}
+                    field={{ enableAnnotationKindCorrection: false }}
+                />,
+            );
+
+            expect(
+                wrapper.queryByRole('tab', {
+                    name: 'annotation_step_target',
+                }),
+            ).toBeInTheDocument();
+
+            expect(
+                wrapper.queryByRole('menuitem', {
+                    name: 'annotation_add_content',
+                }),
+            ).toBeInTheDocument();
+
+            expect(
+                wrapper.queryByRole('menuitem', {
+                    name: 'annotation_correct_content',
+                }),
+            ).not.toBeInTheDocument();
+
+            expect(
+                wrapper.queryByRole('menuitem', {
+                    name: 'annotation_remove_content_choice',
+                }),
+            ).toBeInTheDocument();
+        });
+
+        it('should not display remove value button if disabled', () => {
+            const wrapper = render(
+                <TestModal
+                    onClose={onClose}
+                    onSubmit={onSubmit}
+                    isSubmitting={false}
+                    isFieldValueAnnotable={true}
+                    field={{ enableAnnotationKindRemoval: false }}
+                />,
+            );
+
+            expect(
+                wrapper.queryByRole('tab', {
+                    name: 'annotation_step_target',
+                }),
+            ).toBeInTheDocument();
+
+            expect(
+                wrapper.queryByRole('menuitem', {
+                    name: 'annotation_add_content',
+                }),
+            ).toBeInTheDocument();
+
+            expect(
+                wrapper.queryByRole('menuitem', {
+                    name: 'annotation_correct_content',
+                }),
+            ).toBeInTheDocument();
+
+            expect(
+                wrapper.queryByRole('menuitem', {
+                    name: 'annotation_remove_content_choice',
+                }),
+            ).not.toBeInTheDocument();
+        });
+    });
+
     describe('comment tab', () => {
         beforeEach(() => {
             render(
@@ -496,7 +649,7 @@ describe('CreateAnnotationModal', () => {
         });
 
         describe('correction comment', () => {
-            beforeEach(() => {
+            beforeEach(async () => {
                 render(
                     <TestModal
                         onClose={onClose}
@@ -507,9 +660,12 @@ describe('CreateAnnotationModal', () => {
                     />,
                 );
 
-                fireEvent.click(
-                    screen.queryByText('annotation_correct_content'),
-                );
+                await waitFor(() => {
+                    fireEvent.click(
+                        screen.queryByText('annotation_correct_content'),
+                    );
+                });
+
                 expect(
                     screen.queryByRole('tab', {
                         name: 'annotation_step_comment',
@@ -517,7 +673,7 @@ describe('CreateAnnotationModal', () => {
                 ).toBeInTheDocument();
             });
 
-            it('should render required proposedValue and comment field', () => {
+            it('should render required proposedValue and comment field', async () => {
                 expect(
                     screen.getByText(
                         'annotation_title_annotate_field+{"field":"Field Label"}',
@@ -541,36 +697,46 @@ describe('CreateAnnotationModal', () => {
                 expect(
                     screen.getByRole('button', { name: 'next' }),
                 ).toBeDisabled();
-                fireEvent.change(
-                    screen.getByRole('textbox', {
-                        name: 'annotation.comment *',
-                    }),
-                    {
-                        target: { value: 'comment' },
-                    },
-                );
+
+                await waitFor(() => {
+                    fireEvent.change(
+                        screen.getByRole('textbox', {
+                            name: 'annotation.comment *',
+                        }),
+                        {
+                            target: { value: 'comment' },
+                        },
+                    );
+                });
+
                 expect(
                     screen.getByRole('button', { name: 'next' }),
                 ).not.toBeDisabled();
-                fireEvent.change(
-                    screen.getByRole('textbox', {
-                        name: 'annotation.proposedValue *',
-                    }),
-                    {
-                        target: { value: '' },
-                    },
-                );
+
+                await waitFor(() => {
+                    fireEvent.change(
+                        screen.getByRole('textbox', {
+                            name: 'annotation.proposedValue *',
+                        }),
+                        {
+                            target: { value: '' },
+                        },
+                    );
+                });
                 expect(
                     screen.getByRole('button', { name: 'next' }),
                 ).toBeDisabled();
-                fireEvent.change(
-                    screen.getByRole('textbox', {
-                        name: 'annotation.proposedValue *',
-                    }),
-                    {
-                        target: { value: 'proposedValue' },
-                    },
-                );
+
+                await waitFor(() => {
+                    fireEvent.change(
+                        screen.getByRole('textbox', {
+                            name: 'annotation.proposedValue *',
+                        }),
+                        {
+                            target: { value: 'proposedValue' },
+                        },
+                    );
+                });
                 expect(
                     screen.getByRole('button', { name: 'next' }),
                 ).not.toBeDisabled();
@@ -578,7 +744,7 @@ describe('CreateAnnotationModal', () => {
         });
 
         describe('addition comment', () => {
-            beforeEach(() => {
+            beforeEach(async () => {
                 render(
                     <TestModal
                         onClose={onClose}
@@ -589,7 +755,12 @@ describe('CreateAnnotationModal', () => {
                     />,
                 );
 
-                fireEvent.click(screen.queryByText('annotation_add_content'));
+                await waitFor(() => {
+                    fireEvent.click(
+                        screen.queryByText('annotation_add_content'),
+                    );
+                });
+
                 expect(
                     screen.queryByRole('tab', {
                         name: 'annotation_step_comment',
@@ -597,7 +768,7 @@ describe('CreateAnnotationModal', () => {
                 ).toBeInTheDocument();
             });
 
-            it('should render required proposedValue and comment field', () => {
+            it('should render required proposedValue and comment field', async () => {
                 expect(
                     screen.getByText(
                         'annotation_title_annotate_field+{"field":"Field Label"}',
@@ -616,25 +787,31 @@ describe('CreateAnnotationModal', () => {
                 expect(
                     screen.getByRole('button', { name: 'next' }),
                 ).toBeDisabled();
-                fireEvent.change(
-                    screen.getByRole('textbox', {
-                        name: 'annotation.comment *',
-                    }),
-                    {
-                        target: { value: 'comment' },
-                    },
-                );
+
+                await waitFor(() => {
+                    fireEvent.change(
+                        screen.getByRole('textbox', {
+                            name: 'annotation.comment *',
+                        }),
+                        {
+                            target: { value: 'comment' },
+                        },
+                    );
+                });
                 expect(
                     screen.getByRole('button', { name: 'next' }),
                 ).toBeDisabled();
-                fireEvent.change(
-                    screen.getByRole('textbox', {
-                        name: 'annotation.proposedValue *',
-                    }),
-                    {
-                        target: { value: 'proposedValue' },
-                    },
-                );
+
+                await waitFor(() => {
+                    fireEvent.change(
+                        screen.getByRole('textbox', {
+                            name: 'annotation.proposedValue *',
+                        }),
+                        {
+                            target: { value: 'proposedValue' },
+                        },
+                    );
+                });
                 expect(
                     screen.getByRole('button', { name: 'next' }),
                 ).not.toBeDisabled();
@@ -922,11 +1099,13 @@ describe('CreateAnnotationModal', () => {
             />,
         );
 
-        fireEvent.click(
-            screen.getByRole('menuitem', {
-                name: 'annotation_annotate_field_choice',
-            }),
-        );
+        await waitFor(() => {
+            fireEvent.click(
+                screen.getByRole('menuitem', {
+                    name: 'annotation_annotate_field_choice',
+                }),
+            );
+        });
 
         await waitFor(() => {
             fireEvent.change(

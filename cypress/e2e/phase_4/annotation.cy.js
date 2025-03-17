@@ -1417,4 +1417,160 @@ Revue`);
             cy.findByText('rating').should('exist');
         });
     });
+
+    describe('disable annotation kind', () => {
+        beforeEach(() => {
+            // ResizeObserver doesn't like when the app has to many renders / re-renders
+            // and throws an exception to say, "I wait for the next paint"
+            // https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver#observation_errors
+            cy.on('uncaught:exception', (error) => {
+                return !error.message.includes('ResizeObserver');
+            });
+
+            teardown();
+            menu.openAdvancedDrawer();
+            menu.goToAdminDashboard();
+            datasetImportPage.importDataset('dataset/film.csv');
+            datasetImportPage.importModel('model/film-with-field-id.tar');
+
+            cy.findByRole('link', {
+                name: 'Display',
+            });
+
+            cy.findByRole('gridcell', {
+                name: 'Dataset Name',
+                timeout: 1500,
+            })
+                .should('be.visible')
+                .trigger('mouseenter');
+            cy.findByRole('button', { name: 'edit-Dataset Name' }).click();
+            cy.findByRole('tab', { name: 'Annotations' }).click();
+        });
+
+        it('should no display correction button if disabled', () => {
+            cy.findByRole('checkbox', {
+                name: 'Correct content',
+            }).click();
+
+            cy.findByRole('button', {
+                name: 'Save',
+            }).click();
+
+            datasetImportPage.publish();
+            datasetImportPage.goToPublishedResources();
+
+            cy.findByRole('button', {
+                name: 'Add an annotation to the Dataset Name field',
+            }).click();
+
+            cy.findByRole('menuitem', {
+                name: 'Annotate the field',
+            }).should('exist');
+
+            cy.findByRole('menuitem', {
+                name: 'Correct some content',
+            }).should('not.exist');
+
+            cy.findByRole('menuitem', {
+                name: 'Add some content',
+            }).should('exist');
+
+            cy.findByRole('menuitem', {
+                name: 'Remove some content',
+            }).should('exist');
+        });
+
+        it('should no display add button if disabled', () => {
+            cy.findByRole('checkbox', {
+                name: 'Add content',
+            }).click();
+
+            cy.findByRole('button', {
+                name: 'Save',
+            }).click();
+
+            datasetImportPage.publish();
+            datasetImportPage.goToPublishedResources();
+
+            cy.findByRole('button', {
+                name: 'Add an annotation to the Dataset Name field',
+            }).click();
+
+            cy.findByRole('menuitem', {
+                name: 'Annotate the field',
+            }).should('exist');
+
+            cy.findByRole('menuitem', {
+                name: 'Correct some content',
+            }).should('exist');
+
+            cy.findByRole('menuitem', {
+                name: 'Add some content',
+            }).should('not.exist');
+
+            cy.findByRole('menuitem', {
+                name: 'Remove some content',
+            }).should('exist');
+        });
+
+        it('should no display remove button if disabled', () => {
+            cy.findByRole('checkbox', {
+                name: 'Remove content',
+            }).click();
+
+            cy.findByRole('button', {
+                name: 'Save',
+            }).click();
+
+            datasetImportPage.publish();
+            datasetImportPage.goToPublishedResources();
+
+            cy.findByRole('button', {
+                name: 'Add an annotation to the Dataset Name field',
+            }).click();
+
+            cy.findByRole('menuitem', {
+                name: 'Annotate the field',
+            }).should('exist');
+
+            cy.findByRole('menuitem', {
+                name: 'Correct some content',
+            }).should('exist');
+
+            cy.findByRole('menuitem', {
+                name: 'Add some content',
+            }).should('exist');
+
+            cy.findByRole('menuitem', {
+                name: 'Remove some content',
+            }).should('not.exist');
+        });
+
+        it('should open comment step if all annotation types are disabled', () => {
+            cy.findByRole('checkbox', {
+                name: 'Correct content',
+            }).click();
+
+            cy.findByRole('checkbox', {
+                name: 'Add content',
+            }).click();
+
+            cy.findByRole('checkbox', {
+                name: 'Remove content',
+            }).click();
+
+            cy.findByRole('button', {
+                name: 'Save',
+            }).click();
+
+            datasetImportPage.publish();
+            datasetImportPage.goToPublishedResources();
+
+            cy.findByRole('button', {
+                name: 'Add an annotation to the Dataset Name field',
+            }).click();
+
+            cy.findByText('General commentary').should('be.visible');
+        });
+    });
 });
