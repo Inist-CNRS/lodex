@@ -338,6 +338,12 @@ export default compose(
                 ...currentEditedField,
                 ...fieldFilterAttributes,
                 annotable: currentEditedField?.annotable ?? true,
+                enableAnnotationKindCorrection:
+                    currentEditedField?.enableAnnotationKindCorrection ?? true,
+                enableAnnotationKindAddition:
+                    currentEditedField?.enableAnnotationKindAddition ?? true,
+                enableAnnotationKindRemoval:
+                    currentEditedField?.enableAnnotationKindRemoval ?? true,
                 annotationFormat:
                     currentEditedField?.annotationFormat ?? 'text',
                 annotationFormatListKind:

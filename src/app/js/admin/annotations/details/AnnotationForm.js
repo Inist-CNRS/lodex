@@ -20,9 +20,9 @@ import { AnnotationHeader } from './AnnotationHeader';
 import { AnnotationInputs } from './AnnotationInputs';
 import { AnnotationItems } from './AnnotationItems';
 
-const tenant = sessionStorage.getItem('lodex-tenant') || DEFAULT_TENANT;
-
 export const AnnotationForm = ({ annotation }) => {
+    const tenant = sessionStorage.getItem('lodex-tenant') || DEFAULT_TENANT;
+
     const { translate } = useTranslate();
 
     const { handleUpdateAnnotation, isSubmitting } = useUpdateAnnotation();
