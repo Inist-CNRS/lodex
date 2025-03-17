@@ -190,4 +190,50 @@ describe('search reducer', () => {
             });
         });
     });
+    describe('SEARCH_VISITED', () => {
+        it('should set visited to visited', () => {
+            const state = {
+                filters: { visited: null },
+            };
+            const action = {
+                type: 'SEARCH_VISITED',
+                payload: { value: 'visited' },
+            };
+            const newState = reducer(state, action);
+            expect(newState).toEqual({
+                page: 0,
+                filters: { visited: 'visited' },
+            });
+        });
+
+        it('should set visited to not-visited', () => {
+            const state = {
+                filters: { visited: null },
+            };
+            const action = {
+                type: 'SEARCH_VISITED',
+                payload: { value: 'not-visited' },
+            };
+            const newState = reducer(state, action);
+            expect(newState).toEqual({
+                page: 0,
+                filters: { visited: 'not-visited' },
+            });
+        });
+
+        it('should set visited to null', () => {
+            const state = {
+                filters: { visited: 'visited' },
+            };
+            const action = {
+                type: 'SEARCH_VISITED',
+                payload: { value: null },
+            };
+            const newState = reducer(state, action);
+            expect(newState).toEqual({
+                page: 0,
+                filters: { visited: null },
+            });
+        });
+    });
 });
