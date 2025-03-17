@@ -55,7 +55,6 @@ export const getAnnotationsFilter = ({
         ...(['annotated', 'not-annotated'].includes(annotationsFilter)
             ? { annotated: annotationsFilter === 'annotated' }
             : {}),
-        annotated: annotationsFilter === 'annotated',
     };
 };
 
