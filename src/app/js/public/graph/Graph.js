@@ -1,6 +1,6 @@
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Button, Card, CardHeader, IconButton } from '@mui/material';
+import { Button, Card, CardHeader, IconButton, Stack } from '@mui/material';
 import { grey } from '@mui/material/colors';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
@@ -148,9 +148,13 @@ class Graph extends Component {
                                     className="title"
                                     sx={muiStyles.graphTitle}
                                     title={
-                                        <>
-                                            {' '}
+                                        <Stack
+                                            direction="row"
+                                            gap={2}
+                                            alignItems="center"
+                                        >
                                             {graphField.label}
+
                                             {isAdmin && (
                                                 <IconButton
                                                     onClick={() =>
@@ -173,7 +177,7 @@ class Graph extends Component {
                                                 field={graphField}
                                                 resource={resource}
                                             />
-                                        </>
+                                        </Stack>
                                     }
                                 />
                                 <Format

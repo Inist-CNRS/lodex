@@ -26,9 +26,9 @@ import { AnnotationStatus } from '../admin/annotations/AnnotationStatus';
 import { AnnotationValue } from '../admin/annotations/AnnotationValue';
 import { getResourceType } from '../admin/annotations/helpers/resourceType';
 import { useTranslate } from '../i18n/I18NContext';
-import { MODE_ALL, MODE_CLOSED, MODE_MINE, MODES } from './HistoryDrawer.const';
-import { OpenAllIcon } from '../lib/components/icons/OpenAllIcon';
 import { CloseAllIcon } from '../lib/components/icons/CloseAllIcon';
+import { OpenAllIcon } from '../lib/components/icons/OpenAllIcon';
+import { MODE_ALL, MODE_CLOSED, MODE_MINE, MODES } from './HistoryDrawer.const';
 
 export const getAnnotationSummaryValue = (annotation) => {
     const JOIN_SEPARATOR = ' | ';
@@ -179,11 +179,15 @@ export const AnnotationList = ({ mode, setMode, annotations, field }) => {
                     {getAnnotationTitle(annotations[0], translate)}
                 </Typography>
             </Stack>
-            <Stack direction="row" justifyContent="space-between">
-                <Stack direction="row" gap={1} alignItems="center">
-                    <Typography>
-                        {translate('annotation_filter_by_sender')}
-                    </Typography>
+            <Stack direction="column" gap={1}>
+                <Typography component="div">
+                    {translate('annotation_filter_by_sender')}
+                </Typography>
+                <Stack
+                    direction="row"
+                    alignItems="center"
+                    justifyContent="space-between"
+                >
                     <ButtonGroup>
                         <Button
                             onClick={() => setMode(MODE_ALL)}
@@ -210,22 +214,22 @@ export const AnnotationList = ({ mode, setMode, annotations, field }) => {
                             })}
                         </Button>
                     </ButtonGroup>
-                </Stack>
-                <Stack direction="row" alignItems="center">
-                    <IconButton
-                        title={translate('collapse_all_annotations')}
-                        aria-label={translate('collapse_all_annotations')}
-                        onClick={closeAllAnnotations}
-                    >
-                        <CloseAllIcon fill={theme.palette.primary.main} />
-                    </IconButton>
-                    <IconButton
-                        title={translate('expand_all_annotations')}
-                        aria-label={translate('expand_all_annotations')}
-                        onClick={openAllAnnotations}
-                    >
-                        <OpenAllIcon fill={theme.palette.primary.main} />
-                    </IconButton>
+                    <Box>
+                        <IconButton
+                            title={translate('collapse_all_annotations')}
+                            aria-label={translate('collapse_all_annotations')}
+                            onClick={closeAllAnnotations}
+                        >
+                            <CloseAllIcon />
+                        </IconButton>
+                        <IconButton
+                            title={translate('expand_all_annotations')}
+                            aria-label={translate('expand_all_annotations')}
+                            onClick={openAllAnnotations}
+                        >
+                            <OpenAllIcon />
+                        </IconButton>
+                    </Box>
                 </Stack>
             </Stack>
             <Box>
@@ -373,7 +377,7 @@ export const AnnotationList = ({ mode, setMode, annotations, field }) => {
                                             </Typography>
                                         </Box>
                                     )}
-                                    {annotation.proposedValue?.length && (
+                                    {annotation.proposedValue?.length > 0 && (
                                         <Box>
                                             <Typography
                                                 variant="h6"

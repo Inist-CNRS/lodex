@@ -457,7 +457,7 @@ export const ParsingResultComponent = (props) => {
                     selectedRowIds={selectedRowIds}
                     reloadDataset={fetchDataset}
                 />
-                {filterModel.items.length && (
+                {filterModel.items.length > 0 && (
                     <DeleteFilteredButton
                         filter={filterModel.items[0]}
                         reloadDataset={handleFilteredRowsDeleted}

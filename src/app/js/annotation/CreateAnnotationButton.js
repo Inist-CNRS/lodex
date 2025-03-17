@@ -42,9 +42,10 @@ function UserAnnotationCount({ fieldAnnotationIds, openHistory }) {
                 fontSize: '1rem',
                 fontWeight: 'normal',
                 color: theme.palette.primary.main,
+                textDecoration: 'none',
                 '&:hover': {
                     color: theme.palette.primary.main,
-                    textDecoration: 'none',
+                    textDecoration: 'underline',
                     cursor: 'pointer',
                 },
             }}
@@ -133,7 +134,7 @@ export function CreateAnnotationButton({ field, resource }) {
 
     return (
         <>
-            <Stack direction="row" alignItems="center">
+            <Stack direction="row" alignItems="center" gap={1}>
                 <Tooltip
                     title={buttonLabel}
                     placement="top"
