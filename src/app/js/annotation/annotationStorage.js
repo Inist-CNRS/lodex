@@ -7,6 +7,8 @@ import React, {
     useMemo,
     useState,
 } from 'react';
+import { useDispatch } from 'react-redux';
+import { newResourceAnnotated } from '../public/search/reducer';
 
 export const getStorageKey = () =>
     `${window.__TENANT__ || 'default'}:annotation`;
@@ -53,20 +55,31 @@ export const useGetFieldAnnotationIds = ({ fieldId, resourceUri }) => {
 
 export const useSaveAnnotationId = () => {
     const { setAnnotations } = useContext(AnnotationStorageContext);
+    const dispatch = useDispatch();
 
     return useCallback(
         ({ fieldId, resourceUri, _id }) => {
-            setAnnotations((annotations) => ({
-                ...annotations,
-                [resourceUri]: {
-                    ...(annotations[resourceUri] ?? {}),
-                    [fieldId]: (
-                        annotations[resourceUri]?.[fieldId] || []
-                    ).concat(_id),
-                },
-            }));
+            setAnnotations((annotations) => {
+                if (
+                    annotations[resourceUri]?.[fieldId] &&
+                    annotations[resourceUri]?.[fieldId].includes(_id)
+                ) {
+                    return annotations;
+                }
+
+                dispatch(newResourceAnnotated({ resourceUri }));
+                return {
+                    ...annotations,
+                    [resourceUri]: {
+                        ...(annotations[resourceUri] ?? {}),
+                        [fieldId]: (
+                            annotations[resourceUri]?.[fieldId] || []
+                        ).concat(_id),
+                    },
+                };
+            });
         },
-        [setAnnotations],
+        [setAnnotations, dispatch],
     );
 };
 

@@ -15,7 +15,6 @@ import {
     loadMoreFailed,
     loadMoreSucceed,
     SEARCH,
-    SEARCH_ANNOTATION_ADDED,
     SEARCH_LOAD_MORE,
     SEARCH_ANNOTATIONS,
     SEARCH_SORT,
@@ -24,6 +23,7 @@ import {
     searchSucceed,
     SEARCH_VISITED,
     SEARCH_NEW_RESOURCE_VISITED,
+    SEARCH_NEW_RESOURCE_ANNOTATED,
 } from './reducer';
 
 import { LOAD_PUBLICATION_SUCCESS } from '../../fields';
@@ -240,6 +240,15 @@ function* handleNewResourceVisited() {
     yield call(handleSearch);
 }
 
+function* handleSearchNewResourceAnnotated() {
+    const annotationsFilter = yield select(fromSearch.getAnnotationsFilter);
+
+    if (!annotationsFilter) {
+        return;
+    }
+    yield call(handleSearch);
+}
+
 export default function* () {
     yield fork(initSortSagas);
 
@@ -248,7 +257,6 @@ export default function* () {
             SEARCH,
             SEARCH_ANNOTATIONS,
             SEARCH_VISITED,
-            SEARCH_ANNOTATION_ADDED,
             SEARCH_SORT,
             SEARCH_SORT_INIT,
             facetActionTypes.TOGGLE_FACET_VALUE,
@@ -262,5 +270,9 @@ export default function* () {
     yield takeEvery([SEARCH_LOAD_MORE], handleLoadMore);
     yield takeEvery([LOAD_RESOURCE_SUCCESS], handleLoadNextResource);
     yield takeEvery([SEARCH_NEW_RESOURCE_VISITED], handleNewResourceVisited);
+    yield takeEvery(
+        [SEARCH_NEW_RESOURCE_ANNOTATED],
+        handleSearchNewResourceAnnotated,
+    );
     yield fork(facetSagas);
 }
