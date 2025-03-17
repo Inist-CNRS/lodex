@@ -6,11 +6,11 @@ import { fromSearch } from '../selectors';
 
 describe('search sagas', () => {
     describe('doSearchRequest', () => {
-        it('should keep filter empty when getMyAnnotationsFilter selector return null', () => {
+        it('should keep filter empty when getAnnotationsFilter selector return null', () => {
             const gen = doSearchRequest();
             expect(gen.next().value).toEqual(select(fromSearch.getQuery));
             expect(gen.next('queryValue').value).toEqual(
-                select(fromSearch.getMyAnnotationsFilter),
+                select(fromSearch.getAnnotationsFilter),
             );
             expect(gen.next(null).value).toEqual(
                 select(fromSearch.getResourceUrisWithAnnotationFilter),
@@ -41,11 +41,11 @@ describe('search sagas', () => {
             expect(gen.next().done).toBe(true);
         });
 
-        it('should add resourceUris filter when getMyAnnotationsFilter selector return my-annotations', () => {
+        it('should add resourceUris filter when getAnnotationsFilter selector return my-annotations', () => {
             const gen = doSearchRequest();
             expect(gen.next().value).toEqual(select(fromSearch.getQuery));
             expect(gen.next('queryValue').value).toEqual(
-                select(fromSearch.getMyAnnotationsFilter),
+                select(fromSearch.getAnnotationsFilter),
             );
             expect(gen.next('my-annotations').value).toEqual(
                 select(fromSearch.getResourceUrisWithAnnotationFilter),
@@ -78,11 +78,11 @@ describe('search sagas', () => {
             expect(gen.next().done).toBe(true);
         });
 
-        it('should add excludedResourceUris filter when getMyAnnotationsFilter selector return not-my-annotations', () => {
+        it('should add excludedResourceUris filter when getAnnotationsFilter selector return not-my-annotations', () => {
             const gen = doSearchRequest();
             expect(gen.next().value).toEqual(select(fromSearch.getQuery));
             expect(gen.next('queryValue').value).toEqual(
-                select(fromSearch.getMyAnnotationsFilter),
+                select(fromSearch.getAnnotationsFilter),
             );
             expect(gen.next('not-my-annotations').value).toEqual(
                 select(fromSearch.getResourceUrisWithAnnotationFilter),
@@ -115,11 +115,85 @@ describe('search sagas', () => {
             expect(gen.next().done).toBe(true);
         });
 
+        it('should add annotated: true but not resourceUris filter when getAnnotationsFilter selector return annotated', () => {
+            const gen = doSearchRequest();
+            expect(gen.next().value).toEqual(select(fromSearch.getQuery));
+            expect(gen.next('queryValue').value).toEqual(
+                select(fromSearch.getAnnotationsFilter),
+            );
+            expect(gen.next('annotated').value).toEqual(
+                select(fromSearch.getResourceUrisWithAnnotationFilter),
+            );
+            expect(gen.next(['uri1', 'uri2']).value).toEqual(
+                select(fromSearch.getSort),
+            );
+            expect(gen.next('sortData').value).toEqual(
+                select(fromSearch.getAppliedFacets),
+            );
+            expect(gen.next({}).value).toEqual(
+                select(fromSearch.getInvertedFacetKeys),
+            );
+            expect(gen.next(['inverted', 'facet', 'keys']).value).toEqual(
+                select(fromUser.getLoadDatasetPageRequest, {
+                    match: 'queryValue',
+                    sort: 'sortData',
+                    perPage: 10,
+                    page: 0,
+                    facets: {},
+                    invertedFacets: ['inverted', 'facet', 'keys'],
+                    filters: {
+                        annotated: true,
+                    },
+                }),
+            );
+            expect(gen.next('request object').value).toEqual(
+                call(fetchSaga, 'request object'),
+            );
+            expect(gen.next().done).toBe(true);
+        });
+
+        it('should add annotated: false but not resourceUris filter when getAnnotationsFilter selector return not-annotated', () => {
+            const gen = doSearchRequest();
+            expect(gen.next().value).toEqual(select(fromSearch.getQuery));
+            expect(gen.next('queryValue').value).toEqual(
+                select(fromSearch.getAnnotationsFilter),
+            );
+            expect(gen.next('not-annotated').value).toEqual(
+                select(fromSearch.getResourceUrisWithAnnotationFilter),
+            );
+            expect(gen.next(['uri1', 'uri2']).value).toEqual(
+                select(fromSearch.getSort),
+            );
+            expect(gen.next('sortData').value).toEqual(
+                select(fromSearch.getAppliedFacets),
+            );
+            expect(gen.next({}).value).toEqual(
+                select(fromSearch.getInvertedFacetKeys),
+            );
+            expect(gen.next(['inverted', 'facet', 'keys']).value).toEqual(
+                select(fromUser.getLoadDatasetPageRequest, {
+                    match: 'queryValue',
+                    sort: 'sortData',
+                    perPage: 10,
+                    page: 0,
+                    facets: {},
+                    invertedFacets: ['inverted', 'facet', 'keys'],
+                    filters: {
+                        annotated: false,
+                    },
+                }),
+            );
+            expect(gen.next('request object').value).toEqual(
+                call(fetchSaga, 'request object'),
+            );
+            expect(gen.next().done).toBe(true);
+        });
+
         it('should parse appliedFacet', () => {
             const gen = doSearchRequest();
             expect(gen.next().value).toEqual(select(fromSearch.getQuery));
             expect(gen.next('queryValue').value).toEqual(
-                select(fromSearch.getMyAnnotationsFilter),
+                select(fromSearch.getAnnotationsFilter),
             );
             expect(gen.next(null).value).toEqual(
                 select(fromSearch.getResourceUrisWithAnnotationFilter),

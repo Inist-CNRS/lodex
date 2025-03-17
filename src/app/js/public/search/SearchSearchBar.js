@@ -11,8 +11,10 @@ import { search as searchAction } from './reducer';
 import SearchBar from '../../lib/components/searchbar/SearchBar';
 import useSearchBar from '../../lib/components/searchbar/useSearchBar';
 import ToggleFacetsButton from '../../lib/components/searchbar/ToggleFacetsButton';
-import { Box } from '@mui/material';
+import { Box, Stack } from '@mui/material';
 import stylesToClassName from '../../lib/stylesToClassName';
+import { useCanAnnotate } from '../../annotation/useCanAnnotate';
+import AnnotationsFilter from './AnnotationsFilter';
 
 const styles = stylesToClassName(
     {
@@ -36,29 +38,35 @@ const SearchSearchBar = ({
         defaultQuery,
         search,
     );
+    const canAnnotate = useCanAnnotate();
 
     if (!hasSearchableFields) {
         return null;
     }
 
     return (
-        <Box display="flex" paddingX={1}>
-            <Box flexGrow={1}>
-                <SearchBar
-                    className="search-searchbar"
-                    value={localQuery}
-                    onChange={(e) => handleSearch(e.target.value)}
-                    onClear={handleClearSearch}
-                    maxWidth={875}
-                />
+        <>
+            <Box display="flex" paddingX={1}>
+                <Box flexGrow={1}>
+                    <SearchBar
+                        className="search-searchbar"
+                        value={localQuery}
+                        onChange={(e) => handleSearch(e.target.value)}
+                        onClear={handleClearSearch}
+                        maxWidth={875}
+                    />
+                </Box>
+                {withFacets && (
+                    <ToggleFacetsButton
+                        onChange={onToggleFacets}
+                        className={styles.toggleFacetsButton}
+                    />
+                )}
             </Box>
-            {withFacets && (
-                <ToggleFacetsButton
-                    onChange={onToggleFacets}
-                    className={styles.toggleFacetsButton}
-                />
-            )}
-        </Box>
+            <Stack direction="row" justifyContent="center">
+                {canAnnotate && <AnnotationsFilter />}
+            </Stack>
+        </>
     );
 };
 
