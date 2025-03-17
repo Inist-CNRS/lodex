@@ -22,6 +22,7 @@ import {
     SEARCH_SORT_INIT,
     searchFailed,
     searchSucceed,
+    SEARCH_VISITED,
 } from './reducer';
 
 import { LOAD_PUBLICATION_SUCCESS } from '../../fields';
@@ -30,15 +31,83 @@ import { fromFields, fromUser } from '../../sharedSelectors';
 import facetSagasFactory from '../facet/sagas';
 import { LOAD_RESOURCE_SUCCESS } from '../resource';
 import { fromResource, fromSearch } from '../selectors';
+import { uniq } from 'lodash';
 
 const PER_PAGE = 10;
+
+export const getAnnotationsFilter = ({
+    annotationsFilter,
+    resourceUrisWithAnnotation,
+}) => {
+    if (!annotationsFilter) {
+        return {};
+    }
+
+    return {
+        ...(annotationsFilter === 'my-annotations'
+            ? { resourceUris: resourceUrisWithAnnotation }
+            : {}),
+        ...(annotationsFilter === 'not-my-annotations'
+            ? { excludedResourceUris: resourceUrisWithAnnotation }
+            : {}),
+        ...(['annotated', 'not-annotated'].includes(annotationsFilter)
+            ? { annotated: annotationsFilter === 'annotated' }
+            : {}),
+        annotated: annotationsFilter === 'annotated',
+    };
+};
+
+export const addVisitedFilter = ({
+    filters,
+    visitedFilter,
+    visitedResourceUris,
+}) => {
+    switch (visitedFilter) {
+        case 'visited':
+            if (filters.resourceUris) {
+                return {
+                    ...filters,
+                    resourceUris: uniq(
+                        filters.resourceUris.concat(visitedResourceUris),
+                    ),
+                };
+            }
+
+            return {
+                ...filters,
+                resourceUris: visitedResourceUris,
+            };
+        case 'not-visited':
+            if (filters.excludedResourceUris) {
+                return {
+                    ...filters,
+                    excludedResourceUris: uniq(
+                        filters.excludedResourceUris.concat(
+                            visitedResourceUris,
+                        ),
+                    ),
+                };
+            }
+            return {
+                ...filters,
+                excludedResourceUris: visitedResourceUris,
+            };
+        default:
+            return filters;
+    }
+};
 
 export const doSearchRequest = function* (page = 0) {
     const query = yield select(fromSearch.getQuery);
     const annotationsFilter = yield select(fromSearch.getAnnotationsFilter);
+    const visitedFilter = yield select(fromSearch.getVisitedFilter);
 
     const resourceUrisWithAnnotation = yield select(
         fromSearch.getResourceUrisWithAnnotationFilter,
+    );
+
+    const visitedResourceUris = yield select(
+        fromSearch.getVisitedResourceUrisFilter,
     );
 
     const sort = yield select(fromSearch.getSort);
@@ -49,6 +118,17 @@ export const doSearchRequest = function* (page = 0) {
     }, {});
     const invertedFacets = yield select(fromSearch.getInvertedFacetKeys);
 
+    const filtersWithAnnotations = yield call(getAnnotationsFilter, {
+        annotationsFilter,
+        resourceUrisWithAnnotation,
+    });
+
+    const filters = yield call(addVisitedFilter, {
+        filters: filtersWithAnnotations,
+        visitedFilter,
+        visitedResourceUris,
+    });
+
     const request = yield select(fromUser.getLoadDatasetPageRequest, {
         match: query || '',
         sort,
@@ -56,17 +136,7 @@ export const doSearchRequest = function* (page = 0) {
         page,
         facets,
         invertedFacets,
-        filters: {
-            ...(['annotated', 'not-annotated'].includes(annotationsFilter)
-                ? { annotated: annotationsFilter === 'annotated' }
-                : {}),
-            ...(annotationsFilter === 'my-annotations'
-                ? { resourceUris: resourceUrisWithAnnotation }
-                : {}),
-            ...(annotationsFilter === 'not-my-annotations'
-                ? { excludedResourceUris: resourceUrisWithAnnotation }
-                : {}),
-        },
+        filters,
     });
 
     return yield call(fetchSaga, request);
@@ -168,6 +238,7 @@ export default function* () {
         [
             SEARCH,
             SEARCH_ANNOTATIONS,
+            SEARCH_VISITED,
             SEARCH_ANNOTATION_ADDED,
             SEARCH_SORT,
             SEARCH_SORT_INIT,

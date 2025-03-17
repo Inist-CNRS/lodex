@@ -40,3 +40,11 @@ export const useIsVisited = (resource) => {
         return viewedResources.includes(resource.uri);
     }, [resource.uri]);
 };
+
+export const useVisitedUris = () => {
+    const tenant = sessionStorage.getItem('lodex-tenant') || DEFAULT_TENANT;
+    const viewedResources =
+        JSON.parse(localStorage.getItem(`${tenant}-viewed-resources`)) || [];
+
+    return viewedResources;
+};

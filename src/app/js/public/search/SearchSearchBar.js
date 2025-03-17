@@ -15,6 +15,7 @@ import { Box, Stack } from '@mui/material';
 import stylesToClassName from '../../lib/stylesToClassName';
 import { useCanAnnotate } from '../../annotation/useCanAnnotate';
 import AnnotationsFilter from './AnnotationsFilter';
+import VisitedResourcesFilter from './VisitedResourcesFilter';
 
 const styles = stylesToClassName(
     {
@@ -63,7 +64,8 @@ const SearchSearchBar = ({
                     />
                 )}
             </Box>
-            <Stack direction="row" justifyContent="center">
+            <Stack direction="row" justifyContent="center" gap={1}>
+                <VisitedResourcesFilter />
                 {canAnnotate && <AnnotationsFilter />}
             </Stack>
         </>
