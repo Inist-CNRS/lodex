@@ -398,7 +398,7 @@ describe('AnnotationList', () => {
             ).toHaveTextContent('that');
             expect(
                 wrapper.queryByLabelText('annotation_contributor_section'),
-            ).not.toBeInTheDocument();
+            ).toHaveTextContent('hidden');
             expect(
                 wrapper.queryByLabelText('annotation_comment_section'),
             ).toHaveTextContent('replace this with that');
