@@ -1135,7 +1135,7 @@ Revue`);
                 authorEmail: 'me@myself.org',
             });
 
-            cy.findByText(`(1 sent)`).should('be.visible');
+            cy.findByText('1 sent').should('be.visible');
 
             annotation.openAnnotationModalForField('Dataset Description');
             cy.findByText(`See 2 annotations`).should('be.visible');
@@ -1185,7 +1185,7 @@ Revue`);
                 authorEmail: 'me@myself.org',
             });
 
-            cy.findByText(`(1 sent)`).click();
+            cy.findByText('1 sent').click();
 
             cy.findByText('All contributors').should('be.visible');
             cy.findByText('Only me').should('be.visible');
