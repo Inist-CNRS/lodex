@@ -1,4 +1,7 @@
-const { default: reducer, SEARCH_ANNOTATIONS } = require('./reducer');
+import reducer, {
+    SEARCH_ANNOTATIONS,
+    SEARCH_NEW_RESOURCE_ANNOTATED,
+} from './reducer';
 
 describe('search reducer', () => {
     describe('SEARCH_ANNOTATIONS', () => {
@@ -119,7 +122,7 @@ describe('search reducer', () => {
             });
         });
     });
-    describe('SEARCH_ANNOTATION_ADDED', () => {
+    describe('SEARCH_NEW_RESOURCE_ANNOTATED', () => {
         it('should add resourceUri to resourceUrisWithAnnotation if it is set', () => {
             const state = {
                 filters: {
@@ -127,7 +130,7 @@ describe('search reducer', () => {
                 },
             };
             const action = {
-                type: 'SEARCH_ANNOTATION_ADDED',
+                type: SEARCH_NEW_RESOURCE_ANNOTATED,
                 payload: { resourceUri: 'uri3' },
             };
             const newState = reducer(state, action);
@@ -144,7 +147,7 @@ describe('search reducer', () => {
                 },
             };
             const action = {
-                type: 'SEARCH_ANNOTATION_ADDED',
+                type: 'SEARCH_NEW_RESOURCE_ANNOTATED',
                 payload: { resourceUri: 'uri3' },
             };
             const newState = reducer(state, action);
@@ -160,7 +163,7 @@ describe('search reducer', () => {
                 filters: { resourceUrisWithAnnotation: null },
             };
             const action = {
-                type: 'SEARCH_ANNOTATION_ADDED',
+                type: 'SEARCH_NEW_RESOURCE_ANNOTATED',
                 payload: { resourceUri: 'uri3' },
             };
             const newState = reducer(state, action);
@@ -176,7 +179,7 @@ describe('search reducer', () => {
                 },
             };
             const action = {
-                type: 'SEARCH_ANNOTATION_ADDED',
+                type: 'SEARCH_NEW_RESOURCE_ANNOTATED',
                 payload: { resourceUri: 'uri2' },
             };
             const newState = reducer(state, action);
@@ -184,6 +187,52 @@ describe('search reducer', () => {
                 filters: {
                     resourceUrisWithAnnotation: ['uri1', 'uri2'],
                 },
+            });
+        });
+    });
+    describe('SEARCH_VISITED', () => {
+        it('should set visited to visited', () => {
+            const state = {
+                filters: { visited: null },
+            };
+            const action = {
+                type: 'SEARCH_VISITED',
+                payload: { value: 'visited' },
+            };
+            const newState = reducer(state, action);
+            expect(newState).toEqual({
+                page: 0,
+                filters: { visited: 'visited' },
+            });
+        });
+
+        it('should set visited to not-visited', () => {
+            const state = {
+                filters: { visited: null },
+            };
+            const action = {
+                type: 'SEARCH_VISITED',
+                payload: { value: 'not-visited' },
+            };
+            const newState = reducer(state, action);
+            expect(newState).toEqual({
+                page: 0,
+                filters: { visited: 'not-visited' },
+            });
+        });
+
+        it('should set visited to null', () => {
+            const state = {
+                filters: { visited: 'visited' },
+            };
+            const action = {
+                type: 'SEARCH_VISITED',
+                payload: { value: null },
+            };
+            const newState = reducer(state, action);
+            expect(newState).toEqual({
+                page: 0,
+                filters: { visited: null },
             });
         });
     });

@@ -1,6 +1,8 @@
 import { useEffect, useMemo } from 'react';
 import { DEFAULT_TENANT } from '../../../../common/tools/tenantTools';
 import { isURL } from '../../../../common/uris';
+import { useDispatch } from 'react-redux';
+import { newResourceVisited } from '../search/reducer';
 
 export const useRememberVisit = (resource) => {
     const setViewedResources = (resources) => {
@@ -10,6 +12,7 @@ export const useRememberVisit = (resource) => {
             JSON.stringify(resources),
         );
     };
+    const dispatch = useDispatch();
 
     useEffect(() => {
         if (!resource?.uri) {
@@ -22,8 +25,9 @@ export const useRememberVisit = (resource) => {
             [];
         if (!viewedResources.includes(resource.uri)) {
             setViewedResources([...viewedResources, resource.uri]);
+            dispatch(newResourceVisited());
         }
-    }, [resource?.uri]);
+    }, [resource?.uri, dispatch]);
 };
 
 export const useIsVisited = (resource) => {
@@ -39,4 +43,12 @@ export const useIsVisited = (resource) => {
 
         return viewedResources.includes(resource.uri);
     }, [resource.uri]);
+};
+
+export const getVisitedUris = () => {
+    const tenant = sessionStorage.getItem('lodex-tenant') || DEFAULT_TENANT;
+    const viewedResources =
+        JSON.parse(localStorage.getItem(`${tenant}-viewed-resources`)) || [];
+
+    return viewedResources;
 };

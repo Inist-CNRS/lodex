@@ -11,12 +11,31 @@ import {
     useSaveAnnotationId,
     useSetFieldAnnotationIds,
 } from './annotationStorage';
+import { Provider } from 'react-redux';
+import configureStore from '../configureStore';
+import reducers from '../public/reducers';
+import { createMemoryHistory } from 'history';
+import { newResourceAnnotated } from '../public/search/reducer';
 
-function TestWrapper({ children }) {
-    return <AnnotationStorageProvider>{children}</AnnotationStorageProvider>;
+global.__DEBUG__ = false;
+const memoryHistory = createMemoryHistory();
+const { store } = configureStore(
+    reducers,
+    function* sagas() {},
+    {},
+    memoryHistory,
+);
+
+function TestWrapper({ children, dispatch }) {
+    return (
+        <Provider store={{ ...store, dispatch }}>
+            <AnnotationStorageProvider>{children}</AnnotationStorageProvider>
+        </Provider>
+    );
 }
 TestWrapper.propTypes = {
     children: PropTypes.node,
+    dispatch: PropTypes.func,
 };
 
 describe('annotationStorage', () => {
@@ -65,6 +84,9 @@ describe('annotationStorage', () => {
                     }),
                 {
                     wrapper: TestWrapper,
+                    initialProps: {
+                        dispatch: jest.fn(),
+                    },
                 },
             );
 
@@ -74,10 +96,14 @@ describe('annotationStorage', () => {
 
     describe('useSaveAnnotationId', () => {
         it('should append to existing field annotations', async () => {
+            const dispatch = jest.fn();
             const { result, rerender } = renderHook(
                 () => useSaveAnnotationId(),
                 {
                     wrapper: TestWrapper,
+                    initialProps: {
+                        dispatch,
+                    },
                 },
             );
 
@@ -98,13 +124,19 @@ describe('annotationStorage', () => {
                     fieldId: ['annotation1', 'annotation2', 'annotation3'],
                 },
             });
+
+            expect(dispatch).toHaveBeenCalledTimes(0);
         });
 
-        it('should create a new field entry', async () => {
+        it('should create a new  resource entry and dispatch newResourceAnnotated event', async () => {
+            const dispatch = jest.fn();
             const { result, rerender } = renderHook(
                 () => useSaveAnnotationId(),
                 {
                     wrapper: TestWrapper,
+                    initialProps: {
+                        dispatch,
+                    },
                 },
             );
 
@@ -128,6 +160,10 @@ describe('annotationStorage', () => {
                     fieldId2: ['annotation3'],
                 },
             });
+
+            expect(dispatch).toHaveBeenCalledWith(
+                newResourceAnnotated({ resourceUri: 'resourceUri2' }),
+            );
         });
     });
 

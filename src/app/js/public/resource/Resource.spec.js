@@ -10,6 +10,11 @@ import { StyleSheetTestUtils } from 'aphrodite';
 import { MemoryRouter } from 'react-router-dom';
 import { shallow } from 'enzyme';
 
+jest.mock('react-redux', () => ({
+    ...jest.requireActual('react-redux'),
+    useDispatch: jest.fn().mockReturnValue(jest.fn()),
+}));
+
 describe('<Resource />', () => {
     const defaultProps = {
         loading: true,

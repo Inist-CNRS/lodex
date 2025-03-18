@@ -15,13 +15,15 @@ import {
     loadMoreFailed,
     loadMoreSucceed,
     SEARCH,
-    SEARCH_ANNOTATION_ADDED,
     SEARCH_LOAD_MORE,
     SEARCH_ANNOTATIONS,
     SEARCH_SORT,
     SEARCH_SORT_INIT,
     searchFailed,
     searchSucceed,
+    SEARCH_VISITED,
+    SEARCH_NEW_RESOURCE_VISITED,
+    SEARCH_NEW_RESOURCE_ANNOTATED,
 } from './reducer';
 
 import { LOAD_PUBLICATION_SUCCESS } from '../../fields';
@@ -30,16 +32,82 @@ import { fromFields, fromUser } from '../../sharedSelectors';
 import facetSagasFactory from '../facet/sagas';
 import { LOAD_RESOURCE_SUCCESS } from '../resource';
 import { fromResource, fromSearch } from '../selectors';
+import { uniq } from 'lodash';
+import { getVisitedUris } from '../resource/useRememberVisit';
 
 const PER_PAGE = 10;
+
+export const getAnnotationsFilter = ({
+    annotationsFilter,
+    resourceUrisWithAnnotation,
+}) => {
+    if (!annotationsFilter) {
+        return {};
+    }
+
+    return {
+        ...(annotationsFilter === 'my-annotations'
+            ? { resourceUris: resourceUrisWithAnnotation }
+            : {}),
+        ...(annotationsFilter === 'not-my-annotations'
+            ? { excludedResourceUris: resourceUrisWithAnnotation }
+            : {}),
+        ...(['annotated', 'not-annotated'].includes(annotationsFilter)
+            ? { annotated: annotationsFilter === 'annotated' }
+            : {}),
+    };
+};
+
+export const addVisitedFilter = ({
+    filters,
+    visitedFilter,
+    visitedResourceUris,
+}) => {
+    switch (visitedFilter) {
+        case 'visited':
+            if (filters.resourceUris) {
+                return {
+                    ...filters,
+                    resourceUris: uniq(
+                        filters.resourceUris.concat(visitedResourceUris),
+                    ),
+                };
+            }
+
+            return {
+                ...filters,
+                resourceUris: visitedResourceUris,
+            };
+        case 'not-visited':
+            if (filters.excludedResourceUris) {
+                return {
+                    ...filters,
+                    excludedResourceUris: uniq(
+                        filters.excludedResourceUris.concat(
+                            visitedResourceUris,
+                        ),
+                    ),
+                };
+            }
+            return {
+                ...filters,
+                excludedResourceUris: visitedResourceUris,
+            };
+        default:
+            return filters;
+    }
+};
 
 export const doSearchRequest = function* (page = 0) {
     const query = yield select(fromSearch.getQuery);
     const annotationsFilter = yield select(fromSearch.getAnnotationsFilter);
+    const visitedFilter = yield select(fromSearch.getVisitedFilter);
 
     const resourceUrisWithAnnotation = yield select(
         fromSearch.getResourceUrisWithAnnotationFilter,
     );
+
+    const visitedResourceUris = yield call(getVisitedUris);
 
     const sort = yield select(fromSearch.getSort);
     let facets = yield select(fromSearch.getAppliedFacets);
@@ -49,6 +117,17 @@ export const doSearchRequest = function* (page = 0) {
     }, {});
     const invertedFacets = yield select(fromSearch.getInvertedFacetKeys);
 
+    const filtersWithAnnotations = yield call(getAnnotationsFilter, {
+        annotationsFilter,
+        resourceUrisWithAnnotation,
+    });
+
+    const filters = yield call(addVisitedFilter, {
+        filters: filtersWithAnnotations,
+        visitedFilter,
+        visitedResourceUris,
+    });
+
     const request = yield select(fromUser.getLoadDatasetPageRequest, {
         match: query || '',
         sort,
@@ -56,17 +135,7 @@ export const doSearchRequest = function* (page = 0) {
         page,
         facets,
         invertedFacets,
-        filters: {
-            ...(['annotated', 'not-annotated'].includes(annotationsFilter)
-                ? { annotated: annotationsFilter === 'annotated' }
-                : {}),
-            ...(annotationsFilter === 'my-annotations'
-                ? { resourceUris: resourceUrisWithAnnotation }
-                : {}),
-            ...(annotationsFilter === 'not-my-annotations'
-                ? { excludedResourceUris: resourceUrisWithAnnotation }
-                : {}),
-        },
+        filters,
     });
 
     return yield call(fetchSaga, request);
@@ -161,6 +230,24 @@ function* initSortSagas() {
     yield put(initSort({ sortBy, sortDir }));
 }
 
+function* handleNewResourceVisited() {
+    const visitedFilter = yield select(fromSearch.getVisitedFilter);
+
+    if (!visitedFilter) {
+        return;
+    }
+    yield call(handleSearch);
+}
+
+function* handleSearchNewResourceAnnotated() {
+    const annotationsFilter = yield select(fromSearch.getAnnotationsFilter);
+
+    if (!annotationsFilter) {
+        return;
+    }
+    yield call(handleSearch);
+}
+
 export default function* () {
     yield fork(initSortSagas);
 
@@ -168,7 +255,7 @@ export default function* () {
         [
             SEARCH,
             SEARCH_ANNOTATIONS,
-            SEARCH_ANNOTATION_ADDED,
+            SEARCH_VISITED,
             SEARCH_SORT,
             SEARCH_SORT_INIT,
             facetActionTypes.TOGGLE_FACET_VALUE,
@@ -181,5 +268,10 @@ export default function* () {
     );
     yield takeEvery([SEARCH_LOAD_MORE], handleLoadMore);
     yield takeEvery([LOAD_RESOURCE_SUCCESS], handleLoadNextResource);
+    yield takeEvery([SEARCH_NEW_RESOURCE_VISITED], handleNewResourceVisited);
+    yield takeEvery(
+        [SEARCH_NEW_RESOURCE_ANNOTATED],
+        handleSearchNewResourceAnnotated,
+    );
     yield fork(facetSagas);
 }

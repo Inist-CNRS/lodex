@@ -6,6 +6,7 @@ import facetSelectors from '../facet/selectors';
 
 export const SEARCH = 'SEARCH';
 export const SEARCH_ANNOTATIONS = 'SEARCH_ANNOTATIONS';
+export const SEARCH_VISITED = 'SEARCH_VISITED';
 export const SEARCH_RESULTS = 'SEARCH_RESULTS';
 export const SEARCH_ERROR = 'SEARCH_ERROR';
 
@@ -16,13 +17,16 @@ export const SEARCH_LOAD_MORE_ERROR = 'SEARCH_LOAD_MORE_ERROR';
 export const SEARCH_SORT = 'SEARCH_SORT';
 export const SEARCH_SORT_INIT = 'SEARCH_SORT_INIT';
 
-export const SEARCH_ANNOTATION_ADDED = 'SEARCH_ANNOTATION_ADDED';
+export const SEARCH_NEW_RESOURCE_ANNOTATED = 'SEARCH_NEW_RESOURCE_ANNOTATED';
+export const SEARCH_NEW_RESOURCE_VISITED = 'SEARCH_NEW_RESOURCE_VISITED';
 
 export const search = createAction(SEARCH);
 export const searchAnnotations = createAction(SEARCH_ANNOTATIONS);
+export const searchVisited = createAction(SEARCH_VISITED);
 export const searchSucceed = createAction(SEARCH_RESULTS);
 export const searchFailed = createAction(SEARCH_ERROR);
-export const annotationAdded = createAction(SEARCH_ANNOTATION_ADDED);
+export const newResourceVisited = createAction(SEARCH_NEW_RESOURCE_VISITED);
+export const newResourceAnnotated = createAction(SEARCH_NEW_RESOURCE_ANNOTATED);
 
 export const sort = createAction(SEARCH_SORT);
 export const initSort = createAction(SEARCH_SORT_INIT);
@@ -44,6 +48,7 @@ export const fromSearch = {
     getResourceUrisWithAnnotationFilter: (state) =>
         state.filters?.resourceUrisWithAnnotation,
     getAnnotationsFilter: (state) => state.filters?.annotations,
+    getVisitedFilter: (state) => state.filters?.visited,
     getFilters: (state) => state.filters,
     getPrevResource: (state, currentResource) => {
         if (!currentResource || !currentResource.uri) {
@@ -112,68 +117,83 @@ export default handleActions(
             query: payload.query,
         }),
         [SEARCH_ANNOTATIONS]: (state, { payload: { mode, resourceUris } }) => {
-            if (mode === null) {
-                return {
-                    ...state,
-                    page: 0,
-                    filters: {
-                        ...state.filters,
-                        annotations: null,
-                        resourceUrisWithAnnotation: undefined,
-                    },
-                };
-            }
-            if (mode === 'my-annotations') {
-                return {
-                    ...state,
-                    page: 0,
-                    filters: {
-                        ...state.filters,
-                        annotations: mode,
-                        resourceUrisWithAnnotation: resourceUris,
-                    },
-                };
-            }
+            switch (mode) {
+                case null: {
+                    return {
+                        ...state,
+                        page: 0,
+                        filters: {
+                            ...state.filters,
+                            annotations: null,
+                            resourceUrisWithAnnotation: undefined,
+                        },
+                    };
+                }
+                case 'my-annotations': {
+                    return {
+                        ...state,
+                        page: 0,
+                        filters: {
+                            ...state.filters,
+                            annotations: mode,
+                            resourceUrisWithAnnotation: resourceUris,
+                        },
+                    };
+                }
 
-            if (mode === 'not-my-annotations') {
-                return {
-                    ...state,
-                    page: 0,
-                    filters: {
-                        ...state.filters,
-                        annotations: mode,
-                        resourceUrisWithAnnotation: resourceUris,
-                    },
-                };
-            }
+                case 'not-my-annotations': {
+                    return {
+                        ...state,
+                        page: 0,
+                        filters: {
+                            ...state.filters,
+                            annotations: mode,
+                            resourceUrisWithAnnotation: resourceUris,
+                        },
+                    };
+                }
 
-            if (mode === 'annotated') {
-                return {
-                    ...state,
-                    page: 0,
-                    filters: {
-                        ...state.filters,
-                        annotations: mode,
-                        resourceUrisWithAnnotation: undefined,
-                    },
-                };
-            }
+                case 'annotated': {
+                    return {
+                        ...state,
+                        page: 0,
+                        filters: {
+                            ...state.filters,
+                            annotations: mode,
+                            resourceUrisWithAnnotation: undefined,
+                        },
+                    };
+                }
 
-            if (mode === 'not-annotated') {
-                return {
-                    ...state,
-                    page: 0,
-                    filters: {
-                        ...state.filters,
-                        annotations: mode,
-                        resourceUrisWithAnnotation: undefined,
-                    },
-                };
+                case 'not-annotated': {
+                    return {
+                        ...state,
+                        page: 0,
+                        filters: {
+                            ...state.filters,
+                            annotations: mode,
+                            resourceUrisWithAnnotation: undefined,
+                        },
+                    };
+                }
+                default:
+                    return state;
             }
-
-            return state;
         },
-        [SEARCH_ANNOTATION_ADDED]: (state, { payload: { resourceUri } }) => {
+        [SEARCH_VISITED]: (state, { payload: { value } }) => {
+            return {
+                ...state,
+                page: 0,
+                filters: {
+                    ...state.filters,
+                    visited: value,
+                },
+            };
+        },
+        [SEARCH_NEW_RESOURCE_ANNOTATED]: (
+            state,
+            { payload: { resourceUri } },
+        ) => {
             if (
                 state.filters.resourceUrisWithAnnotation &&
                 !state.filters.resourceUrisWithAnnotation.includes(resourceUri)
