@@ -5,6 +5,12 @@ import { StyleSheetTestUtils } from 'aphrodite';
 import { NavBar } from './NavBar';
 import MenuItem from './MenuItem';
 
+jest.mock('react-redux', () => ({
+    ...jest.requireActual('react-redux'),
+    useSelector: jest.fn(),
+    useDispatch: jest.fn(),
+}));
+
 describe('NavBar', () => {
     // Todo: Unskip this test once material-ui is upgraded
 

@@ -14,18 +14,19 @@ export const SEARCH_LOAD_MORE = 'SEARCH_LOAD_MORE';
 export const SEARCH_LOAD_MORE_SUCCESS = 'SEARCH_LOAD_MORE_SUCCESS';
 export const SEARCH_LOAD_MORE_ERROR = 'SEARCH_LOAD_MORE_ERROR';
 
+export const TRIGGER_SEARCH = 'TRIGGER_SEARCH';
+
 export const SEARCH_SORT = 'SEARCH_SORT';
 export const SEARCH_SORT_INIT = 'SEARCH_SORT_INIT';
 
 export const SEARCH_NEW_RESOURCE_ANNOTATED = 'SEARCH_NEW_RESOURCE_ANNOTATED';
-export const SEARCH_NEW_RESOURCE_VISITED = 'SEARCH_NEW_RESOURCE_VISITED';
 
 export const search = createAction(SEARCH);
 export const searchAnnotations = createAction(SEARCH_ANNOTATIONS);
 export const searchVisited = createAction(SEARCH_VISITED);
 export const searchSucceed = createAction(SEARCH_RESULTS);
 export const searchFailed = createAction(SEARCH_ERROR);
-export const newResourceVisited = createAction(SEARCH_NEW_RESOURCE_VISITED);
+export const triggerSearch = createAction(TRIGGER_SEARCH);
 export const newResourceAnnotated = createAction(SEARCH_NEW_RESOURCE_ANNOTATED);
 
 export const sort = createAction(SEARCH_SORT);

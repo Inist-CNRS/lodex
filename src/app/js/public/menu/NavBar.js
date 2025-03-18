@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { config } from '@fortawesome/fontawesome-svg-core';
@@ -78,10 +78,6 @@ export const NavBar = ({
     closeSearch,
     isMultilingual,
 }) => {
-    if (!leftMenu || !rightMenu) {
-        return null;
-    }
-
     const [searchDrawer, toggleSearchDrawer, closeSearchDrawer] =
         useDrawer(DRAWER_CLOSED);
     const [graphDrawer, toggleGraphDrawer, closeGraphDrawer] =
@@ -92,24 +88,24 @@ export const NavBar = ({
         closeAdvancedMenuDrawer,
     ] = useDrawer(DRAWER_CLOSED);
 
+    const toggleSearch = useCallback(() => {
+        closeAdvancedMenuDrawer();
+        closeGraphDrawer();
+
+        toggleSearchDrawer();
+    }, [closeAdvancedMenuDrawer, closeGraphDrawer, toggleSearchDrawer]);
+
     useEffect(() => {
         if (search) {
             toggleSearch();
         }
-    }, [search]);
+    }, [search, toggleSearch]);
 
     useEffect(() => {
         if (searchDrawer == DRAWER_CLOSED) {
             closeSearch();
         }
-    }, [searchDrawer]);
-
-    const toggleSearch = () => {
-        closeAdvancedMenuDrawer();
-        closeGraphDrawer();
-
-        toggleSearchDrawer();
-    };
+    }, [closeSearch, searchDrawer]);
 
     const toggleGraph = () => {
         closeAdvancedMenuDrawer();
@@ -156,6 +152,10 @@ export const NavBar = ({
                     return;
             }
         };
+
+    if (!leftMenu || !rightMenu) {
+        return null;
+    }
 
     return (
         <>

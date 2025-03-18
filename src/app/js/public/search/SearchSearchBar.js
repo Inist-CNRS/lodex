@@ -39,6 +39,7 @@ const SearchSearchBar = ({
         defaultQuery,
         search,
     );
+
     const canAnnotate = useCanAnnotate();
 
     if (!hasSearchableFields) {

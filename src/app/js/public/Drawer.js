@@ -1,8 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
 import stylesToClassname from '../lib/stylesToClassName';
+import { useDispatch, useSelector } from 'react-redux';
+import { fromSearch } from './selectors';
+import { triggerSearch } from './search/reducer';
 
 export const ANIMATION_DURATION = 300; // ms
 
@@ -20,11 +23,21 @@ export const useDrawer = (
         );
     }
 
+    const dispatch = useDispatch();
+    const visitedFilter = useSelector(fromSearch.getVisitedFilter);
+    const annotationsFilter = useSelector(fromSearch.getAnnotationsFilter);
+
+    useEffect(() => {}, [dispatch, visitedFilter, annotationsFilter]);
+
     const [position, setPosition] = useState(initialPosition);
 
-    const open = () => {
+    const open = useCallback(() => {
         setPosition(DRAWER_OPEN);
-    };
+
+        if (visitedFilter || annotationsFilter) {
+            dispatch(triggerSearch());
+        }
+    }, [dispatch, visitedFilter, annotationsFilter]);
 
     const close = () => {
         if (position !== DRAWER_OPEN) {
