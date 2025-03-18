@@ -195,8 +195,8 @@ export default handleActions(
             { payload: { resourceUri } },
         ) => {
             if (
-                state.filters.resourceUrisWithAnnotation &&
-                !state.filters.resourceUrisWithAnnotation.includes(resourceUri)
+                state.filters?.resourceUrisWithAnnotation &&
+                !state.filters?.resourceUrisWithAnnotation.includes(resourceUri)
             ) {
                 return {
                     ...state,
