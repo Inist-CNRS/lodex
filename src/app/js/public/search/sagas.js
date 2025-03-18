@@ -22,6 +22,7 @@ import {
     searchFailed,
     searchSucceed,
     SEARCH_VISITED,
+    TRIGGER_SEARCH,
 } from './reducer';
 
 import { LOAD_PUBLICATION_SUCCESS } from '../../fields';
@@ -238,6 +239,7 @@ export default function* () {
             SEARCH_VISITED,
             SEARCH_SORT,
             SEARCH_SORT_INIT,
+            TRIGGER_SEARCH,
             facetActionTypes.TOGGLE_FACET_VALUE,
             facetActionTypes.SET_ALL_VALUE_FOR_FACET,
             facetActionTypes.INVERT_FACET,
