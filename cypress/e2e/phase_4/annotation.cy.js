@@ -1246,12 +1246,13 @@ Revue`);
             datasetImportPage.goToPublishedResources();
         });
 
-        it('should remind author of an annotation', () => {
+        it('should remember author of an annotation and if it is name is public', () => {
             annotation.createTitleAnnotation({
                 fieldLabel: 'Dataset Description',
                 comment: 'This is my comment',
                 authorName: 'Me',
                 authorEmail: 'me@myself.org',
+                isContributorNamePublic: true,
                 authorRememberMe: true,
             });
 
@@ -1262,6 +1263,10 @@ Revue`);
 
             annotation.authorNameField().should('have.value', 'Me');
             annotation.authorEmailField().should('have.value', 'me@myself.org');
+            annotation
+                .isContributorNamePublicField()
+                .should('be.checked')
+                .uncheck();
             annotation.authorRememberMeField().should('be.checked').uncheck();
 
             annotation.submitAnnotation();
@@ -1274,6 +1279,8 @@ Revue`);
             annotation.authorNameField().should('have.value', '');
             annotation.authorEmailField().should('have.value', '');
             annotation.authorRememberMeField().should('not.be.checked');
+
+            annotation.isContributorNamePublicField().should('not.be.checked');
         });
     });
 

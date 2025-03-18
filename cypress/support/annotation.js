@@ -63,11 +63,29 @@ export function authorRememberMeField() {
     });
 }
 
-function fillAuthor({ authorName, authorEmail, authorRememberMe }) {
+export function isContributorNamePublicField() {
+    return cy.findByRole('checkbox', {
+        name: 'I agree that my name may be visible to other contributors.',
+        timeout: 1500,
+    });
+}
+
+function fillAuthor({
+    authorName,
+    authorEmail,
+    isContributorNamePublic,
+    authorRememberMe,
+}) {
     authorNameField().type(authorName);
 
     if (authorEmail) {
         authorEmailField().type(authorEmail);
+    }
+
+    if (isContributorNamePublic === true) {
+        isContributorNamePublicField().check();
+    } else if (isContributorNamePublic === false) {
+        isContributorNamePublicField().uncheck();
     }
 
     if (authorRememberMe === true) {
@@ -91,6 +109,7 @@ export function createAnnotationOnFieldWithNoValue({
     comment,
     authorName,
     authorEmail,
+    isContributorNamePublic,
     authorRememberMe,
 }) {
     openAnnotationModalForField(fieldLabel);
@@ -99,7 +118,12 @@ export function createAnnotationOnFieldWithNoValue({
 
     goToNextStep();
 
-    fillAuthor({ authorName, authorEmail, authorRememberMe });
+    fillAuthor({
+        authorName,
+        authorEmail,
+        isContributorNamePublic,
+        authorRememberMe,
+    });
 
     submitAnnotation();
 }
@@ -109,6 +133,7 @@ export function createTitleAnnotation({
     comment,
     authorName,
     authorEmail,
+    isContributorNamePublic,
     authorRememberMe,
 }) {
     openAnnotationModalForField(fieldLabel);
@@ -117,7 +142,12 @@ export function createTitleAnnotation({
 
     fillComment(comment);
     goToNextStep();
-    fillAuthor({ authorName, authorEmail, authorRememberMe });
+    fillAuthor({
+        authorName,
+        authorEmail,
+        isContributorNamePublic,
+        authorRememberMe,
+    });
 
     submitAnnotation();
 }
@@ -191,6 +221,7 @@ export function createSingleValueAnnotation({
     comment,
     authorName,
     authorEmail,
+    isContributorNamePublic,
     authorRememberMe,
 }) {
     openAnnotationModalForField(fieldLabel);
@@ -199,7 +230,12 @@ export function createSingleValueAnnotation({
 
     fillComment(comment);
     goToNextStep();
-    fillAuthor({ authorName, authorEmail, authorRememberMe });
+    fillAuthor({
+        authorName,
+        authorEmail,
+        isContributorNamePublic,
+        authorRememberMe,
+    });
 
     submitAnnotation();
 }
@@ -210,6 +246,7 @@ export function createMultiValueAnnotation({
     value,
     authorName,
     authorEmail,
+    isContributorNamePublic,
     authorRememberMe,
 }) {
     openAnnotationModalForField(fieldLabel);
@@ -218,7 +255,12 @@ export function createMultiValueAnnotation({
 
     fillComment(comment);
     goToNextStep();
-    fillAuthor({ authorName, authorEmail, authorRememberMe });
+    fillAuthor({
+        authorName,
+        authorEmail,
+        isContributorNamePublic,
+        authorRememberMe,
+    });
 
     submitAnnotation();
 }
@@ -229,6 +271,7 @@ export function createAddValueWithSingleProposedValueChoiceAnnotation({
     comment,
     authorName,
     authorEmail,
+    isContributorNamePublic,
     authorRememberMe,
 }) {
     openAnnotationModalForField(fieldLabel);
@@ -240,7 +283,12 @@ export function createAddValueWithSingleProposedValueChoiceAnnotation({
 
     fillComment(comment);
     goToNextStep();
-    fillAuthor({ authorName, authorEmail, authorRememberMe });
+    fillAuthor({
+        authorName,
+        authorEmail,
+        isContributorNamePublic,
+        authorRememberMe,
+    });
 
     submitAnnotation();
 }
@@ -251,6 +299,7 @@ export function createAddValueWithMultipleProposedValuesChoiceAnnotation({
     comment,
     authorName,
     authorEmail,
+    isContributorNamePublic,
     authorRememberMe,
 }) {
     openAnnotationModalForField(fieldLabel);
@@ -266,7 +315,12 @@ export function createAddValueWithMultipleProposedValuesChoiceAnnotation({
 
     fillComment(comment);
     goToNextStep();
-    fillAuthor({ authorName, authorEmail, authorRememberMe });
+    fillAuthor({
+        authorName,
+        authorEmail,
+        isContributorNamePublic,
+        authorRememberMe,
+    });
 
     submitAnnotation();
 }
