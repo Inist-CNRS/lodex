@@ -12,7 +12,7 @@ import { useTranslate } from '../../i18n/I18NContext';
 
 export function IsContributorNamePublicField({ form }) {
     const { translate } = useTranslate();
-    const field = useField({ name: 'publicContributorName', form });
+    const field = useField({ name: 'isContributorNamePublic', form });
 
     const handleCheckboxChange = (event) => {
         field.handleChange(event.target.checked);
@@ -33,7 +33,7 @@ export function IsContributorNamePublicField({ form }) {
                         onChange={handleCheckboxChange}
                     />
                 }
-                label={translate('annotation.publicContributorName')}
+                label={translate('annotation.isContributorNamePublic')}
             />
             {error && (
                 <FormHelperText error role="alert">

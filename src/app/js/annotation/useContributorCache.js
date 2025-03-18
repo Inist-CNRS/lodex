@@ -16,7 +16,12 @@ export function useContributorCache() {
     }, []);
 
     const updateContributorCache = useCallback(
-        ({ authorName, authorEmail, authorRememberMe }) => {
+        ({
+            authorName,
+            authorEmail,
+            authorRememberMe,
+            isContributorNamePublic,
+        }) => {
             if (!authorRememberMe) {
                 localStorage.removeItem(CONTRIBUTOR_LOCALSTORAGE_KEY);
                 return;
@@ -24,7 +29,12 @@ export function useContributorCache() {
 
             localStorage.setItem(
                 CONTRIBUTOR_LOCALSTORAGE_KEY,
-                JSON.stringify({ authorName, authorEmail, authorRememberMe }),
+                JSON.stringify({
+                    authorName,
+                    authorEmail,
+                    authorRememberMe,
+                    isContributorNamePublic,
+                }),
             );
         },
         [],
