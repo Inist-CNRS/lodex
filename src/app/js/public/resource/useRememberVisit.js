@@ -1,7 +1,6 @@
 import { useEffect, useMemo } from 'react';
 import { DEFAULT_TENANT } from '../../../../common/tools/tenantTools';
 import { isURL } from '../../../../common/uris';
-import { useDispatch } from 'react-redux';
 
 export const useRememberVisit = (resource) => {
     const setViewedResources = (resources) => {
@@ -11,7 +10,6 @@ export const useRememberVisit = (resource) => {
             JSON.stringify(resources),
         );
     };
-    const dispatch = useDispatch();
 
     useEffect(() => {
         if (!resource?.uri) {
@@ -25,7 +23,7 @@ export const useRememberVisit = (resource) => {
         if (!viewedResources.includes(resource.uri)) {
             setViewedResources([...viewedResources, resource.uri]);
         }
-    }, [resource?.uri, dispatch]);
+    }, [resource?.uri]);
 };
 
 export const useIsVisited = (resource) => {
