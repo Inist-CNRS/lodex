@@ -6,17 +6,28 @@ import {
     Select,
 } from '@mui/material';
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { useMemo } from 'react';
 
-import { useTranslate } from '../../i18n/I18NContext';
 import { useStore } from '@tanstack/react-form';
+import { useTranslate } from '../../i18n/I18NContext';
 
+/**
+ * @param {Object} props
+ * @param {Object} props.form
+ * @param {string[] | string[][]} props.choices
+ */
 export function ValueField({ form, choices }) {
     const { translate } = useTranslate();
 
     const kind = useStore(form.store, (state) => {
         return state.values.kind;
     });
+
+    const formattedChoices = useMemo(() => {
+        return choices.map((choice) => {
+            return [].concat(choice).join(' ; ');
+        });
+    }, [choices]);
 
     return (
         <form.Field name="initialValue">
@@ -26,14 +37,15 @@ export function ValueField({ form, choices }) {
                     field.state.meta.errors?.length
                 );
 
+                const label = `${translate(kind === 'correction' ? 'annotation_choose_value_to_correct' : 'annotation_choose_value_to_remove')} *`;
                 return (
                     <FormControl fullWidth>
                         <InputLabel id="annotation_choose_value">
-                            {`${translate(kind === 'correction' ? 'annotation_choose_value_to_correct' : 'annotation_choose_value_to_remove')} *`}
+                            {label}
                         </InputLabel>
                         <Select
-                            label={`${translate('annotation_choose_value')} *`}
-                            labelId={translate('annotation_choose_value')}
+                            label={label}
+                            labelId="annotation_choose_value"
                             name={field.name}
                             value={field.state.value}
                             onBlur={field.handleBlur}
@@ -44,8 +56,11 @@ export function ValueField({ form, choices }) {
                             maxRows={10}
                             multiline
                             error={hasErrors}
+                            SelectDisplayProps={{
+                                'aria-labelledby': 'annotation_choose_value',
+                            }}
                         >
-                            {choices.map((choice) => (
+                            {formattedChoices.map((choice) => (
                                 <MenuItem key={choice} value={choice}>
                                     {choice}
                                 </MenuItem>
