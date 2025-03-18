@@ -1281,7 +1281,7 @@
 "annotation.authorEmail"	"Email address"	"Adresse e-mail"
 "annotation.authorEmail_helpText"	"The email address will allow us to contact you if needed"	"L'e-mail permettra d'être contacté en cas de besoin"
 "annotation.authorRememberMe"	"Remember my information"	"Se souvenir de mes informations"
-"annotation.publicContributorName"	"Remember my information"	"Se souvenir de mes informations"
+"annotation.isContributorNamePublic"	"I agree that my name may be visible to other contributors."	"J’accepte que mon nom soit visible par les autres contributeurs"
 "annotation_status"	"Status"	"Statut"
 "annotation_kind"	"Type"	"Type"
 "annotation_internal_comment"	"Internal Comment"	"Commentaire interne"

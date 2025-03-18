@@ -38,6 +38,7 @@ import {
 } from './steps';
 import { useContributorCache } from './useContributorCache';
 import { useReCaptcha } from './useReCaptacha';
+import { IsContributorNamePublicField } from './fields/IsContributorNamePublicField';
 
 const isRequiredFieldValid = (formState, fieldName) => {
     const fieldState = formState.fieldMeta[fieldName];
@@ -89,6 +90,7 @@ export function CreateAnnotationModal({
                 ...value,
                 reCaptchaToken,
             });
+            // eslint-disable-next-line no-use-before-define
             resetForm();
         },
         validators: {
@@ -376,6 +378,7 @@ export function CreateAnnotationModal({
                                 </Stack>
                                 <AuthorNameField form={form} />
                                 <AuthorEmailField form={form} />
+                                <IsContributorNamePublicField form={form} />
                                 <AuthorRememberMeField form={form} />
                             </Stack>
                         )}
