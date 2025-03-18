@@ -414,6 +414,21 @@ export const AnnotationList = ({ mode, setMode, annotations, field }) => {
                                             </Typography>
                                         </Box>
                                     )}
+                                    {annotation.isContributorNamePublic && (
+                                        <Box>
+                                            <Typography
+                                                variant="h6"
+                                                id="annotation_contributor_section"
+                                            >
+                                                {translate(
+                                                    'annotation_contributor_section',
+                                                )}
+                                            </Typography>
+                                            <Typography aria-labelledby="annotation_contributor_section">
+                                                {annotation.authorName}
+                                            </Typography>
+                                        </Box>
+                                    )}
                                     <Box>
                                         <Typography
                                             variant="h6"

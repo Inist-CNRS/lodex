@@ -375,6 +375,7 @@ describe('AnnotationList', () => {
                     field: { label: 'fieldLabel', scope: 'resource' },
                     resource: { title: 'resourceTitle', uri: 'resourceUri' },
                     status: 'to_review',
+                    authorName: 'author name',
                     createdAt: '2025-09-01T00:00:00.000Z',
                     updatedAt: '2025-10-01T00:00:00.000Z',
                     isMine: false,
@@ -396,6 +397,9 @@ describe('AnnotationList', () => {
                 ),
             ).toHaveTextContent('that');
             expect(
+                wrapper.queryByLabelText('annotation_contributor_section'),
+            ).not.toBeInTheDocument();
+            expect(
                 wrapper.queryByLabelText('annotation_comment_section'),
             ).toHaveTextContent('replace this with that');
             expect(
@@ -408,6 +412,59 @@ describe('AnnotationList', () => {
                 wrapper.queryByLabelText('annotation_created_at'),
             ).toHaveTextContent('9/1/2025');
         });
+
+        it('should show contributor when isContributorNamePublic is true', () => {
+            const annotations = [
+                {
+                    _id: 'annotationId',
+                    kind: 'correction',
+                    comment: 'replace this with that',
+                    adminComment: 'Can you please provide more context?',
+                    proposedValue: 'that',
+                    initialValue: 'this',
+                    resourceUri: 'resourceUri',
+                    field: { label: 'fieldLabel', scope: 'resource' },
+                    resource: { title: 'resourceTitle', uri: 'resourceUri' },
+                    status: 'to_review',
+                    isContributorNamePublic: true,
+                    authorName: 'author name',
+                    createdAt: '2025-09-01T00:00:00.000Z',
+                    updatedAt: '2025-10-01T00:00:00.000Z',
+                    isMine: false,
+                },
+            ];
+            const field = { label: 'fieldLabel' };
+            const wrapper = render(
+                <TestAnnotationList annotations={annotations} field={field} />,
+            );
+            expect(
+                wrapper.queryByText('own_annotation'),
+            ).not.toBeInTheDocument();
+            expect(
+                wrapper.queryByLabelText('annotation_initial_value'),
+            ).toHaveTextContent('this');
+            expect(
+                wrapper.queryByLabelText(
+                    'annotation_proposed_value+{"smart_count":1}',
+                ),
+            ).toHaveTextContent('that');
+            expect(
+                wrapper.queryByLabelText('annotation_contributor_section'),
+            ).toHaveTextContent('author name');
+            expect(
+                wrapper.queryByLabelText('annotation_comment_section'),
+            ).toHaveTextContent('replace this with that');
+            expect(
+                wrapper.queryByLabelText('annotation_admin_comment_section'),
+            ).toHaveTextContent('Can you please provide more context?');
+            expect(
+                wrapper.queryByLabelText('annotation_updated_at'),
+            ).toHaveTextContent('10/1/2025');
+            expect(
+                wrapper.queryByLabelText('annotation_created_at'),
+            ).toHaveTextContent('9/1/2025');
+        });
+
         it('should hide initial value when kind is addition', () => {
             const annotations = [
                 {
