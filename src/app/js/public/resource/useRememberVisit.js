@@ -2,7 +2,6 @@ import { useEffect, useMemo } from 'react';
 import { DEFAULT_TENANT } from '../../../../common/tools/tenantTools';
 import { isURL } from '../../../../common/uris';
 import { useDispatch } from 'react-redux';
-import { newResourceVisited } from '../search/reducer';
 
 export const useRememberVisit = (resource) => {
     const setViewedResources = (resources) => {
@@ -25,7 +24,6 @@ export const useRememberVisit = (resource) => {
             [];
         if (!viewedResources.includes(resource.uri)) {
             setViewedResources([...viewedResources, resource.uri]);
-            dispatch(newResourceVisited());
         }
     }, [resource?.uri, dispatch]);
 };
