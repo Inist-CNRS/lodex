@@ -10,6 +10,10 @@ import {
 import { useField } from '@tanstack/react-form';
 import { useTranslate } from '../../i18n/I18NContext';
 
+const formControlStyle = {
+    marginTop: '0px',
+};
+
 export function AuthorRememberMeField({ form }) {
     const { translate } = useTranslate();
     const field = useField({ name: 'authorRememberMe', form });
@@ -25,7 +29,7 @@ export function AuthorRememberMeField({ form }) {
     }, [field.state]);
 
     return (
-        <FormControl>
+        <FormControl style={formControlStyle}>
             <FormControlLabel
                 control={
                     <Checkbox
