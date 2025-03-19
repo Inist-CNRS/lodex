@@ -48,8 +48,8 @@ export const fromSearch = {
     getQuery: (state) => state.query,
     getResourceUrisWithAnnotationFilter: (state) =>
         state.filters?.resourceUrisWithAnnotation,
-    getAnnotationsFilter: (state) => state.filters?.annotations,
-    getVisitedFilter: (state) => state.filters?.visited,
+    getAnnotationsFilter: (state) => state.filters?.annotations ?? null,
+    getVisitedFilter: (state) => state.filters?.visited ?? null,
     getFilters: (state) => state.filters,
     getPrevResource: (state, currentResource) => {
         if (!currentResource || !currentResource.uri) {

@@ -382,7 +382,7 @@ describe('Search', () => {
 
             cy.findByRole('link', { name: 'Search' }).click();
             cy.findByRole('button', {
-                name: 'Sort by Première mise en ligne en Descending',
+                name: 'Sort by Première mise en ligne en | Descending',
             })
                 .should('be.visible')
                 .click();
@@ -397,7 +397,7 @@ describe('Search', () => {
         beforeEach(initSearchDataset());
         it('should filter search results by visited resources', () => {
             menu.openSearchDrawer();
-            cy.findByText('Sort Ascending').click();
+            cy.findByText('Sort | Ascending').click();
             cy.findByRole('menuitem', { name: 'Title' }).click();
             cy.waitForNetworkIdle(500);
             searchDrawer.checkResultsCount(10);

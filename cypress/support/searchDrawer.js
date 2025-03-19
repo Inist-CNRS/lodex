@@ -27,14 +27,14 @@ export const filterClearMyAnnotationsFilter = () => {
 export const filterShowVisitedResources = () => {
     cy.findByLabelText('Visited resources').click();
     cy.findByRole('option', {
-        name: 'I have already seen',
+        name: 'Resources I have already seen',
     }).click();
 };
 
 export const filterShowUnVisitedResources = () => {
     cy.findByLabelText('Visited resources').click();
     cy.findByRole('option', {
-        name: 'I did not see',
+        name: 'Resources I did not see',
     }).click();
 };
 

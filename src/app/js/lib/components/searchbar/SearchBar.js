@@ -1,37 +1,11 @@
-import React, { useRef, useEffect } from 'react';
+import { Icon, IconButton, TextField } from '@mui/material';
 import PropTypes from 'prop-types';
+import React, { useEffect, useRef } from 'react';
 import compose from 'recompose/compose';
 import { translate } from '../../../i18n/I18NContext';
-import classnames from 'classnames';
-import { Icon, IconButton, TextField } from '@mui/material';
 
-import stylesToClassname from '../../stylesToClassName';
+import { Clear as ClearIcon, Search as SearchIcon } from '@mui/icons-material';
 import { polyglot as polyglotPropTypes } from '../../../propTypes';
-import { Search as SearchIcon, Clear as ClearIcon } from '@mui/icons-material';
-
-const styles = stylesToClassname(
-    {
-        container: {
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-        },
-        text: {
-            flexGrow: 3,
-            margin: '0px 8px',
-        },
-        searchIcon: {
-            color: 'var(--neutral-dark-secondary)',
-        },
-        clearIcon: {
-            color: 'var(--secondary-main)',
-        },
-        actions: {
-            display: 'flex',
-        },
-    },
-    'searchbar',
-);
 
 const SearchBar = ({
     className,
@@ -52,39 +26,38 @@ const SearchBar = ({
     }, [refTextField]);
 
     return (
-        <div className={classnames(className, styles.container)}>
-            <TextField
-                ref={refTextField}
-                className={styles.text}
-                sx={{ maxWidth: maxWidth }}
-                placeholder={polyglot.t('search')}
-                onChange={onChange}
-                onFocus={(event) => {
-                    event && event.target && event.target.select();
-                }}
-                value={value}
-                variant="outlined"
-                InputProps={{
-                    startAdornment: (
-                        <Icon sx={{ mr: 2 }}>
-                            <SearchIcon />
-                        </Icon>
-                    ),
+        <TextField
+            fullWidth
+            ref={refTextField}
+            className={className}
+            sx={{ maxWidth: maxWidth }}
+            placeholder={polyglot.t('search')}
+            onChange={onChange}
+            onFocus={(event) => {
+                event && event.target && event.target.select();
+            }}
+            value={value}
+            variant="outlined"
+            InputProps={{
+                startAdornment: (
+                    <Icon sx={{ mr: 2 }}>
+                        <SearchIcon />
+                    </Icon>
+                ),
 
-                    endAdornment: (
-                        <IconButton
-                            className="searchbar-clear"
-                            title={polyglot.t('clear')}
-                            onClick={onClear}
-                        >
-                            <Icon>
-                                <ClearIcon />
-                            </Icon>
-                        </IconButton>
-                    ),
-                }}
-            />
-        </div>
+                endAdornment: (
+                    <IconButton
+                        className="searchbar-clear"
+                        title={polyglot.t('clear')}
+                        onClick={onClear}
+                    >
+                        <Icon>
+                            <ClearIcon />
+                        </Icon>
+                    </IconButton>
+                ),
+            }}
+        />
     );
 };
 

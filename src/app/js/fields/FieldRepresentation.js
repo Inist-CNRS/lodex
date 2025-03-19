@@ -116,7 +116,7 @@ function FieldRepresentation({
                     gap={0.5}
                     color="text.secondary"
                 >
-                    {field.internalScopes?.length && (
+                    {field.internalScopes?.length > 0 && (
                         <Box
                             display="flex"
                             flexDirection="row"
