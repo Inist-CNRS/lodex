@@ -1,28 +1,28 @@
-import React, { useMemo } from 'react';
-import PropTypes from 'prop-types';
-import { bindActionCreators } from 'redux';
-import compose from 'recompose/compose';
-import { connect } from 'react-redux';
-import { submit as submitAction, isSubmitting } from 'redux-form';
+import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import {
     Card,
     CardActions,
-    CardHeader,
     CardContent,
+    CardHeader,
     Link,
 } from '@mui/material';
-import OpenInNewIcon from '@mui/icons-material/OpenInNew';
+import PropTypes from 'prop-types';
+import React, { useMemo } from 'react';
+import { connect } from 'react-redux';
+import compose from 'recompose/compose';
+import { bindActionCreators } from 'redux';
+import { isSubmitting, submit as submitAction } from 'redux-form';
 
+import { translate } from '../i18n/I18NContext';
+import ButtonWithStatus from '../lib/components/ButtonWithStatus';
 import { polyglot as polyglotPropTypes } from '../propTypes';
+import { fromUser } from '../sharedSelectors';
 import {
+    LOGIN_FORM_NAME,
     login as loginAction,
     toggleLogin as toggleLoginAction,
-    LOGIN_FORM_NAME,
 } from './';
-import { fromUser } from '../sharedSelectors';
 import LoginForm from './LoginForm';
-import ButtonWithStatus from '../lib/components/ButtonWithStatus';
-import { translate } from '../i18n/I18NContext';
 
 const styles = {
     container: {
@@ -74,6 +74,7 @@ export const LoginComponent = ({
                                 color,
                             },
                             color: '#626368',
+                            marginInlineEnd: 1,
                         }}
                     >
                         {polyglot.t(title)}
