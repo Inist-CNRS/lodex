@@ -1,20 +1,20 @@
-import React from 'react';
 import PropTypes from 'prop-types';
+import React from 'react';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import { translate } from '../../i18n/I18NContext';
 
+import { Box, Grid, useMediaQuery } from '@mui/material';
+import { useCanAnnotate } from '../../annotation/useCanAnnotate';
+import SearchBar from '../../lib/components/searchbar/SearchBar';
+import ToggleFacetsButton from '../../lib/components/searchbar/ToggleFacetsButton';
+import useSearchBar from '../../lib/components/searchbar/useSearchBar';
+import stylesToClassName from '../../lib/stylesToClassName';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { fromFields } from '../../sharedSelectors';
 import { fromSearch } from '../selectors';
-import { search as searchAction } from './reducer';
-import SearchBar from '../../lib/components/searchbar/SearchBar';
-import useSearchBar from '../../lib/components/searchbar/useSearchBar';
-import ToggleFacetsButton from '../../lib/components/searchbar/ToggleFacetsButton';
-import { Box, Stack } from '@mui/material';
-import stylesToClassName from '../../lib/stylesToClassName';
-import { useCanAnnotate } from '../../annotation/useCanAnnotate';
 import AnnotationsFilter from './AnnotationsFilter';
+import { search as searchAction } from './reducer';
 import VisitedResourcesFilter from './VisitedResourcesFilter';
 
 const styles = stylesToClassName(
@@ -35,6 +35,12 @@ const SearchSearchBar = ({
     onToggleFacets,
     withFacets,
 }) => {
+    const matches = useMediaQuery('@media (max-width: 991.5px)', {
+        noSsr: true,
+    });
+
+    const showToggleFacetButton = matches && withFacets;
+
     const [localQuery, handleSearch, handleClearSearch] = useSearchBar(
         defaultQuery,
         search,
@@ -47,29 +53,52 @@ const SearchSearchBar = ({
     }
 
     return (
-        <>
-            <Box display="flex" paddingX={1}>
-                <Box flexGrow={1}>
+        <Box
+            sx={{
+                paddingInline: 1,
+            }}
+        >
+            <Grid container spacing={2}>
+                <Grid
+                    item
+                    xs={showToggleFacetButton ? 11 : 12}
+                    lg={canAnnotate ? 6 : 9}
+                >
                     <SearchBar
                         className="search-searchbar"
                         value={localQuery}
                         onChange={(e) => handleSearch(e.target.value)}
                         onClear={handleClearSearch}
-                        maxWidth={875}
                     />
-                </Box>
-                {withFacets && (
-                    <ToggleFacetsButton
-                        onChange={onToggleFacets}
-                        className={styles.toggleFacetsButton}
-                    />
+                </Grid>
+
+                {showToggleFacetButton && (
+                    <Grid
+                        item
+                        xs={1}
+                        sx={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                        }}
+                    >
+                        <ToggleFacetsButton
+                            onChange={onToggleFacets}
+                            className={styles.toggleFacetsButton}
+                        />
+                    </Grid>
                 )}
-            </Box>
-            <Stack direction="row" justifyContent="center" gap={1}>
-                <VisitedResourcesFilter />
-                {canAnnotate && <AnnotationsFilter />}
-            </Stack>
-        </>
+
+                <Grid item xs={12} md={canAnnotate ? 6 : 12} lg={3}>
+                    <VisitedResourcesFilter />
+                </Grid>
+                {canAnnotate && (
+                    <Grid item xs={12} md={6} lg={3}>
+                        <AnnotationsFilter />
+                    </Grid>
+                )}
+            </Grid>
+        </Box>
     );
 };
 

@@ -99,7 +99,7 @@ const SearchResultSort = ({
                               ?.label,
                       })
                     : polyglot.t('sort_search')}{' '}
-                {sortDir && polyglot.t(sortDir.toLowerCase())}
+                {sortDir && ` | ${polyglot.t(sortDir.toLowerCase())}`}
             </Button>
             <div className={styles.menuContainer}>
                 <Menu

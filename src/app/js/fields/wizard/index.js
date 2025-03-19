@@ -139,14 +139,14 @@ const FieldEditionWizardComponent = ({
             ),
         },
         {
-            label: 'field_wizard_tab_semantic',
-            id: 'tab-semantics',
-            component: <TabSemantics currentEditedField={currentEditedField} />,
-        },
-        {
             label: 'field_wizard_tab_annotations',
             id: 'tab-annotations',
             component: <TabAnnotations />,
+        },
+        {
+            label: 'field_wizard_tab_semantic',
+            id: 'tab-semantics',
+            component: <TabSemantics currentEditedField={currentEditedField} />,
         },
     ].filter((x) => x);
 

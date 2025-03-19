@@ -1,34 +1,47 @@
-import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
-import React from 'react';
-import { useTranslate } from '../../i18n/I18NContext';
+import {
+    FormControl,
+    InputLabel,
+    MenuItem,
+    OutlinedInput,
+    Select,
+} from '@mui/material';
 import PropTypes from 'prop-types';
+import React from 'react';
 import { connect } from 'react-redux';
-import { searchVisited } from './reducer';
+import { useTranslate } from '../../i18n/I18NContext';
 import { fromSearch } from '../selectors';
+import { searchVisited } from './reducer';
 
 export const VisitedResourcesFilterComponent = ({ filter, onFilterChange }) => {
     const { translate } = useTranslate();
 
     return (
-        <FormControl>
-            <InputLabel id="visited-filter">
+        <FormControl fullWidth>
+            <InputLabel id="visited-filter" shrink>
                 {translate('visited_filter')}
             </InputLabel>
             <Select
-                sx={{ width: 300 }}
+                displayEmpty
                 labelId="visited-filter"
-                label={translate('visited_filter')}
                 value={filter}
-                inputProps={{ 'aria-labelled-by': 'visited-filter' }}
-                onChange={(e) => onFilterChange({ value: e.target.value })}
+                input={
+                    <OutlinedInput
+                        notched
+                        label={translate('visited_filter')}
+                        aria-labelled-by="annotations-filter"
+                    />
+                }
+                onChange={(e) =>
+                    onFilterChange({ value: e.target.value || null })
+                }
             >
-                <MenuItem value={null}>
+                <MenuItem value="">
                     {translate('visited_filter_null_choice')}
                 </MenuItem>
-                <MenuItem value={'visited'}>
+                <MenuItem value="visited">
                     {translate('visited_filter_visited_choice')}
                 </MenuItem>
-                <MenuItem value={'not-visited'}>
+                <MenuItem value="not-visited">
                     {translate('visited_filter_not_visited_choice')}
                 </MenuItem>
             </Select>
@@ -42,7 +55,7 @@ VisitedResourcesFilterComponent.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-    filter: fromSearch.getVisitedFilter(state),
+    filter: fromSearch.getVisitedFilter(state) ?? '',
 });
 
 const mapDispatchToProps = {

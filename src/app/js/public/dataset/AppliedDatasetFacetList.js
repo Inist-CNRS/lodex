@@ -1,14 +1,14 @@
-import React from 'react';
 import PropTypes from 'prop-types';
+import React from 'react';
 import { connect } from 'react-redux';
 
-import { fromDataset } from '../selectors';
-import { facetActions } from '.';
 import { Box, Chip } from '@mui/material';
-import AppliedDatasetFacet from './AppliedDatasetFacet';
 import { compose } from 'recompose';
+import { facetActions } from '.';
 import { translate } from '../../i18n/I18NContext';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
+import { fromDataset } from '../selectors';
+import AppliedDatasetFacet from './AppliedDatasetFacet';
 
 export const AppliedDatasetFacetListComponent = ({
     facets,
@@ -32,7 +32,7 @@ export const AppliedDatasetFacetListComponent = ({
                         facetValues={facetValues}
                     />
                 ))}
-                {facets.length && (
+                {facets.length > 0 && (
                     <Chip
                         sx={{ margin: '5px' }}
                         onClick={clearAll}

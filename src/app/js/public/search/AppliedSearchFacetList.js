@@ -1,14 +1,14 @@
-import React from 'react';
 import PropTypes from 'prop-types';
+import React from 'react';
 import { connect } from 'react-redux';
 
-import { fromSearch } from '../selectors';
-import { facetActions } from './reducer';
 import { Box, Chip } from '@mui/material';
-import AppliedSearchFacet from './AppliedSearchFacet';
 import { compose } from 'recompose';
 import { translate } from '../../i18n/I18NContext';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
+import { fromSearch } from '../selectors';
+import AppliedSearchFacet from './AppliedSearchFacet';
+import { facetActions } from './reducer';
 
 export const AppliedSearchFacetListComponent = ({
     facets,
@@ -32,7 +32,7 @@ export const AppliedSearchFacetListComponent = ({
                         facetValues={facetValues}
                     />
                 ))}
-                {facets.length && (
+                {facets.length > 0 && (
                     <Chip
                         sx={{ margin: '5px' }}
                         onClick={clearAll}
