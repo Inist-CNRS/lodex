@@ -26,11 +26,17 @@ export const completeFilters = async (filters = {}, ctx) => {
         await ctx.annotation.getAnnotatedResourceUris();
 
     if (annotated === true) {
+        if (!filters.resourceUris) {
+            return {
+                ...restFilters,
+                resourceUris: annotatedResourceUris,
+            };
+        }
         return {
             ...restFilters,
-            resourceUris: filters.resourceUris
-                ? uniq(filters.resourceUris.concat(annotatedResourceUris))
-                : annotatedResourceUris,
+            resourceUris: filters.resourceUris.filter((uri) =>
+                annotatedResourceUris.includes(uri),
+            ),
         };
     }
 
