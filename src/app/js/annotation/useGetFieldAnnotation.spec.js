@@ -99,7 +99,9 @@ describe('useGetFieldAnnotation', () => {
                 method: 'GET',
             }),
         );
-        await waitFor(() => result.current.isLoading === false);
+        await waitFor(
+            () => result.current.isLoading === false && result.current.data,
+        );
         expect(result.current.data).toStrictEqual(
             annotations.map((annotation) => ({ ...annotation, isMine: false })),
         );
