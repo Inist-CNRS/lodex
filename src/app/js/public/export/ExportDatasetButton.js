@@ -95,7 +95,6 @@ export const ExportDatasetButtonComponent = ({
                                 <TextField
                                     {...params}
                                     label={translate('export_choose_fields')}
-                                    placeholder={translate('choose_fields')}
                                 />
                             )}
                             renderOption={(props, option, { selected }) => {

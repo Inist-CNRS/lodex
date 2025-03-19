@@ -1,28 +1,28 @@
-import React from 'react';
+import AspectRatioIcon from '@mui/icons-material/AspectRatio';
+import StorageIcon from '@mui/icons-material/Storage';
 import PropTypes from 'prop-types';
+import React from 'react';
 import { connect } from 'react-redux';
 import { Link, NavLink } from 'react-router-dom';
-import StorageIcon from '@mui/icons-material/Storage';
-import AspectRatioIcon from '@mui/icons-material/AspectRatio';
 
-import PublicationButton from '../publish/PublicationButton';
-import { fromFields, fromUser } from '../../sharedSelectors';
-import { fromPublication } from '../selectors';
-import SidebarToggleButton from './SidebarToggleButton';
-import Menu from './Menu';
-import GoToPublicationButton from './GoToPublicationButton';
-import JobProgress from './JobProgress';
-import ValidationButton from '../publish/ValidationButton';
+import MapsUgcIcon from '@mui/icons-material/MapsUgc';
 import {
     AppBar,
     Box,
     Button,
     CircularProgress,
-    Toolbar,
     Link as MuiLink,
+    Toolbar,
 } from '@mui/material';
-import MapsUgcIcon from '@mui/icons-material/MapsUgc';
 import { useTranslate } from '../../i18n/I18NContext';
+import { fromFields, fromUser } from '../../sharedSelectors';
+import PublicationButton from '../publish/PublicationButton';
+import ValidationButton from '../publish/ValidationButton';
+import { fromPublication } from '../selectors';
+import GoToPublicationButton from './GoToPublicationButton';
+import JobProgress from './JobProgress';
+import Menu from './Menu';
+import SidebarToggleButton from './SidebarToggleButton';
 
 const styles = {
     linksContainer: {
@@ -128,7 +128,14 @@ const AppbarComponent = ({
         <AppBar className="appbar">
             <Toolbar disableGutters>
                 {isAdmin && <SidebarToggleButton />}
-                <MuiLink component={Link} to="/" sx={styles.linkToHome}>
+                <MuiLink
+                    component={Link}
+                    to="/"
+                    sx={{
+                        ...styles.linkToHome,
+                        marginLeft: !isAdmin ? 2 : 0,
+                    }}
+                >
                     Lodex
                 </MuiLink>
                 <Box sx={styles.linksContainer}>

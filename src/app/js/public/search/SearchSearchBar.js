@@ -55,7 +55,8 @@ const SearchSearchBar = ({
     return (
         <Box
             sx={{
-                paddingInline: 1,
+                paddingInlineStart: 2.5,
+                paddingInlineEnd: 3,
             }}
         >
             <Grid container spacing={2}>
