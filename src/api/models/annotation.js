@@ -43,7 +43,7 @@ export default async (db) => {
 
     async function findAll() {
         return annotationCollection.find().sort({
-            _id: 1,
+            createdAt: -1,
         });
     }
 
