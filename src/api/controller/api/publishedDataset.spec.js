@@ -962,7 +962,7 @@ describe('publishedDataset', () => {
             });
         });
 
-        it('should add annotatedResourceUris to resourceUris filter if present when annotated is true', async () => {
+        it('should set resourceUris to the intersection between annotatedResourceUris and resourceUris filter if present when annotated is true', async () => {
             await Promise.all(
                 [
                     {
@@ -987,14 +987,14 @@ describe('publishedDataset', () => {
             const result = await completeFilters(
                 {
                     annotated: true,
-                    resourceUris: ['uri1', 'uri7'],
+                    resourceUris: ['uri1', 'uri3', 'uri7'],
                     excludedResourceUris: ['uri100', 'uri200'],
                 },
                 { annotation: annotationModel },
             );
 
             expect(result).toEqual({
-                resourceUris: ['uri1', 'uri7', 'uri2', 'uri3'],
+                resourceUris: ['uri1', 'uri3'],
                 excludedResourceUris: ['uri100', 'uri200'],
             });
         });
