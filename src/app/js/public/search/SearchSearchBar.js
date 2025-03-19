@@ -1,8 +1,6 @@
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import compose from 'recompose/compose';
-import { translate } from '../../i18n/I18NContext';
 
 import { Box, Grid, useMediaQuery } from '@mui/material';
 import { useCanAnnotate } from '../../annotation/useCanAnnotate';
@@ -14,7 +12,7 @@ import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { fromFields } from '../../sharedSelectors';
 import { fromSearch } from '../selectors';
 import AnnotationsFilter from './AnnotationsFilter';
-import { search as searchAction } from './reducer';
+import { search as searchAction, searchAnnotations } from './reducer';
 import VisitedResourcesFilter from './VisitedResourcesFilter';
 
 const styles = stylesToClassName(
@@ -28,12 +26,13 @@ const styles = stylesToClassName(
     'search-searchbar',
 );
 
-const SearchSearchBar = ({
+export const SearchSearchBarComponent = ({
     defaultQuery,
     search,
     hasSearchableFields,
     onToggleFacets,
     withFacets,
+    resetAnnotationFilter,
 }) => {
     const matches = useMediaQuery('@media (max-width: 991.5px)', {
         noSsr: true,
@@ -47,6 +46,12 @@ const SearchSearchBar = ({
     );
 
     const canAnnotate = useCanAnnotate();
+
+    useEffect(() => {
+        if (!canAnnotate) {
+            resetAnnotationFilter();
+        }
+    }, [canAnnotate, resetAnnotationFilter]);
 
     if (!hasSearchableFields) {
         return null;
@@ -102,17 +107,18 @@ const SearchSearchBar = ({
     );
 };
 
-SearchSearchBar.defaultProps = {
+SearchSearchBarComponent.defaultProps = {
     defaultQuery: '',
 };
 
-SearchSearchBar.propTypes = {
+SearchSearchBarComponent.propTypes = {
     p: polyglotPropTypes.isRequired,
     hasSearchableFields: PropTypes.bool.isRequired,
     search: PropTypes.func.isRequired,
     defaultQuery: PropTypes.string,
     onToggleFacets: PropTypes.func.isRequired,
     withFacets: PropTypes.bool,
+    resetAnnotationFilter: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -122,9 +128,10 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
     search: (value) => searchAction({ query: value }),
+    resetAnnotationFilter: () => searchAnnotations({ mode: null }),
 };
 
-export default compose(
-    connect(mapStateToProps, mapDispatchToProps),
-    translate,
-)(SearchSearchBar);
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(SearchSearchBarComponent);
