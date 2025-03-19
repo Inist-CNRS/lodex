@@ -64,11 +64,12 @@ export const addVisitedFilter = ({
 }) => {
     switch (visitedFilter) {
         case 'visited':
+            // If we already have a resourceUris filter we need to set the filter as the intersection of the two
             if (filters.resourceUris) {
                 return {
                     ...filters,
-                    resourceUris: uniq(
-                        filters.resourceUris.concat(visitedResourceUris),
+                    resourceUris: filters.resourceUris.filter((uri) =>
+                        visitedResourceUris.includes(uri),
                     ),
                 };
             }

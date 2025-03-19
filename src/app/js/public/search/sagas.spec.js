@@ -57,21 +57,6 @@ describe('search sagas', () => {
     });
 
     describe('addVisitedFilter', () => {
-        it('should add visitedResourceUris to resourceUris if filter is visited', () => {
-            expect(
-                addVisitedFilter({
-                    filters: {
-                        resourceUris: ['uri3'],
-                        excludedResourceUris: ['uri4'],
-                    },
-                    visitedFilter: 'visited',
-                    visitedResourceUris: ['uri1', 'uri2'],
-                }),
-            ).toEqual({
-                resourceUris: ['uri3', 'uri1', 'uri2'],
-                excludedResourceUris: ['uri4'],
-            });
-        });
         it('should set visitedResourceUris to resourceUris if empty when filter is visited', () => {
             expect(
                 addVisitedFilter({
@@ -86,18 +71,18 @@ describe('search sagas', () => {
                 excludedResourceUris: ['uri3'],
             });
         });
-        it('should not add visitedResourceUris that are already in resourceUris when filter is visited', () => {
+        it('should set resourceUris to the intersection of previous resourceUris and visitedResourceUris when filter is visited', () => {
             expect(
                 addVisitedFilter({
                     filters: {
-                        resourceUris: ['uri1'],
+                        resourceUris: ['uri1', 'uri3', 'uri4'],
                         excludedResourceUris: ['uri3'],
                     },
                     visitedFilter: 'visited',
-                    visitedResourceUris: ['uri1', 'uri2'],
+                    visitedResourceUris: ['uri1', 'uri2', 'uri3'],
                 }),
             ).toEqual({
-                resourceUris: ['uri1', 'uri2'],
+                resourceUris: ['uri1', 'uri3'],
                 excludedResourceUris: ['uri3'],
             });
         });
