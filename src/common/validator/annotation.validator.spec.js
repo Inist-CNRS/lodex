@@ -19,6 +19,7 @@ describe('annotation.validator', () => {
                 authorEmail: null,
                 initialValue: 'initial value',
                 proposedValue: null,
+                isContributorNamePublic: false,
             };
 
             const validatedAnnotation =
@@ -37,6 +38,7 @@ describe('annotation.validator', () => {
                 authorEmail: null,
                 initialValue: null,
                 proposedValue: null,
+                isContributorNamePublic: false,
             };
 
             const validatedAnnotation =
@@ -57,6 +59,7 @@ describe('annotation.validator', () => {
                 authorName: 'John Doe',
                 initialValue: null,
                 proposedValue: null,
+                isContributorNamePublic: false,
             };
 
             const validatedAnnotation =
@@ -77,6 +80,7 @@ describe('annotation.validator', () => {
                 authorEmail: 'john.doe@marmelab.com',
                 initialValue: null,
                 proposedValue: null,
+                isContributorNamePublic: false,
             };
 
             const validatedAnnotation =
@@ -97,6 +101,7 @@ describe('annotation.validator', () => {
                 authorEmail: 'john.doe@marmelab.com',
                 target: 'title',
                 proposedValue: null,
+                isContributorNamePublic: false,
             };
 
             const validatedAnnotation =
@@ -117,6 +122,7 @@ describe('annotation.validator', () => {
                 authorEmail: 'john.doe@marmelab.com',
                 target: 'title',
                 initialValue: 'initial value',
+                isContributorNamePublic: false,
             };
 
             const { success, error } =
@@ -142,6 +148,7 @@ describe('annotation.validator', () => {
                 target: 'value',
                 initialValue: 'initial value',
                 proposedValue: null,
+                isContributorNamePublic: false,
             };
 
             const validatedAnnotation =
@@ -160,6 +167,7 @@ describe('annotation.validator', () => {
                 target: 'value',
                 initialValue: null,
                 proposedValue: null,
+                isContributorNamePublic: false,
             };
 
             const { success, error, data } =
@@ -180,6 +188,7 @@ describe('annotation.validator', () => {
                 target: 'value',
                 initialValue: 'initialValue',
                 proposedValue: 'proposedValue',
+                isContributorNamePublic: false,
             };
 
             const result = annotationCreationSchema.parse(annotationPayload);
@@ -200,6 +209,7 @@ describe('annotation.validator', () => {
                 target: 'value',
                 initialValue: null,
                 proposedValue: 'proposedValue',
+                isContributorNamePublic: false,
             };
 
             const result = annotationCreationSchema.parse(annotationPayload);
@@ -220,6 +230,7 @@ describe('annotation.validator', () => {
                 target: 'value',
                 initialValue: 'initialValue',
                 proposedValue: 'proposedValue',
+                isContributorNamePublic: false,
             };
 
             const { success, error } =
@@ -245,6 +256,7 @@ describe('annotation.validator', () => {
                 target: 'value',
                 initialValue: 'initialValue',
                 proposedValue: null,
+                isContributorNamePublic: false,
             };
 
             const result = annotationCreationSchema.parse(annotationPayload);
@@ -262,6 +274,7 @@ describe('annotation.validator', () => {
                 target: 'value',
                 initialValue: 'initialValue',
                 proposedValue: null,
+                isContributorNamePublic: false,
             };
 
             const { success, error } =
@@ -287,6 +300,7 @@ describe('annotation.validator', () => {
                 target: 'value',
                 initialValue: null,
                 proposedValue: null,
+                isContributorNamePublic: false,
             };
 
             const { success, error } =
@@ -312,6 +326,7 @@ describe('annotation.validator', () => {
                 target: 'value',
                 initialValue: 'initialValue',
                 proposedValue: 'proposedValue',
+                isContributorNamePublic: false,
             };
 
             const result = annotationCreationSchema.parse(annotationPayload);
@@ -332,6 +347,7 @@ describe('annotation.validator', () => {
                 target: 'value',
                 initialValue: 'initialValue',
                 proposedValue: ['proposedValue'],
+                isContributorNamePublic: false,
             };
 
             const result = annotationCreationSchema.parse(annotationPayload);
@@ -412,6 +428,7 @@ describe('annotation.validator', () => {
                 target: 'title',
                 initialValue: null,
                 proposedValue: null,
+                isContributorNamePublic: false,
             };
 
             const result = annotationCreationSchema.parse(annotationPayload);
@@ -524,6 +541,7 @@ describe('annotation.validator', () => {
                 target: 'value',
                 initialValue: 'initialValue',
                 proposedValue: 'proposedValue',
+                isContributorNamePublic: false,
             };
 
             const result = annotationCreationSchema.parse(annotationPayload);
@@ -543,6 +561,7 @@ describe('annotation.validator', () => {
                 target: 'value',
                 initialValue: 'initialValue',
                 proposedValue: null,
+                isContributorNamePublic: false,
             };
 
             const result = annotationCreationSchema.parse(annotationPayload);
@@ -574,6 +593,7 @@ describe('annotation.validator', () => {
                 authorEmail: null,
                 initialValue: 'initial value',
                 proposedValue: null,
+                isContributorNamePublic: false,
             });
         });
 

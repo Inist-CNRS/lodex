@@ -417,6 +417,29 @@ export const AnnotationList = ({ mode, setMode, annotations, field }) => {
                                     <Box>
                                         <Typography
                                             variant="h6"
+                                            id="annotation_contributor_section"
+                                        >
+                                            {translate(
+                                                'annotation_contributor_section',
+                                            )}
+                                        </Typography>
+                                        <Typography
+                                            aria-labelledby="annotation_contributor_section"
+                                            sx={{
+                                                fontStyle:
+                                                    annotation.isContributorNamePublic
+                                                        ? 'normal'
+                                                        : 'italic',
+                                            }}
+                                        >
+                                            {annotation.isContributorNamePublic
+                                                ? annotation.authorName
+                                                : translate('hidden')}
+                                        </Typography>
+                                    </Box>
+                                    <Box>
+                                        <Typography
+                                            variant="h6"
                                             id="annotation_comment_section"
                                             component="pre"
                                         >
