@@ -181,7 +181,7 @@ describe('annotation', () => {
                 .then((cursor) => cursor.toArray());
 
             expect(
-                result.toSorted((annotation) => annotation._id.toString()),
+                result.toSorted((a, b) => b.createdAt - a.createdAt),
             ).toEqual(createdAnnotations);
         });
     });
