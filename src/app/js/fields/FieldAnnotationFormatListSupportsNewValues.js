@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { Box } from '@mui/material';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
@@ -15,11 +16,17 @@ export function FieldAnnotationFormatListSupportsNewValues({
     }
 
     return (
-        <FieldInput
-            name="annotationFormatListSupportsNewValues"
-            component={FormSwitchField}
-            labelKey="field_annotation_format_list_supports_new_values"
-        />
+        <Box
+            sx={{
+                marginBlockStart: -3,
+            }}
+        >
+            <FieldInput
+                name="annotationFormatListSupportsNewValues"
+                component={FormSwitchField}
+                labelKey="field_annotation_format_list_supports_new_values"
+            />
+        </Box>
     );
 }
 

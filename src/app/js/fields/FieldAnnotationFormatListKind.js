@@ -1,4 +1,4 @@
-import { MenuItem, Typography } from '@mui/material';
+import { MenuItem } from '@mui/material';
 import PropTypes from 'prop-types';
 import { default as React } from 'react';
 import { connect } from 'react-redux';
@@ -24,29 +24,18 @@ export function FieldAnnotationFormatListKind({
     }
 
     return (
-        <>
-            <Typography
-                variant="h6"
-                sx={{
-                    marginBlockEnd: -2,
-                }}
-            >
-                {translate('field_annotation_format_list_display')}
-            </Typography>
-
-            <FieldInput
-                name="annotationFormatListKind"
-                labelKey="field_annotation_format_list_kind"
-                component={FormSelectField}
-            >
-                <MenuItem value={FIELD_ANNOTATION_FORMAT_LIST_KIND_SINGLE}>
-                    {translate('field_annotation_format_list_kind_single')}
-                </MenuItem>
-                <MenuItem value={FIELD_ANNOTATION_FORMAT_LIST_KIND_MULTIPLE}>
-                    {translate('field_annotation_format_list_kind_multiple')}
-                </MenuItem>
-            </FieldInput>
-        </>
+        <FieldInput
+            name="annotationFormatListKind"
+            labelKey="field_annotation_format_list_kind"
+            component={FormSelectField}
+        >
+            <MenuItem value={FIELD_ANNOTATION_FORMAT_LIST_KIND_SINGLE}>
+                {translate('field_annotation_format_list_kind_single')}
+            </MenuItem>
+            <MenuItem value={FIELD_ANNOTATION_FORMAT_LIST_KIND_MULTIPLE}>
+                {translate('field_annotation_format_list_kind_multiple')}
+            </MenuItem>
+        </FieldInput>
     );
 }
 

@@ -21,8 +21,7 @@ export function FieldAnnotationKind({ isFieldAnnotable }) {
             <Typography
                 variant="h2"
                 sx={{
-                    fontSize: '1.5rem',
-                    fontWeight: 'bold',
+                    fontSize: '1rem',
                 }}
             >
                 {translate('field_annotation_kind')}
