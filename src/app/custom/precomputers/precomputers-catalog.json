@@ -60,12 +60,32 @@
     {
         "id": "post-v1-tag-cloud-en",
         "url": "https://data-workflow.services.istex.fr/v1/tag-cloud-en",
-        "doc": "https://gitbucket.inist.fr/tdm/web-services/tree/master/data-workflow#v1%252ftag-cloud-en"
+        "doc": "https://gitbucket.inist.fr/tdm/web-services/tree/master/data-workflow#v1%252ftag-cloud-en",
+        "swagger": "https://openapi.services.istex.fr/?urls.primaryName=data-workflow%20-%20Encha%C3%AEnement%20asynchrone%20de%20traitements#/tag-cloud/post-v1-tag-cloud-en",
+        "type": "indexation"   
     },
     {
         "id": "post-v1-tag-cloud-fr",
         "url": "https://data-workflow.services.istex.fr/v1/tag-cloud-fr",
-        "doc": "https://gitbucket.inist.fr/tdm/web-services/tree/master/data-workflow#v1%252ftag-cloud-fr"
+        "doc": "https://gitbucket.inist.fr/tdm/web-services/tree/master/data-workflow#v1%252ftag-cloud-fr",
+        "swagger": "https://openapi.services.istex.fr/?urls.primaryName=data-workflow%20-%20Encha%C3%AEnement%20asynchrone%20de%20traitements#/tag-cloud/post-v1-tag-cloud-fr",
+        "type": "indexation"  
+    },
+    {
+        "id": "post-v1-termsuite-en",
+        "url": "https://data-termsuite.services.istex.fr/v1/en/minimal",
+        "doc": "https://github.com/Inist-CNRS/web-services/tree/main/services/data-termsuite",
+        "swagger": "https://openapi.services.istex.fr/?urls.primaryName=data-termsuite%20-%20Web%20service%20TermSuite",
+        "objectifTDM": "https://services.istex.fr/extraction-de-termes-dun-corpus/",
+        "type": "indexation"
+    },
+    {
+        "id": "post-v1-termsuite-fr",
+        "url": "https://data-termsuite.services.istex.fr/v1/fr/minimal",
+        "doc": "https://github.com/Inist-CNRS/web-services/tree/main/services/data-termsuite",
+        "swagger": "https://openapi.services.istex.fr/?urls.primaryName=data-termsuite%20-%20Web%20service%20TermSuite",
+        "objectifTDM": "https://services.istex.fr/extraction-de-termes-dun-corpus/",
+        "type": "indexation"
     },
     {
         "id": "post-v1-textClustering",
