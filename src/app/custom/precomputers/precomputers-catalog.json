@@ -72,8 +72,16 @@
         "type": "indexation"  
     },
     {
-        "id": "post-v1-termsuite",
+        "id": "post-v1-termsuite-en",
         "url": "https://data-termsuite.services.istex.fr/v1/en/minimal",
+        "doc": "https://github.com/Inist-CNRS/web-services/tree/main/services/data-termsuite",
+        "swagger": "https://openapi.services.istex.fr/?urls.primaryName=data-termsuite%20-%20Web%20service%20TermSuite",
+        "objectifTDM": "https://services.istex.fr/extraction-de-termes-dun-corpus/",
+        "type": "indexation"
+    },
+    {
+        "id": "post-v1-termsuite-fr",
+        "url": "https://data-termsuite.services.istex.fr/v1/fr/minimal",
         "doc": "https://github.com/Inist-CNRS/web-services/tree/main/services/data-termsuite",
         "swagger": "https://openapi.services.istex.fr/?urls.primaryName=data-termsuite%20-%20Web%20service%20TermSuite",
         "objectifTDM": "https://services.istex.fr/extraction-de-termes-dun-corpus/",
