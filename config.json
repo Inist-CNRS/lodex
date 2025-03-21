@@ -61,6 +61,7 @@
         "rdf",
         "skos",
         "json",
+        "json-annotations",
         "json-conditor",
         "json-import",
         "json-istex",
