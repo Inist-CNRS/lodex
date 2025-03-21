@@ -31,11 +31,11 @@ export default async (db) => {
         const result = await collection.aggregate([
             {
                 $addFields: {
-                    propertyCount: { $size: { $objectToArray: "$$ROOT" } }
+                    lodexPropertyCount: { $size: { $objectToArray: "$$ROOT" } }
                 }
             },
             {
-                $sort: { propertyCount: -1 }
+                $sort: { lodexPropertyCount: -1 }
             },
             {
                 $limit: 100
@@ -58,6 +58,7 @@ export default async (db) => {
             .sort((x, y) => y.__nb - x.__nb);
         return result2.splice(0, 8).map((item) => {
             delete item.__nb;
+            delete item.lodexPropertyCount;
             return item;
         });
     };
