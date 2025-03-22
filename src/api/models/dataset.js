@@ -25,12 +25,22 @@ export default async (db) => {
         );
     };
     collection.getExcerpt = async (filter) => {
-        const result = await collection
-            .find(filter)
-            .sort({ $natural: 1 })
-            .limit(100)
-            .toArray();
-        // choisr parmi les 100 premiers documents, ceux ayants le plus de champs
+        // choisir parmi tous les documents du dataset ceux ayant le plus de champs
+        // Lodex construira un datagrid pour tout le dataset en fonction de cet échantillon
+        // Le nombre de colonne affichée dépendra du nombre de champs de l'échantillon
+        const result = await collection.aggregate([
+            {
+                $addFields: {
+                    lodexPropertyCount: { $size: { $objectToArray: "$$ROOT" } }
+                }
+            },
+            {
+                $sort: { lodexPropertyCount: -1 }
+            },
+            {
+                $limit: 100
+            }
+        ]).toArray();
         const result2 = result
             .map((item) => {
                 const validKeys = Object.keys(item).filter((key) => {
@@ -48,6 +58,7 @@ export default async (db) => {
             .sort((x, y) => y.__nb - x.__nb);
         return result2.splice(0, 8).map((item) => {
             delete item.__nb;
+            delete item.lodexPropertyCount;
             return item;
         });
     };
