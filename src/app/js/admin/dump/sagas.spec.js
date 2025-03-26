@@ -21,7 +21,7 @@ describe('dump sagas', () => {
             );
 
             expect(saga.next('request').value).toEqual(
-                call(fetchSaga, 'request', [], 'blob'),
+                call(fetchSaga, 'request', [], 'stream'),
             );
 
             expect(
@@ -46,7 +46,7 @@ describe('dump sagas', () => {
             );
 
             expect(saga.next('request').value).toEqual(
-                call(fetchSaga, 'request', [], 'blob'),
+                call(fetchSaga, 'request', [], 'stream'),
             );
             expect(
                 saga.next({ response: 'response', filename: 'filename' }).value,
