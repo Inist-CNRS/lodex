@@ -110,17 +110,12 @@ div[class*='designHomeContent'] [class*='ListePave'] li {
     background-color: var(--contrast-light);
     border-color: var(--contrast-light);
 }
-div[class*='designHomeContent'] [class*='ListePave'] li a div {
-    padding-right: 1.5rem;
-}
-div[class*='designHomeContent']
-    [class*='ListePave']
-    li
-    a
-    /*div[class*='contentTitle']*/
-    div:last-child {
+div[class*='designHomeContent'] [class*='ListePave'] li > div {
     background: var(--contrast-light) url('../img/fleched.svg') no-repeat bottom
         right 1.3rem;
+}
+div[class*='designHomeContent'] [class*='ListePave'] li a div {
+    padding-right: 1.5rem;
 }
 div[class*='designHomeContent']
    /* [class*='ListePave']*/
@@ -153,7 +148,7 @@ div[class*='HomeSidebar'] {
 }
 /*div[class*='HomeSidebar'] champs composant 1er niveau*/
 div[class*='HomeSidebar'] > .property_value_container > div .property {
-    margin-bottom: 2.5rem;
+    margin-bottom: 1rem;
 }
 /*espace titre-texte*/
 div[class*='HomeSidebar']

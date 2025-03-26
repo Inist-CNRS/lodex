@@ -375,6 +375,17 @@ button {
     color: var(--text-main);
     text-align: left !important;
 }
+/*****************************/
+/* titres marge format_markdown ****/
+/*****************************/
+#content h1,
+#content h2,
+#content h3,
+#content h4,
+#content h5,
+#content h6 {
+    padding-top: 0.5em;
+}
 #content h1 {
     font-size: 2rem;
     line-height: 1.2;
@@ -411,12 +422,6 @@ button {
     margin-bottom: 0.3em;
     font-weight: normal;
     font-style: italic;
-}
-/*****************************/
-/* titres format_markdown ****/
-/*****************************/
-.format_markdown *:is(h1, h2, h3, h4, h5, h6) {
-    padding-top: 1.5em;
 }
 #content p,
 #content li,
