@@ -1,5 +1,5 @@
 import { dumpDatasetError, dumpDatasetSuccess } from '.';
-import downloadFile from '../../lib/downloadFile';
+import streamFile from '../../lib/streamFile';
 import fetchSaga from '../../lib/sagas/fetchSaga';
 import { fromUser } from '../../sharedSelectors';
 import { handleDumpDatasetRequest } from './sagas';
@@ -26,7 +26,7 @@ describe('dump sagas', () => {
 
             expect(
                 saga.next({ response: 'response', filename: 'filename' }).value,
-            ).toEqual(call(downloadFile, 'response', 'filename'));
+            ).toEqual(call(streamFile, 'response', 'filename'));
 
             expect(saga.next().value).toEqual(put(dumpDatasetSuccess()));
             expect(saga.next().done).toBe(true);
@@ -50,7 +50,7 @@ describe('dump sagas', () => {
             );
             expect(
                 saga.next({ response: 'response', filename: 'filename' }).value,
-            ).toEqual(call(downloadFile, 'response', 'filename'));
+            ).toEqual(call(streamFile, 'response', 'filename'));
 
             const error = new Error('Boom');
             expect(saga.throw(error).value).toEqual(
