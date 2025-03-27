@@ -26,16 +26,16 @@
             "documentation": "https://github.com/Inist-CNRS/lodex/tree/master/src/app/custom/themes/istex#readme",
             "headerMenu": {
                 "link1": {
-                    "name": "Loterre",
-                    "url": "https://loterre.istex.fr/fr/"
+                    "name": "",
+                    "url": ""
                 },
                 "link2": {
-                    "name": "Actualités",
-                    "url": "https://www.istex.fr/category/actualites/"
+                    "name": "",
+                    "url": ""
                 },
                 "link3": {
-                    "name": "Corpus spécialisés",
-                    "url": "https://scientific-corpus.data.istex.fr/"
+                    "name": "",
+                    "url": ""
                 }
             }
         }
