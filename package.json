@@ -114,6 +114,7 @@
         "d3-force": "^3.0.0",
         "d3-scale": "^4.0.2",
         "d3-scale-chromatic": "^3.1.0",
+        "dompurify": "3.2.4",
         "ejs": "3.1.10",
         "expect": "^26.4.2",
         "fetch-with-proxy": "^1.1.0",
