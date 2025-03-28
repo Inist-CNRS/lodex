@@ -2,16 +2,50 @@
 
 # Configuration du thème ISTEX
 
-**Les données ci-dessous sont à renseigner via la configuration du thème dans lodex**
-(les données saisies sont à titre d'exemple)
+## Les données ci-dessous sont à renseigner via la configuration du thème dans lodex
 
--   "host": "/",
--   "title": "Services",
--   "summary": "Les technologies et les outils ISTEX pour les projets de recherche.",
--   "matomoID": "39",
--   "info: choix image bannieres": "datamining - doigtdossier - doigtecran - femmebureau - femmededos - filet - graph - graphLodex - hommebureau - mainAI - mainreseau - mainspirale - meeting - terre - translation",
--   "BanniereSimple": "hommebureau",
--   "BanniereDouble": "doigtdossier"
+Les paramètres du thème s'insèrent dans
+
+```
+"front":{
+    "theme":{
+        paramètres décrit ci-dessous
+    }
+}
+```
+
+-   `host`:  
+     "/" : renvoie sur l'instance default de lodex qui porte l'url  
+     "/instance/nom-de-l'instance" : pour les autres instances présentent dans un même lodex
+-   `title`:  
+    selon l'url de l'instance default "Services", "Data",...
+-   `summary`:  
+    description du service rendu par l'instance
+-   `matomoID`:  
+    identifiant de suivi du site
+-   choix des images pour les bannieres listées par leur nom ci-après: "datamining - doigtdossier - doigtecran - femmebureau - femmededos - filet - graph - graphLodex - hommebureau - mainAI - mainreseau - mainspirale - meeting - terre - translation",
+    `BanniereSimple`: "hommebureau",
+    `BanniereDouble`: "doigtdossier"
+-   `headerMenu`:  
+    configuration du menu supérieur du bandeau Istex, liste des liens à insérer comme suit :
+    ```
+        "headerMenu": {
+            "link1": {
+                "name": "",
+                "url": ""
+            },
+            "link2": {
+                "name": "",
+                "url": ""
+            },
+            "link3": {
+                "name": "",
+                "url": ""
+            }
+        }
+    ```
+
+## exemple de configuration du thème istex
 
 ![Capture d’écran 2024-12-09 154944](https://github.com/user-attachments/assets/0ba1d554-081c-4cb0-98bf-2424f74fb933)
 
