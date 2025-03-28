@@ -6,6 +6,7 @@ import JSONStream from 'jsonstream';
 import { Transform } from 'stream';
 import { ObjectId } from 'mongodb';
 import { getCreatedCollection } from './utils';
+import { countValidObjectProperty } from '../services/saveStream';
 
 import { URI_FIELD_NAME, moveUriToFirstPosition } from '../../common/uris';
 import countNotUnique from './countNotUnique';
@@ -25,29 +26,26 @@ export default async (db) => {
         );
     };
     collection.getExcerpt = async (filter) => {
+        // choisir parmi tous les documents du dataset ceux ayant le plus de champs
+        // Lodex construira un datagrid pour tout le dataset en fonction de cet échantillon
+        // Le nombre de colonne affichée dépendra du nombre de champs de l'échantillon
         const result = await collection
-            .find(filter)
-            .sort({ $natural: 1 })
+            .find({})
+            .sort({ lodexPropertyCount: -1 })
             .limit(100)
             .toArray();
-        // choisr parmi les 100 premiers documents, ceux ayants le plus de champs
+        // depuis les versions > 15.8.5, l'import ajoute le champ lodexPropertyCount
+        // Pour les versions précédentes, le champ n'existe pas.
+        // pour assurer la compatibilité ascendante, on recalcule le lodexPropertyCount
+        // sur l'échantillon
         const result2 = result
-            .map((item) => {
-                const validKeys = Object.keys(item).filter((key) => {
-                    if (
-                        item[key] === undefined ||
-                        item[key] === null ||
-                        item[key] === ''
-                    ) {
-                        return false;
-                    }
-                    return true;
-                });
-                return { ...item, __nb: validKeys.length };
-            })
-            .sort((x, y) => y.__nb - x.__nb);
+            .map((item) => ({
+                    ...item,
+                    lodexPropertyCount: countValidObjectProperty(item),
+                }))
+            .sort((x, y) => y.lodexPropertyCount - x.lodexPropertyCount);
         return result2.splice(0, 8).map((item) => {
-            delete item.__nb;
+            delete item.lodexPropertyCount;
             return item;
         });
     };
