@@ -41,24 +41,15 @@
                 <a class="nav-main-link" href="<%= custom.host %>" title="Accueil">Accueil</a>
             </li>
             <% 
-            let validLinks = 0;
-            if (custom.headerMenu) {
-                Object.keys(custom.headerMenu).slice(0, 4).forEach((key) => {
-                    if (custom.headerMenu[key].url && custom.headerMenu[key].name) {
-                        validLinks++;
-                    }
-                });
-            }
-            
-            if (validLinks > 0) { 
-                Object.keys(custom.headerMenu).slice(0, 4).forEach((key, index) => {
-                    if (custom.headerMenu[key].url && custom.headerMenu[key].name) { %>
-                        <li class="nav-main-item  menu-item menu-item-type-custom menu-item-object-custom menu-item-265<%= index + 2 %>">
-                            <a class="nav-main-link" href="<%= custom.headerMenu[key].url %>" target="_blank"
-                            title="<%= custom.headerMenu[key].name %> (lien externe)"><%= custom.headerMenu[key].name %></a>
-                        </li>
-                    <% }
-                });
+            const validLinksArray = Object.keys(custom.headerMenu).slice(0, 4).filter(key => (custom.headerMenu[key].url && custom.headerMenu[key].name));
+
+            if (validLinksArray.length > 0) {
+                validLinksArray.forEach((key, index) => { %>
+                    <li class="nav-main-item  menu-item menu-item-type-custom menu-item-object-custom menu-item-265<%= index + 2 %>">
+                        <a class="nav-main-link" href="<%= custom.headerMenu[key].url %>" target="_blank"
+                        title="<%= custom.headerMenu[key].name %> (lien externe)"><%= custom.headerMenu[key].name %></a>
+                    </li>
+                <% });
             } else { %>
             <li class="nav-main-item  menu-item menu-item-type-custom menu-item-object-custom menu-item-2652">
                 <a class="nav-main-link" href="https://www.loterre.fr/" target="_blank"
