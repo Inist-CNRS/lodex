@@ -9,11 +9,12 @@ const getParagraphWidth = (paragraphWidth, field) => {
     return paragraphWidth;
 };
 
-const ParagraphView = ({ resource, field, paragraphWidth }) => {
+const ParagraphView = ({ resource, field, paragraphWidth, colors }) => {
     const style = {
         maxWidth: getParagraphWidth(paragraphWidth, field),
         padding: 8,
         textAlign: 'justify',
+        color: colors.split(' ')[0],
     };
 
     return <p style={style}>{resource[field.name]}</p>;
@@ -23,6 +24,7 @@ ParagraphView.propTypes = {
     field: fieldPropTypes.isRequired,
     resource: PropTypes.object.isRequired,
     paragraphWidth: PropTypes.string.isRequired,
+    colors: PropTypes.string.isRequired,
 };
 
 ParagraphView.defaultProps = {
