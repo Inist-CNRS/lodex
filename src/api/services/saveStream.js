@@ -4,14 +4,14 @@ import progress from './progress';
 const insert = async (data, feed, self) => {
     const method = self.getParam('method');
     const ctx = self.getEnv();
-    if (!this.nb) {
-        this.nb = 0;
+    if (!self.nb) {
+        self.nb = 0;
     }
-    if (this.isLast()) {
+    if (self.isLast()) {
         return feed.close();
     }
     try {
-        this.nb += data.length;
+        self.nb += data.length;
         const result = await ctx.dataset[method](data);
         progress.incrementProgress(ctx.tenant, data.length);
         return feed.send(result);
