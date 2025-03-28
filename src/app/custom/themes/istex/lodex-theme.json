@@ -1,5 +1,5 @@
 {
-    "version": "7",
+    "version": "8",
     "licence": "All Right Reserved",
     "name": {
         "fr": "ISTEX",
@@ -15,15 +15,16 @@
             "palette": "istexTheme.js"
         },
         "variables": {
+            "readme du theme": "https://github.com/Inist-CNRS/lodex/tree/master/src/app/custom/themes/istex#readme",
+            "documentation du theme": "https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/le-theme/theme-et-modele-composition-de-page-class-interne/",
             "host": "/",
-            "title": "Services",
-            "summary": "Les technologies et les outils ISTEX pour les projets de recherche.",
-            "matomoID": "39",
+            "title": "exemple : Services",
+            "summary": "exemple : Les technologies et les outils ISTEX pour les projets de recherche.",
+            "matomoID": "",
             "matomoHost": "https://piwik2.inist.fr/",
             "info: choix image bannieres": "datamining - doigtdossier - doigtecran - femmebureau - femmededos - filet - graph - graphLodex - hommebureau - mainAI - mainreseau - mainspirale - meeting - terre - translation",
-            "BanniereSimple": "hommebureau",
-            "BanniereDouble": "doigtdossier",
-            "documentation": "https://github.com/Inist-CNRS/lodex/tree/master/src/app/custom/themes/istex#readme",
+            "BanniereSimple": "",
+            "BanniereDouble": "",
             "headerMenu": {
                 "link1": {
                     "name": "",
