@@ -2,7 +2,7 @@ import ezs from '@ezs/core';
 import progress from './progress';
 
 const insert = async (data, feed, self) => {
-    const method = this.getParam('method');
+    const method = self.getParam('method');
     const ctx = self.getEnv();
     if (!this.nb) {
         this.nb = 0;
