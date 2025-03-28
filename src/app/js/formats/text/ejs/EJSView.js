@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import React, { useMemo, useState } from 'react';
 import ejs from 'ejs/ejs.min.js'; // import the browser-friendly build from ejs
 import injectData from '../../injectData';
+import DOMPurify from "dompurify";
 import InvalidFormat from '../../InvalidFormat';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
@@ -29,9 +30,10 @@ const EJSView = ({ field, data, template }) => {
             return '';
         }
         try {
-            const h = compiledTemplate({ root: data, _ });
+            const buildedHTML = compiledTemplate({ root: data, _ });
             setOnError(false);
-            return h;
+            const sanitizedHTML = DOMPurify.sanitize(buildedHTML);
+            return sanitizedHTML;
         } catch (err) {
             setOnError(true);
             setError(err);

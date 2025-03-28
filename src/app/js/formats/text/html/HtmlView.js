@@ -13,7 +13,6 @@ const HtmlView = ({ className, resource, field }) => {
     )
 };
 
-
 HtmlView.propTypes = {
     className: PropTypes.string,
     field: fieldPropTypes.isRequired,
