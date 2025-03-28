@@ -12,6 +12,7 @@ import email from './url/email';
 import fieldClone from './chart/fieldClone';
 import html from './text/html';
 import image from './url/image';
+import iframe from './url/iframe';
 import pdf from './url/pdf';
 import latex from './text/latex';
 import ejs from './text/ejs';
@@ -166,6 +167,16 @@ export const FORMATS_CATALOG = [
         type: 'url',
         isValueAnnotable: true,
         docUrl: 'https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/appliquer-un-format/#autre-url-d%E2%80%99une-image',
+        isUrlValue: true,
+    },
+    {
+        name: 'formatIFrame',
+        description: 'formatIFrameDescription',
+        componentName: 'iframe',
+        component: iframe,
+        type: 'url',
+        isValueAnnotable: true,
+        docUrl: 'https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/appliquer-un-format/#iframe',
         isUrlValue: true,
     },
     {
