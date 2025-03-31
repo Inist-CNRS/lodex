@@ -6,14 +6,14 @@ import stylesToClassname from '../../../lib/stylesToClassName';
 import { field as fieldPropTypes } from '../../../propTypes';
 import { getViewComponent } from '../../index';
 
-const styles = stylesToClassname(
+const styles = (bullet) => stylesToClassname(
     {
         ordered: {
             listStyleType: 'decimal',
         },
         ordered_li: {},
         unordered: {
-            listStyleType: 'initial',
+            listStyleType: bullet ? `"${bullet} "` : 'initial',
         },
         unordered_li: {},
         unordered_without_bullet: {
@@ -26,7 +26,7 @@ const styles = stylesToClassname(
         unordered_flat_li: {
             display: 'inline',
             ':after': {
-                content: '" ; "',
+                content: `" ${bullet} "`,
             },
             ':last-child:after': {
                 content: 'none',
@@ -59,6 +59,7 @@ const ListView = ({
     resource,
     field,
     type,
+    bullet,
     subFormat,
     subFormatOptions,
 }) => {
@@ -71,10 +72,12 @@ const ListView = ({
 
     const List = type === 'ordered' ? OL : UL;
 
+    const localStyles = styles(bullet);
+
     return (
-        <List className={classnames(styles[type], className)}>
+        <List className={classnames(localStyles[type], className)}>
             {values.map((value, index) => (
-                <li key={value} className={classnames(styles[`${type}_li`])}>
+                <li key={value} className={classnames(localStyles[`${type}_li`])}>
                     {subFormat ? (
                         <ViewComponent
                             resource={values}
@@ -104,6 +107,7 @@ ListView.propTypes = {
     field: fieldPropTypes.isRequired,
     resource: PropTypes.object.isRequired,
     type: PropTypes.string,
+    bullet: PropTypes.string,
     subFormat: PropTypes.string,
     subFormatOptions: PropTypes.any,
 };
