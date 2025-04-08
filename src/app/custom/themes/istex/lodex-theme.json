@@ -1,5 +1,5 @@
 {
-    "version": "8",
+    "version": "7",
     "licence": "All Right Reserved",
     "name": {
         "fr": "ISTEX",
@@ -35,6 +35,14 @@
                     "url": ""
                 },
                 "link3": {
+                    "name": "",
+                    "url": ""
+                },
+                "link4": {
+                    "name": "",
+                    "url": ""
+                },
+                "link5": {
                     "name": "",
                     "url": ""
                 }
