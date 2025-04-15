@@ -23,11 +23,11 @@ Les paramètres du thème s'insèrent dans
     description du service rendu par l'instance
 -   `matomoID`:  
     identifiant de suivi du site
--   choix des images pour les bannieres listées par leur nom ci-après: "datamining - doigtdossier - doigtecran - femmebureau - femmededos - filet - graph - graphLodex - hommebureau - mainAI - mainreseau - mainspirale - meeting - terre - translation",
+-   choix des images pour les bannieres listées par leur nom ci-après: "datamining - doigtdossier - doigtecran - femmebureau - femmededos - filet - graph - graphLodex - hommebureau - mainAI - mainreseau - mainspirale - meeting - terre - translation",    
     `BanniereSimple`: "hommebureau",
     `BanniereDouble`: "doigtdossier"
 -   `headerMenu`:  
-    configuration du menu supérieur du bandeau Istex, liste des liens à insérer comme suit :
+    configuration du menu supérieur du bandeau Istex, liste des liens (5 liens maximum hors "accueil" par `host`) à insérer comme suit :
     ```
         "headerMenu": {
             "link1": {
