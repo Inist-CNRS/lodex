@@ -6,11 +6,11 @@ import {
     zoomFunction,
     transformDataIntoMapArray,
     getMinMaxValue,
-    cutStr,
     findNearestTickPosition,
     generateUniqueId,
 } from './utils';
 import injectData from '../../injectData';
+import cliTruncate from 'cli-truncate';
 import moment from 'moment';
 
 import { MULTICHROMATIC_DEFAULT_COLORSET_STREAMGRAPH } from '../../utils/colorUtils';
@@ -352,7 +352,7 @@ class Streamgraph extends PureComponent {
                 .attr('class', `${css(styles.legendItemText)}`)
                 .attr('id', index++)
                 .text(
-                    cutStr(
+                    cliTruncate(
                         element.name,
                         this.props.maxLegendLength ||
                             defaultArgs.maxLegendLength,

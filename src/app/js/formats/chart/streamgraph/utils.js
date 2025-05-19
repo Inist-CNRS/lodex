@@ -179,11 +179,6 @@ export function getMinMaxValue(stackedData) {
     return { minValue, maxValue };
 }
 
-export function cutStr(str, maxLegendLength) {
-    const slicedStr = str.substring(0, maxLegendLength);
-    return slicedStr.length < str.length ? `${slicedStr} [...]` : str;
-}
-
 export function findFirstTickPosition(uniqueId) {
     const containerXPosition = document
         .querySelector(`#divContainer${uniqueId}`)
