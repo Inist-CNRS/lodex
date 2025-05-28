@@ -8,6 +8,14 @@
         "type": "homogénéisation"
     },
     {
+        "id": "post-v1-datatableExtract",
+        "url": "http://data-table.services.istex.fr/v1/table-extraction",
+        "code": "https://github.com/Inist-CNRS/web-services/tree/main/services/data-table",
+        "swagger": "https://openapi.services.istex.fr/?urls.primaryName=data-table%20-%20Extract%20tables%20from%20pdf%20files#/data-table/post-v1-table-extraction",
+        "objectifTDM": "https://services.istex.fr/detection-et-extraction-de-tableaux-dans-un-article-scientifique/",
+        "type": "prétraitement"
+    },
+  {
         "id": "post-v1-graph-segment",
         "url": "https://data-computer.services.istex.fr/v1/graph-segment",
         "code": "https://gitbucket.inist.fr/tdm/web-services/tree/master/data-computer#v1%252fgraph-segment",
@@ -96,6 +104,14 @@
         "swagger": "https://openapi.services.istex.fr/?urls.primaryName=text-clustering%20-%20Cr%C3%A9er%20diff%C3%A9rents%20clusters%20%C3%A0%20partir%20d%27un%20ensemble%20de%20textes%20courts%20ou%20d%27un%20ensemble%20de%20listes%20de%20mots-cl%C3%A9s.#/data-computer/post-v1-clustering",
         "objectifTDM": "https://services.istex.fr/extraction-de-cluster-dun-corpus/",
         "type": "classification"
+    },
+    {
+        "id": "post-v1-textSimilarity",
+        "url": "https://data-computer.services.istex.fr/v1/corpus-similarity",
+        "code": "https://github.com/Inist-CNRS/web-services/blob/main/services/data-computer/v1/corpus-similarity.py",
+        "swagger": "https://openapi.services.istex.fr/?urls.primaryName=data-computer%20-%20Calculs%20sur%20fichier%20corpus%20compress%C3%A9#/data-computer/post-v1-corpus-similarity",
+        "objectifTDM": "https://services.istex.fr/calcul-de-similarite-entre-les-documents-dun-corpus/",
+        "type": "validation"
     },
     {
         "id": "post-v1-topCitation",
