@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Lodex - CNRS Inist</title>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>
+    <link rel="apple-touch-icon" sizes="180x180" href="<%= theme.current.href %>/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="<%= theme.current.href %>/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="<%= theme.current.href %>/favicon-16x16.png">
+    <link rel="manifest" href="<%= theme.current.href %>/site.webmanifest">
+    <link rel="mask-icon" href="<%= theme.current.href %>/safari-pinned-tab.svg" color="#ffc40d">
+    <meta name="msapplication-TileColor" content="#ffc40d">
+    <meta name="theme-color" content="#ffc40d">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css"/>
+    <link rel="stylesheet" href="<%= theme.current.href %>/css/halcnrs-styles.css"/>
+    <style><%= theme.cssVariable %></style>
+</head>
+<body>
+<header>
+    <div class="container">
+        <div class="logos">
+            <a class="logo logohalcnrs" href="https://cnrs.hal.science/">
+                <img src="<%= theme.current.href %>/img/HAL-CNRS-2024.png" alt="HAL CNRS"/>
+            </a>
+        </div>
+            <% if (custom.siteTitle ) { %>
+        <h1 id="titre_lodex" class="bl3">
+            <a href="/instance/<%= lodex.tenant %>"><%= custom.siteTitle %></a>
+        </h1>
+            <% } %>
+            
+        <div class="logos">
+            <a class="logo logoinist" href="https://www.inist.fr" aria-label="accueil du site">
+                <span>Inist</span>
+                <span class="inist">Institut de l'information scientifique et technique</span>
+            </a>
+        </div>
+    </div>
+</header>
+<div id="root"></div>
+<footer class="bt">
+    <ul class="container">
+        <li class=" bl3 ">
+            <a href="https://cnrs.hal.science/" target="_blank" title="Inist contact">Portail HAL CNRS</a>
+        </li>
+        <li class=" bl3 ">
+            <a href="https://www.lodex.fr/docs/documentation" target="_blank" title="Lodex documentation">Lodex
+                Documentation</a>
+        </li>
+    </ul>
+</footer>
+<script>
+    window.__PRELOADED_STATE__ = <%- lodex.preload %>;
+    window.__TENANT__ = '<%= lodex.tenant %>';
+    window.ISTEX_API_URL = '<%= lodex.istexApi %>';
+</script>
+<script src="<%= lodex.base.href %>/index.js"></script>
+    <% if (custom.matomoID && custom.matomoHost) { %>
+        <!-- Piwik -->
+        <script>
+            var _paq = _paq || [];
+            _paq.push([
+                function () {
+                    var self = this;
+                    function getOriginalVisitorCookieTimeout() {
+                        var now = new Date(),
+                            nowTs = Math.round(now.getTime() / 1000),
+                            visitorInfo = self.getVisitorInfo();
+                        var createTs = parseInt(visitorInfo[2]);
+                        var cookieTimeout = 33696000;
+                        var originalTimeout = createTs + cookieTimeout - nowTs;
+                        return originalTimeout;
+                    }
+                    this.setVisitorCookieTimeout(getOriginalVisitorCookieTimeout());
+                }
+            ]);
+            _paq.push(["trackPageView"]);
+            _paq.push(["enableLinkTracking"]);
+            (function () {
+                var u = "<%= custom.matomoHost %>";
+                _paq.push(["setTrackerUrl", u + "piwik.php"]);
+                _paq.push(["setSiteId", "<%= custom.matomoID %>"]);
+                var d = document,
+                    g = d.createElement("script"),
+                    s = d.getElementsByTagName("script")[0];
+                g.type = "text/javascript";
+                g.async = true;
+                g.defer = true;
+                g.src = u + "piwik.js";
+                s.parentNode.insertBefore(g, s);
+            })();
+        </script>
+        <!-- End Piwik Code -->
+    <% } %>
+</body>
+</html>

@@ -1,0 +1,46 @@
+/* les titres */
+@font-face {
+    font-family: "IBM Plex Sans-medium";
+    src: local(IBM Plex Sans-medium),
+        url("fonts/IBMPlexSans-Medium.ttf") format("truetype");
+    font-weight: 500;
+    font-display: swap;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "IBM Plex Sans semibold";
+    src: local(IBM Plex Sans semibold),
+        url("fonts/IBMPlexSans-SemiBold.ttf") format("truetype");
+    font-weight: 600;
+    font-display: swap;
+    font-style: normal;
+}
+@font-face {
+    font-family: "IBM Plex Sans bold";
+    src: local(IBM Plex Sans bold),
+        url("fonts/IBMPlexSans-Bold.ttf") format("truetype");
+    font-weight: 700;
+    font-display: swap;
+    font-style: normal;
+}
+/* footer inist */
+@font-face {
+    font-family: "Satoshi-Regular";
+    src: local("Satoshi-Regular"),
+        url("fonts/Satoshi-Regular.woff2") format("woff2"),
+        url("fonts/Satoshi-Regular.woff") format("woff"),
+        url("fonts/Satoshi-Regular.ttf") format("truetype");
+    font-weight: 400;
+    font-display: swap;
+    font-style: normal;
+}
+@font-face {
+    font-family: "Satoshi-Bold";
+    src: local("Satoshi-Bold"), url("fonts/Satoshi-Bold.woff2") format("woff2"),
+        url("fonts/Satoshi-Bold.woff") format("woff"),
+        url("fonts/Satoshi-Bold.ttf") format("truetype");
+    font-weight: 400;
+    font-display: swap;
+    font-style: normal;
+}

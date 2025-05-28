@@ -2,17 +2,17 @@
     "version": "7",
     "licence": "All Right Reserved",
     "name": {
-        "fr": "INIST",
-        "en": "INIST"
+        "fr": "HAL-CNRS",
+        "en": "HAL-CNRS"
     },
     "description": {
-        "fr": "Thème INIST (restreint)",
-        "en": "INIST theme (restricted)"
+        "fr": "Thème HAL CNRS (restreint)",
+        "en": "HAL CNRS theme (restricted)"
     },
     "configuration": {
         "files": {
             "index": "index.ejs",
-            "palette": "inistTheme.js"
+            "palette": "halcnrsTheme.js"
         },
         "variables": {
             "siteTitle": "Titre a modifier/supprimer dans la config du theme",
