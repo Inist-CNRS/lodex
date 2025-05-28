@@ -407,7 +407,7 @@
         "objectifTDM": "https://services.istex.fr/extraction-du-texte-epure-de-pdf/",
         "type": "pretraitement"
     },
-        {
+    {
         "id": "post-v1-tools",
         "url": "https://terms-extraction.services.istex.fr/v1/tools/normalize",
         "code": "https://github.com/Inist-CNRS/web-services/tree/main/services/terms-extraction",
