@@ -1,28 +1,65 @@
-/* ss pour corpus scientifiques */
+/* css pour corpus scientifiques */
 /* by Helene Creusot */
 /* juin 2025 */
 
 /*home largeur*/
 #content > div.container {
     max-width: var(--maxWidth) !important;
+    margin: auto !important;
 }
-/*home image*/
-.image.format_linkImage .property_value_container a.property_value {
+/*home format_linkImage*/
+.dataset-characteristics
+    > div
+    > .format_linkImage
+    .property_value_container
+    a.property_value {
     display: flex;
     align-items: center;
     height: 300px;
     overflow: hidden;
     border-radius: 10px;
 }
-.image.format_linkImage .property_value_container a.property_value img {
+.dataset-characteristics
+    > div
+    > .format_linkImage
+    .property_value_container
+    a.property_value
+    img {
     width: 100%;
     max-height: initial !important;
 }
 /*home image droit*/
-.image.format_linkImage .property_value_container .linked_fields {
-    margin-top: -2rem;
+.dataset-characteristics
+    > div
+    > .format_linkImage
+    .property_value_container
+    .linked_fields
+    .property.completes {
+    width: 100%;
+    display: flex;
+    flex-flow: row nowrap;
 }
-.image.format_linkImage
+/*home format_image*/
+.dataset-characteristics
+    > div
+    > .format_image
+    .property_value_container
+    > div
+    > div {
+    display: flex;
+}
+
+/*.dataset-characteristics
+    > div
+    > .format_image
+    .property_value_container
+    > div
+    > div
+    > img{}*/
+/*home image droit*/
+.dataset-characteristics
+    > div
+    > .format_image
     .property_value_container
     .linked_fields
     .property.completes {
