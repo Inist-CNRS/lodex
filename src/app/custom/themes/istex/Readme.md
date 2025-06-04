@@ -16,14 +16,16 @@ Les paramètres du thème s'insèrent dans
 
 -   `host`:  
      "/" : renvoie sur l'instance default de lodex qui porte l'url  
-     "/instance/nom-de-l'instance" : pour les autres instances présentent dans un même lodex
+     "/instance/nom-de-l'instance" : pour les autres instances du lodex
 -   `title`:  
     selon l'url de l'instance default "Services", "Data",...
 -   `summary`:  
     description du service rendu par l'instance
 -   `matomoID`:  
     identifiant de suivi du site
--   choix des images pour les bannieres listées par leur nom ci-après: "datamining - doigtdossier - doigtecran - femmebureau - femmededos - filet - graph - graphLodex - hommebureau - mainAI - mainreseau - mainspirale - meeting - terre - translation",    
+-   `sousTheme`:  
+    un seul sous-theme existe pour l'instant : "corpus". Permet l'ajout d'une css spécifique
+-   choix des images pour les bannieres listées par leur nom ci-après: "datamining - doigtdossier - doigtecran - femmebureau - femmededos - filet - graph - graphLodex - hommebureau - mainAI - mainreseau - mainspirale - meeting - terre - translation",  
     `BanniereSimple`: "hommebureau",
     `BanniereDouble`: "doigtdossier"
 -   `headerMenu`:  

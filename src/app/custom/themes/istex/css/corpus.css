@@ -67,3 +67,12 @@
     display: flex;
     flex-flow: row nowrap;
 }
+/*property sans marge basse*/
+.property {
+    margin-bottom: 0;
+    padding: 1rem 0.5rem 0.5rem !important;
+}
+/*label souligne*/
+.property span.property_label[style*='color: rgb(158, 158, 158)']:not(:empty) {
+    border-bottom: 1px solid;
+}
