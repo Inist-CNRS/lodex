@@ -1,0 +1,25 @@
+/* css pour corpus scientifiques */
+/* by Helene Creusot */
+/* juin 2025 */
+
+.main-resource-section .property {
+    margin-bottom: 0 !important;
+    padding: 0 !important;
+    border-top: 1px solid;
+    flex-direction: row !important;
+    flex-wrap: nowrap;
+}
+.main-resource-section .property > .property_label_container {
+    flex: 1;
+}
+.main-resource-section .property > .property_value_container {
+    flex: 2;
+}
+.main-resource-section .property > .property_value_container > .MuiBox-root {
+    padding: 0 !important;
+}
+.main-resource-section
+    .property
+    span.property_label[style*='color: rgb(158, 158, 158)']:not(:empty) {
+    font-size: 0.9rem !important;
+}

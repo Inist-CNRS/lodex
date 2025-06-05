@@ -24,7 +24,7 @@ Les paramètres du thème s'insèrent dans
 -   `matomoID`:  
     identifiant de suivi du site
 -   `sousTheme`:  
-    un seul sous-theme existe pour l'instant : "corpus". Permet l'ajout d'une css spécifique
+    deux sous-themes existent : "corpus" ou "termino". Permet l'ajout d'une css spécifique
 -   choix des images pour les bannieres listées par leur nom ci-après: "datamining - doigtdossier - doigtecran - femmebureau - femmededos - filet - graph - graphLodex - hommebureau - mainAI - mainreseau - mainspirale - meeting - terre - translation",  
     `BanniereSimple`: "hommebureau",
     `BanniereDouble`: "doigtdossier"
