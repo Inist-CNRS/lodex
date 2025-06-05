@@ -1,7 +1,28 @@
 /* css pour corpus scientifiques */
 /* by Helene Creusot */
 /* juin 2025 */
-
+.header-resource-section {
+    position: sticky !important;
+    z-index: 1000;
+    background-color: white;
+    top: 42px;
+    padding: 10px 0 0 15px;
+    box-shadow:
+        0px 2px 4px -1px rgba(0, 0, 0, 0.2),
+        0px 4px 5px 0px rgba(0, 0, 0, 0.14),
+        0px 1px 10px 0px rgba(0, 0, 0, 0.12);
+}
+.header-resource-section .property.format_title {
+    flex-direction: row !important;
+    flex-wrap: nowrap;
+}
+.header-resource-section h1 {
+    font-size: 1.5rem !important;
+    padding: 0 !important;
+}
+.main-resource-section > div > div {
+    gap: 0 !important;
+}
 .main-resource-section .property {
     margin-bottom: 0 !important;
     padding: 0 !important;
@@ -22,4 +43,10 @@
     .property
     span.property_label[style*='color: rgb(158, 158, 158)']:not(:empty) {
     font-size: 0.9rem !important;
+}
+.main-resource-section ul {
+    margin-top: 10px !important;
+}
+.main-resource-section li span {
+    font-size: var(--font-size-texte) !important;
 }
