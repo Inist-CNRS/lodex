@@ -116,7 +116,7 @@ header div.container {
     margin: 0 auto;
     padding: 1rem 1.6rem 0.2rem;
     gap: 10%;
-    justify-content: space-between;
+    justify-content: flex-start;
 }
 header div.container * {
     color: var(--primary-contrast-text);
@@ -211,14 +211,26 @@ footer li a:is(:hover, :focus, :active) {
     width: max-content;
 }
 footer li a[href*='https']::after {
+    display: inline-block;
+    margin-left: 5px;
     background-image: url('../img/external-link-alt_gris.svg');
+    background-repeat: no-repeat;
+    width: 15px;
+    height: 15px;
+    content: ' ';
 }
 footer li#lodex::before {
+    margin-right: 5px;
     width: 30px;
     height: 30px;
     content: ' ';
-    background: #fff left center no-repeat scroll url('/favicon.ico');
+    background: #fff left center no-repeat scroll url('../favicon.ico');
     background-size: contain;
+}
+/*opere par cnrs inist*/
+footer > p > strong {
+    font-size: 16px;
+    font-family: var(--font-titre);
 }
 
 /*ELEMENTS LODEX structure*/
