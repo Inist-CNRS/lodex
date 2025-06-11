@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Lodex - CNRS Inist</title>
+    <title>Lodex - HAL-CNRS Inist</title>
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>
@@ -20,8 +20,12 @@
 <header>
     <div class="container">
         <div class="logos">
-            <a class="logo logohalcnrs" href="https://cnrs.hal.science/">
-                <img src="<%= theme.current.href %>/img/HAL-CNRS-2024.png" alt="HAL CNRS"/>
+            <a class="logo logocnrs" href="https://www.cnrs.fr/">
+                <img src="<%= theme.current.href %>/img/logo_cnrs_2023_bleu.svg" alt="CNRS"/>
+            </a>
+        </div>
+        <div class="logos"> 
+            <a class="logo logohalcnrs" href="https://cnrs.hal.science/">HAL - CNRS
             </a>
         </div>
             <% if (custom.siteTitle ) { %>
@@ -45,7 +49,6 @@
                 Documentation</a>
         </li>
     </ul>
-    <p><strong>Opéré par CNRS Inist - Institut de l'information scientifique et technique</strong></p>
 </footer>
 <script>
     window.__PRELOADED_STATE__ = <%- lodex.preload %>;

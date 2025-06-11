@@ -22,9 +22,10 @@
 }
 @media only screen and (max-width: 480px) {
     header div.container {
-        padding: 0.2rem 0 0.2rem !important;
         gap: 0% !important;
-        height: 66px;
+    }
+    header a.logohalcnrs {
+        color: var(--text-primary) !important;
     }
     .breadcrumb-root {
         display: none !important;
@@ -49,9 +50,7 @@
 :root {
     --font-titre: IBM Plex Sans bold, Arial, Helvetica, sans-serif;
     --font-texte: Satoshi Regular, Arial, Helvetica, sans-serif;
-    --maxWidth: 1700px; /* .css-19r6kue-MuiContainer-root 19.08.2024*/
-    /*fond semi opaque*/
-    --fondsemiopaque: background-color: rgba(24, 20, 79, 0.6);
+    --maxWidth: 1500px; /* .css-19r6kue-MuiContainer-root 19.08.2024*/
 }
 /* text : font, size, color*/
 body {
@@ -98,10 +97,9 @@ body {
     flex-direction: column;
     background-image: url('../img/fondjaune.png');
     background-repeat: no-repeat;
-    background-position: top center;
+    background-position: top left;
     opacity: 1;
     gap: 0 !important;
-    background-size: contain;
 }
 /*header theme inist*/
 header {
@@ -114,9 +112,10 @@ header {
 header div.container {
     display: flex;
     margin: 0 auto;
-    padding: 1rem 1.6rem 0.2rem;
-    gap: 10%;
-    justify-content: flex-start;
+    padding: 1rem 0.2rem 0.2rem;
+    gap: 2%;
+    justify-content: space-between;
+    align-items: center;
 }
 header div.container * {
     color: var(--primary-contrast-text);
@@ -127,12 +126,19 @@ header div.logos {
     align-items: center;
     width: max-content;
 }
-header a.logohalcnrs {
+header a.logocnrs {
     height: 56px;
-    padding-right: 30px;
+    padding-right: 55px;
+    align-self: flex-start;
+    flex: 1;
 }
-header a.logohalcnrs img {
+header a.logocnrs img {
     height: 55px;
+}
+header a.logohalcnrs {
+    font-family: var(--font-titre);
+    font-size: 2rem;
+    flex: 2;
 }
 header a.logoinist {
     display: -webkit-box;
@@ -226,11 +232,6 @@ footer li#lodex::before {
     content: ' ';
     background: #fff left center no-repeat scroll url('../favicon.ico');
     background-size: contain;
-}
-/*opere par cnrs inist*/
-footer > p > strong {
-    font-size: 16px;
-    font-family: var(--font-titre);
 }
 
 /*ELEMENTS LODEX structure*/
