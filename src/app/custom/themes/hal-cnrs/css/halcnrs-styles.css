@@ -13,6 +13,9 @@
     }
 }
 @media only screen and (min-width: 481px) and (max-width: 793.9px) {
+    body {
+        background-position: top left -100px !important;
+    }
     h1 {
         font-size: 1.5rem;
     }
@@ -21,11 +24,13 @@
     }
 }
 @media only screen and (max-width: 480px) {
-    header div.container {
-        gap: 0% !important;
+    body {
+        background-position: top left -100px !important;
     }
     header a.logohalcnrs {
-        color: var(--text-primary) !important;
+        /* color: var(--text-primary) !important;*/
+        font-size: 1.6rem !important;
+        padding-right: 15px !important;
     }
     .breadcrumb-root {
         display: none !important;
@@ -104,13 +109,13 @@ body {
 /*header theme halcnrs*/
 header div.container {
     display: flex;
+    flex-wrap: wrap;
     margin: 0 auto;
     padding: 1rem 0.2rem 0.2rem;
-    gap: 2%;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: center;
 }
-header div.container * {
+header .container * {
     color: var(--primary-contrast-text);
 }
 header div.logos {
@@ -121,8 +126,7 @@ header div.logos {
 }
 header a.logocnrs {
     height: 56px;
-    padding-right: 55px;
-    align-self: flex-start;
+    padding-right: 56px;
     flex: 1;
 }
 header a.logocnrs img {
@@ -131,7 +135,15 @@ header a.logocnrs img {
 header a.logohalcnrs {
     font-family: var(--font-titre);
     font-size: 2rem;
-    flex: 2;
+    padding-right: 56px;
+    flex: 1;
+}
+header h1 {
+    flex: 4;
+}
+header #inist {
+    text-align: right;
+    padding-right: 1.6rem;
 }
 /*header font decoration*/
 header a.logo,
@@ -202,6 +214,7 @@ footer li#lodex::before {
 .container,
 .container-fluid {
     max-width: var(--maxWidth) !important;
+    margin: 0 auto;
 }
 #root > #content .container {
     padding: 0 0 0 0 !important;
