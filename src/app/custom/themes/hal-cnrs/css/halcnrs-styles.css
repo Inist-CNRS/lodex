@@ -101,14 +101,7 @@ body {
     opacity: 1;
     gap: 0 !important;
 }
-/*header theme inist*/
-header {
-    position: relative;
-    margin: 0;
-    top: 0;
-    z-index: -1;
-    width: 100vw;
-}
+/*header theme halcnrs*/
 header div.container {
     display: flex;
     margin: 0 auto;
@@ -140,41 +133,12 @@ header a.logohalcnrs {
     font-size: 2rem;
     flex: 2;
 }
-header a.logoinist {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
-    align-items: center;
-    width: 240px;
-}
 /*header font decoration*/
 header a.logo,
 header a:hover.logo,
 header a:focus.logo,
 header a:active.logo {
     text-decoration: none;
-}
-header a.logoinist {
-    font-size: 0.8125rem;
-    line-height: normal;
-}
-header a.logoinist > span:first-child {
-    font-family: 'Satoshi-Bold', Arial, Helvetica, sans-serif;
-    font-size: 1.875rem;
-}
-header a.logoinist span.inist {
-    font-family: 'Satoshi-Regular', Arial, Helvetica, sans-serif;
-    font-weight: bold;
-}
-header a.logoinist > span:first-child::after {
-    content: '|';
-    font-family: 'Satoshi-Regular', Arial, Helvetica, sans-serif;
-    font-weight: normal;
-    opacity: 0.8;
-    padding-left: 0.5rem;
-    padding-right: 0.5rem;
 }
 /*footer theme inist*/
 footer {
@@ -255,64 +219,11 @@ footer li#lodex::before {
 #version .container {
     padding-bottom: 1rem !important;
 }
-/*breadcrumb au niveau header fond transparent*/
-#breadcrumb {
-    position: absolute;
-    top: 0;
-    width: 100vw;
-    display: flex;
-    justify-content: center;
-}
-.breadcrumb-root.container {
-    background-color: transparent;
-    display: inline-flex;
-    justify-content: flex-end !important;
-    margin: 0 !important;
-    margin-top: 3rem !important;
-}
-.breadcrumb-root span {
-    display: none;
-}
-.breadcrumb-root svg {
-    transform: translate(30px);
-}
-.breadcrumb-trail {
-    margin: 0 !important;
-    width: max-content;
-    display: inline-flex;
-    justify-content: flex-end;
-    align-items: center;
-    gap: 0px;
-    background-color: white;
-}
-/*breadcrumb titre court et liens externes*/
-/* titre courant box*/
-.breadcrumb-trail a {
-    display: flex;
-    align-items: center;
-    padding: 1rem 3rem;
-    width: max-content;
-}
-/*titre courant texte*/
-.breadcrumb-trail a:not([href*='https']):last-child {
-    color: var(--text-primary) !important;
-    font-family: var(--font-titre);
-    font-size: 1.2rem;
-    font-weight: normal;
-}
-/*titre court clicable*/
-.breadcrumb-trail a:is(:hover, :focus, :active) {
-    text-decoration: underline 2px var(--info-main);
-    text-underline-offset: 5px;
-}
+
 /*barre nav lodex*/
 #root nav {
     box-shadow: 0px -5px 3px rgba(0, 0, 0, 0.2);
 }
-/*#content*/
-/*#content {
-    transform: translateY(-1rem);
-}*/
 /*pages+drawers margin padding fond blanc*/
 #content div.container div:is(#home-page, .graph-page, .resource),
 .drawer {
