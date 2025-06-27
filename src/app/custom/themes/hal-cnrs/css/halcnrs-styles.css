@@ -12,10 +12,12 @@
         padding: 0 4rem !important;
     }
 }
-@media only screen and (min-width: 481px) and (max-width: 793.9px) {
+@media only screen and (max-width: 1600px) {
     body {
         background-position: top left -100px !important;
     }
+}
+@media only screen and (min-width: 481px) and (max-width: 793.9px) {
     h1 {
         font-size: 1.5rem;
     }
@@ -25,7 +27,7 @@
 }
 @media only screen and (max-width: 480px) {
     body {
-        background-position: top left -100px !important;
+        background-position: top left -150px !important;
     }
     header a.logohalcnrs {
         /* color: var(--text-primary) !important;*/
@@ -102,7 +104,8 @@ body {
     flex-direction: column;
     background-image: url('../img/fondjaune.png');
     background-repeat: no-repeat;
-    background-position: top left;
+    background-position: top center;
+    background-size: auto;
     opacity: 1;
     gap: 0 !important;
 }
@@ -112,7 +115,7 @@ header div.container {
     flex-wrap: wrap;
     margin: 0 auto;
     padding: 1rem 0.2rem 0.2rem;
-    justify-content: flex-start;
+    justify-content: center;
     align-items: center;
 }
 header .container * {
@@ -140,6 +143,7 @@ header a.logohalcnrs {
 }
 header h1 {
     flex: 4;
+    margin: 1rem 0rem 0.5rem;
 }
 header #inist {
     text-align: right;
