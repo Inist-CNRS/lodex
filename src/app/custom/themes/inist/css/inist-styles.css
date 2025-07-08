@@ -216,7 +216,9 @@ footer li#lodex::before {
     background: #fff left center no-repeat scroll url('/favicon.ico');
     background-size: contain;
 }
-
+footer p {
+    text-align: center;
+}
 /*ELEMENTS LODEX structure*/
 .container,
 .container-fluid {

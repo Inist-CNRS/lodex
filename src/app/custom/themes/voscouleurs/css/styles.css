@@ -107,6 +107,18 @@ header #banner > :last-child {
 #banner p {
     font-weight: 500;
 }
+#version div {
+    padding-bottom: 10px !important;
+}
+footer {
+    border-top: 1px solid gray;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin-bottom: 90px;
+}
+footer p {
+    text-align: center;
+}
 /*structure lodex*/
 .container,
 .container-fluid {
