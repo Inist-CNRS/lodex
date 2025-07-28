@@ -7,66 +7,7 @@
     max-width: var(--maxWidth) !important;
     margin: auto !important;
 }
-/*home format_linkImage*/
-.dataset-characteristics
-    > div
-    > .format_linkImage
-    .property_value_container
-    a.property_value {
-    display: flex;
-    align-items: center;
-    height: 300px;
-    overflow: hidden;
-    border-radius: 10px;
-}
-.dataset-characteristics
-    > div
-    > .format_linkImage
-    .property_value_container
-    a.property_value
-    img {
-    width: 100%;
-    max-height: initial !important;
-}
-/*home image droit*/
-.dataset-characteristics
-    > div
-    > .format_linkImage
-    .property_value_container
-    .linked_fields
-    .property.completes {
-    width: 100%;
-    display: flex;
-    flex-flow: row nowrap;
-}
-/*home format_image*/
-.dataset-characteristics
-    > div
-    > .format_image
-    .property_value_container
-    > div
-    > div {
-    display: flex;
-}
 
-/*.dataset-characteristics
-    > div
-    > .format_image
-    .property_value_container
-    > div
-    > div
-    > img{}*/
-/*home image droit*/
-.dataset-characteristics
-    > div
-    > .format_image
-    .property_value_container
-    .linked_fields
-    .property.completes {
-    width: 100%;
-    display: flex;
-    flex-flow: row nowrap;
-}
 /*property sans marge basse*/
 .property {
     margin-bottom: 0;
@@ -75,4 +16,15 @@
 /*label souligne*/
 .property span.property_label[style*='color: rgb(158, 158, 158)']:not(:empty) {
     border-bottom: 1px solid;
+}
+
+/*code en fond gris*/
+code {
+    background-color: var(--gris3);
+    padding: 5px;
+}
+/*nav barre lodex*/
+nav.nav-bar-menu {
+    background-color: var(--canard3);
+    box-shadow: 0px -10px 10px rgba(0, 0, 0, 0.4);
 }
