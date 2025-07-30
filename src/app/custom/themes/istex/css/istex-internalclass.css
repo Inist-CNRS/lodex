@@ -109,13 +109,15 @@ li.resources-grid-item a > div {
 div[class*='designHomeContent'] [class*='ListePave'] li {
     background-color: var(--contrast-light);
     border-color: var(--contrast-light);
+    min-height: 94.1px;
 }
 div[class*='designHomeContent'] [class*='ListePave'] li > div {
     background: var(--contrast-light) url('../img/fleched.svg') no-repeat bottom
-        right 1.3rem;
+        right 0.3rem;
+    width: 100%;
 }
-div[class*='designHomeContent'] [class*='ListePave'] li a div {
-    padding-right: 1.5rem;
+div[class*='designHomeContent'] [class*='ListePave'] li a > div {
+    padding-right: 0.5rem;
 }
 div[class*='designHomeContent']
    /* [class*='ListePave']*/
