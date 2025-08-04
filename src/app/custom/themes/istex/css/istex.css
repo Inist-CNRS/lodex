@@ -695,10 +695,10 @@ li .facet-value-list .css-qtf05s-MuiButtonBase-root-MuiCheckbox-root {
 /*****************/
 /*general*/
 .resource .nav-button-root {
-    background-color: rgba(100%, 100%, 100%, 0.8);
+    background-color: var(--gris3);
 }
 .resource .nav-button-root:is(:hover, focus, :active) {
-    background-color: rgba(100%, 100%, 100%, 1);
+    background-color: var(--gris1);
 }
 /*labels en noir*/
 .resource span.property_label[style*='color: rgb(158, 158, 158)'] {
