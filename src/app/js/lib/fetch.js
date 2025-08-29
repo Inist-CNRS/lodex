@@ -59,6 +59,10 @@ export default ({ url, ...config }, mode = 'json') => {
                             'extended-nquads-compressed': 'gzip',
                             kbart: 'tsv',
                             raw: 'json',
+                            'csv-full': 'csv',
+                            'csv': 'csv',
+                            'tsv-full': 'tsv',
+                            'tsv': 'tsv',
                         };
                         filename = `export.${
                             exportExtent[exportType]
@@ -94,6 +98,10 @@ export default ({ url, ...config }, mode = 'json') => {
                             'extended-nquads-compressed': 'gzip',
                             kbart: 'tsv',
                             raw: 'json',
+                            'csv-full': 'csv',
+                            'csv': 'csv',
+                            'tsv-full': 'tsv',
+                            'tsv': 'tsv',
                         };
                         filename = `export.${
                             exportExtent[exportType]
