@@ -122,7 +122,7 @@ Les Titres des textes des bannières sont des h1, h2 ou h3.
 
 -   **designHomeTriptyque** champ composé de trois champs:
 
-    -   **Triptyque1**, **Triptyque2**, **Triptyque3**  
+    -   **designTriptyque1**, **designTriptyque2**, **designTriptyque3**  
         qui sont eux même composés de champs contenant icone, texte, nombre, titre,...
 
     **-> Le champ 'designHomeTriptyque' se place juste après une bannière.**
