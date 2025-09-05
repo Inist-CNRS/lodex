@@ -436,7 +436,7 @@ export const FORMATS_CATALOG = [
         component: leaflet,
         type: 'chart',
         isValueAnnotable: false,
-        docUrl: 'https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/appliquer-un-format/#graphique-de-venn',
+        docUrl: 'https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/appliquer-un-format/#carte-leaflet',
     },
     {
         name: 'formatBubbleChart',
