@@ -23,7 +23,7 @@ const styles = {
         overflow: 'hidden',
         userSelect: 'none',
         width: '100%',
-        height: '100%',
+        height: '500px',
         maxHeight: typeof window !== 'undefined' ? window.innerHeight - 96 : 0,
     },
 };
@@ -40,8 +40,9 @@ const LeafletView = ({
 
     const { translate } = useTranslate();
 
+
     const [{ width, height }, setDimensions] = useState({
-        width: 0,
+        width: '100%',
         height: '500px',
    });
 
@@ -126,19 +127,17 @@ const LeafletView = ({
     return (
         <div style={{ height }}>
            <ClientOnly>
-                <FormatFullScreenMode>
-                    <div style={styles.container} ref={containerRef}>
-                        <Suspense fallback={<Loading>{translate('loading')}</Loading>}>
-                            <LazyMap
-                                input={input}
-                                width={width}
-                                height={height}
-                                zoom={zoom || 13}
-                                center={center || [48.8569, 2.3522]}
-                            />
-                        </Suspense>
-                    </div>
-                </FormatFullScreenMode>
+                <div style={styles.container} ref={containerRef}>
+                    <Suspense fallback={<Loading>{translate('loading')}</Loading>}>
+                        <LazyMap
+                            input={input}
+                            width={width}
+                            height={height}
+                            zoom={zoom || 13}
+                            center={center || [48.8569, 2.3522]}
+                        />
+                    </Suspense>
+                </div>
            </ClientOnly>
         </div>
     );
