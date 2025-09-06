@@ -28,6 +28,12 @@ module.exports = {
         client: {
             overlay: false,
         },
+        static: {
+            directory:  resolve(__dirname, '../build'),
+        },
+        devMiddleware: {
+            writeToDisk: true,
+        },
     },
     entry: {
         index: resolve(__dirname, './js/public/index.js'),
@@ -121,6 +127,10 @@ module.exports = {
             'json-6': resolve(
                 __dirname,
                 '../../packages/transformers/node_modules/json-6/dist/index.js',
+            ),
+            'react-leaflet-markercluster': resolve(
+                __dirname,
+                '../../node_modules/react-leaflet-markercluster/dist/esm/index.js',
             ),
         },
     },

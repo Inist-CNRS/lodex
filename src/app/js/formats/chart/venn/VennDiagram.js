@@ -93,8 +93,8 @@ VennDiagram.propTypes = {
     width: PropTypes.number,
     height: PropTypes.number,
     input: PropTypes.arrayOf({
-        sets: PropTypes.arrayOf(PropTypes.string).isRequired,
-        size: PropTypes.number.isRequired,
+        source: PropTypes.string.isRequired,
+        target: PropTypes.string.isRequired,
     }),
 };
 
