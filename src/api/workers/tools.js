@@ -1,5 +1,5 @@
 import { cleanWaitingJobsOfType, workerQueues, CancelWorkerError } from '.';
-import { disableFusible } from '@ezs/core/src/fusible';
+import { disableFusible } from '@ezs/core/fusible';
 
 import { ERROR } from '../../common/progressStatus';
 import getLogger from '../services/logger';

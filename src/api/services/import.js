@@ -4,7 +4,7 @@ import {
     createFusible,
     enableFusible,
     disableFusible,
-} from '@ezs/core/lib/fusible';
+} from '@ezs/core/fusible';
 import breaker from '@ezs/core/lib/statements/breaker';
 import fetch from 'fetch-with-proxy';
 import progress from './progress';

@@ -76,7 +76,7 @@
         "@ezs/analytics": "2.3.5",
         "@ezs/basics": "2.9.2",
         "@ezs/conditor": "2.13.4",
-        "@ezs/core": "4.0.2",
+        "@ezs/core": "4.0.3",
         "@ezs/istex": "1.5.11",
         "@ezs/lodex": "file:packages/ezsLodex",
         "@ezs/sparql": "1.2.5",
