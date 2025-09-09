@@ -232,6 +232,7 @@ div.property[class*='Banniere']
 div[class*='Banniere'] div.MuiBox-root > div * {
     margin: 0 auto;
     color: var(--secondary-contrast-text);
+    flex: 1;
 }
 
 /*******************/
@@ -275,7 +276,7 @@ div.property[class*='BanniereSimple']
 div.property[class*='BanniereDouble'] {
     background-color: var(--primary-main);
     background-image: var(--banniereDoubleUrl);
-    background-size: 50% 30rem;
+    background-size: 50%;
     background-position: left;
     background-repeat: no-repeat;
 }
@@ -284,6 +285,7 @@ div.property[class*='BanniereDouble'] > .property_value_container > div > div {
     justify-content: flex-end !important;
     margin: 0;
     background-color: transparent;
+    gap: 4rem;
 }
 /*banniere double le texte*/
 div.property[class*='BanniereDouble']
@@ -291,12 +293,11 @@ div.property[class*='BanniereDouble']
     > div.MuiBox-root
     > div
     > div {
-    max-width: 600px;
     background-color: var(--primary-main);
     flex-direction: column !important;
     flex-flow: nowrap;
-    margin: 0 0 !important;
-    padding: 4rem 4rem 5rem !important;
+    margin: 4rem auto !important;
+    padding: 10px !important;
 }
 
 div.property[class*='BanniereDouble']

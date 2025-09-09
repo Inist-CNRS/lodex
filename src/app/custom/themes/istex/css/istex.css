@@ -252,17 +252,13 @@ footer.site-footer::after {
     color: var(--text-main);
     background-color: transparent;
     text-decoration: none;
+    display: block;
 }
 .footer3.container {
-    justify-content: space-between;
-    margin-top: 40px;
-}
-.footer1.container {
-    font-family: var(--font-titre);
-    font-weight: 500;
     justify-content: center;
-    gap: 20px;
-    margin-top: 30px;
+    gap: 55px;
+    align-items: center;
+    margin-top: 40px;
 }
 .footer4.container {
     color: var(--neutral-dark-main);
