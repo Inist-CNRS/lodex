@@ -275,9 +275,26 @@ div.property[class*='BanniereSimple']
 /*******************/
 div.property[class*='BanniereDouble'] {
     background-color: var(--primary-main);
+}
+#content
+    #home-page
+    .dataset-characteristics
+    div.property[class*='BanniereDouble']
+    > .property_value_container {
+    display: flex;
+    align-items: center;
+    max-width: 100% !important;
+    width: 100% !important;
+    padding: 0;
+}
+div.property[class*='BanniereDouble']
+    > .property_value_container
+    > div.MuiBox-root
+    > div
+    > span {
     background-image: var(--banniereDoubleUrl);
-    background-size: 50%;
-    background-position: left;
+    background-size: cover;
+    background-position: right;
     background-repeat: no-repeat;
 }
 div.property[class*='BanniereDouble'] > .property_value_container > div > div {
@@ -285,7 +302,6 @@ div.property[class*='BanniereDouble'] > .property_value_container > div > div {
     justify-content: flex-end !important;
     margin: 0;
     background-color: transparent;
-    gap: 4rem;
 }
 /*banniere double le texte*/
 div.property[class*='BanniereDouble']
@@ -296,10 +312,17 @@ div.property[class*='BanniereDouble']
     background-color: var(--primary-main);
     flex-direction: column !important;
     flex-flow: nowrap;
-    margin: 4rem auto !important;
-    padding: 10px !important;
+    margin: 0rem auto 2rem 0rem !important;
 }
-
+div.property[class*='BanniereDouble']
+    > .property_value_container
+    > div.MuiBox-root
+    > div
+    > div
+    > * {
+    max-width: 600px;
+    margin-left: 0;
+}
 div.property[class*='BanniereDouble']
     .property[class*='DoubleTexte']
     .property_value
