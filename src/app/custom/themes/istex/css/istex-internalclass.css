@@ -338,12 +338,13 @@ div.property[class*='BanniereDouble'] .property_value *:is(h1, h2, h3) {
 /* triptyque */
 /**************/
 div.property[class*='Triptyque'] {
-    transform: translateY(-2.5rem);
-    margin-bottom: -2.5rem;
+    position: relative;
+    width: 100%;
+    margin-top: -7rem;
 }
 div.property[class*='Triptyque'] div.MuiBox-root {
-    margin: 0 0;
     padding: 0 0;
+    margin: 0;
 }
 #content
     #home-page
@@ -354,19 +355,22 @@ div.property[class*='Triptyque'] div.MuiBox-root {
     > div
     > div {
     justify-content: center;
-    align-items: flex-start;
-    max-width: var(--maxWidth);
+    align-items: stretch;
 }
-div.property[class*='designHomeTriptyque'] .property[class*='compose'] {
-    width: 33.3%;
-    max-width: 400px;
-    color: var(--contrast-light);
-    min-height: 200px;
+div.property[class*='designHomeTriptyque'] .property[class*='Triptyque'] {
+    flex: 1;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     padding: 24px;
+}
+#content
+    div.property[class*='designHomeTriptyque']
+    .property[class*='Triptyque']
+    * {
+    text-align: center !important;
+    color: var(--contrast-light) !important;
 }
 div.property[class*='designHomeTriptyque'] .property[class*='Triptyque1'] {
     background-color: var(--primary-main);

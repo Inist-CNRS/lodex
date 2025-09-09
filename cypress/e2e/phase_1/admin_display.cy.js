@@ -86,7 +86,7 @@ describe('Home Page', () => {
         }).click();
 
         fields.createNewField({
-            fieldIcons: ['Ressource'],
+            fieldIcons: ['Resource'],
         });
 
         cy.findByRole('gridcell', {
