@@ -66,16 +66,30 @@ const LeafletView = ({
         }
         const formatDataNormalized = flatten(formatData
             .map(x => {
-                if (!Array.isArray(x._id)) {
-                    return {
-                        _id: [x._id],
-                        value: [x.value],
-                    }
+                // Multi values for all cases
+                let a = x._id;
+                let b = x.value;
+                if (typeof _id === 'string') {
+                    a = [x._id]; // '["39.5015541259931","-99.0602406280213"]'
                 }
-                return x;
+                if (Array.isArray(x._id) && x._id.length === 2) {
+                    // example: [46.123, 23.344]
+                    a = [x._id];
+                }
+                if (!Array.isArray(x._id)) {
+                    // example: { lat: 46.123, lnt : 23.344 }
+                    a = [x._id];
+                }
+                if (!Array.isArray(x.value)) {
+                    b = [x.value];
+                }
+                return {
+                    a,
+                    b,
+                }
             })
-            .map(x => {
-                return zip(x._id, x.value)
+            .map(y => {
+                return zip(y.a, y.b)
             }));
         return {
             input: formatDataNormalized.map(([_id, value]) => {
@@ -93,7 +107,7 @@ const LeafletView = ({
                 if (typeof value === 'number') {
                     txt = `${value} ${translate('document_tooltip')}(s)`;
                 } else {
-                    txt = value;
+                    txt = String(value);
                 }
                 if (Array.isArray(latlng)) {
                     return {
