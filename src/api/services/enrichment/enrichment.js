@@ -1,6 +1,12 @@
 import * as fs from 'fs';
 import path from 'path';
 import ezs from '@ezs/core';
+import {
+    createFusible,
+    enableFusible,
+    disableFusible,
+} from '@ezs/core/lib/fusible';
+import { PassThrough } from 'stream';
 import progress from '../../services/progress';
 import localConfig from '../../../../config.json';
 import { mongoConnectionString } from '../mongoClient';
@@ -239,114 +245,143 @@ const processEzsEnrichment = (entries, commands, ctx, preview = false) => {
     });
 };
 
-export const processEnrichment = async (enrichment, filter, ctx) => {
-    const { enrichmentBatchSize } = ctx.configTenant;
-    const BATCH_SIZE = Number(enrichmentBatchSize || 10);
-    await ctx.enrichment.updateStatus(enrichment._id, IN_PROGRESS);
+const processEnrichmentPipeline = (room, fusible, filter, enrichment, ctx) => new Promise((resolve, reject) => {
+    const environment = {};
+    const primer = {
+        filter,
+        connectionStringURI: mongoConnectionString(ctx.tenant),
+    };
     let errorCount = 0;
-
-    const room = `${ctx.tenant}-enrichment-job-${ctx.job.id}`;
-    const commands = createEzsRuleCommands(enrichment.rule);
-    const dataSetSize = await ctx.dataset.count(filter);
-    for (let index = 0; index < dataSetSize; index += BATCH_SIZE) {
-        if (!(await ctx.job?.isActive())) {
-            throw new CancelWorkerError('Job has been canceled');
-        }
-        const entries = await ctx.dataset
-            .find(filter)
-            .skip(index)
-            .limit(BATCH_SIZE)
-            .toArray();
-
-        const logsStartedEnriching = [];
-        for (const entry of entries) {
-            if (!entry.uri) {
-                const logData = JSON.stringify({
-                    level: 'error',
-                    message: `[Instance: ${ctx.tenant}] Unable to enrich row with no URI, see object _id#${entry._id}`,
-                    timestamp: new Date(),
-                    status: IN_PROGRESS,
-                });
-                jobLogger.info(ctx.job, logData);
-            } else {
-                const logData = JSON.stringify({
-                    level: 'info',
-                    message: `[Instance: ${ctx.tenant}] Started enriching #${entry.uri}`,
-                    timestamp: new Date(),
-                    status: IN_PROGRESS,
-                });
-                jobLogger.info(ctx.job, logData);
-                logsStartedEnriching.push(logData);
-            }
-        }
-        notifyListeners(room, logsStartedEnriching.reverse());
-        try {
-            const enrichedValues = await processEzsEnrichment(
-                entries,
-                commands,
-                ctx,
-            );
-
-            const logsEnrichedValue = [];
-            for (const enrichedValue of enrichedValues) {
-                let value;
-                if (enrichedValue.error) {
-                    value = `[Error]: ${enrichedValue.error}`; // cf. Mongo filter on line 374
-                } else if (
-                    enrichedValue.value !== undefined &&
-                    enrichedValue.value !== null
-                ) {
-                    value = enrichedValue.value;
-                } else {
-                    value = 'n/a';
+    const input = new PassThrough({ objectMode: true });
+    input
+        .pipe(ezs('LodexRunQuery', { collection: 'dataset' }))
+        .pipe(ezs('breaker', { fusible }))
+        .pipe(ezs(preformat))
+        .pipe(ezs('delegate', { script: String(enrichment.rule) }, environment))
+        .pipe(ezs(postcheck, { preview: false }, ctx))
+    /* @ezs/core v4
+        .pipe(ezs.catch((data) => {
+            const error = getSourceError(data);
+            let sourceChunk = null;
+            if (error?.sourceChunk) {
+                try {
+                    sourceChunk = JSON.parse(error.sourceChunk);
+                } catch (e) {
+                    const logger = getLogger(ctx.tenant);
+                    logger.error(`Error while parsing sourceChunk`, e);
                 }
-                const id = enrichedValue.id;
-                if (id) {
-                    const logData = JSON.stringify({
-                        level: enrichedValue.error ? 'error' : 'info',
-                        message: enrichedValue.error
-                            ? `[Instance: ${ctx.tenant}] Error enriching #${id}: ${value}`
-                            : `[Instance: ${ctx.tenant}] Finished enriching #${id} (output: ${value})`,
-                        timestamp: new Date(),
-                        status: IN_PROGRESS,
-                    });
-                    errorCount += enrichedValue.error ? 1 : 0;
-                    jobLogger.info(ctx.job, logData);
-                    logsEnrichedValue.push(logData);
+            }
+            // try to obtain only the lodash error message
+            const errorMessage =
+                Array()
+                .concat(error?.traceback)
+                .filter((x) => x.search(/Error:/) >= 0)
+                .shift() || error?.message;
+
+            return {
+                id: sourceChunk?.id,
+                value: errorMessage, // for the preview
+                error: errorMessage, // for the log
+            };
+        })
+            */
+        .on('data', async (data) => {
+            progress.incrementProgress(ctx.tenant, 1);
+            let enrichedValue = data;
+            if (data instanceof Error) {
+                const error = getSourceError(data);
+                let sourceChunk = null;
+                if (error?.sourceChunk) {
+                    try {
+                        sourceChunk = JSON.parse(error.sourceChunk);
+                    } catch (e) {
+                        const logger = getLogger(ctx.tenant);
+                        logger.error(`Error while parsing sourceChunk`, e);
+                    }
+                }
+                // try to obtain only the lodash error message
+                const errorMessage =
+                    Array()
+                    .concat(error?.traceback)
+                    .filter((x) => x.search(/Error:/) >= 0)
+                    .shift() || error?.message;
+
+                enrichedValue = {
+                    id: sourceChunk?.id,
+                    value: errorMessage, // for the preview
+                    error: errorMessage, // for the log
+                };
+            }
+            let value;
+            if (enrichedValue.error) {
+                value = `[Error]: ${enrichedValue.error}`;
+            } else if (
+                enrichedValue.value !== undefined &&
+                enrichedValue.value !== null
+            ) {
+                value = enrichedValue.value;
+            } else {
+                value = 'n/a';
+            }
+            const id = enrichedValue.id;
+            if (id) {
+                const logData = JSON.stringify({
+                    level: enrichedValue.error ? 'error' : 'info',
+                    message: enrichedValue.error
+                    ? `[Instance: ${ctx.tenant}] Error enriching #${id}: ${value}`
+                    : `[Instance: ${ctx.tenant}] Finished enriching #${id} (output: ${value})`,
+                    timestamp: new Date(),
+                    status: IN_PROGRESS,
+                });
+                errorCount += enrichedValue.error ? 1 : 0;
+                jobLogger.info(ctx.job, logData);
+                notifyListeners(room, logData);
+                try {
                     await ctx.dataset.updateOne(
                         {
                             uri: id,
                         },
                         { $set: { [enrichment.name]: value } },
                     );
+                } catch (e) {
+                    const logData = JSON.stringify({
+                        level: 'error',
+                        message: `[Instance: ${ctx.tenant}] ${e.message}`,
+                        timestamp: new Date(),
+                        status: IN_PROGRESS,
+                    });
+                    jobLogger.info(ctx.job, logData);
+                    notifyListeners(room, logData);
                 }
             }
-            progress.incrementProgress(ctx.tenant, BATCH_SIZE);
-            notifyListeners(room, logsEnrichedValue.reverse());
-        } catch (e) {
-            for (const entry of entries) {
-                await ctx.dataset.updateOne(
-                    { _id: new ObjectId(entry._id) },
-                    {
-                        $set: {
-                            [enrichment.name]: `[Error]: ${e.message}`,
-                        },
-                    },
-                );
+        })
+        .on('end', () => resolve(errorCount))
+        .on('error', (error) => reject(error));
+    input.end(primer);
+});
 
-                const logData = JSON.stringify({
-                    level: 'error',
-                    message: `[Instance: ${ctx.tenant}] ${e.message}`,
-                    timestamp: new Date(),
-                    status: IN_PROGRESS,
-                });
-                jobLogger.info(ctx.job, logData);
-                notifyListeners(room, logData);
-                errorCount++;
-                progress.incrementProgress(ctx.tenant, 1);
-            }
-        }
+export const processEnrichment = async (enrichment, filter, ctx) => {
+    const room = `${ctx.tenant}-enrichment-job-${ctx.job.id}`;
+    let errorCount = 0;
+    await ctx.enrichment.updateStatus(enrichment._id, IN_PROGRESS);
+    try {
+        const fusible = await createFusible();
+        await enableFusible(fusible);
+        ctx.job.update({
+            ...ctx.job.data,
+            fusible,
+        });
+        errorCount = await processEnrichmentPipeline(room, fusible, filter, enrichment, ctx);
+    } catch(e) {
+        const logData = JSON.stringify({
+            level: 'error',
+            message: `[Instance: ${ctx.tenant}] Enrichment failed (${e.message})`,
+            timestamp: new Date(),
+            status: IN_PROGRESS,
+        });
+        jobLogger.info(ctx.job, logData);
     }
+
     await ctx.enrichment.updateStatus(enrichment._id, FINISHED, { errorCount });
     progress.finish(ctx.tenant);
     const logData = JSON.stringify({
@@ -371,8 +406,8 @@ export const startEnrichment = async (ctx) => {
 
     const filter = ctx.retryFailedOnly
         ? {
-              [enrichment.name]: /^\[Error\]:/,
-          }
+            [enrichment.name]: /^\[Error\]:/,
+        }
         : undefined;
 
     const dataSetSize = await ctx.dataset.count(filter);
@@ -411,9 +446,9 @@ export const setEnrichmentError = async (ctx, err) => {
     const logData = JSON.stringify({
         level: 'error',
         message:
-            err instanceof CancelWorkerError
-                ? `[Instance: ${ctx.tenant}] ${err?.message}`
-                : `[Instance: ${ctx.tenant}] Enrichement errored : ${err?.message}`,
+        err instanceof CancelWorkerError
+        ? `[Instance: ${ctx.tenant}] ${err?.message}`
+        : `[Instance: ${ctx.tenant}] Enrichement errored : ${err?.message}`,
         timestamp: new Date(),
         status: err instanceof CancelWorkerError ? CANCELED : ERROR,
     });
@@ -425,9 +460,9 @@ export const setEnrichmentError = async (ctx, err) => {
         isEnriching: false,
         success: false,
         message:
-            err instanceof CancelWorkerError
-                ? 'cancelled_enricher'
-                : err?.message,
+        err instanceof CancelWorkerError
+        ? 'cancelled_enricher'
+        : err?.message,
     });
 };
 
