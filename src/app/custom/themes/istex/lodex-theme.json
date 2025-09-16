@@ -22,7 +22,7 @@
             "summary": "exemple : Les technologies et les outils ISTEX pour les projets de recherche.",
             "matomoID": "",
             "matomoHost": "https://piwik2.inist.fr/",
-            "info sous-theme": "un seul sous-theme existe pour l'instant : 'corpus'. Permet l'ajout d'une css spécifique",
+            "info sous-theme": "deux sous-themes existent : 'corpus' ou 'termino'. Permet l'ajout d'une css spécifique",
             "sousTheme": "",
 
             "info: choix image bannieres": "datamining - doigtdossier - doigtecran - femmebureau - femmededos - filet - graph - graphLodex - hommebureau - mainAI - mainreseau - mainspirale - meeting - terre - translation",
