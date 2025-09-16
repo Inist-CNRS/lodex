@@ -5,7 +5,7 @@ import {
     createFusible,
     enableFusible,
     disableFusible,
-} from '@ezs/core/lib/fusible';
+} from '@ezs/core/fusible';
 import { PassThrough } from 'stream';
 import progress from '../../services/progress';
 import localConfig from '../../../../config.json';
@@ -202,6 +202,45 @@ async function postcheck(data, feed) {
     feed.send(data);
 }
 
+function postformat(data, feed) {
+    if (this.isLast()) {
+        return feed.close();
+    }
+    let value;
+    if (data.error) {
+        value = `[Error]: ${data.error}`;
+    } else if (
+        data.value !== undefined &&
+        data.value !== null
+    ) {
+        value = data.value;
+    } else {
+        value = 'n/a';
+    }
+    feed.send({ id: data.id, value });
+}
+
+async function updateDocument(data, feed) {
+    const fieldname = this.getParam('fieldname');
+    const ctx = this.getEnv();
+
+    if (this.isLast()) {
+        return feed.close();
+    }
+    try {
+        const { id, value } = data;
+        await ctx.dataset.updateOne(
+            {
+                uri: id,
+            },
+            { $set: { [fieldname]: value } },
+        );
+        feed.send(data);
+    } catch (e) {
+        feed.send(e);
+    }
+}
+
 const processEzsEnrichment = (entries, commands, ctx, preview = false) => {
     return new Promise((resolve, reject) => {
         const environment = {
@@ -259,7 +298,6 @@ const processEnrichmentPipeline = (room, fusible, filter, enrichment, ctx) => ne
         .pipe(ezs(preformat))
         .pipe(ezs('delegate', { script: String(enrichment.rule) }, environment))
         .pipe(ezs(postcheck, { preview: false }, ctx))
-    /* @ezs/core v4
         .pipe(ezs.catch((data) => {
             const error = getSourceError(data);
             let sourceChunk = null;
@@ -283,77 +321,34 @@ const processEnrichmentPipeline = (room, fusible, filter, enrichment, ctx) => ne
                 value: errorMessage, // for the preview
                 error: errorMessage, // for the log
             };
-        })
-            */
-        .on('data', async (data) => {
+        }))
+        .pipe(ezs(postformat))
+        .pipe(ezs(updateDocument, { fieldname: enrichment.name}, ctx))
+        .on('data', (data) => {
             progress.incrementProgress(ctx.tenant, 1);
-            let enrichedValue = data;
-            if (data instanceof Error) {
-                const error = getSourceError(data);
-                let sourceChunk = null;
-                if (error?.sourceChunk) {
-                    try {
-                        sourceChunk = JSON.parse(error.sourceChunk);
-                    } catch (e) {
-                        const logger = getLogger(ctx.tenant);
-                        logger.error(`Error while parsing sourceChunk`, e);
-                    }
-                }
-                // try to obtain only the lodash error message
-                const errorMessage =
-                    Array()
-                    .concat(error?.traceback)
-                    .filter((x) => x.search(/Error:/) >= 0)
-                    .shift() || error?.message;
-
-                enrichedValue = {
-                    id: sourceChunk?.id,
-                    value: errorMessage, // for the preview
-                    error: errorMessage, // for the log
-                };
-            }
-            let value;
-            if (enrichedValue.error) {
-                value = `[Error]: ${enrichedValue.error}`;
-            } else if (
-                enrichedValue.value !== undefined &&
-                enrichedValue.value !== null
-            ) {
-                value = enrichedValue.value;
-            } else {
-                value = 'n/a';
-            }
-            const id = enrichedValue.id;
+            const {id, value, error } = data;
+            let logData;
             if (id) {
-                const logData = JSON.stringify({
-                    level: enrichedValue.error ? 'error' : 'info',
-                    message: enrichedValue.error
+                logData = JSON.stringify({
+                    level: error ? 'error' : 'info',
+                    message: error
                     ? `[Instance: ${ctx.tenant}] Error enriching #${id}: ${value}`
                     : `[Instance: ${ctx.tenant}] Finished enriching #${id} (output: ${value})`,
                     timestamp: new Date(),
                     status: IN_PROGRESS,
                 });
-                errorCount += enrichedValue.error ? 1 : 0;
-                jobLogger.info(ctx.job, logData);
-                notifyListeners(room, logData);
-                try {
-                    await ctx.dataset.updateOne(
-                        {
-                            uri: id,
-                        },
-                        { $set: { [enrichment.name]: value } },
-                    );
-                } catch (e) {
-                    const logData = JSON.stringify({
-                        level: 'error',
-                        message: `[Instance: ${ctx.tenant}] ${e.message}`,
-                        timestamp: new Date(),
-                        status: IN_PROGRESS,
-                    });
-                    jobLogger.info(ctx.job, logData);
-                    notifyListeners(room, logData);
-                }
+                errorCount += error ? 1 : 0;
+            } else {
+                errorCount += 1;
+                logData = JSON.stringify({
+                    level: 'error',
+                    message: `[Instance: ${ctx.tenant}] ${e.message}`,
+                    timestamp: new Date(),
+                    status: IN_PROGRESS,
+                });
             }
+            jobLogger.info(ctx.job, logData);
+            notifyListeners(room, logData);
         })
         .on('end', () => resolve(errorCount))
         .on('error', (error) => reject(error));
