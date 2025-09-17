@@ -202,10 +202,36 @@ async function postcheck(data, feed) {
     feed.send(data);
 }
 
-function postformat(data, feed) {
+function LodexHomogenizedObject(data, feed) {
     if (this.isLast()) {
         return feed.close();
     }
+
+    if (data.scope && data.stack) { // Erreur serializée par [catch]
+        const error = getSourceError(data);
+            let sourceChunk = null;
+            if (error?.sourceChunk) {
+                try {
+                    sourceChunk = JSON.parse(error.sourceChunk);
+                } catch (e) {
+                    const logger = getLogger(ctx.tenant);
+                    logger.error(`Error while parsing sourceChunk`, e);
+                }
+            }
+            // try to obtain only the lodash error message
+            const errorMessage =
+                Array()
+                .concat(error?.traceback)
+                .filter((x) => x.search(/Error:/) >= 0)
+                .shift() || error?.message;
+
+        return feed.send({
+            id: sourceChunk?.id,
+            value: errorMessage, // for the preview
+            error: errorMessage, // for the log
+        });
+    }
+
     let value;
     if (data.error) {
         value = `[Error]: ${data.error}`;
@@ -217,10 +243,10 @@ function postformat(data, feed) {
     } else {
         value = 'n/a';
     }
-    feed.send({ id: data.id, value });
+    feed.send({ id: data.id, value, error: data.error });
 }
 
-async function updateDocument(data, feed) {
+async function LodexUpdateDocument(data, feed) {
     const fieldname = this.getParam('fieldname');
     const ctx = this.getEnv();
 
@@ -237,7 +263,8 @@ async function updateDocument(data, feed) {
         );
         feed.send(data);
     } catch (e) {
-        feed.send(e);
+        feed.send({ id, value, error: e.message });
+
     }
 }
 
@@ -297,34 +324,14 @@ const processEnrichmentPipeline = (room, fusible, filter, enrichment, ctx) => ne
         .pipe(ezs('breaker', { fusible }))
         .pipe(ezs(preformat))
         .pipe(ezs('delegate', { script: String(enrichment.rule) }, environment))
-        .pipe(ezs(postcheck, { preview: false }, ctx))
-        .pipe(ezs.catch((data) => {
-            const error = getSourceError(data);
-            let sourceChunk = null;
-            if (error?.sourceChunk) {
-                try {
-                    sourceChunk = JSON.parse(error.sourceChunk);
-                } catch (e) {
-                    const logger = getLogger(ctx.tenant);
-                    logger.error(`Error while parsing sourceChunk`, e);
-                }
+        .pipe(ezs('catch', {}))
+        .pipe(ezs(LodexHomogenizedObject))
+        .pipe(ezs(LodexUpdateDocument, { collection: 'dataset', fieldname: enrichment.name}, ctx))
+        .pipe(ezs('breaker', { fusible }))
+        .on('data', async (data) => {
+            if (!(await ctx.job?.isActive())) {
+                return feed.stop(new CancelWorkerError('Job has been canceled'));
             }
-            // try to obtain only the lodash error message
-            const errorMessage =
-                Array()
-                .concat(error?.traceback)
-                .filter((x) => x.search(/Error:/) >= 0)
-                .shift() || error?.message;
-
-            return {
-                id: sourceChunk?.id,
-                value: errorMessage, // for the preview
-                error: errorMessage, // for the log
-            };
-        }))
-        .pipe(ezs(postformat))
-        .pipe(ezs(updateDocument, { fieldname: enrichment.name}, ctx))
-        .on('data', (data) => {
             progress.incrementProgress(ctx.tenant, 1);
             const {id, value, error } = data;
             let logData;
@@ -351,7 +358,10 @@ const processEnrichmentPipeline = (room, fusible, filter, enrichment, ctx) => ne
             notifyListeners(room, logData);
         })
         .on('end', () => resolve(errorCount))
-        .on('error', (error) => reject(error));
+        .on('error', (error) => {
+            error.errorCount = errorCount;
+            reject(error);
+        });
     input.end(primer);
 });
 
@@ -368,6 +378,7 @@ export const processEnrichment = async (enrichment, filter, ctx) => {
         });
         errorCount = await processEnrichmentPipeline(room, fusible, filter, enrichment, ctx);
     } catch(e) {
+        errorCount = e.errorCount || 0;
         const logData = JSON.stringify({
             level: 'error',
             message: `[Instance: ${ctx.tenant}] Enrichment failed (${e.message})`,
