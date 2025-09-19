@@ -82,16 +82,32 @@ const middlewareScript = async (ctx, scriptNameCalledParam, fieldsParams) => {
             process.env.WORKERS_URL || 'http://localhost:31976'
         }/routines/${routineName}?${ctx.querystring}`;
         console.error('Connecting to workers', workers_url, 'with', query);
+
+        const script = `
+        [use]
+        plugin = basics
+
+        ; decode dat from the parent process
+        [unpack]
+
+        ; connect to the ezs server
+        [URLConnect]
+        url = ${workers_url}
+        timeout = ${Number(localConfig.timeout) || 120000}
+        streaming = true,
+        json = false
+        encoder = pack
+
+        `;
         ctx.body = input
+            .pipe(ezs('pack')) // encode to transfert to the thread
             .pipe(
                 ezs(
-                    'URLConnect',
+                    'detach', // thread dedicated to processing the response, otherwise you can simply use “delegate”
                     {
-                        url: workers_url,
-                        timeout: Number(localConfig.timeout) || 120000,
-                        streaming: true,
-                        json: false,
-                        encoder: 'pack',
+                        script,
+                        encoder: 'transit',
+                        decoder: 'transit',
                     },
                     environment,
                 ),

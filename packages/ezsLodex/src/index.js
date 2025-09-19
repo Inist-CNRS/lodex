@@ -26,6 +26,8 @@ import aggregateQuery from './aggregateQuery';
 import LodexJoinQuery from './joinQuery';
 import saveDocuments from './saveDocuments.js';
 import precomputedSelect from './precomputedSelect.js';
+import homogenizedObject from './homogenizedObject.js';
+import updateDocument from './updateDocument.js';
 
 const funcs = {
     flattenPatch,
@@ -55,6 +57,8 @@ const funcs = {
     LodexJoinQuery,
     saveDocuments,
     precomputedSelect,
+    homogenizedObject,
+    updateDocument,
     // aliases
     fixFlatten: flattenPatch.flattenPatch,
     LodexContext: disabled.disabled,
@@ -74,6 +78,8 @@ const funcs = {
     LodexAggregateQuery: aggregateQuery.aggregateQuery,
     LodexSaveDocuments: saveDocuments.saveDocuments,
     LodexPrecomputedSelect: precomputedSelect.precomputedSelect,
+    LodexHomogenizedObject: homogenizedObject.homogenizedObject,
+    LodexUpdateDocument: updateDocument.updateDocument,
 };
 
 export default funcs;

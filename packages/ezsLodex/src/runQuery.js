@@ -44,7 +44,7 @@ export const createFunction = () =>
         const projection = zipObject(fields, Array(fields.length).fill(true));
         const connectionStringURI = this.getParam(
             'connectionStringURI',
-            data.connectionStringURI || '',
+            data.connectionStringURI || this.getEnv('connectionStringURI'),
         );
         const db = await mongoDatabase(connectionStringURI);
         const collection = db.collection(collectionName);
