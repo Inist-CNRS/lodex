@@ -202,71 +202,6 @@ async function postcheck(data, feed) {
     feed.send(data);
 }
 
-function LodexHomogenizedObject(data, feed) {
-    if (this.isLast()) {
-        return feed.close();
-    }
-
-    if (data.scope && data.stack) { // Erreur serializée par [catch]
-        const error = getSourceError(data);
-            let sourceChunk = null;
-            if (error?.sourceChunk) {
-                try {
-                    sourceChunk = JSON.parse(error.sourceChunk);
-                } catch (e) {
-                    const logger = getLogger(ctx.tenant);
-                    logger.error(`Error while parsing sourceChunk`, e);
-                }
-            }
-            // try to obtain only the lodash error message
-            const errorMessage =
-                Array()
-                .concat(error?.traceback)
-                .filter((x) => x.search(/Error:/) >= 0)
-                .shift() || error?.message;
-
-        return feed.send({
-            id: sourceChunk?.id,
-            value: errorMessage, // for the preview
-            error: errorMessage, // for the log
-        });
-    }
-
-    let value;
-    if (data.error) {
-        value = `[Error]: ${data.error}`;
-    } else if (
-        data.value !== undefined &&
-        data.value !== null
-    ) {
-        value = data.value;
-    } else {
-        value = 'n/a';
-    }
-    feed.send({ id: data.id, value, error: data.error });
-}
-
-async function LodexUpdateDocument(data, feed) {
-    const fieldname = this.getParam('fieldname');
-    const ctx = this.getEnv();
-
-    if (this.isLast()) {
-        return feed.close();
-    }
-    try {
-        const { id, value } = data;
-        await ctx.dataset.updateOne(
-            {
-                uri: id,
-            },
-            { $set: { [fieldname]: value } },
-        );
-        feed.send(data);
-    } catch (e) {
-        feed.send({ id, value, error: e.message });
-
-    }
-}
 
 const processEzsEnrichment = (entries, commands, ctx, preview = false) => {
     return new Promise((resolve, reject) => {
@@ -312,22 +247,58 @@ const processEzsEnrichment = (entries, commands, ctx, preview = false) => {
 };
 
 const processEnrichmentPipeline = (room, fusible, filter, enrichment, ctx) => new Promise((resolve, reject) => {
-    const environment = {};
-    const primer = {
-        filter,
+    const environment = {
         connectionStringURI: mongoConnectionString(ctx.tenant),
     };
+    const primer = {
+        filter,
+    };
     let errorCount = 0;
+    const script = `
+    [use]
+    plugin = lodex
+
+    [LodexRunQuery]
+    collection = dataset
+
+    [breaker]
+    fusible = ${fusible}
+
+    [replace]
+    path = id
+    value = get('uri')
+
+    path = value
+    value = get('value')
+
+    ${enrichment.rule}
+
+    [catch]
+    stop = false
+
+    [LodexHomogenizedObject]
+
+    [LodexUpdateDocument]
+    collection = dataset
+    field = ${enrichment.name}
+
+    [breaker]
+    fusible = ${fusible}
+    `;
+    console.log(script);
     const input = new PassThrough({ objectMode: true });
     input
-        .pipe(ezs('LodexRunQuery', { collection: 'dataset' }))
+        /*
+        .pipe(ezs('LodexRunQuery', { collection: 'dataset' }, environment))
         .pipe(ezs('breaker', { fusible }))
         .pipe(ezs(preformat))
         .pipe(ezs('delegate', { script: String(enrichment.rule) }, environment))
         .pipe(ezs('catch', {}))
-        .pipe(ezs(LodexHomogenizedObject))
-        .pipe(ezs(LodexUpdateDocument, { collection: 'dataset', fieldname: enrichment.name}, ctx))
+        .pipe(ezs('LodexHomogenizedObject'))
+        .pipe(ezs('LodexUpdateDocument', { collection: 'dataset', field: enrichment.name}, environment))
         .pipe(ezs('breaker', { fusible }))
+        */
+        .pipe(ezs('delegate', { script }, environment))
         .on('data', async (data) => {
             if (!(await ctx.job?.isActive())) {
                 return feed.stop(new CancelWorkerError('Job has been canceled'));
