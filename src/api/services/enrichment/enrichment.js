@@ -285,7 +285,6 @@ const processEnrichmentPipeline = (room, fusible, filter, enrichment, ctx) => ne
     [breaker]
     fusible = ${fusible}
     `;
-    console.log(script);
     const input = new PassThrough({ objectMode: true });
     input
         /*
@@ -298,7 +297,11 @@ const processEnrichmentPipeline = (room, fusible, filter, enrichment, ctx) => ne
         .pipe(ezs('LodexUpdateDocument', { collection: 'dataset', field: enrichment.name}, environment))
         .pipe(ezs('breaker', { fusible }))
         */
-        .pipe(ezs('delegate', { script }, environment))
+        .pipe(ezs(
+            'delegate',
+            { script },
+            environment,
+        ))
         .on('data', async (data) => {
             if (!(await ctx.job?.isActive())) {
                 return feed.stop(new CancelWorkerError('Job has been canceled'));
