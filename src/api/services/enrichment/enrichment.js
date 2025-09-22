@@ -269,13 +269,12 @@ const processEnrichmentPipeline = (room, fusible, filter, enrichment, ctx) => ne
     value = get('uri')
 
     path = value
-    value = get('value')
+    value = self().omit(['_id', 'uri'])
 
     ${enrichment.rule}
 
     [catch]
     stop = false
-
     [LodexHomogenizedObject]
 
     [LodexUpdateDocument]
