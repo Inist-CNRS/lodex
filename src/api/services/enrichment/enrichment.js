@@ -286,16 +286,6 @@ const processEnrichmentPipeline = (room, fusible, filter, enrichment, ctx) => ne
     `;
     const input = new PassThrough({ objectMode: true });
     input
-        /*
-        .pipe(ezs('LodexRunQuery', { collection: 'dataset' }, environment))
-        .pipe(ezs('breaker', { fusible }))
-        .pipe(ezs(preformat))
-        .pipe(ezs('delegate', { script: String(enrichment.rule) }, environment))
-        .pipe(ezs('catch', {}))
-        .pipe(ezs('LodexHomogenizedObject'))
-        .pipe(ezs('LodexUpdateDocument', { collection: 'dataset', field: enrichment.name}, environment))
-        .pipe(ezs('breaker', { fusible }))
-        */
         .pipe(ezs(
             'delegate',
             { script },
