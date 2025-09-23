@@ -293,7 +293,7 @@ const processEnrichmentPipeline = (room, fusible, filter, enrichment, ctx) => ne
         ))
         .on('data', async (data) => {
             if (!(await ctx.job?.isActive())) {
-                return feed.stop(new CancelWorkerError('Job has been canceled'));
+                return reject(new CancelWorkerError('Job has been canceled'));
             }
             progress.incrementProgress(ctx.tenant, 1);
             const {id, value, error } = data;
