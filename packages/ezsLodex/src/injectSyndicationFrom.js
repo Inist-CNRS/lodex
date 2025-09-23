@@ -1,7 +1,7 @@
-import get from 'lodash/get';
-import find from 'lodash/find';
+import get from 'lodash/get.js';
+import find from 'lodash/find.js';
 import QuickLRU from 'quick-lru';
-import mongoDatabase from './mongoDatabase';
+import mongoDatabase from './mongoDatabase.js';
 
 /**
  * Inject title & description (syndicationà from field what conatsin the uri of one resource

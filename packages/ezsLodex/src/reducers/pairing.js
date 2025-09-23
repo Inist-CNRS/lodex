@@ -3,7 +3,7 @@
 // MongoDB JS functions
 //
 
-module.exports.map = function () {
+const map = function () {
     var doc = this;
     var dta = doc.versions[doc.versions.length - 1];
     dta.uri = doc.uri;
@@ -34,12 +34,12 @@ module.exports.map = function () {
         });
 };
 
-module.exports.reduce = function (key, values) {
+const reduce = function (key, values) {
     return Array.sum(values);
 };
 
 
-module.exports.finalize = function finalize(key, value) {
+const finalize = function finalize(key, value) {
     var vector = JSON.parse(key);
     var obj = {
         source: vector[0],
@@ -49,7 +49,7 @@ module.exports.finalize = function finalize(key, value) {
     return obj;
 };
 
-module.exports.fieldname = function (name) {
+const fieldname = function (name) {
     if (name === 'value') {
         return 'value.weight';
     }
@@ -57,4 +57,11 @@ module.exports.fieldname = function (name) {
         return 'value.source';
     }
     return '_id';
+};
+
+export default {
+    map,
+    reduce,
+    finalize,
+    fieldname,
 };

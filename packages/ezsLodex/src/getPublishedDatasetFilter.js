@@ -1,4 +1,4 @@
-import compose from 'lodash/flowRight';
+import compose from 'lodash/flowRight.js';
 
 export const addMatchToFilters = (match, searchableFieldNames) => filters => {
     if (!match || !searchableFieldNames || !searchableFieldNames.length) {

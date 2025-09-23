@@ -1,5 +1,6 @@
 {
     "private": true,
+    "type": "module",
     "name": "@ezs/lodex",
     "description": "ezs dedicated statements for Lodex",
     "version": "1.17.0",

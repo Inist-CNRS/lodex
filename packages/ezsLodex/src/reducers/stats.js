@@ -3,7 +3,7 @@
 // MongoDB JS functions
 //
 
-module.exports.map = function () {
+const map = function () {
     var doc = this;
     var dta = doc.versions[doc.versions.length - 1];
     dta.uri = doc.uri;
@@ -38,7 +38,7 @@ module.exports.map = function () {
         });
 };
 
-module.exports.reduce = function reduce(key, values) {
+const reduce = function reduce(key, values) {
     return values.reduce(function reduce(previous, current, index, array) {
         var delta = previous.sum / previous.count - current.sum / current.count;
         var weight = previous.count * current.count / (previous.count + current.count);
@@ -53,7 +53,7 @@ module.exports.reduce = function reduce(key, values) {
     });
 };
 
-module.exports.finalize = function finalize(key, value) {
+const finalize = function finalize(key, value) {
     value.average = value.sum / value.count;
     value.populationVariance = value.diff / value.count;
     value.populationStandardDeviation = Math.sqrt(value.population_variance);
@@ -64,9 +64,16 @@ module.exports.finalize = function finalize(key, value) {
 };
 
 
-module.exports.fieldname = function (name) {
+const fieldname = function (name) {
     if (name === 'value') {
         return 'value.count';
     }
     return '_id';
+};
+
+export default {
+    map,
+    reduce,
+    finalize,
+    fieldname,
 };

@@ -1,4 +1,4 @@
-import mongoDatabase from './mongoDatabase';
+import mongoDatabase from './mongoDatabase.js';
 
 /**
  * Return the fields (the model) of a LODEX.

@@ -211,7 +211,7 @@ const processEzsEnrichment = (entries, commands, ctx, preview = false) => {
         const values = [];
         from(entries)
             .pipe(ezs(preformat))
-            .pipe(ezs('delegate', { commands }, environment))
+            .pipe(ezs('detach', { commands }, environment))
             .pipe(ezs(postcheck, { preview }, ctx))
             .on('data', (data) => {
                 if (data instanceof Error) {

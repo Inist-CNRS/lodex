@@ -1,4 +1,4 @@
-import zipObject from 'lodash/zipObject';
+import zipObject from 'lodash/zipObject.js';
 
 /**
  * Take an object and map its keys to the one in mapping parameters.

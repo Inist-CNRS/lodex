@@ -3,7 +3,7 @@
 // MongoDB JS functions
 //
 
-module.exports.map = function () {
+const map = function () {
     var doc = this;
     var dta = doc.versions[doc.versions.length - 1];
     dta.uri = doc.uri;
@@ -24,17 +24,24 @@ module.exports.map = function () {
         });
 };
 
-module.exports.reduce = function (key, values) {
+const reduce = function (key, values) {
     return values.reduce(function (a, b) { return a > b ? a : b; });
 };
 
-module.exports.finalize = function finalize(key, value) {
+const finalize = function finalize(key, value) {
     return value;
 };
 
-module.exports.fieldname = function (name) {
+const fieldname = function (name) {
     if (name === 'value') {
         return 'value';
     }
     return '_id';
+};
+
+export default {
+    map,
+    reduce,
+    finalize,
+    fieldname,
 };
