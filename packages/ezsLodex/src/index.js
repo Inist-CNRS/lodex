@@ -28,6 +28,7 @@ import saveDocuments from './saveDocuments.js';
 import precomputedSelect from './precomputedSelect.js';
 import homogenizedObject from './homogenizedObject.js';
 import updateDocument from './updateDocument.js';
+import updateDocuments from './updateDocuments.js';
 
 const funcs = {
     flattenPatch,
@@ -59,6 +60,7 @@ const funcs = {
     precomputedSelect,
     homogenizedObject,
     updateDocument,
+    updateDocuments,
     // aliases
     fixFlatten: flattenPatch.flattenPatch,
     LodexContext: disabled.disabled,
@@ -80,6 +82,7 @@ const funcs = {
     LodexPrecomputedSelect: precomputedSelect.precomputedSelect,
     LodexHomogenizedObject: homogenizedObject.homogenizedObject,
     LodexUpdateDocument: updateDocument.updateDocument,
+    LodexUpdateDocuments: updateDocuments.updateDocuments,
 };
 
 export default funcs;

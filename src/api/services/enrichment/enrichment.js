@@ -247,6 +247,8 @@ const processEzsEnrichment = (entries, commands, ctx, preview = false) => {
 };
 
 const processEnrichmentPipeline = (room, fusible, filter, enrichment, ctx) => new Promise((resolve, reject) => {
+    const { enrichmentBatchSize } = ctx.configTenant;
+    const BATCH_SIZE = Number(enrichmentBatchSize || 10);
     const environment = {
         connectionStringURI: mongoConnectionString(ctx.tenant),
     };
@@ -277,12 +279,17 @@ const processEnrichmentPipeline = (room, fusible, filter, enrichment, ctx) => ne
     stop = false
     [LodexHomogenizedObject]
 
-    [LodexUpdateDocument]
+    [group]
+    length = ${BATCH_SIZE}
+
+    [LodexUpdateDocuments]
     collection = dataset
     field = ${enrichment.name}
 
     [breaker]
     fusible = ${fusible}
+
+    [ungroup]
     `;
     const input = new PassThrough({ objectMode: true });
     input
@@ -312,7 +319,7 @@ const processEnrichmentPipeline = (room, fusible, filter, enrichment, ctx) => ne
                 errorCount += 1;
                 logData = JSON.stringify({
                     level: 'error',
-                    message: `[Instance: ${ctx.tenant}] ${e.message}`,
+                    message: `[Instance: ${ctx.tenant}] ${error}`,
                     timestamp: new Date(),
                     status: IN_PROGRESS,
                 });
