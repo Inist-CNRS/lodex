@@ -64,6 +64,10 @@ const styles = stylesToClassname(
                 padding: '0rem calc(1rem + 12px)',
             },
         },
+        facets: {
+            position: 'sticky',
+            top: '1rem',
+        },
     },
     'graph',
 );
@@ -134,7 +138,7 @@ class Graph extends Component {
                 <AppliedFacetList />
                 <div className={styles.content}>
                     <FacetList
-                        className="graph-facets"
+                        className={classnames('graph-facets', styles.facets)}
                         page="dataset"
                         open={showFacets}
                     />
