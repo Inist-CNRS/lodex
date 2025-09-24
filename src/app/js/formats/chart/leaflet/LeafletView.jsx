@@ -28,7 +28,7 @@ const styles = {
     },
 };
 
-const LazyMap = React.lazy(() => import("./LeafletMap.js"));
+const LazyMap = React.lazy(() => import("./LeafletMap"));
 
 const LeafletView = ({
     formatData,

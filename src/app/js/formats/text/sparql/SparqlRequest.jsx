@@ -10,12 +10,12 @@ import URL from 'url';
 import {
     field as fieldPropTypes,
     polyglot as polyglotPropTypes,
-} from '../../../propTypes.js';
+} from '../../../propTypes';
 
 import { fromFormat } from '../../../public/selectors';
 import { loadFormatData } from '../../reducer';
 import Loading from '../../../lib/components/Loading';
-import { isURL } from '../../../../../common/uris.js';
+import { isURL } from '../../../../../common/uris';
 import Link from '../../../lib/components/Link';
 
 const styles = {

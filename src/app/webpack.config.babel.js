@@ -29,7 +29,7 @@ module.exports = {
             overlay: false,
         },
         static: {
-            directory:  resolve(__dirname, '../build'),
+            directory: resolve(__dirname, '../build'),
         },
         devMiddleware: {
             writeToDisk: true,

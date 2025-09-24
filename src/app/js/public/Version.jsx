@@ -6,7 +6,7 @@ import Link from '../lib/components/Link';
 import Container from '@mui/material/Container';
 import { translate } from '../i18n/I18NContext';
 
-const { version } = require('../../../../package.json');
+import { version } from '../../../../package.json';
 
 const link = `//github.com/Inist-CNRS/lodex/releases/tag/v${version}`;
 

@@ -1,7 +1,7 @@
 import progress from '../progress';
 import localConfig from '../../../../config.json';
 import { getHost } from '../../../common/uris';
-import { unlinkFile } from '../fsHelpers.js';
+import { unlinkFile } from '../fsHelpers';
 import streamToPromise from 'stream-to-promise';
 import fetch from 'fetch-with-proxy';
 import path from 'path';
