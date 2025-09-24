@@ -4,13 +4,13 @@ WORKDIR /app
 COPY ./package.json /app
 COPY ./package-lock.json /app
 COPY ./packages /app/packages
+COPY ./vite.config.js /app
 
 RUN npm install --legacy-peer-deps
 # see .dockerignore to know all copied files
 COPY . /app/
 
-ARG node_env="production"
-ENV NODE_ENV=$node_env
+ENV NODE_ENV="production"
 ENV CYPRESS_CACHE_FOLDER=/app/.cache
 ENV npm_config_cache=/app/.npm
 
