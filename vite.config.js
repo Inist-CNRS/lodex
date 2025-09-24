@@ -28,6 +28,7 @@ export default defineConfig(({ mode }) => {
                 output: {
                     entryFileNames: '[name]/index.js',
                     chunkFileNames: '[name]/index.js',
+                    assetFileNames: 'css/[name].[ext]',
                     manualChunks: undefined,
                 },
             },
@@ -50,6 +51,7 @@ export default defineConfig(({ mode }) => {
             }),
         ],
 
+        // Global constants (replaces webpack's DefinePlugin)
         define: {
             __DEBUG__: false,
             __EN__: JSON.stringify(translations.getByLanguage('english')),
@@ -61,6 +63,7 @@ export default defineConfig(({ mode }) => {
         // Module resolution
         resolve: {
             alias: {
+                // Same aliases as webpack config
                 'lodash.isarray': resolve(
                     __dirname,
                     'node_modules/react-infinite/node_modules/lodash.isarray/index.js',
@@ -104,5 +107,8 @@ export default defineConfig(({ mode }) => {
                 // Exclude packages that might cause issues
             ],
         },
+
+        // Copy static files (replaces CopyWebpackPlugin)
+        publicDir: './custom',
     };
 });
