@@ -1,4 +1,4 @@
-const { getFieldValue } = require('./checkPredicate');
+import { getFieldValue } from './checkPredicate';
 
 describe('checkPredicate', () => {
     describe('getFieldValue', () => {

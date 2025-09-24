@@ -1,12 +1,16 @@
 import { polyglot as polyglotPropTypes } from '../../../propTypes';
 import PropTypes from 'prop-types';
 import { Box } from '@mui/material';
-import React, { useEffect, useState } from 'react';
-import { translate } from '../../../i18n/I18NContext';
+import React, { lazy, Suspense, useEffect, useState } from 'react';
+import { translate, useTranslate } from '../../../i18n/I18NContext';
+import Loading from '../../../lib/components/Loading';
+
+const FormSourceCodeField = lazy(
+    () => import('../../../lib/components/FormSourceCodeField'),
+);
 
 const EJSEditor = ({ value, onChange }) => {
-    const FormSourceCodeField =
-        require('../../../lib/components/FormSourceCodeField').default;
+    const { translate } = useTranslate();
 
     const [currentValue, setCurrentValue] = useState(value || '');
 
@@ -20,18 +24,20 @@ const EJSEditor = ({ value, onChange }) => {
 
     return (
         <Box width="100%">
-            <FormSourceCodeField
-                style={{
-                    width: '100%',
-                    height: '70vh',
-                    borderRadius: '5px',
-                }}
-                mode="ejs"
-                input={{
-                    value: currentValue,
-                    onChange: handleChange,
-                }}
-            />
+            <Suspense fallback={<Loading>{translate('loading')}</Loading>}>
+                <FormSourceCodeField
+                    style={{
+                        width: '100%',
+                        height: '70vh',
+                        borderRadius: '5px',
+                    }}
+                    mode="ejs"
+                    input={{
+                        value: currentValue,
+                        onChange: handleChange,
+                    }}
+                />
+            </Suspense>
         </Box>
     );
 };
