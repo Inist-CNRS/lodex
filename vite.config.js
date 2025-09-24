@@ -75,6 +75,10 @@ export default defineConfig(({ mode }) => {
                     __dirname,
                     'node_modules/react-leaflet-markercluster/dist/esm/index.js',
                 ),
+                '@recuperateur/resumablejs': resolve(
+                    __dirname,
+                    'node_modules/@recuperateur/resumablejs/resumable.js',
+                ),
             },
         },
 
