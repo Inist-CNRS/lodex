@@ -14,12 +14,13 @@ import {
     VEGA_LITE_DATA_INJECT_TYPE_A,
 } from '../utils/chartsUtils';
 import { useSizeObserver } from '../utils/chartsHooks';
+import stylesToClassName from '../../lib/stylesToClassName';
 
-const styles = {
+const styles = stylesToClassName({
     container: {
         userSelect: 'none',
     },
-};
+});
 
 const VegaLiteView = ({ field, data, aspectRatio, specTemplate }) => {
     const { ref, width } = useSizeObserver();
@@ -43,7 +44,7 @@ const VegaLiteView = ({ field, data, aspectRatio, specTemplate }) => {
     }
 
     return (
-        <div style={styles.container} ref={ref}>
+        <div className={styles.container} ref={ref}>
             <CustomActionVegaLite
                 spec={spec || {}}
                 data={data}
