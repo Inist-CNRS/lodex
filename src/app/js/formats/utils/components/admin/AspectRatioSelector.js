@@ -11,9 +11,15 @@ const AspectRatioSelector = ({ value, onChange, p }) => {
     const aspectRatios = useMemo(() => {
         return ASPECT_RATIOS.map((ratio) => {
             if (ratio === ASPECT_RATIO_NONE) {
-                return p.t('aspect_ratio_none');
+                return {
+                    id: ASPECT_RATIO_NONE,
+                    label: p.t('aspect_ratio_none'),
+                };
             }
-            return ratio;
+            return {
+                id: ratio,
+                label: ratio,
+            };
         });
     }, []);
 
@@ -30,9 +36,9 @@ const AspectRatioSelector = ({ value, onChange, p }) => {
             onChange={handleAspectRatio}
             value={aspectRatio}
         >
-            {aspectRatios.map((aspectRatio) => (
+            {aspectRatios.map(({ id: aspectRatio, label }) => (
                 <MenuItem key={aspectRatio} value={aspectRatio}>
-                    {aspectRatio}
+                    {label}
                 </MenuItem>
             ))}
         </TextField>
