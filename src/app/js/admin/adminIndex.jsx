@@ -17,7 +17,7 @@ import { enUS as enUSDatagrid, frFR as frFRDatagrid } from '@mui/x-data-grid';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Router } from 'react-router-dom';
 import getLocale from '../../../common/getLocale';
-// import '../../ace-webpack-loader';
+import '../../ace-vite-loader';
 import defaultTheme from '../../custom/themes/default/defaultTheme';
 import configureStore from '../configureStore';
 import { I18N } from '../i18n/I18NContext';
