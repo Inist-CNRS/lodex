@@ -11,7 +11,7 @@ import {
     canonicalURL,
     isLocalURL,
     isURL,
-} from '../../../../../../common/uris.js';
+} from '../../../../../../common/uris';
 import Link from '../../../../lib/components/Link';
 import { getShortText, isLongText } from '../../../../lib/longTexts';
 import { field as fieldPropTypes } from '../../../../propTypes';
