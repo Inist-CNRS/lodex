@@ -65,7 +65,7 @@ function CustomActionVegaLite({
                     <Vega
                         style={
                             aspectRatio === ASPECT_RATIO_NONE
-                                ? { width: '100%' }
+                                ? { width: '100%', aspectRatio: '2 / 1' }
                                 : { width: '100%', aspectRatio }
                         }
                         spec={deepClone(specWithData)}
@@ -92,7 +92,7 @@ function CustomActionVegaLite({
                         <Vega
                             style={
                                 aspectRatio === ASPECT_RATIO_NONE
-                                    ? { width: '100%' }
+                                    ? { width: '100%', aspectRatio: '2 / 1' }
                                     : { width: '100%', aspectRatio }
                             }
                             spec={deepClone(specWithData)}
