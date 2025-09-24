@@ -1,5 +1,5 @@
-import set from 'lodash/set';
-import mongoDatabase from './mongoDatabase';
+import set from 'lodash/set.js';
+import mongoDatabase from './mongoDatabase.js';
 
 /**
  * Take `Object` Request to precomputed collection

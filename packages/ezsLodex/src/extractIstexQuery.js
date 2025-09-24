@@ -28,7 +28,7 @@ function removeNumberInstance(uri) {
  * }
  * @returns
  */
-module.exports = function extractIstexQuery(data, feed) {
+export default function extractIstexQuery(data, feed) {
     if (this.isLast()) {
         return feed.close();
     }

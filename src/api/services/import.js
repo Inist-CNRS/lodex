@@ -4,8 +4,7 @@ import {
     createFusible,
     enableFusible,
     disableFusible,
-} from '@ezs/core/lib/fusible';
-import breaker from '@ezs/core/lib/statements/breaker';
+} from '@ezs/core/fusible';
 import fetch from 'fetch-with-proxy';
 import progress from './progress';
 import { INDEXATION, SAVING_DATASET } from '../../common/progressStatus';
@@ -106,9 +105,9 @@ export const startImport = async (ctx) => {
             loaderEnvironment.source = 'text input';
             stream = ctx.getStreamFromText(text);
         }
-        const inputStream = stream.pipe(ezs(breaker, { fusible }));
+        const inputStream = stream.pipe(ezs('breaker', { fusible }));
         const parsedStream = parseStream(inputStream);
-        const outputStream = parsedStream.pipe(ezs(breaker, { fusible }));
+        const outputStream = parsedStream.pipe(ezs('breaker', { fusible }));
 
         await ctx.saveParsedStream(ctx, outputStream);
         progress.start(ctx.tenant, {

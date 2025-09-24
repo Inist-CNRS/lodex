@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import mongoDatabase from './mongoDatabase';
+import mongoDatabase from './mongoDatabase.js';
 
 /**
  * Take 3 parameters and create a join query (one to many, on sub-ressource)

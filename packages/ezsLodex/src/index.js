@@ -1,31 +1,34 @@
-import flattenPatch from './flatten-patch';
-import objects2columns from './objects2columns';
-import convertToAtom from './convertToAtom';
-import convertToJson from './convertToJson';
-import convertToSitemap from './convertToSitemap';
-import extractIstexQuery from './extractIstexQuery';
-import filterContributions from './filterContributions';
-import filterVersions from './filterVersions';
-import linkDataset from './linkDataset';
-import useFieldNames from './useFieldNames';
-import disabled from './disabled';
-import runQuery from './runQuery';
-import runQueryPrecomputed from './runQueryPrecomputed';
-import reduceQuery from './reduceQuery';
-import formatOutput from './formatOutput';
-import getLastCharacteristic from './getLastCharacteristic';
-import keyMapping from './keyMapping';
-import getFields from './getFields';
-import getCharacteristics from './getCharacteristics';
-import injectDatasetFields from './injectDatasetFields';
-import injectSyndicationFrom from './injectSyndicationFrom';
-import injectCountFrom from './injectCountFrom';
-import labelizeFieldID from './labelizeFieldID';
-import buildContext from './buildContext';
-import aggregateQuery from './aggregateQuery';
-import LodexJoinQuery from './joinQuery';
+import flattenPatch from './flatten-patch.js';
+import objects2columns from './objects2columns.js';
+import convertToAtom from './convertToAtom.js';
+import convertToJson from './convertToJson.js';
+import convertToSitemap from './convertToSitemap.js';
+import extractIstexQuery from './extractIstexQuery.js';
+import filterContributions from './filterContributions.js';
+import filterVersions from './filterVersions.js';
+import linkDataset from './linkDataset.js';
+import useFieldNames from './useFieldNames.js';
+import disabled from './disabled.js';
+import runQuery from './runQuery.js';
+import runQueryPrecomputed from './runQueryPrecomputed.js';
+import reduceQuery from './reduceQuery.js';
+import formatOutput from './formatOutput.js';
+import getLastCharacteristic from './getLastCharacteristic.js';
+import keyMapping from './keyMapping.js';
+import getFields from './getFields.js';
+import getCharacteristics from './getCharacteristics.js';
+import injectDatasetFields from './injectDatasetFields.js';
+import injectSyndicationFrom from './injectSyndicationFrom.js';
+import injectCountFrom from './injectCountFrom.js';
+import labelizeFieldID from './labelizeFieldID.js';
+import buildContext from './buildContext.js';
+import aggregateQuery from './aggregateQuery.js';
+import LodexJoinQuery from './joinQuery.js';
 import saveDocuments from './saveDocuments.js';
 import precomputedSelect from './precomputedSelect.js';
+import homogenizedObject from './homogenizedObject.js';
+import updateDocument from './updateDocument.js';
+import updateDocuments from './updateDocuments.js';
 
 const funcs = {
     flattenPatch,
@@ -55,6 +58,9 @@ const funcs = {
     LodexJoinQuery,
     saveDocuments,
     precomputedSelect,
+    homogenizedObject,
+    updateDocument,
+    updateDocuments,
     // aliases
     fixFlatten: flattenPatch.flattenPatch,
     LodexContext: disabled.disabled,
@@ -74,8 +80,11 @@ const funcs = {
     LodexAggregateQuery: aggregateQuery.aggregateQuery,
     LodexSaveDocuments: saveDocuments.saveDocuments,
     LodexPrecomputedSelect: precomputedSelect.precomputedSelect,
+    LodexHomogenizedObject: homogenizedObject.homogenizedObject,
+    LodexUpdateDocument: updateDocument.updateDocument,
+    LodexUpdateDocuments: updateDocuments.updateDocuments,
 };
 
 export default funcs;
 
-module.exports = funcs;
+//module.exports = funcs;

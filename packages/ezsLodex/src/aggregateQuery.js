@@ -1,5 +1,5 @@
 import RJSON from 'relaxed-json';
-import mongoDatabase from './mongoDatabase';
+import mongoDatabase from './mongoDatabase.js';
 
 const stageNameTest = /^\$/;
 /**
