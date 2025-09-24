@@ -4,7 +4,7 @@ import { translate } from '../../../i18n/I18NContext';
 import compose from 'recompose/compose';
 import URL from 'url';
 
-import { isURL } from '../../../../../common/uris.js';
+import { isURL } from '../../../../../common/uris';
 import { field as fieldPropTypes } from '../../../propTypes';
 import injectData from '../../injectData';
 import Link from '../../../lib/components/Link';

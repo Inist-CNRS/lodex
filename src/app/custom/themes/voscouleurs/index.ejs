@@ -82,12 +82,22 @@
     <footer>
         <p><a href="https://www.inist.fr"><img src="<%= theme.current.href %>/img/Opere_par_Inist long.png" width="120px" alt="opéré par CNRS Inist"></a></p>
     </footer>
+    <% if (isDev) { %>
+        <script type="module">
+            import RefreshRuntime from 'http://localhost:8080/@react-refresh'
+            RefreshRuntime.injectIntoGlobalHook(window)
+            window.$RefreshReg$ = () => {}
+            window.$RefreshSig$ = () => (type) => type
+            window.__vite_plugin_react_preamble_installed__ = true
+        </script>
+        <script type="module" src="http://localhost:8080/@vite/client"></script>
+    <% } %>
     <script>
         window.__PRELOADED_STATE__ = <%- lodex.preload %>;
         window.__TENANT__ = '<%= lodex.tenant %>';
         window.ISTEX_API_URL = '<%= lodex.istexApi %>';
     </script>
-    <script src="<%= lodex.base.href %>/index.js"></script>
+    <script type="module" src="<%= lodex.base.href %>/index.js"></script>
     <% if (custom.matomoID && custom.matomoHost) { %>
         <!-- Piwik -->
         <script>

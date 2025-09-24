@@ -26,7 +26,7 @@ import translations from '../services/translations';
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Router } from 'react-router-dom';
-import getCatalogFromArray from '../../common/fields/getCatalogFromArray.js';
+import getCatalogFromArray from '../../common/fields/getCatalogFromArray';
 import { DEFAULT_TENANT } from '../../common/tools/tenantTools';
 import { renderAdmin, renderPublic, renderRootAdmin } from '../models/front';
 import { getPublication } from './api/publication';
@@ -319,7 +319,7 @@ app.use(
     }),
 );
 
-app.use(mount('/', serve(path.resolve(__dirname, '../../build'))));
+app.use(mount('/', serve(path.resolve(__dirname, '../../app/build'))));
 app.use(mount('/', serve(path.resolve(__dirname, '../../app/custom'))));
 
 export default app;
