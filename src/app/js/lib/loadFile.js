@@ -1,4 +1,4 @@
-import Resumable from '@recuperateur/resumablejs';
+import * as Resumable from '@recuperateur/resumablejs';
 import { DEFAULT_TENANT } from '../../../common/tools/tenantTools';
 
 export const loadFile = (url, file, token, customLoader = null) =>

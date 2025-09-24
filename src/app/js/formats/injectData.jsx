@@ -9,13 +9,13 @@ import get from 'lodash/get';
 import {
     field as fieldPropTypes,
     polyglot as polyglotPropTypes,
-} from '../propTypes.js';
+} from '../propTypes';
 import { fromFormat } from '../public/selectors';
 import { preLoadFormatData, loadFormatData, unLoadFormatData } from './reducer';
 import Loading from '../lib/components/Loading';
 import InvalidFormat from './InvalidFormat';
 import { CircularProgress } from '@mui/material';
-import { translate } from '../i18n/I18NContext.js';
+import { translate } from '../i18n/I18NContext';
 
 const styles = {
     message: {

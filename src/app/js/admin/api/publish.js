@@ -1,6 +1,6 @@
 import fetch from '../../lib/fetch';
-const { getPublishRequest } = require('../../user');
-const { getUserSessionStorageInfo } = require('./tools');
+import { getPublishRequest } from '../../user';
+import { getUserSessionStorageInfo } from './tools';
 
 const publish = async () => {
     const { token } = getUserSessionStorageInfo();
