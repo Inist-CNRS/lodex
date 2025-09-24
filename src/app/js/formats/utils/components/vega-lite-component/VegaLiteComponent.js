@@ -34,6 +34,7 @@ function CustomActionVegaLite({
     const graphParentRef = useVegaCsvExport(polyglot, data);
 
     const specWithData = spec;
+    const { height: specHeight } = specWithData;
 
     switch (injectType) {
         case VEGA_LITE_DATA_INJECT_TYPE_A:
@@ -65,7 +66,15 @@ function CustomActionVegaLite({
                     <Vega
                         style={
                             aspectRatio === ASPECT_RATIO_NONE
-                                ? { width: '100%', aspectRatio: '2 / 1' }
+                                ? {
+                                      width: '100%',
+                                      aspectRatio:
+                                          // If no height is provided when the spec height is set to container,
+                                          // the graph height is very small. As a workaround we set a default aspect ratio of 2/1.
+                                          specHeight === 'container'
+                                              ? '2 / 1'
+                                              : undefined,
+                                  }
                                 : { width: '100%', aspectRatio }
                         }
                         spec={deepClone(specWithData)}
@@ -92,7 +101,15 @@ function CustomActionVegaLite({
                         <Vega
                             style={
                                 aspectRatio === ASPECT_RATIO_NONE
-                                    ? { width: '100%', aspectRatio: '2 / 1' }
+                                    ? {
+                                          width: '100%',
+                                          aspectRatio:
+                                              // If no height is provided when the spec height is set to container,
+                                              // the graph height is very small. As a workaround we set a default aspect ratio of 2/1.
+                                              specHeight === 'container'
+                                                  ? '2 / 1'
+                                                  : undefined,
+                                      }
                                     : { width: '100%', aspectRatio }
                             }
                             spec={deepClone(specWithData)}
