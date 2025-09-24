@@ -58,76 +58,45 @@ function CustomActionVegaLite({
             throw new Error('Invalid data injection type');
     }
 
+    const vegaGraphElement = (
+        <Vega
+            style={
+                aspectRatio === ASPECT_RATIO_NONE
+                    ? {
+                          width: '100%',
+                          aspectRatio:
+                              // If no height is provided when the spec height is set to container,
+                              // the graph height is very small. As a workaround we set a default aspect ratio of 2/1.
+                              specHeight === 'container' ? '2 / 1' : undefined,
+                      }
+                    : { width: '100%', aspectRatio }
+            }
+            spec={deepClone(specWithData)}
+            actions={actions}
+            mode="vega-lite"
+            i18n={{
+                SVG_ACTION: polyglot.t('vega_export_svg'),
+                PNG_ACTION: polyglot.t('vega_export_png'),
+                CLICK_TO_VIEW_ACTIONS: polyglot.t('vega_click_to_view_actions'),
+                COMPILED_ACTION: polyglot.t('vega_compiled_action'),
+                EDITOR_ACTION: polyglot.t('vega_editor_action'),
+                SOURCE_ACTION: polyglot.t('vega_source_action'),
+            }}
+        />
+    );
+
     return (
         <>
             <style>{'#vg-tooltip-element {z-index:99999}'}</style>
             {disableZoom ? (
-                <div ref={graphParentRef}>
-                    <Vega
-                        style={
-                            aspectRatio === ASPECT_RATIO_NONE
-                                ? {
-                                      width: '100%',
-                                      aspectRatio:
-                                          // If no height is provided when the spec height is set to container,
-                                          // the graph height is very small. As a workaround we set a default aspect ratio of 2/1.
-                                          specHeight === 'container'
-                                              ? '2 / 1'
-                                              : undefined,
-                                  }
-                                : { width: '100%', aspectRatio }
-                        }
-                        spec={deepClone(specWithData)}
-                        actions={actions}
-                        mode="vega-lite"
-                        i18n={{
-                            SVG_ACTION: polyglot.t('vega_export_svg'),
-                            PNG_ACTION: polyglot.t('vega_export_png'),
-                            CLICK_TO_VIEW_ACTIONS: polyglot.t(
-                                'vega_click_to_view_actions',
-                            ),
-                            COMPILED_ACTION: polyglot.t('vega_compiled_action'),
-                            EDITOR_ACTION: polyglot.t('vega_editor_action'),
-                            SOURCE_ACTION: polyglot.t('vega_source_action'),
-                        }}
-                    />
-                </div>
+                <div ref={graphParentRef}>{vegaGraphElement}</div>
             ) : (
                 <FormatFullScreenMode>
                     <div
                         ref={graphParentRef}
                         style={{ width: '100%', height: '100%' }}
                     >
-                        <Vega
-                            style={
-                                aspectRatio === ASPECT_RATIO_NONE
-                                    ? {
-                                          width: '100%',
-                                          aspectRatio:
-                                              // If no height is provided when the spec height is set to container,
-                                              // the graph height is very small. As a workaround we set a default aspect ratio of 2/1.
-                                              specHeight === 'container'
-                                                  ? '2 / 1'
-                                                  : undefined,
-                                      }
-                                    : { width: '100%', aspectRatio }
-                            }
-                            spec={deepClone(specWithData)}
-                            actions={actions}
-                            mode="vega-lite"
-                            i18n={{
-                                SVG_ACTION: polyglot.t('vega_export_svg'),
-                                PNG_ACTION: polyglot.t('vega_export_png'),
-                                CLICK_TO_VIEW_ACTIONS: polyglot.t(
-                                    'vega_click_to_view_actions',
-                                ),
-                                COMPILED_ACTION: polyglot.t(
-                                    'vega_compiled_action',
-                                ),
-                                EDITOR_ACTION: polyglot.t('vega_editor_action'),
-                                SOURCE_ACTION: polyglot.t('vega_source_action'),
-                            }}
-                        />
+                        {vegaGraphElement}
                     </div>
                 </FormatFullScreenMode>
             )}
