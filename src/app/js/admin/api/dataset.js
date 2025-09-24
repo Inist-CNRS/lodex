@@ -1,12 +1,12 @@
 import fetch from '../../lib/fetch';
-const {
+import {
     getGetDatasetRequest,
     getGetDatasetColumnsRequest,
     putUpdateDataset,
     getDeleteManyDatasetRowRequest,
     getDeleteFilteredDatasetRowRequest,
-} = require('../../user');
-const { getUserSessionStorageInfo } = require('./tools');
+} from '../../user';
+import { getUserSessionStorageInfo } from './tools';
 
 const getDataset = async ({ filter, skip, limit, sort }) => {
     const { token } = getUserSessionStorageInfo();

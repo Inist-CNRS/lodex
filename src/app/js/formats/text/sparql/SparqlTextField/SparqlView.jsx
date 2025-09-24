@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { translate } from '../../../../i18n/I18NContext';
 import compose from 'recompose/compose';
 import SparqlRequest from '../SparqlRequest';
-import { isURL } from '../../../../../../common/uris.js';
+import { isURL } from '../../../../../../common/uris';
 import { field as fieldPropTypes } from '../../../../propTypes';
 import URL from 'url';
 import toPairs from 'lodash/toPairs';

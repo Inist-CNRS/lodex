@@ -74,7 +74,6 @@ export default (predicate, Component, format, type) => {
         resource: PropTypes.string.isRequired,
         field: PropTypes.object.isRequired,
         p: polyglotPropTypes.isRequired,
-        resource: PropTypes.object.isRequired,
     };
 
     return translate(CheckedComponent);
