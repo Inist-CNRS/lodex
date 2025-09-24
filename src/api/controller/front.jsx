@@ -164,8 +164,7 @@ const handleRender = async (ctx, next) => {
     if (
         (url.match(/[^\\]*\.(\w+)$/) && !url.match(/\/uid:\//)) ||
         url.match(/[^\\]*\.html$/) ||
-        url.match('/admin') ||
-        url.match('__webpack_hmr')
+        url.match('/admin')
     ) {
         // no route matched switch to static file
         return next();
@@ -279,8 +278,7 @@ app.use(async (ctx, next) => {
         !ctx.request.url.match(/instance\/([^\/]*)\/login/) &&
         !ctx.request.url.match(/instance\/([^\/]*)\/admin/) &&
         !ctx.request.url.startsWith('/instances') &&
-        !ctx.request.url.match(/[^\\]*\.(\w+)$/) &&
-        !ctx.request.url.match('__webpack_hmr')
+        !ctx.request.url.match(/[^\\]*\.(\w+)$/)
     ) {
         const defaultTenant = DEFAULT_TENANT; // TODO: Replace by default tenant in BDD
         const matchResult = ctx.request.url.match(/instance\/([^\/]*)(.*)/);

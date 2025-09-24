@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { lazy, Suspense, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { formatAdminStyle } from '../../adminStyles';
 import { polyglot as polyglotPropTypes } from '../../../../propTypes';
@@ -10,7 +10,10 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Typography from '@mui/material/Typography';
-import { translate } from '../../../../i18n/I18NContext';
+import Loading from '../../../../lib/components/Loading';
+import { translate, useTranslate } from '../../../../i18n/I18NContext';
+
+const ReactJson = lazy(() => import('react-json-view'));
 
 const FormatFieldSetPreview = ({
     p,
@@ -20,7 +23,7 @@ const FormatFieldSetPreview = ({
     PreviewComponent,
     defaultExpanded,
 }) => {
-    const ReactJson = require('react-json-view').default;
+    const { translate } = useTranslate();
 
     const [datasetName, setDatasetName] = useState('');
     const [dataset, setDataset] = useState({});
@@ -84,20 +87,22 @@ const FormatFieldSetPreview = ({
                 >
                     <PreviewComponent {...args} dataset={dataset} />
                 </fieldset>
-                <ReactJson
-                    style={{
-                        borderRadius: '5px',
-                        padding: '8px',
-                        marginTop: '12px',
-                    }}
-                    src={dataset}
-                    theme="monokai"
-                    enableClipboard={false}
-                    onEdit={handleDataSetEditor}
-                    onAdd={handleDataSetEditor}
-                    onDelete={handleDataSetEditor}
-                    collapsed={1}
-                />
+                <Suspense fallback={<Loading>{translate('loading')}</Loading>}>
+                    <ReactJson
+                        style={{
+                            borderRadius: '5px',
+                            padding: '8px',
+                            marginTop: '12px',
+                        }}
+                        src={dataset}
+                        theme="monokai"
+                        enableClipboard={false}
+                        onEdit={handleDataSetEditor}
+                        onAdd={handleDataSetEditor}
+                        onDelete={handleDataSetEditor}
+                        collapsed={1}
+                    />
+                </Suspense>
             </AccordionDetails>
         </Accordion>
     );

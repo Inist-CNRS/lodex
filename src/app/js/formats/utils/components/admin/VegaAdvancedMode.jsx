@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { lazy, Suspense, useEffect, useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Tooltip, Box } from '@mui/material';
 import ReportProblemIcon from '@mui/icons-material/ReportProblem';
@@ -33,10 +33,11 @@ const styles = {
     },
 };
 
-const VegaAdvancedMode = ({ p, value, onChange, onClear }) => {
-    const FormSourceCodeField =
-        require('../../../../lib/components/FormSourceCodeField').default;
+const FormSourceCodeField = lazy(
+    () => import('../../../../lib/components/FormSourceCodeField'),
+);
 
+const VegaAdvancedMode = ({ p, value, onChange, onClear }) => {
     const [currentValue, setCurrentValue] = useState(value || '{}');
     const [error, setError] = useState(null);
 
@@ -153,18 +154,20 @@ const VegaAdvancedMode = ({ p, value, onChange, onClear }) => {
                         </div>
                     </p>
                 </div>
-                <FormSourceCodeField
-                    style={{
-                        width: '100%',
-                        height: '70vh',
-                        borderRadius: '5px',
-                    }}
-                    mode="json"
-                    input={{
-                        value: currentValue,
-                        onChange: handleChange,
-                    }}
-                />
+                <Suspense fallback={<Loading>{p.t('loading')}</Loading>}>
+                    <FormSourceCodeField
+                        style={{
+                            width: '100%',
+                            height: '70vh',
+                            borderRadius: '5px',
+                        }}
+                        mode="json"
+                        input={{
+                            value: currentValue,
+                            onChange: handleChange,
+                        }}
+                    />
+                </Suspense>
             </Box>
             {error ? (
                 <div style={styles.error.container}>
