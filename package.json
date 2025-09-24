@@ -13,10 +13,10 @@
         "start": "concurrently \"npm:production:*\"",
         "production:api": "node --max-http-header-size=32768 --require @babel/register src/api",
         "production:workers": "node --require @babel/register workers",
-        "build": "BABEL_ENV=browser node --max_old_space_size=4096 --max-http-header-size=32768 ./node_modules/.bin/webpack --config=./src/app/webpack.config.babel.js",
+        "build": "npx vite build --config ./vite.config.js",
         "analyze": "BABEL_ENV=browser NODE_ENV=analyze npx webpack --config=./src/app/webpack.config.babel.js --profile --json > stats.json",
         "development:api": "nodemon --inspect=0.0.0.0:9229 --max-http-header-size=32768 --require @babel/register --watch src/api --watch src/common --watch src/app/custom --watch src/app/js/public src/api",
-        "development:app": "BABEL_ENV=browser npx webpack-dev-server --config=./src/app/webpack.config.babel.js --port=8080 --host=0.0.0.0",
+        "development:app": "npx vite --port=8080 --host=0.0.0.0",
         "postversion": "git push && git push --tags",
         "lint": "eslint \"src/**/*.{jsx,js}\" --fix",
         "lint:test": "eslint \"src/**/*.{jsx,js}\"",
@@ -132,6 +132,7 @@
         "koa": "^2.15.3",
         "koa-bodyparser": "^4.4.1",
         "koa-cache-control": "^2.0.0",
+        "koa-connect": "^2.1.0",
         "koa-jwt": "^4.0.4",
         "koa-mount": "^4.0.0",
         "koa-qs": "^3.0.0",
@@ -235,6 +236,7 @@
         "vega-voronoi": "4.2.2",
         "vega-wordcloud": "4.1.4",
         "venn.js": "0.2.20",
+        "vite-plugin-ssr": "^0.4.142",
         "winston": "^3.11.0",
         "zod": "^3.24.1"
     },
@@ -288,10 +290,13 @@
         "nodemon": "3.0.3",
         "prettier": "^3.2.5",
         "sleepjs": "4.0.3",
+        "vite": "^7.1.7",
+        "@vitejs/plugin-react": "^5.0.3",
         "webpack": "^5.97.1",
         "webpack-bundle-analyzer": "^4.10.2",
         "webpack-cli": "^6.0.1",
-        "webpack-dev-server": "^5.2.0"
+        "webpack-dev-server": "^5.2.0",
+        "fmin": "^0.0.4"
     },
     "config": {
         "mongodbMemoryServer": {
@@ -302,7 +307,6 @@
         "@remix-run/server-runtime": {
             "cookie": "0.7.2"
         },
-        "d3-color": "3.1.0",
-        "rollup": "2.79.2"
+        "d3-color": "3.1.0"
     }
 }

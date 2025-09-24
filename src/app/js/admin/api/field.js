@@ -1,4 +1,4 @@
-const {
+import {
     postDuplicateField,
     clearModelRequest,
     getUpdateFieldRequest,
@@ -6,9 +6,9 @@ const {
     getPatchOverviewRequest,
     getPatchSortFieldRequest,
     getPatchSortOrderRequest,
-} = require('../../user');
+} from '../../user';
 
-import { store } from '..';
+import { store } from '../adminIndex';
 import { saveFieldSuccess } from '../../fields';
 import fetch from '../../lib/fetch';
 import { getUserSessionStorageInfo } from './tools';
