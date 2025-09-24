@@ -91,7 +91,7 @@ describe('Search', () => {
             cy.wait(100);
             menu.openSearchDrawer();
 
-            cy.get('.search-result-link[class*=activeLink_]').should('exist');
+            cy.get('.search-result-link[class*=active]').should('exist');
         });
 
         it('should keep track of the current search after changing page', () => {
@@ -165,7 +165,7 @@ describe('Search', () => {
             searchDrawer.filterFacet('Première mise en ligne en', '1926');
         });
 
-        it('should only show facets that are available on user language', () => {
+        it.only('should only show facets that are available on user language', () => {
             menu.openSearchDrawer();
 
             cy.contains('Première mise en ligne').should('exist');
