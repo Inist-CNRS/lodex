@@ -24,9 +24,19 @@ export default defineConfig(({ mode }) => {
                         __dirname,
                         'src/app/js/root-admin/index.js',
                     ),
+                    embeddedIstexSummary: resolve(
+                        __dirname,
+                        'src/app/js/embeddedIstexSummary/index.jsx',
+                    ),
                 },
                 output: {
-                    entryFileNames: '[name]/index.js',
+                    entryFileNames: (chunkInfo) => {
+                        if (chunkInfo.name === 'embeddedIstexSummary') {
+                            // we need to kepp same path as on ezmaster
+                            return 'embeddedIstexSummary.js';
+                        }
+                        return '[name]/index.js';
+                    },
                     chunkFileNames: '[name]/index.js',
                     assetFileNames: 'css/[name].[ext]',
                     manualChunks: undefined,
