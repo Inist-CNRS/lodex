@@ -108,7 +108,7 @@ describe('dataset reducer', () => {
         });
     });
 
-    it('should handle SORT_DATASET action and invert sortDir when sortBy do not change', () => {
+    it('should handle SORT_DATASET action and invert sortDir when sortBy do not change 2', () => {
         const state = reducer(
             { sort: { sortBy: 'field', sortDir: 'DESC' } },
             sortDataset('field'),

@@ -1,5 +1,6 @@
 import Koa from 'koa';
 import route from 'koa-route';
+// eslint-disable-next-line import/no-unresolved
 import ezs from '@ezs/core';
 import Basics from '@ezs/basics';
 import { PassThrough } from 'stream';
@@ -150,7 +151,7 @@ const middlewareScript = (isFormatExporters = false) => {
         json = false
         encoder = pack
 
-        `
+        `;
         ctx.body = input
             .pipe(ezs('pack')) // encode to transfert to the thread
             .pipe(

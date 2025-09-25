@@ -6,7 +6,6 @@ import {
     ADMIN_ROLE,
     CONTRIBUTOR_ROLE,
 } from '../../../common/tools/tenantTools';
-import ezMasterConfig from '../../services/ezMasterConfig';
 
 const expDate = Date.now();
 

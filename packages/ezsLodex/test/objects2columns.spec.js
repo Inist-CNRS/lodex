@@ -1,4 +1,5 @@
 import from from 'from';
+// eslint-disable-next-line import/no-unresolved
 import ezs from '@ezs/core';
 import testOne from './testOne';
 import statements from '../src';
@@ -25,10 +26,12 @@ describe('objects2columns', () => {
     });
 
     it('should return when columns non object', (done) => {
-        const stream = from([{
-            truc: 'anything else',
-            bidule: 1,
-        }]).pipe(ezs('objects2columns'));
+        const stream = from([
+            {
+                truc: 'anything else',
+                bidule: 1,
+            },
+        ]).pipe(ezs('objects2columns'));
         testOne(
             stream,
             (output) => {

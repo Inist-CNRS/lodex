@@ -1,11 +1,12 @@
 import from from 'from';
+// eslint-disable-next-line import/no-unresolved
 import ezs from '@ezs/core';
 import statements from '.';
 
 ezs.use(statements);
 
 describe('$MAPPING', () => {
-    test('with valid parameter', done => {
+    test('with valid parameter', (done) => {
         const script = `
             [$MAPPING]
             field = b
@@ -25,7 +26,7 @@ describe('$MAPPING', () => {
             .pipe(ezs('delegate', { script }))
             .pipe(ezs.catch())
             .on('error', done)
-            .on('data', chunk => {
+            .on('data', (chunk) => {
                 expect(chunk).toEqual(expect.any(Object));
                 output.push(chunk);
             })

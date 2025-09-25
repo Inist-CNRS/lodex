@@ -11,6 +11,8 @@ import React from 'react';
 import { TestI18N } from '../../i18n/I18NContext';
 import { ProposedValueFieldText } from './ProposedValueFieldText';
 
+import PropTypes from 'prop-types';
+
 function TestProposedValueFieldText({ field, initialValue }) {
     const form = useForm();
     return (
@@ -23,6 +25,11 @@ function TestProposedValueFieldText({ field, initialValue }) {
         </TestI18N>
     );
 }
+
+TestProposedValueFieldText.propTypes = {
+    field: PropTypes.object.isRequired,
+    initialValue: PropTypes.string,
+};
 
 describe('ProposedValueFieldText', () => {
     it('should render as text field if annotationFormat is text', () => {
