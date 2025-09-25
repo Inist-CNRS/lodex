@@ -5,7 +5,7 @@ import route from 'koa-route';
 import cors from 'kcors';
 import koaQs from 'koa-qs';
 import { KoaAdapter } from '@bull-board/koa';
-// @ts-expect-error TS(2792): Cannot find module '@ezs/core'. Did you mean to se... Remove this comment to see the full error message
+
 import ezs from '@ezs/core';
 import controller from './controller';
 import testController from './controller/testController';
