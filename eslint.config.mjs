@@ -1,6 +1,6 @@
 import babelParser from '@babel/eslint-parser';
-
 import { defineConfig, globalIgnores } from 'eslint/config';
+import tseslint from 'typescript-eslint';
 import js from '@eslint/js';
 import cypress from 'eslint-plugin-cypress';
 import importPlugin from 'eslint-plugin-import';
@@ -41,6 +41,11 @@ export default defineConfig([
             ],
         },
     },
+    tseslint.configs.recommended.map((conf) => ({
+        ...conf,
+        files: ['**/*.ts', '**/*.tsx'],
+        ignores: ['**/.js', '**/*.jsx'],
+    })),
     {
         name: 'eslint-plugin-import',
         plugins: { import: importPlugin },
