@@ -50,7 +50,7 @@ export default [
             globals: {
                 ...globals.browser,
                 ...globals.node,
-                ...cypress.environments.globals.globals,
+                cy: true,
                 process: true,
                 __DEBUG__: true,
                 LOADERS: true,
