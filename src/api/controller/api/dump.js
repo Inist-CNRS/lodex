@@ -1,13 +1,12 @@
 import mime from 'mime';
-import fs from 'fs';
-import os from 'os';
 import moment from 'moment';
 import { streamEnd } from '../../services/streamHelper';
-import { unlinkFile } from '../../services/fsHelpers.js';
 
 export default async (ctx) => {
     const { fields } = ctx.query;
-    const fieldsArray = fields ? fields.split(',') : [];
+    const fieldsArray = !Array.isArray(fields)
+        ? fields.split(',')
+        : fields ?? [];
     const filename = `dataset_${moment().format('YYYY-MM-DD-HHmmss')}.jsonl`;
 
     const stream = await ctx.dataset.dumpAsJsonLStream(fieldsArray);
