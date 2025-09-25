@@ -291,6 +291,7 @@
         "eslint": "^9.36.0",
         "eslint-config-prettier": "^10.1.8",
         "eslint-import-resolver-node": "^0.3.9",
+        "eslint-import-resolver-typescript": "^4.4.4",
         "eslint-plugin-cypress": "^5.1.1",
         "eslint-plugin-import": "^2.32.0",
         "eslint-import-resolver-typescript": "^4.4.4",
@@ -313,7 +314,7 @@
         "nodemon": "3.0.3",
         "prettier": "^3.2.5",
         "sleepjs": "4.0.3",
-        "typescript": "5.9.2",
+        "typescript": "^5.9.2",
         "typescript-eslint": "^8.44.1",
         "vite": "^7.1.7"
     },

@@ -1,5 +1,3 @@
-// @ts-expect-error TS(2792): Cannot find module '@ezs/core'. Did you mean to se... Remove this comment to see the full error message
-
 import ezs from '@ezs/core';
 // @ts-expect-error TS(2792): Cannot find module '@ezs/basics'. Did you mean to ... Remove this comment to see the full error message
 import ezsBasics from '@ezs/basics';
@@ -7,7 +5,6 @@ import {
     createFusible,
     enableFusible,
     disableFusible,
-    // @ts-expect-error TS(2792): Cannot find module '@ezs/core/fusible'. Did you me... Remove this comment to see the full error message
 } from '@ezs/core/fusible';
 // @ts-expect-error TS(2792): Cannot find module 'fetch-with-proxy'. Did you mea... Remove this comment to see the full error message
 import fetch from 'fetch-with-proxy';
