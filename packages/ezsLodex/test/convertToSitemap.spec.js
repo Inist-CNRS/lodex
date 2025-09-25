@@ -1,4 +1,5 @@
 import from from 'from';
+// eslint-disable-next-line import/no-unresolved
 import ezs from '@ezs/core';
 import statements from '../src';
 import testOne from './testOne';
@@ -14,11 +15,12 @@ describe('convertToSitemap', () => {
     });
 
     it('should output when one resource', (done) => {
-        const stream = from([{
-            uri: 'http://uri/1',
-            publicationDate: Date.now(),
-        }])
-            .pipe(ezs('convertToSitemap'));
+        const stream = from([
+            {
+                uri: 'http://uri/1',
+                publicationDate: Date.now(),
+            },
+        ]).pipe(ezs('convertToSitemap'));
         testOne(
             stream,
             (data) => {
@@ -30,10 +32,12 @@ describe('convertToSitemap', () => {
 
     it('should output a sitemap when one resource', (done) => {
         let str = '';
-        from([{
-            uri: 'http://uri/1',
-            publicationDate: Date.now(),
-        }])
+        from([
+            {
+                uri: 'http://uri/1',
+                publicationDate: Date.now(),
+            },
+        ])
             .pipe(ezs('convertToSitemap'))
             // .pipe(ezs('debug'))
             .on('data', (chunk) => {
@@ -45,20 +49,25 @@ describe('convertToSitemap', () => {
                 expect(res.length).toBe(2);
                 expect(res[0]).toBe('<?xml version="1.0"?>');
                 // eslint-disable-next-line max-len
-                expect(res[1]).toMatch(/^<urlset xmlns="http:\/\/www.sitemaps.org\/schemas\/sitemap\/0.9"><url><loc>http:\/\/uri\/1<\/loc><lastmod>[0-9]+<\/lastmod><changefreq>monthly<\/changefreq><priority>1<\/priority><\/url><\/urlset>$/);
+                expect(res[1]).toMatch(
+                    /^<urlset xmlns="http:\/\/www.sitemaps.org\/schemas\/sitemap\/0.9"><url><loc>http:\/\/uri\/1<\/loc><lastmod>[0-9]+<\/lastmod><changefreq>monthly<\/changefreq><priority>1<\/priority><\/url><\/urlset>$/,
+                );
                 done();
             });
     });
 
     it('should output a sitemap when 2 resources', (done) => {
         let str = '';
-        from([{
-            uri: 'http://uri/1',
-            publicationDate: Date.now(),
-        }, {
-            uri: 'http://uri/2',
-            publicationDate: Date.now(),
-        }])
+        from([
+            {
+                uri: 'http://uri/1',
+                publicationDate: Date.now(),
+            },
+            {
+                uri: 'http://uri/2',
+                publicationDate: Date.now(),
+            },
+        ])
             .pipe(ezs('convertToSitemap'))
             // .pipe(ezs('debug'))
             .on('data', (chunk) => {
@@ -70,7 +79,9 @@ describe('convertToSitemap', () => {
                 expect(res.length).toBe(2);
                 expect(res[0]).toBe('<?xml version="1.0"?>');
                 // eslint-disable-next-line max-len
-                expect(res[1]).toMatch(/^<urlset xmlns="http:\/\/www.sitemaps.org\/schemas\/sitemap\/0.9"><url><loc>http:\/\/uri\/1<\/loc><lastmod>[0-9]+<\/lastmod><changefreq>monthly<\/changefreq><priority>1<\/priority><\/url><url><loc>http:\/\/uri\/2<\/loc><lastmod>[0-9]+<\/lastmod><changefreq>monthly<\/changefreq><priority>1<\/priority><\/url><\/urlset>$/);
+                expect(res[1]).toMatch(
+                    /^<urlset xmlns="http:\/\/www.sitemaps.org\/schemas\/sitemap\/0.9"><url><loc>http:\/\/uri\/1<\/loc><lastmod>[0-9]+<\/lastmod><changefreq>monthly<\/changefreq><priority>1<\/priority><\/url><url><loc>http:\/\/uri\/2<\/loc><lastmod>[0-9]+<\/lastmod><changefreq>monthly<\/changefreq><priority>1<\/priority><\/url><\/urlset>$/,
+                );
                 done();
             });
     });
