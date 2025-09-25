@@ -1,7 +1,9 @@
 import babelParser from '@babel/eslint-parser';
 import { fixupConfigRules, fixupPluginRules } from '@eslint/compat';
 import { FlatCompat } from '@eslint/eslintrc';
-import js from '@eslint/js';
+// eslint-disable-next-line import/no-unresolved
+import { defineConfig } from 'eslint/config';
+import eslintJs from '@eslint/js';
 import cypress from 'eslint-plugin-cypress';
 import _import from 'eslint-plugin-import';
 import pluginJest from 'eslint-plugin-jest';
@@ -17,17 +19,14 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const compat = new FlatCompat({
     baseDirectory: __dirname,
-    recommendedConfig: js.configs.recommended,
-    allConfig: js.configs.all,
 });
 
-export default [
+export default defineConfig([
     {
         ignores: ['src/themes/**/*.js', 'src/app/custom/themes/**/js/*.js'],
     },
     ...fixupConfigRules(
         compat.extends(
-            'eslint:recommended',
             'plugin:import/errors',
             'plugin:import/warnings',
             'plugin:react/recommended',
@@ -41,8 +40,9 @@ export default [
             prettier,
             cypress,
             'no-only-tests': noOnlyTests,
+            js: eslintJs,
         },
-
+        extends: ['js/recommended'],
         languageOptions: {
             globals: {
                 ...globals.browser,
@@ -140,4 +140,4 @@ export default [
             'cypress/no-unnecessary-waiting': 'warn',
         },
     },
-];
+]);
