@@ -1,9 +1,6 @@
 import * as fs from 'fs';
 import path from 'path';
-// @ts-expect-error TS(2792): Cannot find module '@ezs/core'. Did you mean to se... Remove this comment to see the full error message
-
 import ezs from '@ezs/core';
-// @ts-expect-error TS(2792): Cannot find module '@ezs/core/fusible'. Did you me... Remove this comment to see the full error message
 
 import { createFusible, enableFusible } from '@ezs/core/fusible';
 import { PassThrough } from 'stream';
