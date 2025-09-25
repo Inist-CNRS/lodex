@@ -165,7 +165,7 @@ describe('Search', () => {
             searchDrawer.filterFacet('Première mise en ligne en', '1926');
         });
 
-        it.only('should only show facets that are available on user language', () => {
+        it('should only show facets that are available on user language', () => {
             menu.openSearchDrawer();
 
             cy.contains('Première mise en ligne').should('exist');
