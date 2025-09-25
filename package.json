@@ -107,7 +107,6 @@
         "concurrently": "7.6.0",
         "config": "^2.0.2",
         "copy-to-clipboard": "3.3.1",
-        "css-loader": "6.8.1",
         "csv-string": "3.2.0",
         "d3": "^7.9.0",
         "d3-force": "^3.0.0",
@@ -131,7 +130,6 @@
         "koa": "^2.15.3",
         "koa-bodyparser": "^4.4.1",
         "koa-cache-control": "^2.0.0",
-        "koa-connect": "^2.1.0",
         "koa-jwt": "^4.0.4",
         "koa-mount": "^4.0.0",
         "koa-qs": "^3.0.0",
@@ -288,8 +286,7 @@
         "nodemon": "3.0.3",
         "prettier": "^3.2.5",
         "sleepjs": "4.0.3",
-        "vite": "^7.1.7",
-        "fmin": "^0.0.4"
+        "vite": "^7.1.7"
     },
     "config": {
         "mongodbMemoryServer": {
