@@ -607,9 +607,7 @@ describe('field', () => {
                     await fieldCollection.findIdsByInternalName('not found'),
                 ).toStrictEqual([]);
             });
-        });
 
-        describe('findIdsByName', () => {
             it('should return a list of ids for every fields with given name', async () => {
                 const field1 = await fieldCollection.create(
                     {

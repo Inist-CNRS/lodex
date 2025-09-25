@@ -1,5 +1,6 @@
 import Path from 'path';
 import fs from 'fs';
+// eslint-disable-next-line import/no-unresolved
 import ezs from '@ezs/core';
 import config from '../../../config.json';
 
