@@ -271,6 +271,8 @@
         "@types/node-polyglot": "^2.5.0",
         "@types/nodemailer": "^6.4.17",
         "@types/pdfkit": "^0.17.3",
+        "@types/react": "^17.0.2",
+        "@types/react-dom": "^17.0.2",
         "@types/ramda": "0.27.40",
         "@types/react-helmet": "5.0.27",
         "@types/stream-to-promise": "^2.2.4",
