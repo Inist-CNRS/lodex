@@ -210,7 +210,7 @@ describe('characteristic routes', () => {
                 );
             });
 
-            it('should call ctx.field.updateOneById with updated field with new value as transformer args.value ', async () => {
+            it('should call ctx.field.updateOneById with updated field with new value as transformer args.value', async () => {
                 await updateCharacteristics(ctx);
                 expect(ctx.field.updateOneById).toHaveBeenCalledWith('id', {
                     _id: 'id',
@@ -363,7 +363,7 @@ describe('characteristic routes', () => {
                 );
             });
 
-            it('should call ctx.field.updateOneById with updated field with new value as transformer args.value ', async () => {
+            it('should call ctx.field.updateOneById with updated field with new value as transformer args.value', async () => {
                 await updateCharacteristics(ctx);
 
                 expect(ctx.field.updateOneById).toHaveBeenCalledWith('id', {

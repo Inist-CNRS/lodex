@@ -60,9 +60,9 @@ export default ({ url, ...config }, mode = 'json') => {
                             kbart: 'tsv',
                             raw: 'json',
                             'csv-full': 'csv',
-                            'csv': 'csv',
+                            csv: 'csv',
                             'tsv-full': 'tsv',
-                            'tsv': 'tsv',
+                            tsv: 'tsv',
                         };
                         filename = `export.${
                             exportExtent[exportType]
@@ -71,7 +71,10 @@ export default ({ url, ...config }, mode = 'json') => {
                         }`;
                     }
 
-                    return Promise.resolve({ response: response.body, filename });
+                    return Promise.resolve({
+                        response: response.body,
+                        filename,
+                    });
                 }
                 if (mode === 'blob') {
                     // TODO
@@ -99,9 +102,9 @@ export default ({ url, ...config }, mode = 'json') => {
                             kbart: 'tsv',
                             raw: 'json',
                             'csv-full': 'csv',
-                            'csv': 'csv',
+                            csv: 'csv',
                             'tsv-full': 'tsv',
-                            'tsv': 'tsv',
+                            tsv: 'tsv',
                         };
                         filename = `export.${
                             exportExtent[exportType]

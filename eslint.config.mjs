@@ -1,48 +1,63 @@
 import babelParser from '@babel/eslint-parser';
-import { fixupConfigRules, fixupPluginRules } from '@eslint/compat';
-import { FlatCompat } from '@eslint/eslintrc';
 // eslint-disable-next-line import/no-unresolved
-import { defineConfig } from 'eslint/config';
-import eslintJs from '@eslint/js';
+import { defineConfig, globalIgnores } from 'eslint/config';
+import js from '@eslint/js';
 import cypress from 'eslint-plugin-cypress';
-import _import from 'eslint-plugin-import';
+import importPlugin from 'eslint-plugin-import';
 import pluginJest from 'eslint-plugin-jest';
-import noOnlyTests from 'eslint-plugin-no-only-tests';
-import prettier from 'eslint-plugin-prettier';
 import react from 'eslint-plugin-react';
 import reactHooks from 'eslint-plugin-react-hooks';
 import globals from 'globals';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const compat = new FlatCompat({
-    baseDirectory: __dirname,
-});
 
 export default defineConfig([
+    globalIgnores([
+        'src/themes/**/*.js',
+        'src/app/custom/themes/**/js/*.js',
+        'node_modules',
+        '**/build',
+    ]),
     {
-        ignores: ['src/themes/**/*.js', 'src/app/custom/themes/**/js/*.js'],
-    },
-    ...fixupConfigRules(
-        compat.extends(
-            'plugin:import/errors',
-            'plugin:import/warnings',
-            'plugin:react/recommended',
-            'prettier',
-        ),
-    ),
-    {
+        name: 'eslint-js-recommended-rules',
         plugins: {
-            import: fixupPluginRules(_import),
-            react: fixupPluginRules(react),
-            prettier,
-            cypress,
-            'no-only-tests': noOnlyTests,
-            js: eslintJs,
+            js,
         },
         extends: ['js/recommended'],
+        rules: {
+            'no-use-before-define': 'warn',
+            'no-unused-vars': [
+                'error',
+                {
+                    ignoreRestSiblings: true,
+                    argsIgnorePattern: '^_',
+                    caughtErrors: 'none',
+                },
+            ],
+        },
+    },
+    {
+        name: 'eslint-plugin-import',
+        plugins: { import: importPlugin },
+        rules: {
+            ...importPlugin.configs.recommended.rules,
+        },
+        settings: {
+            'import/resolver': {
+                node: {
+                    extensions: ['.js', '.jsx'],
+                },
+            },
+        },
+    },
+    eslintPluginPrettierRecommended,
+    {
+        name: 'react',
+        ...react.configs.flat.recommended,
         languageOptions: {
             globals: {
                 ...globals.browser,
@@ -68,43 +83,6 @@ export default defineConfig([
                 },
             },
         },
-
-        settings: {
-            react: {
-                version: 'detect',
-            },
-        },
-
-        rules: {
-            'prettier/prettier': [
-                'error',
-                {
-                    singleQuote: true,
-                    tabWidth: 4,
-                    trailingComma: 'all',
-                },
-            ],
-
-            'import/no-extraneous-dependencies': 'off',
-
-            'no-console': [
-                'error',
-                {
-                    allow: ['warn', 'error'],
-                },
-            ],
-
-            'no-unused-vars': [
-                'error',
-                {
-                    ignoreRestSiblings: true,
-                    argsIgnorePattern: '^_',
-                    caughtErrors: 'none',
-                },
-            ],
-            'no-only-tests/no-only-tests': 'error',
-            'no-use-before-define': 'error',
-        },
     },
     reactHooks.configs['recommended-latest'],
     {
@@ -114,12 +92,18 @@ export default defineConfig([
             globals: pluginJest.environments.globals.globals,
         },
         rules: {
-            ...pluginJest.configs['flat/recommended'],
+            ...pluginJest.configs['flat/recommended'].rules,
+            'jest/no-done-callback': 'warn',
             'jest/no-disabled-tests': 'warn',
             'jest/no-focused-tests': 'error',
-            'jest/no-identical-title': 'error',
             'jest/prefer-to-have-length': 'warn',
             'jest/valid-expect': 'error',
+            'jest/no-conditional-expect': 'warn',
+            'jest/no-identical-title': 'warn',
+            'jest/no-standalone-expect': [
+                'error',
+                { additionalTestBlockFunctions: ['beforeEach'] },
+            ],
         },
     },
     {

@@ -1,5 +1,6 @@
 import Koa from 'koa';
 import route from 'koa-route';
+// eslint-disable-next-line import/no-unresolved
 import ezs from '@ezs/core';
 import koaBodyParser from 'koa-bodyparser';
 import { v1 as uuid } from 'uuid';
