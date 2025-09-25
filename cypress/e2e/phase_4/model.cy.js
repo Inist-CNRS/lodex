@@ -10,7 +10,7 @@ describe('Model Page', () => {
             // ResizeObserver doesn't like when the app has to many renders / re-renders
             // and throws an exception to say, "I wait for the next paint"
             // https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver#observation_errors
-            cy.on('uncaught:exception', error => {
+            cy.on('uncaught:exception', (error) => {
                 return !error.message.includes('ResizeObserver');
             });
 
@@ -32,9 +32,7 @@ describe('Model Page', () => {
                 'Répartition par créateurs',
             ]);
 
-            cy.get('.property_label')
-                .contains('rating')
-                .should('not.exist');
+            cy.get('.property_label').contains('rating').should('not.exist');
         });
 
         it('should display list of fields in resources', () => {
@@ -44,21 +42,15 @@ describe('Model Page', () => {
                 .findSearchResultByTitle('Star Wars Episode IV: A New Hope')
                 .click();
 
-            cy.get('.property_label')
-                .contains('actors')
-                .should('be.visible');
+            cy.get('.property_label').contains('actors').should('be.visible');
 
             cy.get('.property_value')
                 .contains('Mark Hamill')
                 .should('be.visible');
 
-            cy.get('.property_label')
-                .contains('rating')
-                .should('be.visible');
+            cy.get('.property_label').contains('rating').should('be.visible');
 
-            cy.get('.property_value')
-                .contains('8,7')
-                .should('be.visible');
+            cy.get('.property_value').contains('8,7').should('be.visible');
 
             cy.get('.property_label')
                 .contains('Répartition par créateurs')
