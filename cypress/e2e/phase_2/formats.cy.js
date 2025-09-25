@@ -14,9 +14,7 @@ describe('Transformers & Formats', () => {
             datasetImportPage.importDataset('dataset/simple.csv');
 
             adminNavigation.goToDisplay();
-            cy.get('.sidebar')
-                .contains('Main resource')
-                .click();
+            cy.get('.sidebar').contains('Main resource').click();
 
             datasetImportPage.addColumn('Column 1', {
                 composedOf: ['Column 1', 'Column 2'],
@@ -108,9 +106,7 @@ describe('Transformers & Formats', () => {
 
                 cy.visit('http://localhost:3000/uid:/wrong');
 
-                cy.get('.detail')
-                    .find('.property')
-                    .should('have.length', 0);
+                cy.get('.detail').find('.property').should('have.length', 0);
 
                 cy.get('.detail')
                     .find('.invalid-format')
