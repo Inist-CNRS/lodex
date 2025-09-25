@@ -2,10 +2,10 @@ name: Lodex CI
 
 # Run this ci only on pull request who targets master and on master branch only
 on:
-  push:
-    branches: [ master, v14 ]
-  pull_request:
-    branches: [ master, v14 ]
+    push:
+        branches: [master, v14]
+    pull_request:
+        branches: [master, v14]
 
 jobs:
     # Job use to create the test environment and run unit test suite
@@ -89,3 +89,30 @@ jobs:
               with:
                   name: cypress-screenshots
                   path: cypress/screenshots
+    lint:
+        runs-on: ubuntu-22.04
+
+        # Create a strategy matrix uses to test multiple versions of node
+        strategy:
+            fail-fast: false
+            matrix:
+                # See https://github.com/nodejs/Release
+                node-version: [22.x]
+
+        steps:
+            # Pull repository content
+            - uses: actions/checkout@v4
+
+            # Setup NodeJS
+            - name: Use Node.js ${{ matrix.node-version }}
+              uses: actions/setup-node@v3
+              with:
+                  node-version: ${{ matrix.node-version }}
+                  cache: 'npm'
+
+            # Install project dependencies (equivalent to make install)
+            - run: make copy-conf
+            - run: npm ci --legacy-peer-deps
+
+            # Run lint
+            - run: npm run lint:test
