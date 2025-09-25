@@ -17,15 +17,15 @@ export default defineConfig(({ mode }) => {
             target: ['chrome107', 'edge107', 'firefox104', 'safari16'],
             rollupOptions: {
                 input: {
-                    public: resolve(__dirname, 'src/app/js/public/index.js'),
-                    admin: resolve(__dirname, 'src/app/js/admin/index.js'),
+                    public: resolve(__dirname, 'src/app/js/public/index.ts'),
+                    admin: resolve(__dirname, 'src/app/js/admin/index.ts'),
                     'root-admin': resolve(
                         __dirname,
-                        'src/app/js/root-admin/index.js',
+                        'src/app/js/root-admin/index.ts',
                     ),
                     embeddedIstexSummary: resolve(
                         __dirname,
-                        'src/app/js/embeddedIstexSummary/index.jsx',
+                        'src/app/js/embeddedIstexSummary/index.tsx',
                     ),
                 },
                 output: {
