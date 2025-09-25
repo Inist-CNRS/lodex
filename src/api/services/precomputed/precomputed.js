@@ -7,6 +7,7 @@ import fetch from 'fetch-with-proxy';
 import path from 'path';
 import { tmpdir } from 'os';
 import { createReadStream } from 'fs';
+// eslint-disable-next-line import/no-unresolved
 import ezs from '@ezs/core';
 import Lodex from '@ezs/lodex';
 import Basics from '@ezs/basics';

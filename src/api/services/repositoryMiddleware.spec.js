@@ -1,7 +1,7 @@
 import { mongoClientFactory } from './repositoryMiddleware';
 
 describe('mongoClient middleware', () => {
-    it('it should add db and collections to ctx', async () => {
+    it('should add db and collections to ctx', async () => {
         const listCollections = {
             toArray: () => [true],
         };

@@ -8,12 +8,13 @@ export const PrecomputedCatalog = ({
     handleClose,
     onChange,
     selectedWebServiceUrl,
-}) => Catalog({
-    isOpen,
-    handleClose,
-    onChange,
-    selectedWebServiceUrl,
-    enrichers,
-    translatePrefix,
-});
+}) =>
+    Catalog({
+        isOpen,
+        handleClose,
+        onChange,
+        selectedWebServiceUrl,
+        enrichers,
+        translatePrefix,
+    });
 export default PrecomputedCatalog;
