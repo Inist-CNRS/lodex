@@ -101,7 +101,7 @@ describe('user reducer', () => {
                 'field3',
             ]);
             expect(result).toEqual({
-                url: '/api/dump?fields=field1%2Cfield2%2Cfield3',
+                url: '/api/dump?fields%5B%5D=field1&fields%5B%5D=field2&fields%5B%5D=field3',
                 method: 'GET',
                 credentials: 'same-origin',
                 body: undefined,
@@ -128,7 +128,7 @@ describe('user reducer', () => {
             ]);
             console.log(result.url);
             expect(result).toEqual({
-                url: '/api/dump?fields=field%20%26%20cie%2Canother%20field%2C%3D%3D%20field%20%3D%3D%2Cfield%2Fwith%2Fslash%2Cfield%3Fwith%3Fquestion%2Cfield%2Bwith%2Bplus%2Cfield%2Cwith%2Ccomma%2Cfield%25with%25percent%2Cfield%23with%23hash',
+                url: '/api/dump?fields%5B%5D=field+%26+cie&fields%5B%5D=another+field&fields%5B%5D=%3D%3D+field+%3D%3D&fields%5B%5D=field%2Fwith%2Fslash&fields%5B%5D=field%3Fwith%3Fquestion&fields%5B%5D=field%2Bwith%2Bplus&fields%5B%5D=field%2Cwith%2Ccomma&fields%5B%5D=field%25with%25percent&fields%5B%5D=field%23with%23hash',
                 method: 'GET',
                 credentials: 'same-origin',
                 body: undefined,

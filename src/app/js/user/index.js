@@ -434,11 +434,14 @@ export const getClearDatasetRequest = (state) =>
         method: 'DELETE',
     });
 
-export const getDumpDatasetRequest = (state, fields) =>
-    getRequest(state, {
-        url: `/api/dump?fields=${encodeURIComponent(fields.join(','))}`,
+export const getDumpDatasetRequest = (state, fields) => {
+    const searchParams = new URLSearchParams();
+    fields.forEach((field) => searchParams.append('fields[]', field));
+    return getRequest(state, {
+        url: `/api/dump?${searchParams.toString()}`,
         method: 'GET',
     });
+};
 
 export const getAddFieldToResourceRequest = (state, data) =>
     getRequest(state, {
