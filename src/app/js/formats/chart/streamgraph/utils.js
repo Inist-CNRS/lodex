@@ -1,5 +1,4 @@
 import differenceBy from 'lodash/differenceBy';
-import * as d3 from 'd3';
 
 export function zoomFunction(event) {
     // create new scale ojects based on event

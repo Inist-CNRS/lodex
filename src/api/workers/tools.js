@@ -1,4 +1,5 @@
 import { cleanWaitingJobsOfType, workerQueues, CancelWorkerError } from '.';
+// eslint-disable-next-line import/no-unresolved
 import { disableFusible } from '@ezs/core/fusible';
 
 import { ERROR } from '../../common/progressStatus';

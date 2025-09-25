@@ -1,17 +1,14 @@
 import * as fs from 'fs';
 import path from 'path';
+// eslint-disable-next-line import/no-unresolved
 import ezs from '@ezs/core';
-import {
-    createFusible,
-    enableFusible,
-    disableFusible,
-} from '@ezs/core/fusible';
+// eslint-disable-next-line import/no-unresolved
+import { createFusible, enableFusible } from '@ezs/core/fusible';
 import { PassThrough } from 'stream';
 import progress from '../../services/progress';
 import localConfig from '../../../../config.json';
 import { mongoConnectionString } from '../mongoClient';
 
-import { ObjectId } from 'mongodb';
 import from from 'from';
 import {
     PENDING as ENRICHMENT_PENDING,
@@ -202,7 +199,6 @@ async function postcheck(data, feed) {
     feed.send(data);
 }
 
-
 const processEzsEnrichment = (entries, commands, ctx, preview = false) => {
     return new Promise((resolve, reject) => {
         const environment = {
@@ -246,17 +242,18 @@ const processEzsEnrichment = (entries, commands, ctx, preview = false) => {
     });
 };
 
-const processEnrichmentPipeline = (room, fusible, filter, enrichment, ctx) => new Promise((resolve, reject) => {
-    const { enrichmentBatchSize } = ctx.configTenant;
-    const BATCH_SIZE = Number(enrichmentBatchSize || 10);
-    const environment = {
-        connectionStringURI: mongoConnectionString(ctx.tenant),
-    };
-    const primer = {
-        filter,
-    };
-    let errorCount = 0;
-    const script = `
+const processEnrichmentPipeline = (room, fusible, filter, enrichment, ctx) =>
+    new Promise((resolve, reject) => {
+        const { enrichmentBatchSize } = ctx.configTenant;
+        const BATCH_SIZE = Number(enrichmentBatchSize || 10);
+        const environment = {
+            connectionStringURI: mongoConnectionString(ctx.tenant),
+        };
+        const primer = {
+            filter,
+        };
+        let errorCount = 0;
+        const script = `
     [use]
     plugin = lodex
 
@@ -291,49 +288,47 @@ const processEnrichmentPipeline = (room, fusible, filter, enrichment, ctx) => ne
 
     [ungroup]
     `;
-    const input = new PassThrough({ objectMode: true });
-    input
-        .pipe(ezs(
-            'delegate',
-            { script },
-            environment,
-        ))
-        .on('data', async (data) => {
-            if (!(await ctx.job?.isActive())) {
-                return reject(new CancelWorkerError('Job has been canceled'));
-            }
-            progress.incrementProgress(ctx.tenant, 1);
-            const {id, value, error } = data;
-            let logData;
-            if (id) {
-                logData = JSON.stringify({
-                    level: error ? 'error' : 'info',
-                    message: error
-                    ? `[Instance: ${ctx.tenant}] Error enriching #${id}: ${value}`
-                    : `[Instance: ${ctx.tenant}] Finished enriching #${id} (output: ${value})`,
-                    timestamp: new Date(),
-                    status: IN_PROGRESS,
-                });
-                errorCount += error ? 1 : 0;
-            } else {
-                errorCount += 1;
-                logData = JSON.stringify({
-                    level: 'error',
-                    message: `[Instance: ${ctx.tenant}] ${error}`,
-                    timestamp: new Date(),
-                    status: IN_PROGRESS,
-                });
-            }
-            jobLogger.info(ctx.job, logData);
-            notifyListeners(room, logData);
-        })
-        .on('end', () => resolve(errorCount))
-        .on('error', (error) => {
-            error.errorCount = errorCount;
-            reject(error);
-        });
-    input.end(primer);
-});
+        const input = new PassThrough({ objectMode: true });
+        input
+            .pipe(ezs('delegate', { script }, environment))
+            .on('data', async (data) => {
+                if (!(await ctx.job?.isActive())) {
+                    return reject(
+                        new CancelWorkerError('Job has been canceled'),
+                    );
+                }
+                progress.incrementProgress(ctx.tenant, 1);
+                const { id, value, error } = data;
+                let logData;
+                if (id) {
+                    logData = JSON.stringify({
+                        level: error ? 'error' : 'info',
+                        message: error
+                            ? `[Instance: ${ctx.tenant}] Error enriching #${id}: ${value}`
+                            : `[Instance: ${ctx.tenant}] Finished enriching #${id} (output: ${value})`,
+                        timestamp: new Date(),
+                        status: IN_PROGRESS,
+                    });
+                    errorCount += error ? 1 : 0;
+                } else {
+                    errorCount += 1;
+                    logData = JSON.stringify({
+                        level: 'error',
+                        message: `[Instance: ${ctx.tenant}] ${error}`,
+                        timestamp: new Date(),
+                        status: IN_PROGRESS,
+                    });
+                }
+                jobLogger.info(ctx.job, logData);
+                notifyListeners(room, logData);
+            })
+            .on('end', () => resolve(errorCount))
+            .on('error', (error) => {
+                error.errorCount = errorCount;
+                reject(error);
+            });
+        input.end(primer);
+    });
 
 export const processEnrichment = async (enrichment, filter, ctx) => {
     const room = `${ctx.tenant}-enrichment-job-${ctx.job.id}`;
@@ -346,8 +341,14 @@ export const processEnrichment = async (enrichment, filter, ctx) => {
             ...ctx.job.data,
             fusible,
         });
-        errorCount = await processEnrichmentPipeline(room, fusible, filter, enrichment, ctx);
-    } catch(e) {
+        errorCount = await processEnrichmentPipeline(
+            room,
+            fusible,
+            filter,
+            enrichment,
+            ctx,
+        );
+    } catch (e) {
         errorCount = e.errorCount || 0;
         const logData = JSON.stringify({
             level: 'error',
@@ -382,8 +383,8 @@ export const startEnrichment = async (ctx) => {
 
     const filter = ctx.retryFailedOnly
         ? {
-            [enrichment.name]: /^\[Error\]:/,
-        }
+              [enrichment.name]: /^\[Error\]:/,
+          }
         : undefined;
 
     const dataSetSize = await ctx.dataset.count(filter);
@@ -422,9 +423,9 @@ export const setEnrichmentError = async (ctx, err) => {
     const logData = JSON.stringify({
         level: 'error',
         message:
-        err instanceof CancelWorkerError
-        ? `[Instance: ${ctx.tenant}] ${err?.message}`
-        : `[Instance: ${ctx.tenant}] Enrichement errored : ${err?.message}`,
+            err instanceof CancelWorkerError
+                ? `[Instance: ${ctx.tenant}] ${err?.message}`
+                : `[Instance: ${ctx.tenant}] Enrichement errored : ${err?.message}`,
         timestamp: new Date(),
         status: err instanceof CancelWorkerError ? CANCELED : ERROR,
     });
@@ -436,9 +437,9 @@ export const setEnrichmentError = async (ctx, err) => {
         isEnriching: false,
         success: false,
         message:
-        err instanceof CancelWorkerError
-        ? 'cancelled_enricher'
-        : err?.message,
+            err instanceof CancelWorkerError
+                ? 'cancelled_enricher'
+                : err?.message,
     });
 };
 

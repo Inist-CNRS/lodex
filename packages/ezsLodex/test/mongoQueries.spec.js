@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/no-unresolved
 import ezs from '@ezs/core';
 import from from 'from';
 import _ from 'lodash';

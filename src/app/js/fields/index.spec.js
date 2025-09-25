@@ -525,13 +525,15 @@ describe('field reducer', () => {
             }),
         );
 
-        expect(state).toEqual({
-            foo: 'bar',
-            byName: {
-                a: { position: 2 },
-                b: { position: 1 },
-                c: { position: 3 },
-            },
+        it('should handle CHANGE_POSITIOn_VALUE event', () => {
+            expect(state).toEqual({
+                foo: 'bar',
+                byName: {
+                    a: { position: 2 },
+                    b: { position: 1 },
+                    c: { position: 3 },
+                },
+            });
         });
     });
 });
