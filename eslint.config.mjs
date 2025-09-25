@@ -4,7 +4,7 @@ import { FlatCompat } from '@eslint/eslintrc';
 import js from '@eslint/js';
 import cypress from 'eslint-plugin-cypress';
 import _import from 'eslint-plugin-import';
-import jest from 'eslint-plugin-jest';
+import pluginJest from 'eslint-plugin-jest';
 import noOnlyTests from 'eslint-plugin-no-only-tests';
 import prettier from 'eslint-plugin-prettier';
 import react from 'eslint-plugin-react';
@@ -31,7 +31,6 @@ export default [
             'plugin:import/errors',
             'plugin:import/warnings',
             'plugin:react/recommended',
-            'plugin:jest/style',
             'prettier',
         ),
     ),
@@ -39,10 +38,8 @@ export default [
         plugins: {
             import: fixupPluginRules(_import),
             react: fixupPluginRules(react),
-            'react-hooks': reactHooks,
             prettier,
             cypress,
-            jest: fixupPluginRules(jest),
             'no-only-tests': noOnlyTests,
         },
 
@@ -57,7 +54,6 @@ export default [
                 __EN__: true,
                 __FR__: true,
                 ISTEX_API_URL: true,
-                jest: true,
                 beforeAll: true,
                 afterAll: true,
             },
@@ -110,12 +106,38 @@ export default [
             'no-use-before-define': 'error',
         },
     },
+    reactHooks.configs['recommended-latest'],
     {
-        plugins: {
-            'react-hooks': reactHooks,
+        files: ['**/*.spec.js', '**/*.spec.jsx'],
+        plugins: { jest: pluginJest },
+        languageOptions: {
+            globals: pluginJest.environments.globals.globals,
         },
         rules: {
-            ...reactHooks.configs.recommended.rules,
+            ...pluginJest.configs['flat/recommended'],
+            'jest/no-disabled-tests': 'warn',
+            'jest/no-focused-tests': 'error',
+            'jest/no-identical-title': 'error',
+            'jest/prefer-to-have-length': 'warn',
+            'jest/valid-expect': 'error',
+        },
+    },
+    {
+        files: ['cypress/e2e/**/*.cy.js'],
+        plugins: {
+            cypress,
+        },
+        languageOptions: {
+            globals: {
+                cy: true,
+                it: true,
+                describe: true,
+                beforeEach: true,
+            },
+        },
+        rules: {
+            ...cypress.configs.recommended.rules,
+            'cypress/no-unnecessary-waiting': 'warn',
         },
     },
 ];
