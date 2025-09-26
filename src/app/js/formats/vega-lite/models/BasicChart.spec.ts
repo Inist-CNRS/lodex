@@ -2,7 +2,7 @@ import BasicChart from './BasicChart';
 
 describe('BasicChart', () => {
     it('Default color need to be equals to MULTICHROMATIC_DEFAULT_COLORSET(transformed in to an array)', function () {
-        let basicChart = new BasicChart();
+        const basicChart = new BasicChart();
         // @ts-expect-error TS2339
         expect(basicChart.colors).toStrictEqual([
             '#d7191c',
@@ -14,20 +14,20 @@ describe('BasicChart', () => {
     });
 
     it('Updated color need to return the new value', function () {
-        let basicChart = new BasicChart();
-        let newColor = '#ffa6e6';
+        const basicChart = new BasicChart();
+        const newColor = '#ffa6e6';
         basicChart.setColor(newColor);
         // @ts-expect-error TS2339
         expect(basicChart.colors).toStrictEqual([newColor]);
     });
 
     it('The build function need to throw an error', function () {
-        let basicChart = new BasicChart();
+        const basicChart = new BasicChart();
         expect(basicChart.buildSpec).toThrow(Error);
     });
 
     it('Test tooltip', function () {
-        let basicChart = new BasicChart();
+        const basicChart = new BasicChart();
         // @ts-expect-error TS2339
         expect(basicChart.tooltip).toStrictEqual({
             toggle: false,

@@ -68,13 +68,15 @@ export default compose(
     withHandlers({
         handleSelect:
             // @ts-expect-error TS7031
-            ({ onChange }) =>
-            () => {
-                onChange({
-                    operation: 'AUTOGENERATE_URI',
-                    args: [],
-                });
-            },
+
+
+                ({ onChange }) =>
+                () => {
+                    onChange({
+                        operation: 'AUTOGENERATE_URI',
+                        args: [],
+                    });
+                },
     }),
     translate,
 )(UriAutogenerateComponent);

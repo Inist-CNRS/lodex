@@ -142,24 +142,33 @@ export default compose(
     withHandlers({
         handleShowErrorsClick:
             // @ts-expect-error TS7031
-            ({ setShowPopover }) =>
-            // @ts-expect-error TS7006
-            (event) => {
-                event.preventDefault();
-                setShowPopover({ anchorEl: event.currentTarget, show: true });
-            },
+
+
+                ({ setShowPopover }) =>
+                // @ts-expect-error TS7006
+                (event) => {
+                    event.preventDefault();
+                    setShowPopover({
+                        anchorEl: event.currentTarget,
+                        show: true,
+                    });
+                },
         handleHideErrors:
             // @ts-expect-error TS7031
-            ({ setShowPopover }) =>
-            () => {
-                setShowPopover({ show: false });
-            },
+
+
+                ({ setShowPopover }) =>
+                () => {
+                    setShowPopover({ show: false });
+                },
         handleEditField:
             // @ts-expect-error TS7031
-            ({ setShowPopover }) =>
-            () => {
-                setShowPopover({ show: false });
-            },
+
+
+                ({ setShowPopover }) =>
+                () => {
+                    setShowPopover({ show: false });
+                },
     }),
     translate,
 )(ValidationButtonComponent);

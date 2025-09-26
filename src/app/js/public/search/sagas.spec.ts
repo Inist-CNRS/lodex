@@ -246,7 +246,7 @@ describe('search sagas', () => {
                     appliedFacet1: [{ id: '1' }, { id: '2' }],
                     appliedFacet2: [{ id: '3' }, { id: '4' }],
                 }).value,
-            // @ts-expect-error TS2339
+                // @ts-expect-error TS2339
             ).toEqual(select(fromSearch.getInvertedFacetKeys));
             expect(gen.next(['inverted', 'facet', 'keys']).value).toEqual(
                 call(getAnnotationsFilter, {

@@ -70,7 +70,7 @@ export default handleActions(
             facetActionTypes.TOGGLE_FACET_VALUE,
             APPLY_FILTER,
             CHANGE_PAGE,
-        // @ts-expect-error TS7006
+            // @ts-expect-error TS7006
         )]: (state, { payload }) => ({
             ...state,
             error: null,

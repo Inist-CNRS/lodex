@@ -33,7 +33,7 @@ export default handleActions(
             REMOVE_FIELD_SUCCESS,
             SAVE_FIELD_SUCCESS,
             LOAD_PARSING_RESULT_SUCCESS,
-        // @ts-expect-error TS7006
+            // @ts-expect-error TS7006
         )]: (state) => ({ ...state, isComputing: true }),
         COMPUTE_PUBLICATION_PREVIEW_SUCCESS: (
             // @ts-expect-error TS7006

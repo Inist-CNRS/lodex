@@ -23,16 +23,18 @@ export const AddSubresource = compose(
     withHandlers({
         onSubmit:
             // @ts-expect-error TS7031
-            ({ createSubresource, history }) =>
-            // @ts-expect-error TS7006
-            (resource) => {
-                createSubresource({
-                    resource,
-                    // @ts-expect-error TS7006
-                    callback: (id) =>
-                        history.push(`/display/document/subresource/${id}`),
-                });
-            },
+
+
+                ({ createSubresource, history }) =>
+                // @ts-expect-error TS7006
+                (resource) => {
+                    createSubresource({
+                        resource,
+                        // @ts-expect-error TS7006
+                        callback: (id) =>
+                            history.push(`/display/document/subresource/${id}`),
+                    });
+                },
     }),
     reduxForm({
         form: 'SUBRESOURCE_ADD_FORM',

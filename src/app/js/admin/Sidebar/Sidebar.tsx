@@ -34,7 +34,8 @@ const ACTIVE_BORDER_WIDTH = 3;
 // @ts-expect-error TS7031
 const Sidebar = ({ p: polyglot, hasPublishedDataset }) => {
     const matchDisplayRoute = useRouteMatch('/display');
-    const matchDataRoute = useRouteMatch('/data') || useRouteMatch('/config');
+    const matchConfigRoute = useRouteMatch('/config');
+    const matchDataRoute = useRouteMatch('/data') || matchConfigRoute;
 
     const { open } = useContext(SidebarContext);
 

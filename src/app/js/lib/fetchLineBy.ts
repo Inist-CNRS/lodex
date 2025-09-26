@@ -10,7 +10,7 @@ export default (token) => (fieldName, value) =>
             Authorization: `Bearer ${token}`,
             'Content-Type': 'application/json',
         },
-    // @ts-expect-error TS7031
+        // @ts-expect-error TS7031
     }).then(({ response, error }) => {
         if (error) {
             return '';

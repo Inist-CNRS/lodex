@@ -40,7 +40,7 @@ class ColorPickerParamsAdmin extends Component {
     // @ts-expect-error TS7006
     handleChangePicker(i, e) {
         // @ts-expect-error TS2339
-        let colorsBuffer = [...this.state.colors];
+        const colorsBuffer = [...this.state.colors];
         colorsBuffer[i] = { color: e.target.value };
 
         this.setState({ colors: colorsBuffer });
@@ -80,10 +80,10 @@ class ColorPickerParamsAdmin extends Component {
             <Box display="flex" flexWrap="wrap" width="100%">
                 <Typography>
                     {monochromatic
-                        // @ts-expect-error TS2339
-                        ? this.props.polyglot.t('Color')
-                        // @ts-expect-error TS2339
-                        : this.props.polyglot.t('colors_set')}
+                        ? // @ts-expect-error TS2339
+                          this.props.polyglot.t('Color')
+                        : // @ts-expect-error TS2339
+                          this.props.polyglot.t('colors_set')}
                 </Typography>
                 <TextField
                     // @ts-expect-error TS2339

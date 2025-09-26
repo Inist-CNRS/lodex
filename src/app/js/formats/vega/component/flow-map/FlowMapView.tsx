@@ -156,7 +156,7 @@ export const FlowMapAdminView = connect((state, props) => {
             values: props.dataset.values ?? [],
         },
     };
-// @ts-expect-error TS2345
+    // @ts-expect-error TS2345
 })(FlowMapView);
 
 export default compose(injectData(), connect(mapStateToProps))(FlowMapView);

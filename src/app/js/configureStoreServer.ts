@@ -21,10 +21,10 @@ export default function configureStoreServer(
     const devtools =
         // @ts-expect-error TS2339
         typeof window !== 'undefined' && window.__REDUX_DEVTOOLS_EXTENSION__
-            // @ts-expect-error TS2339
-            ? window.__REDUX_DEVTOOLS_EXTENSION__()
-            // @ts-expect-error TS7006
-            : (f) => f;
+            ? // @ts-expect-error TS2339
+              window.__REDUX_DEVTOOLS_EXTENSION__()
+            : // @ts-expect-error TS7006
+              (f) => f;
 
     const rootReducer = combineReducers({
         ...reducers,

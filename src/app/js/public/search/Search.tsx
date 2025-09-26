@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import { translate } from '../../i18n/I18NContext';
 import classnames from 'classnames';
-import { CircularProgress, Button, Stack } from '@mui/material';
+import { CircularProgress, Button } from '@mui/material';
 
 import {
     facetActions,
@@ -29,7 +29,6 @@ import SearchResultList from './SearchResultList';
 import SearchResultSort from './SearchResultSort';
 import SearchSearchBar from './SearchSearchBar';
 import SearchResultHeader from './SearchResultHeader';
-import MyAnnotationsFilter from './AnnotationsFilter';
 
 const styles = stylesToClassname(
     {

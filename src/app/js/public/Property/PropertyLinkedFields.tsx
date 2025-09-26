@@ -93,7 +93,7 @@ const PropertyLinkedFields = connect(
     mapStateToProps,
     // @ts-expect-error TS2769
     mapDispatchToProps,
-// @ts-expect-error TS2345
+    // @ts-expect-error TS2345
 )(PropertyLinkedFieldsComponent);
 
 export default PropertyLinkedFields;

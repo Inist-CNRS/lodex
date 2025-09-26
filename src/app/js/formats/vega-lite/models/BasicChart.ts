@@ -75,9 +75,8 @@ class BasicChart {
      * Function use for rebuild the edited spec
      * @param widthIn
      */
-    // eslint-disable-next-line no-unused-vars
-    // @ts-expect-error TS7006
-    buildSpec(widthIn) {
+
+    buildSpec() {
         throw new Error("The builder can't be use at the state");
     }
 }

@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/no-unresolved
 import ezs from '@ezs/core';
 
 const testOne = (stream, expectation, done) => {
