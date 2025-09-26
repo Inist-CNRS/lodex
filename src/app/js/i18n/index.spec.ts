@@ -7,6 +7,7 @@ import reducer, {
 
 describe('i18n reducer', () => {
     it('should initialize with correct state', () => {
+        // @ts-expect-error TS2345
         const state = reducer(undefined, { type: '@@INIT' });
         expect(state).toEqual(defaultState);
     });
@@ -21,6 +22,7 @@ describe('i18n reducer', () => {
 
     it('should handle the SET_LANGUAGE_REQUEST_SUCCESS action', () => {
         const state = reducer(
+            // @ts-expect-error TS2345
             { loading: true },
             setLanguageSuccess({ locale: 'foo', phrases: 'phrases' }),
         );
@@ -33,6 +35,7 @@ describe('i18n reducer', () => {
 
     it('should handle the SET_LANGUAGE_REQUEST_ERROR action', () => {
         const error = new Error('foo');
+        // @ts-expect-error TS2345
         const state = reducer({ loading: true }, setLanguageError(error));
         expect(state).toEqual({
             loading: false,

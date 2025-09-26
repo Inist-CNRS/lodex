@@ -1,4 +1,3 @@
-// @ts-expect-error TS7016
 import { createAction, handleActions, combineActions } from 'redux-actions';
 
 export const UPLOAD_FILE = 'UPLOAD_FILE';
@@ -43,8 +42,10 @@ export const defaultState = {
     customLoader: null,
 };
 
+// @ts-expect-error TS2769
 export default handleActions(
     {
+        // @ts-expect-error TS2464
         [combineActions(UPLOAD_FILE, UPLOAD_URL, UPLOAD_TEXT)]: (
             // @ts-expect-error TS7006
             state,
@@ -59,49 +60,41 @@ export default handleActions(
                       status: 'PENDING',
                   }
                 : state,
-        // @ts-expect-error TS7006
         UPLOAD_SUCCESS: (state) => ({
             ...state,
             status: 'SUCCESS',
         }),
-        // @ts-expect-error TS7006
         UPLOAD_ERROR: (state, { payload }) => ({
             ...state,
             status: 'ERROR',
+            // @ts-expect-error TS2339
             error: payload.message,
         }),
-        // @ts-expect-error TS7006
         OPEN_UPLOAD: (state) => ({
             ...state,
             open: true,
         }),
-        // @ts-expect-error TS7006
         CLOSE_UPLOAD: (state) => ({
             ...state,
             open: false,
         }),
-        // @ts-expect-error TS7006
         CHANGE_UPLOAD_URL: (state, { payload: url }) => ({
             ...state,
             url,
             validUrl: validateUrl(url),
         }),
-        // @ts-expect-error TS7006
         CHANGE_UPLOAD_TEXT: (state, { payload: textContent }) => ({
             ...state,
             textContent,
         }),
-        // @ts-expect-error TS7006
         CHANGE_LOADER_NAME: (state, { payload: loaderName }) => ({
             ...state,
             loaderName,
         }),
-        // @ts-expect-error TS7006
         UPSERT_CUSTOM_LOADER: (state, { payload: customLoader }) => ({
             ...state,
             customLoader,
         }),
-        // @ts-expect-error TS7006
         DELETE_CUSTOM_LOADER: (state) => ({
             ...state,
             customLoader: null,

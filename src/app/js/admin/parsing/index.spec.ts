@@ -11,6 +11,7 @@ import reducer, {
 
 describe('parsing reducer', () => {
     it('should initialize with correct state', () => {
+        // @ts-expect-error TS2345
         const state = reducer(undefined, { type: '@@INIT' });
         expect(state).toEqual(defaultState);
     });

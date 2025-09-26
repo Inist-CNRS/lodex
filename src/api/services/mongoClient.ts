@@ -1,6 +1,5 @@
 import { MongoClient, type Db } from 'mongodb';
 import config from 'config';
-// @ts-expect-error TS(7016): Could not find a declaration file for module
 import { DEFAULT_TENANT } from '../../common/tools/tenantTools';
 
 /**

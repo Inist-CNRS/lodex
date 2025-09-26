@@ -282,6 +282,7 @@
         "@types/uuid": "^8.3.4",
         "@types/react-router": "^5.1.20",
         "@types/recompose": "^0.30.15",
+        "@types/redux-actions": "^2.6.5",
         "@types/redux-form": "^8.3.11",
         "@types/redux-localstorage": "^1.0.12",
         "@types/redux-localstorage-filter": "^0.1.6",

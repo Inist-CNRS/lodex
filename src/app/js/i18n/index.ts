@@ -1,4 +1,3 @@
-// @ts-expect-error TS7016
 import { createAction, handleActions } from 'redux-actions';
 
 export const SUPPORTED_LANGUAGES = ['en', 'fr'];
@@ -22,15 +21,12 @@ export const defaultState = {
 
 export default handleActions(
     {
-        // @ts-expect-error TS7006
         SET_LANGUAGE_REQUEST: (state) => ({
             ...state,
             loading: true,
         }),
         SET_LANGUAGE_REQUEST_SUCCESS: (
-            // @ts-expect-error TS7006
             state,
-            // @ts-expect-error TS7031
             { payload: { locale, phrases } },
         ) => ({
             ...state,
