@@ -24,8 +24,10 @@ export default compose(
     withHandlers({
         onRequestDelete:
             // @ts-expect-error TS7031
-            ({ name, onClearFacet }) =>
-            () =>
-                onClearFacet(name),
+
+
+                ({ name, onClearFacet }) =>
+                () =>
+                    onClearFacet(name),
     }),
 )(AppliedFacet);

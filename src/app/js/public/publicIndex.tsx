@@ -2,6 +2,9 @@ import '@babel/polyfill';
 // @ts-expect-error TS7016
 import { createBrowserHistory } from 'history';
 import React from 'react';
+
+// ignoring deprecation warning react 18 we are using version 17
+// eslint-disable-next-line react/no-deprecated
 import { hydrate } from 'react-dom';
 import { Provider } from 'react-redux';
 import 'url-api-polyfill';

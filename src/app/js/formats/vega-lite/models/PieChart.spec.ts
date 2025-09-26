@@ -2,7 +2,7 @@ import PieChart from './PieChart';
 
 describe('PieChart', () => {
     it('build', function () {
-        let pieChart = new PieChart();
+        const pieChart = new PieChart();
         expect(pieChart.buildSpec()).toStrictEqual({
             $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
             background: 'transparent',

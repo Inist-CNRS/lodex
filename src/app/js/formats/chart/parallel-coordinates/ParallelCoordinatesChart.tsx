@@ -21,12 +21,8 @@ const ParallelCoordinates = ({ fieldNames, data, width, height, colorSet }) => {
 
     const chartWidth = width - margin.left - margin.right;
     const chartHeight = height - margin.top - margin.bottom;
-
-    if (!data) {
-        return null;
-    }
-
     useEffect(() => {
+        if (!data) return;
         const svg = d3
             .select(ref.current)
             .append('g')
@@ -118,7 +114,11 @@ const ParallelCoordinates = ({ fieldNames, data, width, height, colorSet }) => {
             .style('fill', 'black');
 
         ReactTooltip.rebuild();
-    }, [ref, data]);
+    }, [ref, data, chartHeight, chartWidth, fieldNames, colorSet]);
+
+    if (!data) {
+        return null;
+    }
 
     return (
         <>

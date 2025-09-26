@@ -145,6 +145,7 @@ DeleteFieldsButtonComponent.propTypes = {
     p: polyglotPropTypes.isRequired,
     removeFieldList: PropTypes.func.isRequired,
     dispatch: PropTypes.func.isRequired,
+    isRemoveFieldListPending: PropTypes.bool,
 };
 
 // @ts-expect-error TS7006

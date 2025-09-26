@@ -221,7 +221,9 @@ export function CreateAnnotationModal({
         }, 300);
         return () => {
             setDisableSubmit(false);
-            timer && clearTimeout(timer);
+            if (timer) {
+                clearTimeout(timer);
+            }
         };
     }, [currentStep]);
 

@@ -1,30 +1,22 @@
 import { goToPublishedResources } from './datasetImportPage';
 
 export const goToData = () => {
-    cy.get('.appbar')
-        .contains('Data')
-        .click({ force: true }); // avoid bug due of detached DOM element
+    cy.get('.appbar').contains('Data').click({ force: true }); // avoid bug due of detached DOM element
 
     cy.location('hash').should('equal', '#/data/existing');
 };
 
 export const goToDisplay = () => {
-    cy.get('.appbar')
-        .contains('Display')
-        .click({ force: true }); // avoid bug due of detached DOM element
+    cy.get('.appbar').contains('Display').click({ force: true }); // avoid bug due of detached DOM element
 
     cy.location('hash').should('equal', '#/display/dataset');
 };
 
 export const goToResourcePage = () => {
-    cy.get('.appbar')
-        .contains('Display')
-        .click({ force: true }); // avoid bug due of detached DOM element
+    cy.get('.appbar').contains('Display').click({ force: true }); // avoid bug due of detached DOM element
 
     cy.location('hash').should('equal', '#/display/dataset');
-    cy.get('.sidebar')
-        .contains('Main resource')
-        .click();
+    cy.get('.sidebar').contains('Main resource').click();
     cy.wait(500);
     cy.location('hash').should('equal', '#/display/document/main');
 };
