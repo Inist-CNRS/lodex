@@ -56,23 +56,27 @@ const Routes = (props) => {
                     <Route
                         path="/"
                         exact
+                        // @ts-expect-error TS2322
                         render={(props) => <Home {...props} tenant={tenant} />}
                     />
                     <Route
                         path="/resource"
                         render={(props) => (
+                            // @ts-expect-error TS2322
                             <Resource {...props} tenant={tenant} />
                         )}
                     />
                     <Route
                         path="/ark:/:naan/:rest"
                         render={(props) => (
+                            // @ts-expect-error TS2322
                             <Resource {...props} tenant={tenant} />
                         )}
                     />
                     <Route
                         path="/uid:/:uri"
                         render={(props) => (
+                            // @ts-expect-error TS2322
                             <Resource {...props} tenant={tenant} />
                         )}
                     />
@@ -81,6 +85,7 @@ const Routes = (props) => {
                         render={(props) => (
                             <GraphPage
                                 {...props}
+                                // @ts-expect-error TS2322
                                 onSearch={handleSearchWithDataset}
                                 tenant={tenant}
                             />
@@ -125,6 +130,7 @@ const Routes = (props) => {
                 render={(props) => (
                     <NavBar
                         {...props}
+                        // @ts-expect-error TS2322
                         search={search}
                         closeSearch={handleCloseSearch}
                     />

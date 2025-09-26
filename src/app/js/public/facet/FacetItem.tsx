@@ -65,6 +65,7 @@ const FacetItem = ({ className, isOpen, field, total, page }) => (
                     secondary={
                         isOpen && (
                             <FacetValueListComponent
+                                // @ts-expect-error TS2322
                                 name={field.name}
                                 label={field.label}
                                 page={page}

@@ -1,11 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-// @ts-expect-error TS7016
 import compose from 'recompose/compose';
-// @ts-expect-error TS7016
 import withHandlers from 'recompose/withHandlers';
-// @ts-expect-error TS7016
 import withState from 'recompose/withState';
 import { List, Popover, IconButton, Tooltip, Box } from '@mui/material';
 
@@ -107,6 +104,7 @@ const ValidationButtonComponent = ({
                     {fields.map((field) => (
                         <ValidationField
                             key={field.name}
+                            // @ts-expect-error TS2322
                             field={field}
                             onEditField={redirectAndHandleEditField}
                         />
@@ -139,35 +137,30 @@ export default compose(
     connect(mapStateToProps),
     withState('popover', 'setShowPopover', { show: false }),
     withHandlers({
+        // @ts-expect-error TS2322
         handleShowErrorsClick:
-            // @ts-expect-error TS7031
-
-
-                ({ setShowPopover }) =>
-                // @ts-expect-error TS7006
-                (event) => {
-                    event.preventDefault();
-                    setShowPopover({
-                        anchorEl: event.currentTarget,
-                        show: true,
-                    });
-                },
+            ({ setShowPopover }) =>
+            // @ts-expect-error TS7006
+            (event) => {
+                event.preventDefault();
+                setShowPopover({
+                    anchorEl: event.currentTarget,
+                    show: true,
+                });
+            },
+        // @ts-expect-error TS2322
         handleHideErrors:
-            // @ts-expect-error TS7031
-
-
-                ({ setShowPopover }) =>
-                () => {
-                    setShowPopover({ show: false });
-                },
+            ({ setShowPopover }) =>
+            () => {
+                setShowPopover({ show: false });
+            },
+        // @ts-expect-error TS2322
         handleEditField:
-            // @ts-expect-error TS7031
-
-
-                ({ setShowPopover }) =>
-                () => {
-                    setShowPopover({ show: false });
-                },
+            ({ setShowPopover }) =>
+            () => {
+                setShowPopover({ show: false });
+            },
     }),
     translate,
+    // @ts-expect-error TS2345
 )(ValidationButtonComponent);

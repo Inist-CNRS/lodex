@@ -9,7 +9,6 @@ import {
 import PropTypes from 'prop-types';
 import React, { useMemo } from 'react';
 import { connect } from 'react-redux';
-// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import { bindActionCreators } from 'redux';
 // @ts-expect-error TS7016
@@ -89,6 +88,8 @@ export const LoginComponent = ({
                 }
             />
             <CardContent>
+                {/*
+                 // @ts-expect-error TS2322 */}
                 <LoginForm onSubmit={login} />
             </CardContent>
             <CardActions>
@@ -139,4 +140,5 @@ export const mapDispatchToProps = (dispatch) =>
 export default compose(
     connect(mapStateToProps, mapDispatchToProps),
     translate,
+    // @ts-expect-error TS2345
 )(LoginComponent);

@@ -7,7 +7,6 @@ import injectData from '../../injectData';
 import DOMPurify from 'dompurify';
 import InvalidFormat from '../../InvalidFormat';
 import { connect } from 'react-redux';
-// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import _ from 'lodash';
 
@@ -109,4 +108,5 @@ export const EJSAdminView = connect((state, { dataset }) => {
     // @ts-expect-error TS2345
 })(EJSView);
 
+// @ts-expect-error TS2345
 export default compose(injectData(), connect(mapStateToProps))(EJSView);

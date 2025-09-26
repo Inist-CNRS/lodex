@@ -1,5 +1,4 @@
 import React, { useMemo, useCallback } from 'react';
-// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 // @ts-expect-error TS7016
 import { propTypes as reduxFormPropTypes, Field } from 'redux-form';
@@ -235,4 +234,5 @@ const mapStateToProps = (state) => ({
 export default compose(
     connect(mapStateToProps),
     translate,
+    // @ts-expect-error TS2345
 )(SubresourceFormComponent);

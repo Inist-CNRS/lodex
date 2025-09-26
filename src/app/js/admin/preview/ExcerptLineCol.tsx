@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import { TableCell } from '@mui/material';
 import { connect } from 'react-redux';
@@ -72,4 +71,5 @@ const mapStateToProps = (state, { field, line }) => {
 export default compose(
     translate,
     connect(mapStateToProps),
+    // @ts-expect-error TS2345
 )(ExcerptLineColComponent);

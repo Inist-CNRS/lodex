@@ -1,7 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import { clamp } from 'lodash';
 // @ts-expect-error TS7016
@@ -99,6 +98,7 @@ const CartographyView = ({
         // @ts-expect-error TS2322
         <div style={styles.container} ref={ref}>
             <CustomActionVegaLite
+                // @ts-expect-error TS2322
                 spec={spec}
                 data={data}
                 injectType={
@@ -157,4 +157,5 @@ export const CartographyAdminView = connect((state, props) => {
     };
 })(CartographyView);
 
+// @ts-expect-error TS2345
 export default compose(injectData(), connect(mapStateToProps))(CartographyView);

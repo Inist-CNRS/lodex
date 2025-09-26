@@ -1,7 +1,5 @@
 import React from 'react';
-// @ts-expect-error TS7016
 import compose from 'recompose/compose';
-// @ts-expect-error TS7016
 import withHandlers from 'recompose/withHandlers';
 import { connect } from 'react-redux';
 import { translate } from '../../i18n/I18NContext';
@@ -84,17 +82,16 @@ export default compose(
     translate,
     connect(mapStateToProps, mapDispatchToProps),
     withHandlers({
+        // @ts-expect-error TS2322
         onSubmit:
-            // @ts-expect-error TS7031
-
-
-                ({ hideResource, resource }) =>
-                () => {
-                    hideResource(resource.uri);
-                },
+            ({ hideResource, resource }) =>
+            () => {
+                hideResource(resource.uri);
+            },
     }),
     reduxForm({
         form: HIDE_RESOURCE_FORM_NAME,
         validate,
     }),
+    // @ts-expect-error TS2345
 )(HideResourceFormComponent);

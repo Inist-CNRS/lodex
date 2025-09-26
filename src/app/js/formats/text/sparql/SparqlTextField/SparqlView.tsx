@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { translate } from '../../../../i18n/I18NContext';
-// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import SparqlRequest from '../SparqlRequest';
 import { isURL } from '../../../../../../common/uris';
@@ -257,4 +256,5 @@ export default compose(
         }
         return null;
     }),
+    // @ts-expect-error TS2345
 )(SparqlTextField);

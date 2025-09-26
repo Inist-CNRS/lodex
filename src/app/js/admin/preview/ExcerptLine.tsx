@@ -22,6 +22,7 @@ const ExcerptLine = ({ columns, line, readonly }) => (
         {columns.map((col) => (
             <ExcerptLineCol
                 key={`${line.uri}_${col.name}`}
+                // @ts-expect-error TS2322
                 field={col}
                 line={line}
                 readonly={readonly}

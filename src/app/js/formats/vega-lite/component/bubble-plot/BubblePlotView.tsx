@@ -1,7 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import { connect } from 'react-redux';
 import { clamp } from 'lodash';
-// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import PropTypes from 'prop-types';
 
@@ -102,6 +101,7 @@ const BubblePlotView = ({
         // @ts-expect-error TS2322
         <div style={styles.container} ref={ref}>
             <CustomActionVegaLite
+                // @ts-expect-error TS2322
                 spec={spec}
                 data={data}
                 injectType={VEGA_LITE_DATA_INJECT_TYPE_A}
@@ -159,4 +159,5 @@ export const BubblePlotAdminView = connect((state, props) => {
     // @ts-expect-error TS2345
 })(BubblePlotView);
 
+// @ts-expect-error TS2345
 export default compose(injectData(), connect(mapStateToProps))(BubblePlotView);

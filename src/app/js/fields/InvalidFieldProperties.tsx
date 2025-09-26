@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 
 import Alert from '../lib/components/Alert';
@@ -49,4 +48,5 @@ const mapStateToprops = (state) => ({
 export default compose(
     translate,
     connect(mapStateToprops),
+    // @ts-expect-error TS2345
 )(InvalidFieldProperties);

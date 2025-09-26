@@ -11,7 +11,6 @@ import EqualizerIcon from '@mui/icons-material/Equalizer';
 import ArticleIcon from '@mui/icons-material/Article';
 import DocumentScannerIcon from '@mui/icons-material/DocumentScanner';
 import ManageSearchIcon from '@mui/icons-material/ManageSearch';
-// @ts-expect-error TS7016
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
@@ -174,4 +173,5 @@ const mapStateToProps = (state) => ({
     hasPublishedDataset: fromPublication.hasPublishedDataset(state),
 });
 
+// @ts-expect-error TS2345
 export default compose(connect(mapStateToProps), translate)(Sidebar);

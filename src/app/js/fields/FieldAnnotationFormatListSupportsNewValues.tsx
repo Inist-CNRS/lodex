@@ -3,7 +3,6 @@ import React from 'react';
 import { Box } from '@mui/material';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-// @ts-expect-error TS7016
 import { compose } from 'recompose';
 import FieldInput from '../lib/components/FieldInput';
 import FormSwitchField from '../lib/components/FormSwitchField';
@@ -47,5 +46,6 @@ const mapStateToProps = (state) => {
 };
 
 export default compose(connect(mapStateToProps))(
+    // @ts-expect-error TS2345
     FieldAnnotationFormatListSupportsNewValues,
 );

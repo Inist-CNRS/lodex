@@ -39,6 +39,7 @@ export const DatasetCharacteristicItemComponent = ({
             <div ref={ref} style={inView ? styles.loaded : styles.loading} />
             {inView && (
                 <Property
+                    // @ts-expect-error TS2322
                     resource={resource}
                     field={field}
                     style={style}

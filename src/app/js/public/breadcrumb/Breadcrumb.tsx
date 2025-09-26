@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleLeft } from '@fortawesome/free-solid-svg-icons';
@@ -104,4 +103,5 @@ const mapStateToProps = (state) => {
     };
 };
 
+// @ts-expect-error TS2345
 export default compose(connect(mapStateToProps), withRouter)(Breadcrumb);

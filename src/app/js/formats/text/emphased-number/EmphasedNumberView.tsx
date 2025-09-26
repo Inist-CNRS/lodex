@@ -2,7 +2,6 @@
 import commaNumber from 'comma-number';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import { translate } from '../../../i18n/I18NContext';
 
@@ -84,4 +83,5 @@ export default compose(
         const value = resource[field.name];
         return isNaN(value) ? value : null;
     }),
+    // @ts-expect-error TS2345
 )(EmphasedNumberView);

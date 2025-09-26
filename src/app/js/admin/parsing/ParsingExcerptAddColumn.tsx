@@ -1,9 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-// @ts-expect-error TS7016
 import compose from 'recompose/compose';
-// @ts-expect-error TS7016
 import withHandlers from 'recompose/withHandlers';
 import { Button } from '@mui/material';
 
@@ -76,4 +74,5 @@ export default compose(
                 () =>
                     onAddColumn(name),
     }),
+    // @ts-expect-error TS2345
 )(ParsingExcerptAddColumnComponent);

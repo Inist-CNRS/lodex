@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router';
-// @ts-expect-error TS7016
 import { compose, branch, renderComponent } from 'recompose';
 
 import { fromFields } from '../sharedSelectors';

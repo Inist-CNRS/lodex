@@ -1,5 +1,4 @@
 import React, { useEffect, useMemo, useState } from 'react';
-// @ts-expect-error TS7016
 import { compose } from 'recompose';
 import ListAltIcon from '@mui/icons-material/ListAlt';
 import PropTypes from 'prop-types';
@@ -133,6 +132,7 @@ const SourceValueRoutine = ({
                 alignItems="center"
             >
                 <RoutineCatalogAutocomplete
+                    // @ts-expect-error TS2322
                     onChange={handleRoutineChange}
                     currentValue={routine}
                     label={polyglot.t('enter_a_routine_value')}
@@ -150,6 +150,7 @@ const SourceValueRoutine = ({
                 </Box>
 
                 <RoutineCatalog
+                    // @ts-expect-error TS2322
                     isOpen={openRoutineCatalog}
                     handleClose={() => setOpenRoutineCatalog(false)}
                     onChange={handleRoutineChange}
@@ -244,4 +245,5 @@ SourceValueRoutine.propTypes = {
 export default compose(
     translate,
     connect(mapStateToProps, mapDispatchToProps),
+    // @ts-expect-error TS2345
 )(SourceValueRoutine);

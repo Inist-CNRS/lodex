@@ -2,7 +2,6 @@ import { MenuItem } from '@mui/material';
 import PropTypes from 'prop-types';
 import { default as React } from 'react';
 import { connect } from 'react-redux';
-// @ts-expect-error TS7016
 import { compose } from 'recompose';
 import { useTranslate } from '../i18n/I18NContext';
 import FieldInput from '../lib/components/FieldInput';
@@ -55,4 +54,5 @@ const mapStateToProps = (state) => {
     };
 };
 
+// @ts-expect-error TS2345
 export default compose(connect(mapStateToProps))(FieldAnnotationFormatListKind);

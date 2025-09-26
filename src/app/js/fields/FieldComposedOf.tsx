@@ -8,7 +8,6 @@ import {
     MenuItem,
     Chip,
 } from '@mui/material';
-// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 // @ts-expect-error TS7016
@@ -315,4 +314,5 @@ const mapDispatchToProps = (dispatch, { FORM_NAME = FIELD_FORM_NAME }) => ({
 export default compose(
     connect(mapStateToProps, mapDispatchToProps),
     translate,
+    // @ts-expect-error TS2345
 )(FieldComposedOf);
