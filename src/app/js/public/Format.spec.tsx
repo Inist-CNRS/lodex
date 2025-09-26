@@ -1,5 +1,4 @@
 import React from 'react';
-// @ts-expect-error TS7016
 import { shallow } from 'enzyme';
 
 import { FormatComponent as Format } from './Format';
@@ -14,6 +13,7 @@ describe('<Format />', () => {
     };
 
     const wrapper = shallow(
+        // @ts-expect-error TS2769
         <Format
             // @ts-expect-error TS2769
             className={className}

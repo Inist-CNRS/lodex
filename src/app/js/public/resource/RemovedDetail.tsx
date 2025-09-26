@@ -31,8 +31,6 @@ export const RemovedDetailComponent = ({ reason, removedAt, p: polyglot }) => (
         />
         <CardContent>
             <dl style={styles.container}>
-                {/*
-                 // @ts-expect-error TS2322 */}
                 <dt style={styles.reason}>{polyglot.t('reason')}</dt>
                 <dd className="reason">
                     {/*
