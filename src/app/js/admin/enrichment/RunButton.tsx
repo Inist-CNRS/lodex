@@ -6,17 +6,24 @@ import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { FINISHED, IN_PROGRESS, ON_HOLD } from '../../../../common/taskStatus';
 import { fromEnrichments } from '../selectors';
 import { launchEnrichment } from '.';
+// @ts-expect-error TS7016
 import { compose } from 'recompose';
 import { toast } from '../../../../common/tools/toast';
 import { connect } from 'react-redux';
 import { translate } from '../../i18n/I18NContext';
 
 export const RunButton = ({
+    // @ts-expect-error TS7031
     onLaunchEnrichment,
+    // @ts-expect-error TS7031
     areEnrichmentsRunning,
+    // @ts-expect-error TS7031
     enrichmentStatus,
+    // @ts-expect-error TS7031
     p: polyglot,
+    // @ts-expect-error TS7031
     variant,
+    // @ts-expect-error TS7031
     id,
 }) => {
     const [isOngoing, setIsOngoing] = useState(false);
@@ -30,6 +37,7 @@ export const RunButton = ({
         return setIsOngoing(false);
     }, [setIsOngoing, enrichmentStatus]);
 
+    // @ts-expect-error TS7006
     const handleClick = (event) => {
         event.preventDefault();
         event.stopPropagation();
@@ -78,16 +86,21 @@ const mapDispatchToProps = {
     onLaunchEnrichment: launchEnrichment,
 };
 
+// @ts-expect-error TS7006
 const mapStateToProps = (state, { id }) => ({
     areEnrichmentsRunning: !!fromEnrichments
+        // @ts-expect-error TS2339
         .enrichments(state)
         .find(
+            // @ts-expect-error TS7006
             (enrichment) =>
                 enrichment.status === IN_PROGRESS ||
                 enrichment.status === ON_HOLD,
         ),
     enrichmentStatus: fromEnrichments
+        // @ts-expect-error TS2339
         .enrichments(state)
+        // @ts-expect-error TS7031
         .find(({ _id }) => _id === id)?.status,
 });
 

@@ -14,6 +14,7 @@ import FormatCatalogDialog from './FormatCatalog';
 import FormatEditionDialog from './FormatEditionDialog';
 import { translate } from '../i18n/I18NContext';
 
+// @ts-expect-error TS7031
 const FormatEdition = ({ p: polyglot, ...props }) => {
     const { input } = props;
 
@@ -35,6 +36,7 @@ const FormatEdition = ({ p: polyglot, ...props }) => {
         setComponentName(input.value.name || '');
     }, [input.value.name]);
 
+    // @ts-expect-error TS7006
     const handleFormatChange = (name) => {
         setComponentName(name);
         setOpenCatalog(false);

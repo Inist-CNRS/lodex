@@ -11,7 +11,9 @@ import {
 import { fromFields } from '../../sharedSelectors';
 
 export function* handleNeedValidation() {
+    // @ts-expect-error TS7057
     const fields = yield select(fromFields.getFields);
+    // @ts-expect-error TS7057
     const validation = yield call(validateFields, fields);
 
     yield put(setValidation(validation));

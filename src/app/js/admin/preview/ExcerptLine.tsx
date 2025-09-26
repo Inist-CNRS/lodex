@@ -14,8 +14,11 @@ const styles = {
     },
 };
 
+// @ts-expect-error TS7031
 const ExcerptLine = ({ columns, line, readonly }) => (
     <TableRow sx={styles.row}>
+        {/*
+         // @ts-expect-error TS7006 */}
         {columns.map((col) => (
             <ExcerptLineCol
                 key={`${line.uri}_${col.name}`}

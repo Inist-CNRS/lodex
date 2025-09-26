@@ -16,9 +16,14 @@ const styles = stylesToClassname(
     'advanced-page',
 );
 
+// @ts-expect-error TS7031
 const AdvancedPage = ({ advancedMenu, ...rest }) => (
+    // @ts-expect-error TS2339
     <div className={classnames('advanced-page', styles.root)}>
+        {/*
+         // @ts-expect-error TS7006 */}
         {advancedMenu.map((config, index) => (
+            // @ts-expect-error TS2739
             <MenuItem key={index} config={config} {...rest} />
         ))}
     </div>

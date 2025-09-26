@@ -18,6 +18,7 @@ import {
 } from '@mui/material';
 import { Box } from '@mui/system';
 import { connect } from 'react-redux';
+// @ts-expect-error TS7016
 import { compose } from 'recompose';
 import { loadField } from '../../fields';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
@@ -33,26 +34,43 @@ import { usePatchFieldOverview } from './usePatchFieldOverview';
 import { usePatchSortField } from './usePatchSortField';
 import { usePatchSortOrder } from './usePatchSortOrder';
 
+// @ts-expect-error TS7006
 const getSearchableFields = (fields) =>
+    // @ts-expect-error TS7006
     fields.filter((f) => f.searchable) || [];
 
+// @ts-expect-error TS7006
 const getFacetFields = (fields) => fields?.filter((f) => f.isFacet) || [];
 
+// @ts-expect-error TS7006
 const getResourceTitle = (fields) =>
+    // @ts-expect-error TS7006
     fields?.find((f) => f.overview === overview.RESOURCE_TITLE) || null;
+// @ts-expect-error TS7006
 const getResourceDescription = (fields) =>
+    // @ts-expect-error TS7006
     fields?.find((f) => f.overview === overview.RESOURCE_DESCRIPTION) || null;
+// @ts-expect-error TS7006
 const getResourceDetailFirst = (fields) =>
+    // @ts-expect-error TS7006
     fields?.find((f) => f.overview === overview.RESOURCE_DETAIL_1) || null;
+// @ts-expect-error TS7006
 const getResourceDetailSecond = (fields) =>
+    // @ts-expect-error TS7006
     fields?.find((f) => f.overview === overview.RESOURCE_DETAIL_2) || null;
+// @ts-expect-error TS7006
 const getResourceDetailThird = (fields) =>
+    // @ts-expect-error TS7006
     fields?.find((f) => f.overview === overview.RESOURCE_DETAIL_3) || null;
+// @ts-expect-error TS7006
 const getResourceSortField = (fields) =>
+    // @ts-expect-error TS7006
     fields?.find((f) => f.isDefaultSortField) || null;
+// @ts-expect-error TS7006
 const getResourceSortOrder = (fields) =>
     getResourceSortField(fields)?.sortOrder || 'asc';
 
+// @ts-expect-error TS7031
 export const SearchForm = ({ fields, loadField, p: polyglot }) => {
     const fieldsResource = React.useMemo(
         () => getFieldForSpecificScope(fields, 'collection'),
@@ -61,6 +79,7 @@ export const SearchForm = ({ fields, loadField, p: polyglot }) => {
 
     const fieldsForResourceSyndication = React.useMemo(() => {
         const filteredFields = getFieldForSpecificScope(fields, 'collection');
+        // @ts-expect-error TS2345
         filteredFields?.unshift({
             label: polyglot.t('none'),
         });
@@ -138,6 +157,7 @@ export const SearchForm = ({ fields, loadField, p: polyglot }) => {
 
     // We could lower the complexity with only one map. But it's more readable like this. And the performance is not a problem here.
 
+    // @ts-expect-error TS7006
     const handleSearchInFieldsChange = async (event, value) => {
         setSearchInFields(value);
         const res = await fieldApi.patchSearchableFields(value);
@@ -152,33 +172,43 @@ export const SearchForm = ({ fields, loadField, p: polyglot }) => {
     const patchSortFieldMutation = usePatchSortField();
     const patchSortOrderMutation = usePatchSortOrder();
 
+    // @ts-expect-error TS7006
     const handleSResourceTitle = async (_event, value) => {
+        // @ts-expect-error TS2345
         patchFieldOverviewMutation.mutate({
             _id: value?._id,
             overview: overview.RESOURCE_TITLE,
         });
     };
+    // @ts-expect-error TS7006
     const handleSResourceDescription = async (_event, value) => {
+        // @ts-expect-error TS2345
         patchFieldOverviewMutation.mutate({
             _id: value?._id,
             overview: overview.RESOURCE_DESCRIPTION,
         });
     };
 
+    // @ts-expect-error TS7006
     const handleSResourceDetailFirst = async (_event, value) => {
+        // @ts-expect-error TS2345
         patchFieldOverviewMutation.mutate({
             _id: value?._id,
             overview: overview.RESOURCE_DETAIL_1,
         });
     };
 
+    // @ts-expect-error TS7006
     const handleSResourceDetailSecond = async (_event, value) => {
+        // @ts-expect-error TS2345
         patchFieldOverviewMutation.mutate({
             _id: value?._id,
             overview: overview.RESOURCE_DETAIL_2,
         });
     };
+    // @ts-expect-error TS7006
     const handleSResourceDetailThird = async (_event, value) => {
+        // @ts-expect-error TS2345
         patchFieldOverviewMutation.mutate({
             _id: value?._id,
             overview: overview.RESOURCE_DETAIL_3,
@@ -190,22 +220,28 @@ export const SearchForm = ({ fields, loadField, p: polyglot }) => {
         patchSortFieldMutation.isLoading ||
         patchSortOrderMutation.isLoading;
 
+    // @ts-expect-error TS7006
     const handleResourceSortFieldChange = async (_event, value) => {
+        // @ts-expect-error TS2345
         patchSortFieldMutation.mutate({
             _id: value?._id,
             sortOrder: resourceSortOrder,
         });
     };
 
+    // @ts-expect-error TS7006
     const handleResourceSortOrderChange = async (event) => {
         setResourceSortOrder(event.target.value);
+        // @ts-expect-error TS2345
         patchSortOrderMutation.mutate({
             sortOrder: event.target.value,
         });
     };
 
+    // @ts-expect-error TS7006
     const handleFacetCheckedChange = async (value) => {
         const currentIndex = facetChecked.findIndex(
+            // @ts-expect-error TS7006
             (item) => item.name === value.name,
         );
         const oldChecked = [...facetChecked];
@@ -295,6 +331,7 @@ export const SearchForm = ({ fields, loadField, p: polyglot }) => {
                                                     edge="start"
                                                     checked={
                                                         facetChecked.findIndex(
+                                                            // @ts-expect-error TS7006
                                                             (item) =>
                                                                 item.name ===
                                                                 field.name,
@@ -440,11 +477,14 @@ SearchForm.propTypes = {
     p: polyglotPropTypes.isRequired,
 };
 
+// @ts-expect-error TS7006
 const mapStateToProps = (state) => {
     return {
         // sort by label asc
         fields: fromFields
+            // @ts-expect-error TS2339
             .getFields(state)
+            // @ts-expect-error TS7006
             .sort((a, b) => a.label.localeCompare(b.label)),
     };
 };

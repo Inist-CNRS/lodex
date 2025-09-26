@@ -7,6 +7,7 @@ import { useTranslate } from '../../i18n/I18NContext';
 import { ConfirmPopup } from '../../lib/components/ConfirmPopup';
 import { useDeleteManyAnnotation } from './hooks/useDeleteManyAnnotation';
 
+// @ts-expect-error TS7031
 export function DeleteManyButton({ selectedRowIds }) {
     const { translate } = useTranslate();
     const { mutate, isLoading } = useDeleteManyAnnotation();
@@ -52,6 +53,7 @@ export function DeleteManyButton({ selectedRowIds }) {
                 isOpen={isModalOpen}
                 cancelLabel={translate('cancel')}
                 confirmLabel={translate('delete')}
+                // @ts-expect-error TS2554
                 title={translate('annotation_delete_many_modal_title', {
                     smart_count: selectedRowIds.length,
                 })}

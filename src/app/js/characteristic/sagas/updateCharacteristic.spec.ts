@@ -15,11 +15,13 @@ describe('characteristic saga', () => {
 
         it('should select getUpdateCharacteristicsRequest', () => {
             expect(saga.next().value).toEqual(
+                // @ts-expect-error TS2339
                 select(fromUser.getUpdateCharacteristicsRequest, payload),
             );
         });
 
         it('should call fetchPublication with the request', () => {
+            // @ts-expect-error TS2345
             expect(saga.next('request').value).toEqual(
                 call(fetchSaga, 'request'),
             );
@@ -28,7 +30,9 @@ describe('characteristic saga', () => {
         it('should put updateCharacteristicsError action with error if any', () => {
             const failedSaga = handleUpdateCharacteristics({ payload });
             failedSaga.next();
+            // @ts-expect-error TS2345
             failedSaga.next({});
+            // @ts-expect-error TS2345
             expect(failedSaga.next({ error: 'foo' }).value).toEqual(
                 put(updateCharacteristicsError('foo')),
             );
@@ -36,6 +40,7 @@ describe('characteristic saga', () => {
 
         it('should put updateCharacteristicsSuccess action with field and characteristics', () => {
             expect(
+                // @ts-expect-error TS2345
                 saga.next({
                     response: {
                         characteristics: 'characteristics',
@@ -67,6 +72,7 @@ describe('characteristic saga', () => {
             noFieldSaga.next();
             noFieldSaga.next();
             expect(
+                // @ts-expect-error TS2345
                 noFieldSaga.next({
                     response: { characteristics: 'characteristics' },
                 }).value,

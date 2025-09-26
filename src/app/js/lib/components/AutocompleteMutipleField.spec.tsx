@@ -5,6 +5,7 @@ import { fireEvent, render, userEvent, waitFor } from '../../../../test-utils';
 import { TestI18N } from '../../i18n/I18NContext';
 import { AutocompleteMultipleField } from './AutocompleteMultipleField';
 
+// @ts-expect-error TS7006
 function TestAutocompleteMultipleField(props) {
     const form = useForm({
         defaultValues: {
@@ -14,6 +15,8 @@ function TestAutocompleteMultipleField(props) {
 
     return (
         <TestI18N>
+            {/*
+             // @ts-expect-error TS2322 */}
             <AutocompleteMultipleField
                 form={form}
                 name="name"

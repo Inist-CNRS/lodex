@@ -1,3 +1,4 @@
+// @ts-expect-error TS7016
 import { createAction, handleActions } from 'redux-actions';
 import { createSelector } from 'reselect';
 
@@ -27,33 +28,40 @@ export const defaultState = {
 
 export default handleActions(
     {
+        // @ts-expect-error TS7006
         LOAD_PARSING_RESULT: (state) => ({
             ...state,
             allowUpload: false,
             loading: true,
             initialized: true,
         }),
+        // @ts-expect-error TS7006
         LOAD_PARSING_RESULT_ERROR: (state, { payload }) => ({
             ...state,
             loading: false,
             allowUpload: true,
             error: payload,
         }),
+        // @ts-expect-error TS7006
         LOAD_PARSING_RESULT_SUCCESS: (state, { payload }) => ({
             ...state,
             ...payload,
             allowUpload: payload.totalLoadedLines === 0,
             loading: false,
         }),
+        // @ts-expect-error TS7006
         RELOAD_PARSING_RESULT: (state) => ({
             ...state,
             allowUpload: true,
         }),
+        // @ts-expect-error TS7006
         CANCEL_RELOAD: (state) => ({
             ...state,
             allowUpload: false,
         }),
+        // @ts-expect-error TS7006
         SHOW_ADD_COLUMNS: (state) => ({ ...state, showAddFromColumn: true }),
+        // @ts-expect-error TS7006
         HIDE_ADD_COLUMNS: (state) => ({ ...state, showAddFromColumn: false }),
     },
     defaultState,
@@ -67,6 +75,7 @@ export const loadParsingResultSuccess = createAction(
 export const reloadParsingResult = createAction(RELOAD_PARSING_RESULT);
 export const cancelReload = createAction(CANCEL_RELOAD);
 
+// @ts-expect-error TS7031
 export const getExcerptLines = ({ excerptLines }) =>
     !excerptLines || !excerptLines.length ? [] : excerptLines;
 
@@ -75,15 +84,21 @@ export const getParsedExcerptColumns = createSelector(
     (lines) => Object.keys(lines[0] || {}).filter((key) => key !== '_id'),
 );
 
+// @ts-expect-error TS7031
 export const hasUploadedFile = ({ totalLoadedLines }) => !!totalLoadedLines;
 
+// @ts-expect-error TS7031
 export const canUpload = ({ allowUpload }) => !!allowUpload;
 
+// @ts-expect-error TS7031
 export const isParsingLoading = ({ loading }) => loading;
+// @ts-expect-error TS7031
 export const isInitialized = ({ initialized }) => initialized;
 
+// @ts-expect-error TS7031
 export const getTotalLoadedLines = ({ totalLoadedLines }) => totalLoadedLines;
 
+// @ts-expect-error TS7006
 export const getshowAddFromColumn = (state) => state.showAddFromColumn;
 
 export const selectors = {

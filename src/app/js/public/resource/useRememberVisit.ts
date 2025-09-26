@@ -2,7 +2,9 @@ import { useEffect, useMemo } from 'react';
 import { DEFAULT_TENANT } from '../../../../common/tools/tenantTools';
 import { isURL } from '../../../../common/uris';
 
+// @ts-expect-error TS7006
 export const useRememberVisit = (resource) => {
+    // @ts-expect-error TS7006
     const setViewedResources = (resources) => {
         const tenant = sessionStorage.getItem('lodex-tenant') || DEFAULT_TENANT;
         localStorage.setItem(
@@ -18,6 +20,7 @@ export const useRememberVisit = (resource) => {
 
         const tenant = sessionStorage.getItem('lodex-tenant') || DEFAULT_TENANT;
         const viewedResources =
+            // @ts-expect-error TS2345
             JSON.parse(localStorage.getItem(`${tenant}-viewed-resources`)) ||
             [];
         if (!viewedResources.includes(resource.uri)) {
@@ -26,6 +29,7 @@ export const useRememberVisit = (resource) => {
     }, [resource?.uri]);
 };
 
+// @ts-expect-error TS7006
 export const useIsVisited = (resource) => {
     return useMemo(() => {
         if (isURL(resource.uri)) {
@@ -34,6 +38,7 @@ export const useIsVisited = (resource) => {
 
         const tenant = sessionStorage.getItem('lodex-tenant') || DEFAULT_TENANT;
         const viewedResources =
+            // @ts-expect-error TS2345
             JSON.parse(localStorage.getItem(`${tenant}-viewed-resources`)) ||
             [];
 
@@ -44,6 +49,7 @@ export const useIsVisited = (resource) => {
 export const getVisitedUris = () => {
     const tenant = sessionStorage.getItem('lodex-tenant') || DEFAULT_TENANT;
     const viewedResources =
+        // @ts-expect-error TS2345
         JSON.parse(localStorage.getItem(`${tenant}-viewed-resources`)) || [];
 
     return viewedResources;

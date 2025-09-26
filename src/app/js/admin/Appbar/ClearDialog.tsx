@@ -32,6 +32,7 @@ const TRANSLATION_KEY = new Map([
     ['model', 'clear_model'],
 ]);
 
+// @ts-expect-error TS7006
 const ClearDialogComponent = (props) => {
     const { translate } = useTranslate();
     const [validName, setValidName] = React.useState(false);
@@ -59,10 +60,12 @@ const ClearDialogComponent = (props) => {
         }
     }, [succeeded]);
 
+    // @ts-expect-error TS7006
     const handleChangeField = (e) => {
         setValidName(e.target.value === instanceName);
     };
 
+    // @ts-expect-error TS7006
     const handleClear = (type) =>
         (type === 'dataset' && handleClearDataset) ||
         (type === 'published' && handleClearPublished) ||
@@ -98,6 +101,7 @@ const ClearDialogComponent = (props) => {
         }
     };
 
+    // @ts-expect-error TS7006
     const handleKeyPress = (e, type) => {
         if (e.key !== 'Enter' || !validName) {
             return null;
@@ -116,6 +120,8 @@ const ClearDialogComponent = (props) => {
         <CancelButton key="cancel" className="btn-cancel" onClick={onClose}>
             {translate('cancel')}
         </CancelButton>,
+        {/*
+         // @ts-expect-error TS2739 */}
         <ButtonWithStatus
             raised
             key="submit"
@@ -174,10 +180,15 @@ ClearDialogComponent.propTypes = {
     loadSubResources: PropTypes.func.isRequired,
 };
 
+// @ts-expect-error TS7006
 const mapStateToProps = (state) => ({
+    // @ts-expect-error TS2339
     succeeded: fromClear.hasClearSucceeded(state),
+    // @ts-expect-error TS2339
     hasFailed: fromClear.hasClearFailed(state),
+    // @ts-expect-error TS2339
     isLoading: fromClear.getIsLoading(state),
+    // @ts-expect-error TS2339
     hasPublishedDataset: fromPublication.hasPublishedDataset(state),
 });
 

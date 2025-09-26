@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import { Button, Box } from '@mui/material';
@@ -11,9 +12,13 @@ import { fromPublish } from '../selectors';
 import { translate } from '../../i18n/I18NContext';
 
 export const PublishButtonComponent = ({
+    // @ts-expect-error TS7031
     canPublish,
+    // @ts-expect-error TS7031
     p: polyglot,
+    // @ts-expect-error TS7031
     onPublish,
+    // @ts-expect-error TS7031
     isPublishing,
 }) => {
     const handleClick = () => {
@@ -52,15 +57,21 @@ PublishButtonComponent.propTypes = {
     p: polyglotPropTypes.isRequired,
 };
 
+// @ts-expect-error TS7006
 export const canPublish = (areAllFieldsValid, allListFields) => {
+    // @ts-expect-error TS7006
     return areAllFieldsValid && allListFields.some((f) => f.name !== 'uri');
 };
 
+// @ts-expect-error TS7006
 const mapStateToProps = (state) => ({
     canPublish: canPublish(
+        // @ts-expect-error TS2339
         fromFields.areAllFieldsValid(state),
+        // @ts-expect-error TS2339
         fromFields.getAllListFields(state),
     ),
+    // @ts-expect-error TS2339
     isPublishing: fromPublish.getIsPublishing(state),
 });
 

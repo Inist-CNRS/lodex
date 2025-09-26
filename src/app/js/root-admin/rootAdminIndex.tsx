@@ -6,6 +6,7 @@ import {
     Switch,
     Route,
     Redirect,
+// @ts-expect-error TS7016
 } from 'react-router-dom';
 
 import {
@@ -38,6 +39,7 @@ function RootAdmin() {
 
     useEffect(() => {
         // if no cookie found, remove the user from localStorage
+        // @ts-expect-error TS2345
         const user = JSON.parse(localStorage.getItem('root-admin-user'));
         if (user && user.role === ROOT_ROLE) {
             setIsLoggedIn(true);
@@ -60,6 +62,7 @@ function RootAdmin() {
 
     return (
         <ThemeProvider
+            // @ts-expect-error TS2345
             theme={createThemeMui(rootTheme, localesMUI.get(locale))} // TODO: Replace theme to be blue
         >
             <Router basename="/instances">

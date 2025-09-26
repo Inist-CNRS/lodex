@@ -13,7 +13,9 @@ import {
 import PropTypes from 'prop-types';
 import { default as React, useEffect } from 'react';
 import { connect } from 'react-redux';
+// @ts-expect-error TS7016
 import { useHistory } from 'react-router';
+// @ts-expect-error TS7016
 import { Link } from 'react-router-dom';
 import { launchAllEnrichment, retryEnrichment } from '.';
 import { IN_PROGRESS } from '../../../../common/taskStatus';
@@ -24,7 +26,9 @@ import EnrichmentStatus from './EnrichmentStatus';
 import RunButton from './RunButton';
 
 const EnrichmentListToolBar = ({
+    // @ts-expect-error TS7031
     onLaunchAllEnrichment,
+    // @ts-expect-error TS7031
     areEnrichmentsRunning,
 }) => {
     const { translate } = useTranslate();
@@ -57,10 +61,14 @@ const EnrichmentListToolBar = ({
 
             <GridToolbarContainer>
                 <Tooltip title={translate(`column_tooltip`)}>
+                    {/*
+                     // @ts-expect-error TS2741 */}
                     <GridToolbarColumnsButton />
                 </Tooltip>
                 <GridToolbarFilterButton />
                 <Tooltip title={translate(`density_tooltip`)}>
+                    {/*
+                     // @ts-expect-error TS2741 */}
                     <GridToolbarDensitySelector />
                 </Tooltip>
                 <Tooltip title={translate(`add_more_enrichment`)}>
@@ -104,19 +112,27 @@ EnrichmentListToolBar.propTypes = {
 };
 
 export const EnrichmentList = ({
+    // @ts-expect-error TS7031
     enrichments,
+    // @ts-expect-error TS7031
     isLoadEnrichmentsPending,
+    // @ts-expect-error TS7031
     isRunAllEnrichmentPending,
+    // @ts-expect-error TS7031
     runAllEnrichmentError,
+    // @ts-expect-error TS7031
     onLaunchAllEnrichment,
+    // @ts-expect-error TS7031
     onRetryEnrichment,
 }) => {
     const { translate } = useTranslate();
     const history = useHistory();
     const areEnrichmentsRunning =
+        // @ts-expect-error TS7006
         enrichments.some((enrichment) => enrichment.status === IN_PROGRESS) ||
         isLoadEnrichmentsPending ||
         isRunAllEnrichmentPending;
+    // @ts-expect-error TS7006
     const handleRowClick = (params) => {
         history.push(`/data/enrichment/${params.row._id}`);
     };
@@ -189,6 +205,8 @@ export const EnrichmentList = ({
                         renderCell: (params) => {
                             return (
                                 <>
+                                    {/*
+                                     // @ts-expect-error TS2554 */}
                                     {translate('enrichment_error_count', {
                                         errorCount: params.row.errorCount ?? 0,
                                     })}
@@ -215,6 +233,7 @@ export const EnrichmentList = ({
                 rows={enrichments}
                 getRowId={(row) => row._id}
                 autoHeight
+                // @ts-expect-error TS2322
                 width="100%"
                 onRowClick={handleRowClick}
                 components={{
@@ -245,6 +264,7 @@ EnrichmentList.propTypes = {
     onRetryEnrichment: PropTypes.func.isRequired,
 };
 
+// @ts-expect-error TS7006
 const mapStateToProps = (state) => ({
     enrichments: state.enrichment.enrichments,
     isLoadEnrichmentsPending: state.enrichment.isLoadEnrichmentsPending,

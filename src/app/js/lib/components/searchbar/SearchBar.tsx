@@ -1,6 +1,7 @@
 import { Icon, IconButton, TextField } from '@mui/material';
 import PropTypes from 'prop-types';
 import React, { useEffect, useRef } from 'react';
+// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import { translate } from '../../../i18n/I18NContext';
 
@@ -8,11 +9,17 @@ import { Clear as ClearIcon, Search as SearchIcon } from '@mui/icons-material';
 import { polyglot as polyglotPropTypes } from '../../../propTypes';
 
 const SearchBar = ({
+    // @ts-expect-error TS7031
     className,
+    // @ts-expect-error TS7031
     p: polyglot,
+    // @ts-expect-error TS7031
     value,
+    // @ts-expect-error TS7031
     onChange,
+    // @ts-expect-error TS7031
     onClear,
+    // @ts-expect-error TS7031
     maxWidth,
 }) => {
     const refTextField = useRef(null);
@@ -21,6 +28,7 @@ const SearchBar = ({
         setTimeout(() => {
             refTextField &&
                 refTextField.current &&
+                // @ts-expect-error TS2339
                 refTextField.current.focus();
         }, 300);
     }, [refTextField]);

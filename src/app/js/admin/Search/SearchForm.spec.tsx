@@ -18,12 +18,15 @@ jest.mock('../../fields/FieldRepresentation', () => () => (
     <div>FieldRepresentation</div>
 ));
 
+// @ts-expect-error TS7006
 function TestSearchForm(props) {
     if (props.p) {
         props.p.currentLocale = 'fr';
     }
     return (
         <TestI18N>
+            {/*
+             // @ts-expect-error TS2322 */}
             <QueryClientProvider client={new QueryClient()}>
                 <SearchForm {...props} />
             </QueryClientProvider>
@@ -52,10 +55,12 @@ describe('handleSearchInFieldsChange', () => {
 
         const polyglot = { t: jest.fn().mockReturnValue('searchable_success') };
 
+        // @ts-expect-error TS2339
         fieldApi.patchSearchableFields.mockResolvedValue(true);
 
         const { getByTestId } = render(
             <TestSearchForm
+                // @ts-expect-error TS2322
                 loadField={jest.fn()}
                 fields={fields}
                 p={polyglot}
@@ -104,12 +109,14 @@ describe('saveSyndication', () => {
             { _id: '2', label: 'test2', name: 'test2', scope: 'document' },
         ];
 
+        // @ts-expect-error TS2339
         fieldApi.patchOverview.mockResolvedValue(true);
 
         const polyglot = { t: jest.fn().mockReturnValue('translate') };
 
         const { getByTestId } = render(
             <TestSearchForm
+                // @ts-expect-error TS2322
                 loadField={jest.fn()}
                 fields={fields}
                 p={polyglot}
@@ -154,12 +161,14 @@ describe('saveSyndication', () => {
             { _id: '2', label: 'test2', name: 'test2', scope: 'document' },
         ];
 
+        // @ts-expect-error TS2339
         fieldApi.patchOverview.mockResolvedValue(true);
 
         const polyglot = { t: jest.fn().mockReturnValue('search_input') };
 
         const { getByTestId } = render(
             <TestSearchForm
+                // @ts-expect-error TS2322
                 loadField={jest.fn()}
                 fields={fields}
                 fieldsForResourceSyndication={fields}
@@ -205,12 +214,14 @@ describe('saveSyndication', () => {
             { _id: '2', label: 'test2', name: 'test2', scope: 'document' },
         ];
 
+        // @ts-expect-error TS2339
         fieldApi.patchOverview.mockResolvedValue(true);
 
         const polyglot = { t: jest.fn().mockReturnValue('search_input') };
 
         const { getByTestId } = render(
             <TestSearchForm
+                // @ts-expect-error TS2322
                 loadField={jest.fn()}
                 fields={fields}
                 fieldsForResourceSyndication={fields}
@@ -257,12 +268,14 @@ describe('saveSyndication', () => {
             { _id: '2', label: 'test2', name: 'test2', scope: 'document' },
         ];
 
+        // @ts-expect-error TS2339
         fieldApi.patchOverview.mockResolvedValue(true);
 
         const polyglot = { t: jest.fn().mockReturnValue('search_input') };
 
         const { getByTestId } = render(
             <TestSearchForm
+                // @ts-expect-error TS2322
                 loadField={jest.fn()}
                 fields={fields}
                 p={polyglot}

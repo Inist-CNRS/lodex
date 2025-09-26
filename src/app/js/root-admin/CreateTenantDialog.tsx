@@ -11,6 +11,7 @@ import {
     Box,
 } from '@mui/material';
 
+// @ts-expect-error TS7016
 import { deburr } from 'lodash';
 
 import {
@@ -19,6 +20,7 @@ import {
     getTenantMaxSize,
 } from '../../../common/tools/tenantTools';
 
+// @ts-expect-error TS7006
 const cleanUpName = (name) => {
     // We replace any accented and special char with the base letter or a dash
     // https://stackoverflow.com/questions/36557202/replacing-special-characters-with-dashes
@@ -26,10 +28,12 @@ const cleanUpName = (name) => {
     return deburr(name)
         .replace(/[\s_\W]+/g, '-')
         .replace(/^-/, '')
+        // @ts-expect-error TS2339
         .substring(0, getTenantMaxSize(window.__DBNAME__))
         .toLowerCase();
 };
 
+// @ts-expect-error TS7031
 const CreateTenantDialog = ({ isOpen, handleClose, createAction }) => {
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
@@ -43,18 +47,22 @@ const CreateTenantDialog = ({ isOpen, handleClose, createAction }) => {
         }
     }, [isOpen]);
 
+    // @ts-expect-error TS7006
     const handleName = (event) => {
         setName(cleanUpName(event.target.value));
     };
 
+    // @ts-expect-error TS7006
     const handleDescription = (event) => {
         setDescription(event.target.value);
     };
 
+    // @ts-expect-error TS7006
     const handleAuthor = (event) => {
         setAuthor(event.target.value);
     };
 
+    // @ts-expect-error TS7006
     const handleSubmit = (event) => {
         event.preventDefault();
         createAction({ name: cleanUpName(name), description, author });
@@ -75,6 +83,8 @@ const CreateTenantDialog = ({ isOpen, handleClose, createAction }) => {
                 }}
             >
                 <form onSubmit={handleSubmit}>
+                    {/*
+                     // @ts-expect-error TS2769 */}
                     <FormControl mt={1} fullWidth>
                         <TextField
                             id="tenant-name-field"
@@ -96,6 +106,8 @@ const CreateTenantDialog = ({ isOpen, handleClose, createAction }) => {
                             tiret &quot;-&quot; sont autorisés. Une limitation
                             en nombre de caractères est automatiquement
                             appliquée en fonction du nom du container de
+                            {/*
+                             // @ts-expect-error TS2339 */}
                             l’instance ({getTenantMaxSize(window.__DBNAME__)}{' '}
                             caractères).
                         </FormHelperText>

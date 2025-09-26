@@ -6,6 +6,7 @@ import classnames from 'classnames';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import { translate } from '../../i18n/I18NContext';
 
@@ -91,11 +92,15 @@ class Graph extends Component {
     };
 
     UNSAFE_componentWillMount() {
+        // @ts-expect-error TS2339
         this.props.preLoadPublication();
     }
 
+    // @ts-expect-error TS7006
     componentDidUpdate(prevProps) {
+        // @ts-expect-error TS2339
         if (prevProps.name !== this.props.name) {
+            // @ts-expect-error TS2339
             this.props.preLoadDatasetPage();
         }
     }
@@ -105,6 +110,7 @@ class Graph extends Component {
         this.setState({ showFacets: !showFacets });
     };
 
+    // @ts-expect-error TS7006
     handleEditField = (field) => {
         const redirectUrl = getEditFieldRedirectUrl(
             field.name,
@@ -117,31 +123,47 @@ class Graph extends Component {
     render() {
         const { showFacets } = this.state;
         const {
+            // @ts-expect-error TS2339
             className,
+            // @ts-expect-error TS2339
             graphField,
+            // @ts-expect-error TS2339
             resource,
+            // @ts-expect-error TS2339
             p: polyglot,
+            // @ts-expect-error TS2339
             onSearch,
+            // @ts-expect-error TS2339
             isAdmin,
         } = this.props;
 
         return (
+            // @ts-expect-error TS2339
             <div className={classnames(className, styles.container)}>
+                {/*
+                 // @ts-expect-error TS2339 */}
                 <div className={styles.header}>
                     <DatasetSearchBar
                         onToggleFacets={this.handleToggleFacets}
                     />
+                    {/*
+                     // @ts-expect-error TS2339 */}
                     <div className={classnames(styles.advanced)}>
                         <DatasetStats />
                     </div>
                 </div>
                 <AppliedFacetList />
+                {/*
+                 // @ts-expect-error TS2339 */}
                 <div className={styles.content}>
                     <FacetList
+                        // @ts-expect-error TS2339
                         className={classnames('graph-facets', styles.facets)}
                         page="dataset"
                         open={showFacets}
                     />
+                    {/*
+                     // @ts-expect-error TS2339 */}
                     <div className={styles.results}>
                         {graphField && (
                             <Card
@@ -160,6 +182,7 @@ class Graph extends Component {
                                             {graphField.label}
 
                                             {isAdmin && (
+                                                // @ts-expect-error TS2769
                                                 <IconButton
                                                     onClick={() =>
                                                         this.handleEditField(
@@ -186,17 +209,25 @@ class Graph extends Component {
                                 />
                                 <Format
                                     field={graphField}
+                                    // @ts-expect-error TS2322
                                     resource={resource}
                                 />
                                 <CompositeProperty
+                                    // @ts-expect-error TS2322
                                     key="composite"
+                                    // @ts-expect-error TS2322
                                     field={graphField}
+                                    // @ts-expect-error TS2322
                                     resource={resource}
+                                    // @ts-expect-error TS2322
                                     parents={[]}
                                 />
                                 <PropertyLinkedFields
+                                    // @ts-expect-error TS2322
                                     fieldName={graphField.name}
+                                    // @ts-expect-error TS2322
                                     resource={resource}
+                                    // @ts-expect-error TS2322
                                     parents={[]}
                                 />
                             </Card>
@@ -220,6 +251,7 @@ class Graph extends Component {
     }
 }
 
+// @ts-expect-error TS2339
 Graph.propTypes = {
     className: PropTypes.string,
     name: PropTypes.string.isRequired,
@@ -232,11 +264,16 @@ Graph.propTypes = {
     isAdmin: PropTypes.bool,
 };
 
+// @ts-expect-error TS7006
 const mapStateToProps = (state, { name }) => ({
     name,
+    // @ts-expect-error TS2339
     graphField: name && fromFields.getFieldByName(state, name),
+    // @ts-expect-error TS2339
     hasFacetFields: fromFields.hasFacetFields(state),
+    // @ts-expect-error TS2339
     resource: fromCharacteristic.getCharacteristicsAsResource(state),
+    // @ts-expect-error TS2339
     isAdmin: fromUser.isAdmin(state),
 });
 

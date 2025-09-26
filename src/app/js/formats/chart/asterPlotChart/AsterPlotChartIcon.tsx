@@ -1,5 +1,6 @@
 import React from 'react';
 
+// @ts-expect-error TS7006
 const AsterPlotChartIcon = (props) => (
     <svg
         viewBox="0 0 525 525"

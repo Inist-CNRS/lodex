@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 import SearchResultPlaceholder from './SearchResultPlaceholder';
 
+// @ts-expect-error TS7031
 const SearchResultPlaceholders = ({ className, results }) => (
     <div className={className}>
         {Array.from({ length: results }, (_, i) => (

@@ -1,5 +1,7 @@
 import React from 'react';
+// @ts-expect-error TS7016
 import { Redirect } from 'react-router';
+// @ts-expect-error TS7016
 import { useRouteMatch } from 'react-router-dom';
 import { useTranslate } from '../../i18n/I18NContext';
 import AdminOnlyAlert from '../../lib/components/AdminOnlyAlert';

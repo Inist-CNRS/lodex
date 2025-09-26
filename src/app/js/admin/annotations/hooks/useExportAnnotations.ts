@@ -1,5 +1,6 @@
 import { useMutation } from '@tanstack/react-query';
 import { useCallback, useMemo } from 'react';
+// @ts-expect-error TS7016
 import { useHistory } from 'react-router-dom';
 
 import fetch from '../../../lib/fetch';

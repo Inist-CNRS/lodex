@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+// @ts-expect-error TS7016
 import camelCase from 'lodash/camelCase';
 import { fromFields } from '../../sharedSelectors';
 import { field as fieldPropTypes } from '../../propTypes';
@@ -19,9 +20,13 @@ const styles = {
 };
 
 export const CompositePropertyComponent = ({
+    // @ts-expect-error TS7031
     compositeFields,
+    // @ts-expect-error TS7031
     field,
+    // @ts-expect-error TS7031
     parents,
+    // @ts-expect-error TS7031
     resource,
 }) => {
     if (!compositeFields.length) {
@@ -30,6 +35,8 @@ export const CompositePropertyComponent = ({
 
     return (
         <div style={styles.container}>
+            {/*
+             // @ts-expect-error TS7006 */}
             {compositeFields.map((f) => (
                 <Property
                     className={`compose_${getFieldClassName(field)} ${camelCase(f.internalName || '')}`}
@@ -56,13 +63,16 @@ CompositePropertyComponent.defaultProps = {
     className: null,
 };
 
+// @ts-expect-error TS7006
 const mapStateToProps = (state, { field, resource, parents }) => {
+    // @ts-expect-error TS2339
     const allCompositeFields = fromFields.getCompositeFieldsByField(
         state,
         field,
     );
 
     const compositeFields = allCompositeFields?.filter(
+        // @ts-expect-error TS7006
         (f) => f?.name && !parents.includes(f.name),
     );
 
@@ -72,6 +82,7 @@ const mapStateToProps = (state, { field, resource, parents }) => {
     };
 };
 
+// @ts-expect-error TS2345
 const CompositeProperty = connect(mapStateToProps)(CompositePropertyComponent);
 
 export default CompositeProperty;

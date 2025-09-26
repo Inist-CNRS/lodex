@@ -3,6 +3,7 @@ import classnames from 'classnames';
 import PropTypes from 'prop-types';
 import React, { useMemo } from 'react';
 import { connect } from 'react-redux';
+// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import { translate } from '../../i18n/I18NContext';
 
@@ -51,17 +52,29 @@ const styles = stylesToClassname(
 );
 
 const FacetList = ({
+    // @ts-expect-error TS7031
     className,
+    // @ts-expect-error TS7031
     open,
+    // @ts-expect-error TS7031
     hasFacetFields,
+    // @ts-expect-error TS7031
     fields,
+    // @ts-expect-error TS7031
     page,
+    // @ts-expect-error TS7031
     changeFacetValue,
+    // @ts-expect-error TS7031
     invertFacet,
+    // @ts-expect-error TS7031
     openFacet,
+    // @ts-expect-error TS7031
     sortFacetValue,
+    // @ts-expect-error TS7031
     toggleFacetValue,
+    // @ts-expect-error TS7031
     isMultilingual,
+    // @ts-expect-error TS7031
     locale,
 }) => {
     const actions = {
@@ -73,6 +86,7 @@ const FacetList = ({
     };
 
     const filteredFieldsByLocale = useMemo(() => {
+        // @ts-expect-error TS7006
         return fields.filter((field) => {
             return (
                 !isMultilingual || !field.language || field.language === locale
@@ -86,17 +100,23 @@ const FacetList = ({
 
     return (
         <List
+            // @ts-expect-error TS2339
             className={classnames(className, styles.list, {
+                // @ts-expect-error TS2339
                 [styles.listOpen]: open,
             })}
         >
             <FacetActionsContext.Provider value={actions}>
+                {/*
+                 // @ts-expect-error TS7006 */}
                 {filteredFieldsByLocale.map((field) => (
                     <FacetItem
                         key={`${page}-${field.name}`}
                         field={field}
                         page={page}
+                        // @ts-expect-error TS2339
                         className={classnames(styles.listItem, {
+                            // @ts-expect-error TS2339
                             [styles.listItemOpen]: open,
                         })}
                     />
@@ -121,10 +141,15 @@ FacetList.propTypes = {
     locale: PropTypes.string.isRequired,
 };
 
+// @ts-expect-error TS7006
 const mapStateToProps = (state) => ({
+    // @ts-expect-error TS2339
     hasFacetFields: fromFields.hasFacetFields(state),
+    // @ts-expect-error TS2339
     fields: fromFields.getFacetFields(state),
+    // @ts-expect-error TS2339
     isMultilingual: fromDisplayConfig.isMultilingual(state),
+    // @ts-expect-error TS2339
     locale: fromI18n.getLocale(state),
 });
 
@@ -133,15 +158,25 @@ const actionsByPage = {
     search: searchActions,
 };
 
+// @ts-expect-error TS7006
 const mapDispatchToProps = (dispatch, { page }) => ({
+    // @ts-expect-error TS7019
     changeFacetValue: (...args) =>
+        // @ts-expect-error TS7053
         dispatch(actionsByPage[page].changeFacetValue(...args)),
+    // @ts-expect-error TS7019
     invertFacet: (...args) =>
+        // @ts-expect-error TS7053
         dispatch(actionsByPage[page].invertFacet(...args)),
+    // @ts-expect-error TS7019
     openFacet: (...args) => dispatch(actionsByPage[page].openFacet(...args)),
+    // @ts-expect-error TS7019
     sortFacetValue: (...args) =>
+        // @ts-expect-error TS7053
         dispatch(actionsByPage[page].sortFacetValue(...args)),
+    // @ts-expect-error TS7019
     toggleFacetValue: (...args) =>
+        // @ts-expect-error TS7053
         dispatch(actionsByPage[page].toggleFacetValue(...args)),
 });
 

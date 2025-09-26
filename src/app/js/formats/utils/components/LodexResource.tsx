@@ -47,6 +47,7 @@ const styles = stylesToClassname(
 );
 
 // see https://jsonfeed.org/version/1#items
+// @ts-expect-error TS7006
 const LodexResource = (props) => {
     const { id, url, openInNewTab, polyglot } = props;
     const summary = truncateByWords(props.summary, props.summarySize);
@@ -58,8 +59,14 @@ const LodexResource = (props) => {
 
     const content = (
         <div>
+            {/*
+             // @ts-expect-error TS2339 */}
             <div className={styles.contentTitle}>{title}</div>
+            {/*
+             // @ts-expect-error TS2339 */}
             <div className={styles.contentParagraph}>{summary}</div>
+            {/*
+             // @ts-expect-error TS2339 */}
             <div className={styles.contentCustomDiv} />
         </div>
     );
@@ -69,7 +76,10 @@ const LodexResource = (props) => {
     if (isLocalURL(id)) {
         return (
             <div id={id}>
+                {/*
+                 // @ts-expect-error TS2739 */}
                 <Link
+                    // @ts-expect-error TS2339
                     className={styles.contentLink}
                     to={getResourceUri({ uri: id })}
                     target={target}
@@ -77,7 +87,9 @@ const LodexResource = (props) => {
                     {content}
                 </Link>
                 {openInNewTab && (
+                    // @ts-expect-error TS2739
                     <Link
+                        // @ts-expect-error TS2339
                         className={styles.newTab}
                         to={getResourceUri({ uri: id })}
                         target={target}
@@ -96,6 +108,8 @@ const LodexResource = (props) => {
 
     return (
         <div id={id}>
+            {/*
+             // @ts-expect-error TS2739 */}
             <Link className={styles.contentLink} href={url} target={target}>
                 {content}
             </Link>

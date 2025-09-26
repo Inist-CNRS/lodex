@@ -16,18 +16,22 @@ export const defaultArgs = {
 
 const ParagraphAdmin = ({
     args = defaultArgs,
+    // @ts-expect-error TS7031
     onChange,
+    // @ts-expect-error TS7031
     p: polyglot,
 }) => {
     const [colors, setColors] = useState(args.colors || defaultArgs.colors);
     const [paragraphWidth, setParagraphWidth] = useState(args.paragraphWidth || defaultArgs.paragraphWidth);
 
+    // @ts-expect-error TS7006
     const handleParagraphWidth = (event) => {
         const newParagraphWidth = event.target.value;
         updateAdminArgs('paragraphWidth', newParagraphWidth, { args, onChange });
         setParagraphWidth(newParagraphWidth);
     };
 
+    // @ts-expect-error TS7006
     const handleColors = (newColors) => {
         updateAdminArgs('colors', newColors, { args, onChange });
         setColors(newColors);
@@ -35,7 +39,11 @@ const ParagraphAdmin = ({
 
     return (
         <FormatGroupedFieldSet>
+            {/*
+             // @ts-expect-error TS2322 */}
             <FormatDefaultParamsFieldSet defaultExpanded>
+                {/*
+                 // @ts-expect-error TS2322 */}
                 <TextField
                     fullWidth
                     select
@@ -50,6 +58,8 @@ const ParagraphAdmin = ({
                     <MenuItem value="80%">{polyglot.t('eighty_percent')}</MenuItem>
                     <MenuItem value="100%">{polyglot.t('hundred_percent')}</MenuItem>
                 </TextField>
+                {/*
+                 // @ts-expect-error TS2322 */}
                 <ColorPickerParamsAdmin
                     colors={colors}
                     onChange={handleColors}

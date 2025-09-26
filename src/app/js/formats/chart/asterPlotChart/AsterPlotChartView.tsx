@@ -1,8 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+// @ts-expect-error TS7016
 import { withRouter } from 'react-router';
+// @ts-expect-error TS7016
 import compose from 'recompose/compose';
+// @ts-expect-error TS7016
 import get from 'lodash/get';
 
 import { getPercentValue } from '../../../lib/getPercentage';
@@ -15,6 +18,7 @@ import { translate } from '../../../i18n/I18NContext';
 
 const sortByKey =
     (key = '') =>
+    // @ts-expect-error TS7006
     (dataA, dataB) => {
         if (key === '') {
             return 0;
@@ -26,6 +30,7 @@ const sortByKey =
         return Math.sign(a - b);
     };
 
+// @ts-expect-error TS7006
 const prepareData = (data = [], history, polyglot) =>
     data
         .map((d) => {
@@ -37,6 +42,7 @@ const prepareData = (data = [], history, polyglot) =>
             )}</div>`;
             const onClick = () => {
                 history.push({
+                    // @ts-expect-error TS2339
                     pathname: getResourceUri({ uri: d.target }),
                     state: {},
                 });
@@ -59,8 +65,10 @@ const styles = stylesToClassname(
     'aster-plot-chart-view',
 );
 
+// @ts-expect-error TS7031
 const AsterPlotChartView = ({ data, colorSet }) => {
     return (
+        // @ts-expect-error TS2339
         <div className={styles.container}>
             <AsterPlot
                 data={data}
@@ -77,6 +85,7 @@ AsterPlotChartView.propTypes = {
     colorSet: PropTypes.arrayOf(PropTypes.string),
 };
 
+// @ts-expect-error TS7006
 const mapStateToProps = (_, { formatData, history, p: polyglot }) => ({
     data: prepareData(formatData, history, polyglot),
 });

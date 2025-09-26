@@ -10,6 +10,7 @@ import {
     useSetFieldAnnotationIds,
 } from './annotationStorage';
 
+// @ts-expect-error TS7006
 export const useGetFieldAnnotation = (fieldId, resourceUri, enabled = true) => {
     const { translate } = useTranslate();
     const storedAnnotationIds = useGetFieldAnnotationIds({
@@ -35,6 +36,7 @@ export const useGetFieldAnnotation = (fieldId, resourceUri, enabled = true) => {
             const { response, error } = await fetch(request);
 
             if (error?.code === 401) {
+                // @ts-expect-error TS2339
                 history.push('/login');
                 return;
             }
@@ -43,6 +45,7 @@ export const useGetFieldAnnotation = (fieldId, resourceUri, enabled = true) => {
                 throw error;
             }
 
+            // @ts-expect-error TS7006
             return response.map((annotation) => ({
                 ...annotation,
                 isMine: storedAnnotationIds.includes(annotation._id),
@@ -56,7 +59,9 @@ export const useGetFieldAnnotation = (fieldId, resourceUri, enabled = true) => {
             return;
         }
 
+        // @ts-expect-error TS7006
         const existingAnnotationIds = storedAnnotationIds.filter((id) =>
+            // @ts-expect-error TS7006
             data.some((annotation) => annotation._id === id),
         );
 

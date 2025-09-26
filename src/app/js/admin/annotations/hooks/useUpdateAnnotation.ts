@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useCallback, useMemo } from 'react';
+// @ts-expect-error TS7016
 import { useHistory } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
@@ -14,6 +15,7 @@ export function useUpdateAnnotation() {
     const queryClient = useQueryClient();
 
     const mutation = useMutation({
+        // @ts-expect-error TS2339
         mutationFn: async ({ id, annotation }) => {
             const { token } = getUserSessionStorageInfo();
             const request = getRequest(
@@ -43,7 +45,9 @@ export function useUpdateAnnotation() {
                 data._id,
             ]);
             queryClient.setQueryData(['get-annotation', data._id], {
+                // @ts-expect-error TS18046
                 field: currentData.field,
+                // @ts-expect-error TS18046
                 resource: currentData.resource,
                 ...data,
             });
@@ -65,6 +69,7 @@ export function useUpdateAnnotation() {
 
     const handleUpdateAnnotation = useCallback(
         async (id, annotation) => {
+            // @ts-expect-error TS2345
             return mutation.mutateAsync({ id, annotation });
         },
         [mutation],

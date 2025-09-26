@@ -21,6 +21,7 @@ import IstexItem from '../istex/IstexItem';
 import stylesToClassname from '../../../lib/stylesToClassName';
 import { ISTEX_SITE_URL } from '../../../../../common/externals';
 
+// @ts-expect-error TS7031
 export const IstexDocument = ({ item }) => <IstexItem {...item} />;
 
 IstexDocument.propTypes = {
@@ -57,11 +58,17 @@ const styles = stylesToClassname(
 );
 
 export const IstexCitationView = ({
+    // @ts-expect-error TS7031
     formatData,
+    // @ts-expect-error TS7031
     field,
+    // @ts-expect-error TS7031
     resource,
+    // @ts-expect-error TS7031
     searchedField,
+    // @ts-expect-error TS7031
     documentSortBy,
+    // @ts-expect-error TS7031
     p: polyglot,
 }) => {
     if (!resource[field.name] || !searchedField) {
@@ -74,20 +81,30 @@ export const IstexCitationView = ({
     const ComposedComponent = getComposedComponent();
 
     return (
+        // @ts-expect-error TS2339
         <div className={`istex-summary ${styles.container}`}>
+            {/*
+             // @ts-expect-error TS2339 */}
             <div className={styles.header}>
+                {/*
+                 // @ts-expect-error TS2339 */}
                 <span className={styles.total}>
                     {polyglot.t('istex_total', {
                         total: formatData ? formatData.total : 0,
                     })}
                 </span>
+                {/*
+                 // @ts-expect-error TS2739 */}
                 <Link
+                    // @ts-expect-error TS2339
                     className={styles.dl}
                     href={`${ISTEX_SITE_URL}/?q=`.concat(
                         encodeURIComponent(resource[field.name]),
                     )}
                     target="_blank"
                 >
+                    {/*
+                     // @ts-expect-error TS2769 */}
                     <FileDownload tooltip={polyglot.t('download')} />
                 </Link>
             </div>
@@ -124,4 +141,5 @@ IstexCitationView.defaultProps = {
     searchedField: CUSTOM_ISTEX_QUERY,
 };
 
+// @ts-expect-error TS2345
 export default injectData(getCitationUrl)(IstexCitationView);

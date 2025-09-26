@@ -12,11 +12,13 @@ import { useGetAnnotations } from '../../annotations/hooks/useGetAnnotations';
 import { useImportAnnotations } from '../../annotations/hooks/useImportAnnotations';
 
 export const AnnotationNestedMenu = React.memo(function AnnotationNestedMenu({
+    // @ts-expect-error TS2339
     onClose,
 }) {
     const { translate } = useTranslate();
     const fileInputRef = useRef(null);
 
+    // @ts-expect-error TS2345
     const { data: annotations } = useGetAnnotations({
         page: 0,
     });
@@ -29,9 +31,11 @@ export const AnnotationNestedMenu = React.memo(function AnnotationNestedMenu({
     };
 
     const openAnnotationFileSelector = () => {
+        // @ts-expect-error TS2339
         fileInputRef.current?.click();
     };
 
+    // @ts-expect-error TS7006
     const handleAnnotationFileChange = (event) => {
         onClose(() => importAnnotations(event.target.files[0]));
     };
@@ -71,6 +75,7 @@ export const AnnotationNestedMenu = React.memo(function AnnotationNestedMenu({
     );
 });
 
+// @ts-expect-error TS2339
 AnnotationNestedMenu.propTypes = {
     onClose: PropTypes.func.isRequired,
 };

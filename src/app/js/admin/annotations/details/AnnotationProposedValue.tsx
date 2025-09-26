@@ -11,6 +11,7 @@ import { useTranslate } from '../../../i18n/I18NContext';
 import { hasFieldMultipleValues } from '../helpers/field';
 import { UserProvidedValueIcon } from './UserProvidedValueIcon';
 
+// @ts-expect-error TS7031
 export function AnnotationProposedValue({ proposedValue, field }) {
     const { translate } = useTranslate();
 
@@ -33,6 +34,7 @@ export function AnnotationProposedValue({ proposedValue, field }) {
             }))
             .toSorted((a, b) => {
                 if (a.isAdminProvidedValue === b.isAdminProvidedValue) {
+                    // @ts-expect-error TS2339
                     return a.value.localeCompare(b.value);
                 }
 
@@ -59,6 +61,7 @@ export function AnnotationProposedValue({ proposedValue, field }) {
 
                 const userProvidedValueDescription = translate(
                     'annotation_user_provided_value',
+                    // @ts-expect-error TS2554
                     { value },
                 );
 

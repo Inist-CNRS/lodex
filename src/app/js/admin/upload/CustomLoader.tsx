@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import PropTypes from 'prop-types';
 import FormSourceCodeField from '../../lib/components/FormSourceCodeField';
@@ -11,6 +12,7 @@ import {
     DialogContent,
     DialogTitle,
 } from '@mui/material';
+// @ts-expect-error TS7016
 import { Field, formValueSelector, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
 import { fromUpload } from '../selectors';
@@ -25,13 +27,21 @@ import CancelButton from '../../lib/components/CancelButton';
 import { translate } from '../../i18n/I18NContext';
 
 const CustomLoader = ({
+    // @ts-expect-error TS7031
     formValue,
+    // @ts-expect-error TS7031
     handleClose,
+    // @ts-expect-error TS7031
     isOpen,
+    // @ts-expect-error TS7031
     loaderName,
+    // @ts-expect-error TS7031
     onDeleteCustomLoader,
+    // @ts-expect-error TS7031
     onUpsertCustomLoader,
+    // @ts-expect-error TS7031
     onChangeLoaderName,
+    // @ts-expect-error TS7031
     p: polyglot,
 }) => {
     const [isLoading, setIsLoading] = React.useState(false);
@@ -108,9 +118,12 @@ const CustomLoader = ({
 
 const formSelector = formValueSelector('CUSTOM_LOADER_FORM');
 
+// @ts-expect-error TS7006
 const mapStateToProps = (state) => ({
     formValue: formSelector(state, 'customLoader'),
+    // @ts-expect-error TS2339
     initialValues: { customLoader: fromUpload.getCustomLoader(state) },
+    // @ts-expect-error TS2339
     loaderName: fromUpload.getLoaderName(state),
 });
 

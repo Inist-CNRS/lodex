@@ -3,12 +3,14 @@ import { render } from '@testing-library/react';
 import { TransformerListComponent as TransformerList } from './TransformerList';
 
 // eslint-disable-next-line react/display-name, react/prop-types
+// @ts-expect-error TS7031
 jest.mock('./TransformerListItem', () => ({ transformer, show }) => (
     // eslint-disable-next-line react/prop-types
     <div>{show && transformer.operation}</div>
 ));
 
 describe('TransformerList', () => {
+    // @ts-expect-error TS7034
     let transformers, mockFields, mockMeta, polyglot;
 
     beforeEach(() => {
@@ -25,6 +27,7 @@ describe('TransformerList', () => {
                     transformers.map((_, index) => `transformers[${index}]`),
                 ),
             getAll: jest.fn().mockReturnValue(transformers),
+            // @ts-expect-error TS7005
             get: jest.fn().mockImplementation((index) => transformers[index]),
         };
         mockMeta = {
@@ -32,6 +35,7 @@ describe('TransformerList', () => {
             error: null,
         };
         polyglot = {
+            // @ts-expect-error TS7006
             t: (key) => key,
         };
     });
@@ -57,13 +61,17 @@ describe('TransformerList', () => {
                     transformers.map((_, index) => `transformers[${index}]`),
                 ),
             getAll: jest.fn().mockReturnValue(transformers),
+            // @ts-expect-error TS7005
             get: jest.fn().mockImplementation((index) => transformers[index]),
         };
         const { queryByText } = render(
             <TransformerList
                 isSubresourceField
+                // @ts-expect-error TS2322
                 fields={mockFields}
+                // @ts-expect-error TS7005
                 meta={mockMeta}
+                // @ts-expect-error TS7005
                 p={polyglot}
             />,
         );
@@ -89,13 +97,17 @@ describe('TransformerList', () => {
                     transformers.map((_, index) => `transformers[${index}]`),
                 ),
             getAll: jest.fn().mockReturnValue(transformers),
+            // @ts-expect-error TS7005
             get: jest.fn().mockImplementation((index) => transformers[index]),
         };
         const { queryByText } = render(
             <TransformerList
                 isSubresourceField
+                // @ts-expect-error TS2322
                 fields={mockFields}
+                // @ts-expect-error TS7005
                 meta={mockMeta}
+                // @ts-expect-error TS7005
                 p={polyglot}
             />,
         );
@@ -124,13 +136,17 @@ describe('TransformerList', () => {
                     transformers.map((_, index) => `transformers[${index}]`),
                 ),
             getAll: jest.fn().mockReturnValue(transformers),
+            // @ts-expect-error TS7005
             get: jest.fn().mockImplementation((index) => transformers[index]),
         };
         const { queryByText } = render(
             <TransformerList
                 isSubresourceField
+                // @ts-expect-error TS2322
                 fields={mockFields}
+                // @ts-expect-error TS7005
                 meta={mockMeta}
+                // @ts-expect-error TS7005
                 p={polyglot}
             />,
         );
@@ -190,13 +206,17 @@ describe('TransformerList', () => {
                     transformers.map((_, index) => `transformers[${index}]`),
                 ),
             getAll: jest.fn().mockReturnValue(transformers),
+            // @ts-expect-error TS7005
             get: jest.fn().mockImplementation((index) => transformers[index]),
         };
         const { queryByText } = render(
             <TransformerList
                 isSubresourceField
+                // @ts-expect-error TS2322
                 fields={mockFields}
+                // @ts-expect-error TS7005
                 meta={mockMeta}
+                // @ts-expect-error TS7005
                 p={polyglot}
             />,
         );
@@ -254,13 +274,17 @@ describe('TransformerList', () => {
                     transformers.map((_, index) => `transformers[${index}]`),
                 ),
             getAll: jest.fn().mockReturnValue(transformers),
+            // @ts-expect-error TS7005
             get: jest.fn().mockImplementation((index) => transformers[index]),
         };
         const { queryByText } = render(
             <TransformerList
                 isSubresourceField
+                // @ts-expect-error TS2322
                 fields={mockFields}
+                // @ts-expect-error TS7005
                 meta={mockMeta}
+                // @ts-expect-error TS7005
                 p={polyglot}
             />,
         );
@@ -295,13 +319,17 @@ describe('TransformerList', () => {
                     transformers.map((_, index) => `transformers[${index}]`),
                 ),
             getAll: jest.fn().mockReturnValue(transformers),
+            // @ts-expect-error TS7005
             get: jest.fn().mockImplementation((index) => transformers[index]),
         };
         const { queryByText } = render(
             <TransformerList
                 isSubresourceField
+                // @ts-expect-error TS2322
                 fields={mockFields}
+                // @ts-expect-error TS7005
                 meta={mockMeta}
+                // @ts-expect-error TS7005
                 p={polyglot}
             />,
         );

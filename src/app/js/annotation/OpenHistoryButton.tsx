@@ -6,6 +6,7 @@ import { useTranslate } from '../i18n/I18NContext';
 import AdminOnlyAlert from '../lib/components/AdminOnlyAlert';
 import { useGetFieldAnnotation } from './useGetFieldAnnotation';
 
+// @ts-expect-error TS7031
 export const OpenHistoryButton = ({ field, resourceUri, openHistory }) => {
     const { translate } = useTranslate();
     const theme = useTheme();
@@ -17,10 +18,13 @@ export const OpenHistoryButton = ({ field, resourceUri, openHistory }) => {
 
     return (
         <>
+            {/*
+             // @ts-expect-error TS2769 */}
             <Stack
                 gap={0.5}
                 paddingBlockEnd={2}
                 borderBottom={1}
+                // @ts-expect-error TS2339
                 borderColor={theme.palette.grey[500]}
             >
                 <Typography
@@ -41,9 +45,11 @@ export const OpenHistoryButton = ({ field, resourceUri, openHistory }) => {
                     (data.length ? (
                         <Link
                             sx={{
+                                // @ts-expect-error TS2339
                                 color: theme.palette.primary.main,
                                 fontSize: '1rem',
                                 '&:hover': {
+                                    // @ts-expect-error TS2339
                                     color: theme.palette.primary.main,
                                     textDecoration: 'none',
                                 },
@@ -54,6 +60,8 @@ export const OpenHistoryButton = ({ field, resourceUri, openHistory }) => {
                                 openHistory();
                             }}
                         >
+                            {/*
+                             // @ts-expect-error TS2554 */}
                             {translate('annotation_open_history', {
                                 smart_count: data.length,
                             })}

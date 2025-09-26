@@ -12,11 +12,13 @@ describe('publication saga', () => {
 
         it('should select getPublishRequest', () => {
             expect(saga.next().value).toEqual(
+                // @ts-expect-error TS2339
                 select(fromUser.getPublishRequest),
             );
         });
 
         it('should call fetchSaga with the request', () => {
+            // @ts-expect-error TS2345
             expect(saga.next('request').value).toEqual(
                 call(fetchSaga, 'request'),
             );

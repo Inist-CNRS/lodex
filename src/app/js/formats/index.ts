@@ -1,3 +1,4 @@
+// @ts-expect-error TS7016
 import get from 'lodash/get';
 
 import merge from '../lib/merge';
@@ -26,6 +27,7 @@ export const COMPATIBLE_FORMATS = FORMATS_CATALOG.filter((format) =>
     TABLE_COMPATIBLE_FORMATS.includes(format.componentName),
 );
 
+// @ts-expect-error TS7006
 export const getFormatInitialArgs = (name) => {
     const format = FORMATS_CATALOG.find((f) => f.componentName === name);
     if (!format) {
@@ -35,6 +37,7 @@ export const getFormatInitialArgs = (name) => {
     return format.component?.defaultArgs || {};
 };
 
+// @ts-expect-error TS7006
 export const getComponent = (field) => {
     if (!field) {
         return DefaultFormat;
@@ -56,6 +59,7 @@ export const getComponent = (field) => {
     );
 };
 
+// @ts-expect-error TS7006
 export const getViewComponent = (field, isList) => {
     const { defaultArgs, Component, ListComponent, predicate } =
         getComponent(field);
@@ -74,6 +78,7 @@ export const getViewComponent = (field, isList) => {
         args,
     };
 };
+// @ts-expect-error TS7031
 export const getReadableValue = ({ field, resource }) => {
     const { getReadableValue, defaultArgs } = getComponent(field);
 
@@ -82,12 +87,17 @@ export const getReadableValue = ({ field, resource }) => {
     return getReadableValue({ field, resource, ...args });
 };
 
+// @ts-expect-error TS7006
 export const getAdminComponent = (name) => getComponent(name).AdminComponent;
+// @ts-expect-error TS7006
 export const getEditionComponent = (field) =>
     getComponent(field).EditionComponent;
+// @ts-expect-error TS7006
 export const getIconComponent = (name) => getComponent(name).Icon;
+// @ts-expect-error TS7006
 export const getPredicate = (name) => getComponent(name).predicate;
 
+// @ts-expect-error TS7006
 export const getIsFieldValueAnnotable = (name) => {
     if (!name) {
         return true;
@@ -100,6 +110,7 @@ export const getIsFieldValueAnnotable = (name) => {
             ?.isValueAnnotable ?? false
     );
 };
+// @ts-expect-error TS7006
 export const getIsFieldValueAnUrl = (name) => {
     if (!name) {
         return false;

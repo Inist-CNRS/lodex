@@ -20,14 +20,17 @@ describe('fields saga', () => {
         });
 
         it('should call sanitizeField with field form data', () => {
+            // @ts-expect-error TS2345
             expect(saga.next('field form data').value).toEqual(
                 call(sanitizeField, 'field form data'),
             );
         });
 
         it('should select getSaveFieldRequest', () => {
+            // @ts-expect-error TS2345
             expect(saga.next('sanitized field form data').value).toEqual(
                 select(
+                    // @ts-expect-error TS2339
                     fromUser.getSaveFieldRequest,
                     'sanitized field form data',
                 ),
@@ -35,12 +38,14 @@ describe('fields saga', () => {
         });
 
         it('should call fetchSaga with the request', () => {
+            // @ts-expect-error TS2345
             expect(saga.next('request').value).toEqual(
                 call(fetchSaga, 'request'),
             );
         });
 
         it('should put saveFieldSuccess action', () => {
+            // @ts-expect-error TS2345
             expect(saga.next({ response: 'foo' }).value).toEqual(
                 put(saveFieldSuccess()),
             );
@@ -59,6 +64,7 @@ describe('fields saga', () => {
         });
 
         it('should put loadField action', () => {
+            // @ts-expect-error TS2345
             expect(saga.next({ response: 'foo' }).value).toEqual(
                 put(loadField()),
             );

@@ -1,3 +1,4 @@
+// @ts-expect-error TS7016
 import { createAction, combineActions, handleActions } from 'redux-actions';
 
 import {
@@ -9,6 +10,7 @@ import {
     ARRAY_SPLICE as REDUX_FORM_ARRAY_SPLICE,
     REGISTER_FIELD as REDUX_FORM_REGISTER_FIELD,
     UNREGISTER_FIELD as REDUX_FORM_UNREGISTER_FIELD,
+// @ts-expect-error TS7016
 } from 'redux-form/lib/actionTypes';
 
 export const COMPUTE_FIELD_PREVIEW_SUCCESS = 'COMPUTE_FIELD_PREVIEW_SUCCESS';
@@ -37,7 +39,9 @@ export default handleActions(
             REDUX_FORM_ARRAY_SPLICE,
             REDUX_FORM_REGISTER_FIELD,
             REDUX_FORM_UNREGISTER_FIELD,
+        // @ts-expect-error TS7006
         )]: (state) => ({ ...state, isComputing: true }),
+        // @ts-expect-error TS7006
         COMPUTE_FIELD_PREVIEW_SUCCESS: (state, { payload: resources }) => ({
             isComputing: false,
             resources,
@@ -47,8 +51,11 @@ export default handleActions(
     defaultState,
 );
 
+// @ts-expect-error TS7006
 export const isComputing = (state) => state.isComputing;
+// @ts-expect-error TS7006
 export const getFieldPreview = (state) => state.resources;
+// @ts-expect-error TS7006
 export const hasFieldPreview = (state) => !!state.resources.length;
 
 export const selectors = {

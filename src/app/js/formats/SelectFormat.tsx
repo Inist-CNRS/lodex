@@ -6,6 +6,7 @@ import { polyglot as polyglotPropTypes } from '../propTypes';
 import FormatCatalogDialog from './FormatCatalog';
 import { translate } from '../i18n/I18NContext';
 
+// @ts-expect-error TS7031
 const SelectFormat = ({ formats, value, onChange, p: polyglot }) => {
     const [openCatalog, setOpenCatalog] = React.useState(false);
     return (
@@ -19,6 +20,8 @@ const SelectFormat = ({ formats, value, onChange, p: polyglot }) => {
                 fullWidth
             >
                 <MenuItem value="">{polyglot.t('none')}</MenuItem>
+                {/*
+                 // @ts-expect-error TS7006 */}
                 {formats.map((format) => (
                     <MenuItem
                         className="select-format-item"

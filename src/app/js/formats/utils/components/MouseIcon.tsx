@@ -1,7 +1,9 @@
 import React from 'react';
 import { polyglot as polyglotPropTypes } from '../../../propTypes';
+// @ts-expect-error TS7016
 import ReactTooltip from 'react-tooltip';
 
+// @ts-expect-error TS7031
 const MouseIcon = ({ polyglot }) => (
     <>
         <svg

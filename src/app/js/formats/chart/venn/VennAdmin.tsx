@@ -23,7 +23,9 @@ export const defaultArgs = {
 
 const VennAdmin = ({
     args = defaultArgs,
+    // @ts-expect-error TS7031
     onChange,
+    // @ts-expect-error TS7031
     p: polyglot,
     showMaxSize = true,
     showMaxValue = true,
@@ -32,10 +34,12 @@ const VennAdmin = ({
 }) => {
     const [colors, setColors] = useState(args.colors || defaultArgs.colors);
 
+    // @ts-expect-error TS7006
     const handleParams = (params) => {
         updateAdminArgs('params', params, { args, onChange });
     };
 
+    // @ts-expect-error TS7006
     const handleColors = (newColors) => {
         updateAdminArgs('colors', newColors, { args, onChange });
         setColors(newColors);
@@ -43,8 +47,13 @@ const VennAdmin = ({
 
     return (
         <FormatGroupedFieldSet>
+            {/*
+             // @ts-expect-error TS2322 */}
             <FormatDataParamsFieldSet>
+                {/*
+                 // @ts-expect-error TS2322 */}
                 <RoutineParamsAdmin
+                    // @ts-expect-error TS2739
                     params={args.params || defaultArgs.params}
                     polyglot={polyglot}
                     onChange={handleParams}
@@ -54,7 +63,11 @@ const VennAdmin = ({
                     showOrderBy={showOrderBy}
                 />
             </FormatDataParamsFieldSet>
+            {/*
+             // @ts-expect-error TS2322 */}
             <FormatChartParamsFieldSet defaultExpanded>
+                {/*
+                 // @ts-expect-error TS2322 */}
                 <ColorPickerParamsAdmin
                     colors={colors}
                     onChange={handleColors}

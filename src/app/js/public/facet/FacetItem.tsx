@@ -12,6 +12,7 @@ import getFieldClassName from '../../lib/getFieldClassName';
 import FacetValueListComponent from './FacetValueList';
 import FacetActionsContext from './FacetActionsContext';
 
+// @ts-expect-error TS7006
 const onClick = (openFacet, field) => () => openFacet({ name: field.name });
 
 const styles = {
@@ -24,8 +25,10 @@ const styles = {
     },
 };
 
+// @ts-expect-error TS7031
 const FacetTitle = ({ title, total, isOpen }) => {
     return (
+        // @ts-expect-error TS2769
         <Grid container justify="space-between" sx={styles.facetTitle}>
             <Grid item>{`${title} ${total ? `(${total})` : ''}`}</Grid>
             <Grid item>{isOpen ? <ExpandLessIcon /> : <ExpandMoreIcon />}</Grid>
@@ -33,8 +36,11 @@ const FacetTitle = ({ title, total, isOpen }) => {
     );
 };
 
+// @ts-expect-error TS7031
 const FacetItem = ({ className, isOpen, field, total, page }) => (
     <FacetActionsContext.Consumer>
+        {/*
+         // @ts-expect-error TS2339 */}
         {({ openFacet }) => (
             <ListItem
                 className={classnames(
@@ -43,6 +49,7 @@ const FacetItem = ({ className, isOpen, field, total, page }) => (
                     `facet-${getFieldClassName(field)}`,
                 )}
                 key={field.name}
+                // @ts-expect-error TS2769
                 open={isOpen}
             >
                 <ListItemText
@@ -84,6 +91,7 @@ FacetItem.propTypes = {
     page: PropTypes.oneOf(['dataset', 'search']).isRequired,
 };
 
+// @ts-expect-error TS7006
 const mapStateToProps = (state, { field, page }) => {
     const selectors = fromFacet(page);
 

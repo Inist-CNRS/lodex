@@ -5,6 +5,7 @@ import React, { useMemo } from 'react';
 import { useTranslate } from '../../../i18n/I18NContext';
 import { getResourceType } from '../helpers/resourceType';
 
+// @ts-expect-error TS7031
 const getAnnotationResourceTitle = ({ resourceUri, field }, translate) => {
     const resourceType = getResourceType(resourceUri, field);
     if (resourceType === 'graph') {
@@ -18,6 +19,7 @@ const getAnnotationResourceTitle = ({ resourceUri, field }, translate) => {
     return resourceUri;
 };
 
+// @ts-expect-error TS7031
 export function AnnotationHeader({ annotation }) {
     const { translate } = useTranslate();
 

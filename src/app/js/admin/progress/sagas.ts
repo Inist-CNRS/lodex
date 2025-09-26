@@ -14,6 +14,7 @@ import { CLEAR_PUBLISHED } from '../clear';
 
 export function* handleStartProgressSaga() {
     yield delay(1000);
+    // @ts-expect-error TS7057
     const request = yield select(fromUser.getProgressRequest);
     const { error, response } = yield call(fetchSaga, request);
     if (error) {

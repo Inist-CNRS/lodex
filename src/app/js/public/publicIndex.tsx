@@ -1,4 +1,5 @@
 import '@babel/polyfill';
+// @ts-expect-error TS7016
 import { createBrowserHistory } from 'history';
 import React from 'react';
 import { hydrate } from 'react-dom';
@@ -6,6 +7,7 @@ import { Provider } from 'react-redux';
 import 'url-api-polyfill';
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+// @ts-expect-error TS7016
 import { Router } from 'react-router-dom';
 import getLocale from '../../../common/getLocale';
 import configureStore from '../configureStore';
@@ -27,6 +29,7 @@ const initialState = {
     },
 };
 
+// @ts-expect-error TS2339
 const tenant = window.__TENANT__;
 
 const browserHistory = createBrowserHistory({
@@ -38,6 +41,7 @@ sessionStorage.setItem('lodex-tenant', tenant);
 const { store, history } = configureStore(
     reducers,
     sagas,
+    // @ts-expect-error TS2339
     window.__PRELOADED_STATE__ || initialState,
     browserHistory,
 );
@@ -47,12 +51,19 @@ const queryClient = new QueryClient();
 hydrate(
     <Provider {...{ store }}>
         <I18N>
+            {/*
+             // @ts-expect-error TS2322 */}
             <QueryClientProvider client={queryClient}>
                 <AnnotationStorageProvider>
+                    {/*
+                     // @ts-expect-error TS2322 */}
                     <Router history={history}>
                         <LodexThemeProvider>
+                            {/*
+                             // @ts-expect-error TS2322 */}
                             <Routes
                                 history={history}
+                                // @ts-expect-error TS2339
                                 tenant={window.__TENANT__}
                             />
                         </LodexThemeProvider>

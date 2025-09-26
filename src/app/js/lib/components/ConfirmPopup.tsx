@@ -18,12 +18,19 @@ const styles = {
 };
 
 export const ConfirmPopup = ({
+    // @ts-expect-error TS7031
     isOpen,
+    // @ts-expect-error TS7031
     cancelLabel,
+    // @ts-expect-error TS7031
     confirmLabel,
+    // @ts-expect-error TS7031
     title,
+    // @ts-expect-error TS7031
     description,
+    // @ts-expect-error TS7031
     onConfirm,
+    // @ts-expect-error TS7031
     onCancel,
     isLoading = false,
 }) => {

@@ -11,6 +11,7 @@ import {
     Box,
 } from '@mui/material';
 
+// @ts-expect-error TS7031
 const DeleteTenantDialog = ({ isOpen, tenant, handleClose, deleteAction }) => {
     const [name, setName] = useState('');
     const [deleteDatabase, setDeleteDatabase] = useState(true);
@@ -23,6 +24,7 @@ const DeleteTenantDialog = ({ isOpen, tenant, handleClose, deleteAction }) => {
         }
     }, [isOpen]);
 
+    // @ts-expect-error TS7006
     const handleTextValidation = (event) => {
         setName(event.target.value);
         if (event.target.value !== tenant.name) {
@@ -36,6 +38,7 @@ const DeleteTenantDialog = ({ isOpen, tenant, handleClose, deleteAction }) => {
         setDeleteDatabase(!deleteDatabase);
     };
 
+    // @ts-expect-error TS7006
     const handleSubmit = (event) => {
         event.preventDefault();
         deleteAction(tenant._id, tenant.name, deleteDatabase);

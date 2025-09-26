@@ -1,5 +1,7 @@
 import React from 'react';
+// @ts-expect-error TS7016
 import { shallow } from 'enzyme';
+// @ts-expect-error TS7016
 import { StyleSheetTestUtils } from 'aphrodite';
 
 import IstexList from './IstexList';
@@ -12,6 +14,7 @@ describe('IstexList', () => {
     const defaultProps = {
         data: { hits: ['item1', 'item2', 'item3'], total: 3 },
         other: 'props',
+        // @ts-expect-error TS7006
         polyglot: { t: (v) => v },
     };
 
@@ -50,6 +53,7 @@ describe('IstexList', () => {
     it('should display no result message if data.hits is empty', () => {
         const children = jest.fn();
         const wrapper = shallow(
+            // @ts-expect-error TS2322
             <IstexList {...defaultProps} data={{ hits: [] }}>
                 {children}
             </IstexList>,
@@ -66,6 +70,7 @@ describe('IstexList', () => {
             total: 6,
             nextPageURI: null,
         });
+        // @ts-expect-error TS2339
         getMoreDocumentData.mockImplementation(() => dataPromise);
         const children = jest.fn(({ item }) => (
             <div className={item}>{item}</div>
@@ -73,6 +78,7 @@ describe('IstexList', () => {
         const wrapper = shallow(
             <IstexList
                 {...defaultProps}
+                // @ts-expect-error TS2322
                 data={{
                     hits: ['item1', 'item2', 'item3'],
                     total: 6,
@@ -113,6 +119,7 @@ describe('IstexList', () => {
 
     afterEach(() => {
         StyleSheetTestUtils.clearBufferAndResumeStyleInjection();
+        // @ts-expect-error TS2339
         getMoreDocumentData.mockClear();
     });
 });

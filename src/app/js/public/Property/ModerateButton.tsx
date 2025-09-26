@@ -5,6 +5,7 @@ import RejectedIcon from '@mui/icons-material/Clear';
 import ProposedIcon from '@mui/icons-material/Remove';
 import ValidatedIcon from '@mui/icons-material/Done';
 import { connect } from 'react-redux';
+// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import { translate } from '../../i18n/I18NContext';
 import { red, yellow, green, grey } from '@mui/material/colors';
@@ -27,12 +28,16 @@ const colors = {
     REJECTED: red[500],
 };
 
+// @ts-expect-error TS7006
 const getIcons = (status, active) => {
+    // @ts-expect-error TS7053
     const Icon = icons[status];
 
     return (
         <Icon
+            // @ts-expect-error TS7053
             color={active ? colors[status] : grey[500]}
+            // @ts-expect-error TS7053
             hoverColor={colors[status]}
         />
     );
@@ -46,10 +51,15 @@ const styles = {
 };
 
 export const ModerateButtonComponent = ({
+    // @ts-expect-error TS7031
     contributor,
+    // @ts-expect-error TS7031
     status,
+    // @ts-expect-error TS7031
     changeStatus,
+    // @ts-expect-error TS7031
     isAdmin,
+    // @ts-expect-error TS7031
     p: polyglot,
 }) => {
     if (!isAdmin || !status || !contributor) {
@@ -58,6 +68,7 @@ export const ModerateButtonComponent = ({
     return (
         <div className="moderate">
             {propositionStatus.map((availableStatus) => (
+                // @ts-expect-error TS2769
                 <IconButton
                     className={classnames(availableStatus, {
                         active: availableStatus === status,
@@ -91,8 +102,11 @@ ModerateButtonComponent.propTypes = {
     p: polyglotPropTypes.isRequired,
 };
 
+// @ts-expect-error TS7006
 const mapStateToProps = (state, { fieldName }) => ({
+    // @ts-expect-error TS2339
     contributor: fromResource.getResourceContributorForField(state, fieldName),
+    // @ts-expect-error TS2339
     isAdmin: fromUser.isAdmin(state),
 });
 

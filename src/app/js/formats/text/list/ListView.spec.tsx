@@ -1,11 +1,14 @@
 import React from 'react';
+// @ts-expect-error TS7016
 import { shallow } from 'enzyme';
+// @ts-expect-error TS7016
 import { StyleSheetTestUtils } from 'aphrodite';
 
 import ListView, { UL, OL } from './ListView';
 
 describe('list format view <ListView />', () => {
     const polyglot = {
+        // @ts-expect-error TS7006
         t: (v) => v,
     };
 
@@ -51,6 +54,7 @@ describe('list format view <ListView />', () => {
 
         const subFormat = component.find('Translated(CheckedComponent)');
         expect(subFormat).toHaveLength(3);
+        // @ts-expect-error TS7006
         subFormat.forEach((t, index) => {
             expect(t.props().resource).toEqual(['value1', 'value2', 'value3']);
             expect(t.props().field.name).toBe(index.toString());
@@ -81,6 +85,7 @@ describe('list format view <ListView />', () => {
         const component = shallow(<ListView {...props} />);
         const title = component.find('Translated(CheckedComponent)');
         expect(title).toHaveLength(3);
+        // @ts-expect-error TS7006
         title.forEach((t, index) => {
             expect(t.props().resource).toEqual(['value1', 'value2', 'value3']);
             expect(t.props().field.name).toBe(index.toString());

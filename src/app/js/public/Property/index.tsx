@@ -1,11 +1,15 @@
 import { grey } from '@mui/material/colors';
 import classnames from 'classnames';
+// @ts-expect-error TS7016
 import get from 'lodash/get';
+// @ts-expect-error TS7016
 import memoize from 'lodash/memoize';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
+// @ts-expect-error TS7016
 import compose from 'recompose/compose';
+// @ts-expect-error TS7016
 import withProps from 'recompose/withProps';
 import { bindActionCreators } from 'redux';
 import { translate } from '../../i18n/I18NContext';
@@ -46,6 +50,7 @@ import {
 
 const styles = {
     container: memoize(
+        // @ts-expect-error TS7006
         (style, width) => ({
             display: 'flex',
             flexDirection: 'column',
@@ -59,8 +64,10 @@ const styles = {
             },
             ...style,
         }),
+        // @ts-expect-error TS7006
         (style, value) => ({ style, value }),
     ),
+    // @ts-expect-error TS7006
     label: (status, isSub) => ({
         color: grey[500],
         flexGrow: 2,
@@ -96,6 +103,7 @@ const styles = {
         display: 'flex',
         alignItems: 'center',
     },
+    // @ts-expect-error TS7006
     value: (dense, isListFormat) => ({
         flexGrow: 2,
         width: '100%',
@@ -107,6 +115,7 @@ const styles = {
     }),
 };
 
+// @ts-expect-error TS7006
 export const getEditFieldRedirectUrl = (fieldName, scope, subresourceId) => {
     const tenant = extractTenantFromUrl(window.location.href);
 
@@ -122,17 +131,29 @@ export const getEditFieldRedirectUrl = (fieldName, scope, subresourceId) => {
 };
 
 export const PropertyComponent = ({
+    // @ts-expect-error TS7031
     className,
+    // @ts-expect-error TS7031
     field,
+    // @ts-expect-error TS7031
     predicate,
+    // @ts-expect-error TS7031
     isSub,
+    // @ts-expect-error TS7031
     resource,
+    // @ts-expect-error TS7031
     fieldStatus,
+    // @ts-expect-error TS7031
     isAdmin,
+    // @ts-expect-error TS7031
     changeStatus,
+    // @ts-expect-error TS7031
     style,
+    // @ts-expect-error TS7031
     parents,
+    // @ts-expect-error TS7031
     dense,
+    // @ts-expect-error TS7031
     isMultilingual,
 }) => {
     const canAnnotate = useCanAnnotate();
@@ -163,6 +184,7 @@ export const PropertyComponent = ({
     const formatChildren = [
         <Format
             key="format"
+            // @ts-expect-error TS2322
             className={classnames('property_value', fieldClassName)}
             field={field}
             resource={resource}
@@ -170,15 +192,23 @@ export const PropertyComponent = ({
             graphLink={field.scope === SCOPE_GRAPHIC}
         />,
         <CompositeProperty
+            // @ts-expect-error TS2322
             key="composite"
+            // @ts-expect-error TS2322
             field={field}
+            // @ts-expect-error TS2322
             resource={resource}
+            // @ts-expect-error TS2322
             parents={parents}
         />,
         <PropertyLinkedFields
+            // @ts-expect-error TS2322
             key="linked-fields"
+            // @ts-expect-error TS2322
             fieldName={field.name}
+            // @ts-expect-error TS2322
             resource={resource}
+            // @ts-expect-error TS2322
             parents={parents}
         />,
     ];
@@ -210,11 +240,13 @@ export const PropertyComponent = ({
                 <div style={styles.labelContainer}>
                     <span
                         className={classnames('property_label', fieldClassName)}
+                        // @ts-expect-error TS2322
                         style={styles.label(fieldStatus, isSub)}
                         id={`field-${field.name}`}
                     >
                         {field.label}
                         {isAdmin && (
+                            // @ts-expect-error TS2769
                             <IconButton
                                 onClick={handleEditField}
                                 classnames={'edit-field-icon'}
@@ -236,8 +268,11 @@ export const PropertyComponent = ({
                             'property_scheme',
                             fieldClassName,
                         )}
+                        // @ts-expect-error TS2322
                         style={styles.scheme}
                     >
+                        {/*
+                         // @ts-expect-error TS2739 */}
                         <Link style={styles.schemeLink} href={field.scheme}>
                             {addSchemePrefix(field.scheme)}
                         </Link>
@@ -252,6 +287,8 @@ export const PropertyComponent = ({
                 className={classnames('property_value_container')}
                 style={styles.valueContainer}
             >
+                {/*
+                 // @ts-expect-error TS2769 */}
                 <Box sx={styles.value(dense, formatName === 'list')}>
                     {format}
                 </Box>
@@ -261,6 +298,7 @@ export const PropertyComponent = ({
                             'property_language',
                             fieldClassName,
                         )}
+                        // @ts-expect-error TS2322
                         style={styles.language}
                     >
                         {field.language}
@@ -299,14 +337,20 @@ PropertyComponent.defaultProps = {
     isSub: false,
 };
 
+// @ts-expect-error TS7006
 const mapStateToProps = (state, { field }) => ({
+    // @ts-expect-error TS2339
     isAdmin: fromUser.isAdmin(state),
+    // @ts-expect-error TS2339
     fieldStatus: fromResource.getFieldStatus(state, field),
     predicate: getPredicate(field),
+    // @ts-expect-error TS2339
     dense: fromDisplayConfig.isDense(state),
+    // @ts-expect-error TS2339
     isMultilingual: fromDisplayConfig.isMultilingual(state),
 });
 
+// @ts-expect-error TS7006
 const mapDispatchToProps = (dispatch, { field, resource: { uri } }) =>
     bindActionCreators(
         {
@@ -324,6 +368,7 @@ const mapDispatchToProps = (dispatch, { field, resource: { uri } }) =>
 const Property = compose(
     translate,
     connect(mapStateToProps, mapDispatchToProps),
+    // @ts-expect-error TS7031
     withProps(({ field, parents = [] }) => ({
         parents: [field.name, ...parents],
     })),

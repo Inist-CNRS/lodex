@@ -26,7 +26,9 @@ describe('<ParsingExcerpt />', () => {
         };
     });
     it('should return an empty array of enrichments name', () => {
+        // @ts-expect-error TS7034
         const enrichments = [];
+        // @ts-expect-error TS7005
         const enrichmentsName = getEnrichmentsNames(enrichments);
         expect(enrichmentsName).toEqual([]);
     });
@@ -71,6 +73,7 @@ describe('<ParsingExcerpt />', () => {
             { foo: 'foo2', bar: 'bar2' },
         ];
         const wrapper = render(
+            // @ts-expect-error TS2739
             <ParsingExcerpt
                 columns={columns}
                 lines={lines}
@@ -88,6 +91,7 @@ describe('<ParsingExcerpt />', () => {
             { foo: 'foo2', bar: 'bar2' },
         ];
         const wrapper = render(
+            // @ts-expect-error TS2739
             <ParsingExcerpt
                 columns={columns}
                 lines={lines}
@@ -102,7 +106,9 @@ describe('<ParsingExcerpt />', () => {
 
     it('should render headers with subresource', () => {
         mockedParams = {
+            // @ts-expect-error TS2322
             filter: 'document',
+            // @ts-expect-error TS2322
             subresourceId: '1234',
         };
         const subresources = [
@@ -114,6 +120,7 @@ describe('<ParsingExcerpt />', () => {
             },
         ];
 
+        // @ts-expect-error TS7034
         const columns = [];
         const lines = [
             {
@@ -135,7 +142,9 @@ describe('<ParsingExcerpt />', () => {
         ];
 
         const wrapper = render(
+            // @ts-expect-error TS2739
             <ParsingExcerpt
+                // @ts-expect-error TS7005
                 columns={columns}
                 lines={lines}
                 subresources={subresources}
@@ -147,7 +156,9 @@ describe('<ParsingExcerpt />', () => {
 
     it('should render lines with subresource', () => {
         mockedParams = {
+            // @ts-expect-error TS2322
             filter: 'document',
+            // @ts-expect-error TS2322
             subresourceId: '1234',
         };
         const subresources = [
@@ -159,6 +170,7 @@ describe('<ParsingExcerpt />', () => {
             },
         ];
 
+        // @ts-expect-error TS7034
         const columns = [];
         const lines = [
             {
@@ -179,7 +191,9 @@ describe('<ParsingExcerpt />', () => {
             },
         ];
         const wrapper = render(
+            // @ts-expect-error TS2739
             <ParsingExcerpt
+                // @ts-expect-error TS7005
                 columns={columns}
                 lines={lines}
                 subresources={subresources}
@@ -199,6 +213,8 @@ describe('<ParsingExcerpt />', () => {
         ];
         const wrapper = render(
             <TestI18N>
+                {/*
+                 // @ts-expect-error TS2322 */}
                 <ParsingExcerpt
                     columns={columns}
                     lines={lines}
@@ -212,6 +228,7 @@ describe('<ParsingExcerpt />', () => {
 
     it('should call handleAddColumn without subresourcePath when ParsingExcerptAddColumn is clicked and this not a subresource', () => {
         mockedParams = {
+            // @ts-expect-error TS2322
             filter: 'document',
             subresourceId: undefined,
         };
@@ -223,6 +240,8 @@ describe('<ParsingExcerpt />', () => {
         ];
         const wrapper = render(
             <TestI18N>
+                {/*
+                 // @ts-expect-error TS2322 */}
                 <ParsingExcerpt
                     columns={columns}
                     lines={lines}
@@ -245,7 +264,9 @@ describe('<ParsingExcerpt />', () => {
 
     it('should call handleAddColumn with subresourcePath when ParsingExcerptAddColumn is clicked and this is a subresource', () => {
         mockedParams = {
+            // @ts-expect-error TS2322
             filter: 'document',
+            // @ts-expect-error TS2322
             subresourceId: '1234',
         };
         const handleAddColumn = jest.fn();
@@ -258,6 +279,7 @@ describe('<ParsingExcerpt />', () => {
             },
         ];
 
+        // @ts-expect-error TS7034
         const columns = [];
         const lines = [
             {
@@ -279,7 +301,10 @@ describe('<ParsingExcerpt />', () => {
         ];
         const wrapper = render(
             <TestI18N>
+                {/*
+                 // @ts-expect-error TS2322 */}
                 <ParsingExcerpt
+                    // @ts-expect-error TS7005
                     columns={columns}
                     lines={lines}
                     subresources={subresources}

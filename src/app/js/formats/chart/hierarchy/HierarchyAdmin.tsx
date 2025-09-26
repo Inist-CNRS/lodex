@@ -55,21 +55,26 @@ class HierarchyAdmin extends Component {
         showOrderBy: true,
     };
 
+    // @ts-expect-error TS7006
     constructor(props) {
         super(props);
         this.handleColors = this.handleColors.bind(this);
         this.state = {
+            // @ts-expect-error TS2339
             colors: this.props.args.colors || defaultArgs.colors,
         };
     }
+    // @ts-expect-error TS7006
     handleParams = (params) => {
         const newParams = {
+            // @ts-expect-error TS2339
             ...this.props.args.params,
             ...params,
         };
         updateAdminArgs('params', newParams, this.props);
     };
 
+    // @ts-expect-error TS7006
     handleColors(colors) {
         updateAdminArgs(
             'colors',
@@ -78,25 +83,31 @@ class HierarchyAdmin extends Component {
         );
     }
 
+    // @ts-expect-error TS7006
     handleMaxLabelLength = (event) => {
         const maxLabelLength = event.target.value;
         this.handleParams({
+            // @ts-expect-error TS2339
             ...this.props.args.params,
             maxLabelLength: parseInt(maxLabelLength, 10),
         });
     };
 
+    // @ts-expect-error TS7006
     handleLabelOffset = (event) => {
         const labelOffset = event.target.value;
         this.handleParams({
+            // @ts-expect-error TS2339
             ...this.props.args.params,
             labelOffset: parseInt(labelOffset, 10),
         });
     };
 
+    // @ts-expect-error TS7006
     handleMinimumScaleValue = (event) => {
         const minimumScaleValue = event.target.value;
         this.handleParams({
+            // @ts-expect-error TS2339
             ...this.props.args.params,
             minimumScaleValue: parseInt(minimumScaleValue, 10),
         });
@@ -104,17 +115,27 @@ class HierarchyAdmin extends Component {
 
     render() {
         const {
+            // @ts-expect-error TS2339
             p: polyglot,
+            // @ts-expect-error TS2339
             args: { params },
+            // @ts-expect-error TS2339
             showMaxSize,
+            // @ts-expect-error TS2339
             showMaxValue,
+            // @ts-expect-error TS2339
             showMinValue,
+            // @ts-expect-error TS2339
             showOrderBy,
         } = this.props;
 
         return (
             <FormatGroupedFieldSet>
+                {/*
+                 // @ts-expect-error TS2322 */}
                 <FormatDataParamsFieldSet>
+                    {/*
+                     // @ts-expect-error TS2322 */}
                     <RoutineParamsAdmin
                         params={params || defaultArgs.params}
                         polyglot={polyglot}
@@ -125,28 +146,42 @@ class HierarchyAdmin extends Component {
                         showOrderBy={showOrderBy}
                     />
                 </FormatDataParamsFieldSet>
+                {/*
+                 // @ts-expect-error TS2322 */}
                 <FormatChartParamsFieldSet defaultExpanded>
+                    {/*
+                     // @ts-expect-error TS2322 */}
                     <ColorPickerParamsAdmin
+                        // @ts-expect-error TS2339
                         colors={this.state.colors || defaultArgs.colors}
                         onChange={this.handleColors}
                         polyglot={polyglot}
                         monochromatic={true}
                     />
+                    {/*
+                     // @ts-expect-error TS2322 */}
                     <TextField
                         label={polyglot.t('max_char_number_in_labels')}
                         onChange={this.handleMaxLabelLength}
+                        // @ts-expect-error TS2339
                         value={this.props.args.params.maxLabelLength}
                         fullWidth
                     />
+                    {/*
+                     // @ts-expect-error TS2322 */}
                     <TextField
                         label={polyglot.t('label_offset')}
                         onChange={this.handleLabelOffset}
+                        // @ts-expect-error TS2339
                         value={this.props.args.params.labelOffset}
                         fullWidth
                     />
+                    {/*
+                     // @ts-expect-error TS2322 */}
                     <TextField
                         label={polyglot.t('minimum_scale_value')}
                         onChange={this.handleMinimumScaleValue}
+                        // @ts-expect-error TS2339
                         value={this.props.args.params.minimumScaleValue}
                         fullWidth
                     />

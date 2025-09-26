@@ -13,14 +13,20 @@ jest.mock('../../../common/tools/toast');
 
 const queryClient = new QueryClient({
     defaultOptions: {
+        // @ts-expect-error TS2353
         retry: false,
     },
 });
 
+// @ts-expect-error TS7031
 function TestWrapper({ children }) {
     return (
         <TestI18N>
+            {/*
+             // @ts-expect-error TS2322 */}
             <AnnotationStorageProvider>
+                {/*
+                 // @ts-expect-error TS2322 */}
                 <QueryClientProvider client={queryClient}>
                     {children}
                 </QueryClientProvider>
@@ -61,6 +67,7 @@ jest.mock('../lib/fetch', () =>
 
 describe('useGetFieldAnnotation', () => {
     beforeEach(() => {
+        // @ts-expect-error TS2339
         toast.mockClear();
         localStorage.clear();
         localStorage.setItem('redux-localstorage', '{"user":{}}');

@@ -19,11 +19,14 @@ const styles = stylesToClassname(
 );
 
 export const AdminOnlyAlertComponent = ({
+    // @ts-expect-error TS7031
     children,
+    // @ts-expect-error TS7031
     isAdmin,
     className = 'alert',
 }) =>
     isAdmin ? (
+        // @ts-expect-error TS2339
         <div className={classnames(className, styles.alert)}>{children}</div>
     ) : null;
 
@@ -33,7 +36,9 @@ AdminOnlyAlertComponent.propTypes = {
     className: PropTypes.string,
 };
 
+// @ts-expect-error TS7006
 const mapStateToProps = (state) => ({
+    // @ts-expect-error TS2339
     isAdmin: fromUser.isAdmin(state),
 });
 

@@ -7,6 +7,7 @@ import getLabel from '../../utils/getLabel';
 import InvalidFormat from '../../InvalidFormat';
 import Link from '../../../lib/components/Link';
 
+// @ts-expect-error TS7031
 const UriView = ({ className, resource, field, fields, type, value }) => {
     const uri = resource[field.name];
 
@@ -18,6 +19,8 @@ const UriView = ({ className, resource, field, fields, type, value }) => {
 
             return (
                 <div key={uriItem}>
+                    {/*
+                     // @ts-expect-error TS2739 */}
                     <Link
                         className={className}
                         to={getResourceUri({ uri: uriItem })}
@@ -36,6 +39,7 @@ const UriView = ({ className, resource, field, fields, type, value }) => {
     const label = getLabel(field, resource, fields, type, value);
 
     return (
+        // @ts-expect-error TS2739
         <Link className={className} to={getResourceUri({ uri })}>
             {label}
         </Link>
@@ -57,6 +61,7 @@ UriView.defaultProps = {
 
 export default UriView;
 
+// @ts-expect-error TS7031
 export const getReadableValue = ({ resource, field, type, value }) => {
     const uri = resource[field.name];
 

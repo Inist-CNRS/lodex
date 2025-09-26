@@ -25,6 +25,7 @@ const styles = {
     },
 };
 
+// @ts-expect-error TS7031
 export const AppComponent = ({ children, tenant }) => {
     const [sidebarOpen, setSidebarOpen] = useState(true);
     const sidebarContextValue = useMemo(
@@ -36,18 +37,27 @@ export const AppComponent = ({ children, tenant }) => {
     );
 
     return (
+        // @ts-expect-error TS2322
         <SidebarContext.Provider value={sidebarContextValue}>
             <Helmet>
+                {/*
+                 // @ts-expect-error TS2554 */}
                 <title>{getTitle(tenant)}</title>
                 <style type="text/css">{`
                 html, body { height: 100%; background: #efefef }
                 #root { height: 100%; }
             `}</style>
             </Helmet>
+            {/*
+             // @ts-expect-error TS2322 */}
             <div style={styles.layout}>
                 <AppBar />
+                {/*
+                 // @ts-expect-error TS2322 */}
                 <div style={styles.contentLayout}>
                     <Sidebar />
+                    {/*
+                     // @ts-expect-error TS2322 */}
                     <div className="body" style={styles.body}>
                         {children}
                     </div>

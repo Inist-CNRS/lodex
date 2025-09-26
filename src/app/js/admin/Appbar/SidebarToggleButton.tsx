@@ -16,7 +16,9 @@ const SidebarToggleButton = () => {
                         transition: 'transform 0.3s ease-in-out',
                         transform: open ? 'rotate(0deg)' : 'rotate(180deg)',
                     }}
+                    // @ts-expect-error TS2769
                     color="contrast"
+                    // @ts-expect-error TS2554
                     onClick={() => setSidebarOpen(!open)}
                 >
                     <MenuIcon sx={{ fontSize: '30px' }} />

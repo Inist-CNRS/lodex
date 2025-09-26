@@ -6,6 +6,7 @@ const { useForm } = require('@tanstack/react-form');
 const { TextField } = require('./TextField');
 const { TestI18N } = require('../../i18n/I18NContext');
 
+// @ts-expect-error TS7006
 const renderTextField = async (props) => {
     let form;
 
@@ -33,6 +34,7 @@ const renderTextField = async (props) => {
 
     return {
         form,
+        // @ts-expect-error TS2698
         ...wrapper,
     };
 };
@@ -81,6 +83,7 @@ describe('TextField', () => {
         expect(wrapper.queryByLabelText('label')).toBeInTheDocument();
         expect(wrapper.queryByLabelText('label')).toHaveValue('value');
         expect(wrapper.queryByLabelText('clear')).toBeInTheDocument();
+        // @ts-expect-error TS2769
         await act(async () => {
             return fireEvent.click(wrapper.queryByLabelText('clear'));
         });
@@ -102,6 +105,7 @@ describe('TextField', () => {
         const schema = z.object({
             name: z.string().min(10, 'error_from_validator'),
         });
+        // @ts-expect-error TS7006
         function TestTargetField(props) {
             const form = useForm({
                 validators: {
@@ -115,6 +119,7 @@ describe('TextField', () => {
             );
         }
 
+        // @ts-expect-error TS7034
         let wrapper;
 
         await act(async () => {
@@ -126,13 +131,17 @@ describe('TextField', () => {
                 />,
             );
         });
+        // @ts-expect-error TS18048
         expect(wrapper.queryByText('helperText')).toBeInTheDocument();
         await act(async () => {
+            // @ts-expect-error TS7005
             fireEvent.change(wrapper.getByLabelText('label'), {
                 target: { value: 'value' },
             });
         });
+        // @ts-expect-error TS18048
         expect(wrapper.queryByText('helperText')).not.toBeInTheDocument();
+        // @ts-expect-error TS18048
         expect(wrapper.queryByText('error_from_validator')).toBeInTheDocument();
     });
     it('should render an error message in place of the helperText when required is true and there is no value independently of validators', async () => {

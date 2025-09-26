@@ -1,4 +1,5 @@
 import React from 'react';
+// @ts-expect-error TS7016
 import { Route } from 'react-router-dom';
 
 import GraphPage from './GraphPage';

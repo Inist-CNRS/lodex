@@ -1,6 +1,8 @@
 import React, { useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
+// @ts-expect-error TS7016
 import * as d3 from 'd3';
+// @ts-expect-error TS7016
 import ReactTooltip from 'react-tooltip';
 
 import { getColor } from '../../utils/colorUtils';
@@ -20,8 +22,10 @@ const styles = stylesToClassname(
     'aster-plot-chart',
 );
 
+// @ts-expect-error TS7031
 const AsterPlot = ({ data, width, height, colorSet }) => {
     const ref = useRef(null);
+    // @ts-expect-error TS7006
     const createPie = d3.pie().value((d) => d.value);
 
     useEffect(() => {
@@ -41,8 +45,10 @@ const AsterPlot = ({ data, width, height, colorSet }) => {
         const arcDegrees = (arcLength / circumferenceOfCircle) * (Math.PI * 2);
 
         let startAngleIndex = 0;
+        // @ts-expect-error TS7034
         let tempEndAngle;
         let endAngleIndex = 0;
+        // @ts-expect-error TS7034
         let tempEndAngle1;
 
         const computeStartAngle = () => {
@@ -52,6 +58,7 @@ const AsterPlot = ({ data, width, height, colorSet }) => {
                 startAngle = 0;
                 endAngle = startAngle + arcDegrees;
             } else {
+                // @ts-expect-error TS7005
                 startAngle = tempEndAngle;
                 endAngle = startAngle + arcDegrees;
             }
@@ -67,6 +74,7 @@ const AsterPlot = ({ data, width, height, colorSet }) => {
                 startAngle = 0;
                 endAngle = startAngle + arcDegrees;
             } else {
+                // @ts-expect-error TS7005
                 startAngle = tempEndAngle1;
                 endAngle = startAngle + arcDegrees;
             }
@@ -82,6 +90,7 @@ const AsterPlot = ({ data, width, height, colorSet }) => {
         const filledArc = d3
             .arc()
             .innerRadius(inner)
+            // @ts-expect-error TS7006
             .outerRadius(function (d) {
                 return (radius - inner) * (d.value / 100) + inner;
             })
@@ -102,8 +111,10 @@ const AsterPlot = ({ data, width, height, colorSet }) => {
             .data(pieData)
             .enter()
             .append('path')
+            // @ts-expect-error TS7006
             .attr('fill', (_, i) => getColor(colorSet, i))
             .attr('d', filledArc)
+            // @ts-expect-error TS2339
             .attr('class', `arc ${styles.arc}`)
             .attr('transform', `translate(${width / 2} ${height / 2})`);
 
@@ -115,12 +126,15 @@ const AsterPlot = ({ data, width, height, colorSet }) => {
             .attr('fill', 'transparent')
             .attr('stroke', 'gray')
             .attr('d', outlineArc)
+            // @ts-expect-error TS2339
             .attr('class', `outlineArc ${styles.outlineArc}`)
             .attr('transform', `translate(${width / 2} ${height / 2})`)
             .attr('data-html', true)
+            // @ts-expect-error TS7006
             .attr('data-tip', function (d) {
                 return d.data.label;
             })
+            // @ts-expect-error TS7006
             .on('click', function (_event, d) {
                 d.data.onClick();
             });

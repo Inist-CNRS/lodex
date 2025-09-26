@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import DownloadIcon from '@mui/icons-material/Download';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 
 import { polyglot as polyglotPropTypes } from '../propTypes';
@@ -42,27 +43,41 @@ const styles = stylesToClassname(
 );
 
 const ExportButton = ({
+    // @ts-expect-error TS7031
     exporters,
+    // @ts-expect-error TS7031
     onExport,
+    // @ts-expect-error TS7031
     uri,
+    // @ts-expect-error TS7031
     p: polyglot,
+    // @ts-expect-error TS7031
     isResourceExport,
+    // @ts-expect-error TS7031
     displayExportPDF,
+    // @ts-expect-error TS7031
     maxExportPDFSize,
+    // @ts-expect-error TS7031
     match,
+    // @ts-expect-error TS7031
     facets,
+    // @ts-expect-error TS7031
     locale,
+    // @ts-expect-error TS7031
     invertedFacets,
+    // @ts-expect-error TS7031
     sort,
 }) => {
     const [popover, setPopover] = useState({ open: false });
 
+    // @ts-expect-error TS7006
     const handleOpen = (event) => {
         // This prevents ghost click.
         event.preventDefault();
 
         setPopover({
             open: true,
+            // @ts-expect-error TS2353
             anchorEl: event.currentTarget,
         });
     };
@@ -73,6 +88,7 @@ const ExportButton = ({
         });
     };
 
+    // @ts-expect-error TS7006
     const handleExport = (event) => {
         handleClose();
         onExport(event);
@@ -82,7 +98,9 @@ const ExportButton = ({
         handleClose();
 
         const facetsIds = Object.keys(facets).reduce((acc, facetName) => {
+            // @ts-expect-error TS7053
             acc[facetName] = facets[facetName].map(
+                // @ts-expect-error TS7006
                 (facetValue) => facetValue.id,
             );
             return acc;
@@ -134,15 +152,23 @@ const ExportButton = ({
             >
                 {buttonLabel}
             </Button>
+            {/*
+             // @ts-expect-error TS2339 */}
             <div className={styles.menuContainer}>
                 <Menu
+                    // @ts-expect-error TS2339
                     className={styles.menuList}
+                    // @ts-expect-error TS2339
                     anchorEl={popover.anchorEl}
                     keepMounted
                     open={popover.open}
                     onClose={handleClose}
                 >
+                    {/*
+                     // @ts-expect-error TS2339 */}
                     <h3 className={styles.menuTitle}>{menuTitle}</h3>
+                    {/*
+                     // @ts-expect-error TS7031 */}
                     {exporters.map(({ exportID, label }) => (
                         <ExportItem
                             key={exportID}
@@ -180,17 +206,27 @@ ExportButton.defaultProps = {
     isResourceExport: false,
 };
 
+// @ts-expect-error TS7006
 const mapStateToProps = (state) => ({
+    // @ts-expect-error TS2339
     exporters: fromExport.getExporters(state),
+    // @ts-expect-error TS2339
     displayExportPDF: fromDisplayConfig.getDisplayExportPDF(state),
+    // @ts-expect-error TS2339
     maxExportPDFSize: fromDisplayConfig.getMaxExportPDFSize(state),
+    // @ts-expect-error TS2339
     facets: fromSearch.getAppliedFacets(state),
+    // @ts-expect-error TS2339
     match: fromSearch.getQuery(state),
+    // @ts-expect-error TS2339
     invertedFacets: fromSearch.getInvertedFacetKeys(state),
+    // @ts-expect-error TS2339
     sort: fromSearch.getSort(state),
+    // @ts-expect-error TS2339
     locale: fromI18n.getLocale(state),
 });
 
+// @ts-expect-error TS7006
 const mapDispatchToProps = (dispatch) =>
     bindActionCreators(
         {

@@ -4,14 +4,18 @@ import { changePositionValue, CHANGE_POSITIONS } from '../';
 import { fromFields, fromUser } from '../../sharedSelectors';
 import fetchSaga from '../../lib/sagas/fetchSaga';
 
+// @ts-expect-error TS7006
 export const movePosition = (fields, oldPosition, newPosition) => {
+    // @ts-expect-error TS7006
     const fieldToMove = fields.find((field) => field.position === oldPosition);
 
     const newIndex = fields.findIndex(
+        // @ts-expect-error TS7006
         (field) => field.position === newPosition,
     );
 
     const otherFields = fields.filter(
+        // @ts-expect-error TS7006
         (field) => field.position !== oldPosition,
     );
 
@@ -28,9 +32,12 @@ export const movePosition = (fields, oldPosition, newPosition) => {
 };
 
 export function* handleChangePosition({
+    // @ts-expect-error TS7031
     payload: { newPosition, oldPosition, type },
 }) {
+    // @ts-expect-error TS7057
     const fields = yield select(fromFields.getOntologyFields, type);
+    // @ts-expect-error TS7057
     const reorderedFields = yield call(
         movePosition,
         fields,
@@ -40,7 +47,9 @@ export function* handleChangePosition({
 
     yield put(changePositionValue({ fields: reorderedFields }));
 
+    // @ts-expect-error TS7057
     const request = yield select(
+        // @ts-expect-error TS2339
         fromUser.getReorderFieldRequest,
         reorderedFields,
     );
@@ -54,12 +63,16 @@ export function* handleChangePosition({
 }
 
 export function* handleChangePositions({
+    // @ts-expect-error TS7031
     payload: { type, fields: reorderedFields },
 }) {
+    // @ts-expect-error TS7057
     const fields = yield select(fromFields.getOntologyFieldsWithUri, type);
     yield put(changePositionValue({ fields: reorderedFields }));
 
+    // @ts-expect-error TS7057
     const request = yield select(
+        // @ts-expect-error TS2339
         fromUser.getReorderFieldRequest,
         reorderedFields,
     );
@@ -72,5 +85,6 @@ export function* handleChangePositions({
 }
 
 export default function* watchLoadField() {
+    // @ts-expect-error TS2769
     yield takeEvery([CHANGE_POSITIONS], handleChangePositions);
 }

@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
+// @ts-expect-error TS7016
 import { compose, withProps } from 'recompose';
 import { translate } from '../../i18n/I18NContext';
 
@@ -8,7 +9,9 @@ import { Box, Tab, Tabs } from '@mui/material';
 
 import { FIELD_FORM_NAME, saveField as saveFieldAction } from '../';
 
+// @ts-expect-error TS7016
 import { withRouter } from 'react-router';
+// @ts-expect-error TS7016
 import { reduxForm } from 'redux-form';
 import {
     SCOPE_DATASET,
@@ -36,15 +39,25 @@ const ACTIONS_BAR_HEIGHT = 70;
 const PREVIEW_WIDTH = 320;
 
 const FieldEditionWizardComponent = ({
+    // @ts-expect-error TS7031
     currentEditedField,
+    // @ts-expect-error TS7031
     fields,
+    // @ts-expect-error TS7031
     fieldsFromFilter,
+    // @ts-expect-error TS7031
     filter,
+    // @ts-expect-error TS7031
     saveField,
+    // @ts-expect-error TS7031
     handleHideExistingColumns,
+    // @ts-expect-error TS7031
     fieldName,
+    // @ts-expect-error TS7031
     history,
+    // @ts-expect-error TS7031
     isFieldsLoading,
+    // @ts-expect-error TS7031
     p: polyglot,
 }) => {
     const [tabValue, setTabValue] = useState(0);
@@ -74,6 +87,7 @@ const FieldEditionWizardComponent = ({
         }
         if (
             currentEditedField &&
+            // @ts-expect-error TS7006
             !fieldsFromFilter.some((f) => f.name === currentEditedField.name)
         ) {
             toast(polyglot.t('no_field_in_scope', { fieldName, filter }), {
@@ -92,6 +106,7 @@ const FieldEditionWizardComponent = ({
         polyglot,
     ]);
 
+    // @ts-expect-error TS7006
     const handleChange = (_, newValue) => {
         setTabValue(newValue);
     };
@@ -141,6 +156,7 @@ const FieldEditionWizardComponent = ({
         {
             label: 'field_wizard_tab_annotations',
             id: 'tab-annotations',
+            // @ts-expect-error TS2741
             component: <TabAnnotations />,
         },
         {
@@ -294,8 +310,10 @@ FieldEditionWizardComponent.defaultProps = {
     fields: null,
 };
 
+// @ts-expect-error TS7006
 const mapStateToProps = (state, { match, filter }) => {
     const { fieldName } = match.params;
+    // @ts-expect-error TS2339
     const currentEditedField = fromFields.getFieldByName(state, fieldName);
 
     return {
@@ -303,14 +321,18 @@ const mapStateToProps = (state, { match, filter }) => {
         fieldName,
         fields: currentEditedField
             ? fromFields
+                  // @ts-expect-error TS2339
                   .getFieldsExceptField(state, currentEditedField)
+                  // @ts-expect-error TS7006
                   .sort((a, b) =>
                       a.label
                           ?.toLowerCase()
                           .localeCompare(b.label?.toLowerCase()),
                   )
             : null,
+        // @ts-expect-error TS2339
         fieldsFromFilter: fromFields.getOntologyFields(state, filter),
+        // @ts-expect-error TS2339
         isFieldsLoading: fromFields.isLoading(state),
     };
 };
@@ -323,6 +345,7 @@ const mapDispatchToProps = {
 export default compose(
     withRouter,
     connect(mapStateToProps, mapDispatchToProps),
+    // @ts-expect-error TS7031
     withProps(({ currentEditedField, filter }) => {
         const fieldFilterAttributes = filter
             ? {

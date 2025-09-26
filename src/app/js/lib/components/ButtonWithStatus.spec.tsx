@@ -1,4 +1,5 @@
 import React from 'react';
+// @ts-expect-error TS7016
 import { shallow } from 'enzyme';
 import { lightGreen, red } from '@mui/material/colors';
 import { CircularProgress, Button, LinearProgress } from '@mui/material';
@@ -10,6 +11,7 @@ import ButtonWithStatus from './ButtonWithStatus';
 describe('<ButtonWithStatus />', () => {
     describe('<ButtonWithStatus raised={false} />', () => {
         it('should render a Button without icon by default', () => {
+            // @ts-expect-error TS2740
             const wrapper = shallow(<ButtonWithStatus>Foo</ButtonWithStatus>);
 
             const button = wrapper.find(Button).dive().props();
@@ -21,6 +23,7 @@ describe('<ButtonWithStatus />', () => {
 
         it('should render a Button with a CircularProgress icon when loading', () => {
             const wrapper = shallow(
+                // @ts-expect-error TS2740
                 <ButtonWithStatus loading>Foo</ButtonWithStatus>,
             );
 
@@ -35,6 +38,7 @@ describe('<ButtonWithStatus />', () => {
 
         it('should render a Button with a Warning icon when it has error', () => {
             const wrapper = shallow(
+                // @ts-expect-error TS2740
                 <ButtonWithStatus error>Foo</ButtonWithStatus>,
             );
 
@@ -43,6 +47,7 @@ describe('<ButtonWithStatus />', () => {
             expect(button.ownerState.variant).toBe('text');
             expect(button.ownerState.disabled).toBe(false);
             expect(button.ownerState.startIcon).toEqual(
+                // @ts-expect-error TS2769
                 <Warning color={red[400]} />,
             );
             expect(button.children).toContain('Foo');
@@ -50,6 +55,7 @@ describe('<ButtonWithStatus />', () => {
 
         it('should render a Button with a Success icon when it has success', () => {
             const wrapper = shallow(
+                // @ts-expect-error TS2740
                 <ButtonWithStatus success>Foo</ButtonWithStatus>,
             );
 
@@ -57,6 +63,7 @@ describe('<ButtonWithStatus />', () => {
             expect(button.ownerState.variant).toBe('text');
             expect(button.ownerState.disabled).toBe(false);
             expect(button.ownerState.startIcon).toEqual(
+                // @ts-expect-error TS2769
                 <Success color={lightGreen.A400} />,
             );
             expect(button.children).toContain('Foo');
@@ -66,6 +73,7 @@ describe('<ButtonWithStatus />', () => {
     describe('<ButtonWithStatus raised={true} />', () => {
         it('should render a Button without icon by default', () => {
             const wrapper = shallow(
+                // @ts-expect-error TS2740
                 <ButtonWithStatus raised>Foo</ButtonWithStatus>,
             );
             const button = wrapper.find(Button).dive().props();
@@ -77,6 +85,7 @@ describe('<ButtonWithStatus />', () => {
 
         it('should render a Button with a CircularProgress icon when loading', () => {
             const wrapper = shallow(
+                // @ts-expect-error TS2740
                 <ButtonWithStatus raised loading>
                     Foo
                 </ButtonWithStatus>,
@@ -93,6 +102,7 @@ describe('<ButtonWithStatus />', () => {
 
         it('should render a Button with a Warning icon when it has error', () => {
             const wrapper = shallow(
+                // @ts-expect-error TS2740
                 <ButtonWithStatus raised error>
                     Foo
                 </ButtonWithStatus>,
@@ -102,24 +112,28 @@ describe('<ButtonWithStatus />', () => {
             expect(button.ownerState.variant).toBe('contained');
             expect(button.ownerState.disabled).toBe(false);
             expect(button.ownerState.startIcon).toEqual(
+                // @ts-expect-error TS2769
                 <Warning color={red[400]} />,
             );
             expect(button.children).toContain('Foo');
         });
 
         it('should render a Button with a Success icon when it has success', () => {
+            // @ts-expect-error TS2740
             const wrapper = shallow(<ButtonWithStatus raised success />);
 
             const button = wrapper.find(Button).dive().props();
             expect(button.ownerState.variant).toBe('contained');
             expect(button.ownerState.disabled).toBe(false);
             expect(button.ownerState.startIcon).toEqual(
+                // @ts-expect-error TS2769
                 <Success color={lightGreen.A400} />,
             );
         });
 
         it('should render a Button with a LinearProgress when loading with progress', () => {
             const wrapper = shallow(
+                // @ts-expect-error TS2739
                 <ButtonWithStatus raised loading progress={10} target={20}>
                     Foo
                 </ButtonWithStatus>,

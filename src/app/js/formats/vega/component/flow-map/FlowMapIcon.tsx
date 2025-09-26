@@ -1,5 +1,6 @@
 import React from 'react';
 
+// @ts-expect-error TS7006
 const FlowMapIcon = (props) => (
     <svg viewBox="0 0 512 640" width="1em" height="1em" {...props}>
         <path

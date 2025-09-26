@@ -17,8 +17,11 @@ import {
 import { useTranslate } from '../../i18n/I18NContext';
 
 export const PrecomputedDataDialog = ({
+    // @ts-expect-error TS7031
     isOpen,
+    // @ts-expect-error TS7031
     precomputedID,
+    // @ts-expect-error TS7031
     handleClose,
 }) => {
     const { translate } = useTranslate();
@@ -33,6 +36,7 @@ export const PrecomputedDataDialog = ({
     }, [isOpen]);
 
     const handleDownloadData = () => {
+        // @ts-expect-error TS7006
         exportPrecomputedData(precomputedID).then((response) => {
             const file = new Blob([response], { type: 'text/plain' });
             const element = document.createElement('a');

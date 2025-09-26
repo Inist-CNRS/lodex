@@ -1,10 +1,14 @@
 import React from 'react';
+// @ts-expect-error TS7016
 import memoize from 'lodash/memoize';
+// @ts-expect-error TS7016
 import { hsl } from 'd3-color';
 import PropTypes from 'prop-types';
+// @ts-expect-error TS7016
 import ReactTooltip from 'react-tooltip';
 
 const styles = {
+    // @ts-expect-error TS7031
     leaf: memoize(({ x, y, r }, name, color) => ({
         position: 'absolute',
         top: x - r,
@@ -18,6 +22,7 @@ const styles = {
         display: 'flex',
         justifyContent: 'center',
     })),
+    // @ts-expect-error TS7031
     leafLabel: memoize(({ r }) => ({
         overflow: 'hidden',
         padding: '10px',
@@ -27,6 +32,7 @@ const styles = {
     })),
 };
 
+// @ts-expect-error TS7031
 const Bubble = ({ r, x, y, name, value, color }) => (
     <div
         style={styles.leaf({ r, x, y }, name, color)}
@@ -42,6 +48,7 @@ const Bubble = ({ r, x, y, name, value, color }) => (
             place="top"
             type="light"
             effect="float"
+            // @ts-expect-error TS7006
             getContent={(dataTip) => dataTip}
         />
     </div>

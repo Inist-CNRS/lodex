@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+// @ts-expect-error TS7016
 import { Field } from 'redux-form';
 import { IconButton, Button } from '@mui/material';
 import ActionDeleteIcon from '@mui/icons-material/Delete';
 import ActionAddIcon from '@mui/icons-material/Add';
 import classnames from 'classnames';
+// @ts-expect-error TS7016
 import memoize from 'lodash/memoize';
 
 import { polyglot as polyglotPropTypes } from '../../../propTypes';
@@ -31,15 +33,19 @@ const styles = stylesToClassname(
 
 class InputList extends Component {
     convertToList = () => {
+        // @ts-expect-error TS2339
         const { fields, all } = this.props;
         fields.removeAll();
         all.split(';').forEach(fields.push);
     };
 
+    // @ts-expect-error TS7006
     removeValue = memoize((index) => () => this.props.fields.remove(index));
 
+    // @ts-expect-error TS2339
     addValue = () => this.props.fields.push();
     render() {
+        // @ts-expect-error TS2339
         const { fields, polyglot, label, all, ItemComponent } = this.props;
 
         if (typeof all === 'string') {
@@ -59,13 +65,18 @@ class InputList extends Component {
         }
 
         return (
+            // @ts-expect-error TS2339
             <div className={styles.list}>
                 <label>{label}</label>
                 {fields.length === 0 && <p>{polyglot.t('empty')}</p>}
+                {/*
+                 // @ts-expect-error TS7006 */}
                 {fields.map((name, index) => (
+                    // @ts-expect-error TS2339
                     <div key={name} className={styles.item}>
                         <Field
                             {...this.props}
+                            // @ts-expect-error TS2339
                             className={styles.input}
                             name={name}
                             component={ItemComponent}
@@ -73,6 +84,8 @@ class InputList extends Component {
                             field={{ name }}
                         />
 
+                        {/*
+                         // @ts-expect-error TS2769 */}
                         <IconButton
                             className="remove"
                             tooltip={polyglot.t('remove')}
@@ -82,7 +95,10 @@ class InputList extends Component {
                         </IconButton>
                     </div>
                 ))}
+                {/*
+                 // @ts-expect-error TS2769 */}
                 <IconButton
+                    // @ts-expect-error TS2339
                     className={classnames(styles.add, 'add')}
                     tooltip={polyglot.t('add')}
                     onClick={this.addValue}
@@ -94,6 +110,7 @@ class InputList extends Component {
     }
 }
 
+// @ts-expect-error TS2339
 InputList.propTypes = {
     polyglot: polyglotPropTypes.isRequired,
     label: PropTypes.string.isRequired,

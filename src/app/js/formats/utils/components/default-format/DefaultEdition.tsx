@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
+// @ts-expect-error TS7016
 import { change } from 'redux-form';
+// @ts-expect-error TS7016
 import get from 'lodash/get';
 import { connect } from 'react-redux';
+// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import { Button } from '@mui/material';
 
@@ -12,8 +15,11 @@ import { translate } from '../../../../i18n/I18NContext';
 class DefaultEdition extends Component {
     convertValue = () => {
         const {
+            // @ts-expect-error TS2339
             change,
+            // @ts-expect-error TS2339
             meta: { form },
+            // @ts-expect-error TS2339
             input: { name, value },
         } = this.props;
 
@@ -21,6 +27,7 @@ class DefaultEdition extends Component {
     };
 
     render() {
+        // @ts-expect-error TS2339
         const { input, value, label, p: polyglot } = this.props;
         const currentValue = get(input, 'value', value);
 
@@ -41,6 +48,7 @@ class DefaultEdition extends Component {
         }
 
         return (
+            // @ts-expect-error TS2739
             <FormTextField
                 variant="standard"
                 {...this.props}
@@ -50,6 +58,7 @@ class DefaultEdition extends Component {
     }
 }
 
+// @ts-expect-error TS2339
 DefaultEdition.propTypes = formFieldPropTypes;
 
 const mapDispatchToProps = {

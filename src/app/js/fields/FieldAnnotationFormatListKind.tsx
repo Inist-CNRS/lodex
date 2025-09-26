@@ -2,6 +2,7 @@ import { MenuItem } from '@mui/material';
 import PropTypes from 'prop-types';
 import { default as React } from 'react';
 import { connect } from 'react-redux';
+// @ts-expect-error TS7016
 import { compose } from 'recompose';
 import { useTranslate } from '../i18n/I18NContext';
 import FieldInput from '../lib/components/FieldInput';
@@ -12,7 +13,9 @@ export const FIELD_ANNOTATION_FORMAT_LIST_KIND_SINGLE = 'single';
 export const FIELD_ANNOTATION_FORMAT_LIST_KIND_MULTIPLE = 'multiple';
 
 export function FieldAnnotationFormatListKind({
+    // @ts-expect-error TS7031
     isFieldAnnotable,
+    // @ts-expect-error TS7031
     fieldAnnotationFormat,
 }) {
     const { translate } = useTranslate();
@@ -44,6 +47,7 @@ FieldAnnotationFormatListKind.propTypes = {
     fieldAnnotationFormat: PropTypes.string.isRequired,
 };
 
+// @ts-expect-error TS7006
 const mapStateToProps = (state) => {
     return {
         isFieldAnnotable: state.form.field.values.annotable,

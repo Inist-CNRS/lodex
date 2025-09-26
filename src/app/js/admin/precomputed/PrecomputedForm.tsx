@@ -10,6 +10,7 @@ import SourceValueFromColumns from './SourceValueFromColumns';
 
 import { launchPrecomputed, loadPrecomputed } from '.';
 import { connect } from 'react-redux';
+// @ts-expect-error TS7016
 import { compose } from 'recompose';
 import {
     Field,
@@ -17,9 +18,11 @@ import {
     reduxForm,
     change,
     SubmissionError,
+// @ts-expect-error TS7016
 } from 'redux-form';
 import { fromPrecomputed, fromParsing } from '../selectors';
 import { ListAlt as ListAltIcon } from '@mui/icons-material';
+// @ts-expect-error TS7016
 import { withRouter } from 'react-router';
 import {
     Box,
@@ -55,9 +58,11 @@ import { useTranslate } from '../../i18n/I18NContext';
 // UTILITARY PART
 const PRECOMPUTED_FORM = 'PRECOMPUTED_FORM';
 
+// @ts-expect-error TS7006
 const required = (text) => (value) =>
     value && !(value instanceof Array && value.length === 0) ? undefined : text;
 
+// @ts-expect-error TS7031
 const renderTextField = ({ input, label, meta: { touched, error } }) => {
     return (
         <TextField
@@ -72,6 +77,7 @@ const renderTextField = ({ input, label, meta: { touched, error } }) => {
     );
 };
 
+// @ts-expect-error TS7006
 function getDisplayTimeStartedAt(startedAt) {
     if (!startedAt) {
         return;
@@ -79,6 +85,7 @@ function getDisplayTimeStartedAt(startedAt) {
 
     const now = new Date();
     const startedAtDate = new Date(startedAt);
+    // @ts-expect-error TS2362
     const diff = now - startedAtDate;
 
     const diffInMinutes = Math.floor(diff / 60000);
@@ -100,6 +107,7 @@ function getDisplayTimeStartedAt(startedAt) {
     return timeSinceStarted;
 }
 
+// @ts-expect-error TS7006
 export const renderStatus = (status, translate, startedAt = null) => {
     if (status === PENDING) {
         return (
@@ -174,6 +182,7 @@ export const renderStatus = (status, translate, startedAt = null) => {
     );
 };
 
+// @ts-expect-error TS7031
 export const StatusChip = ({ label, color, startedAt, sx }) => {
     const [spentTime, setSpentTime] = useState(
         startedAt ? getDisplayTimeStartedAt(startedAt) : '',
@@ -197,12 +206,17 @@ StatusChip.propTypes = {
 };
 
 export const renderRunButton = (
+    // @ts-expect-error TS7006
     handleLaunchPrecomputed,
+    // @ts-expect-error TS7006
     precomputedStatus,
+    // @ts-expect-error TS7006
     translate,
+    // @ts-expect-error TS7006
     variant,
 ) => {
     const [isClicked, setIsClicked] = useState(false);
+    // @ts-expect-error TS7006
     const handleClick = (event) => {
         handleLaunchPrecomputed(event);
         setIsClicked(true);
@@ -229,15 +243,25 @@ export const renderRunButton = (
 
 // COMPONENT PART
 export const PrecomputedForm = ({
+    // @ts-expect-error TS7031
     datasetFields,
+    // @ts-expect-error TS7031
     formValues,
+    // @ts-expect-error TS7031
     history,
+    // @ts-expect-error TS7031
     initialValues,
+    // @ts-expect-error TS7031
     onChangeWebServiceUrl,
+    // @ts-expect-error TS7031
     onLaunchPrecomputed,
+    // @ts-expect-error TS7031
     onLoadPrecomputedData,
+    // @ts-expect-error TS7031
     isPrecomputedRunning,
+    // @ts-expect-error TS7031
     handleSubmit: formHandleSubmit,
+    // @ts-expect-error TS7031
     submitting,
 }) => {
     const { translate } = useTranslate();
@@ -260,6 +284,7 @@ export const PrecomputedForm = ({
 
     const isEditMode = !!initialValues?._id;
 
+    // @ts-expect-error TS7006
     const handleSourcePreview = async (formValues) => {
         if (!formValues?.sourceColumns) {
             return;
@@ -290,6 +315,7 @@ export const PrecomputedForm = ({
     };
 
     const handleUpdatePrecomputed = async () => {
+        // @ts-expect-error TS2525
         const { data, ...precomputedDataToUpdate } = {
             ...initialValues,
             ...formValues,
@@ -307,6 +333,7 @@ export const PrecomputedForm = ({
         }
     };
 
+    // @ts-expect-error TS7006
     const handleSubmit = async (values) => {
         const validation = {
             name: requiredField(values.name),
@@ -349,6 +376,7 @@ export const PrecomputedForm = ({
         history.push('/data/precomputed');
     };
 
+    // @ts-expect-error TS7006
     const handleLaunchPrecomputed = (event) => {
         event.preventDefault();
         if (isPrecomputedRunning) {
@@ -365,6 +393,7 @@ export const PrecomputedForm = ({
     const handleGetLogs = async () => {
         if (initialValues?.jobId) {
             getJobLogs(initialValues.jobId).then(
+                // @ts-expect-error TS7006
                 (result) => {
                     setPrecomputedLogs(result.response.logs.reverse());
                 },
@@ -377,6 +406,7 @@ export const PrecomputedForm = ({
         }
     };
 
+    // @ts-expect-error TS2345
     useEffect(() => {
         handleGetLogs();
         const socket = io();
@@ -388,12 +418,14 @@ export const PrecomputedForm = ({
                 let lastLine;
                 let parsedData;
                 if (Array.isArray(data)) {
+                    // @ts-expect-error TS2345
                     setPrecomputedLogs((currentState) => [
                         ...data,
                         ...currentState,
                     ]);
                     lastLine = data[0];
                 } else {
+                    // @ts-expect-error TS2345
                     setPrecomputedLogs((currentState) => [
                         data,
                         ...currentState,
@@ -440,6 +472,7 @@ export const PrecomputedForm = ({
                                 label={translate('fieldName')}
                             />
                             {isEditMode &&
+                                // @ts-expect-error TS2554
                                 renderRunButton(
                                     handleLaunchPrecomputed,
                                     precomputedStatus,
@@ -464,6 +497,7 @@ export const PrecomputedForm = ({
                                 </Typography>
                                 <Box>
                                     <Button
+                                        // @ts-expect-error TS2769
                                         variant="link"
                                         sx={{
                                             paddingRight: 0,
@@ -487,6 +521,7 @@ export const PrecomputedForm = ({
                                         precomputedStatus === FINISHED && (
                                             <>
                                                 <Button
+                                                    // @ts-expect-error TS2769
                                                     variant="link"
                                                     sx={{
                                                         marginLeft: 2,
@@ -565,6 +600,7 @@ export const PrecomputedForm = ({
                                         ? initialValues.sourceColumns
                                         : []
                                 }
+                                // @ts-expect-error TS7006
                                 renderOption={(props, option) => {
                                     return (
                                         <ListItem {...props}>
@@ -631,18 +667,26 @@ export const PrecomputedForm = ({
 // REDUX PART
 const formSelector = formValueSelector(PRECOMPUTED_FORM);
 
+// @ts-expect-error TS7006
 const mapStateToProps = (state, { match }) => ({
     formValues: formSelector(state, 'sourceColumns', 'name', 'webServiceUrl'),
     initialValues: fromPrecomputed
+        // @ts-expect-error TS2339
         .precomputed(state)
+        // @ts-expect-error TS7006
         .find((precomputed) => precomputed._id === match.params.precomputedId),
+    // @ts-expect-error TS2339
     datasetFields: fromParsing.getParsedExcerptColumns(state),
+    // @ts-expect-error TS2339
     excerptLines: fromParsing.getExcerptLines(state),
     isPrecomputedRunning: !!fromPrecomputed
+        // @ts-expect-error TS2339
         .precomputed(state)
+        // @ts-expect-error TS7006
         .find((precomputedData) => precomputedData.status === IN_PROGRESS),
 });
 const mapDispatchToProps = {
+    // @ts-expect-error TS7006
     onChangeWebServiceUrl: (value) =>
         change(PRECOMPUTED_FORM, 'webServiceUrl', value),
     onLaunchPrecomputed: launchPrecomputed,

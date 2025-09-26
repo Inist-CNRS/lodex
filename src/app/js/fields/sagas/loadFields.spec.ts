@@ -14,17 +14,20 @@ describe('fields saga', () => {
 
         it('should select getLoadFieldRequest', () => {
             expect(saga.next().value).toEqual(
+                // @ts-expect-error TS2339
                 select(fromUser.getLoadFieldRequest),
             );
         });
 
         it('should call fetchSaga with the request', () => {
+            // @ts-expect-error TS2345
             expect(saga.next('request').value).toEqual(
                 call(fetchSaga, 'request'),
             );
         });
 
         it('should put loadFieldSuccess action', () => {
+            // @ts-expect-error TS2345
             expect(saga.next({ response: 'foo' }).value).toEqual(
                 put(loadFieldSuccess('foo')),
             );
@@ -34,6 +37,7 @@ describe('fields saga', () => {
             const failedSaga = handleLoadField();
             failedSaga.next();
             failedSaga.next();
+            // @ts-expect-error TS2345
             expect(failedSaga.next({ error: 'foo' }).value).toEqual(
                 put(loadFieldError('foo')),
             );

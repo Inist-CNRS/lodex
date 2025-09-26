@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { translate } from '../../../../i18n/I18NContext';
+// @ts-expect-error TS7016
 import { schemeOrRd } from 'd3-scale-chromatic';
 import {
     FormControlLabel,
@@ -44,6 +45,7 @@ export const defaultArgs = {
     aspectRatio: ASPECT_RATIO_16_9,
 };
 
+// @ts-expect-error TS7006
 const CartographyAdmin = (props) => {
     const {
         p: polyglot,
@@ -101,6 +103,7 @@ const CartographyAdmin = (props) => {
         updateAdminArgs('advancedMode', !advancedMode, props);
     };
 
+    // @ts-expect-error TS7006
     const handleAdvancedModeSpec = (newSpec) => {
         updateAdminArgs('advancedModeSpec', newSpec, props);
     };
@@ -109,12 +112,15 @@ const CartographyAdmin = (props) => {
         updateAdminArgs('advancedModeSpec', null, props);
     };
 
+    // @ts-expect-error TS7006
     const handleParams = (params) => updateAdminArgs('params', params, props);
 
+    // @ts-expect-error TS7006
     const handleWorldPosition = (e) => {
         updateAdminArgs('worldPosition', e.target.value, props);
     };
 
+    // @ts-expect-error TS7006
     const handleColorScheme = (_, colorScheme) => {
         updateAdminArgs(
             'colorScheme',
@@ -127,21 +133,28 @@ const CartographyAdmin = (props) => {
         updateAdminArgs('tooltip', !tooltip, props);
     };
 
+    // @ts-expect-error TS7006
     const handleTooltipCategory = (tooltipCategory) => {
         updateAdminArgs('tooltipCategory', tooltipCategory, props);
     };
 
+    // @ts-expect-error TS7006
     const handleTooltipValue = (tooltipValue) => {
         updateAdminArgs('tooltipValue', tooltipValue, props);
     };
 
+    // @ts-expect-error TS7006
     const handleAspectRatio = (value) => {
         updateAdminArgs('aspectRatio', value, props);
     };
 
     return (
         <FormatGroupedFieldSet>
+            {/*
+             // @ts-expect-error TS2322 */}
             <FormatDataParamsFieldSet>
+                {/*
+                 // @ts-expect-error TS2322 */}
                 <RoutineParamsAdmin
                     params={params || defaultArgs.params}
                     onChange={handleParams}
@@ -152,7 +165,11 @@ const CartographyAdmin = (props) => {
                     showOrderBy={showOrderBy}
                 />
             </FormatDataParamsFieldSet>
+            {/*
+             // @ts-expect-error TS2322 */}
             <FormatChartParamsFieldSet defaultExpanded>
+                {/*
+                 // @ts-expect-error TS2322 */}
                 <FormGroup>
                     <FormControlLabel
                         control={
@@ -164,6 +181,8 @@ const CartographyAdmin = (props) => {
                         label={polyglot.t('advancedMode')}
                     />
                 </FormGroup>
+                {/*
+                 // @ts-expect-error TS2322 */}
                 {advancedMode ? (
                     <VegaAdvancedMode
                         value={spec}
@@ -206,11 +225,15 @@ const CartographyAdmin = (props) => {
                         />
                     </>
                 )}
+                {/*
+                 // @ts-expect-error TS2322 */}
                 <AspectRatioSelector
                     value={aspectRatio}
                     onChange={handleAspectRatio}
                 />
             </FormatChartParamsFieldSet>
+            {/*
+             // @ts-expect-error TS2322 */}
             <VegaFieldPreview
                 args={args}
                 PreviewComponent={CartographyAdminView}

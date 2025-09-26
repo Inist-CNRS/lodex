@@ -3,7 +3,9 @@ import { getLoadFacetValuesRequest } from '../../user';
 import { getUserSessionStorageInfo } from './tools';
 
 const getFacetsFiltered = async ({
+    // @ts-expect-error TS7031
     field,
+    // @ts-expect-error TS7031
     filter,
     currentPage = 0,
     perPage = 10,
@@ -14,6 +16,7 @@ const getFacetsFiltered = async ({
         { token },
         { field, filter, currentPage, perPage, sort },
     );
+    // @ts-expect-error TS7031
     return fetch(request).then(({ response, error }) => {
         if (error) {
             return [];

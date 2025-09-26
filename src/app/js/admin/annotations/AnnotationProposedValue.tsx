@@ -4,6 +4,7 @@ import React, { useMemo } from 'react';
 import { CellWithTooltip } from './CellWithTooltip';
 import { hasFieldMultipleValues } from './helpers/field';
 
+// @ts-expect-error TS7031
 export function AnnotationProposedValue({ proposedValue, field }) {
     const valueText = useMemo(() => {
         const proposedValueAsArray = [].concat(proposedValue);
@@ -15,6 +16,7 @@ export function AnnotationProposedValue({ proposedValue, field }) {
         return proposedValueAsArray.at(0);
     }, [proposedValue, field]);
 
+    // @ts-expect-error TS2322
     return <CellWithTooltip value={valueText} />;
 }
 

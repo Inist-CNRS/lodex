@@ -1,5 +1,7 @@
 import React from 'react';
+// @ts-expect-error TS7016
 import { shallow } from 'enzyme';
+// @ts-expect-error TS7016
 import { Field } from 'redux-form';
 
 import { FieldInputComponent as FieldInput } from './FieldInput';
@@ -15,6 +17,7 @@ describe('EditFieldInput', () => {
                 composedOf: {},
             },
         };
+        // @ts-expect-error TS2741
         const wrapper = shallow(<FieldInput {...props} />);
         const compositeEditField = wrapper.find(CompositeFieldInput);
         expect(compositeEditField).toHaveLength(1);
@@ -31,6 +34,7 @@ describe('EditFieldInput', () => {
                 label: 'Field',
             },
         };
+        // @ts-expect-error TS2741
         const wrapper = shallow(<FieldInput {...props} />);
         const compositeEditField = wrapper.find(CompositeFieldInput);
         expect(compositeEditField).toHaveLength(0);

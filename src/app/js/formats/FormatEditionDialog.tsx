@@ -18,11 +18,17 @@ import CancelButton from '../lib/components/CancelButton';
 import { translate } from '../i18n/I18NContext';
 
 const FormatEditionDialog = ({
+    // @ts-expect-error TS7031
     p: polyglot,
+    // @ts-expect-error TS7031
     isOpen,
+    // @ts-expect-error TS7031
     handleClose,
+    // @ts-expect-error TS7031
     formats,
+    // @ts-expect-error TS7031
     currentValue,
+    // @ts-expect-error TS7031
     input,
 }) => {
     const [name, setName] = React.useState(currentValue);
@@ -32,6 +38,7 @@ const FormatEditionDialog = ({
             : getFormatInitialArgs(currentValue),
     );
 
+    // @ts-expect-error TS7006
     const setFormat = (name) => {
         setName(name);
         if (name !== input.value.name) {

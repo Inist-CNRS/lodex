@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const styles = {
+    // @ts-expect-error TS7006
     legendColor: (color) => ({
         display: 'block',
         backgroundColor: color,
@@ -21,14 +22,19 @@ const styles = {
     },
 };
 
+// @ts-expect-error TS7031
 const ColorScaleLegend = ({ colorScale, nullColor }) => (
     <div style={styles.legend}>
         {nullColor && (
             <div style={styles.legendItem}>
+                {/*
+                 // @ts-expect-error TS2322 */}
                 <div style={styles.legendColor(nullColor)} title={0} />
                 <div>{0}</div>
             </div>
         )}
+        {/*
+         // @ts-expect-error TS7006 */}
         {colorScale.range().map((value) => {
             const [start, end] = colorScale.invertExtent(value);
             return (

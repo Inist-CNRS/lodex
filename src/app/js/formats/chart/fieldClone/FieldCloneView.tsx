@@ -6,7 +6,9 @@ import InvalidFormat from '../../InvalidFormat';
 import { getViewComponent } from '../../index';
 import getColorSetFromField from '../../../lib/getColorSetFromField';
 
+// @ts-expect-error TS7031
 const FieldCloneView = ({ className, resource, field, fields, value }) => {
+    // @ts-expect-error TS7006
     const clonedField = fields.find((item) => item.name === value);
 
     const colorSet = getColorSetFromField(clonedField);

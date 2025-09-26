@@ -1,6 +1,8 @@
 import React, { useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
+// @ts-expect-error TS7016
 import * as d3 from 'd3';
+// @ts-expect-error TS7016
 import ReactTooltip from 'react-tooltip';
 
 import { isLongText, getShortText } from '../../../lib/longTexts';
@@ -13,6 +15,7 @@ const margin = {
     left: 0,
 };
 
+// @ts-expect-error TS7031
 const ParallelCoordinates = ({ fieldNames, data, width, height, colorSet }) => {
     const ref = useRef(null);
 
@@ -37,8 +40,10 @@ const ParallelCoordinates = ({ fieldNames, data, width, height, colorSet }) => {
             .padding(1)
             .domain(fieldNames);
 
+        // @ts-expect-error TS7006
         const path = (d) => {
             return d3.line()(
+                // @ts-expect-error TS7006
                 fieldNames.map((fieldName, i) => [
                     x(fieldName),
                     y(d.weights[i]),
@@ -51,6 +56,7 @@ const ParallelCoordinates = ({ fieldNames, data, width, height, colorSet }) => {
                 .transition()
                 .duration(200)
                 .delay(200)
+                // @ts-expect-error TS7006
                 .style('stroke', (_, i) => getColor(colorSet, i))
                 .style('opacity', '1');
         }
@@ -61,19 +67,24 @@ const ParallelCoordinates = ({ fieldNames, data, width, height, colorSet }) => {
             .data(data)
             .enter()
             .append('path')
+            // @ts-expect-error TS7006
             .attr('class', (_, i) => 'line l' + i)
             .attr('d', path)
+            // @ts-expect-error TS7006
             .attr('stroke', (_, i) => getColor(colorSet, i))
             .attr('stroke-width', 3)
             .style('fill', 'none')
             .style('opacity', '0.5')
             .attr('data-html', true)
+            // @ts-expect-error TS7006
             .attr('data-tip', (d) => d.label);
 
         lines
+            // @ts-expect-error TS7006
             .on('click', (_event, d) => d.onClick())
             .on('mouseover', function highlight() {
                 const e = lines.nodes();
+                // @ts-expect-error TS2683
                 const i = e.indexOf(this);
                 d3.selectAll('.line')
                     .transition()
@@ -92,14 +103,17 @@ const ParallelCoordinates = ({ fieldNames, data, width, height, colorSet }) => {
             .data(fieldNames)
             .enter()
             .append('g')
+            // @ts-expect-error TS7006
             .attr('transform', (d) => 'translate(' + x(d) + ')')
             .each(function () {
+                // @ts-expect-error TS2683
                 d3.select(this).call(d3.axisLeft().ticks(5).scale(y));
             })
             // Add axes title
             .append('text')
             .style('text-anchor', 'middle')
             .attr('y', -9)
+            // @ts-expect-error TS7006
             .text((d) => (isLongText(d, 20) ? getShortText(d, 20) : d))
             .style('fill', 'black');
 

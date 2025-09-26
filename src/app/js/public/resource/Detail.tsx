@@ -2,12 +2,16 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { translate } from '../../i18n/I18NContext';
+// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import { CardActions } from '@mui/material';
 import { grey } from '@mui/material/colors';
+// @ts-expect-error TS7016
 import memoize from 'lodash/memoize';
+// @ts-expect-error TS7016
 import camelCase from 'lodash/camelCase';
 import { Helmet } from 'react-helmet';
+// @ts-expect-error TS7016
 import get from 'lodash/get';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
@@ -30,6 +34,7 @@ const styles = {
         display: 'flex',
         flexDirection: 'column',
     },
+    // @ts-expect-error TS7006
     property: (dense) => ({
         display: 'flex',
         flexDirection: 'column',
@@ -55,6 +60,7 @@ const styles = {
     inkBarStyle: {
         backgroundColor: 'black',
     },
+    // @ts-expect-error TS7006
     propertiesContainer: (dense) => ({
         display: 'flex',
         flexFlow: 'row wrap',
@@ -86,6 +92,7 @@ const styles = {
         fontSize: '0.75em',
         alignSelf: 'flex-end',
     },
+    // @ts-expect-error TS7006
     language: memoize((hide) => ({
         marginRight: '1rem',
         fontSize: '0.6em',
@@ -111,19 +118,28 @@ const styles = {
 };
 
 export const DetailComponent = ({
+    // @ts-expect-error TS7031
     fields,
+    // @ts-expect-error TS7031
     resource,
+    // @ts-expect-error TS7031
     title,
+    // @ts-expect-error TS7031
     description,
+    // @ts-expect-error TS7031
     dense,
+    // @ts-expect-error TS7031
     isMultilingual,
+    // @ts-expect-error TS7031
     locale,
+    // @ts-expect-error TS7031
     tenant,
 }) => {
     if (!resource) {
         return null;
     }
     const filteredFields = fields.filter(
+        // @ts-expect-error TS7006
         (field) =>
             !isMultilingual || !field.language || field.language === locale,
     );
@@ -140,6 +156,8 @@ export const DetailComponent = ({
                 <meta name="description" content={description} />
             </Helmet>
             <div className="header-resource-section">
+                {/*
+                 // @ts-expect-error TS2322 */}
                 <div style={styles.container}>
                     <div style={styles.propertiesContainer(dense)}>
                         {topFields.map((field) => (
@@ -155,6 +173,8 @@ export const DetailComponent = ({
                 </div>
             </div>
             <div className="main-resource-section">
+                {/*
+                 // @ts-expect-error TS2322 */}
                 <div style={styles.container}>
                     <div style={styles.propertiesContainer(dense)}>
                         {otherFields.map((field) => (
@@ -207,27 +227,37 @@ DetailComponent.propTypes = {
     tenant: PropTypes.string,
 };
 
+// @ts-expect-error TS7006
 const mapStateToProps = (state) => {
+    // @ts-expect-error TS2339
     const resource = fromResource.getResourceSelectedVersion(state);
 
     const titleKey =
         resource && resource.subresourceId
+            // @ts-expect-error TS2339
             ? fromFields.getSubresourceTitleFieldName(state)
+            // @ts-expect-error TS2339
             : fromFields.getResourceTitleFieldName(state);
 
+    // @ts-expect-error TS2339
     const descriptionKey = fromFields.getResourceDescriptionFieldName(state);
     const title = get(resource, titleKey);
     const description = get(resource, descriptionKey);
+    // @ts-expect-error TS2339
     const fields = fromFields.getResourceFields(state, resource);
 
     const subresourceFilteredFields = fields.filter(
+        // @ts-expect-error TS7006
         (field) =>
             (!resource.subresourceId && !field.subresourceId) ||
             field.subresourceId === resource.subresourceId,
     );
 
+    // @ts-expect-error TS2339
     const dense = fromDisplayConfig.isDense(state);
+    // @ts-expect-error TS2339
     const isMultilingual = fromDisplayConfig.isMultilingual(state);
+    // @ts-expect-error TS2339
     const locale = fromI18n.getLocale(state);
 
     return {

@@ -14,6 +14,7 @@ const styles = {
     },
 };
 
+// @ts-expect-error TS7031
 const NoFieldComponent = ({ label, addFieldButton }) => {
     return (
         <Box sx={styles.noFieldZone}>

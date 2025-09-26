@@ -14,14 +14,22 @@ import FormatGroupedFieldSet from '../../utils/components/field-set/FormatGroupe
 import { translate } from '../../../i18n/I18NContext';
 
 const AsterPlotChartAdmin = ({
+    // @ts-expect-error TS7031
     p: polyglot,
+    // @ts-expect-error TS7031
     args,
+    // @ts-expect-error TS7031
     onChange,
+    // @ts-expect-error TS7031
     showMaxSize,
+    // @ts-expect-error TS7031
     showMaxValue,
+    // @ts-expect-error TS7031
     showMinValue,
+    // @ts-expect-error TS7031
     showOrderBy,
 }) => {
+    // @ts-expect-error TS7006
     const handleParams = (params) => {
         updateAdminArgs(
             'params',
@@ -33,6 +41,7 @@ const AsterPlotChartAdmin = ({
         );
     };
 
+    // @ts-expect-error TS7006
     const handleColors = (colors) => {
         updateAdminArgs('colors', colors, {
             args,
@@ -42,7 +51,11 @@ const AsterPlotChartAdmin = ({
 
     return (
         <FormatGroupedFieldSet>
+            {/*
+             // @ts-expect-error TS2322 */}
             <FormatDataParamsFieldSet>
+                {/*
+                 // @ts-expect-error TS2322 */}
                 <RoutineParamsAdmin
                     params={args.params}
                     onChange={handleParams}
@@ -53,7 +66,11 @@ const AsterPlotChartAdmin = ({
                     showOrderBy={showOrderBy}
                 />
             </FormatDataParamsFieldSet>
+            {/*
+             // @ts-expect-error TS2322 */}
             <FormatChartParamsFieldSet defaultExpanded>
+                {/*
+                 // @ts-expect-error TS2322 */}
                 <ColorPickerParamsAdmin
                     colors={args.colors}
                     onChange={handleColors}

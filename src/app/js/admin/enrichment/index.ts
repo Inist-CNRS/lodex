@@ -1,3 +1,4 @@
+// @ts-expect-error TS7016
 import { createAction, handleActions } from 'redux-actions';
 
 export const LOAD_ENRICHMENTS = 'LOAD_ENRICHMENTS';
@@ -38,30 +39,36 @@ export const initialState = {
 
 export default handleActions(
     {
+        // @ts-expect-error TS7006
         LOAD_ENRICHMENTS: (state) => ({
             ...state,
             isLoadEnrichmentsPending: true,
             initialized: true,
         }),
+        // @ts-expect-error TS7006
         LOAD_ENRICHMENTS_ERROR: (state, { payload: error }) => ({
             ...state,
             error,
             isLoadEnrichmentsPending: false,
         }),
+        // @ts-expect-error TS7006
         LOAD_ENRICHMENTS_SUCCESS: (state, { payload: enrichments }) => ({
             ...state,
             enrichments,
             isLoadEnrichmentsPending: false,
         }),
+        // @ts-expect-error TS7006
         LAUNCH_ALL_ENRICHMENT_STARTED: (state) => ({
             ...state,
             isRunAllEnrichmentPending: true,
             runAllEnrichmentError: null,
         }),
+        // @ts-expect-error TS7006
         LAUNCH_ALL_ENRICHMENT_ERROR: (state, { payload: error }) => ({
             ...state,
             runAllEnrichmentError: error,
         }),
+        // @ts-expect-error TS7006
         LAUNCH_ALL_ENRICHMENT_COMPLETED: (state) => ({
             ...state,
             isRunAllEnrichmentPending: false,
@@ -70,10 +77,15 @@ export default handleActions(
     initialState,
 );
 
+// @ts-expect-error TS7006
 export const isDataPreviewLoading = (state) => state.dataPreviewLoading;
+// @ts-expect-error TS7006
 export const isInitialized = (state) => state.initialized;
+// @ts-expect-error TS7006
 export const enrichments = (state) => state.enrichments;
+// @ts-expect-error TS7006
 export const dataPreviewEnrichment = (state) => state.dataPreviewEnrichment;
+// @ts-expect-error TS7006
 export const getError = (state) => state.error;
 
 export const selectors = {

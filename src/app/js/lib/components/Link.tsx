@@ -1,4 +1,5 @@
 import React from 'react';
+// @ts-expect-error TS7016
 import { Link as RouterLink, NavLink } from 'react-router-dom';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
@@ -26,7 +27,9 @@ const styles = stylesToClassname(
     'link',
 );
 
+// @ts-expect-error TS7031
 const Link = ({ to, href, className, children, routeAware, ...rest }) => {
+    // @ts-expect-error TS2339
     const classname = classnames(className, 'link', styles.link);
     if (routeAware && to) {
         return (

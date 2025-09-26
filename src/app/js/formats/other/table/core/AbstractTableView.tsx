@@ -13,6 +13,7 @@ import {
     TableSortLabel,
 } from '@mui/material';
 import { getViewComponent } from '../../../index';
+// @ts-expect-error TS7016
 import _ from 'lodash';
 
 class AbstractTableView extends Component {
@@ -35,6 +36,7 @@ class AbstractTableView extends Component {
         ).isRequired,
     };
 
+    // @ts-expect-error TS7006
     static mapStateToProps = (_, { formatData, formatTotal, spaceWidth }) => {
         if (!formatData) {
             return {
@@ -65,6 +67,7 @@ class AbstractTableView extends Component {
         };
     };
 
+    // @ts-expect-error TS7006
     constructor(props) {
         super(props);
         this.onChangePage = this.onChangePage.bind(this);
@@ -80,15 +83,19 @@ class AbstractTableView extends Component {
     }
 
     UNSAFE_componentWillMount() {
+        // @ts-expect-error TS2339
         if (this.props.columnsParameters.length >= 1) {
+            // @ts-expect-error TS2339
             this.onSort(this.props.columnsParameters[0]);
         }
     }
 
+    // @ts-expect-error TS7006
     onStateChange(state) {
         this.setState(state);
     }
 
+    // @ts-expect-error TS7006
     onChangePage(event, newPage) {
         const newState = {
             ...this.state,
@@ -98,6 +105,7 @@ class AbstractTableView extends Component {
         this.onStateChange(newState);
     }
 
+    // @ts-expect-error TS7006
     onChangeRowsPerPage(event) {
         const newState = {
             ...this.state,
@@ -107,10 +115,13 @@ class AbstractTableView extends Component {
         this.onStateChange(newState);
     }
 
+    // @ts-expect-error TS7006
     onSort(column) {
         const columnId = column.id;
         const columnField = column.field;
+        // @ts-expect-error TS2339
         let sort = this.state.sort;
+        // @ts-expect-error TS2339
         if (columnId === this.state.sortId) {
             switch (sort) {
                 case 'asc':
@@ -133,8 +144,10 @@ class AbstractTableView extends Component {
         this.onStateChange(newState);
     }
 
+    // @ts-expect-error TS7006
     getCellInnerHtml(value, index, columnParameter) {
         const { name, option } = columnParameter.format;
+        // @ts-expect-error TS2554
         const { ViewComponent, args } = getViewComponent(
             columnParameter.format.name,
         );
@@ -161,28 +174,39 @@ class AbstractTableView extends Component {
         );
     }
 
+    // @ts-expect-error TS7006
     getSortDirection(columnId) {
+        // @ts-expect-error TS2339
         if (columnId !== this.state.sortId) return false;
+        // @ts-expect-error TS2339
         return this.state.sort;
     }
 
+    // @ts-expect-error TS7006
     sortData(array, columnsParameters) {
+        // @ts-expect-error TS2339
         if (this.state.sort === false) return array;
         const sortedArray = _.sortBy(array, [
+            // @ts-expect-error TS7006
             (o) => {
                 const parameter = _.findIndex(columnsParameters, {
+                    // @ts-expect-error TS2339
                     id: this.state.sortId,
                 });
                 return _.get(o, columnsParameters[parameter].field, '');
             },
         ]);
+        // @ts-expect-error TS2339
         return this.state.sort === 'asc' ? sortedArray : _.reverse(sortedArray);
     }
 
+    // @ts-expect-error TS7006
     getTableHead(columnsParameters) {
         return (
             <TableHead>
                 <TableRow>
+                    {/*
+                     // @ts-expect-error TS7006 */}
                     {columnsParameters.map((column) => (
                         <TableCell key={column.id}>
                             <TableSortLabel
@@ -205,7 +229,9 @@ class AbstractTableView extends Component {
         );
     }
 
+    // @ts-expect-error TS7006
     getTableFooter(pageSize, dataTotal, polyglot) {
+        // @ts-expect-error TS7031
         const labelDisplayedRows = ({ from, to, count }) =>
             polyglot
                 .t('showing')
@@ -221,8 +247,10 @@ class AbstractTableView extends Component {
                         pageSize * 3,
                         { label: polyglot.t('all'), value: dataTotal },
                     ]}
+                    // @ts-expect-error TS2339
                     rowsPerPage={this.state.rowsPerPage}
                     count={dataTotal}
+                    // @ts-expect-error TS2339
                     page={this.state.page}
                     onPageChange={this.onChangePage}
                     onRowsPerPageChange={this.onChangeRowsPerPage}

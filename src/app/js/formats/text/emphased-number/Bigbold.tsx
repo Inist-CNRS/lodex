@@ -16,6 +16,7 @@ const styles = stylesToClassname(
     'big-bold',
 );
 
+// @ts-expect-error TS7006
 const getContentInlineStyle = (colors, size) => {
     const color = colors.split(' ')[0] || MONOCHROMATIC_DEFAULT_COLORSET;
     const currentSize = sizes[size - 1];
@@ -31,8 +32,12 @@ const getContentInlineStyle = (colors, size) => {
     };
 };
 
+// @ts-expect-error TS7031
 const Bigbold = ({ value, colors, size }) => (
+    // @ts-expect-error TS2339
     <div className={styles.ribbon}>
+        {/*
+         // @ts-expect-error TS2322 */}
         <div className="content" style={getContentInlineStyle(colors, size)}>
             {value}
         </div>

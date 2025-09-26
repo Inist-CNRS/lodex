@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
+// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import { translate } from '../../i18n/I18NContext';
 import { IconButton } from '@mui/material';
@@ -34,9 +35,11 @@ export const NEXT = 'next';
 export const PREV = 'previous';
 export const NONE = '';
 
+// @ts-expect-error TS7006
 const renderIcon = (direction) =>
     direction === NEXT ? (
         <FontAwesomeIcon
+            // @ts-expect-error TS2339
             className={styles.icon}
             icon={faAngleRight}
             color="var(--primary-main)"
@@ -44,6 +47,7 @@ const renderIcon = (direction) =>
         />
     ) : (
         <FontAwesomeIcon
+            // @ts-expect-error TS2339
             className={styles.icon}
             icon={faAngleLeft}
             color="var(--primary-main)"
@@ -51,6 +55,7 @@ const renderIcon = (direction) =>
         />
     );
 
+// @ts-expect-error TS7031
 const NavButton = ({ p: polyglot, direction, navigate }) => {
     if (!direction) {
         return null;
@@ -61,7 +66,9 @@ const NavButton = ({ p: polyglot, direction, navigate }) => {
     const handleNavigate = () => navigate(direction);
 
     return (
+        // @ts-expect-error TS2769
         <IconButton
+            // @ts-expect-error TS2339
             className={classnames(`nav-button-${direction}`, styles.root)}
             tooltip={label}
             tooltipPosition="bottom-center"

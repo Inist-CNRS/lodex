@@ -4,6 +4,7 @@ import fetch from '../../../lib/fetch';
 import { getRequest } from '../../../user';
 import { getUserSessionStorageInfo } from '../../api/tools';
 
+// @ts-expect-error TS7006
 export function useGetResourceByUri(uri) {
     return useQuery({
         queryFn: async () => {

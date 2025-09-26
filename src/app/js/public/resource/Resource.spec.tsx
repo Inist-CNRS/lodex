@@ -6,8 +6,11 @@ import Detail from './Detail';
 import RemovedDetail from './RemovedDetail';
 import { ResourceComponent } from './Resource';
 import { TestI18N } from '../../i18n/I18NContext';
+// @ts-expect-error TS7016
 import { StyleSheetTestUtils } from 'aphrodite';
+// @ts-expect-error TS7016
 import { MemoryRouter } from 'react-router-dom';
+// @ts-expect-error TS7016
 import { shallow } from 'enzyme';
 
 jest.mock('react-redux', () => ({
@@ -21,6 +24,7 @@ describe('<Resource />', () => {
         preLoadResource: () => null,
         preLoadPublication: () => null,
         preLoadExporters: () => null,
+        // @ts-expect-error TS7006
         p: { t: (v) => v },
         history: { goBack: () => {}, push: () => {} },
         match: { params: { uri: 'FOO' } },
@@ -38,6 +42,8 @@ describe('<Resource />', () => {
 
         const wrapper = render(
             <TestI18N>
+                {/*
+                 // @ts-expect-error TS2322 */}
                 <ResourceComponent {...props} />
             </TestI18N>,
         );
@@ -52,6 +58,8 @@ describe('<Resource />', () => {
 
         const wrapper = render(
             <TestI18N>
+                {/*
+                 // @ts-expect-error TS2322 */}
                 <MemoryRouter>
                     <ResourceComponent {...props} />
                 </MemoryRouter>
@@ -68,6 +76,7 @@ describe('<Resource />', () => {
             resource: {},
         };
 
+        // @ts-expect-error TS2322
         const wrapper = shallow(<ResourceComponent {...props} />);
         expect(wrapper.find(Loading)).toHaveLength(0);
         expect(wrapper.find('.not-found')).toHaveLength(0);
@@ -82,6 +91,7 @@ describe('<Resource />', () => {
             resource: {},
         };
 
+        // @ts-expect-error TS2322
         const wrapper = shallow(<ResourceComponent {...props} />);
         expect(wrapper.find(RemovedDetail)).toHaveLength(1);
         expect(wrapper.find(Detail)).toHaveLength(0);
@@ -96,6 +106,7 @@ describe('<Resource />', () => {
             characteristics: { dataset_title: 'dataset title' },
         };
 
+        // @ts-expect-error TS2322
         const wrapper = shallow(<ResourceComponent {...props} />);
         expect(wrapper.find(Detail).prop('backToListLabel')).toBe(
             'dataset title',
@@ -112,6 +123,7 @@ describe('<Resource />', () => {
             resource: {},
         };
 
+        // @ts-expect-error TS2322
         render(<ResourceComponent {...props} />);
         expect(preLoadExporters).toHaveBeenCalledTimes(1);
     });
@@ -126,10 +138,12 @@ describe('<Resource />', () => {
             resource: {},
         };
 
+        // @ts-expect-error TS2322
         const { rerender } = render(<ResourceComponent {...props} />);
         expect(preLoadResource).toHaveBeenCalledTimes(1);
 
         rerender(
+            // @ts-expect-error TS2322
             <ResourceComponent
                 {...props}
                 match={{ params: { uri: 'changed' } }}
@@ -148,10 +162,12 @@ describe('<Resource />', () => {
             resource: {},
         };
 
+        // @ts-expect-error TS2322
         const { rerender } = render(<ResourceComponent {...props} />);
         expect(preLoadResource).toHaveBeenCalledTimes(1);
 
         rerender(
+            // @ts-expect-error TS2322
             <ResourceComponent
                 {...props}
                 match={{ params: { naan: 'naan', rest: 'changed' } }}
@@ -174,9 +190,12 @@ describe('<Resource />', () => {
         };
 
         const theme = createTheme({});
+        // @ts-expect-error TS7006
         const TestResourceComponent = (props) => (
             <ThemeProvider theme={theme}>
                 <TestI18N>
+                    {/*
+                     // @ts-expect-error TS2322 */}
                     <ResourceComponent {...props} />
                 </TestI18N>
             </ThemeProvider>
@@ -222,9 +241,12 @@ describe('<Resource />', () => {
         };
 
         const theme = createTheme({});
+        // @ts-expect-error TS7006
         const TestResourceComponent = (props) => (
             <ThemeProvider theme={theme}>
                 <TestI18N>
+                    {/*
+                     // @ts-expect-error TS2322 */}
                     <ResourceComponent {...props} />
                 </TestI18N>
             </ThemeProvider>

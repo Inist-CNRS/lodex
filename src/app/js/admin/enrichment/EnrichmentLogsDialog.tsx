@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+// @ts-expect-error TS7016
 import { FixedSizeList } from 'react-window';
 import { useMeasure } from 'react-use';
 import {
@@ -32,6 +33,7 @@ const styles = {
     },
 };
 
+// @ts-expect-error TS7006
 const LogLine = (props) => {
     const { data, index, style } = props;
     const log = data[index];
@@ -64,6 +66,7 @@ const LogLine = (props) => {
             variant="body2"
             key={timestamp.valueOf()}
             style={style}
+            // @ts-expect-error TS7053
             sx={styles[parsedLog.level]}
             title={parsedLog.message}
         >
@@ -78,6 +81,7 @@ LogLine.propTypes = {
     style: PropTypes.object.isRequired,
 };
 
+// @ts-expect-error TS7031
 export const EnrichmentLogsDialog = ({ isOpen, logs, handleClose }) => {
     const { translate } = useTranslate();
     const [logsContainerRef, { width }] = useMeasure();

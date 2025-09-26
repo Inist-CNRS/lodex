@@ -33,28 +33,49 @@ const styles = stylesToClassname(
 );
 
 export const IstexItemComponent = ({
+    // @ts-expect-error TS7031
     title,
+    // @ts-expect-error TS7031
     publicationDate,
+    // @ts-expect-error TS7031
     url,
+    // @ts-expect-error TS7031
     authors,
+    // @ts-expect-error TS7031
     hostTitle,
+    // @ts-expect-error TS7031
     hostGenre,
+    // @ts-expect-error TS7031
     hostPagesFirst,
+    // @ts-expect-error TS7031
     hostPagesLast,
+    // @ts-expect-error TS7031
     hostVolume,
+    // @ts-expect-error TS7031
     hostIssue,
 }) => (
     <article>
+        {/*
+         // @ts-expect-error TS2339 */}
         <div className={styles.article}>
+            {/*
+             // @ts-expect-error TS2339 */}
             <div className={styles.title}>
+                {/*
+                 // @ts-expect-error TS2769 */}
                 <Book size="20" className={styles.titleIcon} />
+                {/*
+                 // @ts-expect-error TS2739 */}
                 <Link href={url} target="_blank">
                     {title}
                 </Link>
             </div>
             {authors && (
+                // @ts-expect-error TS2339
                 <div className={styles.authors}> {authors.join(', ')} </div>
             )}
+            {/*
+             // @ts-expect-error TS2339 */}
             <div className={styles.metadata}>
                 {publicationDate}
                 ,&nbsp;
@@ -78,6 +99,8 @@ export const IstexItemComponent = ({
                     </>
                 )}
                 &nbsp;
+                {/*
+                 // @ts-expect-error TS2339 */}
                 <span className={styles.genre}>({hostGenre})</span>
             </div>
         </div>

@@ -24,9 +24,11 @@ describe('publication saga', () => {
         it('should return if not published', () => {
             const saga = handleRecomputePublication();
             expect(saga.next().value).toEqual(
+                // @ts-expect-error TS2339
                 select(fromPublication.hasPublishedDataset),
             );
             expect(saga.next().value).toEqual(
+                // @ts-expect-error TS2339
                 select(fromConfigTenant.isEnableAutoPublication),
             );
 
@@ -51,16 +53,19 @@ describe('publication saga', () => {
         const transformDocument = () => {};
 
         it('should select fromFields.getFields', () => {
+            // @ts-expect-error TS2339
             expect(saga.next().value).toEqual(select(fromFields.getFields));
         });
 
         it('should select fromParsing.getExcerptLines', () => {
             expect(saga.next(fields).value).toEqual(
+                // @ts-expect-error TS2339
                 select(fromParsing.getExcerptLines),
             );
         });
 
         it('should select getToken', () => {
+            // @ts-expect-error TS2339
             expect(saga.next(lines).value).toEqual(select(fromUser.getToken));
         });
 
@@ -72,6 +77,7 @@ describe('publication saga', () => {
 
         it('should call transformDocument for each lines', () => {
             expect(saga.next(transformDocument).value).toEqual(
+                // @ts-expect-error TS2769
                 all(lines.map((line) => call(transformDocument, line))),
             );
         });
@@ -94,8 +100,10 @@ describe('publication saga', () => {
 
         it('should end if no fields returned', () => {
             const it = handleComputePublicationPreview();
+            // @ts-expect-error TS2339
             expect(it.next().value).toEqual(select(fromFields.getFields));
             expect(it.next([]).value).toEqual(
+                // @ts-expect-error TS2339
                 select(fromParsing.getExcerptLines),
             );
             expect(it.next(lines).done).toBe(true);
@@ -103,8 +111,10 @@ describe('publication saga', () => {
 
         it('should end if no lines returned', () => {
             const it = handleComputePublicationPreview();
+            // @ts-expect-error TS2339
             expect(it.next().value).toEqual(select(fromFields.getFields));
             expect(it.next(fields).value).toEqual(
+                // @ts-expect-error TS2339
                 select(fromParsing.getExcerptLines),
             );
             expect(it.next([]).done).toBe(true);

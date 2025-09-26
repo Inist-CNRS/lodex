@@ -20,6 +20,7 @@ import { translate } from '../../../../i18n/I18NContext';
  * @param id
  * @returns {JSX.Element}
  */
+// @ts-expect-error TS7031
 const FormatFieldSet = ({ children, title, p, defaultExpanded, id }) => {
     return (
         <Accordion defaultExpanded={defaultExpanded}>
@@ -68,6 +69,7 @@ const TranslatedVegaFieldSet = translate(FormatFieldSet);
  * @param defaultExpanded
  * @returns {JSX.Element}
  */
+// @ts-expect-error TS7031
 export const FormatDefaultParamsFieldSet = ({ children, defaultExpanded }) => {
     return (
         <TranslatedVegaFieldSet
@@ -91,6 +93,7 @@ FormatDefaultParamsFieldSet.propTypes = {
  * @param defaultExpanded
  * @returns {JSX.Element}
  */
+// @ts-expect-error TS7031
 export const FormatDataParamsFieldSet = ({ children, defaultExpanded }) => {
     return (
         <TranslatedVegaFieldSet
@@ -114,6 +117,7 @@ FormatDataParamsFieldSet.propTypes = {
  * @param defaultExpanded
  * @returns {JSX.Element}
  */
+// @ts-expect-error TS7031
 export const FormatChartParamsFieldSet = ({ children, defaultExpanded }) => {
     return (
         <TranslatedVegaFieldSet
@@ -138,7 +142,9 @@ FormatChartParamsFieldSet.propTypes = {
  * @returns {JSX.Element}
  */
 export const FormatSubFormatParamsFieldSet = ({
+    // @ts-expect-error TS7031
     children,
+    // @ts-expect-error TS7031
     defaultExpanded,
 }) => {
     return (

@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
+// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import { TableCell } from '@mui/material';
 import { connect } from 'react-redux';
@@ -13,12 +14,14 @@ import parseValue from '../../../../common/tools/parseValue';
 import { translate } from '../../i18n/I18NContext';
 
 const styles = {
+    // @ts-expect-error TS7006
     cell: (readonly) => ({
         cursor: readonly ? 'default' : 'pointer',
         height: 'auto',
     }),
 };
 
+// @ts-expect-error TS7031
 export const ExcerptLineColComponent = ({ field, value = '', readonly }) =>
     isLongText(value) ? (
         <TableCell
@@ -53,7 +56,9 @@ ExcerptLineColComponent.defaultProps = {
     value: '',
 };
 
+// @ts-expect-error TS7006
 const mapStateToProps = (state, { field, line }) => {
+    // @ts-expect-error TS2339
     const getLineCol = fromFields.getLineColGetter(state, field);
     const parsedValue = parseValue(getLineCol(line));
     return {

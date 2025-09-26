@@ -1,14 +1,18 @@
 import { Box } from '@mui/material';
 import PropTypes from 'prop-types';
 import React from 'react';
+// @ts-expect-error TS7016
 import { useParams } from 'react-router';
 import { translate } from '../../i18n/I18NContext';
 
 import { FIELD_FORM_NAME } from '../';
 
+// @ts-expect-error TS7016
 import isEqual from 'lodash/isEqual';
 import { connect } from 'react-redux';
+// @ts-expect-error TS7016
 import compose from 'recompose/compose';
+// @ts-expect-error TS7016
 import { getFormValues } from 'redux-form';
 import RemoveButton from '../../admin/preview/RemoveButton';
 import CancelButton from '../../lib/components/CancelButton';
@@ -19,10 +23,15 @@ import {
 } from '../../propTypes';
 
 export const ActionsComponent = ({
+    // @ts-expect-error TS7031
     currentEditedField,
+    // @ts-expect-error TS7031
     p: polyglot,
+    // @ts-expect-error TS7031
     onCancel,
+    // @ts-expect-error TS7031
     onSave,
+    // @ts-expect-error TS7031
     currentFormValues,
 }) => {
     const { filter } = useParams();
@@ -61,6 +70,7 @@ ActionsComponent.defaultProps = {
 };
 
 // REDUX PART
+// @ts-expect-error TS7006
 const mapStateToProps = (state) => {
     const currentFormValues = getFormValues(FIELD_FORM_NAME)(state);
     return {

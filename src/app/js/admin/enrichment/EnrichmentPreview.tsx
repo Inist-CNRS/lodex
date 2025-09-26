@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import { Box, Typography } from '@mui/material';
 import { useTranslate } from '../../i18n/I18NContext';
 
+// @ts-expect-error TS7031
 const EnrichmentPreview = ({ lines, sourceColumn }) => {
     const { translate } = useTranslate();
     return (
@@ -22,6 +23,8 @@ const EnrichmentPreview = ({ lines, sourceColumn }) => {
                 alignItems="center"
                 mb={4}
             >
+                {/*
+                 // @ts-expect-error TS2769 */}
                 <PreviewIcon mr={1} />
                 <Typography variant="h6">
                     {translate('value_preview_title')}
@@ -33,6 +36,7 @@ const EnrichmentPreview = ({ lines, sourceColumn }) => {
             </Box>
             <Box mb={4}>
                 {lines.length > 0 &&
+                    // @ts-expect-error TS7006
                     lines?.map((line, index) => (
                         <Box key={index} mb={3}>
                             <Typography
