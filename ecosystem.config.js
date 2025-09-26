@@ -2,9 +2,9 @@ module.exports = {
     apps: [
         {
             name: 'lodex',
-            script: 'src/api/index.js',
-            interpreter_args:
-                '--max-http-header-size=32768 --require @babel/register',
+            script: 'src/api',
+            interpreter: 'node',
+            interpreter_args: '--import tsx --max-http-header-size=32768',
             exec_mode: 'cluster',
             wait_ready: true,
             listen_timeout: 10000,
