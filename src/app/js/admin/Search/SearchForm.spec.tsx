@@ -25,8 +25,6 @@ function TestSearchForm(props) {
     }
     return (
         <TestI18N>
-            {/*
-             // @ts-expect-error TS2322 */}
             <QueryClientProvider client={new QueryClient()}>
                 <SearchForm {...props} />
             </QueryClientProvider>

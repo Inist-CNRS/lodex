@@ -18,8 +18,6 @@ function TestProposedValueFieldText({ field, initialValue }) {
     const form = useForm();
     return (
         <TestI18N>
-            {/*
-             // @ts-expect-error TS2322 */}
             <ProposedValueFieldText
                 // @ts-expect-error TS2322
                 field={field}

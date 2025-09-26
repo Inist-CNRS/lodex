@@ -31,11 +31,7 @@ function TestWrapper({ children }) {
     return (
         <Provider store={store}>
             <AnnotationStorageProvider>
-                {/*
-                 // @ts-expect-error TS2322 */}
                 <TestI18N>
-                    {/*
-                     // @ts-expect-error TS2322 */}
                     <QueryClientProvider client={queryClient}>
                         {children}
                     </QueryClientProvider>

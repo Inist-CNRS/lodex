@@ -13,8 +13,6 @@ function TestAnnotationList({ field, annotations }) {
     const [mode, setMode] = React.useState(MODE_ALL);
     return (
         <TestI18N>
-            {/*
-             // @ts-expect-error TS2322 */}
             <AnnotationList
                 mode={mode}
                 setMode={setMode}

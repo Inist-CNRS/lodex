@@ -35,8 +35,6 @@ function TestButton({
     return (
         <QueryClientProvider client={queryClient}>
             <TestI18N>
-                {/*
-                 // @ts-expect-error TS2322 */}
                 <MemoryRouter
                     initialEntries={['/uid:/0579J7JN']}
                     initialIndex={0}

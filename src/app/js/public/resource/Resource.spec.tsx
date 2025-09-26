@@ -42,8 +42,6 @@ describe('<Resource />', () => {
 
         const wrapper = render(
             <TestI18N>
-                {/*
-                 // @ts-expect-error TS2322 */}
                 <ResourceComponent {...props} />
             </TestI18N>,
         );
@@ -58,8 +56,6 @@ describe('<Resource />', () => {
 
         const wrapper = render(
             <TestI18N>
-                {/*
-                 // @ts-expect-error TS2322 */}
                 <MemoryRouter>
                     <ResourceComponent {...props} />
                 </MemoryRouter>
@@ -194,8 +190,6 @@ describe('<Resource />', () => {
         const TestResourceComponent = (props) => (
             <ThemeProvider theme={theme}>
                 <TestI18N>
-                    {/*
-                     // @ts-expect-error TS2322 */}
                     <ResourceComponent {...props} />
                 </TestI18N>
             </ThemeProvider>
@@ -245,8 +239,6 @@ describe('<Resource />', () => {
         const TestResourceComponent = (props) => (
             <ThemeProvider theme={theme}>
                 <TestI18N>
-                    {/*
-                     // @ts-expect-error TS2322 */}
                     <ResourceComponent {...props} />
                 </TestI18N>
             </ThemeProvider>

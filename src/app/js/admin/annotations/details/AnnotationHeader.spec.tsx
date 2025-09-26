@@ -7,8 +7,6 @@ describe('AnnotationHeader', () => {
     it('should render header for home page if resourceUri is "/"', () => {
         const wrapper = render(
             <TestI18N>
-                {/*
-                 // @ts-expect-error TS2322 */}
                 <AnnotationHeader
                     annotation={{
                         resourceUri: '/',
@@ -43,8 +41,6 @@ describe('AnnotationHeader', () => {
     it('should render header for home page if resourceUri is null', () => {
         const wrapper = render(
             <TestI18N>
-                {/*
-                 // @ts-expect-error TS2322 */}
                 <AnnotationHeader
                     annotation={{
                         resourceUri: '/',
@@ -79,8 +75,6 @@ describe('AnnotationHeader', () => {
     it('should render header for graphic page if resourceUri is a graph URI', () => {
         const wrapper = render(
             <TestI18N>
-                {/*
-                 // @ts-expect-error TS2322 */}
                 <AnnotationHeader
                     annotation={{
                         resourceUri: '/graph/GaZr',
@@ -116,8 +110,6 @@ describe('AnnotationHeader', () => {
     it('should render header for graphic page if resourceUri is null', () => {
         const wrapper = render(
             <TestI18N>
-                {/*
-                 // @ts-expect-error TS2322 */}
                 <AnnotationHeader
                     annotation={{
                         resourceUri: '/graph/GaZr',
@@ -153,8 +145,6 @@ describe('AnnotationHeader', () => {
     it('should render header for resource page', () => {
         const wrapper = render(
             <TestI18N>
-                {/*
-                 // @ts-expect-error TS2322 */}
                 <AnnotationHeader
                     annotation={{
                         resourceUri: 'uid:/1234',
@@ -197,8 +187,6 @@ describe('AnnotationHeader', () => {
     it('should render title prefixed with comment when kind is comment', () => {
         const wrapper = render(
             <TestI18N>
-                {/*
-                 // @ts-expect-error TS2322 */}
                 <AnnotationHeader
                     annotation={{
                         resourceUri: 'uid:/1234',
@@ -235,8 +223,6 @@ describe('AnnotationHeader', () => {
     it('should render title prefixed with removal when kind is removal', () => {
         const wrapper = render(
             <TestI18N>
-                {/*
-                 // @ts-expect-error TS2322 */}
                 <AnnotationHeader
                     annotation={{
                         resourceUri: 'uid:/1234',
@@ -273,8 +259,6 @@ describe('AnnotationHeader', () => {
     it('should render header for deleted resource', () => {
         const wrapper = render(
             <TestI18N>
-                {/*
-                 // @ts-expect-error TS2322 */}
                 <AnnotationHeader
                     annotation={{
                         resourceUri: 'uid:/1234',
