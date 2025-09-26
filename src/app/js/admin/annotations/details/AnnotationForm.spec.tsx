@@ -21,8 +21,6 @@ describe('AnnotationForm', () => {
         const wrapper = render(
             <QueryClientProvider client={queryClient}>
                 <TestI18N>
-                    {/*
-                     // @ts-expect-error TS2322 */}
                     <MemoryRouter>
                         <AnnotationForm
                             annotation={{
@@ -153,8 +151,6 @@ describe('AnnotationForm', () => {
         const wrapper = render(
             <QueryClientProvider client={queryClient}>
                 <TestI18N>
-                    {/*
-                     // @ts-expect-error TS2322 */}
                     <MemoryRouter>
                         <AnnotationForm
                             annotation={{
@@ -221,8 +217,6 @@ describe('AnnotationForm', () => {
         const wrapper = render(
             <QueryClientProvider client={queryClient}>
                 <TestI18N>
-                    {/*
-                     // @ts-expect-error TS2322 */}
                     <MemoryRouter>
                         <AnnotationForm
                             annotation={{

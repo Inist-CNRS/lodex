@@ -14,8 +14,6 @@ const renderTargetField = (props) => {
         form = useForm();
         return (
             <TestI18N>
-                {/*
-                 // @ts-expect-error TS2322 */}
                 <TargetField
                     form={form}
                     initialValue="initial value"

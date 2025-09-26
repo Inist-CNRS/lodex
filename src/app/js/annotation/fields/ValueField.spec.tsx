@@ -15,8 +15,6 @@ function TestValueField({ choices }) {
 
     return (
         <TestI18N>
-            {/*
-             // @ts-expect-error TS2322 */}
             <ValueField form={form} choices={choices} />
         </TestI18N>
     );

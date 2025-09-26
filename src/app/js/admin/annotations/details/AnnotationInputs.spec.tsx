@@ -43,8 +43,6 @@ describe('AnnotationInputs', () => {
         }));
         const wrapper = render(
             <TestI18N>
-                {/*
-                 // @ts-expect-error TS2322 */}
                 <MemoryRouter>
                     <TestForm
                         annotation={{
@@ -107,8 +105,6 @@ describe('AnnotationInputs', () => {
             }));
             const wrapper = render(
                 <TestI18N>
-                    {/*
-                     // @ts-expect-error TS2322 */}
                     <MemoryRouter>
                         <TestForm
                             annotation={{

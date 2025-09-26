@@ -15,8 +15,6 @@ jest.mock('../../admin/api/dataset', () => ({
 const TestExportDatasetButton = (props) => {
     return (
         <TestI18N>
-            {/*
-             // @ts-expect-error TS2322 */}
             <ExportDatasetButtonComponent
                 choices={['field1', 'field2', 'field3']}
                 {...props}
@@ -212,8 +210,6 @@ describe('ExportDatasetButton', () => {
             const wrapper = await waitFor(() => {
                 return render(
                     <TestI18N>
-                        {/*
-                         // @ts-expect-error TS2322 */}
                         <ExportDatasetButtonWithFetch
                             dumpDataset={dumpDataset}
                             onDone={onDone}

@@ -24,8 +24,6 @@ const renderAnnotationCommentStep = ({
         });
         return (
             <TestI18N>
-                {/*
-                 // @ts-expect-error TS2322 */}
                 <AnnotationCommentStep
                     form={form}
                     initialValue="initialValue"

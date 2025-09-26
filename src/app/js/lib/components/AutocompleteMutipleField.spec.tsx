@@ -15,8 +15,6 @@ function TestAutocompleteMultipleField(props) {
 
     return (
         <TestI18N>
-            {/*
-             // @ts-expect-error TS2322 */}
             <AutocompleteMultipleField
                 form={form}
                 name="name"

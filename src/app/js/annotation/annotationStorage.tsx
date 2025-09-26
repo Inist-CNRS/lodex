@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import React, {
     createContext,
     useCallback,
@@ -18,8 +17,13 @@ const AnnotationStorageContext = createContext({
     annotations: {},
 });
 
-// @ts-expect-error TS7031
-export const AnnotationStorageProvider = ({ children }) => {
+type AnnotationStorageProviderProps = {
+    children: React.ReactNode;
+};
+
+export const AnnotationStorageProvider = ({
+    children,
+}: AnnotationStorageProviderProps) => {
     const storedAnnotations = useMemo(() => {
         return JSON.parse(localStorage.getItem(getStorageKey()) || '{}');
     }, []);
@@ -41,10 +45,6 @@ export const AnnotationStorageProvider = ({ children }) => {
             {children}
         </AnnotationStorageContext.Provider>
     );
-};
-
-AnnotationStorageProvider.propTypes = {
-    children: PropTypes.node.isRequired,
 };
 
 // @ts-expect-error TS7031

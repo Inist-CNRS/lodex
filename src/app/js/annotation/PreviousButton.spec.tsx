@@ -19,8 +19,6 @@ const renderPreviousButton = ({ formTarget, formKind, ...props }) => {
         });
         return (
             <TestI18N>
-                {/*
-                 // @ts-expect-error TS2322 */}
                 <PreviousButton
                     form={form}
                     initialValue="initial value"
