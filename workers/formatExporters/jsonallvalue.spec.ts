@@ -75,7 +75,8 @@ test.skip('export single resource', (done) => {
                 { localConfig: {}, fields },
             ),
         )
-        .on('data', (data) => {
+        // @ts-expect-error TS(7006) FIXME: Parameter 'data' implicitly has an 'any' type.
+        .on('data', data => {
             if (data) outputString += data;
         })
         .on('end', () => {
