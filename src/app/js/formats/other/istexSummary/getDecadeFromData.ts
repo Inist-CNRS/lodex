@@ -1,6 +1,4 @@
-// @ts-expect-error TS7016
 import range from 'lodash/range';
-// @ts-expect-error TS7016
 import chunk from 'lodash/chunk';
 
 // @ts-expect-error TS7006
@@ -15,13 +13,11 @@ export default (data, reverse) => {
     const max = Number(ascendingHits.slice(-1)[0].name);
     const roundedMax = Math.floor(max / 10) * 10 + 10;
 
-    // @ts-expect-error TS7006
     const emptyBeforeYears = range(roundedMin, min).map((name) => ({
         name,
         count: 0,
     }));
 
-    // @ts-expect-error TS7006
     const emptyAfterYears = range(max + 1, roundedMax).map((name) => ({
         name,
         count: 0,
@@ -29,12 +25,10 @@ export default (data, reverse) => {
 
     const years = [...emptyBeforeYears, ...ascendingHits, ...emptyAfterYears];
 
-    // @ts-expect-error TS7006
     const decades = chunk(years, 10).map((yearList) => {
         const decadeMin = Number(yearList[0].name);
         const decadeMax = Number(yearList.slice(-1)[0].name);
         return yearList.reduce(
-            // @ts-expect-error TS7006
             (acc, { count }) => ({
                 ...acc,
                 count: acc.count + count,

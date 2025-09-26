@@ -1,4 +1,3 @@
-// @ts-expect-error TS7016
 import { clamp, cloneDeep } from 'lodash';
 
 // Values given when an error are encounter

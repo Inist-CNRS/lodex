@@ -2,7 +2,6 @@ import { Vega } from 'react-vega';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-// @ts-expect-error TS7016
 import deepClone from 'lodash/cloneDeep';
 import {
     VEGA_DATA_INJECT_TYPE_A,
@@ -42,7 +41,7 @@ function CustomActionVega(props) {
             break;
         case VEGA_DATA_INJECT_TYPE_B:
             {
-                let data = {
+                const data = {
                     values: [],
                 };
                 // @ts-expect-error TS7006

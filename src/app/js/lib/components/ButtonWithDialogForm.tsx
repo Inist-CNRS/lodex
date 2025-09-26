@@ -89,8 +89,6 @@ export const PureButtonWithDialogForm = ({
         <CancelButton key="cancel" onClick={handleClose}>
             {polyglot.t('cancel')}
         </CancelButton>,
-        {/*
-         // @ts-expect-error TS2739 */}
         <ButtonWithStatus
             raised
             key="save"
@@ -98,6 +96,11 @@ export const PureButtonWithDialogForm = ({
             color="primary"
             loading={saving}
             onClick={handleSubmit}
+            error={undefined}
+            disabled={undefined}
+            success={undefined}
+            progress={undefined}
+            target={undefined}
         >
             {polyglot.t('save')}
         </ButtonWithStatus>,
@@ -147,10 +150,12 @@ export default compose(
     withHandlers({
         handleSubmit:
             // @ts-expect-error TS7031
-            ({ submit, formName }) =>
-            () => {
-                submit(formName);
-            },
+
+
+                ({ submit, formName }) =>
+                () => {
+                    submit(formName);
+                },
     }),
     translate,
 )(PureButtonWithDialogForm);

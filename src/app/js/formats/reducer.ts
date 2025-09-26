@@ -1,6 +1,5 @@
 // @ts-expect-error TS7016
 import { createAction, handleActions } from 'redux-actions';
-// @ts-expect-error TS7016
 import get from 'lodash/get';
 import { LOAD_RESOURCE_SUCCESS } from '../public/resource';
 

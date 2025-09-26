@@ -1,6 +1,5 @@
 // @ts-expect-error TS7016
 import { scaleLinear } from 'd3-scale';
-// @ts-expect-error TS7016
 import get from 'lodash/get';
 import React, {
     lazy,
@@ -21,9 +20,7 @@ import injectData from '../../injectData';
 import FormatFullScreenMode from '../../utils/components/FormatFullScreenMode';
 import MouseIcon from '../../utils/components/MouseIcon';
 
-const ForceGraph2D = lazy(
-    () => import('react-force-graph-2d'),
-);
+const ForceGraph2D = lazy(() => import('react-force-graph-2d'));
 
 const styles = {
     container: {
@@ -129,18 +126,30 @@ const Network = ({ formatData, p, colorSet }) => {
             // @ts-expect-error TS18046
             const b = nodes.find((node) => node.id === link.target);
             // @ts-expect-error TS18046
-            !a.neighbors && (a.neighbors = []);
+            if (!a.neighbors) {
+                // @ts-expect-error TS18046
+                a.neighbors = [];
+            }
             // @ts-expect-error TS18046
-            !b.neighbors && (b.neighbors = []);
+            if (!b.neighbors) {
+                // @ts-expect-error TS18046
+                b.neighbors = [];
+            }
             // @ts-expect-error TS18046
             a.neighbors.push(b);
             // @ts-expect-error TS18046
             b.neighbors.push(a);
 
             // @ts-expect-error TS18046
-            !a.links && (a.links = []);
+            if (!a.links) {
+                // @ts-expect-error TS18046
+                a.links = [];
+            }
             // @ts-expect-error TS18046
-            !b.links && (b.links = []);
+            if (!b.links) {
+                // @ts-expect-error TS18046
+                b.links = [];
+            }
             // @ts-expect-error TS18046
             a.links.push(link);
             // @ts-expect-error TS18046

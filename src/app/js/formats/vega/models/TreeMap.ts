@@ -1,6 +1,5 @@
 import BasicChartVG from './BasicChartVG';
 import { MULTICHROMATIC_DEFAULT_COLORSET_STREAMGRAPH } from '../../utils/colorUtils';
-// @ts-expect-error TS7016
 import deepClone from 'lodash/cloneDeep';
 import treeMapModel from './json/tree_map.vg.json';
 

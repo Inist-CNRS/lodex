@@ -1,7 +1,6 @@
 import { MONOCHROMATIC_DEFAULT_COLORSET } from '../../utils/colorUtils';
 import { SCALE_LINEAR } from '../../utils/chartsUtils';
 import radarChartVG from './json/radar_chart.vg.json';
-// @ts-expect-error TS7016
 import deepClone from 'lodash/cloneDeep';
 import BasicChartVG from './BasicChartVG';
 

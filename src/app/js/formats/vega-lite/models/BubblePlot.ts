@@ -1,6 +1,5 @@
 import HeatMap from './HeatMap';
 import bubblePlotVL from './json/bubble_plot.vl.json';
-// @ts-expect-error TS7016
 import deepClone from 'lodash/cloneDeep';
 
 class BubblePlot extends HeatMap {

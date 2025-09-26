@@ -1,6 +1,4 @@
-// @ts-expect-error TS7016
 import get from 'lodash/get';
-// @ts-expect-error TS7016
 import omit from 'lodash/omit';
 
 import composeAsync from '../../../../../common/lib/composeAsync';
@@ -59,17 +57,19 @@ export const getYearUrl = ({ resource, field, searchedField }) => {
 
 export const getDecadeYearUrl =
     // @ts-expect-error TS7031
-    ({ value, to, from, searchedField }) =>
-    () => ({
-        url: buildIstexQuery({
-            query: `${getFilterQuery(
-                searchedField,
-                value,
-            )} AND publicationDate:[${from} TO ${to}]`,
-            // @ts-expect-error TS2322
-            facet: 'publicationDate[*-*:1]',
-        }),
-    });
+
+
+        ({ value, to, from, searchedField }) =>
+        () => ({
+            url: buildIstexQuery({
+                query: `${getFilterQuery(
+                    searchedField,
+                    value,
+                )} AND publicationDate:[${from} TO ${to}]`,
+                // @ts-expect-error TS2322
+                facet: 'publicationDate[*-*:1]',
+            }),
+        });
 
 export const getDecadeYearData = ({
     // @ts-expect-error TS7031
@@ -116,75 +116,90 @@ export const parseYearData = (formatData, sortDir = SORT_YEAR_DESC) => ({
 
 export const getVolumeUrl =
     // @ts-expect-error TS7031
-    ({ value, year, searchedField }) =>
-    () => ({
-        url: buildIstexQuery({
-            query: `${getFilterQuery(
-                searchedField,
-                value,
-            )} AND publicationDate:"${year}"`,
-            // @ts-expect-error TS2322
-            facet: 'host.volume[*-*:1]',
-        }),
-    });
+
+
+        ({ value, year, searchedField }) =>
+        () => ({
+            url: buildIstexQuery({
+                query: `${getFilterQuery(
+                    searchedField,
+                    value,
+                )} AND publicationDate:"${year}"`,
+                // @ts-expect-error TS2322
+                facet: 'host.volume[*-*:1]',
+            }),
+        });
 
 export const parseFacetData =
     // @ts-expect-error TS7006
-    (facetName, getName = ({ key }) => key) =>
-    // @ts-expect-error TS7031
-    ({ response, error }) => {
-        if (error) {
-            throw error;
-        }
 
-        return {
-            hits: get(response, ['aggregations', facetName, 'buckets'], []).map(
-                // @ts-expect-error TS7031
-                ({ docCount, ...data }) => ({
-                    // @ts-expect-error TS2345
-                    name: getName(data),
-                    count: docCount,
-                }),
-            ),
+
+        (facetName, getName = ({ key }) => key) =>
+        // @ts-expect-error TS7031
+        ({ response, error }) => {
+            if (error) {
+                throw error;
+            }
+
+            return {
+                hits: get(
+                    response,
+                    ['aggregations', facetName, 'buckets'],
+                    [],
+                ).map(
+                    // @ts-expect-error TS7031
+                    ({ docCount, ...data }) => ({
+                        // @ts-expect-error TS2345
+                        name: getName(data),
+                        count: docCount,
+                    }),
+                ),
+            };
         };
-    };
 
 export const parseVolumeData = parseFacetData('host.volume');
 
 export const getOtherVolumeUrl =
     // @ts-expect-error TS7031
-    ({ value, year, searchedField }) =>
-    () => ({
-        url: buildIstexQuery({
-            query: `${getFilterQuery(
-                searchedField,
-                value,
-            )} AND publicationDate:"${year}" AND -host.volume:[0 TO *]`,
-            output: 'host.volume',
-            // @ts-expect-error TS2322
-            size: '*',
-        }),
-    });
+
+
+        ({ value, year, searchedField }) =>
+        () => ({
+            url: buildIstexQuery({
+                query: `${getFilterQuery(
+                    searchedField,
+                    value,
+                )} AND publicationDate:"${year}" AND -host.volume:[0 TO *]`,
+                output: 'host.volume',
+                // @ts-expect-error TS2322
+                size: '*',
+            }),
+        });
 
 export const parseOtherData =
     // @ts-expect-error TS7006
-    (key) =>
-    // @ts-expect-error TS7031
-    ({ response, error }) => {
-        if (error) {
-            throw error;
-        }
-        // @ts-expect-error TS7006
-        const count = response.hits.reduce((acc, hit) => {
-            const name = get(hit, key, 'other');
-            return {
-                ...acc,
-                [name]: get(acc, name, 0) + 1,
-            };
-        }, {});
 
-        return Object.keys(count).map((name) => ({ name, count: count[name] }));
-    };
+
+        (key) =>
+        // @ts-expect-error TS7031
+        ({ response, error }) => {
+            if (error) {
+                throw error;
+            }
+            // @ts-expect-error TS7006
+            const count = response.hits.reduce((acc, hit) => {
+                const name = get(hit, key, 'other');
+                return {
+                    ...acc,
+                    [name]: get(acc, name, 0) + 1,
+                };
+            }, {});
+
+            return Object.keys(count).map((name) => ({
+                name,
+                count: count[name],
+            }));
+        };
 
 // @ts-expect-error TS7031
 export const getOtherVolumeData = ({ value, year, searchedField }) =>
@@ -196,14 +211,16 @@ export const getOtherVolumeData = ({ value, year, searchedField }) =>
 
 export const addOtherVolumeData =
     // @ts-expect-error TS7031
-    ({ value, year, searchedField }) =>
-    // @ts-expect-error TS7031
-    async ({ hits }) => ({
-        hits: alphabeticalSort([
-            ...hits,
-            ...(await getOtherVolumeData({ value, year, searchedField })()),
-        ]),
-    });
+
+
+        ({ value, year, searchedField }) =>
+        // @ts-expect-error TS7031
+        async ({ hits }) => ({
+            hits: alphabeticalSort([
+                ...hits,
+                ...(await getOtherVolumeData({ value, year, searchedField })()),
+            ]),
+        });
 
 // @ts-expect-error TS7031
 export const getVolumeData = ({ value, year, searchedField }) =>
@@ -220,36 +237,40 @@ const getVolumeQuery = (volume) =>
 
 export const getIssueUrl =
     // @ts-expect-error TS7031
-    ({ value, year, volume, searchedField }) =>
-    () => ({
-        url: buildIstexQuery({
-            query: `${getFilterQuery(
-                searchedField,
-                value,
-            )} AND publicationDate:"${year}" AND ${getVolumeQuery(volume)}`,
-            // @ts-expect-error TS2322
-            facet: 'host.issue[*-*:1]',
-        }),
-    });
+
+
+        ({ value, year, volume, searchedField }) =>
+        () => ({
+            url: buildIstexQuery({
+                query: `${getFilterQuery(
+                    searchedField,
+                    value,
+                )} AND publicationDate:"${year}" AND ${getVolumeQuery(volume)}`,
+                // @ts-expect-error TS2322
+                facet: 'host.issue[*-*:1]',
+            }),
+        });
 
 export const parseIssueData = parseFacetData('host.issue');
 
 export const getOtherIssueUrl =
     // @ts-expect-error TS7031
-    ({ value, year, volume, searchedField }) =>
-    () => ({
-        url: buildIstexQuery({
-            query: `${getFilterQuery(
-                searchedField,
-                value,
-            )} AND publicationDate:"${year}" AND ${getVolumeQuery(
-                volume,
-            )} AND -host.issue:[0 TO *]`,
-            // @ts-expect-error TS2322
-            size: '*',
-            output: 'host.issue',
-        }),
-    });
+
+
+        ({ value, year, volume, searchedField }) =>
+        () => ({
+            url: buildIstexQuery({
+                query: `${getFilterQuery(
+                    searchedField,
+                    value,
+                )} AND publicationDate:"${year}" AND ${getVolumeQuery(
+                    volume,
+                )} AND -host.issue:[0 TO *]`,
+                // @ts-expect-error TS2322
+                size: '*',
+                output: 'host.issue',
+            }),
+        });
 
 // @ts-expect-error TS7031
 export const getOtherIssueData = ({ value, year, volume, searchedField }) =>
@@ -261,19 +282,21 @@ export const getOtherIssueData = ({ value, year, volume, searchedField }) =>
 
 export const addOtherIssueData =
     // @ts-expect-error TS7031
-    ({ value, year, volume, searchedField }) =>
-    // @ts-expect-error TS7031
-    async ({ hits }) => ({
-        hits: alphabeticalSort([
-            ...hits,
-            ...(await getOtherIssueData({
-                value,
-                year,
-                volume,
-                searchedField,
-            })()),
-        ]),
-    });
+
+
+        ({ value, year, volume, searchedField }) =>
+        // @ts-expect-error TS7031
+        async ({ hits }) => ({
+            hits: alphabeticalSort([
+                ...hits,
+                ...(await getOtherIssueData({
+                    value,
+                    year,
+                    volume,
+                    searchedField,
+                })()),
+            ]),
+        });
 
 // @ts-expect-error TS7031
 export const getIssueData = ({ value, year, volume, searchedField }) =>
@@ -290,21 +313,23 @@ const getIssueQuery = (issue) =>
 
 export const getDocumentUrl =
     // @ts-expect-error TS7031
-    ({ value, year, volume, issue, searchedField, documentSortBy }) =>
-    () => ({
-        url: buildIstexQuery({
-            query: `${getFilterQuery(
-                searchedField,
-                value,
-            )} AND publicationDate:"${year}" AND ${getVolumeQuery(
-                volume,
-            )} AND ${getIssueQuery(issue)}`,
-            output,
-            // @ts-expect-error TS2353
-            sortBy: documentSortBy,
-            size: 10,
-        }),
-    });
+
+
+        ({ value, year, volume, issue, searchedField, documentSortBy }) =>
+        () => ({
+            url: buildIstexQuery({
+                query: `${getFilterQuery(
+                    searchedField,
+                    value,
+                )} AND publicationDate:"${year}" AND ${getVolumeQuery(
+                    volume,
+                )} AND ${getIssueQuery(issue)}`,
+                output,
+                // @ts-expect-error TS2353
+                sortBy: documentSortBy,
+                size: 10,
+            }),
+        });
 
 export const getDocumentData = ({
     // @ts-expect-error TS7031

@@ -1,6 +1,5 @@
-// @ts-expect-error TS7016
-import get from 'lodash/get';
 import React from 'react';
+import get from 'lodash/get';
 
 import PropTypes from 'prop-types';
 import { translate } from '../i18n/I18NContext';
@@ -53,8 +52,6 @@ export default (predicate, Component, format, type) => {
         resource,
         // @ts-expect-error TS7031
         field,
-        // @ts-expect-error TS7031
-        p: polyglot,
         ...props
     }) => {
         const value = getFieldValue({

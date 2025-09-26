@@ -3,11 +3,11 @@ import PropTypes from 'prop-types';
 import { Button, Tooltip, Box } from '@mui/material';
 import ReportProblemIcon from '@mui/icons-material/ReportProblem';
 import CachedIcon from '@mui/icons-material/Cached';
-// @ts-expect-error TS7016
 import isEqual from 'lodash/isEqual';
 
 import { polyglot as polyglotPropTypes } from '../../../../propTypes';
 import { translate } from '../../../../i18n/I18NContext';
+import Loading from '../../../../lib/components/Loading';
 
 const styles = {
     error: {
@@ -35,6 +35,7 @@ const styles = {
 };
 
 const FormSourceCodeField = lazy(
+    // @ts-expect-error TS7006
     () => import('../../../../lib/components/FormSourceCodeField'),
 );
 
@@ -161,11 +162,7 @@ const VegaAdvancedMode = ({ p, value, onChange, onClear }) => {
                         </div>
                     </p>
                 </div>
-                {/*
-                 // @ts-expect-error TS2304 */}
                 <Suspense fallback={<Loading>{p.t('loading')}</Loading>}>
-                    {/*
-                     // @ts-expect-error TS2739 */}
                     <FormSourceCodeField
                         style={{
                             width: '100%',

@@ -7,7 +7,6 @@ import { translate } from '../../i18n/I18NContext';
 
 import { FIELD_FORM_NAME } from '../';
 
-// @ts-expect-error TS7016
 import isEqual from 'lodash/isEqual';
 import { connect } from 'react-redux';
 // @ts-expect-error TS7016

@@ -13,6 +13,7 @@ import Typography from '@mui/material/Typography';
 import Loading from '../../../../lib/components/Loading';
 import { translate, useTranslate } from '../../../../i18n/I18NContext';
 
+// @ts-expect-error TS7006
 const ReactJson = lazy(() => import('react-json-view'));
 
 const FormatFieldSetPreview = ({

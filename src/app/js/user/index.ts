@@ -1,4 +1,3 @@
-// @ts-expect-error TS7016
 import omit from 'lodash/omit';
 // @ts-expect-error TS7016
 import { createAction, handleActions } from 'redux-actions';
@@ -539,8 +538,8 @@ export const getLoadFacetValuesRequest = (
     { field, filter, currentPage = 0, perPage = 10, sort = {} },
 ) =>
     getRequest(state, {
-        // @ts-expect-error TS2345
         url: `/api/facet/${field}/${filter || ''}?${getQueryString({
+            // @ts-expect-error TS2345
             page: currentPage,
             perPage,
             sort,
