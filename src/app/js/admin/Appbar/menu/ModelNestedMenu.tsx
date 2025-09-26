@@ -7,7 +7,6 @@ import MenuItem from '@mui/material/MenuItem';
 import PropTypes from 'prop-types';
 import { default as React, useRef } from 'react';
 import { connect } from 'react-redux';
-// @ts-expect-error TS7016
 import { withRouter } from 'react-router';
 // @ts-expect-error TS7016
 import { compose } from 'recompose';

@@ -1,5 +1,4 @@
 import { useMemo } from 'react';
-// @ts-expect-error TS7016
 import { useRouteMatch } from 'react-router';
 
 export function useResourceUri() {
@@ -9,14 +8,17 @@ export function useResourceUri() {
         const { path, params } = routeMatch;
 
         if (path === '/uid:/:uri') {
+            // @ts-expect-error TS2339
             return `uid:/${params.uri}`;
         }
 
         if (path === '/ark:/:naan/:rest') {
+            // @ts-expect-error TS2339
             return `ark:/${params.naan}/${params.rest}`;
         }
 
         if (path === '/graph/:name') {
+            // @ts-expect-error TS2339
             return `/graph/${params.name}`;
         }
 

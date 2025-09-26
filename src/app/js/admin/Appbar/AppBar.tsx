@@ -3,7 +3,6 @@ import StorageIcon from '@mui/icons-material/Storage';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
-// @ts-expect-error TS7016
 import { Link, NavLink } from 'react-router-dom';
 
 import MapsUgcIcon from '@mui/icons-material/MapsUgc';

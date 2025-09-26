@@ -15,7 +15,6 @@ import HelpIcon from '@mui/icons-material/HelpOutline';
 import { useForm, useStore } from '@tanstack/react-form';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-// @ts-expect-error TS7016
 import { useHistory } from 'react-router-dom';
 import { z } from 'zod';
 import { loadConfigTenant } from '.';

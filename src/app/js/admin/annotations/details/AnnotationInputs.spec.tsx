@@ -1,7 +1,6 @@
 import { useForm } from '@tanstack/react-form';
 import PropTypes from 'prop-types';
 import React from 'react';
-// @ts-expect-error TS7016
 import { MemoryRouter } from 'react-router-dom';
 import { render } from '../../../../../test-utils';
 import { TestI18N } from '../../../i18n/I18NContext';

@@ -1,5 +1,4 @@
 import React from 'react';
-// @ts-expect-error TS7016
 import { withRouter } from 'react-router';
 
 import { FieldsEdit } from '../field/FieldsEdit';
@@ -19,4 +18,5 @@ const EditSubresourceComponent = withRouter(({ match, filter }) => {
     );
 });
 
+// @ts-expect-error TS2345
 export const EditSubresource = withRouter(EditSubresourceComponent);

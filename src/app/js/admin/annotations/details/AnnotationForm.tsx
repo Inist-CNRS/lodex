@@ -5,7 +5,6 @@ import Stack from '@mui/material/Stack';
 import { useForm, useStore } from '@tanstack/react-form';
 import PropTypes from 'prop-types';
 import React, { useMemo } from 'react';
-// @ts-expect-error TS7016
 import { Link } from 'react-router-dom';
 
 import { Tooltip } from '@mui/material';

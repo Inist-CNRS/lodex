@@ -4,7 +4,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import * as icons from '@fortawesome/free-solid-svg-icons';
 import get from 'lodash/get';
 import classnames from 'classnames';
-// @ts-expect-error TS7016
 import { Link, NavLink } from 'react-router-dom';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
@@ -124,7 +123,6 @@ const MenuItem = ({
                     // @ts-expect-error TS2339
                     activeClassName={styles.active}
                     onClick={onClick(config.role)}
-                    // @ts-expect-error TS7006
                     isActive={(match) => {
                         if (
                             !match ||
@@ -158,7 +156,6 @@ const MenuItem = ({
                                 [styles.active]: graphDrawer === 'open',
                             },
                         )}
-                        // @ts-expect-error TS7006
                         isActive={(location, params) =>
                             get(location, 'url') === '/graph' &&
                             get(params, 'pathname') !== '/graph'
@@ -188,7 +185,6 @@ const MenuItem = ({
                                 [styles.active]: searchDrawer === 'open',
                             },
                         )}
-                        // @ts-expect-error TS7006
                         isActive={(location, params) =>
                             get(location, 'url') === '/search' &&
                             get(params, 'pathname') !== '/search'

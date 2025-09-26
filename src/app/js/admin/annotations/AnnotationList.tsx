@@ -10,7 +10,6 @@ import {
 } from '@mui/x-data-grid';
 import PropTypes from 'prop-types';
 import React, { useMemo, useState } from 'react';
-// @ts-expect-error TS7016
 import { useHistory } from 'react-router';
 import FieldInternalIcon from '../../fields/FieldInternalIcon';
 import { useTranslate } from '../../i18n/I18NContext';

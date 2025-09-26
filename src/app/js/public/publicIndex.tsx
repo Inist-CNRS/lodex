@@ -1,5 +1,4 @@
 import '@babel/polyfill';
-// @ts-expect-error TS7016
 import { createBrowserHistory } from 'history';
 import React from 'react';
 
@@ -10,7 +9,6 @@ import { Provider } from 'react-redux';
 import 'url-api-polyfill';
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-// @ts-expect-error TS7016
 import { Router } from 'react-router-dom';
 import getLocale from '../../../common/getLocale';
 import configureStore from '../configureStore';
