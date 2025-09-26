@@ -525,7 +525,7 @@ describe('field reducer', () => {
             }),
         );
 
-        it('should handle CHANGE_POSITIOn_VALUE event', () => {
+        it('should handle CHANGE_POSITION_VALUE event', () => {
             expect(state).toEqual({
                 foo: 'bar',
                 byName: {
