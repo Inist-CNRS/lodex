@@ -23,8 +23,6 @@ function TestHistoryDrawer({ mode: defaultMode }) {
     return (
         <ThemeProvider theme={theme}>
             <TestI18N>
-                {/*
-                 // @ts-expect-error TS2322 */}
                 <HistoryDrawer
                     field={{ _id: 'fieldId', label: 'fieldLabel' }}
                     resourceUri="resourceUri"

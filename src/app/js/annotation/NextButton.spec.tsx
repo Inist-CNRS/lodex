@@ -10,8 +10,6 @@ const renderNextButton = (props) => {
     function TestNextButton(props) {
         return (
             <TestI18N>
-                {/*
-                 // @ts-expect-error TS2322 */}
                 <NextButton
                     initialValue="initial value"
                     isSubmitting={false}

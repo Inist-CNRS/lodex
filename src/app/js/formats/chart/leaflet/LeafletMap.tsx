@@ -10,19 +10,19 @@ import L from 'leaflet';
 delete L.Icon.Default.prototype._getIconUrl;
 
 L.Icon.Default.mergeOptions({
-    // @ts-expect-error TS1470
     iconRetinaUrl: new URL(
         'leaflet/dist/images/marker-icon-2x.png',
+        // @ts-expect-error TS1470
         import.meta.url,
     ).toString(),
-    // @ts-expect-error TS1470
     iconUrl: new URL(
         'leaflet/dist/images/marker-icon.png',
+        // @ts-expect-error TS1470
         import.meta.url,
     ).toString(),
-    // @ts-expect-error TS1470
     shadowUrl: new URL(
         'leaflet/dist/images/marker-shadow.png',
+        // @ts-expect-error TS1470
         import.meta.url,
     ).toString(),
 });
@@ -44,10 +44,14 @@ export default function Map({ input = [], width, height, zoom, center }) {
             <MarkerClusterGroup>
                 {[]
                     .concat(input)
+                    // @ts-expect-error TS7031
                     .filter((item) => item.lat && item.lng)
                     .map((item, index) => {
                         return (
+                            // @ts-expect-error TS2322
                             <Marker key={index} position={[item.lat, item.lng]}>
+                                {/* 
+                                // @ts-expect-error TS2322 */}
                                 {item.txt && <Popup>{item.txt}</Popup>}
                             </Marker>
                         );

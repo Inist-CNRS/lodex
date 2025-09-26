@@ -81,8 +81,6 @@ render(
                 theme={createThemeMui(defaultTheme, localesMUI.get(locale))}
             >
                 <I18N>
-                    {/*
-                     // @ts-expect-error TS2322 */}
                     <Router history={history}>
                         {/*
                          // @ts-expect-error TS2339 */}

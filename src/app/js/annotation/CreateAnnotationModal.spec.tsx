@@ -21,8 +21,6 @@ const queryClient = new QueryClient();
 function TestModal({ field, ...props }) {
     return (
         <TestI18N>
-            {/*
-             // @ts-expect-error TS2322 */}
             <QueryClientProvider client={queryClient}>
                 {/*
                  // @ts-expect-error TS2739 */}
