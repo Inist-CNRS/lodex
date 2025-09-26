@@ -1,5 +1,4 @@
 import React from 'react';
-// @ts-expect-error TS7016
 import { shallow } from 'enzyme';
 // @ts-expect-error TS7016
 import { StyleSheetTestUtils } from 'aphrodite';
@@ -59,7 +58,6 @@ describe('NavBar', () => {
                 role: 'advanced',
             },
         ];
-        // @ts-expect-error TS7006
         items.forEach((item, index) => {
             expect(item.prop('config')).toEqual(expectedMenu[index]);
         });

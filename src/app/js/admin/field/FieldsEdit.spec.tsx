@@ -1,5 +1,4 @@
 import React from 'react';
-// @ts-expect-error TS7016
 import { shallow } from 'enzyme';
 
 import { FieldsEditComponent as FieldsEdit } from './FieldsEdit';
@@ -15,6 +14,7 @@ jest.mock('../../admin/api/field', () => ({
 describe('<FieldsEdit />', () => {
     it('should display page tab (FieldGrid) per default', () => {
         const wrapper = shallow(
+            // @ts-expect-error TS2322
             <FieldsEdit
                 showAddFromColumn={false}
                 fields={[]}
@@ -29,6 +29,7 @@ describe('<FieldsEdit />', () => {
 
     it('should display published tab (PublicationPreview) with published defaultTab prop', () => {
         const wrapper = shallow(
+            // @ts-expect-error TS2322
             <FieldsEdit
                 showAddFromColumn={false}
                 // @ts-expect-error TS2322
@@ -45,6 +46,7 @@ describe('<FieldsEdit />', () => {
 
     it('should display FieldAddDropdownButton in page tab if filter === SCOPE_DOCUMENT', () => {
         const wrapper = shallow(
+            // @ts-expect-error TS2322
             <FieldsEdit
                 showAddFromColumn={false}
                 // @ts-expect-error TS2322
@@ -60,6 +62,7 @@ describe('<FieldsEdit />', () => {
 
     it('should display FieldGridComponent before statistic', () => {
         const wrapper = shallow(
+            // @ts-expect-error TS2322
             <FieldsEdit
                 showAddFromColumn={true}
                 // @ts-expect-error TS2322
@@ -79,6 +82,7 @@ describe('<FieldsEdit />', () => {
 
     it('should display Statistics after PublicationPreview', () => {
         const wrapper = shallow(
+            // @ts-expect-error TS2322
             <FieldsEdit
                 showAddFromColumn={false}
                 // @ts-expect-error TS2322

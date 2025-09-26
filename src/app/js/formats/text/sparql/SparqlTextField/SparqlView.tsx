@@ -120,7 +120,6 @@ export class SparqlTextField extends Component {
                 <ul
                     // @ts-expect-error TS2695
                     className={('value_sparql_array', className)}
-                    // @ts-expect-error TS2322
                     style={styles.array}
                 >
                     {/*
@@ -183,7 +182,6 @@ export class SparqlTextField extends Component {
                                             <div style={styles.id}>
                                                 <span
                                                     className="label_sparql"
-                                                    // @ts-expect-error TS2322
                                                     style={styles.label}
                                                 >
                                                     {toSentenceCase(attrName)}

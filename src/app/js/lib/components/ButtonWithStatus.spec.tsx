@@ -1,5 +1,4 @@
 import React from 'react';
-// @ts-expect-error TS7016
 import { shallow } from 'enzyme';
 import { lightGreen, red } from '@mui/material/colors';
 import { CircularProgress, Button, LinearProgress } from '@mui/material';
@@ -15,8 +14,11 @@ describe('<ButtonWithStatus />', () => {
             const wrapper = shallow(<ButtonWithStatus>Foo</ButtonWithStatus>);
 
             const button = wrapper.find(Button).dive().props();
+            // @ts-expect-error TS2339
             expect(button.ownerState.variant).toBe('text');
+            // @ts-expect-error TS2339
             expect(button.ownerState.disabled).toBe(false);
+            // @ts-expect-error TS2339
             expect(button.ownerState.startIcon).toBeNull();
             expect(button.children).toContain('Foo');
         });
@@ -28,8 +30,11 @@ describe('<ButtonWithStatus />', () => {
             );
 
             const button = wrapper.find(Button).dive().props();
+            // @ts-expect-error TS2339
             expect(button.ownerState.variant).toBe('text');
+            // @ts-expect-error TS2339
             expect(button.ownerState.disabled).toBe(true);
+            // @ts-expect-error TS2339
             expect(button.ownerState.startIcon).toEqual(
                 <CircularProgress variant="indeterminate" size={20} />,
             );
@@ -44,8 +49,11 @@ describe('<ButtonWithStatus />', () => {
 
             const button = wrapper.find(Button).dive().props();
 
+            // @ts-expect-error TS2339
             expect(button.ownerState.variant).toBe('text');
+            // @ts-expect-error TS2339
             expect(button.ownerState.disabled).toBe(false);
+            // @ts-expect-error TS2339
             expect(button.ownerState.startIcon).toEqual(
                 // @ts-expect-error TS2769
                 <Warning color={red[400]} />,
@@ -60,8 +68,11 @@ describe('<ButtonWithStatus />', () => {
             );
 
             const button = wrapper.find(Button).dive().props();
+            // @ts-expect-error TS2339
             expect(button.ownerState.variant).toBe('text');
+            // @ts-expect-error TS2339
             expect(button.ownerState.disabled).toBe(false);
+            // @ts-expect-error TS2339
             expect(button.ownerState.startIcon).toEqual(
                 // @ts-expect-error TS2769
                 <Success color={lightGreen.A400} />,
@@ -77,8 +88,11 @@ describe('<ButtonWithStatus />', () => {
                 <ButtonWithStatus raised>Foo</ButtonWithStatus>,
             );
             const button = wrapper.find(Button).dive().props();
+            // @ts-expect-error TS2339
             expect(button.ownerState.variant).toBe('contained');
+            // @ts-expect-error TS2339
             expect(button.ownerState.disabled).toBe(false);
+            // @ts-expect-error TS2339
             expect(button.ownerState.startIcon).toBeNull();
             expect(button.children).toContain('Foo');
         });
@@ -92,8 +106,11 @@ describe('<ButtonWithStatus />', () => {
             );
 
             const button = wrapper.find(Button).dive().props();
+            // @ts-expect-error TS2339
             expect(button.ownerState.variant).toBe('contained');
+            // @ts-expect-error TS2339
             expect(button.ownerState.disabled).toBe(true);
+            // @ts-expect-error TS2339
             expect(button.ownerState.startIcon).toEqual(
                 <CircularProgress variant="indeterminate" size={20} />,
             );
@@ -109,8 +126,11 @@ describe('<ButtonWithStatus />', () => {
             );
 
             const button = wrapper.find(Button).dive().props();
+            // @ts-expect-error TS2339
             expect(button.ownerState.variant).toBe('contained');
+            // @ts-expect-error TS2339
             expect(button.ownerState.disabled).toBe(false);
+            // @ts-expect-error TS2339
             expect(button.ownerState.startIcon).toEqual(
                 // @ts-expect-error TS2769
                 <Warning color={red[400]} />,
@@ -123,8 +143,11 @@ describe('<ButtonWithStatus />', () => {
             const wrapper = shallow(<ButtonWithStatus raised success />);
 
             const button = wrapper.find(Button).dive().props();
+            // @ts-expect-error TS2339
             expect(button.ownerState.variant).toBe('contained');
+            // @ts-expect-error TS2339
             expect(button.ownerState.disabled).toBe(false);
+            // @ts-expect-error TS2339
             expect(button.ownerState.startIcon).toEqual(
                 // @ts-expect-error TS2769
                 <Success color={lightGreen.A400} />,
@@ -139,14 +162,19 @@ describe('<ButtonWithStatus />', () => {
                 </ButtonWithStatus>,
             );
             const button = wrapper.find(Button).dive().props();
+            // @ts-expect-error TS2339
             expect(button.ownerState.variant).toBe('contained');
+            // @ts-expect-error TS2339
             expect(button.ownerState.disabled).toBe(true);
+            // @ts-expect-error TS2339
             expect(button.ownerState.startIcon).toEqual(
                 <CircularProgress variant="indeterminate" size={20} />,
             );
             expect(button.children).toContain('Foo');
             const progressBar = wrapper.find(LinearProgress).dive().props();
+            // @ts-expect-error TS2339
             expect(progressBar.ownerState.value).toBe(50);
+            // @ts-expect-error TS2339
             expect(progressBar.ownerState.variant).toBe('determinate');
         });
     });

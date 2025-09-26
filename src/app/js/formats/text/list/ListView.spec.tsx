@@ -1,5 +1,4 @@
 import React from 'react';
-// @ts-expect-error TS7016
 import { shallow } from 'enzyme';
 // @ts-expect-error TS7016
 import { StyleSheetTestUtils } from 'aphrodite';
@@ -39,6 +38,7 @@ describe('list format view <ListView />', () => {
 
         wrongValues.forEach((value) => {
             const component = shallow(
+                // @ts-expect-error TS2769
                 <ListView {...defaultProps} resource={{ name: value }} />,
             );
             const listComponent = component.find(UL);
@@ -47,6 +47,7 @@ describe('list format view <ListView />', () => {
     });
 
     it('should render list of value', () => {
+        // @ts-expect-error TS2769
         const component = shallow(<ListView {...defaultProps} />);
 
         const listComponent = component.find(UL);
@@ -54,10 +55,11 @@ describe('list format view <ListView />', () => {
 
         const subFormat = component.find('Translated(CheckedComponent)');
         expect(subFormat).toHaveLength(3);
-        // @ts-expect-error TS7006
         subFormat.forEach((t, index) => {
             expect(t.props().resource).toEqual(['value1', 'value2', 'value3']);
+            // @ts-expect-error TS2339
             expect(t.props().field.name).toBe(index.toString());
+            // @ts-expect-error TS2339
             expect(t.props().field.format.name).toBe('none');
         });
     });
@@ -82,19 +84,23 @@ describe('list format view <ListView />', () => {
                 level: 2,
             },
         };
+        // @ts-expect-error TS2769
         const component = shallow(<ListView {...props} />);
         const title = component.find('Translated(CheckedComponent)');
         expect(title).toHaveLength(3);
-        // @ts-expect-error TS7006
         title.forEach((t, index) => {
             expect(t.props().resource).toEqual(['value1', 'value2', 'value3']);
+            // @ts-expect-error TS2339
             expect(t.props().field.name).toBe(index.toString());
+            // @ts-expect-error TS2339
             expect(t.props().field.format.name).toBe('title');
+            // @ts-expect-error TS2339
             expect(t.props().field.format.args).toEqual({ level: 2 });
         });
     });
 
     it('should wrap list in UL if no format type provided', () => {
+        // @ts-expect-error TS2769
         const component = shallow(<ListView {...defaultProps} />);
         const ul = component.find(UL);
         expect(ul).toHaveLength(1);
@@ -118,6 +124,7 @@ describe('list format view <ListView />', () => {
             },
             type: 'ordered',
         };
+        // @ts-expect-error TS2769
         const component = shallow(<ListView {...props} />);
         const ul = component.find(UL);
         expect(ul).toHaveLength(0);
@@ -141,6 +148,7 @@ describe('list format view <ListView />', () => {
             },
             type: 'unordered_without_bullet',
         };
+        // @ts-expect-error TS2769
         const component = shallow(<ListView {...props} />);
         const ul = component.find(UL);
         expect(ul).toHaveLength(1);

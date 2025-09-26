@@ -1,6 +1,5 @@
 // @ts-expect-error TS7016
 import { StyleSheetTestUtils } from 'aphrodite';
-// @ts-expect-error TS7016
 import { shallow } from 'enzyme';
 import React from 'react';
 

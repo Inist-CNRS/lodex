@@ -1,4 +1,3 @@
-// @ts-expect-error TS7016
 import { shallow } from 'enzyme';
 import React from 'react';
 
@@ -123,6 +122,7 @@ describe('Property', () => {
 
         it('should render something if resource[field.name] and field format is list is a list of value', () => {
             const wrapper = shallow(
+                // @ts-expect-error TS2769
                 <PropertyComponent
                     {...defaultProps}
                     isAdmin={false}
@@ -150,6 +150,7 @@ describe('Property', () => {
             [null, undefined, '', [], 'value', ['value1', 'value2']].forEach(
                 (value) => {
                     const wrapper = shallow(
+                        // @ts-expect-error TS2769
                         <PropertyComponent
                             {...defaultProps}
                             // @ts-expect-error TS2322
@@ -174,6 +175,7 @@ describe('Property', () => {
             [null, undefined, '', [], 'value', ['value1', 'value2']].forEach(
                 (value) => {
                     const wrapper = shallow(
+                        // @ts-expect-error TS2769
                         <PropertyComponent
                             {...defaultProps}
                             // @ts-expect-error TS2322

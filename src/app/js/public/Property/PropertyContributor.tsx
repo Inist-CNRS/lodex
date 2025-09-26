@@ -49,7 +49,6 @@ const PropertyContributorComponent = ({
     }
 
     return (
-        // @ts-expect-error TS2322
         <div className="property_contributor" style={styles.scheme}>
             {fieldStatus === PROPOSED
                 ? polyglot.t('contributed_by', { name: contributor })
