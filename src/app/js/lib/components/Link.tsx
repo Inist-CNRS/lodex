@@ -1,5 +1,4 @@
 import React from 'react';
-// @ts-expect-error TS7016
 import { Link as RouterLink, NavLink } from 'react-router-dom';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';

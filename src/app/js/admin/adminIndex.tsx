@@ -1,14 +1,12 @@
 import '@babel/polyfill';
 import 'url-api-polyfill';
 
-// @ts-expect-error TS7016
 import { createHashHistory } from 'history';
 import React from 'react';
 // ignoring deprecation warning react 18 we are using version 17
 // eslint-disable-next-line react/no-deprecated
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
-// @ts-expect-error TS7016
 import { Redirect, Route } from 'react-router';
 
 import {
@@ -19,7 +17,6 @@ import {
 import { enUS, frFR } from '@mui/material/locale';
 import { enUS as enUSDatagrid, frFR as frFRDatagrid } from '@mui/x-data-grid';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-// @ts-expect-error TS7016
 import { Router } from 'react-router-dom';
 import getLocale from '../../../common/getLocale';
 import '../../ace-vite-loader';
@@ -90,18 +87,25 @@ render(
                                 exact
                                 render={() => <Redirect to="/data" />}
                             />
+                            {/*
+                             // @ts-expect-error TS2322 */}
                             <PrivateRoute path="/data" component={Data} />
+                            {/*
+                             // @ts-expect-error TS2322 */}
                             <PrivateRoute path="/display" component={Display} />
                             <PrivateRoute
+                                // @ts-expect-error TS2322
                                 path="/annotations/:annotationId"
                                 component={AnnotationDetail}
                             />
                             <PrivateRoute
+                                // @ts-expect-error TS2322
                                 path="/annotations"
                                 component={AnnotationList}
                                 exact
                             />
                             <PrivateRoute
+                                // @ts-expect-error TS2322
                                 path="/config"
                                 component={ConfigTenantRoute}
                             />

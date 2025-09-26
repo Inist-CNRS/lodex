@@ -17,7 +17,6 @@ import {
     polyglot as polyglotPropTypes,
 } from '../../propTypes';
 import { SCOPE_DOCUMENT } from '../../../../common/scope';
-// @ts-expect-error TS7016
 import { useHistory } from 'react-router-dom';
 import { getEditFieldRedirectUrl } from '../../fields/FieldGrid';
 import WarningIcon from '@mui/icons-material/Warning';

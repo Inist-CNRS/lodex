@@ -11,9 +11,7 @@ import {
     GridToolbarDensitySelector,
     GridToolbarFilterButton,
 } from '@mui/x-data-grid';
-// @ts-expect-error TS7016
 import { Link } from 'react-router-dom';
-// @ts-expect-error TS7016
 import { useHistory } from 'react-router';
 import { renderStatus, renderRunButton } from './PrecomputedForm';
 import { fromPrecomputed } from '../selectors';

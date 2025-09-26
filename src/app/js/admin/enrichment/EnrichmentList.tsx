@@ -13,9 +13,7 @@ import {
 import PropTypes from 'prop-types';
 import { default as React, useEffect } from 'react';
 import { connect } from 'react-redux';
-// @ts-expect-error TS7016
 import { useHistory } from 'react-router';
-// @ts-expect-error TS7016
 import { Link } from 'react-router-dom';
 import { launchAllEnrichment, retryEnrichment } from '.';
 import { IN_PROGRESS } from '../../../../common/taskStatus';

@@ -1,5 +1,4 @@
 import React from 'react';
-// @ts-expect-error TS7016
 import { MemoryRouter, Route } from 'react-router-dom';
 import { render } from '../../../../test-utils';
 import { ParsingResultComponent } from './ParsingResult';

@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 // @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
-// @ts-expect-error TS7016
 import { useParams } from 'react-router';
 
 import { MenuItem, TextField } from '@mui/material';
@@ -28,6 +27,7 @@ export const defaultArgs = {
 
 // @ts-expect-error TS7031
 const FieldCloneAdmin = ({ args, onChange, p: polyglot, fields }) => {
+    // @ts-expect-error TS2339
     const { filter } = useParams();
     // @ts-expect-error TS7006
     const handleValue = (e) => {

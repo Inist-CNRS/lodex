@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { compose } from 'recompose';
 // @ts-expect-error TS7016
 import withHandlers from 'recompose/withHandlers';
-// @ts-expect-error TS7016
 import { withRouter } from 'react-router';
 // @ts-expect-error TS7016
 import { formValueSelector, reduxForm } from 'redux-form';

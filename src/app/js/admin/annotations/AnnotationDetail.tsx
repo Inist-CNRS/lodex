@@ -1,7 +1,5 @@
 import React from 'react';
-// @ts-expect-error TS7016
 import { Redirect } from 'react-router';
-// @ts-expect-error TS7016
 import { useRouteMatch } from 'react-router-dom';
 import { useTranslate } from '../../i18n/I18NContext';
 import AdminOnlyAlert from '../../lib/components/AdminOnlyAlert';
@@ -17,6 +15,7 @@ export function AnnotationDetail() {
         data: annotation,
         error,
         isLoading,
+        // @ts-expect-error TS2339
     } = useGetAnnotation(match.params.annotationId);
 
     if (isLoading) {

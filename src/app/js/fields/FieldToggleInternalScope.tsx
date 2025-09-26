@@ -6,7 +6,6 @@ import HomeIcon from '@mui/icons-material/Home';
 import { ToggleButton, ToggleButtonGroup, Tooltip } from '@mui/material';
 import PropTypes from 'prop-types';
 import React, { useEffect } from 'react';
-// @ts-expect-error TS7016
 import { useRouteMatch } from 'react-router-dom';
 import { translate } from '../i18n/I18NContext';
 import { polyglot as polyglotPropTypes } from '../propTypes';
@@ -21,6 +20,7 @@ export const FieldToggleInternalScopeComponent = ({ input, p: polyglot }) => {
         if (
             !input ||
             input.value !== '' ||
+            // @ts-expect-error TS2339
             matches.params.fieldName !== 'new'
         ) {
             return;
@@ -32,21 +32,25 @@ export const FieldToggleInternalScopeComponent = ({ input, p: polyglot }) => {
                 return currentValues;
             }
 
+            // @ts-expect-error TS2339
             if (matches.params.filter === 'dataset') {
                 input.onChange(['home']);
                 return ['home'];
             }
 
+            // @ts-expect-error TS2339
             if (matches.params.subresourceId) {
                 input.onChange(['subRessource']);
                 return ['subRessource'];
             }
 
+            // @ts-expect-error TS2339
             if (matches.params.filter === 'document') {
                 input.onChange(['document']);
                 return ['document'];
             }
 
+            // @ts-expect-error TS2339
             if (matches.params.filter === 'graphic') {
                 input.onChange(['chart']);
                 return ['chart'];
