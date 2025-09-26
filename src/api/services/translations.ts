@@ -69,6 +69,6 @@ const getByLanguage = (locale = 'en') => {
           translations.english;
 };
 
-module.exports = {
+export default {
     getByLanguage,
 };
