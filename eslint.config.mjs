@@ -1,3 +1,4 @@
+import babelParser from '@babel/eslint-parser';
 import { defineConfig, globalIgnores } from 'eslint/config';
 import tseslint from 'typescript-eslint';
 import js from '@eslint/js';
@@ -7,8 +8,13 @@ import pluginJest from 'eslint-plugin-jest';
 import react from 'eslint-plugin-react';
 import reactHooks from 'eslint-plugin-react-hooks';
 import globals from 'globals';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
 import tseslint from 'typescript-eslint';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 export default defineConfig([
     globalIgnores([
@@ -33,6 +39,14 @@ export default defineConfig([
                     caughtErrors: 'none',
                 },
             ],
+        },
+        languageOptions: {
+            parser: babelParser,
+            parserOptions: {
+                babelOptions: {
+                    configFile: path.resolve(__dirname, 'babel.config.js'),
+                },
+            },
         },
     },
     tseslint.configs.recommended.map((conf) => ({
