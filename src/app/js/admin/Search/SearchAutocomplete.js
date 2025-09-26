@@ -12,6 +12,7 @@ import React, { useEffect } from 'react';
 
 import PropTypes from 'prop-types';
 import FieldRepresentation from '../../fields/FieldRepresentation';
+import { filterOptions } from './searchUtils';
 
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
@@ -67,37 +68,6 @@ const SearchAutocomplete = ({
     const handleChange = (event, value) => {
         setAutocompleteValue(value);
         onChange(event, value);
-    };
-    // Fonction pour normaliser la chaîne
-    const normalize = (str) =>
-        (str || '')
-            .toLowerCase()
-            .normalize('NFD')
-            .replace(/\p{Diacritic}/gu, '');
-    // Découpe en tokens en séparant sur espaces et caractères spéciaux
-    const tokenize = (str) =>
-        normalize(str)
-            .split(/[^a-z0-9]+/)
-            .filter(Boolean);
-    // Filtrage : match sur le début d'un mot ou sur le label complet
-    const filterOptions = (options, { inputValue }) => {
-        const inputTokens = tokenize(inputValue);
-        return options.filter((option) => {
-            const labelTokens = tokenize(option.label);
-            const nameTokens = tokenize(option.name);
-            const allTokens = labelTokens.concat(nameTokens);
-            if (inputTokens.length === 0) return true;
-            // Tous les tokens de la saisie doivent matcher le début d’un mot du label ou du nom
-            const allMatch = inputTokens.every((inputToken) =>
-                allTokens.some((token) => token.startsWith(inputToken)),
-            );
-            // Ou si la saisie correspond exactement au label ou au nom
-            const normalizedInput = normalize(inputValue);
-            const matchExact =
-                normalize(option.label) === normalizedInput ||
-                normalize(option.name) === normalizedInput;
-            return allMatch || matchExact;
-        });
     };
 
     return (

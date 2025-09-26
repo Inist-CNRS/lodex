@@ -52,8 +52,13 @@ const onPageChange =
             filter,
         });
 
-/* Hook pour gérer le filtre avec debounce et annulation */
-const useDebouncedSearch = (changeFacetValue, name, perPage, initialFilter) => {
+/* Hook to manage the filter with debounce and cancellation */
+export const useDebouncedSearch = (
+    changeFacetValue,
+    name,
+    perPage,
+    initialFilter,
+) => {
     const [localFilter, setLocalFilter] = useState(initialFilter);
     const [isSearching, setIsSearching] = useState(false);
     const debounceTimeoutRef = useRef(null);

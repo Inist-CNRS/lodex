@@ -6,11 +6,14 @@ export const getFacetFilteredValues = async (ctx, name, filter) => {
         const { page = 0, perPage = 10, sortBy, sortDir } = ctx.request.query;
 
         // Validation des paramètres
-        const pageNum = Math.max(0, parseInt(page, 10) || 0);
-        const perPageNum = Math.min(
-            100,
-            Math.max(1, parseInt(perPage, 10) || 10),
-        );
+        const pageNumRaw = parseInt(page, 10);
+        const pageNum =
+            Number.isFinite(pageNumRaw) && pageNumRaw >= 0 ? pageNumRaw : 0;
+        const perPageNumRaw = parseInt(perPage, 10);
+        const perPageNum =
+            Number.isFinite(perPageNumRaw) && perPageNumRaw >= 1
+                ? Math.min(100, perPageNumRaw)
+                : 10;
 
         // Décoder le filtre s'il existe et nettoyer les espaces en fin
         let searchFilter = filter;
@@ -20,8 +23,6 @@ export const getFacetFilteredValues = async (ctx, name, filter) => {
             if (!searchFilter) {
                 searchFilter = undefined;
             }
-        } else if (typeof filter === 'function') {
-            searchFilter = undefined;
         }
 
         const [data, total] = await Promise.all([
@@ -62,18 +63,10 @@ const app = new Koa();
 app.use(
     route.get('/:name/(.*)', (ctx, name, filter) => {
         // Si le filtre est vide ou juste des slashes, on le traite comme undefined
-        let cleanFilter = filter;
-        if (cleanFilter) {
-            // Méthode sécurisée pour supprimer les slashes en début/fin
-            while (cleanFilter.startsWith('/')) {
-                cleanFilter = cleanFilter.slice(1);
-            }
-            while (cleanFilter.endsWith('/')) {
-                cleanFilter = cleanFilter.slice(0, -1);
-            }
-            cleanFilter = cleanFilter.trim();
-        }
-        return getFacetFilteredValues(ctx, name, cleanFilter || undefined);
+        const cleanFilter = filter
+            ? filter.replace(/^\/+/, '').replace(/\/+$/, '').trim() || undefined
+            : undefined;
+        return getFacetFilteredValues(ctx, name, cleanFilter);
     }),
 );
 
