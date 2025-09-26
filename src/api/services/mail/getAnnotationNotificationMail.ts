@@ -1,4 +1,3 @@
-// @ts-expect-error TS(2792): Cannot find module 'node-polyglot'. Did you mean t... Remove this comment to see the full error message
 import Polyglot from 'node-polyglot';
 // @ts-expect-error TS(2306): File '/home/madeorsk/Cloud/Marmelab/Code/lodex/src... Remove this comment to see the full error message
 import translations from '../translations';

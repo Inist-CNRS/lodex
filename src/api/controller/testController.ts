@@ -1,10 +1,6 @@
-// @ts-expect-error TS(2792): Cannot find module 'koa'. Did you mean to set the ... Remove this comment to see the full error message
 import koa from 'koa';
-// @ts-expect-error TS(2792): Cannot find module 'koa-mount'. Did you mean to se... Remove this comment to see the full error message
 import mount from 'koa-mount';
-// @ts-expect-error TS(2792): Cannot find module 'koa-route'. Did you mean to se... Remove this comment to see the full error message
 import route from 'koa-route';
-// @ts-expect-error TS(2792): Cannot find module 'koa-static'. Did you mean to s... Remove this comment to see the full error message
 import serve from 'koa-static';
 import path from 'path';
 

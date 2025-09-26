@@ -1,4 +1,3 @@
-// @ts-expect-error TS(2792): Cannot find module 'lodash/difference'. Did you me... Remove this comment to see the full error message
 import difference from 'lodash/difference';
 
 const removeOldValue =

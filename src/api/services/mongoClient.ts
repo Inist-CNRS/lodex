@@ -1,7 +1,6 @@
 // @ts-expect-error TS(6133): 'Db' is declared but its value is never read.
 
 import { MongoClient, Db } from 'mongodb';
-// @ts-expect-error TS(2792): Cannot find module 'config'. Did you mean to set t... Remove this comment to see the full error message
 import config from 'config';
 // @ts-expect-error TS(7016): Could not find a declaration file for module '../.... Remove this comment to see the full error message
 import { DEFAULT_TENANT } from '../../common/tools/tenantTools';
@@ -12,7 +11,7 @@ import { DEFAULT_TENANT } from '../../common/tools/tenantTools';
 const clients = new Map();
 
 export const mongoConnectionString = (tenant: any) =>
-    `mongodb://${config.mongo.host}/${config.mongo.dbName}_${
+    `mongodb://${config.get('mongo.host')}/${config.get('mongo.dbName')}_${
         tenant || DEFAULT_TENANT
     }`;
 

@@ -1,4 +1,3 @@
-// @ts-expect-error TS(2792): Cannot find module 'lodash/memoize'. Did you mean ... Remove this comment to see the full error message
 import memoize from 'lodash/memoize';
 
 export const countUniqueConcatenation =
