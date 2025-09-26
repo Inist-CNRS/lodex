@@ -3,6 +3,7 @@ import HomeIcon from '@mui/icons-material/Home';
 import { Button, Card, CardActions, CardContent } from '@mui/material';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
+// @ts-expect-error TS6133
 import React, { useEffect, useMemo, useState } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';

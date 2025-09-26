@@ -1,3 +1,4 @@
+// @ts-expect-error TS6133
 import React from 'react';
 import { translate } from '../../../i18n/I18NContext';
 import PropTypes from 'prop-types';

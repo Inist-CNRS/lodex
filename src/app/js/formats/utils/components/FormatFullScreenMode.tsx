@@ -1,3 +1,4 @@
+// @ts-expect-error TS6133
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import Dialog from '@mui/material/Dialog';

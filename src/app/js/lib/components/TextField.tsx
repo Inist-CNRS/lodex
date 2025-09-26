@@ -7,6 +7,7 @@ import {
     Tooltip,
 } from '@mui/material';
 import PropTypes from 'prop-types';
+// @ts-expect-error TS6133
 import React, { useEffect, useMemo } from 'react';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useField } from '@tanstack/react-form';

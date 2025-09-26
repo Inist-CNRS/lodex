@@ -1,5 +1,6 @@
 import { Typography } from '@mui/material';
 import { useField, useStore } from '@tanstack/react-form';
+// @ts-expect-error TS6133
 import React, { useEffect, useState } from 'react';
 import AceEditor from 'react-ace';
 import { useTranslate } from '../../../i18n/I18NContext';

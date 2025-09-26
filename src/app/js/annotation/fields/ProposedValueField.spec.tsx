@@ -1,5 +1,6 @@
 import { useForm } from '@tanstack/react-form';
 import { render, screen, act } from '@testing-library/react';
+// @ts-expect-error TS6133
 import React from 'react';
 
 import PropTypes from 'prop-types';

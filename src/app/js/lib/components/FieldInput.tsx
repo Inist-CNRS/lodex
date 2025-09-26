@@ -1,6 +1,6 @@
+// @ts-expect-error TS6133
 import React from 'react';
 import PropTypes from 'prop-types';
-// @ts-expect-error TS7016
 import { Field } from 'redux-form';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';

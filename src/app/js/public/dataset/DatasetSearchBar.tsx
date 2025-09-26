@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+// @ts-expect-error TS6133
 import React from 'react';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';

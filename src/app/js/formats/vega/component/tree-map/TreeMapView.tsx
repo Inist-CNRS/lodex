@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import injectData from '../../../injectData';
 import TreeMap, { TREE_MAP_LAYOUT } from '../../models/TreeMap';
+// @ts-expect-error TS6133
 import React, { useMemo, useState } from 'react';
 import { useSizeObserver } from '../../../utils/chartsHooks';
 import {
@@ -170,6 +171,7 @@ const mapStateToProps = (state, { formatData }) => {
     };
 };
 
+// @ts-expect-error TS6133
 export const TreeMapAdminView = connect((state, props) => {
     return {
         ...props,

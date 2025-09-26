@@ -2,6 +2,7 @@ import { useTheme } from '@emotion/react';
 import CloseIcon from '@mui/icons-material/Close';
 import { Box, Drawer, IconButton, Typography } from '@mui/material';
 import PropTypes from 'prop-types';
+// @ts-expect-error TS6133
 import { default as React, useCallback, useMemo } from 'react';
 
 import { useTranslate } from '../i18n/I18NContext';

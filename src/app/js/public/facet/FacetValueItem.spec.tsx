@@ -1,3 +1,4 @@
+// @ts-expect-error TS6133
 import React from 'react';
 import { render, screen } from '../../../../test-utils';
 import { TestI18N } from '../../i18n/I18NContext';

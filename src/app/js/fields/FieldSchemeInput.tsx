@@ -1,8 +1,8 @@
+// @ts-expect-error TS6133
 import React from 'react';
 import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
-// @ts-expect-error TS7016
 import { Field } from 'redux-form';
 import { MenuItem, Box } from '@mui/material';
 
@@ -33,6 +33,7 @@ export const FieldSchemeInputComponent = ({
         label={polyglot.t('scheme')}
         fullWidth
         style={{
+            // @ts-expect-error TS2769
             vertical: 'bottom',
             horizontal: 'left',
         }}

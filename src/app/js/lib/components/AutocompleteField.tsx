@@ -9,6 +9,7 @@ import {
 } from '@mui/material';
 import { useField } from '@tanstack/react-form';
 import PropTypes from 'prop-types';
+// @ts-expect-error TS6133
 import React, { useCallback, useMemo } from 'react';
 
 import { useTranslate } from '../../i18n/I18NContext';

@@ -1,8 +1,6 @@
-// @ts-expect-error TS(6133): 'Db' is declared but its value is never read.
-
-import { MongoClient, Db } from 'mongodb';
+import { MongoClient, type Db } from 'mongodb';
 import config from 'config';
-// @ts-expect-error TS(7016): Could not find a declaration file for module '../.... Remove this comment to see the full error message
+// @ts-expect-error TS(7016): Could not find a declaration file for module
 import { DEFAULT_TENANT } from '../../common/tools/tenantTools';
 
 /**
@@ -45,16 +43,11 @@ const mongoClientConnectionFactory = async (tenant: any) => {
     }
 };
 
-/**
- * Get the database client
- * @param tenant Name of the Lodex instance
- * @returns {Promise<Db>}
- */
-export const mongoClientFactory = async (tenant: any) => {
+export const mongoClientFactory = async (tenant: string): Promise<Db> => {
     return (await mongoClientConnectionFactory(tenant)).db();
 };
 
-export const closeDb = async (tenant: any) => {
+export const closeDb = async (tenant: string) => {
     if (clients && clients.has(tenant)) {
         await clients.get(tenant).close();
     }

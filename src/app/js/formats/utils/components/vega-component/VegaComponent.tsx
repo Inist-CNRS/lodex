@@ -1,4 +1,5 @@
 import { Vega } from 'react-vega';
+// @ts-expect-error TS6133
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';

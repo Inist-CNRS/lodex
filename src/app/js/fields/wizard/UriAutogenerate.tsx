@@ -1,3 +1,4 @@
+// @ts-expect-error TS6133
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Switch, FormControlLabel } from '@mui/material';
@@ -5,7 +6,6 @@ import { translate } from '../../i18n/I18NContext';
 import compose from 'recompose/compose';
 import withHandlers from 'recompose/withHandlers';
 import { connect } from 'react-redux';
-// @ts-expect-error TS7016
 import { formValueSelector } from 'redux-form';
 
 import { FIELD_FORM_NAME } from '..';

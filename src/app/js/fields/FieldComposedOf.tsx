@@ -10,7 +10,6 @@ import {
 } from '@mui/material';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
-// @ts-expect-error TS7016
 import { change, formValueSelector } from 'redux-form';
 
 import { FIELD_FORM_NAME } from './';

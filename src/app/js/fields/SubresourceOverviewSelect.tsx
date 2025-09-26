@@ -1,3 +1,4 @@
+// @ts-expect-error TS6133
 import React, { useMemo } from 'react';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';

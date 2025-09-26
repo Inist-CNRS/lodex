@@ -1,4 +1,5 @@
 import { Grid, Typography, useTheme } from '@mui/material';
+// @ts-expect-error TS6133
 import React from 'react';
 import { useTranslate } from '../../i18n/I18NContext';
 import PropTypes from 'prop-types';

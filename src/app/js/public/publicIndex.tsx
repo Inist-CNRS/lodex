@@ -1,5 +1,6 @@
 import '@babel/polyfill';
 import { createBrowserHistory } from 'history';
+// @ts-expect-error TS6133
 import React from 'react';
 
 // ignoring deprecation warning react 18 we are using version 17

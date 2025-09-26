@@ -1,3 +1,4 @@
+// @ts-expect-error TS6133
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Chip } from '@mui/material';

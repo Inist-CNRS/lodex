@@ -6,6 +6,7 @@ import {
     LinearProgress,
     Typography,
 } from '@mui/material';
+// @ts-expect-error TS6133
 import React, { useEffect, useState } from 'react';
 import { io } from 'socket.io-client';
 import { publish, publishSuccess, publishError } from '../publish';

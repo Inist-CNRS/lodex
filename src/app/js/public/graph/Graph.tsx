@@ -4,6 +4,7 @@ import { Button, Card, CardHeader, IconButton, Stack } from '@mui/material';
 import { grey } from '@mui/material/colors';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
+// @ts-expect-error TS6133
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';

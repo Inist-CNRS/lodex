@@ -21,7 +21,6 @@ import {
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { compose } from 'recompose';
-// @ts-expect-error TS7016
 import { change, Field, formValueSelector, reduxForm } from 'redux-form';
 import { launchEnrichment, loadEnrichments, retryEnrichment } from '.';
 import { IN_PROGRESS, PENDING } from '../../../../common/taskStatus';
@@ -371,6 +370,7 @@ export const EnrichmentForm = ({
                                     );
                                 }}
                                 clearIdentifier={() => {
+                                    // @ts-expect-error TS2554
                                     change('subPath', '');
                                 }}
                             />

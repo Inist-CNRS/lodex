@@ -1,3 +1,4 @@
+// @ts-expect-error TS6133
 import React, { lazy, Suspense, useMemo } from 'react';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
@@ -8,7 +9,6 @@ import injectData from '../../injectData';
 import Loading from '../../../lib/components/Loading';
 import { useTranslate } from '../../../i18n/I18NContext';
 
-// @ts-expect-error TS7016
 const ReactJson = lazy(() => import('react-json-view'));
 
 // @ts-expect-error TS7006

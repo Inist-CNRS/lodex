@@ -1,3 +1,4 @@
+// @ts-expect-error TS6133
 import React from 'react';
 import { Switch, FormControlLabel } from '@mui/material';
 import memoize from 'lodash/memoize';
