@@ -1,4 +1,3 @@
-// @ts-expect-error TS(2792): Cannot find module 'nodemailer'. Did you mean to s... Remove this comment to see the full error message
 import nodemailer from 'nodemailer';
 import config from '../../../../config.json';
 

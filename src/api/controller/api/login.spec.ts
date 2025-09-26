@@ -1,6 +1,4 @@
-// @ts-expect-error TS(2792): Cannot find module 'config'. Did you mean to set t... Remove this comment to see the full error message
-import { auth } from 'config';
-// @ts-expect-error TS(2792): Cannot find module 'jsonwebtoken'. Did you mean to... Remove this comment to see the full error message
+import config from 'config';
 import jwt from 'jsonwebtoken';
 
 import { postLogin as login } from './login';
@@ -11,6 +9,8 @@ import {
 } from '../../../common/tools/tenantTools';
 
 const expDate = Date.now();
+
+const auth = config.get('auth');
 
 describe('login', () => {
     describe('admin authentication', () => {
@@ -97,8 +97,10 @@ describe('login', () => {
                     {
                         username: 'admin',
                         role: ADMIN_ROLE,
+                        // @ts-expect-error TS(18046): auth is of type unknown
                         exp: Math.ceil(expDate / 1000) + auth.expiresIn,
                     },
+                    // @ts-expect-error TS(18046): auth is of type unknown
                     auth.headerSecret,
                 ),
                 role: ADMIN_ROLE,
@@ -109,8 +111,10 @@ describe('login', () => {
                     {
                         username: 'admin',
                         role: ADMIN_ROLE,
+                        // @ts-expect-error TS(18046): auth is of type unknown
                         exp: Math.ceil(expDate / 1000) + auth.expiresIn,
                     },
+                    // @ts-expect-error TS(18046): auth is of type unknown
                     auth.cookieSecret,
                 ),
                 { httpOnly: true },
@@ -268,8 +272,10 @@ describe('login', () => {
                     {
                         username: 'user',
                         role: 'user',
+                        // @ts-expect-error TS(18046): auth is of type unknown
                         exp: Math.ceil(expDate / 1000) + auth.expiresIn,
                     },
+                    // @ts-expect-error TS(18046): auth is of type unknown
                     auth.headerSecret,
                 ),
                 role: 'user',
@@ -280,8 +286,10 @@ describe('login', () => {
                     {
                         username: 'user',
                         role: 'user',
+                        // @ts-expect-error TS(18046): auth is of type unknown
                         exp: Math.ceil(expDate / 1000) + auth.expiresIn,
                     },
+                    // @ts-expect-error TS(18046): auth is of type unknown
                     auth.cookieSecret,
                 ),
                 { httpOnly: true },
@@ -450,8 +458,10 @@ describe('login', () => {
                     {
                         username: 'contributor',
                         role: CONTRIBUTOR_ROLE,
+                        // @ts-expect-error TS(18046): auth is of type unknown
                         exp: Math.ceil(expDate / 1000) + auth.expiresIn,
                     },
+                    // @ts-expect-error TS(18046): auth is of type unknown
                     auth.headerSecret,
                 ),
                 role: CONTRIBUTOR_ROLE,
@@ -462,8 +472,10 @@ describe('login', () => {
                     {
                         username: 'contributor',
                         role: CONTRIBUTOR_ROLE,
+                        // @ts-expect-error TS(18046): auth is of type unknown
                         exp: Math.ceil(expDate / 1000) + auth.expiresIn,
                     },
+                    // @ts-expect-error TS(18046): auth is of type unknown
                     auth.cookieSecret,
                 ),
                 { httpOnly: true },

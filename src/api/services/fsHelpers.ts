@@ -1,9 +1,6 @@
 import fs from 'fs';
-// @ts-expect-error TS(2792): Cannot find module 'lodash/range'. Did you mean to... Remove this comment to see the full error message
 import range from 'lodash/range';
-// @ts-expect-error TS(2792): Cannot find module 'lodash/rangeRight'. Did you me... Remove this comment to see the full error message
 import rangeRight from 'lodash/rangeRight';
-// @ts-expect-error TS(2792): Cannot find module 'multistream'. Did you mean to ... Remove this comment to see the full error message
 import MultiStream from 'multistream';
 
 // @ts-expect-error TS(7016): Could not find a declaration file for module '../.... Remove this comment to see the full error message

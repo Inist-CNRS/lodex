@@ -1,6 +1,4 @@
-// @ts-expect-error TS(2792): Cannot find module 'koa'. Did you mean to set the ... Remove this comment to see the full error message
 import Koa from 'koa';
-// @ts-expect-error TS(2792): Cannot find module 'koa-route'. Did you mean to se... Remove this comment to see the full error message
 import route from 'koa-route';
 // @ts-expect-error TS(2792): Cannot find module '@ezs/core'. Did you mean to se... Remove this comment to see the full error message
 
@@ -8,9 +6,7 @@ import ezs from '@ezs/core';
 // @ts-expect-error TS(2792): Cannot find module '@ezs/lodex'. Did you mean to s... Remove this comment to see the full error message
 import Lodex from '@ezs/lodex';
 import { PassThrough } from 'stream';
-// @ts-expect-error TS(2792): Cannot find module 'koa-cache-control'. Did you me... Remove this comment to see the full error message
 import cacheControl from 'koa-cache-control';
-// @ts-expect-error TS(2792): Cannot find module 'config'. Did you mean to set t... Remove this comment to see the full error message
 import config from 'config';
 
 import Script from '../../services/script';
@@ -145,7 +141,7 @@ const app = new Koa();
 app.use(
     cacheControl({
         public: true,
-        maxAge: config.cache.maxAge,
+        maxAge: config.get('cache.maxAge'),
     }),
 );
 

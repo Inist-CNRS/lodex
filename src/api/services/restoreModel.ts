@@ -1,7 +1,6 @@
 import { text } from 'stream/consumers';
 
 import { MongoClient } from 'mongodb';
-// @ts-expect-error TS(2792): Cannot find module 'tar-stream'. Did you mean to s... Remove this comment to see the full error message
 import * as tar from 'tar-stream';
 
 async function extractModelFromArchive(

@@ -1,25 +1,16 @@
-// @ts-expect-error TS(2792): Cannot find module 'koa'. Did you mean to set the ... Remove this comment to see the full error message
 import Koa from 'koa';
 import { activateBullDashboard, timeout } from '../../config.json';
-// @ts-expect-error TS(2792): Cannot find module 'koa-mount'. Did you mean to se... Remove this comment to see the full error message
 import mount from 'koa-mount';
-// @ts-expect-error TS(2792): Cannot find module 'koa-route'. Did you mean to se... Remove this comment to see the full error message
 import route from 'koa-route';
-// @ts-expect-error TS(2792): Cannot find module 'kcors'. Did you mean to set th... Remove this comment to see the full error message
 import cors from 'kcors';
-// @ts-expect-error TS(2792): Cannot find module 'koa-qs'. Did you mean to set t... Remove this comment to see the full error message
 import koaQs from 'koa-qs';
 import { KoaAdapter } from '@bull-board/koa';
 // @ts-expect-error TS(2792): Cannot find module '@ezs/core'. Did you mean to se... Remove this comment to see the full error message
-
 import ezs from '@ezs/core';
-
 import controller from './controller';
 import testController from './controller/testController';
 import indexSearchableFields from './services/indexSearchableFields';
-
 import { createWorkerQueue, workerQueues } from './workers';
-
 import progress from './services/progress';
 // @ts-expect-error TS(2792): Cannot find module '@uswitch/koa-prometheus'. Did ... Remove this comment to see the full error message
 import Meter from '@uswitch/koa-prometheus';
@@ -44,6 +35,7 @@ ezs.settings.feed.timeout = Number(timeout) || 120000;
 // KoaQs use qs to parse query string. There is an default limit of 20 items in an array. Above this limit, qs will transform the array into an key/value object.
 // We need to increase this limit to 1000 to be able to handle the facets array in the query string.
 // https://github.com/ljharb/qs#parsing-arrays
+// @ts-expect-error The third argument of koaQs is not defined in the type definition, but it is supported.
 const app = koaQs(new Koa(), 'extended', { arrayLimit: 1000 });
 
 // Prometheus metrics
