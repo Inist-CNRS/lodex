@@ -92,6 +92,9 @@ export default defineConfig([
             ecmaVersion: 7,
             sourceType: 'module',
         },
+        settings: {
+            version: '17.0',
+        },
     },
     reactHooks.configs['recommended-latest'],
     {
