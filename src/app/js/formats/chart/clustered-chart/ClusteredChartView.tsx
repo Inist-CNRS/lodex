@@ -3,7 +3,6 @@ import React, { useMemo } from 'react';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-// @ts-expect-error TS7016
 import _ from 'lodash';
 import { Grid, Paper } from '@mui/material';
 
@@ -28,10 +27,8 @@ const ClusteredChartView = ({ data, colors, xTitle, yTitle, flipAxis }) => {
 
     const topics = useMemo(() => {
         return _.chain(values)
-            // @ts-expect-error TS7006
             .map((value) => flip(flipAxis, value.target, value.source))
             .uniq()
-            // @ts-expect-error TS7006
             .sort((a, b) =>
                 a.localeCompare(b, 'fr', {
                     sensitivity: 'accent',
@@ -41,7 +38,7 @@ const ClusteredChartView = ({ data, colors, xTitle, yTitle, flipAxis }) => {
                 }),
             )
             .value();
-    }, [values]);
+    }, [flipAxis, values]);
 
     return (
         <div style={{ margin: '12px' }}>
@@ -52,8 +49,6 @@ const ClusteredChartView = ({ data, colors, xTitle, yTitle, flipAxis }) => {
                     rowSpacing={1}
                     columnSpacing={1}
                 >
-                    {/*
-                     // @ts-expect-error TS7006 */}
                     {topics.map((topic) => (
                         <Grid key={topic} item xs={6}>
                             <Paper style={{ padding: '6px' }}>

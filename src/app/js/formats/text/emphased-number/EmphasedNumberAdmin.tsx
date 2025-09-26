@@ -81,11 +81,7 @@ class EmphasedNumberAdmin extends Component {
 
         return (
             <FormatGroupedFieldSet>
-                {/*
-                 // @ts-expect-error TS2322 */}
                 <FormatDataParamsFieldSet>
-                    {/*
-                     // @ts-expect-error TS2322 */}
                     <RoutineParamsAdmin
                         params={params || defaultArgs.params}
                         onChange={this.handleParams}
@@ -96,11 +92,7 @@ class EmphasedNumberAdmin extends Component {
                         showOrderBy={false}
                     />
                 </FormatDataParamsFieldSet>
-                {/*
-                 // @ts-expect-error TS2322 */}
                 <FormatDefaultParamsFieldSet defaultExpanded>
-                    {/*
-                     // @ts-expect-error TS2322 */}
                     <TextField
                         fullWidth
                         select
@@ -113,8 +105,6 @@ class EmphasedNumberAdmin extends Component {
                         <MenuItem value={3}>{polyglot.t('size3')}</MenuItem>
                         <MenuItem value={4}>{polyglot.t('size4')}</MenuItem>
                     </TextField>
-                    {/*
-                     // @ts-expect-error TS2322 */}
                     <ColorPickerParamsAdmin
                         // @ts-expect-error TS2339
                         colors={this.state.colors || defaultArgs.colors}

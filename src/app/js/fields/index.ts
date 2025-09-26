@@ -1,6 +1,4 @@
-// @ts-expect-error TS7016
 import omit from 'lodash/omit';
-// @ts-expect-error TS7016
 import uniq from 'lodash/uniq';
 // @ts-expect-error TS7016
 import { combineActions, createAction, handleActions } from 'redux-actions';
@@ -294,7 +292,7 @@ export default handleActions(
             CLOSE_EDIT_FIELD_VALUE,
             UPDATE_CHARACTERISTICS_SUCCESS,
             SAVE_RESOURCE_SUCCESS,
-        // @ts-expect-error TS7006
+            // @ts-expect-error TS7006
         )]: (state) => ({
             ...state,
             editedValueFieldName: null,
@@ -302,7 +300,7 @@ export default handleActions(
         [combineActions(
             ADD_CHARACTERISTIC_SUCCESS,
             ADD_FIELD_TO_RESOURCE_SUCCESS,
-        // @ts-expect-error TS7006
+            // @ts-expect-error TS7006
         )]: (state, { payload: { field } }) => ({
             ...state,
             list: uniq([...state.list, field.name]),

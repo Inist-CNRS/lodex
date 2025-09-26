@@ -131,11 +131,7 @@ class HierarchyAdmin extends Component {
 
         return (
             <FormatGroupedFieldSet>
-                {/*
-                 // @ts-expect-error TS2322 */}
                 <FormatDataParamsFieldSet>
-                    {/*
-                     // @ts-expect-error TS2322 */}
                     <RoutineParamsAdmin
                         params={params || defaultArgs.params}
                         polyglot={polyglot}
@@ -146,11 +142,7 @@ class HierarchyAdmin extends Component {
                         showOrderBy={showOrderBy}
                     />
                 </FormatDataParamsFieldSet>
-                {/*
-                 // @ts-expect-error TS2322 */}
                 <FormatChartParamsFieldSet defaultExpanded>
-                    {/*
-                     // @ts-expect-error TS2322 */}
                     <ColorPickerParamsAdmin
                         // @ts-expect-error TS2339
                         colors={this.state.colors || defaultArgs.colors}
@@ -158,8 +150,6 @@ class HierarchyAdmin extends Component {
                         polyglot={polyglot}
                         monochromatic={true}
                     />
-                    {/*
-                     // @ts-expect-error TS2322 */}
                     <TextField
                         label={polyglot.t('max_char_number_in_labels')}
                         onChange={this.handleMaxLabelLength}
@@ -167,8 +157,6 @@ class HierarchyAdmin extends Component {
                         value={this.props.args.params.maxLabelLength}
                         fullWidth
                     />
-                    {/*
-                     // @ts-expect-error TS2322 */}
                     <TextField
                         label={polyglot.t('label_offset')}
                         onChange={this.handleLabelOffset}
@@ -176,8 +164,6 @@ class HierarchyAdmin extends Component {
                         value={this.props.args.params.labelOffset}
                         fullWidth
                     />
-                    {/*
-                     // @ts-expect-error TS2322 */}
                     <TextField
                         label={polyglot.t('minimum_scale_value')}
                         onChange={this.handleMinimumScaleValue}

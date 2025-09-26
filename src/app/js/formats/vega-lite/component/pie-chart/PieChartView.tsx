@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import React, { useMemo, useState } from 'react';
-// @ts-expect-error TS7016
 import { clamp } from 'lodash';
 
 import PieChart from '../../models/PieChart';
@@ -156,7 +155,7 @@ export const PieChartAdminView = connect((state, props) => {
             values: props.dataset.values ?? [],
         },
     };
-// @ts-expect-error TS2345
+    // @ts-expect-error TS2345
 })(PieChartView);
 
 export default compose(injectData(), connect(mapStateToProps))(PieChartView);

@@ -4,7 +4,6 @@ import { translate } from '../../../i18n/I18NContext';
 // @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
-// @ts-expect-error TS7016
 import get from 'lodash/get';
 import URL from 'url';
 
@@ -46,9 +45,13 @@ LodexResourceView.defaultProps = {
 // @ts-expect-error TS7006
 const mapStateToProps = (state, { formatData = {} }) => {
     const {
+        // @ts-expect-error TS18048
         id = '',
+        // @ts-expect-error TS18048
         url = '',
+        // @ts-expect-error TS18048
         title = 'n/a',
+        // @ts-expect-error TS18048
         summary = '',
     } = get(formatData, 'items[0]', {});
     return {

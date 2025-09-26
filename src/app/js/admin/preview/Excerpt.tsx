@@ -8,7 +8,6 @@ import pure from 'recompose/pure';
 import withProps from 'recompose/withProps';
 // @ts-expect-error TS7016
 import withHandlers from 'recompose/withHandlers';
-// @ts-expect-error TS7016
 import memoize from 'lodash/memoize';
 import {
     Table,
@@ -34,7 +33,6 @@ const styles = {
     header: {
         cursor: 'pointer',
     },
-    // @ts-expect-error TS7006
     table: memoize((separated) => ({
         display: separated ? 'block' : 'table',
         overflowX: 'auto',
@@ -44,7 +42,6 @@ const styles = {
     })),
 };
 
-// @ts-expect-error TS7006
 const getColStyle = memoize((style) => ({ ...styles.header, ...style }));
 
 export const ExcerptComponent = ({
@@ -155,21 +152,25 @@ export default compose(
     withHandlers({
         onHeaderClick:
             // @ts-expect-error TS7031
-            ({ onHeaderClick }) =>
-            // @ts-expect-error TS7006
-            (col) => {
-                if (onHeaderClick) {
-                    onHeaderClick(col);
-                }
-            },
+
+
+                ({ onHeaderClick }) =>
+                // @ts-expect-error TS7006
+                (col) => {
+                    if (onHeaderClick) {
+                        onHeaderClick(col);
+                    }
+                },
         onCellClick:
             // @ts-expect-error TS7031
-            ({ onHeaderClick }) =>
-            // @ts-expect-error TS7006
-            (col) => {
-                if (onHeaderClick) {
-                    onHeaderClick(col);
-                }
-            },
+
+
+                ({ onHeaderClick }) =>
+                // @ts-expect-error TS7006
+                (col) => {
+                    if (onHeaderClick) {
+                        onHeaderClick(col);
+                    }
+                },
     }),
 )(ExcerptComponent);

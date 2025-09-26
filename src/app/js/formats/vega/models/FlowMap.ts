@@ -1,7 +1,6 @@
 // @ts-expect-error TS7016
 import { schemeBlues } from 'd3-scale-chromatic';
 import flowMapVG from './json/flow_map.vg.json';
-// @ts-expect-error TS7016
 import deepClone from 'lodash/cloneDeep';
 import BasicChartVG from './BasicChartVG';
 import { VEGA_ACTIONS_WIDTH } from '../../utils/chartsUtils';

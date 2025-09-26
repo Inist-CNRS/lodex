@@ -1,4 +1,3 @@
-// @ts-expect-error TS7016
 import compose from 'lodash/flowRight';
 // @ts-expect-error TS7016
 import qs from 'qs';
@@ -12,17 +11,19 @@ export const addLiteralToLiteral =
 
 export const addKeyToLiteral =
     // @ts-expect-error TS7006
-    (key, value) =>
-    (literal = {}) => {
-        if (!value) {
-            return literal;
-        }
 
-        return {
-            ...literal,
-            [key]: value,
+
+        (key, value) =>
+        (literal = {}) => {
+            if (!value) {
+                return literal;
+            }
+
+            return {
+                ...literal,
+                [key]: value,
+            };
         };
-    };
 
 export default ({
     // @ts-expect-error TS2525

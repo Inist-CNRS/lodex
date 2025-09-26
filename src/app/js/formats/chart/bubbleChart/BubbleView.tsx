@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 // @ts-expect-error TS7016
 import { pack, hierarchy } from 'd3-hierarchy';
-// @ts-expect-error TS7016
 import memoize from 'lodash/memoize';
 
 import injectData from '../../injectData';
@@ -14,7 +13,6 @@ import { getColor } from '../../utils/colorUtils';
 import FormatFullScreenMode from '../../utils/components/FormatFullScreenMode';
 
 const styles = {
-    // @ts-expect-error TS7031
     container: memoize(({ diameter }) => ({
         position: 'relative',
         width: diameter,
@@ -26,6 +24,8 @@ const styles = {
 // @ts-expect-error TS7031
 export const BubbleView = ({ data, diameter, colorSet }) => (
     <FormatFullScreenMode>
+        {/* 
+        // @ts-expect-error TS7006 */}
         <div style={styles.container({ diameter })}>
             {/*
              // @ts-expect-error TS7031 */}

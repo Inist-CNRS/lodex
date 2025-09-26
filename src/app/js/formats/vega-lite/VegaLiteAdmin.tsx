@@ -67,11 +67,7 @@ const VegaLiteAdmin = (props) => {
 
     return (
         <FormatGroupedFieldSet>
-            {/*
-             // @ts-expect-error TS2322 */}
             <FormatDataParamsFieldSet>
-                {/*
-                 // @ts-expect-error TS2322 */}
                 <RoutineParamsAdmin
                     params={params || defaultArgs.params}
                     polyglot={p}
@@ -82,24 +78,16 @@ const VegaLiteAdmin = (props) => {
                     showOrderBy={showOrderBy}
                 />
             </FormatDataParamsFieldSet>
-            {/*
-             // @ts-expect-error TS2322 */}
             <FormatChartParamsFieldSet defaultExpanded>
-                {/*
-                 // @ts-expect-error TS2322 */}
                 <VegaAdvancedMode
                     value={formattedSpecTemplate}
                     onChange={handleSpecTemplate}
                 />
-                {/*
-                 // @ts-expect-error TS2322 */}
                 <AspectRatioSelector
                     value={aspectRatio}
                     onChange={handleAspectRatio}
                 />
             </FormatChartParamsFieldSet>
-            {/*
-             // @ts-expect-error TS2322 */}
             <VegaFieldPreview
                 args={args}
                 PreviewComponent={VegaLiteAdminView}

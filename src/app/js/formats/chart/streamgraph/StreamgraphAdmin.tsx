@@ -99,11 +99,7 @@ class StreamgraphAdmin extends Component {
 
         return (
             <FormatGroupedFieldSet>
-                {/*
-                 // @ts-expect-error TS2322 */}
                 <FormatDataParamsFieldSet>
-                    {/*
-                     // @ts-expect-error TS2322 */}
                     <RoutineParamsAdmin
                         params={params || defaultArgs.params}
                         polyglot={polyglot}
@@ -114,27 +110,19 @@ class StreamgraphAdmin extends Component {
                         showOrderBy={showOrderBy}
                     />
                 </FormatDataParamsFieldSet>
-                {/*
-                 // @ts-expect-error TS2322 */}
                 <FormatChartParamsFieldSet defaultExpanded>
-                    {/*
-                     // @ts-expect-error TS2322 */}
                     <ColorPickerParamsAdmin
                         // @ts-expect-error TS2339
                         colors={this.state.colors}
                         onChange={this.handleColors}
                         polyglot={polyglot}
                     />
-                    {/*
-                     // @ts-expect-error TS2322 */}
                     <TextField
                         label={polyglot.t('max_char_number_in_legends')}
                         onChange={this.handleMaxLegendLength}
                         value={maxLegendLength}
                         fullWidth
                     />
-                    {/*
-                     // @ts-expect-error TS2322 */}
                     <TextField
                         label={polyglot.t('height_px')}
                         onChange={this.handleHeight}

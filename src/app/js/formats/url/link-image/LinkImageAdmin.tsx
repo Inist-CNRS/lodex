@@ -65,11 +65,7 @@ class LinkImageAdmin extends Component {
 
         return (
             <FormatGroupedFieldSet>
-                {/*
-                 // @ts-expect-error TS2322 */}
                 <FormatDataParamsFieldSet>
-                    {/*
-                     // @ts-expect-error TS2322 */}
                     <TextField
                         fullWidth
                         select
@@ -85,11 +81,7 @@ class LinkImageAdmin extends Component {
                         </MenuItem>
                     </TextField>
                 </FormatDataParamsFieldSet>
-                {/*
-                 // @ts-expect-error TS2322 */}
                 <FormatDefaultParamsFieldSet defaultExpanded>
-                    {/*
-                     // @ts-expect-error TS2322 */}
                     <TextField
                         label={
                             type !== 'text'
@@ -100,8 +92,6 @@ class LinkImageAdmin extends Component {
                         value={value}
                         sx={{ flexGrow: 1 }}
                     />
-                    {/*
-                     // @ts-expect-error TS2322 */}
                     <TextField
                         label={polyglot.t('height_px')}
                         type="number"

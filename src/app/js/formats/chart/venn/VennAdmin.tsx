@@ -47,11 +47,7 @@ const VennAdmin = ({
 
     return (
         <FormatGroupedFieldSet>
-            {/*
-             // @ts-expect-error TS2322 */}
             <FormatDataParamsFieldSet>
-                {/*
-                 // @ts-expect-error TS2322 */}
                 <RoutineParamsAdmin
                     // @ts-expect-error TS2739
                     params={args.params || defaultArgs.params}
@@ -63,11 +59,7 @@ const VennAdmin = ({
                     showOrderBy={showOrderBy}
                 />
             </FormatDataParamsFieldSet>
-            {/*
-             // @ts-expect-error TS2322 */}
             <FormatChartParamsFieldSet defaultExpanded>
-                {/*
-                 // @ts-expect-error TS2322 */}
                 <ColorPickerParamsAdmin
                     colors={colors}
                     onChange={handleColors}

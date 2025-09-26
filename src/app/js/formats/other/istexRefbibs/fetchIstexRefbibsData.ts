@@ -1,4 +1,3 @@
-// @ts-expect-error TS7016
 import get from 'lodash/get';
 
 import fetch from '../../../lib/fetch';
@@ -30,7 +29,7 @@ export const getUrl = ({ props: { resource, field } }) => {
 
 // @ts-expect-error TS7006
 const getOpenurlQuery = (article) => {
-    let queryParams = ['noredirect'];
+    const queryParams = ['noredirect'];
 
     if (article.doi) queryParams.push('rft_id=info:doi/' + article.doi);
     else if (article.pii) queryParams.push('rft_id=info:pii/' + article.pii);
@@ -115,13 +114,13 @@ const parseFetchResult = (fetchResult) => {
     } = fetchResult;
     const buckets = get(aggregations, ['refBibs.title', 'buckets'], []);
     // @ts-expect-error TS7034
-    let istexArticles = [];
+    const istexArticles = [];
     // @ts-expect-error TS7034
-    let fetchPromises = [];
+    const fetchPromises = [];
 
     // @ts-expect-error TS7006
     buckets.forEach((bucket) => {
-        let refbibsArticle = get(bucket, [
+        const refbibsArticle = get(bucket, [
             'topHits',
             'hits',
             'hits',
@@ -169,8 +168,8 @@ const parseFetchResult = (fetchResult) => {
                     title: istexArticle.title,
                     publicationDate: istexArticle.publicationDate,
                     authors: istexArticle.author
-                        // @ts-expect-error TS7031
-                        ? istexArticle.author.map(({ name }) => name)
+                        ? // @ts-expect-error TS7031
+                          istexArticle.author.map(({ name }) => name)
                         : '',
                     hostGenre: istexArticle.host.genre[0],
                     hostTitle: istexArticle.host.title,
