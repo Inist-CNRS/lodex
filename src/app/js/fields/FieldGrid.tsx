@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 // @ts-expect-error TS7016
 import GridLayout from 'react-grid-layout';
+// @ts-expect-error TS7016
 import 'react-grid-layout/css/styles.css';
 import { connect } from 'react-redux';
 import { useMeasure } from 'react-use';

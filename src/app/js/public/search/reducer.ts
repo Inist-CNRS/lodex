@@ -1,4 +1,3 @@
-// @ts-expect-error TS7016
 import { combineActions, createAction, handleActions } from 'redux-actions';
 
 import { createGlobalSelectors } from '../../lib/selectors';
@@ -115,12 +114,15 @@ export const defaultState = {
     page: null,
     total: 0,
     query: null,
+    // @ts-expect-error TS7006
     facet: facetReducer(undefined, {}),
     filters: {},
 };
 
+// @ts-expect-error TS7006
 export default handleActions(
     {
+        // @ts-expect-error TS7006
         [combineActions(...Object.values(facetActionTypes))]: (
             // @ts-expect-error TS7006
             state,
@@ -130,7 +132,6 @@ export default handleActions(
             ...state,
             facet: facetReducer(state.facet, action),
         }),
-        // @ts-expect-error TS7006
         [SEARCH]: (state, { payload }) => ({
             ...state,
             dataset: [],
@@ -216,13 +217,14 @@ export default handleActions(
             };
         },
         [SEARCH_NEW_RESOURCE_ANNOTATED]: (
-            // @ts-expect-error TS7006
             state,
             // @ts-expect-error TS7031
             { payload: { resourceUri } },
         ) => {
             if (
+                // @ts-expect-error TS7006
                 state.filters?.resourceUrisWithAnnotation &&
+                // @ts-expect-error TS7006
                 !state.filters?.resourceUrisWithAnnotation.includes(resourceUri)
             ) {
                 return {
@@ -230,6 +232,7 @@ export default handleActions(
                     filters: {
                         ...state.filters,
                         resourceUrisWithAnnotation:
+                            // @ts-expect-error TS7006
                             state.filters.resourceUrisWithAnnotation.concat(
                                 resourceUri,
                             ),
@@ -265,6 +268,7 @@ export default handleActions(
                 },
             };
         },
+        // @ts-expect-error TS7006
         [combineActions(SEARCH_RESULTS, SEARCH_ERROR)]: (
             // @ts-expect-error TS7006
             state,
@@ -279,11 +283,11 @@ export default handleActions(
             fullTotal: payload.fullTotal || 0,
             fields: payload.fields || state.fields,
         }),
-        // @ts-expect-error TS7006
         [SEARCH_LOAD_MORE]: (state) => ({
             ...state,
             loading: true,
         }),
+        // @ts-expect-error TS7006
         [combineActions(SEARCH_LOAD_MORE_SUCCESS, SEARCH_LOAD_MORE_ERROR)]: (
             // @ts-expect-error TS7006
             state,

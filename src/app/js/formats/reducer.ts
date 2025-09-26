@@ -1,4 +1,3 @@
-// @ts-expect-error TS7016
 import { createAction, handleActions } from 'redux-actions';
 import get from 'lodash/get';
 import { LOAD_RESOURCE_SUCCESS } from '../public/resource';
@@ -25,7 +24,6 @@ export default handleActions(
             [field.name]: 'loading',
         }),
         [LOAD_FORMAT_DATA_SUCCESS]: (
-            // @ts-expect-error TS7006
             state,
             // @ts-expect-error TS7031
             { payload: { name, data, total } },
@@ -33,9 +31,9 @@ export default handleActions(
             ...state,
             [name]: { data, total },
         }),
-        // @ts-expect-error TS7006
         [LOAD_RESOURCE_SUCCESS]: (state, { payload }) => ({
             ...state,
+            // @ts-expect-error TS7006
             ...(payload && payload.prefetchedData),
         }),
         // @ts-expect-error TS7006

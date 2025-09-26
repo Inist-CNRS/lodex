@@ -1,8 +1,11 @@
+// @ts-expect-error TS6133
 import React from 'react';
 import PropTypes from 'prop-types';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import MarkerClusterGroup from 'react-leaflet-markercluster'; // see vite.config.js
+// @ts-expect-error TS7016
 import 'leaflet/dist/leaflet.css';
+// @ts-expect-error TS7016
 import './react-leaflet-markercluster.min.css';
 // @ts-expect-error TS7016
 import L from 'leaflet';

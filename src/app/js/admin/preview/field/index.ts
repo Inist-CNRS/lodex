@@ -1,4 +1,3 @@
-// @ts-expect-error TS7016
 import { createAction, combineActions, handleActions } from 'redux-actions';
 
 import { actionTypes } from 'redux-form';
@@ -31,6 +30,7 @@ export const defaultState = {
 
 export default handleActions(
     {
+        // @ts-expect-error TS2464
         [combineActions(
             REDUX_FORM_CHANGE,
             REDUX_FORM_ARRAY_INSERT,
@@ -40,7 +40,7 @@ export default handleActions(
             REDUX_FORM_ARRAY_SPLICE,
             REDUX_FORM_REGISTER_FIELD,
             REDUX_FORM_UNREGISTER_FIELD,
-        // @ts-expect-error TS7006
+            // @ts-expect-error TS7006
         )]: (state) => ({ ...state, isComputing: true }),
         // @ts-expect-error TS7006
         COMPUTE_FIELD_PREVIEW_SUCCESS: (state, { payload: resources }) => ({

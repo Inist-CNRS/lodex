@@ -1,4 +1,3 @@
-// @ts-expect-error TS7016
 import { combineActions, createAction, handleActions } from 'redux-actions';
 
 import { SAVE_FIELD_SUCCESS, SAVE_FIELD_ERROR } from '../../fields';
@@ -18,21 +17,19 @@ export const defaultState = {
 
 export default handleActions(
     {
-        // @ts-expect-error TS7006
         PUBLISH: (state) => ({
             ...state,
             error: null,
             loading: true,
         }),
-        // @ts-expect-error TS7006
         PUBLISH_SUCCESS: (state) => ({
             ...state,
             error: null,
             loading: false,
         }),
-        // @ts-expect-error TS7006
         PUBLISH_ERROR: (state, { payload: error }) => ({
             ...state,
+            // @ts-expect-error TS2339
             error: error.message || error,
             loading: false,
         }),

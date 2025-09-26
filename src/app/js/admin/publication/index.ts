@@ -1,4 +1,3 @@
-// @ts-expect-error TS7016
 import { createAction, handleActions } from 'redux-actions';
 
 export const LOAD_PUBLICATION = 'LOAD_PUBLICATION';
@@ -25,7 +24,6 @@ export const defaultState = {
 
 export default handleActions(
     {
-        // @ts-expect-error TS7006
         LOAD_PUBLICATION: (state) => ({
             ...state,
             initialized: true,
@@ -33,9 +31,7 @@ export default handleActions(
             loading: true,
         }),
         LOAD_PUBLICATION_SUCCESS: (
-            // @ts-expect-error TS7006
             state,
-            // @ts-expect-error TS7031
             { payload: { fields, published } },
         ) => ({
             ...state,
@@ -44,18 +40,16 @@ export default handleActions(
             fields,
             published,
         }),
-        // @ts-expect-error TS7006
         LOAD_PUBLICATION_ERROR: (state, { payload: error }) => ({
             ...state,
+            // @ts-expect-error TS7031
             error: error.message,
             loading: false,
         }),
-        // @ts-expect-error TS7006
         SELECT_FIELD: (state, { payload: name }) => ({
             ...state,
             selectedField: name,
         }),
-        // @ts-expect-error TS7006
         PUBLICATION_CLEARED: (state) => ({
             ...state,
             published: false,

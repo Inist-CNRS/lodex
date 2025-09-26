@@ -25,6 +25,7 @@ import { SCOPE_DOCUMENT } from '../../../common/scope';
 
 describe('field reducer', () => {
     it('should initialize with correct state', () => {
+        // @ts-expect-error TS2345
         const state = reducer(undefined, { type: '@@INIT' });
         expect(state).toEqual(defaultState);
     });
@@ -37,6 +38,7 @@ describe('field reducer', () => {
                         name1: { name: 'name1', label: 'foo' },
                         name2: { name: 'name2', label: 'bar' },
                     },
+                    // @ts-expect-error TS2322
                     list: ['name1', 'name2'],
                 },
                 addField({ name: undefined, scope: SCOPE_DOCUMENT }),
@@ -70,6 +72,7 @@ describe('field reducer', () => {
                         name1: { name: 'name1', label: 'foo' },
                         name2: { name: 'name2', label: 'bar' },
                     },
+                    // @ts-expect-error TS2322
                     list: ['name1', 'name2'],
                 },
                 addField({ name: 'target_col', scope: SCOPE_DOCUMENT }),
@@ -113,6 +116,7 @@ describe('field reducer', () => {
                         name1: { name: 'name1', label: 'foo' },
                         name2: { name: 'name2', label: 'bar' },
                     },
+                    // @ts-expect-error TS2322
                     list: ['name1', 'name2'],
                 },
                 addField({
@@ -150,6 +154,7 @@ describe('field reducer', () => {
                         name1: { name: 'name1', label: 'foo' },
                         name2: { name: 'name2', label: 'bar' },
                     },
+                    // @ts-expect-error TS2322
                     list: ['name1', 'name2'],
                 },
                 addField({
@@ -220,6 +225,7 @@ describe('field reducer', () => {
                 published: true,
             });
             const state = reducer(
+                // @ts-expect-error TS2353
                 { loading: true, error: true, published: false, byName: {} },
                 action,
             );
@@ -248,6 +254,7 @@ describe('field reducer', () => {
             const state = reducer(
                 {
                     loading: true,
+                    // @ts-expect-error TS2353
                     error: true,
                     published: false,
                     byName: { new: { name: 'foo', value: 'bar' } },
@@ -276,6 +283,7 @@ describe('field reducer', () => {
 
         it('should handle the LOAD_PUBLICATION_ERROR action', () => {
             const state = reducer(
+                // @ts-expect-error TS2345
                 { loading: true },
                 loadPublicationError(new Error('foo')),
             );
@@ -287,6 +295,7 @@ describe('field reducer', () => {
 
         it('should handle the SELECT_FIELD action', () => {
             const state = reducer(
+                // @ts-expect-error TS2353
                 { data: 'value' },
                 selectField('selectedFieldName'),
             );
@@ -297,6 +306,7 @@ describe('field reducer', () => {
         });
 
         it('should handle the CONFIGURE_FIELD action', () => {
+            // @ts-expect-error TS2353
             const state = reducer({ data: 'value' }, configureField());
             expect(state).toEqual({
                 data: 'value',
@@ -308,6 +318,7 @@ describe('field reducer', () => {
 
         it('should handle the CONFIGURE_FIELD_SUCCESS action', () => {
             const state = reducer(
+                // @ts-expect-error TS2353
                 { data: 'value', byName: {} },
                 configureFieldSuccess({
                     field: { name: 'name', data: 'updated' },
@@ -327,6 +338,7 @@ describe('field reducer', () => {
 
         it('should handle the CONFIGURE_FIELD_ERROR action', () => {
             const state = reducer(
+                // @ts-expect-error TS2353
                 { data: 'value' },
                 configureFieldError({ message: 'Boom' }),
             );
@@ -339,6 +351,7 @@ describe('field reducer', () => {
 
         it('should handle the CONFIGURE_FIELD_OPEN action', () => {
             const state = reducer(
+                // @ts-expect-error TS2353
                 { data: 'value' },
                 configureFieldOpen('fieldName'),
             );
@@ -350,6 +363,7 @@ describe('field reducer', () => {
         });
 
         it('should handle the CONFIGURE_FIELD_CANCEL action', () => {
+            // @ts-expect-error TS2353
             const state = reducer({ data: 'value' }, configureFieldCancel());
             expect(state).toEqual({
                 invalidProperties: [],
@@ -361,6 +375,7 @@ describe('field reducer', () => {
 
         it('should handle the OPEN_FIELD_VALUE action', () => {
             const state = reducer(
+                // @ts-expect-error TS2353
                 { data: 'value' },
                 openEditFieldValue('fieldName'),
             );
@@ -373,6 +388,7 @@ describe('field reducer', () => {
 
         it('should handle the CLOSE_EDIT_FIELD_VALUE action', () => {
             const state = reducer(
+                // @ts-expect-error TS2353
                 { data: 'value' },
                 closeEditFieldValue('fieldName'),
             );
@@ -391,6 +407,7 @@ describe('field reducer', () => {
 
         it('should handle the LOAD_FIELD_SUCCESS action', () => {
             const state = reducer(
+                // @ts-expect-error TS2322
                 { ...defaultState, list: ['foo'] },
                 loadFieldSuccess([
                     { name: 'bar_name', foo: 'bar' },
@@ -412,6 +429,7 @@ describe('field reducer', () => {
         it('should handle the REMOVE_FIELD_SUCCESS action', () => {
             const state = reducer(
                 {
+                    // @ts-expect-error TS2322
                     list: ['bar', 'foo'],
                     byName: {
                         bar: { name: 'bar' },
@@ -438,6 +456,7 @@ describe('field reducer', () => {
                             byName: {
                                 field: 'data',
                             },
+                            // @ts-expect-error TS2322
                             list: ['field'],
                         },
                         action({ field: { name: 'newField', data: 'data' } }),
@@ -468,6 +487,7 @@ describe('field reducer', () => {
                             byName: {
                                 field: { data: 'data' },
                             },
+                            // @ts-expect-error TS2322
                             list: ['field'],
                         },
                         action({
@@ -495,6 +515,7 @@ describe('field reducer', () => {
     describe('fieldInvalid', () => {
         it('should pass invalidProperties to state and set isSaving to false', () => {
             const state = reducer(
+                // @ts-expect-error TS2353
                 { foo: 'bar' },
                 fieldInvalid({ invalidProperties: 'invalid properties' }),
             );
@@ -510,6 +531,7 @@ describe('field reducer', () => {
     describe('CHANGE_POSITION_VALUE', () => {
         const state = reducer(
             {
+                // @ts-expect-error TS2353
                 foo: 'bar',
                 byName: {
                     a: { position: 1 },

@@ -1,4 +1,3 @@
-// @ts-expect-error TS7016
 import { createAction } from 'redux-actions';
 
 export const EXPORT_FIELDS = 'EXPORT_FIELDS';
