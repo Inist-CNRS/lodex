@@ -1,10 +1,12 @@
 import React from 'react';
+// @ts-expect-error TS7016
 import { shallow } from 'enzyme';
 import { RedirectView, RedirectViewLoader } from './RedirectView';
 
 describe('<RedirectView />', () => {
     it('should render nothing if there is no field', () => {
         const className = 'redirect';
+        // @ts-expect-error TS7006
         const p = { t: (x) => x };
         const resource = { covfefe: 'http://example.com' };
         const field = {};
@@ -12,6 +14,7 @@ describe('<RedirectView />', () => {
         const wrapper = shallow(
             <RedirectView
                 className={className}
+                // @ts-expect-error TS2322
                 p={p}
                 resource={resource}
                 field={field}
@@ -23,6 +26,7 @@ describe('<RedirectView />', () => {
 
     it('should render nothing if there is no resource', () => {
         const className = 'redirect';
+        // @ts-expect-error TS7006
         const p = { t: (x) => x };
         const resource = {};
         const field = { name: 'covfefe' };
@@ -30,6 +34,7 @@ describe('<RedirectView />', () => {
         const wrapper = shallow(
             <RedirectView
                 className={className}
+                // @ts-expect-error TS2322
                 p={p}
                 resource={resource}
                 field={field}
@@ -42,6 +47,7 @@ describe('<RedirectView />', () => {
     it('should render a <RedirectViewLoader />', () => {
         const className = 'redirect';
         const classes = {};
+        // @ts-expect-error TS7006
         const p = { t: (x) => x };
         const resource = { foo: 'http://example.com' };
         const field = { name: 'foo' };
@@ -50,6 +56,7 @@ describe('<RedirectView />', () => {
             <RedirectView
                 className={className}
                 classes={classes}
+                // @ts-expect-error TS2322
                 p={p}
                 resource={resource}
                 field={field}

@@ -1,4 +1,5 @@
 import React from 'react';
+// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import PropTypes from 'prop-types';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
@@ -6,11 +7,15 @@ import { Box, TextField } from '@mui/material';
 import { translate } from '../../i18n/I18NContext';
 
 const SourceValueArbitrary = ({
+    // @ts-expect-error TS7031
     updateDefaultValueTransformers,
+    // @ts-expect-error TS7031
     value,
+    // @ts-expect-error TS7031
     p: polyglot,
 }) => {
     const [valueInput, setValueInput] = React.useState(value || '');
+    // @ts-expect-error TS7006
     const handleChange = (event) => {
         setValueInput(event.target.value);
         const transformers = [

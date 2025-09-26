@@ -1,3 +1,4 @@
+// @ts-expect-error TS7016
 import { createAction, handleActions } from 'redux-actions';
 
 export const LOAD_MENU = 'LOAD_MENU';
@@ -16,7 +17,9 @@ export const initialState = {
 export default handleActions(
     {
         [LOAD_MENU_SUCCESS]: (
+            // @ts-expect-error TS7006
             state,
+            // @ts-expect-error TS7031
             { payload: { leftMenu, rightMenu, advancedMenu, customRoutes } },
         ) => ({
             ...state,
@@ -26,6 +29,7 @@ export default handleActions(
             customRoutes,
             error: null,
         }),
+        // @ts-expect-error TS7006
         [LOAD_MENU_ERROR]: (state, { payload: { error } }) => ({
             ...state,
             error,
@@ -34,12 +38,18 @@ export default handleActions(
     initialState,
 );
 
+// @ts-expect-error TS7006
 export const hasMenu = (state) => state;
 
+// @ts-expect-error TS7006
 const getLeftMenu = (state) => state.leftMenu;
+// @ts-expect-error TS7006
 const getRightMenu = (state) => state.rightMenu;
+// @ts-expect-error TS7006
 const getAdvancedMenu = (state) => state.advancedMenu;
+// @ts-expect-error TS7006
 const getCustomRoutes = (state) => state.customRoutes;
+// @ts-expect-error TS7006
 const getAdvancedMenuButton = (state) => state.advancedMenuButton;
 
 export const fromMenu = {

@@ -8,10 +8,13 @@ import {
 } from './AnnotationList';
 import { MODE_ALL } from './HistoryDrawer.const';
 
+// @ts-expect-error TS7031
 function TestAnnotationList({ field, annotations }) {
     const [mode, setMode] = React.useState(MODE_ALL);
     return (
         <TestI18N>
+            {/*
+             // @ts-expect-error TS2322 */}
             <AnnotationList
                 mode={mode}
                 setMode={setMode}
@@ -195,14 +198,17 @@ describe('AnnotationList', () => {
 
     describe('getAnnotationTitle', () => {
         it('should return null when receiving no annotation', () => {
+            // @ts-expect-error TS7006
             expect(getAnnotationTitle(null, (v) => v)).toBeNull();
         });
 
         it('should return the "annotation_home_page" when the annotation target the home page', () => {
+            // @ts-expect-error TS7006
             expect(getAnnotationTitle({ resourceUri: '/' }, (v) => v)).toBe(
                 'annotation_home_page',
             );
 
+            // @ts-expect-error TS7006
             expect(getAnnotationTitle({ resourceUri: null }, (v) => v)).toBe(
                 'annotation_home_page',
             );
@@ -212,6 +218,7 @@ describe('AnnotationList', () => {
             expect(
                 getAnnotationTitle(
                     { resourceUri: 'resourceUri', resource: null },
+                    // @ts-expect-error TS7006
                     (v) => v,
                 ),
             ).toBe('annotation_resource_not_found');
@@ -220,10 +227,12 @@ describe('AnnotationList', () => {
             expect(
                 getAnnotationTitle(
                     { field: { name: 'gaVf', scope: 'graphic' } },
+                    // @ts-expect-error TS7006
                     (v) => v,
                 ),
             ).toBe('annotation_graph_page');
             expect(
+                // @ts-expect-error TS7006
                 getAnnotationTitle({ resourceUri: '/graph/gaVf' }, (v) => v),
             ).toBe('annotation_graph_page');
         });
@@ -235,6 +244,7 @@ describe('AnnotationList', () => {
                         resource: { title: 'resourceTitle', uri: 'uri' },
                         resourceUri: 'uri',
                     },
+                    // @ts-expect-error TS7006
                     (v) => v,
                 ),
             ).toBe('resourceTitle');

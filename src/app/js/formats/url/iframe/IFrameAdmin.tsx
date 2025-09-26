@@ -16,18 +16,22 @@ export const defaultArgs = {
 
 const IFrameAdmin = ({
     args = defaultArgs,
+    // @ts-expect-error TS7031
     onChange,
+    // @ts-expect-error TS7031
     p: polyglot,
 }) => {
     const [viewWidth, setViewWidth] = useState(args.viewWidth || defaultArgs.viewWidth);
     const [aspectRatio, setAspectRatio] = useState(args.aspectRatio || defaultArgs.aspectRatio);
 
+    // @ts-expect-error TS7006
     const handleViewWidth = (event) => {
         const newViewWidth = event.target.value;
         updateAdminArgs('viewWidth', newViewWidth, { args, onChange });
         setViewWidth(newViewWidth);
     };
 
+    // @ts-expect-error TS7006
     const handleAspectRatio = (newAspectRatio) => {
         updateAdminArgs('aspectRatio', newAspectRatio, { args, onChange });
         setAspectRatio(newAspectRatio);
@@ -35,7 +39,11 @@ const IFrameAdmin = ({
 
     return (
         <FormatGroupedFieldSet>
+            {/*
+             // @ts-expect-error TS2322 */}
             <FormatDefaultParamsFieldSet defaultExpanded>
+                {/*
+                 // @ts-expect-error TS2322 */}
                 <TextField
                     fullWidth
                     select
@@ -50,6 +58,8 @@ const IFrameAdmin = ({
                     <MenuItem value="80%">{polyglot.t('eighty_percent')}</MenuItem>
                     <MenuItem value="100%">{polyglot.t('hundred_percent')}</MenuItem>
                 </TextField>
+                {/*
+                 // @ts-expect-error TS2322 */}
                 <AspectRatioSelector
                     value={aspectRatio}
                     onChange={handleAspectRatio}

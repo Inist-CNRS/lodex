@@ -5,8 +5,11 @@ class BasicChart {
      * Init all required parameters
      */
     constructor() {
+        // @ts-expect-error TS2339
         this.editMode = false;
+        // @ts-expect-error TS2339
         this.colors = MULTICHROMATIC_DEFAULT_COLORSET.split(' ');
+        // @ts-expect-error TS2339
         this.tooltip = {
             toggle: false,
             category: {
@@ -22,7 +25,9 @@ class BasicChart {
         };
     }
 
+    // @ts-expect-error TS7006
     setEditMode(bool) {
+        // @ts-expect-error TS2339
         this.editMode = bool;
     }
 
@@ -30,7 +35,9 @@ class BasicChart {
      * Set the status of the tooltip (display or not)
      * @param bool new status
      */
+    // @ts-expect-error TS7006
     setTooltip(bool) {
+        // @ts-expect-error TS2339
         this.tooltip.toggle = bool;
     }
 
@@ -38,7 +45,9 @@ class BasicChart {
      * Set the display name of the category
      * @param title new name
      */
+    // @ts-expect-error TS7006
     setTooltipCategory(title) {
+        // @ts-expect-error TS2339
         this.tooltip.category.title = title;
     }
 
@@ -46,7 +55,9 @@ class BasicChart {
      * Set the display name of the value
      * @param title new name
      */
+    // @ts-expect-error TS7006
     setTooltipValue(title) {
+        // @ts-expect-error TS2339
         this.tooltip.value.title = title;
     }
 
@@ -54,7 +65,9 @@ class BasicChart {
      * Change/Update the default colors
      * @param colors can only be a string with html color code [default value: MULTICHROMATIC_DEFAULT_COLORSET]
      */
+    // @ts-expect-error TS7006
     setColor(colors) {
+        // @ts-expect-error TS2339
         this.colors = colors.split(' ');
     }
 
@@ -63,6 +76,7 @@ class BasicChart {
      * @param widthIn
      */
     // eslint-disable-next-line no-unused-vars
+    // @ts-expect-error TS7006
     buildSpec(widthIn) {
         throw new Error("The builder can't be use at the state");
     }

@@ -1,6 +1,7 @@
 import * as React from 'react';
 import ArbitraryIcon from '@mui/icons-material/FormatQuote';
 import RoutineIcon from '@mui/icons-material/AccountTree';
+// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import FromColumnsIcon from '@mui/icons-material/ViewColumn';
 import FromSubRessourceIcon from '@mui/icons-material/DocumentScanner';
@@ -12,6 +13,7 @@ import SourceValueFromColumns from './SourceValueFromColumns';
 import SourceValueFromColumnsForSubResource from './SourceValueFromColumnsForSubResource';
 
 import { connect } from 'react-redux';
+// @ts-expect-error TS7016
 import { change, formValueSelector } from 'redux-form';
 import { FIELD_FORM_NAME } from '..';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
@@ -118,6 +120,7 @@ const TRANSFORMERS_FORM_STATUS = new Map([
 ]);
 
 export const GET_SOURCE_VALUE_FROM_TRANSFORMERS = (
+    // @ts-expect-error TS7006
     transformers,
     isSubresourceField = false,
 ) => {
@@ -126,6 +129,7 @@ export const GET_SOURCE_VALUE_FROM_TRANSFORMERS = (
     }
 
     const transformersOperations = transformers
+        // @ts-expect-error TS7006
         .map((t) => t.operation)
         .join('|');
 
@@ -187,6 +191,7 @@ export const GET_SOURCE_VALUE_FROM_TRANSFORMERS = (
             source: 'fromColumns',
             value:
                 transformers[0]?.args &&
+                // @ts-expect-error TS7031
                 transformers[0]?.args.map(({ value }) => value || ''),
         },
     };
@@ -194,6 +199,7 @@ export const GET_SOURCE_VALUE_FROM_TRANSFORMERS = (
     const { operation } = transformers[0];
 
     return operation in sourceValues
+        // @ts-expect-error TS7053
         ? sourceValues[operation]
         : { source: null, value: null };
 };
@@ -216,11 +222,17 @@ const ToggleButton = styled(MuiToggleButton)(() => ({
 }));
 
 export const SourceValueToggle = ({
+    // @ts-expect-error TS7031
     arbitraryMode,
+    // @ts-expect-error TS7031
     currentTransformers,
+    // @ts-expect-error TS7031
     updateTransformers,
+    // @ts-expect-error TS7031
     p: polyglot,
+    // @ts-expect-error TS7031
     selectedSubresourceUri,
+    // @ts-expect-error TS7031
     subresources,
 }) => {
     const [source, setSource] = React.useState(null);
@@ -243,8 +255,11 @@ export const SourceValueToggle = ({
     }, [currentTransformers]);
 
     const updateDefaultValueTransformers = (
+        // @ts-expect-error TS7006
         currentSource,
+        // @ts-expect-error TS7006
         currentTransformers,
+        // @ts-expect-error TS7006
         newTransformers,
     ) => {
         let defaultTransformersLength = 0;
@@ -268,6 +283,7 @@ export const SourceValueToggle = ({
         updateTransformers([...newTransformers, ...nonDefaultTransformers]);
     };
 
+    // @ts-expect-error TS7006
     const handleChange = (event, newSource) => {
         if (!newSource) {
             return;
@@ -398,6 +414,7 @@ export const SourceValueToggle = ({
                 {!selectedSubresourceUri && (
                     <ToggleButton
                         value="fromSubresource"
+                        // @ts-expect-error TS2365
                         disabled={!subresources.length > 0 || arbitraryMode}
                     >
                         <FromSubRessourceIcon style={{ fontSize: 50 }} />
@@ -410,6 +427,7 @@ export const SourceValueToggle = ({
 
             {source === 'arbitrary' && (
                 <SourceValueArbitrary
+                    // @ts-expect-error TS7006
                     updateDefaultValueTransformers={(newTransformers) =>
                         updateDefaultValueTransformers(
                             source,
@@ -423,6 +441,7 @@ export const SourceValueToggle = ({
 
             {source === 'routine' && (
                 <SourceValueRoutine
+                    // @ts-expect-error TS7006
                     updateDefaultValueTransformers={(newTransformers) =>
                         updateDefaultValueTransformers(
                             source,
@@ -436,6 +455,7 @@ export const SourceValueToggle = ({
 
             {source === 'precomputed' && (
                 <SourceValuePrecomputed
+                    // @ts-expect-error TS7006
                     updateDefaultValueTransformers={(newTransformers) =>
                         updateDefaultValueTransformers(
                             source,
@@ -450,6 +470,7 @@ export const SourceValueToggle = ({
 
             {source === 'fromColumns' && (
                 <SourceValueFromColumns
+                    // @ts-expect-error TS7006
                     updateDefaultValueTransformers={(newTransformers) =>
                         updateDefaultValueTransformers(
                             source,
@@ -463,6 +484,7 @@ export const SourceValueToggle = ({
 
             {source === 'fromColumnsForSubRessource' && (
                 <SourceValueFromColumnsForSubResource
+                    // @ts-expect-error TS7006
                     updateDefaultValueTransformers={(newTransformers) =>
                         updateDefaultValueTransformers(
                             source,
@@ -477,6 +499,7 @@ export const SourceValueToggle = ({
 
             {source === 'fromSubresource' && (
                 <SourceValueFromSubResource
+                    // @ts-expect-error TS7006
                     updateDefaultValueTransformers={(newTransformers) =>
                         updateDefaultValueTransformers(
                             source,
@@ -501,6 +524,7 @@ SourceValueToggle.propTypes = {
     subresources: PropTypes.arrayOf(PropTypes.object),
 };
 
+// @ts-expect-error TS7006
 const mapStateToProps = (state) => {
     const currentTransformers = formValueSelector(FIELD_FORM_NAME)(
         state,
@@ -511,7 +535,9 @@ const mapStateToProps = (state) => {
     return { currentTransformers, subresources };
 };
 
+// @ts-expect-error TS7006
 const mapDispatchToProps = (dispatch) => ({
+    // @ts-expect-error TS7006
     updateTransformers: (valueTransformers) => {
         return dispatch(
             change(FIELD_FORM_NAME, 'transformers', valueTransformers),

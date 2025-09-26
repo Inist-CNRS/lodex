@@ -1,6 +1,7 @@
 import { useForm } from '@tanstack/react-form';
 import PropTypes from 'prop-types';
 import React from 'react';
+// @ts-expect-error TS7016
 import { MemoryRouter } from 'react-router-dom';
 import { render } from '../../../../../test-utils';
 import { TestI18N } from '../../../i18n/I18NContext';
@@ -11,6 +12,7 @@ jest.mock('../hooks/useUpdateAnnotation', () => ({
     useUpdateAnnotation: jest.fn(),
 }));
 
+// @ts-expect-error TS7031
 const TestForm = ({ annotation }) => {
     const form = useForm({
         defaultValues: {
@@ -41,6 +43,8 @@ describe('AnnotationInputs', () => {
         }));
         const wrapper = render(
             <TestI18N>
+                {/*
+                 // @ts-expect-error TS2322 */}
                 <MemoryRouter>
                     <TestForm
                         annotation={{
@@ -61,24 +65,28 @@ describe('AnnotationInputs', () => {
         expect(inputsRegion).toBeInTheDocument();
         expect(
             wrapper.queryByLabelText('annotation_status', {
+                // @ts-expect-error TS2353
                 container: inputsRegion,
             }),
         ).toHaveTextContent('annotation_status_to_review');
         expect(
             wrapper.getByRole('textbox', {
                 name: 'annotation_internal_comment',
+                // @ts-expect-error TS2353
                 container: inputsRegion,
             }),
         ).toHaveValue('Internal test comment');
         expect(
             wrapper.getByRole('textbox', {
                 name: 'annotation_admin_comment',
+                // @ts-expect-error TS2353
                 container: inputsRegion,
             }),
         ).toHaveValue('Admin comment visible to contributors');
         expect(
             wrapper.getByRole('textbox', {
                 name: 'annotation_administrator',
+                // @ts-expect-error TS2353
                 container: inputsRegion,
             }),
         ).toHaveValue('Admin');
@@ -99,6 +107,8 @@ describe('AnnotationInputs', () => {
             }));
             const wrapper = render(
                 <TestI18N>
+                    {/*
+                     // @ts-expect-error TS2322 */}
                     <MemoryRouter>
                         <TestForm
                             annotation={{
@@ -121,12 +131,14 @@ describe('AnnotationInputs', () => {
                 ? expect(
                       wrapper.getByRole('textbox', {
                           name: 'annotation_internal_comment',
+                          // @ts-expect-error TS2353
                           container: inputsRegion,
                       }),
                   ).toHaveAttribute('required')
                 : expect(
                       wrapper.getByRole('textbox', {
                           name: 'annotation_internal_comment',
+                          // @ts-expect-error TS2353
                           container: inputsRegion,
                       }),
                   ).not.toHaveAttribute('required');

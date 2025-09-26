@@ -180,12 +180,15 @@ describe('SourceValueFromSubResource', () => {
         ];
 
         test('returns empty array if subresources or subresourcePath is not provided', () => {
+            // @ts-expect-error TS2554
             expect(GET_TRANSFORMERS_FROM_SUBRESOURCE()).toEqual([]);
+            // @ts-expect-error TS2554
             expect(GET_TRANSFORMERS_FROM_SUBRESOURCE(subresources)).toEqual([]);
         });
 
         test('returns empty array if subresource not found', () => {
             expect(
+                // @ts-expect-error TS2554
                 GET_TRANSFORMERS_FROM_SUBRESOURCE(subresources, 'path3'),
             ).toEqual([]);
         });
@@ -235,6 +238,7 @@ describe('SourceValueFromSubResource', () => {
                 },
             ];
             expect(
+                // @ts-expect-error TS2554
                 GET_TRANSFORMERS_FROM_SUBRESOURCE(subresources, 'path1'),
             ).toEqual(expectedTransformers);
         });

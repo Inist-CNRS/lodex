@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+// @ts-expect-error TS7016
 import compose from 'recompose/compose';
+// @ts-expect-error TS7016
 import { withRouter } from 'react-router';
+// @ts-expect-error TS7016
 import isEqual from 'lodash/isEqual';
+// @ts-expect-error TS7016
 import get from 'lodash/get';
 
 import {
@@ -67,6 +71,7 @@ const animationKeyframes = `
     }
 }`;
 
+// @ts-expect-error TS7006
 const getCreateUrl = (url) => {
     if (typeof url === 'function') {
         return url;
@@ -74,12 +79,15 @@ const getCreateUrl = (url) => {
     if (typeof url === 'string') {
         return () => url;
     }
+    // @ts-expect-error TS7031
     return ({ field, resource }) => resource[field.name];
 };
 
+// @ts-expect-error TS7006
 const isHomePage = (location) => get(location, 'pathname', '') === '/';
 
 export default (url = null, checkFormatLoaded = null, withUri = false) =>
+    // @ts-expect-error TS7006
     (FormatView) => {
         const createUrl = getCreateUrl(url);
 
@@ -99,6 +107,7 @@ export default (url = null, checkFormatLoaded = null, withUri = false) =>
                 p: polyglotPropTypes.isRequired,
             };
 
+            // @ts-expect-error TS7006
             constructor(props) {
                 super(props);
                 this.state = {
@@ -108,6 +117,7 @@ export default (url = null, checkFormatLoaded = null, withUri = false) =>
             }
 
             loadFormatData = ({ ...args }) => {
+                // @ts-expect-error TS2339
                 const { loadFormatData, location } = this.props;
 
                 const value = createUrl(this.props);
@@ -126,6 +136,7 @@ export default (url = null, checkFormatLoaded = null, withUri = false) =>
                 });
             };
 
+            // @ts-expect-error TS7006
             filterFormatData = (filter) => {
                 this.loadFormatData({
                     filter,
@@ -133,11 +144,13 @@ export default (url = null, checkFormatLoaded = null, withUri = false) =>
             };
 
             unLoadFormatData = ({ ...args }) => {
+                // @ts-expect-error TS2339
                 const { unLoadFormatData } = this.props;
                 unLoadFormatData({ ...args });
             };
 
             UNSAFE_componentWillMount() {
+                // @ts-expect-error TS2339
                 const { field } = this.props;
                 if (!field) {
                     return;
@@ -146,6 +159,7 @@ export default (url = null, checkFormatLoaded = null, withUri = false) =>
             }
 
             componentWillUnmount() {
+                // @ts-expect-error TS2339
                 const { field } = this.props;
                 if (!field) {
                     return;
@@ -153,9 +167,12 @@ export default (url = null, checkFormatLoaded = null, withUri = false) =>
                 this.unLoadFormatData(field);
             }
 
+            // @ts-expect-error TS7006
             componentDidUpdate(prevProps) {
+                // @ts-expect-error TS2339
                 const { field, resource } = this.props;
 
+                // @ts-expect-error TS2339
                 if (!this.state.isLoading && this.props.isFormatLoading) {
                     this.setState({
                         isLoading: true,
@@ -175,6 +192,7 @@ export default (url = null, checkFormatLoaded = null, withUri = false) =>
             }
 
             handleAnimationEnd() {
+                // @ts-expect-error TS2339
                 if (this.state.isLoading && !this.props.isFormatLoading) {
                     this.setState({
                         isLoading: false,
@@ -184,14 +202,23 @@ export default (url = null, checkFormatLoaded = null, withUri = false) =>
 
             render() {
                 const {
+                    // @ts-expect-error TS2339
                     loadFormatData,
+                    // @ts-expect-error TS2339
                     formatTotal,
+                    // @ts-expect-error TS2339
                     formatData,
+                    // @ts-expect-error TS2339
                     p: polyglot,
+                    // @ts-expect-error TS2339
                     field,
+                    // @ts-expect-error TS2339
                     isLoaded,
+                    // @ts-expect-error TS2339
                     isFormatLoading,
+                    // @ts-expect-error TS2339
                     error,
+                    // @ts-expect-error TS2339
                     resource,
                     ...props
                 } = this.props;
@@ -225,10 +252,12 @@ export default (url = null, checkFormatLoaded = null, withUri = false) =>
                 }
 
                 return (
+                    // @ts-expect-error TS2322
                     <div style={styles.format.container}>
                         <style>{animationKeyframes}</style>
                         <div
                             onAnimationEnd={this.handleAnimationEnd}
+                            // @ts-expect-error TS2322
                             style={{
                                 ...styles.format.loading,
                                 animationName: isFormatLoading
@@ -236,6 +265,8 @@ export default (url = null, checkFormatLoaded = null, withUri = false) =>
                                     : 'injectDataLoadingEnd',
                             }}
                         ></div>
+                        {/*
+                         // @ts-expect-error TS2339 */}
                         {this.state.isLoading ? (
                             <CircularProgress
                                 sx={styles.format.progress}
@@ -257,19 +288,26 @@ export default (url = null, checkFormatLoaded = null, withUri = false) =>
             }
         }
 
+        // @ts-expect-error TS2339
         GraphItem.WrappedComponent = FormatView;
 
+        // @ts-expect-error TS7006
         const mapStateToProps = (state, { field, resource }) => {
             const isLoaded =
                 typeof checkFormatLoaded == 'function'
+                    // @ts-expect-error TS2349
                     ? checkFormatLoaded(field)
+                    // @ts-expect-error TS2339
                     : field && fromFormat.isFormatDataLoaded(state, field.name);
             return {
                 resource,
+                // @ts-expect-error TS2339
                 formatData: fromFormat.getFormatData(state, field.name),
+                // @ts-expect-error TS2339
                 formatTotal: fromFormat.getFormatTotal(state, field.name),
                 isLoaded,
                 isFormatLoading: get(state, 'dataset.formatLoading', false),
+                // @ts-expect-error TS2339
                 error: fromFormat.getFormatError(state, field.name),
             };
         };

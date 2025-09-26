@@ -41,17 +41,24 @@ class AbstractTableAdmin extends Component {
         },
     };
 
+    // @ts-expect-error TS7006
     handleParams = (params) => updateAdminArgs('params', params, this.props);
 
+    // @ts-expect-error TS7006
     handlePageSize = (e) => {
+        // @ts-expect-error TS2339
         this.props.onChange({
+            // @ts-expect-error TS2339
             ...this.props.args,
             pageSize: parseInt(e.target.value, 10),
         });
     };
 
+    // @ts-expect-error TS7006
     handleColumnParameter = (args) => {
+        // @ts-expect-error TS2339
         this.props.onChange({
+            // @ts-expect-error TS2339
             ...this.props.args,
             columnsCount: args.parameterCount,
             columnsParameters: args.parameters,

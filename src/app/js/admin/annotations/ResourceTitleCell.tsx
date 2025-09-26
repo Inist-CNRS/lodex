@@ -4,6 +4,7 @@ import React from 'react';
 import { useTranslate } from '../../i18n/I18NContext';
 import { getResourceType } from './helpers/resourceType';
 
+// @ts-expect-error TS7031
 function ResourceTitleCellInternal({ label, italic }) {
     return (
         <Typography
@@ -24,6 +25,7 @@ ResourceTitleCellInternal.propTypes = {
     italic: PropTypes.bool,
 };
 
+// @ts-expect-error TS7031
 export const ResourceTitleCell = ({ row }) => {
     const { translate } = useTranslate();
 

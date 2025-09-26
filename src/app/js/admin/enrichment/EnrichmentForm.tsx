@@ -19,8 +19,11 @@ import {
     Typography,
 } from '@mui/material';
 import { connect } from 'react-redux';
+// @ts-expect-error TS7016
 import { withRouter } from 'react-router';
+// @ts-expect-error TS7016
 import { compose } from 'recompose';
+// @ts-expect-error TS7016
 import { change, Field, formValueSelector, reduxForm } from 'redux-form';
 import { launchEnrichment, loadEnrichments, retryEnrichment } from '.';
 import { IN_PROGRESS, PENDING } from '../../../../common/taskStatus';
@@ -42,6 +45,7 @@ import { default as RunButton } from './RunButton';
 // UTILITARY PART
 const ENRICHMENT_FORM = 'ENRICHMENT_FORM';
 
+// @ts-expect-error TS7031
 const renderSwitch = ({ input, label }) => (
     <FormGroup>
         <FormControlLabel
@@ -56,6 +60,7 @@ const renderSwitch = ({ input, label }) => (
     </FormGroup>
 );
 
+// @ts-expect-error TS7031
 const renderTextField = ({ input, label, meta: { touched, error } }) => (
     <TextField
         placeholder={label}
@@ -70,14 +75,23 @@ const renderTextField = ({ input, label, meta: { touched, error } }) => (
 
 // COMPONENT PART
 export const EnrichmentForm = ({
+    // @ts-expect-error TS7031
     datasetFields,
+    // @ts-expect-error TS7031
     excerptLines,
+    // @ts-expect-error TS7031
     formValues,
+    // @ts-expect-error TS7031
     history,
+    // @ts-expect-error TS7031
     initialValues,
+    // @ts-expect-error TS7031
     onChangeWebServiceUrl,
+    // @ts-expect-error TS7031
     onLoadEnrichments,
+    // @ts-expect-error TS7031
     onRetryEnrichment,
+    // @ts-expect-error TS7031
     status,
 }) => {
     const { translate } = useTranslate();
@@ -171,6 +185,7 @@ export const EnrichmentForm = ({
     const handleGetLogs = async () => {
         if (initialValues?.jobId) {
             getJobLogs(initialValues.jobId).then(
+                // @ts-expect-error TS7006
                 (result) => {
                     setEnrichmentLogs(result.response.logs.reverse());
                 },
@@ -228,6 +243,8 @@ export const EnrichmentForm = ({
                             gap={2}
                             mb={2}
                         >
+                            {/*
+                             // @ts-expect-error TS2554 */}
                             {translate('enrichment_error_count', {
                                 errorCount: initialValues.errorCount ?? 0,
                             })}
@@ -258,6 +275,7 @@ export const EnrichmentForm = ({
                                 <EnrichmentStatus id={initialValues?._id} />
                             </Typography>
                             <Button
+                                // @ts-expect-error TS2769
                                 variant="link"
                                 sx={{
                                     paddingRight: 0,
@@ -333,6 +351,7 @@ export const EnrichmentForm = ({
                                 type="text"
                                 component={SubressourceFieldAutoComplete}
                                 options={datasetFields}
+                                // @ts-expect-error TS7006
                                 renderInput={(params) => (
                                     <TextField
                                         {...params}
@@ -341,6 +360,7 @@ export const EnrichmentForm = ({
                                         aria-label="input-path"
                                     />
                                 )}
+                                // @ts-expect-error TS7006
                                 renderOption={(props, option) => {
                                     return (
                                         <ListItem {...props}>
@@ -358,6 +378,7 @@ export const EnrichmentForm = ({
                                 type="text"
                                 component={SubressourceFieldAutoComplete}
                                 options={optionsIdentifier}
+                                // @ts-expect-error TS7006
                                 renderInput={(params) => (
                                     <TextField
                                         {...params}
@@ -367,6 +388,7 @@ export const EnrichmentForm = ({
                                     />
                                 )}
                                 disabled={!formValues?.sourceColumn}
+                                // @ts-expect-error TS7006
                                 renderOption={(props, option) => {
                                     return (
                                         <ListItem {...props}>
@@ -391,6 +413,7 @@ export const EnrichmentForm = ({
                                 isLoading
                             }
                             id={initialValues._id}
+                            // @ts-expect-error TS2322
                             translate={translate}
                             onDeleteStart={() => setIsLoading(true)}
                             onDeleteEnd={() => {
@@ -435,9 +458,12 @@ export const EnrichmentForm = ({
 // REDUX PART
 const formSelector = formValueSelector(ENRICHMENT_FORM);
 
+// @ts-expect-error TS7006
 const mapStateToProps = (state, { match }) => {
     const enrichment = fromEnrichments
+        // @ts-expect-error TS2339
         .enrichments(state)
+        // @ts-expect-error TS7006
         .find((enrichment) => enrichment._id === match.params.enrichmentId);
     return {
         formValues: formSelector(
@@ -451,11 +477,14 @@ const mapStateToProps = (state, { match }) => {
         ),
         initialValues: enrichment,
         status: enrichment?.status,
+        // @ts-expect-error TS2339
         datasetFields: fromParsing.getParsedExcerptColumns(state),
+        // @ts-expect-error TS2339
         excerptLines: fromParsing.getExcerptLines(state),
     };
 };
 const mapDispatchToProps = {
+    // @ts-expect-error TS7006
     onChangeWebServiceUrl: (value) =>
         change(ENRICHMENT_FORM, 'webServiceUrl', value),
     onLaunchEnrichment: launchEnrichment,

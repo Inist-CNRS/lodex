@@ -1,3 +1,4 @@
+// @ts-expect-error TS7016
 import { createAction, handleActions } from 'redux-actions';
 import { PENDING, STARTING, ERROR } from '../../../../common/progressStatus';
 import {
@@ -33,14 +34,21 @@ export const defaultState = {
 export default handleActions(
     {
         [UPDATE_PROGRESS]: (
+            // @ts-expect-error TS7006
             state,
             {
                 payload: {
+                    // @ts-expect-error TS7031
                     status,
+                    // @ts-expect-error TS7031
                     progress,
+                    // @ts-expect-error TS7031
                     target,
+                    // @ts-expect-error TS7031
                     symbol,
+                    // @ts-expect-error TS7031
                     label,
+                    // @ts-expect-error TS7031
                     isBackground,
                 },
             },
@@ -54,6 +62,7 @@ export default handleActions(
             label,
             isBackground,
         }),
+        // @ts-expect-error TS7006
         [UPLOAD_FILE]: (state) => ({
             ...state,
             status: STARTING,
@@ -61,6 +70,7 @@ export default handleActions(
             target: undefined,
             error: undefined,
         }),
+        // @ts-expect-error TS7006
         [PUBLISH]: (state) => ({
             ...state,
             status: STARTING,
@@ -69,6 +79,7 @@ export default handleActions(
             error: undefined,
             isBackground: true,
         }),
+        // @ts-expect-error TS7006
         [CLEAR_DATASET]: (state) => ({
             ...state,
             status: STARTING,
@@ -76,6 +87,7 @@ export default handleActions(
             target: undefined,
             error: undefined,
         }),
+        // @ts-expect-error TS7006
         [CLEAR_DATASET_ERROR]: (state) => ({
             ...state,
             status: PENDING,
@@ -83,6 +95,7 @@ export default handleActions(
             target: undefined,
             error: undefined,
         }),
+        // @ts-expect-error TS7006
         [CLEAR_PUBLISHED_ERROR]: (state) => ({
             ...state,
             status: PENDING,
@@ -90,6 +103,7 @@ export default handleActions(
             target: undefined,
             error: undefined,
         }),
+        // @ts-expect-error TS7006
         [ERROR_PROGRESS]: (state) => ({
             ...state,
             status: ERROR,
@@ -97,6 +111,7 @@ export default handleActions(
             target: undefined,
             error: true,
         }),
+        // @ts-expect-error TS7006
         [CLEAR_PROGRESS]: (state) => ({
             ...state,
             status: PENDING,
@@ -108,7 +123,9 @@ export default handleActions(
     defaultState,
 );
 
+// @ts-expect-error TS7006
 const getProgress = (state) => state;
+// @ts-expect-error TS7031
 const getProgressAndTarget = ({ progress, target }) => ({ progress, target });
 
 export const selectors = {

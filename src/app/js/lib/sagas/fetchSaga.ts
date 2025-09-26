@@ -5,6 +5,7 @@ import { logout } from '../../user';
 import { getCurrentQuery } from '../../sharedSelectors';
 
 export default function* fetchSaga(
+    // @ts-expect-error TS7006
     request,
     interruptingActions = [],
     mode = 'json',
@@ -19,6 +20,7 @@ export default function* fetchSaga(
     }
 
     if (fetchResult.error && fetchResult.error.code === 401) {
+        // @ts-expect-error TS7057
         const pathname = yield select(getCurrentQuery);
         if (!pathname.startsWith('/login')) {
             yield put(

@@ -1,4 +1,5 @@
 import React from 'react';
+// @ts-expect-error TS7016
 import { shallow } from 'enzyme';
 
 import { BubbleView } from './BubbleView';
@@ -24,6 +25,7 @@ describe('BubbleView', () => {
         const bubbles = wrapper.find('Bubble');
         expect(bubbles).toHaveLength(3);
 
+        // @ts-expect-error TS7006
         expect(bubbles.map((b) => b.props())).toEqual([
             { color: '#1D1A31', name: 'id1', r: 10, value: 1, x: 10, y: 10 },
             { color: '#4D2D52', name: 'id2', r: 20, value: 2, x: 20, y: 20 },
@@ -43,6 +45,7 @@ describe('BubbleView', () => {
         const bubbles = wrapper.find('Bubble');
         expect(bubbles).toHaveLength(3);
 
+        // @ts-expect-error TS7006
         expect(bubbles.map((b) => b.props())).toEqual([
             { color: '#1D1A31', name: 'id1', r: 10, value: 1, x: 10, y: 10 },
             { color: '#4D2D52', name: 'id2', r: 20, value: 2, x: 20, y: 20 },

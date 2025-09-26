@@ -11,8 +11,10 @@ import { VEGA_LITE_DATA_INJECT_TYPE_A, flip } from '../../utils/chartsUtils';
  * @returns {JSX.Element}
  * @constructor
  */
+// @ts-expect-error TS7031
 const ClusteredChart = ({ data, topic, params }) => {
     const values = useMemo(() => {
+        // @ts-expect-error TS7006
         return data.filter((value) =>
             flip(
                 params.flipAxis,
@@ -47,10 +49,12 @@ const ClusteredChart = ({ data, topic, params }) => {
         };
 
         if (xTitle && xTitle !== '') {
+            // @ts-expect-error TS2339
             specToReturn.encoding.x.title = xTitle;
         }
 
         if (yTitle && yTitle !== '') {
+            // @ts-expect-error TS2339
             specToReturn.encoding.y.title = yTitle;
         }
 

@@ -1,4 +1,5 @@
 import React from 'react';
+// @ts-expect-error TS7016
 import { shallow } from 'enzyme';
 
 import { FieldsEditComponent as FieldsEdit } from './FieldsEdit';
@@ -17,6 +18,7 @@ describe('<FieldsEdit />', () => {
             <FieldsEdit
                 showAddFromColumn={false}
                 fields={[]}
+                // @ts-expect-error TS2322
                 filter={{}}
                 p={{ t: () => {} }}
             />,
@@ -29,6 +31,7 @@ describe('<FieldsEdit />', () => {
         const wrapper = shallow(
             <FieldsEdit
                 showAddFromColumn={false}
+                // @ts-expect-error TS2322
                 fields={[]}
                 filter={SCOPE_DOCUMENT}
                 addFieldButton={null}
@@ -44,6 +47,7 @@ describe('<FieldsEdit />', () => {
         const wrapper = shallow(
             <FieldsEdit
                 showAddFromColumn={false}
+                // @ts-expect-error TS2322
                 fields={[]}
                 filter={SCOPE_DOCUMENT}
                 defaultTab="page"
@@ -58,6 +62,7 @@ describe('<FieldsEdit />', () => {
         const wrapper = shallow(
             <FieldsEdit
                 showAddFromColumn={true}
+                // @ts-expect-error TS2322
                 fields={[]}
                 filter={SCOPE_DOCUMENT}
                 defaultTab="page"
@@ -76,6 +81,7 @@ describe('<FieldsEdit />', () => {
         const wrapper = shallow(
             <FieldsEdit
                 showAddFromColumn={false}
+                // @ts-expect-error TS2322
                 fields={[]}
                 filter={SCOPE_DOCUMENT}
                 defaultTab="published"

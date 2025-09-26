@@ -7,6 +7,7 @@ import { useTranslate } from '../../../i18n/I18NContext';
 import { ConfirmPopup } from '../../../lib/components/ConfirmPopup';
 import { useDeleteAnnotation } from '../hooks/useDeleteAnnotation';
 
+// @ts-expect-error TS7031
 export function AnnotationDeleteButton({ id, isSubmitting }) {
     const { translate } = useTranslate();
     const { mutateAsync, isLoading } = useDeleteAnnotation(id);

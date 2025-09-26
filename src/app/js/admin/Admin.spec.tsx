@@ -1,4 +1,5 @@
 import React from 'react';
+// @ts-expect-error TS7016
 import { shallow } from 'enzyme';
 
 import Loading from '../lib/components/Loading';
@@ -10,6 +11,7 @@ describe('<Admin />', () => {
     it('should render spinner when loading', () => {
         const wrapper = shallow(
             <AdminComponent
+                // @ts-expect-error TS2322
                 hasUploadedFile
                 loadingParsingResult
                 p={{ t: () => {} }}
@@ -20,6 +22,7 @@ describe('<Admin />', () => {
 
     it('should render the ParsingResult', () => {
         const wrapper = shallow(
+            // @ts-expect-error TS2322
             <AdminComponent hasUploadedFile p={{ t: () => {} }} />,
         );
         expect(wrapper.contains(<ParsingResult />)).toBe(true);
@@ -29,6 +32,7 @@ describe('<Admin />', () => {
         const wrapper = shallow(
             <AdminComponent
                 canUploadFile
+                // @ts-expect-error TS2322
                 loadParsingResult={() => {}}
                 loadPublication={() => {}}
                 p={{ t: () => {} }}

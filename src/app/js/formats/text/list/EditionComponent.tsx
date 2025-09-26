@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+// @ts-expect-error TS7016
 import { FieldArray } from 'redux-form';
 import { translate } from '../../../i18n/I18NContext';
 
@@ -10,35 +11,43 @@ import {
 } from '../../../propTypes';
 import InputList from './InputList';
 
+// @ts-expect-error TS7006
 const getSubFormat = (args) => ({
     args: args.subFormatOptions,
     name: args.subFormat,
 });
 
 class EditionComponent extends Component {
+    // @ts-expect-error TS7006
     constructor(props) {
         super(props);
+        // @ts-expect-error TS2339
         this.ItemComponent = getEditionComponent(
             getSubFormat(props.field.format.args),
         );
     }
 
+    // @ts-expect-error TS7031
     renderList = ({ fields }) => {
+        // @ts-expect-error TS2339
         const { p: polyglot, label } = this.props;
         const all = fields.getAll();
 
         return (
             <InputList
+                // @ts-expect-error TS2769
                 polyglot={polyglot}
                 label={label}
                 fields={fields}
                 all={all}
+                // @ts-expect-error TS2339
                 ItemComponent={this.ItemComponent}
             />
         );
     };
 
     render() {
+        // @ts-expect-error TS2339
         const { label, name } = this.props;
 
         return (
@@ -53,6 +62,7 @@ class EditionComponent extends Component {
     }
 }
 
+// @ts-expect-error TS2339
 EditionComponent.propTypes = {
     name: PropTypes.string.isRequired,
     field: fieldPropTypes.isRequired,
@@ -61,10 +71,12 @@ EditionComponent.propTypes = {
     fullWidth: PropTypes.bool,
 };
 
+// @ts-expect-error TS2339
 EditionComponent.defaultProps = {
     className: null,
 };
 
+// @ts-expect-error TS2339
 EditionComponent.isReduxFormReady = true;
 
 export default translate(EditionComponent);

@@ -2,6 +2,7 @@ import React from 'react';
 import { formField as formFieldPropTypes } from '../../../propTypes';
 import DefaultEdition from '../../utils/components/default-format/DefaultEdition';
 
+// @ts-expect-error TS7006
 const FormTextField = (props) => {
     const {
         input,

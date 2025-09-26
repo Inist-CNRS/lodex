@@ -1,4 +1,6 @@
+// @ts-expect-error TS7016
 import omit from 'lodash/omit';
+// @ts-expect-error TS7016
 import { combineActions, createAction, handleActions } from 'redux-actions';
 
 import {
@@ -19,6 +21,7 @@ export const initialState = {
     invertedFacets: {},
 };
 
+// @ts-expect-error TS7006
 export const createActionTypes = (prefix) => ({
     OPEN_FACET: `${prefix}_OPEN_FACET`,
     TOGGLE_FACET_VALUE: `${prefix}_TOGGLE_FACET_VALUE`,
@@ -31,6 +34,7 @@ export const createActionTypes = (prefix) => ({
     ...createFacetValueActionTypes(prefix),
 });
 
+// @ts-expect-error TS7006
 export const createActions = (actionTypes) => ({
     openFacet: createAction(actionTypes.OPEN_FACET),
     toggleFacetValue: createAction(actionTypes.TOGGLE_FACET_VALUE),
@@ -43,6 +47,7 @@ export const createActions = (actionTypes) => ({
     ...createFacetValueActions(actionTypes),
 });
 
+// @ts-expect-error TS7006
 export const createReducer = (prefix) => {
     const actionTypes = createActionTypes(prefix);
     const actions = createActions(actionTypes);
@@ -51,6 +56,7 @@ export const createReducer = (prefix) => {
 
     const reducer = handleActions(
         {
+            // @ts-expect-error TS7006
             [actionTypes.OPEN_FACET]: (state, { payload: { name } }) => ({
                 ...state,
                 openedFacets: {
@@ -59,14 +65,18 @@ export const createReducer = (prefix) => {
                 },
             }),
             [actionTypes.LOAD_FACET_VALUES_ERROR]: (
+                // @ts-expect-error TS7006
                 state,
+                // @ts-expect-error TS7031
                 { payload: error },
             ) => ({
                 ...state,
                 error: error.message || error,
             }),
             [actionTypes.TOGGLE_FACET_VALUE]: (
+                // @ts-expect-error TS7031
                 { appliedFacets, ...state },
+                // @ts-expect-error TS7031
                 { payload: { name, facetValue } },
             ) => {
                 const isChecked = isFacetValuesChecked(
@@ -76,6 +86,7 @@ export const createReducer = (prefix) => {
                 const prevValues = appliedFacets[name] || [];
 
                 const newValues = isChecked
+                    // @ts-expect-error TS7006
                     ? prevValues.filter((v) => v.value !== facetValue.value)
                     : prevValues.concat(facetValue);
 
@@ -94,7 +105,9 @@ export const createReducer = (prefix) => {
                 };
             },
             [actionTypes.SET_ALL_VALUE_FOR_FACET]: (
+                // @ts-expect-error TS7031
                 { appliedFacets, ...state },
+                // @ts-expect-error TS7031
                 { payload: { name, values } },
             ) => {
                 return {
@@ -108,7 +121,9 @@ export const createReducer = (prefix) => {
                 };
             },
             [actionTypes.CLEAR_FACET]: (
+                // @ts-expect-error TS7031
                 { appliedFacets, invertedFacets, ...state },
+                // @ts-expect-error TS7031
                 { payload: name },
             ) => {
                 if (!name) {
@@ -125,7 +140,9 @@ export const createReducer = (prefix) => {
                 };
             },
             [actionTypes.INVERT_FACET]: (
+                // @ts-expect-error TS7031
                 { invertedFacets, ...state },
+                // @ts-expect-error TS7031
                 { payload: { name, inverted } },
             ) => ({
                 ...state,
@@ -137,6 +154,7 @@ export const createReducer = (prefix) => {
                 actionTypes.LOAD_FACET_VALUES_SUCCESS,
                 actionTypes.FACET_VALUE_CHANGE,
                 actionTypes.FACET_VALUE_SORT,
+            // @ts-expect-error TS7006
             )]: (state, action) => {
                 const name = action.payload.name;
 
@@ -151,17 +169,23 @@ export const createReducer = (prefix) => {
                     },
                 };
             },
+            // @ts-expect-error TS7006
             [SAVE_RESOURCE_SUCCESS]: (state) => ({
                 ...state,
                 openedFacets: {},
             }),
             [actionTypes.SET_FACETS]: (
+                // @ts-expect-error TS7006
                 state,
                 {
                     payload: {
+                        // @ts-expect-error TS7031
                         facetsValues,
+                        // @ts-expect-error TS7031
                         appliedFacets,
+                        // @ts-expect-error TS7031
                         invertedFacets,
+                        // @ts-expect-error TS7031
                         openedFacets,
                     },
                 },

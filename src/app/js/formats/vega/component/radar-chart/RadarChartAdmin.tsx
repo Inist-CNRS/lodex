@@ -46,6 +46,7 @@ export const defaultArgs = {
     aspectRatio: ASPECT_RATIO_8_5,
 };
 
+// @ts-expect-error TS7006
 const RadarChartAdmin = (props) => {
     const {
         p: polyglot,
@@ -90,6 +91,7 @@ const RadarChartAdmin = (props) => {
         specBuilder.setScale(lodexScaleToIdScale(scale));
 
         specBuilder.setEditMode(true);
+        // @ts-expect-error TS2554
         return JSON.stringify(specBuilder.buildSpec(), null, 2);
     }, [advancedMode, advancedModeSpec]);
 
@@ -106,6 +108,7 @@ const RadarChartAdmin = (props) => {
         updateAdminArgs('advancedMode', !args.advancedMode, props);
     };
 
+    // @ts-expect-error TS7006
     const handleAdvancedModeSpec = (newSpec) => {
         updateAdminArgs('advancedModeSpec', newSpec, props);
     };
@@ -114,6 +117,7 @@ const RadarChartAdmin = (props) => {
         updateAdminArgs('advancedModeSpec', null, props);
     };
 
+    // @ts-expect-error TS7006
     const handleParams = (params) => {
         updateAdminArgs('params', params, props);
     };
@@ -122,10 +126,12 @@ const RadarChartAdmin = (props) => {
         updateAdminArgs('axisRoundValue', !axisRoundValue, props);
     };
 
+    // @ts-expect-error TS7006
     const handleScale = (e) => {
         updateAdminArgs('scale', e.target.value, props);
     };
 
+    // @ts-expect-error TS7006
     const handleColors = (colors) => {
         updateAdminArgs(
             'colors',
@@ -138,21 +144,28 @@ const RadarChartAdmin = (props) => {
         updateAdminArgs('tooltip', !tooltip, props);
     };
 
+    // @ts-expect-error TS7006
     const handleTooltipCategory = (tooltipCategory) => {
         updateAdminArgs('tooltipCategory', tooltipCategory, props);
     };
 
+    // @ts-expect-error TS7006
     const handleTooltipValue = (tooltipValue) => {
         updateAdminArgs('tooltipValue', tooltipValue, props);
     };
 
+    // @ts-expect-error TS7006
     const handleAspectRatio = (value) => {
         updateAdminArgs('aspectRatio', value, props);
     };
 
     return (
         <FormatGroupedFieldSet>
+            {/*
+             // @ts-expect-error TS2322 */}
             <FormatDataParamsFieldSet>
+                {/*
+                 // @ts-expect-error TS2322 */}
                 <RoutineParamsAdmin
                     params={params || defaultArgs.params}
                     onChange={handleParams}
@@ -163,7 +176,11 @@ const RadarChartAdmin = (props) => {
                     showOrderBy={showOrderBy}
                 />
             </FormatDataParamsFieldSet>
+            {/*
+             // @ts-expect-error TS2322 */}
             <FormatChartParamsFieldSet defaultExpanded>
+                {/*
+                 // @ts-expect-error TS2322 */}
                 <FormGroup>
                     <FormControlLabel
                         control={
@@ -175,6 +192,8 @@ const RadarChartAdmin = (props) => {
                         label={polyglot.t('advancedMode')}
                     />
                 </FormGroup>
+                {/*
+                 // @ts-expect-error TS2322 */}
                 {advancedMode ? (
                     <VegaAdvancedMode
                         value={spec}
@@ -222,11 +241,15 @@ const RadarChartAdmin = (props) => {
                         </TextField>
                     </>
                 )}
+                {/*
+                 // @ts-expect-error TS2322 */}
                 <AspectRatioSelector
                     value={aspectRatio}
                     onChange={handleAspectRatio}
                 />
             </FormatChartParamsFieldSet>
+            {/*
+             // @ts-expect-error TS2322 */}
             <VegaFieldPreview
                 args={args}
                 PreviewComponent={RadarChartAdminView}

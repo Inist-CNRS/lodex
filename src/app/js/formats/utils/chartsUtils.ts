@@ -1,3 +1,4 @@
+// @ts-expect-error TS7016
 import { clamp, cloneDeep } from 'lodash';
 
 // Values given when an error are encounter
@@ -56,6 +57,7 @@ export const MAP_FRANCE = 'france';
 export const VEGA_ACTIONS_WIDTH = 40;
 
 // function use to convert scale give by lodex to an normalized id
+// @ts-expect-error TS7006
 export const lodexScaleToIdScale = (scale) => {
     switch (scale) {
         case 'linear':
@@ -66,6 +68,7 @@ export const lodexScaleToIdScale = (scale) => {
 };
 
 // function use to convert orderBy give by lodex to an normalized id
+// @ts-expect-error TS7006
 export const lodexOrderToIdOrder = (orderBy) => {
     switch (orderBy) {
         case 'value/asc':
@@ -86,6 +89,7 @@ export const lodexOrderToIdOrder = (orderBy) => {
  * @param direction{'vertical' | 'horizontal'}
  * @returns {number}
  */
+// @ts-expect-error TS7006
 export const lodexDirectionToIdDirection = (direction) => {
     switch (direction) {
         case 'vertical':
@@ -107,6 +111,7 @@ const HEIGHT_REGEX = /\{\|__LODEX_HEIGHT__\|}/g;
  * @param height {number} Height of the chart container
  * @returns {any} The Vega Lite spec as a json object
  */
+// @ts-expect-error TS7006
 export const convertSpecTemplate = (spec, width, height) => {
     const specCopy = cloneDeep(spec);
 
@@ -114,10 +119,12 @@ export const convertSpecTemplate = (spec, width, height) => {
     const specWithNumberSize = {};
 
     if (specWithTemplate.width === '{|__LODEX_WIDTH__|}') {
+        // @ts-expect-error TS2339
         specWithNumberSize.width = clamp(width, 100, 1200);
     }
 
     if (specWithTemplate.height === '{|__LODEX_HEIGHT__|}') {
+        // @ts-expect-error TS2339
         specWithNumberSize.height = clamp(height, 100, 1200);
     }
 
@@ -133,6 +140,7 @@ export const convertSpecTemplate = (spec, width, height) => {
     };
 };
 
+// @ts-expect-error TS7006
 export const flip = (condition, defaultValue, flipValue) => {
     return condition ? flipValue : defaultValue;
 };

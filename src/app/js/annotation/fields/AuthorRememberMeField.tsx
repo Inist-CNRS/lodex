@@ -14,10 +14,12 @@ const formControlStyle = {
     marginTop: '0px',
 };
 
+// @ts-expect-error TS7031
 export function AuthorRememberMeField({ form }) {
     const { translate } = useTranslate();
     const field = useField({ name: 'authorRememberMe', form });
 
+    // @ts-expect-error TS7006
     const handleCheckboxChange = (event) => {
         field.handleChange(event.target.checked);
     };
@@ -33,6 +35,7 @@ export function AuthorRememberMeField({ form }) {
             <FormControlLabel
                 control={
                     <Checkbox
+                        // @ts-expect-error TS2322
                         checked={field.state.value ?? false}
                         onChange={handleCheckboxChange}
                     />

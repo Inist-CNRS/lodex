@@ -7,7 +7,9 @@ import MenuItem from '@mui/material/MenuItem';
 import PropTypes from 'prop-types';
 import { default as React, useRef } from 'react';
 import { connect } from 'react-redux';
+// @ts-expect-error TS7016
 import { withRouter } from 'react-router';
+// @ts-expect-error TS7016
 import { compose } from 'recompose';
 import { bindActionCreators } from 'redux';
 
@@ -19,21 +21,30 @@ import { fromParsing, fromPublication } from '../../selectors';
 
 export const ModelNestedMenuComponent = React.memo(
     function AnnotationNestedMenu({
+        // @ts-expect-error TS2339
         onClose,
+        // @ts-expect-error TS2339
         hasPublishedDataset,
+        // @ts-expect-error TS2339
         hasLoadedDataset,
+        // @ts-expect-error TS2339
         exportFields,
+        // @ts-expect-error TS2339
         importFields,
+        // @ts-expect-error TS2339
         showModelClearDialog,
+        // @ts-expect-error TS2339
         nbFields,
     }) {
         const { translate } = useTranslate();
         const fileInputRef = useRef(null);
 
         const openModelFileSelector = () => {
+            // @ts-expect-error TS2339
             fileInputRef.current?.click();
         };
 
+        // @ts-expect-error TS7006
         const handleModelFileChange = (event) => {
             onClose(() => importFields(event.target.files[0]));
         };
@@ -95,6 +106,7 @@ export const ModelNestedMenuComponent = React.memo(
     },
 );
 
+// @ts-expect-error TS2339
 ModelNestedMenuComponent.propTypes = {
     onClose: PropTypes.func.isRequired,
     hasLoadedDataset: PropTypes.bool.isRequired,
@@ -105,6 +117,7 @@ ModelNestedMenuComponent.propTypes = {
     showModelClearDialog: PropTypes.func.isRequired,
 };
 
+// @ts-expect-error TS7006
 const mapDispatchToProps = (dispatch) =>
     bindActionCreators(
         {
@@ -114,9 +127,13 @@ const mapDispatchToProps = (dispatch) =>
         dispatch,
     );
 
+// @ts-expect-error TS7006
 const mapStateToProps = (state) => ({
+    // @ts-expect-error TS2339
     hasLoadedDataset: fromParsing.hasUploadedFile(state),
+    // @ts-expect-error TS2339
     hasPublishedDataset: fromPublication.hasPublishedDataset(state),
+    // @ts-expect-error TS2339
     nbFields: fromFields.getAllListFields(state).filter((f) => f.name !== 'uri')
         .length,
 });

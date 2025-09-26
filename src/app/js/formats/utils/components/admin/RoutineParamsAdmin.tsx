@@ -13,15 +13,24 @@ import {
 import { polyglot as polyglotPropTypes } from '../../../../propTypes';
 
 const RoutineParamsAdmin = ({
+    // @ts-expect-error TS7031
     polyglot,
+    // @ts-expect-error TS7031
     onChange,
+    // @ts-expect-error TS7031
     params: { maxSize, maxValue, minValue, orderBy, uri },
+    // @ts-expect-error TS7031
     showUri,
+    // @ts-expect-error TS7031
     showMaxSize,
+    // @ts-expect-error TS7031
     showMaxValue,
+    // @ts-expect-error TS7031
     showMinValue,
+    // @ts-expect-error TS7031
     showOrderBy,
 }) => {
+    // @ts-expect-error TS7006
     const handleMaxSize = (e) => {
         onChange({
             maxSize: e.target.value,
@@ -32,6 +41,7 @@ const RoutineParamsAdmin = ({
         });
     };
 
+    // @ts-expect-error TS7006
     const handleMaxValue = (e) => {
         onChange({
             maxSize,
@@ -42,6 +52,7 @@ const RoutineParamsAdmin = ({
         });
     };
 
+    // @ts-expect-error TS7006
     const handleMinValue = (e) => {
         onChange({
             maxSize,
@@ -52,6 +63,7 @@ const RoutineParamsAdmin = ({
         });
     };
 
+    // @ts-expect-error TS7006
     const handleSortField = (e) => {
         onChange({
             maxSize,
@@ -62,6 +74,7 @@ const RoutineParamsAdmin = ({
         });
     };
 
+    // @ts-expect-error TS7006
     const handleSortOrder = (e) => {
         onChange({
             maxSize,
@@ -72,6 +85,7 @@ const RoutineParamsAdmin = ({
         });
     };
 
+    // @ts-expect-error TS7006
     const handleUri = (e) => {
         onChange({
             maxSize,

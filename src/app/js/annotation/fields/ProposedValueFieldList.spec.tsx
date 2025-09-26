@@ -5,10 +5,13 @@ import React from 'react';
 import { TestI18N } from '../../i18n/I18NContext';
 import { ProposedValueFieldList } from './ProposedValueFieldList';
 
+// @ts-expect-error TS7006
 function TestProposedValueFieldList(props) {
     const form = useForm();
     return (
         <TestI18N>
+            {/*
+             // @ts-expect-error TS2322 */}
             <ProposedValueFieldList {...props} form={form} />
         </TestI18N>
     );

@@ -7,21 +7,30 @@ import { useTranslate } from '../i18n/I18NContext';
 import { AUTHOR_STEP, COMMENT_STEP, TARGET_STEP, VALUE_STEP } from './steps';
 
 export const PreviousButton = ({
+    // @ts-expect-error TS7031
     currentStep,
+    // @ts-expect-error TS7031
     initialValue,
+    // @ts-expect-error TS7031
     goToStep,
+    // @ts-expect-error TS7031
     onCancel,
+    // @ts-expect-error TS7031
     isSubmitting,
+    // @ts-expect-error TS7031
     form,
+    // @ts-expect-error TS7031
     skipAnnotationKindStep,
 }) => {
     const { translate } = useTranslate();
 
     const kind = useStore(form.store, (state) => {
+        // @ts-expect-error TS18046
         return state.values.kind;
     });
 
     const target = useStore(form.store, (state) => {
+        // @ts-expect-error TS18046
         return state.values.target;
     });
 

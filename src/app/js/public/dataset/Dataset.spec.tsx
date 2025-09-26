@@ -1,4 +1,5 @@
 import React from 'react';
+// @ts-expect-error TS7016
 import { shallow } from 'enzyme';
 
 import { DatasetComponent as Dataset } from './Dataset';
@@ -22,10 +23,12 @@ describe('<Dataset />', () => {
 
         shallow(
             <Dataset
+                // @ts-expect-error TS2769
                 currentPage={1}
                 perPage={10}
                 preLoadDatasetPage={preLoadDatasetPage}
                 loading
+                // @ts-expect-error TS7006
                 p={{ t: (key) => key }}
                 total={0}
             />,
@@ -40,12 +43,14 @@ describe('<Dataset />', () => {
     it('should render the TableCell for each column', () => {
         const wrapper = shallow(
             <Dataset
+                // @ts-expect-error TS2769
                 currentPage={1}
                 perPage={10}
                 columns={columns}
                 dataset={dataset}
                 preLoadDatasetPage={() => {}}
                 loading={false}
+                // @ts-expect-error TS7006
                 p={{ t: (key) => key }}
                 total={3}
             />,
@@ -65,6 +70,7 @@ describe('<Dataset />', () => {
     it('should render the TableCell for each value for each column', () => {
         const wrapper = shallow(
             <Dataset
+                // @ts-expect-error TS2769
                 currentPage={1}
                 perPage={10}
                 columns={columns}
@@ -72,6 +78,7 @@ describe('<Dataset />', () => {
                 changePage={() => {}}
                 preLoadDatasetPage={() => {}}
                 loading={false}
+                // @ts-expect-error TS7006
                 p={{ t: (key) => key }}
                 total={3}
             />,
@@ -119,6 +126,7 @@ describe('<Dataset />', () => {
     it('should render the Pagination', () => {
         const wrapper = shallow(
             <Dataset
+                // @ts-expect-error TS2769
                 p={{ t: (key) => key }}
                 columns={columns}
                 currentPage={1}
@@ -140,6 +148,7 @@ describe('<Dataset />', () => {
         const changePage = jest.fn();
         const wrapper = shallow(
             <Dataset
+                // @ts-expect-error TS2769
                 p={{ t: (key) => key }}
                 currentPage={1}
                 perPage={10}

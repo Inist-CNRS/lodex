@@ -2,6 +2,7 @@ import React, { useState, useCallback, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { translate } from '../../i18n/I18NContext';
+// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import {
     TextField,
@@ -44,6 +45,7 @@ const styles = {
 };
 
 const onPageChange =
+    // @ts-expect-error TS7006
     (changeFacetValue, filter, name) => (currentPage, perPage) =>
         changeFacetValue({
             name,
@@ -53,11 +55,12 @@ const onPageChange =
         });
 
 /* Hook to manage the filter with debounce and cancellation */
+// @ts-expect-error TS1287
 export const useDebouncedSearch = (
-    changeFacetValue,
-    name,
-    perPage,
-    initialFilter,
+    changeFacetValue: any,
+    name: any,
+    perPage: any,
+    initialFilter: any,
 ) => {
     const [localFilter, setLocalFilter] = useState(initialFilter);
     const [isSearching, setIsSearching] = useState(false);
@@ -148,9 +151,11 @@ export const useDebouncedSearch = (
     };
 };
 
+// @ts-expect-error TS7006
 const onInvertChange = (invertFacet, name) => (_, inverted) =>
     invertFacet({ name, inverted });
 
+// @ts-expect-error TS7006
 const onSortChange = (sortFacetValue, name) => (nextSortBy) =>
     sortFacetValue({
         name,
@@ -158,19 +163,33 @@ const onSortChange = (sortFacetValue, name) => (nextSortBy) =>
     });
 
 export const FacetValueList = ({
+    // @ts-expect-error TS7031
     name,
+    // @ts-expect-error TS7031
     label,
+    // @ts-expect-error TS7031
     facetValues,
+    // @ts-expect-error TS7031
     total,
+    // @ts-expect-error TS7031
     currentPage,
+    // @ts-expect-error TS7031
     perPage,
+    // @ts-expect-error TS7031
     filter,
+    // @ts-expect-error TS7031
     inverted,
+    // @ts-expect-error TS7031
     sort,
+    // @ts-expect-error TS7031
     p: polyglot,
+    // @ts-expect-error TS7031
     page,
+    // @ts-expect-error TS7031
     changeFacetValue,
+    // @ts-expect-error TS7031
     invertFacet,
+    // @ts-expect-error TS7031
     sortFacetValue,
 }) => {
     const { localFilter, isSearching, handleFilterChange } = useDebouncedSearch(
@@ -183,6 +202,7 @@ export const FacetValueList = ({
     return (
         <div className="facet-value-list" style={styles.list}>
             <FormControlLabel
+                // @ts-expect-error TS2322
                 fullWidth
                 control={
                     <Checkbox
@@ -239,6 +259,8 @@ export const FacetValueList = ({
                 </div>
                 <div>
                     {filter && <FacetValueAll name={name} page={page} />}
+                    {/*
+                     // @ts-expect-error TS7006 */}
                     {facetValues.map((facetValue) => {
                         return (
                             <FacetValueItem
@@ -282,8 +304,11 @@ FacetValueList.propTypes = {
     sortFacetValue: PropTypes.func.isRequired,
 };
 
+// @ts-expect-error TS7006
 export const ConnectFacetValueList = (props) => (
     <FacetActionsContext.Consumer>
+        {/*
+         // @ts-expect-error TS2339 */}
         {({ changeFacetValue, invertFacet, sortFacetValue }) => (
             <FacetValueList
                 {...props}
@@ -295,6 +320,7 @@ export const ConnectFacetValueList = (props) => (
     </FacetActionsContext.Consumer>
 );
 
+// @ts-expect-error TS7006
 const mapStateToProps = (state, { name, page }) => {
     const selectors = fromFacet(page);
 
@@ -309,6 +335,7 @@ const mapStateToProps = (state, { name, page }) => {
     };
 };
 
+// @ts-expect-error TS1295
 export default compose(
     translate,
     connect(mapStateToProps),

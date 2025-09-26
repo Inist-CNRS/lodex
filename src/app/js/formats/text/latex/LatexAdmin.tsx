@@ -23,21 +23,30 @@ class LatexAdmin extends Component {
         args: defaultArgs,
     };
 
+    // @ts-expect-error TS7006
     handleDelimiter = (e) => {
         const delimiter = String(e.target.value);
+        // @ts-expect-error TS2339
         const newArgs = { ...this.props.args, delimiter };
+        // @ts-expect-error TS2339
         this.props.onChange(newArgs);
     };
 
     render() {
         const {
+            // @ts-expect-error TS2339
             p: polyglot,
+            // @ts-expect-error TS2339
             args: { delimiter },
         } = this.props;
 
         return (
             <FormatGroupedFieldSet>
+                {/*
+                 // @ts-expect-error TS2322 */}
                 <FormatDefaultParamsFieldSet defaultExpanded>
+                    {/*
+                     // @ts-expect-error TS2322 */}
                     <TextField
                         label={polyglot.t('choose_delimiter')}
                         type="string"

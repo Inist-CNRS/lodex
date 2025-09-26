@@ -7,11 +7,15 @@ import { polyglot as polyglotPropTypes } from '../propTypes';
 import FieldInternalIcon from './FieldInternalIcon';
 
 function FieldRepresentation({
+    // @ts-expect-error TS7031
     field,
     shortMode = false,
     showNotAnnotableIcon = false,
+    // @ts-expect-error TS7031
     p: polyglot,
+    // @ts-expect-error TS7031
     isFieldSelected,
+    // @ts-expect-error TS7031
     handleToggleSelectedField,
 }) {
     const { translate } = useTranslate();
@@ -123,6 +127,8 @@ function FieldRepresentation({
                             alignItems="flex-end"
                             marginRight={1}
                         >
+                            {/*
+                             // @ts-expect-error TS7006 */}
                             {field.internalScopes.map((internalScope) => (
                                 <FieldInternalIcon
                                     key={internalScope}

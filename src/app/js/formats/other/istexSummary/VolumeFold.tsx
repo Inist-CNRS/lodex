@@ -7,15 +7,23 @@ import { SEARCHED_FIELD_VALUES } from './constants';
 import { polyglot as polyglotPropTypes } from '../../../propTypes';
 
 const VolumeFold = ({
+    // @ts-expect-error TS7031
     item: { name: volume, count },
+    // @ts-expect-error TS7031
     nbSiblings,
+    // @ts-expect-error TS7031
     value,
+    // @ts-expect-error TS7031
     year,
+    // @ts-expect-error TS7031
     searchedField,
+    // @ts-expect-error TS7031
     children,
+    // @ts-expect-error TS7031
     polyglot,
 }) => (
     <FetchFold
+        // @ts-expect-error TS2769
         label={
             volume === 'other'
                 ? polyglot.t('other_volume')

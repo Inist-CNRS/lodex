@@ -1,4 +1,5 @@
 import React from 'react';
+// @ts-expect-error TS7016
 import { shallow } from 'enzyme';
 
 import { DetailComponent as Detail } from './Detail';
@@ -19,13 +20,16 @@ describe('Detail', () => {
                 contribution1: 'value3',
             },
             p: {
+                // @ts-expect-error TS7006
                 t: (v) => v,
             },
         };
 
+        // @ts-expect-error TS2322
         const wrapper = shallow(<Detail {...props} />);
         const properties = wrapper.find(Property);
         expect(properties).toHaveLength(3);
+        // @ts-expect-error TS7006
         properties.forEach((element, index) => {
             if (index === 2) {
                 expect(element.prop('field')).toEqual({
@@ -67,14 +71,17 @@ describe('Detail', () => {
                 contribution1: 'value3',
             },
             p: {
+                // @ts-expect-error TS7006
                 t: (v) => v,
             },
         };
 
+        // @ts-expect-error TS2322
         const wrapper = shallow(<Detail {...props} />);
         const properties = wrapper.find(Property);
         expect(properties).toHaveLength(3);
 
+        // @ts-expect-error TS7006
         const renderedFields = properties.map((element, index) => ({
             index,
             name: element.prop('field').name,
@@ -100,10 +107,12 @@ describe('Detail', () => {
                 contribution1: 'value3',
             },
             p: {
+                // @ts-expect-error TS7006
                 t: (v) => v,
             },
         };
 
+        // @ts-expect-error TS2322
         const wrapper = shallow(<Detail {...props} />);
         const exportButton = wrapper.find(ExportButton);
         expect(exportButton.exists()).toBeTruthy();
@@ -123,10 +132,12 @@ describe('Detail', () => {
                 subresourceId: 'value4',
             },
             p: {
+                // @ts-expect-error TS7006
                 t: (v) => v,
             },
         };
 
+        // @ts-expect-error TS2322
         const wrapper = shallow(<Detail {...props} />);
         const exportButton = wrapper.find(ExportButton);
         expect(exportButton.exists()).not.toBeTruthy();

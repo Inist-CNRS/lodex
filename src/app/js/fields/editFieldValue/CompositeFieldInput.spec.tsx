@@ -1,6 +1,8 @@
 import React from 'react';
+// @ts-expect-error TS7016
 import { shallow } from 'enzyme';
 import { ListSubheader } from '@mui/material';
+// @ts-expect-error TS7016
 import { Field } from 'redux-form';
 
 import FieldInput from './FieldInput';
@@ -18,6 +20,7 @@ describe('CompositeFieldInput', () => {
             compositeFields: ['field1', 'field2'],
         };
 
+        // @ts-expect-error TS2322
         const wrapper = shallow(<CompositeFieldInput {...props} />);
 
         const editField = wrapper.find(Field);
@@ -42,6 +45,7 @@ describe('CompositeFieldInput', () => {
             compositeFields: ['field1', 'field2'],
         };
 
+        // @ts-expect-error TS2322
         const wrapper = shallow(<CompositeFieldInput {...props} />);
 
         const editField = wrapper.find(Field);
@@ -66,6 +70,7 @@ describe('CompositeFieldInput', () => {
             compositeFields: ['field1', 'field2'],
         };
 
+        // @ts-expect-error TS2322
         const wrapper = shallow(<CompositeFieldInput {...props} />);
 
         const subheader = wrapper.find(ListSubheader);

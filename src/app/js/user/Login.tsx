@@ -9,8 +9,10 @@ import {
 import PropTypes from 'prop-types';
 import React, { useMemo } from 'react';
 import { connect } from 'react-redux';
+// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import { bindActionCreators } from 'redux';
+// @ts-expect-error TS7016
 import { isSubmitting, submit as submitAction } from 'redux-form';
 
 import { translate } from '../i18n/I18NContext';
@@ -31,9 +33,13 @@ const styles = {
 };
 
 export const LoginComponent = ({
+    // @ts-expect-error TS7031
     login,
+    // @ts-expect-error TS7031
     p: polyglot,
+    // @ts-expect-error TS7031
     submit,
+    // @ts-expect-error TS7031
     submitting,
     target = 'admin',
 }) => {
@@ -64,6 +70,7 @@ export const LoginComponent = ({
                 subheader={polyglot.t(subheader)}
                 action={
                     <Link
+                        // @ts-expect-error TS2769
                         variant="contained"
                         color="primary"
                         disableElevation
@@ -85,6 +92,8 @@ export const LoginComponent = ({
                 <LoginForm onSubmit={login} />
             </CardContent>
             <CardActions>
+                {/*
+                 // @ts-expect-error TS2740 */}
                 <ButtonWithStatus
                     loading={submitting}
                     onClick={submit}
@@ -109,11 +118,14 @@ LoginComponent.defaultProps = {
     previousState: null,
 };
 
+// @ts-expect-error TS7006
 export const mapStateToProps = (state) => ({
+    // @ts-expect-error TS2339
     showModal: fromUser.isUserModalShown(state),
     submitting: isSubmitting(LOGIN_FORM_NAME)(state),
 });
 
+// @ts-expect-error TS7006
 export const mapDispatchToProps = (dispatch) =>
     bindActionCreators(
         {

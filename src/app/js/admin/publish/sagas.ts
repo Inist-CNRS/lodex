@@ -7,6 +7,7 @@ import { PUBLISH, publishError } from './';
 
 export function* handlePublishRequest() {
     try {
+        // @ts-expect-error TS7057
         const request = yield select(fromUser.getPublishRequest);
         const { error } = yield call(fetchSaga, request);
 

@@ -20,10 +20,12 @@ import { useCanAnnotate } from './useCanAnnotate';
 import { useCreateAnnotation } from './useCreateAnnotation';
 import { useResourceUri } from './useResourceUri';
 
+// @ts-expect-error TS7031
 function UserAnnotationCount({ fieldAnnotationIds, openHistory }) {
     const { translate } = useTranslate();
     const theme = useTheme();
 
+    // @ts-expect-error TS7006
     const handleOpenHistory = (e) => {
         e.preventDefault();
         openHistory(MODE_MINE);
@@ -50,6 +52,8 @@ function UserAnnotationCount({ fieldAnnotationIds, openHistory }) {
                 },
             }}
         >
+            {/*
+             // @ts-expect-error TS2554 */}
             {translate('annotation_sent_count', {
                 smart_count: fieldAnnotationIds.length,
             })}
@@ -62,6 +66,7 @@ UserAnnotationCount.propTypes = {
     openHistory: PropTypes.func.isRequired,
 };
 
+// @ts-expect-error TS7031
 export function CreateAnnotationButton({ field, resource }) {
     const { translate } = useTranslate();
     const readableInitialValue = getReadableValue({
@@ -112,6 +117,7 @@ export function CreateAnnotationButton({ field, resource }) {
         setIsTooltipOpen(false);
     };
 
+    // @ts-expect-error TS2554
     const buttonLabel = translate(`annotation_create_button_label`, {
         field: field.label,
     });

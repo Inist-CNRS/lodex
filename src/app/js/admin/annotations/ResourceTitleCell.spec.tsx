@@ -7,6 +7,8 @@ describe('ResourceTitleCell', () => {
     it('should render be empty when resourceUri is null', () => {
         const wrapper = render(
             <TestI18N>
+                {/*
+                 // @ts-expect-error TS2322 */}
                 <ResourceTitleCell
                     row={{
                         resourceUri: '/',
@@ -22,6 +24,8 @@ describe('ResourceTitleCell', () => {
     it('should render be empty when field scope is graphic', () => {
         const wrapper = render(
             <TestI18N>
+                {/*
+                 // @ts-expect-error TS2322 */}
                 <ResourceTitleCell
                     row={{
                         resourceUri: 'uid:/qsdf',
@@ -41,6 +45,8 @@ describe('ResourceTitleCell', () => {
     it('should render annotation_resource_not_found message when resource is null', () => {
         const wrapper = render(
             <TestI18N>
+                {/*
+                 // @ts-expect-error TS2322 */}
                 <ResourceTitleCell
                     row={{
                         resourceUri: 'uid:/qsdf',
@@ -58,11 +64,14 @@ describe('ResourceTitleCell', () => {
     it('should render the resource title', () => {
         const wrapper = render(
             <TestI18N>
+                {/*
+                 // @ts-expect-error TS2322 */}
                 <ResourceTitleCell
                     row={{
                         resourceUri: 'uid:/qsdf',
                         resource: {
                             title: 'The resource title',
+                            // @ts-expect-error TS2353
                             uri: 'uid:/qsdf',
                         },
                     }}

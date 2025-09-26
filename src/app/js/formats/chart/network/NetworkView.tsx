@@ -1,4 +1,6 @@
+// @ts-expect-error TS7016
 import { scaleLinear } from 'd3-scale';
+// @ts-expect-error TS7016
 import get from 'lodash/get';
 import React, {
     lazy,
@@ -8,6 +10,7 @@ import React, {
     useMemo,
     useState,
 } from 'react';
+// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import { polyglot as polyglotPropTypes } from '../../../propTypes';
 
@@ -32,6 +35,7 @@ const styles = {
     },
 };
 
+// @ts-expect-error TS7031
 const Network = ({ formatData, p, colorSet }) => {
     const { translate } = useTranslate();
     const [{ width, height }, setDimensions] = useState({
@@ -70,10 +74,12 @@ const Network = ({ formatData, p, colorSet }) => {
             };
         }
         const sanitizedFormatData = formatData.filter(
+            // @ts-expect-error TS7031
             ({ source, target }) => source && target,
         );
 
         const nodesDic = sanitizedFormatData.reduce(
+            // @ts-expect-error TS7006
             (acc, { source, target }) => ({
                 ...acc,
                 [source]: {
@@ -91,12 +97,16 @@ const Network = ({ formatData, p, colorSet }) => {
         );
 
         const nodes = Object.values(nodesDic);
+        // @ts-expect-error TS2345
         const radiusList = nodes.map(({ radius }) => radius);
+        // @ts-expect-error TS2345
         const max = Math.max(...radiusList);
+        // @ts-expect-error TS2345
         const min = Math.min(...radiusList);
 
         const nodeScale = scaleLinear().domain([min, max]).range([1, 10]);
 
+        // @ts-expect-error TS7031
         const weightList = sanitizedFormatData.map(({ weight }) => weight);
         const maxWeight = Math.max(...weightList);
         const minWeight = Math.min(...weightList);
@@ -105,46 +115,64 @@ const Network = ({ formatData, p, colorSet }) => {
             .domain([minWeight, maxWeight])
             .range([1, 20]);
 
+        // @ts-expect-error TS7031
         const links = sanitizedFormatData.map(({ source, target, weight }) => ({
             source,
             target,
             value: linkScale(weight),
         }));
 
+        // @ts-expect-error TS7006
         links.forEach((link) => {
+            // @ts-expect-error TS18046
             const a = nodes.find((node) => node.id === link.source);
+            // @ts-expect-error TS18046
             const b = nodes.find((node) => node.id === link.target);
+            // @ts-expect-error TS18046
             !a.neighbors && (a.neighbors = []);
+            // @ts-expect-error TS18046
             !b.neighbors && (b.neighbors = []);
+            // @ts-expect-error TS18046
             a.neighbors.push(b);
+            // @ts-expect-error TS18046
             b.neighbors.push(a);
 
+            // @ts-expect-error TS18046
             !a.links && (a.links = []);
+            // @ts-expect-error TS18046
             !b.links && (b.links = []);
+            // @ts-expect-error TS18046
             a.links.push(link);
+            // @ts-expect-error TS18046
             b.links.push(link);
         });
 
         return {
             nodes: nodes.map((node) => ({
+                // @ts-expect-error TS2698
                 ...node,
+                // @ts-expect-error TS18046
                 radius: nodeScale(node.radius),
             })),
             links,
         };
     }, [formatData]);
 
+    // @ts-expect-error TS7006
     const handleNodeHover = (node) => {
         // freeze the chart so that it does not rearrange itself every time we interact with it
         setCooldownTime(0);
         if (selectedNode) {
             if (!node) {
+                // @ts-expect-error TS2322
                 setHighlightedNodes([selectedNode, ...selectedNode.neighbors]);
+                // @ts-expect-error TS2339
                 setHighlightedLinks(selectedNode.links);
                 return;
             }
             if (
                 highlightedNodes.some(
+                    // @ts-expect-error TS2339
                     (highlightedNode) => highlightedNode.id === node.id,
                 )
             ) {
@@ -153,7 +181,9 @@ const Network = ({ formatData, p, colorSet }) => {
 
             setHighlightedNodes([
                 selectedNode,
+                // @ts-expect-error TS2322
                 ...selectedNode.neighbors,
+                // @ts-expect-error TS2322
                 node,
             ]);
             return;
@@ -164,11 +194,14 @@ const Network = ({ formatData, p, colorSet }) => {
             setHighlightedLinks([]);
             return;
         }
+        // @ts-expect-error TS2322
         setHighlightedNodes([node, ...node.neighbors]);
         setHighlightedLinks(node.links);
     };
 
+    // @ts-expect-error TS7006
     const handleNodeClick = (node) => {
+        // @ts-expect-error TS2339
         if (!node || selectedNode?.id === node?.id) {
             setSelectedNode(null);
             setHighlightedNodes([]);
@@ -176,6 +209,7 @@ const Network = ({ formatData, p, colorSet }) => {
             return;
         }
         setSelectedNode(node);
+        // @ts-expect-error TS2322
         setHighlightedNodes([node, ...node.neighbors]);
         setHighlightedLinks(node.links);
     };
@@ -183,6 +217,8 @@ const Network = ({ formatData, p, colorSet }) => {
     return (
         <div style={{ height: `500px`, position: 'relative' }}>
             <FormatFullScreenMode>
+                {/*
+                 // @ts-expect-error TS2322 */}
                 <div style={styles.container} ref={containerRef}>
                     <Suspense
                         fallback={<Loading>{translate('loading')}</Loading>}
@@ -196,6 +232,7 @@ const Network = ({ formatData, p, colorSet }) => {
                                     highlightedNodes.length === 0 ||
                                     highlightedNodes.some(
                                         (highlightNode) =>
+                                            // @ts-expect-error TS2339
                                             highlightNode.id === node.id,
                                     )
                                 ) {
@@ -212,6 +249,7 @@ const Network = ({ formatData, p, colorSet }) => {
                                 ctx.fillStyle = 'black';
                                 ctx.fillText(
                                     node.label,
+                                    // @ts-expect-error TS2345
                                     node.x,
                                     node.y + circleRadius + fontSize,
                                 );
@@ -219,6 +257,7 @@ const Network = ({ formatData, p, colorSet }) => {
                                 ctx.fillStyle = colorSet[0];
                                 ctx.beginPath();
                                 ctx.arc(
+                                    // @ts-expect-error TS2345
                                     node.x,
                                     node.y,
                                     circleRadius,
@@ -233,8 +272,10 @@ const Network = ({ formatData, p, colorSet }) => {
                                 highlightedLinks.length === 0 ||
                                 highlightedLinks.some(
                                     (highlightedLink) =>
+                                        // @ts-expect-error TS2339
                                         highlightedLink.source ===
                                             link.source &&
+                                        // @ts-expect-error TS2339
                                         highlightedLink.target === link.target,
                                 )
                                     ? true
@@ -265,6 +306,7 @@ const Network = ({ formatData, p, colorSet }) => {
 Network.propTypes = {
     colorSet: PropTypes.arrayOf(PropTypes.string),
     formatData: PropTypes.arrayOf({
+        // @ts-expect-error TS2353
         source: PropTypes.string.isRequired,
         target: PropTypes.string.isRequired,
     }),

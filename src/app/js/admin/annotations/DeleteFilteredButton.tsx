@@ -44,6 +44,7 @@ export function DeleteFilteredButton() {
 
     const handleDelete = useCallback(async () => {
         try {
+            // @ts-expect-error TS2345
             await mutateAsync({
                 filterBy: filter?.columnField,
                 filterOperator: filter?.operatorValue,
@@ -52,6 +53,7 @@ export function DeleteFilteredButton() {
 
             apiRef.current.setFilterModel({
                 items: [],
+                // @ts-expect-error TS2322
                 linkOperator: 'and',
             });
         } finally {

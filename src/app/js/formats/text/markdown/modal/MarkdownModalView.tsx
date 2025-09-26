@@ -1,3 +1,4 @@
+// @ts-expect-error TS7016
 import MarkdownIt from 'markdown-it';
 import React, { useMemo, useState } from 'react';
 import Button from '@mui/material/Button';
@@ -16,13 +17,21 @@ import getLabel from '../../../utils/getLabel';
 const markdown = new MarkdownIt();
 
 const MarkdownModalView = ({
+    // @ts-expect-error TS7031
     className,
+    // @ts-expect-error TS7031
     resource,
+    // @ts-expect-error TS7031
     field,
+    // @ts-expect-error TS7031
     fields,
+    // @ts-expect-error TS7031
     type,
+    // @ts-expect-error TS7031
     label,
+    // @ts-expect-error TS7031
     fullScreen,
+    // @ts-expect-error TS7031
     maxWidth,
 }) => {
     const [open, setOpen] = useState(false);

@@ -4,6 +4,7 @@ import SearchStats from './SearchStats';
 import PropTypes from 'prop-types';
 import ExportButton from '../ExportButton';
 
+// @ts-expect-error TS7031
 const SearchResultHeader = ({ displayStats, sortComponent }) => {
     return (
         <Box

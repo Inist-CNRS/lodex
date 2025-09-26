@@ -5,12 +5,14 @@ import PropTypes from 'prop-types';
 
 import { Box, Typography } from '@mui/material';
 import { connect } from 'react-redux';
+// @ts-expect-error TS7016
 import { compose } from 'recompose';
 import { fromFieldPreview } from '../../admin/selectors';
 import { getFieldFormData } from '../selectors';
 import { SCOPE_DATASET } from '../../../../common/scope';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 
+// @ts-expect-error TS7031
 const ValuePreview = ({ lines, editedField, p: polyglot }) => {
     return (
         <Box
@@ -27,6 +29,8 @@ const ValuePreview = ({ lines, editedField, p: polyglot }) => {
                 alignItems="center"
                 mb={4}
             >
+                {/*
+                 // @ts-expect-error TS2769 */}
                 <PreviewIcon mr={1} />
                 <Typography variant="h6">
                     {polyglot.t('value_preview_title')}
@@ -40,6 +44,7 @@ const ValuePreview = ({ lines, editedField, p: polyglot }) => {
             </Box>
             <Box mb={4}>
                 {lines.length > 0 &&
+                    // @ts-expect-error TS7006
                     lines?.map((line, index) => (
                         <Box key={index} mb={3}>
                             <Typography
@@ -74,8 +79,10 @@ const ValuePreview = ({ lines, editedField, p: polyglot }) => {
     );
 };
 
+// @ts-expect-error TS7006
 const mapStateToProps = (state, { scope }) => {
     const editedField = getFieldFormData(state);
+    // @ts-expect-error TS2339
     let lines = fromFieldPreview.getFieldPreview(state);
 
     if (lines.length > 0) {

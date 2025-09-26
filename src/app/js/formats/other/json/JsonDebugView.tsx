@@ -1,4 +1,5 @@
 import React, { lazy, Suspense, useMemo } from 'react';
+// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -10,6 +11,7 @@ import { useTranslate } from '../../../i18n/I18NContext';
 
 const ReactJson = lazy(() => import('react-json-view'));
 
+// @ts-expect-error TS7006
 const JsonDebugView = (props) => {
 
     const { debugMode } = props;
@@ -36,6 +38,7 @@ const JsonDebugView = (props) => {
     );
 };
 
+// @ts-expect-error TS7006
 const mapStateToProps = (state, { formatData }) => {
     if (!formatData) {
         return {

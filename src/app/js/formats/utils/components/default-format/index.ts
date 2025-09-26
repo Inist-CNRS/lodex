@@ -8,6 +8,7 @@ export default {
     ListComponent: DefaultView,
     AdminComponent: DefaultAdmin,
     EditionComponent: DefaultEdition,
+    // @ts-expect-error TS7006
     predicate: (value) =>
         value == null ||
         value === '' ||

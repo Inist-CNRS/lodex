@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { translate } from '../../../../i18n/I18NContext';
+// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import SparqlRequest from '../SparqlRequest';
 import { isURL } from '../../../../../../common/uris';
 import { field as fieldPropTypes } from '../../../../propTypes';
 import URL from 'url';
+// @ts-expect-error TS7016
 import toPairs from 'lodash/toPairs';
+// @ts-expect-error TS7016
 import toSentenceCase from 'js-sentencecase';
 import { getViewComponent } from '../../../index';
 import Link from '../../../../lib/components/Link';
@@ -67,8 +70,11 @@ const styles = {
 };
 
 export class SparqlTextField extends Component {
+    // @ts-expect-error TS7006
     renderSubformatComponent = (attrData, subformat) => {
+        // @ts-expect-error TS2339
         const { field } = this.props;
+        // @ts-expect-error TS2554
         const { ViewComponent, args } = getViewComponent(subformat.sub);
         return (
             <ViewComponent
@@ -87,9 +93,12 @@ export class SparqlTextField extends Component {
         );
     };
 
+    // @ts-expect-error TS7006
     renderAttributeFormat = (attrName, attrData) => {
+        // @ts-expect-error TS2339
         const { sparql } = this.props;
 
+        // @ts-expect-error TS7006
         const subFormat = sparql.subformat.find((data) => {
             return attrName === data.attribute.trim().replace(/^\?/, '');
         });
@@ -101,16 +110,22 @@ export class SparqlTextField extends Component {
         return this.renderDefaultAttributeFormat(attrData);
     };
 
+    // @ts-expect-error TS7006
     renderDefaultAttributeFormat = (attrData) => {
+        // @ts-expect-error TS2339
         const { className, sparql } = this.props;
 
         if (attrData.value.includes(sparql.separator)) {
             const values = attrData.value.split(sparql.separator);
             return (
                 <ul
+                    // @ts-expect-error TS2695
                     className={('value_sparql_array', className)}
+                    // @ts-expect-error TS2322
                     style={styles.array}
                 >
+                    {/*
+                     // @ts-expect-error TS7006 */}
                     {values.map((data, key) => (
                         <li key={key}>
                             {this.renderAttributeValue(data, attrData.type)}
@@ -127,13 +142,16 @@ export class SparqlTextField extends Component {
         );
     };
 
+    // @ts-expect-error TS7006
     renderAttributeValue = (value, type) => {
         if (isURL(value) && type === 'uri') {
+            // @ts-expect-error TS2739
             return <Link href={value}>{value}</Link>;
         }
         return <span>{value}</span>;
     };
 
+    // @ts-expect-error TS7006
     renderLang = (attrData) => {
         if (attrData['xml:lang'] !== undefined) {
             return <span>{attrData['xml:lang']}</span>;
@@ -142,6 +160,7 @@ export class SparqlTextField extends Component {
     };
 
     render() {
+        // @ts-expect-error TS2339
         const { className, formatData } = this.props;
         if (!formatData) {
             return null;
@@ -149,10 +168,13 @@ export class SparqlTextField extends Component {
 
         return (
             <div className={className}>
+                {/*
+                 // @ts-expect-error TS7006 */}
                 {formatData.results.bindings.map((result, key) => {
                     return (
                         <div key={key} style={styles.container2}>
                             {toPairs(result).map(
+                                // @ts-expect-error TS7031
                                 ([attrName, attrData], index) => {
                                     if (!attrData.value) {
                                         return;
@@ -162,6 +184,7 @@ export class SparqlTextField extends Component {
                                             <div style={styles.id}>
                                                 <span
                                                     className="label_sparql"
+                                                    // @ts-expect-error TS2322
                                                     style={styles.label}
                                                 >
                                                     {toSentenceCase(attrName)}
@@ -174,6 +197,7 @@ export class SparqlTextField extends Component {
                                             )}
                                             <div
                                                 className="lang_sparql property_language"
+                                                // @ts-expect-error TS2322
                                                 style={styles.lang}
                                             >
                                                 {this.renderLang(attrData)}
@@ -190,6 +214,7 @@ export class SparqlTextField extends Component {
     }
 }
 
+// @ts-expect-error TS2339
 SparqlTextField.propTypes = {
     className: PropTypes.string,
     formatData: PropTypes.object,
@@ -198,12 +223,14 @@ SparqlTextField.propTypes = {
     resource: PropTypes.object.isRequired,
 };
 
+// @ts-expect-error TS2339
 SparqlTextField.defaultProps = {
     className: null,
 };
 
 export default compose(
     translate,
+    // @ts-expect-error TS7031
     SparqlRequest(({ field, resource, sparql }) => {
         const value = resource[field.name];
         if (!value) {

@@ -1,5 +1,7 @@
 import React from 'react';
+// @ts-expect-error TS7016
 import { shallow } from 'enzyme';
+// @ts-expect-error TS7016
 import { Field } from 'redux-form';
 
 import Alert from '../lib/components/Alert';
@@ -16,6 +18,7 @@ describe('<LoginForm />', () => {
     it('should render error', () => {
         const wrapper = shallow(
             <LoginFormComponent
+                // @ts-expect-error TS7006
                 p={{ t: (l) => l }}
                 error="Foo"
                 handleSubmit={() => {}}

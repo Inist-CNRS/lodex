@@ -19,11 +19,13 @@ export const defaultArgs = {
     debugMode: false,
 };
 
+// @ts-expect-error TS7006
 const JsonDebugAdmin = (props) => {
     const { args, p, showMaxSize, showMaxValue, showMinValue, showOrderBy } =
         props;
     const { params, debugMode } = args;
 
+    // @ts-expect-error TS7006
     const handleParams = (params) => {
         updateAdminArgs('params', params, props);
     };
@@ -34,7 +36,11 @@ const JsonDebugAdmin = (props) => {
 
     return (
         <FormatGroupedFieldSet>
+            {/*
+             // @ts-expect-error TS2322 */}
             <FormatDataParamsFieldSet>
+                {/*
+                 // @ts-expect-error TS2322 */}
                 <RoutineParamsAdmin
                     params={params || defaultArgs.params}
                     onChange={handleParams}
@@ -45,7 +51,11 @@ const JsonDebugAdmin = (props) => {
                     showOrderBy={showOrderBy}
                 />
             </FormatDataParamsFieldSet>
+            {/*
+             // @ts-expect-error TS2322 */}
             <FormatDefaultParamsFieldSet defaultExpanded>
+                {/*
+                 // @ts-expect-error TS2322 */}
                 <FormGroup>
                     <FormControlLabel
                         control={

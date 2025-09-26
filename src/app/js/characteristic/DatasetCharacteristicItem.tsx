@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+// @ts-expect-error TS7016
 import camelCase from 'lodash/camelCase';
 import { connect } from 'react-redux';
 import { useInView } from 'react-intersection-observer';
@@ -22,8 +23,11 @@ const styles = {
 };
 
 export const DatasetCharacteristicItemComponent = ({
+    // @ts-expect-error TS7031
     resource,
+    // @ts-expect-error TS7031
     field,
+    // @ts-expect-error TS7031
     style,
 }) => {
     const [ref, inView] = useInView({
@@ -54,10 +58,13 @@ DatasetCharacteristicItemComponent.propTypes = {
     style: PropTypes.shape({}).isRequired,
 };
 
+// @ts-expect-error TS7006
 const mapStateToProps = (state, { characteristic: { name } }) => ({
+    // @ts-expect-error TS2339
     field: fromFields.getFieldByName(state, name),
     resource: {
         name,
+        // @ts-expect-error TS2339
         ...fromCharacteristic.getCharacteristicsAsResource(state),
     },
 });

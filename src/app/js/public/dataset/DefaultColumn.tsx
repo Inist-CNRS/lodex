@@ -7,6 +7,7 @@ import Format from '../Format';
 import { field as fieldPropTypes } from '../../propTypes';
 import getFieldClassName from '../../lib/getFieldClassName';
 
+// @ts-expect-error TS7031
 const DatasetColumn = ({ column, columns, resource }) => (
     <TableCell
         className={classnames(
@@ -15,6 +16,7 @@ const DatasetColumn = ({ column, columns, resource }) => (
         )}
     >
         <Format
+            // @ts-expect-error TS2322
             isList
             field={column}
             fields={columns}

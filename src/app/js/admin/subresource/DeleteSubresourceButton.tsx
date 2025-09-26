@@ -1,15 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, Dialog, DialogTitle, DialogActions } from '@mui/material';
+// @ts-expect-error TS7016
 import { compose, withState } from 'recompose';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import CancelButton from '../../lib/components/CancelButton';
 import { translate } from '../../i18n/I18NContext';
 
 export const DeleteSubresourceButtonComponent = ({
+    // @ts-expect-error TS7031
     p: polyglot,
+    // @ts-expect-error TS7031
     onClick,
+    // @ts-expect-error TS7031
     showDeletePopup,
+    // @ts-expect-error TS7031
     setShowDeletePopup,
 }) => (
     <>

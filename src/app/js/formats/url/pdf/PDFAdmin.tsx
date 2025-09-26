@@ -24,23 +24,32 @@ class PDFAdmin extends Component {
         args: defaultArgs,
     };
 
+    // @ts-expect-error TS7006
     handleWidth = (PDFWidth) => {
         const newArgs = {
+            // @ts-expect-error TS2339
             ...this.props.args,
             PDFWidth,
         };
+        // @ts-expect-error TS2339
         this.props.onChange(newArgs);
     };
 
     render() {
         const {
+            // @ts-expect-error TS2339
             p: polyglot,
+            // @ts-expect-error TS2339
             args: { PDFWidth },
         } = this.props;
 
         return (
             <FormatGroupedFieldSet>
+                {/*
+                 // @ts-expect-error TS2322 */}
                 <FormatDefaultParamsFieldSet defaultExpanded>
+                    {/*
+                     // @ts-expect-error TS2322 */}
                     <TextField
                         fullWidth
                         select

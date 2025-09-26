@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import PropTypes from 'prop-types';
 import { Autocomplete, Box, TextField } from '@mui/material';
@@ -10,10 +11,15 @@ import { translate } from '../../i18n/I18NContext';
 import { fromI18n } from '../../public/selectors';
 
 const SourceValueFromColumnsForSubResource = ({
+    // @ts-expect-error TS7031
     datasetFields,
+    // @ts-expect-error TS7031
     p: polyglot,
+    // @ts-expect-error TS7031
     updateDefaultValueTransformers,
+    // @ts-expect-error TS7031
     value,
+    // @ts-expect-error TS7031
     subresourcePath,
 }) => {
     const [autocompleteValue, setAutocompleteValue] = React.useState(value);
@@ -22,6 +28,7 @@ const SourceValueFromColumnsForSubResource = ({
         setAutocompleteValue(value);
     }, [value]);
 
+    // @ts-expect-error TS7006
     const handleChange = (event, value) => {
         setAutocompleteValue(value);
         updateDefaultValueTransformers([
@@ -71,12 +78,15 @@ const SourceValueFromColumnsForSubResource = ({
     );
 };
 
+// @ts-expect-error TS7006
 export const mapStateToProps = (state, { selectedSubresourceUri }) => {
     const { subresources } = state.subresource;
 
     const subresource = subresources.find(
+        // @ts-expect-error TS7006
         (s) => s._id === selectedSubresourceUri,
     );
+    // @ts-expect-error TS2339
     const [firstParsedLine] = fromParsing.getExcerptLines(state);
 
     if (!subresource || !firstParsedLine) {
@@ -92,6 +102,7 @@ export const mapStateToProps = (state, { selectedSubresourceUri }) => {
                     ? subresourceData[0]
                     : subresourceData) || {},
             ),
+            // @ts-expect-error TS2339
             ...[fromI18n.getPhrases(state)['other']],
         ].sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase())),
         subresourcePath: subresource.path,

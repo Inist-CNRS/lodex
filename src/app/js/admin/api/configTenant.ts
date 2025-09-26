@@ -18,6 +18,7 @@ export const getConfigTenant = () => {
     return fetch(request);
 };
 
+// @ts-expect-error TS7006
 export const updateConfigTenant = (configTenant) => {
     const { token } = getUserSessionStorageInfo();
     const request = getUpdateConfigTenantRequest({ token }, configTenant);

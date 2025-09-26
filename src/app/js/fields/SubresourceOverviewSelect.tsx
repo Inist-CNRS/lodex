@@ -1,4 +1,5 @@
 import React, { useMemo } from 'react';
+// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -15,18 +16,24 @@ import FieldRepresentation from './FieldRepresentation';
 import { translate } from '../i18n/I18NContext';
 
 export const SubresourceOverviewSelectComponent = ({
+    // @ts-expect-error TS7031
     p: polyglot,
+    // @ts-expect-error TS7031
     fields,
+    // @ts-expect-error TS7031
     loadField,
+    // @ts-expect-error TS7031
     subresourceId,
 }) => {
     const subresourceTitle = useMemo(() => {
         const subresourceTitleField = fields.find(
+            // @ts-expect-error TS7006
             (field) => field.overview === overview.SUBRESOURCE_TITLE,
         );
         return subresourceTitleField?._id;
     }, [fields]);
 
+    // @ts-expect-error TS7006
     const handleSubresourceTitleChange = async (event) => {
         const { value: _id } = event.target;
         await fieldApi.patchOverview({
@@ -47,6 +54,7 @@ export const SubresourceOverviewSelectComponent = ({
             SelectProps={{
                 renderValue: (option) => (
                     <FieldRepresentation
+                        // @ts-expect-error TS7006
                         field={fields.find((f) => f._id === option)}
                         shortMode
                     />
@@ -54,6 +62,8 @@ export const SubresourceOverviewSelectComponent = ({
             }}
         >
             <MenuItem value={undefined}>{polyglot.t('none')}</MenuItem>
+            {/*
+             // @ts-expect-error TS7006 */}
             {fields.map((field) => (
                 <MenuItem
                     sx={{
@@ -78,7 +88,9 @@ SubresourceOverviewSelectComponent.propTypes = {
     subresourceId: PropTypes.string.isRequired,
 };
 
+// @ts-expect-error TS7006
 const mapStateToProps = (state, { subresourceId }) => ({
+    // @ts-expect-error TS2339
     fields: fromFields.getEditingFields(state, { subresourceId }),
 });
 

@@ -13,6 +13,7 @@ const Button = styled(MuiButton)(({ theme }) => {
     };
 });
 
+// @ts-expect-error TS7006
 const CancelButton = (props) => {
     return <Button disableRipple {...props} />;
 };

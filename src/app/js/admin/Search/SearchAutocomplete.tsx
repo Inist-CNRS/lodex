@@ -7,7 +7,6 @@ import {
     MenuItem,
     TextField,
 } from '@mui/material';
-import React from 'react';
 
 import PropTypes from 'prop-types';
 import FieldRepresentation from '../../fields/FieldRepresentation';
@@ -16,6 +15,7 @@ import { filterOptions } from './searchUtils';
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
+// @ts-expect-error TS7006
 const renderItem = (props, option) => {
     return (
         <MenuItem
@@ -33,6 +33,7 @@ const renderItem = (props, option) => {
     );
 };
 
+// @ts-expect-error TS7006
 const renderCheckboxItem = (props, option, selected) => {
     return (
         <li key={option._id} {...props}>
@@ -49,9 +50,13 @@ const renderCheckboxItem = (props, option, selected) => {
 
 const SearchAutocomplete = ({
     testId = 'search-autocomplete',
+    // @ts-expect-error TS7031
     fields,
+    // @ts-expect-error TS7031
     onChange,
+    // @ts-expect-error TS7031
     value,
+    // @ts-expect-error TS7031
     translation,
     multiple = false,
     clearText = 'Clear',
@@ -76,6 +81,7 @@ const SearchAutocomplete = ({
                     disabled={isLoading}
                 />
             )}
+            // @ts-expect-error TS2322
             getOptionLabel={(option) =>
                 `${option.label} ${option.name && `[${option.name}]`}  `
             }

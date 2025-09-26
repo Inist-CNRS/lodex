@@ -1,7 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
+// @ts-expect-error TS7016
 import { Field } from 'redux-form';
 import { MenuItem, Box } from '@mui/material';
 
@@ -10,11 +12,17 @@ import FormAutoCompleteField from '../lib/components/FormAutoCompleteField';
 import { translate } from '../i18n/I18NContext';
 
 export const FieldSchemeInputComponent = ({
+    // @ts-expect-error TS7031
     className,
+    // @ts-expect-error TS7031
     name,
+    // @ts-expect-error TS7031
     disabled,
+    // @ts-expect-error TS7031
     p: polyglot,
+    // @ts-expect-error TS7031
     getSchemeSearchRequest,
+    // @ts-expect-error TS7031
     getSchemeMenuItemsDataFromResponse,
 }) => (
     <Field
@@ -30,8 +38,10 @@ export const FieldSchemeInputComponent = ({
             horizontal: 'left',
         }}
         getFetchRequest={getSchemeSearchRequest}
+        // @ts-expect-error TS7006
         parseResponse={(response) =>
             getSchemeMenuItemsDataFromResponse(response).map(
+                // @ts-expect-error TS7031
                 ({ label, uri }) => ({
                     text: uri,
                     value: (
@@ -85,11 +95,14 @@ FieldSchemeInputComponent.propTypes = {
 };
 
 const mapStateToProps = () => ({
+    // @ts-expect-error TS7006
     getSchemeSearchRequest: (query) => ({
         url: `https://lov.linkeddata.es/dataset/lov/api/v2/term/search?q=${query}`,
     }),
+    // @ts-expect-error TS7006
     getSchemeMenuItemsDataFromResponse: (response) =>
         response && response.results
+            // @ts-expect-error TS7006
             ? response.results.map((r) => ({
                   label: r.prefixedName[0],
                   uri: r.uri[0],

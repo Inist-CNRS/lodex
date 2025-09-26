@@ -4,22 +4,27 @@ import { LABEL_ASC, LABEL_DESC } from '../../utils/chartsUtils';
 describe('HeatMap', () => {
     it('Test flipAxis', function () {
         let heatMap = new HeatMap();
+        // @ts-expect-error TS2339
         expect(heatMap.flip).toBe(false);
 
         heatMap.flipAxis(true);
+        // @ts-expect-error TS2339
         expect(heatMap.flip).toBe(true);
     });
 
     it('Test OrderBy', function () {
         let heatMap = new HeatMap();
+        // @ts-expect-error TS2339
         expect(heatMap.orderBy).toBe(LABEL_ASC);
 
         heatMap.setOrderBy(LABEL_DESC);
+        // @ts-expect-error TS2339
         expect(heatMap.orderBy).toBe(LABEL_DESC);
     });
 
     it('Test Tooltip', function () {
         let heatMap = new HeatMap();
+        // @ts-expect-error TS2339
         expect(heatMap.tooltip).toStrictEqual({
             toggle: false,
             source: {
@@ -44,6 +49,7 @@ describe('HeatMap', () => {
         heatMap.setTooltipCategory('TestSource');
         heatMap.setTooltip(true);
 
+        // @ts-expect-error TS2339
         expect(heatMap.tooltip).toStrictEqual({
             toggle: true,
             source: {
@@ -66,6 +72,7 @@ describe('HeatMap', () => {
 
     it('build', function () {
         let heatMap = new HeatMap();
+        // @ts-expect-error TS2554
         expect(heatMap.buildSpec(400)).toStrictEqual({
             background: 'transparent',
             config: {

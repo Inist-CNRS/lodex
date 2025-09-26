@@ -7,6 +7,7 @@ import {
 } from '../../user';
 import { getUserSessionStorageInfo } from './tools';
 
+// @ts-expect-error TS7006
 export const getPreviewEnrichment = (previewEnrichment) => {
     const { token } = getUserSessionStorageInfo();
     const request = getPreviewDataEnrichmentRequest(
@@ -16,18 +17,21 @@ export const getPreviewEnrichment = (previewEnrichment) => {
     return fetch(request);
 };
 
+// @ts-expect-error TS7006
 export const createEnrichment = (enrichment) => {
     const { token } = getUserSessionStorageInfo();
     const request = getCreateEnrichmentRequest({ token }, enrichment);
     return fetch(request);
 };
 
+// @ts-expect-error TS7006
 export const updateEnrichment = (enrichment) => {
     const { token } = getUserSessionStorageInfo();
     const request = getUpdateEnrichmentRequest({ token }, enrichment);
     return fetch(request);
 };
 
+// @ts-expect-error TS7006
 export const deleteEnrichment = (id) => {
     const { token } = getUserSessionStorageInfo();
     const request = getDeleteEnrichmentRequest({ token }, id);
