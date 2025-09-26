@@ -49,11 +49,7 @@ const ParallelCoordinatesChartAdmin = ({
 
     return (
         <FormatGroupedFieldSet>
-            {/*
-             // @ts-expect-error TS2322 */}
             <FormatDataParamsFieldSet>
-                {/*
-                 // @ts-expect-error TS2322 */}
                 <RoutineParamsAdmin
                     params={args.params}
                     onChange={handleParams}
@@ -64,11 +60,7 @@ const ParallelCoordinatesChartAdmin = ({
                     showOrderBy={false}
                 />
             </FormatDataParamsFieldSet>
-            {/*
-             // @ts-expect-error TS2322 */}
             <FormatChartParamsFieldSet defaultExpanded>
-                {/*
-                 // @ts-expect-error TS2322 */}
                 <ColorPickerParamsAdmin
                     colors={args.colors}
                     onChange={handleColors}

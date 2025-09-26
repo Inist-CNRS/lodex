@@ -6,12 +6,9 @@ import { translate } from '../../i18n/I18NContext';
 import compose from 'recompose/compose';
 import { CardActions } from '@mui/material';
 import { grey } from '@mui/material/colors';
-// @ts-expect-error TS7016
 import memoize from 'lodash/memoize';
-// @ts-expect-error TS7016
 import camelCase from 'lodash/camelCase';
 import { Helmet } from 'react-helmet';
-// @ts-expect-error TS7016
 import get from 'lodash/get';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
@@ -92,7 +89,6 @@ const styles = {
         fontSize: '0.75em',
         alignSelf: 'flex-end',
     },
-    // @ts-expect-error TS7006
     language: memoize((hide) => ({
         marginRight: '1rem',
         fontSize: '0.6em',
@@ -234,10 +230,10 @@ const mapStateToProps = (state) => {
 
     const titleKey =
         resource && resource.subresourceId
-            // @ts-expect-error TS2339
-            ? fromFields.getSubresourceTitleFieldName(state)
-            // @ts-expect-error TS2339
-            : fromFields.getResourceTitleFieldName(state);
+            ? // @ts-expect-error TS2339
+              fromFields.getSubresourceTitleFieldName(state)
+            : // @ts-expect-error TS2339
+              fromFields.getResourceTitleFieldName(state);
 
     // @ts-expect-error TS2339
     const descriptionKey = fromFields.getResourceDescriptionFieldName(state);

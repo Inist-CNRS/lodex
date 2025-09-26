@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 // @ts-expect-error TS7016
 import compose from 'recompose/compose';
-// @ts-expect-error TS7016
 import { clamp } from 'lodash';
 // @ts-expect-error TS7016
 import { schemeOrRd } from 'd3-scale-chromatic';

@@ -11,7 +11,6 @@ import {
 import BasicChart from './BasicChart';
 import barChartVL from './json/bar_chart.vl.json';
 import barChartLabelsVL from './json/bar_chart_labels.vl.json';
-// @ts-expect-error TS7016
 import deepClone from 'lodash/cloneDeep';
 
 class BarChart extends BasicChart {
@@ -187,9 +186,9 @@ class BarChart extends BasicChart {
      */
     buildSpec() {
         // @ts-expect-error TS2339
-        let model = this.model;
+        const model = this.model;
         // @ts-expect-error TS2339
-        let labelsModel = this.labelsModel;
+        const labelsModel = this.labelsModel;
         // @ts-expect-error TS2339
         model.encoding.color.scale.range = this.colors;
         // @ts-expect-error TS2339

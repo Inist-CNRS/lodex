@@ -58,18 +58,12 @@ const ClearDialogComponent = (props) => {
             }
             window.location.reload();
         }
-    }, [succeeded]);
+    }, [succeeded, type]);
 
     // @ts-expect-error TS7006
     const handleChangeField = (e) => {
         setValidName(e.target.value === instanceName);
     };
-
-    // @ts-expect-error TS7006
-    const handleClear = (type) =>
-        (type === 'dataset' && handleClearDataset) ||
-        (type === 'published' && handleClearPublished) ||
-        (type === 'model' && handleClearModel);
 
     const handleClearDataset = () => {
         props.clearDataset();
@@ -102,6 +96,12 @@ const ClearDialogComponent = (props) => {
     };
 
     // @ts-expect-error TS7006
+    const handleClear = (type) =>
+        (type === 'dataset' && handleClearDataset) ||
+        (type === 'published' && handleClearPublished) ||
+        (type === 'model' && handleClearModel);
+
+    // @ts-expect-error TS7006
     const handleKeyPress = (e, type) => {
         if (e.key !== 'Enter' || !validName) {
             return null;
@@ -120,8 +120,6 @@ const ClearDialogComponent = (props) => {
         <CancelButton key="cancel" className="btn-cancel" onClick={onClose}>
             {translate('cancel')}
         </CancelButton>,
-        {/*
-         // @ts-expect-error TS2739 */}
         <ButtonWithStatus
             raised
             key="submit"
@@ -131,6 +129,9 @@ const ClearDialogComponent = (props) => {
             error={hasFailed}
             disabled={!validName}
             loading={isLoading}
+            success={undefined}
+            progress={undefined}
+            target={undefined}
         >
             {translate('confirm')}
         </ButtonWithStatus>,

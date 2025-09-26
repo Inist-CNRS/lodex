@@ -15,7 +15,6 @@ import withHandlers from 'recompose/withHandlers';
 import { connect } from 'react-redux';
 // @ts-expect-error TS7016
 import { formValueSelector } from 'redux-form';
-// @ts-expect-error TS7016
 import get from 'lodash/get';
 
 import { FIELD_FORM_NAME } from '..';
@@ -141,64 +140,70 @@ export default compose(
     withHandlers({
         handleSelect:
             // @ts-expect-error TS7031
-            ({ onChange }) =>
-            () => {
-                onChange({
-                    operation: 'CONCAT_URI',
-                    args: [
-                        {
-                            name: 'separator',
-                            type: 'string',
-                            value: '',
-                        },
-                        {
-                            name: 'column',
-                            type: 'column',
-                            value: '',
-                        },
-                        {
-                            name: 'column',
-                            type: 'column',
-                            value: '',
-                        },
-                    ],
-                });
-            },
+
+
+                ({ onChange }) =>
+                () => {
+                    onChange({
+                        operation: 'CONCAT_URI',
+                        args: [
+                            {
+                                name: 'separator',
+                                type: 'string',
+                                value: '',
+                            },
+                            {
+                                name: 'column',
+                                type: 'column',
+                                value: '',
+                            },
+                            {
+                                name: 'column',
+                                type: 'column',
+                                value: '',
+                            },
+                        ],
+                    });
+                },
         handleChange:
             // @ts-expect-error TS7031
-            ({ onChange, args }) =>
-            // @ts-expect-error TS7006
-            (value, event, key, index) => {
-                onChange({
-                    operation: 'CONCAT_URI',
-                    args: [
-                        ...args.slice(0, index + 1),
-                        {
-                            name: 'column',
-                            type: 'column',
-                            value,
-                        },
-                        ...args.slice(index + 2),
-                    ],
-                });
-            },
+
+
+                ({ onChange, args }) =>
+                // @ts-expect-error TS7006
+                (value, event, key, index) => {
+                    onChange({
+                        operation: 'CONCAT_URI',
+                        args: [
+                            ...args.slice(0, index + 1),
+                            {
+                                name: 'column',
+                                type: 'column',
+                                value,
+                            },
+                            ...args.slice(index + 2),
+                        ],
+                    });
+                },
         handleSeparatorChange:
             // @ts-expect-error TS7031
-            ({ onChange, args }) =>
-            // @ts-expect-error TS7006
-            (event) => {
-                onChange({
-                    operation: 'CONCAT_URI',
-                    args: [
-                        {
-                            name: 'separator',
-                            type: 'string',
-                            value: event.target.value,
-                        },
-                        ...args.slice(1),
-                    ],
-                });
-            },
+
+
+                ({ onChange, args }) =>
+                // @ts-expect-error TS7006
+                (event) => {
+                    onChange({
+                        operation: 'CONCAT_URI',
+                        args: [
+                            {
+                                name: 'separator',
+                                type: 'string',
+                                value: event.target.value,
+                            },
+                            ...args.slice(1),
+                        ],
+                    });
+                },
         // @ts-expect-error TS7031
         handleAddColumn: ({ onChange, args }) => {
             onChange({
@@ -215,17 +220,19 @@ export default compose(
         },
         handleRemoveColumn:
             // @ts-expect-error TS7031
-            ({ onChange, args }) =>
-            // @ts-expect-error TS7006
-            (index) => {
-                onChange({
-                    operation: 'CONCAT_URI',
-                    args: [
-                        ...args.slice(0, index + 1),
-                        ...args.slice(index + 2),
-                    ],
-                });
-            },
+
+
+                ({ onChange, args }) =>
+                // @ts-expect-error TS7006
+                (index) => {
+                    onChange({
+                        operation: 'CONCAT_URI',
+                        args: [
+                            ...args.slice(0, index + 1),
+                            ...args.slice(index + 2),
+                        ],
+                    });
+                },
     }),
     translate,
 )(UriConcatComponent);

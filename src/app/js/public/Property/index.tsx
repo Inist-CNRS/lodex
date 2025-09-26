@@ -1,8 +1,6 @@
 import { grey } from '@mui/material/colors';
 import classnames from 'classnames';
-// @ts-expect-error TS7016
 import get from 'lodash/get';
-// @ts-expect-error TS7016
 import memoize from 'lodash/memoize';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -50,7 +48,6 @@ import {
 
 const styles = {
     container: memoize(
-        // @ts-expect-error TS7006
         (style, width) => ({
             display: 'flex',
             flexDirection: 'column',
@@ -64,7 +61,6 @@ const styles = {
             },
             ...style,
         }),
-        // @ts-expect-error TS7006
         (style, value) => ({ style, value }),
     ),
     // @ts-expect-error TS7006

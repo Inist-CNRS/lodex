@@ -1,7 +1,6 @@
 import BasicChart from './BasicChart';
 import { LABEL_ASC, LABEL_DESC } from '../../utils/chartsUtils';
 import heatmapVL from './json/heatmap.vl.json';
-// @ts-expect-error TS7016
 import deepClone from 'lodash/cloneDeep';
 
 class HeatMap extends BasicChart {

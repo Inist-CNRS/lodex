@@ -150,11 +150,7 @@ const BubblePlotAdmin = (props) => {
 
     return (
         <FormatGroupedFieldSet>
-            {/*
-             // @ts-expect-error TS2322 */}
             <FormatDataParamsFieldSet>
-                {/*
-                 // @ts-expect-error TS2322 */}
                 <RoutineParamsAdmin
                     params={params || defaultArgs.params}
                     polyglot={polyglot}
@@ -165,11 +161,7 @@ const BubblePlotAdmin = (props) => {
                     showOrderBy={showOrderBy}
                 />
             </FormatDataParamsFieldSet>
-            {/*
-             // @ts-expect-error TS2322 */}
             <FormatChartParamsFieldSet defaultExpanded>
-                {/*
-                 // @ts-expect-error TS2322 */}
                 <FormGroup>
                     <FormControlLabel
                         control={
@@ -181,8 +173,6 @@ const BubblePlotAdmin = (props) => {
                         label={polyglot.t('advancedMode')}
                     />
                 </FormGroup>
-                {/*
-                 // @ts-expect-error TS2322 */}
                 {advancedMode ? (
                     <VegaAdvancedMode
                         value={spec}
@@ -219,15 +209,11 @@ const BubblePlotAdmin = (props) => {
                         />
                     </>
                 )}
-                {/*
-                 // @ts-expect-error TS2322 */}
                 <AspectRatioSelector
                     value={aspectRatio}
                     onChange={handleAspectRatio}
                 />
             </FormatChartParamsFieldSet>
-            {/*
-             // @ts-expect-error TS2322 */}
             <VegaFieldPreview
                 args={args}
                 PreviewComponent={BubblePlotAdminView}
