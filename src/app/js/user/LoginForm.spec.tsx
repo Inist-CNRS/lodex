@@ -1,5 +1,4 @@
 import React from 'react';
-// @ts-expect-error TS7016
 import { shallow } from 'enzyme';
 // @ts-expect-error TS7016
 import { Field } from 'redux-form';
@@ -10,6 +9,7 @@ import { LoginFormComponent } from './LoginForm';
 describe('<LoginForm />', () => {
     it('should render', () => {
         const wrapper = shallow(
+            // @ts-expect-error TS7006
             <LoginFormComponent p={{ t: () => {} }} handleSubmit={() => {}} />,
         );
         expect(wrapper).toHaveLength(1);
@@ -17,6 +17,7 @@ describe('<LoginForm />', () => {
 
     it('should render error', () => {
         const wrapper = shallow(
+            // @ts-expect-error TS7006
             <LoginFormComponent
                 // @ts-expect-error TS7006
                 p={{ t: (l) => l }}
@@ -31,6 +32,7 @@ describe('<LoginForm />', () => {
 
     it('should render a Field for username', () => {
         const wrapper = shallow(
+            // @ts-expect-error TS7006
             <LoginFormComponent p={{ t: () => {} }} handleSubmit={() => {}} />,
         );
         const textField = wrapper.find(Field).at(0);
@@ -40,6 +42,7 @@ describe('<LoginForm />', () => {
 
     it('should render a Field for password', () => {
         const wrapper = shallow(
+            // @ts-expect-error TS7006
             <LoginFormComponent p={{ t: () => {} }} handleSubmit={() => {}} />,
         );
         const textField = wrapper.find(Field).at(1);

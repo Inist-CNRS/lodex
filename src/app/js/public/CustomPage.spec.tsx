@@ -1,5 +1,4 @@
 import React from 'react';
-// @ts-expect-error TS7016
 import { shallow } from 'enzyme';
 import { CircularProgress } from '@mui/material';
 
@@ -25,6 +24,7 @@ describe('getCustomPage CustomPage', () => {
     it('should render spinner at first', () => {
         // @ts-expect-error TS2339
         fetch.mockImplementation(() => Promise.resolve({ response: {} }));
+        // @ts-expect-error TS2769
         const wrapper = shallow(<CustomPage {...defaultProps} />);
         expect(wrapper.find(CircularProgress)).toHaveLength(1);
     });
@@ -38,6 +38,7 @@ describe('getCustomPage CustomPage', () => {
         });
         // @ts-expect-error TS2339
         fetch.mockImplementation(() => response);
+        // @ts-expect-error TS2769
         const wrapper = shallow(<CustomPage {...defaultProps} />);
         expect(fetch).toHaveBeenCalledWith({
             url: '/customPage/?page=custom%2Fpage',
@@ -51,7 +52,6 @@ describe('getCustomPage CustomPage', () => {
         const scripts = wrapper.find('script');
         expect(scripts).toHaveLength(2);
         const expectedScripts = ['/script.js', '/other/script.js'];
-        // @ts-expect-error TS7006
         scripts.forEach((script, index) =>
             expect(script.prop('src')).toEqual(expectedScripts[index]),
         );
@@ -62,6 +62,7 @@ describe('getCustomPage CustomPage', () => {
         const response = Promise.resolve({ error: new Error('nope') });
         // @ts-expect-error TS2339
         fetch.mockImplementation(() => response);
+        // @ts-expect-error TS2769
         const wrapper = shallow(<CustomPage {...defaultProps} />);
         expect(fetch).toHaveBeenCalledWith({
             url: '/customPage/?page=custom%2Fpage',

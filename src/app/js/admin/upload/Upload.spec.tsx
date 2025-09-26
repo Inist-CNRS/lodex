@@ -1,5 +1,4 @@
 import React from 'react';
-// @ts-expect-error TS7016
 import { shallow } from 'enzyme';
 import { Button } from '@mui/material';
 import Alert from '../../lib/components/Alert';
@@ -24,6 +23,7 @@ describe('<Upload />', () => {
 
         expect(
             wrapper.contains(
+                // @ts-expect-error TS2345
                 <Alert>
                     <p>Error uploading given file: </p>
                     <p>{props.error}</p>
@@ -46,6 +46,7 @@ describe('<Upload />', () => {
 
         expect(
             wrapper.contains(
+                // @ts-expect-error TS2345
                 <Alert>
                     <p>Error uploading given file: </p>
                     <p>{props.error}</p>

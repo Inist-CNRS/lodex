@@ -1,5 +1,4 @@
 import React from 'react';
-// @ts-expect-error TS7016
 import { shallow } from 'enzyme';
 // @ts-expect-error TS7016
 import { StyleSheetTestUtils } from 'aphrodite';
@@ -33,6 +32,7 @@ describe('MenuItem', () => {
 
     it('should translate label based on currentLocate fr', () => {
         const wrapper = shallow(
+            // @ts-expect-error TS2769
             <MenuItem
                 {...defaultProps}
                 config={{
@@ -52,6 +52,7 @@ describe('MenuItem', () => {
 
     it('should translate label based on currentLocate en', () => {
         const wrapper = shallow(
+            // @ts-expect-error TS2769
             <MenuItem
                 {...defaultProps}
                 config={{

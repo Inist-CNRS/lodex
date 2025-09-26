@@ -1,5 +1,4 @@
 import React from 'react';
-// @ts-expect-error TS7016
 import { shallow } from 'enzyme';
 // @ts-expect-error TS7016
 import { StyleSheetTestUtils } from 'aphrodite';
@@ -25,6 +24,7 @@ describe('IstexList', () => {
             <div className={item}>{item}</div>
         ));
         const wrapper = shallow(
+            // @ts-expect-error TS2769
             <IstexList {...defaultProps}>{children}</IstexList>,
         );
 
@@ -76,6 +76,7 @@ describe('IstexList', () => {
             <div className={item}>{item}</div>
         ));
         const wrapper = shallow(
+            // @ts-expect-error TS2769
             <IstexList
                 {...defaultProps}
                 // @ts-expect-error TS2322

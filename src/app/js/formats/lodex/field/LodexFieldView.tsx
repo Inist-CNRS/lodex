@@ -87,7 +87,6 @@ export class LodexFieldView extends Component {
                 <span
                     // @ts-expect-error TS2695
                     className={('lodex_field_value_array', className)}
-                    // @ts-expect-error TS2322
                     style={styles.array}
                 >
                     <ul>
@@ -102,7 +101,6 @@ export class LodexFieldView extends Component {
             <span
                 // @ts-expect-error TS2695
                 className={('lodex_field_value', className)}
-                // @ts-expect-error TS2322
                 style={styles.value}
             >
                 {this.ifUrl(value)}
@@ -157,7 +155,6 @@ export class LodexFieldView extends Component {
                 <span
                     // @ts-expect-error TS2695
                     className={('lodex_field_label', className)}
-                    // @ts-expect-error TS2322
                     style={styles.label}
                 >
                     {data.label} : &#160;
@@ -184,7 +181,6 @@ export class LodexFieldView extends Component {
                 <div>
                     <a
                         className="link_to_resource"
-                        // @ts-expect-error TS2322
                         style={styles.link}
                         href={linkText}
                     >

@@ -1,5 +1,4 @@
 import React from 'react';
-// @ts-expect-error TS7016
 import { shallow } from 'enzyme';
 import { Button, Dialog } from '@mui/material';
 
@@ -12,6 +11,7 @@ describe('<DeleteSubresourceButton />', () => {
         const showDeletePopup = false;
 
         const wrapper = shallow(
+            // @ts-expect-error TS2769
             <DeleteSubresourceButton
                 onClick={onClick}
                 setShowDeletePopup={setShowDeletePopup}
@@ -33,6 +33,7 @@ describe('<DeleteSubresourceButton />', () => {
         const showDeletePopup = true;
 
         const wrapper = shallow(
+            // @ts-expect-error TS2769
             <DeleteSubresourceButton
                 onClick={onClick}
                 setShowDeletePopup={setShowDeletePopup}
@@ -51,6 +52,7 @@ describe('<DeleteSubresourceButton />', () => {
         const showDeletePopup = true;
 
         const wrapper = shallow(
+            // @ts-expect-error TS2769
             <DeleteSubresourceButton
                 onClick={onClick}
                 setShowDeletePopup={setShowDeletePopup}
@@ -61,7 +63,6 @@ describe('<DeleteSubresourceButton />', () => {
         );
 
         const dialog = wrapper.find(Dialog);
-        // @ts-expect-error TS7006
         const confirmButton = dialog.findWhere((node) => {
             return node.type() === Button && node.text() === 'delete';
         });

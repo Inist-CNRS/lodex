@@ -1,4 +1,3 @@
-// @ts-expect-error TS7016
 import { default as Enzyme } from 'enzyme';
 import { default as Adapter } from '@wojtekmaj/enzyme-adapter-react-17';
 
