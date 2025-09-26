@@ -1,7 +1,6 @@
 import { field as fieldPropTypes } from '../../../../propTypes';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import injectData from '../../../injectData';
 import TreeMap, { TREE_MAP_LAYOUT } from '../../models/TreeMap';
@@ -122,6 +121,7 @@ const TreeMapView = (props) => {
         // @ts-expect-error TS2322
         <div style={styles.container} ref={ref}>
             <CustomActionVega
+                // @ts-expect-error TS2322
                 spec={spec}
                 data={formattedData}
                 injectType={VEGA_DATA_INJECT_TYPE_C}

@@ -5,7 +5,6 @@ import PropTypes from 'prop-types';
 
 import { Box, Typography } from '@mui/material';
 import { connect } from 'react-redux';
-// @ts-expect-error TS7016
 import { compose } from 'recompose';
 import { fromFieldPreview } from '../../admin/selectors';
 import { getFieldFormData } from '../selectors';
@@ -100,4 +99,5 @@ ValuePreview.propTypes = {
     p: polyglotPropTypes.isRequired,
 };
 
+// @ts-expect-error TS2345
 export default compose(connect(mapStateToProps), translate)(ValuePreview);

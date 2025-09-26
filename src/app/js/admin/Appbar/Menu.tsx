@@ -10,7 +10,6 @@ import PropTypes from 'prop-types';
 import React, { useCallback, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
-// @ts-expect-error TS7016
 import { compose } from 'recompose';
 import { bindActionCreators } from 'redux';
 import { DEFAULT_TENANT } from '../../../../common/tools/tenantTools';
@@ -169,6 +168,7 @@ const MenuComponent = ({
                         // @ts-expect-error TS2322
                         menu={
                             <ModelNestedMenu
+                                // @ts-expect-error TS2322
                                 onClose={handleCloseMenu}
                                 showModelClearDialog={showModelClearDialog}
                             />
@@ -197,6 +197,7 @@ const MenuComponent = ({
                         // @ts-expect-error TS2322
                         menu={
                             <AdvancedNestedMenu
+                                // @ts-expect-error TS2322
                                 onClose={handleCloseMenu}
                                 showDatasetClearDialog={showDatasetClearDialog}
                             />
@@ -286,4 +287,5 @@ const mapStateToProps = (state) => ({
 export default compose(
     connect(mapStateToProps, mapDispatchToProps),
     withRouter,
+    // @ts-expect-error TS2345
 )(MenuComponent);

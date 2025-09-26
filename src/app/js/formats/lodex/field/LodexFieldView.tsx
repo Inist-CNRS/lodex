@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { translate } from '../../../i18n/I18NContext';
-// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import URL from 'url';
 
@@ -279,4 +278,5 @@ export default compose(
 
         return value;
     }),
+    // @ts-expect-error TS2345
 )(LodexFieldView);

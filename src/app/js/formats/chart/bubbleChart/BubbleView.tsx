@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 // @ts-expect-error TS7016
 import { pack, hierarchy } from 'd3-hierarchy';
@@ -78,4 +77,5 @@ const mapStateToProps = (_, { formatData, diameter: stringDiameter }) => {
     };
 };
 
+// @ts-expect-error TS2345
 export default compose(injectData(), connect(mapStateToProps))(BubbleView);

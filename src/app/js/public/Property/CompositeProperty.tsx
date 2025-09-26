@@ -38,6 +38,7 @@ export const CompositePropertyComponent = ({
              // @ts-expect-error TS7006 */}
             {compositeFields.map((f) => (
                 <Property
+                    // @ts-expect-error TS2322
                     className={`compose_${getFieldClassName(field)} ${camelCase(f.internalName || '')}`}
                     key={f.name}
                     field={f}

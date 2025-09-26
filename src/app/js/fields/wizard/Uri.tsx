@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 // @ts-expect-error TS7016
@@ -32,11 +31,16 @@ export const UriComponent = ({
 
     return (
         <div>
+            {/*
+             // @ts-expect-error TS2322 */}
             <UriAutogenerate onChange={handleTransformerChange} />
             <SourceValueFromColumns
+                // @ts-expect-error TS2322
                 updateTransformers={updateTransformers}
                 value={value}
             />
+            {/*
+             // @ts-expect-error TS2322 */}
             <UriConcat onChange={handleTransformerChange} />
         </div>
     );
@@ -101,4 +105,5 @@ export default compose(
         destroyOnUnmount: false,
         forceUnregisterOnUnmount: true,
     }),
+    // @ts-expect-error TS2345
 )(UriComponent);

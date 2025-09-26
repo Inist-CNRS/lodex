@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 // @ts-expect-error TS7016
@@ -55,11 +54,13 @@ export const FieldInputComponent = ({
     };
 
     if (field.composedOf) {
+        // @ts-expect-error TS2322
         return <CompositeFieldInput label={label} field={field} />;
     }
 
     const EditionComponent = getEditionComponent(field);
 
+    // @ts-expect-error TS2339
     if (EditionComponent.isReduxFormReady) {
         return (
             <EditionComponent
@@ -110,6 +111,7 @@ const mapStateToProps = (state, { field }) => ({
 const EditDetailsField = compose(
     connect(mapStateToProps),
     translate,
+    // @ts-expect-error TS2345
 )(FieldInputComponent);
 
 export default EditDetailsField;

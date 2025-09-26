@@ -4,7 +4,6 @@ import { Menu, MenuItem, Button } from '@mui/material';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import { translate } from '../../i18n/I18NContext';
-// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import ArrowDown from '@mui/icons-material/KeyboardArrowDown';
 

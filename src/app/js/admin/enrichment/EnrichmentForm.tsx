@@ -20,7 +20,6 @@ import {
 } from '@mui/material';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
-// @ts-expect-error TS7016
 import { compose } from 'recompose';
 // @ts-expect-error TS7016
 import { change, Field, formValueSelector, reduxForm } from 'redux-form';
@@ -232,6 +231,8 @@ export const EnrichmentForm = ({
                             component={renderTextField}
                             label={translate('fieldName')}
                         />
+                        {/*
+                         // @ts-expect-error TS2322 */}
                         {isEditMode && <RunButton id={initialValues?._id} />}
                     </Box>
                     {isEditMode && (
@@ -271,6 +272,8 @@ export const EnrichmentForm = ({
                         >
                             <Typography>
                                 {translate('enrichment_status')} : &nbsp;
+                                {/*
+                                 // @ts-expect-error TS2322 */}
                                 <EnrichmentStatus id={initialValues?._id} />
                             </Typography>
                             <Button
@@ -519,4 +522,5 @@ export default compose(
     reduxForm({
         form: ENRICHMENT_FORM,
     }),
+    // @ts-expect-error TS2345
 )(EnrichmentForm);

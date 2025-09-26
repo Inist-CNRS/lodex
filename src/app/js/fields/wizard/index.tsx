@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-// @ts-expect-error TS7016
 import { compose, withProps } from 'recompose';
 import { translate } from '../../i18n/I18NContext';
 
@@ -238,6 +237,7 @@ const FieldEditionWizardComponent = ({
                             </>
                         ) : (
                             <Uri
+                                // @ts-expect-error TS2322
                                 currentEditedField={currentEditedField}
                                 fields={fields}
                             />
@@ -261,6 +261,8 @@ const FieldEditionWizardComponent = ({
                 }}
                 className="mui-fixed"
             >
+                {/*
+                 // @ts-expect-error TS2322 */}
                 <ValuePreviewConnected scope={filter} />
             </Box>
             <Box
@@ -279,6 +281,7 @@ const FieldEditionWizardComponent = ({
             >
                 <Box className="container">
                     <Actions
+                        // @ts-expect-error TS2322
                         currentEditedField={currentEditedField}
                         onCancel={handleCancel}
                         onSave={handleSave}
@@ -383,4 +386,5 @@ export default compose(
         forceUnregisterOnUnmount: true,
     }),
     translate,
+    // @ts-expect-error TS2345
 )(FieldEditionWizardComponent);
