@@ -42,11 +42,7 @@ class LatexAdmin extends Component {
 
         return (
             <FormatGroupedFieldSet>
-                {/*
-                 // @ts-expect-error TS2322 */}
                 <FormatDefaultParamsFieldSet defaultExpanded>
-                    {/*
-                     // @ts-expect-error TS2322 */}
                     <TextField
                         label={polyglot.t('choose_delimiter')}
                         type="string"

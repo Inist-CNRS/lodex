@@ -46,11 +46,7 @@ class PaginatedTableAdmin extends AbstractTableAdmin {
         } = this.props;
         return (
             <FormatGroupedFieldSet>
-                {/*
-                 // @ts-expect-error TS2322 */}
                 <FormatDefaultParamsFieldSet defaultExpanded>
-                    {/*
-                     // @ts-expect-error TS2322 */}
                     <TextField
                         label={polyglot.t('items_per_page')}
                         onChange={this.handlePageSize}
@@ -58,8 +54,6 @@ class PaginatedTableAdmin extends AbstractTableAdmin {
                         type="number"
                         fullWidth
                     />
-                    {/*
-                     // @ts-expect-error TS2322 */}
                     <TableColumnsParameters
                         onChange={this.handleColumnParameter}
                         polyglot={polyglot}

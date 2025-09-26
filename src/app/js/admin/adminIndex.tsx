@@ -85,40 +85,26 @@ render(
                         {/*
                          // @ts-expect-error TS2339 */}
                         <App tenant={window.__TENANT__}>
-                            {/*
-                             // @ts-expect-error TS2322 */}
                             <Route
                                 path="/"
                                 exact
                                 render={() => <Redirect to="/data" />}
                             />
-                            {/*
-                             // @ts-expect-error TS2322 */}
                             <PrivateRoute path="/data" component={Data} />
-                            {/*
-                             // @ts-expect-error TS2322 */}
                             <PrivateRoute path="/display" component={Display} />
-                            {/*
-                             // @ts-expect-error TS2322 */}
                             <PrivateRoute
                                 path="/annotations/:annotationId"
                                 component={AnnotationDetail}
                             />
-                            {/*
-                             // @ts-expect-error TS2322 */}
                             <PrivateRoute
                                 path="/annotations"
                                 component={AnnotationList}
                                 exact
                             />
-                            {/*
-                             // @ts-expect-error TS2322 */}
                             <PrivateRoute
                                 path="/config"
                                 component={ConfigTenantRoute}
                             />
-                            {/*
-                             // @ts-expect-error TS2322 */}
                             <Route path="/login" exact component={LoginAdmin} />
                         </App>
                     </Router>

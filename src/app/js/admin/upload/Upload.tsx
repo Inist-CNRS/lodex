@@ -269,11 +269,7 @@ export const UploadComponent = ({
             {/* Show error */}
             {error ? (
                 <Alert>
-                    {/*
-                     // @ts-expect-error TS2322 */}
                     <p>Error uploading given file: </p>
-                    {/*
-                     // @ts-expect-error TS2322 */}
                     <p>{error}</p>
                 </Alert>
             ) : (

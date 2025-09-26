@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { polyglot as polyglotPropTypes } from '../../../../propTypes';
 import { Box, TextField } from '@mui/material';
 import TableColumnParameter from './TableColumnParameter';
-// @ts-expect-error TS7016
 import _ from 'lodash';
 
 class TableColumnsParameters extends Component {
@@ -37,7 +36,7 @@ class TableColumnsParameters extends Component {
         this.onParameterChange = this.onParameterChange.bind(this);
         this.onParameterCountChange = this.onParameterCountChange.bind(this);
         this.reformatParameters = this.reformatParameters.bind(this);
-        let parameters = this.reformatParameters(
+        const parameters = this.reformatParameters(
             props.parameterCount,
             props.parameters,
         );
@@ -49,7 +48,7 @@ class TableColumnsParameters extends Component {
 
     // @ts-expect-error TS7006
     reformatParameters(parameterCount, parameters) {
-        let reformattedParameters = parameters;
+        const reformattedParameters = parameters;
         if (parameterCount > parameters.length) {
             const diff = parameterCount - parameters.length;
             for (let i = 0; i < diff; i++) {
@@ -73,7 +72,7 @@ class TableColumnsParameters extends Component {
     // @ts-expect-error TS7006
     onParameterChange(parameter) {
         // @ts-expect-error TS2339
-        let parameters = this.state.parameters;
+        const parameters = this.state.parameters;
         const index = _.findIndex(parameters, { id: parameter.id });
         parameters[index] = parameter;
         const args = {

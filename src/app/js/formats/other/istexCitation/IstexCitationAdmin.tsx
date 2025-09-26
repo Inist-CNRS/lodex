@@ -50,11 +50,7 @@ export class IstexCitationAdmin extends Component {
 
         return (
             <FormatGroupedFieldSet>
-                {/*
-                 // @ts-expect-error TS2322 */}
                 <FormatDataParamsFieldSet defaultExpanded>
-                    {/*
-                     // @ts-expect-error TS2322 */}
                     <TextField
                         fullWidth
                         select
@@ -68,8 +64,6 @@ export class IstexCitationAdmin extends Component {
                             </MenuItem>
                         ))}
                     </TextField>
-                    {/*
-                     // @ts-expect-error TS2322 */}
                     <TextField
                         className="document_sort_by"
                         label={polyglot.t('document_sort_by')}
