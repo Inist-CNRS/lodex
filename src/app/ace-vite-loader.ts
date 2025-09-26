@@ -5,7 +5,6 @@ import ace from 'ace-builds';
 function assetUrl(relPath) {
     return new URL(
         `../../node_modules/ace-builds/src-noconflict/${relPath}`,
-        // @ts-expect-error TS1470
         import.meta.url,
     ).href;
 }

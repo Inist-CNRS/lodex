@@ -1,3 +1,4 @@
+// @ts-expect-error TS6133
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
@@ -11,7 +12,6 @@ import { translate } from '../../i18n/I18NContext';
 import compose from 'recompose/compose';
 import withHandlers from 'recompose/withHandlers';
 import { connect } from 'react-redux';
-// @ts-expect-error TS7016
 import { formValueSelector } from 'redux-form';
 import get from 'lodash/get';
 

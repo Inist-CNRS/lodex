@@ -2,7 +2,6 @@ import { connect } from 'react-redux';
 import { compose } from 'recompose';
 import withHandlers from 'recompose/withHandlers';
 import { withRouter } from 'react-router';
-// @ts-expect-error TS7016
 import { formValueSelector, reduxForm } from 'redux-form';
 
 import { createSubresource as createSubresourceAction } from '.';

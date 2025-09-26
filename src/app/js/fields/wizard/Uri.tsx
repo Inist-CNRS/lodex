@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
-// @ts-expect-error TS7016
 import { reduxForm, change, formValueSelector } from 'redux-form';
 
 import { fromParsing } from '../../admin/selectors';

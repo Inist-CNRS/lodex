@@ -1,3 +1,4 @@
+// @ts-expect-error TS6133
 import React, { useMemo, useState } from 'react';
 import { connect } from 'react-redux';
 import { clamp } from 'lodash';
@@ -145,6 +146,7 @@ const mapStateToProps = (state, { formatData }) => {
     };
 };
 
+// @ts-expect-error TS6133
 export const BubblePlotAdminView = connect((state, props) => {
     return {
         ...props,

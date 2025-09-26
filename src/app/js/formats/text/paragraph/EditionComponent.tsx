@@ -1,3 +1,4 @@
+// @ts-expect-error TS6133
 import React from 'react';
 import { formField as formFieldPropTypes } from '../../../propTypes';
 import DefaultEdition from '../../utils/components/default-format/DefaultEdition';

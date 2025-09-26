@@ -1,5 +1,6 @@
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
+// @ts-expect-error TS6133
 import React from 'react';
 
 import stylesToClassname from '../../../lib/stylesToClassName';

@@ -1,6 +1,7 @@
 // @ts-expect-error TS7016
 import { StyleSheetTestUtils } from 'aphrodite';
 import { shallow } from 'enzyme';
+// @ts-expect-error TS6133
 import React from 'react';
 
 import composeRenderProps from '../../../lib/composeRenderProps';

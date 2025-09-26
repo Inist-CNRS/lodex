@@ -1,3 +1,4 @@
+// @ts-expect-error TS6133
 import React from 'react';
 import { shallow } from 'enzyme';
 import { Button } from '@mui/material';

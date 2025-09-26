@@ -1,3 +1,4 @@
+// @ts-expect-error TS6133
 import React from 'react';
 import { translate } from '../../i18n/I18NContext';
 import PreviewIcon from '@mui/icons-material/Preview';
@@ -60,6 +61,7 @@ const ValuePreview = ({ lines, editedField, p: polyglot }) => {
                                     ? 'undefined'
                                     : JSON.stringify(
                                           line[editedField.name],
+                                          // @ts-expect-error TS6133
                                           (k, v) =>
                                               v === undefined
                                                   ? '__undefined'

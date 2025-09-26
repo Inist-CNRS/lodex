@@ -1,3 +1,4 @@
+// @ts-expect-error TS6133
 import React from 'react';
 import { Box, IconButton, Tooltip } from '@mui/material';
 import VisibilityIcon from '@mui/icons-material/Visibility';

@@ -1,3 +1,4 @@
+// @ts-expect-error TS6133
 import React from 'react';
 import PropTypes from 'prop-types';
 import memoize from 'lodash/memoize';

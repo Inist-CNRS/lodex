@@ -1,3 +1,4 @@
+// @ts-expect-error TS6133
 import React from 'react';
 import { Link as RouterLink, NavLink } from 'react-router-dom';
 import classnames from 'classnames';

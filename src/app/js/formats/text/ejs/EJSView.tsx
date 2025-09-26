@@ -1,5 +1,6 @@
 import { field as fieldPropTypes } from '../../../propTypes';
 import PropTypes from 'prop-types';
+// @ts-expect-error TS6133
 import React, { useMemo, useState } from 'react';
 // @ts-expect-error TS7016
 import ejs from 'ejs/ejs.min.js'; // import the browser-friendly build from ejs

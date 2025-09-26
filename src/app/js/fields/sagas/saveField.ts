@@ -1,6 +1,5 @@
 import get from 'lodash/get';
 import set from 'lodash/set';
-// @ts-expect-error TS7016
 import { destroy } from 'redux-form';
 import { call, put, select, takeLatest } from 'redux-saga/effects';
 

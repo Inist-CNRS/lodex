@@ -2,6 +2,7 @@
 import * as venn from 'venn.js';
 // @ts-expect-error TS7016
 import * as d3 from 'd3';
+// @ts-expect-error TS6133
 import React, { useRef, useEffect } from 'react';
 import { getColor } from '../../utils/colorUtils';
 import PropTypes from 'prop-types';

@@ -1,6 +1,7 @@
 import AspectRatioIcon from '@mui/icons-material/AspectRatio';
 import StorageIcon from '@mui/icons-material/Storage';
 import PropTypes from 'prop-types';
+// @ts-expect-error TS6133
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link, NavLink } from 'react-router-dom';

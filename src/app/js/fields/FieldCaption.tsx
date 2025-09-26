@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
+// @ts-expect-error TS6133
 import React from 'react';
-// @ts-expect-error TS7016
 import { Field } from 'redux-form';
 
 import { Box, MenuItem, Typography } from '@mui/material';

@@ -1,13 +1,5 @@
 import { call, all, put, select, takeLatest } from 'redux-saga/effects';
-import {
-    CHANGE as REDUX_FORM_CHANGE,
-    ARRAY_REMOVE as REDUX_FORM_ARRAY_REMOVE,
-    INITIALIZE as REDUX_FORM_INITIALIZE,
-    ARRAY_MOVE as REDUX_FORM_ARRAY_MOVE,
-    ARRAY_PUSH as REDUX_FORM_ARRAY_PUSH,
-    ARRAY_SPLICE as REDUX_FORM_ARRAY_SPLICE,
-    // @ts-expect-error TS7016
-} from 'redux-form/lib/actionTypes';
+import { actionTypes } from 'redux-form';
 
 import getDocumentTransformer from '../../../lib/getDocumentTransformer';
 import { fromUser } from '../../../sharedSelectors';
@@ -17,6 +9,15 @@ import { fromParsing } from '../../selectors';
 import { FIELD_FORM_NAME } from '../../../fields/index';
 import { GET_SOURCE_VALUE_FROM_TRANSFORMERS } from '../../../fields/sourceValue/SourceValueToggle';
 import cloneDeep from 'lodash/cloneDeep';
+
+const {
+    CHANGE: REDUX_FORM_CHANGE,
+    ARRAY_REMOVE: REDUX_FORM_ARRAY_REMOVE,
+    INITIALIZE: REDUX_FORM_INITIALIZE,
+    ARRAY_MOVE: REDUX_FORM_ARRAY_MOVE,
+    ARRAY_PUSH: REDUX_FORM_ARRAY_PUSH,
+    ARRAY_SPLICE: REDUX_FORM_ARRAY_SPLICE,
+} = actionTypes;
 
 // @ts-expect-error TS7031
 export function* handleComputeFieldPreview({ meta: { form } }) {
@@ -126,6 +127,7 @@ export function* handleComputeFieldPreview({ meta: { form } }) {
 
 export default function* watchComputePreview() {
     yield takeLatest(
+        // @ts-expect-error TS2769
         [
             REDUX_FORM_CHANGE,
             REDUX_FORM_ARRAY_REMOVE,

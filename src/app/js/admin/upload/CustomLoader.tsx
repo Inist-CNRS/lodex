@@ -11,7 +11,6 @@ import {
     DialogContent,
     DialogTitle,
 } from '@mui/material';
-// @ts-expect-error TS7016
 import { Field, formValueSelector, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
 import { fromUpload } from '../selectors';

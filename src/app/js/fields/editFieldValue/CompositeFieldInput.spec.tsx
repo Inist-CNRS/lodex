@@ -1,7 +1,7 @@
+// @ts-expect-error TS6133
 import React from 'react';
 import { shallow } from 'enzyme';
 import { ListSubheader } from '@mui/material';
-// @ts-expect-error TS7016
 import { Field } from 'redux-form';
 
 import FieldInput from './FieldInput';

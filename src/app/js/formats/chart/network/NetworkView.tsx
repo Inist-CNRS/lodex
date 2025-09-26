@@ -1,6 +1,7 @@
 // @ts-expect-error TS7016
 import { scaleLinear } from 'd3-scale';
 import get from 'lodash/get';
+// @ts-expect-error TS6133
 import React, {
     lazy,
     Suspense,
