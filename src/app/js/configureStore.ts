@@ -1,10 +1,7 @@
 import { applyMiddleware, compose, combineReducers, createStore } from 'redux';
 import createSagaMiddleware from 'redux-saga';
-// @ts-expect-error TS7016
 import persistState, { mergePersistedState } from 'redux-localstorage';
-// @ts-expect-error TS7016
 import adapter from 'redux-localstorage/lib/adapters/localStorage';
-// @ts-expect-error TS7016
 import filter from 'redux-localstorage-filter';
 import { createReduxHistoryContext } from 'redux-first-history';
 
@@ -32,6 +29,7 @@ export default function configureStore(reducers, sagas, initialState, history) {
           }
         : pureReducer;
 
+    // @ts-expect-error TS2345
     const reducer = compose(mergePersistedState())(rootReducer);
 
     const searchStorage = compose(filter(['search']))(
@@ -53,6 +51,7 @@ export default function configureStore(reducers, sagas, initialState, history) {
     const persistUserStateEnhancer = persistState(userStorage);
 
     const store = createStore(
+        // @ts-expect-error TS2345
         reducer,
         initialState,
         compose(
