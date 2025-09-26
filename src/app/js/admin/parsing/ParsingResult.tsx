@@ -31,7 +31,6 @@ import {
     TableRow,
     Tooltip,
 } from '@mui/material';
-// @ts-expect-error TS7016
 import { Link, useLocation } from 'react-router-dom';
 import { useTranslate } from '../../i18n/I18NContext';
 import Loading from '../../lib/components/Loading';

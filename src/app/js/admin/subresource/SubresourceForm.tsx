@@ -17,7 +17,6 @@ import {
     TextField as MUITextField,
 } from '@mui/material';
 import CancelButton from '../../lib/components/CancelButton';
-// @ts-expect-error TS7016
 import { useHistory } from 'react-router';
 import { translate } from '../../i18n/I18NContext';
 

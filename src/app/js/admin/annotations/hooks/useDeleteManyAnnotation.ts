@@ -1,6 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-// @ts-expect-error TS7016
 import { useHistory } from 'react-router-dom';
 import { toast } from '../../../../../common/tools/toast';
 import { useTranslate } from '../../../i18n/I18NContext';

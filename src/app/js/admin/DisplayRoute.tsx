@@ -6,7 +6,6 @@ import {
     Redirect,
     Switch,
     useParams,
-    // @ts-expect-error TS7016
 } from 'react-router';
 
 import withInitialData from './withInitialData';
@@ -18,6 +17,7 @@ import FieldEditForm from '../fields/wizard';
 import SubresourceListConnected from './subresource/SubresourceList';
 
 const DisplayRouteComponent = () => {
+    // @ts-expect-error TS2339
     const { filter } = useParams();
     const { url, path } = useRouteMatch();
 
@@ -39,6 +39,8 @@ const DisplayRouteComponent = () => {
                     <AddSubresource />
                 </Route>
                 <Route exact path={`${path}/subresource/:subresourceId`}>
+                    {/*
+                     // @ts-expect-error TS2322 */}
                     <EditSubresource filter={filter} />
                 </Route>
                 <Route

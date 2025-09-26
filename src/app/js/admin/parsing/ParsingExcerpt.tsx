@@ -13,7 +13,6 @@ import ParsingExcerptAddColumn from './ParsingExcerptAddColumn';
 import { fromEnrichments, fromParsing, fromSubresources } from '../selectors';
 import { IN_PROGRESS } from '../../../../common/taskStatus';
 import { addField } from '../../fields';
-// @ts-expect-error TS7016
 import { useParams } from 'react-router';
 import parseValue from '../../../../common/tools/parseValue';
 
@@ -75,6 +74,7 @@ export const ParsingExcerptComponent = ({
         [enrichments],
     );
 
+    // @ts-expect-error TS2339
     const { filter, subresourceId } = useParams();
 
     const subresource = subresources.find(

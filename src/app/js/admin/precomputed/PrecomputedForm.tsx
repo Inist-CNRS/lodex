@@ -22,7 +22,6 @@ import {
 } from 'redux-form';
 import { fromPrecomputed, fromParsing } from '../selectors';
 import { ListAlt as ListAltIcon } from '@mui/icons-material';
-// @ts-expect-error TS7016
 import { withRouter } from 'react-router';
 import {
     Box,

@@ -5,7 +5,6 @@ import classnames from 'classnames';
 import PropTypes from 'prop-types';
 import React, { useEffect, useMemo, useState } from 'react';
 import { connect } from 'react-redux';
-// @ts-expect-error TS7016
 import { withRouter } from 'react-router-dom';
 import { Swipeable } from 'react-swipeable';
 // @ts-expect-error TS7016
