@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
-import MarkerClusterGroup from 'react-leaflet-markercluster';  // see webpack.config.babel.js
+import MarkerClusterGroup from 'react-leaflet-markercluster';  // see vite.config.js
 import 'leaflet/dist/leaflet.css';
 import './react-leaflet-markercluster.min.css';
 import L from 'leaflet';

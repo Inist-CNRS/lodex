@@ -26,7 +26,7 @@ import translations from '../services/translations';
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Router } from 'react-router-dom';
-import getCatalogFromArray from '../../common/fields/getCatalogFromArray.js';
+import getCatalogFromArray from '../../common/fields/getCatalogFromArray';
 import { DEFAULT_TENANT } from '../../common/tools/tenantTools';
 import { renderAdmin, renderPublic, renderRootAdmin } from '../models/front';
 import { getPublication } from './api/publication';
@@ -164,8 +164,7 @@ const handleRender = async (ctx, next) => {
     if (
         (url.match(/[^\\]*\.(\w+)$/) && !url.match(/\/uid:\//)) ||
         url.match(/[^\\]*\.html$/) ||
-        url.match('/admin') ||
-        url.match('__webpack_hmr')
+        url.match('/admin')
     ) {
         // no route matched switch to static file
         return next();
@@ -279,8 +278,7 @@ app.use(async (ctx, next) => {
         !ctx.request.url.match(/instance\/([^\/]*)\/login/) &&
         !ctx.request.url.match(/instance\/([^\/]*)\/admin/) &&
         !ctx.request.url.startsWith('/instances') &&
-        !ctx.request.url.match(/[^\\]*\.(\w+)$/) &&
-        !ctx.request.url.match('__webpack_hmr')
+        !ctx.request.url.match(/[^\\]*\.(\w+)$/)
     ) {
         const defaultTenant = DEFAULT_TENANT; // TODO: Replace by default tenant in BDD
         const matchResult = ctx.request.url.match(/instance\/([^\/]*)(.*)/);
@@ -319,7 +317,7 @@ app.use(
     }),
 );
 
-app.use(mount('/', serve(path.resolve(__dirname, '../../build'))));
+app.use(mount('/', serve(path.resolve(__dirname, '../../app/build'))));
 app.use(mount('/', serve(path.resolve(__dirname, '../../app/custom'))));
 
 export default app;

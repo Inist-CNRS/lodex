@@ -18,6 +18,8 @@
         <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Montserrat&amp;subset=latin,latin-ext" type="text/css" />
         <link rel="stylesheet" href="<%= theme.current.href %>/css/style.css" />
         <link rel="stylesheet" href="<%= theme.current.href %>/css/istex.css?ver2.0" />
+        <link rel="stylesheet" href="<%= lodex.base.href %>/css/LeafletMap.css"/>
+        <link rel="stylesheet" href="<%= lodex.base.href %>/css/ReactToastify.css"/>
 
         <title></title>
         <style><%= theme.cssVariable %></style>
@@ -128,6 +130,16 @@
             </div>
         </footer>
         <!-- Footer - bloc-8 END -->
+    <% if (isDev) { %>
+        <script type="module">
+            import RefreshRuntime from 'http://localhost:8080/@react-refresh'
+            RefreshRuntime.injectIntoGlobalHook(window)
+            window.$RefreshReg$ = () => {}
+            window.$RefreshSig$ = () => (type) => type
+            window.__vite_plugin_react_preamble_installed__ = true
+        </script>
+        <script type="module" src="http://localhost:8080/@vite/client"></script>
+    <% } %>
 	<script src="<%= theme.base.href %>/istex/js/jquery-3.6.0.min.js"></script>
 	<script src="<%= theme.base.href %>/istex/js/responsiveMenu.js"></script>
 	<script src="<%= theme.base.href %>/istex/js/tooltip.js"></script>
@@ -136,7 +148,7 @@
 	    window.__TENANT__ = '<%= lodex.tenant %>';
 	    window.ISTEX_API_URL = '<%= lodex.istexApi %>';
 	</script>
-	<script src="<%= lodex.base.href %>/index.js"></script>
+	<script type="module" src="<%= lodex.base.href %>/index.js"></script>
     <% if (custom.matomoID && custom.matomoHost) { %>
         <!-- Piwik -->
         <script>

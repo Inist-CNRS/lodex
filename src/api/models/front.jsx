@@ -119,6 +119,7 @@ export const renderPublic = (themeId, data) => {
     }
 
     const extendedData = {
+        isDev: process.env.NODE_ENV === 'development',
         custom: {
             ...lodexTheme.customTemplateVariables,
             ...data.customTemplateVariables,
@@ -166,6 +167,7 @@ export const renderAdmin = (data) => {
     const cssVariable = buildCssVariable(theme.palette);
 
     const extendedData = {
+        isDev: process.env.NODE_ENV === 'development',
         lodex: {
             version,
             base: { href: data.jsHost ?? '' },
@@ -198,6 +200,7 @@ export const renderRootAdmin = (data) => {
     const cssVariable = buildCssVariable(theme.palette);
 
     const extendedData = {
+        isDev: process.env.NODE_ENV === 'development',
         lodex: {
             version,
             base: { href: data.jsHost ?? '' },

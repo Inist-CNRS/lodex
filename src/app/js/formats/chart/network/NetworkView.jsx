@@ -19,7 +19,7 @@ import FormatFullScreenMode from '../../utils/components/FormatFullScreenMode';
 import MouseIcon from '../../utils/components/MouseIcon';
 
 const ForceGraph2D = lazy(
-    () => import(/* webpackMode: "eager" */ 'react-force-graph-2d'),
+    () => import('react-force-graph-2d'),
 );
 
 const styles = {

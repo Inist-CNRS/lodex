@@ -15,16 +15,28 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css"/>
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Quicksand:400,500"/>
         <link rel="stylesheet" href="<%= theme.current.href %>/css/styles.css"/>
+        <link rel="stylesheet" href="<%= lodex.base.href %>/css/LeafletMap.css"/>
+        <link rel="stylesheet" href="<%= lodex.base.href %>/css/ReactToastify.css"/>
         <style><%= theme.cssVariable %></style>
     </head>
     <body>
         <div id="root"></div>
+        <% if (isDev) { %>
+            <script type="module">
+                import RefreshRuntime from 'http://localhost:8080/@react-refresh'
+                RefreshRuntime.injectIntoGlobalHook(window)
+                window.$RefreshReg$ = () => {}
+                window.$RefreshSig$ = () => (type) => type
+                window.__vite_plugin_react_preamble_installed__ = true
+            </script>
+            <script type="module" src="http://localhost:8080/@vite/client"></script>
+        <% } %>
         <script>
             window.__PRELOADED_STATE__ = <%- lodex.preload %>;
             window.__TENANT__ = '<%= lodex.tenant %>';
             window.ISTEX_API_URL = '<%= lodex.istexApi %>';
         </script>
-        <script src="<%= lodex.base.href %>/index.js"></script>
+        <script type="module" src="<%= lodex.base.href %>/public/index.js"></script>
         <% if (custom.matomoID && custom.matomoHost) { %>
         <!-- Piwik -->
         <script>

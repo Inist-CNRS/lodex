@@ -91,7 +91,7 @@ describe('Search', () => {
             cy.wait(100);
             menu.openSearchDrawer();
 
-            cy.get('.search-result-link[class*=activeLink_]').should('exist');
+            cy.get('.search-result-link[class*=active]').should('exist');
         });
 
         it('should keep track of the current search after changing page', () => {
