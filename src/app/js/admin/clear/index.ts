@@ -1,4 +1,3 @@
-// @ts-expect-error TS7016
 import { createAction, handleActions } from 'redux-actions';
 
 export const CLEAR_DATASET = 'CLEAR_DATASET';
@@ -21,33 +20,28 @@ export const initialState = {
     loading: false,
 };
 
+// @ts-expect-error TS2769
 export default handleActions(
     {
-        // @ts-expect-error TS7006
         CLEAR_DATASET: (state) => ({ ...state, loading: true }),
-        // @ts-expect-error TS7006
         CLEAR_PUBLISHED: (state) => ({ ...state, loading: true }),
-        // @ts-expect-error TS7006
         CLEAR_DATASET_ERROR: (state, { payload: error }) => ({
             ...state,
             status: 'error',
             error,
             loading: false,
         }),
-        // @ts-expect-error TS7006
         CLEAR_DATASET_SUCCESS: (state) => ({
             ...state,
             status: 'success',
             loading: false,
         }),
-        // @ts-expect-error TS7006
         CLEAR_PUBLISHED_ERROR: (state, { payload: error }) => ({
             ...state,
             status: 'error',
             error,
             loading: false,
         }),
-        // @ts-expect-error TS7006
         CLEAR_PUBLISHED_SUCCESS: (state) => ({
             ...state,
             status: 'success',

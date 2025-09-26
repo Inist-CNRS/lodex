@@ -1,5 +1,4 @@
 import omit from 'lodash/omit';
-// @ts-expect-error TS7016
 import { createAction, handleActions } from 'redux-actions';
 import { createSelector } from 'reselect';
 
@@ -20,7 +19,6 @@ export const defaultState = {
 
 export default handleActions(
     {
-        // @ts-expect-error TS7006
         TOGGLE_LOGIN: (state) => ({
             ...state,
             showModal: !state.showModal,
@@ -32,14 +30,12 @@ export default handleActions(
             token: token,
             role,
         }),
-        // @ts-expect-error TS7006
         LOGOUT: (state) => ({
             ...state,
             showModal: true,
             token: null,
             role: null,
         }),
-        // @ts-expect-error TS7006
         SIGNOUT: (state) => ({
             ...state,
             showModal: false,

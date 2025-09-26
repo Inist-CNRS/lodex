@@ -1,4 +1,3 @@
-// @ts-expect-error TS7016
 import { createAction, handleActions, combineActions } from 'redux-actions';
 import { createSelector } from 'reselect';
 import get from 'lodash/get';
@@ -78,6 +77,7 @@ export const defaultState = {
     selectedVersion: 0,
 };
 
+// @ts-expect-error TS7006
 export default handleActions(
     {
         // @ts-expect-error TS7006
@@ -85,7 +85,6 @@ export default handleActions(
             ...state,
             loading: true,
         }),
-        // @ts-expect-error TS7006
         LOAD_RESOURCE: (state) => ({
             ...state,
             resource: null,
@@ -94,7 +93,6 @@ export default handleActions(
             loading: true,
             saving: false,
         }),
-        // @ts-expect-error TS7006
         LOAD_RESOURCE_SUCCESS: (state, { payload }) => {
             const versions = get(payload, 'versions', []);
             return {
@@ -106,13 +104,14 @@ export default handleActions(
                 saving: false,
             };
         },
-        // @ts-expect-error TS7006
         LOAD_RESOURCE_ERROR: (state, { payload: error }) => ({
             ...state,
+            // @ts-expect-error TS7031
             error: error.message,
             loading: false,
             saving: false,
         }),
+        // @ts-expect-error TS7006
         [combineActions(SAVE_RESOURCE, HIDE_RESOURCE, ADD_FIELD_TO_RESOURCE)]: (
             // @ts-expect-error TS7006
             state,
@@ -121,7 +120,6 @@ export default handleActions(
             error: null,
             saving: true,
         }),
-        // @ts-expect-error TS7006
         SAVE_RESOURCE_SUCCESS: (state, { payload }) => {
             const resource = payload || state.resource;
             const versions = get(resource, 'versions', []);
@@ -134,7 +132,6 @@ export default handleActions(
             };
         },
         [HIDE_RESOURCE_SUCCESS]: (
-            // @ts-expect-error TS7031
             { resource, ...state },
             // @ts-expect-error TS7031
             { payload: { reason, removedAt } },
@@ -144,12 +141,12 @@ export default handleActions(
             hiding: false,
             saving: false,
             resource: {
+                // @ts-expect-error TS7031
                 ...resource,
                 reason,
                 removedAt,
             },
         }),
-        // @ts-expect-error TS7006
         [ADD_FIELD_TO_RESOURCE_SUCCESS]: (state, { payload: { resource } }) => {
             const versions = get(resource, 'versions', []);
             return {
@@ -162,6 +159,7 @@ export default handleActions(
                 saving: false,
             };
         },
+        // @ts-expect-error TS7006
         [combineActions(
             SAVE_RESOURCE_ERROR,
             HIDE_RESOURCE_ERROR,
@@ -174,6 +172,7 @@ export default handleActions(
         }),
         // @ts-expect-error TS7006
         CHANGE_FIELD_STATUS: (state, { payload: { field, status } }) => {
+            // @ts-expect-error TS7031
             const { contributions } = state.resource;
             const index = contributions.findIndex(
                 // @ts-expect-error TS7031
@@ -184,6 +183,7 @@ export default handleActions(
                 ...state,
                 moderating: true,
                 resource: {
+                    // @ts-expect-error TS7031
                     ...state.resource,
                     contributions: [
                         ...contributions.slice(0, index),
@@ -197,11 +197,11 @@ export default handleActions(
             };
         },
         CHANGE_FIELD_STATUS_ERROR: (
-            // @ts-expect-error TS7006
             state,
             // @ts-expect-error TS7031
             { payload: { error, field, prevStatus } },
         ) => {
+            // @ts-expect-error TS7031
             const { contributions } = state.resource;
             const index = contributions.findIndex(
                 // @ts-expect-error TS7031
@@ -213,6 +213,7 @@ export default handleActions(
                 error,
                 moderating: false,
                 resource: {
+                    // @ts-expect-error TS7031
                     ...state.resource,
                     contributions: [
                         ...contributions.slice(0, index),
@@ -225,36 +226,30 @@ export default handleActions(
                 },
             };
         },
-        // @ts-expect-error TS7006
         CHANGE_FIELD_STATUS_SUCCESS: (state) => ({
             ...state,
             error: null,
             moderating: false,
         }),
-        // @ts-expect-error TS7006
         SELECT_VERSION: (state, { payload: selectedVersion }) => ({
             ...state,
             selectedVersion,
         }),
-        // @ts-expect-error TS7006
         ADD_FIELD_TO_RESOURCE_OPEN: (state) => ({
             ...state,
             addingField: true,
             error: null,
         }),
-        // @ts-expect-error TS7006
         ADD_FIELD_TO_RESOURCE_CANCEL: (state) => ({
             ...state,
             addingField: false,
             error: null,
         }),
-        // @ts-expect-error TS7006
         HIDE_RESOURCE_OPEN: (state) => ({
             ...state,
             hiding: true,
             error: null,
         }),
-        // @ts-expect-error TS7006
         HIDE_RESOURCE_CANCEL: (state) => ({
             ...state,
             hiding: false,

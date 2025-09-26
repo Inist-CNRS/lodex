@@ -12,6 +12,7 @@ import reducer, {
 
 describe('user reducer', () => {
     it('should initialize with correct state', () => {
+        // @ts-expect-error TS2345
         const state = reducer(undefined, { type: '@@INIT' });
         expect(state).toEqual(defaultState);
     });
@@ -26,6 +27,7 @@ describe('user reducer', () => {
 
     it('should handle the LOGIN_SUCCESS action', () => {
         const state = reducer(
+            // @ts-expect-error TS2345
             { showModal: true },
             loginSuccess({ token: 'foo', role: ADMIN_ROLE }),
         );
@@ -38,6 +40,7 @@ describe('user reducer', () => {
 
     it('should handle the LOGOUT action', () => {
         const state = reducer(
+            // @ts-expect-error TS2322
             { showModal: false, token: 'C3PO&R2D2' },
             logout(),
         );

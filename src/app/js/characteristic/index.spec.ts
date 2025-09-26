@@ -12,6 +12,7 @@ import { loadPublicationSuccess } from '../fields';
 describe('characteristic', () => {
     describe('reducer', () => {
         it('should initialize with correct state', () => {
+            // @ts-expect-error TS2345
             const state = reducer(undefined, { type: '@@INIT' });
             expect(state).toEqual(defaultState);
         });
@@ -23,6 +24,7 @@ describe('characteristic', () => {
                 published: true,
             });
 
+            // @ts-expect-error TS2353
             const state = reducer({ data: 'value' }, action);
 
             expect(state).toEqual({
@@ -44,6 +46,7 @@ describe('characteristic', () => {
                 },
             };
 
+            // @ts-expect-error TS2345
             expect(reducer(state, action)).toEqual({
                 data: 'value',
                 newCharacteristics: {
@@ -59,6 +62,7 @@ describe('characteristic', () => {
                 data: 'value',
             };
 
+            // @ts-expect-error TS2345
             expect(reducer(state, action)).toEqual({
                 data: 'value',
                 error: null,
@@ -72,6 +76,7 @@ describe('characteristic', () => {
                 data: 'value',
             };
 
+            // @ts-expect-error TS2345
             expect(reducer(state, action)).toEqual({
                 data: 'value',
                 error: 'error',
@@ -88,6 +93,7 @@ describe('characteristic', () => {
                 characteristics: ['charac'],
             };
 
+            // @ts-expect-error TS2345
             expect(reducer(state, action)).toEqual({
                 data: 'value',
                 characteristics: ['new', 'charac'],

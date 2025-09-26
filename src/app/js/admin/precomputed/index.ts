@@ -1,4 +1,3 @@
-// @ts-expect-error TS7016
 import { createAction, handleActions } from 'redux-actions';
 
 export const LOAD_PRECOMPUTED = 'LOAD_PRECOMPUTED';
@@ -20,21 +19,19 @@ export const initialState = {
     dataPreviewPrecomputed: [],
 };
 
+// @ts-expect-error TS7006
 export default handleActions(
     {
-        // @ts-expect-error TS7006
         LOAD_PRECOMPUTED: (state) => ({
             ...state,
             loading: true,
             initialized: true,
         }),
-        // @ts-expect-error TS7006
         LOAD_PRECOMPUTED_ERROR: (state, { payload: error }) => ({
             ...state,
             error,
             loading: false,
         }),
-        // @ts-expect-error TS7006
         LOAD_PRECOMPUTED_SUCCESS: (state, { payload: precomputed }) => ({
             ...state,
             precomputed,

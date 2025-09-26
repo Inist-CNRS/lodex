@@ -1,6 +1,5 @@
 import omit from 'lodash/omit';
 import uniq from 'lodash/uniq';
-// @ts-expect-error TS7016
 import { combineActions, createAction, handleActions } from 'redux-actions';
 
 import getCatalogFromArray from '../../../common/fields/getCatalogFromArray';
@@ -181,10 +180,11 @@ const getDefaultField = (
     subresourceId,
 });
 
+// @ts-expect-error TS2769
 export default handleActions(
     {
-        // @ts-expect-error TS7006
         ADD_FIELD: (state, { payload }) => {
+            // @ts-expect-error TS7006
             const { name, scope, subresourceId, subresourcePath } =
                 payload || {};
             return {
@@ -202,9 +202,7 @@ export default handleActions(
                 },
             };
         },
-        // @ts-expect-error TS7006
         LOAD_FIELD: (state) => ({ ...state, loading: true }),
-        // @ts-expect-error TS7006
         LOAD_FIELD_SUCCESS: (state, { payload: fields }) => {
             const { catalog, list } = getCatalogFromArray(fields, 'name');
 
@@ -219,12 +217,10 @@ export default handleActions(
         // @ts-expect-error TS7006
         REMOVE_FIELD_SUCCESS: (state, { payload: { name: nameToRemove } }) => ({
             ...state,
-            // @ts-expect-error TS7006
             list: state.list.filter((name) => name !== nameToRemove),
             byName: omit(state.byName, [nameToRemove]),
         }),
         SET_VALIDATION: (
-            // @ts-expect-error TS7006
             state,
             // @ts-expect-error TS7031
             { payload: { isValid: allValid, fields: invalidFields } },
@@ -233,12 +229,10 @@ export default handleActions(
             allValid,
             invalidFields,
         }),
-        // @ts-expect-error TS7006
         SELECT_FIELD: (state, { payload: name }) => ({
             ...state,
             selectedField: name,
         }),
-        // @ts-expect-error TS7006
         CONFIGURE_FIELD: (state) => ({
             ...state,
             error: null,
@@ -257,37 +251,34 @@ export default handleActions(
             },
             invalidProperties: [],
         }),
-        // @ts-expect-error TS7006
         CONFIGURE_FIELD_ERROR: (state, { payload: error }) => ({
             ...state,
             isSaving: false,
+            // @ts-expect-error TS7031
             error: error.message,
         }),
-        // @ts-expect-error TS7006
         FIELD_INVALID: (state, { payload: { invalidProperties } }) => ({
             ...state,
             isSaving: false,
             invalidProperties,
         }),
-        // @ts-expect-error TS7006
         CONFIGURE_FIELD_OPEN: (state, { payload: configuredFieldName }) => ({
             ...state,
             configuredFieldName,
             error: null,
         }),
-        // @ts-expect-error TS7006
         CONFIGURE_FIELD_CANCEL: (state) => ({
             ...state,
             invalidProperties: [],
             configuredFieldName: null,
             error: null,
         }),
-        // @ts-expect-error TS7006
         OPEN_EDIT_FIELD_VALUE: (state, { payload: editedValueFieldName }) => ({
             ...state,
             editedValueFieldName,
             error: null,
         }),
+        // @ts-expect-error TS7006
         [combineActions(
             CLOSE_EDIT_FIELD_VALUE,
             UPDATE_CHARACTERISTICS_SUCCESS,
@@ -297,6 +288,7 @@ export default handleActions(
             ...state,
             editedValueFieldName: null,
         }),
+        // @ts-expect-error TS7006
         [combineActions(
             ADD_CHARACTERISTIC_SUCCESS,
             ADD_FIELD_TO_RESOURCE_SUCCESS,
@@ -328,19 +320,18 @@ export default handleActions(
                 state.byName,
             ),
         }),
-        // @ts-expect-error TS7006
         LOAD_PUBLICATION: (state) => ({
             ...state,
             error: null,
             loading: true,
         }),
         LOAD_PUBLICATION_SUCCESS: (
-            // @ts-expect-error TS7006
             state,
             // @ts-expect-error TS7031
             { payload: { fields, published } },
         ) => {
             const { catalog, list } = getCatalogFromArray(fields, 'name');
+            // @ts-expect-error TS7006
             const newField = state.byName.new;
 
             return {
@@ -353,43 +344,39 @@ export default handleActions(
                 editedValueFieldName: null,
             };
         },
-        // @ts-expect-error TS7006
         LOAD_PUBLICATION_ERROR: (state, { payload: error }) => ({
             ...state,
+            // @ts-expect-error TS7031
             error: error.message,
             loading: false,
         }),
-        // @ts-expect-error TS7006
         [ADD_CHARACTERISTIC]: (state) => ({
             ...state,
             error: null,
             isSaving: true,
             invalidProperties: [],
         }),
-        // @ts-expect-error TS7006
         [ADD_CHARACTERISTIC_OPEN]: (state) => ({
             ...state,
             isAdding: true,
             error: null,
         }),
-        // @ts-expect-error TS7006
         [ADD_CHARACTERISTIC_ERROR]: (state, { payload: error }) => ({
             ...state,
             isSaving: false,
             error,
         }),
-        // @ts-expect-error TS7006
         [ADD_CHARACTERISTIC_CANCEL]: (state) => ({
             ...state,
             isAdding: false,
             error: null,
             invalidProperties: [],
         }),
-        // @ts-expect-error TS7006
         [REMOVE_FIELD_LIST_STARTED]: (state) => ({
             ...state,
             isRemoveFieldListPending: true,
         }),
+        // @ts-expect-error TS7006
         [combineActions(REMOVE_FIELD_LIST_ERROR, REMOVE_FIELD_LIST_SUCCESS)]: (
             // @ts-expect-error TS7006
             state,
