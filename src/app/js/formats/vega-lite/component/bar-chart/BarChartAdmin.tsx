@@ -118,7 +118,22 @@ const BarChartAdmin = (props) => {
         }
         specBuilder.setEditMode(true);
         return JSON.stringify(specBuilder.buildSpec(), null, 2);
-    }, [advancedMode, advancedModeSpec]);
+    }, [
+        advancedMode,
+        advancedModeSpec,
+        axisRoundValue,
+        barSize,
+        colors,
+        diagonalCategoryAxis,
+        diagonalValueAxis,
+        direction,
+        labelOverlap,
+        labels,
+        scale,
+        tooltip,
+        tooltipCategory,
+        tooltipValue,
+    ]);
 
     // Save the new spec when we first use the advanced mode or when we reset the generated spec
     // details: Update advancedModeSpec props arguments when spec is generated or regenerated
@@ -127,7 +142,7 @@ const BarChartAdmin = (props) => {
             return;
         }
         updateAdminArgs('advancedModeSpec', spec, props);
-    }, [advancedMode, advancedModeSpec]);
+    }, [advancedMode, advancedModeSpec, props, spec]);
 
     const toggleAdvancedMode = () => {
         updateAdminArgs('advancedMode', !advancedMode, props);
@@ -208,11 +223,7 @@ const BarChartAdmin = (props) => {
 
     return (
         <FormatGroupedFieldSet>
-            {/*
-             // @ts-expect-error TS2322 */}
             <FormatDataParamsFieldSet>
-                {/*
-                 // @ts-expect-error TS2322 */}
                 <RoutineParamsAdmin
                     params={params || defaultArgs.params}
                     onChange={handleParams}
@@ -223,11 +234,7 @@ const BarChartAdmin = (props) => {
                     showOrderBy={showOrderBy}
                 />
             </FormatDataParamsFieldSet>
-            {/*
-             // @ts-expect-error TS2322 */}
             <FormatChartParamsFieldSet defaultExpanded>
-                {/*
-                 // @ts-expect-error TS2322 */}
                 <FormGroup>
                     <FormControlLabel
                         control={
@@ -239,8 +246,6 @@ const BarChartAdmin = (props) => {
                         label={polyglot.t('advancedMode')}
                     />
                 </FormGroup>
-                {/*
-                 // @ts-expect-error TS2322 */}
                 {advancedMode ? (
                     <VegaAdvancedMode
                         value={spec}
@@ -344,15 +349,11 @@ const BarChartAdmin = (props) => {
                         />
                     </>
                 )}
-                {/*
-                 // @ts-expect-error TS2322 */}
                 <AspectRatioSelector
                     value={aspectRatio}
                     onChange={handleAspectRatio}
                 />
             </FormatChartParamsFieldSet>
-            {/*
-             // @ts-expect-error TS2322 */}
             <VegaFieldPreview
                 args={args}
                 PreviewComponent={BarChartAdminView}

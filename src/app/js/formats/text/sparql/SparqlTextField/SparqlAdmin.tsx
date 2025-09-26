@@ -91,7 +91,7 @@ class SparqlTextFieldAdmin extends Component {
     };
     // @ts-expect-error TS7006
     handleHiddenInfo = (event) => {
-        let hiddenInfo = event.target.checked;
+        const hiddenInfo = event.target.checked;
         // @ts-expect-error TS2339
         const { sparql, ...state } = this.props.args;
         const newState = { ...state, sparql: { ...sparql, hiddenInfo } };
@@ -112,7 +112,7 @@ class SparqlTextFieldAdmin extends Component {
     handleAddSubformat = () => {
         // @ts-expect-error TS2339
         const { sparql, ...state } = this.props.args;
-        let subformat = sparql.subformat;
+        const subformat = sparql.subformat;
         subformat.push({ attribute: '?example', sub: '', option: {} });
         const newState = { ...state, sparql: { ...sparql, subformat } };
         // @ts-expect-error TS2339
@@ -123,7 +123,7 @@ class SparqlTextFieldAdmin extends Component {
     handleRemoveSubformat = (key) => {
         // @ts-expect-error TS2339
         const { sparql, ...state } = this.props.args;
-        let subformat = sparql.subformat;
+        const subformat = sparql.subformat;
         subformat.splice(key.key, 1);
         const newState = { ...state, sparql: { ...sparql, subformat } };
         // @ts-expect-error TS2339
@@ -134,7 +134,7 @@ class SparqlTextFieldAdmin extends Component {
     handleAttribute = (attribute, key) => {
         // @ts-expect-error TS2339
         const { sparql, ...state } = this.props.args;
-        let subformat = sparql.subformat;
+        const subformat = sparql.subformat;
         subformat[key].attribute = attribute;
         const newState = { ...state, sparql: { ...sparql, subformat } };
         // @ts-expect-error TS2339
@@ -145,7 +145,7 @@ class SparqlTextFieldAdmin extends Component {
     handleSubformat = (sub, key) => {
         // @ts-expect-error TS2339
         const { sparql, ...state } = this.props.args;
-        let subformat = sparql.subformat;
+        const subformat = sparql.subformat;
         subformat[key].sub = sub;
         const newState = { ...state, sparql: { ...sparql, subformat } };
         // @ts-expect-error TS2339
@@ -156,7 +156,7 @@ class SparqlTextFieldAdmin extends Component {
     handleSubformatOption = (option, key) => {
         // @ts-expect-error TS2339
         const { sparql, ...state } = this.props.args;
-        let subformat = sparql.subformat;
+        const subformat = sparql.subformat;
         subformat[key].option = option;
         const newState = { ...state, sparql: { ...sparql, subformat } };
         // @ts-expect-error TS2339
@@ -211,11 +211,7 @@ class SparqlTextFieldAdmin extends Component {
 
         return (
             <FormatGroupedFieldSet>
-                {/*
-                 // @ts-expect-error TS2322 */}
                 <FormatDataParamsFieldSet>
-                    {/*
-                     // @ts-expect-error TS2322 */}
                     <TextField
                         label={polyglot.t('sparql_endpoint')}
                         value={endpoint}
@@ -227,15 +223,11 @@ class SparqlTextFieldAdmin extends Component {
                         required="true"
                         fullWidth
                     />
-                    {/*
-                     // @ts-expect-error TS2322 */}
                     <datalist id="listEnpoint">
                         {endpoints.map((source) => (
                             <option key={source} value={source} />
                         ))}
                     </datalist>
-                    {/*
-                     // @ts-expect-error TS2322 */}
                     <Box width="100%">
                         <TextField
                             label={polyglot.t('sparql_request')}
@@ -253,8 +245,6 @@ class SparqlTextFieldAdmin extends Component {
                             {polyglot.t('sparql_validator')}
                         </a>
                     </Box>
-                    {/*
-                     // @ts-expect-error TS2322 */}
                     <TextField
                         label={polyglot.t('max_value')}
                         type="number"
@@ -262,8 +252,6 @@ class SparqlTextFieldAdmin extends Component {
                         value={maxValue}
                         fullWidth
                     />
-                    {/*
-                     // @ts-expect-error TS2322 */}
                     <FormControlLabel
                         control={
                             <Checkbox
@@ -273,8 +261,6 @@ class SparqlTextFieldAdmin extends Component {
                         }
                         label={polyglot.t('hidden_info')}
                     />
-                    {/*
-                     // @ts-expect-error TS2322 */}
                     <TextField
                         label={polyglot.t('sparql_list_separator')}
                         type="string"
@@ -283,8 +269,6 @@ class SparqlTextFieldAdmin extends Component {
                         fullWidth
                     />
                 </FormatDataParamsFieldSet>
-                {/*
-                 // @ts-expect-error TS2322 */}
                 <FormatDefaultParamsFieldSet defaultExpanded>
                     <Box
                         display="flex"

@@ -1,6 +1,5 @@
 import React, { useMemo, useState } from 'react';
 import { connect } from 'react-redux';
-// @ts-expect-error TS7016
 import { clamp } from 'lodash';
 // @ts-expect-error TS7016
 import compose from 'recompose/compose';
@@ -157,7 +156,7 @@ export const BubblePlotAdminView = connect((state, props) => {
             values: props.dataset.values ?? [],
         },
     };
-// @ts-expect-error TS2345
+    // @ts-expect-error TS2345
 })(BubblePlotView);
 
 export default compose(injectData(), connect(mapStateToProps))(BubblePlotView);

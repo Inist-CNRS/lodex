@@ -1,7 +1,6 @@
 import BasicChart from './BasicChart';
 import pieChartVL from './json/pie_chart.vl.json';
 import pieChartLabelsVL from './json/pie_chart_labels.vl.json';
-// @ts-expect-error TS7016
 import deepClone from 'lodash/cloneDeep';
 
 class PieChart extends BasicChart {

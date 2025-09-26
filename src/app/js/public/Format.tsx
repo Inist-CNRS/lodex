@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-// @ts-expect-error TS7016
 import isEqual from 'lodash/isEqual';
 
 import { fromUser, fromFields } from '../sharedSelectors';

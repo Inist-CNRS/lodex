@@ -5,7 +5,6 @@ import worldCountriesSansAntarctica from './topojson/world-countries-sans-antarc
 import europe from './topojson/europe.json';
 import frDepartments from './topojson/fr-departments.json';
 
-// @ts-expect-error TS7016
 import deepClone from 'lodash/cloneDeep';
 
 class Cartography extends BasicChart {

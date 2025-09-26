@@ -43,7 +43,7 @@ class LodexFieldAdmin extends Component {
 
     // @ts-expect-error TS7006
     handleHiddenInfo = (event) => {
-        let hiddenInfo = event.target.checked;
+        const hiddenInfo = event.target.checked;
         // @ts-expect-error TS2339
         const { param, ...state } = this.props.args;
         const newState = { ...state, param: { ...param, hiddenInfo } };
@@ -63,11 +63,7 @@ class LodexFieldAdmin extends Component {
 
         return (
             <FormatGroupedFieldSet>
-                {/*
-                 // @ts-expect-error TS2322 */}
                 <FormatDataParamsFieldSet>
-                    {/*
-                     // @ts-expect-error TS2322 */}
                     <TextField
                         label={polyglot.t('param_labels')}
                         multiline
@@ -76,11 +72,7 @@ class LodexFieldAdmin extends Component {
                         fullWidth
                     />
                 </FormatDataParamsFieldSet>
-                {/*
-                 // @ts-expect-error TS2322 */}
                 <FormatDefaultParamsFieldSet defaultExpanded>
-                    {/*
-                     // @ts-expect-error TS2322 */}
                     <FormControlLabel
                         control={
                             <Checkbox

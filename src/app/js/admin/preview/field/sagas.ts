@@ -6,7 +6,7 @@ import {
     ARRAY_MOVE as REDUX_FORM_ARRAY_MOVE,
     ARRAY_PUSH as REDUX_FORM_ARRAY_PUSH,
     ARRAY_SPLICE as REDUX_FORM_ARRAY_SPLICE,
-// @ts-expect-error TS7016
+    // @ts-expect-error TS7016
 } from 'redux-form/lib/actionTypes';
 
 import getDocumentTransformer from '../../../lib/getDocumentTransformer';
@@ -16,7 +16,6 @@ import { getFieldFormData } from '../../../fields/selectors';
 import { fromParsing } from '../../selectors';
 import { FIELD_FORM_NAME } from '../../../fields/index';
 import { GET_SOURCE_VALUE_FROM_TRANSFORMERS } from '../../../fields/sourceValue/SourceValueToggle';
-// @ts-expect-error TS7016
 import cloneDeep from 'lodash/cloneDeep';
 
 // @ts-expect-error TS7031

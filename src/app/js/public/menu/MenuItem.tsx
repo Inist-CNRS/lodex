@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import * as icons from '@fortawesome/free-solid-svg-icons';
-// @ts-expect-error TS7016
 import get from 'lodash/get';
 import classnames from 'classnames';
 // @ts-expect-error TS7016

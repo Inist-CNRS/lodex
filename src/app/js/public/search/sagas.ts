@@ -31,7 +31,6 @@ import { fromFields, fromUser } from '../../sharedSelectors';
 import facetSagasFactory from '../facet/sagas';
 import { LOAD_RESOURCE_SUCCESS } from '../resource';
 import { fromResource, fromSearch } from '../selectors';
-// @ts-expect-error TS7016
 import { uniq } from 'lodash';
 import { getVisitedUris } from '../resource/useRememberVisit';
 

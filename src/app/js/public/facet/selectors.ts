@@ -1,6 +1,4 @@
-// @ts-expect-error TS7016
 import get from 'lodash/get';
-// @ts-expect-error TS7016
 import pick from 'lodash/pick';
 
 // @ts-expect-error TS7031

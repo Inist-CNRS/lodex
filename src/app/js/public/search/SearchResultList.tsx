@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-// @ts-expect-error TS7016
 import isEqual from 'lodash/isEqual';
 import classnames from 'classnames';
 

@@ -6,7 +6,6 @@ import {
     throttle,
     all,
 } from 'redux-saga/effects';
-// @ts-expect-error TS7016
 import get from 'lodash/get';
 
 import {
@@ -128,7 +127,7 @@ export const splitPrecomputedNameAndRoutine = (value) => {
             precomputedName: url.searchParams.get('precomputedName'),
             routine: `${url.protocol}//${url.host}${url.pathname}`,
         };
-    } catch (_) {
+    } catch (_e) {
         url = new URL(`http://${value}`);
     }
 

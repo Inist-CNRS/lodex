@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
 import { polyglot as polyglotPropTypes } from '../../../propTypes';
@@ -31,7 +31,6 @@ const LeafletAdmin = ({
     showMinValue = true,
     showOrderBy = true,
 }) => {
-
     // @ts-expect-error TS7006
     const handleParams = (params) => {
         updateAdminArgs('params', params, { args, onChange });
@@ -44,15 +43,9 @@ const LeafletAdmin = ({
 
     const { zoom } = args;
 
-
-
     return (
         <FormatGroupedFieldSet>
-            {/*
-             // @ts-expect-error TS2322 */}
             <FormatDataParamsFieldSet>
-                {/*
-                 // @ts-expect-error TS2322 */}
                 <RoutineParamsAdmin
                     // @ts-expect-error TS2739
                     params={args.params || defaultArgs.params}
@@ -64,11 +57,7 @@ const LeafletAdmin = ({
                     showOrderBy={showOrderBy}
                 />
             </FormatDataParamsFieldSet>
-            {/*
-             // @ts-expect-error TS2322 */}
             <FormatChartParamsFieldSet defaultExpanded>
-                {/*
-                 // @ts-expect-error TS2322 */}
                 <TextField
                     label={polyglot.t('zoomByDefault')}
                     onChange={handleZoom}

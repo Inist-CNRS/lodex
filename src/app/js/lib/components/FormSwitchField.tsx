@@ -1,10 +1,8 @@
 import React from 'react';
 import { Switch, FormControlLabel } from '@mui/material';
-// @ts-expect-error TS7016
 import memoize from 'lodash/memoize';
 import { formField as formFieldPropTypes } from '../../propTypes';
 
-// @ts-expect-error TS7006
 const isChecked = memoize((value) => {
     if (typeof value === 'boolean') {
         return value;
@@ -14,6 +12,7 @@ const isChecked = memoize((value) => {
 });
 
 // @ts-expect-error TS7031
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const FormSwitchField = ({ input, label, meta, ...custom }) => (
     <FormControlLabel
         control={

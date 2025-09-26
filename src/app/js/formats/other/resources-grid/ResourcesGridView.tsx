@@ -5,7 +5,6 @@ import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import { translate } from '../../../i18n/I18NContext';
 import { Button, CircularProgress } from '@mui/material';
-// @ts-expect-error TS7016
 import memoize from 'lodash/memoize';
 
 import LodexResource from '../../utils/components/LodexResource';
@@ -17,7 +16,6 @@ import {
     polyglot as polyglotPropTypes,
 } from '../../../propTypes';
 
-// @ts-expect-error TS7006
 const createStyles = memoize((spaceWidth) =>
     stylesToClassname(
         {
@@ -114,14 +112,19 @@ class ResourcesGridView extends Component {
 
         return (
             <div>
+                {/* 
+                // @ts-expect-error TS2322 */}
                 <ul className={styles.list}>
                     {/*
                      // @ts-expect-error TS7006 */}
                     {filteredData.map((entry, index) => (
                         <li
                             key={`${index}-resources-grid`}
+                            // @ts-expect-error TS2322
                             className={styles.item}
                         >
+                            {/* 
+                            // @ts-expect-error TS2322 */}
                             <div className={styles.content}>
                                 <LodexResource
                                     {...entry}
@@ -138,6 +141,7 @@ class ResourcesGridView extends Component {
                     ))}
                 </ul>
                 {allowToLoadMore && more < total && (
+                    // @ts-expect-error TS2322
                     <div className={styles.button}>
                         <Button
                             variant="contained"

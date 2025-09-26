@@ -54,11 +54,7 @@ const ClusteredChartAdmin = (props) => {
 
     return (
         <FormatGroupedFieldSet>
-            {/*
-             // @ts-expect-error TS2322 */}
             <FormatDataParamsFieldSet>
-                {/*
-                 // @ts-expect-error TS2322 */}
                 <RoutineParamsAdmin
                     params={params || defaultArgs.params}
                     polyglot={p}
@@ -69,11 +65,7 @@ const ClusteredChartAdmin = (props) => {
                     showOrderBy
                 />
             </FormatDataParamsFieldSet>
-            {/*
-             // @ts-expect-error TS2322 */}
             <FormatChartParamsFieldSet defaultExpanded>
-                {/*
-                 // @ts-expect-error TS2322 */}
                 <FormControlLabel
                     control={
                         <Checkbox
@@ -83,23 +75,17 @@ const ClusteredChartAdmin = (props) => {
                     }
                     label={p.t('flip_axis')}
                 />
-                {/*
-                 // @ts-expect-error TS2322 */}
                 <ColorPickerParamsAdmin
                     colors={colors}
                     onChange={handleColors}
                     polyglot={p}
                 />
-                {/*
-                 // @ts-expect-error TS2322 */}
                 <TextField
                     fullWidth
                     label={p.t('format_x_axis_title')}
                     onChange={handleXAxisTitle}
                     value={xTitle}
                 />
-                {/*
-                 // @ts-expect-error TS2322 */}
                 <TextField
                     fullWidth
                     label={p.t('format_y_axis_title')}

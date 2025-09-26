@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 // @ts-expect-error TS7016
 import compose from 'recompose/compose';
-// @ts-expect-error TS7016
 import { clamp } from 'lodash';
 
 import injectData from '../../../injectData';
@@ -197,7 +196,7 @@ export const BarChartAdminView = connect((state, props) => {
             values: props.dataset.values ?? [],
         },
     };
-// @ts-expect-error TS2345
+    // @ts-expect-error TS2345
 })(BarChartView);
 
 export default compose(injectData(), connect(mapStateToProps))(BarChartView);

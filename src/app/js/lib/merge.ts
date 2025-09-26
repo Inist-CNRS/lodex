@@ -1,4 +1,3 @@
-// @ts-expect-error TS7016
 import merge from 'lodash/merge';
 
 // @ts-expect-error TS7006

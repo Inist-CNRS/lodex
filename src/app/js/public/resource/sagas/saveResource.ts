@@ -1,5 +1,4 @@
 import { call, put, select, takeLatest } from 'redux-saga/effects';
-// @ts-expect-error TS7016
 import isEqual from 'lodash/isEqual';
 
 import { saveResourceSuccess, saveResourceError, SAVE_RESOURCE } from '../';
