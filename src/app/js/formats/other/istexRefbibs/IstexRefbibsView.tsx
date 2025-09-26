@@ -49,8 +49,6 @@ export const IstexRefbibsView = ({ fieldStatus, data, error, p: polyglot }) => (
             </span>
             {error && (
                 <Alert>
-                    {/*
-                     // @ts-expect-error TS2322 */}
                     <p>{polyglot.t(error)}</p>
                 </Alert>
             )}

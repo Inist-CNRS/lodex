@@ -90,7 +90,10 @@ const MenuComponent = ({
 
     const handleCloseMenu = useCallback((callback) => {
         setAnchorEl(null);
-        typeof callback === 'function' && callback();
+
+        if (typeof callback === 'function') {
+            callback();
+        }
     }, []);
 
     const handleCloseSubMenu = useCallback(() => {
@@ -230,7 +233,6 @@ const MenuComponent = ({
                 <ClearDialog
                     // @ts-expect-error TS2322
                     type={clearDialogType}
-                    // @ts-expect-error TS2322
                     onClose={() => setShowClearDialog(!showClearDialog)}
                 />
             )}

@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { red } from '@mui/material/colors';
 import memoize from 'lodash/memoize';
 
@@ -10,22 +9,19 @@ const styles = {
     },
 };
 
-const getStyle = memoize((style) => ({ ...styles.alert, ...style }));
+const getStyle = memoize((style) =>
+    style ? styles.alert : { ...styles.alert, ...style },
+);
 
-// @ts-expect-error TS7031
-const Alert = ({ children, style }) => (
+type AlertProps = {
+    children: React.ReactNode;
+    style?: React.CSSProperties | null;
+};
+
+const Alert = ({ children, style }: AlertProps) => (
     <div className="alert" style={getStyle(style)}>
         {children}
     </div>
 );
-
-Alert.propTypes = {
-    children: PropTypes.node.isRequired,
-    style: PropTypes.object,
-};
-
-Alert.defaultProps = {
-    style: null,
-};
 
 export default Alert;

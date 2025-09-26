@@ -303,7 +303,6 @@ describe('format sagas', () => {
     describe('handleLoadFormatDataRequest', () => {
         it('should loadFormatData for field', () => {
             const iterator = handleLoadFormatDataRequest({
-                // @ts-expect-error TS2739
                 payload: {
                     field: { name: 'fieldName' },
                     filter: { filterKey: 'filterValue' },
@@ -350,7 +349,6 @@ describe('format sagas', () => {
 
         it('should loadFormatData with the resource uri for field', () => {
             const iterator = handleLoadFormatDataRequest({
-                // @ts-expect-error TS2741
                 payload: {
                     field: { name: 'fieldName' },
                     filter: { filterKey: 'filterValue' },
@@ -399,7 +397,6 @@ describe('format sagas', () => {
 
         it('should put loadFormatDataError if value is not a string', () => {
             const iterator = handleLoadFormatDataRequest({
-                // @ts-expect-error TS2739
                 payload: {
                     field: { name: 'fieldName' },
                     filter: { filterKey: 'filterValue' },
@@ -426,7 +423,6 @@ describe('format sagas', () => {
 
         it('should do nothing if field has no name', () => {
             const iterator = handleLoadFormatDataRequest({
-                // @ts-expect-error TS2739
                 payload: {
                     field: {},
                     filter: { filterKey: 'filterValue' },
@@ -443,7 +439,6 @@ describe('format sagas', () => {
 
         it('should do nothing if receiving no field', () => {
             const iterator = handleLoadFormatDataRequest({
-                // @ts-expect-error TS2739
                 payload: {
                     field: null,
                     filter: { filterKey: 'filterValue' },

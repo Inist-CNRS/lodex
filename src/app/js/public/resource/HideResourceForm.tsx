@@ -42,8 +42,6 @@ export const HideResourceFormComponent = ({
     <form id="hide_resource_form" onSubmit={() => handleSubmit(resource.uri)}>
         {resourceError && (
             <Alert>
-                {/*
-                 // @ts-expect-error TS2322 */}
                 <p>{resourceError}</p>
             </Alert>
         )}
@@ -88,10 +86,12 @@ export default compose(
     withHandlers({
         onSubmit:
             // @ts-expect-error TS7031
-            ({ hideResource, resource }) =>
-            () => {
-                hideResource(resource.uri);
-            },
+
+
+                ({ hideResource, resource }) =>
+                () => {
+                    hideResource(resource.uri);
+                },
     }),
     reduxForm({
         form: HIDE_RESOURCE_FORM_NAME,

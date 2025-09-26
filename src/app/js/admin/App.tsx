@@ -1,6 +1,5 @@
 import React, { useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet';
-import PropTypes from 'prop-types';
 
 import AppBar from './Appbar/AppBar';
 import getTitle from '../lib/getTitle';
@@ -25,8 +24,12 @@ const styles = {
     },
 };
 
-// @ts-expect-error TS7031
-export const AppComponent = ({ children, tenant }) => {
+type AppComponentProps = {
+    children: React.ReactNode;
+    tenant?: string;
+};
+
+export const AppComponent = ({ children, tenant }: AppComponentProps) => {
     const [sidebarOpen, setSidebarOpen] = useState(true);
     const sidebarContextValue = useMemo(
         () => ({
@@ -78,11 +81,6 @@ export const AppComponent = ({ children, tenant }) => {
             <Progress />
         </SidebarContext.Provider>
     );
-};
-
-AppComponent.propTypes = {
-    children: PropTypes.node.isRequired,
-    tenant: PropTypes.string,
 };
 
 export default AppComponent;

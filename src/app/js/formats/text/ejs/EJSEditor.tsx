@@ -6,6 +6,7 @@ import { translate, useTranslate } from '../../../i18n/I18NContext';
 import Loading from '../../../lib/components/Loading';
 
 const FormSourceCodeField = lazy(
+    // @ts-expect-error TS7016
     () => import('../../../lib/components/FormSourceCodeField'),
 );
 
@@ -17,7 +18,7 @@ const EJSEditor = ({ value, onChange }) => {
 
     useEffect(() => {
         onChange(currentValue);
-    }, [currentValue]);
+    }, [currentValue, onChange]);
 
     // @ts-expect-error TS7006
     const handleChange = (newValue) => {
@@ -27,8 +28,6 @@ const EJSEditor = ({ value, onChange }) => {
     return (
         <Box width="100%">
             <Suspense fallback={<Loading>{translate('loading')}</Loading>}>
-                {/*
-                 // @ts-expect-error TS2739 */}
                 <FormSourceCodeField
                     style={{
                         width: '100%',
