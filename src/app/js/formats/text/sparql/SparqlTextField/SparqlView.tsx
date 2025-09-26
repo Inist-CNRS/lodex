@@ -7,7 +7,6 @@ import SparqlRequest from '../SparqlRequest';
 import { isURL } from '../../../../../../common/uris';
 import { field as fieldPropTypes } from '../../../../propTypes';
 import URL from 'url';
-// @ts-expect-error TS7016
 import toPairs from 'lodash/toPairs';
 // @ts-expect-error TS7016
 import toSentenceCase from 'js-sentencecase';
@@ -174,8 +173,8 @@ export class SparqlTextField extends Component {
                     return (
                         <div key={key} style={styles.container2}>
                             {toPairs(result).map(
-                                // @ts-expect-error TS7031
                                 ([attrName, attrData], index) => {
+                                    // @ts-expect-error TS2339
                                     if (!attrData.value) {
                                         return;
                                     }

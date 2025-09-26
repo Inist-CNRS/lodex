@@ -45,8 +45,6 @@ export const LoginFormComponent = ({
     <form id="login_form" onSubmit={handleSubmit}>
         {error && (
             <Alert style={styles.alert}>
-                {/*
-                 // @ts-expect-error TS2322 */}
                 <p>{polyglot.t(error)}</p>
             </Alert>
         )}
@@ -85,12 +83,14 @@ export default compose(
     withHandlers({
         handleKeyPress:
             // @ts-expect-error TS7031
-            ({ handleSubmit }) =>
-            // @ts-expect-error TS7006
-            (event) => {
-                if (event.key === 'Enter') {
-                    handleSubmit();
-                }
-            },
+
+
+                ({ handleSubmit }) =>
+                // @ts-expect-error TS7006
+                (event) => {
+                    if (event.key === 'Enter') {
+                        handleSubmit();
+                    }
+                },
     }),
 )(LoginFormComponent);

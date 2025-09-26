@@ -25,11 +25,7 @@ describe('<Upload />', () => {
         expect(
             wrapper.contains(
                 <Alert>
-                    {/*
-                     // @ts-expect-error TS2322 */}
                     <p>Error uploading given file: </p>
-                    {/*
-                     // @ts-expect-error TS2322 */}
                     <p>{props.error}</p>
                 </Alert>,
             ),
@@ -51,11 +47,7 @@ describe('<Upload />', () => {
         expect(
             wrapper.contains(
                 <Alert>
-                    {/*
-                     // @ts-expect-error TS2322 */}
                     <p>Error uploading given file: </p>
-                    {/*
-                     // @ts-expect-error TS2322 */}
                     <p>{props.error}</p>
                 </Alert>,
             ),
