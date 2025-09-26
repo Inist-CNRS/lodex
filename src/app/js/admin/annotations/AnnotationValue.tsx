@@ -3,6 +3,7 @@ import React from 'react';
 import { useTranslate } from '../../i18n/I18NContext';
 import PropTypes from 'prop-types';
 
+// @ts-expect-error TS7031
 export const AnnotationValue = ({ value, label }) => {
     const { translate } = useTranslate();
     const theme = useTheme();

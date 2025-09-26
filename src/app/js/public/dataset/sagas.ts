@@ -26,6 +26,7 @@ import { fromDataset } from '../selectors';
 import facetSagasFactory from '../facet/sagas';
 
 export function* handlePreLoadDatasetPage() {
+    // @ts-expect-error TS7057
     if (yield select(fromDataset.isDatasetLoaded)) {
         return;
     }
@@ -33,27 +34,36 @@ export function* handlePreLoadDatasetPage() {
     yield put(loadDatasetPage());
 }
 
+// @ts-expect-error TS7031
 export function* handleLoadDatasetPageRequest({ payload }) {
+    // @ts-expect-error TS7057
     let facets = yield select(fromDataset.getAppliedFacets);
     facets = Object.keys(facets).reduce((acc, facetName) => {
+        // @ts-expect-error TS7053
         acc[facetName] = facets[facetName].map((facetValue) => facetValue.id);
         return acc;
     }, {});
+    // @ts-expect-error TS7057
     const invertedFacets = yield select(fromDataset.getInvertedFacetKeys);
+    // @ts-expect-error TS7057
     const match = yield select(fromDataset.getFilter);
+    // @ts-expect-error TS7057
     const sort = yield select(fromDataset.getSort);
 
     let page = payload && payload.page;
     let perPage = payload && payload.perPage;
 
     if (page === false || typeof page === 'undefined') {
+        // @ts-expect-error TS7057
         page = yield select(fromDataset.getDatasetCurrentPage);
     }
 
     if (!perPage) {
+        // @ts-expect-error TS7057
         perPage = yield select(fromDataset.getDatasetPerPage);
     }
 
+    // @ts-expect-error TS7057
     const request = yield select(fromUser.getLoadDatasetPageRequest, {
         match,
         facets,
@@ -84,6 +94,7 @@ export default function* () {
         // see https://github.com/redux-saga/redux-saga/blob/master/docs/api/README.md#throttlems-pattern-saga-args
         yield throttle(
             500,
+            // @ts-expect-error TS2769
             [
                 LOAD_DATASET_PAGE,
                 APPLY_FILTER,

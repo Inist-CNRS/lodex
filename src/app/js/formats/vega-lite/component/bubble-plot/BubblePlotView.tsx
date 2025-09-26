@@ -1,6 +1,8 @@
 import React, { useMemo, useState } from 'react';
 import { connect } from 'react-redux';
+// @ts-expect-error TS7016
 import { clamp } from 'lodash';
+// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import PropTypes from 'prop-types';
 
@@ -24,17 +26,29 @@ const styles = {
 };
 
 const BubblePlotView = ({
+    // @ts-expect-error TS7031
     advancedMode,
+    // @ts-expect-error TS7031
     advancedModeSpec,
+    // @ts-expect-error TS7031
     field,
+    // @ts-expect-error TS7031
     data,
+    // @ts-expect-error TS7031
     colors,
+    // @ts-expect-error TS7031
     params,
+    // @ts-expect-error TS7031
     flipAxis,
+    // @ts-expect-error TS7031
     tooltip,
+    // @ts-expect-error TS7031
     tooltipSource,
+    // @ts-expect-error TS7031
     tooltipTarget,
+    // @ts-expect-error TS7031
     tooltipWeight,
+    // @ts-expect-error TS7031
     aspectRatio,
 }) => {
     const { ref, width } = useSizeObserver();
@@ -49,6 +63,7 @@ const BubblePlotView = ({
                     clamp(width - VEGA_ACTIONS_WIDTH, 300, 1200),
                 );
             } catch (e) {
+                // @ts-expect-error TS18046
                 setError(e.message);
                 return null;
             }
@@ -64,6 +79,7 @@ const BubblePlotView = ({
         specBuilder.setTooltipTarget(tooltipTarget);
         specBuilder.setTooltipValue(tooltipWeight);
 
+        // @ts-expect-error TS2554
         return specBuilder.buildSpec(width);
     }, [
         width,
@@ -84,6 +100,7 @@ const BubblePlotView = ({
     }
 
     return (
+        // @ts-expect-error TS2322
         <div style={styles.container} ref={ref}>
             <CustomActionVegaLite
                 spec={spec}
@@ -117,6 +134,7 @@ BubblePlotView.defaultProps = {
     className: null,
 };
 
+// @ts-expect-error TS7006
 const mapStateToProps = (state, { formatData }) => {
     if (!formatData) {
         return {};
@@ -135,9 +153,11 @@ export const BubblePlotAdminView = connect((state, props) => {
             format: 'Preview Format',
         },
         data: {
+            // @ts-expect-error TS2339
             values: props.dataset.values ?? [],
         },
     };
+// @ts-expect-error TS2345
 })(BubblePlotView);
 
 export default compose(injectData(), connect(mapStateToProps))(BubblePlotView);

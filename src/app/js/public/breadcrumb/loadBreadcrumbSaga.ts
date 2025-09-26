@@ -10,11 +10,13 @@ import { fromUser } from '../../sharedSelectors';
 import fetchSaga from '../../lib/sagas/fetchSaga';
 
 export function* handleLoadBreadcrumb() {
+    // @ts-expect-error TS7057
     const breadcrumb = yield select(fromBreadcrumb.hasBreadcrumb);
     if (breadcrumb) {
         return;
     }
 
+    // @ts-expect-error TS7057
     const request = yield select(fromUser.getBreadcrumbRequest);
 
     const { error, response } = yield call(fetchSaga, request);

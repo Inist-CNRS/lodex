@@ -37,14 +37,17 @@ export class IstexSummaryAdmin extends Component {
         args: defaultArgs,
     };
 
+    // @ts-expect-error TS7006
     handleSearchedField = (e) => {
         updateAdminArgs('searchedField', e.target.value, this.props);
     };
 
+    // @ts-expect-error TS7006
     handleSortDir = (e) => {
         updateAdminArgs('sortDir', e.target.value, this.props);
     };
 
+    // @ts-expect-error TS7006
     handleYearThreshold = (e) =>
         updateAdminArgs(
             'yearThreshold',
@@ -52,18 +55,25 @@ export class IstexSummaryAdmin extends Component {
             this.props,
         );
 
+    // @ts-expect-error TS7006
     handleDocumentSortBy = (e) =>
         updateAdminArgs('documentSortBy', e.target.value, this.props);
 
     render() {
         const {
+            // @ts-expect-error TS2339
             p: polyglot,
+            // @ts-expect-error TS2339
             args: { searchedField, sortDir, yearThreshold, documentSortBy },
         } = this.props;
 
         return (
             <FormatGroupedFieldSet>
+                {/*
+                 // @ts-expect-error TS2322 */}
                 <FormatDataParamsFieldSet defaultExpanded>
+                    {/*
+                     // @ts-expect-error TS2322 */}
                     <TextField
                         fullWidth
                         select
@@ -78,6 +88,8 @@ export class IstexSummaryAdmin extends Component {
                             </MenuItem>
                         ))}
                     </TextField>
+                    {/*
+                     // @ts-expect-error TS2322 */}
                     <TextField
                         fullWidth
                         select
@@ -92,6 +104,8 @@ export class IstexSummaryAdmin extends Component {
                             </MenuItem>
                         ))}
                     </TextField>
+                    {/*
+                     // @ts-expect-error TS2322 */}
                     <TextField
                         className="year_threshold"
                         type="number"
@@ -100,6 +114,8 @@ export class IstexSummaryAdmin extends Component {
                         value={yearThreshold}
                         fullWidth
                     />
+                    {/*
+                     // @ts-expect-error TS2322 */}
                     <TextField
                         className="document_sort_by"
                         label={polyglot.t('document_sort_by')}

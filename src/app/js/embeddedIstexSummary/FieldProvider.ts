@@ -14,6 +14,7 @@ class FieldProvider extends Component {
 
     getFirstIstexQuery = () => {
         const { data } = this.state;
+        // @ts-expect-error TS2339
         const { field, resource } = data;
         const searchedField =
             field.format.args.searchedField || CUSTOM_ISTEX_QUERY;
@@ -24,6 +25,7 @@ class FieldProvider extends Component {
                 field,
                 searchedField,
             }),
+        // @ts-expect-error TS7031
         }).then(({ error, response }) => {
             if (error) {
                 this.setState({ error: true });
@@ -33,6 +35,7 @@ class FieldProvider extends Component {
             this.setState({
                 loading: false,
                 data: {
+                    // @ts-expect-error TS2698
                     ...data,
                     formatData: response,
                 },
@@ -41,12 +44,14 @@ class FieldProvider extends Component {
     };
 
     componentDidMount() {
+        // @ts-expect-error TS2339
         const { api, uri, fieldName } = this.props;
 
         fetch({
             url: `${api}/embedded?uri=${encodeURIComponent(
                 uri,
             )}&fieldName=${encodeURIComponent(fieldName)}`,
+        // @ts-expect-error TS7031
         }).then(({ error, response }) => {
             if (error) {
                 this.setState({ error: true });
@@ -73,10 +78,12 @@ class FieldProvider extends Component {
             return null;
         }
 
+        // @ts-expect-error TS2349
         return children(data);
     }
 }
 
+// @ts-expect-error TS2339
 FieldProvider.propTypes = {
     children: PropTypes.func.isRequired,
     api: PropTypes.string.isRequired,

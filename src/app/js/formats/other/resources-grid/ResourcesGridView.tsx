@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import { translate } from '../../../i18n/I18NContext';
 import { Button, CircularProgress } from '@mui/material';
+// @ts-expect-error TS7016
 import memoize from 'lodash/memoize';
 
 import LodexResource from '../../utils/components/LodexResource';
@@ -15,6 +17,7 @@ import {
     polyglot as polyglotPropTypes,
 } from '../../../propTypes';
 
+// @ts-expect-error TS7006
 const createStyles = memoize((spaceWidth) =>
     stylesToClassname(
         {
@@ -69,6 +72,7 @@ class ResourcesGridView extends Component {
         p: polyglotPropTypes.isRequired,
     };
 
+    // @ts-expect-error TS7006
     constructor(props) {
         super(props);
         this.state = {
@@ -78,22 +82,31 @@ class ResourcesGridView extends Component {
     }
 
     handleMore = () => {
+        // @ts-expect-error TS2339
         const { filterFormatData, pageSize } = this.props;
 
         this.setState(
+            // @ts-expect-error TS2339
             (prevState) => ({ more: prevState.more + pageSize }),
+            // @ts-expect-error TS2339
             () => filterFormatData({ maxSize: this.state.more }),
         );
     };
 
     render() {
         const {
+            // @ts-expect-error TS2339
             data,
+            // @ts-expect-error TS2339
             spaceWidth,
+            // @ts-expect-error TS2339
             total,
+            // @ts-expect-error TS2339
             allowToLoadMore,
+            // @ts-expect-error TS2339
             p: polyglot,
         } = this.props;
+        // @ts-expect-error TS2339
         const { more, fetch } = this.state;
         const styles = createStyles(spaceWidth);
 
@@ -102,6 +115,8 @@ class ResourcesGridView extends Component {
         return (
             <div>
                 <ul className={styles.list}>
+                    {/*
+                     // @ts-expect-error TS7006 */}
                     {filteredData.map((entry, index) => (
                         <li
                             key={`${index}-resources-grid`}
@@ -110,8 +125,11 @@ class ResourcesGridView extends Component {
                             <div className={styles.content}>
                                 <LodexResource
                                     {...entry}
+                                    // @ts-expect-error TS2339
                                     titleSize={this.props.titleSize}
+                                    // @ts-expect-error TS2339
                                     summarySize={this.props.summarySize}
+                                    // @ts-expect-error TS2339
                                     openInNewTab={this.props.openInNewTab}
                                     polyglot={polyglot}
                                 />
@@ -142,6 +160,7 @@ class ResourcesGridView extends Component {
     }
 }
 
+// @ts-expect-error TS7006
 const mapStateToProps = (_, { formatData, spaceWidth }) => {
     if (!formatData || !formatData.items) {
         return {
@@ -158,6 +177,7 @@ const mapStateToProps = (_, { formatData, spaceWidth }) => {
 };
 
 export default compose(
+    // @ts-expect-error TS2345
     injectData(null, (field) => !!field),
     connect(mapStateToProps),
     translate,

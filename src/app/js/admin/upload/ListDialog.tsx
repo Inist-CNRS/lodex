@@ -33,16 +33,25 @@ const styles = {
 };
 
 export const ListDialogComponent = ({
+    // @ts-expect-error TS7031
     p: polyglot,
+    // @ts-expect-error TS7031
     loaders,
+    // @ts-expect-error TS7031
     value,
+    // @ts-expect-error TS7031
     setLoader,
+    // @ts-expect-error TS7031
     open,
+    // @ts-expect-error TS7031
     handleClose,
+    // @ts-expect-error TS7031
     actions,
 }) => {
+    // @ts-expect-error TS7006
     const [filteredLoaders, setFilter] = useState(loaders.map((l) => l.name));
 
+    // @ts-expect-error TS7006
     const scrollTo = (el) => {
         if (el) {
             el.scrollIntoView({ inline: 'center', block: 'center' });
@@ -50,18 +59,24 @@ export const ListDialogComponent = ({
     };
 
     useEffect(() => {
+        // @ts-expect-error TS7006
         setFilter(loaders.map((l) => l.name));
     }, [loaders]);
 
+    // @ts-expect-error TS7006
     const changeValue = (newValue) => {
         setLoader(newValue);
         handleClose();
     };
 
     const loaderNames = loaders
+        // @ts-expect-error TS7006
         .map((loader) => loader.name)
+        // @ts-expect-error TS7006
         .filter((loader) => filteredLoaders.includes(loader))
+        // @ts-expect-error TS7006
         .sort((x, y) => polyglot.t(x).localeCompare(polyglot.t(y)))
+        // @ts-expect-error TS7006
         .map((pn) => (
             <ListItemComponent
                 key={pn}
@@ -112,11 +127,17 @@ ListDialogComponent.propTypes = {
 };
 
 const ListItemComponent = ({
+    // @ts-expect-error TS7031
     value,
+    // @ts-expect-error TS7031
     title,
+    // @ts-expect-error TS7031
     comment,
+    // @ts-expect-error TS7031
     selected,
+    // @ts-expect-error TS7031
     changeValue,
+    // @ts-expect-error TS7031
     scrollTo,
 }) => {
     return (
@@ -149,16 +170,23 @@ ListItemComponent.propTypes = {
     scrollTo: PropTypes.func.isRequired,
 };
 
+// @ts-expect-error TS7031
 const FilterComponent = ({ loaders, filter, setFilter, p: polyglot }) => {
     const allFilters = {
+        // @ts-expect-error TS7006
         allFormat: loaders.map((l) => l.name),
         csvFormat: loaders
+            // @ts-expect-error TS7006
             .filter((l) => l.name.startsWith('csv'))
+            // @ts-expect-error TS7006
             .map((l) => l.name),
         tsvFormat: loaders
+            // @ts-expect-error TS7006
             .filter((l) => l.name.startsWith('tsv'))
+            // @ts-expect-error TS7006
             .map((l) => l.name),
         xmlFormat: loaders
+            // @ts-expect-error TS7006
             .filter((l) =>
                 [
                     'xml',
@@ -170,12 +198,17 @@ const FilterComponent = ({ loaders, filter, setFilter, p: polyglot }) => {
                     'skos',
                 ].includes(l.name),
             )
+            // @ts-expect-error TS7006
             .map((l) => l.name),
         jsonFormat: loaders
+            // @ts-expect-error TS7006
             .filter((l) => l.name.startsWith('json'))
+            // @ts-expect-error TS7006
             .map((l) => l.name),
     };
+    // @ts-expect-error TS2339
     allFilters.otherFormat = allFilters.allFormat.filter(
+        // @ts-expect-error TS7006
         (l) =>
             !allFilters.csvFormat.includes(l) &&
             !allFilters.tsvFormat.includes(l) &&
@@ -203,11 +236,13 @@ const FilterComponent = ({ loaders, filter, setFilter, p: polyglot }) => {
                 <Box key={key}>
                     <Button
                         variant={
+                            // @ts-expect-error TS7053
                             allFilters[key].toString() === filter.toString()
                                 ? 'contained'
                                 : 'outlined'
                         }
                         color="primary"
+                        // @ts-expect-error TS7053
                         onClick={() => setFilter(allFilters[key])}
                         className="format-category"
                     >

@@ -1,4 +1,5 @@
 import React from 'react';
+// @ts-expect-error TS7016
 import { shallow } from 'enzyme';
 
 import FetchFold from '../istexSummary/FetchFold';
@@ -9,6 +10,7 @@ import { CUSTOM_ISTEX_QUERY } from '../istexSummary/constants';
 jest.mock('./getIstexCitationData');
 
 const getData = () => 'data';
+// @ts-expect-error TS2339
 getCitationDocumentData.mockImplementation(() => getData);
 
 describe('JournalFold', () => {
@@ -18,11 +20,13 @@ describe('JournalFold', () => {
         item: { name: 'The Lancet', count: 9908 },
         searchedField: CUSTOM_ISTEX_QUERY,
         documentSortBy: 'publicationDate[desc]',
+        // @ts-expect-error TS7006
         polyglot: { t: (v) => v },
         children,
     };
 
     it('should render FetchFold to fetch Journal name', () => {
+        // @ts-expect-error TS2322
         const wrapper = shallow(<JournalFold {...defaultProps} />);
 
         const fetchFold = wrapper.find(FetchFold);

@@ -27,6 +27,7 @@ const styles = {
     },
 };
 
+// @ts-expect-error TS7031
 export const StatisticsComponent = ({ isComputing, totalPublishedFields }) => {
     const { translate } = useTranslate();
     return (
@@ -39,6 +40,8 @@ export const StatisticsComponent = ({ isComputing, totalPublishedFields }) => {
                 />
             )}
             <Box sx={styles.item}>
+                {/*
+                 // @ts-expect-error TS2554 */}
                 {translate('publication_summary_fields', {
                     smart_count: totalPublishedFields,
                 })}
@@ -52,8 +55,11 @@ StatisticsComponent.propTypes = {
     totalPublishedFields: PropTypes.number.isRequired,
 };
 
+// @ts-expect-error TS7006
 const mapStateToProps = (state, { filter, subresourceId }) => ({
+    // @ts-expect-error TS2339
     isComputing: fromPublicationPreview.isComputing(state),
+    // @ts-expect-error TS2339
     totalPublishedFields: fromFields.getEditingFields(state, {
         filter,
         subresourceId,

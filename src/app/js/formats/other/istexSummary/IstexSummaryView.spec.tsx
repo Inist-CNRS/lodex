@@ -1,4 +1,6 @@
+// @ts-expect-error TS7016
 import { StyleSheetTestUtils } from 'aphrodite';
+// @ts-expect-error TS7016
 import { shallow } from 'enzyme';
 import React from 'react';
 
@@ -29,17 +31,22 @@ describe('IstexSummaryView', () => {
         searchedField: 'host.issn',
         sortDir: 'sortDir',
         yearThreshold: 50,
+        // @ts-expect-error TS7006
         p: { t: (v) => v },
     };
     const ComposedComponent = () => <div>Composed Child</div>;
 
     beforeAll(() => {
+        // @ts-expect-error TS2339
         parseYearData.mockImplementation((v) => v);
+        // @ts-expect-error TS2339
         composeRenderProps.mockImplementation(() => ComposedComponent);
+        // @ts-expect-error TS2339
         getDecadeFromData.mockImplementation(() => 'decade data');
     });
 
     it('should render Fold for year volume issue and document', () => {
+        // @ts-expect-error TS2741
         const wrapper = shallow(<IstexSummaryView {...defaultProps} />);
 
         expect(composeRenderProps).toHaveBeenCalledWith([
@@ -68,6 +75,7 @@ describe('IstexSummaryView', () => {
 
     it('should render Fold for decade year volume issue and document if formatData.length > 50', () => {
         const wrapper = shallow(
+            // @ts-expect-error TS2741
             <IstexSummaryView
                 {...defaultProps}
                 formatData={{ hits: { length: 51 } }}
@@ -108,6 +116,7 @@ describe('IstexSummaryView', () => {
 
     it('should render InvalidFormat if resource[field.name] is not set', () => {
         const wrapper = shallow(
+            // @ts-expect-error TS2741
             <IstexSummaryView
                 {...defaultProps}
                 resource={{ fieldName: null }}
@@ -122,6 +131,7 @@ describe('IstexSummaryView', () => {
 
     it('should render InvalidFormat if searchedField is not set', () => {
         const wrapper = shallow(
+            // @ts-expect-error TS2741
             <IstexSummaryView {...defaultProps} searchedField={null} />,
         );
 
@@ -132,7 +142,9 @@ describe('IstexSummaryView', () => {
     });
 
     afterEach(() => {
+        // @ts-expect-error TS2339
         parseYearData.mockClear();
+        // @ts-expect-error TS2339
         composeRenderProps.mockClear();
         StyleSheetTestUtils.clearBufferAndResumeStyleInjection();
     });

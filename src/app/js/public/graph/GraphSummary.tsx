@@ -85,41 +85,59 @@ const styles = stylesToClassname(
 );
 
 const PureGraphSummary = ({
+    // @ts-expect-error TS7031
     graphicFields,
+    // @ts-expect-error TS7031
     closeDrawer,
+    // @ts-expect-error TS7031
     isMultilingual,
+    // @ts-expect-error TS7031
     locale,
 }) => {
     const filteredGraphs = graphicFields.filter(
+        // @ts-expect-error TS7006
         (graph) =>
             !isMultilingual || !graph.language || graph.language === locale,
     );
     return (
+        // @ts-expect-error TS2339
         <div className={styles.container}>
+            {/*
+             // @ts-expect-error TS2339 */}
             <div className={classnames('graph-summary', styles.links)}>
+                {/*
+                 // @ts-expect-error TS7006 */}
                 {filteredGraphs.map((field) => {
                     const Icon = getIconComponent(field);
                     return (
+                        // @ts-expect-error TS2741
                         <Link
                             routeAware
                             key={field.name}
                             className={classnames(
                                 'graph-link',
+                                // @ts-expect-error TS2339
                                 styles.link,
+                                // @ts-expect-error TS2339
                                 styles.item,
                             )}
                             activeClassName={classnames(
                                 'active',
+                                // @ts-expect-error TS2339
                                 styles.activeLink,
                             )}
                             to={`/graph/${field.name}`}
                             onClick={closeDrawer}
                         >
                             {Icon ? (
+                                // @ts-expect-error TS2339
                                 <Icon className={styles.icon} />
                             ) : (
+                                // @ts-expect-error TS2339
                                 <MixedChartIcon className={styles.icon} />
                             )}
+                            {/*
+                             // @ts-expect-error TS2339 */}
                             <div className={styles.label}>{field.label}</div>
                         </Link>
                     );
@@ -136,11 +154,16 @@ PureGraphSummary.propTypes = {
     locale: PropTypes.string.isRequired,
 };
 
+// @ts-expect-error TS7006
 const mapStateToProps = (state) => ({
     graphicFields: fromFields
+        // @ts-expect-error TS2339
         .getGraphicFields(state)
+        // @ts-expect-error TS7006
         .filter((f) => !!f.display),
+    // @ts-expect-error TS2339
     isMultilingual: fromDisplayConfig.isMultilingual(state),
+    // @ts-expect-error TS2339
     locale: fromI18n.getLocale(state),
 });
 

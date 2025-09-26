@@ -13,10 +13,14 @@ const styles = {
 };
 
 export const StatsComponent = ({
+    // @ts-expect-error TS7031
     nbResources,
+    // @ts-expect-error TS7031
     currentNbResources,
+    // @ts-expect-error TS7031
     p: polyglot,
 }) => (
+    // @ts-expect-error TS2322
     <div className="stats" style={styles.nb}>
         {polyglot.t('resources_found', {
             current: currentNbResources,

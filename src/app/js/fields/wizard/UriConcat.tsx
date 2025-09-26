@@ -8,10 +8,14 @@ import {
     Box,
 } from '@mui/material';
 import { translate } from '../../i18n/I18NContext';
+// @ts-expect-error TS7016
 import compose from 'recompose/compose';
+// @ts-expect-error TS7016
 import withHandlers from 'recompose/withHandlers';
 import { connect } from 'react-redux';
+// @ts-expect-error TS7016
 import { formValueSelector } from 'redux-form';
+// @ts-expect-error TS7016
 import get from 'lodash/get';
 
 import { FIELD_FORM_NAME } from '..';
@@ -19,14 +23,23 @@ import { polyglot as polyglotPropTypes } from '../../propTypes';
 import ConcatField from './ConcatField';
 
 export const UriConcatComponent = ({
+    // @ts-expect-error TS7031
     handleSelect,
+    // @ts-expect-error TS7031
     p: polyglot,
+    // @ts-expect-error TS7031
     selected,
+    // @ts-expect-error TS7031
     columns,
+    // @ts-expect-error TS7031
     separator,
+    // @ts-expect-error TS7031
     handleChange,
+    // @ts-expect-error TS7031
     handleSeparatorChange,
+    // @ts-expect-error TS7031
     handleAddColumn,
+    // @ts-expect-error TS7031
     handleRemoveColumn,
 }) => (
     <div>
@@ -56,6 +69,8 @@ export const UriConcatComponent = ({
                     onChange={handleSeparatorChange}
                     value={separator}
                 />
+                {/*
+                 // @ts-expect-error TS7006 */}
                 {columns.map((column, index) => (
                     <ConcatField
                         key={index}
@@ -95,6 +110,7 @@ UriConcatComponent.defaultProps = {
     separator: '',
 };
 
+// @ts-expect-error TS7006
 const mapStateToProps = (state) => {
     const transformers = formValueSelector(FIELD_FORM_NAME)(
         state,
@@ -111,6 +127,7 @@ const mapStateToProps = (state) => {
             columns:
                 get(valueTransformer, 'args', [])
                     .slice(1)
+                    // @ts-expect-error TS7031
                     .map(({ value }) => value || '') || [],
             args: valueTransformer.args || [],
         };
@@ -123,6 +140,7 @@ export default compose(
     connect(mapStateToProps),
     withHandlers({
         handleSelect:
+            // @ts-expect-error TS7031
             ({ onChange }) =>
             () => {
                 onChange({
@@ -147,7 +165,9 @@ export default compose(
                 });
             },
         handleChange:
+            // @ts-expect-error TS7031
             ({ onChange, args }) =>
+            // @ts-expect-error TS7006
             (value, event, key, index) => {
                 onChange({
                     operation: 'CONCAT_URI',
@@ -163,7 +183,9 @@ export default compose(
                 });
             },
         handleSeparatorChange:
+            // @ts-expect-error TS7031
             ({ onChange, args }) =>
+            // @ts-expect-error TS7006
             (event) => {
                 onChange({
                     operation: 'CONCAT_URI',
@@ -177,6 +199,7 @@ export default compose(
                     ],
                 });
             },
+        // @ts-expect-error TS7031
         handleAddColumn: ({ onChange, args }) => {
             onChange({
                 operation: 'CONCAT_URI',
@@ -191,7 +214,9 @@ export default compose(
             });
         },
         handleRemoveColumn:
+            // @ts-expect-error TS7031
             ({ onChange, args }) =>
+            // @ts-expect-error TS7006
             (index) => {
                 onChange({
                     operation: 'CONCAT_URI',

@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+// @ts-expect-error TS7016
 import memoize from 'lodash/memoize';
+// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import FileDownload from '@mui/icons-material/GetApp';
 import Link from '../../../lib/components/Link';
@@ -18,6 +20,7 @@ import { ISTEX_SITE_URL } from '../../../../../common/externals';
 import { translate } from '../../../i18n/I18NContext';
 
 const styles = {
+    // @ts-expect-error TS7006
     text: memoize((status) => ({
         fontSize: '1rem',
         textDecoration: status === REJECTED ? 'line-through' : 'none',
@@ -37,20 +40,30 @@ const styles = {
 };
 
 export const IstexView = ({
+    // @ts-expect-error TS7031
     fieldStatus,
+    // @ts-expect-error TS7031
     data,
+    // @ts-expect-error TS7031
     error,
+    // @ts-expect-error TS7031
     field,
+    // @ts-expect-error TS7031
     resource,
+    // @ts-expect-error TS7031
     p: polyglot,
 }) => (
     <div className="istex-list" style={styles.text(fieldStatus)}>
         <div style={styles.header}>
+            {/*
+             // @ts-expect-error TS2322 */}
             <span style={styles.total}>
                 {polyglot.t('istex_total', {
                     total: data ? data.total : 0,
                 })}
             </span>
+            {/*
+             // @ts-expect-error TS2739 */}
             <Link
                 style={styles.dl}
                 href={`${ISTEX_SITE_URL}/?q=`.concat(
@@ -58,16 +71,22 @@ export const IstexView = ({
                 )}
                 target="_blank"
             >
+                {/*
+                 // @ts-expect-error TS2769 */}
                 <FileDownload tooltip={polyglot.t('download')} />
             </Link>
             {error && (
                 <Alert>
+                    {/*
+                     // @ts-expect-error TS2322 */}
                     <p>{polyglot.t(error)}</p>
                 </Alert>
             )}
         </div>
         {data && data.hits && (
             <div>
+                {/*
+                 // @ts-expect-error TS7006 */}
                 {data.hits.map((item) => (
                     <IstexItem key={item.id} {...item} />
                 ))}

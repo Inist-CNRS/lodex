@@ -17,10 +17,15 @@ jest.mock('./useGetFieldAnnotation', () => ({
 
 const queryClient = new QueryClient();
 
+// @ts-expect-error TS7031
 function TestModal({ field, ...props }) {
     return (
         <TestI18N>
+            {/*
+             // @ts-expect-error TS2322 */}
             <QueryClientProvider client={queryClient}>
+                {/*
+                 // @ts-expect-error TS2739 */}
                 <CreateAnnotationModal
                     initialValue={null}
                     resourceUri="/"
@@ -60,6 +65,7 @@ describe('CreateAnnotationModal', () => {
     describe('actions', () => {
         it('should enable cancel action when not submitting', async () => {
             render(
+                // @ts-expect-error TS2741
                 <TestModal
                     onClose={onClose}
                     onSubmit={onSubmit}
@@ -76,6 +82,7 @@ describe('CreateAnnotationModal', () => {
 
         it('should enable next button if comment is valid', async () => {
             render(
+                // @ts-expect-error TS2741
                 <TestModal
                     onClose={onClose}
                     onSubmit={onSubmit}
@@ -105,6 +112,7 @@ describe('CreateAnnotationModal', () => {
 
         it('should disable actions when submitting', async () => {
             render(
+                // @ts-expect-error TS2741
                 <TestModal
                     onClose={onClose}
                     onSubmit={onSubmit}
@@ -137,6 +145,7 @@ describe('CreateAnnotationModal', () => {
 
         it('should submit form values', async () => {
             render(
+                // @ts-expect-error TS2741
                 <TestModal
                     onClose={onClose}
                     onSubmit={onSubmit}
@@ -206,6 +215,7 @@ describe('CreateAnnotationModal', () => {
     describe('step orders', () => {
         it('should start on COMMENT_STEP when isFieldValueAnnotable is false', () => {
             const wrapper = render(
+                // @ts-expect-error TS2741
                 <TestModal
                     onClose={onClose}
                     onSubmit={onSubmit}
@@ -242,6 +252,7 @@ describe('CreateAnnotationModal', () => {
         });
         it('should start on TARGET_STEP when isFieldValueAnnotable is true', () => {
             const wrapper = render(
+                // @ts-expect-error TS2741
                 <TestModal
                     onClose={onClose}
                     onSubmit={onSubmit}
@@ -321,6 +332,7 @@ describe('CreateAnnotationModal', () => {
     describe('value tab', () => {
         beforeEach(async () => {
             render(
+                // @ts-expect-error TS2741
                 <TestModal
                     onClose={onClose}
                     onSubmit={onSubmit}
@@ -374,6 +386,7 @@ describe('CreateAnnotationModal', () => {
             'should call onClose when clicking on %s button when form is not dirty',
             async (label) => {
                 render(
+                    // @ts-expect-error TS2741
                     <TestModal
                         onClose={onClose}
                         onSubmit={onSubmit}
@@ -394,6 +407,7 @@ describe('CreateAnnotationModal', () => {
             'should call onClose after confirm when clicking on %s button when form is dirty',
             async (label) => {
                 render(
+                    // @ts-expect-error TS2741
                     <TestModal
                         onClose={onClose}
                         onSubmit={onSubmit}
@@ -542,6 +556,7 @@ describe('CreateAnnotationModal', () => {
     describe('comment tab', () => {
         beforeEach(() => {
             render(
+                // @ts-expect-error TS2741
                 <TestModal
                     onClose={onClose}
                     onSubmit={onSubmit}
@@ -651,6 +666,7 @@ describe('CreateAnnotationModal', () => {
         describe('correction comment', () => {
             beforeEach(async () => {
                 render(
+                    // @ts-expect-error TS2741
                     <TestModal
                         onClose={onClose}
                         onSubmit={onSubmit}
@@ -662,6 +678,7 @@ describe('CreateAnnotationModal', () => {
 
                 await waitFor(() => {
                     fireEvent.click(
+                        // @ts-expect-error TS2345
                         screen.queryByText('annotation_correct_content'),
                     );
                 });
@@ -746,6 +763,7 @@ describe('CreateAnnotationModal', () => {
         describe('addition comment', () => {
             beforeEach(async () => {
                 render(
+                    // @ts-expect-error TS2741
                     <TestModal
                         onClose={onClose}
                         onSubmit={onSubmit}
@@ -757,6 +775,7 @@ describe('CreateAnnotationModal', () => {
 
                 await waitFor(() => {
                     fireEvent.click(
+                        // @ts-expect-error TS2345
                         screen.queryByText('annotation_add_content'),
                     );
                 });
@@ -822,6 +841,7 @@ describe('CreateAnnotationModal', () => {
     describe('author tab', () => {
         beforeEach(async () => {
             render(
+                // @ts-expect-error TS2741
                 <TestModal
                     onClose={onClose}
                     onSubmit={onSubmit}
@@ -1035,6 +1055,7 @@ describe('CreateAnnotationModal', () => {
 
     it('should allow to create a comment annotation on the field when field value is not editable', async () => {
         const wrapper = render(
+            // @ts-expect-error TS2741
             <TestModal
                 onClose={onClose}
                 onSubmit={onSubmit}
@@ -1090,6 +1111,7 @@ describe('CreateAnnotationModal', () => {
 
     it('should allow to create a comment annotation on the field when there is an initial value', async () => {
         render(
+            // @ts-expect-error TS2741
             <TestModal
                 onClose={onClose}
                 onSubmit={onSubmit}
@@ -1154,6 +1176,7 @@ describe('CreateAnnotationModal', () => {
 
     it('should allow to create a removal annotation on the value when there is a single initial value', async () => {
         render(
+            // @ts-expect-error TS2741
             <TestModal
                 onClose={onClose}
                 onSubmit={onSubmit}
@@ -1218,6 +1241,7 @@ describe('CreateAnnotationModal', () => {
 
     it('should allow to create a removal annotation on the value when initial value is a number', async () => {
         render(
+            // @ts-expect-error TS2741
             <TestModal
                 onClose={onClose}
                 onSubmit={onSubmit}
@@ -1282,6 +1306,7 @@ describe('CreateAnnotationModal', () => {
 
     it('should allow to create a removal annotation on a selected value when there is multiple initial value', async () => {
         render(
+            // @ts-expect-error TS2741
             <TestModal
                 onClose={onClose}
                 onSubmit={onSubmit}
@@ -1362,6 +1387,7 @@ describe('CreateAnnotationModal', () => {
 
     it('should allow to create a removal annotation on a selected value when initial value is an array of number', async () => {
         render(
+            // @ts-expect-error TS2741
             <TestModal
                 onClose={onClose}
                 onSubmit={onSubmit}
@@ -1440,6 +1466,7 @@ describe('CreateAnnotationModal', () => {
 
     it('should allow to create a correct annotation on the value when there is a single initial value', async () => {
         render(
+            // @ts-expect-error TS2741
             <TestModal
                 onClose={onClose}
                 onSubmit={onSubmit}
@@ -1516,6 +1543,7 @@ describe('CreateAnnotationModal', () => {
 
     it('should allow to create a correct annotation on the value when initial value is a number', async () => {
         render(
+            // @ts-expect-error TS2741
             <TestModal
                 onClose={onClose}
                 onSubmit={onSubmit}
@@ -1592,6 +1620,7 @@ describe('CreateAnnotationModal', () => {
 
     it('should allow to create a correct annotation on a selected value when there is multiple initial value', async () => {
         render(
+            // @ts-expect-error TS2741
             <TestModal
                 onClose={onClose}
                 onSubmit={onSubmit}
@@ -1684,6 +1713,7 @@ describe('CreateAnnotationModal', () => {
 
     it('should allow to create a correct annotation on a selected value when initial value is an array of number', async () => {
         render(
+            // @ts-expect-error TS2741
             <TestModal
                 onClose={onClose}
                 onSubmit={onSubmit}
@@ -1774,6 +1804,7 @@ describe('CreateAnnotationModal', () => {
 
     it('should allow to create an add annotation when there is a single initial value', async () => {
         render(
+            // @ts-expect-error TS2741
             <TestModal
                 onClose={onClose}
                 onSubmit={onSubmit}
@@ -1849,6 +1880,7 @@ describe('CreateAnnotationModal', () => {
     });
     it('should allow to create an add annotation when initial value is a number', async () => {
         render(
+            // @ts-expect-error TS2741
             <TestModal
                 onClose={onClose}
                 onSubmit={onSubmit}
@@ -1924,6 +1956,7 @@ describe('CreateAnnotationModal', () => {
     });
     it('should allow to create a add annotation when there is multiple initial value', async () => {
         render(
+            // @ts-expect-error TS2741
             <TestModal
                 onClose={onClose}
                 onSubmit={onSubmit}
@@ -2003,6 +2036,7 @@ describe('CreateAnnotationModal', () => {
     });
     it('should allow to create a add annotation when initial value is an array of number', async () => {
         render(
+            // @ts-expect-error TS2741
             <TestModal
                 onClose={onClose}
                 onSubmit={onSubmit}

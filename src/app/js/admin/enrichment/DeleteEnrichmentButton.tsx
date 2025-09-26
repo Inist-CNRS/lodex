@@ -7,10 +7,15 @@ import { ConfirmPopup } from '../../lib/components/ConfirmPopup';
 import { useTranslate } from '../../i18n/I18NContext';
 
 export function DeleteEnrichmentButton({
+    // @ts-expect-error TS7031
     disabled,
+    // @ts-expect-error TS7031
     onDeleteStart,
+    // @ts-expect-error TS7031
     onDeleteEnd,
+    // @ts-expect-error TS7031
     id,
+    // @ts-expect-error TS7031
     history,
 }) {
     const { translate } = useTranslate();

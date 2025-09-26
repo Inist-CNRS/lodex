@@ -11,6 +11,7 @@ import {
 import CancelButton from '../../lib/components/CancelButton';
 import { useTranslate } from '../../i18n/I18NContext';
 
+// @ts-expect-error TS7006
 const CancelProcessDialog = (props) => {
     const { isOpen, title, content, onConfirm, onCancel } = props;
     const { translate } = useTranslate();

@@ -1,4 +1,5 @@
 import React from 'react';
+// @ts-expect-error TS7016
 import { shallow } from 'enzyme';
 import { TableCell, CircularProgress } from '@mui/material';
 
@@ -26,6 +27,7 @@ describe('<ParsingExcerptColumn />', () => {
     it('should render a loader when it is enrichment loading and value undefined', () => {
         const value = undefined;
         const wrapper = shallow(
+            // @ts-expect-error TS2322
             <ParsingExcerptColumn value={value} isEnrichmentLoading={true} />,
         );
         const row = wrapper.find(TableCell);

@@ -1,8 +1,10 @@
 import { Box, IconButton, Stack, Tooltip } from '@mui/material';
 import copy from 'copy-to-clipboard';
+// @ts-expect-error TS7016
 import compose from 'lodash/flowRight';
 import PropTypes from 'prop-types';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
+// @ts-expect-error TS7016
 import GridLayout from 'react-grid-layout';
 import 'react-grid-layout/css/styles.css';
 import { connect } from 'react-redux';
@@ -22,6 +24,7 @@ import { NoField } from './NoField';
 
 import { changePositions, loadField, saveFieldFromData } from '../fields';
 
+// @ts-expect-error TS7016
 import { useHistory, useLocation } from 'react-router';
 import { SCOPE_DOCUMENT } from '../../../common/scope';
 import { toast } from '../../../common/tools/toast';
@@ -73,6 +76,7 @@ const styles = {
     },
 };
 
+// @ts-expect-error TS7006
 export const getEditFieldRedirectUrl = (fieldName, scope, subresourceId) => {
     if (scope === SCOPE_DOCUMENT) {
         if (subresourceId) {
@@ -85,6 +89,7 @@ export const getEditFieldRedirectUrl = (fieldName, scope, subresourceId) => {
     }
 };
 
+// @ts-expect-error TS7006
 const scrollToField = (fieldLabel) => {
     setTimeout(() => {
         const field = document.querySelector(`[aria-label="${fieldLabel}"]`);
@@ -95,10 +100,13 @@ const scrollToField = (fieldLabel) => {
     }, 200);
 };
 
+// @ts-expect-error TS7006
 const layoutFromItems = (items) => {
     const result = items
+        // @ts-expect-error TS7006
         .sort((a, b) => a.position - b.position)
         .reduce(
+            // @ts-expect-error TS7006
             (acc, curr) => {
                 if (acc.currXOffset + curr.width > 10) {
                     acc.currLine++;
@@ -124,16 +132,21 @@ const layoutFromItems = (items) => {
     return result.layout;
 };
 
+// @ts-expect-error TS7006
 const itemsFromLayout = (layout) =>
     layout
+        // @ts-expect-error TS7006
         .sort((a, b) => (a.y === b.y ? a.x - b.x : a.y - b.y))
+        // @ts-expect-error TS7006
         .map((item, index) => ({
             id: item.i,
             width: item.w,
             position: index + 1,
         }));
 
+// @ts-expect-error TS2339
 const FieldGridItem = connect((state, { field }) => ({
+    // @ts-expect-error TS2339
     completedField: fromFields.getCompletedField(state, field),
 }))(({
     field,
@@ -149,12 +162,14 @@ const FieldGridItem = connect((state, { field }) => ({
         if (completedField) {
             rowCount++;
         }
+        // @ts-expect-error TS2339
         if (field.internalScopes || field.internalName) {
             rowCount++;
         }
         return rowCount;
     }, [field, completedField]);
 
+    // @ts-expect-error TS7006
     const handleCopyToClipboard = (event, text) => {
         // Only copy to clipboard if the user clicks on the field name
         if (event.target.firstChild.nodeName !== '#text') {
@@ -165,6 +180,7 @@ const FieldGridItem = connect((state, { field }) => ({
         event.preventDefault();
 
         copy(text);
+        // @ts-expect-error TS2339
         toast(polyglot.t('fieldidentifier_copied_clipboard'), {
             type: toast.TYPE.SUCCESS,
         });
@@ -180,6 +196,8 @@ const FieldGridItem = connect((state, { field }) => ({
             width="100%"
         >
             <Stack direction="row" gap={1} alignItems="center">
+                {/*
+                 // @ts-expect-error TS2339 */}
                 <Box onClick={(e) => handleCopyToClipboard(e, field.name)}>
                     <FieldRepresentation
                         field={field}
@@ -205,12 +223,17 @@ const FieldGridItem = connect((state, { field }) => ({
                         enterDelay={300}
                         placement="top"
                         arrow
+                        // @ts-expect-error TS2339
                         title={polyglot.t('completes_field_X', {
+                            // @ts-expect-error TS2339
                             field: completedField.label,
                         })}
                     >
                         <span>
+                            {/*
+                             // @ts-expect-error TS2339 */}
                             {polyglot.t('completes_field_X', {
+                                // @ts-expect-error TS2339
                                 field: completedField.label,
                             })}
                         </span>
@@ -232,10 +255,13 @@ const FieldGridItem = connect((state, { field }) => ({
                     <DragIndicatorIcon sx={styles.otherIcon} />
                 </IconButton>
 
+                {/*
+                 // @ts-expect-error TS2339 */}
                 <Tooltip title={polyglot.t('duplicate_field_tooltip')}>
                     <IconButton
                         sx={styles.otherIcon}
                         onClick={handleDuplicateField}
+                        // @ts-expect-error TS2339
                         aria-label={`duplicate-${field.label}`}
                         disabled={isFieldsLoading}
                         color="primary"
@@ -245,9 +271,12 @@ const FieldGridItem = connect((state, { field }) => ({
                         <FileCopyIcon />
                     </IconButton>
                 </Tooltip>
+                {/*
+                 // @ts-expect-error TS2339 */}
                 <Tooltip title={polyglot.t('setting_field_tooltip')}>
                     <IconButton
                         sx={styles.otherIcon}
+                        // @ts-expect-error TS2339
                         aria-label={`edit-${field.label}`}
                         disabled={isFieldsLoading}
                         color="primary"
@@ -261,7 +290,9 @@ const FieldGridItem = connect((state, { field }) => ({
     );
 });
 
+// @ts-expect-error TS7006
 export const buildFieldsDefinitionsArray = (fields) =>
+    // @ts-expect-error TS7006
     fields.map((field) => ({
         id: field.name,
         width: field.width ? parseInt(field.width, 10) / 10 : 10,
@@ -273,16 +304,27 @@ const DraggableItemGrid = compose(
         loadField,
     }),
 )(({
+    // @ts-expect-error TS7031
     onChangeWidth,
+    // @ts-expect-error TS7031
     onChangePositions,
+    // @ts-expect-error TS7031
     allowResize,
+    // @ts-expect-error TS7031
     fields,
+    // @ts-expect-error TS7031
     polyglot,
+    // @ts-expect-error TS7031
     loadField,
+    // @ts-expect-error TS7031
     filter,
+    // @ts-expect-error TS7031
     isFieldsLoading,
+    // @ts-expect-error TS7031
     subresourceId,
+    // @ts-expect-error TS7031
     selectedFields,
+    // @ts-expect-error TS7031
     toggleSelectedField,
 }) => {
     const history = useHistory();
@@ -303,6 +345,7 @@ const DraggableItemGrid = compose(
 
     useDidUpdateEffect(() => {
         onChangePositions(items);
+    // @ts-expect-error TS7006
     }, [JSON.stringify(items.map((item) => item.id))]);
 
     const stopClickPropagation = () => {
@@ -310,13 +353,16 @@ const DraggableItemGrid = compose(
         setTimeout(() => setIsEditable(true), 200);
     };
 
+    // @ts-expect-error TS7006
     const handleLayoutChange = (newLayout) => {
         stopClickPropagation();
         setItems(itemsFromLayout(newLayout));
     };
 
+    // @ts-expect-error TS7006
     const handleResize = (elements, el) => {
         stopClickPropagation();
+        // @ts-expect-error TS7006
         const newEl = elements.find((elem) => elem.i === el.i);
         if (newEl) {
             onChangeWidth(newEl.i, newEl.w * 10);
@@ -324,6 +370,7 @@ const DraggableItemGrid = compose(
         }
     };
 
+    // @ts-expect-error TS7006
     const handleEditField = (fieldName, filter, subresourceId) => {
         if (isEditable && !isFieldsLoading) {
             const redirectUrl = getEditFieldRedirectUrl(
@@ -335,6 +382,7 @@ const DraggableItemGrid = compose(
         }
     };
 
+    // @ts-expect-error TS7006
     const handleDuplicateField = async (event, field) => {
         event.stopPropagation();
         event.preventDefault();
@@ -368,6 +416,8 @@ const DraggableItemGrid = compose(
                 onResizeStop={handleResize}
                 isResizable={allowResize}
             >
+                {/*
+                 // @ts-expect-error TS7006 */}
                 {fields.map((field) => (
                     <Box
                         key={field.name}
@@ -387,15 +437,21 @@ const DraggableItemGrid = compose(
                         }
                     >
                         <FieldGridItem
+                            // @ts-expect-error TS2322
                             field={field}
+                            // @ts-expect-error TS2322
                             polyglot={polyglot}
+                            // @ts-expect-error TS2322
                             isFieldsLoading={isFieldsLoading}
+                            // @ts-expect-error TS2322
                             isFieldSelected={selectedFields.includes(
                                 field.name,
                             )}
+                            // @ts-expect-error TS2322
                             handleToggleSelectedField={() =>
                                 toggleSelectedField(field.name)
                             }
+                            // @ts-expect-error TS2322
                             handleDuplicateField={(e) =>
                                 handleDuplicateField(e, field)
                             }
@@ -431,15 +487,25 @@ DraggableItemGrid.propTypes = {
 };
 
 const FieldGridComponent = ({
+    // @ts-expect-error TS7031
     fields,
+    // @ts-expect-error TS7031
     filter,
+    // @ts-expect-error TS7031
     loadField,
+    // @ts-expect-error TS7031
     changePositions,
+    // @ts-expect-error TS7031
     saveFieldFromData,
+    // @ts-expect-error TS7031
     p: polyglot,
+    // @ts-expect-error TS7031
     isFieldsLoading,
+    // @ts-expect-error TS7031
     subresourceId,
+    // @ts-expect-error TS7031
     selectedFields,
+    // @ts-expect-error TS7031
     toggleSelectedField,
 }) => {
     const { pathname } = useLocation();
@@ -454,6 +520,7 @@ const FieldGridComponent = ({
         const previousFields = previousFieldsRef.current;
 
         const newFields = fields.filter(
+            // @ts-expect-error TS7006
             (field) => !previousFields.find((f) => f.name === field.name),
         );
 
@@ -463,9 +530,11 @@ const FieldGridComponent = ({
         previousFieldsRef.current = fields;
     }, [fields]);
 
+    // @ts-expect-error TS7006
     const handleChangePositions = (fieldsWithPosition) => {
         changePositions({
             type: filter,
+            // @ts-expect-error TS7006
             fields: fieldsWithPosition.map((field) => ({
                 name: field.id,
                 position: field.position,
@@ -473,6 +542,7 @@ const FieldGridComponent = ({
         });
     };
 
+    // @ts-expect-error TS7006
     const handleChangeWidth = (name, width) => {
         saveFieldFromData({
             name,
@@ -523,8 +593,11 @@ FieldGridComponent.propTypes = {
     toggleSelectedField: PropTypes.func.isRequired,
 };
 
+// @ts-expect-error TS7006
 const mapStateToProps = (state, { subresourceId, filter }) => ({
+    // @ts-expect-error TS2339
     fields: fromFields.getEditingFields(state, { filter, subresourceId }),
+    // @ts-expect-error TS2339
     isFieldsLoading: fromFields.isLoading(state),
 });
 

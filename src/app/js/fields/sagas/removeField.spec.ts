@@ -17,23 +17,28 @@ describe('fields saga', () => {
 
         it('should select fromFields.getFieldByName', () => {
             expect(saga.next().value).toEqual(
+                // @ts-expect-error TS2339
                 select(fromFields.getFieldByName, 'a_field_name'),
             );
         });
 
         it('should select getRemoveFieldRequest', () => {
+            // @ts-expect-error TS2345
             expect(saga.next('field').value).toEqual(
+                // @ts-expect-error TS2339
                 select(fromUser.getRemoveFieldRequest, 'field'),
             );
         });
 
         it('should call fetchSaga with the request', () => {
+            // @ts-expect-error TS2345
             expect(saga.next('request').value).toEqual(
                 call(fetchSaga, 'request'),
             );
         });
 
         it('should put push action', () => {
+            // @ts-expect-error TS2345
             expect(saga.next({ response: 'bar' }).value).toEqual(
                 put({
                     type: '@@router/CALL_HISTORY_METHOD',

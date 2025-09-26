@@ -16,6 +16,7 @@ describe('getIstexData', () => {
     describe('parseFacetData', () => {
         it('should retrieve facet key for given facet name', () => {
             expect(
+                // @ts-expect-error TS2345
                 parseFacetData('facet.name')({
                     response: {
                         aggregations: {
@@ -209,6 +210,7 @@ describe('getIstexData', () => {
                 getOtherVolumeUrl({
                     value: 'issn',
                     year: 'year',
+                    // @ts-expect-error TS2353
                     volume: 'volume',
                     searchedField: 'searched.field',
                 })(),
@@ -223,6 +225,7 @@ describe('getIstexData', () => {
                     value: 'issn',
                     year: 'year',
                     volume: 'volume',
+                    // @ts-expect-error TS2353
                     issue: 'issue',
                     searchedField: 'searched.field',
                 })(),
@@ -233,6 +236,7 @@ describe('getIstexData', () => {
     describe('parseOtherData', () => {
         it('should count hits `key` values and convert it to an array', () => {
             expect(
+                // @ts-expect-error TS2345
                 parseOtherData('key')({
                     response: {
                         total: 10,

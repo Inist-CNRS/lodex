@@ -1,5 +1,7 @@
 import React, { useMemo, useCallback } from 'react';
+// @ts-expect-error TS7016
 import compose from 'recompose/compose';
+// @ts-expect-error TS7016
 import { propTypes as reduxFormPropTypes, Field } from 'redux-form';
 import PropTypes from 'prop-types';
 
@@ -15,12 +17,16 @@ import {
     TextField as MUITextField,
 } from '@mui/material';
 import CancelButton from '../../lib/components/CancelButton';
+// @ts-expect-error TS7016
 import { useHistory } from 'react-router';
 import { translate } from '../../i18n/I18NContext';
 
 const TextField = ({
+    // @ts-expect-error TS7031
     label,
+    // @ts-expect-error TS7031
     input,
+    // @ts-expect-error TS7031
     meta: { touched, invalid, error },
     ...custom
 }) => (
@@ -34,6 +40,7 @@ const TextField = ({
     />
 );
 
+// @ts-expect-error TS7006
 export const getKeys = (value) => {
     if (!value || value.length === 0) {
         return [];
@@ -55,16 +62,27 @@ export const getKeys = (value) => {
 };
 
 const SubresourceFormComponent = ({
+    // @ts-expect-error TS7031
     handleSubmit,
+    // @ts-expect-error TS7031
     pristine,
+    // @ts-expect-error TS7031
     submitting,
+    // @ts-expect-error TS7031
     additionnalActions,
+    // @ts-expect-error TS7031
     p: polyglot,
+    // @ts-expect-error TS7031
     datasetFields,
+    // @ts-expect-error TS7031
     excerptLines,
+    // @ts-expect-error TS7031
     pathSelected,
+    // @ts-expect-error TS7031
     change,
+    // @ts-expect-error TS7031
     subresources,
+    // @ts-expect-error TS7031
     invalid,
 }) => {
     const optionsIdentifier = useMemo(() => {
@@ -79,6 +97,7 @@ const SubresourceFormComponent = ({
 
     const validatePath = useCallback(
         (path) =>
+            // @ts-expect-error TS7006
             path && subresources.map((sr) => sr.path).includes(path)
                 ? polyglot.t('subresource_path_validation_error')
                 : undefined,
@@ -105,6 +124,7 @@ const SubresourceFormComponent = ({
                         type="text"
                         component={SubressourceFieldAutoComplete}
                         options={datasetFields}
+                        // @ts-expect-error TS7006
                         renderInput={(params) => (
                             <MUITextField
                                 {...params}
@@ -113,6 +133,7 @@ const SubresourceFormComponent = ({
                                 aria-label="input-path"
                             />
                         )}
+                        // @ts-expect-error TS7006
                         renderOption={(props, option) => {
                             return (
                                 <ListItem {...props}>
@@ -133,6 +154,7 @@ const SubresourceFormComponent = ({
                         component={SubressourceFieldAutoComplete}
                         options={optionsIdentifier}
                         disabled={!pathSelected}
+                        // @ts-expect-error TS7006
                         renderInput={(params) => (
                             <MUITextField
                                 {...params}
@@ -141,6 +163,7 @@ const SubresourceFormComponent = ({
                                 variant="outlined"
                             />
                         )}
+                        // @ts-expect-error TS7006
                         renderOption={(props, option) => {
                             return (
                                 <ListItem {...props}>
@@ -150,6 +173,8 @@ const SubresourceFormComponent = ({
                         }}
                     />
                 </Box>
+                {/*
+                 // @ts-expect-error TS2769 */}
                 <Box
                     mt={2}
                     display="flex"
@@ -200,8 +225,11 @@ TextField.propTypes = {
     }),
 };
 
+// @ts-expect-error TS7006
 const mapStateToProps = (state) => ({
+    // @ts-expect-error TS2339
     datasetFields: fromParsing.getParsedExcerptColumns(state),
+    // @ts-expect-error TS2339
     excerptLines: fromParsing.getExcerptLines(state),
 });
 

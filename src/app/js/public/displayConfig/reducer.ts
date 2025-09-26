@@ -1,3 +1,4 @@
+// @ts-expect-error TS7016
 import { createAction, handleActions } from 'redux-actions';
 
 export const LOAD_DISPLAY_CONFIG = 'LOAD_DISPLAY_CONFIG';
@@ -25,13 +26,16 @@ export const DEFAULT_MAX_VALUE_FOR_CHECK_ALL_FACET = {
 export default handleActions(
     {
         [LOAD_DISPLAY_CONFIG_SUCCESS]: (
+            // @ts-expect-error TS7006
             state,
+            // @ts-expect-error TS7031
             { payload: { displayDensity } },
         ) => ({
             ...state,
             displayDensity,
             error: null,
         }),
+        // @ts-expect-error TS7006
         [LOAD_DISPLAY_CONFIG_ERROR]: (state, { payload: { error } }) => ({
             ...state,
             error,
@@ -40,13 +44,19 @@ export default handleActions(
     initialState,
 );
 
+// @ts-expect-error TS7006
 export const hasDisplayConfig = (state) => state;
 
+// @ts-expect-error TS7006
 const isDense = (state) => state.displayDensity === 'dense';
+// @ts-expect-error TS7006
 const getDisplayExportPDF = (state) => state.PDFExportOptions?.display || false;
+// @ts-expect-error TS7006
 const getMaxExportPDFSize = (state) => state.PDFExportOptions?.maxSize || 0;
+// @ts-expect-error TS7006
 const getMaxCheckAllFacetsValue = (state) =>
     state.maxCheckAllFacetsValue || DEFAULT_MAX_VALUE_FOR_CHECK_ALL_FACET;
+// @ts-expect-error TS7006
 const isMultilingual = (state) => state.multilingual;
 
 export const fromDisplayConfig = {

@@ -7,6 +7,7 @@ const LoginForm = () => {
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
 
+    // @ts-expect-error TS7006
     const handleSubmit = async (event) => {
         event.preventDefault();
         setError('');

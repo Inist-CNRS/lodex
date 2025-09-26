@@ -11,11 +11,13 @@ import EqualizerIcon from '@mui/icons-material/Equalizer';
 import ArticleIcon from '@mui/icons-material/Article';
 import DocumentScannerIcon from '@mui/icons-material/DocumentScanner';
 import ManageSearchIcon from '@mui/icons-material/ManageSearch';
+// @ts-expect-error TS7016
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { fromPublication } from '../selectors';
 import { SidebarContext } from './SidebarContext';
+// @ts-expect-error TS7016
 import { useRouteMatch } from 'react-router-dom';
 import {
     SCOPE_DATASET,
@@ -29,6 +31,7 @@ const DRAWER_CLOSED_WIDTH = 50;
 const DRAWER_OPEN_WIDTH = 205;
 const ACTIVE_BORDER_WIDTH = 3;
 
+// @ts-expect-error TS7031
 const Sidebar = ({ p: polyglot, hasPublishedDataset }) => {
     const matchDisplayRoute = useRouteMatch('/display');
     const matchDataRoute = useRouteMatch('/data') || useRouteMatch('/config');
@@ -165,7 +168,9 @@ Sidebar.propTypes = {
     hasPublishedDataset: PropTypes.bool.isRequired,
 };
 
+// @ts-expect-error TS7006
 const mapStateToProps = (state) => ({
+    // @ts-expect-error TS2339
     hasPublishedDataset: fromPublication.hasPublishedDataset(state),
 });
 

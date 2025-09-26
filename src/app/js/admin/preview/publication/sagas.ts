@@ -25,19 +25,25 @@ import {
 
 export function* handleComputePublicationPreview() {
     try {
+        // @ts-expect-error TS7057
         const fields = yield select(fromFields.getFields);
+        // @ts-expect-error TS7057
         const lines = yield select(fromParsing.getExcerptLines);
         if (!fields.length || !lines.length) {
             return;
         }
+        // @ts-expect-error TS7057
         const token = yield select(fromUser.getToken);
+        // @ts-expect-error TS7057
         const transformDocument = yield call(
             getDocumentTransformer,
             fields,
             token,
         );
 
+        // @ts-expect-error TS7057
         const preview = yield all(
+            // @ts-expect-error TS7006
             lines.map((line) => call(transformDocument, line)),
         );
 
@@ -48,8 +54,11 @@ export function* handleComputePublicationPreview() {
 }
 
 export function* handleRecomputePublication() {
+    // @ts-expect-error TS7057
     const isPublished = yield select(fromPublication.hasPublishedDataset);
+    // @ts-expect-error TS7057
     const isEnableAutoPublication = yield select(
+        // @ts-expect-error TS2339
         fromConfigTenant.isEnableAutoPublication,
     );
 

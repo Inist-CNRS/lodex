@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { field as fieldPropTypes } from '../../../propTypes';
 
+// @ts-expect-error TS7031
 const IFrameView = ({ resource, field, viewWidth, aspectRatio }) => {
 
     const srcURL = resource[field.name];

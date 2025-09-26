@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
+// @ts-expect-error TS7016
 import { compose } from 'recompose';
 import ListAltIcon from '@mui/icons-material/ListAlt';
 import PropTypes from 'prop-types';
@@ -16,9 +17,13 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { translate } from '../../i18n/I18NContext';
 
 const SourceValueRoutine = ({
+    // @ts-expect-error TS7031
     fields,
+    // @ts-expect-error TS7031
     updateDefaultValueTransformers,
+    // @ts-expect-error TS7031
     value,
+    // @ts-expect-error TS7031
     p: polyglot,
 }) => {
     const [openRoutineCatalog, setOpenRoutineCatalog] = useState(false);
@@ -36,6 +41,7 @@ const SourceValueRoutine = ({
         if (typeof value === 'string') {
             setRoutine(value.split('/').slice(0, 4).join('/'));
             const args = value.split('/').slice(4);
+            // @ts-expect-error TS2345
             setRoutineArgs(args);
             const filteredRoutineFields = args
                 .map((arg) => {
@@ -47,6 +53,7 @@ const SourceValueRoutine = ({
             if (filteredRoutineFields.length === 0) {
                 setRoutineFields([null]);
             } else {
+                // @ts-expect-error TS2345
                 setRoutineFields(filteredRoutineFields);
             }
         }
@@ -73,12 +80,14 @@ const SourceValueRoutine = ({
         }
     }, [routine, routineArgs]);
 
+    // @ts-expect-error TS7006
     const handleRoutineChange = (event) => {
         setRoutine(event.target.value);
         setRoutineFields([null]);
         setRoutineArgs([]);
     };
 
+    // @ts-expect-error TS7006
     const handleRoutineFieldChange = (newIndex, newValue) => {
         const newField = routineFields.map((field, index) => {
             if (index === newIndex) {
@@ -87,6 +96,7 @@ const SourceValueRoutine = ({
             return field;
         });
         setRoutineFields(newField);
+        // @ts-expect-error TS2345
         setRoutineArgs(newField.map((field) => field.name));
     };
 
@@ -94,6 +104,7 @@ const SourceValueRoutine = ({
         setRoutineFields([...routineFields, null]);
     };
 
+    // @ts-expect-error TS7006
     const handleDeleteField = (deleteIndex) => {
         if (deleteIndex === 0 && routineFields.length === 1) {
             setRoutineFields([null]);
@@ -109,6 +120,7 @@ const SourceValueRoutine = ({
             })
             .filter((field) => field !== undefined);
         setRoutineFields(newField);
+        // @ts-expect-error TS2345
         setRoutineArgs(newField.map((field) => field.name));
     };
 
@@ -152,6 +164,7 @@ const SourceValueRoutine = ({
 
                 {routineFields.map((field, index) => (
                     <Box
+                        // @ts-expect-error TS2339
                         key={`${field?.name ?? 'default'}_${index}`}
                         sx={{ width: '100%' }}
                         mt={1}
@@ -205,11 +218,14 @@ const SourceValueRoutine = ({
     );
 };
 
+// @ts-expect-error TS7006
 const mapStateToProps = (state) => {
     return {
         // sort by label asc
         fields: fromFields
+            // @ts-expect-error TS2339
             .getFields(state)
+            // @ts-expect-error TS7006
             .sort((a, b) => a.label.localeCompare(b.label)),
     };
 };

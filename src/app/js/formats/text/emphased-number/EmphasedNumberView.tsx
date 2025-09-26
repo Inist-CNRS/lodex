@@ -1,6 +1,8 @@
+// @ts-expect-error TS7016
 import commaNumber from 'comma-number';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import { translate } from '../../../i18n/I18NContext';
 
@@ -8,6 +10,7 @@ import { field as fieldPropTypes } from '../../../propTypes';
 import injectData from '../../injectData';
 import Bigbold from './Bigbold';
 
+// @ts-expect-error TS7006
 function getNumber(numb) {
     if (Number.isInteger(numb)) {
         // /api/run/count-all
@@ -35,6 +38,7 @@ function getNumber(numb) {
 
 class EmphasedNumberView extends Component {
     render() {
+        // @ts-expect-error TS2339
         const { field, className, resource, formatData, size, colors } =
             this.props;
 
@@ -57,6 +61,7 @@ class EmphasedNumberView extends Component {
     }
 }
 
+// @ts-expect-error TS2339
 EmphasedNumberView.propTypes = {
     field: fieldPropTypes.isRequired,
     resource: PropTypes.object,
@@ -66,12 +71,14 @@ EmphasedNumberView.propTypes = {
     colors: PropTypes.string.isRequired,
 };
 
+// @ts-expect-error TS2339
 EmphasedNumberView.defaultProps = {
     className: null,
 };
 
 export default compose(
     translate,
+    // @ts-expect-error TS2345
     injectData(({ field, resource }) => {
         // Try to use the field value as a number, otherwise it's probably a routine
         const value = resource[field.name];

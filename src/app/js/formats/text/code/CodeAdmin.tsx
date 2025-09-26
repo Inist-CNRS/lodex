@@ -22,19 +22,27 @@ class AdminComponent extends Component {
         args: defaultArgs,
     };
 
+    // @ts-expect-error TS7006
     handleLanguageToHighlight = (languageToHighlight) => {
+        // @ts-expect-error TS2339
         this.props.onChange({ languageToHighlight });
     };
 
     render() {
         const {
+            // @ts-expect-error TS2339
             p: polyglot,
+            // @ts-expect-error TS2339
             args: { languageToHighlight },
         } = this.props;
 
         return (
             <FormatGroupedFieldSet>
+                {/*
+                 // @ts-expect-error TS2322 */}
                 <FormatDefaultParamsFieldSet defaultExpanded>
+                    {/*
+                     // @ts-expect-error TS2322 */}
                     <TextField
                         fullWidth
                         select

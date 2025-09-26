@@ -13,9 +13,11 @@ import { AnnotationStatus } from '../AnnotationStatus';
 import { FormHelperText } from '@mui/material';
 import { statuses } from '../../../../../common/validator/annotation.validator';
 
+// @ts-expect-error TS7031
 export function AnnotationInputs({ form }) {
     const { translate } = useTranslate();
     const isInternalCommentRequired = useStore(form.store, (state) => {
+        // @ts-expect-error TS18046
         return ['validated', 'rejected'].includes(state.values.status);
     });
     return (
@@ -25,6 +27,8 @@ export function AnnotationInputs({ form }) {
             aria-label={translate('annotation_form_title')}
         >
             <form.Field name="status">
+                {/*
+                 // @ts-expect-error TS7006 */}
                 {(field) => {
                     return (
                         <FormControl fullWidth>
@@ -54,6 +58,8 @@ export function AnnotationInputs({ form }) {
                 }}
             </form.Field>
             <form.Field name="internalComment">
+                {/*
+                 // @ts-expect-error TS7006 */}
                 {(field) => {
                     const hasErrors = !!(
                         field.state.meta.isTouched &&
@@ -76,6 +82,8 @@ export function AnnotationInputs({ form }) {
                 }}
             </form.Field>
             <form.Field name="adminComment">
+                {/*
+                 // @ts-expect-error TS7006 */}
                 {(field) => {
                     const hasErrors = !!(
                         field.state.meta.isTouched &&
@@ -98,6 +106,8 @@ export function AnnotationInputs({ form }) {
             </form.Field>
 
             <form.Field name="administrator">
+                {/*
+                 // @ts-expect-error TS7006 */}
                 {(field) => {
                     const hasErrors = !!(
                         field.state.meta.isTouched &&

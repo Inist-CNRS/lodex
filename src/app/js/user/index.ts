@@ -1,4 +1,6 @@
+// @ts-expect-error TS7016
 import omit from 'lodash/omit';
+// @ts-expect-error TS7016
 import { createAction, handleActions } from 'redux-actions';
 import { createSelector } from 'reselect';
 
@@ -19,22 +21,26 @@ export const defaultState = {
 
 export default handleActions(
     {
+        // @ts-expect-error TS7006
         TOGGLE_LOGIN: (state) => ({
             ...state,
             showModal: !state.showModal,
         }),
+        // @ts-expect-error TS7006
         LOGIN_SUCCESS: (state, { payload: { token, role } }) => ({
             ...state,
             showModal: false,
             token: token,
             role,
         }),
+        // @ts-expect-error TS7006
         LOGOUT: (state) => ({
             ...state,
             showModal: true,
             token: null,
             role: null,
         }),
+        // @ts-expect-error TS7006
         SIGNOUT: (state) => ({
             ...state,
             showModal: false,
@@ -51,15 +57,21 @@ export const loginSuccess = createAction(LOGIN_SUCCESS);
 export const logout = createAction(LOGOUT);
 export const signOut = createAction(SIGNOUT);
 
+// @ts-expect-error TS7006
 export const isAdmin = (state) => state.role === ADMIN_ROLE;
+// @ts-expect-error TS7006
 export const getRole = (state) => state.role || 'not logged';
+// @ts-expect-error TS7006
 export const getToken = (state) => state.token;
+// @ts-expect-error TS7006
 export const getCookie = (state) => state.cookie;
+// @ts-expect-error TS7006
 export const isUserModalShown = (state) => state.showModal;
 
 export const getRequest = createSelector(
     getToken,
     getCookie,
+    // @ts-expect-error TS7006
     (_, props) => props,
     (
         token,
@@ -97,6 +109,7 @@ export const getRequest = createSelector(
     },
 );
 
+// @ts-expect-error TS7006
 export const getLoginRequest = (state, credentials) =>
     getRequest(state, {
         url: '/api/login',
@@ -104,40 +117,47 @@ export const getLoginRequest = (state, credentials) =>
         method: 'POST',
     });
 
+// @ts-expect-error TS7006
 export const getLogoutRequest = (state) =>
     getRequest(state, {
         url: '/api/logout',
         method: 'POST',
     });
 
+// @ts-expect-error TS7006
 export const getLoadSubresourcesRequest = (state) =>
     getRequest(state, {
         url: '/api/subresource',
     });
 
+// @ts-expect-error TS7006
 export const getLoadEnrichmentsRequest = (state) =>
     getRequest(state, {
         url: '/api/enrichment',
     });
 
+// @ts-expect-error TS7006
 export const getEnrichmentActionRequest = (state, { action, id }) =>
     getRequest(state, {
         url: `/api/enrichment/${action}/${id}`,
         method: 'POST',
     });
 
+// @ts-expect-error TS7006
 export const getEnrichmentLaunchAllRequest = (state) =>
     getRequest(state, {
         url: `/api/enrichment/launchAll`,
         method: 'POST',
     });
 
+// @ts-expect-error TS7006
 export const getEnrichmentRetryRequest = (state, { id }) =>
     getRequest(state, {
         url: `/api/enrichment/retry/${id}`,
         method: 'POST',
     });
 
+// @ts-expect-error TS7006
 export const getCreateSubresourceRequest = (state, body) =>
     getRequest(state, {
         url: '/api/subresource',
@@ -145,6 +165,7 @@ export const getCreateSubresourceRequest = (state, body) =>
         body,
     });
 
+// @ts-expect-error TS7006
 export const getCreateEnrichmentRequest = (state, body) =>
     getRequest(state, {
         url: '/api/enrichment',
@@ -152,6 +173,7 @@ export const getCreateEnrichmentRequest = (state, body) =>
         body,
     });
 
+// @ts-expect-error TS7006
 export const getPreviewDataEnrichmentRequest = (state, body) =>
     getRequest(state, {
         url: '/api/enrichment/preview',
@@ -159,6 +181,7 @@ export const getPreviewDataEnrichmentRequest = (state, body) =>
         body,
     });
 
+// @ts-expect-error TS7006
 export const getUpdateEnrichmentRequest = (state, enrichment) =>
     getRequest(state, {
         url: `/api/enrichment/${enrichment._id}`,
@@ -166,24 +189,28 @@ export const getUpdateEnrichmentRequest = (state, enrichment) =>
         body: enrichment,
     });
 
+// @ts-expect-error TS7006
 export const getDeleteEnrichmentRequest = (state, id) =>
     getRequest(state, {
         url: `/api/enrichment/${id}`,
         method: 'DELETE',
     });
 
+// @ts-expect-error TS7006
 export const getConfigTenantAvailableThemeRequest = (state) =>
     getRequest(state, {
         url: '/api/themes',
         method: 'GET',
     });
 
+// @ts-expect-error TS7006
 export const getConfigTenantRequest = (state) =>
     getRequest(state, {
         url: `/api/config-tenant`,
         method: 'GET',
     });
 
+// @ts-expect-error TS7006
 export const getUpdateConfigTenantRequest = (state, configTenant) =>
     getRequest(state, {
         url: `/api/config-tenant/${configTenant._id}`,
@@ -191,17 +218,20 @@ export const getUpdateConfigTenantRequest = (state, configTenant) =>
         body: configTenant,
     });
 
+// @ts-expect-error TS7006
 export const getLoadPrecomputedRequest = (state) =>
     getRequest(state, {
         url: '/api/precomputed',
     });
 
+// @ts-expect-error TS7006
 export const getPrecomputedActionRequest = (state, { action, id }) =>
     getRequest(state, {
         url: `/api/precomputed/${action}/${id}`,
         method: 'POST',
     });
 
+// @ts-expect-error TS7006
 export const getCreatePrecomputedRequest = (state, body) =>
     getRequest(state, {
         url: '/api/precomputed',
@@ -209,6 +239,7 @@ export const getCreatePrecomputedRequest = (state, body) =>
         body,
     });
 
+// @ts-expect-error TS7006
 export const getPreviewDataPrecomputedRequest = (state, body) =>
     getRequest(state, {
         url: '/api/precomputed/preview',
@@ -216,6 +247,7 @@ export const getPreviewDataPrecomputedRequest = (state, body) =>
         body,
     });
 
+// @ts-expect-error TS7006
 export const getUpdatePrecomputedRequest = (state, precomputed) =>
     getRequest(state, {
         url: `/api/precomputed/${precomputed._id}`,
@@ -223,12 +255,14 @@ export const getUpdatePrecomputedRequest = (state, precomputed) =>
         body: precomputed,
     });
 
+// @ts-expect-error TS7006
 export const getDeletePrecomputedRequest = (state, id) =>
     getRequest(state, {
         url: `/api/precomputed/${id}`,
         method: 'DELETE',
     });
 
+// @ts-expect-error TS7006
 export const getUpdateSubresourceRequest = (state, { _id, ...body }) =>
     getRequest(state, {
         url: `/api/subresource/${_id}`,
@@ -236,17 +270,20 @@ export const getUpdateSubresourceRequest = (state, { _id, ...body }) =>
         body,
     });
 
+// @ts-expect-error TS7006
 export const getDeleteSubresourceRequest = (state, id) =>
     getRequest(state, {
         url: `/api/subresource/${id}`,
         method: 'DELETE',
     });
 
+// @ts-expect-error TS7006
 export const getLoadFieldRequest = (state) =>
     getRequest(state, {
         url: '/api/field',
     });
 
+// @ts-expect-error TS7006
 export const getCreateFieldRequest = (state, fieldData) =>
     getRequest(state, {
         url: '/api/field',
@@ -254,6 +291,7 @@ export const getCreateFieldRequest = (state, fieldData) =>
         method: 'POST',
     });
 
+// @ts-expect-error TS7006
 export const getUpdateFieldRequest = (state, { _id, ...fieldData }) =>
     getRequest(state, {
         url: `/api/field/${_id}`,
@@ -261,6 +299,7 @@ export const getUpdateFieldRequest = (state, { _id, ...fieldData }) =>
         method: 'PATCH',
     });
 
+// @ts-expect-error TS7006
 export const getPatchSearchableFieldsRequest = (state, fieldsData) =>
     getRequest(state, {
         url: `/api/field/searchable`,
@@ -268,6 +307,7 @@ export const getPatchSearchableFieldsRequest = (state, fieldsData) =>
         method: 'PATCH',
     });
 
+// @ts-expect-error TS7006
 export const getPatchOverviewRequest = (state, fieldData) =>
     getRequest(state, {
         url: `/api/field/overview`,
@@ -275,6 +315,7 @@ export const getPatchOverviewRequest = (state, fieldData) =>
         method: 'PATCH',
     });
 
+// @ts-expect-error TS7006
 export const getPatchSortFieldRequest = (state, body) =>
     getRequest(state, {
         url: `/api/field/sort-field`,
@@ -282,6 +323,7 @@ export const getPatchSortFieldRequest = (state, body) =>
         method: 'PATCH',
     });
 
+// @ts-expect-error TS7006
 export const getPatchSortOrderRequest = (state, body) =>
     getRequest(state, {
         url: `/api/field/sort-order`,
@@ -289,6 +331,7 @@ export const getPatchSortOrderRequest = (state, body) =>
         method: 'PATCH',
     });
 
+// @ts-expect-error TS7006
 export const getSaveFieldRequest = (state, fieldData) => {
     if (fieldData.name === 'new') {
         return getCreateFieldRequest(state, omit(fieldData, ['name']));
@@ -297,29 +340,34 @@ export const getSaveFieldRequest = (state, fieldData) => {
     return getUpdateFieldRequest(state, fieldData);
 };
 
+// @ts-expect-error TS7006
 export const getRemoveFieldRequest = (state, { _id }) =>
     getRequest(state, {
         url: `/api/field/${_id}`,
         method: 'DELETE',
     });
 
+// @ts-expect-error TS7006
 export const getLoadParsingResultRequest = (state) =>
     getRequest(state, {
         url: '/api/parsing',
     });
 
+// @ts-expect-error TS7006
 export const getPublishRequest = (state) =>
     getRequest(state, {
         url: '/api/publish',
         method: 'POST',
     });
 
+// @ts-expect-error TS7006
 export const getClearPublishedRequest = (state) =>
     getRequest(state, {
         url: '/api/publish',
         method: 'DELETE',
     });
 
+// @ts-expect-error TS7006
 export const getLoadRemovedResourcePageRequest = (state, { page, perPage }) =>
     getRequest(state, {
         url: `/api/publishedDataset/removed?page=${encodeURIComponent(
@@ -327,6 +375,7 @@ export const getLoadRemovedResourcePageRequest = (state, { page, perPage }) =>
         )}&perPage=${encodeURIComponent(perPage)}`,
     });
 
+// @ts-expect-error TS7006
 export const getRestoreResourceRequest = (state, uri) =>
     getRequest(state, {
         url: '/api/publishedDataset/restore',
@@ -334,6 +383,7 @@ export const getRestoreResourceRequest = (state, uri) =>
         method: 'PUT',
     });
 
+// @ts-expect-error TS7006
 export const getUpdateCharacteristicsRequest = (state, newCharacteristics) =>
     getRequest(state, {
         url: '/api/characteristic',
@@ -341,6 +391,7 @@ export const getUpdateCharacteristicsRequest = (state, newCharacteristics) =>
         body: newCharacteristics,
     });
 
+// @ts-expect-error TS7006
 export const getAddCharacteristicRequest = (state, newCharacteristics) =>
     getRequest(state, {
         url: '/api/characteristic',
@@ -348,6 +399,7 @@ export const getAddCharacteristicRequest = (state, newCharacteristics) =>
         body: newCharacteristics,
     });
 
+// @ts-expect-error TS7006
 export const getLoadDatasetPageRequest = (state, params = {}) => {
     return getRequest(state, {
         url: `/api/publishedDataset`,
@@ -356,11 +408,13 @@ export const getLoadDatasetPageRequest = (state, params = {}) => {
     });
 };
 
+// @ts-expect-error TS7006
 export const getLoadPublicationRequest = (state) =>
     getRequest(state, {
         url: '/api/publication',
     });
 
+// @ts-expect-error TS7006
 export const getLoadResourceRequest = (state, uri) =>
     getRequest(state, {
         url: `/api/publishedDataset/ark?uri=${encodeURIComponent(
@@ -368,6 +422,7 @@ export const getLoadResourceRequest = (state, uri) =>
         )}&applyFormat=true`,
     });
 
+// @ts-expect-error TS7006
 export const getSaveResourceRequest = (state, { resource, field }) =>
     getRequest(state, {
         url: '/api/publishedDataset',
@@ -378,6 +433,7 @@ export const getSaveResourceRequest = (state, { resource, field }) =>
         },
     });
 
+// @ts-expect-error TS7006
 export const getHideResourceRequest = (state, data) =>
     getRequest(state, {
         url: '/api/publishedDataset',
@@ -385,6 +441,7 @@ export const getHideResourceRequest = (state, data) =>
         body: data,
     });
 
+// @ts-expect-error TS7006
 export const getGetDatasetRequest = (state, params) => {
     const paramString = getQueryString(params);
     return getRequest(state, {
@@ -393,6 +450,7 @@ export const getGetDatasetRequest = (state, params) => {
     });
 };
 
+// @ts-expect-error TS7006
 export const putUpdateDataset = (state, data) =>
     getRequest(state, {
         url: '/api/dataset',
@@ -400,6 +458,7 @@ export const putUpdateDataset = (state, data) =>
         body: data,
     });
 
+// @ts-expect-error TS7006
 export const getGetDatasetColumnsRequest = (state) => {
     return getRequest(state, {
         url: `/api/dataset/columns`,
@@ -407,6 +466,7 @@ export const getGetDatasetColumnsRequest = (state) => {
     });
 };
 
+// @ts-expect-error TS7006
 export const getDeleteManyDatasetRowRequest = (state, ids) => {
     return getRequest(state, {
         url: `/api/dataset/batch-delete-id?ids=${encodeURIComponent(ids.join(','))}`,
@@ -415,7 +475,9 @@ export const getDeleteManyDatasetRowRequest = (state, ids) => {
 };
 
 export const getDeleteFilteredDatasetRowRequest = (
+    // @ts-expect-error TS7006
     state,
+    // @ts-expect-error TS7031
     { columnField, operatorValue, value },
 ) => {
     return getRequest(state, {
@@ -428,12 +490,14 @@ export const getDeleteFilteredDatasetRowRequest = (
     });
 };
 
+// @ts-expect-error TS7006
 export const getClearDatasetRequest = (state) =>
     getRequest(state, {
         url: '/api/dataset',
         method: 'DELETE',
     });
 
+// @ts-expect-error TS7006
 export const getDumpDatasetRequest = (state, fields) => {
     const searchParams = new URLSearchParams();
     fields.forEach((field) => searchParams.append('fields[]', field));
@@ -443,6 +507,7 @@ export const getDumpDatasetRequest = (state, fields) => {
     });
 };
 
+// @ts-expect-error TS7006
 export const getAddFieldToResourceRequest = (state, data) =>
     getRequest(state, {
         url: '/api/publishedDataset/add_field',
@@ -450,6 +515,7 @@ export const getAddFieldToResourceRequest = (state, data) =>
         body: data,
     });
 
+// @ts-expect-error TS7006
 export const getCreateResourceRequest = (state, data) =>
     getRequest(state, {
         url: '/api/publishedDataset',
@@ -457,21 +523,26 @@ export const getCreateResourceRequest = (state, data) =>
         body: data,
     });
 
+// @ts-expect-error TS7006
 export const getExportFieldsRequest = (state) =>
     getRequest(state, {
         url: '/api/field/export',
     });
 
+// @ts-expect-error TS7006
 export const getExportFieldsReadyRequest = (state) =>
     getRequest(state, {
         url: '/api/field/export/ready',
     });
 
 export const getLoadFacetValuesRequest = (
+    // @ts-expect-error TS7006
     state,
+    // @ts-expect-error TS7031
     { field, filter, currentPage = 0, perPage = 10, sort = {} },
 ) =>
     getRequest(state, {
+        // @ts-expect-error TS2345
         url: `/api/facet/${field}/${filter || ''}?${getQueryString({
             page: currentPage,
             perPage,
@@ -479,6 +550,7 @@ export const getLoadFacetValuesRequest = (
         })}`,
     });
 
+// @ts-expect-error TS7006
 export const getChangeFieldStatusRequest = (state, { uri, field, status }) =>
     getRequest(state, {
         method: 'PUT',
@@ -487,11 +559,13 @@ export const getChangeFieldStatusRequest = (state, { uri, field, status }) =>
         )}/change_contribution_status/${field}/${status}`,
     });
 
+// @ts-expect-error TS7006
 export const getLoadExportersRequest = (state) =>
     getRequest(state, {
         url: '/api/export',
     });
 
+// @ts-expect-error TS7006
 export const getClearUploadRequest = (state) =>
     getRequest(state, {
         method: 'DELETE',
@@ -499,7 +573,9 @@ export const getClearUploadRequest = (state) =>
     });
 
 export const getUploadUrlRequest = (
+    // @ts-expect-error TS7006
     state,
+    // @ts-expect-error TS7031
     { url, loaderName, customLoader = null },
 ) =>
     getRequest(state, {
@@ -513,7 +589,9 @@ export const getUploadUrlRequest = (
     });
 
 export const getUploadTextRequest = (
+    // @ts-expect-error TS7006
     state,
+    // @ts-expect-error TS7031
     { text, loaderName, customLoader = null },
 ) =>
     getRequest(state, {
@@ -526,12 +604,14 @@ export const getUploadTextRequest = (
         },
     });
 
+// @ts-expect-error TS7006
 export const getUrlRequest = (state, { url, queryString }) =>
     getRequest(state, {
         method: 'GET',
         url: `${url}${queryString ? `?${queryString}` : ''}`,
     });
 
+// @ts-expect-error TS7006
 export const getSparqlRequest = (state, { url, body }) => {
     return getRequest(state, {
         body,
@@ -547,6 +627,7 @@ export const getSparqlRequest = (state, { url, body }) => {
     });
 };
 
+// @ts-expect-error TS7006
 export const getIstexRequest = (state, { url }) => {
     return getRequest(state, {
         method: 'GET',
@@ -561,7 +642,9 @@ export const getIstexRequest = (state, { url }) => {
 };
 
 export const getExportPublishedDatasetRequest = (
+    // @ts-expect-error TS7006
     state,
+    // @ts-expect-error TS7031
     { type, queryString },
 ) =>
     getRequest(state, {
@@ -570,6 +653,7 @@ export const getExportPublishedDatasetRequest = (
     });
 
 // download pdf file
+// @ts-expect-error TS7006
 export const getExportPDFRequest = (state, options) => {
     const paramString = getQueryString(options);
     return getRequest(state, {
@@ -581,49 +665,58 @@ export const getExportPDFRequest = (state, options) => {
     });
 };
 
+// @ts-expect-error TS7006
 export const getReorderFieldRequest = (state, fields) =>
     getRequest(state, {
         method: 'PUT',
         url: '/api/field/reorder',
         body: {
+            // @ts-expect-error TS7031
             fields: fields.map(({ name }) => name),
         },
     });
 
+// @ts-expect-error TS7006
 export const getProgressRequest = (state) =>
     getRequest(state, {
         method: 'GET',
         url: '/api/progress',
     });
 
+// @ts-expect-error TS7006
 export const getBreadcrumbRequest = (state) =>
     getRequest(state, {
         method: 'GET',
         url: '/api/breadcrumb',
     });
 
+// @ts-expect-error TS7006
 export const getMenuRequest = (state) =>
     getRequest(state, {
         method: 'GET',
         url: '/api/menu',
     });
 
+// @ts-expect-error TS7006
 export const getDisplayConfigRequest = (state) =>
     getRequest(state, {
         method: 'GET',
         url: '/api/displayConfig',
     });
 
+// @ts-expect-error TS7006
 export const getLoadLoadersRequest = (state) =>
     getRequest(state, {
         url: '/api/loader',
     });
 
+// @ts-expect-error TS7006
 export const getJobLogsRequest = (state, jobId) =>
     getRequest(state, {
         url: `/api/job/${jobId}/logs`,
     });
 
+// @ts-expect-error TS7006
 export const getCancelJobRequest = (state, queue, subLabel) =>
     getRequest(state, {
         url: `/api/job/${queue}/cancel`,
@@ -631,18 +724,21 @@ export const getCancelJobRequest = (state, queue, subLabel) =>
         body: { subLabel },
     });
 
+// @ts-expect-error TS7006
 export const getClearJobsRequest = (state) =>
     getRequest(state, {
         url: `/api/job/clear`,
         method: 'POST',
     });
 
+// @ts-expect-error TS7006
 export const getLoaderWithScriptRequest = (state, { name }) =>
     getRequest(state, {
         method: 'GET',
         url: `/api/loader/${name}`,
     });
 
+// @ts-expect-error TS7006
 export const postDuplicateField = (state, data) =>
     getRequest(state, {
         url: '/api/field/duplicate',
@@ -650,18 +746,21 @@ export const postDuplicateField = (state, data) =>
         body: data,
     });
 
+// @ts-expect-error TS7006
 export const clearModelRequest = (state) =>
     getRequest(state, {
         url: '/api/field',
         method: 'DELETE',
     });
 
+// @ts-expect-error TS7006
 export const getThemeRequest = (state) =>
     getRequest(state, {
         url: '/api/themes/current',
         method: 'GET',
     });
 
+// @ts-expect-error TS7006
 export const getExportPrecomputedDataRequest = (state, id) => {
     return getRequest(state, {
         method: 'GET',
@@ -672,6 +771,7 @@ export const getExportPrecomputedDataRequest = (state, id) => {
     });
 };
 
+// @ts-expect-error TS7006
 export const getPreviewPrecomputedDataRequest = (state, id) => {
     return getRequest(state, {
         method: 'GET',
@@ -682,6 +782,7 @@ export const getPreviewPrecomputedDataRequest = (state, id) => {
     });
 };
 
+// @ts-expect-error TS7006
 export const getExportHiddenResources = (state) => {
     return getRequest(state, {
         url: '/api/hiddenResource/export',
@@ -692,6 +793,7 @@ export const getExportHiddenResources = (state) => {
     });
 };
 
+// @ts-expect-error TS7006
 export const getImportHiddenResources = (state, formData) => {
     const req = getRequest(state, {
         url: '/api/hiddenResource/import',

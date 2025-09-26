@@ -13,6 +13,7 @@ import { useTranslate } from '../../i18n/I18NContext';
 import { fromSearch } from '../selectors';
 import { searchAnnotations } from './reducer';
 
+// @ts-expect-error TS7031
 export const AnnotationsFilterComponent = ({ filter, onFilterChange }) => {
     const { translate } = useTranslate();
 
@@ -24,6 +25,7 @@ export const AnnotationsFilterComponent = ({ filter, onFilterChange }) => {
             </InputLabel>
             <Select
                 displayEmpty
+                // @ts-expect-error TS2322
                 notched
                 labelId="annotations-filter"
                 value={filter ?? ''}
@@ -66,11 +68,14 @@ AnnotationsFilterComponent.propTypes = {
     onFilterChange: PropTypes.func.isRequired,
 };
 
+// @ts-expect-error TS7006
 const mapStateToProps = (state) => ({
+    // @ts-expect-error TS2339
     filter: fromSearch.getAnnotationsFilter(state) ?? '',
 });
 
 const mapDispatchToProps = {
+    // @ts-expect-error TS7006
     onFilterChange: (value) => searchAnnotations(value),
 };
 

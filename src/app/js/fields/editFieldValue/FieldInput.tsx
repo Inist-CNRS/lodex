@@ -1,7 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
+// @ts-expect-error TS7016
 import { Field } from 'redux-form';
 
 import { getEditionComponent, getPredicate } from '../../formats';
@@ -16,6 +18,7 @@ import {
 } from '../../propTypes';
 import { translate } from '../../i18n/I18NContext';
 
+// @ts-expect-error TS7006
 const getLabel = (field, polyglot, completedField, required) => {
     let label = field.label;
     if (completedField) {
@@ -30,14 +33,19 @@ const getLabel = (field, polyglot, completedField, required) => {
 };
 
 export const FieldInputComponent = ({
+    // @ts-expect-error TS7031
     field,
+    // @ts-expect-error TS7031
     completedField,
+    // @ts-expect-error TS7031
     p: polyglot,
+    // @ts-expect-error TS7031
     input,
 }) => {
     const required = isFieldRequired(field);
     const label = getLabel(field, polyglot, completedField, required);
 
+    // @ts-expect-error TS7006
     const validate = (value) => {
         if (required && isEmpty(value)) {
             return polyglot.t('error_overview_field_required');
@@ -93,7 +101,9 @@ FieldInputComponent.defaultProps = {
     input: null,
 };
 
+// @ts-expect-error TS7006
 const mapStateToProps = (state, { field }) => ({
+    // @ts-expect-error TS2339
     completedField: fromFields.getCompletedField(state, field),
 });
 

@@ -1,6 +1,7 @@
 import React from 'react';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import PropTypes from 'prop-types';
+// @ts-expect-error TS7016
 import { FixedSizeList } from 'react-window';
 import { useMeasure } from 'react-use';
 import {
@@ -33,6 +34,7 @@ const styles = {
     },
 };
 
+// @ts-expect-error TS7006
 const LogLine = (props) => {
     const { data, index, style } = props;
     const log = data[index];
@@ -65,6 +67,7 @@ const LogLine = (props) => {
             variant="body2"
             key={timestamp.valueOf()}
             style={style}
+            // @ts-expect-error TS7053
             sx={styles[parsedLog.level]}
             title={parsedLog.message}
         >
@@ -80,9 +83,13 @@ LogLine.propTypes = {
 };
 
 export const PrecomputedLogsDialog = ({
+    // @ts-expect-error TS7031
     isOpen,
+    // @ts-expect-error TS7031
     logs,
+    // @ts-expect-error TS7031
     p: polyglot,
+    // @ts-expect-error TS7031
     handleClose,
 }) => {
     const [logsContainerRef, { width }] = useMeasure();

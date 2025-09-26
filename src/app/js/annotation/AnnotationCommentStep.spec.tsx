@@ -8,6 +8,7 @@ import {
 } from './AnnotationCommentStep';
 
 const renderAnnotationCommentStep = ({
+    // @ts-expect-error TS7031
     kind,
     formatName = 'formatParagraph',
     ...props
@@ -23,6 +24,8 @@ const renderAnnotationCommentStep = ({
         });
         return (
             <TestI18N>
+                {/*
+                 // @ts-expect-error TS2322 */}
                 <AnnotationCommentStep
                     form={form}
                     initialValue="initialValue"
@@ -161,9 +164,12 @@ describe('AnnotationCommentStep', () => {
     });
 
     describe('CommentDescription', () => {
+        // @ts-expect-error TS7006
         function TestCommentDescription(props) {
             return (
                 <TestI18N>
+                    {/*
+                     // @ts-expect-error TS2322 */}
                     <CommentDescription {...props} />
                 </TestI18N>
             );
@@ -221,6 +227,7 @@ describe('AnnotationCommentStep', () => {
             const wrapper = render(
                 <TestCommentDescription
                     kind="removal"
+                    // @ts-expect-error TS2322
                     annotationInitialValue={['initialValue']}
                     fieldInitialValue="initialValue"
                     isFieldAnUrl

@@ -1,5 +1,6 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import React from 'react';
+// @ts-expect-error TS7016
 import { MemoryRouter } from 'react-router-dom';
 import { render } from '../../../../test-utils';
 import { TestI18N } from '../../i18n/I18NContext';
@@ -20,6 +21,8 @@ function TestAnnotationDetail() {
     return (
         <QueryClientProvider client={queryClient}>
             <TestI18N>
+                {/*
+                 // @ts-expect-error TS2322 */}
                 <MemoryRouter>
                     <AnnotationDetail />
                 </MemoryRouter>
@@ -34,6 +37,7 @@ describe('AnnotationDetail', () => {
     });
 
     it('should render the annotation with its field and resource', () => {
+        // @ts-expect-error TS2345
         jest.mocked(useGetAnnotation).mockImplementation(() => ({
             data: {
                 resourceUri: 'uid:/1234',
@@ -84,16 +88,19 @@ describe('AnnotationDetail', () => {
         expect(fieldRegion).toBeInTheDocument();
         expect(
             wrapper.getByText('[GaZr]', {
+                // @ts-expect-error TS2353
                 container: fieldRegion,
             }),
         ).toBeInTheDocument();
         expect(
             wrapper.getByText('Annotated field', {
+                // @ts-expect-error TS2353
                 container: fieldRegion,
             }),
         ).toBeInTheDocument();
         expect(
             wrapper.getByText('annotated_field', {
+                // @ts-expect-error TS2353
                 container: fieldRegion,
             }),
         ).toBeInTheDocument();
@@ -105,6 +112,7 @@ describe('AnnotationDetail', () => {
         expect(commentRegion).toBeInTheDocument();
         expect(
             wrapper.getByText('Just testing the annotation system', {
+                // @ts-expect-error TS2353
                 container: commentRegion,
             }),
         ).toBeInTheDocument();
@@ -116,6 +124,7 @@ describe('AnnotationDetail', () => {
         expect(authorRegion).toBeInTheDocument();
         expect(
             wrapper.getByText('Count Ributor', {
+                // @ts-expect-error TS2353
                 container: authorRegion,
             }),
         ).toBeInTheDocument();
@@ -123,6 +132,7 @@ describe('AnnotationDetail', () => {
         expect(
             wrapper.getByRole('link', {
                 name: 'ributor@gmail.com',
+                // @ts-expect-error TS2353
                 container: authorRegion,
             }),
         ).toHaveAttribute('href', 'mailto:ributor@gmail.com');
@@ -132,11 +142,13 @@ describe('AnnotationDetail', () => {
         });
         expect(
             wrapper.queryByLabelText('annotation_created_at', {
+                // @ts-expect-error TS2353
                 container: complementaryInfosRegion,
             }),
         ).toHaveTextContent('1/1/2025');
         expect(
             wrapper.queryByLabelText('annotation_updated_at', {
+                // @ts-expect-error TS2353
                 container: complementaryInfosRegion,
             }),
         ).toHaveTextContent('10/1/2025');
@@ -147,24 +159,28 @@ describe('AnnotationDetail', () => {
         expect(inputsRegion).toBeInTheDocument();
         expect(
             wrapper.queryByLabelText('annotation_status', {
+                // @ts-expect-error TS2353
                 container: inputsRegion,
             }),
         ).toHaveTextContent('annotation_status_ongoing');
         expect(
             wrapper.getByRole('textbox', {
                 name: 'annotation_internal_comment',
+                // @ts-expect-error TS2353
                 container: inputsRegion,
             }),
         ).toHaveValue('Just testing the annotation admin');
         expect(
             wrapper.getByRole('textbox', {
                 name: 'annotation_administrator',
+                // @ts-expect-error TS2353
                 container: inputsRegion,
             }),
         ).toHaveValue('The administrator');
     });
 
     it('should render the annotation targeting home', () => {
+        // @ts-expect-error TS2345
         jest.mocked(useGetAnnotation).mockImplementation(() => ({
             data: {
                 resourceUri: '/',
@@ -197,6 +213,7 @@ describe('AnnotationDetail', () => {
     });
 
     it('should render an annotation with a resourceUri but a resource that could not be found', () => {
+        // @ts-expect-error TS2345
         jest.mocked(useGetAnnotation).mockImplementation(() => ({
             data: {
                 resourceUri: 'uid:/404',
@@ -235,6 +252,7 @@ describe('AnnotationDetail', () => {
     });
 
     it('should render an annotation with a field that could not be found', () => {
+        // @ts-expect-error TS2345
         jest.mocked(useGetAnnotation).mockImplementation(() => ({
             data: {
                 resourceUri: 'uid:/1234',
@@ -272,6 +290,7 @@ describe('AnnotationDetail', () => {
     });
 
     it('should render a loading indicator while the resource is loading', () => {
+        // @ts-expect-error TS2345
         jest.mocked(useGetAnnotation).mockImplementation(() => ({
             data: null,
             isLoading: true,

@@ -1,4 +1,5 @@
 import React from 'react';
+// @ts-expect-error TS7016
 import { shallow } from 'enzyme';
 
 import { DatasetCharacteristicItemComponent as DatasetCharacteristicItem } from './DatasetCharacteristicItem';
@@ -9,6 +10,7 @@ jest.mock('react-intersection-observer');
 
 describe('DatasetCharacteristicItem', () => {
     it('should not render a Property when it is not visible', () => {
+        // @ts-expect-error TS2339
         useInView.mockImplementation(() => [null, false]);
 
         const props = {
@@ -19,6 +21,7 @@ describe('DatasetCharacteristicItem', () => {
             },
         };
 
+        // @ts-expect-error TS2741
         const wrapper = shallow(<DatasetCharacteristicItem {...props} />);
 
         const property = wrapper.find(Property);
@@ -26,6 +29,7 @@ describe('DatasetCharacteristicItem', () => {
     });
 
     it('should render a Property when it is visible', () => {
+        // @ts-expect-error TS2339
         useInView.mockImplementation(() => [null, true]);
 
         const props = {
@@ -36,6 +40,7 @@ describe('DatasetCharacteristicItem', () => {
             },
         };
 
+        // @ts-expect-error TS2741
         const wrapper = shallow(<DatasetCharacteristicItem {...props} />);
 
         const property = wrapper.find(Property);

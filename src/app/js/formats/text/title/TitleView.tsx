@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { field as fieldPropTypes } from '../../../propTypes';
 
+// @ts-expect-error TS7031
 const TitleViewInternal = ({ level, value, colors }) => {
     const style = {
         display: 'inline-block',
@@ -31,6 +32,7 @@ TitleViewInternal.propTypes = {
     colors: PropTypes.string.isRequired,
 };
 
+// @ts-expect-error TS7031
 const TitleView = ({ resource, field, level, colors }) => {
     const value = resource[field.name];
     return (

@@ -31,6 +31,7 @@ import {
     TableRow,
     Tooltip,
 } from '@mui/material';
+// @ts-expect-error TS7016
 import { Link, useLocation } from 'react-router-dom';
 import { useTranslate } from '../../i18n/I18NContext';
 import Loading from '../../lib/components/Loading';
@@ -93,10 +94,12 @@ const styles = {
     },
 };
 
+// @ts-expect-error TS7006
 const getFiltersOperatorsForType = (type) => {
     switch (type) {
         case 'number':
             return getGridNumericColumnOperators().filter(
+                // @ts-expect-error TS7006
                 (operator) =>
                     operator.value === '=' ||
                     operator.value === '<' ||
@@ -111,6 +114,7 @@ const getFiltersOperatorsForType = (type) => {
     }
 };
 
+// @ts-expect-error TS7006
 export const ParsingResultComponent = (props) => {
     const { enrichments, loadingParsingResult } = props;
     const { translate } = useTranslate();
@@ -146,6 +150,7 @@ export const ParsingResultComponent = (props) => {
     const columnsToShow = useMemo(() => {
         const getColumnsToShow = () => {
             const enrichmentsNames = enrichments.map(
+                // @ts-expect-error TS7006
                 (enrichment) => enrichment.name,
             );
 
@@ -165,18 +170,21 @@ export const ParsingResultComponent = (props) => {
                     const isEnrichmentLoading =
                         isEnrichment &&
                         enrichments.some(
+                            // @ts-expect-error TS7006
                             (enrichment) =>
                                 enrichment.name === key &&
                                 enrichment.status === IN_PROGRESS,
                         );
                     const errorCount = isEnrichment
                         ? enrichments.find(
+                              // @ts-expect-error TS7006
                               (enrichment) => enrichment.name === key,
                           )?.errorCount
                         : null;
                     return {
                         field: key,
                         headerName: errorCount
+                            // @ts-expect-error TS2554
                             ? translate('header_name_with_errors', {
                                   name: key,
                                   errorCount,
@@ -189,6 +197,7 @@ export const ParsingResultComponent = (props) => {
                         sortable: type !== 'object',
                         filterOperators: getFiltersOperatorsForType(type),
                         type,
+                        // @ts-expect-error TS7006
                         renderCell: (params) => {
                             if (
                                 isEnrichmentLoading &&
@@ -228,6 +237,7 @@ export const ParsingResultComponent = (props) => {
         };
 
         return getColumnsToShow(
+            // @ts-expect-error TS2554
             columns,
             showEnrichmentColumns,
             showMainColumns,
@@ -246,6 +256,7 @@ export const ParsingResultComponent = (props) => {
             if (!columns || columns.length === 0 || !enrichments) return 0;
             return columns.filter(({ key }) => {
                 const isEnrichmentColumn = enrichments.some(
+                    // @ts-expect-error TS7006
                     (enrichment) => enrichment.name === key,
                 );
                 switch (columnType) {
@@ -263,6 +274,7 @@ export const ParsingResultComponent = (props) => {
 
     const rows = useMemo(() => {
         if (!datas || !Array.isArray(datas)) return [];
+        // @ts-expect-error TS2339
         return datas.map((data) => ({ id: data._id, ...data }));
     }, [datas]);
 
@@ -283,10 +295,12 @@ export const ParsingResultComponent = (props) => {
         setDatas(datas);
     }, [skip, limit, filterModel, sort]);
 
+    // @ts-expect-error TS7006
     const onPageChange = (page) => {
         setSkip(page * limit);
     };
 
+    // @ts-expect-error TS7006
     const handleChangeRowsPerPage = (e) => {
         setLimit(e.target.value);
         setSkip(0);
@@ -315,6 +329,7 @@ export const ParsingResultComponent = (props) => {
         fetchDataset();
     }, [skip, limit, filterModel, sort, fetchDataset]);
 
+    // @ts-expect-error TS7006
     const handleSortModelChange = (sortModel) => {
         setSort({
             sortBy: sortModel[0]?.field,
@@ -322,6 +337,7 @@ export const ParsingResultComponent = (props) => {
         });
     };
 
+    // @ts-expect-error TS7006
     const handleCellClick = (params) => {
         if (params.field === '__check__') {
             return;
@@ -332,6 +348,7 @@ export const ParsingResultComponent = (props) => {
 
     if (loadingParsingResult) {
         return (
+            // @ts-expect-error TS2322
             <Loading className="admin">
                 {translate('loading_parsing_results')}
             </Loading>
@@ -352,6 +369,8 @@ export const ParsingResultComponent = (props) => {
                         }}
                     >
                         <Box sx={styles.footerItemText}>
+                            {/*
+                             // @ts-expect-error TS2554 */}
                             {translate('parsing_summary_columns', {
                                 smart_count: numberOfColumns(COLUMN_TYPE.MAIN),
                             })}
@@ -376,6 +395,8 @@ export const ParsingResultComponent = (props) => {
                         }}
                     >
                         <Box sx={styles.footerItemText}>
+                            {/*
+                             // @ts-expect-error TS2554 */}
                             {translate('parsing_enriched_columns', {
                                 smart_count: numberOfColumns(
                                     COLUMN_TYPE.ENRICHMENT,
@@ -427,12 +448,17 @@ export const ParsingResultComponent = (props) => {
 
     const CustomToolbar = () => {
         return (
+            // @ts-expect-error TS2322
             <GridToolbarContainer sx={{ gap: 1 }}>
                 <Tooltip title={translate(`column_tooltip`)}>
+                    {/*
+                     // @ts-expect-error TS2741 */}
                     <GridToolbarColumnsButton />
                 </Tooltip>
                 <GridToolbarFilterButton />
                 <Tooltip title={translate(`density_tooltip`)}>
+                    {/*
+                     // @ts-expect-error TS2741 */}
                     <GridToolbarDensitySelector />
                 </Tooltip>
                 <Tooltip title={translate(`add_more_data`)}>
@@ -487,6 +513,7 @@ export const ParsingResultComponent = (props) => {
                 disableSelectionOnClick={true}
                 onCellClick={handleCellClick}
                 selectionModel={selectedRowIds}
+                // @ts-expect-error TS2322
                 onSelectionModelChange={setSelectedRowIds}
                 components={{
                     Footer: CustomFooter,
@@ -522,8 +549,11 @@ ParsingResultComponent.propTypes = {
     enrichments: PropTypes.arrayOf(PropTypes.object),
 };
 
+// @ts-expect-error TS7006
 const mapStateToProps = (state) => ({
+    // @ts-expect-error TS2339
     loadingParsingResult: fromParsing.isParsingLoading(state),
+    // @ts-expect-error TS2339
     enrichments: fromEnrichments.enrichments(state),
 });
 

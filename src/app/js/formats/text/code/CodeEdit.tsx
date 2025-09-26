@@ -2,6 +2,7 @@ import React from 'react';
 import { TextField } from '@mui/material';
 import { formField as formFieldPropTypes } from '../../../propTypes';
 
+// @ts-expect-error TS7031
 const CodeEdit = ({ input, label, meta: { touched, error }, ...custom }) => (
     <TextField
         variant="standard"

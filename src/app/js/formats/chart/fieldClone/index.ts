@@ -8,5 +8,6 @@ export default {
     ListComponent: Component,
     AdminComponent,
     defaultArgs,
+    // @ts-expect-error TS7006
     predicate: (value) => typeof value === 'string',
 };

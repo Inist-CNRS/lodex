@@ -9,7 +9,9 @@ import {
 import { fromUser } from '../../../sharedSelectors';
 import fetchSaga from '../../../lib/sagas/fetchSaga';
 
+// @ts-expect-error TS7031
 export function* handleAddFieldToResource({ payload: uri }) {
+    // @ts-expect-error TS7057
     const formData = yield select(getNewResourceFieldFormData);
     if (!formData.field) {
         yield put(
@@ -19,6 +21,7 @@ export function* handleAddFieldToResource({ payload: uri }) {
         );
         return;
     }
+    // @ts-expect-error TS7057
     const request = yield select(fromUser.getAddFieldToResourceRequest, {
         ...formData,
         uri,
@@ -34,5 +37,6 @@ export function* handleAddFieldToResource({ payload: uri }) {
 }
 
 export default function* watchAddFieldToResource() {
+    // @ts-expect-error TS2769
     yield takeLatest(ADD_FIELD_TO_RESOURCE, handleAddFieldToResource);
 }

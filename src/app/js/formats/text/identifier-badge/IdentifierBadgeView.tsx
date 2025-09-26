@@ -6,6 +6,7 @@ import { resolvers } from './index';
 import Link from '../../../lib/components/Link';
 import stylesToClassname from '../../../lib/stylesToClassName';
 
+// @ts-expect-error TS2554
 const styles = stylesToClassname({
     key: {
         float: 'left',
@@ -36,7 +37,9 @@ const styles = stylesToClassname({
     },
 });
 
+// @ts-expect-error TS7031
 const IdentifierBadgeView = ({ resource, field, typid, colors }) => {
+    // @ts-expect-error TS7053
     const resolver = resolvers[typid] || '';
     const value = resource[field.name] || '';
 
@@ -51,8 +54,13 @@ const IdentifierBadgeView = ({ resource, field, typid, colors }) => {
     }
 
     return (
+        // @ts-expect-error TS2739
         <Link href={target}>
+            {/*
+             // @ts-expect-error TS2339 */}
             <span className={styles.key}>{typid}</span>
+            {/*
+             // @ts-expect-error TS2339 */}
             <span className={styles.value} style={colorStyle}>
                 {identifier}
             </span>

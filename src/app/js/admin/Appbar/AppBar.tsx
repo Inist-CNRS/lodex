@@ -3,6 +3,7 @@ import StorageIcon from '@mui/icons-material/Storage';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
+// @ts-expect-error TS7016
 import { Link, NavLink } from 'react-router-dom';
 
 import MapsUgcIcon from '@mui/icons-material/MapsUgc';
@@ -60,9 +61,13 @@ const styles = {
 };
 
 const AppbarComponent = ({
+    // @ts-expect-error TS7031
     isLoading,
+    // @ts-expect-error TS7031
     isAdmin,
+    // @ts-expect-error TS7031
     hasPublishedDataset,
+    // @ts-expect-error TS7031
     invalidFields,
 }) => {
     const { translate } = useTranslate();
@@ -116,6 +121,7 @@ const AppbarComponent = ({
             {isLoading && (
                 <CircularProgress
                     variant="indeterminate"
+                    // @ts-expect-error TS2322
                     color="#fff"
                     size={30}
                     thickness={2}
@@ -158,10 +164,14 @@ AppbarComponent.defaultProps = {
     isLoading: false,
 };
 
+// @ts-expect-error TS7006
 const mapStateToProps = (state) => ({
     isLoading: state.loading,
+    // @ts-expect-error TS2339
     isAdmin: fromUser.isAdmin(state),
+    // @ts-expect-error TS2339
     hasPublishedDataset: fromPublication.hasPublishedDataset(state),
+    // @ts-expect-error TS2339
     invalidFields: fromFields.getInvalidFields(state),
 });
 

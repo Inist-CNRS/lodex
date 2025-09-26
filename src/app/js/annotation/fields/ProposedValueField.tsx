@@ -4,6 +4,7 @@ import React from 'react';
 import { ProposedValueFieldList } from './ProposedValueFieldList';
 import { ProposedValueFieldText } from './ProposedValueFieldText';
 
+// @ts-expect-error TS7031
 export function ProposedValueField({ form, field, initialValue }) {
     if (
         field.annotationFormat === 'list' &&

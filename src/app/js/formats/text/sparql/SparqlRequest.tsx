@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { translate } from '../../../i18n/I18NContext';
+// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import LinkIcon from '@mui/icons-material/Link';
 import { TextField } from '@mui/material';
@@ -48,6 +49,7 @@ const styles = {
     },
 };
 
+// @ts-expect-error TS7006
 const getCreateUrl = (url) => {
     if (typeof url === 'function') {
         return url;
@@ -56,9 +58,11 @@ const getCreateUrl = (url) => {
         return () => url;
     }
 
+    // @ts-expect-error TS7031
     return ({ field, resource }) => resource[field.name];
 };
 
+// @ts-expect-error TS7006
 export default (url) => (FormatView) => {
     const createUrl = getCreateUrl(url);
 
@@ -76,6 +80,7 @@ export default (url) => (FormatView) => {
         };
 
         loadFormatData = () => {
+            // @ts-expect-error TS2339
             const { field, loadFormatData } = this.props;
             const value = createUrl(this.props);
             if (!value) {
@@ -86,6 +91,7 @@ export default (url) => (FormatView) => {
         };
 
         componentDidMount() {
+            // @ts-expect-error TS2339
             const { field } = this.props;
             if (!field) {
                 return;
@@ -93,7 +99,9 @@ export default (url) => (FormatView) => {
             this.loadFormatData();
         }
 
+        // @ts-expect-error TS7006
         filterFormatData = (filter) => {
+            // @ts-expect-error TS2339
             const { field, loadFormatData } = this.props;
             loadFormatData({
                 field,
@@ -103,6 +111,7 @@ export default (url) => (FormatView) => {
         };
 
         redirectIfUrl = () => {
+            // @ts-expect-error TS2339
             const { resource, field } = this.props;
             const requestText = resource[field.name];
 
@@ -112,11 +121,13 @@ export default (url) => (FormatView) => {
         };
 
         ifUrl = () => {
+            // @ts-expect-error TS2339
             const { resource, field } = this.props;
             const requestText = resource[field.name];
 
             if (isURL(requestText)) {
                 return (
+                    // @ts-expect-error TS2739
                     <Link href={requestText} style={styles.link}>
                         {requestText}
                     </Link>
@@ -126,6 +137,7 @@ export default (url) => (FormatView) => {
         };
 
         getHeaderFormat = () => {
+            // @ts-expect-error TS2339
             const { resource, field, sparql } = this.props;
             const requestText = resource[field.name];
             let endpoint = sparql.endpoint.substring(
@@ -140,6 +152,7 @@ export default (url) => (FormatView) => {
                                     ? styles.pointer
                                     : styles.icon
                             }
+                            // @ts-expect-error TS2769
                             color="lightGrey"
                             onClick={this.redirectIfUrl}
                         />
@@ -158,6 +171,7 @@ export default (url) => (FormatView) => {
         };
 
         loadButton2ReloadInHttp = () => {
+            // @ts-expect-error TS2339
             const { p: polyglot } = this.props;
             const source = URL.parse(window.location.href);
             if (source.protocol == 'http:') {
@@ -175,6 +189,8 @@ export default (url) => (FormatView) => {
             return (
                 <p>
                     {polyglot.t('sparql_http_retry')}
+                    {/*
+                     // @ts-expect-error TS2739 */}
                     <Link href={url}> {polyglot.t('here')} </Link>
                 </p>
             );
@@ -182,11 +198,17 @@ export default (url) => (FormatView) => {
 
         render() {
             const {
+                // @ts-expect-error TS2339
                 loadFormatData,
+                // @ts-expect-error TS2339
                 formatData,
+                // @ts-expect-error TS2339
                 p: polyglot,
+                // @ts-expect-error TS2339
                 field,
+                // @ts-expect-error TS2339
                 isLoaded,
+                // @ts-expect-error TS2339
                 error,
                 ...props
             } = this.props;
@@ -230,11 +252,16 @@ export default (url) => (FormatView) => {
         }
     }
 
+    // @ts-expect-error TS2339
     SparqlRequest.WrappedComponent = FormatView;
 
+    // @ts-expect-error TS7006
     const mapStateToProps = (state, { field }) => ({
+        // @ts-expect-error TS2339
         formatData: fromFormat.getFormatData(state, field.name),
+        // @ts-expect-error TS2339
         isLoaded: field && fromFormat.isFormatDataLoaded(state, field.name),
+        // @ts-expect-error TS2339
         error: fromFormat.getFormatError(state, field.name),
     });
 

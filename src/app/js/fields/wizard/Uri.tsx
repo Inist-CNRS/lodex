@@ -1,7 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
+// @ts-expect-error TS7016
 import { reduxForm, change, formValueSelector } from 'redux-form';
 
 import { fromParsing } from '../../admin/selectors';
@@ -14,8 +16,11 @@ import SourceValueFromColumns from '../sourceValue/SourceValueFromColumns';
 import { GET_SOURCE_VALUE_FROM_TRANSFORMERS } from '../sourceValue/SourceValueToggle';
 
 export const UriComponent = ({
+    // @ts-expect-error TS7031
     handleTransformerChange,
+    // @ts-expect-error TS7031
     updateTransformers,
+    // @ts-expect-error TS7031
     currentTransformers,
 }) => {
     const [value, setValue] = React.useState(null);
@@ -43,7 +48,9 @@ UriComponent.propTypes = {
     currentTransformers: PropTypes.array,
 };
 
+// @ts-expect-error TS7006
 const mapStateToProps = (state, { currentEditedField }) => ({
+    // @ts-expect-error TS2339
     datasetFields: fromParsing.getParsedExcerptColumns(state),
     initialValues: currentEditedField,
     currentTransformers: formValueSelector(FIELD_FORM_NAME)(
@@ -53,9 +60,12 @@ const mapStateToProps = (state, { currentEditedField }) => ({
 });
 
 const mapDispatchToProps = (
+    // @ts-expect-error TS7006
     dispatch,
+    // @ts-expect-error TS7031
     { currentEditedField: { transformers } },
 ) => ({
+    // @ts-expect-error TS7006
     handleTransformerChange: (valueTransformer) => {
         let newTransformers = [];
         const firstTransformerIsValueTransformer =
@@ -75,6 +85,7 @@ const mapDispatchToProps = (
 
         dispatch(change(FIELD_FORM_NAME, 'transformers', newTransformers));
     },
+    // @ts-expect-error TS7006
     updateTransformers: (valueTransformers) => {
         return dispatch(
             change(FIELD_FORM_NAME, 'transformers', valueTransformers),

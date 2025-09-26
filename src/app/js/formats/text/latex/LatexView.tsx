@@ -18,6 +18,7 @@ const styles = stylesToClassname(
     'latex',
 );
 
+// @ts-expect-error TS7031
 const LatexView = ({ resource, field }) => {
     const KatexOptions = {
         displayMode: false,
@@ -40,10 +41,12 @@ const LatexView = ({ resource, field }) => {
     try {
         html = parts
             .reduce(
+                // @ts-expect-error TS7006
                 (acc, cur, index) =>
                     acc.concat(
                         index % 2 === 0
                             ? cur
+                            // @ts-expect-error TS2345
                             : katex.renderToString(cur, KatexOptions),
                     ),
                 [],
@@ -54,6 +57,7 @@ const LatexView = ({ resource, field }) => {
     }
 
     return (
+        // @ts-expect-error TS2339
         <div className={classnames('latex-container', styles.container)}>
             <Helmet>
                 <link

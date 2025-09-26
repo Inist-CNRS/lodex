@@ -1,7 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+// @ts-expect-error TS7016
 import memoize from 'lodash/memoize';
 import { translate } from '../../../i18n/I18NContext';
+// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 
 import fetchDataForComponent from './fetchDataForComponent';
@@ -15,6 +17,7 @@ import { fetchForIstexRefbibsFormat } from './fetchIstexRefbibsData';
 import IstexItem from '../istex/IstexItem';
 
 const styles = {
+    // @ts-expect-error TS7006
     text: memoize((status) =>
         Object.assign({
             fontSize: '1rem',
@@ -35,9 +38,12 @@ const styles = {
     },
 };
 
+// @ts-expect-error TS7031
 export const IstexRefbibsView = ({ fieldStatus, data, error, p: polyglot }) => (
     <div className="istex-list" style={styles.text(fieldStatus)}>
         <div style={styles.header}>
+            {/*
+             // @ts-expect-error TS2322 */}
             <span style={styles.total}>
                 {polyglot.t('istex_total', {
                     total: data ? data.total : 0,
@@ -45,12 +51,16 @@ export const IstexRefbibsView = ({ fieldStatus, data, error, p: polyglot }) => (
             </span>
             {error && (
                 <Alert>
+                    {/*
+                     // @ts-expect-error TS2322 */}
                     <p>{polyglot.t(error)}</p>
                 </Alert>
             )}
         </div>
         {data && data.hits && (
             <div>
+                {/*
+                 // @ts-expect-error TS7006 */}
                 {data.hits.map((item) => (
                     <IstexItem key={item.id} {...item} />
                 ))}

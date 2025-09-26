@@ -1,8 +1,11 @@
 import React from 'react';
+// @ts-expect-error TS7016
 import compose from 'recompose/compose';
+// @ts-expect-error TS7016
 import withHandlers from 'recompose/withHandlers';
 import { connect } from 'react-redux';
 import { translate } from '../../i18n/I18NContext';
+// @ts-expect-error TS7016
 import { Field, reduxForm, propTypes as reduxFormPropTypes } from 'redux-form';
 
 import {
@@ -15,6 +18,7 @@ import Alert from '../../lib/components/Alert';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { fromResource } from '../selectors';
 
+// @ts-expect-error TS7006
 const validate = (values, { p: polyglot }) => {
     if (!values.reason) {
         return {
@@ -26,14 +30,20 @@ const validate = (values, { p: polyglot }) => {
 };
 
 export const HideResourceFormComponent = ({
+    // @ts-expect-error TS7031
     resource,
+    // @ts-expect-error TS7031
     resourceError,
+    // @ts-expect-error TS7031
     handleSubmit,
+    // @ts-expect-error TS7031
     p: polyglot,
 }) => (
     <form id="hide_resource_form" onSubmit={() => handleSubmit(resource.uri)}>
         {resourceError && (
             <Alert>
+                {/*
+                 // @ts-expect-error TS2322 */}
                 <p>{resourceError}</p>
             </Alert>
         )}
@@ -58,9 +68,13 @@ HideResourceFormComponent.propTypes = {
     p: polyglotPropTypes.isRequired,
 };
 
+// @ts-expect-error TS7006
 const mapStateToProps = (state) => ({
+    // @ts-expect-error TS2339
     resourceError: fromResource.getError(state),
+    // @ts-expect-error TS2339
     initialValues: fromResource.getResourceLastVersion(state),
+    // @ts-expect-error TS2339
     resource: fromResource.getResourceLastVersion(state),
 });
 
@@ -73,6 +87,7 @@ export default compose(
     connect(mapStateToProps, mapDispatchToProps),
     withHandlers({
         onSubmit:
+            // @ts-expect-error TS7031
             ({ hideResource, resource }) =>
             () => {
                 hideResource(resource.uri);

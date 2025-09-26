@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import moment from 'moment';
 
@@ -37,25 +38,36 @@ const styles = {
 
 export class RemovedResourceListComponent extends Component {
     UNSAFE_componentWillMount() {
+        // @ts-expect-error TS2339
         const { loadRemovedResourcePage, currentPage } = this.props;
         loadRemovedResourcePage({ page: currentPage, perPage: 10 });
     }
 
+    // @ts-expect-error TS7006
     handlePageChange = (currentPage, perPage) => {
+        // @ts-expect-error TS2339
         this.props.loadRemovedResourcePage({ page: currentPage, perPage });
     };
 
+    // @ts-expect-error TS7006
     handleRestoreResourceClick = (id) => () => {
+        // @ts-expect-error TS2339
         this.props.restoreRessource(id);
     };
 
     render() {
         const {
+            // @ts-expect-error TS2339
             columns,
+            // @ts-expect-error TS2339
             resources,
+            // @ts-expect-error TS2339
             loading,
+            // @ts-expect-error TS2339
             p: polyglot,
+            // @ts-expect-error TS2339
             total,
+            // @ts-expect-error TS2339
             currentPage,
         } = this.props;
 
@@ -71,12 +83,16 @@ export class RemovedResourceListComponent extends Component {
                                 {polyglot.t('removed_reason')}
                             </TableCell>
                             <TableCell />
+                            {/*
+                             // @ts-expect-error TS7031 */}
                             {columns.map(({ name, label }) => (
                                 <TableCell key={name}>{label}</TableCell>
                             ))}
                         </TableRow>
                     </TableHead>
                     <TableBody>
+                        {/*
+                         // @ts-expect-error TS7006 */}
                         {resources.map((data) => (
                             <TableRow key={data.uri}>
                                 <TableCell>
@@ -84,6 +100,8 @@ export class RemovedResourceListComponent extends Component {
                                 </TableCell>
                                 <TableCell>{data.reason}</TableCell>
                                 <TableCell>
+                                    {/*
+                                     // @ts-expect-error TS2739 */}
                                     <ButtonWithStatus
                                         raised
                                         className="btn-restore-resource"
@@ -97,6 +115,8 @@ export class RemovedResourceListComponent extends Component {
                                         {polyglot.t('restore')}
                                     </ButtonWithStatus>
                                 </TableCell>
+                                {/*
+                                 // @ts-expect-error TS7031 */}
                                 {columns.map(({ name }) => (
                                     <TableCell key={data[name]}>
                                         {data[name]}
@@ -122,6 +142,7 @@ export class RemovedResourceListComponent extends Component {
     }
 }
 
+// @ts-expect-error TS2339
 RemovedResourceListComponent.propTypes = {
     columns: PropTypes.arrayOf(PropTypes.object).isRequired,
     currentPage: PropTypes.number.isRequired,
@@ -133,11 +154,17 @@ RemovedResourceListComponent.propTypes = {
     total: PropTypes.number.isRequired,
 };
 
+// @ts-expect-error TS7006
 const mapStateToProps = (state) => ({
+    // @ts-expect-error TS2339
     loading: fromRemovedResources.isRemovedResourceLoading(state),
+    // @ts-expect-error TS2339
     columns: fromFields.getCollectionFields(state),
+    // @ts-expect-error TS2339
     currentPage: fromRemovedResources.getRemovedResourceCurrentPage(state),
+    // @ts-expect-error TS2339
     resources: fromRemovedResources.getRemovedResourceItems(state),
+    // @ts-expect-error TS2339
     total: fromRemovedResources.getRemovedResourceTotal(state),
 });
 

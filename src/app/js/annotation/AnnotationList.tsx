@@ -30,6 +30,7 @@ import { CloseAllIcon } from '../lib/components/icons/CloseAllIcon';
 import { OpenAllIcon } from '../lib/components/icons/OpenAllIcon';
 import { MODE_ALL, MODE_CLOSED, MODE_MINE, MODES } from './HistoryDrawer.const';
 
+// @ts-expect-error TS7006
 export const getAnnotationSummaryValue = (annotation) => {
     const JOIN_SEPARATOR = ' | ';
     switch (annotation.kind) {
@@ -57,6 +58,7 @@ export const getAnnotationSummaryValue = (annotation) => {
         case ANNOTATION_KIND_REMOVAL:
             if (Array.isArray(annotation.initialValue)) {
                 return annotation.initialValue
+                    // @ts-expect-error TS7006
                     .map((value) =>
                         [null, undefined, ''].includes(value) ? '""' : value,
                     )
@@ -74,6 +76,7 @@ export const getAnnotationSummaryValue = (annotation) => {
     }
 };
 
+// @ts-expect-error TS7006
 export const getAnnotationTitle = (annotation, translate) => {
     if (!annotation) {
         return null;
@@ -99,16 +102,19 @@ export const getAnnotationTitle = (annotation, translate) => {
     return annotation.resource.title;
 };
 
+// @ts-expect-error TS7031
 export const AnnotationList = ({ mode, setMode, annotations, field }) => {
     const { translate } = useTranslate();
     const theme = useTheme();
 
     const myAnnotations = useMemo(() => {
+        // @ts-expect-error TS7006
         return annotations.filter((annotation) => annotation.isMine);
     }, [annotations]);
 
     const [annotationsOpen, setAnnotationsOpen] = useState(
         annotations.reduce(
+            // @ts-expect-error TS7006
             (acc, annotation) => ({
                 ...acc,
                 [annotation._id]: false,
@@ -118,8 +124,10 @@ export const AnnotationList = ({ mode, setMode, annotations, field }) => {
     );
 
     const openAllAnnotations = () => {
+        // @ts-expect-error TS7006
         setAnnotationsOpen((annotationsOpen) =>
             annotations.reduce(
+                // @ts-expect-error TS7006
                 (acc, annotation) => ({
                     ...acc,
                     [annotation._id]: true,
@@ -130,8 +138,10 @@ export const AnnotationList = ({ mode, setMode, annotations, field }) => {
     };
 
     const closeAllAnnotations = () => {
+        // @ts-expect-error TS7006
         setAnnotationsOpen((annotationsOpen) =>
             annotations.reduce(
+                // @ts-expect-error TS7006
                 (acc, annotation) => ({
                     ...acc,
                     [annotation._id]: false,
@@ -143,12 +153,14 @@ export const AnnotationList = ({ mode, setMode, annotations, field }) => {
 
     useEffect(() => {
         if (mode === MODE_ALL && annotations.length > 0) {
+            // @ts-expect-error TS7006
             setAnnotationsOpen((annotationsOpen) => ({
                 ...annotationsOpen,
                 [annotations[0]._id]: true,
             }));
         }
         if (mode === MODE_MINE && myAnnotations.length > 0) {
+            // @ts-expect-error TS7006
             setAnnotationsOpen((annotationsOpen) => ({
                 ...annotationsOpen,
                 [myAnnotations[0]._id]: true,
@@ -171,6 +183,8 @@ export const AnnotationList = ({ mode, setMode, annotations, field }) => {
         >
             <Stack>
                 <Typography variant="h5">
+                    {/*
+                     // @ts-expect-error TS2554 */}
                     {translate('annotation_history_for_field', {
                         fieldLabel: field.label,
                     })}
@@ -195,6 +209,8 @@ export const AnnotationList = ({ mode, setMode, annotations, field }) => {
                                 mode === MODE_ALL ? 'contained' : 'outlined'
                             }
                         >
+                            {/*
+                             // @ts-expect-error TS2554 */}
                             {translate('all_annotation', {
                                 smart_count: annotations.length,
                             })}
@@ -209,6 +225,8 @@ export const AnnotationList = ({ mode, setMode, annotations, field }) => {
                             }
                             disabled={myAnnotations.length === 0}
                         >
+                            {/*
+                             // @ts-expect-error TS2554 */}
                             {translate('annotation_sent_by_me', {
                                 smart_count: myAnnotations.length,
                             })}
@@ -220,6 +238,8 @@ export const AnnotationList = ({ mode, setMode, annotations, field }) => {
                             aria-label={translate('collapse_all_annotations')}
                             onClick={closeAllAnnotations}
                         >
+                            {/*
+                             // @ts-expect-error TS2741 */}
                             <CloseAllIcon />
                         </IconButton>
                         <IconButton
@@ -227,6 +247,8 @@ export const AnnotationList = ({ mode, setMode, annotations, field }) => {
                             aria-label={translate('expand_all_annotations')}
                             onClick={openAllAnnotations}
                         >
+                            {/*
+                             // @ts-expect-error TS2741 */}
                             <OpenAllIcon />
                         </IconButton>
                     </Box>
@@ -234,11 +256,13 @@ export const AnnotationList = ({ mode, setMode, annotations, field }) => {
             </Stack>
             <Box>
                 {(mode === MODE_ALL ? annotations : myAnnotations).map(
+                    // @ts-expect-error TS7006
                     (annotation) => (
                         <Accordion
                             key={annotation._id}
                             expanded={annotationsOpen[annotation._id]}
                             onChange={() => {
+                                // @ts-expect-error TS7006
                                 setAnnotationsOpen((annotationsOpen) => ({
                                     ...annotationsOpen,
                                     [annotation._id]:
@@ -385,6 +409,7 @@ export const AnnotationList = ({ mode, setMode, annotations, field }) => {
                                             >
                                                 {translate(
                                                     'annotation_proposed_value',
+                                                    // @ts-expect-error TS2554
                                                     {
                                                         smart_count:
                                                             Array.isArray(
@@ -402,6 +427,7 @@ export const AnnotationList = ({ mode, setMode, annotations, field }) => {
                                                     annotation.proposedValue,
                                                 )
                                                     ? annotation.proposedValue.map(
+                                                          // @ts-expect-error TS7006
                                                           (value) => (
                                                               <Typography
                                                                   key={value}

@@ -31,6 +31,7 @@ const styles = stylesToClassname(
     'sort',
 );
 
+// @ts-expect-error TS7006
 export const getSortableFieldNames = (fieldNames) =>
     [
         fieldNames.title,
@@ -40,27 +41,37 @@ export const getSortableFieldNames = (fieldNames) =>
         fieldNames.detail3,
     ].filter((x) => !!x);
 
+// @ts-expect-error TS7006
 export const getSortableFields = (fields, sortedFieldNames) =>
     fields
+        // @ts-expect-error TS7006
         .filter((field) => sortedFieldNames.includes(field.name) && field.label)
         .sort(
+            // @ts-expect-error TS7006
             (fieldA, fieldB) =>
                 sortedFieldNames.indexOf(fieldA.name) -
                 sortedFieldNames.indexOf(fieldB.name),
         );
 
 const SearchResultSort = ({
+    // @ts-expect-error TS7031
     p: polyglot,
+    // @ts-expect-error TS7031
     fields,
+    // @ts-expect-error TS7031
     fieldNames,
+    // @ts-expect-error TS7031
     sort,
+    // @ts-expect-error TS7031
     sortBy,
+    // @ts-expect-error TS7031
     sortDir,
 }) => {
     const [popover, setPopover] = useState({ open: false });
     const sortableFieldNames = getSortableFieldNames(fieldNames);
     const sortableFields = getSortableFields(fields, sortableFieldNames);
 
+    // @ts-expect-error TS7006
     const handleSort = (name) => {
         sort({ sortBy: name });
         setPopover({
@@ -68,12 +79,14 @@ const SearchResultSort = ({
         });
     };
 
+    // @ts-expect-error TS7006
     const handleOpen = (event) => {
         // This prevents ghost click.
         event.preventDefault();
 
         setPopover({
             open: true,
+            // @ts-expect-error TS2353
             anchorEl: event.currentTarget,
         });
     };
@@ -95,15 +108,20 @@ const SearchResultSort = ({
             >
                 {sortBy
                     ? polyglot.t('sort_search_by_field', {
+                          // @ts-expect-error TS7006
                           field: sortableFields.find((s) => s.name === sortBy)
                               ?.label,
                       })
                     : polyglot.t('sort_search')}{' '}
                 {sortDir && ` | ${polyglot.t(sortDir.toLowerCase())}`}
             </Button>
+            {/*
+             // @ts-expect-error TS2339 */}
             <div className={styles.menuContainer}>
                 <Menu
+                    // @ts-expect-error TS2339
                     className={styles.menuList}
+                    // @ts-expect-error TS2339
                     anchorEl={popover.anchorEl}
                     anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
                     transformOrigin={{
@@ -114,10 +132,15 @@ const SearchResultSort = ({
                     open={popover.open}
                     onClose={handleClose}
                 >
+                    {/*
+                     // @ts-expect-error TS2339 */}
                     <h3 className={styles.menuTitle}>
                         {polyglot.t('sort_search_title')}
                     </h3>
+                    {/*
+                     // @ts-expect-error TS7006 */}
                     {sortableFields.map((field) => (
+                        // @ts-expect-error TS2769
                         <MenuItem
                             key={field.name}
                             onClick={() => handleSort(field.name)}

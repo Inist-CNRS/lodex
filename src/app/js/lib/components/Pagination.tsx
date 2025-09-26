@@ -67,13 +67,16 @@ class Pagination extends Component {
     };
 
     componentDidMount() {
+        // @ts-expect-error TS2339
         this.calculatePageCount(this.props.total, this.props.perPage);
     }
 
+    // @ts-expect-error TS7006
     UNSAFE_componentWillReceiveProps(nextProps) {
         this.calculatePageCount(nextProps.total, nextProps.perPage);
     }
 
+    // @ts-expect-error TS7006
     calculatePageCount = (total, perPage) => {
         const pages = [];
         const count = Math.ceil(total / perPage);
@@ -85,44 +88,58 @@ class Pagination extends Component {
         this.setState({ pages, count });
     };
 
+    // @ts-expect-error TS7006
     handleChangePerPage = (e) => {
         const perPage = e.target.value;
+        // @ts-expect-error TS2339
         const count = Math.ceil(this.props.total / perPage);
+        // @ts-expect-error TS2339
         let currentPage = this.props.currentPage;
 
+        // @ts-expect-error TS2339
         if (count < this.state.count && currentPage !== 0) {
             currentPage = count - 1;
         }
 
+        // @ts-expect-error TS2339
         this.props.onChange(currentPage, perPage);
     };
 
     handlePreviousPageClick = () => {
+        // @ts-expect-error TS2339
         this.handleChangePage(this.props.currentPage - 1);
     };
 
     handleNextPageClick = () => {
+        // @ts-expect-error TS2339
         this.handleChangePage(this.props.currentPage + 1);
     };
 
+    // @ts-expect-error TS7006
     handleChangePage = (currentPage) => {
+        // @ts-expect-error TS2339
         this.props.onChange(currentPage, this.props.perPage);
     };
 
+    // @ts-expect-error TS7006
     handleChangePageFromSelect = (e) => {
         this.handleChangePage(e.target.value);
     };
 
+    // @ts-expect-error TS7006
     handleChangePageFromText = (e) => {
         const page = parseInt(e.target.value) - 1;
 
+        // @ts-expect-error TS2339
         if (page < this.state.count && page > -1) {
             this.handleChangePage(page);
         }
     };
 
     render() {
+        // @ts-expect-error TS2339
         const { perPage, currentPage, total, texts, column } = this.props;
+        // @ts-expect-error TS2339
         const { pages, count } = this.state;
         const pageToDisplay = currentPage + 1;
 

@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import PropTypes from 'prop-types';
 import {
@@ -17,12 +18,16 @@ import parseValue from '../../../../common/tools/parseValue';
 import { translate } from '../../i18n/I18NContext';
 
 export const GET_TRANSFORMERS_FROM_SUBRESOURCE = (
+    // @ts-expect-error TS7006
     subresources,
+    // @ts-expect-error TS7006
     subresourcePath,
+    // @ts-expect-error TS7006
     column,
 ) => {
     if (!subresources || !subresourcePath) return [];
 
+    // @ts-expect-error TS7006
     const subresource = subresources.find((sr) => sr.path === subresourcePath);
 
     if (!subresource) return [];
@@ -100,11 +105,17 @@ export const GET_TRANSFORMERS_FROM_SUBRESOURCE = (
 };
 
 const SourceValueFromSubResource = ({
+    // @ts-expect-error TS7031
     firstParsedLine,
+    // @ts-expect-error TS7031
     p: polyglot,
+    // @ts-expect-error TS7031
     subresources,
+    // @ts-expect-error TS7031
     path,
+    // @ts-expect-error TS7031
     column,
+    // @ts-expect-error TS7031
     updateDefaultValueTransformers,
 }) => {
     const [autocompleteValue, setAutocompleteValue] = React.useState(column);
@@ -119,6 +130,7 @@ const SourceValueFromSubResource = ({
                     : subresourceData) || {},
             ),
         ].sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()));
+        // @ts-expect-error TS2345
         setDatasetFields(datasetFields);
     }, [path]);
 
@@ -126,6 +138,7 @@ const SourceValueFromSubResource = ({
         setAutocompleteValue(column);
     }, [column]);
 
+    // @ts-expect-error TS7006
     const handleChangeSubresource = (event) => {
         const transformers = GET_TRANSFORMERS_FROM_SUBRESOURCE(
             subresources,
@@ -135,6 +148,7 @@ const SourceValueFromSubResource = ({
         updateDefaultValueTransformers(transformers);
     };
 
+    // @ts-expect-error TS7006
     const handleChange = (event, value) => {
         const transformers = GET_TRANSFORMERS_FROM_SUBRESOURCE(
             subresources,
@@ -157,6 +171,8 @@ const SourceValueFromSubResource = ({
                     label={polyglot.t('subRessource_tooltip')}
                     onChange={handleChangeSubresource}
                 >
+                    {/*
+                     // @ts-expect-error TS7006 */}
                     {subresources.map((subresource) => (
                         // TODO: manage selected subresource with its id because two subresources can have the same path
                         // but currently we store only the path in mongo and not the id
@@ -170,6 +186,7 @@ const SourceValueFromSubResource = ({
                 </Select>
             </FormControl>
             <Autocomplete
+                // @ts-expect-error TS2322
                 labelId="autocomplete-subresource-label"
                 data-testid="autocomplete-subresource-label"
                 fullWidth
@@ -188,8 +205,10 @@ const SourceValueFromSubResource = ({
     );
 };
 
+// @ts-expect-error TS7006
 export const mapStateToProps = (state) => {
     const { subresources } = state.subresource;
+    // @ts-expect-error TS2339
     const [firstParsedLine] = fromParsing.getExcerptLines(state);
 
     return { subresources, firstParsedLine };

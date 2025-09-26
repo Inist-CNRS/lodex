@@ -1,7 +1,9 @@
 import React, { useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+// @ts-expect-error TS7016
 import compose from 'recompose/compose';
+// @ts-expect-error TS7016
 import { clamp } from 'lodash';
 
 import InvalidFormat from '../InvalidFormat';
@@ -16,12 +18,14 @@ import {
 import { useSizeObserver } from '../utils/chartsHooks';
 import stylesToClassName from '../../lib/stylesToClassName';
 
+// @ts-expect-error TS2554
 const styles = stylesToClassName({
     container: {
         userSelect: 'none',
     },
 });
 
+// @ts-expect-error TS7031
 const VegaLiteView = ({ field, data, aspectRatio, specTemplate }) => {
     const { ref, width } = useSizeObserver();
     const [error, setError] = useState('');
@@ -34,6 +38,7 @@ const VegaLiteView = ({ field, data, aspectRatio, specTemplate }) => {
                 clamp((width - VEGA_ACTIONS_WIDTH) * 0.8, 300, 1200),
             );
         } catch (e) {
+            // @ts-expect-error TS18046
             setError(e.message);
             return null;
         }
@@ -44,6 +49,7 @@ const VegaLiteView = ({ field, data, aspectRatio, specTemplate }) => {
     }
 
     return (
+        // @ts-expect-error TS2339
         <div className={styles.container} ref={ref}>
             <CustomActionVegaLite
                 spec={spec || {}}
@@ -67,6 +73,7 @@ VegaLiteView.defaultProps = {
     className: null,
 };
 
+// @ts-expect-error TS7006
 const mapStateToProps = (state, { formatData }) => {
     if (!formatData) {
         return {};
@@ -85,9 +92,11 @@ export const VegaLiteAdminView = connect((state, props) => {
             format: 'Preview Format',
         },
         data: {
+            // @ts-expect-error TS2339
             values: props.dataset.values ?? [],
         },
     };
+// @ts-expect-error TS2345
 })(VegaLiteView);
 
 export default compose(injectData(), connect(mapStateToProps))(VegaLiteView);

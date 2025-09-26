@@ -1,3 +1,4 @@
+// @ts-expect-error TS7016
 import { createAction, handleActions } from 'redux-actions';
 
 export const LOAD_SUBRESOURCES = 'LOAD_SUBRESOURCES';
@@ -31,27 +32,33 @@ export const initialState = {
 
 export default handleActions(
     {
+        // @ts-expect-error TS7006
         LOAD_SUBRESOURCES: (state) => ({
             ...state,
             loading: true,
             initialized: true,
         }),
+        // @ts-expect-error TS7006
         LOAD_SUBRESOURCES_ERROR: (state, { payload: error }) => ({
             ...state,
             error,
             loading: false,
         }),
+        // @ts-expect-error TS7006
         LOAD_SUBRESOURCES_SUCCESS: (state, { payload: subresources }) => ({
             ...state,
             subresources,
             loading: false,
         }),
+        // @ts-expect-error TS7006
         CREATE_SUBRESOURCE_OPTIMISTIC: (state, { payload: subresource }) => ({
             ...state,
             subresources: [...state.subresources, subresource],
         }),
+        // @ts-expect-error TS7006
         UPDATE_SUBRESOURCE_OPTIMISTIC: (state, { payload: subresource }) => ({
             ...state,
+            // @ts-expect-error TS7006
             subresources: state.subresources.map((sr) => {
                 if (sr._id === subresource._id) {
                     return subresource;
@@ -64,8 +71,11 @@ export default handleActions(
     initialState,
 );
 
+// @ts-expect-error TS7006
 export const isLoading = (state) => state.loading;
+// @ts-expect-error TS7006
 export const isInitialized = (state) => state.initialized;
+// @ts-expect-error TS7006
 export const getSubresources = (state) => state.subresources;
 
 export const selectors = {

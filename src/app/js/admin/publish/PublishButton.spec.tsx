@@ -1,4 +1,5 @@
 import React from 'react';
+// @ts-expect-error TS7016
 import { shallow } from 'enzyme';
 
 import {
@@ -9,6 +10,7 @@ import { Button } from '@mui/material';
 
 describe('<Publish />', () => {
     it('should render a publish button', () => {
+        // @ts-expect-error TS2322
         const wrapper = shallow(<PublishButton p={{ t: (key) => key }} />);
 
         const button = wrapper.find(Button).at(0);
@@ -20,6 +22,7 @@ describe('<Publish />', () => {
 
         const wrapper = shallow(
             <PublishButton
+                // @ts-expect-error TS2322
                 p={{ t: (key) => key }}
                 loadField={() => {}}
                 isPublishing={false}

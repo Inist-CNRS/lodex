@@ -8,9 +8,13 @@ import { UPLOAD_TEXT, uploadError, uploadSuccess } from '../index';
 
 export function* handleUploadText() {
     preventUnload();
+    // @ts-expect-error TS7057
     const text = yield select(fromUpload.getTextContent);
+    // @ts-expect-error TS7057
     const loaderName = yield select(fromUpload.getLoaderName);
+    // @ts-expect-error TS7057
     const customLoader = yield select(fromUpload.getCustomLoader);
+    // @ts-expect-error TS7057
     const request = yield select(fromUser.getUploadTextRequest, {
         text,
         loaderName,

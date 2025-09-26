@@ -1,7 +1,9 @@
 import React, { useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+// @ts-expect-error TS7016
 import compose from 'recompose/compose';
+// @ts-expect-error TS7016
 import { clamp } from 'lodash';
 
 import injectData from '../../../injectData';
@@ -27,23 +29,41 @@ const styles = {
 };
 
 const BarChartView = ({
+    // @ts-expect-error TS7031
     advancedMode,
+    // @ts-expect-error TS7031
     advancedModeSpec,
+    // @ts-expect-error TS7031
     field,
+    // @ts-expect-error TS7031
     data,
+    // @ts-expect-error TS7031
     direction,
+    // @ts-expect-error TS7031
     params,
+    // @ts-expect-error TS7031
     scale,
+    // @ts-expect-error TS7031
     colors,
+    // @ts-expect-error TS7031
     axisRoundValue,
+    // @ts-expect-error TS7031
     tooltip,
+    // @ts-expect-error TS7031
     tooltipCategory,
+    // @ts-expect-error TS7031
     tooltipValue,
+    // @ts-expect-error TS7031
     labels,
+    // @ts-expect-error TS7031
     labelOverlap,
+    // @ts-expect-error TS7031
     barSize,
+    // @ts-expect-error TS7031
     diagonalCategoryAxis,
+    // @ts-expect-error TS7031
     diagonalValueAxis,
+    // @ts-expect-error TS7031
     aspectRatio,
 }) => {
     const { ref, width } = useSizeObserver();
@@ -58,6 +78,7 @@ const BarChartView = ({
                     clamp((width - VEGA_ACTIONS_WIDTH) * 0.6, 300, 1200),
                 );
             } catch (e) {
+                // @ts-expect-error TS18046
                 setError(e.message);
                 return null;
             }
@@ -80,6 +101,7 @@ const BarChartView = ({
         if (diagonalCategoryAxis) specBuilder.setLabelAngle(AXIS_X, -45);
         if (diagonalValueAxis) specBuilder.setLabelAngle(AXIS_Y, -45);
 
+        // @ts-expect-error TS2554
         return specBuilder.buildSpec(width, data.values.length);
     }, [
         width,
@@ -107,6 +129,7 @@ const BarChartView = ({
     }
 
     return (
+        // @ts-expect-error TS2322
         <div style={styles.container} ref={ref}>
             <CustomActionVegaLite
                 spec={spec}
@@ -147,6 +170,7 @@ BarChartView.defaultProps = {
     className: null,
 };
 
+// @ts-expect-error TS7006
 const mapStateToProps = (state, { formatData }) => {
     if (!formatData) {
         return {
@@ -169,9 +193,11 @@ export const BarChartAdminView = connect((state, props) => {
             format: 'Preview Format',
         },
         data: {
+            // @ts-expect-error TS2339
             values: props.dataset.values ?? [],
         },
     };
+// @ts-expect-error TS2345
 })(BarChartView);
 
 export default compose(injectData(), connect(mapStateToProps))(BarChartView);

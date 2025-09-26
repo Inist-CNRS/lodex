@@ -13,9 +13,11 @@ import { saveFieldSuccess } from '../../fields';
 import fetch from '../../lib/fetch';
 import { getUserSessionStorageInfo } from './tools';
 
+// @ts-expect-error TS7031
 const duplicateField = async ({ fieldId }) => {
     const { token } = getUserSessionStorageInfo();
     const request = postDuplicateField({ token }, { fieldId });
+    // @ts-expect-error TS7031
     return fetch(request).then(({ response, error }) => {
         if (error) {
             return [];
@@ -27,6 +29,7 @@ const duplicateField = async ({ fieldId }) => {
 const clearModel = async () => {
     const { token } = getUserSessionStorageInfo();
     const request = clearModelRequest({ token });
+    // @ts-expect-error TS7031
     return fetch(request).then(({ response, error }) => {
         if (error) {
             return error;
@@ -35,9 +38,11 @@ const clearModel = async () => {
     });
 };
 
+// @ts-expect-error TS7006
 const patchField = async (field) => {
     const { token } = getUserSessionStorageInfo();
     const request = getUpdateFieldRequest({ token }, field);
+    // @ts-expect-error TS7031
     return fetch(request).then(({ response, error }) => {
         if (error) {
             return error;
@@ -46,9 +51,11 @@ const patchField = async (field) => {
     });
 };
 
+// @ts-expect-error TS7006
 const patchOverview = async (field) => {
     const { token } = getUserSessionStorageInfo();
     const request = getPatchOverviewRequest({ token }, field);
+    // @ts-expect-error TS7031
     return fetch(request).then(({ response, error }) => {
         if (error) {
             return error;
@@ -58,9 +65,11 @@ const patchOverview = async (field) => {
     });
 };
 
+// @ts-expect-error TS7006
 const patchSortField = async (field) => {
     const { token } = getUserSessionStorageInfo();
     const request = getPatchSortFieldRequest({ token }, field);
+    // @ts-expect-error TS7031
     return fetch(request).then(({ error }) => {
         if (error) {
             return { ok: false };
@@ -70,9 +79,11 @@ const patchSortField = async (field) => {
     });
 };
 
+// @ts-expect-error TS7006
 const patchSortOrder = async (order) => {
     const { token } = getUserSessionStorageInfo();
     const request = getPatchSortOrderRequest({ token }, order);
+    // @ts-expect-error TS7031
     return fetch(request).then(({ error }) => {
         if (error) {
             return { ok: false };
@@ -82,9 +93,11 @@ const patchSortOrder = async (order) => {
     });
 };
 
+// @ts-expect-error TS7006
 const patchSearchableFields = async (fields) => {
     const { token } = getUserSessionStorageInfo();
     const request = getPatchSearchableFieldsRequest({ token }, fields);
+    // @ts-expect-error TS7031
     return fetch(request).then(({ response, error }) => {
         if (error) {
             return error;

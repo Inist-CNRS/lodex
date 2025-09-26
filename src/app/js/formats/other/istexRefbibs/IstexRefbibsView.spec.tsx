@@ -1,4 +1,5 @@
 import React from 'react';
+// @ts-expect-error TS7016
 import { shallow } from 'enzyme';
 import { List } from '@mui/material';
 
@@ -11,6 +12,7 @@ describe('<IstexView />', () => {
         const wrapper = shallow(
             <IstexRefbibsView
                 fieldStatus=""
+                // @ts-expect-error TS2322
                 data={{
                     hits: [
                         {
@@ -35,6 +37,7 @@ describe('<IstexView />', () => {
                 }}
                 field={{ name: 'name' }}
                 resource={{ name: 'value' }}
+                // @ts-expect-error TS2322
                 p={{ t: (v) => v }}
             />,
         );
@@ -45,9 +48,11 @@ describe('<IstexView />', () => {
         const wrapper = shallow(
             <IstexRefbibsView
                 fieldStatus=""
+                // @ts-expect-error TS2322
                 data={{ total: 0 }}
                 field={{ name: 'name' }}
                 resource={{ name: 'value' }}
+                // @ts-expect-error TS2322
                 p={{ t: (v) => v }}
             />,
         );
@@ -63,6 +68,7 @@ describe('<IstexView />', () => {
                 data={{ total: 0, hits: [] }}
                 field={{ name: 'name' }}
                 resource={{ name: 'value' }}
+                // @ts-expect-error TS2322
                 p={{ t: (v) => v }}
             />,
         );
@@ -73,6 +79,7 @@ describe('<IstexView />', () => {
         const wrapper = shallow(
             <IstexRefbibsView
                 fieldStatus=""
+                // @ts-expect-error TS2322
                 data={{
                     hits: [
                         {
@@ -97,6 +104,7 @@ describe('<IstexView />', () => {
                 }}
                 field={{ name: 'name' }}
                 resource={{ name: 'value' }}
+                // @ts-expect-error TS2322
                 p={{ t: (v) => v }}
             />,
         );
@@ -127,11 +135,13 @@ describe('<IstexView />', () => {
         const wrapper = shallow(
             <IstexRefbibsView
                 fieldStatus=""
+                // @ts-expect-error TS2322
                 data={{
                     hits: [],
                 }}
                 field={{ name: 'name' }}
                 resource={{ name: 'value' }}
+                // @ts-expect-error TS2322
                 p={{ t: (v) => v }}
             />,
         );
@@ -143,12 +153,14 @@ describe('<IstexView />', () => {
         const wrapper = shallow(
             <IstexRefbibsView
                 fieldStatus=""
+                // @ts-expect-error TS2322
                 data={{
                     hits: [],
                 }}
                 field={{ name: 'name' }}
                 resource={{ name: 'value' }}
                 error="error message"
+                // @ts-expect-error TS2322
                 p={{ t: (v) => v }}
             />,
         );
@@ -162,11 +174,13 @@ describe('<IstexView />', () => {
         const wrapper = shallow(
             <IstexRefbibsView
                 fieldStatus=""
+                // @ts-expect-error TS2322
                 data={{
                     hits: [],
                 }}
                 field={{ name: 'name' }}
                 resource={{ name: 'value' }}
+                // @ts-expect-error TS2322
                 p={{ t: (v) => v }}
             />,
         );

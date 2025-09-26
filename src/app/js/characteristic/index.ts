@@ -1,3 +1,4 @@
+// @ts-expect-error TS7016
 import { createAction, handleActions } from 'redux-actions';
 import { createSelector } from 'reselect';
 import { SCOPE_DATASET } from '../../../common/scope';
@@ -28,7 +29,9 @@ export const defaultState = {
 export default handleActions(
     {
         LOAD_PUBLICATION_SUCCESS: (
+            // @ts-expect-error TS7006
             state,
+            // @ts-expect-error TS7031
             { payload: { characteristics } },
         ) => ({
             ...state,
@@ -36,7 +39,9 @@ export default handleActions(
             newCharacteristics: characteristics[0],
         }),
         SET_CHARACTERISTIC_VALUE: (
+            // @ts-expect-error TS7031
             { newCharacteristics, ...state },
+            // @ts-expect-error TS7031
             { payload: { name, value } },
         ) => ({
             ...state,
@@ -45,18 +50,22 @@ export default handleActions(
                 [name]: value,
             },
         }),
+        // @ts-expect-error TS7006
         UPDATE_CHARACTERISTICS: (state) => ({
             ...state,
             error: null,
             isSaving: true,
         }),
+        // @ts-expect-error TS7006
         UPDATE_CHARACTERISTICS_ERROR: (state, { payload: error }) => ({
             ...state,
             error,
             isSaving: false,
         }),
         UPDATE_CHARACTERISTICS_SUCCESS: (
+            // @ts-expect-error TS7006
             state,
+            // @ts-expect-error TS7031
             { payload: { characteristics } },
         ) => ({
             ...state,
@@ -69,18 +78,23 @@ export default handleActions(
     defaultState,
 );
 
+// @ts-expect-error TS7006
 const getCharacteristicError = (state) => state.error;
 
+// @ts-expect-error TS7006
 const getCharacteristicsAsResource = (state) => state.characteristics[0] || {};
+// @ts-expect-error TS7006
 const getNewCharacteristicsAsResource = (state) =>
     state.newCharacteristics || {};
 
+// @ts-expect-error TS7006
 const getParams = (state, params) => params;
 
 const getCharacteristics = createSelector(
     getCharacteristicsAsResource,
     getParams,
     (characteristics, fields) =>
+        // @ts-expect-error TS7006
         fields.map((field) => ({
             ...field,
             value: characteristics[field.name],
@@ -91,6 +105,7 @@ const getNewCharacteristics = createSelector(
     getNewCharacteristicsAsResource,
     getParams,
     (characteristics, fields) =>
+        // @ts-expect-error TS7006
         fields.map((field) => ({
             ...field,
             value: characteristics[field.name],
@@ -102,11 +117,13 @@ const getRootCharacteristics = createSelector(
     getParams,
     (characteristics, fields) =>
         fields
+            // @ts-expect-error TS7006
             .map((field) => ({
                 ...field,
                 value: characteristics[field.name],
             }))
             .filter(
+                // @ts-expect-error TS7006
                 (field) =>
                     !field.completes &&
                     field.scope === SCOPE_DATASET &&
@@ -120,10 +137,13 @@ const getCharacteristicByName = createSelector(
     (characteristics, name) => characteristics[name],
 );
 
+// @ts-expect-error TS7006
 const isSaving = (state) => state.isSaving;
 
+// @ts-expect-error TS7006
 const isAdding = (state) => state.isAdding;
 
+// @ts-expect-error TS7006
 const getError = (state) => state.error;
 
 export const selectors = {

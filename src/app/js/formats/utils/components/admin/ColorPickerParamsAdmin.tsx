@@ -14,36 +14,47 @@ class ColorPickerParamsAdmin extends Component {
         monochromatic: PropTypes.bool,
     };
 
+    // @ts-expect-error TS7006
     constructor(props) {
         super(props);
         this.handleChangeText = this.handleChangeText.bind(this);
         this.state = {
+            // @ts-expect-error TS2339
             colors: this.props.colors.split(' ').map((color) => ({ color })),
         };
     }
 
+    // @ts-expect-error TS7006
     handleChangeText(e) {
         this.setState({
             colors: (e.target.value || '')
                 .split(' ')
+                // @ts-expect-error TS7006
                 .map((color) => ({ color })),
         });
 
+        // @ts-expect-error TS2339
         this.props.onChange(e.target.value);
     }
 
+    // @ts-expect-error TS7006
     handleChangePicker(i, e) {
+        // @ts-expect-error TS2339
         let colorsBuffer = [...this.state.colors];
         colorsBuffer[i] = { color: e.target.value };
 
         this.setState({ colors: colorsBuffer });
+        // @ts-expect-error TS2339
         this.props.onChange(colorsBuffer.map(({ color }) => color).join(' '));
     }
 
     createUI() {
+        // @ts-expect-error TS2339
         const colors = this.state.colors;
         return (
             <Box display="flex" flexWrap="wrap" gap={1}>
+                {/*
+                 // @ts-expect-error TS7006 */}
                 {colors.map((element, i) => (
                     <input
                         key={i}
@@ -58,22 +69,28 @@ class ColorPickerParamsAdmin extends Component {
     }
 
     getStateColorsString() {
+        // @ts-expect-error TS2339
         return this.state.colors.map(({ color }) => color).join(' ');
     }
 
     render() {
+        // @ts-expect-error TS2339
         const { monochromatic } = this.props;
         return (
             <Box display="flex" flexWrap="wrap" width="100%">
                 <Typography>
                     {monochromatic
+                        // @ts-expect-error TS2339
                         ? this.props.polyglot.t('Color')
+                        // @ts-expect-error TS2339
                         : this.props.polyglot.t('colors_set')}
                 </Typography>
                 <TextField
+                    // @ts-expect-error TS2339
                     label={this.props.polyglot.t('colors_string')}
                     onChange={this.handleChangeText}
                     value={this.getStateColorsString()}
+                    // @ts-expect-error TS2322
                     maxLength={monochromatic ? 7 : multichromatic_maxLength}
                     fullWidth
                     sx={{

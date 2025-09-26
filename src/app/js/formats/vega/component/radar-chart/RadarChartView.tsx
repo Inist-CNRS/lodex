@@ -1,5 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import { connect } from 'react-redux';
+// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import PropTypes from 'prop-types';
 
@@ -24,15 +25,25 @@ const styles = {
 };
 
 const RadarChartView = ({
+    // @ts-expect-error TS7031
     advancedMode,
+    // @ts-expect-error TS7031
     advancedModeSpec,
+    // @ts-expect-error TS7031
     field,
+    // @ts-expect-error TS7031
     data,
+    // @ts-expect-error TS7031
     colors,
+    // @ts-expect-error TS7031
     tooltip,
+    // @ts-expect-error TS7031
     tooltipCategory,
+    // @ts-expect-error TS7031
     tooltipValue,
+    // @ts-expect-error TS7031
     scale,
+    // @ts-expect-error TS7031
     aspectRatio,
 }) => {
     const formattedData = useMemo(() => {
@@ -44,6 +55,7 @@ const RadarChartView = ({
             ...data,
         };
 
+        // @ts-expect-error TS7006
         tmpData.values.forEach((value) => {
             value.category = 0;
         });
@@ -63,6 +75,7 @@ const RadarChartView = ({
                     width * 0.76,
                 );
             } catch (e) {
+                // @ts-expect-error TS18046
                 setError(e.message);
                 return null;
             }
@@ -76,6 +89,7 @@ const RadarChartView = ({
         specBuilder.setTooltipValue(tooltipValue);
         specBuilder.setScale(lodexScaleToIdScale(scale));
 
+        // @ts-expect-error TS2554
         return specBuilder.buildSpec(width, formattedData.values.length);
     }, [
         width,
@@ -94,6 +108,7 @@ const RadarChartView = ({
     }
 
     return (
+        // @ts-expect-error TS2322
         <div style={styles.container} ref={ref}>
             <CustomActionVega
                 spec={spec}
@@ -123,6 +138,7 @@ RadarChartView.defaultProps = {
     className: null,
 };
 
+// @ts-expect-error TS7006
 const mapStateToProps = (state, { formatData }) => {
     if (!formatData) {
         return {
@@ -145,9 +161,11 @@ export const RadarChartAdminView = connect((state, props) => {
             format: 'Preview Format',
         },
         data: {
+            // @ts-expect-error TS2339
             values: props.dataset.values ?? [],
         },
     };
+// @ts-expect-error TS2345
 })(RadarChartView);
 
 export default compose(injectData(), connect(mapStateToProps))(RadarChartView);

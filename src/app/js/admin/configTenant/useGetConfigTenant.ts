@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 
+// @ts-expect-error TS7016
 import { useHistory } from 'react-router-dom';
 import { getConfigTenant } from '../api/configTenant';
 

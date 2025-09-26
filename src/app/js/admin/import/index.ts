@@ -1,3 +1,4 @@
+// @ts-expect-error TS7016
 import { createAction, handleActions } from 'redux-actions';
 
 export const IMPORT_FIELDS = 'IMPORT_FIELDS';
@@ -19,12 +20,15 @@ export const initialState = {
 
 export default handleActions(
     {
+        // @ts-expect-error TS7006
         IMPORT_FIELDS: (state) => ({ ...state, loading: true }),
+        // @ts-expect-error TS7006
         IMPORT_FIELDS_ERROR: (state) => ({
             ...state,
             status: 'error',
             loading: false,
         }),
+        // @ts-expect-error TS7006
         IMPORT_FIELDS_SUCCESS: (state, { payload }) => ({
             ...state,
             status: 'success',
@@ -32,6 +36,7 @@ export default handleActions(
             hasEnrichments: payload.hasEnrichments,
             hasPrecomputed: payload.hasPrecomputed,
         }),
+        // @ts-expect-error TS7006
         IMPORT_FIELDS_CLOSED: (state) => ({
             ...state,
             status: null,
@@ -42,9 +47,13 @@ export default handleActions(
     initialState,
 );
 
+// @ts-expect-error TS7006
 export const hasImportFailed = (state) => state.status === 'error';
+// @ts-expect-error TS7006
 export const hasImportSucceeded = (state) => state.status === 'success';
+// @ts-expect-error TS7006
 export const hasEnrichments = (state) => state.hasEnrichments;
+// @ts-expect-error TS7006
 export const hasPrecomputed = (state) => state.hasPrecomputed;
 
 export const selectors = {

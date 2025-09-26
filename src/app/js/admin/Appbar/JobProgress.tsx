@@ -72,6 +72,7 @@ const styles = {
     },
 };
 
+// @ts-expect-error TS7006
 const JobProgressComponent = (props) => {
     const {
         hasPublishedDataset,
@@ -110,6 +111,7 @@ const JobProgressComponent = (props) => {
         socket.on(`${dbName}_${tenant}-publisher`, (data) => {
             if (data.success) {
                 handlePublishSuccess();
+                // @ts-expect-error TS2554
                 setProgress();
             }
             if (!data.success && !data.isPublishing && data.message) {
@@ -188,7 +190,9 @@ const JobProgressComponent = (props) => {
     useEffect(() => {
         if (
             progress &&
+            // @ts-expect-error TS2339
             progress.status === SAVING_DATASET &&
+            // @ts-expect-error TS2339
             progress.progress > 0 &&
             !hasLoadedParsingResult
         ) {
@@ -200,6 +204,7 @@ const JobProgressComponent = (props) => {
     return (
         <>
             <Fade
+                // @ts-expect-error TS2339
                 in={progress && (progress.isJobProgress || progress.isJobError)}
             >
                 <Box
@@ -210,7 +215,10 @@ const JobProgressComponent = (props) => {
                         sx={styles.progressLabelContainer}
                         aria-label="job-progress"
                     >
+                        {/*
+                         // @ts-expect-error TS2339 */}
                         {progress?.isJobError ? (
+                            // @ts-expect-error TS2769
                             <Warning size={20} />
                         ) : (
                             <CircularProgress
@@ -220,42 +228,64 @@ const JobProgressComponent = (props) => {
                             />
                         )}
                         <Box sx={styles.progressLabel}>
+                            {/*
+                             // @ts-expect-error TS2339 */}
                             {(progress?.label || progress?.status) && (
                                 <Typography variant="subtitle2">
                                     {translate(
+                                        // @ts-expect-error TS2339
                                         progress?.label || progress?.status,
                                     )}
                                 </Typography>
                             )}
                             {progress &&
+                                // @ts-expect-error TS2339
                                 progress?.type === 'publisher' &&
+                                // @ts-expect-error TS2339
                                 progress.status && (
                                     <Typography
                                         variant="caption"
+                                        // @ts-expect-error TS2339
                                         title={progress?.status}
                                         sx={styles.progressStatus}
                                         noWrap={true}
                                     >
+                                        {/*
+                                         // @ts-expect-error TS2339 */}
                                         {translate(progress.status)}
                                     </Typography>
                                 )}
 
+                            {/*
+                             // @ts-expect-error TS2339 */}
                             {(progress?.type === 'enricher' ||
+                                // @ts-expect-error TS2339
                                 progress?.type === 'precomputer') && (
                                 <Typography variant="caption">
+                                    {/*
+                                     // @ts-expect-error TS2339 */}
                                     {progress.subLabel}
                                 </Typography>
                             )}
+                            {/*
+                             // @ts-expect-error TS2339 */}
                             {progress?.status === SAVING_DATASET &&
+                                // @ts-expect-error TS2339
                                 progress?.subLabel && (
                                     <Typography variant="caption">
+                                        {/*
+                                         // @ts-expect-error TS2339 */}
                                         {`${progress.progress} ${translate(
+                                            // @ts-expect-error TS2339
                                             progress.subLabel,
                                         )}`}
                                     </Typography>
                                 )}
                         </Box>
+                        {/*
+                         // @ts-expect-error TS2339 */}
                         {progress?.status !== UPLOADING_DATASET &&
+                            // @ts-expect-error TS2339
                             progress?.type !== 'precomputer' && (
                                 <Button
                                     sx={styles.cancelButton}
@@ -268,6 +298,8 @@ const JobProgressComponent = (props) => {
                                 </Button>
                             )}
                     </Box>
+                    {/*
+                     // @ts-expect-error TS2339 */}
                     {!!progress?.progress && !!progress?.target && (
                         <LinearProgress
                             sx={{
@@ -280,6 +312,7 @@ const JobProgressComponent = (props) => {
                                 },
                             }}
                             variant="determinate"
+                            // @ts-expect-error TS2339
                             value={(progress.progress / progress.target) * 100}
                         />
                     )}
@@ -287,7 +320,9 @@ const JobProgressComponent = (props) => {
             </Fade>
             <CancelProcessDialog
                 isOpen={isCancelDialogOpen}
+                // @ts-expect-error TS2339
                 title={getTitle(progress?.type)}
+                // @ts-expect-error TS2339
                 content={getContent(progress?.type)}
                 onCancel={() => {
                     setIsCancelDialogOpen(false);
@@ -296,9 +331,12 @@ const JobProgressComponent = (props) => {
                     if (!progress) {
                         return;
                     }
+                    // @ts-expect-error TS2339
                     jobsApi.cancelJob(progress.type, progress.subLabel);
+                    // @ts-expect-error TS2339
                     if (progress.type === 'publisher') {
                         handleCancelPublication();
+                        // @ts-expect-error TS2554
                         setProgress();
                     }
                     setIsCancelDialogOpen(false);
@@ -319,6 +357,7 @@ JobProgressComponent.propTypes = {
     loadPrecomputed: PropTypes.func.isRequired,
 };
 
+// @ts-expect-error TS7006
 const getTitle = (type) => {
     switch (type) {
         case 'publisher':
@@ -332,6 +371,7 @@ const getTitle = (type) => {
     }
 };
 
+// @ts-expect-error TS7006
 const getContent = (type) => {
     switch (type) {
         case 'publisher':
@@ -345,11 +385,14 @@ const getContent = (type) => {
     }
 };
 
+// @ts-expect-error TS7006
 const mapStateToProps = (state) => ({
+    // @ts-expect-error TS2339
     hasPublishedDataset: fromPublication.hasPublishedDataset(state),
 });
 const mapDispatchToProps = {
     handlePublishSuccess: () => publishSuccess(),
+    // @ts-expect-error TS7006
     handlePublishError: (error) => publishError(error),
     handleCancelPublication: () => publicationCleared(),
     loadParsingResult,

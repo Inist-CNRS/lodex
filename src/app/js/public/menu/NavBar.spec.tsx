@@ -1,5 +1,7 @@
 import React from 'react';
+// @ts-expect-error TS7016
 import { shallow } from 'enzyme';
+// @ts-expect-error TS7016
 import { StyleSheetTestUtils } from 'aphrodite';
 
 import { NavBar } from './NavBar';
@@ -20,6 +22,7 @@ describe('NavBar', () => {
     // 3. You might have more than one copy of React in the same app
 
     const defaultProps = {
+        // @ts-expect-error TS7006
         p: { t: (v) => v },
         canBeSearched: false,
         graphFields: [],
@@ -37,6 +40,7 @@ describe('NavBar', () => {
     beforeEach(() => StyleSheetTestUtils.suppressStyleInjection());
 
     it('should render NavBar with home and sign in', () => {
+        // @ts-expect-error TS2739
         const wrapper = shallow(<NavBar {...defaultProps} />);
 
         const items = wrapper.find(MenuItem);
@@ -55,6 +59,7 @@ describe('NavBar', () => {
                 role: 'advanced',
             },
         ];
+        // @ts-expect-error TS7006
         items.forEach((item, index) => {
             expect(item.prop('config')).toEqual(expectedMenu[index]);
         });

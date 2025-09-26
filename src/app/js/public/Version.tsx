@@ -1,4 +1,5 @@
 import React from 'react';
+// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 
 import { polyglot as polyglotPropTypes } from '../propTypes';
@@ -10,6 +11,7 @@ import { version } from '../../../../package.json';
 
 const link = `//github.com/Inist-CNRS/lodex/releases/tag/v${version}`;
 
+// @ts-expect-error TS7031
 export const VersionComponent = ({ p: polyglot }) => (
     <div id="version">
         <Container
@@ -18,6 +20,7 @@ export const VersionComponent = ({ p: polyglot }) => (
             style={{
                 color: 'gray',
                 fontSize: '12px',
+                // @ts-expect-error TS2769
                 fontWeight: '300',
                 right: '10px',
                 width: '100%',
@@ -28,6 +31,8 @@ export const VersionComponent = ({ p: polyglot }) => (
         >
             {polyglot.t('powered')}{' '}
             <strong>
+                {/*
+                 // @ts-expect-error TS2739 */}
                 Lodex <Link href={link}>{version}</Link>
             </strong>
         </Container>

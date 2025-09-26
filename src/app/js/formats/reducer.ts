@@ -1,4 +1,6 @@
+// @ts-expect-error TS7016
 import { createAction, handleActions } from 'redux-actions';
+// @ts-expect-error TS7016
 import get from 'lodash/get';
 import { LOAD_RESOURCE_SUCCESS } from '../public/resource';
 
@@ -18,25 +20,31 @@ export const defaultState = {};
 
 export default handleActions(
     {
+        // @ts-expect-error TS7006
         [LOAD_FORMAT_DATA]: (state, { payload: { field } }) => ({
             ...state,
             [field.name]: 'loading',
         }),
         [LOAD_FORMAT_DATA_SUCCESS]: (
+            // @ts-expect-error TS7006
             state,
+            // @ts-expect-error TS7031
             { payload: { name, data, total } },
         ) => ({
             ...state,
             [name]: { data, total },
         }),
+        // @ts-expect-error TS7006
         [LOAD_RESOURCE_SUCCESS]: (state, { payload }) => ({
             ...state,
             ...(payload && payload.prefetchedData),
         }),
+        // @ts-expect-error TS7006
         [LOAD_FORMAT_DATA_ERROR]: (state, { payload: { name, error } }) => ({
             ...state,
             [name]: { error },
         }),
+        // @ts-expect-error TS7006
         [UN_LOAD_FORMAT_DATA]: (state, { payload: { name } }) => ({
             ...state,
             [name]: null,
@@ -45,12 +53,17 @@ export default handleActions(
     defaultState,
 );
 
+// @ts-expect-error TS7006
 const isFormatDataLoaded = (state, name) => state[name] !== 'loading';
 
+// @ts-expect-error TS7006
 const getFormatData = (state, name) => get(state, [name, 'data']);
+// @ts-expect-error TS7006
 const getFormatTotal = (state, name) => get(state, [name, 'total']);
+// @ts-expect-error TS7006
 const getFormatError = (state, name) => get(state, [name, 'error']);
 
+// @ts-expect-error TS7006
 export const getCurrentFieldNames = (state) =>
     Object.keys(state).filter((key) => !!state[key]);
 

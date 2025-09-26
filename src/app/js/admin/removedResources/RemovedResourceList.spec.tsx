@@ -1,4 +1,5 @@
 import React from 'react';
+// @ts-expect-error TS7016
 import { shallow } from 'enzyme';
 import moment from 'moment';
 import { TableCell, TableBody } from '@mui/material';
@@ -38,9 +39,11 @@ describe('<RemovedResourceList />', () => {
 
         shallow(
             <RemovedResourceList
+                // @ts-expect-error TS2769
                 currentPage={1}
                 loadRemovedResourcePage={loadRemovedResourcePage}
                 loading
+                // @ts-expect-error TS7006
                 p={{ t: (key) => key }}
                 total={0}
             />,
@@ -55,11 +58,13 @@ describe('<RemovedResourceList />', () => {
     it('should render the TableCell for each column', () => {
         const wrapper = shallow(
             <RemovedResourceList
+                // @ts-expect-error TS2769
                 currentPage={1}
                 columns={columns}
                 resources={resources}
                 loadRemovedResourcePage={() => {}}
                 loading={false}
+                // @ts-expect-error TS7006
                 p={{ t: (key) => key }}
                 total={3}
             />,
@@ -75,11 +80,13 @@ describe('<RemovedResourceList />', () => {
     it('should render the TableCell for each value for each column', () => {
         const wrapper = shallow(
             <RemovedResourceList
+                // @ts-expect-error TS2769
                 currentPage={1}
                 columns={columns}
                 resources={resources}
                 loadRemovedResourcePage={() => {}}
                 loading={false}
+                // @ts-expect-error TS7006
                 p={{ t: (key) => key }}
                 total={3}
             />,
@@ -113,6 +120,7 @@ describe('<RemovedResourceList />', () => {
     it('should render the Pagination', () => {
         const wrapper = shallow(
             <RemovedResourceList
+                // @ts-expect-error TS2769
                 p={{ t: (key) => key }}
                 columns={columns}
                 currentPage={1}
@@ -132,6 +140,7 @@ describe('<RemovedResourceList />', () => {
         const loadRemovedResourcePage = jest.fn();
         const wrapper = shallow(
             <RemovedResourceList
+                // @ts-expect-error TS2769
                 p={{ t: (key) => key }}
                 columns={columns}
                 currentPage={1}
@@ -153,6 +162,7 @@ describe('<RemovedResourceList />', () => {
         const restoreRessource = jest.fn();
         const wrapper = shallow(
             <RemovedResourceList
+                // @ts-expect-error TS2769
                 p={{ t: (key) => key }}
                 columns={columns}
                 currentPage={1}

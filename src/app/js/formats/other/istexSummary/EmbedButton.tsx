@@ -15,9 +15,11 @@ class EmbedButton extends Component {
     handleClose = () => this.setState({ open: false });
 
     renderOpenButton = () => {
+        // @ts-expect-error TS2339
         const { className, p: polyglot } = this.props;
 
         return (
+            // @ts-expect-error TS2769
             <IconButton
                 className={classnames('embed-button', className)}
                 style={{ position: 'absolute' }}
@@ -30,6 +32,7 @@ class EmbedButton extends Component {
     };
 
     renderDialog = () => {
+        // @ts-expect-error TS2339
         const { uri, fieldName, p: polyglot } = this.props;
         const host = getCleanHost();
 
@@ -48,6 +51,7 @@ class EmbedButton extends Component {
     };
 
     render() {
+        // @ts-expect-error TS2339
         const { p: polyglot } = this.props;
         const { open } = this.state;
 
@@ -64,6 +68,7 @@ class EmbedButton extends Component {
     }
 }
 
+// @ts-expect-error TS2339
 EmbedButton.propTypes = {
     className: PropTypes.string,
     p: polyglotPropTypes.isRequired,
@@ -71,6 +76,7 @@ EmbedButton.propTypes = {
     fieldName: PropTypes.string.isRequired,
 };
 
+// @ts-expect-error TS2339
 EmbedButton.defaultProps = {
     className: null,
 };

@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 
@@ -23,11 +24,15 @@ const styles = {
 };
 
 const DatasetCharacteristicsView = ({
+    // @ts-expect-error TS7031
     characteristics,
+    // @ts-expect-error TS7031
     isMultilingual,
+    // @ts-expect-error TS7031
     locale,
 }) => {
     const filteredCharacteristics = characteristics.filter(
+        // @ts-expect-error TS7006
         (characteristic) =>
             !isMultilingual ||
             !characteristic.language ||
@@ -36,6 +41,8 @@ const DatasetCharacteristicsView = ({
     return (
         <div className="dataset-characteristics">
             <div style={styles.container}>
+                {/*
+                 // @ts-expect-error TS7006 */}
                 {filteredCharacteristics.map((characteristicField) => (
                     <DatasetCharacteristicItem
                         key={characteristicField.name}
@@ -59,16 +66,21 @@ DatasetCharacteristicsView.defaultProps = {
     newCharacteristics: [],
 };
 
+// @ts-expect-error TS7006
 const mapStateToProps = (state) => {
+    // @ts-expect-error TS2339
     const fields = fromFields.getDatasetFields(state);
 
     return {
+        // @ts-expect-error TS2339
         characteristics: fromCharacteristic.getRootCharacteristics(
             state,
             fields,
         ),
         fields,
+        // @ts-expect-error TS2339
         isMultilingual: fromDisplayConfig.isMultilingual(state),
+        // @ts-expect-error TS2339
         locale: fromI18n.getLocale(state),
     };
 };

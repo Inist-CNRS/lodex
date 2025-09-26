@@ -11,9 +11,12 @@ jest.mock('../../admin/api/dataset', () => ({
     getDatasetColumns: jest.fn(),
 }));
 
+// @ts-expect-error TS7006
 const TestExportDatasetButton = (props) => {
     return (
         <TestI18N>
+            {/*
+             // @ts-expect-error TS2322 */}
             <ExportDatasetButtonComponent
                 choices={['field1', 'field2', 'field3']}
                 {...props}
@@ -195,6 +198,7 @@ describe('ExportDatasetButton', () => {
             jest.clearAllMocks();
         });
         it('should fetch dataset columns and display them as choices except _id', async () => {
+            // @ts-expect-error TS2339
             datasetApi.getDatasetColumns.mockResolvedValue({
                 columns: [
                     { key: '_id' },
@@ -208,6 +212,8 @@ describe('ExportDatasetButton', () => {
             const wrapper = await waitFor(() => {
                 return render(
                     <TestI18N>
+                        {/*
+                         // @ts-expect-error TS2322 */}
                         <ExportDatasetButtonWithFetch
                             dumpDataset={dumpDataset}
                             onDone={onDone}

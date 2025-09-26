@@ -30,31 +30,46 @@ class LinkImageAdmin extends Component {
         args: defaultArgs,
     };
 
+    // @ts-expect-error TS7006
     handleType = (e) => {
+        // @ts-expect-error TS2339
         const newArgs = { ...this.props.args, type: e.target.value };
+        // @ts-expect-error TS2339
         this.props.onChange(newArgs);
     };
 
+    // @ts-expect-error TS7006
     handleValue = (e) => {
+        // @ts-expect-error TS2339
         const newArgs = { ...this.props.args, value: e.target.value };
+        // @ts-expect-error TS2339
         this.props.onChange(newArgs);
     };
 
+    // @ts-expect-error TS7006
     handleMaxHeight = (e) => {
         const maxHeight = Math.max(e.target.value, 1);
+        // @ts-expect-error TS2339
         const newArgs = { ...this.props.args, maxHeight };
+        // @ts-expect-error TS2339
         this.props.onChange(newArgs);
     };
 
     render() {
         const {
+            // @ts-expect-error TS2339
             p: polyglot,
+            // @ts-expect-error TS2339
             args: { type, value, maxHeight },
         } = this.props;
 
         return (
             <FormatGroupedFieldSet>
+                {/*
+                 // @ts-expect-error TS2322 */}
                 <FormatDataParamsFieldSet>
+                    {/*
+                     // @ts-expect-error TS2322 */}
                     <TextField
                         fullWidth
                         select
@@ -70,7 +85,11 @@ class LinkImageAdmin extends Component {
                         </MenuItem>
                     </TextField>
                 </FormatDataParamsFieldSet>
+                {/*
+                 // @ts-expect-error TS2322 */}
                 <FormatDefaultParamsFieldSet defaultExpanded>
+                    {/*
+                     // @ts-expect-error TS2322 */}
                     <TextField
                         label={
                             type !== 'text'
@@ -81,6 +100,8 @@ class LinkImageAdmin extends Component {
                         value={value}
                         sx={{ flexGrow: 1 }}
                     />
+                    {/*
+                     // @ts-expect-error TS2322 */}
                     <TextField
                         label={polyglot.t('height_px')}
                         type="number"

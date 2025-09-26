@@ -27,15 +27,20 @@ const options = [
 ];
 
 export const FieldAddDropdownButtonComponent = ({
+    // @ts-expect-error TS7031
     onAddNewField,
+    // @ts-expect-error TS7031
     onShowExistingColumns,
+    // @ts-expect-error TS7031
     isFieldsLoading,
+    // @ts-expect-error TS7031
     subresourceId,
 }) => {
     const { translate } = useTranslate();
     const [open, setOpen] = React.useState(false);
     const anchorRef = React.useRef();
 
+    // @ts-expect-error TS7006
     const handleClick = (index) => {
         if (index === 2) {
             return onShowExistingColumns();
@@ -43,6 +48,7 @@ export const FieldAddDropdownButtonComponent = ({
         return onAddNewField({ scope: SCOPE_DOCUMENT, subresourceId });
     };
 
+    // @ts-expect-error TS7006
     const handleMenuItemClick = (event, index) => {
         setOpen(false);
         handleClick(index);
@@ -52,7 +58,9 @@ export const FieldAddDropdownButtonComponent = ({
         setOpen((prevOpen) => !prevOpen);
     };
 
+    // @ts-expect-error TS7006
     const handleClose = (event) => {
+        // @ts-expect-error TS2339
         if (anchorRef.current && anchorRef.current.contains(event.target)) {
             return;
         }
@@ -62,6 +70,8 @@ export const FieldAddDropdownButtonComponent = ({
 
     return (
         <React.Fragment>
+            {/*
+             // @ts-expect-error TS2769 */}
             <ButtonGroup
                 variant="contained"
                 ref={anchorRef}
@@ -143,7 +153,9 @@ export const FieldAddDropdownButtonComponent = ({
     );
 };
 
+// @ts-expect-error TS7006
 const mapStateToProps = (state) => ({
+    // @ts-expect-error TS2339
     isFieldsLoading: fromFields.isLoading(state),
 });
 

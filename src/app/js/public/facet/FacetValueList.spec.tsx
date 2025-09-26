@@ -1,4 +1,5 @@
 import React from 'react';
+// @ts-expect-error TS7016
 import { shallow } from 'enzyme';
 import { Button } from '@mui/material';
 
@@ -20,6 +21,7 @@ describe('FacetValueList', () => {
             sortBy: 'count',
         },
         p: {
+            // @ts-expect-error TS7006
             t: (v) => v,
         },
         page: 'dataset',
@@ -35,6 +37,7 @@ describe('FacetValueList', () => {
     });
 
     it('should allow to sort', () => {
+        // @ts-expect-error TS2322
         const wrapper = shallow(<FacetValueList {...defaultProps} />);
 
         const sortButtons = wrapper.find(SortButton);

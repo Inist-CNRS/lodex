@@ -12,6 +12,7 @@ import ParsingExcerpt from '../parsing/ParsingExcerpt';
 import CancelButton from '../../lib/components/CancelButton';
 import { useTranslate } from '../../i18n/I18NContext';
 
+// @ts-expect-error TS7031
 export const AddFromColumnDialogComponent = ({ onClose }) => {
     const { translate } = useTranslate();
 

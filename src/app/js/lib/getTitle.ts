@@ -7,6 +7,7 @@ const HOST_REGEX = /https?:\/\/([\w-]+)/;
  * @param prefix{string|undefined}
  * @return {string}
  */
+// @ts-expect-error TS7006
 export default (tenant, prefix) => {
     const host = getCleanHost();
 
@@ -24,6 +25,7 @@ export default (tenant, prefix) => {
     }
 
     if (host) {
+        // @ts-expect-error TS2531
         title.push(HOST_REGEX.exec(host)[1]);
     }
 

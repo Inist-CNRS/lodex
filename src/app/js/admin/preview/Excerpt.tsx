@@ -1,9 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+// @ts-expect-error TS7016
 import compose from 'recompose/compose';
+// @ts-expect-error TS7016
 import pure from 'recompose/pure';
+// @ts-expect-error TS7016
 import withProps from 'recompose/withProps';
+// @ts-expect-error TS7016
 import withHandlers from 'recompose/withHandlers';
+// @ts-expect-error TS7016
 import memoize from 'lodash/memoize';
 import {
     Table,
@@ -29,6 +34,7 @@ const styles = {
     header: {
         cursor: 'pointer',
     },
+    // @ts-expect-error TS7006
     table: memoize((separated) => ({
         display: separated ? 'block' : 'table',
         overflowX: 'auto',
@@ -38,15 +44,23 @@ const styles = {
     })),
 };
 
+// @ts-expect-error TS7006
 const getColStyle = memoize((style) => ({ ...styles.header, ...style }));
 
 export const ExcerptComponent = ({
+    // @ts-expect-error TS7031
     colStyle,
+    // @ts-expect-error TS7031
     areHeadersClickable,
+    // @ts-expect-error TS7031
     columns,
+    // @ts-expect-error TS7031
     lines,
+    // @ts-expect-error TS7031
     onCellClick,
+    // @ts-expect-error TS7031
     onHeaderClick,
+    // @ts-expect-error TS7031
     p: polyglot,
     isPreview = false,
 }) => (
@@ -54,6 +68,8 @@ export const ExcerptComponent = ({
         <Table className="publication-excerpt" sx={styles.table(isPreview)}>
             <TableHead>
                 <TableRow>
+                    {/*
+                     // @ts-expect-error TS7006 */}
                     {columns.map((field) => (
                         <TableCell
                             key={field.name}
@@ -70,6 +86,7 @@ export const ExcerptComponent = ({
                                 field.name !== URI_FIELD_NAME &&
                                 onHeaderClick(field.name)
                             }
+                            // @ts-expect-error TS2322
                             tooltip={
                                 areHeadersClickable
                                     ? polyglot.t(
@@ -86,6 +103,8 @@ export const ExcerptComponent = ({
             <TableBody>
                 {areHeadersClickable && (
                     <TableRow>
+                        {/*
+                         // @ts-expect-error TS7006 */}
                         {columns.map((c) => (
                             <ExcerptRemoveColumn
                                 key={`remove_column_${c._id}`}
@@ -95,6 +114,8 @@ export const ExcerptComponent = ({
                         ))}
                     </TableRow>
                 )}
+                {/*
+                 // @ts-expect-error TS7006 */}
                 {lines.map((line, index) => (
                     <ExcerptLine
                         key={line ? `${line.uri}-${index}` : index}
@@ -127,19 +148,24 @@ ExcerptComponent.defaultProps = {
 export default compose(
     translate,
     pure,
+    // @ts-expect-error TS7031
     withProps(({ onHeaderClick }) => ({
         areHeadersClickable: typeof onHeaderClick === 'function',
     })),
     withHandlers({
         onHeaderClick:
+            // @ts-expect-error TS7031
             ({ onHeaderClick }) =>
+            // @ts-expect-error TS7006
             (col) => {
                 if (onHeaderClick) {
                     onHeaderClick(col);
                 }
             },
         onCellClick:
+            // @ts-expect-error TS7031
             ({ onHeaderClick }) =>
+            // @ts-expect-error TS7006
             (col) => {
                 if (onHeaderClick) {
                     onHeaderClick(col);

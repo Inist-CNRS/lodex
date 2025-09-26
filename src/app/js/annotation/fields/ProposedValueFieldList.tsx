@@ -8,9 +8,13 @@ import { AutocompleteMultipleField } from '../../lib/components/AutocompleteMult
 const NAME = 'proposedValue';
 
 export function ProposedValueFieldList({
+    // @ts-expect-error TS7031
     form,
+    // @ts-expect-error TS7031
     options,
+    // @ts-expect-error TS7031
     multiple,
+    // @ts-expect-error TS7031
     supportsNewValues,
 }) {
     const { translate } = useTranslate();

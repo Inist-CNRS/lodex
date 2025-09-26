@@ -8,6 +8,7 @@ import { getRequest } from '../user';
 import { useSaveAnnotationId } from './annotationStorage';
 
 export function useCreateAnnotation() {
+    // @ts-expect-error TS2339
     const { translate, locale } = useTranslate();
     const queryClient = useQueryClient();
 

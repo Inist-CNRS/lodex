@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { polyglot as polyglotPropTypes } from '../../../../propTypes';
 import { Box, TextField } from '@mui/material';
 import TableColumnParameter from './TableColumnParameter';
+// @ts-expect-error TS7016
 import _ from 'lodash';
 
 class TableColumnsParameters extends Component {
@@ -30,6 +31,7 @@ class TableColumnsParameters extends Component {
      * Default constructor
      * @param props Args taken by the component
      */
+    // @ts-expect-error TS7006
     constructor(props) {
         super(props);
         this.onParameterChange = this.onParameterChange.bind(this);
@@ -45,6 +47,7 @@ class TableColumnsParameters extends Component {
         };
     }
 
+    // @ts-expect-error TS7006
     reformatParameters(parameterCount, parameters) {
         let reformattedParameters = parameters;
         if (parameterCount > parameters.length) {
@@ -67,22 +70,28 @@ class TableColumnsParameters extends Component {
         return reformattedParameters;
     }
 
+    // @ts-expect-error TS7006
     onParameterChange(parameter) {
+        // @ts-expect-error TS2339
         let parameters = this.state.parameters;
         const index = _.findIndex(parameters, { id: parameter.id });
         parameters[index] = parameter;
         const args = {
+            // @ts-expect-error TS2339
             parameterCount: this.state.parameterCount,
             parameters: parameters,
         };
         this.setState(args);
+        // @ts-expect-error TS2339
         this.props.onChange(args);
     }
 
+    // @ts-expect-error TS7006
     onParameterCountChange(e) {
         const parameterCount = parseInt(e.target.value, 10);
         const parameters = this.reformatParameters(
             parameterCount,
+            // @ts-expect-error TS2339
             this.state.parameters,
         );
         const args = {
@@ -90,11 +99,14 @@ class TableColumnsParameters extends Component {
             parameters: parameters,
         };
         this.setState(args);
+        // @ts-expect-error TS2339
         this.props.onChange(args);
     }
 
     render() {
+        // @ts-expect-error TS2339
         const { polyglot } = this.props;
+        // @ts-expect-error TS2339
         const { parameters, parameterCount } = this.state;
         return (
             <Box width="100%">
@@ -105,6 +117,8 @@ class TableColumnsParameters extends Component {
                     onChange={this.onParameterCountChange}
                     value={parameterCount}
                 />
+                {/*
+                 // @ts-expect-error TS7006 */}
                 {parameters.map((parameter, index) => (
                     <TableColumnParameter
                         key={`${index}-column-parameter`}
