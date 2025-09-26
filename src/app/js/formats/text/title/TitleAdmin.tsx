@@ -60,11 +60,7 @@ class TitleAdmin extends Component {
 
         return (
             <FormatGroupedFieldSet>
-                {/*
-                 // @ts-expect-error TS2322 */}
                 <FormatDefaultParamsFieldSet defaultExpanded>
-                    {/*
-                     // @ts-expect-error TS2322 */}
                     <TextField
                         fullWidth
                         select
@@ -77,8 +73,6 @@ class TitleAdmin extends Component {
                         <MenuItem value={3}>{polyglot.t('level3')}</MenuItem>
                         <MenuItem value={4}>{polyglot.t('level4')}</MenuItem>
                     </TextField>
-                    {/*
-                     // @ts-expect-error TS2322 */}
                     <ColorPickerParamsAdmin
                         // @ts-expect-error TS2339
                         colors={this.state.colors || defaultArgs.colors}

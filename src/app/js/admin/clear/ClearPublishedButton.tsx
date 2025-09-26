@@ -41,8 +41,6 @@ export const ClearPublishedButtonComponent = ({ hasPublishedDataset }) => {
             >
                 {translate('clear_publish')}
             </Button>
-            {/*
-             // @ts-expect-error TS2322 */}
             {show && <ClearDialog type="published" onClose={handleHide} />}
         </Box>
     );

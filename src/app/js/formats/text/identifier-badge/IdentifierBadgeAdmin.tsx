@@ -68,11 +68,7 @@ class IdentifierBadgeAdmin extends Component {
         ));
         return (
             <FormatGroupedFieldSet>
-                {/*
-                 // @ts-expect-error TS2322 */}
                 <FormatDefaultParamsFieldSet defaultExpanded>
-                    {/*
-                     // @ts-expect-error TS2322 */}
                     <TextField
                         fullWidth
                         select
@@ -82,8 +78,6 @@ class IdentifierBadgeAdmin extends Component {
                     >
                         {items}
                     </TextField>
-                    {/*
-                     // @ts-expect-error TS2322 */}
                     <ColorPickerParamsAdmin
                         // @ts-expect-error TS2339
                         colors={this.state.colors || defaultArgs.colors}
