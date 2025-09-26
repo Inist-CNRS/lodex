@@ -1,6 +1,4 @@
-// @ts-expect-error TS(2792): Cannot find module 'memorystream'. Did you mean to... Remove this comment to see the full error message
 import MemoryStream from 'memorystream';
-// @ts-expect-error TS(2792): Cannot find module 'through'. Did you mean to set ... Remove this comment to see the full error message
 import through from 'through';
 
 import safePipe from './safePipe';

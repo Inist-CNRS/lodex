@@ -11,7 +11,6 @@ import progress from '../../services/progress';
 import localConfig from '../../../../config.json';
 import { mongoConnectionString } from '../mongoClient';
 
-// @ts-expect-error TS(2792): Cannot find module 'from'. Did you mean to set the... Remove this comment to see the full error message
 import from from 'from';
 import {
     PENDING as ENRICHMENT_PENDING,

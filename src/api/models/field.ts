@@ -1,6 +1,4 @@
-// @ts-expect-error TS(2792): Cannot find module 'lodash/omit'. Did you mean to ... Remove this comment to see the full error message
 import omit from 'lodash/omit';
-// @ts-expect-error TS(2792): Cannot find module 'lodash/pick'. Did you mean to ... Remove this comment to see the full error message
 import pick from 'lodash/pick';
 import { ObjectId } from 'mongodb';
 
@@ -277,6 +275,7 @@ export default async (db: any) => {
                 ],
             };
             if (!isLogged) {
+                // @ts-expect-error TS(2551): Property contributors does not exist on type
                 fieldData.contributors = [contributor];
             }
 

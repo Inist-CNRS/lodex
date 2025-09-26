@@ -1,10 +1,9 @@
-// @ts-expect-error TS(2792): Cannot find module 'config'. Did you mean to set t... Remove this comment to see the full error message
 import config from 'config';
-
 import { parseRequest, uploadChunkMiddleware, uploadUrl } from './upload';
 import { IMPORT } from '../../workers/import';
 import progress from '../../services/progress';
 import { workerQueues } from '../../workers';
+
 jest.mock('../../workers', () => ({
     workerQueues: {
         lodex_test: {
@@ -46,8 +45,8 @@ describe('upload', () => {
             // @ts-expect-error TS(2304): Cannot find name 'expect'.
             expect(ctx.resumable).toEqual({
                 stream: 'stream',
-                filename: `${config.uploadDir}/lodex_test_identifier`,
-                chunkname: `${config.uploadDir}/lodex_test_identifier.10`,
+                filename: `${config.get('uploadDir')}/lodex_test_identifier`,
+                chunkname: `${config.get('uploadDir')}/lodex_test_identifier.10`,
                 totalChunks: 100,
                 totalSize: 500,
                 currentChunkSize: 5,

@@ -1,13 +1,8 @@
-// @ts-expect-error TS(2792): Cannot find module 'config'. Did you mean to set t... Remove this comment to see the full error message
-import { auth } from 'config';
-// @ts-expect-error TS(2792): Cannot find module 'koa'. Did you mean to set the ... Remove this comment to see the full error message
+import config from 'config';
 import Koa from 'koa';
 import jwt from 'koa-jwt';
-// @ts-expect-error TS(2792): Cannot find module 'koa-mount'. Did you mean to se... Remove this comment to see the full error message
 import mount from 'koa-mount';
-// @ts-expect-error TS(2792): Cannot find module 'koa-route'. Did you mean to se... Remove this comment to see the full error message
 import route from 'koa-route';
-// @ts-expect-error TS(2792): Cannot find module 'lodash/get'. Did you mean to s... Remove this comment to see the full error message
 import get from 'lodash/get';
 
 import {
@@ -49,6 +44,8 @@ import themes from './themes';
 import translate from './translate';
 import upload from './upload';
 
+const auth = config.get('auth');
+
 const app = new Koa();
 
 app.use(ezMasterConfig);
@@ -79,16 +76,17 @@ app.use(mount('/themes', themes));
 
 app.use(async (ctx: any, next: any) => {
     const jwtMid = await jwt({
+        // @ts-expect-error TS(18046): auth is of type unknown
         secret: auth.cookieSecret,
         cookie: `lodex_token_${ctx.tenant}`,
         key: 'cookie',
         passthrough: true,
     });
 
-    // @ts-expect-error TS(2349): This expression is not callable. Type Middleware has no call signatures.
     return jwtMid(ctx, next);
 });
 
+// @ts-expect-error TS(18046): auth is of type unknown
 app.use(jwt({ secret: auth.headerSecret, key: 'header', passthrough: true }));
 
 app.use(async (ctx: any, next: any) => {

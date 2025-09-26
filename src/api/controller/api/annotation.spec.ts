@@ -1,4 +1,3 @@
-// @ts-expect-error TS(2792): Cannot find module 'lodash'. Did you mean to set t... Remove this comment to see the full error message
 import { default as _ } from 'lodash';
 import { MongoClient } from 'mongodb';
 import { text } from 'stream/consumers';
