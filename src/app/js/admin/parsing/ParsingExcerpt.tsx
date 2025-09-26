@@ -179,7 +179,9 @@ export const ParsingExcerptComponent = ({
                                             name={column}
                                             // @ts-expect-error TS7006
                                             onAddColumn={(name) => {
-                                                onAddField && onAddField();
+                                                if (onAddField) {
+                                                    onAddField();
+                                                }
                                                 handleAddColumn({
                                                     name,
                                                     scope: filter,

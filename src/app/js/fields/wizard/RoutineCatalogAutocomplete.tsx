@@ -117,7 +117,7 @@ const RoutineCatalog = ({
      * @type {Array<{id: string, title: string, url: string, doc: string, recommendedWith: string[]}>}
      */
     const catalog = useMemo(() => {
-        let routineCatalog = precomputed ? routinesPrecomputed : routines;
+        const routineCatalog = precomputed ? routinesPrecomputed : routines;
         const formatedRoutineCatalog = routineCatalog.map((routine) => {
             const title = polyglot.t(`${routine.id}_title`);
             const firstLetter = title[0].toUpperCase();

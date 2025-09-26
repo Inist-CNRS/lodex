@@ -46,8 +46,8 @@ const LatexView = ({ resource, field }) => {
                     acc.concat(
                         index % 2 === 0
                             ? cur
-                            // @ts-expect-error TS2345
-                            : katex.renderToString(cur, KatexOptions),
+                            : // @ts-expect-error TS2345
+                              katex.renderToString(cur, KatexOptions),
                     ),
                 [],
             )

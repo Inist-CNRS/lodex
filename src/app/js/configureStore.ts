@@ -21,8 +21,8 @@ export default function configureStore(reducers, sagas, initialState, history) {
     });
     // @ts-expect-error TS2304
     const rootReducer = __DEBUG__
-        // @ts-expect-error TS7006
-        ? (state, action) => {
+        ? // @ts-expect-error TS7006
+          (state, action) => {
               if (action.type == 'SET_STATE') {
                   // @ts-expect-error TS2345
                   return action.state || pureReducer({}, action);
@@ -44,10 +44,10 @@ export default function configureStore(reducers, sagas, initialState, history) {
     const devtools =
         // @ts-expect-error TS2339
         typeof window !== 'undefined' && window.__REDUX_DEVTOOLS_EXTENSION__
-            // @ts-expect-error TS2339
-            ? window.__REDUX_DEVTOOLS_EXTENSION__()
-            // @ts-expect-error TS7006
-            : (f) => f;
+            ? // @ts-expect-error TS2339
+              window.__REDUX_DEVTOOLS_EXTENSION__()
+            : // @ts-expect-error TS7006
+              (f) => f;
 
     const persistSearchStateEnhancer = persistState(searchStorage);
     const persistUserStateEnhancer = persistState(userStorage);

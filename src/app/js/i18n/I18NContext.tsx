@@ -47,8 +47,12 @@ const mapDispatchToProps = {
 };
 
 export const I18N = connect(mapStateToProps, mapDispatchToProps)(I18NComponent);
-// @ts-expect-error TS7031
-export const TestI18N = ({ children }) => {
+
+type TestI18NProps = {
+    children: React.ReactNode;
+};
+
+export const TestI18N = ({ children }: TestI18NProps) => {
     return (
         <I18NContext.Provider
             value={{
@@ -62,9 +66,6 @@ export const TestI18N = ({ children }) => {
             {children}
         </I18NContext.Provider>
     );
-};
-TestI18N.propTypes = {
-    children: PropTypes.node.isRequired,
 };
 
 export const useTranslate = () => {

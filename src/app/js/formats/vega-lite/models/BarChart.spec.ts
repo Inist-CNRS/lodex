@@ -11,15 +11,15 @@ import {
     AXIS_Y,
 } from '../../utils/chartsUtils';
 
+import barChartVlJson from './json/bar_chart.vl.json';
+
 describe('BasicChart', () => {
     it('Default values should filled with all default values', function () {
-        let barChart = new BarChart();
+        const barChart = new BarChart();
         // @ts-expect-error TS2339
         expect(barChart.direction).toBe(AXIS_HORIZONTAL);
         // @ts-expect-error TS2339
-        expect(barChart.model).toStrictEqual(
-            require('./json/bar_chart.vl.json'),
-        );
+        expect(barChart.model).toStrictEqual(barChartVlJson);
         // @ts-expect-error TS2339
         expect(barChart.scale).toBe('linear');
         // @ts-expect-error TS2551
@@ -34,8 +34,8 @@ describe('BasicChart', () => {
     });
 
     it('Default build need to return the vega lite spec with all default values', function () {
-        let barChart = new BarChart();
-        let defaultBuild = {
+        const barChart = new BarChart();
+        const defaultBuild = {
             background: 'transparent',
             autosize: {
                 contains: 'padding',
@@ -91,7 +91,7 @@ describe('BasicChart', () => {
     });
 
     it('Testing default and updated axis direction', function () {
-        let barChart = new BarChart();
+        const barChart = new BarChart();
         // @ts-expect-error TS2339
         expect(barChart.direction).toBe(AXIS_HORIZONTAL);
 
@@ -105,7 +105,7 @@ describe('BasicChart', () => {
     });
 
     it('Testing default and updated axis type on x', function () {
-        let barChart = new BarChart();
+        const barChart = new BarChart();
         // @ts-expect-error TS2339
         expect(barChart.type.x).toBe(AXIS_NOMINAL);
 
@@ -131,7 +131,7 @@ describe('BasicChart', () => {
     });
 
     it('Testing default and updated axis type on y', function () {
-        let barChart = new BarChart();
+        const barChart = new BarChart();
         // @ts-expect-error TS2339
         expect(barChart.type.y).toBe(AXIS_QUANTITATIVE);
 
@@ -157,7 +157,7 @@ describe('BasicChart', () => {
     });
 
     it('Testing default and updated axis title', function () {
-        let barChart = new BarChart();
+        const barChart = new BarChart();
         // @ts-expect-error TS2339
         expect(barChart.title.x).toBe('');
         // @ts-expect-error TS2339

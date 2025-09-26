@@ -32,8 +32,10 @@ export const PrecomputedDataDialog = ({
             setPreviewData(response);
         }
 
-        isOpen && fetchData();
-    }, [isOpen]);
+        if (isOpen) {
+            fetchData();
+        }
+    }, [isOpen, precomputedID]);
 
     const handleDownloadData = () => {
         // @ts-expect-error TS7006

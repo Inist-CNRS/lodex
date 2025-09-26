@@ -1,10 +1,4 @@
-import React, {
-    useEffect,
-    useMemo,
-    useState,
-    Suspense,
-    useCallback,
-} from 'react';
+import React, { useMemo, useState, Suspense, useCallback } from 'react';
 import { polyglot as polyglotPropTypes } from '../../../propTypes';
 // @ts-expect-error TS7016
 import compose from 'recompose/compose';
@@ -15,7 +9,7 @@ import MouseIcon from '../../utils/components/MouseIcon';
 import PropTypes from 'prop-types';
 import Loading from '../../../lib/components/Loading';
 import { useTranslate } from '../../../i18n/I18NContext';
-import VennDiagram  from './VennDiagram';
+import VennDiagram from './VennDiagram';
 
 const styles = {
     container: {
@@ -55,11 +49,9 @@ const Venn = ({ formatData, p, colorSet }) => {
         }
         return {
             // @ts-expect-error TS7006
-            input: formatData.map(x=>x),
+            input: formatData.map((x) => x),
         };
     }, [formatData]);
-
-
 
     return (
         <div style={{ height: `500px` }}>
@@ -69,7 +61,7 @@ const Venn = ({ formatData, p, colorSet }) => {
                 <div style={styles.container} ref={containerRef}>
                     <Suspense
                         fallback={<Loading>{translate('loading')}</Loading>}
-                        >
+                    >
                         <VennDiagram
                             input={input}
                             width={width}

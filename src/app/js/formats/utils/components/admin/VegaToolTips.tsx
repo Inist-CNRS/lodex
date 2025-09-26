@@ -42,8 +42,8 @@ class VegaToolTips extends Component {
                 // @ts-expect-error TS2339
                 this.props.thirdValueTitle === undefined
                     ? ''
-                    // @ts-expect-error TS2339
-                    : this.props.thirdValueTitle,
+                    : // @ts-expect-error TS2339
+                      this.props.thirdValueTitle,
         };
     }
 

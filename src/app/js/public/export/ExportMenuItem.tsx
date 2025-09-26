@@ -24,9 +24,11 @@ export default compose(
     withHandlers({
         handleClick:
             // @ts-expect-error TS7031
-            ({ onClick, uri, exportID }) =>
-            () =>
-                onClick({ uri, exportID }),
+
+
+                ({ onClick, uri, exportID }) =>
+                () =>
+                    onClick({ uri, exportID }),
     }),
     translate,
 )(ExportMenuItem);

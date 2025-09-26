@@ -18,8 +18,8 @@ export const CreateAnnotationTitle = ({ fieldLabel, step, form }) => {
         return (
             <Typography role="heading" variant="h6" color="text.gray">
                 {fieldLabel
-                    // @ts-expect-error TS2554
-                    ? translate('annotation_title_annotate_field', {
+                    ? // @ts-expect-error TS2554
+                      translate('annotation_title_annotate_field', {
                           field: fieldLabel,
                       })
                     : translate(
@@ -32,8 +32,8 @@ export const CreateAnnotationTitle = ({ fieldLabel, step, form }) => {
     return (
         <Typography role="heading" variant="h6" color="text.gray">
             {fieldLabel
-                // @ts-expect-error TS2554
-                ? translate('annotation_title_annotate_content', {
+                ? // @ts-expect-error TS2554
+                  translate('annotation_title_annotate_content', {
                       field: fieldLabel,
                   })
                 : translate('annotation_title_annotate_content_no_field_label')}

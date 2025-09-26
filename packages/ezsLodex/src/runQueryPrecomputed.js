@@ -112,7 +112,7 @@ export const createFunction = () =>
             .skip(Number(skip || 0))
             .limit(Number(maxSize || 1000000))
             .stream()
-            .on('error', e => feed.stop(e))
+            .on('error', (e) => feed.stop(e))
             .pipe(ezs('assign', { path, value }));
         await feed.flow(stream);
     };

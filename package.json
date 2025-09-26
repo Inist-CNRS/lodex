@@ -239,7 +239,6 @@
         "zod": "^3.24.1"
     },
     "devDependencies": {
-        "@types/lodash": "^4.17.20",
         "@babel/eslint-parser": "^7.26.5",
         "@eslint/compat": "^1.4.0",
         "@eslint/eslintrc": "^3.3.1",

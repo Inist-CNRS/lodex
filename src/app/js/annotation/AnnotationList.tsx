@@ -57,12 +57,16 @@ export const getAnnotationSummaryValue = (annotation) => {
         }
         case ANNOTATION_KIND_REMOVAL:
             if (Array.isArray(annotation.initialValue)) {
-                return annotation.initialValue
-                    // @ts-expect-error TS7006
-                    .map((value) =>
-                        [null, undefined, ''].includes(value) ? '""' : value,
-                    )
-                    .join(JOIN_SEPARATOR);
+                return (
+                    annotation.initialValue
+                        // @ts-expect-error TS7006
+                        .map((value) =>
+                            [null, undefined, ''].includes(value)
+                                ? '""'
+                                : value,
+                        )
+                        .join(JOIN_SEPARATOR)
+                );
             }
             return [null, undefined, ''].includes(annotation.initialValue)
                 ? '""'

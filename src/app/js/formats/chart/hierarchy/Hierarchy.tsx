@@ -145,7 +145,7 @@ class Hierarchy extends PureComponent {
                     return a.parent == b.parent ? 3 : 4;
                 }); // define separation ratio between siblings
 
-            let stratify = d3
+            const stratify = d3
                 .stratify() // This D3 API method gives cvs file flat data array dimensions.
                 // @ts-expect-error TS7006
                 .id(function (d) {
@@ -159,7 +159,7 @@ class Hierarchy extends PureComponent {
             let myData;
 
             // @ts-expect-error TS2339
-            let treeData = this.props.formatData;
+            const treeData = this.props.formatData;
 
             try {
                 if (treeData) {
@@ -175,8 +175,8 @@ class Hierarchy extends PureComponent {
                     this.update();
                 }
                 // @ts-expect-error TS2339
-                let current = this.divContainer.current;
-                let gBbox = this.g().node().getBBox();
+                const current = this.divContainer.current;
+                const gBbox = this.g().node().getBBox();
 
                 if (
                     current.clientWidth / gBbox.width <
@@ -237,15 +237,15 @@ class Hierarchy extends PureComponent {
                 },
             );
 
-            let xScale = d3
+            const xScale = d3
                 .scaleLinear()
                 .domain([
                     0,
                     // @ts-expect-error TS2339
                     maxWeight > this.props.params.minimumScaleValue
                         ? maxWeight
-                        // @ts-expect-error TS2339
-                        : this.props.params.minimumScaleValue,
+                        : // @ts-expect-error TS2339
+                          this.props.params.minimumScaleValue,
                 ])
                 .range([0, 500]);
 
@@ -270,7 +270,7 @@ class Hierarchy extends PureComponent {
             });
 
             // Draw every datum a line connecting to its parent.
-            let link = this.g()
+            const link = this.g()
                 .selectAll(`.${css(styles.link)}`)
                 // remove links from fakeRootNode
                 .data(
@@ -344,7 +344,7 @@ class Hierarchy extends PureComponent {
                 .attr('stroke', isValidColor(color) ? color : 'black');
 
             // Setup position for every datum; Applying different css classes to parents and leafs.
-            let node = this.g()
+            const node = this.g()
                 .selectAll(`.${css(styles.node)}`)
                 .data(
                     // @ts-expect-error TS2339
@@ -366,7 +366,7 @@ class Hierarchy extends PureComponent {
                 return 'translate(' + d.x + ',' + d.y + ')';
             });
 
-            let nodeLeafG = node
+            const nodeLeafG = node
                 // @ts-expect-error TS7006
                 .filter(function (d) {
                     return !d.children && !d._children;
@@ -388,7 +388,7 @@ class Hierarchy extends PureComponent {
                 });
 
             // add new nodes
-            let nodeEnter = node
+            const nodeEnter = node
                 .enter()
                 .append('g')
                 // @ts-expect-error TS7006
@@ -417,7 +417,7 @@ class Hierarchy extends PureComponent {
                 .attr('fill', color);
 
             // @ts-expect-error TS7006
-            let nodeInternal = nodeEnter.filter(function (d) {
+            const nodeInternal = nodeEnter.filter(function (d) {
                 return d.children || d._children;
             });
             let currentId = '';
@@ -463,7 +463,7 @@ class Hierarchy extends PureComponent {
                 .attr('y', -10);
 
             // Setup G for every leaf datum. (rectangle)
-            let leafNodeGEnter = nodeEnter
+            const leafNodeGEnter = nodeEnter
                 // @ts-expect-error TS7006
                 .filter(function (d) {
                     return !d.children && !d._children;
@@ -529,7 +529,7 @@ class Hierarchy extends PureComponent {
 
     // @ts-expect-error TS7006
     handleMouseOver(event, node) {
-        let leafG = d3.select(event.target);
+        const leafG = d3.select(event.target);
 
         leafG.select('rect').attr('stroke-width', '2');
         this.tooltip().style('opacity', 1);
@@ -541,9 +541,9 @@ class Hierarchy extends PureComponent {
     }
 
     // @ts-expect-error TS7006
-    handleMouseOut(_event, node) {
+    handleMouseOut(_event, _node) {
         // @ts-expect-error TS18048
-        let leafG = d3.select(event.target);
+        const leafG = d3.select(event.target);
 
         leafG.select('rect').attr('stroke-width', '0');
         this.tooltip().style('opacity', 0);
@@ -603,7 +603,7 @@ class Hierarchy extends PureComponent {
         d3.select(
             // @ts-expect-error TS2339
             `[id="id_${d.id.split(' ').join('_')}_${this.uniqueId}"]`,
-        // @ts-expect-error TS7006
+            // @ts-expect-error TS7006
         ).text((d) => {
             return this.getLabelAccordingChildren(d);
         });
@@ -611,7 +611,7 @@ class Hierarchy extends PureComponent {
         d3.select(
             // @ts-expect-error TS2339
             `[id="id_${d.id.split(' ').join('_')}_${this.uniqueId}_rect"]`,
-        // @ts-expect-error TS7006
+            // @ts-expect-error TS7006
         ).attr('width', (d) => {
             const label = this.getLabelAccordingChildren(d);
             return label.length * 8;
@@ -623,11 +623,11 @@ class Hierarchy extends PureComponent {
 
     // @ts-expect-error TS7006
     centerNode(source) {
-        let scale = d3.zoomTransform(this).k;
+        const scale = d3.zoomTransform(this).k;
         let x = -source.x;
         let y = -source.y;
 
-        let divContainerBoundingRect = d3
+        const divContainerBoundingRect = d3
             // @ts-expect-error TS2339
             .select(this.divContainer.current)
             .node()
@@ -650,16 +650,16 @@ class Hierarchy extends PureComponent {
     // @ts-expect-error TS7006
     addRootElements(data) {
         let newData = [];
-        let elementsDone = [];
-        let parentsAdded = [];
+        const elementsDone = [];
+        const parentsAdded = [];
 
         if (data) {
-            for (let elem of data) {
+            for (const elem of data) {
                 if (elementsDone.indexOf(elem.target) < 0) {
                     let parentExist = false;
                     elementsDone.push(elem.target);
 
-                    for (let comparedElem of data) {
+                    for (const comparedElem of data) {
                         if (comparedElem.target == elem.source) {
                             parentExist = true;
                         }
@@ -685,7 +685,7 @@ class Hierarchy extends PureComponent {
                 isFakeNode: true,
             });
 
-            newData.push.apply(newData, data);
+            newData.push(...data);
         }
         newData = this.setRootNodeWeight(newData, parentsAdded);
         return newData;
@@ -694,14 +694,14 @@ class Hierarchy extends PureComponent {
     // @ts-expect-error TS7006
     setRootNodeWeight(data, rootNodesList) {
         if (data) {
-            for (let rootName of rootNodesList) {
+            for (const rootName of rootNodesList) {
                 const rootNodePos = data
                     // @ts-expect-error TS7006
                     .map((e) => {
                         return e.target;
                     })
                     .indexOf(rootName);
-                for (let elem of data) {
+                for (const elem of data) {
                     if (rootName === elem.source) {
                         data[rootNodePos].weight =
                             data[rootNodePos].weight + elem.weight;
@@ -786,14 +786,14 @@ class Hierarchy extends PureComponent {
                 ')',
         );
 
-        let transform = d3.zoomIdentity
+        const transform = d3.zoomIdentity
             // @ts-expect-error TS2339
             .translate(this.initialPosition.x, this.initialPosition.y)
             // @ts-expect-error TS2339
             .scale(this.initialPosition.scale);
 
         // @ts-expect-error TS7006
-        let zoomListener = d3.zoom().on('zoom', (event) => {
+        const zoomListener = d3.zoom().on('zoom', (event) => {
             this.zoom(event);
         });
 

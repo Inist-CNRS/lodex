@@ -11,19 +11,22 @@ function homogenizedObject(data, feed) {
         return feed.close();
     }
 
-    if (data.scope && data.stack) { // Erreur serializée par [catch]
+    if (data.scope && data.stack) {
+        // Erreur serializée par [catch]
         const error = getSourceError(data);
-            let sourceChunk = null;
-            if (error?.sourceChunk) {
-                try {
-                    sourceChunk = JSON.parse(error.sourceChunk);
-                } catch (e) {
-                    feed.stop(new Error(`Error while parsing sourceChunk (${e.message}`));
-                }
+        let sourceChunk = null;
+        if (error?.sourceChunk) {
+            try {
+                sourceChunk = JSON.parse(error.sourceChunk);
+            } catch (e) {
+                feed.stop(
+                    new Error(`Error while parsing sourceChunk (${e.message}`),
+                );
             }
-            // try to obtain only the lodash error message
-            const errorMessage =
-                Array()
+        }
+        // try to obtain only the lodash error message
+        const errorMessage =
+            Array()
                 .concat(error?.traceback)
                 .filter((x) => x.search(/Error:/) >= 0)
                 .shift() || error?.message;
@@ -38,10 +41,7 @@ function homogenizedObject(data, feed) {
     let value;
     if (data.error) {
         value = `[Error]: ${data.error}`;
-    } else if (
-        data.value !== undefined &&
-        data.value !== null
-    ) {
+    } else if (data.value !== undefined && data.value !== null) {
         value = data.value;
     } else {
         value = 'n/a';
@@ -51,4 +51,3 @@ function homogenizedObject(data, feed) {
 export default {
     homogenizedObject,
 };
-

@@ -18,8 +18,8 @@ const TransformerArgs = ({ availableArgs, onChange, transformerArgs }) => {
     const handleChange = (editedArgName, value) => {
         // If the transformer is already in the list, we update its value. Otherwise, we add it to the list from the available args.
         const newTransformerArgs = transformerArgs
-            // @ts-expect-error TS7006
-            ? transformerArgs.map((transformerArg) => {
+            ? // @ts-expect-error TS7006
+              transformerArgs.map((transformerArg) => {
                   if (transformerArg.name === editedArgName) {
                       return {
                           ...transformerArg,
@@ -28,8 +28,8 @@ const TransformerArgs = ({ availableArgs, onChange, transformerArgs }) => {
                   }
                   return transformerArg;
               })
-            // @ts-expect-error TS7006
-            : availableArgs.map((availableArg) => {
+            : // @ts-expect-error TS7006
+              availableArgs.map((availableArg) => {
                   if (availableArg.name === editedArgName) {
                       return {
                           ...availableArg,

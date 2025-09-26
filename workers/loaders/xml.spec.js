@@ -2,13 +2,13 @@ const ezs = require('@ezs/core');
 const from = require('from');
 
 describe('xml.ini', () => {
-    it('should parse a RDF XML', done => {
+    it('should parse a RDF XML', (done) => {
         const res = [];
         from([
             `<root><row><f1>val1</f1><f2>val2</f2></row><row><f1>val1</f1><f2>val2</f2></row></root>`,
         ])
             .pipe(ezs('delegate', { file: __dirname + '/xml.ini' }))
-            .on('data', chunk => {
+            .on('data', (chunk) => {
                 res.push(chunk);
             })
             .on('end', () => {
@@ -18,13 +18,13 @@ describe('xml.ini', () => {
             });
     });
 
-    it('should parse a MODS XML', done => {
+    it('should parse a MODS XML', (done) => {
         const res = [];
         from([
             `<modsCollection><mods><test>value</test></mods></modsCollection>`,
         ])
             .pipe(ezs('delegate', { file: __dirname + '/xml.ini' }))
-            .on('data', chunk => {
+            .on('data', (chunk) => {
                 res.push(chunk);
             })
             .on('end', () => {

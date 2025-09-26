@@ -74,7 +74,7 @@ export const createFunction = () =>
             .skip(skip)
             .limit(limit)
             .stream()
-            .on('error', e => feed.stop(e))
+            .on('error', (e) => feed.stop(e))
             .pipe(ezs('assign', { path, value }));
         await feed.flow(stream);
     };

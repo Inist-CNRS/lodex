@@ -117,7 +117,7 @@ export default class TreeMapData {
      * Transforme routine data into manipulable data
      */
     buildNodesAndLeaves() {
-        for (let datum of this.data) {
+        for (const datum of this.data) {
             const parentNode = datum.source;
             const node = datum.target;
             const size = datum.weight;
@@ -139,7 +139,7 @@ export default class TreeMapData {
      * Create a list of node and transforme the raw data into cleanable data
      */
     buildFilteredNodes() {
-        for (let [node, datum] of this.rawNodesAndLeaves) {
+        for (const [node, datum] of this.rawNodesAndLeaves) {
             const id = this.ids.get(node);
 
             if (datum.parent) {
@@ -164,7 +164,7 @@ export default class TreeMapData {
          */
         const transformedAndCleanupData = [];
 
-        for (let [node, datum] of this.formattedNodesAndLeaves) {
+        for (const [node, datum] of this.formattedNodesAndLeaves) {
             if (this.filteredNodes.has(node)) {
                 delete datum.size;
                 transformedAndCleanupData.push(datum);
