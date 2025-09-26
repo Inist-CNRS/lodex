@@ -2,9 +2,7 @@ import * as adminNavigation from './adminNavigation';
 
 export const openEnrichment = () => {
     adminNavigation.goToData();
-    cy.get('.sidebar')
-        .contains('Enrichment')
-        .click({ force: true });
+    cy.get('.sidebar').contains('Enrichment').click({ force: true });
 };
 
 export const fillAdvancedEnrichment = () => {

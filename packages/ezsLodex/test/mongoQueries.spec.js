@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/no-unresolved
 import ezs from '@ezs/core';
 import from from 'from';
 import _ from 'lodash';
@@ -842,7 +841,7 @@ describe('mongo queries', () => {
                 });
         });
 
-        it('should return no results ', (done) => {
+        it('should return no results', (done) => {
             let res = [];
             from([
                 {

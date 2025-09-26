@@ -18,4 +18,4 @@
 !typings.json
 !docker-entrypoint.sh
 !workers*
-!vite.config.js
+!vite.config.ts

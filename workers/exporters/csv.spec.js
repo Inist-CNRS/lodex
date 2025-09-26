@@ -3,7 +3,7 @@ const ezs = require('@ezs/core');
 
 ezs.use(require('@ezs/basics'));
 
-test.skip('export one resource in a two-lines CSV', done => {
+test.skip('export one resource in a two-lines CSV', (done) => {
     let outputString = '';
     from([
         {
@@ -12,7 +12,7 @@ test.skip('export one resource in a two-lines CSV', done => {
         },
     ])
         .pipe(ezs('delegate', { file: __dirname + '/csv.ini' }))
-        .on('data', data => {
+        .on('data', (data) => {
             if (data) outputString += data;
         })
         .on('end', () => {
@@ -28,7 +28,7 @@ test.skip('export one resource in a two-lines CSV', done => {
         .on('error', done);
 });
 
-test.skip('export two resources in a three-lines CSV', done => {
+test.skip('export two resources in a three-lines CSV', (done) => {
     let outputString = '';
     from([
         {
@@ -41,7 +41,7 @@ test.skip('export two resources in a three-lines CSV', done => {
         },
     ])
         .pipe(ezs('delegate', { file: __dirname + '/csv.ini' }))
-        .on('data', data => {
+        .on('data', (data) => {
             if (data) outputString += data;
         })
         .on('end', () => {
@@ -58,7 +58,7 @@ test.skip('export two resources in a three-lines CSV', done => {
         .on('error', done);
 });
 
-test.skip('export in CSV resources containing quotes', done => {
+test.skip('export in CSV resources containing quotes', (done) => {
     let outputString = '';
     from([
         {
@@ -71,7 +71,7 @@ test.skip('export in CSV resources containing quotes', done => {
         },
     ])
         .pipe(ezs('delegate', { file: __dirname + '/csv.ini' }))
-        .on('data', data => {
+        .on('data', (data) => {
             if (data) outputString += data;
         })
         .on('end', () => {
@@ -88,7 +88,7 @@ test.skip('export in CSV resources containing quotes', done => {
         .on('error', done);
 });
 
-test.skip('export in CSV resources containing semicolon', done => {
+test.skip('export in CSV resources containing semicolon', (done) => {
     let outputString = '';
     from([
         {
@@ -101,7 +101,7 @@ test.skip('export in CSV resources containing semicolon', done => {
         },
     ])
         .pipe(ezs('delegate', { file: __dirname + '/csv.ini' }))
-        .on('data', data => {
+        .on('data', (data) => {
             if (data) outputString += data;
         })
         .on('end', () => {
@@ -118,7 +118,7 @@ test.skip('export in CSV resources containing semicolon', done => {
         .on('error', done);
 });
 
-test.skip('export CSV with labels in header', done => {
+test.skip('export CSV with labels in header', (done) => {
     let outputString = '';
     from([
         {
@@ -137,7 +137,7 @@ test.skip('export CSV with labels in header', done => {
                 { fields: [{ name: 'AbCd', label: 'Title' }] },
             ),
         )
-        .on('data', data => {
+        .on('data', (data) => {
             if (data) outputString += data;
         })
         .on('end', () => {

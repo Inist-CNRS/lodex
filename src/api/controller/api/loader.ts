@@ -1,9 +1,8 @@
 import Koa from 'koa';
 import route from 'koa-route';
-// @ts-expect-error TS(2792): Cannot find module '@ezs/core'. Did you mean to se... Remove this comment to see the full error message
-
+// @ts-expect-error TS(2792): Cannot find module '@ezs/core'.
 import ezs from '@ezs/core';
-// @ts-expect-error TS(2792): Cannot find module '@ezs/lodex'. Did you mean to s... Remove this comment to see the full error message
+// @ts-expect-error TS(2792): Cannot find module '@ezs/lodex'.
 import ezsLodex from '@ezs/lodex';
 
 // @ts-expect-error TS(7016): Could not find a declaration file for module '../.... Remove this comment to see the full error message

@@ -2,11 +2,13 @@ const ezs = require('@ezs/core');
 const from = require('from');
 
 describe('tsv-double-quotes.ini', () => {
-    it('should parse a TSV with double quotes escaping', done => {
+    it('should parse a TSV with double quotes escaping', (done) => {
         const res = [];
         from(['a\tb\n', '"1\t2"\t3\n'])
-            .pipe(ezs('delegate', { file: __dirname + '/tsv-double-quotes.ini' }))
-            .on('data', chunk => {
+            .pipe(
+                ezs('delegate', { file: __dirname + '/tsv-double-quotes.ini' }),
+            )
+            .on('data', (chunk) => {
                 res.push(chunk);
             })
             .on('end', () => {

@@ -30,7 +30,8 @@ export async function LodexInjectSyndicationFrom(data, feed) {
         const db = await mongoDatabase(connectionStringURI);
         this.collection = db.collection('publishedDataset');
 
-        const fields = await db.collection('field')
+        const fields = await db
+            .collection('field')
             .find()
             .sort({ position: 1, cover: 1 })
             .toArray();

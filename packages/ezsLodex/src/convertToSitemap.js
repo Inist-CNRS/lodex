@@ -19,22 +19,13 @@ export default function convertToSitemap(data, feed) {
         );
     }
     this.xw.startElement('url');
-    this.xw
-        .startElement('loc')
-        .text(data.uri)
-        .endElement();
+    this.xw.startElement('loc').text(data.uri).endElement();
     this.xw
         .startElement('lastmod')
         .text(data.publicationDate.toString())
         .endElement();
-    this.xw
-        .startElement('changefreq')
-        .text('monthly')
-        .endElement();
-    this.xw
-        .startElement('priority')
-        .text('1')
-        .endElement();
+    this.xw.startElement('changefreq').text('monthly').endElement();
+    this.xw.startElement('priority').text('1').endElement();
     this.xw.endElement();
     return feed.end();
 }

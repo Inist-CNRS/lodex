@@ -2,13 +2,13 @@ const ezs = require('@ezs/core');
 const from = require('from');
 
 describe('atom.ini', () => {
-    it('should parse an ATOM XML feed', done => {
+    it('should parse an ATOM XML feed', (done) => {
         const res = [];
         from([
             `<feed><entry><any>value</any><other>thing</other></entry></feed>`,
         ])
             .pipe(ezs('delegate', { file: __dirname + '/atom.ini' }))
-            .on('data', chunk => {
+            .on('data', (chunk) => {
                 res.push(chunk);
             })
             .on('end', () => {

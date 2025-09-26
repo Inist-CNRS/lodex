@@ -48,12 +48,13 @@ export default function keyMapping(data, feed) {
     if (this.isLast()) {
         return feed.close();
     }
-    const res = Object
-        .keys(data)
-        .reduce((o, key) => ({
+    const res = Object.keys(data).reduce(
+        (o, key) => ({
             ...o,
             [mapping[key] ? mapping[key] : key]: data[key],
-        }), {});
+        }),
+        {},
+    );
     feed.write(res);
     return feed.end();
 }

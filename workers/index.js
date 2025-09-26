@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/no-unresolved
 import ezs from '@ezs/core';
 import Basics from '@ezs/basics';
 import Analytics from '@ezs/analytics';

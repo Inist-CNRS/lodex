@@ -10,13 +10,13 @@ export const login = (username = 'admin', password = 'secret') => {
 
 export const logout = () => {
     cy.clearCookies();
-    cy.window().then(win => {
+    cy.window().then((win) => {
         win.sessionStorage.clear();
         win.localStorage.clear();
     });
 };
 
-export const logoutAndLoginAs = username => {
+export const logoutAndLoginAs = (username) => {
     logout();
     login(username);
 };
@@ -29,7 +29,7 @@ export const teardown = (withoutLogin = false) => {
         return;
     }
 
-    cy.window().then(win => {
+    cy.window().then((win) => {
         win.sessionStorage.setItem('tenant', DEFAULT_TENANT);
     });
 

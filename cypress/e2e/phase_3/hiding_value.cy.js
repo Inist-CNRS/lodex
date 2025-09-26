@@ -22,9 +22,7 @@ describe('hiding null value to user', () => {
     it('admin should be able hide field to user by setting it to null', () => {
         menu.openSearchDrawer();
         searchDrawer.goToResourceNumber(1);
-        cy.get('.detail')
-            .find('.property')
-            .should('have.length', 2);
+        cy.get('.detail').find('.property').should('have.length', 2);
 
         cy.get('.column1 h3').contains('Row 1');
         cy.get('.column2').contains('Test 1');
@@ -33,14 +31,10 @@ describe('hiding null value to user', () => {
         menu.openAdvancedDrawer();
         menu.goToAdminDashboard();
         adminNavigation.goToDisplay();
-        cy.get('.sidebar')
-            .contains('Main resource')
-            .click();
+        cy.get('.sidebar').contains('Main resource').click();
 
         cy.wait(1000);
-        cy.get('.react-grid-item')
-            .eq(1)
-            .click(15, 40, { force: true });
+        cy.get('.react-grid-item').eq(1).click(15, 40, { force: true });
 
         cy.get('#tab-display').click();
         cy.contains('Visible').click();
@@ -50,9 +44,7 @@ describe('hiding null value to user', () => {
         logoutAndLoginAs('user');
         menu.openSearchDrawer();
         searchDrawer.goToResourceNumber(1);
-        cy.get('.detail')
-            .find('.property')
-            .should('have.length', 1);
+        cy.get('.detail').find('.property').should('have.length', 1);
 
         cy.get('.column1').should('be.visible');
         cy.get('.column2').should('not.exist');

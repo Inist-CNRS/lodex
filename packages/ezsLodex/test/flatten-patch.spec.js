@@ -1,5 +1,4 @@
 import from from 'from';
-// eslint-disable-next-line import/no-unresolved
 import ezs from '@ezs/core';
 import statements from '../src';
 
@@ -31,7 +30,7 @@ describe('flattenPatch', () => {
                 res.push(chunk);
             })
             .on('end', () => {
-                expect(res.length).toBe(3);
+                expect(res).toHaveLength(3);
                 expect(res[0].a).toBe(1);
                 expect(res[0].b).toBe('2;3');
                 expect(res[0].c).toBe(4);

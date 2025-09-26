@@ -2,11 +2,8 @@ import omit from 'lodash/omit';
 import pick from 'lodash/pick';
 import { ObjectId } from 'mongodb';
 
-// @ts-expect-error TS(7016): Could not find a declaration file for module '../.... Remove this comment to see the full error message
 import { SCOPE_COLLECTION, SCOPE_DOCUMENT } from '../../common/scope';
-// @ts-expect-error TS(7016): Could not find a declaration file for module '../.... Remove this comment to see the full error message
 import { URI_FIELD_NAME } from '../../common/uris';
-// @ts-expect-error TS(7016): Could not find a declaration file for module '../.... Remove this comment to see the full error message
 import { validateField as validateFieldIsomorphic } from '../../common/validateFields';
 import { createDiacriticSafeContainRegex } from '../services/createDiacriticSafeContainRegex';
 import generateUid from '../services/generateUid';

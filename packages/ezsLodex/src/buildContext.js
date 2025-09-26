@@ -1,13 +1,10 @@
 import mongoDatabase from './mongoDatabase.js';
 import getPublishedDatasetFilter from './getPublishedDatasetFilter.js';
 
-const findAll = async collection =>
-    collection
-        .find({})
-        .sort({ position: 1, cover: 1 })
-        .toArray();
+const findAll = async (collection) =>
+    collection.find({}).sort({ position: 1, cover: 1 }).toArray();
 
-const findSearchableNames = async collection => {
+const findSearchableNames = async (collection) => {
     const searchableFields = await collection
         .find({ searchable: true })
         .toArray();
@@ -15,7 +12,7 @@ const findSearchableNames = async collection => {
     return searchableFields.map(({ name }) => name);
 };
 
-const findFacetNames = async collection => {
+const findFacetNames = async (collection) => {
     const searchableFields = await collection.find({ isFacet: true }).toArray();
 
     return searchableFields.map(({ name }) => name);

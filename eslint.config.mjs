@@ -1,6 +1,6 @@
 import babelParser from '@babel/eslint-parser';
-
 import { defineConfig, globalIgnores } from 'eslint/config';
+import tseslint from 'typescript-eslint';
 import js from '@eslint/js';
 import cypress from 'eslint-plugin-cypress';
 import importPlugin from 'eslint-plugin-import';
@@ -11,7 +11,6 @@ import globals from 'globals';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
-import tseslint from 'typescript-eslint';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -40,7 +39,34 @@ export default defineConfig([
                 },
             ],
         },
+        languageOptions: {
+            parser: babelParser,
+            parserOptions: {
+                babelOptions: {
+                    configFile: path.resolve(__dirname, 'babel.config.js'),
+                },
+            },
+        },
     },
+    tseslint.configs.recommended.map((conf) => ({
+        ...conf,
+        files: ['**/*.ts', '**/*.tsx'],
+        ignores: ['**/.js', '**/*.jsx'],
+        rules: {
+            ...conf.rules,
+            '@typescript-eslint/no-explicit-any': 'warn',
+            '@typescript-eslint/no-unused-expressions': 'warn',
+
+            '@typescript-eslint/no-unused-vars': [
+                'error',
+                {
+                    ignoreRestSiblings: true,
+                    argsIgnorePattern: '^_',
+                    caughtErrors: 'none',
+                },
+            ],
+        },
+    })),
     {
         name: 'eslint-plugin-import',
         plugins: { import: importPlugin },
@@ -76,15 +102,11 @@ export default defineConfig([
                 afterAll: true,
             },
 
-            parser: babelParser,
             ecmaVersion: 7,
             sourceType: 'module',
-
-            parserOptions: {
-                babelOptions: {
-                    configFile: path.resolve(__dirname, 'babel.config.js'),
-                },
-            },
+        },
+        settings: {
+            version: '17.0',
         },
     },
     reactHooks.configs['recommended-latest'],
@@ -132,15 +154,4 @@ export default defineConfig([
             'cypress/no-unnecessary-waiting': 'warn',
         },
     },
-    tseslint.configs.recommended.map((conf) => ({
-        ...conf,
-        files: ['**/*.ts', '**/*.tsx'],
-        ignores: ['**/*.js', '**/*.jsx'],
-        rules: {
-            ...conf.rules,
-            '@typescript-eslint/no-explicit-any': 'warn',
-            '@typescript-eslint/no-unused-vars': 'warn',
-            '@typescript-eslint/no-unused-expressions': 'warn',
-        },
-    })),
 ]);

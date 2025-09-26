@@ -1,0 +1,141 @@
+// @ts-expect-error TS6133
+import React, { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
+import {
+    Dialog,
+    LinearProgress,
+    DialogTitle,
+    DialogContent,
+} from '@mui/material';
+import { connect } from 'react-redux';
+import compose from 'recompose/compose';
+
+import { fromProgress } from '../selectors';
+import { loadProgress, clearProgress } from './reducer';
+import { PENDING } from '../../../../common/progressStatus';
+import { polyglot as polyglotPropTypes } from '../../propTypes';
+import { io } from 'socket.io-client';
+import { DEFAULT_TENANT } from '../../../../common/tools/tenantTools';
+import { translate } from '../../i18n/I18NContext';
+
+// @ts-expect-error TS7006
+const formatProgress = (progress, target, symbol, label) => {
+    const formatedTarget = target ? ` / ${target}` : ``;
+    const formatedSymbol = symbol ? ` ${symbol}` : ``;
+    const formatedLabel = label ? ` ${label}` : ``;
+    return progress + formatedTarget + formatedSymbol + formatedLabel;
+};
+
+// @ts-expect-error TS7006
+const renderProgressText = (props) => {
+    const { progress, target, symbol, label, p: polyglot } = props;
+    if (!progress) {
+        return null;
+    }
+
+    return (
+        <p>
+            {formatProgress(
+                progress,
+                target,
+                symbol,
+                label ? polyglot.t(label) : undefined,
+            )}
+        </p>
+    );
+};
+
+// @ts-expect-error TS7006
+export const ProgressComponent = (props) => {
+    const { clearProgress, p: polyglot, loadProgress, progress } = props;
+
+    const [updatedProgress, setUpdatedProgress] = useState(progress);
+    const isOpen =
+        updatedProgress.status !== PENDING && !updatedProgress.isBackground;
+
+    // @ts-expect-error TS2345
+    useEffect(() => {
+        const socket = io();
+        const tenant = sessionStorage.getItem('lodex-tenant') || DEFAULT_TENANT;
+        // log all messages
+        socket.on(`${tenant}-progress`, (data) => {
+            setUpdatedProgress(data);
+        });
+        socket.on(`${tenant}-connect_error`, () => {
+            loadProgress();
+        });
+        return () => socket.disconnect();
+    }, []);
+
+    if (updatedProgress.error) {
+        return (
+            <Dialog open={isOpen} onClose={clearProgress}>
+                <DialogTitle>{polyglot.t(updatedProgress.status)}</DialogTitle>
+                <DialogContent>
+                    <div>{polyglot.t('progress_error')}</div>
+                </DialogContent>
+            </Dialog>
+        );
+    }
+
+    return (
+        <Dialog open={isOpen}>
+            <DialogTitle>{polyglot.t(updatedProgress.status)}</DialogTitle>
+            <DialogContent>
+                <div className="progress">
+                    <LinearProgress
+                        variant={
+                            updatedProgress.target
+                                ? 'determinate'
+                                : 'indeterminate'
+                        }
+                        value={
+                            updatedProgress.progress && updatedProgress.target
+                                ? (updatedProgress.progress /
+                                      updatedProgress.target) *
+                                  100
+                                : 0
+                        }
+                    />
+                    {renderProgressText({ ...updatedProgress, p: polyglot })}
+                </div>
+            </DialogContent>
+        </Dialog>
+    );
+};
+ProgressComponent.propTypes = {
+    progress: PropTypes.shape({
+        status: PropTypes.string.isRequired,
+        target: PropTypes.number,
+        progress: PropTypes.number,
+        symbol: PropTypes.string,
+        label: PropTypes.string,
+        isBackground: PropTypes.bool,
+        error: PropTypes.bool,
+    }).isRequired,
+    loadProgress: PropTypes.func.isRequired,
+    clearProgress: PropTypes.func.isRequired,
+    p: polyglotPropTypes,
+};
+
+ProgressComponent.defaultProps = {
+    symbol: null,
+    text: null,
+    target: null,
+};
+
+// @ts-expect-error TS7006
+const mapStateToProps = (state) => ({
+    // @ts-expect-error TS2339
+    progress: fromProgress.getProgress(state),
+});
+
+const mapDispatchToProps = {
+    loadProgress,
+    clearProgress,
+};
+
+export const Progress = compose(
+    translate,
+    connect(mapStateToProps, mapDispatchToProps),
+)(ProgressComponent);

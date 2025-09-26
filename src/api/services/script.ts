@@ -1,7 +1,6 @@
 import Path from 'path';
 import fs from 'fs';
 // @ts-expect-error TS(2792): Cannot find module '@ezs/core'. Did you mean to se... Remove this comment to see the full error message
-
 import ezs from '@ezs/core';
 import config from '../../../config.json';
 
