@@ -1,10 +1,12 @@
-/* eslint-disable no-useless-escape */
+// @ts-expect-error TS6133
+import React from 'react';
+// @ts-expect-error: TS7016
 import { StyleSheetServer } from 'aphrodite/no-important';
 import { renderToString } from 'react-dom/server';
 import { Provider } from 'react-redux';
 import { StaticRouter } from 'react-router';
 
-import { auth, istexApiUrl, jsHost, mongo, themesHost } from 'config';
+import config from 'config';
 import { createMemoryHistory } from 'history';
 import jsonwebtoken from 'jsonwebtoken';
 import Koa from 'koa';
@@ -20,16 +22,26 @@ import configureStoreServer from '../../app/js/configureStoreServer';
 import reducers from '../../app/js/public/reducers';
 import Routes from '../../app/js/public/Routes';
 import sagas from '../../app/js/public/sagas';
+// @ts-expect-error: TS7016
 import getLocale from '../../common/getLocale';
 import translations from '../services/translations';
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Router } from 'react-router-dom';
+// @ts-expect-error: TS7016
 import getCatalogFromArray from '../../common/fields/getCatalogFromArray';
+// @ts-expect-error: TS7016
 import { DEFAULT_TENANT } from '../../common/tools/tenantTools';
 import { renderAdmin, renderPublic, renderRootAdmin } from '../models/front';
 import { getPublication } from './api/publication';
 
+const auth = config.get('auth');
+const istexApiUrl = config.get('istexApiUrl');
+const jsHost = config.get('jsHost');
+const mongo = config.get('mongo');
+const themesHost = config.get('themesHost');
+
+// @ts-expect-error: TS7006
 const getDefaultInitialState = (ctx, token, cookie, locale) => ({
     enableAutoPublication: ctx.configTenant.enableAutoPublication,
     fields: {
@@ -69,7 +81,12 @@ const getDefaultInitialState = (ctx, token, cookie, locale) => ({
     },
 });
 
-const getInitialState = async (token, cookie, locale, ctx) => {
+const getInitialState = async (
+    token: any,
+    cookie: any,
+    locale: any,
+    ctx: any,
+) => {
     const initialState = getDefaultInitialState(ctx, token, cookie, locale);
 
     if (!cookie) {
@@ -108,12 +125,12 @@ const getInitialState = async (token, cookie, locale, ctx) => {
 const queryClient = new QueryClient();
 
 export const getPreloadedState = async (
-    unConnectedHistory,
-    token,
-    cookie,
-    locale,
-    url,
-    ctx,
+    unConnectedHistory: any,
+    token: any,
+    cookie: any,
+    locale: any,
+    url: any,
+    ctx: any,
 ) => {
     const { store, history } = configureStoreServer(
         reducers,
@@ -122,6 +139,7 @@ export const getPreloadedState = async (
         unConnectedHistory,
     );
 
+    // @ts-expect-error: TS7006
     const sagaPromise = store.runSaga(sagas).done;
     const context = {};
     StyleSheetServer.renderStatic(() =>
@@ -137,11 +155,14 @@ export const getPreloadedState = async (
             </StaticRouter>,
         ),
     );
+    // @ts-expect-error: TS7006
     store.dispatch(END);
     await sagaPromise;
 
+    // @ts-expect-error: TS7006
     if (context.url) {
         return {
+            // @ts-expect-error: TS7006
             redirect: context.url,
         };
     }
@@ -158,7 +179,7 @@ export const getPreloadedState = async (
     };
 };
 
-const handleRender = async (ctx, next) => {
+const handleRender = async (ctx: any, next: any) => {
     const { url } = ctx.request;
     if (
         (url.match(/[^\\]*\.(\w+)$/) && !url.match(/\/uid:\//)) ||
@@ -212,7 +233,7 @@ const handleRender = async (ctx, next) => {
         istexApi: istexApiUrl,
         customTemplateVariables,
         recaptchaClientKey,
-    }).then((html) => {
+    }).then((html: any) => {
         // If recaptcha is enabled for this instance we inject it just before the closing body tag
         ctx.body = recaptchaClientKey
             ? html.replace(
@@ -225,9 +246,10 @@ const handleRender = async (ctx, next) => {
     });
 };
 
-const renderAdminIndexHtml = (ctx) => {
+const renderAdminIndexHtml = (ctx: any) => {
     renderAdmin({
         tenant: ctx.tenant,
+        // @ts-expect-error: TS7006
         dbName: mongo.dbName,
         jsHost: jsHost,
         themesHost: themesHost,
@@ -236,9 +258,10 @@ const renderAdminIndexHtml = (ctx) => {
     });
 };
 
-const renderRootAdminIndexHtml = (ctx) => {
+const renderRootAdminIndexHtml = (ctx: any) => {
     renderRootAdmin({
         tenant: ctx.tenant,
+        // @ts-expect-error: TS7006
         dbName: mongo.dbName,
         jsHost: jsHost,
         themesHost: themesHost,
@@ -258,6 +281,7 @@ app.use(async (ctx, next) => {
         return await next();
     }
     const jwtMid = await jwt({
+        // @ts-expect-error: TS7006
         secret: auth.cookieSecret,
         cookie: `lodex_token_${ctx.tenant}`,
         key: 'cookie',
@@ -274,13 +298,13 @@ app.use(async (ctx, next) => {
 
     if (
         !ctx.state.cookie &&
-        !ctx.request.url.match(/instance\/([^\/]*)\/login/) &&
-        !ctx.request.url.match(/instance\/([^\/]*)\/admin/) &&
+        !ctx.request.url.match(/instance\/([^/]*)\/login/) &&
+        !ctx.request.url.match(/instance\/([^/]*)\/admin/) &&
         !ctx.request.url.startsWith('/instances') &&
         !ctx.request.url.match(/[^\\]*\.(\w+)$/)
     ) {
         const defaultTenant = DEFAULT_TENANT; // TODO: Replace by default tenant in BDD
-        const matchResult = ctx.request.url.match(/instance\/([^\/]*)(.*)/);
+        const matchResult = ctx.request.url.match(/instance\/([^/]*)(.*)/);
 
         if (matchResult) {
             const [, tenantSlug, queryUrl] = matchResult;
@@ -296,6 +320,7 @@ app.use(async (ctx, next) => {
     }
     ctx.state.headerToken = jsonwebtoken.sign(
         pick(ctx.state.cookie, ['username', 'role', 'exp']),
+        // @ts-expect-error: TS7006
         auth.headerSecret,
     );
 

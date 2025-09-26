@@ -3,20 +3,17 @@ import ejs from 'ejs';
 import { assign, escape } from 'lodash';
 import path from 'path';
 import { version } from '../../../package.json';
+// @ts-expect-error: No types
 import rootTheme from '../../app/custom/themes/rootTheme';
 import { getTheme } from './themes';
 
-/**
- * @param {string} key
- * @param {any} value
- * @return {string[]}
- */
-const buildCss = ([key, value]) => {
+const buildCss = ([key, value]: [string, unknown]): unknown[] => {
     if (typeof value === 'object') {
         const prefix = key
             .split(/(?=[A-Z])/)
             .map((word) => word.toLowerCase())
             .join('-');
+        // @ts-expect-error: TS1342
         return Object.entries(value)
             .flatMap(buildCss)
             .map((variable) => `${prefix}-${variable}`);
@@ -37,6 +34,7 @@ const buildCss = ([key, value]) => {
  * Transform an object into css variable
  * @param {Object} cssObject
  */
+// @ts-expect-error: TS7006
 export const buildCssVariable = (cssObject) => {
     const css = [
         ':root{',
@@ -53,6 +51,7 @@ export const buildCssVariable = (cssObject) => {
  * @param {Partial<import('@mui/material/styles').Theme>} lodexTheme
  * @return {import('@mui/material/styles').Theme}
  */
+// @ts-expect-error: TS7006
 export const createMuiTheme = (lodexTheme) => {
     const theme = createTheme(lodexTheme);
     return assign(lodexTheme, theme);
@@ -63,6 +62,7 @@ export const createMuiTheme = (lodexTheme) => {
  * @param {any} data
  * @return {Promise<string>}
  */
+// @ts-expect-error: TS7006
 const renderTemplate = (file, data) => {
     return new Promise((resolve) => {
         ejs.renderFile(file, data, {
@@ -102,6 +102,7 @@ const renderTemplate = (file, data) => {
  * @param {RenderData} data
  * @return {Promise<string>}
  */
+// @ts-expect-error: TS7006
 export const renderPublic = (themeId, data) => {
     const lodexTheme = getTheme(themeId);
     if (!lodexTheme) {
@@ -161,6 +162,7 @@ export const renderPublic = (themeId, data) => {
  * @param {RenderData} data
  * @return {Promise<string>}
  */
+// @ts-expect-error: TS7006
 export const renderAdmin = (data) => {
     const lodexTheme = getTheme('default');
     const theme = createMuiTheme(lodexTheme.muiTheme);
@@ -195,6 +197,7 @@ export const renderAdmin = (data) => {
  * @param {RenderData} data
  * @return {Promise<string>}
  */
+// @ts-expect-error: TS7006
 export const renderRootAdmin = (data) => {
     const theme = createMuiTheme(rootTheme);
     const cssVariable = buildCssVariable(theme.palette);

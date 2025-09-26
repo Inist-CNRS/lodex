@@ -3,7 +3,6 @@ import route from 'koa-route';
 import config from 'config';
 import cacheControl from 'koa-cache-control';
 
-// @ts-expect-error TS(2306): File '/home/madeorsk/Cloud/Marmelab/Code/lodex/src... Remove this comment to see the full error message
 import translations from '../../services/translations';
 
 const getTranslations = async (ctx: any, locale: any) => {
