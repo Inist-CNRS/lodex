@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { translate } from '../../i18n/I18NContext';
+// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import { TextField, Checkbox, FormControlLabel } from '@mui/material';
 
@@ -35,6 +36,7 @@ const styles = {
 };
 
 const onPageChange =
+    // @ts-expect-error TS7006
     (changeFacetValue, filter, name) => (currentPage, perPage) =>
         changeFacetValue({
             name,
@@ -43,6 +45,7 @@ const onPageChange =
             filter,
         });
 
+// @ts-expect-error TS7006
 const onFilterChange = (changeFacetValue, name, perPage) => (e) => {
     changeFacetValue({
         name,
@@ -52,9 +55,11 @@ const onFilterChange = (changeFacetValue, name, perPage) => (e) => {
     });
 };
 
+// @ts-expect-error TS7006
 const onInvertChange = (invertFacet, name) => (_, inverted) =>
     invertFacet({ name, inverted });
 
+// @ts-expect-error TS7006
 const onSortChange = (sortFacetValue, name) => (nextSortBy) =>
     sortFacetValue({
         name,
@@ -62,24 +67,39 @@ const onSortChange = (sortFacetValue, name) => (nextSortBy) =>
     });
 
 export const FacetValueList = ({
+    // @ts-expect-error TS7031
     name,
+    // @ts-expect-error TS7031
     label,
+    // @ts-expect-error TS7031
     facetValues,
+    // @ts-expect-error TS7031
     total,
+    // @ts-expect-error TS7031
     currentPage,
+    // @ts-expect-error TS7031
     perPage,
+    // @ts-expect-error TS7031
     filter,
+    // @ts-expect-error TS7031
     inverted,
+    // @ts-expect-error TS7031
     sort,
+    // @ts-expect-error TS7031
     p: polyglot,
+    // @ts-expect-error TS7031
     page,
+    // @ts-expect-error TS7031
     changeFacetValue,
+    // @ts-expect-error TS7031
     invertFacet,
+    // @ts-expect-error TS7031
     sortFacetValue,
 }) => {
     return (
         <div className="facet-value-list" style={styles.list}>
             <FormControlLabel
+                // @ts-expect-error TS2322
                 fullWidth
                 control={
                     <Checkbox
@@ -122,6 +142,8 @@ export const FacetValueList = ({
                 </div>
                 <div>
                     {filter && <FacetValueAll name={name} page={page} />}
+                    {/*
+                     // @ts-expect-error TS7006 */}
                     {facetValues.map((facetValue) => {
                         return (
                             <FacetValueItem
@@ -165,8 +187,11 @@ FacetValueList.propTypes = {
     sortFacetValue: PropTypes.func.isRequired,
 };
 
+// @ts-expect-error TS7006
 export const ConnectFacetValueList = (props) => (
     <FacetActionsContext.Consumer>
+        {/*
+         // @ts-expect-error TS2339 */}
         {({ changeFacetValue, invertFacet, sortFacetValue }) => (
             <FacetValueList
                 {...props}
@@ -178,6 +203,7 @@ export const ConnectFacetValueList = (props) => (
     </FacetActionsContext.Consumer>
 );
 
+// @ts-expect-error TS7006
 const mapStateToProps = (state, { name, page }) => {
     const selectors = fromFacet(page);
 

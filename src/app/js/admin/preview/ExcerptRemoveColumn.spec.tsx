@@ -1,4 +1,5 @@
 import React from 'react';
+// @ts-expect-error TS7016
 import { shallow } from 'enzyme';
 import { Button } from '@mui/material';
 
@@ -12,6 +13,7 @@ describe('<ExcerptRemoveColumn />', () => {
             <ExcerptRemoveColumn
                 field={field}
                 removeColumn={() => {}}
+                // @ts-expect-error TS2322
                 p={{ t: (key) => key }}
             />,
         );
@@ -26,6 +28,7 @@ describe('<ExcerptRemoveColumn />', () => {
             <ExcerptRemoveColumn
                 field={field}
                 removeColumn={() => {}}
+                // @ts-expect-error TS2322
                 p={{ t: (key) => key }}
             />,
         );

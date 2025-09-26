@@ -1,4 +1,5 @@
 import React from 'react';
+// @ts-expect-error TS7016
 import { shallow } from 'enzyme';
 import { Button } from '@mui/material';
 
@@ -14,6 +15,7 @@ describe('<ClearPublishedButton />', () => {
         const wrapper = shallow(
             <ClearPublishedButton
                 hasPublishedDataset={false}
+                // @ts-expect-error TS2322
                 p={{ t: (key) => key }}
             />,
         );
@@ -26,6 +28,7 @@ describe('<ClearPublishedButton />', () => {
         const wrapper = shallow(
             <ClearPublishedButton
                 hasPublishedDataset={false}
+                // @ts-expect-error TS2322
                 p={{ t: (key) => key }}
             />,
         );
@@ -37,6 +40,7 @@ describe('<ClearPublishedButton />', () => {
         const wrapper = shallow(
             <ClearPublishedButton
                 hasPublishedDataset={false}
+                // @ts-expect-error TS2322
                 p={{ t: (key) => key }}
             />,
         );

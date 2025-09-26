@@ -4,6 +4,7 @@ import { fireEvent, render, waitFor } from '../../../../test-utils';
 import { TestI18N } from '../../i18n/I18NContext';
 import { ValueField } from './ValueField';
 
+// @ts-expect-error TS7031
 function TestValueField({ choices }) {
     const form = useForm({
         defaultValues: {
@@ -14,6 +15,8 @@ function TestValueField({ choices }) {
 
     return (
         <TestI18N>
+            {/*
+             // @ts-expect-error TS2322 */}
             <ValueField form={form} choices={choices} />
         </TestI18N>
     );

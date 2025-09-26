@@ -1,8 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import { ListSubheader } from '@mui/material';
+// @ts-expect-error TS7016
 import { Field } from 'redux-form';
 
 import { getEditionComponent } from '../../formats';
@@ -31,16 +33,23 @@ export const directlyEditableTransformers = [
     'CAPITALIZE',
 ];
 
+// @ts-expect-error TS7006
 export const canBeDirectlyEdited = (transformers) =>
     !transformers.some(
+        // @ts-expect-error TS7031
         ({ operation }) => !directlyEditableTransformers.includes(operation),
     );
 
 export const CompositeFieldInputComponent = ({
+    // @ts-expect-error TS7031
     label,
+    // @ts-expect-error TS7031
     p: polyglot,
+    // @ts-expect-error TS7031
     rootField,
+    // @ts-expect-error TS7031
     isRootFieldEditable,
+    // @ts-expect-error TS7031
     compositeFields,
 }) => (
     <div>
@@ -59,6 +68,8 @@ export const CompositeFieldInputComponent = ({
             )}
         </div>
         <div style={style.list}>
+            {/*
+             // @ts-expect-error TS7006 */}
             {compositeFields.map((f) => (
                 <FieldInput key={f.name} field={f} />
             ))}
@@ -79,12 +90,15 @@ CompositeFieldInputComponent.defaultProps = {
     compositeFields: null,
 };
 
+// @ts-expect-error TS7006
 const mapStateToProps = (state, { field }) => ({
     rootField: {
+        // @ts-expect-error TS2339
         ...fromFields.getFieldByName(state, field.name),
         composedOf: null,
     },
     isRootFieldEditable: canBeDirectlyEdited(field.transformers),
+    // @ts-expect-error TS2339
     compositeFields: fromFields.getCompositeFieldsByField(state, field),
 });
 

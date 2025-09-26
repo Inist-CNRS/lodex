@@ -20,8 +20,10 @@ const styles = {
     },
 };
 
+// @ts-expect-error TS7031
 const ImportModelDialogComponent = ({ onClose, importFields }) => {
     const { translate } = useTranslate();
+    // @ts-expect-error TS7006
     const handleFileUpload = (event) => {
         importFields(event.target.files[0]);
         onClose();
@@ -53,6 +55,7 @@ const ImportModelDialogComponent = ({ onClose, importFields }) => {
                 name="file_model"
                 type="file"
                 onChange={handleFileUpload}
+                // @ts-expect-error TS2322
                 style={styles.input}
             />
         </Button>,

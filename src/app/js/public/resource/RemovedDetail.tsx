@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { CardHeader, Card, CardContent } from '@mui/material';
 import moment from 'moment';
+// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import { translate } from '../../i18n/I18NContext';
 
@@ -20,6 +21,7 @@ const styles = {
     },
 };
 
+// @ts-expect-error TS7031
 export const RemovedDetailComponent = ({ reason, removedAt, p: polyglot }) => (
     <Card className="removed-detail" sx={{ marginTop: '0.5rem' }}>
         <CardHeader
@@ -29,8 +31,12 @@ export const RemovedDetailComponent = ({ reason, removedAt, p: polyglot }) => (
         />
         <CardContent>
             <dl style={styles.container}>
+                {/*
+                 // @ts-expect-error TS2322 */}
                 <dt style={styles.reason}>{polyglot.t('reason')}</dt>
                 <dd className="reason">
+                    {/*
+                     // @ts-expect-error TS7006 */}
                     {reason.split('\n').map((line, index) => (
                         <p key={index}>{line}</p>
                     ))}
@@ -51,6 +57,7 @@ RemovedDetailComponent.propTypes = {
     p: polyglotPropTypes.isRequired,
 };
 
+// @ts-expect-error TS2339
 const mapStateToProps = fromResource.getRemovedData;
 
 const mapDispatchToProps = {};

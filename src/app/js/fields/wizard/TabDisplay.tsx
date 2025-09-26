@@ -10,8 +10,11 @@ import FieldWidthInput from '../FieldWidthInput';
 
 export const TabDisplayComponent = ({
     keepMeta = true,
+    // @ts-expect-error TS7031
     filter,
+    // @ts-expect-error TS7031
     fields,
+    // @ts-expect-error TS7031
     subresourceId,
 }) => (
     <>

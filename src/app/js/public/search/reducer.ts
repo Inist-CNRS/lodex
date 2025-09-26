@@ -1,3 +1,4 @@
+// @ts-expect-error TS7016
 import { combineActions, createAction, handleActions } from 'redux-actions';
 
 import { createGlobalSelectors } from '../../lib/selectors';
@@ -37,36 +38,53 @@ export const loadMoreSucceed = createAction(SEARCH_LOAD_MORE_SUCCESS);
 export const loadMoreFailed = createAction(SEARCH_LOAD_MORE_ERROR);
 
 export const fromSearch = {
+    // @ts-expect-error TS7006
     isLoading: (state) => state.loading,
+    // @ts-expect-error TS7006
     getDataset: (state) => state.dataset,
+    // @ts-expect-error TS7006
     getDatasetTotal: (state) => state.total,
+    // @ts-expect-error TS7006
     getDatasetFullTotal: (state) => state.fullTotal,
+    // @ts-expect-error TS7006
     getSort: (state) => state.sort,
+    // @ts-expect-error TS7006
     getFieldNames: (state) => state.fields,
+    // @ts-expect-error TS7006
     getPage: (state) => state.page,
+    // @ts-expect-error TS7006
     getTotal: (state) => state.total,
+    // @ts-expect-error TS7006
     getQuery: (state) => state.query,
+    // @ts-expect-error TS7006
     getResourceUrisWithAnnotationFilter: (state) =>
         state.filters?.resourceUrisWithAnnotation,
+    // @ts-expect-error TS7006
     getAnnotationsFilter: (state) => state.filters?.annotations ?? null,
+    // @ts-expect-error TS7006
     getVisitedFilter: (state) => state.filters?.visited ?? null,
+    // @ts-expect-error TS7006
     getFilters: (state) => state.filters,
+    // @ts-expect-error TS7006
     getPrevResource: (state, currentResource) => {
         if (!currentResource || !currentResource.uri) {
             return null;
         }
         const indexCurrentResource = state.dataset.findIndex(
+            // @ts-expect-error TS7006
             (resource) => resource.uri === currentResource.uri,
         );
         return indexCurrentResource < 0
             ? null
             : state.dataset[indexCurrentResource - 1];
     },
+    // @ts-expect-error TS7006
     getNextResource: (state, currentResource) => {
         if (!currentResource || !currentResource.uri) {
             return null;
         }
         const indexCurrentResource = state.dataset.findIndex(
+            // @ts-expect-error TS7006
             (resource) => resource.uri === currentResource.uri,
         );
         return indexCurrentResource === -1 ||
@@ -74,6 +92,7 @@ export const fromSearch = {
             ? null
             : state.dataset[indexCurrentResource + 1];
     },
+    // @ts-expect-error TS7006
     ...createGlobalSelectors((state) => state.facet, facetSelectors),
 };
 
@@ -103,12 +122,15 @@ export const defaultState = {
 export default handleActions(
     {
         [combineActions(...Object.values(facetActionTypes))]: (
+            // @ts-expect-error TS7006
             state,
+            // @ts-expect-error TS7006
             action,
         ) => ({
             ...state,
             facet: facetReducer(state.facet, action),
         }),
+        // @ts-expect-error TS7006
         [SEARCH]: (state, { payload }) => ({
             ...state,
             dataset: [],
@@ -117,6 +139,7 @@ export default handleActions(
             total: 0,
             query: payload.query,
         }),
+        // @ts-expect-error TS7006
         [SEARCH_ANNOTATIONS]: (state, { payload: { mode, resourceUris } }) => {
             switch (mode) {
                 case null: {
@@ -181,6 +204,7 @@ export default handleActions(
                     return state;
             }
         },
+        // @ts-expect-error TS7006
         [SEARCH_VISITED]: (state, { payload: { value } }) => {
             return {
                 ...state,
@@ -192,7 +216,9 @@ export default handleActions(
             };
         },
         [SEARCH_NEW_RESOURCE_ANNOTATED]: (
+            // @ts-expect-error TS7006
             state,
+            // @ts-expect-error TS7031
             { payload: { resourceUri } },
         ) => {
             if (
@@ -212,6 +238,7 @@ export default handleActions(
             }
             return state;
         },
+        // @ts-expect-error TS7006
         [SEARCH_SORT]: (state, { payload: { sortBy: nextSortBy } }) => {
             const { sortBy, sortDir } = state.sort;
 
@@ -227,6 +254,7 @@ export default handleActions(
                 },
             };
         },
+        // @ts-expect-error TS7006
         [SEARCH_SORT_INIT]: (state, { payload: { sortBy, sortDir } }) => {
             return {
                 ...state,
@@ -238,7 +266,9 @@ export default handleActions(
             };
         },
         [combineActions(SEARCH_RESULTS, SEARCH_ERROR)]: (
+            // @ts-expect-error TS7006
             state,
+            // @ts-expect-error TS7031
             { payload },
         ) => ({
             ...state,
@@ -249,12 +279,15 @@ export default handleActions(
             fullTotal: payload.fullTotal || 0,
             fields: payload.fields || state.fields,
         }),
+        // @ts-expect-error TS7006
         [SEARCH_LOAD_MORE]: (state) => ({
             ...state,
             loading: true,
         }),
         [combineActions(SEARCH_LOAD_MORE_SUCCESS, SEARCH_LOAD_MORE_ERROR)]: (
+            // @ts-expect-error TS7006
             state,
+            // @ts-expect-error TS7031
             { payload },
         ) => ({
             ...state,

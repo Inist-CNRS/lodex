@@ -1,5 +1,6 @@
 export const getUserSessionStorageInfo = () => {
     const localStorageItem = JSON.parse(
+        // @ts-expect-error TS2345
         window.localStorage.getItem('redux-localstorage'),
     );
     if (typeof localStorageItem === 'string') {

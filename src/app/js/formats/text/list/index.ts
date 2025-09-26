@@ -10,5 +10,6 @@ export default {
     AdminComponent,
     EditionComponent,
     defaultArgs,
+    // @ts-expect-error TS7006
     predicate: (value) => value == null || value === '' || Array.isArray(value),
 };

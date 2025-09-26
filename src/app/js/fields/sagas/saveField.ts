@@ -1,5 +1,8 @@
+// @ts-expect-error TS7016
 import get from 'lodash/get';
+// @ts-expect-error TS7016
 import set from 'lodash/set';
+// @ts-expect-error TS7016
 import { destroy } from 'redux-form';
 import { call, put, select, takeLatest } from 'redux-saga/effects';
 
@@ -19,6 +22,7 @@ import { push } from 'redux-first-history';
 import { SCOPE_DOCUMENT } from '../../../../common/scope';
 import fetchSaga from '../../lib/sagas/fetchSaga';
 
+// @ts-expect-error TS7006
 export const sanitizeField = (fieldData) => {
     const valueOperation = get(fieldData, 'transformers[0].operation');
     if (valueOperation === 'CONCAT') {
@@ -26,6 +30,7 @@ export const sanitizeField = (fieldData) => {
 
         return set({ ...fieldData }, 'transformers[0].args', [
             ...values.slice(0, 2),
+            // @ts-expect-error TS7031
             ...values.slice(2).filter(({ value }) => !!value),
         ]);
     }
@@ -33,6 +38,7 @@ export const sanitizeField = (fieldData) => {
     return fieldData;
 };
 
+// @ts-expect-error TS7031
 export function* handleSaveField({ payload }) {
     const {
         field: { subresourceId },
@@ -45,9 +51,13 @@ export function* handleSaveField({ payload }) {
             : ''
     }`;
 
+    // @ts-expect-error TS7057
     const fieldData = yield select(getFieldFormData);
+    // @ts-expect-error TS7057
     const sanitizedFieldData = yield call(sanitizeField, fieldData);
+    // @ts-expect-error TS7057
     const request = yield select(
+        // @ts-expect-error TS2339
         fromUser.getSaveFieldRequest,
         sanitizedFieldData,
     );
@@ -64,18 +74,23 @@ export function* handleSaveField({ payload }) {
     yield put(destroy(FIELD_FORM_NAME));
 }
 
+// @ts-expect-error TS7031
 export function* handleSaveFieldData({ payload }) {
+    // @ts-expect-error TS7057
     const field = yield select(fromFields.getFromName, payload.name);
     if (!field) {
         return;
     }
 
+    // @ts-expect-error TS7057
     const sanitizedFieldData = yield call(sanitizeField, {
         ...field,
         ...payload.data,
     });
 
+    // @ts-expect-error TS7057
     const request = yield select(
+        // @ts-expect-error TS2339
         fromUser.getSaveFieldRequest,
         sanitizedFieldData,
     );
@@ -95,6 +110,8 @@ export function* handleSaveFieldData({ payload }) {
 }
 
 export default function* watchSaveField() {
+    // @ts-expect-error TS2769
     yield takeLatest([SAVE_FIELD], handleSaveField);
+    // @ts-expect-error TS2769
     yield takeLatest([SAVE_FIELD_FROM_DATA], handleSaveFieldData);
 }

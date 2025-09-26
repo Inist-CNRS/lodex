@@ -7,6 +7,7 @@ import { fromFields, fromUser } from '../../sharedSelectors';
 import fetchSaga from '../../lib/sagas/fetchSaga';
 import { SCOPE_DOCUMENT } from '../../../../common/scope';
 
+// @ts-expect-error TS7031
 export function* handleRemoveField({ payload }) {
     const {
         field: { name, subresourceId },
@@ -18,7 +19,9 @@ export function* handleRemoveField({ payload }) {
             ? `/subresource/${subresourceId}`
             : ''
     }`;
+    // @ts-expect-error TS7057
     const field = yield select(fromFields.getFieldByName, name);
+    // @ts-expect-error TS7057
     const request = yield select(fromUser.getRemoveFieldRequest, field);
 
     const { error } = yield call(fetchSaga, request);
@@ -32,5 +35,6 @@ export function* handleRemoveField({ payload }) {
 }
 
 export default function* watchLoadField() {
+    // @ts-expect-error TS2769
     yield takeLatest([REMOVE_FIELD], handleRemoveField);
 }

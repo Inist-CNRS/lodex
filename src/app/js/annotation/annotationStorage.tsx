@@ -11,12 +11,14 @@ import { useDispatch } from 'react-redux';
 import { newResourceAnnotated } from '../public/search/reducer';
 
 export const getStorageKey = () =>
+    // @ts-expect-error TS2339
     `${window.__TENANT__ || 'default'}:annotation`;
 
 const AnnotationStorageContext = createContext({
     annotations: {},
 });
 
+// @ts-expect-error TS7031
 export const AnnotationStorageProvider = ({ children }) => {
     const storedAnnotations = useMemo(() => {
         return JSON.parse(localStorage.getItem(getStorageKey()) || '{}');
@@ -32,6 +34,7 @@ export const AnnotationStorageProvider = ({ children }) => {
         <AnnotationStorageContext.Provider
             value={{
                 annotations,
+                // @ts-expect-error TS2561
                 setAnnotations,
             }}
         >
@@ -44,21 +47,25 @@ AnnotationStorageProvider.propTypes = {
     children: PropTypes.node.isRequired,
 };
 
+// @ts-expect-error TS7031
 export const useGetFieldAnnotationIds = ({ fieldId, resourceUri }) => {
     const { annotations } = useContext(AnnotationStorageContext);
 
     return useMemo(
+        // @ts-expect-error TS7053
         () => annotations[resourceUri]?.[fieldId] || [],
         [annotations, resourceUri, fieldId],
     );
 };
 
 export const useSaveAnnotationId = () => {
+    // @ts-expect-error TS2339
     const { setAnnotations } = useContext(AnnotationStorageContext);
     const dispatch = useDispatch();
 
     return useCallback(
         ({ fieldId, resourceUri, _id }) => {
+            // @ts-expect-error TS7006
             setAnnotations((annotations) => {
                 if (!annotations[resourceUri]) {
                     dispatch(newResourceAnnotated({ resourceUri }));
@@ -79,11 +86,14 @@ export const useSaveAnnotationId = () => {
     );
 };
 
+// @ts-expect-error TS7031
 export const useSetFieldAnnotationIds = ({ fieldId, resourceUri }) => {
+    // @ts-expect-error TS2339
     const { setAnnotations } = useContext(AnnotationStorageContext);
 
     return useCallback(
         (ids) => {
+            // @ts-expect-error TS7006
             setAnnotations((annotations) => ({
                 ...annotations,
                 [resourceUri]: {

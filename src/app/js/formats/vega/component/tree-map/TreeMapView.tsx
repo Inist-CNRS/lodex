@@ -1,6 +1,7 @@
 import { field as fieldPropTypes } from '../../../../propTypes';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import injectData from '../../../injectData';
 import TreeMap, { TREE_MAP_LAYOUT } from '../../models/TreeMap';
@@ -22,6 +23,7 @@ const styles = {
     },
 };
 
+// @ts-expect-error TS7006
 const TreeMapView = (props) => {
     const {
         data,
@@ -48,9 +50,11 @@ const TreeMapView = (props) => {
         let values = data.values;
         if (!hierarchy) {
             if (flatType === 'id/value') {
+                // @ts-expect-error TS2339
                 values = TreeMapData.transformIdValue(data.values);
             }
             if (flatType === 'source/target/weight') {
+                // @ts-expect-error TS2339
                 values = TreeMapData.transformSourceTargetWeight(data.values);
             }
         }
@@ -74,6 +78,7 @@ const TreeMapView = (props) => {
                     width * 0.76,
                 );
             } catch (e) {
+                // @ts-expect-error TS18046
                 setError(e.message);
                 return null;
             }
@@ -114,6 +119,7 @@ const TreeMapView = (props) => {
     }
 
     return (
+        // @ts-expect-error TS2322
         <div style={styles.container} ref={ref}>
             <CustomActionVega
                 spec={spec}
@@ -147,6 +153,7 @@ TreeMapView.defaultProps = {
     className: null,
 };
 
+// @ts-expect-error TS7006
 const mapStateToProps = (state, { formatData }) => {
     if (!formatData) {
         return {
@@ -170,6 +177,7 @@ export const TreeMapAdminView = connect((state, props) => {
             format: 'Preview Format',
         },
         data: {
+            // @ts-expect-error TS2339
             values: props.dataset.values ?? [],
         },
     };

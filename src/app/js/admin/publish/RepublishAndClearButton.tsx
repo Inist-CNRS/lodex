@@ -12,6 +12,7 @@ import {
     ListItemText,
 } from '@mui/material';
 import { connect } from 'react-redux';
+// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import PropTypes from 'prop-types';
 import ClearAllIcon from '@mui/icons-material/ClearAll';
@@ -29,7 +30,9 @@ const options = [
 ];
 
 export const RepublishAndClearButtonComponent = ({
+    // @ts-expect-error TS7031
     p: polyglot,
+    // @ts-expect-error TS7031
     onPublish,
 }) => {
     const [open, setOpen] = React.useState(false);
@@ -40,6 +43,7 @@ export const RepublishAndClearButtonComponent = ({
 
     const anchorRef = React.useRef();
 
+    // @ts-expect-error TS7006
     const handleClick = (index) => {
         if (index === 1) {
             return handleShowClearDialog();
@@ -47,6 +51,7 @@ export const RepublishAndClearButtonComponent = ({
         return onPublish();
     };
 
+    // @ts-expect-error TS7006
     const handleMenuItemClick = (event, index) => {
         setOpen(false);
         handleClick(index);
@@ -56,7 +61,9 @@ export const RepublishAndClearButtonComponent = ({
         setOpen((prevOpen) => !prevOpen);
     };
 
+    // @ts-expect-error TS7006
     const handleClose = (event) => {
+        // @ts-expect-error TS2339
         if (anchorRef.current && anchorRef.current.contains(event.target)) {
             return;
         }
@@ -75,6 +82,7 @@ export const RepublishAndClearButtonComponent = ({
                     color: 'primary.main',
                     m: 1.5,
                 }}
+                // @ts-expect-error TS2769
                 color="neutral"
             >
                 <Button
@@ -150,6 +158,7 @@ export const RepublishAndClearButtonComponent = ({
                 )}
             </Popper>
             {showClearDialog && (
+                // @ts-expect-error TS2322
                 <ClearDialog type="published" onClose={handleHideClearDialog} />
             )}
         </React.Fragment>

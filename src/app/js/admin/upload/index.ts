@@ -1,3 +1,4 @@
+// @ts-expect-error TS7016
 import { createAction, handleActions, combineActions } from 'redux-actions';
 
 export const UPLOAD_FILE = 'UPLOAD_FILE';
@@ -28,6 +29,7 @@ export const changeLoaderName = createAction(CHANGE_LOADER_NAME);
 export const upsertCustomLoader = createAction(UPSERT_CUSTOM_LOADER);
 export const deleteCustomLoader = createAction(DELETE_CUSTOM_LOADER);
 
+// @ts-expect-error TS7006
 const validateUrl = (url) =>
     url && (url.startsWith('http://') || url.startsWith('https://'));
 
@@ -44,7 +46,9 @@ export const defaultState = {
 export default handleActions(
     {
         [combineActions(UPLOAD_FILE, UPLOAD_URL, UPLOAD_TEXT)]: (
+            // @ts-expect-error TS7006
             state,
+            // @ts-expect-error TS7031
             { payload },
         ) =>
             payload
@@ -55,40 +59,49 @@ export default handleActions(
                       status: 'PENDING',
                   }
                 : state,
+        // @ts-expect-error TS7006
         UPLOAD_SUCCESS: (state) => ({
             ...state,
             status: 'SUCCESS',
         }),
+        // @ts-expect-error TS7006
         UPLOAD_ERROR: (state, { payload }) => ({
             ...state,
             status: 'ERROR',
             error: payload.message,
         }),
+        // @ts-expect-error TS7006
         OPEN_UPLOAD: (state) => ({
             ...state,
             open: true,
         }),
+        // @ts-expect-error TS7006
         CLOSE_UPLOAD: (state) => ({
             ...state,
             open: false,
         }),
+        // @ts-expect-error TS7006
         CHANGE_UPLOAD_URL: (state, { payload: url }) => ({
             ...state,
             url,
             validUrl: validateUrl(url),
         }),
+        // @ts-expect-error TS7006
         CHANGE_UPLOAD_TEXT: (state, { payload: textContent }) => ({
             ...state,
             textContent,
         }),
+        // @ts-expect-error TS7006
         CHANGE_LOADER_NAME: (state, { payload: loaderName }) => ({
             ...state,
             loaderName,
         }),
+        // @ts-expect-error TS7006
         UPSERT_CUSTOM_LOADER: (state, { payload: customLoader }) => ({
             ...state,
             customLoader,
         }),
+        // @ts-expect-error TS7006
         DELETE_CUSTOM_LOADER: (state) => ({
             ...state,
             customLoader: null,
@@ -97,13 +110,21 @@ export default handleActions(
     defaultState,
 );
 
+// @ts-expect-error TS7006
 export const getUpload = (state) => state;
+// @ts-expect-error TS7006
 export const isUploadPending = (state) => state.status === 'PENDING';
+// @ts-expect-error TS7006
 export const isOpen = (state) => state.open;
+// @ts-expect-error TS7031
 export const getUrl = ({ url }) => url;
+// @ts-expect-error TS7031
 export const getTextContent = ({ textContent }) => textContent;
+// @ts-expect-error TS7031
 export const getLoaderName = ({ loaderName }) => loaderName;
+// @ts-expect-error TS7031
 export const isUrlValid = ({ validUrl }) => validUrl;
+// @ts-expect-error TS7031
 export const getCustomLoader = ({ customLoader }) => customLoader;
 
 export const selectors = {

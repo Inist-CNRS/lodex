@@ -10,23 +10,27 @@ import downloadFile from '../../../lib/downloadFile';
 describe('export saga', () => {
     describe('handleExportPublishedDatasetSuccess', () => {
         const saga = handleExportPublishedDatasetSuccess({
+            // @ts-expect-error TS2741
             payload: { exportID: 'type' },
         });
 
         it('should select fromSearch.getAppliedFacets', () => {
             expect(saga.next().value).toEqual(
+                // @ts-expect-error TS2339
                 select(fromSearch.getAppliedFacets),
             );
         });
 
         it('should select fromSearch.getInvertedFacetKeys', () => {
             expect(saga.next().value).toEqual(
+                // @ts-expect-error TS2339
                 select(fromSearch.getInvertedFacetKeys),
             );
         });
 
         it('should select fromSearch.getQuery', () => {
             expect(
+                // @ts-expect-error TS2345
                 saga.next([
                     {
                         field: {
@@ -35,19 +39,24 @@ describe('export saga', () => {
                         value: 'aFacetValue',
                     },
                 ]).value,
+            // @ts-expect-error TS2339
             ).toEqual(select(fromSearch.getQuery));
         });
 
         it('should select fromSearch.getSort', () => {
+            // @ts-expect-error TS2345
             expect(saga.next('aFilter').value).toEqual(
+                // @ts-expect-error TS2339
                 select(fromSearch.getSort),
             );
         });
 
         it('should call getQueryString', () => {
             expect(
+                // @ts-expect-error TS2345
                 saga.next({ sortBy: 'field', sortDir: 'ASC' }).value,
             ).toEqual(
+                // @ts-expect-error TS2769
                 call(getQueryString, {
                     match: 'aFilter',
                     facets: undefined,
@@ -69,7 +78,9 @@ describe('export saga', () => {
         });
 
         it('should select fromUser.getExportPublishedDatasetRequest', () => {
+            // @ts-expect-error TS2345
             expect(saga.next('queryString').value).toEqual(
+                // @ts-expect-error TS2339
                 select(fromUser.getExportPublishedDatasetRequest, {
                     type: 'type',
                     queryString: 'queryString',
@@ -78,12 +89,14 @@ describe('export saga', () => {
         });
 
         it('should fetch request', () => {
+            // @ts-expect-error TS2345
             expect(saga.next('request').value).toEqual(
                 call(fetchSaga, 'request', [], 'blob'),
             );
         });
 
         it('should call downloadFile with response', () => {
+            // @ts-expect-error TS2345
             expect(saga.next({ response: 'response' }).value).toEqual(
                 call(downloadFile, 'response', undefined),
             );

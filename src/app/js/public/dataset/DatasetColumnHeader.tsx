@@ -7,6 +7,7 @@ import { sortDataset as sortDatasetAction } from './';
 import { fromDataset } from '../selectors';
 import SortButton from '../../lib/components/SortButton';
 
+// @ts-expect-error TS7031
 const DatasetColumnHeader = ({ name, label, sortBy, sortDir, sortDataset }) => (
     <TableCell>
         {label === 'uri' ? (
@@ -38,7 +39,9 @@ DatasetColumnHeader.propTypes = {
     sortDataset: PropTypes.func.isRequired,
 };
 
+// @ts-expect-error TS7006
 const mapStateToProps = (state) => ({
+    // @ts-expect-error TS2339
     ...fromDataset.getSort(state),
 });
 

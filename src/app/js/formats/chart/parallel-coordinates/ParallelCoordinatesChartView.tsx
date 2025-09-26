@@ -1,9 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+// @ts-expect-error TS7016
 import { withRouter } from 'react-router';
+// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import { translate } from '../../../i18n/I18NContext';
+// @ts-expect-error TS7016
 import get from 'lodash/get';
 
 import { getPercentValue } from '../../../lib/getPercentage';
@@ -21,11 +24,13 @@ const styles = stylesToClassname(
     'parallel-coordinates-chart-view',
 );
 
+// @ts-expect-error TS7006
 const prepareData = (data = [], history, polyglot) =>
     data.map((d) => {
         const title = getShortText(d['target-title']);
         const onClick = () => {
             history.push({
+                // @ts-expect-error TS2339
                 pathname: `/${d.target}`,
                 state: {},
             });
@@ -37,13 +42,16 @@ const prepareData = (data = [], history, polyglot) =>
         )}</div>`;
         return {
             label,
+            // @ts-expect-error TS2339
             weights: d.weights.map((weight) => weight * 100),
             onClick,
         };
     });
 
+// @ts-expect-error TS7031
 const ParallelCoordinatesChartView = ({ fieldNames, data, colorSet }) => {
     return (
+        // @ts-expect-error TS2339
         <div className={styles.container}>
             <ParallelCoordinatesChart
                 fieldNames={fieldNames}
@@ -62,6 +70,7 @@ ParallelCoordinatesChartView.propTypes = {
     colorSet: PropTypes.arrayOf(PropTypes.string),
 };
 
+// @ts-expect-error TS7006
 const getFieldNames = (field, fields, resource) => {
     /**
      * @type {string}
@@ -72,14 +81,18 @@ const getFieldNames = (field, fields, resource) => {
         return [];
     }
     characteristics.splice(0, 4);
+    // @ts-expect-error TS7006
     return characteristics.map((characteristic) => {
+        // @ts-expect-error TS7006
         const fieldName = fields.find((field) => field.name === characteristic);
         return get(fieldName, 'label', '');
     });
 };
 
 const mapStateToProps = (
+    // @ts-expect-error TS7006
     _,
+    // @ts-expect-error TS7031
     { field, fields, resource, formatData, history, p: polyglot },
 ) => {
     return {

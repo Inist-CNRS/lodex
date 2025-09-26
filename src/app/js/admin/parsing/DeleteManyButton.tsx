@@ -8,6 +8,7 @@ import { useTranslate } from '../../i18n/I18NContext';
 import { ConfirmPopup } from '../../lib/components/ConfirmPopup';
 import datasetApi from '../api/dataset';
 
+// @ts-expect-error TS7031
 export function DeleteManyButton({ selectedRowIds, reloadDataset }) {
     const { translate } = useTranslate();
 
@@ -69,6 +70,7 @@ export function DeleteManyButton({ selectedRowIds, reloadDataset }) {
                 isOpen={isModalOpen}
                 cancelLabel={translate('cancel')}
                 confirmLabel={translate('delete')}
+                // @ts-expect-error TS2554
                 title={translate('parsing_delete_many_modal_title', {
                     smart_count: selectedRowIds.length,
                 })}

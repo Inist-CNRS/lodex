@@ -1,5 +1,7 @@
 import React from 'react';
+// @ts-expect-error TS7016
 import { shallow } from 'enzyme';
+// @ts-expect-error TS7016
 import { StyleSheetTestUtils } from 'aphrodite';
 
 import { IstexItemComponent } from './IstexItem';
@@ -11,6 +13,7 @@ describe('<IstexItem />', () => {
 
     it('should display one a with correct props', () => {
         const wrapper = shallow(
+            // @ts-expect-error TS2741
             <IstexItemComponent
                 title="title"
                 publicationDate="publicationDate"

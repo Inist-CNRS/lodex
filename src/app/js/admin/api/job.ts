@@ -6,6 +6,7 @@ import {
 } from '../../user';
 import { getUserSessionStorageInfo } from './tools';
 
+// @ts-expect-error TS7006
 export const getJobLogs = (jobId) => {
     const { token } = getUserSessionStorageInfo();
 
@@ -13,6 +14,7 @@ export const getJobLogs = (jobId) => {
     return fetch(request);
 };
 
+// @ts-expect-error TS7006
 const cancelJob = (type, subLabel) => {
     const state = getUserSessionStorageInfo();
     const request = getCancelJobRequest(state, type, subLabel);

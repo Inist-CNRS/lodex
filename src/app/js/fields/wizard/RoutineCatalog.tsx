@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { translate } from '../../i18n/I18NContext';
+// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 
@@ -42,6 +43,7 @@ const styles = {
     },
 };
 
+// @ts-expect-error TS7031
 const RoutineCatalogDescription = ({ routine, polyglot }) => {
     return (
         <React.Fragment>
@@ -75,19 +77,26 @@ const RoutineCatalogDescription = ({ routine, polyglot }) => {
 };
 
 const RoutineCatalog = ({
+    // @ts-expect-error TS7031
     p: polyglot,
+    // @ts-expect-error TS7031
     isOpen,
+    // @ts-expect-error TS7031
     handleClose,
+    // @ts-expect-error TS7031
     onChange,
+    // @ts-expect-error TS7031
     currentValue,
     precomputed = false,
 }) => {
+    // @ts-expect-error TS7006
     const handleValueChange = (newValue) => {
         const event = { target: { value: newValue } };
         onChange(event);
         handleClose();
     };
 
+    // @ts-expect-error TS7006
     const scrollTo = (el) => {
         if (el) {
             el.scrollIntoView({ inline: 'center', block: 'center' });

@@ -6,6 +6,7 @@ import React, {
     useCallback,
 } from 'react';
 import { polyglot as polyglotPropTypes } from '../../../propTypes';
+// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 
 import injectData from '../../injectData';
@@ -26,6 +27,7 @@ const styles = {
     },
 };
 
+// @ts-expect-error TS7031
 const Venn = ({ formatData, p, colorSet }) => {
     const { translate } = useTranslate();
     const [{ width, height }, setDimensions] = useState({
@@ -52,6 +54,7 @@ const Venn = ({ formatData, p, colorSet }) => {
             };
         }
         return {
+            // @ts-expect-error TS7006
             input: formatData.map(x=>x),
         };
     }, [formatData]);
@@ -61,6 +64,8 @@ const Venn = ({ formatData, p, colorSet }) => {
     return (
         <div style={{ height: `500px` }}>
             <FormatFullScreenMode>
+                {/*
+                 // @ts-expect-error TS2322 */}
                 <div style={styles.container} ref={containerRef}>
                     <Suspense
                         fallback={<Loading>{translate('loading')}</Loading>}
@@ -82,6 +87,7 @@ const Venn = ({ formatData, p, colorSet }) => {
 Venn.propTypes = {
     colorSet: PropTypes.arrayOf(PropTypes.string),
     formatData: PropTypes.arrayOf({
+        // @ts-expect-error TS2353
         source: PropTypes.string.isRequired,
         target: PropTypes.string.isRequired,
         weight: PropTypes.number,

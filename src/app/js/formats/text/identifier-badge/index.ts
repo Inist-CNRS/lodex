@@ -8,6 +8,7 @@ export default {
     ListComponent: IdentifierBadgeView,
     AdminComponent,
     defaultArgs,
+    // @ts-expect-error TS7006
     predicate: (value) =>
         value == null || value === '' || typeof value === 'string',
 };

@@ -5,9 +5,12 @@ import { fireEvent, render, waitFor } from '../../../../test-utils';
 
 import configTenant from '../../../../../configTenant.json';
 
+// @ts-expect-error TS7006
 function TestConfigTenantFormView(props) {
     return (
         <TestI18N>
+            {/*
+             // @ts-expect-error TS2322 */}
             <ConfigTenantFormView {...props} />
         </TestI18N>
     );
@@ -199,6 +202,7 @@ describe('ConfigTenantForm', () => {
 
         await waitFor(() => {
             fireEvent.change(
+                // @ts-expect-error TS2345
                 wrapper.getAllByLabelText('notification_email').at(0),
                 {
                     target: { value: 'invalidEmail' },
@@ -235,6 +239,7 @@ describe('ConfigTenantForm', () => {
 
         await waitFor(() => {
             fireEvent.change(
+                // @ts-expect-error TS2345
                 wrapper.getAllByLabelText('notification_email').at(0),
                 {
                     target: { value: '' },
@@ -375,6 +380,7 @@ describe('ConfigTenantForm', () => {
         expect(wrapper.getByLabelText('user')).not.toBeChecked();
 
         await waitFor(() => {
+            // @ts-expect-error TS2345
             fireEvent.change(wrapper.getAllByLabelText('Username').at(0), {
                 target: { value: 'newUser' },
             });
@@ -384,6 +390,7 @@ describe('ConfigTenantForm', () => {
         );
 
         await waitFor(() => {
+            // @ts-expect-error TS2345
             fireEvent.change(wrapper.getAllByLabelText('Password').at(0), {
                 target: { value: 'userSecret' },
             });
@@ -398,6 +405,7 @@ describe('ConfigTenantForm', () => {
         expect(wrapper.getByLabelText('contributor')).toBeChecked();
 
         await waitFor(() => {
+            // @ts-expect-error TS2345
             fireEvent.change(wrapper.getAllByLabelText('Username').at(1), {
                 target: { value: 'newContributor' },
             });
@@ -407,6 +415,7 @@ describe('ConfigTenantForm', () => {
         );
 
         await waitFor(() => {
+            // @ts-expect-error TS2345
             fireEvent.change(wrapper.getAllByLabelText('Password').at(1), {
                 target: { value: 'contributorSecret' },
             });
@@ -417,6 +426,7 @@ describe('ConfigTenantForm', () => {
 
         await waitFor(() => {
             fireEvent.change(
+                // @ts-expect-error TS2345
                 wrapper.getAllByLabelText('notification_email').at(0),
                 {
                     target: { value: 'admin@inist.fr' },

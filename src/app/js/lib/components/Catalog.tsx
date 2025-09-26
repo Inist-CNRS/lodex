@@ -40,6 +40,7 @@ const styles = {
     },
 };
 
+// @ts-expect-error TS7031
 const EnricherDescription = ({ enricher, translatePrefix }) => {
     const { translate } = useTranslate();
     return (
@@ -92,14 +93,21 @@ const EnricherDescription = ({ enricher, translatePrefix }) => {
 };
 
 export const EnrichmentCatalog = ({
+    // @ts-expect-error TS7031
     isOpen,
+    // @ts-expect-error TS7031
     handleClose,
+    // @ts-expect-error TS7031
     onChange,
+    // @ts-expect-error TS7031
     selectedWebServiceUrl,
+    // @ts-expect-error TS7031
     enrichers,
+    // @ts-expect-error TS7031
     translatePrefix,
 }) => {
     const { translate } = useTranslate();
+    // @ts-expect-error TS7006
     const filters = [...new Set(enrichers.map((item) => item.type))].sort(
         (x, y) => translate(x).localeCompare(translate(y)),
     );
@@ -112,16 +120,19 @@ export const EnrichmentCatalog = ({
     useEffect(() => {
         setFilterEnricher(
             selectedFilter && selectedFilter !== 'all'
+                // @ts-expect-error TS7006
                 ? enrichers.filter((item) => item.type === selectedFilter)
                 : enrichers,
         );
     }, [selectedFilter]);
 
+    // @ts-expect-error TS7006
     const handleValueChange = (newValue) => {
         onChange(newValue);
         handleClose();
     };
 
+    // @ts-expect-error TS7006
     const scrollTo = (el) => {
         if (el) {
             el.scrollIntoView({ inline: 'center', block: 'center' });
@@ -150,10 +161,12 @@ export const EnrichmentCatalog = ({
                         />
                     </Box>
                     {filters.map((filter) => (
+                        // @ts-expect-error TS2769
                         <Box key={filter}>
                             <Button
                                 color="primary"
                                 className="format-category"
+                                // @ts-expect-error TS2345
                                 onClick={() => setSelectedFilter(filter)}
                                 variant={
                                     filter === selectedFilter
@@ -171,6 +184,8 @@ export const EnrichmentCatalog = ({
                     aria-label="format list"
                     style={{ height: '70vh' }}
                 >
+                    {/*
+                     // @ts-expect-error TS7006 */}
                     {filteredEnricher.map((enricher) => (
                         <ListItem
                             key={enricher.id}

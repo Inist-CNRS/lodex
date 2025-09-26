@@ -9,7 +9,9 @@ import MenuItem from '@mui/material/MenuItem';
 import PropTypes from 'prop-types';
 import React, { useCallback, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
+// @ts-expect-error TS7016
 import { withRouter } from 'react-router';
+// @ts-expect-error TS7016
 import { compose } from 'recompose';
 import { bindActionCreators } from 'redux';
 import { DEFAULT_TENANT } from '../../../../common/tools/tenantTools';
@@ -30,12 +32,19 @@ const NESTED_MENU_ADVANCED = 'advanced';
 const NESTED_MENU_MODEL = 'model';
 
 const MenuComponent = ({
+    // @ts-expect-error TS7031
     hasPublishedDataset,
+    // @ts-expect-error TS7031
     onSignOut,
+    // @ts-expect-error TS7031
     importSucceeded,
+    // @ts-expect-error TS7031
     importHasEnrichments,
+    // @ts-expect-error TS7031
     importHasPrecomputed,
+    // @ts-expect-error TS7031
     importFailed,
+    // @ts-expect-error TS7031
     history,
 }) => {
     const { translate } = useTranslate();
@@ -65,6 +74,7 @@ const MenuComponent = ({
         if (importHasEnrichments || importHasPrecomputed) {
             setShowRelaunchDialog(true);
             setDataRelaunchDialog({
+                // @ts-expect-error TS2353
                 hasEnrichments: importHasEnrichments,
                 hasPrecomputed: importHasPrecomputed,
             });
@@ -73,6 +83,7 @@ const MenuComponent = ({
 
     const open = !!anchorEl;
 
+    // @ts-expect-error TS7006
     const handleOpenMenu = (event) => {
         setAnchorEl(event.currentTarget);
     };
@@ -149,9 +160,11 @@ const MenuComponent = ({
 
                     <NestedMenu
                         isOpen={subMenuToShow === NESTED_MENU_MODEL}
+                        // @ts-expect-error TS2345
                         onOpen={() => setSubMenuToShow(NESTED_MENU_MODEL)}
                         onClose={handleCloseSubMenu}
                         label={translate('model')}
+                        // @ts-expect-error TS2322
                         menu={
                             <ModelNestedMenu
                                 onClose={handleCloseMenu}
@@ -162,19 +175,24 @@ const MenuComponent = ({
 
                     <NestedMenu
                         isOpen={subMenuToShow === NESTED_MENU_ANNOTATIONS}
+                        // @ts-expect-error TS2345
                         onOpen={() => setSubMenuToShow(NESTED_MENU_ANNOTATIONS)}
                         onClose={handleCloseSubMenu}
                         label={translate('annotations')}
+                        // @ts-expect-error TS2322
                         menu={
+                            // @ts-expect-error TS2322
                             <AnnotationNestedMenu onClose={handleCloseMenu} />
                         }
                     />
 
                     <NestedMenu
                         isOpen={subMenuToShow === NESTED_MENU_ADVANCED}
+                        // @ts-expect-error TS2345
                         onOpen={() => setSubMenuToShow(NESTED_MENU_ADVANCED)}
                         onClose={handleCloseSubMenu}
                         label={translate('advanced')}
+                        // @ts-expect-error TS2322
                         menu={
                             <AdvancedNestedMenu
                                 onClose={handleCloseMenu}
@@ -210,7 +228,9 @@ const MenuComponent = ({
 
             {showClearDialog && (
                 <ClearDialog
+                    // @ts-expect-error TS2322
                     type={clearDialogType}
+                    // @ts-expect-error TS2322
                     onClose={() => setShowClearDialog(!showClearDialog)}
                 />
             )}
@@ -224,6 +244,7 @@ const MenuComponent = ({
             {showRelaunchDialog && (
                 <ImportHasRelaunchDialog
                     onClose={() => setShowRelaunchDialog(false)}
+                    // @ts-expect-error TS2322
                     data={dataRelaunchDialog}
                 />
             )}
@@ -240,6 +261,7 @@ MenuComponent.propTypes = {
     importFailed: PropTypes.bool.isRequired,
     history: PropTypes.object.isRequired,
 };
+// @ts-expect-error TS7006
 const mapDispatchToProps = (dispatch) =>
     bindActionCreators(
         {
@@ -247,11 +269,17 @@ const mapDispatchToProps = (dispatch) =>
         },
         dispatch,
     );
+// @ts-expect-error TS7006
 const mapStateToProps = (state) => ({
+    // @ts-expect-error TS2339
     hasPublishedDataset: fromPublication.hasPublishedDataset(state),
+    // @ts-expect-error TS2339
     importSucceeded: fromImport.hasImportSucceeded(state),
+    // @ts-expect-error TS2339
     importHasEnrichments: fromImport.hasEnrichments(state),
+    // @ts-expect-error TS2339
     importHasPrecomputed: fromImport.hasPrecomputed(state),
+    // @ts-expect-error TS2339
     importFailed: fromImport.hasImportFailed(state),
 });
 export default compose(

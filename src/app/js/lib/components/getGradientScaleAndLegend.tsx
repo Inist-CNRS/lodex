@@ -1,11 +1,15 @@
 import React from 'react';
+// @ts-expect-error TS7016
 import { scaleQuantize } from 'd3-scale';
 
 import ColorScaleLegend from './ColorScaleLegend';
 
 const getGradientScaleAndLegend = ({
+    // @ts-expect-error TS7031
     colorScheme,
+    // @ts-expect-error TS7031
     hoverColorScheme,
+    // @ts-expect-error TS7031
     maxValue,
 }) => {
     const nullColor = colorScheme[0];
@@ -20,7 +24,9 @@ const getGradientScaleAndLegend = ({
           };
 
     return {
+        // @ts-expect-error TS7006
         colorScale: (value) => (value ? colorScale(value) : nullColor),
+        // @ts-expect-error TS7006
         hoverColorScale: (value) =>
             value ? hoverColorScale(value) : nullColor,
         legend: (

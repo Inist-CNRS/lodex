@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 import { connect } from 'react-redux';
+// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import { translate } from '../../../i18n/I18NContext';
 
@@ -63,6 +64,7 @@ const styles = stylesToClassname(
     'redirect-view',
 );
 
+// @ts-expect-error TS7031
 export const RedirectViewLoader = ({ classes, title, url }) => (
     <div className={classes.loading}>
         <div>
@@ -81,10 +83,15 @@ RedirectViewLoader.propTypes = {
 };
 
 export const RedirectView = ({
+    // @ts-expect-error TS7031
     className,
+    // @ts-expect-error TS7031
     classes,
+    // @ts-expect-error TS7031
     p: polyglot,
+    // @ts-expect-error TS7031
     field,
+    // @ts-expect-error TS7031
     resource,
 }) => {
     const url = resource[field.name];

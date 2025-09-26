@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
+// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import { translate } from '../../i18n/I18NContext';
 
@@ -26,9 +27,13 @@ const styles = stylesToClassname(
 );
 
 const DatasetSearchBar = ({
+    // @ts-expect-error TS7031
     defaultQuery,
+    // @ts-expect-error TS7031
     search,
+    // @ts-expect-error TS7031
     hasSearchableFields,
+    // @ts-expect-error TS7031
     onToggleFacets,
 }) => {
     const showToggleFacetButton = useMediaQuery('@media (max-width: 991.5px)', {
@@ -49,6 +54,7 @@ const DatasetSearchBar = ({
                 <SearchBar
                     className="dataset-searchbar"
                     value={localQuery}
+                    // @ts-expect-error TS7006
                     onChange={(e) => handleSearch(e.target.value)}
                     onClear={handleClearSearch}
                 />
@@ -65,6 +71,7 @@ const DatasetSearchBar = ({
                 >
                     <ToggleFacetsButton
                         onChange={onToggleFacets}
+                        // @ts-expect-error TS2339
                         className={styles.toggleFacetsButton}
                     />
                 </Grid>
@@ -85,8 +92,11 @@ DatasetSearchBar.propTypes = {
     onToggleFacets: PropTypes.func.isRequired,
 };
 
+// @ts-expect-error TS7006
 const mapStateToProps = (state) => ({
+    // @ts-expect-error TS2339
     hasSearchableFields: fromFields.hasSearchableFields(state),
+    // @ts-expect-error TS2339
     defaultQuery: fromDataset.getFilter(state),
 });
 

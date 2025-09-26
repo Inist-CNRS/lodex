@@ -12,6 +12,7 @@ import { fromUser } from '../../../sharedSelectors';
 import fetchSaga from '../../../lib/sagas/fetchSaga';
 import { fromResource, fromRouter } from '../../selectors';
 
+// @ts-expect-error TS7006
 export const parsePathName = (pathname) => {
     const match = pathname.match(/^\/((?:ark|uid):\/.*$)/);
 
@@ -20,16 +21,19 @@ export const parsePathName = (pathname) => {
 
 export function* handleLoadResource() {
     yield put(preLoadPublication());
+    // @ts-expect-error TS7057
     const uri = yield select(fromRouter.getResourceUri);
     if (!uri) {
         return;
     }
 
+    // @ts-expect-error TS7057
     if (yield select(fromResource.isResourceLoaded, uri)) {
         return;
     }
 
     yield put(loadResource());
+    // @ts-expect-error TS7057
     const request = yield select(fromUser.getLoadResourceRequest, uri);
     const { error, response } = yield call(fetchSaga, request);
 

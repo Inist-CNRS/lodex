@@ -10,6 +10,7 @@ import FieldInternalName from './FieldInternalName';
 import FieldInput from '../lib/components/FieldInput';
 import { translate } from '../i18n/I18NContext';
 
+// @ts-expect-error TS7031
 export const FieldInternalComponent = ({ field, p: polyglot }) => {
     return (
         <Box

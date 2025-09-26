@@ -40,6 +40,7 @@ import { useContributorCache } from './useContributorCache';
 import { useReCaptcha } from './useReCaptacha';
 import { IsContributorNamePublicField } from './fields/IsContributorNamePublicField';
 
+// @ts-expect-error TS7006
 const isRequiredFieldValid = (formState, fieldName) => {
     const fieldState = formState.fieldMeta[fieldName];
     if (!fieldState) {
@@ -49,6 +50,7 @@ const isRequiredFieldValid = (formState, fieldName) => {
     return fieldState.isTouched && fieldState.errors.length === 0;
 };
 
+// @ts-expect-error TS7006
 const isOptionalFieldValid = (formState, fieldName) => {
     const fieldState = formState.fieldMeta[fieldName];
     if (!fieldState) {
@@ -59,14 +61,23 @@ const isOptionalFieldValid = (formState, fieldName) => {
 };
 
 export function CreateAnnotationModal({
+    // @ts-expect-error TS7031
     isSubmitting,
+    // @ts-expect-error TS7031
     onSubmit,
+    // @ts-expect-error TS7031
     anchorEl,
+    // @ts-expect-error TS7031
     onClose,
+    // @ts-expect-error TS7031
     initialValue,
+    // @ts-expect-error TS7031
     field,
+    // @ts-expect-error TS7031
     resourceUri,
+    // @ts-expect-error TS7031
     isFieldValueAnnotable,
+    // @ts-expect-error TS7031
     openHistory,
 }) {
     const { translate } = useTranslate();
@@ -77,12 +88,14 @@ export function CreateAnnotationModal({
     const [isConfirmOpen, setIsConfirmOpen] = useState(false);
 
     const form = useForm({
+        // @ts-expect-error TS2741
         defaultValues: {
             resourceUri,
             comment: '',
             target: 'title',
             kind: 'comment',
         },
+        // @ts-expect-error TS2339
         onSubmit: async ({ value: { authorRememberMe, ...value } }) => {
             const reCaptchaToken = await requestReCaptchaToken();
             updateContributorCache({ authorRememberMe, ...value });
@@ -124,8 +137,10 @@ export function CreateAnnotationModal({
         }
 
         for (const [key, value] of Object.entries(contributor || {})) {
+            // @ts-expect-error TS2345
             form.setFieldValue(key, value);
         }
+        // @ts-expect-error TS2554
         form.validate();
     }, [currentStep, form, contributor]);
 
@@ -145,6 +160,7 @@ export function CreateAnnotationModal({
 
         if (
             [ANNOTATION_KIND_CORRECTION, ANNOTATION_KIND_ADDITION].includes(
+                // @ts-expect-error TS2345
                 state.values.kind,
             )
         ) {
@@ -174,6 +190,7 @@ export function CreateAnnotationModal({
     const resetForm = () => {
         form.reset();
         form.setErrorMap({});
+        // @ts-expect-error TS2345
         setCurrentStep(0);
     };
 
@@ -232,6 +249,7 @@ export function CreateAnnotationModal({
                     horizontal: 'left',
                 }}
                 PaperProps={{
+                    // @ts-expect-error TS2353
                     component: 'form',
                     onSubmit: (event) => {
                         event.preventDefault();
@@ -256,6 +274,8 @@ export function CreateAnnotationModal({
                 }}
                 role="dialog"
             >
+                {/*
+                 // @ts-expect-error TS2786 */}
                 <form.Field name="resourceUri">
                     {(field) => (
                         <input
@@ -270,6 +290,7 @@ export function CreateAnnotationModal({
                         <Box flexGrow={1}>
                             <LinearProgress
                                 variant="determinate"
+                                // @ts-expect-error TS7053
                                 value={progressByStep[currentStep]}
                             />
                         </Box>
@@ -290,11 +311,15 @@ export function CreateAnnotationModal({
 
                         {currentStep === COMMENT_STEP && (
                             <Tooltip title={translate('public_annotation')}>
+                                {/*
+                                 // @ts-expect-error TS2769 */}
                                 <HelpIcon fontSize="1.125rem" />
                             </Tooltip>
                         )}
                     </Stack>
 
+                    {/*
+                     // @ts-expect-error TS2769 */}
                     <Box fullWidth role="tabpanel">
                         {currentStep === TARGET_STEP && (
                             <Stack
@@ -373,6 +398,8 @@ export function CreateAnnotationModal({
                                             'annotation_personal_information_tooltip',
                                         )}
                                     >
+                                        {/*
+                                         // @ts-expect-error TS2769 */}
                                         <HelpIcon fontSize="1.125rem" />
                                     </Tooltip>
                                 </Stack>
@@ -403,6 +430,7 @@ export function CreateAnnotationModal({
                             goToStep={setCurrentStep}
                             isSubmitting={isSubmitting}
                             disableSubmit={disableSubmit}
+                            // @ts-expect-error TS2322
                             form={form}
                         />
                     </Box>

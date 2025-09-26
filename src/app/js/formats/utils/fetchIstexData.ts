@@ -17,14 +17,17 @@ export const output = [
     'host.issue',
 ].join(',');
 
+// @ts-expect-error TS7006
 export const getSiteUrl = (value) =>
     `${ISTEX_SITE_URL}/?q=${encodeURIComponent(`host.issn="${value}"`)}`;
 
+// @ts-expect-error TS7006
 export const getApiUrl = (value) =>
     `${ISTEX_API_URL}/document/?q=${encodeURIComponent(
         `host.issn="${value}"`,
     )}`;
 
+// @ts-expect-error TS7031
 export const getUrl = ({ props: { resource, field }, page, perPage }) => {
     const value = resource[field.name];
 
@@ -36,8 +39,11 @@ export const getUrl = ({ props: { resource, field }, page, perPage }) => {
 };
 
 export const getUrlFromISSN = ({
+    // @ts-expect-error TS7031
     props: { resource, field },
+    // @ts-expect-error TS7031
     page,
+    // @ts-expect-error TS7031
     perPage,
 }) => {
     const value = resource[field.name];
@@ -49,6 +55,7 @@ export const getUrlFromISSN = ({
     };
 };
 
+// @ts-expect-error TS7006
 export const parseFetchResult = (fetchResult) => {
     if (fetchResult.error) {
         throw new Error(fetchResult.error);
@@ -58,6 +65,7 @@ export const parseFetchResult = (fetchResult) => {
     } = fetchResult;
     const { protocol, host } = URL.parse(ISTEX_API_URL);
     return {
+        // @ts-expect-error TS7006
         hits: hits.map((hit) => {
             const hostPagesFirst =
                 hit.host.pages && hit.host.pages.first
@@ -79,6 +87,7 @@ export const parseFetchResult = (fetchResult) => {
                 }),
                 title: hit.title,
                 publicationDate: hit.publicationDate,
+                // @ts-expect-error TS7031
                 authors: hit.author ? hit.author.map(({ name }) => name) : '',
                 hostGenre: hit.host.genre[0],
                 hostTitle: hit.host.title,

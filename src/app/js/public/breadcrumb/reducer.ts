@@ -1,3 +1,4 @@
+// @ts-expect-error TS7016
 import { createAction, handleActions } from 'redux-actions';
 
 export const LOAD_BREADCRUMB = 'LOAD_BREADCRUMB';
@@ -15,11 +16,13 @@ export const initialState = {
 
 export default handleActions(
     {
+        // @ts-expect-error TS7006
         [LOAD_BREADCRUMB_SUCCESS]: (state, { payload: { breadcrumb } }) => ({
             ...state,
             breadcrumb,
             error: null,
         }),
+        // @ts-expect-error TS7006
         [LOAD_BREADCRUMB_ERROR]: (state, { payload: { error } }) => ({
             ...state,
             error,
@@ -28,8 +31,10 @@ export default handleActions(
     initialState,
 );
 
+// @ts-expect-error TS7006
 export const hasBreadcrumb = (state) => state;
 
+// @ts-expect-error TS7006
 const getBreadcrumb = (state) => state;
 
 export const fromBreadcrumb = {

@@ -8,6 +8,7 @@ import {
     setLanguageError,
 } from '../';
 
+// @ts-expect-error TS7006
 export function* loadPhrases(locale) {
     const { response, error } = yield call(fetchSaga, {
         url: `/api/translations/${locale}`,
@@ -21,8 +22,10 @@ export function* loadPhrases(locale) {
     return response;
 }
 
+// @ts-expect-error TS7031
 export function* handleSetLanguage({ payload: locale }) {
     try {
+        // @ts-expect-error TS7057
         const phrases = yield call(loadPhrases, locale);
 
         yield put(setLanguageSuccess({ locale, phrases }));
@@ -32,5 +35,6 @@ export function* handleSetLanguage({ payload: locale }) {
 }
 
 export default function* watchSetLanguage() {
+    // @ts-expect-error TS2769
     yield takeLatest(SET_LANGUAGE_REQUEST, handleSetLanguage);
 }

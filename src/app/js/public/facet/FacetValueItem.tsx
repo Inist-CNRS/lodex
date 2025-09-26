@@ -9,6 +9,7 @@ import {
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
+// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import { translate, useTranslate } from '../../i18n/I18NContext';
 
@@ -26,9 +27,11 @@ const styles = {
     },
 };
 
+// @ts-expect-error TS7006
 const onCheck = (toggleFacetValue, name, facetValue) => () =>
     toggleFacetValue({ name, facetValue });
 
+// @ts-expect-error TS7031
 export const FacetValueItemView = ({ name, facetValue, isChecked }) => {
     const { translate } = useTranslate();
 
@@ -52,6 +55,8 @@ export const FacetValueItemView = ({ name, facetValue, isChecked }) => {
 
     return (
         <FacetActionsContext.Consumer>
+            {/*
+             // @ts-expect-error TS2339 */}
             {({ toggleFacetValue }) => (
                 <ListItem className="facet-value-item" sx={styles.listItem}>
                     <ListItemText
@@ -91,6 +96,7 @@ export const FacetValueItemView = ({ name, facetValue, isChecked }) => {
                             }}
                             componentsProps={{
                                 typography: {
+                                    // @ts-expect-error TS2353
                                     component: 'div',
                                     sx: {
                                         display: 'flex',
@@ -118,6 +124,7 @@ FacetValueItemView.propTypes = {
     }).isRequired,
 };
 
+// @ts-expect-error TS7006
 const mapStateToProps = (state, { name, facetValue, page }) => ({
     isChecked: fromFacet(page).isFacetValuesChecked(state, {
         name,

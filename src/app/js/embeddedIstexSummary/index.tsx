@@ -3,6 +3,7 @@ import 'url-api-polyfill';
 
 import React from 'react';
 import { render } from 'react-dom';
+// @ts-expect-error TS7016
 import Polyglot from 'node-polyglot';
 
 import {
@@ -22,13 +23,17 @@ const polyglot = new Polyglot({
     phrases: phrasesFor(locale),
 });
 
+// @ts-expect-error TS2345
 const theme = createTheme(defaultMuiTheme, {
     userAgent: navigator.userAgent,
 });
 
+// @ts-expect-error TS7006
 const App = (props) => (
     <MuiThemeProvider theme={theme}>
         <FieldProvider {...props}>
+            {/*
+             // @ts-expect-error TS7031 */}
             {({ resource, field, formatData }) => (
                 <IstexSummaryView
                     {...field.format.args}

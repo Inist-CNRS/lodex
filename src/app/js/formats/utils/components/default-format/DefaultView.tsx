@@ -31,11 +31,13 @@ const styles = {
     },
 };
 
+// @ts-expect-error TS7031
 const DefaultView = ({ className, resource, field, fieldStatus, shrink }) => {
     let value = resource[field.name];
 
     if (isURL(value)) {
         return (
+            // @ts-expect-error TS2739
             <Link style={styles[fieldStatus]} href={`${value}`}>
                 {value}
             </Link>
@@ -43,6 +45,7 @@ const DefaultView = ({ className, resource, field, fieldStatus, shrink }) => {
     }
     if (isLocalURL(value)) {
         return (
+            // @ts-expect-error TS2739
             <Link style={styles[fieldStatus]} href={`${canonicalURL(value)}`}>
                 {value}
             </Link>
@@ -54,6 +57,7 @@ const DefaultView = ({ className, resource, field, fieldStatus, shrink }) => {
         <Typography
             component="span"
             className="property_value_item"
+            // @ts-expect-error TS7053
             sx={styles[fieldStatus]}
         >
             <span className={className}>{text}</span>
@@ -77,6 +81,7 @@ DefaultView.defaultProps = {
 
 export default DefaultView;
 
+// @ts-expect-error TS7031
 export const getReadableValue = ({ resource, field }) => {
     return resource[field.name];
 };

@@ -17,6 +17,7 @@ import { useAutocompleteTranslations } from './useAutocompleteTranslations';
 
 const filter = createFilterOptions();
 
+// @ts-expect-error TS7006
 function optionToAutocompleteValue(option) {
     return {
         value: option,
@@ -26,12 +27,19 @@ function optionToAutocompleteValue(option) {
 
 // TextField component to use tanstack react form with material ui text field
 export function AutocompleteMultipleField({
+    // @ts-expect-error TS7031
     form,
+    // @ts-expect-error TS7031
     name,
+    // @ts-expect-error TS7031
     label,
+    // @ts-expect-error TS7031
     helperText,
+    // @ts-expect-error TS7031
     required,
+    // @ts-expect-error TS7031
     options,
+    // @ts-expect-error TS7031
     supportsNewValues,
 }) {
     const { translate } = useTranslate();
@@ -42,6 +50,7 @@ export function AutocompleteMultipleField({
         // required is used for optionally required field based on a condition
         // since tanstack form does not support multi field validation on the field side
         if (required) {
+            // @ts-expect-error TS2339
             return field.state.meta.isTouched && !field.state.value?.length
                 ? 'error_field_required'
                 : null;
@@ -52,6 +61,7 @@ export function AutocompleteMultipleField({
     }, [required, field.state]);
 
     const values = useMemo(() => {
+        // @ts-expect-error TS2339
         return (field.state.value ?? []).map(optionToAutocompleteValue);
     }, [field.state.value]);
 
@@ -95,6 +105,7 @@ export function AutocompleteMultipleField({
                     if (inputValue !== '' && !isExisting && supportsNewValues) {
                         filtered.push({
                             value: inputValue,
+                            // @ts-expect-error TS2554
                             title: translate('autocomplete_add', {
                                 option: inputValue,
                             }),

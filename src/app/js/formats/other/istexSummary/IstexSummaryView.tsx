@@ -25,12 +25,14 @@ import getDecadeFromData from './getDecadeFromData';
 import EmbedButton from './EmbedButton';
 import stylesToClassname from '../../../lib/stylesToClassName';
 
+// @ts-expect-error TS7031
 export const IstexDocument = ({ item }) => <IstexItem {...item} />;
 
 IstexDocument.propTypes = {
     item: PropTypes.shape({ id: PropTypes.string.isRequired }).isRequired,
 };
 
+// @ts-expect-error TS7006
 export const getComposedComponent = (displayDecade) =>
     composeRenderProps([
         ...(displayDecade ? [IstexList, DecadeFold] : []),
@@ -59,14 +61,23 @@ const styles = stylesToClassname(
 );
 
 export const IstexSummaryView = ({
+    // @ts-expect-error TS7031
     formatData,
+    // @ts-expect-error TS7031
     field,
+    // @ts-expect-error TS7031
     resource,
+    // @ts-expect-error TS7031
     searchedField,
+    // @ts-expect-error TS7031
     sortDir,
+    // @ts-expect-error TS7031
     yearThreshold,
+    // @ts-expect-error TS7031
     documentSortBy,
+    // @ts-expect-error TS7031
     p: polyglot,
+    // @ts-expect-error TS7031
     showEmbedButton,
 }) => {
     if (!resource[field.name] || !searchedField) {
@@ -81,9 +92,11 @@ export const IstexSummaryView = ({
     const ComposedComponent = getComposedComponent(displayDecade);
 
     return (
+        // @ts-expect-error TS2339
         <div className={`istex-summary ${styles.container}`}>
             {showEmbedButton && (
                 <EmbedButton
+                    // @ts-expect-error TS2769
                     className={styles.embedButton}
                     uri={resource.uri}
                     fieldName={field.name}
@@ -110,6 +123,7 @@ IstexSummaryView.propTypes = {
     fieldStatus: PropTypes.string,
     resource: PropTypes.object.isRequired,
     field: fieldPropTypes.isRequired,
+    // @ts-expect-error TS2551
     formatData: PropTypes.shape({ hits: PropTypes.Array }),
     error: PropTypes.string,
     searchedField: PropTypes.oneOf(SEARCHED_FIELD_VALUES),
@@ -131,4 +145,5 @@ IstexSummaryView.defaultProps = {
     showEmbedButton: true,
 };
 
+// @ts-expect-error TS2345
 export default injectData(getYearUrl)(IstexSummaryView);

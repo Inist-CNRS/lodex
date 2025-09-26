@@ -6,6 +6,7 @@ import { Box, Typography } from '@mui/material';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { translate } from '../../i18n/I18NContext';
 
+// @ts-expect-error TS7031
 const PrecomputedPreview = ({ lines, sourceColumns, p: polyglot }) => {
     return (
         <Box
@@ -22,6 +23,8 @@ const PrecomputedPreview = ({ lines, sourceColumns, p: polyglot }) => {
                 alignItems="center"
                 mb={4}
             >
+                {/*
+                 // @ts-expect-error TS2769 */}
                 <PreviewIcon mr={1} />
                 <Typography variant="h6">
                     {polyglot.t('value_preview_title')}
@@ -35,6 +38,7 @@ const PrecomputedPreview = ({ lines, sourceColumns, p: polyglot }) => {
             </Box>
             <Box mb={4}>
                 {lines.length > 0 &&
+                    // @ts-expect-error TS7006
                     lines?.map((line, index) => (
                         <Box key={index} mb={3}>
                             <Typography

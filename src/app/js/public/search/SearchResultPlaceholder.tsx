@@ -60,7 +60,9 @@ const styles = stylesToClassname(
     'search-result-placeholder',
 );
 
+// @ts-expect-error TS7031
 const Placeholder = ({ className }) => (
+    // @ts-expect-error TS2339
     <div className={classnames(styles.placeholder, className)} />
 );
 
@@ -69,12 +71,25 @@ Placeholder.propTypes = {
 };
 
 const SearchResultPlaceholder = () => (
+    // @ts-expect-error TS2339
     <div className={styles.container}>
+        {/*
+         // @ts-expect-error TS2339 */}
         <Placeholder className={styles.title} />
+        {/*
+         // @ts-expect-error TS2339 */}
         <Placeholder className={styles.description} />
+        {/*
+         // @ts-expect-error TS2339 */}
         <div className={styles.details}>
+            {/*
+             // @ts-expect-error TS2339 */}
             <Placeholder className={styles.detailsColumn} />
+            {/*
+             // @ts-expect-error TS2339 */}
             <div className={styles.detailsSpacer} />
+            {/*
+             // @ts-expect-error TS2339 */}
             <Placeholder className={styles.detailsColumn} />
         </div>
     </div>

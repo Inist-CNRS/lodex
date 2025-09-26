@@ -2,8 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import * as icons from '@fortawesome/free-solid-svg-icons';
+// @ts-expect-error TS7016
 import get from 'lodash/get';
 import classnames from 'classnames';
+// @ts-expect-error TS7016
 import { Link, NavLink } from 'react-router-dom';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
@@ -64,16 +66,19 @@ const styles = stylesToClassname(
     'menu-item',
 );
 
+// @ts-expect-error TS7006
 const getIcon = (icon) => {
     const faIcon = get(icons, icon);
     if (faIcon) {
         return (
+            // @ts-expect-error TS2339
             <FontAwesomeIcon icon={faIcon} className={styles.menuItemIcon} />
         );
     }
     return (
         <img
             src={icon}
+            // @ts-expect-error TS2339
             className={styles.menuItemIcon}
             width={50}
             height={50}
@@ -82,14 +87,23 @@ const getIcon = (icon) => {
 };
 
 const MenuItem = ({
+    // @ts-expect-error TS7031
     config,
+    // @ts-expect-error TS7031
     polyglot,
+    // @ts-expect-error TS7031
     hasGraph,
+    // @ts-expect-error TS7031
     graphDrawer,
+    // @ts-expect-error TS7031
     searchDrawer,
+    // @ts-expect-error TS7031
     advancedDrawer,
+    // @ts-expect-error TS7031
     canBeSearched,
+    // @ts-expect-error TS7031
     role,
+    // @ts-expect-error TS7031
     onClick,
 }) => {
     const label = config.label[polyglot.currentLocale];
@@ -103,11 +117,15 @@ const MenuItem = ({
                     exact
                     className={classnames(
                         'nav-item',
+                        // @ts-expect-error TS2339
                         styles.menuItem,
+                        // @ts-expect-error TS2339
                         styles.link,
                     )}
+                    // @ts-expect-error TS2339
                     activeClassName={styles.active}
                     onClick={onClick(config.role)}
+                    // @ts-expect-error TS7006
                     isActive={(match) => {
                         if (
                             !match ||
@@ -132,16 +150,21 @@ const MenuItem = ({
                         onClick={onClick(config.role, true)}
                         className={classnames(
                             'nav-item',
+                            // @ts-expect-error TS2339
                             styles.menuItem,
+                            // @ts-expect-error TS2339
                             styles.link,
                             {
+                                // @ts-expect-error TS2339
                                 [styles.active]: graphDrawer === 'open',
                             },
                         )}
+                        // @ts-expect-error TS7006
                         isActive={(location, params) =>
                             get(location, 'url') === '/graph' &&
                             get(params, 'pathname') !== '/graph'
                         }
+                        // @ts-expect-error TS2339
                         activeClassName={styles.active}
                     >
                         {icon}
@@ -157,16 +180,21 @@ const MenuItem = ({
                         onClick={onClick(config.role, true)}
                         className={classnames(
                             'nav-item',
+                            // @ts-expect-error TS2339
                             styles.menuItem,
+                            // @ts-expect-error TS2339
                             styles.link,
                             {
+                                // @ts-expect-error TS2339
                                 [styles.active]: searchDrawer === 'open',
                             },
                         )}
+                        // @ts-expect-error TS7006
                         isActive={(location, params) =>
                             get(location, 'url') === '/search' &&
                             get(params, 'pathname') !== '/search'
                         }
+                        // @ts-expect-error TS2339
                         activeClassName={styles.active}
                     >
                         {icon}
@@ -181,9 +209,12 @@ const MenuItem = ({
                     onClick={onClick(config.role, true)}
                     className={classnames(
                         'nav-item',
+                        // @ts-expect-error TS2339
                         styles.menuItem,
+                        // @ts-expect-error TS2339
                         styles.link,
                         {
+                            // @ts-expect-error TS2339
                             [styles.active]: advancedDrawer === 'open',
                         },
                     )}
@@ -201,7 +232,9 @@ const MenuItem = ({
                         )}/admin`}
                         className={classnames(
                             'nav-item',
+                            // @ts-expect-error TS2339
                             styles.menuItem,
+                            // @ts-expect-error TS2339
                             styles.link,
                         )}
                     >
@@ -215,6 +248,7 @@ const MenuItem = ({
                 role === 'not logged' && (
                     <Link
                         to="/login"
+                        // @ts-expect-error TS2339
                         className={classnames('nav-item', styles.menuItem)}
                     >
                         {icon}
@@ -229,7 +263,9 @@ const MenuItem = ({
                         to="/login"
                         className={classnames(
                             'nav-item',
+                            // @ts-expect-error TS2339
                             styles.menuItem,
+                            // @ts-expect-error TS2339
                             styles.link,
                         )}
                         onClick={onClick(config.role)}
@@ -253,6 +289,7 @@ const MenuItem = ({
                 return (
                     <a
                         href={link}
+                        // @ts-expect-error TS2339
                         className={classnames('nav-item', styles.menuItem)}
                     >
                         {icon}
@@ -267,6 +304,7 @@ const MenuItem = ({
                 return (
                     <a
                         href={`/instance/${tenant}/${link}`}
+                        // @ts-expect-error TS2339
                         className={classnames('nav-item', styles.menuItem)}
                     >
                         {icon}
@@ -281,9 +319,12 @@ const MenuItem = ({
                     onClick={onClick(config.role)}
                     className={classnames(
                         'nav-item',
+                        // @ts-expect-error TS2339
                         styles.menuItem,
+                        // @ts-expect-error TS2339
                         styles.link,
                     )}
+                    // @ts-expect-error TS2339
                     activeClassName={styles.active}
                 >
                     {icon}

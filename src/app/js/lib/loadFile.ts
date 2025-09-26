@@ -1,6 +1,8 @@
+// @ts-expect-error TS2306
 import Resumable from '@recuperateur/resumablejs';
 import { DEFAULT_TENANT } from '../../../common/tools/tenantTools';
 
+// @ts-expect-error TS7006
 export const loadFile = (url, file, token, customLoader = null) =>
     new Promise((resolve, reject) => {
         const options = {
@@ -14,6 +16,7 @@ export const loadFile = (url, file, token, customLoader = null) =>
         };
 
         if (customLoader) {
+            // @ts-expect-error TS2339
             options.query = {
                 customLoader,
             };
@@ -21,9 +24,11 @@ export const loadFile = (url, file, token, customLoader = null) =>
 
         const resumable = new Resumable(options);
 
+        // @ts-expect-error TS7006
         resumable.on('fileSuccess', (_, message) => {
             resolve(message);
         });
+        // @ts-expect-error TS7006
         resumable.on('error', (_, error) => reject(error));
 
         resumable.on('fileAdded', () => {
@@ -32,6 +37,7 @@ export const loadFile = (url, file, token, customLoader = null) =>
         resumable.addFile(file);
     });
 
+// @ts-expect-error TS7006
 export const loadDatasetFile = (file, token, loaderName, customLoader) => {
     const extension = loaderName || file.name.split('.').pop();
     const url = `/api/upload/${extension}`;
@@ -39,5 +45,6 @@ export const loadDatasetFile = (file, token, loaderName, customLoader) => {
     return loadFile(url, file, token, customLoader);
 };
 
+// @ts-expect-error TS7006
 export const loadModelFile = (file, token) =>
     loadFile('/api/field/import', file, token);

@@ -1,10 +1,12 @@
 import '@babel/polyfill';
 import 'url-api-polyfill';
 
+// @ts-expect-error TS7016
 import { createHashHistory } from 'history';
 import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
+// @ts-expect-error TS7016
 import { Redirect, Route } from 'react-router';
 
 import {
@@ -15,6 +17,7 @@ import {
 import { enUS, frFR } from '@mui/material/locale';
 import { enUS as enUSDatagrid, frFR as frFRDatagrid } from '@mui/x-data-grid';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+// @ts-expect-error TS7016
 import { Router } from 'react-router-dom';
 import getLocale from '../../../common/getLocale';
 import '../../ace-vite-loader';
@@ -50,6 +53,7 @@ const hashHistory = createHashHistory();
 export const { store, history } = configureStore(
     reducers,
     sagas,
+    // @ts-expect-error TS2339
     window.__PRELOADED_STATE__ || initialState,
     hashHistory,
 );
@@ -57,7 +61,9 @@ export const { store, history } = configureStore(
 if (process.env.NODE_ENV === 'e2e') {
     sessionStorage.setItem('lodex-dbName', 'lodex_test');
 } else {
+    // @ts-expect-error TS2339
     const dbName = window.__DBNAME__;
+    // @ts-expect-error TS2339
     const tenant = window.__TENANT__;
     sessionStorage.setItem('lodex-dbName', dbName);
     sessionStorage.setItem('lodex-tenant', tenant);
@@ -69,31 +75,50 @@ render(
     <Provider store={store}>
         <QueryClientProvider client={queryClient}>
             <ThemeProvider
+                // @ts-expect-error TS2345
                 theme={createThemeMui(defaultTheme, localesMUI.get(locale))}
             >
                 <I18N>
+                    {/*
+                     // @ts-expect-error TS2322 */}
                     <Router history={history}>
+                        {/*
+                         // @ts-expect-error TS2339 */}
                         <App tenant={window.__TENANT__}>
+                            {/*
+                             // @ts-expect-error TS2322 */}
                             <Route
                                 path="/"
                                 exact
                                 render={() => <Redirect to="/data" />}
                             />
+                            {/*
+                             // @ts-expect-error TS2322 */}
                             <PrivateRoute path="/data" component={Data} />
+                            {/*
+                             // @ts-expect-error TS2322 */}
                             <PrivateRoute path="/display" component={Display} />
+                            {/*
+                             // @ts-expect-error TS2322 */}
                             <PrivateRoute
                                 path="/annotations/:annotationId"
                                 component={AnnotationDetail}
                             />
+                            {/*
+                             // @ts-expect-error TS2322 */}
                             <PrivateRoute
                                 path="/annotations"
                                 component={AnnotationList}
                                 exact
                             />
+                            {/*
+                             // @ts-expect-error TS2322 */}
                             <PrivateRoute
                                 path="/config"
                                 component={ConfigTenantRoute}
                             />
+                            {/*
+                             // @ts-expect-error TS2322 */}
                             <Route path="/login" exact component={LoginAdmin} />
                         </App>
                     </Router>

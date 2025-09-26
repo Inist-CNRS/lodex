@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
+// @ts-expect-error TS7016
 import { compose } from 'recompose';
 
 import { MenuItem } from '@mui/material';
@@ -11,6 +12,7 @@ import FormSelectField from '../lib/components/FormSelectField';
 export const FIELD_ANNOTATION_FORMAT_TEXT = 'text';
 export const FIELD_ANNOTATION_FORMAT_LIST = 'list';
 
+// @ts-expect-error TS7031
 export function FieldAnnotationFormat({ isFieldAnnotable }) {
     const { translate } = useTranslate();
 
@@ -39,6 +41,7 @@ FieldAnnotationFormat.propTypes = {
     isFieldAnnotable: PropTypes.bool.isRequired,
 };
 
+// @ts-expect-error TS7006
 const mapStateToProps = (state) => {
     return {
         isFieldAnnotable: state.form.field.values.annotable,

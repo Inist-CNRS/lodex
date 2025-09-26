@@ -1,7 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+// @ts-expect-error TS7016
 import compose from 'recompose/compose';
+// @ts-expect-error TS7016
 import withHandlers from 'recompose/withHandlers';
 import { Button } from '@mui/material';
 
@@ -9,9 +11,13 @@ import { fromFields } from '../../sharedSelectors';
 import { useTranslate } from '../../i18n/I18NContext';
 
 export const ParsingExcerptAddColumnComponent = ({
+    // @ts-expect-error TS7031
     handleAddColumn,
+    // @ts-expect-error TS7031
     name,
+    // @ts-expect-error TS7031
     atTop,
+    // @ts-expect-error TS7031
     isFieldsLoading,
 }) => {
     const { translate } = useTranslate();
@@ -53,7 +59,9 @@ ParsingExcerptAddColumnComponent.defaultProps = {
     style: null,
 };
 
+// @ts-expect-error TS7006
 const mapStateToProps = (state) => ({
+    // @ts-expect-error TS2339
     isFieldsLoading: fromFields.isLoading(state),
 });
 
@@ -61,6 +69,7 @@ export default compose(
     connect(mapStateToProps),
     withHandlers({
         handleAddColumn:
+            // @ts-expect-error TS7031
             ({ name, onAddColumn }) =>
             () =>
                 onAddColumn(name),

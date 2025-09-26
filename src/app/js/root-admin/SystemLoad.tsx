@@ -27,6 +27,7 @@ const redColor = {
 
 // https://stackoverflow.com/questions/30143082/how-to-get-color-value-from-gradient-by-percentage-with-javascript
 // https://gist.github.com/gskema/2f56dc2e087894ffc756c11e6de1b5ed
+// @ts-expect-error TS7006
 const colorGradient = (fadeFraction, rgbColor1, rgbColor2, rgbColor3) => {
     let color1 = rgbColor1;
     let color2 = rgbColor2;
@@ -55,6 +56,7 @@ const colorGradient = (fadeFraction, rgbColor1, rgbColor2, rgbColor3) => {
     return `rgb(${red},${green},${blue})`;
 };
 
+// @ts-expect-error TS7031
 const CircularProgressWithLabel = ({ value }) => {
     return (
         <Box

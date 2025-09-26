@@ -5,9 +5,13 @@ import { createReduxHistoryContext } from 'redux-first-history';
 const sagaMiddleware = createSagaMiddleware();
 
 export default function configureStoreServer(
+    // @ts-expect-error TS7006
     reducers,
+    // @ts-expect-error TS7006
     sagas,
+    // @ts-expect-error TS7006
     initialState,
+    // @ts-expect-error TS7006
     history,
 ) {
     const { createReduxHistory, routerMiddleware, routerReducer } =
@@ -15,8 +19,11 @@ export default function configureStoreServer(
     const middlewares = applyMiddleware(routerMiddleware, sagaMiddleware);
 
     const devtools =
+        // @ts-expect-error TS2339
         typeof window !== 'undefined' && window.__REDUX_DEVTOOLS_EXTENSION__
+            // @ts-expect-error TS2339
             ? window.__REDUX_DEVTOOLS_EXTENSION__()
+            // @ts-expect-error TS7006
             : (f) => f;
 
     const rootReducer = combineReducers({
@@ -31,6 +38,7 @@ export default function configureStoreServer(
     );
 
     sagaMiddleware.run(sagas);
+    // @ts-expect-error TS2339
     store.runSaga = sagaMiddleware.run;
 
     return { store, history: createReduxHistory(store) };

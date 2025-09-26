@@ -1,4 +1,5 @@
 import React from 'react';
+// @ts-expect-error TS7016
 import { shallow } from 'enzyme';
 
 import ExcerptLine from './ExcerptLine';
@@ -15,6 +16,7 @@ describe('<ExcerptLine />', () => {
             <ExcerptLine
                 columns={columns}
                 line={line}
+                // @ts-expect-error TS2322
                 p={{ t: (key) => key }}
             />,
         );

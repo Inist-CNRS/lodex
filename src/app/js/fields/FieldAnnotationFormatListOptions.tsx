@@ -4,14 +4,18 @@ import Stack from '@mui/material/Stack';
 import PropTypes from 'prop-types';
 import { default as React, useMemo } from 'react';
 import { connect } from 'react-redux';
+// @ts-expect-error TS7016
 import { compose } from 'recompose';
 import { useTranslate } from '../i18n/I18NContext';
 import FieldInput from '../lib/components/FieldInput';
 import { FIELD_ANNOTATION_FORMAT_LIST } from './FieldAnnotationFormat';
 
 function FieldAnnotationFormatListOptionsField({
+    // @ts-expect-error TS7031
     input,
+    // @ts-expect-error TS7031
     label,
+    // @ts-expect-error TS7031
     meta: { touched, error },
 }) {
     const fieldValue = useMemo(() => {
@@ -48,7 +52,9 @@ FieldAnnotationFormatListOptionsField.propTypes = {
 };
 
 export function FieldAnnotationFormatListOptions({
+    // @ts-expect-error TS7031
     isFieldAnnotable,
+    // @ts-expect-error TS7031
     fieldAnnotationFormat,
 }) {
     const { translate } = useTranslate();
@@ -78,6 +84,7 @@ FieldAnnotationFormatListOptions.propTypes = {
     fieldAnnotationFormat: PropTypes.string.isRequired,
 };
 
+// @ts-expect-error TS7006
 const mapStateToProps = (state) => {
     return {
         isFieldAnnotable: state.form.field.values.annotable,

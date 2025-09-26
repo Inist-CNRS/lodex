@@ -1,7 +1,9 @@
 import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+// @ts-expect-error TS7016
 import compose from 'recompose/compose';
+// @ts-expect-error TS7016
 import pure from 'recompose/pure';
 import { Table, TableBody, TableHead, TableRow } from '@mui/material';
 
@@ -11,9 +13,11 @@ import ParsingExcerptAddColumn from './ParsingExcerptAddColumn';
 import { fromEnrichments, fromParsing, fromSubresources } from '../selectors';
 import { IN_PROGRESS } from '../../../../common/taskStatus';
 import { addField } from '../../fields';
+// @ts-expect-error TS7016
 import { useParams } from 'react-router';
 import parseValue from '../../../../common/tools/parseValue';
 
+// @ts-expect-error TS7006
 export const getRowStyle = (index, total) => {
     let opacity = 1;
 
@@ -28,10 +32,13 @@ export const getRowStyle = (index, total) => {
     return { opacity, height: 36 };
 };
 
+// @ts-expect-error TS7006
 export const getEnrichmentsNames = (enrichments) => {
+    // @ts-expect-error TS7006
     return enrichments?.map((enrichiment) => enrichiment.name);
 };
 
+// @ts-expect-error TS7006
 export const getColumnStyle = (enrichmentsNames, column) => {
     return enrichmentsNames?.includes(column)
         ? {
@@ -40,18 +47,27 @@ export const getColumnStyle = (enrichmentsNames, column) => {
         : {};
 };
 
+// @ts-expect-error TS7006
 const formatValue = (value) => {
     return JSON.stringify(value);
 };
 
 export const ParsingExcerptComponent = ({
+    // @ts-expect-error TS7031
     columns,
+    // @ts-expect-error TS7031
     handleAddColumn,
+    // @ts-expect-error TS7031
     lines,
+    // @ts-expect-error TS7031
     showAddFromColumn,
+    // @ts-expect-error TS7031
     onAddField,
+    // @ts-expect-error TS7031
     enrichments,
+    // @ts-expect-error TS7031
     maxLines,
+    // @ts-expect-error TS7031
     subresources,
 }) => {
     const enrichmentsNames = useMemo(
@@ -62,6 +78,7 @@ export const ParsingExcerptComponent = ({
     const { filter, subresourceId } = useParams();
 
     const subresource = subresources.find(
+        // @ts-expect-error TS7006
         (subresource) => subresource._id === subresourceId,
     );
 
@@ -69,6 +86,7 @@ export const ParsingExcerptComponent = ({
 
     const displayedLines = subresourceId
         ? lines
+              // @ts-expect-error TS7006
               .map((line) => parseValue(line[subresource?.path]))
               .slice(0, maxLines)
         : lines.slice(0, maxLines);
@@ -83,8 +101,10 @@ export const ParsingExcerptComponent = ({
           ].sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()))
         : columns;
 
+    // @ts-expect-error TS7006
     const checkIsEnrichmentLoading = (column) => {
         return (
+            // @ts-expect-error TS7006
             enrichments?.find((enrichiment) => enrichiment.name === column)
                 ?.status === IN_PROGRESS
         );
@@ -103,6 +123,8 @@ export const ParsingExcerptComponent = ({
         >
             <TableHead>
                 <TableRow>
+                    {/*
+                     // @ts-expect-error TS7006 */}
                     {displayedColumns.map((column) => (
                         <ParsingExcerptHeaderColumn
                             key={`header_${column}`}
@@ -117,11 +139,15 @@ export const ParsingExcerptComponent = ({
                     position: 'relative',
                 }}
             >
+                {/*
+                 // @ts-expect-error TS7006 */}
                 {displayedLines.map((line, index) => (
                     <TableRow
                         key={`${line._id || index}_data_row`}
                         style={getRowStyle(index, total)}
                     >
+                        {/*
+                         // @ts-expect-error TS7006 */}
                         {displayedColumns.map((column) => {
                             const showAddColumnButton =
                                 showAddFromColumn &&
@@ -151,6 +177,7 @@ export const ParsingExcerptComponent = ({
                                         <ParsingExcerptAddColumn
                                             key={`add_column_${column}`}
                                             name={column}
+                                            // @ts-expect-error TS7006
                                             onAddColumn={(name) => {
                                                 onAddField && onAddField();
                                                 handleAddColumn({
@@ -189,10 +216,15 @@ ParsingExcerptComponent.defaultProps = {
     maxLines: 6,
 };
 
+// @ts-expect-error TS7006
 const mapStateToProps = (state) => ({
+    // @ts-expect-error TS2339
     enrichments: fromEnrichments.enrichments(state),
+    // @ts-expect-error TS2339
     columns: fromParsing.getParsedExcerptColumns(state),
+    // @ts-expect-error TS2339
     lines: fromParsing.getExcerptLines(state),
+    // @ts-expect-error TS2339
     subresources: fromSubresources.getSubresources(state),
 });
 

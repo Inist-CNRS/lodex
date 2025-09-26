@@ -1,3 +1,4 @@
+// @ts-expect-error TS7016
 import { createAction, handleActions, combineActions } from 'redux-actions';
 
 import { createGlobalSelectors } from '../../lib/selectors';
@@ -51,12 +52,15 @@ export const defaultState = {
 export default handleActions(
     {
         [combineActions(...Object.values(facetActionTypes))]: (
+            // @ts-expect-error TS7006
             state,
+            // @ts-expect-error TS7006
             action,
         ) => ({
             ...state,
             facet: facetReducer(state.facet, action),
         }),
+        // @ts-expect-error TS7006
         PRE_LOAD_DATASET_PAGE: (state, { payload }) => ({
             ...state,
             perPage: (payload && payload.perPage) || state.perPage,
@@ -66,6 +70,7 @@ export default handleActions(
             facetActionTypes.TOGGLE_FACET_VALUE,
             APPLY_FILTER,
             CHANGE_PAGE,
+        // @ts-expect-error TS7006
         )]: (state, { payload }) => ({
             ...state,
             error: null,
@@ -73,12 +78,15 @@ export default handleActions(
             formatLoading: true,
             perPage: (payload && payload.perPage) || state.perPage,
         }),
+        // @ts-expect-error TS7006
         LOAD_FORMAT_DATA_SUCCESS: (state) => ({
             ...state,
             formatLoading: false,
         }),
         LOAD_DATASET_PAGE_SUCCESS: (
+            // @ts-expect-error TS7006
             state,
+            // @ts-expect-error TS7031
             { payload: { dataset, page: currentPage, total, fullTotal } },
         ) => ({
             ...state,
@@ -89,21 +97,25 @@ export default handleActions(
             total,
             fullTotal,
         }),
+        // @ts-expect-error TS7006
         LOAD_DATASET_PAGE_ERROR: (state, { payload: error }) => ({
             ...state,
             error: error.message,
             loading: false,
         }),
+        // @ts-expect-error TS7006
         APPLY_FILTER: (state, { payload: match }) => ({
             ...state,
             currentPage: 0,
             match,
             sort: {},
         }),
+        // @ts-expect-error TS7006
         [facetActionTypes.TOGGLE_FACET_VALUE]: (state) => ({
             ...state,
             currentPage: 0,
         }),
+        // @ts-expect-error TS7006
         SORT_DATASET: (state, { payload: sortBy }) => {
             const sortDir =
                 sortBy === state.sort.sortBy && state.sort.sortDir === 'ASC'
@@ -123,16 +135,27 @@ export default handleActions(
     defaultState,
 );
 
+// @ts-expect-error TS7006
 const isDatasetLoading = (state) => state.loading;
+// @ts-expect-error TS7006
 const getDatasetCurrentPage = (state) => state.currentPage;
+// @ts-expect-error TS7006
 const getDatasetPerPage = (state) => state.perPage;
+// @ts-expect-error TS7006
 const getDataset = (state) => state.dataset;
+// @ts-expect-error TS7006
 const getDatasetTotal = (state) => state.total;
+// @ts-expect-error TS7006
 const getDatasetFullTotal = (state) => state.fullTotal;
+// @ts-expect-error TS7006
 const isDatasetLoaded = (state) => state.total > 0;
+// @ts-expect-error TS7006
 const getFilter = (state) => state.match;
+// @ts-expect-error TS7006
 const getSort = (state) => state.sort;
+// @ts-expect-error TS7006
 const isSaving = (state) => state.isSaving;
+// @ts-expect-error TS7006
 const getFacet = (state) => state.facet;
 
 export const fromDataset = {

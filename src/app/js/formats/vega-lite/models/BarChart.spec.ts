@@ -14,13 +14,19 @@ import {
 describe('BasicChart', () => {
     it('Default values should filled with all default values', function () {
         let barChart = new BarChart();
+        // @ts-expect-error TS2339
         expect(barChart.direction).toBe(AXIS_HORIZONTAL);
+        // @ts-expect-error TS2339
         expect(barChart.model).toStrictEqual(
             require('./json/bar_chart.vl.json'),
         );
+        // @ts-expect-error TS2339
         expect(barChart.scale).toBe('linear');
+        // @ts-expect-error TS2551
         expect(barChart.labelAngle).toStrictEqual({ x: 0, y: 0 });
+        // @ts-expect-error TS2339
         expect(barChart.title).toStrictEqual({ x: '', y: '' });
+        // @ts-expect-error TS2339
         expect(barChart.type).toStrictEqual({
             x: AXIS_NOMINAL,
             y: AXIS_QUANTITATIVE,
@@ -86,64 +92,83 @@ describe('BasicChart', () => {
 
     it('Testing default and updated axis direction', function () {
         let barChart = new BarChart();
+        // @ts-expect-error TS2339
         expect(barChart.direction).toBe(AXIS_HORIZONTAL);
 
         barChart.setAxisDirection(AXIS_VERTICAL);
+        // @ts-expect-error TS2339
         expect(barChart.direction).toBe(AXIS_VERTICAL);
 
         barChart.setAxisDirection(AXIS_HORIZONTAL);
+        // @ts-expect-error TS2339
         expect(barChart.direction).toBe(AXIS_HORIZONTAL);
     });
 
     it('Testing default and updated axis type on x', function () {
         let barChart = new BarChart();
+        // @ts-expect-error TS2339
         expect(barChart.type.x).toBe(AXIS_NOMINAL);
 
         barChart.setType(AXIS_X, AXIS_GEOJSON);
+        // @ts-expect-error TS2339
         expect(barChart.type.x).toBe(AXIS_GEOJSON);
 
         barChart.setType(AXIS_X, AXIS_ORDINAL);
+        // @ts-expect-error TS2339
         expect(barChart.type.x).toBe(AXIS_ORDINAL);
 
         barChart.setType(AXIS_X, AXIS_QUANTITATIVE);
+        // @ts-expect-error TS2339
         expect(barChart.type.x).toBe(AXIS_QUANTITATIVE);
 
         barChart.setType(AXIS_X, AXIS_TEMPORAL);
+        // @ts-expect-error TS2339
         expect(barChart.type.x).toBe(AXIS_TEMPORAL);
 
         barChart.setType(AXIS_X, AXIS_NOMINAL);
+        // @ts-expect-error TS2339
         expect(barChart.type.x).toBe(AXIS_NOMINAL);
     });
 
     it('Testing default and updated axis type on y', function () {
         let barChart = new BarChart();
+        // @ts-expect-error TS2339
         expect(barChart.type.y).toBe(AXIS_QUANTITATIVE);
 
         barChart.setType(AXIS_Y, AXIS_GEOJSON);
+        // @ts-expect-error TS2339
         expect(barChart.type.y).toBe(AXIS_GEOJSON);
 
         barChart.setType(AXIS_Y, AXIS_ORDINAL);
+        // @ts-expect-error TS2339
         expect(barChart.type.y).toBe(AXIS_ORDINAL);
 
         barChart.setType(AXIS_Y, AXIS_TEMPORAL);
+        // @ts-expect-error TS2339
         expect(barChart.type.y).toBe(AXIS_TEMPORAL);
 
         barChart.setType(AXIS_Y, AXIS_NOMINAL);
+        // @ts-expect-error TS2339
         expect(barChart.type.y).toBe(AXIS_NOMINAL);
 
         barChart.setType(AXIS_Y, AXIS_QUANTITATIVE);
+        // @ts-expect-error TS2339
         expect(barChart.type.y).toBe(AXIS_QUANTITATIVE);
     });
 
     it('Testing default and updated axis title', function () {
         let barChart = new BarChart();
+        // @ts-expect-error TS2339
         expect(barChart.title.x).toBe('');
+        // @ts-expect-error TS2339
         expect(barChart.title.y).toBe('');
 
         barChart.setTitle(AXIS_X, '1234');
         barChart.setTitle(AXIS_Y, '1234');
 
+        // @ts-expect-error TS2339
         expect(barChart.title.x).toBe('1234');
+        // @ts-expect-error TS2339
         expect(barChart.title.y).toBe('1234');
     });
 });

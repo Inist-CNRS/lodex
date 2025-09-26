@@ -10,6 +10,7 @@ import { getResourceType } from './helpers/resourceType';
 
 const tenant = sessionStorage.getItem('lodex-tenant') || DEFAULT_TENANT;
 
+// @ts-expect-error TS7031
 function ResourceUriCellInternal({ label, linkLabel, linkUrl, italic, color }) {
     return (
         <Box
@@ -44,6 +45,8 @@ function ResourceUriCellInternal({ label, linkLabel, linkUrl, italic, color }) {
                     }}
                     onClick={(event) => event.stopPropagation()}
                 >
+                    {/*
+                     // @ts-expect-error TS2769 */}
                     <OpenInNewIcon fontSize="1.25rem" />
                 </Link>
             )}
@@ -59,6 +62,7 @@ ResourceUriCellInternal.propTypes = {
     color: PropTypes.string,
 };
 
+// @ts-expect-error TS7031
 export function ResourceUriCell({ row }) {
     const { translate } = useTranslate();
     const resourceType = getResourceType(row.resourceUri, row.field);

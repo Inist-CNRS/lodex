@@ -9,9 +9,13 @@ import 'ace-builds/src-noconflict/mode-ejs';
 import 'ace-builds/src-noconflict/theme-monokai';
 
 const FormSourceCodeField = ({
+    // @ts-expect-error TS7031
     input,
+    // @ts-expect-error TS7031
     label,
+    // @ts-expect-error TS7031
     p,
+    // @ts-expect-error TS7031
     dispatch,
     enableModeSelector = false,
     mode = 'ini',
@@ -19,6 +23,7 @@ const FormSourceCodeField = ({
 }) => {
     const [currentMode, setCurrentMode] = useState(mode);
 
+    // @ts-expect-error TS7006
     const handleModeChange = (event) => {
         setCurrentMode(event.target.value);
     };

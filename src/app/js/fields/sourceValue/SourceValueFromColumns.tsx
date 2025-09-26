@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import PropTypes from 'prop-types';
 import { Autocomplete, Box, TextField } from '@mui/material';
@@ -8,9 +9,13 @@ import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { translate } from '../../i18n/I18NContext';
 
 const SourceValueFromColumns = ({
+    // @ts-expect-error TS7031
     datasetFields,
+    // @ts-expect-error TS7031
     p: polyglot,
+    // @ts-expect-error TS7031
     updateDefaultValueTransformers,
+    // @ts-expect-error TS7031
     value,
 }) => {
     const [autocompleteValue, setAutocompleteValue] = React.useState(value);
@@ -18,6 +23,7 @@ const SourceValueFromColumns = ({
         setAutocompleteValue(value);
     }, [value]);
 
+    // @ts-expect-error TS7006
     const handleChange = (event, value) => {
         setAutocompleteValue(value);
         updateDefaultValueTransformers([
@@ -25,6 +31,7 @@ const SourceValueFromColumns = ({
                 operation: value.length > 1 ? 'CONCAT' : 'COLUMN',
                 args:
                     value.length !== 0
+                        // @ts-expect-error TS7006
                         ? value.map((v) => ({
                               name: 'column',
                               type: 'column',
@@ -56,9 +63,12 @@ const SourceValueFromColumns = ({
     );
 };
 
+// @ts-expect-error TS7006
 const mapStateToProps = (state) => ({
     datasetFields: fromParsing
+        // @ts-expect-error TS2339
         .getParsedExcerptColumns(state)
+        // @ts-expect-error TS7006
         .sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase())),
 });
 

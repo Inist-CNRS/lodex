@@ -1,6 +1,9 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+// @ts-expect-error TS7016
 import { omitBy } from 'lodash';
+// @ts-expect-error TS7016
 import qs from 'qs';
+// @ts-expect-error TS7016
 import { useHistory } from 'react-router-dom';
 import { toast } from '../../../../../common/tools/toast';
 import { useTranslate } from '../../../i18n/I18NContext';
@@ -16,6 +19,7 @@ export function useDeleteFilteredAnnotation() {
     return useMutation({
         mutationFn: async (filter) => {
             const query = qs.stringify(
+                // @ts-expect-error TS7006
                 omitBy(filter, (value) => value === null || value === ''),
             );
 
@@ -41,6 +45,7 @@ export function useDeleteFilteredAnnotation() {
             });
 
             toast(
+                // @ts-expect-error TS2554
                 translate('annotation_delete_many_success', {
                     smart_count: deletedCount,
                 }),
@@ -50,6 +55,7 @@ export function useDeleteFilteredAnnotation() {
             );
         },
         onError(error) {
+            // @ts-expect-error TS2339
             if (error?.code === 401) {
                 history.push('/login');
                 return;

@@ -6,6 +6,7 @@ import { TestI18N } from '../../i18n/I18NContext';
 import { COMMENT_STEP, VALUE_STEP } from '../steps';
 import { TargetField } from './TargetField';
 
+// @ts-expect-error TS7006
 const renderTargetField = (props) => {
     let form;
 
@@ -13,6 +14,8 @@ const renderTargetField = (props) => {
         form = useForm();
         return (
             <TestI18N>
+                {/*
+                 // @ts-expect-error TS2322 */}
                 <TargetField
                     form={form}
                     initialValue="initial value"
@@ -63,6 +66,7 @@ describe('TargetField', () => {
             );
         });
         expect(goToStep).toHaveBeenCalledWith(COMMENT_STEP);
+        // @ts-expect-error TS18048
         expect(form.state.values).toStrictEqual({
             target: 'title',
             kind: 'comment',
@@ -80,6 +84,7 @@ describe('TargetField', () => {
             fireEvent.click(screen.getByText('annotation_correct_content'));
         });
         expect(goToStep).toHaveBeenCalledWith(COMMENT_STEP);
+        // @ts-expect-error TS18048
         expect(form.state.values).toStrictEqual({
             target: 'value',
             kind: 'correction',
@@ -97,6 +102,7 @@ describe('TargetField', () => {
             fireEvent.click(screen.getByText('annotation_correct_content'));
         });
         expect(goToStep).toHaveBeenCalledWith(VALUE_STEP);
+        // @ts-expect-error TS18048
         expect(form.state.values).toStrictEqual({
             target: 'value',
             kind: 'correction',
@@ -115,6 +121,7 @@ describe('TargetField', () => {
             );
         });
         expect(goToStep).toHaveBeenCalledWith(COMMENT_STEP);
+        // @ts-expect-error TS18048
         expect(form.state.values).toStrictEqual({
             target: 'value',
             kind: 'removal',
@@ -134,6 +141,7 @@ describe('TargetField', () => {
             );
         });
         expect(goToStep).toHaveBeenCalledWith(VALUE_STEP);
+        // @ts-expect-error TS18048
         expect(form.state.values).toStrictEqual({
             target: 'value',
             kind: 'removal',
@@ -150,6 +158,7 @@ describe('TargetField', () => {
             fireEvent.click(screen.getByText('annotation_add_content'));
         });
         expect(goToStep).toHaveBeenCalledWith(COMMENT_STEP);
+        // @ts-expect-error TS18048
         expect(form.state.values).toStrictEqual({
             target: 'value',
             kind: 'addition',
@@ -167,6 +176,7 @@ describe('TargetField', () => {
             fireEvent.click(screen.getByText('annotation_add_content'));
         });
         expect(goToStep).toHaveBeenCalledWith(COMMENT_STEP);
+        // @ts-expect-error TS18048
         expect(form.state.values).toStrictEqual({
             target: 'value',
             kind: 'addition',

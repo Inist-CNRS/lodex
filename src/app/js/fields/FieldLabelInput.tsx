@@ -1,7 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
+// @ts-expect-error TS7016
 import get from 'lodash/get';
 
 import FormTextField from '../lib/components/FormTextField';
@@ -9,6 +11,7 @@ import FieldInput from '../lib/components/FieldInput';
 import { fromFields } from '../sharedSelectors';
 import { translate } from '../i18n/I18NContext';
 
+// @ts-expect-error TS7006
 export const uniqueField = (fields, polyglot) => (value, _, props) => {
     // retrieve previous label of the edited field if any (either in props.field of props.fieldToAdd)
     const label = get(props, 'field.label', get(props, 'fieldToAdd.label'));
@@ -19,11 +22,13 @@ export const uniqueField = (fields, polyglot) => (value, _, props) => {
     }
 
     // check if another field exist with the same label
+    // @ts-expect-error TS7031
     return fields.find(({ label }) => label === value)
         ? polyglot.t('field_label_exists')
         : undefined;
 };
 
+// @ts-expect-error TS7031
 export const FieldLabelInputComponent = ({ disabled }) => (
     <FieldInput
         name="label"
@@ -43,7 +48,9 @@ FieldLabelInputComponent.defaultProps = {
     disabled: false,
 };
 
+// @ts-expect-error TS7006
 const mapStateToProps = (state) => ({
+    // @ts-expect-error TS2339
     fields: fromFields.getFields(state),
 });
 

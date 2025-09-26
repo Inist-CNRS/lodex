@@ -24,6 +24,7 @@ class TableColumnParameter extends Component {
         onParameterChange: PropTypes.func.isRequired,
     };
 
+    // @ts-expect-error TS7006
     constructor(props) {
         super(props);
         this.state = {
@@ -38,7 +39,9 @@ class TableColumnParameter extends Component {
         this.changeTitle = this.changeTitle.bind(this);
     }
 
+    // @ts-expect-error TS7006
     changeFormat(newFormat) {
+        // @ts-expect-error TS2339
         const { id, field, title } = this.state;
         const parameter = {
             id: id,
@@ -50,10 +53,13 @@ class TableColumnParameter extends Component {
             field: field,
         };
         this.setState(parameter);
+        // @ts-expect-error TS2339
         this.props.onParameterChange(parameter);
     }
 
+    // @ts-expect-error TS7006
     changeFormatOption(newFormatOption) {
+        // @ts-expect-error TS2339
         const { id, field, title, format } = this.state;
         const parameter = {
             id: id,
@@ -65,11 +71,14 @@ class TableColumnParameter extends Component {
             field: field,
         };
         this.setState(parameter);
+        // @ts-expect-error TS2339
         this.props.onParameterChange(parameter);
     }
 
+    // @ts-expect-error TS7006
     changeField(e) {
         const newField = e.target.value;
+        // @ts-expect-error TS2339
         const { id, format, title } = this.state;
         const parameter = {
             id: id,
@@ -78,11 +87,14 @@ class TableColumnParameter extends Component {
             field: newField,
         };
         this.setState(parameter);
+        // @ts-expect-error TS2339
         this.props.onParameterChange(parameter);
     }
 
+    // @ts-expect-error TS7006
     changeTitle(e) {
         const newTitle = e.target.value;
+        // @ts-expect-error TS2339
         const { id, format, field } = this.state;
         const parameter = {
             id: id,
@@ -91,11 +103,14 @@ class TableColumnParameter extends Component {
             field: field,
         };
         this.setState(parameter);
+        // @ts-expect-error TS2339
         this.props.onParameterChange(parameter);
     }
 
     render() {
+        // @ts-expect-error TS2339
         const { id, format, field, title } = this.state;
+        // @ts-expect-error TS2339
         const polyglot = this.props.polyglot;
 
         const SubAdminComponent = getAdminComponent(format.name);

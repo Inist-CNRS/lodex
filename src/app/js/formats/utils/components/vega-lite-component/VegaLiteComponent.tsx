@@ -2,6 +2,7 @@ import { Vega } from 'react-vega';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+// @ts-expect-error TS7016
 import deepClone from 'lodash/cloneDeep';
 import {
     VEGA_LITE_DATA_INJECT_TYPE_A,
@@ -12,6 +13,7 @@ import { ASPECT_RATIO_NONE, ASPECT_RATIOS } from '../../aspectRatio';
 import FormatFullScreenMode from '../FormatFullScreenMode';
 import { translate } from '../../../../i18n/I18NContext';
 import { polyglot as polyglotPropTypes } from '../../../../propTypes';
+// @ts-expect-error TS7016
 import { compose } from 'recompose';
 import { useVegaCsvExport } from '../useVegaCsvExport';
 import { useVegaActions } from '../useVegaActions';
@@ -22,12 +24,19 @@ import { useVegaActions } from '../useVegaActions';
  * @returns {*} React-Vega component
  */
 function CustomActionVegaLite({
+    // @ts-expect-error TS7031
     aspectRatio,
+    // @ts-expect-error TS7031
     user,
+    // @ts-expect-error TS7031
     spec,
+    // @ts-expect-error TS7031
     data,
+    // @ts-expect-error TS7031
     injectType,
+    // @ts-expect-error TS7031
     disableZoom,
+    // @ts-expect-error TS7031
     p: polyglot,
 }) {
     const actions = useVegaActions(user);
@@ -41,6 +50,7 @@ function CustomActionVegaLite({
             specWithData.data = data;
             break;
         case VEGA_LITE_DATA_INJECT_TYPE_B:
+            // @ts-expect-error TS7006
             specWithData.transform.forEach((e) => {
                 if (e.lookup === 'id') {
                     e.from.data.values = data.values;
@@ -48,6 +58,7 @@ function CustomActionVegaLite({
             });
             break;
         case VEGA_LITE_DATA_INJECT_TYPE_C:
+            // @ts-expect-error TS7006
             specWithData.transform.forEach((e) => {
                 if (e.lookup === 'properties.HASC_2') {
                     e.from.data.values = data.values;
@@ -89,10 +100,12 @@ function CustomActionVegaLite({
         <>
             <style>{'#vg-tooltip-element {z-index:99999}'}</style>
             {disableZoom ? (
+                // @ts-expect-error TS2322
                 <div ref={graphParentRef}>{vegaGraphElement}</div>
             ) : (
                 <FormatFullScreenMode>
                     <div
+                        // @ts-expect-error TS2322
                         ref={graphParentRef}
                         style={{ width: '100%', height: '100%' }}
                     >
@@ -128,6 +141,7 @@ CustomActionVegaLite.propTypes = {
  * @param state application state
  * @returns {{user: *}} user state
  */
+// @ts-expect-error TS7006
 const mapStateToProps = (state) => {
     return {
         user: state.user,

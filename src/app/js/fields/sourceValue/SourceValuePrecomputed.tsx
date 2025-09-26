@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import ListAltIcon from '@mui/icons-material/ListAlt';
 import PropTypes from 'prop-types';
@@ -12,10 +13,15 @@ import RoutineCatalogAutocomplete from '../wizard/RoutineCatalogAutocomplete';
 import { translate } from '../../i18n/I18NContext';
 
 const SourceValuePrecomputed = ({
+    // @ts-expect-error TS7031
     precomputedData,
+    // @ts-expect-error TS7031
     updateDefaultValueTransformers,
+    // @ts-expect-error TS7031
     value,
+    // @ts-expect-error TS7031
     routine,
+    // @ts-expect-error TS7031
     p: polyglot,
 }) => {
     const [autocompleteValue, setAutocompleteValue] = React.useState(value);
@@ -25,7 +31,9 @@ const SourceValuePrecomputed = ({
     const [openRoutineCatalog, setOpenRoutineCatalog] = React.useState(false);
     const [valueInput, setValueInput] = React.useState(routine || '');
 
+    // @ts-expect-error TS7006
     const handleChangePrecomputed = (event, value) => {
+        // @ts-expect-error TS7006
         const precomputedSelected = precomputedData.find((precomputed) => {
             return precomputed.name === value;
         });
@@ -59,6 +67,7 @@ const SourceValuePrecomputed = ({
         updateDefaultValueTransformers(transformers);
     };
 
+    // @ts-expect-error TS7006
     const handleChangeRoutine = (event) => {
         setValueInput(event.target.value);
         const transformers = [
@@ -87,6 +96,7 @@ const SourceValuePrecomputed = ({
             <Autocomplete
                 data-testid="source-value-from-precomputed"
                 fullWidth
+                // @ts-expect-error TS7031
                 options={precomputedData.map(({ name }) => name)}
                 value={autocompleteValue ?? ''}
                 renderInput={(params) => (
@@ -130,9 +140,12 @@ const SourceValuePrecomputed = ({
     );
 };
 
+// @ts-expect-error TS7006
 const mapStateToProps = (state) => ({
     precomputedData: fromPrecomputed
+        // @ts-expect-error TS2339
         .precomputed(state)
+        // @ts-expect-error TS7006
         .sort((a, b) =>
             a.name.toLowerCase().localeCompare(b.name.toLowerCase()),
         ),

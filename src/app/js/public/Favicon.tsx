@@ -11,6 +11,7 @@ class Favicon extends Component {
     };
 
     render() {
+        // @ts-expect-error TS2339
         const { className } = this.props;
         const { error } = this.state;
 
@@ -28,10 +29,12 @@ class Favicon extends Component {
     }
 }
 
+// @ts-expect-error TS2339
 Favicon.propTypes = {
     className: PropTypes.string,
 };
 
+// @ts-expect-error TS2339
 Favicon.defaultProps = {
     className: null,
 };

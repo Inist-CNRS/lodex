@@ -23,9 +23,12 @@ class PaginatedTableAdmin extends AbstractTableAdmin {
         args: defaultArgs,
     };
 
+    // @ts-expect-error TS7006
     handlePageSize = (e) => {
         const pageSize = parseInt(e.target.value, 10);
+        // @ts-expect-error TS2339
         this.props.onChange({
+            // @ts-expect-error TS2339
             ...this.props.args,
             params: {
                 maxSize: pageSize,
@@ -36,12 +39,18 @@ class PaginatedTableAdmin extends AbstractTableAdmin {
 
     render() {
         const {
+            // @ts-expect-error TS2339
             p: polyglot,
+            // @ts-expect-error TS2339
             args: { pageSize, columnsCount, columnsParameters },
         } = this.props;
         return (
             <FormatGroupedFieldSet>
+                {/*
+                 // @ts-expect-error TS2322 */}
                 <FormatDefaultParamsFieldSet defaultExpanded>
+                    {/*
+                     // @ts-expect-error TS2322 */}
                     <TextField
                         label={polyglot.t('items_per_page')}
                         onChange={this.handlePageSize}
@@ -49,6 +58,8 @@ class PaginatedTableAdmin extends AbstractTableAdmin {
                         type="number"
                         fullWidth
                     />
+                    {/*
+                     // @ts-expect-error TS2322 */}
                     <TableColumnsParameters
                         onChange={this.handleColumnParameter}
                         polyglot={polyglot}

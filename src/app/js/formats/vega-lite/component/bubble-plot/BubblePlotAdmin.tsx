@@ -39,6 +39,7 @@ export const defaultArgs = {
     aspectRatio: ASPECT_RATIO_1_1,
 };
 
+// @ts-expect-error TS7006
 const BubblePlotAdmin = (props) => {
     const {
         p: polyglot,
@@ -100,6 +101,7 @@ const BubblePlotAdmin = (props) => {
         updateAdminArgs('advancedMode', !advancedMode, props);
     };
 
+    // @ts-expect-error TS7006
     const handleAdvancedModeSpec = (newSpec) => {
         updateAdminArgs('advancedModeSpec', newSpec, props);
     };
@@ -108,10 +110,12 @@ const BubblePlotAdmin = (props) => {
         updateAdminArgs('advancedModeSpec', null, props);
     };
 
+    // @ts-expect-error TS7006
     const handleColors = (colors) => {
         updateAdminArgs('colors', colors || defaultArgs.colors, props);
     };
 
+    // @ts-expect-error TS7006
     const handleParams = (params) => {
         updateAdminArgs('params', params, props);
     };
@@ -124,25 +128,33 @@ const BubblePlotAdmin = (props) => {
         updateAdminArgs('tooltip', !tooltip, props);
     };
 
+    // @ts-expect-error TS7006
     const handleTooltipSource = (tooltipSource) => {
         updateAdminArgs('tooltipSource', tooltipSource, props);
     };
 
+    // @ts-expect-error TS7006
     const handleTooltipTarget = (tooltipTarget) => {
         updateAdminArgs('tooltipTarget', tooltipTarget, props);
     };
 
+    // @ts-expect-error TS7006
     const handleTooltipWeight = (tooltipWeight) => {
         updateAdminArgs('tooltipWeight', tooltipWeight, props);
     };
 
+    // @ts-expect-error TS7006
     const handleAspectRatio = (value) => {
         updateAdminArgs('aspectRatio', value, props);
     };
 
     return (
         <FormatGroupedFieldSet>
+            {/*
+             // @ts-expect-error TS2322 */}
             <FormatDataParamsFieldSet>
+                {/*
+                 // @ts-expect-error TS2322 */}
                 <RoutineParamsAdmin
                     params={params || defaultArgs.params}
                     polyglot={polyglot}
@@ -153,7 +165,11 @@ const BubblePlotAdmin = (props) => {
                     showOrderBy={showOrderBy}
                 />
             </FormatDataParamsFieldSet>
+            {/*
+             // @ts-expect-error TS2322 */}
             <FormatChartParamsFieldSet defaultExpanded>
+                {/*
+                 // @ts-expect-error TS2322 */}
                 <FormGroup>
                     <FormControlLabel
                         control={
@@ -165,6 +181,8 @@ const BubblePlotAdmin = (props) => {
                         label={polyglot.t('advancedMode')}
                     />
                 </FormGroup>
+                {/*
+                 // @ts-expect-error TS2322 */}
                 {advancedMode ? (
                     <VegaAdvancedMode
                         value={spec}
@@ -201,11 +219,15 @@ const BubblePlotAdmin = (props) => {
                         />
                     </>
                 )}
+                {/*
+                 // @ts-expect-error TS2322 */}
                 <AspectRatioSelector
                     value={aspectRatio}
                     onChange={handleAspectRatio}
                 />
             </FormatChartParamsFieldSet>
+            {/*
+             // @ts-expect-error TS2322 */}
             <VegaFieldPreview
                 args={args}
                 PreviewComponent={BubblePlotAdminView}

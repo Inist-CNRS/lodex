@@ -6,6 +6,7 @@ import {
     ARRAY_MOVE as REDUX_FORM_ARRAY_MOVE,
     ARRAY_PUSH as REDUX_FORM_ARRAY_PUSH,
     ARRAY_SPLICE as REDUX_FORM_ARRAY_SPLICE,
+// @ts-expect-error TS7016
 } from 'redux-form/lib/actionTypes';
 
 import getDocumentTransformer from '../../../lib/getDocumentTransformer';
@@ -15,13 +16,16 @@ import { getFieldFormData } from '../../../fields/selectors';
 import { fromParsing } from '../../selectors';
 import { FIELD_FORM_NAME } from '../../../fields/index';
 import { GET_SOURCE_VALUE_FROM_TRANSFORMERS } from '../../../fields/sourceValue/SourceValueToggle';
+// @ts-expect-error TS7016
 import cloneDeep from 'lodash/cloneDeep';
 
+// @ts-expect-error TS7031
 export function* handleComputeFieldPreview({ meta: { form } }) {
     if (form !== FIELD_FORM_NAME) {
         return;
     }
     try {
+        // @ts-expect-error TS7057
         const formData = yield select(getFieldFormData);
 
         const { source } = GET_SOURCE_VALUE_FROM_TRANSFORMERS(
@@ -35,8 +39,10 @@ export function* handleComputeFieldPreview({ meta: { form } }) {
         // we need to deep clone the formData to avoid mutating it
         const fields = [cloneDeep(formData)];
 
+        // @ts-expect-error TS7057
         const lines = yield select(fromParsing.getExcerptLines);
 
+        // @ts-expect-error TS7057
         const token = yield select(fromUser.getToken);
 
         let preview;
@@ -44,32 +50,40 @@ export function* handleComputeFieldPreview({ meta: { form } }) {
             // we keep the three first transformers (COLUMN, PARSE, GET) in fields to get the subresource data
             // other transformers will be used to transform the subresource data
             const subresourceTransformers = fields[0].transformers.splice(3);
+            // @ts-expect-error TS7057
             const getSubresourceData = yield call(
                 getDocumentTransformer,
                 fields,
                 token,
             );
+            // @ts-expect-error TS7057
             preview = yield all(
+                // @ts-expect-error TS7006
                 lines.map((line) => call(getSubresourceData, line)),
             );
 
             // if there is other transformers we have to apply them to transform the preview
             if (subresourceTransformers.length > 0) {
                 const subresourceData = preview.map(
+                    // @ts-expect-error TS7006
                     (subresourceLine) => subresourceLine[formData.name],
                 );
 
                 // use the subresource transformers to transform the subresource data
                 fields[0].transformers = subresourceTransformers;
+                // @ts-expect-error TS7057
                 const transformSubresource = yield call(
                     getDocumentTransformer,
                     fields,
                     token,
                 );
 
+                // @ts-expect-error TS7057
                 preview = yield all(
+                    // @ts-expect-error TS7006
                     subresourceData.map(function* (subresourceLine) {
                         if (Array.isArray(subresourceLine)) {
+                            // @ts-expect-error TS7057
                             const previewLine = yield all(
                                 subresourceLine.map((subresourceLineItem) =>
                                     call(
@@ -80,6 +94,7 @@ export function* handleComputeFieldPreview({ meta: { form } }) {
                             );
                             return {
                                 [formData.name]: previewLine.map(
+                                    // @ts-expect-error TS7006
                                     (previewLineItem) =>
                                         previewLineItem[formData.name],
                                 ),
@@ -90,13 +105,16 @@ export function* handleComputeFieldPreview({ meta: { form } }) {
                 );
             }
         } else {
+            // @ts-expect-error TS7057
             const transformDocument = yield call(
                 getDocumentTransformer,
                 fields,
                 token,
             );
 
+            // @ts-expect-error TS7057
             preview = yield all(
+                // @ts-expect-error TS7006
                 lines.map((line) => call(transformDocument, line)),
             );
         }

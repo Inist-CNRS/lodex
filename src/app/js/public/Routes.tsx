@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
+// @ts-expect-error TS7016
 import { Route } from 'react-router-dom';
 
 import Container from '@mui/material/Container';
@@ -21,6 +22,7 @@ import { fromMenu } from './selectors';
 
 const notLogin = new RegExp('^(?!.*(/login)).*$');
 
+// @ts-expect-error TS7006
 const Routes = (props) => {
     const [search, setSearch] = useState(false);
 
@@ -53,28 +55,33 @@ const Routes = (props) => {
                     <Route
                         path="/"
                         exact
+                        // @ts-expect-error TS7006
                         render={(props) => <Home {...props} tenant={tenant} />}
                     />
                     <Route
                         path="/resource"
+                        // @ts-expect-error TS7006
                         render={(props) => (
                             <Resource {...props} tenant={tenant} />
                         )}
                     />
                     <Route
                         path="/ark:/:naan/:rest"
+                        // @ts-expect-error TS7006
                         render={(props) => (
                             <Resource {...props} tenant={tenant} />
                         )}
                     />
                     <Route
                         path="/uid:/:uri"
+                        // @ts-expect-error TS7006
                         render={(props) => (
                             <Resource {...props} tenant={tenant} />
                         )}
                     />
                     <Route
                         path="/graph/:name"
+                        // @ts-expect-error TS7006
                         render={(props) => (
                             <GraphPage
                                 {...props}
@@ -86,6 +93,8 @@ const Routes = (props) => {
 
                     <Route path="/login" component={Login} />
 
+                    {/*
+                     // @ts-expect-error TS7006 */}
                     {customRoutes.map((link) => (
                         <Route
                             key={link}
@@ -116,6 +125,7 @@ const Routes = (props) => {
             {/* Nav Bar and version footer */}
             <Route
                 path={notLogin}
+                // @ts-expect-error TS7006
                 render={(props) => (
                     <NavBar
                         {...props}
@@ -139,7 +149,9 @@ Routes.propTypes = {
     tenant: PropTypes.string,
 };
 
+// @ts-expect-error TS7006
 const mapStateToProps = (state) => ({
+    // @ts-expect-error TS2339
     customRoutes: fromMenu.getCustomRoutes(state),
 });
 

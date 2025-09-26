@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo } from 'react';
 import { translate } from '../../../../i18n/I18NContext';
+// @ts-expect-error TS7016
 import { schemeOrRd } from 'd3-scale-chromatic';
 import PropTypes from 'prop-types';
 import { Checkbox, FormControlLabel, Switch, FormGroup } from '@mui/material';
@@ -39,6 +40,7 @@ export const defaultArgs = {
     aspectRatio: ASPECT_RATIO_1_1,
 };
 
+// @ts-expect-error TS7006
 const HeatMapAdmin = (props) => {
     const {
         p: polyglot,
@@ -97,6 +99,7 @@ const HeatMapAdmin = (props) => {
         updateAdminArgs('advancedMode', !advancedMode, props);
     };
 
+    // @ts-expect-error TS7006
     const handleAdvancedModeSpec = (newSpec) => {
         updateAdminArgs('advancedModeSpec', newSpec, props);
     };
@@ -105,10 +108,12 @@ const HeatMapAdmin = (props) => {
         updateAdminArgs('advancedModeSpec', null, props);
     };
 
+    // @ts-expect-error TS7006
     const handleParams = (params) => {
         updateAdminArgs('params', params, props);
     };
 
+    // @ts-expect-error TS7006
     const handleColorSchemeChange = (_, colorScheme) => {
         updateAdminArgs(
             'colorScheme',
@@ -125,25 +130,33 @@ const HeatMapAdmin = (props) => {
         updateAdminArgs('tooltip', !tooltip, props);
     };
 
+    // @ts-expect-error TS7006
     const handleTooltipSource = (tooltipSource) => {
         updateAdminArgs('tooltipSource', tooltipSource, props);
     };
 
+    // @ts-expect-error TS7006
     const handleTooltipTarget = (tooltipTarget) => {
         updateAdminArgs('tooltipTarget', tooltipTarget, props);
     };
 
+    // @ts-expect-error TS7006
     const handleTooltipWeight = (tooltipWeight) => {
         updateAdminArgs('tooltipWeight', tooltipWeight, props);
     };
 
+    // @ts-expect-error TS7006
     const handleAspectRatio = (value) => {
         updateAdminArgs('aspectRatio', value, props);
     };
 
     return (
         <FormatGroupedFieldSet>
+            {/*
+             // @ts-expect-error TS2322 */}
             <FormatDataParamsFieldSet>
+                {/*
+                 // @ts-expect-error TS2322 */}
                 <RoutineParamsAdmin
                     params={params || defaultArgs.params}
                     polyglot={polyglot}
@@ -154,7 +167,11 @@ const HeatMapAdmin = (props) => {
                     showOrderBy={showOrderBy}
                 />
             </FormatDataParamsFieldSet>
+            {/*
+             // @ts-expect-error TS2322 */}
             <FormatChartParamsFieldSet defaultExpanded>
+                {/*
+                 // @ts-expect-error TS2322 */}
                 <FormGroup>
                     <FormControlLabel
                         control={
@@ -166,6 +183,8 @@ const HeatMapAdmin = (props) => {
                         label={polyglot.t('advancedMode')}
                     />
                 </FormGroup>
+                {/*
+                 // @ts-expect-error TS2322 */}
                 {advancedMode ? (
                     <VegaAdvancedMode
                         value={spec}
@@ -202,11 +221,15 @@ const HeatMapAdmin = (props) => {
                         />
                     </>
                 )}
+                {/*
+                 // @ts-expect-error TS2322 */}
                 <AspectRatioSelector
                     value={aspectRatio}
                     onChange={handleAspectRatio}
                 />
             </FormatChartParamsFieldSet>
+            {/*
+             // @ts-expect-error TS2322 */}
             <VegaFieldPreview
                 args={args}
                 PreviewComponent={HeatMapAdminView}

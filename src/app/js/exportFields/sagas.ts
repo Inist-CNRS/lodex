@@ -6,6 +6,7 @@ import { EXPORT_FIELDS, exportFieldsError } from './';
 import downloadFile from '../lib/downloadFile';
 
 export function* handleExportFields() {
+    // @ts-expect-error TS7057
     const request = yield select(fromUser.getExportFieldsRequest);
     const { error, response, filename } = yield call(
         fetchSaga,

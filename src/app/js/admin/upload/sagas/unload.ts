@@ -8,6 +8,7 @@ export const preventUnload = () => {
 
 export const allowUnload = () => {
     if (window && window.onbeforeunload) {
+        // @ts-expect-error TS2322
         window.onbeforeunload = undefined;
     }
 };

@@ -9,8 +9,11 @@ import { fromUser } from '../../sharedSelectors';
 import fetchSaga from '../../lib/sagas/fetchSaga';
 import { configureFieldSuccess } from '../../fields/index';
 
+// @ts-expect-error TS7031
 export function* handleUpdateCharacteristics({ payload }) {
+    // @ts-expect-error TS7057
     const request = yield select(
+        // @ts-expect-error TS2339
         fromUser.getUpdateCharacteristicsRequest,
         payload,
     );
@@ -18,6 +21,7 @@ export function* handleUpdateCharacteristics({ payload }) {
     const { error, response } = yield call(fetchSaga, request);
 
     if (error) {
+        // @ts-expect-error TS7057
         return yield put(updateCharacteristicsError(error));
     }
 
@@ -36,5 +40,6 @@ export function* handleUpdateCharacteristics({ payload }) {
 }
 
 export default function* () {
+    // @ts-expect-error TS2769
     yield takeLatest(UPDATE_CHARACTERISTICS, handleUpdateCharacteristics);
 }

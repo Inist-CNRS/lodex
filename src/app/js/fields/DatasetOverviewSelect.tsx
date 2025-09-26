@@ -1,4 +1,5 @@
 import React, { useMemo } from 'react';
+// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -16,20 +17,26 @@ import FieldRepresentation from './FieldRepresentation';
 import { translate } from '../i18n/I18NContext';
 
 export const DatasetOverviewSelectComponent = ({
+    // @ts-expect-error TS7031
     p: polyglot,
+    // @ts-expect-error TS7031
     fields,
+    // @ts-expect-error TS7031
     loadField,
 }) => {
     const [datasetTitle, datasetDescription] = useMemo(() => {
         const datasetTitleField = fields.find(
+            // @ts-expect-error TS7006
             (field) => field.overview === overview.DATASET_TITLE,
         );
         const datasetDescriptionField = fields.find(
+            // @ts-expect-error TS7006
             (field) => field.overview === overview.DATASET_DESCRIPTION,
         );
         return [datasetTitleField?._id, datasetDescriptionField?._id];
     }, [fields]);
 
+    // @ts-expect-error TS7006
     const handleDatasetTitleChange = async (event) => {
         const { value: _id } = event.target;
         await fieldApi.patchOverview({
@@ -39,6 +46,7 @@ export const DatasetOverviewSelectComponent = ({
         loadField();
     };
 
+    // @ts-expect-error TS7006
     const handleDatasetDescriptionChange = async (event) => {
         const { value: _id } = event.target;
         await fieldApi.patchOverview({
@@ -59,6 +67,7 @@ export const DatasetOverviewSelectComponent = ({
                 SelectProps={{
                     renderValue: (option) => (
                         <FieldRepresentation
+                            // @ts-expect-error TS7006
                             field={fields.find((f) => f._id === option)}
                             shortMode
                         />
@@ -66,6 +75,8 @@ export const DatasetOverviewSelectComponent = ({
                 }}
             >
                 <MenuItem value={undefined}>{polyglot.t('none')}</MenuItem>
+                {/*
+                 // @ts-expect-error TS7006 */}
                 {fields.map((field) => (
                     <MenuItem
                         sx={{
@@ -89,6 +100,7 @@ export const DatasetOverviewSelectComponent = ({
                 SelectProps={{
                     renderValue: (option) => (
                         <FieldRepresentation
+                            // @ts-expect-error TS7006
                             field={fields.find((f) => f._id === option)}
                             shortMode
                         />
@@ -96,6 +108,8 @@ export const DatasetOverviewSelectComponent = ({
                 }}
             >
                 <MenuItem value={undefined}>{polyglot.t('none')}</MenuItem>
+                {/*
+                 // @ts-expect-error TS7006 */}
                 {fields.map((field) => (
                     <MenuItem
                         sx={{
@@ -120,9 +134,12 @@ DatasetOverviewSelectComponent.propTypes = {
     loadField: PropTypes.func.isRequired,
 };
 
+// @ts-expect-error TS7006
 const mapStateToProps = (state) => ({
     fields: fromFields
+        // @ts-expect-error TS2339
         .getEditingFields(state, { filter: SCOPE_DATASET })
+        // @ts-expect-error TS7006
         .sort((a, b) => a.label.localeCompare(b.label)),
 });
 

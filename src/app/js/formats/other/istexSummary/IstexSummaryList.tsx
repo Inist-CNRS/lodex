@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+// @ts-expect-error TS7016
 import memoize from 'lodash/memoize';
 
 import { REJECTED } from '../../../../../common/propositionStatus';
@@ -7,12 +8,14 @@ import { field as fieldPropTypes } from '../../../propTypes';
 import { getSiteUrl } from '../../utils/fetchIstexData';
 
 const styles = {
+    // @ts-expect-error TS7006
     text: memoize((status) => ({
         fontSize: '1rem',
         textDecoration: status === REJECTED ? 'line-through' : 'none',
     })),
 };
 
+// @ts-expect-error TS7031
 const IstexSummaryList = ({ fieldStatus, field, resource }) => {
     const url = getSiteUrl(resource[field.name]);
 

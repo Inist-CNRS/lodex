@@ -35,6 +35,7 @@ const style = {
     },
 };
 
+// @ts-expect-error TS7006
 export const returnParsedValue = (value) => {
     try {
         return JSON.parse(value);
@@ -43,10 +44,12 @@ export const returnParsedValue = (value) => {
     }
 };
 
+// @ts-expect-error TS7006
 export const isPrimitive = (value) => {
     return value !== Object(value);
 };
 
+// @ts-expect-error TS7006
 export const tryParseJSONObjectOrArray = (jsonString) => {
     try {
         if (typeof jsonString === 'object') {
@@ -63,6 +66,7 @@ export const tryParseJSONObjectOrArray = (jsonString) => {
     return false;
 };
 
+// @ts-expect-error TS7006
 export const getValueBySavingType = (value, type, previousValue) => {
     if (type === 'number') {
         const parsedValue = Number(value);
@@ -118,6 +122,7 @@ export const getValueBySavingType = (value, type, previousValue) => {
     return JSON.stringify(value);
 };
 
+// @ts-expect-error TS7006
 const isError = (value) => {
     return (
         typeof value === 'string' &&
@@ -125,6 +130,7 @@ const isError = (value) => {
     );
 };
 
+// @ts-expect-error TS7031
 const ButtonEditCellWithDropdown = ({ loading, handleChange }) => {
     const { translate } = useTranslate();
     const theme = useTheme();
@@ -148,6 +154,7 @@ const ButtonEditCellWithDropdown = ({ loading, handleChange }) => {
                         <CircularProgress
                             size={20}
                             sx={style.icon}
+                            // @ts-expect-error TS2322
                             color="contrast"
                         />
                     ) : (
@@ -167,6 +174,7 @@ const ButtonEditCellWithDropdown = ({ loading, handleChange }) => {
             <Menu
                 open={isOpen}
                 onClose={() => setOpen(false)}
+                // @ts-expect-error TS2322
                 getContentAnchorEl={null}
                 anchorEl={anchorRef.current}
                 anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
@@ -175,6 +183,7 @@ const ButtonEditCellWithDropdown = ({ loading, handleChange }) => {
                     '& .MuiMenu-paper': {
                         backgroundColor: theme.palette.primary.main,
                         '& .MuiMenuItem-root': {
+                            // @ts-expect-error TS2339
                             color: theme.palette.contrast.main,
                         },
                     },
@@ -188,6 +197,8 @@ const ButtonEditCellWithDropdown = ({ loading, handleChange }) => {
                             setOpen(false);
                         }}
                     >
+                        {/*
+                         // @ts-expect-error TS2554 */}
                         {translate('save_as', {
                             type: type,
                         })}
@@ -203,12 +214,14 @@ ButtonEditCellWithDropdown.propTypes = {
     handleChange: PropTypes.func.isRequired,
 };
 
+// @ts-expect-error TS7031
 const ParsingEditCell = ({ cell, setToggleDrawer }) => {
     const { translate } = useTranslate();
     const theme = useTheme();
     const [loading, setLoading] = React.useState(false);
     const [value, setValue] = React.useState(cell.value);
 
+    // @ts-expect-error TS7006
     const handleChange = async (type) => {
         setLoading(true);
         try {
@@ -216,9 +229,11 @@ const ParsingEditCell = ({ cell, setToggleDrawer }) => {
             try {
                 valueToSave = getValueBySavingType(value, type, cell.value);
             } catch (e) {
+                // @ts-expect-error TS18046
                 toast(translate(e.message), {
                     type: toast.TYPE.ERROR,
                 });
+                // @ts-expect-error TS18046
                 throw new Error(translate(e.message));
             }
             await datasetApi.updateDataset({
@@ -244,10 +259,13 @@ const ParsingEditCell = ({ cell, setToggleDrawer }) => {
                 <h2
                     style={{
                         textAlign: 'center',
+                        // @ts-expect-error TS2339
                         color: theme.palette.danger.main,
                         fontWeight: 'initial',
                     }}
                 >
+                    {/*
+                     // @ts-expect-error TS2554 */}
                     {translate('dataset_edit_enrichment_title', {
                         column_name: cell.field,
                         row_name: cell?.row?.uri || cell?.row?.ark,

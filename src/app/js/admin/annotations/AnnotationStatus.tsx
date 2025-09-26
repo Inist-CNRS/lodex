@@ -5,6 +5,7 @@ import { grey } from '@mui/material/colors';
 import { useTranslate } from '../../i18n/I18NContext';
 import { statuses } from '../../../../common/validator/annotation.validator';
 
+// @ts-expect-error TS7031
 export const AnnotationStatus = ({ status, arialLabel }) => {
     const { translate } = useTranslate();
 

@@ -4,6 +4,7 @@ import Folder from '@mui/icons-material/Folder';
 import FolderOpen from '@mui/icons-material/FolderOpen';
 import Arrow from '@mui/icons-material/KeyboardArrowDown';
 import { Button, CircularProgress } from '@mui/material';
+// @ts-expect-error TS7016
 import get from 'lodash/get';
 
 import { polyglot as polyglotPropTypes } from '../../../propTypes';
@@ -44,6 +45,7 @@ const circularProgress = (
     <CircularProgress
         variant="indeterminate"
         size={20}
+        // @ts-expect-error TS2322
         innerStyle={{
             display: 'flex',
             marginLeft: 8,
@@ -69,7 +71,9 @@ class FetchFold extends Component {
 
         this.setState({ isLoading: true }, () => {
             this.props
+                // @ts-expect-error TS2339
                 .getData(this.props)
+                // @ts-expect-error TS7006
                 .then((data) => {
                     this.setState({
                         data,
@@ -77,6 +81,7 @@ class FetchFold extends Component {
                         isOpen: true,
                     });
                 })
+                // @ts-expect-error TS7006
                 .catch((error) => {
                     console.error(error);
                     this.setState({ error: true });
@@ -89,6 +94,7 @@ class FetchFold extends Component {
     };
 
     render() {
+        // @ts-expect-error TS2339
         const { label, count, polyglot, children, skip } = this.props;
         const { error, data, isOpen, isLoading } = this.state;
 
@@ -107,22 +113,31 @@ class FetchFold extends Component {
             <div className="istex-fold">
                 <div>
                     <Button
+                        // @ts-expect-error TS2769
                         color="text"
                         onClick={isOpen ? this.close : this.open}
                     >
+                        {/*
+                         // @ts-expect-error TS2339 */}
                         <div className={styles.buttonLabel}>
                             <Arrow
                                 className={
+                                    // @ts-expect-error TS2339
                                     isOpen ? undefined : styles.arrowClose
                                 }
                             />
                             {isOpen ? <FolderOpen /> : <Folder />}
+                            {/*
+                             // @ts-expect-error TS2339 */}
                             <span className={styles.labelText}>{label}</span>
+                            {/*
+                             // @ts-expect-error TS2339 */}
                             <span className={styles.count}>{count}</span>
                             {isLoading && circularProgress}
                         </div>
                     </Button>
                     {isOpen &&
+                        // @ts-expect-error TS2349
                         children({
                             ...this.props,
                             data,
@@ -134,6 +149,7 @@ class FetchFold extends Component {
     }
 }
 
+// @ts-expect-error TS2339
 FetchFold.propTypes = {
     label: PropTypes.string.isRequired,
     polyglot: polyglotPropTypes.isRequired,

@@ -15,6 +15,7 @@ import { useTranslate } from '../../i18n/I18NContext';
 import { useAutocompleteTranslations } from './useAutocompleteTranslations';
 
 const filter = createFilterOptions();
+// @ts-expect-error TS7006
 function optionToAutocompleteValue(option) {
     return {
         value: option,
@@ -24,12 +25,19 @@ function optionToAutocompleteValue(option) {
 
 // TextField component to use tanstack react form with material ui text field
 export function AutocompleteField({
+    // @ts-expect-error TS7031
     form,
+    // @ts-expect-error TS7031
     name,
+    // @ts-expect-error TS7031
     label,
+    // @ts-expect-error TS7031
     helperText,
+    // @ts-expect-error TS7031
     required,
+    // @ts-expect-error TS7031
     options,
+    // @ts-expect-error TS7031
     supportsNewValues,
 }) {
     const { translate } = useTranslate();
@@ -70,6 +78,7 @@ export function AutocompleteField({
                 value={value}
                 onBlur={field.handleBlur}
                 onChange={(_, val) => {
+                    // @ts-expect-error TS2551
                     field.handleChange(val?.value ?? '');
                 }}
                 options={mappedOptions}
@@ -83,9 +92,11 @@ export function AutocompleteField({
                     />
                 )}
                 freeSolo={supportsNewValues}
+                // @ts-expect-error TS2322
                 filterOptions={(options, params) => {
                     const filtered = filter(
                         options.filter(({ value }) => value !== ''),
+                        // @ts-expect-error TS2345
                         params,
                     );
 
@@ -96,6 +107,7 @@ export function AutocompleteField({
                     if (inputValue !== '' && !isExisting && supportsNewValues) {
                         filtered.push({
                             value: inputValue,
+                            // @ts-expect-error TS2554
                             title: translate('autocomplete_add', {
                                 option: inputValue,
                             }),

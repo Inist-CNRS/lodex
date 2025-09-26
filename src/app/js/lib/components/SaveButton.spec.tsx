@@ -8,6 +8,8 @@ describe('SaveButton', () => {
     it('should render a save button without icon when isFormModified=false', () => {
         render(
             <TestI18N>
+                {/*
+                 // @ts-expect-error TS2322 */}
                 <SaveButton onSave={() => {}} isFormModified={false} />
             </TestI18N>,
         );
@@ -19,6 +21,8 @@ describe('SaveButton', () => {
     it('should render a save button with icon when isFormModified=true', () => {
         render(
             <TestI18N>
+                {/*
+                 // @ts-expect-error TS2322 */}
                 <SaveButton onSave={() => {}} isFormModified={true} />
             </TestI18N>,
         );

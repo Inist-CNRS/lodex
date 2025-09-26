@@ -9,6 +9,7 @@ import {
 import fetchSaga from '../../lib/sagas/fetchSaga';
 import { fromFields, fromUser } from '../../sharedSelectors';
 
+// @ts-expect-error TS7031
 export function* handleRemoveFieldList({ payload }) {
     const { fields } = payload;
 
@@ -17,7 +18,9 @@ export function* handleRemoveFieldList({ payload }) {
     try {
         // Usage of for as it eases testing since we can catch easily selects and calls
         for (const { name } of fields) {
+            // @ts-expect-error TS7057
             const field = yield select(fromFields.getFieldByName, name);
+            // @ts-expect-error TS7057
             const request = yield select(fromUser.getRemoveFieldRequest, field);
             const { error } = yield call(fetchSaga, request);
             if (error) {
@@ -34,5 +37,6 @@ export function* handleRemoveFieldList({ payload }) {
 }
 
 export default function* watchLoadField() {
+    // @ts-expect-error TS2769
     yield takeLatest([REMOVE_FIELD_LIST], handleRemoveFieldList);
 }

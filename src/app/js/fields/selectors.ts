@@ -1,4 +1,6 @@
+// @ts-expect-error TS7016
 import get from 'lodash/get';
+// @ts-expect-error TS7016
 import omit from 'lodash/omit';
 import { createSelector } from 'reselect';
 
@@ -27,39 +29,50 @@ import { FIELD_ANNOTATION_FORMAT_LIST_KIND_SINGLE } from './FieldAnnotationForma
 
 export const NEW_CHARACTERISTIC_FORM_NAME = 'NEW_CHARACTERISTIC_FORM_NAME';
 
+// @ts-expect-error TS7031
 export const getFields = ({ byName, list = [] }) =>
     list
         .map((name) => byName[name])
         .sort((f1, f2) => f1.position - f2.position);
 
+// @ts-expect-error TS7006
 const getOntologyFieldsFilter = (type, keepUriField = false) =>
     type === SCOPE_COLLECTION || type === SCOPE_DOCUMENT
+        // @ts-expect-error TS7031
         ? ({ scope, name }) =>
               (name === 'uri' && keepUriField) ||
               scope === SCOPE_COLLECTION ||
               scope === SCOPE_DOCUMENT
+        // @ts-expect-error TS7031
         : ({ scope, name }) =>
               (name === 'uri' && keepUriField) || scope === type;
 
 const getOntologyFields = createSelector(
     getFields,
+    // @ts-expect-error TS7006
     (_, type) => type,
     (fields, type) => fields.filter(getOntologyFieldsFilter(type)),
 );
 
 const getOntologyFieldsWithUri = createSelector(
     getFields,
+    // @ts-expect-error TS7006
     (_, type) => type,
     (fields, type) => fields.filter(getOntologyFieldsFilter(type, true)),
 );
 
+// @ts-expect-error TS7006
 const getState = (state) => state.list;
+// @ts-expect-error TS7031
 const getByName = ({ byName }) => byName;
 
+// @ts-expect-error TS7031
 const getNbFields = ({ list }) => list.length;
 
+// @ts-expect-error TS7006
 const getParams = (_, params) => params;
 
+// @ts-expect-error TS7006
 const getEditingFields = (state, { filter, subresourceId }) => {
     return (
         !subresourceId
@@ -79,6 +92,7 @@ export const getCollectionFields = createSelector(getFields, (fields) =>
 
 export const getSubresourceFields = createSelector(
     getFields,
+    // @ts-expect-error TS7006
     (_, subresourceId) => subresourceId,
     (fields, subresourceId) =>
         fields.filter((f) => f.subresourceId === subresourceId),
@@ -100,6 +114,7 @@ const getGraphicFields = createSelector(getFields, (fields) =>
 
 const getFromFilterFields = createSelector(
     getFields,
+    // @ts-expect-error TS7006
     (_, type) => type,
     (fields, type) => {
         return fields
@@ -112,7 +127,9 @@ const getComposedFields = createSelector(getFields, (fields) =>
     fields.filter(({ composedOf }) => !!composedOf),
 );
 
+// @ts-expect-error TS7006
 export const isACompositeFields = (name, composedFields) =>
+    // @ts-expect-error TS7031
     composedFields.some(({ composedOf: { fields } }) => fields.includes(name));
 
 const getCollectionFieldsExceptComposite = createSelector(
@@ -158,7 +175,9 @@ const getAllListFields = createSelector(getCollectionFields, (fields) =>
     fields.filter((f) => !f.composedOf),
 );
 
+// @ts-expect-error TS7006
 const findFieldWithOverviewID = (id) => (fields) => {
+    // @ts-expect-error TS7006
     const result = fields.find((f) => f.overview === id);
     return result ? result.name : null;
 };
@@ -186,16 +205,21 @@ export const getCompletedField = createSelector(
     (field, fields) => fields.find((f) => f.name === field.completes),
 );
 
+// @ts-expect-error TS7031
 export const hasPublicationFields = ({ list }) => list.length > 0;
 
+// @ts-expect-error TS7006
 export const getTransformers = (state, type) => getTransformersMetas(type);
 
+// @ts-expect-error TS7006
 export const getTransformerArgs = (state, operation) =>
     getTransformerMetas(operation).args;
 
+// @ts-expect-error TS7006
 export const getFieldOntologyFormData = (state) =>
     state.form.ONTOLOGY_FIELD_FORM && state.form.ONTOLOGY_FIELD_FORM.values;
 
+// @ts-expect-error TS7006
 export const getFieldFormData = (state) => {
     try {
         const values = state.form.field.values;
@@ -228,6 +252,7 @@ export const getFieldFormData = (state) => {
     }
 };
 
+// @ts-expect-error TS7006
 const getValidationFields = (state) => state.invalidFields;
 
 export const getInvalidFields = createSelector(
@@ -235,21 +260,26 @@ export const getInvalidFields = createSelector(
     getValidationFields,
     (byName = {}, validationFields = []) =>
         validationFields
+            // @ts-expect-error TS7031
             .filter(({ isValid }) => !isValid)
+            // @ts-expect-error TS7006
             .map((field) => ({
                 ...byName[field.name],
                 ...field,
             })),
 );
 
+// @ts-expect-error TS7006
 export const areAllFieldsValid = (state) =>
     state.allValid && (state.list || []).length > 0;
 
+// @ts-expect-error TS7006
 export const getLineColGetterFromAllFields = (fieldByName, field) => {
     if (!field) {
         return () => null;
     }
 
+    // @ts-expect-error TS7006
     return (line) => {
         const lineValue = line[field.name];
         return Array.isArray(lineValue) ? JSON.stringify(lineValue) : lineValue;
@@ -258,13 +288,16 @@ export const getLineColGetterFromAllFields = (fieldByName, field) => {
 
 export const getLineColGetter = createSelector(
     getByName,
+    // @ts-expect-error TS7006
     (_, field) => field,
     (fieldByName, field) => {
         const getLineCol = getLineColGetterFromAllFields(fieldByName, field);
+        // @ts-expect-error TS7006
         return (line) => {
             try {
                 return getLineCol(line);
             } catch (error) {
+                // @ts-expect-error TS18046
                 if (error.message === 'circular dependencies') {
                     return 'circular dependencies';
                 }
@@ -274,10 +307,12 @@ export const getLineColGetter = createSelector(
     },
 );
 
+// @ts-expect-error TS7006
 const getFieldsCatalog = (state) => state.byName;
 
 const getCompositeFieldsByField = createSelector(
     getFieldsCatalog,
+    // @ts-expect-error TS7006
     (_, field) => field,
     (fieldsCatalog, field) => {
         if (!field.composedOf) {
@@ -285,23 +320,28 @@ const getCompositeFieldsByField = createSelector(
         }
         const { fields } = field.composedOf;
 
+        // @ts-expect-error TS7006
         return fields.map((name) => fieldsCatalog[name]);
     },
 );
 
 const getCompositeFieldsNamesByField = createSelector(
     getCompositeFieldsByField,
+    // @ts-expect-error TS7006
     (fields) => fields.filter((f) => !!f).map(({ label }) => label),
 );
 
+// @ts-expect-error TS7031
 const hasPublishedDataset = ({ published }) => published;
 
 const getContributionFields = createSelector(getFields, (fields) =>
     fields.filter((f) => f.contribution),
 );
 
+// @ts-expect-error TS7031
 const getSelectedField = ({ selectedField }) => selectedField;
 
+// @ts-expect-error TS7031
 const getFieldToAdd = ({ byName, selectedField }) => {
     if (selectedField === 'new') {
         return { scope: SCOPE_DOCUMENT };
@@ -371,6 +411,7 @@ const getResourceSortDir = createSelector(getAllListFields, (fields) => {
     );
 });
 
+// @ts-expect-error TS7031
 const getPublishData = ({ error, published, editedFieldIndex, loading }) => ({
     published,
     editedFieldIndex,
@@ -378,9 +419,13 @@ const getPublishData = ({ error, published, editedFieldIndex, loading }) => ({
     error: error && (error.message || error),
 });
 
+// @ts-expect-error TS7006
 const isLoading = (state) => state.loading;
+// @ts-expect-error TS7006
 const isSaving = (state) => state.isSaving;
+// @ts-expect-error TS7006
 const isAdding = (state) => state.isAdding;
+// @ts-expect-error TS7006
 const getError = (state) => state.error;
 
 const getFacetFields = createSelector(getFields, (allFields) =>
@@ -403,8 +448,10 @@ const canBeSearched = createSelector(
     (hasFacet, hasSearchable) => hasFacet || hasSearchable,
 );
 
+// @ts-expect-error TS7006
 const getNbColumns = (state) => state.list.length;
 
+// @ts-expect-error TS7031
 const getEditedValueFieldName = ({ editedValueFieldName }) =>
     editedValueFieldName;
 
@@ -414,14 +461,17 @@ const isFieldEdited = createSelector(
     (editedValueFieldName, fieldName) => editedValueFieldName === fieldName,
 );
 
+// @ts-expect-error TS7031
 const getConfiguredFieldName = ({ configuredFieldName }) => configuredFieldName;
 
 const isFieldConfigured = createSelector(
     getConfiguredFieldName,
+    // @ts-expect-error TS7006
     (_, fieldName) => fieldName,
     (configuredFieldName, fieldName) => configuredFieldName === fieldName,
 );
 
+// @ts-expect-error TS7006
 export const getNewCharacteristicFormData = (state) =>
     state.form[NEW_CHARACTERISTIC_FORM_NAME].values;
 
@@ -429,14 +479,17 @@ const getFieldFormatArgs = createSelector(getFieldByName, (field) =>
     get(field, 'format.args', {}),
 );
 
+// @ts-expect-error TS7006
 const getInvalidProperties = (state) => state.invalidProperties || [];
 
 export const getFromName = createSelector(
     getByName,
+    // @ts-expect-error TS7006
     (_, name) => name,
     (fields, name) => fields[name] || null,
 );
 
+// @ts-expect-error TS7006
 function isRemoveFieldListPending(state) {
     return state.isRemoveFieldListPending;
 }

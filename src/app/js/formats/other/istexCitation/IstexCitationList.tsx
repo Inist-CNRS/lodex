@@ -27,9 +27,11 @@ const styles = stylesToClassname(
 );
 
 class IstexCitationList extends Component {
+    // @ts-expect-error TS7006
     constructor(props) {
         super(props);
         this.state = {
+            // @ts-expect-error TS2339
             ...this.props.data,
             isLoading: false,
         };
@@ -37,10 +39,12 @@ class IstexCitationList extends Component {
 
     loadMore = () => {
         this.setState({ isLoading: true }, () =>
+            // @ts-expect-error TS2339
             getMoreDocumentData(this.state.nextPageURI).then(
                 ({ hits, total, nextPageURI }) =>
                     this.setState((state) => ({
                         ...state,
+                        // @ts-expect-error TS2339
                         hits: state.hits.concat(hits),
                         total,
                         nextPageURI,
@@ -51,13 +55,17 @@ class IstexCitationList extends Component {
     };
 
     render() {
+        // @ts-expect-error TS2339
         const { children, polyglot, data, skip, value, name, ...props } =
             this.props;
+        // @ts-expect-error TS2339
         const { hits, total, nextPageURI, isLoading } = this.state;
 
         if (!hits || !hits.length) {
             return (
                 <ul>
+                    {/*
+                     // @ts-expect-error TS2339 */}
                     <li className={styles.li}>
                         {polyglot.t('istex_no_result')}
                     </li>
@@ -85,6 +93,8 @@ class IstexCitationList extends Component {
                                 total,
                             })}
                         </span>
+                        {/*
+                         // @ts-expect-error TS2739 */}
                         <Link
                             style={{
                                 float: 'right',
@@ -96,19 +106,31 @@ class IstexCitationList extends Component {
                             )}
                             target="_blank"
                         >
+                            {/*
+                             // @ts-expect-error TS2769 */}
                             <FileDownload tooltip={polyglot.t('download')} />
                         </Link>
                     </div>
                 )}
+                {/*
+                 // @ts-expect-error TS2339 */}
                 <ul className={classnames({ skip }, skip && styles.skip)}>
+                    {/*
+                     // @ts-expect-error TS7006 */}
                     {hits.map((item, index) => (
+                        // @ts-expect-error TS2339
                         <li className={styles.li} key={index}>
+                            {/*
+                             // @ts-expect-error TS2349 */}
                             {children({ ...props, polyglot, item })}
                         </li>
                     ))}
                 </ul>
                 {nextPageURI && (
+                    // @ts-expect-error TS2339
                     <div className={classnames('load-more', styles.loadMore)}>
+                        {/*
+                         // @ts-expect-error TS2740 */}
                         <ButtonWithStatus
                             fullWidth
                             onClick={this.loadMore}
@@ -124,6 +146,7 @@ class IstexCitationList extends Component {
     }
 }
 
+// @ts-expect-error TS2339
 IstexCitationList.propTypes = {
     data: PropTypes.shape({
         hits: PropTypes.array.isRequired,

@@ -15,16 +15,27 @@ import { useTranslate } from '../../i18n/I18NContext';
 
 // TextField component to use tanstack react form with material ui text field
 export function TextField({
+    // @ts-expect-error TS7031
     form,
+    // @ts-expect-error TS7031
     name,
+    // @ts-expect-error TS7031
     label,
+    // @ts-expect-error TS7031
     disabled,
+    // @ts-expect-error TS7031
     helperText,
+    // @ts-expect-error TS7031
     multiline,
+    // @ts-expect-error TS7031
     required,
+    // @ts-expect-error TS7031
     type,
+    // @ts-expect-error TS7031
     sx,
+    // @ts-expect-error TS7031
     initialValue,
+    // @ts-expect-error TS7031
     clearable,
 }) {
     const { translate } = useTranslate();

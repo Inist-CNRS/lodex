@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+// @ts-expect-error TS7016
 import compose from 'recompose/compose';
+// @ts-expect-error TS7016
 import withHandlers from 'recompose/withHandlers';
 import { ListItem, IconButton, Grid, Box } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
@@ -26,9 +28,13 @@ const styles = {
 };
 
 const ValidationFieldComponent = ({
+    // @ts-expect-error TS7031
     onEditField,
+    // @ts-expect-error TS7031
     field: { label, properties },
+    // @ts-expect-error TS7031
     p: polyglot,
+    // @ts-expect-error TS7031
     isFieldsLoading,
 }) => (
     <ListItem
@@ -42,7 +48,9 @@ const ValidationFieldComponent = ({
             <Grid item>
                 <ul>
                     {properties
+                        // @ts-expect-error TS7006
                         .filter((p) => !p.isValid)
+                        // @ts-expect-error TS7006
                         .map((p) => (
                             <li key={`${p.name}_${p.error}`}>
                                 {polyglot.t(
@@ -69,13 +77,16 @@ ValidationFieldComponent.propTypes = {
     isFieldsLoading: PropTypes.bool,
 };
 
+// @ts-expect-error TS7006
 const mapStateToProps = (state) => ({
+    // @ts-expect-error TS2339
     isFieldsLoading: fromFields.isLoading(state),
 });
 
 export default compose(
     connect(mapStateToProps),
     withHandlers({
+        // @ts-expect-error TS7006
         onEditField: (props) => (event) => {
             event.preventDefault();
             props.onEditField(props.field.name);

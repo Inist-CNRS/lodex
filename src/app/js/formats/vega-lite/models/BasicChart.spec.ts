@@ -3,6 +3,7 @@ import BasicChart from './BasicChart';
 describe('BasicChart', () => {
     it('Default color need to be equals to MULTICHROMATIC_DEFAULT_COLORSET(transformed in to an array)', function () {
         let basicChart = new BasicChart();
+        // @ts-expect-error TS2339
         expect(basicChart.colors).toStrictEqual([
             '#d7191c',
             '#fdae61',
@@ -16,6 +17,7 @@ describe('BasicChart', () => {
         let basicChart = new BasicChart();
         let newColor = '#ffa6e6';
         basicChart.setColor(newColor);
+        // @ts-expect-error TS2339
         expect(basicChart.colors).toStrictEqual([newColor]);
     });
 
@@ -26,6 +28,7 @@ describe('BasicChart', () => {
 
     it('Test tooltip', function () {
         let basicChart = new BasicChart();
+        // @ts-expect-error TS2339
         expect(basicChart.tooltip).toStrictEqual({
             toggle: false,
             category: {
@@ -41,14 +44,18 @@ describe('BasicChart', () => {
         });
 
         basicChart.setTooltip(true);
+        // @ts-expect-error TS2339
         expect(basicChart.tooltip.toggle).toBe(true);
 
         basicChart.setTooltipCategory('TestCategory');
+        // @ts-expect-error TS2339
         expect(basicChart.tooltip.category.title).toBe('TestCategory');
 
         basicChart.setTooltipValue('TestValue');
+        // @ts-expect-error TS2339
         expect(basicChart.tooltip.value.title).toBe('TestValue');
 
+        // @ts-expect-error TS2339
         expect(basicChart.tooltip).toStrictEqual({
             toggle: true,
             category: {

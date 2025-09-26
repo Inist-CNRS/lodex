@@ -31,23 +31,31 @@ class LodexFieldAdmin extends Component {
         args: defaultArgs,
     };
 
+    // @ts-expect-error TS7006
     handleRequest = (e) => {
         const labelArray = (e.target.value || '').split(';');
+        // @ts-expect-error TS2339
         const { param, ...args } = this.props.args;
         const newArgs = { ...args, param: { ...param, labelArray } };
+        // @ts-expect-error TS2339
         this.props.onChange(newArgs);
     };
 
+    // @ts-expect-error TS7006
     handleHiddenInfo = (event) => {
         let hiddenInfo = event.target.checked;
+        // @ts-expect-error TS2339
         const { param, ...state } = this.props.args;
         const newState = { ...state, param: { ...param, hiddenInfo } };
+        // @ts-expect-error TS2339
         this.props.onChange(newState);
     };
 
     render() {
         const {
+            // @ts-expect-error TS2339
             p: polyglot,
+            // @ts-expect-error TS2339
             args: { param },
         } = this.props;
         const { labelArray, hiddenInfo } = param || defaultArgs.param;
@@ -55,7 +63,11 @@ class LodexFieldAdmin extends Component {
 
         return (
             <FormatGroupedFieldSet>
+                {/*
+                 // @ts-expect-error TS2322 */}
                 <FormatDataParamsFieldSet>
+                    {/*
+                     // @ts-expect-error TS2322 */}
                     <TextField
                         label={polyglot.t('param_labels')}
                         multiline
@@ -64,7 +76,11 @@ class LodexFieldAdmin extends Component {
                         fullWidth
                     />
                 </FormatDataParamsFieldSet>
+                {/*
+                 // @ts-expect-error TS2322 */}
                 <FormatDefaultParamsFieldSet defaultExpanded>
+                    {/*
+                     // @ts-expect-error TS2322 */}
                     <FormControlLabel
                         control={
                             <Checkbox

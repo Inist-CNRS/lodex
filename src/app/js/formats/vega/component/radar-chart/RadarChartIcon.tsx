@@ -1,5 +1,6 @@
 import React from 'react';
 
+// @ts-expect-error TS7006
 const RadarChartByAgusPurwantoFromTheNounProject = (props) => (
     <svg viewBox="0 0 100 125" width="1em" height="1em" {...props}>
         <path d="M86.001 95.5c-.435 0-.865-.188-1.162-.55L50 52.369 15.161 94.95a1.5 1.5 0 1 1-2.322-1.9l36-44c.57-.696 1.752-.696 2.322 0l36 44a1.5 1.5 0 0 1-1.16 2.45z" />

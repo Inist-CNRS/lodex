@@ -6,7 +6,9 @@ import MenuItem from '@mui/material/MenuItem';
 import PropTypes from 'prop-types';
 import { default as React } from 'react';
 import { connect } from 'react-redux';
+// @ts-expect-error TS7016
 import { withRouter } from 'react-router';
+// @ts-expect-error TS7016
 import { compose } from 'recompose';
 
 import { toast } from '../../../../../common/tools/toast';
@@ -17,8 +19,11 @@ import { ExportDatasetButton } from '../../../public/export/ExportDatasetButton'
 
 export const AdvancedNestedMenuComponent = React.memo(
     function AnnotationNestedMenu({
+        // @ts-expect-error TS2339
         onClose,
+        // @ts-expect-error TS2339
         showDatasetClearDialog,
+        // @ts-expect-error TS2339
         hasLoadedDataset,
     }) {
         const { translate } = useTranslate();
@@ -61,6 +66,7 @@ export const AdvancedNestedMenuComponent = React.memo(
     },
 );
 
+// @ts-expect-error TS2339
 AdvancedNestedMenuComponent.propTypes = {
     onClose: PropTypes.func.isRequired,
     hasLoadedDataset: PropTypes.bool.isRequired,
@@ -68,7 +74,9 @@ AdvancedNestedMenuComponent.propTypes = {
     showDatasetClearDialog: PropTypes.func.isRequired,
 };
 
+// @ts-expect-error TS7006
 const mapStateToProps = (state) => ({
+    // @ts-expect-error TS2339
     hasLoadedDataset: fromParsing.hasUploadedFile(state),
 });
 

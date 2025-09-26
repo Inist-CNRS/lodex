@@ -3,6 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { connect } from 'react-redux';
+// @ts-expect-error TS7016
 import { compose } from 'recompose';
 import { fromEnrichments } from '../selectors';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
@@ -17,6 +18,7 @@ import {
 } from '../../../../common/taskStatus';
 import { translate } from '../../i18n/I18NContext';
 
+// @ts-expect-error TS7031
 export const EnrichmentStatus = ({ status, p: polyglot }) => {
     if (status === PENDING) {
         return (
@@ -94,7 +96,9 @@ EnrichmentStatus.propTypes = {
 
 const mapDispatchToProps = {};
 
+// @ts-expect-error TS7006
 const mapStateToProps = (state, { id }) => ({
+    // @ts-expect-error TS2339
     status: fromEnrichments.enrichments(state).find(({ _id }) => _id === id)
         ?.status,
 });

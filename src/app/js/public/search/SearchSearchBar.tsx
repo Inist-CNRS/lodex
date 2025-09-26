@@ -27,11 +27,17 @@ const styles = stylesToClassName(
 );
 
 export const SearchSearchBarComponent = ({
+    // @ts-expect-error TS7031
     defaultQuery,
+    // @ts-expect-error TS7031
     search,
+    // @ts-expect-error TS7031
     hasSearchableFields,
+    // @ts-expect-error TS7031
     onToggleFacets,
+    // @ts-expect-error TS7031
     withFacets,
+    // @ts-expect-error TS7031
     resetAnnotationFilter,
 }) => {
     const matches = useMediaQuery('@media (max-width: 991.5px)', {
@@ -73,6 +79,7 @@ export const SearchSearchBarComponent = ({
                     <SearchBar
                         className="search-searchbar"
                         value={localQuery}
+                        // @ts-expect-error TS7006
                         onChange={(e) => handleSearch(e.target.value)}
                         onClear={handleClearSearch}
                     />
@@ -90,6 +97,7 @@ export const SearchSearchBarComponent = ({
                     >
                         <ToggleFacetsButton
                             onChange={onToggleFacets}
+                            // @ts-expect-error TS2339
                             className={styles.toggleFacetsButton}
                         />
                     </Grid>
@@ -122,12 +130,16 @@ SearchSearchBarComponent.propTypes = {
     resetAnnotationFilter: PropTypes.func.isRequired,
 };
 
+// @ts-expect-error TS7006
 const mapStateToProps = (state) => ({
+    // @ts-expect-error TS2339
     hasSearchableFields: fromFields.hasSearchableFields(state),
+    // @ts-expect-error TS2339
     defaultQuery: fromSearch.getQuery(state),
 });
 
 const mapDispatchToProps = {
+    // @ts-expect-error TS7006
     search: (value) => searchAction({ query: value }),
     resetAnnotationFilter: () => searchAnnotations({ mode: null }),
 };
