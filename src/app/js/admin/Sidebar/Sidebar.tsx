@@ -17,7 +17,6 @@ import { connect } from 'react-redux';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { fromPublication } from '../selectors';
 import { SidebarContext } from './SidebarContext';
-// @ts-expect-error TS7016
 import { useRouteMatch } from 'react-router-dom';
 import {
     SCOPE_DATASET,

@@ -10,7 +10,6 @@ import { AnnotationStorageProvider } from './annotationStorage';
 import { TestI18N } from '../i18n/I18NContext';
 import configureStore from '../configureStore';
 import reducers from '../public/reducers';
-// @ts-expect-error TS7016
 import { createMemoryHistory } from 'history';
 
 // @ts-expect-error TS7017

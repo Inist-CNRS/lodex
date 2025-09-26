@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import MenuItem from '@mui/material/MenuItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
-// @ts-expect-error TS7016
 import { NavLink } from 'react-router-dom';
 
 // this component is not styled

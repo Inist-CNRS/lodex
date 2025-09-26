@@ -1,5 +1,4 @@
 import React from 'react';
-// @ts-expect-error TS7016
 import { Switch, Route, useRouteMatch, Redirect } from 'react-router';
 
 import { DataRoute } from './DataRoute';

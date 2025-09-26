@@ -1,6 +1,5 @@
 import React from 'react';
 import { connect } from 'react-redux';
-// @ts-expect-error TS7016
 import { Redirect } from 'react-router';
 // @ts-expect-error TS7016
 import { compose, branch, renderComponent } from 'recompose';

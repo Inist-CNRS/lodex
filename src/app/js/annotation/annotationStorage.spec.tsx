@@ -14,7 +14,6 @@ import {
 import { Provider } from 'react-redux';
 import configureStore from '../configureStore';
 import reducers from '../public/reducers';
-// @ts-expect-error TS7016
 import { createMemoryHistory } from 'history';
 import { newResourceAnnotated } from '../public/search/reducer';
 
