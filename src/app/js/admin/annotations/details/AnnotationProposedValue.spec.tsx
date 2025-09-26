@@ -71,8 +71,6 @@ describe('AnnotationProposedValue', () => {
     it('should display add icon when value is not in the admin provided value list', () => {
         const wrapper = render(
             <TestI18N>
-                {/*
-                 // @ts-expect-error TS2322 */}
                 <AnnotationProposedValue
                     proposedValue={['value1', 'value2']}
                     field={{

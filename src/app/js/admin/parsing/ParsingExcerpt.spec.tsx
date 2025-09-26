@@ -240,8 +240,6 @@ describe('<ParsingExcerpt />', () => {
         ];
         const wrapper = render(
             <TestI18N>
-                {/*
-                 // @ts-expect-error TS2322 */}
                 <ParsingExcerpt
                     columns={columns}
                     lines={lines}
@@ -301,8 +299,6 @@ describe('<ParsingExcerpt />', () => {
         ];
         const wrapper = render(
             <TestI18N>
-                {/*
-                 // @ts-expect-error TS2322 */}
                 <ParsingExcerpt
                     // @ts-expect-error TS7005
                     columns={columns}
