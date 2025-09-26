@@ -158,7 +158,6 @@ export const RepublishAndClearButtonComponent = ({
                 )}
             </Popper>
             {showClearDialog && (
-                // @ts-expect-error TS2322
                 <ClearDialog type="published" onClose={handleHideClearDialog} />
             )}
         </React.Fragment>

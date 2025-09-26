@@ -6,7 +6,6 @@ import { IconButton, Button } from '@mui/material';
 import ActionDeleteIcon from '@mui/icons-material/Delete';
 import ActionAddIcon from '@mui/icons-material/Add';
 import classnames from 'classnames';
-// @ts-expect-error TS7016
 import memoize from 'lodash/memoize';
 
 import { polyglot as polyglotPropTypes } from '../../../propTypes';

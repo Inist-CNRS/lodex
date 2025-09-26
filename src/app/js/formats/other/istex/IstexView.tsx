@@ -75,8 +75,6 @@ export const IstexView = ({
             </Link>
             {error && (
                 <Alert>
-                    {/*
-                     // @ts-expect-error TS2322 */}
                     <p>{polyglot.t(error)}</p>
                 </Alert>
             )}

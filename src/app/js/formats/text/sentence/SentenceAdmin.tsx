@@ -51,11 +51,7 @@ class SentenceAdmin extends Component {
 
         return (
             <FormatGroupedFieldSet>
-                {/*
-                 // @ts-expect-error TS2322 */}
                 <FormatDefaultParamsFieldSet defaultExpanded>
-                    {/*
-                     // @ts-expect-error TS2322 */}
                     <TextField
                         key="prefix"
                         label={polyglot.t('prefix')}
@@ -63,8 +59,6 @@ class SentenceAdmin extends Component {
                         value={prefix}
                         sx={{ flexGrow: 1 }}
                     />
-                    {/*
-                     // @ts-expect-error TS2322 */}
                     <TextField
                         key="suffix"
                         label={polyglot.t('suffix')}

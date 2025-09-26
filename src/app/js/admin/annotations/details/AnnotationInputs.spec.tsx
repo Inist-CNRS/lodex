@@ -127,21 +127,23 @@ describe('AnnotationInputs', () => {
                 name: 'annotation_form_title',
             });
 
-            required
-                ? expect(
-                      wrapper.getByRole('textbox', {
-                          name: 'annotation_internal_comment',
-                          // @ts-expect-error TS2353
-                          container: inputsRegion,
-                      }),
-                  ).toHaveAttribute('required')
-                : expect(
-                      wrapper.getByRole('textbox', {
-                          name: 'annotation_internal_comment',
-                          // @ts-expect-error TS2353
-                          container: inputsRegion,
-                      }),
-                  ).not.toHaveAttribute('required');
+            if (required) {
+                expect(
+                    wrapper.getByRole('textbox', {
+                        name: 'annotation_internal_comment',
+                        // @ts-expect-error TS2353
+                        container: inputsRegion,
+                    }),
+                ).toHaveAttribute('required');
+            } else {
+                expect(
+                    wrapper.getByRole('textbox', {
+                        name: 'annotation_internal_comment',
+                        // @ts-expect-error TS2353
+                        container: inputsRegion,
+                    }),
+                ).not.toHaveAttribute('required');
+            }
         },
     );
 });
