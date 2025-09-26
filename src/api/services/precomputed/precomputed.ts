@@ -9,6 +9,7 @@ import fetch from 'fetch-with-proxy';
 import path from 'path';
 import { tmpdir } from 'os';
 import { createReadStream } from 'fs';
+// @ts-expect-error TS(2792): Cannot find module 'stream-to-promise'. Did you me... Remove this comment to see the full error message
 import ezs from '@ezs/core';
 // @ts-expect-error TS(2792): Cannot find module '@ezs/lodex'. Did you mean to s... Remove this comment to see the full error message
 import Lodex from '@ezs/lodex';
