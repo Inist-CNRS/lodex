@@ -2,11 +2,11 @@ const ezs = require('@ezs/core');
 const from = require('from');
 
 describe('csv.ini', () => {
-    it('should parse a comma csv', done => {
+    it('should parse a comma csv', (done) => {
         const res = [];
         from(['a,b\n1,2\n'])
             .pipe(ezs('delegate', { file: __dirname + '/csv.ini' }))
-            .on('data', chunk => {
+            .on('data', (chunk) => {
                 res.push(chunk);
             })
             .on('end', () => {
@@ -14,11 +14,11 @@ describe('csv.ini', () => {
                 done();
             });
     });
-    it('should parse a semicolon csv', done => {
+    it('should parse a semicolon csv', (done) => {
         const res = [];
         from(['a;b\n1;2\n'])
             .pipe(ezs('delegate', { file: __dirname + '/csv.ini' }))
-            .on('data', chunk => {
+            .on('data', (chunk) => {
                 res.push(chunk);
             })
             .on('end', () => {

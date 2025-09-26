@@ -1,4 +1,5 @@
 import from from 'from';
+// eslint-disable-next-line import/no-unresolved
 import ezs from '@ezs/core';
 import statements from '../src';
 import testOne from './testOne';

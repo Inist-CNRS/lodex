@@ -1,6 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useCallback, useMemo } from 'react';
-import { useHistory } from 'react-router-dom';
 
 import { toast } from '../../../../../common/tools/toast';
 import { useTranslate } from '../../../i18n/I18NContext';
@@ -10,7 +9,6 @@ import { useDownloader } from '../../commons/useDownloader';
 
 export function useImportAnnotations() {
     const { translate } = useTranslate();
-    const history = useHistory();
     const queryClient = useQueryClient();
     const { download } = useDownloader();
 

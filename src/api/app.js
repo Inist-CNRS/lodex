@@ -5,6 +5,7 @@ import route from 'koa-route';
 import cors from 'kcors';
 import koaQs from 'koa-qs';
 import { KoaAdapter } from '@bull-board/koa';
+// eslint-disable-next-line import/no-unresolved
 import ezs from '@ezs/core';
 
 import controller from './controller';
