@@ -9,7 +9,7 @@ import { EnrichmentRoute } from './EnrichmentRoute';
 import { PrecomputedRoute } from './PrecomputedRoute';
 
 const DataComponent = () => {
-    let { path } = useRouteMatch();
+    const { path } = useRouteMatch();
     return (
         <Switch>
             <Route

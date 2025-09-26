@@ -8,7 +8,7 @@ import PrecomputedListConnected from './precomputed/PrecomputedList';
 import PrecomputedFormConnected from './precomputed/PrecomputedForm';
 
 export const PrecomputedRouteComponent = () => {
-    let { path } = useRouteMatch();
+    const { path } = useRouteMatch();
 
     return (
         <Switch>
