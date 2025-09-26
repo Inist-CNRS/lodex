@@ -22,8 +22,6 @@ describe('<FieldAddDropdownButton />', () => {
     it('should call addField on click', () => {
         const { getByText } = render(
             <TestI18N>
-                {/*
-                 // @ts-expect-error TS2322 */}
                 <FieldAddDropdownButton
                     // @ts-expect-error TS7005
                     onAddNewField={mockAddField}
@@ -48,8 +46,6 @@ describe('<FieldAddDropdownButton />', () => {
     it('should call addField on click on blank field dropdown', () => {
         const { getByTestId, getByText } = render(
             <TestI18N>
-                {/*
-                 // @ts-expect-error TS2322 */}
                 <FieldAddDropdownButton
                     // @ts-expect-error TS7005
                     onAddNewField={mockAddField}
@@ -77,8 +73,6 @@ describe('<FieldAddDropdownButton />', () => {
     it('should call showAddFromColumn on click on existing column dropdown', () => {
         const { getByTestId, getByText } = render(
             <TestI18N>
-                {/*
-                 // @ts-expect-error TS2322 */}
                 <FieldAddDropdownButton
                     // @ts-expect-error TS7005
                     onAddNewField={mockAddField}
@@ -103,8 +97,6 @@ describe('<FieldAddDropdownButton />', () => {
     it('should call addField with subresourceId on click if subresourceId is defined', () => {
         const { getByText } = render(
             <TestI18N>
-                {/*
-                 // @ts-expect-error TS2322 */}
                 <FieldAddDropdownButton
                     // @ts-expect-error TS7005
                     onAddNewField={mockAddField}
@@ -130,8 +122,6 @@ describe('<FieldAddDropdownButton />', () => {
     it('should call addField with subresourceId on click on blank field dropdown if subresourceId is defined', () => {
         const { getByTestId, getByText } = render(
             <TestI18N>
-                {/*
-                 // @ts-expect-error TS2322 */}
                 <FieldAddDropdownButton
                     // @ts-expect-error TS7005
                     onAddNewField={mockAddField}

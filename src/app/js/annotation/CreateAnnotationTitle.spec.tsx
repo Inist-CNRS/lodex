@@ -15,8 +15,6 @@ function TestTitle({ formTarget, ...props }) {
     });
     return (
         <TestI18N>
-            {/*
-             // @ts-expect-error TS2322 */}
             <CreateAnnotationTitle
                 form={form}
                 // @ts-expect-error TS2322

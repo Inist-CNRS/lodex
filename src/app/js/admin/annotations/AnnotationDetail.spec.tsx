@@ -21,8 +21,6 @@ function TestAnnotationDetail() {
     return (
         <QueryClientProvider client={queryClient}>
             <TestI18N>
-                {/*
-                 // @ts-expect-error TS2322 */}
                 <MemoryRouter>
                     <AnnotationDetail />
                 </MemoryRouter>

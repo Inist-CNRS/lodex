@@ -24,8 +24,6 @@ function TestButton({ isSubmitting = false }) {
     return (
         <QueryClientProvider client={queryClient}>
             <TestI18N>
-                {/*
-                 // @ts-expect-error TS2322 */}
                 <MemoryRouter>
                     <AnnotationDeleteButton
                         id={ANNOTATION_ID}

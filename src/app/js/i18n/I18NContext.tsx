@@ -1,6 +1,5 @@
 // @ts-expect-error TS7016
 import Polyglot from 'node-polyglot';
-import PropTypes from 'prop-types';
 import React, { createContext, useContext, useMemo } from 'react';
 import { connect } from 'react-redux';
 import { fromI18n } from '../public/selectors';
@@ -9,8 +8,18 @@ import { setLanguage as setLanguageAction } from './index';
 // @ts-expect-error TS7006
 const I18NContext = createContext({ translate: (_label) => '' });
 
-// @ts-expect-error TS7031
-export const I18NComponent = ({ locale, phrases, setLanguage, children }) => {
+type I18NComponentProps = {
+    locale: 'fr' | 'en';
+    phrases: Record<string, string>;
+    setLanguage: (lang: 'fr' | 'en') => void;
+    children: React.ReactNode;
+};
+export const I18NComponent = ({
+    locale,
+    phrases,
+    setLanguage,
+    children,
+}: I18NComponentProps) => {
     const translate = useMemo(() => {
         const polyglot = new Polyglot({
             locale,
@@ -25,13 +34,6 @@ export const I18NComponent = ({ locale, phrases, setLanguage, children }) => {
             {children}
         </I18NContext.Provider>
     );
-};
-
-I18NComponent.propTypes = {
-    locale: PropTypes.oneOf(['fr', 'en']).isRequired,
-    phrases: PropTypes.array.isRequired,
-    setLanguage: PropTypes.func.isRequired,
-    children: PropTypes.node.isRequired,
 };
 
 // @ts-expect-error TS7006

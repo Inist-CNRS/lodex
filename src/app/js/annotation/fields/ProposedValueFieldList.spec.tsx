@@ -10,8 +10,6 @@ function TestProposedValueFieldList(props) {
     const form = useForm();
     return (
         <TestI18N>
-            {/*
-             // @ts-expect-error TS2322 */}
             <ProposedValueFieldList {...props} form={form} />
         </TestI18N>
     );
