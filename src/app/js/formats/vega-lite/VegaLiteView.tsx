@@ -1,7 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import { clamp } from 'lodash';
 
@@ -51,6 +50,7 @@ const VegaLiteView = ({ field, data, aspectRatio, specTemplate }) => {
         // @ts-expect-error TS2339
         <div className={styles.container} ref={ref}>
             <CustomActionVegaLite
+                // @ts-expect-error TS2322
                 spec={spec || {}}
                 data={data}
                 injectType={VEGA_LITE_DATA_INJECT_TYPE_A}
@@ -98,4 +98,5 @@ export const VegaLiteAdminView = connect((state, props) => {
     // @ts-expect-error TS2345
 })(VegaLiteView);
 
+// @ts-expect-error TS2345
 export default compose(injectData(), connect(mapStateToProps))(VegaLiteView);

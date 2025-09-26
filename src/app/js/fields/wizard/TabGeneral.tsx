@@ -45,6 +45,7 @@ export const TabGeneralComponent = ({
             <Field name="scope" component={TextField} type="hidden" />
             <FieldInternal field={currentEditedField} />
             <SourceValueToggleConnected
+                // @ts-expect-error TS2322
                 selectedSubresourceUri={subresourceUri}
                 arbitraryMode={arbitraryMode}
             />

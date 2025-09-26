@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
-// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import { translate } from '../../i18n/I18NContext';
 import PropTypes from 'prop-types';
@@ -96,4 +95,5 @@ const mapDispatchToProps = {
 export default compose(
     connect(mapStateToProps, mapDispatchToProps),
     translate,
+    // @ts-expect-error TS2345
 )(LanguageSelector);

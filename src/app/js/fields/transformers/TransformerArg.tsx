@@ -1,5 +1,4 @@
 import React from 'react';
-// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import PropTypes from 'prop-types';
 
@@ -92,4 +91,5 @@ const mapStateToProps = (state, { operation }) => ({
 export default compose(
     connect(mapStateToProps, null),
     translate,
+    // @ts-expect-error TS2345
 )(TransformerArgs);

@@ -5,7 +5,6 @@ import RejectedIcon from '@mui/icons-material/Clear';
 import ProposedIcon from '@mui/icons-material/Remove';
 import ValidatedIcon from '@mui/icons-material/Done';
 import { connect } from 'react-redux';
-// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import { translate } from '../../i18n/I18NContext';
 import { red, yellow, green, grey } from '@mui/material/colors';
@@ -113,4 +112,5 @@ const mapStateToProps = (state, { fieldName }) => ({
 export default compose(
     translate,
     connect(mapStateToProps),
+    // @ts-expect-error TS2345
 )(ModerateButtonComponent);

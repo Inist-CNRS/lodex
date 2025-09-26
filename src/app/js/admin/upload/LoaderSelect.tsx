@@ -136,6 +136,7 @@ const LoaderSelectComponent = ({
                 value={value}
             />
             <CustomLoader
+                // @ts-expect-error TS2322
                 isOpen={openCustomLoadersDialog}
                 handleClose={() => {
                     setOpenCustomLoadersDialog(false);

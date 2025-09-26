@@ -1,7 +1,6 @@
 import { Icon, IconButton, TextField } from '@mui/material';
 import PropTypes from 'prop-types';
 import React, { useEffect, useRef } from 'react';
-// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import { translate } from '../../../i18n/I18NContext';
 
@@ -87,4 +86,5 @@ SearchBar.defaultProps = {
     className: 'searchbar',
 };
 
+// @ts-expect-error TS2345
 export default compose(translate)(SearchBar);

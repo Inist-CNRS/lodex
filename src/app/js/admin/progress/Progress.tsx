@@ -7,7 +7,6 @@ import {
     DialogContent,
 } from '@mui/material';
 import { connect } from 'react-redux';
-// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 
 import { fromProgress } from '../selectors';

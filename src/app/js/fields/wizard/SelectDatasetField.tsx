@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { MenuItem, TextField } from '@mui/material';
 import { translate } from '../../i18n/I18NContext';
-// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 
@@ -67,4 +66,5 @@ const mapStateToProps = (state) => ({
 export default compose(
     connect(mapStateToProps),
     translate,
+    // @ts-expect-error TS2345
 )(SelectDatasetFieldComponent);

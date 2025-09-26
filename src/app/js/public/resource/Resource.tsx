@@ -7,7 +7,6 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { Swipeable } from 'react-swipeable';
-// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import { useTranslate } from '../../i18n/I18NContext';
 
@@ -209,17 +208,22 @@ export const ResourceComponent = ({
         >
             {removed && <RemovedDetail />}
             {!removed && (
+                // @ts-expect-error TS2322
                 <Detail backToListLabel={backToListLabel} tenant={tenant} />
             )}
             {prevResource && (
                 // @ts-expect-error TS2339
                 <div className={classnames(navStyles.nav, navStyles.left)}>
+                    {/*
+                     // @ts-expect-error TS2322 */}
                     <NavButton direction={PREV} navigate={navigatePrev} />
                 </div>
             )}
             {nextResource && (
                 // @ts-expect-error TS2339
                 <div className={classnames(navStyles.nav, navStyles.right)}>
+                    {/*
+                     // @ts-expect-error TS2322 */}
                     <NavButton direction={NEXT} navigate={navigateNext} />
                 </div>
             )}
@@ -304,4 +308,5 @@ const mapDispatchToProps = {
 export default compose(
     connect(mapStateToProps, mapDispatchToProps),
     withRouter,
+    // @ts-expect-error TS2345
 )(ResourceComponent);

@@ -37,6 +37,7 @@ const PropertyLinkedFieldsComponent = ({
             {linkedFields.map((linkedField) => (
                 <Property
                     key={linkedField._id}
+                    // @ts-expect-error TS2322
                     className={classnames(
                         'completes',
                         `completes_${fieldName}`,

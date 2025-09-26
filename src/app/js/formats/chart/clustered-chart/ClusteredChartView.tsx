@@ -1,5 +1,4 @@
 import React, { useMemo } from 'react';
-// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -100,4 +99,5 @@ ClusteredChartView.propTypes = {
 export default compose(
     injectData(),
     connect(mapStateToProps),
+    // @ts-expect-error TS2345
 )(ClusteredChartView);

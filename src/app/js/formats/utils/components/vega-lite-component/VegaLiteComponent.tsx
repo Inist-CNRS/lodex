@@ -12,7 +12,6 @@ import { ASPECT_RATIO_NONE, ASPECT_RATIOS } from '../../aspectRatio';
 import FormatFullScreenMode from '../FormatFullScreenMode';
 import { translate } from '../../../../i18n/I18NContext';
 import { polyglot as polyglotPropTypes } from '../../../../propTypes';
-// @ts-expect-error TS7016
 import { compose } from 'recompose';
 import { useVegaCsvExport } from '../useVegaCsvExport';
 import { useVegaActions } from '../useVegaActions';
@@ -150,4 +149,5 @@ const mapStateToProps = (state) => {
 export default compose(
     connect(mapStateToProps),
     translate,
+    // @ts-expect-error TS2345
 )(CustomActionVegaLite);

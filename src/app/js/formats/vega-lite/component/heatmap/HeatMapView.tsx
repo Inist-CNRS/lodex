@@ -2,7 +2,6 @@ import React, { useMemo, useState } from 'react';
 import { clamp } from 'lodash';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 
 import HeatMap from '../../models/HeatMap';
@@ -102,6 +101,7 @@ const HeatMapView = ({
         // @ts-expect-error TS2322
         <div style={styles.container} ref={ref}>
             <CustomActionVegaLite
+                // @ts-expect-error TS2322
                 spec={spec}
                 data={data}
                 injectType={VEGA_LITE_DATA_INJECT_TYPE_A}
@@ -159,4 +159,5 @@ export const HeatMapAdminView = connect((state, props) => {
     // @ts-expect-error TS2345
 })(HeatMapView);
 
+// @ts-expect-error TS2345
 export default compose(injectData(), connect(mapStateToProps))(HeatMapView);

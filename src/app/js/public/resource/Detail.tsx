@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { translate } from '../../i18n/I18NContext';
-// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import { CardActions } from '@mui/material';
 import { grey } from '@mui/material/colors';
@@ -159,6 +158,7 @@ export const DetailComponent = ({
                         {topFields.map((field) => (
                             <Property
                                 key={field.name}
+                                // @ts-expect-error TS2322
                                 field={field}
                                 resource={resource}
                                 style={styles.property(dense)}
@@ -176,6 +176,7 @@ export const DetailComponent = ({
                         {otherFields.map((field) => (
                             <Property
                                 key={field.name}
+                                // @ts-expect-error TS2322
                                 field={field}
                                 resource={resource}
                                 style={styles.property(dense)}
@@ -188,6 +189,7 @@ export const DetailComponent = ({
                         <HideResource />
                         {!resource.subresourceId && (
                             <ExportButton
+                                // @ts-expect-error TS2322
                                 style={{ float: 'right' }}
                                 uri={resource.uri}
                                 isResourceExport
@@ -267,4 +269,5 @@ const mapStateToProps = (state) => {
     };
 };
 
+// @ts-expect-error TS2345
 export default compose(connect(mapStateToProps), translate)(DetailComponent);

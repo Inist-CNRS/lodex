@@ -1,9 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-// @ts-expect-error TS7016
 import compose from 'recompose/compose';
-// @ts-expect-error TS7016
 import withHandlers from 'recompose/withHandlers';
 // @ts-expect-error TS7016
 import { submit as submitAction } from 'redux-form';
@@ -148,14 +146,13 @@ const mapDispatchToProps = { submit: submitAction };
 export default compose(
     connect(null, mapDispatchToProps),
     withHandlers({
+        // @ts-expect-error TS2322
         handleSubmit:
-            // @ts-expect-error TS7031
-
-
-                ({ submit, formName }) =>
-                () => {
-                    submit(formName);
-                },
+            ({ submit, formName }) =>
+            () => {
+                submit(formName);
+            },
     }),
     translate,
+    // @ts-expect-error TS2345
 )(PureButtonWithDialogForm);

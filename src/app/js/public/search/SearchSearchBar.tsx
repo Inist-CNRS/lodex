@@ -77,6 +77,7 @@ export const SearchSearchBarComponent = ({
                     lg={canAnnotate ? 6 : 9}
                 >
                     <SearchBar
+                        // @ts-expect-error TS2322
                         className="search-searchbar"
                         value={localQuery}
                         // @ts-expect-error TS7006

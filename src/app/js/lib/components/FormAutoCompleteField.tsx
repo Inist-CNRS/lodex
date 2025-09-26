@@ -1,8 +1,6 @@
 import React from 'react';
 import { bindActionCreators } from 'redux';
-// @ts-expect-error TS7016
 import compose from 'recompose/compose';
-// @ts-expect-error TS7016
 import withHandlers from 'recompose/withHandlers';
 import { connect } from 'react-redux';
 import {
@@ -117,4 +115,5 @@ export default compose(
     connect(mapStateToProps, mapDispatchToProps),
     withHandlers({ handleValueChosen, handleComplete }),
     translate,
+    // @ts-expect-error TS2345
 )(FormAutoCompleteField);

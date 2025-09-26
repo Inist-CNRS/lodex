@@ -1,13 +1,10 @@
-// @ts-expect-error TS7016
 import branch from 'recompose/branch';
-// @ts-expect-error TS7016
 import renderComponent from 'recompose/renderComponent';
 import { connect } from 'react-redux';
 
 import { fromFields } from '../../sharedSelectors';
 import PublishButton from './PublishButton';
 import { fromConfigTenant, fromPublication } from '../selectors';
-// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import { ClearPublishedButton } from '../clear/ClearPublishedButton';
 import { RepublishAndClearButton } from './RepublishAndClearButton';

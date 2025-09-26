@@ -1,6 +1,5 @@
 import React, { useMemo, useState } from 'react';
 import { connect } from 'react-redux';
-// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import PropTypes from 'prop-types';
 
@@ -111,6 +110,7 @@ const RadarChartView = ({
         // @ts-expect-error TS2322
         <div style={styles.container} ref={ref}>
             <CustomActionVega
+                // @ts-expect-error TS2322
                 spec={spec}
                 data={formattedData}
                 injectType={VEGA_DATA_INJECT_TYPE_A}
@@ -168,4 +168,5 @@ export const RadarChartAdminView = connect((state, props) => {
     // @ts-expect-error TS2345
 })(RadarChartView);
 
+// @ts-expect-error TS2345
 export default compose(injectData(), connect(mapStateToProps))(RadarChartView);

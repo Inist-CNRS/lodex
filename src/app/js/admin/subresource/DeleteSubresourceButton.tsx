@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, Dialog, DialogTitle, DialogActions } from '@mui/material';
-// @ts-expect-error TS7016
 import { compose, withState } from 'recompose';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import CancelButton from '../../lib/components/CancelButton';
@@ -57,4 +56,5 @@ DeleteSubresourceButtonComponent.propTypes = {
 export const DeleteSubresourceButton = compose(
     translate,
     withState('showDeletePopup', 'setShowDeletePopup', false),
+    // @ts-expect-error TS2345
 )(DeleteSubresourceButtonComponent);

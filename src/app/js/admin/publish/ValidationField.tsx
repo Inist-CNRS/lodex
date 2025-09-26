@@ -1,8 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-// @ts-expect-error TS7016
 import compose from 'recompose/compose';
-// @ts-expect-error TS7016
 import withHandlers from 'recompose/withHandlers';
 import { ListItem, IconButton, Grid, Box } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
@@ -89,8 +87,10 @@ export default compose(
         // @ts-expect-error TS7006
         onEditField: (props) => (event) => {
             event.preventDefault();
+            // @ts-expect-error TS18046
             props.onEditField(props.field.name);
         },
     }),
     translate,
+    // @ts-expect-error TS2345
 )(ValidationFieldComponent);

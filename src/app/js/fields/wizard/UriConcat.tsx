@@ -8,9 +8,7 @@ import {
     Box,
 } from '@mui/material';
 import { translate } from '../../i18n/I18NContext';
-// @ts-expect-error TS7016
 import compose from 'recompose/compose';
-// @ts-expect-error TS7016
 import withHandlers from 'recompose/withHandlers';
 import { connect } from 'react-redux';
 // @ts-expect-error TS7016
@@ -73,6 +71,7 @@ export const UriConcatComponent = ({
                 {columns.map((column, index) => (
                     <ConcatField
                         key={index}
+                        // @ts-expect-error TS2322
                         index={index}
                         column={column}
                         removable={index > 1}
@@ -138,72 +137,66 @@ const mapStateToProps = (state) => {
 export default compose(
     connect(mapStateToProps),
     withHandlers({
+        // @ts-expect-error TS2322
         handleSelect:
-            // @ts-expect-error TS7031
-
-
-                ({ onChange }) =>
-                () => {
-                    onChange({
-                        operation: 'CONCAT_URI',
-                        args: [
-                            {
-                                name: 'separator',
-                                type: 'string',
-                                value: '',
-                            },
-                            {
-                                name: 'column',
-                                type: 'column',
-                                value: '',
-                            },
-                            {
-                                name: 'column',
-                                type: 'column',
-                                value: '',
-                            },
-                        ],
-                    });
-                },
+            ({ onChange }) =>
+            () => {
+                onChange({
+                    operation: 'CONCAT_URI',
+                    args: [
+                        {
+                            name: 'separator',
+                            type: 'string',
+                            value: '',
+                        },
+                        {
+                            name: 'column',
+                            type: 'column',
+                            value: '',
+                        },
+                        {
+                            name: 'column',
+                            type: 'column',
+                            value: '',
+                        },
+                    ],
+                });
+            },
+        // @ts-expect-error TS2322
         handleChange:
-            // @ts-expect-error TS7031
-
-
-                ({ onChange, args }) =>
-                // @ts-expect-error TS7006
-                (value, event, key, index) => {
-                    onChange({
-                        operation: 'CONCAT_URI',
-                        args: [
-                            ...args.slice(0, index + 1),
-                            {
-                                name: 'column',
-                                type: 'column',
-                                value,
-                            },
-                            ...args.slice(index + 2),
-                        ],
-                    });
-                },
+            ({ onChange, args }) =>
+            // @ts-expect-error TS7006
+            (value, event, key, index) => {
+                onChange({
+                    operation: 'CONCAT_URI',
+                    args: [
+                        ...args.slice(0, index + 1),
+                        {
+                            name: 'column',
+                            type: 'column',
+                            value,
+                        },
+                        ...args.slice(index + 2),
+                    ],
+                });
+            },
+        // @ts-expect-error TS2322
         handleSeparatorChange:
-            // @ts-expect-error TS7031
-
-
-                ({ onChange, args }) =>
-                // @ts-expect-error TS7006
-                (event) => {
-                    onChange({
-                        operation: 'CONCAT_URI',
-                        args: [
-                            {
-                                name: 'separator',
-                                type: 'string',
-                                value: event.target.value,
-                            },
-                            ...args.slice(1),
-                        ],
-                    });
-                },
+            ({ onChange, args }) =>
+            // @ts-expect-error TS7006
+            (event) => {
+                onChange({
+                    operation: 'CONCAT_URI',
+                    args: [
+                        {
+                            name: 'separator',
+                            type: 'string',
+                            value: event.target.value,
+                        },
+                        ...args.slice(1),
+                    ],
+                });
+            },
         // @ts-expect-error TS7031
         handleAddColumn: ({ onChange, args }) => {
             onChange({
@@ -218,21 +211,20 @@ export default compose(
                 ],
             });
         },
+        // @ts-expect-error TS2322
         handleRemoveColumn:
-            // @ts-expect-error TS7031
-
-
-                ({ onChange, args }) =>
-                // @ts-expect-error TS7006
-                (index) => {
-                    onChange({
-                        operation: 'CONCAT_URI',
-                        args: [
-                            ...args.slice(0, index + 1),
-                            ...args.slice(index + 2),
-                        ],
-                    });
-                },
+            ({ onChange, args }) =>
+            // @ts-expect-error TS7006
+            (index) => {
+                onChange({
+                    operation: 'CONCAT_URI',
+                    args: [
+                        ...args.slice(0, index + 1),
+                        ...args.slice(index + 2),
+                    ],
+                });
+            },
     }),
     translate,
+    // @ts-expect-error TS2345
 )(UriConcatComponent);

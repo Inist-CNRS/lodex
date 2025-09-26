@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { translate } from '../../../i18n/I18NContext';
-// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import LinkIcon from '@mui/icons-material/Link';
 import { TextField } from '@mui/material';
@@ -272,5 +271,6 @@ export default (url) => (FormatView) => {
     return compose(
         connect(mapStateToProps, mapDispatchToProps),
         translate,
+        // @ts-expect-error TS2345
     )(SparqlRequest);
 };

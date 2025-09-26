@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import PropTypes from 'prop-types';
 import {
@@ -226,4 +225,5 @@ SourceValueFromSubResource.propTypes = {
 export default compose(
     connect(mapStateToProps),
     translate,
+    // @ts-expect-error TS2345
 )(SourceValueFromSubResource);

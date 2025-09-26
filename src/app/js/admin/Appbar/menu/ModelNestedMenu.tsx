@@ -8,7 +8,6 @@ import PropTypes from 'prop-types';
 import { default as React, useRef } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
-// @ts-expect-error TS7016
 import { compose } from 'recompose';
 import { bindActionCreators } from 'redux';
 

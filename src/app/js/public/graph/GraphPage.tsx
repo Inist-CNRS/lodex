@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 import { connect } from 'react-redux';
-// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 
 import getTitle from '../../lib/getTitle';
@@ -14,6 +13,8 @@ const GraphPage = ({ name, onSearch, tenant }) => (
         <Helmet>
             <title>{getTitle(tenant, 'Resources')}</title>
         </Helmet>
+        {/*
+         // @ts-expect-error TS2322 */}
         <Graph className="graph-page" name={name} onSearch={onSearch} />
     </>
 );
@@ -41,4 +42,5 @@ const mapStateToProps = (
     name,
 });
 
+// @ts-expect-error TS2345
 export default compose(connect(mapStateToProps))(GraphPage);

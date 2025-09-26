@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import { translate } from '../../i18n/I18NContext';
 import classnames from 'classnames';
@@ -254,6 +253,7 @@ class Search extends Component {
                 <div className={styles.content}>
                     {withFacets && (
                         <FacetList
+                            // @ts-expect-error TS2322
                             className="search-facets"
                             page="search"
                             open={showFacets}
