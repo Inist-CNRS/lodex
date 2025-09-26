@@ -3,7 +3,7 @@ const ezs = require('@ezs/core');
 
 ezs.use(require('@ezs/basics'));
 
-test.skip('export one resource in a two-lines TSV', done => {
+test.skip('export one resource in a two-lines CSV', done => {
     let outputString = '';
     from([
         {
@@ -11,7 +11,8 @@ test.skip('export one resource in a two-lines TSV', done => {
             title: 'first resource',
         },
     ])
-        .pipe(ezs('delegate', { file: __dirname + '/tsv.ini' }))
+        .pipe(ezs('delegate', { file: __dirname + '/csv.ini' }))
+        // @ts-expect-error TS(7006) FIXME: Parameter 'data' implicitly has an 'any' type.
         .on('data', data => {
             if (data) outputString += data;
         })
@@ -19,8 +20,8 @@ test.skip('export one resource in a two-lines TSV', done => {
             const res = outputString.split('\r\n');
             expect(res).toHaveLength(3);
             expect(res).toEqual([
-                'uri\ttitle',
-                'http://resource.uri\tfirst resource',
+                'uri;title',
+                'http://resource.uri;first resource',
                 '',
             ]);
             done();
@@ -28,7 +29,7 @@ test.skip('export one resource in a two-lines TSV', done => {
         .on('error', done);
 });
 
-test.skip('export two resources in a three-lines TSV', done => {
+test.skip('export two resources in a three-lines CSV', done => {
     let outputString = '';
     from([
         {
@@ -40,7 +41,8 @@ test.skip('export two resources in a three-lines TSV', done => {
             title: 'second resource',
         },
     ])
-        .pipe(ezs('delegate', { file: __dirname + '/tsv.ini' }))
+        .pipe(ezs('delegate', { file: __dirname + '/csv.ini' }))
+        // @ts-expect-error TS(7006) FIXME: Parameter 'data' implicitly has an 'any' type.
         .on('data', data => {
             if (data) outputString += data;
         })
@@ -48,9 +50,9 @@ test.skip('export two resources in a three-lines TSV', done => {
             const res = outputString.split('\r\n');
             expect(res).toHaveLength(4);
             expect(res).toEqual([
-                'uri\ttitle',
-                'http://resource.uri/1\tfirst resource',
-                'http://resource.uri/2\tsecond resource',
+                'uri;title',
+                'http://resource.uri/1;first resource',
+                'http://resource.uri/2;second resource',
                 '',
             ]);
             done();
@@ -58,7 +60,7 @@ test.skip('export two resources in a three-lines TSV', done => {
         .on('error', done);
 });
 
-test.skip('export in TSV resources containing quotes', done => {
+test.skip('export in CSV resources containing quotes', done => {
     let outputString = '';
     from([
         {
@@ -70,7 +72,8 @@ test.skip('export in TSV resources containing quotes', done => {
             title: 'second resource',
         },
     ])
-        .pipe(ezs('delegate', { file: __dirname + '/tsv.ini' }))
+        .pipe(ezs('delegate', { file: __dirname + '/csv.ini' }))
+        // @ts-expect-error TS(7006) FIXME: Parameter 'data' implicitly has an 'any' type.
         .on('data', data => {
             if (data) outputString += data;
         })
@@ -78,9 +81,9 @@ test.skip('export in TSV resources containing quotes', done => {
             const res = outputString.split('\r\n');
             expect(res).toHaveLength(4);
             expect(res).toEqual([
-                'uri\ttitle',
-                'http://resource.uri/1\t"first ""resource"""',
-                'http://resource.uri/2\tsecond resource',
+                'uri;title',
+                'http://resource.uri/1;"first ""resource"""',
+                'http://resource.uri/2;second resource',
                 '',
             ]);
             done();
@@ -88,19 +91,20 @@ test.skip('export in TSV resources containing quotes', done => {
         .on('error', done);
 });
 
-test.skip('export in TSV resources containing tabulation', done => {
+test.skip('export in CSV resources containing semicolon', done => {
     let outputString = '';
     from([
         {
             uri: 'http://resource.uri/1',
-            title: 'first\tresource',
+            title: 'first;resource',
         },
         {
             uri: 'http://resource.uri/2',
             title: 'second resource',
         },
     ])
-        .pipe(ezs('delegate', { file: __dirname + '/tsv.ini' }))
+        .pipe(ezs('delegate', { file: __dirname + '/csv.ini' }))
+        // @ts-expect-error TS(7006) FIXME: Parameter 'data' implicitly has an 'any' type.
         .on('data', data => {
             if (data) outputString += data;
         })
@@ -108,9 +112,9 @@ test.skip('export in TSV resources containing tabulation', done => {
             const res = outputString.split('\r\n');
             expect(res).toHaveLength(4);
             expect(res).toEqual([
-                'uri\ttitle',
-                'http://resource.uri/1\t"first\tresource"',
-                'http://resource.uri/2\tsecond resource',
+                'uri;title',
+                'http://resource.uri/1;"first;resource"',
+                'http://resource.uri/2;second resource',
                 '',
             ]);
             done();
@@ -118,7 +122,7 @@ test.skip('export in TSV resources containing tabulation', done => {
         .on('error', done);
 });
 
-test.skip('export TSV with labels in header', done => {
+test.skip('export CSV with labels in header', done => {
     let outputString = '';
     from([
         {
@@ -133,10 +137,11 @@ test.skip('export TSV with labels in header', done => {
         .pipe(
             ezs(
                 'delegate',
-                { file: __dirname + '/tsv.ini' },
+                { file: __dirname + '/csv.ini' },
                 { fields: [{ name: 'AbCd', label: 'Title' }] },
             ),
         )
+        // @ts-expect-error TS(7006) FIXME: Parameter 'data' implicitly has an 'any' type.
         .on('data', data => {
             if (data) outputString += data;
         })
@@ -144,9 +149,9 @@ test.skip('export TSV with labels in header', done => {
             const res = outputString.split('\r\n');
             expect(res).toHaveLength(4);
             expect(res).toEqual([
-                'uri\tTitle',
-                'http://resource.uri/1\tfirst;resource',
-                'http://resource.uri/2\tsecond resource',
+                'uri;Title',
+                'http://resource.uri/1;"first;resource"',
+                'http://resource.uri/2;second resource',
                 '',
             ]);
             done();

@@ -8,6 +8,7 @@ test.skip('export an xml', done => {
         publicationDate: Date.now(),
     }])
         .pipe(ezs('delegate', { file: __dirname + '/sitemap.ini' }))
+        // @ts-expect-error TS(7006) FIXME: Parameter 'data' implicitly has an 'any' type.
         .on('data', data => {
             if (data) outputString += data;
         })
