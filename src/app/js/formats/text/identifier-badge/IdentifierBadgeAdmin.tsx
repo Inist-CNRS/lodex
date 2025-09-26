@@ -31,26 +31,34 @@ class IdentifierBadgeAdmin extends Component {
         colors: MONOCHROMATIC_DEFAULT_COLORSET,
     };
 
+    // @ts-expect-error TS7006
     constructor(props) {
         super(props);
         this.handleColors = this.handleColors.bind(this);
         this.state = {
+            // @ts-expect-error TS2339
             colors: this.props.args.colors || defaultArgs.colors,
         };
     }
 
+    // @ts-expect-error TS7006
     handleTypid = (typid) => {
+        // @ts-expect-error TS2339
         const newArgs = { ...this.props.args, typid };
+        // @ts-expect-error TS2339
         this.props.onChange(newArgs);
     };
 
+    // @ts-expect-error TS7006
     handleColors(colors) {
         updateAdminArgs('colors', colors.split(' ')[0], this.props);
     }
 
     render() {
         const {
+            // @ts-expect-error TS2339
             p: polyglot,
+            // @ts-expect-error TS2339
             args: { typid },
         } = this.props;
         const items = Object.keys(resolvers).map((resolverID) => (
@@ -60,7 +68,11 @@ class IdentifierBadgeAdmin extends Component {
         ));
         return (
             <FormatGroupedFieldSet>
+                {/*
+                 // @ts-expect-error TS2322 */}
                 <FormatDefaultParamsFieldSet defaultExpanded>
+                    {/*
+                     // @ts-expect-error TS2322 */}
                     <TextField
                         fullWidth
                         select
@@ -70,7 +82,10 @@ class IdentifierBadgeAdmin extends Component {
                     >
                         {items}
                     </TextField>
+                    {/*
+                     // @ts-expect-error TS2322 */}
                     <ColorPickerParamsAdmin
+                        // @ts-expect-error TS2339
                         colors={this.state.colors || defaultArgs.colors}
                         onChange={this.handleColors}
                         polyglot={polyglot}

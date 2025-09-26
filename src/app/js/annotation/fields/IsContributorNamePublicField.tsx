@@ -10,10 +10,12 @@ import {
 import { useField } from '@tanstack/react-form';
 import { useTranslate } from '../../i18n/I18NContext';
 
+// @ts-expect-error TS7031
 export function IsContributorNamePublicField({ form }) {
     const { translate } = useTranslate();
     const field = useField({ name: 'isContributorNamePublic', form });
 
+    // @ts-expect-error TS7006
     const handleCheckboxChange = (event) => {
         field.handleChange(event.target.checked);
     };
@@ -29,6 +31,7 @@ export function IsContributorNamePublicField({ form }) {
             <FormControlLabel
                 control={
                     <Checkbox
+                        // @ts-expect-error TS2322
                         checked={field.state.value ?? false}
                         onChange={handleCheckboxChange}
                     />

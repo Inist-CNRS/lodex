@@ -5,6 +5,7 @@ import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { exportHiddenResources } from '../api/hiddenResource';
 import { translate } from '../../i18n/I18NContext';
 
+// @ts-expect-error TS7031
 const ExportButton = ({ p: polyglot }) => {
     const handleExport = async () => {
         const res = await exportHiddenResources();

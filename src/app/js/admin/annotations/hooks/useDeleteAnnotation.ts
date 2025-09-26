@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
+// @ts-expect-error TS7016
 import { useHistory } from 'react-router-dom';
 import { toast } from '../../../../../common/tools/toast';
 import { useTranslate } from '../../../i18n/I18NContext';
@@ -7,6 +8,7 @@ import fetch from '../../../lib/fetch';
 import { getRequest } from '../../../user';
 import { getUserSessionStorageInfo } from '../../api/tools';
 
+// @ts-expect-error TS7006
 export function useDeleteAnnotation(id) {
     const history = useHistory();
     const { translate } = useTranslate();
@@ -42,6 +44,7 @@ export function useDeleteAnnotation(id) {
             history.push('/annotations');
         },
         onError(error) {
+            // @ts-expect-error TS2339
             if (error?.code === 401) {
                 history.push('/login');
                 return;

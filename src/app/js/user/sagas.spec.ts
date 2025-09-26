@@ -1,4 +1,5 @@
 import { call, put, select } from 'redux-saga/effects';
+// @ts-expect-error TS7016
 import { startSubmit, stopSubmit } from 'redux-form';
 import { push } from 'redux-first-history';
 
@@ -22,6 +23,7 @@ describe('user saga', () => {
 
         it('should select getLoginRequest', () => {
             expect(saga.next().value).toEqual(
+                // @ts-expect-error TS2339
                 select(fromUser.getLoginRequest, {
                     username: 'foo',
                     password: 'pwd',
@@ -30,6 +32,7 @@ describe('user saga', () => {
         });
 
         it('should call fetchSaga with the request', () => {
+            // @ts-expect-error TS2345
             expect(saga.next('request').value).toEqual(
                 call(fetchSaga, 'request'),
             );
@@ -37,6 +40,7 @@ describe('user saga', () => {
 
         it('should put loginSuccess action with the token from fetchLogin', () => {
             expect(
+                // @ts-expect-error TS2345
                 saga.next({ response: { token: 'foo', role: ADMIN_ROLE } })
                     .value,
             ).toEqual(put(loginSuccess({ token: 'foo', role: ADMIN_ROLE })));
@@ -59,6 +63,7 @@ describe('user saga', () => {
             failedSaga.next();
             failedSaga.next();
             expect(
+                // @ts-expect-error TS2345
                 failedSaga.next({ error: { message: 'foo' } }).value,
             ).toEqual(put(stopSubmit(LOGIN_FORM_NAME, { _error: 'foo' })));
         });

@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
+// @ts-expect-error TS7016
 import { compose } from 'recompose';
 
 import { Stack, Typography } from '@mui/material';
@@ -9,6 +10,7 @@ import FieldAnnotationKindAdditionInput from './FieldAnnotationKindAdditionInput
 import FieldAnnotationKindCorrectionInput from './FieldAnnotationKindCorrectionInput';
 import FieldAnnotationKindRemovalInput from './FieldAnnotationKindRemovalInput';
 
+// @ts-expect-error TS7031
 export function FieldAnnotationKind({ isFieldAnnotable }) {
     const { translate } = useTranslate();
 
@@ -37,6 +39,7 @@ FieldAnnotationKind.propTypes = {
     isFieldAnnotable: PropTypes.bool.isRequired,
 };
 
+// @ts-expect-error TS7006
 const mapStateToProps = (state) => {
     return {
         isFieldAnnotable: state.form.field.values.annotable,

@@ -14,13 +14,20 @@ import {
 import { translate } from '../../../i18n/I18NContext';
 
 const ParallelCoordinatesChartAdmin = ({
+    // @ts-expect-error TS7031
     p: polyglot,
+    // @ts-expect-error TS7031
     args,
+    // @ts-expect-error TS7031
     onChange,
+    // @ts-expect-error TS7031
     showMaxSize,
+    // @ts-expect-error TS7031
     showMaxValue,
+    // @ts-expect-error TS7031
     showMinValue,
 }) => {
+    // @ts-expect-error TS7006
     const handleParams = (params) => {
         updateAdminArgs(
             'params',
@@ -32,6 +39,7 @@ const ParallelCoordinatesChartAdmin = ({
         );
     };
 
+    // @ts-expect-error TS7006
     const handleColors = (colors) => {
         updateAdminArgs('colors', colors, {
             args,
@@ -41,7 +49,11 @@ const ParallelCoordinatesChartAdmin = ({
 
     return (
         <FormatGroupedFieldSet>
+            {/*
+             // @ts-expect-error TS2322 */}
             <FormatDataParamsFieldSet>
+                {/*
+                 // @ts-expect-error TS2322 */}
                 <RoutineParamsAdmin
                     params={args.params}
                     onChange={handleParams}
@@ -52,7 +64,11 @@ const ParallelCoordinatesChartAdmin = ({
                     showOrderBy={false}
                 />
             </FormatDataParamsFieldSet>
+            {/*
+             // @ts-expect-error TS2322 */}
             <FormatChartParamsFieldSet defaultExpanded>
+                {/*
+                 // @ts-expect-error TS2322 */}
                 <ColorPickerParamsAdmin
                     colors={args.colors}
                     onChange={handleColors}

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import { Button, Dialog, DialogActions, DialogTitle } from '@mui/material';
 
@@ -14,6 +15,7 @@ import {
 import CancelButton from '../../lib/components/CancelButton';
 import { translate } from '../../i18n/I18NContext';
 
+// @ts-expect-error TS7031
 export const RemoveButtonComponent = ({ onRemove, p: polyglot }) => {
     const [showDialog, setShowDialog] = useState(false);
 
@@ -60,6 +62,7 @@ RemoveButtonComponent.propTypes = {
     p: polyglotPropTypes.isRequired,
 };
 
+// @ts-expect-error TS7006
 const mapDispatchtoProps = (dispatch, { field, filter }) =>
     bindActionCreators(
         {

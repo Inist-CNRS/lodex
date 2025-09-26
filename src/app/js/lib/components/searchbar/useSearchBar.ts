@@ -1,3 +1,4 @@
+// @ts-expect-error TS7016
 import debounce from 'lodash/debounce';
 import { useCallback, useEffect, useState } from 'react';
 
@@ -12,7 +13,9 @@ const useSearchBar = (
     const [query, setQuery] = useState(defaultQuery || '');
 
     const debouncedSearch = useCallback(
+        // @ts-expect-error TS7006
         debounce((value) => {
+            // @ts-expect-error TS2554
             onSearch(value);
         }, debounceTimeout),
         [],
@@ -25,6 +28,7 @@ const useSearchBar = (
         setQuery(defaultQuery);
     }, [defaultQuery]);
 
+    // @ts-expect-error TS7006
     const search = (value) => {
         setQuery(value);
         debouncedSearch(value);

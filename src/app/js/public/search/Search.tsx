@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import { translate } from '../../i18n/I18NContext';
 import classnames from 'classnames';
@@ -86,22 +87,34 @@ class Search extends Component {
         showFacets: false,
     };
 
+    // @ts-expect-error TS7006
     constructor(props) {
         super(props);
     }
 
     UNSAFE_componentWillMount() {
         const {
+            // @ts-expect-error TS2339
             searchQuery,
+            // @ts-expect-error TS2339
             search,
+            // @ts-expect-error TS2339
             results,
+            // @ts-expect-error TS2339
             preLoadPublication,
+            // @ts-expect-error TS2339
             withDataset,
+            // @ts-expect-error TS2339
             datasetSearchTerm,
+            // @ts-expect-error TS2339
             datasetFacetsValues,
+            // @ts-expect-error TS2339
             datasetAppliedFacets,
+            // @ts-expect-error TS2339
             datasetInvertedFacets,
+            // @ts-expect-error TS2339
             datasetOpenedFacets,
+            // @ts-expect-error TS2339
             setFacets,
         } = this.props;
 
@@ -129,15 +142,19 @@ class Search extends Component {
         this.setState({ showFacets: !showFacets });
     };
 
+    // @ts-expect-error TS7031
     handleSort = ({ sortBy }) => {
+        // @ts-expect-error TS2339
         const { sort } = this.props;
         sort({ sortBy });
     };
 
     renderNoResults = () => {
+        // @ts-expect-error TS2339
         const { p: polyglot } = this.props;
 
         return (
+            // @ts-expect-error TS2339
             <div className={styles.noResult}>
                 <div>
                     <strong>{polyglot.t('no_result')}</strong>
@@ -148,6 +165,7 @@ class Search extends Component {
     };
 
     renderNoOverviewField = () => {
+        // @ts-expect-error TS2339
         const { p: polyglot } = this.props;
 
         return (
@@ -158,15 +176,18 @@ class Search extends Component {
     };
 
     renderLoadMore = () => {
+        // @ts-expect-error TS2339
         const { loadMore, p: polyglot, results, total, loading } = this.props;
 
         return (
+            // @ts-expect-error TS2339
             <div className={classnames('load-more', styles.loadMore)}>
                 {loading ? (
                     <>
                         <CircularProgress
                             variant="indeterminate"
                             size={20}
+                            // @ts-expect-error TS2339
                             className={styles.loading}
                         />{' '}
                         {polyglot.t('loading')}
@@ -184,15 +205,25 @@ class Search extends Component {
     render() {
         const { opening, showFacets } = this.state;
         const {
+            // @ts-expect-error TS2339
             className,
+            // @ts-expect-error TS2339
             sortBy,
+            // @ts-expect-error TS2339
             sortDir,
+            // @ts-expect-error TS2339
             loading,
+            // @ts-expect-error TS2339
             fieldNames,
+            // @ts-expect-error TS2339
             results,
+            // @ts-expect-error TS2339
             total,
+            // @ts-expect-error TS2339
             withFacets,
+            // @ts-expect-error TS2339
             fields,
+            // @ts-expect-error TS2339
             closeDrawer,
         } = this.props;
 
@@ -206,14 +237,21 @@ class Search extends Component {
         const canLoadMore = everythingIsOk && results.length < total;
 
         return (
+            // @ts-expect-error TS2339
             <div className={classnames(className, styles.container)}>
+                {/*
+                 // @ts-expect-error TS2339 */}
                 <div className={styles.header}>
+                    {/*
+                     // @ts-expect-error TS2741 */}
                     <SearchSearchBar
                         withFacets={withFacets}
                         onToggleFacets={this.handleToggleFacets}
                     />
                 </div>
                 {withFacets && <AppliedFacetList />}
+                {/*
+                 // @ts-expect-error TS2339 */}
                 <div className={styles.content}>
                     {withFacets && (
                         <FacetList
@@ -223,7 +261,9 @@ class Search extends Component {
                         />
                     )}
                     <div
+                        // @ts-expect-error TS2339
                         className={classnames(styles.results, {
+                            // @ts-expect-error TS2339
                             [styles.resultsOpening]: opening,
                         })}
                     >
@@ -233,6 +273,7 @@ class Search extends Component {
                             <>
                                 <SearchResultHeader
                                     displayStats={everythingIsOk || noResults}
+                                    // @ts-expect-error TS2322
                                     sortComponent={
                                         <SearchResultSort
                                             fields={fields}
@@ -244,6 +285,7 @@ class Search extends Component {
                                     }
                                 />
                                 <SearchResultList
+                                    // @ts-expect-error TS2322
                                     results={results}
                                     fields={fields}
                                     fieldNames={fieldNames}
@@ -260,6 +302,7 @@ class Search extends Component {
     }
 }
 
+// @ts-expect-error TS2339
 Search.propTypes = {
     className: PropTypes.string,
     search: PropTypes.func.isRequired,
@@ -306,26 +349,40 @@ Search.propTypes = {
     datasetOpenedFacets: PropTypes.objectOf(PropTypes.bool),
 };
 
+// @ts-expect-error TS2339
 Search.defaultProps = {
     searchQuery: null,
 };
 
+// @ts-expect-error TS7006
 const mapStateToProps = (state) => {
+    // @ts-expect-error TS2339
     const { sortBy, sortDir } = fromSearch.getSort(state);
 
     return {
+        // @ts-expect-error TS2339
         loading: fromSearch.isLoading(state),
+        // @ts-expect-error TS2339
         results: fromSearch.getDataset(state),
+        // @ts-expect-error TS2339
         fieldNames: fromSearch.getFieldNames(state),
+        // @ts-expect-error TS2339
         fields: fromFields.getFields(state),
+        // @ts-expect-error TS2339
         total: fromSearch.getTotal(state),
+        // @ts-expect-error TS2339
         searchQuery: fromSearch.getQuery(state),
         sortBy,
         sortDir,
+        // @ts-expect-error TS2339
         datasetSearchTerm: fromDataset.getFilter(state),
+        // @ts-expect-error TS2339
         datasetFacetsValues: fromDataset.getFacetsValues(state),
+        // @ts-expect-error TS2339
         datasetAppliedFacets: fromDataset.getAppliedFacets(state),
+        // @ts-expect-error TS2339
         datasetInvertedFacets: fromDataset.getInvertedFacets(state),
+        // @ts-expect-error TS2339
         datasetOpenedFacets: fromDataset.getOpenedFacets(state),
     };
 };

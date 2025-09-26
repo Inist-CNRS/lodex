@@ -14,9 +14,11 @@ import {
 import { Provider } from 'react-redux';
 import configureStore from '../configureStore';
 import reducers from '../public/reducers';
+// @ts-expect-error TS7016
 import { createMemoryHistory } from 'history';
 import { newResourceAnnotated } from '../public/search/reducer';
 
+// @ts-expect-error TS7017
 global.__DEBUG__ = false;
 const memoryHistory = createMemoryHistory();
 const { store } = configureStore(
@@ -26,6 +28,7 @@ const { store } = configureStore(
     memoryHistory,
 );
 
+// @ts-expect-error TS7031
 function TestWrapper({ children, dispatch }) {
     return (
         <Provider store={{ ...store, dispatch }}>
@@ -84,6 +87,7 @@ describe('annotationStorage', () => {
                     }),
                 {
                     wrapper: TestWrapper,
+                    // @ts-expect-error TS2741
                     initialProps: {
                         dispatch: jest.fn(),
                     },
@@ -100,6 +104,7 @@ describe('annotationStorage', () => {
             const { result, rerender } = renderHook(
                 () => useSaveAnnotationId(),
                 {
+                    // @ts-expect-error TS2322
                     wrapper: TestWrapper,
                     initialProps: {
                         dispatch,
@@ -118,6 +123,7 @@ describe('annotationStorage', () => {
             rerender();
 
             expect(
+                // @ts-expect-error TS2345
                 JSON.parse(localStorage.getItem(getStorageKey())),
             ).toStrictEqual({
                 resourceUri: {
@@ -133,6 +139,7 @@ describe('annotationStorage', () => {
             const { result, rerender } = renderHook(
                 () => useSaveAnnotationId(),
                 {
+                    // @ts-expect-error TS2322
                     wrapper: TestWrapper,
                     initialProps: {
                         dispatch,
@@ -151,6 +158,7 @@ describe('annotationStorage', () => {
             rerender();
 
             expect(
+                // @ts-expect-error TS2345
                 JSON.parse(localStorage.getItem(getStorageKey())),
             ).toStrictEqual({
                 resourceUri: {
@@ -187,6 +195,7 @@ describe('annotationStorage', () => {
             rerender();
 
             expect(
+                // @ts-expect-error TS2345
                 JSON.parse(localStorage.getItem(getStorageKey())),
             ).toStrictEqual({
                 resourceUri: {

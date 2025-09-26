@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 import 'ace-builds/src-noconflict/mode-json';
 import 'ace-builds/src-noconflict/theme-monokai';
 
+// @ts-expect-error TS7031
 export const ConfigField = ({ form }) => {
     const { translate } = useTranslate();
     const field = useField({ name: 'config', form });
@@ -23,6 +24,7 @@ export const ConfigField = ({ form }) => {
         );
     }, [field.state.value]);
 
+    // @ts-expect-error TS7006
     const onChange = (newJson) => {
         setJson(newJson);
 
@@ -44,6 +46,7 @@ export const ConfigField = ({ form }) => {
             <AceEditor
                 mode="json"
                 onLoad={(editor) => {
+                    // @ts-expect-error TS2339
                     editor.textInput.getElement().ariaLabel =
                         translate('config');
                 }}

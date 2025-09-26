@@ -17,6 +17,7 @@ describe('load removed resources saga', () => {
 
         it('should select getLoadRemovedResourcePageRequest', () => {
             expect(saga.next().value).toEqual(
+                // @ts-expect-error TS2339
                 select(fromUser.getLoadRemovedResourcePageRequest, {
                     page: 10,
                     perPage: 42,
@@ -25,6 +26,7 @@ describe('load removed resources saga', () => {
         });
 
         it('should call fetchDafetchSagataset with the request', () => {
+            // @ts-expect-error TS2345
             expect(saga.next('request').value).toEqual(
                 call(fetchSaga, 'request'),
             );
@@ -32,6 +34,7 @@ describe('load removed resources saga', () => {
 
         it('should put loadRemovedResourcePageSuccess action', () => {
             expect(
+                // @ts-expect-error TS2345
                 saga.next({ response: { data: [{ foo: 42 }], total: 100 } })
                     .value,
             ).toEqual(
@@ -51,6 +54,7 @@ describe('load removed resources saga', () => {
             });
             failedSaga.next();
             failedSaga.next();
+            // @ts-expect-error TS2345
             expect(failedSaga.next({ error: 'foo' }).value).toEqual(
                 put(loadRemovedResourcePageError('foo')),
             );

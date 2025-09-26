@@ -1,4 +1,6 @@
+// @ts-expect-error TS7006
 export default (array) =>
+    // @ts-expect-error TS7006
     array.sort((a, b) => {
         const typeA = typeof a.name;
         const typeB = typeof b.name;

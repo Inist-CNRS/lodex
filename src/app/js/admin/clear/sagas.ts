@@ -13,24 +13,30 @@ import { fromUser } from '../../sharedSelectors';
 import fetchSaga from '../../lib/sagas/fetchSaga';
 
 export function* handleClearDatasetRequest() {
+    // @ts-expect-error TS7057
     const request = yield select(fromUser.getClearDatasetRequest);
     const { error, response } = yield call(fetchSaga, request);
 
     if (error || response.status !== 'success') {
+        // @ts-expect-error TS7057
         return yield put(clearDatasetError(error));
     }
 
+    // @ts-expect-error TS7057
     return yield put(clearDatasetSuccess());
 }
 
 export function* handleClearPublishedRequest() {
+    // @ts-expect-error TS7057
     const request = yield select(fromUser.getClearPublishedRequest);
     const { error, response } = yield call(fetchSaga, request);
 
     if (error || response.status !== 'success') {
+        // @ts-expect-error TS7057
         return yield put(clearPublishedError(error));
     }
 
+    // @ts-expect-error TS7057
     return yield put(clearPublishedSuccess());
 }
 

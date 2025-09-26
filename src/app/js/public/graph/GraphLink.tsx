@@ -28,6 +28,7 @@ const styles = {
     },
 };
 
+// @ts-expect-error TS7031
 const GraphLink = ({ link, children, p: polyglot }) => (
     <Card>
         <CardMedia sx={styles.media}>{children}</CardMedia>

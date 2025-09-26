@@ -4,6 +4,7 @@
  * @param sizeIn approximated size of the output string
  * @returns {string} Truncated string
  */
+// @ts-expect-error TS7006
 export const truncateByWords = (stringIn, sizeIn) => {
     // Trivial case
     if (sizeIn <= 0 || sizeIn >= stringIn.length) return stringIn;

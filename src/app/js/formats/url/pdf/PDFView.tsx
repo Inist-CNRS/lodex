@@ -16,16 +16,19 @@ const styles = stylesToClassname(
     'pdf',
 );
 
+// @ts-expect-error TS7031
 const PDFView = ({ resource, field, PDFWidth }) => {
     const PDFURL = resource[field.name];
 
     return (
         <iframe
             title="PDF Viewer"
+            // @ts-expect-error TS2339
             className={classnames('pdf-container', styles.container)}
             width={PDFWidth}
             src={PDFURL}
             allow="fullscreen"
+            // @ts-expect-error TS2322
             webkitallowfullscreen=""
         ></iframe>
     );

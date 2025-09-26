@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { red } from '@mui/material/colors';
+// @ts-expect-error TS7016
 import memoize from 'lodash/memoize';
 
 const styles = {
@@ -10,8 +11,10 @@ const styles = {
     },
 };
 
+// @ts-expect-error TS7006
 const getStyle = memoize((style) => ({ ...styles.alert, ...style }));
 
+// @ts-expect-error TS7031
 const Alert = ({ children, style }) => (
     <div className="alert" style={getStyle(style)}>
         {children}

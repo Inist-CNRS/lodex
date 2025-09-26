@@ -1,5 +1,6 @@
 import React from 'react';
 
+// @ts-expect-error TS7006
 const PieChartByGregorCresnarFromTheNounProject = (props) => (
     <svg
         data-name="Layer 1"

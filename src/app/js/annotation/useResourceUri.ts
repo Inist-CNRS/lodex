@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+// @ts-expect-error TS7016
 import { useRouteMatch } from 'react-router';
 
 export function useResourceUri() {

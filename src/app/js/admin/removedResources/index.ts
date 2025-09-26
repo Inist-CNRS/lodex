@@ -1,3 +1,4 @@
+// @ts-expect-error TS7016
 import { combineActions, createAction, handleActions } from 'redux-actions';
 
 export const LOAD_REMOVED_RESOURCE_PAGE = 'LOAD_REMOVED_RESOURCE_PAGE';
@@ -33,6 +34,7 @@ export const defaultState = {
 export default handleActions(
     {
         [combineActions(LOAD_REMOVED_RESOURCE_PAGE, RESTORE_RESOURCE)]: (
+            // @ts-expect-error TS7006
             state,
         ) => ({
             ...state,
@@ -41,13 +43,16 @@ export default handleActions(
         [combineActions(
             LOAD_REMOVED_RESOURCE_PAGE_ERROR,
             RESTORE_RESOURCE_ERROR,
+        // @ts-expect-error TS7006
         )]: (state, { payload: error }) => ({
             ...state,
             error: error.message || error,
             loading: false,
         }),
         LOAD_REMOVED_RESOURCE_PAGE_SUCCESS: (
+            // @ts-expect-error TS7006
             state,
+            // @ts-expect-error TS7031
             { payload: { resources: items, page: currentPage, total } },
         ) => ({
             ...state,
@@ -57,19 +62,25 @@ export default handleActions(
             items,
             total,
         }),
+        // @ts-expect-error TS7031
         RESTORE_RESOURCE_SUCCESS: ({ items, ...state }, { payload: uri }) => ({
             ...state,
             error: false,
             loading: false,
+            // @ts-expect-error TS7006
             items: items.filter((r) => r.uri !== uri),
         }),
     },
     defaultState,
 );
 
+// @ts-expect-error TS7006
 export const isRemovedResourceLoading = (state) => state.loading;
+// @ts-expect-error TS7006
 export const getRemovedResourceCurrentPage = (state) => state.currentPage;
+// @ts-expect-error TS7006
 export const getRemovedResourceTotal = (state) => state.total;
+// @ts-expect-error TS7006
 export const getRemovedResourceItems = (state) => state.items;
 
 export const selectors = {

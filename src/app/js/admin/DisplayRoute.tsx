@@ -6,6 +6,7 @@ import {
     Redirect,
     Switch,
     useParams,
+// @ts-expect-error TS7016
 } from 'react-router';
 
 import withInitialData from './withInitialData';

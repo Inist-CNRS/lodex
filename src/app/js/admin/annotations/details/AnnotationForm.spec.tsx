@@ -1,5 +1,6 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import React from 'react';
+// @ts-expect-error TS7016
 import { MemoryRouter } from 'react-router-dom';
 import { fireEvent, render, waitFor } from '../../../../../test-utils';
 import { TestI18N } from '../../../i18n/I18NContext';
@@ -20,6 +21,8 @@ describe('AnnotationForm', () => {
         const wrapper = render(
             <QueryClientProvider client={queryClient}>
                 <TestI18N>
+                    {/*
+                     // @ts-expect-error TS2322 */}
                     <MemoryRouter>
                         <AnnotationForm
                             annotation={{
@@ -80,16 +83,19 @@ describe('AnnotationForm', () => {
         expect(fieldRegion).toBeInTheDocument();
         expect(
             wrapper.getByText('[GaZr]', {
+                // @ts-expect-error TS2353
                 container: fieldRegion,
             }),
         ).toBeInTheDocument();
         expect(
             wrapper.getByText('Annotated field', {
+                // @ts-expect-error TS2353
                 container: fieldRegion,
             }),
         ).toBeInTheDocument();
         expect(
             wrapper.getByText('annotated_field', {
+                // @ts-expect-error TS2353
                 container: fieldRegion,
             }),
         ).toBeInTheDocument();
@@ -101,6 +107,7 @@ describe('AnnotationForm', () => {
         expect(commentRegion).toBeInTheDocument();
         expect(
             wrapper.getByText('Just testing the annotation system', {
+                // @ts-expect-error TS2353
                 container: commentRegion,
             }),
         ).toBeInTheDocument();
@@ -112,6 +119,7 @@ describe('AnnotationForm', () => {
         expect(authorRegion).toBeInTheDocument();
         expect(
             wrapper.getByText('Count Ributor', {
+                // @ts-expect-error TS2353
                 container: authorRegion,
             }),
         ).toBeInTheDocument();
@@ -119,6 +127,7 @@ describe('AnnotationForm', () => {
         expect(
             wrapper.getByRole('link', {
                 name: 'ributor@gmail.com',
+                // @ts-expect-error TS2353
                 container: authorRegion,
             }),
         ).toHaveAttribute('href', 'mailto:ributor@gmail.com');
@@ -128,11 +137,13 @@ describe('AnnotationForm', () => {
         });
         expect(
             wrapper.queryByLabelText('annotation_created_at', {
+                // @ts-expect-error TS2353
                 container: complementaryInfosRegion,
             }),
         ).toHaveTextContent('1/1/2025');
         expect(
             wrapper.queryByLabelText('annotation_updated_at', {
+                // @ts-expect-error TS2353
                 container: complementaryInfosRegion,
             }),
         ).toHaveTextContent('10/1/2025');
@@ -142,6 +153,8 @@ describe('AnnotationForm', () => {
         const wrapper = render(
             <QueryClientProvider client={queryClient}>
                 <TestI18N>
+                    {/*
+                     // @ts-expect-error TS2322 */}
                     <MemoryRouter>
                         <AnnotationForm
                             annotation={{
@@ -178,18 +191,21 @@ describe('AnnotationForm', () => {
         expect(inputsRegion).toBeInTheDocument();
         expect(
             wrapper.queryByLabelText('annotation_status', {
+                // @ts-expect-error TS2353
                 container: inputsRegion,
             }),
         ).toHaveTextContent('annotation_status_ongoing');
         expect(
             wrapper.getByRole('textbox', {
                 name: 'annotation_internal_comment',
+                // @ts-expect-error TS2353
                 container: inputsRegion,
             }),
         ).toHaveValue('Just testing the annotation admin');
         expect(
             wrapper.getByRole('textbox', {
                 name: 'annotation_administrator',
+                // @ts-expect-error TS2353
                 container: inputsRegion,
             }),
         ).toHaveValue('The administrator');
@@ -205,6 +221,8 @@ describe('AnnotationForm', () => {
         const wrapper = render(
             <QueryClientProvider client={queryClient}>
                 <TestI18N>
+                    {/*
+                     // @ts-expect-error TS2322 */}
                     <MemoryRouter>
                         <AnnotationForm
                             annotation={{
@@ -244,6 +262,7 @@ describe('AnnotationForm', () => {
             fireEvent.mouseDown(
                 wrapper.getByRole('button', {
                     name: 'annotation_status',
+                    // @ts-expect-error TS2353
                     container: inputsRegion,
                 }),
             );
@@ -254,6 +273,7 @@ describe('AnnotationForm', () => {
         });
         expect(
             wrapper.queryByLabelText('annotation_status', {
+                // @ts-expect-error TS2353
                 container: inputsRegion,
             }),
         ).toHaveTextContent('annotation_status_ongoing');
@@ -262,6 +282,7 @@ describe('AnnotationForm', () => {
             fireEvent.change(
                 wrapper.getByRole('textbox', {
                     name: 'annotation_internal_comment',
+                    // @ts-expect-error TS2353
                     container: inputsRegion,
                 }),
                 {
@@ -275,6 +296,7 @@ describe('AnnotationForm', () => {
         expect(
             wrapper.getByRole('textbox', {
                 name: 'annotation_internal_comment',
+                // @ts-expect-error TS2353
                 container: inputsRegion,
             }),
         ).toHaveValue('Just testing the annotation admin');
@@ -283,6 +305,7 @@ describe('AnnotationForm', () => {
             fireEvent.change(
                 wrapper.getByRole('textbox', {
                     name: 'annotation_administrator',
+                    // @ts-expect-error TS2353
                     container: inputsRegion,
                 }),
                 {

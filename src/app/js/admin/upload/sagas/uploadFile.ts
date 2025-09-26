@@ -9,14 +9,18 @@ import { FINISH_PROGRESS } from '../../progress/reducer';
 import { publish as publishAction } from '../../publish';
 import { clearPublished } from '../../clear';
 
+// @ts-expect-error TS7006
 export function* handleUploadFile(action) {
     if (!action || !action.payload) {
         return;
     }
     try {
         preventUnload();
+        // @ts-expect-error TS7057
         const loaderName = yield select(fromUpload.getLoaderName);
+        // @ts-expect-error TS7057
         const customLoader = yield select(fromUpload.getCustomLoader);
+        // @ts-expect-error TS7057
         const token = yield select(fromUser.getToken);
 
         yield call(
@@ -35,6 +39,7 @@ export function* handleUploadFile(action) {
 }
 
 export function* handleFinishUpload() {
+    // @ts-expect-error TS7057
     const isUploadPending = yield select(fromUpload.isUploadPending);
     if (!isUploadPending) {
         return;
@@ -43,7 +48,9 @@ export function* handleFinishUpload() {
     try {
         yield put(uploadSuccess());
 
+        // @ts-expect-error TS7057
         const hasPublishedDataset = yield select(
+            // @ts-expect-error TS2339
             fromPublication.hasPublishedDataset,
         );
         if (hasPublishedDataset) {

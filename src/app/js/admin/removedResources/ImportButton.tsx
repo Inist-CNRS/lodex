@@ -4,6 +4,7 @@ import UploadIcon from '@mui/icons-material/Upload';
 import { Button, CircularProgress, styled } from '@mui/material';
 import { importHiddenResources } from '../api/hiddenResource';
 import { toast } from '../../../../common/tools/toast';
+// @ts-expect-error TS7016
 import { useLocation, Redirect } from 'react-router-dom';
 import { translate } from '../../i18n/I18NContext';
 
@@ -19,12 +20,14 @@ const VisuallyHiddenInput = styled('input')({
     width: 1,
 });
 
+// @ts-expect-error TS7031
 const ImportButton = ({ p: polyglot }) => {
     const buttonLabel = polyglot.t('import');
     const location = useLocation();
     const [uploading, setUploading] = useState(false);
     const [done, setDone] = useState(false);
 
+    // @ts-expect-error TS7006
     const handleFileChange = async (event) => {
         setUploading(true);
         const file = event.target.files[0];

@@ -31,13 +31,16 @@ import { fromFields, fromUser } from '../../sharedSelectors';
 import facetSagasFactory from '../facet/sagas';
 import { LOAD_RESOURCE_SUCCESS } from '../resource';
 import { fromResource, fromSearch } from '../selectors';
+// @ts-expect-error TS7016
 import { uniq } from 'lodash';
 import { getVisitedUris } from '../resource/useRememberVisit';
 
 const PER_PAGE = 10;
 
 export const getAnnotationsFilter = ({
+    // @ts-expect-error TS7031
     annotationsFilter,
+    // @ts-expect-error TS7031
     resourceUrisWithAnnotation,
 }) => {
     if (!annotationsFilter) {
@@ -58,8 +61,11 @@ export const getAnnotationsFilter = ({
 };
 
 export const addVisitedFilter = ({
+    // @ts-expect-error TS7031
     filters,
+    // @ts-expect-error TS7031
     visitedFilter,
+    // @ts-expect-error TS7031
     visitedResourceUris,
 }) => {
     switch (visitedFilter) {
@@ -68,6 +74,7 @@ export const addVisitedFilter = ({
             if (filters.resourceUris) {
                 return {
                     ...filters,
+                    // @ts-expect-error TS7006
                     resourceUris: filters.resourceUris.filter((uri) =>
                         visitedResourceUris.includes(uri),
                     ),
@@ -99,35 +106,48 @@ export const addVisitedFilter = ({
 };
 
 export const doSearchRequest = function* (page = 0) {
+    // @ts-expect-error TS7057
     const query = yield select(fromSearch.getQuery);
+    // @ts-expect-error TS7057
     const annotationsFilter = yield select(fromSearch.getAnnotationsFilter);
+    // @ts-expect-error TS7057
     const visitedFilter = yield select(fromSearch.getVisitedFilter);
 
+    // @ts-expect-error TS7057
     const resourceUrisWithAnnotation = yield select(
+        // @ts-expect-error TS2339
         fromSearch.getResourceUrisWithAnnotationFilter,
     );
 
+    // @ts-expect-error TS7057
     const visitedResourceUris = yield call(getVisitedUris);
 
+    // @ts-expect-error TS7057
     const sort = yield select(fromSearch.getSort);
+    // @ts-expect-error TS7057
     let facets = yield select(fromSearch.getAppliedFacets);
     facets = Object.keys(facets).reduce((acc, facetName) => {
+        // @ts-expect-error TS7053
         acc[facetName] = facets[facetName].map((facetValue) => facetValue.id);
         return acc;
     }, {});
+    // @ts-expect-error TS7057
     const invertedFacets = yield select(fromSearch.getInvertedFacetKeys);
 
+    // @ts-expect-error TS7057
     const filtersWithAnnotations = yield call(getAnnotationsFilter, {
         annotationsFilter,
         resourceUrisWithAnnotation,
     });
 
+    // @ts-expect-error TS7057
     const filters = yield call(addVisitedFilter, {
         filters: filtersWithAnnotations,
         visitedFilter,
         visitedResourceUris,
     });
 
+    // @ts-expect-error TS7057
     const request = yield select(fromUser.getLoadDatasetPageRequest, {
         match: query || '',
         sort,
@@ -138,10 +158,12 @@ export const doSearchRequest = function* (page = 0) {
         filters,
     });
 
+    // @ts-expect-error TS7057
     return yield call(fetchSaga, request);
 };
 
 const handleSearch = function* () {
+    // @ts-expect-error TS7057
     const fieldsNumber = yield select(fromFields.getNbColumns);
 
     if (fieldsNumber === 0) {
@@ -158,10 +180,15 @@ const handleSearch = function* () {
 
     const fields = {
         uri: 'uri',
+        // @ts-expect-error TS7057
         title: yield select(fromFields.getResourceTitleFieldName),
+        // @ts-expect-error TS7057
         description: yield select(fromFields.getResourceDescriptionFieldName),
+        // @ts-expect-error TS7057
         detail1: yield select(fromFields.getResourceDetail1FieldName),
+        // @ts-expect-error TS7057
         detail2: yield select(fromFields.getResourceDetail2FieldName),
+        // @ts-expect-error TS7057
         detail3: yield select(fromFields.getResourceDetail3FieldName),
     };
 
@@ -176,6 +203,7 @@ const handleSearch = function* () {
 };
 
 const handleLoadMore = function* () {
+    // @ts-expect-error TS7057
     const currentPage = yield select(fromSearch.getPage);
     const page = currentPage + 1;
 
@@ -196,15 +224,19 @@ const handleLoadMore = function* () {
 };
 
 const handleLoadNextResource = function* () {
+    // @ts-expect-error TS7057
     const total = yield select(fromSearch.getTotal);
+    // @ts-expect-error TS7057
     const results = yield select(fromSearch.getDataset);
 
     if (results.length >= total) {
         return;
     }
 
+    // @ts-expect-error TS7057
     const currentResource = yield select(fromResource.getResourceLastVersion);
     const indexCurrentResource = results.findIndex(
+        // @ts-expect-error TS7006
         (resource) => resource.uri === currentResource?.uri,
     );
 
@@ -221,7 +253,9 @@ const facetSagas = facetSagasFactory({
 });
 
 function* initSortSagas() {
+    // @ts-expect-error TS7057
     const sortBy = yield select(fromFields.getResourceSortFieldName);
+    // @ts-expect-error TS7057
     const sortDir = yield select(fromFields.getResourceSortDir);
     if (!sortBy) {
         return;

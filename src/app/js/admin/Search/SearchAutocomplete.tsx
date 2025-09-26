@@ -17,6 +17,7 @@ import { filterOptions } from './searchUtils';
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
 
+// @ts-expect-error TS7006
 const renderItem = (props, option) => {
     return (
         <MenuItem
@@ -34,6 +35,7 @@ const renderItem = (props, option) => {
     );
 };
 
+// @ts-expect-error TS7006
 const renderCheckboxItem = (props, option, selected) => {
     return (
         <li key={option._id} {...props}>
@@ -50,9 +52,13 @@ const renderCheckboxItem = (props, option, selected) => {
 
 const SearchAutocomplete = ({
     testId = 'search-autocomplete',
+    // @ts-expect-error TS7031
     fields,
+    // @ts-expect-error TS7031
     onChange,
+    // @ts-expect-error TS7031
     value,
+    // @ts-expect-error TS7031
     translation,
     multiple = false,
     clearText = 'Clear',
@@ -65,6 +71,7 @@ const SearchAutocomplete = ({
         setAutocompleteValue(value);
     }, [value]);
 
+    // @ts-expect-error TS7006
     const handleChange = (event, value) => {
         setAutocompleteValue(value);
         onChange(event, value);
@@ -89,6 +96,7 @@ const SearchAutocomplete = ({
                     InputProps={{
                         ...params.InputProps,
                         startAdornment: isLoading && (
+                            // @ts-expect-error TS2769
                             <InputAdornment>
                                 <CircularProgress size={16} />
                             </InputAdornment>
@@ -96,6 +104,7 @@ const SearchAutocomplete = ({
                     }}
                 />
             )}
+            // @ts-expect-error TS2322
             getOptionLabel={(option) =>
                 multiple ? (
                     <FieldRepresentation field={option} shortMode />

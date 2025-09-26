@@ -1,8 +1,11 @@
 import React, { useMemo, useState } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+// @ts-expect-error TS7016
 import compose from 'recompose/compose';
+// @ts-expect-error TS7016
 import { clamp } from 'lodash';
+// @ts-expect-error TS7016
 import { schemeOrRd } from 'd3-scale-chromatic';
 
 import { CustomActionVegaLite } from '../../../utils/components/vega-lite-component';
@@ -26,15 +29,25 @@ const styles = {
 };
 
 const CartographyView = ({
+    // @ts-expect-error TS7031
     advancedMode,
+    // @ts-expect-error TS7031
     advancedModeSpec,
+    // @ts-expect-error TS7031
     field,
+    // @ts-expect-error TS7031
     data,
+    // @ts-expect-error TS7031
     tooltip,
+    // @ts-expect-error TS7031
     tooltipCategory,
+    // @ts-expect-error TS7031
     tooltipValue,
+    // @ts-expect-error TS7031
     worldPosition,
+    // @ts-expect-error TS7031
     colorScheme,
+    // @ts-expect-error TS7031
     aspectRatio,
 }) => {
     const { ref, width } = useSizeObserver();
@@ -49,6 +62,7 @@ const CartographyView = ({
                     clamp((width - VEGA_ACTIONS_WIDTH) * 0.6, 300, 1200),
                 );
             } catch (e) {
+                // @ts-expect-error TS18046
                 setError(e.message);
                 return null;
             }
@@ -64,6 +78,7 @@ const CartographyView = ({
             colorScheme !== undefined ? colorScheme.join(' ') : schemeOrRd[9],
         );
 
+        // @ts-expect-error TS2554
         return specBuilder.buildSpec(width);
     }, [
         width,
@@ -82,6 +97,7 @@ const CartographyView = ({
     }
 
     return (
+        // @ts-expect-error TS2322
         <div style={styles.container} ref={ref}>
             <CustomActionVegaLite
                 spec={spec}
@@ -113,6 +129,7 @@ CartographyView.propTypes = {
     aspectRatio: PropTypes.string,
 };
 
+// @ts-expect-error TS7006
 const mapStateToProps = (state, { formatData }) => {
     if (!formatData) {
         return {
@@ -135,6 +152,7 @@ export const CartographyAdminView = connect((state, props) => {
             format: 'Preview Format',
         },
         data: {
+            // @ts-expect-error TS2339
             values: props.dataset.values ?? [],
         },
     };

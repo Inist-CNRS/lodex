@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import { push } from 'redux-first-history';
@@ -41,19 +42,29 @@ export class HomeComponent extends Component {
     };
 
     UNSAFE_componentWillMount() {
+        // @ts-expect-error TS2339
         this.props.preLoadPublication();
+        // @ts-expect-error TS2339
         this.props.preLoadDatasetPage();
+        // @ts-expect-error TS2339
         this.props.preLoadExporters();
     }
 
     render() {
         const {
+            // @ts-expect-error TS2339
             error,
+            // @ts-expect-error TS2339
             hasPublishedDataset,
+            // @ts-expect-error TS2339
             loading,
+            // @ts-expect-error TS2339
             p: polyglot,
+            // @ts-expect-error TS2339
             title,
+            // @ts-expect-error TS2339
             description,
+            // @ts-expect-error TS2339
             tenant,
         } = this.props;
 
@@ -87,17 +98,24 @@ export class HomeComponent extends Component {
     }
 }
 
+// @ts-expect-error TS7006
 const mapStateToProps = (state) => {
     const characteristics =
+        // @ts-expect-error TS2339
         fromCharacteristic.getCharacteristicsAsResource(state);
+    // @ts-expect-error TS2339
     const titleKey = fromFields.getDatasetTitleFieldName(state);
+    // @ts-expect-error TS2339
     const descriptionKey = fromFields.getDatasetDescriptionFieldName(state);
     const title = titleKey && characteristics[titleKey];
     const description = descriptionKey && characteristics[descriptionKey];
 
     return {
+        // @ts-expect-error TS2339
         error: fromFields.getError(state),
+        // @ts-expect-error TS2339
         loading: fromFields.isLoading(state),
+        // @ts-expect-error TS2339
         hasPublishedDataset: fromFields.hasPublishedDataset(state),
         title,
         description,

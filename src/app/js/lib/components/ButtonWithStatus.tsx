@@ -22,13 +22,21 @@ const styles = {
 };
 
 const ButtonWithStatus = ({
+    // @ts-expect-error TS7031
     raised,
+    // @ts-expect-error TS7031
     error,
+    // @ts-expect-error TS7031
     loading,
+    // @ts-expect-error TS7031
     disabled,
+    // @ts-expect-error TS7031
     success,
+    // @ts-expect-error TS7031
     progress,
+    // @ts-expect-error TS7031
     target,
+    // @ts-expect-error TS7031
     className,
     ...props
 }) => {
@@ -40,6 +48,7 @@ const ButtonWithStatus = ({
                     className={className}
                     sx={loading && target ? styles.loadingProgress : {}}
                     disabled={disabled || loading}
+                    // @ts-expect-error TS2554
                     startIcon={getIcon(error, success, loading, target)}
                     {...props}
                 />
@@ -47,6 +56,7 @@ const ButtonWithStatus = ({
                 <Button
                     variant="text"
                     disabled={disabled || loading}
+                    // @ts-expect-error TS2554
                     startIcon={getIcon(error, success, loading, target)}
                     {...props}
                 />
@@ -68,9 +78,12 @@ const ButtonWithStatus = ({
     );
 };
 
+// @ts-expect-error TS7006
 const getIcon = (error, success, loading) => {
     if (loading) return <CircularProgress variant="indeterminate" size={20} />;
+    // @ts-expect-error TS2769
     if (error) return <Warning color={red[400]} />;
+    // @ts-expect-error TS2769
     if (success) return <Success color={lightGreen.A400} />;
     return null;
 };

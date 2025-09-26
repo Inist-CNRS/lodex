@@ -42,37 +42,50 @@ class EmphasedNumberAdmin extends Component {
         args: defaultArgs,
     };
 
+    // @ts-expect-error TS7006
     constructor(props) {
         super(props);
         this.handleColors = this.handleColors.bind(this);
         this.state = {
+            // @ts-expect-error TS2339
             colors: this.props.args.colors || defaultArgs.colors,
         };
     }
 
+    // @ts-expect-error TS7006
     handleSize = (size) => {
         const newArgs = {
+            // @ts-expect-error TS2339
             ...this.props.args,
             size,
         };
+        // @ts-expect-error TS2339
         this.props.onChange(newArgs);
     };
 
+    // @ts-expect-error TS7006
     handleColors(colors) {
         updateAdminArgs('colors', colors.split(' ')[0], this.props);
     }
 
+    // @ts-expect-error TS7006
     handleParams = (params) => updateAdminArgs('params', params, this.props);
 
     render() {
         const {
+            // @ts-expect-error TS2339
             p: polyglot,
+            // @ts-expect-error TS2339
             args: { size, params },
         } = this.props;
 
         return (
             <FormatGroupedFieldSet>
+                {/*
+                 // @ts-expect-error TS2322 */}
                 <FormatDataParamsFieldSet>
+                    {/*
+                     // @ts-expect-error TS2322 */}
                     <RoutineParamsAdmin
                         params={params || defaultArgs.params}
                         onChange={this.handleParams}
@@ -83,7 +96,11 @@ class EmphasedNumberAdmin extends Component {
                         showOrderBy={false}
                     />
                 </FormatDataParamsFieldSet>
+                {/*
+                 // @ts-expect-error TS2322 */}
                 <FormatDefaultParamsFieldSet defaultExpanded>
+                    {/*
+                     // @ts-expect-error TS2322 */}
                     <TextField
                         fullWidth
                         select
@@ -96,7 +113,10 @@ class EmphasedNumberAdmin extends Component {
                         <MenuItem value={3}>{polyglot.t('size3')}</MenuItem>
                         <MenuItem value={4}>{polyglot.t('size4')}</MenuItem>
                     </TextField>
+                    {/*
+                     // @ts-expect-error TS2322 */}
                     <ColorPickerParamsAdmin
+                        // @ts-expect-error TS2339
                         colors={this.state.colors || defaultArgs.colors}
                         onChange={this.handleColors}
                         polyglot={polyglot}

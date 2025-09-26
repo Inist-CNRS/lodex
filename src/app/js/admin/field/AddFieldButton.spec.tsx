@@ -1,4 +1,5 @@
 import React from 'react';
+// @ts-expect-error TS7016
 import { shallow } from 'enzyme';
 import { Button } from '@mui/material';
 
@@ -17,7 +18,9 @@ describe('<AddFieldButton />', () => {
         const wrapper = shallow(
             <AddFieldButton
                 onAddNewField={onAddNewField}
+                // @ts-expect-error TS2322
                 name="foo"
+                // @ts-expect-error TS7006
                 p={{ t: (key) => key }}
             />,
         );

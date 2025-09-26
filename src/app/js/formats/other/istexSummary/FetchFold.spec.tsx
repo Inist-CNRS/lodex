@@ -1,8 +1,10 @@
 import React from 'react';
+// @ts-expect-error TS7016
 import { shallow } from 'enzyme';
 import Folder from '@mui/icons-material/Folder';
 import FolderOpen from '@mui/icons-material/FolderOpen';
 import { CircularProgress, Button } from '@mui/material';
+// @ts-expect-error TS7016
 import { StyleSheetTestUtils } from 'aphrodite';
 
 import FetchFold from './FetchFold';
@@ -16,6 +18,7 @@ describe('FetchFold', () => {
         )),
         label: 'label',
         count: 10,
+        // @ts-expect-error TS7006
         polyglot: { t: (v) => v },
     };
 
@@ -46,6 +49,7 @@ describe('FetchFold', () => {
         const getData = jest.fn(() => dataPromise);
 
         const wrapper = shallow(
+            // @ts-expect-error TS2769
             <FetchFold {...defaultProps} getData={getData} />,
         );
         const button = wrapper.find(Button);
@@ -79,6 +83,7 @@ describe('FetchFold', () => {
         const getData = jest.fn(() => dataPromise);
 
         const wrapper = shallow(
+            // @ts-expect-error TS2769
             <FetchFold {...defaultProps} getData={getData} />,
         );
         const button = wrapper.find(Button);
@@ -100,6 +105,7 @@ describe('FetchFold', () => {
     });
 
     it('should not render if count is 0', () => {
+        // @ts-expect-error TS2769
         const wrapper = shallow(<FetchFold {...defaultProps} count={0} />);
         expect(wrapper.find(Folder)).toHaveLength(0);
         expect(wrapper.find(FolderOpen)).toHaveLength(0);

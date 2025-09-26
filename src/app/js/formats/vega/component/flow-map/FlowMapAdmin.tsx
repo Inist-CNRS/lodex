@@ -6,6 +6,7 @@ import updateAdminArgs from '../../../utils/updateAdminArgs';
 import RoutineParamsAdmin from '../../../utils/components/admin/RoutineParamsAdmin';
 import VegaToolTips from '../../../utils/components/admin/VegaToolTips';
 import ColorPickerParamsAdmin from '../../../utils/components/admin/ColorPickerParamsAdmin';
+// @ts-expect-error TS7016
 import { schemeBlues } from 'd3-scale-chromatic';
 import { GradientSchemeSelector } from '../../../../lib/components/ColorSchemeSelector';
 import { FormControlLabel, FormGroup, Switch } from '@mui/material';
@@ -37,6 +38,7 @@ export const defaultArgs = {
     aspectRatio: ASPECT_RATIO_16_9,
 };
 
+// @ts-expect-error TS7006
 const FlowMapAdmin = (props) => {
     const {
         p: polyglot,
@@ -81,6 +83,7 @@ const FlowMapAdmin = (props) => {
             colorScheme !== undefined ? colorScheme : schemeBlues[9].split(' '),
         );
         specBuilder.setEditMode(true);
+        // @ts-expect-error TS2554
         return JSON.stringify(specBuilder.buildSpec(), null, 2);
     }, [advancedMode, advancedModeSpec]);
 
@@ -97,6 +100,7 @@ const FlowMapAdmin = (props) => {
         updateAdminArgs('advancedMode', !args.advancedMode, props);
     };
 
+    // @ts-expect-error TS7006
     const handleAdvancedModeSpec = (newSpec) => {
         updateAdminArgs('advancedModeSpec', newSpec, props);
     };
@@ -105,10 +109,12 @@ const FlowMapAdmin = (props) => {
         updateAdminArgs('advancedModeSpec', null, props);
     };
 
+    // @ts-expect-error TS7006
     const handleParams = (params) => {
         updateAdminArgs('params', params, props);
     };
 
+    // @ts-expect-error TS7006
     const handleColor = (color) => {
         updateAdminArgs(
             'color',
@@ -117,6 +123,7 @@ const FlowMapAdmin = (props) => {
         );
     };
 
+    // @ts-expect-error TS7006
     const handleColorScheme = (_, colorScheme) => {
         updateAdminArgs(
             'colorScheme',
@@ -129,21 +136,28 @@ const FlowMapAdmin = (props) => {
         updateAdminArgs('tooltip', !tooltip, props);
     };
 
+    // @ts-expect-error TS7006
     const handleTooltipCategory = (tooltipCategory) => {
         updateAdminArgs('tooltipCategory', tooltipCategory, props);
     };
 
+    // @ts-expect-error TS7006
     const handleTooltipValue = (tooltipValue) => {
         updateAdminArgs('tooltipValue', tooltipValue, props);
     };
 
+    // @ts-expect-error TS7006
     const handleAspectRatio = (value) => {
         updateAdminArgs('aspectRatio', value, props);
     };
 
     return (
         <FormatGroupedFieldSet>
+            {/*
+             // @ts-expect-error TS2322 */}
             <FormatDataParamsFieldSet>
+                {/*
+                 // @ts-expect-error TS2322 */}
                 <RoutineParamsAdmin
                     params={params || defaultArgs.params}
                     onChange={handleParams}
@@ -154,7 +168,11 @@ const FlowMapAdmin = (props) => {
                     showOrderBy={showOrderBy}
                 />
             </FormatDataParamsFieldSet>
+            {/*
+             // @ts-expect-error TS2322 */}
             <FormatChartParamsFieldSet defaultExpanded>
+                {/*
+                 // @ts-expect-error TS2322 */}
                 <FormGroup>
                     <FormControlLabel
                         control={
@@ -166,6 +184,8 @@ const FlowMapAdmin = (props) => {
                         label={polyglot.t('advancedMode')}
                     />
                 </FormGroup>
+                {/*
+                 // @ts-expect-error TS2322 */}
                 {advancedMode ? (
                     <VegaAdvancedMode
                         value={spec}
@@ -197,11 +217,15 @@ const FlowMapAdmin = (props) => {
                         />
                     </>
                 )}
+                {/*
+                 // @ts-expect-error TS2322 */}
                 <AspectRatioSelector
                     value={aspectRatio}
                     onChange={handleAspectRatio}
                 />
             </FormatChartParamsFieldSet>
+            {/*
+             // @ts-expect-error TS2322 */}
             <VegaFieldPreview
                 args={{ ...args, p: polyglot }}
                 PreviewComponent={FlowMapAdminView}

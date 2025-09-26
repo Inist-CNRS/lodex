@@ -5,14 +5,17 @@ import PropTypes from 'prop-types';
 import composeRenderProps, { concat, neutral } from './composeRenderProps';
 
 describe('composeRenderProps', () => {
+    // @ts-expect-error TS7031
     const Div = ({ children, ...props }) => <div>Div({children(props)})</div>;
     Div.propTypes = {
         children: PropTypes.func.isRequired,
     };
+    // @ts-expect-error TS7031
     const P = ({ children, ...props }) => <p>P({children(props)})</p>;
     P.propTypes = {
         children: PropTypes.func.isRequired,
     };
+    // @ts-expect-error TS7031
     const Span = ({ name }) => <span>Span({name})</span>;
     Span.propTypes = {
         name: PropTypes.string.isRequired,

@@ -1,6 +1,7 @@
 import * as React from 'react';
 import SvgIcon from '@mui/material/SvgIcon';
 
+// @ts-expect-error TS7006
 function AddFromDatasetIcon(props) {
     return (
         <SvgIcon

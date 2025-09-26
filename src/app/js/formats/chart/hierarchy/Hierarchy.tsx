@@ -1,9 +1,13 @@
 import React, { PureComponent } from 'react';
+// @ts-expect-error TS7016
 import compose from 'recompose/compose';
+// @ts-expect-error TS7016
 import { StyleSheet, css } from 'aphrodite/no-important';
+// @ts-expect-error TS7016
 import * as d3 from 'd3';
 import { zoomFunction, generateUniqueId } from './utils';
 import injectData from '../../injectData';
+// @ts-expect-error TS7016
 import cliTruncate from 'cli-truncate';
 import PropTypes from 'prop-types';
 import { polyglot as polyglotPropTypes } from '../../../propTypes';
@@ -61,6 +65,7 @@ const styles = StyleSheet.create({
     },
 });
 
+// @ts-expect-error TS2554
 const stylesWithClassnames = stylesToClassname({
     icon: {
         color: 'var(--primary-main)',
@@ -76,6 +81,7 @@ class Hierarchy extends PureComponent {
     mouseIcon = '';
     centerIcon = '';
 
+    // @ts-expect-error TS7006
     constructor(props) {
         super(props);
         this.state = {
@@ -84,15 +90,23 @@ class Hierarchy extends PureComponent {
             margin: { top: 60, right: 40, bottom: 50, left: 60 },
         };
         this.centerGraphClick = this.centerGraphClick.bind(this);
+        // @ts-expect-error TS2339
         this.divContainer = React.createRef();
+        // @ts-expect-error TS2339
         this.svgContainer = React.createRef();
+        // @ts-expect-error TS2339
         this.tooltipContainer = React.createRef();
+        // @ts-expect-error TS2339
         this.anchor = React.createRef();
 
+        // @ts-expect-error TS2339
         this.mouseIsOverStream = false;
+        // @ts-expect-error TS2339
         this.zoomFunction = zoomFunction.bind(this);
+        // @ts-expect-error TS2339
         this.uniqueId = generateUniqueId();
         this.collapse = this.collapse.bind(this);
+        // @ts-expect-error TS2339
         this.initialPosition = {
             x: 0,
             y: 0,
@@ -101,53 +115,66 @@ class Hierarchy extends PureComponent {
     }
 
     svg() {
+        // @ts-expect-error TS2339
         return d3.select(this.svgContainer.current);
     }
 
     g() {
+        // @ts-expect-error TS2339
         return d3.select(this.anchor.current);
     }
 
     tooltip() {
+        // @ts-expect-error TS2339
         return d3.select(this.tooltipContainer.current);
     }
 
     setGraph() {
+        // @ts-expect-error TS2339
         if (this.props.formatData) {
+            // @ts-expect-error TS2339
             this.setState({ width: this.divContainer.current.clientWidth });
             this.g().attr('transform', 'translate(20,20)'); // move right 20px.
 
             // Setting up a way to handle the data
+            // @ts-expect-error TS2339
             this.tree = d3
                 .cluster() // This D3 API method setup the Dendrogram elements position.
+                // @ts-expect-error TS7006
                 .separation(function (a, b) {
                     return a.parent == b.parent ? 3 : 4;
                 }); // define separation ratio between siblings
 
             let stratify = d3
                 .stratify() // This D3 API method gives cvs file flat data array dimensions.
+                // @ts-expect-error TS7006
                 .id(function (d) {
                     return d.target;
                 })
+                // @ts-expect-error TS7006
                 .parentId(function (d) {
                     return d.source;
                 });
 
             let myData;
 
+            // @ts-expect-error TS2339
             let treeData = this.props.formatData;
 
             try {
                 if (treeData) {
                     myData = this.addRootElements(treeData);
+                    // @ts-expect-error TS2339
                     this.root = stratify(myData);
                     // collpsed all nodes
+                    // @ts-expect-error TS2339
                     this.root.children.forEach((d) =>
                         d.children.forEach(this.collapse),
                     );
 
                     this.update();
                 }
+                // @ts-expect-error TS2339
                 let current = this.divContainer.current;
                 let gBbox = this.g().node().getBBox();
 
@@ -155,16 +182,20 @@ class Hierarchy extends PureComponent {
                     current.clientWidth / gBbox.width <
                     current.clientHeight / gBbox.height
                 ) {
+                    // @ts-expect-error TS2339
                     this.initialPosition.scale =
                         current.clientWidth / gBbox.width;
                 } else {
+                    // @ts-expect-error TS2339
                     this.initialPosition.scale =
                         current.clientHeight / gBbox.height;
                 }
 
+                // @ts-expect-error TS2339
                 this.initialPosition.scale = this.initialPosition.scale * 0.8;
                 this.centerGraphClick();
             } catch (error) {
+                // @ts-expect-error TS2339
                 const { p: polyglot } = this.props;
                 this.tooltip()
                     .style('background-color', 'red')
@@ -181,18 +212,26 @@ class Hierarchy extends PureComponent {
     }
 
     update() {
+        // @ts-expect-error TS2339
         const color = this.props.colors;
         // update tree size
+        // @ts-expect-error TS2339
         if (this.root && this.tree) {
+            // @ts-expect-error TS2339
             const height = (this.root.leaves().length + 1) * 50;
+            // @ts-expect-error TS2339
             const width = (this.root.depth + this.root.height) * 200;
+            // @ts-expect-error TS2339
             this.tree.size([height, width]);
 
             // update axis
             const maxWeight = d3.max(
+                // @ts-expect-error TS2339
                 this.root
                     .descendants()
+                    // @ts-expect-error TS7006
                     .filter((d) => !d.children && !d._children),
+                // @ts-expect-error TS7006
                 function (d) {
                     return d.data.weight;
                 },
@@ -202,20 +241,25 @@ class Hierarchy extends PureComponent {
                 .scaleLinear()
                 .domain([
                     0,
+                    // @ts-expect-error TS2339
                     maxWeight > this.props.params.minimumScaleValue
                         ? maxWeight
+                        // @ts-expect-error TS2339
                         : this.props.params.minimumScaleValue,
                 ])
                 .range([0, 500]);
 
+            // @ts-expect-error TS2339
             this.tree(this.root); // d3.cluster()
             let maxHeightInTree = 0;
+            // @ts-expect-error TS2339
             this.root.descendants().forEach((d) => {
                 if (maxHeightInTree < d.height) {
                     maxHeightInTree = d.height;
                 }
             });
 
+            // @ts-expect-error TS2339
             this.root.descendants().forEach((d) => {
                 d.y = d.x;
                 if (d.height > 0) {
@@ -230,14 +274,17 @@ class Hierarchy extends PureComponent {
                 .selectAll(`.${css(styles.link)}`)
                 // remove links from fakeRootNode
                 .data(
+                    // @ts-expect-error TS2339
                     this.root
                         .descendants()
                         .slice(1)
                         .filter(
+                            // @ts-expect-error TS7006
                             (d) =>
                                 !d.parent.data.isFakeNode &&
                                 !d.parent.isCollapsedNode,
                         ),
+                    // @ts-expect-error TS7006
                     function (d) {
                         return d.id;
                     },
@@ -247,6 +294,7 @@ class Hierarchy extends PureComponent {
             link.exit().remove();
 
             // update remaining link
+            // @ts-expect-error TS7006
             link.attr('d', function (d) {
                 return (
                     'M' +
@@ -272,6 +320,7 @@ class Hierarchy extends PureComponent {
             link.enter()
                 .append('path')
                 .attr('class', `${css(styles.link)}`)
+                // @ts-expect-error TS7006
                 .attr('d', function (d) {
                     return (
                         'M' +
@@ -298,9 +347,11 @@ class Hierarchy extends PureComponent {
             let node = this.g()
                 .selectAll(`.${css(styles.node)}`)
                 .data(
+                    // @ts-expect-error TS2339
                     this.root.descendants().filter((d) => {
                         return !d.data.isFakeNode; // remove fake node (ie: fakeRoot and fake children when collapsed)
                     }),
+                    // @ts-expect-error TS7006
                     function (d) {
                         return d.id;
                     },
@@ -310,23 +361,28 @@ class Hierarchy extends PureComponent {
             node.exit().remove();
 
             // udpate remaining nodes
+            // @ts-expect-error TS7006
             node.attr('transform', function (d) {
                 return 'translate(' + d.x + ',' + d.y + ')';
             });
 
             let nodeLeafG = node
+                // @ts-expect-error TS7006
                 .filter(function (d) {
                     return !d.children && !d._children;
                 })
                 .selectAll('g');
+            // @ts-expect-error TS7006
             nodeLeafG.select('rect').attr('width', function (d) {
                 return xScale(d.data.weight);
             });
             nodeLeafG
                 .select('text')
+                // @ts-expect-error TS7006
                 .attr('width', function (d) {
                     return xScale(d.data.weight) - 8;
                 })
+                // @ts-expect-error TS7006
                 .text(function (d) {
                     return d.id;
                 });
@@ -335,6 +391,7 @@ class Hierarchy extends PureComponent {
             let nodeEnter = node
                 .enter()
                 .append('g')
+                // @ts-expect-error TS7006
                 .attr('class', function (d) {
                     return (
                         `${css(styles.node)}` +
@@ -344,9 +401,12 @@ class Hierarchy extends PureComponent {
                         (d._children ? ' node--collapsed' : '')
                     );
                 })
+                // @ts-expect-error TS7006
                 .on('click', (_event, d) => {
+                    // @ts-expect-error TS2554
                     this.click(d, this.tree);
                 })
+                // @ts-expect-error TS7006
                 .attr('transform', function (d) {
                     return 'translate(' + d.x + ',' + d.y + ')';
                 });
@@ -356,6 +416,7 @@ class Hierarchy extends PureComponent {
                 .attr('r', 4)
                 .attr('fill', color);
 
+            // @ts-expect-error TS7006
             let nodeInternal = nodeEnter.filter(function (d) {
                 return d.children || d._children;
             });
@@ -363,14 +424,18 @@ class Hierarchy extends PureComponent {
 
             nodeInternal
                 .append('rect')
+                // @ts-expect-error TS2339
                 .attr('x', -5 - this.props.params.labelOffset)
                 .attr('y', -22)
+                // @ts-expect-error TS7006
                 .attr('width', (d) => {
                     const label = this.getLabelAccordingChildren(d);
                     return label.length * 8;
                 })
+                // @ts-expect-error TS7006
                 .attr('id', (d) => {
                     return `id_${d.id.split(' ').join('_')}_${
+                        // @ts-expect-error TS2339
                         this.uniqueId
                     }_rect`;
                 })
@@ -381,20 +446,25 @@ class Hierarchy extends PureComponent {
             nodeInternal
                 .append('text')
                 .style('text-anchor', 'start')
+                // @ts-expect-error TS7006
                 .text((d) => {
                     return this.getLabelAccordingChildren(d);
                 })
+                // @ts-expect-error TS7006
                 .attr('id', (d) => {
                     currentId = `id_${d.id.split(' ').join('_')}_${
+                        // @ts-expect-error TS2339
                         this.uniqueId
                     }`;
                     return currentId;
                 })
+                // @ts-expect-error TS2339
                 .attr('x', -this.props.params.labelOffset)
                 .attr('y', -10);
 
             // Setup G for every leaf datum. (rectangle)
             let leafNodeGEnter = nodeEnter
+                // @ts-expect-error TS7006
                 .filter(function (d) {
                     return !d.children && !d._children;
                 })
@@ -413,17 +483,20 @@ class Hierarchy extends PureComponent {
                 .attr('ry', 2)
                 .transition()
                 .duration(500)
+                // @ts-expect-error TS7006
                 .attr('width', function (d) {
                     return xScale(d.data.weight);
                 });
             leafNodeGEnter
                 .append('text')
                 .style('text-anchor', 'start')
+                // @ts-expect-error TS7006
                 .text(function (d) {
                     return d.id;
                 })
                 .attr('dy', -5)
                 .attr('x', 8)
+                // @ts-expect-error TS7006
                 .attr('width', function (d) {
                     return xScale(d.data.weight) - 8;
                 });
@@ -431,24 +504,30 @@ class Hierarchy extends PureComponent {
             // Animation functions for mouse on and off events.
             this.g()
                 .selectAll('.node--leaf-g')
+                // @ts-expect-error TS7006
                 .on('mouseover', (event, node) => {
                     this.handleMouseOver(event, node);
                 })
+                // @ts-expect-error TS7006
                 .on('mouseout', (event, node) => {
                     this.handleMouseOut(event, node);
                 });
 
             this.g()
                 .selectAll('.node--internal')
+                // @ts-expect-error TS7006
                 .on('mouseover', (event, node) => {
                     this.handleMouseOverInternalNode(event, node);
                 })
+                // @ts-expect-error TS7006
                 .on('mouseout', (event, node) => {
+                    // @ts-expect-error TS2554
                     this.handleMouseOutInternalNode(event, node);
                 });
         }
     }
 
+    // @ts-expect-error TS7006
     handleMouseOver(event, node) {
         let leafG = d3.select(event.target);
 
@@ -461,18 +540,22 @@ class Hierarchy extends PureComponent {
             .style('top', event.layerY - 28 + 'px');
     }
 
+    // @ts-expect-error TS7006
     handleMouseOut(_event, node) {
+        // @ts-expect-error TS18048
         let leafG = d3.select(event.target);
 
         leafG.select('rect').attr('stroke-width', '0');
         this.tooltip().style('opacity', 0);
     }
 
+    // @ts-expect-error TS7006
     handleMouseOverInternalNode(event, node) {
         const nodeG = d3.select(event.target);
         this.tooltip().style('opacity', 1);
         this.tooltip()
             .html(
+                // @ts-expect-error TS2339
                 `${node.id}, ${this.props.p.t('poids')} : ${node.data.weight.toFixed(
                     0,
                 )}`,
@@ -487,11 +570,13 @@ class Hierarchy extends PureComponent {
         nodeG.select('circle').attr('r', 8);
     }
 
+    // @ts-expect-error TS7006
     handleMouseOutInternalNode(event) {
         this.tooltip().style('opacity', 0);
         d3.select(event.target).select('circle').attr('r', 4);
     }
 
+    // @ts-expect-error TS7006
     collapse(d) {
         if (d.children) {
             d._children = d.children;
@@ -500,6 +585,7 @@ class Hierarchy extends PureComponent {
         }
     }
 
+    // @ts-expect-error TS7006
     expand(d) {
         if (d._children) {
             d.children = d._children;
@@ -507,6 +593,7 @@ class Hierarchy extends PureComponent {
         }
     }
 
+    // @ts-expect-error TS7006
     click(d) {
         if (d.children) {
             this.collapse(d);
@@ -514,13 +601,17 @@ class Hierarchy extends PureComponent {
             this.expand(d);
         }
         d3.select(
+            // @ts-expect-error TS2339
             `[id="id_${d.id.split(' ').join('_')}_${this.uniqueId}"]`,
+        // @ts-expect-error TS7006
         ).text((d) => {
             return this.getLabelAccordingChildren(d);
         });
 
         d3.select(
+            // @ts-expect-error TS2339
             `[id="id_${d.id.split(' ').join('_')}_${this.uniqueId}_rect"]`,
+        // @ts-expect-error TS7006
         ).attr('width', (d) => {
             const label = this.getLabelAccordingChildren(d);
             return label.length * 8;
@@ -530,12 +621,14 @@ class Hierarchy extends PureComponent {
         this.centerNode(d);
     }
 
+    // @ts-expect-error TS7006
     centerNode(source) {
         let scale = d3.zoomTransform(this).k;
         let x = -source.x;
         let y = -source.y;
 
         let divContainerBoundingRect = d3
+            // @ts-expect-error TS2339
             .select(this.divContainer.current)
             .node()
             .getBoundingClientRect();
@@ -545,6 +638,7 @@ class Hierarchy extends PureComponent {
         this.svg().call(d3.zoom().transform, d3.zoomIdentity.translate(x, y));
         this.svg().on('dblclick.zoom', null);
 
+        // @ts-expect-error TS2695
         if ((x, y)) {
             this.g()
                 .transition()
@@ -553,6 +647,7 @@ class Hierarchy extends PureComponent {
         }
     }
 
+    // @ts-expect-error TS7006
     addRootElements(data) {
         let newData = [];
         let elementsDone = [];
@@ -596,10 +691,12 @@ class Hierarchy extends PureComponent {
         return newData;
     }
 
+    // @ts-expect-error TS7006
     setRootNodeWeight(data, rootNodesList) {
         if (data) {
             for (let rootName of rootNodesList) {
                 const rootNodePos = data
+                    // @ts-expect-error TS7006
                     .map((e) => {
                         return e.target;
                     })
@@ -615,6 +712,7 @@ class Hierarchy extends PureComponent {
         return data;
     }
 
+    // @ts-expect-error TS7006
     zoom(event) {
         this.g().attr('transform', event.transform);
     }
@@ -625,11 +723,13 @@ class Hierarchy extends PureComponent {
     }
 
     removeGraph() {
+        // @ts-expect-error TS2339
         d3.select(this.divContainer.current)
             .selectAll('#d3DivContainer')
             .selectAll('div')
             .remove();
 
+        // @ts-expect-error TS2339
         d3.select(this.divContainer.current)
             .selectAll('#d3DivContainer')
             .remove();
@@ -649,7 +749,9 @@ class Hierarchy extends PureComponent {
         this.setGraph();
 
         // if the tooltip content is available before componentDidMount, the content prints weirdly in a corner of the page
+        // @ts-expect-error TS2322
         this.mouseIcon = <MouseIcon polyglot={this.props.p} />;
+        // @ts-expect-error TS2322
         this.centerIcon = <CenterIcon polyglot={this.props.p} />;
     }
 
@@ -659,8 +761,10 @@ class Hierarchy extends PureComponent {
         this.removeGraph();
     }
 
+    // @ts-expect-error TS7006
     getLabelAccordingChildren(d) {
         if (d.children != null) {
+            // @ts-expect-error TS2339
             return cliTruncate(d.id, this.props.params.maxLabelLength);
         } else {
             return d.id;
@@ -671,24 +775,31 @@ class Hierarchy extends PureComponent {
         this.g().attr(
             'transform',
             'translate(' +
+                // @ts-expect-error TS2339
                 this.initialPosition.x +
                 ',' +
+                // @ts-expect-error TS2339
                 this.initialPosition.y +
                 ')scale(' +
+                // @ts-expect-error TS2339
                 this.initialPosition.scale +
                 ')',
         );
 
         let transform = d3.zoomIdentity
+            // @ts-expect-error TS2339
             .translate(this.initialPosition.x, this.initialPosition.y)
+            // @ts-expect-error TS2339
             .scale(this.initialPosition.scale);
 
+        // @ts-expect-error TS7006
         let zoomListener = d3.zoom().on('zoom', (event) => {
             this.zoom(event);
         });
 
         this.svg().call(zoomListener).call(zoomListener.transform, transform);
 
+        // @ts-expect-error TS2339
         this.root.children.forEach((d) => {
             d.children.forEach(this.collapse);
         });
@@ -696,16 +807,20 @@ class Hierarchy extends PureComponent {
     }
 
     render() {
+        // @ts-expect-error TS2339
         const { width, height } = this.state;
+        // @ts-expect-error TS2339
         const { p: polyglot } = this.props;
 
         return (
             <div
+                // @ts-expect-error TS2339
                 ref={this.divContainer}
                 style={{
                     overflow: 'hidden',
                     position: 'relative',
                 }}
+                // @ts-expect-error TS2339
                 id={`divContainer${this.uniqueId}`}
             >
                 <div
@@ -725,13 +840,16 @@ class Hierarchy extends PureComponent {
                         left: '57px',
                     }}
                     onClick={this.centerGraphClick}
+                    // @ts-expect-error TS2339
                     className={stylesWithClassnames.icon}
                 >
                     {this.centerIcon}
                 </div>
 
                 <div
+                    // @ts-expect-error TS2339
                     id={`centerGraphText${this.uniqueId}`}
+                    // @ts-expect-error TS2339
                     ref={this.centerIndicator}
                     style={{
                         visibility: 'hidden',
@@ -745,16 +863,22 @@ class Hierarchy extends PureComponent {
                 </div>
 
                 <svg
+                    // @ts-expect-error TS2339
                     id={`svgContainer${this.uniqueId}`}
+                    // @ts-expect-error TS2339
                     ref={this.svgContainer}
                     width={width}
                     height={height}
                 >
+                    {/*
+                     // @ts-expect-error TS2339 */}
                     <g id="anchor" ref={this.anchor} />
                 </svg>
                 <div
+                    // @ts-expect-error TS2339
                     id={`tooltipContainer${this.uniqueId}`}
                     className={`${css(styles.tooltip)}`}
+                    // @ts-expect-error TS2339
                     ref={this.tooltipContainer}
                 />
             </div>
@@ -762,6 +886,7 @@ class Hierarchy extends PureComponent {
     }
 }
 
+// @ts-expect-error TS2339
 Hierarchy.propTypes = {
     params: {
         minimumScaleValue: PropTypes.number.isRequired,

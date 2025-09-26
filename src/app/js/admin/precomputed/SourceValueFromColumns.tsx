@@ -8,8 +8,11 @@ import {
 } from '@mui/material';
 
 const SourceValueFromColumns = ({
+    // @ts-expect-error TS7031
     input,
+    // @ts-expect-error TS7031
     meta: { touched, error, dirty },
+    // @ts-expect-error TS7031
     label,
     ...props
 }) => {
@@ -24,6 +27,7 @@ const SourceValueFromColumns = ({
         <FormControl fullWidth error={!!error}>
             <Autocomplete
                 data-testid="source-value-from-columns"
+                // @ts-expect-error TS2322
                 multiple
                 disableCloseOnSelect
                 value={autocompleteValue || []}

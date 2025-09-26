@@ -4,6 +4,7 @@ import { MONOCHROMATIC_DEFAULT_COLORSET } from '../../utils/colorUtils';
 describe('RadarChart', () => {
     it('Test Color', function () {
         const radarChart = new RadarChart();
+        // @ts-expect-error TS2339
         expect(radarChart.colors).toStrictEqual(
             MONOCHROMATIC_DEFAULT_COLORSET.split(' '),
         );
@@ -11,6 +12,7 @@ describe('RadarChart', () => {
 
     it('Test Tooltip', function () {
         const radarChart = new RadarChart();
+        // @ts-expect-error TS2339
         expect(radarChart.tooltip).toStrictEqual({
             toggle: false,
             category: {
@@ -25,6 +27,7 @@ describe('RadarChart', () => {
         radarChart.setTooltipCategory('TestCategory');
         radarChart.setTooltipValue('TestValue');
 
+        // @ts-expect-error TS2339
         expect(radarChart.tooltip).toStrictEqual({
             toggle: true,
             category: {

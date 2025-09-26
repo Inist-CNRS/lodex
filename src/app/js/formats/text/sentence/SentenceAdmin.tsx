@@ -25,25 +25,37 @@ class SentenceAdmin extends Component {
         args: defaultArgs,
     };
 
+    // @ts-expect-error TS7006
     handlePrefix = (prefix) => {
+        // @ts-expect-error TS2339
         const newArgs = { ...this.props.args, prefix };
+        // @ts-expect-error TS2339
         this.props.onChange(newArgs);
     };
 
+    // @ts-expect-error TS7006
     handleSuffix = (suffix) => {
+        // @ts-expect-error TS2339
         const newArgs = { ...this.props.args, suffix };
+        // @ts-expect-error TS2339
         this.props.onChange(newArgs);
     };
 
     render() {
         const {
+            // @ts-expect-error TS2339
             p: polyglot,
+            // @ts-expect-error TS2339
             args: { prefix, suffix },
         } = this.props;
 
         return (
             <FormatGroupedFieldSet>
+                {/*
+                 // @ts-expect-error TS2322 */}
                 <FormatDefaultParamsFieldSet defaultExpanded>
+                    {/*
+                     // @ts-expect-error TS2322 */}
                     <TextField
                         key="prefix"
                         label={polyglot.t('prefix')}
@@ -51,6 +63,8 @@ class SentenceAdmin extends Component {
                         value={prefix}
                         sx={{ flexGrow: 1 }}
                     />
+                    {/*
+                     // @ts-expect-error TS2322 */}
                     <TextField
                         key="suffix"
                         label={polyglot.t('suffix')}

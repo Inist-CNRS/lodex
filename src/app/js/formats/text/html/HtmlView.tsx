@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import DOMPurify from "dompurify";
 import { field as fieldPropTypes } from '../../../propTypes';
 
+// @ts-expect-error TS7031
 const HtmlView = ({ className, resource, field }) => {
     const sanitizedHTML = DOMPurify.sanitize(resource[field.name]);
     return (

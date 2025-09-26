@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import { translate } from '../../i18n/I18NContext';
 import { grey } from '@mui/material/colors';
@@ -55,22 +56,33 @@ const styles = {
 
 export class DatasetComponent extends Component {
     UNSAFE_componentWillMount() {
+        // @ts-expect-error TS2339
         const { currentPage, perPage } = this.props;
+        // @ts-expect-error TS2339
         this.props.preLoadDatasetPage({ page: currentPage, perPage });
     }
 
+    // @ts-expect-error TS7006
     handlePageChange = (page, perPage) => {
+        // @ts-expect-error TS2339
         this.props.changePage({ page, perPage });
     };
 
     render() {
         const {
+            // @ts-expect-error TS2339
             columns,
+            // @ts-expect-error TS2339
             dataset,
+            // @ts-expect-error TS2339
             loading,
+            // @ts-expect-error TS2339
             p: polyglot,
+            // @ts-expect-error TS2339
             total,
+            // @ts-expect-error TS2339
             perPage,
+            // @ts-expect-error TS2339
             currentPage,
         } = this.props;
         if (loading) return <Loading>{polyglot.t('loading')}</Loading>;
@@ -81,6 +93,7 @@ export class DatasetComponent extends Component {
                         <div style={styles.labelContainer}>
                             <span
                                 className="property_label resources"
+                                // @ts-expect-error TS2322
                                 style={styles.label}
                             >
                                 {polyglot.t('resources')}
@@ -91,7 +104,10 @@ export class DatasetComponent extends Component {
                 <Table sx={styles.table}>
                     <TableHead>
                         <TableRow>
+                            {/*
+                             // @ts-expect-error TS7006 */}
                             {columns.map((c) => (
+                                // @ts-expect-error TS2741
                                 <DatasetColumnHeader
                                     key={c.name}
                                     name={c.name}
@@ -106,8 +122,11 @@ export class DatasetComponent extends Component {
                                 <TableCell>{polyglot.t('no_result')}</TableCell>
                             </TableRow>
                         ) : (
+                            // @ts-expect-error TS7006
                             dataset.map((data, indice) => (
                                 <TableRow key={data.uri}>
+                                    {/*
+                                     // @ts-expect-error TS7006 */}
                                     {columns.map((column) => (
                                         <DatasetColumn
                                             key={column.name}
@@ -142,6 +161,7 @@ export class DatasetComponent extends Component {
     }
 }
 
+// @ts-expect-error TS2339
 DatasetComponent.propTypes = {
     columns: PropTypes.arrayOf(PropTypes.object),
     currentPage: PropTypes.number.isRequired,
@@ -154,17 +174,25 @@ DatasetComponent.propTypes = {
     total: PropTypes.number.isRequired,
 };
 
+// @ts-expect-error TS2339
 DatasetComponent.defaultProps = {
     columns: [],
     dataset: [],
 };
 
+// @ts-expect-error TS7006
 const mapStateToProps = (state) => ({
+    // @ts-expect-error TS2339
     loading: fromDataset.isDatasetLoading(state),
+    // @ts-expect-error TS2339
     columns: fromFields.getListFields(state),
+    // @ts-expect-error TS2339
     currentPage: fromDataset.getDatasetCurrentPage(state),
+    // @ts-expect-error TS2339
     perPage: fromDataset.getDatasetPerPage(state),
+    // @ts-expect-error TS2339
     dataset: fromDataset.getDataset(state),
+    // @ts-expect-error TS2339
     total: fromDataset.getDatasetTotal(state),
 });
 

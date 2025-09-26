@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+// @ts-expect-error TS7016
 import { compose, lifecycle } from 'recompose';
 import { connect } from 'react-redux';
 import { Card } from '@mui/material';
@@ -26,10 +27,12 @@ const styles = {
     },
 };
 
+// @ts-expect-error TS7031
 export const AdminComponent = ({ loadingParsingResult, canUploadFile }) => {
     const { translate } = useTranslate();
     if (loadingParsingResult) {
         return (
+            // @ts-expect-error TS2322
             <Loading className="admin">
                 {translate('loading_parsing_results')}
             </Loading>
@@ -44,6 +47,8 @@ export const AdminComponent = ({ loadingParsingResult, canUploadFile }) => {
         <Card className="admin">
             <ParsingResult />
             <PublicationPreview />
+            {/*
+             // @ts-expect-error TS2322 */}
             <div style={styles.punchLine}>{translate('publish-punchline')}</div>
         </Card>
     );
@@ -55,11 +60,16 @@ AdminComponent.propTypes = {
     canUploadFile: PropTypes.bool.isRequired,
 };
 
+// @ts-expect-error TS7006
 const mapStateToProps = (state) => ({
     loadingParsingResult:
+        // @ts-expect-error TS2339
         fromParsing.isParsingLoading(state) ||
+        // @ts-expect-error TS2339
         fromUpload.isUploadPending(state),
+    // @ts-expect-error TS2339
     canUploadFile: fromParsing.canUpload(state),
+    // @ts-expect-error TS2339
     hasPublishedDataset: fromPublication.hasPublishedDataset(state),
 });
 

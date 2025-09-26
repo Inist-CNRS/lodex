@@ -1,4 +1,6 @@
+// @ts-expect-error TS7016
 import { StyleSheetTestUtils } from 'aphrodite';
+// @ts-expect-error TS7016
 import { shallow } from 'enzyme';
 import React from 'react';
 
@@ -24,16 +26,20 @@ describe('IstexCitationView', () => {
         resource: { uri: 'uri', field: 'refBibs.host.title:"The Lancet"' },
         searchedField: CUSTOM_ISTEX_QUERY,
         documentSortBy: 'publicationDate[desc]',
+        // @ts-expect-error TS7006
         p: { t: (v) => v },
     };
     const ComposedComponent = () => <div>Composed Child</div>;
 
     beforeAll(() => {
+        // @ts-expect-error TS2339
         parseCitationData.mockImplementation((v) => v);
+        // @ts-expect-error TS2339
         composeRenderProps.mockImplementation(() => ComposedComponent);
     });
 
     it('should render Fold for journal and document', () => {
+        // @ts-expect-error TS2322
         const wrapper = shallow(<IstexCitationView {...defaultProps} />);
 
         expect(composeRenderProps).toHaveBeenCalledWith([
@@ -55,6 +61,7 @@ describe('IstexCitationView', () => {
 
     it('should render InvalidFormat if resource[field.name] is not set', () => {
         const wrapper = shallow(
+            // @ts-expect-error TS2322
             <IstexCitationView
                 {...defaultProps}
                 resource={{ fieldName: null }}
@@ -69,6 +76,7 @@ describe('IstexCitationView', () => {
 
     it('should render InvalidFormat if searchedField is not set', () => {
         const wrapper = shallow(
+            // @ts-expect-error TS2322
             <IstexCitationView {...defaultProps} searchedField={null} />,
         );
 
@@ -79,7 +87,9 @@ describe('IstexCitationView', () => {
     });
 
     afterEach(() => {
+        // @ts-expect-error TS2339
         parseCitationData.mockClear();
+        // @ts-expect-error TS2339
         composeRenderProps.mockClear();
         StyleSheetTestUtils.clearBufferAndResumeStyleInjection();
     });

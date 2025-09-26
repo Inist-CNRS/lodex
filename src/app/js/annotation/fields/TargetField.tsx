@@ -22,6 +22,7 @@ import {
 import { useTranslate } from '../../i18n/I18NContext';
 import { COMMENT_STEP, VALUE_STEP } from '../steps';
 
+// @ts-expect-error TS7031
 export function TargetField({ form, field, initialValue, goToStep }) {
     const theme = useTheme();
     const { translate } = useTranslate();
@@ -37,6 +38,8 @@ export function TargetField({ form, field, initialValue, goToStep }) {
 
     return (
         <form.Field name="target">
+            {/*
+             // @ts-expect-error TS7006 */}
             {(formField) => {
                 return (
                     <MenuList
@@ -63,6 +66,7 @@ export function TargetField({ form, field, initialValue, goToStep }) {
                             <Stack direction="row" spacing={1}>
                                 <ListItemIcon>
                                     <CommentIcon
+                                        // @ts-expect-error TS2769
                                         color={theme.palette.primary.main}
                                         htmlColor={theme.palette.primary.main}
                                     />
@@ -70,6 +74,7 @@ export function TargetField({ form, field, initialValue, goToStep }) {
                                 {translate('annotation_annotate_field_choice')}
                             </Stack>
                             <ArrowForwardIosIcon
+                                // @ts-expect-error TS2769
                                 color={theme.palette.primary.main}
                                 htmlColor={theme.palette.primary.main}
                             />
@@ -102,6 +107,7 @@ export function TargetField({ form, field, initialValue, goToStep }) {
                                 <Stack direction="row" spacing={1}>
                                     <ListItemIcon>
                                         <EditIcon
+                                            // @ts-expect-error TS2769
                                             color={theme.palette.primary.main}
                                             htmlColor={
                                                 theme.palette.primary.main
@@ -111,6 +117,7 @@ export function TargetField({ form, field, initialValue, goToStep }) {
                                     {translate('annotation_correct_content')}
                                 </Stack>
                                 <ArrowForwardIosIcon
+                                    // @ts-expect-error TS2769
                                     color={theme.palette.primary.main}
                                     htmlColor={theme.palette.primary.main}
                                 />
@@ -138,6 +145,7 @@ export function TargetField({ form, field, initialValue, goToStep }) {
                                 <Stack direction="row" spacing={1}>
                                     <ListItemIcon>
                                         <AddIcon
+                                            // @ts-expect-error TS2769
                                             color={theme.palette.primary.main}
                                             htmlColor={
                                                 theme.palette.primary.main
@@ -147,6 +155,7 @@ export function TargetField({ form, field, initialValue, goToStep }) {
                                     {translate('annotation_add_content')}
                                 </Stack>
                                 <ArrowForwardIosIcon
+                                    // @ts-expect-error TS2769
                                     color={theme.palette.primary.main}
                                     htmlColor={theme.palette.primary.main}
                                 />
@@ -181,6 +190,7 @@ export function TargetField({ form, field, initialValue, goToStep }) {
                                 <Stack direction="row" spacing={1}>
                                     <ListItemIcon>
                                         <RemoveIcon
+                                            // @ts-expect-error TS2769
                                             color={theme.palette.primary.main}
                                             htmlColor={
                                                 theme.palette.primary.main
@@ -192,6 +202,7 @@ export function TargetField({ form, field, initialValue, goToStep }) {
                                     )}
                                 </Stack>
                                 <ArrowForwardIosIcon
+                                    // @ts-expect-error TS2769
                                     color={theme.palette.primary.main}
                                     htmlColor={theme.palette.primary.main}
                                 />

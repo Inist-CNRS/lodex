@@ -13,9 +13,11 @@ import { ANNOTATION_GRID_COLUMNS, AnnotationValue } from './AnnotationValue';
 
 const ANNOTATION_GRID_SPACING = 1;
 
+// @ts-expect-error TS7031
 function Section({ label, children, translateOptions }) {
     const { translate } = useTranslate();
 
+    // @ts-expect-error TS2554
     const translatedLabel = translate(label, translateOptions);
 
     return (
@@ -34,12 +36,15 @@ Section.propTypes = {
     translateOptions: PropTypes.object,
 };
 
+// @ts-expect-error TS7031
 export function AnnotationItems({ annotation }) {
     const { translate } = useTranslate();
 
     return (
         <Stack gap={6}>
             <Section label="annotation_field_section">
+                {/*
+                 // @ts-expect-error TS2322 */}
                 {annotation.field ? (
                     <FieldRepresentation field={annotation.field} />
                 ) : (
@@ -49,6 +54,8 @@ export function AnnotationItems({ annotation }) {
 
             {['removal', 'correction'].includes(annotation.kind) && (
                 <Section label="annotation_initial_value">
+                    {/*
+                     // @ts-expect-error TS2322 */}
                     <Typography
                         aria-labelledby="annotation_initial_value"
                         component="pre"
@@ -73,6 +80,8 @@ export function AnnotationItems({ annotation }) {
                             : 1,
                     }}
                 >
+                    {/*
+                     // @ts-expect-error TS2322 */}
                     <AnnotationProposedValue
                         proposedValue={annotation.proposedValue}
                         field={annotation.field}
@@ -81,6 +90,8 @@ export function AnnotationItems({ annotation }) {
             )}
 
             <Section label="annotation_comment_section">
+                {/*
+                 // @ts-expect-error TS2322 */}
                 <Typography
                     aria-labelledby="annotation_comment_section"
                     component="pre"
@@ -91,6 +102,8 @@ export function AnnotationItems({ annotation }) {
             </Section>
 
             <Section label="annotation_contributor_section">
+                {/*
+                 // @ts-expect-error TS2322 */}
                 <Stack gap={1}>
                     <Typography>{annotation.authorName}</Typography>
                     {annotation.authorEmail && (
@@ -107,6 +120,8 @@ export function AnnotationItems({ annotation }) {
             </Section>
 
             <Section label="annotation_complementary_infos_section">
+                {/*
+                 // @ts-expect-error TS2322 */}
                 <Grid
                     container
                     spacing={ANNOTATION_GRID_SPACING}

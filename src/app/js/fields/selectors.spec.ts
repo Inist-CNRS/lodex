@@ -25,6 +25,7 @@ describe('field selectors', () => {
                     name4: 'field4',
                 },
             };
+            // @ts-expect-error TS2345
             expect(getFields(state)).toEqual(['field1', 'field2', 'field3']);
         });
     });
@@ -41,6 +42,7 @@ describe('field selectors', () => {
         };
 
         it('should return array of all dataset fields if second args is dataset', () => {
+            // @ts-expect-error TS2345
             expect(selectors.getOntologyFields(state, SCOPE_DATASET)).toEqual([
                 { name: 'name1', scope: SCOPE_DATASET },
                 { name: 'name2', scope: SCOPE_DATASET },
@@ -48,6 +50,7 @@ describe('field selectors', () => {
         });
 
         it('should return array of all document and collection fields if second args is document or collection', () => {
+            // @ts-expect-error TS2345
             expect(selectors.getOntologyFields(state, 'document')).toEqual([
                 { name: 'name3', scope: SCOPE_COLLECTION },
                 { name: 'name4', scope: SCOPE_DOCUMENT },
@@ -84,6 +87,7 @@ describe('field selectors', () => {
         it('should return the model', () => {
             expect(
                 getCollectionFields({
+                    // @ts-expect-error TS2322
                     list: ['first', 'second'],
                     byName: {
                         first: {
@@ -106,6 +110,7 @@ describe('field selectors', () => {
         it('should return the model', () => {
             expect(
                 selectors.getDatasetFields({
+                    // @ts-expect-error TS2322
                     list: ['first', 'second'],
                     byName: {
                         first: {
@@ -364,6 +369,7 @@ describe('field selectors', () => {
                 },
             };
 
+            // @ts-expect-error TS2345
             expect(selectors.getContributionFields(state)).toEqual([
                 { name: 'field2', contribution: true },
                 { name: 'field4', contribution: true },

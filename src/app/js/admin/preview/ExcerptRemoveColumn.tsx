@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import { TableCell, Button } from '@mui/material';
 
@@ -14,8 +15,11 @@ import getFieldClassName from '../../lib/getFieldClassName';
 import { translate } from '../../i18n/I18NContext';
 
 export const ExcerptRemoveColumnComponent = ({
+    // @ts-expect-error TS7031
     removeColumn,
+    // @ts-expect-error TS7031
     field: { name },
+    // @ts-expect-error TS7031
     p: polyglot,
 }) => (
     <TableCell>
@@ -40,6 +44,7 @@ ExcerptRemoveColumnComponent.propTypes = {
     p: polyglotPropTypes.isRequired,
 };
 
+// @ts-expect-error TS7006
 const mapDispatchtoProps = (dispatch, { field: { name } }) =>
     bindActionCreators(
         {

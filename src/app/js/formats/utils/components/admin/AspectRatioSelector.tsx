@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import { polyglot as polyglotPropTypes } from '../../../../propTypes';
 import { translate } from '../../../../i18n/I18NContext';
 
+// @ts-expect-error TS7031
 const AspectRatioSelector = ({ value, onChange, p }) => {
     const [aspectRatio, setAspectRatio] = useState(value);
 
@@ -23,6 +24,7 @@ const AspectRatioSelector = ({ value, onChange, p }) => {
         });
     }, []);
 
+    // @ts-expect-error TS7006
     const handleAspectRatio = (event) => {
         setAspectRatio(event.target.value);
         onChange(event.target.value);

@@ -5,10 +5,15 @@ import { FormControl, FormHelperText, Autocomplete } from '@mui/material';
 import { formField as formFieldPropTypes } from '../../propTypes';
 
 const SubressourceFieldAutoComplete = ({
+    // @ts-expect-error TS7031
     input,
+    // @ts-expect-error TS7031
     hint,
+    // @ts-expect-error TS7031
     meta: { touched, error },
+    // @ts-expect-error TS7031
     clearIdentifier,
+    // @ts-expect-error TS7031
     error: rootError,
     ...props
 }) => {

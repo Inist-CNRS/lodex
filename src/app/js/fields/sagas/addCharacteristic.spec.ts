@@ -21,18 +21,22 @@ describe('characteristic saga', () => {
         });
 
         it('should call validateField', () => {
+            // @ts-expect-error TS2345
             expect(saga.next('form data').value).toEqual(
                 call(validateField, 'form data'),
             );
         });
 
         it('should select getAddCharacteristicsRequest if field is valid', () => {
+            // @ts-expect-error TS2345
             expect(saga.next(true).value).toEqual(
+                // @ts-expect-error TS2339
                 select(fromUser.getAddCharacteristicRequest, 'form data'),
             );
         });
 
         it('should call fetchPublication with the request', () => {
+            // @ts-expect-error TS2345
             expect(saga.next('request').value).toEqual(
                 call(fetchSaga, 'request'),
             );
@@ -40,6 +44,7 @@ describe('characteristic saga', () => {
 
         it('should put addCharacteristicSuccess action', () => {
             expect(
+                // @ts-expect-error TS2345
                 saga.next({
                     response: ['value1', 'value2'],
                 }).value,
@@ -50,6 +55,7 @@ describe('characteristic saga', () => {
             const invalidSaga = handleAddCharacteristic();
             invalidSaga.next();
             invalidSaga.next();
+            // @ts-expect-error TS2345
             expect(invalidSaga.next(false).done).toBe(true);
         });
 
@@ -57,9 +63,11 @@ describe('characteristic saga', () => {
             const failedSaga = handleAddCharacteristic();
             failedSaga.next();
             failedSaga.next();
+            // @ts-expect-error TS2345
             failedSaga.next(true);
             failedSaga.next();
             expect(
+                // @ts-expect-error TS2345
                 failedSaga.next({ error: { message: 'foo' } }).value,
             ).toEqual(put(addCharacteristicError('foo')));
         });

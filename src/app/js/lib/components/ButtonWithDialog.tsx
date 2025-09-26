@@ -25,15 +25,25 @@ const dialogStyle = {
 };
 
 export const PureButtonWithDialog = ({
+    // @ts-expect-error TS7031
     handleClose,
+    // @ts-expect-error TS7031
     handleOpen,
+    // @ts-expect-error TS7031
     open,
+    // @ts-expect-error TS7031
     show,
+    // @ts-expect-error TS7031
     style,
+    // @ts-expect-error TS7031
     dialog,
+    // @ts-expect-error TS7031
     className,
+    // @ts-expect-error TS7031
     label,
+    // @ts-expect-error TS7031
     icon,
+    // @ts-expect-error TS7031
     p: polyglot,
     actions = [
         <CancelButton key="cancel" onClick={handleClose}>

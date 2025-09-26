@@ -1,12 +1,16 @@
 import { useQuery } from '@tanstack/react-query';
+// @ts-expect-error TS7016
 import { omitBy } from 'lodash';
+// @ts-expect-error TS7016
 import qs from 'qs';
+// @ts-expect-error TS7016
 import { useHistory } from 'react-router-dom';
 
 import fetch from '../../../lib/fetch';
 import { getRequest } from '../../../user';
 import { getUserSessionStorageInfo } from '../../api/tools';
 
+// @ts-expect-error TS7031
 export function useGetAnnotations({ page, perPage, sortBy, sortDir, filter }) {
     const history = useHistory();
     return useQuery({
@@ -21,6 +25,7 @@ export function useGetAnnotations({ page, perPage, sortBy, sortDir, filter }) {
                         sortDir,
                         ...filter,
                     },
+                    // @ts-expect-error TS7006
                     (value) => value === null || value === '',
                 ),
             );

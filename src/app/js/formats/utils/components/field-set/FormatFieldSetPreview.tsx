@@ -16,11 +16,17 @@ import { translate, useTranslate } from '../../../../i18n/I18NContext';
 const ReactJson = lazy(() => import('react-json-view'));
 
 const FormatFieldSetPreview = ({
+    // @ts-expect-error TS7031
     p,
+    // @ts-expect-error TS7031
     args,
+    // @ts-expect-error TS7031
     showDatasetsSelector,
+    // @ts-expect-error TS7031
     datasets,
+    // @ts-expect-error TS7031
     PreviewComponent,
+    // @ts-expect-error TS7031
     defaultExpanded,
 }) => {
     const { translate } = useTranslate();
@@ -35,6 +41,7 @@ const FormatFieldSetPreview = ({
     }, [datasets]);
 
     useEffect(() => {
+        // @ts-expect-error TS7006
         const newSet = datasets.find((value) => value.name === datasetName);
         if (!newSet) {
             setDataset({});
@@ -46,10 +53,12 @@ const FormatFieldSetPreview = ({
         });
     }, [datasets, datasetName]);
 
+    // @ts-expect-error TS7006
     const handleDataSetChange = (event) => {
         setDatasetName(event.target.value);
     };
 
+    // @ts-expect-error TS7006
     const handleDataSetEditor = (event) => {
         setDataset(event.updated_src);
     };
@@ -73,6 +82,8 @@ const FormatFieldSetPreview = ({
                         value={datasetName}
                         onChange={handleDataSetChange}
                     >
+                        {/*
+                         // @ts-expect-error TS7006 */}
                         {datasets.map((set) => (
                             <MenuItem key={set.name} value={set.name}>
                                 {set.name}

@@ -1,4 +1,5 @@
 import React from 'react';
+// @ts-expect-error TS7016
 import { Field, FieldArray } from 'redux-form';
 import PropTypes from 'prop-types';
 import { TextField as MUITextField } from '@mui/material';
@@ -11,8 +12,11 @@ import TransformerList from '../transformers/TransformerList';
 import { field as fieldPropTypes } from '../../propTypes';
 
 const TextField = ({
+    // @ts-expect-error TS7031
     label,
+    // @ts-expect-error TS7031
     input,
+    // @ts-expect-error TS7031
     meta: { touched, invalid, error },
     ...custom
 }) => (
@@ -28,8 +32,11 @@ const TextField = ({
 );
 
 export const TabGeneralComponent = ({
+    // @ts-expect-error TS7031
     currentEditedField,
+    // @ts-expect-error TS7031
     subresourceUri,
+    // @ts-expect-error TS7031
     arbitraryMode,
 }) => {
     return (

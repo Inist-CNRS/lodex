@@ -6,6 +6,7 @@ import FormatEdition from '../formats/FormatEdition';
 import FieldInput from '../lib/components/FieldInput';
 import { translate } from '../i18n/I18NContext';
 
+// @ts-expect-error TS7031
 const FieldFormatInput = ({ p: polyglot }) => (
     <Box mt={5} id="step-value-format">
         <Typography variant="subtitle1" sx={{ marginBottom: 2 }}>

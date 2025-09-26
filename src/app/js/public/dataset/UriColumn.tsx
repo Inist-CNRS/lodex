@@ -8,6 +8,7 @@ import { field as fieldPropTypes } from '../../propTypes';
 import { getResourceUri } from '../../../../common/uris';
 import Link from '../../lib/components/Link';
 
+// @ts-expect-error TS7031
 const UriColumn = ({ column, resource, indice }) => (
     <TableCell
         className={classnames('dataset-column', `dataset-${column.name}`)}

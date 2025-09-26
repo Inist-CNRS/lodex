@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import { translate } from '../../i18n/I18NContext';
 
@@ -13,6 +14,7 @@ import propositionStatus, {
 } from '../../../../common/propositionStatus';
 
 const styles = {
+    // @ts-expect-error TS7006
     container: (status) => ({
         display: 'flex',
         marginRight: '1rem',
@@ -35,8 +37,11 @@ const styles = {
 };
 
 const PropertyContributorComponent = ({
+    // @ts-expect-error TS7031
     contributor,
+    // @ts-expect-error TS7031
     fieldStatus,
+    // @ts-expect-error TS7031
     p: polyglot,
 }) => {
     if (!contributor) {
@@ -44,6 +49,7 @@ const PropertyContributorComponent = ({
     }
 
     return (
+        // @ts-expect-error TS2322
         <div className="property_contributor" style={styles.scheme}>
             {fieldStatus === PROPOSED
                 ? polyglot.t('contributed_by', { name: contributor })
@@ -63,7 +69,9 @@ PropertyContributorComponent.propTypes = {
     fieldStatus: PropTypes.oneOf(propositionStatus),
 };
 
+// @ts-expect-error TS7006
 const mapStateToProps = (state, { fieldName }) => ({
+    // @ts-expect-error TS2339
     contributor: fromResource.getResourceContributorForField(state, fieldName),
 });
 

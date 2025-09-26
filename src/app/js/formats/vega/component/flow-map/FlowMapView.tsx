@@ -1,5 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import { connect } from 'react-redux';
+// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import PropTypes from 'prop-types';
 
@@ -14,6 +15,7 @@ import {
     VEGA_ACTIONS_WIDTH,
     VEGA_DATA_INJECT_TYPE_B,
 } from '../../../utils/chartsUtils';
+// @ts-expect-error TS7016
 import { schemeBlues } from 'd3-scale-chromatic';
 import MouseIcon from '../../../utils/components/MouseIcon';
 import InvalidFormat from '../../../InvalidFormat';
@@ -28,16 +30,27 @@ const styles = {
 };
 
 const FlowMapView = ({
+    // @ts-expect-error TS7031
     advancedMode,
+    // @ts-expect-error TS7031
     advancedModeSpec,
+    // @ts-expect-error TS7031
     p,
+    // @ts-expect-error TS7031
     field,
+    // @ts-expect-error TS7031
     data,
+    // @ts-expect-error TS7031
     tooltip,
+    // @ts-expect-error TS7031
     tooltipCategory,
+    // @ts-expect-error TS7031
     tooltipValue,
+    // @ts-expect-error TS7031
     color,
+    // @ts-expect-error TS7031
     colorScheme,
+    // @ts-expect-error TS7031
     aspectRatio,
 }) => {
     const { ref, width } = useSizeObserver();
@@ -52,6 +65,7 @@ const FlowMapView = ({
                     width * 0.6,
                 );
             } catch (e) {
+                // @ts-expect-error TS18046
                 setError(e.message);
                 return null;
             }
@@ -84,6 +98,7 @@ const FlowMapView = ({
     }
 
     return (
+        // @ts-expect-error TS2322
         <div style={styles.container} ref={ref}>
             <CustomActionVega
                 spec={spec}
@@ -114,6 +129,7 @@ FlowMapView.defaultProps = {
     className: null,
 };
 
+// @ts-expect-error TS7006
 const mapStateToProps = (state, { formatData }) => {
     if (!formatData) {
         return {
@@ -136,9 +152,11 @@ export const FlowMapAdminView = connect((state, props) => {
             format: 'Preview Format',
         },
         data: {
+            // @ts-expect-error TS2339
             values: props.dataset.values ?? [],
         },
     };
+// @ts-expect-error TS2345
 })(FlowMapView);
 
 export default compose(injectData(), connect(mapStateToProps))(FlowMapView);

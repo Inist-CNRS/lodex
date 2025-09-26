@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react';
+// @ts-expect-error TS7016
 import compose from 'recompose/compose';
+// @ts-expect-error TS7016
 import memoize from 'lodash/memoize';
 import PropTypes from 'prop-types';
+// @ts-expect-error TS7016
 import pure from 'recompose/pure';
 import { translate } from '../../i18n/I18NContext';
 import TransformerListItem from './TransformerListItem';
@@ -32,6 +35,7 @@ import TransformerRemoveAllDialog from './TransformerRemoveAllDialog';
 import { GET_SOURCE_VALUE_FROM_TRANSFORMERS } from '../sourceValue/SourceValueToggle';
 
 const SHOW_TRANSFORMER = memoize(
+    // @ts-expect-error TS7006
     (operation, type) =>
         !type ||
         !operation ||
@@ -41,9 +45,11 @@ const SHOW_TRANSFORMER = memoize(
          */
         !hasRegistredTransformer(operation) ||
         getTransformerMetas(operation).type === type,
+    // @ts-expect-error TS7006
     (operation, type) => `${operation}_${type}`,
 );
 
+// @ts-expect-error TS7006
 const getHiddenTransformers = (source) => {
     if (source === 'fromSubresource') {
         return 7;
@@ -61,13 +67,19 @@ const getHiddenTransformers = (source) => {
 };
 
 export const TransformerListComponent = ({
+    // @ts-expect-error TS7031
     fields,
+    // @ts-expect-error TS7031
     meta: { touched, error },
+    // @ts-expect-error TS7031
     type,
+    // @ts-expect-error TS7031
     isSubresourceField,
+    // @ts-expect-error TS7031
     p: polyglot,
 }) => {
     const [fieldsToDrag, setFieldsToDrag] = useState(
+        // @ts-expect-error TS7006
         fields.map((fieldName) => fieldName),
     );
 
@@ -86,6 +98,7 @@ export const TransformerListComponent = ({
     const [indexFieldToEdit, setIndexFieldToEdit] = useState(null);
 
     useEffect(() => {
+        // @ts-expect-error TS7006
         setFieldsToDrag(fields.map((fieldName) => fieldName));
     }, [fields]);
 
@@ -96,10 +109,14 @@ export const TransformerListComponent = ({
         }),
     );
 
+    // @ts-expect-error TS7006
     const handleDragEnd = (event) => {
         const { active, over } = event;
+        // @ts-expect-error TS7034
         let oldItemIndex;
+        // @ts-expect-error TS7034
         let newItemIndex;
+        // @ts-expect-error TS7006
         fields.map((fieldName, index) => {
             if (fieldName === active.id) {
                 oldItemIndex = index;
@@ -110,7 +127,9 @@ export const TransformerListComponent = ({
         });
 
         fields.move(oldItemIndex, newItemIndex);
+        // @ts-expect-error TS7006
         setFieldsToDrag((fieldsToDrag) => {
+            // @ts-expect-error TS7005
             return arrayMove(fieldsToDrag, oldItemIndex, newItemIndex);
         });
     };
@@ -153,6 +172,8 @@ export const TransformerListComponent = ({
                             items={fieldsToDrag}
                             strategy={verticalListSortingStrategy}
                         >
+                            {/*
+                             // @ts-expect-error TS7006 */}
                             {fieldsToDrag?.map((fieldName, index) => (
                                 <TransformerListItem
                                     key={fieldName}

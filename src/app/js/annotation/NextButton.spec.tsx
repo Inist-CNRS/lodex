@@ -4,10 +4,14 @@ import { TestI18N } from '../i18n/I18NContext';
 import { AUTHOR_STEP, COMMENT_STEP, TARGET_STEP, VALUE_STEP } from './steps';
 import { NextButton } from './NextButton';
 
+// @ts-expect-error TS7006
 const renderNextButton = (props) => {
+    // @ts-expect-error TS7006
     function TestNextButton(props) {
         return (
             <TestI18N>
+                {/*
+                 // @ts-expect-error TS2322 */}
                 <NextButton
                     initialValue="initial value"
                     isSubmitting={false}
@@ -88,6 +92,7 @@ describe('NextButton', () => {
             });
             expect(screen.queryByText('next')).toBeInTheDocument();
             expect(screen.queryByText('validate')).not.toBeInTheDocument();
+            // @ts-expect-error TS2345
             fireEvent.click(screen.queryByText('next'));
             expect(goToStep).toHaveBeenCalledWith(COMMENT_STEP);
         });
@@ -128,6 +133,7 @@ describe('NextButton', () => {
             });
             expect(screen.queryByText('next')).toBeInTheDocument();
             expect(screen.queryByText('validate')).not.toBeInTheDocument();
+            // @ts-expect-error TS2345
             fireEvent.click(screen.queryByText('next'));
             expect(goToStep).toHaveBeenCalledWith(AUTHOR_STEP);
         });

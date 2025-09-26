@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
 import { translate } from '../../i18n/I18NContext';
+// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 
@@ -31,6 +32,7 @@ const GroupItems = styled('ul')({
     padding: 0,
 });
 
+// @ts-expect-error TS7031
 const RoutineOption = ({ key, option, polyglot, ...props }) => {
     return (
         <Box key={key} {...props}>
@@ -99,9 +101,13 @@ RoutineOption.propTypes = {
 };
 
 const RoutineCatalog = ({
+    // @ts-expect-error TS7031
     p: polyglot,
+    // @ts-expect-error TS7031
     label,
+    // @ts-expect-error TS7031
     onChange,
+    // @ts-expect-error TS7031
     currentValue,
     precomputed = false,
 }) => {
@@ -128,11 +134,13 @@ const RoutineCatalog = ({
             numeric: true,
             ignorePunctuation: true,
         });
+        // @ts-expect-error TS2345
         return formatedRoutineCatalog.sort(sorter.compare);
     }, [precomputed]);
 
     useEffect(() => {
         setValue(
+            // @ts-expect-error TS2345
             catalog.find(
                 (routine) =>
                     typeof currentValue === 'string' &&
@@ -142,6 +150,7 @@ const RoutineCatalog = ({
         );
     }, [currentValue, catalog]);
 
+    // @ts-expect-error TS7006
     const handleChange = (event, newValue) => {
         setValue(newValue);
         onChange({
@@ -166,6 +175,7 @@ const RoutineCatalog = ({
             groupBy={(option) => option.firstLetter}
             getOptionLabel={(option) => option.title}
             renderOption={(props, option) => (
+                // @ts-expect-error TS2741
                 <RoutineOption option={option} polyglot={polyglot} {...props} />
             )}
             renderInput={(params) => <TextField {...params} label={label} />}

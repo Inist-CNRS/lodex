@@ -1,13 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+// @ts-expect-error TS7016
 import pure from 'recompose/pure';
 import { CircularProgress, TableCell } from '@mui/material';
 import { isLongText, getShortText } from '../../lib/longTexts';
 
 export const ParsingExcerptColumnComponent = ({
+    // @ts-expect-error TS7031
     children,
+    // @ts-expect-error TS7031
     sx,
+    // @ts-expect-error TS7031
     value,
+    // @ts-expect-error TS7031
     isEnrichmentLoading,
 }) => (
     <TableCell

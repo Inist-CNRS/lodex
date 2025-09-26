@@ -7,6 +7,7 @@ import {
     DialogContent,
 } from '@mui/material';
 import { connect } from 'react-redux';
+// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 
 import { fromProgress } from '../selectors';
@@ -17,6 +18,7 @@ import { io } from 'socket.io-client';
 import { DEFAULT_TENANT } from '../../../../common/tools/tenantTools';
 import { translate } from '../../i18n/I18NContext';
 
+// @ts-expect-error TS7006
 const formatProgress = (progress, target, symbol, label) => {
     const formatedTarget = target ? ` / ${target}` : ``;
     const formatedSymbol = symbol ? ` ${symbol}` : ``;
@@ -24,6 +26,7 @@ const formatProgress = (progress, target, symbol, label) => {
     return progress + formatedTarget + formatedSymbol + formatedLabel;
 };
 
+// @ts-expect-error TS7006
 const renderProgressText = (props) => {
     const { progress, target, symbol, label, p: polyglot } = props;
     if (!progress) {
@@ -42,6 +45,7 @@ const renderProgressText = (props) => {
     );
 };
 
+// @ts-expect-error TS7006
 export const ProgressComponent = (props) => {
     const { clearProgress, p: polyglot, loadProgress, progress } = props;
 
@@ -49,6 +53,7 @@ export const ProgressComponent = (props) => {
     const isOpen =
         updatedProgress.status !== PENDING && !updatedProgress.isBackground;
 
+    // @ts-expect-error TS2345
     useEffect(() => {
         const socket = io();
         const tenant = sessionStorage.getItem('lodex-tenant') || DEFAULT_TENANT;
@@ -119,7 +124,9 @@ ProgressComponent.defaultProps = {
     target: null,
 };
 
+// @ts-expect-error TS7006
 const mapStateToProps = (state) => ({
+    // @ts-expect-error TS2339
     progress: fromProgress.getProgress(state),
 });
 

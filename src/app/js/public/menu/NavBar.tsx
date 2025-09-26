@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { config } from '@fortawesome/fontawesome-svg-core';
 import { translate } from '../../i18n/I18NContext';
+// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import classnames from 'classnames';
 
@@ -64,18 +65,31 @@ const styles = stylesToClassname(
 );
 
 export const NavBar = ({
+    // @ts-expect-error TS7031
     logout,
+    // @ts-expect-error TS7031
     role,
+    // @ts-expect-error TS7031
     canBeSearched,
+    // @ts-expect-error TS7031
     hasGraph,
+    // @ts-expect-error TS7031
     leftMenu,
+    // @ts-expect-error TS7031
     rightMenu,
+    // @ts-expect-error TS7031
     advancedMenu,
+    // @ts-expect-error TS7031
     advancedMenuButton,
+    // @ts-expect-error TS7031
     p: polyglot,
+    // @ts-expect-error TS7031
     hasFacetFields,
+    // @ts-expect-error TS7031
     search,
+    // @ts-expect-error TS7031
     closeSearch,
+    // @ts-expect-error TS7031
     isMultilingual,
 }) => {
     const [searchDrawer, toggleSearchDrawer, closeSearchDrawer] =
@@ -89,9 +103,12 @@ export const NavBar = ({
     ] = useDrawer(DRAWER_CLOSED);
 
     const toggleSearch = useCallback(() => {
+        // @ts-expect-error TS2349
         closeAdvancedMenuDrawer();
+        // @ts-expect-error TS2349
         closeGraphDrawer();
 
+        // @ts-expect-error TS2349
         toggleSearchDrawer();
     }, [closeAdvancedMenuDrawer, closeGraphDrawer, toggleSearchDrawer]);
 
@@ -108,27 +125,38 @@ export const NavBar = ({
     }, [closeSearch, searchDrawer]);
 
     const toggleGraph = () => {
+        // @ts-expect-error TS2349
         closeAdvancedMenuDrawer();
+        // @ts-expect-error TS2349
         closeSearchDrawer();
 
+        // @ts-expect-error TS2349
         toggleGraphDrawer();
     };
 
     const toggleAdvancedMenu = () => {
+        // @ts-expect-error TS2349
         closeSearchDrawer();
+        // @ts-expect-error TS2349
         closeGraphDrawer();
 
+        // @ts-expect-error TS2349
         toggleAdvancedMenuDrawer();
     };
 
     const closeAll = () => {
+        // @ts-expect-error TS2349
         closeAdvancedMenuDrawer();
+        // @ts-expect-error TS2349
         closeSearchDrawer();
+        // @ts-expect-error TS2349
         closeGraphDrawer();
     };
 
     const handleMenuItemClick =
+        // @ts-expect-error TS7006
         (role, suppressEvent = false) =>
+        // @ts-expect-error TS7006
         (evt) => {
             if (suppressEvent) {
                 evt.preventDefault();
@@ -160,17 +188,26 @@ export const NavBar = ({
     return (
         <>
             <nav
+                // @ts-expect-error TS2339
                 className={classnames(styles.menu, {
+                    // @ts-expect-error TS2339
                     [styles.menuWithDrawer]:
                         searchDrawer === 'open' || graphDrawer === 'open',
                 })}
             >
                 <Container
                     maxWidth="xl"
+                    // @ts-expect-error TS2339
                     className={classnames('container', styles.container)}
                 >
+                    {/*
+                     // @ts-expect-error TS2769 */}
                     <Favicon className={styles.icon} />
+                    {/*
+                     // @ts-expect-error TS2339 */}
                     <div className={styles.first}>
+                        {/*
+                         // @ts-expect-error TS7006 */}
                         {leftMenu.map((config, index) => (
                             <MenuItem
                                 key={index}
@@ -180,13 +217,20 @@ export const NavBar = ({
                                 hasGraph={hasGraph}
                                 polyglot={polyglot}
                                 onClick={handleMenuItemClick}
+                                // @ts-expect-error TS2322
                                 graphDrawer={graphDrawer}
+                                // @ts-expect-error TS2322
                                 searchDrawer={searchDrawer}
+                                // @ts-expect-error TS2322
                                 advancedDrawer={advancedMenuDrawer}
                             />
                         ))}
                     </div>
+                    {/*
+                     // @ts-expect-error TS2339 */}
                     <div className={styles.last}>
+                        {/*
+                         // @ts-expect-error TS7006 */}
                         {rightMenu.map((config, index) => (
                             <MenuItem
                                 key={index}
@@ -196,8 +240,11 @@ export const NavBar = ({
                                 hasGraph={hasGraph}
                                 onClick={handleMenuItemClick}
                                 polyglot={polyglot}
+                                // @ts-expect-error TS2322
                                 graphDrawer={graphDrawer}
+                                // @ts-expect-error TS2322
                                 searchDrawer={searchDrawer}
+                                // @ts-expect-error TS2322
                                 advancedDrawer={advancedMenuDrawer}
                             />
                         ))}
@@ -214,24 +261,39 @@ export const NavBar = ({
                             hasGraph={hasGraph}
                             onClick={handleMenuItemClick}
                             polyglot={polyglot}
+                            // @ts-expect-error TS2322
                             graphDrawer={graphDrawer}
+                            // @ts-expect-error TS2322
                             searchDrawer={searchDrawer}
+                            // @ts-expect-error TS2322
                             advancedDrawer={advancedMenuDrawer}
                         />
                     )}
                 </Container>
             </nav>
+            {/*
+             // @ts-expect-error TS2322 */}
             <Drawer status={searchDrawer} onClose={toggleSearch}>
+                {/*
+                 // @ts-expect-error TS2322 */}
                 <Search
                     className="search"
                     withFacets={hasFacetFields}
                     withDataset={search}
                 />
             </Drawer>
+            {/*
+             // @ts-expect-error TS2322 */}
             <Drawer status={graphDrawer} onClose={toggleGraph}>
+                {/*
+                 // @ts-expect-error TS2322 */}
                 <GraphSummary />
             </Drawer>
+            {/*
+             // @ts-expect-error TS2322 */}
             <Drawer status={advancedMenuDrawer} onClose={toggleAdvancedMenu}>
+                {/*
+                 // @ts-expect-error TS2322 */}
                 <AdvancedPage
                     role={role}
                     canBeSearched={canBeSearched}
@@ -288,17 +350,27 @@ NavBar.propTypes = {
     isMultilingual: PropTypes.bool.isRequired,
 };
 
+// @ts-expect-error TS7006
 const mapStateToProps = (state) => ({
+    // @ts-expect-error TS2339
     role: fromUser.getRole(state),
+    // @ts-expect-error TS2339
     canBeSearched: fromFields.canBeSearched(state),
     hasGraph:
+        // @ts-expect-error TS2339
         fromFields.getGraphicFields(state).filter((f) => !!f.display).length >
         0,
+    // @ts-expect-error TS2339
     leftMenu: fromMenu.getLeftMenu(state),
+    // @ts-expect-error TS2339
     rightMenu: fromMenu.getRightMenu(state),
+    // @ts-expect-error TS2339
     advancedMenu: fromMenu.getAdvancedMenu(state),
+    // @ts-expect-error TS2339
     advancedMenuButton: fromMenu.getAdvancedMenuButton(state),
+    // @ts-expect-error TS2339
     hasFacetFields: fromFields.hasFacetFields(state),
+    // @ts-expect-error TS2339
     isMultilingual: fromDisplayConfig.isMultilingual(state),
 });
 

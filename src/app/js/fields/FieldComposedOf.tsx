@@ -8,8 +8,10 @@ import {
     MenuItem,
     Chip,
 } from '@mui/material';
+// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
+// @ts-expect-error TS7016
 import { change, formValueSelector } from 'redux-form';
 
 import { FIELD_FORM_NAME } from './';
@@ -40,6 +42,7 @@ import {
 } from '@dnd-kit/core';
 import { translate } from '../i18n/I18NContext';
 
+// @ts-expect-error TS7031
 const SortableItem = ({ option, onDelete, isActive }) => {
     const { attributes, listeners, setNodeRef, transform, isDragging } =
         useSortable({
@@ -75,6 +78,7 @@ SortableItem.propTypes = {
     isActive: PropTypes.bool,
 };
 
+// @ts-expect-error TS7031
 const SortableChips = ({ onChange, onDelete, options }) => {
     const [activeId, setActiveId] = React.useState(null);
     const sensors = useSensors(
@@ -93,24 +97,29 @@ const SortableChips = ({ onChange, onDelete, options }) => {
         }),
     );
 
+    // @ts-expect-error TS7006
     const handleDragEnd = (event) => {
         const { active, over } = event;
         if (active && over && active.id !== over.id) {
             const oldIndex = options.findIndex(
+                // @ts-expect-error TS7006
                 (option) => option.name === active.id,
             );
             const newIndex = options.findIndex(
+                // @ts-expect-error TS7006
                 (option) => option.name === over.id,
             );
             const newFields = arrayMove(options, oldIndex, newIndex);
             onChange({
                 isComposedOf: newFields.length > 0,
+                // @ts-expect-error TS18046
                 fields: newFields.map((field) => field.name),
             });
         }
         setActiveId(null);
     };
 
+    // @ts-expect-error TS7031
     const handleDragStart = ({ active }) => {
         if (!active) {
             return;
@@ -129,9 +138,12 @@ const SortableChips = ({ onChange, onDelete, options }) => {
             onDragCancel={handleDragCancel}
         >
             <SortableContext
+                // @ts-expect-error TS7006
                 items={options.map((option) => option.name)}
                 strategy={horizontalListSortingStrategy}
             >
+                {/*
+                 // @ts-expect-error TS7006 */}
                 {options.map((option) => (
                     <SortableItem
                         key={option.name}
@@ -145,6 +157,7 @@ const SortableChips = ({ onChange, onDelete, options }) => {
                     <SortableItem
                         isActive={true}
                         option={options.find(
+                            // @ts-expect-error TS7006
                             (option) => option.name === activeId,
                         )}
                     />
@@ -161,11 +174,17 @@ SortableChips.propTypes = {
 };
 
 const FieldComposedOf = ({
+    // @ts-expect-error TS7031
     onChange,
+    // @ts-expect-error TS7031
     fields,
+    // @ts-expect-error TS7031
     p: polyglot,
+    // @ts-expect-error TS7031
     columns,
+    // @ts-expect-error TS7031
     scope,
+    // @ts-expect-error TS7031
     subresourceId,
 }) => {
     const options = useMemo(() => {
@@ -175,6 +194,7 @@ const FieldComposedOf = ({
             if (
                 toReturn.filter((field) => field.name === column).length === 0
             ) {
+                // @ts-expect-error TS2345
                 toReturn.push({
                     name: column,
                     internalName: polyglot.t('missing_field'),
@@ -185,12 +205,15 @@ const FieldComposedOf = ({
     }, [fields, scope, subresourceId, columns]);
 
     const autocompleteValue = useMemo(() => {
+        // @ts-expect-error TS7006
         return columns.map((column) => {
             return options.find((field) => field.name === column);
         });
     }, [columns, options]);
 
+    // @ts-expect-error TS7006
     const onDelete = (name) => {
+        // @ts-expect-error TS7006
         const newFields = columns.filter((column) => column !== name);
         onChange({
             isComposedOf: newFields.length > 0,
@@ -198,9 +221,11 @@ const FieldComposedOf = ({
         });
     };
 
+    // @ts-expect-error TS7006
     const handleChange = (event, value) => {
         onChange({
             isComposedOf: value.length > 0,
+            // @ts-expect-error TS7006
             fields: value.map((field) => field.name),
         });
     };
@@ -264,6 +289,7 @@ FieldComposedOf.defaultProps = {
     columns: [],
 };
 
+// @ts-expect-error TS7006
 const mapStateToProps = (state, { FORM_NAME }) => {
     const composedOf = formValueSelector(FORM_NAME || FIELD_FORM_NAME)(
         state,
@@ -278,7 +304,9 @@ const mapStateToProps = (state, { FORM_NAME }) => {
     return { columns: [] };
 };
 
+// @ts-expect-error TS7006
 const mapDispatchToProps = (dispatch, { FORM_NAME = FIELD_FORM_NAME }) => ({
+    // @ts-expect-error TS7006
     onChange: (composedOf) => {
         dispatch(change(FORM_NAME, 'composedOf', composedOf));
     },

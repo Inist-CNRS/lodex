@@ -1,19 +1,28 @@
+// @ts-expect-error TS7016
 import differenceBy from 'lodash/differenceBy';
 
+// @ts-expect-error TS7006
 export function zoomFunction(event) {
     // create new scale ojects based on event
+    // @ts-expect-error TS2683
     const new_xScale = event.transform.rescaleX(this.xAxisScale);
+    // @ts-expect-error TS2683
     const new_yScale = event.transform.rescaleY(this.yAxisScale);
 
     // update axes
+    // @ts-expect-error TS2683
     this.gx.call(this.xAxis.scale(new_xScale));
+    // @ts-expect-error TS2683
     this.gyr.call(this.yAxisR.scale(new_yScale));
+    // @ts-expect-error TS2683
     this.gyl.call(this.yAxisL.scale(new_yScale));
 
     // update streams
+    // @ts-expect-error TS2683
     this.streams.attr('transform', event.transform);
 }
 
+// @ts-expect-error TS7006
 export function distinctColors(count) {
     const colors = [];
     for (let hue = 0; hue < 360; hue += 360 / count) {
@@ -22,6 +31,7 @@ export function distinctColors(count) {
     return colors;
 }
 
+// @ts-expect-error TS7006
 export function hslToHex(h, s, l) {
     h /= 360;
     s /= 100;
@@ -30,6 +40,7 @@ export function hslToHex(h, s, l) {
     if (s === 0) {
         r = g = b = l; // achromatic
     } else {
+        // @ts-expect-error TS7006
         const hue2rgb = (p, q, t) => {
             if (t < 0) t += 1;
             if (t > 1) t -= 1;
@@ -44,6 +55,7 @@ export function hslToHex(h, s, l) {
         g = hue2rgb(p, q, h);
         b = hue2rgb(p, q, h - 1 / 3);
     }
+    // @ts-expect-error TS7006
     const toHex = (x) => {
         const hex = Math.round(x * 255).toString(16);
         return hex.length === 1 ? '0' + hex : hex;
@@ -51,6 +63,7 @@ export function hslToHex(h, s, l) {
     return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
 }
 
+// @ts-expect-error TS7006
 export function transformDataIntoMapArray(formatData) {
     let dateMin = -42;
     let dateMax = -42;
@@ -84,10 +97,13 @@ export function transformDataIntoMapArray(formatData) {
                     } else {
                         for (let valueElem of currentItem.values) {
                             if (
+                                // @ts-expect-error TS2339
                                 parseInt(valueElem.date.getFullYear()) ===
                                 parseInt(elem.source)
                             ) {
+                                // @ts-expect-error TS2339
                                 var sum = valueElem.value + elem.weight;
+                                // @ts-expect-error TS2339
                                 valueElem.value = parseFloat(sum.toFixed(3));
                                 addValueAsSum = true;
                                 break;
@@ -96,6 +112,7 @@ export function transformDataIntoMapArray(formatData) {
                     }
 
                     if (!addValueAsSum) {
+                        // @ts-expect-error TS2345
                         currentItem.values.push({
                             date: new Date(elem.source),
                             value: elem.weight,
@@ -138,7 +155,9 @@ export function transformDataIntoMapArray(formatData) {
         for (let element of valuesObjectsArray) {
             // loop which add each values for the good year
             for (let dateValue of element.values) {
+                // @ts-expect-error TS2339
                 if (dateValue.date.getFullYear() == currentDate) {
+                    // @ts-expect-error TS7053
                     newElem[element.name] = dateValue.value;
                     tmpName.push(element.name);
                 }
@@ -147,6 +166,7 @@ export function transformDataIntoMapArray(formatData) {
             // loop which add 0 value to the missing keys
             let resMissingNameList = differenceBy(namesList, tmpName);
             for (let elemToAdd of resMissingNameList) {
+                // @ts-expect-error TS7053
                 newElem[elemToAdd] = 0;
             }
         }
@@ -158,6 +178,7 @@ export function transformDataIntoMapArray(formatData) {
     return { valuesObjectsArray, valuesArray, dateMin, dateMax, namesList };
 }
 
+// @ts-expect-error TS7006
 export function getMinMaxValue(stackedData) {
     let minValue = 0;
     let maxValue = 0;
@@ -178,7 +199,9 @@ export function getMinMaxValue(stackedData) {
     return { minValue, maxValue };
 }
 
+// @ts-expect-error TS7006
 export function findFirstTickPosition(uniqueId) {
+    // @ts-expect-error TS2531
     const containerXPosition = document
         .querySelector(`#divContainer${uniqueId}`)
         .getBoundingClientRect().left;
@@ -190,10 +213,13 @@ export function findFirstTickPosition(uniqueId) {
     return 0;
 }
 
+// @ts-expect-error TS7006
 export function findNearestTickPosition(cursorPosition, uniqueId) {
+    // @ts-expect-error TS2531
     const containerXPosition = document
         .querySelector(`#divContainer${uniqueId}`)
         .getBoundingClientRect().left;
+    // @ts-expect-error TS7034
     const ticksPositionAndValueList = [];
     document
         .querySelectorAll(`.xAxis${uniqueId} .tick`)
@@ -210,6 +236,7 @@ export function findNearestTickPosition(cursorPosition, uniqueId) {
 
     let tickPosition = cursorPosition + 10000;
     let tickValue;
+    // @ts-expect-error TS7005
     ticksPositionAndValueList.forEach(function (value) {
         if (
             Math.abs(cursorPosition - value.position) <

@@ -17,6 +17,7 @@ const GoToPublicationButtonComponent = ({}) => {
                 <IconButton
                     className="go-published-button"
                     onClick={handleGoToPublication}
+                    // @ts-expect-error TS2769
                     color="contrast"
                 >
                     <VisibilityIcon sx={{ fontSize: '30px' }} />

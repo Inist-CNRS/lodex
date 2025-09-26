@@ -27,29 +27,39 @@ describe('fields saga', () => {
             expect(saga.next().value).toEqual(put(removeFieldListStarted()));
 
             expect(saga.next().value).toEqual(
+                // @ts-expect-error TS2339
                 select(fromFields.getFieldByName, fields[0].name),
             );
 
+            // @ts-expect-error TS2345
             expect(saga.next('field').value).toEqual(
+                // @ts-expect-error TS2339
                 select(fromUser.getRemoveFieldRequest, 'field'),
             );
 
+            // @ts-expect-error TS2345
             expect(saga.next('request').value).toEqual(
                 call(fetchSaga, 'request'),
             );
 
+            // @ts-expect-error TS2345
             expect(saga.next({ response: 'bar ' }).value).toEqual(
+                // @ts-expect-error TS2339
                 select(fromFields.getFieldByName, fields[1].name),
             );
 
+            // @ts-expect-error TS2345
             expect(saga.next('field').value).toEqual(
+                // @ts-expect-error TS2339
                 select(fromUser.getRemoveFieldRequest, 'field'),
             );
 
+            // @ts-expect-error TS2345
             expect(saga.next('request').value).toEqual(
                 call(fetchSaga, 'request'),
             );
 
+            // @ts-expect-error TS2345
             expect(saga.next({ response: 'bar ' }).value).toEqual(
                 put(removeFieldListSuccess(fields)),
             );
@@ -69,6 +79,7 @@ describe('fields saga', () => {
                 put(removeFieldListStarted()),
             );
             failedSaga.next();
+            // @ts-expect-error TS2345
             failedSaga.next('field');
             failedSaga.next();
             expect(failedSaga.next({ error: 'foo' }).value).toEqual(

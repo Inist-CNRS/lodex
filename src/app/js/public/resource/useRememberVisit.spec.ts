@@ -9,6 +9,7 @@ describe('useRememberVisit', () => {
     it('should store resource.uri in localStorage', () => {
         renderHook(() => useRememberVisit({ uri: 'resource/uri' }));
         expect(
+            // @ts-expect-error TS2345
             JSON.parse(localStorage.getItem('default-viewed-resources')),
         ).toEqual(['resource/uri']);
     });
@@ -20,6 +21,7 @@ describe('useRememberVisit', () => {
         );
         renderHook(() => useRememberVisit({ uri: 'resource/uri' }));
         expect(
+            // @ts-expect-error TS2345
             JSON.parse(localStorage.getItem('default-viewed-resources')),
         ).toEqual(['uri/1', 'uri/2', 'resource/uri']);
     });
@@ -31,6 +33,7 @@ describe('useRememberVisit', () => {
         );
         renderHook(() => useRememberVisit({ uri: 'resource/uri' }));
         expect(
+            // @ts-expect-error TS2345
             JSON.parse(localStorage.getItem('default-viewed-resources')),
         ).toEqual(['uri/1', 'uri/2', 'resource/uri']);
     });
@@ -42,6 +45,7 @@ describe('useRememberVisit', () => {
         );
         renderHook(() => useRememberVisit({}));
         expect(
+            // @ts-expect-error TS2345
             JSON.parse(localStorage.getItem('default-viewed-resources')),
         ).toEqual(['uri/1', 'uri/2']);
     });

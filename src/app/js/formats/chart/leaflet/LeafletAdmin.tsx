@@ -22,7 +22,9 @@ export const defaultArgs = {
 
 const LeafletAdmin = ({
     args = defaultArgs,
+    // @ts-expect-error TS7031
     onChange,
+    // @ts-expect-error TS7031
     p: polyglot,
     showMaxSize = true,
     showMaxValue = true,
@@ -30,10 +32,13 @@ const LeafletAdmin = ({
     showOrderBy = true,
 }) => {
 
+    // @ts-expect-error TS7006
     const handleParams = (params) => {
         updateAdminArgs('params', params, { args, onChange });
     };
+    // @ts-expect-error TS7006
     const handleZoom = (e) => {
+        // @ts-expect-error TS2532
         updateAdminArgs('zoom', e.target.value, this.props);
     };
 
@@ -43,8 +48,13 @@ const LeafletAdmin = ({
 
     return (
         <FormatGroupedFieldSet>
+            {/*
+             // @ts-expect-error TS2322 */}
             <FormatDataParamsFieldSet>
+                {/*
+                 // @ts-expect-error TS2322 */}
                 <RoutineParamsAdmin
+                    // @ts-expect-error TS2739
                     params={args.params || defaultArgs.params}
                     polyglot={polyglot}
                     onChange={handleParams}
@@ -54,7 +64,11 @@ const LeafletAdmin = ({
                     showOrderBy={showOrderBy}
                 />
             </FormatDataParamsFieldSet>
+            {/*
+             // @ts-expect-error TS2322 */}
             <FormatChartParamsFieldSet defaultExpanded>
+                {/*
+                 // @ts-expect-error TS2322 */}
                 <TextField
                     label={polyglot.t('zoomByDefault')}
                     onChange={handleZoom}

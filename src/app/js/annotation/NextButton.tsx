@@ -7,12 +7,19 @@ import { useTranslate } from '../i18n/I18NContext';
 import PropTypes from 'prop-types';
 
 export const NextButton = ({
+    // @ts-expect-error TS7031
     currentStep,
+    // @ts-expect-error TS7031
     disableSubmit,
+    // @ts-expect-error TS7031
     goToStep,
+    // @ts-expect-error TS7031
     isSubmitting,
+    // @ts-expect-error TS7031
     isValueStepValid,
+    // @ts-expect-error TS7031
     isCommentStepValid,
+    // @ts-expect-error TS7031
     isAuthorStepValid,
 }) => {
     const { translate } = useTranslate();

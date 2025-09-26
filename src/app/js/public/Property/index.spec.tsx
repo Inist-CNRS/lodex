@@ -1,3 +1,4 @@
+// @ts-expect-error TS7016
 import { shallow } from 'enzyme';
 import React from 'react';
 
@@ -31,6 +32,7 @@ describe('Property', () => {
 
         it('should render nothing if resource[field.name] is null', () => {
             const wrapper = shallow(
+                // @ts-expect-error TS2741
                 <PropertyComponent
                     {...defaultProps}
                     isAdmin={false}
@@ -43,6 +45,7 @@ describe('Property', () => {
 
         it('should render nothing if resource[field.name] is undefined', () => {
             const wrapper = shallow(
+                // @ts-expect-error TS2741
                 <PropertyComponent
                     {...defaultProps}
                     isAdmin={false}
@@ -55,6 +58,7 @@ describe('Property', () => {
 
         it('should render nothing if resource[field.name] is an empty string', () => {
             const wrapper = shallow(
+                // @ts-expect-error TS2741
                 <PropertyComponent
                     {...defaultProps}
                     isAdmin={false}
@@ -67,6 +71,7 @@ describe('Property', () => {
 
         it('should render nothing if resource[field.name] is an empty array', () => {
             const wrapper = shallow(
+                // @ts-expect-error TS2741
                 <PropertyComponent
                     {...defaultProps}
                     isAdmin={false}
@@ -79,6 +84,7 @@ describe('Property', () => {
 
         it('should render nothing if fieldStatus is rejected', () => {
             const wrapper = shallow(
+                // @ts-expect-error TS2741
                 <PropertyComponent
                     {...defaultProps}
                     fieldStatus={REJECTED}
@@ -91,6 +97,7 @@ describe('Property', () => {
 
         it('should render nothing if predicate is false', () => {
             const wrapper = shallow(
+                // @ts-expect-error TS2741
                 <PropertyComponent
                     {...defaultProps}
                     predicate={() => false}
@@ -103,6 +110,7 @@ describe('Property', () => {
 
         it('should render something if resource[field.name] is a value', () => {
             const wrapper = shallow(
+                // @ts-expect-error TS2741
                 <PropertyComponent
                     {...defaultProps}
                     isAdmin={false}
@@ -120,6 +128,7 @@ describe('Property', () => {
                     isAdmin={false}
                     field={{
                         name: 'field',
+                        // @ts-expect-error TS2353
                         format: {
                             name: 'list',
                         },
@@ -143,6 +152,7 @@ describe('Property', () => {
                     const wrapper = shallow(
                         <PropertyComponent
                             {...defaultProps}
+                            // @ts-expect-error TS2322
                             p={{ t: (x) => x }}
                             isAdmin={true}
                             resource={{ field: value }}
@@ -166,6 +176,7 @@ describe('Property', () => {
                     const wrapper = shallow(
                         <PropertyComponent
                             {...defaultProps}
+                            // @ts-expect-error TS2322
                             p={{ t: (x) => x }}
                             isAdmin={false}
                             resource={{ field: value }}

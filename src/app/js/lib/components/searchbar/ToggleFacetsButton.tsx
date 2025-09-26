@@ -15,8 +15,11 @@ const styles = stylesToClassname(
     'searchbar-facets-toggler',
 );
 
+// @ts-expect-error TS7031
 const ToggleFacetsButton = ({ className, onChange }) => (
     <IconButton className={className} onClick={onChange}>
+        {/*
+         // @ts-expect-error TS2339 */}
         <FontAwesomeIcon className={styles.icon} icon={faFilter} height={20} />
     </IconButton>
 );

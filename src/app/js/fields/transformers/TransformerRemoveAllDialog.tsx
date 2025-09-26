@@ -16,9 +16,12 @@ import { polyglot as polyglotPropTypes } from '../../propTypes';
 import CancelButton from '../../lib/components/CancelButton';
 
 const TransformerRemoveAllDialog = ({
+    // @ts-expect-error TS7031
     removeAll,
     isOpen = false,
+    // @ts-expect-error TS7031
     handleClose,
+    // @ts-expect-error TS7031
     p: polyglot,
 }) => {
     const handleRemoveAll = () => {

@@ -25,12 +25,18 @@ class UnPaginatedTableAdmin extends AbstractTableAdmin {
 
     render() {
         const {
+            // @ts-expect-error TS2339
             p: polyglot,
+            // @ts-expect-error TS2339
             args: { params, columnsCount, columnsParameters },
         } = this.props;
         return (
             <FormatGroupedFieldSet>
+                {/*
+                 // @ts-expect-error TS2322 */}
                 <FormatDataParamsFieldSet>
+                    {/*
+                     // @ts-expect-error TS2322 */}
                     <RoutineParamsAdmin
                         params={params || defaultArgs.params}
                         onChange={this.handleParams}
@@ -41,7 +47,11 @@ class UnPaginatedTableAdmin extends AbstractTableAdmin {
                         showOrderBy={true}
                     />
                 </FormatDataParamsFieldSet>
+                {/*
+                 // @ts-expect-error TS2322 */}
                 <FormatDefaultParamsFieldSet defaultExpanded>
+                    {/*
+                     // @ts-expect-error TS2322 */}
                     <TableColumnsParameters
                         onChange={this.handleColumnParameter}
                         polyglot={polyglot}

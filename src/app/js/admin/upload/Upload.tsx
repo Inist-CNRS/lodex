@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+// @ts-expect-error TS7016
 import compose from 'recompose/compose';
+// @ts-expect-error TS7016
 import { withRouter } from 'react-router';
 import { DropzoneAreaBase } from 'mui-file-dropzone';
 import Alert from '../../lib/components/Alert';
@@ -136,21 +138,37 @@ const styles = {
 };
 
 export const UploadComponent = ({
+    // @ts-expect-error TS7031
     history,
+    // @ts-expect-error TS7031
     error,
+    // @ts-expect-error TS7031
     url,
+    // @ts-expect-error TS7031
     textContent,
+    // @ts-expect-error TS7031
     loaderName,
+    // @ts-expect-error TS7031
     isUrlValid,
+    // @ts-expect-error TS7031
     isUploading,
+    // @ts-expect-error TS7031
     onChangeUrl,
+    // @ts-expect-error TS7031
     onChangeTextContent,
+    // @ts-expect-error TS7031
     onChangeLoaderName,
+    // @ts-expect-error TS7031
     onFileLoad,
+    // @ts-expect-error TS7031
     onUrlUpload,
+    // @ts-expect-error TS7031
     onTextUpload,
+    // @ts-expect-error TS7031
     p: polyglot,
+    // @ts-expect-error TS7031
     loaders,
+    // @ts-expect-error TS7031
     isFirstFile,
 }) => {
     const [tab, setTab] = useState(0);
@@ -160,6 +178,7 @@ export const UploadComponent = ({
     const path = history.location.pathname;
     const successRedirectPath = '/data/existing';
 
+    // @ts-expect-error TS7006
     const handleImportType = (_, newTab) => {
         setTab(newTab);
     };
@@ -172,21 +191,25 @@ export const UploadComponent = ({
         setDropping(false);
     };
 
+    // @ts-expect-error TS7006
     const handleFileAdded = (list) => {
         setDropping(false);
         if (!list || list.length === 0) return;
 
+        // @ts-expect-error TS2345
         setFiles([...list]);
         toast(polyglot.t('add_file_success', { name: list[0].file.name }), {
             type: toast.TYPE.SUCCESS,
         });
     };
 
+    // @ts-expect-error TS7019
     const handleConfirm = (...params) => {
         // 0 = File, 1 = URL and 2 = TEXT
         switch (tab) {
             case 0: {
                 if (files.length === 0) return;
+                // @ts-expect-error TS2339
                 onFileLoad(files[0].file);
                 break;
             }
@@ -207,6 +230,7 @@ export const UploadComponent = ({
         }
     };
 
+    // @ts-expect-error TS7019
     const handleSubmit = (...params) => {
         if (!isFirstFile) {
             setIsOpenPopupConfirm(true);
@@ -245,7 +269,11 @@ export const UploadComponent = ({
             {/* Show error */}
             {error ? (
                 <Alert>
+                    {/*
+                     // @ts-expect-error TS2322 */}
                     <p>Error uploading given file: </p>
+                    {/*
+                     // @ts-expect-error TS2322 */}
                     <p>{error}</p>
                 </Alert>
             ) : (
@@ -264,6 +292,8 @@ export const UploadComponent = ({
                 {/* Display the content of the first tab */}
                 {tab === 0 ? (
                     <>
+                        {/*
+                         // @ts-expect-error TS2322 */}
                         <p style={styles.formDesc}>
                             {polyglot.t('upload_file')}
                         </p>
@@ -274,6 +304,7 @@ export const UploadComponent = ({
                                 fileObjects={files}
                                 filesLimit={1}
                                 maxFileSize={1 * 1024 * 1024 * 1024}
+                                // @ts-expect-error TS2322
                                 dropzoneText={
                                     <Typography variant="h6">
                                         {polyglot.t('import_file_text')}
@@ -310,6 +341,8 @@ export const UploadComponent = ({
                 {/* Display the content of the second tab */}
                 {tab === 1 ? (
                     <>
+                        {/*
+                         // @ts-expect-error TS2322 */}
                         <p style={styles.formDesc}>
                             {polyglot.t('upload_via_url')}
                         </p>
@@ -333,9 +366,13 @@ export const UploadComponent = ({
                 {/* Display the content of the third tab */}
                 {tab === 2 ? (
                     <>
+                        {/*
+                         // @ts-expect-error TS2322 */}
                         <p style={styles.formDesc}>
                             {polyglot.t('upload_via_text')}
                         </p>
+                        {/*
+                         // @ts-expect-error TS2739 */}
                         <FormSourceCodeField
                             style={styles.textInput}
                             enableModeSelector
@@ -423,6 +460,7 @@ UploadComponent.defaultProps = {
     error: false,
 };
 
+// @ts-expect-error TS7031
 const DroppingLoader = ({ text }) => {
     return (
         <Grid
@@ -445,12 +483,19 @@ UploadComponent.propTypes = {
     text: PropTypes.string,
 };
 
+// @ts-expect-error TS7006
 const mapStateToProps = (state) => ({
+    // @ts-expect-error TS2339
     url: fromUpload.getUrl(state),
+    // @ts-expect-error TS2339
     textContent: fromUpload.getTextContent(state),
+    // @ts-expect-error TS2339
     isUrlValid: fromUpload.isUrlValid(state),
+    // @ts-expect-error TS2339
     isUploading: fromUpload.isUploadPending(state),
+    // @ts-expect-error TS2339
     loaderName: fromUpload.getLoaderName(state),
+    // @ts-expect-error TS2339
     loaders: fromLoaders.getLoaders(state),
 });
 
@@ -458,8 +503,11 @@ const mapDispatchToProps = {
     onUrlUpload: uploadUrl,
     onFileLoad: uploadFile,
     onTextUpload: uploadText,
+    // @ts-expect-error TS7006
     onChangeUrl: (e) => changeUploadUrl(e.target.value),
+    // @ts-expect-error TS7006
     onChangeTextContent: (e) => changeUploadText(e),
+    // @ts-expect-error TS7006
     onChangeLoaderName: (val) =>
         changeLoaderName(Array.isArray(val) ? val[0] : val),
 };

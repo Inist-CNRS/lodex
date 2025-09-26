@@ -76,21 +76,27 @@ const styles = stylesToClassname(
     'search-result',
 );
 
+// @ts-expect-error TS7031
 const SearchResult = ({ fields, fieldNames, result, closeDrawer }) => {
     const isVisited = useIsVisited(result);
     const [showMore, setShowMore] = React.useState(false);
+    // @ts-expect-error TS7006
     const titleField = fields.find((field) => field.name === fieldNames.title);
     const descriptionField = fields.find(
+        // @ts-expect-error TS7006
         (field) => field.name === fieldNames.description,
     );
     const firstDetailField = fields.find(
+        // @ts-expect-error TS7006
         (field) => field.name === fieldNames.detail1,
     );
     const secondDetailField = fields.find(
+        // @ts-expect-error TS7006
         (field) => field.name === fieldNames.detail2,
     );
 
     const thirdDetailField = fields.find(
+        // @ts-expect-error TS7006
         (field) => field.name === fieldNames.detail3,
     );
 
@@ -102,24 +108,29 @@ const SearchResult = ({ fields, fieldNames, result, closeDrawer }) => {
         ? { href: result.uri }
         : { to: getResourceUri(result) };
     return (
+        // @ts-expect-error TS2322
         <Link
             {...linkProps}
             routeAware
             className={classnames(
                 'search-result-link',
+                // @ts-expect-error TS2339
                 styles.link,
+                // @ts-expect-error TS2339
                 isVisited && styles.activeLink,
             )}
             onClick={closeDrawer}
         >
             <div
                 id={`search-result-${result.uri}`}
+                // @ts-expect-error TS2339
                 className={classnames('search-result', styles.container)}
             >
                 {titleField && result[titleField.name] && (
                     <Box
                         className={classnames(
                             'search-result-title',
+                            // @ts-expect-error TS2339
                             styles.title,
                         )}
                         title={result[titleField.name]}
@@ -136,12 +147,14 @@ const SearchResult = ({ fields, fieldNames, result, closeDrawer }) => {
                     <div
                         className={classnames(
                             'search-result-detail-third',
+                            // @ts-expect-error TS2339
                             styles.details,
                         )}
                     >
                         <div
                             className={classnames(
                                 'search-result-detail-3',
+                                // @ts-expect-error TS2339
                                 styles.detailsColumn,
                             )}
                             title={result[thirdDetailField.name]}
@@ -154,6 +167,7 @@ const SearchResult = ({ fields, fieldNames, result, closeDrawer }) => {
                     <Box
                         className={classnames(
                             'search-result-description',
+                            // @ts-expect-error TS2339
                             styles.description,
                         )}
                         title={result[descriptionField.name]}
@@ -177,6 +191,7 @@ const SearchResult = ({ fields, fieldNames, result, closeDrawer }) => {
                     <div
                         className={classnames(
                             'search-result-details',
+                            // @ts-expect-error TS2339
                             styles.details,
                         )}
                     >
@@ -184,6 +199,7 @@ const SearchResult = ({ fields, fieldNames, result, closeDrawer }) => {
                             <Box
                                 className={classnames(
                                     'search-result-detail1',
+                                    // @ts-expect-error TS2339
                                     styles.detailsColumn,
                                 )}
                                 title={result[firstDetailField.name]}
@@ -201,6 +217,7 @@ const SearchResult = ({ fields, fieldNames, result, closeDrawer }) => {
                                 <Box
                                     className={classnames(
                                         'search-result-detail2',
+                                        // @ts-expect-error TS2339
                                         styles.detailsColumn,
                                     )}
                                     title={result[secondDetailField.name]}

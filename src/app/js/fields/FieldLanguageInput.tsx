@@ -1,4 +1,5 @@
 import React from 'react';
+// @ts-expect-error TS7016
 import { Field } from 'redux-form';
 import { MenuItem } from '@mui/material';
 
@@ -13,7 +14,9 @@ import {
 import { translate } from '../i18n/I18NContext';
 
 export const FieldLanguageInputComponent = ({
+    // @ts-expect-error TS7031
     field,
+    // @ts-expect-error TS7031
     p: polyglot,
     ...props
 }) => {
@@ -38,6 +41,8 @@ export const FieldLanguageInputComponent = ({
             }}
             {...props}
         >
+            {/*
+             // @ts-expect-error TS2769 */}
             <MenuItem
                 className={`language_${getFieldClassName(field)}`}
                 key={null}

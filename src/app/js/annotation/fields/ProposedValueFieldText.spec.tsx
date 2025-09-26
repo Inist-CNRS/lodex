@@ -13,11 +13,15 @@ import { ProposedValueFieldText } from './ProposedValueFieldText';
 
 import PropTypes from 'prop-types';
 
+// @ts-expect-error TS7031
 function TestProposedValueFieldText({ field, initialValue }) {
     const form = useForm();
     return (
         <TestI18N>
+            {/*
+             // @ts-expect-error TS2322 */}
             <ProposedValueFieldText
+                // @ts-expect-error TS2322
                 field={field}
                 form={form}
                 initialValue={initialValue}
@@ -59,6 +63,7 @@ describe('ProposedValueFieldText', () => {
             );
         });
 
+        // @ts-expect-error TS18048
         const textBox = wrapper.queryByRole('textbox', {
             name: 'annotation.proposedValue *',
         });

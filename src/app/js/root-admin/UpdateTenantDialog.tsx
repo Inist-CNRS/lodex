@@ -9,6 +9,7 @@ import {
     Box,
 } from '@mui/material';
 
+// @ts-expect-error TS7031
 const UpdateTenantDialog = ({ isOpen, tenant, handleClose, updateAction }) => {
     const [description, setDescription] = useState('');
     const [author, setAuthor] = useState('');
@@ -24,22 +25,27 @@ const UpdateTenantDialog = ({ isOpen, tenant, handleClose, updateAction }) => {
         }
     }, [isOpen, tenant]);
 
+    // @ts-expect-error TS7006
     const handleDescription = (event) => {
         setDescription(event.target.value);
     };
 
+    // @ts-expect-error TS7006
     const handleAuthor = (event) => {
         setAuthor(event.target.value);
     };
 
+    // @ts-expect-error TS7006
     const handleUsername = (event) => {
         setUsername(event.target.value);
     };
 
+    // @ts-expect-error TS7006
     const handlePassword = (event) => {
         setPassword(event.target.value);
     };
 
+    // @ts-expect-error TS7006
     const handleSubmit = (event) => {
         event.preventDefault();
         updateAction(tenant._id, {

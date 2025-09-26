@@ -1,8 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+// @ts-expect-error TS7016
 import compose from 'recompose/compose';
+// @ts-expect-error TS7016
 import withHandlers from 'recompose/withHandlers';
+// @ts-expect-error TS7016
 import withState from 'recompose/withState';
 import { List, Popover, IconButton, Tooltip, Box } from '@mui/material';
 
@@ -14,6 +17,7 @@ import {
     polyglot as polyglotPropTypes,
 } from '../../propTypes';
 import { SCOPE_DOCUMENT } from '../../../../common/scope';
+// @ts-expect-error TS7016
 import { useHistory } from 'react-router-dom';
 import { getEditFieldRedirectUrl } from '../../fields/FieldGrid';
 import WarningIcon from '@mui/icons-material/Warning';
@@ -31,16 +35,24 @@ const styles = {
 };
 
 const ValidationButtonComponent = ({
+    // @ts-expect-error TS7031
     handleEditField,
+    // @ts-expect-error TS7031
     fields,
+    // @ts-expect-error TS7031
     handleHideErrors,
+    // @ts-expect-error TS7031
     handleShowErrorsClick,
+    // @ts-expect-error TS7031
     popover,
+    // @ts-expect-error TS7031
     p: polyglot,
 }) => {
     const history = useHistory();
     // @TODO: Find a better way to handle fix error from data tab
+    // @ts-expect-error TS7019
     const redirectAndHandleEditField = (...args) => {
+        // @ts-expect-error TS7031
         const field = fields.find(({ name }) => name === args[0]);
         handleEditField();
         const redirectUrl = getEditFieldRedirectUrl(
@@ -54,6 +66,8 @@ const ValidationButtonComponent = ({
     return (
         <Box sx={styles.container}>
             <Tooltip title={polyglot.t(`show_publication_errors`)}>
+                {/*
+                 // @ts-expect-error TS2769 */}
                 <IconButton
                     color="warning"
                     variant="contained"
@@ -65,6 +79,7 @@ const ValidationButtonComponent = ({
                             position: 'absolute',
                             width: '10px',
                             height: '10px',
+                            // @ts-expect-error TS2339
                             background: ({ palette }) => palette.contrast.main,
                             zIndex: -1,
                             marginTop: '5px',
@@ -82,11 +97,14 @@ const ValidationButtonComponent = ({
             <Popover
                 open={popover.show}
                 anchorEl={popover.anchorEl}
+                // @ts-expect-error TS2322
                 anchorOrigin={anchorOrigin}
                 targetOrigin={targetOrigin}
                 onClose={handleHideErrors}
             >
                 <List className="validation">
+                    {/*
+                     // @ts-expect-error TS7006 */}
                     {fields.map((field) => (
                         <ValidationField
                             key={field.name}
@@ -112,7 +130,9 @@ ValidationButtonComponent.defaultProps = {
     popover: { show: false },
 };
 
+// @ts-expect-error TS7006
 const mapStateToProps = (state) => ({
+    // @ts-expect-error TS2339
     fields: fromFields.getInvalidFields(state),
 });
 
@@ -121,17 +141,21 @@ export default compose(
     withState('popover', 'setShowPopover', { show: false }),
     withHandlers({
         handleShowErrorsClick:
+            // @ts-expect-error TS7031
             ({ setShowPopover }) =>
+            // @ts-expect-error TS7006
             (event) => {
                 event.preventDefault();
                 setShowPopover({ anchorEl: event.currentTarget, show: true });
             },
         handleHideErrors:
+            // @ts-expect-error TS7031
             ({ setShowPopover }) =>
             () => {
                 setShowPopover({ show: false });
             },
         handleEditField:
+            // @ts-expect-error TS7031
             ({ setShowPopover }) =>
             () => {
                 setShowPopover({ show: false });

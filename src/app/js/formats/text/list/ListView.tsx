@@ -6,6 +6,7 @@ import stylesToClassname from '../../../lib/stylesToClassName';
 import { field as fieldPropTypes } from '../../../propTypes';
 import { getViewComponent } from '../../index';
 
+// @ts-expect-error TS7006
 const styles = (bullet) =>
     stylesToClassname(
         {
@@ -51,6 +52,7 @@ const styles = (bullet) =>
         'list-format',
     );
 
+// @ts-expect-error TS7031
 export const UL = ({ className, children }) => (
     <ul className={className}>{children}</ul>
 );
@@ -60,6 +62,7 @@ UL.propTypes = {
     children: PropTypes.any.isRequired,
 };
 
+// @ts-expect-error TS7031
 export const OL = ({ className, children }) => (
     <ol className={className}>{children}</ol>
 );
@@ -70,12 +73,19 @@ OL.propTypes = {
 };
 
 const ListView = ({
+    // @ts-expect-error TS7031
     className,
+    // @ts-expect-error TS7031
     resource,
+    // @ts-expect-error TS7031
     field,
+    // @ts-expect-error TS7031
     type,
+    // @ts-expect-error TS7031
     bullet,
+    // @ts-expect-error TS7031
     subFormat,
+    // @ts-expect-error TS7031
     subFormatOptions,
 }) => {
     const values = resource[field.name];
@@ -83,6 +93,7 @@ const ListView = ({
         return null;
     }
 
+    // @ts-expect-error TS2554
     const { ViewComponent, args } = getViewComponent(subFormat);
 
     const List = type === 'ordered' ? OL : UL;
@@ -90,10 +101,12 @@ const ListView = ({
     const localStyles = styles(bullet);
 
     return (
+        // @ts-expect-error TS7053
         <List className={classnames(localStyles[type], className)}>
             {values.map((value, index) => (
                 <li
                     key={value}
+                    // @ts-expect-error TS7053
                     className={classnames(localStyles[`${type}_li`])}
                 >
                     {subFormat ? (

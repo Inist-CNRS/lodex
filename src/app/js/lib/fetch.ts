@@ -1,8 +1,10 @@
+// @ts-expect-error TS7016
 import fetch from 'fetch-with-proxy';
 
 import { getHost } from '../../../common/uris';
 import { DEFAULT_TENANT } from '../../../common/tools/tenantTools';
 
+// @ts-expect-error TS7031
 export default ({ url, ...config }, mode = 'json') => {
     const fullUrl = url.startsWith('http') ? url : getHost() + url;
 
@@ -29,6 +31,7 @@ export default ({ url, ...config }, mode = 'json') => {
     }
 
     return fetch(fullUrl, config).then(
+        // @ts-expect-error TS7006
         (response) => {
             if (response.status === 204) {
                 return { response: null };
@@ -65,7 +68,9 @@ export default ({ url, ...config }, mode = 'json') => {
                             tsv: 'tsv',
                         };
                         filename = `export.${
+                            // @ts-expect-error TS7053
                             exportExtent[exportType]
+                                // @ts-expect-error TS7053
                                 ? exportExtent[exportType]
                                 : exportType
                         }`;
@@ -107,7 +112,9 @@ export default ({ url, ...config }, mode = 'json') => {
                             tsv: 'tsv',
                         };
                         filename = `export.${
+                            // @ts-expect-error TS7053
                             exportExtent[exportType]
+                                // @ts-expect-error TS7053
                                 ? exportExtent[exportType]
                                 : exportType
                         }`;
@@ -115,19 +122,25 @@ export default ({ url, ...config }, mode = 'json') => {
 
                     return response
                         .blob()
+                        // @ts-expect-error TS7006
                         .then((blob) => ({ response: blob, filename }));
                 }
 
                 return response
                     .json()
+                    // @ts-expect-error TS7006
                     .then((json) => ({ response: json }))
+                    // @ts-expect-error TS7006
                     .catch((error) => ({ error }));
             }
 
             return response.json().then(
+                // @ts-expect-error TS7006
                 (json) => {
                     const error = new Error(json.error);
+                    // @ts-expect-error TS2339
                     error.response = response;
+                    // @ts-expect-error TS2339
                     error.code = response.status;
 
                     // if error 404 and json.message contains 'Tenant not found', and windows is defined, we reload the page
@@ -145,12 +158,15 @@ export default ({ url, ...config }, mode = 'json') => {
                 },
                 () => {
                     const error = new Error(response.statusText);
+                    // @ts-expect-error TS2339
                     error.response = response;
+                    // @ts-expect-error TS2339
                     error.code = response.status;
                     return { error };
                 },
             );
         },
+        // @ts-expect-error TS7006
         (error) => ({ error }),
     );
 };

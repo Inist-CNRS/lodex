@@ -1,10 +1,12 @@
 import React from 'react';
+// @ts-expect-error TS7016
 import { shallow } from 'enzyme';
 import { Dialog, LinearProgress } from '@mui/material';
 
 import { ProgressComponent as Progress } from './Progress';
 import { PENDING, STARTING } from '../../../../common/progressStatus';
 
+// @ts-expect-error TS7006
 const identity = (x) => x;
 
 describe('Progress', () => {
@@ -32,6 +34,7 @@ describe('Progress', () => {
                 status: PENDING,
             },
         };
+        // @ts-expect-error TS2322
         const wrapper = shallow(<Progress {...props} />);
 
         const dialog = wrapper.find(Dialog);
@@ -39,6 +42,7 @@ describe('Progress', () => {
     });
 
     it('should render opened dialog if status is not PENDING', () => {
+        // @ts-expect-error TS2322
         const wrapper = shallow(<Progress {...defaultProps} />);
 
         const dialog = wrapper.find(Dialog);
@@ -54,6 +58,7 @@ describe('Progress', () => {
                 progress: 700,
             },
         };
+        // @ts-expect-error TS2322
         const wrapper = shallow(<Progress {...props} />);
 
         const linearProgress = wrapper.find(LinearProgress);
@@ -71,6 +76,7 @@ describe('Progress', () => {
                 progress: 700,
             },
         };
+        // @ts-expect-error TS2322
         const wrapper = shallow(<Progress {...props} />);
         expect(wrapper.find('.progress p').text()).toBe('700');
     });
@@ -85,6 +91,7 @@ describe('Progress', () => {
                 label: 'lines',
             },
         };
+        // @ts-expect-error TS2322
         const wrapper = shallow(<Progress {...props} />);
         expect(wrapper.find('.progress p').text()).toBe('700 lines');
     });
@@ -99,6 +106,7 @@ describe('Progress', () => {
                 symbol: '%',
             },
         };
+        // @ts-expect-error TS2322
         const wrapper = shallow(<Progress {...props} />);
 
         const linearProgress = wrapper.find(LinearProgress);

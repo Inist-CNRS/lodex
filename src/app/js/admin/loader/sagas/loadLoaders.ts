@@ -11,12 +11,14 @@ import { fromLoaders } from '../../selectors';
 import fetchSaga from '../../../lib/sagas/fetchSaga';
 
 export function* handleLoadLoaders() {
+    // @ts-expect-error TS7057
     const loadersAlreadyLoaded = yield select(fromLoaders.areLoadersLoaded);
     if (loadersAlreadyLoaded) {
         return;
     }
 
     yield put(loadLoaders());
+    // @ts-expect-error TS7057
     const request = yield select(fromUser.getLoadLoadersRequest);
     const { response, error } = yield call(fetchSaga, request);
 

@@ -1,4 +1,5 @@
 import React from 'react';
+// @ts-expect-error TS7016
 import { MemoryRouter } from 'react-router-dom';
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -23,6 +24,8 @@ function TestButton({ isSubmitting = false }) {
     return (
         <QueryClientProvider client={queryClient}>
             <TestI18N>
+                {/*
+                 // @ts-expect-error TS2322 */}
                 <MemoryRouter>
                     <AnnotationDeleteButton
                         id={ANNOTATION_ID}
@@ -45,6 +48,7 @@ describe('AnnotationDeleteButton', () => {
 
     it('should delete annotation', async () => {
         const mutateAsync = jest.fn();
+        // @ts-expect-error TS2345
         jest.mocked(useDeleteAnnotation).mockReturnValue({
             mutateAsync,
             isLoading: false,
@@ -87,6 +91,7 @@ describe('AnnotationDeleteButton', () => {
     });
 
     it('should disable button when in flight', async () => {
+        // @ts-expect-error TS2345
         jest.mocked(useDeleteAnnotation).mockReturnValue({
             mutateAsync: jest.fn(),
             isLoading: true,
@@ -102,6 +107,7 @@ describe('AnnotationDeleteButton', () => {
     });
 
     it('should not delete annotation when cancelling', async () => {
+        // @ts-expect-error TS2345
         jest.mocked(useDeleteAnnotation).mockReturnValue({
             mutateAsync: jest.fn(),
             isLoading: false,

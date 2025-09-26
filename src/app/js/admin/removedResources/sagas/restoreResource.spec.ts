@@ -11,17 +11,20 @@ describe('restore removed resources saga', () => {
 
         it('should select getRestoreResourceRequest', () => {
             expect(saga.next().value).toEqual(
+                // @ts-expect-error TS2339
                 select(fromUser.getRestoreResourceRequest, 'an_uri'),
             );
         });
 
         it('should call fetchDafetchSagataset with the request', () => {
+            // @ts-expect-error TS2345
             expect(saga.next('request').value).toEqual(
                 call(fetchSaga, 'request'),
             );
         });
 
         it('should put restoreRessourceSuccess action', () => {
+            // @ts-expect-error TS2345
             expect(saga.next({}).value).toEqual(
                 put(restoreRessourceSuccess('an_uri')),
             );

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+// @ts-expect-error TS7016
 import isEqual from 'lodash/isEqual';
 
 import { fromUser, fromFields } from '../sharedSelectors';
@@ -9,21 +10,33 @@ import { getViewComponent } from '../formats';
 import getColorSetFromField from '../lib/getColorSetFromField';
 
 export class FormatComponent extends Component {
+    // @ts-expect-error TS7006
     shouldComponentUpdate(prevProps) {
         return !isEqual(prevProps, this.props);
     }
     render() {
         const {
+            // @ts-expect-error TS2339
             className,
+            // @ts-expect-error TS2339
             field,
+            // @ts-expect-error TS2339
             fieldStatus,
+            // @ts-expect-error TS2339
             fields,
+            // @ts-expect-error TS2339
             resource,
+            // @ts-expect-error TS2339
             shrink,
+            // @ts-expect-error TS2339
             isList,
+            // @ts-expect-error TS2339
             filter,
+            // @ts-expect-error TS2339
             facets,
+            // @ts-expect-error TS2339
             colorSet,
+            // @ts-expect-error TS2339
             graphLink,
         } = this.props;
         const { ViewComponent, args } = getViewComponent(field, isList);
@@ -46,6 +59,7 @@ export class FormatComponent extends Component {
     }
 }
 
+// @ts-expect-error TS2339
 FormatComponent.propTypes = {
     className: PropTypes.string,
     field: fieldPropTypes.isRequired,
@@ -60,6 +74,7 @@ FormatComponent.propTypes = {
     graphLink: PropTypes.bool,
 };
 
+// @ts-expect-error TS2339
 FormatComponent.defaultProps = {
     className: null,
     fieldStatus: null,
@@ -67,12 +82,17 @@ FormatComponent.defaultProps = {
     isList: false,
 };
 
+// @ts-expect-error TS7006
 const mapStateToProps = (state, { field }) => ({
     fields: [
+        // @ts-expect-error TS2339
         ...fromFields.getCollectionFields(state),
+        // @ts-expect-error TS2339
         ...fromFields.getDatasetFields(state),
+        // @ts-expect-error TS2339
         ...fromFields.getGraphicFields(state),
     ],
+    // @ts-expect-error TS2339
     token: fromUser.getToken(state),
     colorSet: getColorSetFromField(field),
 });

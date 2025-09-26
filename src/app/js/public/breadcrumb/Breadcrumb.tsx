@@ -1,9 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleLeft } from '@fortawesome/free-solid-svg-icons';
+// @ts-expect-error TS7016
 import { withRouter } from 'react-router';
 
 import { fromBreadcrumb } from '../selectors';
@@ -30,6 +32,7 @@ const styles = stylesToClassname(
     'breadcrumb',
 );
 
+// @ts-expect-error TS7031
 export const Breadcrumb = ({ breadcrumb, location }) => {
     const isRoot = location.pathname === '/';
 
@@ -46,18 +49,26 @@ export const Breadcrumb = ({ breadcrumb, location }) => {
 
     return (
         <div id="breadcrumb">
+            {/*
+             // @ts-expect-error TS2339 */}
             <Container maxWidth="xl" className={`${styles.root} container`}>
                 <FontAwesomeIcon
+                    // @ts-expect-error TS2339
                     className={styles.icon}
                     icon={faAngleLeft}
                     height={20}
                 />
+                {/*
+                 // @ts-expect-error TS2339 */}
                 <div className={styles.trail}>
+                    {/*
+                     // @ts-expect-error TS7006 */}
                     {items.map((item, index) => (
                         <>
                             <BreadcrumbItem
                                 key={index}
                                 value={item}
+                                // @ts-expect-error TS2339
                                 className={styles.item}
                             />
                             {index + 1 < items.length && <span>/</span>}
@@ -86,8 +97,10 @@ Breadcrumb.propTypes = {
     ),
 };
 
+// @ts-expect-error TS7006
 const mapStateToProps = (state) => {
     return {
+        // @ts-expect-error TS2339
         breadcrumb: fromBreadcrumb.getBreadcrumb(state),
     };
 };

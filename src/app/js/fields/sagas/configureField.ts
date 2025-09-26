@@ -13,15 +13,20 @@ import fetchSaga from '../../lib/sagas/fetchSaga';
 import validateField from './validateField';
 
 export function* handleConfigureField() {
+    // @ts-expect-error TS7057
     const formData = yield select(getFieldOntologyFormData);
+    // @ts-expect-error TS7057
     const fields = yield select(fromFields.getFields);
+    // @ts-expect-error TS7006
     const fieldToUpdate = fields.find((f) => f.name === formData.name);
 
+    // @ts-expect-error TS7057
     const isValid = yield call(validateField, formData);
 
     if (!isValid) {
         return;
     }
+    // @ts-expect-error TS7057
     const request = yield select(fromUser.getUpdateFieldRequest, formData);
 
     const { error, response: field } = yield call(fetchSaga, request);

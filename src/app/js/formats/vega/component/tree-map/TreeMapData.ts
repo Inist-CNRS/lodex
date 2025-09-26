@@ -44,6 +44,7 @@ export default class TreeMapData {
      * @param {Array<{source: string, target: string, weight: string | number, original?: any}>} data
      * @param isHierarchy
      */
+    // @ts-expect-error TS7006
     constructor(data, isHierarchy = true) {
         this.data = data;
         this.idIncrement = 0;
@@ -55,8 +56,10 @@ export default class TreeMapData {
 
         if (!this.isHierarchy) {
             this.originalObject = new Map();
+            // @ts-expect-error TS7006
             data.forEach((datum) => {
                 if (datum.original) {
+                    // @ts-expect-error TS2532
                     this.originalObject.set(datum.target, datum.original);
                 }
             });
@@ -68,6 +71,7 @@ export default class TreeMapData {
      * @param node
      * @return {number | undefined}
      */
+    // @ts-expect-error TS7006
     createIdIfNotExist(node) {
         if (!this.ids.has(node)) {
             const id = ++this.idIncrement;
@@ -82,10 +86,12 @@ export default class TreeMapData {
      * @param node First parent of the leaf
      * @return {string} Leaf parent list
      */
+    // @ts-expect-error TS7006
     createHierarchy(node) {
         const maxRecursion = 10;
         let recursion = 0;
 
+        // @ts-expect-error TS7023
         const getHierarchy = (parentId) => {
             recursion++;
             if (recursion > maxRecursion) {
@@ -168,6 +174,7 @@ export default class TreeMapData {
             if (this.isHierarchy) {
                 datum.hierarchy = this.createHierarchy(datum.parent);
             } else {
+                // @ts-expect-error TS2532
                 datum.original = this.originalObject.get(datum.name);
             }
 
@@ -192,8 +199,11 @@ export default class TreeMapData {
  * @param {Array<{_id: string, value: string | number}>} values
  * @return {Array<{source: string, target: string, weight: string | number, original: any}>}
  */
+// @ts-expect-error TS2339
 TreeMapData.transformIdValue = (values) => {
+    // @ts-expect-error TS7034
     const finalValues = [];
+    // @ts-expect-error TS7006
     values.forEach((datum) => {
         const middleNode = `root_${datum._id}`;
         finalValues.push({
@@ -208,6 +218,7 @@ TreeMapData.transformIdValue = (values) => {
             weight: datum.value,
         });
     });
+    // @ts-expect-error TS7005
     return finalValues;
 };
 
@@ -215,8 +226,11 @@ TreeMapData.transformIdValue = (values) => {
  * @param {Array<{source: string, target: string, weight: string | number}>} values
  * @return {Array<{source: string, target: string, weight: string | number, original: any}>}
  */
+// @ts-expect-error TS2339
 TreeMapData.transformSourceTargetWeight = (values) => {
+    // @ts-expect-error TS7034
     const finalValues = [];
+    // @ts-expect-error TS7006
     values.forEach((datum) => {
         const leaves = `leaves_${datum.source}_${datum.target}`;
         finalValues.push({
@@ -231,5 +245,6 @@ TreeMapData.transformSourceTargetWeight = (values) => {
             weight: datum.weight,
         });
     });
+    // @ts-expect-error TS7005
     return finalValues;
 };

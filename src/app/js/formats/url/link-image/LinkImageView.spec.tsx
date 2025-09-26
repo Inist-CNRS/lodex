@@ -1,4 +1,5 @@
 import React from 'react';
+// @ts-expect-error TS7016
 import { shallow } from 'enzyme';
 
 import LinkImageView from './LinkImageView';
@@ -12,6 +13,7 @@ describe('<LinkImageView />', () => {
             format: { args: { maxHeight: 500 } },
         };
         const wrapper = shallow(
+            // @ts-expect-error TS2739
             <LinkImageView
                 resource={resource}
                 field={field}
