@@ -9,6 +9,7 @@ import Tooltip from '@mui/material/Tooltip';
 import { translate } from '../../../i18n/I18NContext';
 import { polyglot as polyglotPropTypes } from '../../../propTypes';
 
+// @ts-expect-error TS7031
 const FormatFullScreenMode = ({ children, p }) => {
     const [open, setOpen] = useState(false);
 

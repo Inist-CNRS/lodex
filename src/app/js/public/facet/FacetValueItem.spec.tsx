@@ -7,6 +7,8 @@ describe('FacetValueItem', () => {
     it('should render a null facet value as empty', () => {
         render(
             <TestI18N>
+                {/*
+                 // @ts-expect-error TS2322 */}
                 <FacetValueItemView
                     facetValue={{
                         value: null,
@@ -24,6 +26,8 @@ describe('FacetValueItem', () => {
     it('should render a "" facet value as empty', () => {
         render(
             <TestI18N>
+                {/*
+                 // @ts-expect-error TS2322 */}
                 <FacetValueItemView
                     facetValue={{
                         value: '',
@@ -41,6 +45,8 @@ describe('FacetValueItem', () => {
     it('should render facet.value otherwise', () => {
         render(
             <TestI18N>
+                {/*
+                 // @ts-expect-error TS2322 */}
                 <FacetValueItemView
                     facetValue={{
                         value: 'facet value',

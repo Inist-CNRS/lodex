@@ -31,6 +31,7 @@ const styles = stylesToClassname(
     'breadcrumb-item',
 );
 
+// @ts-expect-error TS7031
 const BreadcrumbItem = ({ value, p: polyglot }) => {
     const label = value.label[polyglot.currentLocale];
     const to = String(value.url).trim() || './';
@@ -40,10 +41,12 @@ const BreadcrumbItem = ({ value, p: polyglot }) => {
 
     if (to.startsWith('https://')) {
         props = {
+            // @ts-expect-error TS2353
             href: to,
         };
     } else if (value.isExternal === true) {
         props = {
+            // @ts-expect-error TS2353
             href: to,
             target: '_blank',
             rel: 'noopener noreferrer',
@@ -55,12 +58,14 @@ const BreadcrumbItem = ({ value, p: polyglot }) => {
     ) {
         const tenant = sessionStorage?.getItem('lodex-tenant');
         props = {
+            // @ts-expect-error TS2353
             href: `/instance/${tenant}/${to}`,
             rel: 'noopener noreferrer',
         };
     }
 
     return (
+        // @ts-expect-error TS2739
         <Link className={styles.link} {...props}>
             {label}
         </Link>

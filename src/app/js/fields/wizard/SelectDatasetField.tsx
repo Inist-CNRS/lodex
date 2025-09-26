@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { MenuItem, TextField } from '@mui/material';
 import { translate } from '../../i18n/I18NContext';
+// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 
@@ -9,11 +10,17 @@ import { fromParsing } from '../../admin/selectors';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 
 export const SelectDatasetFieldComponent = ({
+    // @ts-expect-error TS7031
     datasetFields,
+    // @ts-expect-error TS7031
     handleChange,
+    // @ts-expect-error TS7031
     p: polyglot,
+    // @ts-expect-error TS7031
     column,
+    // @ts-expect-error TS7031
     label,
+    // @ts-expect-error TS7031
     id,
 }) => (
     <TextField
@@ -24,6 +31,8 @@ export const SelectDatasetFieldComponent = ({
         label={polyglot.t(label)}
         value={column}
     >
+        {/*
+         // @ts-expect-error TS7006 */}
         {datasetFields.map((datasetField) => (
             <MenuItem
                 key={`id_${datasetField}`}
@@ -49,7 +58,9 @@ SelectDatasetFieldComponent.defaultProps = {
     id: 'select_column',
 };
 
+// @ts-expect-error TS7006
 const mapStateToProps = (state) => ({
+    // @ts-expect-error TS2339
     datasetFields: fromParsing.getParsedExcerptColumns(state),
 });
 

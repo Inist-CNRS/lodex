@@ -2,17 +2,23 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Switch, FormControlLabel } from '@mui/material';
 import { translate } from '../../i18n/I18NContext';
+// @ts-expect-error TS7016
 import compose from 'recompose/compose';
+// @ts-expect-error TS7016
 import withHandlers from 'recompose/withHandlers';
 import { connect } from 'react-redux';
+// @ts-expect-error TS7016
 import { formValueSelector } from 'redux-form';
 
 import { FIELD_FORM_NAME } from '..';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 
 export const UriAutogenerateComponent = ({
+    // @ts-expect-error TS7031
     handleSelect,
+    // @ts-expect-error TS7031
     p: polyglot,
+    // @ts-expect-error TS7031
     selected,
 }) => (
     <FormControlLabel
@@ -34,6 +40,7 @@ UriAutogenerateComponent.propTypes = {
     selected: PropTypes.bool.isRequired,
 };
 
+// @ts-expect-error TS7006
 const mapStateToProps = (state) => {
     const transformers = formValueSelector(FIELD_FORM_NAME)(
         state,
@@ -60,6 +67,7 @@ export default compose(
     connect(mapStateToProps),
     withHandlers({
         handleSelect:
+            // @ts-expect-error TS7031
             ({ onChange }) =>
             () => {
                 onChange({

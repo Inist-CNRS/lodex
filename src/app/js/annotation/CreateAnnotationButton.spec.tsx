@@ -1,6 +1,7 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import PropTypes from 'prop-types';
 import React from 'react';
+// @ts-expect-error TS7016
 import { MemoryRouter, Route, Switch } from 'react-router-dom';
 import { fireEvent, render, screen, waitFor } from '../../../test-utils';
 
@@ -26,6 +27,7 @@ jest.mock('./useCanAnnotate', () => ({
 }));
 
 function TestButton({
+    // @ts-expect-error TS7031
     annotable,
     fieldFormatName = 'formatParagraph',
     ...props
@@ -33,6 +35,8 @@ function TestButton({
     return (
         <QueryClientProvider client={queryClient}>
             <TestI18N>
+                {/*
+                 // @ts-expect-error TS2322 */}
                 <MemoryRouter
                     initialEntries={['/uid:/0579J7JN']}
                     initialIndex={0}
@@ -74,6 +78,7 @@ describe('CreateAnnotationButton', () => {
             'redux-localstorage',
             JSON.stringify({ user: { token: 'token' } }),
         );
+        // @ts-expect-error TS2339
         useCanAnnotate.mockReturnValue(true);
     });
 
@@ -83,7 +88,9 @@ describe('CreateAnnotationButton', () => {
     });
 
     it('should not render the button if useCanAccess return false', async () => {
+        // @ts-expect-error TS2339
         useCanAnnotate.mockReturnValue(false);
+        // @ts-expect-error TS2741
         render(<TestButton />);
         expect(
             screen.queryByRole('button', {
@@ -129,6 +136,7 @@ describe('CreateAnnotationButton', () => {
     });
 
     it('should call api when submitting annotation form for annotation on title', async () => {
+        // @ts-expect-error TS2741
         render(<TestButton />);
 
         await waitFor(() => {
@@ -200,6 +208,7 @@ describe('CreateAnnotationButton', () => {
 
     it('should call api when submiting annotation form for value', async () => {
         render(
+            // @ts-expect-error TS2741
             <TestButton
                 {...{
                     target: 'value',

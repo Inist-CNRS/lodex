@@ -1,3 +1,4 @@
+// @ts-expect-error TS7016
 import { reducer as form } from 'redux-form';
 
 import characteristic from '../characteristic';

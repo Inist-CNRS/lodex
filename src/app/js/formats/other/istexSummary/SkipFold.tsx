@@ -9,6 +9,7 @@ const circularProgress = (
     <CircularProgress
         variant="indeterminate"
         size={20}
+        // @ts-expect-error TS2322
         innerStyle={{
             display: 'flex',
             marginLeft: 8,
@@ -25,7 +26,9 @@ class SkipFold extends Component {
 
     UNSAFE_componentWillMount() {
         this.props
+            // @ts-expect-error TS2339
             .getData(this.props)
+            // @ts-expect-error TS7006
             .then((data) => {
                 this.setState({
                     data,
@@ -33,6 +36,7 @@ class SkipFold extends Component {
                     isOpen: true,
                 });
             })
+            // @ts-expect-error TS7006
             .catch((error) => {
                 console.error(error);
                 this.setState({ error: true, isLoading: false });
@@ -40,6 +44,7 @@ class SkipFold extends Component {
     }
 
     render() {
+        // @ts-expect-error TS2339
         const { polyglot, children } = this.props;
         const { data, isLoading, error } = this.state;
 
@@ -51,14 +56,17 @@ class SkipFold extends Component {
             return circularProgress;
         }
 
+        // @ts-expect-error TS18047
         if (!data.hits.length) {
             return null;
         }
 
+        // @ts-expect-error TS2349
         return children({ ...this.props, data });
     }
 }
 
+// @ts-expect-error TS2339
 SkipFold.propTypes = {
     children: PropTypes.func.isRequired,
     polyglot: polyglotPropTypes.isRequired,

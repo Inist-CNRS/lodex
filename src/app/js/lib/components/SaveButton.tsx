@@ -22,6 +22,7 @@ const shake = keyframes`
   }
 `;
 
+// @ts-expect-error TS7031
 export const SaveButton = ({ onClick, type, isFormModified, disabled }) => {
     const { translate } = useTranslate();
 

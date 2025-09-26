@@ -9,18 +9,25 @@ describe('fields saga', () => {
         it('should selectAllFields and validate formData ending if it is valid', () => {
             const saga = validateFieldSaga('form data');
 
+            // @ts-expect-error TS2339
             expect(saga.next().value).toEqual(select(fromFields.getFields));
+            // @ts-expect-error TS2345
             expect(saga.next('fields').value).toEqual(
+                // @ts-expect-error TS2769
                 call(validateAddedField, 'form data', false, 'fields'),
             );
+            // @ts-expect-error TS2345
             expect(saga.next({ isValid: true }).done).toBe(true);
         });
 
         it('should put fieldInvalid if field is invalid', () => {
             const saga = validateFieldSaga('form data');
 
+            // @ts-expect-error TS2339
             expect(saga.next().value).toEqual(select(fromFields.getFields));
+            // @ts-expect-error TS2345
             expect(saga.next('fields').value).toEqual(
+                // @ts-expect-error TS2769
                 call(validateAddedField, 'form data', false, 'fields'),
             );
             expect(

@@ -30,14 +30,17 @@ import { sizeConverter } from './rootAdminUtils';
 
 const baseUrl = getHost();
 
+// @ts-expect-error TS7031
 const Tenants = ({ handleLogout }) => {
     const [tenants, setTenants] = useState([]);
     const [openCreateTenantDialog, setOpenCreateTenantDialog] = useState(false);
     const [openDeleteTenantDialog, setOpenDeleteTenantDialog] = useState(false);
     const [tenantToUpdate, setTenantToUpdate] = useState(null);
 
+    // @ts-expect-error TS7006
     const onChangeTenants = (changedTenants) => {
         if (changedTenants instanceof Array) {
+            // @ts-expect-error TS2345
             setTenants(changedTenants);
         }
     };
@@ -56,10 +59,12 @@ const Tenants = ({ handleLogout }) => {
                 }
                 return response;
             })
+            // @ts-expect-error TS18048
             .then((response) => response.json())
             .then(onChangeTenants);
     }, []);
 
+    // @ts-expect-error TS7031
     const addTenant = ({ name, description, author }) => {
         fetch('/rootAdmin/tenant', {
             credentials: 'include',
@@ -107,6 +112,7 @@ const Tenants = ({ handleLogout }) => {
             });
     };
 
+    // @ts-expect-error TS7006
     const updateTenant = (id, updatedTenant) => {
         fetch(`/rootAdmin/tenant/${id}`, {
             credentials: 'include',
@@ -156,6 +162,7 @@ const Tenants = ({ handleLogout }) => {
             });
     };
 
+    // @ts-expect-error TS7006
     const deleteTenant = (_id, name, deleteDatabase) => {
         fetch('/rootAdmin/tenant', {
             credentials: 'include',
@@ -209,10 +216,14 @@ const Tenants = ({ handleLogout }) => {
         return (
             <GridToolbarContainer>
                 <Tooltip title={'Colonnes'}>
+                    {/*
+                     // @ts-expect-error TS2741 */}
                     <GridToolbarColumnsButton />
                 </Tooltip>
                 <GridToolbarFilterButton />
                 <Tooltip title={'Densité'}>
+                    {/*
+                     // @ts-expect-error TS2741 */}
                     <GridToolbarDensitySelector />
                 </Tooltip>
                 <Tooltip title="Ajoute une instance">
@@ -233,6 +244,7 @@ const Tenants = ({ handleLogout }) => {
         );
     };
 
+    // @ts-expect-error TS7006
     const formatValue = (value) => {
         if (value == null) {
             return '-';
@@ -247,6 +259,7 @@ const Tenants = ({ handleLogout }) => {
             field: 'name',
             headerName: 'Nom',
             flex: 4,
+            // @ts-expect-error TS7006
             renderCell: (params) => {
                 const name = params.row.name;
                 return (
@@ -315,9 +328,11 @@ const Tenants = ({ handleLogout }) => {
             field: 'description',
             headerName: 'Description',
             flex: 4,
+            // @ts-expect-error TS7006
             valueFormatter: (params) => {
                 return formatValue(params.value);
             },
+            // @ts-expect-error TS7006
             renderCell: (params) => {
                 return (
                     <Typography
@@ -337,6 +352,7 @@ const Tenants = ({ handleLogout }) => {
             field: 'author',
             headerName: 'Auteur',
             flex: 2,
+            // @ts-expect-error TS7006
             valueFormatter: (params) => {
                 return formatValue(params.value);
             },
@@ -345,6 +361,7 @@ const Tenants = ({ handleLogout }) => {
             field: 'createdAt',
             headerName: 'Créée le',
             flex: 2,
+            // @ts-expect-error TS7006
             valueFormatter: (params) => {
                 if (params.value == null) {
                     return '-';
@@ -364,6 +381,7 @@ const Tenants = ({ handleLogout }) => {
             headerName: 'Données',
             flex: 2,
             sortable: true,
+            // @ts-expect-error TS7006
             valueFormatter: (params) => {
                 if (!params.value) {
                     return '-';
@@ -377,6 +395,7 @@ const Tenants = ({ handleLogout }) => {
             headerName: 'Données publiées',
             flex: 2,
             sortable: true,
+            // @ts-expect-error TS7006
             valueFormatter: (params) => {
                 return params.value ? 'Oui' : 'Non';
             },
@@ -386,6 +405,7 @@ const Tenants = ({ handleLogout }) => {
             headerName: 'Taille Base de données',
             flex: 2,
             sortable: true,
+            // @ts-expect-error TS7006
             valueFormatter: (params) => {
                 return sizeConverter(params.value);
             },
@@ -394,6 +414,7 @@ const Tenants = ({ handleLogout }) => {
             field: 'update',
             headerName: 'Modifier',
             flex: 1,
+            // @ts-expect-error TS7006
             renderCell: (params) => {
                 return (
                     <IconButton
@@ -410,6 +431,7 @@ const Tenants = ({ handleLogout }) => {
             field: 'delete',
             headerName: 'Supprimer',
             flex: 1,
+            // @ts-expect-error TS7006
             renderCell: (params) => {
                 if (params.row.name === 'default') {
                     return null;
@@ -437,6 +459,7 @@ const Tenants = ({ handleLogout }) => {
                 }}
             >
                 <DataGrid
+                    // @ts-expect-error TS2339
                     getRowId={(row) => row._id}
                     rows={tenants}
                     columns={columns}

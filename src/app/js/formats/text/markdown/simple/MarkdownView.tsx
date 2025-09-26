@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
+// @ts-expect-error TS7016
 import MarkdownIt from 'markdown-it';
 
 import { field as fieldPropTypes } from '../../../../propTypes';
@@ -7,6 +8,7 @@ import InvalidFormat from '../../../InvalidFormat';
 
 const markdown = new MarkdownIt();
 
+// @ts-expect-error TS7031
 const MarkdownView = ({ className, resource, field }) => {
     const [value, content] = useMemo(() => {
         const value = resource[field.name];

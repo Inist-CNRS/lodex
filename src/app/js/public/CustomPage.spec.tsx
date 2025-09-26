@@ -1,4 +1,5 @@
 import React from 'react';
+// @ts-expect-error TS7016
 import { shallow } from 'enzyme';
 import { CircularProgress } from '@mui/material';
 
@@ -8,6 +9,7 @@ jest.mock('../lib/fetch');
 
 describe('getCustomPage CustomPage', () => {
     const defaultProps = {
+        // @ts-expect-error TS7006
         p: { t: (v) => v },
         location: {
             pathname: '/custom/page',
@@ -16,10 +18,12 @@ describe('getCustomPage CustomPage', () => {
     };
 
     beforeEach(() => {
+        // @ts-expect-error TS2339
         fetch.mockClear();
     });
 
     it('should render spinner at first', () => {
+        // @ts-expect-error TS2339
         fetch.mockImplementation(() => Promise.resolve({ response: {} }));
         const wrapper = shallow(<CustomPage {...defaultProps} />);
         expect(wrapper.find(CircularProgress)).toHaveLength(1);
@@ -32,6 +36,7 @@ describe('getCustomPage CustomPage', () => {
                 scripts: ['/script.js', '/other/script.js'],
             },
         });
+        // @ts-expect-error TS2339
         fetch.mockImplementation(() => response);
         const wrapper = shallow(<CustomPage {...defaultProps} />);
         expect(fetch).toHaveBeenCalledWith({
@@ -46,6 +51,7 @@ describe('getCustomPage CustomPage', () => {
         const scripts = wrapper.find('script');
         expect(scripts).toHaveLength(2);
         const expectedScripts = ['/script.js', '/other/script.js'];
+        // @ts-expect-error TS7006
         scripts.forEach((script, index) =>
             expect(script.prop('src')).toEqual(expectedScripts[index]),
         );
@@ -54,6 +60,7 @@ describe('getCustomPage CustomPage', () => {
     it('should render nothing if could not fetch page data', async () => {
         const wait = () => new Promise((resolve) => setTimeout(resolve)); //Will wait for component to re-render after the setState of the error
         let response = Promise.resolve({ error: new Error('nope') });
+        // @ts-expect-error TS2339
         fetch.mockImplementation(() => response);
         const wrapper = shallow(<CustomPage {...defaultProps} />);
         expect(fetch).toHaveBeenCalledWith({

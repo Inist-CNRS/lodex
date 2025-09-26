@@ -6,6 +6,7 @@ import { render } from '../../../test-utils';
 import { COMMENT_STEP, TARGET_STEP } from './steps';
 import PropTypes from 'prop-types';
 
+// @ts-expect-error TS7031
 function TestTitle({ formTarget, ...props }) {
     const form = useForm({
         defaultValues: {
@@ -14,8 +15,11 @@ function TestTitle({ formTarget, ...props }) {
     });
     return (
         <TestI18N>
+            {/*
+             // @ts-expect-error TS2322 */}
             <CreateAnnotationTitle
                 form={form}
+                // @ts-expect-error TS2322
                 initialValue="initial value"
                 goToStep={() => {}}
                 {...props}
@@ -30,6 +34,7 @@ TestTitle.propTypes = {
 
 describe('CreateAnnotationTitle', () => {
     it('should render annotate field title with no label when step is TARGET_STEP', async () => {
+        // @ts-expect-error TS2741
         const wrapper = render(<TestTitle step={TARGET_STEP} />);
         expect(
             wrapper.queryByText(
@@ -39,6 +44,7 @@ describe('CreateAnnotationTitle', () => {
     });
     it('should render annotate field title with no label when step is TARGET_STEP', async () => {
         const wrapper = render(
+            // @ts-expect-error TS2741
             <TestTitle step={TARGET_STEP} fieldLabel="Field Label" />,
         );
         expect(
@@ -73,6 +79,7 @@ describe('CreateAnnotationTitle', () => {
     });
 
     it('should render annotate content title with no label when step is not TARGET_STEP', async () => {
+        // @ts-expect-error TS2741
         const wrapper = render(<TestTitle step={COMMENT_STEP} />);
         expect(
             wrapper.queryByText(
@@ -83,6 +90,7 @@ describe('CreateAnnotationTitle', () => {
 
     it('should render annotate content title with label when step is not TARGET_STEP', async () => {
         const wrapper = render(
+            // @ts-expect-error TS2741
             <TestTitle step={COMMENT_STEP} fieldLabel="Field Label" />,
         );
         expect(

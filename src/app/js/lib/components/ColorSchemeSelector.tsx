@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { MenuItem, TextField } from '@mui/material';
+// @ts-expect-error TS7016
 import { scaleQuantize } from 'd3-scale';
 
 import {
@@ -28,6 +29,7 @@ import {
     schemeSet1,
     schemeSet2,
     schemeSet3,
+// @ts-expect-error TS7016
 } from 'd3-scale-chromatic';
 
 const gradientSchemes = [
@@ -61,7 +63,9 @@ const categorySchemes = [
 
 import ColorScalePreview from '../../lib/components/ColorScalePreview';
 
+// @ts-expect-error TS7006
 const getColorSchemeSelector = (schemes) => {
+    // @ts-expect-error TS7031
     const ColorSchemeSelector = ({ value = [], label, onChange }) => (
         <TextField
             fullWidth
@@ -70,6 +74,8 @@ const getColorSchemeSelector = (schemes) => {
             value={value.join(',')}
             onChange={onChange}
         >
+            {/*
+             // @ts-expect-error TS7006 */}
             {schemes.map((scheme) => (
                 <MenuItem key={scheme} value={scheme.join(',')}>
                     {

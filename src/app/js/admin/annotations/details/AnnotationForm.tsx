@@ -5,6 +5,7 @@ import Stack from '@mui/material/Stack';
 import { useForm, useStore } from '@tanstack/react-form';
 import PropTypes from 'prop-types';
 import React, { useMemo } from 'react';
+// @ts-expect-error TS7016
 import { Link } from 'react-router-dom';
 
 import { Tooltip } from '@mui/material';
@@ -20,6 +21,7 @@ import { AnnotationHeader } from './AnnotationHeader';
 import { AnnotationInputs } from './AnnotationInputs';
 import { AnnotationItems } from './AnnotationItems';
 
+// @ts-expect-error TS7031
 export const AnnotationForm = ({ annotation }) => {
     const tenant = sessionStorage.getItem('lodex-tenant') || DEFAULT_TENANT;
 
@@ -137,6 +139,7 @@ export const AnnotationForm = ({ annotation }) => {
                                 <span>
                                     <Button
                                         variant="outlined"
+                                        // @ts-expect-error TS2769
                                         href={frontUrl}
                                         target="_blank"
                                         disabled={!frontUrl}

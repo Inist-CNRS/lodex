@@ -23,11 +23,13 @@ describe('field saga', () => {
 
         it('should select fromParsing.getExcerptLines', () => {
             expect(saga.next('fieldFormData').value).toEqual(
+                // @ts-expect-error TS2339
                 select(fromParsing.getExcerptLines),
             );
         });
 
         it('should select getToken', () => {
+            // @ts-expect-error TS2339
             expect(saga.next(lines).value).toEqual(select(fromUser.getToken));
         });
 
@@ -39,6 +41,7 @@ describe('field saga', () => {
 
         it('should call transformDocument for each lines', () => {
             expect(saga.next(transformDocument).value).toEqual(
+                // @ts-expect-error TS2769
                 all(lines.map((line) => call(transformDocument, line))),
             );
         });
@@ -62,6 +65,7 @@ describe('field saga', () => {
 
         it('should do nothing if meta.form is not FIELD_FORM_NAME', () => {
             const saga = handleComputeFieldPreview({
+                // @ts-expect-error TS2353
                 meta: { field: 'other form' },
             });
             expect(saga.next()).toEqual({

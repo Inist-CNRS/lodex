@@ -1,6 +1,8 @@
+// @ts-expect-error TS7016
 import * as Papa from 'papaparse';
 import { useCallback, useEffect, useRef } from 'react';
 
+// @ts-expect-error TS7006
 function download(name, data) {
     const link = document.createElement('a');
     document.body.appendChild(link);
@@ -19,6 +21,7 @@ export function getExportDateFormat() {
     return `${today}-${time}`;
 }
 
+// @ts-expect-error TS7006
 function isGraphExportableInCSV(data) {
     if (!data || !Array.isArray(data.values) || !data.values.length) {
         return false;
@@ -34,6 +37,7 @@ function isGraphExportableInCSV(data) {
     );
 }
 
+// @ts-expect-error TS7006
 export function useVegaCsvExport(polyglot, data) {
     const graphParentRef = useRef();
 
@@ -62,6 +66,7 @@ export function useVegaCsvExport(polyglot, data) {
         // This timeout is required for the vega actions to be rendered
         const timer = setTimeout(() => {
             const vegaActionsList =
+                // @ts-expect-error TS18048
                 graphParentRef.current.querySelector('.vega-actions');
 
             // Create a new action
@@ -86,6 +91,7 @@ export function useVegaCsvExport(polyglot, data) {
             }
 
             const vegaExportCsvButton =
+                // @ts-expect-error TS2339
                 graphParentRef.current.querySelector('.vega-export-csv');
             if (vegaExportCsvButton) {
                 vegaExportCsvButton.remove();

@@ -52,6 +52,7 @@ export const defaultArgs = {
     aspectRatio: ASPECT_RATIO_8_5,
 };
 
+// @ts-expect-error TS7006
 const TreeMapAdmin = (props) => {
     const {
         args,
@@ -115,6 +116,7 @@ const TreeMapAdmin = (props) => {
         specBuilder.setLayout(layout);
 
         specBuilder.setEditMode(true);
+        // @ts-expect-error TS2554
         return JSON.stringify(specBuilder.buildSpec(), null, 2);
     }, [advancedMode, advancedModeSpec]);
 
@@ -127,6 +129,7 @@ const TreeMapAdmin = (props) => {
         updateAdminArgs('advancedModeSpec', spec, props);
     }, [advancedMode, advancedModeSpec]);
 
+    // @ts-expect-error TS7006
     const handleParams = (params) => {
         updateAdminArgs('params', params, props);
     };
@@ -139,6 +142,7 @@ const TreeMapAdmin = (props) => {
         updateAdminArgs('hierarchy', !hierarchy, props);
     };
 
+    // @ts-expect-error TS7006
     const handleFlatType = (e) => {
         updateAdminArgs('flatType', e.target.value, props);
     };
@@ -147,6 +151,7 @@ const TreeMapAdmin = (props) => {
         updateAdminArgs('advancedModeSpec', null, props);
     };
 
+    // @ts-expect-error TS7006
     const handleAdvancedModeSpec = (newSpec) => {
         updateAdminArgs('advancedModeSpec', newSpec, props);
     };
@@ -155,37 +160,48 @@ const TreeMapAdmin = (props) => {
         updateAdminArgs('tooltip', !tooltip, props);
     };
 
+    // @ts-expect-error TS7006
     const handleTooltipSource = (tooltipSource) => {
         updateAdminArgs('tooltipSource', tooltipSource, props);
     };
 
+    // @ts-expect-error TS7006
     const handleTooltipTarget = (tooltipTarget) => {
         updateAdminArgs('tooltipTarget', tooltipTarget, props);
     };
 
+    // @ts-expect-error TS7006
     const handleTooltipWeight = (tooltipWeight) => {
         updateAdminArgs('tooltipWeight', tooltipWeight, props);
     };
 
+    // @ts-expect-error TS7006
     const handleColors = (colors) => {
         updateAdminArgs('colors', colors || defaultArgs.colors, props);
     };
 
+    // @ts-expect-error TS7006
     const handleLayout = (e) => {
         updateAdminArgs('layout', e.target.value, props);
     };
 
+    // @ts-expect-error TS7006
     const handleRatio = (_, value) => {
         updateAdminArgs('ratio', value, props);
     };
 
+    // @ts-expect-error TS7006
     const handleAspectRatio = (value) => {
         updateAdminArgs('aspectRatio', value, props);
     };
 
     return (
         <FormatGroupedFieldSet>
+            {/*
+             // @ts-expect-error TS2322 */}
             <FormatDataParamsFieldSet>
+                {/*
+                 // @ts-expect-error TS2322 */}
                 <RoutineParamsAdmin
                     params={params || defaultArgs.params}
                     onChange={handleParams}
@@ -196,7 +212,11 @@ const TreeMapAdmin = (props) => {
                     showOrderBy={showOrderBy}
                 />
             </FormatDataParamsFieldSet>
+            {/*
+             // @ts-expect-error TS2322 */}
             <FormatChartParamsFieldSet defaultExpanded>
+                {/*
+                 // @ts-expect-error TS2322 */}
                 <FormGroup>
                     <FormControlLabel
                         control={
@@ -208,6 +228,8 @@ const TreeMapAdmin = (props) => {
                         label={polyglot.t('advancedMode')}
                     />
                 </FormGroup>
+                {/*
+                 // @ts-expect-error TS2322 */}
                 <FormGroup>
                     <FormControlLabel
                         control={
@@ -219,6 +241,8 @@ const TreeMapAdmin = (props) => {
                         label={polyglot.t('treemap_hierarchy_data')}
                     />
                 </FormGroup>
+                {/*
+                 // @ts-expect-error TS2322 */}
                 {!hierarchy ? (
                     <TextField
                         fullWidth
@@ -233,6 +257,8 @@ const TreeMapAdmin = (props) => {
                         </MenuItem>
                     </TextField>
                 ) : null}
+                {/*
+                 // @ts-expect-error TS2322 */}
                 {advancedMode ? (
                     <VegaAdvancedMode
                         value={spec}
@@ -306,11 +332,15 @@ const TreeMapAdmin = (props) => {
                         </div>
                     </>
                 )}
+                {/*
+                 // @ts-expect-error TS2322 */}
                 <AspectRatioSelector
                     value={aspectRatio}
                     onChange={handleAspectRatio}
                 />
             </FormatChartParamsFieldSet>
+            {/*
+             // @ts-expect-error TS2322 */}
             <VegaFieldPreview
                 args={args}
                 PreviewComponent={TreeMapAdminView}

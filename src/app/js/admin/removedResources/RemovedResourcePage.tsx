@@ -1,4 +1,5 @@
 import React from 'react';
+// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import { Card, CardHeader, Divider } from '@mui/material';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
@@ -9,6 +10,7 @@ import ExportButton from './ExportButton';
 import ImportButton from './ImportButton';
 import { translate } from '../../i18n/I18NContext';
 
+// @ts-expect-error TS7031
 export const RemovedResourcePageComponent = ({ p: polyglot }) => {
     return (
         <Card>

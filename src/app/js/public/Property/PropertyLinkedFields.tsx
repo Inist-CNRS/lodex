@@ -18,9 +18,13 @@ const styles = {
 };
 
 const PropertyLinkedFieldsComponent = ({
+    // @ts-expect-error TS7031
     fieldName,
+    // @ts-expect-error TS7031
     linkedFields,
+    // @ts-expect-error TS7031
     parents,
+    // @ts-expect-error TS7031
     resource,
 }) => {
     if (!linkedFields.length) {
@@ -28,6 +32,8 @@ const PropertyLinkedFieldsComponent = ({
     }
     return (
         <div className="linked_fields" style={styles.container}>
+            {/*
+             // @ts-expect-error TS7006 */}
             {linkedFields.map((linkedField) => (
                 <Property
                     key={linkedField._id}
@@ -56,15 +62,19 @@ PropertyLinkedFieldsComponent.defaultProps = {
     fieldStatus: null,
 };
 
+// @ts-expect-error TS7006
 const mapStateToProps = (state, { fieldName, parents = [] }) => {
+    // @ts-expect-error TS2339
     const allLinkedFields = fromFields.getLinkedFields(state, fieldName);
     const linkedFields = allLinkedFields.filter(
+        // @ts-expect-error TS7006
         (f) => !parents.includes(f.name),
     );
 
     return { linkedFields };
 };
 
+// @ts-expect-error TS7006
 const mapDispatchToProps = (dispatch, { field, resource: { uri } }) =>
     bindActionCreators(
         {
@@ -81,7 +91,9 @@ const mapDispatchToProps = (dispatch, { field, resource: { uri } }) =>
 
 const PropertyLinkedFields = connect(
     mapStateToProps,
+    // @ts-expect-error TS2769
     mapDispatchToProps,
+// @ts-expect-error TS2345
 )(PropertyLinkedFieldsComponent);
 
 export default PropertyLinkedFields;

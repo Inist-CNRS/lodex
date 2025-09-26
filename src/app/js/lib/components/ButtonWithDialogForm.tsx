@@ -1,8 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+// @ts-expect-error TS7016
 import compose from 'recompose/compose';
+// @ts-expect-error TS7016
 import withHandlers from 'recompose/withHandlers';
+// @ts-expect-error TS7016
 import { submit as submitAction } from 'redux-form';
 import { IconButton, Button, CircularProgress } from '@mui/material';
 import classnames from 'classnames';
@@ -24,24 +27,38 @@ const styles = stylesToClassname(
 );
 
 export const PureButtonWithDialogForm = ({
+    // @ts-expect-error TS7031
     buttonStyle,
+    // @ts-expect-error TS7031
     handleClose,
+    // @ts-expect-error TS7031
     handleOpen,
+    // @ts-expect-error TS7031
     handleSubmit,
+    // @ts-expect-error TS7031
     saving,
+    // @ts-expect-error TS7031
     open,
+    // @ts-expect-error TS7031
     show,
+    // @ts-expect-error TS7031
     style,
+    // @ts-expect-error TS7031
     icon,
+    // @ts-expect-error TS7031
     form,
+    // @ts-expect-error TS7031
     className,
+    // @ts-expect-error TS7031
     label,
     openButton = icon ? (
+        // @ts-expect-error TS2769
         <IconButton
             className={classnames(
                 'open',
                 'dialog-button',
                 className,
+                // @ts-expect-error TS2339
                 styles.icon,
             )}
             tooltip={label}
@@ -61,6 +78,7 @@ export const PureButtonWithDialogForm = ({
             {label}
         </Button>
     ),
+    // @ts-expect-error TS7031
     p: polyglot,
 }) => {
     if (!show) {
@@ -71,6 +89,8 @@ export const PureButtonWithDialogForm = ({
         <CancelButton key="cancel" onClick={handleClose}>
             {polyglot.t('cancel')}
         </CancelButton>,
+        {/*
+         // @ts-expect-error TS2739 */}
         <ButtonWithStatus
             raised
             key="save"
@@ -126,6 +146,7 @@ export default compose(
     connect(null, mapDispatchToProps),
     withHandlers({
         handleSubmit:
+            // @ts-expect-error TS7031
             ({ submit, formName }) =>
             () => {
                 submit(formName);

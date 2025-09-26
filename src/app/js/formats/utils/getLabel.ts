@@ -1,3 +1,4 @@
+// @ts-expect-error TS7006
 export default (field, resource, fields, type, value) => {
     switch (type) {
         case 'text':

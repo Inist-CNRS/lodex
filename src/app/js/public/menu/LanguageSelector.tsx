@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
+// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import { translate } from '../../i18n/I18NContext';
 import PropTypes from 'prop-types';
@@ -9,10 +10,12 @@ import { setLanguage } from '../../i18n';
 import { Button, Menu, MenuItem } from '@mui/material';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 
+// @ts-expect-error TS7031
 const LanguageSelector = ({ locale, setLanguage, p: polyglot }) => {
     const [languageSelectorAnchorEl, setLanguageSelectorAnchorEl] =
         useState(null);
     const languageSelectorOpen = Boolean(languageSelectorAnchorEl);
+    // @ts-expect-error TS7006
     const handleLanguageSelectorClick = (event) => {
         setLanguageSelectorAnchorEl(event.currentTarget);
     };
@@ -80,7 +83,9 @@ LanguageSelector.propTypes = {
     p: polyglotPropTypes.isRequired,
 };
 
+// @ts-expect-error TS7006
 const mapStateToProps = (state) => ({
+    // @ts-expect-error TS2339
     locale: fromI18n.getLocale(state),
 });
 

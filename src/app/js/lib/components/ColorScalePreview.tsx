@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const styles = {
+    // @ts-expect-error TS7006
     previewColor: (color) => ({
         display: 'block',
         backgroundColor: color,
@@ -16,8 +17,11 @@ const styles = {
     },
 };
 
+// @ts-expect-error TS7031
 const ColorScalePreview = ({ colorScale }) => (
     <div style={styles.preview}>
+        {/*
+         // @ts-expect-error TS7006 */}
         {colorScale.range().map((value) => (
             <div key={value} style={styles.previewColor(value)} />
         ))}

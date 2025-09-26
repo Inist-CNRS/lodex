@@ -4,6 +4,7 @@ import React from 'react';
 import { useTranslate } from '../../i18n/I18NContext';
 import { TextField } from '../../lib/components/TextField';
 
+// @ts-expect-error TS7031
 export function AuthorEmailField({ form }) {
     const { translate } = useTranslate();
     return (

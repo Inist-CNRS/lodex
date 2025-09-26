@@ -15,13 +15,17 @@ jest.mock('./useGetFieldAnnotation', () => ({
     }),
 }));
 
+// @ts-expect-error TS2345
 const theme = createTheme(defaultTheme);
 
+// @ts-expect-error TS7031
 function TestHistoryDrawer({ mode: defaultMode }) {
     const [mode, setMode] = React.useState(defaultMode);
     return (
         <ThemeProvider theme={theme}>
             <TestI18N>
+                {/*
+                 // @ts-expect-error TS2322 */}
                 <HistoryDrawer
                     field={{ _id: 'fieldId', label: 'fieldLabel' }}
                     resourceUri="resourceUri"
@@ -40,12 +44,14 @@ TestHistoryDrawer.propTypes = {
 describe('HistoryDrawer', () => {
     it('should not prefetch annotations if the drawer is closed', () => {
         const onClose = jest.fn();
+        // @ts-expect-error TS2339
         useGetFieldAnnotation.mockReturnValue({
             data: undefined,
             error: null,
             isLoading: false,
         });
         const wrapper = render(
+            // @ts-expect-error TS2322
             <TestHistoryDrawer mode={MODE_CLOSED} onClose={onClose} />,
         );
         expect(useGetFieldAnnotation).toHaveBeenCalledWith(
@@ -57,6 +63,7 @@ describe('HistoryDrawer', () => {
     });
 
     it('should show annotations when mode is all', () => {
+        // @ts-expect-error TS2339
         useGetFieldAnnotation.mockReturnValue({
             data: [
                 {
@@ -185,6 +192,7 @@ describe('HistoryDrawer', () => {
     });
 
     it('should close the drawer when clicking on close button', () => {
+        // @ts-expect-error TS2339
         useGetFieldAnnotation.mockReturnValue({
             data: [],
             error: null,

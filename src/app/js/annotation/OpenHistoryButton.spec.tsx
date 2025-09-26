@@ -15,6 +15,7 @@ jest.mock('./useGetFieldAnnotation', () => ({
 describe('OpenHistoryButton', () => {
     it('should call useGetFieldAnnotation with field id and resource uri and display a button to see the annotations', async () => {
         const openHistory = jest.fn();
+        // @ts-expect-error TS2339
         useGetFieldAnnotation.mockReturnValue({
             data: [
                 {
@@ -33,6 +34,8 @@ describe('OpenHistoryButton', () => {
         });
         const wrapper = render(
             <TestI18N>
+                {/*
+                 // @ts-expect-error TS2322 */}
                 <OpenHistoryButton
                     field={{ _id: 'fieldId', label: 'fieldLabel' }}
                     resourceUri="resourceUri"
@@ -54,6 +57,7 @@ describe('OpenHistoryButton', () => {
         ).not.toBeDisabled();
         await waitFor(() => {
             fireEvent.click(
+                // @ts-expect-error TS2345
                 wrapper.queryByText(
                     'annotation_open_history+{"smart_count":1}',
                 ),
@@ -64,6 +68,7 @@ describe('OpenHistoryButton', () => {
 
     it('should display a disabled button when receiving no annotations([])', () => {
         const openHistory = jest.fn();
+        // @ts-expect-error TS2339
         useGetFieldAnnotation.mockReturnValue({
             data: [],
             error: null,
@@ -71,6 +76,8 @@ describe('OpenHistoryButton', () => {
         });
         const wrapper = render(
             <TestI18N>
+                {/*
+                 // @ts-expect-error TS2322 */}
                 <OpenHistoryButton
                     field={{ _id: 'fieldId', label: 'fieldLabel' }}
                     resourceUri="resourceUri"
@@ -95,6 +102,7 @@ describe('OpenHistoryButton', () => {
 
     it('should display loading while loading the annotations', () => {
         const openHistory = jest.fn();
+        // @ts-expect-error TS2339
         useGetFieldAnnotation.mockReturnValue({
             data: null,
             error: null,
@@ -102,6 +110,8 @@ describe('OpenHistoryButton', () => {
         });
         const wrapper = render(
             <TestI18N>
+                {/*
+                 // @ts-expect-error TS2322 */}
                 <OpenHistoryButton
                     field={{ _id: 'fieldId', label: 'fieldLabel' }}
                     resourceUri="resourceUri"

@@ -10,6 +10,7 @@ import { AnnotationList } from './AnnotationList';
 import { MODE_CLOSED, MODES } from './HistoryDrawer.const';
 import { useGetFieldAnnotation } from './useGetFieldAnnotation';
 
+// @ts-expect-error TS7031
 export function HistoryDrawer({ mode, setMode, field, resourceUri }) {
     const { translate } = useTranslate();
     const theme = useTheme();
@@ -38,6 +39,7 @@ export function HistoryDrawer({ mode, setMode, field, resourceUri }) {
                 sx: {
                     width: '40%',
                     minWidth: '600px',
+                    // @ts-expect-error TS2339
                     backgroundColor: theme.palette.grey[100],
                 },
             }}
@@ -48,6 +50,8 @@ export function HistoryDrawer({ mode, setMode, field, resourceUri }) {
                     size="small"
                     onClick={handleClose}
                 >
+                    {/*
+                     // @ts-expect-error TS2769 */}
                     <CloseIcon fontSize="1rem" />
                 </IconButton>
             </Box>

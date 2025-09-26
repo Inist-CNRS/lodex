@@ -20,6 +20,7 @@ import MenuBookIcon from '@mui/icons-material/MenuBook';
 import CancelButton from '../lib/components/CancelButton';
 import { translate } from '../i18n/I18NContext';
 
+// @ts-expect-error TS7031
 const FormatCatalogDescription = ({ format, polyglot }) => {
     return (
         <React.Fragment>
@@ -43,13 +44,20 @@ const FormatCatalogDescription = ({ format, polyglot }) => {
 };
 
 export const FormatCatalog = ({
+    // @ts-expect-error TS7031
     p: polyglot,
+    // @ts-expect-error TS7031
     formats,
+    // @ts-expect-error TS7031
     isOpen,
+    // @ts-expect-error TS7031
     handleClose,
+    // @ts-expect-error TS7031
     onChange,
+    // @ts-expect-error TS7031
     currentValue,
 }) => {
+    // @ts-expect-error TS7006
     const filters = [...new Set(formats.map((item) => item.type))].sort(
         (x, y) => polyglot.t(x).localeCompare(polyglot.t(y)),
     );
@@ -62,16 +70,19 @@ export const FormatCatalog = ({
     useEffect(() => {
         setFilterFormats(
             selectedFilter && selectedFilter !== 'all'
+                // @ts-expect-error TS7006
                 ? formats.filter((item) => item.type === selectedFilter)
                 : formats,
         );
     }, [selectedFilter]);
 
+    // @ts-expect-error TS7006
     const handleValueChange = (newValue) => {
         onChange(newValue);
         handleClose();
     };
 
+    // @ts-expect-error TS7006
     const scrollTo = (el) => {
         if (el) {
             el.scrollIntoView({ inline: 'center', block: 'center' });
@@ -96,10 +107,12 @@ export const FormatCatalog = ({
                         <FilterIcon fontSize="large" sx={{ marginRight: 10 }} />
                     </Box>
                     {filters.map((filter) => (
+                        // @ts-expect-error TS2769
                         <Box key={filter}>
                             <Button
                                 color="primary"
                                 className="format-category"
+                                // @ts-expect-error TS2345
                                 onClick={() => setSelectedFilter(filter)}
                                 variant={
                                     filter === selectedFilter
@@ -117,6 +130,8 @@ export const FormatCatalog = ({
                     aria-label="format list"
                     style={{ height: '70vh' }}
                 >
+                    {/*
+                     // @ts-expect-error TS7006 */}
                     {filteredFormats.map((format) => (
                         <ListItem
                             key={format.name}

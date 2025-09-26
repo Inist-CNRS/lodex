@@ -51,6 +51,7 @@ describe('getDecadeFromData', () => {
 
     it('should do nothing if hits is empty', () => {
         expect(
+            // @ts-expect-error TS2554
             getDecadeFromData({
                 hits: [],
             }),

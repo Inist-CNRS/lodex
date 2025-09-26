@@ -18,10 +18,15 @@ const styles = {
 };
 
 export const AppliedFacetComponent = ({
+    // @ts-expect-error TS7031
     facetValues,
+    // @ts-expect-error TS7031
     field,
+    // @ts-expect-error TS7031
     inverted,
+    // @ts-expect-error TS7031
     p: polyglot,
+    // @ts-expect-error TS7031
     onRequestDelete,
 }) => (
     <Chip
@@ -35,7 +40,9 @@ export const AppliedFacetComponent = ({
                     {field.label}
                 </b>{' '}
                 {interleave(
+                    // @ts-expect-error TS7006
                     facetValues.map((facetValue) => (
+                        // @ts-expect-error TS2339
                         <span key={facetValue.value} style={styles.labelValue}>
                             {facetValue.value}
                         </span>

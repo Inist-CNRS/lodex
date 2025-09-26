@@ -1,4 +1,5 @@
 import React from 'react';
+// @ts-expect-error TS7016
 import { shallow } from 'enzyme';
 
 import { HomeComponent as Home } from './Home';
@@ -13,6 +14,7 @@ describe('<Home />', () => {
 
         shallow(
             <Home
+                // @ts-expect-error TS2769
                 p={{ t: (key) => key }}
                 loading
                 preLoadPublication={preLoadPublication}
@@ -29,6 +31,7 @@ describe('<Home />', () => {
     it('should render Loading if loading', () => {
         const wrapper = shallow(
             <Home
+                // @ts-expect-error TS2769
                 p={{ t: (key) => key }}
                 loading
                 preLoadPublication={() => {}}
@@ -44,6 +47,7 @@ describe('<Home />', () => {
     it('should render a NoDataset component if no dataset present', () => {
         const wrapper = shallow(
             <Home
+                // @ts-expect-error TS2769
                 p={{ t: (key) => key }}
                 hasPublishedDataset={false}
                 preLoadPublication={() => {}}

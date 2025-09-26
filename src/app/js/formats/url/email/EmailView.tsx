@@ -5,11 +5,13 @@ import { field as fieldPropTypes } from '../../../propTypes';
 import getLabel from '../../utils/getLabel';
 import Link from '../../../lib/components/Link';
 
+// @ts-expect-error TS7031
 const EmailView = ({ className, resource, field, fields, type, value }) => {
     const label = getLabel(field, resource, fields, type, value);
     const email = resource[field.name];
 
     return (
+        // @ts-expect-error TS2739
         <Link className={className} to={`mailto:${email}`}>
             {label}
         </Link>

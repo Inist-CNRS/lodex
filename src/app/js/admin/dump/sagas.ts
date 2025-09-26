@@ -5,7 +5,9 @@ import { fromUser } from '../../sharedSelectors';
 import fetchSaga from '../../lib/sagas/fetchSaga';
 import streamFile from '../../lib/streamFile';
 
+// @ts-expect-error TS7031
 export function* handleDumpDatasetRequest({ payload }) {
+    // @ts-expect-error TS7057
     const request = yield select(fromUser.getDumpDatasetRequest, payload);
     const { response, filename } = yield call(fetchSaga, request, [], 'stream');
 
@@ -18,6 +20,7 @@ export function* handleDumpDatasetRequest({ payload }) {
 }
 
 export function* watchDumpDatasetRequest() {
+    // @ts-expect-error TS2769
     yield takeLatest(DUMP_DATASET, handleDumpDatasetRequest);
 }
 

@@ -10,20 +10,28 @@ import {
 } from '@mui/icons-material';
 import { CSS } from '@dnd-kit/utilities';
 import { useSortable } from '@dnd-kit/sortable';
+// @ts-expect-error TS7016
 import { compose } from 'recompose';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 
 const TransformerListItem = ({
+    // @ts-expect-error TS7031
     transformer,
+    // @ts-expect-error TS7031
     id,
+    // @ts-expect-error TS7031
     show,
+    // @ts-expect-error TS7031
     onRemove,
+    // @ts-expect-error TS7031
     onEdit,
+    // @ts-expect-error TS7031
     p: polyglot,
 }) => {
     const { attributes, listeners, setNodeRef, transform, transition } =
         useSortable({ id });
 
+    // @ts-expect-error TS7006
     const renderChip = (name, value) => {
         if (value === undefined || value === null || value === '') {
             return (
@@ -75,9 +83,12 @@ const TransformerListItem = ({
         );
     };
 
+    // @ts-expect-error TS7006
     const renderTransformersArgs = (args) => {
         return (
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                {/*
+                 // @ts-expect-error TS7006 */}
                 {args.map((item) => renderChip(item.name, item.value))}
             </Box>
         );

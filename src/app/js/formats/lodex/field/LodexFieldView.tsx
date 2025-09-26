@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { translate } from '../../../i18n/I18NContext';
+// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import URL from 'url';
 
@@ -65,22 +66,28 @@ const styles = {
     },
 };
 
+// @ts-expect-error TS7006
 const buildValue = (field, resource) => {
     return field.valueOfList ? field.valueOfList.trim() : resource[field.name];
 };
 
 export class LodexFieldView extends Component {
     getValue = () => {
+        // @ts-expect-error TS2339
         const { field, resource } = this.props;
         return buildValue(field, resource);
     };
 
+    // @ts-expect-error TS7006
     ifArray = (value) => {
+        // @ts-expect-error TS2339
         const { className } = this.props;
         if (Array.isArray(value)) {
             return (
                 <span
+                    // @ts-expect-error TS2695
                     className={('lodex_field_value_array', className)}
+                    // @ts-expect-error TS2322
                     style={styles.array}
                 >
                     <ul>
@@ -93,7 +100,9 @@ export class LodexFieldView extends Component {
         }
         return (
             <span
+                // @ts-expect-error TS2695
                 className={('lodex_field_value', className)}
+                // @ts-expect-error TS2322
                 style={styles.value}
             >
                 {this.ifUrl(value)}
@@ -101,12 +110,16 @@ export class LodexFieldView extends Component {
         );
     };
 
+    // @ts-expect-error TS7006
     ifLang = (value) => {
+        // @ts-expect-error TS2339
         const { className } = this.props;
         if (value) {
             return (
                 <span
+                    // @ts-expect-error TS2695
                     className={('lodex_field_lang', className)}
+                    // @ts-expect-error TS2322
                     style={styles.lang}
                 >
                     {value}
@@ -116,20 +129,25 @@ export class LodexFieldView extends Component {
         return;
     };
 
+    // @ts-expect-error TS7006
     ifUrl = (value) => {
         if (isURL(value)) {
+            // @ts-expect-error TS2739
             return <Link href={value}>{value}</Link>;
         }
 
         return <span>{value}</span>;
     };
 
+    // @ts-expect-error TS7006
     loadContent = (label, key) => {
+        // @ts-expect-error TS2339
         const { className, formatData } = this.props;
         if (!label) {
             return;
         }
 
+        // @ts-expect-error TS7006
         const data = formatData[0].fields.find((data) => data.name == label);
         if (!data) {
             return;
@@ -137,7 +155,9 @@ export class LodexFieldView extends Component {
         return (
             <div key={key}>
                 <span
+                    // @ts-expect-error TS2695
                     className={('lodex_field_label', className)}
+                    // @ts-expect-error TS2322
                     style={styles.label}
                 >
                     {data.label} : &#160;
@@ -156,6 +176,7 @@ export class LodexFieldView extends Component {
     };
 
     getHeaderFormat = () => {
+        // @ts-expect-error TS2339
         const { field } = this.props;
         const linkText = this.getValue();
         if (!field.format.args.param.hiddenInfo) {
@@ -163,6 +184,7 @@ export class LodexFieldView extends Component {
                 <div>
                     <a
                         className="link_to_resource"
+                        // @ts-expect-error TS2322
                         style={styles.link}
                         href={linkText}
                     >
@@ -176,11 +198,13 @@ export class LodexFieldView extends Component {
     };
 
     render() {
+        // @ts-expect-error TS2339
         const { className, formatData, field } = this.props;
         if (formatData === undefined) {
             return <span> </span>;
         }
 
+        // @ts-expect-error TS7006
         const labelArray = field.format.args.param.labelArray.map((e) =>
             e.trim(),
         );
@@ -188,6 +212,8 @@ export class LodexFieldView extends Component {
         return (
             <div className={className} style={styles.container}>
                 {this.getHeaderFormat()}
+                {/*
+                 // @ts-expect-error TS7006 */}
                 {labelArray.map((label, key) => {
                     return this.loadContent(label, key);
                 })}
@@ -196,6 +222,7 @@ export class LodexFieldView extends Component {
     }
 }
 
+// @ts-expect-error TS2339
 LodexFieldView.propTypes = {
     className: PropTypes.string,
     formatData: PropTypes.arrayOf(PropTypes.object),
@@ -203,12 +230,14 @@ LodexFieldView.propTypes = {
     resource: PropTypes.object.isRequired,
 };
 
+// @ts-expect-error TS2339
 LodexFieldView.defaultProps = {
     className: null,
 };
 
 export default compose(
     translate,
+    // @ts-expect-error TS2345
     injectData(({ field, resource }) => {
         const value = buildValue(field, resource);
 
@@ -223,8 +252,10 @@ export default compose(
         }
 
         const source = URL.parse(value);
+        // @ts-expect-error TS18047
         if (source.pathname.search(/(ark|uid):/) >= 0) {
             const [check, tenant = 'default', scheme, identifier] =
+                // @ts-expect-error TS18047
                 source.pathname.split('/').filter(Boolean);
             let uri;
             let pathname;
@@ -234,6 +265,7 @@ export default compose(
                 pathname = '/api/export/format/jsonallvalue';
             } else {
                 // lodex <= 12
+                // @ts-expect-error TS18047
                 uri = source.pathname.slice(1);
                 pathname = '/api/export/jsonallvalue';
             }

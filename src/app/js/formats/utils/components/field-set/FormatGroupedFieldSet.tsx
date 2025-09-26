@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
  * @param children {React.ReactNode}
  * @returns {JSX.Element}
  */
+// @ts-expect-error TS7031
 const FormatGroupedFieldSet = ({ children }) => {
     return <div>{children}</div>;
 };

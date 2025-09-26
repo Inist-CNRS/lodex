@@ -10,10 +10,12 @@ import {
 } from './';
 import { loadModelFile } from '../../lib/loadFile';
 
+// @ts-expect-error TS7006
 export function* handleLoadModel(action) {
     if (!action || !action.payload) {
         return;
     }
+    // @ts-expect-error TS7057
     const token = yield select(fromUser.getToken);
     try {
         const { loadModelFileStatus, cancel } = yield race({

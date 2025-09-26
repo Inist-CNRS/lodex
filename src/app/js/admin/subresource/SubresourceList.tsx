@@ -1,4 +1,5 @@
 import React from 'react';
+// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import PropTypes from 'prop-types';
@@ -12,13 +13,17 @@ import {
     GridToolbarDensitySelector,
     GridToolbarFilterButton,
 } from '@mui/x-data-grid';
+// @ts-expect-error TS7016
 import { Link } from 'react-router-dom';
+// @ts-expect-error TS7016
 import { useHistory } from 'react-router';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { translate } from '../../i18n/I18NContext';
 
+// @ts-expect-error TS7031
 export const SubresourceList = ({ subresources, p: polyglot }) => {
     const history = useHistory();
+    // @ts-expect-error TS7006
     const handleRowClick = (params) => {
         history.push(`/display/document/subresource/${params.row._id}`);
     };
@@ -27,10 +32,14 @@ export const SubresourceList = ({ subresources, p: polyglot }) => {
         return (
             <GridToolbarContainer>
                 <Tooltip title={polyglot.t(`column_tooltip`)}>
+                    {/*
+                     // @ts-expect-error TS2741 */}
                     <GridToolbarColumnsButton />
                 </Tooltip>
                 <GridToolbarFilterButton />
                 <Tooltip title={polyglot.t(`density_tooltip`)}>
+                    {/*
+                     // @ts-expect-error TS2741 */}
                     <GridToolbarDensitySelector />
                 </Tooltip>
                 <Tooltip title={polyglot.t(`add_more_subresource`)}>
@@ -81,6 +90,7 @@ export const SubresourceList = ({ subresources, p: polyglot }) => {
                 rows={subresources}
                 getRowId={(row) => row._id}
                 autoHeight
+                // @ts-expect-error TS2322
                 width="100%"
                 onRowClick={handleRowClick}
                 components={{
@@ -101,6 +111,7 @@ SubresourceList.propTypes = {
     p: polyglotPropTypes.isRequired,
 };
 
+// @ts-expect-error TS7006
 const mapStateToProps = (state) => ({
     subresources: state.subresource.subresources,
 });

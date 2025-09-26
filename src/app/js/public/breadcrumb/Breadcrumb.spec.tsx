@@ -1,5 +1,7 @@
 import React from 'react';
+// @ts-expect-error TS7016
 import { shallow } from 'enzyme';
+// @ts-expect-error TS7016
 import { StyleSheetTestUtils } from 'aphrodite';
 
 import { Breadcrumb } from './Breadcrumb';
@@ -29,6 +31,7 @@ describe('Breadcrumb', () => {
             <Breadcrumb
                 breadcrumb={[
                     {
+                        // @ts-expect-error TS2353
                         label: {
                             en: 'Data Istex',
                             fr: 'Accueil',
@@ -51,6 +54,7 @@ describe('Breadcrumb', () => {
             <Breadcrumb
                 breadcrumb={[
                     {
+                        // @ts-expect-error TS2353
                         label: {
                             en: 'Data Istex',
                             fr: 'Accueil',

@@ -6,9 +6,12 @@ import { useDeleteManyAnnotation } from './hooks/useDeleteManyAnnotation';
 
 jest.mock('./hooks/useDeleteManyAnnotation');
 
+// @ts-expect-error TS7031
 function TestButton({ selectedRowIds }) {
     return (
         <TestI18N>
+            {/*
+             // @ts-expect-error TS2322 */}
             <DeleteManyButton selectedRowIds={selectedRowIds} />
         </TestI18N>
     );
@@ -18,6 +21,7 @@ TestButton.propTypes = DeleteManyButton.propTypes;
 
 describe('DeleteManyButton', () => {
     it('should not render button if no annotation is selected', async () => {
+        // @ts-expect-error TS2345
         jest.mocked(useDeleteManyAnnotation).mockImplementation(() => ({
             mutate: jest.fn(),
             isLoading: false,
@@ -31,6 +35,7 @@ describe('DeleteManyButton', () => {
     it('should delete selected annotations', async () => {
         const mutate = jest.fn();
 
+        // @ts-expect-error TS2345
         jest.mocked(useDeleteManyAnnotation).mockImplementation(() => ({
             mutate,
             isLoading: false,
@@ -56,6 +61,7 @@ describe('DeleteManyButton', () => {
     it('should support canceling deletion', async () => {
         const mutate = jest.fn();
 
+        // @ts-expect-error TS2345
         jest.mocked(useDeleteManyAnnotation).mockImplementation(() => ({
             mutate,
             isLoading: false,
@@ -81,6 +87,7 @@ describe('DeleteManyButton', () => {
     it('should support disable modal actions when loading', async () => {
         const mutate = jest.fn();
 
+        // @ts-expect-error TS2345
         jest.mocked(useDeleteManyAnnotation).mockImplementation(() => ({
             mutate,
             isLoading: true,

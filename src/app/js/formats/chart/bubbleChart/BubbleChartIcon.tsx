@@ -1,5 +1,6 @@
 import React from 'react';
 
+// @ts-expect-error TS7006
 const BubbleChartIcon = (props) => (
     <svg viewBox="0 0 100 125" width="1em" height="1em" {...props}>
         <circle cx={48.7} cy={60.9} r={4.3} />

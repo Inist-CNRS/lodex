@@ -9,8 +9,10 @@ import { fromUser } from '../../../sharedSelectors';
 import fetchSaga from '../../../lib/sagas/fetchSaga';
 
 export function* handleChangeFieldStatus({
+    // @ts-expect-error TS7031
     payload: { uri, field, status, prevStatus },
 }) {
+    // @ts-expect-error TS7057
     const request = yield select(fromUser.getChangeFieldStatusRequest, {
         uri,
         field,
@@ -26,5 +28,6 @@ export function* handleChangeFieldStatus({
 }
 
 export default function* watchAddFieldToResource() {
+    // @ts-expect-error TS2769
     yield takeLatest(CHANGE_FIELD_STATUS, handleChangeFieldStatus);
 }

@@ -1,7 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
+// @ts-expect-error TS7016
 import memoize from 'lodash/memoize';
 import HiddenIcon from '@mui/icons-material/VisibilityOff';
 
@@ -18,6 +20,7 @@ import {
 import FieldInternalIcon from '../../fields/FieldInternalIcon';
 import { translate } from '../../i18n/I18NContext';
 
+// @ts-expect-error TS7006
 const getStyle = memoize((field) => {
     if (field.scope === SCOPE_DATASET) {
         return {
@@ -54,12 +57,15 @@ const titleStyle = {
     },
 };
 
+// @ts-expect-error TS7006
 const ensureTextIsShort = (text) =>
     isLongText(text) ? getShortText(text) : text;
 
+// @ts-expect-error TS7006
 const isVisible = (field) =>
     field.display ? null : <HiddenIcon style={titleStyle.hidden} />;
 
+// @ts-expect-error TS7031
 const ComposedOf = ({ compositeFields, polyglot }) => {
     if (!compositeFields.length) {
         return null;
@@ -79,14 +85,22 @@ ComposedOf.propTypes = {
 };
 
 const ExcerptHeaderComponent = ({
+    // @ts-expect-error TS7031
     completedField,
+    // @ts-expect-error TS7031
     compositeFields,
+    // @ts-expect-error TS7031
     field,
+    // @ts-expect-error TS7031
     p: polyglot,
 }) => (
     <div style={getStyle(field)}>
+        {/*
+         // @ts-expect-error TS2322 */}
         <p style={titleStyle.titleBlock}>
             <span>{ensureTextIsShort(field.label)}</span>
+            {/*
+             // @ts-expect-error TS2322 */}
             <span style={titleStyle.titleId} data-field-name={field.name}>
                 (&nbsp;{ensureTextIsShort(field.name)}&nbsp;) {isVisible(field)}
             </span>
@@ -99,8 +113,11 @@ const ExcerptHeaderComponent = ({
             </div>
         )}
         <ComposedOf compositeFields={compositeFields} polyglot={polyglot} />
+        {/*
+         // @ts-expect-error TS2322 */}
         <div style={titleStyle.internal}>
             {field.internalScopes &&
+                // @ts-expect-error TS7006
                 field.internalScopes.map((internalScope) => (
                     <FieldInternalIcon
                         key={internalScope}
@@ -124,8 +141,11 @@ ExcerptHeaderComponent.defaultProps = {
     compositeFields: [],
 };
 
+// @ts-expect-error TS7006
 const mapStateToProps = (state, { field }) => ({
+    // @ts-expect-error TS2339
     completedField: fromFields.getCompletedField(state, field),
+    // @ts-expect-error TS2339
     compositeFields: fromFields.getCompositeFieldsNamesByField(state, field),
 });
 

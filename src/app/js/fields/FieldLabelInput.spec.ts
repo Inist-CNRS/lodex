@@ -2,6 +2,7 @@ import { uniqueField } from './FieldLabelInput';
 
 describe('FieldLabelInput', () => {
     const polyglot = {
+        // @ts-expect-error TS7006
         t: (v) => v,
     };
     describe('validator: uniqueField', () => {

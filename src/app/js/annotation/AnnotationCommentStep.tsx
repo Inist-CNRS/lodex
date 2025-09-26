@@ -15,9 +15,13 @@ import { ProposedValueField } from './fields/ProposedValueField';
 import { getIsFieldValueAnUrl } from '../formats';
 
 export const CommentDescription = ({
+    // @ts-expect-error TS7031
     kind,
+    // @ts-expect-error TS7031
     isFieldAnUrl,
+    // @ts-expect-error TS7031
     annotationInitialValue,
+    // @ts-expect-error TS7031
     fieldInitialValue,
 }) => {
     const { translate } = useTranslate();
@@ -42,6 +46,8 @@ export const CommentDescription = ({
                             overflow: 'hidden',
                         }}
                     >
+                        {/*
+                         // @ts-expect-error TS2554 */}
                         {translate('annotation_correct_value', {
                             value: annotationInitialValue,
                         })}
@@ -100,6 +106,8 @@ export const CommentDescription = ({
                                 overflow: 'hidden',
                             }}
                         >
+                            {/*
+                             // @ts-expect-error TS2554 */}
                             {translate('annotation_remove_value', {
                                 value: annotationInitialValue,
                             })}
@@ -117,6 +125,8 @@ export const CommentDescription = ({
                             overflow: 'hidden',
                         }}
                     >
+                        {/*
+                         // @ts-expect-error TS2554 */}
                         {translate('annotation_remove_content_from', {
                             value: annotationInitialValue,
                         })}
@@ -134,19 +144,24 @@ CommentDescription.propTypes = {
     fieldInitialValue: PropTypes.any,
 };
 
+// @ts-expect-error TS7031
 export function AnnotationCommentStep({ field, form, initialValue }) {
     const isFieldAnUrl = getIsFieldValueAnUrl(field.format?.name);
 
     const annotationInitialValue = useStore(form.store, (state) => {
+        // @ts-expect-error TS18046
         return state.values.initialValue?.replace(/<[^>]*>/g, '');
     });
 
     const kind = useStore(form.store, (state) => {
+        // @ts-expect-error TS18046
         return state.values.kind;
     });
 
     return (
         <>
+            {/*
+             // @ts-expect-error TS2786 */}
             <CommentDescription
                 annotationInitialValue={annotationInitialValue}
                 fieldInitialValue={initialValue}

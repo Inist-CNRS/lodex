@@ -1,4 +1,5 @@
 import React from 'react';
+// @ts-expect-error TS7016
 import { shallow } from 'enzyme';
 import { DeleteEnrichmentButton } from './DeleteEnrichmentButton';
 import { Button } from '@mui/material';
@@ -14,6 +15,7 @@ describe('DeleteEnrichmentButton', () => {
     it('should render a Delete button with closed dialog', () => {
         const wrapper = shallow(
             <DeleteEnrichmentButton
+                // @ts-expect-error TS2322
                 polyglot={{ t: (v) => v }}
                 disabled={false}
                 history={{ push: jest.fn() }}
@@ -33,6 +35,7 @@ describe('DeleteEnrichmentButton', () => {
     it('should open dialog when clicking on delete button', () => {
         const wrapper = shallow(
             <DeleteEnrichmentButton
+                // @ts-expect-error TS2322
                 polyglot={{ t: (v) => v }}
                 disabled={false}
                 history={{ push: jest.fn() }}
@@ -58,6 +61,7 @@ describe('DeleteEnrichmentButton', () => {
 
         const wrapper = shallow(
             <DeleteEnrichmentButton
+                // @ts-expect-error TS2322
                 polyglot={{ t: (v) => v }}
                 disabled={false}
                 history={{ push: historyPush }}
@@ -93,6 +97,7 @@ describe('DeleteEnrichmentButton', () => {
 
         const wrapper = shallow(
             <DeleteEnrichmentButton
+                // @ts-expect-error TS2322
                 polyglot={{ t: (v) => v }}
                 disabled={false}
                 history={{ push: historyPush }}

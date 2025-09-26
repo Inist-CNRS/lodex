@@ -19,9 +19,13 @@ import { useTranslate } from '../../i18n/I18NContext';
 
 export const FieldsEditComponent = ({
     defaultTab = 'page',
+    // @ts-expect-error TS7031
     filter,
+    // @ts-expect-error TS7031
     hideAddColumns,
+    // @ts-expect-error TS7031
     showAddFromColumn,
+    // @ts-expect-error TS7031
     subresourceId,
 }) => {
     const { translate } = useTranslate();
@@ -35,14 +39,18 @@ export const FieldsEditComponent = ({
         }
     }, [showAddFromColumn]);
 
+    // @ts-expect-error TS7006
     const handleChangeTab = (_, newValue) => setTab(newValue);
     const handleCloseAddFromColumnDialog = () => {
         hideAddColumns();
         setAddFromColumnDialog(false);
     };
 
+    // @ts-expect-error TS7006
     const handleToggleSelectedField = (fieldName) => {
+        // @ts-expect-error TS2345
         setSelectedFields((prev) =>
+            // @ts-expect-error TS2345
             prev.includes(fieldName)
                 ? prev.filter((item) => item !== fieldName)
                 : [...prev, fieldName],
@@ -153,7 +161,9 @@ FieldsEditComponent.propTypes = {
     subresourceId: PropTypes.string,
 };
 
+// @ts-expect-error TS7006
 const mapStateToProps = (state) => ({
+    // @ts-expect-error TS2339
     showAddFromColumn: fromParsing.showAddFromColumn(state),
 });
 

@@ -8,6 +8,7 @@ jest.mock('../../../../common/tools/toast');
 
 describe('RunButton', () => {
     beforeEach(() => {
+        // @ts-expect-error TS2339
         toast.mockClear();
     });
     it('should render a run button calling onLaunchEnrichment on click', () => {
@@ -18,6 +19,7 @@ describe('RunButton', () => {
                 enrichmentStatus={''}
                 id="id"
                 onLaunchEnrichment={onLaunchEnrichment}
+                // @ts-expect-error TS2322
                 p={{ t: (v) => v }}
             />,
         );
@@ -42,6 +44,7 @@ describe('RunButton', () => {
                 enrichmentStatus={''}
                 id="id"
                 onLaunchEnrichment={onLaunchEnrichment}
+                // @ts-expect-error TS2322
                 p={{ t: (v) => v }}
             />,
         );
@@ -69,6 +72,7 @@ describe('RunButton', () => {
                 enrichmentStatus={FINISHED}
                 id="id"
                 onLaunchEnrichment={onLaunchEnrichment}
+                // @ts-expect-error TS2322
                 p={{ t: (v) => v }}
             />,
         );
@@ -93,6 +97,7 @@ describe('RunButton', () => {
                 enrichmentStatus={PENDING}
                 id="id"
                 onLaunchEnrichment={onLaunchEnrichment}
+                // @ts-expect-error TS2322
                 p={{ t: (v) => v }}
             />,
         );
@@ -114,6 +119,7 @@ describe('RunButton', () => {
                 enrichmentStatus={IN_PROGRESS}
                 id="id"
                 onLaunchEnrichment={onLaunchEnrichment}
+                // @ts-expect-error TS2322
                 p={{ t: (v) => v }}
             />,
         );

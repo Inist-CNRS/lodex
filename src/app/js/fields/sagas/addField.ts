@@ -4,6 +4,7 @@ import { push } from 'redux-first-history';
 import { ADD_FIELD } from '../';
 import { SCOPE_DOCUMENT } from '../../../../common/scope';
 
+// @ts-expect-error TS7006
 const getAddFieldRedirectUrl = (scope, subresourceId) => {
     if (scope === SCOPE_DOCUMENT) {
         if (subresourceId) {
@@ -14,6 +15,7 @@ const getAddFieldRedirectUrl = (scope, subresourceId) => {
     return `/display/${scope}/edit/new`;
 };
 
+// @ts-expect-error TS7031
 export function* handleAddField({ payload }) {
     const { scope, subresourceId } = payload;
     if (scope) {
@@ -23,5 +25,6 @@ export function* handleAddField({ payload }) {
 }
 
 export default function* watchLoadField() {
+    // @ts-expect-error TS2769
     yield takeLatest([ADD_FIELD], handleAddField);
 }

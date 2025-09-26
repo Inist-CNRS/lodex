@@ -1,4 +1,5 @@
 import React from 'react';
+// @ts-expect-error TS7016
 import { shallow } from 'enzyme';
 
 import FetchFold from './FetchFold';
@@ -7,6 +8,7 @@ import { getIssueData } from './getIstexData';
 jest.mock('./getIstexData');
 
 const getData = () => 'data';
+// @ts-expect-error TS2339
 getIssueData.mockImplementation(() => getData);
 
 describe('VolumeFold', () => {
@@ -16,11 +18,13 @@ describe('VolumeFold', () => {
         year: 'year',
         item: { name: 'volume', count: 1 },
         searchedField: 'host.issn',
+        // @ts-expect-error TS7006
         polyglot: { t: (v) => v },
         children,
     };
 
     it('should render FetchFold to fetch Year', () => {
+        // @ts-expect-error TS2322
         const wrapper = shallow(<VolumeFold {...defaultProps} />);
 
         const fetchFold = wrapper.find(FetchFold);

@@ -23,22 +23,27 @@ export const defaultArgs = {
     flipAxis: false,
 };
 
+// @ts-expect-error TS7006
 const ClusteredChartAdmin = (props) => {
     const { args, p } = props;
     const { params, colors, xTitle, yTitle, flipAxis } = args;
 
+    // @ts-expect-error TS7006
     const handleParams = (params) => {
         updateAdminArgs('params', params, props);
     };
 
+    // @ts-expect-error TS7006
     const handleColors = (colors) => {
         updateAdminArgs('colors', colors || defaultArgs.colors, props);
     };
 
+    // @ts-expect-error TS7006
     const handleXAxisTitle = (event) => {
         updateAdminArgs('xTitle', event.target.value, props);
     };
 
+    // @ts-expect-error TS7006
     const handleYAxisTitle = (event) => {
         updateAdminArgs('yTitle', event.target.value, props);
     };
@@ -49,7 +54,11 @@ const ClusteredChartAdmin = (props) => {
 
     return (
         <FormatGroupedFieldSet>
+            {/*
+             // @ts-expect-error TS2322 */}
             <FormatDataParamsFieldSet>
+                {/*
+                 // @ts-expect-error TS2322 */}
                 <RoutineParamsAdmin
                     params={params || defaultArgs.params}
                     polyglot={p}
@@ -60,7 +69,11 @@ const ClusteredChartAdmin = (props) => {
                     showOrderBy
                 />
             </FormatDataParamsFieldSet>
+            {/*
+             // @ts-expect-error TS2322 */}
             <FormatChartParamsFieldSet defaultExpanded>
+                {/*
+                 // @ts-expect-error TS2322 */}
                 <FormControlLabel
                     control={
                         <Checkbox
@@ -70,17 +83,23 @@ const ClusteredChartAdmin = (props) => {
                     }
                     label={p.t('flip_axis')}
                 />
+                {/*
+                 // @ts-expect-error TS2322 */}
                 <ColorPickerParamsAdmin
                     colors={colors}
                     onChange={handleColors}
                     polyglot={p}
                 />
+                {/*
+                 // @ts-expect-error TS2322 */}
                 <TextField
                     fullWidth
                     label={p.t('format_x_axis_title')}
                     onChange={handleXAxisTitle}
                     value={xTitle}
                 />
+                {/*
+                 // @ts-expect-error TS2322 */}
                 <TextField
                     fullWidth
                     label={p.t('format_y_axis_title')}

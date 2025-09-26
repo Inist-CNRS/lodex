@@ -1,9 +1,11 @@
 import { renderHook } from '@testing-library/react-hooks';
 import PropTypes from 'prop-types';
 import React from 'react';
+// @ts-expect-error TS7016
 import { MemoryRouter, Route, Switch } from 'react-router-dom';
 import { useResourceUri } from './useResourceUri';
 
+// @ts-expect-error TS7031
 function TestRouter({ children, ...rest }) {
     return (
         <MemoryRouter {...rest}>
@@ -27,6 +29,7 @@ TestRouter.propTypes = {
 describe('useResourceUri', () => {
     it('should return resource id for UID resources', () => {
         const { result } = renderHook(() => useResourceUri(), {
+            // @ts-expect-error TS2322
             wrapper: TestRouter,
             initialProps: {
                 initialEntries: ['/uid:/0579J7JN'],
@@ -39,6 +42,7 @@ describe('useResourceUri', () => {
 
     it('should return resource id for ARK resources', () => {
         const { result } = renderHook(() => useResourceUri(), {
+            // @ts-expect-error TS2322
             wrapper: TestRouter,
             initialProps: {
                 initialEntries: ['/ark:/67375/1BB-1JGMFXJK-2'],
@@ -51,6 +55,7 @@ describe('useResourceUri', () => {
 
     it('should return "/graph/:name" for graph', () => {
         const { result } = renderHook(() => useResourceUri(), {
+            // @ts-expect-error TS2322
             wrapper: TestRouter,
             initialProps: {
                 initialEntries: ['/graph/gavF'],
@@ -63,6 +68,7 @@ describe('useResourceUri', () => {
 
     it('should return "/" for home', () => {
         const { result } = renderHook(() => useResourceUri(), {
+            // @ts-expect-error TS2322
             wrapper: TestRouter,
             initialProps: {
                 initialEntries: ['/'],
@@ -75,6 +81,7 @@ describe('useResourceUri', () => {
 
     it('should return null otherwise', () => {
         const { result } = renderHook(() => useResourceUri(), {
+            // @ts-expect-error TS2322
             wrapper: TestRouter,
             initialProps: {
                 initialEntries: ['/other'],

@@ -1,7 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
+// @ts-expect-error TS7016
 import { useParams } from 'react-router';
 
 import { MenuItem, TextField } from '@mui/material';
@@ -24,20 +26,27 @@ export const defaultArgs = {
     value: '',
 };
 
+// @ts-expect-error TS7031
 const FieldCloneAdmin = ({ args, onChange, p: polyglot, fields }) => {
     const { filter } = useParams();
+    // @ts-expect-error TS7006
     const handleValue = (e) => {
         const newArgs = { value: e.target.value };
         onChange(newArgs);
     };
 
+    // @ts-expect-error TS7006
     const filteredFields = fields.filter((f) =>
         isValidClonableField(f, filter),
     );
 
     return (
         <FormatGroupedFieldSet>
+            {/*
+             // @ts-expect-error TS2322 */}
             <FormatDefaultParamsFieldSet defaultExpanded>
+                {/*
+                 // @ts-expect-error TS2322 */}
                 <TextField
                     fullWidth
                     select
@@ -45,6 +54,8 @@ const FieldCloneAdmin = ({ args, onChange, p: polyglot, fields }) => {
                     value={args.value}
                     label={polyglot.t('fieldclone_format_value')}
                 >
+                    {/*
+                     // @ts-expect-error TS7006 */}
                     {filteredFields.map((field) => {
                         return (
                             <MenuItem value={field.name} key={field.name}>
@@ -72,10 +83,13 @@ FieldCloneAdmin.defaultProps = {
     fields: [],
 };
 
+// @ts-expect-error TS7006
 const mapStateToProps = (state) => ({
+    // @ts-expect-error TS2339
     fields: fromFields.getFields(state),
 });
 
+// @ts-expect-error TS7006
 export const isValidClonableField = (field, filter) => {
     if (field.format && field.format.name === 'fieldClone') {
         return false;

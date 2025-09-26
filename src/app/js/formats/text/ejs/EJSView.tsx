@@ -1,14 +1,18 @@
 import { field as fieldPropTypes } from '../../../propTypes';
 import PropTypes from 'prop-types';
 import React, { useMemo, useState } from 'react';
+// @ts-expect-error TS7016
 import ejs from 'ejs/ejs.min.js'; // import the browser-friendly build from ejs
 import injectData from '../../injectData';
 import DOMPurify from "dompurify";
 import InvalidFormat from '../../InvalidFormat';
 import { connect } from 'react-redux';
+// @ts-expect-error TS7016
 import compose from 'recompose/compose';
+// @ts-expect-error TS7016
 import _ from 'lodash';
 
+// @ts-expect-error TS7031
 const EJSView = ({ field, data, template }) => {
     const [onError, setOnError] = useState(false);
     const [error, setError] = useState(false);
@@ -20,6 +24,7 @@ const EJSView = ({ field, data, template }) => {
             return t;
         } catch (err) {
             setOnError(true);
+            // @ts-expect-error TS2345
             setError(err);
             return null;
         }
@@ -36,12 +41,14 @@ const EJSView = ({ field, data, template }) => {
             return sanitizedHTML;
         } catch (err) {
             setOnError(true);
+            // @ts-expect-error TS2345
             setError(err);
             return 'null';
         }
     }, [compiledTemplate, data]);
 
     if (onError) {
+        // @ts-expect-error TS2339
         return <InvalidFormat format={field.format} value={error.message} />;
     }
 
@@ -62,6 +69,7 @@ EJSView.defaultProps = {
     className: null,
 };
 
+// @ts-expect-error TS7006
 const mapStateToProps = (state, { formatData, formatTotal }) => {
     if (!formatData) {
         return {
@@ -87,6 +95,7 @@ const mapStateToProps = (state, { formatData, formatTotal }) => {
     };
 };
 
+// @ts-expect-error TS2339
 export const EJSAdminView = connect((state, { dataset }) => {
     return {
         field: {
@@ -98,6 +107,7 @@ export const EJSAdminView = connect((state, { dataset }) => {
             values: dataset.values,
         },
     };
+// @ts-expect-error TS2345
 })(EJSView);
 
 export default compose(injectData(), connect(mapStateToProps))(EJSView);

@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
+// @ts-expect-error TS7031
 export const CloseAllIcon = ({ fill, ...props }) => {
     return (
         <svg

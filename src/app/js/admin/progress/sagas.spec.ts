@@ -15,8 +15,11 @@ describe('progress sagas handleStartProgressSaga', () => {
     it('should get progress and trigger loadProgress action', () => {
         const it = handleStartProgressSaga();
         it.next();
+        // @ts-expect-error TS2339
         expect(it.next().value).toEqual(select(fromUser.getProgressRequest));
+        // @ts-expect-error TS2345
         expect(it.next('request').value).toEqual(call(fetchSaga, 'request'));
+        // @ts-expect-error TS2345
         expect(it.next({ response: 'progress data' }).value).toEqual(
             put(updateProgress('progress data')),
         );
@@ -27,8 +30,11 @@ describe('progress sagas handleStartProgressSaga', () => {
     it('should trigger finishProgress action if response.status is PENDING', () => {
         const it = handleStartProgressSaga();
         it.next();
+        // @ts-expect-error TS2339
         expect(it.next().value).toEqual(select(fromUser.getProgressRequest));
+        // @ts-expect-error TS2345
         expect(it.next('request').value).toEqual(call(fetchSaga, 'request'));
+        // @ts-expect-error TS2345
         expect(it.next({ response: { status: PENDING } }).value).toEqual(
             put(updateProgress({ status: PENDING })),
         );
@@ -39,8 +45,11 @@ describe('progress sagas handleStartProgressSaga', () => {
     it('should not trigger loadProgress action if request returned an error', () => {
         const it = handleStartProgressSaga();
         it.next();
+        // @ts-expect-error TS2339
         expect(it.next().value).toEqual(select(fromUser.getProgressRequest));
+        // @ts-expect-error TS2345
         expect(it.next('request').value).toEqual(call(fetchSaga, 'request'));
+        // @ts-expect-error TS2345
         expect(it.next({ error: 'error' }).value).toEqual(
             put(errorProgress('error')),
         );

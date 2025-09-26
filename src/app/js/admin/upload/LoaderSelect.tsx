@@ -15,10 +15,15 @@ const styles = {
 };
 
 const LoaderSelectComponent = ({
+    // @ts-expect-error TS7031
     loaders,
+    // @ts-expect-error TS7031
     value,
+    // @ts-expect-error TS7031
     setLoader,
+    // @ts-expect-error TS7031
     p: polyglot,
+    // @ts-expect-error TS7031
     disabled,
 }) => {
     const [openLoadersDialog, setOpenLoadersDialog] = useState(false);
@@ -55,6 +60,7 @@ const LoaderSelectComponent = ({
                     label={polyglot.t('loader_name')}
                     onChange={(e) => setLoader(e.target.value)}
                     value={value}
+                    // @ts-expect-error TS2322
                     autoWidth
                     disabled={disabled}
                     variant="standard"
@@ -68,11 +74,13 @@ const LoaderSelectComponent = ({
                         {polyglot.t('automatic-loader')}
                     </MenuItem>
                     {loaders
+                        // @ts-expect-error TS7006
                         .sort((x, y) =>
                             polyglot
                                 .t(x.name)
                                 .localeCompare(polyglot.t(y.name)),
                         )
+                        // @ts-expect-error TS7006
                         .map((loader) => (
                             <MenuItem
                                 className="select-loader-item"

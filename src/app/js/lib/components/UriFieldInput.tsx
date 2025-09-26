@@ -1,12 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import { translate } from '../../i18n/I18NContext';
+// @ts-expect-error TS7016
 import { Field } from 'redux-form';
 
 import FormTextField from './FormTextField';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 
+// @ts-expect-error TS7031
 export const UriFieldInputComponent = ({ p: polyglot, input }) => (
     <Field
         key="uri"

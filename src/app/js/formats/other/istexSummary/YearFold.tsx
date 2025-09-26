@@ -7,13 +7,19 @@ import { SEARCHED_FIELD_VALUES } from './constants';
 import { polyglot as polyglotPropTypes } from '../../../propTypes';
 
 const YearFold = ({
+    // @ts-expect-error TS7031
     value,
+    // @ts-expect-error TS7031
     item: { name: year, count },
+    // @ts-expect-error TS7031
     searchedField,
+    // @ts-expect-error TS7031
     polyglot,
+    // @ts-expect-error TS7031
     children,
 }) => (
     <FetchFold
+        // @ts-expect-error TS2769
         label={year}
         count={count}
         year={year}

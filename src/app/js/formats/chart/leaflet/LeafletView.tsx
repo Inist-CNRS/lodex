@@ -6,8 +6,11 @@ import React, {
     useCallback,
 } from 'react';
 import { polyglot as polyglotPropTypes } from '../../../propTypes';
+// @ts-expect-error TS7016
 import compose from 'recompose/compose';
+// @ts-expect-error TS7016
 import zip from 'lodash/zip';
+// @ts-expect-error TS7016
 import flatten from 'lodash/flatten';
 
 import injectData from '../../injectData';
@@ -31,9 +34,13 @@ const styles = {
 const LazyMap = React.lazy(() => import("./LeafletMap"));
 
 const LeafletView = ({
+    // @ts-expect-error TS7031
     formatData,
+    // @ts-expect-error TS7031
     p,
+    // @ts-expect-error TS7031
     zoom,
+    // @ts-expect-error TS7031
     center,
   }) => {
     const mounted = useClientOnly();
@@ -65,10 +72,12 @@ const LeafletView = ({
             };
         }
         const formatDataNormalized = flatten(formatData
+            // @ts-expect-error TS7006
             .map(x => {
                 // Multi values for all cases
                 let a = x._id;
                 let b = x.value;
+                // @ts-expect-error TS2304
                 if (typeof _id === 'string') {
                     a = [x._id]; // '["39.5015541259931","-99.0602406280213"]'
                 }
@@ -88,10 +97,12 @@ const LeafletView = ({
                     b,
                 }
             })
+            // @ts-expect-error TS7006
             .map(y => {
                 return zip(y.a, y.b)
             }));
         return {
+            // @ts-expect-error TS7031
             input: formatDataNormalized.map(([_id, value]) => {
                 let latlng; // see https://leafletjs.com/reference.html#latlng
                 try {
@@ -141,6 +152,8 @@ const LeafletView = ({
     return (
         <div style={{ height }}>
            <ClientOnly>
+                {/*
+                 // @ts-expect-error TS2322 */}
                 <div style={styles.container} ref={containerRef}>
                     <Suspense fallback={<Loading>{translate('loading')}</Loading>}>
                         <LazyMap

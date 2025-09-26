@@ -3,6 +3,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import { Box, Chip } from '@mui/material';
+// @ts-expect-error TS7016
 import { compose } from 'recompose';
 import { translate } from '../../i18n/I18NContext';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
@@ -11,8 +12,11 @@ import AppliedSearchFacet from './AppliedSearchFacet';
 import { facetActions } from './reducer';
 
 export const AppliedSearchFacetListComponent = ({
+    // @ts-expect-error TS7031
     facets,
+    // @ts-expect-error TS7031
     clearAll,
+    // @ts-expect-error TS7031
     p: polyglot,
 }) => (
     <Box className="applied-facet-container">
@@ -25,6 +29,8 @@ export const AppliedSearchFacetListComponent = ({
                     width: '100%',
                 }}
             >
+                {/*
+                 // @ts-expect-error TS7031 */}
                 {facets.map(({ name, value: facetValues }) => (
                     <AppliedSearchFacet
                         key={name}
@@ -50,7 +56,9 @@ AppliedSearchFacetListComponent.propTypes = {
     p: polyglotPropTypes.isRequired,
 };
 
+// @ts-expect-error TS7006
 const mapStateToProps = (state) => ({
+    // @ts-expect-error TS2339
     facets: fromSearch.getAppliedFacetList(state),
 });
 

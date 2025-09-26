@@ -16,6 +16,7 @@ const styles = {
     },
 };
 
+// @ts-expect-error TS7031
 const Loading = ({ children }) => (
     <div className="loading" style={styles.container}>
         <div style={styles.textContainer}>

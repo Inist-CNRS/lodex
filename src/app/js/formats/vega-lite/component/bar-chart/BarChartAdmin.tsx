@@ -57,6 +57,7 @@ export const defaultArgs = {
     aspectRatio: ASPECT_RATIO_16_6,
 };
 
+// @ts-expect-error TS7006
 const BarChartAdmin = (props) => {
     const {
         p: polyglot,
@@ -132,6 +133,7 @@ const BarChartAdmin = (props) => {
         updateAdminArgs('advancedMode', !advancedMode, props);
     };
 
+    // @ts-expect-error TS7006
     const handleAdvancedModeSpec = (newSpec) => {
         updateAdminArgs('advancedModeSpec', newSpec, props);
     };
@@ -140,10 +142,12 @@ const BarChartAdmin = (props) => {
         updateAdminArgs('advancedModeSpec', null, props);
     };
 
+    // @ts-expect-error TS7006
     const handleParams = (params) => {
         updateAdminArgs('params', params, props);
     };
 
+    // @ts-expect-error TS7006
     const handleColors = (colors) => {
         updateAdminArgs('colors', colors || defaultArgs.colors, props);
     };
@@ -152,10 +156,12 @@ const BarChartAdmin = (props) => {
         updateAdminArgs('axisRoundValue', !axisRoundValue, props);
     };
 
+    // @ts-expect-error TS7006
     const handleScale = (event) => {
         updateAdminArgs('scale', event.target.value, props);
     };
 
+    // @ts-expect-error TS7006
     const handleDirection = (event) => {
         updateAdminArgs('direction', event.target.value, props);
     };
@@ -168,6 +174,7 @@ const BarChartAdmin = (props) => {
         updateAdminArgs('diagonalCategoryAxis', !diagonalCategoryAxis, props);
     };
 
+    // @ts-expect-error TS7006
     const handleBarSize = (event) => {
         updateAdminArgs('barSize', parseInt(event.target.value, 10), props);
     };
@@ -184,21 +191,28 @@ const BarChartAdmin = (props) => {
         updateAdminArgs('labelOverlap', !args.labelOverlap, props);
     };
 
+    // @ts-expect-error TS7006
     const handleTooltipCategory = (category) => {
         updateAdminArgs('tooltipCategory', category, props);
     };
 
+    // @ts-expect-error TS7006
     const handleTooltipValue = (value) => {
         updateAdminArgs('tooltipValue', value, props);
     };
 
+    // @ts-expect-error TS7006
     const handleAspectRatio = (value) => {
         updateAdminArgs('aspectRatio', value, props);
     };
 
     return (
         <FormatGroupedFieldSet>
+            {/*
+             // @ts-expect-error TS2322 */}
             <FormatDataParamsFieldSet>
+                {/*
+                 // @ts-expect-error TS2322 */}
                 <RoutineParamsAdmin
                     params={params || defaultArgs.params}
                     onChange={handleParams}
@@ -209,7 +223,11 @@ const BarChartAdmin = (props) => {
                     showOrderBy={showOrderBy}
                 />
             </FormatDataParamsFieldSet>
+            {/*
+             // @ts-expect-error TS2322 */}
             <FormatChartParamsFieldSet defaultExpanded>
+                {/*
+                 // @ts-expect-error TS2322 */}
                 <FormGroup>
                     <FormControlLabel
                         control={
@@ -221,6 +239,8 @@ const BarChartAdmin = (props) => {
                         label={polyglot.t('advancedMode')}
                     />
                 </FormGroup>
+                {/*
+                 // @ts-expect-error TS2322 */}
                 {advancedMode ? (
                     <VegaAdvancedMode
                         value={spec}
@@ -324,11 +344,15 @@ const BarChartAdmin = (props) => {
                         />
                     </>
                 )}
+                {/*
+                 // @ts-expect-error TS2322 */}
                 <AspectRatioSelector
                     value={aspectRatio}
                     onChange={handleAspectRatio}
                 />
             </FormatChartParamsFieldSet>
+            {/*
+             // @ts-expect-error TS2322 */}
             <VegaFieldPreview
                 args={args}
                 PreviewComponent={BarChartAdminView}

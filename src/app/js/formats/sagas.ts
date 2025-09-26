@@ -6,6 +6,7 @@ import {
     throttle,
     all,
 } from 'redux-saga/effects';
+// @ts-expect-error TS7016
 import get from 'lodash/get';
 
 import {
@@ -24,13 +25,16 @@ import { SCOPE_DATASET, SCOPE_GRAPHIC } from '../../../common/scope';
 import { ISTEX_API_URL } from '../../../common/externals';
 import { isPrecomputed } from './checkPredicate';
 
+// @ts-expect-error TS7006
 const isSparqlQuery = (url) =>
     url.toLowerCase().includes('select') &&
     url.toLowerCase().includes('where') &&
     url.toLowerCase().includes('?query=');
 
+// @ts-expect-error TS7006
 const isIstexQuery = (url) => url.includes(ISTEX_API_URL);
 
+// @ts-expect-error TS7006
 export const getQueryType = (url) => {
     if (isSparqlQuery(url)) {
         return 'sparql';
@@ -43,25 +47,30 @@ export const getQueryType = (url) => {
     return 'other';
 };
 
+// @ts-expect-error TS7006
 export function* getQuery(url, queryString) {
+    // @ts-expect-error TS7057
     const queryType = yield call(getQueryType, url);
     switch (queryType) {
         case 'sparql': {
             const newUrl = url.split('?query=')[0];
             const body = 'query=' + url.split('?query=')[1];
 
+            // @ts-expect-error TS7057
             return yield select(fromUser.getSparqlRequest, {
                 url: newUrl,
                 body,
             });
         }
         case 'istex': {
+            // @ts-expect-error TS7057
             return yield select(fromUser.getIstexRequest, {
                 url,
                 queryString,
             });
         }
         default:
+            // @ts-expect-error TS7057
             return yield select(fromUser.getUrlRequest, {
                 url,
                 queryString,
@@ -69,7 +78,9 @@ export function* getQuery(url, queryString) {
     }
 }
 
+// @ts-expect-error TS7006
 export function* loadFormatData(name, url, queryString) {
+    // @ts-expect-error TS7057
     const request = yield call(getQuery, url, queryString);
 
     const { error, response } = yield call(fetchSaga, request);
@@ -100,6 +111,7 @@ export function* loadFormatData(name, url, queryString) {
     );
 }
 
+// @ts-expect-error TS7006
 export const splitPrecomputedNameAndRoutine = (value) => {
     if (!value || typeof value !== 'string') {
         return {
@@ -128,11 +140,17 @@ export const splitPrecomputedNameAndRoutine = (value) => {
 
 export function* handleLoadFormatDataRequest({
     payload: {
+        // @ts-expect-error TS2525
         field,
+        // @ts-expect-error TS2525
         filter,
+        // @ts-expect-error TS2525
         value: rawValue,
+        // @ts-expect-error TS2525
         resource,
+        // @ts-expect-error TS2525
         withUri,
+        // @ts-expect-error TS2525
         withFacets,
     } = {},
 }) {
@@ -166,9 +184,11 @@ export function* handleLoadFormatDataRequest({
         return;
     }
 
+    // @ts-expect-error TS7057
     const params = yield select(fromFields.getGraphFieldParamsByName, name);
     const uri = get(resource, 'uri', undefined);
 
+    // @ts-expect-error TS7057
     const queryString = yield call(getQueryString, {
         params: {
             ...precomputed,
@@ -181,27 +201,37 @@ export function* handleLoadFormatDataRequest({
     yield call(loadFormatData, name, value, queryString);
 }
 
+// @ts-expect-error TS7006
 export function* loadFormatDataForName(name, filter) {
+    // @ts-expect-error TS7057
     const field = yield select(fromFields.getFieldByName, name);
     if (!field || ![SCOPE_DATASET, SCOPE_GRAPHIC].includes(field.scope)) {
         return;
     }
+    // @ts-expect-error TS7057
     const url = yield select(fromCharacteristic.getCharacteristicByName, name);
     const { precomputedName, routine } = splitPrecomputedNameAndRoutine(url);
     const precomputed = isPrecomputed(field) ? { precomputedName } : {};
 
+    // @ts-expect-error TS7057
     const params = yield select(fromFields.getGraphFieldParamsByName, name);
 
+    // @ts-expect-error TS7057
     let facets = yield select(fromDataset.getAppliedFacets);
     facets = Object.keys(facets).reduce((acc, facetName) => {
+        // @ts-expect-error TS7053
         acc[facetName] = facets[facetName].map(
+            // @ts-expect-error TS7006
             (facetValue) => facetValue.value,
         );
         return acc;
     }, {});
+    // @ts-expect-error TS7057
     const invertedFacets = yield select(fromDataset.getInvertedFacetKeys);
+    // @ts-expect-error TS7057
     const match = yield select(fromDataset.getFilter);
 
+    // @ts-expect-error TS7057
     const queryString = yield call(getQueryString, {
         facets,
         invertedFacets,
@@ -216,13 +246,16 @@ export function* loadFormatDataForName(name, filter) {
     yield call(loadFormatData, name, routine, queryString);
 }
 
+// @ts-expect-error TS2525
 export function* handleFilterFormatDataRequest({ payload: { filter } = {} }) {
+    // @ts-expect-error TS7057
     const names = yield select(fromFormat.getCurrentFieldNames);
 
     if (!names || !names.length) {
         return;
     }
 
+    // @ts-expect-error TS7006
     yield all(names.map((name) => call(loadFormatDataForName, name, filter)));
 }
 
@@ -230,6 +263,7 @@ export default function* () {
     // see https://github.com/redux-saga/redux-saga/blob/master/docs/api/README.md#throttlems-pattern-saga-args
     yield throttle(
         500,
+        // @ts-expect-error TS2769
         [
             facetActionTypes.TOGGLE_FACET_VALUE,
             facetActionTypes.SET_ALL_VALUE_FOR_FACET,
@@ -241,5 +275,6 @@ export default function* () {
         ],
         handleFilterFormatDataRequest,
     );
+    // @ts-expect-error TS2769
     yield takeEvery(LOAD_FORMAT_DATA, handleLoadFormatDataRequest);
 }

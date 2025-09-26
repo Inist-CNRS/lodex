@@ -15,6 +15,7 @@ import {
     MenuItem,
     TextField,
 } from '@mui/material';
+// @ts-expect-error TS7016
 import CancelIcon from '@mui/material/internal/svg-icons/Cancel';
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
@@ -31,10 +32,15 @@ import CancelButton from '../../lib/components/CancelButton';
 import datasetApi from '../../admin/api/dataset';
 
 export const ExportDatasetButtonComponent = ({
+    // @ts-expect-error TS7031
     dumpDataset,
+    // @ts-expect-error TS7031
     loading,
+    // @ts-expect-error TS7031
     disabled,
+    // @ts-expect-error TS7031
     onDone,
+    // @ts-expect-error TS7031
     choices,
 }) => {
     const { translate } = useTranslate();
@@ -73,6 +79,7 @@ export const ExportDatasetButtonComponent = ({
                             renderTags={(value, getTagProps) =>
                                 value.map((option, index) => (
                                     <Chip
+                                        // @ts-expect-error TS2783
                                         key={option}
                                         label={option}
                                         {...getTagProps({ index })}
@@ -81,6 +88,7 @@ export const ExportDatasetButtonComponent = ({
                                                 aria-hidden={false}
                                                 aria-label={translate(
                                                     'remove_field_from_export',
+                                                    // @ts-expect-error TS2554
                                                     {
                                                         field: option,
                                                     },
@@ -152,12 +160,14 @@ export const ExportDatasetButtonComponent = ({
     );
 };
 
+// @ts-expect-error TS7006
 export const ExportDatasetButtonWithFetch = (props) => {
     const [choices, setChoices] = useState(null);
     useEffect(() => {
         const fetchDataColumns = async () => {
             const { columns } = await datasetApi.getDatasetColumns();
             setChoices(
+                // @ts-expect-error TS7031
                 columns.map(({ key }) => key).filter((name) => name !== '_id'),
             );
         };
@@ -181,6 +191,7 @@ ExportDatasetButtonComponent.propTypes = {
 
 export const ExportDatasetButton = connect(
     (state) => ({
+        // @ts-expect-error TS2339
         loading: fromDump.isDumpLoading(state),
     }),
     {

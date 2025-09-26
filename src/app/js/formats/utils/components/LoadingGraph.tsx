@@ -8,6 +8,7 @@ class LoadingGraph extends Component {
     };
 
     render() {
+        // @ts-expect-error TS2339
         const { polyglot } = this.props;
 
         return (

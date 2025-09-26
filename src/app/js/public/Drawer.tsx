@@ -24,7 +24,9 @@ export const useDrawer = (
     }
 
     const dispatch = useDispatch();
+    // @ts-expect-error TS2339
     const visitedFilter = useSelector(fromSearch.getVisitedFilter);
+    // @ts-expect-error TS2339
     const annotationsFilter = useSelector(fromSearch.getAnnotationsFilter);
 
     useEffect(() => {}, [dispatch, visitedFilter, annotationsFilter]);
@@ -120,14 +122,17 @@ const styles = stylesToClassname(
 
 const preventScroll = () => {
     document.body.style.overflow = 'hidden';
+    // @ts-expect-error TS7015
     document.body.style['-webkit-overflow-scrolling'] = 'touch';
 };
 
 const removePreventScroll = () => {
     document.body.style.overflow = '';
+    // @ts-expect-error TS7015
     document.body.style['-webkit-overflow-scrolling'] = '';
 };
 
+// @ts-expect-error TS7031
 const Drawer = ({ children, status, onClose, disabled }) => {
     useEffect(() => {
         if (status === 'open') {
@@ -140,9 +145,13 @@ const Drawer = ({ children, status, onClose, disabled }) => {
     return (
         <>
             <div
+                // @ts-expect-error TS2339
                 className={classnames('drawer', styles.drawer, {
+                    // @ts-expect-error TS2339
                     [styles.drawerOpen]: status === DRAWER_OPEN && !disabled,
+                    // @ts-expect-error TS2339
                     [styles.drawerClosed]: status === DRAWER_CLOSED,
+                    // @ts-expect-error TS2339
                     [styles.drawerDisabled]: disabled,
                 })}
             >
@@ -150,7 +159,9 @@ const Drawer = ({ children, status, onClose, disabled }) => {
                     React.cloneElement(children, { closeDrawer: onClose })}
             </div>
             <div
+                // @ts-expect-error TS2339
                 className={classnames('mask', styles.mask, {
+                    // @ts-expect-error TS2339
                     [styles.maskOpen]: status === DRAWER_OPEN && !disabled,
                 })}
                 onClick={onClose}

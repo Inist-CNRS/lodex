@@ -1,3 +1,4 @@
+// @ts-expect-error TS7016
 import get from 'lodash/get';
 
 import fetch from '../../../lib/fetch';
@@ -8,6 +9,7 @@ import { buildIstexQuery } from '../istexSummary/getIstexData';
 import { TOP_HITS, REFBIBS_TITLE } from '../istexSummary/constants';
 
 let refbibsValue = '';
+// @ts-expect-error TS7031
 export const getUrl = ({ props: { resource, field } }) => {
     const value = resource[field.name];
     if (!value) {
@@ -18,6 +20,7 @@ export const getUrl = ({ props: { resource, field } }) => {
     return {
         url: buildIstexQuery({
             query: value,
+            // @ts-expect-error TS2322
             facet: `${REFBIBS_TITLE}[50]>${TOP_HITS}[1]`,
             output,
             size: 0,
@@ -25,6 +28,7 @@ export const getUrl = ({ props: { resource, field } }) => {
     };
 };
 
+// @ts-expect-error TS7006
 const getOpenurlQuery = (article) => {
     let queryParams = ['noredirect'];
 
@@ -64,6 +68,7 @@ const getOpenurlQuery = (article) => {
         return `${ISTEX_API_URL}/document/openurl?${queryParams.join('&')}`;
 };
 
+// @ts-expect-error TS7006
 const parseOpenurlFetchResult = async (fetchResult) => {
     if (
         fetchResult.error &&
@@ -90,6 +95,7 @@ const parseOpenurlFetchResult = async (fetchResult) => {
     }
 };
 
+// @ts-expect-error TS7006
 const isArticleIstex = async (article) => {
     const url = getOpenurlQuery(article);
     if (url) {
@@ -99,6 +105,7 @@ const isArticleIstex = async (article) => {
     }
 };
 
+// @ts-expect-error TS7006
 const parseFetchResult = (fetchResult) => {
     if (fetchResult.error) {
         throw new Error(fetchResult.error);
@@ -107,9 +114,12 @@ const parseFetchResult = (fetchResult) => {
         response: { aggregations, nextPageURI },
     } = fetchResult;
     const buckets = get(aggregations, ['refBibs.title', 'buckets'], []);
+    // @ts-expect-error TS7034
     let istexArticles = [];
+    // @ts-expect-error TS7034
     let fetchPromises = [];
 
+    // @ts-expect-error TS7006
     buckets.forEach((bucket) => {
         let refbibsArticle = get(bucket, [
             'topHits',
@@ -119,6 +129,7 @@ const parseFetchResult = (fetchResult) => {
             '_source',
             'refBibs',
         ]).find(
+            // @ts-expect-error TS7006
             (refBib) =>
                 refBib.title === bucket.key &&
                 refbibsValue.includes(refBib.host.title),
@@ -132,8 +143,10 @@ const parseFetchResult = (fetchResult) => {
         }
     });
 
+    // @ts-expect-error TS7005
     return Promise.all(fetchPromises).then(() => {
         return {
+            // @ts-expect-error TS7005
             hits: istexArticles.map((istexArticle) => {
                 const hostPagesFirst =
                     istexArticle.host.pages && istexArticle.host.pages.first
@@ -156,6 +169,7 @@ const parseFetchResult = (fetchResult) => {
                     title: istexArticle.title,
                     publicationDate: istexArticle.publicationDate,
                     authors: istexArticle.author
+                        // @ts-expect-error TS7031
                         ? istexArticle.author.map(({ name }) => name)
                         : '',
                     hostGenre: istexArticle.host.genre[0],

@@ -10,9 +10,11 @@ import {
 } from '@mui/material';
 import { useTranslate } from '../../i18n/I18NContext';
 
+// @ts-expect-error TS7031
 const ImportHasRelaunchDialog = ({ onClose, data }) => {
     const { translate } = useTranslate();
     const actions = [
+        // @ts-expect-error TS2769
         <Button
             raised
             key="submit"

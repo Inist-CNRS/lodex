@@ -13,6 +13,7 @@ import { useTranslate } from '../../i18n/I18NContext';
 import { ConfirmPopup } from '../../lib/components/ConfirmPopup';
 import datasetApi from '../api/dataset';
 
+// @ts-expect-error TS7031
 export function DeleteFilteredButton({ filter, reloadDataset }) {
     const apiRef = useGridApiContext();
     const rowCount = useGridSelector(apiRef, gridRowCountSelector);
@@ -48,6 +49,7 @@ export function DeleteFilteredButton({ filter, reloadDataset }) {
             });
             apiRef.current.setFilterModel({
                 items: [],
+                // @ts-expect-error TS2322
                 linkOperator: 'and',
             });
             reloadDataset();

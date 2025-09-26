@@ -6,10 +6,13 @@ import PropTypes from 'prop-types';
 import { TestI18N } from '../../i18n/I18NContext';
 import { ProposedValueField } from './ProposedValueField';
 
+// @ts-expect-error TS7031
 function TestProposedValueField({ field, initialValue }) {
     const form = useForm();
     return (
         <TestI18N>
+            {/*
+             // @ts-expect-error TS2322 */}
             <ProposedValueField
                 field={field}
                 form={form}

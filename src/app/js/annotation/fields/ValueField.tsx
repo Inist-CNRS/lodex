@@ -16,14 +16,17 @@ import { useTranslate } from '../../i18n/I18NContext';
  * @param {Object} props.form
  * @param {string[] | string[][]} props.choices
  */
+// @ts-expect-error TS7031
 export function ValueField({ form, choices }) {
     const { translate } = useTranslate();
 
     const kind = useStore(form.store, (state) => {
+        // @ts-expect-error TS18046
         return state.values.kind;
     });
 
     const formattedChoices = useMemo(() => {
+        // @ts-expect-error TS7006
         return choices.map((choice) => {
             return [].concat(choice).join(' ; ');
         });
@@ -31,6 +34,8 @@ export function ValueField({ form, choices }) {
 
     return (
         <form.Field name="initialValue">
+            {/*
+             // @ts-expect-error TS7006 */}
             {(field) => {
                 const hasErrors = !!(
                     field.state.meta.isTouched &&
@@ -60,6 +65,8 @@ export function ValueField({ form, choices }) {
                                 'aria-labelledby': 'annotation_choose_value',
                             }}
                         >
+                            {/*
+                             // @ts-expect-error TS7006 */}
                             {formattedChoices.map((choice) => (
                                 <MenuItem key={choice} value={choice}>
                                     {choice}

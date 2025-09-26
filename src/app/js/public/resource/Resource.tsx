@@ -5,8 +5,10 @@ import classnames from 'classnames';
 import PropTypes from 'prop-types';
 import React, { useEffect, useMemo, useState } from 'react';
 import { connect } from 'react-redux';
+// @ts-expect-error TS7016
 import { withRouter } from 'react-router-dom';
 import { Swipeable } from 'react-swipeable';
+// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import { useTranslate } from '../../i18n/I18NContext';
 
@@ -46,6 +48,7 @@ const navStyles = stylesToClassname(
     'resource-navigation',
 );
 
+// @ts-expect-error TS7006
 const buildLocationFromResource = (resource) =>
     resource
         ? {
@@ -54,25 +57,40 @@ const buildLocationFromResource = (resource) =>
           }
         : {};
 
+// @ts-expect-error TS7006
 const navigate = (history, location) => history.push(location);
 
+// @ts-expect-error TS7006
 const getArkResourceUrl = (naan, rest) => {
     return `${naan}/${rest}`;
 };
 
 export const ResourceComponent = ({
+    // @ts-expect-error TS7031
     history,
+    // @ts-expect-error TS7031
     resource,
+    // @ts-expect-error TS7031
     datasetTitleKey,
+    // @ts-expect-error TS7031
     characteristics,
+    // @ts-expect-error TS7031
     loading,
+    // @ts-expect-error TS7031
     removed,
+    // @ts-expect-error TS7031
     prevResource,
+    // @ts-expect-error TS7031
     nextResource,
+    // @ts-expect-error TS7031
     match,
+    // @ts-expect-error TS7031
     tenant,
+    // @ts-expect-error TS7031
     preLoadResource,
+    // @ts-expect-error TS7031
     preLoadPublication,
+    // @ts-expect-error TS7031
     preLoadExporters,
 }) => {
     useRememberVisit(resource);
@@ -114,6 +132,7 @@ export const ResourceComponent = ({
                 match.params.rest,
             );
             if (newLastResourceUri !== lastResourceUri) {
+                // @ts-expect-error TS2345
                 setLastResourceUri(newLastResourceUri);
             }
         }
@@ -121,6 +140,7 @@ export const ResourceComponent = ({
 
     if (loading) {
         return (
+            // @ts-expect-error TS2322
             <Loading className="resource">
                 {translate('loading_resource')}
             </Loading>
@@ -181,6 +201,7 @@ export const ResourceComponent = ({
 
     return (
         <Swipeable
+            // @ts-expect-error TS2769
             id="resource-page"
             className="resource"
             {...swipeableConfig}
@@ -192,11 +213,13 @@ export const ResourceComponent = ({
                 <Detail backToListLabel={backToListLabel} tenant={tenant} />
             )}
             {prevResource && (
+                // @ts-expect-error TS2339
                 <div className={classnames(navStyles.nav, navStyles.left)}>
                     <NavButton direction={PREV} navigate={navigatePrev} />
                 </div>
             )}
             {nextResource && (
+                // @ts-expect-error TS2339
                 <div className={classnames(navStyles.nav, navStyles.right)}>
                     <NavButton direction={NEXT} navigate={navigateNext} />
                 </div>
@@ -249,17 +272,26 @@ ResourceComponent.propTypes = {
     tenant: PropTypes.string,
 };
 
+// @ts-expect-error TS7006
 const mapStateToProps = (state) => {
+    // @ts-expect-error TS2339
     const resource = fromResource.getResourceLastVersion(state);
 
     return {
         resource,
+        // @ts-expect-error TS2339
         removed: fromResource.hasBeenRemoved(state),
+        // @ts-expect-error TS2339
         characteristics: fromCharacteristic.getCharacteristicsAsResource(state),
+        // @ts-expect-error TS2339
         datasetTitleKey: fromFields.getDatasetTitleFieldName(state),
+        // @ts-expect-error TS2339
         fields: fromFields.getFields(state),
+        // @ts-expect-error TS2339
         loading: fromResource.isLoading(state),
+        // @ts-expect-error TS2339
         prevResource: fromSearch.getPrevResource(state, resource),
+        // @ts-expect-error TS2339
         nextResource: fromSearch.getNextResource(state, resource),
     };
 };

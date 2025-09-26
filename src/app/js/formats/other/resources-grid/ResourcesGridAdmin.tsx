@@ -45,6 +45,7 @@ class RessourcesGridAdmin extends Component {
         args: defaultArgs,
     };
 
+    // @ts-expect-error TS7006
     handleWidth = (spaceWidth) => {
         updateAdminArgs('spaceWidth', spaceWidth, this.props);
     };
@@ -52,6 +53,7 @@ class RessourcesGridAdmin extends Component {
     toggleAllowToLoadMore = () =>
         updateAdminArgs(
             'allowToLoadMore',
+            // @ts-expect-error TS2339
             !this.props.args.allowToLoadMore,
             this.props,
         );
@@ -59,11 +61,14 @@ class RessourcesGridAdmin extends Component {
     toggleOpenInNewTab = () =>
         updateAdminArgs(
             'openInNewTab',
+            // @ts-expect-error TS2339
             !this.props.args.openInNewTab,
             this.props,
         );
 
+    // @ts-expect-error TS7006
     handlePageSize = (e) => {
+        // @ts-expect-error TS2339
         const { args, onChange } = this.props;
         const pageSize = parseInt(e.target.value, 10);
         onChange({
@@ -75,21 +80,28 @@ class RessourcesGridAdmin extends Component {
         });
     };
 
+    // @ts-expect-error TS7006
     handleSummarySize = (e) => {
+        // @ts-expect-error TS2339
         this.props.onChange({
+            // @ts-expect-error TS2339
             ...this.props.args,
             summarySize: parseInt(e.target.value),
         });
     };
 
+    // @ts-expect-error TS7006
     handleTitleSize = (e) => {
+        // @ts-expect-error TS2339
         this.props.onChange({
+            // @ts-expect-error TS2339
             ...this.props.args,
             titleSize: parseInt(e.target.value),
         });
     };
 
     render() {
+        // @ts-expect-error TS2339
         const { p: polyglot } = this.props;
         const {
             spaceWidth,
@@ -98,11 +110,16 @@ class RessourcesGridAdmin extends Component {
             titleSize,
             summarySize,
             openInNewTab,
+        // @ts-expect-error TS2339
         } = this.props.args;
 
         return (
             <FormatGroupedFieldSet>
+                {/*
+                 // @ts-expect-error TS2322 */}
                 <FormatDefaultParamsFieldSet defaultExpanded>
+                    {/*
+                     // @ts-expect-error TS2322 */}
                     <TextField
                         fullWidth
                         select
@@ -129,6 +146,8 @@ class RessourcesGridAdmin extends Component {
                             {polyglot.t('hundred_percent')}
                         </MenuItem>
                     </TextField>
+                    {/*
+                     // @ts-expect-error TS2322 */}
                     <FormControlLabel
                         control={
                             <Checkbox
@@ -138,6 +157,8 @@ class RessourcesGridAdmin extends Component {
                         }
                         label={polyglot.t('allow_to_load_more')}
                     />
+                    {/*
+                     // @ts-expect-error TS2322 */}
                     <FormControlLabel
                         control={
                             <Checkbox
@@ -147,6 +168,8 @@ class RessourcesGridAdmin extends Component {
                         }
                         label={polyglot.t('open_in_new_tab')}
                     />
+                    {/*
+                     // @ts-expect-error TS2322 */}
                     <TextField
                         label={polyglot.t('number_of_char_title')}
                         onChange={this.handleTitleSize}
@@ -154,6 +177,8 @@ class RessourcesGridAdmin extends Component {
                         type="number"
                         fullWidth
                     />
+                    {/*
+                     // @ts-expect-error TS2322 */}
                     <TextField
                         label={polyglot.t('number_of_char_summary')}
                         onChange={this.handleSummarySize}
@@ -161,6 +186,8 @@ class RessourcesGridAdmin extends Component {
                         type="number"
                         fullWidth
                     />
+                    {/*
+                     // @ts-expect-error TS2322 */}
                     <TextField
                         label={polyglot.t('items_per_page')}
                         onChange={this.handlePageSize}

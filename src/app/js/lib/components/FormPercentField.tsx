@@ -3,8 +3,11 @@ import { TextField } from '@mui/material';
 import { formField as formFieldPropTypes } from '../../propTypes';
 
 const FormPercentField = ({
+    // @ts-expect-error TS7031
     input,
+    // @ts-expect-error TS7031
     label,
+    // @ts-expect-error TS7031
     meta: { touched, error },
     ...custom
 }) => (

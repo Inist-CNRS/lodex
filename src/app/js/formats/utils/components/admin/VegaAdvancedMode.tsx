@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Button, Tooltip, Box } from '@mui/material';
 import ReportProblemIcon from '@mui/icons-material/ReportProblem';
 import CachedIcon from '@mui/icons-material/Cached';
+// @ts-expect-error TS7016
 import isEqual from 'lodash/isEqual';
 
 import { polyglot as polyglotPropTypes } from '../../../../propTypes';
@@ -37,6 +38,7 @@ const FormSourceCodeField = lazy(
     () => import('../../../../lib/components/FormSourceCodeField'),
 );
 
+// @ts-expect-error TS7031
 const VegaAdvancedMode = ({ p, value, onChange, onClear }) => {
     const [currentValue, setCurrentValue] = useState(value || '{}');
     const [error, setError] = useState(null);
@@ -47,6 +49,7 @@ const VegaAdvancedMode = ({ p, value, onChange, onClear }) => {
             setError(null);
             return json;
         } catch (e) {
+            // @ts-expect-error TS2345
             setError(e);
             return null;
         }
@@ -58,6 +61,7 @@ const VegaAdvancedMode = ({ p, value, onChange, onClear }) => {
             setError(null);
             return json;
         } catch (e) {
+            // @ts-expect-error TS2345
             setError(e);
             return null;
         }
@@ -69,6 +73,7 @@ const VegaAdvancedMode = ({ p, value, onChange, onClear }) => {
         }
     }, [currentValueObject, valueObject]);
 
+    // @ts-expect-error TS7006
     const handleChange = (newValue) => {
         setCurrentValue(newValue);
     };
@@ -109,6 +114,8 @@ const VegaAdvancedMode = ({ p, value, onChange, onClear }) => {
                             title={
                                 <div>
                                     <p>{p.t('vega_json_error')}</p>
+                                    {/*
+                                     // @ts-expect-error TS2339 */}
                                     <p>{error.message}</p>
                                 </div>
                             }
@@ -154,7 +161,11 @@ const VegaAdvancedMode = ({ p, value, onChange, onClear }) => {
                         </div>
                     </p>
                 </div>
+                {/*
+                 // @ts-expect-error TS2304 */}
                 <Suspense fallback={<Loading>{p.t('loading')}</Loading>}>
+                    {/*
+                     // @ts-expect-error TS2739 */}
                     <FormSourceCodeField
                         style={{
                             width: '100%',
@@ -171,12 +182,16 @@ const VegaAdvancedMode = ({ p, value, onChange, onClear }) => {
             </Box>
             {error ? (
                 <div style={styles.error.container}>
+                    {/*
+                     // @ts-expect-error TS2322 */}
                     <div style={styles.error.message.container}>
                         <div style={styles.error.message.icon}>
                             <ReportProblemIcon fontSize="large" />
                         </div>
                         <div style={styles.error.message.message}>
                             <p>{p.t('vega_json_error')}</p>
+                            {/*
+                             // @ts-expect-error TS2339 */}
                             <p>{error.message}</p>
                         </div>
                     </div>

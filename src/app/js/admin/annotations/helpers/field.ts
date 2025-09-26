@@ -1,3 +1,4 @@
+// @ts-expect-error TS7006
 export function hasFieldMultipleValues(field) {
     return (
         field &&
@@ -6,6 +7,7 @@ export function hasFieldMultipleValues(field) {
     );
 }
 
+// @ts-expect-error TS7006
 export function getRedirectFieldHash(field) {
     return field?.name ? `#field-${field.name}` : '';
 }

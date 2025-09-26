@@ -51,38 +51,54 @@ class BubbleAdmin extends Component {
         showOrderBy: true,
     };
 
+    // @ts-expect-error TS7006
     constructor(props) {
         super(props);
         this.handleColors = this.handleColors.bind(this);
         this.state = {
+            // @ts-expect-error TS2339
             colors: this.props.args.colors || defaultArgs.colors,
         };
     }
 
+    // @ts-expect-error TS7006
     handleParams = (params) => updateAdminArgs('params', params, this.props);
 
+    // @ts-expect-error TS7006
     handleColors(colors) {
         updateAdminArgs('colors', colors, this.props);
     }
 
+    // @ts-expect-error TS7006
     handleDiameter = (e) => {
         updateAdminArgs('diameter', e.target.value, this.props);
     };
 
     render() {
         const {
+            // @ts-expect-error TS2339
             p: polyglot,
+            // @ts-expect-error TS2339
             args: { params },
+            // @ts-expect-error TS2339
             showMaxSize,
+            // @ts-expect-error TS2339
             showMaxValue,
+            // @ts-expect-error TS2339
             showMinValue,
+            // @ts-expect-error TS2339
             showOrderBy,
         } = this.props;
+        // @ts-expect-error TS2339
         const { diameter } = this.props.args;
 
         return (
             <FormatGroupedFieldSet>
+                {/*
+                 // @ts-expect-error TS2322 */}
                 <FormatDataParamsFieldSet>
+                    {/*
+                     // @ts-expect-error TS2322 */}
                     <RoutineParamsAdmin
                         params={params || defaultArgs.params}
                         onChange={this.handleParams}
@@ -93,12 +109,19 @@ class BubbleAdmin extends Component {
                         showOrderBy={showOrderBy}
                     />
                 </FormatDataParamsFieldSet>
+                {/*
+                 // @ts-expect-error TS2322 */}
                 <FormatChartParamsFieldSet defaultExpanded>
+                    {/*
+                     // @ts-expect-error TS2322 */}
                     <ColorPickerParamsAdmin
+                        // @ts-expect-error TS2339
                         colors={this.state.colors || defaultArgs.colors}
                         onChange={this.handleColors}
                         polyglot={polyglot}
                     />
+                    {/*
+                     // @ts-expect-error TS2322 */}
                     <TextField
                         label={polyglot.t('diameter')}
                         onChange={this.handleDiameter}
