@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
-// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import { translate } from '../../i18n/I18NContext';
 
@@ -52,6 +51,7 @@ const DatasetSearchBar = ({
         <Grid container spacing={2}>
             <Grid item xs={showToggleFacetButton ? 11 : 12}>
                 <SearchBar
+                    // @ts-expect-error TS2322
                     className="dataset-searchbar"
                     value={localQuery}
                     // @ts-expect-error TS7006
@@ -107,4 +107,5 @@ const mapDispatchToProps = {
 export default compose(
     connect(mapStateToProps, mapDispatchToProps),
     translate,
+    // @ts-expect-error TS2345
 )(DatasetSearchBar);

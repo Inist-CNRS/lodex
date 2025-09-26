@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import { TableCell, Button } from '@mui/material';
 
@@ -56,4 +55,5 @@ const mapDispatchtoProps = (dispatch, { field: { name } }) =>
 export default compose(
     connect(undefined, mapDispatchtoProps),
     translate,
+    // @ts-expect-error TS2345
 )(ExcerptRemoveColumnComponent);

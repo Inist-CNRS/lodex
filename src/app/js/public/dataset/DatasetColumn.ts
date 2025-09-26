@@ -1,6 +1,4 @@
-// @ts-expect-error TS7016
 import branch from 'recompose/branch';
-// @ts-expect-error TS7016
 import renderComponent from 'recompose/renderComponent';
 
 import UriColumn from './UriColumn';

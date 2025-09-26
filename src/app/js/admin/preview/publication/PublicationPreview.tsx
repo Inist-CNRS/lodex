@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 
 import PublicationExcerpt from './PublicationExcerpt';
@@ -35,6 +34,8 @@ const PublicationPreviewComponent = ({ fields, loadField }) => {
     return (
         // @ts-expect-error TS2322
         <div style={styles.container} className="publication-preview">
+            {/*
+             // @ts-expect-error TS2322 */}
             <PublicationExcerpt onHeaderClick={null} fields={fields} />
         </div>
     );
@@ -56,5 +57,6 @@ const mapDispatchToProps = {
 };
 
 export default compose(connect(mapStateToProps, mapDispatchToProps))(
+    // @ts-expect-error TS2345
     PublicationPreviewComponent,
 );

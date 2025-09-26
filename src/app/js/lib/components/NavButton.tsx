@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import { translate } from '../../i18n/I18NContext';
 import { IconButton } from '@mui/material';
@@ -90,4 +89,5 @@ NavButton.defaultProps = {
     navigate: () => {},
 };
 
+// @ts-expect-error TS2345
 export default compose(translate)(NavButton);

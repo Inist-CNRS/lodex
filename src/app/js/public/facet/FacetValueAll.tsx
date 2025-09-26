@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { translate } from '../../i18n/I18NContext';
-// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import { polyglot as polyglotPropType } from '../../propTypes';
 import { Box, Button } from '@mui/material';
@@ -90,4 +89,5 @@ const mapDispatchToProps = (dispatch, { page }) => ({
 export default compose(
     translate,
     connect(mapStateToProps, mapDispatchToProps),
+    // @ts-expect-error TS2345
 )(FacetValueAll);

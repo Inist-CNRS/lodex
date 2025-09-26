@@ -3,9 +3,7 @@ import PropTypes from 'prop-types';
 import { IconButton } from '@mui/material';
 import ActionDeleteIcon from '@mui/icons-material/Delete';
 import { translate } from '../../i18n/I18NContext';
-// @ts-expect-error TS7016
 import compose from 'recompose/compose';
-// @ts-expect-error TS7016
 import withHandlers from 'recompose/withHandlers';
 import { connect } from 'react-redux';
 import SelectDatasetField from './SelectDatasetField';
@@ -36,6 +34,7 @@ export const ConcatFieldComponent = ({
 }) => (
     <div style={styles.container}>
         <SelectDatasetField
+            // @ts-expect-error TS2322
             id={`select-column-${index}`}
             label="select_a_column"
             column={column}
@@ -75,17 +74,16 @@ const mapStateToProps = (state) => ({
 export default compose(
     connect(mapStateToProps),
     withHandlers({
+        // @ts-expect-error TS2322
         handleChange:
-            // @ts-expect-error TS7031
-
-
-                ({ handleChange, index }) =>
-                // @ts-expect-error TS7006
-                (event, key, value) =>
-                    handleChange(event, key, value, index),
+            ({ handleChange, index }) =>
+            // @ts-expect-error TS7006
+            (event, key, value) =>
+                handleChange(event, key, value, index),
         // @ts-expect-error TS7031
         handleRemoveColumn: ({ handleRemoveColumn, index }) =>
             handleRemoveColumn(index),
     }),
     translate,
+    // @ts-expect-error TS2345
 )(ConcatFieldComponent);

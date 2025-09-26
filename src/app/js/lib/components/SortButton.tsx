@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Button } from '@mui/material';
 import ArrowUp from '@mui/icons-material/ArrowUpward';
-// @ts-expect-error TS7016
 import withHandlers from 'recompose/withHandlers';
 import { isLongText, getShortText } from '../../lib/longTexts';
 

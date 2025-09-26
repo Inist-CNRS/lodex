@@ -1,5 +1,4 @@
 import React, { PureComponent } from 'react';
-// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 // @ts-expect-error TS7016
 import { StyleSheet, css } from 'aphrodite/no-important';

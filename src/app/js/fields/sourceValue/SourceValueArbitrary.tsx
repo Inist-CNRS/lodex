@@ -1,5 +1,4 @@
 import React from 'react';
-// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import PropTypes from 'prop-types';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
@@ -54,4 +53,5 @@ SourceValueArbitrary.propTypes = {
     value: PropTypes.string,
 };
 
+// @ts-expect-error TS2345
 export default compose(translate)(SourceValueArbitrary);

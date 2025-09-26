@@ -4,7 +4,6 @@ import Stack from '@mui/material/Stack';
 import PropTypes from 'prop-types';
 import { default as React, useMemo } from 'react';
 import { connect } from 'react-redux';
-// @ts-expect-error TS7016
 import { compose } from 'recompose';
 import { useTranslate } from '../i18n/I18NContext';
 import FieldInput from '../lib/components/FieldInput';
@@ -93,5 +92,6 @@ const mapStateToProps = (state) => {
 };
 
 export default compose(connect(mapStateToProps))(
+    // @ts-expect-error TS2345
     FieldAnnotationFormatListOptions,
 );

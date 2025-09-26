@@ -26,6 +26,8 @@ export const AddFromColumnDialogComponent = ({ onClose }) => {
             <DialogTitle> {translate('a_column')}</DialogTitle>
             <DialogContent>
                 <Box display="flex" p={2} width="1000px">
+                    {/*
+                     // @ts-expect-error TS2322 */}
                     <ParsingExcerpt showAddFromColumn onAddField={onClose} />
                 </Box>
             </DialogContent>

@@ -5,7 +5,6 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import DownloadIcon from '@mui/icons-material/Download';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 
 import { polyglot as polyglotPropTypes } from '../propTypes';
@@ -172,6 +171,7 @@ const ExportButton = ({
                     {exporters.map(({ exportID, label }) => (
                         <ExportItem
                             key={exportID}
+                            // @ts-expect-error TS2322
                             label={label}
                             exportID={exportID}
                             uri={uri}
@@ -238,4 +238,5 @@ const mapDispatchToProps = (dispatch) =>
 export default compose(
     connect(mapStateToProps, mapDispatchToProps),
     translate,
+    // @ts-expect-error TS2345
 )(ExportButton);

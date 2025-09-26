@@ -1,5 +1,4 @@
 import React from 'react';
-// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import { Card, CardHeader, Divider } from '@mui/material';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
@@ -37,4 +36,5 @@ export default compose(
     redirectToDashboardIfNoField,
     withInitialData,
     translate,
+    // @ts-expect-error TS2345
 )(RemovedResourcePageComponent);

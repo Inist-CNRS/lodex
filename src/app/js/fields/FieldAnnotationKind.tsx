@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
-// @ts-expect-error TS7016
 import { compose } from 'recompose';
 
 import { Stack, Typography } from '@mui/material';
@@ -46,4 +45,5 @@ const mapStateToProps = (state) => {
     };
 };
 
+// @ts-expect-error TS2345
 export default compose(connect(mapStateToProps))(FieldAnnotationKind);

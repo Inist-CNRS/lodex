@@ -1,7 +1,6 @@
 import * as React from 'react';
 import ArbitraryIcon from '@mui/icons-material/FormatQuote';
 import RoutineIcon from '@mui/icons-material/AccountTree';
-// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import FromColumnsIcon from '@mui/icons-material/ViewColumn';
 import FromSubRessourceIcon from '@mui/icons-material/DocumentScanner';
@@ -548,4 +547,5 @@ const mapDispatchToProps = (dispatch) => ({
 export default compose(
     translate,
     connect(mapStateToProps, mapDispatchToProps),
+    // @ts-expect-error TS2345
 )(SourceValueToggle);

@@ -14,6 +14,7 @@ const DatasetColumnHeader = ({ name, label, sortBy, sortDir, sortDataset }) => (
             <span>#</span>
         ) : (
             <SortButton
+                // @ts-expect-error TS2322
                 className={`sort_${name}`}
                 sort={sortDataset}
                 name={name}

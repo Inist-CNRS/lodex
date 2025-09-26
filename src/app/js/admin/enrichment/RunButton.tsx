@@ -6,7 +6,6 @@ import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { FINISHED, IN_PROGRESS, ON_HOLD } from '../../../../common/taskStatus';
 import { fromEnrichments } from '../selectors';
 import { launchEnrichment } from '.';
-// @ts-expect-error TS7016
 import { compose } from 'recompose';
 import { toast } from '../../../../common/tools/toast';
 import { connect } from 'react-redux';
@@ -107,4 +106,5 @@ const mapStateToProps = (state, { id }) => ({
 export default compose(
     translate,
     connect(mapStateToProps, mapDispatchToProps),
+    // @ts-expect-error TS2345
 )(RunButton);

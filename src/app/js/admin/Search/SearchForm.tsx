@@ -18,7 +18,6 @@ import {
 } from '@mui/material';
 import { Box } from '@mui/system';
 import { connect } from 'react-redux';
-// @ts-expect-error TS7016
 import { compose } from 'recompose';
 import { loadField } from '../../fields';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
@@ -497,4 +496,5 @@ export default compose(
     withInitialData,
     translate,
     connect(mapStateToProps, mapDispatchToProps),
+    // @ts-expect-error TS2345
 )(SearchForm);

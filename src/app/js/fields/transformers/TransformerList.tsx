@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react';
-// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import memoize from 'lodash/memoize';
 import PropTypes from 'prop-types';
-// @ts-expect-error TS7016
 import pure from 'recompose/pure';
 import { translate } from '../../i18n/I18NContext';
 import TransformerListItem from './TransformerListItem';
@@ -174,6 +172,7 @@ export const TransformerListComponent = ({
                             {fieldsToDrag?.map((fieldName, index) => (
                                 <TransformerListItem
                                     key={fieldName}
+                                    // @ts-expect-error TS2322
                                     id={fieldName}
                                     transformer={fields.get(index)}
                                     onRemove={() => {
@@ -211,6 +210,7 @@ export const TransformerListComponent = ({
 
                     {isTransformerUpsertDialogOpen && (
                         <TransformerUpsertDialog
+                            // @ts-expect-error TS2322
                             isOpen={isTransformerUpsertDialogOpen}
                             handleClose={() =>
                                 setIsTransformerUpsertDialogOpen(false)
@@ -262,4 +262,5 @@ TransformerListComponent.defaultProps = {
     type: null,
 };
 
+// @ts-expect-error TS2345
 export default compose(translate, pure)(TransformerListComponent);

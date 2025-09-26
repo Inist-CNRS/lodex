@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import memoize from 'lodash/memoize';
-// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import FileDownload from '@mui/icons-material/GetApp';
 import Link from '../../../lib/components/Link';
@@ -112,4 +111,5 @@ IstexView.defaultProps = {
 export default compose(
     translate,
     fetchPaginatedDataForComponent(fetchForIstexFormat),
+    // @ts-expect-error TS2345
 )(IstexView);

@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import { translate } from '../../i18n/I18NContext';
 
@@ -176,6 +175,7 @@ const TransformerUpsertDialog = ({
                         }}
                     />
                     <TransformerArg
+                        // @ts-expect-error TS2322
                         operation={transformer.operation}
                         transformerArgs={transformer.args}
                         // @ts-expect-error TS7006
@@ -244,4 +244,5 @@ const mapStateToProps = (state, { type }) => {
 export default compose(
     connect(mapStateToProps, null),
     translate,
+    // @ts-expect-error TS2345
 )(TransformerUpsertDialog);

@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import PropTypes from 'prop-types';
 import FormSourceCodeField from '../../lib/components/FormSourceCodeField';
@@ -151,4 +150,5 @@ export default compose(
         form: 'CUSTOM_LOADER_FORM',
         enableReinitialize: true,
     }),
+    // @ts-expect-error TS2345
 )(CustomLoader);

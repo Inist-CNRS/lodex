@@ -3,7 +3,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { connect } from 'react-redux';
-// @ts-expect-error TS7016
 import { compose } from 'recompose';
 import { fromEnrichments } from '../selectors';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
@@ -106,4 +105,5 @@ const mapStateToProps = (state, { id }) => ({
 export default compose(
     translate,
     connect(mapStateToProps, mapDispatchToProps),
+    // @ts-expect-error TS2345
 )(EnrichmentStatus);
