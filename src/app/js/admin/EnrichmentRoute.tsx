@@ -8,7 +8,7 @@ import EnrichmentListConnected from './enrichment/EnrichmentList';
 import EnrichmentFormConnected from './enrichment/EnrichmentForm';
 
 export const EnrichmentRouteComponent = () => {
-    let { path } = useRouteMatch();
+    const { path } = useRouteMatch();
 
     return (
         <Switch>
