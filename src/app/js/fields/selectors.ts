@@ -1,6 +1,4 @@
-// @ts-expect-error TS7016
 import get from 'lodash/get';
-// @ts-expect-error TS7016
 import omit from 'lodash/omit';
 import { createSelector } from 'reselect';
 
@@ -38,13 +36,13 @@ export const getFields = ({ byName, list = [] }) =>
 // @ts-expect-error TS7006
 const getOntologyFieldsFilter = (type, keepUriField = false) =>
     type === SCOPE_COLLECTION || type === SCOPE_DOCUMENT
-        // @ts-expect-error TS7031
-        ? ({ scope, name }) =>
+        ? // @ts-expect-error TS7031
+          ({ scope, name }) =>
               (name === 'uri' && keepUriField) ||
               scope === SCOPE_COLLECTION ||
               scope === SCOPE_DOCUMENT
-        // @ts-expect-error TS7031
-        : ({ scope, name }) =>
+        : // @ts-expect-error TS7031
+          ({ scope, name }) =>
               (name === 'uri' && keepUriField) || scope === type;
 
 const getOntologyFields = createSelector(

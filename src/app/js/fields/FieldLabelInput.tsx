@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 // @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
-// @ts-expect-error TS7016
 import get from 'lodash/get';
 
 import FormTextField from '../lib/components/FormTextField';

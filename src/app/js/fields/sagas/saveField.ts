@@ -1,6 +1,4 @@
-// @ts-expect-error TS7016
 import get from 'lodash/get';
-// @ts-expect-error TS7016
 import set from 'lodash/set';
 // @ts-expect-error TS7016
 import { destroy } from 'redux-form';

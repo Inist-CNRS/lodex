@@ -4,7 +4,6 @@ import Folder from '@mui/icons-material/Folder';
 import FolderOpen from '@mui/icons-material/FolderOpen';
 import Arrow from '@mui/icons-material/KeyboardArrowDown';
 import { Button, CircularProgress } from '@mui/material';
-// @ts-expect-error TS7016
 import get from 'lodash/get';
 
 import { polyglot as polyglotPropTypes } from '../../../propTypes';

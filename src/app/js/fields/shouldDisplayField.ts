@@ -1,4 +1,3 @@
-// @ts-expect-error TS7016
 import get from 'lodash/get';
 
 import isEmpty from '../../../common/lib/isEmpty';

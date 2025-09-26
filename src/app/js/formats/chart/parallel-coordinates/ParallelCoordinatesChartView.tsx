@@ -6,7 +6,6 @@ import { withRouter } from 'react-router';
 // @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import { translate } from '../../../i18n/I18NContext';
-// @ts-expect-error TS7016
 import get from 'lodash/get';
 
 import { getPercentValue } from '../../../lib/getPercentage';

@@ -1,13 +1,11 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import PropTypes from 'prop-types';
 
-/**
- * This element is used to group multiple FormatFieldSets in a flex box.
- * @param children {React.ReactNode}
- * @returns {JSX.Element}
- */
-// @ts-expect-error TS7031
-const FormatGroupedFieldSet = ({ children }) => {
+type FormatGroupedFieldSetProps = {
+    children: ReactNode;
+};
+
+const FormatGroupedFieldSet = ({ children }: FormatGroupedFieldSetProps) => {
     return <div>{children}</div>;
 };
 

@@ -94,11 +94,7 @@ class BubbleAdmin extends Component {
 
         return (
             <FormatGroupedFieldSet>
-                {/*
-                 // @ts-expect-error TS2322 */}
                 <FormatDataParamsFieldSet>
-                    {/*
-                     // @ts-expect-error TS2322 */}
                     <RoutineParamsAdmin
                         params={params || defaultArgs.params}
                         onChange={this.handleParams}
@@ -109,19 +105,13 @@ class BubbleAdmin extends Component {
                         showOrderBy={showOrderBy}
                     />
                 </FormatDataParamsFieldSet>
-                {/*
-                 // @ts-expect-error TS2322 */}
                 <FormatChartParamsFieldSet defaultExpanded>
-                    {/*
-                     // @ts-expect-error TS2322 */}
                     <ColorPickerParamsAdmin
                         // @ts-expect-error TS2339
                         colors={this.state.colors || defaultArgs.colors}
                         onChange={this.handleColors}
                         polyglot={polyglot}
                     />
-                    {/*
-                     // @ts-expect-error TS2322 */}
                     <TextField
                         label={polyglot.t('diameter')}
                         onChange={this.handleDiameter}

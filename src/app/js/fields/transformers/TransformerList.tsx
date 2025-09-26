@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 // @ts-expect-error TS7016
 import compose from 'recompose/compose';
-// @ts-expect-error TS7016
 import memoize from 'lodash/memoize';
 import PropTypes from 'prop-types';
 // @ts-expect-error TS7016
@@ -35,7 +34,6 @@ import TransformerRemoveAllDialog from './TransformerRemoveAllDialog';
 import { GET_SOURCE_VALUE_FROM_TRANSFORMERS } from '../sourceValue/SourceValueToggle';
 
 const SHOW_TRANSFORMER = memoize(
-    // @ts-expect-error TS7006
     (operation, type) =>
         !type ||
         !operation ||
@@ -45,7 +43,6 @@ const SHOW_TRANSFORMER = memoize(
          */
         !hasRegistredTransformer(operation) ||
         getTransformerMetas(operation).type === type,
-    // @ts-expect-error TS7006
     (operation, type) => `${operation}_${type}`,
 );
 

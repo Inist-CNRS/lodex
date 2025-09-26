@@ -11,7 +11,6 @@ import {
     Box,
 } from '@mui/material';
 
-// @ts-expect-error TS7016
 import { deburr } from 'lodash';
 
 import {
@@ -25,12 +24,14 @@ const cleanUpName = (name) => {
     // We replace any accented and special char with the base letter or a dash
     // https://stackoverflow.com/questions/36557202/replacing-special-characters-with-dashes
 
-    return deburr(name)
-        .replace(/[\s_\W]+/g, '-')
-        .replace(/^-/, '')
-        // @ts-expect-error TS2339
-        .substring(0, getTenantMaxSize(window.__DBNAME__))
-        .toLowerCase();
+    return (
+        deburr(name)
+            .replace(/[\s_\W]+/g, '-')
+            .replace(/^-/, '')
+            // @ts-expect-error TS2339
+            .substring(0, getTenantMaxSize(window.__DBNAME__))
+            .toLowerCase()
+    );
 };
 
 // @ts-expect-error TS7031

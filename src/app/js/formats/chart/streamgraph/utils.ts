@@ -1,4 +1,3 @@
-// @ts-expect-error TS7016
 import differenceBy from 'lodash/differenceBy';
 
 // @ts-expect-error TS7006
@@ -71,7 +70,7 @@ export function transformDataIntoMapArray(formatData) {
 
     if (formatData) {
         for (let i = 0; i < formatData.length; i++) {
-            let elem = formatData[i];
+            const elem = formatData[i];
 
             if (elem) {
                 // source: "2010"
@@ -81,7 +80,7 @@ export function transformDataIntoMapArray(formatData) {
                 if (elem.source && elem.weight) {
                     let currentItem = undefined;
 
-                    for (let tmpElem of valuesObjectsArray) {
+                    for (const tmpElem of valuesObjectsArray) {
                         if (tmpElem.name === elem.target) {
                             currentItem = tmpElem;
                         }
@@ -95,14 +94,14 @@ export function transformDataIntoMapArray(formatData) {
                         };
                         valuesObjectsArray.push(currentItem);
                     } else {
-                        for (let valueElem of currentItem.values) {
+                        for (const valueElem of currentItem.values) {
                             if (
                                 // @ts-expect-error TS2339
                                 parseInt(valueElem.date.getFullYear()) ===
                                 parseInt(elem.source)
                             ) {
                                 // @ts-expect-error TS2339
-                                var sum = valueElem.value + elem.weight;
+                                const sum = valueElem.value + elem.weight;
                                 // @ts-expect-error TS2339
                                 valueElem.value = parseFloat(sum.toFixed(3));
                                 addValueAsSum = true;
@@ -147,14 +146,14 @@ export function transformDataIntoMapArray(formatData) {
     const valuesArray = [];
 
     while (currentDate <= dateMax) {
-        let tmpName = [];
-        let newElem = {
+        const tmpName = [];
+        const newElem = {
             date: new Date(String(currentDate)),
         };
 
-        for (let element of valuesObjectsArray) {
+        for (const element of valuesObjectsArray) {
             // loop which add each values for the good year
-            for (let dateValue of element.values) {
+            for (const dateValue of element.values) {
                 // @ts-expect-error TS2339
                 if (dateValue.date.getFullYear() == currentDate) {
                     // @ts-expect-error TS7053
@@ -164,8 +163,8 @@ export function transformDataIntoMapArray(formatData) {
             }
 
             // loop which add 0 value to the missing keys
-            let resMissingNameList = differenceBy(namesList, tmpName);
-            for (let elemToAdd of resMissingNameList) {
+            const resMissingNameList = differenceBy(namesList, tmpName);
+            for (const elemToAdd of resMissingNameList) {
                 // @ts-expect-error TS7053
                 newElem[elemToAdd] = 0;
             }
@@ -184,8 +183,8 @@ export function getMinMaxValue(stackedData) {
     let maxValue = 0;
 
     if (stackedData) {
-        for (let element of stackedData) {
-            for (let value of element) {
+        for (const element of stackedData) {
+            for (const value of element) {
                 if (minValue > value[0]) {
                     minValue = value[0];
                 }

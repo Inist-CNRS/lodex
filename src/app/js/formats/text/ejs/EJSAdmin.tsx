@@ -161,11 +161,7 @@ const EJSAdmin = (props) => {
 
     return (
         <FormatGroupedFieldSet>
-            {/*
-             // @ts-expect-error TS2322 */}
             <FormatDataParamsFieldSet>
-                {/*
-                 // @ts-expect-error TS2322 */}
                 <RoutineParamsAdmin
                     params={params || defaultArgs.params}
                     onChange={handleParams}
@@ -176,11 +172,7 @@ const EJSAdmin = (props) => {
                     showOrderBy={showOrderBy}
                 />
             </FormatDataParamsFieldSet>
-            {/*
-             // @ts-expect-error TS2322 */}
             <FormatDefaultParamsFieldSet defaultExpanded>
-                {/*
-                 // @ts-expect-error TS2322 */}
                 <p style={{ width: '100%' }}>
                     {polyglot.t('ejs_variable_list')}
                     <i>
@@ -209,12 +201,8 @@ const EJSAdmin = (props) => {
                         </ul>
                     </i>
                 </p>
-                {/*
-                 // @ts-expect-error TS2322 */}
                 <EJSEditor value={template} onChange={handleTemplateChange} />
             </FormatDefaultParamsFieldSet>
-            {/*
-             // @ts-expect-error TS2322 */}
             <FormatFieldSetPreview
                 args={{ ...args }}
                 PreviewComponent={EJSAdminView}
