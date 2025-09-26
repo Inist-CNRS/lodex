@@ -1,5 +1,5 @@
 import babelParser from '@babel/eslint-parser';
-// eslint-disable-next-line import/no-unresolved
+
 import { defineConfig, globalIgnores } from 'eslint/config';
 import js from '@eslint/js';
 import cypress from 'eslint-plugin-cypress';
@@ -11,6 +11,7 @@ import globals from 'globals';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
+import tseslint from 'typescript-eslint';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -45,12 +46,14 @@ export default defineConfig([
         plugins: { import: importPlugin },
         rules: {
             ...importPlugin.configs.recommended.rules,
+            ...importPlugin.configs.typescript.rules,
         },
         settings: {
             'import/resolver': {
                 node: {
-                    extensions: ['.js', '.jsx'],
+                    extensions: ['.js', '.jsx', '.ts', '.tsx'],
                 },
+                typescript: true,
             },
         },
     },
@@ -86,7 +89,12 @@ export default defineConfig([
     },
     reactHooks.configs['recommended-latest'],
     {
-        files: ['**/*.spec.js', '**/*.spec.jsx'],
+        files: [
+            '**/*.spec.js',
+            '**/*.spec.jsx',
+            '**/*.test.ts',
+            '**/*.test.tsx',
+        ],
         plugins: { jest: pluginJest },
         languageOptions: {
             globals: pluginJest.environments.globals.globals,
@@ -124,4 +132,15 @@ export default defineConfig([
             'cypress/no-unnecessary-waiting': 'warn',
         },
     },
+    tseslint.configs.recommended.map((conf) => ({
+        ...conf,
+        files: ['**/*.ts', '**/*.tsx'],
+        ignores: ['**/*.js', '**/*.jsx'],
+        rules: {
+            ...conf.rules,
+            '@typescript-eslint/no-explicit-any': 'warn',
+            '@typescript-eslint/no-unused-vars': 'warn',
+            '@typescript-eslint/no-unused-expressions': 'warn',
+        },
+    })),
 ]);

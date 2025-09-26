@@ -1,0 +1,64 @@
+// @ts-expect-error TS(2792): Cannot find module 'node-polyglot'. Did you mean t... Remove this comment to see the full error message
+import Polyglot from 'node-polyglot';
+// @ts-expect-error TS(2306): File '/home/madeorsk/Cloud/Marmelab/Code/lodex/src... Remove this comment to see the full error message
+import translations from '../translations';
+
+export const getAnnotationNotificationMail = ({
+    locale = 'en',
+    tenant,
+    annotationWithDetails,
+    origin,
+}: any) => {
+    const phrases = translations.getByLanguage(locale);
+
+    const polyglot = new Polyglot({
+        locale,
+        phrases,
+    });
+    const subject = polyglot.t('notification_new_annotation_email_subject', {
+        tenant: tenant,
+    });
+
+    const text = [
+        subject,
+        annotationWithDetails.resource
+            ? polyglot.t('notification_new_annotation_email_resource', {
+                  resource: annotationWithDetails.resource.title,
+              })
+            : null,
+        polyglot.t('notification_new_annotation_email_type', {
+            type: polyglot.t(annotationWithDetails.kind),
+        }),
+        annotationWithDetails.field
+            ? polyglot.t('notification_new_annotation_email_field', {
+                  field: annotationWithDetails.field.label,
+              })
+            : null,
+        annotationWithDetails.initialValue
+            ? polyglot.t('notification_new_annotation_email_initial_value', {
+                  initialValue: annotationWithDetails.initialValue,
+              })
+            : null,
+        annotationWithDetails.proposedValue
+            ? polyglot.t('notification_new_annotation_email_proposed_value', {
+                  proposedValue: annotationWithDetails.proposedValue,
+              })
+            : null,
+        polyglot.t('notification_new_annotation_email_author', {
+            authorName: annotationWithDetails.authorName,
+        }),
+        polyglot.t('notification_new_annotation_email_comment', {
+            comment: annotationWithDetails.comment,
+        }),
+        polyglot.t('notification_new_annotation_email_see_annotation', {
+            annotationUrl: `${origin}/instance/${tenant}/admin#/annotations`,
+        }),
+    ]
+        .filter(Boolean)
+        .join('\n');
+
+    return {
+        subject,
+        text: text,
+    };
+};
