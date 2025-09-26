@@ -102,12 +102,14 @@ export const FieldsEditComponent = ({
                         {filter === SCOPE_DATASET && <DatasetOverviewSelect />}
                         {filter === SCOPE_DOCUMENT && subresourceId && (
                             <SubresourceOverviewSelect
+                                // @ts-expect-error TS2322
                                 subresourceId={subresourceId}
                             />
                         )}
 
                         <Box sx={{ display: 'flex', gap: 2 }}>
                             <DeleteFieldsButton
+                                // @ts-expect-error TS2322
                                 selectedFields={selectedFields}
                                 filter={filter}
                                 subresourceId={subresourceId}
@@ -142,6 +144,7 @@ export const FieldsEditComponent = ({
             {tab === 'published' && (
                 <>
                     <PublicationPreview
+                        // @ts-expect-error TS2322
                         filter={filter}
                         subresourceId={subresourceId}
                     />

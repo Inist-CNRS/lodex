@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import memoize from 'lodash/memoize';
@@ -147,4 +146,5 @@ const mapStateToProps = (state, { field }) => ({
 export default compose(
     connect(mapStateToProps),
     translate,
+    // @ts-expect-error TS2345
 )(ExcerptHeaderComponent);

@@ -183,6 +183,7 @@ export const EnrichmentList = ({
                         headerName: translate('enrichment_status'),
                         flex: 1,
                         renderCell: (params) => (
+                            // @ts-expect-error TS2322
                             <EnrichmentStatus id={params.row._id} />
                         ),
                     },
@@ -192,6 +193,7 @@ export const EnrichmentList = ({
                         flex: 1,
                         renderCell: (params) => {
                             return (
+                                // @ts-expect-error TS2322
                                 <RunButton id={params.row._id} variant="text" />
                             );
                         },

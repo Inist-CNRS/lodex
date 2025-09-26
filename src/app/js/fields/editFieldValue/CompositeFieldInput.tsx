@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import { ListSubheader } from '@mui/material';
@@ -71,6 +70,7 @@ export const CompositeFieldInputComponent = ({
             {/*
              // @ts-expect-error TS7006 */}
             {compositeFields.map((f) => (
+                // @ts-expect-error TS2322
                 <FieldInput key={f.name} field={f} />
             ))}
         </div>
@@ -105,6 +105,7 @@ const mapStateToProps = (state, { field }) => ({
 const CompositeFieldInput = compose(
     connect(mapStateToProps),
     translate,
+    // @ts-expect-error TS2345
 )(CompositeFieldInputComponent);
 
 export default CompositeFieldInput;

@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { translate } from '../../i18n/I18NContext';
-// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 
@@ -175,4 +174,5 @@ RoutineCatalogDescription.propTypes = {
     polyglot: polyglotPropTypes.isRequired,
 };
 
+// @ts-expect-error TS2345
 export default compose(translate)(RoutineCatalog);

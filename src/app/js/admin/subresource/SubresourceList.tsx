@@ -1,5 +1,4 @@
 import React from 'react';
-// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import PropTypes from 'prop-types';
@@ -114,4 +113,5 @@ const mapStateToProps = (state) => ({
     subresources: state.subresource.subresources,
 });
 
+// @ts-expect-error TS2345
 export default compose(translate, connect(mapStateToProps))(SubresourceList);

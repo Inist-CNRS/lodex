@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import { withRouter } from 'react-router';
 import { DropzoneAreaBase } from 'mui-file-dropzone';
@@ -511,4 +510,5 @@ export default compose(
     translate,
     withRouter,
     connect(mapStateToProps, mapDispatchToProps),
+    // @ts-expect-error TS2345
 )(UploadComponent);

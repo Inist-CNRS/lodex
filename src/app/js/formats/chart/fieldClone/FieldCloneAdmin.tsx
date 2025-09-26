@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import { useParams } from 'react-router';
@@ -109,4 +108,5 @@ export const isValidClonableField = (field, filter) => {
     return true;
 };
 
+// @ts-expect-error TS2345
 export default compose(connect(mapStateToProps), translate)(FieldCloneAdmin);

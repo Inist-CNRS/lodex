@@ -2,9 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Switch, FormControlLabel } from '@mui/material';
 import { translate } from '../../i18n/I18NContext';
-// @ts-expect-error TS7016
 import compose from 'recompose/compose';
-// @ts-expect-error TS7016
 import withHandlers from 'recompose/withHandlers';
 import { connect } from 'react-redux';
 // @ts-expect-error TS7016
@@ -66,17 +64,16 @@ const mapStateToProps = (state) => {
 export default compose(
     connect(mapStateToProps),
     withHandlers({
+        // @ts-expect-error TS2322
         handleSelect:
-            // @ts-expect-error TS7031
-
-
-                ({ onChange }) =>
-                () => {
-                    onChange({
-                        operation: 'AUTOGENERATE_URI',
-                        args: [],
-                    });
-                },
+            ({ onChange }) =>
+            () => {
+                onChange({
+                    operation: 'AUTOGENERATE_URI',
+                    args: [],
+                });
+            },
     }),
     translate,
+    // @ts-expect-error TS2345
 )(UriAutogenerateComponent);

@@ -62,6 +62,7 @@ const ClusteredChart = ({ data, topic, params }) => {
     }, [values, topic, params]);
     return (
         <CustomActionVegaLite
+            // @ts-expect-error TS2322
             spec={spec}
             data={{
                 values,

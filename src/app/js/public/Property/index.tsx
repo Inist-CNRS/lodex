@@ -5,9 +5,7 @@ import memoize from 'lodash/memoize';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
-// @ts-expect-error TS7016
 import compose from 'recompose/compose';
-// @ts-expect-error TS7016
 import withProps from 'recompose/withProps';
 import { bindActionCreators } from 'redux';
 import { translate } from '../../i18n/I18NContext';
@@ -273,6 +271,7 @@ export const PropertyComponent = ({
                     </span>
                 </div>
                 <PropertyContributor
+                    // @ts-expect-error TS2322
                     fieldName={field.name}
                     fieldStatus={fieldStatus}
                 />
@@ -300,6 +299,7 @@ export const PropertyComponent = ({
                 )}
             </div>
             <ModerateButton
+                // @ts-expect-error TS2322
                 fieldName={field.name}
                 status={fieldStatus}
                 changeStatus={changeStatus}
@@ -366,6 +366,7 @@ const Property = compose(
     withProps(({ field, parents = [] }) => ({
         parents: [field.name, ...parents],
     })),
+    // @ts-expect-error TS2345
 )(PropertyComponent);
 
 export default Property;

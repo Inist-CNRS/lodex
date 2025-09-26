@@ -12,7 +12,6 @@ import {
     ListItemText,
 } from '@mui/material';
 import { connect } from 'react-redux';
-// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import PropTypes from 'prop-types';
 import ClearAllIcon from '@mui/icons-material/ClearAll';
@@ -178,4 +177,5 @@ const mapDispatchToProps = {
 export const RepublishAndClearButton = compose(
     translate,
     connect(mapStateToProps, mapDispatchToProps),
+    // @ts-expect-error TS2345
 )(RepublishAndClearButtonComponent);

@@ -1,12 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-// @ts-expect-error TS7016
 import compose from 'recompose/compose';
-// @ts-expect-error TS7016
 import pure from 'recompose/pure';
-// @ts-expect-error TS7016
 import withProps from 'recompose/withProps';
-// @ts-expect-error TS7016
 import withHandlers from 'recompose/withHandlers';
 import memoize from 'lodash/memoize';
 import {
@@ -92,6 +88,8 @@ export const ExcerptComponent = ({
                                     : ''
                             }
                         >
+                            {/*
+                             // @ts-expect-error TS2322 */}
                             <ExcerptHeader field={field} />
                         </TableCell>
                     ))}
@@ -105,6 +103,7 @@ export const ExcerptComponent = ({
                         {columns.map((c) => (
                             <ExcerptRemoveColumn
                                 key={`remove_column_${c._id}`}
+                                // @ts-expect-error TS2322
                                 field={c}
                                 onClick={onCellClick}
                             />
@@ -150,27 +149,24 @@ export default compose(
         areHeadersClickable: typeof onHeaderClick === 'function',
     })),
     withHandlers({
+        // @ts-expect-error TS2322
         onHeaderClick:
-            // @ts-expect-error TS7031
-
-
-                ({ onHeaderClick }) =>
-                // @ts-expect-error TS7006
-                (col) => {
-                    if (onHeaderClick) {
-                        onHeaderClick(col);
-                    }
-                },
+            ({ onHeaderClick }) =>
+            // @ts-expect-error TS7006
+            (col) => {
+                if (onHeaderClick) {
+                    onHeaderClick(col);
+                }
+            },
+        // @ts-expect-error TS2322
         onCellClick:
-            // @ts-expect-error TS7031
-
-
-                ({ onHeaderClick }) =>
-                // @ts-expect-error TS7006
-                (col) => {
-                    if (onHeaderClick) {
-                        onHeaderClick(col);
-                    }
-                },
+            ({ onHeaderClick }) =>
+            // @ts-expect-error TS7006
+            (col) => {
+                if (onHeaderClick) {
+                    onHeaderClick(col);
+                }
+            },
     }),
+    // @ts-expect-error TS2345
 )(ExcerptComponent);

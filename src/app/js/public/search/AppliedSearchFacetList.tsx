@@ -3,7 +3,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import { Box, Chip } from '@mui/material';
-// @ts-expect-error TS7016
 import { compose } from 'recompose';
 import { translate } from '../../i18n/I18NContext';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
@@ -34,6 +33,7 @@ export const AppliedSearchFacetListComponent = ({
                 {facets.map(({ name, value: facetValues }) => (
                     <AppliedSearchFacet
                         key={name}
+                        // @ts-expect-error TS2322
                         name={name}
                         facetValues={facetValues}
                     />
@@ -69,4 +69,5 @@ const mapDispatchToProps = {
 export default compose(
     translate,
     connect(mapStateToProps, mapDispatchToProps),
+    // @ts-expect-error TS2345
 )(AppliedSearchFacetListComponent);

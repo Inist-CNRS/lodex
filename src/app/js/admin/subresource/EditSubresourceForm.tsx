@@ -1,11 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
-// @ts-expect-error TS7016
 import withHandlers from 'recompose/withHandlers';
 // @ts-expect-error TS7016
 import { formValueSelector, reduxForm } from 'redux-form';
 import { Redirect, withRouter } from 'react-router';
-// @ts-expect-error TS7016
 import { compose, branch, renderComponent, withProps } from 'recompose';
 
 import SubresourceForm from './SubresourceForm';
@@ -42,26 +40,23 @@ export const EditSubresourceForm = compose(
         renderComponent(({ match }) => <Redirect to={`${match.url}/main`} />),
     ),
     withHandlers({
+        // @ts-expect-error TS2322
         onSubmit:
-            // @ts-expect-error TS7031
-
-
-                ({ updateSubresource }) =>
-                // @ts-expect-error TS7006
-                (resource) => {
-                    updateSubresource(resource);
-                },
+            ({ updateSubresource }) =>
+            // @ts-expect-error TS7006
+            (resource) => {
+                updateSubresource(resource);
+            },
+        // @ts-expect-error TS2322
         onDelete:
-            // @ts-expect-error TS7031
-
-
-                ({ deleteSubresource, match }) =>
-                () => {
-                    deleteSubresource(match.params.subresourceId);
-                },
+            ({ deleteSubresource, match }) =>
+            () => {
+                deleteSubresource(match.params.subresourceId);
+            },
     }),
     // @ts-expect-error TS7031
     withProps(({ onDelete }) => ({
+        // @ts-expect-error TS2322
         additionnalActions: <DeleteSubresourceButton onClick={onDelete} />,
     })),
     reduxForm({

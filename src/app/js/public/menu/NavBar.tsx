@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { config } from '@fortawesome/fontawesome-svg-core';
 import { translate } from '../../i18n/I18NContext';
-// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import classnames from 'classnames';
 
@@ -279,6 +278,7 @@ export const NavBar = ({
                 {/*
                  // @ts-expect-error TS2322 */}
                 <Search
+                    // @ts-expect-error TS2322
                     className="search"
                     withFacets={hasFacetFields}
                     withDataset={search}
@@ -383,4 +383,5 @@ const mapDispatchToProps = {
 export default compose(
     connect(mapStateToProps, mapDispatchToProps),
     translate,
+    // @ts-expect-error TS2345
 )(NavBar);

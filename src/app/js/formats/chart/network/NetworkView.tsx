@@ -9,7 +9,6 @@ import React, {
     useMemo,
     useState,
 } from 'react';
-// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import { polyglot as polyglotPropTypes } from '../../../propTypes';
 
@@ -322,4 +321,5 @@ Network.propTypes = {
     p: polyglotPropTypes.isRequired,
 };
 
+// @ts-expect-error TS2345
 export default compose(injectData())(Network);

@@ -6,7 +6,6 @@ import classnames from 'classnames';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import { translate } from '../../i18n/I18NContext';
 
@@ -144,6 +143,7 @@ class Graph extends Component {
                  // @ts-expect-error TS2339 */}
                 <div className={styles.header}>
                     <DatasetSearchBar
+                        // @ts-expect-error TS2322
                         onToggleFacets={this.handleToggleFacets}
                     />
                     {/*
@@ -285,4 +285,5 @@ const mapDispatchToProps = {
 export default compose(
     translate,
     connect(mapStateToProps, mapDispatchToProps),
+    // @ts-expect-error TS2345
 )(Graph);

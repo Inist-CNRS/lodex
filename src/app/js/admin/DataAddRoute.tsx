@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-// @ts-expect-error TS7016
 import { compose, lifecycle } from 'recompose';
 import { connect } from 'react-redux';
 
@@ -11,6 +10,7 @@ import withInitialData from './withInitialData';
 
 // @ts-expect-error TS7031
 export const DataAddRouteComponent = ({ canUploadFile }) => {
+    // @ts-expect-error TS2322
     return <Upload className="admin" isFirstFile={canUploadFile} />;
 };
 
@@ -33,7 +33,9 @@ export const DataAddRoute = compose(
     connect(mapStateToProps, mapDispatchToProps),
     lifecycle({
         componentWillMount() {
+            // @ts-expect-error TS2571
             this.props.preLoadLoaders();
         },
     }),
+    // @ts-expect-error TS2345
 )(DataAddRouteComponent);

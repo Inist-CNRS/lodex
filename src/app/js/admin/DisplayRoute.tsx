@@ -30,6 +30,8 @@ const DisplayRouteComponent = () => {
                     {pageComponent}
                 </Route>
                 <Route exact path={`${path}/main/edit/:fieldName?`}>
+                    {/*
+                     // @ts-expect-error TS2322 */}
                     <FieldEditForm filter={filter} />
                 </Route>
                 <Route exact path={`${path}/subresource`}>
@@ -47,6 +49,8 @@ const DisplayRouteComponent = () => {
                     exact
                     path={`${path}/subresource/:subresourceId/edit/:fieldName?`}
                 >
+                    {/*
+                     // @ts-expect-error TS2322 */}
                     <FieldEditForm filter={filter} />
                 </Route>
                 <Route>
@@ -59,6 +63,8 @@ const DisplayRouteComponent = () => {
     return (
         <Switch>
             <Route exact path={`${path}/edit/:fieldName?`}>
+                {/*
+                 // @ts-expect-error TS2322 */}
                 <FieldEditForm filter={filter} />
             </Route>
             <Route>{pageComponent}</Route>
