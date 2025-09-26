@@ -22,7 +22,9 @@ import repositoryMiddleware, {
     mongoRootAdminClient,
 } from '../services/repositoryMiddleware';
 
-const simulatedLatency = config.get('simulatedLatency');
+const simulatedLatency = config.has('simulatedLatency')
+    ? config.get('simulatedLatency')
+    : 0;
 
 const app = new Koa();
 
