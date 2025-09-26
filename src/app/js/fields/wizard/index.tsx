@@ -9,7 +9,6 @@ import { Box, Tab, Tabs } from '@mui/material';
 
 import { FIELD_FORM_NAME, saveField as saveFieldAction } from '../';
 
-// @ts-expect-error TS7016
 import { withRouter } from 'react-router';
 // @ts-expect-error TS7016
 import { reduxForm } from 'redux-form';

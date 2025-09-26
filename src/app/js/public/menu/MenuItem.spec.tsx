@@ -2,7 +2,6 @@ import React from 'react';
 import { shallow } from 'enzyme';
 // @ts-expect-error TS7016
 import { StyleSheetTestUtils } from 'aphrodite';
-// @ts-expect-error TS7016
 import { Link, NavLink } from 'react-router-dom';
 
 import MenuItem from './MenuItem';

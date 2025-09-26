@@ -1,7 +1,6 @@
 import { Box } from '@mui/material';
 import PropTypes from 'prop-types';
 import React from 'react';
-// @ts-expect-error TS7016
 import { useParams } from 'react-router';
 import { translate } from '../../i18n/I18NContext';
 
@@ -33,6 +32,7 @@ export const ActionsComponent = ({
     // @ts-expect-error TS7031
     currentFormValues,
 }) => {
+    // @ts-expect-error TS2339
     const { filter } = useParams();
     if (!currentEditedField) return null;
 

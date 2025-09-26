@@ -1,8 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-// @ts-expect-error TS7016
 import { Route, Redirect } from 'react-router-dom';
-// @ts-expect-error TS7016
 import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
 
@@ -27,4 +25,5 @@ const mapStateToProps = (state) => ({
     isAdmin: fromUser.isAdmin(state),
 });
 
+// @ts-expect-error TS2345
 export default withRouter(connect(mapStateToProps)(PrivateRoute));

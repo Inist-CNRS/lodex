@@ -23,7 +23,6 @@ import { NoField } from './NoField';
 
 import { changePositions, loadField, saveFieldFromData } from '../fields';
 
-// @ts-expect-error TS7016
 import { useHistory, useLocation } from 'react-router';
 import { SCOPE_DOCUMENT } from '../../../common/scope';
 import { toast } from '../../../common/tools/toast';

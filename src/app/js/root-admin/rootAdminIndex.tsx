@@ -8,7 +8,6 @@ import {
     Switch,
     Route,
     Redirect,
-    // @ts-expect-error TS7016
 } from 'react-router-dom';
 
 import {
