@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
+// @ts-expect-error TS6133
 import React, { useMemo, useState } from 'react';
 import { clamp } from 'lodash';
 
@@ -144,6 +145,7 @@ const mapStateToProps = (state, { formatData }) => {
     };
 };
 
+// @ts-expect-error TS6133
 export const PieChartAdminView = connect((state, props) => {
     return {
         ...props,

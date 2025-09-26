@@ -1,5 +1,6 @@
 import { Box, Checkbox, Tooltip, Typography, useTheme } from '@mui/material';
 import PropTypes from 'prop-types';
+// @ts-expect-error TS6133
 import React from 'react';
 import { AnnotationDisabledIcon } from '../annotation/AnnotationDisabledIcon';
 import { translate, useTranslate } from '../i18n/I18NContext';

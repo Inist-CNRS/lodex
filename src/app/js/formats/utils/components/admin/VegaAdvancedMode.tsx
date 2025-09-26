@@ -35,7 +35,6 @@ const styles = {
 };
 
 const FormSourceCodeField = lazy(
-    // @ts-expect-error TS7006
     () => import('../../../../lib/components/FormSourceCodeField'),
 );
 
@@ -163,6 +162,8 @@ const VegaAdvancedMode = ({ p, value, onChange, onClear }) => {
                     </p>
                 </div>
                 <Suspense fallback={<Loading>{p.t('loading')}</Loading>}>
+                    {/*
+                     // @ts-expect-error TS2322 */}
                     <FormSourceCodeField
                         style={{
                             width: '100%',

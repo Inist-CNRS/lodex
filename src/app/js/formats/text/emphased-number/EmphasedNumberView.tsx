@@ -1,6 +1,7 @@
 // @ts-expect-error TS7016
 import commaNumber from 'comma-number';
 import PropTypes from 'prop-types';
+// @ts-expect-error TS6133
 import React, { Component } from 'react';
 import compose from 'recompose/compose';
 import { translate } from '../../../i18n/I18NContext';

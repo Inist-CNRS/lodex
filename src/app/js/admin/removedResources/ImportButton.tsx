@@ -1,3 +1,4 @@
+// @ts-expect-error TS6133
 import React, { useState } from 'react';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import UploadIcon from '@mui/icons-material/Upload';

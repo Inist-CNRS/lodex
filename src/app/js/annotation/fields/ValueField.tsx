@@ -6,6 +6,7 @@ import {
     Select,
 } from '@mui/material';
 import PropTypes from 'prop-types';
+// @ts-expect-error TS6133
 import React, { useMemo } from 'react';
 
 import { useStore } from '@tanstack/react-form';

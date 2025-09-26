@@ -1,6 +1,7 @@
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import PropTypes from 'prop-types';
+// @ts-expect-error TS6133
 import React, { useMemo } from 'react';
 import { useTranslate } from '../../../i18n/I18NContext';
 import { getResourceType } from '../helpers/resourceType';

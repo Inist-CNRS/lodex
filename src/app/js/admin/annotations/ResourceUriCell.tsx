@@ -1,6 +1,7 @@
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import { Box, Link, Typography } from '@mui/material';
 import PropTypes from 'prop-types';
+// @ts-expect-error TS6133
 import React from 'react';
 
 import { DEFAULT_TENANT } from '../../../../common/tools/tenantTools';

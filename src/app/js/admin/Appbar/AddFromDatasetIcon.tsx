@@ -1,3 +1,4 @@
+// @ts-expect-error TS6133
 import * as React from 'react';
 import SvgIcon from '@mui/material/SvgIcon';
 

@@ -1,5 +1,6 @@
 import { Chip } from '@mui/material';
 import PropTypes from 'prop-types';
+// @ts-expect-error TS6133
 import React from 'react';
 import { grey } from '@mui/material/colors';
 import { useTranslate } from '../../i18n/I18NContext';

@@ -1,5 +1,6 @@
 import { Box } from '@mui/material';
 import PropTypes from 'prop-types';
+// @ts-expect-error TS6133
 import React from 'react';
 import { useParams } from 'react-router';
 import { translate } from '../../i18n/I18NContext';
@@ -9,7 +10,6 @@ import { FIELD_FORM_NAME } from '../';
 import isEqual from 'lodash/isEqual';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
-// @ts-expect-error TS7016
 import { getFormValues } from 'redux-form';
 import RemoveButton from '../../admin/preview/RemoveButton';
 import CancelButton from '../../lib/components/CancelButton';

@@ -2,10 +2,10 @@ import { ObjectId } from 'mongodb';
 import chunk from 'lodash/chunk';
 import omit from 'lodash/omit';
 
-// @ts-expect-error TS(7016): Could not find a declaration file for module '../.... Remove this comment to see the full error message
+// @ts-expect-error TS(7016): Could not find a declaration file for module
 import { getFullResourceUri } from '../../common/uris';
 import getPublishedDatasetFilter from './getPublishedDatasetFilter';
-// @ts-expect-error TS(7016): Could not find a declaration file for module '../.... Remove this comment to see the full error message
+// @ts-expect-error TS(7016): Could not find a declaration file for module
 import { VALIDATED, PROPOSED } from '../../common/propositionStatus';
 import { getCreatedCollection } from './utils';
 import { createDiacriticSafeContainRegex } from '../services/createDiacriticSafeContainRegex';

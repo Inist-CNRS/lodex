@@ -1,3 +1,4 @@
+// @ts-expect-error TS6133
 import React from 'react';
 
 import { FormControl, FormHelperText, Autocomplete } from '@mui/material';
@@ -23,6 +24,7 @@ const SubressourceFieldAutoComplete = ({
             <Autocomplete
                 error={finalError}
                 {...input}
+                // @ts-expect-error TS6133
                 onChange={(event, newValue, reason) => {
                     if (reason === 'clear') {
                         clearIdentifier();

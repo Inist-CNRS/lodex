@@ -1,5 +1,6 @@
 import { renderHook } from '@testing-library/react-hooks';
 import PropTypes from 'prop-types';
+// @ts-expect-error TS6133
 import React from 'react';
 import { MemoryRouter, Route, Switch } from 'react-router-dom';
 import { useResourceUri } from './useResourceUri';

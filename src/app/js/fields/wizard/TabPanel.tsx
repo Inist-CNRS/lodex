@@ -1,3 +1,4 @@
+// @ts-expect-error TS6133
 import React from 'react';
 import { Box } from '@mui/material';
 import PropTypes from 'prop-types';

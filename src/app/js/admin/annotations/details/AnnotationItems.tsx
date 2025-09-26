@@ -3,6 +3,7 @@ import Link from '@mui/material/Link';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import PropTypes from 'prop-types';
+// @ts-expect-error TS6133
 import React from 'react';
 
 import FieldRepresentation from '../../../fields/FieldRepresentation';

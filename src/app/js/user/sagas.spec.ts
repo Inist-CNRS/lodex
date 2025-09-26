@@ -1,5 +1,4 @@
 import { call, put, select } from 'redux-saga/effects';
-// @ts-expect-error TS7016
 import { startSubmit, stopSubmit } from 'redux-form';
 import { push } from 'redux-first-history';
 

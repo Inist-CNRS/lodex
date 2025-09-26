@@ -4,6 +4,7 @@ import { ASPECT_RATIO_8_5 } from '../../../utils/aspectRatio';
 import PropTypes from 'prop-types';
 import { polyglot as polyglotPropTypes } from '../../../../propTypes';
 import TreeMap, { TREE_MAP_LAYOUT } from '../../models/TreeMap';
+// @ts-expect-error TS6133
 import React, { useEffect, useMemo } from 'react';
 import updateAdminArgs from '../../../utils/updateAdminArgs';
 import RoutineParamsAdmin from '../../../utils/components/admin/RoutineParamsAdmin';

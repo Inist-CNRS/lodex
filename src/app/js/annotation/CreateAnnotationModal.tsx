@@ -11,6 +11,7 @@ import {
 } from '@mui/material';
 import { useForm, useStore } from '@tanstack/react-form';
 import PropTypes from 'prop-types';
+// @ts-expect-error TS6133
 import React, { useEffect, useMemo, useState } from 'react';
 import {
     ANNOTATION_KIND_ADDITION,

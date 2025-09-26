@@ -4,6 +4,7 @@ import Fade from '@mui/material/Fade';
 import MenuItem from '@mui/material/MenuItem';
 import Paper from '@mui/material/Paper';
 import PropTypes from 'prop-types';
+// @ts-expect-error TS6133
 import React from 'react';
 
 // @ts-expect-error TS7031

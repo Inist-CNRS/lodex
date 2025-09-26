@@ -7,11 +7,11 @@ import {
     Link,
 } from '@mui/material';
 import PropTypes from 'prop-types';
+// @ts-expect-error TS6133
 import React, { useMemo } from 'react';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import { bindActionCreators } from 'redux';
-// @ts-expect-error TS7016
 import { isSubmitting, submit as submitAction } from 'redux-form';
 
 import { translate } from '../i18n/I18NContext';

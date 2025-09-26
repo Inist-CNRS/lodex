@@ -1,3 +1,4 @@
+// @ts-expect-error TS6133
 import React from 'react';
 import { SearchSearchBarComponent } from './SearchSearchBar';
 import { useCanAnnotate } from '../../annotation/useCanAnnotate';
