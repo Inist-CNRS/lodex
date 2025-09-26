@@ -1,6 +1,6 @@
 import Koa from 'koa';
 import route from 'koa-route';
-
+// @ts-expect-error TS(2792): Cannot find module '@ezs/core'.
 import ezs from '@ezs/core';
 import koaBodyParser from 'koa-bodyparser';
 import { v1 as uuid } from 'uuid';
