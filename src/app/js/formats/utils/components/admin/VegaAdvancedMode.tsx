@@ -1,3 +1,4 @@
+// @ts-expect-error TS6133
 import React, { lazy, Suspense, useEffect, useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Tooltip, Box } from '@mui/material';

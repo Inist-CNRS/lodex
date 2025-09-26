@@ -1,4 +1,3 @@
-// @ts-expect-error TS7016
 import { createAction, handleActions } from 'redux-actions';
 
 export const PRE_LOAD_LOADERS = 'PRE_LOAD_LOADERS';
@@ -17,21 +16,19 @@ const initialState = {
     loaders: [],
 };
 
+// @ts-expect-error TS7006
 export default handleActions(
     {
-        // @ts-expect-error TS7006
         [LOAD_LOADERS]: (state) => ({
             ...state,
             error: false,
             loading: true,
         }),
-        // @ts-expect-error TS7006
         [LOAD_LOADERS_ERROR]: (state, { payload: error }) => ({
             ...state,
             error,
             loading: false,
         }),
-        // @ts-expect-error TS7006
         [LOAD_LOADERS_SUCCESS]: (state, { payload: loaders }) => ({
             ...state,
             error: false,

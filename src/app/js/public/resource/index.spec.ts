@@ -30,6 +30,7 @@ import {
 
 describe('resourceReducer', () => {
     it('should initialize with correct state', () => {
+        // @ts-expect-error TS2345
         const state = reducer(undefined, { type: '@@INIT' });
         expect(state).toEqual(defaultState);
     });
@@ -37,6 +38,7 @@ describe('resourceReducer', () => {
     it('should handle LOAD_RESOURCE_SUCCESS', () => {
         const state = reducer(
             {
+                // @ts-expect-error TS2353
                 key: 'value',
             },
             {
@@ -57,6 +59,7 @@ describe('resourceReducer', () => {
     it('should handle LOAD_RESOURCE_ERROR', () => {
         const state = reducer(
             {
+                // @ts-expect-error TS2353
                 key: 'value',
             },
             {
@@ -75,6 +78,7 @@ describe('resourceReducer', () => {
     it('should handle LOAD_RESOURCE', () => {
         const state = reducer(
             {
+                // @ts-expect-error TS2353
                 key: 'value',
             },
             { type: LOAD_RESOURCE },
@@ -94,6 +98,7 @@ describe('resourceReducer', () => {
             (type) => {
                 const state = reducer(
                     {
+                        // @ts-expect-error TS2353
                         key: 'value',
                     },
                     { type },
@@ -117,6 +122,7 @@ describe('resourceReducer', () => {
         };
         expect(
             reducer(
+                // @ts-expect-error TS2345
                 state,
                 saveResourceSuccess({
                     data: 'new resource',
@@ -137,6 +143,7 @@ describe('resourceReducer', () => {
             data: 'value',
             resource: { data: 'resource', versions: [1] },
         };
+        // @ts-expect-error TS2345
         expect(reducer(state, saveResourceSuccess())).toEqual({
             data: 'value',
             resource: { data: 'resource', versions: [1] },
@@ -150,6 +157,7 @@ describe('resourceReducer', () => {
         const state = reducer(
             {
                 key: 'value',
+                // @ts-expect-error TS2322
                 resource: {
                     data: 'value',
                 },
@@ -175,6 +183,7 @@ describe('resourceReducer', () => {
     it('should handle ADD_FIELD_TO_RESOURCE_SUCCESS', () => {
         const state = reducer(
             {
+                // @ts-expect-error TS2353
                 key: 'value',
             },
             {
@@ -207,6 +216,7 @@ describe('resourceReducer', () => {
         ].forEach((type) => {
             const state = reducer(
                 {
+                    // @ts-expect-error TS2353
                     key: 'value',
                 },
                 { type, payload: { message: 'boom' } },
@@ -233,6 +243,7 @@ describe('resourceReducer', () => {
 
         expect(
             reducer(
+                // @ts-expect-error TS2345
                 state,
                 changeFieldStatus({ field: 'target', status: 'new status' }),
             ),
@@ -258,6 +269,7 @@ describe('resourceReducer', () => {
             data: 'value',
         };
 
+        // @ts-expect-error TS2345
         expect(reducer(state, changeFieldStatusSuccess())).toEqual({
             data: 'value',
             error: null,
@@ -287,6 +299,7 @@ describe('resourceReducer', () => {
             prevStatus: 'previous status',
         });
 
+        // @ts-expect-error TS2345
         expect(reducer(state, action)).toEqual({
             data: 'value',
             error: 'boom',
@@ -310,6 +323,7 @@ describe('resourceReducer', () => {
             data: 'value',
         };
 
+        // @ts-expect-error TS2345
         expect(reducer(state, selectVersion('version'))).toEqual({
             data: 'value',
             selectedVersion: 'version',
@@ -321,6 +335,7 @@ describe('resourceReducer', () => {
             data: 'value',
         };
 
+        // @ts-expect-error TS2345
         expect(reducer(state, addFieldToResourceOpen())).toEqual({
             data: 'value',
             error: null,
@@ -333,6 +348,7 @@ describe('resourceReducer', () => {
             data: 'value',
         };
 
+        // @ts-expect-error TS2345
         expect(reducer(state, addFieldToResourceCancel())).toEqual({
             data: 'value',
             error: null,
@@ -345,6 +361,7 @@ describe('resourceReducer', () => {
             data: 'value',
         };
 
+        // @ts-expect-error TS2345
         expect(reducer(state, hideResourceOpen())).toEqual({
             data: 'value',
             error: null,
@@ -357,6 +374,7 @@ describe('resourceReducer', () => {
             data: 'value',
         };
 
+        // @ts-expect-error TS2345
         expect(reducer(state, hideResourceCancel())).toEqual({
             data: 'value',
             error: null,

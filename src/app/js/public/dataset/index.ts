@@ -1,4 +1,3 @@
-// @ts-expect-error TS7016
 import { createAction, handleActions, combineActions } from 'redux-actions';
 
 import { createGlobalSelectors } from '../../lib/selectors';
@@ -46,11 +45,13 @@ export const defaultState = {
     sort: {},
     total: 0,
     fullTotal: 0,
+    // @ts-expect-error TS7006
     facet: facetReducer(undefined, {}),
 };
 
 export default handleActions(
     {
+        // @ts-expect-error TS7006
         [combineActions(...Object.values(facetActionTypes))]: (
             // @ts-expect-error TS7006
             state,
@@ -60,11 +61,11 @@ export default handleActions(
             ...state,
             facet: facetReducer(state.facet, action),
         }),
-        // @ts-expect-error TS7006
         PRE_LOAD_DATASET_PAGE: (state, { payload }) => ({
             ...state,
             perPage: (payload && payload.perPage) || state.perPage,
         }),
+        // @ts-expect-error TS7006
         [combineActions(
             LOAD_DATASET_PAGE,
             facetActionTypes.TOGGLE_FACET_VALUE,
@@ -78,13 +79,11 @@ export default handleActions(
             formatLoading: true,
             perPage: (payload && payload.perPage) || state.perPage,
         }),
-        // @ts-expect-error TS7006
         LOAD_FORMAT_DATA_SUCCESS: (state) => ({
             ...state,
             formatLoading: false,
         }),
         LOAD_DATASET_PAGE_SUCCESS: (
-            // @ts-expect-error TS7006
             state,
             // @ts-expect-error TS7031
             { payload: { dataset, page: currentPage, total, fullTotal } },
@@ -97,9 +96,9 @@ export default handleActions(
             total,
             fullTotal,
         }),
-        // @ts-expect-error TS7006
         LOAD_DATASET_PAGE_ERROR: (state, { payload: error }) => ({
             ...state,
+            // @ts-expect-error TS2339
             error: error.message,
             loading: false,
         }),
@@ -110,14 +109,13 @@ export default handleActions(
             match,
             sort: {},
         }),
-        // @ts-expect-error TS7006
         [facetActionTypes.TOGGLE_FACET_VALUE]: (state) => ({
             ...state,
             currentPage: 0,
         }),
-        // @ts-expect-error TS7006
         SORT_DATASET: (state, { payload: sortBy }) => {
             const sortDir =
+                // @ts-expect-error TS7006
                 sortBy === state.sort.sortBy && state.sort.sortDir === 'ASC'
                     ? 'DESC'
                     : 'ASC';

@@ -14,6 +14,7 @@ describe('progress reducer', () => {
 
             expect(
                 reducer(
+                    // @ts-expect-error TS2345
                     state,
                     updateProgress({
                         status: 'status',
@@ -36,6 +37,7 @@ describe('progress reducer', () => {
         it('should start progress', () => {
             const state = {};
 
+            // @ts-expect-error TS2345
             expect(reducer(state, publish())).toEqual({
                 status: 'STARTING',
                 error: undefined,
@@ -50,6 +52,7 @@ describe('progress reducer', () => {
         it('should start progress', () => {
             const state = {};
 
+            // @ts-expect-error TS2345
             expect(reducer(state, uploadFile())).toEqual({
                 status: 'STARTING',
                 error: undefined,
@@ -63,6 +66,7 @@ describe('progress reducer', () => {
         it('should set error in progress', () => {
             const state = {};
 
+            // @ts-expect-error TS2345
             expect(reducer(state, errorProgress())).toEqual({
                 error: true,
                 status: ERROR,
@@ -76,6 +80,7 @@ describe('progress reducer', () => {
         it('should clear progress', () => {
             const state = {};
 
+            // @ts-expect-error TS2345
             expect(reducer(state, clearProgress())).toEqual({
                 error: false,
                 status: PENDING,

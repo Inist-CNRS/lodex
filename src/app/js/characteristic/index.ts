@@ -1,4 +1,3 @@
-// @ts-expect-error TS7016
 import { createAction, handleActions } from 'redux-actions';
 import { createSelector } from 'reselect';
 import { SCOPE_DATASET } from '../../../common/scope';
@@ -26,12 +25,11 @@ export const defaultState = {
     isAdding: false,
 };
 
+// @ts-expect-error TS2769
 export default handleActions(
     {
         LOAD_PUBLICATION_SUCCESS: (
-            // @ts-expect-error TS7006
             state,
-            // @ts-expect-error TS7031
             { payload: { characteristics } },
         ) => ({
             ...state,
@@ -39,33 +37,29 @@ export default handleActions(
             newCharacteristics: characteristics[0],
         }),
         SET_CHARACTERISTIC_VALUE: (
-            // @ts-expect-error TS7031
             { newCharacteristics, ...state },
             // @ts-expect-error TS7031
             { payload: { name, value } },
         ) => ({
             ...state,
             newCharacteristics: {
+                // @ts-expect-error TS7006
                 ...newCharacteristics,
                 [name]: value,
             },
         }),
-        // @ts-expect-error TS7006
         UPDATE_CHARACTERISTICS: (state) => ({
             ...state,
             error: null,
             isSaving: true,
         }),
-        // @ts-expect-error TS7006
         UPDATE_CHARACTERISTICS_ERROR: (state, { payload: error }) => ({
             ...state,
             error,
             isSaving: false,
         }),
         UPDATE_CHARACTERISTICS_SUCCESS: (
-            // @ts-expect-error TS7006
             state,
-            // @ts-expect-error TS7031
             { payload: { characteristics } },
         ) => ({
             ...state,

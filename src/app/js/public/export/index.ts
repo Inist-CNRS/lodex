@@ -1,4 +1,3 @@
-// @ts-expect-error TS7016
 import { createAction, handleActions } from 'redux-actions';
 
 export const PRE_LOAD_EXPORTERS = 'PRE_LOAD_EXPORTERS';
@@ -37,33 +36,29 @@ const initialState = {
     exporters: [],
 };
 
+// @ts-expect-error TS2769
 export default handleActions(
     {
-        // @ts-expect-error TS7006
         [LOAD_EXPORTERS]: (state) => ({
             ...state,
             error: false,
             loading: true,
         }),
-        // @ts-expect-error TS7006
         [LOAD_EXPORTERS_ERROR]: (state, { payload: error }) => ({
             ...state,
             error,
             loading: false,
         }),
-        // @ts-expect-error TS7006
         [LOAD_EXPORTERS_SUCCESS]: (state, { payload: exporters }) => ({
             ...state,
             error: false,
             exporters,
             loading: false,
         }),
-        // @ts-expect-error TS7006
         [EXPORT_OPEN]: (state) => ({
             ...state,
             open: true,
         }),
-        // @ts-expect-error TS7006
         [EXPORT_CLOSE]: (state) => ({
             ...state,
             open: false,

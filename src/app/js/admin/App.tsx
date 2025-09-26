@@ -7,6 +7,7 @@ import { Progress } from './progress/Progress';
 import { SidebarContext } from './Sidebar/SidebarContext';
 import Sidebar from './Sidebar/Sidebar';
 import { ToastContainer } from 'react-toastify';
+// @ts-expect-error TS6133
 import 'react-toastify/dist/ReactToastify.css';
 
 const styles = {

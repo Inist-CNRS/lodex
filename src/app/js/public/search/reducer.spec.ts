@@ -16,6 +16,7 @@ describe('search reducer', () => {
                 type: SEARCH_ANNOTATIONS,
                 payload: { mode: null, resourceUris: ['uri1', 'uri2'] },
             };
+            // @ts-expect-error TS2345
             const newState = reducer(state, action);
             expect(newState).toEqual({
                 page: 0,
@@ -40,6 +41,7 @@ describe('search reducer', () => {
                     resourceUris: ['uri1', 'uri2'],
                 },
             };
+            // @ts-expect-error TS2345
             const newState = reducer(state, action);
             expect(newState).toEqual({
                 page: 0,
@@ -64,6 +66,7 @@ describe('search reducer', () => {
                     resourceUris: ['uri1', 'uri2'],
                 },
             };
+            // @ts-expect-error TS2345
             const newState = reducer(state, action);
             expect(newState).toEqual({
                 page: 0,
@@ -88,6 +91,7 @@ describe('search reducer', () => {
                     resourceUris: ['uri1', 'uri2'],
                 },
             };
+            // @ts-expect-error TS2345
             const newState = reducer(state, action);
             expect(newState).toEqual({
                 page: 0,
@@ -112,6 +116,7 @@ describe('search reducer', () => {
                     resourceUris: ['uri1', 'uri2'],
                 },
             };
+            // @ts-expect-error TS2345
             const newState = reducer(state, action);
             expect(newState).toEqual({
                 page: 0,
@@ -133,6 +138,7 @@ describe('search reducer', () => {
                 type: SEARCH_NEW_RESOURCE_ANNOTATED,
                 payload: { resourceUri: 'uri3' },
             };
+            // @ts-expect-error TS2345
             const newState = reducer(state, action);
             expect(newState).toEqual({
                 filters: {
@@ -150,6 +156,7 @@ describe('search reducer', () => {
                 type: 'SEARCH_NEW_RESOURCE_ANNOTATED',
                 payload: { resourceUri: 'uri3' },
             };
+            // @ts-expect-error TS2345
             const newState = reducer(state, action);
             expect(newState).toEqual({
                 filters: {
@@ -166,6 +173,7 @@ describe('search reducer', () => {
                 type: 'SEARCH_NEW_RESOURCE_ANNOTATED',
                 payload: { resourceUri: 'uri3' },
             };
+            // @ts-expect-error TS2345
             const newState = reducer(state, action);
             expect(newState).toEqual({
                 filters: { resourceUrisWithAnnotation: null },
@@ -182,6 +190,7 @@ describe('search reducer', () => {
                 type: 'SEARCH_NEW_RESOURCE_ANNOTATED',
                 payload: { resourceUri: 'uri2' },
             };
+            // @ts-expect-error TS2345
             const newState = reducer(state, action);
             expect(newState).toEqual({
                 filters: {
@@ -199,6 +208,7 @@ describe('search reducer', () => {
                 type: 'SEARCH_VISITED',
                 payload: { value: 'visited' },
             };
+            // @ts-expect-error TS2345
             const newState = reducer(state, action);
             expect(newState).toEqual({
                 page: 0,
@@ -214,6 +224,7 @@ describe('search reducer', () => {
                 type: 'SEARCH_VISITED',
                 payload: { value: 'not-visited' },
             };
+            // @ts-expect-error TS2345
             const newState = reducer(state, action);
             expect(newState).toEqual({
                 page: 0,
@@ -229,6 +240,7 @@ describe('search reducer', () => {
                 type: 'SEARCH_VISITED',
                 payload: { value: null },
             };
+            // @ts-expect-error TS2345
             const newState = reducer(state, action);
             expect(newState).toEqual({
                 page: 0,

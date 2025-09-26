@@ -28,7 +28,7 @@ describe('facet reducer', () => {
                 type: OPEN_FACET,
                 payload: { name: 'target' },
             };
-
+            // @ts-expect-error TS7031
             expect(facetReducer(state, action)).toEqual({
                 foo: 'bar',
                 openedFacets: {
@@ -52,7 +52,7 @@ describe('facet reducer', () => {
                 type: OPEN_FACET,
                 payload: { name: 'target' },
             };
-
+            // @ts-expect-error TS7031
             expect(facetReducer(state, action)).toEqual({
                 foo: 'bar',
                 openedFacets: {
@@ -76,7 +76,7 @@ describe('facet reducer', () => {
                 type: OPEN_FACET,
                 payload: { name: 'target' },
             };
-
+            // @ts-expect-error TS7031
             expect(facetReducer(state, action)).toEqual({
                 foo: 'bar',
                 openedFacets: {
@@ -98,7 +98,7 @@ describe('facet reducer', () => {
                 type: LOAD_FACET_VALUES_ERROR,
                 payload: { message: 'boom' },
             };
-
+            // @ts-expect-error TS7031
             expect(facetReducer(state, action)).toEqual({
                 foo: 'bar',
                 error: 'boom',
@@ -122,7 +122,7 @@ describe('facet reducer', () => {
                     values: { data: 'values', total: 'total' },
                 },
             };
-
+            // @ts-expect-error TS7031
             expect(facetReducer(state, action)).toEqual({
                 foo: 'bar',
                 facetsValues: {
@@ -159,7 +159,7 @@ describe('facet reducer', () => {
                     facetValue: { value: 'value2', count: 4, id: 'id2' },
                 },
             };
-
+            // @ts-expect-error TS7031
             expect(facetReducer(state, action)).toEqual({
                 appliedFacets: {
                     foo: [{ value: 'bar' }],
@@ -185,7 +185,7 @@ describe('facet reducer', () => {
                     facetValue: { value: 'value', count: 4, id: 'id' },
                 },
             };
-
+            // @ts-expect-error TS7031
             expect(facetReducer(state, action)).toEqual({
                 appliedFacets: {
                     foo: [{ value: 'bar' }],
@@ -213,7 +213,7 @@ describe('facet reducer', () => {
                     facetValue: { value: 'value2', count: 4, id: 'id2' },
                 },
             };
-
+            // @ts-expect-error TS7031
             expect(facetReducer(state, action)).toEqual({
                 appliedFacets: {
                     foo: [{ value: 'bar' }],
@@ -240,7 +240,7 @@ describe('facet reducer', () => {
                     facetValue: { value: 'value', count: 1, id: 'id' },
                 },
             };
-
+            // @ts-expect-error TS7031
             expect(facetReducer(state, action)).toEqual({
                 appliedFacets: {
                     foo: [{ value: 'bar' }],
@@ -267,7 +267,7 @@ describe('facet reducer', () => {
                 type: CLEAR_FACET,
                 payload: 'name',
             };
-
+            // @ts-expect-error TS7031
             expect(facetReducer(state, action)).toEqual({
                 foo: 'bar',
                 appliedFacets: {
@@ -296,7 +296,7 @@ describe('facet reducer', () => {
                 type: CLEAR_FACET,
                 payload: null,
             };
-
+            // @ts-expect-error TS7031
             expect(facetReducer(state, action)).toEqual({
                 foo: 'bar',
                 appliedFacets: {},
@@ -326,7 +326,7 @@ describe('facet reducer', () => {
                     perPage: 'perPage',
                 },
             };
-
+            // @ts-expect-error TS7031
             expect(facetReducer(state, action)).toEqual({
                 foo: 'bar',
                 facetsValues: {
@@ -358,7 +358,7 @@ describe('facet reducer', () => {
                     inverted: true,
                 },
             };
-
+            // @ts-expect-error TS7031
             expect(facetReducer(state, action)).toEqual({
                 foo: 'bar',
                 invertedFacets: {
@@ -384,7 +384,7 @@ describe('facet reducer', () => {
                     inverted: false,
                 },
             };
-
+            // @ts-expect-error TS7031
             expect(facetReducer(state, action)).toEqual({
                 foo: 'bar',
                 invertedFacets: {
@@ -417,7 +417,7 @@ describe('facet reducer', () => {
                     nextSortBy: 'sortBy',
                 },
             };
-
+            // @ts-expect-error TS7031
             expect(facetReducer(state, action)).toEqual({
                 foo: 'bar',
                 facetsValues: {
@@ -456,7 +456,7 @@ describe('facet reducer', () => {
                     nextSortBy: 'sortBy',
                 },
             };
-
+            // @ts-expect-error TS7031
             expect(facetReducer(state, action)).toEqual({
                 foo: 'bar',
                 facetsValues: {
@@ -495,7 +495,7 @@ describe('facet reducer', () => {
                     nextSortBy: 'sortBy',
                 },
             };
-
+            // @ts-expect-error TS7031
             expect(facetReducer(state, action)).toEqual({
                 foo: 'bar',
                 facetsValues: {
