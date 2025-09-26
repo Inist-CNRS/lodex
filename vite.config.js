@@ -9,8 +9,7 @@ export default defineConfig(({ mode }) => {
     const isDevelopment = mode === 'development';
 
     return {
-        root: 'src/app/js', // Set the root to where your HTML files are located
-        // Entry points - Vite uses HTML files as entry points
+        root: 'src/app/js',
         build: {
             outDir: '../build',
             emptyOutDir: true,
@@ -32,7 +31,7 @@ export default defineConfig(({ mode }) => {
                 output: {
                     entryFileNames: (chunkInfo) => {
                         if (chunkInfo.name === 'embeddedIstexSummary') {
-                            // we need to kepp same path as on ezmaster
+                            // we need to keep same path as on ezmaster
                             return 'embeddedIstexSummary.js';
                         }
                         return '[name]/index.js';
@@ -44,7 +43,6 @@ export default defineConfig(({ mode }) => {
             },
         },
 
-        // Development server configuration
         server: {
             port: 8080,
             host: '0.0.0.0',
@@ -53,7 +51,6 @@ export default defineConfig(({ mode }) => {
             },
         },
 
-        // Plugin configuration
         plugins: [
             react({
                 jsxRuntime: 'automatic',
@@ -61,7 +58,6 @@ export default defineConfig(({ mode }) => {
             }),
         ],
 
-        // Global constants (replaces webpack's DefinePlugin)
         define: {
             __DEBUG__: false,
             __EN__: JSON.stringify(translations.getByLanguage('english')),
@@ -70,10 +66,8 @@ export default defineConfig(({ mode }) => {
             'process.env.NODE_ENV': JSON.stringify(mode),
         },
 
-        // Module resolution
         resolve: {
             alias: {
-                // Same aliases as webpack config
                 'lodash.isarray': resolve(
                     __dirname,
                     'node_modules/react-infinite/node_modules/lodash.isarray/index.js',
@@ -93,14 +87,12 @@ export default defineConfig(({ mode }) => {
             },
         },
 
-        // CSS handling
         css: {
             modules: {
                 localsConvention: 'camelCase',
             },
         },
 
-        // Optimize dependencies
         optimizeDeps: {
             include: [
                 'react',
@@ -113,12 +105,7 @@ export default defineConfig(({ mode }) => {
                 '@mui/material',
                 '@mui/icons-material',
             ],
-            exclude: [
-                // Exclude packages that might cause issues
-            ],
+            exclude: [],
         },
-
-        // Copy static files (replaces CopyWebpackPlugin)
-        publicDir: './custom',
     };
 });
