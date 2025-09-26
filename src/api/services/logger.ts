@@ -1,5 +1,4 @@
 import winston, { createLogger, format } from 'winston';
-// @ts-expect-error TS(2792): Cannot find module 'config'. Did you mean to set t... Remove this comment to see the full error message
 import config from 'config';
 import { MESSAGE } from 'triple-beam';
 
@@ -26,7 +25,7 @@ const getLogger = (tenant: any) => {
                     ` [${tenant}] ${info.timestamp} ${info[MESSAGE]}`,
             ),
         ),
-        silent: config.logger.disabled,
+        silent: config.get('logger.disabled'),
     });
 
     loggers.set(tenant, logger);

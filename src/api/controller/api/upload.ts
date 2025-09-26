@@ -1,12 +1,8 @@
-// @ts-expect-error TS(2792): Cannot find module 'koa'. Did you mean to set the ... Remove this comment to see the full error message
 import Koa from 'koa';
-// @ts-expect-error TS(2792): Cannot find module 'koa-route'. Did you mean to se... Remove this comment to see the full error message
 import route from 'koa-route';
 // @ts-expect-error TS(2792): Cannot find module '@recuperateur/async-busboy'. D... Remove this comment to see the full error message
 import asyncBusboy from '@recuperateur/async-busboy';
-// @ts-expect-error TS(2792): Cannot find module 'config'. Did you mean to set t... Remove this comment to see the full error message
 import config from 'config';
-// @ts-expect-error TS(2792): Cannot find module 'koa-bodyparser'. Did you mean ... Remove this comment to see the full error message
 import koaBodyParser from 'koa-bodyparser';
 
 import progress from '../../services/progress';
@@ -19,7 +15,6 @@ import {
     unlinkFile,
 } from '../../services/fsHelpers';
 
-// @ts-expect-error TS(2792): Cannot find module 'uuid'. Did you mean to set the... Remove this comment to see the full error message
 import { v1 as uuid } from 'uuid';
 import { workerQueues } from '../../workers';
 import { IMPORT } from '../../workers/import';
@@ -73,9 +68,9 @@ export const parseRequest = async (ctx: any, loaderName: any, next: any) => {
         totalChunks: parseInt(resumableTotalChunks, 10),
         totalSize: parseInt(resumableTotalSize, 10),
         currentChunkSize: parseInt(resumableCurrentChunkSize, 10),
-        filename: `${config.uploadDir}/${ctx.tenant}_${resumableIdentifier}`,
+        filename: `${config.get('uploadDir')}/${ctx.tenant}_${resumableIdentifier}`,
         extension,
-        chunkname: `${config.uploadDir}/${ctx.tenant}_${resumableIdentifier}.${chunkNumber}`,
+        chunkname: `${config.get('uploadDir')}/${ctx.tenant}_${resumableIdentifier}.${chunkNumber}`,
         stream,
         customLoader: loaderName === 'custom-loader' ? customLoader : null,
     };
@@ -186,8 +181,8 @@ export const checkChunkMiddleware = async (ctx: any, loaderName: any) => {
     const chunkNumber = parseInt(resumableChunkNumber, 10);
     const totalChunks = parseInt(resumableTotalChunks, 10);
     const currentChunkSize = parseInt(resumableCurrentChunkSize, 10);
-    const filename = `${config.uploadDir}/${ctx.tenant}_${resumableIdentifier}`;
-    const chunkname = `${config.uploadDir}/${ctx.tenant}_${resumableIdentifier}.${resumableChunkNumber}`;
+    const filename = `${config.get('uploadDir')}/${ctx.tenant}_${resumableIdentifier}`;
+    const chunkname = `${config.get('uploadDir')}/${ctx.tenant}_${resumableIdentifier}.${resumableChunkNumber}`;
     const [extension] = resumableFilename.match(/[^.]*$/);
 
     const exists = await checkFileExists(chunkname, currentChunkSize);
@@ -218,10 +213,6 @@ app.use(
         formLimit: '10mb',
         textLimit: '10mb',
         jsonLimit: '10mb',
-        queryString: {
-            allowDots: true, //  to keep compatibility with qs@4
-            parameterLimit: 100000000000000,
-        },
     }),
 );
 app.use(route.post('/url', uploadUrl));

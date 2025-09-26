@@ -1,4 +1,3 @@
-// @ts-expect-error TS(2792): Cannot find module 'lodash/omit'. Did you mean to ... Remove this comment to see the full error message
 import omit from 'lodash/omit';
 import { ObjectId } from 'mongodb';
 import { castIdsFactory, getCreatedCollection } from './utils';
