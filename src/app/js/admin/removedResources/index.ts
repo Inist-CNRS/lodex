@@ -43,7 +43,7 @@ export default handleActions(
         [combineActions(
             LOAD_REMOVED_RESOURCE_PAGE_ERROR,
             RESTORE_RESOURCE_ERROR,
-        // @ts-expect-error TS7006
+            // @ts-expect-error TS7006
         )]: (state, { payload: error }) => ({
             ...state,
             error: error.message || error,

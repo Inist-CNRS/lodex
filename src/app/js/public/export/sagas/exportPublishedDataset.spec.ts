@@ -39,7 +39,7 @@ describe('export saga', () => {
                         value: 'aFacetValue',
                     },
                 ]).value,
-            // @ts-expect-error TS2339
+                // @ts-expect-error TS2339
             ).toEqual(select(fromSearch.getQuery));
         });
 

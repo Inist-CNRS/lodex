@@ -46,7 +46,7 @@ const FieldCaption = ({ fields, scope, p: polyglot, subresourceId }) => (
                 fields,
                 scope,
                 subresourceId,
-            // @ts-expect-error TS7006
+                // @ts-expect-error TS7006
             ).map((f) => (
                 <MenuItem
                     className={`completes-${getFieldClassName(f)}`}

@@ -4,7 +4,7 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import { DEFAULT_TENANT } from '../../../../common/tools/tenantTools';
 import { useTranslate } from '../../i18n/I18NContext';
 
-const GoToPublicationButtonComponent = ({}) => {
+const GoToPublicationButtonComponent = () => {
     const { translate } = useTranslate();
     const handleGoToPublication = () => {
         const tenant = sessionStorage.getItem('lodex-tenant') || DEFAULT_TENANT;

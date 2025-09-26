@@ -199,8 +199,8 @@ export const GET_SOURCE_VALUE_FROM_TRANSFORMERS = (
     const { operation } = transformers[0];
 
     return operation in sourceValues
-        // @ts-expect-error TS7053
-        ? sourceValues[operation]
+        ? // @ts-expect-error TS7053
+          sourceValues[operation]
         : { source: null, value: null };
 };
 

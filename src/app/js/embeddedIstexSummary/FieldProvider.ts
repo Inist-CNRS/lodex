@@ -25,7 +25,7 @@ class FieldProvider extends Component {
                 field,
                 searchedField,
             }),
-        // @ts-expect-error TS7031
+            // @ts-expect-error TS7031
         }).then(({ error, response }) => {
             if (error) {
                 this.setState({ error: true });
@@ -51,7 +51,7 @@ class FieldProvider extends Component {
             url: `${api}/embedded?uri=${encodeURIComponent(
                 uri,
             )}&fieldName=${encodeURIComponent(fieldName)}`,
-        // @ts-expect-error TS7031
+            // @ts-expect-error TS7031
         }).then(({ error, response }) => {
             if (error) {
                 this.setState({ error: true });

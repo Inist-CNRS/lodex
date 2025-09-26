@@ -3,7 +3,7 @@ import { LABEL_ASC, LABEL_DESC } from '../../utils/chartsUtils';
 
 describe('HeatMap', () => {
     it('Test flipAxis', function () {
-        let heatMap = new HeatMap();
+        const heatMap = new HeatMap();
         // @ts-expect-error TS2339
         expect(heatMap.flip).toBe(false);
 
@@ -13,7 +13,7 @@ describe('HeatMap', () => {
     });
 
     it('Test OrderBy', function () {
-        let heatMap = new HeatMap();
+        const heatMap = new HeatMap();
         // @ts-expect-error TS2339
         expect(heatMap.orderBy).toBe(LABEL_ASC);
 
@@ -23,7 +23,7 @@ describe('HeatMap', () => {
     });
 
     it('Test Tooltip', function () {
-        let heatMap = new HeatMap();
+        const heatMap = new HeatMap();
         // @ts-expect-error TS2339
         expect(heatMap.tooltip).toStrictEqual({
             toggle: false,
@@ -71,7 +71,7 @@ describe('HeatMap', () => {
     });
 
     it('build', function () {
-        let heatMap = new HeatMap();
+        const heatMap = new HeatMap();
         // @ts-expect-error TS2554
         expect(heatMap.buildSpec(400)).toStrictEqual({
             background: 'transparent',

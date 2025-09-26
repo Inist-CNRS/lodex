@@ -4,7 +4,6 @@ import { field as fieldPropTypes } from '../../../propTypes';
 
 // @ts-expect-error TS7031
 const IFrameView = ({ resource, field, viewWidth, aspectRatio }) => {
-
     const srcURL = resource[field.name];
     const style = {
         overflow: 'hidden',
@@ -12,12 +11,14 @@ const IFrameView = ({ resource, field, viewWidth, aspectRatio }) => {
         aspectRatio,
     };
 
-    return <iframe
-        style={style}
-        src={srcURL}
-        referrerPolicy="origin"
-        sandbox="allow-scripts allow-same-origin"
-    />;
+    return (
+        <iframe
+            style={style}
+            src={srcURL}
+            referrerPolicy="origin"
+            sandbox="allow-scripts allow-same-origin"
+        />
+    );
 };
 
 IFrameView.propTypes = {

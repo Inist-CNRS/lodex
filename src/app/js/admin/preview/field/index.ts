@@ -10,7 +10,7 @@ import {
     ARRAY_SPLICE as REDUX_FORM_ARRAY_SPLICE,
     REGISTER_FIELD as REDUX_FORM_REGISTER_FIELD,
     UNREGISTER_FIELD as REDUX_FORM_UNREGISTER_FIELD,
-// @ts-expect-error TS7016
+    // @ts-expect-error TS7016
 } from 'redux-form/lib/actionTypes';
 
 export const COMPUTE_FIELD_PREVIEW_SUCCESS = 'COMPUTE_FIELD_PREVIEW_SUCCESS';
@@ -39,7 +39,7 @@ export default handleActions(
             REDUX_FORM_ARRAY_SPLICE,
             REDUX_FORM_REGISTER_FIELD,
             REDUX_FORM_UNREGISTER_FIELD,
-        // @ts-expect-error TS7006
+            // @ts-expect-error TS7006
         )]: (state) => ({ ...state, isComputing: true }),
         // @ts-expect-error TS7006
         COMPUTE_FIELD_PREVIEW_SUCCESS: (state, { payload: resources }) => ({

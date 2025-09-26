@@ -70,8 +70,8 @@ export const FormatCatalog = ({
     useEffect(() => {
         setFilterFormats(
             selectedFilter && selectedFilter !== 'all'
-                // @ts-expect-error TS7006
-                ? formats.filter((item) => item.type === selectedFilter)
+                ? // @ts-expect-error TS7006
+                  formats.filter((item) => item.type === selectedFilter)
                 : formats,
         );
     }, [selectedFilter]);

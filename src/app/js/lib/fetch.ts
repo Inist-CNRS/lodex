@@ -70,8 +70,8 @@ export default ({ url, ...config }, mode = 'json') => {
                         filename = `export.${
                             // @ts-expect-error TS7053
                             exportExtent[exportType]
-                                // @ts-expect-error TS7053
-                                ? exportExtent[exportType]
+                                ? // @ts-expect-error TS7053
+                                  exportExtent[exportType]
                                 : exportType
                         }`;
                     }
@@ -114,24 +114,28 @@ export default ({ url, ...config }, mode = 'json') => {
                         filename = `export.${
                             // @ts-expect-error TS7053
                             exportExtent[exportType]
-                                // @ts-expect-error TS7053
-                                ? exportExtent[exportType]
+                                ? // @ts-expect-error TS7053
+                                  exportExtent[exportType]
                                 : exportType
                         }`;
                     }
 
-                    return response
-                        .blob()
-                        // @ts-expect-error TS7006
-                        .then((blob) => ({ response: blob, filename }));
+                    return (
+                        response
+                            .blob()
+                            // @ts-expect-error TS7006
+                            .then((blob) => ({ response: blob, filename }))
+                    );
                 }
 
-                return response
-                    .json()
-                    // @ts-expect-error TS7006
-                    .then((json) => ({ response: json }))
-                    // @ts-expect-error TS7006
-                    .catch((error) => ({ error }));
+                return (
+                    response
+                        .json()
+                        // @ts-expect-error TS7006
+                        .then((json) => ({ response: json }))
+                        // @ts-expect-error TS7006
+                        .catch((error) => ({ error }))
+                );
             }
 
             return response.json().then(

@@ -140,7 +140,7 @@ export default (url) => (FormatView) => {
             // @ts-expect-error TS2339
             const { resource, field, sparql } = this.props;
             const requestText = resource[field.name];
-            let endpoint = sparql.endpoint.substring(
+            const endpoint = sparql.endpoint.substring(
                 sparql.endpoint.search('//') + 2,
             );
             if (!sparql.hiddenInfo) {

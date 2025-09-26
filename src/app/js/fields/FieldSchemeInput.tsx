@@ -102,8 +102,8 @@ const mapStateToProps = () => ({
     // @ts-expect-error TS7006
     getSchemeMenuItemsDataFromResponse: (response) =>
         response && response.results
-            // @ts-expect-error TS7006
-            ? response.results.map((r) => ({
+            ? // @ts-expect-error TS7006
+              response.results.map((r) => ({
                   label: r.prefixedName[0],
                   uri: r.uri[0],
               }))

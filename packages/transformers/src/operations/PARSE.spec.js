@@ -8,5 +8,4 @@ describe('PARSE', () => {
     it('should return orginal value', () => {
         expect(parse(true)).toBe(true);
     });
-
 });

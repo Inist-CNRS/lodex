@@ -127,7 +127,7 @@ describe('convertToAtom', () => {
                 ezs((input) => {
                     try {
                         const lines = input.split('\n');
-                        expect(lines.length).toBe(23);
+                        expect(lines).toHaveLength(23);
                         done();
                     } catch (e) {
                         done(e);

@@ -81,7 +81,7 @@ class Pagination extends Component {
         const pages = [];
         const count = Math.ceil(total / perPage);
 
-        for (var i = 0; i < count; i++) {
+        for (let i = 0; i < count; i++) {
             pages.push(i);
         }
 
@@ -150,7 +150,7 @@ class Pagination extends Component {
             to = total;
         }
 
-        let showing = texts.showing
+        const showing = texts.showing
             .replace('{total}', total)
             .replace('{from}', from)
             .replace('{to}', to);

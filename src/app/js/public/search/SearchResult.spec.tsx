@@ -4,8 +4,8 @@ import { MemoryRouter } from 'react-router-dom';
 // @ts-expect-error TS7016
 import { StyleSheetTestUtils } from 'aphrodite';
 
-const { render, screen } = require('../../../../test-utils');
-const { default: SearchResult } = require('./SearchResult');
+import { render, screen } from '../../../../test-utils';
+import SearchResult from './SearchResult';
 
 describe('SearchResult', () => {
     beforeEach(() => {

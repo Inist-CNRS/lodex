@@ -530,6 +530,7 @@ class Streamgraph extends PureComponent {
         if (this.streams) {
             // @ts-expect-error TS2339
             const streams = this.streams;
+            // eslint-disable-next-line @typescript-eslint/no-this-alias
             const componentContext = this;
             // @ts-expect-error TS2339
             this.streams
@@ -552,7 +553,7 @@ class Streamgraph extends PureComponent {
                         // @ts-expect-error TS7006
                         (elem) =>
                             elem.data.date.getFullYear() === parseInt(date),
-                    // @ts-expect-error TS2339
+                        // @ts-expect-error TS2339
                     ).data[componentContext.hoveredKey];
 
                     // @ts-expect-error TS2339
@@ -612,6 +613,7 @@ class Streamgraph extends PureComponent {
 
     // @ts-expect-error TS7006
     setMouseOutStreams(tooltip, colorNameList) {
+        // eslint-disable-next-line @typescript-eslint/no-this-alias
         const componentContext = this;
         // @ts-expect-error TS2339
         if (this.streams) {
