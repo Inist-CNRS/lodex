@@ -1,5 +1,4 @@
 import React from 'react';
-// @ts-expect-error TS7016
 import { shallow } from 'enzyme';
 import { Button } from '@mui/material';
 
@@ -13,6 +12,7 @@ jest.mock('../../admin/api/field', () => ({
 describe('<ClearPublishedButton />', () => {
     it('should only display a button when mounted', () => {
         const wrapper = shallow(
+            // @ts-expect-error TS2322
             <ClearPublishedButton
                 hasPublishedDataset={false}
                 // @ts-expect-error TS2322
@@ -26,6 +26,7 @@ describe('<ClearPublishedButton />', () => {
 
     it('should have button disabled if hasPublishedDataset is falsy', () => {
         const wrapper = shallow(
+            // @ts-expect-error TS2322
             <ClearPublishedButton
                 hasPublishedDataset={false}
                 // @ts-expect-error TS2322
@@ -38,6 +39,7 @@ describe('<ClearPublishedButton />', () => {
 
     it('should display ClearDialog on button click', () => {
         const wrapper = shallow(
+            // @ts-expect-error TS2322
             <ClearPublishedButton
                 hasPublishedDataset={false}
                 // @ts-expect-error TS2322

@@ -1,5 +1,4 @@
 import React from 'react';
-// @ts-expect-error TS7016
 import { shallow } from 'enzyme';
 
 import { HomeComponent as Home } from './Home';
@@ -13,6 +12,7 @@ describe('<Home />', () => {
         const preLoadExporters = jest.fn();
 
         shallow(
+            // @ts-expect-error TS2769
             <Home
                 // @ts-expect-error TS2769
                 p={{ t: (key) => key }}
@@ -30,6 +30,7 @@ describe('<Home />', () => {
 
     it('should render Loading if loading', () => {
         const wrapper = shallow(
+            // @ts-expect-error TS2769
             <Home
                 // @ts-expect-error TS2769
                 p={{ t: (key) => key }}
@@ -46,6 +47,7 @@ describe('<Home />', () => {
 
     it('should render a NoDataset component if no dataset present', () => {
         const wrapper = shallow(
+            // @ts-expect-error TS2769
             <Home
                 // @ts-expect-error TS2769
                 p={{ t: (key) => key }}
