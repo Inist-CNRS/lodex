@@ -1,6 +1,7 @@
 import { polyglot as polyglotPropTypes } from '../../../propTypes';
 import PropTypes from 'prop-types';
 import { Box } from '@mui/material';
+// @ts-expect-error TS6133
 import React, { lazy, Suspense, useEffect, useState } from 'react';
 import { translate, useTranslate } from '../../../i18n/I18NContext';
 import Loading from '../../../lib/components/Loading';

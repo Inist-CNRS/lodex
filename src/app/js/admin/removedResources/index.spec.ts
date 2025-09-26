@@ -7,6 +7,7 @@ import reducer, {
 
 describe('removed resource reducer', () => {
     it('should initialize with correct state', () => {
+        // @ts-expect-error TS2345
         const state = reducer(undefined, { type: '@@INIT' });
         expect(state).toEqual(defaultState);
     });
@@ -25,6 +26,7 @@ describe('removed resource reducer', () => {
             page: 42,
             total: 1000,
         });
+        // @ts-expect-error TS2345
         const state = reducer({ loading: true, error: true }, action);
         expect(state).toEqual({
             error: false,
@@ -37,6 +39,7 @@ describe('removed resource reducer', () => {
 
     it('should handle the LOAD_REMOVED_RESOURCE_PAGE_ERROR action', () => {
         const state = reducer(
+            // @ts-expect-error TS2345
             { loading: true },
             loadRemovedResourcePageError(new Error('foo')),
         );

@@ -19,7 +19,7 @@ import LodexThemeProvider from './LodexThemeProvider';
 import reducers from './reducers';
 import Routes from './Routes';
 import sagas from './sagas';
-
+// @ts-expect-error TS6133
 import 'react-toastify/dist/ReactToastify.css';
 import { AnnotationStorageProvider } from '../annotation/annotationStorage';
 

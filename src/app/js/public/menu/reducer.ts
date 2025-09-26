@@ -1,4 +1,3 @@
-// @ts-expect-error TS7016
 import { createAction, handleActions } from 'redux-actions';
 
 export const LOAD_MENU = 'LOAD_MENU';
@@ -17,7 +16,6 @@ export const initialState = {
 export default handleActions(
     {
         [LOAD_MENU_SUCCESS]: (
-            // @ts-expect-error TS7006
             state,
             // @ts-expect-error TS7031
             { payload: { leftMenu, rightMenu, advancedMenu, customRoutes } },
@@ -29,7 +27,6 @@ export default handleActions(
             customRoutes,
             error: null,
         }),
-        // @ts-expect-error TS7006
         [LOAD_MENU_ERROR]: (state, { payload: { error } }) => ({
             ...state,
             error,

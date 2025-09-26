@@ -1,4 +1,3 @@
-// @ts-expect-error TS7016
 import { combineActions, createAction, handleActions } from 'redux-actions';
 
 export const LOAD_REMOVED_RESOURCE_PAGE = 'LOAD_REMOVED_RESOURCE_PAGE';
@@ -33,6 +32,7 @@ export const defaultState = {
 
 export default handleActions(
     {
+        // @ts-expect-error TS7006
         [combineActions(LOAD_REMOVED_RESOURCE_PAGE, RESTORE_RESOURCE)]: (
             // @ts-expect-error TS7006
             state,
@@ -40,6 +40,7 @@ export default handleActions(
             ...state,
             loading: true,
         }),
+        // @ts-expect-error TS7006
         [combineActions(
             LOAD_REMOVED_RESOURCE_PAGE_ERROR,
             RESTORE_RESOURCE_ERROR,
@@ -50,7 +51,6 @@ export default handleActions(
             loading: false,
         }),
         LOAD_REMOVED_RESOURCE_PAGE_SUCCESS: (
-            // @ts-expect-error TS7006
             state,
             // @ts-expect-error TS7031
             { payload: { resources: items, page: currentPage, total } },
@@ -62,7 +62,6 @@ export default handleActions(
             items,
             total,
         }),
-        // @ts-expect-error TS7031
         RESTORE_RESOURCE_SUCCESS: ({ items, ...state }, { payload: uri }) => ({
             ...state,
             error: false,

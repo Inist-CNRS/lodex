@@ -1,5 +1,4 @@
 import omit from 'lodash/omit';
-// @ts-expect-error TS7016
 import { combineActions, createAction, handleActions } from 'redux-actions';
 
 import {
@@ -60,20 +59,19 @@ export const createReducer = (prefix) => {
                 ...state,
                 openedFacets: {
                     ...state.openedFacets,
+                    // @ts-expect-error TS7053
                     [name]: !state.openedFacets[name],
                 },
             }),
             [actionTypes.LOAD_FACET_VALUES_ERROR]: (
-                // @ts-expect-error TS7006
                 state,
-                // @ts-expect-error TS7031
                 { payload: error },
             ) => ({
                 ...state,
+                // @ts-expect-error TS2345
                 error: error.message || error,
             }),
             [actionTypes.TOGGLE_FACET_VALUE]: (
-                // @ts-expect-error TS7031
                 { appliedFacets, ...state },
                 // @ts-expect-error TS7031
                 { payload: { name, facetValue } },
@@ -82,6 +80,7 @@ export const createReducer = (prefix) => {
                     { appliedFacets },
                     { name, facetValue },
                 );
+                // @ts-expect-error TS7053
                 const prevValues = appliedFacets[name] || [];
 
                 const newValues = isChecked
@@ -104,7 +103,6 @@ export const createReducer = (prefix) => {
                 };
             },
             [actionTypes.SET_ALL_VALUE_FOR_FACET]: (
-                // @ts-expect-error TS7031
                 { appliedFacets, ...state },
                 // @ts-expect-error TS7031
                 { payload: { name, values } },
@@ -113,16 +111,16 @@ export const createReducer = (prefix) => {
                     ...state,
                     appliedFacets: {
                         ...appliedFacets,
+                        //  @ts-expect-error TS7053
                         [name]: appliedFacets[name]
-                            ? [...new Set([...appliedFacets[name], ...values])]
+                            ? // @ts-expect-error TS7006
+                              [...new Set([...appliedFacets[name], ...values])]
                             : values,
                     },
                 };
             },
             [actionTypes.CLEAR_FACET]: (
-                // @ts-expect-error TS7031
                 { appliedFacets, invertedFacets, ...state },
-                // @ts-expect-error TS7031
                 { payload: name },
             ) => {
                 if (!name) {
@@ -134,12 +132,13 @@ export const createReducer = (prefix) => {
                 }
                 return {
                     ...state,
+                    // @ts-expect-error TS7053
                     appliedFacets: omit(appliedFacets, name),
+                    // @ts-expect-error TS7053
                     invertedFacets: omit(invertedFacets, name),
                 };
             },
             [actionTypes.INVERT_FACET]: (
-                // @ts-expect-error TS7031
                 { invertedFacets, ...state },
                 // @ts-expect-error TS7031
                 { payload: { name, inverted } },
@@ -149,6 +148,7 @@ export const createReducer = (prefix) => {
                     ? { ...invertedFacets, [name]: true }
                     : omit(invertedFacets, name),
             }),
+            // @ts-expect-error TS7006
             [combineActions(
                 actionTypes.LOAD_FACET_VALUES_SUCCESS,
                 actionTypes.FACET_VALUE_CHANGE,
@@ -168,23 +168,17 @@ export const createReducer = (prefix) => {
                     },
                 };
             },
-            // @ts-expect-error TS7006
             [SAVE_RESOURCE_SUCCESS]: (state) => ({
                 ...state,
                 openedFacets: {},
             }),
             [actionTypes.SET_FACETS]: (
-                // @ts-expect-error TS7006
                 state,
                 {
                     payload: {
-                        // @ts-expect-error TS7031
                         facetsValues,
-                        // @ts-expect-error TS7031
                         appliedFacets,
-                        // @ts-expect-error TS7031
                         invertedFacets,
-                        // @ts-expect-error TS7031
                         openedFacets,
                     },
                 },
