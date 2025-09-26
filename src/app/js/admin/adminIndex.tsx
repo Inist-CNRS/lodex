@@ -4,6 +4,8 @@ import 'url-api-polyfill';
 // @ts-expect-error TS7016
 import { createHashHistory } from 'history';
 import React from 'react';
+// ignoring deprecation warning react 18 we are using version 17
+// eslint-disable-next-line react/no-deprecated
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 // @ts-expect-error TS7016

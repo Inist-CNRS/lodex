@@ -3,6 +3,8 @@ import 'url-api-polyfill';
 
 import React from 'react';
 
+// ignoring deprecation warning react 18 we are using version 17
+// eslint-disable-next-line react/no-deprecated
 import { render } from 'react-dom';
 // @ts-expect-error TS7016
 import Polyglot from 'node-polyglot';

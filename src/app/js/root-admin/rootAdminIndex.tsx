@@ -1,12 +1,14 @@
 import '@babel/polyfill';
 import React, { useEffect, useState } from 'react';
+// ignoring deprecation warning react 18 we are using version 17
+// eslint-disable-next-line react/no-deprecated
 import { render } from 'react-dom';
 import {
     BrowserRouter as Router,
     Switch,
     Route,
     Redirect,
-// @ts-expect-error TS7016
+    // @ts-expect-error TS7016
 } from 'react-router-dom';
 
 import {
