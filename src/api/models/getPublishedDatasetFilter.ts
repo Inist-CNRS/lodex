@@ -1,4 +1,3 @@
-// @ts-expect-error TS(2792): Cannot find module 'lodash/flowRight'. Did you mea... Remove this comment to see the full error message
 import compose from 'lodash/flowRight';
 
 export const addMatchToFilters =

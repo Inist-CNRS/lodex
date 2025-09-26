@@ -3,7 +3,6 @@ import localConfig from '../../../../config.json';
 // @ts-expect-error TS(7016): Could not find a declaration file for module '../.... Remove this comment to see the full error message
 import { getHost } from '../../../common/uris';
 import { unlinkFile } from '../fsHelpers';
-// @ts-expect-error TS(2792): Cannot find module 'stream-to-promise'. Did you me... Remove this comment to see the full error message
 import streamToPromise from 'stream-to-promise';
 // @ts-expect-error TS(2792): Cannot find module 'fetch-with-proxy'. Did you mea... Remove this comment to see the full error message
 import fetch from 'fetch-with-proxy';
@@ -414,6 +413,7 @@ export const processPrecomputed = async (precomputed: any, ctx: any) => {
         });
         throw new Error(msg);
     }
+    // @ts-expect-error TS(2339): Property filename does not exist on type Number
     const { size: fileSize, filename: fileToUpload } = fileDescription;
     const parameters = {
         timeout: Number(localConfig.timeout) || 120000,

@@ -1,12 +1,7 @@
-// @ts-expect-error TS(2792): Cannot find module 'config'. Did you mean to set t... Remove this comment to see the full error message
-import { simulatedLatency } from 'config';
-// @ts-expect-error TS(2792): Cannot find module 'koa'. Did you mean to set the ... Remove this comment to see the full error message
+import config from 'config';
 import Koa from 'koa';
-// @ts-expect-error TS(2792): Cannot find module 'koa-mount'. Did you mean to se... Remove this comment to see the full error message
 import mount from 'koa-mount';
-// @ts-expect-error TS(2792): Cannot find module 'koa-route'. Did you mean to se... Remove this comment to see the full error message
 import route from 'koa-route';
-// @ts-expect-error TS(2792): Cannot find module 'lodash/merge'. Did you mean to... Remove this comment to see the full error message
 import merge from 'lodash/merge';
 import path from 'path';
 import api from './api';
@@ -19,7 +14,6 @@ import rootAdmin from './rootAdmin';
 import webhook from './webhook';
 
 import fs from 'fs';
-// @ts-expect-error TS(2792): Cannot find module 'lodash'. Did you mean to set t... Remove this comment to see the full error message
 import { cloneDeep } from 'lodash';
 import configTenantDefault from '../../../configTenant.json';
 // @ts-expect-error TS(7016): Could not find a declaration file for module '../.... Remove this comment to see the full error message
@@ -27,6 +21,8 @@ import { DEFAULT_TENANT } from '../../common/tools/tenantTools';
 import repositoryMiddleware, {
     mongoRootAdminClient,
 } from '../services/repositoryMiddleware';
+
+const simulatedLatency = config.get('simulatedLatency');
 
 const app = new Koa();
 

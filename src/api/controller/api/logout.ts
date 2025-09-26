@@ -1,14 +1,12 @@
-// @ts-expect-error TS(2792): Cannot find module 'koa'. Did you mean to set the ... Remove this comment to see the full error message
 import Koa from 'koa';
-// @ts-expect-error TS(2792): Cannot find module 'koa-route'. Did you mean to se... Remove this comment to see the full error message
 import route from 'koa-route';
-// @ts-expect-error TS(2792): Cannot find module 'koa-bodyparser'. Did you mean ... Remove this comment to see the full error message
 import koaBodyParser from 'koa-bodyparser';
 import jwt from 'koa-jwt';
-// @ts-expect-error TS(2792): Cannot find module 'config'. Did you mean to set t... Remove this comment to see the full error message
-import { auth } from 'config';
+import config from 'config';
 // @ts-expect-error TS(7016): Could not find a declaration file for module '../.... Remove this comment to see the full error message
 import { ROOT_ROLE } from '../../../common/tools/tenantTools';
+
+const auth = config.get('auth');
 
 export const logout = (ctx: any) => {
     // if cookie role is root, delete corresponding cookie else delete tenant cookie
@@ -29,6 +27,7 @@ app.use(koaBodyParser());
 
 app.use(async (ctx: any, next: any) => {
     const jwtMid = await jwt({
+        // @ts-expect-error TS(18046): auth is of type unknown
         secret: auth.cookieSecret,
         cookie:
             ctx.tenant === 'admin'
@@ -38,7 +37,6 @@ app.use(async (ctx: any, next: any) => {
         passthrough: true,
     });
 
-    // @ts-expect-error TS(2349): This expression is not callable. Type Middleware has no call signatures.
     return jwtMid(ctx, next);
 });
 
