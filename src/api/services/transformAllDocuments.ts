@@ -1,6 +1,7 @@
 import progress from './progress';
-// @ts-expect-error TS(2792): Cannot find module 'config'. Did you mean to set t... Remove this comment to see the full error message
-import { mongo } from 'config';
+import config from 'config';
+
+const mongo = config.get('mongo');
 
 export default async function transformAllDocument(
     count: any,
@@ -36,6 +37,7 @@ export default async function transformAllDocument(
         ).filter((x: any) => x);
         await insertBatch(transformedDataset);
         progress.incrementProgress(
+            // @ts-expect-error TS(18046): mongo is of type unknown
             job?.data?.tenant || mongo.dbName,
             transformedDataset.filter(
                 ({ subresourceId }: any) => !subresourceId,

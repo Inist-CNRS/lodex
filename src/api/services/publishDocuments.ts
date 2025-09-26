@@ -1,6 +1,4 @@
-// @ts-expect-error TS(2792): Cannot find module 'lodash/omit'. Did you mean to ... Remove this comment to see the full error message
 import omit from 'lodash/omit';
-// @ts-expect-error TS(2792): Cannot find module 'lodash/get'. Did you mean to s... Remove this comment to see the full error message
 import get from 'lodash/get';
 
 import getDocumentTransformer from './getDocumentTransformer';

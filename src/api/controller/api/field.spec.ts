@@ -21,7 +21,6 @@ import {
     setup,
 } from './field';
 
-// @ts-expect-error TS(2792): Cannot find module 'lodash'. Did you mean to set t... Remove this comment to see the full error message
 import _ from 'lodash';
 // @ts-expect-error TS(7016): Could not find a declaration file for module '../.... Remove this comment to see the full error message
 import { RESOURCE_DETAIL_1 } from '../../../common/overview';

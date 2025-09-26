@@ -1,12 +1,8 @@
-// @ts-expect-error TS(2792): Cannot find module 'koa'. Did you mean to set the ... Remove this comment to see the full error message
 import Koa from 'koa';
-// @ts-expect-error TS(2792): Cannot find module 'koa-bodyparser'. Did you mean ... Remove this comment to see the full error message
 import koaBodyParser from 'koa-bodyparser';
-// @ts-expect-error TS(2792): Cannot find module 'koa-route'. Did you mean to se... Remove this comment to see the full error message
 import route from 'koa-route';
 import jwt from 'koa-jwt';
-// @ts-expect-error TS(2792): Cannot find module 'config'. Did you mean to set t... Remove this comment to see the full error message
-import { auth } from 'config';
+import config from 'config';
 import { ObjectId } from 'mongodb';
 import { createWorkerQueue, deleteWorkerQueue } from '../workers';
 import {
@@ -20,15 +16,19 @@ import { insertConfigTenant } from '../services/configTenant';
 import mongoClient from '../services/mongoClient';
 import os from 'os';
 
+const auth = config.get('auth');
+
 const app = new Koa();
 app.use(
     jwt({
+        // @ts-expect-error TS(18046): auth is of type unknown
         secret: auth.cookieSecret,
         cookie: 'lodex_token_root',
         key: 'cookie',
         passthrough: true,
     }),
 );
+// @ts-expect-error TS(18046): auth is of type unknown
 app.use(jwt({ secret: auth.headerSecret, key: 'header', passthrough: true }));
 
 app.use(async (ctx: any, next: any) => {

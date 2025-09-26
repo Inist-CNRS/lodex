@@ -1,14 +1,10 @@
-// @ts-expect-error TS(2792): Cannot find module 'koa'. Did you mean to set the ... Remove this comment to see the full error message
 import Koa from 'koa';
-// @ts-expect-error TS(2792): Cannot find module 'koa-bodyparser'. Did you mean ... Remove this comment to see the full error message
 import koaBodyParser from 'koa-bodyparser';
-// @ts-expect-error TS(2792): Cannot find module 'koa-route'. Did you mean to se... Remove this comment to see the full error message
 import route from 'koa-route';
 import getLogger from '../../services/logger';
 import { buildQuery } from './buildQuery';
 import { workerQueues } from '../../workers';
 import { PUBLISHER } from '../../workers/publisher';
-// @ts-expect-error TS(2792): Cannot find module 'uuid'. Did you mean to set the... Remove this comment to see the full error message
 import { v1 as uuid } from 'uuid';
 
 const app = new Koa();

@@ -1,8 +1,5 @@
-// @ts-expect-error TS(2792): Cannot find module 'koa'. Did you mean to set the ... Remove this comment to see the full error message
 import Koa from 'koa';
-// @ts-expect-error TS(2792): Cannot find module 'koa-route'. Did you mean to se... Remove this comment to see the full error message
 import route from 'koa-route';
-// @ts-expect-error TS(2792): Cannot find module 'koa-bodyparser'. Did you mean ... Remove this comment to see the full error message
 import koaBodyParser from 'koa-bodyparser';
 
 // @ts-expect-error TS(7016): Could not find a declaration file for module '../.... Remove this comment to see the full error message
@@ -12,7 +9,6 @@ import generateUri from '../../../common/transformers/AUTOGENERATE_URI';
 import ark from './ark';
 import updateFacetValue from '../../services/updateFacetValue';
 import { ObjectId } from 'mongodb';
-// @ts-expect-error TS(2792): Cannot find module 'lodash'. Did you mean to set t... Remove this comment to see the full error message
 import { uniq } from 'lodash';
 
 const app = new Koa();
