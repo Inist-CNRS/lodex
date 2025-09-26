@@ -11,7 +11,6 @@ import globals from 'globals';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
-import tseslint from 'typescript-eslint';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -55,6 +54,8 @@ export default defineConfig([
         ignores: ['**/.js', '**/*.jsx'],
         rules: {
             ...conf.rules,
+            '@typescript-eslint/no-explicit-any': 'warn',
+            '@typescript-eslint/no-unused-expressions': 'warn',
 
             '@typescript-eslint/no-unused-vars': [
                 'error',
@@ -153,15 +154,4 @@ export default defineConfig([
             'cypress/no-unnecessary-waiting': 'warn',
         },
     },
-    tseslint.configs.recommended.map((conf) => ({
-        ...conf,
-        files: ['**/*.ts', '**/*.tsx'],
-        ignores: ['**/*.js', '**/*.jsx'],
-        rules: {
-            ...conf.rules,
-            '@typescript-eslint/no-explicit-any': 'warn',
-            '@typescript-eslint/no-unused-vars': 'warn',
-            '@typescript-eslint/no-unused-expressions': 'warn',
-        },
-    })),
 ]);
