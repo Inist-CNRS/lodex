@@ -2,12 +2,16 @@ import React from 'react';
 import { render } from '@testing-library/react';
 import { TransformerListComponent as TransformerList } from './TransformerList';
 
-// eslint-disable-next-line react/display-name, react/prop-types
-// @ts-expect-error TS7031
-jest.mock('./TransformerListItem', () => ({ transformer, show }) => (
-    // eslint-disable-next-line react/prop-types
-    <div>{show && transformer.operation}</div>
-));
+jest.mock(
+    './TransformerListItem',
+    () =>
+        // @ts-expect-error TS7006
+        // eslint-disable-next-line react/prop-types
+        function TransformerListItemMock({ transformer, show }) {
+            // eslint-disable-next-line react/prop-types
+            return <div>{show && transformer.operation}</div>;
+        },
+);
 
 describe('TransformerList', () => {
     // @ts-expect-error TS7034

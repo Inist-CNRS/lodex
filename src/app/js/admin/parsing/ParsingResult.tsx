@@ -184,8 +184,8 @@ export const ParsingResultComponent = (props) => {
                     return {
                         field: key,
                         headerName: errorCount
-                            // @ts-expect-error TS2554
-                            ? translate('header_name_with_errors', {
+                            ? // @ts-expect-error TS2554
+                              translate('header_name_with_errors', {
                                   name: key,
                                   errorCount,
                               })

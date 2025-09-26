@@ -2,9 +2,9 @@ import React from 'react';
 import { act, fireEvent, render } from '@testing-library/react';
 import { z } from 'zod';
 import PropTypes from 'prop-types';
-const { useForm } = require('@tanstack/react-form');
-const { TextField } = require('./TextField');
-const { TestI18N } = require('../../i18n/I18NContext');
+import { useForm } from '@tanstack/react-form';
+import { TextField } from './TextField';
+import { TestI18N } from '../../i18n/I18NContext';
 
 // @ts-expect-error TS7006
 const renderTextField = async (props) => {
@@ -18,6 +18,8 @@ const renderTextField = async (props) => {
         });
         return (
             <TestI18N>
+                {/* 
+                // @ts-expect-error TS2322 */}
                 <TextField form={form} {...props} />
             </TestI18N>
         );

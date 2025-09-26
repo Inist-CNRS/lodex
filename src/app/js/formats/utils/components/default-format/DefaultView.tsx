@@ -7,11 +7,7 @@ import {
     REJECTED,
     VALIDATED,
 } from '../../../../../../common/propositionStatus';
-import {
-    canonicalURL,
-    isLocalURL,
-    isURL,
-} from '../../../../../../common/uris';
+import { canonicalURL, isLocalURL, isURL } from '../../../../../../common/uris';
 import Link from '../../../../lib/components/Link';
 import { getShortText, isLongText } from '../../../../lib/longTexts';
 import { field as fieldPropTypes } from '../../../../propTypes';
@@ -33,7 +29,7 @@ const styles = {
 
 // @ts-expect-error TS7031
 const DefaultView = ({ className, resource, field, fieldStatus, shrink }) => {
-    let value = resource[field.name];
+    const value = resource[field.name];
 
     if (isURL(value)) {
         return (

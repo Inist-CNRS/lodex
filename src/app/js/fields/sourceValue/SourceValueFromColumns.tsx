@@ -31,8 +31,8 @@ const SourceValueFromColumns = ({
                 operation: value.length > 1 ? 'CONCAT' : 'COLUMN',
                 args:
                     value.length !== 0
-                        // @ts-expect-error TS7006
-                        ? value.map((v) => ({
+                        ? // @ts-expect-error TS7006
+                          value.map((v) => ({
                               name: 'column',
                               type: 'column',
                               value: v,

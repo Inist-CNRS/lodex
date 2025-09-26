@@ -77,10 +77,12 @@ export default compose(
     withHandlers({
         handleChange:
             // @ts-expect-error TS7031
-            ({ handleChange, index }) =>
-            // @ts-expect-error TS7006
-            (event, key, value) =>
-                handleChange(event, key, value, index),
+
+
+                ({ handleChange, index }) =>
+                // @ts-expect-error TS7006
+                (event, key, value) =>
+                    handleChange(event, key, value, index),
         // @ts-expect-error TS7031
         handleRemoveColumn: ({ handleRemoveColumn, index }) =>
             handleRemoveColumn(index),

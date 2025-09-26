@@ -58,7 +58,7 @@ const EnricherDescription = ({ enricher, translatePrefix }) => {
                             style={{ marginRight: '1em' }}
                             onClick={(e) => e.stopPropagation()}
                         >
-                            <GitHubIcon/>
+                            <GitHubIcon />
                         </Link>
                     </Tooltip>
                 )}
@@ -120,8 +120,8 @@ export const EnrichmentCatalog = ({
     useEffect(() => {
         setFilterEnricher(
             selectedFilter && selectedFilter !== 'all'
-                // @ts-expect-error TS7006
-                ? enrichers.filter((item) => item.type === selectedFilter)
+                ? // @ts-expect-error TS7006
+                  enrichers.filter((item) => item.type === selectedFilter)
                 : enrichers,
         );
     }, [selectedFilter]);
@@ -206,11 +206,16 @@ export const EnrichmentCatalog = ({
                                 disableTypography
                                 primary={
                                     <Typography sx={{ fontWeight: 'bold' }}>
-                                        {translate(`${translatePrefix}_${enricher.id}_title`)}
+                                        {translate(
+                                            `${translatePrefix}_${enricher.id}_title`,
+                                        )}
                                     </Typography>
                                 }
                                 secondary={
-                                    <EnricherDescription enricher={enricher} translatePrefix={translatePrefix} />
+                                    <EnricherDescription
+                                        enricher={enricher}
+                                        translatePrefix={translatePrefix}
+                                    />
                                 }
                             />
                         </ListItem>
@@ -231,6 +236,18 @@ EnrichmentCatalog.propTypes = {
     handleClose: PropTypes.func.isRequired,
     onChange: PropTypes.func.isRequired,
     selectedWebServiceUrl: PropTypes.string,
+    enrichers: PropTypes.arrayOf(
+        PropTypes.shape({
+            id: PropTypes.string.isRequired,
+            type: PropTypes.string.isRequired,
+            url: PropTypes.string.isRequired,
+            doc: PropTypes.string,
+            swagger: PropTypes.string,
+            objectifTDM: PropTypes.string,
+            code: PropTypes.string,
+        }).isRequired,
+    ).isRequired,
+    translatePrefix: PropTypes.string.isRequired,
 };
 
 EnricherDescription.propTypes = {
@@ -239,9 +256,9 @@ EnricherDescription.propTypes = {
         doc: PropTypes.string,
         swagger: PropTypes.string,
         objectifTDM: PropTypes.string,
+        code: PropTypes.string,
     }).isRequired,
-    translatePrefix: PropTypes.string.isRequired
+    translatePrefix: PropTypes.string.isRequired,
 };
 
 export default EnrichmentCatalog;
-

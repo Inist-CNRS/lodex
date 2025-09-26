@@ -70,8 +70,10 @@ export default compose(
     withHandlers({
         handleAddColumn:
             // @ts-expect-error TS7031
-            ({ name, onAddColumn }) =>
-            () =>
-                onAddColumn(name),
+
+
+                ({ name, onAddColumn }) =>
+                () =>
+                    onAddColumn(name),
     }),
 )(ParsingExcerptAddColumnComponent);

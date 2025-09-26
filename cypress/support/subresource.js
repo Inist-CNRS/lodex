@@ -4,8 +4,8 @@ const defaultSubresource = {
     identifier: 'id',
 };
 
-export const fillSubcategoryFormAndSubmit = values => {
-    Object.keys(values).forEach(key => {
+export const fillSubcategoryFormAndSubmit = (values) => {
+    Object.keys(values).forEach((key) => {
         cy.get(`[aria-label="input-${key}"]`).type(values[key]);
     });
 
@@ -18,22 +18,15 @@ export const addField = (name, label, save = true) => {
 
     cy.get('.wizard').should('exist');
 
-    cy.get('.wizard')
-        .find(`input[name="label"]`)
-        .clear()
-        .type(label);
+    cy.get('.wizard').find(`input[name="label"]`).clear().type(label);
 
     cy.contains('Existing Column(s)').click();
     cy.get('[data-testid="source-value-from-columns"]').click();
 
-    cy.get('[role="listbox"]')
-        .contains(name)
-        .click();
+    cy.get('[role="listbox"]').contains(name).click();
 
     if (save) {
-        cy.get('.wizard')
-            .find('.btn-save')
-            .click();
+        cy.get('.wizard').find('.btn-save').click();
 
         cy.get('.wizard').should('not.exist');
 
@@ -50,9 +43,7 @@ export const createSubresource = (subresource = defaultSubresource) => {
 
     fillSubcategoryFormAndSubmit(subresource);
 
-    cy.get('.sidebar')
-        .contains('Subresources')
-        .should('be.visible');
+    cy.get('.sidebar').contains('Subresources').should('be.visible');
 
     cy.url().should('not.contain', '/display/document/subresource/add');
 };

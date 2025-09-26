@@ -11,7 +11,7 @@ export const truncateByWords = (stringIn, sizeIn) => {
 
     // setup necessary variable
     let currentSize = 0;
-    let finalOutput = [];
+    const finalOutput = [];
     const subStringList = stringIn.split(/\s+/);
 
     // Loop into all word
