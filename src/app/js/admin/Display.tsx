@@ -6,7 +6,7 @@ import { DisplayRoute } from './DisplayRoute';
 import SearchFormConnected from './Search/SearchForm';
 
 const DisplayComponent = () => {
-    let { path } = useRouteMatch();
+    const { path } = useRouteMatch();
     return (
         <Switch>
             <Route exact path={`${path}/search`}>
