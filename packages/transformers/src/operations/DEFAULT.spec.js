@@ -25,8 +25,13 @@ describe('DEFAULT', () => {
         expect(defval([], 'Yo')).toEqual(['Yo']);
     });
 
-    it('should return filled array with default ', () => {
-        expect(defval(['', null, undefined, ' '], 'Yo')).toEqual(['Yo', 'Yo', 'Yo', 'Yo']);
+    it('should return filled array with default', () => {
+        expect(defval(['', null, undefined, ' '], 'Yo')).toEqual([
+            'Yo',
+            'Yo',
+            'Yo',
+            'Yo',
+        ]);
     });
 
     it('should return value', () => {

@@ -26,10 +26,12 @@ const SearchBar = ({
 
     useEffect(() => {
         setTimeout(() => {
-            refTextField &&
-                refTextField.current &&
-                // @ts-expect-error TS2339
-                refTextField.current.focus();
+            if (!refTextField?.current) {
+                return;
+            }
+
+            // @ts-expect-error TS2531
+            refTextField.current.focus();
         }, 300);
     }, [refTextField]);
 
@@ -42,7 +44,10 @@ const SearchBar = ({
             placeholder={polyglot.t('search')}
             onChange={onChange}
             onFocus={(event) => {
-                event && event.target && event.target.select();
+                if (!event || !event.target) {
+                    return;
+                }
+                event.target.select();
             }}
             value={value}
             variant="outlined"

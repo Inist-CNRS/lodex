@@ -29,7 +29,7 @@ import {
     schemeSet1,
     schemeSet2,
     schemeSet3,
-// @ts-expect-error TS7016
+    // @ts-expect-error TS7016
 } from 'd3-scale-chromatic';
 
 const gradientSchemes = [

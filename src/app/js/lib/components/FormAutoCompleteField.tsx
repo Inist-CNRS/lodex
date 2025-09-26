@@ -85,28 +85,32 @@ const mapDispatchToProps = (dispatch, { input: { name }, getFetchRequest }) =>
 
 const handleValueChosen =
     // @ts-expect-error TS7031
-    ({ allowNewItem, input: { onChange } }) =>
-    // @ts-expect-error TS7006
-    (event, value) => {
-        // Material UI doc: index is the index in dataSource of the list item selected,
-        // or -1 if enter is pressed in the TextField
-        if (!allowNewItem) {
-            return onChange('');
-        }
 
-        return value.text ? onChange(value.text) : onChange(value);
-    };
+
+        ({ allowNewItem, input: { onChange } }) =>
+        // @ts-expect-error TS7006
+        (event, value) => {
+            // Material UI doc: index is the index in dataSource of the list item selected,
+            // or -1 if enter is pressed in the TextField
+            if (!allowNewItem) {
+                return onChange('');
+            }
+
+            return value.text ? onChange(value.text) : onChange(value);
+        };
 
 const handleComplete =
     // @ts-expect-error TS7031
-    ({ allowNewItem, input: { onChange }, handleSearch }) =>
-    // @ts-expect-error TS7006
-    (event, searchText) => {
-        if (allowNewItem) {
-            onChange(searchText);
-            handleSearch(searchText);
-        }
-    };
+
+
+        ({ allowNewItem, input: { onChange }, handleSearch }) =>
+        // @ts-expect-error TS7006
+        (event, searchText) => {
+            if (allowNewItem) {
+                onChange(searchText);
+                handleSearch(searchText);
+            }
+        };
 
 export default compose(
     // @ts-expect-error TS2769

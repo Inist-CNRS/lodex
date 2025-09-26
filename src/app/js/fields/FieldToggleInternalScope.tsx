@@ -57,7 +57,9 @@ export const FieldToggleInternalScopeComponent = ({ input, p: polyglot }) => {
     }, [input, matches]);
 
     useEffect(() => {
-        Array.isArray(input.value) && setValues(input.value);
+        if (Array.isArray(input.value)) {
+            setValues(input.value);
+        }
     }, [input.value]);
 
     // @ts-expect-error TS7006

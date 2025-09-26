@@ -22,7 +22,7 @@ describe('Chart Menu', () => {
             'Radar Chart',
         ];
         const chartMenu = cy.get('.graph-summary');
-        charts.forEach(chartName => {
+        charts.forEach((chartName) => {
             chartMenu
                 .get(`.graph-link`)
                 .contains(chartName)
@@ -32,8 +32,6 @@ describe('Chart Menu', () => {
         menu.goToChart('Pie Chart');
 
         menu.openChartDrawer();
-        cy.get(`.graph-link.active`)
-            .contains('Pie Chart')
-            .should('be.visible');
+        cy.get(`.graph-link.active`).contains('Pie Chart').should('be.visible');
     });
 });

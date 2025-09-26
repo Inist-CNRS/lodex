@@ -53,6 +53,18 @@ export default defineConfig([
         ...conf,
         files: ['**/*.ts', '**/*.tsx'],
         ignores: ['**/.js', '**/*.jsx'],
+        rules: {
+            ...conf.rules,
+
+            '@typescript-eslint/no-unused-vars': [
+                'error',
+                {
+                    ignoreRestSiblings: true,
+                    argsIgnorePattern: '^_',
+                    caughtErrors: 'none',
+                },
+            ],
+        },
     })),
     {
         name: 'eslint-plugin-import',

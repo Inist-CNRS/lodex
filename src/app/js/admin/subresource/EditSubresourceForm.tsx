@@ -45,17 +45,21 @@ export const EditSubresourceForm = compose(
     withHandlers({
         onSubmit:
             // @ts-expect-error TS7031
-            ({ updateSubresource }) =>
-            // @ts-expect-error TS7006
-            (resource) => {
-                updateSubresource(resource);
-            },
+
+
+                ({ updateSubresource }) =>
+                // @ts-expect-error TS7006
+                (resource) => {
+                    updateSubresource(resource);
+                },
         onDelete:
             // @ts-expect-error TS7031
-            ({ deleteSubresource, match }) =>
-            () => {
-                deleteSubresource(match.params.subresourceId);
-            },
+
+
+                ({ deleteSubresource, match }) =>
+                () => {
+                    deleteSubresource(match.params.subresourceId);
+                },
     }),
     // @ts-expect-error TS7031
     withProps(({ onDelete }) => ({

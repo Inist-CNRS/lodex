@@ -12,7 +12,6 @@ const isChecked = memoize((value) => {
 });
 
 // @ts-expect-error TS7031
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const FormSwitchField = ({ input, label, meta, ...custom }) => (
     <FormControlLabel
         control={

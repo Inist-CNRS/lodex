@@ -155,31 +155,33 @@ export const NavBar = ({
 
     const handleMenuItemClick =
         // @ts-expect-error TS7006
-        (role, suppressEvent = false) =>
-        // @ts-expect-error TS7006
-        (evt) => {
-            if (suppressEvent) {
-                evt.preventDefault();
-            }
 
-            switch (role) {
-                case 'graphs':
-                    toggleGraph();
-                    break;
-                case 'search':
-                    toggleSearch();
-                    break;
-                case 'sign-out':
-                    logout();
-                    break;
-                case 'advanced':
-                    toggleAdvancedMenu();
-                    break;
-                default:
-                    closeAll();
-                    return;
-            }
-        };
+
+            (role, suppressEvent = false) =>
+            // @ts-expect-error TS7006
+            (evt) => {
+                if (suppressEvent) {
+                    evt.preventDefault();
+                }
+
+                switch (role) {
+                    case 'graphs':
+                        toggleGraph();
+                        break;
+                    case 'search':
+                        toggleSearch();
+                        break;
+                    case 'sign-out':
+                        logout();
+                        break;
+                    case 'advanced':
+                        toggleAdvancedMenu();
+                        break;
+                    default:
+                        closeAll();
+                        return;
+                }
+            };
 
     if (!leftMenu || !rightMenu) {
         return null;

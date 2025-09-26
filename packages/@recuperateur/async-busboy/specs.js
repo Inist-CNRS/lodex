@@ -29,7 +29,7 @@ describe('Async-busboy', () => {
         Promise.all(fileContentPromises)
           .then((contentBufs) => {
             contentBufs.forEach((content, index) =>
-              expect(content.toString()).toBe(fileContent[index])
+              expect(content.toString()).toBe(fileContent[index]),
             );
             done();
           })
@@ -51,7 +51,7 @@ describe('Async-busboy', () => {
         Promise.all(fileContentPromises)
           .then((contentBufs) => {
             contentBufs.forEach((content, index) =>
-              expect(content.toString()).toBe(fileContent[index])
+              expect(content.toString()).toBe(fileContent[index]),
             );
             done();
           })
@@ -89,7 +89,7 @@ describe('Async-busboy', () => {
     asyncBusboy(request())
       .then((formData) => {
         expect(formData.fields.hasOwnProperty).toEqual(
-          Object.prototype.hasOwnProperty
+          Object.prototype.hasOwnProperty,
         );
         done();
       })
@@ -110,7 +110,7 @@ describe('Async-busboy', () => {
         expect(e.code).toBe('Request_files_limit');
         expect(e.message).toBe('Reach files limit');
         done();
-      }
+      },
     );
   });
 
@@ -128,7 +128,7 @@ describe('Async-busboy', () => {
         expect(e.code).toBe('Request_fields_limit');
         expect(e.message).toBe('Reach fields limit');
         done();
-      }
+      },
     );
   });
 });
@@ -215,7 +215,7 @@ function request() {
       '',
       fileContent[2],
       '-----------------------------paZqsnEHRufoShdX6fh0lUhXBP4k--',
-    ].join('\r\n')
+    ].join('\r\n'),
   );
   stream.end();
 

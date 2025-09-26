@@ -31,7 +31,7 @@ describe('dataset saga', () => {
                 saga.next({
                     aFacet: [{ value: 'aFacetValue', count: 1, id: 'id' }],
                 }).value,
-            // @ts-expect-error TS2339
+                // @ts-expect-error TS2339
             ).toEqual(select(fromDataset.getInvertedFacetKeys));
         });
 
@@ -52,7 +52,7 @@ describe('dataset saga', () => {
         it('should select fromDataset.getDatasetCurrentPage', () => {
             expect(
                 saga.next({ sortBy: 'field', sortDir: 'ASC' }).value,
-            // @ts-expect-error TS2339
+                // @ts-expect-error TS2339
             ).toEqual(select(fromDataset.getDatasetCurrentPage));
         });
 

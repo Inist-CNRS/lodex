@@ -96,13 +96,14 @@ export const RedirectView = ({
 }) => {
     const url = resource[field.name];
 
+    useEffect(() => {
+        if (!url) return;
+        window.location.href = url;
+    }, [url]);
+
     if (url == null || url === '') {
         return null;
     }
-
-    useEffect(() => {
-        window.location.href = url;
-    });
 
     return (
         <div className={className}>

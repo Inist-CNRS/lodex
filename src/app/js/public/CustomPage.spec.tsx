@@ -59,7 +59,7 @@ describe('getCustomPage CustomPage', () => {
 
     it('should render nothing if could not fetch page data', async () => {
         const wait = () => new Promise((resolve) => setTimeout(resolve)); //Will wait for component to re-render after the setState of the error
-        let response = Promise.resolve({ error: new Error('nope') });
+        const response = Promise.resolve({ error: new Error('nope') });
         // @ts-expect-error TS2339
         fetch.mockImplementation(() => response);
         const wrapper = shallow(<CustomPage {...defaultProps} />);

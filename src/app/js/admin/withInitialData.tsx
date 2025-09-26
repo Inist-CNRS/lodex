@@ -106,6 +106,6 @@ export default (BaseComponent, onlyLoadIfNotInitialized = false) => {
     return connect(
         mapStateToProps,
         mapDispatchToProps,
-    // @ts-expect-error TS2345
+        // @ts-expect-error TS2345
     )(withInitialDataHoc(BaseComponent, onlyLoadIfNotInitialized));
 };
