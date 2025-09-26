@@ -1,5 +1,6 @@
 import { Typography } from '@mui/material';
 import PropTypes from 'prop-types';
+// @ts-expect-error TS6133
 import React from 'react';
 import { field as fieldPropTypes } from '../../../propTypes';
 

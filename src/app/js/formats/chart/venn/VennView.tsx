@@ -1,3 +1,4 @@
+// @ts-expect-error TS6133
 import React, { useMemo, useState, Suspense, useCallback } from 'react';
 import { polyglot as polyglotPropTypes } from '../../../propTypes';
 import compose from 'recompose/compose';

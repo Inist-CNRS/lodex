@@ -2,6 +2,7 @@ import '@babel/polyfill';
 import 'url-api-polyfill';
 
 import { createHashHistory } from 'history';
+// @ts-expect-error TS6133
 import React from 'react';
 // ignoring deprecation warning react 18 we are using version 17
 // eslint-disable-next-line react/no-deprecated

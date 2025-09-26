@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+// @ts-expect-error TS6133
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { compose, withProps } from 'recompose';
@@ -9,7 +10,6 @@ import { Box, Tab, Tabs } from '@mui/material';
 import { FIELD_FORM_NAME, saveField as saveFieldAction } from '../';
 
 import { withRouter } from 'react-router';
-// @ts-expect-error TS7016
 import { reduxForm } from 'redux-form';
 import {
     SCOPE_DATASET,

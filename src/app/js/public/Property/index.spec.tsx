@@ -1,4 +1,5 @@
 import { shallow } from 'enzyme';
+// @ts-expect-error TS6133
 import React from 'react';
 
 import { REJECTED, VALIDATED } from '../../../../common/propositionStatus';

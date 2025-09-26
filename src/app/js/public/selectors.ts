@@ -1,4 +1,3 @@
-// @ts-expect-error TS7016
 import qs from 'qs';
 import { createGlobalSelectors } from '../lib/selectors';
 import { fromDataset as localFromDataset } from './dataset';

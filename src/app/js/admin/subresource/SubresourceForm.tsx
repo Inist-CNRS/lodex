@@ -1,3 +1,4 @@
+// @ts-expect-error TS6133
 import React, { useMemo, useCallback } from 'react';
 import compose from 'recompose/compose';
 // @ts-expect-error TS7016

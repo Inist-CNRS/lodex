@@ -1,3 +1,4 @@
+// @ts-expect-error TS6133
 import React from 'react';
 import { Button, keyframes, Tooltip } from '@mui/material';
 import { useTranslate } from '../../i18n/I18NContext';

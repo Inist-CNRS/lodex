@@ -1,4 +1,5 @@
 import { useForm } from '@tanstack/react-form';
+// @ts-expect-error TS6133
 import React from 'react';
 import { render } from '../../../test-utils';
 import { TestI18N } from '../i18n/I18NContext';

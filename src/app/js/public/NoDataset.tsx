@@ -1,3 +1,4 @@
+// @ts-expect-error TS6133
 import React from 'react';
 import { CardContent, Card } from '@mui/material';
 import { polyglot as polyglotPropTypes } from '../propTypes';

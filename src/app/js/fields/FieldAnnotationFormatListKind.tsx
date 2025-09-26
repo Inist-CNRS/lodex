@@ -1,5 +1,6 @@
 import { MenuItem } from '@mui/material';
 import PropTypes from 'prop-types';
+// @ts-expect-error TS6133
 import { default as React } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';

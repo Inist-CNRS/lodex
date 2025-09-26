@@ -1,4 +1,5 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+// @ts-expect-error TS6133
 import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { fireEvent, render, waitFor } from '../../../../../test-utils';

@@ -1,3 +1,4 @@
+// @ts-expect-error TS6133
 import React, { useEffect, useState } from 'react';
 import CircularProgress from '@mui/material/CircularProgress';
 import Typography from '@mui/material/Typography';

@@ -1,3 +1,4 @@
+// @ts-expect-error TS6133
 import React from 'react';
 import { render, fireEvent, act } from '@testing-library/react';
 import { RunButton } from './RunButton';

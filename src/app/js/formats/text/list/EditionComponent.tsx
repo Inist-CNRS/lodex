@@ -1,6 +1,6 @@
+// @ts-expect-error TS6133
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-// @ts-expect-error TS7016
 import { FieldArray } from 'redux-form';
 import { translate } from '../../../i18n/I18NContext';
 
@@ -54,6 +54,7 @@ class EditionComponent extends Component {
             <FieldArray
                 name={name}
                 component={this.renderList}
+                // @ts-expect-error TS2769
                 disabled={name === 'uri'}
                 label={label}
                 fullWidth

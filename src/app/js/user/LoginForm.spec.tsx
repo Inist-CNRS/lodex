@@ -1,6 +1,6 @@
+// @ts-expect-error TS6133
 import React from 'react';
 import { shallow } from 'enzyme';
-// @ts-expect-error TS7016
 import { Field } from 'redux-form';
 
 import Alert from '../lib/components/Alert';

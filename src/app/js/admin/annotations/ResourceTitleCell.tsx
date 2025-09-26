@@ -1,5 +1,6 @@
 import { Typography } from '@mui/material';
 import PropTypes from 'prop-types';
+// @ts-expect-error TS6133
 import React from 'react';
 import { useTranslate } from '../../i18n/I18NContext';
 import { getResourceType } from './helpers/resourceType';

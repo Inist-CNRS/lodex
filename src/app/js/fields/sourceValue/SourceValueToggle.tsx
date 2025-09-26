@@ -12,7 +12,6 @@ import SourceValueFromColumns from './SourceValueFromColumns';
 import SourceValueFromColumnsForSubResource from './SourceValueFromColumnsForSubResource';
 
 import { connect } from 'react-redux';
-// @ts-expect-error TS7016
 import { change, formValueSelector } from 'redux-form';
 import { FIELD_FORM_NAME } from '..';
 import { polyglot as polyglotPropTypes } from '../../propTypes';

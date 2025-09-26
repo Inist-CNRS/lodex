@@ -1,3 +1,4 @@
+// @ts-expect-error TS6133
 import React, { useState } from 'react';
 import AceEditor from 'react-ace';
 import { polyglot as polyglotPropTypes } from '../../propTypes';

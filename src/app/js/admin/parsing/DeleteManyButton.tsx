@@ -1,6 +1,7 @@
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Button } from '@mui/material';
 import PropTypes from 'prop-types';
+// @ts-expect-error TS6133
 import React, { useEffect, useState } from 'react';
 
 import { toast } from '../../../../common/tools/toast';

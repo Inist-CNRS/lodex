@@ -1,3 +1,4 @@
+// @ts-expect-error TS6133
 import React from 'react';
 import { Redirect } from 'react-router';
 import { useRouteMatch } from 'react-router-dom';

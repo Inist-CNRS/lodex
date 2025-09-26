@@ -9,6 +9,7 @@ import {
     GridToolbarFilterButton,
 } from '@mui/x-data-grid';
 import PropTypes from 'prop-types';
+// @ts-expect-error TS6133
 import React, { useMemo, useState } from 'react';
 import { useHistory } from 'react-router';
 import FieldInternalIcon from '../../fields/FieldInternalIcon';

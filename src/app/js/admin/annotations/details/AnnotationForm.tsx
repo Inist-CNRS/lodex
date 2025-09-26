@@ -4,6 +4,7 @@ import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
 import { useForm, useStore } from '@tanstack/react-form';
 import PropTypes from 'prop-types';
+// @ts-expect-error TS6133
 import React, { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 

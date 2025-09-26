@@ -1,5 +1,4 @@
 import compose from 'lodash/flowRight';
-// @ts-expect-error TS7016
 import qs from 'qs';
 
 export const addLiteralToLiteral =

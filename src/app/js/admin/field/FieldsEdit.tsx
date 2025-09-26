@@ -1,3 +1,4 @@
+// @ts-expect-error TS6133
 import React, { useEffect, useState } from 'react';
 import { Tab, Tabs, Box } from '@mui/material';
 import PropTypes from 'prop-types';

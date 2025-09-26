@@ -1,3 +1,4 @@
+// @ts-expect-error TS6133
 import React, { useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -185,6 +186,7 @@ const mapStateToProps = (state, { formatData }) => {
     };
 };
 
+// @ts-expect-error TS6133
 export const BarChartAdminView = connect((state, props) => {
     return {
         ...props,
