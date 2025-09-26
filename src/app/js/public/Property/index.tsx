@@ -236,7 +236,6 @@ export const PropertyComponent = ({
                 <div style={styles.labelContainer}>
                     <span
                         className={classnames('property_label', fieldClassName)}
-                        // @ts-expect-error TS2322
                         style={styles.label(fieldStatus, isSub)}
                         id={`field-${field.name}`}
                     >
@@ -264,7 +263,6 @@ export const PropertyComponent = ({
                             'property_scheme',
                             fieldClassName,
                         )}
-                        // @ts-expect-error TS2322
                         style={styles.scheme}
                     >
                         {/*

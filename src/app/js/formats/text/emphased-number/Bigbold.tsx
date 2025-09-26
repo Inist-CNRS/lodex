@@ -36,8 +36,6 @@ const getContentInlineStyle = (colors, size) => {
 const Bigbold = ({ value, colors, size }) => (
     // @ts-expect-error TS2339
     <div className={styles.ribbon}>
-        {/*
-         // @ts-expect-error TS2322 */}
         <div className="content" style={getContentInlineStyle(colors, size)}>
             {value}
         </div>

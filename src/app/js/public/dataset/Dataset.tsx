@@ -93,7 +93,6 @@ export class DatasetComponent extends Component {
                         <div style={styles.labelContainer}>
                             <span
                                 className="property_label resources"
-                                // @ts-expect-error TS2322
                                 style={styles.label}
                             >
                                 {polyglot.t('resources')}

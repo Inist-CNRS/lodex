@@ -20,7 +20,6 @@ export const VersionComponent = ({ p: polyglot }) => (
             style={{
                 color: 'gray',
                 fontSize: '12px',
-                // @ts-expect-error TS2769
                 fontWeight: '300',
                 right: '10px',
                 width: '100%',
