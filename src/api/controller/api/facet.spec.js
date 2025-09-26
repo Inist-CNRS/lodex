@@ -19,11 +19,9 @@ describe('facets routes', () => {
             },
         };
 
-        const next = () => {};
-
         describe('without filter', () => {
             it('calls ctx.publishedFacet.findValuesForField with correct parameters', async () => {
-                await getFacetFilteredValues(ctx, 'foo', next);
+                await getFacetFilteredValues(ctx, 'foo');
 
                 expect(
                     ctx.publishedFacet.findValuesForField,
@@ -38,7 +36,7 @@ describe('facets routes', () => {
             });
 
             it('calls ctx.publishedFacet.countValuesForField with correct parameters', async () => {
-                await getFacetFilteredValues(ctx, 'foo', next);
+                await getFacetFilteredValues(ctx, 'foo');
 
                 expect(
                     ctx.publishedFacet.countValuesForField,
