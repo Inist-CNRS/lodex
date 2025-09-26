@@ -9,8 +9,6 @@ import configTenant from '../../../../../configTenant.json';
 function TestConfigTenantFormView(props) {
     return (
         <TestI18N>
-            {/*
-             // @ts-expect-error TS2322 */}
             <ConfigTenantFormView {...props} />
         </TestI18N>
     );

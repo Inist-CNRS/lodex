@@ -10,8 +10,6 @@ jest.mock('./hooks/useDeleteManyAnnotation');
 function TestButton({ selectedRowIds }) {
     return (
         <TestI18N>
-            {/*
-             // @ts-expect-error TS2322 */}
             <DeleteManyButton selectedRowIds={selectedRowIds} />
         </TestI18N>
     );

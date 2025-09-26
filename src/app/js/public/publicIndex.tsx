@@ -54,16 +54,10 @@ const queryClient = new QueryClient();
 hydrate(
     <Provider {...{ store }}>
         <I18N>
-            {/*
-             // @ts-expect-error TS2322 */}
             <QueryClientProvider client={queryClient}>
                 <AnnotationStorageProvider>
-                    {/*
-                     // @ts-expect-error TS2322 */}
                     <Router history={history}>
                         <LodexThemeProvider>
-                            {/*
-                             // @ts-expect-error TS2322 */}
                             <Routes
                                 history={history}
                                 // @ts-expect-error TS2339

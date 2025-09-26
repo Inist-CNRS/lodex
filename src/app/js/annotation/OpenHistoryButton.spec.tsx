@@ -34,8 +34,6 @@ describe('OpenHistoryButton', () => {
         });
         const wrapper = render(
             <TestI18N>
-                {/*
-                 // @ts-expect-error TS2322 */}
                 <OpenHistoryButton
                     field={{ _id: 'fieldId', label: 'fieldLabel' }}
                     resourceUri="resourceUri"
@@ -76,8 +74,6 @@ describe('OpenHistoryButton', () => {
         });
         const wrapper = render(
             <TestI18N>
-                {/*
-                 // @ts-expect-error TS2322 */}
                 <OpenHistoryButton
                     field={{ _id: 'fieldId', label: 'fieldLabel' }}
                     resourceUri="resourceUri"
@@ -110,8 +106,6 @@ describe('OpenHistoryButton', () => {
         });
         const wrapper = render(
             <TestI18N>
-                {/*
-                 // @ts-expect-error TS2322 */}
                 <OpenHistoryButton
                     field={{ _id: 'fieldId', label: 'fieldLabel' }}
                     resourceUri="resourceUri"

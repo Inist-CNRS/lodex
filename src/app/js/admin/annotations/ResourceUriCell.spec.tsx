@@ -9,8 +9,6 @@ describe('ResourceUriCell', () => {
         (resourceUri) => {
             const wrapper = render(
                 <TestI18N>
-                    {/*
-                     // @ts-expect-error TS2322 */}
                     <ResourceUriCell
                         row={{
                             resourceUri,
@@ -27,8 +25,6 @@ describe('ResourceUriCell', () => {
     it('should display resourceUri when set if field is a graph', () => {
         const wrapper = render(
             <TestI18N>
-                {/*
-                 // @ts-expect-error TS2322 */}
                 <ResourceUriCell
                     row={{
                         resourceUri: '/graph/HDpz',
@@ -48,8 +44,6 @@ describe('ResourceUriCell', () => {
     it('should construct graph uri from field when resourceUri is not set', () => {
         const wrapper = render(
             <TestI18N>
-                {/*
-                 // @ts-expect-error TS2322 */}
                 <ResourceUriCell
                     row={{
                         resourceUri: null,
@@ -69,8 +63,6 @@ describe('ResourceUriCell', () => {
     it('should display the resourceUri with a button to the resource if the resource still exist', () => {
         const wrapper = render(
             <TestI18N>
-                {/*
-                 // @ts-expect-error TS2322 */}
                 <ResourceUriCell
                     row={{
                         resourceUri: 'uid:/0579J7JN',
@@ -94,8 +86,6 @@ describe('ResourceUriCell', () => {
     it('should only display the resourceUri if the resource does not exist anymore', () => {
         const wrapper = render(
             <TestI18N>
-                {/*
-                 // @ts-expect-error TS2322 */}
                 <ResourceUriCell
                     row={{
                         resourceUri: 'uid:/0579J7JN',
