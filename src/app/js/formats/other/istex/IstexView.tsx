@@ -53,8 +53,6 @@ export const IstexView = ({
 }) => (
     <div className="istex-list" style={styles.text(fieldStatus)}>
         <div style={styles.header}>
-            {/*
-             // @ts-expect-error TS2322 */}
             <span style={styles.total}>
                 {polyglot.t('istex_total', {
                     total: data ? data.total : 0,

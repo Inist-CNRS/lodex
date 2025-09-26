@@ -1,5 +1,4 @@
 import React from 'react';
-// @ts-expect-error TS7016
 import { shallow } from 'enzyme';
 import Folder from '@mui/icons-material/Folder';
 import FolderOpen from '@mui/icons-material/FolderOpen';
@@ -28,6 +27,7 @@ describe('FetchFold', () => {
     });
 
     it('should render closed', () => {
+        // @ts-expect-error TS2769
         const wrapper = shallow(<FetchFold {...defaultProps} />);
         expect(wrapper.find(Folder)).toHaveLength(1);
         expect(wrapper.find(FolderOpen)).toHaveLength(0);

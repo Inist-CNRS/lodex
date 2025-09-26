@@ -1,5 +1,4 @@
 import React from 'react';
-// @ts-expect-error TS7016
 import { shallow } from 'enzyme';
 // @ts-expect-error TS7016
 import { StyleSheetTestUtils } from 'aphrodite';
@@ -14,6 +13,7 @@ describe('Breadcrumb', () => {
 
     it('should not create a breadcrumb trail with an empty configuration', () => {
         const wrapper = shallow(
+            // @ts-expect-error TS2769
             <Breadcrumb
                 breadcrumb={[]}
                 location={{
@@ -28,6 +28,7 @@ describe('Breadcrumb', () => {
 
     it('should create the breadcrumb trail with an item', () => {
         const wrapper = shallow(
+            // @ts-expect-error TS2769
             <Breadcrumb
                 breadcrumb={[
                     {
@@ -51,6 +52,7 @@ describe('Breadcrumb', () => {
 
     it('should not create the breadcrumb trail with an item on the main page', () => {
         const wrapper = shallow(
+            // @ts-expect-error TS2769
             <Breadcrumb
                 breadcrumb={[
                     {

@@ -1,5 +1,4 @@
 import React from 'react';
-// @ts-expect-error TS7016
 import { shallow } from 'enzyme';
 import { TableCell } from '@mui/material';
 
@@ -15,6 +14,7 @@ describe('<DefaultColumn />', () => {
     };
 
     const wrapper = shallow(
+        // @ts-expect-error TS2769
         <DefaultColumn column={column} columns={columns} resource={resource} />,
     );
 

@@ -1,5 +1,4 @@
 import React from 'react';
-// @ts-expect-error TS7016
 import { shallow } from 'enzyme';
 // @ts-expect-error TS7016
 import { Field } from 'redux-form';
@@ -10,6 +9,7 @@ const EXCERPT_LINES = [{ columnOne: 'TEST' }];
 describe('<PrecomputedFormComponent />', () => {
     it('should render', () => {
         const wrapper = shallow(
+            // @ts-expect-error TS2769
             <PrecomputedForm
                 // @ts-expect-error TS2322
                 p={{ t: () => {} }}
@@ -23,6 +23,7 @@ describe('<PrecomputedFormComponent />', () => {
 
     it('should render a Field for name precomputed', () => {
         const wrapper = shallow(
+            // @ts-expect-error TS2769
             <PrecomputedForm
                 // @ts-expect-error TS2322
                 p={{ t: () => {} }}
@@ -38,6 +39,7 @@ describe('<PrecomputedFormComponent />', () => {
 
     it('should render 2 Fields for precomputed info', () => {
         const wrapper = shallow(
+            // @ts-expect-error TS2769
             <PrecomputedForm
                 // @ts-expect-error TS2322
                 p={{ t: () => {} }}
@@ -61,6 +63,7 @@ describe('<PrecomputedFormComponent />', () => {
             status: 'IN_PROGRESS',
         };
         const wrapper = shallow(
+            // @ts-expect-error TS2769
             <PrecomputedForm
                 // @ts-expect-error TS2322
                 p={{ t: () => {} }}

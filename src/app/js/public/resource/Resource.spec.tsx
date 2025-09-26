@@ -10,7 +10,6 @@ import { TestI18N } from '../../i18n/I18NContext';
 import { StyleSheetTestUtils } from 'aphrodite';
 // @ts-expect-error TS7016
 import { MemoryRouter } from 'react-router-dom';
-// @ts-expect-error TS7016
 import { shallow } from 'enzyme';
 
 jest.mock('react-redux', () => ({

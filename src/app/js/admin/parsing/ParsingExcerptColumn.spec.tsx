@@ -1,5 +1,4 @@
 import React from 'react';
-// @ts-expect-error TS7016
 import { shallow } from 'enzyme';
 import { TableCell, CircularProgress } from '@mui/material';
 
@@ -9,6 +8,7 @@ import { ParsingExcerptColumnComponent as ParsingExcerptColumn } from './Parsing
 describe('<ParsingExcerptColumn />', () => {
     it('should render the value directly when it is short', () => {
         const value = 'foo';
+        // @ts-expect-error TS2769
         const wrapper = shallow(<ParsingExcerptColumn value={value} />);
         const row = wrapper.find(TableCell);
         expect(row.prop('title')).toEqual(value);
@@ -18,6 +18,7 @@ describe('<ParsingExcerptColumn />', () => {
     it('should render the value truncated when it is long', () => {
         const value =
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit.';
+        // @ts-expect-error TS2769
         const wrapper = shallow(<ParsingExcerptColumn value={value} />);
         const row = wrapper.find(TableCell);
         expect(row.prop('title')).toEqual(value);
@@ -38,6 +39,7 @@ describe('<ParsingExcerptColumn />', () => {
     it('should render a loader when it is enrichment loading and value defined', () => {
         const value = 'defined';
         const wrapper = shallow(
+            // @ts-expect-error TS2769
             <ParsingExcerptColumn value={value} isEnrichmentLoading={true} />,
         );
         const row = wrapper.find(TableCell);

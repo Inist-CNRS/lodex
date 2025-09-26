@@ -1,5 +1,4 @@
 import React from 'react';
-// @ts-expect-error TS7016
 import { shallow } from 'enzyme';
 import { List } from '@mui/material';
 
@@ -10,6 +9,7 @@ import IstexItem from './IstexItem';
 describe('<IstexView />', () => {
     it('should display .istex-list if data.hits', () => {
         const wrapper = shallow(
+            // @ts-expect-error TS2769
             <IstexView
                 fieldStatus=""
                 // @ts-expect-error TS2322
@@ -46,6 +46,7 @@ describe('<IstexView />', () => {
 
     it('should not display List if no data.hits', () => {
         const wrapper = shallow(
+            // @ts-expect-error TS2769
             <IstexView
                 fieldStatus=""
                 // @ts-expect-error TS2322
@@ -63,6 +64,7 @@ describe('<IstexView />', () => {
     // The next test is more realistic, but should ideally not display 1 element
     it('should display .list if data.hits is empty', () => {
         const wrapper = shallow(
+            // @ts-expect-error TS2769
             <IstexView
                 fieldStatus=""
                 data={{ total: 0, hits: [] }}
@@ -77,6 +79,7 @@ describe('<IstexView />', () => {
 
     it('should create one IstexItem per hit inside List', () => {
         const wrapper = shallow(
+            // @ts-expect-error TS2769
             <IstexView
                 fieldStatus=""
                 // @ts-expect-error TS2322
@@ -133,6 +136,7 @@ describe('<IstexView />', () => {
 
     it('should display a span with `Istex result for value`', () => {
         const wrapper = shallow(
+            // @ts-expect-error TS2769
             <IstexView
                 fieldStatus=""
                 // @ts-expect-error TS2322
@@ -151,6 +155,7 @@ describe('<IstexView />', () => {
 
     it('should dislay Alert with error if there is one error', () => {
         const wrapper = shallow(
+            // @ts-expect-error TS2769
             <IstexView
                 fieldStatus=""
                 // @ts-expect-error TS2322
@@ -172,6 +177,7 @@ describe('<IstexView />', () => {
 
     it('should not dislay Alert if no error', () => {
         const wrapper = shallow(
+            // @ts-expect-error TS2769
             <IstexView
                 fieldStatus=""
                 // @ts-expect-error TS2322

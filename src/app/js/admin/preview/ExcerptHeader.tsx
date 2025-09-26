@@ -98,8 +98,6 @@ const ExcerptHeaderComponent = ({
          // @ts-expect-error TS2322 */}
         <p style={titleStyle.titleBlock}>
             <span>{ensureTextIsShort(field.label)}</span>
-            {/*
-             // @ts-expect-error TS2322 */}
             <span style={titleStyle.titleId} data-field-name={field.name}>
                 (&nbsp;{ensureTextIsShort(field.name)}&nbsp;) {isVisible(field)}
             </span>
@@ -112,8 +110,6 @@ const ExcerptHeaderComponent = ({
             </div>
         )}
         <ComposedOf compositeFields={compositeFields} polyglot={polyglot} />
-        {/*
-         // @ts-expect-error TS2322 */}
         <div style={titleStyle.internal}>
             {field.internalScopes &&
                 // @ts-expect-error TS7006

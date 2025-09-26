@@ -1,5 +1,4 @@
 import React from 'react';
-// @ts-expect-error TS7016
 import { shallow } from 'enzyme';
 import { ListSubheader } from '@mui/material';
 // @ts-expect-error TS7016
@@ -26,13 +25,16 @@ describe('CompositeFieldInput', () => {
         const editField = wrapper.find(Field);
         expect(editField).toHaveLength(1);
         const editFieldProps = editField.at(0).props();
+        // @ts-expect-error TS18046
         expect(editFieldProps.field).toBe('field');
 
         const editFieldInput = wrapper.find(FieldInput);
         expect(editFieldInput).toHaveLength(2);
         const editFieldInput1Props = editFieldInput.at(0).props();
+        // @ts-expect-error TS18046
         expect(editFieldInput1Props.field).toBe('field1');
         const editFieldInput2Props = editFieldInput.at(1).props();
+        // @ts-expect-error TS18046
         expect(editFieldInput2Props.field).toBe('field2');
     });
 
@@ -56,8 +58,10 @@ describe('CompositeFieldInput', () => {
         const editFieldInput = wrapper.find(FieldInput);
         expect(editFieldInput).toHaveLength(2);
         const editFieldInput1Props = editFieldInput.at(0).props();
+        // @ts-expect-error TS18046
         expect(editFieldInput1Props.field).toBe('field1');
         const editFieldInput2Props = editFieldInput.at(1).props();
+        // @ts-expect-error TS18046
         expect(editFieldInput2Props.field).toBe('field2');
     });
 

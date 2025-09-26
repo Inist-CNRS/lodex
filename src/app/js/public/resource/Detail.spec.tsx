@@ -1,5 +1,4 @@
 import React from 'react';
-// @ts-expect-error TS7016
 import { shallow } from 'enzyme';
 
 import { DetailComponent as Detail } from './Detail';
@@ -29,7 +28,6 @@ describe('Detail', () => {
         const wrapper = shallow(<Detail {...props} />);
         const properties = wrapper.find(Property);
         expect(properties).toHaveLength(3);
-        // @ts-expect-error TS7006
         properties.forEach((element, index) => {
             if (index === 2) {
                 expect(element.prop('field')).toEqual({
@@ -81,9 +79,9 @@ describe('Detail', () => {
         const properties = wrapper.find(Property);
         expect(properties).toHaveLength(3);
 
-        // @ts-expect-error TS7006
         const renderedFields = properties.map((element, index) => ({
             index,
+            // @ts-expect-error TS2571
             name: element.prop('field').name,
         }));
 

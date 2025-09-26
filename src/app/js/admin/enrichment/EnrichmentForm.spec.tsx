@@ -1,5 +1,4 @@
 import React from 'react';
-// @ts-expect-error TS7016
 import { shallow } from 'enzyme';
 // @ts-expect-error TS7016
 import { Field } from 'redux-form';
@@ -10,6 +9,7 @@ const EXCERPT_LINES = [{ columnOne: 'TEST' }];
 describe('<EnrichmentFormComponent />', () => {
     it('should render', () => {
         const wrapper = shallow(
+            // @ts-expect-error TS2322
             <EnrichmentForm
                 // @ts-expect-error TS2322
                 p={{ t: () => {} }}
@@ -22,6 +22,7 @@ describe('<EnrichmentFormComponent />', () => {
 
     it('should render a Field for name enrichment', () => {
         const wrapper = shallow(
+            // @ts-expect-error TS2322
             <EnrichmentForm
                 // @ts-expect-error TS2322
                 p={{ t: () => {} }}
@@ -36,6 +37,7 @@ describe('<EnrichmentFormComponent />', () => {
 
     it('should render 3 Fields for enrichment rule with simplified mode', () => {
         const wrapper = shallow(
+            // @ts-expect-error TS2322
             <EnrichmentForm
                 // @ts-expect-error TS2322
                 p={{ t: () => {} }}
@@ -62,6 +64,7 @@ describe('<EnrichmentFormComponent />', () => {
             _id: '123',
         };
         const wrapper = shallow(
+            // @ts-expect-error TS2322
             <EnrichmentForm
                 // @ts-expect-error TS2322
                 p={{ t: () => {} }}
@@ -83,6 +86,7 @@ describe('<EnrichmentFormComponent />', () => {
             status: 'IN_PROGRESS',
         };
         const wrapper = shallow(
+            // @ts-expect-error TS2322
             <EnrichmentForm
                 // @ts-expect-error TS2322
                 p={{ t: () => {} }}

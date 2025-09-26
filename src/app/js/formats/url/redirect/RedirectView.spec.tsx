@@ -1,5 +1,4 @@
 import React from 'react';
-// @ts-expect-error TS7016
 import { shallow } from 'enzyme';
 import { RedirectView, RedirectViewLoader } from './RedirectView';
 
@@ -12,6 +11,7 @@ describe('<RedirectView />', () => {
         const field = {};
 
         const wrapper = shallow(
+            // @ts-expect-error TS2769
             <RedirectView
                 className={className}
                 // @ts-expect-error TS2322
@@ -32,6 +32,7 @@ describe('<RedirectView />', () => {
         const field = { name: 'covfefe' };
 
         const wrapper = shallow(
+            // @ts-expect-error TS2769
             <RedirectView
                 className={className}
                 // @ts-expect-error TS2322
@@ -53,6 +54,7 @@ describe('<RedirectView />', () => {
         const field = { name: 'foo' };
 
         const wrapper = shallow(
+            // @ts-expect-error TS2769
             <RedirectView
                 className={className}
                 classes={classes}
@@ -73,6 +75,7 @@ describe('<RedirectView />', () => {
             const url = 'http://myfakelink.com';
 
             const wrapper = shallow(
+                // @ts-expect-error TS2769
                 <RedirectViewLoader
                     classes={classes}
                     title={title}
@@ -89,6 +92,7 @@ describe('<RedirectView />', () => {
             const url = 'http://myfakelink.com';
 
             const wrapper = shallow(
+                // @ts-expect-error TS2769
                 <RedirectViewLoader
                     classes={classes}
                     title={title}
