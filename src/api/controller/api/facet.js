@@ -63,9 +63,7 @@ const app = new Koa();
 app.use(
     route.get('/:name/(.*)', (ctx, name, filter) => {
         // Si le filtre est vide ou juste des slashes, on le traite comme undefined
-        const cleanFilter = filter
-            ? filter.replace(/^\/+/, '').replace(/\/+$/, '').trim() || undefined
-            : undefined;
+        const cleanFilter = filter.replace(/^\/+/, '').replace(/\/+$/, '');
         return getFacetFilteredValues(ctx, name, cleanFilter);
     }),
 );
