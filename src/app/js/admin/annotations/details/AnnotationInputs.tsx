@@ -5,6 +5,7 @@ import Select from '@mui/material/Select';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import PropTypes from 'prop-types';
+// @ts-expect-error TS6133
 import React from 'react';
 import { useStore } from '@tanstack/react-form';
 

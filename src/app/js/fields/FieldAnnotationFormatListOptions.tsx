@@ -2,6 +2,7 @@ import { TextField } from '@mui/material';
 import FormHelperText from '@mui/material/FormHelperText';
 import Stack from '@mui/material/Stack';
 import PropTypes from 'prop-types';
+// @ts-expect-error TS6133
 import { default as React, useMemo } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';

@@ -1,3 +1,4 @@
+// @ts-expect-error TS6133
 import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import MenuList from '@mui/material/MenuList';

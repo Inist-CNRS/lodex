@@ -15,6 +15,7 @@ import {
     useTheme,
 } from '@mui/material';
 import PropTypes from 'prop-types';
+// @ts-expect-error TS6133
 import React, { useEffect, useMemo, useState } from 'react';
 import {
     ANNOTATION_KIND_ADDITION,

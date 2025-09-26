@@ -1,3 +1,4 @@
+// @ts-expect-error TS6133
 import React from 'react';
 import { act, fireEvent, render } from '@testing-library/react';
 import { z } from 'zod';

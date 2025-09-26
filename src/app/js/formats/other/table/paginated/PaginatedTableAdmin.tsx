@@ -1,6 +1,7 @@
 import AbstractTableAdmin from '../core/AbstractTableAdmin';
 import { TextField } from '@mui/material';
 import TableColumnsParameters from '../core/TableColumnsParameters';
+// @ts-expect-error TS6133
 import React from 'react';
 import { FormatDefaultParamsFieldSet } from '../../../utils/components/field-set/FormatFieldSets';
 import FormatGroupedFieldSet from '../../../utils/components/field-set/FormatGroupedFieldSet';

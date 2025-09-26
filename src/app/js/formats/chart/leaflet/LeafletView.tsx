@@ -20,7 +20,6 @@ const styles = {
     },
 };
 
-// @ts-expect-error TS7016
 const LazyMap = React.lazy(() => import('./LeafletMap'));
 
 const LeafletView = ({
@@ -147,6 +146,7 @@ const LeafletView = ({
                         fallback={<Loading>{translate('loading')}</Loading>}
                     >
                         <LazyMap
+                            // @ts-expect-error TS2322
                             input={input}
                             width={width}
                             height={height}

@@ -2,6 +2,7 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import { Button } from '@mui/material';
 import { useStore } from '@tanstack/react-form';
 import PropTypes from 'prop-types';
+// @ts-expect-error TS6133
 import React, { useCallback } from 'react';
 import { useTranslate } from '../i18n/I18NContext';
 import { AUTHOR_STEP, COMMENT_STEP, TARGET_STEP, VALUE_STEP } from './steps';

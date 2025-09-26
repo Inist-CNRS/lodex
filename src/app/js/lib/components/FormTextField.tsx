@@ -1,3 +1,4 @@
+// @ts-expect-error TS6133
 import React from 'react';
 import { TextField } from '@mui/material';
 import { formField as formFieldPropTypes } from '../../propTypes';

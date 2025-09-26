@@ -1,3 +1,4 @@
+// @ts-expect-error TS6133
 import React from 'react';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import PropTypes from 'prop-types';

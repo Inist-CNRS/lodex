@@ -2,6 +2,7 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import SortIcon from '@mui/icons-material/Sort';
 import { Button, Menu, MenuItem } from '@mui/material';
 import PropTypes from 'prop-types';
+// @ts-expect-error TS6133
 import React, { useState } from 'react';
 
 import { ArrowUpward } from '@mui/icons-material';

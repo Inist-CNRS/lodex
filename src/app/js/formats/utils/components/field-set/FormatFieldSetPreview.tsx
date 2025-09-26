@@ -1,3 +1,4 @@
+// @ts-expect-error TS6133
 import React, { lazy, Suspense, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { formatAdminStyle } from '../../adminStyles';
@@ -13,7 +14,6 @@ import Typography from '@mui/material/Typography';
 import Loading from '../../../../lib/components/Loading';
 import { translate, useTranslate } from '../../../../i18n/I18NContext';
 
-// @ts-expect-error TS7006
 const ReactJson = lazy(() => import('react-json-view'));
 
 const FormatFieldSetPreview = ({

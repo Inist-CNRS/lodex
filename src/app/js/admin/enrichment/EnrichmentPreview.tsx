@@ -1,3 +1,4 @@
+// @ts-expect-error TS6133
 import React from 'react';
 import PreviewIcon from '@mui/icons-material/Preview';
 import PropTypes from 'prop-types';

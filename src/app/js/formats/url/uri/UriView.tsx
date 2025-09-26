@@ -1,3 +1,4 @@
+// @ts-expect-error TS6133
 import React from 'react';
 import PropTypes from 'prop-types';
 
@@ -66,6 +67,7 @@ export const getReadableValue = ({ resource, field, type, value }) => {
     const uri = resource[field.name];
 
     if (Array.isArray(uri)) {
+        // @ts-expect-error TS6133
         return uri.map((uriItem, index) => {
             const label = getLabel(field, resource, null, type, value);
 

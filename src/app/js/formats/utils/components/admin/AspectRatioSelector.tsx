@@ -1,5 +1,6 @@
 import { ASPECT_RATIO_NONE, ASPECT_RATIOS } from '../../aspectRatio';
 import { MenuItem, TextField } from '@mui/material';
+// @ts-expect-error TS6133
 import React, { useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
 import { polyglot as polyglotPropTypes } from '../../../../propTypes';

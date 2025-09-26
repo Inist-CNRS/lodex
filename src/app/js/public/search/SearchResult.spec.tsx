@@ -1,3 +1,4 @@
+// @ts-expect-error TS6133
 import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
 // @ts-expect-error TS7016

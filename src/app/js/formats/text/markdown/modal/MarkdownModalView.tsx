@@ -1,5 +1,6 @@
 // @ts-expect-error TS7016
 import MarkdownIt from 'markdown-it';
+// @ts-expect-error TS6133
 import React, { useMemo, useState } from 'react';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';

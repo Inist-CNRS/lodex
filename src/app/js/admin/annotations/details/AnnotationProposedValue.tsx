@@ -6,6 +6,7 @@ import {
     Tooltip,
 } from '@mui/material';
 import PropTypes from 'prop-types';
+// @ts-expect-error TS6133
 import React, { useMemo } from 'react';
 import { useTranslate } from '../../../i18n/I18NContext';
 import { hasFieldMultipleValues } from '../helpers/field';
@@ -32,9 +33,9 @@ export function AnnotationProposedValue({ proposedValue, field }) {
                     !fieldSuggestedValues.size ||
                     fieldSuggestedValues.has(value),
             }))
+            // @ts-expect-error TS2339
             .toSorted((a, b) => {
                 if (a.isAdminProvidedValue === b.isAdminProvidedValue) {
-                    // @ts-expect-error TS2339
                     return a.value.localeCompare(b.value);
                 }
 
@@ -54,6 +55,8 @@ export function AnnotationProposedValue({ proposedValue, field }) {
 
     return (
         <List dense>
+            {/*
+             // @ts-expect-error TS7031 */}
             {proposedValueAsArray.map(({ value, isAdminProvidedValue }, i) => {
                 const fieldDescriptionId = isAdminProvidedValue
                     ? undefined

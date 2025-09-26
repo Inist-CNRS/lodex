@@ -73,6 +73,7 @@ export const ExportDatasetButtonComponent = ({
                             multiple
                             options={choices}
                             value={selectedFields}
+                            // @ts-expect-error TS6133
                             onChange={(event, newValue) => {
                                 setSelectedFields(newValue);
                             }}

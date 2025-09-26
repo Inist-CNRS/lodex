@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+// @ts-expect-error TS6133
 import React from 'react';
 
 export function AnnotationDisabledIcon({ fill = '#000', ...props } = {}) {

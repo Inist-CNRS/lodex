@@ -1,7 +1,5 @@
-// @ts-expect-error TS7016
 import qs from 'qs';
 import { call, put, select, takeEvery, fork } from 'redux-saga/effects';
-// @ts-expect-error TS7016
 import { startSubmit, stopSubmit } from 'redux-form';
 import { push } from 'redux-first-history';
 

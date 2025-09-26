@@ -12,6 +12,7 @@ import {
     GridToolbarFilterButton,
 } from '@mui/x-data-grid';
 import PropTypes from 'prop-types';
+// @ts-expect-error TS6133
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { connect } from 'react-redux';
 import { IN_PROGRESS } from '../../../../common/taskStatus';
@@ -425,6 +426,7 @@ export const ParsingResultComponent = (props) => {
                                         count={rowCount}
                                         page={skip / limit}
                                         rowsPerPage={limit}
+                                        // @ts-expect-error TS6133
                                         onPageChange={(e, page) =>
                                             onPageChange(page)
                                         }

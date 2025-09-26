@@ -1,4 +1,5 @@
 import { render } from '@testing-library/react';
+// @ts-expect-error TS6133
 import React from 'react';
 
 import { AnnotationProposedValue } from './AnnotationProposedValue';

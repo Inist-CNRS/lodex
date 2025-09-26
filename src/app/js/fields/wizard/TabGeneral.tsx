@@ -1,5 +1,5 @@
+// @ts-expect-error TS6133
 import React from 'react';
-// @ts-expect-error TS7016
 import { Field, FieldArray } from 'redux-form';
 import PropTypes from 'prop-types';
 import { TextField as MUITextField } from '@mui/material';
@@ -53,6 +53,7 @@ export const TabGeneralComponent = ({
                 name="transformers"
                 type="transform"
                 rerenderOnEveryChange
+                // @ts-expect-error TS2769
                 component={TransformerList}
                 props={{
                     isSubresourceField: !!subresourceUri,

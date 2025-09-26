@@ -1,4 +1,3 @@
-// @ts-expect-error TS7016
 import Polyglot from 'node-polyglot';
 import React, { createContext, useContext, useMemo } from 'react';
 import { connect } from 'react-redux';

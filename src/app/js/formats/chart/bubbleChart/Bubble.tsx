@@ -1,3 +1,4 @@
+// @ts-expect-error TS6133
 import React from 'react';
 import memoize from 'lodash/memoize';
 // @ts-expect-error TS7016
@@ -7,6 +8,7 @@ import PropTypes from 'prop-types';
 import ReactTooltip from 'react-tooltip';
 
 const styles = {
+    // @ts-expect-error TS6133
     leaf: memoize(({ x, y, r }, name, color) => ({
         position: 'absolute',
         top: x - r,

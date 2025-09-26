@@ -1,6 +1,7 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { setTimeout } from 'node:timers/promises';
 import PropTypes from 'prop-types';
+// @ts-expect-error TS6133
 import React from 'react';
 
 import { fireEvent, render, screen, waitFor } from '../../../test-utils';

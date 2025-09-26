@@ -1,5 +1,4 @@
 import { put, select, all } from 'redux-saga/effects';
-// @ts-expect-error TS7016
 import { change, arrayRemove, formValueSelector } from 'redux-form';
 
 // redux-form do not allow to change whole array of field at once, if one of the field has been changed
