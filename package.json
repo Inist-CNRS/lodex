@@ -5,16 +5,16 @@
     "name": "lodex",
     "version": "15.9.12",
     "description": "",
-    "main": "src/api/index.js",
+    "main": "src/api/index.ts",
     "browser": {
         "config": false
     },
     "scripts": {
         "start": "concurrently \"npm:production:*\"",
-        "production:api": "node --max-http-header-size=32768 --require @babel/register src/api",
+        "production:api": "tsx --max-http-header-size=32768 src/api",
         "production:workers": "node --require @babel/register workers",
         "build": "npx vite build --config ./vite.config.js",
-        "development:api": "nodemon --inspect=0.0.0.0:9229 --max-http-header-size=32768 --require @babel/register --watch src/api --watch src/common --watch src/app/custom --watch src/app/js/public src/api",
+        "development:api": "tsx watch --max-http-header-size=32768 src/api",
         "development:app": "npx vite --port=8080 --host=0.0.0.0",
         "postversion": "git push && git push --tags",
         "lint": "eslint \"src/**/*.{js,jsx,ts,tsx}\" --fix",
@@ -198,6 +198,7 @@
         "tar-fs": "3.0.9",
         "tar-stream": "2.2.0",
         "through": "^2.3.8",
+        "tsx": "^4.20.6",
         "triple-beam": "1.3.0",
         "url": "0.11.3",
         "url-api-polyfill": "^1.1.0",
