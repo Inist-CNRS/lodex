@@ -1,7 +1,7 @@
+// @ts-expect-error TS6133
 import React from 'react';
 import { connect } from 'react-redux';
 import withHandlers from 'recompose/withHandlers';
-// @ts-expect-error TS7016
 import { formValueSelector, reduxForm } from 'redux-form';
 import { Redirect, withRouter } from 'react-router';
 import { compose, branch, renderComponent, withProps } from 'recompose';
@@ -19,6 +19,7 @@ export const EditSubresourceForm = compose(
     connect(
         // @ts-expect-error TS2339
         (s, { match }) => ({
+            // @ts-expect-error TS2345
             pathSelected: formValueSelector('SUBRESOURCE_EDIT_FORM')(s, 'path'),
             // @ts-expect-error TS18046
             initialValues: s.subresource.subresources.find(

@@ -1,8 +1,8 @@
+// @ts-expect-error TS6133
 import React from 'react';
 import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
-// @ts-expect-error TS7016
 import { Field } from 'redux-form';
 
 import { getEditionComponent, getPredicate } from '../../formats';

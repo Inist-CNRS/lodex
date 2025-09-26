@@ -1,3 +1,4 @@
+// @ts-expect-error TS6133
 import React, { useEffect, useState } from 'react';
 import compose from 'recompose/compose';
 import memoize from 'lodash/memoize';

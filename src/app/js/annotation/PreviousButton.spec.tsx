@@ -1,4 +1,5 @@
 import { fireEvent, render, screen } from '@testing-library/react';
+// @ts-expect-error TS6133
 import React from 'react';
 import { useForm } from '@tanstack/react-form';
 import { TestI18N } from '../i18n/I18NContext';

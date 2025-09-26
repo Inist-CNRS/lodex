@@ -1,4 +1,5 @@
 import { render, within } from '@testing-library/react';
+// @ts-expect-error TS6133
 import React from 'react';
 
 import { TestI18N } from '../../../i18n/I18NContext';

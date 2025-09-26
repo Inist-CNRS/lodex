@@ -2,6 +2,7 @@ import { Box, IconButton, Stack, Tooltip } from '@mui/material';
 import copy from 'copy-to-clipboard';
 import compose from 'lodash/flowRight';
 import PropTypes from 'prop-types';
+// @ts-expect-error TS6133
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 // @ts-expect-error TS7016
 import GridLayout from 'react-grid-layout';

@@ -1,4 +1,5 @@
 import '@babel/polyfill';
+// @ts-expect-error TS6133
 import React, { useEffect, useState } from 'react';
 // ignoring deprecation warning react 18 we are using version 17
 // eslint-disable-next-line react/no-deprecated

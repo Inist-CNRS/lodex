@@ -150,6 +150,7 @@ const TransformerUpsertDialog = ({
                     <Autocomplete
                         aria-label={polyglot.t('select_an_operation')}
                         value={transformer.operation || ''}
+                        // @ts-expect-error TS6133
                         onChange={(event, newValue) => {
                             handleChangeOperation(newValue);
                         }}

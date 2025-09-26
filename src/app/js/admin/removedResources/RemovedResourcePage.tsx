@@ -1,3 +1,4 @@
+// @ts-expect-error TS6133
 import React from 'react';
 import compose from 'recompose/compose';
 import { Card, CardHeader, Divider } from '@mui/material';

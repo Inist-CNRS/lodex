@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import { polyglot as polyglotPropTypes } from '../../../propTypes';
 import RoutineParamsAdmin from '../../utils/components/admin/RoutineParamsAdmin';
+// @ts-expect-error TS6133
 import React from 'react';
 import {
     FormatDataParamsFieldSet,

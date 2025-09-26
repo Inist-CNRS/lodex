@@ -1,6 +1,7 @@
 import { useForm } from '@tanstack/react-form';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import PropTypes from 'prop-types';
+// @ts-expect-error TS6133
 import React from 'react';
 import { TestI18N } from '../../i18n/I18NContext';
 import { COMMENT_STEP, VALUE_STEP } from '../steps';

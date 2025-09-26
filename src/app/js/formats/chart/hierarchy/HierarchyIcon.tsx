@@ -1,3 +1,4 @@
+// @ts-expect-error TS6133
 import React from 'react';
 
 //<svg viewBox="0 0 100 125" width="1em" height="1em">

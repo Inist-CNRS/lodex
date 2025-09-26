@@ -1,3 +1,4 @@
+// @ts-expect-error TS6133
 import React from 'react';
 import { render } from '@testing-library/react';
 import { TransformerListComponent as TransformerList } from './TransformerList';

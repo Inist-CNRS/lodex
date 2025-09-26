@@ -2,6 +2,7 @@ import AbstractTableAdmin from '../core/AbstractTableAdmin';
 import { translate } from '../../../../i18n/I18NContext';
 import RoutineParamsAdmin from '../../../utils/components/admin/RoutineParamsAdmin';
 import TableColumnsParameters from '../core/TableColumnsParameters';
+// @ts-expect-error TS6133
 import React from 'react';
 import {
     FormatDataParamsFieldSet,

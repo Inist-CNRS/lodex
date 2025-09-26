@@ -1,3 +1,4 @@
+// @ts-expect-error TS6133
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Folder from '@mui/icons-material/Folder';

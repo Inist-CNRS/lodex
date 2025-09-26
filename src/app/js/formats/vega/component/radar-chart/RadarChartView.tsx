@@ -1,3 +1,4 @@
+// @ts-expect-error TS6133
 import React, { useMemo, useState } from 'react';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
@@ -154,6 +155,7 @@ const mapStateToProps = (state, { formatData }) => {
     };
 };
 
+// @ts-expect-error TS6133
 export const RadarChartAdminView = connect((state, props) => {
     return {
         ...props,

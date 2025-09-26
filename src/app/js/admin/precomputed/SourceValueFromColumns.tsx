@@ -43,6 +43,7 @@ const SourceValueFromColumns = ({
                         />
                     );
                 }}
+                // @ts-expect-error TS6133
                 onChange={(event, newValue) => {
                     setAutocompleteValue(newValue);
                     input.onChange(newValue);

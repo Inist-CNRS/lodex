@@ -8,6 +8,7 @@ import {
     useTheme,
 } from '@mui/material';
 import PropTypes from 'prop-types';
+// @ts-expect-error TS6133
 import React, { useCallback, useMemo, useRef, useState } from 'react';
 
 import { getIsFieldValueAnnotable, getReadableValue } from '../formats';

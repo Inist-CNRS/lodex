@@ -6,6 +6,7 @@ import {
     Select,
 } from '@mui/material';
 import PropTypes from 'prop-types';
+// @ts-expect-error TS6133
 import React from 'react';
 import { connect } from 'react-redux';
 import { useGetAnnotatedResourceUris } from '../../annotation/annotationStorage';

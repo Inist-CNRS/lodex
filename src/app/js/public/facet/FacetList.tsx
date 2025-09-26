@@ -1,6 +1,7 @@
 import { List } from '@mui/material';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
+// @ts-expect-error TS6133
 import React, { useMemo } from 'react';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';

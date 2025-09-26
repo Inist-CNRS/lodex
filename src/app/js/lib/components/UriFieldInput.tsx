@@ -1,8 +1,8 @@
+// @ts-expect-error TS6133
 import React from 'react';
 import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import { translate } from '../../i18n/I18NContext';
-// @ts-expect-error TS7016
 import { Field } from 'redux-form';
 
 import FormTextField from './FormTextField';

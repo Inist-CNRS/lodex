@@ -1,3 +1,4 @@
+// @ts-expect-error TS6133
 import React, { useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 // @ts-expect-error TS7016
