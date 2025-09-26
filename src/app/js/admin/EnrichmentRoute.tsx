@@ -2,7 +2,6 @@ import React from 'react';
 
 import withInitialData from './withInitialData';
 
-// @ts-expect-error TS7016
 import { Route, useRouteMatch, Switch } from 'react-router';
 import EnrichmentListConnected from './enrichment/EnrichmentList';
 import EnrichmentFormConnected from './enrichment/EnrichmentForm';

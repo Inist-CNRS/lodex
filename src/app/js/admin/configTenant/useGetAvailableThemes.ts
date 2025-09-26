@@ -1,6 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
 
-// @ts-expect-error TS7016
 import { useHistory } from 'react-router-dom';
 import { getConfigTenantAvailableTheme } from '../api/configTenant';
 

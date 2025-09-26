@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleLeft } from '@fortawesome/free-solid-svg-icons';
-// @ts-expect-error TS7016
 import { withRouter } from 'react-router';
 
 import { fromBreadcrumb } from '../selectors';

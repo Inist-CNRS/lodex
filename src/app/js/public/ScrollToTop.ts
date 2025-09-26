@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
 import { useEffect } from 'react';
-// @ts-expect-error TS7016
 import { withRouter } from 'react-router';
 
 // @see https://reacttraining.com/react-router/web/guides/scroll-restoration/scroll-to-top
@@ -20,4 +19,5 @@ ScrollToTop.propTypes = {
     }),
 };
 
+// @ts-expect-error TS2345
 export default withRouter(ScrollToTop);

@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { Button } from '@mui/material';
 import { Add as AddNewIcon } from '@mui/icons-material';
 import { connect } from 'react-redux';
-// @ts-expect-error TS7016
 import { useParams } from 'react-router';
 
 import { addField } from '../../fields';
@@ -13,6 +12,7 @@ import { useTranslate } from '../../i18n/I18NContext';
 // @ts-expect-error TS7031
 export const AddFieldButtonComponent = ({ onAddNewField, isFieldsLoading }) => {
     const { translate } = useTranslate();
+    // @ts-expect-error TS2339
     const { filter } = useParams();
 
     return (

@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-// @ts-expect-error TS7016
 import { withRouter } from 'react-router';
 // @ts-expect-error TS7016
 import compose from 'recompose/compose';

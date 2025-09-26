@@ -4,7 +4,6 @@ import UploadIcon from '@mui/icons-material/Upload';
 import { Button, CircularProgress, styled } from '@mui/material';
 import { importHiddenResources } from '../api/hiddenResource';
 import { toast } from '../../../../common/tools/toast';
-// @ts-expect-error TS7016
 import { useLocation, Redirect } from 'react-router-dom';
 import { translate } from '../../i18n/I18NContext';
 

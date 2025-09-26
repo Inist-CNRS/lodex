@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import withHandlers from 'recompose/withHandlers';
 // @ts-expect-error TS7016
 import { formValueSelector, reduxForm } from 'redux-form';
-// @ts-expect-error TS7016
 import { Redirect, withRouter } from 'react-router';
 // @ts-expect-error TS7016
 import { compose, branch, renderComponent, withProps } from 'recompose';

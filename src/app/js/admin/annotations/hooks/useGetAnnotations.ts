@@ -2,7 +2,6 @@ import { useQuery } from '@tanstack/react-query';
 import { omitBy } from 'lodash';
 // @ts-expect-error TS7016
 import qs from 'qs';
-// @ts-expect-error TS7016
 import { useHistory } from 'react-router-dom';
 
 import fetch from '../../../lib/fetch';
