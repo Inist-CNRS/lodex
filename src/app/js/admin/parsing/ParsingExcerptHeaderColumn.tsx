@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-// @ts-expect-error TS7016
 import pure from 'recompose/pure';
 import { TableCell } from '@mui/material';
 import { isLongText, getShortText } from '../../lib/longTexts';

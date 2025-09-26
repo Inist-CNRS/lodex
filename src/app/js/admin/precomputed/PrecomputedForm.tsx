@@ -10,7 +10,6 @@ import SourceValueFromColumns from './SourceValueFromColumns';
 
 import { launchPrecomputed, loadPrecomputed } from '.';
 import { connect } from 'react-redux';
-// @ts-expect-error TS7016
 import { compose } from 'recompose';
 import {
     Field,
@@ -718,4 +717,5 @@ export default compose(
     reduxForm({
         form: PRECOMPUTED_FORM,
     }),
+    // @ts-expect-error TS2345
 )(PrecomputedForm);

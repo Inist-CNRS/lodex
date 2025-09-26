@@ -7,7 +7,6 @@ import PropTypes from 'prop-types';
 import { default as React } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
-// @ts-expect-error TS7016
 import { compose } from 'recompose';
 
 import { toast } from '../../../../../common/tools/toast';

@@ -1,9 +1,7 @@
 import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-// @ts-expect-error TS7016
 import compose from 'recompose/compose';
-// @ts-expect-error TS7016
 import pure from 'recompose/pure';
 import { Table, TableBody, TableHead, TableRow } from '@mui/material';
 
@@ -176,6 +174,7 @@ export const ParsingExcerptComponent = ({
                                     {showAddColumnButton && (
                                         <ParsingExcerptAddColumn
                                             key={`add_column_${column}`}
+                                            // @ts-expect-error TS2322
                                             name={column}
                                             // @ts-expect-error TS7006
                                             onAddColumn={(name) => {
@@ -237,4 +236,5 @@ const mapDispatchToProps = {
 export default compose(
     connect(mapStateToProps, mapDispatchToProps),
     pure,
+    // @ts-expect-error TS2345
 )(ParsingExcerptComponent);

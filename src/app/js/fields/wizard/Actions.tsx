@@ -8,7 +8,6 @@ import { FIELD_FORM_NAME } from '../';
 
 import isEqual from 'lodash/isEqual';
 import { connect } from 'react-redux';
-// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 // @ts-expect-error TS7016
 import { getFormValues } from 'redux-form';
@@ -41,6 +40,7 @@ export const ActionsComponent = ({
     return (
         <Box display="flex" justifyContent="space-between">
             {currentEditedField.name !== 'uri' && (
+                // @ts-expect-error TS2322
                 <RemoveButton field={currentEditedField} filter={filter} />
             )}
             <Box display="flex" gap={1}>
@@ -77,4 +77,5 @@ const mapStateToProps = (state) => {
     };
 };
 
+// @ts-expect-error TS2345
 export default compose(connect(mapStateToProps), translate)(ActionsComponent);

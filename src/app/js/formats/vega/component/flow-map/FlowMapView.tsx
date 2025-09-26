@@ -1,6 +1,5 @@
 import React, { useMemo, useState } from 'react';
 import { connect } from 'react-redux';
-// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import PropTypes from 'prop-types';
 
@@ -101,6 +100,7 @@ const FlowMapView = ({
         // @ts-expect-error TS2322
         <div style={styles.container} ref={ref}>
             <CustomActionVega
+                // @ts-expect-error TS2322
                 spec={spec}
                 data={data}
                 injectType={VEGA_DATA_INJECT_TYPE_B}
@@ -159,4 +159,5 @@ export const FlowMapAdminView = connect((state, props) => {
     // @ts-expect-error TS2345
 })(FlowMapView);
 
+// @ts-expect-error TS2345
 export default compose(injectData(), connect(mapStateToProps))(FlowMapView);

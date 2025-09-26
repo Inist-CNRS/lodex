@@ -10,7 +10,6 @@ import {
 } from '@mui/icons-material';
 import { CSS } from '@dnd-kit/utilities';
 import { useSortable } from '@dnd-kit/sortable';
-// @ts-expect-error TS7016
 import { compose } from 'recompose';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 
@@ -169,4 +168,5 @@ TransformerListItem.propTypes = {
     p: polyglotPropTypes.isRequired,
 };
 
+// @ts-expect-error TS2345
 export default compose(translate)(TransformerListItem);

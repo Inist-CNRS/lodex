@@ -1,7 +1,5 @@
 import React from 'react';
-// @ts-expect-error TS7016
 import compose from 'recompose/compose';
-// @ts-expect-error TS7016
 import withHandlers from 'recompose/withHandlers';
 // @ts-expect-error TS7016
 import { Field, reduxForm, propTypes as reduxFormPropTypes } from 'redux-form';
@@ -81,16 +79,15 @@ export default compose(
         validate,
     }),
     withHandlers({
+        // @ts-expect-error TS2322
         handleKeyPress:
-            // @ts-expect-error TS7031
-
-
-                ({ handleSubmit }) =>
-                // @ts-expect-error TS7006
-                (event) => {
-                    if (event.key === 'Enter') {
-                        handleSubmit();
-                    }
-                },
+            ({ handleSubmit }) =>
+            // @ts-expect-error TS7006
+            (event) => {
+                if (event.key === 'Enter') {
+                    handleSubmit();
+                }
+            },
     }),
+    // @ts-expect-error TS2345
 )(LoginFormComponent);

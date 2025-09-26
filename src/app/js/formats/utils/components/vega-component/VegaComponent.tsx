@@ -13,7 +13,6 @@ import FormatFullScreenMode from '../FormatFullScreenMode';
 import { useVegaActions } from '../useVegaActions';
 import { useVegaCsvExport } from '../useVegaCsvExport';
 import { polyglot as polyglotPropTypes } from '../../../../propTypes';
-// @ts-expect-error TS7016
 import { compose } from 'recompose';
 import { translate } from '../../../../i18n/I18NContext';
 

@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import memoize from 'lodash/memoize';
 import { translate } from '../../../i18n/I18NContext';
-// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 
 import fetchDataForComponent from './fetchDataForComponent';
@@ -86,4 +85,5 @@ IstexRefbibsView.defaultProps = {
 export default compose(
     translate,
     fetchDataForComponent(fetchForIstexRefbibsFormat),
+    // @ts-expect-error TS2345
 )(IstexRefbibsView);

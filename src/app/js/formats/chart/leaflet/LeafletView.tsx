@@ -1,6 +1,5 @@
 import React, { useMemo, useState, Suspense, useCallback } from 'react';
 import { polyglot as polyglotPropTypes } from '../../../propTypes';
-// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import zip from 'lodash/zip';
 import flatten from 'lodash/flatten';
@@ -168,4 +167,5 @@ LeafletView.propTypes = {
     center: PropTypes.arrayOf(PropTypes.number),
 };
 
+// @ts-expect-error TS2345
 export default compose(injectData())(LeafletView);

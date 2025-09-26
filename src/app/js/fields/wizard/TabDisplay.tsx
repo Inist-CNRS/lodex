@@ -27,6 +27,7 @@ export const TabDisplayComponent = ({
             subresourceId={subresourceId}
         />
         <FieldComposedOf
+            // @ts-expect-error TS2322
             fields={fields}
             scope={filter}
             subresourceId={subresourceId}

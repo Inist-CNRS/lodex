@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
-// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import get from 'lodash/get';
 
@@ -93,4 +92,5 @@ export default compose(
     withRouter,
     injectData(null, null, true),
     connect(mapStateToProps),
+    // @ts-expect-error TS2345
 )(AsterPlotChartView);

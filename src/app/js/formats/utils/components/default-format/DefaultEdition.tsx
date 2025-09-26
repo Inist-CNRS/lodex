@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import { change } from 'redux-form';
 import get from 'lodash/get';
 import { connect } from 'react-redux';
-// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import { Button } from '@mui/material';
 
@@ -67,4 +66,5 @@ const mapDispatchToProps = {
 export default compose(
     translate,
     connect(null, mapDispatchToProps),
+    // @ts-expect-error TS2345
 )(DefaultEdition);

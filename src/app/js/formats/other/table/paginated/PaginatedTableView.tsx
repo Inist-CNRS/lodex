@@ -1,4 +1,3 @@
-// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import injectData from '../../../injectData';
 import { connect } from 'react-redux';

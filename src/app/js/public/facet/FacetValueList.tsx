@@ -2,7 +2,6 @@ import React, { useState, useCallback, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { translate } from '../../i18n/I18NContext';
-// @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import {
     TextField,
@@ -258,6 +257,8 @@ export const FacetValueList = ({
                     </div>
                 </div>
                 <div>
+                    {/*
+                     // @ts-expect-error TS2322 */}
                     {filter && <FacetValueAll name={name} page={page} />}
                     {/*
                      // @ts-expect-error TS7006 */}
@@ -265,6 +266,7 @@ export const FacetValueList = ({
                         return (
                             <FacetValueItem
                                 key={facetValue.value}
+                                // @ts-expect-error TS2322
                                 name={name}
                                 facetValue={facetValue}
                                 page={page}

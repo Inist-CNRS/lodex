@@ -1,8 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-// @ts-expect-error TS7016
 import compose from 'recompose/compose';
-// @ts-expect-error TS7016
 import withHandlers from 'recompose/withHandlers';
 import { translate } from '../../i18n/I18NContext';
 import { MenuItem } from '@mui/material';
@@ -31,4 +29,5 @@ export default compose(
                     onClick({ uri, exportID }),
     }),
     translate,
+    // @ts-expect-error TS2345
 )(ExportMenuItem);
