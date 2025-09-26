@@ -1,4 +1,3 @@
-// @ts-expect-error TS7016
 import { createAction, handleActions } from 'redux-actions';
 
 export const LOAD_ENRICHMENTS = 'LOAD_ENRICHMENTS';
@@ -37,38 +36,33 @@ export const initialState = {
     dataPreviewEnrichment: [],
 };
 
+// @ts-expect-error TS2769
 export default handleActions(
     {
-        // @ts-expect-error TS7006
         LOAD_ENRICHMENTS: (state) => ({
             ...state,
             isLoadEnrichmentsPending: true,
             initialized: true,
         }),
-        // @ts-expect-error TS7006
         LOAD_ENRICHMENTS_ERROR: (state, { payload: error }) => ({
             ...state,
             error,
             isLoadEnrichmentsPending: false,
         }),
-        // @ts-expect-error TS7006
         LOAD_ENRICHMENTS_SUCCESS: (state, { payload: enrichments }) => ({
             ...state,
             enrichments,
             isLoadEnrichmentsPending: false,
         }),
-        // @ts-expect-error TS7006
         LAUNCH_ALL_ENRICHMENT_STARTED: (state) => ({
             ...state,
             isRunAllEnrichmentPending: true,
             runAllEnrichmentError: null,
         }),
-        // @ts-expect-error TS7006
         LAUNCH_ALL_ENRICHMENT_ERROR: (state, { payload: error }) => ({
             ...state,
             runAllEnrichmentError: error,
         }),
-        // @ts-expect-error TS7006
         LAUNCH_ALL_ENRICHMENT_COMPLETED: (state) => ({
             ...state,
             isRunAllEnrichmentPending: false,

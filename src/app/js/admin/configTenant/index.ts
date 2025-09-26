@@ -1,4 +1,3 @@
-// @ts-expect-error TS7016
 import { createAction, handleActions } from 'redux-actions';
 
 export const LOAD_CONFIG_TENANT = 'LOAD_CONFIG_TENANT';
@@ -18,7 +17,6 @@ export const initialState = {
 
 export default handleActions(
     {
-        // @ts-expect-error TS7006
         LOAD_CONFIG_TENANT: (state) => ({
             ...state,
             loading: true,
@@ -30,7 +28,6 @@ export default handleActions(
             error,
             loading: false,
         }),
-        // @ts-expect-error TS7006
         LOAD_CONFIG_TENANT_SUCCESS: (state, { payload: configTenant }) => ({
             ...state,
             configTenant,

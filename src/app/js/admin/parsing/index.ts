@@ -1,4 +1,3 @@
-// @ts-expect-error TS7016
 import { createAction, handleActions } from 'redux-actions';
 import { createSelector } from 'reselect';
 
@@ -28,7 +27,6 @@ export const defaultState = {
 
 export default handleActions(
     {
-        // @ts-expect-error TS7006
         LOAD_PARSING_RESULT: (state) => ({
             ...state,
             allowUpload: false,
@@ -42,26 +40,21 @@ export default handleActions(
             allowUpload: true,
             error: payload,
         }),
-        // @ts-expect-error TS7006
         LOAD_PARSING_RESULT_SUCCESS: (state, { payload }) => ({
             ...state,
             ...payload,
             allowUpload: payload.totalLoadedLines === 0,
             loading: false,
         }),
-        // @ts-expect-error TS7006
         RELOAD_PARSING_RESULT: (state) => ({
             ...state,
             allowUpload: true,
         }),
-        // @ts-expect-error TS7006
         CANCEL_RELOAD: (state) => ({
             ...state,
             allowUpload: false,
         }),
-        // @ts-expect-error TS7006
         SHOW_ADD_COLUMNS: (state) => ({ ...state, showAddFromColumn: true }),
-        // @ts-expect-error TS7006
         HIDE_ADD_COLUMNS: (state) => ({ ...state, showAddFromColumn: false }),
     },
     defaultState,

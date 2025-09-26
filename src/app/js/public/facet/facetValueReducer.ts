@@ -1,4 +1,3 @@
-// @ts-expect-error TS7016
 import { createAction, handleActions } from 'redux-actions';
 
 // @ts-expect-error TS7006
@@ -32,7 +31,6 @@ export const createReducer = (actionTypes) =>
     handleActions(
         {
             [actionTypes.LOAD_FACET_VALUES_SUCCESS]: (
-                // @ts-expect-error TS7006
                 state,
                 {
                     payload: {
@@ -46,9 +44,7 @@ export const createReducer = (actionTypes) =>
                 total,
             }),
             [actionTypes.FACET_VALUE_CHANGE]: (
-                // @ts-expect-error TS7006
                 state,
-                // @ts-expect-error TS7031
                 { payload: { currentPage, perPage, filter } },
             ) => ({
                 ...state,
@@ -57,7 +53,6 @@ export const createReducer = (actionTypes) =>
                 filter,
             }),
             [actionTypes.FACET_VALUE_SORT]: (
-                // @ts-expect-error TS7031
                 { sort: { sortBy, sortDir }, ...state },
                 // @ts-expect-error TS7031
                 { payload: { nextSortBy } },

@@ -1,4 +1,3 @@
-// @ts-expect-error TS7016
 import { createAction, combineActions, handleActions } from 'redux-actions';
 
 import {
@@ -28,6 +27,7 @@ export const defaultState = {
 
 export default handleActions(
     {
+        // @ts-expect-error TS7006
         [combineActions(
             LOAD_FIELD_SUCCESS,
             REMOVE_FIELD_SUCCESS,
@@ -35,10 +35,10 @@ export default handleActions(
             LOAD_PARSING_RESULT_SUCCESS,
             // @ts-expect-error TS7006
         )]: (state) => ({ ...state, isComputing: true }),
+        // @ts-expect-error TS7006
         COMPUTE_PUBLICATION_PREVIEW_SUCCESS: (
             // @ts-expect-error TS7006
             state,
-            // @ts-expect-error TS7031
             { payload: resources },
         ) => ({ isComputing: false, resources }),
         COMPUTE_PUBLICATION_PREVIEW_ERROR: () => defaultState,
