@@ -21,8 +21,12 @@ const IFrameAdmin = ({
     // @ts-expect-error TS7031
     p: polyglot,
 }) => {
-    const [viewWidth, setViewWidth] = useState(args.viewWidth || defaultArgs.viewWidth);
-    const [aspectRatio, setAspectRatio] = useState(args.aspectRatio || defaultArgs.aspectRatio);
+    const [viewWidth, setViewWidth] = useState(
+        args.viewWidth || defaultArgs.viewWidth,
+    );
+    const [aspectRatio, setAspectRatio] = useState(
+        args.aspectRatio || defaultArgs.aspectRatio,
+    );
 
     // @ts-expect-error TS7006
     const handleViewWidth = (event) => {
@@ -39,11 +43,7 @@ const IFrameAdmin = ({
 
     return (
         <FormatGroupedFieldSet>
-            {/*
-             // @ts-expect-error TS2322 */}
             <FormatDefaultParamsFieldSet defaultExpanded>
-                {/*
-                 // @ts-expect-error TS2322 */}
                 <TextField
                     fullWidth
                     select
@@ -52,14 +52,22 @@ const IFrameAdmin = ({
                     value={viewWidth}
                 >
                     <MenuItem value="10%">{polyglot.t('ten_percent')}</MenuItem>
-                    <MenuItem value="20%">{polyglot.t('twenty_percent')}</MenuItem>
-                    <MenuItem value="30%">{polyglot.t('thirty_percent')}</MenuItem>
-                    <MenuItem value="50%">{polyglot.t('fifty_percent')}</MenuItem>
-                    <MenuItem value="80%">{polyglot.t('eighty_percent')}</MenuItem>
-                    <MenuItem value="100%">{polyglot.t('hundred_percent')}</MenuItem>
+                    <MenuItem value="20%">
+                        {polyglot.t('twenty_percent')}
+                    </MenuItem>
+                    <MenuItem value="30%">
+                        {polyglot.t('thirty_percent')}
+                    </MenuItem>
+                    <MenuItem value="50%">
+                        {polyglot.t('fifty_percent')}
+                    </MenuItem>
+                    <MenuItem value="80%">
+                        {polyglot.t('eighty_percent')}
+                    </MenuItem>
+                    <MenuItem value="100%">
+                        {polyglot.t('hundred_percent')}
+                    </MenuItem>
                 </TextField>
-                {/*
-                 // @ts-expect-error TS2322 */}
                 <AspectRatioSelector
                     value={aspectRatio}
                     onChange={handleAspectRatio}

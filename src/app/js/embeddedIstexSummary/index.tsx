@@ -2,6 +2,7 @@ import '@babel/polyfill';
 import 'url-api-polyfill';
 
 import React from 'react';
+
 import { render } from 'react-dom';
 // @ts-expect-error TS7016
 import Polyglot from 'node-polyglot';
@@ -23,7 +24,6 @@ const polyglot = new Polyglot({
     phrases: phrasesFor(locale),
 });
 
-// @ts-expect-error TS2345
 const theme = createTheme(defaultMuiTheme, {
     userAgent: navigator.userAgent,
 });

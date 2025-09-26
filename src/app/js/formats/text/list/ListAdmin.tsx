@@ -27,7 +27,6 @@ const ListAdmin = ({
     // @ts-expect-error TS7031
     p: polyglot,
 }) => {
-
     const [type, setType] = useState(args.type || defaultArgs.type);
     // @ts-expect-error TS7006
     const handleType = (event) => {
@@ -44,15 +43,22 @@ const ListAdmin = ({
         setBullet(newValue);
     };
 
-    const [subFormat, setSubFormat] = useState(args.subFormat || defaultArgs.subFormat);
+    const [subFormat, setSubFormat] = useState(
+        args.subFormat || defaultArgs.subFormat,
+    );
     // @ts-expect-error TS7006
     const handleSubFormat = (event) => {
         const newValue = event;
-        updateAdminArgs('subFormat', newValue, { args: getFormatInitialArgs(subFormat), onChange });
+        updateAdminArgs('subFormat', newValue, {
+            args: getFormatInitialArgs(subFormat),
+            onChange,
+        });
         setSubFormat(newValue);
     };
 
-    const [subFormatOptions, setSubFormatOptions] = useState(args.subFormatOptions || defaultArgs.subFormatOptions);
+    const [subFormatOptions, setSubFormatOptions] = useState(
+        args.subFormatOptions || defaultArgs.subFormatOptions,
+    );
     // @ts-expect-error TS7006
     const handleSubFormatOptions = (event) => {
         const newValue = event;
@@ -64,11 +70,7 @@ const ListAdmin = ({
 
     return (
         <FormatGroupedFieldSet>
-            {/*
-             // @ts-expect-error TS2322 */}
             <FormatDefaultParamsFieldSet defaultExpanded>
-                {/*
-                 // @ts-expect-error TS2322 */}
                 <TextField
                     fullWidth
                     select
@@ -89,8 +91,6 @@ const ListAdmin = ({
                         {polyglot.t('list_format_unordered_flat')}
                     </MenuItem>
                 </TextField>
-                {/*
-                 // @ts-expect-error TS2322 */}
                 <div
                     style={{
                         width: '100%',
@@ -102,8 +102,6 @@ const ListAdmin = ({
                         onChange={handleSubFormat}
                     />
                 </div>
-                {/*
-                 // @ts-expect-error TS2322 */}
                 <TextField
                     key="bullet"
                     label={polyglot.t('bullet')}
@@ -111,8 +109,6 @@ const ListAdmin = ({
                     value={bullet}
                 />
             </FormatDefaultParamsFieldSet>
-            {/*
-             // @ts-expect-error TS2322 */}
             <FormatSubFormatParamsFieldSet>
                 {subFormat && subFormat !== 'none' ? (
                     <SubAdminComponent
@@ -125,7 +121,7 @@ const ListAdmin = ({
             </FormatSubFormatParamsFieldSet>
         </FormatGroupedFieldSet>
     );
-}
+};
 
 ListAdmin.propTypes = {
     args: PropTypes.shape({

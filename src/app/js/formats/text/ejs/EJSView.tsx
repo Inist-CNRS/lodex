@@ -4,12 +4,11 @@ import React, { useMemo, useState } from 'react';
 // @ts-expect-error TS7016
 import ejs from 'ejs/ejs.min.js'; // import the browser-friendly build from ejs
 import injectData from '../../injectData';
-import DOMPurify from "dompurify";
+import DOMPurify from 'dompurify';
 import InvalidFormat from '../../InvalidFormat';
 import { connect } from 'react-redux';
 // @ts-expect-error TS7016
 import compose from 'recompose/compose';
-// @ts-expect-error TS7016
 import _ from 'lodash';
 
 // @ts-expect-error TS7031
@@ -107,7 +106,7 @@ export const EJSAdminView = connect((state, { dataset }) => {
             values: dataset.values,
         },
     };
-// @ts-expect-error TS2345
+    // @ts-expect-error TS2345
 })(EJSView);
 
 export default compose(injectData(), connect(mapStateToProps))(EJSView);

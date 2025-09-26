@@ -17,8 +17,6 @@ const InvalidFieldProperties = ({ invalidProperties, p: polyglot }) => {
 
     return (
         <Alert>
-            {/*
-             // @ts-expect-error TS2322 */}
             <ul>
                 {/*
                  // @ts-expect-error TS7031 */}

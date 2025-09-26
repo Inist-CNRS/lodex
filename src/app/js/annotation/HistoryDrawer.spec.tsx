@@ -15,7 +15,6 @@ jest.mock('./useGetFieldAnnotation', () => ({
     }),
 }));
 
-// @ts-expect-error TS2345
 const theme = createTheme(defaultTheme);
 
 // @ts-expect-error TS7031

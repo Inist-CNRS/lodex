@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { MenuItem, TextField } from '@mui/material';
 import { translate } from '../../../i18n/I18NContext';
@@ -22,12 +22,17 @@ const ParagraphAdmin = ({
     p: polyglot,
 }) => {
     const [colors, setColors] = useState(args.colors || defaultArgs.colors);
-    const [paragraphWidth, setParagraphWidth] = useState(args.paragraphWidth || defaultArgs.paragraphWidth);
+    const [paragraphWidth, setParagraphWidth] = useState(
+        args.paragraphWidth || defaultArgs.paragraphWidth,
+    );
 
     // @ts-expect-error TS7006
     const handleParagraphWidth = (event) => {
         const newParagraphWidth = event.target.value;
-        updateAdminArgs('paragraphWidth', newParagraphWidth, { args, onChange });
+        updateAdminArgs('paragraphWidth', newParagraphWidth, {
+            args,
+            onChange,
+        });
         setParagraphWidth(newParagraphWidth);
     };
 
@@ -39,11 +44,7 @@ const ParagraphAdmin = ({
 
     return (
         <FormatGroupedFieldSet>
-            {/*
-             // @ts-expect-error TS2322 */}
             <FormatDefaultParamsFieldSet defaultExpanded>
-                {/*
-                 // @ts-expect-error TS2322 */}
                 <TextField
                     fullWidth
                     select
@@ -52,14 +53,22 @@ const ParagraphAdmin = ({
                     value={paragraphWidth}
                 >
                     <MenuItem value="10%">{polyglot.t('ten_percent')}</MenuItem>
-                    <MenuItem value="20%">{polyglot.t('twenty_percent')}</MenuItem>
-                    <MenuItem value="30%">{polyglot.t('thirty_percent')}</MenuItem>
-                    <MenuItem value="50%">{polyglot.t('fifty_percent')}</MenuItem>
-                    <MenuItem value="80%">{polyglot.t('eighty_percent')}</MenuItem>
-                    <MenuItem value="100%">{polyglot.t('hundred_percent')}</MenuItem>
+                    <MenuItem value="20%">
+                        {polyglot.t('twenty_percent')}
+                    </MenuItem>
+                    <MenuItem value="30%">
+                        {polyglot.t('thirty_percent')}
+                    </MenuItem>
+                    <MenuItem value="50%">
+                        {polyglot.t('fifty_percent')}
+                    </MenuItem>
+                    <MenuItem value="80%">
+                        {polyglot.t('eighty_percent')}
+                    </MenuItem>
+                    <MenuItem value="100%">
+                        {polyglot.t('hundred_percent')}
+                    </MenuItem>
                 </TextField>
-                {/*
-                 // @ts-expect-error TS2322 */}
                 <ColorPickerParamsAdmin
                     colors={colors}
                     onChange={handleColors}

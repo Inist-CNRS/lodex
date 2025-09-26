@@ -55,11 +55,7 @@ const MarkdownModalAdmin = (props) => {
 
     return (
         <FormatGroupedFieldSet>
-            {/*
-             // @ts-expect-error TS2322 */}
             <FormatDefaultParamsFieldSet defaultExpanded>
-                {/*
-                 // @ts-expect-error TS2322 */}
                 <TextField
                     fullWidth
                     select
@@ -74,8 +70,6 @@ const MarkdownModalAdmin = (props) => {
                         {p.t('label_format_another_column')}
                     </MenuItem>
                 </TextField>
-                {/*
-                 // @ts-expect-error TS2322 */}
                 <TextField
                     fullWidth
                     label={
@@ -86,8 +80,6 @@ const MarkdownModalAdmin = (props) => {
                     onChange={handleLabel}
                     value={label}
                 />
-                {/*
-                 // @ts-expect-error TS2322 */}
                 <FormControlLabel
                     control={
                         <Switch
@@ -97,8 +89,6 @@ const MarkdownModalAdmin = (props) => {
                     }
                     label={p.t('label_format_fullscreen')}
                 />
-                {/*
-                 // @ts-expect-error TS2322 */}
                 {!fullScreen ? (
                     <TextField
                         fullWidth

@@ -13,7 +13,6 @@ import {
     TableSortLabel,
 } from '@mui/material';
 import { getViewComponent } from '../../../index';
-// @ts-expect-error TS7016
 import _ from 'lodash';
 
 class AbstractTableView extends Component {
@@ -187,7 +186,6 @@ class AbstractTableView extends Component {
         // @ts-expect-error TS2339
         if (this.state.sort === false) return array;
         const sortedArray = _.sortBy(array, [
-            // @ts-expect-error TS7006
             (o) => {
                 const parameter = _.findIndex(columnsParameters, {
                     // @ts-expect-error TS2339

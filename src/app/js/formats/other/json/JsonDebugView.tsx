@@ -9,11 +9,11 @@ import injectData from '../../injectData';
 import Loading from '../../../lib/components/Loading';
 import { useTranslate } from '../../../i18n/I18NContext';
 
+// @ts-expect-error TS7016
 const ReactJson = lazy(() => import('react-json-view'));
 
 // @ts-expect-error TS7006
 const JsonDebugView = (props) => {
-
     const { debugMode } = props;
 
     const { translate } = useTranslate();
@@ -23,7 +23,7 @@ const JsonDebugView = (props) => {
             return props.data ?? [];
         }
         return props;
-    }, [props]);
+    }, [props, debugMode]);
 
     return (
         <Suspense fallback={<Loading>{translate('loading')}</Loading>}>
@@ -33,7 +33,6 @@ const JsonDebugView = (props) => {
                 theme="monokai"
                 collapsed={1}
             />
-
         </Suspense>
     );
 };

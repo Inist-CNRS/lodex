@@ -18,7 +18,7 @@ import {
     reduxForm,
     change,
     SubmissionError,
-// @ts-expect-error TS7016
+    // @ts-expect-error TS7016
 } from 'redux-form';
 import { fromPrecomputed, fromParsing } from '../selectors';
 import { ListAlt as ListAltIcon } from '@mui/icons-material';
@@ -215,6 +215,7 @@ export const renderRunButton = (
     // @ts-expect-error TS7006
     variant,
 ) => {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     const [isClicked, setIsClicked] = useState(false);
     // @ts-expect-error TS7006
     const handleClick = (event) => {
@@ -315,7 +316,7 @@ export const PrecomputedForm = ({
     };
 
     const handleUpdatePrecomputed = async () => {
-        // @ts-expect-error TS2525
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { data, ...precomputedDataToUpdate } = {
             ...initialValues,
             ...formValues,
