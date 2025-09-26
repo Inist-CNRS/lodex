@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 // @ts-expect-error TS7016
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
-// @ts-expect-error TS7016
 import memoize from 'lodash/memoize';
 import HiddenIcon from '@mui/icons-material/VisibilityOff';
 
@@ -20,7 +19,6 @@ import {
 import FieldInternalIcon from '../../fields/FieldInternalIcon';
 import { translate } from '../../i18n/I18NContext';
 
-// @ts-expect-error TS7006
 const getStyle = memoize((field) => {
     if (field.scope === SCOPE_DATASET) {
         return {
@@ -94,6 +92,7 @@ const ExcerptHeaderComponent = ({
     // @ts-expect-error TS7031
     p: polyglot,
 }) => (
+    // @ts-expect-error TS2322
     <div style={getStyle(field)}>
         {/*
          // @ts-expect-error TS2322 */}

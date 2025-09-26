@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-// @ts-expect-error TS7016
 import memoize from 'lodash/memoize';
 import { translate } from '../../../i18n/I18NContext';
 // @ts-expect-error TS7016
@@ -17,7 +16,6 @@ import { fetchForIstexRefbibsFormat } from './fetchIstexRefbibsData';
 import IstexItem from '../istex/IstexItem';
 
 const styles = {
-    // @ts-expect-error TS7006
     text: memoize((status) =>
         Object.assign({
             fontSize: '1rem',

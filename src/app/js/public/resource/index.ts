@@ -1,7 +1,6 @@
 // @ts-expect-error TS7016
 import { createAction, handleActions, combineActions } from 'redux-actions';
 import { createSelector } from 'reselect';
-// @ts-expect-error TS7016
 import get from 'lodash/get';
 
 import { PROPOSED } from '../../../../common/propositionStatus';
@@ -167,7 +166,7 @@ export default handleActions(
             SAVE_RESOURCE_ERROR,
             HIDE_RESOURCE_ERROR,
             ADD_FIELD_TO_RESOURCE_ERROR,
-        // @ts-expect-error TS7006
+            // @ts-expect-error TS7006
         )]: (state, { payload: error }) => ({
             ...state,
             error: error.message,
@@ -296,11 +295,13 @@ const getResourceProposedFields = (state) => {
     if (!contributions) {
         return [];
     }
-    return contributions
-        // @ts-expect-error TS7031
-        .filter(({ status }) => status === PROPOSED)
-        // @ts-expect-error TS7031
-        .map(({ fieldName }) => fieldName);
+    return (
+        contributions
+            // @ts-expect-error TS7031
+            .filter(({ status }) => status === PROPOSED)
+            // @ts-expect-error TS7031
+            .map(({ fieldName }) => fieldName)
+    );
 };
 
 // @ts-expect-error TS7006

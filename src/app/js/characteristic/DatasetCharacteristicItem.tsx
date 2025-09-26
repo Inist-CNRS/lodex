@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-// @ts-expect-error TS7016
 import camelCase from 'lodash/camelCase';
 import { connect } from 'react-redux';
 import { useInView } from 'react-intersection-observer';

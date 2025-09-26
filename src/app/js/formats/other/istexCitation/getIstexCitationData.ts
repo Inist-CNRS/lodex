@@ -1,4 +1,3 @@
-// @ts-expect-error TS7016
 import get from 'lodash/get';
 
 import composeAsync from '../../../../../common/lib/composeAsync';
@@ -37,19 +36,21 @@ export const parseCitationData = (formatData) => ({
 
 export const getCitationDocumentUrl =
     // @ts-expect-error TS7031
-    ({ value, name, searchedField, documentSortBy }) =>
-    () => ({
-        url: buildIstexQuery({
-            query: `${getFilterQuery(
-                searchedField,
-                value,
-            )} AND ${HOST_TITLE_RAW}:"${name}"`,
-            output,
-            // @ts-expect-error TS2353
-            sortBy: documentSortBy,
-            size: 10,
-        }),
-    });
+
+
+        ({ value, name, searchedField, documentSortBy }) =>
+        () => ({
+            url: buildIstexQuery({
+                query: `${getFilterQuery(
+                    searchedField,
+                    value,
+                )} AND ${HOST_TITLE_RAW}:"${name}"`,
+                output,
+                // @ts-expect-error TS2353
+                sortBy: documentSortBy,
+                size: 10,
+            }),
+        });
 
 export const getCitationDocumentData = ({
     // @ts-expect-error TS7031

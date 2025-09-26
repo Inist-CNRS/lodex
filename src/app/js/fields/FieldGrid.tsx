@@ -1,11 +1,11 @@
 import { Box, IconButton, Stack, Tooltip } from '@mui/material';
 import copy from 'copy-to-clipboard';
-// @ts-expect-error TS7016
 import compose from 'lodash/flowRight';
 import PropTypes from 'prop-types';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 // @ts-expect-error TS7016
 import GridLayout from 'react-grid-layout';
+// @ts-expect-error TS7016
 import 'react-grid-layout/css/styles.css';
 import { connect } from 'react-redux';
 import { useMeasure } from 'react-use';
@@ -345,7 +345,7 @@ const DraggableItemGrid = compose(
 
     useDidUpdateEffect(() => {
         onChangePositions(items);
-    // @ts-expect-error TS7006
+        // @ts-expect-error TS7006
     }, [JSON.stringify(items.map((item) => item.id))]);
 
     const stopClickPropagation = () => {

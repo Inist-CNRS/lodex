@@ -90,11 +90,7 @@ class NetworkAdmin extends Component {
 
         return (
             <FormatGroupedFieldSet>
-                {/*
-                 // @ts-expect-error TS2322 */}
                 <FormatDataParamsFieldSet>
-                    {/*
-                     // @ts-expect-error TS2322 */}
                     <RoutineParamsAdmin
                         params={params || defaultArgs.params}
                         polyglot={polyglot}
@@ -105,11 +101,7 @@ class NetworkAdmin extends Component {
                         showOrderBy={showOrderBy}
                     />
                 </FormatDataParamsFieldSet>
-                {/*
-                 // @ts-expect-error TS2322 */}
                 <FormatChartParamsFieldSet defaultExpanded>
-                    {/*
-                     // @ts-expect-error TS2322 */}
                     <ColorPickerParamsAdmin
                         // @ts-expect-error TS2339
                         colors={this.state.colors}

@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-// @ts-expect-error TS7016
 import camelCase from 'lodash/camelCase';
 import { fromFields } from '../../sharedSelectors';
 import { field as fieldPropTypes } from '../../propTypes';

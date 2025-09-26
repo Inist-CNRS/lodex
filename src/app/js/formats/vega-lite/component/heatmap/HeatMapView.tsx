@@ -1,5 +1,4 @@
 import React, { useMemo, useState } from 'react';
-// @ts-expect-error TS7016
 import { clamp } from 'lodash';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -157,7 +156,7 @@ export const HeatMapAdminView = connect((state, props) => {
             values: props.dataset.values ?? [],
         },
     };
-// @ts-expect-error TS2345
+    // @ts-expect-error TS2345
 })(HeatMapView);
 
 export default compose(injectData(), connect(mapStateToProps))(HeatMapView);

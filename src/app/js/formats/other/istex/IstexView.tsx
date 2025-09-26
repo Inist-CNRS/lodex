@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-// @ts-expect-error TS7016
 import memoize from 'lodash/memoize';
 // @ts-expect-error TS7016
 import compose from 'recompose/compose';
@@ -20,7 +19,6 @@ import { ISTEX_SITE_URL } from '../../../../../common/externals';
 import { translate } from '../../../i18n/I18NContext';
 
 const styles = {
-    // @ts-expect-error TS7006
     text: memoize((status) => ({
         fontSize: '1rem',
         textDecoration: status === REJECTED ? 'line-through' : 'none',

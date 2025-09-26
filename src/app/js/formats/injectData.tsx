@@ -5,9 +5,7 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 // @ts-expect-error TS7016
 import { withRouter } from 'react-router';
-// @ts-expect-error TS7016
 import isEqual from 'lodash/isEqual';
-// @ts-expect-error TS7016
 import get from 'lodash/get';
 
 import {
@@ -203,8 +201,6 @@ export default (url = null, checkFormatLoaded = null, withUri = false) =>
             render() {
                 const {
                     // @ts-expect-error TS2339
-                    loadFormatData,
-                    // @ts-expect-error TS2339
                     formatTotal,
                     // @ts-expect-error TS2339
                     formatData,
@@ -295,10 +291,10 @@ export default (url = null, checkFormatLoaded = null, withUri = false) =>
         const mapStateToProps = (state, { field, resource }) => {
             const isLoaded =
                 typeof checkFormatLoaded == 'function'
-                    // @ts-expect-error TS2349
-                    ? checkFormatLoaded(field)
-                    // @ts-expect-error TS2339
-                    : field && fromFormat.isFormatDataLoaded(state, field.name);
+                    ? // @ts-expect-error TS2349
+                      checkFormatLoaded(field)
+                    : // @ts-expect-error TS2339
+                      field && fromFormat.isFormatDataLoaded(state, field.name);
             return {
                 resource,
                 // @ts-expect-error TS2339

@@ -1,5 +1,4 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-// @ts-expect-error TS7016
 import { omitBy } from 'lodash';
 // @ts-expect-error TS7016
 import qs from 'qs';

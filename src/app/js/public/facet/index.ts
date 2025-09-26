@@ -1,4 +1,3 @@
-// @ts-expect-error TS7016
 import omit from 'lodash/omit';
 // @ts-expect-error TS7016
 import { combineActions, createAction, handleActions } from 'redux-actions';
@@ -86,8 +85,8 @@ export const createReducer = (prefix) => {
                 const prevValues = appliedFacets[name] || [];
 
                 const newValues = isChecked
-                    // @ts-expect-error TS7006
-                    ? prevValues.filter((v) => v.value !== facetValue.value)
+                    ? // @ts-expect-error TS7006
+                      prevValues.filter((v) => v.value !== facetValue.value)
                     : prevValues.concat(facetValue);
 
                 if (!newValues.length) {
@@ -154,7 +153,7 @@ export const createReducer = (prefix) => {
                 actionTypes.LOAD_FACET_VALUES_SUCCESS,
                 actionTypes.FACET_VALUE_CHANGE,
                 actionTypes.FACET_VALUE_SORT,
-            // @ts-expect-error TS7006
+                // @ts-expect-error TS7006
             )]: (state, action) => {
                 const name = action.payload.name;
 
