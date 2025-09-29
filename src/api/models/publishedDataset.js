@@ -349,8 +349,32 @@ export default async (db) => {
                     value: { $arrayElemAt: [`$versions.${field}`, -1] },
                 },
             },
+            {
+                $addFields: {
+                    value: {
+                        $cond: {
+                            if: { $isArray: '$value' },
+                            then: '$value',
+                            else: {
+                                $cond: {
+                                    if: { $eq: ['$value', null] },
+                                    then: [],
+                                    else: {
+                                        $split: ['$value', ';'], // Si le champ est une chaîne, on le split sur ';'
+                                    },
+                                },
+                            },
+                        },
+                    },
+                },
+            },
             { $unwind: '$value' },
-            { $group: { _id: '$value', count: { $sum: 1 } } },
+            {
+                $group: {
+                    _id: { $trim: { input: '$value' } },
+                    count: { $sum: 1 },
+                },
+            },
             { $project: { _id: 0, value: '$_id', count: 1, field } },
         ]);
 
