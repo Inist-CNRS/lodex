@@ -6,8 +6,7 @@ import {
 } from '../../user';
 import { getUserSessionStorageInfo } from './tools';
 
-// @ts-expect-error TS7006
-export const getJobLogs = (jobId) => {
+export const getJobLogs = (jobId: string) => {
     const { token } = getUserSessionStorageInfo();
 
     const request = getJobLogsRequest({ token }, jobId);
