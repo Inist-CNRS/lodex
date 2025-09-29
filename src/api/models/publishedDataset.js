@@ -349,32 +349,8 @@ export default async (db) => {
                     value: { $arrayElemAt: [`$versions.${field}`, -1] },
                 },
             },
-            {
-                $addFields: {
-                    value: {
-                        $cond: {
-                            if: { $isArray: '$value' },
-                            then: '$value',
-                            else: {
-                                $cond: {
-                                    if: { $eq: ['$value', null] },
-                                    then: [],
-                                    else: {
-                                        $split: ['$value', ';'], // Si le champ est une chaîne, on le split sur ';'
-                                    },
-                                },
-                            },
-                        },
-                    },
-                },
-            },
             { $unwind: '$value' },
-            {
-                $group: {
-                    _id: { $trim: { input: '$value' } },
-                    count: { $sum: 1 },
-                },
-            },
+            { $group: { _id: '$value', count: { $sum: 1 } } },
             { $project: { _id: 0, value: '$_id', count: 1, field } },
         ]);
 
@@ -412,20 +388,7 @@ export default async (db) => {
 
     collection.create = async (resource, publicationDate = new Date()) => {
         const { uri, ...version } = resource;
-        const existing = await collection.findOne({ uri });
-        if (existing) {
-            return collection.updateOne(
-                { uri },
-                {
-                    $push: {
-                        versions: {
-                            ...version,
-                            publicationDate,
-                        },
-                    },
-                },
-            );
-        }
+
         return collection.insertOne({
             uri,
             versions: [

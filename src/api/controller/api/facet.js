@@ -62,16 +62,10 @@ const app = new Koa();
 // Route pour les filtres
 app.use(
     route.get('/:name/(.*)', (ctx, name, filter) => {
-        if (!filter || /^\/+$/.test(filter)) {
-            filter = undefined;
-        }
-        let cleanFilter = filter;
-        while (cleanFilter.startsWith('/')) {
-            cleanFilter = cleanFilter.slice(1);
-        }
-        while (cleanFilter.endsWith('/')) {
-            cleanFilter = cleanFilter.slice(0, -1);
-        }
+        // Si le filtre est vide ou juste des slashes, on le traite comme undefined
+        const cleanFilter = filter
+            ? filter.replace(/^\/+/, '').replace(/\/+$/, '').trim() || undefined
+            : undefined;
         return getFacetFilteredValues(ctx, name, cleanFilter);
     }),
 );

@@ -6,9 +6,6 @@ describe('publishedDataset', () => {
         const collection = {
             createIndex: jest.fn(),
             findOneAndUpdate: jest.fn(),
-            findOne: jest.fn().mockReturnValue(null),
-            updateOne: jest.fn().mockReturnValue({ result: { n: 1 } }),
-            insertOne: jest.fn().mockReturnValue({ insertedId: 'inserted' }),
         };
         const listCollections = {
             toArray: () => [true],

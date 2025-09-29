@@ -2,25 +2,25 @@
     {
         "uri": 1,
         "firstName": "Bobby",
-        "lastName": "Womack",
+        "lastNAme": "Womack",
         "boolean": true
     },
     {
         "uri": 2,
         "firstName": "Alain",
-        "lastName": "Chabat",
+        "lastNAme": "Chabat",
         "boolean": true
     },
     {
         "uri": 3,
         "firstName": "General",
-        "lastName": "Elektriks",
+        "lastNAme": "Elektriks",
         "boolean": false
     },
     {
         "uri": 4,
         "firstName": "Rob",
-        "lastName": "Zombie",
+        "lastNAme": "Zombie",
         "boolean": false
     }
 ]

@@ -2,133 +2,40 @@ import { fillInputWithFixture } from './forms';
 import * as adminNavigation from './adminNavigation';
 import { DEFAULT_TENANT } from '../../src/common/tools/tenantTools';
 
-// Fonction utilitaire pour vérifier l'état du formulaire d'upload
-const checkUploadFormState = () => {
-    cy.log("Vérification de l'état du formulaire d'upload");
-    cy.get('input[type=file]').should('exist');
-    cy.get('.select-loader').should('exist');
-    cy.get('.btn-upload-dataset').should('exist');
-};
-
-// Fonction utilitaire pour vérifier la réponse de l'upload
-const checkUploadResponse = () => {
-    cy.log('Vérification de la réponse après upload');
-    // Vérifie si un message d'erreur est présent
-    cy.get('body').then(($body) => {
-        if ($body.find('.error-message').length > 0) {
-            cy.get('.error-message').then(($error) => {
-                cy.log('Erreur détectée:', $error.text());
-            });
-        }
-    });
-};
-
-export const selectLoader = (loaderName = 'automatic') => {
-    cy.log('Sélection du loader:', loaderName);
-    cy.get('.select-loader').first().should('be.visible').click();
-    cy.get(`[role="listbox"] li[data-value="${loaderName}"]`).click();
-};
-
-export const addFile = (filename, mimeType = 'text/csv') => {
-    // 1. Log du début de l'upload
-    cy.log(`Début de l'upload du fichier: ${filename}`);
-
-    // 2. Vérification du formulaire
-    cy.get('input[type=file]')
-        .should('exist')
-        .then(($input) => {
-            cy.log(
-                `État de l'input file: ${$input.is(':visible') ? 'visible' : 'caché'}`,
-            );
-        });
-
-    // 3. Upload du fichier
-    fillInputWithFixture('input[type=file]', filename, mimeType);
-    cy.wait(300);
-
-    // 4. Vérification avant sélection du loader
-    cy.get('.select-loader')
-        .should('exist')
-        .then(($loader) => {
-            cy.log(
-                `État du sélecteur de loader: ${$loader.is(':visible') ? 'visible' : 'caché'}`,
-            );
-        });
-
-    // 5. Sélection du loader
-    selectLoader();
-
-    // 6. Vérification du bouton d'upload
-    cy.get('.btn-upload-dataset')
-        .should('be.visible')
-        .should('not.be.disabled')
-        .then(($btn) => {
-            cy.log(
-                `État du bouton d'upload: visible=${$btn.is(':visible')}, disabled=${$btn.prop('disabled')}`,
-            );
-        })
-        .click({ force: true });
-};
-
 export const openImport = () => {
     adminNavigation.goToData();
     cy.location('pathname').should('equal', '/data/existing');
 };
 
 export const importDataset = (filename, mimeType = 'text/csv') => {
-    cy.log('Début import dataset:', filename);
-    checkUploadFormState();
     addFile(filename, mimeType);
-
-    // Vérification après upload
-    checkUploadResponse();
-
-    cy.log('Attente de la grille');
-    cy.get('[role="grid"]', { timeout: 12000 })
-        .should('exist')
-        .then(($grid) => {
-            cy.log('État de la grille:', {
-                visible: $grid.is(':visible'),
-                ariaAttr: $grid.attr('aria-busy'),
-                width: $grid.width(),
-            });
-        });
-};
-
-const waitForGrid = () => {
     cy.get('[role="grid"]', { timeout: 12000 }).should('exist');
 };
 
 export const importOtherDataset = (filename, mimeType = 'text/csv') => {
     fillInputWithFixture('input[type=file]', filename, mimeType);
-    cy.wait(500);
+    cy.wait(300);
     selectLoader();
-    cy.get('.btn-upload-dataset', { timeout: 3000 }).should('be.enabled');
-    cy.get('.btn-upload-dataset').click({
-        force: true,
-    });
+    cy.get('.btn-upload-dataset').should('be.enabled');
+    cy.get('.btn-upload-dataset').click({ force: true });
     cy.get('#confirm-upload', { timeout: 3000 }).should('be.visible');
-    cy.wait(500);
+    cy.wait(300);
     cy.contains('Accept').click({ force: true });
-    waitForGrid();
+    cy.get('[role="grid"]', { timeout: 12000 }).should('exist');
 };
 
 export const importMoreDataset = (filename, mimeType = 'text/csv') => {
     cy.contains('Add more').click({ force: true });
 
     fillInputWithFixture('input[type=file]', filename, mimeType);
-    cy.wait(500);
+    cy.wait(300);
     selectLoader();
 
-    cy.get('.btn-upload-dataset', { timeout: 3000 }).click({
-        force: true,
-    });
+    cy.get('.btn-upload-dataset').click({ force: true });
     cy.get('#confirm-upload', { timeout: 3000 }).should('be.visible');
-    cy.wait(500);
-    cy.contains('Accept').click({
-        force: true,
-    });
-    cy.get('[aria-label="unpublish"]', { timeout: 5000 }).should('be.visible');
+    cy.wait(300);
+    cy.contains('Accept').click({ force: true });
+    cy.get('[aria-label="unpublish"]', { timeout: 2000 }).should('be.visible');
 };
 
 export const fillTabDisplayFormat = (format, save = true) => {
@@ -253,9 +160,20 @@ export const checkListOfFiltererFileFormats = () => {
     cy.get('li>div>span').should('have.length', 4);
     cy.get('button').contains('Cancel').click({ force: true });
 };
+export const addFile = (filename, mimeType = 'text/csv') => {
+    fillInputWithFixture('input[type=file]', filename, mimeType);
+    cy.wait(300);
+    selectLoader();
+    cy.get('.btn-upload-dataset').click({ force: true });
+};
 export const addFileWithoutClick = (filename, mimeType = 'text/csv') => {
     fillInputWithFixture('input[type=file]', filename, mimeType);
-    cy.wait(500);
+    cy.wait(300);
+};
+
+export const selectLoader = (loaderName = 'automatic') => {
+    cy.get('.select-loader').first().click();
+    cy.get(`[role="listbox"] li[data-value="${loaderName}"]`).click();
 };
 
 export const importAnnotations = (filename) => {
