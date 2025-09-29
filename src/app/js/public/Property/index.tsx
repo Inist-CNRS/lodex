@@ -15,6 +15,7 @@ import {
     SCOPE_DATASET,
     SCOPE_DOCUMENT,
     SCOPE_GRAPHIC,
+    // @ts-expect-error TS7016
 } from '../../../../common/scope';
 import { shouldDisplayField } from '../../fields/shouldDisplayField';
 import { getPredicate } from '../../formats';
@@ -33,10 +34,12 @@ import PropertyLinkedFields from './PropertyLinkedFields';
 
 import propositionStatus, {
     REJECTED,
+    // @ts-expect-error TS7016
 } from '../../../../common/propositionStatus';
 
 import { Settings } from '@mui/icons-material';
 import { Box, IconButton } from '@mui/material';
+// @ts-expect-error TS7016
 import { extractTenantFromUrl } from '../../../../common/tools/tenantTools';
 import { CreateAnnotationButton } from '../../annotation/CreateAnnotationButton';
 import { useCanAnnotate } from '../../annotation/useCanAnnotate';

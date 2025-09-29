@@ -11,6 +11,7 @@ import { getShortText } from '../../../lib/longTexts';
 import stylesToClassname from '../../../lib/stylesToClassName';
 import injectData from '../../injectData';
 import AsterPlot from './AsterPlot';
+// @ts-expect-error TS7016
 import { getResourceUri } from '../../../../../common/uris';
 import { translate } from '../../../i18n/I18NContext';
 

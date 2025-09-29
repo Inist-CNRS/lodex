@@ -5,6 +5,7 @@ import { REMOVE_FIELD, removeFieldError, removeFieldSuccess } from '../';
 
 import { fromFields, fromUser } from '../../sharedSelectors';
 import fetchSaga from '../../lib/sagas/fetchSaga';
+// @ts-expect-error TS7016
 import { SCOPE_DOCUMENT } from '../../../../common/scope';
 
 // @ts-expect-error TS7031

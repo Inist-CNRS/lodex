@@ -3,6 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { field as fieldPropTypes } from '../../../propTypes';
+// @ts-expect-error TS7016
 import { getResourceUri } from '../../../../../common/uris';
 import getLabel from '../../utils/getLabel';
 import InvalidFormat from '../../InvalidFormat';

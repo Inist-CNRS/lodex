@@ -5,6 +5,7 @@ import { translate } from '../../../i18n/I18NContext';
 import compose from 'recompose/compose';
 import URL from 'url';
 
+// @ts-expect-error TS7016
 import { isURL } from '../../../../../common/uris';
 import { field as fieldPropTypes } from '../../../propTypes';
 import injectData from '../../injectData';
