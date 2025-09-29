@@ -149,7 +149,6 @@ const middlewareScript = (isFormatExporters = false) => {
         ; connect to the ezs server
         [URLConnect]
         url = ${workers_url}
-        // @ts-expect-error TS(2304): Cannot find name 'Number'.
         timeout = ${Number(localConfig.timeout) || 120000}
         streaming = true,
         json = false
