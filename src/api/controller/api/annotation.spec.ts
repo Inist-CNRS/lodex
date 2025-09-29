@@ -82,7 +82,7 @@ const ANNOTATIONS = [
     },
 ];
 
-jest.mock('./recaptcha.js', () => ({
+jest.mock('./recaptcha', () => ({
     verifyReCaptchaToken: jest.fn(),
 }));
 
