@@ -40,7 +40,7 @@ const styles = stylesToClassname(
         listItem: {
             height: '0px',
             '@media (min-width: 992px)': {
-                height: '100%',
+                height: 'auto',
             },
         },
         listItemOpen: {

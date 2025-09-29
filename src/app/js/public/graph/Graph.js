@@ -36,14 +36,17 @@ import PropertyLinkedFields from '../Property/PropertyLinkedFields';
 const styles = stylesToClassname(
     {
         container: {
-            margin: '30px auto',
+            margin: '0px auto 30px auto',
         },
         header: {
+            gridColumn: 'span 2',
+            position: 'sticky',
+            top: '0',
+            paddingTop: '30px!important',
             display: 'flex',
             flexDirection: 'column',
-            '@media (min-width: 992px)': {
-                padding: '1rem',
-            },
+            backgroundColor: '#fff',
+            zIndex: 10000,
         },
         advanced: {
             display: 'flex',
@@ -54,7 +57,8 @@ const styles = stylesToClassname(
         },
         content: {
             '@media (min-width: 992px)': {
-                display: 'flex',
+                display: 'grid',
+                gridTemplateColumns: '1fr 3fr',
             },
         },
         results: {
@@ -65,8 +69,10 @@ const styles = stylesToClassname(
             },
         },
         facets: {
+            backgroundColor: '#fff',
             position: 'sticky',
-            top: '1rem',
+            top: '8rem',
+            zIndex: 1,
         },
     },
     'graph',
@@ -127,16 +133,16 @@ class Graph extends Component {
 
         return (
             <div className={classnames(className, styles.container)}>
-                <div className={styles.header}>
-                    <DatasetSearchBar
-                        onToggleFacets={this.handleToggleFacets}
-                    />
-                    <div className={classnames(styles.advanced)}>
-                        <DatasetStats />
-                    </div>
-                </div>
-                <AppliedFacetList />
                 <div className={styles.content}>
+                    <div className={styles.header}>
+                        <DatasetSearchBar
+                            onToggleFacets={this.handleToggleFacets}
+                        />
+                        <div className={classnames(styles.advanced)}>
+                            <DatasetStats />
+                        </div>
+                        <AppliedFacetList />
+                    </div>
                     <FacetList
                         className={classnames('graph-facets', styles.facets)}
                         page="dataset"
