@@ -8,7 +8,7 @@ import IstexList from './IstexList';
 import { getMoreDocumentData } from './getIstexData';
 import ButtonWithStatus from '../../../lib/components/ButtonWithStatus';
 
-jest.mock('./getIstexData.js');
+jest.mock('./getIstexData');
 
 describe('IstexList', () => {
     const defaultProps = {
