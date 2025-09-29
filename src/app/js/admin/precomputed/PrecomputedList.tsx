@@ -1,4 +1,3 @@
-// @ts-expect-error TS6133
 import React from 'react';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import PropTypes from 'prop-types';
@@ -14,7 +13,7 @@ import {
 } from '@mui/x-data-grid';
 import { Link } from 'react-router-dom';
 import { useHistory } from 'react-router';
-import { renderStatus, renderRunButton } from './PrecomputedForm';
+import { renderStatus, RunButton } from './PrecomputedForm';
 import { fromPrecomputed } from '../selectors';
 import { launchPrecomputed } from '.';
 import { IN_PROGRESS, FINISHED, ON_HOLD } from '../../../../common/taskStatus';
@@ -118,11 +117,15 @@ export const PrecomputedList = ({
                         headerName: translate('run'),
                         flex: 2,
                         renderCell: (params) => {
-                            return renderRunButton(
-                                handleLaunchPrecomputed(params.row),
-                                params.row.status,
-                                translate,
-                                'text',
+                            return (
+                                <RunButton
+                                    handleLaunchPrecomputed={handleLaunchPrecomputed(
+                                        params.row,
+                                    )}
+                                    precomputedStatus={params.row.status}
+                                    translate={translate}
+                                    variant="text"
+                                />
                             );
                         },
                     },
