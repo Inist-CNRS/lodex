@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { resolve } from 'path';
+import { visualizer } from 'rollup-plugin-visualizer';
 
 import translations from './src/api/services/translations';
 import { loaders } from './config.json';
@@ -40,6 +41,12 @@ export default defineConfig(({ mode }) => {
                     assetFileNames: 'css/[name].[ext]',
                     manualChunks: undefined,
                 },
+                plugins: [
+                    !process.env.CI &&
+                        visualizer({
+                            filename: resolve(__dirname, 'stats.html'),
+                        }),
+                ],
             },
         },
 
