@@ -45,8 +45,8 @@ const styles = stylesToClassname(
             paddingTop: '30px!important',
             display: 'flex',
             flexDirection: 'column',
-            backgroundColor: '#fff',
-            zIndex: 10000,
+            backgroundColor: 'var(--background-default)',
+            zIndex: 1001,
         },
         advanced: {
             display: 'flex',
@@ -69,7 +69,7 @@ const styles = stylesToClassname(
             },
         },
         facets: {
-            backgroundColor: '#fff',
+            backgroundColor: 'var(--background-default)',
             position: 'sticky',
             top: '8rem',
             zIndex: 1,
