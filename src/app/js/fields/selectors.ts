@@ -2,12 +2,14 @@ import get from 'lodash/get';
 import omit from 'lodash/omit';
 import { createSelector } from 'reselect';
 
+// @ts-expect-error TS7016
 import * as overview from '../../../common/overview';
 import { getProps } from '../lib/selectors';
 
 import {
     getTransformerMetas,
     getTransformersMetas,
+    // @ts-expect-error TS7016
 } from '../../../common/transformers';
 
 import {
@@ -15,8 +17,10 @@ import {
     SCOPE_DATASET,
     SCOPE_DOCUMENT,
     SCOPE_GRAPHIC,
+    // @ts-expect-error TS7016
 } from '../../../common/scope';
 
+// @ts-expect-error TS7016
 import { URI_FIELD_NAME } from '../../../common/uris';
 import { splitAnnotationFormatListOptions } from './annotations';
 import {

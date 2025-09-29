@@ -11,6 +11,7 @@ import { translate } from '../../i18n/I18NContext';
 import { red, yellow, green, grey } from '@mui/material/colors';
 import classnames from 'classnames';
 
+// @ts-expect-error TS7016
 import propositionStatus from '../../../../common/propositionStatus';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { fromResource } from '../selectors';
@@ -67,6 +68,8 @@ export const ModerateButtonComponent = ({
     }
     return (
         <div className="moderate">
+            {/*
+             // @ts-expect-error TS7006 */}
             {propositionStatus.map((availableStatus) => (
                 // @ts-expect-error TS2769
                 <IconButton

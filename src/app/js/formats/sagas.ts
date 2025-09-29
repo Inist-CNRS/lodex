@@ -20,7 +20,9 @@ import { fromFields, fromUser, fromCharacteristic } from '../sharedSelectors';
 import { APPLY_FILTER, facetActionTypes } from '../public/dataset';
 import { CONFIGURE_FIELD_SUCCESS } from '../fields';
 import { UPDATE_CHARACTERISTICS_SUCCESS } from '../characteristic';
+// @ts-expect-error TS7016
 import { SCOPE_DATASET, SCOPE_GRAPHIC } from '../../../common/scope';
+// @ts-expect-error TS7016
 import { ISTEX_API_URL } from '../../../common/externals';
 import { isPrecomputed } from './checkPredicate';
 

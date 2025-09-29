@@ -1,6 +1,8 @@
 import fetch from '../../lib/fetch';
+// @ts-expect-error TS7016
 import composeAsync from '../../../../common/lib/composeAsync';
 import URL from 'url';
+// @ts-expect-error TS7016
 import { ISTEX_SITE_URL, ISTEX_API_URL } from '../../../../common/externals';
 
 export const output = [

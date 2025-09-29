@@ -1,7 +1,9 @@
 import get from 'lodash/get';
 
 import fetch from '../../../lib/fetch';
+// @ts-expect-error TS7016
 import composeAsync from '../../../../../common/lib/composeAsync';
+// @ts-expect-error TS7016
 import { ISTEX_API_URL } from '../../../../../common/externals';
 import { output } from '../../utils/fetchIstexData';
 import { buildIstexQuery } from '../istexSummary/getIstexData';

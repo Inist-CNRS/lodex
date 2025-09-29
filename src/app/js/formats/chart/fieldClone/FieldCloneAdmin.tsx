@@ -16,6 +16,7 @@ import {
     SCOPE_GRAPHIC,
     SCOPE_DOCUMENT,
     SCOPE_COLLECTION,
+    // @ts-expect-error TS7016
 } from '../../../../../common/scope';
 import { FormatDefaultParamsFieldSet } from '../../utils/components/field-set/FormatFieldSets';
 import FormatGroupedFieldSet from '../../utils/components/field-set/FormatGroupedFieldSet';

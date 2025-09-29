@@ -2,6 +2,7 @@ import { call, put, select } from 'redux-saga/effects';
 
 import { fieldInvalid } from '../';
 import { fromFields } from '../../sharedSelectors';
+// @ts-expect-error TS7016
 import { validateAddedField } from '../../../../common/validateFields';
 
 // @ts-expect-error TS7006
