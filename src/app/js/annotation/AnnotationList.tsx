@@ -22,6 +22,7 @@ import {
     ANNOTATION_KIND_COMMENT,
     ANNOTATION_KIND_CORRECTION,
     ANNOTATION_KIND_REMOVAL,
+    // @ts-expect-error TS7016
 } from '../../../common/validator/annotation.validator';
 import { AnnotationStatus } from '../admin/annotations/AnnotationStatus';
 import { AnnotationValue } from '../admin/annotations/AnnotationValue';

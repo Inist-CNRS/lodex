@@ -1,5 +1,7 @@
 import { useEffect, useMemo } from 'react';
+// @ts-expect-error TS7016
 import { DEFAULT_TENANT } from '../../../../common/tools/tenantTools';
+// @ts-expect-error TS7016
 import { isURL } from '../../../../common/uris';
 
 // @ts-expect-error TS7006
