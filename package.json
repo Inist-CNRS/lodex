@@ -240,6 +240,7 @@
     },
     "devDependencies": {
         "@babel/eslint-parser": "^7.26.5",
+        "@babel/preset-typescript": "^7.27.1",
         "@eslint/compat": "^1.4.0",
         "@eslint/eslintrc": "^3.3.1",
         "@eslint/js": "^9.36.0",
