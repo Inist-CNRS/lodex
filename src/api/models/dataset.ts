@@ -6,8 +6,7 @@ import JSONStream from 'jsonstream';
 import { Transform } from 'stream';
 import { ObjectId } from 'mongodb';
 import { getCreatedCollection } from './utils';
-
-// @ts-expect-error TS(7016): Could not find a declaration file for module '../.... Remove this comment to see the full error message
+// @ts-expect-error TS7016
 import { URI_FIELD_NAME, moveUriToFirstPosition } from '../../common/uris';
 import countNotUnique from './countNotUnique';
 import countNotUniqueSubresources from './countNotUniqueSubresources';

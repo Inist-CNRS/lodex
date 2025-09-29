@@ -1,5 +1,4 @@
 import from from 'from';
-// eslint-disable-next-line import/no-unresolved
 import ezs from '@ezs/core';
 import statements from '../src';
 import testOne from './testOne';
@@ -46,9 +45,9 @@ describe('convertToSitemap', () => {
             })
             .on('end', () => {
                 const res = str.split('\n');
-                expect(res.length).toBe(2);
+                expect(res).toHaveLength(2);
                 expect(res[0]).toBe('<?xml version="1.0"?>');
-                // eslint-disable-next-line max-len
+
                 expect(res[1]).toMatch(
                     /^<urlset xmlns="http:\/\/www.sitemaps.org\/schemas\/sitemap\/0.9"><url><loc>http:\/\/uri\/1<\/loc><lastmod>[0-9]+<\/lastmod><changefreq>monthly<\/changefreq><priority>1<\/priority><\/url><\/urlset>$/,
                 );
@@ -76,9 +75,9 @@ describe('convertToSitemap', () => {
             })
             .on('end', () => {
                 const res = str.split('\n');
-                expect(res.length).toBe(2);
+                expect(res).toHaveLength(2);
                 expect(res[0]).toBe('<?xml version="1.0"?>');
-                // eslint-disable-next-line max-len
+
                 expect(res[1]).toMatch(
                     /^<urlset xmlns="http:\/\/www.sitemaps.org\/schemas\/sitemap\/0.9"><url><loc>http:\/\/uri\/1<\/loc><lastmod>[0-9]+<\/lastmod><changefreq>monthly<\/changefreq><priority>1<\/priority><\/url><url><loc>http:\/\/uri\/2<\/loc><lastmod>[0-9]+<\/lastmod><changefreq>monthly<\/changefreq><priority>1<\/priority><\/url><\/urlset>$/,
                 );

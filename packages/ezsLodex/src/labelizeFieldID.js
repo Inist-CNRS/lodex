@@ -5,7 +5,7 @@ import mongoDatabase from './mongoDatabase.js';
 /**
  * Inject in each item the last characteristics (the dataset covering fields) of a LODEX.
  *
-  * @example <caption>Input:</caption>
+ * @example <caption>Input:</caption>
  *
  * [
  *   {
@@ -46,11 +46,13 @@ export async function LodexLabelizeFieldID(data, feed) {
             .sort({ position: 1, cover: 1 })
             .toArray();
     }
-    return feed.send(mapKeys(data, (value, key) => {
-        const field = find(this.fields, { name: key });
-        const compl = suffix ? ` - ${key}` : '';
-        return field && field.label ? `${field.label}${compl}` : key;
-    }));
+    return feed.send(
+        mapKeys(data, (value, key) => {
+            const field = find(this.fields, { name: key });
+            const compl = suffix ? ` - ${key}` : '';
+            return field && field.label ? `${field.label}${compl}` : key;
+        }),
+    );
 }
 
 export default {

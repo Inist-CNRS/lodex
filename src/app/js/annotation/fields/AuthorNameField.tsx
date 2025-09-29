@@ -1,0 +1,23 @@
+import PropTypes from 'prop-types';
+// @ts-expect-error TS6133
+import React from 'react';
+
+import { useTranslate } from '../../i18n/I18NContext';
+import { TextField } from '../../lib/components/TextField';
+
+// @ts-expect-error TS7031
+export function AuthorNameField({ form }) {
+    const { translate } = useTranslate();
+
+    return (
+        <TextField
+            form={form}
+            name="authorName"
+            label={`${translate('annotation.authorName')} *`}
+        />
+    );
+}
+
+AuthorNameField.propTypes = {
+    form: PropTypes.object.isRequired,
+};

@@ -35,11 +35,15 @@ export default async function LodexJoinQuery(data, feed) {
 
     const filter = this.getParam('filter', data.filter || {});
 
-    const collectionName = this.getParam('collection', data.collection || 'publishedDataset');
+    const collectionName = this.getParam(
+        'collection',
+        data.collection || 'publishedDataset',
+    );
     const limit = Number(this.getParam('limit', data.limit || 1000000));
     const skip = Number(this.getParam('skip', data.skip || 0));
     const connectionStringURI = this.getParam(
-        'connectionStringURI', data.connectionStringURI || '',
+        'connectionStringURI',
+        data.connectionStringURI || '',
     );
     const db = await mongoDatabase(connectionStringURI);
     const collection = db.collection(collectionName);
@@ -47,7 +51,12 @@ export default async function LodexJoinQuery(data, feed) {
     if (matchField === '' || joinField === '') return feed.send({ total: 0 });
 
     const aggregateQuery = [
-        { $match: { [`versions.0.${matchField}`]: matchValue, removedAt: { $exists: false } } },
+        {
+            $match: {
+                [`versions.0.${matchField}`]: matchValue,
+                removedAt: { $exists: false },
+            },
+        },
         { $project: { _id: 1, [`versions.${matchField}`]: 1 } },
         { $unwind: '$versions' },
         { $project: { items: `$versions.${matchField}` } },
@@ -57,20 +66,19 @@ export default async function LodexJoinQuery(data, feed) {
 
     let hitsTotal = 0;
     const results = {};
-    await aggregateCursor
-        .forEach((row) => {
-            hitsTotal += 1;
-            _.get(row, 'items', []).forEach((item) => {
-                if (item !== matchValue) {
-                    const itemValue = _.get(results, item);
-                    if (itemValue) {
-                        _.set(results, item, itemValue + 1);
-                    } else {
-                        _.set(results, item, 1);
-                    }
+    await aggregateCursor.forEach((row) => {
+        hitsTotal += 1;
+        _.get(row, 'items', []).forEach((item) => {
+            if (item !== matchValue) {
+                const itemValue = _.get(results, item);
+                if (itemValue) {
+                    _.set(results, item, itemValue + 1);
+                } else {
+                    _.set(results, item, 1);
                 }
-            });
+            }
         });
+    });
 
     const findQuery = {
         [`versions.${joinField}`]: { $in: _.keys(results) },
@@ -80,7 +88,9 @@ export default async function LodexJoinQuery(data, feed) {
     let findCursor = await collection.find(findQuery);
 
     if (sortOn !== false) {
-        findCursor = findCursor.sort(`versions.${sortOn}`, sortOrder === 'desc' ? -1 : 1).allowDiskUse();
+        findCursor = findCursor
+            .sort(`versions.${sortOn}`, sortOrder === 'desc' ? -1 : 1)
+            .allowDiskUse();
     }
 
     const findTotal = await findCursor.count();
@@ -105,25 +115,28 @@ export default async function LodexJoinQuery(data, feed) {
         .limit(limit)
         .stream()
         .on('error', (e) => feed.stop(e))
-        .pipe(ezs('assign',
-            {
+        .pipe(
+            ezs('assign', {
                 path,
                 value,
-            }))
-        .pipe(ezs((input, output) => {
-            if (input == null) {
-                output.end();
-                return;
-            }
-            const title = _.chain(input)
-                .get('versions')
-                .last()
-                .get(joinField)
-                .value();
-            const count = _.get(results, title);
-            _.set(input, 'count', count);
-            output.send(input);
-        }));
+            }),
+        )
+        .pipe(
+            ezs((input, output) => {
+                if (input == null) {
+                    output.end();
+                    return;
+                }
+                const title = _.chain(input)
+                    .get('versions')
+                    .last()
+                    .get(joinField)
+                    .value();
+                const count = _.get(results, title);
+                _.set(input, 'count', count);
+                output.send(input);
+            }),
+        );
 
     await feed.flow(stream);
 }

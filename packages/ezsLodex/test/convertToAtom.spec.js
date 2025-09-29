@@ -1,6 +1,5 @@
 import from from 'from';
 import { Feed } from 'feed';
-// eslint-disable-next-line import/no-unresolved
 import ezs from '@ezs/core';
 import statements from '../src';
 
@@ -128,7 +127,7 @@ describe('convertToAtom', () => {
                 ezs((input) => {
                     try {
                         const lines = input.split('\n');
-                        expect(lines.length).toBe(23);
+                        expect(lines).toHaveLength(23);
                         done();
                     } catch (e) {
                         done(e);

@@ -1,0 +1,175 @@
+import { Delete as DeleteIcon } from '@mui/icons-material';
+import {
+    Button,
+    CircularProgress,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    DialogTitle,
+    List,
+    ListItem,
+} from '@mui/material';
+import PropTypes from 'prop-types';
+// @ts-expect-error TS6133
+import React, { useCallback, useMemo, useState } from 'react';
+import { connect } from 'react-redux';
+import compose from 'recompose/compose';
+import { removeFieldList } from '../../fields';
+import FieldRepresentation from '../../fields/FieldRepresentation';
+import { polyglot as polyglotPropTypes } from '../../propTypes';
+import { fromFields } from '../../sharedSelectors';
+import { translate } from '../../i18n/I18NContext';
+
+const DeleteFieldsButtonComponent = ({
+    // @ts-expect-error TS7031
+    fields,
+    // @ts-expect-error TS7031
+    isRemoveFieldListPending,
+    // @ts-expect-error TS7031
+    isFieldsLoading,
+    // @ts-expect-error TS7031
+    p: polyglot,
+    // @ts-expect-error TS7031
+    selectedFields,
+    // @ts-expect-error TS7031
+    removeFieldList,
+}) => {
+    const [warningOpen, setWarningOpen] = useState(false);
+
+    const fieldsToDelete = useMemo(() => {
+        if (selectedFields.length === 0) {
+            return [];
+        }
+
+        // @ts-expect-error TS7031
+        return fields.filter(({ name }) => selectedFields.includes(name));
+    }, [fields, selectedFields]);
+
+    const handleOpenModal = useCallback(async () => {
+        setWarningOpen(true);
+    }, [fieldsToDelete, removeFieldList]);
+
+    const handleCloseModal = useCallback(async () => {
+        setWarningOpen(false);
+    }, [fieldsToDelete, removeFieldList]);
+
+    const handleDeleteFields = useCallback(async () => {
+        handleCloseModal();
+        removeFieldList(fieldsToDelete);
+    }, [fieldsToDelete, removeFieldList]);
+
+    const isLoading = isFieldsLoading || isRemoveFieldListPending;
+
+    return (
+        <>
+            {fieldsToDelete.length > 0 && (
+                <Button
+                    variant="outlined"
+                    color="primary"
+                    disabled={isLoading}
+                    startIcon={
+                        isLoading ? (
+                            <CircularProgress color="primary" size="1em" />
+                        ) : (
+                            <DeleteIcon />
+                        )
+                    }
+                    onClick={handleOpenModal}
+                    aria-label={polyglot.t('delete_selected_fields')}
+                >
+                    {polyglot.t('delete_selected_fields')}
+                </Button>
+            )}
+            <Dialog
+                open={warningOpen}
+                onClose={handleCloseModal}
+                aria-labelledby="delete-selected-fields-dialog-title"
+                aria-describedby="delete-selected-fields-dialog-description"
+            >
+                <DialogTitle id="delete-selected-fields-dialog-title">
+                    {polyglot.t('delete_selected_fields_title', {
+                        smart_count: fieldsToDelete.length,
+                    })}
+                </DialogTitle>
+                <DialogContent>
+                    <DialogContentText>
+                        {polyglot.t('delete_selected_fields_helptext', {
+                            smart_count: fieldsToDelete.length,
+                        })}
+                    </DialogContentText>
+                    <List>
+                        {/*
+                         // @ts-expect-error TS7006 */}
+                        {fieldsToDelete.map((field) => (
+                            <ListItem
+                                key={field._id}
+                                sx={{
+                                    display: 'grid',
+                                    gridTemplateRows: 'repeat(2, 1fr)',
+                                }}
+                            >
+                                <FieldRepresentation field={field} />
+                            </ListItem>
+                        ))}
+                    </List>
+                </DialogContent>
+                <DialogActions>
+                    <Button
+                        onClick={handleCloseModal}
+                        aria-label={polyglot.t('cancel')}
+                    >
+                        {polyglot.t('cancel')}
+                    </Button>
+                    <Button
+                        onClick={handleDeleteFields}
+                        variant="contained"
+                        color="primary"
+                        autoFocus
+                        aria-label={polyglot.t('delete')}
+                    >
+                        {polyglot.t('delete')}
+                    </Button>
+                </DialogActions>
+            </Dialog>
+        </>
+    );
+};
+
+DeleteFieldsButtonComponent.propTypes = {
+    fields: PropTypes.array,
+    selectedFields: PropTypes.arrayOf(PropTypes.string).isRequired,
+    isFieldsLoading: PropTypes.bool.isRequired,
+    filter: PropTypes.string,
+    subresourceId: PropTypes.string,
+    p: polyglotPropTypes.isRequired,
+    removeFieldList: PropTypes.func.isRequired,
+    dispatch: PropTypes.func.isRequired,
+    isRemoveFieldListPending: PropTypes.bool,
+};
+
+// @ts-expect-error TS7006
+const mapStateToProps = (state, { subresourceId, filter }) => ({
+    // @ts-expect-error TS2339
+    isRemoveFieldListPending: fromFields.isRemoveFieldListPending(state),
+    // @ts-expect-error TS2339
+    fields: fromFields.getEditingFields(state, { filter, subresourceId }),
+    // @ts-expect-error TS2339
+    isFieldsLoading: fromFields.isLoading(state),
+});
+
+// @ts-expect-error TS7006
+const mapDispatchToProps = (dispatch) => {
+    return {
+        // @ts-expect-error TS7006
+        removeFieldList: (fields) => {
+            dispatch(removeFieldList({ fields }));
+        },
+    };
+};
+
+export const DeleteFieldsButton = compose(
+    connect(mapStateToProps, mapDispatchToProps),
+    translate,
+    // @ts-expect-error TS2345
+)(DeleteFieldsButtonComponent);
