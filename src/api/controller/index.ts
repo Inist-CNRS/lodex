@@ -5,10 +5,8 @@ import route from 'koa-route';
 import merge from 'lodash/merge';
 import path from 'path';
 import api from './api';
-// @ts-expect-error TS(7016): Could not find a declaration file for module './cu... Remove this comment to see the full error message
 import customPage from './customPage';
 import embedded from './embedded';
-// @ts-expect-error TS(7016): Could not find a declaration file for module './fr... Remove this comment to see the full error message
 import front from './front';
 import rootAdmin from './rootAdmin';
 import webhook from './webhook';

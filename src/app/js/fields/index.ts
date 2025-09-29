@@ -2,6 +2,7 @@ import omit from 'lodash/omit';
 import uniq from 'lodash/uniq';
 import { combineActions, createAction, handleActions } from 'redux-actions';
 
+// @ts-expect-error TS7016
 import getCatalogFromArray from '../../../common/fields/getCatalogFromArray';
 import { UPDATE_CHARACTERISTICS_SUCCESS } from '../characteristic';
 import {

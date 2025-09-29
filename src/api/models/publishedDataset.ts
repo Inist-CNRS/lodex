@@ -2,8 +2,10 @@ import { ObjectId } from 'mongodb';
 import chunk from 'lodash/chunk';
 import omit from 'lodash/omit';
 
+// @ts-expect-error TS7016
 import { getFullResourceUri } from '../../common/uris';
 import getPublishedDatasetFilter from './getPublishedDatasetFilter';
+// @ts-expect-error TS7016
 import { VALIDATED, PROPOSED } from '../../common/propositionStatus';
 import { getCreatedCollection } from './utils';
 import { createDiacriticSafeContainRegex } from '../services/createDiacriticSafeContainRegex';

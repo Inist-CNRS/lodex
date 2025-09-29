@@ -1,5 +1,6 @@
 import get from 'lodash/get';
 
+// @ts-expect-error TS7016
 import composeAsync from '../../../../../common/lib/composeAsync';
 import { parseFetchResult, output } from '../../utils/fetchIstexData';
 import fetch from '../../../lib/fetch';

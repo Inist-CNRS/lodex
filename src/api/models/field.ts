@@ -2,8 +2,11 @@ import omit from 'lodash/omit';
 import pick from 'lodash/pick';
 import { ObjectId } from 'mongodb';
 
+// @ts-expect-error TS7016
 import { SCOPE_COLLECTION, SCOPE_DOCUMENT } from '../../common/scope';
+// @ts-expect-error TS7016
 import { URI_FIELD_NAME } from '../../common/uris';
+// @ts-expect-error TS7016
 import { validateField as validateFieldIsomorphic } from '../../common/validateFields';
 import { createDiacriticSafeContainRegex } from '../services/createDiacriticSafeContainRegex';
 import generateUid from '../services/generateUid';
