@@ -7,6 +7,7 @@ import classnames from 'classnames';
 
 import { polyglot as polyglotPropTypes } from '../../../propTypes';
 import ButtonWithDialog from '../../../lib/components/ButtonWithDialog';
+// @ts-expect-error TS7016
 import { getCleanHost } from '../../../../../common/uris';
 
 class EmbedButton extends Component {

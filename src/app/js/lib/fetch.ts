@@ -1,7 +1,9 @@
 // @ts-expect-error TS7016
 import fetch from 'fetch-with-proxy';
 
+// @ts-expect-error TS7016
 import { getHost } from '../../../common/uris';
+// @ts-expect-error TS7016
 import { DEFAULT_TENANT } from '../../../common/tools/tenantTools';
 
 // @ts-expect-error TS7031

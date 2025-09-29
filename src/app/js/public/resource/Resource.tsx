@@ -11,6 +11,7 @@ import { Swipeable } from 'react-swipeable';
 import compose from 'recompose/compose';
 import { useTranslate } from '../../i18n/I18NContext';
 
+// @ts-expect-error TS7016
 import { getResourceUri } from '../../../../common/uris';
 import { preLoadPublication } from '../../fields';
 import Link from '../../lib/components/Link';

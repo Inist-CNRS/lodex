@@ -7,7 +7,9 @@ import {
     PROPOSED,
     REJECTED,
     VALIDATED,
+    // @ts-expect-error TS7016
 } from '../../../../../../common/propositionStatus';
+// @ts-expect-error TS7016
 import { canonicalURL, isLocalURL, isURL } from '../../../../../../common/uris';
 import Link from '../../../../lib/components/Link';
 import { getShortText, isLongText } from '../../../../lib/longTexts';
@@ -54,7 +56,6 @@ const DefaultView = ({ className, resource, field, fieldStatus, shrink }) => {
         <Typography
             component="span"
             className="property_value_item"
-            // @ts-expect-error TS7053
             sx={styles[fieldStatus]}
         >
             <span className={className}>{text}</span>

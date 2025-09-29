@@ -38,6 +38,7 @@ class IstexList extends Component {
         this.setState({ isLoading: true }, () =>
             // @ts-expect-error TS2339
             getMoreDocumentData(this.state.nextPageURI).then(
+                // @ts-expect-error TS7031
                 ({ hits, total, nextPageURI }) =>
                     this.setState((state) => ({
                         ...state,

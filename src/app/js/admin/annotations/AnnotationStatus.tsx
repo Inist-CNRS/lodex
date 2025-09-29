@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { grey } from '@mui/material/colors';
 import { useTranslate } from '../../i18n/I18NContext';
+// @ts-expect-error TS7016
 import { statuses } from '../../../../common/validator/annotation.validator';
 
 // @ts-expect-error TS7031
