@@ -11,10 +11,10 @@
     },
     "scripts": {
         "start": "concurrently \"npm:production:*\"",
-        "production:api": "tsx --max-http-header-size=32768 src/api",
-        "production:workers": "tsx workers",
+        "production:api": "tsx --require @babel/register --max-http-header-size=32768 src/api",
+        "production:workers": "tsx --require @babel/register workers",
         "build": "npx vite build --config ./vite.config.ts",
-        "development:api": "tsx watch --max-http-header-size=32768 src/api",
+        "development:api": "tsx watch --require @babel/register --max-http-header-size=32768 src/api",
         "development:app": "npx vite --port=8080 --host=0.0.0.0",
         "postversion": "git push && git push --tags",
         "type-check": "tsc --noEmit --project tsconfig.app.json --project tsconfig.node.json",

@@ -4,7 +4,8 @@ module.exports = {
             name: 'lodex',
             script: 'src/api',
             interpreter: 'node',
-            interpreter_args: '--import tsx --max-http-header-size=32768',
+            interpreter_args:
+                '--import tsx --require @babel/register --max-http-header-size=32768',
             exec_mode: 'cluster',
             wait_ready: true,
             listen_timeout: 10000,
@@ -15,7 +16,7 @@ module.exports = {
             name: 'worker',
             script: 'workers',
             interpreter: 'node',
-            interpreter_args: '--import tsx',
+            interpreter_args: '--import tsx --require @babel/register',
             exec_mode: 'fork',
             instances: 1,
             err_file: '/dev/null',
