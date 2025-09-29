@@ -3,6 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import memoize from 'lodash/memoize';
 
+// @ts-expect-error TS7016
 import { REJECTED } from '../../../../../common/propositionStatus';
 import { field as fieldPropTypes } from '../../../propTypes';
 import { getSiteUrl } from '../../utils/fetchIstexData';
