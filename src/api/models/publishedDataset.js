@@ -412,7 +412,20 @@ export default async (db) => {
 
     collection.create = async (resource, publicationDate = new Date()) => {
         const { uri, ...version } = resource;
-
+        const existing = await collection.findOne({ uri });
+        if (existing) {
+            return collection.updateOne(
+                { uri },
+                {
+                    $push: {
+                        versions: {
+                            ...version,
+                            publicationDate,
+                        },
+                    },
+                },
+            );
+        }
         return collection.insertOne({
             uri,
             versions: [
