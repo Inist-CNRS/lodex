@@ -30,6 +30,7 @@ import { useTranslate } from '../i18n/I18NContext';
 import { CloseAllIcon } from '../lib/components/icons/CloseAllIcon';
 import { OpenAllIcon } from '../lib/components/icons/OpenAllIcon';
 import { MODE_ALL, MODE_CLOSED, MODE_MINE, MODES } from './HistoryDrawer.const';
+import { sanitize } from '../lib/sanitize';
 
 // @ts-expect-error TS7006
 export const getAnnotationSummaryValue = (annotation) => {
@@ -38,11 +39,8 @@ export const getAnnotationSummaryValue = (annotation) => {
         case ANNOTATION_KIND_COMMENT:
             return annotation.comment;
         case ANNOTATION_KIND_CORRECTION: {
-            const initialValue = [null, undefined, ''].includes(
-                annotation.initialValue,
-            )
-                ? '""'
-                : annotation.initialValue.toString().replace(/<[^>]*>/g, '');
+            const initialValue = sanitize(annotation.initialValue, '""');
+
             const truncatedInitialValue =
                 initialValue.length > 16
                     ? `${initialValue.slice(0, 16)} ...`
@@ -69,9 +67,7 @@ export const getAnnotationSummaryValue = (annotation) => {
                         .join(JOIN_SEPARATOR)
                 );
             }
-            return [null, undefined, ''].includes(annotation.initialValue)
-                ? '""'
-                : annotation.initialValue.toString().replace(/<[^>]*>/g, '');
+            return sanitize(annotation.initialValue, '""');
         case ANNOTATION_KIND_ADDITION:
             return Array.isArray(annotation.proposedValue)
                 ? annotation.proposedValue.join(JOIN_SEPARATOR)
