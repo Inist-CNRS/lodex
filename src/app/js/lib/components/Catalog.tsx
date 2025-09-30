@@ -107,10 +107,13 @@ export const EnrichmentCatalog = ({
     translatePrefix,
 }) => {
     const { translate } = useTranslate();
-    // @ts-expect-error TS7006
-    const filters = [...new Set(enrichers.map((item) => item.type))].sort(
-        (x, y) => translate(x).localeCompare(translate(y)),
-    );
+    const filters = (
+        [
+            ...new Set(
+                enrichers.map((item: { type: string }): string => item.type),
+            ),
+        ] as string[]
+    ).sort((x: string, y: string) => x.localeCompare(y));
     filters.unshift('all');
     filters.push(filters.splice(filters.indexOf('other'), 1)[0]);
 
@@ -174,7 +177,7 @@ export const EnrichmentCatalog = ({
                                         : 'outlined'
                                 }
                             >
-                                {translate(filter)}
+                                {filter}
                             </Button>
                         </Box>
                     ))}
