@@ -5,11 +5,7 @@ import config from '../../../config.json';
 const ARBITRARY_SUBPUBLISHER = '39D';
 
 export const autoGenerateUri =
-    ({
-        naan,
-        subpublisher,
-        uriSize
-    }: any) =>
+    ({ naan, subpublisher, uriSize }: any) =>
     () =>
     () =>
         new Promise((resolve, reject) => {

@@ -6,15 +6,13 @@ export const getFieldTransformation = (context: any, field: any) => {
         return () => Promise.resolve({});
     }
     const documentTransformers = field.transformers.map(
-        ({
-            operation,
-            args = []
-        }: any) => transformers[operation](context, args),
+        ({ operation, args = [] }: any) =>
+            transformers[operation](context, args),
     );
 
     const transformDocument = composeTransformers(documentTransformers);
     return async (doc: any) => ({
-        [field.name]: await transformDocument(doc).catch(() => '')
+        [field.name]: await transformDocument(doc).catch(() => ''),
     });
 };
 
@@ -39,21 +37,23 @@ export const sanitizeUris = (doc: any) => {
     };
 };
 
-export const applyTransformation = (documentTransformers: any) => async (doc: any) => {
-    const partialDocsPromises = documentTransformers.map((transformer: any) => transformer(doc),
-    );
+export const applyTransformation =
+    (documentTransformers: any) => async (doc: any) => {
+        const partialDocsPromises = documentTransformers.map(
+            (transformer: any) => transformer(doc),
+        );
 
-    const partialDocs = await Promise.all(partialDocsPromises);
-    const result = partialDocs.reduce(
-        (newDoc, partialDoc) => ({
-            ...newDoc,
-            ...partialDoc,
-        }),
-        {},
-    );
+        const partialDocs = await Promise.all(partialDocsPromises);
+        const result = partialDocs.reduce(
+            (newDoc, partialDoc) => ({
+                ...newDoc,
+                ...partialDoc,
+            }),
+            {},
+        );
 
-    return sanitizeUris(result);
-};
+        return sanitizeUris(result);
+    };
 
 export default (context: any, fields: any) => {
     const documentTransformers = getDocumentTransformations(context, fields);

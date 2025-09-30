@@ -1,5 +1,5 @@
-const serve = require('koa-static');
-const Koa = require('koa');
+import serve from 'koa-static';
+import Koa from 'koa';
 
 export default (path: any, port: any) => {
     const app = new Koa();
