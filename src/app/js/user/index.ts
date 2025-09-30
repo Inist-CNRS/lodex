@@ -496,7 +496,7 @@ export const getClearDatasetRequest = (state) =>
 // @ts-expect-error TS7006
 export const getDumpDatasetRequest = (state, fields) => {
     const searchParams = new URLSearchParams();
-    fields.forEach((field) => searchParams.append('fields[]', field));
+    fields.forEach((field: string) => searchParams.append('fields[]', field));
     return getRequest(state, {
         url: `/api/dump?${searchParams.toString()}`,
         method: 'GET',
