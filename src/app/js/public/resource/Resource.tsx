@@ -278,24 +278,16 @@ ResourceComponent.propTypes = {
 
 // @ts-expect-error TS7006
 const mapStateToProps = (state) => {
-    // @ts-expect-error TS2339
     const resource = fromResource.getResourceLastVersion(state);
 
     return {
         resource,
-        // @ts-expect-error TS2339
         removed: fromResource.hasBeenRemoved(state),
-        // @ts-expect-error TS2339
         characteristics: fromCharacteristic.getCharacteristicsAsResource(state),
-        // @ts-expect-error TS2339
         datasetTitleKey: fromFields.getDatasetTitleFieldName(state),
-        // @ts-expect-error TS2339
         fields: fromFields.getFields(state),
-        // @ts-expect-error TS2339
         loading: fromResource.isLoading(state),
-        // @ts-expect-error TS2339
         prevResource: fromSearch.getPrevResource(state, resource),
-        // @ts-expect-error TS2339
         nextResource: fromSearch.getNextResource(state, resource),
     };
 };

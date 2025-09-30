@@ -55,7 +55,6 @@ RemovedDetailComponent.propTypes = {
     p: polyglotPropTypes.isRequired,
 };
 
-// @ts-expect-error TS2339
 const mapStateToProps = fromResource.getRemovedData;
 
 const mapDispatchToProps = {};

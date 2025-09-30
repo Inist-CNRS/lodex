@@ -16,11 +16,8 @@ import ButtonWithDialogForm from '../../lib/components/ButtonWithDialogForm';
 
 // @ts-expect-error TS7006
 const mapStateToProps = (state, { p }) => ({
-    // @ts-expect-error TS2339
     open: fromResource.isHiding(state),
-    // @ts-expect-error TS2339
     saving: fromResource.isSaving(state),
-    // @ts-expect-error TS2339
     show: fromUser.isAdmin(state),
     formName: HIDE_RESOURCE_FORM_NAME,
     form: <HideResourceForm />,

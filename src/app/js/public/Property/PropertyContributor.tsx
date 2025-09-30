@@ -70,7 +70,6 @@ PropertyContributorComponent.propTypes = {
 
 // @ts-expect-error TS7006
 const mapStateToProps = (state, { fieldName }) => ({
-    // @ts-expect-error TS2339
     contributor: fromResource.getResourceContributorForField(state, fieldName),
 });
 

@@ -6,13 +6,11 @@ import { selectors as userSelectors } from './user';
 import { selectors as characteristicSelectors } from './characteristic';
 
 export const fromCharacteristic = createGlobalSelectors(
-    // @ts-expect-error TS7006
     (s) => s.characteristic,
     characteristicSelectors,
 );
 
 export const fromFields = createGlobalSelectors(
-    // @ts-expect-error TS7006
     (s) => s.fields,
     fieldsSelectors,
 );

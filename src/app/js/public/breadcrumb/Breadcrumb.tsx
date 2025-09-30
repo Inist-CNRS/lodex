@@ -99,7 +99,6 @@ Breadcrumb.propTypes = {
 // @ts-expect-error TS7006
 const mapStateToProps = (state) => {
     return {
-        // @ts-expect-error TS2339
         breadcrumb: fromBreadcrumb.getBreadcrumb(state),
     };
 };

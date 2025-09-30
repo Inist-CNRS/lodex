@@ -18,8 +18,32 @@ import progress from './progress/reducer';
 import loaders from './loader';
 import subresource from './subresource';
 import enrichment from './enrichment';
-import precomputed from './precomputed';
+import precomputed, { type PrecomputedState } from './precomputed';
 import configTenant from './configTenant';
+
+export type State = {
+    fetch: unknown;
+    fields: unknown;
+    form: unknown;
+    i18n: unknown;
+    import: unknown;
+    dump: unknown;
+    parsing: unknown;
+    publication: unknown;
+    preview: unknown;
+    publish: unknown;
+    removedResources: unknown;
+    upload: unknown;
+    user: unknown;
+    clear: unknown;
+    characteristic: unknown;
+    progress: unknown;
+    loaders: unknown;
+    subresource: unknown;
+    enrichment: unknown;
+    precomputed: PrecomputedState;
+    configTenant: unknown;
+};
 
 const reducers = {
     fetch: fetchReducer,

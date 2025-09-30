@@ -13,7 +13,6 @@ import { configureFieldSuccess } from '../../fields/index';
 export function* handleUpdateCharacteristics({ payload }) {
     // @ts-expect-error TS7057
     const request = yield select(
-        // @ts-expect-error TS2339
         fromUser.getUpdateCharacteristicsRequest,
         payload,
     );

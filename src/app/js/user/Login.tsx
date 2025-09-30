@@ -121,7 +121,6 @@ LoginComponent.defaultProps = {
 
 // @ts-expect-error TS7006
 export const mapStateToProps = (state) => ({
-    // @ts-expect-error TS2339
     showModal: fromUser.isUserModalShown(state),
     submitting: isSubmitting(LOGIN_FORM_NAME)(state),
 });
