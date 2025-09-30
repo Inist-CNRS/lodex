@@ -1,5 +1,5 @@
 import React from 'react';
-import { act, render } from '../../../test-utils.tsx';
+import { act, render } from '../../../test-utils';
 import { TestI18N } from '../i18n/I18NContext';
 import {
     AnnotationList,

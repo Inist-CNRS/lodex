@@ -1,7 +1,7 @@
 import { ThemeProvider, createTheme } from '@mui/material';
 // @ts-expect-error TS6133
 import React from 'react';
-import { render, screen } from '../../../../test-utils.tsx';
+import { render, screen } from '../../../../test-utils';
 import Loading from '../../lib/components/Loading';
 import Detail from './Detail';
 import RemovedDetail from './RemovedDetail';
