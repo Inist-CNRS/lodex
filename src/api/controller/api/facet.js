@@ -5,7 +5,7 @@ export const getFacetFilteredValues = async (ctx, name, filter) => {
     try {
         const { page = 0, perPage = 10, sortBy, sortDir } = ctx.request.query;
 
-        // Validation des paramètres
+        // Validate parameters
         const pageNumRaw = parseInt(page, 10);
         const pageNum =
             Number.isFinite(pageNumRaw) && pageNumRaw >= 0 ? pageNumRaw : 0;
@@ -15,14 +15,16 @@ export const getFacetFilteredValues = async (ctx, name, filter) => {
                 ? Math.min(100, perPageNumRaw)
                 : 10;
 
-        // Décoder le filtre s'il existe et nettoyer les espaces en fin
+        // Decode filter if it exists
         let searchFilter = filter;
-        if (typeof filter === 'string') {
-            searchFilter = decodeURIComponent(filter).trim();
-            // Si le filtre est vide après trim, on le considère comme undefined
-            if (!searchFilter) {
-                searchFilter = undefined;
+        if (typeof filter === 'string' && filter.length > 0) {
+            try {
+                searchFilter = decodeURIComponent(filter).trim();
+            } catch (e) {
+                searchFilter = filter.trim();
             }
+        } else if (filter === null || filter === undefined) {
+            searchFilter = undefined;
         }
 
         const [data, total] = await Promise.all([
@@ -59,17 +61,24 @@ export const getFacetFilteredValues = async (ctx, name, filter) => {
 
 const app = new Koa();
 
-// Route pour les filtres
+// Route for the filters
 app.use(
     route.get('/:name/(.*)', (ctx, name, filter) => {
-        const cleanFilter = filter
-            ? filter.split('/').filter(Boolean).join('/').trim() || undefined
-            : undefined;
+        let cleanFilter = filter;
+        if (typeof cleanFilter === 'string') {
+            // Remove leading and trailing slashes manually
+            while (cleanFilter.startsWith('/')) {
+                cleanFilter = cleanFilter.slice(1);
+            }
+            while (cleanFilter.endsWith('/')) {
+                cleanFilter = cleanFilter.slice(0, -1);
+            }
+        }
         return getFacetFilteredValues(ctx, name, cleanFilter);
     }),
 );
 
-// Route pour le nom seul (sans filtre)
+// Route for name without filters
 app.use(route.get('/:name', getFacetFilteredValues));
 
 export default app;

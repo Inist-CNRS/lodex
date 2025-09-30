@@ -74,9 +74,10 @@ export const useDebouncedSearch = (
                 abortControllerRef.current.abort();
             }
 
+            const trimmedValue = filterValue.trim();
             if (
-                filterValue.trim().length > 0 &&
-                filterValue.trim().length < MIN_SEARCH_LENGTH
+                trimmedValue.length > 0 &&
+                trimmedValue.length < MIN_SEARCH_LENGTH
             ) {
                 setIsSearching(false);
                 return;
@@ -265,7 +266,7 @@ FacetValueList.propTypes = {
     facetValues: PropTypes.arrayOf(facetValuePropType).isRequired,
     name: PropTypes.string.isRequired,
     label: PropTypes.string.isRequired,
-    filter: PropTypes.string.isRequired,
+    filter: PropTypes.string,
     inverted: PropTypes.bool.isRequired,
     total: PropTypes.number.isRequired,
     currentPage: PropTypes.number.isRequired,
