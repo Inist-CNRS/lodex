@@ -1,6 +1,6 @@
 // @ts-expect-error TS6133
 import React from 'react';
-import { fireEvent, render, waitFor } from '../../../test-utils.tsx';
+import { fireEvent, render, waitFor } from '../../../test-utils';
 import { TestI18N } from '../i18n/I18NContext';
 import { OpenHistoryButton } from './OpenHistoryButton';
 import { useGetFieldAnnotation } from './useGetFieldAnnotation';

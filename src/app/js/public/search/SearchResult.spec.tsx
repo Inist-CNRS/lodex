@@ -4,7 +4,7 @@ import { MemoryRouter } from 'react-router-dom';
 // @ts-expect-error TS7016
 import { StyleSheetTestUtils } from 'aphrodite';
 
-import { render, screen } from '../../../../test-utils.tsx';
+import { render, screen } from '../../../../test-utils';
 import SearchResult from './SearchResult';
 
 describe('SearchResult', () => {
