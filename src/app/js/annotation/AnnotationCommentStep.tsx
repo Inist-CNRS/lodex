@@ -15,6 +15,7 @@ import { useTranslate } from '../i18n/I18NContext';
 import { CommentField } from './fields/CommentField';
 import { ProposedValueField } from './fields/ProposedValueField';
 import { getIsFieldValueAnUrl } from '../formats';
+import { sanitize } from '../lib/sanitize';
 
 export const CommentDescription = ({
     // @ts-expect-error TS7031
@@ -152,7 +153,10 @@ export function AnnotationCommentStep({ field, form, initialValue }) {
 
     const annotationInitialValue = useStore(form.store, (state) => {
         // @ts-expect-error TS18046
-        return state.values.initialValue?.replace(/<[^>]*>/g, '');
+        return state.values.initialValue
+            ? // @ts-expect-error TS18046
+              sanitize(state.values.initialValue)
+            : '';
     });
 
     const kind = useStore(form.store, (state) => {
