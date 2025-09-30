@@ -1,6 +1,6 @@
 // @ts-expect-error TS6133
 import React from 'react';
-import { render } from '../../../../../test-utils';
+import { render } from '../../../../../test-utils.tsx';
 import { TestI18N } from '../../../i18n/I18NContext';
 import { AnnotationHeader } from './AnnotationHeader';
 

@@ -1,4 +1,4 @@
-const parseValue = (value) => {
+const parseValue = (value: any) => {
     if (typeof value === 'object') {
         return value;
     }

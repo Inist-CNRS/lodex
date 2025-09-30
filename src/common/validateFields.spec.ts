@@ -125,6 +125,7 @@ describe('validateField', () => {
 
     describe('validateScope', () => {
         it('should return valid result if scope is part of valid scope : collection', () => {
+            // @ts-expect-error TS(2304): Cannot find name 'expect'.
             expect(validateScope({ scope: SCOPE_COLLECTION })).toEqual({
                 name: 'scope',
                 isValid: true,
@@ -132,6 +133,7 @@ describe('validateField', () => {
         });
 
         it('should return valid result if scope is part of valid scope : graphic', () => {
+            // @ts-expect-error TS(2304): Cannot find name 'expect'.
             expect(validateScope({ scope: SCOPE_GRAPHIC })).toEqual({
                 name: 'scope',
                 isValid: true,
@@ -154,6 +156,7 @@ describe('validateField', () => {
         });
 
         it('should return invalid error if scope is not part of valid scope', () => {
+            // @ts-expect-error TS(2304): Cannot find name 'expect'.
             expect(validateScope({ scope: 'UNKNOWN' })).toEqual({
                 name: 'scope',
                 isValid: false,
@@ -162,6 +165,7 @@ describe('validateField', () => {
         });
 
         it('should return required error if scope is absent', () => {
+            // @ts-expect-error TS(2304): Cannot find name 'expect'.
             expect(validateScope({})).toEqual({
                 name: 'scope',
                 isValid: false,
@@ -195,6 +199,7 @@ describe('validateField', () => {
             expect(
                 validatePosition(
                     { position: 0, name: 'toto', scope: SCOPE_GRAPHIC },
+                    // @ts-expect-error TS(2554): Expected 1 arguments, but got 2.
                     true,
                 ),
             ).toEqual({
@@ -254,6 +259,7 @@ describe('validateField', () => {
     describe('validateLanguage', () => {
         it('returns valid result if language is known', () => {
             expect(
+                // @ts-expect-error TS(2741): Property 'label' is missing in type '{ code: strin... Remove this comment to see the full error message
                 validateLanguage({ language: 'en' }, [{ code: 'en' }]),
             ).toEqual({
                 name: 'language',
@@ -277,6 +283,7 @@ describe('validateField', () => {
 
         it('returns invalid error if language is unknown', () => {
             expect(
+                // @ts-expect-error TS(2741): Property 'label' is missing in type '{ code: strin... Remove this comment to see the full error message
                 validateLanguage({ language: 'foo' }, [{ code: 'en' }]),
             ).toEqual({
                 name: 'language',
@@ -289,6 +296,7 @@ describe('validateField', () => {
     describe('validateTransformers', () => {
         it('should return valid result if transformers is present with at least an item', () => {
             expect(
+                // @ts-expect-error TS(2554): Expected 2 arguments, but got 1.
                 validateTransformers({ transformers: ['transformer'] }),
             ).toEqual({
                 name: 'transformers',
@@ -297,6 +305,7 @@ describe('validateField', () => {
         });
 
         it('should return invalid result if transformers is empty', () => {
+            // @ts-expect-error TS(2304): Cannot find name 'expect'.
             expect(validateTransformers({ transformers: [] })).toEqual({
                 name: 'transformers',
                 isValid: false,
@@ -305,6 +314,7 @@ describe('validateField', () => {
         });
 
         it('should return invalid result if no transformers', () => {
+            // @ts-expect-error TS(2304): Cannot find name 'expect'.
             expect(validateTransformers({})).toEqual({
                 name: 'transformers',
                 isValid: false,
@@ -314,6 +324,7 @@ describe('validateField', () => {
 
         it('should return valid result if no transformers and scope is graphic', () => {
             expect(
+                // @ts-expect-error TS(2554): Expected 2 arguments, but got 1.
                 validateTransformers({
                     scope: SCOPE_GRAPHIC,
                 }),
@@ -325,6 +336,7 @@ describe('validateField', () => {
 
         it('should return valid result if format name is fieldClone even if no transformers', () => {
             expect(
+                // @ts-expect-error TS(2554): Expected 2 arguments, but got 1.
                 validateTransformers({
                     format: {
                         name: 'fieldClone',
@@ -345,6 +357,7 @@ describe('validateField', () => {
 
         it('should return valid result if no transformers and composedOf is set', () => {
             expect(
+                // @ts-expect-error TS(2554): Expected 2 arguments, but got 1.
                 validateTransformers({ composedOf: ['field1', 'field2'] }),
             ).toEqual({
                 name: 'transformers',
@@ -356,8 +369,8 @@ describe('validateField', () => {
     describe('validateTransformer', () => {
         it('should return invalid if the transformer is not in known transformers', () => {
             const knownTransformers = {
-                UPPERCASE: (x) => x,
-                LOWERCASE: (x) => x,
+                UPPERCASE: (x: any) => x,
+                LOWERCASE: (x: any) => x,
             };
 
             const transformer = {
@@ -372,12 +385,13 @@ describe('validateField', () => {
 
             expect(result.name).toBe('transformer.operation');
             expect(result.isValid).toBe(false);
+            // @ts-expect-error TS(2304): Cannot find name 'expect'.
             expect(result.meta.operation).toBe('IVY');
             expect(result.error).toBe('invalid');
         });
 
         it('should return invalid if there is less args in the transformer than in the corresponding transformer', () => {
-            const IVY = (x) => x;
+            const IVY = (x: any) => x;
 
             IVY.getMetas = () => ({
                 name: 'IVY',
@@ -407,12 +421,13 @@ describe('validateField', () => {
 
             expect(result.name).toBe('transformer.args');
             expect(result.isValid).toBe(false);
+            // @ts-expect-error TS(2304): Cannot find name 'expect'.
             expect(result.meta.operation).toBe('IVY');
             expect(result.error).toBe('invalid');
         });
 
         it('should return invalid if the transformer args has an undefined value', () => {
-            const IVY = (x) => x;
+            const IVY = (x: any) => x;
 
             IVY.getMetas = () => ({
                 name: 'IVY',
@@ -448,13 +463,15 @@ describe('validateField', () => {
 
             expect(result.name).toBe('transformer.args');
             expect(result.isValid).toBe(false);
+            // @ts-expect-error TS(2304): Cannot find name 'expect'.
             expect(result.meta.operation).toBe('IVY');
+            // @ts-expect-error TS(2304): Cannot find name 'expect'.
             expect(result.meta.args).toBe(1);
             expect(result.error).toBe('invalid');
         });
 
         it('should return invalid if the transformer args has a value equals to an empty string', () => {
-            const IVY = (x) => x;
+            const IVY = (x: any) => x;
 
             IVY.getMetas = () => ({
                 name: 'IVY',
@@ -490,13 +507,15 @@ describe('validateField', () => {
 
             expect(result.name).toBe('transformer.args');
             expect(result.isValid).toBe(false);
+            // @ts-expect-error TS(2304): Cannot find name 'expect'.
             expect(result.meta.operation).toBe('IVY');
+            // @ts-expect-error TS(2304): Cannot find name 'expect'.
             expect(result.meta.args).toBe(1);
             expect(result.error).toBe('invalid');
         });
 
         it('should return valid otherwise', () => {
-            const IVY = (x) => x;
+            const IVY = (x: any) => x;
 
             IVY.getMetas = () => ({
                 name: 'IVY',
@@ -547,6 +566,7 @@ describe('validateField', () => {
     describe('validateComposedOf', () => {
         it('should return valid result if composedOf is present', () => {
             expect(
+                // @ts-expect-error TS(2554): Expected 2 arguments, but got 1.
                 validateComposedOf({ composedOf: 'composedOf data' }),
             ).toEqual({
                 name: 'composedOf',
@@ -562,6 +582,7 @@ describe('validateField', () => {
         });
 
         it('should return valid result if composedOf is absent', () => {
+            // @ts-expect-error TS(2304): Cannot find name 'expect'.
             expect(validateComposedOf({})).toEqual({
                 name: 'composedOf',
                 isValid: true,

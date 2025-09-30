@@ -2,9 +2,7 @@ import Koa from 'koa';
 import route from 'koa-route';
 import koaBodyParser from 'koa-bodyparser';
 
-// @ts-expect-error TS(7016): Could not find a declaration file for module '../.... Remove this comment to see the full error message
 import { PROPOSED } from '../../../common/propositionStatus';
-// @ts-expect-error TS(7016): Could not find a declaration file for module '../.... Remove this comment to see the full error message
 import generateUri from '../../../common/transformers/AUTOGENERATE_URI';
 import ark from './ark';
 import updateFacetValue from '../../services/updateFacetValue';

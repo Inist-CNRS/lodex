@@ -2,7 +2,6 @@ import { createAction, handleActions, combineActions } from 'redux-actions';
 import { createSelector } from 'reselect';
 import get from 'lodash/get';
 
-// @ts-expect-error TS7016
 import { PROPOSED } from '../../../../common/propositionStatus';
 
 export const PRE_LOAD_RESOURCE = 'PRE_LOAD_RESOURCE';

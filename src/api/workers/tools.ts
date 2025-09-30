@@ -2,7 +2,6 @@ import { cleanWaitingJobsOfType, workerQueues, CancelWorkerError } from '.';
 // @ts-expect-error TS(2792): Cannot find module 'uuid'. Did you mean to install... Remove this comment to see the full error message
 import { disableFusible } from '@ezs/core/fusible';
 
-// @ts-expect-error TS(7016): Could not find a declaration file for module '../.... Remove this comment to see the full error message
 import { ERROR } from '../../common/progressStatus';
 import getLogger from '../services/logger';
 import progress from '../services/progress';

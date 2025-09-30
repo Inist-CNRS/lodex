@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 // @ts-expect-error TS6133
 import React from 'react';
 
-import { fireEvent, render, screen, waitFor } from '../../../test-utils';
+import { fireEvent, render, screen, waitFor } from '../../../test-utils.tsx';
 import { TestI18N } from '../i18n/I18NContext';
 import { CreateAnnotationModal } from './CreateAnnotationModal';
 

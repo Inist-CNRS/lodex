@@ -1,4 +1,3 @@
-// @ts-expect-error TS(7016): Could not find a declaration file for module '../.... Remove this comment to see the full error message
 import { SCOPE_COLLECTION, SCOPE_DOCUMENT } from '../../common/scope';
 
 export const saveParsedStream = async (ctx: any, parsedStream: any) => {

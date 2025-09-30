@@ -1,5 +1,4 @@
 import { MongoClient, ObjectId } from 'mongodb';
-// @ts-expect-error TS(7016): Could not find a declaration file for module '../.... Remove this comment to see the full error message
 import { SCOPE_DOCUMENT } from '../../common/scope';
 import fieldFactory, {
     buildInvalidPropertiesMessage,

@@ -4,13 +4,9 @@ import get from 'lodash/get';
 import getDocumentTransformer from './getDocumentTransformer';
 import transformAllDocuments from './transformAllDocuments';
 import progress from './progress';
-// @ts-expect-error TS(7016): Could not find a declaration file for module '../.... Remove this comment to see the full error message
 import { PUBLISH_DOCUMENT } from '../../common/progressStatus';
-// @ts-expect-error TS(7016): Could not find a declaration file for module '../.... Remove this comment to see the full error message
 import { URI_FIELD_NAME } from '../../common/uris';
-// @ts-expect-error TS(7016): Could not find a declaration file for module '../.... Remove this comment to see the full error message
 import { SCOPE_COLLECTION, SCOPE_DOCUMENT } from '../../common/scope';
-// @ts-expect-error TS(7016): Could not find a declaration file for module '../.... Remove this comment to see the full error message
 import parseValue from '../../common/tools/parseValue';
 import { jobLogger } from '../workers/tools';
 import getLogger from './logger';

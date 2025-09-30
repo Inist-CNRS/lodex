@@ -20,7 +20,6 @@ import IstexCitationList from './IstexCitationList';
 import JournalFold from './JournalFold';
 import IstexItem from '../istex/IstexItem';
 import stylesToClassname from '../../../lib/stylesToClassName';
-// @ts-expect-error TS7016
 import { ISTEX_SITE_URL } from '../../../../../common/externals';
 
 // @ts-expect-error TS7031

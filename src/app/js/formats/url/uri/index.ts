@@ -1,7 +1,6 @@
 import Component, { getReadableValue } from './UriView';
 import AdminComponent, { defaultArgs } from '../DefaultUrlAdmin';
 import DefaultFormat from '../../utils/components/default-format';
-// @ts-expect-error TS7016
 import { isLink } from '../../../../../common/uris';
 
 export default {

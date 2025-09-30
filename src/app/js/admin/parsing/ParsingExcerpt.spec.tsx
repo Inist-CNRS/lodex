@@ -1,6 +1,6 @@
 // @ts-expect-error TS6133
 import React from 'react';
-import { render, fireEvent } from '../../../../test-utils';
+import { render, fireEvent } from '../../../../test-utils.tsx';
 
 import {
     ParsingExcerptComponent as ParsingExcerpt,

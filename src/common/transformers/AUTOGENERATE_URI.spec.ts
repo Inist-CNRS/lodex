@@ -1,3 +1,4 @@
+// @ts-expect-error TS(2792): Cannot find module 'inist-ark'. Did you mean to se... Remove this comment to see the full error message
 import InistArk from 'inist-ark';
 
 import { autoGenerateUri } from './AUTOGENERATE_URI';
@@ -7,7 +8,9 @@ describe('AUTOGENERATE_URI', () => {
         const arkUri = await autoGenerateUri({
             naan: '67375',
             subpublisher: '39D',
+        // @ts-expect-error TS(2554): Expected 0 arguments, but got 2.
         })('newA', 'a')(
+            // @ts-expect-error TS(2554): Expected 0 arguments, but got 2.
             {
                 a: 1,
                 b: 2,
@@ -29,7 +32,9 @@ describe('AUTOGENERATE_URI', () => {
     });
 
     it('should generate a valid ark identifier when no config supplied', async () => {
+        // @ts-expect-error TS(2554): Expected 0 arguments, but got 2.
         const arkUri = await autoGenerateUri({})('newA', 'a')(
+            // @ts-expect-error TS(2554): Expected 0 arguments, but got 2.
             {
                 a: 1,
                 b: 2,

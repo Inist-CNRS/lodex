@@ -3,7 +3,7 @@ export const SCOPE_GRAPHIC = 'graphic';
 export const SCOPE_COLLECTION = 'collection';
 export const SCOPE_DOCUMENT = 'document';
 
-export const hasSimilarScope = (scope) => (field) => {
+export const hasSimilarScope = (scope: any) => (field: any) => {
     if (scope === field.scope) {
         return true;
     }
@@ -32,32 +32,29 @@ export const hasSimilarScope = (scope) => (field) => {
  * }>}
  */
 export const getFieldForSpecificScope = (
-    fields,
-    scope,
+    fields: any,
+    scope: any,
     subresourceId = undefined,
 ) => {
     if (scope === SCOPE_DATASET || scope === SCOPE_GRAPHIC) {
         return fields.filter(
-            (field) =>
-                field.scope === SCOPE_GRAPHIC || field.scope === SCOPE_DATASET,
+            (field: any) => field.scope === SCOPE_GRAPHIC || field.scope === SCOPE_DATASET,
         );
     }
 
     if (scope === SCOPE_COLLECTION || scope === SCOPE_DOCUMENT) {
         if (subresourceId === undefined) {
             return fields.filter(
-                (field) =>
-                    (field.scope === SCOPE_COLLECTION ||
-                        field.scope === SCOPE_DOCUMENT) &&
-                    field.subresourceId === undefined,
+                (field: any) => (field.scope === SCOPE_COLLECTION ||
+                    field.scope === SCOPE_DOCUMENT) &&
+                field.subresourceId === undefined,
             );
         }
 
         return fields.filter(
-            (field) =>
-                (field.scope === SCOPE_COLLECTION ||
-                    field.scope === SCOPE_DOCUMENT) &&
-                field.subresourceId === subresourceId,
+            (field: any) => (field.scope === SCOPE_COLLECTION ||
+                field.scope === SCOPE_DOCUMENT) &&
+            field.subresourceId === subresourceId,
         );
     }
 
@@ -65,32 +62,30 @@ export const getFieldForSpecificScope = (
 };
 
 export const getFieldToCaptionForSpecificScope = (
-    fields,
-    scope,
+    fields: any,
+    scope: any,
     subresourceId = undefined,
 ) => {
     if (scope === SCOPE_DATASET) {
-        return fields.filter((field) => field.scope === SCOPE_DATASET);
+        return fields.filter((field: any) => field.scope === SCOPE_DATASET);
     }
     if (scope === SCOPE_GRAPHIC) {
-        return fields.filter((field) => field.scope === SCOPE_GRAPHIC);
+        return fields.filter((field: any) => field.scope === SCOPE_GRAPHIC);
     }
 
     if (scope === SCOPE_COLLECTION || scope === SCOPE_DOCUMENT) {
         if (subresourceId === undefined) {
             return fields.filter(
-                (field) =>
-                    (field.scope === SCOPE_COLLECTION ||
-                        field.scope === SCOPE_DOCUMENT) &&
-                    field.subresourceId === undefined,
+                (field: any) => (field.scope === SCOPE_COLLECTION ||
+                    field.scope === SCOPE_DOCUMENT) &&
+                field.subresourceId === undefined,
             );
         }
 
         return fields.filter(
-            (field) =>
-                (field.scope === SCOPE_COLLECTION ||
-                    field.scope === SCOPE_DOCUMENT) &&
-                field.subresourceId === subresourceId,
+            (field: any) => (field.scope === SCOPE_COLLECTION ||
+                field.scope === SCOPE_DOCUMENT) &&
+            field.subresourceId === subresourceId,
         );
     }
 

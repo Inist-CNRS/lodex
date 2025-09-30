@@ -2,7 +2,6 @@ import omit from 'lodash/omit';
 import { createAction, handleActions } from 'redux-actions';
 import { createSelector } from 'reselect';
 
-// @ts-expect-error TS7016
 import { ADMIN_ROLE } from '../../../common/tools/tenantTools';
 import getQueryString from '../lib/getQueryString';
 

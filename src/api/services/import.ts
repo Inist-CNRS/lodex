@@ -11,7 +11,6 @@ import {
 // @ts-expect-error TS(2792): Cannot find module 'fetch-with-proxy'. Did you mea... Remove this comment to see the full error message
 import fetch from 'fetch-with-proxy';
 import progress from './progress';
-// @ts-expect-error TS(7016): Could not find a declaration file for module '../.... Remove this comment to see the full error message
 import { INDEXATION, SAVING_DATASET } from '../../common/progressStatus';
 import { Readable } from 'stream';
 import localConfig from '../../../config.json';

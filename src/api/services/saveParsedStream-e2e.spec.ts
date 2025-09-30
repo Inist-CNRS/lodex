@@ -9,7 +9,6 @@ import {
     loadFixtures,
     clear,
     close,
-    // @ts-expect-error TS(7016): Could not find a declaration file for module '../.... Remove this comment to see the full error message
 } from '../../common/tests/fixtures';
 import datasetFactory from '../models/dataset';
 import publishedDataset from '../models/publishedDataset';
@@ -108,7 +107,7 @@ const fixtures = {
 describe('e2e upload saveparsedStream', () => {
     let db: any;
     beforeAll(async () => {
-        db = await connect('lodex_test');
+        db = await connect();
     });
 
     describe('optimal', () => {
@@ -216,7 +215,7 @@ describe('e2e upload saveparsedStream', () => {
         });
 
         afterAll(async () => {
-            await clear('lodex_test');
+            await clear();
         });
     });
 
@@ -320,7 +319,7 @@ describe('e2e upload saveparsedStream', () => {
         });
 
         afterAll(async () => {
-            await clear('lodex_test');
+            await clear();
         });
     });
 

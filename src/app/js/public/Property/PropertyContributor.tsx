@@ -11,7 +11,6 @@ import propositionStatus, {
     PROPOSED,
     VALIDATED,
     REJECTED,
-    // @ts-expect-error TS7016
 } from '../../../../common/propositionStatus';
 
 const styles = {
