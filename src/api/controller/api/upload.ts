@@ -59,7 +59,7 @@ export const parseRequest = async (ctx: any, loaderName: any, next: any) => {
         customLoader = null,
     } = fields;
 
-    const [extension] = resumableFilename.match(/[^.]*$/);
+    const extension = resumableFilename.split('.').pop();
     const chunkNumber = parseInt(resumableChunkNumber, 10);
 
     ctx.resumable = {
@@ -181,7 +181,7 @@ export const checkChunkMiddleware = async (ctx: any, loaderName: any) => {
     const currentChunkSize = parseInt(resumableCurrentChunkSize, 10);
     const filename = `${config.get('uploadDir')}/${ctx.tenant}_${resumableIdentifier}`;
     const chunkname = `${config.get('uploadDir')}/${ctx.tenant}_${resumableIdentifier}.${resumableChunkNumber}`;
-    const [extension] = resumableFilename.match(/[^.]*$/);
+    const extension = resumableFilename.split('.').pop();
 
     const exists = await checkFileExists(chunkname, currentChunkSize);
 
