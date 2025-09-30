@@ -1,6 +1,10 @@
 import path from 'path';
 
-import { getFileStatsIfExists, readFile } from '../services/fsHelpers';
+import {
+    getFileStatsIfExists,
+    getRealPath,
+    readFile,
+} from '../services/fsHelpers';
 import getLogger from '../services/logger';
 
 const scriptRegEx = new RegExp('<script.*?( src=".*")?.*?>.*?</script>', 'gim');
@@ -17,11 +21,19 @@ export const getScriptsFromHtml = (html) =>
         .filter((src) => !!src);
 
 // @ts-expect-error TS7006
-const getPathname = async (file, tenant) => {
-    const absoluteFilename = path.resolve(
+export const getPathname = async (file, tenant) => {
+    const rootDir = path.resolve(
         __dirname,
-        `../../app/custom/instance/${tenant}/${file}`,
+        `../../app/custom/instance/${tenant}`,
     );
+    const absoluteFilename = path.resolve(rootDir, file);
+
+    const resolvedPath = getRealPath(absoluteFilename);
+    const resolvedRoot = getRealPath(rootDir);
+
+    if (!resolvedPath.startsWith(resolvedRoot)) {
+        return null;
+    }
 
     const stats = await getFileStatsIfExists(absoluteFilename);
 
@@ -48,6 +60,11 @@ export default async (ctx) => {
     }
 
     const pathname = await getPathname(file, tenant);
+
+    if (!pathname) {
+        ctx.status = 404;
+        return;
+    }
 
     let html;
 
