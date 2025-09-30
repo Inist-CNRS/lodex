@@ -7,5 +7,8 @@ export const sanitize = (
     if ([null, undefined, ''].includes(dirty)) {
         return defaultValue;
     }
-    return DOMPurify.sanitize(dirty as string).replace(/<[^>]*>/g, '');
+    return DOMPurify.sanitize(dirty as string, {
+        ALLOWED_ATTR: [],
+        ALLOWED_TAGS: [],
+    });
 };
