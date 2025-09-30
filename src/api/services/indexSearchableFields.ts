@@ -1,4 +1,3 @@
-// @ts-expect-error TS(7016): Could not find a declaration file for module '../.... Remove this comment to see the full error message
 import composeAsync from '../../common/lib/composeAsync';
 import mongoClient from './mongoClient';
 import field from '../models/field';

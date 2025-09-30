@@ -3,10 +3,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import memoize from 'lodash/memoize';
 
-// @ts-expect-error TS7016
 import { REJECTED } from '../../../../../common/propositionStatus';
 import { field as fieldPropTypes } from '../../../propTypes';
-// @ts-expect-error TS7016
 import { ISTEX_API_URL } from '../../../../../common/externals';
 import Link from '../../../lib/components/Link';
 

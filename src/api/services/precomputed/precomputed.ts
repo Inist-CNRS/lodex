@@ -1,6 +1,5 @@
 import progress from '../progress';
 import localConfig from '../../../../config.json';
-// @ts-expect-error TS(7016): Could not find a declaration file for module '../.... Remove this comment to see the full error message
 import { getHost } from '../../../common/uris';
 import { unlinkFile } from '../fsHelpers';
 import streamToPromise from 'stream-to-promise';
@@ -23,10 +22,8 @@ import {
     ERROR,
     CANCELED,
     ON_HOLD,
-    // @ts-expect-error TS(7016): Could not find a declaration file for module '../.... Remove this comment to see the full error message
 } from '../../../common/taskStatus';
 import { mongoConnectionString } from '../mongoClient';
-// @ts-expect-error TS(7016): Could not find a declaration file for module '../.... Remove this comment to see the full error message
 import { PRECOMPUTING } from '../../../common/progressStatus';
 import { jobLogger } from '../../workers/tools';
 import { CancelWorkerError, workerQueues } from '../../workers';

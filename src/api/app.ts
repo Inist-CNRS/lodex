@@ -23,7 +23,6 @@ import getLogger from './services/logger';
 import tenant from './models/tenant';
 import mongoClient from './services/mongoClient';
 import bullBoard from './bullBoard';
-// @ts-expect-error TS(7016): Could not find a declaration file for module '../c... Remove this comment to see the full error message
 import { DEFAULT_TENANT } from '../common/tools/tenantTools';
 import { insertConfigTenant } from './services/configTenant';
 

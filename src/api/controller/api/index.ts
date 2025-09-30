@@ -9,7 +9,6 @@ import {
     ADMIN_ROLE,
     CONTRIBUTOR_ROLE,
     USER_ROLE,
-    // @ts-expect-error TS(7016): Could not find a declaration file for module '../.... Remove this comment to see the full error message
 } from '../../../common/tools/tenantTools';
 import tenant from '../../models/tenant';
 import ezMasterConfig from '../../services/ezMasterConfig';

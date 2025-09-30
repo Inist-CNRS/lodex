@@ -1,6 +1,6 @@
 import get from 'lodash/get';
 
-export default (ctx) => {
+export default (ctx?: any) => {
     if (process.env.NODE_ENV === 'e2e') {
         return 'en';
     }

@@ -11,7 +11,6 @@ import {
     setPrecomputedJobId,
 } from '../../services/precomputed/precomputed';
 import { cancelJob } from '../../workers/tools';
-// @ts-expect-error TS(7016): Could not find a declaration file for module '../.... Remove this comment to see the full error message
 import getLocale from '../../../common/getLocale';
 
 export const setup = async (ctx: any, next: any) => {

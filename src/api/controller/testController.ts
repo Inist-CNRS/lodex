@@ -4,7 +4,6 @@ import route from 'koa-route';
 import serve from 'koa-static';
 import path from 'path';
 
-// @ts-expect-error TS(7016): Could not find a declaration file for module '../.... Remove this comment to see the full error message
 import { DEFAULT_TENANT } from '../../common/tools/tenantTools';
 import repositoryMiddleware, {
     mongoRootAdminClient,

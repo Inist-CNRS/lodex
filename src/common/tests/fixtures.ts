@@ -6,7 +6,7 @@ import publishedFacetFactory from '../../api/models/publishedFacet';
 import mongoClient, { closeDb } from '../../api/services/mongoClient';
 import { DEFAULT_TENANT } from '../tools/tenantTools';
 
-let db;
+let db: any;
 
 export async function connect() {
     if (!db) {
@@ -21,7 +21,7 @@ export async function connect() {
     return db;
 }
 
-export function loadFixtures(fixtures) {
+export function loadFixtures(fixtures: any) {
     const promises = [];
 
     if (fixtures.field) {

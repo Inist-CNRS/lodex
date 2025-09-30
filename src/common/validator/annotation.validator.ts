@@ -5,14 +5,14 @@ export const ANNOTATION_KIND_COMMENT = 'comment';
 export const ANNOTATION_KIND_CORRECTION = 'correction';
 export const ANNOTATION_KIND_ADDITION = 'addition';
 
-export const kinds = [
+export const kinds: [string, ...string[]] = [
     ANNOTATION_KIND_REMOVAL,
     ANNOTATION_KIND_COMMENT,
     ANNOTATION_KIND_CORRECTION,
     ANNOTATION_KIND_ADDITION,
 ];
 
-export const statuses = [
+export const statuses: [string, ...string[]] = [
     'to_review',
     'ongoing',
     'validated',
@@ -59,7 +59,7 @@ export const annotationCreationSchema = z
             ])
             .nullish()
             .default(null)
-            .transform((value) => (value === '' ? null : value)),
+            .transform((value: any) => (value === '' ? null : value)),
         initialValue: z.string().nullish().default(null),
         proposedValue: z
             .string()
@@ -80,7 +80,7 @@ export const annotationCreationSchema = z
             )
             .nullish()
             .default(null)
-            .transform((value) => {
+            .transform((value: any) => {
                 if (value == null) {
                     return null;
                 }
@@ -92,9 +92,9 @@ export const annotationCreationSchema = z
                 return [value];
             }),
         isContributorNamePublic: z.boolean().default(false),
-        reCaptchaToken: z.string().nullish().default(undefined),
+        reCaptchaToken: z.string().nullish().optional().default(undefined),
     })
-    .superRefine((data, refineContext) => {
+    .superRefine((data: any, refineContext: any) => {
         if (
             (data.target === 'title' && data.initialValue) ||
             (data.kind === 'addition' && data.initialValue)
@@ -147,7 +147,7 @@ const unrefinedAnnotationUpdateSchema = z.object({
         .string()
         .nullish()
         .default(null)
-        .transform((value) => (value === '' ? null : value)),
+        .transform((value: any) => (value === '' ? null : value)),
     administrator: z
         .union([
             z.literal(''),
@@ -162,26 +162,29 @@ const unrefinedAnnotationUpdateSchema = z.object({
         ])
         .nullish()
         .default(null)
-        .transform((value) => (value === '' ? null : value)),
+        .transform((value: any) => (value === '' ? null : value)),
 });
 
 export const annotationUpdateSchema =
-    unrefinedAnnotationUpdateSchema.superRefine((data, refineContext) => {
-        if (
-            ['validated', 'rejected'].includes(data.status) &&
-            !data.internalComment
-        ) {
-            refineContext.addIssue({
-                code: 'error_required',
-                message: 'error_required',
-                path: ['internalComment'],
-            });
-        }
-    });
+    unrefinedAnnotationUpdateSchema.superRefine(
+        (data: any, refineContext: any) => {
+            if (
+                ['validated', 'rejected'].includes(data.status) &&
+                !data.internalComment
+            ) {
+                refineContext.addIssue({
+                    code: 'error_required',
+                    message: 'error_required',
+                    path: ['internalComment'],
+                });
+            }
+        },
+    );
 
 const annotationUpdateNullishSchema = z.object(
     Object.entries(unrefinedAnnotationUpdateSchema.shape).reduce(
         (acc, [key, value]) => {
+            // @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
             acc[key] = value
                 .nullish()
                 .default(key === 'status' ? 'to_review' : null);

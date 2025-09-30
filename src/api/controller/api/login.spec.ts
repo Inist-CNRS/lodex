@@ -5,7 +5,6 @@ import { postLogin as login } from './login';
 import {
     ADMIN_ROLE,
     CONTRIBUTOR_ROLE,
-    // @ts-expect-error TS(7016): Could not find a declaration file for module '../.... Remove this comment to see the full error message
 } from '../../../common/tools/tenantTools';
 
 const expDate = Date.now();
