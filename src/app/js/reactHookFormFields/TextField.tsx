@@ -25,7 +25,6 @@ export const TextField = ({
         control,
     });
 
-    console.log('TextField', name, field.value, fieldState);
     return (
         <MuiTextField
             {...props}
