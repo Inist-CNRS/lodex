@@ -1,16 +1,9 @@
-import React, {
-    useCallback,
-    useEffect,
-    useMemo,
-    useState,
-    type MouseEvent,
-} from 'react';
+import React, { useCallback, useEffect, useMemo, type MouseEvent } from 'react';
 
 import PrecomputedCatalogConnected from './PrecomputedCatalog';
 import PrecomputedPreview from './PrecomputedPreview';
 import PrecomputedFormLogsDialogComponent from './PrecomputedLogsDialog';
 import PrecomputedFormDataDialogComponent from './PrecomputedDataDialog';
-import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import SourceValueFromColumns from './SourceValueFromColumns';
 import { useForm } from 'react-hook-form';
 import { TextField } from '../../reactHookFormFields/TextField';
@@ -31,60 +24,16 @@ import {
 } from '../api/precomputed';
 import { getJobLogs } from '../api/job';
 import { toast } from '../../../../common/tools/toast';
-import {
-    FINISHED,
-    IN_PROGRESS,
-    PENDING,
-    ON_HOLD,
-} from '../../../../common/taskStatus';
+import { FINISHED, IN_PROGRESS, PENDING } from '../../../../common/taskStatus';
 import { io } from 'socket.io-client';
 import CancelButton from '../../lib/components/CancelButton';
 import { DEFAULT_TENANT } from '../../../../common/tools/tenantTools';
 import { useTranslate } from '../../i18n/I18NContext';
 import { PrecomputedStatus } from './PrecomputedStatus';
+import { RunButton } from './RunButton';
 
 const required = (text: string) => (value: unknown) =>
     value && !(value instanceof Array && value.length === 0) ? undefined : text;
-
-export const RunButton = ({
-    handleLaunchPrecomputed,
-    precomputedStatus,
-    translate,
-    variant = 'contained',
-}: {
-    handleLaunchPrecomputed: {
-        (event: any): void;
-        (event: any): void;
-        (arg0: any): void;
-    };
-    precomputedStatus: string;
-    translate: (key: string) => string;
-    variant: ButtonProps['variant'];
-}) => {
-    const [isClicked, setIsClicked] = useState<boolean>(false);
-    const handleClick = (event: MouseEvent) => {
-        handleLaunchPrecomputed(event);
-        setIsClicked(true);
-    };
-
-    return (
-        <Button
-            color="primary"
-            variant={variant}
-            sx={{ height: '100%' }}
-            startIcon={<PlayArrowIcon />}
-            onClick={handleClick}
-            disabled={
-                isClicked ||
-                precomputedStatus === IN_PROGRESS ||
-                precomputedStatus === PENDING ||
-                precomputedStatus === ON_HOLD
-            }
-        >
-            {translate('run')}
-        </Button>
-    );
-};
 
 type PreComputation = {
     name: string;
@@ -226,7 +175,7 @@ export const PrecomputedForm = ({
         history.push('/data/precomputed');
     };
 
-    const handleLaunchPrecomputed = (event: Event) => {
+    const handleLaunchPrecomputed = (event: MouseEvent) => {
         event.preventDefault();
         if (isPrecomputedRunning) {
             toast(translate('pending_precomputed'), {
