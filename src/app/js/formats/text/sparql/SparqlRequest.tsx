@@ -16,7 +16,6 @@ import {
 import { fromFormat } from '../../../public/selectors';
 import { loadFormatData } from '../../reducer';
 import Loading from '../../../lib/components/Loading';
-// @ts-expect-error TS7016
 import { isURL } from '../../../../../common/uris';
 import Link from '../../../lib/components/Link';
 

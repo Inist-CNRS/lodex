@@ -7,7 +7,6 @@ import compose from 'recompose/compose';
 
 import fetchDataForComponent from './fetchDataForComponent';
 import Alert from '../../../lib/components/Alert';
-// @ts-expect-error TS7016
 import { REJECTED } from '../../../../../common/propositionStatus';
 import {
     field as fieldPropTypes,

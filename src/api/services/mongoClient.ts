@@ -1,6 +1,5 @@
 import { MongoClient, type Db } from 'mongodb';
 import config from 'config';
-// @ts-expect-error TS7016
 import { DEFAULT_TENANT } from '../../common/tools/tenantTools';
 
 /**

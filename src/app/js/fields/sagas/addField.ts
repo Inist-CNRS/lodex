@@ -2,7 +2,6 @@ import { put, takeLatest } from 'redux-saga/effects';
 import { push } from 'redux-first-history';
 
 import { ADD_FIELD } from '../';
-// @ts-expect-error TS7016
 import { SCOPE_DOCUMENT } from '../../../../common/scope';
 
 // @ts-expect-error TS7006

@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import { translate } from '../../../../i18n/I18NContext';
 import compose from 'recompose/compose';
 import SparqlRequest from '../SparqlRequest';
-// @ts-expect-error TS7016
 import { isURL } from '../../../../../../common/uris';
 import { field as fieldPropTypes } from '../../../../propTypes';
 import URL from 'url';

@@ -1,10 +1,8 @@
 import get from 'lodash/get';
 import omit from 'lodash/omit';
 
-// @ts-expect-error TS7016
 import composeAsync from '../../../../../common/lib/composeAsync';
 import { parseFetchResult, output } from '../../utils/fetchIstexData';
-// @ts-expect-error TS7016
 import { ISTEX_API_URL } from '../../../../../common/externals';
 import fetch from '../../../lib/fetch';
 import alphabeticalSort from '../../../lib/alphabeticalSort';

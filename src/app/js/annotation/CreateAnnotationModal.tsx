@@ -17,7 +17,6 @@ import {
     ANNOTATION_KIND_ADDITION,
     ANNOTATION_KIND_CORRECTION,
     annotationCreationSchema,
-    // @ts-expect-error TS7016
 } from '../../../common/validator/annotation.validator';
 import { useTranslate } from '../i18n/I18NContext';
 import { ConfirmPopup } from '../lib/components/ConfirmPopup';
@@ -92,6 +91,7 @@ export function CreateAnnotationModal({
     const form = useForm({
         defaultValues: {
             resourceUri,
+            authorName: '',
             comment: '',
             target: 'title',
             kind: 'comment',
@@ -151,7 +151,6 @@ export function CreateAnnotationModal({
         }
 
         // tanstack form does not support conditional validation (e.g. validation using superRefine to depend on another field value)
-        // @ts-expect-error TS2339
         return !!state.values.initialValue;
     });
 
@@ -162,11 +161,10 @@ export function CreateAnnotationModal({
 
         if (
             [ANNOTATION_KIND_CORRECTION, ANNOTATION_KIND_ADDITION].includes(
-                state.values.kind,
+                state.values.kind!,
             )
         ) {
             return (
-                // @ts-expect-error TS2339
                 !!state.values.proposedValue &&
                 isRequiredFieldValid(state, 'comment')
             );

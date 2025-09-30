@@ -7,9 +7,7 @@ import {
     PROPOSED,
     REJECTED,
     VALIDATED,
-    // @ts-expect-error TS7016
 } from '../../../../../../common/propositionStatus';
-// @ts-expect-error TS7016
 import { canonicalURL, isLocalURL, isURL } from '../../../../../../common/uris';
 import Link from '../../../../lib/components/Link';
 import { getShortText, isLongText } from '../../../../lib/longTexts';
@@ -56,6 +54,7 @@ const DefaultView = ({ className, resource, field, fieldStatus, shrink }) => {
         <Typography
             component="span"
             className="property_value_item"
+            // @ts-expect-error TS(7053): Element implicitly has an any type because expression of type string can't be used to index type
             sx={styles[fieldStatus]}
         >
             <span className={className}>{text}</span>
