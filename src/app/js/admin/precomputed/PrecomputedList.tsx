@@ -13,7 +13,7 @@ import {
 } from '@mui/x-data-grid';
 import { Link } from 'react-router-dom';
 import { useHistory } from 'react-router';
-import { RunButton } from './PrecomputedForm';
+import { RunButton } from './RunButton';
 import { fromPrecomputed } from '../selectors';
 import { launchPrecomputed } from '.';
 import { IN_PROGRESS, FINISHED, ON_HOLD } from '../../../../common/taskStatus';
