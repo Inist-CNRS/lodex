@@ -179,8 +179,8 @@ export const getPreloadedState = async (
 const handleRender = async (ctx: any, next: any) => {
     const { url } = ctx.request;
     if (
-        (url.match(/[^\\]*\.(\w+)$/) && !url.match(/\/uid:\//)) ||
-        url.match(/[^\\]*\.html$/) ||
+        (url.match(/\.([a-z]+)$/) && !url.match(/\/uid:\//)) ||
+        url.match(/\.html$/) ||
         url.match('/admin')
     ) {
         // no route matched switch to static file
