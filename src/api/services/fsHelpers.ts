@@ -1,4 +1,4 @@
-import fs from 'fs';
+import fs, { realpathSync } from 'fs';
 import range from 'lodash/range';
 import rangeRight from 'lodash/rangeRight';
 import MultiStream from 'multistream';
@@ -41,9 +41,9 @@ export const mergeChunksFactory =
 
 export const mergeChunks = mergeChunksFactory(createReadStream);
 
-export const getFileStats = (filename: any) =>
-    new Promise((resolve: any, reject: any) => {
-        fs.stat(filename, (error: any, result: any) => {
+export const getFileStats = (filename: string) =>
+    new Promise((resolve, reject) => {
+        fs.stat(filename, (error, result) => {
             if (error) {
                 reject(error);
                 return;
@@ -109,3 +109,11 @@ export const getFileStatsIfExists = (pathname: any) =>
             getFileStats(pathname).then(resolve).catch(reject);
         });
     });
+
+export const getRealPath = (path: string): string => {
+    try {
+        return realpathSync(path);
+    } catch (_error) {
+        return path;
+    }
+};
