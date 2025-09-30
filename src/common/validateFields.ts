@@ -132,7 +132,9 @@ export const validateComposedOfFields = (field: any) => {
 };
 
 export const validateComposedOfField = (field: any, allFields: any) => {
-    const isValid = !!allFields.find((otherfield: any) => otherfield.name === field);
+    const isValid = !!allFields.find(
+        (otherfield: any) => otherfield.name === field,
+    );
 
     return {
         name: 'composedOf.fields',
@@ -146,7 +148,9 @@ export const validateEachComposedOfFields = (fields: any, allFields: any) => {
         return [];
     }
 
-    return fields.map((field: any) => validateComposedOfField(field, allFields));
+    return fields.map((field: any) =>
+        validateComposedOfField(field, allFields),
+    );
 };
 
 export const validateCompletesField = (field: any, allFields: any) => {
@@ -213,9 +217,7 @@ export const validateTransformer = (
 
     const transformerMeta = transformerOperation.getMetas();
     const transformerArgs = transformer.args || [];
-    const filteredTransformerArgs = transformerArgs.filter(({
-        value
-    }: any) =>
+    const filteredTransformerArgs = transformerArgs.filter(({ value }: any) =>
         transformer.operation === 'VALUE'
             ? value !== undefined
             : !isUndefinedOrEmpty(value),
@@ -265,11 +267,14 @@ export const validateLanguage = (field: any, languages = languagesList) => {
         error: 'invalid',
     };
 };
-export const isListValid = (list: any) => list.reduce((areValid: any, {
-    isValid
-}: any) => areValid && isValid, true);
+export const isListValid = (list: any) =>
+    list.reduce((areValid: any, { isValid }: any) => areValid && isValid, true);
 
-export const validateField = (field: any, isContribution = false, fields = []) => {
+export const validateField = (
+    field: any,
+    isContribution = false,
+    fields = [],
+) => {
     const properties = [
         validateScope(field, isContribution),
         validateScheme(field),
@@ -349,7 +354,8 @@ export const validateAddedField = (
 };
 
 export default (allFields: any) => {
-    const fields = allFields.map((field: any) => validateField(field, false, allFields),
+    const fields = allFields.map((field: any) =>
+        validateField(field, false, allFields),
     );
 
     return {

@@ -8,7 +8,7 @@ describe('AUTOGENERATE_URI', () => {
         const arkUri = await autoGenerateUri({
             naan: '67375',
             subpublisher: '39D',
-        // @ts-expect-error TS(2554): Expected 0 arguments, but got 2.
+            // @ts-expect-error TS(2554): Expected 0 arguments, but got 2.
         })('newA', 'a')(
             // @ts-expect-error TS(2554): Expected 0 arguments, but got 2.
             {
