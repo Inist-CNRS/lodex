@@ -92,7 +92,7 @@ export const annotationCreationSchema = z
                 return [value];
             }),
         isContributorNamePublic: z.boolean().default(false),
-        reCaptchaToken: z.string().nullish().optional().default(undefined),
+        reCaptchaToken: z.string().nullish().optional(),
     })
     .superRefine((data: any, refineContext: any) => {
         if (
