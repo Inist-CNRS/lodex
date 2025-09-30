@@ -3,7 +3,7 @@ import knownTransformers from './transformers';
 import languagesList from './languages';
 import isUndefinedOrEmpty from './lib/isUndefinedOrEmpty';
 
-export const validateScope = (field, isContribution) => {
+export const validateScope = (field: any, isContribution: any) => {
     const result = {
         name: 'scope',
         isValid: true,
@@ -36,7 +36,7 @@ export const validateScope = (field, isContribution) => {
     return result;
 };
 
-export const validatePosition = (field) => {
+export const validatePosition = (field: any) => {
     const result = {
         name: 'position',
         isValid: true,
@@ -61,7 +61,7 @@ export const validatePosition = (field) => {
     return result;
 };
 
-export const validateTransformers = (field, isContribution) => {
+export const validateTransformers = (field: any, isContribution: any) => {
     const result = {
         name: 'transformers',
         isValid: true,
@@ -87,7 +87,7 @@ export const validateTransformers = (field, isContribution) => {
     return result;
 };
 
-export const validateComposedOf = (field, isContribution) => {
+export const validateComposedOf = (field: any, isContribution: any) => {
     const result = {
         name: 'composedOf',
         isValid: true,
@@ -108,7 +108,7 @@ export const validateComposedOf = (field, isContribution) => {
     return result;
 };
 
-export const validateComposedOfFields = (field) => {
+export const validateComposedOfFields = (field: any) => {
     if (!field.composedOf || !field.composedOf.isComposedOf) {
         return null;
     }
@@ -131,8 +131,10 @@ export const validateComposedOfFields = (field) => {
     return result;
 };
 
-export const validateComposedOfField = (field, allFields) => {
-    const isValid = !!allFields.find((otherfield) => otherfield.name === field);
+export const validateComposedOfField = (field: any, allFields: any) => {
+    const isValid = !!allFields.find(
+        (otherfield: any) => otherfield.name === field,
+    );
 
     return {
         name: 'composedOf.fields',
@@ -141,19 +143,21 @@ export const validateComposedOfField = (field, allFields) => {
     };
 };
 
-export const validateEachComposedOfFields = (fields, allFields) => {
+export const validateEachComposedOfFields = (fields: any, allFields: any) => {
     if (!fields || !fields.length) {
         return [];
     }
 
-    return fields.map((field) => validateComposedOfField(field, allFields));
+    return fields.map((field: any) =>
+        validateComposedOfField(field, allFields),
+    );
 };
 
-export const validateCompletesField = (field, allFields) => {
+export const validateCompletesField = (field: any, allFields: any) => {
     let isValid = true;
     if (field.completes) {
         isValid = !!allFields.find(
-            (otherfield) => otherfield.name === field.completes,
+            (otherfield: any) => otherfield.name === field.completes,
         );
     }
 
@@ -164,7 +168,7 @@ export const validateCompletesField = (field, allFields) => {
     };
 };
 
-export const validateScheme = (field) => {
+export const validateScheme = (field: any) => {
     const result = {
         name: 'scheme',
         isValid: true,
@@ -189,7 +193,7 @@ export const validateScheme = (field) => {
 };
 
 export const validateTransformer = (
-    transformer,
+    transformer: any,
     isComposedOf = false,
     transformers = knownTransformers,
 ) => {
@@ -213,7 +217,7 @@ export const validateTransformer = (
 
     const transformerMeta = transformerOperation.getMetas();
     const transformerArgs = transformer.args || [];
-    const filteredTransformerArgs = transformerArgs.filter(({ value }) =>
+    const filteredTransformerArgs = transformerArgs.filter(({ value }: any) =>
         transformer.operation === 'VALUE'
             ? value !== undefined
             : !isUndefinedOrEmpty(value),
@@ -242,7 +246,7 @@ export const validateEachTransformer = (
     isComposedOf = false,
 ) => transformers.map((value) => validateTransformer(value, isComposedOf));
 
-export const validateLanguage = (field, languages = languagesList) => {
+export const validateLanguage = (field: any, languages = languagesList) => {
     const result = {
         name: 'language',
         isValid: true,
@@ -263,10 +267,14 @@ export const validateLanguage = (field, languages = languagesList) => {
         error: 'invalid',
     };
 };
-export const isListValid = (list) =>
-    list.reduce((areValid, { isValid }) => areValid && isValid, true);
+export const isListValid = (list: any) =>
+    list.reduce((areValid: any, { isValid }: any) => areValid && isValid, true);
 
-export const validateField = (field, isContribution = false, fields = []) => {
+export const validateField = (
+    field: any,
+    isContribution = false,
+    fields = [],
+) => {
     const properties = [
         validateScope(field, isContribution),
         validateScheme(field),
@@ -308,7 +316,7 @@ export const validateField = (field, isContribution = false, fields = []) => {
 };
 
 export const validateAddedField = (
-    field,
+    field: any,
     isContribution = false,
     fields = [],
 ) => {
@@ -345,14 +353,14 @@ export const validateAddedField = (
     };
 };
 
-export default (allFields) => {
-    const fields = allFields.map((field) =>
+export default (allFields: any) => {
+    const fields = allFields.map((field: any) =>
         validateField(field, false, allFields),
     );
 
     return {
         isValid: fields.reduce(
-            (isValid, field) => isValid && field.isValid,
+            (isValid: any, field: any) => isValid && field.isValid,
             true,
         ),
         fields,

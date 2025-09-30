@@ -1,7 +1,10 @@
+import config from 'config';
+
 export const ISTEX_API_URL = (function () {
     if (typeof window === 'undefined') {
-        return require('config').istexApiUrl;
+        return config.get('istexApiUrl');
     }
+    // @ts-expect-error TS(2304): Cannot find name 'window'.
     return window.ISTEX_API_URL || 'https://api.istex.fr';
 })();
 

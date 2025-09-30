@@ -3,7 +3,6 @@ import route from 'koa-route';
 import koaBodyParser from 'koa-bodyparser';
 import jwt from 'koa-jwt';
 import config from 'config';
-// @ts-expect-error TS(7016): Could not find a declaration file for module '../.... Remove this comment to see the full error message
 import { ROOT_ROLE } from '../../../common/tools/tenantTools';
 
 const auth = config.get('auth');

@@ -5,7 +5,6 @@ import ezs from '@ezs/core';
 // @ts-expect-error TS(2792): Cannot find module '@ezs/lodex'.
 import ezsLodex from '@ezs/lodex';
 
-// @ts-expect-error TS(7016): Could not find a declaration file for module '../.... Remove this comment to see the full error message
 import { getHost, getCleanHost } from '../../../common/uris';
 import config from '../../../../config.json';
 import Script from '../../services/script';

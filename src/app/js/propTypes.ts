@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
 
-// @ts-expect-error TS7016
 import { PROPOSED, VALIDATED, REJECTED } from '../../common/propositionStatus';
 
 export const polyglot = PropTypes.shape({

@@ -7,7 +7,6 @@ import {
     field as fieldPropTypes,
     resource as resourcePropTypes,
 } from '../../propTypes';
-// @ts-expect-error TS7016
 import { isURL, getResourceUri } from '../../../../common/uris';
 import stylesToClassname from '../../lib/stylesToClassName';
 import { Box } from '@mui/material';
