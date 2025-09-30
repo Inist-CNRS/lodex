@@ -5,6 +5,7 @@ import {
 import { render } from '@testing-library/react';
 import { createMemoryHistory } from 'history';
 import PropTypes from 'prop-types';
+import { type ReactElement } from 'react';
 import { Provider } from 'react-redux';
 
 import userEvent from '@testing-library/user-event';
@@ -13,6 +14,7 @@ import sagas from './app/js/admin/sagas';
 import { AnnotationStorageProvider } from './app/js/annotation/annotationStorage';
 import configureStore from './app/js/configureStore';
 import reducers from './app/js/public/reducers';
+import { TestI18N } from './app/js/i18n/I18NContext';
 
 // custom/themes/default/defaultTheme';
 
@@ -28,9 +30,11 @@ const theme = createTheme(defaultMuiTheme, {
 
 const Wrapper = ({ children }: any) => (
     <Provider store={store}>
-        <AnnotationStorageProvider>
-            <MuiThemeProvider theme={theme}>{children}</MuiThemeProvider>
-        </AnnotationStorageProvider>
+        <TestI18N>
+            <AnnotationStorageProvider>
+                <MuiThemeProvider theme={theme}>{children}</MuiThemeProvider>
+            </AnnotationStorageProvider>
+        </TestI18N>
     </Provider>
 );
 
@@ -38,7 +42,7 @@ Wrapper.propTypes = {
     children: PropTypes.node.isRequired,
 };
 
-const customRender = (ui: any, options: any) =>
+const customRender = (ui: ReactElement, options = {}) =>
     render(ui, { wrapper: Wrapper, ...options });
 
 export {
