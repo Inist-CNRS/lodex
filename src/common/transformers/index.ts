@@ -12,9 +12,13 @@ transformersMetas.push(MD5.getMetas());
 
 export default transformers;
 
-export const hasRegistredTransformer = (operation: any) => typeof transformers[operation] !== 'undefined';
+export const hasRegistredTransformer = (operation: any) =>
+    typeof transformers[operation] !== 'undefined';
 
-export const getTransformersMetas = (type: any) => type ? transformersMetas.filter((m: any) => m.type === type) : transformersMetas;
+export const getTransformersMetas = (type: any) =>
+    type
+        ? transformersMetas.filter((m: any) => m.type === type)
+        : transformersMetas;
 
 export const getTransformerMetas = (operation: any) => {
     const transformer = transformers[operation];
