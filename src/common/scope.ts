@@ -38,23 +38,26 @@ export const getFieldForSpecificScope = (
 ) => {
     if (scope === SCOPE_DATASET || scope === SCOPE_GRAPHIC) {
         return fields.filter(
-            (field: any) => field.scope === SCOPE_GRAPHIC || field.scope === SCOPE_DATASET,
+            (field: any) =>
+                field.scope === SCOPE_GRAPHIC || field.scope === SCOPE_DATASET,
         );
     }
 
     if (scope === SCOPE_COLLECTION || scope === SCOPE_DOCUMENT) {
         if (subresourceId === undefined) {
             return fields.filter(
-                (field: any) => (field.scope === SCOPE_COLLECTION ||
-                    field.scope === SCOPE_DOCUMENT) &&
-                field.subresourceId === undefined,
+                (field: any) =>
+                    (field.scope === SCOPE_COLLECTION ||
+                        field.scope === SCOPE_DOCUMENT) &&
+                    field.subresourceId === undefined,
             );
         }
 
         return fields.filter(
-            (field: any) => (field.scope === SCOPE_COLLECTION ||
-                field.scope === SCOPE_DOCUMENT) &&
-            field.subresourceId === subresourceId,
+            (field: any) =>
+                (field.scope === SCOPE_COLLECTION ||
+                    field.scope === SCOPE_DOCUMENT) &&
+                field.subresourceId === subresourceId,
         );
     }
 
@@ -76,16 +79,18 @@ export const getFieldToCaptionForSpecificScope = (
     if (scope === SCOPE_COLLECTION || scope === SCOPE_DOCUMENT) {
         if (subresourceId === undefined) {
             return fields.filter(
-                (field: any) => (field.scope === SCOPE_COLLECTION ||
-                    field.scope === SCOPE_DOCUMENT) &&
-                field.subresourceId === undefined,
+                (field: any) =>
+                    (field.scope === SCOPE_COLLECTION ||
+                        field.scope === SCOPE_DOCUMENT) &&
+                    field.subresourceId === undefined,
             );
         }
 
         return fields.filter(
-            (field: any) => (field.scope === SCOPE_COLLECTION ||
-                field.scope === SCOPE_DOCUMENT) &&
-            field.subresourceId === subresourceId,
+            (field: any) =>
+                (field.scope === SCOPE_COLLECTION ||
+                    field.scope === SCOPE_DOCUMENT) &&
+                field.subresourceId === subresourceId,
         );
     }
 

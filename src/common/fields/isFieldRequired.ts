@@ -16,4 +16,5 @@ const overviewValues = [
     SUBRESOURCE_TITLE,
 ];
 
-export default (field: any) => !!(field && overviewValues.includes(field.overview));
+export default (field: any) =>
+    !!(field && overviewValues.includes(field.overview));
