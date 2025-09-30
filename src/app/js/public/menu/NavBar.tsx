@@ -355,25 +355,16 @@ NavBar.propTypes = {
 
 // @ts-expect-error TS7006
 const mapStateToProps = (state) => ({
-    // @ts-expect-error TS2339
     role: fromUser.getRole(state),
-    // @ts-expect-error TS2339
     canBeSearched: fromFields.canBeSearched(state),
     hasGraph:
-        // @ts-expect-error TS2339
         fromFields.getGraphicFields(state).filter((f) => !!f.display).length >
         0,
-    // @ts-expect-error TS2339
     leftMenu: fromMenu.getLeftMenu(state),
-    // @ts-expect-error TS2339
     rightMenu: fromMenu.getRightMenu(state),
-    // @ts-expect-error TS2339
     advancedMenu: fromMenu.getAdvancedMenu(state),
-    // @ts-expect-error TS2339
     advancedMenuButton: fromMenu.getAdvancedMenuButton(state),
-    // @ts-expect-error TS2339
     hasFacetFields: fromFields.hasFacetFields(state),
-    // @ts-expect-error TS2339
     isMultilingual: fromDisplayConfig.isMultilingual(state),
 });
 

@@ -1,4 +1,5 @@
 import { createSelector } from 'reselect';
+import type { State } from '../admin/reducers';
 
 // @ts-expect-error TS7006
 export const getProps = (state, props) => props;
@@ -9,12 +10,33 @@ export const createGlobalSelector = (getLocalState, selector) =>
         selector(localState, props),
     );
 
-// @ts-expect-error TS7006
-export const createGlobalSelectors = (getLocalState, selectors) =>
+// export const createGlobalSelectors = <
+//     T extends Record<string, (state: any) => any>,
+// >(
+//     getLocalState,
+//     selectors,
+// ) =>
+//     Object.keys(selectors).reduce(
+//         (result, key) => ({
+//             ...result,
+//             [key]: createGlobalSelector(getLocalState, selectors[key]),
+//         }),
+//         {},
+//     );
+export const createGlobalSelectors = <
+    T extends Record<string, (localState: any, props?: any) => any>,
+    LocalState = any,
+    Props = any,
+>(
+    getLocalState: (state: State) => LocalState,
+    selectors: T,
+): {
+    [K in keyof T]: (state: State, props?: Props) => ReturnType<T[K]>;
+} =>
     Object.keys(selectors).reduce(
         (result, key) => ({
             ...result,
             [key]: createGlobalSelector(getLocalState, selectors[key]),
         }),
-        {},
+        {} as any,
     );

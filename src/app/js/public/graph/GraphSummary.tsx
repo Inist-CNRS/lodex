@@ -158,13 +158,9 @@ PureGraphSummary.propTypes = {
 // @ts-expect-error TS7006
 const mapStateToProps = (state) => ({
     graphicFields: fromFields
-        // @ts-expect-error TS2339
         .getGraphicFields(state)
-        // @ts-expect-error TS7006
         .filter((f) => !!f.display),
-    // @ts-expect-error TS2339
     isMultilingual: fromDisplayConfig.isMultilingual(state),
-    // @ts-expect-error TS2339
     locale: fromI18n.getLocale(state),
 });
 

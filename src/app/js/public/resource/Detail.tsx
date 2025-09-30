@@ -228,35 +228,26 @@ DetailComponent.propTypes = {
 
 // @ts-expect-error TS7006
 const mapStateToProps = (state) => {
-    // @ts-expect-error TS2339
     const resource = fromResource.getResourceSelectedVersion(state);
 
     const titleKey =
         resource && resource.subresourceId
-            ? // @ts-expect-error TS2339
-              fromFields.getSubresourceTitleFieldName(state)
-            : // @ts-expect-error TS2339
-              fromFields.getResourceTitleFieldName(state);
+            ? fromFields.getSubresourceTitleFieldName(state)
+            : fromFields.getResourceTitleFieldName(state);
 
-    // @ts-expect-error TS2339
     const descriptionKey = fromFields.getResourceDescriptionFieldName(state);
     const title = get(resource, titleKey);
     const description = get(resource, descriptionKey);
-    // @ts-expect-error TS2339
     const fields = fromFields.getResourceFields(state, resource);
 
     const subresourceFilteredFields = fields.filter(
-        // @ts-expect-error TS7006
         (field) =>
             (!resource.subresourceId && !field.subresourceId) ||
             field.subresourceId === resource.subresourceId,
     );
 
-    // @ts-expect-error TS2339
     const dense = fromDisplayConfig.isDense(state);
-    // @ts-expect-error TS2339
     const isMultilingual = fromDisplayConfig.isMultilingual(state);
-    // @ts-expect-error TS2339
     const locale = fromI18n.getLocale(state);
 
     return {

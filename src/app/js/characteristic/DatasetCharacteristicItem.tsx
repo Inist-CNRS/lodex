@@ -61,11 +61,9 @@ DatasetCharacteristicItemComponent.propTypes = {
 
 // @ts-expect-error TS7006
 const mapStateToProps = (state, { characteristic: { name } }) => ({
-    // @ts-expect-error TS2339
     field: fromFields.getFieldByName(state, name),
     resource: {
         name,
-        // @ts-expect-error TS2339
         ...fromCharacteristic.getCharacteristicsAsResource(state),
     },
 });
