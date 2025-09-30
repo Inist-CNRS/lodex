@@ -1,4 +1,3 @@
-// @ts-expect-error TS7016
 import { getCleanHost } from '../../../common/uris';
 
 const HOST_REGEX = /https?:\/\/([\w-]+)/;

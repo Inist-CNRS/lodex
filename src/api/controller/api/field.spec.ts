@@ -22,14 +22,12 @@ import {
 } from './field';
 
 import _ from 'lodash';
-// @ts-expect-error TS(7016): Could not find a declaration file for module '../.... Remove this comment to see the full error message
 import { RESOURCE_DETAIL_1 } from '../../../common/overview';
 import {
     SCOPE_COLLECTION,
     SCOPE_DATASET,
     SCOPE_DOCUMENT,
     SCOPE_GRAPHIC,
-    // @ts-expect-error TS(7016): Could not find a declaration file for module '../.... Remove this comment to see the full error message
 } from '../../../common/scope';
 
 jest.mock('../../services/indexSearchableFields');

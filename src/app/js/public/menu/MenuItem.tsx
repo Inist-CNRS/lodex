@@ -12,7 +12,6 @@ import stylesToClassname from '../../lib/stylesToClassName';
 import {
     ADMIN_ROLE,
     extractTenantFromUrl,
-    // @ts-expect-error TS7016
 } from '../../../../common/tools/tenantTools';
 
 const styles = stylesToClassname(

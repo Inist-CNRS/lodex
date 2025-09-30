@@ -10,7 +10,6 @@ import streamToString from 'stream-to-string';
 import {
     ADMIN_ROLE,
     CONTRIBUTOR_ROLE,
-    // @ts-expect-error TS(7016): Could not find a declaration file for module '../.... Remove this comment to see the full error message
 } from '../../../common/tools/tenantTools';
 import { createDiacriticSafeContainRegex } from '../../services/createDiacriticSafeContainRegex';
 import getLogger from '../../services/logger';
@@ -22,7 +21,6 @@ import {
     annotationUpdateSchema,
     deleteManyAnnotationsSchema,
     getAnnotationsQuerySchema,
-    // @ts-expect-error TS(7016): Could not find a declaration file for module './..... Remove this comment to see the full error message
 } from './../../../common/validator/annotation.validator';
 import { verifyReCaptchaToken } from './recaptcha';
 

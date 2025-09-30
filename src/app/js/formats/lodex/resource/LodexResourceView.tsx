@@ -7,7 +7,6 @@ import { connect } from 'react-redux';
 import get from 'lodash/get';
 import URL from 'url';
 
-// @ts-expect-error TS7016
 import { isURL } from '../../../../../common/uris';
 import LodexResource from '../../utils/components/LodexResource';
 import { field as fieldPropTypes } from '../../../propTypes';

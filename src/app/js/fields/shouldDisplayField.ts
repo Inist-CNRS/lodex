@@ -1,8 +1,6 @@
 import get from 'lodash/get';
 
-// @ts-expect-error TS7016
 import isEmpty from '../../../common/lib/isEmpty';
-// @ts-expect-error TS7016
 import { REJECTED } from '../../../common/propositionStatus';
 
 export const shouldDisplayField = (

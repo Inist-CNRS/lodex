@@ -129,6 +129,7 @@ describe('annotation.validator', () => {
                 annotationCreationSchema.safeParse(annotationPayload);
 
             expect(success).toBe(false);
+            // @ts-expect-error TS(2304): Cannot find name 'expect'.
             expect(error.errors).toStrictEqual([
                 {
                     code: 'error_empty',
@@ -237,6 +238,7 @@ describe('annotation.validator', () => {
                 annotationCreationSchema.safeParse(annotationPayload);
 
             expect(success).toBe(false);
+            // @ts-expect-error TS(2304): Cannot find name 'expect'.
             expect(error.errors).toStrictEqual([
                 {
                     code: 'error_empty',
@@ -281,6 +283,7 @@ describe('annotation.validator', () => {
                 annotationCreationSchema.safeParse(annotationPayload);
 
             expect(success).toBe(false);
+            // @ts-expect-error TS(2304): Cannot find name 'expect'.
             expect(error.errors).toStrictEqual([
                 {
                     code: 'error_required',
@@ -307,6 +310,7 @@ describe('annotation.validator', () => {
                 annotationCreationSchema.safeParse(annotationPayload);
 
             expect(success).toBe(false);
+            // @ts-expect-error TS(2304): Cannot find name 'expect'.
             expect(error.errors).toStrictEqual([
                 {
                     code: 'error_required',
@@ -371,6 +375,7 @@ describe('annotation.validator', () => {
                 annotationCreationSchema.safeParse(annotationPayload);
 
             expect(result.success).toBe(false);
+            // @ts-expect-error TS(2304): Cannot find name 'expect'.
             expect(result.error.errors).toStrictEqual([
                 {
                     code: 'too_small',
@@ -405,6 +410,7 @@ describe('annotation.validator', () => {
                 annotationCreationSchema.safeParse(annotationPayload);
 
             expect(result.success).toBe(false);
+            // @ts-expect-error TS(2304): Cannot find name 'expect'.
             expect(result.error.errors).toStrictEqual([
                 {
                     code: 'too_small',
@@ -450,6 +456,7 @@ describe('annotation.validator', () => {
             const { success, error } =
                 annotationCreationSchema.safeParse(annotationPayload);
             expect(success).toBe(false);
+            // @ts-expect-error TS(2304): Cannot find name 'expect'.
             expect(error.errors).toStrictEqual([
                 {
                     code: 'error_invalid',
@@ -474,6 +481,7 @@ describe('annotation.validator', () => {
             const { success, error } =
                 annotationCreationSchema.safeParse(annotationPayload);
             expect(success).toBe(false);
+            // @ts-expect-error TS(2304): Cannot find name 'expect'.
             expect(error.errors).toStrictEqual([
                 {
                     code: 'error_invalid',
@@ -498,6 +506,7 @@ describe('annotation.validator', () => {
             const { success, error } =
                 annotationCreationSchema.safeParse(annotationPayload);
             expect(success).toBe(false);
+            // @ts-expect-error TS(2304): Cannot find name 'expect'.
             expect(error.errors).toStrictEqual([
                 {
                     code: 'error_invalid',
@@ -522,6 +531,7 @@ describe('annotation.validator', () => {
             const { success, error } =
                 annotationCreationSchema.safeParse(annotationPayload);
             expect(success).toBe(false);
+            // @ts-expect-error TS(2304): Cannot find name 'expect'.
             expect(error.errors).toStrictEqual([
                 {
                     code: 'error_invalid',
@@ -604,6 +614,7 @@ describe('annotation.validator', () => {
             });
 
             expect(success).toBe(false);
+            // @ts-expect-error TS(2304): Cannot find name 'expect'.
             expect(error.errors).toMatchObject([
                 {
                     path: ['comment'],
@@ -642,6 +653,7 @@ describe('annotation.validator', () => {
                 annotationUpdateSchema.safeParse(annotationPayload);
             expect(success).toBe(false);
 
+            // @ts-expect-error TS(2304): Cannot find name 'expect'.
             expect(error.errors).toStrictEqual([
                 {
                     code: 'invalid_enum_value',
@@ -664,6 +676,7 @@ describe('annotation.validator', () => {
                 annotationUpdateSchema.safeParse(annotationPayload);
             expect(success).toBe(false);
 
+            // @ts-expect-error TS(2304): Cannot find name 'expect'.
             expect(error.errors).toStrictEqual([
                 {
                     code: 'invalid_type',
@@ -688,6 +701,7 @@ describe('annotation.validator', () => {
                 annotationUpdateSchema.safeParse(annotationPayload);
             expect(success).toBe(false);
 
+            // @ts-expect-error TS(2304): Cannot find name 'expect'.
             expect(error.errors).toStrictEqual([
                 {
                     code: 'invalid_type',
@@ -700,7 +714,7 @@ describe('annotation.validator', () => {
         });
         it.each(['validated', 'rejected'])(
             'should reject when internalComment is empty and status %s',
-            (status) => {
+            (status: any) => {
                 const annotationPayload = {
                     status,
                     internalComment: '',
@@ -711,6 +725,7 @@ describe('annotation.validator', () => {
                     annotationUpdateSchema.safeParse(annotationPayload);
                 expect(success).toBe(false);
 
+                // @ts-expect-error TS(2304): Cannot find name 'expect'.
                 expect(error.errors).toStrictEqual([
                     {
                         message: 'error_required',
@@ -723,7 +738,7 @@ describe('annotation.validator', () => {
 
         it.each(['to_review', 'ongoing', 'parking'])(
             'should accept when internalComment is empty and status %s',
-            (status) => {
+            (status: any) => {
                 const annotationPayload = {
                     status,
                     internalComment: '',
@@ -809,6 +824,7 @@ describe('annotation.validator', () => {
             });
 
             expect(success).toBe(false);
+            // @ts-expect-error TS(2304): Cannot find name 'expect'.
             expect(error.errors).toMatchObject([
                 {
                     path: ['page'],
@@ -975,6 +991,7 @@ describe('annotation.validator', () => {
             });
 
             expect(success).toBe(false);
+            // @ts-expect-error TS(2304): Cannot find name 'expect'.
             expect(error.errors).toMatchObject([
                 {
                     code: 'invalid_type',

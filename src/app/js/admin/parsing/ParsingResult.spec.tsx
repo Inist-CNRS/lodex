@@ -1,7 +1,7 @@
 // @ts-expect-error TS6133
 import React from 'react';
 import { MemoryRouter, Route } from 'react-router-dom';
-import { render } from '../../../../test-utils';
+import { render } from '../../../../test-utils.tsx';
 import { ParsingResultComponent } from './ParsingResult';
 
 jest.mock('../api/dataset', () => ({

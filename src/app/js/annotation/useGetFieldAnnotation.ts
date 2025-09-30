@@ -1,6 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
-// @ts-expect-error TS7016
 import { toast } from '../../../common/tools/toast';
 import { getUserSessionStorageInfo } from '../admin/api/tools';
 import { useTranslate } from '../i18n/I18NContext';

@@ -16,7 +16,6 @@ import { fromFields, fromUser } from '../../sharedSelectors';
 import { getFieldFormData } from '../selectors';
 
 import { push } from 'redux-first-history';
-// @ts-expect-error TS7016
 import { SCOPE_DOCUMENT } from '../../../../common/scope';
 import fetchSaga from '../../lib/sagas/fetchSaga';
 
