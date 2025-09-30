@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 // @ts-expect-error TS6133
 import React from 'react';
 import { MemoryRouter, Route, Switch } from 'react-router-dom';
-import { fireEvent, render, screen, waitFor } from '../../../test-utils.tsx';
+import { fireEvent, render, screen, waitFor } from '../../../test-utils';
 
 import { TestI18N } from '../i18n/I18NContext';
 import fetch from '../lib/fetch';

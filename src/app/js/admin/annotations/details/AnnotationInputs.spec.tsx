@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 // @ts-expect-error TS6133
 import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
-import { render } from '../../../../../test-utils.tsx';
+import { render } from '../../../../../test-utils';
 import { TestI18N } from '../../../i18n/I18NContext';
 import { useUpdateAnnotation } from './../hooks/useUpdateAnnotation';
 import { AnnotationInputs } from './AnnotationInputs';
