@@ -64,7 +64,10 @@ app.use(
     route.get('/:name/(.*)', (ctx, name, filter) => {
         // Si le filtre est vide ou juste des slashes, on le traite comme undefined
         const cleanFilter = filter
-            ? filter.replace(/^\/+/, '').replace(/\/+$/, '').trim() || undefined
+            ? filter
+                  .replace(/^(\/*)/, '')
+                  .replace(/(\/*)$/, '')
+                  .trim() || undefined
             : undefined;
         return getFacetFilteredValues(ctx, name, cleanFilter);
     }),
