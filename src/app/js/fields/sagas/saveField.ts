@@ -54,7 +54,6 @@ export function* handleSaveField({ payload }) {
     const sanitizedFieldData = yield call(sanitizeField, fieldData);
     // @ts-expect-error TS7057
     const request = yield select(
-        // @ts-expect-error TS2339
         fromUser.getSaveFieldRequest,
         sanitizedFieldData,
     );
@@ -87,7 +86,6 @@ export function* handleSaveFieldData({ payload }) {
 
     // @ts-expect-error TS7057
     const request = yield select(
-        // @ts-expect-error TS2339
         fromUser.getSaveFieldRequest,
         sanitizedFieldData,
     );

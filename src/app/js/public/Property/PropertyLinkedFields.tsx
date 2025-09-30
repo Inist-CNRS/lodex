@@ -66,7 +66,6 @@ PropertyLinkedFieldsComponent.defaultProps = {
 
 // @ts-expect-error TS7006
 const mapStateToProps = (state, { fieldName, parents = [] }) => {
-    // @ts-expect-error TS2339
     const allLinkedFields = fromFields.getLinkedFields(state, fieldName);
     const linkedFields = allLinkedFields.filter(
         // @ts-expect-error TS7006

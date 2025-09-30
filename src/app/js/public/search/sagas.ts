@@ -114,7 +114,6 @@ export const doSearchRequest = function* (page = 0) {
 
     // @ts-expect-error TS7057
     const resourceUrisWithAnnotation = yield select(
-        // @ts-expect-error TS2339
         fromSearch.getResourceUrisWithAnnotationFilter,
     );
 

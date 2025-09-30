@@ -257,11 +257,8 @@ export default (url) => (FormatView) => {
 
     // @ts-expect-error TS7006
     const mapStateToProps = (state, { field }) => ({
-        // @ts-expect-error TS2339
         formatData: fromFormat.getFormatData(state, field.name),
-        // @ts-expect-error TS2339
         isLoaded: field && fromFormat.isFormatDataLoaded(state, field.name),
-        // @ts-expect-error TS2339
         error: fromFormat.getFormatError(state, field.name),
     });
 

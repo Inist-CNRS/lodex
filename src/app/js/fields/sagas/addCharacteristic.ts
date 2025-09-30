@@ -20,7 +20,6 @@ export function* handleAddCharacteristic() {
     }
     // @ts-expect-error TS7057
     const request = yield select(
-        // @ts-expect-error TS2339
         fromUser.getAddCharacteristicRequest,
         formData,
     );

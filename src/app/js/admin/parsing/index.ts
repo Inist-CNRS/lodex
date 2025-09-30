@@ -12,7 +12,20 @@ export const HIDE_ADD_COLUMNS = 'HIDE_ADD_COLUMNS';
 export const showAddFromColumn = createAction(SHOW_ADD_COLUMNS);
 export const hideAddColumns = createAction(HIDE_ADD_COLUMNS);
 
-export const defaultState = {
+type ParsingState = {
+    error: Error | false;
+    excerptLines: Array<Record<string, unknown>>;
+    precomputed: Array<{ _id: string; status: string }>;
+    initialized: boolean;
+    loading: boolean;
+    parsing: boolean;
+    allowUpload: boolean;
+    showAddFromColumn: boolean;
+    totalLoadedLines: number;
+    totalParsedLines: number;
+};
+
+export const defaultState: ParsingState = {
     error: false,
     excerptLines: [],
     precomputed: [],
@@ -68,8 +81,7 @@ export const loadParsingResultSuccess = createAction(
 export const reloadParsingResult = createAction(RELOAD_PARSING_RESULT);
 export const cancelReload = createAction(CANCEL_RELOAD);
 
-// @ts-expect-error TS7031
-export const getExcerptLines = ({ excerptLines }) =>
+export const getExcerptLines = ({ excerptLines }: ParsingState) =>
     !excerptLines || !excerptLines.length ? [] : excerptLines;
 
 export const getParsedExcerptColumns = createSelector(
@@ -77,22 +89,19 @@ export const getParsedExcerptColumns = createSelector(
     (lines) => Object.keys(lines[0] || {}).filter((key) => key !== '_id'),
 );
 
-// @ts-expect-error TS7031
-export const hasUploadedFile = ({ totalLoadedLines }) => !!totalLoadedLines;
+export const hasUploadedFile = ({ totalLoadedLines }: ParsingState) =>
+    !!totalLoadedLines;
 
-// @ts-expect-error TS7031
-export const canUpload = ({ allowUpload }) => !!allowUpload;
+export const canUpload = ({ allowUpload }: ParsingState) => !!allowUpload;
 
-// @ts-expect-error TS7031
-export const isParsingLoading = ({ loading }) => loading;
-// @ts-expect-error TS7031
-export const isInitialized = ({ initialized }) => initialized;
+export const isParsingLoading = ({ loading }: ParsingState) => loading;
+export const isInitialized = ({ initialized }: ParsingState) => initialized;
 
-// @ts-expect-error TS7031
-export const getTotalLoadedLines = ({ totalLoadedLines }) => totalLoadedLines;
+export const getTotalLoadedLines = ({ totalLoadedLines }: ParsingState) =>
+    totalLoadedLines;
 
-// @ts-expect-error TS7006
-export const getshowAddFromColumn = (state) => state.showAddFromColumn;
+export const getshowAddFromColumn = (state: ParsingState) =>
+    state.showAddFromColumn;
 
 export const selectors = {
     getExcerptLines,
