@@ -663,8 +663,6 @@ const mapStateToProps = (state, { match }) => ({
         .find((precomputed) => precomputed._id === match.params.precomputedId),
     // @ts-expect-error TS2322
     datasetFields: fromParsing.getParsedExcerptColumns(state),
-    // @ts-expect-error TS2322
-    excerptLines: fromParsing.getExcerptLines(state),
     isPrecomputedRunning: !!fromPrecomputed
         // @ts-expect-error TS2339
         .precomputed(state)
@@ -675,26 +673,6 @@ const mapDispatchToProps = {
     onLaunchPrecomputed: launchPrecomputed,
     onLoadPrecomputedData: loadPrecomputed,
 };
-
-// PrecomputedForm.propTypes = {
-//     datasetFields: PropTypes.array.isRequired,
-//     excerptLines: PropTypes.array.isRequired,
-//     formValues: PropTypes.shape({
-//         sourceColumns: PropTypes.arrayOf(PropTypes.string),
-//         subPath: PropTypes.string,
-//         webServiceUrl: PropTypes.string,
-//         name: PropTypes.string,
-//     }),
-//     history: PropTypes.object.isRequired,
-//     initialValues: PropTypes.any,
-//     match: PropTypes.object.isRequired,
-//     onChangeWebServiceUrl: PropTypes.func.isRequired,
-//     onLaunchPrecomputed: PropTypes.func.isRequired,
-//     onLoadPrecomputedData: PropTypes.func.isRequired,
-//     isPrecomputedRunning: PropTypes.bool,
-//     handleSubmit: PropTypes.func.isRequired,
-//     submitting: PropTypes.bool,
-// };
 
 export default compose(
     withRouter,
