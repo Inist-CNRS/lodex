@@ -5,7 +5,6 @@ import ezs from '@ezs/core';
 import Basics from '@ezs/basics';
 // @ts-expect-error TS(2792) FIXME: Cannot find module '@ezs/analytics'. Did you mean ... Remove this comment to see the full error message
 import Analytics from '@ezs/analytics';
-// @ts-expect-error TS(2792) FIXME: Cannot find module '@ezs/lodex'. Did you mean to s... Remove this comment to see the full error message
 import Lodex from '@ezs/lodex';
 // @ts-expect-error TS(2792) FIXME: Cannot find module '@ezs/conditor'. Did you mean t... Remove this comment to see the full error message
 import Conditor from '@ezs/conditor';
