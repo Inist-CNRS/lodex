@@ -2,7 +2,7 @@
 import React from 'react';
 import { SearchSearchBarComponent } from './SearchSearchBar';
 import { useCanAnnotate } from '../../annotation/useCanAnnotate';
-import { render } from '../../../../test-utils';
+import { render } from '../../../../test-utils.tsx';
 
 jest.mock('../../annotation/useCanAnnotate', () => ({
     useCanAnnotate: jest.fn(),

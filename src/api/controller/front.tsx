@@ -22,15 +22,12 @@ import configureStoreServer from '../../app/js/configureStoreServer';
 import reducers from '../../app/js/public/reducers';
 import Routes from '../../app/js/public/Routes';
 import sagas from '../../app/js/public/sagas';
-// @ts-expect-error: TS7016
 import getLocale from '../../common/getLocale';
 import translations from '../services/translations';
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Router } from 'react-router-dom';
-// @ts-expect-error: TS7016
 import getCatalogFromArray from '../../common/fields/getCatalogFromArray';
-// @ts-expect-error: TS7016
 import { DEFAULT_TENANT } from '../../common/tools/tenantTools';
 import { renderAdmin, renderPublic, renderRootAdmin } from '../models/front';
 import { getPublication } from './api/publication';

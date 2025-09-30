@@ -1,20 +1,21 @@
 export const URI_FIELD_NAME = 'uri';
 
-export const isURL = (v) =>
+export const isURL = (v: any) =>
     (typeof v === 'string' &&
         (v.startsWith('http://') || v.startsWith('https://'))) ||
     false;
 
-export const isLocalURL = (v) =>
+export const isLocalURL = (v: any) =>
     (typeof v === 'string' &&
         (v.startsWith('/api/') ||
             v.startsWith('uid:') ||
             v.startsWith('ark:'))) ||
     false;
 
-export const isLink = (value) => value && (isURL(value) || isLocalURL(value));
+export const isLink = (value: any) =>
+    value && (isURL(value) || isLocalURL(value));
 
-export const canonicalURL = (u) => {
+export const canonicalURL = (u: any) => {
     if (isURL(u)) {
         return u;
     } else if (isLocalURL(u)) {
@@ -24,7 +25,7 @@ export const canonicalURL = (u) => {
     return '';
 };
 
-export const getResourceUri = (resource) => {
+export const getResourceUri = (resource: any) => {
     const uri = resource.uri;
     if (!uri) {
         return null;
@@ -61,15 +62,15 @@ export const getHost = () => {
     return host;
 };
 
-export const getFullResourceUri = (resource, defaultBaseUri) => {
+export const getFullResourceUri = (resource: any, defaultBaseUri?: any) => {
     const baseUri = getCleanHost() || defaultBaseUri;
     const uri = getResourceUri(resource);
 
     return `${baseUri}${uri}`;
 };
 
-export const moveUriToFirstPosition = (data) => {
-    return data.map((item) => {
+export const moveUriToFirstPosition = (data: any) => {
+    return data.map((item: any) => {
         const { uri, ...rest } = item;
         if (!uri) return item;
         return { uri, ...rest };

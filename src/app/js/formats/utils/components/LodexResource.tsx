@@ -2,7 +2,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-// @ts-expect-error TS7016
 import { isLocalURL, getResourceUri } from '../../../../../common/uris';
 import Link from '../../../lib/components/Link';
 import stylesToClassname from '../../../lib/stylesToClassName';

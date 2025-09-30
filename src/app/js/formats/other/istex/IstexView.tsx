@@ -8,7 +8,6 @@ import Link from '../../../lib/components/Link';
 
 import fetchPaginatedDataForComponent from '../../../lib/fetchPaginatedDataForComponent';
 import Alert from '../../../lib/components/Alert';
-// @ts-expect-error TS7016
 import { REJECTED } from '../../../../../common/propositionStatus';
 import {
     field as fieldPropTypes,
@@ -16,7 +15,6 @@ import {
 } from '../../../propTypes';
 import { fetchForIstexFormat } from '../../utils/fetchIstexData';
 import IstexItem from './IstexItem';
-// @ts-expect-error TS7016
 import { ISTEX_SITE_URL } from '../../../../../common/externals';
 import { translate } from '../../../i18n/I18NContext';
 

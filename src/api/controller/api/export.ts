@@ -10,7 +10,6 @@ import config from 'config';
 
 import Script from '../../services/script';
 import localConfig from '../../../../config.json';
-// @ts-expect-error TS(7016): Could not find a declaration file for module '../.... Remove this comment to see the full error message
 import { getCleanHost } from '../../../common/uris';
 import { mongoConnectionString } from '../../services/mongoClient';
 import { ObjectId } from 'mongodb';

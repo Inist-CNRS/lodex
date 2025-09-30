@@ -1,6 +1,6 @@
 // @ts-expect-error TS6133
 import React from 'react';
-import { fireEvent, render, waitFor } from '../../../../test-utils';
+import { fireEvent, render, waitFor } from '../../../../test-utils.tsx';
 import datasetApi from '../../admin/api/dataset';
 import { TestI18N } from '../../i18n/I18NContext';
 import {

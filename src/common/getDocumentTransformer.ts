@@ -1,24 +1,27 @@
 import transformers from './transformers';
 import composeTransformers from './lib/composeTransformers';
 
-export const getFieldTransformation = (context, field) => {
+export const getFieldTransformation = (context: any, field: any) => {
     if (!field.transformers.length) {
         return () => Promise.resolve({});
     }
     const documentTransformers = field.transformers.map(
-        ({ operation, args = [] }) => transformers[operation](context, args),
+        ({
+            operation,
+            args = []
+        }: any) => transformers[operation](context, args),
     );
 
     const transformDocument = composeTransformers(documentTransformers);
-    return async (doc) => ({
-        [field.name]: await transformDocument(doc).catch(() => ''),
+    return async (doc: any) => ({
+        [field.name]: await transformDocument(doc).catch(() => '')
     });
 };
 
-export const getDocumentTransformations = (context, fields) =>
-    fields.map((field) => getFieldTransformation(context, field));
+export const getDocumentTransformations = (context: any, fields: any) =>
+    fields.map((field: any) => getFieldTransformation(context, field));
 
-export const sanitizeUris = (doc) => {
+export const sanitizeUris = (doc: any) => {
     if (!doc.uri) {
         return doc;
     }
@@ -36,9 +39,8 @@ export const sanitizeUris = (doc) => {
     };
 };
 
-export const applyTransformation = (documentTransformers) => async (doc) => {
-    const partialDocsPromises = documentTransformers.map((transformer) =>
-        transformer(doc),
+export const applyTransformation = (documentTransformers: any) => async (doc: any) => {
+    const partialDocsPromises = documentTransformers.map((transformer: any) => transformer(doc),
     );
 
     const partialDocs = await Promise.all(partialDocsPromises);
@@ -53,7 +55,7 @@ export const applyTransformation = (documentTransformers) => async (doc) => {
     return sanitizeUris(result);
 };
 
-export default (context, fields) => {
+export default (context: any, fields: any) => {
     const documentTransformers = getDocumentTransformations(context, fields);
     return applyTransformation(documentTransformers);
 };

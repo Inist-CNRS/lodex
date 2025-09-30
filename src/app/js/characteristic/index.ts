@@ -1,6 +1,5 @@
 import { createAction, handleActions } from 'redux-actions';
 import { createSelector } from 'reselect';
-// @ts-expect-error TS7016
 import { SCOPE_DATASET } from '../../../common/scope';
 
 export const SET_CHARACTERISTIC_VALUE = 'SET_CHARACTERISTIC_VALUE';

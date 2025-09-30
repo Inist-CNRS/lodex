@@ -1,6 +1,6 @@
 import { toast as reactToast } from 'react-toastify';
 
-export const toast = (message, options) => {
+export const toast = (message: any, options: any) => {
     if (options?.type === reactToast.TYPE.ERROR) {
         options = {
             ...options,

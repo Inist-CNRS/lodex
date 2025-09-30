@@ -1,10 +1,15 @@
+// @ts-expect-error TS(2792): Cannot find module 'inist-ark'. Did you mean to se... Remove this comment to see the full error message
 import InistArk from 'inist-ark';
 import config from '../../../config.json';
 
 const ARBITRARY_SUBPUBLISHER = '39D';
 
 export const autoGenerateUri =
-    ({ naan, subpublisher, uriSize }) =>
+    ({
+        naan,
+        subpublisher,
+        uriSize
+    }: any) =>
     () =>
     () =>
         new Promise((resolve, reject) => {
@@ -34,6 +39,7 @@ export const autoGenerateUri =
 
 const transformation = autoGenerateUri(config);
 
+// @ts-expect-error TS(2339): Property 'getMetas' does not exist on type '() => ... Remove this comment to see the full error message
 transformation.getMetas = () => ({
     name: 'AUTOGENERATE_URI',
     type: 'value',

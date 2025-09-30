@@ -8,12 +8,17 @@ export const MAX_DB_NAME_SIZE = 63;
 
 export const INVALID_NAMES = [ADMIN_ROLE, ROOT_ROLE, DEFAULT_TENANT];
 
-export const getTenantMaxSize = (dbName = config?.mongo?.dbName) =>
-    MAX_DB_NAME_SIZE - dbName?.length - 1;
+export const getTenantMaxSize = (
+    dbName: string | undefined = config.has('mongo.dbName')
+        ? config.get('mongo.dbName')
+        : undefined,
+) => MAX_DB_NAME_SIZE - (dbName?.length ?? 0) - 1;
 
-export const checkForbiddenNames = (value) => INVALID_NAMES.includes(value);
+export const checkForbiddenNames = (value: any) =>
+    INVALID_NAMES.includes(value);
 
-export const checkNameTooLong = (value) => value.length > getTenantMaxSize();
+export const checkNameTooLong = (value: any) =>
+    value.length > getTenantMaxSize();
 
 export const forbiddenNamesMessage = INVALID_NAMES.filter((name) => !!name)
     .map((name, index, list) =>
@@ -21,7 +26,7 @@ export const forbiddenNamesMessage = INVALID_NAMES.filter((name) => !!name)
     )
     .join(', ');
 
-export function extractTenantFromUrl(url) {
+export function extractTenantFromUrl(url: any) {
     const match = url.match(/\/instance\/([^/]+)/);
     return match ? match[1].toLowerCase() : DEFAULT_TENANT;
 }
