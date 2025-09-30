@@ -62,8 +62,9 @@ const app = new Koa();
 // Route pour les filtres
 app.use(
     route.get('/:name/(.*)', (ctx, name, filter) => {
-        const cleanFilter =
-            filter?.replace(/^\/+|\/+$/g, '').trim() || undefined;
+        const cleanFilter = filter
+            ? filter.split('/').filter(Boolean).join('/').trim() || undefined
+            : undefined;
         return getFacetFilteredValues(ctx, name, cleanFilter);
     }),
 );
