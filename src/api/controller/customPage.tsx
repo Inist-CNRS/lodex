@@ -3,7 +3,7 @@ import path from 'path';
 import { getFileStatsIfExists, readFile } from '../services/fsHelpers';
 import getLogger from '../services/logger';
 
-const scriptRegEx = new RegExp('<script.*?( src=".*")?.*?>.*?</script>', 'gm');
+const scriptRegEx = new RegExp('<script.*?( src=".*")?.*?>.*?</script>', 'gim');
 
 // @ts-expect-error TS7006
 export const getScriptsFromHtml = (html) =>
