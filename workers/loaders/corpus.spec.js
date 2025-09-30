@@ -6,8 +6,7 @@ const from = require('from');
 // 1. remove this test
 // 2. mock the API
 describe.skip('corpus.ini', () => {
-    it('should parse a .corpus', done => {
-        // @ts-expect-error TS(7034) FIXME: Variable 'res' implicitly has type 'any[]' in some... Remove this comment to see the full error message
+    it('should parse a .corpus', (done) => {
         const res = [];
         const expected = [
             {
@@ -424,12 +423,10 @@ id F6CB7249E90BD96D5F7E3C4E80CC1C3FEE4FF483
 `,
         ])
             .pipe(ezs('delegate', { file: __dirname + '/corpus.ini' }))
-            // @ts-expect-error TS(7006) FIXME: Parameter 'chunk' implicitly has an 'any' type.
-            .on('data', chunk => {
+            .on('data', (chunk) => {
                 res.push(chunk);
             })
             .on('end', () => {
-                // @ts-expect-error TS(2552) FIXME: Cannot find name 'expect'. Did you mean 'expected'... Remove this comment to see the full error message
                 expect(res).toEqual(expected);
                 done();
             });
