@@ -101,21 +101,15 @@ export class HomeComponent extends Component {
 // @ts-expect-error TS7006
 const mapStateToProps = (state) => {
     const characteristics =
-        // @ts-expect-error TS2339
         fromCharacteristic.getCharacteristicsAsResource(state);
-    // @ts-expect-error TS2339
     const titleKey = fromFields.getDatasetTitleFieldName(state);
-    // @ts-expect-error TS2339
     const descriptionKey = fromFields.getDatasetDescriptionFieldName(state);
     const title = titleKey && characteristics[titleKey];
     const description = descriptionKey && characteristics[descriptionKey];
 
     return {
-        // @ts-expect-error TS2339
         error: fromFields.getError(state),
-        // @ts-expect-error TS2339
         loading: fromFields.isLoading(state),
-        // @ts-expect-error TS2339
         hasPublishedDataset: fromFields.hasPublishedDataset(state),
         title,
         description,

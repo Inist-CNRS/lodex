@@ -134,9 +134,7 @@ SearchSearchBarComponent.propTypes = {
 
 // @ts-expect-error TS7006
 const mapStateToProps = (state) => ({
-    // @ts-expect-error TS2339
     hasSearchableFields: fromFields.hasSearchableFields(state),
-    // @ts-expect-error TS2339
     defaultQuery: fromSearch.getQuery(state),
 });
 

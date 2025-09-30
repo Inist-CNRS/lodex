@@ -103,9 +103,7 @@ SelectVersionComponent.propTypes = {
 
 // @ts-expect-error TS7006
 const mapStateToProps = (state) => ({
-    // @ts-expect-error TS2339
     versions: fromResource.getVersions(state),
-    // @ts-expect-error TS2339
     selectedVersion: fromResource.getSelectedVersion(state),
 });
 

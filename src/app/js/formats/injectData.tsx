@@ -292,17 +292,13 @@ export default (url = null, checkFormatLoaded = null, withUri = false) =>
                 typeof checkFormatLoaded == 'function'
                     ? // @ts-expect-error TS2349
                       checkFormatLoaded(field)
-                    : // @ts-expect-error TS2339
-                      field && fromFormat.isFormatDataLoaded(state, field.name);
+                    : field && fromFormat.isFormatDataLoaded(state, field.name);
             return {
                 resource,
-                // @ts-expect-error TS2339
                 formatData: fromFormat.getFormatData(state, field.name),
-                // @ts-expect-error TS2339
                 formatTotal: fromFormat.getFormatTotal(state, field.name),
                 isLoaded,
                 isFormatLoading: get(state, 'dataset.formatLoading', false),
-                // @ts-expect-error TS2339
                 error: fromFormat.getFormatError(state, field.name),
             };
         };

@@ -67,11 +67,8 @@ HideResourceFormComponent.propTypes = {
 
 // @ts-expect-error TS7006
 const mapStateToProps = (state) => ({
-    // @ts-expect-error TS2339
     resourceError: fromResource.getError(state),
-    // @ts-expect-error TS2339
     initialValues: fromResource.getResourceLastVersion(state),
-    // @ts-expect-error TS2339
     resource: fromResource.getResourceLastVersion(state),
 });
 

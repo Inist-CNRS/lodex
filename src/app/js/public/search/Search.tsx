@@ -356,33 +356,21 @@ Search.defaultProps = {
 
 // @ts-expect-error TS7006
 const mapStateToProps = (state) => {
-    // @ts-expect-error TS2339
     const { sortBy, sortDir } = fromSearch.getSort(state);
 
     return {
-        // @ts-expect-error TS2339
         loading: fromSearch.isLoading(state),
-        // @ts-expect-error TS2339
         results: fromSearch.getDataset(state),
-        // @ts-expect-error TS2339
         fieldNames: fromSearch.getFieldNames(state),
-        // @ts-expect-error TS2339
         fields: fromFields.getFields(state),
-        // @ts-expect-error TS2339
         total: fromSearch.getTotal(state),
-        // @ts-expect-error TS2339
         searchQuery: fromSearch.getQuery(state),
         sortBy,
         sortDir,
-        // @ts-expect-error TS2339
         datasetSearchTerm: fromDataset.getFilter(state),
-        // @ts-expect-error TS2339
         datasetFacetsValues: fromDataset.getFacetsValues(state),
-        // @ts-expect-error TS2339
         datasetAppliedFacets: fromDataset.getAppliedFacets(state),
-        // @ts-expect-error TS2339
         datasetInvertedFacets: fromDataset.getInvertedFacets(state),
-        // @ts-expect-error TS2339
         datasetOpenedFacets: fromDataset.getOpenedFacets(state),
     };
 };

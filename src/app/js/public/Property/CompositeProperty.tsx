@@ -66,7 +66,6 @@ CompositePropertyComponent.defaultProps = {
 
 // @ts-expect-error TS7006
 const mapStateToProps = (state, { field, resource, parents }) => {
-    // @ts-expect-error TS2339
     const allCompositeFields = fromFields.getCompositeFieldsByField(
         state,
         field,

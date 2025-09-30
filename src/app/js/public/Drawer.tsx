@@ -24,9 +24,7 @@ export const useDrawer = (
     }
 
     const dispatch = useDispatch();
-    // @ts-expect-error TS2339
     const visitedFilter = useSelector(fromSearch.getVisitedFilter);
-    // @ts-expect-error TS2339
     const annotationsFilter = useSelector(fromSearch.getAnnotationsFilter);
 
     useEffect(() => {}, [dispatch, visitedFilter, annotationsFilter]);

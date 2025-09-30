@@ -274,13 +274,9 @@ Graph.propTypes = {
 // @ts-expect-error TS7006
 const mapStateToProps = (state, { name }) => ({
     name,
-    // @ts-expect-error TS2339
     graphField: name && fromFields.getFieldByName(state, name),
-    // @ts-expect-error TS2339
     hasFacetFields: fromFields.hasFacetFields(state),
-    // @ts-expect-error TS2339
     resource: fromCharacteristic.getCharacteristicsAsResource(state),
-    // @ts-expect-error TS2339
     isAdmin: fromUser.isAdmin(state),
 });
 

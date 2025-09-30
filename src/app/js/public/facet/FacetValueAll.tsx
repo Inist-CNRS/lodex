@@ -74,7 +74,6 @@ const mapStateToProps = (state, { name, page }) => {
         facetData: selectors.getFacetValueRequestData(state, name),
         total: selectors.getFacetValuesTotal(state, name),
         maxCheckAllValue:
-            // @ts-expect-error TS2339
             fromDisplayConfig.getMaxCheckAllFacetsValue(state)[page],
     };
 };
