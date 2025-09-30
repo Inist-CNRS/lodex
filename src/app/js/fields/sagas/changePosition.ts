@@ -49,7 +49,6 @@ export function* handleChangePosition({
 
     // @ts-expect-error TS7057
     const request = yield select(
-        // @ts-expect-error TS2339
         fromUser.getReorderFieldRequest,
         reorderedFields,
     );
@@ -72,7 +71,6 @@ export function* handleChangePositions({
 
     // @ts-expect-error TS7057
     const request = yield select(
-        // @ts-expect-error TS2339
         fromUser.getReorderFieldRequest,
         reorderedFields,
     );

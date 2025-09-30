@@ -15,6 +15,7 @@ import PropTypes from 'prop-types';
 import SourceValueFromColumns from './SourceValueFromColumns';
 import { useForm } from 'react-hook-form';
 import { TextField } from '../../reactHookFormFields/TextField';
+import { type State } from '../reducers';
 
 import { launchPrecomputed, loadPrecomputed } from '.';
 import { connect } from 'react-redux';
@@ -251,9 +252,9 @@ type PrecomputedFormProps = {
     isPrecomputedRunning: boolean;
     handleSubmit: () => void;
     submitting: boolean;
+    children?: React.ReactNode;
 };
 
-// COMPONENT PART
 export const PrecomputedForm = ({
     datasetFields,
     history,
@@ -654,19 +655,20 @@ export const PrecomputedForm = ({
     );
 };
 
-// @ts-expect-error TS7006
-const mapStateToProps = (state, { match }) => ({
+const mapStateToProps = (
+    state: State,
+    {
+        match,
+    }: {
+        match: { params: { precomputedId: string } };
+    },
+) => ({
     initialValues: fromPrecomputed
-        // @ts-expect-error TS2345
         .precomputed(state)
-        // @ts-expect-error TS2345
         .find((precomputed) => precomputed._id === match.params.precomputedId),
-    // @ts-expect-error TS2322
     datasetFields: fromParsing.getParsedExcerptColumns(state),
     isPrecomputedRunning: !!fromPrecomputed
-        // @ts-expect-error TS2339
         .precomputed(state)
-        // @ts-expect-error TS7006
         .find((precomputedData) => precomputedData.status === IN_PROGRESS),
 });
 const mapDispatchToProps = {
@@ -674,8 +676,7 @@ const mapDispatchToProps = {
     onLoadPrecomputedData: loadPrecomputed,
 };
 
-export default compose(
+export default compose<PrecomputedFormProps, PrecomputedFormProps>(
     withRouter,
     connect(mapStateToProps, mapDispatchToProps),
-    // @ts-expect-error TS2345
 )(PrecomputedForm);

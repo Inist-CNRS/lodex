@@ -59,7 +59,6 @@ AppliedDatasetFacetListComponent.propTypes = {
 
 // @ts-expect-error TS7006
 const mapStateToProps = (state) => ({
-    // @ts-expect-error TS2339
     facets: fromDataset.getAppliedFacetList(state),
 });
 
