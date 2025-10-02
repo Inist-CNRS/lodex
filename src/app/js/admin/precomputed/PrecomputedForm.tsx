@@ -47,7 +47,7 @@ type PrecomputedFormProps = {
     history: {
         push: (path: string) => void;
     };
-    initialValues: {
+    initialValues?: {
         _id: string;
         status: TaskStatus;
         jobId: string;
@@ -84,16 +84,17 @@ export const PrecomputedForm = ({
         [],
     );
     const [precomputedLogs, setPrecomputedLogs] = React.useState<string[]>([]);
-    const [precomputedStatus, setPrecomputedStatus] =
-        React.useState<TaskStatus>(initialValues.status);
+    const [precomputedStatus, setPrecomputedStatus] = React.useState<
+        TaskStatus | undefined
+    >(initialValues?.status);
 
     const { handleSubmit, getValues, watch, control, setValue } =
         useForm<NewPreComputation>({
             defaultValues: {
-                name: initialValues.name,
-                webServiceUrl: initialValues.webServiceUrl,
-                sourceColumns: initialValues.sourceColumns,
-                subPath: initialValues.subPath,
+                name: initialValues?.name,
+                webServiceUrl: initialValues?.webServiceUrl,
+                sourceColumns: initialValues?.sourceColumns,
+                subPath: initialValues?.subPath,
             },
             mode: 'onChange',
         });
@@ -143,6 +144,9 @@ export const PrecomputedForm = ({
     };
 
     const handleUpdatePrecomputed = async (formValues: NewPreComputation) => {
+        if (!initialValues) {
+            return;
+        }
         const { data, ...precomputedDataToUpdate } = {
             ...initialValues,
             ...formValues,
@@ -171,8 +175,11 @@ export const PrecomputedForm = ({
     };
 
     const handleDeletePrecomputed = async () => {
+        if (!initialValues) {
+            return;
+        }
         setIsLoading(true);
-        const res = await deletePrecomputed(initialValues._id);
+        const res = await deletePrecomputed(initialValues?._id);
         if (res.response) {
             toast(translate('precomputed_deleted_success'), {
                 type: toast.TYPE.SUCCESS,
@@ -192,6 +199,9 @@ export const PrecomputedForm = ({
 
     const handleLaunchPrecomputed = (event: MouseEvent) => {
         event.preventDefault();
+        if (!initialValues) {
+            return;
+        }
         if (isPrecomputedRunning) {
             toast(translate('pending_precomputed'), {
                 type: toast.TYPE.INFO,
