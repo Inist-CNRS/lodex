@@ -27,8 +27,7 @@ const theme = createTheme(defaultMuiTheme, {
     userAgent: navigator.userAgent,
 });
 
-// @ts-expect-error TS7031
-const Wrapper = ({ children }) => (
+const Wrapper = ({ children }: any) => (
     <Provider store={store}>
         <AnnotationStorageProvider>
             <MuiThemeProvider theme={theme}>{children}</MuiThemeProvider>
