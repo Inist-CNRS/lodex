@@ -13,6 +13,7 @@ describe('SearchSearchBar', () => {
         const resetAnnotationFilter = jest.fn();
         // @ts-expect-error TS2339
         useCanAnnotate.mockReturnValue(false);
+        // @ts-expect-error TS2554
         render(
             // @ts-expect-error TS2739
             <SearchSearchBarComponent
@@ -27,6 +28,7 @@ describe('SearchSearchBar', () => {
         const resetAnnotationFilter = jest.fn();
         // @ts-expect-error TS2339
         useCanAnnotate.mockReturnValue(true);
+        // @ts-expect-error TS2554
         render(
             // @ts-expect-error TS2739
             <SearchSearchBarComponent

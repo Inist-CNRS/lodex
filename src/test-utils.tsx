@@ -17,6 +17,7 @@ import reducers from './app/js/public/reducers';
 
 // custom/themes/default/defaultTheme';
 
+// @ts-expect-error TS7017
 global.__DEBUG__ = false;
 
 const memoryHistory = createMemoryHistory();
@@ -26,6 +27,7 @@ const theme = createTheme(defaultMuiTheme, {
     userAgent: navigator.userAgent,
 });
 
+// @ts-expect-error TS7031
 const Wrapper = ({ children }) => (
     <Provider store={store}>
         <AnnotationStorageProvider>

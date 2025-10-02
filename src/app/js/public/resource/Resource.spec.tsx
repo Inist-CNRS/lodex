@@ -39,6 +39,7 @@ describe('<Resource />', () => {
             loading: true,
         };
 
+        // @ts-expect-error TS2554
         const wrapper = render(
             <TestI18N>
                 <ResourceComponent {...props} />
@@ -53,6 +54,7 @@ describe('<Resource />', () => {
             loading: false,
         };
 
+        // @ts-expect-error TS2554
         const wrapper = render(
             <TestI18N>
                 <MemoryRouter>
@@ -194,6 +196,7 @@ describe('<Resource />', () => {
             </ThemeProvider>
         );
 
+        // @ts-expect-error TS2554
         const { rerender } = render(<TestResourceComponent {...props} />);
 
         // Setting last uri state requires a rerender
@@ -243,6 +246,7 @@ describe('<Resource />', () => {
             </ThemeProvider>
         );
 
+        // @ts-expect-error TS2554
         const { rerender } = render(<TestResourceComponent {...props} />);
 
         // Setting last uri state requires a rerender
@@ -280,6 +284,7 @@ describe('<Resource />', () => {
             resource: { uri: 'resource/uri' },
         };
 
+        // @ts-expect-error TS2554
         render(<ResourceComponent {...props} />);
         expect(localStorage.getItem('default-viewed-resources')).toBe(
             '["resource/uri"]',
