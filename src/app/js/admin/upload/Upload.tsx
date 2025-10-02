@@ -366,8 +366,6 @@ export const UploadComponent = ({
                         <p style={styles.formDesc}>
                             {polyglot.t('upload_via_text')}
                         </p>
-                        {/*
-                         // @ts-expect-error TS2739 */}
                         <FormSourceCodeField
                             style={styles.textInput}
                             enableModeSelector
