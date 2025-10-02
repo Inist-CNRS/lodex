@@ -1,7 +1,12 @@
 import { Button, type ButtonProps } from '@mui/material';
 import React, { type MouseEvent, useState } from 'react';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
-import { IN_PROGRESS, ON_HOLD, PENDING } from '../../../../common/taskStatus';
+import {
+    IN_PROGRESS,
+    ON_HOLD,
+    PENDING,
+    type TaskStatus,
+} from '../../../../common/taskStatus';
 
 export const RunButton = ({
     handleLaunchPrecomputed,
@@ -10,7 +15,7 @@ export const RunButton = ({
     variant = 'contained',
 }: {
     handleLaunchPrecomputed: (event: MouseEvent) => void;
-    precomputedStatus: string;
+    precomputedStatus: TaskStatus | undefined;
     translate: (key: string) => string;
     variant: ButtonProps['variant'];
 }) => {
