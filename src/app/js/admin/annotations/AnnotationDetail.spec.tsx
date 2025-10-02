@@ -61,6 +61,7 @@ describe('AnnotationDetail', () => {
             isLoading: false,
             error: null,
         }));
+        // @ts-expect-error TS2554
         const wrapper = render(<TestAnnotationDetail />);
 
         expect(
@@ -197,6 +198,7 @@ describe('AnnotationDetail', () => {
             error: null,
         }));
 
+        // @ts-expect-error TS2554
         const wrapper = render(<TestAnnotationDetail />);
 
         expect(
@@ -230,6 +232,7 @@ describe('AnnotationDetail', () => {
             error: null,
         }));
 
+        // @ts-expect-error TS2554
         const wrapper = render(<TestAnnotationDetail />);
 
         expect(
@@ -266,6 +269,7 @@ describe('AnnotationDetail', () => {
             error: null,
         }));
 
+        // @ts-expect-error TS2554
         const wrapper = render(<TestAnnotationDetail />);
 
         expect(
@@ -295,6 +299,7 @@ describe('AnnotationDetail', () => {
             error: null,
         }));
 
+        // @ts-expect-error TS2554
         const wrapper = render(<TestAnnotationDetail />);
 
         expect(

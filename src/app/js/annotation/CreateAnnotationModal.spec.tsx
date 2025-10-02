@@ -63,6 +63,7 @@ describe('CreateAnnotationModal', () => {
 
     describe('actions', () => {
         it('should enable cancel action when not submitting', async () => {
+            // @ts-expect-error TS2554
             render(
                 // @ts-expect-error TS2741
                 <TestModal
@@ -80,6 +81,7 @@ describe('CreateAnnotationModal', () => {
         });
 
         it('should enable next button if comment is valid', async () => {
+            // @ts-expect-error TS2554
             render(
                 // @ts-expect-error TS2741
                 <TestModal
@@ -110,6 +112,7 @@ describe('CreateAnnotationModal', () => {
         });
 
         it('should disable actions when submitting', async () => {
+            // @ts-expect-error TS2554
             render(
                 // @ts-expect-error TS2741
                 <TestModal
@@ -143,6 +146,7 @@ describe('CreateAnnotationModal', () => {
         });
 
         it('should submit form values', async () => {
+            // @ts-expect-error TS2554
             render(
                 // @ts-expect-error TS2741
                 <TestModal
@@ -213,6 +217,7 @@ describe('CreateAnnotationModal', () => {
 
     describe('step orders', () => {
         it('should start on COMMENT_STEP when isFieldValueAnnotable is false', () => {
+            // @ts-expect-error TS2554
             const wrapper = render(
                 // @ts-expect-error TS2741
                 <TestModal
@@ -250,6 +255,7 @@ describe('CreateAnnotationModal', () => {
             ).not.toBeInTheDocument();
         });
         it('should start on TARGET_STEP when isFieldValueAnnotable is true', () => {
+            // @ts-expect-error TS2554
             const wrapper = render(
                 // @ts-expect-error TS2741
                 <TestModal
@@ -287,6 +293,7 @@ describe('CreateAnnotationModal', () => {
         });
 
         it('should start on COMMENT_STEP when no annotation kind other than comment is enabled', () => {
+            // @ts-expect-error TS2554
             const wrapper = render(
                 <TestModal
                     onClose={onClose}
@@ -330,6 +337,7 @@ describe('CreateAnnotationModal', () => {
 
     describe('value tab', () => {
         beforeEach(async () => {
+            // @ts-expect-error TS2554
             render(
                 // @ts-expect-error TS2741
                 <TestModal
@@ -384,6 +392,7 @@ describe('CreateAnnotationModal', () => {
         it.each([['close', 'cancel']])(
             'should call onClose when clicking on %s button when form is not dirty',
             async (label) => {
+                // @ts-expect-error TS2554
                 render(
                     // @ts-expect-error TS2741
                     <TestModal
@@ -405,6 +414,7 @@ describe('CreateAnnotationModal', () => {
         it.each([['close', 'cancel']])(
             'should call onClose after confirm when clicking on %s button when form is dirty',
             async (label) => {
+                // @ts-expect-error TS2554
                 render(
                     // @ts-expect-error TS2741
                     <TestModal
@@ -444,6 +454,7 @@ describe('CreateAnnotationModal', () => {
 
     describe('target tab', () => {
         it('should not display add value button if disabled', () => {
+            // @ts-expect-error TS2554
             const wrapper = render(
                 <TestModal
                     onClose={onClose}
@@ -480,6 +491,7 @@ describe('CreateAnnotationModal', () => {
         });
 
         it('should not display correct value button if disabled', () => {
+            // @ts-expect-error TS2554
             const wrapper = render(
                 <TestModal
                     onClose={onClose}
@@ -516,6 +528,7 @@ describe('CreateAnnotationModal', () => {
         });
 
         it('should not display remove value button if disabled', () => {
+            // @ts-expect-error TS2554
             const wrapper = render(
                 <TestModal
                     onClose={onClose}
@@ -554,6 +567,7 @@ describe('CreateAnnotationModal', () => {
 
     describe('comment tab', () => {
         beforeEach(() => {
+            // @ts-expect-error TS2554
             render(
                 // @ts-expect-error TS2741
                 <TestModal
@@ -664,6 +678,7 @@ describe('CreateAnnotationModal', () => {
 
         describe('correction comment', () => {
             beforeEach(async () => {
+                // @ts-expect-error TS2554
                 render(
                     // @ts-expect-error TS2741
                     <TestModal
@@ -761,6 +776,7 @@ describe('CreateAnnotationModal', () => {
 
         describe('addition comment', () => {
             beforeEach(async () => {
+                // @ts-expect-error TS2554
                 render(
                     // @ts-expect-error TS2741
                     <TestModal
@@ -839,6 +855,7 @@ describe('CreateAnnotationModal', () => {
 
     describe('author tab', () => {
         beforeEach(async () => {
+            // @ts-expect-error TS2554
             render(
                 // @ts-expect-error TS2741
                 <TestModal
@@ -1053,6 +1070,7 @@ describe('CreateAnnotationModal', () => {
     });
 
     it('should allow to create a comment annotation on the field when field value is not editable', async () => {
+        // @ts-expect-error TS2554
         const wrapper = render(
             // @ts-expect-error TS2741
             <TestModal
@@ -1109,6 +1127,7 @@ describe('CreateAnnotationModal', () => {
     });
 
     it('should allow to create a comment annotation on the field when there is an initial value', async () => {
+        // @ts-expect-error TS2554
         render(
             // @ts-expect-error TS2741
             <TestModal
@@ -1174,6 +1193,7 @@ describe('CreateAnnotationModal', () => {
     });
 
     it('should allow to create a removal annotation on the value when there is a single initial value', async () => {
+        // @ts-expect-error TS2554
         render(
             // @ts-expect-error TS2741
             <TestModal
@@ -1239,6 +1259,7 @@ describe('CreateAnnotationModal', () => {
     });
 
     it('should allow to create a removal annotation on the value when initial value is a number', async () => {
+        // @ts-expect-error TS2554
         render(
             // @ts-expect-error TS2741
             <TestModal
@@ -1304,6 +1325,7 @@ describe('CreateAnnotationModal', () => {
     });
 
     it('should allow to create a removal annotation on a selected value when there is multiple initial value', async () => {
+        // @ts-expect-error TS2554
         render(
             // @ts-expect-error TS2741
             <TestModal
@@ -1385,6 +1407,7 @@ describe('CreateAnnotationModal', () => {
     });
 
     it('should allow to create a removal annotation on a selected value when initial value is an array of number', async () => {
+        // @ts-expect-error TS2554
         render(
             // @ts-expect-error TS2741
             <TestModal
@@ -1464,6 +1487,7 @@ describe('CreateAnnotationModal', () => {
     });
 
     it('should allow to create a correct annotation on the value when there is a single initial value', async () => {
+        // @ts-expect-error TS2554
         render(
             // @ts-expect-error TS2741
             <TestModal
@@ -1541,6 +1565,7 @@ describe('CreateAnnotationModal', () => {
     });
 
     it('should allow to create a correct annotation on the value when initial value is a number', async () => {
+        // @ts-expect-error TS2554
         render(
             // @ts-expect-error TS2741
             <TestModal
@@ -1618,6 +1643,7 @@ describe('CreateAnnotationModal', () => {
     });
 
     it('should allow to create a correct annotation on a selected value when there is multiple initial value', async () => {
+        // @ts-expect-error TS2554
         render(
             // @ts-expect-error TS2741
             <TestModal
@@ -1711,6 +1737,7 @@ describe('CreateAnnotationModal', () => {
     });
 
     it('should allow to create a correct annotation on a selected value when initial value is an array of number', async () => {
+        // @ts-expect-error TS2554
         render(
             // @ts-expect-error TS2741
             <TestModal
@@ -1802,6 +1829,7 @@ describe('CreateAnnotationModal', () => {
     });
 
     it('should allow to create an add annotation when there is a single initial value', async () => {
+        // @ts-expect-error TS2554
         render(
             // @ts-expect-error TS2741
             <TestModal
@@ -1878,6 +1906,7 @@ describe('CreateAnnotationModal', () => {
         });
     });
     it('should allow to create an add annotation when initial value is a number', async () => {
+        // @ts-expect-error TS2554
         render(
             // @ts-expect-error TS2741
             <TestModal
@@ -1954,6 +1983,7 @@ describe('CreateAnnotationModal', () => {
         });
     });
     it('should allow to create a add annotation when there is multiple initial value', async () => {
+        // @ts-expect-error TS2554
         render(
             // @ts-expect-error TS2741
             <TestModal
@@ -2034,6 +2064,7 @@ describe('CreateAnnotationModal', () => {
         });
     });
     it('should allow to create a add annotation when initial value is an array of number', async () => {
+        // @ts-expect-error TS2554
         render(
             // @ts-expect-error TS2741
             <TestModal
