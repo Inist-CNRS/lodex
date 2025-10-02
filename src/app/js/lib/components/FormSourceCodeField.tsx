@@ -5,24 +5,24 @@ import 'ace-builds/src-noconflict/mode-ini';
 import 'ace-builds/src-noconflict/mode-json';
 import 'ace-builds/src-noconflict/mode-ejs';
 import 'ace-builds/src-noconflict/theme-monokai';
+import { useTranslate } from '../../i18n/I18NContext';
 
 const FormSourceCodeField = ({
     input,
     label,
-    p,
     enableModeSelector = false,
     mode = 'ini',
     ...custom
 }: {
     input: { value: string; onChange: (value: string) => void };
     label?: string;
-    p: { t: (key: string) => string };
     enableModeSelector?: boolean;
     mode?: string;
     style?: CSSProperties;
     [key: string]: unknown;
 }) => {
     const [currentMode, setCurrentMode] = useState(mode);
+    const { translate } = useTranslate();
 
     return (
         <>
@@ -34,7 +34,7 @@ const FormSourceCodeField = ({
                     }}
                     select
                     size="small"
-                    label={p.t('form_source_code_mode')}
+                    label={translate('form_source_code_mode')}
                     onChange={(event) => {
                         setCurrentMode(event.target.value);
                     }}
