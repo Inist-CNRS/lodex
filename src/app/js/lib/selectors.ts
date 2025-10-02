@@ -10,19 +10,6 @@ export const createGlobalSelector = (getLocalState, selector) =>
         selector(localState, props),
     );
 
-// export const createGlobalSelectors = <
-//     T extends Record<string, (state: any) => any>,
-// >(
-//     getLocalState,
-//     selectors,
-// ) =>
-//     Object.keys(selectors).reduce(
-//         (result, key) => ({
-//             ...result,
-//             [key]: createGlobalSelector(getLocalState, selectors[key]),
-//         }),
-//         {},
-//     );
 export const createGlobalSelectors = <
     T extends Record<string, (localState: any, props?: any) => any>,
     LocalState = any,

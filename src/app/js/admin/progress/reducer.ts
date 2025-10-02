@@ -1,5 +1,4 @@
 import { createAction, handleActions } from 'redux-actions';
-// @ts-expect-error TS7016
 import { PENDING, STARTING, ERROR } from '../../../../common/progressStatus';
 import {
     CLEAR_DATASET,
