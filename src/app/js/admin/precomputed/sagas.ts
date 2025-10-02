@@ -10,49 +10,55 @@ import {
 
 import { fromUser } from '../../sharedSelectors';
 import fetchSaga from '../../lib/sagas/fetchSaga';
+import type { SagaIterator } from 'redux-saga';
 
-export function* handleLoadPrecomputedRequest() {
-    // @ts-expect-error TS7057
+export function* handleLoadPrecomputedRequest(): SagaIterator {
     const request = yield select(fromUser.getLoadPrecomputedRequest);
-    const { error, response } = yield call(fetchSaga, request);
+    const {
+        error,
+        response,
+    }: {
+        error: Error;
+        response: {
+            precomputed: Array<{ _id: string; status: string }>;
+        };
+    } = yield call(fetchSaga, request);
 
     if (error) {
-        // @ts-expect-error TS7057
         return yield put(loadPrecomputedError(error));
     }
 
-    // @ts-expect-error TS7057
     return yield put(loadPrecomputedSuccess(response));
 }
 
-// @ts-expect-error TS7031
-export function* handleLaunchPrecomputed({ payload: precomputed }) {
-    // @ts-expect-error TS7057
+export function* handleLaunchPrecomputed({
+    payload: { action, id },
+}: {
+    payload: { action: string; id: string };
+}): SagaIterator {
     const precomputedActionRequest = yield select(
-        // @ts-expect-error TS2339
         fromUser.getPrecomputedActionRequest,
         {
-            action: precomputed.action || 'launch',
-            id: precomputed.id,
+            action: action || 'launch',
+            id: id,
         },
     );
 
     yield call(fetchSaga, precomputedActionRequest);
 
-    // @ts-expect-error TS7057
     return yield put(loadPrecomputed());
 }
 
-export function* watchLoadPrecomputedRequest() {
+export function* watchLoadPrecomputedRequest(): SagaIterator {
     yield takeLatest([LOAD_PRECOMPUTED], handleLoadPrecomputedRequest);
 }
 
-export function* watchLaunchPrecomputed() {
+export function* watchLaunchPrecomputed(): SagaIterator {
     // @ts-expect-error TS2769
     yield takeLatest(LAUNCH_PRECOMPUTED, handleLaunchPrecomputed);
 }
 
-export default function* () {
+export default function* (): SagaIterator {
     yield fork(watchLoadPrecomputedRequest);
     yield fork(watchLaunchPrecomputed);
 }
