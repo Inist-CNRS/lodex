@@ -163,8 +163,6 @@ const VegaAdvancedMode = ({ p, value, onChange, onClear }) => {
                     </p>
                 </div>
                 <Suspense fallback={<Loading>{p.t('loading')}</Loading>}>
-                    {/*
-                    // @ts-expect-error 2739 */}
                     <FormSourceCodeField
                         style={{
                             width: '100%',
