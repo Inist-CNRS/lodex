@@ -8,6 +8,7 @@ describe('ResourceUriCell', () => {
     it.each([[null], ['/']])(
         'should not display "/" for home page',
         (resourceUri) => {
+            // @ts-expect-error TS2554
             const wrapper = render(
                 <TestI18N>
                     <ResourceUriCell
@@ -24,6 +25,7 @@ describe('ResourceUriCell', () => {
     );
 
     it('should display resourceUri when set if field is a graph', () => {
+        // @ts-expect-error TS2554
         const wrapper = render(
             <TestI18N>
                 <ResourceUriCell
@@ -43,6 +45,7 @@ describe('ResourceUriCell', () => {
     });
 
     it('should construct graph uri from field when resourceUri is not set', () => {
+        // @ts-expect-error TS2554
         const wrapper = render(
             <TestI18N>
                 <ResourceUriCell
@@ -62,6 +65,7 @@ describe('ResourceUriCell', () => {
     });
 
     it('should display the resourceUri with a button to the resource if the resource still exist', () => {
+        // @ts-expect-error TS2554
         const wrapper = render(
             <TestI18N>
                 <ResourceUriCell
@@ -85,6 +89,7 @@ describe('ResourceUriCell', () => {
     });
 
     it('should only display the resourceUri if the resource does not exist anymore', () => {
+        // @ts-expect-error TS2554
         const wrapper = render(
             <TestI18N>
                 <ResourceUriCell

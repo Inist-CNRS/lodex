@@ -197,6 +197,7 @@ export const validateTransformer = (
     isComposedOf = false,
     transformers = knownTransformers,
 ) => {
+    // @ts-expect-error TS7053
     const transformerOperation = transformers[transformer.operation];
 
     if (!transformerOperation) {

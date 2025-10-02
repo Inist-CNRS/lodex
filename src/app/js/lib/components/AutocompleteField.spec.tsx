@@ -34,6 +34,7 @@ TestAutocompleteField.propTypes = {
 describe('AutocompleteField', () => {
     describe('defined values', () => {
         it('should support to select a value', async () => {
+            // @ts-expect-error TS2554
             const wrapper = render(<TestAutocompleteField />);
 
             const textbox = wrapper.getByRole('textbox', {
@@ -58,6 +59,7 @@ describe('AutocompleteField', () => {
         });
 
         it('should support filtering values', async () => {
+            // @ts-expect-error TS2554
             const wrapper = render(<TestAutocompleteField />);
 
             const textbox = wrapper.getByRole('textbox', {
@@ -88,6 +90,7 @@ describe('AutocompleteField', () => {
 
     describe('free solo support', () => {
         it('should support to add a new value', async () => {
+            // @ts-expect-error TS2554
             const wrapper = render(<TestAutocompleteField supportsNewValues />);
 
             const textbox = wrapper.getByRole('textbox', {
@@ -116,6 +119,7 @@ describe('AutocompleteField', () => {
         });
 
         it('should not support to have a new value if does not support new values', async () => {
+            // @ts-expect-error TS2554
             const wrapper = render(<TestAutocompleteField />);
 
             const textbox = wrapper.getByRole('textbox', {

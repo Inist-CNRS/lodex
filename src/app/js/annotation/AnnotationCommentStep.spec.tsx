@@ -37,6 +37,7 @@ const renderAnnotationCommentStep = ({
             </TestI18N>
         );
     }
+    // @ts-expect-error TS2554
     const wrapper = render(<TestAnnotationCommentStep {...props} />);
 
     return {
@@ -177,6 +178,7 @@ describe('AnnotationCommentStep', () => {
         TestCommentDescription.propTypes = CommentDescription.propTypes;
 
         it('should render annotation_remove_content_from when kind is removal field not an url and initialValue not an array', () => {
+            // @ts-expect-error TS2554
             const wrapper = render(
                 <TestCommentDescription
                     kind="removal"
@@ -193,6 +195,7 @@ describe('AnnotationCommentStep', () => {
         });
 
         it('should render annotation_remove_value when kind is removal field not an url and initialValue is an array', () => {
+            // @ts-expect-error TS2554
             const wrapper = render(
                 <TestCommentDescription
                     kind="removal"
@@ -209,6 +212,7 @@ describe('AnnotationCommentStep', () => {
         });
 
         it('should render annotation_remove_content when kind is removal field is an url', () => {
+            // @ts-expect-error TS2554
             const wrapper = render(
                 <TestCommentDescription
                     kind="removal"
@@ -223,6 +227,7 @@ describe('AnnotationCommentStep', () => {
         });
 
         it('should render annotation_remove_content when kind is removal field is an url even when initialValue is an array', () => {
+            // @ts-expect-error TS2554
             const wrapper = render(
                 <TestCommentDescription
                     kind="removal"
@@ -238,6 +243,7 @@ describe('AnnotationCommentStep', () => {
         });
 
         it('should render annotation_correct_content when kind is correction and field is an url', () => {
+            // @ts-expect-error TS2554
             const wrapper = render(
                 <TestCommentDescription
                     kind="correction"
@@ -252,6 +258,7 @@ describe('AnnotationCommentStep', () => {
         });
 
         it('should render annotation_correct_value when kind is correction and field not an url', () => {
+            // @ts-expect-error TS2554
             const wrapper = render(
                 <TestCommentDescription
                     kind="correction"
@@ -268,6 +275,7 @@ describe('AnnotationCommentStep', () => {
         });
 
         it('should render annotation_add_value when kind is addition', () => {
+            // @ts-expect-error TS2554
             const wrapper = render(
                 <TestCommentDescription
                     kind="addition"
@@ -282,6 +290,7 @@ describe('AnnotationCommentStep', () => {
         });
 
         it('should render annotation_general_comment when kind is comment', () => {
+            // @ts-expect-error TS2554
             const wrapper = render(
                 <TestCommentDescription
                     kind="comment"

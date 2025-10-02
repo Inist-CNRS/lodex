@@ -7,6 +7,7 @@ export const getFieldTransformation = (context: any, field: any) => {
     }
     const documentTransformers = field.transformers.map(
         ({ operation, args = [] }: any) =>
+            // @ts-expect-error TS7053
             transformers[operation](context, args),
     );
 

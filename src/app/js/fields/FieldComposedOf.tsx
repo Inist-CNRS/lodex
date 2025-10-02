@@ -190,9 +190,9 @@ const FieldComposedOf = ({
         toReturn.filter(Boolean);
         for (const column of columns) {
             if (
+                // @ts-expect-error TS7006
                 toReturn.filter((field) => field.name === column).length === 0
             ) {
-                // @ts-expect-error TS2345
                 toReturn.push({
                     name: column,
                     internalName: polyglot.t('missing_field'),
@@ -205,6 +205,7 @@ const FieldComposedOf = ({
     const autocompleteValue = useMemo(() => {
         // @ts-expect-error TS7006
         return columns.map((column) => {
+            // @ts-expect-error TS7006
             return options.find((field) => field.name === column);
         });
     }, [columns, options]);
