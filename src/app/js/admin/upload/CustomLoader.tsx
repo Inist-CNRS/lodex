@@ -20,7 +20,7 @@ import {
 } from './index';
 import loaderApi from '../api/loader';
 import CancelButton from '../../lib/components/CancelButton';
-import { translate } from '../../i18n/I18NContext';
+import { translate, useTranslate } from '../../i18n/I18NContext';
 import type { State } from '../reducers';
 
 type CustomLoaderFormData = {
@@ -35,9 +35,6 @@ type CustomLoaderProps = {
     onUpsertCustomLoader: (loader: string) => void;
     onChangeLoaderName: (name: string) => void;
     initialValues: { customLoader: string };
-    p: {
-        t: (key: string) => string;
-    };
 };
 
 const CustomLoader = ({
@@ -48,8 +45,8 @@ const CustomLoader = ({
     onUpsertCustomLoader,
     onChangeLoaderName,
     initialValues,
-    p: polyglot,
 }: CustomLoaderProps) => {
+    const { translate } = useTranslate();
     const [isLoading, setIsLoading] = useState(false);
 
     const { control, setValue, getValues } = useForm<CustomLoaderFormData>({
@@ -90,7 +87,7 @@ const CustomLoader = ({
 
     return (
         <Dialog open={isOpen} onClose={handleClose} scroll="body" maxWidth="xl">
-            <DialogTitle>{polyglot.t('custom-loader')}</DialogTitle>
+            <DialogTitle>{translate('custom-loader')}</DialogTitle>
             <DialogContent>
                 <Box display="flex">
                     {isLoading ? (
@@ -102,9 +99,8 @@ const CustomLoader = ({
                             render={({ field }) => (
                                 <FormSourceCodeField
                                     input={field}
-                                    label={polyglot.t('expand_rules')}
+                                    label={translate('expand_rules')}
                                     height="350px"
-                                    p={polyglot}
                                     dispatch={() => {}}
                                 />
                             )}
@@ -118,18 +114,18 @@ const CustomLoader = ({
                     color="warning"
                     variant="contained"
                 >
-                    {polyglot.t('remove')}
+                    {translate('remove')}
                 </Button>
                 <div>
                     <CancelButton onClick={handleClose}>
-                        {polyglot.t('cancel')}
+                        {translate('cancel')}
                     </CancelButton>
                     <Button
                         onClick={handleSave}
                         color="primary"
                         variant="contained"
                     >
-                        {polyglot.t('save')}
+                        {translate('save')}
                     </Button>
                 </div>
             </DialogActions>
@@ -148,7 +144,17 @@ const mapDispatchToProps = {
     onDeleteCustomLoader: deleteCustomLoader,
 };
 
-export default compose<CustomLoaderProps, CustomLoaderProps>(
+export default compose<
+    CustomLoaderProps,
+    Omit<
+        CustomLoaderProps,
+        | 'onChangeLoaderName'
+        | 'onUpsertCustomLoader'
+        | 'onDeleteCustomLoader'
+        | 'loaderName'
+        | 'initialValues'
+    >
+>(
     translate,
     connect(mapStateToProps, mapDispatchToProps),
 )(CustomLoader);
