@@ -78,7 +78,6 @@ export const SearchForm = ({ fields, loadField, p: polyglot }) => {
 
     const fieldsForResourceSyndication = React.useMemo(() => {
         const filteredFields = getFieldForSpecificScope(fields, 'collection');
-        // @ts-expect-error TS2345
         filteredFields?.unshift({
             label: polyglot.t('none'),
         });
@@ -306,6 +305,8 @@ export const SearchForm = ({ fields, loadField, p: polyglot }) => {
                                 padding: 0,
                             }}
                         >
+                            {/*
+                             // @ts-expect-error TS7006 */}
                             {fieldsResource?.map((field) => {
                                 const labelId = `checkbox-list-label-${field.name}`;
 

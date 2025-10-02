@@ -47,6 +47,7 @@ const availableThemes = [
 describe('ConfigTenantForm', () => {
     it('should render a form allowing to update config', async () => {
         const handleSave = jest.fn();
+        // @ts-expect-error TS2554
         const wrapper = render(
             <TestConfigTenantFormView
                 initialConfig={configTenant}
@@ -119,6 +120,7 @@ describe('ConfigTenantForm', () => {
     });
     it('should update front theme when changing theme', async () => {
         const handleSave = jest.fn();
+        // @ts-expect-error TS2554
         const wrapper = render(
             <TestConfigTenantFormView
                 initialConfig={configTenant}
@@ -164,6 +166,7 @@ describe('ConfigTenantForm', () => {
         'should display "%s" when userAuth.active is %s and contributorAuth.active is %s',
         async (message, userAuthActive, contributorAuthActive) => {
             const handleSave = jest.fn();
+            // @ts-expect-error TS2554
             const wrapper = render(
                 <TestConfigTenantFormView
                     initialConfig={{
@@ -190,6 +193,7 @@ describe('ConfigTenantForm', () => {
 
     it('should reject invalid notification email', async () => {
         const handleSave = jest.fn();
+        // @ts-expect-error TS2554
         const wrapper = render(
             <TestConfigTenantFormView
                 initialConfig={configTenant}
@@ -224,6 +228,7 @@ describe('ConfigTenantForm', () => {
 
     it('should accept no notification email', async () => {
         const handleSave = jest.fn();
+        // @ts-expect-error TS2554
         const wrapper = render(
             <TestConfigTenantFormView
                 initialConfig={{
@@ -267,6 +272,7 @@ describe('ConfigTenantForm', () => {
 
     it('should reject null recaptchaClientKey and null recaptchaSecretKey when antispamFilter.active is true', async () => {
         const handleSave = jest.fn();
+        // @ts-expect-error TS2554
         const wrapper = render(
             <TestConfigTenantFormView
                 initialConfig={{
@@ -307,6 +313,7 @@ describe('ConfigTenantForm', () => {
 
     it('should accept null recaptchaClientKey and null recaptchaSecretKey when antispamFilter.active is false', async () => {
         const handleSave = jest.fn();
+        // @ts-expect-error TS2554
         const wrapper = render(
             <TestConfigTenantFormView
                 initialConfig={{
@@ -354,6 +361,7 @@ describe('ConfigTenantForm', () => {
     });
     it('should allow to update everything', async () => {
         const handleSave = jest.fn();
+        // @ts-expect-error TS2554
         const wrapper = render(
             <TestConfigTenantFormView
                 initialConfig={configTenant}
