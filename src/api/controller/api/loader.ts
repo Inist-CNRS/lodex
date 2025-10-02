@@ -2,7 +2,6 @@ import Koa from 'koa';
 import route from 'koa-route';
 // @ts-expect-error TS(2792): Cannot find module '@ezs/core'.
 import ezs from '@ezs/core';
-// @ts-expect-error TS(2792): Cannot find module '@ezs/lodex'.
 import ezsLodex from '@ezs/lodex';
 
 import { getHost, getCleanHost } from '../../../common/uris';
