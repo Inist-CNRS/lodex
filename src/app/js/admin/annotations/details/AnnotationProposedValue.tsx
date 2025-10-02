@@ -33,9 +33,9 @@ export function AnnotationProposedValue({ proposedValue, field }) {
                     !fieldSuggestedValues.size ||
                     fieldSuggestedValues.has(value),
             }))
-            // @ts-expect-error TS2339
             .toSorted((a, b) => {
                 if (a.isAdminProvidedValue === b.isAdminProvidedValue) {
+                    // @ts-expect-error TS2239
                     return a.value.localeCompare(b.value);
                 }
 
@@ -55,8 +55,6 @@ export function AnnotationProposedValue({ proposedValue, field }) {
 
     return (
         <List dense>
-            {/*
-             // @ts-expect-error TS7031 */}
             {proposedValueAsArray.map(({ value, isAdminProvidedValue }, i) => {
                 const fieldDescriptionId = isAdminProvidedValue
                     ? undefined
