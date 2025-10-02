@@ -1,8 +1,5 @@
-// @ts-expect-error TS6133
-import React, { useState } from 'react';
+import { useState, type CSSProperties } from 'react';
 import AceEditor from 'react-ace';
-import { polyglot as polyglotPropTypes } from '../../propTypes';
-import PropTypes from 'prop-types';
 import { MenuItem, TextField } from '@mui/material';
 import 'ace-builds/src-noconflict/mode-ini';
 import 'ace-builds/src-noconflict/mode-json';
@@ -10,24 +7,22 @@ import 'ace-builds/src-noconflict/mode-ejs';
 import 'ace-builds/src-noconflict/theme-monokai';
 
 const FormSourceCodeField = ({
-    // @ts-expect-error TS7031
     input,
-    // @ts-expect-error TS7031
     label,
-    // @ts-expect-error TS7031
     p,
-    // @ts-expect-error TS7031
-    dispatch,
     enableModeSelector = false,
     mode = 'ini',
     ...custom
+}: {
+    input: { value: string; onChange: (value: string) => void };
+    label?: string;
+    p: { t: (key: string) => string };
+    enableModeSelector?: boolean;
+    mode?: string;
+    style?: CSSProperties;
+    [key: string]: unknown;
 }) => {
     const [currentMode, setCurrentMode] = useState(mode);
-
-    // @ts-expect-error TS7006
-    const handleModeChange = (event) => {
-        setCurrentMode(event.target.value);
-    };
 
     return (
         <>
@@ -40,7 +35,9 @@ const FormSourceCodeField = ({
                     select
                     size="small"
                     label={p.t('form_source_code_mode')}
-                    onChange={handleModeChange}
+                    onChange={(event) => {
+                        setCurrentMode(event.target.value);
+                    }}
                     value={currentMode}
                 >
                     {/* We don't show the ini syntax because it's only meant to be used with the EZS routine. */}
@@ -66,18 +63,6 @@ const FormSourceCodeField = ({
             />
         </>
     );
-};
-
-FormSourceCodeField.propTypes = {
-    input: PropTypes.shape({
-        value: PropTypes.any.isRequired,
-        onChange: PropTypes.func.isRequired,
-    }).isRequired,
-    p: polyglotPropTypes.isRequired,
-    enableModeSelector: PropTypes.bool,
-    mode: PropTypes.string,
-    label: PropTypes.string,
-    dispatch: PropTypes.any,
 };
 
 export default FormSourceCodeField;
