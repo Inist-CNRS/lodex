@@ -28,8 +28,6 @@ const EJSEditor = ({ value, onChange }) => {
     return (
         <Box width="100%">
             <Suspense fallback={<Loading>{translate('loading')}</Loading>}>
-                {/* 
-                // @ts-expect-error TS2322 */}
                 <FormSourceCodeField
                     style={{
                         width: '100%',
