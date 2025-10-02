@@ -24,14 +24,14 @@ describe('customPage', () => {
     });
     describe('getPathName', () => {
         it('should return pathname in tenant directory', async () => {
-            expect(await getPathname('mySite', 'tenant')).toBe(
-                '/app/src/app/custom/instance/tenant/mySite.html',
-            );
+            expect(
+                (await getPathname('mySite', 'tenant'))?.split('/src/').pop(),
+            ).toBe('app/custom/instance/tenant/mySite.html');
         });
         it('should return folder/index.html if folder exists in tenant directory', async () => {
-            expect(await getPathname('folder', 'test')).toBe(
-                '/app/src/app/custom/instance/test/folder/index.html',
-            );
+            expect(
+                (await getPathname('folder', 'test'))?.split('/src/').pop(),
+            ).toBe('app/custom/instance/test/folder/index.html');
         });
         it('should return null if given path is not in tenant directory', async () => {
             expect(await getPathname('../.env', 'test')).toBeNull();
