@@ -11,6 +11,7 @@ jest.mock('../api/dataset', () => ({
 
 describe('<ParsingResult />', () => {
     it('should render the DataGrid', () => {
+        // @ts-expect-error TS2554
         const wrapper = render(
             <MemoryRouter initialEntries={['/data/existing']} initialIndex={0}>
                 <Route

@@ -45,6 +45,7 @@ const SourceValueRoutine = ({
             setRoutineArgs(args);
             const filteredRoutineFields = args
                 .map((arg) => {
+                    // @ts-expect-error TS7006
                     return fieldsResource.find((field) => {
                         return field.name === arg;
                     });
@@ -53,7 +54,6 @@ const SourceValueRoutine = ({
             if (filteredRoutineFields.length === 0) {
                 setRoutineFields([null]);
             } else {
-                // @ts-expect-error TS2345
                 setRoutineFields(filteredRoutineFields);
             }
         }

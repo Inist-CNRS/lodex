@@ -41,6 +41,7 @@ describe('AnnotationInputs', () => {
             handleUpdateAnnotation,
             isSubmitting: false,
         }));
+        // @ts-expect-error TS2554
         const wrapper = render(
             <TestI18N>
                 <MemoryRouter>
@@ -103,6 +104,7 @@ describe('AnnotationInputs', () => {
                 handleUpdateAnnotation,
                 isSubmitting: false,
             }));
+            // @ts-expect-error TS2554
             const wrapper = render(
                 <TestI18N>
                     <MemoryRouter>
