@@ -87,6 +87,14 @@ export default defineConfig([
     {
         name: 'react',
         ...react.configs.flat.recommended,
+        rules: {
+            ...react.configs.flat.recommended.rules,
+            'react/react-in-jsx-scope': 'off',
+            'react/jsx-uses-react': 'off',
+        },
+        files: ['**/*.jsx', '**/*.tsx'],
+        ignores: ['**/*.js', '**/*.ts'],
+        plugins: { react },
         languageOptions: {
             globals: {
                 ...globals.browser,
