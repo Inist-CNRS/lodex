@@ -24,29 +24,40 @@ import {
 } from '../api/precomputed';
 import { getJobLogs } from '../api/job';
 import { toast } from '../../../../common/tools/toast';
-import { FINISHED, IN_PROGRESS, PENDING } from '../../../../common/taskStatus';
+import {
+    FINISHED,
+    IN_PROGRESS,
+    PENDING,
+    type TaskStatus,
+} from '../../../../common/taskStatus';
 import { io } from 'socket.io-client';
 import CancelButton from '../../lib/components/CancelButton';
 import { DEFAULT_TENANT } from '../../../../common/tools/tenantTools';
 import { useTranslate } from '../../i18n/I18NContext';
 import { PrecomputedStatus } from './PrecomputedStatus';
 import { RunButton } from './RunButton';
+import type { NewPreComputation } from '../../../../common/types/precomputation';
 
 const required = (text: string) => (value: unknown) =>
     value && !(value instanceof Array && value.length === 0) ? undefined : text;
 
-type PreComputation = {
-    name: string;
-    webServiceUrl: string;
-    sourceColumns: string[];
-    subPath: string;
-};
-
 type PrecomputedFormProps = {
     datasetFields: string[];
-    formValues: PreComputation;
-    history: any;
-    initialValues: any;
+    formValues: NewPreComputation;
+    history: {
+        push: (path: string) => void;
+    };
+    initialValues: {
+        _id: string;
+        status: TaskStatus;
+        jobId: string;
+        startedAt: string;
+        name: string;
+        webServiceUrl: string;
+        sourceColumns: string[];
+        subPath: string;
+        data: unknown;
+    };
     onLaunchPrecomputed: (params: { id: string; action: string }) => void;
     onLoadPrecomputedData: () => void;
     isPrecomputedRunning: boolean;
@@ -73,13 +84,17 @@ export const PrecomputedForm = ({
         [],
     );
     const [precomputedLogs, setPrecomputedLogs] = React.useState<string[]>([]);
-    const [precomputedStatus, setPrecomputedStatus] = React.useState<string>(
-        initialValues?.status,
-    );
+    const [precomputedStatus, setPrecomputedStatus] =
+        React.useState<TaskStatus>(initialValues.status);
 
     const { handleSubmit, getValues, watch, control, setValue } =
-        useForm<PreComputation>({
-            defaultValues: initialValues,
+        useForm<NewPreComputation>({
+            defaultValues: {
+                name: initialValues.name,
+                webServiceUrl: initialValues.webServiceUrl,
+                sourceColumns: initialValues.sourceColumns,
+                subPath: initialValues.subPath,
+            },
             mode: 'onChange',
         });
 
@@ -113,7 +128,7 @@ export const PrecomputedForm = ({
         }
     };
 
-    const handleAddPrecomputed = async (formValues: PreComputation) => {
+    const handleAddPrecomputed = async (formValues: NewPreComputation) => {
         const res = await createPrecomputed(formValues);
         if (res.response) {
             toast(translate('precomputed_added_success'), {
@@ -127,7 +142,7 @@ export const PrecomputedForm = ({
         }
     };
 
-    const handleUpdatePrecomputed = async (formValues: PreComputation) => {
+    const handleUpdatePrecomputed = async (formValues: NewPreComputation) => {
         const { data, ...precomputedDataToUpdate } = {
             ...initialValues,
             ...formValues,
@@ -145,7 +160,7 @@ export const PrecomputedForm = ({
         }
     };
 
-    const onSubmit = async (values: PreComputation) => {
+    const onSubmit = async (values: NewPreComputation) => {
         setIsLoading(true);
         if (isEditMode) {
             await handleUpdatePrecomputed(values);
@@ -191,7 +206,7 @@ export const PrecomputedForm = ({
     const handleGetLogs = useCallback(async () => {
         if (initialValues?.jobId) {
             getJobLogs(initialValues.jobId).then(
-                (result: any) => {
+                (result: { response: { logs: string[] } }) => {
                     setPrecomputedLogs(result.response.logs.reverse());
                 },
                 () => {
@@ -214,7 +229,7 @@ export const PrecomputedForm = ({
                 let lastLine;
                 let parsedData;
                 if (Array.isArray(data)) {
-                    setPrecomputedLogs((currentState: any) => [
+                    setPrecomputedLogs((currentState) => [
                         ...data,
                         ...currentState,
                     ]);
