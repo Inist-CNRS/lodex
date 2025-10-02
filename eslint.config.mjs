@@ -86,6 +86,7 @@ export default defineConfig([
     eslintPluginPrettierRecommended,
     {
         name: 'react',
+        files: ['src/**/*.js', 'src/**/*.jsx', 'src/**/*.ts', 'src/**/*.tsx'],
         ...react.configs.flat.recommended,
         rules: {
             ...react.configs.flat.recommended.rules,
