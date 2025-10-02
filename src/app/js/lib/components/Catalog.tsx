@@ -164,12 +164,10 @@ export const EnrichmentCatalog = ({
                         />
                     </Box>
                     {filters.map((filter) => (
-                        // @ts-expect-error TS2769
                         <Box key={filter}>
                             <Button
                                 color="primary"
                                 className="format-category"
-                                // @ts-expect-error TS2345
                                 onClick={() => setSelectedFilter(filter)}
                                 variant={
                                     filter === selectedFilter
@@ -177,7 +175,7 @@ export const EnrichmentCatalog = ({
                                         : 'outlined'
                                 }
                             >
-                                {filter}
+                                {translate(filter)}
                             </Button>
                         </Box>
                     ))}
