@@ -9,6 +9,7 @@ import {
     CANCELED,
     PAUSED,
     ON_HOLD,
+    type TaskStatus,
 } from '../../../../common/taskStatus';
 
 function getDisplayTimeStartedAt(startedAt: string) {
@@ -74,7 +75,7 @@ export const StatusChip = ({
 };
 
 type PrecomputedStatusProps = {
-    status: string;
+    status: TaskStatus;
     translate: (key: string) => string;
     startedAt?: string | null;
 };

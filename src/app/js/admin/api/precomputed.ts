@@ -8,6 +8,10 @@ import {
     getUpdatePrecomputedRequest,
 } from '../../user';
 import { getUserSessionStorageInfo } from './tools';
+import {
+    type NewPreComputation,
+    type PreComputation,
+} from '../../../../common/types/precomputation';
 
 // @ts-expect-error TS7006
 export const getPreviewPrecomputed = (previewPrecomputed) => {
@@ -19,43 +23,39 @@ export const getPreviewPrecomputed = (previewPrecomputed) => {
     return fetch(request);
 };
 
-// @ts-expect-error TS7006
-export const createPrecomputed = (precomputed) => {
+export const createPrecomputed = (precomputed: NewPreComputation) => {
     const { token } = getUserSessionStorageInfo();
     const request = getCreatePrecomputedRequest({ token }, precomputed);
     return fetch(request);
 };
 
-// @ts-expect-error TS7006
-export const updatePrecomputed = (precomputed) => {
+export const updatePrecomputed = (precomputed: PreComputation) => {
     const { token } = getUserSessionStorageInfo();
     const request = getUpdatePrecomputedRequest({ token }, precomputed);
     return fetch(request);
 };
 
-// @ts-expect-error TS7006
-export const deletePrecomputed = (id) => {
+export const deletePrecomputed = (id: string) => {
     const { token } = getUserSessionStorageInfo();
     const request = getDeletePrecomputedRequest({ token }, id);
     return fetch(request);
 };
 
-// @ts-expect-error TS7006
-export const exportPrecomputedData = (id) => {
+export const exportPrecomputedData = (id: string) => {
     const { token } = getUserSessionStorageInfo();
 
     const request = getExportPrecomputedDataRequest({ token }, id);
-    // @ts-expect-error TS7031
-    return fetch(request, 'blob').then(({ response, error }) => {
-        if (error) {
-            return error;
-        }
-        return response;
-    });
+    return fetch(request, 'blob').then(
+        ({ response, error }: { response: Response; error: Error }) => {
+            if (error) {
+                return error;
+            }
+            return response;
+        },
+    );
 };
 
-// @ts-expect-error TS7006
-export const previewPrecomputedData = (id) => {
+export const previewPrecomputedData = (id: string) => {
     const { token } = getUserSessionStorageInfo();
 
     const request = getPreviewPrecomputedDataRequest({ token }, id);

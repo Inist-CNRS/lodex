@@ -1,6 +1,5 @@
 // @ts-expect-error TS6133
 import React, { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
 import {
     Box,
     Button,
@@ -17,14 +16,17 @@ import {
 } from '../api/precomputed';
 import { useTranslate } from '../../i18n/I18NContext';
 
+type PrecomputedDataDialogProps = {
+    isOpen: boolean;
+    precomputedID: string;
+    handleClose: () => void;
+};
+
 export const PrecomputedDataDialog = ({
-    // @ts-expect-error TS7031
     isOpen,
-    // @ts-expect-error TS7031
     precomputedID,
-    // @ts-expect-error TS7031
     handleClose,
-}) => {
+}: PrecomputedDataDialogProps) => {
     const { translate } = useTranslate();
     const [previewData, setPreviewData] = useState(null);
     useEffect(() => {
@@ -85,12 +87,6 @@ export const PrecomputedDataDialog = ({
             </DialogActions>
         </Dialog>
     );
-};
-
-PrecomputedDataDialog.propTypes = {
-    isOpen: PropTypes.bool.isRequired,
-    handleClose: PropTypes.func.isRequired,
-    precomputedID: PropTypes.object.isRequired,
 };
 
 export default PrecomputedDataDialog;
