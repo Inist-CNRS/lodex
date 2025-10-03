@@ -71,7 +71,6 @@ export function DeleteManyButton({ selectedRowIds, reloadDataset }) {
                 isOpen={isModalOpen}
                 cancelLabel={translate('cancel')}
                 confirmLabel={translate('delete')}
-                // @ts-expect-error TS2554
                 title={translate('parsing_delete_many_modal_title', {
                     smart_count: selectedRowIds.length,
                 })}
