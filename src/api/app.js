@@ -25,6 +25,8 @@ import bullBoard from './bullBoard';
 import { DEFAULT_TENANT } from '../common/tools/tenantTools';
 import { insertConfigTenant } from './services/configTenant';
 
+const meters = Meter(MeterConfig, { loadStandards: true, loadDefaults: true });
+
 // set timeout as ezs server (see workers/index.js)
 ezs.settings.feed.timeout = Number(timeout) || 120000;
 
@@ -32,6 +34,22 @@ ezs.settings.feed.timeout = Number(timeout) || 120000;
 // We need to increase this limit to 1000 to be able to handle the facets array in the query string.
 // https://github.com/ljharb/qs#parsing-arrays
 const app = koaQs(new Koa(), 'extended', { arrayLimit: 1000 });
+
+// Prometheus metrics
+app.use(meters.middleware); // The middleware that makes the meters available
+app.use(
+    route.get('/metrics', async (ctx) => {
+        ctx.body = await meters.print();
+    }),
+);
+
+app.use(tracer());
+app.use(access());
+app.on(eventAccess, (ctx) => {
+    meters.automark(ctx);
+});
+app.on(eventTrace, (ctx) => meters.automark(ctx));
+app.on(eventError, () => meters.errorRate.mark(1));
 
 app.use(cors({ credentials: true }));
 
@@ -141,19 +159,6 @@ app.use(async (ctx, next) => {
     const logger = getLogger(ctx.tenant);
     logger.info(ctx.request.url, ctx.httpLog);
 });
-
-// Prometheus metrics
-const meters = Meter(MeterConfig, { loadStandards: true, loadDefaults: true });
-app.use(meters.middleware); // The middleware that makes the meters available
-app.use(route.get('/metrics', (ctx) => (ctx.body = meters.print())));
-
-app.use(tracer());
-app.use(access());
-app.on(eventAccess, (ctx) => {
-    meters.automark(ctx);
-});
-app.on(eventTrace, (ctx) => meters.automark(ctx));
-app.on(eventError, () => meters.errorRate.mark(1));
 
 app.use(function* (next) {
     try {
