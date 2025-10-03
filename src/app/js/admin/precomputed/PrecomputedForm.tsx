@@ -41,7 +41,7 @@ import type { NewPreComputation } from '../../../../common/types/precomputation'
 const required = (text: string) => (value: unknown) =>
     value && !(value instanceof Array && value.length === 0) ? undefined : text;
 
-type PrecomputedFormProps = {
+export type PrecomputedFormProps = {
     datasetFields: string[];
     formValues: NewPreComputation;
     history: {
@@ -499,7 +499,7 @@ const mapDispatchToProps = {
     onLoadPrecomputedData: loadPrecomputed,
 };
 
-export default compose<PrecomputedFormProps, PrecomputedFormProps>(
+export default compose<PrecomputedFormProps, Record<string, never>>(
     withRouter,
     connect(mapStateToProps, mapDispatchToProps),
 )(PrecomputedForm);
