@@ -7,18 +7,18 @@ import {
     PENDING,
     type TaskStatus,
 } from '../../../../common/taskStatus';
+import { useTranslate } from '../../i18n/I18NContext';
 
 export const RunButton = ({
     handleLaunchPrecomputed,
     precomputedStatus,
-    translate,
     variant = 'contained',
 }: {
     handleLaunchPrecomputed: (event: MouseEvent) => void;
     precomputedStatus: TaskStatus | undefined;
-    translate: (key: string) => string;
     variant: ButtonProps['variant'];
 }) => {
+    const { translate } = useTranslate();
     const [isClicked, setIsClicked] = useState<boolean>(false);
     const handleClick = (event: MouseEvent) => {
         handleLaunchPrecomputed(event);
