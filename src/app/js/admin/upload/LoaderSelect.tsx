@@ -1,5 +1,4 @@
-// @ts-expect-error TS6133
-import React, { useState } from 'react';
+import { useState } from 'react';
 import PropTypes from 'prop-types';
 import ListAltIcon from '@mui/icons-material/ListAlt';
 import { Box, Button, MenuItem, TextField } from '@mui/material';
