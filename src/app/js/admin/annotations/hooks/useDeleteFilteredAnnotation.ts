@@ -42,7 +42,6 @@ export function useDeleteFilteredAnnotation() {
             });
 
             toast(
-                // @ts-expect-error TS2554
                 translate('annotation_delete_many_success', {
                     smart_count: deletedCount,
                 }),

@@ -139,7 +139,11 @@ const ClearDialogComponent = (props) => {
 
     return (
         <Dialog open onClose={onClose}>
-            <DialogTitle>{translate(TRANSLATION_KEY.get(type))}</DialogTitle>
+            <DialogTitle>
+                {TRANSLATION_KEY.get(type)
+                    ? translate(TRANSLATION_KEY.get(type)!)
+                    : ''}
+            </DialogTitle>
             <DialogContent>
                 <b>
                     {type === 'model'

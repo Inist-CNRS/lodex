@@ -18,7 +18,6 @@ const ANNOTATION_GRID_SPACING = 1;
 function Section({ label, children, translateOptions }) {
     const { translate } = useTranslate();
 
-    // @ts-expect-error TS2554
     const translatedLabel = translate(label, translateOptions);
 
     return (

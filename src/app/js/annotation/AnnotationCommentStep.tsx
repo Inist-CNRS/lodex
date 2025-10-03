@@ -48,8 +48,6 @@ export const CommentDescription = ({
                             overflow: 'hidden',
                         }}
                     >
-                        {/*
-                         // @ts-expect-error TS2554 */}
                         {translate('annotation_correct_value', {
                             value: annotationInitialValue,
                         })}
@@ -108,8 +106,6 @@ export const CommentDescription = ({
                                 overflow: 'hidden',
                             }}
                         >
-                            {/*
-                             // @ts-expect-error TS2554 */}
                             {translate('annotation_remove_value', {
                                 value: annotationInitialValue,
                             })}
@@ -127,8 +123,6 @@ export const CommentDescription = ({
                             overflow: 'hidden',
                         }}
                     >
-                        {/*
-                         // @ts-expect-error TS2554 */}
                         {translate('annotation_remove_content_from', {
                             value: annotationInitialValue,
                         })}

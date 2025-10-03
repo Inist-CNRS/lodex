@@ -50,9 +50,17 @@ const ImportHasRelaunchDialog = ({ onClose, data }) => {
 
     return (
         <Dialog open onClose={onClose}>
-            <DialogTitle>{translate(returnTitleTranslationKey())}</DialogTitle>
+            <DialogTitle>
+                {returnTitleTranslationKey()
+                    ? translate(returnTitleTranslationKey()!)
+                    : null}
+            </DialogTitle>
             <DialogContent>
-                <b>{translate(returnDescriptionTranslationKey())}</b>
+                <b>
+                    {returnDescriptionTranslationKey()
+                        ? translate(returnDescriptionTranslationKey()!)
+                        : null}
+                </b>
             </DialogContent>
             <DialogActions>{actions}</DialogActions>
         </Dialog>

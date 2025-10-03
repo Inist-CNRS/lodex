@@ -106,7 +106,6 @@ export function AutocompleteMultipleField({
                     if (inputValue !== '' && !isExisting && supportsNewValues) {
                         filtered.push({
                             value: inputValue,
-                            // @ts-expect-error TS2554
                             title: translate('autocomplete_add', {
                                 option: inputValue,
                             }),

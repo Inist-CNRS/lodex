@@ -205,8 +205,6 @@ export const EnrichmentList = ({
                         renderCell: (params) => {
                             return (
                                 <>
-                                    {/*
-                                     // @ts-expect-error TS2554 */}
                                     {translate('enrichment_error_count', {
                                         errorCount: params.row.errorCount ?? 0,
                                     })}
