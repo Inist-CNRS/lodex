@@ -33,6 +33,7 @@ import { toast } from '../../../../common/tools/toast';
 import FormSourceCodeField from '../../lib/components/FormSourceCodeField';
 import { ConfirmPopup } from '../../lib/components/ConfirmPopup';
 import { useTranslate } from '../../i18n/I18NContext';
+import type { State } from '../reducers';
 
 const styles = {
     button: {
@@ -61,7 +62,7 @@ const styles = {
         borderBottom: 'solid 1px #00000018',
     },
     formDesc: {
-        textAlign: 'center',
+        textAlign: 'center' as const,
         marginBottom: '24px',
     },
     form: {
@@ -79,7 +80,7 @@ const styles = {
     divider: {
         textTransform: 'uppercase',
         position: 'relative',
-        textAlign: 'center',
+        textAlign: 'center' as const,
         width: '100%',
         marginTop: '32px',
         '&:before': {
@@ -242,8 +243,7 @@ export const UploadComponent = ({
         }
     };
 
-    // @ts-expect-error TS7019
-    const handleSubmit = (...params) => {
+    const handleSubmit = (...params: any[]) => {
         if (!isFirstFile) {
             setIsOpenPopupConfirm(true);
             return;
@@ -300,8 +300,6 @@ export const UploadComponent = ({
                 {/* Display the content of the first tab */}
                 {tab === 0 ? (
                     <>
-                        {/*
-                         // @ts-expect-error TS2322 */}
                         <p style={styles.formDesc}>
                             {translate('upload_file')}
                         </p>
@@ -312,7 +310,7 @@ export const UploadComponent = ({
                                 fileObjects={files}
                                 filesLimit={1}
                                 maxFileSize={1 * 1024 * 1024 * 1024}
-                                // @ts-expect-error TS2322
+                                // @ts-expect-error TS2322 --- mui component type only accept string
                                 dropzoneText={
                                     <Typography variant="h6">
                                         {translate('import_file_text')}
@@ -349,8 +347,6 @@ export const UploadComponent = ({
                 {/* Display the content of the second tab */}
                 {tab === 1 ? (
                     <>
-                        {/*
-                         // @ts-expect-error TS2322 */}
                         <p style={styles.formDesc}>
                             {translate('upload_via_url')}
                         </p>
@@ -374,8 +370,6 @@ export const UploadComponent = ({
                 {/* Display the content of the third tab */}
                 {tab === 2 ? (
                     <>
-                        {/*
-                         // @ts-expect-error TS2322 */}
                         <p style={styles.formDesc}>
                             {translate('upload_via_text')}
                         </p>
@@ -436,8 +430,7 @@ export const UploadComponent = ({
     );
 };
 
-// @ts-expect-error TS7006
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: State) => ({
     url: fromUpload.getUrl(state),
     textContent: fromUpload.getTextContent(state),
     isUrlValid: fromUpload.isUrlValid(state),
