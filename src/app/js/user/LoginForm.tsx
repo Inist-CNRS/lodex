@@ -1,94 +1,68 @@
-// @ts-expect-error TS6133
-import React from 'react';
-import compose from 'recompose/compose';
-import withHandlers from 'recompose/withHandlers';
-// @ts-expect-error TS7016
-import { Field, reduxForm, propTypes as reduxFormPropTypes } from 'redux-form';
-import FormTextField from '../lib/components/FormTextField';
+import { useTranslate } from '../i18n/I18NContext';
+import { useForm } from 'react-hook-form';
+import { TextField } from '../reactHookFormFields/TextField';
+import { useMemo } from 'react';
+import ButtonWithStatus from '../lib/components/ButtonWithStatus';
+import { CardActions, CardContent } from '@mui/material';
 
-import { translate } from '../i18n/I18NContext';
-import Alert from '../lib/components/Alert';
-import { polyglot as polyglotPropTypes } from '../propTypes';
-import { LOGIN_FORM_NAME } from './';
+const required = (text: string) => (value: unknown) =>
+    value && !(value instanceof Array && value.length === 0) ? undefined : text;
 
-// @ts-expect-error TS7006
-const validate = (values, { p: polyglot }) => {
-    const errors = ['username', 'password'].reduce((currentErrors, field) => {
-        if (!values[field]) {
-            return {
-                ...currentErrors,
-                [field]: polyglot.t('required'),
-            };
-        }
-        return currentErrors;
-    }, {});
-
-    return errors;
+type LoginFormProps = {
+    onSubmit: (data: { username: string; password: string }) => void;
 };
 
-const styles = {
-    alert: {
-        width: '100%',
-    },
-};
-export const LoginFormComponent = ({
-    // @ts-expect-error TS7031
-    error,
-    // @ts-expect-error TS7031
-    handleKeyPress,
-    // @ts-expect-error TS7031
-    handleSubmit,
-    // @ts-expect-error TS7031
-    p: polyglot,
-}) => (
-    <form id="login_form" onSubmit={handleSubmit}>
-        {error && (
-            <Alert style={styles.alert}>
-                <p>{polyglot.t(error)}</p>
-            </Alert>
-        )}
-        <Field
-            name="username"
-            component={FormTextField}
-            label={polyglot.t('Username')}
-            onKeyPress={handleKeyPress}
-            autoFocus
-            fullWidth
-            variant="standard"
-        />
-        <Field
-            name="password"
-            type="password"
-            component={FormTextField}
-            label={polyglot.t('Password')}
-            onKeyPress={handleKeyPress}
-            fullWidth
-            variant="standard"
-        />
-    </form>
-);
+export const LoginFormComponent = ({ onSubmit }: LoginFormProps) => {
+    const { translate } = useTranslate();
+    const { handleSubmit, control, formState } = useForm<{
+        username: string;
+        password: string;
+    }>({
+        mode: 'onChange',
+    });
 
-LoginFormComponent.propTypes = {
-    ...reduxFormPropTypes,
-    p: polyglotPropTypes.isRequired,
+    const { isSubmitting, isValid } = formState;
+
+    const requiredField = useMemo(
+        () => required(translate('error_field_required')),
+        [translate],
+    );
+    return (
+        <form id="login_form" onSubmit={handleSubmit(onSubmit)}>
+            <CardContent>
+                <TextField
+                    name="username"
+                    label={translate('Username')}
+                    control={control}
+                    validate={requiredField}
+                    autoFocus
+                    fullWidth
+                    variant="standard"
+                />
+                <TextField
+                    name="password"
+                    label={translate('Password')}
+                    type="password"
+                    control={control}
+                    validate={requiredField}
+                    fullWidth
+                    variant="standard"
+                />
+            </CardContent>
+            <CardActions>
+                {/* 
+                // @ts-expect-error TS2740 */}
+                <ButtonWithStatus
+                    loading={isSubmitting}
+                    type="submit"
+                    disabled={!isValid || isSubmitting}
+                    color="primary"
+                >
+                    {translate('Sign in')}
+                </ButtonWithStatus>
+            </CardActions>
+        </form>
+    );
 };
 
-export default compose(
-    translate,
-    reduxForm({
-        form: LOGIN_FORM_NAME,
-        validate,
-    }),
-    withHandlers({
-        // @ts-expect-error TS2322
-        handleKeyPress:
-            ({ handleSubmit }) =>
-            // @ts-expect-error TS7006
-            (event) => {
-                if (event.key === 'Enter') {
-                    handleSubmit();
-                }
-            },
-    }),
-    // @ts-expect-error TS2345
-)(LoginFormComponent);
+export default LoginFormComponent;
