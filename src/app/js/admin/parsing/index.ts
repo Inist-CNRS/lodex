@@ -12,7 +12,7 @@ export const HIDE_ADD_COLUMNS = 'HIDE_ADD_COLUMNS';
 export const showAddFromColumn = createAction(SHOW_ADD_COLUMNS);
 export const hideAddColumns = createAction(HIDE_ADD_COLUMNS);
 
-type ParsingState = {
+export type ParsingState = {
     error: Error | false;
     excerptLines: Array<Record<string, unknown>>;
     precomputed: Array<{ _id: string; status: string }>;
