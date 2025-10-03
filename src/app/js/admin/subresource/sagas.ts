@@ -35,7 +35,6 @@ export function* handleLoadSubresourcesRequest() {
 export function* handleCreateSubresource({ payload: { resource, callback } }) {
     // @ts-expect-error TS7057
     const request = yield select(
-        // @ts-expect-error TS2339
         fromUser.getCreateSubresourceRequest,
         resource,
     );
@@ -58,7 +57,6 @@ export function* handleCreateSubresource({ payload: { resource, callback } }) {
 export function* handleUpdateSubresource({ payload: resource }) {
     // @ts-expect-error TS7057
     const request = yield select(
-        // @ts-expect-error TS2339
         fromUser.getUpdateSubresourceRequest,
         resource,
     );

@@ -552,9 +552,7 @@ ParsingResultComponent.propTypes = {
 
 // @ts-expect-error TS7006
 const mapStateToProps = (state) => ({
-    // @ts-expect-error TS2339
     loadingParsingResult: fromParsing.isParsingLoading(state),
-    // @ts-expect-error TS2339
     enrichments: fromEnrichments.enrichments(state),
 });
 

@@ -19,7 +19,6 @@ describe('parsing saga', () => {
 
         it('should select getLoadParsingResultRequest', () => {
             expect(saga.next().value).toEqual(
-                // @ts-expect-error TS2339
                 select(fromUser.getLoadParsingResultRequest),
             );
         });

@@ -85,7 +85,6 @@ TransformerArgs.propTypes = {
 
 // @ts-expect-error TS7006
 const mapStateToProps = (state, { operation }) => ({
-    // @ts-expect-error TS2339
     availableArgs: fromFields.getTransformerArgs(state, operation),
 });
 

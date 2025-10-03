@@ -150,31 +150,24 @@ describe('search sagas', () => {
     describe('doSearchRequest', () => {
         it('should retrieve query, facets, inverted facets, annotations filter, visited filter and sort', () => {
             const gen = doSearchRequest();
-            // @ts-expect-error TS2339
             expect(gen.next().value).toEqual(select(fromSearch.getQuery));
             expect(gen.next('queryValue').value).toEqual(
-                // @ts-expect-error TS2339
                 select(fromSearch.getAnnotationsFilter),
             );
             expect(gen.next('my-annotations').value).toEqual(
-                // @ts-expect-error TS2339
                 select(fromSearch.getVisitedFilter),
             );
             expect(gen.next(null).value).toEqual(
-                // @ts-expect-error TS2339
                 select(fromSearch.getResourceUrisWithAnnotationFilter),
             );
             expect(gen.next(['uri1', 'uri2']).value).toEqual(
                 call(getVisitedUris),
             );
-            // @ts-expect-error TS2339
             expect(gen.next([]).value).toEqual(select(fromSearch.getSort));
             expect(gen.next('sortData').value).toEqual(
-                // @ts-expect-error TS2339
                 select(fromSearch.getAppliedFacets),
             );
             expect(gen.next({}).value).toEqual(
-                // @ts-expect-error TS2339
                 select(fromSearch.getInvertedFacetKeys),
             );
             expect(gen.next(['inverted', 'facet', 'keys']).value).toEqual(
@@ -197,7 +190,6 @@ describe('search sagas', () => {
                     resourceUris: ['uri1', 'uri2'],
                 }).value,
             ).toEqual(
-                // @ts-expect-error TS2339
                 select(fromUser.getLoadDatasetPageRequest, {
                     match: 'queryValue',
                     sort: 'sortData',
@@ -218,27 +210,21 @@ describe('search sagas', () => {
 
         it('should parse appliedFacet', () => {
             const gen = doSearchRequest();
-            // @ts-expect-error TS2339
             expect(gen.next().value).toEqual(select(fromSearch.getQuery));
             expect(gen.next('queryValue').value).toEqual(
-                // @ts-expect-error TS2339
                 select(fromSearch.getAnnotationsFilter),
             );
             expect(gen.next(null).value).toEqual(
-                // @ts-expect-error TS2339
                 select(fromSearch.getVisitedFilter),
             );
             expect(gen.next(null).value).toEqual(
-                // @ts-expect-error TS2339
                 select(fromSearch.getResourceUrisWithAnnotationFilter),
             );
             expect(gen.next(['uri1', 'uri2']).value).toEqual(
                 call(getVisitedUris),
             );
-            // @ts-expect-error TS2339
             expect(gen.next([]).value).toEqual(select(fromSearch.getSort));
             expect(gen.next('sortData').value).toEqual(
-                // @ts-expect-error TS2339
                 select(fromSearch.getAppliedFacets),
             );
             expect(
@@ -246,7 +232,6 @@ describe('search sagas', () => {
                     appliedFacet1: [{ id: '1' }, { id: '2' }],
                     appliedFacet2: [{ id: '3' }, { id: '4' }],
                 }).value,
-                // @ts-expect-error TS2339
             ).toEqual(select(fromSearch.getInvertedFacetKeys));
             expect(gen.next(['inverted', 'facet', 'keys']).value).toEqual(
                 call(getAnnotationsFilter, {
@@ -262,7 +247,6 @@ describe('search sagas', () => {
                 }),
             );
             expect(gen.next({}).value).toEqual(
-                // @ts-expect-error TS2339
                 select(fromUser.getLoadDatasetPageRequest, {
                     match: 'queryValue',
                     sort: 'sortData',

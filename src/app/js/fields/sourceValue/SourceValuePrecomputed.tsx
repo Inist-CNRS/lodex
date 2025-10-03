@@ -144,9 +144,7 @@ const SourceValuePrecomputed = ({
 // @ts-expect-error TS7006
 const mapStateToProps = (state) => ({
     precomputedData: fromPrecomputed
-        // @ts-expect-error TS2339
         .precomputed(state)
-        // @ts-expect-error TS7006
         .sort((a, b) =>
             a.name.toLowerCase().localeCompare(b.name.toLowerCase()),
         ),

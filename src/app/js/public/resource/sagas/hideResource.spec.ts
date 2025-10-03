@@ -29,7 +29,6 @@ describe('handleHideResource', () => {
         // @ts-expect-error TS7005
         const next = saga.next({ reason: 'reason' });
         expect(next.value).toEqual(
-            // @ts-expect-error TS2339
             select(fromUser.getHideResourceRequest, {
                 uri: 'uri',
                 reason: 'reason',

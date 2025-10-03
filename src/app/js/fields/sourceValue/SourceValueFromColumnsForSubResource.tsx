@@ -85,7 +85,6 @@ export const mapStateToProps = (state, { selectedSubresourceUri }) => {
         // @ts-expect-error TS7006
         (s) => s._id === selectedSubresourceUri,
     );
-    // @ts-expect-error TS2339
     const [firstParsedLine] = fromParsing.getExcerptLines(state);
 
     if (!subresource || !firstParsedLine) {
@@ -101,7 +100,6 @@ export const mapStateToProps = (state, { selectedSubresourceUri }) => {
                     ? subresourceData[0]
                     : subresourceData) || {},
             ),
-            // @ts-expect-error TS2339
             ...[fromI18n.getPhrases(state)['other']],
         ].sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase())),
         subresourcePath: subresource.path,

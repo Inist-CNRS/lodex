@@ -19,7 +19,6 @@ describe('resource saga', () => {
     it('should select fromResource.getResourceLastVersion', () => {
         // @ts-expect-error TS7005
         const next = saga.next();
-        // @ts-expect-error TS2339
         expect(next.value).toEqual(select(fromResource.getResourceLastVersion));
     });
 
@@ -29,7 +28,6 @@ describe('resource saga', () => {
         // @ts-expect-error TS7005
         const next = saga.next({ field: 'oldValue', uri: 'uri' });
         expect(next.value).toEqual(
-            // @ts-expect-error TS2339
             select(fromUser.getSaveResourceRequest, {
                 resource: { field: 'value' },
                 field: { name: 'field' },

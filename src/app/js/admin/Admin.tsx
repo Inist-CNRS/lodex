@@ -64,13 +64,9 @@ AdminComponent.propTypes = {
 // @ts-expect-error TS7006
 const mapStateToProps = (state) => ({
     loadingParsingResult:
-        // @ts-expect-error TS2339
         fromParsing.isParsingLoading(state) ||
-        // @ts-expect-error TS2339
         fromUpload.isUploadPending(state),
-    // @ts-expect-error TS2339
     canUploadFile: fromParsing.canUpload(state),
-    // @ts-expect-error TS2339
     hasPublishedDataset: fromPublication.hasPublishedDataset(state),
 });
 
