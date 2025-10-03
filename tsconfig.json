@@ -25,6 +25,6 @@
         "noUncheckedSideEffectImports": true,
         "noImplicitAny": true
     },
-    "include": ["vite.config.ts", "src/api", "src/common", "src/app"],
-    "exclude": ["test-utils.tsx"]
+    "include": ["vite.config.ts", "test-utils.tsx", "src/api", "src/common", "src/app"],
+    "exclude": ["src/build", "src/app/build"]
 }
