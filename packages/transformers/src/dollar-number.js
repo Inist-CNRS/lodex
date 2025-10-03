@@ -4,7 +4,7 @@ import dollar from './dollar';
 /**
  * transformer une chaîne de caractères en nombre
  *
-* Exemple :
+ * Exemple :
  *
  * ```ini
  * [$NUMBER]

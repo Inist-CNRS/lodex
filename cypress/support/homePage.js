@@ -1,4 +1,4 @@
-export const checkCharacteristicsOrder = labels => {
+export const checkCharacteristicsOrder = (labels) => {
     labels.forEach((label, index) => {
         cy.get('.property')
             .eq(index)

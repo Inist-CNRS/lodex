@@ -1,0 +1,72 @@
+// @ts-expect-error TS6133
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import Helmet from 'react-helmet';
+import { CircularProgress } from '@mui/material';
+
+import fetch from '../lib/fetch';
+import { polyglot as polyglotPropTypes } from '../propTypes';
+
+export class CustomPage extends Component {
+    state = {};
+
+    UNSAFE_componentWillMount() {
+        // @ts-expect-error TS2339
+        const { pathname } = this.props.location;
+        fetch({
+            url: `/customPage/?page=${encodeURIComponent(
+                pathname.substring(1),
+            )}`,
+        })
+            // @ts-expect-error TS7031
+            .then(({ response, error }) => {
+                if (error) {
+                    throw error;
+                }
+                this.setState({
+                    html: response.html,
+                    scripts: response.scripts,
+                });
+            })
+            .catch(() => {
+                this.setState({ error: true });
+            });
+    }
+
+    render() {
+        // @ts-expect-error TS2339
+        const { html, scripts, error } = this.state;
+
+        if (error) {
+            return null;
+        }
+
+        if (!html) {
+            return <CircularProgress variant="indeterminate" />;
+        }
+
+        return (
+            <>
+                <Helmet>
+                    {/*
+                     // @ts-expect-error TS7006 */}
+                    {scripts.map((src, index) => (
+                        <script key={index} src={src} />
+                    ))}
+                </Helmet>
+                <div dangerouslySetInnerHTML={{ __html: html }} />
+            </>
+        );
+    }
+}
+
+// @ts-expect-error TS2339
+CustomPage.propTypes = {
+    link: PropTypes.string.isRequired,
+    location: PropTypes.shape({
+        pathname: PropTypes.string.isRequired,
+    }).isRequired,
+    p: polyglotPropTypes.isRequired,
+};
+
+export default CustomPage;

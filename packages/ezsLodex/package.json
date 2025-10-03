@@ -2,6 +2,7 @@
     "private": true,
     "type": "module",
     "name": "@ezs/lodex",
+    "type": "module",
     "description": "ezs dedicated statements for Lodex",
     "version": "1.17.0",
     "dependencies": {

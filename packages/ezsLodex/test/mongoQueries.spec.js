@@ -841,7 +841,7 @@ describe('mongo queries', () => {
                 });
         });
 
-        it('should return no results ', (done) => {
+        it('should return no results', (done) => {
             let res = [];
             from([
                 {
