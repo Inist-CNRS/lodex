@@ -5,7 +5,6 @@ import {
 import { render } from '@testing-library/react';
 import { createMemoryHistory } from 'history';
 import PropTypes from 'prop-types';
-import React from 'react';
 import { Provider } from 'react-redux';
 
 import userEvent from '@testing-library/user-event';
@@ -39,7 +38,7 @@ Wrapper.propTypes = {
     children: PropTypes.node.isRequired,
 };
 
-const customRender = (ui, options) =>
+const customRender = (ui: any, options: any) =>
     render(ui, { wrapper: Wrapper, ...options });
 
 export {
