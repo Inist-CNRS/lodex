@@ -150,11 +150,8 @@ DeleteFieldsButtonComponent.propTypes = {
 
 // @ts-expect-error TS7006
 const mapStateToProps = (state, { subresourceId, filter }) => ({
-    // @ts-expect-error TS2339
     isRemoveFieldListPending: fromFields.isRemoveFieldListPending(state),
-    // @ts-expect-error TS2339
     fields: fromFields.getEditingFields(state, { filter, subresourceId }),
-    // @ts-expect-error TS2339
     isFieldsLoading: fromFields.isLoading(state),
 });
 

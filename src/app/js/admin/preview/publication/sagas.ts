@@ -58,7 +58,6 @@ export function* handleRecomputePublication() {
     const isPublished = yield select(fromPublication.hasPublishedDataset);
     // @ts-expect-error TS7057
     const isEnableAutoPublication = yield select(
-        // @ts-expect-error TS2339
         fromConfigTenant.isEnableAutoPublication,
     );
 

@@ -14,7 +14,6 @@ describe('SearchResult', () => {
     });
 
     it('should render the search result using fieldNames as mapping and fields', () => {
-        // @ts-expect-error TS2554
         render(
             <MemoryRouter>
                 <SearchResult
@@ -55,7 +54,6 @@ describe('SearchResult', () => {
 
     it('should render the search result with no active class when resource uri is not in localStorage', () => {
         localStorage.setItem('default-viewed-resources', JSON.stringify([]));
-        // @ts-expect-error TS2554
         const { container } = render(
             <MemoryRouter>
                 <SearchResult
@@ -99,7 +97,6 @@ describe('SearchResult', () => {
             'default-viewed-resources',
             JSON.stringify(['resource/uri']),
         );
-        // @ts-expect-error TS2554
         const { container } = render(
             <MemoryRouter>
                 <SearchResult

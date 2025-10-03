@@ -50,7 +50,6 @@ export function* handleFinishUpload() {
 
         // @ts-expect-error TS7057
         const hasPublishedDataset = yield select(
-            // @ts-expect-error TS2339
             fromPublication.hasPublishedDataset,
         );
         if (hasPublishedDataset) {

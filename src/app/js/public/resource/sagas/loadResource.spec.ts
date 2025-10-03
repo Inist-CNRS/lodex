@@ -54,7 +54,6 @@ describe('resource saga', () => {
             // @ts-expect-error TS2345
             const next = saga.next('uri');
             expect(next.value).toEqual(
-                // @ts-expect-error TS2339
                 select(fromResource.isResourceLoaded, 'uri'),
             );
         });
@@ -94,7 +93,6 @@ describe('resource saga', () => {
             saga.next(false);
             const next = saga.next();
             expect(next.value).toEqual(
-                // @ts-expect-error TS2339
                 select(fromUser.getLoadResourceRequest, 'uri'),
             );
         });

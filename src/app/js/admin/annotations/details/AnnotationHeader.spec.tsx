@@ -6,7 +6,6 @@ import { AnnotationHeader } from './AnnotationHeader';
 
 describe('AnnotationHeader', () => {
     it('should render header for home page if resourceUri is "/"', () => {
-        // @ts-expect-error TS2554
         const wrapper = render(
             <TestI18N>
                 <AnnotationHeader
@@ -41,7 +40,6 @@ describe('AnnotationHeader', () => {
     });
 
     it('should render header for home page if resourceUri is null', () => {
-        // @ts-expect-error TS2554
         const wrapper = render(
             <TestI18N>
                 <AnnotationHeader
@@ -76,7 +74,6 @@ describe('AnnotationHeader', () => {
     });
 
     it('should render header for graphic page if resourceUri is a graph URI', () => {
-        // @ts-expect-error TS2554
         const wrapper = render(
             <TestI18N>
                 <AnnotationHeader
@@ -112,7 +109,6 @@ describe('AnnotationHeader', () => {
     });
 
     it('should render header for graphic page if resourceUri is null', () => {
-        // @ts-expect-error TS2554
         const wrapper = render(
             <TestI18N>
                 <AnnotationHeader
@@ -148,7 +144,6 @@ describe('AnnotationHeader', () => {
     });
 
     it('should render header for resource page', () => {
-        // @ts-expect-error TS2554
         const wrapper = render(
             <TestI18N>
                 <AnnotationHeader
@@ -191,7 +186,6 @@ describe('AnnotationHeader', () => {
     });
 
     it('should render title prefixed with comment when kind is comment', () => {
-        // @ts-expect-error TS2554
         const wrapper = render(
             <TestI18N>
                 <AnnotationHeader
@@ -228,7 +222,6 @@ describe('AnnotationHeader', () => {
     });
 
     it('should render title prefixed with removal when kind is removal', () => {
-        // @ts-expect-error TS2554
         const wrapper = render(
             <TestI18N>
                 <AnnotationHeader
@@ -265,7 +258,6 @@ describe('AnnotationHeader', () => {
     });
 
     it('should render header for deleted resource', () => {
-        // @ts-expect-error TS2554
         const wrapper = render(
             <TestI18N>
                 <AnnotationHeader

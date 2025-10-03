@@ -480,17 +480,11 @@ UploadComponent.propTypes = {
 
 // @ts-expect-error TS7006
 const mapStateToProps = (state) => ({
-    // @ts-expect-error TS2339
     url: fromUpload.getUrl(state),
-    // @ts-expect-error TS2339
     textContent: fromUpload.getTextContent(state),
-    // @ts-expect-error TS2339
     isUrlValid: fromUpload.isUrlValid(state),
-    // @ts-expect-error TS2339
     isUploading: fromUpload.isUploadPending(state),
-    // @ts-expect-error TS2339
     loaderName: fromUpload.getLoaderName(state),
-    // @ts-expect-error TS2339
     loaders: fromLoaders.getLoaders(state),
 });
 

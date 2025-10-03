@@ -183,13 +183,9 @@ ClearDialogComponent.propTypes = {
 
 // @ts-expect-error TS7006
 const mapStateToProps = (state) => ({
-    // @ts-expect-error TS2339
     succeeded: fromClear.hasClearSucceeded(state),
-    // @ts-expect-error TS2339
     hasFailed: fromClear.hasClearFailed(state),
-    // @ts-expect-error TS2339
     isLoading: fromClear.getIsLoading(state),
-    // @ts-expect-error TS2339
     hasPublishedDataset: fromPublication.hasPublishedDataset(state),
 });
 

@@ -73,7 +73,6 @@ describe('<ParsingExcerpt />', () => {
             { foo: 'foo1', bar: 'bar1' },
             { foo: 'foo2', bar: 'bar2' },
         ];
-        // @ts-expect-error TS2554
         const wrapper = render(
             // @ts-expect-error TS2739
             <ParsingExcerpt
@@ -92,7 +91,6 @@ describe('<ParsingExcerpt />', () => {
             { foo: 'foo1', bar: 'bar1' },
             { foo: 'foo2', bar: 'bar2' },
         ];
-        // @ts-expect-error TS2554
         const wrapper = render(
             // @ts-expect-error TS2739
             <ParsingExcerpt
@@ -144,7 +142,6 @@ describe('<ParsingExcerpt />', () => {
             },
         ];
 
-        // @ts-expect-error TS2554
         const wrapper = render(
             // @ts-expect-error TS2739
             <ParsingExcerpt
@@ -194,7 +191,6 @@ describe('<ParsingExcerpt />', () => {
                 ],
             },
         ];
-        // @ts-expect-error TS2554
         const wrapper = render(
             // @ts-expect-error TS2739
             <ParsingExcerpt
@@ -216,7 +212,6 @@ describe('<ParsingExcerpt />', () => {
             { foo: 'foo1', bar: 'bar1' },
             { foo: 'foo2', bar: 'bar2' },
         ];
-        // @ts-expect-error TS2554
         const wrapper = render(
             <TestI18N>
                 {/*
@@ -244,7 +239,6 @@ describe('<ParsingExcerpt />', () => {
             { foo: 'foo1', bar: 'bar1' },
             { foo: 'foo2', bar: 'bar2' },
         ];
-        // @ts-expect-error TS2554
         const wrapper = render(
             <TestI18N>
                 <ParsingExcerpt
@@ -304,7 +298,6 @@ describe('<ParsingExcerpt />', () => {
                 ],
             },
         ];
-        // @ts-expect-error TS2554
         const wrapper = render(
             <TestI18N>
                 <ParsingExcerpt

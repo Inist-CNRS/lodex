@@ -482,9 +482,7 @@ const mapStateToProps = (state) => {
     return {
         // sort by label asc
         fields: fromFields
-            // @ts-expect-error TS2339
             .getFields(state)
-            // @ts-expect-error TS7006
             .sort((a, b) => a.label.localeCompare(b.label)),
     };
 };

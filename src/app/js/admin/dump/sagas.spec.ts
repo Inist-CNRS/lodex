@@ -13,7 +13,6 @@ describe('dump sagas', () => {
             });
 
             expect(saga.next().value).toEqual(
-                // @ts-expect-error TS2339
                 select(fromUser.getDumpDatasetRequest, [
                     'field1',
                     'field2',
@@ -40,7 +39,6 @@ describe('dump sagas', () => {
             });
 
             expect(saga.next().value).toEqual(
-                // @ts-expect-error TS2339
                 select(fromUser.getDumpDatasetRequest, [
                     'field1',
                     'field2',

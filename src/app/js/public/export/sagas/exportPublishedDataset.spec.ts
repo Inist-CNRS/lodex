@@ -16,14 +16,12 @@ describe('export saga', () => {
 
         it('should select fromSearch.getAppliedFacets', () => {
             expect(saga.next().value).toEqual(
-                // @ts-expect-error TS2339
                 select(fromSearch.getAppliedFacets),
             );
         });
 
         it('should select fromSearch.getInvertedFacetKeys', () => {
             expect(saga.next().value).toEqual(
-                // @ts-expect-error TS2339
                 select(fromSearch.getInvertedFacetKeys),
             );
         });
@@ -39,14 +37,12 @@ describe('export saga', () => {
                         value: 'aFacetValue',
                     },
                 ]).value,
-                // @ts-expect-error TS2339
             ).toEqual(select(fromSearch.getQuery));
         });
 
         it('should select fromSearch.getSort', () => {
             // @ts-expect-error TS2345
             expect(saga.next('aFilter').value).toEqual(
-                // @ts-expect-error TS2339
                 select(fromSearch.getSort),
             );
         });
@@ -80,7 +76,6 @@ describe('export saga', () => {
         it('should select fromUser.getExportPublishedDatasetRequest', () => {
             // @ts-expect-error TS2345
             expect(saga.next('queryString').value).toEqual(
-                // @ts-expect-error TS2339
                 select(fromUser.getExportPublishedDatasetRequest, {
                     type: 'type',
                     queryString: 'queryString',
