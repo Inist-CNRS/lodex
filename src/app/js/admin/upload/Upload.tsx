@@ -34,6 +34,7 @@ import FormSourceCodeField from '../../lib/components/FormSourceCodeField';
 import { ConfirmPopup } from '../../lib/components/ConfirmPopup';
 import { useTranslate } from '../../i18n/I18NContext';
 import type { State } from '../reducers';
+import type { Loader } from './ListDialog';
 
 const styles = {
     button: {
@@ -153,21 +154,24 @@ const DroppingLoader = ({ text }: DroppingLoaderProps) => {
     );
 };
 
-type UploadComponentProps = {
-    history: any;
+export type UploadComponentProps = {
+    history: {
+        location: { pathname: string };
+        push: (path: string) => void;
+    };
     error: string | boolean;
     url: string;
     textContent: string;
     loaderName: string;
     isUrlValid: boolean;
     isUploading: boolean;
-    onChangeUrl: (e: any) => void;
+    onChangeUrl: React.ChangeEventHandler<HTMLInputElement>;
     onChangeTextContent: (e: string) => void;
     onChangeLoaderName: (val: string) => void;
     onFileLoad: (file: File) => void;
-    onUrlUpload: (...params: any) => void;
-    onTextUpload: (...params: any) => void;
-    loaders: Array<any>;
+    onUrlUpload: (...params: unknown[]) => void;
+    onTextUpload: (...params: unknown[]) => void;
+    loaders: Loader[];
     isFirstFile: boolean;
 };
 
