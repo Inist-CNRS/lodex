@@ -89,7 +89,6 @@ export const ExportDatasetButtonComponent = ({
                                                 aria-hidden={false}
                                                 aria-label={translate(
                                                     'remove_field_from_export',
-                                                    // @ts-expect-error TS2554
                                                     {
                                                         field: option,
                                                     },

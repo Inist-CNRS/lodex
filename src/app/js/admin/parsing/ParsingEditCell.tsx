@@ -197,8 +197,6 @@ const ButtonEditCellWithDropdown = ({ loading, handleChange }) => {
                             setOpen(false);
                         }}
                     >
-                        {/*
-                         // @ts-expect-error TS2554 */}
                         {translate('save_as', {
                             type: type,
                         })}
@@ -264,8 +262,6 @@ const ParsingEditCell = ({ cell, setToggleDrawer }) => {
                         fontWeight: 'initial',
                     }}
                 >
-                    {/*
-                     // @ts-expect-error TS2554 */}
                     {translate('dataset_edit_enrichment_title', {
                         column_name: cell.field,
                         row_name: cell?.row?.uri || cell?.row?.ark,

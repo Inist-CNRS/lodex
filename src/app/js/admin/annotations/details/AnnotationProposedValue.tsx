@@ -62,7 +62,6 @@ export function AnnotationProposedValue({ proposedValue, field }) {
 
                 const userProvidedValueDescription = translate(
                     'annotation_user_provided_value',
-                    // @ts-expect-error TS2554
                     { value },
                 );
 
