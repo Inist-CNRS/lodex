@@ -6,30 +6,23 @@ import { ADMIN_ROLE } from '../../../common/tools/tenantTools';
 import getQueryString from '../lib/getQueryString';
 
 export const LOGIN_FORM_NAME = 'login';
-export const TOGGLE_LOGIN = 'TOGGLE_LOGIN';
 export const LOGIN = 'LOGIN';
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 export const LOGOUT = 'LOGOUT';
 export const SIGNOUT = 'SIGNOUT';
 
 type UserState = {
-    showModal: boolean;
     token: string | null;
     role?: 'admin' | 'root' | null;
     cookie?: string | null;
 };
 
 export const defaultState: UserState = {
-    showModal: false,
     token: null,
 };
 
 export default handleActions<UserState, any>(
     {
-        TOGGLE_LOGIN: (state: UserState) => ({
-            ...state,
-            showModal: !state.showModal,
-        }),
         LOGIN_SUCCESS: (state, { payload: { token, role } }) => ({
             ...state,
             showModal: false,
@@ -52,7 +45,6 @@ export default handleActions<UserState, any>(
     defaultState,
 );
 
-export const toggleLogin = createAction(TOGGLE_LOGIN);
 export const login = createAction(LOGIN);
 export const loginSuccess = createAction(LOGIN_SUCCESS);
 export const logout = createAction(LOGOUT);
@@ -62,7 +54,6 @@ export const isAdmin = (state: UserState) => state.role === ADMIN_ROLE;
 export const getRole = (state: UserState) => state.role || 'not logged';
 export const getToken = (state: UserState) => state.token;
 export const getCookie = (state: UserState) => state.cookie;
-export const isUserModalShown = (state: UserState) => state.showModal;
 
 type RequestProps = {
     body?: Record<string, unknown> | string | null;
@@ -948,7 +939,6 @@ export const selectors = {
     getToken,
     getCookie,
     getRequest,
-    isUserModalShown,
     getLoginRequest,
     getLogoutRequest,
     getClearUploadRequest,
