@@ -23,7 +23,6 @@ describe('format sagas', () => {
                 payload: { filter: 'filter' },
             });
             expect(it.next()).toEqual({
-                // @ts-expect-error TS2339
                 value: select(fromFormat.getCurrentFieldNames),
                 done: false,
             });
@@ -41,7 +40,6 @@ describe('format sagas', () => {
                 payload: { filter: 'filter' },
             });
             expect(it.next()).toEqual({
-                // @ts-expect-error TS2339
                 value: select(fromFormat.getCurrentFieldNames),
                 done: false,
             });
@@ -56,25 +54,21 @@ describe('format sagas', () => {
         it('should call loadFormatData with request for given field name', () => {
             const it = loadFormatDataForName('name', { filter: 'data' });
             expect(it.next()).toEqual({
-                // @ts-expect-error TS2339
                 value: select(fromFields.getFieldByName, 'name'),
                 done: false,
             });
             expect(it.next({ scope: SCOPE_DATASET })).toEqual({
                 value: select(
-                    // @ts-expect-error TS2339
                     fromCharacteristic.getCharacteristicByName,
                     'name',
                 ),
                 done: false,
             });
             expect(it.next('url')).toEqual({
-                // @ts-expect-error TS2339
                 value: select(fromFields.getGraphFieldParamsByName, 'name'),
                 done: false,
             });
             expect(it.next({ params: 'data' })).toEqual({
-                // @ts-expect-error TS2339
                 value: select(fromDataset.getAppliedFacets),
                 done: false,
             });
@@ -83,12 +77,10 @@ describe('format sagas', () => {
                     facetName: [{ value: 'facetValue', count: 1, id: 'id' }],
                 }),
             ).toEqual({
-                // @ts-expect-error TS2339
                 value: select(fromDataset.getInvertedFacetKeys),
                 done: false,
             });
             expect(it.next('invertedFacets')).toEqual({
-                // @ts-expect-error TS2339
                 value: select(fromDataset.getFilter),
                 done: false,
             });
@@ -118,7 +110,6 @@ describe('format sagas', () => {
         it('should not call loadFormatData if field scope is not dataset', () => {
             const it = loadFormatDataForName('name', { filter: 'data' });
             expect(it.next()).toEqual({
-                // @ts-expect-error TS2339
                 value: select(fromFields.getFieldByName, 'name'),
                 done: false,
             });
@@ -137,7 +128,6 @@ describe('format sagas', () => {
                 done: false,
             });
             expect(it.next('other')).toEqual({
-                // @ts-expect-error TS2339
                 value: select(fromUser.getUrlRequest, {
                     url: 'url',
                     queryString: 'queryString',
@@ -163,7 +153,6 @@ describe('format sagas', () => {
                 done: false,
             });
             expect(it.next('sparql')).toEqual({
-                // @ts-expect-error TS2339
                 value: select(fromUser.getSparqlRequest, {
                     url: 'https://data.istex.fr/sparql/',
                     body: 'query=select * where {?s ?c ?d }',
@@ -183,7 +172,6 @@ describe('format sagas', () => {
                 done: false,
             });
             expect(it.next('istex')).toEqual({
-                // @ts-expect-error TS2339
                 value: select(fromUser.getIstexRequest, {
                     url: 'url',
                     queryString: 'queryString',
@@ -314,7 +302,6 @@ describe('format sagas', () => {
             expect(iterator.next()).toEqual({
                 done: false,
                 value: select(
-                    // @ts-expect-error TS2339
                     fromFields.getGraphFieldParamsByName,
                     'fieldName',
                 ),
@@ -361,7 +348,6 @@ describe('format sagas', () => {
             expect(iterator.next()).toEqual({
                 done: false,
                 value: select(
-                    // @ts-expect-error TS2339
                     fromFields.getGraphFieldParamsByName,
                     'fieldName',
                 ),

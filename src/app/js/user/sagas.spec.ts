@@ -22,7 +22,6 @@ describe('user saga', () => {
 
         it('should select getLoginRequest', () => {
             expect(saga.next().value).toEqual(
-                // @ts-expect-error TS2339
                 select(fromUser.getLoginRequest, {
                     username: 'foo',
                     password: 'pwd',

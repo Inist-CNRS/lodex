@@ -14,7 +14,6 @@ describe('fields saga', () => {
 
         it('should select getLoadFieldRequest', () => {
             expect(saga.next().value).toEqual(
-                // @ts-expect-error TS2339
                 select(fromUser.getLoadFieldRequest),
             );
         });

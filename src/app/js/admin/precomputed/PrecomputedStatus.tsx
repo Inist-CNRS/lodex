@@ -1,5 +1,5 @@
 import { Chip } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import getLocale from '../../../../common/getLocale';
 import {
     FINISHED,

@@ -23,13 +23,11 @@ describe('field saga', () => {
 
         it('should select fromParsing.getExcerptLines', () => {
             expect(saga.next('fieldFormData').value).toEqual(
-                // @ts-expect-error TS2339
                 select(fromParsing.getExcerptLines),
             );
         });
 
         it('should select getToken', () => {
-            // @ts-expect-error TS2339
             expect(saga.next(lines).value).toEqual(select(fromUser.getToken));
         });
 

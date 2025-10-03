@@ -6,7 +6,6 @@ import { ResourceTitleCell } from './ResourceTitleCell';
 
 describe('ResourceTitleCell', () => {
     it('should render be empty when resourceUri is null', () => {
-        // @ts-expect-error TS2554
         const wrapper = render(
             <TestI18N>
                 <ResourceTitleCell
@@ -22,7 +21,6 @@ describe('ResourceTitleCell', () => {
     });
 
     it('should render be empty when field scope is graphic', () => {
-        // @ts-expect-error TS2554
         const wrapper = render(
             <TestI18N>
                 <ResourceTitleCell
@@ -42,7 +40,6 @@ describe('ResourceTitleCell', () => {
     });
 
     it('should render annotation_resource_not_found message when resource is null', () => {
-        // @ts-expect-error TS2554
         const wrapper = render(
             <TestI18N>
                 <ResourceTitleCell
@@ -60,7 +57,6 @@ describe('ResourceTitleCell', () => {
     });
 
     it('should render the resource title', () => {
-        // @ts-expect-error TS2554
         const wrapper = render(
             <TestI18N>
                 <ResourceTitleCell

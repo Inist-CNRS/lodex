@@ -12,7 +12,6 @@ describe('publication saga', () => {
 
         it('should select getPublishRequest', () => {
             expect(saga.next().value).toEqual(
-                // @ts-expect-error TS2339
                 select(fromUser.getPublishRequest),
             );
         });

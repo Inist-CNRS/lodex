@@ -93,12 +93,10 @@ CompositeFieldInputComponent.defaultProps = {
 // @ts-expect-error TS7006
 const mapStateToProps = (state, { field }) => ({
     rootField: {
-        // @ts-expect-error TS2339
         ...fromFields.getFieldByName(state, field.name),
         composedOf: null,
     },
     isRootFieldEditable: canBeDirectlyEdited(field.transformers),
-    // @ts-expect-error TS2339
     compositeFields: fromFields.getCompositeFieldsByField(state, field),
 });
 

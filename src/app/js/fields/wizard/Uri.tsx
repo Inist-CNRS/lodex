@@ -53,7 +53,6 @@ UriComponent.propTypes = {
 
 // @ts-expect-error TS7006
 const mapStateToProps = (state, { currentEditedField }) => ({
-    // @ts-expect-error TS2339
     datasetFields: fromParsing.getParsedExcerptColumns(state),
     initialValues: currentEditedField,
     currentTransformers: formValueSelector(FIELD_FORM_NAME)(

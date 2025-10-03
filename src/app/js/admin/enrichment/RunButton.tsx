@@ -88,17 +88,12 @@ const mapDispatchToProps = {
 
 // @ts-expect-error TS7006
 const mapStateToProps = (state, { id }) => ({
-    areEnrichmentsRunning: !!fromEnrichments
-        // @ts-expect-error TS2339
-        .enrichments(state)
-        .find(
-            // @ts-expect-error TS7006
-            (enrichment) =>
-                enrichment.status === IN_PROGRESS ||
-                enrichment.status === ON_HOLD,
-        ),
+    areEnrichmentsRunning: !!fromEnrichments.enrichments(state).find(
+        // @ts-expect-error TS7006
+        (enrichment) =>
+            enrichment.status === IN_PROGRESS || enrichment.status === ON_HOLD,
+    ),
     enrichmentStatus: fromEnrichments
-        // @ts-expect-error TS2339
         .enrichments(state)
         // @ts-expect-error TS7031
         .find(({ _id }) => _id === id)?.status,

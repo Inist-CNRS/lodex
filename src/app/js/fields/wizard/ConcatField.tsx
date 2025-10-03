@@ -68,7 +68,6 @@ ConcatFieldComponent.defaultProps = {
 
 // @ts-expect-error TS7006
 const mapStateToProps = (state) => ({
-    // @ts-expect-error TS2339
     datasetFields: fromParsing.getParsedExcerptColumns(state),
 });
 
