@@ -1,10 +1,9 @@
-import React from 'react';
 import '@testing-library/jest-dom';
 import { render } from '../../../../test-utils';
 
-import { PrecomputedForm } from './PrecomputedForm';
+import { PrecomputedForm, type PrecomputedFormProps } from './PrecomputedForm';
 
-const defaultProps = {
+const defaultProps: PrecomputedFormProps = {
     datasetFields: ['field1', 'field2'],
     formValues: {
         name: '',
@@ -13,7 +12,6 @@ const defaultProps = {
         subPath: '',
     },
     history: { push: jest.fn() },
-    initialValues: {},
     onLaunchPrecomputed: jest.fn(),
     onLoadPrecomputedData: jest.fn(),
     isPrecomputedRunning: false,
@@ -41,7 +39,17 @@ describe('<PrecomputedForm />', () => {
         const screen = render(
             <PrecomputedForm
                 {...defaultProps}
-                initialValues={{ _id: '123', status: 'IN_PROGRESS' }}
+                initialValues={{
+                    _id: '123',
+                    status: 'IN_PROGRESS',
+                    data: {},
+                    name: 'test',
+                    jobId: 'job_123',
+                    webServiceUrl: 'http://example.com',
+                    sourceColumns: ['field1'],
+                    subPath: '',
+                    startedAt: '2025-01-01',
+                }}
             />,
         );
         expect(screen.getByText(/see_logs/i)).toBeInTheDocument();

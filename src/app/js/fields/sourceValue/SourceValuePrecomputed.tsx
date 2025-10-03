@@ -10,6 +10,7 @@ import { Autocomplete, Box, Button, TextField } from '@mui/material';
 import { toast } from 'react-toastify';
 import RoutineCatalogAutocomplete from '../wizard/RoutineCatalogAutocomplete';
 import { translate } from '../../i18n/I18NContext';
+import type { State } from '../../admin/reducers';
 
 const SourceValuePrecomputed = ({
     // @ts-expect-error TS7031
@@ -141,8 +142,7 @@ const SourceValuePrecomputed = ({
     );
 };
 
-// @ts-expect-error TS7006
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: State) => ({
     precomputedData: fromPrecomputed
         .precomputed(state)
         .sort((a, b) =>

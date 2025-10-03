@@ -1,5 +1,3 @@
-import React from 'react';
-
 import enrichers from '../../../custom/enrichers/enrichers-catalog.json';
 import Catalog from '../../lib/components/Catalog';
 

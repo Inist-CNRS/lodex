@@ -129,7 +129,6 @@ describe('user reducer', () => {
                 'field%with%percent',
                 'field#with#hash',
             ]);
-            console.log(result.url);
             expect(result).toEqual({
                 url: '/api/dump?fields%5B%5D=field+%26+cie&fields%5B%5D=another+field&fields%5B%5D=%3D%3D+field+%3D%3D&fields%5B%5D=field%2Fwith%2Fslash&fields%5B%5D=field%3Fwith%3Fquestion&fields%5B%5D=field%2Bwith%2Bplus&fields%5B%5D=field%2Cwith%2Ccomma&fields%5B%5D=field%25with%25percent&fields%5B%5D=field%23with%23hash',
                 method: 'GET',
