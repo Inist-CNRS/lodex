@@ -1,5 +1,5 @@
 import { Button, type ButtonProps } from '@mui/material';
-import React, { type MouseEvent, useState } from 'react';
+import { type MouseEvent, useState } from 'react';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import {
     IN_PROGRESS,

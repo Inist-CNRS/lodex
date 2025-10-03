@@ -156,15 +156,10 @@ RemovedResourceListComponent.propTypes = {
 
 // @ts-expect-error TS7006
 const mapStateToProps = (state) => ({
-    // @ts-expect-error TS2339
     loading: fromRemovedResources.isRemovedResourceLoading(state),
-    // @ts-expect-error TS2339
     columns: fromFields.getCollectionFields(state),
-    // @ts-expect-error TS2339
     currentPage: fromRemovedResources.getRemovedResourceCurrentPage(state),
-    // @ts-expect-error TS2339
     resources: fromRemovedResources.getRemovedResourceItems(state),
-    // @ts-expect-error TS2339
     total: fromRemovedResources.getRemovedResourceTotal(state),
 });
 

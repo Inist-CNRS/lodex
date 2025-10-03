@@ -226,13 +226,10 @@ TransformerUpsertDialog.propTypes = {
 
 // @ts-expect-error TS7006
 const mapStateToProps = (state, { type }) => {
-    // @ts-expect-error TS2339
     const transformers = fromFields.getTransformers(state, type);
     return {
-        // @ts-expect-error TS7031
         availableTransformers: transformers.map(({ name }) => name),
         docUrlByTransformer: transformers.reduce(
-            // @ts-expect-error TS7006
             (acc, { name, docUrl }) => ({
                 ...acc,
                 [name]: docUrl,

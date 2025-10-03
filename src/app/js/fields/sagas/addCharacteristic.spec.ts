@@ -30,7 +30,6 @@ describe('characteristic saga', () => {
         it('should select getAddCharacteristicsRequest if field is valid', () => {
             // @ts-expect-error TS2345
             expect(saga.next(true).value).toEqual(
-                // @ts-expect-error TS2339
                 select(fromUser.getAddCharacteristicRequest, 'form data'),
             );
         });

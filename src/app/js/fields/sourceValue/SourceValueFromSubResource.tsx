@@ -207,7 +207,6 @@ const SourceValueFromSubResource = ({
 // @ts-expect-error TS7006
 export const mapStateToProps = (state) => {
     const { subresources } = state.subresource;
-    // @ts-expect-error TS2339
     const [firstParsedLine] = fromParsing.getExcerptLines(state);
 
     return { subresources, firstParsedLine };

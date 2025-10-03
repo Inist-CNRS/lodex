@@ -220,13 +220,9 @@ ParsingExcerptComponent.defaultProps = {
 
 // @ts-expect-error TS7006
 const mapStateToProps = (state) => ({
-    // @ts-expect-error TS2339
     enrichments: fromEnrichments.enrichments(state),
-    // @ts-expect-error TS2339
     columns: fromParsing.getParsedExcerptColumns(state),
-    // @ts-expect-error TS2339
     lines: fromParsing.getExcerptLines(state),
-    // @ts-expect-error TS2339
     subresources: fromSubresources.getSubresources(state),
 });
 

@@ -34,7 +34,6 @@ export function* handleLoadEnrichmentsRequest() {
 export function* handleLaunchEnrichment({ payload: enrichment }) {
     // @ts-expect-error TS7057
     const enrichmentActionRequest = yield select(
-        // @ts-expect-error TS2339
         fromUser.getEnrichmentActionRequest,
         {
             action: enrichment.action || 'launch',
@@ -54,7 +53,6 @@ export function* handleLaunchAllEnrichment() {
     try {
         // @ts-expect-error TS7057
         const enrichmentLaunchAllRequest = yield select(
-            // @ts-expect-error TS2339
             fromUser.getEnrichmentLaunchAllRequest,
         );
 
@@ -80,7 +78,6 @@ export function* handleLaunchAllEnrichment() {
 export function* handleRetryEnrichment({ payload: { id } }) {
     // @ts-expect-error TS7057
     const enrichmentRetryRequest = yield select(
-        // @ts-expect-error TS2339
         fromUser.getEnrichmentRetryRequest,
         {
             id,

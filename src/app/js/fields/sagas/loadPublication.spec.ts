@@ -14,7 +14,6 @@ describe('publication saga', () => {
     describe('handleLoadPublicationRequest', () => {
         it('should select getNbFields', () => {
             const saga = handleLoadPublicationRequest();
-            // @ts-expect-error TS2339
             expect(saga.next().value).toEqual(select(fromFields.getNbFields));
         });
 
@@ -38,7 +37,6 @@ describe('publication saga', () => {
             // @ts-expect-error TS2345
             saga.next(0);
             expect(saga.next().value).toEqual(
-                // @ts-expect-error TS2339
                 select(fromUser.getLoadPublicationRequest),
             );
         });

@@ -70,26 +70,16 @@ export const withInitialDataHoc = (
 // @ts-expect-error TS7006
 export const mapStateToProps = (state) => ({
     isInitialized:
-        // @ts-expect-error TS2339
         fromParsing.isInitialized(state) ||
-        // @ts-expect-error TS2339
         fromPublication.isInitialized(state) ||
-        // @ts-expect-error TS2339
         fromSubresources.isInitialized(state) ||
-        // @ts-expect-error TS2339
         fromPrecomputed.isInitialized(state) ||
-        // @ts-expect-error TS2339
         fromConfigTenant.isInitialized(state),
     isLoading:
-        // @ts-expect-error TS2339
         fromParsing.isParsingLoading(state) ||
-        // @ts-expect-error TS2339
         fromPublication.isPublicationLoading(state) ||
-        // @ts-expect-error TS2339
         fromSubresources.isLoading(state) ||
-        // @ts-expect-error TS2339
         fromPrecomputed.isLoading(state) ||
-        // @ts-expect-error TS2339
         fromConfigTenant.isLoading(state),
 });
 

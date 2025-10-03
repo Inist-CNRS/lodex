@@ -182,17 +182,11 @@ DatasetComponent.defaultProps = {
 
 // @ts-expect-error TS7006
 const mapStateToProps = (state) => ({
-    // @ts-expect-error TS2339
     loading: fromDataset.isDatasetLoading(state),
-    // @ts-expect-error TS2339
     columns: fromFields.getListFields(state),
-    // @ts-expect-error TS2339
     currentPage: fromDataset.getDatasetCurrentPage(state),
-    // @ts-expect-error TS2339
     perPage: fromDataset.getDatasetPerPage(state),
-    // @ts-expect-error TS2339
     dataset: fromDataset.getDataset(state),
-    // @ts-expect-error TS2339
     total: fromDataset.getDatasetTotal(state),
 });
 

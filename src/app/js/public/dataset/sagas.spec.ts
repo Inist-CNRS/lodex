@@ -21,7 +21,6 @@ describe('dataset saga', () => {
 
         it('should select fromDataset.getAppliedFacets', () => {
             expect(saga.next().value).toEqual(
-                // @ts-expect-error TS2339
                 select(fromDataset.getAppliedFacets),
             );
         });
@@ -31,20 +30,17 @@ describe('dataset saga', () => {
                 saga.next({
                     aFacet: [{ value: 'aFacetValue', count: 1, id: 'id' }],
                 }).value,
-                // @ts-expect-error TS2339
             ).toEqual(select(fromDataset.getInvertedFacetKeys));
         });
 
         it('should select fromDataset.getFilter', () => {
             expect(saga.next(['facet']).value).toEqual(
-                // @ts-expect-error TS2339
                 select(fromDataset.getFilter),
             );
         });
 
         it('should select fromDataset.getSort', () => {
             expect(saga.next('aFilter').value).toEqual(
-                // @ts-expect-error TS2339
                 select(fromDataset.getSort),
             );
         });
@@ -52,20 +48,17 @@ describe('dataset saga', () => {
         it('should select fromDataset.getDatasetCurrentPage', () => {
             expect(
                 saga.next({ sortBy: 'field', sortDir: 'ASC' }).value,
-                // @ts-expect-error TS2339
             ).toEqual(select(fromDataset.getDatasetCurrentPage));
         });
 
         it('should select fromDataset.getDatasetPerPage', () => {
             expect(saga.next(10).value).toEqual(
-                // @ts-expect-error TS2339
                 select(fromDataset.getDatasetPerPage),
             );
         });
 
         it('should select getLoadDatasetPageRequest', () => {
             expect(saga.next(20).value).toEqual(
-                // @ts-expect-error TS2339
                 select(fromUser.getLoadDatasetPageRequest, {
                     match: 'aFilter',
                     facets: {
@@ -131,7 +124,6 @@ describe('dataset saga', () => {
             const saga = handlePreLoadDatasetPage();
             const next = saga.next();
 
-            // @ts-expect-error TS2339
             expect(next.value).toEqual(select(fromDataset.isDatasetLoaded));
         });
 

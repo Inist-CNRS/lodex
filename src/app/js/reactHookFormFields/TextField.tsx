@@ -1,4 +1,3 @@
-import React from 'react';
 import {
     TextField as MuiTextField,
     type TextFieldProps as MuiTextFieldProps,

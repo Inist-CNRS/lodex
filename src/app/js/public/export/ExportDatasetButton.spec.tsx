@@ -28,7 +28,6 @@ describe('ExportDatasetButton', () => {
     it('should render a export button, opening a model with all fields preselected, confirming call dumpDataset with them', async () => {
         const dumpDataset = jest.fn();
         const onDone = jest.fn();
-        // @ts-expect-error TS2554
         const wrapper = render(
             <TestExportDatasetButton
                 dumpDataset={dumpDataset}
@@ -67,7 +66,6 @@ describe('ExportDatasetButton', () => {
     it('should allow to unselect some field before export', async () => {
         const dumpDataset = jest.fn();
         const onDone = jest.fn();
-        // @ts-expect-error TS2554
         const wrapper = render(
             <TestExportDatasetButton
                 dumpDataset={dumpDataset}
@@ -97,7 +95,6 @@ describe('ExportDatasetButton', () => {
     it('should allow to unselect all field with the clear_all button, this disable the confirm button, until at least one is selected', async () => {
         const dumpDataset = jest.fn();
         const onDone = jest.fn();
-        // @ts-expect-error TS2554
         const wrapper = render(
             <TestExportDatasetButton
                 dumpDataset={dumpDataset}
@@ -133,7 +130,6 @@ describe('ExportDatasetButton', () => {
     it('should allow to readd all field with the select_all button', async () => {
         const dumpDataset = jest.fn();
         const onDone = jest.fn();
-        // @ts-expect-error TS2554
         const wrapper = render(
             <TestExportDatasetButton
                 dumpDataset={dumpDataset}
@@ -170,7 +166,6 @@ describe('ExportDatasetButton', () => {
     it('should allow to remove target field with their remove button', async () => {
         const dumpDataset = jest.fn();
         const onDone = jest.fn();
-        // @ts-expect-error TS2554
         const wrapper = render(
             <TestExportDatasetButton
                 dumpDataset={dumpDataset}
@@ -214,7 +209,6 @@ describe('ExportDatasetButton', () => {
             const dumpDataset = jest.fn();
             const onDone = jest.fn();
             const wrapper = await waitFor(() => {
-                // @ts-expect-error TS2554
                 return render(
                     <TestI18N>
                         <ExportDatasetButtonWithFetch
