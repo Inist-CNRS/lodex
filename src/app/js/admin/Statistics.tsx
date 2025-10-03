@@ -41,8 +41,6 @@ export const StatisticsComponent = ({ isComputing, totalPublishedFields }) => {
                 />
             )}
             <Box sx={styles.item}>
-                {/*
-                 // @ts-expect-error TS2554 */}
                 {translate('publication_summary_fields', {
                     smart_count: totalPublishedFields,
                 })}

@@ -37,7 +37,6 @@ export function useImportAnnotations() {
 
             if (response.failedImports.length === 0) {
                 return toast(
-                    // @ts-expect-error TS2554
                     translate('annotations_import_success', {
                         // @ts-expect-error TS2339
                         filename: file.name,
@@ -55,7 +54,6 @@ export function useImportAnnotations() {
                 }),
             );
             return toast(
-                // @ts-expect-error TS2554
                 translate('annotations_import_failed_imports', {
                     smart_count: response.failedImports.length,
                     filename: errorFilename,

@@ -184,8 +184,7 @@ export const ParsingResultComponent = (props) => {
                     return {
                         field: key,
                         headerName: errorCount
-                            ? // @ts-expect-error TS2554
-                              translate('header_name_with_errors', {
+                            ? translate('header_name_with_errors', {
                                   name: key,
                                   errorCount,
                               })
@@ -369,8 +368,6 @@ export const ParsingResultComponent = (props) => {
                         }}
                     >
                         <Box sx={styles.footerItemText}>
-                            {/*
-                             // @ts-expect-error TS2554 */}
                             {translate('parsing_summary_columns', {
                                 smart_count: numberOfColumns(COLUMN_TYPE.MAIN),
                             })}
@@ -395,8 +392,6 @@ export const ParsingResultComponent = (props) => {
                         }}
                     >
                         <Box sx={styles.footerItemText}>
-                            {/*
-                             // @ts-expect-error TS2554 */}
                             {translate('parsing_enriched_columns', {
                                 smart_count: numberOfColumns(
                                     COLUMN_TYPE.ENRICHMENT,
