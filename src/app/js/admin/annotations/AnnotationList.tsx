@@ -255,7 +255,6 @@ export const AnnotationList = () => {
             },
             {
                 field: 'proposedValue',
-                // @ts-expect-error TS2554
                 headerName: translate('annotation_proposed_value', {
                     smart_count: 2,
                 }),

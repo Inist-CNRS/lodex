@@ -1,11 +1,22 @@
-import Polyglot from 'node-polyglot';
+import Polyglot, { type InterpolationOptions } from 'node-polyglot';
 import React, { createContext, useContext, useMemo } from 'react';
 import { connect } from 'react-redux';
 import { fromI18n } from '../public/selectors';
 import { setLanguage as setLanguageAction } from './index';
+import type { State } from '../admin/reducers';
 
-// @ts-expect-error TS7006
-const I18NContext = createContext({ translate: (_label) => '' });
+const I18NContext = createContext<{
+    translate: (
+        label: string,
+        option?: number | InterpolationOptions | undefined,
+    ) => string;
+    locale: 'fr' | 'en';
+    setLanguage: (lang: 'fr' | 'en') => void;
+}>({
+    translate: (_label: string, _option?: unknown) => '',
+    locale: 'en',
+    setLanguage: (_lang: 'fr' | 'en') => {},
+});
 
 type I18NComponentProps = {
     locale: 'fr' | 'en';
@@ -28,15 +39,13 @@ export const I18NComponent = ({
     }, [locale, phrases]);
 
     return (
-        // @ts-expect-error TS2353
         <I18NContext.Provider value={{ translate, locale, setLanguage }}>
             {children}
         </I18NContext.Provider>
     );
 };
 
-// @ts-expect-error TS7006
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: State) => ({
     phrases: fromI18n.getPhrases(state),
     locale: fromI18n.getLocale(state),
 });
@@ -55,8 +64,7 @@ export const TestI18N = ({ children }: TestI18NProps) => {
     return (
         <I18NContext.Provider
             value={{
-                // @ts-expect-error TS2322
-                translate: (v, options) =>
+                translate: (v: string, options: any) =>
                     options ? `${v}+${JSON.stringify(options)}` : v,
                 locale: 'en',
                 setLanguage: () => {},
@@ -73,19 +81,15 @@ export const useTranslate = () => {
     return context;
 };
 
-// @ts-expect-error TS7006
-const getDisplayName = (Component) =>
+const getDisplayName = (Component: { displayName?: string; name?: string }) =>
     Component.displayName || Component.name || 'Component';
 
 /**
  * @deprecated hoc created for retro compatibility purpose.
  * Please use useTranslate hook instead
  */
-// @ts-expect-error TS7006
-export const translate = (Component) => {
-    // @ts-expect-error TS7006
-    const Translated = (props) => {
-        // @ts-expect-error TS2339
+export const translate = (Component: React.ComponentType<any>) => {
+    const Translated = (props: Record<string, unknown>) => {
         const { translate, locale } = useTranslate();
 
         return (

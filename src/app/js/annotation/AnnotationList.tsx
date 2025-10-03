@@ -184,8 +184,6 @@ export const AnnotationList = ({ mode, setMode, annotations, field }) => {
         >
             <Stack>
                 <Typography variant="h5">
-                    {/*
-                     // @ts-expect-error TS2554 */}
                     {translate('annotation_history_for_field', {
                         fieldLabel: field.label,
                     })}
@@ -210,8 +208,6 @@ export const AnnotationList = ({ mode, setMode, annotations, field }) => {
                                 mode === MODE_ALL ? 'contained' : 'outlined'
                             }
                         >
-                            {/*
-                             // @ts-expect-error TS2554 */}
                             {translate('all_annotation', {
                                 smart_count: annotations.length,
                             })}
@@ -226,8 +222,6 @@ export const AnnotationList = ({ mode, setMode, annotations, field }) => {
                             }
                             disabled={myAnnotations.length === 0}
                         >
-                            {/*
-                             // @ts-expect-error TS2554 */}
                             {translate('annotation_sent_by_me', {
                                 smart_count: myAnnotations.length,
                             })}
@@ -410,7 +404,6 @@ export const AnnotationList = ({ mode, setMode, annotations, field }) => {
                                             >
                                                 {translate(
                                                     'annotation_proposed_value',
-                                                    // @ts-expect-error TS2554
                                                     {
                                                         smart_count:
                                                             Array.isArray(

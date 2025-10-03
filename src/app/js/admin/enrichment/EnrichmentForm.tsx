@@ -242,8 +242,6 @@ export const EnrichmentForm = ({
                             gap={2}
                             mb={2}
                         >
-                            {/*
-                             // @ts-expect-error TS2554 */}
                             {translate('enrichment_error_count', {
                                 errorCount: initialValues.errorCount ?? 0,
                             })}

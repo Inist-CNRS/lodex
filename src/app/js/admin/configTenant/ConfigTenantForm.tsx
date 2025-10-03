@@ -121,7 +121,6 @@ export const ConfigTenantFormView = ({
     // @ts-expect-error TS7031
     isSubmitting,
 }) => {
-    // @ts-expect-error TS2339
     const { translate, locale } = useTranslate();
 
     const form = useForm({
