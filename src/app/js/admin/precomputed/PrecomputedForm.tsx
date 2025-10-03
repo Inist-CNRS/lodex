@@ -301,7 +301,6 @@ export const PrecomputedForm = ({
                                         handleLaunchPrecomputed
                                     }
                                     precomputedStatus={precomputedStatus}
-                                    translate={translate}
                                 />
                             )}
                         </Box>
@@ -317,7 +316,6 @@ export const PrecomputedForm = ({
                                     {translate('precomputed_status')} : &nbsp;
                                     <PrecomputedStatus
                                         status={precomputedStatus}
-                                        translate={translate}
                                         startedAt={initialValues?.startedAt}
                                     />
                                 </Typography>

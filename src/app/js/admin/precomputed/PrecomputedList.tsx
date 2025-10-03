@@ -109,7 +109,6 @@ export const PrecomputedList = ({
                         renderCell: (params) => (
                             <PrecomputedStatus
                                 status={params.row.status}
-                                translate={translate}
                                 startedAt={params.row.startedAt}
                             />
                         ),
@@ -125,7 +124,6 @@ export const PrecomputedList = ({
                                         params.row,
                                     )}
                                     precomputedStatus={params.row.status}
-                                    translate={translate}
                                     variant="text"
                                 />
                             );

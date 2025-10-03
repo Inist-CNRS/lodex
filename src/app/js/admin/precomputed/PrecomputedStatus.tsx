@@ -11,6 +11,7 @@ import {
     ON_HOLD,
     type TaskStatus,
 } from '../../../../common/taskStatus';
+import { useTranslate } from '../../i18n/I18NContext';
 
 function getDisplayTimeStartedAt(startedAt: string) {
     if (!startedAt) {
@@ -76,15 +77,15 @@ export const StatusChip = ({
 
 type PrecomputedStatusProps = {
     status: TaskStatus | undefined;
-    translate: (key: string) => string;
     startedAt?: string | null;
 };
 
 export const PrecomputedStatus = ({
     status,
-    translate,
     startedAt = null,
 }: PrecomputedStatusProps) => {
+    const { translate } = useTranslate();
+
     if (status === PENDING) {
         return (
             <StatusChip
