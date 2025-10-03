@@ -1,5 +1,4 @@
 import reducer, {
-    defaultState,
     getParsedExcerptColumns,
     hasUploadedFile,
     loadParsingResult,
@@ -7,9 +6,22 @@ import reducer, {
     loadParsingResultSuccess,
     reloadParsingResult,
     cancelReload,
+    type ParsingState,
 } from './';
 
 describe('parsing reducer', () => {
+    const defaultState: ParsingState = {
+        allowUpload: true,
+        error: false,
+        excerptLines: [],
+        initialized: false,
+        loading: false,
+        parsing: false,
+        precomputed: [],
+        showAddFromColumn: false,
+        totalLoadedLines: 0,
+        totalParsedLines: 0,
+    };
     it('should initialize with correct state', () => {
         // @ts-expect-error TS2345
         const state = reducer(undefined, { type: '@@INIT' });
@@ -74,12 +86,15 @@ describe('parsing reducer', () => {
 
     describe('getParsedExcerptColumns', () => {
         it('should return an empty array if no excerptLines in state', () => {
-            expect(getParsedExcerptColumns({ excerptLines: [] })).toEqual([]);
+            expect(
+                getParsedExcerptColumns({ ...defaultState, excerptLines: [] }),
+            ).toEqual([]);
         });
 
         it('should return a list of columns from excerptLines', () => {
             expect(
                 getParsedExcerptColumns({
+                    ...defaultState,
                     excerptLines: [
                         {
                             key1: 'key1_value',
@@ -94,11 +109,15 @@ describe('parsing reducer', () => {
 
     describe('hasUploadedFile', () => {
         it('should return true if totalLoadedLines is truthy', () => {
-            expect(hasUploadedFile({ totalLoadedLines: 100 })).toBe(true);
+            expect(
+                hasUploadedFile({ ...defaultState, totalLoadedLines: 100 }),
+            ).toBe(true);
         });
 
         it('should return true if totalLoadedLines is falsy', () => {
-            expect(hasUploadedFile({ totalLoadedLines: 0 })).toBe(false);
+            expect(
+                hasUploadedFile({ ...defaultState, totalLoadedLines: 0 }),
+            ).toBe(false);
         });
     });
 });

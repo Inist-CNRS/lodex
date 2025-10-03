@@ -27,7 +27,6 @@ describe('import model saga', () => {
             // @ts-expect-error TS7005
             const { value } = saga.next();
 
-            // @ts-expect-error TS2339
             expect(value).toEqual(select(fromUser.getToken));
         });
 

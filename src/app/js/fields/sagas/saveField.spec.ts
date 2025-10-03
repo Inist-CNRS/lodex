@@ -30,7 +30,6 @@ describe('fields saga', () => {
             // @ts-expect-error TS2345
             expect(saga.next('sanitized field form data').value).toEqual(
                 select(
-                    // @ts-expect-error TS2339
                     fromUser.getSaveFieldRequest,
                     'sanitized field form data',
                 ),

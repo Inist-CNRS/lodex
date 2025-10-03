@@ -17,7 +17,6 @@ describe('fields saga', () => {
 
         it('should select fromFields.getFieldByName', () => {
             expect(saga.next().value).toEqual(
-                // @ts-expect-error TS2339
                 select(fromFields.getFieldByName, 'a_field_name'),
             );
         });
@@ -25,7 +24,6 @@ describe('fields saga', () => {
         it('should select getRemoveFieldRequest', () => {
             // @ts-expect-error TS2345
             expect(saga.next('field').value).toEqual(
-                // @ts-expect-error TS2339
                 select(fromUser.getRemoveFieldRequest, 'field'),
             );
         });

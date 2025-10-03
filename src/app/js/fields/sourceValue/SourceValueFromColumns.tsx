@@ -65,9 +65,7 @@ const SourceValueFromColumns = ({
 // @ts-expect-error TS7006
 const mapStateToProps = (state) => ({
     datasetFields: fromParsing
-        // @ts-expect-error TS2339
         .getParsedExcerptColumns(state)
-        // @ts-expect-error TS7006
         .sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase())),
 });
 

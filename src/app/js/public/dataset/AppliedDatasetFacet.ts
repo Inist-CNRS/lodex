@@ -9,9 +9,7 @@ import { facetActions } from '.';
 
 // @ts-expect-error TS7006
 const mapStateToProps = (state, { name }) => ({
-    // @ts-expect-error TS2339
     field: fromFields.getFieldByName(state, name),
-    // @ts-expect-error TS2339
     inverted: fromDataset.isFacetValuesInverted(state, name),
 });
 

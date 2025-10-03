@@ -11,11 +11,8 @@ import { RepublishAndClearButton } from './RepublishAndClearButton';
 
 // @ts-expect-error TS7006
 const mapStateToProps = (state) => ({
-    // @ts-expect-error TS2339
     invalidFields: fromFields.getInvalidFields(state),
-    // @ts-expect-error TS2339
     hasPublishedDataset: fromPublication.hasPublishedDataset(state),
-    // @ts-expect-error TS2339
     isEnableAutoPublication: fromConfigTenant.isEnableAutoPublication(state),
 });
 

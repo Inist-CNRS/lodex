@@ -143,13 +143,9 @@ FacetList.propTypes = {
 
 // @ts-expect-error TS7006
 const mapStateToProps = (state) => ({
-    // @ts-expect-error TS2339
     hasFacetFields: fromFields.hasFacetFields(state),
-    // @ts-expect-error TS2339
     fields: fromFields.getFacetFields(state),
-    // @ts-expect-error TS2339
     isMultilingual: fromDisplayConfig.isMultilingual(state),
-    // @ts-expect-error TS2339
     locale: fromI18n.getLocale(state),
 });
 

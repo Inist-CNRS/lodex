@@ -334,14 +334,10 @@ PropertyComponent.defaultProps = {
 
 // @ts-expect-error TS7006
 const mapStateToProps = (state, { field }) => ({
-    // @ts-expect-error TS2339
     isAdmin: fromUser.isAdmin(state),
-    // @ts-expect-error TS2339
     fieldStatus: fromResource.getFieldStatus(state, field),
     predicate: getPredicate(field),
-    // @ts-expect-error TS2339
     dense: fromDisplayConfig.isDense(state),
-    // @ts-expect-error TS2339
     isMultilingual: fromDisplayConfig.isMultilingual(state),
 });
 

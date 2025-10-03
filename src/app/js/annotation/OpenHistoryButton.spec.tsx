@@ -33,7 +33,6 @@ describe('OpenHistoryButton', () => {
             error: null,
             isLoading: false,
         });
-        // @ts-expect-error TS2554
         const wrapper = render(
             <TestI18N>
                 <OpenHistoryButton
@@ -74,7 +73,6 @@ describe('OpenHistoryButton', () => {
             error: null,
             isLoading: false,
         });
-        // @ts-expect-error TS2554
         const wrapper = render(
             <TestI18N>
                 <OpenHistoryButton
@@ -107,7 +105,6 @@ describe('OpenHistoryButton', () => {
             error: null,
             isLoading: true,
         });
-        // @ts-expect-error TS2554
         const wrapper = render(
             <TestI18N>
                 <OpenHistoryButton

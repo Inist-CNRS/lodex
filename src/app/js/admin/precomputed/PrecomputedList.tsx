@@ -1,5 +1,3 @@
-// @ts-expect-error TS6133
-import React from 'react';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import PropTypes from 'prop-types';
 
@@ -14,12 +12,13 @@ import {
 } from '@mui/x-data-grid';
 import { Link } from 'react-router-dom';
 import { useHistory } from 'react-router';
-import { renderStatus, renderRunButton } from './PrecomputedForm';
+import { RunButton } from './RunButton';
 import { fromPrecomputed } from '../selectors';
 import { launchPrecomputed } from '.';
 import { IN_PROGRESS, FINISHED, ON_HOLD } from '../../../../common/taskStatus';
 import { toast } from '../../../../common/tools/toast';
 import { useTranslate } from '../../i18n/I18NContext';
+import { PrecomputedStatus } from './PrecomputedStatus';
 
 export const PrecomputedList = ({
     // @ts-expect-error TS7031
@@ -106,23 +105,26 @@ export const PrecomputedList = ({
                         field: 'status',
                         headerName: translate('precomputed_status'),
                         flex: 3,
-                        renderCell: (params) =>
-                            renderStatus(
-                                params.row.status,
-                                translate,
-                                params.row.startedAt,
-                            ),
+                        renderCell: (params) => (
+                            <PrecomputedStatus
+                                status={params.row.status}
+                                startedAt={params.row.startedAt}
+                            />
+                        ),
                     },
                     {
                         field: 'run',
                         headerName: translate('run'),
                         flex: 2,
                         renderCell: (params) => {
-                            return renderRunButton(
-                                handleLaunchPrecomputed(params.row),
-                                params.row.status,
-                                translate,
-                                'text',
+                            return (
+                                <RunButton
+                                    handleLaunchPrecomputed={handleLaunchPrecomputed(
+                                        params.row,
+                                    )}
+                                    precomputedStatus={params.row.status}
+                                    variant="text"
+                                />
                             );
                         },
                     },
@@ -156,10 +158,8 @@ PrecomputedList.propTypes = {
 const mapStateToProps = (state) => ({
     precomputedList: state.precomputed.precomputed,
     isPrecomputedRunning: !!fromPrecomputed
-        // @ts-expect-error TS2339
         .precomputed(state)
         .find(
-            // @ts-expect-error TS7006
             (precomputedData) =>
                 precomputedData.status === IN_PROGRESS ||
                 precomputedData.status === ON_HOLD,

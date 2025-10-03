@@ -15,7 +15,6 @@ describe('characteristic saga', () => {
 
         it('should select getUpdateCharacteristicsRequest', () => {
             expect(saga.next().value).toEqual(
-                // @ts-expect-error TS2339
                 select(fromUser.getUpdateCharacteristicsRequest, payload),
             );
         });

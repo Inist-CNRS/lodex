@@ -209,21 +209,13 @@ ExportButton.defaultProps = {
 
 // @ts-expect-error TS7006
 const mapStateToProps = (state) => ({
-    // @ts-expect-error TS2339
     exporters: fromExport.getExporters(state),
-    // @ts-expect-error TS2339
     displayExportPDF: fromDisplayConfig.getDisplayExportPDF(state),
-    // @ts-expect-error TS2339
     maxExportPDFSize: fromDisplayConfig.getMaxExportPDFSize(state),
-    // @ts-expect-error TS2339
     facets: fromSearch.getAppliedFacets(state),
-    // @ts-expect-error TS2339
     match: fromSearch.getQuery(state),
-    // @ts-expect-error TS2339
     invertedFacets: fromSearch.getInvertedFacetKeys(state),
-    // @ts-expect-error TS2339
     sort: fromSearch.getSort(state),
-    // @ts-expect-error TS2339
     locale: fromI18n.getLocale(state),
 });
 

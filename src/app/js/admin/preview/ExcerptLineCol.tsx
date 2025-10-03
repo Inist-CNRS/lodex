@@ -58,7 +58,6 @@ ExcerptLineColComponent.defaultProps = {
 
 // @ts-expect-error TS7006
 const mapStateToProps = (state, { field, line }) => {
-    // @ts-expect-error TS2339
     const getLineCol = fromFields.getLineColGetter(state, field);
     const parsedValue = parseValue(getLineCol(line));
     return {

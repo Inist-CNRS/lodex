@@ -66,12 +66,9 @@ export const canPublish = (areAllFieldsValid, allListFields) => {
 // @ts-expect-error TS7006
 const mapStateToProps = (state) => ({
     canPublish: canPublish(
-        // @ts-expect-error TS2339
         fromFields.areAllFieldsValid(state),
-        // @ts-expect-error TS2339
         fromFields.getAllListFields(state),
     ),
-    // @ts-expect-error TS2339
     isPublishing: fromPublish.getIsPublishing(state),
 });
 

@@ -83,7 +83,6 @@ const ValuePreview = ({ lines, editedField, p: polyglot }) => {
 // @ts-expect-error TS7006
 const mapStateToProps = (state, { scope }) => {
     const editedField = getFieldFormData(state);
-    // @ts-expect-error TS2339
     let lines = fromFieldPreview.getFieldPreview(state);
 
     if (lines.length > 0) {

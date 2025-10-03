@@ -315,7 +315,6 @@ FieldEditionWizardComponent.defaultProps = {
 // @ts-expect-error TS7006
 const mapStateToProps = (state, { match, filter }) => {
     const { fieldName } = match.params;
-    // @ts-expect-error TS2339
     const currentEditedField = fromFields.getFieldByName(state, fieldName);
 
     return {
@@ -323,18 +322,14 @@ const mapStateToProps = (state, { match, filter }) => {
         fieldName,
         fields: currentEditedField
             ? fromFields
-                  // @ts-expect-error TS2339
                   .getFieldsExceptField(state, currentEditedField)
-                  // @ts-expect-error TS7006
                   .sort((a, b) =>
                       a.label
                           ?.toLowerCase()
                           .localeCompare(b.label?.toLowerCase()),
                   )
             : null,
-        // @ts-expect-error TS2339
         fieldsFromFilter: fromFields.getOntologyFields(state, filter),
-        // @ts-expect-error TS2339
         isFieldsLoading: fromFields.isLoading(state),
     };
 };

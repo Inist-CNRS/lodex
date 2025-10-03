@@ -5,12 +5,23 @@ export const LOAD_PRECOMPUTED_ERROR = 'LOAD_PRECOMPUTED_ERROR';
 export const LOAD_PRECOMPUTED_SUCCESS = 'LOAD_PRECOMPUTED_SUCCESS';
 export const LAUNCH_PRECOMPUTED = 'LAUNCH_PRECOMPUTED';
 
-export const loadPrecomputed = createAction(LOAD_PRECOMPUTED);
-export const loadPrecomputedError = createAction(LOAD_PRECOMPUTED_ERROR);
-export const loadPrecomputedSuccess = createAction(LOAD_PRECOMPUTED_SUCCESS);
+export const loadPrecomputed = createAction<void>(LOAD_PRECOMPUTED);
+export const loadPrecomputedError = createAction<Error>(LOAD_PRECOMPUTED_ERROR);
+export const loadPrecomputedSuccess = createAction<{
+    precomputed: Array<{ _id: string; status: string }>;
+}>(LOAD_PRECOMPUTED_SUCCESS);
 export const launchPrecomputed = createAction(LAUNCH_PRECOMPUTED);
 
-export const initialState = {
+export type PrecomputedState = {
+    error: Error | null;
+    initialized: boolean;
+    loading: boolean;
+    dataPreviewLoading: boolean;
+    precomputed: Array<{ _id: string; status: string; name: string }>;
+    dataPreviewPrecomputed: Array<{ _id: string; status: string }>;
+};
+
+export const initialState: PrecomputedState = {
     error: null,
     initialized: false,
     loading: false,
@@ -19,20 +30,29 @@ export const initialState = {
     dataPreviewPrecomputed: [],
 };
 
-// @ts-expect-error TS7006
-export default handleActions(
+export default handleActions<PrecomputedState, any>(
     {
         LOAD_PRECOMPUTED: (state) => ({
             ...state,
             loading: true,
             initialized: true,
         }),
-        LOAD_PRECOMPUTED_ERROR: (state, { payload: error }) => ({
+        LOAD_PRECOMPUTED_ERROR: (
+            state: PrecomputedState,
+            { payload: error }: { payload: Error },
+        ) => ({
             ...state,
             error,
             loading: false,
         }),
-        LOAD_PRECOMPUTED_SUCCESS: (state, { payload: precomputed }) => ({
+        LOAD_PRECOMPUTED_SUCCESS: (
+            state,
+            {
+                payload: precomputed,
+            }: {
+                payload: { _id: string; status: string; name: string }[];
+            },
+        ) => ({
             ...state,
             precomputed,
             loading: false,
@@ -41,18 +61,14 @@ export default handleActions(
     initialState,
 );
 
-// @ts-expect-error TS7006
-export const isDataPreviewLoading = (state) => state.dataPreviewLoading;
-// @ts-expect-error TS7006
-export const isLoading = (state) => state.loading;
-// @ts-expect-error TS7006
-export const isInitialized = (state) => state.initialized;
-// @ts-expect-error TS7006
-export const precomputed = (state) => state.precomputed;
-// @ts-expect-error TS7006
-export const dataPreviewPrecomputed = (state) => state.dataPreviewPrecomputed;
-// @ts-expect-error TS7006
-export const getError = (state) => state.error;
+export const isDataPreviewLoading = (state: PrecomputedState) =>
+    state.dataPreviewLoading;
+export const isLoading = (state: PrecomputedState) => state.loading;
+export const isInitialized = (state: PrecomputedState) => state.initialized;
+export const precomputed = (state: PrecomputedState) => state.precomputed;
+export const dataPreviewPrecomputed = (state: PrecomputedState) =>
+    state.dataPreviewPrecomputed;
+export const getError = (state: PrecomputedState) => state.error;
 
 export const selectors = {
     isDataPreviewLoading,

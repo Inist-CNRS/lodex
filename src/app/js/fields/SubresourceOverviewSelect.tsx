@@ -90,7 +90,6 @@ SubresourceOverviewSelectComponent.propTypes = {
 
 // @ts-expect-error TS7006
 const mapStateToProps = (state, { subresourceId }) => ({
-    // @ts-expect-error TS2339
     fields: fromFields.getEditingFields(state, { subresourceId }),
 });
 

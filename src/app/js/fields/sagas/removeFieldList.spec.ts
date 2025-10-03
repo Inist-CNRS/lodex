@@ -27,13 +27,11 @@ describe('fields saga', () => {
             expect(saga.next().value).toEqual(put(removeFieldListStarted()));
 
             expect(saga.next().value).toEqual(
-                // @ts-expect-error TS2339
                 select(fromFields.getFieldByName, fields[0].name),
             );
 
             // @ts-expect-error TS2345
             expect(saga.next('field').value).toEqual(
-                // @ts-expect-error TS2339
                 select(fromUser.getRemoveFieldRequest, 'field'),
             );
 
@@ -44,13 +42,11 @@ describe('fields saga', () => {
 
             // @ts-expect-error TS2345
             expect(saga.next({ response: 'bar ' }).value).toEqual(
-                // @ts-expect-error TS2339
                 select(fromFields.getFieldByName, fields[1].name),
             );
 
             // @ts-expect-error TS2345
             expect(saga.next('field').value).toEqual(
-                // @ts-expect-error TS2339
                 select(fromUser.getRemoveFieldRequest, 'field'),
             );
 

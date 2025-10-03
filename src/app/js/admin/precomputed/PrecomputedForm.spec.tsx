@@ -1,81 +1,57 @@
-// @ts-expect-error TS6133
-import React from 'react';
-import { shallow } from 'enzyme';
-import { Field } from 'redux-form';
-import { PrecomputedForm } from './PrecomputedForm';
+import '@testing-library/jest-dom';
+import { render } from '../../../../test-utils';
 
-const EXCERPT_LINES = [{ columnOne: 'TEST' }];
+import { PrecomputedForm, type PrecomputedFormProps } from './PrecomputedForm';
 
-describe('<PrecomputedFormComponent />', () => {
-    it('should render', () => {
-        const wrapper = shallow(
-            // @ts-expect-error TS2769
-            <PrecomputedForm
-                // @ts-expect-error TS2322
-                p={{ t: () => {} }}
-                handleSubmit={() => {}}
-                excerptColumns={[]}
-                excerptLines={EXCERPT_LINES}
-            />,
-        );
-        expect(wrapper).toHaveLength(1);
+const defaultProps: PrecomputedFormProps = {
+    datasetFields: ['field1', 'field2'],
+    formValues: {
+        name: '',
+        webServiceUrl: '',
+        sourceColumns: [],
+        subPath: '',
+    },
+    history: { push: jest.fn() },
+    onLaunchPrecomputed: jest.fn(),
+    onLoadPrecomputedData: jest.fn(),
+    isPrecomputedRunning: false,
+    handleSubmit: jest.fn(),
+    submitting: false,
+};
+
+describe('<PrecomputedForm />', () => {
+    it('renders the name field', () => {
+        const screen = render(<PrecomputedForm {...defaultProps} />);
+        expect(screen.getByLabelText('fieldName *')).toBeInTheDocument();
     });
 
-    it('should render a Field for name precomputed', () => {
-        const wrapper = shallow(
-            // @ts-expect-error TS2769
-            <PrecomputedForm
-                // @ts-expect-error TS2322
-                p={{ t: () => {} }}
-                handleSubmit={() => {}}
-                excerptColumns={[]}
-                excerptLines={EXCERPT_LINES}
-            />,
-        );
-        const textField = wrapper.find(Field).at(0);
-        expect(textField).toHaveLength(1);
-        expect(textField.prop('name')).toBe('name');
+    it('renders the webServiceUrl field', () => {
+        const screen = render(<PrecomputedForm {...defaultProps} />);
+        expect(screen.getByLabelText('webServiceUrl *')).toBeInTheDocument();
     });
 
-    it('should render 2 Fields for precomputed info', () => {
-        const wrapper = shallow(
-            // @ts-expect-error TS2769
-            <PrecomputedForm
-                // @ts-expect-error TS2322
-                p={{ t: () => {} }}
-                handleSubmit={() => {}}
-                excerptColumns={[]}
-                excerptLines={EXCERPT_LINES}
-            />,
-        );
-        const webServiceUrl = wrapper.find(Field).at(1);
-        expect(webServiceUrl).toHaveLength(1);
-        expect(webServiceUrl.prop('name')).toBe('webServiceUrl');
-
-        const sourceColumns = wrapper.find(Field).at(2);
-        expect(sourceColumns).toHaveLength(1);
-        expect(sourceColumns.prop('name')).toBe('sourceColumns');
+    it('renders the sourceColumns field', () => {
+        const screen = render(<PrecomputedForm {...defaultProps} />);
+        expect(screen.getByLabelText('sourceColumns *')).toBeInTheDocument();
     });
 
-    it('should render a  precomputed logs dialog', () => {
-        const initialValues = {
-            _id: '123',
-            status: 'IN_PROGRESS',
-        };
-        const wrapper = shallow(
-            // @ts-expect-error TS2769
+    it('renders the logs dialog button in edit mode', () => {
+        const screen = render(
             <PrecomputedForm
-                // @ts-expect-error TS2322
-                p={{ t: () => {} }}
-                handleSubmit={() => {}}
-                excerptColumns={[]}
-                initialValues={initialValues}
-                isEdit={true}
-                excerptLines={EXCERPT_LINES}
+                {...defaultProps}
+                initialValues={{
+                    _id: '123',
+                    status: 'IN_PROGRESS',
+                    data: {},
+                    name: 'test',
+                    jobId: 'job_123',
+                    webServiceUrl: 'http://example.com',
+                    sourceColumns: ['field1'],
+                    subPath: '',
+                    startedAt: '2025-01-01',
+                }}
             />,
         );
-        expect(wrapper.find('Translated(PrecomputedLogsDialog)')).toHaveLength(
-            1,
-        );
+        expect(screen.getByText(/see_logs/i)).toBeInTheDocument();
     });
 });

@@ -12,7 +12,6 @@ import { fromUser } from '../../../sharedSelectors';
 export function* handleLoadRemovedResourcePageRequest({ payload }) {
     // @ts-expect-error TS7057
     const request = yield select(
-        // @ts-expect-error TS2339
         fromUser.getLoadRemovedResourcePageRequest,
         payload,
     );

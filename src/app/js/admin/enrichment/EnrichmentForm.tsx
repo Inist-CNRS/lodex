@@ -463,7 +463,6 @@ const formSelector = formValueSelector(ENRICHMENT_FORM);
 // @ts-expect-error TS7006
 const mapStateToProps = (state, { match }) => {
     const enrichment = fromEnrichments
-        // @ts-expect-error TS2339
         .enrichments(state)
         // @ts-expect-error TS7006
         .find((enrichment) => enrichment._id === match.params.enrichmentId);
@@ -479,9 +478,7 @@ const mapStateToProps = (state, { match }) => {
         ),
         initialValues: enrichment,
         status: enrichment?.status,
-        // @ts-expect-error TS2339
         datasetFields: fromParsing.getParsedExcerptColumns(state),
-        // @ts-expect-error TS2339
         excerptLines: fromParsing.getExcerptLines(state),
     };
 };

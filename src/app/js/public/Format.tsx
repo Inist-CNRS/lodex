@@ -85,14 +85,10 @@ FormatComponent.defaultProps = {
 // @ts-expect-error TS7006
 const mapStateToProps = (state, { field }) => ({
     fields: [
-        // @ts-expect-error TS2339
         ...fromFields.getCollectionFields(state),
-        // @ts-expect-error TS2339
         ...fromFields.getDatasetFields(state),
-        // @ts-expect-error TS2339
         ...fromFields.getGraphicFields(state),
     ],
-    // @ts-expect-error TS2339
     token: fromUser.getToken(state),
     colorSet: getColorSetFromField(field),
 });
