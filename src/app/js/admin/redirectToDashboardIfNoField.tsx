@@ -8,9 +8,7 @@ import { fromFields } from '../sharedSelectors';
 
 // @ts-expect-error TS7006
 const mapStateToProps = (state) => ({
-    // @ts-expect-error TS2339
     nbFields: fromFields.getNbFields(state),
-    // @ts-expect-error TS2339
     isLoading: fromFields.isLoading(state),
 });
 

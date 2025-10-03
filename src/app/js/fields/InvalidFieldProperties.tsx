@@ -42,7 +42,6 @@ InvalidFieldProperties.propTypes = {
 
 // @ts-expect-error TS7006
 const mapStateToprops = (state) => ({
-    // @ts-expect-error TS2339
     invalidProperties: fromFields.getInvalidProperties(state),
 });
 

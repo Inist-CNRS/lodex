@@ -40,7 +40,6 @@ describe('handleAddFieldToResource', () => {
         // @ts-expect-error TS7005
         const next = saga.next({ field: 'field data' });
         expect(next.value).toEqual(
-            // @ts-expect-error TS2339
             select(fromUser.getAddFieldToResourceRequest, {
                 uri: 'uri',
                 field: 'field data',

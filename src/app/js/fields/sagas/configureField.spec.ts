@@ -35,7 +35,6 @@ describe('fields saga', () => {
             it('should select fromFields.getFields', () => {
                 // @ts-expect-error TS2345
                 expect(saga.next(formData).value).toEqual(
-                    // @ts-expect-error TS2339
                     select(fromFields.getFields),
                 );
             });
@@ -50,7 +49,6 @@ describe('fields saga', () => {
             it('should select fromUser.getUpdateFieldRequest with form data if field is Valid', () => {
                 // @ts-expect-error TS2345
                 expect(saga.next(true).value).toEqual(
-                    // @ts-expect-error TS2339
                     select(fromUser.getUpdateFieldRequest, formData),
                 );
             });
@@ -81,7 +79,6 @@ describe('fields saga', () => {
             );
             // @ts-expect-error TS2345
             expect(invalidSaga.next(formData).value).toEqual(
-                // @ts-expect-error TS2339
                 select(fromFields.getFields),
             );
             // @ts-expect-error TS2345
@@ -99,7 +96,6 @@ describe('fields saga', () => {
             );
             // @ts-expect-error TS2345
             expect(failedSaga.next(formData).value).toEqual(
-                // @ts-expect-error TS2339
                 select(fromFields.getFields),
             );
             // @ts-expect-error TS2345
@@ -108,7 +104,6 @@ describe('fields saga', () => {
             );
             // @ts-expect-error TS2345
             expect(failedSaga.next(true).value).toEqual(
-                // @ts-expect-error TS2339
                 select(fromUser.getUpdateFieldRequest, formData),
             );
             // @ts-expect-error TS2345
@@ -134,7 +129,6 @@ describe('fields saga', () => {
             );
             // @ts-expect-error TS2345
             expect(overviewSaga.next(formData).value).toEqual(
-                // @ts-expect-error TS2339
                 select(fromFields.getFields),
             );
 
@@ -144,7 +138,6 @@ describe('fields saga', () => {
             );
             // @ts-expect-error TS2345
             expect(overviewSaga.next(true).value).toEqual(
-                // @ts-expect-error TS2339
                 select(fromUser.getUpdateFieldRequest, formData),
             );
             // @ts-expect-error TS2345

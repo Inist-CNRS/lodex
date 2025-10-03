@@ -167,11 +167,8 @@ AppbarComponent.defaultProps = {
 // @ts-expect-error TS7006
 const mapStateToProps = (state) => ({
     isLoading: state.loading,
-    // @ts-expect-error TS2339
     isAdmin: fromUser.isAdmin(state),
-    // @ts-expect-error TS2339
     hasPublishedDataset: fromPublication.hasPublishedDataset(state),
-    // @ts-expect-error TS2339
     invalidFields: fromFields.getInvalidFields(state),
 });
 

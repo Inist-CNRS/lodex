@@ -13,7 +13,6 @@ describe('load clear saga', () => {
         const saga = handleClearDatasetRequest();
         it('should select getClearDatasetRequest', () => {
             expect(saga.next().value).toEqual(
-                // @ts-expect-error TS2339
                 select(fromUser.getClearDatasetRequest),
             );
         });
@@ -30,7 +29,6 @@ describe('load clear saga', () => {
         const saga = handleClearPublishedRequest();
         it('should select getClearPublishedRequest', () => {
             expect(saga.next().value).toEqual(
-                // @ts-expect-error TS2339
                 select(fromUser.getClearPublishedRequest),
             );
         });

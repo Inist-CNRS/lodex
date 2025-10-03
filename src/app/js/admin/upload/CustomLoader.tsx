@@ -119,9 +119,7 @@ const formSelector = formValueSelector('CUSTOM_LOADER_FORM');
 // @ts-expect-error TS7006
 const mapStateToProps = (state) => ({
     formValue: formSelector(state, 'customLoader'),
-    // @ts-expect-error TS2339
     initialValues: { customLoader: fromUpload.getCustomLoader(state) },
-    // @ts-expect-error TS2339
     loaderName: fromUpload.getLoaderName(state),
 });
 

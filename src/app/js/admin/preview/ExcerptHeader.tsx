@@ -138,9 +138,7 @@ ExcerptHeaderComponent.defaultProps = {
 
 // @ts-expect-error TS7006
 const mapStateToProps = (state, { field }) => ({
-    // @ts-expect-error TS2339
     completedField: fromFields.getCompletedField(state, field),
-    // @ts-expect-error TS2339
     compositeFields: fromFields.getCompositeFieldsNamesByField(state, field),
 });
 

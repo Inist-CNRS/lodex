@@ -137,9 +137,7 @@ DatasetOverviewSelectComponent.propTypes = {
 // @ts-expect-error TS7006
 const mapStateToProps = (state) => ({
     fields: fromFields
-        // @ts-expect-error TS2339
         .getEditingFields(state, { filter: SCOPE_DATASET })
-        // @ts-expect-error TS7006
         .sort((a, b) => a.label.localeCompare(b.label)),
 });
 

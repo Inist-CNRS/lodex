@@ -49,7 +49,6 @@ PublicationPreviewComponent.propTypes = {
 
 // @ts-expect-error TS7006
 const mapStateToProps = (state, { filter, subresourceId }) => ({
-    // @ts-expect-error TS2339
     fields: fromFields.getEditingFields(state, { filter, subresourceId }),
 });
 

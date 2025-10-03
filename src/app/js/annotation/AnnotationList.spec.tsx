@@ -302,7 +302,6 @@ describe('AnnotationList', () => {
                 },
             ];
             const field = { label: 'fieldLabel' };
-            // @ts-expect-error TS2554
             const wrapper = render(
                 <TestAnnotationList annotations={annotations} field={field} />,
             );
@@ -391,7 +390,6 @@ describe('AnnotationList', () => {
                 },
             ];
             const field = { label: 'fieldLabel' };
-            // @ts-expect-error TS2554
             const wrapper = render(
                 <TestAnnotationList annotations={annotations} field={field} />,
             );
@@ -444,7 +442,6 @@ describe('AnnotationList', () => {
                 },
             ];
             const field = { label: 'fieldLabel' };
-            // @ts-expect-error TS2554
             const wrapper = render(
                 <TestAnnotationList annotations={annotations} field={field} />,
             );
@@ -495,7 +492,6 @@ describe('AnnotationList', () => {
                 },
             ];
             const field = { label: 'fieldLabel' };
-            // @ts-expect-error TS2554
             const wrapper = render(
                 <TestAnnotationList annotations={annotations} field={field} />,
             );
@@ -522,7 +518,6 @@ describe('AnnotationList', () => {
                 },
             ];
             const field = { label: 'fieldLabel' };
-            // @ts-expect-error TS2554
             const wrapper = render(
                 <TestAnnotationList annotations={annotations} field={field} />,
             );
@@ -561,7 +556,6 @@ describe('AnnotationList', () => {
                     },
                 ];
                 const field = { label: 'fieldLabel' };
-                // @ts-expect-error TS2554
                 const wrapper = render(
                     <TestAnnotationList
                         annotations={annotations}
@@ -626,7 +620,6 @@ describe('AnnotationList', () => {
                 },
             ];
             const field = { label: 'fieldLabel' };
-            // @ts-expect-error TS2554
             const wrapper = render(
                 <TestAnnotationList annotations={annotations} field={field} />,
             );
@@ -749,7 +742,6 @@ describe('AnnotationList', () => {
                 },
             ];
             const field = { label: 'fieldLabel' };
-            // @ts-expect-error TS2554
             const wrapper = render(
                 <TestAnnotationList annotations={annotations} field={field} />,
             );
@@ -771,7 +763,6 @@ describe('AnnotationList', () => {
                 },
             ];
             const field = { label: 'fieldLabel' };
-            // @ts-expect-error TS2554
             const wrapper = render(
                 <TestAnnotationList annotations={annotations} field={field} />,
             );

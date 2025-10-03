@@ -58,9 +58,7 @@ StatisticsComponent.propTypes = {
 
 // @ts-expect-error TS7006
 const mapStateToProps = (state, { filter, subresourceId }) => ({
-    // @ts-expect-error TS2339
     isComputing: fromPublicationPreview.isComputing(state),
-    // @ts-expect-error TS2339
     totalPublishedFields: fromFields.getEditingFields(state, {
         filter,
         subresourceId,

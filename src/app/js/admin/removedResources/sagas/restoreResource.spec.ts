@@ -11,7 +11,6 @@ describe('restore removed resources saga', () => {
 
         it('should select getRestoreResourceRequest', () => {
             expect(saga.next().value).toEqual(
-                // @ts-expect-error TS2339
                 select(fromUser.getRestoreResourceRequest, 'an_uri'),
             );
         });

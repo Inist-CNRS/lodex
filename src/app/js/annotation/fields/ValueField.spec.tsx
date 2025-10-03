@@ -27,7 +27,6 @@ TestValueField.propTypes = {
 
 describe('ValueField', () => {
     it('should support a list of string as choices', async () => {
-        // @ts-expect-error TS2554
         const wrapper = render(
             <TestValueField choices={['choice1', 'choice2']} />,
         );
@@ -49,7 +48,6 @@ describe('ValueField', () => {
     });
 
     it('should support a list of string array as choices', async () => {
-        // @ts-expect-error TS2554
         const wrapper = render(
             <TestValueField
                 choices={[

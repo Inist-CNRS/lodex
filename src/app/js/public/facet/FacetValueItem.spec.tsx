@@ -6,7 +6,6 @@ import { FacetValueItemView } from './FacetValueItem';
 
 describe('FacetValueItem', () => {
     it('should render a null facet value as empty', () => {
-        // @ts-expect-error TS2554
         render(
             <TestI18N>
                 <FacetValueItemView
@@ -24,7 +23,6 @@ describe('FacetValueItem', () => {
         expect(screen.getByText('10')).toBeInTheDocument();
     });
     it('should render a "" facet value as empty', () => {
-        // @ts-expect-error TS2554
         render(
             <TestI18N>
                 <FacetValueItemView
@@ -42,7 +40,6 @@ describe('FacetValueItem', () => {
         expect(screen.getByText('10')).toBeInTheDocument();
     });
     it('should render facet.value otherwise', () => {
-        // @ts-expect-error TS2554
         render(
             <TestI18N>
                 <FacetValueItemView

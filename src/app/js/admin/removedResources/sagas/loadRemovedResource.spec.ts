@@ -17,7 +17,6 @@ describe('load removed resources saga', () => {
 
         it('should select getLoadRemovedResourcePageRequest', () => {
             expect(saga.next().value).toEqual(
-                // @ts-expect-error TS2339
                 select(fromUser.getLoadRemovedResourcePageRequest, {
                     page: 10,
                     perPage: 42,
