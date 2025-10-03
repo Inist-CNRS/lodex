@@ -116,7 +116,7 @@ jobs:
 
             # Run lint
             - run: npm run lint:test
-    type-check-node:
+    type-check:
         runs-on: ubuntu-22.04
 
         # Create a strategy matrix uses to test multiple versions of node
@@ -142,32 +142,4 @@ jobs:
             - run: npm ci --legacy-peer-deps
 
             # Run lint
-            - run: npm run type-check:node
-
-    type-check-app:
-        runs-on: ubuntu-22.04
-
-        # Create a strategy matrix uses to test multiple versions of node
-        strategy:
-            fail-fast: false
-            matrix:
-                # See https://github.com/nodejs/Release
-                node-version: [22.x]
-
-        steps:
-            # Pull repository content
-            - uses: actions/checkout@v4
-
-            # Setup NodeJS
-            - name: Use Node.js ${{ matrix.node-version }}
-              uses: actions/setup-node@v3
-              with:
-                  node-version: ${{ matrix.node-version }}
-                  cache: 'npm'
-
-            # Install project dependencies (equivalent to make install)
-            - run: make copy-conf
-            - run: npm ci --legacy-peer-deps
-
-            # Run lint
-            - run: npm run type-check:app
+            - run: npm run type-check
