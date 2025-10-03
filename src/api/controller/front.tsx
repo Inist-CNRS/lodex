@@ -176,12 +176,14 @@ export const getPreloadedState = async (
     };
 };
 
-const handleRender = async (ctx: any, next: any) => {
-    const { url } = ctx.request;
+const handleRender = async (ctx: Koa.Context, next: any) => {
+    const { url, URL } = ctx.request;
+    // testing URL.pathname to ignore query parameter
     if (
-        (url.match(/\.([a-z]+)$/) && !url.match(/\/uid:\//)) ||
-        url.match(/\.html$/) ||
-        url.match('/admin')
+        (URL.pathname.match(/\.([a-z]+)$/) &&
+            !URL.pathname.match(/\/uid:\//)) ||
+        URL.pathname.match(/\.html$/) ||
+        URL.pathname.match('/admin')
     ) {
         // no route matched switch to static file
         return next();
