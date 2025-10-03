@@ -63,17 +63,11 @@ const app = new Koa();
 
 // Route for the filters
 app.use(
-    route.get('/:name/(.*)', (ctx, name, filter) => {
-        let cleanFilter = filter;
-        if (typeof cleanFilter === 'string') {
-            // Remove leading and trailing slashes manually
-            while (cleanFilter.startsWith('/')) {
-                cleanFilter = cleanFilter.slice(1);
-            }
-            while (cleanFilter.endsWith('/')) {
-                cleanFilter = cleanFilter.slice(0, -1);
-            }
-        }
+    route.get('/:name/(.*)', (ctx, name, filter = '') => {
+        const cleanFilter = filter
+            .replace(/^(\/*)/, '') // remove all leading slashes
+            .replace(/(\/*)$/, ''); // remove all slashes at the end
+
         return getFacetFilteredValues(ctx, name, cleanFilter);
     }),
 );
