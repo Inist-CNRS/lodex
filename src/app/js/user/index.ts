@@ -13,7 +13,7 @@ export const SIGNOUT = 'SIGNOUT';
 
 type UserState = {
     token: string | null;
-    role?: 'admin' | 'root' | null;
+    role?: 'admin' | 'user' | 'root' | null;
     cookie?: string | null;
 };
 
