@@ -106,6 +106,7 @@ describe('CreateAnnotationButton', () => {
                 },
             }),
         );
+        // @ts-expect-error TS2554
         render(<TestButton annotable={true} />);
         expect(
             screen.getByText('annotation_sent_count+{"smart_count":3}'),
@@ -113,6 +114,7 @@ describe('CreateAnnotationButton', () => {
     });
 
     it('should not render the number of annotations sent by the user when there is none', async () => {
+        // @ts-expect-error TS2554
         render(<TestButton annotable={true} />);
         expect(
             screen.queryByText('annotation_sent_count+{"smart_count":0}'),
@@ -120,6 +122,7 @@ describe('CreateAnnotationButton', () => {
     });
 
     it('should open the modal when clicking on the button', async () => {
+        // @ts-expect-error TS2554
         render(<TestButton annotable={true} />);
 
         await waitFor(() => {
@@ -205,6 +208,7 @@ describe('CreateAnnotationButton', () => {
     });
 
     it('should call api when submiting annotation form for value', async () => {
+        // @ts-expect-error TS2554
         render(
             // @ts-expect-error TS2741
             <TestButton
@@ -292,6 +296,7 @@ describe('CreateAnnotationButton', () => {
     });
 
     it('should not display button if field is not annotable', async () => {
+        // @ts-expect-error TS2554
         render(<TestButton annotable={false} />);
 
         expect(

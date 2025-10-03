@@ -9,7 +9,7 @@ module.exports = {
                 useBuiltIns: 'entry',
             },
         ],
-        '@babel/preset-react',
+        ['@babel/preset-react', { runtime: 'automatic' }],
         '@babel/preset-typescript',
     ],
     plugins: [
@@ -32,7 +32,7 @@ module.exports = {
                         useBuiltIns: 'entry',
                     },
                 ],
-                '@babel/preset-react',
+                ['@babel/preset-react', { runtime: 'automatic' }],
             ],
             plugins: [
                 '@babel/plugin-transform-class-properties',

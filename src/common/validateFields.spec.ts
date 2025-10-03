@@ -380,6 +380,7 @@ describe('validateField', () => {
             const result = validateTransformer(
                 transformer,
                 false,
+                // @ts-expect-error TS2345
                 knownTransformers,
             );
 
@@ -416,6 +417,7 @@ describe('validateField', () => {
             const result = validateTransformer(
                 transformer,
                 false,
+                // @ts-expect-error TS2345
                 knownTransformers,
             );
 
@@ -458,6 +460,7 @@ describe('validateField', () => {
             const result = validateTransformer(
                 transformer,
                 false,
+                // @ts-expect-error TS2345
                 knownTransformers,
             );
 
@@ -502,6 +505,7 @@ describe('validateField', () => {
             const result = validateTransformer(
                 transformer,
                 false,
+                // @ts-expect-error TS2345
                 knownTransformers,
             );
 
@@ -555,6 +559,7 @@ describe('validateField', () => {
             const result = validateTransformer(
                 transformer,
                 false,
+                // @ts-expect-error TS2345
                 knownTransformers,
             );
 

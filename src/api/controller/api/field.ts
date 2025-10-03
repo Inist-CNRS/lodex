@@ -1,4 +1,3 @@
-// @ts-expect-error TS(2792): Cannot find module '@recuperateur/async-busboy'. D... Remove this comment to see the full error message
 import asyncBusboy from '@recuperateur/async-busboy';
 import Koa from 'koa';
 import koaBodyParser from 'koa-bodyparser';

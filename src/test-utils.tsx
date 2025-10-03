@@ -5,7 +5,6 @@ import {
 import { render } from '@testing-library/react';
 import { createMemoryHistory } from 'history';
 import PropTypes from 'prop-types';
-import React from 'react';
 import { Provider } from 'react-redux';
 
 import userEvent from '@testing-library/user-event';
@@ -17,6 +16,7 @@ import reducers from './app/js/public/reducers';
 
 // custom/themes/default/defaultTheme';
 
+// @ts-expect-error TS7017
 global.__DEBUG__ = false;
 
 const memoryHistory = createMemoryHistory();
@@ -26,7 +26,7 @@ const theme = createTheme(defaultMuiTheme, {
     userAgent: navigator.userAgent,
 });
 
-const Wrapper = ({ children }) => (
+const Wrapper = ({ children }: any) => (
     <Provider store={store}>
         <AnnotationStorageProvider>
             <MuiThemeProvider theme={theme}>{children}</MuiThemeProvider>
@@ -38,7 +38,7 @@ Wrapper.propTypes = {
     children: PropTypes.node.isRequired,
 };
 
-const customRender = (ui, options) =>
+const customRender = (ui: any, options: any) =>
     render(ui, { wrapper: Wrapper, ...options });
 
 export {

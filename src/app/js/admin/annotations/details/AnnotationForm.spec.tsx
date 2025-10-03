@@ -18,6 +18,7 @@ const queryClient = new QueryClient();
 
 describe('AnnotationForm', () => {
     it('should render annotation items', () => {
+        // @ts-expect-error TS2554
         const wrapper = render(
             <QueryClientProvider client={queryClient}>
                 <TestI18N>
@@ -148,6 +149,7 @@ describe('AnnotationForm', () => {
     });
 
     it('should render annotation edit form', () => {
+        // @ts-expect-error TS2554
         const wrapper = render(
             <QueryClientProvider client={queryClient}>
                 <TestI18N>
@@ -214,6 +216,7 @@ describe('AnnotationForm', () => {
             isSubmitting: false,
         }));
 
+        // @ts-expect-error TS2554
         const wrapper = render(
             <QueryClientProvider client={queryClient}>
                 <TestI18N>

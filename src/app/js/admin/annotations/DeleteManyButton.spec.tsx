@@ -26,6 +26,7 @@ describe('DeleteManyButton', () => {
             isLoading: false,
         }));
 
+        // @ts-expect-error TS2554
         const wrapper = render(<TestButton selectedRowIds={[]} />);
 
         expect(wrapper.container).toBeEmptyDOMElement();
@@ -40,6 +41,7 @@ describe('DeleteManyButton', () => {
             isLoading: false,
         }));
 
+        // @ts-expect-error TS2554
         const wrapper = render(<TestButton selectedRowIds={['1', '2']} />);
 
         wrapper
@@ -66,6 +68,7 @@ describe('DeleteManyButton', () => {
             isLoading: false,
         }));
 
+        // @ts-expect-error TS2554
         const wrapper = render(<TestButton selectedRowIds={['1', '2']} />);
 
         wrapper
@@ -92,6 +95,7 @@ describe('DeleteManyButton', () => {
             isLoading: true,
         }));
 
+        // @ts-expect-error TS2554
         const wrapper = render(<TestButton selectedRowIds={['1', '2']} />);
 
         wrapper

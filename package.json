@@ -17,7 +17,7 @@
         "development:api": "tsx watch --max-http-header-size=32768 src/api",
         "development:app": "npx vite --port=8080 --host=0.0.0.0",
         "postversion": "git push && git push --tags",
-        "type-check": "tsc --noEmit --project tsconfig.app.json --project tsconfig.node.json",
+        "type-check": "tsc --noEmit --project tsconfig.json",
         "lint": "eslint \"src/**/*.{js,jsx,ts,tsx}\" --fix",
         "lint:test": "eslint \"src/**/*.{js,jsx,ts,tsx}\"",
         "clean": "concurrently \"npm:clean:*\"",

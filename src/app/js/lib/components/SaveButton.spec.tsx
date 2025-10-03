@@ -7,6 +7,7 @@ import { TestI18N } from '../../i18n/I18NContext';
 
 describe('SaveButton', () => {
     it('should render a save button without icon when isFormModified=false', () => {
+        // @ts-expect-error TS2554
         render(
             <TestI18N>
                 {/*
@@ -20,6 +21,7 @@ describe('SaveButton', () => {
         ).not.toBeInTheDocument();
     });
     it('should render a save button with icon when isFormModified=true', () => {
+        // @ts-expect-error TS2554
         render(
             <TestI18N>
                 {/*

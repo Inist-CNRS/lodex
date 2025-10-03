@@ -42,6 +42,7 @@ describe('CreateAnnotationTitle', () => {
         ).toBeInTheDocument();
     });
     it('should render annotate field title with no label when step is TARGET_STEP', async () => {
+        // @ts-expect-error TS2554
         const wrapper = render(
             // @ts-expect-error TS2741
             <TestTitle step={TARGET_STEP} fieldLabel="Field Label" />,
@@ -53,6 +54,7 @@ describe('CreateAnnotationTitle', () => {
         ).toBeInTheDocument();
     });
     it('should render annotate field title with no label when target is title', async () => {
+        // @ts-expect-error TS2554
         const wrapper = render(
             <TestTitle step={COMMENT_STEP} formTarget="title" />,
         );
@@ -63,6 +65,7 @@ describe('CreateAnnotationTitle', () => {
         ).toBeInTheDocument();
     });
     it('should render annotate field title with no label when step is TARGET_STEP', async () => {
+        // @ts-expect-error TS2554
         const wrapper = render(
             <TestTitle
                 step={COMMENT_STEP}
@@ -88,6 +91,7 @@ describe('CreateAnnotationTitle', () => {
     });
 
     it('should render annotate content title with label when step is not TARGET_STEP', async () => {
+        // @ts-expect-error TS2554
         const wrapper = render(
             // @ts-expect-error TS2741
             <TestTitle step={COMMENT_STEP} fieldLabel="Field Label" />,

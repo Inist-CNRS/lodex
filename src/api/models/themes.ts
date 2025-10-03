@@ -1,7 +1,6 @@
 import config from '../../../config.json';
 import path from 'path';
 import getLogger from '../services/logger';
-// @ts-expect-error TS(7016): Could not find a declaration file for module '../.... Remove this comment to see the full error message
 import defaultMuiTheme from '../../app/custom/themes/default/defaultTheme';
 import { cloneDeep, merge } from 'lodash';
 

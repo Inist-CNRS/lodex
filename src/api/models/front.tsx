@@ -3,7 +3,6 @@ import ejs from 'ejs';
 import { assign, escape } from 'lodash';
 import path from 'path';
 import { version } from '../../../package.json';
-// @ts-expect-error: No types
 import rootTheme from '../../app/custom/themes/rootTheme';
 import { getTheme } from './themes';
 
