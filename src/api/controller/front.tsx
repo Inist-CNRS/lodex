@@ -179,8 +179,8 @@ export const getPreloadedState = async (
 const handleRender = async (ctx: any, next: any) => {
     const { url } = ctx.request;
     if (
-        (url.match(/[^\\]*\.(\w+)$/) && !url.match(/\/uid:\//)) ||
-        url.match(/[^\\]*\.html$/) ||
+        (url.match(/\.([a-z]+)$/) && !url.match(/\/uid:\//)) ||
+        url.match(/\.html$/) ||
         url.match('/admin')
     ) {
         // no route matched switch to static file
@@ -298,7 +298,7 @@ app.use(async (ctx, next) => {
         !ctx.request.url.match(/instance\/([^/]*)\/login/) &&
         !ctx.request.url.match(/instance\/([^/]*)\/admin/) &&
         !ctx.request.url.startsWith('/instances') &&
-        !ctx.request.url.match(/[^\\]*\.(\w+)$/)
+        !ctx.request.url.match(/\.([a-z]+)$/)
     ) {
         const defaultTenant = DEFAULT_TENANT; // TODO: Replace by default tenant in BDD
         const matchResult = ctx.request.url.match(/instance\/([^/]*)(.*)/);
