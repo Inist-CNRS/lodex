@@ -159,7 +159,7 @@ const FilterComponent = ({
     );
 };
 
-type Loader = {
+export type Loader = {
     name: string;
 };
 
