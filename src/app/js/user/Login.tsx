@@ -1,28 +1,16 @@
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
-import {
-    Card,
-    CardActions,
-    CardContent,
-    CardHeader,
-    Link,
-} from '@mui/material';
+import { Card, CardHeader, Link } from '@mui/material';
 import PropTypes from 'prop-types';
-// @ts-expect-error TS6133
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import { bindActionCreators } from 'redux';
-import { isSubmitting, submit as submitAction } from 'redux-form';
+import { isSubmitting } from 'redux-form';
 
 import { translate } from '../i18n/I18NContext';
-import ButtonWithStatus from '../lib/components/ButtonWithStatus';
 import { polyglot as polyglotPropTypes } from '../propTypes';
 import { fromUser } from '../sharedSelectors';
-import {
-    LOGIN_FORM_NAME,
-    login as loginAction,
-    toggleLogin as toggleLoginAction,
-} from './';
+import { LOGIN_FORM_NAME, toggleLogin as toggleLoginAction } from './';
 import LoginForm from './LoginForm';
 
 const styles = {
@@ -36,10 +24,6 @@ export const LoginComponent = ({
     login,
     // @ts-expect-error TS7031
     p: polyglot,
-    // @ts-expect-error TS7031
-    submit,
-    // @ts-expect-error TS7031
-    submitting,
     target = 'admin',
 }) => {
     const { href, title, className, color, subheader } = useMemo(() => {
@@ -87,22 +71,7 @@ export const LoginComponent = ({
                     </Link>
                 }
             />
-            <CardContent>
-                {/*
-                 // @ts-expect-error TS2322 */}
-                <LoginForm onSubmit={login} />
-            </CardContent>
-            <CardActions>
-                {/*
-                 // @ts-expect-error TS2740 */}
-                <ButtonWithStatus
-                    loading={submitting}
-                    onClick={submit}
-                    color="primary"
-                >
-                    {polyglot.t('Sign in')}
-                </ButtonWithStatus>
-            </CardActions>
+            <LoginForm onSubmit={login} />
         </Card>
     );
 };
@@ -129,8 +98,6 @@ export const mapStateToProps = (state) => ({
 export const mapDispatchToProps = (dispatch) =>
     bindActionCreators(
         {
-            login: (values) => loginAction(values),
-            submit: () => submitAction(LOGIN_FORM_NAME),
             toggleLogin: toggleLoginAction,
         },
         dispatch,
