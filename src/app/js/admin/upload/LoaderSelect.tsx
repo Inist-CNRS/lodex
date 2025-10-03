@@ -1,12 +1,10 @@
 import { useState } from 'react';
-import PropTypes from 'prop-types';
 import ListAltIcon from '@mui/icons-material/ListAlt';
 import { Box, Button, MenuItem, TextField } from '@mui/material';
 import ListDialog from './ListDialog';
-import { polyglot as polyglotPropTypes } from '../../propTypes';
 import CustomLoader from './CustomLoader';
 import CancelButton from '../../lib/components/CancelButton';
-import { translate } from '../../i18n/I18NContext';
+import { useTranslate } from '../../i18n/I18NContext';
 
 const styles = {
     disableUppercase: {
@@ -14,18 +12,20 @@ const styles = {
     },
 };
 
+type LoaderSelectComponentProps = {
+    loaders: Array<{ name: string }>;
+    value: string;
+    setLoader: (loaderName: string) => void;
+    disabled?: boolean;
+};
+
 const LoaderSelectComponent = ({
-    // @ts-expect-error TS7031
     loaders,
-    // @ts-expect-error TS7031
     value,
-    // @ts-expect-error TS7031
     setLoader,
-    // @ts-expect-error TS7031
-    p: polyglot,
-    // @ts-expect-error TS7031
     disabled,
-}) => {
+}: LoaderSelectComponentProps) => {
+    const { translate } = useTranslate();
     const [openLoadersDialog, setOpenLoadersDialog] = useState(false);
     const [openCustomLoadersDialog, setOpenCustomLoadersDialog] =
         useState(false);
@@ -40,7 +40,7 @@ const LoaderSelectComponent = ({
 
     const actions = [
         <CancelButton key="cancel" onClick={handleClose}>
-            {polyglot.t('cancel')}
+            {translate('cancel')}
         </CancelButton>,
     ];
 
@@ -57,11 +57,9 @@ const LoaderSelectComponent = ({
                     select
                     sx={{ minWidth: 200 }}
                     className="select-loader"
-                    label={polyglot.t('loader_name')}
+                    label={translate('loader_name')}
                     onChange={(e) => setLoader(e.target.value)}
                     value={value}
-                    // @ts-expect-error TS2322
-                    autoWidth
                     disabled={disabled}
                     variant="standard"
                     InputLabelProps={{ shrink: !!value }}
@@ -71,23 +69,19 @@ const LoaderSelectComponent = ({
                         key={'automatic'}
                         value={'automatic'}
                     >
-                        {polyglot.t('automatic-loader')}
+                        {translate('automatic-loader')}
                     </MenuItem>
                     {loaders
-                        // @ts-expect-error TS7006
                         .sort((x, y) =>
-                            polyglot
-                                .t(x.name)
-                                .localeCompare(polyglot.t(y.name)),
+                            translate(x.name).localeCompare(translate(y.name)),
                         )
-                        // @ts-expect-error TS7006
                         .map((loader) => (
                             <MenuItem
                                 className="select-loader-item"
                                 key={loader.name}
                                 value={loader.name}
                             >
-                                {polyglot.t(loader.name)}
+                                {translate(loader.name)}
                             </MenuItem>
                         ))}
                     {value === 'custom-loader' && (
@@ -96,7 +90,7 @@ const LoaderSelectComponent = ({
                             key={'custom-loader'}
                             value={'custom-loader'}
                         >
-                            {polyglot.t('custom-loader')}
+                            {translate('custom-loader')}
                         </MenuItem>
                     )}
                 </TextField>
@@ -124,7 +118,7 @@ const LoaderSelectComponent = ({
                     onClick={() => setOpenCustomLoadersDialog(true)}
                     disabled={disabled || !value || value === 'automatic'}
                 >
-                    {polyglot.t(`add-custom-loader`)}
+                    {translate(`add-custom-loader`)}
                 </Button>
             </Box>
             <ListDialog
@@ -145,16 +139,4 @@ const LoaderSelectComponent = ({
     );
 };
 
-LoaderSelectComponent.propTypes = {
-    loaders: PropTypes.array,
-    setLoader: PropTypes.func.isRequired,
-    value: PropTypes.string.isRequired,
-    p: polyglotPropTypes.isRequired,
-    disabled: PropTypes.bool,
-};
-
-LoaderSelectComponent.defaultProps = {
-    value: 'automatic',
-};
-
-export default translate(LoaderSelectComponent);
+export default LoaderSelectComponent;
