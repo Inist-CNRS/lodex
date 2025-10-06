@@ -25,19 +25,16 @@ export default handleActions<UserState, any>(
     {
         LOGIN_SUCCESS: (state, { payload: { token, role } }) => ({
             ...state,
-            showModal: false,
             token: token,
             role,
         }),
         LOGOUT: (state: UserState) => ({
             ...state,
-            showModal: true,
             token: null,
             role: null,
         }),
         SIGNOUT: (state: UserState) => ({
             ...state,
-            showModal: false,
             token: null,
             role: null,
         }),
