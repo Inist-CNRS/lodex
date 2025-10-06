@@ -1,4 +1,3 @@
-import React from 'react';
 import { act } from 'react-dom/test-utils';
 import { mount } from 'enzyme';
 import { useDebouncedSearch } from '../FacetValueList';
@@ -8,7 +7,18 @@ jest.useFakeTimers();
 describe('useDebouncedSearch hook', () => {
     const defaultChange = jest.fn();
 
-    const TestComponent = ({ changeFacetValue, initialFilter = '' }) => {
+    const TestComponent = ({
+        changeFacetValue,
+        initialFilter = '',
+    }: {
+        changeFacetValue: (params: {
+            name: string;
+            currentPage: number;
+            perPage: number;
+            filter: string;
+        }) => void;
+        initialFilter?: string;
+    }) => {
         const { localFilter, isSearching, handleFilterChange } =
             useDebouncedSearch(changeFacetValue, 'test', 10, initialFilter);
 
@@ -20,17 +30,13 @@ describe('useDebouncedSearch hook', () => {
         );
     };
 
-    TestComponent.propTypes = {
-        changeFacetValue: require('prop-types').func.isRequired,
-        initialFilter: require('prop-types').string,
-    };
-
     beforeEach(() => {
         jest.clearAllMocks();
     });
 
     it('debounces and respects MIN_SEARCH_LENGTH', () => {
         const wrapper = mount(
+            // @ts-expect-error TS2769
             <TestComponent changeFacetValue={defaultChange} />,
         );
         const input = wrapper.find('input').at(0);
@@ -73,6 +79,7 @@ describe('useDebouncedSearch hook', () => {
 
     it('shows loading indicator for the appropriate delay', () => {
         const wrapper = mount(
+            // @ts-expect-error TS2769
             <TestComponent changeFacetValue={defaultChange} />,
         );
         const input = wrapper.find('input').at(0);
@@ -103,6 +110,7 @@ describe('useDebouncedSearch hook', () => {
 
     it('calls search immediately when filter becomes empty', () => {
         const wrapper = mount(
+            // @ts-expect-error TS2769
             <TestComponent
                 changeFacetValue={defaultChange}
                 initialFilter="test"
@@ -133,9 +141,11 @@ describe('useDebouncedSearch hook', () => {
         const mockAbortController = {
             abort: mockAbort,
         };
+        // @ts-expect-error TS2322
         global.AbortController = jest.fn(() => mockAbortController);
 
         const wrapper = mount(
+            // @ts-expect-error TS2769
             <TestComponent changeFacetValue={defaultChange} />,
         );
         const input = wrapper.find('input').at(0);

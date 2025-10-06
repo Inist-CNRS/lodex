@@ -3,7 +3,7 @@
  * @param {string} str - The string to normalize
  * @returns {string} The normalized string
  */
-export const normalize = (str) =>
+export const normalize = (str: string | null | undefined) =>
     (str || '')
         .toLowerCase()
         .normalize('NFD')
@@ -14,7 +14,7 @@ export const normalize = (str) =>
  * @param {string} str - The string to tokenize
  * @returns {string[]} Array of tokens
  */
-export const tokenize = (str) =>
+export const tokenize = (str: string) =>
     normalize(str)
         .split(/[^a-z0-9]+/)
         .filter(Boolean);
@@ -26,7 +26,17 @@ export const tokenize = (str) =>
  * @param {string} params.inputValue - The input value to filter by
  * @returns {Array} Filtered array of options
  */
-export const filterOptions = (options, { inputValue }) => {
+export const filterOptions = (
+    options: {
+        label: string;
+        name: string;
+    }[],
+    {
+        inputValue,
+    }: {
+        inputValue: string;
+    },
+) => {
     const inputTokens = tokenize(inputValue);
     return options.filter((option) => {
         const labelTokens = tokenize(option.label);
