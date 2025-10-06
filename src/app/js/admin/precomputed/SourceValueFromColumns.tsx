@@ -5,13 +5,12 @@ import {
     FormHelperText,
     TextField,
 } from '@mui/material';
-import { useController, type Control } from 'react-hook-form';
+import { useController } from 'react-hook-form';
 
 type SourceValueFromColumnsProps = {
     name: string;
     label: string;
     options: string[];
-    control: Control<any>;
     validate: (value: unknown) => string | undefined;
 };
 
@@ -19,13 +18,11 @@ const SourceValueFromColumns = ({
     name,
     label,
     options,
-    control,
     validate,
     ...props
 }: SourceValueFromColumnsProps) => {
     const { field, fieldState } = useController({
         name,
-        control,
         rules: {
             validate,
         },
