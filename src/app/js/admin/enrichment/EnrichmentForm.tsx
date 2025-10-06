@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useMemo } from 'react';
 
-import PropTypes from 'prop-types';
 import FormSourceCodeField from '../../lib/components/FormSourceCodeField';
 import SubressourceFieldAutoComplete from '../subresource/SubressourceFieldAutoComplete';
 import EnrichmentCatalogConnected from './EnrichmentCatalog';
@@ -70,27 +69,51 @@ const renderTextField = ({ input, label, meta: { touched, error } }) => (
     />
 );
 
+type EnrichmentFormProps = {
+    datasetFields: string[];
+    excerptLines: Record<string, unknown>[];
+    formValues: {
+        sourceColumn?: string;
+        subPath?: string;
+        rule?: string;
+        webServiceUrl: string;
+        name?: string;
+        advancedMode?: boolean;
+    };
+    history: {
+        push: (path: string) => void;
+    };
+    initialValues?: {
+        _id: string;
+        name: string;
+        advancedMode: boolean;
+        rule: string;
+        sourceColumn: string;
+        errorCount?: number;
+        jobId: string;
+        status: string;
+    };
+    match: string;
+    onChangeWebServiceUrl: (value: string) => void;
+    onLaunchEnrichment: (params: { id: string }) => void;
+    onLoadEnrichments: () => void;
+    onRetryEnrichment: (params: { id: string }) => void;
+    isEnrichmentRunning?: boolean;
+    status?: string;
+};
+
 // COMPONENT PART
 export const EnrichmentForm = ({
-    // @ts-expect-error TS7031
     datasetFields,
-    // @ts-expect-error TS7031
     excerptLines,
-    // @ts-expect-error TS7031
     formValues,
-    // @ts-expect-error TS7031
     history,
-    // @ts-expect-error TS7031
     initialValues,
-    // @ts-expect-error TS7031
     onChangeWebServiceUrl,
-    // @ts-expect-error TS7031
     onLoadEnrichments,
-    // @ts-expect-error TS7031
     onRetryEnrichment,
-    // @ts-expect-error TS7031
     status,
-}) => {
+}: EnrichmentFormProps) => {
     const { translate } = useTranslate();
     const [openCatalog, setOpenCatalog] = React.useState(false);
     const [openEnrichmentLogs, setOpenEnrichmentLogs] = React.useState(false);
@@ -103,8 +126,9 @@ export const EnrichmentForm = ({
     const isEditMode = !!initialValues?._id;
 
     const optionsIdentifier = useMemo(() => {
-        const firstExcerptLine =
-            excerptLines[0]?.[formValues?.sourceColumn] || [];
+        const firstExcerptLine = formValues?.sourceColumn
+            ? excerptLines[0]?.[formValues?.sourceColumn] || []
+            : [];
         return getKeys(firstExcerptLine);
     }, [excerptLines, formValues?.sourceColumn]);
 
@@ -487,28 +511,6 @@ const mapDispatchToProps = {
     onLaunchEnrichment: launchEnrichment,
     onLoadEnrichments: loadEnrichments,
     onRetryEnrichment: retryEnrichment,
-};
-
-EnrichmentForm.propTypes = {
-    datasetFields: PropTypes.array.isRequired,
-    excerptLines: PropTypes.array.isRequired,
-    formValues: PropTypes.shape({
-        sourceColumn: PropTypes.string,
-        subPath: PropTypes.string,
-        rule: PropTypes.string,
-        webServiceUrl: PropTypes.string,
-        name: PropTypes.string,
-        advancedMode: PropTypes.bool,
-    }),
-    history: PropTypes.object.isRequired,
-    initialValues: PropTypes.any,
-    match: PropTypes.object.isRequired,
-    onChangeWebServiceUrl: PropTypes.func.isRequired,
-    onLaunchEnrichment: PropTypes.func.isRequired,
-    onLoadEnrichments: PropTypes.func.isRequired,
-    onRetryEnrichment: PropTypes.func.isRequired,
-    isEnrichmentRunning: PropTypes.bool,
-    status: PropTypes.string,
 };
 
 export default compose(
