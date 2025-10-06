@@ -1,5 +1,5 @@
 import { defineConfig } from 'cypress';
-import fs from 'fs';
+import * as fs from 'fs';
 
 const getFiles = (path) => {
     return fs.readdirSync(path);
@@ -17,8 +17,13 @@ module.exports = defineConfig({
         retries: process.env.CI ? 2 : 0,
         setupNodeEvents(on) {
             on('task', {
-                // @ts-expect-error TS2769
-                getFileContent(directory: string, pattern: string | RegExp) {
+                getFileContent({
+                    directory,
+                    pattern,
+                }: {
+                    directory: string;
+                    pattern: string | RegExp;
+                }) {
                     const file = getFiles('cypress/downloads').find((file) =>
                         file.match(pattern),
                     );
