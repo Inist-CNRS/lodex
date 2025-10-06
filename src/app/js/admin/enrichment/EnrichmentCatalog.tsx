@@ -6,7 +6,7 @@ const translatePrefix = 'ws';
 type EnrichmentCatalogProps = {
     isOpen: boolean;
     handleClose: () => void;
-    onChange: () => void;
+    onChange: (value: string) => void;
     selectedWebServiceUrl: string;
 };
 
