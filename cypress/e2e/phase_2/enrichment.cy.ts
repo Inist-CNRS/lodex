@@ -5,7 +5,7 @@ import * as enrichmentFormPage from '../../support/enrichmentFormPage';
 import * as menu from '../../support/menu';
 
 describe('Enrichment', () => {
-    beforeEach(teardown);
+    beforeEach(() => teardown());
 
     describe('Advanced enrichment', () => {
         it('should add an advanced enrichment', () => {

@@ -219,6 +219,7 @@ describe('Annotation', () => {
 
                 cy.findByRole('region', {
                     name: 'Contributor',
+                    // @ts-expect-error TS2353
                     exact: true,
                 }).should(
                     'have.text',
@@ -227,6 +228,7 @@ describe('Annotation', () => {
 
                 cy.findByRole('region', {
                     name: 'Contributor',
+                    // @ts-expect-error TS2353
                     exact: true,
                 }).then((region) => {
                     cy.findByRole('link', {
@@ -504,10 +506,11 @@ describe('Annotation', () => {
             cy.task(
                 'getFileContent',
                 Cypress.config('downloadsFolder'),
+                // @ts-expect-error TS2559
                 /annotations_\d{4}-\d{2}-\d{2}-\d{6}.json/,
             ).then((content) => {
                 expect(content).not.to.equal(null);
-
+                // @ts-expect-error TS2345
                 const annotations = JSON.parse(content);
                 expect(annotations).to.be.an('array').with.length(1);
                 expect(annotations[0]).to.include({
@@ -650,10 +653,12 @@ describe('Annotation', () => {
             cy.task(
                 'getFileContent',
                 Cypress.config('downloadsFolder'),
+                // @ts-expect-error TS2559
                 /annotations_import_error_\d{4}-\d{2}-\d{2}-\d{6}.json/,
             ).then((content) => {
                 expect(content).not.to.equal(null);
 
+                // @ts-expect-error TS2345
                 const errors = JSON.parse(content);
                 expect(errors).to.be.an('array').with.length(1);
                 cy.log('errors', errors);
