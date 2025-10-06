@@ -2,7 +2,7 @@ import { getFacetFilteredValues } from './facet';
 
 describe('facets routes', () => {
     describe('getFacetFilteredValues', () => {
-        let ctx;
+        let ctx: any;
 
         beforeEach(() => {
             ctx = {

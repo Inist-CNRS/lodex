@@ -44,7 +44,7 @@ export const getFacetFilteredValues = async (
         ]);
 
         ctx.body = {
-            data: data.map((d) => ({
+            data: data.map((d: any) => ({
                 value: d.value,
                 count: d.count,
                 id: d._id,
@@ -57,7 +57,8 @@ export const getFacetFilteredValues = async (
             error: 'Internal server error',
             message:
                 process.env.NODE_ENV === 'development'
-                    ? error.message
+                    ? // @ts-expect-error TS17048
+                      error.message
                     : undefined,
         };
     }
