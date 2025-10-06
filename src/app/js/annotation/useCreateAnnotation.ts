@@ -14,7 +14,7 @@ export function useCreateAnnotation() {
     const saveAnnotationId = useSaveAnnotationId();
 
     const mutation = useMutation({
-        mutationFn: async (annotation) => {
+        mutationFn: async (annotation: Record<string, unknown>) => {
             const { token } = getUserSessionStorageInfo();
             const request = getRequest(
                 { token },
