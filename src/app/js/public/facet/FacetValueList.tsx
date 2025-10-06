@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useRef, useEffect } from 'react';
+import { useState, useCallback, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { translate } from '../../i18n/I18NContext';
@@ -54,7 +54,6 @@ const onPageChange =
         });
 
 /* Hook to manage the filter with debounce and cancellation */
-// @ts-expect-error TS1287
 export const useDebouncedSearch = (
     changeFacetValue: any,
     name: any,
@@ -73,6 +72,7 @@ export const useDebouncedSearch = (
     const performSearch = useCallback(
         (filterValue) => {
             if (abortControllerRef.current) {
+                // @ts-expect-error TS2339
                 abortControllerRef.current.abort();
             }
 
@@ -86,6 +86,7 @@ export const useDebouncedSearch = (
             }
 
             setIsSearching(true);
+            // @ts-expect-error TS2322
             abortControllerRef.current = new AbortController();
 
             changeFacetValue({
@@ -107,7 +108,7 @@ export const useDebouncedSearch = (
             if (debounceTimeoutRef.current) {
                 clearTimeout(debounceTimeoutRef.current);
             }
-
+            // @ts-expect-error TS2322
             debounceTimeoutRef.current = setTimeout(() => {
                 performSearch(filterValue);
             }, DEBOUNCE_DELAY);
@@ -138,6 +139,7 @@ export const useDebouncedSearch = (
                 clearTimeout(debounceTimeoutRef.current);
             }
             if (abortControllerRef.current) {
+                // @ts-expect-error TS2339
                 abortControllerRef.current.abort();
             }
         };
@@ -337,7 +339,6 @@ const mapStateToProps = (state, { name, page }) => {
     };
 };
 
-// @ts-expect-error TS1295
 export default compose(
     translate,
     connect(mapStateToProps),
