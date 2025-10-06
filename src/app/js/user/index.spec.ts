@@ -30,7 +30,6 @@ describe('user reducer', () => {
     it('should handle the LOGOUT action', () => {
         const state = reducer({ token: 'C3PO&R2D2' }, logout());
         expect(state).toEqual({
-            showModal: true,
             token: null,
             role: null,
         });
