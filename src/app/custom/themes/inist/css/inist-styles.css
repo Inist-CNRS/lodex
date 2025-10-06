@@ -315,16 +315,7 @@ footer p {
 .graph-page {
     margin: 0 auto !important;
 }
-.graph-header {
-    flex-flow: row wrap !important;
-    justify-content: center !important;
-    align-items: center !important;
-    margin: 0 auto;
-    gap: 2%;
-}
 .graph-header > div {
-    flex-grow: 1;
-    max-width: 875px;
     min-width: 450px;
 }
 .graph-header > div .stats {
