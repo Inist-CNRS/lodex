@@ -503,12 +503,12 @@ describe('Annotation', () => {
 
             cy.wait(1000);
 
-            cy.task(
-                'getFileContent',
-                Cypress.config('downloadsFolder'),
-                // @ts-expect-error TS2559
-                /annotations_\d{4}-\d{2}-\d{2}-\d{6}.json/,
-            ).then((content) => {
+            console.log({ directory: Cypress.config('downloadsFolder') });
+
+            cy.task('getFileContent', {
+                directory: Cypress.config('downloadsFolder'),
+                pattern: /annotations_\d{4}-\d{2}-\d{2}-\d{6}.json/,
+            }).then((content) => {
                 expect(content).not.to.equal(null);
                 // @ts-expect-error TS2345
                 const annotations = JSON.parse(content);
@@ -650,12 +650,11 @@ describe('Annotation', () => {
                 ]);
             });
 
-            cy.task(
-                'getFileContent',
-                Cypress.config('downloadsFolder'),
-                // @ts-expect-error TS2559
-                /annotations_import_error_\d{4}-\d{2}-\d{2}-\d{6}.json/,
-            ).then((content) => {
+            cy.task('getFileContent', {
+                directory: Cypress.config('downloadsFolder'),
+                pattern:
+                    /annotations_import_error_\d{4}-\d{2}-\d{2}-\d{6}.json/,
+            }).then((content) => {
                 expect(content).not.to.equal(null);
 
                 // @ts-expect-error TS2345
