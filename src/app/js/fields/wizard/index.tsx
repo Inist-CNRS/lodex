@@ -17,7 +17,6 @@ import {
     SCOPE_GRAPHIC,
 } from '../../../../common/scope';
 import { toast } from '../../../../common/tools/toast';
-import { URI_FIELD_NAME } from '../../../../common/uris';
 import { hideAddColumns } from '../../admin/parsing';
 import {
     field as fieldPropTypes,
@@ -30,7 +29,6 @@ import TabDisplay from './TabDisplay';
 import TabGeneral from './TabGeneral';
 import { TabPanel } from './TabPanel';
 import TabSemantics from './TabSemantics';
-import Uri from './Uri';
 import ValuePreviewConnected from './ValuePreview';
 
 const ACTIONS_BAR_HEIGHT = 70;
@@ -196,52 +194,42 @@ const FieldEditionWizardComponent = ({
                             flexDirection: 'column',
                         }}
                     >
-                        {currentEditedField.name !== URI_FIELD_NAME ? (
-                            <>
-                                <Tabs
+                        <Tabs
+                            value={tabValue}
+                            onChange={handleChange}
+                            variant="fullWidth"
+                            sx={{
+                                borderBottom: 1,
+                                borderColor: 'divider',
+                                marginBottom: 4,
+                                '& button:hover': {
+                                    color: 'primary.main',
+                                },
+                            }}
+                        >
+                            {tabs.map((tab, index) => (
+                                <Tab
+                                    label={polyglot.t(tab.label)}
+                                    value={index}
+                                    key={index}
+                                    id={tab.id}
+                                />
+                            ))}
+                        </Tabs>
+                        <Box
+                            flexGrow={1}
+                            marginBottom={`${ACTIONS_BAR_HEIGHT}px`}
+                        >
+                            {tabs.map((tab, index) => (
+                                <TabPanel
                                     value={tabValue}
-                                    onChange={handleChange}
-                                    variant="fullWidth"
-                                    sx={{
-                                        borderBottom: 1,
-                                        borderColor: 'divider',
-                                        marginBottom: 4,
-                                        '& button:hover': {
-                                            color: 'primary.main',
-                                        },
-                                    }}
+                                    index={index}
+                                    key={index}
                                 >
-                                    {tabs.map((tab, index) => (
-                                        <Tab
-                                            label={polyglot.t(tab.label)}
-                                            value={index}
-                                            key={index}
-                                            id={tab.id}
-                                        />
-                                    ))}
-                                </Tabs>
-                                <Box
-                                    flexGrow={1}
-                                    marginBottom={`${ACTIONS_BAR_HEIGHT}px`}
-                                >
-                                    {tabs.map((tab, index) => (
-                                        <TabPanel
-                                            value={tabValue}
-                                            index={index}
-                                            key={index}
-                                        >
-                                            {tab.component}
-                                        </TabPanel>
-                                    ))}
-                                </Box>
-                            </>
-                        ) : (
-                            <Uri
-                                // @ts-expect-error TS2322
-                                currentEditedField={currentEditedField}
-                                fields={fields}
-                            />
-                        )}
+                                    {tab.component}
+                                </TabPanel>
+                            ))}
+                        </Box>
                     </Box>
                 </Box>
             )}
