@@ -4,7 +4,7 @@ import * as datasetImportPage from '../../support/datasetImportPage';
 import * as menu from '../../support/menu';
 
 describe('Dataset Publication', () => {
-    beforeEach(teardown);
+    beforeEach(() => teardown());
 
     describe('Dataset Import', () => {
         it('should get the list of possible loaders', () => {

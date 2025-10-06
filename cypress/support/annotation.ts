@@ -1,4 +1,4 @@
-export function openAnnotationModalForField(fieldLabel) {
+export function openAnnotationModalForField(fieldLabel: string) {
     const buttonLabel = `Add an annotation to the ${fieldLabel} field`;
     cy.findByRole('button', {
         name: buttonLabel,
@@ -31,12 +31,12 @@ export function goToNextStep() {
     cy.wait(350);
 }
 
-function chooseValueToComment(value) {
+function chooseValueToComment(value: string) {
     cy.findByLabelText('Choose value to comment *').click();
     cy.findByText(value).click();
 }
 
-export function fillComment(comment) {
+export function fillComment(comment: string) {
     cy.findByRole('textbox', { name: 'Comment *', timeout: 1500 }).type(
         comment,
     );
@@ -75,6 +75,11 @@ function fillAuthor({
     authorEmail,
     isContributorNamePublic,
     authorRememberMe,
+}: {
+    authorName: string;
+    authorEmail?: string;
+    isContributorNamePublic?: boolean;
+    authorRememberMe?: boolean;
 }) {
     authorNameField().type(authorName);
 
@@ -111,6 +116,13 @@ export function createAnnotationOnFieldWithNoValue({
     authorEmail,
     isContributorNamePublic,
     authorRememberMe,
+}: {
+    fieldLabel: string;
+    comment: string;
+    authorName: string;
+    authorEmail?: string;
+    isContributorNamePublic?: boolean;
+    authorRememberMe?: boolean;
 }) {
     openAnnotationModalForField(fieldLabel);
 
@@ -135,6 +147,13 @@ export function createTitleAnnotation({
     authorEmail,
     isContributorNamePublic,
     authorRememberMe,
+}: {
+    fieldLabel: string;
+    comment: string;
+    authorName: string;
+    authorEmail?: string;
+    isContributorNamePublic?: boolean;
+    authorRememberMe?: boolean;
 }) {
     openAnnotationModalForField(fieldLabel);
 
@@ -163,6 +182,14 @@ export function checkFieldAnnotations({
     fieldLabel,
     expectedAnnotations,
     resourceTitle,
+}: {
+    fieldLabel: string;
+    expectedAnnotations: Array<{
+        kind: string;
+        summaryValue: string;
+        status: string;
+    }>;
+    resourceTitle: string;
 }) {
     openAnnotationModalForField(fieldLabel);
 
@@ -223,6 +250,13 @@ export function createSingleValueAnnotation({
     authorEmail,
     isContributorNamePublic,
     authorRememberMe,
+}: {
+    fieldLabel: string;
+    comment: string;
+    authorName: string;
+    authorEmail?: string;
+    isContributorNamePublic?: boolean;
+    authorRememberMe?: boolean;
 }) {
     openAnnotationModalForField(fieldLabel);
 
@@ -248,6 +282,14 @@ export function createMultiValueAnnotation({
     authorEmail,
     isContributorNamePublic,
     authorRememberMe,
+}: {
+    fieldLabel: string;
+    comment: string;
+    value: string;
+    authorName: string;
+    authorEmail?: string;
+    isContributorNamePublic?: boolean;
+    authorRememberMe?: boolean;
 }) {
     openAnnotationModalForField(fieldLabel);
 
@@ -273,6 +315,14 @@ export function createAddValueWithSingleProposedValueChoiceAnnotation({
     authorEmail,
     isContributorNamePublic,
     authorRememberMe,
+}: {
+    fieldLabel: string;
+    proposedValue: string;
+    comment: string;
+    authorName: string;
+    authorEmail?: string;
+    isContributorNamePublic?: boolean;
+    authorRememberMe?: boolean;
 }) {
     openAnnotationModalForField(fieldLabel);
 
@@ -301,6 +351,14 @@ export function createAddValueWithMultipleProposedValuesChoiceAnnotation({
     authorEmail,
     isContributorNamePublic,
     authorRememberMe,
+}: {
+    fieldLabel: string;
+    proposedValues: string[];
+    comment: string;
+    authorName: string;
+    authorEmail?: string;
+    isContributorNamePublic?: boolean;
+    authorRememberMe?: boolean;
 }) {
     openAnnotationModalForField(fieldLabel);
 

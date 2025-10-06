@@ -23,8 +23,15 @@
         "erasableSyntaxOnly": true,
         "noFallthroughCasesInSwitch": true,
         "noUncheckedSideEffectImports": true,
-        "noImplicitAny": true
+        "noImplicitAny": true,
+        "types": ["cypress", "@testing-library/cypress"]
     },
-    "include": ["vite.config.ts", "test-utils.tsx", "src/api", "src/common", "src/app"],
+    "include": [
+        "vite.config.ts",
+        "test-utils.tsx",
+        "src/api",
+        "src/common",
+        "src/app"
+    ],
     "exclude": ["src/build", "src/app/build"]
 }

@@ -21,7 +21,7 @@ export const logoutAndLoginAs = (username) => {
     login(username);
 };
 
-export const teardown = (withoutLogin = false) => {
+export const teardown = (withoutLogin: boolean = false) => {
     cy.request('DELETE', '/tests/fixtures');
 
     if (withoutLogin) {
