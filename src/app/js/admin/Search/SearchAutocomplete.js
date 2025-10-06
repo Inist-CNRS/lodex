@@ -12,6 +12,7 @@ import React, { useEffect } from 'react';
 
 import PropTypes from 'prop-types';
 import FieldRepresentation from '../../fields/FieldRepresentation';
+import { filterOptions } from './searchUtils';
 
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
@@ -78,6 +79,7 @@ const SearchAutocomplete = ({
             disableCloseOnSelect={multiple}
             multiple={multiple}
             limitTags={limitTags}
+            filterOptions={filterOptions}
             renderInput={(params) => (
                 <TextField
                     {...params}
