@@ -1,6 +1,6 @@
 export const getStats = () => cy.get('.stats');
 
-export const createResource = (resource) => {
+export const createResource = (resource: string[]) => {
     cy.get('button.create-resource').click();
 
     Object.entries(resource).forEach(([field, value]) => {

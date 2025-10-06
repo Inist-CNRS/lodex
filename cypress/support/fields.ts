@@ -1,4 +1,4 @@
-export function setFieldLanguage(fieldName, languageCode) {
+export function setFieldLanguage(fieldName: string, languageCode: string) {
     cy.contains('p', fieldName).trigger('mouseenter');
     cy.get(
         `[aria-label="edit-${fieldName}"] > [data-testid="SettingsIcon"]`,
@@ -11,7 +11,11 @@ export function setFieldLanguage(fieldName, languageCode) {
     cy.wait(1000);
 }
 
-export function createNewField({ fieldIcons = [] } = {}) {
+export function createNewField({
+    fieldIcons = [],
+}: {
+    fieldIcons?: string[];
+} = {}) {
     cy.findByRole('button', {
         name: /New field/,
     }).click();

@@ -1,5 +1,5 @@
-const { defineConfig } = require('cypress');
-const fs = require('fs');
+import { defineConfig } from 'cypress';
+import fs from 'fs';
 
 const getFiles = (path) => {
     return fs.readdirSync(path);
@@ -12,12 +12,13 @@ const removeFile = (path) => {
 module.exports = defineConfig({
     e2e: {
         baseUrl: 'http://localhost:3000',
-        supportFile: 'cypress/support/index.js',
+        supportFile: 'cypress/support/index.ts',
         experimentalStudio: true,
         retries: process.env.CI ? 2 : 0,
         setupNodeEvents(on) {
             on('task', {
-                getFileContent(directory, pattern) {
+                // @ts-expect-error TS2769
+                getFileContent(directory: string, pattern: string | RegExp) {
                     const file = getFiles('cypress/downloads').find((file) =>
                         file.match(pattern),
                     );
