@@ -13,7 +13,7 @@ export function useDeleteManyAnnotation() {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: async (ids) => {
+        mutationFn: async (ids: string[]) => {
             const { token } = getUserSessionStorageInfo();
             const request = getRequest(
                 { token },

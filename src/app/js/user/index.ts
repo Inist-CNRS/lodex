@@ -53,7 +53,7 @@ export const getToken = (state: UserState) => state.token;
 export const getCookie = (state: UserState) => state.cookie;
 
 type RequestProps = {
-    body?: Record<string, unknown> | string | null;
+    body?: unknown;
     method?: string;
     url: string;
     credentials?: RequestCredentials;
