@@ -61,7 +61,7 @@ export default defineConfig(({ mode }) => {
         plugins: [
             react({
                 jsxRuntime: 'automatic',
-                include: ['**/*.js', '**/*.jsx'],
+                include: ['**/*.js', '**/*.jsx', '**/*.ts', '**/*.tsx'],
             }),
         ],
 

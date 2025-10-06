@@ -1,10 +1,8 @@
-// @ts-expect-error TS6133
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
+import { useState, type ChangeEvent } from 'react';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import { withRouter } from 'react-router';
-import { DropzoneAreaBase } from 'mui-file-dropzone';
+import { DropzoneAreaBase, type FileObject } from 'mui-file-dropzone';
 import Alert from '../../lib/components/Alert';
 import {
     Box,
@@ -21,7 +19,6 @@ import UploadFileIcon from '@mui/icons-material/UploadFile';
 import LinkIcon from '@mui/icons-material/Link';
 import EditNoteIcon from '@mui/icons-material/EditNote';
 
-import { polyglot as polyglotPropTypes } from '../../propTypes';
 import {
     uploadFile,
     changeUploadUrl,
@@ -35,7 +32,9 @@ import LoaderSelect from './LoaderSelect';
 import { toast } from '../../../../common/tools/toast';
 import FormSourceCodeField from '../../lib/components/FormSourceCodeField';
 import { ConfirmPopup } from '../../lib/components/ConfirmPopup';
-import { translate } from '../../i18n/I18NContext';
+import { useTranslate } from '../../i18n/I18NContext';
+import type { State } from '../reducers';
+import type { Loader } from './ListDialog';
 
 const styles = {
     button: {
@@ -64,7 +63,7 @@ const styles = {
         borderBottom: 'solid 1px #00000018',
     },
     formDesc: {
-        textAlign: 'center',
+        textAlign: 'center' as const,
         marginBottom: '24px',
     },
     form: {
@@ -82,7 +81,7 @@ const styles = {
     divider: {
         textTransform: 'uppercase',
         position: 'relative',
-        textAlign: 'center',
+        textAlign: 'center' as const,
         width: '100%',
         marginTop: '32px',
         '&:before': {
@@ -136,49 +135,72 @@ const styles = {
     },
 };
 
+type DroppingLoaderProps = {
+    text: string;
+};
+
+const DroppingLoader = ({ text }: DroppingLoaderProps) => {
+    return (
+        <Grid
+            sx={styles.loader}
+            container
+            direction="column"
+            alignItems="center"
+            justifyContent="center"
+        >
+            <CircularProgress />
+            <span>{text}</span>
+        </Grid>
+    );
+};
+
+export type UploadComponentProps = {
+    history: {
+        location: { pathname: string };
+        push: (path: string) => void;
+    };
+    error: string | boolean;
+    url: string;
+    textContent: string;
+    loaderName: string;
+    isUrlValid: boolean;
+    isUploading: boolean;
+    onChangeUrl: React.ChangeEventHandler<HTMLInputElement>;
+    onChangeTextContent: (e: string) => void;
+    onChangeLoaderName: (val: string) => void;
+    onFileLoad: (file: File) => void;
+    onUrlUpload: (...params: unknown[]) => void;
+    onTextUpload: (...params: unknown[]) => void;
+    loaders: Loader[];
+    isFirstFile: boolean;
+};
+
 export const UploadComponent = ({
-    // @ts-expect-error TS7031
     history,
-    // @ts-expect-error TS7031
     error,
-    // @ts-expect-error TS7031
     url,
-    // @ts-expect-error TS7031
     textContent,
-    // @ts-expect-error TS7031
     loaderName,
-    // @ts-expect-error TS7031
     isUrlValid,
-    // @ts-expect-error TS7031
     isUploading,
-    // @ts-expect-error TS7031
     onChangeUrl,
-    // @ts-expect-error TS7031
     onChangeTextContent,
-    // @ts-expect-error TS7031
     onChangeLoaderName,
-    // @ts-expect-error TS7031
     onFileLoad,
-    // @ts-expect-error TS7031
     onUrlUpload,
-    // @ts-expect-error TS7031
     onTextUpload,
-    // @ts-expect-error TS7031
-    p: polyglot,
-    // @ts-expect-error TS7031
     loaders,
-    // @ts-expect-error TS7031
     isFirstFile,
-}) => {
-    const [tab, setTab] = useState(0);
-    const [files, setFiles] = useState([]);
+}: UploadComponentProps) => {
+    const { translate } = useTranslate();
+    const [tab, setTab] = useState<number>(0);
+    const [files, setFiles] = useState<FileObject[]>([]);
     const [dropping, setDropping] = useState(false);
     const [isOpenPopupConfirm, setIsOpenPopupConfirm] = useState(false);
     const path = history.location.pathname;
     const successRedirectPath = '/data/existing';
 
-    // @ts-expect-error TS7006
-    const handleImportType = (_, newTab) => {
+    const handleImportType = (_: unknown, newTab: number) => {
         setTab(newTab);
     };
 
@@ -190,25 +212,21 @@ export const UploadComponent = ({
         setDropping(false);
     };
 
-    // @ts-expect-error TS7006
-    const handleFileAdded = (list) => {
+    const handleFileAdded = (list: FileObject[]) => {
         setDropping(false);
         if (!list || list.length === 0) return;
 
-        // @ts-expect-error TS2345
         setFiles([...list]);
-        toast(polyglot.t('add_file_success', { name: list[0].file.name }), {
+        toast(translate('add_file_success', { name: list[0].file.name }), {
             type: toast.TYPE.SUCCESS,
         });
     };
 
-    // @ts-expect-error TS7019
-    const handleConfirm = (...params) => {
+    const handleConfirm = (...params: any[]) => {
         // 0 = File, 1 = URL and 2 = TEXT
         switch (tab) {
             case 0: {
                 if (files.length === 0) return;
-                // @ts-expect-error TS2339
                 onFileLoad(files[0].file);
                 break;
             }
@@ -229,8 +247,7 @@ export const UploadComponent = ({
         }
     };
 
-    // @ts-expect-error TS7019
-    const handleSubmit = (...params) => {
+    const handleSubmit = (...params: any[]) => {
         if (!isFirstFile) {
             setIsOpenPopupConfirm(true);
             return;
@@ -250,17 +267,17 @@ export const UploadComponent = ({
                     <Tab
                         icon={<UploadFileIcon />}
                         iconPosition="start"
-                        label={polyglot.t('upload_by_file')}
+                        label={translate('upload_by_file')}
                     />
                     <Tab
                         icon={<LinkIcon />}
                         iconPosition="start"
-                        label={polyglot.t('upload_by_url')}
+                        label={translate('upload_by_url')}
                     />
                     <Tab
                         icon={<EditNoteIcon />}
                         iconPosition="start"
-                        label={polyglot.t('upload_by_text')}
+                        label={translate('upload_by_text')}
                     />
                 </Tabs>
             </Box>
@@ -287,22 +304,20 @@ export const UploadComponent = ({
                 {/* Display the content of the first tab */}
                 {tab === 0 ? (
                     <>
-                        {/*
-                         // @ts-expect-error TS2322 */}
                         <p style={styles.formDesc}>
-                            {polyglot.t('upload_file')}
+                            {translate('upload_file')}
                         </p>
                         {dropping ? (
-                            <DroppingLoader text={polyglot.t('inspect_file')} />
+                            <DroppingLoader text={translate('inspect_file')} />
                         ) : (
                             <DropzoneAreaBase
                                 fileObjects={files}
                                 filesLimit={1}
                                 maxFileSize={1 * 1024 * 1024 * 1024}
-                                // @ts-expect-error TS2322
+                                // @ts-expect-error TS2322 --- mui component type only accept string
                                 dropzoneText={
                                     <Typography variant="h6">
-                                        {polyglot.t('import_file_text')}
+                                        {translate('import_file_text')}
                                     </Typography>
                                 }
                                 dropzoneProps={{
@@ -336,10 +351,8 @@ export const UploadComponent = ({
                 {/* Display the content of the second tab */}
                 {tab === 1 ? (
                     <>
-                        {/*
-                         // @ts-expect-error TS2322 */}
                         <p style={styles.formDesc}>
-                            {polyglot.t('upload_via_url')}
+                            {translate('upload_via_url')}
                         </p>
                         <TextField
                             fullWidth
@@ -349,10 +362,10 @@ export const UploadComponent = ({
                             placeholder="URL"
                             error={!!url && !isUrlValid}
                             helperText={
-                                url && !isUrlValid && polyglot.t('invalid_url')
+                                url && !isUrlValid && translate('invalid_url')
                             }
                             disabled={!!files.length}
-                            label={polyglot.t('use_url')}
+                            label={translate('use_url')}
                             variant="standard"
                         />
                     </>
@@ -361,17 +374,12 @@ export const UploadComponent = ({
                 {/* Display the content of the third tab */}
                 {tab === 2 ? (
                     <>
-                        {/*
-                         // @ts-expect-error TS2322 */}
                         <p style={styles.formDesc}>
-                            {polyglot.t('upload_via_text')}
+                            {translate('upload_via_text')}
                         </p>
-                        {/*
-                         // @ts-expect-error TS2739 */}
                         <FormSourceCodeField
                             style={styles.textInput}
                             enableModeSelector
-                            p={polyglot}
                             mode="json"
                             input={{
                                 value: textContent,
@@ -407,14 +415,14 @@ export const UploadComponent = ({
                 onClick={handleSubmit}
                 startIcon={<PublishIcon />}
             >
-                {polyglot.t('upload_data')}
+                {translate('upload_data')}
             </Button>
 
             <ConfirmPopup
-                cancelLabel={polyglot.t('Cancel')}
-                confirmLabel={polyglot.t('Accept')}
-                title={polyglot.t('info_upload')}
-                description={polyglot.t('info_publish_desc')}
+                cancelLabel={translate('Cancel')}
+                confirmLabel={translate('Accept')}
+                title={translate('info_upload')}
+                description={translate('info_publish_desc')}
                 isOpen={isOpenPopupConfirm}
                 onCancel={() => setIsOpenPopupConfirm(false)}
                 onConfirm={() => {
@@ -426,60 +434,7 @@ export const UploadComponent = ({
     );
 };
 
-UploadComponent.propTypes = {
-    history: PropTypes.shape({
-        push: PropTypes.func.isRequired,
-        location: PropTypes.object,
-    }),
-    className: PropTypes.string,
-    error: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]).isRequired,
-    url: PropTypes.string.isRequired,
-    textContent: PropTypes.string.isRequired,
-    loaderName: PropTypes.string.isRequired,
-    loaders: PropTypes.array,
-    isUrlValid: PropTypes.bool,
-    isUploading: PropTypes.bool,
-    onChangeUrl: PropTypes.func.isRequired,
-    onChangeTextContent: PropTypes.func.isRequired,
-    onFileLoad: PropTypes.func.isRequired,
-    onUrlUpload: PropTypes.func.isRequired,
-    onTextUpload: PropTypes.func.isRequired,
-    onChangeLoaderName: PropTypes.func.isRequired,
-    p: polyglotPropTypes.isRequired,
-    isFirstFile: PropTypes.bool,
-};
-
-UploadComponent.defaultProps = {
-    className: null,
-    isUrlValid: true,
-    error: false,
-};
-
-// @ts-expect-error TS7031
-const DroppingLoader = ({ text }) => {
-    return (
-        <Grid
-            sx={styles.loader}
-            container
-            direction="column"
-            alignItems="center"
-            justifyContent="center"
-        >
-            <CircularProgress />
-            <span>{text}</span>
-        </Grid>
-    );
-};
-DroppingLoader.propTypes = {
-    text: PropTypes.string.isRequired,
-};
-
-UploadComponent.propTypes = {
-    text: PropTypes.string,
-};
-
-// @ts-expect-error TS7006
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: State) => ({
     url: fromUpload.getUrl(state),
     textContent: fromUpload.getTextContent(state),
     isUrlValid: fromUpload.isUrlValid(state),
@@ -492,18 +447,31 @@ const mapDispatchToProps = {
     onUrlUpload: uploadUrl,
     onFileLoad: uploadFile,
     onTextUpload: uploadText,
-    // @ts-expect-error TS7006
-    onChangeUrl: (e) => changeUploadUrl(e.target.value),
-    // @ts-expect-error TS7006
-    onChangeTextContent: (e) => changeUploadText(e),
-    // @ts-expect-error TS7006
-    onChangeLoaderName: (val) =>
+    onChangeUrl: (e: ChangeEvent<HTMLInputElement>) =>
+        changeUploadUrl(e.target.value),
+    onChangeTextContent: (value: string) => changeUploadText(value),
+    onChangeLoaderName: (val: string | string[]) =>
         changeLoaderName(Array.isArray(val) ? val[0] : val),
 };
 
-export default compose(
-    translate,
+export default compose<
+    UploadComponentProps,
+    Omit<
+        UploadComponentProps,
+        | 'url'
+        | 'textContent'
+        | 'isUrlValid'
+        | 'isUploading'
+        | 'loaderName'
+        | 'loaders'
+        | 'onUrlUpload'
+        | 'onFileLoad'
+        | 'onTextUpload'
+        | 'onChangeUrl'
+        | 'onChangeTextContent'
+        | 'onChangeLoaderName'
+    >
+>(
     withRouter,
     connect(mapStateToProps, mapDispatchToProps),
-    // @ts-expect-error TS2345
 )(UploadComponent);

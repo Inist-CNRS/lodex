@@ -34,7 +34,7 @@ export function* handleUploadFile(action) {
     } catch (error) {
         console.error(error);
         allowUnload();
-        yield put(uploadError(error));
+        yield put(uploadError(error as Error));
     }
 }
 
@@ -58,7 +58,7 @@ export function* handleFinishUpload() {
         }
     } catch (error) {
         console.error(error);
-        yield put(uploadError(error));
+        yield put(uploadError(error as Error));
     }
 }
 

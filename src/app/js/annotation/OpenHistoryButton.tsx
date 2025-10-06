@@ -61,8 +61,6 @@ export const OpenHistoryButton = ({ field, resourceUri, openHistory }) => {
                                 openHistory();
                             }}
                         >
-                            {/*
-                             // @ts-expect-error TS2554 */}
                             {translate('annotation_open_history', {
                                 smart_count: data.length,
                             })}

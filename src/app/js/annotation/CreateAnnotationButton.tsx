@@ -53,8 +53,6 @@ function UserAnnotationCount({ fieldAnnotationIds, openHistory }) {
                 },
             }}
         >
-            {/*
-             // @ts-expect-error TS2554 */}
             {translate('annotation_sent_count', {
                 smart_count: fieldAnnotationIds.length,
             })}
@@ -118,7 +116,6 @@ export function CreateAnnotationButton({ field, resource }) {
         setIsTooltipOpen(false);
     };
 
-    // @ts-expect-error TS2554
     const buttonLabel = translate(`annotation_create_button_label`, {
         field: field.label,
     });
