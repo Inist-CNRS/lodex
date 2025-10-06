@@ -1,4 +1,4 @@
 export const checkLoginPage = () => {
-    cy.get('input[name="username"]').should('be.visible');
-    cy.get('input[name="password"]').should('be.visible');
+    cy.findByLabelText('Username *').should('be.visible');
+    cy.findByLabelText('Password *').should('be.visible');
 };
