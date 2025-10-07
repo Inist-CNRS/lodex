@@ -1,31 +1,30 @@
-// @ts-expect-error TS6133
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState, type MouseEventHandler } from 'react';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import { Button } from '@mui/material';
-import PropTypes from 'prop-types';
-import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { FINISHED, IN_PROGRESS, ON_HOLD } from '../../../../common/taskStatus';
 import { fromEnrichments } from '../selectors';
 import { launchEnrichment } from '.';
-import { compose } from 'recompose';
 import { toast } from '../../../../common/tools/toast';
 import { connect } from 'react-redux';
-import { translate } from '../../i18n/I18NContext';
+import { useTranslate } from '../../i18n/I18NContext';
+import type { State } from '../reducers';
+
+type RunButtonProps = {
+    onLaunchEnrichment: (value: { id: string; action: string }) => void;
+    areEnrichmentsRunning: boolean;
+    enrichmentStatus: 'IN_PROGRESS' | 'PENDING' | 'FINISHED' | 'CANCELED' | '';
+    variant?: 'text' | 'outlined' | 'contained';
+    id: string;
+};
 
 export const RunButton = ({
-    // @ts-expect-error TS7031
     onLaunchEnrichment,
-    // @ts-expect-error TS7031
     areEnrichmentsRunning,
-    // @ts-expect-error TS7031
     enrichmentStatus,
-    // @ts-expect-error TS7031
-    p: polyglot,
-    // @ts-expect-error TS7031
     variant,
-    // @ts-expect-error TS7031
     id,
-}) => {
+}: RunButtonProps) => {
+    const { translate } = useTranslate();
     const [isOngoing, setIsOngoing] = useState(false);
 
     useEffect(() => {
@@ -37,13 +36,12 @@ export const RunButton = ({
         return setIsOngoing(false);
     }, [setIsOngoing, enrichmentStatus]);
 
-    // @ts-expect-error TS7006
-    const handleClick = (event) => {
+    const handleClick: MouseEventHandler<HTMLButtonElement> = (event) => {
         event.preventDefault();
         event.stopPropagation();
         setIsOngoing(true);
         if (areEnrichmentsRunning) {
-            toast(polyglot.t('pending_enrichment'), {
+            toast(translate('pending_enrichment'), {
                 type: toast.TYPE.INFO,
             });
         }
@@ -62,45 +60,34 @@ export const RunButton = ({
             onClick={handleClick}
             disabled={isOngoing}
         >
-            {polyglot.t('run')}
+            {translate('run')}
         </Button>
     );
-};
-
-RunButton.propTypes = {
-    areEnrichmentsRunning: PropTypes.bool.isRequired,
-    onLaunchEnrichment: PropTypes.func.isRequired,
-    enrichmentStatus: PropTypes.oneOf([
-        'IN_PROGRESS',
-        'PENDING',
-        'FINISHED',
-        'CANCELED',
-        '',
-    ]).isRequired,
-    p: polyglotPropTypes,
-    variant: PropTypes.string,
-    id: PropTypes.string,
 };
 
 const mapDispatchToProps = {
     onLaunchEnrichment: launchEnrichment,
 };
 
-// @ts-expect-error TS7006
-const mapStateToProps = (state, { id }) => ({
-    areEnrichmentsRunning: !!fromEnrichments.enrichments(state).find(
-        // @ts-expect-error TS7006
-        (enrichment) =>
-            enrichment.status === IN_PROGRESS || enrichment.status === ON_HOLD,
-    ),
+const mapStateToProps = (
+    state: State,
+    {
+        id,
+    }: {
+        id: string;
+    },
+) => ({
+    areEnrichmentsRunning: !!fromEnrichments
+        .enrichments(state)
+        .find(
+            (enrichment) =>
+                enrichment.status === IN_PROGRESS ||
+                enrichment.status === ON_HOLD,
+        ),
     enrichmentStatus: fromEnrichments
         .enrichments(state)
-        // @ts-expect-error TS7031
-        .find(({ _id }) => _id === id)?.status,
+        .find(({ _id }: { _id: string }) => _id === id)?.status,
 });
 
-export default compose(
-    translate,
-    connect(mapStateToProps, mapDispatchToProps),
-    // @ts-expect-error TS2345
-)(RunButton);
+// @ts-expect-error TS2345
+export default connect(mapStateToProps, mapDispatchToProps)(RunButton);
