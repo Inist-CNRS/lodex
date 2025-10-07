@@ -1,12 +1,5 @@
-// @ts-expect-error TS6133
-import React from 'react';
-
-import PropTypes from 'prop-types';
-
 import { connect } from 'react-redux';
-import { compose } from 'recompose';
 import { fromEnrichments } from '../selectors';
-import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { Chip } from '@mui/material';
 import {
     FINISHED,
@@ -16,15 +9,27 @@ import {
     CANCELED,
     PAUSED,
 } from '../../../../common/taskStatus';
-import { translate } from '../../i18n/I18NContext';
+import { useTranslate } from '../../i18n/I18NContext';
+import type { State } from '../reducers';
 
-// @ts-expect-error TS7031
-export const EnrichmentStatus = ({ status, p: polyglot }) => {
+type EnrichmentStatusProps = {
+    status:
+        | 'IN_PROGRESS'
+        | 'PENDING'
+        | 'FINISHED'
+        | 'CANCELED'
+        | 'ERROR'
+        | 'PAUSED'
+        | '';
+};
+
+export const EnrichmentStatus = ({ status }: EnrichmentStatusProps) => {
+    const { translate } = useTranslate();
     if (status === PENDING) {
         return (
             <Chip
                 component="span"
-                label={polyglot.t('enrichment_status_pending')}
+                label={translate('enrichment_status_pending')}
                 color="warning"
             />
         );
@@ -33,7 +38,7 @@ export const EnrichmentStatus = ({ status, p: polyglot }) => {
         return (
             <Chip
                 component="span"
-                label={polyglot.t('enrichment_status_running')}
+                label={translate('enrichment_status_running')}
                 color="info"
             />
         );
@@ -43,7 +48,7 @@ export const EnrichmentStatus = ({ status, p: polyglot }) => {
         return (
             <Chip
                 component="span"
-                label={polyglot.t('enrichment_status_paused')}
+                label={translate('enrichment_status_paused')}
                 color="info"
             />
         );
@@ -53,7 +58,7 @@ export const EnrichmentStatus = ({ status, p: polyglot }) => {
         return (
             <Chip
                 component="span"
-                label={polyglot.t('enrichment_status_done')}
+                label={translate('enrichment_status_done')}
                 color="success"
             />
         );
@@ -63,7 +68,7 @@ export const EnrichmentStatus = ({ status, p: polyglot }) => {
         return (
             <Chip
                 component="span"
-                label={polyglot.t('enrichment_status_error')}
+                label={translate('enrichment_status_error')}
                 color="error"
             />
         );
@@ -73,7 +78,7 @@ export const EnrichmentStatus = ({ status, p: polyglot }) => {
         return (
             <Chip
                 component="span"
-                label={polyglot.t('enrichment_status_canceled')}
+                label={translate('enrichment_status_canceled')}
                 color="warning"
             />
         );
@@ -82,29 +87,22 @@ export const EnrichmentStatus = ({ status, p: polyglot }) => {
     return (
         <Chip
             component="span"
-            label={polyglot.t('enrichment_status_not_started')}
+            label={translate('enrichment_status_not_started')}
             sx={{ backgroundColor: 'neutral' }}
         />
     );
 };
 
-EnrichmentStatus.propTypes = {
-    p: polyglotPropTypes.isRequired,
-    status: PropTypes.string,
-    id: PropTypes.string,
-};
-
-const mapDispatchToProps = {};
-
-// @ts-expect-error TS7006
-const mapStateToProps = (state, { id }) => ({
-    // @ts-expect-error TS2339
+const mapStateToProps = (
+    state: State,
+    {
+        id,
+    }: {
+        id: string;
+    },
+): EnrichmentStatusProps => ({
     status: fromEnrichments.enrichments(state).find(({ _id }) => _id === id)
-        ?.status,
+        ?.status as EnrichmentStatusProps['status'],
 });
 
-export default compose(
-    translate,
-    connect(mapStateToProps, mapDispatchToProps),
-    // @ts-expect-error TS2345
-)(EnrichmentStatus);
+export default connect(mapStateToProps)(EnrichmentStatus);

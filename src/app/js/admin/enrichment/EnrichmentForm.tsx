@@ -5,7 +5,7 @@ import EnrichmentLogsDialogComponent from './EnrichmentLogsDialog';
 import EnrichmentPreview from './EnrichmentPreview';
 
 import { ListAlt as ListAltIcon } from '@mui/icons-material';
-import { Box, Button, ListItem, Typography } from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { compose } from 'recompose';
@@ -423,7 +423,6 @@ export const EnrichmentForm = ({
 const mapStateToProps = (state, { match }) => {
     const enrichment = fromEnrichments
         .enrichments(state)
-        // @ts-expect-error TS7006
         .find((enrichment) => enrichment._id === match.params.enrichmentId);
     return {
         initialValues: enrichment,
