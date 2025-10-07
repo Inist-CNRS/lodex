@@ -8,16 +8,7 @@ import {
     MenuItem,
     Chip,
 } from '@mui/material';
-import compose from 'recompose/compose';
-import { connect } from 'react-redux';
-import { change, formValueSelector } from 'redux-form';
-
-import { FIELD_FORM_NAME } from './';
-
-import {
-    polyglot as polyglotPropTypes,
-    field as fieldPropTypes,
-} from '../propTypes';
+import { field as fieldPropTypes } from '../propTypes';
 import FieldRepresentation from './FieldRepresentation';
 import { getFieldForSpecificScope } from '../../../common/scope';
 import {
@@ -38,7 +29,9 @@ import {
     useSensor,
     useSensors,
 } from '@dnd-kit/core';
-import { translate } from '../i18n/I18NContext';
+import { useTranslate } from '../i18n/I18NContext';
+import type { Field } from './types.ts';
+import { useController, useFormContext } from 'react-hook-form';
 
 // @ts-expect-error TS7031
 const SortableItem = ({ option, onDelete, isActive }) => {
@@ -172,19 +165,27 @@ SortableChips.propTypes = {
 };
 
 const FieldComposedOf = ({
-    // @ts-expect-error TS7031
-    onChange,
-    // @ts-expect-error TS7031
     fields,
-    // @ts-expect-error TS7031
-    p: polyglot,
-    // @ts-expect-error TS7031
-    columns,
-    // @ts-expect-error TS7031
     scope,
-    // @ts-expect-error TS7031
     subresourceId,
+}: {
+    fields: Field[];
+    scope: string;
+    subresourceId?: string;
 }) => {
+    const { translate } = useTranslate();
+
+    const { control } = useFormContext();
+    const { field } = useController({
+        name: 'composedOf',
+        control,
+        defaultValue: {
+            isComposedOf: false,
+            fields: [],
+        },
+    });
+    const columns = field.value.fields;
+
     const options = useMemo(() => {
         const toReturn = getFieldForSpecificScope(fields, scope, subresourceId);
         toReturn.filter(Boolean);
@@ -195,7 +196,7 @@ const FieldComposedOf = ({
             ) {
                 toReturn.push({
                     name: column,
-                    internalName: polyglot.t('missing_field'),
+                    internalName: translate('missing_field'),
                 });
             }
         }
@@ -214,7 +215,7 @@ const FieldComposedOf = ({
     const onDelete = (name) => {
         // @ts-expect-error TS7006
         const newFields = columns.filter((column) => column !== name);
-        onChange({
+        field.onChange({
             isComposedOf: newFields.length > 0,
             fields: newFields,
         });
@@ -222,7 +223,7 @@ const FieldComposedOf = ({
 
     // @ts-expect-error TS7006
     const handleChange = (event, value) => {
-        onChange({
+        field.onChange({
             isComposedOf: value.length > 0,
             // @ts-expect-error TS7006
             fields: value.map((field) => field.name),
@@ -232,7 +233,7 @@ const FieldComposedOf = ({
     return (
         <Box mt={5}>
             <Typography variant="subtitle1" sx={{ marginBottom: 2 }}>
-                {polyglot.t('wizard_composed_of')}
+                {translate('wizard_composed_of')}
             </Typography>
             <Autocomplete
                 multiple
@@ -245,7 +246,7 @@ const FieldComposedOf = ({
                 renderInput={(params) => (
                     <TextField
                         {...params}
-                        label={polyglot.t('fields_composed_of')}
+                        label={translate('fields_composed_of')}
                     />
                 )}
                 renderOption={(props, option) => (
@@ -265,7 +266,7 @@ const FieldComposedOf = ({
                 onChange={handleChange}
                 renderTags={(props) => (
                     <SortableChips
-                        onChange={onChange}
+                        onChange={field.onChange}
                         onDelete={onDelete}
                         options={props}
                     />
@@ -276,43 +277,9 @@ const FieldComposedOf = ({
 };
 
 FieldComposedOf.propTypes = {
-    columns: PropTypes.arrayOf(PropTypes.string),
     fields: PropTypes.arrayOf(fieldPropTypes).isRequired,
-    onChange: PropTypes.func.isRequired,
-    p: polyglotPropTypes.isRequired,
     scope: PropTypes.string.isRequired,
     subresourceId: PropTypes.string,
 };
 
-FieldComposedOf.defaultProps = {
-    columns: [],
-};
-
-// @ts-expect-error TS7006
-const mapStateToProps = (state, { FORM_NAME }) => {
-    const composedOf = formValueSelector(FORM_NAME || FIELD_FORM_NAME)(
-        state,
-        'composedOf',
-    );
-
-    if (composedOf && composedOf.fields && composedOf.fields.length > 0) {
-        return {
-            columns: composedOf.fields,
-        };
-    }
-    return { columns: [] };
-};
-
-// @ts-expect-error TS7006
-const mapDispatchToProps = (dispatch, { FORM_NAME = FIELD_FORM_NAME }) => ({
-    // @ts-expect-error TS7006
-    onChange: (composedOf) => {
-        dispatch(change(FORM_NAME, 'composedOf', composedOf));
-    },
-});
-
-export default compose(
-    connect(mapStateToProps, mapDispatchToProps),
-    translate,
-    // @ts-expect-error TS2345
-)(FieldComposedOf);
+export default FieldComposedOf;

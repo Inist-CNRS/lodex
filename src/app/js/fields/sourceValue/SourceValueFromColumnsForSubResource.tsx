@@ -1,28 +1,53 @@
 import React, { useEffect } from 'react';
-import compose from 'recompose/compose';
 import PropTypes from 'prop-types';
 import { Autocomplete, Box, TextField } from '@mui/material';
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { fromParsing } from '../../admin/selectors';
-import { polyglot as polyglotPropTypes } from '../../propTypes';
 import parseValue from '../../../../common/tools/parseValue';
-import { translate } from '../../i18n/I18NContext';
+import { useTranslate } from '../../i18n/I18NContext';
 import { fromI18n } from '../../public/selectors';
+import type { Subresource, TransformerDraft } from '../types.ts';
 
 const SourceValueFromColumnsForSubResource = ({
-    // @ts-expect-error TS7031
-    datasetFields,
-    // @ts-expect-error TS7031
-    p: polyglot,
-    // @ts-expect-error TS7031
     updateDefaultValueTransformers,
-    // @ts-expect-error TS7031
     value,
-    // @ts-expect-error TS7031
-    subresourcePath,
+    selectedSubresourceUri,
+}: {
+    updateDefaultValueTransformers: (transformers: TransformerDraft[]) => void;
+    value?: string | null;
+    selectedSubresourceUri?: string;
 }) => {
-    const [autocompleteValue, setAutocompleteValue] = React.useState(value);
+    const { translate } = useTranslate();
+    const { datasetFields, subresourcePath } = useSelector((state: any) => {
+        const { subresources } = state.subresource;
 
+        const subresource = subresources.find(
+            (s: Subresource) => s._id === selectedSubresourceUri,
+        );
+        const [firstParsedLine] = fromParsing.getExcerptLines(state);
+
+        if (!subresource || !firstParsedLine) {
+            return {};
+        }
+
+        const subresourceData = parseValue(
+            firstParsedLine[subresource.path] || '',
+        );
+
+        return {
+            datasetFields: [
+                ...Object.keys(
+                    (Array.isArray(subresourceData)
+                        ? subresourceData[0]
+                        : subresourceData) || {},
+                ),
+                ...[fromI18n.getPhrases(state)['other']],
+            ].sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase())),
+            subresourcePath: subresource.path,
+        };
+    });
+
+    const [autocompleteValue, setAutocompleteValue] = React.useState(value);
     useEffect(() => {
         setAutocompleteValue(value);
     }, [value]);
@@ -62,13 +87,13 @@ const SourceValueFromColumnsForSubResource = ({
             <Autocomplete
                 data-testid="source-value-from-columns"
                 fullWidth
-                options={datasetFields}
+                options={datasetFields ?? []}
                 value={autocompleteValue ?? []}
                 renderInput={(params) => (
                     <TextField
                         {...params}
-                        label={polyglot.t('from_columns')}
-                        placeholder={polyglot.t('enter_from_columns')}
+                        label={translate('from_columns')}
+                        placeholder={translate('enter_from_columns')}
                     />
                 )}
                 onChange={handleChange}
@@ -77,45 +102,10 @@ const SourceValueFromColumnsForSubResource = ({
     );
 };
 
-// @ts-expect-error TS7006
-export const mapStateToProps = (state, { selectedSubresourceUri }) => {
-    const { subresources } = state.subresource;
-
-    const subresource = subresources.find(
-        // @ts-expect-error TS7006
-        (s) => s._id === selectedSubresourceUri,
-    );
-    const [firstParsedLine] = fromParsing.getExcerptLines(state);
-
-    if (!subresource || !firstParsedLine) {
-        return {};
-    }
-
-    const subresourceData = parseValue(firstParsedLine[subresource.path] || '');
-
-    return {
-        datasetFields: [
-            ...Object.keys(
-                (Array.isArray(subresourceData)
-                    ? subresourceData[0]
-                    : subresourceData) || {},
-            ),
-            ...[fromI18n.getPhrases(state)['other']],
-        ].sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase())),
-        subresourcePath: subresource.path,
-    };
-};
-
 SourceValueFromColumnsForSubResource.propTypes = {
-    datasetFields: PropTypes.arrayOf(PropTypes.string).isRequired,
-    p: polyglotPropTypes.isRequired,
     updateDefaultValueTransformers: PropTypes.func.isRequired,
-    value: PropTypes.array,
-    subresourcePath: PropTypes.string,
+    value: PropTypes.string,
+    selectedSubresourceUri: PropTypes.string,
 };
 
-export default compose(
-    connect(mapStateToProps),
-    translate,
-    // @ts-expect-error TS2345
-)(SourceValueFromColumnsForSubResource);
+export default SourceValueFromColumnsForSubResource;

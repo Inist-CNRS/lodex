@@ -15,6 +15,10 @@ import fieldSelectors, {
 export const selectors = fieldSelectors;
 export const NEW_CHARACTERISTIC_FORM_NAME = formName;
 
+/**
+ * TODO remove
+ * @deprecated
+ */
 export const FIELD_FORM_NAME = 'field';
 
 export const ADD_FIELD = 'ADD_FIELD';
