@@ -90,6 +90,7 @@ const mapStateToProps = (
         .find(({ _id }: { _id: string }) => _id === id)?.status,
 });
 
-export default compose<RunButtonProps, { id: string }>(
-    connect(mapStateToProps, mapDispatchToProps),
-)(RunButton);
+export default compose<
+    RunButtonProps,
+    { id: string; variant?: 'text' | 'outlined' | 'contained' }
+>(connect(mapStateToProps, mapDispatchToProps))(RunButton);
