@@ -10,10 +10,11 @@ import { useController } from 'react-hook-form';
 
 type AutocompleteProps = {
     name: string;
-    clearIdentifier: () => void;
+    clearIdentifier?: () => void;
     hint?: string;
     options: string[];
     label: string;
+    disabled?: boolean;
 };
 
 export const Autocomplete = ({
@@ -22,6 +23,7 @@ export const Autocomplete = ({
     hint,
     options,
     label,
+    disabled = false,
 }: AutocompleteProps) => {
     const { field, fieldState } = useController({
         name,
@@ -32,8 +34,9 @@ export const Autocomplete = ({
     return (
         <FormControl fullWidth error={!!finalError}>
             <MuiAutocomplete
+                disabled={disabled}
                 onChange={(_event, newValue, reason) => {
-                    if (reason === 'clear') {
+                    if (reason === 'clear' && clearIdentifier) {
                         clearIdentifier();
                     }
                     field.onChange(newValue);

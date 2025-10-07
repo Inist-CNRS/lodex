@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useMemo } from 'react';
 
-import SubressourceFieldAutoComplete from '../subresource/SubressourceFieldAutoComplete';
 import EnrichmentCatalogConnected from './EnrichmentCatalog';
 import EnrichmentLogsDialogComponent from './EnrichmentLogsDialog';
 import EnrichmentPreview from './EnrichmentPreview';
@@ -352,34 +351,11 @@ export const EnrichmentForm = ({
                                         name="sourceColumn"
                                         label={translate('sourceColumn')}
                                     />
-
-                                    <Field
+                                    <Autocomplete
                                         name="subPath"
-                                        type="text"
-                                        component={
-                                            SubressourceFieldAutoComplete
-                                        }
+                                        label={translate('subPath')}
                                         options={optionsIdentifier}
-                                        // @ts-expect-error TS7006
-                                        renderInput={(params) => (
-                                            <TextField
-                                                {...params}
-                                                label={translate('subPath')}
-                                                aria-label="subPath"
-                                                variant="outlined"
-                                            />
-                                        )}
                                         disabled={!formValues?.sourceColumn}
-                                        // @ts-expect-error TS7006
-                                        renderOption={(props, option) => {
-                                            return (
-                                                <ListItem {...props}>
-                                                    <Typography>
-                                                        {option}
-                                                    </Typography>
-                                                </ListItem>
-                                            );
-                                        }}
                                     />
                                 </Box>
                             </Box>
