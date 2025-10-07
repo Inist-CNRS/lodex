@@ -25,9 +25,7 @@ const EnrichmentPreview = ({ lines, sourceColumn }: EnrichmentPreviewProps) => {
                 alignItems="center"
                 mb={4}
             >
-                {/*
-                 // @ts-expect-error TS2769 */}
-                <PreviewIcon mr={1} />
+                <PreviewIcon sx={{ mr: 1 }} />
                 <Typography variant="h6">
                     {translate('value_preview_title')}
                 </Typography>
