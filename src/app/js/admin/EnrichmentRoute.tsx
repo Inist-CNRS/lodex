@@ -13,8 +13,6 @@ export const EnrichmentRouteComponent = () => {
     return (
         <Switch>
             <Route exact path={`${path}`}>
-                {/*
-                 // @ts-expect-error TS2741 */}
                 <EnrichmentListConnected />
             </Route>
             <Route exact path={`${path}/add`}>
