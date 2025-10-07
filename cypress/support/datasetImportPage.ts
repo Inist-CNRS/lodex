@@ -56,7 +56,7 @@ export const fillSyndication = (syndication, columnName) => {
     cy.get('[role="listbox"]').contains(columnName).click({ force: true });
 };
 
-export const addColumn = (columnName, options = {}) => {
+export const addColumn = (columnName, options: any = {}) => {
     const name = columnName.replaceAll(' ', '-');
     cy.get(`[data-testid="add-field-dropdown"]`).click();
     cy.contains('From a column').click();
