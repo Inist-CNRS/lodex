@@ -36,6 +36,7 @@ export type Enrichment = {
     rule: string;
     jobId: string;
     errorCount: number;
+    name: string;
 };
 
 type EnrichmentState = {

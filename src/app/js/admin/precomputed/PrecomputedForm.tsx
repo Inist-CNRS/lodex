@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, type MouseEvent } from 'react';
+import React, { useCallback, useEffect, type MouseEvent } from 'react';
 
 import PrecomputedCatalogConnected from './PrecomputedCatalog';
 import PrecomputedPreview from './PrecomputedPreview';
@@ -37,9 +37,6 @@ import { useTranslate } from '../../i18n/I18NContext';
 import { PrecomputedStatus } from './PrecomputedStatus';
 import { RunButton } from './RunButton';
 import type { NewPreComputation } from '../../../../common/types/precomputation';
-
-const required = (text: string) => (value: unknown) =>
-    value && !(value instanceof Array && value.length === 0) ? undefined : text;
 
 export type PrecomputedFormProps = {
     datasetFields: string[];
@@ -102,11 +99,6 @@ export const PrecomputedForm = ({
 
     const sourceColumns = watch('sourceColumns');
     const webServiceUrl = watch('webServiceUrl');
-
-    const requiredField = useMemo(
-        () => required(translate('error_field_required')),
-        [translate],
-    );
 
     const isEditMode = !!initialValues?._id;
 
@@ -292,7 +284,7 @@ export const PrecomputedForm = ({
                                 <TextField
                                     name="name"
                                     label={translate('fieldName')}
-                                    validate={requiredField}
+                                    required
                                     fullWidth
                                 />
                                 {isEditMode && (
@@ -397,7 +389,7 @@ export const PrecomputedForm = ({
                                 <TextField
                                     name="webServiceUrl"
                                     label={translate('webServiceUrl')}
-                                    validate={requiredField}
+                                    required
                                     fullWidth
                                 />
                                 <Button
@@ -423,7 +415,7 @@ export const PrecomputedForm = ({
                                     name="sourceColumns"
                                     label={translate('sourceColumns')}
                                     options={datasetFields}
-                                    validate={requiredField}
+                                    required
                                 />
                             </Box>
                         </Box>
