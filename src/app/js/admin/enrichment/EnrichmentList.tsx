@@ -10,12 +10,11 @@ import {
     GridToolbarDensitySelector,
     GridToolbarFilterButton,
 } from '@mui/x-data-grid';
-import PropTypes from 'prop-types';
 import { default as React, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { useHistory } from 'react-router';
 import { Link } from 'react-router-dom';
-import { launchAllEnrichment, retryEnrichment } from '.';
+import { launchAllEnrichment, retryEnrichment, type Enrichment } from '.';
 import { IN_PROGRESS } from '../../../../common/taskStatus';
 import { toast } from '../../../../common/tools/toast';
 import { useTranslate } from '../../i18n/I18NContext';
@@ -23,10 +22,15 @@ import { ConfirmPopup } from '../../lib/components/ConfirmPopup';
 import EnrichmentStatus from './EnrichmentStatus';
 import RunButton from './RunButton';
 
+type EnrichmentListToolBarProps = {
+    onLaunchAllEnrichment: () => void;
+    areEnrichmentsRunning: boolean;
+};
+
 const EnrichmentListToolBar = ({
     onLaunchAllEnrichment,
     areEnrichmentsRunning,
-}) => {
+}: EnrichmentListToolBarProps) => {
     const { translate } = useTranslate();
     const [isConfirmOpen, setIsConfirmOpen] = React.useState(false);
 
@@ -102,29 +106,26 @@ const EnrichmentListToolBar = ({
     );
 };
 
-EnrichmentListToolBar.propTypes = {
-    onLaunchAllEnrichment: PropTypes.func,
-    areEnrichmentsRunning: PropTypes.bool.isRequired,
+type EnrichmentListProps = {
+    enrichments: Enrichment[];
+    isLoadEnrichmentsPending: boolean;
+    isRunAllEnrichmentPending: boolean;
+    runAllEnrichmentError: string | null;
+    onLaunchAllEnrichment: () => void;
+    onRetryEnrichment: (value: { id: string }) => void;
 };
 
 export const EnrichmentList = ({
-    // @ts-expect-error TS7031
     enrichments,
-    // @ts-expect-error TS7031
     isLoadEnrichmentsPending,
-    // @ts-expect-error TS7031
     isRunAllEnrichmentPending,
-    // @ts-expect-error TS7031
     runAllEnrichmentError,
-    // @ts-expect-error TS7031
     onLaunchAllEnrichment,
-    // @ts-expect-error TS7031
     onRetryEnrichment,
-}) => {
+}: EnrichmentListProps) => {
     const { translate } = useTranslate();
     const history = useHistory();
     const areEnrichmentsRunning =
-        // @ts-expect-error TS7006
         enrichments.some((enrichment) => enrichment.status === IN_PROGRESS) ||
         isLoadEnrichmentsPending ||
         isRunAllEnrichmentPending;
@@ -141,7 +142,7 @@ export const EnrichmentList = ({
         toast(translate(runAllEnrichmentError), {
             type: toast.TYPE.ERROR,
         });
-    }, [runAllEnrichmentError]);
+    }, [runAllEnrichmentError, translate]);
 
     return (
         <Box>
@@ -181,7 +182,6 @@ export const EnrichmentList = ({
                         headerName: translate('enrichment_status'),
                         flex: 1,
                         renderCell: (params) => (
-                            // @ts-expect-error TS2322
                             <EnrichmentStatus id={params.row._id} />
                         ),
                     },
@@ -191,7 +191,6 @@ export const EnrichmentList = ({
                         flex: 1,
                         renderCell: (params) => {
                             return (
-                                // @ts-expect-error TS2322
                                 <RunButton id={params.row._id} variant="text" />
                             );
                         },
@@ -210,7 +209,7 @@ export const EnrichmentList = ({
                                         color="primary"
                                         onClick={(event) => {
                                             onRetryEnrichment({
-                                                id: params.id,
+                                                id: params.id as string,
                                             });
                                             event.preventDefault();
                                             event.stopPropagation();
@@ -248,16 +247,6 @@ export const EnrichmentList = ({
             />
         </Box>
     );
-};
-
-EnrichmentList.propTypes = {
-    enrichments: PropTypes.array.isRequired,
-    onLaunchEnrichment: PropTypes.func.isRequired,
-    onLaunchAllEnrichment: PropTypes.func.isRequired,
-    isLoadEnrichmentsPending: PropTypes.bool,
-    isRunAllEnrichmentPending: PropTypes.bool,
-    runAllEnrichmentError: PropTypes.string,
-    onRetryEnrichment: PropTypes.func.isRequired,
 };
 
 // @ts-expect-error TS7006
