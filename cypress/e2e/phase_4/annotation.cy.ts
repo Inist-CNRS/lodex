@@ -503,8 +503,6 @@ describe('Annotation', () => {
 
             cy.wait(1000);
 
-            console.log({ directory: Cypress.config('downloadsFolder') });
-
             cy.task('getFileContent', {
                 directory: Cypress.config('downloadsFolder'),
                 pattern: /annotations_\d{4}-\d{2}-\d{2}-\d{6}.json/,
