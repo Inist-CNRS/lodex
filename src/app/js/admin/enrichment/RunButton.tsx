@@ -8,6 +8,7 @@ import { toast } from '../../../../common/tools/toast';
 import { connect } from 'react-redux';
 import { useTranslate } from '../../i18n/I18NContext';
 import type { State } from '../reducers';
+import { compose } from 'recompose';
 
 type RunButtonProps = {
     onLaunchEnrichment: (value: { id: string; action: string }) => void;
@@ -89,5 +90,6 @@ const mapStateToProps = (
         .find(({ _id }: { _id: string }) => _id === id)?.status,
 });
 
-// @ts-expect-error TS2345
-export default connect(mapStateToProps, mapDispatchToProps)(RunButton);
+export default compose<RunButtonProps, { id: string }>(
+    connect(mapStateToProps, mapDispatchToProps),
+)(RunButton);

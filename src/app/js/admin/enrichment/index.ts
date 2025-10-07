@@ -27,7 +27,16 @@ export const launchAllEnrichmentError = createAction(
     LAUNCH_ALL_ENRICHMENT_ERROR,
 );
 
-type Enrichment = Record<string, unknown> & { _id: string };
+export type Enrichment = {
+    _id: string;
+    sourceColumn: string;
+    status: string;
+    subPath: string;
+    advancedMode: boolean;
+    rule: string;
+    jobId: string;
+    errorCount: number;
+};
 
 type EnrichmentState = {
     error: string | null;
@@ -39,6 +48,8 @@ type EnrichmentState = {
     isLoadEnrichmentsPending?: boolean;
     isRunAllEnrichmentPending?: boolean;
     runAllEnrichmentError?: string | null;
+    jobId?: string;
+    sourceColumn?: string;
 };
 
 export const initialState: EnrichmentState = {
@@ -87,7 +98,8 @@ export default handleActions<EnrichmentState, any>(
 export const isDataPreviewLoading = (state: EnrichmentState) =>
     state.dataPreviewLoading;
 export const isInitialized = (state: EnrichmentState) => state.initialized;
-export const enrichments = (state: EnrichmentState) => state.enrichments;
+export const enrichments = (state: EnrichmentState): Enrichment[] =>
+    state.enrichments;
 export const dataPreviewEnrichment = (state: EnrichmentState) =>
     state.dataPreviewEnrichment;
 export const getError = (state: EnrichmentState) => state.error;

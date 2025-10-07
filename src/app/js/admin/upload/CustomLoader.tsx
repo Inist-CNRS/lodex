@@ -10,7 +10,7 @@ import {
     DialogContent,
     DialogTitle,
 } from '@mui/material';
-import { useForm, Controller, Form } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { connect } from 'react-redux';
 import { fromUpload } from '../selectors';
 import {
@@ -49,7 +49,7 @@ const CustomLoader = ({
     const { translate } = useTranslate();
     const [isLoading, setIsLoading] = useState(false);
 
-    const { control, setValue, getValues } = useForm<CustomLoaderFormData>({
+    const { setValue, getValues } = useForm<CustomLoaderFormData>({
         defaultValues: {
             customLoader: initialValues?.customLoader || '',
         },
