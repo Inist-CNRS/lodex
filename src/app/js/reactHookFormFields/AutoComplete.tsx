@@ -35,6 +35,7 @@ export const Autocomplete = ({
         <FormControl fullWidth error={!!finalError}>
             <MuiAutocomplete
                 disabled={disabled}
+                value={field.value || null}
                 onChange={(_event, newValue, reason) => {
                     if (reason === 'clear' && clearIdentifier) {
                         clearIdentifier();
