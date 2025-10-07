@@ -24,9 +24,7 @@ import EnrichmentStatus from './EnrichmentStatus';
 import RunButton from './RunButton';
 
 const EnrichmentListToolBar = ({
-    // @ts-expect-error TS7031
     onLaunchAllEnrichment,
-    // @ts-expect-error TS7031
     areEnrichmentsRunning,
 }) => {
     const { translate } = useTranslate();
