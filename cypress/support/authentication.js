@@ -2,8 +2,8 @@ import { ADMIN_ROLE, DEFAULT_TENANT } from '../../src/common/tools/tenantTools';
 
 export const login = (username = 'admin', password = 'secret') => {
     cy.visit('http://localhost:3000');
-    cy.get('input[name="username"]').type(username);
-    cy.get('input[name="password"]').type(password);
+    cy.findByLabelText('Username *').type(username);
+    cy.findByLabelText('Password *').type(password);
     cy.get('button').click();
     cy.location('pathname').should('equal', `/instance/${DEFAULT_TENANT}/`);
 };

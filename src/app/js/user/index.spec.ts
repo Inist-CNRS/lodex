@@ -1,3 +1,4 @@
+import type { Action } from 'redux-actions';
 import { ADMIN_ROLE, USER_ROLE } from '../../../common/tools/tenantTools';
 import reducer, {
     defaultState,
@@ -5,47 +6,30 @@ import reducer, {
     isAdmin,
     loginSuccess,
     logout,
-    toggleLogin,
     getRequest,
     getDumpDatasetRequest,
 } from './';
 
 describe('user reducer', () => {
     it('should initialize with correct state', () => {
-        // @ts-expect-error TS2345
-        const state = reducer(undefined, { type: '@@INIT' });
+        const state = reducer(undefined, { type: '@@INIT' } as Action<any>);
         expect(state).toEqual(defaultState);
-    });
-
-    it('should handle the TOGGLE_LOGIN action', () => {
-        const state = reducer(undefined, toggleLogin());
-        expect(state).toEqual({
-            ...state,
-            showModal: true,
-        });
     });
 
     it('should handle the LOGIN_SUCCESS action', () => {
         const state = reducer(
-            // @ts-expect-error TS2345
-            { showModal: true },
+            defaultState,
             loginSuccess({ token: 'foo', role: ADMIN_ROLE }),
         );
         expect(state).toEqual({
-            showModal: false,
             token: 'foo',
             role: ADMIN_ROLE,
         });
     });
 
     it('should handle the LOGOUT action', () => {
-        const state = reducer(
-            // @ts-expect-error TS2322
-            { showModal: false, token: 'C3PO&R2D2' },
-            logout(),
-        );
+        const state = reducer({ token: 'C3PO&R2D2' }, logout());
         expect(state).toEqual({
-            showModal: true,
             token: null,
             role: null,
         });
@@ -53,17 +37,17 @@ describe('user reducer', () => {
 
     describe('isAdmin selector', () => {
         it('should return false if state has no role', () => {
-            const result = isAdmin({});
+            const result = isAdmin(defaultState);
             expect(result).toBe(false);
         });
 
         it('should return false if state role is not admin', () => {
-            const result = isAdmin({ role: USER_ROLE });
+            const result = isAdmin({ ...defaultState, role: USER_ROLE });
             expect(result).toBe(false);
         });
 
         it('should return true if state role is admin', () => {
-            const result = isAdmin({ role: ADMIN_ROLE });
+            const result = isAdmin({ ...defaultState, role: ADMIN_ROLE });
             expect(result).toBe(true);
         });
     });

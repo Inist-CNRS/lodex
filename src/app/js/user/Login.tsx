@@ -1,29 +1,11 @@
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
-import {
-    Card,
-    CardActions,
-    CardContent,
-    CardHeader,
-    Link,
-} from '@mui/material';
-import PropTypes from 'prop-types';
-// @ts-expect-error TS6133
-import React, { useMemo } from 'react';
+import { Button, Card, CardHeader, Link } from '@mui/material';
+import { useMemo } from 'react';
 import { connect } from 'react-redux';
-import compose from 'recompose/compose';
-import { bindActionCreators } from 'redux';
-import { isSubmitting, submit as submitAction } from 'redux-form';
 
-import { translate } from '../i18n/I18NContext';
-import ButtonWithStatus from '../lib/components/ButtonWithStatus';
-import { polyglot as polyglotPropTypes } from '../propTypes';
-import { fromUser } from '../sharedSelectors';
-import {
-    LOGIN_FORM_NAME,
-    login as loginAction,
-    toggleLogin as toggleLoginAction,
-} from './';
 import LoginForm from './LoginForm';
+import { useTranslate } from '../i18n/I18NContext';
+import { login as loginAction } from './';
 
 const styles = {
     container: {
@@ -31,17 +13,16 @@ const styles = {
     },
 };
 
+type LoginComponentProps = {
+    login: (data: { username: string; password: string }) => void;
+    target?: 'root' | 'admin';
+};
+
 export const LoginComponent = ({
-    // @ts-expect-error TS7031
     login,
-    // @ts-expect-error TS7031
-    p: polyglot,
-    // @ts-expect-error TS7031
-    submit,
-    // @ts-expect-error TS7031
-    submitting,
     target = 'admin',
-}) => {
+}: LoginComponentProps) => {
+    const { translate } = useTranslate();
     const { href, title, className, color, subheader } = useMemo(() => {
         if (target === 'root') {
             return {
@@ -65,12 +46,11 @@ export const LoginComponent = ({
     return (
         <Card sx={styles.container} className={className}>
             <CardHeader
-                title={polyglot.t('Login')}
-                subheader={polyglot.t(subheader)}
+                title={translate('Login')}
+                subheader={translate(subheader)}
                 action={
                     <Link
-                        // @ts-expect-error TS2769
-                        variant="contained"
+                        component={Button}
                         color="primary"
                         disableElevation
                         href={href}
@@ -83,61 +63,19 @@ export const LoginComponent = ({
                             marginInlineEnd: 1,
                         }}
                     >
-                        {polyglot.t(title)}
+                        {translate(title)}
                     </Link>
                 }
             />
-            <CardContent>
-                {/*
-                 // @ts-expect-error TS2322 */}
-                <LoginForm onSubmit={login} />
-            </CardContent>
-            <CardActions>
-                {/*
-                 // @ts-expect-error TS2740 */}
-                <ButtonWithStatus
-                    loading={submitting}
-                    onClick={submit}
-                    color="primary"
-                >
-                    {polyglot.t('Sign in')}
-                </ButtonWithStatus>
-            </CardActions>
+            <LoginForm onSubmit={login} />
         </Card>
     );
 };
 
-LoginComponent.propTypes = {
-    login: PropTypes.func.isRequired,
-    p: polyglotPropTypes.isRequired,
-    submit: PropTypes.func.isRequired,
-    submitting: PropTypes.bool.isRequired,
-    target: PropTypes.oneOf(['root', 'admin']),
+export const mapDispatchToProps = {
+    login: loginAction,
 };
 
-LoginComponent.defaultProps = {
-    previousState: null,
-};
+export const mapStateToProps = () => ({});
 
-// @ts-expect-error TS7006
-export const mapStateToProps = (state) => ({
-    showModal: fromUser.isUserModalShown(state),
-    submitting: isSubmitting(LOGIN_FORM_NAME)(state),
-});
-
-// @ts-expect-error TS7006
-export const mapDispatchToProps = (dispatch) =>
-    bindActionCreators(
-        {
-            login: (values) => loginAction(values),
-            submit: () => submitAction(LOGIN_FORM_NAME),
-            toggleLogin: toggleLoginAction,
-        },
-        dispatch,
-    );
-
-export default compose(
-    connect(mapStateToProps, mapDispatchToProps),
-    translate,
-    // @ts-expect-error TS2345
-)(LoginComponent);
+export default connect(mapStateToProps, mapDispatchToProps)(LoginComponent);

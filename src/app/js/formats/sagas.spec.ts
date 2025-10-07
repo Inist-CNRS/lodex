@@ -309,7 +309,6 @@ describe('format sagas', () => {
 
             expect(iterator.next({ paramsKey: 'paramsValue' })).toEqual({
                 done: false,
-                // @ts-expect-error TS2769
                 value: call(getQueryString, {
                     params: {
                         filterKey: 'filterValue',
@@ -355,7 +354,6 @@ describe('format sagas', () => {
 
             expect(iterator.next({ paramsKey: 'paramsValue' })).toEqual({
                 done: false,
-                // @ts-expect-error TS2769
                 value: call(getQueryString, {
                     params: {
                         filterKey: 'filterValue',
