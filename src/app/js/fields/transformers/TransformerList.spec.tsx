@@ -1,7 +1,8 @@
 // @ts-expect-error TS6133
-import React from 'react';
+import React, { type PropsWithChildren } from 'react';
 import { render } from '@testing-library/react';
 import { TransformerListComponent as TransformerList } from './TransformerList';
+import { TestI18N } from '../../i18n/I18NContext.tsx';
 
 jest.mock(
     './TransformerListItem',
@@ -16,7 +17,11 @@ jest.mock(
 
 describe('TransformerList', () => {
     // @ts-expect-error TS7034
-    let transformers, mockFields, mockMeta, polyglot;
+    let transformers, mockFields, mockMeta;
+
+    const Wrapper = ({ children }: PropsWithChildren<object>) => (
+        <TestI18N>{children}</TestI18N>
+    );
 
     beforeEach(() => {
         transformers = [
@@ -25,23 +30,10 @@ describe('TransformerList', () => {
                 args: [{ name: 'value', type: 'string', value: 'test' }],
             },
         ];
-        mockFields = {
-            map: jest
-                .fn()
-                .mockReturnValue(
-                    transformers.map((_, index) => `transformers[${index}]`),
-                ),
-            getAll: jest.fn().mockReturnValue(transformers),
-            // @ts-expect-error TS7005
-            get: jest.fn().mockImplementation((index) => transformers[index]),
-        };
+        mockFields = transformers;
         mockMeta = {
             touched: false,
             error: null,
-        };
-        polyglot = {
-            // @ts-expect-error TS7006
-            t: (key) => key,
         };
     });
 
@@ -59,26 +51,17 @@ describe('TransformerList', () => {
                 operation: 'BOOLEAN',
             },
         ];
-        mockFields = {
-            map: jest
-                .fn()
-                .mockReturnValue(
-                    transformers.map((_, index) => `transformers[${index}]`),
-                ),
-            getAll: jest.fn().mockReturnValue(transformers),
-            // @ts-expect-error TS7005
-            get: jest.fn().mockImplementation((index) => transformers[index]),
-        };
+        mockFields = transformers;
         const { queryByText } = render(
-            <TransformerList
-                isSubresourceField
-                // @ts-expect-error TS2322
-                fields={mockFields}
-                // @ts-expect-error TS7005
-                meta={mockMeta}
-                // @ts-expect-error TS7005
-                p={polyglot}
-            />,
+            <Wrapper>
+                <TransformerList
+                    isSubresourceField
+                    // @ts-expect-error TS2322
+                    fields={mockFields}
+                    // @ts-expect-error TS7005
+                    meta={mockMeta}
+                />
+            </Wrapper>,
         );
 
         expect(queryByText('VALUE')).not.toBeInTheDocument();
@@ -95,26 +78,17 @@ describe('TransformerList', () => {
                 operation: 'BOOLEAN',
             },
         ];
-        mockFields = {
-            map: jest
-                .fn()
-                .mockReturnValue(
-                    transformers.map((_, index) => `transformers[${index}]`),
-                ),
-            getAll: jest.fn().mockReturnValue(transformers),
-            // @ts-expect-error TS7005
-            get: jest.fn().mockImplementation((index) => transformers[index]),
-        };
+        mockFields = transformers;
         const { queryByText } = render(
-            <TransformerList
-                isSubresourceField
-                // @ts-expect-error TS2322
-                fields={mockFields}
-                // @ts-expect-error TS7005
-                meta={mockMeta}
-                // @ts-expect-error TS7005
-                p={polyglot}
-            />,
+            <Wrapper>
+                <TransformerList
+                    isSubresourceField
+                    // @ts-expect-error TS2322
+                    fields={mockFields}
+                    // @ts-expect-error TS7005
+                    meta={mockMeta}
+                />
+            </Wrapper>,
         );
 
         expect(queryByText('COLUMN')).not.toBeInTheDocument();
@@ -134,26 +108,17 @@ describe('TransformerList', () => {
                 operation: 'BOOLEAN',
             },
         ];
-        mockFields = {
-            map: jest
-                .fn()
-                .mockReturnValue(
-                    transformers.map((_, index) => `transformers[${index}]`),
-                ),
-            getAll: jest.fn().mockReturnValue(transformers),
-            // @ts-expect-error TS7005
-            get: jest.fn().mockImplementation((index) => transformers[index]),
-        };
+        mockFields = transformers;
         const { queryByText } = render(
-            <TransformerList
-                isSubresourceField
-                // @ts-expect-error TS2322
-                fields={mockFields}
-                // @ts-expect-error TS7005
-                meta={mockMeta}
-                // @ts-expect-error TS7005
-                p={polyglot}
-            />,
+            <Wrapper>
+                <TransformerList
+                    isSubresourceField
+                    // @ts-expect-error TS2322
+                    fields={mockFields}
+                    // @ts-expect-error TS7005
+                    meta={mockMeta}
+                />
+            </Wrapper>,
         );
 
         expect(queryByText('CONCAT')).not.toBeInTheDocument();
@@ -169,7 +134,7 @@ describe('TransformerList', () => {
             { operation: 'PARSE' },
             {
                 operation: 'GET',
-                args: [{ name: 'path', type: 'string', value: 'id1' }],
+                args: [{ name: 'path', type: 'string', value: null }],
             },
             { operation: 'STRING' },
             {
@@ -204,26 +169,17 @@ describe('TransformerList', () => {
                 ],
             },
         ];
-        mockFields = {
-            map: jest
-                .fn()
-                .mockReturnValue(
-                    transformers.map((_, index) => `transformers[${index}]`),
-                ),
-            getAll: jest.fn().mockReturnValue(transformers),
-            // @ts-expect-error TS7005
-            get: jest.fn().mockImplementation((index) => transformers[index]),
-        };
+        mockFields = transformers;
         const { queryByText } = render(
-            <TransformerList
-                isSubresourceField
-                // @ts-expect-error TS2322
-                fields={mockFields}
-                // @ts-expect-error TS7005
-                meta={mockMeta}
-                // @ts-expect-error TS7005
-                p={polyglot}
-            />,
+            <Wrapper>
+                <TransformerList
+                    isSubresourceField
+                    // @ts-expect-error TS2322
+                    fields={mockFields}
+                    // @ts-expect-error TS7005
+                    meta={mockMeta}
+                />
+            </Wrapper>,
         );
 
         expect(
@@ -272,26 +228,17 @@ describe('TransformerList', () => {
             { operation: 'TRIM' },
             { operation: 'BOOLEAN' },
         ];
-        mockFields = {
-            map: jest
-                .fn()
-                .mockReturnValue(
-                    transformers.map((_, index) => `transformers[${index}]`),
-                ),
-            getAll: jest.fn().mockReturnValue(transformers),
-            // @ts-expect-error TS7005
-            get: jest.fn().mockImplementation((index) => transformers[index]),
-        };
+        mockFields = transformers;
         const { queryByText } = render(
-            <TransformerList
-                isSubresourceField
-                // @ts-expect-error TS2322
-                fields={mockFields}
-                // @ts-expect-error TS7005
-                meta={mockMeta}
-                // @ts-expect-error TS7005
-                p={polyglot}
-            />,
+            <Wrapper>
+                <TransformerList
+                    isSubresourceField
+                    // @ts-expect-error TS2322
+                    fields={mockFields}
+                    // @ts-expect-error TS7005
+                    meta={mockMeta}
+                />
+            </Wrapper>,
         );
 
         expect(queryByText('COLUMN')).not.toBeInTheDocument();
@@ -317,26 +264,17 @@ describe('TransformerList', () => {
             { operation: 'STRING' },
             { operation: 'BOOLEAN' },
         ];
-        mockFields = {
-            map: jest
-                .fn()
-                .mockReturnValue(
-                    transformers.map((_, index) => `transformers[${index}]`),
-                ),
-            getAll: jest.fn().mockReturnValue(transformers),
-            // @ts-expect-error TS7005
-            get: jest.fn().mockImplementation((index) => transformers[index]),
-        };
+        mockFields = transformers;
         const { queryByText } = render(
-            <TransformerList
-                isSubresourceField
-                // @ts-expect-error TS2322
-                fields={mockFields}
-                // @ts-expect-error TS7005
-                meta={mockMeta}
-                // @ts-expect-error TS7005
-                p={polyglot}
-            />,
+            <Wrapper>
+                <TransformerList
+                    isSubresourceField
+                    // @ts-expect-error TS2322
+                    fields={mockFields}
+                    // @ts-expect-error TS7005
+                    meta={mockMeta}
+                />
+            </Wrapper>,
         );
 
         expect(queryByText('COLUMN')).not.toBeInTheDocument();

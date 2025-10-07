@@ -1,24 +1,19 @@
-// @ts-expect-error TS6133
-import React from 'react';
-import { polyglot as polyglotPropTypes } from '../propTypes';
 import { Box, Typography } from '@mui/material';
 
 import FormatEdition from '../formats/FormatEdition';
-import FieldInput from '../lib/components/FieldInput';
-import { translate } from '../i18n/I18NContext';
+import { useTranslate } from '../i18n/I18NContext';
 
-// @ts-expect-error TS7031
-const FieldFormatInput = ({ p: polyglot }) => (
-    <Box mt={5} id="step-value-format">
-        <Typography variant="subtitle1" sx={{ marginBottom: 2 }}>
-            {polyglot.t('display_with_format')}
-        </Typography>
-        <FieldInput name="format" component={FormatEdition} labelKey="format" />
-    </Box>
-);
+const FieldFormatInput = () => {
+    const { translate } = useTranslate();
 
-FieldFormatInput.propTypes = {
-    p: polyglotPropTypes.isRequired,
+    return (
+        <Box mt={5} id="step-value-format">
+            <Typography variant="subtitle1" sx={{ marginBottom: 2 }}>
+                {translate('display_with_format')}
+            </Typography>
+            <FormatEdition />
+        </Box>
+    );
 };
 
-export default translate(FieldFormatInput);
+export default FieldFormatInput;

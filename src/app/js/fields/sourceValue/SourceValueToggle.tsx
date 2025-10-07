@@ -1,7 +1,7 @@
 import * as React from 'react';
+import { styled } from '@mui/material/styles';
 import ArbitraryIcon from '@mui/icons-material/FormatQuote';
 import RoutineIcon from '@mui/icons-material/AccountTree';
-import compose from 'recompose/compose';
 import FromColumnsIcon from '@mui/icons-material/ViewColumn';
 import FromSubRessourceIcon from '@mui/icons-material/DocumentScanner';
 import ProcessingIcon from '@mui/icons-material/Settings';
@@ -11,12 +11,6 @@ import SourceValuePrecomputed from './SourceValuePrecomputed';
 import SourceValueFromColumns from './SourceValueFromColumns';
 import SourceValueFromColumnsForSubResource from './SourceValueFromColumnsForSubResource';
 
-import { connect } from 'react-redux';
-import { change, formValueSelector } from 'redux-form';
-import { FIELD_FORM_NAME } from '..';
-import { polyglot as polyglotPropTypes } from '../../propTypes';
-import { styled } from '@mui/material/styles';
-
 import {
     Box,
     ToggleButtonGroup,
@@ -25,7 +19,10 @@ import {
 } from '@mui/material';
 import SourceValueFromSubResource from './SourceValueFromSubResource';
 import SourceValueRoutine from './SourceValueRoutine';
-import { translate } from '../../i18n/I18NContext';
+import { useTranslate } from '../../i18n/I18NContext';
+import { useController, useFormContext } from 'react-hook-form';
+import { useSelector } from 'react-redux';
+import type { Subresource, Transformer, TransformerDraft } from '../types';
 
 const TRANSFORMERS_FORM_STATUS = new Map([
     [
@@ -118,16 +115,14 @@ const TRANSFORMERS_FORM_STATUS = new Map([
 ]);
 
 export const GET_SOURCE_VALUE_FROM_TRANSFORMERS = (
-    // @ts-expect-error TS7006
-    transformers,
-    isSubresourceField = false,
+    transformers: Transformer[] | null,
+    isSubresourceField: boolean = false,
 ) => {
     if (!transformers || !transformers[0]?.operation) {
         return { source: null, value: null };
     }
 
     const transformersOperations = transformers
-        // @ts-expect-error TS7006
         .map((t) => t.operation)
         .join('|');
 
@@ -189,7 +184,6 @@ export const GET_SOURCE_VALUE_FROM_TRANSFORMERS = (
             source: 'fromColumns',
             value:
                 transformers[0]?.args &&
-                // @ts-expect-error TS7031
                 transformers[0]?.args.map(({ value }) => value || ''),
         },
     };
@@ -197,8 +191,7 @@ export const GET_SOURCE_VALUE_FROM_TRANSFORMERS = (
     const { operation } = transformers[0];
 
     return operation in sourceValues
-        ? // @ts-expect-error TS7053
-          sourceValues[operation]
+        ? (sourceValues as any)[operation]
         : { source: null, value: null };
 };
 
@@ -220,20 +213,27 @@ const ToggleButton = styled(MuiToggleButton)(() => ({
 }));
 
 export const SourceValueToggle = ({
-    // @ts-expect-error TS7031
-    arbitraryMode,
-    // @ts-expect-error TS7031
-    currentTransformers,
-    // @ts-expect-error TS7031
+    transformers: currentTransformers,
     updateTransformers,
-    // @ts-expect-error TS7031
-    p: polyglot,
-    // @ts-expect-error TS7031
+    arbitraryMode,
     selectedSubresourceUri,
-    // @ts-expect-error TS7031
-    subresources,
+}: {
+    transformers: Transformer[];
+    updateTransformers: (transformers: Omit<Transformer, 'id'>[]) => void;
+    arbitraryMode?: boolean;
+    selectedSubresourceUri?: string;
 }) => {
-    const [source, setSource] = React.useState(null);
+    const { translate } = useTranslate();
+    const subresources = useSelector(
+        (state: any) => state.subresource.subresources,
+    ) as Subresource[];
+
+    const { control } = useFormContext();
+    const { field } = useController({
+        name: 'source',
+        control,
+    });
+
     const [value, setValue] = React.useState(null);
     const [routine, setRoutine] = React.useState(undefined);
     React.useEffect(() => {
@@ -243,9 +243,9 @@ export const SourceValueToggle = ({
             routine: currentRoutine,
         } = GET_SOURCE_VALUE_FROM_TRANSFORMERS(
             currentTransformers,
-            selectedSubresourceUri && true,
+            !!selectedSubresourceUri,
         );
-        setSource(currentSource);
+        field.onChange(currentSource);
         setValue(currentValue);
         if (currentRoutine) {
             setRoutine(currentRoutine);
@@ -356,19 +356,29 @@ export const SourceValueToggle = ({
 
         const transformersFromStatus = TRANSFORMERS_FORM_STATUS.get(newSource);
         updateDefaultValueTransformers(
-            source,
+            field.value,
             currentTransformers,
             transformersFromStatus,
+        );
+    };
+
+    const handleDefaultValueTransformersUpdate = (
+        newTransformers: TransformerDraft[],
+    ) => {
+        updateDefaultValueTransformers(
+            field.value,
+            currentTransformers,
+            newTransformers,
         );
     };
 
     return (
         <Box pt={5}>
             <Typography variant="subtitle1" sx={{ marginBottom: 2 }}>
-                {polyglot.t('source_value')}
+                {translate('source_value')}
             </Typography>
             <ToggleButtonGroup
-                value={source}
+                value={field.value}
                 exclusive
                 onChange={handleChange}
                 aria-label="Choix de la valeur"
@@ -377,7 +387,7 @@ export const SourceValueToggle = ({
                 <ToggleButton value="arbitrary">
                     <ArbitraryIcon style={{ fontSize: 50 }} />
                     <Typography variant="caption">
-                        {polyglot.t('arbitrary_value')}
+                        {translate('arbitrary_value')}
                     </Typography>
                 </ToggleButton>
 
@@ -385,14 +395,14 @@ export const SourceValueToggle = ({
                 <ToggleButton value="routine">
                     <RoutineIcon style={{ fontSize: 50 }} />
                     <Typography variant="caption">
-                        {polyglot.t('routine_value')}
+                        {translate('routine_value')}
                     </Typography>
                 </ToggleButton>
 
                 <ToggleButton disabled={!arbitraryMode} value="precomputed">
                     <ProcessingIcon style={{ fontSize: 50 }} />
                     <Typography variant="caption">
-                        {polyglot.t('precomputed_processing')}
+                        {translate('precomputed_processing')}
                     </Typography>
                 </ToggleButton>
 
@@ -406,7 +416,7 @@ export const SourceValueToggle = ({
                 >
                     <FromColumnsIcon style={{ fontSize: 50 }} />
                     <Typography variant="caption">
-                        {polyglot.t('from_columns')}
+                        {translate('from_columns')}
                     </Typography>
                 </ToggleButton>
                 {!selectedSubresourceUri && (
@@ -417,96 +427,66 @@ export const SourceValueToggle = ({
                     >
                         <FromSubRessourceIcon style={{ fontSize: 50 }} />
                         <Typography variant="caption">
-                            {polyglot.t('from_subresource')}
+                            {translate('from_subresource')}
                         </Typography>
                     </ToggleButton>
                 )}
             </ToggleButtonGroup>
 
-            {source === 'arbitrary' && (
+            {field.value === 'arbitrary' && (
                 <SourceValueArbitrary
-                    // @ts-expect-error TS7006
-                    updateDefaultValueTransformers={(newTransformers) =>
-                        updateDefaultValueTransformers(
-                            source,
-                            currentTransformers,
-                            newTransformers,
-                        )
+                    updateDefaultValueTransformers={
+                        handleDefaultValueTransformersUpdate
                     }
                     value={value}
                 />
             )}
 
-            {source === 'routine' && (
+            {field.value === 'routine' && (
                 <SourceValueRoutine
-                    // @ts-expect-error TS7006
-                    updateDefaultValueTransformers={(newTransformers) =>
-                        updateDefaultValueTransformers(
-                            source,
-                            currentTransformers,
-                            newTransformers,
-                        )
+                    updateDefaultValueTransformers={
+                        handleDefaultValueTransformersUpdate
                     }
                     value={value}
                 />
             )}
 
-            {source === 'precomputed' && (
+            {field.value === 'precomputed' && (
                 <SourceValuePrecomputed
-                    // @ts-expect-error TS7006
-                    updateDefaultValueTransformers={(newTransformers) =>
-                        updateDefaultValueTransformers(
-                            source,
-                            currentTransformers,
-                            newTransformers,
-                        )
+                    updateDefaultValueTransformers={
+                        handleDefaultValueTransformersUpdate
                     }
                     value={value}
                     routine={routine}
                 />
             )}
 
-            {source === 'fromColumns' && (
+            {field.value === 'fromColumns' && (
                 <SourceValueFromColumns
-                    // @ts-expect-error TS7006
-                    updateDefaultValueTransformers={(newTransformers) =>
-                        updateDefaultValueTransformers(
-                            source,
-                            currentTransformers,
-                            newTransformers,
-                        )
+                    updateDefaultValueTransformers={
+                        handleDefaultValueTransformersUpdate
                     }
                     value={value}
                 />
             )}
 
-            {source === 'fromColumnsForSubRessource' && (
+            {field.value === 'fromColumnsForSubRessource' && (
                 <SourceValueFromColumnsForSubResource
-                    // @ts-expect-error TS7006
-                    updateDefaultValueTransformers={(newTransformers) =>
-                        updateDefaultValueTransformers(
-                            source,
-                            currentTransformers,
-                            newTransformers,
-                        )
+                    updateDefaultValueTransformers={
+                        handleDefaultValueTransformersUpdate
                     }
                     value={value}
                     selectedSubresourceUri={selectedSubresourceUri}
                 />
             )}
 
-            {source === 'fromSubresource' && (
+            {field.value === 'fromSubresource' && (
                 <SourceValueFromSubResource
-                    // @ts-expect-error TS7006
-                    updateDefaultValueTransformers={(newTransformers) =>
-                        updateDefaultValueTransformers(
-                            source,
-                            currentTransformers,
-                            newTransformers,
-                        )
+                    updateDefaultValueTransformers={
+                        handleDefaultValueTransformersUpdate
                     }
                     column={value}
-                    path={currentTransformers[0].args[0].value}
+                    path={currentTransformers[0]?.args?.[0]?.value}
                 />
             )}
         </Box>
@@ -515,36 +495,7 @@ export const SourceValueToggle = ({
 
 SourceValueToggle.propTypes = {
     arbitraryMode: PropTypes.bool,
-    currentTransformers: PropTypes.arrayOf(PropTypes.object),
-    updateTransformers: PropTypes.func.isRequired,
-    p: polyglotPropTypes.isRequired,
     selectedSubresourceUri: PropTypes.string,
-    subresources: PropTypes.arrayOf(PropTypes.object),
 };
 
-// @ts-expect-error TS7006
-const mapStateToProps = (state) => {
-    const currentTransformers = formValueSelector(FIELD_FORM_NAME)(
-        state,
-        'transformers',
-    );
-
-    const subresources = state.subresource.subresources;
-    return { currentTransformers, subresources };
-};
-
-// @ts-expect-error TS7006
-const mapDispatchToProps = (dispatch) => ({
-    // @ts-expect-error TS7006
-    updateTransformers: (valueTransformers) => {
-        return dispatch(
-            change(FIELD_FORM_NAME, 'transformers', valueTransformers),
-        );
-    },
-});
-
-export default compose(
-    translate,
-    connect(mapStateToProps, mapDispatchToProps),
-    // @ts-expect-error TS2345
-)(SourceValueToggle);
+export default SourceValueToggle;

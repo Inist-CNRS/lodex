@@ -1,16 +1,27 @@
-// @ts-expect-error TS6133
-import React from 'react';
+import { useTranslate } from '../i18n/I18NContext.tsx';
+import { TextField } from '../reactHookFormFields/TextField.tsx';
 
-import FormPercentField from '../lib/components/FormPercentField';
-import FieldInput from '../lib/components/FieldInput';
+const FieldWidthInput = () => {
+    const { translate } = useTranslate();
 
-const FieldWidthInput = () => (
-    <FieldInput
-        className="width"
-        name="width"
-        component={FormPercentField}
-        labelKey="field_width"
-    />
-);
+    return (
+        <TextField
+            className="width"
+            name="width"
+            sx={{
+                width: '30%',
+                marginTop: 2,
+            }}
+            type="number"
+            // min={10}
+            // max={100}
+            // step={10}
+            label={translate('field_width')}
+            InputProps={{
+                endAdornment: '%',
+            }}
+        />
+    );
+};
 
 export default FieldWidthInput;
