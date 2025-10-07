@@ -28,8 +28,8 @@ import { getJobLogs } from '../api/job';
 import { fromEnrichments, fromParsing } from '../selectors';
 import { getKeys } from '../subresource/SubresourceForm';
 import { DeleteEnrichmentButton } from './DeleteEnrichmentButton';
-import { default as EnrichmentStatus } from './EnrichmentStatus';
-import { default as RunButton } from './RunButton';
+import EnrichmentStatus from './EnrichmentStatus';
+import RunButton from './RunButton';
 import { FormProvider, useForm } from 'react-hook-form';
 import { TextField } from '../../reactHookFormFields/TextField';
 import { Switch } from '../../reactHookFormFields/Switch';
@@ -39,7 +39,7 @@ import type { State } from '../reducers';
 
 type NewEnrichment = Omit<Partial<Enrichment>, '_id'>;
 
-type EnrichmentFormProps = {
+export type EnrichmentFormProps = {
     datasetFields: string[];
     excerptLines: Record<string, unknown>[];
     history: {
@@ -54,7 +54,6 @@ type EnrichmentFormProps = {
     status?: string;
 };
 
-// COMPONENT PART
 export const EnrichmentForm = ({
     datasetFields,
     excerptLines,
