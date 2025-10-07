@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useMemo } from 'react';
 
-import FormSourceCodeField from '../../lib/components/FormSourceCodeField';
 import SubressourceFieldAutoComplete from '../subresource/SubressourceFieldAutoComplete';
 import EnrichmentCatalogConnected from './EnrichmentCatalog';
 import EnrichmentLogsDialogComponent from './EnrichmentLogsDialog';
@@ -31,6 +30,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { TextField } from '../../reactHookFormFields/TextField';
 import { Switch } from '../../reactHookFormFields/Switch';
 import { Autocomplete } from '../../reactHookFormFields/AutoComplete';
+import FormSourceCodeField from '../../lib/components/FormSourceCodeField';
 
 type Enrichment = {
     _id: string;
@@ -306,9 +306,8 @@ export const EnrichmentForm = ({
 
                         {formValues?.advancedMode && (
                             <Box mb={2}>
-                                <Field
+                                <FormSourceCodeField
                                     name="rule"
-                                    component={FormSourceCodeField}
                                     label={translate('expand_rules')}
                                     width="100%"
                                 />

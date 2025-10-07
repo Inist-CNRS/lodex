@@ -6,8 +6,8 @@ import React, { lazy, Suspense, useEffect, useState } from 'react';
 import { translate, useTranslate } from '../../../i18n/I18NContext';
 import Loading from '../../../lib/components/Loading';
 
-const FormSourceCodeField = lazy(
-    () => import('../../../lib/components/FormSourceCodeField'),
+const SourceCodeField = lazy(
+    () => import('../../../lib/components/SourceCodeField'),
 );
 
 // @ts-expect-error TS7031
@@ -28,7 +28,7 @@ const EJSEditor = ({ value, onChange }) => {
     return (
         <Box width="100%">
             <Suspense fallback={<Loading>{translate('loading')}</Loading>}>
-                <FormSourceCodeField
+                <SourceCodeField
                     style={{
                         width: '100%',
                         height: '70vh',
