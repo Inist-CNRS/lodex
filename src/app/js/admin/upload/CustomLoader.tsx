@@ -10,7 +10,7 @@ import {
     DialogContent,
     DialogTitle,
 } from '@mui/material';
-import { useForm, Controller } from 'react-hook-form';
+import { useForm, Controller, Form } from 'react-hook-form';
 import { connect } from 'react-redux';
 import { fromUpload } from '../selectors';
 import {
@@ -93,17 +93,10 @@ const CustomLoader = ({
                     {isLoading ? (
                         <CircularProgress />
                     ) : (
-                        <Controller
+                        <FormSourceCodeField
                             name="customLoader"
-                            control={control}
-                            render={({ field }) => (
-                                <FormSourceCodeField
-                                    input={field}
-                                    label={translate('expand_rules')}
-                                    height="350px"
-                                    dispatch={() => {}}
-                                />
-                            )}
+                            label={translate('expand_rules')}
+                            height="350px"
                         />
                     )}
                 </Box>
