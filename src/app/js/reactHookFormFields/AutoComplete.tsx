@@ -7,6 +7,7 @@ import {
     FormHelperText,
 } from '@mui/material';
 import { useController } from 'react-hook-form';
+import { useTranslate } from '../i18n/I18NContext';
 
 type AutocompleteProps = {
     name: string;
@@ -15,6 +16,7 @@ type AutocompleteProps = {
     options: string[];
     label: string;
     disabled?: boolean;
+    required?: boolean;
 };
 
 export const Autocomplete = ({
@@ -24,15 +26,20 @@ export const Autocomplete = ({
     options,
     label,
     disabled = false,
+    required = false,
 }: AutocompleteProps) => {
+    const { translate } = useTranslate();
     const { field, fieldState } = useController({
         name,
+        rules: {
+            required: required ? translate('error_field_required') : false,
+        },
     });
-    const finalError: string | undefined =
-        (fieldState.isTouched && fieldState.error?.message) || undefined;
+    const error: string | undefined =
+        (fieldState.isDirty && fieldState.error?.message) || undefined;
 
     return (
-        <FormControl fullWidth error={!!finalError}>
+        <FormControl fullWidth error={!!error}>
             <MuiAutocomplete
                 disabled={disabled}
                 value={field.value || null}
@@ -44,8 +51,9 @@ export const Autocomplete = ({
                 }}
                 renderInput={(params) => (
                     <TextField
+                        error={!!error}
                         {...params}
-                        label={label}
+                        label={required ? `${label} *` : label}
                         variant="outlined"
                         aria-label="input-path"
                     />
@@ -59,7 +67,7 @@ export const Autocomplete = ({
                 }}
                 options={options}
             />
-            <FormHelperText>{finalError || hint}</FormHelperText>
+            <FormHelperText>{error || hint}</FormHelperText>
         </FormControl>
     );
 };

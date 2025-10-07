@@ -68,8 +68,7 @@ export const EnrichmentForm = ({
         defaultValues: initialValues,
         mode: 'onChange',
     });
-    console.log(initialValues);
-    const { handleSubmit, watch, setValue } = formMethods;
+    const { handleSubmit, watch, setValue, formState } = formMethods;
     const formValues = watch();
     const { translate } = useTranslate();
     const [openCatalog, setOpenCatalog] = React.useState(false);
@@ -216,7 +215,15 @@ export const EnrichmentForm = ({
                                 <TextField
                                     name="name"
                                     label={translate('fieldName')}
+                                    required
                                     fullWidth
+                                    validate={(value) => {
+                                        if (!value) {
+                                            return translate(
+                                                'This field is required',
+                                            );
+                                        }
+                                    }}
                                 />
                                 {isEditMode && (
                                     <RunButton id={initialValues?._id} />
@@ -317,6 +324,7 @@ export const EnrichmentForm = ({
                                     <TextField
                                         name="webServiceUrl"
                                         label={translate('webServiceUrl')}
+                                        required
                                         fullWidth
                                     />
                                     <Button
@@ -343,6 +351,7 @@ export const EnrichmentForm = ({
                                         options={datasetFields}
                                         name="sourceColumn"
                                         label={translate('sourceColumn')}
+                                        required
                                     />
                                     <Autocomplete
                                         name="subPath"
@@ -390,7 +399,8 @@ export const EnrichmentForm = ({
                                     disabled={
                                         isLoading ||
                                         initialValues?.status === IN_PROGRESS ||
-                                        initialValues?.status === PENDING
+                                        initialValues?.status === PENDING ||
+                                        formState.isValid === false
                                     }
                                 >
                                     {translate('save')}
