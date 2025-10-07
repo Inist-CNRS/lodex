@@ -1,7 +1,3 @@
-// @ts-expect-error TS6133
-import React from 'react';
-import PropTypes from 'prop-types';
-// @ts-expect-error TS7016
 import { FixedSizeList } from 'react-window';
 import { useMeasure } from 'react-use';
 import {
@@ -15,8 +11,17 @@ import {
 } from '@mui/material';
 import CancelButton from '../../lib/components/CancelButton';
 import { useTranslate } from '../../i18n/I18NContext';
+import type { CSSProperties } from 'react';
 
-const styles = {
+type LogLevel = 'info' | 'ok' | 'error';
+
+type ParsedLog = {
+    timestamp: string;
+    level: LogLevel;
+    message: string;
+};
+
+const styles: Record<LogLevel, CSSProperties> = {
     info: {
         color: 'info.main',
         lineHeight: '0.8rem',
@@ -34,11 +39,19 @@ const styles = {
     },
 };
 
-// @ts-expect-error TS7006
-const LogLine = (props) => {
+type LogLineProps = {
+    data: string[] | null | undefined;
+    index: number;
+    style: object;
+};
+
+const LogLine = (props: LogLineProps) => {
     const { data, index, style } = props;
+    if (!data) {
+        return null;
+    }
     const log = data[index];
-    let parsedLog;
+    let parsedLog: ParsedLog;
     try {
         parsedLog = JSON.parse(log);
     } catch (e) {
@@ -67,7 +80,6 @@ const LogLine = (props) => {
             variant="body2"
             key={timestamp.valueOf()}
             style={style}
-            // @ts-expect-error TS7053
             sx={styles[parsedLog.level]}
             title={parsedLog.message}
         >
@@ -76,14 +88,17 @@ const LogLine = (props) => {
     );
 };
 
-LogLine.propTypes = {
-    data: PropTypes.arrayOf(PropTypes.string).isRequired,
-    index: PropTypes.number.isRequired,
-    style: PropTypes.object.isRequired,
+type EnrichmentLogsDialogProps = {
+    isOpen: boolean;
+    logs: string[];
+    handleClose: () => void;
 };
 
-// @ts-expect-error TS7031
-export const EnrichmentLogsDialog = ({ isOpen, logs, handleClose }) => {
+export const EnrichmentLogsDialog = ({
+    isOpen,
+    logs,
+    handleClose,
+}: EnrichmentLogsDialogProps) => {
     const { translate } = useTranslate();
     const [logsContainerRef, { width }] = useMeasure();
 
@@ -137,12 +152,6 @@ export const EnrichmentLogsDialog = ({ isOpen, logs, handleClose }) => {
             </DialogActions>
         </Dialog>
     );
-};
-
-EnrichmentLogsDialog.propTypes = {
-    isOpen: PropTypes.bool.isRequired,
-    handleClose: PropTypes.func.isRequired,
-    logs: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 export default EnrichmentLogsDialog;
