@@ -5,7 +5,11 @@ describe('SourceValueToggle', () => {
     describe('GET_SOURCE_VALUE_FROM_TRANSFORMERS', () => {
         it('returns correct values for operation VALUE', () => {
             const transformers = [
-                { operation: 'VALUE', args: [{ value: 'test' }] },
+                {
+                    id: 'fakeid',
+                    operation: 'VALUE',
+                    args: [{ name: 'test', type: 'string', value: 'test' }],
+                },
             ];
             expect(GET_SOURCE_VALUE_FROM_TRANSFORMERS(transformers)).toEqual({
                 source: 'arbitrary',
@@ -15,7 +19,13 @@ describe('SourceValueToggle', () => {
 
         it('returns correct values for operation COLUMN', () => {
             const transformers = [
-                { operation: 'COLUMN', args: [{ value: 'columnName' }] },
+                {
+                    id: 'fakeid',
+                    operation: 'COLUMN',
+                    args: [
+                        { name: 'test', type: 'column', value: 'columnName' },
+                    ],
+                },
             ];
             expect(GET_SOURCE_VALUE_FROM_TRANSFORMERS(transformers)).toEqual({
                 source: 'fromColumns',
@@ -26,8 +36,13 @@ describe('SourceValueToggle', () => {
         it('returns correct values for operation CONCAT', () => {
             const transformers = [
                 {
+                    id: 'fakeid',
                     operation: 'CONCAT',
-                    args: [{ value: 'a' }, { value: 'b' }, { value: 'c' }],
+                    args: [
+                        { name: 'test', type: 'column', value: 'a' },
+                        { name: 'test', type: 'column', value: 'b' },
+                        { name: 'test', type: 'column', value: 'c' },
+                    ],
                 },
             ];
             expect(GET_SOURCE_VALUE_FROM_TRANSFORMERS(transformers)).toEqual({
@@ -37,7 +52,9 @@ describe('SourceValueToggle', () => {
         });
 
         it('returns null values for invalid operation', () => {
-            const transformers = [{ operation: 'INVALID', args: [] }];
+            const transformers = [
+                { id: 'fakeid', operation: 'INVALID', args: [] },
+            ];
             expect(GET_SOURCE_VALUE_FROM_TRANSFORMERS(transformers)).toEqual({
                 source: null,
                 value: null,
@@ -54,16 +71,18 @@ describe('SourceValueToggle', () => {
         it('returns correct values for transformers from a column for subresource', () => {
             const transformers = [
                 {
+                    id: 'fakeid_1',
                     operation: 'COLUMN',
                     args: [{ name: 'column', type: 'column', value: 'path1' }],
                 },
-                { operation: 'PARSE' },
+                { id: 'fakeid_2', operation: 'PARSE' },
                 {
+                    id: 'fakeid_3',
                     operation: 'GET',
                     args: [{ name: 'path', type: 'string', value: 'id1' }],
                 },
-                { operation: 'STRING' },
-                { operation: 'BOOLEAN' },
+                { id: 'fakeid_4', operation: 'STRING' },
+                { id: 'fakeid_5', operation: 'BOOLEAN' },
             ];
             expect(
                 GET_SOURCE_VALUE_FROM_TRANSFORMERS(transformers, true),
@@ -76,16 +95,19 @@ describe('SourceValueToggle', () => {
         it('returns correct values for transformers from a subresource', () => {
             const transformers = [
                 {
+                    id: 'fakeid_1',
                     operation: 'COLUMN',
                     args: [{ name: 'column', type: 'column', value: 'path1' }],
                 },
-                { operation: 'PARSE' },
+                { id: 'fakeid_2', operation: 'PARSE' },
                 {
+                    id: 'fakeid_3',
                     operation: 'GET',
                     args: [{ name: 'path', type: 'string', value: 'id1' }],
                 },
-                { operation: 'STRING' },
+                { id: 'fakeid_4', operation: 'STRING' },
                 {
+                    id: 'fakeid_5',
                     operation: 'REPLACE_REGEX',
                     args: [
                         {
@@ -100,8 +122,9 @@ describe('SourceValueToggle', () => {
                         },
                     ],
                 },
-                { operation: 'MD5', args: [] },
+                { id: 'fakeid_6', operation: 'MD5', args: [] },
                 {
+                    id: 'fakeid_7',
                     operation: 'REPLACE_REGEX',
                     args: [
                         {
@@ -126,16 +149,19 @@ describe('SourceValueToggle', () => {
         it('returns correct values for transformers from a subresource with column', () => {
             const transformers = [
                 {
+                    id: 'fakeid_1',
                     operation: 'COLUMN',
                     args: [{ name: 'column', type: 'column', value: 'path1' }],
                 },
-                { operation: 'PARSE' },
+                { id: 'fakeid_2', operation: 'PARSE' },
                 {
+                    id: 'fakeid_3',
                     operation: 'GET',
                     args: [{ name: 'path', type: 'string', value: 'id1' }],
                 },
-                { operation: 'STRING' },
+                { id: 'fakeid_4', operation: 'STRING' },
                 {
+                    id: 'fakeid_5',
                     operation: 'REPLACE_REGEX',
                     args: [
                         {
@@ -151,6 +177,7 @@ describe('SourceValueToggle', () => {
                     ],
                 },
                 {
+                    id: 'fakeid_6',
                     operation: 'REPLACE_REGEX',
                     args: [
                         {
@@ -161,8 +188,8 @@ describe('SourceValueToggle', () => {
                         { name: 'replaceValue', type: 'string', value: ' ' },
                     ],
                 },
-                { operation: 'TRIM' },
-                { operation: 'BOOLEAN' },
+                { id: 'fakeid_7', operation: 'TRIM' },
+                { id: 'fakeid_8', operation: 'BOOLEAN' },
             ];
             expect(GET_SOURCE_VALUE_FROM_TRANSFORMERS(transformers)).toEqual({
                 source: 'fromSubresource',

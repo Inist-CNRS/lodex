@@ -1,17 +1,16 @@
-// @ts-expect-error TS6133
-import React from 'react';
+import { useTranslate } from '../i18n/I18NContext.tsx';
+import { SwitchField } from '../reactHookFormFields/SwitchField.tsx';
 
-import FieldInput from '../lib/components/FieldInput';
-import FormSwitchField from '../lib/components/FormSwitchField';
+const FieldAnnotationKindCorrectionInput = () => {
+    const { translate } = useTranslate();
 
-export default function FieldAnnotationKindCorrectionInput() {
     return (
-        <FieldInput
+        <SwitchField
+            className="enableAnnotationKindCorrection"
             name="enableAnnotationKindCorrection"
-            component={FormSwitchField}
-            labelKey="field_annotation_kind_correction"
+            label={translate('field_annotation_kind_correction')}
         />
     );
-}
+};
 
-FieldAnnotationKindCorrectionInput.propTypes = {};
+export default FieldAnnotationKindCorrectionInput;
