@@ -1,24 +1,27 @@
-// @ts-expect-error TS6133
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Button } from '@mui/material';
 import { deleteEnrichment } from '../api/enrichment';
 import { toast } from 'react-toastify';
-import PropTypes from 'prop-types';
 import { ConfirmPopup } from '../../lib/components/ConfirmPopup';
 import { useTranslate } from '../../i18n/I18NContext';
 
+type DeleteEnrichmentButtonProps = {
+    disabled?: boolean;
+    id: string;
+    onDeleteStart: () => void;
+    onDeleteEnd: () => void;
+    history: {
+        push: (path: string) => void;
+    };
+};
+
 export function DeleteEnrichmentButton({
-    // @ts-expect-error TS7031
     disabled,
-    // @ts-expect-error TS7031
     onDeleteStart,
-    // @ts-expect-error TS7031
     onDeleteEnd,
-    // @ts-expect-error TS7031
     id,
-    // @ts-expect-error TS7031
     history,
-}) {
+}: DeleteEnrichmentButtonProps) {
     const { translate } = useTranslate();
     const [isConfirmPopupOpen, setIsConfirmPopupOpen] = useState(false);
     const handleDeleteEnrichment = async () => {
@@ -66,11 +69,3 @@ export function DeleteEnrichmentButton({
         </>
     );
 }
-
-DeleteEnrichmentButton.propTypes = {
-    disabled: PropTypes.bool,
-    id: PropTypes.string.isRequired,
-    onDeleteStart: PropTypes.func,
-    onDeleteEnd: PropTypes.func,
-    history: PropTypes.object.isRequired,
-};

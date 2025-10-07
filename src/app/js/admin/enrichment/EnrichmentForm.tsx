@@ -9,7 +9,12 @@ import { Box, Button, Typography } from '@mui/material';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { compose } from 'recompose';
-import { launchEnrichment, loadEnrichments, retryEnrichment } from '.';
+import {
+    launchEnrichment,
+    loadEnrichments,
+    retryEnrichment,
+    type Enrichment,
+} from '.';
 import { IN_PROGRESS, PENDING } from '../../../../common/taskStatus';
 import { toast } from '../../../../common/tools/toast';
 import { useTranslate } from '../../i18n/I18NContext';
@@ -30,22 +35,9 @@ import { TextField } from '../../reactHookFormFields/TextField';
 import { Switch } from '../../reactHookFormFields/Switch';
 import { Autocomplete } from '../../reactHookFormFields/AutoComplete';
 import FormSourceCodeField from '../../lib/components/FormSourceCodeField';
+import type { State } from '../reducers';
 
-type Enrichment = {
-    _id: string;
-    name: string;
-    advancedMode: boolean;
-    rule: string;
-    sourceColumn: string;
-    errorCount?: number;
-    jobId: string;
-    status: string;
-    webServiceUrl: string;
-    sourceColumns: string[];
-    subPath: string;
-};
-
-type NewEnrichment = Omit<Enrichment, '_id'>;
+type NewEnrichment = Omit<Partial<Enrichment>, '_id'>;
 
 type EnrichmentFormProps = {
     datasetFields: string[];
@@ -73,16 +65,12 @@ export const EnrichmentForm = ({
     status,
 }: EnrichmentFormProps) => {
     const formMethods = useForm<NewEnrichment>({
-        defaultValues: {
-            name: initialValues?.name,
-            webServiceUrl: initialValues?.webServiceUrl,
-            sourceColumns: initialValues?.sourceColumns,
-            subPath: initialValues?.subPath,
-        },
+        defaultValues: initialValues,
         mode: 'onChange',
     });
-    const { handleSubmit, getValues, setValue } = formMethods;
-    const formValues = getValues();
+    console.log(initialValues);
+    const { handleSubmit, watch, setValue } = formMethods;
+    const formValues = watch();
     const { translate } = useTranslate();
     const [openCatalog, setOpenCatalog] = React.useState(false);
     const [openEnrichmentLogs, setOpenEnrichmentLogs] = React.useState(false);
@@ -90,14 +78,16 @@ export const EnrichmentForm = ({
     const [dataPreviewEnrichment, setDataPreviewEnrichment] = React.useState(
         [],
     );
-    const [enrichmentLogs, setEnrichmentLogs] = React.useState([]);
+    const [enrichmentLogs, setEnrichmentLogs] = React.useState<string[]>([]);
 
     const isEditMode = !!initialValues?._id;
 
     const optionsIdentifier = useMemo(() => {
-        const firstExcerptLine = formValues?.sourceColumn
-            ? excerptLines[0]?.[formValues?.sourceColumn] || []
-            : [];
+        const sourceColumn = formValues?.sourceColumn;
+        const firstExcerptLine =
+            typeof sourceColumn === 'string' && sourceColumn in excerptLines[0]
+                ? excerptLines[0]?.[sourceColumn] || []
+                : [];
         return getKeys(firstExcerptLine);
     }, [excerptLines, formValues?.sourceColumn]);
 
@@ -125,8 +115,8 @@ export const EnrichmentForm = ({
         }
     }, [formValues]);
 
-    const handleAddEnrichment = async () => {
-        const res = await createEnrichment(formValues);
+    const handleAddEnrichment = async (enrichment: NewEnrichment) => {
+        const res = await createEnrichment(enrichment);
         if (res.response) {
             toast(translate('enrichment_added_success'), {
                 type: toast.TYPE.SUCCESS,
@@ -139,12 +129,11 @@ export const EnrichmentForm = ({
         }
     };
 
-    const handleUpdateEnrichment = async () => {
-        const enrichmentToUpdate = {
+    const handleUpdateEnrichment = async (enrichment: NewEnrichment) => {
+        const res = await updateEnrichment({
             ...initialValues,
-            ...formValues,
-        };
-        const res = await updateEnrichment(enrichmentToUpdate);
+            ...enrichment,
+        });
         if (res.response) {
             toast(translate('enrichment_updated_success'), {
                 type: toast.TYPE.SUCCESS,
@@ -157,13 +146,13 @@ export const EnrichmentForm = ({
         }
     };
 
-    const onSubmit = async () => {
+    const onSubmit = async (enrichment: NewEnrichment) => {
         handleSourcePreview();
         setIsLoading(true);
         if (isEditMode) {
-            await handleUpdateEnrichment();
+            await handleUpdateEnrichment(enrichment);
         } else {
-            await handleAddEnrichment();
+            await handleAddEnrichment(enrichment);
         }
         setIsLoading(false);
     };
@@ -174,9 +163,12 @@ export const EnrichmentForm = ({
 
     const handleGetLogs = useCallback(async () => {
         if (initialValues?.jobId) {
-            getJobLogs(initialValues.jobId).then(
-                // @ts-expect-error TS7006
-                (result) => {
+            getJobLogs(initialValues.jobId as string).then(
+                (result: {
+                    response: {
+                        logs: string[];
+                    };
+                }) => {
                     setEnrichmentLogs(result.response.logs.reverse());
                 },
                 () => {
@@ -224,6 +216,7 @@ export const EnrichmentForm = ({
                                 <TextField
                                     name="name"
                                     label={translate('fieldName')}
+                                    fullWidth
                                 />
                                 {isEditMode && (
                                     <RunButton id={initialValues?._id} />
@@ -274,7 +267,6 @@ export const EnrichmentForm = ({
                                         />
                                     </Typography>
                                     <Button
-                                        variant="link"
                                         sx={{
                                             paddingRight: 0,
                                             paddingLeft: 0,
@@ -325,6 +317,7 @@ export const EnrichmentForm = ({
                                     <TextField
                                         name="webServiceUrl"
                                         label={translate('webServiceUrl')}
+                                        fullWidth
                                     />
                                     <Button
                                         variant="contained"
@@ -375,8 +368,6 @@ export const EnrichmentForm = ({
                                         isLoading
                                     }
                                     id={initialValues._id}
-                                    // @ts-expect-error TS2322
-                                    translate={translate}
                                     onDeleteStart={() => setIsLoading(true)}
                                     onDeleteEnd={() => {
                                         setIsLoading(false);
@@ -410,7 +401,7 @@ export const EnrichmentForm = ({
                     <Box width="25rem">
                         <EnrichmentPreview
                             lines={dataPreviewEnrichment}
-                            sourceColumn={formValues?.sourceColumn}
+                            sourceColumn={formValues.sourceColumn}
                         />
                     </Box>
                 </Box>
@@ -419,8 +410,17 @@ export const EnrichmentForm = ({
     );
 };
 
-// @ts-expect-error TS7006
-const mapStateToProps = (state, { match }) => {
+const mapStateToProps = (
+    state: State,
+    {
+        match,
+    }: {
+        match: { params: { enrichmentId: string } };
+    },
+): Pick<
+    EnrichmentFormProps,
+    'initialValues' | 'status' | 'datasetFields' | 'excerptLines'
+> => {
     const enrichment = fromEnrichments
         .enrichments(state)
         .find((enrichment) => enrichment._id === match.params.enrichmentId);
@@ -437,8 +437,7 @@ const mapDispatchToProps = {
     onRetryEnrichment: retryEnrichment,
 };
 
-export default compose(
+export default compose<EnrichmentFormProps, Record<string, never>>(
     withRouter,
     connect(mapStateToProps, mapDispatchToProps),
-    // @ts-expect-error TS2345
 )(EnrichmentForm);
