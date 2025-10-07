@@ -35,8 +35,8 @@ const styles = {
     },
 };
 
-const FormSourceCodeField = lazy(
-    () => import('../../../../lib/components/FormSourceCodeField'),
+const SourceCodeField = lazy(
+    () => import('../../../../lib/components/SourceCodeField'),
 );
 
 // @ts-expect-error TS7031
@@ -163,7 +163,7 @@ const VegaAdvancedMode = ({ p, value, onChange, onClear }) => {
                     </p>
                 </div>
                 <Suspense fallback={<Loading>{p.t('loading')}</Loading>}>
-                    <FormSourceCodeField
+                    <SourceCodeField
                         style={{
                             width: '100%',
                             height: '70vh',
