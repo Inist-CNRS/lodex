@@ -5,6 +5,7 @@ import { FormControl, FormHelperText, Autocomplete } from '@mui/material';
 
 import { formField as formFieldPropTypes } from '../../propTypes';
 
+// @deprecated: use reactHookFormFields/Autocomplete when migrating to react-hook-form
 const SubressourceFieldAutoComplete = ({
     // @ts-expect-error TS7031
     input,

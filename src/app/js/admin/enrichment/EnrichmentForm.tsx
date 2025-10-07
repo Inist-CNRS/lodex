@@ -7,20 +7,10 @@ import EnrichmentLogsDialogComponent from './EnrichmentLogsDialog';
 import EnrichmentPreview from './EnrichmentPreview';
 
 import { ListAlt as ListAltIcon } from '@mui/icons-material';
-import {
-    Box,
-    Button,
-    FormControlLabel,
-    FormGroup,
-    ListItem,
-    Switch,
-    TextField,
-    Typography,
-} from '@mui/material';
+import { Box, Button, ListItem, Typography } from '@mui/material';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { compose } from 'recompose';
-import { change, Field, formValueSelector, reduxForm } from 'redux-form';
 import { launchEnrichment, loadEnrichments, retryEnrichment } from '.';
 import { IN_PROGRESS, PENDING } from '../../../../common/taskStatus';
 import { toast } from '../../../../common/tools/toast';
@@ -37,64 +27,35 @@ import { getKeys } from '../subresource/SubresourceForm';
 import { DeleteEnrichmentButton } from './DeleteEnrichmentButton';
 import { default as EnrichmentStatus } from './EnrichmentStatus';
 import { default as RunButton } from './RunButton';
+import { FormProvider, useForm } from 'react-hook-form';
+import { TextField } from '../../reactHookFormFields/TextField';
+import { Switch } from '../../reactHookFormFields/Switch';
+import { Autocomplete } from '../../reactHookFormFields/AutoComplete';
 
-// UTILITARY PART
-const ENRICHMENT_FORM = 'ENRICHMENT_FORM';
+type Enrichment = {
+    _id: string;
+    name: string;
+    advancedMode: boolean;
+    rule: string;
+    sourceColumn: string;
+    errorCount?: number;
+    jobId: string;
+    status: string;
+    webServiceUrl: string;
+    sourceColumns: string[];
+    subPath: string;
+};
 
-// @ts-expect-error TS7031
-const renderSwitch = ({ input, label }) => (
-    <FormGroup>
-        <FormControlLabel
-            control={
-                <Switch
-                    checked={input.value ? true : false}
-                    onChange={input.onChange}
-                />
-            }
-            label={label}
-        />
-    </FormGroup>
-);
-
-// @ts-expect-error TS7031
-const renderTextField = ({ input, label, meta: { touched, error } }) => (
-    <TextField
-        placeholder={label}
-        label={label}
-        error={touched && !!error}
-        helperText={touched && error}
-        value={input.value === null ? '' : input.value}
-        {...input}
-        fullWidth
-    />
-);
+type NewEnrichment = Omit<Enrichment, '_id'>;
 
 type EnrichmentFormProps = {
     datasetFields: string[];
     excerptLines: Record<string, unknown>[];
-    formValues: {
-        sourceColumn?: string;
-        subPath?: string;
-        rule?: string;
-        webServiceUrl: string;
-        name?: string;
-        advancedMode?: boolean;
-    };
     history: {
         push: (path: string) => void;
     };
-    initialValues?: {
-        _id: string;
-        name: string;
-        advancedMode: boolean;
-        rule: string;
-        sourceColumn: string;
-        errorCount?: number;
-        jobId: string;
-        status: string;
-    };
+    initialValues?: Enrichment;
     match: string;
-    onChangeWebServiceUrl: (value: string) => void;
     onLaunchEnrichment: (params: { id: string }) => void;
     onLoadEnrichments: () => void;
     onRetryEnrichment: (params: { id: string }) => void;
@@ -106,14 +67,23 @@ type EnrichmentFormProps = {
 export const EnrichmentForm = ({
     datasetFields,
     excerptLines,
-    formValues,
     history,
     initialValues,
-    onChangeWebServiceUrl,
     onLoadEnrichments,
     onRetryEnrichment,
     status,
 }: EnrichmentFormProps) => {
+    const formMethods = useForm<NewEnrichment>({
+        defaultValues: {
+            name: initialValues?.name,
+            webServiceUrl: initialValues?.webServiceUrl,
+            sourceColumns: initialValues?.sourceColumns,
+            subPath: initialValues?.subPath,
+        },
+        mode: 'onChange',
+    });
+    const { handleSubmit, getValues, setValue } = formMethods;
+    const formValues = getValues();
     const { translate } = useTranslate();
     const [openCatalog, setOpenCatalog] = React.useState(false);
     const [openEnrichmentLogs, setOpenEnrichmentLogs] = React.useState(false);
@@ -188,7 +158,7 @@ export const EnrichmentForm = ({
         }
     };
 
-    const handleSubmit = async () => {
+    const onSubmit = async () => {
         handleSourcePreview();
         setIsLoading(true);
         if (isEditMode) {
@@ -203,7 +173,7 @@ export const EnrichmentForm = ({
         history.push('/data/enrichment');
     };
 
-    const handleGetLogs = async () => {
+    const handleGetLogs = useCallback(async () => {
         if (initialValues?.jobId) {
             getJobLogs(initialValues.jobId).then(
                 // @ts-expect-error TS7006
@@ -217,11 +187,11 @@ export const EnrichmentForm = ({
                 },
             );
         }
-    };
+    }, [initialValues?.jobId, translate]);
 
     useEffect(() => {
         handleGetLogs();
-    }, [initialValues?.status]);
+    }, [handleGetLogs, initialValues?.status]);
 
     useEffect(() => {
         // We skip preview update if the enrichment has not completed
@@ -232,255 +202,247 @@ export const EnrichmentForm = ({
         const timeout = setTimeout(handleSourcePreview, 500);
         return () => clearTimeout(timeout);
     }, [
-        formValues?.rule,
-        formValues?.sourceColumn,
-        formValues?.subPath,
+        formValues.rule,
+        formValues.sourceColumn,
+        formValues.subPath,
+        handleSourcePreview,
         status,
     ]);
 
     return (
-        <Box mt={3} display="flex" gap={6}>
-            <Box sx={{ flex: 2 }}>
-                <Box>
-                    <Box
-                        display="flex"
-                        justifyContent="space-between"
-                        alignItems="center"
-                        gap={2}
-                        mb={2}
-                    >
-                        <Field
-                            name="name"
-                            component={renderTextField}
-                            label={translate('fieldName')}
-                        />
-                        {/*
-                         // @ts-expect-error TS2322 */}
-                        {isEditMode && <RunButton id={initialValues?._id} />}
-                    </Box>
-                    {isEditMode && (
-                        <Box
-                            display="flex"
-                            justifyContent="space-between"
-                            alignItems="center"
-                            gap={2}
-                            mb={2}
-                        >
-                            {translate('enrichment_error_count', {
-                                errorCount: initialValues.errorCount ?? 0,
-                            })}
-                            <Button
-                                color="primary"
-                                onClick={(event) => {
-                                    onRetryEnrichment({
-                                        id: initialValues._id,
-                                    });
-                                    event.preventDefault();
-                                    event.stopPropagation();
-                                }}
-                                disabled={(initialValues.errorCount ?? 0) === 0}
+        <FormProvider {...formMethods}>
+            <form onSubmit={handleSubmit(onSubmit)}>
+                <Box mt={3} display="flex" gap={6}>
+                    <Box sx={{ flex: 2 }}>
+                        <Box>
+                            <Box
+                                display="flex"
+                                justifyContent="space-between"
+                                alignItems="center"
+                                gap={2}
+                                mb={2}
                             >
-                                {translate('retry')}
-                            </Button>
+                                <TextField
+                                    name="name"
+                                    label={translate('fieldName')}
+                                />
+                                {isEditMode && (
+                                    <RunButton id={initialValues?._id} />
+                                )}
+                            </Box>
+                            {isEditMode && (
+                                <Box
+                                    display="flex"
+                                    justifyContent="space-between"
+                                    alignItems="center"
+                                    gap={2}
+                                    mb={2}
+                                >
+                                    {translate('enrichment_error_count', {
+                                        errorCount:
+                                            initialValues.errorCount ?? 0,
+                                    })}
+                                    <Button
+                                        color="primary"
+                                        onClick={(event) => {
+                                            onRetryEnrichment({
+                                                id: initialValues._id,
+                                            });
+                                            event.preventDefault();
+                                            event.stopPropagation();
+                                        }}
+                                        disabled={
+                                            (initialValues.errorCount ?? 0) ===
+                                            0
+                                        }
+                                    >
+                                        {translate('retry')}
+                                    </Button>
+                                </Box>
+                            )}
+                            {isEditMode && (
+                                <Box
+                                    display="flex"
+                                    justifyContent="space-between"
+                                    alignItems="center"
+                                    gap={2}
+                                >
+                                    <Typography>
+                                        {translate('enrichment_status')} :
+                                        &nbsp;
+                                        <EnrichmentStatus
+                                            id={initialValues?._id}
+                                        />
+                                    </Typography>
+                                    <Button
+                                        variant="link"
+                                        sx={{
+                                            paddingRight: 0,
+                                            paddingLeft: 0,
+                                            textDecoration: 'underline',
+                                        }}
+                                        onClick={() =>
+                                            setOpenEnrichmentLogs(true)
+                                        }
+                                    >
+                                        {translate('see_logs')}
+                                    </Button>
+                                    <EnrichmentLogsDialogComponent
+                                        isOpen={openEnrichmentLogs}
+                                        logs={enrichmentLogs}
+                                        handleClose={() =>
+                                            setOpenEnrichmentLogs(false)
+                                        }
+                                    />
+                                </Box>
+                            )}
                         </Box>
-                    )}
-                    {isEditMode && (
-                        <Box
-                            display="flex"
-                            justifyContent="space-between"
-                            alignItems="center"
-                            gap={2}
-                        >
-                            <Typography>
-                                {translate('enrichment_status')} : &nbsp;
-                                {/*
-                                 // @ts-expect-error TS2322 */}
-                                <EnrichmentStatus id={initialValues?._id} />
-                            </Typography>
-                            <Button
-                                // @ts-expect-error TS2769
-                                variant="link"
-                                sx={{
-                                    paddingRight: 0,
-                                    paddingLeft: 0,
-                                    textDecoration: 'underline',
-                                }}
-                                onClick={() => setOpenEnrichmentLogs(true)}
-                            >
-                                {translate('see_logs')}
-                            </Button>
-                            <EnrichmentLogsDialogComponent
-                                isOpen={openEnrichmentLogs}
-                                logs={enrichmentLogs}
-                                handleClose={() => setOpenEnrichmentLogs(false)}
-                            />
-                        </Box>
-                    )}
-                </Box>
-                <Box>
-                    <Field
-                        name="advancedMode"
-                        component={renderSwitch}
-                        label={translate('advancedMode')}
-                    />
-                </Box>
-
-                {formValues?.advancedMode && (
-                    <Box mb={2}>
-                        <Field
-                            name="rule"
-                            component={FormSourceCodeField}
-                            label={translate('expand_rules')}
-                            width="100%"
-                        />
-                    </Box>
-                )}
-
-                {!formValues?.advancedMode && (
-                    <Box>
-                        <Box
-                            display="flex"
-                            justifyContent="space-between"
-                            alignItems="center"
-                            gap={2}
-                            mb={2}
-                        >
-                            <Field
-                                name="webServiceUrl"
-                                component={renderTextField}
-                                label={translate('webServiceUrl')}
-                            />
-                            <Button
-                                variant="contained"
-                                color="primary"
-                                onClick={() => setOpenCatalog(true)}
-                                style={{ height: '100%' }}
-                            >
-                                <ListAltIcon fontSize="medium" />
-                            </Button>
-                            <EnrichmentCatalogConnected
-                                isOpen={openCatalog}
-                                handleClose={() => setOpenCatalog(false)}
-                                selectedWebServiceUrl={
-                                    formValues?.webServiceUrl
-                                }
-                                onChange={onChangeWebServiceUrl}
+                        <Box>
+                            <Switch
+                                name="advancedMode"
+                                label={translate('advancedMode')}
                             />
                         </Box>
 
-                        <Box display="flex" gap={2} mb={2}>
-                            <Field
-                                name="sourceColumn"
-                                type="text"
-                                component={SubressourceFieldAutoComplete}
-                                options={datasetFields}
-                                // @ts-expect-error TS7006
-                                renderInput={(params) => (
+                        {formValues?.advancedMode && (
+                            <Box mb={2}>
+                                <Field
+                                    name="rule"
+                                    component={FormSourceCodeField}
+                                    label={translate('expand_rules')}
+                                    width="100%"
+                                />
+                            </Box>
+                        )}
+
+                        {!formValues?.advancedMode && (
+                            <Box>
+                                <Box
+                                    display="flex"
+                                    justifyContent="space-between"
+                                    alignItems="center"
+                                    gap={2}
+                                    mb={2}
+                                >
                                     <TextField
-                                        {...params}
+                                        name="webServiceUrl"
+                                        label={translate('webServiceUrl')}
+                                    />
+                                    <Button
+                                        variant="contained"
+                                        color="primary"
+                                        onClick={() => setOpenCatalog(true)}
+                                        style={{ height: '100%' }}
+                                    >
+                                        <ListAltIcon fontSize="medium" />
+                                    </Button>
+                                    <EnrichmentCatalogConnected
+                                        isOpen={openCatalog}
+                                        handleClose={() =>
+                                            setOpenCatalog(false)
+                                        }
+                                    />
+                                </Box>
+
+                                <Box display="flex" gap={2} mb={2}>
+                                    <Autocomplete
+                                        clearIdentifier={() => {
+                                            setValue('subPath', '');
+                                        }}
+                                        options={datasetFields}
+                                        name="sourceColumn"
                                         label={translate('sourceColumn')}
-                                        variant="outlined"
-                                        aria-label="input-path"
                                     />
-                                )}
-                                // @ts-expect-error TS7006
-                                renderOption={(props, option) => {
-                                    return (
-                                        <ListItem {...props}>
-                                            <Typography>{option}</Typography>
-                                        </ListItem>
-                                    );
-                                }}
-                                clearIdentifier={() => {
-                                    // @ts-expect-error TS2554
-                                    change('subPath', '');
-                                }}
-                            />
 
-                            <Field
-                                name="subPath"
-                                type="text"
-                                component={SubressourceFieldAutoComplete}
-                                options={optionsIdentifier}
-                                // @ts-expect-error TS7006
-                                renderInput={(params) => (
-                                    <TextField
-                                        {...params}
-                                        label={translate('subPath')}
-                                        aria-label="subPath"
-                                        variant="outlined"
+                                    <Field
+                                        name="subPath"
+                                        type="text"
+                                        component={
+                                            SubressourceFieldAutoComplete
+                                        }
+                                        options={optionsIdentifier}
+                                        // @ts-expect-error TS7006
+                                        renderInput={(params) => (
+                                            <TextField
+                                                {...params}
+                                                label={translate('subPath')}
+                                                aria-label="subPath"
+                                                variant="outlined"
+                                            />
+                                        )}
+                                        disabled={!formValues?.sourceColumn}
+                                        // @ts-expect-error TS7006
+                                        renderOption={(props, option) => {
+                                            return (
+                                                <ListItem {...props}>
+                                                    <Typography>
+                                                        {option}
+                                                    </Typography>
+                                                </ListItem>
+                                            );
+                                        }}
                                     />
-                                )}
-                                disabled={!formValues?.sourceColumn}
-                                // @ts-expect-error TS7006
-                                renderOption={(props, option) => {
-                                    return (
-                                        <ListItem {...props}>
-                                            <Typography>{option}</Typography>
-                                        </ListItem>
-                                    );
-                                }}
-                            />
+                                </Box>
+                            </Box>
+                        )}
+
+                        <Box
+                            display="flex"
+                            justifyContent={
+                                isEditMode ? 'space-between' : 'flex-end'
+                            }
+                        >
+                            {isEditMode && (
+                                <DeleteEnrichmentButton
+                                    disabled={
+                                        initialValues?.status === IN_PROGRESS ||
+                                        initialValues?.status === PENDING ||
+                                        isLoading
+                                    }
+                                    id={initialValues._id}
+                                    // @ts-expect-error TS2322
+                                    translate={translate}
+                                    onDeleteStart={() => setIsLoading(true)}
+                                    onDeleteEnd={() => {
+                                        setIsLoading(false);
+                                    }}
+                                    history={history}
+                                />
+                            )}
+                            <Box>
+                                <CancelButton
+                                    sx={{ height: '100%' }}
+                                    onClick={handleCancel}
+                                >
+                                    {translate('cancel')}
+                                </CancelButton>
+                                <Button
+                                    variant="contained"
+                                    color="primary"
+                                    sx={{ height: '100%' }}
+                                    type="submit"
+                                    disabled={
+                                        isLoading ||
+                                        initialValues?.status === IN_PROGRESS ||
+                                        initialValues?.status === PENDING
+                                    }
+                                >
+                                    {translate('save')}
+                                </Button>
+                            </Box>
                         </Box>
                     </Box>
-                )}
-
-                <Box
-                    display="flex"
-                    justifyContent={isEditMode ? 'space-between' : 'flex-end'}
-                >
-                    {isEditMode && (
-                        <DeleteEnrichmentButton
-                            disabled={
-                                initialValues?.status === IN_PROGRESS ||
-                                initialValues?.status === PENDING ||
-                                isLoading
-                            }
-                            id={initialValues._id}
-                            // @ts-expect-error TS2322
-                            translate={translate}
-                            onDeleteStart={() => setIsLoading(true)}
-                            onDeleteEnd={() => {
-                                setIsLoading(false);
-                            }}
-                            history={history}
+                    <Box width="25rem">
+                        <EnrichmentPreview
+                            lines={dataPreviewEnrichment}
+                            sourceColumn={formValues?.sourceColumn}
                         />
-                    )}
-                    <Box>
-                        <CancelButton
-                            sx={{ height: '100%' }}
-                            onClick={handleCancel}
-                        >
-                            {translate('cancel')}
-                        </CancelButton>
-                        <Button
-                            variant="contained"
-                            color="primary"
-                            sx={{ height: '100%' }}
-                            onClick={handleSubmit}
-                            disabled={
-                                isLoading ||
-                                initialValues?.status === IN_PROGRESS ||
-                                initialValues?.status === PENDING
-                            }
-                        >
-                            {translate('save')}
-                        </Button>
                     </Box>
                 </Box>
-            </Box>
-            <Box width="25rem">
-                <EnrichmentPreview
-                    lines={dataPreviewEnrichment}
-                    sourceColumn={formValues?.sourceColumn}
-                />
-            </Box>
-        </Box>
+            </form>
+        </FormProvider>
     );
 };
-
-// REDUX PART
-const formSelector = formValueSelector(ENRICHMENT_FORM);
 
 // @ts-expect-error TS7006
 const mapStateToProps = (state, { match }) => {
@@ -489,15 +451,6 @@ const mapStateToProps = (state, { match }) => {
         // @ts-expect-error TS7006
         .find((enrichment) => enrichment._id === match.params.enrichmentId);
     return {
-        formValues: formSelector(
-            state,
-            'sourceColumn',
-            'subPath',
-            'rule',
-            'name',
-            'webServiceUrl',
-            'advancedMode',
-        ),
         initialValues: enrichment,
         status: enrichment?.status,
         datasetFields: fromParsing.getParsedExcerptColumns(state),
@@ -505,9 +458,6 @@ const mapStateToProps = (state, { match }) => {
     };
 };
 const mapDispatchToProps = {
-    // @ts-expect-error TS7006
-    onChangeWebServiceUrl: (value) =>
-        change(ENRICHMENT_FORM, 'webServiceUrl', value),
     onLaunchEnrichment: launchEnrichment,
     onLoadEnrichments: loadEnrichments,
     onRetryEnrichment: retryEnrichment,
@@ -516,8 +466,5 @@ const mapDispatchToProps = {
 export default compose(
     withRouter,
     connect(mapStateToProps, mapDispatchToProps),
-    reduxForm({
-        form: ENRICHMENT_FORM,
-    }),
     // @ts-expect-error TS2345
 )(EnrichmentForm);
