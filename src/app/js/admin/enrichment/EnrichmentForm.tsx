@@ -90,6 +90,7 @@ export const EnrichmentForm = ({
     }, [excerptLines, formValues?.sourceColumn]);
 
     const handleSourcePreview = useCallback(async () => {
+        const formValues = watch();
         if (formValues?.advancedMode && !formValues?.rule) {
             return;
         }
@@ -111,7 +112,7 @@ export const EnrichmentForm = ({
         } else {
             setDataPreviewEnrichment([]);
         }
-    }, [formValues]);
+    }, [watch]);
 
     const handleAddEnrichment = async (enrichment: NewEnrichment) => {
         const res = await createEnrichment(enrichment);

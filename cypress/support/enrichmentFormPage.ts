@@ -27,7 +27,7 @@ value = get("value.Column 1")
 bySecond = 1
 `;
     cy.contains('Add more', { timeout: 500 }).click();
-    cy.get('input[name="name"]', { timeout: 12000 }).type('Enrichment');
+    cy.findByLabelText('Name *', { timeout: 12000 }).type('Enrichment');
     cy.contains('Advanced mode').click({ force: true });
     cy.get('textarea', { timeout: 3000 }).type(rule, { force: true });
     cy.wait(3000);
@@ -38,13 +38,13 @@ bySecond = 1
 };
 
 export const updateNameEnrichment = () => {
-    cy.get('input[name="name"]', { timeout: 500 }).clear();
-    cy.get('input[name="name"]', { timeout: 500 }).type('Enrichment');
+    cy.findByLabelText('Name *', { timeout: 500 }).clear();
+    cy.findByLabelText('Name *', { timeout: 500 }).type('Enrichment');
     cy.contains('Save', { timeout: 500 }).click({
         force: true,
     });
     cy.reload();
-    cy.get('input[name="name"]', { timeout: 3500 }).should(
+    cy.findByLabelText('Name *', { timeout: 3500 }).should(
         'have.value',
         'Enrichment',
     );
