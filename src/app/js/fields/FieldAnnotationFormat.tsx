@@ -1,30 +1,29 @@
-import PropTypes from 'prop-types';
-// @ts-expect-error TS6133
-import React from 'react';
-import { connect } from 'react-redux';
-import { compose } from 'recompose';
-
 import { MenuItem } from '@mui/material';
 import { useTranslate } from '../i18n/I18NContext';
-import FieldInput from '../lib/components/FieldInput';
-import FormSelectField from '../lib/components/FormSelectField';
+import { useFormContext, useWatch } from 'react-hook-form';
+import { TextField } from '../reactHookFormFields/TextField.tsx';
 
 export const FIELD_ANNOTATION_FORMAT_TEXT = 'text';
 export const FIELD_ANNOTATION_FORMAT_LIST = 'list';
 
-// @ts-expect-error TS7031
-export function FieldAnnotationFormat({ isFieldAnnotable }) {
+export function FieldAnnotationFormat() {
     const { translate } = useTranslate();
+
+    const { control } = useFormContext();
+    const isFieldAnnotable = useWatch({
+        control,
+        name: 'annotable',
+    });
 
     if (!isFieldAnnotable) {
         return null;
     }
 
     return (
-        <FieldInput
+        <TextField
+            select
             name="annotationFormat"
-            labelKey="field_annotation_format"
-            component={FormSelectField}
+            label={translate('field_annotation_format')}
             fullWidth
         >
             <MenuItem value={FIELD_ANNOTATION_FORMAT_TEXT}>
@@ -33,20 +32,8 @@ export function FieldAnnotationFormat({ isFieldAnnotable }) {
             <MenuItem value={FIELD_ANNOTATION_FORMAT_LIST}>
                 {translate('field_annotation_format_list')}
             </MenuItem>
-        </FieldInput>
+        </TextField>
     );
 }
 
-FieldAnnotationFormat.propTypes = {
-    isFieldAnnotable: PropTypes.bool.isRequired,
-};
-
-// @ts-expect-error TS7006
-const mapStateToProps = (state) => {
-    return {
-        isFieldAnnotable: state.form.field.values.annotable,
-    };
-};
-
-// @ts-expect-error TS2345
-export default compose(connect(mapStateToProps))(FieldAnnotationFormat);
+export default FieldAnnotationFormat;

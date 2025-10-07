@@ -102,6 +102,10 @@ const TransformerUpsertDialog = ({
     docUrlByTransformer,
     // @ts-expect-error TS7031
     fields,
+    // @ts-expect-error TS7031
+    append,
+    // @ts-expect-error TS7031
+    update,
     indexFieldToEdit = null,
     isOpen = false,
     // @ts-expect-error TS7031
@@ -110,7 +114,7 @@ const TransformerUpsertDialog = ({
     p: polyglot,
 }) => {
     const [transformer, setTransformer] = React.useState(
-        indexFieldToEdit !== null ? fields.get(indexFieldToEdit) : {},
+        indexFieldToEdit !== null ? fields?.[indexFieldToEdit] ?? {} : {},
     );
 
     if (!isOpen) {
@@ -130,9 +134,9 @@ const TransformerUpsertDialog = ({
 
     const handleUpsert = () => {
         if (indexFieldToEdit !== null) {
-            fields.splice(indexFieldToEdit, 1, transformer);
+            update(indexFieldToEdit, transformer);
         } else {
-            fields.push(transformer);
+            append(transformer);
         }
         handleClose();
     };
@@ -213,11 +217,9 @@ const TransformerUpsertDialog = ({
 TransformerUpsertDialog.propTypes = {
     availableTransformers: PropTypes.array,
     docUrlByTransformer: PropTypes.objectOf(PropTypes.string).isRequired,
-    fields: PropTypes.shape({
-        get: PropTypes.func.isRequired,
-        push: PropTypes.func.isRequired,
-        splice: PropTypes.func.isRequired,
-    }).isRequired,
+    fields: PropTypes.array.isRequired,
+    append: PropTypes.func.isRequired,
+    update: PropTypes.func.isRequired,
     handleClose: PropTypes.func.isRequired,
     indexFieldToEdit: PropTypes.number,
     isOpen: PropTypes.bool,
