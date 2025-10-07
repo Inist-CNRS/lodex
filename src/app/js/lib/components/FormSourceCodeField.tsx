@@ -1,8 +1,3 @@
-import 'ace-builds/src-noconflict/mode-ini';
-import 'ace-builds/src-noconflict/mode-json';
-import 'ace-builds/src-noconflict/mode-ejs';
-import 'ace-builds/src-noconflict/theme-monokai';
-
 import { useController } from 'react-hook-form';
 import SourceCodeField from './SourceCodeField';
 

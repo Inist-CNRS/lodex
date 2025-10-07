@@ -3,21 +3,30 @@ import {
     type TextFieldProps as MuiTextFieldProps,
 } from '@mui/material';
 import { useController } from 'react-hook-form';
+import { useTranslate } from '../i18n/I18NContext';
 
 export const TextField = ({
     name,
     validate,
     label,
+    required = false,
     ...props
 }: MuiTextFieldProps & {
     name: string;
     validate?: (value: unknown) => string | undefined;
     label: string;
+    required?: boolean;
 }) => {
+    const { translate } = useTranslate();
     const { field, fieldState } = useController({
         name,
         rules: {
-            validate,
+            required: required ? translate('error_field_required') : false,
+            validate: (value) => {
+                if (validate) {
+                    return validate(value);
+                }
+            },
         },
     });
 
