@@ -3,8 +3,7 @@ import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import {
     Autocomplete,
     Checkbox,
-    CircularProgress,
-    InputAdornment,
+    Chip,
     MenuItem,
     TextField,
 } from '@mui/material';
@@ -86,22 +85,26 @@ const SearchAutocomplete = ({
                     label={translation}
                     placeholder={translation}
                     disabled={isLoading}
-                    InputProps={{
-                        ...params.InputProps,
-                        startAdornment: isLoading && (
-                            <InputAdornment>
-                                <CircularProgress size={16} />
-                            </InputAdornment>
-                        ),
-                    }}
                 />
             )}
             getOptionLabel={(option) =>
-                multiple ? (
-                    <FieldRepresentation field={option} shortMode />
-                ) : (
-                    `${option.label} ${option.name && `[${option.name}]`}  `
-                )
+                `${option.label} ${option.name && `[${option.name}]`}  `
+            }
+            renderTags={(options, getTagProps) =>
+                options.map((option, index) => (
+                    <Chip
+                        key={option.name}
+                        {...getTagProps({ index })}
+                        label={
+                            <FieldRepresentation
+                                key={option._id}
+                                field={option}
+                                shortMode
+                                {...getTagProps({ index })}
+                            />
+                        }
+                    ></Chip>
+                ))
             }
             clearText={clearText}
             renderOption={(props, option, { selected }) =>
