@@ -39,6 +39,7 @@ export const SwitchField = ({
             control={
                 <MuiSwitch
                     {...props}
+                    name={name}
                     sx={{ marginLeft: 1.5 }}
                     checked={isChecked(field.value)}
                     onChange={(e) => field.onChange(e.target.checked)}
