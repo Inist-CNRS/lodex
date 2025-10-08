@@ -5,7 +5,7 @@ import EnrichmentLogsDialogComponent from './EnrichmentLogsDialog';
 import EnrichmentPreview from './EnrichmentPreview';
 
 import { ListAlt as ListAltIcon } from '@mui/icons-material';
-import { Box, Button, Typography } from '@mui/material';
+import { Box, Button, FormGroup, Typography } from '@mui/material';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { compose } from 'recompose';
@@ -296,10 +296,12 @@ export const EnrichmentForm = ({
                             )}
                         </Box>
                         <Box>
-                            <Switch
-                                name="advancedMode"
-                                label={translate('advancedMode')}
-                            />
+                            <FormGroup>
+                                <Switch
+                                    name="advancedMode"
+                                    label={translate('advancedMode')}
+                                />
+                            </FormGroup>
                         </Box>
 
                         {formValues?.advancedMode && (

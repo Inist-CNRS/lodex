@@ -1,8 +1,4 @@
-import {
-    FormControlLabel,
-    FormGroup,
-    Switch as MuiSwitch,
-} from '@mui/material';
+import { FormControlLabel, Switch as MuiSwitch } from '@mui/material';
 import { useController } from 'react-hook-form';
 
 type SwitchProps = {
@@ -15,16 +11,14 @@ export const Switch = ({ name, label }: SwitchProps) => {
         name,
     });
     return (
-        <FormGroup>
-            <FormControlLabel
-                control={
-                    <MuiSwitch
-                        checked={field.value ? true : false}
-                        onChange={field.onChange}
-                    />
-                }
-                label={label}
-            />
-        </FormGroup>
+        <FormControlLabel
+            control={
+                <MuiSwitch
+                    checked={field.value ? true : false}
+                    onChange={field.onChange}
+                />
+            }
+            label={label}
+        />
     );
 };
