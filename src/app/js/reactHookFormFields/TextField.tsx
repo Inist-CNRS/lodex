@@ -40,6 +40,7 @@ export const TextField = ({
     return (
         <MuiTextField
             {...props}
+            name={name}
             placeholder={label}
             label={label}
             error={!!fieldState.error}
