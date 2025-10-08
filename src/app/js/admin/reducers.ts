@@ -16,7 +16,7 @@ import dump from './dump';
 import characteristic from '../characteristic';
 import progress from './progress/reducer';
 import loaders from './loader';
-import subresource from './subresource';
+import subresource, { type SubresourceState } from './subresource';
 import enrichment from './enrichment';
 import precomputed, { type PrecomputedState } from './precomputed';
 import configTenant from './configTenant';
@@ -39,7 +39,7 @@ export type State = {
     characteristic: unknown;
     progress: unknown;
     loaders: unknown;
-    subresource: unknown;
+    subresource: SubresourceState;
     enrichment: unknown;
     precomputed: PrecomputedState;
     configTenant: unknown;
