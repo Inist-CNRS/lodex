@@ -1,12 +1,12 @@
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
-import { connect } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
 import { compose, withProps } from 'recompose';
 import { translate } from '../../i18n/I18NContext';
 
 import { Box, Tab, Tabs } from '@mui/material';
 
-import { saveField as saveFieldAction } from '../';
+import { lodexFieldFormChange, saveField as saveFieldAction } from '../';
 
 import { withRouter } from 'react-router';
 import {
@@ -101,9 +101,23 @@ const FieldEditionWizardComponent = ({
         polyglot,
     ]);
 
+    const dispatch = useDispatch();
+
     const form = useForm({
         values: currentEditedField,
     });
+    useEffect(
+        () =>
+            form.subscribe({
+                formState: {
+                    values: true,
+                },
+                callback: ({ values }) => {
+                    dispatch(lodexFieldFormChange({ values }));
+                },
+            }),
+        [form.subscribe],
+    );
 
     // @ts-expect-error TS7006
     const handleChange = (_, newValue) => {
@@ -122,7 +136,11 @@ const FieldEditionWizardComponent = ({
     };
 
     const handleSave = () => {
-        saveField({ field: form.getValues(), filter });
+        saveField({
+            field: currentEditedField,
+            filter,
+            values: form.getValues(),
+        });
         handleHideExistingColumns();
     };
 
@@ -165,19 +183,19 @@ const FieldEditionWizardComponent = ({
 
     return (
         <FormProvider {...form}>
-            <Box
-                className="wizard"
-                sx={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    height: '100%',
-                    width: {
-                        xs: '100%',
-                        md: `calc(100% - ${PREVIEW_WIDTH}px)`,
-                    },
-                }}
-            >
-                <form onSubmit={form.handleSubmit(handleSave)}>
+            <form onSubmit={form.handleSubmit(handleSave)}>
+                <Box
+                    className="wizard"
+                    sx={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        height: '100%',
+                        width: {
+                            xs: '100%',
+                            md: `calc(100% - ${PREVIEW_WIDTH}px)`,
+                        },
+                    }}
+                >
                     {currentEditedField && (
                         <Box
                             sx={{
@@ -252,7 +270,6 @@ const FieldEditionWizardComponent = ({
                         }}
                         className="mui-fixed"
                     >
-                        {/* @ts-expect-error TS2322 */}
                         <ValuePreviewConnected scope={filter} />
                     </Box>
                     <Box
@@ -271,15 +288,14 @@ const FieldEditionWizardComponent = ({
                     >
                         <Box className="container">
                             <Actions
-                                // @ts-expect-error TS2322
                                 currentEditedField={currentEditedField}
                                 onCancel={handleCancel}
                                 onSave={handleSave}
                             />
                         </Box>
                     </Box>
-                </form>
-            </Box>
+                </Box>
+            </form>
         </FormProvider>
     );
 };

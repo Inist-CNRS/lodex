@@ -1,32 +1,20 @@
 import { call, all, put, select, takeLatest } from 'redux-saga/effects';
-import { actionTypes } from 'redux-form';
+import cloneDeep from 'lodash/cloneDeep';
 
 import getDocumentTransformer from '../../../lib/getDocumentTransformer';
 import { fromUser } from '../../../sharedSelectors';
 import { computeFieldPreviewSuccess, computeFieldPreviewError } from './';
-import { getFieldFormData } from '../../../fields/selectors';
 import { fromParsing } from '../../selectors';
-import { FIELD_FORM_NAME } from '../../../fields/index';
 import { GET_SOURCE_VALUE_FROM_TRANSFORMERS } from '../../../fields/sourceValue/SourceValueToggle';
-import cloneDeep from 'lodash/cloneDeep';
-
-const {
-    CHANGE: REDUX_FORM_CHANGE,
-    ARRAY_REMOVE: REDUX_FORM_ARRAY_REMOVE,
-    INITIALIZE: REDUX_FORM_INITIALIZE,
-    ARRAY_MOVE: REDUX_FORM_ARRAY_MOVE,
-    ARRAY_PUSH: REDUX_FORM_ARRAY_PUSH,
-    ARRAY_SPLICE: REDUX_FORM_ARRAY_SPLICE,
-} = actionTypes;
+import { prepareFieldFormData } from '../../../fields/sagas/saveField.ts';
+import { LODEX_FIELD_FORM_CHANGE } from '../../../fields';
+import type { PreviewLine } from '../../../fields/types.ts';
 
 // @ts-expect-error TS7031
-export function* handleComputeFieldPreview({ meta: { form } }) {
-    if (form !== FIELD_FORM_NAME) {
-        return;
-    }
+export function* handleComputeFieldPreview({ payload: { values } }) {
     try {
         // @ts-expect-error TS7057
-        const formData = yield select(getFieldFormData);
+        const formData = yield call(prepareFieldFormData, values);
 
         const { source } = GET_SOURCE_VALUE_FROM_TRANSFORMERS(
             formData.transformers,
@@ -45,7 +33,7 @@ export function* handleComputeFieldPreview({ meta: { form } }) {
         // @ts-expect-error TS7057
         const token = yield select(fromUser.getToken);
 
-        let preview;
+        let preview: PreviewLine[] = [];
         if (isFromColumnsForSubRessourceField) {
             // we keep the three first transformers (COLUMN, PARSE, GET) in fields to get the subresource data
             // other transformers will be used to transform the subresource data
@@ -56,7 +44,6 @@ export function* handleComputeFieldPreview({ meta: { form } }) {
                 fields,
                 token,
             );
-            // @ts-expect-error TS7057
             preview = yield all(
                 // @ts-expect-error TS7006
                 lines.map((line) => call(getSubresourceData, line)),
@@ -65,7 +52,6 @@ export function* handleComputeFieldPreview({ meta: { form } }) {
             // if there is other transformers we have to apply them to transform the preview
             if (subresourceTransformers.length > 0) {
                 const subresourceData = preview.map(
-                    // @ts-expect-error TS7006
                     (subresourceLine) => subresourceLine[formData.name],
                 );
 
@@ -78,9 +64,7 @@ export function* handleComputeFieldPreview({ meta: { form } }) {
                     token,
                 );
 
-                // @ts-expect-error TS7057
                 preview = yield all(
-                    // @ts-expect-error TS7006
                     subresourceData.map(function* (subresourceLine) {
                         if (Array.isArray(subresourceLine)) {
                             // @ts-expect-error TS7057
@@ -112,7 +96,6 @@ export function* handleComputeFieldPreview({ meta: { form } }) {
                 token,
             );
 
-            // @ts-expect-error TS7057
             preview = yield all(
                 // @ts-expect-error TS7006
                 lines.map((line) => call(transformDocument, line)),
@@ -128,14 +111,7 @@ export function* handleComputeFieldPreview({ meta: { form } }) {
 export default function* watchComputePreview() {
     yield takeLatest(
         // @ts-expect-error TS2769
-        [
-            REDUX_FORM_CHANGE,
-            REDUX_FORM_ARRAY_REMOVE,
-            REDUX_FORM_INITIALIZE,
-            REDUX_FORM_ARRAY_MOVE,
-            REDUX_FORM_ARRAY_PUSH,
-            REDUX_FORM_ARRAY_SPLICE,
-        ],
+        [LODEX_FIELD_FORM_CHANGE],
         handleComputeFieldPreview,
     );
 }
