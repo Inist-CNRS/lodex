@@ -7,7 +7,7 @@ import {
     MenuItem,
     TextField,
 } from '@mui/material';
-import React, { useEffect } from 'react';
+import React from 'react';
 
 import PropTypes from 'prop-types';
 import FieldRepresentation from '../../fields/FieldRepresentation';
@@ -58,23 +58,12 @@ const SearchAutocomplete = ({
     limitTags = 6,
     isLoading = false,
 }) => {
-    const [autocompleteValue, setAutocompleteValue] = React.useState(value);
-
-    useEffect(() => {
-        setAutocompleteValue(value);
-    }, [value]);
-
-    const handleChange = (event, value) => {
-        setAutocompleteValue(value);
-        onChange(event, value);
-    };
-
     return (
         <Autocomplete
             data-testid={testId}
             fullWidth
             options={fields}
-            value={autocompleteValue}
+            value={value}
             disableCloseOnSelect={multiple}
             multiple={multiple}
             limitTags={limitTags}
@@ -112,7 +101,7 @@ const SearchAutocomplete = ({
                     ? renderCheckboxItem(props, option, selected)
                     : renderItem(props, option)
             }
-            onChange={handleChange}
+            onChange={onChange}
         />
     );
 };
