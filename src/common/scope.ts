@@ -1,3 +1,9 @@
+export type ScopeType =
+    | typeof SCOPE_DATASET
+    | typeof SCOPE_GRAPHIC
+    | typeof SCOPE_COLLECTION
+    | typeof SCOPE_DOCUMENT;
+
 export const SCOPE_DATASET = 'dataset';
 export const SCOPE_GRAPHIC = 'graphic';
 export const SCOPE_COLLECTION = 'collection';
