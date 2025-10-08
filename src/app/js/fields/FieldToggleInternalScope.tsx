@@ -31,6 +31,7 @@ export const FieldToggleInternalScopeComponent = ({
     useEffect(() => {
         if (
             !field ||
+            Array.isArray(field?.value) ||
             matches.params.fieldName !== 'new' ||
             field.value?.length > 0
         ) {
