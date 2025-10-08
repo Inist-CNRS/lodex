@@ -15,7 +15,6 @@ export const TextField = ({
     name: string;
     validate?: (value: unknown) => string | undefined;
     label: string;
-    required?: boolean;
 }) => {
     const { translate } = useTranslate();
     const { field, fieldState } = useController({
