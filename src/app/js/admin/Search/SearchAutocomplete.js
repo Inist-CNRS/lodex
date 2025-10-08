@@ -3,12 +3,11 @@ import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import {
     Autocomplete,
     Checkbox,
-    CircularProgress,
-    InputAdornment,
+    Chip,
     MenuItem,
     TextField,
 } from '@mui/material';
-import React, { useEffect } from 'react';
+import React from 'react';
 
 import PropTypes from 'prop-types';
 import FieldRepresentation from '../../fields/FieldRepresentation';
@@ -59,23 +58,12 @@ const SearchAutocomplete = ({
     limitTags = 6,
     isLoading = false,
 }) => {
-    const [autocompleteValue, setAutocompleteValue] = React.useState(value);
-
-    useEffect(() => {
-        setAutocompleteValue(value);
-    }, [value]);
-
-    const handleChange = (event, value) => {
-        setAutocompleteValue(value);
-        onChange(event, value);
-    };
-
     return (
         <Autocomplete
             data-testid={testId}
             fullWidth
             options={fields}
-            value={autocompleteValue}
+            value={value}
             disableCloseOnSelect={multiple}
             multiple={multiple}
             limitTags={limitTags}
@@ -86,22 +74,26 @@ const SearchAutocomplete = ({
                     label={translation}
                     placeholder={translation}
                     disabled={isLoading}
-                    InputProps={{
-                        ...params.InputProps,
-                        startAdornment: isLoading && (
-                            <InputAdornment>
-                                <CircularProgress size={16} />
-                            </InputAdornment>
-                        ),
-                    }}
                 />
             )}
             getOptionLabel={(option) =>
-                multiple ? (
-                    <FieldRepresentation field={option} shortMode />
-                ) : (
-                    `${option.label} ${option.name && `[${option.name}]`}  `
-                )
+                `${option.label} ${option.name && `[${option.name}]`}  `
+            }
+            renderTags={(options, getTagProps) =>
+                options.map((option, index) => (
+                    <Chip
+                        key={option.name}
+                        {...getTagProps({ index })}
+                        label={
+                            <FieldRepresentation
+                                key={option._id}
+                                field={option}
+                                shortMode
+                                {...getTagProps({ index })}
+                            />
+                        }
+                    ></Chip>
+                ))
             }
             clearText={clearText}
             renderOption={(props, option, { selected }) =>
@@ -109,7 +101,7 @@ const SearchAutocomplete = ({
                     ? renderCheckboxItem(props, option, selected)
                     : renderItem(props, option)
             }
-            onChange={handleChange}
+            onChange={onChange}
         />
     );
 };
