@@ -17,6 +17,9 @@ type AutocompleteProps = {
     label: string;
     disabled?: boolean;
     required?: boolean;
+    validate?: (value: string) => string | undefined;
+    className?: string;
+    variant?: 'standard' | 'outlined' | 'filled';
 };
 
 export const Autocomplete = ({
@@ -27,19 +30,23 @@ export const Autocomplete = ({
     label,
     disabled = false,
     required = false,
+    validate,
+    className,
+    variant = 'outlined',
 }: AutocompleteProps) => {
     const { translate } = useTranslate();
     const { field, fieldState } = useController({
         name,
         rules: {
             required: required ? translate('error_field_required') : false,
+            validate,
         },
     });
     const error: string | undefined =
         (fieldState.isDirty && fieldState.error?.message) || undefined;
 
     return (
-        <FormControl fullWidth error={!!error}>
+        <FormControl className={className} fullWidth error={!!error}>
             <MuiAutocomplete
                 disabled={disabled}
                 value={field.value || null}
@@ -54,7 +61,7 @@ export const Autocomplete = ({
                         error={!!error}
                         {...params}
                         label={required ? `${label} *` : label}
-                        variant="outlined"
+                        variant={variant}
                         aria-label="input-path"
                     />
                 )}

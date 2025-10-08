@@ -1,10 +1,6 @@
-// @ts-expect-error TS6133
-import React from 'react';
-import { connect } from 'react-redux';
-import withHandlers from 'recompose/withHandlers';
-import { formValueSelector, reduxForm } from 'redux-form';
-import { Redirect, withRouter } from 'react-router';
-import { compose, branch, renderComponent, withProps } from 'recompose';
+import { useCallback, useMemo } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Redirect, useLocation, useParams } from 'react-router';
 
 import SubresourceForm from './SubresourceForm';
 import { DeleteSubresourceButton } from './DeleteSubresourceButton';
@@ -12,56 +8,40 @@ import { DeleteSubresourceButton } from './DeleteSubresourceButton';
 import {
     updateSubresource as updateSubresourceAction,
     deleteSubresource as deleteSubresourceAction,
+    type SubResource,
 } from '.';
+import { fromSubresources } from '../selectors';
 
-export const EditSubresourceForm = compose(
-    withRouter,
-    connect(
-        // @ts-expect-error TS2339
-        (s, { match }) => ({
-            // @ts-expect-error TS2345
-            pathSelected: formValueSelector('SUBRESOURCE_EDIT_FORM')(s, 'path'),
-            // @ts-expect-error TS18046
-            initialValues: s.subresource.subresources.find(
-                // @ts-expect-error TS7006
-                (sr) => sr._id === match.params.subresourceId,
-            ),
-            // @ts-expect-error TS18046
-            subresources: s.subresource.subresources,
-        }),
-        {
-            updateSubresource: updateSubresourceAction,
-            deleteSubresource: deleteSubresourceAction,
+export const EditSubresourceForm = () => {
+    const params = useParams<{
+        subresourceId: string;
+    }>();
+
+    const dispatch = useDispatch();
+    const onDelete = useCallback(() => {
+        dispatch(deleteSubresourceAction(params.subresourceId));
+    }, [params.subresourceId, dispatch]);
+
+    const onSubmit = useCallback(
+        (values: SubResource) => {
+            dispatch(updateSubresourceAction(values));
         },
-    ),
-    branch(
-        // @ts-expect-error TS7031
-        ({ initialValues }) => !initialValues,
-        // @ts-expect-error TS7031
-        renderComponent(({ match }) => <Redirect to={`${match.url}/main`} />),
-    ),
-    withHandlers({
-        // @ts-expect-error TS2322
-        onSubmit:
-            ({ updateSubresource }) =>
-            // @ts-expect-error TS7006
-            (resource) => {
-                updateSubresource(resource);
-            },
-        // @ts-expect-error TS2322
-        onDelete:
-            ({ deleteSubresource, match }) =>
-            () => {
-                deleteSubresource(match.params.subresourceId);
-            },
-    }),
-    // @ts-expect-error TS7031
-    withProps(({ onDelete }) => ({
-        // @ts-expect-error TS2322
-        additionnalActions: <DeleteSubresourceButton onClick={onDelete} />,
-    })),
-    reduxForm({
-        form: 'SUBRESOURCE_EDIT_FORM',
-        enableReinitialize: true,
-    }),
-)(SubresourceForm);
+        [dispatch],
+    );
+    const subresources = useSelector(fromSubresources.getSubresources);
+    const initialValues = useMemo(() => {
+        return subresources.find(({ _id }) => _id === params.subresourceId);
+    }, [subresources, params.subresourceId]);
+    const location = useLocation();
+
+    if (!initialValues) {
+        return <Redirect to={`${location.pathname}/subresource`} />;
+    }
+    return (
+        <SubresourceForm
+            onSubmit={onSubmit}
+            initialValues={initialValues}
+            additionnalActions={<DeleteSubresourceButton onClick={onDelete} />}
+        />
+    );
+};
