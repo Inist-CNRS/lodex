@@ -5,29 +5,38 @@ import {
     FormHelperText,
     TextField,
 } from '@mui/material';
-import { useController, type Control } from 'react-hook-form';
+import { useController } from 'react-hook-form';
+import { useTranslate } from '../../i18n/I18NContext';
 
 type SourceValueFromColumnsProps = {
     name: string;
     label: string;
     options: string[];
-    control: Control<any>;
-    validate: (value: unknown) => string | undefined;
+    required?: boolean;
 };
 
 const SourceValueFromColumns = ({
     name,
     label,
     options,
-    control,
-    validate,
+    required = false,
     ...props
 }: SourceValueFromColumnsProps) => {
+    const { translate } = useTranslate();
     const { field, fieldState } = useController({
         name,
-        control,
         rules: {
-            validate,
+            required,
+            validate: (value) => {
+                if (
+                    required &&
+                    (value === undefined ||
+                        value === null ||
+                        !(value instanceof Array && value.length === 0))
+                ) {
+                    return translate('error_field_required');
+                }
+            },
         },
     });
     const { error, isDirty, isTouched } = fieldState;

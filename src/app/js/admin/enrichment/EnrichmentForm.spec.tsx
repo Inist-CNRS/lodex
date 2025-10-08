@@ -1,101 +1,184 @@
-// @ts-expect-error TS6133
-import React from 'react';
-import { shallow } from 'enzyme';
-import { Field } from 'redux-form';
-import { EnrichmentForm } from './EnrichmentForm';
+import { act } from 'react-dom/test-utils';
+import { fireEvent, render, waitFor } from '../../../../test-utils';
+import { EnrichmentForm, type EnrichmentFormProps } from './EnrichmentForm';
+import type { Enrichment } from '.';
 
 const EXCERPT_LINES = [{ columnOne: 'TEST' }];
 
+const Noop = () => <></>;
+jest.mock('./EnrichmentStatus', () => Noop);
+jest.mock('./RunButton', () => Noop);
+jest.mock('../api/job', () => ({
+    getJobLogs: () =>
+        Promise.resolve({
+            response: { logs: [] },
+        }),
+}));
+
 describe('<EnrichmentFormComponent />', () => {
-    it('should render', () => {
-        const wrapper = shallow(
-            // @ts-expect-error TS2322
-            <EnrichmentForm
-                // @ts-expect-error TS2322
-                p={{ t: () => {} }}
-                excerptColumns={[]}
-                excerptLines={EXCERPT_LINES}
-            />,
-        );
-        expect(wrapper).toHaveLength(1);
+    const defaultProps: EnrichmentFormProps = {
+        datasetFields: ['field1', 'field2'],
+        excerptLines: EXCERPT_LINES,
+        history: {
+            push: jest.fn(),
+        },
+        onLoadEnrichments: jest.fn(),
+        onRetryEnrichment: jest.fn(),
+        onLaunchEnrichment: jest.fn(),
+        match: '/enrichment/123',
+    };
+
+    it('should render form', () => {
+        const screen = render(<EnrichmentForm {...defaultProps} />);
+
+        const nameField = screen.getByLabelText('fieldName *');
+        expect(nameField).toBeInTheDocument();
+        expect(nameField).toHaveValue('');
+
+        const webServiceUrlField = screen.getByLabelText('webServiceUrl *');
+        expect(webServiceUrlField).toBeInTheDocument();
+        expect(webServiceUrlField).toHaveValue('');
+
+        const sourceColumnField = screen.getByLabelText('sourceColumn *');
+        expect(sourceColumnField).toBeInTheDocument();
+        expect(sourceColumnField).toHaveValue('');
+
+        const subPathField = screen.getByLabelText('subPath');
+        expect(subPathField).toBeInTheDocument();
+        expect(subPathField).toHaveValue('');
+
+        const submitButton = screen.getByText('save');
+        expect(submitButton).toBeInTheDocument();
+        expect(submitButton).toBeDisabled();
     });
 
-    it('should render a Field for name enrichment', () => {
-        const wrapper = shallow(
-            // @ts-expect-error TS2322
-            <EnrichmentForm
-                // @ts-expect-error TS2322
-                p={{ t: () => {} }}
-                excerptColumns={[]}
-                excerptLines={EXCERPT_LINES}
-            />,
-        );
-        const textField = wrapper.find(Field).at(0);
-        expect(textField).toHaveLength(1);
-        expect(textField.prop('name')).toBe('name');
-    });
-
-    it('should render 3 Fields for enrichment rule with simplified mode', () => {
-        const wrapper = shallow(
-            // @ts-expect-error TS2322
-            <EnrichmentForm
-                // @ts-expect-error TS2322
-                p={{ t: () => {} }}
-                excerptColumns={[]}
-                excerptLines={EXCERPT_LINES}
-            />,
-        );
-        const webServiceUrl = wrapper.find(Field).at(2);
-        expect(webServiceUrl).toHaveLength(1);
-        expect(webServiceUrl.prop('name')).toBe('webServiceUrl');
-
-        const sourceColumn = wrapper.find(Field).at(3);
-        expect(sourceColumn).toHaveLength(1);
-        expect(sourceColumn.prop('name')).toBe('sourceColumn');
-
-        const subPath = wrapper.find(Field).at(4);
-        expect(subPath).toHaveLength(1);
-        expect(subPath.prop('name')).toBe('subPath');
-    });
-
-    it('should render 1 Field for enrichment rule with advanced mode', () => {
-        const initialValues = {
-            advancedMode: true,
-            _id: '123',
-        };
-        const wrapper = shallow(
-            // @ts-expect-error TS2322
-            <EnrichmentForm
-                // @ts-expect-error TS2322
-                p={{ t: () => {} }}
-                excerptColumns={[]}
-                initialValues={initialValues}
-                excerptLines={EXCERPT_LINES}
-                formValues={initialValues}
-            />,
-        );
-        const rule = wrapper.find(Field).at(2);
-        expect(rule).toHaveLength(1);
-        expect(rule.prop('name')).toBe('rule');
-    });
-
-    it('should render a  enrichment logs dialog', () => {
+    it('should render form with valid initial values', async () => {
         const initialValues = {
             advancedMode: false,
             _id: '123',
-            status: 'IN_PROGRESS',
+            status: 'FINISHED',
+            name: 'Test Enrichment',
+            sourceColumn: 'field1',
+            subPath: '/test',
+            rule: '',
+            webServiceUrl: 'http://example.com/api',
+            jobId: 'job123',
+            errorCount: 0,
         };
-        const wrapper = shallow(
-            // @ts-expect-error TS2322
+
+        const propsWithInitialValues: EnrichmentFormProps = {
+            ...defaultProps,
+            initialValues,
+        };
+
+        const screen = render(<EnrichmentForm {...propsWithInitialValues} />);
+
+        const nameField = screen.getByLabelText('fieldName *');
+        expect(nameField).toBeInTheDocument();
+        expect(nameField).toHaveValue('Test Enrichment');
+
+        const advancedModeCheckbox = screen.getByLabelText('advancedMode');
+        expect(advancedModeCheckbox).toBeInTheDocument();
+        expect(advancedModeCheckbox).not.toBeChecked();
+
+        const webServiceUrlField = screen.getByLabelText('webServiceUrl *');
+        expect(webServiceUrlField).toBeInTheDocument();
+        expect(webServiceUrlField).toHaveValue('http://example.com/api');
+
+        const sourceColumnField = screen.getByLabelText('sourceColumn *');
+        expect(sourceColumnField).toBeInTheDocument();
+        expect(sourceColumnField).toHaveValue('field1');
+
+        const subPathField = screen.getByLabelText('subPath');
+        expect(subPathField).toBeInTheDocument();
+        expect(subPathField).toHaveValue('/test');
+
+        const submitButton = screen.getByText('save');
+        expect(submitButton).toBeInTheDocument();
+        await waitFor(() => {
+            expect(submitButton).not.toBeDisabled();
+        });
+    });
+
+    it('should require the name field', async () => {
+        const screen = render(
             <EnrichmentForm
-                // @ts-expect-error TS2322
-                p={{ t: () => {} }}
-                excerptColumns={[]}
-                initialValues={initialValues}
-                isEdit={true}
-                excerptLines={EXCERPT_LINES}
+                {...defaultProps}
+                initialValues={{ name: 'test' } as unknown as Enrichment}
             />,
         );
-        expect(wrapper.find('EnrichmentLogsDialog')).toHaveLength(1);
+
+        const nameField = screen.getByLabelText('fieldName *');
+        expect(nameField).toBeInTheDocument();
+        expect(nameField).toHaveValue('test');
+        expect(
+            screen.queryByText('error_field_required'),
+        ).not.toBeInTheDocument();
+
+        await act(async () => {
+            fireEvent.change(nameField, { target: { value: '' } });
+        });
+
+        await waitFor(() => {
+            expect(
+                screen.getByText('error_field_required'),
+            ).toBeInTheDocument();
+        });
+    });
+
+    it('should require the webServiceUrl field', async () => {
+        const screen = render(
+            <EnrichmentForm
+                {...defaultProps}
+                initialValues={
+                    { webServiceUrl: '/test' } as unknown as Enrichment
+                }
+            />,
+        );
+
+        const field = screen.getByLabelText('webServiceUrl *');
+        expect(field).toBeInTheDocument();
+        expect(field).toHaveValue('/test');
+        expect(
+            screen.queryByText('error_field_required'),
+        ).not.toBeInTheDocument();
+
+        await act(async () => {
+            fireEvent.change(field, { target: { value: '' } });
+        });
+
+        await waitFor(() => {
+            expect(
+                screen.getByText('error_field_required'),
+            ).toBeInTheDocument();
+        });
+    });
+
+    it('should require the sourceColumn field', async () => {
+        const screen = render(
+            <EnrichmentForm
+                {...defaultProps}
+                initialValues={
+                    { sourceColumn: 'field1' } as unknown as Enrichment
+                }
+            />,
+        );
+
+        const field = screen.getByLabelText('sourceColumn *');
+        expect(field).toBeInTheDocument();
+        expect(field).toHaveValue('field1');
+        expect(
+            screen.queryByText('error_field_required'),
+        ).not.toBeInTheDocument();
+
+        await act(async () => {
+            fireEvent.click(screen.getByLabelText('Clear'));
+        });
+
+        await waitFor(() => {
+            expect(
+                screen.getByText('error_field_required'),
+            ).toBeInTheDocument();
+        });
     });
 });

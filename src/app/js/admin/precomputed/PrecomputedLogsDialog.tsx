@@ -2,7 +2,6 @@
 import React from 'react';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import PropTypes from 'prop-types';
-// @ts-expect-error TS7016
 import { FixedSizeList } from 'react-window';
 import { useMeasure } from 'react-use';
 import {

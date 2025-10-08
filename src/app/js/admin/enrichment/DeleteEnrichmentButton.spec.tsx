@@ -1,5 +1,3 @@
-// @ts-expect-error TS6133
-import React from 'react';
 import { shallow } from 'enzyme';
 import { DeleteEnrichmentButton } from './DeleteEnrichmentButton';
 import { Button } from '@mui/material';
@@ -16,8 +14,6 @@ describe('DeleteEnrichmentButton', () => {
         const wrapper = shallow(
             // @ts-expect-error TS2769
             <DeleteEnrichmentButton
-                // @ts-expect-error TS2322
-                polyglot={{ t: (v) => v }}
                 disabled={false}
                 history={{ push: jest.fn() }}
                 id="id"
@@ -37,8 +33,6 @@ describe('DeleteEnrichmentButton', () => {
         const wrapper = shallow(
             // @ts-expect-error TS2769
             <DeleteEnrichmentButton
-                // @ts-expect-error TS2322
-                polyglot={{ t: (v) => v }}
                 disabled={false}
                 history={{ push: jest.fn() }}
                 id="id"
@@ -64,8 +58,6 @@ describe('DeleteEnrichmentButton', () => {
         const wrapper = shallow(
             // @ts-expect-error TS2769
             <DeleteEnrichmentButton
-                // @ts-expect-error TS2322
-                polyglot={{ t: (v) => v }}
                 disabled={false}
                 history={{ push: historyPush }}
                 id="id"
@@ -101,8 +93,6 @@ describe('DeleteEnrichmentButton', () => {
         const wrapper = shallow(
             // @ts-expect-error TS2769
             <DeleteEnrichmentButton
-                // @ts-expect-error TS2322
-                polyglot={{ t: (v) => v }}
                 disabled={false}
                 history={{ push: historyPush }}
                 id="id"

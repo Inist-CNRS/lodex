@@ -27,7 +27,33 @@ export const launchAllEnrichmentError = createAction(
     LAUNCH_ALL_ENRICHMENT_ERROR,
 );
 
-export const initialState = {
+export type Enrichment = {
+    _id: string;
+    sourceColumn: string;
+    status: string;
+    subPath: string;
+    advancedMode: boolean;
+    rule: string;
+    jobId: string;
+    errorCount: number;
+    name: string;
+};
+
+type EnrichmentState = {
+    error: string | null;
+    initialized: boolean;
+    loading: boolean;
+    dataPreviewLoading: boolean;
+    enrichments: Enrichment[];
+    dataPreviewEnrichment: unknown[];
+    isLoadEnrichmentsPending?: boolean;
+    isRunAllEnrichmentPending?: boolean;
+    runAllEnrichmentError?: string | null;
+    jobId?: string;
+    sourceColumn?: string;
+};
+
+export const initialState: EnrichmentState = {
     error: null,
     initialized: false,
     loading: false,
@@ -36,8 +62,7 @@ export const initialState = {
     dataPreviewEnrichment: [],
 };
 
-// @ts-expect-error TS2769
-export default handleActions(
+export default handleActions<EnrichmentState, any>(
     {
         LOAD_ENRICHMENTS: (state) => ({
             ...state,
@@ -71,16 +96,14 @@ export default handleActions(
     initialState,
 );
 
-// @ts-expect-error TS7006
-export const isDataPreviewLoading = (state) => state.dataPreviewLoading;
-// @ts-expect-error TS7006
-export const isInitialized = (state) => state.initialized;
-// @ts-expect-error TS7006
-export const enrichments = (state) => state.enrichments;
-// @ts-expect-error TS7006
-export const dataPreviewEnrichment = (state) => state.dataPreviewEnrichment;
-// @ts-expect-error TS7006
-export const getError = (state) => state.error;
+export const isDataPreviewLoading = (state: EnrichmentState) =>
+    state.dataPreviewLoading;
+export const isInitialized = (state: EnrichmentState) => state.initialized;
+export const enrichments = (state: EnrichmentState): Enrichment[] =>
+    state.enrichments;
+export const dataPreviewEnrichment = (state: EnrichmentState) =>
+    state.dataPreviewEnrichment;
+export const getError = (state: EnrichmentState) => state.error;
 
 export const selectors = {
     isDataPreviewLoading,

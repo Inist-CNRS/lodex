@@ -1,16 +1,13 @@
-// @ts-expect-error TS6133
-import React from 'react';
-import { render, fireEvent, act } from '@testing-library/react';
 import { RunButton } from './RunButton';
 import { FINISHED, IN_PROGRESS, PENDING } from '../../../../common/taskStatus';
 import { toast } from '../../../../common/tools/toast';
+import { act, fireEvent, render } from '../../../../test-utils';
 
 jest.mock('../../../../common/tools/toast');
 
 describe('RunButton', () => {
     beforeEach(() => {
-        // @ts-expect-error TS2339
-        toast.mockClear();
+        (toast as unknown as jest.Mock).mockClear();
     });
     it('should render a run button calling onLaunchEnrichment on click', () => {
         const onLaunchEnrichment = jest.fn();
@@ -20,8 +17,6 @@ describe('RunButton', () => {
                 enrichmentStatus={''}
                 id="id"
                 onLaunchEnrichment={onLaunchEnrichment}
-                // @ts-expect-error TS2322
-                p={{ t: (v) => v }}
             />,
         );
 
@@ -45,8 +40,6 @@ describe('RunButton', () => {
                 enrichmentStatus={''}
                 id="id"
                 onLaunchEnrichment={onLaunchEnrichment}
-                // @ts-expect-error TS2322
-                p={{ t: (v) => v }}
             />,
         );
 
@@ -73,8 +66,6 @@ describe('RunButton', () => {
                 enrichmentStatus={FINISHED}
                 id="id"
                 onLaunchEnrichment={onLaunchEnrichment}
-                // @ts-expect-error TS2322
-                p={{ t: (v) => v }}
             />,
         );
 
@@ -98,8 +89,6 @@ describe('RunButton', () => {
                 enrichmentStatus={PENDING}
                 id="id"
                 onLaunchEnrichment={onLaunchEnrichment}
-                // @ts-expect-error TS2322
-                p={{ t: (v) => v }}
             />,
         );
 
@@ -120,8 +109,6 @@ describe('RunButton', () => {
                 enrichmentStatus={IN_PROGRESS}
                 id="id"
                 onLaunchEnrichment={onLaunchEnrichment}
-                // @ts-expect-error TS2322
-                p={{ t: (v) => v }}
             />,
         );
 

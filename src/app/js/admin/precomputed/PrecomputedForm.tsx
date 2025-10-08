@@ -1,11 +1,11 @@
-import React, { useCallback, useEffect, useMemo, type MouseEvent } from 'react';
+import React, { useCallback, useEffect, type MouseEvent } from 'react';
 
 import PrecomputedCatalogConnected from './PrecomputedCatalog';
 import PrecomputedPreview from './PrecomputedPreview';
 import PrecomputedFormLogsDialogComponent from './PrecomputedLogsDialog';
 import PrecomputedFormDataDialogComponent from './PrecomputedDataDialog';
 import SourceValueFromColumns from './SourceValueFromColumns';
-import { useForm } from 'react-hook-form';
+import { FormProvider, useForm } from 'react-hook-form';
 import { TextField } from '../../reactHookFormFields/TextField';
 import { type State } from '../reducers';
 
@@ -37,9 +37,6 @@ import { useTranslate } from '../../i18n/I18NContext';
 import { PrecomputedStatus } from './PrecomputedStatus';
 import { RunButton } from './RunButton';
 import type { NewPreComputation } from '../../../../common/types/precomputation';
-
-const required = (text: string) => (value: unknown) =>
-    value && !(value instanceof Array && value.length === 0) ? undefined : text;
 
 export type PrecomputedFormProps = {
     datasetFields: string[];
@@ -88,24 +85,20 @@ export const PrecomputedForm = ({
         TaskStatus | undefined
     >(initialValues?.status);
 
-    const { handleSubmit, getValues, watch, control, setValue } =
-        useForm<NewPreComputation>({
-            defaultValues: {
-                name: initialValues?.name,
-                webServiceUrl: initialValues?.webServiceUrl,
-                sourceColumns: initialValues?.sourceColumns,
-                subPath: initialValues?.subPath,
-            },
-            mode: 'onChange',
-        });
+    const formMethods = useForm<NewPreComputation>({
+        defaultValues: {
+            name: initialValues?.name,
+            webServiceUrl: initialValues?.webServiceUrl,
+            sourceColumns: initialValues?.sourceColumns,
+            subPath: initialValues?.subPath,
+        },
+        mode: 'onChange',
+    });
+
+    const { handleSubmit, getValues, watch, setValue } = formMethods;
 
     const sourceColumns = watch('sourceColumns');
     const webServiceUrl = watch('webServiceUrl');
-
-    const requiredField = useMemo(
-        () => required(translate('error_field_required')),
-        [translate],
-    );
 
     const isEditMode = !!initialValues?._id;
 
@@ -276,205 +269,207 @@ export const PrecomputedForm = ({
     }, [getValues, sourceColumns, webServiceUrl]);
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)}>
-            <Box mt={3} display="flex" gap={6}>
-                <Box sx={{ flex: 2 }}>
-                    <Box>
-                        <Box
-                            display="flex"
-                            justifyContent="space-between"
-                            alignItems="center"
-                            gap={2}
-                            mb={2}
-                        >
-                            <TextField
-                                name="name"
-                                label={translate('fieldName')}
-                                validate={requiredField}
-                                control={control}
-                                fullWidth
-                            />
-                            {isEditMode && (
-                                <RunButton
-                                    variant="outlined"
-                                    handleLaunchPrecomputed={
-                                        handleLaunchPrecomputed
-                                    }
-                                    precomputedStatus={precomputedStatus}
-                                />
-                            )}
-                        </Box>
-                        {isEditMode && (
+        <FormProvider {...formMethods}>
+            <form onSubmit={handleSubmit(onSubmit)}>
+                <Box mt={3} display="flex" gap={6}>
+                    <Box sx={{ flex: 2 }}>
+                        <Box>
                             <Box
                                 display="flex"
                                 justifyContent="space-between"
                                 alignItems="center"
                                 gap={2}
-                                sx={{ marginBottom: 2 }}
+                                mb={2}
                             >
-                                <Typography>
-                                    {translate('precomputed_status')} : &nbsp;
-                                    <PrecomputedStatus
-                                        status={precomputedStatus}
-                                        startedAt={initialValues?.startedAt}
+                                <TextField
+                                    name="name"
+                                    label={translate('fieldName')}
+                                    required
+                                    fullWidth
+                                />
+                                {isEditMode && (
+                                    <RunButton
+                                        variant="outlined"
+                                        handleLaunchPrecomputed={
+                                            handleLaunchPrecomputed
+                                        }
+                                        precomputedStatus={precomputedStatus}
                                     />
-                                </Typography>
-                                <Box>
-                                    <Button
-                                        variant={
-                                            'link' as ButtonProps['variant']
-                                        }
-                                        sx={{
-                                            paddingRight: 0,
-                                            paddingLeft: 0,
-                                            textDecoration: 'underline',
-                                        }}
-                                        onClick={() =>
-                                            setOpenPrecomputedLogs(true)
-                                        }
-                                    >
-                                        {translate('see_logs')}
-                                    </Button>
-                                    <PrecomputedFormLogsDialogComponent
-                                        isOpen={openPrecomputedLogs}
-                                        logs={precomputedLogs}
-                                        handleClose={() =>
-                                            setOpenPrecomputedLogs(false)
-                                        }
-                                    />
-                                    {isEditMode &&
-                                        precomputedStatus === FINISHED && (
-                                            <>
-                                                <Button
-                                                    variant={
-                                                        'link' as ButtonProps['variant']
-                                                    }
-                                                    sx={{
-                                                        marginLeft: 2,
-                                                        paddingRight: 0,
-                                                        paddingLeft: 0,
-                                                        textDecoration:
-                                                            'underline',
-                                                    }}
-                                                    onClick={() =>
-                                                        setOpenPrecomputedData(
-                                                            true,
-                                                        )
-                                                    }
-                                                >
-                                                    {translate('see_data')}
-                                                </Button>
-                                                <PrecomputedFormDataDialogComponent
-                                                    isOpen={openPrecomputedData}
-                                                    precomputedID={
-                                                        initialValues._id
-                                                    }
-                                                    handleClose={() =>
-                                                        setOpenPrecomputedData(
-                                                            false,
-                                                        )
-                                                    }
-                                                />
-                                            </>
-                                        )}
-                                </Box>
+                                )}
                             </Box>
-                        )}
-                    </Box>
+                            {isEditMode && (
+                                <Box
+                                    display="flex"
+                                    justifyContent="space-between"
+                                    alignItems="center"
+                                    gap={2}
+                                    sx={{ marginBottom: 2 }}
+                                >
+                                    <Typography>
+                                        {translate('precomputed_status')} :
+                                        &nbsp;
+                                        <PrecomputedStatus
+                                            status={precomputedStatus}
+                                            startedAt={initialValues?.startedAt}
+                                        />
+                                    </Typography>
+                                    <Box>
+                                        <Button
+                                            variant={
+                                                'link' as ButtonProps['variant']
+                                            }
+                                            sx={{
+                                                paddingRight: 0,
+                                                paddingLeft: 0,
+                                                textDecoration: 'underline',
+                                            }}
+                                            onClick={() =>
+                                                setOpenPrecomputedLogs(true)
+                                            }
+                                        >
+                                            {translate('see_logs')}
+                                        </Button>
+                                        <PrecomputedFormLogsDialogComponent
+                                            isOpen={openPrecomputedLogs}
+                                            logs={precomputedLogs}
+                                            handleClose={() =>
+                                                setOpenPrecomputedLogs(false)
+                                            }
+                                        />
+                                        {isEditMode &&
+                                            precomputedStatus === FINISHED && (
+                                                <>
+                                                    <Button
+                                                        variant={
+                                                            'link' as ButtonProps['variant']
+                                                        }
+                                                        sx={{
+                                                            marginLeft: 2,
+                                                            paddingRight: 0,
+                                                            paddingLeft: 0,
+                                                            textDecoration:
+                                                                'underline',
+                                                        }}
+                                                        onClick={() =>
+                                                            setOpenPrecomputedData(
+                                                                true,
+                                                            )
+                                                        }
+                                                    >
+                                                        {translate('see_data')}
+                                                    </Button>
+                                                    <PrecomputedFormDataDialogComponent
+                                                        isOpen={
+                                                            openPrecomputedData
+                                                        }
+                                                        precomputedID={
+                                                            initialValues._id
+                                                        }
+                                                        handleClose={() =>
+                                                            setOpenPrecomputedData(
+                                                                false,
+                                                            )
+                                                        }
+                                                    />
+                                                </>
+                                            )}
+                                    </Box>
+                                </Box>
+                            )}
+                        </Box>
 
-                    <Box>
+                        <Box>
+                            <Box
+                                display="flex"
+                                justifyContent="space-between"
+                                alignItems="center"
+                                gap={2}
+                                mb={2}
+                            >
+                                <TextField
+                                    name="webServiceUrl"
+                                    label={translate('webServiceUrl')}
+                                    required
+                                    fullWidth
+                                />
+                                <Button
+                                    variant="contained"
+                                    color="primary"
+                                    onClick={() => setOpenCatalog(true)}
+                                    style={{ height: '100%' }}
+                                >
+                                    <ListAltIcon fontSize="medium" />
+                                </Button>
+                                <PrecomputedCatalogConnected
+                                    isOpen={openCatalog}
+                                    handleClose={() => setOpenCatalog(false)}
+                                    selectedWebServiceUrl={webServiceUrl}
+                                    onChange={(value: string) => {
+                                        setValue('webServiceUrl', value);
+                                    }}
+                                />
+                            </Box>
+
+                            <Box display="flex" gap={2} mb={2}>
+                                <SourceValueFromColumns
+                                    name="sourceColumns"
+                                    label={translate('sourceColumns')}
+                                    options={datasetFields}
+                                    required
+                                />
+                            </Box>
+                        </Box>
+
                         <Box
                             display="flex"
-                            justifyContent="space-between"
-                            alignItems="center"
-                            gap={2}
-                            mb={2}
+                            justifyContent={
+                                isEditMode ? 'space-between' : 'flex-end'
+                            }
                         >
-                            <TextField
-                                name="webServiceUrl"
-                                label={translate('webServiceUrl')}
-                                control={control}
-                                validate={requiredField}
-                                fullWidth
-                            />
-                            <Button
-                                variant="contained"
-                                color="primary"
-                                onClick={() => setOpenCatalog(true)}
-                                style={{ height: '100%' }}
-                            >
-                                <ListAltIcon fontSize="medium" />
-                            </Button>
-                            <PrecomputedCatalogConnected
-                                isOpen={openCatalog}
-                                handleClose={() => setOpenCatalog(false)}
-                                selectedWebServiceUrl={webServiceUrl}
-                                onChange={(value: string) => {
-                                    setValue('webServiceUrl', value);
-                                }}
-                            />
-                        </Box>
-
-                        <Box display="flex" gap={2} mb={2}>
-                            <SourceValueFromColumns
-                                name="sourceColumns"
-                                label={translate('sourceColumns')}
-                                options={datasetFields}
-                                control={control}
-                                validate={requiredField}
-                            />
-                        </Box>
-                    </Box>
-
-                    <Box
-                        display="flex"
-                        justifyContent={
-                            isEditMode ? 'space-between' : 'flex-end'
-                        }
-                    >
-                        {isEditMode && (
-                            <Button
-                                variant="contained"
-                                color="warning"
-                                sx={{ height: '100%' }}
-                                onClick={handleDeletePrecomputed}
-                                disabled={isLoading}
-                            >
-                                {translate('delete')}
-                            </Button>
-                        )}
-                        <Box>
-                            <CancelButton
-                                sx={{ height: '100%' }}
-                                onClick={handleBack}
-                            >
-                                {translate('back')}
-                            </CancelButton>
-                            <Button
-                                variant="contained"
-                                color="primary"
-                                sx={{ height: '100%' }}
-                                type="submit"
-                                disabled={
-                                    submitting ||
-                                    isLoading ||
-                                    precomputedStatus === IN_PROGRESS ||
-                                    precomputedStatus === PENDING
-                                }
-                            >
-                                {translate('save')}
-                            </Button>
+                            {isEditMode && (
+                                <Button
+                                    variant="contained"
+                                    color="warning"
+                                    sx={{ height: '100%' }}
+                                    onClick={handleDeletePrecomputed}
+                                    disabled={isLoading}
+                                >
+                                    {translate('delete')}
+                                </Button>
+                            )}
+                            <Box>
+                                <CancelButton
+                                    sx={{ height: '100%' }}
+                                    onClick={handleBack}
+                                >
+                                    {translate('back')}
+                                </CancelButton>
+                                <Button
+                                    variant="contained"
+                                    color="primary"
+                                    sx={{ height: '100%' }}
+                                    type="submit"
+                                    disabled={
+                                        submitting ||
+                                        isLoading ||
+                                        precomputedStatus === IN_PROGRESS ||
+                                        precomputedStatus === PENDING
+                                    }
+                                >
+                                    {translate('save')}
+                                </Button>
+                            </Box>
                         </Box>
                     </Box>
+                    <Box width="25rem">
+                        <PrecomputedPreview
+                            lines={dataPreviewPrecomputed}
+                            sourceColumns={sourceColumns}
+                        />
+                    </Box>
                 </Box>
-                <Box width="25rem">
-                    <PrecomputedPreview
-                        lines={dataPreviewPrecomputed}
-                        sourceColumns={sourceColumns}
-                    />
-                </Box>
-            </Box>
-        </form>
+            </form>
+        </FormProvider>
     );
 };
 

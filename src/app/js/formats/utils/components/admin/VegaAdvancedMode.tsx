@@ -1,5 +1,4 @@
-// @ts-expect-error TS6133
-import React, { lazy, Suspense, useEffect, useMemo, useState } from 'react';
+import { lazy, Suspense, useEffect, useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Tooltip, Box } from '@mui/material';
 import ReportProblemIcon from '@mui/icons-material/ReportProblem';
@@ -35,8 +34,8 @@ const styles = {
     },
 };
 
-const FormSourceCodeField = lazy(
-    () => import('../../../../lib/components/FormSourceCodeField'),
+const SourceCodeField = lazy(
+    () => import('../../../../lib/components/SourceCodeField'),
 );
 
 // @ts-expect-error TS7031
@@ -163,7 +162,7 @@ const VegaAdvancedMode = ({ p, value, onChange, onClear }) => {
                     </p>
                 </div>
                 <Suspense fallback={<Loading>{p.t('loading')}</Loading>}>
-                    <FormSourceCodeField
+                    <SourceCodeField
                         style={{
                             width: '100%',
                             height: '70vh',

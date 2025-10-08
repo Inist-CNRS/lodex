@@ -30,7 +30,7 @@ import {
 import { fromUpload, fromLoaders } from '../selectors';
 import LoaderSelect from './LoaderSelect';
 import { toast } from '../../../../common/tools/toast';
-import FormSourceCodeField from '../../lib/components/FormSourceCodeField';
+import SourceCodeField from '../../lib/components/SourceCodeField';
 import { ConfirmPopup } from '../../lib/components/ConfirmPopup';
 import { useTranslate } from '../../i18n/I18NContext';
 import type { State } from '../reducers';
@@ -377,7 +377,7 @@ export const UploadComponent = ({
                         <p style={styles.formDesc}>
                             {translate('upload_via_text')}
                         </p>
-                        <FormSourceCodeField
+                        <SourceCodeField
                             style={styles.textInput}
                             enableModeSelector
                             mode="json"

@@ -1,13 +1,14 @@
-// @ts-expect-error TS6133
-import React from 'react';
 import PreviewIcon from '@mui/icons-material/Preview';
-import PropTypes from 'prop-types';
 
 import { Box, Typography } from '@mui/material';
 import { useTranslate } from '../../i18n/I18NContext';
 
-// @ts-expect-error TS7031
-const EnrichmentPreview = ({ lines, sourceColumn }) => {
+type EnrichmentPreviewProps = {
+    lines: unknown[];
+    sourceColumn?: string;
+};
+
+const EnrichmentPreview = ({ lines, sourceColumn }: EnrichmentPreviewProps) => {
     const { translate } = useTranslate();
     return (
         <Box
@@ -24,9 +25,7 @@ const EnrichmentPreview = ({ lines, sourceColumn }) => {
                 alignItems="center"
                 mb={4}
             >
-                {/*
-                 // @ts-expect-error TS2769 */}
-                <PreviewIcon mr={1} />
+                <PreviewIcon sx={{ mr: 1 }} />
                 <Typography variant="h6">
                     {translate('value_preview_title')}
                 </Typography>
@@ -37,7 +36,6 @@ const EnrichmentPreview = ({ lines, sourceColumn }) => {
             </Box>
             <Box mb={4}>
                 {lines.length > 0 &&
-                    // @ts-expect-error TS7006
                     lines?.map((line, index) => (
                         <Box key={index} mb={3}>
                             <Typography
@@ -72,11 +70,6 @@ const EnrichmentPreview = ({ lines, sourceColumn }) => {
             </Box>
         </Box>
     );
-};
-
-EnrichmentPreview.propTypes = {
-    lines: PropTypes.array.isRequired,
-    sourceColumn: PropTypes.string,
 };
 
 export default EnrichmentPreview;
