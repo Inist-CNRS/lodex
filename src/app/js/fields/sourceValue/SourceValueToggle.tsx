@@ -20,7 +20,6 @@ import {
 import SourceValueFromSubResource from './SourceValueFromSubResource';
 import SourceValueRoutine from './SourceValueRoutine';
 import { useTranslate } from '../../i18n/I18NContext';
-import { useController, useFormContext } from 'react-hook-form';
 import { useSelector } from 'react-redux';
 import type { Subresource, Transformer, TransformerDraft } from '../types';
 
@@ -228,12 +227,7 @@ export const SourceValueToggle = ({
         (state: any) => state.subresource.subresources,
     ) as Subresource[];
 
-    const { control } = useFormContext();
-    const { field } = useController({
-        name: 'source',
-        control,
-    });
-
+    const [source, setSource] = React.useState(null);
     const [value, setValue] = React.useState(null);
     const [routine, setRoutine] = React.useState(undefined);
     React.useEffect(() => {
@@ -245,7 +239,7 @@ export const SourceValueToggle = ({
             currentTransformers,
             !!selectedSubresourceUri,
         );
-        field.onChange(currentSource);
+        setSource(currentSource);
         setValue(currentValue);
         if (currentRoutine) {
             setRoutine(currentRoutine);
@@ -356,7 +350,7 @@ export const SourceValueToggle = ({
 
         const transformersFromStatus = TRANSFORMERS_FORM_STATUS.get(newSource);
         updateDefaultValueTransformers(
-            field.value,
+            source,
             currentTransformers,
             transformersFromStatus,
         );
@@ -366,7 +360,7 @@ export const SourceValueToggle = ({
         newTransformers: TransformerDraft[],
     ) => {
         updateDefaultValueTransformers(
-            field.value,
+            source,
             currentTransformers,
             newTransformers,
         );
@@ -378,7 +372,7 @@ export const SourceValueToggle = ({
                 {translate('source_value')}
             </Typography>
             <ToggleButtonGroup
-                value={field.value}
+                value={source}
                 exclusive
                 onChange={handleChange}
                 aria-label="Choix de la valeur"
@@ -433,7 +427,7 @@ export const SourceValueToggle = ({
                 )}
             </ToggleButtonGroup>
 
-            {field.value === 'arbitrary' && (
+            {source === 'arbitrary' && (
                 <SourceValueArbitrary
                     updateDefaultValueTransformers={
                         handleDefaultValueTransformersUpdate
@@ -442,7 +436,7 @@ export const SourceValueToggle = ({
                 />
             )}
 
-            {field.value === 'routine' && (
+            {source === 'routine' && (
                 <SourceValueRoutine
                     updateDefaultValueTransformers={
                         handleDefaultValueTransformersUpdate
@@ -451,7 +445,7 @@ export const SourceValueToggle = ({
                 />
             )}
 
-            {field.value === 'precomputed' && (
+            {source === 'precomputed' && (
                 <SourceValuePrecomputed
                     updateDefaultValueTransformers={
                         handleDefaultValueTransformersUpdate
@@ -461,7 +455,7 @@ export const SourceValueToggle = ({
                 />
             )}
 
-            {field.value === 'fromColumns' && (
+            {source === 'fromColumns' && (
                 <SourceValueFromColumns
                     updateDefaultValueTransformers={
                         handleDefaultValueTransformersUpdate
@@ -470,7 +464,7 @@ export const SourceValueToggle = ({
                 />
             )}
 
-            {field.value === 'fromColumnsForSubRessource' && (
+            {source === 'fromColumnsForSubRessource' && (
                 <SourceValueFromColumnsForSubResource
                     updateDefaultValueTransformers={
                         handleDefaultValueTransformersUpdate
@@ -480,7 +474,7 @@ export const SourceValueToggle = ({
                 />
             )}
 
-            {field.value === 'fromSubresource' && (
+            {source === 'fromSubresource' && (
                 <SourceValueFromSubResource
                     updateDefaultValueTransformers={
                         handleDefaultValueTransformersUpdate
