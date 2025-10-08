@@ -23,3 +23,7 @@ export interface TransformerDraft {
 export interface Transformer extends TransformerDraft {
     id: string;
 }
+
+export interface PreviewLine {
+    [fieldName: string]: string;
+}

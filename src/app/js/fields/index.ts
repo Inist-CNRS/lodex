@@ -15,11 +15,7 @@ import fieldSelectors, {
 export const selectors = fieldSelectors;
 export const NEW_CHARACTERISTIC_FORM_NAME = formName;
 
-/**
- * TODO remove
- * @deprecated
- */
-export const FIELD_FORM_NAME = 'field';
+export const LODEX_FIELD_FORM_CHANGE = 'LODEX_FIELD_FORM_CHANGE';
 
 export const ADD_FIELD = 'ADD_FIELD';
 export const LOAD_FIELD = 'LOAD_FIELD';
@@ -62,6 +58,8 @@ export const ADD_CHARACTERISTIC_OPEN = 'ADD_CHARACTERISTIC_OPEN';
 export const ADD_CHARACTERISTIC_SUCCESS = 'ADD_CHARACTERISTIC_SUCCESS';
 export const ADD_CHARACTERISTIC_ERROR = 'ADD_CHARACTERISTIC_ERROR';
 export const ADD_CHARACTERISTIC_CANCEL = 'ADD_CHARACTERISTIC_CANCEL';
+
+export const lodexFieldFormChange = createAction(LODEX_FIELD_FORM_CHANGE);
 
 export const addField = createAction(ADD_FIELD);
 export const loadField = createAction(LOAD_FIELD);
