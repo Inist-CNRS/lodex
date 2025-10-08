@@ -23,13 +23,14 @@ describe('linkDataset', () => {
     });
 
     it('should return null when no data', (done) => {
-        from([]).pipe(
-            ezs('linkDataset', {
-                uri: 'http://uri',
-                scheme: 'http://scheme',
-                datasetClass: 'DataSet',
-            }),
-        )
+        from([])
+            .pipe(
+                ezs('linkDataset', {
+                    uri: 'http://uri',
+                    scheme: 'http://scheme',
+                    datasetClass: 'DataSet',
+                }),
+            )
             .on('data', () => {
                 done(new Error('should return null'));
             })

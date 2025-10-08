@@ -59,7 +59,7 @@ const fields = [
     },
 ];
 
-test.skip('export single resource', done => {
+test.skip('export single resource', (done) => {
     let outputString = '';
     from([
         {
@@ -75,7 +75,7 @@ test.skip('export single resource', done => {
                 { localConfig: {}, fields },
             ),
         )
-        .on('data', data => {
+        .on('data', (data) => {
             if (data) outputString += data;
         })
         .on('end', () => {

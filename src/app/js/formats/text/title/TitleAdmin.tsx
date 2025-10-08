@@ -1,0 +1,90 @@
+// @ts-expect-error TS6133
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { MenuItem, TextField } from '@mui/material';
+import { translate } from '../../../i18n/I18NContext';
+
+import { polyglot as polyglotPropTypes } from '../../../propTypes';
+import updateAdminArgs from '../../utils/updateAdminArgs';
+import ColorPickerParamsAdmin from '../../utils/components/admin/ColorPickerParamsAdmin';
+import { MONOCHROMATIC_DEFAULT_COLORSET } from '../../utils/colorUtils';
+import { FormatDefaultParamsFieldSet } from '../../utils/components/field-set/FormatFieldSets';
+import FormatGroupedFieldSet from '../../utils/components/field-set/FormatGroupedFieldSet';
+
+export const defaultArgs = {
+    level: 1,
+    colors: MONOCHROMATIC_DEFAULT_COLORSET,
+};
+
+class TitleAdmin extends Component {
+    static propTypes = {
+        args: PropTypes.shape({
+            level: PropTypes.number,
+            colors: PropTypes.string,
+        }),
+        onChange: PropTypes.func.isRequired,
+        p: polyglotPropTypes.isRequired,
+    };
+
+    static defaultProps = {
+        args: defaultArgs,
+    };
+
+    // @ts-expect-error TS7006
+    constructor(props) {
+        super(props);
+        this.handleColors = this.handleColors.bind(this);
+        this.state = {
+            // @ts-expect-error TS2339
+            colors: this.props.args.colors || defaultArgs.colors,
+        };
+    }
+
+    // @ts-expect-error TS7006
+    handleLevel = (level) => {
+        // @ts-expect-error TS2339
+        this.props.onChange({ level });
+    };
+
+    // @ts-expect-error TS7006
+    handleColors(colors) {
+        updateAdminArgs('colors', colors.split(' ')[0], this.props);
+    }
+
+    render() {
+        const {
+            // @ts-expect-error TS2339
+            p: polyglot,
+            // @ts-expect-error TS2339
+            args: { level },
+        } = this.props;
+
+        return (
+            <FormatGroupedFieldSet>
+                <FormatDefaultParamsFieldSet defaultExpanded>
+                    <TextField
+                        fullWidth
+                        select
+                        label={polyglot.t('list_format_select_level')}
+                        onChange={(e) => this.handleLevel(e.target.value)}
+                        value={level}
+                    >
+                        <MenuItem value={1}>{polyglot.t('level1')}</MenuItem>
+                        <MenuItem value={2}>{polyglot.t('level2')}</MenuItem>
+                        <MenuItem value={3}>{polyglot.t('level3')}</MenuItem>
+                        <MenuItem value={4}>{polyglot.t('level4')}</MenuItem>
+                    </TextField>
+                    <ColorPickerParamsAdmin
+                        // @ts-expect-error TS2339
+                        colors={this.state.colors || defaultArgs.colors}
+                        onChange={this.handleColors}
+                        polyglot={polyglot}
+                        monochromatic={true}
+                    />
+                </FormatDefaultParamsFieldSet>
+            </FormatGroupedFieldSet>
+        );
+    }
+}
+
+export default translate(TitleAdmin);

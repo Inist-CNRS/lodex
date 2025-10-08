@@ -139,12 +139,12 @@ function onFile(filePromises, file, stream, info) {
             readStream.transferEncoding = readStream.encoding = info.encoding;
             readStream.mimeType = readStream.mime = info.mimeType;
             resolve(readStream);
-          })
+          }),
       )
       .on('error', (err) => {
         stream.resume().on('error', reject);
         reject(err);
-      })
+      }),
   );
   filePromises.push(filePromise);
 }

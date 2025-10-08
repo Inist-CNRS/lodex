@@ -22,7 +22,7 @@ const server = http
         function (error) {
           console.log(error);
           res.end('Something broke!! ');
-        }
+        },
       );
     } else if (req.method === 'GET') {
       res.writeHead(200, { Connection: 'close' });

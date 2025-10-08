@@ -6,7 +6,7 @@ const from = require('from');
 // 1. remove this test
 // 2. mock the API
 describe.skip('corpus.ini', () => {
-    it('should parse a .corpus', done => {
+    it('should parse a .corpus', (done) => {
         const res = [];
         const expected = [
             {
@@ -40,8 +40,7 @@ describe.skip('corpus.ini', () => {
                         extension: 'tei',
                         mimetype: 'application/tei+xml',
                         original: false,
-                        uri:
-                            'https://api.istex.fr/document/F6CB7249E90BD96D5F7E3C4E80CC1C3FEE4FF483/enrichments/multicat',
+                        uri: 'https://api.istex.fr/document/F6CB7249E90BD96D5F7E3C4E80CC1C3FEE4FF483/enrichments/multicat',
                     },
                 ],
                 'enrichments/teeft': [
@@ -49,8 +48,7 @@ describe.skip('corpus.ini', () => {
                         extension: 'tei',
                         mimetype: 'application/tei+xml',
                         original: false,
-                        uri:
-                            'https://api.istex.fr/document/F6CB7249E90BD96D5F7E3C4E80CC1C3FEE4FF483/enrichments/teeft',
+                        uri: 'https://api.istex.fr/document/F6CB7249E90BD96D5F7E3C4E80CC1C3FEE4FF483/enrichments/teeft',
                     },
                 ],
                 'enrichments/unitex': [
@@ -58,8 +56,7 @@ describe.skip('corpus.ini', () => {
                         extension: 'tei',
                         mimetype: 'application/tei+xml',
                         original: false,
-                        uri:
-                            'https://api.istex.fr/document/F6CB7249E90BD96D5F7E3C4E80CC1C3FEE4FF483/enrichments/unitex',
+                        uri: 'https://api.istex.fr/document/F6CB7249E90BD96D5F7E3C4E80CC1C3FEE4FF483/enrichments/unitex',
                     },
                 ],
                 fulltext: [
@@ -67,29 +64,25 @@ describe.skip('corpus.ini', () => {
                         extension: 'pdf',
                         mimetype: 'application/pdf',
                         original: true,
-                        uri:
-                            'https://api.istex.fr/document/F6CB7249E90BD96D5F7E3C4E80CC1C3FEE4FF483/fulltext/pdf',
+                        uri: 'https://api.istex.fr/document/F6CB7249E90BD96D5F7E3C4E80CC1C3FEE4FF483/fulltext/pdf',
                     },
                     {
                         extension: 'zip',
                         mimetype: 'application/zip',
                         original: false,
-                        uri:
-                            'https://api.istex.fr/document/F6CB7249E90BD96D5F7E3C4E80CC1C3FEE4FF483/fulltext/zip',
+                        uri: 'https://api.istex.fr/document/F6CB7249E90BD96D5F7E3C4E80CC1C3FEE4FF483/fulltext/zip',
                     },
                     {
                         extension: 'tei',
                         mimetype: 'application/tei+xml',
                         original: false,
-                        uri:
-                            'https://api.istex.fr/document/F6CB7249E90BD96D5F7E3C4E80CC1C3FEE4FF483/fulltext/tei',
+                        uri: 'https://api.istex.fr/document/F6CB7249E90BD96D5F7E3C4E80CC1C3FEE4FF483/fulltext/tei',
                     },
                     {
                         extension: 'txt',
                         mimetype: 'text/plain',
                         original: false,
-                        uri:
-                            'https://api.istex.fr/document/F6CB7249E90BD96D5F7E3C4E80CC1C3FEE4FF483/fulltext/txt',
+                        uri: 'https://api.istex.fr/document/F6CB7249E90BD96D5F7E3C4E80CC1C3FEE4FF483/fulltext/txt',
                     },
                 ],
                 genre: ['research-article'],
@@ -149,22 +142,19 @@ describe.skip('corpus.ini', () => {
                         extension: 'xml',
                         mimetype: 'application/xml',
                         original: true,
-                        uri:
-                            'https://api.istex.fr/document/F6CB7249E90BD96D5F7E3C4E80CC1C3FEE4FF483/metadata/xml',
+                        uri: 'https://api.istex.fr/document/F6CB7249E90BD96D5F7E3C4E80CC1C3FEE4FF483/metadata/xml',
                     },
                     {
                         extension: 'mods',
                         mimetype: 'application/mods+xml',
                         original: false,
-                        uri:
-                            'https://api.istex.fr/document/F6CB7249E90BD96D5F7E3C4E80CC1C3FEE4FF483/metadata/mods',
+                        uri: 'https://api.istex.fr/document/F6CB7249E90BD96D5F7E3C4E80CC1C3FEE4FF483/metadata/mods',
                     },
                     {
                         extension: 'json',
                         mimetype: 'application/json',
                         original: false,
-                        uri:
-                            'https://api.istex.fr/document/F6CB7249E90BD96D5F7E3C4E80CC1C3FEE4FF483/metadata/json',
+                        uri: 'https://api.istex.fr/document/F6CB7249E90BD96D5F7E3C4E80CC1C3FEE4FF483/metadata/json',
                     },
                 ],
                 'namedEntities/unitex/bibl': [],
@@ -265,15 +255,13 @@ describe.skip('corpus.ini', () => {
                     {
                         host: {
                             author: [],
-                            title:
-                                'From the "Address of the General Couneil of the International Working Man\'s Association on the Civil War in France", in Karl Marx, The Civil War in France (Peking: Foreign Languages Press, 1966), 99.',
+                            title: 'From the "Address of the General Couneil of the International Working Man\'s Association on the Civil War in France", in Karl Marx, The Civil War in France (Peking: Foreign Languages Press, 1966), 99.',
                         },
                     },
                     {
                         host: {
                             author: [],
-                            title:
-                                "F. Engels, Introduction to The Civil War in France, 14. By 1891, Engels goes on to argue, the Proudhonist idea of a decentralized state and a federation of local working men's associations survived only among the \"'radical' bourgeoisie\". It has, of course, been argued many times that, if this was so, it was because the defeat of the Commune demonstrated the impractibility of such a scheme and not, as Engels claimed, because the Commune was, in effect, committed to the idea of the unitary state.",
+                            title: "F. Engels, Introduction to The Civil War in France, 14. By 1891, Engels goes on to argue, the Proudhonist idea of a decentralized state and a federation of local working men's associations survived only among the \"'radical' bourgeoisie\". It has, of course, been argued many times that, if this was so, it was because the defeat of the Commune demonstrated the impractibility of such a scheme and not, as Engels claimed, because the Commune was, in effect, committed to the idea of the unitary state.",
                         },
                     },
                     {
@@ -285,15 +273,13 @@ describe.skip('corpus.ini', () => {
                     {
                         host: {
                             author: [],
-                            title:
-                                'For a thorough examination of these questions, see J. Rougerie, Procès des Communards',
+                            title: 'For a thorough examination of these questions, see J. Rougerie, Procès des Communards',
                         },
                     },
                     {
                         host: {
                             author: [],
-                            title:
-                                'Quoted by Paul Lidsky from Le Temps 3 October 1871, 58.',
+                            title: 'Quoted by Paul Lidsky from Le Temps 3 October 1871, 58.',
                         },
                     },
                     {
@@ -315,8 +301,7 @@ describe.skip('corpus.ini', () => {
                     {
                         host: {
                             author: [],
-                            title:
-                                "Zola's Germinal: A critical study of its primary sources",
+                            title: "Zola's Germinal: A critical study of its primary sources",
                         },
                     },
                     {
@@ -354,8 +339,7 @@ describe.skip('corpus.ini', () => {
                             pages: {
                                 first: '621',
                             },
-                            title:
-                                'Essay on "Dickens romancier" in the Club Diderot edition',
+                            title: 'Essay on "Dickens romancier" in the Club Diderot edition',
                         },
                     },
                     {
@@ -385,8 +369,7 @@ describe.skip('corpus.ini', () => {
                     {
                         host: {
                             author: [],
-                            title:
-                                'I am thinking especially of Montaigne\'s eye-witness account of the lynching of the Lieutenant Governor of Bordeaux in 1548 in "Divers evenemens du mesme conseil" (1, XXIV), what he tells us of recent local atrocities in "De l\'expérience" (iii, XIII) and his account of the motivation of the combatants in the religious wars in the opening pages of "L\'Apologie de Raymond Sebond" (ii, XII).',
+                            title: 'I am thinking especially of Montaigne\'s eye-witness account of the lynching of the Lieutenant Governor of Bordeaux in 1548 in "Divers evenemens du mesme conseil" (1, XXIV), what he tells us of recent local atrocities in "De l\'expérience" (iii, XIII) and his account of the motivation of the combatants in the religious wars in the opening pages of "L\'Apologie de Raymond Sebond" (ii, XII).',
                         },
                     },
                     {
@@ -416,8 +399,7 @@ describe.skip('corpus.ini', () => {
                         },
                     },
                 ],
-                title:
-                    'Maupassant, Zola, Jules Vallès and the Paris Commune of 1871',
+                title: 'Maupassant, Zola, Jules Vallès and the Paris Commune of 1871',
                 versionInfo: '1',
             },
         ];
@@ -441,7 +423,7 @@ id F6CB7249E90BD96D5F7E3C4E80CC1C3FEE4FF483
 `,
         ])
             .pipe(ezs('delegate', { file: __dirname + '/corpus.ini' }))
-            .on('data', chunk => {
+            .on('data', (chunk) => {
                 res.push(chunk);
             })
             .on('end', () => {

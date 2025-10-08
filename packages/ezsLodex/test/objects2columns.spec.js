@@ -25,10 +25,12 @@ describe('objects2columns', () => {
     });
 
     it('should return when columns non object', (done) => {
-        const stream = from([{
-            truc: 'anything else',
-            bidule: 1,
-        }]).pipe(ezs('objects2columns'));
+        const stream = from([
+            {
+                truc: 'anything else',
+                bidule: 1,
+            },
+        ]).pipe(ezs('objects2columns'));
         testOne(
             stream,
             (output) => {

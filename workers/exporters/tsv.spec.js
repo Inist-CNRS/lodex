@@ -3,7 +3,7 @@ const ezs = require('@ezs/core');
 
 ezs.use(require('@ezs/basics'));
 
-test.skip('export one resource in a two-lines TSV', done => {
+test.skip('export one resource in a two-lines TSV', (done) => {
     let outputString = '';
     from([
         {
@@ -12,7 +12,7 @@ test.skip('export one resource in a two-lines TSV', done => {
         },
     ])
         .pipe(ezs('delegate', { file: __dirname + '/tsv.ini' }))
-        .on('data', data => {
+        .on('data', (data) => {
             if (data) outputString += data;
         })
         .on('end', () => {
@@ -28,7 +28,7 @@ test.skip('export one resource in a two-lines TSV', done => {
         .on('error', done);
 });
 
-test.skip('export two resources in a three-lines TSV', done => {
+test.skip('export two resources in a three-lines TSV', (done) => {
     let outputString = '';
     from([
         {
@@ -41,7 +41,7 @@ test.skip('export two resources in a three-lines TSV', done => {
         },
     ])
         .pipe(ezs('delegate', { file: __dirname + '/tsv.ini' }))
-        .on('data', data => {
+        .on('data', (data) => {
             if (data) outputString += data;
         })
         .on('end', () => {
@@ -58,7 +58,7 @@ test.skip('export two resources in a three-lines TSV', done => {
         .on('error', done);
 });
 
-test.skip('export in TSV resources containing quotes', done => {
+test.skip('export in TSV resources containing quotes', (done) => {
     let outputString = '';
     from([
         {
@@ -71,7 +71,7 @@ test.skip('export in TSV resources containing quotes', done => {
         },
     ])
         .pipe(ezs('delegate', { file: __dirname + '/tsv.ini' }))
-        .on('data', data => {
+        .on('data', (data) => {
             if (data) outputString += data;
         })
         .on('end', () => {
@@ -88,7 +88,7 @@ test.skip('export in TSV resources containing quotes', done => {
         .on('error', done);
 });
 
-test.skip('export in TSV resources containing tabulation', done => {
+test.skip('export in TSV resources containing tabulation', (done) => {
     let outputString = '';
     from([
         {
@@ -101,7 +101,7 @@ test.skip('export in TSV resources containing tabulation', done => {
         },
     ])
         .pipe(ezs('delegate', { file: __dirname + '/tsv.ini' }))
-        .on('data', data => {
+        .on('data', (data) => {
             if (data) outputString += data;
         })
         .on('end', () => {
@@ -118,7 +118,7 @@ test.skip('export in TSV resources containing tabulation', done => {
         .on('error', done);
 });
 
-test.skip('export TSV with labels in header', done => {
+test.skip('export TSV with labels in header', (done) => {
     let outputString = '';
     from([
         {
@@ -137,7 +137,7 @@ test.skip('export TSV with labels in header', done => {
                 { fields: [{ name: 'AbCd', label: 'Title' }] },
             ),
         )
-        .on('data', data => {
+        .on('data', (data) => {
             if (data) outputString += data;
         })
         .on('end', () => {

@@ -33,7 +33,7 @@ export default function extractIstexQuery(data, feed) {
         return feed.close();
     }
 
-    const fields = /** @type Field[] */(this.getParam('fields', []));
+    const fields = /** @type Field[] */ (this.getParam('fields', []));
 
     const isIstexQuery = (field) => {
         const istexQuerySchemes = [
@@ -61,4 +61,4 @@ export default function extractIstexQuery(data, feed) {
         },
         content: data[propertyName],
     });
-};
+}

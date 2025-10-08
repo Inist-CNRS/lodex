@@ -54,8 +54,8 @@ build:
 ## Deploy =================================================================
 
 publish: build  ## publish version to docker hub
-	docker build -t cnrsinist/lodex:15.9.12 --build-arg http_proxy --build-arg https_proxy .
-	docker push cnrsinist/lodex:15.9.12
+	docker build -t cnrsinist/lodex:16.0.1 --build-arg http_proxy --build-arg https_proxy .
+	docker push cnrsinist/lodex:16.0.1
 
 ## Development =================================================================
 
@@ -65,9 +65,6 @@ start-dev: run-dev ## Start the project (alias of make run-dev)
 
 build-app:
 	docker compose -f docker-compose.dev.yml run --no-deps --rm node npm run build
-
-analyze-code: ## Generate statistics about the bundle. Usage: make analyze-code.
-	docker compose -f docker-compose.dev.yml run --no-deps --rm node npm run analyze
 
 npm: ## allow to run dockerized npm command eg make npm 'install koa --save'
 	docker compose -f docker-compose.dev.yml run --no-deps --rm node npm $(COMMAND_ARGS)
