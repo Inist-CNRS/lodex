@@ -26,7 +26,7 @@ export const DeleteSubresourceButton = ({
                     </DialogTitle>
                     <DialogActions>
                         <CancelButton onClick={() => setShowDeletePopup(false)}>
-                            {translate('Cancel')}
+                            {translate('cancel')}
                         </CancelButton>
                         <Button
                             color="warning"

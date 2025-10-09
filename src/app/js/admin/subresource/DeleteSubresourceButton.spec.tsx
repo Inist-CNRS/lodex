@@ -1,76 +1,47 @@
-// @ts-expect-error TS6133
-import React from 'react';
-import { shallow } from 'enzyme';
-import { Button, Dialog } from '@mui/material';
-
-import { DeleteSubresourceButtonComponent as DeleteSubresourceButton } from './DeleteSubresourceButton';
+import { DeleteSubresourceButton } from './DeleteSubresourceButton';
+import { act, render, within } from '../../../../test-utils';
 
 describe('<DeleteSubresourceButton />', () => {
-    it('should call setShowDeletePopup with true on button click', () => {
+    it('should display a dialog on button click and call onClick when the dialog is confirmed', async () => {
         const onClick = jest.fn();
-        const setShowDeletePopup = jest.fn();
-        const showDeletePopup = false;
 
-        const wrapper = shallow(
-            // @ts-expect-error TS2769
-            <DeleteSubresourceButton
-                onClick={onClick}
-                setShowDeletePopup={setShowDeletePopup}
-                showDeletePopup={showDeletePopup}
-                // @ts-expect-error TS2322
-                p={{ t: (key) => key }}
-            />,
+        const screen = render(<DeleteSubresourceButton onClick={onClick} />);
+
+        expect(screen.getByText('delete')).toBeInTheDocument();
+        expect(
+            screen.queryByText('confirm_delete_subresource'),
+        ).not.toBeInTheDocument();
+        act(() => screen.getByText('delete').click());
+        expect(
+            screen.getByText('confirm_delete_subresource'),
+        ).toBeInTheDocument();
+        expect(onClick).not.toHaveBeenCalled();
+
+        act(() =>
+            within(screen.getByRole('dialog')).getByText('delete').click(),
         );
-
-        expect(wrapper.find(Button).exists()).toBeTruthy();
-        wrapper.find(Button).simulate('click');
-
-        expect(setShowDeletePopup).toHaveBeenCalledWith(true);
-    });
-
-    it('should show Dialog if showDeletePopup is truthy', () => {
-        const onClick = jest.fn();
-        const setShowDeletePopup = jest.fn();
-        const showDeletePopup = true;
-
-        const wrapper = shallow(
-            // @ts-expect-error TS2769
-            <DeleteSubresourceButton
-                onClick={onClick}
-                setShowDeletePopup={setShowDeletePopup}
-                showDeletePopup={showDeletePopup}
-                // @ts-expect-error TS2322
-                p={{ t: (key) => key }}
-            />,
-        );
-
-        expect(wrapper.find(Dialog).exists()).toBeTruthy();
-    });
-
-    it('should call onClick on Dialog button click', () => {
-        const onClick = jest.fn();
-        const setShowDeletePopup = jest.fn();
-        const showDeletePopup = true;
-
-        const wrapper = shallow(
-            // @ts-expect-error TS2769
-            <DeleteSubresourceButton
-                onClick={onClick}
-                setShowDeletePopup={setShowDeletePopup}
-                showDeletePopup={showDeletePopup}
-                // @ts-expect-error TS2322
-                p={{ t: (key) => key }}
-            />,
-        );
-
-        const dialog = wrapper.find(Dialog);
-        const confirmButton = dialog.findWhere((node) => {
-            return node.type() === Button && node.text() === 'delete';
-        });
-
-        expect(confirmButton.exists()).toBeTruthy();
-        confirmButton.simulate('click');
 
         expect(onClick).toHaveBeenCalledTimes(1);
+    });
+    it('should display a dialog on button click and do not call onClick when the dialog is cancelled', async () => {
+        const onClick = jest.fn();
+
+        const screen = render(<DeleteSubresourceButton onClick={onClick} />);
+
+        expect(screen.getByText('delete')).toBeInTheDocument();
+        expect(
+            screen.queryByText('confirm_delete_subresource'),
+        ).not.toBeInTheDocument();
+        act(() => screen.getByText('delete').click());
+        expect(
+            screen.getByText('confirm_delete_subresource'),
+        ).toBeInTheDocument();
+        expect(onClick).not.toHaveBeenCalled();
+
+        act(() =>
+            within(screen.getByRole('dialog')).getByText('cancel').click(),
+        );
+
+        expect(onClick).not.toHaveBeenCalled();
     });
 });
