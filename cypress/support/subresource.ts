@@ -4,14 +4,6 @@ const defaultSubresource = {
     identifier: 'id',
 };
 
-export const fillSubcategoryFormAndSubmit = (values) => {
-    Object.keys(values).forEach((key) => {
-        cy.get(`[aria-label="input-${key}"]`).type(values[key]);
-    });
-
-    cy.get('button[type="submit"]').click({ force: true });
-};
-
 export const addField = (name, label, save = true) => {
     cy.get('.field-grid').should('exist');
     cy.contains('button', 'New field').click();
@@ -41,7 +33,14 @@ export const createSubresource = (subresource = defaultSubresource) => {
 
     cy.url().should('contain', '/display/document/subresource/add');
 
-    fillSubcategoryFormAndSubmit(subresource);
+    // fillSubcategoryFormAndSubmit(subresource);
+    cy.findByLabelText('Name *').clear().type(subresource.name);
+    cy.findByLabelText('Path').clear().type(subresource.path);
+    cy.findByRole('option', { name: subresource.path }).click();
+    cy.findByLabelText('Identifier').clear().type(subresource.identifier);
+    cy.findByRole('option', { name: subresource.identifier }).click();
+
+    cy.get('button[type="submit"]').click({ force: true });
 
     cy.get('.sidebar').contains('Subresources').should('be.visible');
 
