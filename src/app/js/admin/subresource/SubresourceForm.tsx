@@ -1,7 +1,7 @@
-import { useMemo, useCallback } from 'react';
+import { useMemo, useCallback, useEffect } from 'react';
 import compose from 'recompose/compose';
 
-import { connect, useSelector } from 'react-redux';
+import { connect } from 'react-redux';
 import { fromParsing, fromSubresources } from '../selectors';
 import { Box, Button } from '@mui/material';
 import CancelButton from '../../lib/components/CancelButton';
@@ -12,6 +12,7 @@ import { TextField } from '../../reactHookFormFields/TextField';
 import { Autocomplete } from '../../reactHookFormFields/AutoComplete';
 import { FormProvider, useForm } from 'react-hook-form';
 import type { SubResource } from '.';
+import { usePrevious } from 'react-use';
 
 export const getKeys = (value: unknown): string[] => {
     if (!value || (Array.isArray(value) && value.length === 0)) {
@@ -42,17 +43,17 @@ export type SubresourceFormProps = {
     initialValues?: SubResource;
 };
 
-const SubresourceFormComponent = ({
+export const SubresourceFormComponent = ({
     onSubmit,
     additionnalActions,
     datasetFields,
     excerptLines,
     initialValues,
+    subresources,
 }: SubresourceFormProps) => {
-    const subresources = useSelector(fromSubresources.getSubresources);
-
     const formMethods = useForm<SubResource>({
         mode: 'onChange',
+        reValidateMode: 'onChange',
         defaultValues: initialValues,
     });
     const { handleSubmit, setValue, formState, watch } = formMethods;
@@ -72,11 +73,22 @@ const SubresourceFormComponent = ({
     };
     const validatePath = useCallback(
         (path: string) =>
-            path && subresources.map((sr) => sr.path).includes(path)
+            path &&
+            subresources
+                .filter(({ _id }) => _id !== initialValues?._id)
+                .map((sr) => sr.path)
+                .includes(path)
                 ? translate('subresource_path_validation_error')
                 : undefined,
-        [subresources, translate],
+        [initialValues?._id, subresources, translate],
     );
+    const prevPathSelected = usePrevious(pathSelected);
+
+    useEffect(() => {
+        if (prevPathSelected && pathSelected !== prevPathSelected) {
+            setValue('identifier', null);
+        }
+    }, [pathSelected, setValue, prevPathSelected]);
 
     return (
         <FormProvider {...formMethods}>
@@ -89,7 +101,7 @@ const SubresourceFormComponent = ({
                             autoFocus
                             label={translate('subresource_name')}
                             fullWidth
-                            aria-label="input-name"
+                            required
                         />
 
                         <Autocomplete
@@ -98,7 +110,7 @@ const SubresourceFormComponent = ({
                             className="path"
                             options={datasetFields}
                             clearIdentifier={() => {
-                                setValue('identifier', '');
+                                setValue('identifier', null);
                             }}
                             validate={validatePath}
                             variant="outlined"
@@ -137,9 +149,7 @@ const SubresourceFormComponent = ({
                                 variant="contained"
                                 color="primary"
                                 type="submit"
-                                disabled={
-                                    formState.isSubmitting || !formState.isValid
-                                }
+                                disabled={!formState.isValid}
                             >
                                 {translate('save')}
                             </Button>
