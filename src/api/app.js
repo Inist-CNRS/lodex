@@ -1,3 +1,4 @@
+
 import Koa from 'koa';
 import { activateBullDashboard, timeout } from '../../config.json';
 import mount from 'koa-mount';
@@ -14,8 +15,7 @@ import indexSearchableFields from './services/indexSearchableFields';
 import { createWorkerQueue, workerQueues } from './workers';
 
 import progress from './services/progress';
-import Meter from '@uswitch/koa-prometheus';
-import MeterConfig from '@uswitch/koa-prometheus/build/koa-prometheus.defaults.json';
+import Meter, { collectMetrics } from '@uswitch/koa-prometheus';
 import tracer, { eventTrace, eventError } from '@uswitch/koa-tracer';
 import access, { eventAccess } from '@uswitch/koa-access';
 import getLogger from './services/logger';
@@ -25,7 +25,7 @@ import bullBoard from './bullBoard';
 import { DEFAULT_TENANT } from '../common/tools/tenantTools';
 import { insertConfigTenant } from './services/configTenant';
 
-const meters = Meter(MeterConfig, { loadStandards: true, loadDefaults: true });
+const meters = Meter([], { loadStandards: true, loadDefaults: true });
 
 // set timeout as ezs server (see workers/index.js)
 ezs.settings.feed.timeout = Number(timeout) || 120000;
@@ -35,21 +35,27 @@ ezs.settings.feed.timeout = Number(timeout) || 120000;
 // https://github.com/ljharb/qs#parsing-arrays
 const app = koaQs(new Koa(), 'extended', { arrayLimit: 1000 });
 
+
 // Prometheus metrics
-app.use(meters.middleware); // The middleware that makes the meters available
+// to enable koa-prometheus log process.env.DEBUG_KOA = true;
+app.use(tracer());
+app.use(access(['id', 'trace', 'errors']));
+collectMetrics({ prefix : '' }); // no prefix to be compatible with standard dashboards
+app.use(async (ctx, next) => {
+    ctx._matchedRoute = ctx.originalUrl; // _matchedRoute is used by koa-prometheus
+    await next();
+});
 app.use(
     route.get('/metrics', async (ctx) => {
         ctx.body = await meters.print();
     }),
 );
+app.use(meters.middleware); // The middleware that makes the meters available
 
-app.use(tracer());
-app.use(access());
-app.on(eventAccess, (ctx) => {
-    meters.automark(ctx);
-});
-app.on(eventTrace, (ctx) => meters.automark(ctx));
-app.on(eventError, () => meters.errorRate.mark(1));
+app.on(eventAccess, (ctx, extra) => meters.automark({ ...ctx, ...extra }));
+app.on(eventTrace, (ctx, extra) => meters.automark({ ...ctx, ...extra }));
+app.on(eventError, () => meters.koaErrorsPerSecond.mark(1));
+
 
 app.use(cors({ credentials: true }));
 
