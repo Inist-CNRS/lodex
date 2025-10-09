@@ -1,13 +1,13 @@
-// @ts-expect-error TS6133
-import React from 'react';
-import { withRouter } from 'react-router';
+import { useParams, withRouter } from 'react-router';
 
 import { FieldsEdit } from '../field/FieldsEdit';
 import { EditSubresourceForm } from './EditSubresourceForm';
 
-// @ts-expect-error TS7031
-const EditSubresourceComponent = withRouter(({ match, filter }) => {
-    const subresourceId = match.params.subresourceId;
+export const EditSubresource = withRouter(() => {
+    const { filter, subresourceId } = useParams<{
+        filter: string;
+        subresourceId: string;
+    }>();
 
     return (
         <>
@@ -18,6 +18,3 @@ const EditSubresourceComponent = withRouter(({ match, filter }) => {
         </>
     );
 });
-
-// @ts-expect-error TS2345
-export const EditSubresource = withRouter(EditSubresourceComponent);
