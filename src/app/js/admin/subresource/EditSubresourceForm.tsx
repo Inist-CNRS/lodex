@@ -29,11 +29,15 @@ export const EditSubresourceForm = () => {
         [dispatch],
     );
     const subresources = useSelector(fromSubresources.getSubresources);
+    const isLoading = useSelector(fromSubresources.isLoading);
     const initialValues = useMemo(() => {
         return subresources.find(({ _id }) => _id === params.subresourceId);
     }, [subresources, params.subresourceId]);
     const location = useLocation();
 
+    if (isLoading) {
+        return null;
+    }
     if (!initialValues) {
         return <Redirect to={`${location.pathname}/subresource`} />;
     }
