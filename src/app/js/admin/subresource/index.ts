@@ -26,7 +26,7 @@ export type SubResource = {
     _id: string;
     name: string;
     path: string;
-    identifier: string;
+    identifier: string | null;
 };
 
 export type SubresourceState = {
