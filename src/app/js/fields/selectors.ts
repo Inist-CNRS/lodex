@@ -122,7 +122,7 @@ const getFromFilterFields = createSelector(
 );
 
 const getComposedFields = createSelector(getFields, (fields) =>
-    fields.filter(({ composedOf }) => !!composedOf),
+    fields.filter(({ composedOf }) => !!composedOf && composedOf.isComposedOf),
 );
 
 // @ts-expect-error TS7006
@@ -166,11 +166,13 @@ const getResourceFields = createSelector(
 );
 
 const getListFields = createSelector(getCollectionFields, (fields) =>
-    fields.filter((f) => f.name === 'uri').filter((f) => !f.composedOf),
+    fields
+        .filter((f) => f.name === 'uri')
+        .filter((f) => !f.composedOf || !f.composedOf?.isComposedOf),
 );
 
 const getAllListFields = createSelector(getCollectionFields, (fields) =>
-    fields.filter((f) => !f.composedOf),
+    fields.filter((f) => !f.composedOf || !f.composedOf?.isComposedOf),
 );
 
 // @ts-expect-error TS7006
@@ -268,8 +270,9 @@ export const getInvalidFields = createSelector(
 );
 
 // @ts-expect-error TS7006
-export const areAllFieldsValid = (state) =>
-    state.allValid && (state.list || []).length > 0;
+export const areAllFieldsValid = (state) => {
+    return state.allValid && (state.list || []).length > 0;
+};
 
 // @ts-expect-error TS7006
 export const getLineColGetterFromAllFields = (fieldByName, field) => {
@@ -313,7 +316,7 @@ const getCompositeFieldsByField = createSelector(
     // @ts-expect-error TS7006
     (_, field) => field,
     (fieldsCatalog, field) => {
-        if (!field.composedOf) {
+        if (!field.composedOf || !field.composedOf?.isComposedOf) {
             return [];
         }
         const { fields } = field.composedOf;
