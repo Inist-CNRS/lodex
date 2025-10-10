@@ -70,7 +70,7 @@ export const AutoCompleteField = ({
 
             field.onChange(newValue);
         },
-        [field.onChange, props.onChange],
+        [field.onChange, props.onChange, clearIdentifier],
     );
 
     return (
@@ -78,6 +78,7 @@ export const AutoCompleteField = ({
             <MuiAutocomplete
                 {...props}
                 getOptionLabel={getOptionLabel}
+                disabled={disabled}
                 value={field.value || null}
                 onChange={handleValueChosen}
                 renderInput={(params) => (
