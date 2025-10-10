@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import { MenuItem, Box } from '@mui/material';
 import { useTranslate } from '../i18n/I18NContext';
-import AutoCompleteField from '../reactHookFormFields/AutoCompleteField.tsx';
+import AutoCompleteField from '../reactHookFormFields/AutoCompleteFetchedField.tsx';
 
 export const FieldSchemeInputComponent = ({
     className,
