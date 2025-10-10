@@ -33,7 +33,7 @@ import RunButton from './RunButton';
 import { FormProvider, useForm } from 'react-hook-form';
 import { TextField } from '../../reactHookFormFields/TextField';
 import { SwitchField } from '../../reactHookFormFields/SwitchField';
-import { Autocomplete } from '../../reactHookFormFields/AutoComplete';
+import { AutoCompleteField } from '../../reactHookFormFields/AutoCompleteField.tsx';
 import FormSourceCodeField from '../../lib/components/FormSourceCodeField';
 import type { State } from '../reducers';
 
@@ -346,7 +346,7 @@ export const EnrichmentForm = ({
                                 </Box>
 
                                 <Box display="flex" gap={2} mb={2}>
-                                    <Autocomplete
+                                    <AutoCompleteField
                                         clearIdentifier={() => {
                                             setValue('subPath', '');
                                         }}
@@ -355,7 +355,7 @@ export const EnrichmentForm = ({
                                         label={translate('sourceColumn')}
                                         required
                                     />
-                                    <Autocomplete
+                                    <AutoCompleteField
                                         name="subPath"
                                         label={translate('subPath')}
                                         options={optionsIdentifier}
