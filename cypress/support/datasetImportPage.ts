@@ -104,7 +104,7 @@ export const addColumn = (columnName, options: any = {}) => {
 export const setOperationTypeInWizard = (value = 'DEFAULT') => {
     cy.get('.wizard', { timeout: 5000 }).should('be.visible');
     cy.wait(1000);
-    cy.get('[aria-label="transformer-edit-transformers[0]').click();
+    cy.get('[data-testid="EditIcon"]').click();
     cy.get('[aria-label="Select an operation"]').click();
     cy.contains(value).click();
     cy.contains('confirm').click();

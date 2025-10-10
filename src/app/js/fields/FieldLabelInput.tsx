@@ -1,14 +1,10 @@
 // @ts-expect-error TS6133
 import React from 'react';
 import PropTypes from 'prop-types';
-import compose from 'recompose/compose';
-import { connect } from 'react-redux';
 import get from 'lodash/get';
 
-import FormTextField from '../lib/components/FormTextField';
-import FieldInput from '../lib/components/FieldInput';
-import { fromFields } from '../sharedSelectors';
-import { translate } from '../i18n/I18NContext';
+import { useTranslate } from '../i18n/I18NContext';
+import { TextField } from '../reactHookFormFields/TextField.tsx';
 
 // @ts-expect-error TS7006
 export const uniqueField = (fields, polyglot) => (value, _, props) => {
@@ -27,33 +23,29 @@ export const uniqueField = (fields, polyglot) => (value, _, props) => {
         : undefined;
 };
 
-// @ts-expect-error TS7031
-export const FieldLabelInputComponent = ({ disabled }) => (
-    <FieldInput
-        name="label"
-        component={FormTextField}
-        labelKey="fieldLabel"
-        fullWidth
-        disabled={disabled}
-    />
-);
+export const FieldLabelInputComponent = ({
+    disabled,
+}: {
+    disabled?: boolean;
+}) => {
+    const { translate } = useTranslate();
+
+    return (
+        <TextField
+            name="label"
+            label={translate('fieldLabel')}
+            fullWidth
+            disabled={disabled}
+        />
+    );
+};
 
 FieldLabelInputComponent.propTypes = {
     disabled: PropTypes.bool,
 };
 
 FieldLabelInputComponent.defaultProps = {
-    isNewField: false,
     disabled: false,
 };
 
-// @ts-expect-error TS7006
-const mapStateToProps = (state) => ({
-    fields: fromFields.getFields(state),
-});
-
-export default compose(
-    connect(mapStateToProps),
-    translate,
-    // @ts-expect-error TS2345
-)(FieldLabelInputComponent);
+export default FieldLabelInputComponent;

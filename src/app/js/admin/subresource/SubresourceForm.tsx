@@ -9,7 +9,7 @@ import { useHistory } from 'react-router';
 import { useTranslate } from '../../i18n/I18NContext';
 import type { State } from '../reducers';
 import { TextField } from '../../reactHookFormFields/TextField';
-import { Autocomplete } from '../../reactHookFormFields/AutoComplete';
+import { AutoCompleteField } from '../../reactHookFormFields/AutoCompleteField.tsx';
 import { FormProvider, useForm } from 'react-hook-form';
 import type { SubResource } from '.';
 import { usePrevious } from 'react-use';
@@ -104,7 +104,7 @@ export const SubresourceFormComponent = ({
                             required
                         />
 
-                        <Autocomplete
+                        <AutoCompleteField
                             name="path"
                             label={translate('subresource_path')}
                             className="path"
@@ -116,7 +116,7 @@ export const SubresourceFormComponent = ({
                             variant="outlined"
                         />
 
-                        <Autocomplete
+                        <AutoCompleteField
                             className="identifier"
                             name="identifier"
                             options={optionsIdentifier}

@@ -1,18 +1,12 @@
-// @ts-expect-error TS6133
-import React from 'react';
 import { Box, Typography } from '@mui/material';
-import {
-    field as fieldPropTypes,
-    polyglot as polyglotPropTypes,
-} from '../propTypes';
 
 import FieldToggleInternalScope from './FieldToggleInternalScope';
 import FieldInternalName from './FieldInternalName';
-import FieldInput from '../lib/components/FieldInput';
-import { translate } from '../i18n/I18NContext';
+import { useTranslate } from '../i18n/I18NContext.tsx';
 
-// @ts-expect-error TS7031
-export const FieldInternalComponent = ({ field, p: polyglot }) => {
+export const FieldInternalComponent = () => {
+    const { translate } = useTranslate();
+
     return (
         <Box
             display="flex"
@@ -28,24 +22,14 @@ export const FieldInternalComponent = ({ field, p: polyglot }) => {
         >
             <Box display="flex" flexDirection="column">
                 <Typography variant="caption" gutterBottom>
-                    {polyglot.t('internalScope')}
+                    {translate('internalScope')}
                 </Typography>
-                <FieldInput
-                    name="internalScopes"
-                    component={FieldToggleInternalScope}
-                    labelKey="internalScope"
-                    fullWidth
-                />
+                <FieldToggleInternalScope name="internalScopes" />
             </Box>
 
-            <FieldInternalName field={field} />
+            <FieldInternalName />
         </Box>
     );
 };
 
-FieldInternalComponent.propTypes = {
-    field: fieldPropTypes.isRequired,
-    p: polyglotPropTypes.isRequired,
-};
-
-export default translate(FieldInternalComponent);
+export default FieldInternalComponent;

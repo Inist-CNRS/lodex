@@ -1,43 +1,51 @@
 import { all, call, put, select } from 'redux-saga/effects';
 
 import getDocumentTransformer from '../../../lib/getDocumentTransformer';
-import { getFieldFormData } from '../../../fields/selectors';
 import { fromUser } from '../../../sharedSelectors';
 import { computeFieldPreviewSuccess, computeFieldPreviewError } from './';
 import { fromParsing } from '../../selectors';
 import { handleComputeFieldPreview } from './sagas';
-import { FIELD_FORM_NAME } from '../../../fields/index';
+import { prepareFieldFormData } from '../../../fields/sagas/saveField.ts';
 
 describe('field saga', () => {
     describe('handleComputeFieldPreview', () => {
+        const formValues = {
+            label: 'field label',
+        };
         const saga = handleComputeFieldPreview({
-            meta: { form: FIELD_FORM_NAME },
+            payload: { values: formValues },
         });
         const token = 'token';
         const lines = ['line1', 'line2'];
         const transformDocument = () => {};
 
         it('should select getFieldFormData', () => {
-            expect(saga.next().value).toEqual(select(getFieldFormData));
+            expect(saga.next().value).toEqual(
+                call(prepareFieldFormData, formValues),
+            );
         });
 
         it('should select fromParsing.getExcerptLines', () => {
+            // @ts-expect-error TS2345
             expect(saga.next('fieldFormData').value).toEqual(
                 select(fromParsing.getExcerptLines),
             );
         });
 
         it('should select getToken', () => {
+            // @ts-expect-error TS2345
             expect(saga.next(lines).value).toEqual(select(fromUser.getToken));
         });
 
         it('should call getDocumentTransformer with correct context and field', () => {
+            // @ts-expect-error TS2345
             expect(saga.next(token).value).toEqual(
                 call(getDocumentTransformer, ['fieldFormData'], token),
             );
         });
 
         it('should call transformDocument for each lines', () => {
+            // @ts-expect-error TS2345
             expect(saga.next(transformDocument).value).toEqual(
                 // @ts-expect-error TS2769
                 all(lines.map((line) => call(transformDocument, line))),
@@ -45,6 +53,7 @@ describe('field saga', () => {
         });
 
         it('should put computePreviewSuccess action', () => {
+            // @ts-expect-error TS2345
             expect(saga.next('preview').value).toEqual(
                 put(computeFieldPreviewSuccess('preview')),
             );
@@ -52,24 +61,13 @@ describe('field saga', () => {
 
         it('should put computePreviewError action with error if any', () => {
             const failedSaga = handleComputeFieldPreview({
-                meta: { form: FIELD_FORM_NAME },
+                payload: { values: formValues },
             });
             const error = { message: 'foo' };
             failedSaga.next();
             expect(failedSaga.throw(error).value).toEqual(
                 put(computeFieldPreviewError(error)),
             );
-        });
-
-        it('should do nothing if meta.form is not FIELD_FORM_NAME', () => {
-            const saga = handleComputeFieldPreview({
-                // @ts-expect-error TS2353
-                meta: { field: 'other form' },
-            });
-            expect(saga.next()).toEqual({
-                value: undefined,
-                done: true,
-            });
         });
     });
 });

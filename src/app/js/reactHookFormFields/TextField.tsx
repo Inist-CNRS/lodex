@@ -2,6 +2,7 @@ import {
     TextField as MuiTextField,
     type TextFieldProps as MuiTextFieldProps,
 } from '@mui/material';
+import { useMemo } from 'react';
 import { useController } from 'react-hook-form';
 import { useTranslate } from '../i18n/I18NContext';
 
@@ -10,11 +11,13 @@ export const TextField = ({
     validate,
     label,
     required = false,
+    transform,
     ...props
 }: MuiTextFieldProps & {
     name: string;
     validate?: (value: unknown) => string | undefined;
     label: string;
+    transform?: (value: any) => string | undefined;
 }) => {
     const { translate } = useTranslate();
     const { field, fieldState } = useController({
@@ -29,14 +32,21 @@ export const TextField = ({
         },
     });
 
+    const fieldValue =
+        useMemo(() => {
+            return transform ? transform(field.value) : field.value;
+        }, [field.value]) ?? '';
+
     return (
         <MuiTextField
             {...props}
-            placeholder={`${label} *`}
-            label={`${label} *`}
+            name={name}
+            placeholder={label}
+            label={label}
             error={!!fieldState.error}
             helperText={fieldState.error?.message}
-            value={field.value ?? ''}
+            value={fieldValue}
+            required={required}
             onChange={(e) => field.onChange(e.target.value)}
         />
     );

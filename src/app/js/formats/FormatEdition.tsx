@@ -1,9 +1,5 @@
 import React from 'react';
 import { FORMATS } from '../formats';
-import {
-    formField as formFieldPropTypes,
-    polyglot as polyglotPropTypes,
-} from '../propTypes';
 import { Box, Button, Typography } from '@mui/material';
 import {
     Delete as DeleteIcon,
@@ -12,29 +8,35 @@ import {
 } from '@mui/icons-material';
 import FormatCatalogDialog from './FormatCatalog';
 import FormatEditionDialog from './FormatEditionDialog';
-import { translate } from '../i18n/I18NContext';
+import { useTranslate } from '../i18n/I18NContext';
+import { useController, useFormContext } from 'react-hook-form';
 
-// @ts-expect-error TS7031
-const FormatEdition = ({ p: polyglot, ...props }) => {
-    const { input } = props;
+const FormatEdition = () => {
+    const { translate } = useTranslate();
+
+    const { control } = useFormContext();
+    const { field } = useController({
+        name: 'format',
+        control,
+    });
 
     const formats = FORMATS.sort((x, y) =>
-        polyglot.t(x.name).localeCompare(polyglot.t(y.name)),
+        translate(x.name).localeCompare(translate(y.name)),
     );
 
     const displayedName =
-        FORMATS.find((format) => format.componentName === input.value.name)
+        FORMATS.find((format) => format.componentName === field.value?.name)
             ?.name || 'no_format';
 
     const [componentName, setComponentName] = React.useState(
-        input.value.name || '',
+        field.value?.name || '',
     );
     const [openCatalog, setOpenCatalog] = React.useState(false);
     const [openEditDialog, setOpenEditDialog] = React.useState(false);
 
     React.useEffect(() => {
-        setComponentName(input.value.name || '');
-    }, [input.value.name]);
+        setComponentName(field.value?.name || '');
+    }, [field.value?.name]);
 
     // @ts-expect-error TS7006
     const handleFormatChange = (name) => {
@@ -47,7 +49,7 @@ const FormatEdition = ({ p: polyglot, ...props }) => {
         setOpenEditDialog(true);
     };
     const onRemove = () => {
-        input.onChange(null);
+        field.onChange(null);
     };
 
     return (
@@ -71,7 +73,7 @@ const FormatEdition = ({ p: polyglot, ...props }) => {
                         },
                     }}
                 >
-                    <Typography noWrap>{polyglot.t(displayedName)}</Typography>
+                    <Typography noWrap>{translate(displayedName)}</Typography>
                     {componentName && (
                         <Box
                             style={{
@@ -120,10 +122,10 @@ const FormatEdition = ({ p: polyglot, ...props }) => {
                         isOpen={openEditDialog}
                         handleClose={() => {
                             setOpenEditDialog(false);
-                            setComponentName(input.value.name || '');
+                            setComponentName(field.value?.name || '');
                         }}
                         formats={formats}
-                        input={input}
+                        field={field}
                         currentValue={componentName}
                     />
                 )}
@@ -132,9 +134,4 @@ const FormatEdition = ({ p: polyglot, ...props }) => {
     );
 };
 
-FormatEdition.propTypes = {
-    p: polyglotPropTypes.isRequired,
-    ...formFieldPropTypes,
-};
-
-export default translate(FormatEdition);
+export default FormatEdition;

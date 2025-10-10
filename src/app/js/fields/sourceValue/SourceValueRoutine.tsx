@@ -1,31 +1,31 @@
-// @ts-expect-error TS6133
-import React, { useEffect, useMemo, useState } from 'react';
-import { compose } from 'recompose';
+import { useEffect, useMemo, useState } from 'react';
 import ListAltIcon from '@mui/icons-material/ListAlt';
 import PropTypes from 'prop-types';
 import RoutineCatalog from '../wizard/RoutineCatalog';
-import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { Box, Button, IconButton, Tooltip, Typography } from '@mui/material';
 import { fromFields } from '../../sharedSelectors';
-import { loadField } from '../index';
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { getFieldForSpecificScope } from '../../../../common/scope';
 import SearchAutocomplete from '../../admin/Search/SearchAutocomplete';
 import RoutineCatalogAutocomplete from '../wizard/RoutineCatalogAutocomplete';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { translate } from '../../i18n/I18NContext';
+import type { TransformerDraft } from '../types.ts';
+import { useTranslate } from '../../i18n/I18NContext.tsx';
 
 const SourceValueRoutine = ({
-    // @ts-expect-error TS7031
-    fields,
-    // @ts-expect-error TS7031
     updateDefaultValueTransformers,
-    // @ts-expect-error TS7031
     value,
-    // @ts-expect-error TS7031
-    p: polyglot,
+}: {
+    updateDefaultValueTransformers: (transformers: TransformerDraft[]) => void;
+    value?: string | null;
 }) => {
+    const { translate } = useTranslate();
+    const fields = useSelector((state: any) =>
+        fromFields
+            .getFields(state)
+            .sort((a, b) => a.label.localeCompare(b.label)),
+    );
     const [openRoutineCatalog, setOpenRoutineCatalog] = useState(false);
     const [routine, setRoutine] = useState('');
     const [routineArgs, setRoutineArgs] = useState([]);
@@ -136,7 +136,7 @@ const SourceValueRoutine = ({
                     // @ts-expect-error TS2322
                     onChange={handleRoutineChange}
                     currentValue={routine}
-                    label={polyglot.t('enter_a_routine_value')}
+                    label={translate('enter_a_routine_value')}
                 />
 
                 <Box style={{ marginLeft: '10px', height: '56px' }}>
@@ -161,7 +161,7 @@ const SourceValueRoutine = ({
 
             <Box mt={3} sx={{ flexGrow: 1 }}>
                 <Typography variant="subtitle2">
-                    {polyglot.t('routine_args')}
+                    {translate('routine_args')}
                 </Typography>
 
                 {routineFields.map((field, index) => (
@@ -175,15 +175,15 @@ const SourceValueRoutine = ({
                     >
                         <SearchAutocomplete
                             testId={`autocomplete_routine_args_${index}`}
-                            translation={`${polyglot.t('routine_arg')}${index + 1}`}
+                            translation={`${translate('routine_arg')}${index + 1}`}
                             fields={fieldsResource}
                             onChange={(_, newValue) => {
                                 handleRoutineFieldChange(index, newValue);
                             }}
                             value={field}
-                            clearText={polyglot.t('clear')}
+                            clearText={translate('clear')}
                         />
-                        <Tooltip title={polyglot.t('routine_arg_delete')}>
+                        <Tooltip title={translate('routine_arg_delete')}>
                             <IconButton
                                 color="warning"
                                 aria-label="delete field"
@@ -204,7 +204,7 @@ const SourceValueRoutine = ({
                         marginRight: 'auto',
                     }}
                 >
-                    <Tooltip title={polyglot.t('routine_arg_add')}>
+                    <Tooltip title={translate('routine_arg_add')}>
                         <IconButton
                             color="primary"
                             aria-label="add field"
@@ -220,29 +220,9 @@ const SourceValueRoutine = ({
     );
 };
 
-// @ts-expect-error TS7006
-const mapStateToProps = (state) => {
-    return {
-        // sort by label asc
-        fields: fromFields
-            .getFields(state)
-            .sort((a, b) => a.label.localeCompare(b.label)),
-    };
-};
-
-const mapDispatchToProps = {
-    loadField,
-};
-
 SourceValueRoutine.propTypes = {
-    fields: PropTypes.arrayOf(PropTypes.object).isRequired,
-    p: polyglotPropTypes.isRequired,
     updateDefaultValueTransformers: PropTypes.func.isRequired,
     value: PropTypes.string,
 };
 
-export default compose(
-    translate,
-    connect(mapStateToProps, mapDispatchToProps),
-    // @ts-expect-error TS2345
-)(SourceValueRoutine);
+export default SourceValueRoutine;

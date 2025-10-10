@@ -1,16 +1,16 @@
-// @ts-expect-error TS6133
-import React from 'react';
+import { SwitchField } from '../reactHookFormFields/SwitchField.tsx';
+import { useTranslate } from '../i18n/I18NContext.tsx';
 
-import FormSwitchField from '../lib/components/FormSwitchField';
-import FieldInput from '../lib/components/FieldInput';
+const FieldDisplayInput = () => {
+    const { translate } = useTranslate();
 
-const FieldDisplayInput = () => (
-    <FieldInput
-        className="display"
-        name="display"
-        component={FormSwitchField}
-        labelKey="field_display"
-    />
-);
+    return (
+        <SwitchField
+            className="display"
+            name="display"
+            label={translate('field_display')}
+        />
+    );
+};
 
 export default FieldDisplayInput;

@@ -1,24 +1,25 @@
 import { MenuItem } from '@mui/material';
-import PropTypes from 'prop-types';
-// @ts-expect-error TS6133
-import { default as React } from 'react';
-import { connect } from 'react-redux';
-import { compose } from 'recompose';
 import { useTranslate } from '../i18n/I18NContext';
-import FieldInput from '../lib/components/FieldInput';
-import FormSelectField from '../lib/components/FormSelectField';
 import { FIELD_ANNOTATION_FORMAT_LIST } from './FieldAnnotationFormat';
+import { useFormContext, useWatch } from 'react-hook-form';
+import { TextField } from '../reactHookFormFields/TextField.tsx';
 
 export const FIELD_ANNOTATION_FORMAT_LIST_KIND_SINGLE = 'single';
 export const FIELD_ANNOTATION_FORMAT_LIST_KIND_MULTIPLE = 'multiple';
 
-export function FieldAnnotationFormatListKind({
-    // @ts-expect-error TS7031
-    isFieldAnnotable,
-    // @ts-expect-error TS7031
-    fieldAnnotationFormat,
-}) {
+export function FieldAnnotationFormatListKind() {
     const { translate } = useTranslate();
+
+    const { control } = useFormContext();
+    const isFieldAnnotable = useWatch({
+        control,
+        name: 'annotable',
+    });
+    const fieldAnnotationFormat = useWatch({
+        control,
+        name: 'annotationFormat',
+    });
+
     if (
         !isFieldAnnotable ||
         fieldAnnotationFormat !== FIELD_ANNOTATION_FORMAT_LIST
@@ -27,10 +28,11 @@ export function FieldAnnotationFormatListKind({
     }
 
     return (
-        <FieldInput
+        <TextField
+            select
             name="annotationFormatListKind"
-            labelKey="field_annotation_format_list_kind"
-            component={FormSelectField}
+            label={translate('field_annotation_format_list_kind')}
+            fullWidth
         >
             <MenuItem value={FIELD_ANNOTATION_FORMAT_LIST_KIND_SINGLE}>
                 {translate('field_annotation_format_list_kind_single')}
@@ -38,22 +40,8 @@ export function FieldAnnotationFormatListKind({
             <MenuItem value={FIELD_ANNOTATION_FORMAT_LIST_KIND_MULTIPLE}>
                 {translate('field_annotation_format_list_kind_multiple')}
             </MenuItem>
-        </FieldInput>
+        </TextField>
     );
 }
 
-FieldAnnotationFormatListKind.propTypes = {
-    isFieldAnnotable: PropTypes.bool.isRequired,
-    fieldAnnotationFormat: PropTypes.string.isRequired,
-};
-
-// @ts-expect-error TS7006
-const mapStateToProps = (state) => {
-    return {
-        isFieldAnnotable: state.form.field.values.annotable,
-        fieldAnnotationFormat: state.form.field.values.annotationFormat,
-    };
-};
-
-// @ts-expect-error TS2345
-export default compose(connect(mapStateToProps))(FieldAnnotationFormatListKind);
+export default FieldAnnotationFormatListKind;

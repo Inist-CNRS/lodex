@@ -1,8 +1,4 @@
-// @ts-expect-error TS6133
-import React from 'react';
-
 import Stack from '@mui/material/Stack';
-import { field as fieldPropTypes } from '../../propTypes';
 import FieldAnnotableInput from '../FieldAnnotableInput';
 import { default as FieldAnnotationFormat } from '../FieldAnnotationFormat';
 import { default as FieldAnnotationFormatListKind } from '../FieldAnnotationFormatListKind';
@@ -25,10 +21,6 @@ export const TabAnnotationsComponent = () => {
             <FieldAnnotationFormatListKind />
         </Stack>
     );
-};
-
-TabAnnotationsComponent.propTypes = {
-    currentEditedField: fieldPropTypes.isRequired,
 };
 
 export default TabAnnotationsComponent;

@@ -1,10 +1,8 @@
 import get from 'lodash/get';
 import set from 'lodash/set';
-import { destroy } from 'redux-form';
 import { call, put, select, takeLatest } from 'redux-saga/effects';
 
 import {
-    FIELD_FORM_NAME,
     loadField,
     SAVE_FIELD,
     SAVE_FIELD_FROM_DATA,
@@ -13,11 +11,47 @@ import {
 } from '../';
 
 import { fromFields, fromUser } from '../../sharedSelectors';
-import { getFieldFormData } from '../selectors';
 
 import { push } from 'redux-first-history';
 import { SCOPE_DOCUMENT } from '../../../../common/scope';
 import fetchSaga from '../../lib/sagas/fetchSaga';
+import {
+    FIELD_ANNOTATION_FORMAT_LIST,
+    FIELD_ANNOTATION_FORMAT_TEXT,
+} from '../FieldAnnotationFormat.tsx';
+import { splitAnnotationFormatListOptions } from '../annotations.ts';
+import { FIELD_ANNOTATION_FORMAT_LIST_KIND_SINGLE } from '../FieldAnnotationFormatListKind.tsx';
+
+export const prepareFieldFormData = (values: any) => {
+    try {
+        return {
+            ...values,
+            annotationFormat: values.annotable
+                ? values.annotationFormat
+                : FIELD_ANNOTATION_FORMAT_TEXT,
+            annotationFormatListOptions:
+                values.annotable &&
+                values.annotationFormat === FIELD_ANNOTATION_FORMAT_LIST
+                    ? splitAnnotationFormatListOptions(
+                          values.annotationFormatListOptions,
+                      )
+                    : [],
+            annotationFormatListKind:
+                values.annotable &&
+                values.annotationFormat === FIELD_ANNOTATION_FORMAT_LIST
+                    ? values.annotationFormatListKind ??
+                      FIELD_ANNOTATION_FORMAT_LIST_KIND_SINGLE
+                    : FIELD_ANNOTATION_FORMAT_LIST_KIND_SINGLE,
+            annotationFormatListSupportsNewValues:
+                values.annotable &&
+                values.annotationFormat === FIELD_ANNOTATION_FORMAT_LIST
+                    ? values.annotationFormatListSupportsNewValues ?? true
+                    : false,
+        };
+    } catch (error) {
+        return undefined;
+    }
+};
 
 // @ts-expect-error TS7006
 export const sanitizeField = (fieldData) => {
@@ -40,6 +74,7 @@ export function* handleSaveField({ payload }) {
     const {
         field: { subresourceId },
         filter,
+        values,
     } = payload;
 
     const redirectingPath = `/display/${filter}${
@@ -49,7 +84,7 @@ export function* handleSaveField({ payload }) {
     }`;
 
     // @ts-expect-error TS7057
-    const fieldData = yield select(getFieldFormData);
+    const fieldData = yield call(prepareFieldFormData, values);
     // @ts-expect-error TS7057
     const sanitizedFieldData = yield call(sanitizeField, fieldData);
     // @ts-expect-error TS7057
@@ -67,7 +102,6 @@ export function* handleSaveField({ payload }) {
     yield put(push(redirectingPath));
 
     yield put(loadField());
-    yield put(destroy(FIELD_FORM_NAME));
 }
 
 // @ts-expect-error TS7031

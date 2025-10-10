@@ -1,29 +1,33 @@
 import React, { useEffect } from 'react';
-import compose from 'recompose/compose';
 import ListAltIcon from '@mui/icons-material/ListAlt';
 import PropTypes from 'prop-types';
 import RoutineCatalog from '../wizard/RoutineCatalog';
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { fromPrecomputed } from '../../admin/selectors';
-import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { Autocomplete, Box, Button, TextField } from '@mui/material';
 import { toast } from 'react-toastify';
 import RoutineCatalogAutocomplete from '../wizard/RoutineCatalogAutocomplete';
-import { translate } from '../../i18n/I18NContext';
 import type { State } from '../../admin/reducers';
+import { useTranslate } from '../../i18n/I18NContext';
+import type { TransformerDraft } from '../types.ts';
 
 const SourceValuePrecomputed = ({
-    // @ts-expect-error TS7031
-    precomputedData,
-    // @ts-expect-error TS7031
     updateDefaultValueTransformers,
-    // @ts-expect-error TS7031
     value,
-    // @ts-expect-error TS7031
     routine,
-    // @ts-expect-error TS7031
-    p: polyglot,
+}: {
+    updateDefaultValueTransformers: (transformers: TransformerDraft[]) => void;
+    value?: string | null;
+    routine?: string;
 }) => {
+    const { translate } = useTranslate();
+    const precomputedData = useSelector((state: State) =>
+        fromPrecomputed
+            .precomputed(state)
+            .sort((a, b) =>
+                a.name.toLowerCase().localeCompare(b.name.toLowerCase()),
+            ),
+    );
     const [autocompleteValue, setAutocompleteValue] = React.useState(value);
     useEffect(() => {
         setAutocompleteValue(value);
@@ -33,16 +37,15 @@ const SourceValuePrecomputed = ({
 
     // @ts-expect-error TS7006
     const handleChangePrecomputed = (event, value) => {
-        // @ts-expect-error TS7006
         const precomputedSelected = precomputedData.find((precomputed) => {
             return precomputed.name === value;
         });
 
         if (
-            !precomputedSelected.hasData ||
-            precomputedSelected.status !== 'FINISHED'
+            !precomputedSelected?.hasData ||
+            precomputedSelected?.status !== 'FINISHED'
         ) {
-            toast.warning(polyglot.t('error_precomputed_data_empty'));
+            toast.warning(translate('error_precomputed_data_empty'));
         }
 
         setAutocompleteValue(value);
@@ -96,14 +99,13 @@ const SourceValuePrecomputed = ({
             <Autocomplete
                 data-testid="source-value-from-precomputed"
                 fullWidth
-                // @ts-expect-error TS7031
                 options={precomputedData.map(({ name }) => name)}
                 value={autocompleteValue ?? ''}
                 renderInput={(params) => (
                     <TextField
                         {...params}
-                        label={polyglot.t('from_precomputed')}
-                        placeholder={polyglot.t('enter_from_precomputed')}
+                        label={translate('from_precomputed')}
+                        placeholder={translate('enter_from_precomputed')}
                     />
                 )}
                 onChange={handleChangePrecomputed}
@@ -114,7 +116,7 @@ const SourceValuePrecomputed = ({
                     // @ts-expect-error TS2322
                     onChange={handleChangeRoutine}
                     currentValue={valueInput}
-                    label={polyglot.t('enter_a_routine_value')}
+                    label={translate('enter_a_routine_value')}
                     precomputed
                 />
 
@@ -142,24 +144,10 @@ const SourceValuePrecomputed = ({
     );
 };
 
-const mapStateToProps = (state: State) => ({
-    precomputedData: fromPrecomputed
-        .precomputed(state)
-        .sort((a, b) =>
-            a.name.toLowerCase().localeCompare(b.name.toLowerCase()),
-        ),
-});
-
 SourceValuePrecomputed.propTypes = {
-    precomputedData: PropTypes.arrayOf(PropTypes.string).isRequired,
-    p: polyglotPropTypes.isRequired,
     updateDefaultValueTransformers: PropTypes.func.isRequired,
     value: PropTypes.string,
     routine: PropTypes.string,
 };
 
-export default compose(
-    connect(mapStateToProps),
-    translate,
-    // @ts-expect-error TS2345
-)(SourceValuePrecomputed);
+export default SourceValuePrecomputed;

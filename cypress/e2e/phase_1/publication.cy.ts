@@ -376,7 +376,7 @@ describe('Dataset Publication', () => {
             cy.contains('BOOLEAN').click();
             cy.contains('confirm').click();
 
-            cy.get('[aria-label="transformer-edit-transformers[1]').click();
+            cy.get('[data-testid="EditIcon"]').click();
             cy.get('[aria-label="Select an operation"]').click();
             cy.contains('GET').click();
             cy.get('input[placeholder="path"]').type('example');

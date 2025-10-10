@@ -1,6 +1,4 @@
 import PropTypes from 'prop-types';
-// @ts-expect-error TS6133
-import React from 'react';
 
 import { field as fieldPropTypes } from '../../propTypes';
 import FieldCaption from '../FieldCaption';
@@ -28,7 +26,6 @@ export const TabDisplayComponent = ({
             subresourceId={subresourceId}
         />
         <FieldComposedOf
-            // @ts-expect-error TS2322
             fields={fields}
             scope={filter}
             subresourceId={subresourceId}

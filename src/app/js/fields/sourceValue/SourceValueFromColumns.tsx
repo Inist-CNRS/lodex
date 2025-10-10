@@ -1,22 +1,24 @@
 import React, { useEffect } from 'react';
-import compose from 'recompose/compose';
 import PropTypes from 'prop-types';
 import { Autocomplete, Box, TextField } from '@mui/material';
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { fromParsing } from '../../admin/selectors';
-import { polyglot as polyglotPropTypes } from '../../propTypes';
-import { translate } from '../../i18n/I18NContext';
+import { useTranslate } from '../../i18n/I18NContext';
+import type { TransformerDraft } from '../types.ts';
 
 const SourceValueFromColumns = ({
-    // @ts-expect-error TS7031
-    datasetFields,
-    // @ts-expect-error TS7031
-    p: polyglot,
-    // @ts-expect-error TS7031
     updateDefaultValueTransformers,
-    // @ts-expect-error TS7031
     value,
+}: {
+    updateDefaultValueTransformers: (transformers: TransformerDraft[]) => void;
+    value?: string[] | null;
 }) => {
+    const { translate } = useTranslate();
+    const datasetFields = useSelector((state: any) =>
+        fromParsing
+            .getParsedExcerptColumns(state)
+            .sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase())),
+    );
     const [autocompleteValue, setAutocompleteValue] = React.useState(value);
     useEffect(() => {
         setAutocompleteValue(value);
@@ -52,8 +54,8 @@ const SourceValueFromColumns = ({
                 renderInput={(params) => (
                     <TextField
                         {...params}
-                        label={polyglot.t('from_columns')}
-                        placeholder={polyglot.t('enter_from_columns')}
+                        label={translate('from_columns')}
+                        placeholder={translate('enter_from_columns')}
                     />
                 )}
                 onChange={handleChange}
@@ -62,22 +64,9 @@ const SourceValueFromColumns = ({
     );
 };
 
-// @ts-expect-error TS7006
-const mapStateToProps = (state) => ({
-    datasetFields: fromParsing
-        .getParsedExcerptColumns(state)
-        .sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase())),
-});
-
 SourceValueFromColumns.propTypes = {
-    datasetFields: PropTypes.arrayOf(PropTypes.string).isRequired,
-    p: polyglotPropTypes.isRequired,
     updateDefaultValueTransformers: PropTypes.func.isRequired,
     value: PropTypes.array,
 };
 
-export default compose(
-    connect(mapStateToProps),
-    translate,
-    // @ts-expect-error TS2345
-)(SourceValueFromColumns);
+export default SourceValueFromColumns;

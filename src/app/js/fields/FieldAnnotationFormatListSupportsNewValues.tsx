@@ -1,19 +1,21 @@
-// @ts-expect-error TS6133
-import React from 'react';
-
 import { Box } from '@mui/material';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { compose } from 'recompose';
-import FieldInput from '../lib/components/FieldInput';
-import FormSwitchField from '../lib/components/FormSwitchField';
+import { useFormContext, useWatch } from 'react-hook-form';
+import { SwitchField } from '../reactHookFormFields/SwitchField.tsx';
+import { useTranslate } from '../i18n/I18NContext.tsx';
 
-export function FieldAnnotationFormatListSupportsNewValues({
-    // @ts-expect-error TS7031
-    isFieldAnnotable,
-    // @ts-expect-error TS7031
-    fieldAnnotationFormat,
-}) {
+export function FieldAnnotationFormatListSupportsNewValues() {
+    const { translate } = useTranslate();
+
+    const { control } = useFormContext();
+    const isFieldAnnotable = useWatch({
+        control,
+        name: 'annotable',
+    });
+    const fieldAnnotationFormat = useWatch({
+        control,
+        name: 'annotationFormat',
+    });
+
     if (!isFieldAnnotable || fieldAnnotationFormat !== 'list') {
         return null;
     }
@@ -24,29 +26,15 @@ export function FieldAnnotationFormatListSupportsNewValues({
                 marginBlockStart: -3,
             }}
         >
-            <FieldInput
+            <SwitchField
+                className="annotationFormatListSupportsNewValues"
                 name="annotationFormatListSupportsNewValues"
-                component={FormSwitchField}
-                labelKey="field_annotation_format_list_supports_new_values"
+                label={translate(
+                    'field_annotation_format_list_supports_new_values',
+                )}
             />
         </Box>
     );
 }
 
-FieldAnnotationFormatListSupportsNewValues.propTypes = {
-    isFieldAnnotable: PropTypes.bool.isRequired,
-    fieldAnnotationFormat: PropTypes.string.isRequired,
-};
-
-// @ts-expect-error TS7006
-const mapStateToProps = (state) => {
-    return {
-        isFieldAnnotable: state.form.field.values.annotable,
-        fieldAnnotationFormat: state.form.field.values.annotationFormat,
-    };
-};
-
-export default compose(connect(mapStateToProps))(
-    // @ts-expect-error TS2345
-    FieldAnnotationFormatListSupportsNewValues,
-);
+export default FieldAnnotationFormatListSupportsNewValues;
