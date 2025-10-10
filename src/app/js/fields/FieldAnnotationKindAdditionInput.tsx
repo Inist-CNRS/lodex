@@ -9,6 +9,7 @@ export const FieldAnnotationKindAdditionInput = () => {
             className="enableAnnotationKindAddition"
             name="enableAnnotationKindAddition"
             label={translate('field_annotation_kind_addition')}
+            defaultValue={true}
         />
     );
 };

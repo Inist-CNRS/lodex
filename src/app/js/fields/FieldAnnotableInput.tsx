@@ -9,6 +9,7 @@ const FieldAnnotableInput = () => {
             className="annotable"
             name="annotable"
             label={translate('field_annotable')}
+            defaultValue={true}
         />
     );
 };

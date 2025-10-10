@@ -20,11 +20,13 @@ export const SwitchField = ({
     validate,
     label,
     required = false,
+    defaultValue,
     ...props
-}: MuiSwitchProps & {
+}: Omit<MuiSwitchProps, 'defaultValue'> & {
     name: string;
     validate?: (value: unknown) => string | undefined;
     label: string;
+    defaultValue?: boolean | string;
 }) => {
     const { translate } = useTranslate();
     const { field } = useController({
@@ -37,6 +39,7 @@ export const SwitchField = ({
                 }
             },
         },
+        defaultValue,
     });
 
     return (

@@ -9,6 +9,7 @@ const FieldAnnotationKindRemovalInput = () => {
             className="enableAnnotationKindRemoval"
             name="enableAnnotationKindRemoval"
             label={translate('field_annotation_kind_removal')}
+            defaultValue={true}
         />
     );
 };
