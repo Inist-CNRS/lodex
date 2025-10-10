@@ -32,7 +32,7 @@ import EnrichmentStatus from './EnrichmentStatus';
 import RunButton from './RunButton';
 import { FormProvider, useForm } from 'react-hook-form';
 import { TextField } from '../../reactHookFormFields/TextField';
-import { Switch } from '../../reactHookFormFields/Switch';
+import { SwitchField } from '../../reactHookFormFields/SwitchField';
 import { Autocomplete } from '../../reactHookFormFields/AutoComplete';
 import FormSourceCodeField from '../../lib/components/FormSourceCodeField';
 import type { State } from '../reducers';
@@ -297,7 +297,7 @@ export const EnrichmentForm = ({
                         </Box>
                         <Box>
                             <FormGroup>
-                                <Switch
+                                <SwitchField
                                     name="advancedMode"
                                     label={translate('advancedMode')}
                                 />
