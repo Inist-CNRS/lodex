@@ -1,132 +1,121 @@
 import {
     Autocomplete as MuiAutocomplete,
-    type AutocompleteProps as MuiAutocompleteProps,
     FormControl,
-    FormHelperText,
     TextField,
+    ListItem,
+    Typography,
+    FormHelperText,
+    type AutocompleteProps as MuiAutocompleteProps,
+    type TextFieldProps as MuiTextFieldProps,
 } from '@mui/material';
-import { useController, useFormContext } from 'react-hook-form';
+import { useController } from 'react-hook-form';
+import { useTranslate } from '../i18n/I18NContext';
 import { useCallback } from 'react';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { fetch as fetchAction } from '../fetch';
-import { useTranslate } from '../i18n/I18NContext.tsx';
 
-type AutoCompleteFieldProps = Partial<
+export type AutoCompleteProps = Partial<
     MuiAutocompleteProps<any, false, false, true>
 > & {
     name: string;
-    validate?: (value: unknown) => string | undefined;
-    label: string;
-    dataSource: any;
+    clearIdentifier?: () => void;
     allowNewItem?: boolean;
-    getFetchRequest: (searchText: string) => { url: string };
-    parseResponse: (response: any) => any;
-    handleSearch: (searchText: string) => void;
+    hint?: string;
+    options: string[];
+    label: string;
+    required?: boolean;
+    validate?: (value: string) => string | undefined;
+    variant?: MuiTextFieldProps['variant'];
+    InputProps?: MuiTextFieldProps;
 };
 
-const AutoCompleteField = ({
-    name,
-    validate,
-    label,
-    dataSource,
-    allowNewItem = false,
-    getFetchRequest: _getFetchRequest,
-    parseResponse: _parseResponse,
-    handleSearch,
-    ...props
-}: AutoCompleteFieldProps) => {
-    const { translate } = useTranslate();
-    const { control } = useFormContext();
+type NotUndefined<T> = T extends undefined ? never : T;
 
+export const AutoCompleteField = ({
+    name,
+    clearIdentifier,
+    allowNewItem = false,
+    hint,
+    options,
+    label: labelProp,
+    disabled = false,
+    required = false,
+    validate,
+    className,
+    variant = 'outlined',
+    InputProps,
+    getOptionLabel,
+    ...props
+}: AutoCompleteProps) => {
+    const { translate } = useTranslate();
     const { field, fieldState } = useController({
         name,
         rules: {
+            required: required ? translate('error_field_required') : false,
             validate,
         },
-        control,
     });
+    const error: string | undefined =
+        (fieldState.isDirty && fieldState.error?.message) || undefined;
 
-    const source = dataSource || [];
+    const label = required ? `${labelProp} *` : labelProp;
 
-    const handleValueChosen = useCallback(
-        (_, value) => {
-            // Material UI doc: index is the index in dataSource of the list item selected,
-            // or -1 if enter is pressed in the TextField
-            if (!allowNewItem) {
-                return field.onChange('');
+    const handleValueChosen = useCallback<
+        NotUndefined<AutoCompleteProps['onChange']>
+    >(
+        (event, newValue, reason, details): void => {
+            if (reason === 'clear' && clearIdentifier) {
+                clearIdentifier();
             }
 
-            return value.text
-                ? field.onChange(value.text)
-                : field.onChange(value);
-        },
-        [field.onChange],
-    );
+            props.onChange?.(event, newValue, reason, details);
 
-    const handleComplete = useCallback(
-        (_, searchText) => {
-            if (allowNewItem) {
-                field.onChange(searchText);
-                handleSearch(searchText);
-            }
+            field.onChange(newValue);
         },
-        [field.onChange, handleSearch],
+        [field.onChange, props.onChange],
     );
 
     return (
-        <FormControl fullWidth>
+        <FormControl className={className} fullWidth error={!!error}>
             <MuiAutocomplete
                 {...props}
-                options={source}
-                freeSolo
-                getOptionLabel={(option) => option.text}
+                getOptionLabel={getOptionLabel}
+                value={field.value || null}
+                onChange={handleValueChosen}
                 renderInput={(params) => (
                     <TextField
                         {...params}
-                        placeholder={label}
+                        {...InputProps}
+                        error={!!error}
                         label={label}
+                        placeholder={label}
+                        variant={variant}
+                        aria-label="input-path"
                         helperText={
-                            field.value
-                                ? `(${translate('actually')} ${field.value})`
+                            allowNewItem && field.value
+                                ? `(${translate('actually')} ${
+                                      getOptionLabel?.(field.value) ??
+                                      field.value
+                                  })`
                                 : undefined
                         }
                     />
                 )}
-                onChange={handleValueChosen}
-                onInputChange={handleComplete}
+                renderOption={(props, option) => {
+                    return (
+                        <ListItem {...props}>
+                            <Typography>
+                                {getOptionLabel?.(option) ?? option}
+                            </Typography>
+                        </ListItem>
+                    );
+                }}
+                options={options}
                 noOptionsText={translate('no_option')}
             />
-            {fieldState.error?.message && (
-                <FormHelperText error>
-                    {fieldState.error.message}
-                </FormHelperText>
+            {error ? (
+                <FormHelperText error>{error}</FormHelperText>
+            ) : (
+                <FormHelperText>{hint}</FormHelperText>
             )}
         </FormControl>
     );
 };
-
-const mapStateToProps = (
-    // @ts-expect-error TS7031
-    { fetch },
-    { name, parseResponse }: AutoCompleteFieldProps,
-) => ({
-    dataSource: parseResponse(fetch[name] && fetch[name].response),
-});
-
-const mapDispatchToProps = (
-    // @ts-expect-error TS7006
-    dispatch,
-    { name, getFetchRequest }: AutoCompleteFieldProps,
-) =>
-    bindActionCreators(
-        {
-            handleSearch: (searchText) =>
-                searchText
-                    ? fetchAction({ config: getFetchRequest(searchText), name })
-                    : { type: '@@NULL' }, // We must return an action so return an action which will not be handled
-        },
-        dispatch,
-    );
-
-export default connect(mapStateToProps, mapDispatchToProps)(AutoCompleteField);
