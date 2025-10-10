@@ -46,6 +46,7 @@ export const TextField = ({
             error={!!fieldState.error}
             helperText={fieldState.error?.message}
             value={fieldValue}
+            required={required}
             onChange={(e) => field.onChange(e.target.value)}
         />
     );
