@@ -115,6 +115,11 @@ export const enrichmentAction = async (ctx: any, action: any, id: any) => {
     }
 
     if (action === 'launch') {
+        console.log('enrichmentAction launch', {
+            workerQueues,
+            tenant: ctx.tenant,
+            exists: workerQueues[ctx.tenant],
+        });
         await workerQueues[ctx.tenant]
             .add(
                 ENRICHER, // Name of the job
