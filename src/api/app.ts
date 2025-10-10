@@ -62,16 +62,10 @@ function extractTenantFromUrl(url: any) {
 
 const setTenant = async (ctx: any, next: any) => {
     if (extractTenantFromUrl(ctx.request.url)) {
-        console.log(
-            'extractTenantFromUrl',
-            extractTenantFromUrl(ctx.request.url),
-        );
         ctx.tenant = extractTenantFromUrl(ctx.request.url);
     } else if (ctx.get('X-Lodex-Tenant')) {
-        console.log('ctx.get(X-Lodex-Tenant)', ctx.get('X-Lodex-Tenant'));
         ctx.tenant = ctx.get('X-Lodex-Tenant');
     } else {
-        console.log('default tenant', DEFAULT_TENANT);
         ctx.tenant = DEFAULT_TENANT;
     }
 
