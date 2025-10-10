@@ -22,15 +22,28 @@ export const updateSubresourceOptimistic = createAction(
 );
 export const deleteSubresource = createAction(DELETE_SUBRESOURCE);
 
-export const initialState = {
+export type SubResource = {
+    _id: string;
+    name: string;
+    path: string;
+    identifier: string | null;
+};
+
+export type SubresourceState = {
+    error: Error | null;
+    initialized: boolean;
+    loading: boolean;
+    subresources: SubResource[];
+};
+
+export const initialState: SubresourceState = {
     error: null,
     initialized: false,
     loading: false,
     subresources: [],
 };
 
-// @ts-expect-error TS2769
-export default handleActions(
+export default handleActions<SubresourceState, any>(
     {
         LOAD_SUBRESOURCES: (state) => ({
             ...state,
@@ -54,7 +67,6 @@ export default handleActions(
         UPDATE_SUBRESOURCE_OPTIMISTIC: (state, { payload: subresource }) => ({
             ...state,
             subresources: state.subresources.map((sr) => {
-                // @ts-expect-error TS2339
                 if (sr._id === subresource._id) {
                     return subresource;
                 }
@@ -66,12 +78,9 @@ export default handleActions(
     initialState,
 );
 
-// @ts-expect-error TS7006
-export const isLoading = (state) => state.loading;
-// @ts-expect-error TS7006
-export const isInitialized = (state) => state.initialized;
-// @ts-expect-error TS7006
-export const getSubresources = (state) => state.subresources;
+export const isLoading = (state: SubresourceState) => state.loading;
+export const isInitialized = (state: SubresourceState) => state.initialized;
+export const getSubresources = (state: SubresourceState) => state.subresources;
 
 export const selectors = {
     isLoading,
