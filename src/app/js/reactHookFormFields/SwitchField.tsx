@@ -12,7 +12,7 @@ const isChecked = memoize((value) => {
         return value;
     }
 
-    return value.toString().toLowerCase() === 'true';
+    return value?.toString()?.toLowerCase() === 'true';
 });
 
 export const SwitchField = ({
