@@ -9,6 +9,7 @@ const FieldAnnotationKindCorrectionInput = () => {
             className="enableAnnotationKindCorrection"
             name="enableAnnotationKindCorrection"
             label={translate('field_annotation_kind_correction')}
+            defaultValue={true}
         />
     );
 };
