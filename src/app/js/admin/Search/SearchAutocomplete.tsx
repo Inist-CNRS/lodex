@@ -86,20 +86,22 @@ const SearchAutocomplete = ({
                 `${option.label} ${option.name && `[${option.name}]`}  `
             }
             renderTags={(options, getTagProps) =>
-                options.map((option, index) => (
-                    <Chip
-                        key={option.name}
-                        {...getTagProps({ index })}
-                        label={
-                            <FieldRepresentation
-                                key={option._id}
-                                field={option}
-                                shortMode
-                                {...getTagProps({ index })}
-                            />
-                        }
-                    ></Chip>
-                ))
+                options.map((option, index) => {
+                    const { key, ...tagProps } = getTagProps({ index });
+                    return (
+                        <Chip
+                            key={key}
+                            {...tagProps}
+                            label={
+                                <FieldRepresentation
+                                    field={option}
+                                    shortMode
+                                    {...tagProps}
+                                />
+                            }
+                        ></Chip>
+                    );
+                })
             }
             clearText={clearText}
             renderOption={(props, option, { selected }) =>
