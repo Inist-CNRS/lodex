@@ -5,13 +5,6 @@ export interface Field {
     subresourceId?: string;
 }
 
-export interface Subresource {
-    _id: string;
-    identifier: string;
-    name: string;
-    path: string;
-}
-
 export interface TransformerDraft {
     operation: string;
     args?: {
