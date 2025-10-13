@@ -1,17 +1,22 @@
-// @ts-expect-error TS6133
-import React from 'react';
-import PropTypes from 'prop-types';
-
-import { polyglot as polyglotPropTypes } from '../../../propTypes';
-import updateAdminArgs from '../../utils/updateAdminArgs';
 import RoutineParamsAdmin from '../../utils/components/admin/RoutineParamsAdmin';
 import {
     FormatDataParamsFieldSet,
     FormatChartParamsFieldSet,
 } from '../../utils/components/field-set/FormatFieldSets';
 import FormatGroupedFieldSet from '../../utils/components/field-set/FormatGroupedFieldSet';
-import { translate } from '../../../i18n/I18NContext';
+import { useTranslate } from '../../../i18n/I18NContext';
 import { TextField } from '@mui/material';
+import { useUpdateAdminArgs } from '../../utils/updateAdminArgs';
+
+type LeafletArgs = {
+    params?: {
+        maxSize?: number;
+        maxValue?: number;
+        minValue?: number;
+        orderBy?: string;
+    };
+    zoom?: number;
+};
 
 export const defaultArgs = {
     params: {
@@ -21,26 +26,42 @@ export const defaultArgs = {
     zoom: 5,
 };
 
+type LeafletAdminProps = {
+    args?: LeafletArgs;
+    onChange: (args: {
+        params?: {
+            maxSize?: number;
+            maxValue?: number;
+            minValue?: number;
+            orderBy?: string;
+        };
+        zoom?: number;
+    }) => void;
+    showMaxSize?: boolean;
+    showMaxValue?: boolean;
+    showMinValue?: boolean;
+    showOrderBy?: boolean;
+};
+
 const LeafletAdmin = ({
     args = defaultArgs,
-    // @ts-expect-error TS7031
     onChange,
-    // @ts-expect-error TS7031
-    p: polyglot,
     showMaxSize = true,
     showMaxValue = true,
     showMinValue = true,
     showOrderBy = true,
-}) => {
-    // @ts-expect-error TS7006
-    const handleParams = (params) => {
-        updateAdminArgs('params', params, { args, onChange });
-    };
-    // @ts-expect-error TS7006
-    const handleZoom = (e) => {
-        // @ts-expect-error TS2532
-        updateAdminArgs('zoom', e.target.value, this.props);
-    };
+}: LeafletAdminProps) => {
+    const { translate } = useTranslate();
+
+    const handleParams = useUpdateAdminArgs<LeafletArgs, 'params'>('params', {
+        args,
+        onChange,
+    });
+
+    const handleZoom = useUpdateAdminArgs<LeafletArgs, 'zoom'>('zoom', {
+        args,
+        onChange,
+    });
 
     const { zoom } = args;
 
@@ -48,9 +69,7 @@ const LeafletAdmin = ({
         <FormatGroupedFieldSet>
             <FormatDataParamsFieldSet>
                 <RoutineParamsAdmin
-                    // @ts-expect-error TS2739
                     params={args.params || defaultArgs.params}
-                    polyglot={polyglot}
                     onChange={handleParams}
                     showMaxSize={showMaxSize}
                     showMaxValue={showMaxValue}
@@ -60,8 +79,12 @@ const LeafletAdmin = ({
             </FormatDataParamsFieldSet>
             <FormatChartParamsFieldSet defaultExpanded>
                 <TextField
-                    label={polyglot.t('zoomByDefault')}
-                    onChange={handleZoom}
+                    label={translate('zoomByDefault')}
+                    onChange={(e) =>
+                        handleZoom(
+                            e.target.value ? Number(e.target.value) : undefined,
+                        )
+                    }
                     value={zoom}
                     fullWidth
                 />
@@ -70,22 +93,4 @@ const LeafletAdmin = ({
     );
 };
 
-LeafletAdmin.propTypes = {
-    args: PropTypes.shape({
-        params: PropTypes.shape({
-            maxSize: PropTypes.number,
-            maxValue: PropTypes.number,
-            minValue: PropTypes.number,
-            orderBy: PropTypes.string,
-            zoom: PropTypes.number,
-        }),
-    }),
-    onChange: PropTypes.func.isRequired,
-    p: polyglotPropTypes.isRequired,
-    showMaxSize: PropTypes.bool,
-    showMaxValue: PropTypes.bool,
-    showMinValue: PropTypes.bool,
-    showOrderBy: PropTypes.bool,
-};
-
-export default translate(LeafletAdmin);
+export default LeafletAdmin;
