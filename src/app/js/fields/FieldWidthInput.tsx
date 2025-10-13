@@ -13,12 +13,14 @@ const FieldWidthInput = () => {
                 marginTop: 2,
             }}
             type="number"
-            // min={10}
-            // max={100}
-            // step={10}
             label={translate('field_width')}
             InputProps={{
                 endAdornment: '%',
+                inputProps: {
+                    min: 10,
+                    max: 100,
+                    step: 10,
+                },
             }}
         />
     );
