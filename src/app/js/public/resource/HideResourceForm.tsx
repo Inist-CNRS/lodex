@@ -14,12 +14,50 @@ import CancelButton from '../../lib/components/CancelButton';
 import ButtonWithStatus from '../../lib/components/ButtonWithStatus';
 import { hideResource } from '../api/hideResource';
 import { hideResourceSuccess } from '.';
-import { useState } from 'react';
 import Alert from '../../lib/components/Alert';
+import { useMutation } from '@tanstack/react-query';
 
 type HideResourceFormComponentProps = {
     isOpen: boolean;
     onClose: () => void;
+};
+
+const useHideResource = ({
+    uri,
+    onClose,
+}: {
+    uri: string;
+    onClose: () => void;
+}): {
+    hideResource: (data: { reason: string }) => void;
+    error: Error | null;
+    isLoading: boolean;
+} => {
+    const dispatch = useDispatch();
+    const { mutate, error, isLoading } = useMutation<
+        {
+            reason: string;
+            removedAt: string;
+        },
+        Error,
+        { reason: string }
+    >({
+        mutationFn: async ({ reason }: { reason: string }) => {
+            return hideResource({ uri, reason });
+        },
+        onSuccess(response) {
+            // update the resource data in the redux store
+            dispatch(
+                hideResourceSuccess({
+                    uri,
+                    ...response,
+                }),
+            );
+            onClose();
+        },
+    });
+
+    return { hideResource: mutate, error, isLoading };
 };
 
 export const HideResourceForm = ({
@@ -27,33 +65,15 @@ export const HideResourceForm = ({
     onClose,
 }: HideResourceFormComponentProps) => {
     const { translate } = useTranslate();
-    const [resourceError, setResourceError] = useState<string | null>(null);
     const formMethods = useForm<{ reason: string }>({
         reValidateMode: 'onChange',
     });
     const resource = useSelector(fromResource.getResourceLastVersion);
-    const dispatch = useDispatch();
 
-    const onSubmit = async ({ reason }: { reason: string }) => {
-        const result = await hideResource({
-            uri: resource.uri,
-            reason,
-        }).catch((error) => ({ error }));
-
-        const { response, error } = result;
-
-        if (error) {
-            setResourceError(error.message);
-            return;
-        }
-
-        if (response) {
-            // update the resource data in the redux store
-            dispatch(hideResourceSuccess(response));
-        }
-
-        onClose();
-    };
+    const { hideResource, error, isLoading } = useHideResource({
+        uri: resource.uri,
+        onClose,
+    });
 
     const { handleSubmit, formState } = formMethods;
 
@@ -67,11 +87,14 @@ export const HideResourceForm = ({
                 maxWidth="sm"
             >
                 <DialogTitle>{translate('hide')}</DialogTitle>
-                <form id="hide_resource_form" onSubmit={handleSubmit(onSubmit)}>
+                <form
+                    id="hide_resource_form"
+                    onSubmit={handleSubmit(hideResource)}
+                >
                     <DialogContent>
-                        {resourceError && (
+                        {error && (
                             <Alert>
-                                <p>{resourceError}</p>
+                                <p>{error.message}</p>
                             </Alert>
                         )}
                         <TextField
@@ -93,9 +116,11 @@ export const HideResourceForm = ({
                             className={'save'}
                             color="primary"
                             type="submit"
-                            loading={formState.isSubmitting}
+                            loading={formState.isSubmitting || isLoading}
                             error={undefined}
-                            disabled={undefined}
+                            disabled={
+                                formState.isSubmitting || !formState.isValid
+                            }
                             success={undefined}
                             progress={undefined}
                             target={undefined}

@@ -15,20 +15,24 @@ import { AnnotationStorageProvider } from './app/js/annotation/annotationStorage
 import configureStore from './app/js/configureStore';
 import reducers from './app/js/public/reducers';
 import { TestI18N } from './app/js/i18n/I18NContext';
-
-// custom/themes/default/defaultTheme';
+import type { Store } from 'redux';
 
 // @ts-expect-error TS7017
 global.__DEBUG__ = false;
 
 const memoryHistory = createMemoryHistory();
 
-const { store } = configureStore(reducers, sagas, {}, memoryHistory);
 const theme = createTheme(defaultMuiTheme, {
     userAgent: navigator.userAgent,
 });
 
-const Wrapper = ({ children }: any) => (
+const Wrapper = ({
+    children,
+    store,
+}: {
+    children: ReactElement;
+    store: Store;
+}) => (
     <Provider store={store}>
         <TestI18N>
             <AnnotationStorageProvider>
@@ -42,8 +46,22 @@ Wrapper.propTypes = {
     children: PropTypes.node.isRequired,
 };
 
-const customRender = (ui: ReactElement, options = {}) =>
-    render(ui, { wrapper: Wrapper, ...options });
+const customRender = (
+    ui: ReactElement,
+    { initialState = {}, ...options } = {},
+) => {
+    const { store } = configureStore(
+        reducers,
+        sagas,
+        initialState,
+        memoryHistory,
+    );
+    const WrapperWithStore = ({ children }: { children: ReactElement }) => (
+        <Wrapper store={store}>{children}</Wrapper>
+    );
+
+    return render(ui, { wrapper: WrapperWithStore, ...options });
+};
 
 export {
     act,
