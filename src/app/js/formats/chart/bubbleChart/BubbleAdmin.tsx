@@ -1,8 +1,10 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import { TextField } from '@mui/material';
 
-import updateAdminArgs from '../../utils/updateAdminArgs';
-import RoutineParamsAdmin from '../../utils/components/admin/RoutineParamsAdmin';
+import { useUpdateAdminArgs } from '../../utils/updateAdminArgs';
+import RoutineParamsAdmin, {
+    type RoutineParams,
+} from '../../utils/components/admin/RoutineParamsAdmin';
 import ColorPickerParamsAdmin from '../../utils/components/admin/ColorPickerParamsAdmin';
 import { MULTICHROMATIC_DEFAULT_COLORSET } from '../../utils/colorUtils';
 import {
@@ -24,18 +26,14 @@ export const defaultArgs = {
     colors: MULTICHROMATIC_DEFAULT_COLORSET,
 };
 
+type BubbleAdminArgs = {
+    params?: RoutineParams;
+    diameter?: number;
+    colors?: string;
+};
+
 type BubbleAdminProps = {
-    args?: {
-        params?: {
-            maxSize?: number;
-            maxValue?: number;
-            minValue?: number;
-            orderBy?: string;
-            uri?: string;
-        };
-        diameter?: number;
-        colors?: string;
-    };
+    args?: BubbleAdminArgs;
     onChange: (args: {
         params?: {
             maxSize?: number;
@@ -70,29 +68,28 @@ const BubbleAdmin = ({
         setColors(args.colors || defaultArgs.colors);
     }, [args.colors]);
 
-    const handleParams = useCallback(
-        (params: {
-            maxSize?: number;
-            maxValue?: number;
-            minValue?: number;
-            orderBy?: string;
-        }) => updateAdminArgs('params', params, { args, onChange }),
-        [args, onChange],
+    const handleParams = useUpdateAdminArgs<BubbleAdminArgs, 'params'>(
+        'params',
+        {
+            args,
+            onChange,
+        },
     );
 
-    const handleColors = useCallback(
-        (newColors: string) => {
-            setColors(newColors);
-            updateAdminArgs('colors', newColors, { args, onChange });
+    const handleColors = useUpdateAdminArgs<BubbleAdminArgs, 'colors'>(
+        'colors',
+        {
+            args,
+            onChange,
         },
-        [args, onChange, setColors],
     );
 
-    const handleDiameter = useCallback(
-        (e: React.ChangeEvent<HTMLInputElement>) => {
-            updateAdminArgs('diameter', e.target.value, { args, onChange });
+    const handleDiameter = useUpdateAdminArgs<BubbleAdminArgs, 'diameter'>(
+        'diameter',
+        {
+            args,
+            onChange,
         },
-        [args, onChange],
     );
 
     const { params, diameter } = args;
@@ -120,6 +117,7 @@ const BubbleAdmin = ({
                 />
                 <TextField
                     label={translate('diameter')}
+                    //  @ts-expect-error TS2322
                     onChange={handleDiameter}
                     value={diameter}
                     fullWidth
