@@ -89,7 +89,7 @@ describe('fields saga', () => {
                 prepareFieldFormData({
                     annotable: false,
                     annotationFormat: 'list',
-                    annotationFormatListKind: 'single',
+                    annotationFormatListKind: 'multiple',
                     annotationFormatListOptions: 'a\nb\nc',
                     annotationFormatListSupportsNewValues: true,
                 }),
