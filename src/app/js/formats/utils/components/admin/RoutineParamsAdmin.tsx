@@ -10,25 +10,21 @@ import {
 
 import { useTranslate } from '../../../../i18n/I18NContext';
 
+export type RoutineParams = {
+    maxSize?: number;
+    maxValue?: number;
+    minValue?: number;
+    orderBy?: string;
+    uri?: string;
+};
+
 type RoutineParamsAdminProps = {
-    params: {
-        maxSize?: number;
-        maxValue?: number;
-        minValue?: number;
-        orderBy?: string;
-        uri?: string;
-    };
-    onChange: (params: {
-        maxSize?: number;
-        maxValue?: number;
-        minValue?: number;
-        orderBy?: string;
-        uri?: string;
-    }) => void;
-    showMaxSize: boolean;
-    showMaxValue: boolean;
-    showMinValue: boolean;
-    showOrderBy: boolean;
+    params: RoutineParams;
+    onChange: (params: RoutineParams) => void;
+    showMaxSize?: boolean;
+    showMaxValue?: boolean;
+    showMinValue?: boolean;
+    showOrderBy?: boolean;
     showUri?: boolean;
 };
 

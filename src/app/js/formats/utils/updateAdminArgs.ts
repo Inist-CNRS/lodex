@@ -12,3 +12,25 @@ export default (
     };
     props.onChange(newState);
 };
+
+export const useUpdateAdminArgs = <
+    Args extends Record<string, unknown>,
+    key extends keyof Args,
+>(
+    key: string,
+    {
+        args,
+        onChange,
+    }: {
+        args: Args;
+        onChange: (newState: Args) => void;
+    },
+) => {
+    return (value: Args[key]) => {
+        const newState = {
+            ...args,
+            [key]: value,
+        };
+        onChange(newState);
+    };
+};
