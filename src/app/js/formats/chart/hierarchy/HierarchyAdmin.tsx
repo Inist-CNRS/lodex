@@ -1,10 +1,6 @@
-// @ts-expect-error TS6133
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { TextField } from '@mui/material';
 
-import { polyglot as polyglotPropTypes } from '../../../propTypes';
-import updateAdminArgs from '../../utils/updateAdminArgs';
+import { useUpdateAdminArgs } from '../../utils/updateAdminArgs';
 import RoutineParamsAdmin from '../../utils/components/admin/RoutineParamsAdmin';
 import ColorPickerParamsAdmin from '../../utils/components/admin/ColorPickerParamsAdmin';
 import { MONOCHROMATIC_DEFAULT_COLORSET } from '../../utils/colorUtils';
@@ -13,7 +9,7 @@ import {
     FormatDataParamsFieldSet,
 } from '../../utils/components/field-set/FormatFieldSets';
 import FormatGroupedFieldSet from '../../utils/components/field-set/FormatGroupedFieldSet';
-import { translate } from '../../../i18n/I18NContext';
+import { useTranslate } from '../../../i18n/I18NContext';
 
 export const defaultArgs = {
     params: {
@@ -22,160 +18,171 @@ export const defaultArgs = {
         maxLabelLength: 25,
         labelOffset: 50,
         minimumScaleValue: 5,
+        maxValue: undefined,
+        minValue: undefined,
+        uri: undefined,
     },
     colors: MONOCHROMATIC_DEFAULT_COLORSET,
 };
 
-class HierarchyAdmin extends Component {
-    static propTypes = {
-        args: PropTypes.shape({
-            params: PropTypes.shape({
-                maxSize: PropTypes.number,
-                maxValue: PropTypes.number,
-                minValue: PropTypes.number,
-                orderBy: PropTypes.string,
-                maxLabelLength: PropTypes.number,
-                labelOffset: PropTypes.number,
-                minimumScaleValue: PropTypes.number,
-            }),
-            colors: PropTypes.string,
-        }),
-        onChange: PropTypes.func.isRequired,
-        p: polyglotPropTypes.isRequired,
-        showMaxSize: PropTypes.bool.isRequired,
-        showMaxValue: PropTypes.bool.isRequired,
-        showMinValue: PropTypes.bool.isRequired,
-        showOrderBy: PropTypes.bool.isRequired,
+type HierarchyArgs = {
+    params?: {
+        maxSize?: number;
+        maxValue?: number;
+        minValue?: number;
+        orderBy?: string;
+        maxLabelLength?: number;
+        labelOffset?: number;
+        minimumScaleValue?: number;
+        uri?: string;
     };
+    colors?: string;
+};
 
-    static defaultProps = {
-        args: defaultArgs,
-        showMaxSize: true,
-        showMaxValue: false,
-        showMinValue: false,
-        showOrderBy: true,
-    };
-
-    // @ts-expect-error TS7006
-    constructor(props) {
-        super(props);
-        this.handleColors = this.handleColors.bind(this);
-        this.state = {
-            // @ts-expect-error TS2339
-            colors: this.props.args.colors || defaultArgs.colors,
+type HierarchyAdminProps = {
+    args?: HierarchyArgs;
+    onChange: (args: {
+        params?: {
+            maxSize?: number;
+            maxValue?: number;
+            minValue?: number;
+            orderBy?: string;
+            maxLabelLength?: number;
+            labelOffset?: number;
+            minimumScaleValue?: number;
+            uri?: string;
         };
-    }
-    // @ts-expect-error TS7006
-    handleParams = (params) => {
+        colors?: string;
+    }) => void;
+    showMaxSize?: boolean;
+    showMaxValue?: boolean;
+    showMinValue?: boolean;
+    showOrderBy?: boolean;
+};
+
+const HierarchyAdmin = ({
+    args = defaultArgs,
+    onChange,
+    showMaxSize = true,
+    showMaxValue = false,
+    showMinValue = false,
+    showOrderBy = true,
+}: HierarchyAdminProps) => {
+    const { translate } = useTranslate();
+
+    const updateParams = useUpdateAdminArgs<HierarchyArgs, 'params'>('params', {
+        args,
+        onChange,
+    });
+
+    const handleParams = (params: {
+        maxSize?: number;
+        maxValue?: number;
+        minValue?: number;
+        orderBy?: string;
+        maxLabelLength?: number;
+        labelOffset?: number;
+        minimumScaleValue?: number;
+        uri?: string;
+    }) => {
         const newParams = {
-            // @ts-expect-error TS2339
-            ...this.props.args.params,
+            ...args.params,
             ...params,
         };
-        updateAdminArgs('params', newParams, this.props);
+        updateParams(newParams);
     };
 
-    // @ts-expect-error TS7006
-    handleColors(colors) {
-        updateAdminArgs(
-            'colors',
-            colors.split(' ')[0] || defaultArgs.colors,
-            this.props,
-        );
-    }
+    const updateColors = useUpdateAdminArgs<HierarchyArgs, 'colors'>('colors', {
+        args,
+        onChange,
+    });
 
-    // @ts-expect-error TS7006
-    handleMaxLabelLength = (event) => {
-        const maxLabelLength = event.target.value;
-        this.handleParams({
-            // @ts-expect-error TS2339
-            ...this.props.args.params,
-            maxLabelLength: parseInt(maxLabelLength, 10),
+    const handleColors = (newColors: string) => {
+        const color = newColors.split(' ')[0] || defaultArgs.colors;
+        updateColors(color);
+    };
+
+    const handleMaxLabelLength = (
+        event: React.ChangeEvent<HTMLInputElement>,
+    ) => {
+        const maxLabelLength = parseInt(event.target.value, 10);
+        handleParams({
+            ...args.params,
+            maxLabelLength,
         });
     };
 
-    // @ts-expect-error TS7006
-    handleLabelOffset = (event) => {
-        const labelOffset = event.target.value;
-        this.handleParams({
-            // @ts-expect-error TS2339
-            ...this.props.args.params,
-            labelOffset: parseInt(labelOffset, 10),
+    const handleLabelOffset = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const labelOffset = parseInt(event.target.value, 10);
+        handleParams({
+            ...args.params,
+            labelOffset,
         });
     };
 
-    // @ts-expect-error TS7006
-    handleMinimumScaleValue = (event) => {
-        const minimumScaleValue = event.target.value;
-        this.handleParams({
-            // @ts-expect-error TS2339
-            ...this.props.args.params,
-            minimumScaleValue: parseInt(minimumScaleValue, 10),
+    const handleMinimumScaleValue = (
+        event: React.ChangeEvent<HTMLInputElement>,
+    ) => {
+        const minimumScaleValue = parseInt(event.target.value, 10);
+        handleParams({
+            ...args.params,
+            minimumScaleValue,
         });
     };
 
-    render() {
-        const {
-            // @ts-expect-error TS2339
-            p: polyglot,
-            // @ts-expect-error TS2339
-            args: { params },
-            // @ts-expect-error TS2339
-            showMaxSize,
-            // @ts-expect-error TS2339
-            showMaxValue,
-            // @ts-expect-error TS2339
-            showMinValue,
-            // @ts-expect-error TS2339
-            showOrderBy,
-        } = this.props;
+    const { params } = args;
 
-        return (
-            <FormatGroupedFieldSet>
-                <FormatDataParamsFieldSet>
-                    <RoutineParamsAdmin
-                        params={params || defaultArgs.params}
-                        polyglot={polyglot}
-                        onChange={this.handleParams}
-                        showMaxSize={showMaxSize}
-                        showMaxValue={showMaxValue}
-                        showMinValue={showMinValue}
-                        showOrderBy={showOrderBy}
-                    />
-                </FormatDataParamsFieldSet>
-                <FormatChartParamsFieldSet defaultExpanded>
-                    <ColorPickerParamsAdmin
-                        // @ts-expect-error TS2339
-                        colors={this.state.colors || defaultArgs.colors}
-                        onChange={this.handleColors}
-                        polyglot={polyglot}
-                        monochromatic={true}
-                    />
-                    <TextField
-                        label={polyglot.t('max_char_number_in_labels')}
-                        onChange={this.handleMaxLabelLength}
-                        // @ts-expect-error TS2339
-                        value={this.props.args.params.maxLabelLength}
-                        fullWidth
-                    />
-                    <TextField
-                        label={polyglot.t('label_offset')}
-                        onChange={this.handleLabelOffset}
-                        // @ts-expect-error TS2339
-                        value={this.props.args.params.labelOffset}
-                        fullWidth
-                    />
-                    <TextField
-                        label={polyglot.t('minimum_scale_value')}
-                        onChange={this.handleMinimumScaleValue}
-                        // @ts-expect-error TS2339
-                        value={this.props.args.params.minimumScaleValue}
-                        fullWidth
-                    />
-                </FormatChartParamsFieldSet>
-            </FormatGroupedFieldSet>
-        );
-    }
-}
+    return (
+        <FormatGroupedFieldSet>
+            <FormatDataParamsFieldSet>
+                <RoutineParamsAdmin
+                    params={{
+                        ...defaultArgs.params,
+                        ...params,
+                    }}
+                    onChange={handleParams}
+                    showMaxSize={showMaxSize}
+                    showMaxValue={showMaxValue}
+                    showMinValue={showMinValue}
+                    showOrderBy={showOrderBy}
+                    showUri={false}
+                />
+            </FormatDataParamsFieldSet>
+            <FormatChartParamsFieldSet defaultExpanded>
+                <ColorPickerParamsAdmin
+                    colors={args.colors}
+                    onChange={handleColors}
+                    monochromatic={true}
+                />
+                <TextField
+                    label={translate('max_char_number_in_labels')}
+                    onChange={handleMaxLabelLength}
+                    value={
+                        params?.maxLabelLength ||
+                        defaultArgs.params.maxLabelLength
+                    }
+                    fullWidth
+                />
+                <TextField
+                    label={translate('label_offset')}
+                    onChange={handleLabelOffset}
+                    value={
+                        params?.labelOffset || defaultArgs.params.labelOffset
+                    }
+                    fullWidth
+                />
+                <TextField
+                    label={translate('minimum_scale_value')}
+                    onChange={handleMinimumScaleValue}
+                    value={
+                        params?.minimumScaleValue ||
+                        defaultArgs.params.minimumScaleValue
+                    }
+                    fullWidth
+                />
+            </FormatChartParamsFieldSet>
+        </FormatGroupedFieldSet>
+    );
+};
 
-export default translate(HierarchyAdmin);
+export default HierarchyAdmin;
