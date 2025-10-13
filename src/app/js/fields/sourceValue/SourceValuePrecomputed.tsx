@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import ListAltIcon from '@mui/icons-material/ListAlt';
-import PropTypes from 'prop-types';
 import RoutineCatalog from '../wizard/RoutineCatalog';
 import { useSelector } from 'react-redux';
 import { fromPrecomputed } from '../../admin/selectors';
@@ -142,12 +141,6 @@ const SourceValuePrecomputed = ({
             </Box>
         </Box>
     );
-};
-
-SourceValuePrecomputed.propTypes = {
-    updateDefaultValueTransformers: PropTypes.func.isRequired,
-    value: PropTypes.string,
-    routine: PropTypes.string,
 };
 
 export default SourceValuePrecomputed;
