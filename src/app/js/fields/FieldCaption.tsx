@@ -1,10 +1,7 @@
-import PropTypes from 'prop-types';
-
 import { Box, MenuItem, Typography } from '@mui/material';
 import { getFieldToCaptionForSpecificScope } from '../../../common/scope';
 import { useTranslate } from '../i18n/I18NContext';
 import getFieldClassName from '../lib/getFieldClassName';
-import { field as fieldPropTypes } from '../propTypes';
 import FieldRepresentation from './FieldRepresentation';
 import type { Field } from './types.ts';
 import { TextField } from '../reactHookFormFields/TextField.tsx';
@@ -66,12 +63,6 @@ const FieldCaption = ({
             </TextField>
         </Box>
     );
-};
-
-FieldCaption.propTypes = {
-    fields: PropTypes.arrayOf(fieldPropTypes).isRequired,
-    scope: PropTypes.string.isRequired,
-    subresourceId: PropTypes.string,
 };
 
 export default FieldCaption;

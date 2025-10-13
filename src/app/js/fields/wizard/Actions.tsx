@@ -1,5 +1,4 @@
 import { Box } from '@mui/material';
-import PropTypes from 'prop-types';
 import { useParams } from 'react-router';
 import { useWatch } from 'react-hook-form';
 import { useTranslate } from '../../i18n/I18NContext';
@@ -7,7 +6,6 @@ import isEqual from 'lodash/isEqual';
 import RemoveButton from '../../admin/preview/RemoveButton';
 import CancelButton from '../../lib/components/CancelButton';
 import { SaveButton } from '../../lib/components/SaveButton';
-import { field as fieldPropTypes } from '../../propTypes';
 import type { Field } from '../types.ts';
 
 export const ActionsComponent = ({
@@ -47,12 +45,6 @@ export const ActionsComponent = ({
             </Box>
         </Box>
     );
-};
-
-ActionsComponent.propTypes = {
-    currentEditedField: fieldPropTypes,
-    onCancel: PropTypes.func.isRequired,
-    onSave: PropTypes.func.isRequired,
 };
 
 ActionsComponent.defaultProps = {

@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
 import ListAltIcon from '@mui/icons-material/ListAlt';
-import PropTypes from 'prop-types';
 import RoutineCatalog from '../wizard/RoutineCatalog';
 import { Box, Button, IconButton, Tooltip, Typography } from '@mui/material';
 import { fromFields } from '../../sharedSelectors';
@@ -218,11 +217,6 @@ const SourceValueRoutine = ({
             </Box>
         </Box>
     );
-};
-
-SourceValueRoutine.propTypes = {
-    updateDefaultValueTransformers: PropTypes.func.isRequired,
-    value: PropTypes.string,
 };
 
 export default SourceValueRoutine;
