@@ -85,7 +85,7 @@ export const PrecomputedForm = ({
         TaskStatus | undefined
     >(initialValues?.status);
 
-    const form = useForm<NewPreComputation>({
+    const formMethods = useForm<NewPreComputation>({
         defaultValues: {
             name: initialValues?.name,
             webServiceUrl: initialValues?.webServiceUrl,
@@ -95,7 +95,7 @@ export const PrecomputedForm = ({
         mode: 'onChange',
     });
 
-    const { handleSubmit, getValues, watch, setValue } = form;
+    const { handleSubmit, getValues, watch, setValue } = formMethods;
 
     const sourceColumns = watch('sourceColumns');
     const webServiceUrl = watch('webServiceUrl');
@@ -269,7 +269,7 @@ export const PrecomputedForm = ({
     }, [getValues, sourceColumns, webServiceUrl]);
 
     return (
-        <FormProvider {...form}>
+        <FormProvider {...formMethods}>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <Box mt={3} display="flex" gap={6}>
                     <Box sx={{ flex: 2 }}>
