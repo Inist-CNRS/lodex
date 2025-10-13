@@ -1,95 +1,135 @@
-// @ts-expect-error TS6133
-import React from 'react';
-import compose from 'recompose/compose';
-import withHandlers from 'recompose/withHandlers';
-import { connect } from 'react-redux';
-import { translate } from '../../i18n/I18NContext';
-// @ts-expect-error TS7016
-import { Field, reduxForm, propTypes as reduxFormPropTypes } from 'redux-form';
+import { useDispatch, useSelector } from 'react-redux';
+import { useTranslate } from '../../i18n/I18NContext';
 
-import {
-    hideResource as hideResourceAction,
-    HIDE_RESOURCE_FORM_NAME,
-} from './';
-
-import FormTextField from '../../lib/components/FormTextField';
-import Alert from '../../lib/components/Alert';
-import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { fromResource } from '../selectors';
+import { FormProvider, useForm } from 'react-hook-form';
+import {
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
+} from '@mui/material';
+import { TextField } from '../../reactHookFormFields/TextField';
+import CancelButton from '../../lib/components/CancelButton';
+import ButtonWithStatus from '../../lib/components/ButtonWithStatus';
+import { hideResource } from '../api/hideResource';
+import { hideResourceSuccess } from '.';
+import Alert from '../../lib/components/Alert';
+import { useMutation } from '@tanstack/react-query';
 
-// @ts-expect-error TS7006
-const validate = (values, { p: polyglot }) => {
-    if (!values.reason) {
-        return {
-            reason: polyglot.t('required'),
-        };
-    }
-
-    return {};
+type HideResourceFormComponentProps = {
+    isOpen: boolean;
+    onClose: () => void;
 };
 
-export const HideResourceFormComponent = ({
-    // @ts-expect-error TS7031
-    resource,
-    // @ts-expect-error TS7031
-    resourceError,
-    // @ts-expect-error TS7031
-    handleSubmit,
-    // @ts-expect-error TS7031
-    p: polyglot,
-}) => (
-    <form id="hide_resource_form" onSubmit={() => handleSubmit(resource.uri)}>
-        {resourceError && (
-            <Alert>
-                <p>{resourceError}</p>
-            </Alert>
-        )}
-        <Field
-            name="reason"
-            component={FormTextField}
-            label={polyglot.t('enter_reason')}
-            fullWidth
-            multiline
-            variant="standard"
-        />
-    </form>
-);
+const useHideResource = ({
+    uri,
+    onClose,
+}: {
+    uri: string;
+    onClose: () => void;
+}): {
+    hideResource: (data: { reason: string }) => void;
+    error: Error | null;
+    isLoading: boolean;
+} => {
+    const dispatch = useDispatch();
+    const { mutate, error, isLoading } = useMutation<
+        {
+            reason: string;
+            removedAt: string;
+        },
+        Error,
+        { reason: string }
+    >({
+        mutationFn: async ({ reason }: { reason: string }) => {
+            return hideResource({ uri, reason });
+        },
+        onSuccess(response) {
+            // update the resource data in the redux store
+            dispatch(
+                hideResourceSuccess({
+                    uri,
+                    ...response,
+                }),
+            );
+            onClose();
+        },
+    });
 
-HideResourceFormComponent.defaultProps = {
-    resource: null,
-    resourceError: null,
+    return { hideResource: mutate, error, isLoading };
 };
 
-HideResourceFormComponent.propTypes = {
-    ...reduxFormPropTypes,
-    p: polyglotPropTypes.isRequired,
+export const HideResourceForm = ({
+    isOpen,
+    onClose,
+}: HideResourceFormComponentProps) => {
+    const { translate } = useTranslate();
+    const formMethods = useForm<{ reason: string }>({
+        reValidateMode: 'onChange',
+    });
+    const resource = useSelector(fromResource.getResourceLastVersion);
+
+    const { hideResource, error, isLoading } = useHideResource({
+        uri: resource.uri,
+        onClose,
+    });
+
+    const { handleSubmit, formState } = formMethods;
+
+    return (
+        <FormProvider {...formMethods}>
+            <Dialog
+                open={isOpen}
+                scroll="body"
+                onClose={onClose}
+                fullWidth
+                maxWidth="sm"
+            >
+                <DialogTitle>{translate('hide')}</DialogTitle>
+                <form
+                    id="hide_resource_form"
+                    onSubmit={handleSubmit(hideResource)}
+                >
+                    <DialogContent>
+                        {error && (
+                            <Alert>
+                                <p>{error.message}</p>
+                            </Alert>
+                        )}
+                        <TextField
+                            name="reason"
+                            label={translate('enter_reason')}
+                            fullWidth
+                            multiline
+                            variant="standard"
+                            required
+                        />
+                    </DialogContent>
+                    <DialogActions>
+                        <CancelButton key="cancel" onClick={onClose}>
+                            {translate('cancel')}
+                        </CancelButton>
+                        <ButtonWithStatus
+                            raised
+                            key="save"
+                            className={'save'}
+                            color="primary"
+                            type="submit"
+                            loading={formState.isSubmitting || isLoading}
+                            error={undefined}
+                            disabled={
+                                formState.isSubmitting || !formState.isValid
+                            }
+                            success={undefined}
+                            progress={undefined}
+                            target={undefined}
+                        >
+                            {translate('save')}
+                        </ButtonWithStatus>
+                    </DialogActions>
+                </form>
+            </Dialog>
+        </FormProvider>
+    );
 };
-
-// @ts-expect-error TS7006
-const mapStateToProps = (state) => ({
-    resourceError: fromResource.getError(state),
-    initialValues: fromResource.getResourceLastVersion(state),
-    resource: fromResource.getResourceLastVersion(state),
-});
-
-const mapDispatchToProps = {
-    hideResource: hideResourceAction,
-};
-
-export default compose(
-    translate,
-    connect(mapStateToProps, mapDispatchToProps),
-    withHandlers({
-        // @ts-expect-error TS2322
-        onSubmit:
-            ({ hideResource, resource }) =>
-            () => {
-                hideResource(resource.uri);
-            },
-    }),
-    reduxForm({
-        form: HIDE_RESOURCE_FORM_NAME,
-        validate,
-    }),
-    // @ts-expect-error TS2345
-)(HideResourceFormComponent);
