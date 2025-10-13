@@ -35,7 +35,7 @@ export const TextField = ({
     const fieldValue =
         useMemo(() => {
             return transform ? transform(field.value) : field.value;
-        }, [field.value]) ?? '';
+        }, [field.value, transform]) ?? '';
 
     return (
         <MuiTextField
@@ -46,8 +46,8 @@ export const TextField = ({
             error={!!fieldState.error}
             helperText={fieldState.error?.message}
             value={fieldValue}
-            required={required}
             onChange={(e) => field.onChange(e.target.value)}
+            required={required}
         />
     );
 };
