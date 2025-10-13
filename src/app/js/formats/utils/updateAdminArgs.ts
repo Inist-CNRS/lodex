@@ -1,5 +1,11 @@
-// @ts-expect-error TS7006
-export default (key, value, props) => {
+export default (
+    key: string,
+    value: unknown,
+    props: {
+        args: Record<string, unknown>;
+        onChange: (newState: Record<string, unknown>) => void;
+    },
+) => {
     const newState = {
         ...props.args,
         [key]: value,

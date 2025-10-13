@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import { polyglot as polyglotPropTypes } from '../../../propTypes';
 import RoutineParamsAdmin from '../../utils/components/admin/RoutineParamsAdmin';
 // @ts-expect-error TS6133
-import React from 'react';
+import React, { useCallback } from 'react';
 import {
     FormatDataParamsFieldSet,
     FormatDefaultParamsFieldSet,
@@ -146,19 +146,27 @@ const EJSAdmin = (props) => {
         showMaxValue,
         showMinValue,
         showOrderBy,
+        onChange,
     } = props;
 
     const { params, template } = args;
 
-    // @ts-expect-error TS7006
-    const handleParams = (newParams) => {
-        updateAdminArgs('params', newParams, props);
-    };
+    const handleParams = useCallback(
+        (newParams: unknown) => {
+            updateAdminArgs('params', newParams, props);
+        },
+        [props],
+    );
 
-    // @ts-expect-error TS7006
-    const handleTemplateChange = (newTemplate) => {
-        updateAdminArgs('template', newTemplate, props);
-    };
+    const handleTemplateChange = useCallback(
+        (newTemplate: string) => {
+            updateAdminArgs('template', newTemplate, {
+                args,
+                onChange,
+            });
+        },
+        [args, onChange],
+    );
 
     return (
         <FormatGroupedFieldSet>
