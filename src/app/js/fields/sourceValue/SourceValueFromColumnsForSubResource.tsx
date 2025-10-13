@@ -5,7 +5,8 @@ import { fromParsing } from '../../admin/selectors';
 import parseValue from '../../../../common/tools/parseValue';
 import { useTranslate } from '../../i18n/I18NContext';
 import { fromI18n } from '../../public/selectors';
-import type { Subresource, TransformerDraft } from '../types.ts';
+import type { TransformerDraft } from '../types.ts';
+import type { SubResource } from '../../admin/subresource';
 
 const SourceValueFromColumnsForSubResource = ({
     updateDefaultValueTransformers,
@@ -21,7 +22,7 @@ const SourceValueFromColumnsForSubResource = ({
         const { subresources } = state.subresource;
 
         const subresource = subresources.find(
-            (s: Subresource) => s._id === selectedSubresourceUri,
+            (s: SubResource) => s._id === selectedSubresourceUri,
         );
         const [firstParsedLine] = fromParsing.getExcerptLines(state);
 
