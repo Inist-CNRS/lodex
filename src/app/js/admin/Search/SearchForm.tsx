@@ -216,14 +216,17 @@ export const SearchForm = ({ fields, loadField, p: polyglot }) => {
     const [isPending, setIsPending] = React.useState(false);
 
     useEffect(() => {
-        let timer;
+        let timer: number;
         const loading =
             patchFieldOverviewMutation.isLoading ||
             patchSortFieldMutation.isLoading ||
             patchSortOrderMutation.isLoading;
 
         if (loading) {
-            timer = setTimeout(() => setIsPending(true), 100);
+            timer = setTimeout(
+                () => setIsPending(true),
+                100,
+            ) as unknown as number;
         } else {
             setIsPending(false);
         }
