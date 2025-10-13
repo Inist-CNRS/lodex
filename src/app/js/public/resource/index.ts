@@ -58,7 +58,37 @@ export const changeFieldStatusSuccess = createAction(
 export const changeFieldStatusError = createAction(CHANGE_FIELD_STATUS_ERROR);
 export const selectVersion = createAction(SELECT_VERSION);
 
-export const defaultState = {
+export type Contributor = {
+    name: string;
+};
+
+export type Resource = {
+    uri: string;
+    versions: Array<any>;
+    contributions: Array<{
+        fieldName: string;
+        status: string;
+        contributor: Contributor;
+    }>;
+    removedAt?: string;
+    reason?: string;
+    subresourceId?: string;
+    data?: unknown;
+};
+
+export type ResourceState = {
+    resource: null | Resource;
+    error: null | string;
+    loading: boolean;
+    saving: boolean;
+    addingField: boolean | null;
+    hiding: boolean;
+    moderating: boolean;
+    selectedVersion: number | null;
+    isCreating?: boolean;
+};
+
+export const defaultState: ResourceState = {
     resource: null,
     error: null,
     loading: true,
@@ -66,13 +96,14 @@ export const defaultState = {
     addingField: false,
     hiding: false,
     selectedVersion: 0,
+    moderating: false,
 };
 
-// @ts-expect-error TS7006
-export default handleActions(
+export default handleActions<ResourceState, any>(
     {
-        // @ts-expect-error TS7006
-        [combineActions('@@INIT', PRE_LOAD_RESOURCE)]: (state) => ({
+        [combineActions('@@INIT', PRE_LOAD_RESOURCE) as unknown as string]: (
+            state: ResourceState,
+        ) => ({
             ...state,
             loading: true,
         }),
@@ -97,16 +128,14 @@ export default handleActions(
         },
         LOAD_RESOURCE_ERROR: (state, { payload: error }) => ({
             ...state,
-            // @ts-expect-error TS7031
             error: error.message,
             loading: false,
             saving: false,
         }),
-        // @ts-expect-error TS7006
-        [combineActions(SAVE_RESOURCE, ADD_FIELD_TO_RESOURCE)]: (
-            // @ts-expect-error TS7006
-            state,
-        ) => ({
+        [combineActions(
+            SAVE_RESOURCE,
+            ADD_FIELD_TO_RESOURCE,
+        ) as unknown as string]: (state) => ({
             ...state,
             error: null,
             saving: true,
@@ -122,21 +151,21 @@ export default handleActions(
                 saving: false,
             };
         },
-        [HIDE_RESOURCE_SUCCESS]: (
+        HIDE_RESOURCE_SUCCESS: (
             { resource, ...state },
-            // @ts-expect-error TS7031
-            { payload: { reason, removedAt } },
+            {
+                payload: { reason, removedAt },
+            }: { payload: { reason: string; removedAt: string } },
         ) => ({
             ...state,
             error: null,
             hiding: false,
             saving: false,
             resource: {
-                // @ts-expect-error TS7031
                 ...resource,
                 reason,
                 removedAt,
-            },
+            } as Resource,
         }),
         [ADD_FIELD_TO_RESOURCE_SUCCESS]: (state, { payload: { resource } }) => {
             const versions = get(resource, 'versions', []);
@@ -150,22 +179,17 @@ export default handleActions(
                 saving: false,
             };
         },
-        // @ts-expect-error TS7006
         [combineActions(
             SAVE_RESOURCE_ERROR,
             ADD_FIELD_TO_RESOURCE_ERROR,
-            // @ts-expect-error TS7006
-        )]: (state, { payload: error }) => ({
+        ) as unknown as string]: (state, { payload: error }) => ({
             ...state,
             error: error.message,
             saving: false,
         }),
-        // @ts-expect-error TS7006
         CHANGE_FIELD_STATUS: (state, { payload: { field, status } }) => {
-            // @ts-expect-error TS7031
-            const { contributions } = state.resource;
+            const { contributions } = state.resource!;
             const index = contributions.findIndex(
-                // @ts-expect-error TS7031
                 ({ fieldName }) => fieldName === field,
             );
 
@@ -173,7 +197,6 @@ export default handleActions(
                 ...state,
                 moderating: true,
                 resource: {
-                    // @ts-expect-error TS7031
                     ...state.resource,
                     contributions: [
                         ...contributions.slice(0, index),
@@ -183,18 +206,15 @@ export default handleActions(
                         },
                         ...contributions.slice(index + 1),
                     ],
-                },
+                } as Resource,
             };
         },
         CHANGE_FIELD_STATUS_ERROR: (
             state,
-            // @ts-expect-error TS7031
             { payload: { error, field, prevStatus } },
         ) => {
-            // @ts-expect-error TS7031
-            const { contributions } = state.resource;
+            const { contributions } = state.resource!;
             const index = contributions.findIndex(
-                // @ts-expect-error TS7031
                 ({ fieldName }) => fieldName === field,
             );
 
@@ -203,7 +223,6 @@ export default handleActions(
                 error,
                 moderating: false,
                 resource: {
-                    // @ts-expect-error TS7031
                     ...state.resource,
                     contributions: [
                         ...contributions.slice(0, index),
@@ -213,7 +232,7 @@ export default handleActions(
                         },
                         ...contributions.slice(index + 1),
                     ],
-                },
+                } as Resource,
             };
         },
         CHANGE_FIELD_STATUS_SUCCESS: (state) => ({
@@ -239,8 +258,10 @@ export default handleActions(
     defaultState,
 );
 
-// @ts-expect-error TS7006
-const getResourceLastVersion = (state, resource = state.resource) => {
+const getResourceLastVersion = (
+    state: ResourceState,
+    resource = state.resource,
+) => {
     if (!resource) {
         return null;
     }
@@ -255,8 +276,7 @@ const getResourceLastVersion = (state, resource = state.resource) => {
     };
 };
 
-// @ts-expect-error TS7006
-const hasBeenRemoved = (state, resource = state.resource) => {
+const hasBeenRemoved = (state: ResourceState, resource = state.resource) => {
     if (!resource) {
         return false;
     }
@@ -264,30 +284,23 @@ const hasBeenRemoved = (state, resource = state.resource) => {
     return !!resource.removedAt;
 };
 
-// @ts-expect-error TS7006
-const getResourceProposedFields = (state) => {
+const getResourceProposedFields = (state: ResourceState) => {
     const contributions = get(state, 'resource.contributions');
     if (!contributions) {
         return [];
     }
-    return (
-        contributions
-            // @ts-expect-error TS7031
-            .filter(({ status }) => status === PROPOSED)
-            // @ts-expect-error TS7031
-            .map(({ fieldName }) => fieldName)
-    );
+    return contributions
+        .filter(({ status }) => status === PROPOSED)
+        .map(({ fieldName }) => fieldName);
 };
 
-// @ts-expect-error TS7006
-const getProposedFieldStatus = (state) => {
+const getProposedFieldStatus = (state: ResourceState) => {
     const contributions = get(state, 'resource.contributions');
     if (!contributions) {
         return {};
     }
 
     return contributions.reduce(
-        // @ts-expect-error TS7006
         (acc, { fieldName, status }) => ({
             ...acc,
             [fieldName]: status,
@@ -298,23 +311,20 @@ const getProposedFieldStatus = (state) => {
 
 const getFieldStatus = createSelector(
     getProposedFieldStatus,
+    (_: unknown, { name }: { name: string }) => name,
     // @ts-expect-error TS7006
-    (_, { name }) => name,
     (fieldStatusByName, name) => fieldStatusByName[name],
 );
 
-// @ts-expect-error TS7006
-const getResourceContributions = (state) =>
+const getResourceContributions = (state: ResourceState) =>
     get(state, 'resource.contributions', []);
 
 const getResourceContributorsCatalog = createSelector(
     getResourceContributions,
     (contributions) =>
         contributions
-            // @ts-expect-error TS7031
             .filter(({ contributor }) => !!contributor)
             .reduce(
-                // @ts-expect-error TS7006
                 (acc, { fieldName, contributor: { name } }) => ({
                     ...acc,
                     [fieldName]: name,
@@ -325,13 +335,12 @@ const getResourceContributorsCatalog = createSelector(
 
 const getResourceContributorForField = createSelector(
     getResourceContributorsCatalog,
-    // @ts-expect-error TS7006
-    (_, fieldName) => fieldName,
-    (contributorsCatalog, fieldName) => contributorsCatalog[fieldName],
+    (_: unknown, fieldName: string) => fieldName,
+    (contributorsCatalog: Record<string, Contributor>, fieldName) =>
+        contributorsCatalog[fieldName],
 );
 
-// @ts-expect-error TS7006
-const getRemovedData = (state) => {
+const getRemovedData = (state: ResourceState) => {
     const resource = state.resource;
     if (!resource) {
         return {};
@@ -344,25 +353,19 @@ const getRemovedData = (state) => {
     };
 };
 
-// @ts-expect-error TS7006
-const isSaving = (state) => state.saving;
+const isSaving = (state: ResourceState) => state.saving;
 
-// @ts-expect-error TS7006
-const isLoading = (state) => state.loading;
+const isLoading = (state: ResourceState) => state.loading;
 
-// @ts-expect-error TS7031
-const getVersions = ({ resource }) => {
+const getVersions = ({ resource }: ResourceState) => {
     const versions = get(resource, 'versions', []);
-    // @ts-expect-error TS7031
     return versions.map(({ publicationDate }) => publicationDate);
 };
 
-// @ts-expect-error TS7031
-const getNbVersions = ({ resource }) =>
+const getNbVersions = ({ resource }: ResourceState) =>
     (resource && resource.versions && resource.versions.length) || 0;
 
 const getSelectedVersion = createSelector(
-    // @ts-expect-error TS2339
     (state) => state.selectedVersion,
     getNbVersions,
     (selectedVersion, nbVersions) =>
@@ -394,20 +397,15 @@ const isLastVersionSelected = createSelector(
     (selectedVersion, nbVersions) => selectedVersion === nbVersions - 1,
 );
 
-// @ts-expect-error TS7006
-const isAdding = (state) => state.addingField;
+const isAdding = (state: ResourceState) => state.addingField;
 
-// @ts-expect-error TS7006
-const isHiding = (state) => state.hiding;
+const isHiding = (state: ResourceState) => state.hiding;
 
-// @ts-expect-error TS7031
-const getError = ({ error }) => error;
+const getError = ({ error }: ResourceState) => error;
 
-// @ts-expect-error TS7006
-const isCreating = (state) => state.isCreating;
+const isCreating = (state: ResourceState) => state.isCreating;
 
-// @ts-expect-error TS7006
-const isResourceLoaded = (state, uri) =>
+const isResourceLoaded = (state: ResourceState, uri: string) =>
     !state.loading && state.resource && state.resource.uri === uri;
 
 export const fromResource = {
@@ -433,12 +431,9 @@ export const fromResource = {
     isResourceLoaded,
 };
 
-// @ts-expect-error TS7006
-export const getResourceFormData = (state) =>
+export const getResourceFormData = (state: ResourceState) =>
     get(state, 'form.resource.values');
-// @ts-expect-error TS7006
-export const getHideResourceFormData = (state) =>
+export const getHideResourceFormData = (state: ResourceState) =>
     get(state, 'form.hideResource.values');
-// @ts-expect-error TS7006
-export const getNewResourceFieldFormData = (state) =>
+export const getNewResourceFieldFormData = (state: ResourceState) =>
     get(state, 'form.newResourceField.values');
