@@ -1,7 +1,6 @@
 // @ts-expect-error TS6133
 import React, { useEffect, useState } from 'react';
 import memoize from 'lodash/memoize';
-import PropTypes from 'prop-types';
 import pure from 'recompose/pure';
 import { useTranslate } from '../../i18n/I18NContext';
 import TransformerListItem from './TransformerListItem';
@@ -244,10 +243,6 @@ export const TransformerListComponent = ({
             )}
         </Box>
     );
-};
-
-TransformerListComponent.propTypes = {
-    isSubresourceField: PropTypes.bool,
 };
 
 export default pure(TransformerListComponent);

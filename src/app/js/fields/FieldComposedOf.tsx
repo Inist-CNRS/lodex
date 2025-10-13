@@ -276,10 +276,4 @@ const FieldComposedOf = ({
     );
 };
 
-FieldComposedOf.propTypes = {
-    fields: PropTypes.arrayOf(fieldPropTypes).isRequired,
-    scope: PropTypes.string.isRequired,
-    subresourceId: PropTypes.string,
-};
-
 export default FieldComposedOf;

@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import PropTypes from 'prop-types';
 import {
     Autocomplete,
     Box,
@@ -203,12 +202,6 @@ const SourceValueFromSubResource = ({
             />
         </Box>
     );
-};
-
-SourceValueFromSubResource.propTypes = {
-    updateDefaultValueTransformers: PropTypes.func.isRequired,
-    column: PropTypes.string,
-    path: PropTypes.string,
 };
 
 export default SourceValueFromSubResource;

@@ -1,8 +1,5 @@
-// @ts-expect-error TS6133
-import React from 'react';
 import { useTranslate } from '../../i18n/I18NContext';
 import PreviewIcon from '@mui/icons-material/Preview';
-import PropTypes from 'prop-types';
 import { useWatch } from 'react-hook-form';
 
 import { Box, Typography } from '@mui/material';
@@ -89,10 +86,6 @@ const ValuePreview = ({ scope }: { scope?: ScopeType }) => {
             </Box>
         </Box>
     );
-};
-
-ValuePreview.propTypes = {
-    scope: PropTypes.string,
 };
 
 export default ValuePreview;

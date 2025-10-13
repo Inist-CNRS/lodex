@@ -1,4 +1,3 @@
-import { field as fieldPropTypes } from '../../propTypes';
 import FieldLanguageInput from '../FieldLanguageInput';
 import FieldSchemeInput from '../FieldSchemeInput';
 import type { Field } from '../types.ts';
@@ -17,10 +16,6 @@ export const TabSemanticsComponent = ({
             <FieldLanguageInput field={currentEditedField} />
         </>
     );
-};
-
-TabSemanticsComponent.propTypes = {
-    currentEditedField: fieldPropTypes.isRequired,
 };
 
 export default TabSemanticsComponent;

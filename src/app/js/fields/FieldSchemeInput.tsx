@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import { MenuItem, Box } from '@mui/material';
 import { useTranslate } from '../i18n/I18NContext';
 import AutoCompleteField from '../reactHookFormFields/AutoCompleteFetchedField.tsx';
@@ -80,18 +79,6 @@ export const FieldSchemeInputComponent = ({
             }
         />
     );
-};
-
-FieldSchemeInputComponent.defaultProps = {
-    disabled: false,
-    className: undefined,
-    name: 'scheme',
-};
-
-FieldSchemeInputComponent.propTypes = {
-    className: PropTypes.string,
-    name: PropTypes.string,
-    disabled: PropTypes.bool,
 };
 
 export default FieldSchemeInputComponent;
