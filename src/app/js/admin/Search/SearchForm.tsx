@@ -147,11 +147,11 @@ export const SearchForm = ({ fields, loadField, p: polyglot }) => {
     useEffect(() => {
         setFacetChecked(getFacetFields(fieldsResource));
         setSearchInFields(getSearchableFields(fieldsResource));
-    }, [fieldsResource]);
+    }, [fieldsResource, setSearchInFields, setFacetChecked]);
 
     useEffect(() => {
         setResourceSortOrder(initialResourceSortOrder);
-    }, [initialResourceSortOrder]);
+    }, [initialResourceSortOrder, setResourceSortOrder]);
 
     // We could lower the complexity with only one map. But it's more readable like this. And the performance is not a problem here.
 
@@ -213,10 +213,27 @@ export const SearchForm = ({ fields, loadField, p: polyglot }) => {
         });
     };
 
-    const isPending =
-        patchFieldOverviewMutation.isLoading ||
-        patchSortFieldMutation.isLoading ||
-        patchSortOrderMutation.isLoading;
+    const [isPending, setIsPending] = React.useState(false);
+
+    useEffect(() => {
+        let timer;
+        const loading =
+            patchFieldOverviewMutation.isLoading ||
+            patchSortFieldMutation.isLoading ||
+            patchSortOrderMutation.isLoading;
+
+        if (loading) {
+            timer = setTimeout(() => setIsPending(true), 100);
+        } else {
+            setIsPending(false);
+        }
+
+        return () => clearTimeout(timer);
+    }, [
+        patchFieldOverviewMutation.isLoading,
+        patchSortFieldMutation.isLoading,
+        patchSortOrderMutation.isLoading,
+    ]);
 
     // @ts-expect-error TS7006
     const handleResourceSortFieldChange = async (_event, value) => {
