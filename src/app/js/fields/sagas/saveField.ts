@@ -24,28 +24,33 @@ import { FIELD_ANNOTATION_FORMAT_LIST_KIND_SINGLE } from '../FieldAnnotationForm
 
 export const prepareFieldFormData = (values: any) => {
     try {
+        const { annotationFormat, annotable, annotationFormatListOptions } =
+            values;
+        const annotationFormatListKind =
+            values.annotationFormatListKind ??
+            FIELD_ANNOTATION_FORMAT_LIST_KIND_SINGLE;
+        const annotationFormatListSupportsNewValues =
+            values.annotationFormatListSupportsNewValues ?? true;
+        const isListFormat = annotationFormat === FIELD_ANNOTATION_FORMAT_LIST;
+
         return {
             ...values,
-            annotationFormat: values.annotable
-                ? values.annotationFormat
+            annotationFormat: annotable
+                ? annotationFormat
                 : FIELD_ANNOTATION_FORMAT_TEXT,
             annotationFormatListOptions:
-                values.annotable &&
-                values.annotationFormat === FIELD_ANNOTATION_FORMAT_LIST
+                annotable && isListFormat
                     ? splitAnnotationFormatListOptions(
-                          values.annotationFormatListOptions,
+                          annotationFormatListOptions,
                       )
                     : [],
             annotationFormatListKind:
-                values.annotable &&
-                values.annotationFormat === FIELD_ANNOTATION_FORMAT_LIST
-                    ? values.annotationFormatListKind ??
-                      FIELD_ANNOTATION_FORMAT_LIST_KIND_SINGLE
+                annotable && isListFormat
+                    ? annotationFormatListKind
                     : FIELD_ANNOTATION_FORMAT_LIST_KIND_SINGLE,
             annotationFormatListSupportsNewValues:
-                values.annotable &&
-                values.annotationFormat === FIELD_ANNOTATION_FORMAT_LIST
-                    ? values.annotationFormatListSupportsNewValues ?? true
+                annotable && isListFormat
+                    ? annotationFormatListSupportsNewValues
                     : false,
         };
     } catch (error) {
