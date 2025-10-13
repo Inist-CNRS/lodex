@@ -103,12 +103,12 @@ const FieldEditionWizardComponent = ({
 
     const dispatch = useDispatch();
 
-    const form = useForm({
+    const formMethods = useForm({
         values: currentEditedField,
     });
     useEffect(
         () =>
-            form.subscribe({
+            formMethods.subscribe({
                 formState: {
                     values: true,
                 },
@@ -116,7 +116,7 @@ const FieldEditionWizardComponent = ({
                     dispatch(lodexFieldFormChange({ values }));
                 },
             }),
-        [form.subscribe],
+        [formMethods.subscribe],
     );
 
     // @ts-expect-error TS7006
@@ -139,7 +139,7 @@ const FieldEditionWizardComponent = ({
         saveField({
             field: currentEditedField,
             filter,
-            values: form.getValues(),
+            values: formMethods.getValues(),
         });
         handleHideExistingColumns();
     };
@@ -182,8 +182,8 @@ const FieldEditionWizardComponent = ({
     ].filter((x) => x);
 
     return (
-        <FormProvider {...form}>
-            <form onSubmit={form.handleSubmit(handleSave)}>
+        <FormProvider {...formMethods}>
+            <form onSubmit={formMethods.handleSubmit(handleSave)}>
                 <Box
                     className="wizard"
                     sx={{
