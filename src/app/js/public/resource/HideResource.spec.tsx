@@ -33,7 +33,7 @@ describe('HideResourceForm', () => {
         );
         expect(screen.getByText('hide')).toBeInTheDocument();
         await user.click(screen.getByText('hide'));
-        expect(screen.getByText('enter_reason *')).toBeInTheDocument();
+        expect(screen.getByLabelText('enter_reason *')).toBeInTheDocument();
 
         await user.type(screen.getByLabelText('enter_reason *'), 'reason');
         await user.click(screen.getByText('save'));
@@ -67,7 +67,7 @@ describe('HideResourceForm', () => {
         expect(screen.getByText('hide')).toBeInTheDocument();
         await user.click(screen.getByText('hide'));
         await waitFor(() =>
-            expect(screen.getByText('enter_reason *')).toBeInTheDocument(),
+            expect(screen.getByLabelText('enter_reason *')).toBeInTheDocument(),
         );
 
         await user.click(screen.getByText('cancel'));
@@ -98,7 +98,7 @@ describe('HideResourceForm', () => {
         expect(screen.getByText('hide')).toBeInTheDocument();
         await user.click(screen.getByText('hide'));
         await waitFor(() =>
-            expect(screen.getByText('enter_reason *')).toBeInTheDocument(),
+            expect(screen.getByLabelText('enter_reason *')).toBeInTheDocument(),
         );
 
         expect(screen.getByText('save')).toBeDisabled();
@@ -132,7 +132,7 @@ describe('HideResourceForm', () => {
         );
         expect(screen.getByText('hide')).toBeInTheDocument();
         await user.click(screen.getByText('hide'));
-        expect(screen.getByText('enter_reason *')).toBeInTheDocument();
+        expect(screen.getByLabelText('enter_reason *')).toBeInTheDocument();
 
         await user.type(screen.getByLabelText('enter_reason *'), 'reason');
         await user.click(screen.getByText('save'));
