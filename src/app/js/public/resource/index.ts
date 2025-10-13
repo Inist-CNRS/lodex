@@ -13,11 +13,7 @@ export const SAVE_RESOURCE = 'SAVE_RESOURCE';
 export const SAVE_RESOURCE_SUCCESS = 'SAVE_RESOURCE_SUCCESS';
 export const SAVE_RESOURCE_ERROR = 'SAVE_RESOURCE_ERROR';
 
-export const HIDE_RESOURCE = 'HIDE_RESOURCE';
-export const HIDE_RESOURCE_OPEN = 'HIDE_RESOURCE_OPEN';
-export const HIDE_RESOURCE_CANCEL = 'HIDE_RESOURCE_CANCEL';
 export const HIDE_RESOURCE_SUCCESS = 'HIDE_RESOURCE_SUCCESS';
-export const HIDE_RESOURCE_ERROR = 'HIDE_RESOURCE_ERROR';
 
 export const ADD_FIELD_TO_RESOURCE = 'ADD_FIELD_TO_RESOURCE';
 export const ADD_FIELD_TO_RESOURCE_OPEN = 'ADD_FIELD_TO_RESOURCE_OPEN';
@@ -25,7 +21,6 @@ export const ADD_FIELD_TO_RESOURCE_CANCEL = 'ADD_FIELD_TO_RESOURCE_CANCEL';
 export const ADD_FIELD_TO_RESOURCE_SUCCESS = 'ADD_FIELD_TO_RESOURCE_SUCCESS';
 export const ADD_FIELD_TO_RESOURCE_ERROR = 'ADD_FIELD_TO_RESOURCE_ERROR';
 
-export const HIDE_RESOURCE_FORM_NAME = 'hideResource';
 export const NEW_RESOURCE_FIELD_FORM_NAME = 'newResourceField';
 
 export const CHANGE_FIELD_STATUS = 'CHANGE_FIELD_STATUS';
@@ -42,11 +37,7 @@ export const saveResource = createAction(SAVE_RESOURCE);
 export const saveResourceSuccess = createAction(SAVE_RESOURCE_SUCCESS);
 export const saveResourceError = createAction(SAVE_RESOURCE_ERROR);
 
-export const hideResource = createAction(HIDE_RESOURCE);
-export const hideResourceOpen = createAction(HIDE_RESOURCE_OPEN);
-export const hideResourceCancel = createAction(HIDE_RESOURCE_CANCEL);
 export const hideResourceSuccess = createAction(HIDE_RESOURCE_SUCCESS);
-export const hideResourceError = createAction(HIDE_RESOURCE_ERROR);
 
 export const addFieldToResource = createAction(ADD_FIELD_TO_RESOURCE);
 export const addFieldToResourceOpen = createAction(ADD_FIELD_TO_RESOURCE_OPEN);
@@ -112,7 +103,7 @@ export default handleActions(
             saving: false,
         }),
         // @ts-expect-error TS7006
-        [combineActions(SAVE_RESOURCE, HIDE_RESOURCE, ADD_FIELD_TO_RESOURCE)]: (
+        [combineActions(SAVE_RESOURCE, ADD_FIELD_TO_RESOURCE)]: (
             // @ts-expect-error TS7006
             state,
         ) => ({
@@ -162,7 +153,6 @@ export default handleActions(
         // @ts-expect-error TS7006
         [combineActions(
             SAVE_RESOURCE_ERROR,
-            HIDE_RESOURCE_ERROR,
             ADD_FIELD_TO_RESOURCE_ERROR,
             // @ts-expect-error TS7006
         )]: (state, { payload: error }) => ({
@@ -243,16 +233,6 @@ export default handleActions(
         ADD_FIELD_TO_RESOURCE_CANCEL: (state) => ({
             ...state,
             addingField: false,
-            error: null,
-        }),
-        HIDE_RESOURCE_OPEN: (state) => ({
-            ...state,
-            hiding: true,
-            error: null,
-        }),
-        HIDE_RESOURCE_CANCEL: (state) => ({
-            ...state,
-            hiding: false,
             error: null,
         }),
     },
