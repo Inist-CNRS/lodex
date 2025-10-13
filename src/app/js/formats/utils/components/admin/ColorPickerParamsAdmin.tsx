@@ -1,108 +1,94 @@
-// @ts-expect-error TS6133
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import React, { useState, useEffect } from 'react';
 import { Box, TextField, Typography } from '@mui/material';
-
-import { polyglot as polyglotPropTypes } from '../../../../propTypes';
+import { useTranslate } from '../../../../i18n/I18NContext';
 
 const multichromatic_maxLength = 100 * 8 - 1; // "#RRGGBB " is 8 chars, minus the last space, so we can set 100 pickers
 
-class ColorPickerParamsAdmin extends Component {
-    static propTypes = {
-        colors: PropTypes.string,
-        onChange: PropTypes.func.isRequired,
-        polyglot: polyglotPropTypes.isRequired,
-        monochromatic: PropTypes.bool,
+type ColorItem = {
+    color: string;
+};
+
+type ColorPickerParamsAdminProps = {
+    colors?: string;
+    onChange: (colors: string) => void;
+    monochromatic?: boolean;
+};
+
+const ColorPickerParamsAdmin = ({
+    colors = '',
+    onChange,
+    monochromatic = false,
+}: ColorPickerParamsAdminProps) => {
+    const { translate } = useTranslate();
+    const [colorItems, setColorItems] = useState<ColorItem[]>(() =>
+        colors.split(' ').map((color) => ({ color })),
+    );
+
+    useEffect(() => {
+        setColorItems(colors.split(' ').map((color) => ({ color })));
+    }, [colors]);
+
+    const handleChangeText = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const newColors = (e.target.value || '')
+            .split(' ')
+            .map((color) => ({ color }));
+
+        setColorItems(newColors);
+        onChange(e.target.value);
     };
 
-    // @ts-expect-error TS7006
-    constructor(props) {
-        super(props);
-        this.handleChangeText = this.handleChangeText.bind(this);
-        this.state = {
-            // @ts-expect-error TS2339
-            colors: this.props.colors.split(' ').map((color) => ({ color })),
-        };
-    }
-
-    // @ts-expect-error TS7006
-    handleChangeText(e) {
-        this.setState({
-            colors: (e.target.value || '')
-                .split(' ')
-                // @ts-expect-error TS7006
-                .map((color) => ({ color })),
-        });
-
-        // @ts-expect-error TS2339
-        this.props.onChange(e.target.value);
-    }
-
-    // @ts-expect-error TS7006
-    handleChangePicker(i, e) {
-        // @ts-expect-error TS2339
-        const colorsBuffer = [...this.state.colors];
+    const handleChangePicker = (
+        i: number,
+        e: React.ChangeEvent<HTMLInputElement>,
+    ) => {
+        const colorsBuffer = [...colorItems];
         colorsBuffer[i] = { color: e.target.value };
 
-        this.setState({ colors: colorsBuffer });
-        // @ts-expect-error TS2339
-        this.props.onChange(colorsBuffer.map(({ color }) => color).join(' '));
-    }
+        setColorItems(colorsBuffer);
+        onChange(colorsBuffer.map(({ color }) => color).join(' '));
+    };
 
-    createUI() {
-        // @ts-expect-error TS2339
-        const colors = this.state.colors;
+    const createColorPickers = () => {
         return (
             <Box display="flex" flexWrap="wrap" gap={1}>
-                {/*
-                 // @ts-expect-error TS7006 */}
-                {colors.map((element, i) => (
+                {colorItems.map((_, i) => (
                     <input
                         key={i}
                         name="color"
                         type="color"
-                        onChange={this.handleChangePicker.bind(this, i)}
-                        value={colors[i].color}
+                        onChange={(e) => handleChangePicker(i, e)}
+                        value={colorItems[i].color}
                     />
                 ))}
             </Box>
         );
-    }
+    };
 
-    getStateColorsString() {
-        // @ts-expect-error TS2339
-        return this.state.colors.map(({ color }) => color).join(' ');
-    }
+    const getStateColorsString = () => {
+        return colorItems.map(({ color }) => color).join(' ');
+    };
 
-    render() {
-        // @ts-expect-error TS2339
-        const { monochromatic } = this.props;
-        return (
-            <Box display="flex" flexWrap="wrap" width="100%">
-                <Typography>
-                    {monochromatic
-                        ? // @ts-expect-error TS2339
-                          this.props.polyglot.t('Color')
-                        : // @ts-expect-error TS2339
-                          this.props.polyglot.t('colors_set')}
-                </Typography>
-                <TextField
-                    // @ts-expect-error TS2339
-                    label={this.props.polyglot.t('colors_string')}
-                    onChange={this.handleChangeText}
-                    value={this.getStateColorsString()}
-                    // @ts-expect-error TS2322
-                    maxLength={monochromatic ? 7 : multichromatic_maxLength}
-                    fullWidth
-                    sx={{
-                        marginBottom: 1,
-                        marginTop: 1,
-                    }}
-                />
-                {this.createUI()}
-            </Box>
-        );
-    }
-}
+    return (
+        <Box display="flex" flexWrap="wrap" width="100%">
+            <Typography>
+                {monochromatic ? translate('Color') : translate('colors_set')}
+            </Typography>
+            <TextField
+                label={translate('colors_string')}
+                onChange={handleChangeText}
+                value={getStateColorsString()}
+                inputProps={{
+                    maxLength: monochromatic ? 7 : multichromatic_maxLength,
+                }}
+                fullWidth
+                sx={{
+                    marginBottom: 1,
+                    marginTop: 1,
+                }}
+            />
+            {createColorPickers()}
+        </Box>
+    );
+};
 
 export default ColorPickerParamsAdmin;
