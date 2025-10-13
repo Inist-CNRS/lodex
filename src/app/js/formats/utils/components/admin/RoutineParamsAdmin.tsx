@@ -1,6 +1,3 @@
-// @ts-expect-error TS6133
-import React from 'react';
-import PropTypes from 'prop-types';
 import {
     TextField,
     FormControl,
@@ -11,26 +8,40 @@ import {
     Box,
 } from '@mui/material';
 
-import { polyglot as polyglotPropTypes } from '../../../../propTypes';
+import { useTranslate } from '../../../../i18n/I18NContext';
+
+type RoutineParamsAdminProps = {
+    params: {
+        maxSize?: number;
+        maxValue?: number;
+        minValue?: number;
+        orderBy?: string;
+        uri?: string;
+    };
+    onChange: (params: {
+        maxSize?: number;
+        maxValue?: number;
+        minValue?: number;
+        orderBy?: string;
+        uri?: string;
+    }) => void;
+    showMaxSize: boolean;
+    showMaxValue: boolean;
+    showMinValue: boolean;
+    showOrderBy: boolean;
+    showUri?: boolean;
+};
 
 const RoutineParamsAdmin = ({
-    // @ts-expect-error TS7031
-    polyglot,
-    // @ts-expect-error TS7031
     onChange,
-    // @ts-expect-error TS7031
     params: { maxSize, maxValue, minValue, orderBy, uri },
-    // @ts-expect-error TS7031
     showUri,
-    // @ts-expect-error TS7031
     showMaxSize,
-    // @ts-expect-error TS7031
     showMaxValue,
-    // @ts-expect-error TS7031
     showMinValue,
-    // @ts-expect-error TS7031
     showOrderBy,
-}) => {
+}: RoutineParamsAdminProps) => {
+    const { translate } = useTranslate();
     // @ts-expect-error TS7006
     const handleMaxSize = (e) => {
         onChange({
@@ -101,7 +112,7 @@ const RoutineParamsAdmin = ({
         <Box display="flex" flexDirection="column" gap={2} width="100%">
             {showMaxSize && (
                 <TextField
-                    label={polyglot.t('max_fields')}
+                    label={translate('max_fields')}
                     onChange={handleMaxSize}
                     value={maxSize}
                     sx={{ width: '50%' }}
@@ -111,7 +122,7 @@ const RoutineParamsAdmin = ({
                 <Box display="flex" gap={1}>
                     {showMinValue && (
                         <TextField
-                            label={polyglot.t('min_value')}
+                            label={translate('min_value')}
                             onChange={handleMinValue}
                             value={minValue}
                             fullWidth
@@ -119,7 +130,7 @@ const RoutineParamsAdmin = ({
                     )}
                     {showMaxValue && (
                         <TextField
-                            label={polyglot.t('max_value')}
+                            label={translate('max_value')}
                             onChange={handleMaxValue}
                             value={maxValue}
                             fullWidth
@@ -129,7 +140,7 @@ const RoutineParamsAdmin = ({
             )}
             {showOrderBy && (
                 <Box>
-                    <Typography>{polyglot.t('order_by')}</Typography>
+                    <Typography>{translate('order_by')}</Typography>
                     <FormControl sx={{ display: 'flex', flexDirection: 'row' }}>
                         <RadioGroup
                             value={orderBy?.split('/')[0]}
@@ -139,12 +150,12 @@ const RoutineParamsAdmin = ({
                             <FormControlLabel
                                 value="_id"
                                 control={<Radio />}
-                                label={polyglot.t('label')}
+                                label={translate('label')}
                             />
                             <FormControlLabel
                                 value="value"
                                 control={<Radio />}
-                                label={polyglot.t('value')}
+                                label={translate('value')}
                             />
                         </RadioGroup>
                         <RadioGroup
@@ -155,12 +166,12 @@ const RoutineParamsAdmin = ({
                             <FormControlLabel
                                 value="asc"
                                 control={<Radio />}
-                                label={polyglot.t('asc')}
+                                label={translate('asc')}
                             />
                             <FormControlLabel
                                 value="desc"
                                 control={<Radio />}
-                                label={polyglot.t('desc')}
+                                label={translate('desc')}
                             />
                         </RadioGroup>
                     </FormControl>
@@ -168,7 +179,7 @@ const RoutineParamsAdmin = ({
             )}
             {showUri && (
                 <TextField
-                    label={polyglot.t('uri')}
+                    label={translate('uri')}
                     onChange={handleUri}
                     value={uri}
                     sx={{ width: '50%' }}
@@ -176,27 +187,6 @@ const RoutineParamsAdmin = ({
             )}
         </Box>
     );
-};
-
-RoutineParamsAdmin.defaultProps = {
-    showUri: false,
-};
-
-RoutineParamsAdmin.propTypes = {
-    params: PropTypes.shape({
-        maxSize: PropTypes.number,
-        maxValue: PropTypes.number,
-        minValue: PropTypes.number,
-        orderBy: PropTypes.string,
-        uri: PropTypes.string,
-    }),
-    onChange: PropTypes.func.isRequired,
-    polyglot: polyglotPropTypes.isRequired,
-    showMaxSize: PropTypes.bool.isRequired,
-    showMaxValue: PropTypes.bool.isRequired,
-    showMinValue: PropTypes.bool.isRequired,
-    showOrderBy: PropTypes.bool.isRequired,
-    showUri: PropTypes.bool.isRequired,
 };
 
 export default RoutineParamsAdmin;
