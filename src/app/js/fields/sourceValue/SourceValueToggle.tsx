@@ -20,7 +20,8 @@ import SourceValueFromSubResource from './SourceValueFromSubResource';
 import SourceValueRoutine from './SourceValueRoutine';
 import { useTranslate } from '../../i18n/I18NContext';
 import { useSelector } from 'react-redux';
-import type { Subresource, Transformer, TransformerDraft } from '../types';
+import type { Transformer, TransformerDraft } from '../types';
+import type { SubResource } from '../../admin/subresource';
 
 const TRANSFORMERS_FORM_STATUS = new Map([
     [
@@ -224,7 +225,7 @@ export const SourceValueToggle = ({
     const { translate } = useTranslate();
     const subresources = useSelector(
         (state: any) => state.subresource.subresources,
-    ) as Subresource[];
+    ) as SubResource[];
 
     const [source, setSource] = React.useState(null);
     const [value, setValue] = React.useState(null);
@@ -281,7 +282,7 @@ export const SourceValueToggle = ({
         }
 
         if (newSource === 'fromSubresource') {
-            const transformers = subresources
+            const transformers: TransformerDraft[] = subresources
                 ? [
                       {
                           operation: 'COLUMN',
@@ -302,7 +303,7 @@ export const SourceValueToggle = ({
                               {
                                   name: 'path',
                                   type: 'string',
-                                  value: subresources[0].identifier,
+                                  value: subresources[0].identifier ?? '',
                               },
                           ],
                       },
