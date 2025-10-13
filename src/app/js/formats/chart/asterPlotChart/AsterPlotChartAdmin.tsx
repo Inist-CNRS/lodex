@@ -1,10 +1,7 @@
-// @ts-expect-error TS6133
-import React from 'react';
-import PropTypes from 'prop-types';
-
-import { polyglot as polyglotPropTypes } from '../../../propTypes';
-import updateAdminArgs from '../../utils/updateAdminArgs';
-import RoutineParamsAdmin from '../../utils/components/admin/RoutineParamsAdmin';
+import { useUpdateAdminArgs } from '../../utils/updateAdminArgs';
+import RoutineParamsAdmin, {
+    type RoutineParams,
+} from '../../utils/components/admin/RoutineParamsAdmin';
 import ColorPickerParamsAdmin from '../../utils/components/admin/ColorPickerParamsAdmin';
 import { MULTICHROMATIC_DEFAULT_COLORSET } from '../../utils/colorUtils';
 import {
@@ -12,84 +9,19 @@ import {
     FormatDataParamsFieldSet,
 } from '../../utils/components/field-set/FormatFieldSets';
 import FormatGroupedFieldSet from '../../utils/components/field-set/FormatGroupedFieldSet';
-import { translate } from '../../../i18n/I18NContext';
 
-const AsterPlotChartAdmin = ({
-    // @ts-expect-error TS7031
-    p: polyglot,
-    // @ts-expect-error TS7031
-    args,
-    // @ts-expect-error TS7031
-    onChange,
-    // @ts-expect-error TS7031
-    showMaxSize,
-    // @ts-expect-error TS7031
-    showMaxValue,
-    // @ts-expect-error TS7031
-    showMinValue,
-    // @ts-expect-error TS7031
-    showOrderBy,
-}) => {
-    // @ts-expect-error TS7006
-    const handleParams = (params) => {
-        updateAdminArgs(
-            'params',
-            { ...args.params, ...params },
-            {
-                args,
-                onChange,
-            },
-        );
-    };
-
-    // @ts-expect-error TS7006
-    const handleColors = (colors) => {
-        updateAdminArgs('colors', colors, {
-            args,
-            onChange,
-        });
-    };
-
-    return (
-        <FormatGroupedFieldSet>
-            <FormatDataParamsFieldSet>
-                <RoutineParamsAdmin
-                    params={args.params}
-                    onChange={handleParams}
-                    polyglot={polyglot}
-                    showMaxSize={showMaxSize}
-                    showMaxValue={showMaxValue}
-                    showMinValue={showMinValue}
-                    showOrderBy={showOrderBy}
-                />
-            </FormatDataParamsFieldSet>
-            <FormatChartParamsFieldSet defaultExpanded>
-                <ColorPickerParamsAdmin
-                    colors={args.colors}
-                    onChange={handleColors}
-                    polyglot={polyglot}
-                />
-            </FormatChartParamsFieldSet>
-        </FormatGroupedFieldSet>
-    );
+type AsterPlotArgs = {
+    params: RoutineParams;
+    colors?: string;
 };
 
-AsterPlotChartAdmin.propTypes = {
-    args: PropTypes.shape({
-        params: PropTypes.shape({
-            maxSize: PropTypes.number,
-            maxValue: PropTypes.number,
-            minValue: PropTypes.number,
-            orderBy: PropTypes.string,
-        }),
-        colors: PropTypes.string,
-    }),
-    onChange: PropTypes.func.isRequired,
-    p: polyglotPropTypes.isRequired,
-    showMaxSize: PropTypes.bool,
-    showMaxValue: PropTypes.bool,
-    showMinValue: PropTypes.bool,
-    showOrderBy: PropTypes.bool,
+type AsterPlotChartAdminProps = {
+    args: AsterPlotArgs;
+    onChange: (args: AsterPlotArgs) => void;
+    showMaxSize?: boolean;
+    showMaxValue?: boolean;
+    showMinValue?: boolean;
+    showOrderBy?: boolean;
 };
 
 export const defaultArgs = {
@@ -102,12 +34,44 @@ export const defaultArgs = {
     colors: MULTICHROMATIC_DEFAULT_COLORSET,
 };
 
-AsterPlotChartAdmin.defaultProps = {
-    args: defaultArgs,
-    showMaxSize: true,
-    showMaxValue: true,
-    showMinValue: true,
-    showOrderBy: true,
+const AsterPlotChartAdmin = ({
+    args = defaultArgs,
+    onChange,
+    showMaxSize = true,
+    showMaxValue = true,
+    showMinValue = true,
+    showOrderBy = true,
+}: AsterPlotChartAdminProps) => {
+    const handleParams = useUpdateAdminArgs<AsterPlotArgs, 'params'>('params', {
+        args,
+        onChange,
+    });
+
+    const handleColors = useUpdateAdminArgs<AsterPlotArgs, 'colors'>('colors', {
+        args,
+        onChange,
+    });
+
+    return (
+        <FormatGroupedFieldSet>
+            <FormatDataParamsFieldSet>
+                <RoutineParamsAdmin
+                    params={args.params}
+                    onChange={handleParams}
+                    showMaxSize={showMaxSize}
+                    showMaxValue={showMaxValue}
+                    showMinValue={showMinValue}
+                    showOrderBy={showOrderBy}
+                />
+            </FormatDataParamsFieldSet>
+            <FormatChartParamsFieldSet defaultExpanded>
+                <ColorPickerParamsAdmin
+                    colors={args.colors}
+                    onChange={handleColors}
+                />
+            </FormatChartParamsFieldSet>
+        </FormatGroupedFieldSet>
+    );
 };
 
-export default translate(AsterPlotChartAdmin);
+export default AsterPlotChartAdmin;
