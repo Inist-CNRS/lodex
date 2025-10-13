@@ -15,7 +15,7 @@ import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { fromDisplayConfig, fromI18n, fromResource } from '../selectors';
 import { fromFields } from '../../sharedSelectors';
 import Property from '../Property';
-import HideResource from './HideResource';
+import { HideResource } from './HideResource';
 import SelectVersion from './SelectVersion';
 import getTitle from '../../lib/getTitle';
 import ExportButton from '../ExportButton';

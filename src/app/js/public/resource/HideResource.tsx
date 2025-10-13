@@ -1,36 +1,34 @@
-// @ts-expect-error TS6133
-import React from 'react';
-import { connect } from 'react-redux';
-import compose from 'recompose/compose';
-import { translate } from '../../i18n/I18NContext';
-
-import { fromResource } from '../selectors';
-import {
-    hideResourceOpen,
-    hideResourceCancel,
-    HIDE_RESOURCE_FORM_NAME,
-} from './';
-import HideResourceForm from './HideResourceForm';
+import { useState } from 'react';
+import { HideResourceForm } from './HideResourceForm';
+import { Button } from '@mui/material';
+import { useTranslate } from '../../i18n/I18NContext';
+import { useSelector } from 'react-redux';
 import { fromUser } from '../../sharedSelectors';
-import ButtonWithDialogForm from '../../lib/components/ButtonWithDialogForm';
 
-// @ts-expect-error TS7006
-const mapStateToProps = (state, { p }) => ({
-    open: fromResource.isHiding(state),
-    saving: fromResource.isSaving(state),
-    show: fromUser.isAdmin(state),
-    formName: HIDE_RESOURCE_FORM_NAME,
-    form: <HideResourceForm />,
-    label: p.t('hide'),
-    className: 'hide-resource',
-});
+export const HideResource = () => {
+    const { translate } = useTranslate();
+    const [isOpen, setIsOpen] = useState(false);
+    const isAdmin = useSelector(fromUser.isAdmin);
 
-const mapDispatchToProps = {
-    handleOpen: () => hideResourceOpen(),
-    handleClose: () => hideResourceCancel(),
+    if (!isAdmin) {
+        return null;
+    }
+
+    return (
+        <>
+            <Button
+                variant="text"
+                className="dialog-button hide-resource"
+                color="primary"
+                onClick={() => setIsOpen(true)}
+            >
+                {translate('hide')}
+            </Button>
+
+            <HideResourceForm
+                isOpen={isOpen}
+                onClose={() => setIsOpen(false)}
+            />
+        </>
+    );
 };
-
-export default compose(
-    translate,
-    connect(mapStateToProps, mapDispatchToProps),
-)(ButtonWithDialogForm);
