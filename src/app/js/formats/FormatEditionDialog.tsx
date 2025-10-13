@@ -38,8 +38,7 @@ const FormatEditionDialog = ({
             : getFormatInitialArgs(currentValue),
     );
 
-    // @ts-expect-error TS7006
-    const setFormat = (name) => {
+    const setFormat = (name: string) => {
         setName(name);
         if (name !== field.value?.name) {
             setArgs(getFormatInitialArgs(name));
