@@ -1,6 +1,19 @@
 import { MenuItem, Box } from '@mui/material';
 import { useTranslate } from '../i18n/I18NContext';
-import AutoCompleteField from '../reactHookFormFields/AutoCompleteFetchedField.tsx';
+import AutoCompleteFetchedField from '../reactHookFormFields/AutoCompleteFetchedField.tsx';
+
+const getSchemeSearchRequest = (query: string) => ({
+    url: `https://lov.linkeddata.es/dataset/lov/api/v2/term/search?q=${encodeURIComponent(query)}`,
+});
+
+const getSchemeMenuItemsDataFromResponse = (response: any) =>
+    response && response.results
+        ? // @ts-expect-error TS7006
+          response.results.map((r) => ({
+              label: r.prefixedName[0],
+              uri: r.uri[0],
+          }))
+        : [];
 
 export const FieldSchemeInputComponent = ({
     className,
@@ -13,32 +26,14 @@ export const FieldSchemeInputComponent = ({
 }) => {
     const { translate } = useTranslate();
 
-    const getSchemeSearchRequest = (query: string) => ({
-        url: `https://lov.linkeddata.es/dataset/lov/api/v2/term/search?q=${encodeURIComponent(query)}`,
-    });
-
-    const getSchemeMenuItemsDataFromResponse = (response: any) =>
-        response && response.results
-            ? // @ts-expect-error TS7006
-              response.results.map((r) => ({
-                  label: r.prefixedName[0],
-                  uri: r.uri[0],
-              }))
-            : [];
-
     return (
-        <AutoCompleteField
+        <AutoCompleteFetchedField
             allowNewItem
             className={className}
             name={name}
             disabled={disabled}
             label={translate('scheme')}
             fullWidth
-            style={{
-                // @ts-expect-error TS2769
-                vertical: 'bottom',
-                horizontal: 'left',
-            }}
             getFetchRequest={getSchemeSearchRequest}
             parseResponse={(response) =>
                 getSchemeMenuItemsDataFromResponse(response).map(
