@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import PropTypes from 'prop-types';
 import { Autocomplete, Box, TextField } from '@mui/material';
 import { useSelector } from 'react-redux';
 import { fromParsing } from '../../admin/selectors';
@@ -100,12 +99,6 @@ const SourceValueFromColumnsForSubResource = ({
             />
         </Box>
     );
-};
-
-SourceValueFromColumnsForSubResource.propTypes = {
-    updateDefaultValueTransformers: PropTypes.func.isRequired,
-    value: PropTypes.string,
-    selectedSubresourceUri: PropTypes.string,
 };
 
 export default SourceValueFromColumnsForSubResource;

@@ -5,7 +5,6 @@ import RoutineIcon from '@mui/icons-material/AccountTree';
 import FromColumnsIcon from '@mui/icons-material/ViewColumn';
 import FromSubRessourceIcon from '@mui/icons-material/DocumentScanner';
 import ProcessingIcon from '@mui/icons-material/Settings';
-import PropTypes from 'prop-types';
 import SourceValueArbitrary from './SourceValueArbitrary';
 import SourceValuePrecomputed from './SourceValuePrecomputed';
 import SourceValueFromColumns from './SourceValueFromColumns';
@@ -485,11 +484,6 @@ export const SourceValueToggle = ({
             )}
         </Box>
     );
-};
-
-SourceValueToggle.propTypes = {
-    arbitraryMode: PropTypes.bool,
-    selectedSubresourceUri: PropTypes.string,
 };
 
 export default SourceValueToggle;

@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import merge from '../lib/merge';
 import {
     Box,
@@ -110,17 +109,6 @@ const FormatEditionDialog = ({
             </DialogActions>
         </Dialog>
     );
-};
-
-FormatEditionDialog.propTypes = {
-    isOpen: PropTypes.bool.isRequired,
-    handleClose: PropTypes.func.isRequired,
-    formats: PropTypes.arrayOf(PropTypes.object).isRequired,
-    currentValue: PropTypes.string,
-    field: PropTypes.shape({
-        onChange: PropTypes.func.isRequired,
-        value: PropTypes.object.isRequired,
-    }).isRequired,
 };
 
 export default FormatEditionDialog;

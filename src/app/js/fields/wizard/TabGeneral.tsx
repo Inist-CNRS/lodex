@@ -1,7 +1,3 @@
-// @ts-expect-error TS6133
-import React from 'react';
-import PropTypes from 'prop-types';
-
 import FieldLabelInput from '../FieldLabelInput';
 
 import FieldInternal from '../FieldInternal.tsx';
@@ -44,11 +40,6 @@ export const TabGeneralComponent = ({
             />
         </>
     );
-};
-
-TabGeneralComponent.propTypes = {
-    subresourceUri: PropTypes.string,
-    arbitraryMode: PropTypes.bool.isRequired,
 };
 
 export default TabGeneralComponent;

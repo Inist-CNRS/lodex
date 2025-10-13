@@ -2,7 +2,6 @@ import { MenuItem } from '@mui/material';
 
 import languages from '../../../common/languages';
 import getFieldClassName from '../lib/getFieldClassName';
-import { field as fieldPropTypes } from '../propTypes';
 import { useTranslate } from '../i18n/I18NContext';
 import { TextField } from '../reactHookFormFields/TextField.tsx';
 import type { ComponentProps } from 'react';
@@ -48,10 +47,6 @@ export const FieldLanguageInputComponent = ({
             {languagesItems}
         </TextField>
     );
-};
-
-FieldLanguageInputComponent.propTypes = {
-    field: fieldPropTypes.isRequired,
 };
 
 export default FieldLanguageInputComponent;
