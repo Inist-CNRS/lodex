@@ -1,6 +1,4 @@
 import React, { useEffect } from 'react';
-import compose from 'recompose/compose';
-import PropTypes from 'prop-types';
 import {
     Autocomplete,
     Box,
@@ -10,11 +8,11 @@ import {
     Select,
     TextField,
 } from '@mui/material';
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { fromParsing } from '../../admin/selectors';
-import { polyglot as polyglotPropTypes } from '../../propTypes';
 import parseValue from '../../../../common/tools/parseValue';
-import { translate } from '../../i18n/I18NContext';
+import { useTranslate } from '../../i18n/I18NContext';
+import type { TransformerDraft } from '../types.ts';
 
 export const GET_TRANSFORMERS_FROM_SUBRESOURCE = (
     // @ts-expect-error TS7006
@@ -104,23 +102,25 @@ export const GET_TRANSFORMERS_FROM_SUBRESOURCE = (
 };
 
 const SourceValueFromSubResource = ({
-    // @ts-expect-error TS7031
-    firstParsedLine,
-    // @ts-expect-error TS7031
-    p: polyglot,
-    // @ts-expect-error TS7031
-    subresources,
-    // @ts-expect-error TS7031
     path,
-    // @ts-expect-error TS7031
     column,
-    // @ts-expect-error TS7031
     updateDefaultValueTransformers,
+}: {
+    updateDefaultValueTransformers: (transformers: TransformerDraft[]) => void;
+    path?: string;
+    column?: string | null;
 }) => {
+    const { translate } = useTranslate();
+    const { firstParsedLine, subresources } = useSelector((state: any) => {
+        const { subresources } = state.subresource;
+        const [firstParsedLine] = fromParsing.getExcerptLines(state);
+
+        return { subresources, firstParsedLine };
+    });
     const [autocompleteValue, setAutocompleteValue] = React.useState(column);
     const [datasetFields, setDatasetFields] = React.useState([]);
     useEffect(() => {
-        const subresourceData = parseValue(firstParsedLine[path] || '');
+        const subresourceData = parseValue(firstParsedLine[path ?? ''] || '');
 
         const datasetFields = [
             ...Object.keys(
@@ -161,13 +161,13 @@ const SourceValueFromSubResource = ({
         <Box mt={5} display="flex" flexDirection="column" gap={2}>
             <FormControl fullWidth>
                 <InputLabel id="select-subresource-label">
-                    {polyglot.t('subRessource_tooltip')}
+                    {translate('subRessource_tooltip')}
                 </InputLabel>
                 <Select
                     labelId="select-subresource-label"
                     data-testid="select-subresource"
                     value={path}
-                    label={polyglot.t('subRessource_tooltip')}
+                    label={translate('subRessource_tooltip')}
                     onChange={handleChangeSubresource}
                 >
                     {/*
@@ -194,8 +194,8 @@ const SourceValueFromSubResource = ({
                 renderInput={(params) => (
                     <TextField
                         {...params}
-                        label={polyglot.t('from_columns')}
-                        placeholder={polyglot.t('enter_from_columns')}
+                        label={translate('from_columns')}
+                        placeholder={translate('enter_from_columns')}
                     />
                 )}
                 onChange={handleChange}
@@ -204,25 +204,4 @@ const SourceValueFromSubResource = ({
     );
 };
 
-// @ts-expect-error TS7006
-export const mapStateToProps = (state) => {
-    const { subresources } = state.subresource;
-    const [firstParsedLine] = fromParsing.getExcerptLines(state);
-
-    return { subresources, firstParsedLine };
-};
-
-SourceValueFromSubResource.propTypes = {
-    firstParsedLine: PropTypes.object,
-    p: polyglotPropTypes.isRequired,
-    subresources: PropTypes.array,
-    updateDefaultValueTransformers: PropTypes.func.isRequired,
-    column: PropTypes.string,
-    path: PropTypes.string,
-};
-
-export default compose(
-    connect(mapStateToProps),
-    translate,
-    // @ts-expect-error TS2345
-)(SourceValueFromSubResource);
+export default SourceValueFromSubResource;

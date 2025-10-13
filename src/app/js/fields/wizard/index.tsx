@@ -1,16 +1,14 @@
 import PropTypes from 'prop-types';
-// @ts-expect-error TS6133
-import React, { useEffect, useState } from 'react';
-import { connect } from 'react-redux';
+import { useEffect, useState } from 'react';
+import { connect, useDispatch } from 'react-redux';
 import { compose, withProps } from 'recompose';
 import { translate } from '../../i18n/I18NContext';
 
 import { Box, Tab, Tabs } from '@mui/material';
 
-import { FIELD_FORM_NAME, saveField as saveFieldAction } from '../';
+import { lodexFieldFormChange, saveField as saveFieldAction } from '../';
 
 import { withRouter } from 'react-router';
-import { reduxForm } from 'redux-form';
 import {
     SCOPE_DATASET,
     SCOPE_DOCUMENT,
@@ -30,6 +28,7 @@ import TabGeneral from './TabGeneral';
 import { TabPanel } from './TabPanel';
 import TabSemantics from './TabSemantics';
 import ValuePreviewConnected from './ValuePreview';
+import { FormProvider, useForm } from 'react-hook-form';
 
 const ACTIONS_BAR_HEIGHT = 70;
 const PREVIEW_WIDTH = 320;
@@ -102,6 +101,24 @@ const FieldEditionWizardComponent = ({
         polyglot,
     ]);
 
+    const dispatch = useDispatch();
+
+    const formMethods = useForm({
+        values: currentEditedField,
+    });
+    useEffect(
+        () =>
+            formMethods.subscribe({
+                formState: {
+                    values: true,
+                },
+                callback: ({ values }) => {
+                    dispatch(lodexFieldFormChange({ values }));
+                },
+            }),
+        [formMethods.subscribe],
+    );
+
     // @ts-expect-error TS7006
     const handleChange = (_, newValue) => {
         setTabValue(newValue);
@@ -119,7 +136,11 @@ const FieldEditionWizardComponent = ({
     };
 
     const handleSave = () => {
-        saveField({ field: currentEditedField, filter });
+        saveField({
+            field: currentEditedField,
+            filter,
+            values: formMethods.getValues(),
+        });
         handleHideExistingColumns();
     };
 
@@ -130,7 +151,6 @@ const FieldEditionWizardComponent = ({
             id: 'tab-general',
             component: (
                 <TabGeneral
-                    currentEditedField={currentEditedField}
                     subresourceUri={currentEditedField.subresourceId}
                     arbitraryMode={[SCOPE_DATASET, SCOPE_GRAPHIC].includes(
                         filter,
@@ -152,7 +172,6 @@ const FieldEditionWizardComponent = ({
         {
             label: 'field_wizard_tab_annotations',
             id: 'tab-annotations',
-            // @ts-expect-error TS2741
             component: <TabAnnotations />,
         },
         {
@@ -163,120 +182,121 @@ const FieldEditionWizardComponent = ({
     ].filter((x) => x);
 
     return (
-        <Box
-            className="wizard"
-            sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                height: '100%',
-                width: {
-                    xs: '100%',
-                    md: `calc(100% - ${PREVIEW_WIDTH}px)`,
-                },
-            }}
-        >
-            {currentEditedField && (
+        <FormProvider {...formMethods}>
+            <form onSubmit={formMethods.handleSubmit(handleSave)}>
                 <Box
+                    className="wizard"
                     sx={{
                         display: 'flex',
-                        paddingBottom: '1rem',
-                        flexGrow: 1,
+                        flexDirection: 'column',
+                        height: '100%',
+                        width: {
+                            xs: '100%',
+                            md: `calc(100% - ${PREVIEW_WIDTH}px)`,
+                        },
                     }}
                 >
-                    <Box
-                        id="field_form"
-                        sx={{
-                            marginRight: '1rem',
-                            paddingRight: '1rem',
-                            flexGrow: 1,
-                            overflowY: 'auto',
-                            display: 'flex',
-                            flexDirection: 'column',
-                        }}
-                    >
-                        <Tabs
-                            value={tabValue}
-                            onChange={handleChange}
-                            variant="fullWidth"
+                    {currentEditedField && (
+                        <Box
                             sx={{
-                                borderBottom: 1,
-                                borderColor: 'divider',
-                                marginBottom: 4,
-                                '& button:hover': {
-                                    color: 'primary.main',
-                                },
+                                display: 'flex',
+                                paddingBottom: '1rem',
+                                flexGrow: 1,
                             }}
                         >
-                            {tabs.map((tab, index) => (
-                                <Tab
-                                    label={polyglot.t(tab.label)}
-                                    value={index}
-                                    key={index}
-                                    id={tab.id}
-                                />
-                            ))}
-                        </Tabs>
-                        <Box
-                            flexGrow={1}
-                            marginBottom={`${ACTIONS_BAR_HEIGHT}px`}
-                        >
-                            {tabs.map((tab, index) => (
-                                <TabPanel
+                            <Box
+                                id="field_form"
+                                sx={{
+                                    marginRight: '1rem',
+                                    paddingRight: '1rem',
+                                    flexGrow: 1,
+                                    overflowY: 'auto',
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                }}
+                            >
+                                <Tabs
                                     value={tabValue}
-                                    index={index}
-                                    key={index}
+                                    onChange={handleChange}
+                                    variant="fullWidth"
+                                    sx={{
+                                        borderBottom: 1,
+                                        borderColor: 'divider',
+                                        marginBottom: 4,
+                                        '& button:hover': {
+                                            color: 'primary.main',
+                                        },
+                                    }}
                                 >
-                                    {tab.component}
-                                </TabPanel>
-                            ))}
+                                    {tabs.map((tab, index) => (
+                                        <Tab
+                                            label={polyglot.t(tab.label)}
+                                            value={index}
+                                            key={index}
+                                            id={tab.id}
+                                        />
+                                    ))}
+                                </Tabs>
+                                <Box
+                                    flexGrow={1}
+                                    marginBottom={`${ACTIONS_BAR_HEIGHT}px`}
+                                >
+                                    {tabs.map((tab, index) => (
+                                        <TabPanel
+                                            value={tabValue}
+                                            index={index}
+                                            key={index}
+                                        >
+                                            {tab.component}
+                                        </TabPanel>
+                                    ))}
+                                </Box>
+                            </Box>
+                        </Box>
+                    )}
+                    <Box
+                        sx={{
+                            display: {
+                                xs: 'none',
+                                md: 'block',
+                            },
+                            width: `${PREVIEW_WIDTH}px`,
+                            boxSizing: 'content-box',
+                            position: 'fixed',
+                            right: 0,
+                            marginX: '1rem',
+                            height: `calc(100% - ${ACTIONS_BAR_HEIGHT * 2.5}px)`,
+                            overflowY: 'auto',
+                        }}
+                        className="mui-fixed"
+                    >
+                        <ValuePreviewConnected scope={filter} />
+                    </Box>
+                    <Box
+                        sx={{
+                            position: 'fixed',
+                            bottom: 0,
+                            left: 0,
+                            right: 0,
+                            background: 'white',
+                            boxShadow: '-3px -12px 15px -3px rgba(0,0,0,0.1)',
+                            padding: '1rem',
+                            maxHeight: ACTIONS_BAR_HEIGHT,
+                            zIndex: 999,
+                        }}
+                        className="mui-fixed"
+                    >
+                        <Box className="container">
+                            <Actions
+                                currentEditedField={currentEditedField}
+                                onCancel={handleCancel}
+                                onSave={handleSave}
+                            />
                         </Box>
                     </Box>
                 </Box>
-            )}
-            <Box
-                sx={{
-                    display: {
-                        xs: 'none',
-                        md: 'block',
-                    },
-                    width: `${PREVIEW_WIDTH}px`,
-                    boxSizing: 'content-box',
-                    position: 'fixed',
-                    right: 0,
-                    marginX: '1rem',
-                    height: `calc(100% - ${ACTIONS_BAR_HEIGHT * 2.5}px)`,
-                    overflowY: 'auto',
-                }}
-                className="mui-fixed"
-            >
-                {/*
-                 // @ts-expect-error TS2322 */}
-                <ValuePreviewConnected scope={filter} />
-            </Box>
-            <Box
-                sx={{
-                    position: 'fixed',
-                    bottom: 0,
-                    left: 0,
-                    right: 0,
-                    background: 'white',
-                    boxShadow: '-3px -12px 15px -3px rgba(0,0,0,0.1)',
-                    padding: '1rem',
-                    maxHeight: ACTIONS_BAR_HEIGHT,
-                    zIndex: 999,
-                }}
-                className="mui-fixed"
-            >
-                <Box className="container">
-                    <Actions
-                        // @ts-expect-error TS2322
-                        currentEditedField={currentEditedField}
-                        onCancel={handleCancel}
-                        onSave={handleSave}
-                    />
-                </Box>
-            </Box>
-        </Box>
+            </form>
+        </FormProvider>
     );
 };
 
@@ -361,12 +381,6 @@ export default compose(
                     true,
             },
         };
-    }),
-    reduxForm({
-        form: FIELD_FORM_NAME,
-        enableReinitialize: true,
-        destroyOnUnmount: false,
-        forceUnregisterOnUnmount: true,
     }),
     translate,
     // @ts-expect-error TS2345

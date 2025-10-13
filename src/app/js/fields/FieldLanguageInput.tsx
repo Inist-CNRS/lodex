@@ -1,25 +1,20 @@
-// @ts-expect-error TS6133
-import React from 'react';
-import { Field } from 'redux-form';
 import { MenuItem } from '@mui/material';
 
 import languages from '../../../common/languages';
-import FormSelectField from '../lib/components/FormSelectField';
 import getFieldClassName from '../lib/getFieldClassName';
-
-import {
-    field as fieldPropTypes,
-    polyglot as polyglotPropTypes,
-} from '../propTypes';
-import { translate } from '../i18n/I18NContext';
+import { useTranslate } from '../i18n/I18NContext';
+import { TextField } from '../reactHookFormFields/TextField.tsx';
+import type { ComponentProps } from 'react';
+import type { Field } from './types.ts';
 
 export const FieldLanguageInputComponent = ({
-    // @ts-expect-error TS7031
     field,
-    // @ts-expect-error TS7031
-    p: polyglot,
     ...props
+}: Partial<ComponentProps<typeof TextField>> & {
+    field: Field;
 }) => {
+    const { translate } = useTranslate();
+
     const languagesItems = languages.map((language) => (
         <MenuItem
             className={`language_${getFieldClassName(field)}`}
@@ -31,33 +26,27 @@ export const FieldLanguageInputComponent = ({
     ));
 
     return (
-        <Field
+        <TextField
+            {...props}
+            select
             name="language"
-            component={FormSelectField}
-            label={polyglot.t('language')}
+            label={translate('language')}
             fullWidth
             sx={{
                 marginTop: 3,
             }}
-            {...props}
         >
-            {/*
-             // @ts-expect-error TS2769 */}
+            {/* @ts-expect-error TS2769 */}
             <MenuItem
                 className={`language_${getFieldClassName(field)}`}
                 key={null}
                 value={null}
             >
-                {polyglot.t('none')}
+                {translate('none')}
             </MenuItem>
             {languagesItems}
-        </Field>
+        </TextField>
     );
 };
 
-FieldLanguageInputComponent.propTypes = {
-    field: fieldPropTypes.isRequired,
-    p: polyglotPropTypes.isRequired,
-};
-
-export default translate(FieldLanguageInputComponent);
+export default FieldLanguageInputComponent;

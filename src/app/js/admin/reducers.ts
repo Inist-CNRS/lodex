@@ -1,6 +1,6 @@
 import { reducer as form } from 'redux-form';
 
-import fetchReducer from '../fetch';
+import fetchReducer, { type FetchState } from '../fetch';
 import fields from '../fields';
 import i18n from '../i18n';
 import importReducer from './import';
@@ -22,7 +22,7 @@ import precomputed, { type PrecomputedState } from './precomputed';
 import configTenant from './configTenant';
 
 export type State = {
-    fetch: unknown;
+    fetch: FetchState;
     fields: unknown;
     form: unknown;
     i18n: unknown;

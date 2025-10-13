@@ -1,3 +1,9 @@
+export type ScopeType =
+    | typeof SCOPE_DATASET
+    | typeof SCOPE_GRAPHIC
+    | typeof SCOPE_COLLECTION
+    | typeof SCOPE_DOCUMENT;
+
 export const SCOPE_DATASET = 'dataset';
 export const SCOPE_GRAPHIC = 'graphic';
 export const SCOPE_COLLECTION = 'collection';
@@ -34,7 +40,7 @@ export const hasSimilarScope = (scope: any) => (field: any) => {
 export const getFieldForSpecificScope = (
     fields: any,
     scope: any,
-    subresourceId = undefined,
+    subresourceId?: string,
 ) => {
     if (scope === SCOPE_DATASET || scope === SCOPE_GRAPHIC) {
         return fields.filter(
@@ -67,7 +73,7 @@ export const getFieldForSpecificScope = (
 export const getFieldToCaptionForSpecificScope = (
     fields: any,
     scope: any,
-    subresourceId = undefined,
+    subresourceId?: string,
 ) => {
     if (scope === SCOPE_DATASET) {
         return fields.filter((field: any) => field.scope === SCOPE_DATASET);

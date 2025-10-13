@@ -1,17 +1,17 @@
-// @ts-expect-error TS6133
-import React from 'react';
+import { useTranslate } from '../i18n/I18NContext.tsx';
+import { SwitchField } from '../reactHookFormFields/SwitchField.tsx';
 
-import FieldInput from '../lib/components/FieldInput';
-import FormSwitchField from '../lib/components/FormSwitchField';
+const FieldAnnotableInput = () => {
+    const { translate } = useTranslate();
 
-export default function FieldAnnotableInput() {
     return (
-        <FieldInput
+        <SwitchField
+            className="annotable"
             name="annotable"
-            component={FormSwitchField}
-            labelKey="field_annotable"
+            label={translate('field_annotable')}
+            defaultValue={true}
         />
     );
-}
+};
 
-FieldAnnotableInput.propTypes = {};
+export default FieldAnnotableInput;

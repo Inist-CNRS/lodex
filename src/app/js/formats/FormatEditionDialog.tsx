@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import merge from '../lib/merge';
 import {
     Box,
@@ -11,46 +10,47 @@ import {
     IconButton,
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
-import { polyglot as polyglotPropTypes } from '../propTypes';
+import type { ControllerRenderProps } from 'react-hook-form';
 import SelectFormat from './SelectFormat';
 import { getAdminComponent, getFormatInitialArgs } from '.';
 import CancelButton from '../lib/components/CancelButton';
-import { translate } from '../i18n/I18NContext';
+import { useTranslate } from '../i18n/I18NContext';
 
 const FormatEditionDialog = ({
-    // @ts-expect-error TS7031
-    p: polyglot,
-    // @ts-expect-error TS7031
     isOpen,
-    // @ts-expect-error TS7031
     handleClose,
-    // @ts-expect-error TS7031
     formats,
-    // @ts-expect-error TS7031
     currentValue,
-    // @ts-expect-error TS7031
-    input,
+    field,
+}: {
+    isOpen: boolean;
+    handleClose: () => void;
+    formats: { name: string; componentName: string }[];
+    currentValue: string;
+    field: ControllerRenderProps;
 }) => {
+    const { translate } = useTranslate();
+
     const [name, setName] = React.useState(currentValue);
     const [args, setArgs] = React.useState(
-        currentValue === input.value.name
-            ? merge(getFormatInitialArgs(input.value.name), input.value.args)
+        currentValue === field.value?.name
+            ? merge(getFormatInitialArgs(field.value?.name), field.value?.args)
             : getFormatInitialArgs(currentValue),
     );
 
     // @ts-expect-error TS7006
     const setFormat = (name) => {
         setName(name);
-        if (name !== input.value.name) {
+        if (name !== field.value?.name) {
             setArgs(getFormatInitialArgs(name));
         }
-        if (name === input.value.name) {
-            setArgs(merge(getFormatInitialArgs(name), input.value.args));
+        if (name === field.value?.name) {
+            setArgs(merge(getFormatInitialArgs(name), field.value?.args));
         }
     };
 
     const handleSave = () => {
-        input.onChange({
+        field.onChange({
             name,
             args,
         });
@@ -67,7 +67,7 @@ const FormatEditionDialog = ({
             id="format-edit-dialog"
         >
             <DialogTitle>
-                {polyglot.t('format_settings')}
+                {translate('format_settings')}
                 <IconButton
                     aria-label="close"
                     onClick={handleClose}
@@ -93,34 +93,22 @@ const FormatEditionDialog = ({
             </DialogContent>
             <DialogActions>
                 <CancelButton
-                    aria-label={polyglot.t('cancel')}
+                    aria-label={translate('cancel')}
                     onClick={handleClose}
                 >
-                    {polyglot.t('cancel')}
+                    {translate('cancel')}
                 </CancelButton>
                 <Button
-                    aria-label={polyglot.t('confirm')}
+                    aria-label={translate('confirm')}
                     color="primary"
                     variant="contained"
                     onClick={handleSave}
                 >
-                    {polyglot.t('confirm')}
+                    {translate('confirm')}
                 </Button>
             </DialogActions>
         </Dialog>
     );
 };
 
-FormatEditionDialog.propTypes = {
-    p: polyglotPropTypes.isRequired,
-    isOpen: PropTypes.bool.isRequired,
-    handleClose: PropTypes.func.isRequired,
-    formats: PropTypes.arrayOf(PropTypes.object).isRequired,
-    currentValue: PropTypes.string,
-    input: PropTypes.shape({
-        onChange: PropTypes.func.isRequired,
-        value: PropTypes.object.isRequired,
-    }).isRequired,
-};
-
-export default translate(FormatEditionDialog);
+export default FormatEditionDialog;

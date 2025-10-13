@@ -1,19 +1,28 @@
-// @ts-expect-error TS6133
-import React from 'react';
-import { translate } from '../../i18n/I18NContext';
+import { useTranslate } from '../../i18n/I18NContext';
 import PreviewIcon from '@mui/icons-material/Preview';
-import PropTypes from 'prop-types';
+import { useWatch } from 'react-hook-form';
 
 import { Box, Typography } from '@mui/material';
-import { connect } from 'react-redux';
-import { compose } from 'recompose';
+import { useSelector } from 'react-redux';
 import { fromFieldPreview } from '../../admin/selectors';
-import { getFieldFormData } from '../selectors';
-import { SCOPE_DATASET } from '../../../../common/scope';
-import { polyglot as polyglotPropTypes } from '../../propTypes';
+import { SCOPE_DATASET, type ScopeType } from '../../../../common/scope';
+import { prepareFieldFormData } from '../sagas/saveField.ts';
+import type { State } from '../../admin/reducers.ts';
+import type { PreviewLine } from '../types.ts';
 
-// @ts-expect-error TS7031
-const ValuePreview = ({ lines, editedField, p: polyglot }) => {
+const ValuePreview = ({ scope }: { scope?: ScopeType }) => {
+    const { translate } = useTranslate();
+
+    const lines: PreviewLine[] = useSelector((state: State) => {
+        const lines = fromFieldPreview.getFieldPreview(state);
+        if (lines.length > 0) {
+            return scope === SCOPE_DATASET ? [lines[0]] : lines;
+        }
+        return lines;
+    });
+
+    const editedField = prepareFieldFormData(useWatch());
+
     return (
         <Box
             id="value-preview"
@@ -33,7 +42,7 @@ const ValuePreview = ({ lines, editedField, p: polyglot }) => {
                  // @ts-expect-error TS2769 */}
                 <PreviewIcon mr={1} />
                 <Typography variant="h6">
-                    {polyglot.t('value_preview_title')}
+                    {translate('value_preview_title')}
                 </Typography>
             </Box>
 
@@ -44,7 +53,6 @@ const ValuePreview = ({ lines, editedField, p: polyglot }) => {
             </Box>
             <Box mb={4}>
                 {lines.length > 0 &&
-                    // @ts-expect-error TS7006
                     lines?.map((line, index) => (
                         <Box key={index} mb={3}>
                             <Typography
@@ -73,32 +81,11 @@ const ValuePreview = ({ lines, editedField, p: polyglot }) => {
             </Box>
             <Box mb={1}>
                 <Typography variant="body1" sx={{ fontStyle: 'italic' }}>
-                    {polyglot.t('value_preview_description')}
+                    {translate('value_preview_description')}
                 </Typography>
             </Box>
         </Box>
     );
 };
 
-// @ts-expect-error TS7006
-const mapStateToProps = (state, { scope }) => {
-    const editedField = getFieldFormData(state);
-    let lines = fromFieldPreview.getFieldPreview(state);
-
-    if (lines.length > 0) {
-        lines = scope === SCOPE_DATASET ? [lines[0]] : lines;
-    }
-    return {
-        lines,
-        editedField: editedField ? editedField : [],
-    };
-};
-
-ValuePreview.propTypes = {
-    lines: PropTypes.array.isRequired,
-    editedField: PropTypes.object,
-    p: polyglotPropTypes.isRequired,
-};
-
-// @ts-expect-error TS2345
-export default compose(connect(mapStateToProps), translate)(ValuePreview);
+export default ValuePreview;

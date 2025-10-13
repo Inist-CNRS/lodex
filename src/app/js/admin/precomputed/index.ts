@@ -17,7 +17,12 @@ export type PrecomputedState = {
     initialized: boolean;
     loading: boolean;
     dataPreviewLoading: boolean;
-    precomputed: Array<{ _id: string; status: string; name: string }>;
+    precomputed: Array<{
+        _id: string;
+        name: string;
+        status: string;
+        hasData: boolean;
+    }>;
     dataPreviewPrecomputed: Array<{ _id: string; status: string }>;
 };
 
@@ -50,7 +55,12 @@ export default handleActions<PrecomputedState, any>(
             {
                 payload: precomputed,
             }: {
-                payload: { _id: string; status: string; name: string }[];
+                payload: {
+                    _id: string;
+                    name: string;
+                    status: string;
+                    hasData: boolean;
+                }[];
             },
         ) => ({
             ...state,

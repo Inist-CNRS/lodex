@@ -1,25 +1,10 @@
-// @ts-expect-error TS6133
-import React from 'react';
-import {
-    field as fieldPropTypes,
-    polyglot as polyglotPropTypes,
-} from '../propTypes';
+import { TextField } from '../reactHookFormFields/TextField';
+import { useTranslate } from '../i18n/I18NContext';
 
-import FormTextField from '../lib/components/FormTextField';
-import FieldInput from '../lib/components/FieldInput';
-import { translate } from '../i18n/I18NContext';
+export const FieldInternalNameComponent = () => {
+    const { translate } = useTranslate();
 
-export const FieldInternalNameComponent = () => (
-    <FieldInput
-        name="internalName"
-        component={FormTextField}
-        labelKey="internalName"
-    />
-);
-
-FieldInternalNameComponent.propTypes = {
-    field: fieldPropTypes.isRequired,
-    p: polyglotPropTypes.isRequired,
+    return <TextField name="internalName" label={translate('internalName')} />;
 };
 
-export default translate(FieldInternalNameComponent);
+export default FieldInternalNameComponent;

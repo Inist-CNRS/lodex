@@ -42,8 +42,7 @@ export const LoginFormComponent = ({ onSubmit }: LoginFormProps) => {
                     />
                 </CardContent>
                 <CardActions>
-                    {/* 
-                // @ts-expect-error TS2740 */}
+                    {/* @ts-expect-error TS2740 */}
                     <ButtonWithStatus
                         loading={isSubmitting}
                         type="submit"

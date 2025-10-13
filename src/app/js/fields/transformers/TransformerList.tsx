@@ -1,16 +1,13 @@
 // @ts-expect-error TS6133
 import React, { useEffect, useState } from 'react';
-import compose from 'recompose/compose';
 import memoize from 'lodash/memoize';
-import PropTypes from 'prop-types';
 import pure from 'recompose/pure';
-import { translate } from '../../i18n/I18NContext';
+import { useTranslate } from '../../i18n/I18NContext';
 import TransformerListItem from './TransformerListItem';
 import TransformerUpsertDialog from './TransformerUpsertDialog';
 
 import { Box, Button, Typography } from '@mui/material';
 import { Delete as DeleteIcon } from '@mui/icons-material';
-import { polyglot as polyglotPropTypes } from '../../propTypes';
 import {
     DndContext,
     closestCenter,
@@ -31,6 +28,8 @@ import {
 } from '../../../../common/transformers';
 import TransformerRemoveAllDialog from './TransformerRemoveAllDialog';
 import { GET_SOURCE_VALUE_FROM_TRANSFORMERS } from '../sourceValue/SourceValueToggle';
+import type { UseFieldArrayReturn } from 'react-hook-form';
+import type { Transformer } from '../types.ts';
 
 const SHOW_TRANSFORMER = memoize(
     (operation, type) =>
@@ -63,24 +62,31 @@ const getHiddenTransformers = (source) => {
 };
 
 export const TransformerListComponent = ({
-    // @ts-expect-error TS7031
     fields,
-    // @ts-expect-error TS7031
-    meta: { touched, error },
-    // @ts-expect-error TS7031
-    type,
-    // @ts-expect-error TS7031
+    append,
+    update,
+    move,
+    remove,
+    replace,
     isSubresourceField,
-    // @ts-expect-error TS7031
-    p: polyglot,
+    type = null,
+}: {
+    fields: Transformer[];
+    append: UseFieldArrayReturn['append'];
+    update: UseFieldArrayReturn['update'];
+    move: UseFieldArrayReturn['move'];
+    remove: UseFieldArrayReturn['remove'];
+    replace: UseFieldArrayReturn['replace'];
+    isSubresourceField?: boolean;
+    type?: string | null;
 }) => {
+    const { translate } = useTranslate();
     const [fieldsToDrag, setFieldsToDrag] = useState(
-        // @ts-expect-error TS7006
-        fields.map((fieldName) => fieldName),
+        fields.map((field) => field.id),
     );
 
     const { source, value } = GET_SOURCE_VALUE_FROM_TRANSFORMERS(
-        fields.getAll(),
+        fields as unknown[] as Transformer[],
         isSubresourceField,
     );
 
@@ -91,11 +97,12 @@ export const TransformerListComponent = ({
     const [isTransformerUpsertDialogOpen, setIsTransformerUpsertDialogOpen] =
         useState(false);
     const [isRemoveAllDialogOpen, setIsRemoveAllDialogOpen] = useState(false);
-    const [indexFieldToEdit, setIndexFieldToEdit] = useState(null);
+    const [indexFieldToEdit, setIndexFieldToEdit] = useState<number | null>(
+        null,
+    );
 
     useEffect(() => {
-        // @ts-expect-error TS7006
-        setFieldsToDrag(fields.map((fieldName) => fieldName));
+        setFieldsToDrag(fields.map((field) => field.id));
     }, [fields]);
 
     const sensors = useSensors(
@@ -108,27 +115,27 @@ export const TransformerListComponent = ({
     // @ts-expect-error TS7006
     const handleDragEnd = (event) => {
         const { active, over } = event;
-        // @ts-expect-error TS7034
-        let oldItemIndex;
-        // @ts-expect-error TS7034
-        let newItemIndex;
-        // @ts-expect-error TS7006
-        fields.map((fieldName, index) => {
-            if (fieldName === active.id) {
+        let oldItemIndex: number | undefined = undefined;
+        let newItemIndex: number | undefined = undefined;
+        fields.forEach((field, index) => {
+            if (field.id === active.id) {
                 oldItemIndex = index;
             }
-            if (fieldName === over.id) {
+            if (field.id === over.id) {
                 newItemIndex = index;
             }
         });
 
-        fields.move(oldItemIndex, newItemIndex);
-        // @ts-expect-error TS7006
+        if (!oldItemIndex || !newItemIndex) {
+            return;
+        }
+
+        move(oldItemIndex, newItemIndex);
         setFieldsToDrag((fieldsToDrag) => {
-            // @ts-expect-error TS7005
-            return arrayMove(fieldsToDrag, oldItemIndex, newItemIndex);
+            return arrayMove(fieldsToDrag, oldItemIndex!, newItemIndex!);
         });
     };
+
     return (
         <Box pt={5}>
             <Box
@@ -139,7 +146,7 @@ export const TransformerListComponent = ({
             >
                 <Box display="flex" alignItems="center">
                     <Typography variant="subtitle1">
-                        {polyglot.t('transformers')}
+                        {translate('transformers')}
                     </Typography>
                 </Box>
                 {!transformersLocked && (
@@ -150,15 +157,14 @@ export const TransformerListComponent = ({
                         onClick={() => setIsRemoveAllDialogOpen(true)}
                         startIcon={<DeleteIcon />}
                     >
-                        {polyglot.t('delete_all')}
+                        {translate('delete_all')}
                     </Button>
                 )}
             </Box>
             {transformersLocked ? (
-                polyglot.t('transformer_no_editable_with_subresource_uid_value')
+                translate('transformer_no_editable_with_subresource_uid_value')
             ) : (
                 <>
-                    {touched && error && <span>{error}</span>}
                     <DndContext
                         sensors={sensors}
                         collisionDetection={closestCenter}
@@ -168,24 +174,20 @@ export const TransformerListComponent = ({
                             items={fieldsToDrag}
                             strategy={verticalListSortingStrategy}
                         >
-                            {/*
-                             // @ts-expect-error TS7006 */}
                             {fieldsToDrag?.map((fieldName, index) => (
                                 <TransformerListItem
                                     key={fieldName}
                                     // @ts-expect-error TS2322
                                     id={fieldName}
-                                    transformer={fields.get(index)}
-                                    onRemove={() => {
-                                        fields.remove(index);
-                                    }}
+                                    transformer={fields[index]}
+                                    onRemove={() => remove(index)}
                                     onEdit={() => {
                                         setIndexFieldToEdit(index);
                                         setIsTransformerUpsertDialogOpen(true);
                                     }}
                                     show={
                                         SHOW_TRANSFORMER(
-                                            fields.get(index)?.operation,
+                                            fields[index]?.operation,
                                             type,
                                         ) &&
                                         (!hideFirstTransformers ||
@@ -197,7 +199,7 @@ export const TransformerListComponent = ({
                     </DndContext>
                     <Box sx={{ display: 'flex', justifyContent: 'center' }}>
                         <Button
-                            aria-label={polyglot.t('add_transformer')}
+                            aria-label={translate('add_transformer')}
                             color="primary"
                             sx={{ borderWidth: '2px', borderStyle: 'dashed' }}
                             onClick={() => {
@@ -205,7 +207,7 @@ export const TransformerListComponent = ({
                                 setIsTransformerUpsertDialogOpen(true);
                             }}
                         >
-                            {polyglot.t('add_transformer')}
+                            {translate('add_transformer')}
                         </Button>
                     </Box>
 
@@ -217,6 +219,8 @@ export const TransformerListComponent = ({
                                 setIsTransformerUpsertDialogOpen(false)
                             }
                             indexFieldToEdit={indexFieldToEdit}
+                            append={append}
+                            update={update}
                             fields={fields}
                             type={type}
                         />
@@ -226,9 +230,11 @@ export const TransformerListComponent = ({
                             isOpen={isRemoveAllDialogOpen}
                             handleClose={() => setIsRemoveAllDialogOpen(false)}
                             removeAll={() =>
-                                fields.splice(
-                                    hideFirstTransformers,
-                                    fields.length - hideFirstTransformers,
+                                replace(
+                                    fields.toSpliced(
+                                        hideFirstTransformers,
+                                        fields.length - hideFirstTransformers,
+                                    ),
                                 )
                             }
                         />
@@ -239,29 +245,4 @@ export const TransformerListComponent = ({
     );
 };
 
-TransformerListComponent.propTypes = {
-    fields: PropTypes.shape({
-        map: PropTypes.func.isRequired,
-        get: PropTypes.func.isRequired,
-        remove: PropTypes.func.isRequired,
-        push: PropTypes.func.isRequired,
-        move: PropTypes.func.isRequired,
-        getAll: PropTypes.func.isRequired,
-        splice: PropTypes.func.isRequired,
-        length: PropTypes.number.isRequired,
-    }).isRequired,
-    meta: PropTypes.shape({
-        touched: PropTypes.bool,
-        error: PropTypes.string,
-    }).isRequired,
-    p: polyglotPropTypes.isRequired,
-    type: PropTypes.string,
-    isSubresourceField: PropTypes.bool,
-};
-
-TransformerListComponent.defaultProps = {
-    type: null,
-};
-
-// @ts-expect-error TS2345
-export default compose(translate, pure)(TransformerListComponent);
+export default pure(TransformerListComponent);
