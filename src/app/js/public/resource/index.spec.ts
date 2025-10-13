@@ -6,9 +6,7 @@ import reducer, {
     SAVE_RESOURCE,
     saveResourceSuccess,
     SAVE_RESOURCE_ERROR,
-    HIDE_RESOURCE,
     HIDE_RESOURCE_SUCCESS,
-    HIDE_RESOURCE_ERROR,
     ADD_FIELD_TO_RESOURCE,
     ADD_FIELD_TO_RESOURCE_SUCCESS,
     ADD_FIELD_TO_RESOURCE_ERROR,
@@ -18,8 +16,6 @@ import reducer, {
     selectVersion,
     addFieldToResourceOpen,
     addFieldToResourceCancel,
-    hideResourceOpen,
-    hideResourceCancel,
     fromResource,
 } from './index';
 import {
@@ -93,23 +89,21 @@ describe('resourceReducer', () => {
         });
     });
 
-    it('should handle SAVE_RESOURCE, HIDE_RESOURCE and ADD_FIELD_TO_RESOURCE', () => {
-        [SAVE_RESOURCE, HIDE_RESOURCE, ADD_FIELD_TO_RESOURCE].forEach(
-            (type) => {
-                const state = reducer(
-                    {
-                        // @ts-expect-error TS2353
-                        key: 'value',
-                    },
-                    { type },
-                );
-                expect(state).toEqual({
+    it('should handle SAVE_RESOURCE and ADD_FIELD_TO_RESOURCE', () => {
+        [SAVE_RESOURCE, ADD_FIELD_TO_RESOURCE].forEach((type) => {
+            const state = reducer(
+                {
+                    // @ts-expect-error TS2353
                     key: 'value',
-                    error: null,
-                    saving: true,
-                });
-            },
-        );
+                },
+                { type },
+            );
+            expect(state).toEqual({
+                key: 'value',
+                error: null,
+                saving: true,
+            });
+        });
     });
 
     it('should handle SAVE_RESOURCE_SUCCESS', () => {
@@ -208,12 +202,8 @@ describe('resourceReducer', () => {
         });
     });
 
-    it('should handle SAVE_RESOURCE_ERROR, HIDE_RESOURCE_ERROR, ADD_FIELD_TO_RESOURCE_ERROR', () => {
-        [
-            SAVE_RESOURCE_ERROR,
-            HIDE_RESOURCE_ERROR,
-            ADD_FIELD_TO_RESOURCE_ERROR,
-        ].forEach((type) => {
+    it('should handle SAVE_RESOURCE_ERROR, ADD_FIELD_TO_RESOURCE_ERROR', () => {
+        [SAVE_RESOURCE_ERROR, ADD_FIELD_TO_RESOURCE_ERROR].forEach((type) => {
             const state = reducer(
                 {
                     // @ts-expect-error TS2353
@@ -353,32 +343,6 @@ describe('resourceReducer', () => {
             data: 'value',
             error: null,
             addingField: false,
-        });
-    });
-
-    it('should handle HIDE_RESOURCE_OPEN action', () => {
-        const state = {
-            data: 'value',
-        };
-
-        // @ts-expect-error TS2345
-        expect(reducer(state, hideResourceOpen())).toEqual({
-            data: 'value',
-            error: null,
-            hiding: true,
-        });
-    });
-
-    it('should handle HIDE_RESOURCE_CANCEL action', () => {
-        const state = {
-            data: 'value',
-        };
-
-        // @ts-expect-error TS2345
-        expect(reducer(state, hideResourceCancel())).toEqual({
-            data: 'value',
-            error: null,
-            hiding: false,
         });
     });
 
