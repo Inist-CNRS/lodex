@@ -17,14 +17,12 @@ const isChecked = memoize((value) => {
 
 export const SwitchField = ({
     name,
-    validate,
     label,
     required = false,
     defaultValue,
     ...props
 }: Omit<MuiSwitchProps, 'defaultValue'> & {
     name: string;
-    validate?: (value: unknown) => string | undefined;
     label: string;
     defaultValue?: boolean | string;
 }) => {
@@ -33,11 +31,6 @@ export const SwitchField = ({
         name,
         rules: {
             required: required ? translate('error_field_required') : false,
-            validate: (value) => {
-                if (validate) {
-                    return validate(value);
-                }
-            },
         },
         defaultValue,
     });
