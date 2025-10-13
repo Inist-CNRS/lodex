@@ -10,18 +10,18 @@ type LoginFormProps = {
 
 export const LoginFormComponent = ({ onSubmit }: LoginFormProps) => {
     const { translate } = useTranslate();
-    const form = useForm<{
+    const formMethods = useForm<{
         username: string;
         password: string;
     }>({
         mode: 'onChange',
     });
-    const { handleSubmit, formState } = form;
+    const { handleSubmit, formState } = formMethods;
 
     const { isSubmitting, isValid } = formState;
 
     return (
-        <FormProvider {...form}>
+        <FormProvider {...formMethods}>
             <form id="login_form" onSubmit={handleSubmit(onSubmit)}>
                 <CardContent>
                     <TextField
