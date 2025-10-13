@@ -1,5 +1,7 @@
 import { createAction, handleActions } from 'redux-actions';
 
+export type FetchState = Record<string, any>;
+
 export const FETCH = 'FETCH';
 export const FETCH_ERROR = 'FETCH_ERROR';
 export const FETCH_SUCCESS = 'FETCH_SUCCESS';
@@ -20,9 +22,9 @@ export const fetchSuccess = createAction(
     ({ name }) => ({ name }),
 );
 
-export const defaultState = {};
+export const defaultState: FetchState = {};
 
-export default handleActions(
+export default handleActions<FetchState>(
     {
         // @ts-expect-error TS7006
         FETCH: (state, { payload: config, meta: { name } }) => ({
@@ -38,7 +40,6 @@ export default handleActions(
         FETCH_ERROR: (state, { payload: error, meta: { name } }) => ({
             ...state,
             [name]: {
-                // @ts-expect-error TS2339
                 ...state[name],
                 error,
                 loading: false,
@@ -49,7 +50,6 @@ export default handleActions(
         FETCH_SUCCESS: (state, { payload: response, meta: { name } }) => ({
             ...state,
             [name]: {
-                // @ts-expect-error TS2339
                 ...state[name],
                 error: null,
                 loading: false,

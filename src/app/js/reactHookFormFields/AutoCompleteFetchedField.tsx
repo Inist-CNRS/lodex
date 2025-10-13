@@ -1,34 +1,37 @@
 import { useCallback } from 'react';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { fetch as fetchAction } from '../fetch';
 import {
     AutoCompleteField,
     type AutoCompleteProps,
 } from './AutoCompleteField.tsx';
+import type { State } from '../admin/reducers.ts';
 
-type AutoCompleteFetchedFieldProps = AutoCompleteProps & {
-    dataSource: any;
+type AutoCompleteFetchedFieldProps = Omit<AutoCompleteProps, 'options'> & {
     getFetchRequest: (searchText: string) => { url: string };
     parseResponse: (response: any) => any;
-    handleSearch: (searchText: string) => void;
 };
 
 const AutoCompleteFetchedField = ({
-    dataSource,
     allowNewItem = false,
-    getFetchRequest: _getFetchRequest,
-    parseResponse: _parseResponse,
-    handleSearch,
+    name,
+    getFetchRequest,
+    parseResponse,
     ...props
 }: AutoCompleteFetchedFieldProps) => {
+    const fetch = useSelector((state: State) => state.fetch);
+    const dataSource = parseResponse(fetch[name] && fetch[name].response);
     const source = dataSource || [];
+
+    const dispatch = useDispatch();
+    const handleSearch = (searchText: string) => {
+        if (!searchText) return;
+        dispatch(fetchAction({ config: getFetchRequest(searchText), name }));
+    };
 
     const handleComplete = useCallback(
         (_, searchText) => {
-            if (allowNewItem) {
-                handleSearch(searchText);
-            }
+            handleSearch(searchText);
         },
         [handleSearch],
     );
@@ -36,6 +39,7 @@ const AutoCompleteFetchedField = ({
     return (
         <AutoCompleteField
             {...props}
+            name={name}
             allowNewItem={allowNewItem}
             options={source}
             freeSolo
@@ -45,30 +49,4 @@ const AutoCompleteFetchedField = ({
     );
 };
 
-const mapStateToProps = (
-    // @ts-expect-error TS7031
-    { fetch },
-    { name, parseResponse }: AutoCompleteFetchedFieldProps,
-) => ({
-    dataSource: parseResponse(fetch[name] && fetch[name].response),
-});
-
-const mapDispatchToProps = (
-    // @ts-expect-error TS7006
-    dispatch,
-    { name, getFetchRequest }: AutoCompleteFetchedFieldProps,
-) =>
-    bindActionCreators(
-        {
-            handleSearch: (searchText) =>
-                searchText
-                    ? fetchAction({ config: getFetchRequest(searchText), name })
-                    : { type: '@@NULL' }, // We must return an action so return an action which will not be handled
-        },
-        dispatch,
-    );
-
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps,
-)(AutoCompleteFetchedField);
+export default AutoCompleteFetchedField;

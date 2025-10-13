@@ -1,3 +1,4 @@
+import { useCallback } from 'react';
 import {
     Autocomplete as MuiAutocomplete,
     FormControl,
@@ -10,7 +11,6 @@ import {
 } from '@mui/material';
 import { useController } from 'react-hook-form';
 import { useTranslate } from '../i18n/I18NContext';
-import { useCallback } from 'react';
 
 export type AutoCompleteProps = Partial<
     MuiAutocompleteProps<any, false, false, true>
@@ -42,7 +42,8 @@ export const AutoCompleteField = ({
     className,
     variant = 'outlined',
     InputProps,
-    getOptionLabel,
+    getOptionLabel: getOptionLabelProp,
+    onInputChange,
     ...props
 }: AutoCompleteProps) => {
     const { translate } = useTranslate();
@@ -73,6 +74,24 @@ export const AutoCompleteField = ({
         [field.onChange, props.onChange, clearIdentifier],
     );
 
+    const handleInputValueChange = useCallback<
+        NotUndefined<AutoCompleteProps['onInputChange']>
+    >(
+        (event, value, reason) => {
+            console.log(value);
+            onInputChange?.(event, value, reason);
+            if (allowNewItem) {
+                field.onChange(value);
+            }
+        },
+        [field.onChange, allowNewItem],
+    );
+
+    const getOptionLabel = useCallback(
+        (option: any): any => getOptionLabelProp?.(option) ?? option,
+        [getOptionLabelProp],
+    );
+
     return (
         <FormControl className={className} fullWidth error={!!error}>
             <MuiAutocomplete
@@ -81,6 +100,7 @@ export const AutoCompleteField = ({
                 disabled={disabled}
                 value={field.value || null}
                 onChange={handleValueChosen}
+                onInputChange={handleInputValueChange}
                 renderInput={(params) => (
                     <TextField
                         {...params}
@@ -103,9 +123,7 @@ export const AutoCompleteField = ({
                 renderOption={(props, option) => {
                     return (
                         <ListItem {...props}>
-                            <Typography>
-                                {getOptionLabel?.(option) ?? option}
-                            </Typography>
+                            <Typography>{getOptionLabel(option)}</Typography>
                         </ListItem>
                     );
                 }}
