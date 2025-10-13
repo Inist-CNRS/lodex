@@ -1,9 +1,6 @@
-// @ts-expect-error TS6133
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import React from 'react';
 
-import { polyglot as polyglotPropTypes } from '../../../propTypes';
-import updateAdminArgs from '../../utils/updateAdminArgs';
+import { useUpdateAdminArgs } from '../../utils/updateAdminArgs';
 import RoutineParamsAdmin from '../../utils/components/admin/RoutineParamsAdmin';
 import ColorPickerParamsAdmin from '../../utils/components/admin/ColorPickerParamsAdmin';
 import { MONOCHROMATIC_DEFAULT_COLORSET } from '../../utils/colorUtils';
@@ -12,108 +9,83 @@ import {
     FormatDataParamsFieldSet,
 } from '../../utils/components/field-set/FormatFieldSets';
 import FormatGroupedFieldSet from '../../utils/components/field-set/FormatGroupedFieldSet';
-import { translate } from '../../../i18n/I18NContext';
+
+type NetworkArgs = {
+    params?: {
+        maxSize?: number;
+        maxValue?: number;
+        minValue?: number;
+        orderBy?: string;
+        uri?: string;
+    };
+    colors?: string;
+};
 
 export const defaultArgs = {
     params: {
         maxSize: 200,
         orderBy: 'value/asc',
+        maxValue: undefined,
+        minValue: undefined,
+        uri: undefined,
     },
     colors: MONOCHROMATIC_DEFAULT_COLORSET,
 };
 
-class NetworkAdmin extends Component {
-    static propTypes = {
-        args: PropTypes.shape({
-            params: PropTypes.shape({
-                maxSize: PropTypes.number,
-                maxValue: PropTypes.number,
-                minValue: PropTypes.number,
-                orderBy: PropTypes.string,
-            }),
-            colors: PropTypes.string,
-        }),
-        onChange: PropTypes.func.isRequired,
-        p: polyglotPropTypes.isRequired,
-        showMaxSize: PropTypes.bool.isRequired,
-        showMaxValue: PropTypes.bool.isRequired,
-        showMinValue: PropTypes.bool.isRequired,
-        showOrderBy: PropTypes.bool.isRequired,
-    };
+type NetworkAdminProps = {
+    args?: NetworkArgs;
+    onChange: (args: NetworkArgs) => void;
+    showMaxSize?: boolean;
+    showMaxValue?: boolean;
+    showMinValue?: boolean;
+    showOrderBy?: boolean;
+};
 
-    static defaultProps = {
-        args: defaultArgs,
-        showMaxSize: true,
-        showMaxValue: true,
-        showMinValue: true,
-        showOrderBy: true,
-    };
+const NetworkAdmin: React.FC<NetworkAdminProps> = ({
+    args = defaultArgs,
+    onChange,
+    showMaxSize = true,
+    showMaxValue = true,
+    showMinValue = true,
+    showOrderBy = true,
+}) => {
+    const handleParams = useUpdateAdminArgs<NetworkArgs, 'params'>('params', {
+        args,
+        onChange,
+    });
 
-    // @ts-expect-error TS7006
-    constructor(props) {
-        super(props);
-        this.handleColors = this.handleColors.bind(this);
-        this.state = {
-            // @ts-expect-error TS2339
-            colors: this.props.args.colors || defaultArgs.colors,
-        };
-    }
+    const handleColors = useUpdateAdminArgs<NetworkArgs, 'colors'>('colors', {
+        args,
+        onChange,
+    });
 
-    // @ts-expect-error TS7006
-    handleParams = (params) => {
-        updateAdminArgs('params', params, this.props);
-    };
+    const { params } = args;
 
-    // @ts-expect-error TS7006
-    handleColors(colors) {
-        updateAdminArgs(
-            'colors',
-            colors.split(' ')[0] || defaultArgs.colors,
-            this.props,
-        );
-    }
+    return (
+        <FormatGroupedFieldSet>
+            <FormatDataParamsFieldSet>
+                <RoutineParamsAdmin
+                    params={{
+                        ...defaultArgs.params,
+                        ...params,
+                    }}
+                    onChange={handleParams}
+                    showMaxSize={showMaxSize}
+                    showMaxValue={showMaxValue}
+                    showMinValue={showMinValue}
+                    showOrderBy={showOrderBy}
+                    showUri={false}
+                />
+            </FormatDataParamsFieldSet>
+            <FormatChartParamsFieldSet defaultExpanded>
+                <ColorPickerParamsAdmin
+                    colors={args.colors}
+                    onChange={handleColors}
+                    monochromatic={true}
+                />
+            </FormatChartParamsFieldSet>
+        </FormatGroupedFieldSet>
+    );
+};
 
-    render() {
-        const {
-            // @ts-expect-error TS2339
-            p: polyglot,
-            // @ts-expect-error TS2339
-            args: { params },
-            // @ts-expect-error TS2339
-            showMaxSize,
-            // @ts-expect-error TS2339
-            showMaxValue,
-            // @ts-expect-error TS2339
-            showMinValue,
-            // @ts-expect-error TS2339
-            showOrderBy,
-        } = this.props;
-
-        return (
-            <FormatGroupedFieldSet>
-                <FormatDataParamsFieldSet>
-                    <RoutineParamsAdmin
-                        params={params || defaultArgs.params}
-                        polyglot={polyglot}
-                        onChange={this.handleParams}
-                        showMaxSize={showMaxSize}
-                        showMaxValue={showMaxValue}
-                        showMinValue={showMinValue}
-                        showOrderBy={showOrderBy}
-                    />
-                </FormatDataParamsFieldSet>
-                <FormatChartParamsFieldSet defaultExpanded>
-                    <ColorPickerParamsAdmin
-                        // @ts-expect-error TS2339
-                        colors={this.state.colors}
-                        onChange={this.handleColors}
-                        polyglot={polyglot}
-                        monochromatic={true}
-                    />
-                </FormatChartParamsFieldSet>
-            </FormatGroupedFieldSet>
-        );
-    }
-}
-
-export default translate(NetworkAdmin);
+export default NetworkAdmin;
