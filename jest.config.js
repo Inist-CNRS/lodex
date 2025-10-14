@@ -82,8 +82,8 @@ module.exports = {
             ],
             moduleNameMapper: {},
             testMatch: [
-                '**/test?(s)/**/*.[jt]s?(x)',
-                '**/__tests__/**/*.[jt]s?(x)',
+                '**/test?(s)/**/*.spec.[jt]s?(x)',
+                '**/__tests__/**/*.spec.[jt]s?(x)',
                 '**/?(*.)+(spec|test).[tj]s?(x)',
             ],
             testEnvironment: 'node',
