@@ -65,7 +65,7 @@ const getColorSchemeSelector = (schemes: (readonly string[])[]) => {
         label,
         onChange,
     }: {
-        value: string[];
+        value: readonly string[];
         label: string;
         onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
     }) => (

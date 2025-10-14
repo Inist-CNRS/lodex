@@ -1,8 +1,5 @@
-// @ts-expect-error TS6133
-import React, { useEffect, useMemo } from 'react';
-import PropTypes from 'prop-types';
-import { translate } from '../../../../i18n/I18NContext';
-// @ts-expect-error TS7016
+import { useCallback, useMemo, type ChangeEvent } from 'react';
+import { useTranslate } from '../../../../i18n/I18NContext';
 import { schemeOrRd } from 'd3-scale-chromatic';
 import {
     FormControlLabel,
@@ -13,8 +10,6 @@ import {
 } from '@mui/material';
 
 import { GradientSchemeSelector } from '../../../../lib/components/ColorSchemeSelector';
-import { polyglot as polyglotPropTypes } from '../../../../propTypes';
-import updateAdminArgs from '../../../utils/updateAdminArgs';
 import RoutineParamsAdmin from '../../../utils/components/admin/RoutineParamsAdmin';
 import VegaToolTips from '../../../utils/components/admin/VegaToolTips';
 import { MAP_EUROPE, MAP_FRANCE, MAP_WORLD } from '../../../utils/chartsUtils';
@@ -34,7 +29,7 @@ import FormatGroupedFieldSet from '../../../utils/components/field-set/FormatGro
 export const defaultArgs = {
     params: {
         maxSize: 200,
-        orderBy: 'value/asc',
+        orderBy: 'value/asc' as const,
     },
     advancedMode: false,
     advancedModeSpec: null,
@@ -46,16 +41,43 @@ export const defaultArgs = {
     aspectRatio: ASPECT_RATIO_16_9,
 };
 
-// @ts-expect-error TS7006
-const CartographyAdmin = (props) => {
-    const {
-        p: polyglot,
-        args,
-        showMaxSize,
-        showMaxValue,
-        showMinValue,
-        showOrderBy,
-    } = props;
+type CartographyParams = {
+    maxSize?: number;
+    maxValue?: number;
+    minValue?: number;
+    orderBy?: string;
+};
+
+type CartographyArgs = {
+    params: CartographyParams;
+    advancedMode?: boolean;
+    advancedModeSpec?: string | null;
+    colorScheme: readonly string[];
+    tooltip: boolean;
+    tooltipCategory: string;
+    tooltipValue: string;
+    worldPosition?: string;
+    aspectRatio?: string;
+};
+
+type CartographyAdminProps = {
+    args?: CartographyArgs;
+    onChange: (args: CartographyArgs) => void;
+    showMaxSize?: boolean;
+    showMaxValue?: boolean;
+    showMinValue?: boolean;
+    showOrderBy?: boolean;
+};
+
+const CartographyAdmin = ({
+    args = defaultArgs,
+    showMaxSize = true,
+    showMaxValue = true,
+    showMinValue = true,
+    showOrderBy = true,
+    onChange,
+}: CartographyAdminProps) => {
+    const { translate } = useTranslate();
 
     const {
         advancedMode,
@@ -89,65 +111,112 @@ const CartographyAdmin = (props) => {
         );
 
         return JSON.stringify(specBuilder.buildSpec(), null, 2);
-    }, [advancedMode, advancedModeSpec]);
+    }, [
+        advancedMode,
+        advancedModeSpec,
+        colorScheme,
+        tooltip,
+        tooltipCategory,
+        tooltipValue,
+        worldPosition,
+    ]);
 
-    // Save the new spec when we first use the advanced mode or when we reset the generated spec
-    // details: Update advancedModeSpec props arguments when spec is generated or regenerated
-    useEffect(() => {
-        if (!advancedMode) {
-            return;
-        }
-        updateAdminArgs('advancedModeSpec', spec, props);
-    }, [advancedMode, advancedModeSpec]);
+    const toggleAdvancedMode = useCallback(
+        (event: ChangeEvent<HTMLInputElement>) => {
+            onChange({
+                ...args,
+                advancedMode: event.target.checked,
+            });
+        },
+        [onChange, args],
+    );
 
-    const toggleAdvancedMode = () => {
-        updateAdminArgs('advancedMode', !advancedMode, props);
-    };
+    const handleAdvancedModeSpec = useCallback(
+        (newSpec: string) => {
+            onChange({
+                ...args,
+                advancedModeSpec: newSpec,
+            });
+        },
+        [onChange, args],
+    );
 
-    // @ts-expect-error TS7006
-    const handleAdvancedModeSpec = (newSpec) => {
-        updateAdminArgs('advancedModeSpec', newSpec, props);
-    };
+    const clearAdvancedModeSpec = useCallback(() => {
+        onChange({
+            ...args,
+            advancedModeSpec: null,
+        });
+    }, [onChange, args]);
 
-    const clearAdvancedModeSpec = () => {
-        updateAdminArgs('advancedModeSpec', null, props);
-    };
+    const handleParams = useCallback(
+        (params: CartographyParams) => {
+            onChange({
+                ...args,
+                params,
+            });
+        },
+        [onChange, args],
+    );
 
-    // @ts-expect-error TS7006
-    const handleParams = (params) => updateAdminArgs('params', params, props);
+    const handleWorldPosition = useCallback(
+        (e: ChangeEvent<HTMLInputElement>) => {
+            onChange({
+                ...args,
+                worldPosition: e.target.value,
+            });
+        },
+        [onChange, args],
+    );
 
-    // @ts-expect-error TS7006
-    const handleWorldPosition = (e) => {
-        updateAdminArgs('worldPosition', e.target.value, props);
-    };
+    const handleColorScheme = useCallback(
+        (event: ChangeEvent<HTMLInputElement>) => {
+            onChange({
+                ...args,
+                colorScheme: event.target.value.split(','),
+            });
+        },
+        [onChange, args],
+    );
 
-    // @ts-expect-error TS7006
-    const handleColorScheme = (_, colorScheme) => {
-        updateAdminArgs(
-            'colorScheme',
-            colorScheme.props.value.split(','),
-            props,
-        );
-    };
+    const toggleTooltip = useCallback(
+        (tooltip: boolean) => {
+            onChange({
+                ...args,
+                tooltip,
+            });
+        },
+        [onChange, args],
+    );
 
-    const toggleTooltip = () => {
-        updateAdminArgs('tooltip', !tooltip, props);
-    };
+    const handleTooltipCategory = useCallback(
+        (tooltipCategory: string) => {
+            onChange({
+                ...args,
+                tooltipCategory,
+            });
+        },
+        [onChange, args],
+    );
 
-    // @ts-expect-error TS7006
-    const handleTooltipCategory = (tooltipCategory) => {
-        updateAdminArgs('tooltipCategory', tooltipCategory, props);
-    };
+    const handleTooltipValue = useCallback(
+        (tooltipValue: string) => {
+            onChange({
+                ...args,
+                tooltipValue,
+            });
+        },
+        [onChange, args],
+    );
 
-    // @ts-expect-error TS7006
-    const handleTooltipValue = (tooltipValue) => {
-        updateAdminArgs('tooltipValue', tooltipValue, props);
-    };
-
-    // @ts-expect-error TS7006
-    const handleAspectRatio = (value) => {
-        updateAdminArgs('aspectRatio', value, props);
-    };
+    const handleAspectRatio = useCallback(
+        (value: string) => {
+            onChange({
+                ...args,
+                aspectRatio: value,
+            });
+        },
+        [onChange, args],
+    );
 
     return (
         <FormatGroupedFieldSet>
@@ -155,7 +224,6 @@ const CartographyAdmin = (props) => {
                 <RoutineParamsAdmin
                     params={params || defaultArgs.params}
                     onChange={handleParams}
-                    polyglot={polyglot}
                     showMaxSize={showMaxSize}
                     showMaxValue={showMaxValue}
                     showMinValue={showMinValue}
@@ -171,7 +239,7 @@ const CartographyAdmin = (props) => {
                                 onChange={toggleAdvancedMode}
                             />
                         }
-                        label={polyglot.t('advancedMode')}
+                        label={translate('advancedMode')}
                     />
                 </FormGroup>
                 {advancedMode ? (
@@ -185,22 +253,22 @@ const CartographyAdmin = (props) => {
                         <TextField
                             fullWidth
                             select
-                            label={polyglot.t('world_position')}
+                            label={translate('world_position')}
                             value={worldPosition}
                             onChange={handleWorldPosition}
                         >
                             <MenuItem value={MAP_WORLD}>
-                                {polyglot.t('world_position_world')}
+                                {translate('world_position_world')}
                             </MenuItem>
                             <MenuItem value={MAP_EUROPE}>
-                                {polyglot.t('world_position_europe')}
+                                {translate('world_position_europe')}
                             </MenuItem>
                             <MenuItem value={MAP_FRANCE}>
-                                {polyglot.t('world_position_france')}
+                                {translate('world_position_france')}
                             </MenuItem>
                         </TextField>
                         <GradientSchemeSelector
-                            label={polyglot.t('color_scheme')}
+                            label={translate('color_scheme')}
                             onChange={handleColorScheme}
                             value={colorScheme}
                         />
@@ -211,7 +279,6 @@ const CartographyAdmin = (props) => {
                             categoryTitle={tooltipCategory}
                             onValueTitleChange={handleTooltipValue}
                             valueTitle={tooltipValue}
-                            polyglot={polyglot}
                             thirdValue={false}
                         />
                     </>
@@ -223,6 +290,7 @@ const CartographyAdmin = (props) => {
             </FormatChartParamsFieldSet>
             <VegaFieldPreview
                 args={args}
+                // @ts-expect-error TS2322
                 PreviewComponent={CartographyAdminView}
                 datasets={
                     worldPosition === MAP_FRANCE
@@ -234,37 +302,4 @@ const CartographyAdmin = (props) => {
     );
 };
 
-CartographyAdmin.propTypes = {
-    args: PropTypes.shape({
-        params: PropTypes.shape({
-            maxSize: PropTypes.number,
-            maxValue: PropTypes.number,
-            minValue: PropTypes.number,
-            orderBy: PropTypes.string,
-        }),
-        advancedMode: PropTypes.bool,
-        advancedModeSpec: PropTypes.string,
-        colorScheme: PropTypes.arrayOf(PropTypes.string),
-        tooltip: PropTypes.bool,
-        tooltipCategory: PropTypes.string,
-        tooltipValue: PropTypes.string,
-        worldPosition: PropTypes.oneOf([MAP_WORLD, MAP_EUROPE, MAP_FRANCE]),
-        aspectRatio: PropTypes.string,
-    }),
-    onChange: PropTypes.func.isRequired,
-    p: polyglotPropTypes.isRequired,
-    showMaxSize: PropTypes.bool.isRequired,
-    showMaxValue: PropTypes.bool.isRequired,
-    showMinValue: PropTypes.bool.isRequired,
-    showOrderBy: PropTypes.bool.isRequired,
-};
-
-CartographyAdmin.defaultProps = {
-    args: defaultArgs,
-    showMaxSize: true,
-    showMaxValue: true,
-    showMinValue: true,
-    showOrderBy: true,
-};
-
-export default translate(CartographyAdmin);
+export default CartographyAdmin;
