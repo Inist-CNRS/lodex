@@ -10,6 +10,7 @@ import {
 } from '../../utils/components/field-set/FormatFieldSets';
 import FormatGroupedFieldSet from '../../utils/components/field-set/FormatGroupedFieldSet';
 import { useTranslate } from '../../../i18n/I18NContext';
+import { useCallback } from 'react';
 
 export const defaultArgs = {
     params: {
@@ -70,65 +71,60 @@ const HierarchyAdmin = ({
 }: HierarchyAdminProps) => {
     const { translate } = useTranslate();
 
-    const updateParams = useUpdateAdminArgs<HierarchyArgs, 'params'>('params', {
+    const handleParams = useUpdateAdminArgs<
+        HierarchyArgs,
+        'params',
+        Partial<HierarchyArgs['params']>
+    >('params', {
         args,
         onChange,
-    });
-
-    const handleParams = (params: {
-        maxSize?: number;
-        maxValue?: number;
-        minValue?: number;
-        orderBy?: string;
-        maxLabelLength?: number;
-        labelOffset?: number;
-        minimumScaleValue?: number;
-        uri?: string;
-    }) => {
-        const newParams = {
+        parseValue: (params) => ({
             ...args.params,
             ...params,
-        };
-        updateParams(newParams);
-    };
-
-    const updateColors = useUpdateAdminArgs<HierarchyArgs, 'colors'>('colors', {
-        args,
-        onChange,
+        }),
     });
 
-    const handleColors = (newColors: string) => {
-        const color = newColors.split(' ')[0] || defaultArgs.colors;
-        updateColors(color);
-    };
+    const handleColors = useUpdateAdminArgs<HierarchyArgs, 'colors', string>(
+        'colors',
+        {
+            args,
+            onChange,
+            parseValue: (value) => value || defaultArgs.colors,
+        },
+    );
 
-    const handleMaxLabelLength = (
-        event: React.ChangeEvent<HTMLInputElement>,
-    ) => {
-        const maxLabelLength = parseInt(event.target.value, 10);
-        handleParams({
-            ...args.params,
-            maxLabelLength,
-        });
-    };
+    const handleMaxLabelLength = useCallback(
+        (event: React.ChangeEvent<HTMLInputElement>) => {
+            const maxLabelLength = parseInt(event.target.value, 10);
+            handleParams({
+                ...args.params,
+                maxLabelLength,
+            });
+        },
+        [args.params, handleParams],
+    );
 
-    const handleLabelOffset = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const labelOffset = parseInt(event.target.value, 10);
-        handleParams({
-            ...args.params,
-            labelOffset,
-        });
-    };
+    const handleLabelOffset = useCallback(
+        (event: React.ChangeEvent<HTMLInputElement>) => {
+            const labelOffset = parseInt(event.target.value, 10);
+            handleParams({
+                ...args.params,
+                labelOffset,
+            });
+        },
+        [args.params, handleParams],
+    );
 
-    const handleMinimumScaleValue = (
-        event: React.ChangeEvent<HTMLInputElement>,
-    ) => {
-        const minimumScaleValue = parseInt(event.target.value, 10);
-        handleParams({
-            ...args.params,
-            minimumScaleValue,
-        });
-    };
+    const handleMinimumScaleValue = useCallback(
+        (event: React.ChangeEvent<HTMLInputElement>) => {
+            const minimumScaleValue = parseInt(event.target.value, 10);
+            handleParams({
+                ...args.params,
+                minimumScaleValue,
+            });
+        },
+        [args.params, handleParams],
+    );
 
     const { params } = args;
 

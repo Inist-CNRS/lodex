@@ -12,6 +12,7 @@ import {
 import FormatGroupedFieldSet from '../../utils/components/field-set/FormatGroupedFieldSet';
 import { useTranslate } from '../../../i18n/I18NContext';
 import { useUpdateAdminArgs } from '../../utils/updateAdminArgs';
+import type { ChangeEvent } from 'react';
 
 type ClusterChartArgs = {
     params: RoutineParams;
@@ -56,29 +57,35 @@ const ClusteredChartAdmin = (props: ClusteredChartAdminProps) => {
         },
     );
 
-    const handleXAxisTitle = useUpdateAdminArgs<ClusterChartArgs, 'xTitle'>(
+    const handleXAxisTitle = useUpdateAdminArgs<
+        ClusterChartArgs,
         'xTitle',
-        {
-            args,
-            onChange,
-        },
-    );
+        ChangeEvent<HTMLInputElement>
+    >('xTitle', {
+        args,
+        onChange,
+        parseValue: (event) => event.target.value,
+    });
 
-    const handleYAxisTitle = useUpdateAdminArgs<ClusterChartArgs, 'yTitle'>(
+    const handleYAxisTitle = useUpdateAdminArgs<
+        ClusterChartArgs,
         'yTitle',
-        {
-            args,
-            onChange,
-        },
-    );
+        ChangeEvent<HTMLInputElement>
+    >('yTitle', {
+        args,
+        onChange,
+        parseValue: (event) => event.target.value,
+    });
 
-    const toggleFlipAxis = useUpdateAdminArgs<ClusterChartArgs, 'flipAxis'>(
+    const toggleFlipAxis = useUpdateAdminArgs<
+        ClusterChartArgs,
         'flipAxis',
-        {
-            args,
-            onChange,
-        },
-    );
+        ChangeEvent<HTMLInputElement>
+    >('flipAxis', {
+        args,
+        onChange,
+        parseValue: (event) => event.target.checked,
+    });
 
     return (
         <FormatGroupedFieldSet>
@@ -96,7 +103,7 @@ const ClusteredChartAdmin = (props: ClusteredChartAdminProps) => {
                 <FormControlLabel
                     control={
                         <Checkbox
-                            onChange={(e) => toggleFlipAxis(e.target.checked)}
+                            onChange={toggleFlipAxis}
                             checked={flipAxis}
                         />
                     }
@@ -109,13 +116,13 @@ const ClusteredChartAdmin = (props: ClusteredChartAdminProps) => {
                 <TextField
                     fullWidth
                     label={translate('format_x_axis_title')}
-                    onChange={(e) => handleXAxisTitle(e.target.value)}
+                    onChange={handleXAxisTitle}
                     value={xTitle}
                 />
                 <TextField
                     fullWidth
                     label={translate('format_y_axis_title')}
-                    onChange={(e) => handleYAxisTitle(e.target.value)}
+                    onChange={handleYAxisTitle}
                     value={yTitle}
                 />
             </FormatChartParamsFieldSet>

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, type ChangeEvent } from 'react';
 import { TextField } from '@mui/material';
 
 import { useUpdateAdminArgs } from '../../utils/updateAdminArgs';
@@ -84,13 +84,15 @@ const BubbleAdmin = ({
         },
     );
 
-    const handleDiameter = useUpdateAdminArgs<BubbleAdminArgs, 'diameter'>(
+    const handleDiameter = useUpdateAdminArgs<
+        BubbleAdminArgs,
         'diameter',
-        {
-            args,
-            onChange,
-        },
-    );
+        ChangeEvent<HTMLInputElement>
+    >('diameter', {
+        args,
+        onChange,
+        parseValue: (event) => parseInt(event.target.value, 10),
+    });
 
     const { params, diameter } = args;
 
@@ -117,7 +119,6 @@ const BubbleAdmin = ({
                 />
                 <TextField
                     label={translate('diameter')}
-                    //  @ts-expect-error TS2322
                     onChange={handleDiameter}
                     value={diameter}
                     fullWidth
