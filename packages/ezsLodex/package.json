@@ -2,7 +2,6 @@
     "private": true,
     "type": "module",
     "name": "@ezs/lodex",
-    "type": "module",
     "description": "ezs dedicated statements for Lodex",
     "version": "1.17.0",
     "dependencies": {
@@ -17,7 +16,7 @@
     "directories": {
         "test": "test"
     },
-    "main": "./src/index.js",
+    "main": "./src/index.ts",
     "peerDependencies": {
         "@ezs/core": "*"
     }
