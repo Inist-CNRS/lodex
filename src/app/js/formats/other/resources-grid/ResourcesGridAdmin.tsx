@@ -1,11 +1,8 @@
-// @ts-expect-error TS6133
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import React, { useCallback, type ChangeEvent } from 'react';
 import { MenuItem, Checkbox, TextField, FormControlLabel } from '@mui/material';
-import { translate } from '../../../i18n/I18NContext';
+import { useTranslate } from '../../../i18n/I18NContext';
 
-import { polyglot as polyglotPropTypes } from '../../../propTypes';
-import updateAdminArgs from '../../utils/updateAdminArgs';
+import { useUpdateAdminArgs } from '../../utils/updateAdminArgs';
 import { FormatDefaultParamsFieldSet } from '../../utils/components/field-set/FormatFieldSets';
 import FormatGroupedFieldSet from '../../utils/components/field-set/FormatGroupedFieldSet';
 
@@ -22,170 +19,177 @@ export const defaultArgs = {
     },
 };
 
-class RessourcesGridAdmin extends Component {
-    static propTypes = {
-        args: PropTypes.shape({
-            params: PropTypes.shape({
-                maxSize: PropTypes.number,
-                maxValue: PropTypes.number,
-                minValue: PropTypes.number,
-                orderBy: PropTypes.string,
-            }),
-            spaceWidth: PropTypes.string,
-            allowToLoadMore: PropTypes.bool,
-            pageSize: PropTypes.number,
-            titleSize: PropTypes.number,
-            summarySize: PropTypes.number,
-            openInNewTab: PropTypes.bool,
-        }),
-        onChange: PropTypes.func.isRequired,
-        p: polyglotPropTypes.isRequired,
+type ResourcesGridArgs = {
+    params?: {
+        maxSize?: number;
+        maxValue?: number;
+        minValue?: number;
+        orderBy?: string;
     };
+    spaceWidth?: string;
+    allowToLoadMore?: boolean;
+    pageSize?: number;
+    titleSize?: number;
+    summarySize?: number;
+    openInNewTab?: boolean;
+};
 
-    static defaultProps = {
-        args: defaultArgs,
-    };
+type ResourcesGridAdminProps = {
+    args?: ResourcesGridArgs;
+    onChange: (args: ResourcesGridArgs) => void;
+};
 
-    // @ts-expect-error TS7006
-    handleWidth = (spaceWidth) => {
-        updateAdminArgs('spaceWidth', spaceWidth, this.props);
-    };
+const ResourcesGridAdmin = ({
+    args = defaultArgs,
+    onChange,
+}: ResourcesGridAdminProps) => {
+    const { translate } = useTranslate();
 
-    toggleAllowToLoadMore = () =>
-        updateAdminArgs(
-            'allowToLoadMore',
-            // @ts-expect-error TS2339
-            !this.props.args.allowToLoadMore,
-            this.props,
-        );
+    const handleWidth = useUpdateAdminArgs<
+        ResourcesGridArgs,
+        'spaceWidth',
+        ChangeEvent<HTMLInputElement>
+    >('spaceWidth', {
+        args,
+        onChange,
+        parseValue: (event) => event.target.value,
+    });
 
-    toggleOpenInNewTab = () =>
-        updateAdminArgs(
-            'openInNewTab',
-            // @ts-expect-error TS2339
-            !this.props.args.openInNewTab,
-            this.props,
-        );
+    const toggleAllowToLoadMore = useUpdateAdminArgs<
+        ResourcesGridArgs,
+        'allowToLoadMore',
+        ChangeEvent<HTMLInputElement>
+    >('allowToLoadMore', {
+        args,
+        onChange,
+        parseValue: (event) => event.target.checked,
+    });
 
-    // @ts-expect-error TS7006
-    handlePageSize = (e) => {
-        // @ts-expect-error TS2339
-        const { args, onChange } = this.props;
-        const pageSize = parseInt(e.target.value, 10);
-        onChange({
-            ...args,
-            pageSize: pageSize,
-            params: {
-                maxSize: pageSize,
-            },
-        });
-    };
+    const toggleOpenInNewTab = useUpdateAdminArgs<
+        ResourcesGridArgs,
+        'openInNewTab',
+        ChangeEvent<HTMLInputElement>
+    >('openInNewTab', {
+        args,
+        onChange,
+        parseValue: (event) => event.target.checked,
+    });
 
-    // @ts-expect-error TS7006
-    handleSummarySize = (e) => {
-        // @ts-expect-error TS2339
-        this.props.onChange({
-            // @ts-expect-error TS2339
-            ...this.props.args,
-            summarySize: parseInt(e.target.value),
-        });
-    };
+    const handlePageSize = useCallback(
+        (e: React.ChangeEvent<HTMLInputElement>) => {
+            const pageSize = parseInt(e.target.value, 10);
+            onChange({
+                ...args,
+                pageSize: pageSize,
+                params: {
+                    ...args.params,
+                    maxSize: pageSize,
+                },
+            });
+        },
+        [args, onChange],
+    );
 
-    // @ts-expect-error TS7006
-    handleTitleSize = (e) => {
-        // @ts-expect-error TS2339
-        this.props.onChange({
-            // @ts-expect-error TS2339
-            ...this.props.args,
-            titleSize: parseInt(e.target.value),
-        });
-    };
+    const handleSummarySize = useUpdateAdminArgs<
+        ResourcesGridArgs,
+        'summarySize',
+        ChangeEvent<HTMLInputElement>
+    >('summarySize', {
+        args,
+        onChange,
+        parseValue: (event) => parseInt(event.target.value, 10),
+    });
 
-    render() {
-        // @ts-expect-error TS2339
-        const { p: polyglot } = this.props;
-        const {
-            spaceWidth,
-            allowToLoadMore,
-            pageSize,
-            titleSize,
-            summarySize,
-            openInNewTab,
-            // @ts-expect-error TS2339
-        } = this.props.args;
+    const handleTitleSize = useUpdateAdminArgs<
+        ResourcesGridArgs,
+        'titleSize',
+        ChangeEvent<HTMLInputElement>
+    >('titleSize', {
+        args,
+        onChange,
+        parseValue: (event) => parseInt(event.target.value, 10),
+    });
 
-        return (
-            <FormatGroupedFieldSet>
-                <FormatDefaultParamsFieldSet defaultExpanded>
-                    <TextField
-                        fullWidth
-                        select
-                        label={polyglot.t('list_format_select_image_width')}
-                        onChange={(e) => this.handleWidth(e.target.value)}
-                        value={spaceWidth}
-                    >
-                        <MenuItem value="10%">
-                            {polyglot.t('ten_percent')}
-                        </MenuItem>
-                        <MenuItem value="20%">
-                            {polyglot.t('twenty_percent')}
-                        </MenuItem>
-                        <MenuItem value="30%">
-                            {polyglot.t('thirty_percent')}
-                        </MenuItem>
-                        <MenuItem value="50%">
-                            {polyglot.t('fifty_percent')}
-                        </MenuItem>
-                        <MenuItem value="80%">
-                            {polyglot.t('eighty_percent')}
-                        </MenuItem>
-                        <MenuItem value="100%">
-                            {polyglot.t('hundred_percent')}
-                        </MenuItem>
-                    </TextField>
-                    <FormControlLabel
-                        control={
-                            <Checkbox
-                                onChange={this.toggleAllowToLoadMore}
-                                checked={allowToLoadMore}
-                            />
-                        }
-                        label={polyglot.t('allow_to_load_more')}
-                    />
-                    <FormControlLabel
-                        control={
-                            <Checkbox
-                                onChange={this.toggleOpenInNewTab}
-                                checked={openInNewTab}
-                            />
-                        }
-                        label={polyglot.t('open_in_new_tab')}
-                    />
-                    <TextField
-                        label={polyglot.t('number_of_char_title')}
-                        onChange={this.handleTitleSize}
-                        value={titleSize}
-                        type="number"
-                        fullWidth
-                    />
-                    <TextField
-                        label={polyglot.t('number_of_char_summary')}
-                        onChange={this.handleSummarySize}
-                        value={summarySize}
-                        type="number"
-                        fullWidth
-                    />
-                    <TextField
-                        label={polyglot.t('items_per_page')}
-                        onChange={this.handlePageSize}
-                        value={pageSize}
-                        type="number"
-                        fullWidth
-                    />
-                </FormatDefaultParamsFieldSet>
-            </FormatGroupedFieldSet>
-        );
-    }
-}
+    const {
+        spaceWidth,
+        allowToLoadMore,
+        pageSize,
+        titleSize,
+        summarySize,
+        openInNewTab,
+    } = args;
 
-export default translate(RessourcesGridAdmin);
+    return (
+        <FormatGroupedFieldSet>
+            <FormatDefaultParamsFieldSet defaultExpanded>
+                <TextField
+                    fullWidth
+                    select
+                    label={translate('list_format_select_image_width')}
+                    onChange={handleWidth}
+                    value={spaceWidth || defaultArgs.spaceWidth}
+                >
+                    <MenuItem value="10%">{translate('ten_percent')}</MenuItem>
+                    <MenuItem value="20%">
+                        {translate('twenty_percent')}
+                    </MenuItem>
+                    <MenuItem value="30%">
+                        {translate('thirty_percent')}
+                    </MenuItem>
+                    <MenuItem value="50%">
+                        {translate('fifty_percent')}
+                    </MenuItem>
+                    <MenuItem value="80%">
+                        {translate('eighty_percent')}
+                    </MenuItem>
+                    <MenuItem value="100%">
+                        {translate('hundred_percent')}
+                    </MenuItem>
+                </TextField>
+                <FormControlLabel
+                    control={
+                        <Checkbox
+                            onChange={toggleAllowToLoadMore}
+                            checked={
+                                allowToLoadMore ?? defaultArgs.allowToLoadMore
+                            }
+                        />
+                    }
+                    label={translate('allow_to_load_more')}
+                />
+                <FormControlLabel
+                    control={
+                        <Checkbox
+                            onChange={toggleOpenInNewTab}
+                            checked={openInNewTab ?? defaultArgs.openInNewTab}
+                        />
+                    }
+                    label={translate('open_in_new_tab')}
+                />
+                <TextField
+                    label={translate('number_of_char_title')}
+                    onChange={handleTitleSize}
+                    value={titleSize || defaultArgs.titleSize}
+                    type="number"
+                    fullWidth
+                />
+                <TextField
+                    label={translate('number_of_char_summary')}
+                    onChange={handleSummarySize}
+                    value={summarySize || defaultArgs.summarySize}
+                    type="number"
+                    fullWidth
+                />
+                <TextField
+                    label={translate('items_per_page')}
+                    onChange={handlePageSize}
+                    value={pageSize || defaultArgs.pageSize}
+                    type="number"
+                    fullWidth
+                />
+            </FormatDefaultParamsFieldSet>
+        </FormatGroupedFieldSet>
+    );
+};
+
+export default ResourcesGridAdmin;
