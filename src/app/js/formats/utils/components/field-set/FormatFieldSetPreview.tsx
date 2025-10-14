@@ -1,48 +1,54 @@
-// @ts-expect-error TS6133
-import React, { lazy, Suspense, useEffect, useState } from 'react';
+import { lazy, Suspense, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { formatAdminStyle } from '../../adminStyles';
-import { polyglot as polyglotPropTypes } from '../../../../propTypes';
 import { AllDataSets } from '../../dataSet';
 import MenuItem from '@mui/material/MenuItem';
-import Select from '@mui/material/Select';
+import Select, { type SelectChangeEvent } from '@mui/material/Select';
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Typography from '@mui/material/Typography';
 import Loading from '../../../../lib/components/Loading';
-import { translate, useTranslate } from '../../../../i18n/I18NContext';
+import { useTranslate } from '../../../../i18n/I18NContext';
+import type { InteractionProps } from 'react-json-view';
 
 const ReactJson = lazy(() => import('react-json-view'));
 
+type FormatFieldSetPreviewProps = {
+    args: Record<string, unknown>;
+    showDatasetsSelector?: boolean;
+    datasets: {
+        name: string;
+        total: number;
+        values: unknown;
+    }[];
+    PreviewComponent: React.JSXElementConstructor<{
+        dataset: unknown;
+    }>;
+    defaultExpanded?: boolean;
+};
+
 const FormatFieldSetPreview = ({
-    // @ts-expect-error TS7031
-    p,
-    // @ts-expect-error TS7031
     args,
-    // @ts-expect-error TS7031
     showDatasetsSelector,
-    // @ts-expect-error TS7031
     datasets,
-    // @ts-expect-error TS7031
     PreviewComponent,
-    // @ts-expect-error TS7031
     defaultExpanded,
-}) => {
+}: FormatFieldSetPreviewProps) => {
     const { translate } = useTranslate();
 
     const [datasetName, setDatasetName] = useState('');
     const [dataset, setDataset] = useState({});
 
     useEffect(() => {
+        console.log({ datasets });
         if (datasets && datasets.length >= 1) {
             setDatasetName(datasets[0].name);
         }
     }, [datasets]);
 
     useEffect(() => {
-        // @ts-expect-error TS7006
         const newSet = datasets.find((value) => value.name === datasetName);
         if (!newSet) {
             setDataset({});
@@ -54,13 +60,11 @@ const FormatFieldSetPreview = ({
         });
     }, [datasets, datasetName]);
 
-    // @ts-expect-error TS7006
-    const handleDataSetChange = (event) => {
+    const handleDataSetChange = (event: SelectChangeEvent<string>) => {
         setDatasetName(event.target.value);
     };
 
-    // @ts-expect-error TS7006
-    const handleDataSetEditor = (event) => {
+    const handleDataSetEditor = (event: InteractionProps) => {
         setDataset(event.updated_src);
     };
 
@@ -71,7 +75,7 @@ const FormatFieldSetPreview = ({
                 aria-controls="format-field-set-preview"
                 id="format-field-set-preview"
             >
-                <Typography>{p.t('format_preview')}</Typography>
+                <Typography>{translate('format_preview')}</Typography>
             </AccordionSummary>
             <AccordionDetails>
                 {showDatasetsSelector ? (
@@ -83,8 +87,6 @@ const FormatFieldSetPreview = ({
                         value={datasetName}
                         onChange={handleDataSetChange}
                     >
-                        {/*
-                         // @ts-expect-error TS7006 */}
                         {datasets.map((set) => (
                             <MenuItem key={set.name} value={set.name}>
                                 {set.name}
@@ -127,7 +129,6 @@ FormatFieldSetPreview.defaultProps = {
 };
 
 FormatFieldSetPreview.propTypes = {
-    p: polyglotPropTypes.isRequired,
     args: PropTypes.any.isRequired,
     showDatasetsSelector: PropTypes.bool,
     defaultExpanded: PropTypes.bool,
@@ -140,4 +141,4 @@ FormatFieldSetPreview.propTypes = {
     PreviewComponent: PropTypes.element.isRequired,
 };
 
-export default translate(FormatFieldSetPreview);
+export default FormatFieldSetPreview;

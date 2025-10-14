@@ -1,8 +1,4 @@
-// @ts-expect-error TS6133
-import React from 'react';
-import PropTypes from 'prop-types';
 import { MenuItem, TextField } from '@mui/material';
-// @ts-expect-error TS7016
 import { scaleQuantize } from 'd3-scale';
 
 import {
@@ -30,7 +26,6 @@ import {
     schemeSet1,
     schemeSet2,
     schemeSet3,
-    // @ts-expect-error TS7016
 } from 'd3-scale-chromatic';
 
 const gradientSchemes = [
@@ -64,10 +59,16 @@ const categorySchemes = [
 
 import ColorScalePreview from '../../lib/components/ColorScalePreview';
 
-// @ts-expect-error TS7006
-const getColorSchemeSelector = (schemes) => {
-    // @ts-expect-error TS7031
-    const ColorSchemeSelector = ({ value = [], label, onChange }) => (
+const getColorSchemeSelector = (schemes: (readonly string[])[]) => {
+    const ColorSchemeSelector = ({
+        value = [],
+        label,
+        onChange,
+    }: {
+        value: string[];
+        label: string;
+        onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+    }) => (
         <TextField
             fullWidth
             select
@@ -75,14 +76,13 @@ const getColorSchemeSelector = (schemes) => {
             value={value.join(',')}
             onChange={onChange}
         >
-            {/*
-             // @ts-expect-error TS7006 */}
             {schemes.map((scheme) => (
-                <MenuItem key={scheme} value={scheme.join(',')}>
+                <MenuItem key={scheme.join(',')} value={scheme.join(',')}>
                     {
                         <ColorScalePreview
                             colorScale={scaleQuantize()
                                 .domain([0, 100])
+                                // @ts-expect-error TS2322
                                 .range(scheme)}
                         />
                     }
@@ -90,11 +90,6 @@ const getColorSchemeSelector = (schemes) => {
             ))}
         </TextField>
     );
-    ColorSchemeSelector.propTypes = {
-        value: PropTypes.arrayOf(PropTypes.string),
-        onChange: PropTypes.func.isRequired,
-        label: PropTypes.string.isRequired,
-    };
 
     return ColorSchemeSelector;
 };
