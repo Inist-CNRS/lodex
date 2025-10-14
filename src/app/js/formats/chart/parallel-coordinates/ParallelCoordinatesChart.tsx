@@ -3,7 +3,6 @@ import React, { useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 // @ts-expect-error TS7016
 import * as d3 from 'd3';
-// @ts-expect-error TS7016
 import ReactTooltip from 'react-tooltip';
 
 import { isLongText, getShortText } from '../../../lib/longTexts';
