@@ -6,7 +6,7 @@ import {
 import FormatGroupedFieldSet from '../../utils/components/field-set/FormatGroupedFieldSet';
 import { useTranslate } from '../../../i18n/I18NContext';
 import { TextField } from '@mui/material';
-import { useUpdateAdminArgs } from '../../utils/updateAdminArgs';
+import { useCallback } from 'react';
 
 type LeafletArgs = {
     params?: {
@@ -53,15 +53,25 @@ const LeafletAdmin = ({
 }: LeafletAdminProps) => {
     const { translate } = useTranslate();
 
-    const handleParams = useUpdateAdminArgs<LeafletArgs, 'params'>('params', {
-        args,
-        onChange,
-    });
+    const handleParams = useCallback(
+        (params: LeafletArgs['params']) => {
+            onChange({
+                ...args,
+                params,
+            });
+        },
+        [onChange, args],
+    );
 
-    const handleZoom = useUpdateAdminArgs<LeafletArgs, 'zoom'>('zoom', {
-        args,
-        onChange,
-    });
+    const handleZoom = useCallback(
+        (zoom: number | undefined) => {
+            onChange({
+                ...args,
+                zoom,
+            });
+        },
+        [onChange, args],
+    );
 
     const { zoom } = args;
 

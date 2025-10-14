@@ -1,5 +1,4 @@
-import React, { useCallback, type ChangeEvent } from 'react';
-import { useUpdateAdminArgs } from '../../../utils/updateAdminArgs';
+import React, { useCallback } from 'react';
 
 export type ColumnParameter = {
     id: number;
@@ -43,24 +42,25 @@ export const useAbstractTableAdmin = ({
         } as React.CSSProperties,
     };
 
-    const handleParams = useUpdateAdminArgs<AbstractTableArgs, 'params'>(
-        'params',
-        {
-            args,
-            onChange,
+    const handleParams = useCallback(
+        (params: AbstractTableArgs['params']) => {
+            onChange({
+                ...args,
+                params,
+            });
         },
+        [onChange, args],
     );
 
-    const handlePageSize = useUpdateAdminArgs<
-        AbstractTableArgs,
-        'pageSize',
-        ChangeEvent<HTMLInputElement>
-    >('pageSize', {
-        args,
-        onChange,
-        parseValue: (event: React.ChangeEvent<HTMLInputElement>) =>
-            parseInt(event.target.value, 10),
-    });
+    const handlePageSize = useCallback(
+        (event: React.ChangeEvent<HTMLInputElement>) => {
+            onChange({
+                ...args,
+                pageSize: parseInt(event.target.value, 10),
+            });
+        },
+        [onChange, args],
+    );
 
     const handleColumnParameter = useCallback(
         (columnArgs: {

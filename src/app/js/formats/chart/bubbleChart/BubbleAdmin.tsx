@@ -1,7 +1,6 @@
-import { useState, useEffect, type ChangeEvent } from 'react';
+import { useState, useEffect, type ChangeEvent, useCallback } from 'react';
 import { TextField } from '@mui/material';
 
-import { useUpdateAdminArgs } from '../../utils/updateAdminArgs';
 import RoutineParamsAdmin, {
     type RoutineParams,
 } from '../../utils/components/admin/RoutineParamsAdmin';
@@ -68,31 +67,34 @@ const BubbleAdmin = ({
         setColors(args.colors || defaultArgs.colors);
     }, [args.colors]);
 
-    const handleParams = useUpdateAdminArgs<BubbleAdminArgs, 'params'>(
-        'params',
-        {
-            args,
-            onChange,
+    const handleParams = useCallback(
+        (params: RoutineParams) => {
+            onChange({
+                ...args,
+                params,
+            });
         },
+        [onChange, args],
     );
 
-    const handleColors = useUpdateAdminArgs<BubbleAdminArgs, 'colors'>(
-        'colors',
-        {
-            args,
-            onChange,
+    const handleColors = useCallback(
+        (colors: string) => {
+            onChange({
+                ...args,
+                colors,
+            });
         },
+        [onChange, args],
     );
 
-    const handleDiameter = useUpdateAdminArgs<
-        BubbleAdminArgs,
-        'diameter',
-        ChangeEvent<HTMLInputElement>
-    >('diameter', {
-        args,
-        onChange,
-        parseValue: (event) => parseInt(event.target.value, 10),
-    });
+    const handleDiameter = useCallback(
+        (event: ChangeEvent<HTMLInputElement>) =>
+            onChange({
+                ...args,
+                diameter: parseInt(event.target.value, 10),
+            }),
+        [onChange, args],
+    );
 
     const { params, diameter } = args;
 

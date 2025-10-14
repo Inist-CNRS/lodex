@@ -1,6 +1,5 @@
 import { TextField } from '@mui/material';
 
-import { useUpdateAdminArgs } from '../../utils/updateAdminArgs';
 import RoutineParamsAdmin from '../../utils/components/admin/RoutineParamsAdmin';
 import ColorPickerParamsAdmin from '../../utils/components/admin/ColorPickerParamsAdmin';
 import { MONOCHROMATIC_DEFAULT_COLORSET } from '../../utils/colorUtils';
@@ -71,26 +70,27 @@ const HierarchyAdmin = ({
 }: HierarchyAdminProps) => {
     const { translate } = useTranslate();
 
-    const handleParams = useUpdateAdminArgs<
-        HierarchyArgs,
-        'params',
-        Partial<HierarchyArgs['params']>
-    >('params', {
-        args,
-        onChange,
-        parseValue: (params) => ({
-            ...args.params,
-            ...params,
-        }),
-    });
-
-    const handleColors = useUpdateAdminArgs<HierarchyArgs, 'colors', string>(
-        'colors',
-        {
-            args,
-            onChange,
-            parseValue: (value) => value || defaultArgs.colors,
+    const handleParams = useCallback(
+        (params: Partial<HierarchyArgs['params']>) => {
+            onChange({
+                ...args,
+                params: {
+                    ...args.params,
+                    ...params,
+                },
+            });
         },
+        [onChange, args],
+    );
+
+    const handleColors = useCallback(
+        (value: string) => {
+            onChange({
+                ...args,
+                colors: value || defaultArgs.colors,
+            });
+        },
+        [onChange, args],
     );
 
     const handleMaxLabelLength = useCallback(

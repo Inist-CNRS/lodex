@@ -9,7 +9,7 @@ import { AllDataSets } from '../../utils/dataSet';
 import { EJSAdminView } from './EJSView';
 import FormatGroupedFieldSet from '../../utils/components/field-set/FormatGroupedFieldSet';
 import { translate, useTranslate } from '../../../i18n/I18NContext';
-import { useUpdateAdminArgs } from '../../utils/updateAdminArgs';
+import { useCallback } from 'react';
 
 type EJSArgs = {
     params?: {
@@ -162,17 +162,24 @@ const EJSAdmin = ({
 
     const { params, template } = args;
 
-    const handleParams = useUpdateAdminArgs<EJSArgs, 'params'>('params', {
-        args,
-        onChange,
-    });
-
-    const handleTemplateChange = useUpdateAdminArgs<EJSArgs, 'template'>(
-        'template',
-        {
-            args,
-            onChange,
+    const handleParams = useCallback(
+        (params: EJSArgs['params']) => {
+            onChange({
+                ...args,
+                params,
+            });
         },
+        [onChange, args],
+    );
+
+    const handleTemplateChange = useCallback(
+        (template: string) => {
+            onChange({
+                ...args,
+                template,
+            });
+        },
+        [onChange, args],
     );
 
     return (

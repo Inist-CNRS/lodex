@@ -11,8 +11,7 @@ import {
 } from '../../utils/components/field-set/FormatFieldSets';
 import FormatGroupedFieldSet from '../../utils/components/field-set/FormatGroupedFieldSet';
 import { useTranslate } from '../../../i18n/I18NContext';
-import { useUpdateAdminArgs } from '../../utils/updateAdminArgs';
-import type { ChangeEvent } from 'react';
+import { useCallback, type ChangeEvent } from 'react';
 
 type ClusterChartArgs = {
     params: RoutineParams;
@@ -41,51 +40,45 @@ const ClusteredChartAdmin = (props: ClusteredChartAdminProps) => {
     const { args = defaultArgs, onChange } = props;
     const { params, colors, xTitle, yTitle, flipAxis } = args;
 
-    const handleParams = useUpdateAdminArgs<ClusterChartArgs, 'params'>(
-        'params',
-        {
-            args,
-            onChange,
-        },
+    const handleParams = useCallback(
+        (params: RoutineParams) => onChange({ ...args, params }),
+        [onChange, args],
     );
 
-    const handleColors = useUpdateAdminArgs<ClusterChartArgs, 'colors'>(
-        'colors',
-        {
-            args,
-            onChange,
-        },
+    const handleColors = useCallback(
+        (colors: string) => onChange({ ...args, colors }),
+        [onChange, args],
     );
 
-    const handleXAxisTitle = useUpdateAdminArgs<
-        ClusterChartArgs,
-        'xTitle',
-        ChangeEvent<HTMLInputElement>
-    >('xTitle', {
-        args,
-        onChange,
-        parseValue: (event) => event.target.value,
-    });
+    const handleXAxisTitle = useCallback(
+        (event: ChangeEvent<HTMLInputElement>) => {
+            onChange({
+                ...args,
+                xTitle: event.target.value,
+            });
+        },
+        [onChange, args],
+    );
 
-    const handleYAxisTitle = useUpdateAdminArgs<
-        ClusterChartArgs,
-        'yTitle',
-        ChangeEvent<HTMLInputElement>
-    >('yTitle', {
-        args,
-        onChange,
-        parseValue: (event) => event.target.value,
-    });
+    const handleYAxisTitle = useCallback(
+        (event: ChangeEvent<HTMLInputElement>) => {
+            onChange({
+                ...args,
+                yTitle: event.target.value,
+            });
+        },
+        [onChange, args],
+    );
 
-    const toggleFlipAxis = useUpdateAdminArgs<
-        ClusterChartArgs,
-        'flipAxis',
-        ChangeEvent<HTMLInputElement>
-    >('flipAxis', {
-        args,
-        onChange,
-        parseValue: (event) => event.target.checked,
-    });
+    const toggleFlipAxis = useCallback(
+        (event: ChangeEvent<HTMLInputElement>) => {
+            onChange({
+                ...args,
+                flipAxis: event.target.checked,
+            });
+        },
+        [onChange, args],
+    );
 
     return (
         <FormatGroupedFieldSet>
