@@ -392,10 +392,10 @@
         "type": "indexation"
     },
     {
-        "id": "post-v2-teeft-with-numbers-en",
-        "url": "https://terms-extraction.services.istex.fr/v2/teeft/with-numbers/en",
-        "code": "https://github.com/Inist-CNRS/web-services/tree/main/services/terms-extraction/v2/teeft",
-        "swagger": "https://openapi.services.istex.fr/?urls.primaryName=terms-extraction%20-%20Extraction%20de%20termes#/terms-extraction/post-v2-teeft-with-numbers-en",
+        "id": "post-v1-teeft-with-numbers-en",
+        "url": "https://terms-extraction.services.istex.fr/v1/teeft/with-numbers/en",
+        "code": "https://github.com/Inist-CNRS/web-services/tree/main/services/terms-extraction/v1/teeft/with-numbers",
+        "swagger": "https://openapi.services.istex.fr/?urls.primaryName=terms-extraction%20-%20Extraction%20de%20termes#/terms-extraction/post-v1-teeft-with-numbers-en",
         "objectifTDM": "https://services.istex.fr/extraction-de-termes-teeft/",
         "type": "indexation"
     },
