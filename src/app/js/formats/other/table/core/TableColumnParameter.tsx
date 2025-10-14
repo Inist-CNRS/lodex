@@ -1,7 +1,4 @@
-// @ts-expect-error TS6133
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { polyglot as polyglotPropTypes } from '../../../../propTypes';
+import React, { useState, useCallback } from 'react';
 import { Box, MenuItem, TextField } from '@mui/material';
 import SelectFormat from '../../../SelectFormat';
 import {
@@ -9,199 +6,190 @@ import {
     getAdminComponent,
     getFormatInitialArgs,
 } from '../../../index';
+import { useTranslate } from '../../../../i18n/I18NContext';
 
-class TableColumnParameter extends Component {
-    static propTypes = {
-        polyglot: polyglotPropTypes.isRequired,
-        parameter: PropTypes.shape({
-            id: PropTypes.number.isRequired,
-            title: PropTypes.string.isRequired,
-            field: PropTypes.string.isRequired,
-            format: PropTypes.shape({
-                name: PropTypes.string.isRequired,
-                option: PropTypes.any.isRequired,
-            }).isRequired,
-        }),
-        onParameterChange: PropTypes.func.isRequired,
-    };
+type ColumnParameterFormat = {
+    name: string;
+    option: unknown;
+};
 
-    // @ts-expect-error TS7006
-    constructor(props) {
-        super(props);
-        this.state = {
-            id: props.parameter.id,
-            title: props.parameter.title,
-            format: props.parameter.format,
-            field: props.parameter.field,
-        };
-        this.changeFormat = this.changeFormat.bind(this);
-        this.changeFormatOption = this.changeFormatOption.bind(this);
-        this.changeField = this.changeField.bind(this);
-        this.changeTitle = this.changeTitle.bind(this);
-    }
+type ColumnParameter = {
+    id: number;
+    title: string;
+    field: string;
+    format: ColumnParameterFormat;
+};
 
-    // @ts-expect-error TS7006
-    changeFormat(newFormat) {
-        // @ts-expect-error TS2339
-        const { id, field, title } = this.state;
-        const parameter = {
-            id: id,
-            title: title,
-            format: {
+type TableColumnParameterProps = {
+    parameter: ColumnParameter;
+    onParameterChange: (parameter: ColumnParameter) => void;
+};
+
+const TableColumnParameter: React.FC<TableColumnParameterProps> = ({
+    parameter,
+    onParameterChange,
+}) => {
+    const { translate } = useTranslate();
+    const { id } = parameter;
+    const [title, setTitle] = useState(parameter.title);
+    const [format, setFormat] = useState(parameter.format);
+    const [field, setField] = useState(parameter.field);
+
+    const changeFormat = useCallback(
+        (newFormat: string) => {
+            const newFormatObj = {
                 name: newFormat,
                 option: getFormatInitialArgs(newFormat),
-            },
-            field: field,
-        };
-        this.setState(parameter);
-        // @ts-expect-error TS2339
-        this.props.onParameterChange(parameter);
-    }
+            };
+            const parameter = {
+                id,
+                title,
+                format: newFormatObj,
+                field,
+            };
+            setFormat(newFormatObj);
+            onParameterChange(parameter);
+        },
+        [id, title, field, onParameterChange],
+    );
 
-    // @ts-expect-error TS7006
-    changeFormatOption(newFormatOption) {
-        // @ts-expect-error TS2339
-        const { id, field, title, format } = this.state;
-        const parameter = {
-            id: id,
-            title: title,
-            format: {
+    const changeFormatOption = useCallback(
+        (newFormatOption: unknown) => {
+            const newFormatObj = {
                 name: format.name,
                 option: newFormatOption,
-            },
-            field: field,
-        };
-        this.setState(parameter);
-        // @ts-expect-error TS2339
-        this.props.onParameterChange(parameter);
-    }
+            };
+            const parameter = {
+                id,
+                title,
+                format: newFormatObj,
+                field,
+            };
+            setFormat(newFormatObj);
+            onParameterChange(parameter);
+        },
+        [id, title, format.name, field, onParameterChange],
+    );
 
-    // @ts-expect-error TS7006
-    changeField(e) {
-        const newField = e.target.value;
-        // @ts-expect-error TS2339
-        const { id, format, title } = this.state;
-        const parameter = {
-            id: id,
-            title: title,
-            format: format,
-            field: newField,
-        };
-        this.setState(parameter);
-        // @ts-expect-error TS2339
-        this.props.onParameterChange(parameter);
-    }
+    const changeField = useCallback(
+        (e: React.ChangeEvent<HTMLInputElement>) => {
+            const newField = e.target.value;
+            const parameter = {
+                id,
+                title,
+                format,
+                field: newField,
+            };
+            setField(newField);
+            onParameterChange(parameter);
+        },
+        [id, title, format, onParameterChange],
+    );
 
-    // @ts-expect-error TS7006
-    changeTitle(e) {
-        const newTitle = e.target.value;
-        // @ts-expect-error TS2339
-        const { id, format, field } = this.state;
-        const parameter = {
-            id: id,
-            title: newTitle,
-            format: format,
-            field: field,
-        };
-        this.setState(parameter);
-        // @ts-expect-error TS2339
-        this.props.onParameterChange(parameter);
-    }
+    const changeTitle = useCallback(
+        (e: React.ChangeEvent<HTMLInputElement>) => {
+            const newTitle = e.target.value;
+            const parameter = {
+                id,
+                title: newTitle,
+                format,
+                field,
+            };
+            setTitle(newTitle);
+            onParameterChange(parameter);
+        },
+        [id, format, field, onParameterChange],
+    );
 
-    render() {
-        // @ts-expect-error TS2339
-        const { id, format, field, title } = this.state;
-        // @ts-expect-error TS2339
-        const polyglot = this.props.polyglot;
+    const SubAdminComponent = getAdminComponent(format.name);
 
-        const SubAdminComponent = getAdminComponent(format.name);
+    const availableField = [
+        'title',
+        'summary',
+        'source',
+        'target',
+        'weight',
+        'value',
+        'url',
+        'id',
+    ];
 
-        const availableField = [
-            'title',
-            'summary',
-            'source',
-            'target',
-            'weight',
-            'value',
-            'url',
-            'id',
-        ];
-
-        return (
-            <Box display="flex" alignItems="center">
-                <Box component="label" mr={1}>
-                    {'#' + (id + 1)}
-                </Box>
-                <Box
-                    sx={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        flexGrow: 1,
-                        gap: 2,
-                        paddingTop: 2,
-                        paddingBottom: 2,
-                        paddingLeft: 1,
-                        marginTop: 1,
-                        borderLeft: '1px solid grey',
-                        borderRadius: '2px',
-                    }}
-                >
-                    <Box display="flex" gap={1}>
-                        <TextField
-                            select
-                            label={polyglot.t('table_field')}
-                            value={field}
-                            onChange={this.changeField}
-                            sx={{ flexGrow: 1 }}
-                        >
-                            {availableField.map((value) => (
-                                <MenuItem
-                                    key={`table_parameter_${value}`}
-                                    value={value}
-                                >
-                                    {polyglot.t(`table_${value}`)}
-                                </MenuItem>
-                            ))}
-                            <MenuItem
-                                value={
-                                    availableField.includes(field)
-                                        ? 'other'
-                                        : field
-                                }
-                            >
-                                {polyglot.t('table_other')}
-                            </MenuItem>
-                        </TextField>
-                        <TextField
-                            value={title}
-                            label={polyglot.t('column_title')}
-                            onChange={this.changeTitle}
-                            sx={{ flexGrow: 1 }}
-                        />
-                    </Box>
-                    {!availableField.includes(field) && (
-                        <TextField
-                            fullWidth
-                            value={field}
-                            label={polyglot.t('table_other_field')}
-                            onChange={this.changeField}
-                        />
-                    )}
-                    <SelectFormat
-                        formats={COMPATIBLE_FORMATS}
-                        value={format.name}
-                        onChange={this.changeFormat}
-                    />
-                    {format.name && (
-                        <SubAdminComponent
-                            onChange={this.changeFormatOption}
-                            args={format.option}
-                        />
-                    )}
-                </Box>
+    return (
+        <Box display="flex" alignItems="center">
+            <Box component="label" mr={1}>
+                {'#' + (id + 1)}
             </Box>
-        );
-    }
-}
+            <Box
+                sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    flexGrow: 1,
+                    gap: 2,
+                    paddingTop: 2,
+                    paddingBottom: 2,
+                    paddingLeft: 1,
+                    marginTop: 1,
+                    borderLeft: '1px solid grey',
+                    borderRadius: '2px',
+                }}
+            >
+                <Box display="flex" gap={1}>
+                    <TextField
+                        select
+                        label={translate('table_field')}
+                        value={field}
+                        onChange={changeField}
+                        sx={{ flexGrow: 1 }}
+                        variant="standard"
+                    >
+                        {availableField.map((value) => (
+                            <MenuItem
+                                key={`table_parameter_${value}`}
+                                value={value}
+                            >
+                                {translate(`table_${value}`)}
+                            </MenuItem>
+                        ))}
+                        <MenuItem
+                            value={
+                                availableField.includes(field) ? 'other' : field
+                            }
+                        >
+                            {translate('table_other')}
+                        </MenuItem>
+                    </TextField>
+                    <TextField
+                        value={title}
+                        label={translate('column_title')}
+                        onChange={changeTitle}
+                        sx={{ flexGrow: 1 }}
+                        variant="standard"
+                    />
+                </Box>
+                {!availableField.includes(field) && (
+                    <TextField
+                        fullWidth
+                        value={field}
+                        label={translate('table_other_field')}
+                        onChange={changeField}
+                        variant="standard"
+                    />
+                )}
+                <SelectFormat
+                    formats={COMPATIBLE_FORMATS}
+                    value={format.name}
+                    onChange={changeFormat}
+                />
+                {format.name && (
+                    <SubAdminComponent
+                        onChange={changeFormatOption}
+                        // @ts-expect-error Complex union type from getAdminComponent
+                        args={format.option}
+                    />
+                )}
+            </Box>
+        </Box>
+    );
+};
 
 export default TableColumnParameter;

@@ -1,11 +1,14 @@
-import AbstractTableAdmin from '../core/AbstractTableAdmin';
-import { TextField } from '@mui/material';
-import TableColumnsParameters from '../core/TableColumnsParameters';
-// @ts-expect-error TS6133
 import React from 'react';
+import { TextField } from '@mui/material';
+import { useTranslate } from '../../../../i18n/I18NContext';
+
+import {
+    useAbstractTableAdmin,
+    type AbstractTableAdminProps,
+} from '../core/useAbstractTableAdmin';
+import TableColumnsParameters from '../core/TableColumnsParameters';
 import { FormatDefaultParamsFieldSet } from '../../../utils/components/field-set/FormatFieldSets';
 import FormatGroupedFieldSet from '../../../utils/components/field-set/FormatGroupedFieldSet';
-import { translate } from '../../../../i18n/I18NContext';
 
 export const defaultArgs = {
     pageSize: 6,
@@ -17,54 +20,35 @@ export const defaultArgs = {
     columnsParameters: [],
 };
 
-class PaginatedTableAdmin extends AbstractTableAdmin {
-    static propTypes = AbstractTableAdmin.propTypes;
+const PaginatedTableAdmin: React.FC<AbstractTableAdminProps> = ({
+    args = defaultArgs,
+    onChange,
+}) => {
+    const { translate: t } = useTranslate();
+    const { handlePageSize, handleColumnParameter } = useAbstractTableAdmin({
+        args,
+        onChange,
+    });
 
-    static defaultProps = {
-        args: defaultArgs,
-    };
+    return (
+        <FormatGroupedFieldSet>
+            <FormatDefaultParamsFieldSet>
+                <TextField
+                    fullWidth
+                    type="number"
+                    label={t('format_table_page_size')}
+                    onChange={handlePageSize}
+                    value={args.pageSize || 10}
+                    variant="standard"
+                />
+            </FormatDefaultParamsFieldSet>
+            <TableColumnsParameters
+                onChange={handleColumnParameter}
+                parameters={args.columnsParameters || []}
+                parameterCount={args.columnsCount || 3}
+            />
+        </FormatGroupedFieldSet>
+    );
+};
 
-    // @ts-expect-error TS7006
-    handlePageSize = (e) => {
-        const pageSize = parseInt(e.target.value, 10);
-        // @ts-expect-error TS2339
-        this.props.onChange({
-            // @ts-expect-error TS2339
-            ...this.props.args,
-            params: {
-                maxSize: pageSize,
-            },
-            pageSize: pageSize,
-        });
-    };
-
-    render() {
-        const {
-            // @ts-expect-error TS2339
-            p: polyglot,
-            // @ts-expect-error TS2339
-            args: { pageSize, columnsCount, columnsParameters },
-        } = this.props;
-        return (
-            <FormatGroupedFieldSet>
-                <FormatDefaultParamsFieldSet defaultExpanded>
-                    <TextField
-                        label={polyglot.t('items_per_page')}
-                        onChange={this.handlePageSize}
-                        value={pageSize}
-                        type="number"
-                        fullWidth
-                    />
-                    <TableColumnsParameters
-                        onChange={this.handleColumnParameter}
-                        polyglot={polyglot}
-                        parameterCount={columnsCount}
-                        parameters={columnsParameters}
-                    />
-                </FormatDefaultParamsFieldSet>
-            </FormatGroupedFieldSet>
-        );
-    }
-}
-
-export default translate(PaginatedTableAdmin);
+export default PaginatedTableAdmin;
