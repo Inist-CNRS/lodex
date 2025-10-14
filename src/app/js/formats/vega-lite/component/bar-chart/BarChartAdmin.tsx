@@ -1,6 +1,4 @@
-// @ts-expect-error TS6133
-import React, { useEffect, useMemo } from 'react';
-import PropTypes from 'prop-types';
+import { useCallback, useMemo, type ChangeEvent } from 'react';
 import {
     TextField,
     MenuItem,
@@ -9,10 +7,8 @@ import {
     Switch,
     FormGroup,
 } from '@mui/material';
-import { translate } from '../../../../i18n/I18NContext';
+import { useTranslate } from '../../../../i18n/I18NContext';
 
-import { polyglot as polyglotPropTypes } from '../../../../propTypes';
-import updateAdminArgs from '../../../utils/updateAdminArgs';
 import RoutineParamsAdmin from '../../../utils/components/admin/RoutineParamsAdmin';
 import ColorPickerParamsAdmin from '../../../utils/components/admin/ColorPickerParamsAdmin';
 import { MULTICHROMATIC_DEFAULT_COLORSET } from '../../../utils/colorUtils';
@@ -33,13 +29,16 @@ import {
 import VegaFieldPreview from '../../../utils/components/field-set/FormatFieldSetPreview';
 import { StandardIdValue } from '../../../utils/dataSet';
 import AspectRatioSelector from '../../../utils/components/admin/AspectRatioSelector';
-import { ASPECT_RATIO_16_6 } from '../../../utils/aspectRatio';
+import {
+    ASPECT_RATIO_16_6,
+    type AspectRatio,
+} from '../../../utils/aspectRatio';
 import FormatGroupedFieldSet from '../../../utils/components/field-set/FormatGroupedFieldSet';
 
 export const defaultArgs = {
     params: {
         maxSize: 200,
-        orderBy: 'value/asc',
+        orderBy: 'value/asc' as const,
     },
     advancedMode: false,
     advancedModeSpec: null,
@@ -58,17 +57,51 @@ export const defaultArgs = {
     aspectRatio: ASPECT_RATIO_16_6,
 };
 
-// @ts-expect-error TS7006
-const BarChartAdmin = (props) => {
-    const {
-        p: polyglot,
-        args,
-        showMaxSize,
-        showMaxValue,
-        showMinValue,
-        showOrderBy,
-    } = props;
+type BarChartParams = {
+    maxSize?: number;
+    maxValue?: number;
+    minValue?: number;
+    orderBy?: string;
+    uri?: string;
+};
 
+type BarChartArgs = {
+    params?: BarChartParams;
+    advancedMode?: boolean;
+    advancedModeSpec?: string | null;
+    colors?: string;
+    axisRoundValue?: boolean;
+    diagonalCategoryAxis?: boolean;
+    diagonalValueAxis?: boolean;
+    direction?: string;
+    scale?: string;
+    tooltip?: boolean;
+    tooltipCategory?: string;
+    tooltipValue?: string;
+    labels?: boolean;
+    labelOverlap?: boolean;
+    barSize?: number;
+    aspectRatio?: AspectRatio;
+};
+
+type BarChartAdminProps = {
+    args?: BarChartArgs;
+    onChange: (args: BarChartArgs) => void;
+    showMaxSize?: boolean;
+    showMaxValue?: boolean;
+    showMinValue?: boolean;
+    showOrderBy?: boolean;
+};
+
+const BarChartAdmin = ({
+    args = defaultArgs,
+    showMaxSize = true,
+    showMaxValue = true,
+    showMinValue = true,
+    showOrderBy = true,
+    onChange,
+}: BarChartAdminProps) => {
+    const { translate } = useTranslate();
     const {
         advancedMode,
         advancedModeSpec,
@@ -136,91 +169,166 @@ const BarChartAdmin = (props) => {
         tooltipValue,
     ]);
 
-    // Save the new spec when we first use the advanced mode or when we reset the generated spec
-    // details: Update advancedModeSpec props arguments when spec is generated or regenerated
-    useEffect(() => {
-        if (!advancedMode) {
-            return;
-        }
-        updateAdminArgs('advancedModeSpec', spec, props);
-    }, [advancedMode, advancedModeSpec, props, spec]);
+    const toggleAdvancedMode = useCallback(
+        (event: ChangeEvent<HTMLInputElement>) => {
+            onChange({
+                ...args,
+                advancedMode: event.target.checked,
+            });
+        },
+        [onChange, args],
+    );
 
-    const toggleAdvancedMode = () => {
-        updateAdminArgs('advancedMode', !advancedMode, props);
-    };
-
-    // @ts-expect-error TS7006
-    const handleAdvancedModeSpec = (newSpec) => {
-        updateAdminArgs('advancedModeSpec', newSpec, props);
-    };
+    const handleAdvancedModeSpec = useCallback(
+        (advancedModeSpec: string | null) => {
+            onChange({
+                ...args,
+                advancedModeSpec,
+            });
+        },
+        [onChange, args],
+    );
 
     const clearAdvancedModeSpec = () => {
-        updateAdminArgs('advancedModeSpec', null, props);
+        handleAdvancedModeSpec(null);
     };
 
-    // @ts-expect-error TS7006
-    const handleParams = (params) => {
-        updateAdminArgs('params', params, props);
-    };
+    const handleParams = useCallback(
+        (params: BarChartParams) => {
+            onChange({
+                ...args,
+                params,
+            });
+        },
+        [onChange, args],
+    );
 
-    // @ts-expect-error TS7006
-    const handleColors = (colors) => {
-        updateAdminArgs('colors', colors || defaultArgs.colors, props);
-    };
+    const handleColors = useCallback(
+        (colors: string | null) => {
+            onChange({
+                ...args,
+                colors: colors || defaultArgs.colors,
+            });
+        },
+        [onChange, args],
+    );
 
-    const handleAxisRoundValue = () => {
-        updateAdminArgs('axisRoundValue', !axisRoundValue, props);
-    };
+    const handleAxisRoundValue = useCallback(
+        (event: ChangeEvent<HTMLInputElement>) => {
+            onChange({
+                ...args,
+                axisRoundValue: event.target.checked,
+            });
+        },
+        [onChange, args],
+    );
 
-    // @ts-expect-error TS7006
-    const handleScale = (event) => {
-        updateAdminArgs('scale', event.target.value, props);
-    };
+    const handleScale = useCallback(
+        (event: ChangeEvent<HTMLInputElement>) =>
+            onChange({
+                ...args,
+                scale: event.target.value,
+            }),
+        [onChange, args],
+    );
 
-    // @ts-expect-error TS7006
-    const handleDirection = (event) => {
-        updateAdminArgs('direction', event.target.value, props);
-    };
+    const handleDirection = useCallback(
+        (event: ChangeEvent<HTMLInputElement>) =>
+            onChange({
+                ...args,
+                direction: event.target.value,
+            }),
+        [onChange, args],
+    );
 
-    const toggleDiagonalValueAxis = () => {
-        updateAdminArgs('diagonalValueAxis', !diagonalValueAxis, props);
-    };
+    const toggleDiagonalValueAxis = useCallback(
+        (event: ChangeEvent<HTMLInputElement>) => {
+            onChange({
+                ...args,
+                diagonalValueAxis: event.target.checked,
+            });
+        },
+        [onChange, args],
+    );
 
-    const toggleDiagonalCategoryAxis = () => {
-        updateAdminArgs('diagonalCategoryAxis', !diagonalCategoryAxis, props);
-    };
+    const toggleDiagonalCategoryAxis = useCallback(
+        (event: ChangeEvent<HTMLInputElement>) =>
+            onChange({
+                ...args,
+                diagonalCategoryAxis: event.target.checked,
+            }),
+        [onChange, args],
+    );
 
-    // @ts-expect-error TS7006
-    const handleBarSize = (event) => {
-        updateAdminArgs('barSize', parseInt(event.target.value, 10), props);
-    };
+    const handleBarSize = useCallback(
+        (event: ChangeEvent<HTMLInputElement>) => {
+            onChange({
+                ...args,
+                barSize: parseInt(event.target.value, 10),
+            });
+        },
+        [onChange, args],
+    );
 
-    const toggleTooltip = () => {
-        updateAdminArgs('tooltip', !args.tooltip, props);
-    };
+    const toggleTooltip = useCallback(
+        (tooltip: boolean) => {
+            onChange({
+                ...args,
+                tooltip,
+            });
+        },
+        [onChange, args],
+    );
 
-    const toggleLabels = () => {
-        updateAdminArgs('labels', !args.labels, props);
-    };
+    const toggleLabels = useCallback(
+        (event: ChangeEvent<HTMLInputElement>) => {
+            onChange({
+                ...args,
+                labels: event.target.checked,
+            });
+        },
+        [onChange, args],
+    );
 
-    const toggleLabelOverlap = () => {
-        updateAdminArgs('labelOverlap', !args.labelOverlap, props);
-    };
+    const toggleLabelOverlap = useCallback(
+        (event: ChangeEvent<HTMLInputElement>) => {
+            onChange({
+                ...args,
+                labelOverlap: event.target.checked,
+            });
+        },
+        [onChange, args],
+    );
 
-    // @ts-expect-error TS7006
-    const handleTooltipCategory = (category) => {
-        updateAdminArgs('tooltipCategory', category, props);
-    };
+    const handleTooltipCategory = useCallback(
+        (category: string) => {
+            onChange({
+                ...args,
+                tooltipCategory: category,
+            });
+        },
+        [onChange, args],
+    );
 
-    // @ts-expect-error TS7006
-    const handleTooltipValue = (value) => {
-        updateAdminArgs('tooltipValue', value, props);
-    };
+    const handleTooltipValue = useCallback(
+        (value: string) => {
+            onChange({
+                ...args,
+                tooltipValue: value,
+            });
+        },
+        [onChange, args],
+    );
 
-    // @ts-expect-error TS7006
-    const handleAspectRatio = (value) => {
-        updateAdminArgs('aspectRatio', value, props);
-    };
+    const handleAspectRatio = useCallback(
+        (value: AspectRatio) => {
+            onChange({
+                ...args,
+                aspectRatio: value,
+            });
+        },
+        [onChange, args],
+    );
 
     return (
         <FormatGroupedFieldSet>
@@ -228,7 +336,6 @@ const BarChartAdmin = (props) => {
                 <RoutineParamsAdmin
                     params={params || defaultArgs.params}
                     onChange={handleParams}
-                    polyglot={polyglot}
                     showMaxSize={showMaxSize}
                     showMaxValue={showMaxValue}
                     showMinValue={showMinValue}
@@ -244,7 +351,7 @@ const BarChartAdmin = (props) => {
                                 onChange={toggleAdvancedMode}
                             />
                         }
-                        label={polyglot.t('advancedMode')}
+                        label={translate('advancedMode')}
                     />
                 </FormGroup>
                 {advancedMode ? (
@@ -256,32 +363,34 @@ const BarChartAdmin = (props) => {
                 ) : (
                     <>
                         <VegaToolTips
-                            checked={tooltip}
+                            checked={tooltip ?? defaultArgs.tooltip}
                             onChange={toggleTooltip}
                             onCategoryTitleChange={handleTooltipCategory}
-                            categoryTitle={tooltipCategory}
+                            categoryTitle={
+                                tooltipCategory ?? defaultArgs.tooltipCategory
+                            }
                             onValueTitleChange={handleTooltipValue}
-                            valueTitle={tooltipValue}
-                            polyglot={polyglot}
+                            valueTitle={
+                                tooltipValue ?? defaultArgs.tooltipValue
+                            }
                             thirdValue={false}
                         />
                         <ColorPickerParamsAdmin
                             colors={colors}
                             onChange={handleColors}
-                            polyglot={polyglot}
                         />
                         <TextField
                             fullWidth
                             select
-                            label={polyglot.t('direction')}
+                            label={translate('direction')}
                             onChange={handleDirection}
                             value={direction}
                         >
                             <MenuItem value="horizontal">
-                                {polyglot.t('horizontal')}
+                                {translate('horizontal')}
                             </MenuItem>
                             <MenuItem value="vertical">
-                                {polyglot.t('vertical')}
+                                {translate('vertical')}
                             </MenuItem>
                         </TextField>
                         <FormControlLabel
@@ -291,7 +400,7 @@ const BarChartAdmin = (props) => {
                                     checked={diagonalCategoryAxis}
                                 />
                             }
-                            label={polyglot.t('diagonal_category_axis')}
+                            label={translate('diagonal_category_axis')}
                         />
                         <FormControlLabel
                             control={
@@ -300,7 +409,7 @@ const BarChartAdmin = (props) => {
                                     checked={diagonalValueAxis}
                                 />
                             }
-                            label={polyglot.t('diagonal_value_axis')}
+                            label={translate('diagonal_value_axis')}
                         />
                         <FormControlLabel
                             control={
@@ -309,7 +418,7 @@ const BarChartAdmin = (props) => {
                                     checked={axisRoundValue}
                                 />
                             }
-                            label={polyglot.t('axis_round_value')}
+                            label={translate('axis_round_value')}
                         />
                         <FormControlLabel
                             control={
@@ -318,7 +427,7 @@ const BarChartAdmin = (props) => {
                                     checked={labels}
                                 />
                             }
-                            label={polyglot.t('toggle_labels')}
+                            label={translate('toggle_labels')}
                         />
                         <FormControlLabel
                             control={
@@ -327,24 +436,24 @@ const BarChartAdmin = (props) => {
                                     checked={labelOverlap}
                                 />
                             }
-                            label={polyglot.t('toggle_label_overlap')}
+                            label={translate('toggle_label_overlap')}
                         />
                         <TextField
                             fullWidth
                             select
-                            label={polyglot.t('scale')}
+                            label={translate('scale')}
                             onChange={handleScale}
                             value={scale}
                         >
                             <MenuItem value="linear">
-                                {polyglot.t('linear')}
+                                {translate('linear')}
                             </MenuItem>
-                            <MenuItem value="log">{polyglot.t('log')}</MenuItem>
+                            <MenuItem value="log">{translate('log')}</MenuItem>
                         </TextField>
                         <TextField
                             type="number"
                             fullWidth
-                            label={polyglot.t('bar_size')}
+                            label={translate('bar_size')}
                             onChange={handleBarSize}
                             value={barSize}
                         />
@@ -357,6 +466,7 @@ const BarChartAdmin = (props) => {
             </FormatChartParamsFieldSet>
             <VegaFieldPreview
                 args={args}
+                // @ts-expect-error TS2322
                 PreviewComponent={BarChartAdminView}
                 datasets={[StandardIdValue]}
                 showDatasetsSelector={false}
@@ -365,44 +475,4 @@ const BarChartAdmin = (props) => {
     );
 };
 
-BarChartAdmin.defaultProps = {
-    args: defaultArgs,
-    showMaxSize: true,
-    showMaxValue: true,
-    showMinValue: true,
-    showOrderBy: true,
-};
-
-BarChartAdmin.propTypes = {
-    args: PropTypes.shape({
-        params: PropTypes.shape({
-            maxSize: PropTypes.number,
-            maxValue: PropTypes.number,
-            minValue: PropTypes.number,
-            orderBy: PropTypes.string,
-        }),
-        advancedMode: PropTypes.bool,
-        advancedModeSpec: PropTypes.string,
-        colors: PropTypes.string,
-        axisRoundValue: PropTypes.bool,
-        diagonalCategoryAxis: PropTypes.bool,
-        diagonalValueAxis: PropTypes.bool,
-        scale: PropTypes.oneOf(['log', 'linear']),
-        direction: PropTypes.oneOf(['horizontal', 'vertical']),
-        barSize: PropTypes.number,
-        tooltip: PropTypes.bool,
-        tooltipCategory: PropTypes.string,
-        tooltipValue: PropTypes.string,
-        labels: PropTypes.bool,
-        labelOverlap: PropTypes.bool,
-        aspectRatio: PropTypes.string,
-    }),
-    onChange: PropTypes.func.isRequired,
-    p: polyglotPropTypes.isRequired,
-    showMaxSize: PropTypes.bool.isRequired,
-    showMaxValue: PropTypes.bool.isRequired,
-    showMinValue: PropTypes.bool.isRequired,
-    showOrderBy: PropTypes.bool.isRequired,
-};
-
-export default translate(BarChartAdmin);
+export default BarChartAdmin;
