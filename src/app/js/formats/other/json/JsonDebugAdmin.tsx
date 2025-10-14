@@ -1,16 +1,13 @@
-// @ts-expect-error TS6133
-import React from 'react';
-import { translate } from '../../../i18n/I18NContext';
-import PropTypes from 'prop-types';
-import { polyglot as polyglotPropTypes } from '../../../propTypes';
 import RoutineParamsAdmin from '../../utils/components/admin/RoutineParamsAdmin';
 import { FormControlLabel, FormGroup, Switch } from '@mui/material';
-import updateAdminArgs from '../../utils/updateAdminArgs';
+import { useUpdateAdminArgs } from '../../utils/updateAdminArgs';
 import {
     FormatDataParamsFieldSet,
     FormatDefaultParamsFieldSet,
 } from '../../utils/components/field-set/FormatFieldSets';
 import FormatGroupedFieldSet from '../../utils/components/field-set/FormatGroupedFieldSet';
+import { useTranslate } from '../../../i18n/I18NContext';
+import type { ChangeEvent } from 'react';
 
 export const defaultArgs = {
     params: {
@@ -20,20 +17,51 @@ export const defaultArgs = {
     debugMode: false,
 };
 
-// @ts-expect-error TS7006
-const JsonDebugAdmin = (props) => {
-    const { args, p, showMaxSize, showMaxValue, showMinValue, showOrderBy } =
-        props;
+type JsonDebugArgs = {
+    params?: {
+        maxSize?: number;
+        maxValue?: number;
+        minValue?: number;
+        orderBy?: string;
+    };
+    debugMode?: boolean;
+};
+
+type JsonDebugAdminProps = {
+    args?: JsonDebugArgs;
+    onChange: (args: JsonDebugArgs) => void;
+    showMaxSize?: boolean;
+    showMaxValue?: boolean;
+    showMinValue?: boolean;
+    showOrderBy?: boolean;
+};
+
+const JsonDebugAdmin = ({
+    args = defaultArgs,
+    showMaxSize = true,
+    showMaxValue = true,
+    showMinValue = true,
+    showOrderBy = true,
+    onChange,
+}: JsonDebugAdminProps) => {
     const { params, debugMode } = args;
 
-    // @ts-expect-error TS7006
-    const handleParams = (params) => {
-        updateAdminArgs('params', params, props);
-    };
+    const { translate } = useTranslate();
 
-    const toggleDebugMode = () => {
-        updateAdminArgs('debugMode', !debugMode, props);
-    };
+    const handleParams = useUpdateAdminArgs<JsonDebugArgs, 'params'>('params', {
+        args,
+        onChange,
+    });
+
+    const toggleDebugMode = useUpdateAdminArgs<
+        JsonDebugArgs,
+        'debugMode',
+        ChangeEvent<HTMLInputElement>
+    >('debugMode', {
+        args,
+        onChange,
+        parseValue: (event) => event.target.checked,
+    });
 
     return (
         <FormatGroupedFieldSet>
@@ -41,7 +69,6 @@ const JsonDebugAdmin = (props) => {
                 <RoutineParamsAdmin
                     params={params || defaultArgs.params}
                     onChange={handleParams}
-                    polyglot={p}
                     showMaxSize={showMaxSize}
                     showMaxValue={showMaxValue}
                     showMinValue={showMinValue}
@@ -57,7 +84,7 @@ const JsonDebugAdmin = (props) => {
                                 onChange={toggleDebugMode}
                             />
                         }
-                        label={p.t('debugMode')}
+                        label={translate('debugMode')}
                     />
                 </FormGroup>
             </FormatDefaultParamsFieldSet>
@@ -65,30 +92,4 @@ const JsonDebugAdmin = (props) => {
     );
 };
 
-JsonDebugAdmin.defaultProps = {
-    args: defaultArgs,
-    showMaxSize: true,
-    showMaxValue: true,
-    showMinValue: true,
-    showOrderBy: true,
-};
-
-JsonDebugAdmin.propTypes = {
-    args: PropTypes.shape({
-        params: PropTypes.shape({
-            maxSize: PropTypes.number,
-            maxValue: PropTypes.number,
-            minValue: PropTypes.number,
-            orderBy: PropTypes.string,
-        }),
-        debugMode: PropTypes.bool,
-    }),
-    onChange: PropTypes.func.isRequired,
-    p: polyglotPropTypes.isRequired,
-    showMaxSize: PropTypes.bool.isRequired,
-    showMaxValue: PropTypes.bool.isRequired,
-    showMinValue: PropTypes.bool.isRequired,
-    showOrderBy: PropTypes.bool.isRequired,
-};
-
-export default translate(JsonDebugAdmin);
+export default JsonDebugAdmin;
