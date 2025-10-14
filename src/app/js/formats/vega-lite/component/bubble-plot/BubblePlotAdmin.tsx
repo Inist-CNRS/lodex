@@ -1,11 +1,7 @@
-// @ts-expect-error TS6133
-import React, { useEffect, useMemo } from 'react';
-import { translate } from '../../../../i18n/I18NContext';
-import PropTypes from 'prop-types';
+import { useCallback, useMemo, type ChangeEvent } from 'react';
+import { useTranslate } from '../../../../i18n/I18NContext';
 import { Checkbox, FormControlLabel, FormGroup, Switch } from '@mui/material';
 
-import { polyglot as polyglotPropTypes } from '../../../../propTypes';
-import updateAdminArgs from '../../../utils/updateAdminArgs';
 import RoutineParamsAdmin from '../../../utils/components/admin/RoutineParamsAdmin';
 import VegaToolTips from '../../../utils/components/admin/VegaToolTips';
 import ColorPickerParamsAdmin from '../../../utils/components/admin/ColorPickerParamsAdmin';
@@ -40,16 +36,44 @@ export const defaultArgs = {
     aspectRatio: ASPECT_RATIO_1_1,
 };
 
-// @ts-expect-error TS7006
-const BubblePlotAdmin = (props) => {
-    const {
-        p: polyglot,
-        args,
-        showMaxSize,
-        showMaxValue,
-        showMinValue,
-        showOrderBy,
-    } = props;
+type BubblePlotParams = {
+    maxSize?: number;
+    maxValue?: number;
+    minValue?: number;
+    orderBy?: string;
+};
+
+type BubblePlotArgs = {
+    params: BubblePlotParams;
+    advancedMode?: boolean;
+    advancedModeSpec?: string | null;
+    colors?: string;
+    flipAxis?: boolean;
+    tooltip?: boolean;
+    tooltipSource?: string;
+    tooltipTarget?: string;
+    tooltipWeight?: string;
+    aspectRatio?: string;
+};
+
+type BubblePlotAdminProps = {
+    args?: BubblePlotArgs;
+    onChange: (args: BubblePlotArgs) => void;
+    showMaxSize: boolean;
+    showMaxValue: boolean;
+    showMinValue: boolean;
+    showOrderBy: boolean;
+};
+
+const BubblePlotAdmin = ({
+    args = defaultArgs,
+    onChange,
+    showMaxSize = true,
+    showMaxValue = true,
+    showMinValue = true,
+    showOrderBy = true,
+}: BubblePlotAdminProps) => {
+    const { translate } = useTranslate();
 
     const {
         advancedMode,
@@ -87,74 +111,128 @@ const BubblePlotAdmin = (props) => {
         specBuilder.setTooltipValue(tooltipWeight);
 
         return JSON.stringify(specBuilder.buildSpec(), null, 2);
-    }, [advancedMode, advancedModeSpec]);
+    }, [
+        advancedMode,
+        advancedModeSpec,
+        colors,
+        flipAxis,
+        params.orderBy,
+        tooltip,
+        tooltipSource,
+        tooltipTarget,
+        tooltipWeight,
+    ]);
 
-    // Save the new spec when we first use the advanced mode or when we reset the generated spec
-    // details: Update advancedModeSpec props arguments when spec is generated or regenerated
-    useEffect(() => {
-        if (!advancedMode) {
-            return;
-        }
-        updateAdminArgs('advancedModeSpec', spec, props);
-    }, [advancedMode, advancedModeSpec]);
+    const toggleAdvancedMode = useCallback(
+        (event: ChangeEvent<HTMLInputElement>) => {
+            onChange({
+                ...args,
+                advancedMode: event.target.checked,
+            });
+        },
+        [onChange, args],
+    );
 
-    const toggleAdvancedMode = () => {
-        updateAdminArgs('advancedMode', !advancedMode, props);
-    };
+    const handleAdvancedModeSpec = useCallback(
+        (advancedModeSpec: string | null) => {
+            onChange({
+                ...args,
+                advancedModeSpec,
+            });
+        },
+        [onChange, args],
+    );
 
-    // @ts-expect-error TS7006
-    const handleAdvancedModeSpec = (newSpec) => {
-        updateAdminArgs('advancedModeSpec', newSpec, props);
-    };
+    const clearAdvancedModeSpec = useCallback(
+        () => handleAdvancedModeSpec(null),
+        [handleAdvancedModeSpec],
+    );
 
-    const clearAdvancedModeSpec = () => {
-        updateAdminArgs('advancedModeSpec', null, props);
-    };
+    const handleColors = useCallback(
+        (colors: string) => {
+            onChange({
+                ...args,
+                colors: colors || defaultArgs.colors,
+            });
+        },
+        [onChange, args],
+    );
 
-    // @ts-expect-error TS7006
-    const handleColors = (colors) => {
-        updateAdminArgs('colors', colors || defaultArgs.colors, props);
-    };
+    const handleParams = useCallback(
+        (params: BubblePlotParams) => {
+            onChange({
+                ...args,
+                params,
+            });
+        },
+        [onChange, args],
+    );
 
-    // @ts-expect-error TS7006
-    const handleParams = (params) => {
-        updateAdminArgs('params', params, props);
-    };
+    const toggleFlipAxis = useCallback(
+        (event: ChangeEvent<HTMLInputElement>) => {
+            onChange({
+                ...args,
+                flipAxis: event.target.checked,
+            });
+        },
+        [onChange, args],
+    );
 
-    const toggleFlipAxis = () => {
-        updateAdminArgs('flipAxis', !flipAxis, props);
-    };
+    const toggleTooltip = useCallback(
+        (tooltip: boolean) => {
+            onChange({
+                ...args,
+                tooltip,
+            });
+        },
+        [onChange, args],
+    );
 
-    const toggleTooltip = () => {
-        updateAdminArgs('tooltip', !tooltip, props);
-    };
+    const handleTooltipSource = useCallback(
+        (tooltipSource: string) => {
+            onChange({
+                ...args,
+                tooltipSource,
+            });
+        },
+        [onChange, args],
+    );
 
-    // @ts-expect-error TS7006
-    const handleTooltipSource = (tooltipSource) => {
-        updateAdminArgs('tooltipSource', tooltipSource, props);
-    };
+    const handleTooltipTarget = useCallback(
+        (tooltipTarget: string) => {
+            onChange({
+                ...args,
+                tooltipTarget,
+            });
+        },
+        [onChange, args],
+    );
 
-    // @ts-expect-error TS7006
-    const handleTooltipTarget = (tooltipTarget) => {
-        updateAdminArgs('tooltipTarget', tooltipTarget, props);
-    };
+    const handleTooltipWeight = useCallback(
+        (tooltipWeight: string) => {
+            onChange({
+                ...args,
+                tooltipWeight,
+            });
+        },
+        [onChange, args],
+    );
 
-    // @ts-expect-error TS7006
-    const handleTooltipWeight = (tooltipWeight) => {
-        updateAdminArgs('tooltipWeight', tooltipWeight, props);
-    };
-
-    // @ts-expect-error TS7006
-    const handleAspectRatio = (value) => {
-        updateAdminArgs('aspectRatio', value, props);
-    };
+    const handleAspectRatio = useCallback(
+        (value: string) => {
+            onChange({
+                ...args,
+                aspectRatio: value,
+            });
+        },
+        [onChange, args],
+    );
 
     return (
         <FormatGroupedFieldSet>
             <FormatDataParamsFieldSet>
                 <RoutineParamsAdmin
                     params={params || defaultArgs.params}
-                    polyglot={polyglot}
                     onChange={handleParams}
                     showMaxSize={showMaxSize}
                     showMaxValue={showMaxValue}
@@ -171,7 +249,7 @@ const BubblePlotAdmin = (props) => {
                                 onChange={toggleAdvancedMode}
                             />
                         }
-                        label={polyglot.t('advancedMode')}
+                        label={translate('advancedMode')}
                     />
                 </FormGroup>
                 {advancedMode ? (
@@ -189,24 +267,28 @@ const BubblePlotAdmin = (props) => {
                                     checked={flipAxis}
                                 />
                             }
-                            label={polyglot.t('flip_axis')}
+                            label={translate('flip_axis')}
                         />
                         <VegaToolTips
-                            checked={tooltip}
+                            checked={tooltip ?? defaultArgs.tooltip}
                             onChange={toggleTooltip}
                             onCategoryTitleChange={handleTooltipSource}
-                            categoryTitle={tooltipSource}
+                            categoryTitle={
+                                tooltipSource ?? defaultArgs.tooltipSource
+                            }
                             onValueTitleChange={handleTooltipTarget}
-                            valueTitle={tooltipTarget}
-                            polyglot={polyglot}
+                            valueTitle={
+                                tooltipTarget ?? defaultArgs.tooltipTarget
+                            }
                             thirdValue={true}
                             onThirdValueChange={handleTooltipWeight}
-                            thirdValueTitle={tooltipWeight}
+                            thirdValueTitle={
+                                tooltipWeight ?? defaultArgs.tooltipWeight
+                            }
                         />
                         <ColorPickerParamsAdmin
                             colors={colors}
                             onChange={handleColors}
-                            polyglot={polyglot}
                         />
                     </>
                 )}
@@ -217,6 +299,7 @@ const BubblePlotAdmin = (props) => {
             </FormatChartParamsFieldSet>
             <VegaFieldPreview
                 args={args}
+                // @ts-expect-error TS2322
                 PreviewComponent={BubblePlotAdminView}
                 datasets={[StandardSourceTargetWeight]}
                 showDatasetsSelector={false}
@@ -225,38 +308,4 @@ const BubblePlotAdmin = (props) => {
     );
 };
 
-BubblePlotAdmin.propTypes = {
-    args: PropTypes.shape({
-        params: PropTypes.shape({
-            maxSize: PropTypes.number,
-            maxValue: PropTypes.number,
-            minValue: PropTypes.number,
-            orderBy: PropTypes.string,
-        }),
-        advancedMode: PropTypes.bool,
-        advancedModeSpec: PropTypes.string,
-        colors: PropTypes.string,
-        flipAxis: PropTypes.bool,
-        tooltip: PropTypes.bool,
-        tooltipSource: PropTypes.string,
-        tooltipTarget: PropTypes.string,
-        tooltipWeight: PropTypes.string,
-        aspectRatio: PropTypes.string,
-    }),
-    onChange: PropTypes.func.isRequired,
-    p: polyglotPropTypes.isRequired,
-    showMaxSize: PropTypes.bool.isRequired,
-    showMaxValue: PropTypes.bool.isRequired,
-    showMinValue: PropTypes.bool.isRequired,
-    showOrderBy: PropTypes.bool.isRequired,
-};
-
-BubblePlotAdmin.defaultProps = {
-    args: defaultArgs,
-    showMaxSize: true,
-    showMaxValue: true,
-    showMinValue: true,
-    showOrderBy: true,
-};
-
-export default translate(BubblePlotAdmin);
+export default BubblePlotAdmin;
