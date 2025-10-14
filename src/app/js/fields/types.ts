@@ -1,8 +1,13 @@
 export interface Field {
+    _id: string;
     name: string;
-    label: string;
-    scheme: string;
+    label?: string;
+    scheme?: string;
     subresourceId?: string;
+    overview?: number;
+    position?: number;
+    isDefaultSortField?: boolean;
+    sortOrder?: 'asc' | 'desc';
 }
 
 export interface TransformerDraft {
