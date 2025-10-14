@@ -8,6 +8,7 @@ import {
 } from '../istexSummary/constants';
 import { FormatDataParamsFieldSet } from '../../utils/components/field-set/FormatFieldSets';
 import FormatGroupedFieldSet from '../../utils/components/field-set/FormatGroupedFieldSet';
+import type { ChangeEvent } from 'react';
 
 export const defaultArgs = {
     searchedField: CUSTOM_ISTEX_QUERY,
@@ -35,13 +36,23 @@ export const IstexCitationAdmin = ({
 
     const handleSearchedField = useUpdateAdminArgs<
         IstexCitationArgs,
-        'searchedField'
-    >('searchedField', { args, onChange });
+        'searchedField',
+        ChangeEvent<HTMLInputElement>
+    >('searchedField', {
+        args,
+        onChange,
+        parseValue: (event) => event.target.value,
+    });
 
     const handleDocumentSortBy = useUpdateAdminArgs<
         IstexCitationArgs,
-        'documentSortBy'
-    >('documentSortBy', { args, onChange });
+        'documentSortBy',
+        ChangeEvent<HTMLInputElement>
+    >('documentSortBy', {
+        args,
+        onChange,
+        parseValue: (event) => event.target.value,
+    });
 
     const { searchedField, documentSortBy } = args;
 
@@ -53,7 +64,7 @@ export const IstexCitationAdmin = ({
                     select
                     label={translate('searched_field')}
                     value={searchedField || defaultArgs.searchedField}
-                    onChange={(e) => handleSearchedField(e.target.value)}
+                    onChange={handleSearchedField}
                 >
                     {SEARCHED_FIELD_VALUES.map((value) => (
                         <MenuItem key={value} value={value}>
@@ -64,7 +75,7 @@ export const IstexCitationAdmin = ({
                 <TextField
                     className="document_sort_by"
                     label={translate('document_sort_by')}
-                    onChange={(e) => handleDocumentSortBy(e.target.value)}
+                    onChange={handleDocumentSortBy}
                     value={documentSortBy || defaultArgs.documentSortBy}
                     fullWidth
                 />
