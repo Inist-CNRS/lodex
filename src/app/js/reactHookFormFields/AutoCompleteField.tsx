@@ -78,7 +78,6 @@ export const AutoCompleteField = ({
         NotUndefined<AutoCompleteProps['onInputChange']>
     >(
         (event, value, reason) => {
-            console.log(value);
             onInputChange?.(event, value, reason);
             if (allowNewItem) {
                 field.onChange(value);
