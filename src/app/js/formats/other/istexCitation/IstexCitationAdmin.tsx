@@ -1,11 +1,7 @@
-// @ts-expect-error TS6133
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { translate } from '../../../i18n/I18NContext';
+import { useTranslate } from '../../../i18n/I18NContext';
 import { MenuItem, TextField } from '@mui/material';
 
-import { polyglot as polyglotPropTypes } from '../../../propTypes';
-import updateAdminArgs from '../../utils/updateAdminArgs';
+import { useUpdateAdminArgs } from '../../utils/updateAdminArgs';
 import {
     SEARCHED_FIELD_VALUES,
     CUSTOM_ISTEX_QUERY,
@@ -18,64 +14,63 @@ export const defaultArgs = {
     documentSortBy: 'publicationDate[desc]',
 };
 
-export class IstexCitationAdmin extends Component {
-    static propTypes = {
-        args: PropTypes.shape({
-            searchedField: PropTypes.oneOf(SEARCHED_FIELD_VALUES),
-            documentSortBy: PropTypes.string,
-        }),
-        onChange: PropTypes.func.isRequired,
-        p: polyglotPropTypes.isRequired,
-    };
+type IstexCitationArgs = {
+    searchedField?: string;
+    documentSortBy?: string;
+};
 
-    static defaultProps = {
-        args: defaultArgs,
-    };
+type IstexCitationAdminProps = {
+    args?: IstexCitationArgs;
+    onChange: (args: {
+        searchedField?: string;
+        documentSortBy?: string;
+    }) => void;
+};
 
-    // @ts-expect-error TS7006
-    handleSearchedField = (e) => {
-        updateAdminArgs('searchedField', e.target.value, this.props);
-    };
+export const IstexCitationAdmin = ({
+    args = defaultArgs,
+    onChange,
+}: IstexCitationAdminProps) => {
+    const { translate } = useTranslate();
 
-    // @ts-expect-error TS7006
-    handleDocumentSortBy = (e) =>
-        updateAdminArgs('documentSortBy', e.target.value, this.props);
+    const handleSearchedField = useUpdateAdminArgs<
+        IstexCitationArgs,
+        'searchedField'
+    >('searchedField', { args, onChange });
 
-    render() {
-        const {
-            // @ts-expect-error TS2339
-            p: polyglot,
-            // @ts-expect-error TS2339
-            args: { searchedField, documentSortBy },
-        } = this.props;
+    const handleDocumentSortBy = useUpdateAdminArgs<
+        IstexCitationArgs,
+        'documentSortBy'
+    >('documentSortBy', { args, onChange });
 
-        return (
-            <FormatGroupedFieldSet>
-                <FormatDataParamsFieldSet defaultExpanded>
-                    <TextField
-                        fullWidth
-                        select
-                        label={polyglot.t('searched_field')}
-                        value={searchedField}
-                        onChange={this.handleSearchedField}
-                    >
-                        {SEARCHED_FIELD_VALUES.map((value) => (
-                            <MenuItem key={value} value={value}>
-                                {polyglot.t(value)}
-                            </MenuItem>
-                        ))}
-                    </TextField>
-                    <TextField
-                        className="document_sort_by"
-                        label={polyglot.t('document_sort_by')}
-                        onChange={this.handleDocumentSortBy}
-                        value={documentSortBy}
-                        fullWidth
-                    />
-                </FormatDataParamsFieldSet>
-            </FormatGroupedFieldSet>
-        );
-    }
-}
+    const { searchedField, documentSortBy } = args;
 
-export default translate(IstexCitationAdmin);
+    return (
+        <FormatGroupedFieldSet>
+            <FormatDataParamsFieldSet defaultExpanded>
+                <TextField
+                    fullWidth
+                    select
+                    label={translate('searched_field')}
+                    value={searchedField || defaultArgs.searchedField}
+                    onChange={(e) => handleSearchedField(e.target.value)}
+                >
+                    {SEARCHED_FIELD_VALUES.map((value) => (
+                        <MenuItem key={value} value={value}>
+                            {translate(value)}
+                        </MenuItem>
+                    ))}
+                </TextField>
+                <TextField
+                    className="document_sort_by"
+                    label={translate('document_sort_by')}
+                    onChange={(e) => handleDocumentSortBy(e.target.value)}
+                    value={documentSortBy || defaultArgs.documentSortBy}
+                    fullWidth
+                />
+            </FormatDataParamsFieldSet>
+        </FormatGroupedFieldSet>
+    );
+};
+
+export default IstexCitationAdmin;
