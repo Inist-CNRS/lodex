@@ -1,8 +1,6 @@
-// @ts-expect-error TS6133
-import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { MenuItem, TextField } from '@mui/material';
-import { translate } from '../../../i18n/I18NContext';
+import { useTranslate } from '../../../i18n/I18NContext';
 
 import { polyglot as polyglotPropTypes } from '../../../propTypes';
 import SelectFormat from '../../SelectFormat';
@@ -12,7 +10,7 @@ import {
     FormatSubFormatParamsFieldSet,
 } from '../../utils/components/field-set/FormatFieldSets';
 import FormatGroupedFieldSet from '../../utils/components/field-set/FormatGroupedFieldSet';
-import updateAdminArgs from '../../utils/updateAdminArgs';
+import { useUpdateAdminArgs } from '../../utils/updateAdminArgs';
 
 export const defaultArgs = {
     type: 'unordered',
@@ -21,51 +19,59 @@ export const defaultArgs = {
     subFormatOptions: {},
 };
 
-const ListAdmin = ({
-    args = defaultArgs,
-    // @ts-expect-error TS7031
-    onChange,
-    // @ts-expect-error TS7031
-    p: polyglot,
-}) => {
-    const [type, setType] = useState(args.type || defaultArgs.type);
-    // @ts-expect-error TS7006
-    const handleType = (event) => {
-        const newValue = event.target.value;
-        updateAdminArgs('type', newValue, { args, onChange });
-        setType(newValue);
-    };
+type ListArgs = {
+    type?: string;
+    bullet?: string;
+    subFormat?: string;
+    subFormatOptions?: unknown;
+};
 
-    const [bullet, setBullet] = useState(args.bullet || defaultArgs.bullet);
-    // @ts-expect-error TS7006
-    const handleBullet = (event) => {
-        const newValue = event.target.value;
-        updateAdminArgs('bullet', newValue, { args, onChange });
-        setBullet(newValue);
-    };
+type ListAdminProps = {
+    args?: ListArgs;
+    onChange: (args: ListArgs) => void;
+};
 
-    const [subFormat, setSubFormat] = useState(
-        args.subFormat || defaultArgs.subFormat,
-    );
-    // @ts-expect-error TS7006
-    const handleSubFormat = (event) => {
-        const newValue = event;
-        updateAdminArgs('subFormat', newValue, {
+const ListAdmin = ({ args = defaultArgs, onChange }: ListAdminProps) => {
+    const { translate } = useTranslate();
+
+    const {
+        type = defaultArgs.type,
+        bullet = defaultArgs.bullet,
+        subFormat = defaultArgs.subFormat,
+        subFormatOptions = defaultArgs.subFormatOptions,
+    } = args;
+    const handleType = useUpdateAdminArgs<
+        ListArgs,
+        'type',
+        React.ChangeEvent<HTMLInputElement>
+    >('type', {
+        args,
+        onChange,
+        parseValue: (event: React.ChangeEvent<HTMLInputElement>) =>
+            event.target.value,
+    });
+
+    const handleBullet = useUpdateAdminArgs<ListArgs, 'bullet', any>('bullet', {
+        args,
+        onChange,
+        parseValue: (event) => event.target.value,
+    });
+
+    const handleSubFormat = useUpdateAdminArgs<ListArgs, 'subFormat'>(
+        'subFormat',
+        {
             args: getFormatInitialArgs(subFormat),
             onChange,
-        });
-        setSubFormat(newValue);
-    };
-
-    const [subFormatOptions, setSubFormatOptions] = useState(
-        args.subFormatOptions || defaultArgs.subFormatOptions,
+        },
     );
-    // @ts-expect-error TS7006
-    const handleSubFormatOptions = (event) => {
-        const newValue = event;
-        updateAdminArgs('subFormatOptions', newValue, { args, onChange });
-        setSubFormatOptions(newValue);
-    };
+
+    const handleSubFormatOptions = useUpdateAdminArgs<
+        ListArgs,
+        'subFormatOptions'
+    >('subFormatOptions', {
+        args,
+        onChange,
+    });
 
     const SubAdminComponent = getAdminComponent(subFormat);
 
@@ -75,21 +81,21 @@ const ListAdmin = ({
                 <TextField
                     fullWidth
                     select
-                    label={polyglot.t('list_format_select_type')}
+                    label={translate('list_format_select_type')}
                     onChange={handleType}
                     value={type}
                 >
                     <MenuItem value="unordered">
-                        {polyglot.t('list_format_unordered')}
+                        {translate('list_format_unordered')}
                     </MenuItem>
                     <MenuItem value="ordered">
-                        {polyglot.t('list_format_ordered')}
+                        {translate('list_format_ordered')}
                     </MenuItem>
                     <MenuItem value="unordered_without_bullet">
-                        {polyglot.t('list_format_unordered_without_bullet')}
+                        {translate('list_format_unordered_without_bullet')}
                     </MenuItem>
                     <MenuItem value="unordered_flat">
-                        {polyglot.t('list_format_unordered_flat')}
+                        {translate('list_format_unordered_flat')}
                     </MenuItem>
                 </TextField>
                 <div
@@ -105,7 +111,7 @@ const ListAdmin = ({
                 </div>
                 <TextField
                     key="bullet"
-                    label={polyglot.t('bullet')}
+                    label={translate('bullet')}
                     onChange={handleBullet}
                     value={bullet}
                 />
@@ -114,10 +120,10 @@ const ListAdmin = ({
                 {subFormat && subFormat !== 'none' ? (
                     <SubAdminComponent
                         onChange={handleSubFormatOptions}
-                        args={subFormatOptions}
+                        args={subFormatOptions as any}
                     />
                 ) : (
-                    polyglot.t('no_format')
+                    <>{translate('no_format')}</>
                 )}
             </FormatSubFormatParamsFieldSet>
         </FormatGroupedFieldSet>
@@ -135,4 +141,4 @@ ListAdmin.propTypes = {
     p: polyglotPropTypes.isRequired,
 };
 
-export default translate(ListAdmin);
+export default ListAdmin;
