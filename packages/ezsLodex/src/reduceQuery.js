@@ -11,6 +11,8 @@ const hashCoerce = hasher({ sort: false, coerce: true });
  * The input object must contain a `connectionStringURI` property, containing
  * the connection string to MongoDB.
  *
+ * @deprecated Use lodex/aggregateQuery instead
+ *
  * @name LodexReduceQuery
  * @param {String}   reducer         The name of the reducer to use
  * @param {Object}   [referer]       data injected into every result object
@@ -64,10 +66,10 @@ export const createFunction = () =>
         const db = await mongoDatabase(connectionStringURI);
         const command = {
             mapReduce: 'publishedDataset',
-            map: map.toString(),
-            reduce: reduce.toString(),
+            map: map,
+            reduce: reduce,
             query: filter,
-            finalize: finalize.toString(),
+            finalize: finalize,
             out: {
                 replace: collName,
             },

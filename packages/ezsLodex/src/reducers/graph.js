@@ -1,9 +1,16 @@
 /* eslint-disable */
+import { js } from './template.js';
+
 //
 // MongoDB JS functions
 //
 
-const map = function () {
+//FIXME These functions are stringified to be passed to MongoDB.
+// We do this to avoid transpilation issues when using TypeScript.
+// As mapReduce is deprecated, you should probably use an aggregation pipeline instead.
+
+const map = /* js */ js`
+function () {
     var doc = this;
     var dta = doc.versions[doc.versions.length - 1];
     dta.uri = doc.uri;
@@ -51,14 +58,17 @@ const map = function () {
                 emit(JSON.stringify([v, w]), 1);
             });
         });
-};
+}
+`;
 
-const reduce = function (key, values) {
+const reduce = /* js */ js`
+function (key, values) {
     return Array.sum(values);
-};
+}
+`;
 
-
-const finalize = function finalize(key, value) {
+const finalize = /* js */ js`
+function finalize(key, value) {
     var vector = JSON.parse(key);
     var sourceKey = Object.keys(vector[0])[0];
     var targetKey = Object.keys(vector[1])[0];
@@ -66,9 +76,10 @@ const finalize = function finalize(key, value) {
         source: vector[0][sourceKey],
         target: vector[1][targetKey],
         weight: value,
-    }
+    };
     return obj;
-};
+}
+`;
 
 const fieldname = function (name) {
     if (name === 'value') {
