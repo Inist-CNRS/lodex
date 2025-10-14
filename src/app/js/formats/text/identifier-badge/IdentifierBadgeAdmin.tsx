@@ -1,11 +1,7 @@
-// @ts-expect-error TS6133
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { translate } from '../../../i18n/I18NContext';
 import { TextField, MenuItem } from '@mui/material';
+import { useTranslate } from '../../../i18n/I18NContext';
 
-import { polyglot as polyglotPropTypes } from '../../../propTypes';
-import updateAdminArgs from '../../utils/updateAdminArgs';
+import { useUpdateAdminArgs } from '../../utils/updateAdminArgs';
 import { resolvers } from './index';
 import { MONOCHROMATIC_DEFAULT_COLORSET } from '../../utils/colorUtils';
 import ColorPickerParamsAdmin from '../../utils/components/admin/ColorPickerParamsAdmin';
@@ -17,79 +13,75 @@ export const defaultArgs = {
     colors: MONOCHROMATIC_DEFAULT_COLORSET,
 };
 
-class IdentifierBadgeAdmin extends Component {
-    static propTypes = {
-        args: PropTypes.shape({
-            typid: PropTypes.string,
-            colors: PropTypes.string,
-        }),
-        onChange: PropTypes.func.isRequired,
-        p: polyglotPropTypes.isRequired,
-    };
+type IdentifierBadgeArgs = {
+    typid?: string | number;
+    colors?: string;
+};
 
-    static defaultProps = {
-        args: defaultArgs,
-        colors: MONOCHROMATIC_DEFAULT_COLORSET,
-    };
+type IdentifierBadgeAdminProps = {
+    args?: IdentifierBadgeArgs;
+    onChange: (args: IdentifierBadgeArgs) => void;
+};
 
-    // @ts-expect-error TS7006
-    constructor(props) {
-        super(props);
-        this.handleColors = this.handleColors.bind(this);
-        this.state = {
-            // @ts-expect-error TS2339
-            colors: this.props.args.colors || defaultArgs.colors,
-        };
-    }
+const IdentifierBadgeAdmin = ({
+    args = defaultArgs,
+    onChange,
+}: IdentifierBadgeAdminProps) => {
+    const { translate } = useTranslate();
 
-    // @ts-expect-error TS7006
-    handleTypid = (typid) => {
-        // @ts-expect-error TS2339
-        const newArgs = { ...this.props.args, typid };
-        // @ts-expect-error TS2339
-        this.props.onChange(newArgs);
-    };
+    const handleTypid = useUpdateAdminArgs<
+        IdentifierBadgeArgs,
+        'typid',
+        React.ChangeEvent<HTMLInputElement>
+    >('typid', {
+        args,
+        onChange,
+        parseValue: (event: React.ChangeEvent<HTMLInputElement>) =>
+            event.target.value,
+    });
 
-    // @ts-expect-error TS7006
-    handleColors(colors) {
-        updateAdminArgs('colors', colors.split(' ')[0], this.props);
-    }
+    const handleColorsChange = useUpdateAdminArgs<
+        IdentifierBadgeArgs,
+        'colors',
+        string
+    >('colors', {
+        args,
+        onChange,
+        parseValue: (colors: string) => {
+            const colorValue = colors.split(' ')[0];
+            return colorValue;
+        },
+    });
 
-    render() {
-        const {
-            // @ts-expect-error TS2339
-            p: polyglot,
-            // @ts-expect-error TS2339
-            args: { typid },
-        } = this.props;
-        const items = Object.keys(resolvers).map((resolverID) => (
-            <MenuItem key={`resolver_${resolverID}`} value={resolverID}>
-                {polyglot.t(resolverID)}
-            </MenuItem>
-        ));
-        return (
-            <FormatGroupedFieldSet>
-                <FormatDefaultParamsFieldSet defaultExpanded>
-                    <TextField
-                        fullWidth
-                        select
-                        label={polyglot.t('list_format_select_identifier')}
-                        value={typid}
-                        onChange={(e) => this.handleTypid(e.target.value)}
-                    >
-                        {items}
-                    </TextField>
-                    <ColorPickerParamsAdmin
-                        // @ts-expect-error TS2339
-                        colors={this.state.colors || defaultArgs.colors}
-                        onChange={this.handleColors}
-                        polyglot={polyglot}
-                        monochromatic={true}
-                    />
-                </FormatDefaultParamsFieldSet>
-            </FormatGroupedFieldSet>
-        );
-    }
-}
+    const { typid } = args;
 
-export default translate(IdentifierBadgeAdmin);
+    const items = Object.keys(resolvers).map((resolverID) => (
+        <MenuItem key={`resolver_${resolverID}`} value={resolverID}>
+            {translate(resolverID)}
+        </MenuItem>
+    ));
+
+    return (
+        <FormatGroupedFieldSet>
+            <FormatDefaultParamsFieldSet defaultExpanded>
+                <TextField
+                    fullWidth
+                    select
+                    label={translate('list_format_select_identifier')}
+                    value={typid || defaultArgs.typid}
+                    onChange={handleTypid}
+                    variant="standard"
+                >
+                    {items}
+                </TextField>
+                <ColorPickerParamsAdmin
+                    colors={args.colors}
+                    onChange={handleColorsChange}
+                    monochromatic={true}
+                />
+            </FormatDefaultParamsFieldSet>
+        </FormatGroupedFieldSet>
+    );
+};
+
+export default IdentifierBadgeAdmin;

@@ -38,10 +38,10 @@ type EmphasedNumberAdminProps = {
     onChange: (args: EmphasedNumberArgs) => void;
 };
 
-const EmphasedNumberAdmin: React.FC<EmphasedNumberAdminProps> = ({
+const EmphasedNumberAdmin = ({
     args = defaultArgs,
     onChange,
-}) => {
+}: EmphasedNumberAdminProps) => {
     const { translate } = useTranslate();
 
     const handleSize = useUpdateAdminArgs<
