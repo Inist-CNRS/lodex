@@ -1,0 +1,185 @@
+// @ts-expect-error TS(1259): Module '"/home/madeorsk/Cloud/Marmelab/Code/lodex/... Remove this comment to see the full error message
+import from from 'from';
+// @ts-expect-error TS(2792): Cannot find module '@ezs/core'. Did you mean to se... Remove this comment to see the full error message
+import ezs from '@ezs/core';
+// @ts-expect-error TS(2792): Cannot find module '../src'. Did you mean to set t... Remove this comment to see the full error message
+import statements from '../src';
+import testOne from './testOne';
+
+ezs.use(statements);
+
+describe('linkDataset', () => {
+    it('should return when no uri', (done) => {
+        const stream = from([{}]).pipe(
+            ezs('linkDataset', {
+                scheme: 'http://scheme',
+                datasetClass: 'DataSet',
+            }),
+        );
+        testOne(
+            stream,
+            (output: any) => {
+                // @ts-expect-error TS(2551): Property 'toEqual' does not exist on type 'Asserti... Remove this comment to see the full error message
+                expect(output).toEqual({});
+            },
+            done,
+        );
+    });
+
+    it('should return null when no data', (done) => {
+        from([])
+            .pipe(
+                ezs('linkDataset', {
+                    uri: 'http://uri',
+                    scheme: 'http://scheme',
+                    datasetClass: 'DataSet',
+                }),
+            )
+            .on('data', () => {
+                done(new Error('should return null'));
+            })
+            .on('end', done);
+    });
+
+    it('should return when no data[@context]', (done) => {
+        const stream = from([{}]).pipe(
+            ezs('linkDataset', {
+                uri: 'http://uri',
+                scheme: 'http://scheme',
+                datasetClass: 'DataSet',
+            }),
+        );
+        testOne(
+            stream,
+            (output: any) => {
+                // @ts-expect-error TS(2551): Property 'toEqual' does not exist on type 'Asserti... Remove this comment to see the full error message
+                expect(output).toEqual({});
+            },
+            done,
+        );
+    });
+
+    it('should return restructured data', (done) => {
+        const options = {
+            uri: 'http://uri',
+            scheme: 'http://scheme',
+            datasetClass: 'DataSet',
+        };
+        const data = {
+            someData: 'some data',
+            dataset: {
+                this: 'should',
+                be: 'a dataset',
+            },
+            '@context': {
+                dataset: [1, 2],
+            },
+        };
+        const stream = from([data]).pipe(ezs('linkDataset', options));
+        testOne(
+            stream,
+            (output: any) => {
+                // @ts-expect-error TS(2551): Property 'toEqual' does not exist on type 'Asserti... Remove this comment to see the full error message
+                expect(output).toEqual({
+                    '@context': {
+                        dataset: {
+                            0: 1,
+                            1: 2,
+                            '@id': options.scheme,
+                        },
+                    },
+                    dataset: {
+                        '@id': options.uri,
+                        '@type': options.datasetClass,
+                        this: 'should',
+                        be: 'a dataset',
+                    },
+                    someData: data.someData,
+                });
+            },
+            done,
+        );
+    });
+
+    it('should return restructured data when no scheme', (done) => {
+        const options = {
+            uri: 'http://uri',
+            datasetClass: 'DataSet',
+        };
+        const data = {
+            someData: 'some data',
+            dataset: {
+                this: 'should',
+                be: 'a dataset',
+            },
+            '@context': {
+                dataset: [1, 2],
+            },
+        };
+        const stream = from([data]).pipe(ezs('linkDataset', options));
+        testOne(
+            stream,
+            (output: any) => {
+                // @ts-expect-error TS(2551): Property 'toEqual' does not exist on type 'Asserti... Remove this comment to see the full error message
+                expect(output).toEqual({
+                    '@context': {
+                        dataset: {
+                            0: 1,
+                            1: 2,
+                            '@id': 'http://purl.org/dc/terms/isPartOf',
+                        },
+                    },
+                    dataset: {
+                        '@id': options.uri,
+                        '@type': options.datasetClass,
+                        this: 'should',
+                        be: 'a dataset',
+                    },
+                    someData: data.someData,
+                });
+            },
+            done,
+        );
+    });
+
+    it('should return restructured data when no datasetClass', (done) => {
+        const options = {
+            uri: 'http://uri',
+            scheme: 'http://scheme',
+        };
+        const data = {
+            someData: 'some data',
+            dataset: {
+                this: 'should',
+                be: 'a dataset',
+            },
+            '@context': {
+                dataset: [1, 2],
+            },
+        };
+        const stream = from([data]).pipe(ezs('linkDataset', options));
+        testOne(
+            stream,
+            (output: any) => {
+                // @ts-expect-error TS(2551): Property 'toEqual' does not exist on type 'Asserti... Remove this comment to see the full error message
+                expect(output).toEqual({
+                    '@context': {
+                        dataset: {
+                            0: 1,
+                            1: 2,
+                            '@id': options.scheme,
+                        },
+                    },
+                    dataset: {
+                        '@id': options.uri,
+                        '@type': '',
+                        this: 'should',
+                        be: 'a dataset',
+                    },
+                    someData: data.someData,
+                });
+            },
+            done,
+        );
+    });
+});
