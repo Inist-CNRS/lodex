@@ -1,4 +1,3 @@
-// @ts-expect-error TS7016
 import { schemeBlues } from 'd3-scale-chromatic';
 import flowMapVG from './json/flow_map.vg.json';
 import deepClone from 'lodash/cloneDeep';

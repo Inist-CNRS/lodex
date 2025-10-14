@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import { clamp } from 'lodash';
-// @ts-expect-error TS7016
 import { schemeOrRd } from 'd3-scale-chromatic';
 
 import { CustomActionVegaLite } from '../../../utils/components/vega-lite-component';

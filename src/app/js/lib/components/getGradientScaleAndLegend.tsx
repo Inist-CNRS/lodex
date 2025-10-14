@@ -1,6 +1,3 @@
-// @ts-expect-error TS6133
-import React from 'react';
-// @ts-expect-error TS7016
 import { scaleQuantize } from 'd3-scale';
 
 import ColorScaleLegend from './ColorScaleLegend';
