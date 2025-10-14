@@ -1,15 +1,21 @@
-import { lazy, Suspense, useEffect, useMemo, useState } from 'react';
-import PropTypes from 'prop-types';
+import { lazy, Suspense, useEffect, useState, type CSSProperties } from 'react';
 import { Button, Tooltip, Box } from '@mui/material';
 import ReportProblemIcon from '@mui/icons-material/ReportProblem';
 import CachedIcon from '@mui/icons-material/Cached';
-import isEqual from 'lodash/isEqual';
 
-import { polyglot as polyglotPropTypes } from '../../../../propTypes';
-import { translate } from '../../../../i18n/I18NContext';
 import Loading from '../../../../lib/components/Loading';
+import { useTranslate } from '../../../../i18n/I18NContext';
 
-const styles = {
+const styles: {
+    error: {
+        container: CSSProperties;
+        message: {
+            container: CSSProperties;
+            icon: CSSProperties;
+            message: CSSProperties;
+        };
+    };
+} = {
     error: {
         container: {
             marginLeft: 'auto',
@@ -38,45 +44,28 @@ const SourceCodeField = lazy(
     () => import('../../../../lib/components/SourceCodeField'),
 );
 
-// @ts-expect-error TS7031
-const VegaAdvancedMode = ({ p, value, onChange, onClear }) => {
-    const [currentValue, setCurrentValue] = useState(value || '{}');
-    const [error, setError] = useState(null);
+type VegaAdvancedModeProps = {
+    value?: string | null;
+    onChange: (value: string) => void;
+    onClear?: () => void;
+};
 
-    const valueObject = useMemo(() => {
-        try {
-            const json = JSON.parse(value);
-            setError(null);
-            return json;
-        } catch (e) {
-            // @ts-expect-error TS2345
-            setError(e);
-            return null;
-        }
-    }, [value]);
-
-    const currentValueObject = useMemo(() => {
-        try {
-            const json = JSON.parse(currentValue);
-            setError(null);
-            return json;
-        } catch (e) {
-            // @ts-expect-error TS2345
-            setError(e);
-            return null;
-        }
-    }, [currentValue]);
+const VegaAdvancedMode = ({
+    value,
+    onChange,
+    onClear,
+}: VegaAdvancedModeProps) => {
+    const { translate } = useTranslate();
+    const [error, setError] = useState<Error | null>(null);
 
     useEffect(() => {
-        if (!isEqual(currentValueObject, valueObject)) {
-            onChange(currentValue);
+        try {
+            JSON.parse(value as string);
+            setError(null);
+        } catch (e) {
+            setError(e as Error);
         }
-    }, [currentValueObject, valueObject]);
-
-    // @ts-expect-error TS7006
-    const handleChange = (newValue) => {
-        setCurrentValue(newValue);
-    };
+    }, [value]);
 
     return (
         <>
@@ -99,7 +88,7 @@ const VegaAdvancedMode = ({ p, value, onChange, onClear }) => {
                                     marginRight: '10px',
                                 }}
                             />
-                            {p.t('regenerate_vega_lite_spec')}
+                            {translate('regenerate_vega_lite_spec')}
                         </Button>
                     ) : null}
                 </div>
@@ -113,9 +102,7 @@ const VegaAdvancedMode = ({ p, value, onChange, onClear }) => {
                         <Tooltip
                             title={
                                 <div>
-                                    <p>{p.t('vega_json_error')}</p>
-                                    {/*
-                                     // @ts-expect-error TS2339 */}
+                                    <p>{translate('vega_json_error')}</p>
                                     <p>{error.message}</p>
                                 </div>
                             }
@@ -137,31 +124,31 @@ const VegaAdvancedMode = ({ p, value, onChange, onClear }) => {
                         target="_blank"
                         rel="nofollow noopener noreferrer"
                     >
-                        {p.t('vega_validator')}
+                        {translate('vega_validator')}
                     </a>
                     <p>
-                        {p.t('vega_variable_list')}
+                        {translate('vega_variable_list')}
                         <div>
                             <i>
                                 <ul>
                                     <li>
                                         <code>{'{|__LODEX_WIDTH__|}'}</code> (
-                                        {p.t('vega_variable_width')})
+                                        {translate('vega_variable_width')})
                                     </li>
                                     <li>
                                         <code>{'{|__LODEX_HEIGHT__|}'}</code> (
-                                        {p.t('vega_variable_height')})
+                                        {translate('vega_variable_height')})
                                     </li>
                                     <li>
                                         <code>container</code> (
-                                        {p.t('vega_variable_container')})
+                                        {translate('vega_variable_container')})
                                     </li>
                                 </ul>
                             </i>
                         </div>
                     </p>
                 </div>
-                <Suspense fallback={<Loading>{p.t('loading')}</Loading>}>
+                <Suspense fallback={<Loading>{translate('loading')}</Loading>}>
                     <SourceCodeField
                         style={{
                             width: '100%',
@@ -170,24 +157,20 @@ const VegaAdvancedMode = ({ p, value, onChange, onClear }) => {
                         }}
                         mode="json"
                         input={{
-                            value: currentValue,
-                            onChange: handleChange,
+                            value: value || '',
+                            onChange,
                         }}
                     />
                 </Suspense>
             </Box>
             {error ? (
                 <div style={styles.error.container}>
-                    {/*
-                     // @ts-expect-error TS2322 */}
                     <div style={styles.error.message.container}>
                         <div style={styles.error.message.icon}>
                             <ReportProblemIcon fontSize="large" />
                         </div>
                         <div style={styles.error.message.message}>
-                            <p>{p.t('vega_json_error')}</p>
-                            {/*
-                             // @ts-expect-error TS2339 */}
+                            <p>{translate('vega_json_error')}</p>
                             <p>{error.message}</p>
                         </div>
                     </div>
@@ -197,11 +180,4 @@ const VegaAdvancedMode = ({ p, value, onChange, onClear }) => {
     );
 };
 
-VegaAdvancedMode.propTypes = {
-    p: polyglotPropTypes.isRequired,
-    value: PropTypes.string.isRequired,
-    onChange: PropTypes.func.isRequired,
-    onClear: PropTypes.func,
-};
-
-export default translate(VegaAdvancedMode);
+export default VegaAdvancedMode;

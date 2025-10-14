@@ -1,3 +1,5 @@
+import { useCallback } from 'react';
+
 export default (
     key: string,
     value: unknown,
@@ -26,15 +28,18 @@ export const useUpdateAdminArgs = <
     }: {
         args: Args;
         onChange: (newState: Args) => void;
-        parseValue?: (value: Value) => Args[Key];
+        parseValue?: (value: Value, ...rest: any[]) => Args[Key];
     },
 ) => {
-    return (value: Value) => {
-        const newState = {
-            ...args,
-            [key]: parseValue ? parseValue(value) : value,
-        };
+    return useCallback(
+        (value: Value, ...rest: unknown[]) => {
+            const newState = {
+                ...args,
+                [key]: parseValue ? parseValue(value, ...rest) : value,
+            };
 
-        onChange(newState);
-    };
+            onChange(newState);
+        },
+        [args, onChange, key, parseValue],
+    );
 };

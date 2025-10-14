@@ -1,6 +1,7 @@
 // @ts-expect-error TS7016
 import * as Papa from 'papaparse';
 import { useCallback, useEffect, useRef } from 'react';
+import { useTranslate } from '../../../i18n/I18NContext';
 
 // @ts-expect-error TS7006
 function download(name, data) {
@@ -37,9 +38,9 @@ function isGraphExportableInCSV(data) {
     );
 }
 
-// @ts-expect-error TS7006
-export function useVegaCsvExport(polyglot, data) {
-    const graphParentRef = useRef();
+export function useVegaCsvExport(data: { values: unknown }) {
+    const { translate } = useTranslate();
+    const graphParentRef = useRef<any>();
 
     const exportData = useCallback(() => {
         if (!Array.isArray(data.values) || !data.values.length) {
@@ -66,14 +67,13 @@ export function useVegaCsvExport(polyglot, data) {
         // This timeout is required for the vega actions to be rendered
         const timer = setTimeout(() => {
             const vegaActionsList =
-                // @ts-expect-error TS18048
                 graphParentRef.current.querySelector('.vega-actions');
 
             // Create a new action
             // @see https://github.com/vega/vega-embed/issues/156
             const exportCsvAction = document.createElement('a');
             exportCsvAction.className = 'vega-export-csv';
-            exportCsvAction.innerText = polyglot.t('vega_export_csv');
+            exportCsvAction.innerText = translate('vega_export_csv');
             exportCsvAction.href = '#';
             exportCsvAction.addEventListener('click', (e) => {
                 e.preventDefault();
@@ -91,13 +91,12 @@ export function useVegaCsvExport(polyglot, data) {
             }
 
             const vegaExportCsvButton =
-                // @ts-expect-error TS2339
                 graphParentRef.current.querySelector('.vega-export-csv');
             if (vegaExportCsvButton) {
                 vegaExportCsvButton.remove();
             }
         };
-    }, [graphParentRef.current, polyglot, data, exportData]);
+    }, [data, exportData, translate]);
 
     return graphParentRef;
 }
