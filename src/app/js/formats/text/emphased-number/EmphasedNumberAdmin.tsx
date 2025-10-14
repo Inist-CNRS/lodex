@@ -1,11 +1,8 @@
-// @ts-expect-error TS6133
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import React from 'react';
 import { MenuItem, TextField } from '@mui/material';
-import { translate } from '../../../i18n/I18NContext';
+import { useTranslate } from '../../../i18n/I18NContext';
 
-import { polyglot as polyglotPropTypes } from '../../../propTypes';
-import updateAdminArgs from '../../utils/updateAdminArgs';
+import { useUpdateAdminArgs } from '../../utils/updateAdminArgs';
 import RoutineParamsAdmin from '../../utils/components/admin/RoutineParamsAdmin';
 import ColorPickerParamsAdmin from '../../utils/components/admin/ColorPickerParamsAdmin';
 import { MONOCHROMATIC_DEFAULT_COLORSET } from '../../utils/colorUtils';
@@ -23,100 +20,95 @@ export const defaultArgs = {
     },
 };
 
-class EmphasedNumberAdmin extends Component {
-    static propTypes = {
-        args: PropTypes.shape({
-            size: PropTypes.number,
-            colors: PropTypes.string,
-            params: PropTypes.shape({
-                maxSize: PropTypes.number,
-                maxValue: PropTypes.number,
-                minValue: PropTypes.number,
-                orderBy: PropTypes.string,
-            }),
-        }),
-        onChange: PropTypes.func.isRequired,
-        p: polyglotPropTypes.isRequired,
-    };
+type EmphasedNumberParams = {
+    maxSize?: number;
+    maxValue?: number;
+    minValue?: number;
+    orderBy?: string;
+};
 
-    static defaultProps = {
-        args: defaultArgs,
-    };
+type EmphasedNumberArgs = {
+    size?: number;
+    colors?: string;
+    params?: EmphasedNumberParams;
+};
 
-    // @ts-expect-error TS7006
-    constructor(props) {
-        super(props);
-        this.handleColors = this.handleColors.bind(this);
-        this.state = {
-            // @ts-expect-error TS2339
-            colors: this.props.args.colors || defaultArgs.colors,
-        };
-    }
+type EmphasedNumberAdminProps = {
+    args?: EmphasedNumberArgs;
+    onChange: (args: EmphasedNumberArgs) => void;
+};
 
-    // @ts-expect-error TS7006
-    handleSize = (size) => {
-        const newArgs = {
-            // @ts-expect-error TS2339
-            ...this.props.args,
-            size,
-        };
-        // @ts-expect-error TS2339
-        this.props.onChange(newArgs);
-    };
+const EmphasedNumberAdmin: React.FC<EmphasedNumberAdminProps> = ({
+    args = defaultArgs,
+    onChange,
+}) => {
+    const { translate } = useTranslate();
 
-    // @ts-expect-error TS7006
-    handleColors(colors) {
-        updateAdminArgs('colors', colors.split(' ')[0], this.props);
-    }
+    const handleSize = useUpdateAdminArgs<
+        EmphasedNumberArgs,
+        'size',
+        React.ChangeEvent<HTMLInputElement>
+    >('size', {
+        args,
+        onChange,
+        parseValue: (event: React.ChangeEvent<HTMLInputElement>) =>
+            parseInt(event.target.value, 10),
+    });
 
-    // @ts-expect-error TS7006
-    handleParams = (params) => updateAdminArgs('params', params, this.props);
+    const handleColorsChange = useUpdateAdminArgs<
+        EmphasedNumberArgs,
+        'colors',
+        string
+    >('colors', {
+        args,
+        onChange,
+        parseValue: (colors: string) => colors.split(' ')[0]!,
+    });
 
-    render() {
-        const {
-            // @ts-expect-error TS2339
-            p: polyglot,
-            // @ts-expect-error TS2339
-            args: { size, params },
-        } = this.props;
+    const handleParams = useUpdateAdminArgs<EmphasedNumberArgs, 'params'>(
+        'params',
+        {
+            args,
+            onChange,
+        },
+    );
 
-        return (
-            <FormatGroupedFieldSet>
-                <FormatDataParamsFieldSet>
-                    <RoutineParamsAdmin
-                        params={params || defaultArgs.params}
-                        onChange={this.handleParams}
-                        polyglot={polyglot}
-                        showMaxSize={true}
-                        showMaxValue={true}
-                        showMinValue={true}
-                        showOrderBy={false}
-                    />
-                </FormatDataParamsFieldSet>
-                <FormatDefaultParamsFieldSet defaultExpanded>
-                    <TextField
-                        fullWidth
-                        select
-                        label={polyglot.t('list_format_select_size')}
-                        onChange={(e) => this.handleSize(e.target.value)}
-                        value={size}
-                    >
-                        <MenuItem value={1}>{polyglot.t('size1')}</MenuItem>
-                        <MenuItem value={2}>{polyglot.t('size2')}</MenuItem>
-                        <MenuItem value={3}>{polyglot.t('size3')}</MenuItem>
-                        <MenuItem value={4}>{polyglot.t('size4')}</MenuItem>
-                    </TextField>
-                    <ColorPickerParamsAdmin
-                        // @ts-expect-error TS2339
-                        colors={this.state.colors || defaultArgs.colors}
-                        onChange={this.handleColors}
-                        polyglot={polyglot}
-                        monochromatic={true}
-                    />
-                </FormatDefaultParamsFieldSet>
-            </FormatGroupedFieldSet>
-        );
-    }
-}
+    const { size, params } = args;
 
-export default translate(EmphasedNumberAdmin);
+    return (
+        <FormatGroupedFieldSet>
+            <FormatDataParamsFieldSet>
+                <RoutineParamsAdmin
+                    params={params || defaultArgs.params}
+                    onChange={handleParams}
+                    showMaxSize={true}
+                    showMaxValue={true}
+                    showMinValue={true}
+                    showOrderBy={false}
+                />
+            </FormatDataParamsFieldSet>
+            <FormatDefaultParamsFieldSet defaultExpanded>
+                <TextField
+                    fullWidth
+                    select
+                    label={translate('list_format_select_size')}
+                    onChange={handleSize}
+                    value={size || defaultArgs.size}
+                    variant="standard"
+                >
+                    <MenuItem value={1}>{translate('size1')}</MenuItem>
+                    <MenuItem value={2}>{translate('size2')}</MenuItem>
+                    <MenuItem value={3}>{translate('size3')}</MenuItem>
+                    <MenuItem value={4}>{translate('size4')}</MenuItem>
+                </TextField>
+                <ColorPickerParamsAdmin
+                    colors={args.colors}
+                    onChange={handleColorsChange}
+                    monochromatic={true}
+                />
+            </FormatDefaultParamsFieldSet>
+        </FormatGroupedFieldSet>
+    );
+};
+
+export default EmphasedNumberAdmin;
