@@ -1,6 +1,11 @@
 import omit from 'lodash/omit';
 import uniq from 'lodash/uniq';
-import { combineActions, createAction, handleActions } from 'redux-actions';
+import {
+    combineActions,
+    createAction,
+    handleActions,
+    type ReducerMapValue,
+} from 'redux-actions';
 
 import getCatalogFromArray from '../../../common/fields/getCatalogFromArray';
 import { UPDATE_CHARACTERISTICS_SUCCESS } from '../characteristic';
@@ -11,6 +16,7 @@ import {
 import fieldSelectors, {
     NEW_CHARACTERISTIC_FORM_NAME as formName,
 } from './selectors';
+import type { Field } from './types.ts';
 
 export const selectors = fieldSelectors;
 export const NEW_CHARACTERISTIC_FORM_NAME = formName;
@@ -37,6 +43,9 @@ export const SAVE_FIELD_SUCCESS = 'SAVE_FIELD_SUCCESS';
 export const CHANGE_POSITION_VALUE = 'CHANGE_POSITION_VALUE';
 export const CHANGE_POSITIONS = 'CHANGE_POSITIONS';
 export const CHANGE_CLASS = 'CHANGE_CLASS';
+export const CHANGE_OVERVIEW = 'CHANGE_OVERVIEW';
+export const CHANGE_SORT_FIELD = 'CHANGE_SORT_FIELD';
+export const CHANGE_SORT_ORDER = 'CHANGE_SORT_ORDER';
 
 export const SELECT_FIELD = 'SELECT_FIELD';
 export const CONFIGURE_FIELD = 'CONFIGURE_FIELD';
@@ -81,6 +90,9 @@ export const saveFieldSuccess = createAction(SAVE_FIELD_SUCCESS);
 export const changePositionValue = createAction(CHANGE_POSITION_VALUE);
 export const changePositions = createAction(CHANGE_POSITIONS);
 export const changeClass = createAction(CHANGE_CLASS);
+export const changeOverview = createAction(CHANGE_OVERVIEW);
+export const changeSortField = createAction(CHANGE_SORT_FIELD);
+export const changeSortOrder = createAction(CHANGE_SORT_ORDER);
 
 export const selectField = createAction(SELECT_FIELD);
 export const configureField = createAction(CONFIGURE_FIELD);
@@ -108,7 +120,7 @@ export const defaultState = {
     loading: false,
     isSaving: false,
     isAdding: false,
-    byName: {},
+    byName: {} as Record<string, Field>,
     allValid: true,
     list: [],
     invalidFields: [],
@@ -216,8 +228,10 @@ export default handleActions(
             };
         },
         LOAD_FIELD_ERROR: () => defaultState,
-        // @ts-expect-error TS7006
-        REMOVE_FIELD_SUCCESS: (state, { payload: { name: nameToRemove } }) => ({
+        REMOVE_FIELD_SUCCESS: (
+            state,
+            { payload: { name: nameToRemove } }: any,
+        ) => ({
             ...state,
             list: state.list.filter((name) => name !== nameToRemove),
             byName: omit(state.byName, [nameToRemove]),
@@ -259,7 +273,7 @@ export default handleActions(
             // @ts-expect-error TS7031
             error: error.message,
         }),
-        FIELD_INVALID: (state, { payload: { invalidProperties } }) => ({
+        FIELD_INVALID: (state, { payload: { invalidProperties } }: any) => ({
             ...state,
             isSaving: false,
             invalidProperties,
@@ -322,6 +336,83 @@ export default handleActions(
                 state.byName,
             ),
         }),
+        CHANGE_OVERVIEW: ((state, { payload: { _id, overview } }) => ({
+            ...state,
+            byName: Object.fromEntries(
+                Object.entries(state.byName).map(
+                    ([fieldName, field]: [string, Field]) => {
+                        if (field._id === _id) {
+                            return [fieldName, { ...field, overview }];
+                        }
+
+                        if (field.overview === overview) {
+                            const {
+                                overview: _overview,
+                                isDefaultSortField: _isDefaultSortField,
+                                sortOrder: _sortOrder,
+                                ...fieldWithoutOverview
+                            } = field;
+                            return [fieldName, fieldWithoutOverview];
+                        }
+
+                        return [fieldName, field];
+                    },
+                ),
+            ),
+        })) satisfies ReducerMapValue<
+            typeof defaultState,
+            { _id: string; overview: number }
+        >,
+        CHANGE_SORT_FIELD: ((state, { payload: { _id, sortOrder } }) => ({
+            ...state,
+            byName: Object.fromEntries(
+                Object.entries(state.byName).map(
+                    ([fieldName, field]: [string, Field]) => {
+                        if (field._id === _id) {
+                            return [
+                                fieldName,
+                                {
+                                    ...field,
+                                    isDefaultSortField: true,
+                                    sortOrder,
+                                },
+                            ];
+                        }
+
+                        if (field.isDefaultSortField || field.sortOrder) {
+                            const {
+                                isDefaultSortField: _isDefaultSortField,
+                                sortOrder: _sortOrder,
+                                ...fieldWithoutSort
+                            } = field;
+                            return [fieldName, fieldWithoutSort];
+                        }
+
+                        return [fieldName, field];
+                    },
+                ),
+            ),
+        })) satisfies ReducerMapValue<
+            typeof defaultState,
+            { _id: string; sortOrder: Field['sortOrder'] }
+        >,
+        CHANGE_SORT_ORDER: ((state, { payload: { sortOrder } }) => ({
+            ...state,
+            byName: Object.fromEntries(
+                Object.entries(state.byName).map(
+                    ([fieldName, field]: [string, Field]) => {
+                        if (field.isDefaultSortField) {
+                            return [fieldName, { ...field, sortOrder }];
+                        }
+
+                        return [fieldName, field];
+                    },
+                ),
+            ),
+        })) satisfies ReducerMapValue<
+            typeof defaultState,
+            { sortOrder: Field['sortOrder'] }
+        >,
         LOAD_PUBLICATION: (state) => ({
             ...state,
             error: null,
@@ -333,7 +424,6 @@ export default handleActions(
             { payload: { fields, published } },
         ) => {
             const { catalog, list } = getCatalogFromArray(fields, 'name');
-            // @ts-expect-error TS7006
             const newField = state.byName.new;
 
             return {

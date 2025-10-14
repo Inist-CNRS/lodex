@@ -35,8 +35,8 @@ describe('field reducer', () => {
             const state = reducer(
                 {
                     byName: {
-                        name1: { name: 'name1', label: 'foo' },
-                        name2: { name: 'name2', label: 'bar' },
+                        name1: { _id: '1', name: 'name1', label: 'foo' },
+                        name2: { _id: '2', name: 'name2', label: 'bar' },
                     },
                     // @ts-expect-error TS2322
                     list: ['name1', 'name2'],
@@ -48,8 +48,8 @@ describe('field reducer', () => {
                 ...state,
                 list: ['name1', 'name2', 'new'],
                 byName: {
-                    name2: { name: 'name2', label: 'bar' },
-                    name1: { name: 'name1', label: 'foo' },
+                    name2: { _id: '2', name: 'name2', label: 'bar' },
+                    name1: { _id: '1', name: 'name1', label: 'foo' },
                     new: {
                         label: 'newField 3',
                         scope: SCOPE_DOCUMENT,
@@ -69,8 +69,8 @@ describe('field reducer', () => {
             const state = reducer(
                 {
                     byName: {
-                        name1: { name: 'name1', label: 'foo' },
-                        name2: { name: 'name2', label: 'bar' },
+                        name1: { _id: '1', name: 'name1', label: 'foo' },
+                        name2: { _id: '2', name: 'name2', label: 'bar' },
                     },
                     // @ts-expect-error TS2322
                     list: ['name1', 'name2'],
@@ -82,8 +82,8 @@ describe('field reducer', () => {
                 ...state,
                 list: ['name1', 'name2', 'new'],
                 byName: {
-                    name2: { name: 'name2', label: 'bar' },
-                    name1: { name: 'name1', label: 'foo' },
+                    name2: { _id: '2', name: 'name2', label: 'bar' },
+                    name1: { _id: '1', name: 'name1', label: 'foo' },
                     new: {
                         label: 'target_col',
                         scope: SCOPE_DOCUMENT,
@@ -113,8 +113,8 @@ describe('field reducer', () => {
             const state = reducer(
                 {
                     byName: {
-                        name1: { name: 'name1', label: 'foo' },
-                        name2: { name: 'name2', label: 'bar' },
+                        name1: { _id: '1', name: 'name1', label: 'foo' },
+                        name2: { _id: '2', name: 'name2', label: 'bar' },
                     },
                     // @ts-expect-error TS2322
                     list: ['name1', 'name2'],
@@ -130,8 +130,8 @@ describe('field reducer', () => {
                 ...state,
                 list: ['name1', 'name2', 'new'],
                 byName: {
-                    name2: { name: 'name2', label: 'bar' },
-                    name1: { name: 'name1', label: 'foo' },
+                    name2: { _id: '2', name: 'name2', label: 'bar' },
+                    name1: { _id: '1', name: 'name1', label: 'foo' },
                     new: {
                         label: 'newField 3',
                         scope: SCOPE_DOCUMENT,
@@ -151,8 +151,8 @@ describe('field reducer', () => {
             const state = reducer(
                 {
                     byName: {
-                        name1: { name: 'name1', label: 'foo' },
-                        name2: { name: 'name2', label: 'bar' },
+                        name1: { _id: '1', name: 'name1', label: 'foo' },
+                        name2: { _id: '2', name: 'name2', label: 'bar' },
                     },
                     // @ts-expect-error TS2322
                     list: ['name1', 'name2'],
@@ -169,8 +169,8 @@ describe('field reducer', () => {
                 ...state,
                 list: ['name1', 'name2', 'new'],
                 byName: {
-                    name2: { name: 'name2', label: 'bar' },
-                    name1: { name: 'name1', label: 'foo' },
+                    name2: { _id: '2', name: 'name2', label: 'bar' },
+                    name1: { _id: '1', name: 'name1', label: 'foo' },
                     new: {
                         label: 'target_col',
                         scope: SCOPE_DOCUMENT,
@@ -254,9 +254,9 @@ describe('field reducer', () => {
             const state = reducer(
                 {
                     loading: true,
-                    // @ts-expect-error TS2353
                     error: true,
                     published: false,
+                    // @ts-expect-error TS2353
                     byName: { new: { name: 'foo', value: 'bar' } },
                 },
                 action,
@@ -432,8 +432,8 @@ describe('field reducer', () => {
                     // @ts-expect-error TS2322
                     list: ['bar', 'foo'],
                     byName: {
-                        bar: { name: 'bar' },
-                        foo: { name: 'foo' },
+                        bar: { _id: '1', name: 'bar' },
+                        foo: { _id: '2', name: 'foo' },
                     },
                 },
                 removeFieldSuccess({ name: 'foo' }),
@@ -441,7 +441,7 @@ describe('field reducer', () => {
             expect(state).toEqual({
                 list: ['bar'],
                 byName: {
-                    bar: { name: 'bar' },
+                    bar: { _id: '1', name: 'bar' },
                 },
             });
         });
@@ -454,6 +454,7 @@ describe('field reducer', () => {
                     const state = reducer(
                         {
                             byName: {
+                                // @ts-expect-error TS2322
                                 field: 'data',
                             },
                             // @ts-expect-error TS2322
@@ -485,6 +486,7 @@ describe('field reducer', () => {
                     const state = reducer(
                         {
                             byName: {
+                                // @ts-expect-error TS2322
                                 field: { data: 'data' },
                             },
                             // @ts-expect-error TS2322
@@ -534,9 +536,9 @@ describe('field reducer', () => {
                 // @ts-expect-error TS2353
                 foo: 'bar',
                 byName: {
-                    a: { position: 1 },
-                    b: { position: 2 },
-                    c: { position: 3 },
+                    a: { _id: '1', name: 'a', position: 1 },
+                    b: { _id: '2', name: 'b', position: 2 },
+                    c: { _id: '3', name: 'c', position: 3 },
                 },
             },
             changePositionValue({
@@ -551,9 +553,9 @@ describe('field reducer', () => {
             expect(state).toEqual({
                 foo: 'bar',
                 byName: {
-                    a: { position: 2 },
-                    b: { position: 1 },
-                    c: { position: 3 },
+                    a: { _id: '1', name: 'a', position: 2 },
+                    b: { _id: '2', name: 'b', position: 1 },
+                    c: { _id: '3', name: 'c', position: 3 },
                 },
             });
         });
