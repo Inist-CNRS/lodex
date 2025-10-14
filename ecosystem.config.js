@@ -14,7 +14,8 @@ module.exports = {
         {
             name: 'worker',
             script: 'workers',
-            interpreter_args: '--require @babel/register',
+            interpreter: 'node',
+            interpreter_args: '--import tsx',
             exec_mode: 'fork',
             instances: 1,
             err_file: '/dev/null',
