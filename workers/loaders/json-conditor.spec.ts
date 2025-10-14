@@ -3,7 +3,7 @@ const from = require('from');
 
 describe('json-conditor.ini', () => {
     it('should parse a JSON', (done) => {
-        const res = [];
+        const res: any = [];
         const expected = [
             {
                 'abstract en': '1. abstract.en',
@@ -303,7 +303,7 @@ describe('json-conditor.ini', () => {
         ];
         from([JSON.stringify(input)])
             .pipe(ezs('delegate', { file: __dirname + '/json-conditor.ini' }))
-            .on('data', (chunk) => {
+            .on('data', (chunk: any) => {
                 res.push(chunk);
             })
             .on('end', () => {

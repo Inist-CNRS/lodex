@@ -3,12 +3,12 @@ const from = require('from');
 
 describe('tsv-double-quotes.ini', () => {
     it('should parse a TSV with double quotes escaping', (done) => {
-        const res = [];
+        const res: any = [];
         from(['a\tb\n', '"1\t2"\t3\n'])
             .pipe(
                 ezs('delegate', { file: __dirname + '/tsv-double-quotes.ini' }),
             )
-            .on('data', (chunk) => {
+            .on('data', (chunk: any) => {
                 res.push(chunk);
             })
             .on('end', () => {

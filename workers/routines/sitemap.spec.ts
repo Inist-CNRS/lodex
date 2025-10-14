@@ -10,7 +10,7 @@ test.skip('export an xml', (done) => {
         },
     ])
         .pipe(ezs('delegate', { file: __dirname + '/sitemap.ini' }))
-        .on('data', (data) => {
+        .on('data', (data: any) => {
             if (data) outputString += data;
         })
         .on('end', () => {
