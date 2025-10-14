@@ -1,4 +1,4 @@
-import { useMemo, useState, type ChangeEvent } from 'react';
+import { useMemo, useCallback, type ChangeEvent } from 'react';
 import RoutineParamsAdmin from '../../../utils/components/admin/RoutineParamsAdmin';
 import VegaToolTips from '../../../utils/components/admin/VegaToolTips';
 import ColorPickerParamsAdmin from '../../../utils/components/admin/ColorPickerParamsAdmin';
@@ -17,7 +17,6 @@ import { MapSourceTargetWeight } from '../../../utils/dataSet';
 import AspectRatioSelector from '../../../utils/components/admin/AspectRatioSelector';
 import { ASPECT_RATIO_16_9 } from '../../../utils/aspectRatio';
 import FormatGroupedFieldSet from '../../../utils/components/field-set/FormatGroupedFieldSet';
-import { useUpdateAdminArgs } from '../../../utils/updateAdminArgs';
 import { useTranslate } from '../../../../i18n/I18NContext';
 
 export const defaultArgs = {
@@ -80,11 +79,8 @@ const FlowMapAdmin = ({
         tooltipValue = defaultArgs.tooltipValue,
         tooltipCategory = defaultArgs.tooltipCategory,
         aspectRatio = defaultArgs.aspectRatio,
+        colorScheme = defaultArgs.colorScheme,
     } = args;
-
-    const [colorScheme, setColorScheme] = useState<string[]>(
-        args.colorScheme ?? defaultArgs.colorScheme,
-    );
 
     const color = useMemo(() => {
         return args.color || defaultArgs.color;
@@ -121,83 +117,100 @@ const FlowMapAdmin = ({
         tooltipValue,
     ]);
 
-    const toggleAdvancedMode = useUpdateAdminArgs<
-        FlowMapArgs,
-        'advancedMode',
-        ChangeEvent<HTMLInputElement>
-    >('advancedMode', {
-        args,
-        onChange,
-        parseValue: (event) => event.target.checked,
-    });
+    const toggleAdvancedMode = useCallback(
+        (event: ChangeEvent<HTMLInputElement>) => {
+            onChange({
+                ...args,
+                advancedMode: event.target.checked,
+            });
+        },
+        [onChange, args],
+    );
 
-    const handleAdvancedModeSpec = useUpdateAdminArgs<
-        FlowMapArgs,
-        'advancedModeSpec'
-    >('advancedModeSpec', {
-        args,
-        onChange,
-    });
+    const handleAdvancedModeSpec = useCallback(
+        (advancedModeSpec: string | null) => {
+            onChange({
+                ...args,
+                advancedModeSpec,
+            });
+        },
+        [onChange, args],
+    );
 
     const clearAdvancedModeSpec = () => handleAdvancedModeSpec(null);
 
     console.log({ advancedModeSpec });
 
-    const handleParams = useUpdateAdminArgs<FlowMapArgs, 'params'>('params', {
-        args,
-        onChange,
-    });
-
-    const handleColor = useUpdateAdminArgs<FlowMapArgs, 'color', string>(
-        'color',
-        {
-            args,
-            onChange,
-            parseValue: (value) => value.split(' ')[0] || defaultArgs.color,
+    const handleParams = useCallback(
+        (params: FlowMapParams) => {
+            onChange({
+                ...args,
+                params,
+            });
         },
+        [onChange, args],
     );
 
-    const handleColorScheme = useUpdateAdminArgs<
-        FlowMapArgs,
-        'colorScheme',
-        ChangeEvent<HTMLInputElement>
-    >('colorScheme', {
-        args,
-        onChange,
-        parseValue: (event) => {
+    const handleColor = useCallback(
+        (value: string) => {
+            const colorValue = value.split(' ')[0] || defaultArgs.color;
+            onChange({
+                ...args,
+                color: colorValue,
+            });
+        },
+        [onChange, args],
+    );
+
+    const handleColorScheme = useCallback(
+        (event: ChangeEvent<HTMLInputElement>) => {
             const newColorScheme = event.target.value.split(',');
-            setColorScheme(newColorScheme);
-            return newColorScheme;
+            onChange({
+                ...args,
+                colorScheme: newColorScheme,
+            });
         },
-    });
-
-    const toggleTooltip = useUpdateAdminArgs<FlowMapArgs, 'tooltip'>(
-        'tooltip',
-        {
-            args,
-            onChange,
-        },
+        [onChange, args],
     );
 
-    const handleTooltipCategory = useUpdateAdminArgs<
-        FlowMapArgs,
-        'tooltipCategory'
-    >('tooltipCategory', {
-        args,
-        onChange,
-    });
-
-    const handleTooltipValue = useUpdateAdminArgs<FlowMapArgs, 'tooltipValue'>(
-        'tooltipValue',
-        { args, onChange },
+    const toggleTooltip = useCallback(
+        (tooltip: boolean) => {
+            onChange({
+                ...args,
+                tooltip,
+            });
+        },
+        [onChange, args],
     );
 
-    const handleAspectRatio = useUpdateAdminArgs<FlowMapArgs, 'aspectRatio'>(
-        'aspectRatio',
-        {
-            args,
-            onChange,
+    const handleTooltipCategory = useCallback(
+        (tooltipCategory: string) => {
+            onChange({
+                ...args,
+                tooltipCategory,
+            });
         },
+        [onChange, args],
+    );
+
+    const handleTooltipValue = useCallback(
+        (tooltipValue: string) => {
+            onChange({
+                ...args,
+                tooltipValue,
+            });
+        },
+        [onChange, args],
+    );
+
+    const handleAspectRatio = useCallback(
+        (aspectRatio: string) => {
+            onChange({
+                ...args,
+                aspectRatio,
+            });
+        },
+        [onChange, args],
     );
 
     const datasets = useMemo(() => [MapSourceTargetWeight], []);

@@ -10,7 +10,7 @@ import {
     FormatSubFormatParamsFieldSet,
 } from '../../utils/components/field-set/FormatFieldSets';
 import FormatGroupedFieldSet from '../../utils/components/field-set/FormatGroupedFieldSet';
-import { useUpdateAdminArgs } from '../../utils/updateAdminArgs';
+import { useCallback } from 'react';
 
 export const defaultArgs = {
     type: 'unordered',
@@ -40,38 +40,45 @@ const ListAdmin = ({ args = defaultArgs, onChange }: ListAdminProps) => {
         subFormat = defaultArgs.subFormat,
         subFormatOptions = defaultArgs.subFormatOptions,
     } = args;
-    const handleType = useUpdateAdminArgs<
-        ListArgs,
-        'type',
-        React.ChangeEvent<HTMLInputElement>
-    >('type', {
-        args,
-        onChange,
-        parseValue: (event: React.ChangeEvent<HTMLInputElement>) =>
-            event.target.value,
-    });
-
-    const handleBullet = useUpdateAdminArgs<ListArgs, 'bullet', any>('bullet', {
-        args,
-        onChange,
-        parseValue: (event) => event.target.value,
-    });
-
-    const handleSubFormat = useUpdateAdminArgs<ListArgs, 'subFormat'>(
-        'subFormat',
-        {
-            args: getFormatInitialArgs(subFormat),
-            onChange,
+    const handleType = useCallback(
+        (event: React.ChangeEvent<HTMLInputElement>) => {
+            onChange({
+                ...args,
+                type: event.target.value,
+            });
         },
+        [onChange, args],
     );
 
-    const handleSubFormatOptions = useUpdateAdminArgs<
-        ListArgs,
-        'subFormatOptions'
-    >('subFormatOptions', {
-        args,
-        onChange,
-    });
+    const handleBullet = useCallback(
+        (event: React.ChangeEvent<HTMLInputElement>) => {
+            onChange({
+                ...args,
+                bullet: event.target.value,
+            });
+        },
+        [onChange, args],
+    );
+
+    const handleSubFormat = useCallback(
+        (subFormat: string) => {
+            onChange({
+                ...getFormatInitialArgs(subFormat),
+                subFormat,
+            });
+        },
+        [onChange],
+    );
+
+    const handleSubFormatOptions = useCallback(
+        (subFormatOptions: unknown) => {
+            onChange({
+                ...args,
+                subFormatOptions,
+            });
+        },
+        [onChange, args],
+    );
 
     const SubAdminComponent = getAdminComponent(subFormat);
 

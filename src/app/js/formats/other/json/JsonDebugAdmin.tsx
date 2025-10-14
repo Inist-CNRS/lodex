@@ -1,13 +1,12 @@
 import RoutineParamsAdmin from '../../utils/components/admin/RoutineParamsAdmin';
 import { FormControlLabel, FormGroup, Switch } from '@mui/material';
-import { useUpdateAdminArgs } from '../../utils/updateAdminArgs';
 import {
     FormatDataParamsFieldSet,
     FormatDefaultParamsFieldSet,
 } from '../../utils/components/field-set/FormatFieldSets';
 import FormatGroupedFieldSet from '../../utils/components/field-set/FormatGroupedFieldSet';
 import { useTranslate } from '../../../i18n/I18NContext';
-import type { ChangeEvent } from 'react';
+import { useCallback, type ChangeEvent } from 'react';
 
 export const defaultArgs = {
     params: {
@@ -48,20 +47,25 @@ const JsonDebugAdmin = ({
 
     const { translate } = useTranslate();
 
-    const handleParams = useUpdateAdminArgs<JsonDebugArgs, 'params'>('params', {
-        args,
-        onChange,
-    });
+    const handleParams = useCallback(
+        (params: JsonDebugArgs['params']) => {
+            onChange({
+                ...args,
+                params,
+            });
+        },
+        [onChange, args],
+    );
 
-    const toggleDebugMode = useUpdateAdminArgs<
-        JsonDebugArgs,
-        'debugMode',
-        ChangeEvent<HTMLInputElement>
-    >('debugMode', {
-        args,
-        onChange,
-        parseValue: (event) => event.target.checked,
-    });
+    const toggleDebugMode = useCallback(
+        (event: ChangeEvent<HTMLInputElement>) => {
+            onChange({
+                ...args,
+                debugMode: event.target.checked,
+            });
+        },
+        [onChange, args],
+    );
 
     return (
         <FormatGroupedFieldSet>

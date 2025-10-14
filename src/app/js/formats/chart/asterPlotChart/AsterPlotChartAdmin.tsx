@@ -1,4 +1,3 @@
-import { useUpdateAdminArgs } from '../../utils/updateAdminArgs';
 import RoutineParamsAdmin, {
     type RoutineParams,
 } from '../../utils/components/admin/RoutineParamsAdmin';
@@ -9,6 +8,7 @@ import {
     FormatDataParamsFieldSet,
 } from '../../utils/components/field-set/FormatFieldSets';
 import FormatGroupedFieldSet from '../../utils/components/field-set/FormatGroupedFieldSet';
+import { useCallback } from 'react';
 
 type AsterPlotArgs = {
     params: RoutineParams;
@@ -42,15 +42,25 @@ const AsterPlotChartAdmin = ({
     showMinValue = true,
     showOrderBy = true,
 }: AsterPlotChartAdminProps) => {
-    const handleParams = useUpdateAdminArgs<AsterPlotArgs, 'params'>('params', {
-        args,
-        onChange,
-    });
+    const handleParams = useCallback(
+        (params: RoutineParams) => {
+            onChange({
+                ...args,
+                params,
+            });
+        },
+        [onChange, args],
+    );
 
-    const handleColors = useUpdateAdminArgs<AsterPlotArgs, 'colors'>('colors', {
-        args,
-        onChange,
-    });
+    const handleColors = useCallback(
+        (colors: string) => {
+            onChange({
+                ...args,
+                colors,
+            });
+        },
+        [onChange, args],
+    );
 
     return (
         <FormatGroupedFieldSet>

@@ -1,7 +1,7 @@
 import { TextField, MenuItem } from '@mui/material';
 import { useTranslate } from '../../../i18n/I18NContext';
+import { useCallback } from 'react';
 
-import { useUpdateAdminArgs } from '../../utils/updateAdminArgs';
 import { resolvers } from './index';
 import { MONOCHROMATIC_DEFAULT_COLORSET } from '../../utils/colorUtils';
 import ColorPickerParamsAdmin from '../../utils/components/admin/ColorPickerParamsAdmin';
@@ -29,29 +29,26 @@ const IdentifierBadgeAdmin = ({
 }: IdentifierBadgeAdminProps) => {
     const { translate } = useTranslate();
 
-    const handleTypid = useUpdateAdminArgs<
-        IdentifierBadgeArgs,
-        'typid',
-        React.ChangeEvent<HTMLInputElement>
-    >('typid', {
-        args,
-        onChange,
-        parseValue: (event: React.ChangeEvent<HTMLInputElement>) =>
-            event.target.value,
-    });
-
-    const handleColorsChange = useUpdateAdminArgs<
-        IdentifierBadgeArgs,
-        'colors',
-        string
-    >('colors', {
-        args,
-        onChange,
-        parseValue: (colors: string) => {
-            const colorValue = colors.split(' ')[0];
-            return colorValue;
+    const handleTypid = useCallback(
+        (event: React.ChangeEvent<HTMLInputElement>) => {
+            onChange({
+                ...args,
+                typid: event.target.value,
+            });
         },
-    });
+        [onChange, args],
+    );
+
+    const handleColorsChange = useCallback(
+        (colors: string) => {
+            const colorValue = colors.split(' ')[0];
+            onChange({
+                ...args,
+                colors: colorValue,
+            });
+        },
+        [onChange, args],
+    );
 
     const { typid } = args;
 

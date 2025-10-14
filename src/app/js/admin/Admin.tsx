@@ -1,5 +1,3 @@
-// @ts-expect-error TS6133
-import React from 'react';
 import PropTypes from 'prop-types';
 import { compose, lifecycle } from 'recompose';
 import { connect } from 'react-redux';

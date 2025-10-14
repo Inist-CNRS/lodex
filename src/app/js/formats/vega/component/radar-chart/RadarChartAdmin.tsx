@@ -1,4 +1,4 @@
-import { useMemo, type ChangeEvent } from 'react';
+import { useMemo, useCallback, type ChangeEvent } from 'react';
 import {
     MenuItem,
     Checkbox,
@@ -7,8 +7,6 @@ import {
     Switch,
     FormGroup,
 } from '@mui/material';
-
-import { useUpdateAdminArgs } from '../../../utils/updateAdminArgs';
 import RoutineParamsAdmin from '../../../utils/components/admin/RoutineParamsAdmin';
 import ColorPickerParamsAdmin from '../../../utils/components/admin/ColorPickerParamsAdmin';
 import { MONOCHROMATIC_DEFAULT_COLORSET } from '../../../utils/colorUtils';
@@ -126,95 +124,109 @@ const RadarChartAdmin = ({
         tooltipValue,
     ]);
 
-    const toggleAdvancedMode = useUpdateAdminArgs<
-        RadarChartArgs,
-        'advancedMode',
-        ChangeEvent<HTMLInputElement>
-    >('advancedMode', {
-        args,
-        onChange,
-        parseValue: (event) => event.target.checked,
-    });
+    const toggleAdvancedMode = useCallback(
+        (event: ChangeEvent<HTMLInputElement>) => {
+            onChange({
+                ...args,
+                advancedMode: event.target.checked,
+            });
+        },
+        [onChange, args],
+    );
 
-    const handleAdvancedModeSpec = useUpdateAdminArgs<
-        RadarChartArgs,
-        'advancedModeSpec'
-    >('advancedModeSpec', {
-        args,
-        onChange,
-    });
+    const handleAdvancedModeSpec = useCallback(
+        (advancedModeSpec: string | null) => {
+            onChange({
+                ...args,
+                advancedModeSpec,
+            });
+        },
+        [onChange, args],
+    );
 
     const clearAdvancedModeSpec = () => {
         handleAdvancedModeSpec(null);
     };
 
-    const handleParams = useUpdateAdminArgs<RadarChartArgs, 'params'>(
-        'params',
-        {
-            args,
-            onChange,
+    const handleParams = useCallback(
+        (params: RadarChartParams) => {
+            onChange({
+                ...args,
+                params,
+            });
         },
+        [onChange, args],
     );
 
-    const handleAxisRoundValue = useUpdateAdminArgs<
-        RadarChartArgs,
-        'axisRoundValue',
-        ChangeEvent<HTMLInputElement>
-    >('axisRoundValue', {
-        args,
-        onChange,
-        parseValue: (event) => event.target.checked,
-    });
-
-    const handleScale = useUpdateAdminArgs<
-        RadarChartArgs,
-        'scale',
-        ChangeEvent<HTMLInputElement>
-    >('scale', {
-        args,
-        onChange,
-        parseValue: (event) => event.target.value as 'log' | 'linear',
-    });
-
-    const handleColors = useUpdateAdminArgs<RadarChartArgs, 'colors', string>(
-        'colors',
-        {
-            args,
-            onChange,
-            parseValue: (colors) => colors.split(' ')[0] || defaultArgs.colors,
+    const handleAxisRoundValue = useCallback(
+        (event: ChangeEvent<HTMLInputElement>) => {
+            onChange({
+                ...args,
+                axisRoundValue: event.target.checked,
+            });
         },
+        [onChange, args],
     );
 
-    const toggleTooltip = useUpdateAdminArgs<RadarChartArgs, 'tooltip'>(
-        'tooltip',
-        {
-            args,
-            onChange,
+    const handleScale = useCallback(
+        (event: ChangeEvent<HTMLInputElement>) => {
+            onChange({
+                ...args,
+                scale: event.target.value as 'log' | 'linear',
+            });
         },
+        [onChange, args],
     );
 
-    const handleTooltipCategory = useUpdateAdminArgs<
-        RadarChartArgs,
-        'tooltipCategory'
-    >('tooltipCategory', {
-        args,
-        onChange,
-    });
-
-    const handleTooltipValue = useUpdateAdminArgs<
-        RadarChartArgs,
-        'tooltipValue'
-    >('tooltipValue', {
-        args,
-        onChange,
-    });
-
-    const handleAspectRatio = useUpdateAdminArgs<RadarChartArgs, 'aspectRatio'>(
-        'aspectRatio',
-        {
-            args,
-            onChange,
+    const handleColors = useCallback(
+        (colors: string) => {
+            const colorValue = colors.split(' ')[0] || defaultArgs.colors;
+            onChange({
+                ...args,
+                colors: colorValue,
+            });
         },
+        [onChange, args],
+    );
+
+    const toggleTooltip = useCallback(
+        (tooltip: boolean) => {
+            onChange({
+                ...args,
+                tooltip,
+            });
+        },
+        [onChange, args],
+    );
+
+    const handleTooltipCategory = useCallback(
+        (tooltipCategory: string) => {
+            onChange({
+                ...args,
+                tooltipCategory,
+            });
+        },
+        [onChange, args],
+    );
+
+    const handleTooltipValue = useCallback(
+        (tooltipValue: string) => {
+            onChange({
+                ...args,
+                tooltipValue,
+            });
+        },
+        [onChange, args],
+    );
+
+    const handleAspectRatio = useCallback(
+        (aspectRatio: AspectRatio) => {
+            onChange({
+                ...args,
+                aspectRatio,
+            });
+        },
+        [onChange, args],
     );
 
     return (

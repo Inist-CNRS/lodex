@@ -1,4 +1,4 @@
-import { useUpdateAdminArgs } from '../../utils/updateAdminArgs';
+import { useCallback } from 'react';
 import RoutineParamsAdmin from '../../utils/components/admin/RoutineParamsAdmin';
 import ColorPickerParamsAdmin from '../../utils/components/admin/ColorPickerParamsAdmin';
 import { MULTICHROMATIC_DEFAULT_COLORSET } from '../../utils/colorUtils';
@@ -43,15 +43,25 @@ const VennAdmin = ({
     showMinValue = true,
     showOrderBy = true,
 }: VennAdminProps) => {
-    const handleParams = useUpdateAdminArgs<VennArgs, 'params'>('params', {
-        args,
-        onChange,
-    });
+    const handleParams = useCallback(
+        (params: VennArgs['params']) => {
+            onChange({
+                ...args,
+                params,
+            });
+        },
+        [onChange, args],
+    );
 
-    const handleColors = useUpdateAdminArgs<VennArgs, 'colors'>('colors', {
-        args,
-        onChange,
-    });
+    const handleColors = useCallback(
+        (colors: string) => {
+            onChange({
+                ...args,
+                colors,
+            });
+        },
+        [onChange, args],
+    );
 
     return (
         <FormatGroupedFieldSet>

@@ -1,7 +1,6 @@
 import { TextField } from '@mui/material';
 import { useTranslate } from '../../../i18n/I18NContext';
 
-import { useUpdateAdminArgs } from '../../utils/updateAdminArgs';
 import RoutineParamsAdmin from '../../utils/components/admin/RoutineParamsAdmin';
 import ColorPickerParamsAdmin from '../../utils/components/admin/ColorPickerParamsAdmin';
 import { MULTICHROMATIC_DEFAULT_COLORSET_STREAMGRAPH } from '../../utils/colorUtils';
@@ -10,7 +9,7 @@ import {
     FormatDataParamsFieldSet,
 } from '../../utils/components/field-set/FormatFieldSets';
 import FormatGroupedFieldSet from '../../utils/components/field-set/FormatGroupedFieldSet';
-import type { ChangeEvent } from 'react';
+import { useCallback, type ChangeEvent } from 'react';
 
 type StreamgraphArgs = {
     params?: {
@@ -57,42 +56,45 @@ const StreamgraphAdmin = ({
 }: StreamgraphAdminProps) => {
     const { translate } = useTranslate();
 
-    const handleParams = useUpdateAdminArgs<StreamgraphArgs, 'params'>(
-        'params',
-        {
-            args,
-            onChange,
+    const handleParams = useCallback(
+        (params: StreamgraphArgs['params']) => {
+            onChange({
+                ...args,
+                params,
+            });
         },
+        [onChange, args],
     );
 
-    const handleColors = useUpdateAdminArgs<StreamgraphArgs, 'colors', string>(
-        'colors',
-        {
-            args,
-            onChange,
-            parseValue: (value) => value || defaultArgs.colors,
+    const handleColors = useCallback(
+        (value: string) => {
+            onChange({
+                ...args,
+                colors: value || defaultArgs.colors,
+            });
         },
+        [onChange, args],
     );
 
-    const handleMaxLegendLength = useUpdateAdminArgs<
-        StreamgraphArgs,
-        'maxLegendLength',
-        ChangeEvent<HTMLInputElement>
-    >('maxLegendLength', {
-        args,
-        onChange,
-        parseValue: (event) => parseInt(event.target.value, 10),
-    });
+    const handleMaxLegendLength = useCallback(
+        (event: ChangeEvent<HTMLInputElement>) => {
+            onChange({
+                ...args,
+                maxLegendLength: parseInt(event.target.value, 10),
+            });
+        },
+        [onChange, args],
+    );
 
-    const handleHeight = useUpdateAdminArgs<
-        StreamgraphArgs,
-        'height',
-        ChangeEvent<HTMLInputElement>
-    >('height', {
-        args,
-        onChange,
-        parseValue: (event) => parseInt(event.target.value, 10),
-    });
+    const handleHeight = useCallback(
+        (event: ChangeEvent<HTMLInputElement>) => {
+            onChange({
+                ...args,
+                height: parseInt(event.target.value, 10),
+            });
+        },
+        [onChange, args],
+    );
 
     const { params, maxLegendLength, height } = args;
 

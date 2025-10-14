@@ -1,14 +1,13 @@
 import { useTranslate } from '../../../i18n/I18NContext';
 import { MenuItem, TextField } from '@mui/material';
 
-import { useUpdateAdminArgs } from '../../utils/updateAdminArgs';
 import {
     SEARCHED_FIELD_VALUES,
     CUSTOM_ISTEX_QUERY,
 } from '../istexSummary/constants';
 import { FormatDataParamsFieldSet } from '../../utils/components/field-set/FormatFieldSets';
 import FormatGroupedFieldSet from '../../utils/components/field-set/FormatGroupedFieldSet';
-import type { ChangeEvent } from 'react';
+import { useCallback, type ChangeEvent } from 'react';
 
 export const defaultArgs = {
     searchedField: CUSTOM_ISTEX_QUERY,
@@ -34,25 +33,25 @@ export const IstexCitationAdmin = ({
 }: IstexCitationAdminProps) => {
     const { translate } = useTranslate();
 
-    const handleSearchedField = useUpdateAdminArgs<
-        IstexCitationArgs,
-        'searchedField',
-        ChangeEvent<HTMLInputElement>
-    >('searchedField', {
-        args,
-        onChange,
-        parseValue: (event) => event.target.value,
-    });
+    const handleSearchedField = useCallback(
+        (event: ChangeEvent<HTMLInputElement>) => {
+            onChange({
+                ...args,
+                searchedField: event.target.value,
+            });
+        },
+        [onChange, args],
+    );
 
-    const handleDocumentSortBy = useUpdateAdminArgs<
-        IstexCitationArgs,
-        'documentSortBy',
-        ChangeEvent<HTMLInputElement>
-    >('documentSortBy', {
-        args,
-        onChange,
-        parseValue: (event) => event.target.value,
-    });
+    const handleDocumentSortBy = useCallback(
+        (event: ChangeEvent<HTMLInputElement>) => {
+            onChange({
+                ...args,
+                documentSortBy: event.target.value,
+            });
+        },
+        [onChange, args],
+    );
 
     const { searchedField, documentSortBy } = args;
 
