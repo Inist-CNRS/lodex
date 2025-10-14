@@ -103,6 +103,9 @@ class TableColumnParameter extends Component {
         const availableField = [
             'title',
             'summary',
+            'detail1',
+            'detail2',
+            'detail3',
             'source',
             'target',
             'weight',
