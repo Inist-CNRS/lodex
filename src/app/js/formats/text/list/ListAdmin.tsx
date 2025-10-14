@@ -118,6 +118,7 @@ const ListAdmin = ({ args = defaultArgs, onChange }: ListAdminProps) => {
             </FormatDefaultParamsFieldSet>
             <FormatSubFormatParamsFieldSet>
                 {subFormat && subFormat !== 'none' ? (
+                    // @ts-expect-error TS2739 - Too complex union type from getAdminComponent
                     <SubAdminComponent
                         onChange={handleSubFormatOptions}
                         args={subFormatOptions as any}

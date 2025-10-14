@@ -190,8 +190,8 @@ class SparqlTextFieldAdmin extends Component {
                     value={result.sub}
                 />
                 {result.sub && (
+                    // @ts-expect-error TS2739 - Too complex union type from getAdminComponent
                     <SubAdminComponent
-                        // @ts-expect-error TS7006
                         onChange={(e) => this.handleSubformatOption(e, key)}
                         args={result.option}
                     />

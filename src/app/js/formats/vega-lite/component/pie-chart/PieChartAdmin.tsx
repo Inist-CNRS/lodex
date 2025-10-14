@@ -1,11 +1,6 @@
-// @ts-expect-error TS6133
-import React, { useEffect, useMemo } from 'react';
-import PropTypes from 'prop-types';
-import { translate } from '../../../../i18n/I18NContext';
+import { useCallback, useMemo, type ChangeEvent } from 'react';
 import { Checkbox, FormControlLabel, FormGroup, Switch } from '@mui/material';
 
-import { polyglot as polyglotPropTypes } from '../../../../propTypes';
-import updateAdminArgs from '../../../utils/updateAdminArgs';
 import RoutineParamsAdmin from '../../../utils/components/admin/RoutineParamsAdmin';
 import ColorPickerParamsAdmin from '../../../utils/components/admin/ColorPickerParamsAdmin';
 import { MULTICHROMATIC_DEFAULT_COLORSET } from '../../../utils/colorUtils';
@@ -22,6 +17,7 @@ import { StandardIdValue } from '../../../utils/dataSet';
 import { ASPECT_RATIO_8_5 } from '../../../utils/aspectRatio';
 import AspectRatioSelector from '../../../utils/components/admin/AspectRatioSelector';
 import FormatGroupedFieldSet from '../../../utils/components/field-set/FormatGroupedFieldSet';
+import { useTranslate } from '../../../../i18n/I18NContext';
 
 export const defaultArgs = {
     params: {
@@ -38,17 +34,43 @@ export const defaultArgs = {
     aspectRatio: ASPECT_RATIO_8_5,
 };
 
-// @ts-expect-error TS7006
-const PieChartAdmin = (props) => {
-    const {
-        p: polyglot,
-        args,
-        showMaxSize,
-        showMaxValue,
-        showMinValue,
-        showOrderBy,
-    } = props;
+type PieChartParams = {
+    maxSize?: number;
+    maxValue?: number;
+    minValue?: number;
+    orderBy?: string;
+};
 
+type PieChartArgs = {
+    params: PieChartParams;
+    advancedMode?: boolean;
+    advancedModeSpec?: string | null;
+    colors?: string;
+    tooltip: boolean;
+    tooltipCategory: string;
+    tooltipValue: string;
+    labels?: boolean;
+    aspectRatio?: string;
+};
+
+type PieChartAdminProps = {
+    args?: PieChartArgs;
+    onChange: (args: PieChartArgs) => void;
+    showMaxSize: boolean;
+    showMaxValue: boolean;
+    showMinValue: boolean;
+    showOrderBy: boolean;
+};
+
+const PieChartAdmin = ({
+    args = defaultArgs,
+    showMaxSize = true,
+    showMaxValue = true,
+    showMinValue = true,
+    showOrderBy = true,
+    onChange,
+}: PieChartAdminProps) => {
+    const { translate } = useTranslate();
     const {
         advancedMode,
         advancedModeSpec,
@@ -82,60 +104,109 @@ const PieChartAdmin = (props) => {
         specBuilder.setLabels(labels);
 
         return JSON.stringify(specBuilder.buildSpec(), null, 2);
-    }, [advancedMode, advancedModeSpec]);
+    }, [
+        advancedMode,
+        advancedModeSpec,
+        colors,
+        labels,
+        tooltip,
+        tooltipCategory,
+        tooltipValue,
+    ]);
 
-    // Save the new spec when we first use the advanced mode or when we reset the generated spec
-    // details: Update advancedModeSpec props arguments when spec is generated or regenerated
-    useEffect(() => {
-        if (!advancedMode) {
-            return;
-        }
-        updateAdminArgs('advancedModeSpec', spec, props);
-    }, [advancedMode, advancedModeSpec]);
+    const toggleAdvancedMode = useCallback(
+        (event: ChangeEvent<HTMLInputElement>) => {
+            onChange({
+                ...args,
+                advancedMode: event.target.checked,
+            });
+        },
+        [onChange, args],
+    );
 
-    const toggleAdvancedMode = () => {
-        updateAdminArgs('advancedMode', !advancedMode, props);
-    };
+    const handleAdvancedModeSpec = useCallback(
+        (advancedModeSpec: string | null) => {
+            onChange({
+                ...args,
+                advancedModeSpec,
+            });
+        },
+        [onChange, args],
+    );
 
-    // @ts-expect-error TS7006
-    const handleAdvancedModeSpec = (newSpec) => {
-        updateAdminArgs('advancedModeSpec', newSpec, props);
-    };
+    const clearAdvancedModeSpec = useCallback(() => {
+        handleAdvancedModeSpec(null);
+    }, [handleAdvancedModeSpec]);
 
-    const clearAdvancedModeSpec = () => {
-        updateAdminArgs('advancedModeSpec', null, props);
-    };
+    const handleParams = useCallback(
+        (params: PieChartParams) => {
+            onChange({
+                ...args,
+                params,
+            });
+        },
+        [onChange, args],
+    );
 
-    // @ts-expect-error TS7006
-    const handleParams = (params) => updateAdminArgs('params', params, props);
+    const handleColors = useCallback(
+        (colors: string) => {
+            onChange({
+                ...args,
+                colors: colors || defaultArgs.colors,
+            });
+        },
+        [onChange, args],
+    );
 
-    // @ts-expect-error TS7006
-    const handleColors = (colors) => {
-        updateAdminArgs('colors', colors || defaultArgs.colors, props);
-    };
+    const toggleLabels = useCallback(
+        (event: ChangeEvent<HTMLInputElement>) => {
+            onChange({
+                ...args,
+                labels: event.target.checked,
+            });
+        },
+        [onChange, args],
+    );
 
-    const toggleLabels = () => {
-        updateAdminArgs('labels', !labels, props);
-    };
+    const toggleTooltip = useCallback(
+        (tooltip: boolean) => {
+            onChange({
+                ...args,
+                tooltip,
+            });
+        },
+        [onChange, args],
+    );
 
-    const toggleTooltip = () => {
-        updateAdminArgs('tooltip', !tooltip, props);
-    };
+    const handleTooltipCategory = useCallback(
+        (tooltipCategory: string) => {
+            onChange({
+                ...args,
+                tooltipCategory,
+            });
+        },
+        [onChange, args],
+    );
 
-    // @ts-expect-error TS7006
-    const handleTooltipCategory = (tooltipCategory) => {
-        updateAdminArgs('tooltipCategory', tooltipCategory, props);
-    };
+    const handleTooltipValue = useCallback(
+        (tooltipValue: string) => {
+            onChange({
+                ...args,
+                tooltipValue,
+            });
+        },
+        [onChange, args],
+    );
 
-    // @ts-expect-error TS7006
-    const handleTooltipValue = (tooltipValue) => {
-        updateAdminArgs('tooltipValue', tooltipValue, props);
-    };
-
-    // @ts-expect-error TS7006
-    const handleAspectRatio = (value) => {
-        updateAdminArgs('aspectRatio', value, props);
-    };
+    const handleAspectRatio = useCallback(
+        (value: string) => {
+            onChange({
+                ...args,
+                aspectRatio: value,
+            });
+        },
+        [onChange, args],
+    );
 
     return (
         <FormatGroupedFieldSet>
@@ -143,7 +214,6 @@ const PieChartAdmin = (props) => {
                 <RoutineParamsAdmin
                     params={params || defaultArgs.params}
                     onChange={handleParams}
-                    polyglot={polyglot}
                     showMaxSize={showMaxSize}
                     showMaxValue={showMaxValue}
                     showMinValue={showMinValue}
@@ -159,7 +229,7 @@ const PieChartAdmin = (props) => {
                                 onChange={toggleAdvancedMode}
                             />
                         }
-                        label={polyglot.t('advancedMode')}
+                        label={translate('advancedMode')}
                     />
                 </FormGroup>
                 {advancedMode ? (
@@ -177,7 +247,6 @@ const PieChartAdmin = (props) => {
                             categoryTitle={tooltipCategory}
                             onValueTitleChange={handleTooltipValue}
                             valueTitle={tooltipValue}
-                            polyglot={polyglot}
                             thirdValue={false}
                         />
                         <FormControlLabel
@@ -187,12 +256,11 @@ const PieChartAdmin = (props) => {
                                     checked={labels}
                                 />
                             }
-                            label={polyglot.t('toggle_labels')}
+                            label={translate('toggle_labels')}
                         />
                         <ColorPickerParamsAdmin
                             colors={colors}
                             onChange={handleColors}
-                            polyglot={polyglot}
                         />
                     </>
                 )}
@@ -203,6 +271,7 @@ const PieChartAdmin = (props) => {
             </FormatChartParamsFieldSet>
             <VegaFieldPreview
                 args={args}
+                // @ts-expect-error TS2322
                 PreviewComponent={PieChartAdminView}
                 datasets={[StandardIdValue]}
                 showDatasetsSelector={false}
@@ -211,37 +280,4 @@ const PieChartAdmin = (props) => {
     );
 };
 
-PieChartAdmin.defaultProps = {
-    args: defaultArgs,
-    showMaxSize: true,
-    showMaxValue: true,
-    showMinValue: true,
-    showOrderBy: true,
-};
-
-PieChartAdmin.propTypes = {
-    args: PropTypes.shape({
-        params: PropTypes.shape({
-            maxSize: PropTypes.number,
-            maxValue: PropTypes.number,
-            minValue: PropTypes.number,
-            orderBy: PropTypes.string,
-        }),
-        advancedMode: PropTypes.bool,
-        advancedModeSpec: PropTypes.string,
-        colors: PropTypes.string,
-        tooltip: PropTypes.bool,
-        tooltipCategory: PropTypes.string,
-        tooltipValue: PropTypes.string,
-        labels: PropTypes.bool,
-        aspectRatio: PropTypes.string,
-    }),
-    onChange: PropTypes.func.isRequired,
-    p: polyglotPropTypes.isRequired,
-    showMaxSize: PropTypes.bool.isRequired,
-    showMaxValue: PropTypes.bool.isRequired,
-    showMinValue: PropTypes.bool.isRequired,
-    showOrderBy: PropTypes.bool.isRequired,
-};
-
-export default translate(PieChartAdmin);
+export default PieChartAdmin;

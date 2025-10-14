@@ -1,6 +1,5 @@
 // @ts-expect-error TS6133
 import React, { useMemo, useState, Suspense, useCallback } from 'react';
-import { polyglot as polyglotPropTypes } from '../../../propTypes';
 import compose from 'recompose/compose';
 
 import injectData from '../../injectData';
@@ -22,7 +21,7 @@ const styles = {
 };
 
 // @ts-expect-error TS7031
-const Venn = ({ formatData, p, colorSet }) => {
+const Venn = ({ formatData, colorSet }) => {
     const { translate } = useTranslate();
     const [{ width, height }, setDimensions] = useState({
         width: 0,
@@ -69,7 +68,7 @@ const Venn = ({ formatData, p, colorSet }) => {
                             colorSet={colorSet}
                         />
                     </Suspense>
-                    <div>{<MouseIcon polyglot={p} />}</div>
+                    <div>{<MouseIcon />}</div>
                 </div>
             </FormatFullScreenMode>
         </div>
@@ -84,7 +83,6 @@ Venn.propTypes = {
         target: PropTypes.string.isRequired,
         weight: PropTypes.number,
     }),
-    p: polyglotPropTypes.isRequired,
 };
 
 // @ts-expect-error TS2345
