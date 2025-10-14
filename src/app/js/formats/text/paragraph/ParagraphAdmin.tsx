@@ -1,47 +1,54 @@
-// @ts-expect-error TS6133
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
 import { MenuItem, TextField } from '@mui/material';
-import { translate } from '../../../i18n/I18NContext';
-import { polyglot as polyglotPropTypes } from '../../../propTypes';
+import { useTranslate } from '../../../i18n/I18NContext';
 import { FormatDefaultParamsFieldSet } from '../../utils/components/field-set/FormatFieldSets';
 import FormatGroupedFieldSet from '../../utils/components/field-set/FormatGroupedFieldSet';
 import ColorPickerParamsAdmin from '../../utils/components/admin/ColorPickerParamsAdmin';
 import { MONOCHROMATIC_DEFAULT_COLORSET } from '../../utils/colorUtils';
-import updateAdminArgs from '../../utils/updateAdminArgs';
+import { useUpdateAdminArgs } from '../../utils/updateAdminArgs';
 
 export const defaultArgs = {
     paragraphWidth: '100%',
     colors: MONOCHROMATIC_DEFAULT_COLORSET,
 };
 
+type ParagraphArgs = {
+    paragraphWidth?: string;
+    colors?: string;
+};
+
+type ParagraphAdminProps = {
+    args?: ParagraphArgs;
+    onChange: (args: ParagraphArgs) => void;
+};
+
 const ParagraphAdmin = ({
     args = defaultArgs,
-    // @ts-expect-error TS7031
     onChange,
-    // @ts-expect-error TS7031
-    p: polyglot,
-}) => {
-    const [colors, setColors] = useState(args.colors || defaultArgs.colors);
-    const [paragraphWidth, setParagraphWidth] = useState(
-        args.paragraphWidth || defaultArgs.paragraphWidth,
-    );
+}: ParagraphAdminProps) => {
+    const { translate } = useTranslate();
+    const {
+        colors = defaultArgs.colors,
+        paragraphWidth = defaultArgs.paragraphWidth,
+    } = args;
 
-    // @ts-expect-error TS7006
-    const handleParagraphWidth = (event) => {
-        const newParagraphWidth = event.target.value;
-        updateAdminArgs('paragraphWidth', newParagraphWidth, {
+    const handleParagraphWidth = useUpdateAdminArgs<
+        ParagraphArgs,
+        'paragraphWidth',
+        React.ChangeEvent<HTMLInputElement>
+    >('paragraphWidth', {
+        args,
+        onChange,
+        parseValue: (event: React.ChangeEvent<HTMLInputElement>) =>
+            event.target.value,
+    });
+
+    const handleColors = useUpdateAdminArgs<ParagraphArgs, 'colors', string>(
+        'colors',
+        {
             args,
             onChange,
-        });
-        setParagraphWidth(newParagraphWidth);
-    };
-
-    // @ts-expect-error TS7006
-    const handleColors = (newColors) => {
-        updateAdminArgs('colors', newColors, { args, onChange });
-        setColors(newColors);
-    };
+        },
+    );
 
     return (
         <FormatGroupedFieldSet>
@@ -49,31 +56,30 @@ const ParagraphAdmin = ({
                 <TextField
                     fullWidth
                     select
-                    label={polyglot.t('list_format_select_image_width')}
+                    label={translate('list_format_select_image_width')}
                     onChange={handleParagraphWidth}
                     value={paragraphWidth}
                 >
-                    <MenuItem value="10%">{polyglot.t('ten_percent')}</MenuItem>
+                    <MenuItem value="10%">{translate('ten_percent')}</MenuItem>
                     <MenuItem value="20%">
-                        {polyglot.t('twenty_percent')}
+                        {translate('twenty_percent')}
                     </MenuItem>
                     <MenuItem value="30%">
-                        {polyglot.t('thirty_percent')}
+                        {translate('thirty_percent')}
                     </MenuItem>
                     <MenuItem value="50%">
-                        {polyglot.t('fifty_percent')}
+                        {translate('fifty_percent')}
                     </MenuItem>
                     <MenuItem value="80%">
-                        {polyglot.t('eighty_percent')}
+                        {translate('eighty_percent')}
                     </MenuItem>
                     <MenuItem value="100%">
-                        {polyglot.t('hundred_percent')}
+                        {translate('hundred_percent')}
                     </MenuItem>
                 </TextField>
                 <ColorPickerParamsAdmin
                     colors={colors}
                     onChange={handleColors}
-                    polyglot={polyglot}
                     monochromatic={true}
                 />
             </FormatDefaultParamsFieldSet>
@@ -81,13 +87,4 @@ const ParagraphAdmin = ({
     );
 };
 
-ParagraphAdmin.propTypes = {
-    args: PropTypes.shape({
-        paragraphWidth: PropTypes.string,
-        colors: PropTypes.string,
-    }),
-    onChange: PropTypes.func.isRequired,
-    p: polyglotPropTypes.isRequired,
-};
-
-export default translate(ParagraphAdmin);
+export default ParagraphAdmin;
