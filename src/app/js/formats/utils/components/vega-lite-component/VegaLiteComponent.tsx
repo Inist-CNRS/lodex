@@ -39,7 +39,7 @@ function CustomActionVegaLite({
     p: polyglot,
 }) {
     const actions = useVegaActions(user);
-    const graphParentRef = useVegaCsvExport(polyglot, data);
+    const graphParentRef = useVegaCsvExport(data);
 
     const specWithData = spec;
     const { height: specHeight } = specWithData;
@@ -99,12 +99,10 @@ function CustomActionVegaLite({
         <>
             <style>{'#vg-tooltip-element {z-index:99999}'}</style>
             {disableZoom ? (
-                // @ts-expect-error TS2322
                 <div ref={graphParentRef}>{vegaGraphElement}</div>
             ) : (
                 <FormatFullScreenMode>
                     <div
-                        // @ts-expect-error TS2322
                         ref={graphParentRef}
                         style={{ width: '100%', height: '100%' }}
                     >

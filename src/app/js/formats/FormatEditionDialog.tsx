@@ -88,6 +88,8 @@ const FormatEditionDialog = ({
                         onChange={setFormat}
                     />
                 </Box>
+                {/* 
+                // @ts-expect-error TS2739 */}
                 <AdminComponent onChange={setArgs} args={args} />
             </DialogContent>
             <DialogActions>

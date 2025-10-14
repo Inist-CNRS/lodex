@@ -16,3 +16,12 @@ export const ASPECT_RATIOS = [
     ASPECT_RATIO_16_9,
     ASPECT_RATIO_NONE,
 ];
+
+export type AspectRatio =
+    | typeof ASPECT_RATIO_1_1
+    | typeof ASPECT_RATIO_3_2
+    | typeof ASPECT_RATIO_4_3
+    | typeof ASPECT_RATIO_8_5
+    | typeof ASPECT_RATIO_16_6
+    | typeof ASPECT_RATIO_16_9
+    | typeof ASPECT_RATIO_NONE;
