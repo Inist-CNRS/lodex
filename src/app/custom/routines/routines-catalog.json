@@ -30,6 +30,12 @@
         "recommendedWith": ["All"]
     },
     {
+        "id": "r-count-distinct-by",
+        "url": "/api/run/count-distinct-by/",
+        "doc": "https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/les-routines-et-graphes/les-routines/#count-by-fields",
+        "recommendedWith": ["All"]
+    },
+    {
         "id": "r-cross-by",
         "url": "/api/run/cross-by/",
         "doc": "https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/les-routines-et-graphes/les-routines/#cross-by",
