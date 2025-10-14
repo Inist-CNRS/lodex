@@ -1,9 +1,16 @@
 /* eslint-disable */
+import { js } from './template.js';
+
 //
 // MongoDB JS functions
 //
 
-const map = function () {
+//FIXME These functions are stringified to be passed to MongoDB.
+// We do this to avoid transpilation issues when using TypeScript.
+// As mapReduce is deprecated, you should probably use an aggregation pipeline instead.
+
+const map = /* js */ js`
+function () {
     var doc = this;
     var dta = doc.versions[doc.versions.length - 1];
     dta.uri = doc.uri;
@@ -36,9 +43,11 @@ const map = function () {
                 });
             }
         });
-};
+}
+`;
 
-const reduce = function reduce(key, values) {
+const reduce = /* js */ js`
+function reduce(key, values) {
     return values.reduce(function reduce(previous, current, index, array) {
         var delta = previous.sum / previous.count - current.sum / current.count;
         var weight = previous.count * current.count / (previous.count + current.count);
@@ -51,9 +60,11 @@ const reduce = function reduce(key, values) {
             diff: previous.diff + current.diff + delta * delta * weight
         };
     });
-};
+}
+`;
 
-const finalize = function finalize(key, value) {
+const finalize = /* js */ js`
+function finalize(key, value) {
     value.average = value.sum / value.count;
     value.populationVariance = value.diff / value.count;
     value.populationStandardDeviation = Math.sqrt(value.population_variance);
@@ -61,8 +72,8 @@ const finalize = function finalize(key, value) {
     value.sampleStandardDeviation = Math.sqrt(value.sample_variance);
     delete value.diff;
     return value;
-};
-
+}
+`;
 
 const fieldname = function (name) {
     if (name === 'value') {
