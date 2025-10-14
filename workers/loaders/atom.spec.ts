@@ -1,14 +1,14 @@
 const ezs = require('@ezs/core');
 const from = require('from');
 
-describe('rss.ini', () => {
-    it('should parse a RSS XML', (done) => {
-        const res = [];
+describe('atom.ini', () => {
+    it('should parse an ATOM XML feed', (done) => {
+        const res: any = [];
         from([
-            `<rss><channel><item><any>value</any><other>thing</other></item></channel></rss>`,
+            `<feed><entry><any>value</any><other>thing</other></entry></feed>`,
         ])
-            .pipe(ezs('delegate', { file: __dirname + '/rss.ini' }))
-            .on('data', (chunk) => {
+            .pipe(ezs('delegate', { file: __dirname + '/atom.ini' }))
+            .on('data', (chunk: any) => {
                 res.push(chunk);
             })
             .on('end', () => {

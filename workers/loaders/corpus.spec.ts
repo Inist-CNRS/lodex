@@ -7,7 +7,7 @@ const from = require('from');
 // 2. mock the API
 describe.skip('corpus.ini', () => {
     it('should parse a .corpus', (done) => {
-        const res = [];
+        const res: any = [];
         const expected = [
             {
                 ark: ['ark:/67375/M70-PTX2P60Q-H'],
@@ -423,7 +423,7 @@ id F6CB7249E90BD96D5F7E3C4E80CC1C3FEE4FF483
 `,
         ])
             .pipe(ezs('delegate', { file: __dirname + '/corpus.ini' }))
-            .on('data', (chunk) => {
+            .on('data', (chunk: any) => {
                 res.push(chunk);
             })
             .on('end', () => {

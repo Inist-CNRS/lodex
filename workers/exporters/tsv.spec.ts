@@ -3,7 +3,7 @@ const ezs = require('@ezs/core');
 
 ezs.use(require('@ezs/basics'));
 
-test.skip('export one resource in a two-lines CSV', (done) => {
+test.skip('export one resource in a two-lines TSV', (done) => {
     let outputString = '';
     from([
         {
@@ -11,16 +11,16 @@ test.skip('export one resource in a two-lines CSV', (done) => {
             title: 'first resource',
         },
     ])
-        .pipe(ezs('delegate', { file: __dirname + '/csv.ini' }))
-        .on('data', (data) => {
+        .pipe(ezs('delegate', { file: __dirname + '/tsv.ini' }))
+        .on('data', (data: any) => {
             if (data) outputString += data;
         })
         .on('end', () => {
             const res = outputString.split('\r\n');
             expect(res).toHaveLength(3);
             expect(res).toEqual([
-                'uri;title',
-                'http://resource.uri;first resource',
+                'uri\ttitle',
+                'http://resource.uri\tfirst resource',
                 '',
             ]);
             done();
@@ -28,7 +28,7 @@ test.skip('export one resource in a two-lines CSV', (done) => {
         .on('error', done);
 });
 
-test.skip('export two resources in a three-lines CSV', (done) => {
+test.skip('export two resources in a three-lines TSV', (done) => {
     let outputString = '';
     from([
         {
@@ -40,17 +40,17 @@ test.skip('export two resources in a three-lines CSV', (done) => {
             title: 'second resource',
         },
     ])
-        .pipe(ezs('delegate', { file: __dirname + '/csv.ini' }))
-        .on('data', (data) => {
+        .pipe(ezs('delegate', { file: __dirname + '/tsv.ini' }))
+        .on('data', (data: any) => {
             if (data) outputString += data;
         })
         .on('end', () => {
             const res = outputString.split('\r\n');
             expect(res).toHaveLength(4);
             expect(res).toEqual([
-                'uri;title',
-                'http://resource.uri/1;first resource',
-                'http://resource.uri/2;second resource',
+                'uri\ttitle',
+                'http://resource.uri/1\tfirst resource',
+                'http://resource.uri/2\tsecond resource',
                 '',
             ]);
             done();
@@ -58,7 +58,7 @@ test.skip('export two resources in a three-lines CSV', (done) => {
         .on('error', done);
 });
 
-test.skip('export in CSV resources containing quotes', (done) => {
+test.skip('export in TSV resources containing quotes', (done) => {
     let outputString = '';
     from([
         {
@@ -70,17 +70,17 @@ test.skip('export in CSV resources containing quotes', (done) => {
             title: 'second resource',
         },
     ])
-        .pipe(ezs('delegate', { file: __dirname + '/csv.ini' }))
-        .on('data', (data) => {
+        .pipe(ezs('delegate', { file: __dirname + '/tsv.ini' }))
+        .on('data', (data: any) => {
             if (data) outputString += data;
         })
         .on('end', () => {
             const res = outputString.split('\r\n');
             expect(res).toHaveLength(4);
             expect(res).toEqual([
-                'uri;title',
-                'http://resource.uri/1;"first ""resource"""',
-                'http://resource.uri/2;second resource',
+                'uri\ttitle',
+                'http://resource.uri/1\t"first ""resource"""',
+                'http://resource.uri/2\tsecond resource',
                 '',
             ]);
             done();
@@ -88,29 +88,29 @@ test.skip('export in CSV resources containing quotes', (done) => {
         .on('error', done);
 });
 
-test.skip('export in CSV resources containing semicolon', (done) => {
+test.skip('export in TSV resources containing tabulation', (done) => {
     let outputString = '';
     from([
         {
             uri: 'http://resource.uri/1',
-            title: 'first;resource',
+            title: 'first\tresource',
         },
         {
             uri: 'http://resource.uri/2',
             title: 'second resource',
         },
     ])
-        .pipe(ezs('delegate', { file: __dirname + '/csv.ini' }))
-        .on('data', (data) => {
+        .pipe(ezs('delegate', { file: __dirname + '/tsv.ini' }))
+        .on('data', (data: any) => {
             if (data) outputString += data;
         })
         .on('end', () => {
             const res = outputString.split('\r\n');
             expect(res).toHaveLength(4);
             expect(res).toEqual([
-                'uri;title',
-                'http://resource.uri/1;"first;resource"',
-                'http://resource.uri/2;second resource',
+                'uri\ttitle',
+                'http://resource.uri/1\t"first\tresource"',
+                'http://resource.uri/2\tsecond resource',
                 '',
             ]);
             done();
@@ -118,7 +118,7 @@ test.skip('export in CSV resources containing semicolon', (done) => {
         .on('error', done);
 });
 
-test.skip('export CSV with labels in header', (done) => {
+test.skip('export TSV with labels in header', (done) => {
     let outputString = '';
     from([
         {
@@ -133,20 +133,20 @@ test.skip('export CSV with labels in header', (done) => {
         .pipe(
             ezs(
                 'delegate',
-                { file: __dirname + '/csv.ini' },
+                { file: __dirname + '/tsv.ini' },
                 { fields: [{ name: 'AbCd', label: 'Title' }] },
             ),
         )
-        .on('data', (data) => {
+        .on('data', (data: any) => {
             if (data) outputString += data;
         })
         .on('end', () => {
             const res = outputString.split('\r\n');
             expect(res).toHaveLength(4);
             expect(res).toEqual([
-                'uri;Title',
-                'http://resource.uri/1;"first;resource"',
-                'http://resource.uri/2;second resource',
+                'uri\tTitle',
+                'http://resource.uri/1\tfirst;resource',
+                'http://resource.uri/2\tsecond resource',
                 '',
             ]);
             done();

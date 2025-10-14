@@ -31,7 +31,8 @@
         "test-utils.tsx",
         "src/api",
         "src/common",
-        "src/app"
+        "src/app",
+        "workers"
     ],
     "exclude": ["src/build", "src/app/build"]
 }

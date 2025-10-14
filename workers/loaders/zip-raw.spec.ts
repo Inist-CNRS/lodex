@@ -3,10 +3,10 @@ const ezs = require('@ezs/core');
 
 describe('zip.ini', () => {
     it('should unzip a zip file containing JSON files', (done) => {
-        const res = [];
+        const res: any = [];
         fs.createReadStream(__dirname + '/fixture-10.zip')
             .pipe(ezs('delegate', { file: __dirname + '/zip-raw.ini' }))
-            .on('data', (chunk) => {
+            .on('data', (chunk: any) => {
                 res.push(chunk);
             })
             .on('end', () => {
