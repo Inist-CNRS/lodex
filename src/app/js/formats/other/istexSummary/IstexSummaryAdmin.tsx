@@ -1,7 +1,6 @@
 import { useTranslate } from '../../../i18n/I18NContext';
 import { MenuItem, TextField } from '@mui/material';
 
-import { useUpdateAdminArgs } from '../../utils/updateAdminArgs';
 import {
     SEARCHED_FIELD_VALUES,
     SORT_YEAR_VALUES,
@@ -10,7 +9,7 @@ import {
 } from './constants';
 import { FormatDataParamsFieldSet } from '../../utils/components/field-set/FormatFieldSets';
 import FormatGroupedFieldSet from '../../utils/components/field-set/FormatGroupedFieldSet';
-import type { ChangeEvent } from 'react';
+import { useCallback, type ChangeEvent } from 'react';
 
 export const defaultArgs = {
     searchedField: CUSTOM_ISTEX_QUERY,
@@ -37,41 +36,45 @@ export const IstexSummaryAdmin = ({
 }: IstexSummaryAdminProps) => {
     const { translate } = useTranslate();
 
-    const handleSearchedField = useUpdateAdminArgs<
-        IstexSummaryArgs,
-        'searchedField',
-        ChangeEvent<HTMLInputElement>
-    >('searchedField', {
-        args,
-        onChange,
-        parseValue: (event) => event.target.value,
-    });
+    const handleSearchedField = useCallback(
+        (event: ChangeEvent<HTMLInputElement>) => {
+            onChange({
+                ...args,
+                searchedField: event.target.value,
+            });
+        },
+        [onChange, args],
+    );
 
-    const handleSortDir = useUpdateAdminArgs<
-        IstexSummaryArgs,
-        'sortDir',
-        ChangeEvent<HTMLInputElement>
-    >('sortDir', { args, onChange, parseValue: (event) => event.target.value });
+    const handleSortDir = useCallback(
+        (event: ChangeEvent<HTMLInputElement>) => {
+            onChange({
+                ...args,
+                sortDir: event.target.value,
+            });
+        },
+        [onChange, args],
+    );
 
-    const handleYearThreshold = useUpdateAdminArgs<
-        IstexSummaryArgs,
-        'yearThreshold',
-        ChangeEvent<HTMLInputElement>
-    >('yearThreshold', {
-        args,
-        onChange,
-        parseValue: (event) => parseInt(event.target.value, 10),
-    });
+    const handleYearThreshold = useCallback(
+        (event: ChangeEvent<HTMLInputElement>) => {
+            onChange({
+                ...args,
+                yearThreshold: parseInt(event.target.value, 10),
+            });
+        },
+        [onChange, args],
+    );
 
-    const handleDocumentSortBy = useUpdateAdminArgs<
-        IstexSummaryArgs,
-        'documentSortBy',
-        ChangeEvent<HTMLInputElement>
-    >('documentSortBy', {
-        args,
-        onChange,
-        parseValue: (event) => event.target.value,
-    });
+    const handleDocumentSortBy = useCallback(
+        (event: ChangeEvent<HTMLInputElement>) => {
+            onChange({
+                ...args,
+                documentSortBy: event.target.value,
+            });
+        },
+        [onChange, args],
+    );
 
     const { searchedField, sortDir, yearThreshold, documentSortBy } = args;
 

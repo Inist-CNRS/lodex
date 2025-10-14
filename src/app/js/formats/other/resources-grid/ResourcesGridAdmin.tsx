@@ -2,7 +2,6 @@ import React, { useCallback, type ChangeEvent } from 'react';
 import { MenuItem, Checkbox, TextField, FormControlLabel } from '@mui/material';
 import { useTranslate } from '../../../i18n/I18NContext';
 
-import { useUpdateAdminArgs } from '../../utils/updateAdminArgs';
 import { FormatDefaultParamsFieldSet } from '../../utils/components/field-set/FormatFieldSets';
 import FormatGroupedFieldSet from '../../utils/components/field-set/FormatGroupedFieldSet';
 
@@ -45,35 +44,35 @@ const ResourcesGridAdmin = ({
 }: ResourcesGridAdminProps) => {
     const { translate } = useTranslate();
 
-    const handleWidth = useUpdateAdminArgs<
-        ResourcesGridArgs,
-        'spaceWidth',
-        ChangeEvent<HTMLInputElement>
-    >('spaceWidth', {
-        args,
-        onChange,
-        parseValue: (event) => event.target.value,
-    });
+    const handleWidth = useCallback(
+        (event: ChangeEvent<HTMLInputElement>) => {
+            onChange({
+                ...args,
+                spaceWidth: event.target.value,
+            });
+        },
+        [onChange, args],
+    );
 
-    const toggleAllowToLoadMore = useUpdateAdminArgs<
-        ResourcesGridArgs,
-        'allowToLoadMore',
-        ChangeEvent<HTMLInputElement>
-    >('allowToLoadMore', {
-        args,
-        onChange,
-        parseValue: (event) => event.target.checked,
-    });
+    const toggleAllowToLoadMore = useCallback(
+        (event: ChangeEvent<HTMLInputElement>) => {
+            onChange({
+                ...args,
+                allowToLoadMore: event.target.checked,
+            });
+        },
+        [onChange, args],
+    );
 
-    const toggleOpenInNewTab = useUpdateAdminArgs<
-        ResourcesGridArgs,
-        'openInNewTab',
-        ChangeEvent<HTMLInputElement>
-    >('openInNewTab', {
-        args,
-        onChange,
-        parseValue: (event) => event.target.checked,
-    });
+    const toggleOpenInNewTab = useCallback(
+        (event: ChangeEvent<HTMLInputElement>) => {
+            onChange({
+                ...args,
+                openInNewTab: event.target.checked,
+            });
+        },
+        [onChange, args],
+    );
 
     const handlePageSize = useCallback(
         (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -90,25 +89,25 @@ const ResourcesGridAdmin = ({
         [args, onChange],
     );
 
-    const handleSummarySize = useUpdateAdminArgs<
-        ResourcesGridArgs,
-        'summarySize',
-        ChangeEvent<HTMLInputElement>
-    >('summarySize', {
-        args,
-        onChange,
-        parseValue: (event) => parseInt(event.target.value, 10),
-    });
+    const handleSummarySize = useCallback(
+        (event: ChangeEvent<HTMLInputElement>) => {
+            onChange({
+                ...args,
+                summarySize: parseInt(event.target.value, 10),
+            });
+        },
+        [onChange, args],
+    );
 
-    const handleTitleSize = useUpdateAdminArgs<
-        ResourcesGridArgs,
-        'titleSize',
-        ChangeEvent<HTMLInputElement>
-    >('titleSize', {
-        args,
-        onChange,
-        parseValue: (event) => parseInt(event.target.value, 10),
-    });
+    const handleTitleSize = useCallback(
+        (event: ChangeEvent<HTMLInputElement>) => {
+            onChange({
+                ...args,
+                titleSize: parseInt(event.target.value, 10),
+            });
+        },
+        [onChange, args],
+    );
 
     const {
         spaceWidth,

@@ -1,7 +1,7 @@
 import { TextField, MenuItem } from '@mui/material';
+import { useCallback } from 'react';
 import { FormatDefaultParamsFieldSet } from '../../utils/components/field-set/FormatFieldSets';
 import FormatGroupedFieldSet from '../../utils/components/field-set/FormatGroupedFieldSet';
-import { useUpdateAdminArgs } from '../../utils/updateAdminArgs';
 import { ASPECT_RATIO_16_9 } from '../../utils/aspectRatio';
 import AspectRatioSelector from '../../utils/components/admin/AspectRatioSelector';
 import { useTranslate } from '../../../i18n/I18NContext';
@@ -28,23 +28,24 @@ const IFrameAdmin = ({ args = defaultArgs, onChange }: IFrameAdminProps) => {
     } = args;
     const { translate } = useTranslate();
 
-    const handleViewWidth = useUpdateAdminArgs<
-        IFrameArgs,
-        'viewWidth',
-        React.ChangeEvent<HTMLInputElement>
-    >('viewWidth', {
-        args,
-        onChange,
-        parseValue: (event: React.ChangeEvent<HTMLInputElement>) =>
-            event.target.value,
-    });
-
-    const handleAspectRatio = useUpdateAdminArgs<IFrameArgs, 'aspectRatio'>(
-        'aspectRatio',
-        {
-            args,
-            onChange,
+    const handleViewWidth = useCallback(
+        (event: React.ChangeEvent<HTMLInputElement>) => {
+            onChange({
+                ...args,
+                viewWidth: event.target.value,
+            });
         },
+        [onChange, args],
+    );
+
+    const handleAspectRatio = useCallback(
+        (aspectRatio: string) => {
+            onChange({
+                ...args,
+                aspectRatio,
+            });
+        },
+        [onChange, args],
     );
 
     return (

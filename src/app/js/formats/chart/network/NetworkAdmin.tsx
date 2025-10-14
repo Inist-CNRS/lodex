@@ -1,6 +1,5 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 
-import { useUpdateAdminArgs } from '../../utils/updateAdminArgs';
 import RoutineParamsAdmin from '../../utils/components/admin/RoutineParamsAdmin';
 import ColorPickerParamsAdmin from '../../utils/components/admin/ColorPickerParamsAdmin';
 import { MONOCHROMATIC_DEFAULT_COLORSET } from '../../utils/colorUtils';
@@ -49,15 +48,25 @@ const NetworkAdmin: React.FC<NetworkAdminProps> = ({
     showMinValue = true,
     showOrderBy = true,
 }) => {
-    const handleParams = useUpdateAdminArgs<NetworkArgs, 'params'>('params', {
-        args,
-        onChange,
-    });
+    const handleParams = useCallback(
+        (params: NetworkArgs['params']) => {
+            onChange({
+                ...args,
+                params,
+            });
+        },
+        [onChange, args],
+    );
 
-    const handleColors = useUpdateAdminArgs<NetworkArgs, 'colors'>('colors', {
-        args,
-        onChange,
-    });
+    const handleColors = useCallback(
+        (colors: string) => {
+            onChange({
+                ...args,
+                colors,
+            });
+        },
+        [onChange, args],
+    );
 
     const { params } = args;
 
