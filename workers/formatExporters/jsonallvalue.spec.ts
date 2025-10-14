@@ -75,7 +75,7 @@ test.skip('export single resource', (done) => {
                 { localConfig: {}, fields },
             ),
         )
-        .on('data', (data) => {
+        .on('data', (data: any) => {
             if (data) outputString += data;
         })
         .on('end', () => {
