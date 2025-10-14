@@ -1,8 +1,9 @@
-import AbstractTableAdmin from '../core/AbstractTableAdmin';
-import { translate } from '../../../../i18n/I18NContext';
+import {
+    useAbstractTableAdmin,
+    type AbstractTableAdminProps,
+} from '../core/useAbstractTableAdmin';
 import RoutineParamsAdmin from '../../../utils/components/admin/RoutineParamsAdmin';
 import TableColumnsParameters from '../core/TableColumnsParameters';
-// @ts-expect-error TS6133
 import React from 'react';
 import {
     FormatDataParamsFieldSet,
@@ -19,42 +20,38 @@ export const defaultArgs = {
     columnsParameters: [],
 };
 
-class UnPaginatedTableAdmin extends AbstractTableAdmin {
-    static defaultProps = {
-        args: defaultArgs,
-    };
+const UnPaginatedTableAdmin: React.FC<AbstractTableAdminProps> = ({
+    args = defaultArgs,
+    onChange,
+}) => {
+    const { handleParams, handleColumnParameter } = useAbstractTableAdmin({
+        args,
+        onChange,
+    });
 
-    render() {
-        const {
-            // @ts-expect-error TS2339
-            p: polyglot,
-            // @ts-expect-error TS2339
-            args: { params, columnsCount, columnsParameters },
-        } = this.props;
-        return (
-            <FormatGroupedFieldSet>
-                <FormatDataParamsFieldSet>
-                    <RoutineParamsAdmin
-                        params={params || defaultArgs.params}
-                        onChange={this.handleParams}
-                        polyglot={polyglot}
-                        showMaxSize={true}
-                        showMaxValue={true}
-                        showMinValue={true}
-                        showOrderBy={true}
-                    />
-                </FormatDataParamsFieldSet>
-                <FormatDefaultParamsFieldSet defaultExpanded>
-                    <TableColumnsParameters
-                        onChange={this.handleColumnParameter}
-                        polyglot={polyglot}
-                        parameterCount={columnsCount}
-                        parameters={columnsParameters}
-                    />
-                </FormatDefaultParamsFieldSet>
-            </FormatGroupedFieldSet>
-        );
-    }
-}
+    const { params, columnsCount, columnsParameters } = args;
 
-export default translate(UnPaginatedTableAdmin);
+    return (
+        <FormatGroupedFieldSet>
+            <FormatDataParamsFieldSet>
+                <RoutineParamsAdmin
+                    params={params || defaultArgs.params}
+                    onChange={handleParams}
+                    showMaxSize={true}
+                    showMaxValue={true}
+                    showMinValue={true}
+                    showOrderBy={true}
+                />
+            </FormatDataParamsFieldSet>
+            <FormatDefaultParamsFieldSet defaultExpanded>
+                <TableColumnsParameters
+                    onChange={handleColumnParameter}
+                    parameterCount={columnsCount || 0}
+                    parameters={columnsParameters || []}
+                />
+            </FormatDefaultParamsFieldSet>
+        </FormatGroupedFieldSet>
+    );
+};
+
+export default UnPaginatedTableAdmin;
