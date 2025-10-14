@@ -10,6 +10,7 @@ import {
     FormatDataParamsFieldSet,
 } from '../../utils/components/field-set/FormatFieldSets';
 import FormatGroupedFieldSet from '../../utils/components/field-set/FormatGroupedFieldSet';
+import type { ChangeEvent } from 'react';
 
 type StreamgraphArgs = {
     params?: {
@@ -64,42 +65,34 @@ const StreamgraphAdmin = ({
         },
     );
 
-    const updateColors = useUpdateAdminArgs<StreamgraphArgs, 'colors'>(
+    const handleColors = useUpdateAdminArgs<StreamgraphArgs, 'colors', string>(
         'colors',
         {
             args,
             onChange,
+            parseValue: (value) => value || defaultArgs.colors,
         },
     );
 
-    const handleColors = (newColors: string) => {
-        const color = newColors || defaultArgs.colors;
-        updateColors(color);
-    };
-
-    const updateMaxLegendLength = useUpdateAdminArgs<
+    const handleMaxLegendLength = useUpdateAdminArgs<
         StreamgraphArgs,
-        'maxLegendLength'
+        'maxLegendLength',
+        ChangeEvent<HTMLInputElement>
     >('maxLegendLength', {
         args,
         onChange,
+        parseValue: (event) => parseInt(event.target.value, 10),
     });
 
-    const handleMaxLegendLength = (e: React.ChangeEvent<HTMLInputElement>) => {
-        updateMaxLegendLength(parseInt(e.target.value, 10));
-    };
-
-    const updateHeight = useUpdateAdminArgs<StreamgraphArgs, 'height'>(
+    const handleHeight = useUpdateAdminArgs<
+        StreamgraphArgs,
         'height',
-        {
-            args,
-            onChange,
-        },
-    );
-
-    const handleHeight = (e: React.ChangeEvent<HTMLInputElement>) => {
-        updateHeight(parseInt(e.target.value, 10));
-    };
+        ChangeEvent<HTMLInputElement>
+    >('height', {
+        args,
+        onChange,
+        parseValue: (event) => parseInt(event.target.value, 10),
+    });
 
     const { params, maxLegendLength, height } = args;
 

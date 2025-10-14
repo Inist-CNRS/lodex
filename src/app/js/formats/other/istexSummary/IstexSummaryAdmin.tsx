@@ -1,11 +1,7 @@
-// @ts-expect-error TS6133
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { translate } from '../../../i18n/I18NContext';
+import { useTranslate } from '../../../i18n/I18NContext';
 import { MenuItem, TextField } from '@mui/material';
 
-import { polyglot as polyglotPropTypes } from '../../../propTypes';
-import updateAdminArgs from '../../utils/updateAdminArgs';
+import { useUpdateAdminArgs } from '../../utils/updateAdminArgs';
 import {
     SEARCHED_FIELD_VALUES,
     SORT_YEAR_VALUES,
@@ -14,6 +10,7 @@ import {
 } from './constants';
 import { FormatDataParamsFieldSet } from '../../utils/components/field-set/FormatFieldSets';
 import FormatGroupedFieldSet from '../../utils/components/field-set/FormatGroupedFieldSet';
+import type { ChangeEvent } from 'react';
 
 export const defaultArgs = {
     searchedField: CUSTOM_ISTEX_QUERY,
@@ -22,102 +19,111 @@ export const defaultArgs = {
     documentSortBy: 'host.pages.first,title.raw',
 };
 
-export class IstexSummaryAdmin extends Component {
-    static propTypes = {
-        args: PropTypes.shape({
-            searchedField: PropTypes.oneOf(SEARCHED_FIELD_VALUES),
-            sortDir: PropTypes.oneOf(SORT_YEAR_VALUES),
-            yearThreshold: PropTypes.number,
-            documentSortBy: PropTypes.string,
-        }),
-        onChange: PropTypes.func.isRequired,
-        p: polyglotPropTypes.isRequired,
-    };
+type IstexSummaryArgs = {
+    searchedField?: string;
+    sortDir?: string;
+    yearThreshold?: number;
+    documentSortBy?: string;
+};
 
-    static defaultProps = {
-        args: defaultArgs,
-    };
+type IstexSummaryAdminProps = {
+    args?: IstexSummaryArgs;
+    onChange: (args: IstexSummaryArgs) => void;
+};
 
-    // @ts-expect-error TS7006
-    handleSearchedField = (e) => {
-        updateAdminArgs('searchedField', e.target.value, this.props);
-    };
+export const IstexSummaryAdmin = ({
+    args = defaultArgs,
+    onChange,
+}: IstexSummaryAdminProps) => {
+    const { translate } = useTranslate();
 
-    // @ts-expect-error TS7006
-    handleSortDir = (e) => {
-        updateAdminArgs('sortDir', e.target.value, this.props);
-    };
+    const handleSearchedField = useUpdateAdminArgs<
+        IstexSummaryArgs,
+        'searchedField',
+        ChangeEvent<HTMLInputElement>
+    >('searchedField', {
+        args,
+        onChange,
+        parseValue: (event) => event.target.value,
+    });
 
-    // @ts-expect-error TS7006
-    handleYearThreshold = (e) =>
-        updateAdminArgs(
-            'yearThreshold',
-            parseInt(e.target.value, 10),
-            this.props,
-        );
+    const handleSortDir = useUpdateAdminArgs<
+        IstexSummaryArgs,
+        'sortDir',
+        ChangeEvent<HTMLInputElement>
+    >('sortDir', { args, onChange, parseValue: (event) => event.target.value });
 
-    // @ts-expect-error TS7006
-    handleDocumentSortBy = (e) =>
-        updateAdminArgs('documentSortBy', e.target.value, this.props);
+    const handleYearThreshold = useUpdateAdminArgs<
+        IstexSummaryArgs,
+        'yearThreshold',
+        ChangeEvent<HTMLInputElement>
+    >('yearThreshold', {
+        args,
+        onChange,
+        parseValue: (event) => parseInt(event.target.value, 10),
+    });
 
-    render() {
-        const {
-            // @ts-expect-error TS2339
-            p: polyglot,
-            // @ts-expect-error TS2339
-            args: { searchedField, sortDir, yearThreshold, documentSortBy },
-        } = this.props;
+    const handleDocumentSortBy = useUpdateAdminArgs<
+        IstexSummaryArgs,
+        'documentSortBy',
+        ChangeEvent<HTMLInputElement>
+    >('documentSortBy', {
+        args,
+        onChange,
+        parseValue: (event) => event.target.value,
+    });
 
-        return (
-            <FormatGroupedFieldSet>
-                <FormatDataParamsFieldSet defaultExpanded>
-                    <TextField
-                        fullWidth
-                        select
-                        label={polyglot.t('searched_field')}
-                        value={searchedField}
-                        onChange={this.handleSearchedField}
-                        className="searched_field"
-                    >
-                        {SEARCHED_FIELD_VALUES.map((value) => (
-                            <MenuItem key={value} value={value}>
-                                {polyglot.t(value)}
-                            </MenuItem>
-                        ))}
-                    </TextField>
-                    <TextField
-                        fullWidth
-                        select
-                        label={polyglot.t('year_sort_dir')}
-                        value={sortDir}
-                        onChange={this.handleSortDir}
-                        className="year_sort_dir"
-                    >
-                        {SORT_YEAR_VALUES.map((value) => (
-                            <MenuItem key={value} value={value}>
-                                {polyglot.t(value)}
-                            </MenuItem>
-                        ))}
-                    </TextField>
-                    <TextField
-                        className="year_threshold"
-                        type="number"
-                        label={polyglot.t('year_threshold')}
-                        onChange={this.handleYearThreshold}
-                        value={yearThreshold}
-                        fullWidth
-                    />
-                    <TextField
-                        className="document_sort_by"
-                        label={polyglot.t('document_sort_by')}
-                        onChange={this.handleDocumentSortBy}
-                        value={documentSortBy}
-                        fullWidth
-                    />
-                </FormatDataParamsFieldSet>
-            </FormatGroupedFieldSet>
-        );
-    }
-}
+    const { searchedField, sortDir, yearThreshold, documentSortBy } = args;
 
-export default translate(IstexSummaryAdmin);
+    return (
+        <FormatGroupedFieldSet>
+            <FormatDataParamsFieldSet defaultExpanded>
+                <TextField
+                    fullWidth
+                    select
+                    label={translate('searched_field')}
+                    value={searchedField || defaultArgs.searchedField}
+                    onChange={handleSearchedField}
+                    className="searched_field"
+                >
+                    {SEARCHED_FIELD_VALUES.map((value) => (
+                        <MenuItem key={value} value={value}>
+                            {translate(value)}
+                        </MenuItem>
+                    ))}
+                </TextField>
+                <TextField
+                    fullWidth
+                    select
+                    label={translate('year_sort_dir')}
+                    value={sortDir || defaultArgs.sortDir}
+                    onChange={handleSortDir}
+                    className="year_sort_dir"
+                >
+                    {SORT_YEAR_VALUES.map((value) => (
+                        <MenuItem key={value} value={value}>
+                            {translate(value)}
+                        </MenuItem>
+                    ))}
+                </TextField>
+                <TextField
+                    className="year_threshold"
+                    type="number"
+                    label={translate('year_threshold')}
+                    onChange={handleYearThreshold}
+                    value={yearThreshold || defaultArgs.yearThreshold}
+                    fullWidth
+                />
+                <TextField
+                    className="document_sort_by"
+                    label={translate('document_sort_by')}
+                    onChange={handleDocumentSortBy}
+                    value={documentSortBy || defaultArgs.documentSortBy}
+                    fullWidth
+                />
+            </FormatDataParamsFieldSet>
+        </FormatGroupedFieldSet>
+    );
+};
+
+export default IstexSummaryAdmin;

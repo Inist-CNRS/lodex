@@ -15,22 +15,26 @@ export default (
 
 export const useUpdateAdminArgs = <
     Args extends Record<string, unknown>,
-    key extends keyof Args,
+    Key extends keyof Args,
+    Value = Args[Key],
 >(
     key: string,
     {
         args,
         onChange,
+        parseValue,
     }: {
         args: Args;
         onChange: (newState: Args) => void;
+        parseValue?: (value: Value) => Args[Key];
     },
 ) => {
-    return (value: Args[key]) => {
+    return (value: Value) => {
         const newState = {
             ...args,
-            [key]: value,
+            [key]: parseValue ? parseValue(value) : value,
         };
+
         onChange(newState);
     };
 };
