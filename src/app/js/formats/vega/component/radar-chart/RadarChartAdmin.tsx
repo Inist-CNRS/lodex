@@ -1,6 +1,4 @@
-// @ts-expect-error TS6133
-import React, { useEffect, useMemo } from 'react';
-import PropTypes from 'prop-types';
+import { useMemo, type ChangeEvent } from 'react';
 import {
     MenuItem,
     Checkbox,
@@ -9,10 +7,8 @@ import {
     Switch,
     FormGroup,
 } from '@mui/material';
-import { translate } from '../../../../i18n/I18NContext';
 
-import { polyglot as polyglotPropTypes } from '../../../../propTypes';
-import updateAdminArgs from '../../../utils/updateAdminArgs';
+import { useUpdateAdminArgs } from '../../../utils/updateAdminArgs';
 import RoutineParamsAdmin from '../../../utils/components/admin/RoutineParamsAdmin';
 import ColorPickerParamsAdmin from '../../../utils/components/admin/ColorPickerParamsAdmin';
 import { MONOCHROMATIC_DEFAULT_COLORSET } from '../../../utils/colorUtils';
@@ -27,9 +23,10 @@ import {
 import VegaFieldPreview from '../../../utils/components/field-set/FormatFieldSetPreview';
 import { RadarChartAdminView } from './RadarChartView';
 import { StandardIdValue } from '../../../utils/dataSet';
-import { ASPECT_RATIO_8_5 } from '../../../utils/aspectRatio';
+import { ASPECT_RATIO_8_5, type AspectRatio } from '../../../utils/aspectRatio';
 import AspectRatioSelector from '../../../utils/components/admin/AspectRatioSelector';
 import FormatGroupedFieldSet from '../../../utils/components/field-set/FormatGroupedFieldSet';
+import { useTranslate } from '../../../../i18n/I18NContext';
 
 export const defaultArgs = {
     params: {
@@ -40,24 +37,49 @@ export const defaultArgs = {
     advancedModeSpec: null,
     colors: MONOCHROMATIC_DEFAULT_COLORSET,
     axisRoundValue: true,
-    scale: 'linear',
+    scale: 'linear' as const,
     tooltip: false,
     tooltipCategory: 'Category',
     tooltipValue: 'Value',
     aspectRatio: ASPECT_RATIO_8_5,
 };
 
-// @ts-expect-error TS7006
-const RadarChartAdmin = (props) => {
-    const {
-        p: polyglot,
-        showMaxSize,
-        showMaxValue,
-        showMinValue,
-        showOrderBy,
-        args,
-    } = props;
+type RadarChartParams = {
+    maxSize?: number;
+    orderBy?: string;
+};
 
+type RadarChartArgs = {
+    params?: RadarChartParams;
+    advancedMode?: boolean;
+    advancedModeSpec?: string | null;
+    colors?: string;
+    axisRoundValue?: boolean;
+    scale?: 'log' | 'linear';
+    tooltip: boolean;
+    tooltipCategory: string;
+    tooltipValue: string;
+    aspectRatio?: AspectRatio;
+};
+
+type RadarChartAdminProps = {
+    args?: RadarChartArgs;
+    onChange: (args: RadarChartArgs) => void;
+    showMaxSize: boolean;
+    showMaxValue: boolean;
+    showMinValue: boolean;
+    showOrderBy: boolean;
+};
+
+const RadarChartAdmin = ({
+    showMaxSize = true,
+    showMaxValue = true,
+    showMinValue = true,
+    showOrderBy = true,
+    args = defaultArgs,
+    onChange,
+}: RadarChartAdminProps) => {
+    const { translate } = useTranslate();
     const {
         advancedMode,
         advancedModeSpec,
@@ -94,71 +116,106 @@ const RadarChartAdmin = (props) => {
         specBuilder.setEditMode(true);
         // @ts-expect-error TS2554
         return JSON.stringify(specBuilder.buildSpec(), null, 2);
-    }, [advancedMode, advancedModeSpec]);
+    }, [
+        advancedMode,
+        advancedModeSpec,
+        colors,
+        scale,
+        tooltip,
+        tooltipCategory,
+        tooltipValue,
+    ]);
 
-    // Save the new spec when we first use the advanced mode or when we reset the generated spec
-    // details: Update advancedModeSpec props arguments when spec is generated or regenerated
-    useEffect(() => {
-        if (!advancedMode) {
-            return;
-        }
-        updateAdminArgs('advancedModeSpec', spec, props);
-    }, [advancedMode, advancedModeSpec]);
+    const toggleAdvancedMode = useUpdateAdminArgs<
+        RadarChartArgs,
+        'advancedMode',
+        ChangeEvent<HTMLInputElement>
+    >('advancedMode', {
+        args,
+        onChange,
+        parseValue: (event) => event.target.checked,
+    });
 
-    const toggleAdvancedMode = () => {
-        updateAdminArgs('advancedMode', !args.advancedMode, props);
-    };
-
-    // @ts-expect-error TS7006
-    const handleAdvancedModeSpec = (newSpec) => {
-        updateAdminArgs('advancedModeSpec', newSpec, props);
-    };
+    const handleAdvancedModeSpec = useUpdateAdminArgs<
+        RadarChartArgs,
+        'advancedModeSpec'
+    >('advancedModeSpec', {
+        args,
+        onChange,
+    });
 
     const clearAdvancedModeSpec = () => {
-        updateAdminArgs('advancedModeSpec', null, props);
+        handleAdvancedModeSpec(null);
     };
 
-    // @ts-expect-error TS7006
-    const handleParams = (params) => {
-        updateAdminArgs('params', params, props);
-    };
+    const handleParams = useUpdateAdminArgs<RadarChartArgs, 'params'>(
+        'params',
+        {
+            args,
+            onChange,
+        },
+    );
 
-    const handleAxisRoundValue = () => {
-        updateAdminArgs('axisRoundValue', !axisRoundValue, props);
-    };
+    const handleAxisRoundValue = useUpdateAdminArgs<
+        RadarChartArgs,
+        'axisRoundValue',
+        ChangeEvent<HTMLInputElement>
+    >('axisRoundValue', {
+        args,
+        onChange,
+        parseValue: (event) => event.target.checked,
+    });
 
-    // @ts-expect-error TS7006
-    const handleScale = (e) => {
-        updateAdminArgs('scale', e.target.value, props);
-    };
+    const handleScale = useUpdateAdminArgs<
+        RadarChartArgs,
+        'scale',
+        ChangeEvent<HTMLInputElement>
+    >('scale', {
+        args,
+        onChange,
+        parseValue: (event) => event.target.value as 'log' | 'linear',
+    });
 
-    // @ts-expect-error TS7006
-    const handleColors = (colors) => {
-        updateAdminArgs(
-            'colors',
-            colors.split(' ')[0] || defaultArgs.colors,
-            props,
-        );
-    };
+    const handleColors = useUpdateAdminArgs<RadarChartArgs, 'colors', string>(
+        'colors',
+        {
+            args,
+            onChange,
+            parseValue: (colors) => colors.split(' ')[0] || defaultArgs.colors,
+        },
+    );
 
-    const toggleTooltip = () => {
-        updateAdminArgs('tooltip', !tooltip, props);
-    };
+    const toggleTooltip = useUpdateAdminArgs<RadarChartArgs, 'tooltip'>(
+        'tooltip',
+        {
+            args,
+            onChange,
+        },
+    );
 
-    // @ts-expect-error TS7006
-    const handleTooltipCategory = (tooltipCategory) => {
-        updateAdminArgs('tooltipCategory', tooltipCategory, props);
-    };
+    const handleTooltipCategory = useUpdateAdminArgs<
+        RadarChartArgs,
+        'tooltipCategory'
+    >('tooltipCategory', {
+        args,
+        onChange,
+    });
 
-    // @ts-expect-error TS7006
-    const handleTooltipValue = (tooltipValue) => {
-        updateAdminArgs('tooltipValue', tooltipValue, props);
-    };
+    const handleTooltipValue = useUpdateAdminArgs<
+        RadarChartArgs,
+        'tooltipValue'
+    >('tooltipValue', {
+        args,
+        onChange,
+    });
 
-    // @ts-expect-error TS7006
-    const handleAspectRatio = (value) => {
-        updateAdminArgs('aspectRatio', value, props);
-    };
+    const handleAspectRatio = useUpdateAdminArgs<RadarChartArgs, 'aspectRatio'>(
+        'aspectRatio',
+        {
+            args,
+            onChange,
+        },
+    );
 
     return (
         <FormatGroupedFieldSet>
@@ -166,7 +223,6 @@ const RadarChartAdmin = (props) => {
                 <RoutineParamsAdmin
                     params={params || defaultArgs.params}
                     onChange={handleParams}
-                    polyglot={polyglot}
                     showMaxSize={showMaxSize}
                     showMaxValue={showMaxValue}
                     showMinValue={showMinValue}
@@ -182,7 +238,7 @@ const RadarChartAdmin = (props) => {
                                 onChange={toggleAdvancedMode}
                             />
                         }
-                        label={polyglot.t('advancedMode')}
+                        label={translate('advancedMode')}
                     />
                 </FormGroup>
                 {advancedMode ? (
@@ -200,13 +256,11 @@ const RadarChartAdmin = (props) => {
                             categoryTitle={tooltipCategory}
                             onValueTitleChange={handleTooltipValue}
                             valueTitle={tooltipValue}
-                            polyglot={polyglot}
                             thirdValue={false}
                         />
                         <ColorPickerParamsAdmin
                             colors={colors}
                             onChange={handleColors}
-                            polyglot={polyglot}
                             monochromatic={true}
                         />
                         <FormControlLabel
@@ -216,19 +270,19 @@ const RadarChartAdmin = (props) => {
                                     checked={axisRoundValue}
                                 />
                             }
-                            label={polyglot.t('axis_round_value')}
+                            label={translate('axis_round_value')}
                         />
                         <TextField
                             fullWidth
                             select
-                            label={polyglot.t('scale')}
+                            label={translate('scale')}
                             onChange={handleScale}
                             value={scale}
                         >
                             <MenuItem value="linear">
-                                {polyglot.t('linear')}
+                                {translate('linear')}
                             </MenuItem>
-                            <MenuItem value="log">{polyglot.t('log')}</MenuItem>
+                            <MenuItem value="log">{translate('log')}</MenuItem>
                         </TextField>
                     </>
                 )}
@@ -239,6 +293,7 @@ const RadarChartAdmin = (props) => {
             </FormatChartParamsFieldSet>
             <VegaFieldPreview
                 args={args}
+                // @ts-expect-error TS2769
                 PreviewComponent={RadarChartAdminView}
                 datasets={[StandardIdValue]}
                 showDatasetsSelector={false}
@@ -247,38 +302,4 @@ const RadarChartAdmin = (props) => {
     );
 };
 
-RadarChartAdmin.propTypes = {
-    args: PropTypes.shape({
-        params: PropTypes.shape({
-            maxSize: PropTypes.number,
-            maxValue: PropTypes.number,
-            minValue: PropTypes.number,
-            orderBy: PropTypes.string,
-        }),
-        advancedMode: PropTypes.bool,
-        advancedModeSpec: PropTypes.string,
-        colors: PropTypes.string,
-        axisRoundValue: PropTypes.bool,
-        scale: PropTypes.oneOf(['log', 'linear']),
-        tooltip: PropTypes.bool,
-        tooltipCategory: PropTypes.string,
-        tooltipValue: PropTypes.string,
-        aspectRatio: PropTypes.string,
-    }),
-    onChange: PropTypes.func.isRequired,
-    p: polyglotPropTypes.isRequired,
-    showMaxSize: PropTypes.bool.isRequired,
-    showMaxValue: PropTypes.bool.isRequired,
-    showMinValue: PropTypes.bool.isRequired,
-    showOrderBy: PropTypes.bool.isRequired,
-};
-
-RadarChartAdmin.defaultProps = {
-    args: defaultArgs,
-    showMaxSize: true,
-    showMaxValue: true,
-    showMinValue: true,
-    showOrderBy: true,
-};
-
-export default translate(RadarChartAdmin);
+export default RadarChartAdmin;
