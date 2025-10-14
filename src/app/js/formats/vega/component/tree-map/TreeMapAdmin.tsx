@@ -1,12 +1,13 @@
-import { translate } from '../../../../i18n/I18NContext';
+import { useTranslate } from '../../../../i18n/I18NContext';
 import { MULTICHROMATIC_DEFAULT_COLORSET_STREAMGRAPH } from '../../../utils/colorUtils';
 import { ASPECT_RATIO_8_5 } from '../../../utils/aspectRatio';
 import PropTypes from 'prop-types';
 import { polyglot as polyglotPropTypes } from '../../../../propTypes';
-import TreeMap, { TREE_MAP_LAYOUT } from '../../models/TreeMap';
-// @ts-expect-error TS6133
-import React, { useEffect, useMemo } from 'react';
-import updateAdminArgs from '../../../utils/updateAdminArgs';
+import TreeMap, {
+    TREE_MAP_LAYOUT,
+    type TreeMapLayout,
+} from '../../models/TreeMap';
+import { useCallback, useMemo, type ChangeEvent } from 'react';
 import RoutineParamsAdmin from '../../../utils/components/admin/RoutineParamsAdmin';
 import {
     FormatChartParamsFieldSet,
@@ -40,7 +41,7 @@ export const defaultArgs = {
         orderBy: 'value/asc',
     },
     hierarchy: true,
-    flatType: 'id/value',
+    flatType: 'id/value' as const,
     advancedMode: false,
     advancedModeSpec: null,
     tooltip: false,
@@ -48,22 +49,50 @@ export const defaultArgs = {
     tooltipTarget: 'Target',
     tooltipWeight: 'Weight',
     colors: MULTICHROMATIC_DEFAULT_COLORSET_STREAMGRAPH,
-    layout: 'squarify',
+    layout: 'squarify' as const,
     ratio: 2.0,
     aspectRatio: ASPECT_RATIO_8_5,
 };
 
-// @ts-expect-error TS7006
-const TreeMapAdmin = (props) => {
-    const {
-        args,
-        p: polyglot,
-        showMaxSize,
-        showMaxValue,
-        showMinValue,
-        showOrderBy,
-    } = props;
+type TreeMapParams = {
+    maxSize?: number;
+    orderBy?: string;
+};
 
+type TreeMapArgs = {
+    params?: TreeMapParams;
+    hierarchy?: boolean;
+    flatType?: 'id/value' | 'source/target/weight';
+    advancedMode?: boolean;
+    advancedModeSpec?: string | null;
+    tooltip: boolean;
+    tooltipSource: string;
+    tooltipTarget: string;
+    tooltipWeight?: string;
+    colors?: string;
+    layout?: TreeMapLayout;
+    ratio?: number;
+    aspectRatio?: string;
+};
+
+type TreeMapAdminProps = {
+    args?: TreeMapArgs;
+    onChange: (args: TreeMapArgs) => void;
+    showMaxSize: boolean;
+    showMaxValue: boolean;
+    showMinValue: boolean;
+    showOrderBy: boolean;
+};
+
+const TreeMapAdmin = ({
+    args = defaultArgs,
+    showMaxSize = true,
+    showMaxValue = true,
+    showMinValue = true,
+    showOrderBy = true,
+    onChange,
+}: TreeMapAdminProps) => {
+    const { translate } = useTranslate();
     const {
         hierarchy,
         flatType,
@@ -117,8 +146,7 @@ const TreeMapAdmin = (props) => {
         specBuilder.setLayout(layout);
 
         specBuilder.setEditMode(true);
-        // @ts-expect-error TS2554
-        return JSON.stringify(specBuilder.buildSpec(), null, 2);
+        return JSON.stringify(specBuilder.buildSpec(400), null, 2);
     }, [
         advancedMode,
         advancedModeSpec,
@@ -133,79 +161,140 @@ const TreeMapAdmin = (props) => {
         tooltipWeight,
     ]);
 
-    // Save the new spec when we first use the advanced mode or when we reset the generated spec
-    // details: Update advancedModeSpec props arguments when spec is generated or regenerated
-    useEffect(() => {
-        if (!advancedMode) {
-            return;
-        }
-        updateAdminArgs('advancedModeSpec', spec, props);
-    }, [advancedMode, advancedModeSpec, props, spec]);
+    const handleParams = useCallback(
+        (params: TreeMapParams) => {
+            onChange({
+                ...args,
+                params,
+            });
+        },
+        [args, onChange],
+    );
 
-    // @ts-expect-error TS7006
-    const handleParams = (params) => {
-        updateAdminArgs('params', params, props);
-    };
+    const toggleAdvancedMode = useCallback(
+        (event: ChangeEvent<HTMLInputElement>) => {
+            onChange({
+                ...args,
+                advancedMode: event.target.checked,
+            });
+        },
+        [args, onChange],
+    );
 
-    const toggleAdvancedMode = () => {
-        updateAdminArgs('advancedMode', !advancedMode, props);
-    };
+    const toggleHierarchy = useCallback(
+        (event: ChangeEvent<HTMLInputElement>) => {
+            onChange({
+                ...args,
+                hierarchy: event.target.checked,
+            });
+        },
+        [args, onChange],
+    );
 
-    const toggleHierarchy = () => {
-        updateAdminArgs('hierarchy', !hierarchy, props);
-    };
-    // @ts-expect-error TS7006
-    const handleFlatType = (e) => {
-        updateAdminArgs('flatType', e.target.value, props);
-    };
+    const handleFlatType = useCallback(
+        (event: ChangeEvent<HTMLInputElement>) => {
+            onChange({
+                ...args,
+                flatType: event.target.value as
+                    | 'id/value'
+                    | 'source/target/weight',
+            });
+        },
+        [args, onChange],
+    );
 
-    const clearAdvancedModeSpec = () => {
-        updateAdminArgs('advancedModeSpec', null, props);
-    };
+    const handleAdvancedModeSpec = useCallback(
+        (advancedModeSpec) => {
+            onChange({
+                ...args,
+                advancedModeSpec,
+            });
+        },
+        [args, onChange],
+    );
 
-    // @ts-expect-error TS7006
-    const handleAdvancedModeSpec = (newSpec) => {
-        updateAdminArgs('advancedModeSpec', newSpec, props);
-    };
+    const clearAdvancedModeSpec = useCallback(() => {
+        handleAdvancedModeSpec(null);
+    }, [handleAdvancedModeSpec]);
 
-    const toggleTooltip = () => {
-        updateAdminArgs('tooltip', !tooltip, props);
-    };
+    const toggleTooltip = useCallback(
+        (tooltip: boolean) => {
+            onChange({
+                ...args,
+                tooltip,
+            });
+        },
+        [args, onChange],
+    );
 
-    // @ts-expect-error TS7006
-    const handleTooltipSource = (tooltipSource) => {
-        updateAdminArgs('tooltipSource', tooltipSource, props);
-    };
+    const handleTooltipSource = useCallback(
+        (tooltipSource: string) =>
+            onChange({
+                ...args,
+                tooltipSource,
+            }),
+        [args, onChange],
+    );
 
-    // @ts-expect-error TS7006
-    const handleTooltipTarget = (tooltipTarget) => {
-        updateAdminArgs('tooltipTarget', tooltipTarget, props);
-    };
+    const handleTooltipTarget = useCallback(
+        (tooltipTarget: string) => {
+            onChange({
+                ...args,
+                tooltipTarget,
+            });
+        },
+        [args, onChange],
+    );
 
-    // @ts-expect-error TS7006
-    const handleTooltipWeight = (tooltipWeight) => {
-        updateAdminArgs('tooltipWeight', tooltipWeight, props);
-    };
+    const handleTooltipWeight = useCallback(
+        (tooltipWeight: string) => {
+            onChange({
+                ...args,
+                tooltipWeight,
+            });
+        },
+        [args, onChange],
+    );
 
-    // @ts-expect-error TS7006
-    const handleColors = (colors) => {
-        updateAdminArgs('colors', colors || defaultArgs.colors, props);
-    };
+    const handleColors = useCallback(
+        (colors: string) => {
+            onChange({
+                ...args,
+                colors,
+            });
+        },
+        [args, onChange],
+    );
 
-    // @ts-expect-error TS7006
-    const handleLayout = (e) => {
-        updateAdminArgs('layout', e.target.value, props);
-    };
+    const handleLayout = useCallback(
+        (e) => {
+            onChange({
+                ...args,
+                layout: e.target.value as TreeMapLayout,
+            });
+        },
+        [args, onChange],
+    );
 
-    // @ts-expect-error TS7006
-    const handleRatio = (_, value) => {
-        updateAdminArgs('ratio', value, props);
-    };
+    const handleRatio = useCallback(
+        (_, value) => {
+            onChange({
+                ...args,
+                ratio: value as number,
+            });
+        },
+        [args, onChange],
+    );
 
-    // @ts-expect-error TS7006
-    const handleAspectRatio = (value) => {
-        updateAdminArgs('aspectRatio', value, props);
-    };
+    const handleAspectRatio = useCallback(
+        (aspectRatio: string) => {
+            onChange({
+                ...args,
+                aspectRatio,
+            });
+        },
+        [args, onChange],
+    );
 
     return (
         <FormatGroupedFieldSet>
@@ -213,7 +302,6 @@ const TreeMapAdmin = (props) => {
                 <RoutineParamsAdmin
                     params={params || defaultArgs.params}
                     onChange={handleParams}
-                    polyglot={polyglot}
                     showMaxSize={showMaxSize}
                     showMaxValue={showMaxValue}
                     showMinValue={showMinValue}
@@ -229,7 +317,7 @@ const TreeMapAdmin = (props) => {
                                 onChange={toggleAdvancedMode}
                             />
                         }
-                        label={polyglot.t('advancedMode')}
+                        label={translate('advancedMode')}
                     />
                 </FormGroup>
                 <FormGroup>
@@ -240,14 +328,14 @@ const TreeMapAdmin = (props) => {
                                 onChange={toggleHierarchy}
                             />
                         }
-                        label={polyglot.t('treemap_hierarchy_data')}
+                        label={translate('treemap_hierarchy_data')}
                     />
                 </FormGroup>
                 {!hierarchy ? (
                     <TextField
                         fullWidth
                         select
-                        label={polyglot.t('treemap_flat_data_type')}
+                        label={translate('treemap_flat_data_type')}
                         onChange={handleFlatType}
                         value={flatType}
                     >
@@ -272,7 +360,6 @@ const TreeMapAdmin = (props) => {
                             categoryTitle={tooltipSource}
                             onValueTitleChange={handleTooltipTarget}
                             valueTitle={tooltipTarget}
-                            polyglot={polyglot}
                             thirdValue={
                                 hierarchy ||
                                 (!hierarchy && flatType !== 'id/value')
@@ -283,24 +370,23 @@ const TreeMapAdmin = (props) => {
                         <ColorPickerParamsAdmin
                             colors={colors}
                             onChange={handleColors}
-                            polyglot={polyglot}
                             monochromatic={false}
                         />
                         <TextField
                             fullWidth
                             select
-                            label={polyglot.t('layout')}
+                            label={translate('layout')}
                             onChange={handleLayout}
                             value={layout}
                         >
                             <MenuItem value="squarify">
-                                {polyglot.t('squarify')}
+                                {translate('squarify')}
                             </MenuItem>
                             <MenuItem value="binary">
-                                {polyglot.t('binary')}
+                                {translate('binary')}
                             </MenuItem>
                             <MenuItem value="slicedice">
-                                {polyglot.t('slicedice')}
+                                {translate('slicedice')}
                             </MenuItem>
                         </TextField>
                         <div
@@ -314,7 +400,7 @@ const TreeMapAdmin = (props) => {
                                 gutterBottom
                                 sx={{ marginBottom: '-2px' }}
                             >
-                                {polyglot.t('treemap_ratio')}
+                                {translate('treemap_ratio')}
                             </Typography>
                             <Slider
                                 aria-label="Ratio"
@@ -337,6 +423,7 @@ const TreeMapAdmin = (props) => {
             </FormatChartParamsFieldSet>
             <VegaFieldPreview
                 args={args}
+                // @ts-expect-error TS2322
                 PreviewComponent={TreeMapAdminView}
                 datasets={[dataset]}
                 showDatasetsSelector={false}
@@ -382,4 +469,4 @@ TreeMapAdmin.defaultProps = {
     showOrderBy: true,
 };
 
-export default translate(TreeMapAdmin);
+export default TreeMapAdmin;
