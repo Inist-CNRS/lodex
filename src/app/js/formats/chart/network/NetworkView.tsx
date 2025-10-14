@@ -1,4 +1,3 @@
-// @ts-expect-error TS7016
 import { scaleLinear } from 'd3-scale';
 import get from 'lodash/get';
 // @ts-expect-error TS6133
@@ -11,7 +10,6 @@ import React, {
     useState,
 } from 'react';
 import compose from 'recompose/compose';
-import { polyglot as polyglotPropTypes } from '../../../propTypes';
 
 import PropTypes from 'prop-types';
 import { useTranslate } from '../../../i18n/I18NContext';
@@ -33,7 +31,7 @@ const styles = {
 };
 
 // @ts-expect-error TS7031
-const Network = ({ formatData, p, colorSet }) => {
+const Network = ({ formatData, colorSet }) => {
     const { translate } = useTranslate();
     const [{ width, height }, setDimensions] = useState({
         width: 0,
@@ -304,7 +302,7 @@ const Network = ({ formatData, p, colorSet }) => {
                             left: 0,
                         }}
                     >
-                        {<MouseIcon polyglot={p} />}
+                        {<MouseIcon />}
                     </div>
                 </div>
             </FormatFullScreenMode>
@@ -319,7 +317,6 @@ Network.propTypes = {
         source: PropTypes.string.isRequired,
         target: PropTypes.string.isRequired,
     }),
-    p: polyglotPropTypes.isRequired,
 };
 
 // @ts-expect-error TS2345

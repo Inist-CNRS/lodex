@@ -4,7 +4,6 @@ import memoize from 'lodash/memoize';
 // @ts-expect-error TS7016
 import { hsl } from 'd3-color';
 import PropTypes from 'prop-types';
-// @ts-expect-error TS7016
 import ReactTooltip from 'react-tooltip';
 
 const styles = {
@@ -49,7 +48,6 @@ const Bubble = ({ r, x, y, name, value, color }) => (
             place="top"
             type="light"
             effect="float"
-            // @ts-expect-error TS7006
             getContent={(dataTip) => dataTip}
         />
     </div>

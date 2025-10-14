@@ -220,6 +220,7 @@ const EJSAdmin = ({
             </FormatDefaultParamsFieldSet>
             <FormatFieldSetPreview
                 args={{ ...args }}
+                // @ts-expect-error TS2322
                 PreviewComponent={EJSAdminView}
                 datasets={AllDataSets}
                 showDatasetsSelector

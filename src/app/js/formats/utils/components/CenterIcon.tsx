@@ -1,7 +1,6 @@
 // @ts-expect-error TS6133
 import React from 'react';
 import { polyglot as polyglotPropTypes } from '../../../propTypes';
-// @ts-expect-error TS7016
 import ReactTooltip from 'react-tooltip';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUndo } from '@fortawesome/free-solid-svg-icons';
