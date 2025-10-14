@@ -3,10 +3,10 @@ const from = require('from');
 
 describe('tsv.ini', () => {
     it('should parse a TSV', (done) => {
-        const res = [];
+        const res: any = [];
         from(['a\tb\n1\t2\n'])
             .pipe(ezs('delegate', { file: __dirname + '/tsv.ini' }))
-            .on('data', (chunk) => {
+            .on('data', (chunk: any) => {
                 res.push(chunk);
             })
             .on('end', () => {

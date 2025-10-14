@@ -3,12 +3,12 @@ const from = require('from');
 
 describe('json-istex.ini', () => {
     it('should parse a JSON', (done) => {
-        const res = [];
+        const res: any = [];
         const expected = [{ a: '1', b: '2' }];
         const input = { hits: expected };
         from([JSON.stringify(input)])
             .pipe(ezs('delegate', { file: __dirname + '/json-istex.ini' }))
-            .on('data', (chunk) => {
+            .on('data', (chunk: any) => {
                 res.push(chunk);
             })
             .on('end', () => {
