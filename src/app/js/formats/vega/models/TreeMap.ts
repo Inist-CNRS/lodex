@@ -3,7 +3,13 @@ import { MULTICHROMATIC_DEFAULT_COLORSET_STREAMGRAPH } from '../../utils/colorUt
 import deepClone from 'lodash/cloneDeep';
 import treeMapModel from './json/tree_map.vg.json';
 
-export const TREE_MAP_LAYOUT = ['squarify', 'binary', 'slicedice'];
+export const TREE_MAP_LAYOUT = [
+    'squarify' as const,
+    'binary' as const,
+    'slicedice' as const,
+];
+
+export type TreeMapLayout = 'squarify' | 'binary' | 'slicedice';
 
 class TreeMap extends BasicChartVG {
     constructor() {
