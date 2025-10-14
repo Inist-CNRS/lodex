@@ -1,10 +1,5 @@
-// @ts-expect-error TS6133
-import React, { useMemo } from 'react';
-import PropTypes from 'prop-types';
-import { translate } from '../../i18n/I18NContext';
+import { useCallback, useMemo } from 'react';
 
-import { polyglot as polyglotPropTypes } from '../../propTypes';
-import updateAdminArgs from '../utils/updateAdminArgs';
 import RoutineParamsAdmin from '../utils/components/admin/RoutineParamsAdmin';
 import VegaAdvancedMode from '../utils/components/admin/VegaAdvancedMode';
 import {
@@ -13,7 +8,7 @@ import {
 } from '../utils/components/field-set/FormatFieldSets';
 import VegaFieldPreview from '../utils/components/field-set/FormatFieldSetPreview';
 import { VegaLiteAdminView } from './VegaLiteView';
-import { ASPECT_RATIO_16_9 } from '../utils/aspectRatio';
+import { ASPECT_RATIO_16_9, type AspectRatio } from '../utils/aspectRatio';
 import AspectRatioSelector from '../utils/components/admin/AspectRatioSelector';
 import FormatGroupedFieldSet from '../utils/components/field-set/FormatGroupedFieldSet';
 
@@ -37,10 +32,36 @@ export const defaultArgs = {
     aspectRatio: ASPECT_RATIO_16_9,
 };
 
-// @ts-expect-error TS7006
-const VegaLiteAdmin = (props) => {
-    const { args, p, showMaxSize, showMaxValue, showMinValue, showOrderBy } =
-        props;
+type VegaLiteParams = {
+    maxSize?: number;
+    maxValue?: number;
+    minValue?: number;
+    orderBy?: string;
+};
+
+type VegaliteArgs = {
+    params: VegaLiteParams;
+    specTemplate: string;
+    aspectRatio: string;
+};
+
+type VegaLiteAdminProps = {
+    args: VegaliteArgs;
+    onChange: (args: VegaliteArgs) => void;
+    showMaxSize: boolean;
+    showMaxValue: boolean;
+    showMinValue: boolean;
+    showOrderBy: boolean;
+};
+
+const VegaLiteAdmin = ({
+    args = defaultArgs,
+    showMaxSize = true,
+    showMaxValue = true,
+    showMinValue = true,
+    showOrderBy = true,
+    onChange,
+}: VegaLiteAdminProps) => {
     const { specTemplate, aspectRatio, params } = args;
 
     const formattedSpecTemplate = useMemo(() => {
@@ -51,27 +72,26 @@ const VegaLiteAdmin = (props) => {
         }
     }, [specTemplate]);
 
-    // @ts-expect-error TS7006
-    const handleParams = (params) => {
-        updateAdminArgs('params', params, props);
-    };
+    const handleParams = useCallback(
+        (params: VegaLiteParams) => onChange({ ...args, params }),
+        [onChange, args],
+    );
 
-    // @ts-expect-error TS7006
-    const handleSpecTemplate = (value) => {
-        updateAdminArgs('specTemplate', value, props);
-    };
+    const handleSpecTemplate = useCallback(
+        (specTemplate: string) => onChange({ ...args, specTemplate }),
+        [onChange, args],
+    );
 
-    // @ts-expect-error TS7006
-    const handleAspectRatio = (value) => {
-        updateAdminArgs('aspectRatio', value, props);
-    };
+    const handleAspectRatio = useCallback(
+        (aspectRatio: AspectRatio) => onChange({ ...args, aspectRatio }),
+        [onChange, args],
+    );
 
     return (
         <FormatGroupedFieldSet>
             <FormatDataParamsFieldSet>
                 <RoutineParamsAdmin
                     params={params || defaultArgs.params}
-                    polyglot={p}
                     onChange={handleParams}
                     showMaxSize={showMaxSize}
                     showMaxValue={showMaxValue}
@@ -91,37 +111,11 @@ const VegaLiteAdmin = (props) => {
             </FormatChartParamsFieldSet>
             <VegaFieldPreview
                 args={args}
+                // @ts-expect-error TS2322
                 PreviewComponent={VegaLiteAdminView}
             />
         </FormatGroupedFieldSet>
     );
 };
 
-VegaLiteAdmin.defaultProps = {
-    args: defaultArgs,
-    showMaxSize: true,
-    showMaxValue: true,
-    showMinValue: true,
-    showOrderBy: true,
-};
-
-VegaLiteAdmin.propTypes = {
-    args: PropTypes.shape({
-        params: PropTypes.shape({
-            maxSize: PropTypes.number,
-            maxValue: PropTypes.number,
-            minValue: PropTypes.number,
-            orderBy: PropTypes.string,
-        }),
-        specTemplate: PropTypes.string,
-        aspectRatio: PropTypes.string,
-    }),
-    onChange: PropTypes.func.isRequired,
-    p: polyglotPropTypes.isRequired,
-    showMaxSize: PropTypes.bool.isRequired,
-    showMaxValue: PropTypes.bool.isRequired,
-    showMinValue: PropTypes.bool.isRequired,
-    showOrderBy: PropTypes.bool.isRequired,
-};
-
-export default translate(VegaLiteAdmin);
+export default VegaLiteAdmin;
