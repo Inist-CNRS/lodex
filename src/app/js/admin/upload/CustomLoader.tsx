@@ -10,7 +10,7 @@ import {
     DialogContent,
     DialogTitle,
 } from '@mui/material';
-import { useForm } from 'react-hook-form';
+import { FormProvider, useForm } from 'react-hook-form';
 import { connect } from 'react-redux';
 import { fromUpload } from '../selectors';
 import {
@@ -49,12 +49,13 @@ const CustomLoader = ({
     const { translate } = useTranslate();
     const [isLoading, setIsLoading] = useState(false);
 
-    const { setValue, getValues } = useForm<CustomLoaderFormData>({
+    const formMethods = useForm<CustomLoaderFormData>({
         defaultValues: {
             customLoader: initialValues?.customLoader || '',
         },
         mode: 'onChange',
     });
+    const { setValue, getValues } = formMethods;
 
     const handleSave = () => {
         const formValue = getValues('customLoader');
@@ -86,43 +87,50 @@ const CustomLoader = ({
     }, [isOpen, loaderName, setValue]);
 
     return (
-        <Dialog open={isOpen} onClose={handleClose} scroll="body" maxWidth="xl">
-            <DialogTitle>{translate('custom-loader')}</DialogTitle>
-            <DialogContent>
-                <Box display="flex">
-                    {isLoading ? (
-                        <CircularProgress />
-                    ) : (
-                        <FormSourceCodeField
-                            name="customLoader"
-                            label={translate('expand_rules')}
-                            height="350px"
-                        />
-                    )}
-                </Box>
-            </DialogContent>
-            <DialogActions style={{ justifyContent: 'space-between' }}>
-                <Button
-                    onClick={handleDelete}
-                    color="warning"
-                    variant="contained"
-                >
-                    {translate('remove')}
-                </Button>
-                <div>
-                    <CancelButton onClick={handleClose}>
-                        {translate('cancel')}
-                    </CancelButton>
+        <FormProvider {...formMethods}>
+            <Dialog
+                open={isOpen}
+                onClose={handleClose}
+                scroll="body"
+                maxWidth="xl"
+            >
+                <DialogTitle>{translate('custom-loader')}</DialogTitle>
+                <DialogContent>
+                    <Box display="flex">
+                        {isLoading ? (
+                            <CircularProgress />
+                        ) : (
+                            <FormSourceCodeField
+                                name="customLoader"
+                                label={translate('expand_rules')}
+                                height="350px"
+                            />
+                        )}
+                    </Box>
+                </DialogContent>
+                <DialogActions style={{ justifyContent: 'space-between' }}>
                     <Button
-                        onClick={handleSave}
-                        color="primary"
+                        onClick={handleDelete}
+                        color="warning"
                         variant="contained"
                     >
-                        {translate('save')}
+                        {translate('remove')}
                     </Button>
-                </div>
-            </DialogActions>
-        </Dialog>
+                    <div>
+                        <CancelButton onClick={handleClose}>
+                            {translate('cancel')}
+                        </CancelButton>
+                        <Button
+                            onClick={handleSave}
+                            color="primary"
+                            variant="contained"
+                        >
+                            {translate('save')}
+                        </Button>
+                    </div>
+                </DialogActions>
+            </Dialog>
+        </FormProvider>
     );
 };
 
