@@ -1,19 +1,23 @@
-import PropTypes from 'prop-types';
-import { polyglot as polyglotPropTypes } from '../../../propTypes';
 import RoutineParamsAdmin from '../../utils/components/admin/RoutineParamsAdmin';
-// @ts-expect-error TS6133
-import React, { useCallback } from 'react';
 import {
     FormatDataParamsFieldSet,
     FormatDefaultParamsFieldSet,
 } from '../../utils/components/field-set/FormatFieldSets';
-import updateAdminArgs from '../../utils/updateAdminArgs';
 import EJSEditor from './EJSEditor';
 import FormatFieldSetPreview from '../../utils/components/field-set/FormatFieldSetPreview';
 import { AllDataSets } from '../../utils/dataSet';
 import { EJSAdminView } from './EJSView';
 import FormatGroupedFieldSet from '../../utils/components/field-set/FormatGroupedFieldSet';
-import { translate } from '../../../i18n/I18NContext';
+import { translate, useTranslate } from '../../../i18n/I18NContext';
+import { useUpdateAdminArgs } from '../../utils/updateAdminArgs';
+
+type EJSArgs = {
+    params?: {
+        maxSize?: number;
+        orderBy?: string;
+    };
+    template?: string;
+};
 
 export const defaultArgs = {
     params: {
@@ -137,35 +141,38 @@ export const defaultArgs = {
 `,
 };
 
-// @ts-expect-error TS7006
-const EJSAdmin = (props) => {
-    const {
-        p: polyglot,
-        args,
-        showMaxSize,
-        showMaxValue,
-        showMinValue,
-        showOrderBy,
-        onChange,
-    } = props;
+type EJSAdminProps = {
+    args: EJSArgs;
+    onChange: (args: EJSArgs) => void;
+    showMaxSize?: boolean;
+    showOrderBy?: boolean;
+    showMinValue?: boolean;
+    showMaxValue?: boolean;
+};
+
+const EJSAdmin = ({
+    args = defaultArgs,
+    showMaxSize = true,
+    showMaxValue = true,
+    showMinValue = true,
+    showOrderBy = true,
+    onChange,
+}: EJSAdminProps) => {
+    const { translate } = useTranslate();
 
     const { params, template } = args;
 
-    const handleParams = useCallback(
-        (newParams: unknown) => {
-            updateAdminArgs('params', newParams, props);
-        },
-        [props],
-    );
+    const handleParams = useUpdateAdminArgs<EJSArgs, 'params'>('params', {
+        args,
+        onChange,
+    });
 
-    const handleTemplateChange = useCallback(
-        (newTemplate: string) => {
-            updateAdminArgs('template', newTemplate, {
-                args,
-                onChange,
-            });
+    const handleTemplateChange = useUpdateAdminArgs<EJSArgs, 'template'>(
+        'template',
+        {
+            args,
+            onChange,
         },
-        [args, onChange],
     );
 
     return (
@@ -174,7 +181,6 @@ const EJSAdmin = (props) => {
                 <RoutineParamsAdmin
                     params={params || defaultArgs.params}
                     onChange={handleParams}
-                    polyglot={polyglot}
                     showMaxSize={showMaxSize}
                     showMaxValue={showMaxValue}
                     showMinValue={showMinValue}
@@ -183,22 +189,22 @@ const EJSAdmin = (props) => {
             </FormatDataParamsFieldSet>
             <FormatDefaultParamsFieldSet defaultExpanded>
                 <p style={{ width: '100%' }}>
-                    {polyglot.t('ejs_variable_list')}
+                    {translate('ejs_variable_list')}
                     <i>
                         <ul>
                             <li>
-                                <code>root</code> ({polyglot.t('ejs_data')})
+                                <code>root</code> ({translate('ejs_data')})
                                 &nbsp;-&nbsp;
                                 <a
                                     href="https://ejs.co/#docs"
                                     target="_blank"
                                     rel="nofollow noopener noreferrer"
                                 >
-                                    {polyglot.t('ejs_documentation')}
+                                    {translate('ejs_documentation')}
                                 </a>
                             </li>
                             <li>
-                                <code>_</code> ({polyglot.t('ejs_lodash')})
+                                <code>_</code> ({translate('ejs_lodash')})
                                 &nbsp;-&nbsp;
                                 <a
                                     href="https://lodash.com/docs"
@@ -220,32 +226,6 @@ const EJSAdmin = (props) => {
             />
         </FormatGroupedFieldSet>
     );
-};
-
-EJSAdmin.propTypes = {
-    args: PropTypes.shape({
-        params: PropTypes.shape({
-            maxSize: PropTypes.number,
-            maxValue: PropTypes.number,
-            minValue: PropTypes.number,
-            orderBy: PropTypes.string,
-        }),
-        template: PropTypes.string,
-    }),
-    onChange: PropTypes.func.isRequired,
-    p: polyglotPropTypes.isRequired,
-    showMaxSize: PropTypes.bool.isRequired,
-    showMaxValue: PropTypes.bool.isRequired,
-    showMinValue: PropTypes.bool.isRequired,
-    showOrderBy: PropTypes.bool.isRequired,
-};
-
-EJSAdmin.defaultProps = {
-    args: defaultArgs,
-    showMaxSize: true,
-    showMaxValue: true,
-    showMinValue: true,
-    showOrderBy: true,
 };
 
 export default translate(EJSAdmin);

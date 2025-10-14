@@ -1,7 +1,7 @@
 import { polyglot as polyglotPropTypes } from '../../../propTypes';
 import PropTypes from 'prop-types';
 import { Box } from '@mui/material';
-import { lazy, Suspense, useEffect, useState } from 'react';
+import { lazy, Suspense } from 'react';
 import { translate, useTranslate } from '../../../i18n/I18NContext';
 import Loading from '../../../lib/components/Loading';
 
@@ -9,20 +9,14 @@ const SourceCodeField = lazy(
     () => import('../../../lib/components/SourceCodeField'),
 );
 
-// @ts-expect-error TS7031
-const EJSEditor = ({ value, onChange }) => {
+const EJSEditor = ({
+    value,
+    onChange,
+}: {
+    value: string;
+    onChange: (value: string) => void;
+}) => {
     const { translate } = useTranslate();
-
-    const [currentValue, setCurrentValue] = useState(value || '');
-
-    useEffect(() => {
-        onChange(currentValue);
-    }, [currentValue, onChange]);
-
-    // @ts-expect-error TS7006
-    const handleChange = (newValue) => {
-        setCurrentValue(newValue);
-    };
 
     return (
         <Box width="100%">
@@ -35,8 +29,8 @@ const EJSEditor = ({ value, onChange }) => {
                     }}
                     mode="ejs"
                     input={{
-                        value: currentValue,
-                        onChange: handleChange,
+                        value,
+                        onChange,
                     }}
                 />
             </Suspense>
