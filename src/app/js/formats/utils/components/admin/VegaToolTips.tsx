@@ -1,213 +1,136 @@
-// @ts-expect-error TS6133
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import React, { useState } from 'react';
 import { Checkbox, TextField, FormControlLabel, Box } from '@mui/material';
-import { polyglot as polyglotPropTypes } from '../../../../propTypes';
+import { useTranslate } from '../../../../i18n/I18NContext';
+
+type VegaToolTipsProps = {
+    checked: boolean;
+    onChange: (checked: boolean) => void;
+    onCategoryTitleChange: (title: string) => void;
+    categoryTitle: string;
+    onValueTitleChange: (title: string) => void;
+    valueTitle: string;
+    thirdValue: boolean;
+    thirdValueTitle?: string;
+    onThirdValueChange?: (title: string) => void;
+};
 
 /**
  * React component use for edit the tooltip
  */
-class VegaToolTips extends Component {
-    /**
-     * Default args taken by the component
-     */
-    static propTypes = {
-        checked: PropTypes.bool.isRequired,
-        onChange: PropTypes.func.isRequired,
-        onCategoryTitleChange: PropTypes.func.isRequired,
-        categoryTitle: PropTypes.string.isRequired,
-        onValueTitleChange: PropTypes.func.isRequired,
-        valueTitle: PropTypes.string.isRequired,
-        polyglot: polyglotPropTypes.isRequired,
-        thirdValue: PropTypes.bool.isRequired,
-        thirdValueTitle: PropTypes.string,
-        onThirdValueChange: PropTypes.func,
-    };
 
-    /**
-     * Default constructor
-     * @param props Args taken by the component
-     */
-    // @ts-expect-error TS7006
-    constructor(props) {
-        super(props);
-        this.onCheck = this.onCheck.bind(this);
-        this.state = {
-            // @ts-expect-error TS2339
-            checked: this.props.checked,
-            // @ts-expect-error TS2339
-            categoryTitle: this.props.categoryTitle,
-            // @ts-expect-error TS2339
-            valueTitle: this.props.valueTitle,
-            thirdValueTitle:
-                // @ts-expect-error TS2339
-                this.props.thirdValueTitle === undefined
-                    ? ''
-                    : // @ts-expect-error TS2339
-                      this.props.thirdValueTitle,
-        };
-    }
+const VegaToolTips = ({
+    checked: initialChecked,
+    onChange,
+    onCategoryTitleChange: handleCategoryTitleChange,
+    categoryTitle: initialCategoryTitle,
+    onValueTitleChange: handleValueTitleChange,
+    valueTitle: initialValueTitle,
+    thirdValue,
+    thirdValueTitle: initialThirdValueTitle = '',
+    onThirdValueChange: handleThirdValueChange,
+}: VegaToolTipsProps) => {
+    const { translate } = useTranslate();
+    const [checked, setChecked] = useState(initialChecked);
+    const [categoryTitle, setCategoryTitle] = useState(initialCategoryTitle);
+    const [valueTitle, setValueTitle] = useState(initialValueTitle);
+    const [thirdValueTitle, setThirdValueTitle] = useState(
+        initialThirdValueTitle,
+    );
 
     /**
      * Update the view and the states when the checkbox change
-     * @param e event of the checkbox
      */
-    // @ts-expect-error TS7006
-    onCheck(e) {
+    const onCheck = (e: React.ChangeEvent<HTMLInputElement>) => {
         const target = e.target;
-        this.setState({
-            checked: target.checked,
-            // @ts-expect-error TS2339
-            categoryTitle: this.state.categoryTitle,
-            // @ts-expect-error TS2339
-            valueTitle: this.state.valueTitle,
-            // @ts-expect-error TS2339
-            thirdValueTitle: this.state.thirdValueTitle,
-        });
-        // @ts-expect-error TS2339
-        this.props.onChange(target.checked);
-    }
+        setChecked(target.checked);
+        onChange(target.checked);
+    };
 
     /**
      * Update the view and the states when the text field corresponding to the category change
-     * @param e event of the text field
      */
-    // @ts-expect-error TS7006
-    onCategoryTitleChange(e) {
+    const onCategoryTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const target = e.target;
-        this.setState({
-            // @ts-expect-error TS2339
-            checked: this.state.checked,
-            categoryTitle: target.value,
-            // @ts-expect-error TS2339
-            valueTitle: this.state.valueTitle,
-            // @ts-expect-error TS2339
-            thirdValueTitle: this.state.thirdValueTitle,
-        });
-        // @ts-expect-error TS2339
-        this.props.onCategoryTitleChange(target.value);
-    }
+        setCategoryTitle(target.value);
+        handleCategoryTitleChange(target.value);
+    };
 
     /**
      * Update the view and the states when the text field corresponding to the value change
-     * @param e event of the text field
      */
-    // @ts-expect-error TS7006
-    onValueTitleChange(e) {
+    const onValueTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const target = e.target;
-        this.setState({
-            // @ts-expect-error TS2339
-            checked: this.state.checked,
-            // @ts-expect-error TS2339
-            categoryTitle: this.state.categoryTitle,
-            valueTitle: target.value,
-            // @ts-expect-error TS2339
-            thirdValueTitle: this.state.thirdValueTitle,
-        });
-        // @ts-expect-error TS2339
-        this.props.onValueTitleChange(target.value);
-    }
+        setValueTitle(target.value);
+        handleValueTitleChange(target.value);
+    };
 
     /**
      * Update the view and the states when the text field corresponding to the ThirdValue change
-     * @param e event of the text field
      */
-    // @ts-expect-error TS7006
-    onThirdValueChange(e) {
+    const onThirdValueChangeHandler = (
+        e: React.ChangeEvent<HTMLInputElement>,
+    ) => {
         const target = e.target;
-        this.setState({
-            // @ts-expect-error TS2339
-            checked: this.state.checked,
-            // @ts-expect-error TS2339
-            categoryTitle: this.state.categoryTitle,
-            // @ts-expect-error TS2339
-            valueTitle: this.state.valueTitle,
-            thirdValueTitle: target.value,
-        });
-        // @ts-expect-error TS2339
-        this.props.onThirdValueChange(target.value);
-    }
+        setThirdValueTitle(target.value);
+        handleThirdValueChange?.(target.value);
+    };
 
     /**
      * Function use to make the view more dynamic (if checkbox is checked then display the text field)
-     * @returns {*} Html corresponding to the text field
      */
-    createUserInterface() {
-        // @ts-expect-error TS2339
-        const checked = this.state.checked;
-
-        const thirdValue = () => {
-            // @ts-expect-error TS2339
-            if (this.props.thirdValue) {
+    const createUserInterface = () => {
+        const renderThirdValue = () => {
+            if (thirdValue) {
                 return (
                     <TextField
-                        // @ts-expect-error TS2339
-                        label={this.props.polyglot.t('tooltip_third_3')}
-                        // @ts-expect-error TS2339
-                        value={this.state.thirdValueTitle}
-                        onChange={this.onThirdValueChange.bind(this)}
+                        label={translate('tooltip_third_3')}
+                        value={thirdValueTitle}
+                        onChange={onThirdValueChangeHandler}
                         fullWidth
+                        variant="standard"
                     />
                 );
             }
+            return null;
         };
 
         if (checked) {
             return (
                 <Box display="flex" flexDirection="column" flexGrow={1} gap={2}>
                     <TextField
-                        // @ts-expect-error TS2339
-                        label={this.props.polyglot.t(
-                            // @ts-expect-error TS2339
-                            this.props.thirdValue
-                                ? 'tooltip_third_1'
-                                : 'tooltip_category',
+                        label={translate(
+                            thirdValue ? 'tooltip_third_1' : 'tooltip_category',
                         )}
-                        // @ts-expect-error TS2339
-                        value={this.state.categoryTitle}
-                        onChange={this.onCategoryTitleChange.bind(this)}
+                        value={categoryTitle}
+                        onChange={onCategoryTitleChange}
                         fullWidth
+                        variant="standard"
                     />
                     <TextField
-                        // @ts-expect-error TS2339
-                        label={this.props.polyglot.t(
-                            // @ts-expect-error TS2339
-                            this.props.thirdValue
-                                ? 'tooltip_third_2'
-                                : 'tooltip_value',
+                        label={translate(
+                            thirdValue ? 'tooltip_third_2' : 'tooltip_value',
                         )}
-                        // @ts-expect-error TS2339
-                        value={this.state.valueTitle}
-                        onChange={this.onValueTitleChange.bind(this)}
+                        value={valueTitle}
+                        onChange={onValueTitleChange}
                         fullWidth
+                        variant="standard"
                     />
-                    {thirdValue()}
+                    {renderThirdValue()}
                 </Box>
             );
         }
-    }
+        return null;
+    };
 
-    /**
-     * Return the html need to display by this component
-     */
-    render() {
-        return (
-            <Box mb={2} display="flex" width="100%">
-                <FormControlLabel
-                    control={
-                        <Checkbox
-                            onChange={this.onCheck}
-                            // @ts-expect-error TS2339
-                            checked={this.props.checked}
-                        />
-                    }
-                    // @ts-expect-error TS2339
-                    label={this.props.polyglot.t('toggle_tooltip')}
-                />
-                {this.createUserInterface()}
-            </Box>
-        );
-    }
-}
+    return (
+        <Box mb={2} display="flex" width="100%">
+            <FormControlLabel
+                control={<Checkbox onChange={onCheck} checked={checked} />}
+                label={translate('toggle_tooltip')}
+            />
+            {createUserInterface()}
+        </Box>
+    );
+};
 
 export default VegaToolTips;
