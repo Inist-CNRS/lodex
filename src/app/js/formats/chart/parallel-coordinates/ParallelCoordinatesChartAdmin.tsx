@@ -1,4 +1,4 @@
-import { useUpdateAdminArgs } from '../../utils/updateAdminArgs';
+import { useCallback } from 'react';
 import RoutineParamsAdmin, {
     type RoutineParams,
 } from '../../utils/components/admin/RoutineParamsAdmin';
@@ -40,21 +40,25 @@ const ParallelCoordinatesChartAdmin = ({
     showMaxValue = true,
     showMinValue = true,
 }: ParallelCoordinatesChartAdminProps) => {
-    const handleParams = useUpdateAdminArgs<
-        ParallelCoordinatesChartArgs,
-        'params'
-    >('params', {
-        args,
-        onChange,
-    });
+    const handleParams = useCallback(
+        (params: RoutineParams) => {
+            onChange({
+                ...args,
+                params,
+            });
+        },
+        [onChange, args],
+    );
 
-    const handleColors = useUpdateAdminArgs<
-        ParallelCoordinatesChartArgs,
-        'colors'
-    >('colors', {
-        args,
-        onChange,
-    });
+    const handleColors = useCallback(
+        (colors: string) => {
+            onChange({
+                ...args,
+                colors,
+            });
+        },
+        [onChange, args],
+    );
 
     return (
         <FormatGroupedFieldSet>

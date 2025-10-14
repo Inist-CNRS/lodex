@@ -4,7 +4,7 @@ import { FormatDefaultParamsFieldSet } from '../../utils/components/field-set/Fo
 import FormatGroupedFieldSet from '../../utils/components/field-set/FormatGroupedFieldSet';
 import ColorPickerParamsAdmin from '../../utils/components/admin/ColorPickerParamsAdmin';
 import { MONOCHROMATIC_DEFAULT_COLORSET } from '../../utils/colorUtils';
-import { useUpdateAdminArgs } from '../../utils/updateAdminArgs';
+import { useCallback } from 'react';
 
 export const defaultArgs = {
     paragraphWidth: '100%',
@@ -31,23 +31,24 @@ const ParagraphAdmin = ({
         paragraphWidth = defaultArgs.paragraphWidth,
     } = args;
 
-    const handleParagraphWidth = useUpdateAdminArgs<
-        ParagraphArgs,
-        'paragraphWidth',
-        React.ChangeEvent<HTMLInputElement>
-    >('paragraphWidth', {
-        args,
-        onChange,
-        parseValue: (event: React.ChangeEvent<HTMLInputElement>) =>
-            event.target.value,
-    });
-
-    const handleColors = useUpdateAdminArgs<ParagraphArgs, 'colors', string>(
-        'colors',
-        {
-            args,
-            onChange,
+    const handleParagraphWidth = useCallback(
+        (event: React.ChangeEvent<HTMLInputElement>) => {
+            onChange({
+                ...args,
+                paragraphWidth: event.target.value,
+            });
         },
+        [onChange, args],
+    );
+
+    const handleColors = useCallback(
+        (colors: string) => {
+            onChange({
+                ...args,
+                colors,
+            });
+        },
+        [onChange, args],
     );
 
     return (

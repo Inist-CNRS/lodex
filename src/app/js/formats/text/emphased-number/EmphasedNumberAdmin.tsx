@@ -1,8 +1,7 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { MenuItem, TextField } from '@mui/material';
 import { useTranslate } from '../../../i18n/I18NContext';
 
-import { useUpdateAdminArgs } from '../../utils/updateAdminArgs';
 import RoutineParamsAdmin from '../../utils/components/admin/RoutineParamsAdmin';
 import ColorPickerParamsAdmin from '../../utils/components/admin/ColorPickerParamsAdmin';
 import { MONOCHROMATIC_DEFAULT_COLORSET } from '../../utils/colorUtils';
@@ -44,33 +43,34 @@ const EmphasedNumberAdmin = ({
 }: EmphasedNumberAdminProps) => {
     const { translate } = useTranslate();
 
-    const handleSize = useUpdateAdminArgs<
-        EmphasedNumberArgs,
-        'size',
-        React.ChangeEvent<HTMLInputElement>
-    >('size', {
-        args,
-        onChange,
-        parseValue: (event: React.ChangeEvent<HTMLInputElement>) =>
-            parseInt(event.target.value, 10),
-    });
-
-    const handleColorsChange = useUpdateAdminArgs<
-        EmphasedNumberArgs,
-        'colors',
-        string
-    >('colors', {
-        args,
-        onChange,
-        parseValue: (colors: string) => colors.split(' ')[0]!,
-    });
-
-    const handleParams = useUpdateAdminArgs<EmphasedNumberArgs, 'params'>(
-        'params',
-        {
-            args,
-            onChange,
+    const handleSize = useCallback(
+        (event: React.ChangeEvent<HTMLInputElement>) => {
+            onChange({
+                ...args,
+                size: parseInt(event.target.value, 10),
+            });
         },
+        [onChange, args],
+    );
+
+    const handleColorsChange = useCallback(
+        (colors: string) => {
+            onChange({
+                ...args,
+                colors: colors.split(' ')[0]!,
+            });
+        },
+        [onChange, args],
+    );
+
+    const handleParams = useCallback(
+        (params: EmphasedNumberParams) => {
+            onChange({
+                ...args,
+                params,
+            });
+        },
+        [onChange, args],
     );
 
     const { size, params } = args;
