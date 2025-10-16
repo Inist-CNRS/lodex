@@ -5,7 +5,6 @@ import { createSelector } from 'reselect';
 import { ADMIN_ROLE } from '../../../common/tools/tenantTools';
 import getQueryString from '../lib/getQueryString';
 
-export const LOGIN_FORM_NAME = 'login';
 export const LOGIN = 'LOGIN';
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 export const LOGOUT = 'LOGOUT';
