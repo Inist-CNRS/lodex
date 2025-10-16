@@ -8,6 +8,7 @@ export const QUEUE_NAME = 'worker';
 
 export class CancelWorkerError extends Error {
     name: any;
+    errorCount?: number;
     constructor(message: any) {
         super(message);
         this.name = 'CancelWorkerError';

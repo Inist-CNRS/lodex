@@ -3,7 +3,7 @@ import path from 'path';
 // @ts-expect-error TS(2792): Cannot find module '@ezs/core'. Did you mean to se... Remove this comment to see the full error message
 import ezs from '@ezs/core';
 // @ts-expect-error TS(2792): Cannot find module '@ezs/compile'. Did you mean to ... Remove this comment to see the full error message
-import { createFusible, enableFusible } from '@ezs/core/fusible';
+import { createFusible, enableFusible, checkFusible } from '@ezs/core/fusible';
 import { PassThrough } from 'stream';
 import progress from '../../services/progress';
 import localConfig from '../../../../config.json';
@@ -263,7 +263,7 @@ const processEnrichmentPipeline = (
     enrichment: any,
     ctx: any,
 ) =>
-    new Promise((resolve: any, reject: any) => {
+    new Promise<number>((resolve: any, reject: any) => {
         const { enrichmentBatchSize } = ctx.configTenant;
         const BATCH_SIZE = Number(enrichmentBatchSize || 10);
         const environment = {
@@ -356,46 +356,43 @@ export const processEnrichment = async (
     ctx: any,
 ) => {
     const room = `${ctx.tenant}-enrichment-job-${ctx.job.id}`;
-    let errorCount = 0;
     await ctx.enrichment.updateStatus(enrichment._id, IN_PROGRESS);
     try {
         const fusible = await createFusible();
         await enableFusible(fusible);
-        ctx.job.update({
+        await ctx.job.update({
             ...ctx.job.data,
             fusible,
         });
-        // @ts-expect-error TS(2322): Type unknown is not assignable to type number
-        errorCount = await processEnrichmentPipeline(
+        const errorCount = await processEnrichmentPipeline(
             room,
             fusible,
             filter,
             enrichment,
             ctx,
         );
-    } catch (e) {
-        // @ts-expect-error TS(2571): Object is of type 'unknown'.
-        errorCount = e.errorCount || 0;
+
+        if (!(await checkFusible(fusible))) {
+            const error = new CancelWorkerError('Job has been canceled');
+            error.errorCount = errorCount;
+            throw error;
+        }
+
+        await ctx.enrichment.updateStatus(enrichment._id, FINISHED, {
+            errorCount,
+        });
+        progress.finish(ctx.tenant);
         const logData = JSON.stringify({
-            level: 'error',
-            // @ts-expect-error TS(2571): Object is of type 'unknown'.
-            message: `[Instance: ${ctx.tenant}] Enrichment failed (${e.message})`,
+            level: 'ok',
+            message: `[Instance: ${ctx.tenant}] Enrichement finished`,
             timestamp: new Date(),
-            status: IN_PROGRESS,
+            status: FINISHED,
         });
         jobLogger.info(ctx.job, logData);
+        notifyListeners(room, logData);
+    } catch (err) {
+        await setEnrichmentError(ctx, err);
     }
-
-    await ctx.enrichment.updateStatus(enrichment._id, FINISHED, { errorCount });
-    progress.finish(ctx.tenant);
-    const logData = JSON.stringify({
-        level: 'ok',
-        message: `[Instance: ${ctx.tenant}] Enrichement finished`,
-        timestamp: new Date(),
-        status: FINISHED,
-    });
-    jobLogger.info(ctx.job, logData);
-    notifyListeners(room, logData);
 };
 
 export const setEnrichmentJobId = async (
@@ -447,6 +444,7 @@ export const setEnrichmentError = async (ctx: any, err: any) => {
         err instanceof CancelWorkerError ? CANCELED : ERROR,
         {
             message: err?.message,
+            errorCount: err?.errorCount || 0,
         },
     );
 
