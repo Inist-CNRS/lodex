@@ -32,7 +32,7 @@ const SourceValueFromColumns = ({
                     required &&
                     (value === undefined ||
                         value === null ||
-                        !(value instanceof Array && value.length === 0))
+                        (value instanceof Array && value.length === 0))
                 ) {
                     return translate('error_field_required');
                 }
