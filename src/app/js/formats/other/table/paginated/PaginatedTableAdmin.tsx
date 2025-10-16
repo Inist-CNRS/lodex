@@ -44,8 +44,10 @@ const PaginatedTableAdmin: React.FC<AbstractTableAdminProps> = ({
             </FormatDefaultParamsFieldSet>
             <TableColumnsParameters
                 onChange={handleColumnParameter}
-                parameters={args.columnsParameters || []}
-                parameterCount={args.columnsCount || 3}
+                parameters={
+                    args.columnsParameters || defaultArgs.columnsParameters
+                }
+                parameterCount={args.columnsCount || defaultArgs.columnsCount}
             />
         </FormatGroupedFieldSet>
     );

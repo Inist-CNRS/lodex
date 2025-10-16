@@ -80,10 +80,10 @@ const BubblePlotAdmin = ({
         advancedModeSpec,
         params,
         flipAxis,
-        tooltip,
-        tooltipSource,
-        tooltipTarget,
-        tooltipWeight,
+        tooltip = defaultArgs.tooltip,
+        tooltipSource = defaultArgs.tooltipSource,
+        tooltipTarget = defaultArgs.tooltipTarget,
+        tooltipWeight = defaultArgs.tooltipWeight,
         aspectRatio,
     } = args;
 
@@ -270,21 +270,15 @@ const BubblePlotAdmin = ({
                             label={translate('flip_axis')}
                         />
                         <VegaToolTips
-                            checked={tooltip ?? defaultArgs.tooltip}
+                            checked={tooltip}
                             onChange={toggleTooltip}
                             onCategoryTitleChange={handleTooltipSource}
-                            categoryTitle={
-                                tooltipSource ?? defaultArgs.tooltipSource
-                            }
+                            categoryTitle={tooltipSource}
                             onValueTitleChange={handleTooltipTarget}
-                            valueTitle={
-                                tooltipTarget ?? defaultArgs.tooltipTarget
-                            }
+                            valueTitle={tooltipTarget}
                             thirdValue={true}
                             onThirdValueChange={handleTooltipWeight}
-                            thirdValueTitle={
-                                tooltipWeight ?? defaultArgs.tooltipWeight
-                            }
+                            thirdValueTitle={tooltipWeight}
                         />
                         <ColorPickerParamsAdmin
                             colors={colors}

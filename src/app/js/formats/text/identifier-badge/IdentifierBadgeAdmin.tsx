@@ -50,7 +50,7 @@ const IdentifierBadgeAdmin = ({
         [onChange, args],
     );
 
-    const { typid } = args;
+    const { typid = defaultArgs.typid, colors = defaultArgs.colors } = args;
 
     const items = Object.keys(resolvers).map((resolverID) => (
         <MenuItem key={`resolver_${resolverID}`} value={resolverID}>
@@ -65,14 +65,14 @@ const IdentifierBadgeAdmin = ({
                     fullWidth
                     select
                     label={translate('list_format_select_identifier')}
-                    value={typid || defaultArgs.typid}
+                    value={typid}
                     onChange={handleTypid}
                     variant="standard"
                 >
                     {items}
                 </TextField>
                 <ColorPickerParamsAdmin
-                    colors={args.colors}
+                    colors={colors}
                     onChange={handleColorsChange}
                     monochromatic={true}
                 />
