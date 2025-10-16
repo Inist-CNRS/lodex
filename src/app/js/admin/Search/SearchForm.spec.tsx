@@ -4,11 +4,12 @@ import React from 'react';
 import { SearchForm } from './SearchForm';
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { fireEvent, render, waitFor, within } from '@testing-library/react';
+import { fireEvent, waitFor, within } from '@testing-library/react';
 import PropTypes from 'prop-types';
 import * as overview from '../../../../common/overview';
 import fieldApi from '../../admin/api/field';
-import { TestI18N } from '../../i18n/I18NContext';
+import { render } from '../../../../test-utils.tsx';
+
 jest.mock('../../admin/api/field', () => ({
     patchSearchableFields: jest.fn(),
     patchOverview: jest.fn(),
@@ -25,11 +26,9 @@ function TestSearchForm(props) {
         props.p.currentLocale = 'fr';
     }
     return (
-        <TestI18N>
-            <QueryClientProvider client={new QueryClient()}>
-                <SearchForm {...props} />
-            </QueryClientProvider>
-        </TestI18N>
+        <QueryClientProvider client={new QueryClient()}>
+            <SearchForm {...props} />
+        </QueryClientProvider>
     );
 }
 
