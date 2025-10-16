@@ -1,4 +1,10 @@
-import { Button, Dialog, DialogTitle, DialogActions } from '@mui/material';
+import {
+    Button,
+    Dialog,
+    DialogTitle,
+    DialogActions,
+    DialogContent,
+} from '@mui/material';
 import CancelButton from '../../lib/components/CancelButton';
 import { useTranslate } from '../../i18n/I18NContext';
 import { useState } from 'react';
@@ -24,6 +30,9 @@ export const DeleteSubresourceButton = ({
                     <DialogTitle>
                         {translate('confirm_delete_subresource')}
                     </DialogTitle>
+                    <DialogContent>
+                        {translate('confirm_delete_subresource_details')}
+                    </DialogContent>
                     <DialogActions>
                         <CancelButton onClick={() => setShowDeletePopup(false)}>
                             {translate('cancel')}
