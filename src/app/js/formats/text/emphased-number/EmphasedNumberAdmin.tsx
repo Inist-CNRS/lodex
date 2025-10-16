@@ -73,13 +73,13 @@ const EmphasedNumberAdmin = ({
         [onChange, args],
     );
 
-    const { size, params } = args;
+    const { size = defaultArgs.size, params = defaultArgs.params } = args;
 
     return (
         <FormatGroupedFieldSet>
             <FormatDataParamsFieldSet>
                 <RoutineParamsAdmin
-                    params={params || defaultArgs.params}
+                    params={params}
                     onChange={handleParams}
                     showMaxSize={true}
                     showMaxValue={true}
@@ -93,7 +93,7 @@ const EmphasedNumberAdmin = ({
                     select
                     label={translate('list_format_select_size')}
                     onChange={handleSize}
-                    value={size || defaultArgs.size}
+                    value={size}
                     variant="standard"
                 >
                     <MenuItem value={1}>{translate('size1')}</MenuItem>

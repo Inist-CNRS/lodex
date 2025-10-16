@@ -29,13 +29,17 @@ const UnPaginatedTableAdmin: React.FC<AbstractTableAdminProps> = ({
         onChange,
     });
 
-    const { params, columnsCount, columnsParameters } = args;
+    const {
+        params = defaultArgs.params,
+        columnsCount = defaultArgs.columnsCount,
+        columnsParameters = defaultArgs.columnsParameters,
+    } = args;
 
     return (
         <FormatGroupedFieldSet>
             <FormatDataParamsFieldSet>
                 <RoutineParamsAdmin
-                    params={params || defaultArgs.params}
+                    params={params}
                     onChange={handleParams}
                     showMaxSize={true}
                     showMaxValue={true}
@@ -46,8 +50,8 @@ const UnPaginatedTableAdmin: React.FC<AbstractTableAdminProps> = ({
             <FormatDefaultParamsFieldSet defaultExpanded>
                 <TableColumnsParameters
                     onChange={handleColumnParameter}
-                    parameterCount={columnsCount || 0}
-                    parameters={columnsParameters || []}
+                    parameterCount={columnsCount}
+                    parameters={columnsParameters}
                 />
             </FormatDefaultParamsFieldSet>
         </FormatGroupedFieldSet>

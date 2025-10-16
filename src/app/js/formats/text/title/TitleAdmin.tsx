@@ -24,7 +24,7 @@ type TitleAdminProps = {
 
 const TitleAdmin = ({ args = defaultArgs, onChange }: TitleAdminProps) => {
     const { translate: t } = useTranslate();
-    const { colors = defaultArgs.colors } = args;
+    const { colors = defaultArgs.colors, level = defaultArgs.level } = args;
 
     const handleLevel = useCallback(
         (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -47,8 +47,6 @@ const TitleAdmin = ({ args = defaultArgs, onChange }: TitleAdminProps) => {
         [onChange, args],
     );
 
-    const { level } = args;
-
     return (
         <FormatGroupedFieldSet>
             <FormatDefaultParamsFieldSet defaultExpanded>
@@ -57,7 +55,7 @@ const TitleAdmin = ({ args = defaultArgs, onChange }: TitleAdminProps) => {
                     select
                     label={t('list_format_select_level')}
                     onChange={handleLevel}
-                    value={level || defaultArgs.level}
+                    value={level}
                     variant="standard"
                 >
                     <MenuItem value={1}>{t('level1')}</MenuItem>
