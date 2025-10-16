@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 
 import LoginForm from './LoginForm';
 import { useTranslate } from '../i18n/I18NContext';
-import { login as loginAction } from './';
 
 const styles = {
     container: {
@@ -14,14 +13,10 @@ const styles = {
 };
 
 type LoginComponentProps = {
-    login: (data: { username: string; password: string }) => void;
     target?: 'root' | 'admin';
 };
 
-export const LoginComponent = ({
-    login,
-    target = 'admin',
-}: LoginComponentProps) => {
+export const LoginComponent = ({ target = 'admin' }: LoginComponentProps) => {
     const { translate } = useTranslate();
     const { href, title, className, color, subheader } = useMemo(() => {
         if (target === 'root') {
@@ -67,15 +62,11 @@ export const LoginComponent = ({
                     </Link>
                 }
             />
-            <LoginForm onSubmit={login} />
+            <LoginForm />
         </Card>
     );
 };
 
-export const mapDispatchToProps = {
-    login: loginAction,
-};
-
 export const mapStateToProps = () => ({});
 
-export default connect(mapStateToProps, mapDispatchToProps)(LoginComponent);
+export default connect(mapStateToProps)(LoginComponent);
