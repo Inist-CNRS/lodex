@@ -26,7 +26,7 @@ const theme = createTheme(defaultMuiTheme, {
     userAgent: navigator.userAgent,
 });
 
-const Wrapper = ({
+export const Wrapper = ({
     children,
     store,
 }: {
@@ -46,16 +46,14 @@ Wrapper.propTypes = {
     children: PropTypes.node.isRequired,
 };
 
+export const getStore = (initialState = {}) =>
+    configureStore(reducers, sagas, initialState, memoryHistory).store;
+
 const customRender = (
     ui: ReactElement,
     { initialState = {}, ...options } = {},
 ) => {
-    const { store } = configureStore(
-        reducers,
-        sagas,
-        initialState,
-        memoryHistory,
-    );
+    const store = getStore(initialState);
     const WrapperWithStore = ({ children }: { children: ReactElement }) => (
         <Wrapper store={store}>{children}</Wrapper>
     );
