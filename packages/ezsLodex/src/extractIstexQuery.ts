@@ -1,4 +1,4 @@
-function removeNumberInstance(uri: any) {
+function removeNumberInstance(uri: string) {
     const reg = new RegExp('(\\-\\d+)(\\.[a-z]+)+');
     const match = reg.exec(uri);
 
@@ -33,7 +33,7 @@ export default function extractIstexQuery(this: any, data: any, feed: any) {
         return feed.close();
     }
 
-    const fields = /** @type Field[] */ (this.getParam('fields', []));
+    const fields = /** @type Field[] */ this.getParam('fields', []);
 
     const isIstexQuery = (field: any) => {
         const istexQuerySchemes = [
