@@ -139,8 +139,6 @@ const FlowMapAdmin = ({
 
     const clearAdvancedModeSpec = () => handleAdvancedModeSpec(null);
 
-    console.log({ advancedModeSpec });
-
     const handleParams = useCallback(
         (params: FlowMapParams) => {
             onChange({

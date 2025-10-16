@@ -42,7 +42,6 @@ const FormatFieldSetPreview = ({
     const [dataset, setDataset] = useState({});
 
     useEffect(() => {
-        console.log({ datasets });
         if (datasets && datasets.length >= 1) {
             setDatasetName(datasets[0].name);
         }
