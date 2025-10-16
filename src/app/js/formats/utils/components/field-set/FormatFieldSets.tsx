@@ -16,7 +16,7 @@ type FormatFieldSetProps = {
     id: string;
 };
 
-const VegaFieldSet = ({
+const FormatFieldSet = ({
     children,
     title,
     defaultExpanded = false,
@@ -57,13 +57,13 @@ export const FormatDefaultParamsFieldSet = ({
     defaultExpanded,
 }: FormatDefaultParamsFieldSetProps) => {
     return (
-        <VegaFieldSet
+        <FormatFieldSet
             title="format_default_params"
             id="format-field-set-default-param"
             defaultExpanded={defaultExpanded}
         >
             {children}
-        </VegaFieldSet>
+        </FormatFieldSet>
     );
 };
 
@@ -77,13 +77,13 @@ export const FormatDataParamsFieldSet = ({
     defaultExpanded,
 }: FormatDataParamsFieldSetProps) => {
     return (
-        <VegaFieldSet
+        <FormatFieldSet
             title="format_data_params"
             id="format-field-set-data-param"
             defaultExpanded={defaultExpanded}
         >
             {children}
-        </VegaFieldSet>
+        </FormatFieldSet>
     );
 };
 
@@ -97,13 +97,13 @@ export const FormatChartParamsFieldSet = ({
     defaultExpanded,
 }: FormatChartParamsFieldSetProps) => {
     return (
-        <VegaFieldSet
+        <FormatFieldSet
             title="format_chart_params"
             id="format-field-set-chart-param"
             defaultExpanded={defaultExpanded}
         >
             {children}
-        </VegaFieldSet>
+        </FormatFieldSet>
     );
 };
 
@@ -117,12 +117,12 @@ export const FormatSubFormatParamsFieldSet = ({
     defaultExpanded,
 }: FormatSubFormatParamsFieldSetProps) => {
     return (
-        <VegaFieldSet
+        <FormatFieldSet
             title="format_sub_format_params"
             id="format-field-set-sub-format-param"
             defaultExpanded={defaultExpanded}
         >
             {children}
-        </VegaFieldSet>
+        </FormatFieldSet>
     );
 };
