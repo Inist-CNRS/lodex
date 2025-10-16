@@ -157,7 +157,7 @@ const VegaAdvancedMode = ({
                         }}
                         mode="json"
                         input={{
-                            value: value || '',
+                            value: value || '{}',
                             onChange,
                         }}
                     />

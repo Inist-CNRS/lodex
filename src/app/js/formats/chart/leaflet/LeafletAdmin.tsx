@@ -6,7 +6,7 @@ import {
 import FormatGroupedFieldSet from '../../utils/components/field-set/FormatGroupedFieldSet';
 import { useTranslate } from '../../../i18n/I18NContext';
 import { TextField } from '@mui/material';
-import { useCallback } from 'react';
+import { useCallback, type ChangeEvent } from 'react';
 
 type LeafletArgs = {
     params?: {
@@ -64,10 +64,12 @@ const LeafletAdmin = ({
     );
 
     const handleZoom = useCallback(
-        (zoom: number | undefined) => {
+        (event: ChangeEvent<HTMLInputElement>) => {
             onChange({
                 ...args,
-                zoom,
+                zoom: event.target.value
+                    ? Number(event.target.value)
+                    : undefined,
             });
         },
         [onChange, args],
@@ -90,11 +92,7 @@ const LeafletAdmin = ({
             <FormatChartParamsFieldSet defaultExpanded>
                 <TextField
                     label={translate('zoomByDefault')}
-                    onChange={(e) =>
-                        handleZoom(
-                            e.target.value ? Number(e.target.value) : undefined,
-                        )
-                    }
+                    onChange={handleZoom}
                     value={zoom}
                     fullWidth
                 />
