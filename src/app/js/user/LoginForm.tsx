@@ -3,13 +3,20 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { TextField } from '../reactHookFormFields/TextField';
 import ButtonWithStatus from '../lib/components/ButtonWithStatus';
 import { CardActions, CardContent } from '@mui/material';
+import { useLogin } from '../api/login';
+import Alert from '../lib/components/Alert';
 
-type LoginFormProps = {
-    onSubmit: (data: { username: string; password: string }) => void;
+const styles = {
+    alert: {
+        width: '100%',
+    },
 };
 
-export const LoginFormComponent = ({ onSubmit }: LoginFormProps) => {
+export const LoginFormComponent = () => {
     const { translate } = useTranslate();
+
+    const { login: onSubmit, error, isLoading } = useLogin();
+
     const formMethods = useForm<{
         username: string;
         password: string;
@@ -22,8 +29,16 @@ export const LoginFormComponent = ({ onSubmit }: LoginFormProps) => {
 
     return (
         <FormProvider {...formMethods}>
-            <form id="login_form" onSubmit={handleSubmit(onSubmit)}>
+            <form
+                id="login_form"
+                onSubmit={handleSubmit((data) => onSubmit(data))}
+            >
                 <CardContent>
+                    {error && (
+                        <Alert style={styles.alert}>
+                            <p>{translate(error.message)}</p>
+                        </Alert>
+                    )}
                     <TextField
                         name="username"
                         label={translate('Username')}
@@ -46,7 +61,7 @@ export const LoginFormComponent = ({ onSubmit }: LoginFormProps) => {
                     <ButtonWithStatus
                         loading={isSubmitting}
                         type="submit"
-                        disabled={!isValid || isSubmitting}
+                        disabled={!isValid || isSubmitting || isLoading}
                         color="primary"
                     >
                         {translate('Sign in')}
