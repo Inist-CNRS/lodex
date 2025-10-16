@@ -10,6 +10,7 @@
         "close-by",
         "count-all",
         "count-by-fields",
+        "count-distinct-by",
         "cross-by",
         "decompose-by",
         "distance-with",
