@@ -81,7 +81,6 @@ const SearchAutocomplete = ({
                     disabled={isLoading}
                 />
             )}
-            // @ts-expect-error TS2322
             getOptionLabel={(option) =>
                 `${option.label} ${option.name && `[${option.name}]`}  `
             }
