@@ -89,9 +89,6 @@ export const getReadableValue = ({ field, resource }) => {
 // @ts-expect-error TS7006
 export const getAdminComponent = (name) => getComponent(name).AdminComponent;
 // @ts-expect-error TS7006
-export const getEditionComponent = (field) =>
-    getComponent(field).EditionComponent;
-// @ts-expect-error TS7006
 export const getIconComponent = (name) => getComponent(name).Icon;
 // @ts-expect-error TS7006
 export const getPredicate = (name) => getComponent(name).predicate;

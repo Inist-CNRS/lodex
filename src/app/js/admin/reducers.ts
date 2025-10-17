@@ -1,5 +1,3 @@
-import { reducer as form } from 'redux-form';
-
 import fetchReducer, { type FetchState } from '../fetch';
 import fields from '../fields';
 import i18n from '../i18n';
@@ -48,7 +46,6 @@ export type State = {
 const reducers = {
     fetch: fetchReducer,
     fields,
-    form,
     i18n,
     import: importReducer,
     dump,
