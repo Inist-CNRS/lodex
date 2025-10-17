@@ -243,6 +243,7 @@
     },
     "devDependencies": {
         "@babel/eslint-parser": "^7.26.5",
+        "@cfaester/enzyme-adapter-react-18": "^0.8.0",
         "@eslint/compat": "^1.4.0",
         "@eslint/eslintrc": "^3.3.1",
         "@eslint/js": "^9.36.0",
