@@ -8,7 +8,7 @@ import cacheControl from 'koa-cache-control';
 import config from 'config';
 
 import Script from '../../services/script';
-import { getCleanHost } from '../../../common/uris';
+import { getCleanHost } from '@lodex/common';
 import { mongoConnectionString } from '../../services/mongoClient';
 import localConfig from '../../../../config.json';
 

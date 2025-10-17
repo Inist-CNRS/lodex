@@ -10,7 +10,7 @@ import {
     CONTRIBUTOR_ROLE,
     ROOT_ROLE,
     USER_ROLE,
-} from '../../../common/tools/tenantTools';
+} from '@lodex/common';
 
 const auth = config.get('auth');
 

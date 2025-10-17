@@ -5,7 +5,7 @@ import config from 'config';
 import koaBodyParser from 'koa-bodyparser';
 
 import progress from '../../services/progress';
-import { PENDING, UPLOADING_DATASET } from '../../../common/progressStatus';
+import { ProgressStatus } from '@lodex/common';
 import {
     saveStreamInFile,
     checkFileExists,
@@ -86,9 +86,9 @@ export async function uploadChunkMiddleware(ctx: any, loaderName: any) {
         extension,
         customLoader,
     } = ctx.resumable;
-    if (progress.getProgress(ctx.tenant).status === PENDING) {
+    if (progress.getProgress(ctx.tenant).status === ProgressStatus.PENDING) {
         progress.start(ctx.tenant, {
-            status: UPLOADING_DATASET,
+            status: ProgressStatus.UPLOADING_DATASET,
             target: 100,
             symbol: '%',
             type: IMPORT,
@@ -104,7 +104,10 @@ export async function uploadChunkMiddleware(ctx: any, loaderName: any) {
     );
 
     const progression = Math.round((uploadedFileSize * 100) / totalSize);
-    if (progress.getProgress(ctx.tenant).status === UPLOADING_DATASET) {
+    if (
+        progress.getProgress(ctx.tenant).status ===
+        ProgressStatus.UPLOADING_DATASET
+    ) {
         progress.setProgress(
             ctx.tenant,
             progression === 100 ? 99 : progression,

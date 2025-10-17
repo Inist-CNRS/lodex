@@ -4,7 +4,7 @@ import route from 'koa-route';
 import serve from 'koa-static';
 import path from 'path';
 
-import { DEFAULT_TENANT } from '../../common/tools/tenantTools';
+import { DEFAULT_TENANT } from '@lodex/common';
 import repositoryMiddleware, {
     mongoRootAdminClient,
 } from '../services/repositoryMiddleware';

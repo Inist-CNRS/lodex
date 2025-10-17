@@ -2,7 +2,7 @@ import { useState } from 'react';
 import UploadIcon from '@mui/icons-material/Upload';
 import { Button, CircularProgress, styled } from '@mui/material';
 import { importHiddenResources } from '../api/hiddenResource';
-import { toast } from '../../../../common/tools/toast';
+import { toast } from '@lodex/common';
 import { useLocation, Redirect } from 'react-router-dom';
 import { useTranslate } from '../../i18n/I18NContext';
 

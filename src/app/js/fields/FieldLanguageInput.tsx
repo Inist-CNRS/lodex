@@ -1,6 +1,6 @@
 import { MenuItem } from '@mui/material';
 
-import languages from '../../../common/languages';
+import { languages } from '@lodex/common';
 import getFieldClassName from '../lib/getFieldClassName';
 import { useTranslate } from '../i18n/I18NContext';
 import { TextField } from '../reactHookFormFields/TextField.tsx';

@@ -4,12 +4,7 @@ import get from 'lodash/get';
 import set from 'lodash/set';
 
 import { saveParsedStream } from './saveParsedStream';
-import {
-    connect,
-    loadFixtures,
-    clear,
-    close,
-} from '../../common/tests/fixtures';
+import { connect, loadFixtures, clear, close } from './fixtures';
 import datasetFactory from '../models/dataset';
 import publishedDataset from '../models/publishedDataset';
 import publishedFacet from '../models/publishedFacet';

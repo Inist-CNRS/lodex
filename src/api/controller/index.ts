@@ -14,7 +14,7 @@ import webhook from './webhook';
 import fs from 'fs';
 import { cloneDeep } from 'lodash';
 import configTenantDefault from '../../../configTenant.json';
-import { DEFAULT_TENANT } from '../../common/tools/tenantTools';
+import { DEFAULT_TENANT } from '@lodex/common';
 import repositoryMiddleware, {
     mongoRootAdminClient,
 } from '../services/repositoryMiddleware';

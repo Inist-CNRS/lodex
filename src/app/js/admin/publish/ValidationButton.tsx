@@ -7,7 +7,7 @@ import { List, Popover, IconButton, Tooltip, Box } from '@mui/material';
 import { fromFields } from '../../sharedSelectors';
 import ValidationField from './ValidationField';
 
-import { SCOPE_DOCUMENT } from '../../../../common/scope';
+import { SCOPE_DOCUMENT } from '@lodex/common';
 import { useHistory } from 'react-router-dom';
 import { getEditFieldRedirectUrl } from '../../fields/FieldGrid';
 import WarningIcon from '@mui/icons-material/Warning';

@@ -1,0 +1,11 @@
+{
+	"private": true,
+	"type": "module",
+	"name": "@lodex/common",
+	"description": "Lodex common utilities",
+	"version": "16.0.3",
+	"main": "./src/index.ts",
+	"devDependencies": {
+		"typescript": "^5.9.3"
+	}
+}

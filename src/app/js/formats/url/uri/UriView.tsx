@@ -1,4 +1,4 @@
-import { getResourceUri } from '../../../../../common/uris';
+import { getResourceUri } from '@lodex/common';
 import getLabel from '../../utils/getLabel';
 import InvalidFormat from '../../InvalidFormat';
 import Link from '../../../lib/components/Link';

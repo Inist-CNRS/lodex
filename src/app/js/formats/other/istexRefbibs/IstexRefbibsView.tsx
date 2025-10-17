@@ -4,7 +4,7 @@ import compose from 'recompose/compose';
 
 import fetchDataForComponent from './fetchDataForComponent';
 import Alert from '../../../lib/components/Alert';
-import { REJECTED } from '../../../../../common/propositionStatus';
+import { PropositionStatus } from '@lodex/common';
 import { fetchForIstexRefbibsFormat } from './fetchIstexRefbibsData';
 import IstexItem, { type IstexItemComponentProps } from '../istex/IstexItem';
 
@@ -12,7 +12,8 @@ const styles = {
     text: memoize((status) =>
         Object.assign({
             fontSize: '1rem',
-            textDecoration: status === REJECTED ? 'line-through' : 'none',
+            textDecoration:
+                status === PropositionStatus.REJECTED ? 'line-through' : 'none',
         }),
     ),
     header: {

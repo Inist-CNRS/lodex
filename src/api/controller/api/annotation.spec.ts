@@ -1,11 +1,7 @@
 import { default as _ } from 'lodash';
 import { MongoClient } from 'mongodb';
 import { text } from 'stream/consumers';
-import {
-    ADMIN_ROLE,
-    CONTRIBUTOR_ROLE,
-    USER_ROLE,
-} from '../../../common/tools/tenantTools';
+import { ADMIN_ROLE, CONTRIBUTOR_ROLE, USER_ROLE } from '@lodex/common';
 import createAnnotationModel from '../../models/annotation';
 import configTenant from '../../models/configTenant';
 import createFieldModel from '../../models/field';

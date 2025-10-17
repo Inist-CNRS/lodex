@@ -1,7 +1,7 @@
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import { Box, Link, Typography } from '@mui/material';
 
-import { DEFAULT_TENANT } from '../../../../common/tools/tenantTools';
+import { DEFAULT_TENANT } from '@lodex/common';
 import { useTranslate } from '../../i18n/I18NContext';
 import { getRedirectFieldHash } from './helpers/field';
 import { getResourceType } from './helpers/resourceType';
