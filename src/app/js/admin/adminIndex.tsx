@@ -4,9 +4,7 @@ import 'url-api-polyfill';
 import { createHashHistory } from 'history';
 // @ts-expect-error TS6133
 import React from 'react';
-// ignoring deprecation warning react 18 we are using version 17
-// eslint-disable-next-line react/no-deprecated
-import { render } from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { Redirect, Route } from 'react-router';
 
@@ -71,7 +69,9 @@ if (process.env.NODE_ENV === 'e2e') {
 
 const queryClient = new QueryClient();
 
-render(
+const root = createRoot(document.getElementById('root')!);
+
+root.render(
     <Provider store={store}>
         <QueryClientProvider client={queryClient}>
             <ThemeProvider
@@ -117,5 +117,4 @@ render(
             </ThemeProvider>
         </QueryClientProvider>
     </Provider>,
-    document.getElementById('root'),
 );
