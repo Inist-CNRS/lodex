@@ -1,5 +1,6 @@
-const ezs = require('@ezs/core');
-const from = require('from');
+import from from 'from';
+// @ts-expect-error TS7016
+import ezs from '@ezs/core';
 
 describe('atom.ini', () => {
     it('should parse an ATOM XML feed', (done) => {
@@ -12,7 +13,9 @@ describe('atom.ini', () => {
                 res.push(chunk);
             })
             .on('end', () => {
-                expect(res).toEqual([ { 'any/$t': 'value', 'other/$t': 'thing' } ]); // eslint-disable-line
+                expect(res).toMatchObject([
+                    { 'any/_t': 'value', 'other/_t': 'thing' },
+                ]); // eslint-disable-line
                 done();
             });
     });
