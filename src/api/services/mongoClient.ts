@@ -1,6 +1,6 @@
 import { MongoClient, type Db } from 'mongodb';
 import config from 'config';
-import { DEFAULT_TENANT } from '../../common/tools/tenantTools';
+import { DEFAULT_TENANT } from '@lodex/common';
 
 /**
  * @type {Map<string, MongoClient>}

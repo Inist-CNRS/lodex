@@ -2,9 +2,12 @@ import omit from 'lodash/omit';
 import pick from 'lodash/pick';
 import { ObjectId } from 'mongodb';
 
-import { SCOPE_COLLECTION, SCOPE_DOCUMENT } from '../../common/scope';
-import { URI_FIELD_NAME } from '../../common/uris';
-import { validateField as validateFieldIsomorphic } from '../../common/validateFields';
+import {
+    SCOPE_COLLECTION,
+    SCOPE_DOCUMENT,
+    URI_FIELD_NAME,
+    validateField as validateFieldIsomorphic,
+} from '@lodex/common';
 import { createDiacriticSafeContainRegex } from '../services/createDiacriticSafeContainRegex';
 import generateUid from '../services/generateUid';
 import { castIdsFactory, getCreatedCollection } from './utils';

@@ -2,10 +2,7 @@ import config from 'config';
 import jwt from 'jsonwebtoken';
 
 import { postLogin as login } from './login';
-import {
-    ADMIN_ROLE,
-    CONTRIBUTOR_ROLE,
-} from '../../../common/tools/tenantTools';
+import { ADMIN_ROLE, CONTRIBUTOR_ROLE } from '@lodex/common';
 
 const expDate = Date.now();
 

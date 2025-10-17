@@ -1,13 +1,12 @@
 import { shouldDisplayField } from './shouldDisplayField';
-
-import { REJECTED, VALIDATED } from '../../../common/propositionStatus';
+import { PropositionStatus } from '@lodex/common';
 
 describe('shouldDisplayField', () => {
     describe('with an empty field', () => {
         it('should display an empty field for an admin', () => {
             const field = { name: 'empty' };
             const resource = {};
-            const fieldStatus = VALIDATED;
+            const fieldStatus = PropositionStatus.VALIDATED;
             const predicate = () => true;
             const isAdmin = true;
 
@@ -26,7 +25,7 @@ describe('shouldDisplayField', () => {
         it('should display an empty field for a contributor', () => {
             const field = { name: 'empty' };
             const resource = {};
-            const fieldStatus = VALIDATED;
+            const fieldStatus = PropositionStatus.VALIDATED;
             const predicate = () => true;
             const isAdmin = true;
             const canAnnotate = true;
@@ -47,7 +46,7 @@ describe('shouldDisplayField', () => {
         it('should not display an empty field for a user', () => {
             const field = { name: 'empty' };
             const resource = {};
-            const fieldStatus = VALIDATED;
+            const fieldStatus = PropositionStatus.VALIDATED;
             const predicate = () => true;
             const isAdmin = false;
 
@@ -66,7 +65,7 @@ describe('shouldDisplayField', () => {
         it('should should not display an empty field if the user status is not defined', () => {
             const field = { name: 'empty' };
             const resource = {};
-            const fieldStatus = VALIDATED;
+            const fieldStatus = PropositionStatus.VALIDATED;
             const predicate = () => true;
             const isAdmin = undefined;
 
@@ -85,7 +84,7 @@ describe('shouldDisplayField', () => {
         it('should should not display an empty field if the field status is rejected', () => {
             const field = { name: 'empty' };
             const resource = {};
-            const fieldStatus = REJECTED;
+            const fieldStatus = PropositionStatus.REJECTED;
             const predicate = () => true;
             const isAdmin = undefined;
 
@@ -106,7 +105,7 @@ describe('shouldDisplayField', () => {
         it('should display a filled field for an admin', () => {
             const field = { name: 'title' };
             const resource = { title: 'Title' };
-            const fieldStatus = VALIDATED;
+            const fieldStatus = PropositionStatus.VALIDATED;
             const predicate = () => true;
             const isAdmin = true;
 
@@ -125,7 +124,7 @@ describe('shouldDisplayField', () => {
         it('should display a filled field for a user', () => {
             const field = { name: 'title' };
             const resource = { title: 'Title' };
-            const fieldStatus = VALIDATED;
+            const fieldStatus = PropositionStatus.VALIDATED;
             const predicate = () => true;
             const isAdmin = false;
 
@@ -144,7 +143,7 @@ describe('shouldDisplayField', () => {
         it('should display a filled field if the user status is not defined', () => {
             const field = { name: 'title' };
             const resource = { title: 'Title' };
-            const fieldStatus = VALIDATED;
+            const fieldStatus = PropositionStatus.VALIDATED;
             const predicate = () => true;
             const isAdmin = undefined;
 
@@ -163,7 +162,7 @@ describe('shouldDisplayField', () => {
         it('should not display a filled field for a user if predicate is false', () => {
             const field = { name: 'title' };
             const resource = { title: 'Title' };
-            const fieldStatus = VALIDATED;
+            const fieldStatus = PropositionStatus.VALIDATED;
             const predicate = () => false;
             const isAdmin = false;
 
@@ -182,7 +181,7 @@ describe('shouldDisplayField', () => {
         it('should not display a filled field for a user if the field status is rejected', () => {
             const field = { name: 'title' };
             const resource = { title: 'Title' };
-            const fieldStatus = REJECTED;
+            const fieldStatus = PropositionStatus.REJECTED;
             const predicate = () => false;
             const isAdmin = false;
 
@@ -206,7 +205,7 @@ describe('shouldDisplayField', () => {
                 composedOf: { fields: ['something'] },
             };
             const resource = { title: 'salut', something: 'marmelab' };
-            const fieldStatus = VALIDATED;
+            const fieldStatus = PropositionStatus.VALIDATED;
             const predicate = () => true;
             const isAdmin = true;
 
@@ -228,7 +227,7 @@ describe('shouldDisplayField', () => {
                 composedOf: { fields: ['something'] },
             };
             const resource = { title: 'salut', something: 'marmelab' };
-            const fieldStatus = VALIDATED;
+            const fieldStatus = PropositionStatus.VALIDATED;
             const predicate = () => true;
             const isAdmin = false;
 
@@ -250,7 +249,7 @@ describe('shouldDisplayField', () => {
                 composedOf: { fields: ['something'] },
             };
             const resource = { title: 'salut', something: 'marmelab' };
-            const fieldStatus = VALIDATED;
+            const fieldStatus = PropositionStatus.VALIDATED;
             const predicate = () => true;
             const isAdmin = undefined;
 
@@ -272,7 +271,7 @@ describe('shouldDisplayField', () => {
                 composedOf: { fields: ['something'] },
             };
             const resource = { title: 'salut', something: 'marmelab' };
-            const fieldStatus = REJECTED;
+            const fieldStatus = PropositionStatus.REJECTED;
             const predicate = () => true;
             const isAdmin = undefined;
 
@@ -294,7 +293,7 @@ describe('shouldDisplayField', () => {
                 composedOf: { fields: ['something'] },
             };
             const resource = { title: 'salut', something: 'marmelab' };
-            const fieldStatus = VALIDATED;
+            const fieldStatus = PropositionStatus.VALIDATED;
             const predicate = () => true;
             const isAdmin = true;
 
@@ -316,7 +315,7 @@ describe('shouldDisplayField', () => {
                 composedOf: { fields: ['something'] },
             };
             const resource = { title: 'salut', something: 'marmelab' };
-            const fieldStatus = VALIDATED;
+            const fieldStatus = PropositionStatus.VALIDATED;
             const predicate = () => true;
             const isAdmin = false;
 
@@ -338,7 +337,7 @@ describe('shouldDisplayField', () => {
                 composedOf: { fields: ['something'] },
             };
             const resource = { title: 'salut', something: 'marmelab' };
-            const fieldStatus = VALIDATED;
+            const fieldStatus = PropositionStatus.VALIDATED;
             const predicate = () => true;
             const isAdmin = undefined;
 
@@ -362,7 +361,7 @@ describe('shouldDisplayField', () => {
                 format: { name: 'fieldClone', args: { value: 'clonedField' } },
             };
             const resource = { title: 'Title', clonedField: 'cloned value' };
-            const fieldStatus = VALIDATED;
+            const fieldStatus = PropositionStatus.VALIDATED;
             const predicate = () => true;
             const isAdmin = false;
 
@@ -383,7 +382,7 @@ describe('shouldDisplayField', () => {
                 format: { name: 'fieldClone', args: { value: 'clonedField' } },
             };
             const resource = { title: 'Title', clonedField: '' };
-            const fieldStatus = VALIDATED;
+            const fieldStatus = PropositionStatus.VALIDATED;
             const predicate = () => true;
             const isAdmin = false;
 
@@ -404,7 +403,7 @@ describe('shouldDisplayField', () => {
                 format: { name: 'fieldClone', args: { value: 'clonedField' } },
             };
             const resource = { title: 'Title', clonedField: '' };
-            const fieldStatus = VALIDATED;
+            const fieldStatus = PropositionStatus.VALIDATED;
             const predicate = () => true;
             const isAdmin = true;
 

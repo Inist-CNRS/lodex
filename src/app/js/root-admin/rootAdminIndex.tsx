@@ -13,7 +13,7 @@ import {
     ThemeProvider,
 } from '@mui/material/styles';
 
-import getLocale from '../../../common/getLocale';
+import { getLocale, ROOT_ROLE } from '@lodex/common';
 import { frFR as frFRDatagrid, enUS as enUSDatagrid } from '@mui/x-data-grid';
 import { frFR, enUS } from '@mui/material/locale';
 import rootTheme from '../../custom/themes/rootTheme';
@@ -22,7 +22,6 @@ import { AppBar, Box, Button, Toolbar, Typography } from '@mui/material';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import Tenants from './Tenants';
 import LoginForm from './LoginForm';
-import { ROOT_ROLE } from '../../../common/tools/tenantTools';
 import SystemLoad from './SystemLoad';
 
 const localesMUI = new Map([

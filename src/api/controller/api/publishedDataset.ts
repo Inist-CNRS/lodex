@@ -2,8 +2,7 @@ import Koa from 'koa';
 import route from 'koa-route';
 import koaBodyParser from 'koa-bodyparser';
 
-import { PROPOSED } from '../../../common/propositionStatus';
-import generateUri from '../../../common/transformers/AUTOGENERATE_URI';
+import { PropositionStatus, autoGenerateUriTransformer } from '@lodex/common';
 import ark from './ark';
 import updateFacetValue from '../../services/updateFacetValue';
 import { ObjectId } from 'mongodb';
@@ -220,7 +219,10 @@ export const changePropositionStatus = async (
     );
 };
 
-export const getPropositionPage = async (ctx: any, status = PROPOSED) => {
+export const getPropositionPage = async (
+    ctx: any,
+    status = PropositionStatus.PROPOSED,
+) => {
     const { page = 0, perPage = 10 } = ctx.request.query;
     const intPage = parseInt(page, 10);
     const intPerPage = parseInt(perPage, 10);
@@ -272,7 +274,7 @@ export const editResource = async (ctx: any) => {
 export const createResource = async (ctx: any) => {
     const newResource = ctx.request.body;
     if (!newResource.uri) {
-        newResource.uri = await generateUri()();
+        newResource.uri = await autoGenerateUriTransformer()();
     }
 
     const resource = await ctx.publishedDataset.findByUri(newResource.uri);

@@ -1,5 +1,5 @@
 import { updateCharacteristics, createCharacteristic } from './characteristic';
-import { SCOPE_DATASET } from '../../../common/scope';
+import { SCOPE_DATASET } from '@lodex/common';
 
 describe('characteristic routes', () => {
     describe('updateCharacteristics', () => {

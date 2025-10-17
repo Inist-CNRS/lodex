@@ -1,4 +1,4 @@
-import getDocumentTransformer from '../../common/getDocumentTransformer';
+import { getDocumentTransformer } from '@lodex/common';
 
 export default (fetchLineBy: any, fields: any) =>
     getDocumentTransformer(

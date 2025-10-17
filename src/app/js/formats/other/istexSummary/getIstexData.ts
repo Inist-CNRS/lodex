@@ -1,9 +1,9 @@
 import get from 'lodash/get';
 import omit from 'lodash/omit';
 
-import composeAsync from '../../../../../common/lib/composeAsync';
+import { composeAsync } from '@lodex/common';
+import { ISTEX_API_URL } from '../../../api/externals';
 import { parseFetchResult, output } from '../../utils/fetchIstexData';
-import { ISTEX_API_URL } from '../../../../../common/externals';
 import fetch from '../../../lib/fetch';
 import alphabeticalSort from '../../../lib/alphabeticalSort';
 import { CUSTOM_ISTEX_QUERY, SORT_YEAR_DESC, type SortYear } from './constants';

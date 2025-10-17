@@ -10,14 +10,7 @@ import localConfig from '../../../../config.json';
 import { mongoConnectionString } from '../mongoClient';
 
 import from from 'from';
-import {
-    PENDING as ENRICHMENT_PENDING,
-    IN_PROGRESS,
-    FINISHED,
-    ERROR,
-    CANCELED,
-} from '../../../common/taskStatus';
-import { ENRICHING } from '../../../common/progressStatus';
+import { TaskStatus, ProgressStatus } from '@lodex/common';
 import { jobLogger } from '../../workers/tools';
 import { CancelWorkerError } from '../../workers';
 import getLogger from '../logger';
@@ -327,7 +320,7 @@ const processEnrichmentPipeline = (
                             ? `[Instance: ${ctx.tenant}] Error enriching #${id}: ${value}`
                             : `[Instance: ${ctx.tenant}] Finished enriching #${id} (output: ${value})`,
                         timestamp: new Date(),
-                        status: IN_PROGRESS,
+                        status: TaskStatus.IN_PROGRESS,
                     });
                     errorCount += error ? 1 : 0;
                 } else {
@@ -336,7 +329,7 @@ const processEnrichmentPipeline = (
                         level: 'error',
                         message: `[Instance: ${ctx.tenant}] ${error}`,
                         timestamp: new Date(),
-                        status: IN_PROGRESS,
+                        status: TaskStatus.IN_PROGRESS,
                     });
                 }
                 jobLogger.info(ctx.job, logData);
@@ -356,7 +349,7 @@ export const processEnrichment = async (
     ctx: any,
 ) => {
     const room = `${ctx.tenant}-enrichment-job-${ctx.job.id}`;
-    await ctx.enrichment.updateStatus(enrichment._id, IN_PROGRESS);
+    await ctx.enrichment.updateStatus(enrichment._id, TaskStatus.IN_PROGRESS);
 
     const fusible = await createFusible();
     await enableFusible(fusible);
@@ -378,7 +371,7 @@ export const processEnrichment = async (
         throw error;
     }
 
-    await ctx.enrichment.updateStatus(enrichment._id, FINISHED, {
+    await ctx.enrichment.updateStatus(enrichment._id, TaskStatus.FINISHED, {
         errorCount,
     });
     progress.finish(ctx.tenant);
@@ -386,7 +379,7 @@ export const processEnrichment = async (
         level: 'ok',
         message: `[Instance: ${ctx.tenant}] Enrichement finished`,
         timestamp: new Date(),
-        status: FINISHED,
+        status: TaskStatus.FINISHED,
     });
     jobLogger.info(ctx.job, logData);
     notifyListeners(room, logData);
@@ -397,7 +390,7 @@ export const setEnrichmentJobId = async (
     enrichmentID: any,
     job: any,
 ) => {
-    await ctx.enrichment.updateStatus(enrichmentID, ENRICHMENT_PENDING, {
+    await ctx.enrichment.updateStatus(enrichmentID, TaskStatus.PENDING, {
         jobId: job.id,
     });
 };
@@ -415,7 +408,7 @@ export const startEnrichment = async (ctx: any) => {
     const dataSetSize = await ctx.dataset.count(filter);
     progress.initialize(ctx.tenant);
     progress.start(ctx.tenant, {
-        status: ENRICHING,
+        status: ProgressStatus.ENRICHING,
         target: dataSetSize,
         label: 'ENRICHING',
         subLabel: enrichment.name,
@@ -427,7 +420,7 @@ export const startEnrichment = async (ctx: any) => {
         level: 'ok',
         message: `[Instance: ${ctx.tenant}] Enrichment started`,
         timestamp: new Date(),
-        status: IN_PROGRESS,
+        status: TaskStatus.IN_PROGRESS,
     });
     jobLogger.info(ctx.job, logData);
     notifyListeners(room, logData);
@@ -438,7 +431,9 @@ export const setEnrichmentError = async (ctx: any, err: any) => {
     const id = ctx.job?.data?.id;
     await ctx.enrichment.updateStatus(
         id,
-        err instanceof CancelWorkerError ? CANCELED : ERROR,
+        err instanceof CancelWorkerError
+            ? TaskStatus.CANCELED
+            : TaskStatus.ERROR,
         {
             message: err?.message,
             errorCount: err?.errorCount || 0,
@@ -453,7 +448,10 @@ export const setEnrichmentError = async (ctx: any, err: any) => {
                 ? `[Instance: ${ctx.tenant}] ${err?.message}`
                 : `[Instance: ${ctx.tenant}] Enrichement errored : ${err?.message}`,
         timestamp: new Date(),
-        status: err instanceof CancelWorkerError ? CANCELED : ERROR,
+        status:
+            err instanceof CancelWorkerError
+                ? TaskStatus.CANCELED
+                : TaskStatus.ERROR,
     });
     jobLogger.info(ctx.job, logData);
     notifyListeners(room, logData);
