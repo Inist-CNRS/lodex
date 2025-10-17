@@ -4,9 +4,7 @@ import 'url-api-polyfill';
 // @ts-expect-error TS6133
 import React from 'react';
 
-// ignoring deprecation warning react 18 we are using version 17
-// eslint-disable-next-line react/no-deprecated
-import { render } from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import Polyglot from 'node-polyglot';
 
 import {
@@ -53,11 +51,12 @@ const App = (props) => (
 const elements = document.querySelectorAll('.embedded-istex-summary');
 
 elements.forEach((element) => {
+    const root = createRoot(element);
     const props = {
         api: element.getAttribute('data-api'),
         uri: element.getAttribute('data-uri'),
         fieldName: element.getAttribute('data-field-name'),
     };
 
-    render(<App {...props} />, element);
+    root.render(<App {...props} />);
 });
