@@ -1,7 +1,10 @@
-const from = require('from');
-const ezs = require('@ezs/core');
+import from from 'from';
+// @ts-expect-error TS7016
+import ezs from '@ezs/core';
+// @ts-expect-error TS7016
+import ezsBasics from '@ezs/basics';
 
-ezs.use(require('@ezs/basics'));
+ezs.use(ezsBasics);
 
 test.skip('export one resource in a two-lines TSV', (done) => {
     let outputString = '';
