@@ -44,7 +44,6 @@ export const useLogin = () => {
     const { mutate, error, isLoading } = useMutation({
         mutationFn: login,
         onSuccess: (response) => {
-            console.log('SUCCESS');
             dispatch(loginSuccess(response));
 
             history.push(`${page && page.startsWith('/') ? page : '/'}`);

@@ -212,7 +212,11 @@ describe('useLogin', () => {
             expect(result.current.isLoading).toBe(false);
         });
 
-        expect(result.current.error).toEqual(new Error('Invalid credentials'));
+        await waitFor(() => {
+            expect(result.current.error).toEqual(
+                new Error('Invalid credentials'),
+            );
+        });
         expect(loginSuccess).not.toHaveBeenCalled();
     });
 });
