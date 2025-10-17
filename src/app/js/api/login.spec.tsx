@@ -66,73 +66,74 @@ describe('useLogin', () => {
         queryClient.clear();
     });
 
-    // it('should return login function, loading state, and error state', () => {
-    //     const wrapper = createWrapper('/?page=/admin/dashboard');
-    //     const { result } = renderHook(() => useLogin(), {
-    //         wrapper,
-    //     });
+    it('should return login function, loading state, and error state', () => {
+        const wrapper = createWrapper('/?page=/admin/dashboard');
+        const { result } = renderHook(() => useLogin(), {
+            wrapper,
+        });
 
-    //     expect(result.current.login).toBeInstanceOf(Function);
-    //     expect(result.current.isLoading).toBe(false);
-    //     expect(result.current.error).toBeNull();
-    // });
+        expect(result.current.login).toBeInstanceOf(Function);
+        expect(result.current.isLoading).toBe(false);
+        expect(result.current.error).toBeNull();
+    });
 
-    // it('should call login API and dispatch success action on successful login', async () => {
-    //     const mockResponse = { user: { id: 1, username: 'testuser' } };
-    //     (getUserSessionStorageInfo as jest.Mock).mockReturnValue({
-    //         token: 'mock-token',
-    //     });
-    //     (fetch as jest.Mock).mockImplementation(
-    //         () =>
-    //             new Promise((resolve) =>
-    //                 setTimeout(
-    //                     () =>
-    //                         resolve({
-    //                             error: null,
-    //                             response: mockResponse,
-    //                         }),
-    //                     100,
-    //                 ),
-    //             ),
-    //     );
+    it('should call login API and dispatch success action on successful login', async () => {
+        const mockResponse = { user: { id: 1, username: 'testuser' } };
+        (getUserSessionStorageInfo as jest.Mock).mockReturnValue({
+            token: 'mock-token',
+        });
+        (fetch as jest.Mock).mockImplementation(
+            () =>
+                new Promise((resolve) =>
+                    setTimeout(
+                        () =>
+                            resolve({
+                                error: null,
+                                response: mockResponse,
+                            }),
+                        100,
+                    ),
+                ),
+        );
 
-    //     const { result } = renderHook(() => useLogin(), {
-    //         wrapper: createWrapper('/?page=/admin/dashboard'),
-    //     });
+        const { result } = renderHook(() => useLogin(), {
+            wrapper: createWrapper('/?page=/admin/dashboard'),
+        });
 
-    //     result.current.login({
-    //         username: 'testuser',
-    //         password: 'password123',
-    //     });
+        result.current.login({
+            username: 'testuser',
+            password: 'password123',
+        });
 
-    //     await waitFor(() => {
-    //         expect(result.current.isLoading).toBe(true);
-    //     });
+        await waitFor(() => {
+            expect(result.current.isLoading).toBe(true);
+        });
 
-    //     await waitFor(() => {
-    //         expect(result.current.isLoading).toBe(false);
-    //     });
+        await waitFor(() => {
+            expect(result.current.isLoading).toBe(false);
+        });
 
-    //     expect(getUserSessionStorageInfo).toHaveBeenCalledTimes(1);
-    //     expect(getUserSessionStorageInfo).toHaveBeenCalledWith();
-    //     expect(fetch).toHaveBeenCalledWith({
-    //         url: '/api/login',
-    //         method: 'POST',
-    //         body: JSON.stringify({
-    //             password: 'password123',
-    //             username: 'testuser',
-    //         }),
-    //         credentials: 'same-origin',
-    //         headers: {
-    //             Accept: 'application/json',
-    //             Authorization: 'Bearer mock-token',
-    //             'Content-Type': 'application/json',
-    //             Cookie: undefined,
-    //         },
-    //     });
+        expect(getUserSessionStorageInfo).toHaveBeenCalledTimes(1);
+        expect(getUserSessionStorageInfo).toHaveBeenCalledWith();
+        expect(fetch).toHaveBeenCalledWith({
+            url: '/api/login',
+            method: 'POST',
+            body: JSON.stringify({
+                password: 'password123',
+                username: 'testuser',
+            }),
+            credentials: 'same-origin',
+            headers: {
+                Accept: 'application/json',
+                Authorization: 'Bearer mock-token',
+                'Content-Type': 'application/json',
+                Cookie: undefined,
+            },
+        });
 
-    //     expect(loginSuccess).toHaveBeenCalledWith(mockResponse);
-    // });
+        expect(loginSuccess).toHaveBeenCalledWith(mockResponse);
+    });
+
     it('should redirect to root path on successful login when no page param', async () => {
         (useHistory as jest.Mock).mockReturnValue({ push: jest.fn() });
 
@@ -160,6 +161,7 @@ describe('useLogin', () => {
 
         expect(useHistory().push).toHaveBeenCalledWith('/');
     });
+
     it('should redirect to page when page is set', async () => {
         (useHistory as jest.Mock).mockReturnValue({ push: jest.fn() });
 
