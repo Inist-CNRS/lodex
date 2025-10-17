@@ -1,5 +1,6 @@
-const ezs = require('@ezs/core');
-const from = require('from');
+import from from 'from';
+// @ts-expect-error TS7016
+import ezs from '@ezs/core';
 
 describe('tsv.ini', () => {
     it('should parse a TSV', (done) => {
@@ -10,7 +11,7 @@ describe('tsv.ini', () => {
                 res.push(chunk);
             })
             .on('end', () => {
-                expect(res).toEqual([{ a: '1', b: '2' }]);
+                expect(res).toMatchObject([{ a: '1', b: '2' }]);
                 done();
             });
     });

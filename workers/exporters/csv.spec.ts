@@ -1,5 +1,6 @@
-const from = require('from');
-const ezs = require('@ezs/core');
+import from from 'from';
+// @ts-expect-error TS7016
+import ezs from '@ezs/core';
 
 ezs.use(require('@ezs/basics'));
 

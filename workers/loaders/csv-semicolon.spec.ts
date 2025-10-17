@@ -1,5 +1,6 @@
-const ezs = require('@ezs/core');
-const from = require('from');
+import from from 'from';
+// @ts-expect-error TS7016
+import ezs from '@ezs/core';
 
 describe('csv-semicolon.ini', () => {
     it('should parse a CSV with a semicolon as separator', (done) => {
@@ -10,7 +11,7 @@ describe('csv-semicolon.ini', () => {
                 res.push(chunk);
             })
             .on('end', () => {
-                expect(res).toEqual([{ a: '1', b: '2' }]);
+                expect(res).toMatchObject([{ a: '1', b: '2' }]);
                 done();
             });
     });

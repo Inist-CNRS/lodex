@@ -61,6 +61,18 @@ module.exports = {
             workerIdleMemoryLimit,
         },
         {
+            displayName: 'workers',
+            rootDir: `${__dirname}/workers`,
+            transform,
+            testMatch: [
+                '/**/*.spec.js',
+                '/**/*.spec.jsx',
+                '/**/*.spec.tsx',
+                '/**/*.spec.ts',
+            ],
+            workerIdleMemoryLimit,
+        },
+        {
             displayName: 'transformers',
             rootDir: `${__dirname}/packages/transformers`,
             testMatch: [
