@@ -3,9 +3,7 @@ import { createBrowserHistory } from 'history';
 // @ts-expect-error TS6133
 import React from 'react';
 
-// ignoring deprecation warning react 18 we are using version 17
-// eslint-disable-next-line react/no-deprecated
-import { hydrate } from 'react-dom';
+import { hydrateRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
 import 'url-api-polyfill';
 
@@ -50,7 +48,8 @@ const { store, history } = configureStore(
 
 const queryClient = new QueryClient();
 
-hydrate(
+hydrateRoot(
+    document.getElementById('root')!,
     <Provider {...{ store }}>
         <I18N>
             <QueryClientProvider client={queryClient}>
@@ -68,5 +67,4 @@ hydrate(
             </QueryClientProvider>
         </I18N>
     </Provider>,
-    document.getElementById('root'),
 );
