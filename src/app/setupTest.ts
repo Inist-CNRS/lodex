@@ -7,3 +7,5 @@ Enzyme.configure({ adapter: new Adapter() });
 global.API_URL = 'http://api';
 // @ts-expect-error TS7017
 global.ISTEX_API_URL = 'https://api.istex.fr';
+// @ts-expect-error TS7017
+globalThis.IS_REACT_ACT_ENVIRONMENT = true;
