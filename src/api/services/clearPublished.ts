@@ -1,11 +1,13 @@
-import { UNPUBLISH_DOCUMENT } from '../../common/progressStatus';
+import { ProgressStatus } from '@lodex/common';
 import progress from './progress';
 
 export default async (ctx: any, triggeredFromPublication: any) => {
     progress.start(ctx.tenant, {
-        status: UNPUBLISH_DOCUMENT,
+        status: ProgressStatus.UNPUBLISH_DOCUMENT,
         target: 100,
-        label: triggeredFromPublication ? 'publishing' : UNPUBLISH_DOCUMENT,
+        label: triggeredFromPublication
+            ? 'publishing'
+            : ProgressStatus.UNPUBLISH_DOCUMENT,
         type: 'publisher',
     });
     await ctx.dataset.updateMany(

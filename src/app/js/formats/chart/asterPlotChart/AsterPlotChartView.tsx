@@ -8,7 +8,7 @@ import { getShortText } from '../../../lib/longTexts';
 import stylesToClassname from '../../../lib/stylesToClassName';
 import injectData from '../../injectData';
 import AsterPlot from './AsterPlot';
-import { getResourceUri } from '../../../../../common/uris';
+import { getResourceUri } from '@lodex/common';
 import { translate } from '../../../i18n/I18NContext';
 
 const sortByKey =

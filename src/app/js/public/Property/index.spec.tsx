@@ -1,11 +1,10 @@
-import { REJECTED, VALIDATED } from '../../../../common/propositionStatus';
+import { PropositionStatus, ADMIN_ROLE, USER_ROLE } from '@lodex/common';
 import { useCanAnnotate } from '../../annotation/useCanAnnotate';
 import { PropertyComponent, type PropertyComponentProps } from './index';
 import { render } from '../../../../test-utils';
 import { getPredicate } from '../../formats';
 // @ts-expect-error TS2322
 import { StyleSheetTestUtils } from 'aphrodite';
-import { ADMIN_ROLE, USER_ROLE } from '../../../../common/tools/tenantTools';
 
 jest.mock('../../annotation/useCanAnnotate');
 
@@ -91,7 +90,7 @@ describe('Property', () => {
                                         contributions: [
                                             {
                                                 fieldName: 'field',
-                                                status: VALIDATED,
+                                                status: PropositionStatus.VALIDATED,
                                             },
                                         ],
                                     },
@@ -128,7 +127,7 @@ describe('Property', () => {
                                 contributions: [
                                     {
                                         fieldName: 'field',
-                                        status: VALIDATED,
+                                        status: PropositionStatus.VALIDATED,
                                     },
                                 ],
                             },
@@ -153,7 +152,7 @@ describe('Property', () => {
                                 contributions: [
                                     {
                                         fieldName: 'field',
-                                        status: VALIDATED,
+                                        status: PropositionStatus.VALIDATED,
                                     },
                                 ],
                             },
@@ -181,7 +180,7 @@ describe('Property', () => {
                                 contributions: [
                                     {
                                         fieldName: 'field',
-                                        status: VALIDATED,
+                                        status: PropositionStatus.VALIDATED,
                                     },
                                 ],
                             },
@@ -209,7 +208,7 @@ describe('Property', () => {
                                 contributions: [
                                     {
                                         fieldName: 'field',
-                                        status: VALIDATED,
+                                        status: PropositionStatus.VALIDATED,
                                     },
                                 ],
                             },
@@ -232,7 +231,7 @@ describe('Property', () => {
                             contributions: [
                                 {
                                     fieldName: 'field',
-                                    status: REJECTED,
+                                    status: PropositionStatus.REJECTED,
                                 },
                             ],
                         },
@@ -255,7 +254,7 @@ describe('Property', () => {
                             contributions: [
                                 {
                                     fieldName: 'field',
-                                    status: VALIDATED,
+                                    status: PropositionStatus.VALIDATED,
                                 },
                             ],
                         },
@@ -282,7 +281,7 @@ describe('Property', () => {
                                 contributions: [
                                     {
                                         fieldName: 'field',
-                                        status: VALIDATED,
+                                        status: PropositionStatus.VALIDATED,
                                     },
                                 ],
                             },
@@ -319,7 +318,7 @@ describe('Property', () => {
                                 contributions: [
                                     {
                                         fieldName: 'field',
-                                        status: VALIDATED,
+                                        status: PropositionStatus.VALIDATED,
                                     },
                                 ],
                             },
@@ -354,7 +353,7 @@ describe('Property', () => {
                                         contributions: [
                                             {
                                                 fieldName: 'field',
-                                                status: VALIDATED,
+                                                status: PropositionStatus.VALIDATED,
                                             },
                                         ],
                                     },

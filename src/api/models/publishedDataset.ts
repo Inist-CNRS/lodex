@@ -2,9 +2,8 @@ import { ObjectId } from 'mongodb';
 import chunk from 'lodash/chunk';
 import omit from 'lodash/omit';
 
-import { getFullResourceUri } from '../../common/uris';
+import { getFullResourceUri, PropositionStatus } from '@lodex/common';
 import getPublishedDatasetFilter from './getPublishedDatasetFilter';
-import { VALIDATED, PROPOSED } from '../../common/propositionStatus';
 import { getCreatedCollection } from './utils';
 import { createDiacriticSafeContainRegex } from '../services/createDiacriticSafeContainRegex';
 
@@ -284,15 +283,17 @@ export default async (db: any) => {
                     contributions: {
                         fieldName: field.name,
                         contributor,
-                        status: isLoggedIn ? VALIDATED : PROPOSED,
+                        status: isLoggedIn
+                            ? PropositionStatus.VALIDATED
+                            : PropositionStatus.PROPOSED,
                     },
                 },
                 $inc: isLoggedIn
                     ? {
-                          [`contributionCount.${VALIDATED}`]: 1,
+                          [`contributionCount.${PropositionStatus.VALIDATED}`]: 1,
                       }
                     : {
-                          [`contributionCount.${PROPOSED}`]: 1,
+                          [`contributionCount.${PropositionStatus.PROPOSED}`]: 1,
                       },
                 $push: {
                     versions: {

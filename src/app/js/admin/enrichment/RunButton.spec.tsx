@@ -1,10 +1,9 @@
 import { RunButton } from './RunButton';
-import { FINISHED, IN_PROGRESS, PENDING } from '../../../../common/taskStatus';
-import { toast } from '../../../../common/tools/toast';
+import { TaskStatus, toast } from '@lodex/common';
 import { act, render } from '../../../../test-utils';
 import { fireEvent } from '@testing-library/dom';
 
-jest.mock('../../../../common/tools/toast');
+jest.mock('../../../../../packages/common/src/tools/toast');
 
 describe('RunButton', () => {
     beforeEach(() => {
@@ -64,7 +63,7 @@ describe('RunButton', () => {
         const { getByText } = render(
             <RunButton
                 areEnrichmentsRunning={false}
-                enrichmentStatus={FINISHED}
+                enrichmentStatus={TaskStatus.FINISHED}
                 id="id"
                 onLaunchEnrichment={onLaunchEnrichment}
             />,
@@ -87,7 +86,7 @@ describe('RunButton', () => {
         const { getByText } = render(
             <RunButton
                 areEnrichmentsRunning={false}
-                enrichmentStatus={PENDING}
+                enrichmentStatus={TaskStatus.PENDING}
                 id="id"
                 onLaunchEnrichment={onLaunchEnrichment}
             />,
@@ -107,7 +106,7 @@ describe('RunButton', () => {
         const { getByText } = render(
             <RunButton
                 areEnrichmentsRunning={false}
-                enrichmentStatus={IN_PROGRESS}
+                enrichmentStatus={TaskStatus.IN_PROGRESS}
                 id="id"
                 onLaunchEnrichment={onLaunchEnrichment}
             />,

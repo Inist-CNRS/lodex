@@ -11,7 +11,7 @@ import {
 // @ts-expect-error TS(2792): Cannot find module 'fetch-with-proxy'. Did you mea... Remove this comment to see the full error message
 import fetch from 'fetch-with-proxy';
 import progress from './progress';
-import { INDEXATION, SAVING_DATASET } from '../../common/progressStatus';
+import { ProgressStatus } from '@lodex/common';
 import { Readable } from 'stream';
 import localConfig from '../../../config.json';
 
@@ -66,9 +66,9 @@ export const startImport = async (ctx: any) => {
     let fusible;
     try {
         // @ts-expect-error TS(2339): Property 'status' does not exist on type 'Progress... Remove this comment to see the full error message
-        if (progress.status !== SAVING_DATASET) {
+        if (progress.status !== ProgressStatus.SAVING_DATASET) {
             progress.start(ctx.tenant, {
-                status: SAVING_DATASET,
+                status: ProgressStatus.SAVING_DATASET,
                 subLabel: 'imported_lines',
                 type: 'import',
             });
@@ -117,7 +117,7 @@ export const startImport = async (ctx: any) => {
 
         await ctx.saveParsedStream(ctx, outputStream);
         progress.start(ctx.tenant, {
-            status: INDEXATION,
+            status: ProgressStatus.INDEXATION,
             type: 'import',
         });
         await ctx.dataset.indexColumns();

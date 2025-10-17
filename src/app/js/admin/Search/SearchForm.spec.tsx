@@ -1,7 +1,7 @@
 import { SearchForm, type SearchFormProps } from './SearchForm';
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import * as overview from '../../../../common/overview';
+import { Overview } from '@lodex/common';
 import fieldApi from '../../admin/api/field';
 import { render } from '../../../../test-utils.tsx';
 import { I18NContext } from '../../i18n/I18NContext.tsx';
@@ -112,7 +112,7 @@ describe('saveSyndication', () => {
         );
 
         const autocomplete = screen.getByTestId(
-            `autocomplete_search_syndication_${overview.RESOURCE_TITLE}`,
+            `autocomplete_search_syndication_${Overview.RESOURCE_TITLE}`,
         );
         const input = within(autocomplete).getByRole('combobox');
         autocomplete.focus();
@@ -165,7 +165,7 @@ describe('saveSyndication', () => {
         );
 
         const autocomplete = screen.getByTestId(
-            `autocomplete_search_syndication_${overview.RESOURCE_DESCRIPTION}`,
+            `autocomplete_search_syndication_${Overview.RESOURCE_DESCRIPTION}`,
         );
         const input = within(autocomplete).getByRole('combobox');
         autocomplete.focus();
@@ -218,7 +218,7 @@ describe('saveSyndication', () => {
         );
 
         const autocomplete = screen.getByTestId(
-            `autocomplete_search_syndication_${overview.RESOURCE_DETAIL_1}`,
+            `autocomplete_search_syndication_${Overview.RESOURCE_DETAIL_1}`,
         );
         const input = within(autocomplete).getByRole('combobox');
         autocomplete.focus();
@@ -272,7 +272,7 @@ describe('saveSyndication', () => {
         );
 
         const autocomplete = screen.getByTestId(
-            `autocomplete_search_syndication_${overview.RESOURCE_DETAIL_2}`,
+            `autocomplete_search_syndication_${Overview.RESOURCE_DETAIL_2}`,
         );
         const input = within(autocomplete).getByRole('combobox');
         autocomplete.focus();

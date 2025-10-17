@@ -22,7 +22,7 @@ import getLogger from './services/logger';
 import tenant from './models/tenant';
 import mongoClient from './services/mongoClient';
 import bullBoard from './bullBoard';
-import { DEFAULT_TENANT } from '../common/tools/tenantTools';
+import { DEFAULT_TENANT } from '@lodex/common';
 import { insertConfigTenant } from './services/configTenant';
 
 const meters = Meter([], { loadStandards: true, loadDefaults: true });

@@ -22,13 +22,13 @@ import {
 } from './field';
 
 import _ from 'lodash';
-import { RESOURCE_DETAIL_1 } from '../../../common/overview';
 import {
+    Overview,
     SCOPE_COLLECTION,
     SCOPE_DATASET,
     SCOPE_DOCUMENT,
     SCOPE_GRAPHIC,
-} from '../../../common/scope';
+} from '@lodex/common';
 
 jest.mock('../../services/indexSearchableFields');
 
@@ -96,7 +96,7 @@ describe('field routes', () => {
                     name: 'WXc1',
                     count: 0,
                     display: true,
-                    overview: RESOURCE_DETAIL_1,
+                    overview: Overview.RESOURCE_DETAIL_1,
                     isDefaultSortField: true,
                     sortOrder: 'asc',
                 },
@@ -425,7 +425,7 @@ describe('field routes', () => {
                 request: {
                     body: {
                         _id: insertedFields[0]._id.toString(),
-                        overview: RESOURCE_DETAIL_1,
+                        overview: Overview.RESOURCE_DETAIL_1,
                     },
                 },
                 field: fieldModel,
@@ -434,14 +434,14 @@ describe('field routes', () => {
             // @ts-expect-error TS(2304): Cannot find name 'expect'.
             expect(ctx.body).toStrictEqual({
                 ...insertedFields[0],
-                overview: RESOURCE_DETAIL_1,
+                overview: Overview.RESOURCE_DETAIL_1,
             });
 
             await expect(
                 fieldModel.findOneById(insertedFields[0]._id),
             ).resolves.toStrictEqual({
                 ...insertedFields[0],
-                overview: RESOURCE_DETAIL_1,
+                overview: Overview.RESOURCE_DETAIL_1,
             });
 
             await expect(
@@ -466,7 +466,7 @@ describe('field routes', () => {
                 request: {
                     body: {
                         _id: insertedFields[0]._id.toString(),
-                        overview: RESOURCE_DETAIL_1,
+                        overview: Overview.RESOURCE_DETAIL_1,
                         subresourceId: 'subresourceId',
                     },
                 },
@@ -476,7 +476,7 @@ describe('field routes', () => {
             // @ts-expect-error TS(2304): Cannot find name 'expect'.
             expect(ctx.body).toStrictEqual({
                 ...insertedFields[0],
-                overview: RESOURCE_DETAIL_1,
+                overview: Overview.RESOURCE_DETAIL_1,
                 subresourceId: 'subresourceId',
             });
 
@@ -484,7 +484,7 @@ describe('field routes', () => {
                 fieldModel.findOneById(insertedFields[0]._id),
             ).resolves.toStrictEqual({
                 ...insertedFields[0],
-                overview: RESOURCE_DETAIL_1,
+                overview: Overview.RESOURCE_DETAIL_1,
                 subresourceId: 'subresourceId',
             });
 
@@ -536,7 +536,7 @@ describe('field routes', () => {
                 request: {
                     body: {
                         _id: null,
-                        overview: RESOURCE_DETAIL_1,
+                        overview: Overview.RESOURCE_DETAIL_1,
                     },
                 },
                 field: fieldModel,

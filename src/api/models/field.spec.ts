@@ -1,5 +1,5 @@
 import { MongoClient, ObjectId } from 'mongodb';
-import { SCOPE_DOCUMENT } from '../../common/scope';
+import { SCOPE_DOCUMENT } from '@lodex/common';
 import fieldFactory, {
     buildInvalidPropertiesMessage,
     buildInvalidTransformersMessage,

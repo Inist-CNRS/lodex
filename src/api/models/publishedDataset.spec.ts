@@ -1,5 +1,5 @@
 import publishedDataset from './publishedDataset';
-import { VALIDATED, PROPOSED } from '../../common/propositionStatus';
+import { PropositionStatus } from '@lodex/common';
 
 describe('publishedDataset', () => {
     describe('addVersion', () => {
@@ -103,7 +103,7 @@ describe('publishedDataset', () => {
                             contributions: {
                                 fieldName: field.name,
                                 contributor,
-                                status: VALIDATED,
+                                status: PropositionStatus.VALIDATED,
                             },
                         },
                         $inc: {
@@ -149,7 +149,7 @@ describe('publishedDataset', () => {
                             contributions: {
                                 fieldName: field.name,
                                 contributor,
-                                status: PROPOSED,
+                                status: PropositionStatus.PROPOSED,
                             },
                         },
                         $inc: {

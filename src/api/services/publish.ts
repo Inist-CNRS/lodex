@@ -6,7 +6,7 @@ import {
     SCOPE_DATASET,
     SCOPE_DOCUMENT,
     SCOPE_GRAPHIC,
-} from '../../common/scope';
+} from '@lodex/common';
 import { CancelWorkerError } from '../workers';
 
 const isJobActive = async (ctx: any) => !ctx.job || (await ctx.job.isActive());

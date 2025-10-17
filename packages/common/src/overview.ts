@@ -1,0 +1,25 @@
+const NONE = 0;
+const RESOURCE_TITLE = 1;
+const RESOURCE_DESCRIPTION = 2;
+const RESOURCE_DETAIL_1 = 3;
+const RESOURCE_DETAIL_2 = 4;
+/**
+ * Resource detail 3 is used as subtitle.
+ */
+const RESOURCE_DETAIL_3 = 6;
+const SUBRESOURCE_TITLE = 5;
+
+const DATASET_TITLE = 100;
+const DATASET_DESCRIPTION = 200;
+
+export const Overview = {
+    NONE,
+    RESOURCE_TITLE,
+    RESOURCE_DESCRIPTION,
+    RESOURCE_DETAIL_1,
+    RESOURCE_DETAIL_2,
+    RESOURCE_DETAIL_3,
+    SUBRESOURCE_TITLE,
+    DATASET_TITLE,
+    DATASET_DESCRIPTION,
+};

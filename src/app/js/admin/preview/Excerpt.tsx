@@ -17,7 +17,7 @@ import ExcerptHeader from './ExcerptHeader';
 import ExcerptRemoveColumn from './ExcerptRemoveColumn';
 import ExcerptLine from './ExcerptLine';
 import getFieldClassName from '../../lib/getFieldClassName';
-import { URI_FIELD_NAME } from '../../../../common/uris';
+import { URI_FIELD_NAME } from '@lodex/common';
 import { useTranslate } from '../../i18n/I18NContext';
 
 const styles = {
