@@ -4,6 +4,7 @@ WORKDIR /app
 COPY ./package.json /app
 COPY ./package-lock.json /app
 COPY ./packages /app/packages
+COPY ./vite.config.ts /app
 
 RUN npm install --legacy-peer-deps
 # see .dockerignore to know all copied files

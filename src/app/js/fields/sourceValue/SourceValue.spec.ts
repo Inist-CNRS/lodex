@@ -1,0 +1,328 @@
+import { GET_TRANSFORMERS_FROM_SUBRESOURCE } from './SourceValueFromSubResource';
+import { GET_SOURCE_VALUE_FROM_TRANSFORMERS } from './SourceValueToggle';
+
+describe('SourceValueToggle', () => {
+    describe('GET_SOURCE_VALUE_FROM_TRANSFORMERS', () => {
+        it('returns correct values for operation VALUE', () => {
+            const transformers = [
+                {
+                    id: 'fakeid',
+                    operation: 'VALUE',
+                    args: [{ name: 'test', type: 'string', value: 'test' }],
+                },
+            ];
+            expect(GET_SOURCE_VALUE_FROM_TRANSFORMERS(transformers)).toEqual({
+                source: 'arbitrary',
+                value: 'test',
+            });
+        });
+
+        it('returns correct values for operation COLUMN', () => {
+            const transformers = [
+                {
+                    id: 'fakeid',
+                    operation: 'COLUMN',
+                    args: [
+                        { name: 'test', type: 'column', value: 'columnName' },
+                    ],
+                },
+            ];
+            expect(GET_SOURCE_VALUE_FROM_TRANSFORMERS(transformers)).toEqual({
+                source: 'fromColumns',
+                value: ['columnName'],
+            });
+        });
+
+        it('returns correct values for operation CONCAT', () => {
+            const transformers = [
+                {
+                    id: 'fakeid',
+                    operation: 'CONCAT',
+                    args: [
+                        { name: 'test', type: 'column', value: 'a' },
+                        { name: 'test', type: 'column', value: 'b' },
+                        { name: 'test', type: 'column', value: 'c' },
+                    ],
+                },
+            ];
+            expect(GET_SOURCE_VALUE_FROM_TRANSFORMERS(transformers)).toEqual({
+                source: 'fromColumns',
+                value: ['a', 'b', 'c'],
+            });
+        });
+
+        it('returns null values for invalid operation', () => {
+            const transformers = [
+                { id: 'fakeid', operation: 'INVALID', args: [] },
+            ];
+            expect(GET_SOURCE_VALUE_FROM_TRANSFORMERS(transformers)).toEqual({
+                source: null,
+                value: null,
+            });
+        });
+
+        it('returns null values for missing transformers', () => {
+            expect(GET_SOURCE_VALUE_FROM_TRANSFORMERS(null)).toEqual({
+                source: null,
+                value: null,
+            });
+        });
+
+        it('returns correct values for transformers from a column for subresource', () => {
+            const transformers = [
+                {
+                    id: 'fakeid_1',
+                    operation: 'COLUMN',
+                    args: [{ name: 'column', type: 'column', value: 'path1' }],
+                },
+                { id: 'fakeid_2', operation: 'PARSE' },
+                {
+                    id: 'fakeid_3',
+                    operation: 'GET',
+                    args: [{ name: 'path', type: 'string', value: 'id1' }],
+                },
+                { id: 'fakeid_4', operation: 'STRING' },
+                { id: 'fakeid_5', operation: 'BOOLEAN' },
+            ];
+            expect(
+                GET_SOURCE_VALUE_FROM_TRANSFORMERS(transformers, true),
+            ).toEqual({
+                source: 'fromColumnsForSubRessource',
+                value: ['id1'],
+            });
+        });
+
+        it('returns correct values for transformers from a subresource', () => {
+            const transformers = [
+                {
+                    id: 'fakeid_1',
+                    operation: 'COLUMN',
+                    args: [{ name: 'column', type: 'column', value: 'path1' }],
+                },
+                { id: 'fakeid_2', operation: 'PARSE' },
+                {
+                    id: 'fakeid_3',
+                    operation: 'GET',
+                    args: [{ name: 'path', type: 'string', value: 'id1' }],
+                },
+                { id: 'fakeid_4', operation: 'STRING' },
+                {
+                    id: 'fakeid_5',
+                    operation: 'REPLACE_REGEX',
+                    args: [
+                        {
+                            name: 'searchValue',
+                            type: 'string',
+                            value: '^(.*)$',
+                        },
+                        {
+                            name: 'replaceValue',
+                            type: 'string',
+                            value: 'sub1/$1',
+                        },
+                    ],
+                },
+                { id: 'fakeid_6', operation: 'MD5', args: [] },
+                {
+                    id: 'fakeid_7',
+                    operation: 'REPLACE_REGEX',
+                    args: [
+                        {
+                            name: 'searchValue',
+                            type: 'string',
+                            value: '^(.*)$',
+                        },
+                        {
+                            name: 'replaceValue',
+                            type: 'string',
+                            value: 'uid:/$1',
+                        },
+                    ],
+                },
+            ];
+            expect(GET_SOURCE_VALUE_FROM_TRANSFORMERS(transformers)).toEqual({
+                source: 'fromSubresource',
+                value: null,
+            });
+        });
+
+        it('returns correct values for transformers from a subresource with column', () => {
+            const transformers = [
+                {
+                    id: 'fakeid_1',
+                    operation: 'COLUMN',
+                    args: [{ name: 'column', type: 'column', value: 'path1' }],
+                },
+                { id: 'fakeid_2', operation: 'PARSE' },
+                {
+                    id: 'fakeid_3',
+                    operation: 'GET',
+                    args: [{ name: 'path', type: 'string', value: 'id1' }],
+                },
+                { id: 'fakeid_4', operation: 'STRING' },
+                {
+                    id: 'fakeid_5',
+                    operation: 'REPLACE_REGEX',
+                    args: [
+                        {
+                            name: 'searchValue',
+                            type: 'string',
+                            value: '^(.*)$',
+                        },
+                        {
+                            name: 'replaceValue',
+                            type: 'string',
+                            value: `(sub1)$1`,
+                        },
+                    ],
+                },
+                {
+                    id: 'fakeid_6',
+                    operation: 'REPLACE_REGEX',
+                    args: [
+                        {
+                            name: 'searchValue',
+                            type: 'string',
+                            value: `/^\\((.*)\\)/`,
+                        },
+                        { name: 'replaceValue', type: 'string', value: ' ' },
+                    ],
+                },
+                { id: 'fakeid_7', operation: 'TRIM' },
+                { id: 'fakeid_8', operation: 'BOOLEAN' },
+            ];
+            expect(GET_SOURCE_VALUE_FROM_TRANSFORMERS(transformers)).toEqual({
+                source: 'fromSubresource',
+                value: 'id1',
+            });
+        });
+    });
+});
+
+describe('SourceValueFromSubResource', () => {
+    describe('GET_TRANSFORMERS_FROM_SUBRESOURCE', () => {
+        const subresources = [
+            { path: 'path1', identifier: 'id1', _id: 'sub1' },
+            { path: 'path2', identifier: 'id2', _id: 'sub2' },
+        ];
+
+        test('returns empty array if subresources or subresourcePath is not provided', () => {
+            // @ts-expect-error TS2554
+            expect(GET_TRANSFORMERS_FROM_SUBRESOURCE()).toEqual([]);
+            // @ts-expect-error TS2554
+            expect(GET_TRANSFORMERS_FROM_SUBRESOURCE(subresources)).toEqual([]);
+        });
+
+        test('returns empty array if subresource not found', () => {
+            expect(
+                // @ts-expect-error TS2554
+                GET_TRANSFORMERS_FROM_SUBRESOURCE(subresources, 'path3'),
+            ).toEqual([]);
+        });
+
+        test('returns proper transformers without column', () => {
+            const expectedTransformers = [
+                {
+                    operation: 'COLUMN',
+                    args: [{ name: 'column', type: 'column', value: 'path1' }],
+                },
+                { operation: 'PARSE' },
+                {
+                    operation: 'GET',
+                    args: [{ name: 'path', type: 'string', value: 'id1' }],
+                },
+                { operation: 'STRING' },
+                {
+                    operation: 'REPLACE_REGEX',
+                    args: [
+                        {
+                            name: 'searchValue',
+                            type: 'string',
+                            value: '^(.*)$',
+                        },
+                        {
+                            name: 'replaceValue',
+                            type: 'string',
+                            value: 'sub1/$1',
+                        },
+                    ],
+                },
+                { operation: 'MD5', args: [] },
+                {
+                    operation: 'REPLACE_REGEX',
+                    args: [
+                        {
+                            name: 'searchValue',
+                            type: 'string',
+                            value: '^(.*)$',
+                        },
+                        {
+                            name: 'replaceValue',
+                            type: 'string',
+                            value: 'uid:/$1',
+                        },
+                    ],
+                },
+            ];
+            expect(
+                // @ts-expect-error TS2554
+                GET_TRANSFORMERS_FROM_SUBRESOURCE(subresources, 'path1'),
+            ).toEqual(expectedTransformers);
+        });
+
+        test('returns proper transformers with column', () => {
+            const expectedTransformers = [
+                {
+                    operation: 'COLUMN',
+                    args: [{ name: 'column', type: 'column', value: 'path1' }],
+                },
+                { operation: 'PARSE' },
+                {
+                    operation: 'GET',
+                    args: [
+                        {
+                            name: 'path',
+                            type: 'string',
+                            value: 'columnSelected',
+                        },
+                    ],
+                },
+                { operation: 'STRING' },
+                {
+                    operation: 'REPLACE_REGEX',
+                    args: [
+                        {
+                            name: 'searchValue',
+                            type: 'string',
+                            value: '^(.*)$',
+                        },
+                        {
+                            name: 'replaceValue',
+                            type: 'string',
+                            value: `(sub1)$1`,
+                        },
+                    ],
+                },
+                {
+                    operation: 'REPLACE_REGEX',
+                    args: [
+                        {
+                            name: 'searchValue',
+                            type: 'string',
+                            value: `/^\\((.*)\\)/`,
+                        },
+                        { name: 'replaceValue', type: 'string', value: ' ' },
+                    ],
+                },
+                { operation: 'TRIM' },
+            ];
+            expect(
+                GET_TRANSFORMERS_FROM_SUBRESOURCE(
+                    subresources,
+                    'path1',
+                    'columnSelected',
+                ),
+            ).toEqual(expectedTransformers);
+        });
+    });
+});
