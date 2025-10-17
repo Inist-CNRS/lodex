@@ -1,12 +1,7 @@
-import React, { memo } from 'react';
-import PropTypes from 'prop-types';
+import React, { memo, type CSSProperties } from 'react';
 import classnames from 'classnames';
 
 import Link from '../../lib/components/Link';
-import {
-    field as fieldPropTypes,
-    resource as resourcePropTypes,
-} from '../../propTypes';
 import { isURL, getResourceUri } from '../../../../common/uris';
 import stylesToClassname from '../../lib/stylesToClassName';
 import { Box } from '@mui/material';
@@ -19,7 +14,7 @@ const ellipsis = {
     textOverflow: 'ellipsis',
 };
 
-const styles = stylesToClassname(
+const styles: Record<string, CSSProperties> = stylesToClassname(
     {
         container: {
             display: 'flex',
@@ -76,27 +71,39 @@ const styles = stylesToClassname(
     'search-result',
 );
 
-// @ts-expect-error TS7031
-const SearchResult = ({ fields, fieldNames, result, closeDrawer }) => {
+type SearchResultProps = {
+    fields: Array<any>;
+    fieldNames: {
+        title: string;
+        description: string;
+        detail1: string;
+        detail2: string;
+        detail3: string;
+    };
+    result: Record<string, any>;
+    closeDrawer: () => void;
+};
+
+const SearchResult = ({
+    fields,
+    fieldNames,
+    result,
+    closeDrawer,
+}: SearchResultProps) => {
     const isVisited = useIsVisited(result);
     const [showMore, setShowMore] = React.useState(false);
-    // @ts-expect-error TS7006
     const titleField = fields.find((field) => field.name === fieldNames.title);
     const descriptionField = fields.find(
-        // @ts-expect-error TS7006
         (field) => field.name === fieldNames.description,
     );
     const firstDetailField = fields.find(
-        // @ts-expect-error TS7006
         (field) => field.name === fieldNames.detail1,
     );
     const secondDetailField = fields.find(
-        // @ts-expect-error TS7006
         (field) => field.name === fieldNames.detail2,
     );
 
     const thirdDetailField = fields.find(
-        // @ts-expect-error TS7006
         (field) => field.name === fieldNames.detail3,
     );
 
@@ -114,23 +121,19 @@ const SearchResult = ({ fields, fieldNames, result, closeDrawer }) => {
             routeAware
             className={classnames(
                 'search-result-link',
-                // @ts-expect-error TS2339
                 styles.link,
-                // @ts-expect-error TS2339
                 isVisited && styles.activeLink,
             )}
             onClick={closeDrawer}
         >
             <div
                 id={`search-result-${result.uri}`}
-                // @ts-expect-error TS2339
                 className={classnames('search-result', styles.container)}
             >
                 {titleField && result[titleField.name] && (
                     <Box
                         className={classnames(
                             'search-result-title',
-                            // @ts-expect-error TS2339
                             styles.title,
                         )}
                         title={result[titleField.name]}
@@ -147,7 +150,6 @@ const SearchResult = ({ fields, fieldNames, result, closeDrawer }) => {
                     <Box
                         className={classnames(
                             'search-result-description',
-                            // @ts-expect-error TS2339
                             styles.description,
                         )}
                         title={result[descriptionField.name]}
@@ -171,7 +173,6 @@ const SearchResult = ({ fields, fieldNames, result, closeDrawer }) => {
                     <div
                         className={classnames(
                             'search-result-details',
-                            // @ts-expect-error TS2339
                             styles.details,
                         )}
                     >
@@ -179,7 +180,6 @@ const SearchResult = ({ fields, fieldNames, result, closeDrawer }) => {
                             <Box
                                 className={classnames(
                                     'search-result-detail1',
-                                    // @ts-expect-error TS2339
                                     styles.detailsColumn,
                                 )}
                                 title={result[firstDetailField.name]}
@@ -197,7 +197,6 @@ const SearchResult = ({ fields, fieldNames, result, closeDrawer }) => {
                                 <Box
                                     className={classnames(
                                         'search-result-detail2',
-                                        // @ts-expect-error TS2339
                                         styles.detailsColumn,
                                     )}
                                     title={result[secondDetailField.name]}
@@ -217,14 +216,12 @@ const SearchResult = ({ fields, fieldNames, result, closeDrawer }) => {
                             <div
                                 className={classnames(
                                     'search-result-detail-third',
-                                    // @ts-expect-error TS2339
                                     styles.details,
                                 )}
                             >
                                 <div
                                     className={classnames(
                                         'search-result-detail-3',
-                                        // @ts-expect-error TS2339
                                         styles.detailsColumn,
                                     )}
                                     title={result[thirdDetailField.name]}
@@ -259,19 +256,6 @@ const SearchResult = ({ fields, fieldNames, result, closeDrawer }) => {
             </div>
         </Link>
     );
-};
-
-SearchResult.propTypes = {
-    fields: PropTypes.arrayOf(fieldPropTypes).isRequired,
-    fieldNames: PropTypes.shape({
-        title: PropTypes.string,
-        description: PropTypes.string,
-        detail1: PropTypes.string,
-        detail2: PropTypes.string,
-        detail3: PropTypes.string,
-    }).isRequired,
-    result: resourcePropTypes.isRequired,
-    closeDrawer: PropTypes.func.isRequired,
 };
 
 export default memo(
