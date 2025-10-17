@@ -34,7 +34,6 @@ describe('SearchResult', () => {
                     ]}
                     result={{
                         uri: 'resource/uri',
-                        // @ts-expect-error TS2322
                         title: 'Resource Title',
                         description: 'Resource Description',
                         detail1: 'Resource Detail 1',
@@ -74,7 +73,6 @@ describe('SearchResult', () => {
                     ]}
                     result={{
                         uri: 'resource/uri',
-                        // @ts-expect-error TS2322
                         title: 'Resource Title',
                         description: 'Resource Description',
                         detail1: 'Resource Detail 1',
@@ -117,7 +115,6 @@ describe('SearchResult', () => {
                     ]}
                     result={{
                         uri: 'resource/uri',
-                        // @ts-expect-error TS2322
                         title: 'Resource Title',
                         description: 'Resource Description',
                         detail1: 'Resource Detail 1',
