@@ -1,5 +1,3 @@
-import { reducer as form } from 'redux-form';
-
 import characteristic from '../characteristic';
 import dataset from './dataset';
 import exportReducer from './export';
@@ -20,7 +18,6 @@ const reducers = {
     dataset,
     export: exportReducer,
     fetch: fetchReducer,
-    form,
     i18n,
     fields,
     resource,
