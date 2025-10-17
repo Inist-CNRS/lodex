@@ -1,4 +1,4 @@
-import { PUBLISH_FACET } from '../../../common/progressStatus';
+import { ProgressStatus } from '@lodex/common';
 import progress from '../../services/progress';
 import { jobLogger } from '../../workers/tools';
 
@@ -10,7 +10,7 @@ export default async (ctx: any, fields: any, withProgress = false) => {
     }
     withProgress &&
         progress.start(ctx.tenant, {
-            status: PUBLISH_FACET,
+            status: ProgressStatus.PUBLISH_FACET,
             target: facetFields.length,
             label: 'publishing',
             type: 'publisher',

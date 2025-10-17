@@ -2,7 +2,7 @@ import { cleanWaitingJobsOfType, workerQueues, CancelWorkerError } from '.';
 // @ts-expect-error TS(2792): Cannot find module 'uuid'. Did you mean to install... Remove this comment to see the full error message
 import { disableFusible } from '@ezs/core/fusible';
 
-import { ERROR } from '../../common/progressStatus';
+import { ProgressStatus } from '@lodex/common';
 import getLogger from '../services/logger';
 import progress from '../services/progress';
 import { notifyListeners } from './import';
@@ -81,7 +81,7 @@ export const cancelJob = async (ctx: any, jobType: any, subLabel = null) => {
         );
         // get precomputed job
         const precomputedID = jobToFail?.data?.id;
-        await ctx.precomputed.updateStatus(precomputedID, ERROR);
+        await ctx.precomputed.updateStatus(precomputedID, ProgressStatus.ERROR);
         progress.finish(ctx.tenant);
         notifyListeners(`${jobToFail?.data?.tenant}-precomputer`, {
             isPrecomputing: false,

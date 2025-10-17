@@ -5,11 +5,7 @@ import mount from 'koa-mount';
 import route from 'koa-route';
 import get from 'lodash/get';
 
-import {
-    ADMIN_ROLE,
-    CONTRIBUTOR_ROLE,
-    USER_ROLE,
-} from '../../../common/tools/tenantTools';
+import { ADMIN_ROLE, CONTRIBUTOR_ROLE, USER_ROLE } from '@lodex/common';
 import tenant from '../../models/tenant';
 import ezMasterConfig from '../../services/ezMasterConfig';
 import mongoClient from '../../services/mongoClient';

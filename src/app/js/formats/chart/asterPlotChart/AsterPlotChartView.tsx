@@ -1,5 +1,3 @@
-// @ts-expect-error TS6133
-import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
@@ -11,7 +9,7 @@ import { getShortText } from '../../../lib/longTexts';
 import stylesToClassname from '../../../lib/stylesToClassName';
 import injectData from '../../injectData';
 import AsterPlot from './AsterPlot';
-import { getResourceUri } from '../../../../../common/uris';
+import { getResourceUri } from '@lodex/common';
 import { translate } from '../../../i18n/I18NContext';
 
 const sortByKey =

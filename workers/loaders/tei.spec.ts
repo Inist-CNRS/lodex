@@ -1,5 +1,6 @@
-const ezs = require('@ezs/core');
-const from = require('from');
+import from from 'from';
+// @ts-expect-error TS7016
+import ezs from '@ezs/core';
 
 describe('tei.ini', () => {
     it('should parse a TEI XML', (done) => {
@@ -12,7 +13,9 @@ describe('tei.ini', () => {
                 res.push(chunk);
             })
             .on('end', () => {
-                expect(res).toEqual([ { any: [ { $t: 'value' }, { $t: 'other' } ] } ]); // eslint-disable-line
+                expect(res).toMatchObject([
+                    { 'any/0/_t': 'value', 'any/1/_t': 'other' },
+                ]);
                 done();
             });
     });

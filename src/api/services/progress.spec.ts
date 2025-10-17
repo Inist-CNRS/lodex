@@ -1,5 +1,5 @@
 import { Progress } from './progress';
-import { PENDING, PUBLISH_DOCUMENT } from '../../common/progressStatus';
+import { ProgressStatus } from '@lodex/common';
 
 describe('Progress', () => {
     const progress = new Progress();
@@ -12,19 +12,22 @@ describe('Progress', () => {
             target: undefined,
             progress: undefined,
             symbol: undefined,
-            status: PENDING,
+            status: ProgressStatus.PENDING,
             isBackground: false,
             label: undefined,
         });
     });
 
     it('should change status on start if target is 0', () => {
-        progress.start('lodex_test', { status: PUBLISH_DOCUMENT, target: 0 });
+        progress.start('lodex_test', {
+            status: ProgressStatus.PUBLISH_DOCUMENT,
+            target: 0,
+        });
 
         expect(progress.getProgress('lodex_test')).toEqual({
             target: 0,
             progress: 0,
-            status: PUBLISH_DOCUMENT,
+            status: ProgressStatus.PUBLISH_DOCUMENT,
             symbol: undefined,
             error: null,
             isBackground: true,
@@ -33,12 +36,15 @@ describe('Progress', () => {
     });
 
     it('should allow to follow Progress', () => {
-        progress.start('lodex_test', { status: PUBLISH_DOCUMENT, target: 30 });
+        progress.start('lodex_test', {
+            status: ProgressStatus.PUBLISH_DOCUMENT,
+            target: 30,
+        });
 
         expect(progress.getProgress('lodex_test')).toEqual({
             target: 30,
             progress: 0,
-            status: PUBLISH_DOCUMENT,
+            status: ProgressStatus.PUBLISH_DOCUMENT,
             symbol: undefined,
             error: null,
             isBackground: true,
@@ -50,7 +56,7 @@ describe('Progress', () => {
         expect(progress.getProgress('lodex_test')).toEqual({
             target: 30,
             progress: 10,
-            status: PUBLISH_DOCUMENT,
+            status: ProgressStatus.PUBLISH_DOCUMENT,
             symbol: undefined,
             error: null,
             isBackground: true,
@@ -62,7 +68,7 @@ describe('Progress', () => {
         expect(progress.getProgress('lodex_test')).toEqual({
             target: 30,
             progress: 20,
-            status: PUBLISH_DOCUMENT,
+            status: ProgressStatus.PUBLISH_DOCUMENT,
             symbol: undefined,
             error: null,
             isBackground: true,
@@ -74,7 +80,7 @@ describe('Progress', () => {
         expect(progress.getProgress('lodex_test')).toEqual({
             target: 30,
             progress: 30,
-            status: PUBLISH_DOCUMENT,
+            status: ProgressStatus.PUBLISH_DOCUMENT,
             symbol: undefined,
             error: null,
             isBackground: true,
@@ -99,7 +105,7 @@ describe('Progress', () => {
     describe('.throw', () => {
         it('should cancel progress ignoring all further operation until getProgress is called that will throw the error', () => {
             progress.start('lodex_test', {
-                status: PUBLISH_DOCUMENT,
+                status: ProgressStatus.PUBLISH_DOCUMENT,
                 target: 30,
             });
             const error = new Error('Boom');

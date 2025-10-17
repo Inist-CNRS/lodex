@@ -1,4 +1,4 @@
-import composeAsync from '../../common/lib/composeAsync';
+import { composeAsync } from '@lodex/common';
 import mongoClient from './mongoClient';
 import field from '../models/field';
 import publishedDataset from '../models/publishedDataset';

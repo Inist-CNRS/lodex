@@ -1,7 +1,6 @@
 import get from 'lodash/get';
 
-import isEmpty from '../../../common/lib/isEmpty';
-import { REJECTED } from '../../../common/propositionStatus';
+import { isEmpty, PropositionStatus } from '@lodex/common';
 
 export const shouldDisplayField = (
     // @ts-expect-error TS7006
@@ -18,7 +17,7 @@ export const shouldDisplayField = (
         return true;
     }
 
-    if (fieldStatus === REJECTED) {
+    if (fieldStatus === PropositionStatus.REJECTED) {
         return false;
     }
 

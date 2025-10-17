@@ -1,4 +1,4 @@
-import { SCOPE_COLLECTION, SCOPE_DOCUMENT } from '../../common/scope';
+import { SCOPE_COLLECTION, SCOPE_DOCUMENT } from '@lodex/common';
 
 export const saveParsedStream = async (ctx: any, parsedStream: any) => {
     const publishedCount = await ctx.publishedDataset.count();

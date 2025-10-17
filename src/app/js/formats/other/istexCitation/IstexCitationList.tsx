@@ -10,7 +10,7 @@ import { getMoreDocumentData } from '../istexSummary/getIstexData';
 import ButtonWithStatus from '../../../lib/components/ButtonWithStatus';
 import stylesToClassname from '../../../lib/stylesToClassName';
 import { HOST_TITLE_RAW } from '../istexSummary/constants';
-import { ISTEX_SITE_URL } from '../../../../../common/externals';
+import { ISTEX_SITE_URL } from '@lodex/common';
 
 const styles = stylesToClassname(
     {

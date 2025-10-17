@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import get from 'lodash/get';
 import URL from 'url';
 
-import { isURL } from '../../../../../common/uris';
+import { isURL } from '@lodex/common';
 import LodexResource from '../../utils/components/LodexResource';
 import { field as fieldPropTypes } from '../../../propTypes';
 import injectData from '../../injectData';

@@ -1,8 +1,6 @@
 // @ts-expect-error TS7016
 import fetch from 'fetch-with-proxy';
-
-import { getHost } from '../../../common/uris';
-import { DEFAULT_TENANT } from '../../../common/tools/tenantTools';
+import { getHost, DEFAULT_TENANT } from '@lodex/common';
 
 // @ts-expect-error TS7031
 export default ({ url, ...config }, mode = 'json') => {

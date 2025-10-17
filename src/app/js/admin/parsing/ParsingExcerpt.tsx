@@ -10,10 +10,9 @@ import ParsingExcerptColumn from './ParsingExcerptColumn';
 import ParsingExcerptHeaderColumn from './ParsingExcerptHeaderColumn';
 import ParsingExcerptAddColumn from './ParsingExcerptAddColumn';
 import { fromEnrichments, fromParsing, fromSubresources } from '../selectors';
-import { IN_PROGRESS } from '../../../../common/taskStatus';
 import { addField } from '../../fields';
 import { useParams } from 'react-router';
-import parseValue from '../../../../common/tools/parseValue';
+import { parseValue, TaskStatus } from '@lodex/common';
 
 // @ts-expect-error TS7006
 export const getRowStyle = (index, total) => {
@@ -105,7 +104,7 @@ export const ParsingExcerptComponent = ({
         return (
             // @ts-expect-error TS7006
             enrichments?.find((enrichiment) => enrichiment.name === column)
-                ?.status === IN_PROGRESS
+                ?.status === TaskStatus.IN_PROGRESS
         );
     };
 

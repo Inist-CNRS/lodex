@@ -10,7 +10,7 @@ import config from 'config';
 
 import Script from '../../services/script';
 import localConfig from '../../../../config.json';
-import { getCleanHost } from '../../../common/uris';
+import { getCleanHost } from '@lodex/common';
 import { mongoConnectionString } from '../../services/mongoClient';
 import { ObjectId } from 'mongodb';
 

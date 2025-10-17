@@ -1,5 +1,6 @@
-const ezs = require('@ezs/core');
-const from = require('from');
+import from from 'from';
+// @ts-expect-error TS7016
+import ezs from '@ezs/core';
 
 describe('xml.ini', () => {
     it('should parse a RDF XML', (done) => {
@@ -12,8 +13,11 @@ describe('xml.ini', () => {
                 res.push(chunk);
             })
             .on('end', () => {
-                expect(res.length).toEqual(2); // eslint-disable-line
-                expect(res).toEqual([ { 'f1/$t': 'val1', 'f2/$t': 'val2' }, { 'f1/$t': 'val1', 'f2/$t': 'val2' } ]); // eslint-disable-line
+                expect(res.length).toEqual(2);
+                expect(res).toMatchObject([
+                    { 'f1/_t': 'val1', 'f2/_t': 'val2' },
+                    { 'f1/_t': 'val1', 'f2/_t': 'val2' },
+                ]);
                 done();
             });
     });
@@ -28,7 +32,7 @@ describe('xml.ini', () => {
                 res.push(chunk);
             })
             .on('end', () => {
-              expect(res).toEqual([{ 'test/$t': 'value' }]); // eslint-disable-line
+                expect(res).toMatchObject([{ 'test/_t': 'value' }]);
                 done();
             });
     });

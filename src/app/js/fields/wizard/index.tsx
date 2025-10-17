@@ -13,8 +13,8 @@ import {
     SCOPE_DATASET,
     SCOPE_DOCUMENT,
     SCOPE_GRAPHIC,
-} from '../../../../common/scope';
-import { toast } from '../../../../common/tools/toast';
+    toast,
+} from '@lodex/common';
 import { hideAddColumns } from '../../admin/parsing';
 import {
     field as fieldPropTypes,

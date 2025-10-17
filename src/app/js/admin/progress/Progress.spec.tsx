@@ -4,7 +4,7 @@ import { shallow } from 'enzyme';
 import { Dialog, LinearProgress } from '@mui/material';
 
 import { ProgressComponent as Progress } from './Progress';
-import { PENDING, STARTING } from '../../../../common/progressStatus';
+import { ProgressStatus } from '@lodex/common';
 
 // @ts-expect-error TS7006
 const identity = (x) => x;
@@ -14,7 +14,7 @@ describe('Progress', () => {
         loadProgress: () => null,
         clearProgress: () => null,
         progress: {
-            status: STARTING,
+            status: ProgressStatus.STARTING,
             target: 0,
             progress: 0,
         },
@@ -31,7 +31,7 @@ describe('Progress', () => {
             ...defaultProps,
             progress: {
                 ...defaultProps.progress,
-                status: PENDING,
+                status: ProgressStatus.PENDING,
             },
         };
         // @ts-expect-error TS2322

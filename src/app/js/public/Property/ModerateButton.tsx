@@ -11,7 +11,7 @@ import { translate } from '../../i18n/I18NContext';
 import { red, yellow, green, grey } from '@mui/material/colors';
 import classnames from 'classnames';
 
-import propositionStatus from '../../../../common/propositionStatus';
+import { propositionStatuses } from '@lodex/common';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { fromResource } from '../selectors';
 import { fromUser } from '../../sharedSelectors';
@@ -67,7 +67,7 @@ export const ModerateButtonComponent = ({
     }
     return (
         <div className="moderate">
-            {propositionStatus.map((availableStatus) => (
+            {propositionStatuses.map((availableStatus) => (
                 // @ts-expect-error TS2769
                 <IconButton
                     className={classnames(availableStatus, {
@@ -96,7 +96,7 @@ ModerateButtonComponent.defaultProps = {
 
 ModerateButtonComponent.propTypes = {
     contributor: PropTypes.string,
-    status: PropTypes.oneOf(propositionStatus),
+    status: PropTypes.oneOf(propositionStatuses),
     changeStatus: PropTypes.func.isRequired,
     isAdmin: PropTypes.bool.isRequired,
     p: polyglotPropTypes.isRequired,

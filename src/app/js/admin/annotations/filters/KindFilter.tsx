@@ -2,7 +2,7 @@ import { FormControl, InputLabel, NativeSelect } from '@mui/material';
 import PropTypes from 'prop-types';
 // @ts-expect-error TS6133
 import React from 'react';
-import { kinds } from '../../../../../common/validator/annotation.validator';
+import { kinds } from '@lodex/common';
 import { useTranslate } from '../../../i18n/I18NContext';
 
 // @ts-expect-error TS7031

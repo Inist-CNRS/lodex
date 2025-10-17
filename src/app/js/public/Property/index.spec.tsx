@@ -2,7 +2,7 @@ import { shallow } from 'enzyme';
 // @ts-expect-error TS6133
 import React from 'react';
 
-import { REJECTED, VALIDATED } from '../../../../common/propositionStatus';
+import { PropositionStatus } from '@lodex/common';
 import { useCanAnnotate } from '../../annotation/useCanAnnotate';
 import { PropertyComponent } from './index';
 
@@ -15,7 +15,7 @@ describe('Property', () => {
         resource: {
             field: 'value',
         },
-        fieldStatus: VALIDATED,
+        fieldStatus: PropositionStatus.VALIDATED,
         isAdmin: true,
         changeStatus: () => null,
         parents: [],
@@ -87,7 +87,7 @@ describe('Property', () => {
                 // @ts-expect-error TS2741
                 <PropertyComponent
                     {...defaultProps}
-                    fieldStatus={REJECTED}
+                    fieldStatus={PropositionStatus.REJECTED}
                     isAdmin={false}
                 />,
             );

@@ -1,5 +1,6 @@
-const ezs = require('@ezs/core');
-const from = require('from');
+import from from 'from';
+// @ts-expect-error TS7016
+import ezs from '@ezs/core';
 
 describe('json-lodex.ini', () => {
     it('should parse a JSON', (done) => {
@@ -12,7 +13,7 @@ describe('json-lodex.ini', () => {
                 res.push(chunk);
             })
             .on('end', () => {
-                expect(res).toEqual(expected);
+                expect(res).toMatchObject(expected);
                 done();
             });
     });

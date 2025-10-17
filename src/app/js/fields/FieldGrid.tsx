@@ -25,8 +25,7 @@ import { NoField } from './NoField';
 import { changePositions, loadField, saveFieldFromData } from '../fields';
 
 import { useHistory, useLocation } from 'react-router';
-import { SCOPE_DOCUMENT } from '../../../common/scope';
-import { toast } from '../../../common/tools/toast';
+import { SCOPE_DOCUMENT, toast } from '@lodex/common';
 import fieldApi from '../admin/api/field';
 import { translate } from '../i18n/I18NContext';
 import FieldRepresentation from './FieldRepresentation';

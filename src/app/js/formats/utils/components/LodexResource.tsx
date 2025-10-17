@@ -2,7 +2,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { isLocalURL, getResourceUri } from '../../../../../common/uris';
+import { isLocalURL, getResourceUri } from '@lodex/common';
 import Link from '../../../lib/components/Link';
 import stylesToClassname from '../../../lib/stylesToClassName';
 import { truncateByWords } from '../../stringUtils';

@@ -7,7 +7,7 @@ import {
     field as fieldPropTypes,
     resource as resourcePropTypes,
 } from '../../propTypes';
-import { isURL, getResourceUri } from '../../../../common/uris';
+import { isURL, getResourceUri } from '@lodex/common';
 import stylesToClassname from '../../lib/stylesToClassName';
 import { Box } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';

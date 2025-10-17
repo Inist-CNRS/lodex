@@ -6,7 +6,7 @@ import { SearchForm } from './SearchForm';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { fireEvent, waitFor, within } from '@testing-library/react';
 import PropTypes from 'prop-types';
-import * as overview from '../../../../common/overview';
+import { Overview } from '@lodex/common';
 import fieldApi from '../../admin/api/field';
 import { render } from '../../../../test-utils.tsx';
 
@@ -122,7 +122,7 @@ describe('saveSyndication', () => {
         );
 
         const autocomplete = getByTestId(
-            `autocomplete_search_syndication_${overview.RESOURCE_TITLE}`,
+            `autocomplete_search_syndication_${Overview.RESOURCE_TITLE}`,
         );
         const input = within(autocomplete).getByRole('textbox');
         autocomplete.focus();
@@ -175,7 +175,7 @@ describe('saveSyndication', () => {
         );
 
         const autocomplete = getByTestId(
-            `autocomplete_search_syndication_${overview.RESOURCE_DESCRIPTION}`,
+            `autocomplete_search_syndication_${Overview.RESOURCE_DESCRIPTION}`,
         );
         const input = within(autocomplete).getByRole('textbox');
         autocomplete.focus();
@@ -228,7 +228,7 @@ describe('saveSyndication', () => {
         );
 
         const autocomplete = getByTestId(
-            `autocomplete_search_syndication_${overview.RESOURCE_DETAIL_1}`,
+            `autocomplete_search_syndication_${Overview.RESOURCE_DETAIL_1}`,
         );
         const input = within(autocomplete).getByRole('textbox');
         autocomplete.focus();
@@ -281,7 +281,7 @@ describe('saveSyndication', () => {
         );
 
         const autocomplete = getByTestId(
-            `autocomplete_search_syndication_${overview.RESOURCE_DETAIL_2}`,
+            `autocomplete_search_syndication_${Overview.RESOURCE_DETAIL_2}`,
         );
         const input = within(autocomplete).getByRole('textbox');
         autocomplete.focus();

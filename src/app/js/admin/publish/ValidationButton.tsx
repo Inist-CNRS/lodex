@@ -14,7 +14,7 @@ import {
     validationField as validationFieldPropType,
     polyglot as polyglotPropTypes,
 } from '../../propTypes';
-import { SCOPE_DOCUMENT } from '../../../../common/scope';
+import { SCOPE_DOCUMENT } from '@lodex/common';
 import { useHistory } from 'react-router-dom';
 import { getEditFieldRedirectUrl } from '../../fields/FieldGrid';
 import WarningIcon from '@mui/icons-material/Warning';

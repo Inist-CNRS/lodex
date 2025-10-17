@@ -15,7 +15,7 @@ import PropTypes from 'prop-types';
 // @ts-expect-error TS6133
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { connect } from 'react-redux';
-import { IN_PROGRESS } from '../../../../common/taskStatus';
+import { TaskStatus } from '@lodex/common';
 
 import { AddBox as AddBoxIcon } from '@mui/icons-material';
 import {
@@ -173,7 +173,7 @@ export const ParsingResultComponent = (props) => {
                             // @ts-expect-error TS7006
                             (enrichment) =>
                                 enrichment.name === key &&
-                                enrichment.status === IN_PROGRESS,
+                                enrichment.status === TaskStatus.IN_PROGRESS,
                         );
                     const errorCount = isEnrichment
                         ? enrichments.find(

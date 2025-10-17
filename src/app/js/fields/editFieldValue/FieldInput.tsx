@@ -8,8 +8,7 @@ import { Field } from 'redux-form';
 import { getEditionComponent, getPredicate } from '../../formats';
 import CompositeFieldInput from './CompositeFieldInput';
 import { fromFields } from '../../sharedSelectors';
-import isFieldRequired from '../../../../common/fields/isFieldRequired';
-import isEmpty from '../../../../common/lib/isEmpty';
+import { isFieldRequired, isEmpty } from '@lodex/common';
 
 import {
     field as fieldPropTypes,

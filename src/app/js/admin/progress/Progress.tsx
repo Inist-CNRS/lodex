@@ -12,10 +12,9 @@ import compose from 'recompose/compose';
 
 import { fromProgress } from '../selectors';
 import { loadProgress, clearProgress } from './reducer';
-import { PENDING } from '../../../../common/progressStatus';
+import { DEFAULT_TENANT, ProgressStatus } from '@lodex/common';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { io } from 'socket.io-client';
-import { DEFAULT_TENANT } from '../../../../common/tools/tenantTools';
 import { translate } from '../../i18n/I18NContext';
 
 // @ts-expect-error TS7006
@@ -51,7 +50,8 @@ export const ProgressComponent = (props) => {
 
     const [updatedProgress, setUpdatedProgress] = useState(progress);
     const isOpen =
-        updatedProgress.status !== PENDING && !updatedProgress.isBackground;
+        updatedProgress.status !== ProgressStatus.PENDING &&
+        !updatedProgress.isBackground;
 
     // @ts-expect-error TS2345
     useEffect(() => {

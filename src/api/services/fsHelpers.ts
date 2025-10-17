@@ -3,7 +3,7 @@ import range from 'lodash/range';
 import rangeRight from 'lodash/rangeRight';
 import MultiStream from 'multistream';
 
-import composeAsync from '../../common/lib/composeAsync';
+import { composeAsync } from '@lodex/common';
 import safePipe from './safePipe';
 
 export const unlinkFile = (filename: any) =>

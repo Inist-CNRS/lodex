@@ -1,7 +1,7 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { render, userEvent, waitFor } from '../../../../test-utils';
 import { HideResource } from './HideResource';
-import { ADMIN_ROLE } from '../../../../common/tools/tenantTools';
+import { ADMIN_ROLE } from '@lodex/common';
 import { hideResource } from '../api/hideResource';
 
 jest.mock('../api/hideResource', () => ({

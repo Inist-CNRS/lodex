@@ -5,7 +5,7 @@ import { useWatch } from 'react-hook-form';
 import { Box, Typography } from '@mui/material';
 import { useSelector } from 'react-redux';
 import { fromFieldPreview } from '../../admin/selectors';
-import { SCOPE_DATASET, type ScopeType } from '../../../../common/scope';
+import { SCOPE_DATASET, type ScopeType } from '@lodex/common';
 import { prepareFieldFormData } from '../sagas/saveField.ts';
 import type { State } from '../../admin/reducers.ts';
 import type { PreviewLine } from '../types.ts';

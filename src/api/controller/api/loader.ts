@@ -4,7 +4,7 @@ import route from 'koa-route';
 import ezs from '@ezs/core';
 import ezsLodex from '@ezs/lodex';
 
-import { getHost, getCleanHost } from '../../../common/uris';
+import { getHost, getCleanHost } from '@lodex/common';
 import config from '../../../../config.json';
 import Script from '../../services/script';
 

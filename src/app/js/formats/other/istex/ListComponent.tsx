@@ -3,15 +3,15 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import memoize from 'lodash/memoize';
 
-import { REJECTED } from '../../../../../common/propositionStatus';
+import { PropositionStatus, ISTEX_API_URL } from '@lodex/common';
 import { field as fieldPropTypes } from '../../../propTypes';
-import { ISTEX_API_URL } from '../../../../../common/externals';
 import Link from '../../../lib/components/Link';
 
 const styles = {
     text: memoize((status) => ({
         fontSize: '1rem',
-        textDecoration: status === REJECTED ? 'line-through' : 'none',
+        textDecoration:
+            status === PropositionStatus.REJECTED ? 'line-through' : 'none',
     })),
 };
 

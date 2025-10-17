@@ -50,7 +50,19 @@ module.exports = {
         },
         {
             displayName: 'common',
-            rootDir: `${__dirname}/src/common`,
+            rootDir: `${__dirname}/packages/common/src`,
+            transform,
+            testMatch: [
+                '/**/*.spec.js',
+                '/**/*.spec.jsx',
+                '/**/*.spec.tsx',
+                '/**/*.spec.ts',
+            ],
+            workerIdleMemoryLimit,
+        },
+        {
+            displayName: 'workers',
+            rootDir: `${__dirname}/workers`,
             transform,
             testMatch: [
                 '/**/*.spec.js',

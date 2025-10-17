@@ -15,8 +15,7 @@ import {
     retryEnrichment,
     type Enrichment,
 } from '.';
-import { IN_PROGRESS, PENDING } from '../../../../common/taskStatus';
-import { toast } from '../../../../common/tools/toast';
+import { TaskStatus, toast } from '@lodex/common';
 import { useTranslate } from '../../i18n/I18NContext';
 import CancelButton from '../../lib/components/CancelButton';
 import {
@@ -185,7 +184,7 @@ export const EnrichmentForm = ({
 
     useEffect(() => {
         // We skip preview update if the enrichment has not completed
-        if (status === IN_PROGRESS) {
+        if (status === TaskStatus.IN_PROGRESS) {
             return;
         }
 
@@ -374,8 +373,10 @@ export const EnrichmentForm = ({
                             {isEditMode && (
                                 <DeleteEnrichmentButton
                                     disabled={
-                                        initialValues?.status === IN_PROGRESS ||
-                                        initialValues?.status === PENDING ||
+                                        initialValues?.status ===
+                                            TaskStatus.IN_PROGRESS ||
+                                        initialValues?.status ===
+                                            TaskStatus.PENDING ||
                                         isLoading
                                     }
                                     id={initialValues._id}
@@ -400,8 +401,10 @@ export const EnrichmentForm = ({
                                     type="submit"
                                     disabled={
                                         isLoading ||
-                                        initialValues?.status === IN_PROGRESS ||
-                                        initialValues?.status === PENDING ||
+                                        initialValues?.status ===
+                                            TaskStatus.IN_PROGRESS ||
+                                        initialValues?.status ===
+                                            TaskStatus.PENDING ||
                                         formState.isValid === false
                                     }
                                 >

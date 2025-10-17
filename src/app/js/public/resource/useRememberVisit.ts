@@ -1,6 +1,5 @@
 import { useEffect, useMemo } from 'react';
-import { DEFAULT_TENANT } from '../../../../common/tools/tenantTools';
-import { isURL } from '../../../../common/uris';
+import { DEFAULT_TENANT, isURL } from '@lodex/common';
 
 // @ts-expect-error TS7006
 export const useRememberVisit = (resource) => {
