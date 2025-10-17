@@ -2,7 +2,7 @@ import { createAction, handleActions, combineActions } from 'redux-actions';
 import { createSelector } from 'reselect';
 import get from 'lodash/get';
 
-import { PROPOSED } from '../../../../common/propositionStatus';
+import { PropositionStatus } from '@lodex/common';
 
 export const PRE_LOAD_RESOURCE = 'PRE_LOAD_RESOURCE';
 export const LOAD_RESOURCE = 'LOAD_RESOURCE';
@@ -290,7 +290,7 @@ const getResourceProposedFields = (state: ResourceState) => {
         return [];
     }
     return contributions
-        .filter(({ status }) => status === PROPOSED)
+        .filter(({ status }) => status === PropositionStatus.PROPOSED)
         .map(({ fieldName }) => fieldName);
 };
 

@@ -16,7 +16,7 @@ import {
 import { fromFormat } from '../../../public/selectors';
 import { loadFormatData } from '../../reducer';
 import Loading from '../../../lib/components/Loading';
-import { isURL } from '../../../../../common/uris';
+import { isURL } from '@lodex/common';
 import Link from '../../../lib/components/Link';
 
 const styles = {

@@ -23,9 +23,7 @@ import { loadField } from '../../fields';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { fromFields } from '../../sharedSelectors';
 
-import * as overview from '../../../../common/overview';
-import { getFieldForSpecificScope } from '../../../../common/scope';
-import { toast } from '../../../../common/tools/toast';
+import { Overview, getFieldForSpecificScope, toast } from '@lodex/common';
 import FieldRepresentation from '../../fields/FieldRepresentation';
 import { translate } from '../../i18n/I18NContext';
 import withInitialData from '../withInitialData';
@@ -44,23 +42,23 @@ const getFacetFields = (fields) => fields?.filter((f) => f.isFacet) || [];
 // @ts-expect-error TS7006
 const getResourceTitle = (fields) =>
     // @ts-expect-error TS7006
-    fields?.find((f) => f.overview === overview.RESOURCE_TITLE) || null;
+    fields?.find((f) => f.overview === Overview.RESOURCE_TITLE) || null;
 // @ts-expect-error TS7006
 const getResourceDescription = (fields) =>
     // @ts-expect-error TS7006
-    fields?.find((f) => f.overview === overview.RESOURCE_DESCRIPTION) || null;
+    fields?.find((f) => f.overview === Overview.RESOURCE_DESCRIPTION) || null;
 // @ts-expect-error TS7006
 const getResourceDetailFirst = (fields) =>
     // @ts-expect-error TS7006
-    fields?.find((f) => f.overview === overview.RESOURCE_DETAIL_1) || null;
+    fields?.find((f) => f.overview === Overview.RESOURCE_DETAIL_1) || null;
 // @ts-expect-error TS7006
 const getResourceDetailSecond = (fields) =>
     // @ts-expect-error TS7006
-    fields?.find((f) => f.overview === overview.RESOURCE_DETAIL_2) || null;
+    fields?.find((f) => f.overview === Overview.RESOURCE_DETAIL_2) || null;
 // @ts-expect-error TS7006
 const getResourceDetailThird = (fields) =>
     // @ts-expect-error TS7006
-    fields?.find((f) => f.overview === overview.RESOURCE_DETAIL_3) || null;
+    fields?.find((f) => f.overview === Overview.RESOURCE_DETAIL_3) || null;
 // @ts-expect-error TS7006
 const getResourceSortField = (fields) =>
     // @ts-expect-error TS7006
@@ -175,7 +173,7 @@ export const SearchForm = ({ fields, loadField, p: polyglot }) => {
         // @ts-expect-error TS2345
         patchFieldOverviewMutation.mutate({
             _id: value?._id,
-            overview: overview.RESOURCE_TITLE,
+            overview: Overview.RESOURCE_TITLE,
         });
     };
     // @ts-expect-error TS7006
@@ -183,7 +181,7 @@ export const SearchForm = ({ fields, loadField, p: polyglot }) => {
         // @ts-expect-error TS2345
         patchFieldOverviewMutation.mutate({
             _id: value?._id,
-            overview: overview.RESOURCE_DESCRIPTION,
+            overview: Overview.RESOURCE_DESCRIPTION,
         });
     };
 
@@ -192,7 +190,7 @@ export const SearchForm = ({ fields, loadField, p: polyglot }) => {
         // @ts-expect-error TS2345
         patchFieldOverviewMutation.mutate({
             _id: value?._id,
-            overview: overview.RESOURCE_DETAIL_1,
+            overview: Overview.RESOURCE_DETAIL_1,
         });
     };
 
@@ -201,7 +199,7 @@ export const SearchForm = ({ fields, loadField, p: polyglot }) => {
         // @ts-expect-error TS2345
         patchFieldOverviewMutation.mutate({
             _id: value?._id,
-            overview: overview.RESOURCE_DETAIL_2,
+            overview: Overview.RESOURCE_DETAIL_2,
         });
     };
     // @ts-expect-error TS7006
@@ -209,7 +207,7 @@ export const SearchForm = ({ fields, loadField, p: polyglot }) => {
         // @ts-expect-error TS2345
         patchFieldOverviewMutation.mutate({
             _id: value?._id,
-            overview: overview.RESOURCE_DETAIL_3,
+            overview: Overview.RESOURCE_DETAIL_3,
         });
     };
 
@@ -400,7 +398,7 @@ export const SearchForm = ({ fields, loadField, p: polyglot }) => {
                         }}
                     >
                         <SearchAutocomplete
-                            testId={`autocomplete_search_syndication_${overview.RESOURCE_TITLE}`}
+                            testId={`autocomplete_search_syndication_${Overview.RESOURCE_TITLE}`}
                             translation={polyglot.t('resource_title')}
                             fields={fieldsForResourceSyndication}
                             onChange={handleSResourceTitle}
@@ -409,7 +407,7 @@ export const SearchForm = ({ fields, loadField, p: polyglot }) => {
                             isLoading={isPending}
                         />
                         <SearchAutocomplete
-                            testId={`autocomplete_search_syndication_${overview.RESOURCE_DESCRIPTION}`}
+                            testId={`autocomplete_search_syndication_${Overview.RESOURCE_DESCRIPTION}`}
                             translation={polyglot.t('resource_description')}
                             fields={fieldsForResourceSyndication}
                             onChange={handleSResourceDescription}
@@ -419,7 +417,7 @@ export const SearchForm = ({ fields, loadField, p: polyglot }) => {
                         />
                         <Box display="flex" gap={2}>
                             <SearchAutocomplete
-                                testId={`autocomplete_search_syndication_${overview.RESOURCE_DETAIL_1}`}
+                                testId={`autocomplete_search_syndication_${Overview.RESOURCE_DETAIL_1}`}
                                 translation={polyglot.t(
                                     'resource_detail_first',
                                 )}
@@ -430,7 +428,7 @@ export const SearchForm = ({ fields, loadField, p: polyglot }) => {
                                 isLoading={isPending}
                             />
                             <SearchAutocomplete
-                                testId={`autocomplete_search_syndication_${overview.RESOURCE_DETAIL_2}`}
+                                testId={`autocomplete_search_syndication_${Overview.RESOURCE_DETAIL_2}`}
                                 translation={polyglot.t(
                                     'resource_detail_second',
                                 )}
@@ -441,7 +439,7 @@ export const SearchForm = ({ fields, loadField, p: polyglot }) => {
                                 isLoading={isPending}
                             />
                             <SearchAutocomplete
-                                testId={`autocomplete_search_syndication_${overview.RESOURCE_DETAIL_3}`}
+                                testId={`autocomplete_search_syndication_${Overview.RESOURCE_DETAIL_3}`}
                                 translation={polyglot.t(
                                     'resource_detail_third',
                                 )}

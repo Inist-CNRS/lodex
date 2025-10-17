@@ -1,14 +1,4 @@
-import {
-    PENDING,
-    ERROR,
-    PUBLISH_DOCUMENT,
-    ENRICHING,
-    PUBLISH_FACET,
-    CREATE_INDEX,
-    UNPUBLISH_DOCUMENT,
-    SAVING_DATASET,
-    INDEXATION,
-} from '../../common/progressStatus';
+import { ProgressStatus } from '@lodex/common';
 
 export class Progress {
     listeners = [];
@@ -20,7 +10,7 @@ export class Progress {
         }
         // @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
         this[tenant] = {
-            status: PENDING,
+            status: ProgressStatus.PENDING,
         };
     }
 
@@ -50,24 +40,28 @@ export class Progress {
 
     finish(tenant: any) {
         // @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
-        if (!this[tenant] || this[tenant].status === ERROR) {
+        if (!this[tenant] || this[tenant].status === ProgressStatus.ERROR) {
             return;
         }
         // @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
-        this[tenant].status = PENDING;
+        this[tenant].status = ProgressStatus.PENDING;
         this.notifyListeners(tenant);
     }
 
     throw(tenant: any, error: any) {
         // @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
-        this[tenant].status = ERROR;
+        this[tenant].status = ProgressStatus.ERROR;
         // @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
         this[tenant].error = error;
     }
 
     incrementProgress(tenant: any, progress = 1) {
-        // @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
-        if (this[tenant].status === PENDING || this[tenant].status === ERROR) {
+        if (
+            // @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
+            this[tenant].status === ProgressStatus.PENDING ||
+            // @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
+            this[tenant].status === ProgressStatus.ERROR
+        ) {
             return;
         }
         // @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
@@ -76,8 +70,12 @@ export class Progress {
     }
 
     setProgress(tenant: any, progress: any) {
-        // @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
-        if (this[tenant].status === PENDING || this[tenant].status === ERROR) {
+        if (
+            // @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
+            this[tenant].status === ProgressStatus.PENDING ||
+            // @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
+            this[tenant].status === ProgressStatus.ERROR
+        ) {
             return;
         }
 
@@ -88,13 +86,13 @@ export class Progress {
 
     getProgress(tenant: any) {
         // @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
-        if (this[tenant].status === ERROR) {
+        if (this[tenant].status === ProgressStatus.ERROR) {
             // @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
             const error = this[tenant].error;
             // @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
             this[tenant].error = null;
             // @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
-            this[tenant].status = PENDING;
+            this[tenant].status = ProgressStatus.PENDING;
             throw error;
         }
 
@@ -116,13 +114,13 @@ export class Progress {
             // @ts-expect-error TS(7053): Element implicitly has an 'any' type because expre... Remove this comment to see the full error message
             type: this[tenant].type,
             isBackground: [
-                PUBLISH_DOCUMENT,
-                UNPUBLISH_DOCUMENT,
-                ENRICHING,
-                PUBLISH_FACET,
-                CREATE_INDEX,
-                SAVING_DATASET,
-                INDEXATION,
+                ProgressStatus.PUBLISH_DOCUMENT,
+                ProgressStatus.UNPUBLISH_DOCUMENT,
+                ProgressStatus.ENRICHING,
+                ProgressStatus.PUBLISH_FACET,
+                ProgressStatus.CREATE_INDEX,
+                ProgressStatus.SAVING_DATASET,
+                ProgressStatus.INDEXATION,
                 // @ts-expect-error TS(2339): Property 'includes' does not exist on type '{}'.
             ].includes(this[tenant].status),
         };

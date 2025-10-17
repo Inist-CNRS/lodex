@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 // @ts-expect-error TS6133
 import React from 'react';
 
-import { DEFAULT_TENANT } from '../../../../common/tools/tenantTools';
+import { DEFAULT_TENANT } from '@lodex/common';
 import { useTranslate } from '../../i18n/I18NContext';
 import { getRedirectFieldHash } from './helpers/field';
 import { getResourceType } from './helpers/resourceType';

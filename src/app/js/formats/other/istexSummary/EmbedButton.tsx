@@ -7,7 +7,7 @@ import classnames from 'classnames';
 
 import { polyglot as polyglotPropTypes } from '../../../propTypes';
 import ButtonWithDialog from '../../../lib/components/ButtonWithDialog';
-import { getCleanHost } from '../../../../../common/uris';
+import { getCleanHost } from '@lodex/common';
 
 class EmbedButton extends Component {
     state = { open: false };

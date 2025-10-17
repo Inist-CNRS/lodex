@@ -1,4 +1,4 @@
-import { DEFAULT_TENANT } from '../../src/common/tools/tenantTools';
+import { DEFAULT_TENANT } from '@lodex/common';
 
 export const openAdvancedDrawer = () => {
     cy.get('.drawer').should('exist');

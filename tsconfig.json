@@ -30,7 +30,6 @@
         "vite.config.ts",
         "test-utils.tsx",
         "src/api",
-        "src/common",
         "src/app",
         "workers"
     ],

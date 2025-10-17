@@ -10,7 +10,7 @@ import {
 } from '@mui/material';
 import { useSelector } from 'react-redux';
 import { fromParsing } from '../../admin/selectors';
-import parseValue from '../../../../common/tools/parseValue';
+import { parseValue } from '@lodex/common';
 import { useTranslate } from '../../i18n/I18NContext';
 import type { TransformerDraft } from '../types.ts';
 

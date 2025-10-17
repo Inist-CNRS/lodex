@@ -4,7 +4,7 @@ import RoutineCatalog from '../wizard/RoutineCatalog';
 import { Box, Button, IconButton, Tooltip, Typography } from '@mui/material';
 import { fromFields } from '../../sharedSelectors';
 import { useSelector } from 'react-redux';
-import { getFieldForSpecificScope } from '../../../../common/scope';
+import { getFieldForSpecificScope } from '@lodex/common';
 import SearchAutocomplete from '../../admin/Search/SearchAutocomplete';
 import RoutineCatalogAutocomplete from '../wizard/RoutineCatalogAutocomplete';
 import AddIcon from '@mui/icons-material/Add';

@@ -50,7 +50,7 @@ module.exports = {
         },
         {
             displayName: 'common',
-            rootDir: `${__dirname}/src/common`,
+            rootDir: `${__dirname}/packages/common/src`,
             transform,
             testMatch: [
                 '/**/*.spec.js',

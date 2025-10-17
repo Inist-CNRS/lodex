@@ -4,7 +4,7 @@ import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { TextField, MenuItem } from '@mui/material';
-import * as overview from '../../../common/overview';
+import { Overview } from '@lodex/common';
 import {
     polyglot as polyglotPropTypes,
     field as fieldPropTypes,
@@ -28,7 +28,7 @@ export const SubresourceOverviewSelectComponent = ({
     const subresourceTitle = useMemo(() => {
         const subresourceTitleField = fields.find(
             // @ts-expect-error TS7006
-            (field) => field.overview === overview.SUBRESOURCE_TITLE,
+            (field) => field.overview === Overview.SUBRESOURCE_TITLE,
         );
         return subresourceTitleField?._id;
     }, [fields]);
@@ -38,7 +38,7 @@ export const SubresourceOverviewSelectComponent = ({
         const { value: _id } = event.target;
         await fieldApi.patchOverview({
             _id,
-            overview: overview.SUBRESOURCE_TITLE,
+            overview: Overview.SUBRESOURCE_TITLE,
             subresourceId,
         });
         loadField();

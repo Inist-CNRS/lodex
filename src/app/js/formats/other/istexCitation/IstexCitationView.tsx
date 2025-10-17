@@ -20,7 +20,7 @@ import IstexCitationList from './IstexCitationList';
 import JournalFold from './JournalFold';
 import IstexItem from '../istex/IstexItem';
 import stylesToClassname from '../../../lib/stylesToClassName';
-import { ISTEX_SITE_URL } from '../../../../../common/externals';
+import { ISTEX_SITE_URL } from '@lodex/common';
 
 // @ts-expect-error TS7031
 export const IstexDocument = ({ item }) => <IstexItem {...item} />;

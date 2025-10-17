@@ -1,6 +1,6 @@
 // @ts-expect-error TS2306
 import Resumable from '@recuperateur/resumablejs';
-import { DEFAULT_TENANT } from '../../../common/tools/tenantTools';
+import { DEFAULT_TENANT } from '@lodex/common';
 
 // @ts-expect-error TS7006
 export const loadFile = (url, file, token, customLoader = null) =>

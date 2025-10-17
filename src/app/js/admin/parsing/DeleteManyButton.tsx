@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 // @ts-expect-error TS6133
 import React, { useEffect, useState } from 'react';
 
-import { toast } from '../../../../common/tools/toast';
+import { toast } from '@lodex/common';
 import { useTranslate } from '../../i18n/I18NContext';
 import { ConfirmPopup } from '../../lib/components/ConfirmPopup';
 import datasetApi from '../api/dataset';

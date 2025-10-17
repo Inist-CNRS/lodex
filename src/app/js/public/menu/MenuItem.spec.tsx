@@ -6,10 +6,7 @@ import { StyleSheetTestUtils } from 'aphrodite';
 import { Link, NavLink } from 'react-router-dom';
 
 import MenuItem from './MenuItem';
-import {
-    ADMIN_ROLE,
-    DEFAULT_TENANT,
-} from '../../../../common/tools/tenantTools';
+import { ADMIN_ROLE, DEFAULT_TENANT } from '@lodex/common';
 
 describe('MenuItem', () => {
     const onClick = jest.fn();

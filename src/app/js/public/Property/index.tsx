@@ -12,10 +12,13 @@ import { bindActionCreators } from 'redux';
 import { translate } from '../../i18n/I18NContext';
 
 import {
+    extractTenantFromUrl,
+    PropositionStatus,
+    propositionStatuses,
     SCOPE_DATASET,
     SCOPE_DOCUMENT,
     SCOPE_GRAPHIC,
-} from '../../../../common/scope';
+} from '@lodex/common';
 import { shouldDisplayField } from '../../fields/shouldDisplayField';
 import { getPredicate } from '../../formats';
 import addSchemePrefix from '../../lib/addSchemePrefix';
@@ -30,14 +33,8 @@ import CompositeProperty from './CompositeProperty';
 import ModerateButton from './ModerateButton';
 import PropertyContributor from './PropertyContributor';
 import PropertyLinkedFields from './PropertyLinkedFields';
-
-import propositionStatus, {
-    REJECTED,
-} from '../../../../common/propositionStatus';
-
 import { Settings } from '@mui/icons-material';
 import { Box, IconButton } from '@mui/material';
-import { extractTenantFromUrl } from '../../../../common/tools/tenantTools';
 import { CreateAnnotationButton } from '../../annotation/CreateAnnotationButton';
 import { useCanAnnotate } from '../../annotation/useCanAnnotate';
 import {
@@ -68,7 +65,8 @@ const styles = {
         flexGrow: 2,
         fontWeight: 'bold',
         fontSize: isSub === true ? '1rem' : '1.25rem',
-        textDecoration: status === REJECTED ? 'line-through' : 'none',
+        textDecoration:
+            status === PropositionStatus.REJECTED ? 'line-through' : 'none',
         fontFamily: 'Quicksand, sans-serif',
         display: 'flex',
         justifyContent: 'flex-start',
@@ -313,7 +311,7 @@ PropertyComponent.propTypes = {
     changeStatus: PropTypes.func.isRequired,
     className: PropTypes.string,
     field: fieldPropTypes.isRequired,
-    fieldStatus: PropTypes.oneOf(propositionStatus),
+    fieldStatus: PropTypes.oneOf(propositionStatuses),
     predicate: PropTypes.func,
     isSub: PropTypes.bool,
     isAdmin: PropTypes.bool.isRequired,

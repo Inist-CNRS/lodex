@@ -10,7 +10,7 @@ import {
 } from '@mui/material';
 import { field as fieldPropTypes } from '../propTypes';
 import FieldRepresentation from './FieldRepresentation';
-import { getFieldForSpecificScope } from '../../../common/scope';
+import { getFieldForSpecificScope } from '@lodex/common';
 import {
     SortableContext,
     arrayMove,

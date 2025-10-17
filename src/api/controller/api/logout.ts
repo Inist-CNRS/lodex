@@ -3,7 +3,7 @@ import route from 'koa-route';
 import koaBodyParser from 'koa-bodyparser';
 import jwt from 'koa-jwt';
 import config from 'config';
-import { ROOT_ROLE } from '../../../common/tools/tenantTools';
+import { ROOT_ROLE } from '@lodex/common';
 
 const auth = config.get('auth');
 

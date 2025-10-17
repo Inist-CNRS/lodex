@@ -9,18 +9,16 @@ import streamToString from 'stream-to-string';
 import {
     ADMIN_ROLE,
     CONTRIBUTOR_ROLE,
-} from '../../../common/tools/tenantTools';
-import { createDiacriticSafeContainRegex } from '../../services/createDiacriticSafeContainRegex';
-import getLogger from '../../services/logger';
-import { getAnnotationNotificationMail } from '../../services/mail/getAnnotationNotificationMail';
-import { sendMail } from '../../services/mail/mailer';
-import {
     annotationCreationSchema,
     annotationImportSchema,
     annotationUpdateSchema,
     deleteManyAnnotationsSchema,
     getAnnotationsQuerySchema,
-} from './../../../common/validator/annotation.validator';
+} from '@lodex/common';
+import { createDiacriticSafeContainRegex } from '../../services/createDiacriticSafeContainRegex';
+import getLogger from '../../services/logger';
+import { getAnnotationNotificationMail } from '../../services/mail/getAnnotationNotificationMail';
+import { sendMail } from '../../services/mail/mailer';
 import { verifyReCaptchaToken } from './recaptcha';
 
 function getResourceTitle(

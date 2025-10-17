@@ -18,11 +18,7 @@ import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { fromPublication } from '../selectors';
 import { SidebarContext } from './SidebarContext';
 import { useRouteMatch } from 'react-router-dom';
-import {
-    SCOPE_DATASET,
-    SCOPE_DOCUMENT,
-    SCOPE_GRAPHIC,
-} from '../../../../common/scope';
+import { SCOPE_DATASET, SCOPE_DOCUMENT, SCOPE_GRAPHIC } from '@lodex/common';
 import { MenuItemLink } from './MenuItemLink';
 import { translate } from '../../i18n/I18NContext';
 

@@ -9,10 +9,7 @@ import { Link, NavLink } from 'react-router-dom';
 
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import stylesToClassname from '../../lib/stylesToClassName';
-import {
-    ADMIN_ROLE,
-    extractTenantFromUrl,
-} from '../../../../common/tools/tenantTools';
+import { ADMIN_ROLE, extractTenantFromUrl } from '@lodex/common';
 
 const styles = stylesToClassname(
     {

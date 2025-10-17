@@ -8,20 +8,20 @@ import Link from '../../../lib/components/Link';
 
 import fetchPaginatedDataForComponent from '../../../lib/fetchPaginatedDataForComponent';
 import Alert from '../../../lib/components/Alert';
-import { REJECTED } from '../../../../../common/propositionStatus';
+import { PropositionStatus, ISTEX_SITE_URL } from '@lodex/common';
 import {
     field as fieldPropTypes,
     polyglot as polyglotPropTypes,
 } from '../../../propTypes';
 import { fetchForIstexFormat } from '../../utils/fetchIstexData';
 import IstexItem from './IstexItem';
-import { ISTEX_SITE_URL } from '../../../../../common/externals';
 import { translate } from '../../../i18n/I18NContext';
 
 const styles = {
     text: memoize((status) => ({
         fontSize: '1rem',
-        textDecoration: status === REJECTED ? 'line-through' : 'none',
+        textDecoration:
+            status === PropositionStatus.REJECTED ? 'line-through' : 'none',
     })),
     header: {
         borderBottom: '1px solid lightgrey',

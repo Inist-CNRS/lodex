@@ -16,7 +16,7 @@ import {
     SCOPE_GRAPHIC,
     SCOPE_DOCUMENT,
     SCOPE_COLLECTION,
-} from '../../../../../common/scope';
+} from '@lodex/common';
 import { FormatDefaultParamsFieldSet } from '../../utils/components/field-set/FormatFieldSets';
 import FormatGroupedFieldSet from '../../utils/components/field-set/FormatGroupedFieldSet';
 import { translate } from '../../../i18n/I18NContext';

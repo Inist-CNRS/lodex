@@ -4,7 +4,7 @@ import { polyglot as polyglotPropTypes } from '../../propTypes';
 import UploadIcon from '@mui/icons-material/Upload';
 import { Button, CircularProgress, styled } from '@mui/material';
 import { importHiddenResources } from '../api/hiddenResource';
-import { toast } from '../../../../common/tools/toast';
+import { toast } from '@lodex/common';
 import { useLocation, Redirect } from 'react-router-dom';
 import { translate } from '../../i18n/I18NContext';
 

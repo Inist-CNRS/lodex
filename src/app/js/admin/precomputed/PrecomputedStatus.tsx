@@ -1,16 +1,6 @@
 import { Chip } from '@mui/material';
 import { useEffect, useState } from 'react';
-import getLocale from '../../../../common/getLocale';
-import {
-    FINISHED,
-    IN_PROGRESS,
-    PENDING,
-    ERROR,
-    CANCELED,
-    PAUSED,
-    ON_HOLD,
-    type TaskStatus,
-} from '../../../../common/taskStatus';
+import { getLocale, TaskStatus, type TaskStatusType } from '@lodex/common';
 import { useTranslate } from '../../i18n/I18NContext';
 
 function getDisplayTimeStartedAt(startedAt: string) {
@@ -76,7 +66,7 @@ export const StatusChip = ({
 };
 
 type PrecomputedStatusProps = {
-    status: TaskStatus | undefined;
+    status: TaskStatusType | undefined;
     startedAt?: string | null;
 };
 
@@ -86,7 +76,7 @@ export const PrecomputedStatus = ({
 }: PrecomputedStatusProps) => {
     const { translate } = useTranslate();
 
-    if (status === PENDING) {
+    if (status === TaskStatus.PENDING) {
         return (
             <StatusChip
                 label={translate('precomputed_status_pending')}
@@ -95,7 +85,7 @@ export const PrecomputedStatus = ({
             />
         );
     }
-    if (status === IN_PROGRESS) {
+    if (status === TaskStatus.IN_PROGRESS) {
         return (
             <StatusChip
                 label={translate('precomputed_status_running')}
@@ -105,7 +95,7 @@ export const PrecomputedStatus = ({
         );
     }
 
-    if (status === PAUSED) {
+    if (status === TaskStatus.PAUSED) {
         return (
             <StatusChip
                 label={translate('precomputed_status_paused')}
@@ -114,7 +104,7 @@ export const PrecomputedStatus = ({
         );
     }
 
-    if (status === FINISHED) {
+    if (status === TaskStatus.FINISHED) {
         return (
             <StatusChip
                 label={translate('precomputed_status_done')}
@@ -123,7 +113,7 @@ export const PrecomputedStatus = ({
         );
     }
 
-    if (status === ERROR) {
+    if (status === TaskStatus.ERROR) {
         return (
             <StatusChip
                 label={translate('precomputed_status_error')}
@@ -132,7 +122,7 @@ export const PrecomputedStatus = ({
         );
     }
 
-    if (status === CANCELED) {
+    if (status === TaskStatus.CANCELED) {
         return (
             <StatusChip
                 label={translate('precomputed_status_canceled')}
@@ -141,7 +131,7 @@ export const PrecomputedStatus = ({
         );
     }
 
-    if (status === ON_HOLD) {
+    if (status === TaskStatus.ON_HOLD) {
         return (
             <StatusChip
                 label={translate('precomputed_status_hold')}

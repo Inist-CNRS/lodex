@@ -6,7 +6,7 @@ import { TableCell, Button } from '@mui/material';
 import RightIcon from '@mui/icons-material/KeyboardArrowRight';
 
 import { field as fieldPropTypes } from '../../propTypes';
-import { getResourceUri } from '../../../../common/uris';
+import { getResourceUri } from '@lodex/common';
 import Link from '../../lib/components/Link';
 
 // @ts-expect-error TS7031

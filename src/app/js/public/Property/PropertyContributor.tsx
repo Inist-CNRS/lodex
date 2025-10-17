@@ -7,19 +7,17 @@ import { translate } from '../../i18n/I18NContext';
 
 import { fromResource } from '../selectors';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
-import propositionStatus, {
-    PROPOSED,
-    VALIDATED,
-    REJECTED,
-} from '../../../../common/propositionStatus';
+import { propositionStatuses, PropositionStatus } from '@lodex/common';
 
 const styles = {
     // @ts-expect-error TS7006
     container: (status) => ({
         display: 'flex',
         marginRight: '1rem',
-        color: status && status !== VALIDATED ? 'grey' : 'black',
-        textDecoration: status === REJECTED ? 'line-through' : 'none',
+        color:
+            status && status !== PropositionStatus.VALIDATED ? 'grey' : 'black',
+        textDecoration:
+            status === PropositionStatus.REJECTED ? 'line-through' : 'none',
     }),
     name: {
         fontWeight: 'bold',
@@ -50,7 +48,7 @@ const PropertyContributorComponent = ({
 
     return (
         <div className="property_contributor" style={styles.scheme}>
-            {fieldStatus === PROPOSED
+            {fieldStatus === PropositionStatus.PROPOSED
                 ? polyglot.t('contributed_by', { name: contributor })
                 : polyglot.t('added_by', { name: contributor })}
         </div>
@@ -65,7 +63,7 @@ PropertyContributorComponent.defaultProps = {
 PropertyContributorComponent.propTypes = {
     contributor: PropTypes.string,
     p: polyglotPropTypes.isRequired,
-    fieldStatus: PropTypes.oneOf(propositionStatus),
+    fieldStatus: PropTypes.oneOf(propositionStatuses),
 };
 
 // @ts-expect-error TS7006

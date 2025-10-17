@@ -10,7 +10,7 @@ import { fromFields } from '../../sharedSelectors';
 import { isLongText, getShortText } from '../../lib/longTexts';
 import getFieldClassName from '../../lib/getFieldClassName';
 import { field as fieldPropTypes } from '../../propTypes';
-import parseValue from '../../../../common/tools/parseValue';
+import { parseValue } from '@lodex/common';
 import { translate } from '../../i18n/I18NContext';
 
 const styles = {

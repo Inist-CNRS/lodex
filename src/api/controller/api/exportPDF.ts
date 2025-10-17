@@ -2,14 +2,7 @@ import Koa from 'koa';
 import route from 'koa-route';
 import PDFDocument from 'pdfkit';
 import moment from 'moment';
-import {
-    DATASET_TITLE,
-    RESOURCE_DESCRIPTION,
-    RESOURCE_DETAIL_1,
-    RESOURCE_DETAIL_2,
-    RESOURCE_DETAIL_3,
-    RESOURCE_TITLE,
-} from '../../../common/overview';
+import { Overview } from '@lodex/common';
 import { ObjectId } from 'mongodb';
 
 const PDF_MARGIN_LEFT = 70;
@@ -64,7 +57,7 @@ async function getPDFTitle(ctx: any, locale: any) {
     // get pubished data field who is dataset_title
     const datasetTitleField = await ctx.field
         .find({
-            overview: DATASET_TITLE,
+            overview: Overview.DATASET_TITLE,
         })
         .toArray();
 
@@ -256,11 +249,11 @@ async function getSyndicatedFields(ctx: any) {
         .find({
             overview: {
                 $in: [
-                    RESOURCE_TITLE,
-                    RESOURCE_DETAIL_3,
-                    RESOURCE_DESCRIPTION,
-                    RESOURCE_DETAIL_1,
-                    RESOURCE_DETAIL_2,
+                    Overview.RESOURCE_TITLE,
+                    Overview.RESOURCE_DETAIL_3,
+                    Overview.RESOURCE_DESCRIPTION,
+                    Overview.RESOURCE_DETAIL_1,
+                    Overview.RESOURCE_DETAIL_2,
                 ],
             },
         })
@@ -273,7 +266,7 @@ async function getSyndicatedFields(ctx: any) {
 
     // place overview with value 6 at the second position
     const overview6Index = sortedFields.findIndex(
-        (field: any) => field.overview === RESOURCE_DETAIL_3,
+        (field: any) => field.overview === Overview.RESOURCE_DETAIL_3,
     );
     if (overview6Index !== -1) {
         const overview6 = sortedFields.splice(overview6Index, 1);

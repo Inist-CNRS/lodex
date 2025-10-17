@@ -1,6 +1,6 @@
 import progress from '../progress';
 import localConfig from '../../../../config.json';
-import { getHost } from '../../../common/uris';
+import { getHost, ProgressStatus, TaskStatus } from '@lodex/common';
 import { unlinkFile } from '../fsHelpers';
 import streamToPromise from 'stream-to-promise';
 // @ts-expect-error TS(2792): Cannot find module 'fetch-with-proxy'. Did you mea... Remove this comment to see the full error message
@@ -14,16 +14,7 @@ import Lodex from '@ezs/lodex';
 // @ts-expect-error TS(2792): Cannot find module '@ezs/basics'. Did you mean to ... Remove this comment to see the full error message
 import Basics from '@ezs/basics';
 import { Readable } from 'stream';
-import {
-    PENDING as PRECOMPUTED_PENDING,
-    IN_PROGRESS,
-    FINISHED,
-    ERROR,
-    CANCELED,
-    ON_HOLD,
-} from '../../../common/taskStatus';
 import { mongoConnectionString } from '../mongoClient';
-import { PRECOMPUTING } from '../../../common/progressStatus';
 import { jobLogger } from '../../workers/tools';
 import { CancelWorkerError, workerQueues } from '../../workers';
 import { PRECOMPUTER } from '../../workers/precomputer';
@@ -96,7 +87,7 @@ export const getComputedFromWebservice = async (ctx: any) => {
     const { webServiceUrl, name: precomputedName } = precomputed;
     progress.initialize(tenant);
     progress.start(ctx.tenant, {
-        status: PRECOMPUTING,
+        status: ProgressStatus.PRECOMPUTING,
         target: 100,
         label: 'PRECOMPUTING',
         subLabel: precomputedName,
@@ -134,13 +125,16 @@ export const getComputedFromWebservice = async (ctx: any) => {
     }
     progress.setProgress(tenant, 75);
     const room = `${tenant}-precomputed-job-${askForPrecomputedJobId}`;
-    await ctx.precomputed.updateStatus(precomputedId._id, IN_PROGRESS);
+    await ctx.precomputed.updateStatus(
+        precomputedId._id,
+        TaskStatus.IN_PROGRESS,
+    );
     let logData = {};
     logData = JSON.stringify({
         level: 'ok',
         message: `[Instance: ${tenant}] 7/10 - Response ok`,
         timestamp: new Date(),
-        status: IN_PROGRESS,
+        status: TaskStatus.IN_PROGRESS,
     });
     jobLogger.info(askForPrecomputedJob, logData);
     notifyListeners(room, logData);
@@ -159,7 +153,7 @@ export const getComputedFromWebservice = async (ctx: any) => {
         level: 'ok',
         message: `[Instance: ${tenant}] 8/10 - Start retrieving data from response`,
         timestamp: new Date(),
-        status: IN_PROGRESS,
+        status: TaskStatus.IN_PROGRESS,
     });
     jobLogger.info(askForPrecomputedJob, logData);
     notifyListeners(room, logData);
@@ -188,7 +182,7 @@ export const getComputedFromWebservice = async (ctx: any) => {
                     progress.setProgress(tenant, 95);
                     await ctx.precomputed.updateStatus(
                         precomputedId,
-                        FINISHED,
+                        TaskStatus.FINISHED,
                         { hasData: true },
                     );
                     return feed.close();
@@ -208,7 +202,7 @@ export const getComputedFromWebservice = async (ctx: any) => {
         level: 'ok',
         message: `[Instance: ${tenant}] 9/10 - Data saved in pc_${precomputedId}`,
         timestamp: new Date(),
-        status: IN_PROGRESS,
+        status: TaskStatus.IN_PROGRESS,
     });
     jobLogger.info(askForPrecomputedJob, logData);
     notifyListeners(room, logData);
@@ -228,7 +222,7 @@ export const getComputedFromWebservice = async (ctx: any) => {
         level: 'ok',
         message: `[Instance: ${tenant}] 10/10 - Precomputing finished ${insertCount} items saved.`,
         timestamp: new Date(),
-        status: IN_PROGRESS,
+        status: TaskStatus.IN_PROGRESS,
     });
     jobLogger.info(askForPrecomputedJob, logData);
     notifyListeners(room, logData);
@@ -267,7 +261,7 @@ export const getFailureFromWebservice = async (ctx: any) => {
 
     const room = `${tenant}-precomputed-job-${askForPrecomputedJobId}`;
 
-    await ctx.precomputed.updateStatus(precomputedId, ERROR, {
+    await ctx.precomputed.updateStatus(precomputedId, TaskStatus.ERROR, {
         message: error.message,
     });
     await ctx.precomputed.updateStartedAt(precomputedId, null);
@@ -278,7 +272,7 @@ export const getFailureFromWebservice = async (ctx: any) => {
         level: 'error',
         message: `[Instance: ${tenant}] 7/10 - Response not ok ${error.type} ${error.message}`,
         timestamp: new Date(),
-        status: ERROR,
+        status: TaskStatus.ERROR,
     });
     jobLogger.info(job, logData);
     notifyListeners(room, logData);
@@ -300,9 +294,13 @@ const tryParseJsonString = (str: any) => {
 export const processPrecomputed = async (precomputed: any, ctx: any) => {
     const precomputedId = precomputed._id.toString();
     let logData = {};
-    await ctx.precomputed.updateStatus(precomputed._id, IN_PROGRESS, {
-        hasData: false,
-    });
+    await ctx.precomputed.updateStatus(
+        precomputed._id,
+        TaskStatus.IN_PROGRESS,
+        {
+            hasData: false,
+        },
+    );
     await ctx.precomputed.updateStartedAt(precomputed._id, new Date());
 
     const room = `${ctx.tenant}-precomputed-job-${ctx.job.id}`;
@@ -311,7 +309,7 @@ export const processPrecomputed = async (precomputed: any, ctx: any) => {
         level: 'ok',
         message: `[Instance: ${ctx.tenant}] 2/10 - Start building compress data`,
         timestamp: new Date(),
-        status: IN_PROGRESS,
+        status: TaskStatus.IN_PROGRESS,
     });
     jobLogger.info(ctx.job, logData);
     notifyListeners(room, logData);
@@ -376,7 +374,7 @@ export const processPrecomputed = async (precomputed: any, ctx: any) => {
                     level: 'ok',
                     message: `[Instance: ${ctx.tenant}] 3/10 - End compress data. Start sending file (${path.basename(entry.filename)}) to webservice`,
                     timestamp: new Date(),
-                    status: IN_PROGRESS,
+                    status: TaskStatus.IN_PROGRESS,
                 });
                 jobLogger.info(ctx.job, logData);
                 notifyListeners(room, logData);
@@ -403,7 +401,7 @@ export const processPrecomputed = async (precomputed: any, ctx: any) => {
                 msg = err.sourceError.message.split('\n').shift();
             }
         }
-        await ctx.precomputed.updateStatus(precomputedId, ERROR, {
+        await ctx.precomputed.updateStatus(precomputedId, TaskStatus.ERROR, {
             message: msg,
         });
         throw new Error(msg);
@@ -425,7 +423,7 @@ export const processPrecomputed = async (precomputed: any, ctx: any) => {
         level: 'ok',
         message: `[Instance: ${ctx.tenant}] 4/10 - Get Token from ${precomputed.webServiceUrl}`,
         timestamp: new Date(),
-        status: IN_PROGRESS,
+        status: TaskStatus.IN_PROGRESS,
     });
     jobLogger.info(ctx.job, logData);
     notifyListeners(room, logData);
@@ -447,12 +445,12 @@ export const processPrecomputed = async (precomputed: any, ctx: any) => {
             // for error 404, 5XX, etc.
             responseErrorMessageFull = `${response.status} ${response.statusText}`;
         }
-        await ctx.precomputed.updateStatus(precomputedId, ERROR, {
+        await ctx.precomputed.updateStatus(precomputedId, TaskStatus.ERROR, {
             message: responseErrorMessageFull,
         });
         throw new Error(responseErrorMessageFull);
     }
-    await ctx.precomputed.updateStatus(precomputed._id, ON_HOLD, {
+    await ctx.precomputed.updateStatus(precomputed._id, TaskStatus.ON_HOLD, {
         hasData: false,
         callId: token,
     });
@@ -460,7 +458,7 @@ export const processPrecomputed = async (precomputed: any, ctx: any) => {
         level: 'ok',
         message: `[Instance: ${ctx.tenant}] 5/10 - Token obtained : ${token}`,
         timestamp: new Date(),
-        status: ON_HOLD,
+        status: TaskStatus.ON_HOLD,
     });
     jobLogger.info(ctx.job, logData);
     notifyListeners(room, logData);
@@ -470,7 +468,7 @@ export const processPrecomputed = async (precomputed: any, ctx: any) => {
         level: 'ok',
         message: `[Instance: ${ctx.tenant}] 6/10 - Waiting for response data`,
         timestamp: new Date(),
-        status: ON_HOLD,
+        status: TaskStatus.ON_HOLD,
     });
     jobLogger.info(ctx.job, logData);
     notifyListeners(room, logData);
@@ -481,7 +479,7 @@ export const setPrecomputedJobId = async (
     precomputedID: any,
     job: any,
 ) => {
-    await ctx.precomputed.updateStatus(precomputedID, PRECOMPUTED_PENDING, {
+    await ctx.precomputed.updateStatus(precomputedID, TaskStatus.PENDING, {
         hasData: false,
         jobId: job.id,
     });
@@ -492,7 +490,7 @@ export const startAskForPrecomputed = async (ctx: any) => {
     const precomputed = await ctx.precomputed.findOneById(id);
     progress.initialize(ctx.tenant);
     progress.start(ctx.tenant, {
-        status: PRECOMPUTING,
+        status: ProgressStatus.PRECOMPUTING,
         target: 100,
         label: 'PRECOMPUTING',
         subLabel: precomputed.name,
@@ -504,7 +502,7 @@ export const startAskForPrecomputed = async (ctx: any) => {
         level: 'ok',
         message: `[Instance: ${ctx.tenant}] 1/10 - Precomputing started`,
         timestamp: new Date(),
-        status: IN_PROGRESS,
+        status: TaskStatus.IN_PROGRESS,
     });
     jobLogger.info(ctx.job, logData);
     notifyListeners(room, logData);
@@ -528,7 +526,9 @@ export const setPrecomputedError = async (ctx: any, err: any) => {
     const id = ctx.job?.data?.id;
     await ctx.precomputed.updateStatus(
         id,
-        err instanceof CancelWorkerError ? CANCELED : ERROR,
+        err instanceof CancelWorkerError
+            ? TaskStatus.CANCELED
+            : TaskStatus.ERROR,
         {
             message: err?.message,
         },
@@ -543,7 +543,10 @@ export const setPrecomputedError = async (ctx: any, err: any) => {
                 ? `[Instance: ${ctx.tenant}] ${err?.message}`
                 : `[Instance: ${ctx.tenant}] Precomputing errored : ${err?.message}`,
         timestamp: new Date(),
-        status: err instanceof CancelWorkerError ? CANCELED : ERROR,
+        status:
+            err instanceof CancelWorkerError
+                ? TaskStatus.CANCELED
+                : TaskStatus.ERROR,
     });
     ctx.job.progress(100);
     progress.finish(ctx.tenant);

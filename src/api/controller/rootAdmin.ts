@@ -9,7 +9,7 @@ import {
     checkForbiddenNames,
     checkNameTooLong,
     ROOT_ROLE,
-} from '../../common/tools/tenantTools';
+} from '@lodex/common';
 import bullBoard from '../bullBoard';
 import { insertConfigTenant } from '../services/configTenant';
 import mongoClient from '../services/mongoClient';
