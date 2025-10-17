@@ -143,26 +143,6 @@ const SearchResult = ({ fields, fieldNames, result, closeDrawer }) => {
                         {result[titleField.name]}
                     </Box>
                 )}
-                {thirdDetailField && result[thirdDetailField.name] && (
-                    <div
-                        className={classnames(
-                            'search-result-detail-third',
-                            // @ts-expect-error TS2339
-                            styles.details,
-                        )}
-                    >
-                        <div
-                            className={classnames(
-                                'search-result-detail-3',
-                                // @ts-expect-error TS2339
-                                styles.detailsColumn,
-                            )}
-                            title={result[thirdDetailField.name]}
-                        >
-                            {result[thirdDetailField.name]}
-                        </div>
-                    </div>
-                )}
                 {descriptionField && result[descriptionField.name] && (
                     <Box
                         className={classnames(
@@ -233,6 +213,26 @@ const SearchResult = ({ fields, fieldNames, result, closeDrawer }) => {
                                     {result[secondDetailField.name]}
                                 </Box>
                             )}
+                        {thirdDetailField && result[thirdDetailField.name] && (
+                            <div
+                                className={classnames(
+                                    'search-result-detail-third',
+                                    // @ts-expect-error TS2339
+                                    styles.details,
+                                )}
+                            >
+                                <div
+                                    className={classnames(
+                                        'search-result-detail-3',
+                                        // @ts-expect-error TS2339
+                                        styles.detailsColumn,
+                                    )}
+                                    title={result[thirdDetailField.name]}
+                                >
+                                    {result[thirdDetailField.name]}
+                                </div>
+                            </div>
+                        )}
                     </div>
                 )}
                 <ExpandMoreIcon
