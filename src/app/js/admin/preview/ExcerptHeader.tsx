@@ -3,11 +3,10 @@ import { connect } from 'react-redux';
 import memoize from 'lodash/memoize';
 import HiddenIcon from '@mui/icons-material/VisibilityOff';
 
-import { SCOPE_DATASET } from '../../../../common/scope';
+import { SCOPE_DATASET, URI_FIELD_NAME } from '@lodex/common';
 import { fromFields } from '../../sharedSelectors';
 import getFieldClassName from '../../lib/getFieldClassName';
 import { isLongText, getShortText } from '../../lib/longTexts';
-import { URI_FIELD_NAME } from '../../../../common/uris';
 
 import { type Field } from '../../propTypes';
 import FieldInternalIcon from '../../fields/FieldInternalIcon';

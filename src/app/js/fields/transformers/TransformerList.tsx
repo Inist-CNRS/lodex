@@ -21,10 +21,7 @@ import {
     sortableKeyboardCoordinates,
     verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
-import {
-    getTransformerMetas,
-    hasRegistredTransformer,
-} from '../../../../common/transformers';
+import { getTransformerMetas, hasRegistredTransformer } from '@lodex/common';
 import TransformerRemoveAllDialog from './TransformerRemoveAllDialog';
 import { GET_SOURCE_VALUE_FROM_TRANSFORMERS } from '../sourceValue/SourceValueToggle';
 import type { UseFieldArrayReturn } from 'react-hook-form';

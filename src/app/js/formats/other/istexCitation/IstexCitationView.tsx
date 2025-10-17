@@ -13,7 +13,7 @@ import IstexCitationList from './IstexCitationList';
 import JournalFold from './JournalFold';
 import IstexItem, { type IstexItemComponentProps } from '../istex/IstexItem';
 import stylesToClassname from '../../../lib/stylesToClassName';
-import { ISTEX_SITE_URL } from '../../../../../common/externals';
+import { ISTEX_SITE_URL } from '@lodex/common';
 import { useTranslate } from '../../../i18n/I18NContext';
 
 interface IstexDocumentProps {

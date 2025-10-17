@@ -4,10 +4,13 @@ import get from 'lodash/get';
 import getDocumentTransformer from './getDocumentTransformer';
 import transformAllDocuments from './transformAllDocuments';
 import progress from './progress';
-import { PUBLISH_DOCUMENT } from '../../common/progressStatus';
-import { URI_FIELD_NAME } from '../../common/uris';
-import { SCOPE_COLLECTION, SCOPE_DOCUMENT } from '../../common/scope';
-import parseValue from '../../common/tools/parseValue';
+import {
+    ProgressStatus,
+    URI_FIELD_NAME,
+    SCOPE_COLLECTION,
+    SCOPE_DOCUMENT,
+    parseValue,
+} from '@lodex/common';
 import { jobLogger } from '../workers/tools';
 import getLogger from './logger';
 
@@ -151,7 +154,7 @@ export const publishDocumentsFactory =
         );
 
         progress.start(ctx.tenant, {
-            status: PUBLISH_DOCUMENT,
+            status: ProgressStatus.PUBLISH_DOCUMENT,
             target: count,
             label: 'publishing',
             type: 'publisher',

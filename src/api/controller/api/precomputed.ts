@@ -11,7 +11,7 @@ import {
     setPrecomputedJobId,
 } from '../../services/precomputed/precomputed';
 import { cancelJob } from '../../workers/tools';
-import getLocale from '../../../common/getLocale';
+import { getLocale } from '@lodex/common';
 
 export const setup = async (ctx: any, next: any) => {
     try {

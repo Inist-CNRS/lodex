@@ -11,8 +11,8 @@ import {
     SCOPE_DATASET,
     SCOPE_DOCUMENT,
     SCOPE_GRAPHIC,
-} from '../../../../common/scope';
-import { toast } from '../../../../common/tools/toast';
+    toast,
+} from '@lodex/common';
 import { hideAddColumns } from '../../admin/parsing';
 import { type Field } from '../../propTypes';
 import { fromFields } from '../../sharedSelectors';

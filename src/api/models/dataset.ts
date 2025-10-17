@@ -6,7 +6,7 @@ import JSONStream from 'jsonstream';
 import { Transform } from 'stream';
 import { ObjectId } from 'mongodb';
 import { getCreatedCollection } from './utils';
-import { URI_FIELD_NAME, moveUriToFirstPosition } from '../../common/uris';
+import { URI_FIELD_NAME, moveUriToFirstPosition } from '@lodex/common';
 import countNotUnique from './countNotUnique';
 import countNotUniqueSubresources from './countNotUniqueSubresources';
 

@@ -37,7 +37,7 @@
         "insertversion:makefile": "sed -i \"s#\\(lodex:\\)\\([\\.a-z0-9]\\+\\)#\\1${npm_package_version}#g\" Makefile",
         "insertversion:docker": "sed -i \"s#\\(lodex:\\)\\([\\.a-z0-9]\\+\\)#\\1${npm_package_version}#g\" docker-compose*.yml",
         "version": "npm run insertversion:readme && npm run insertversion:makefile && npm run insertversion:docker && git add README.md Makefile",
-        "postinstall": "cd ./packages/ezsLodex/ && npm install --production --install-strategy=nested --legacy-peer-deps && cd ../transformers/ && npm install --production --install-strategy=nested --legacy-peer-deps"
+        "postinstall": "cd ./packages/ezsLodex/ && npm install --production --install-strategy=nested --legacy-peer-deps && cd ../transformers/ && npm install --production --install-strategy=nested --legacy-peer-deps && cd ../common/ && npm install --install-strategy=nested --legacy-peer-deps"
     },
     "nodemonConfig": {
         "ignore": [
@@ -89,6 +89,7 @@
         "@fortawesome/fontawesome-svg-core": "^1.2.36",
         "@fortawesome/free-solid-svg-icons": "^5.11.2",
         "@fortawesome/react-fontawesome": "^3.1.0",
+        "@lodex/common": "file:packages/common",
         "@mui/icons-material": "5.14.19",
         "@mui/material": "^5.5.2",
         "@mui/x-data-grid": "5.8.0",

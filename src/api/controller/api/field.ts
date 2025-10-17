@@ -13,18 +13,12 @@ import publishFacets from './publishFacets';
 
 import { ObjectId } from 'mongodb';
 import {
-    RESOURCE_DESCRIPTION,
-    RESOURCE_DETAIL_1,
-    RESOURCE_DETAIL_2,
-    RESOURCE_DETAIL_3,
-    RESOURCE_TITLE,
-} from '../../../common/overview';
-import {
+    Overview,
     SCOPE_COLLECTION,
     SCOPE_DATASET,
     SCOPE_DOCUMENT,
     SCOPE_GRAPHIC,
-} from '../../../common/scope';
+} from '@lodex/common';
 import { restoreEnrichments } from '../../services/enrichment/enrichment';
 import generateUid from '../../services/generateUid';
 import { restorePrecomputed } from '../../services/precomputed/precomputed';
@@ -202,11 +196,11 @@ export const patchField = async (ctx: any, id: any) => {
 };
 
 const SORTABLE_FIELDS = [
-    RESOURCE_TITLE,
-    RESOURCE_DESCRIPTION,
-    RESOURCE_DETAIL_1,
-    RESOURCE_DETAIL_2,
-    RESOURCE_DETAIL_3,
+    Overview.RESOURCE_TITLE,
+    Overview.RESOURCE_DESCRIPTION,
+    Overview.RESOURCE_DETAIL_1,
+    Overview.RESOURCE_DETAIL_2,
+    Overview.RESOURCE_DETAIL_3,
 ];
 
 export const patchOverview = async (ctx: any) => {
