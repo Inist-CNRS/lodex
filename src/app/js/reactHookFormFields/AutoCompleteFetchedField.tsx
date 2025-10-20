@@ -30,7 +30,7 @@ const AutoCompleteFetchedField = ({
     };
 
     const handleComplete = useCallback(
-        (_, searchText) => {
+        (_: unknown, searchText: string) => {
             handleSearch(searchText);
         },
         [handleSearch],

@@ -1,6 +1,5 @@
 // @ts-expect-error TS6133
 import React, { useMemo, useState } from 'react';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import { clamp } from 'lodash';
@@ -24,8 +23,20 @@ const styles = stylesToClassName({
     },
 });
 
-// @ts-expect-error TS7031
-const VegaLiteView = ({ field, data, aspectRatio, specTemplate }) => {
+interface VegaLiteViewProps {
+    field: unknown;
+    resource: object;
+    data?: any;
+    specTemplate: string;
+    aspectRatio?: string;
+}
+
+const VegaLiteView = ({
+    field,
+    data,
+    aspectRatio,
+    specTemplate
+}: VegaLiteViewProps) => {
     const { ref, width } = useSizeObserver();
     const [error, setError] = useState('');
 
@@ -49,7 +60,7 @@ const VegaLiteView = ({ field, data, aspectRatio, specTemplate }) => {
 
     return (
         // @ts-expect-error TS2339
-        <div className={styles.container} ref={ref}>
+        (<div className={styles.container} ref={ref}>
             <CustomActionVegaLite
                 // @ts-expect-error TS2322
                 spec={spec || {}}
@@ -57,16 +68,8 @@ const VegaLiteView = ({ field, data, aspectRatio, specTemplate }) => {
                 injectType={VEGA_LITE_DATA_INJECT_TYPE_A}
                 aspectRatio={aspectRatio}
             />
-        </div>
+        </div>)
     );
-};
-
-VegaLiteView.propTypes = {
-    field: fieldPropTypes.isRequired,
-    resource: PropTypes.object.isRequired,
-    data: PropTypes.any,
-    specTemplate: PropTypes.string.isRequired,
-    aspectRatio: PropTypes.string,
 };
 
 VegaLiteView.defaultProps = {

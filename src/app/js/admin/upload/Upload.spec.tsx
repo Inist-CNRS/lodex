@@ -26,7 +26,6 @@ describe('<Upload />', () => {
             onUrlUpload() {},
             onTextUpload() {},
         };
-        // @ts-expect-error TS2740
         const wrapper = shallow(<Upload {...props} />);
 
         const button = wrapper.find(Button).at(0);
@@ -34,7 +33,6 @@ describe('<Upload />', () => {
 
         expect(
             wrapper.contains(
-                // @ts-expect-error TS2345
                 <Alert>
                     <p>Error uploading given file: </p>
                     <p>{props.error}</p>
@@ -57,7 +55,6 @@ describe('<Upload />', () => {
 
         expect(
             wrapper.contains(
-                // @ts-expect-error TS2345
                 <Alert>
                     <p>Error uploading given file: </p>
                     <p>{props.error}</p>

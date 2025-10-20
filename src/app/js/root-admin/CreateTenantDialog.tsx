@@ -1,6 +1,5 @@
 // @ts-expect-error TS6133
 import React, { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
 import {
     Dialog,
     DialogContent,
@@ -35,8 +34,21 @@ const cleanUpName = (name) => {
     );
 };
 
-// @ts-expect-error TS7031
-const CreateTenantDialog = ({ isOpen, handleClose, createAction }) => {
+type CreateTenantDialogProps = {
+    isOpen: boolean;
+    handleClose(): void;
+    createAction(action: {
+        name: string;
+        description: string;
+        author: string;
+    }): void;
+};
+
+const CreateTenantDialog = ({
+    isOpen,
+    handleClose,
+    createAction,
+}: CreateTenantDialogProps) => {
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
     const [author, setAuthor] = useState('');
@@ -165,12 +177,6 @@ const CreateTenantDialog = ({ isOpen, handleClose, createAction }) => {
             </DialogContent>
         </Dialog>
     );
-};
-
-CreateTenantDialog.propTypes = {
-    isOpen: PropTypes.bool.isRequired,
-    handleClose: PropTypes.func.isRequired,
-    createAction: PropTypes.func.isRequired,
 };
 
 export default CreateTenantDialog;

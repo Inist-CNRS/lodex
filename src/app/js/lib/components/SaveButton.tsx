@@ -1,9 +1,6 @@
-// @ts-expect-error TS6133
-import React from 'react';
 import { Button, keyframes, Tooltip } from '@mui/material';
 import { useTranslate } from '../../i18n/I18NContext';
 import { SaveAs } from '@mui/icons-material';
-import PropTypes from 'prop-types';
 
 const shake = keyframes`
 10%, 90% {
@@ -23,11 +20,23 @@ const shake = keyframes`
   }
 `;
 
-// @ts-expect-error TS7031
-export const SaveButton = ({ onClick, type, isFormModified, disabled }) => {
+interface SaveButtonProps {
+    onClick?(...args: unknown[]): unknown;
+    type?: string;
+    isFormModified: boolean;
+    disabled?: boolean;
+}
+
+export const SaveButton = ({
+    onClick,
+    type,
+    isFormModified,
+    disabled,
+}: SaveButtonProps) => {
     const { translate } = useTranslate();
 
     return (
+        // @ts-expect-error TS2769
         <Button
             variant="contained"
             className="btn-save"
@@ -49,11 +58,4 @@ export const SaveButton = ({ onClick, type, isFormModified, disabled }) => {
             {translate('save')}
         </Button>
     );
-};
-
-SaveButton.propTypes = {
-    onClick: PropTypes.func,
-    type: PropTypes.string,
-    isFormModified: PropTypes.bool.isRequired,
-    disabled: PropTypes.bool,
 };

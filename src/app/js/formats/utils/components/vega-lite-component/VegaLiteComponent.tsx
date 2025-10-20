@@ -1,7 +1,6 @@
 import { Vega } from 'react-vega';
 // @ts-expect-error TS6133
 import React from 'react';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import deepClone from 'lodash/cloneDeep';
 import {
@@ -17,27 +16,36 @@ import { compose } from 'recompose';
 import { useVegaCsvExport } from '../useVegaCsvExport';
 import { useVegaActions } from '../useVegaActions';
 
+interface CustomActionVegaLiteProps {
+    disableZoom?: boolean;
+    user?: any;
+    spec: any;
+    data?: any;
+    injectType: number;
+    aspectRatio?: unknown[];
+    p: unknown;
+}
+
 /**
  * small component use to handle vega lite display
  * @param props args taken by the component
  * @returns {*} React-Vega component
  */
 function CustomActionVegaLite({
-    // @ts-expect-error TS7031
     aspectRatio,
-    // @ts-expect-error TS7031
+
     user,
-    // @ts-expect-error TS7031
+
     spec,
-    // @ts-expect-error TS7031
+
     data,
-    // @ts-expect-error TS7031
+
     injectType,
-    // @ts-expect-error TS7031
+
     disableZoom,
-    // @ts-expect-error TS7031
-    p: polyglot,
-}) {
+
+    p: polyglot
+}: CustomActionVegaLiteProps) {
     const actions = useVegaActions(user);
     const graphParentRef = useVegaCsvExport(data);
 
@@ -117,20 +125,6 @@ function CustomActionVegaLite({
 CustomActionVegaLite.defaultProps = {
     disableZoom: false,
     aspectRatio: ASPECT_RATIO_NONE,
-};
-
-/**
- * Element required in the props
- * @type {{data: Requireable<any>, user: Requireable<any>, spec: Validator<NonNullable<any>>}}
- */
-CustomActionVegaLite.propTypes = {
-    disableZoom: PropTypes.bool,
-    user: PropTypes.any,
-    spec: PropTypes.any.isRequired,
-    data: PropTypes.any,
-    injectType: PropTypes.number.isRequired,
-    aspectRatio: PropTypes.oneOf(ASPECT_RATIOS),
-    p: polyglotPropTypes.isRequired,
 };
 
 /**

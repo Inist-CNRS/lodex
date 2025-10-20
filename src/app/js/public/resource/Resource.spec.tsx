@@ -1,11 +1,11 @@
 import { ThemeProvider, createTheme } from '@mui/material';
 // @ts-expect-error TS6133
 import React from 'react';
-import { render, screen } from '../../../../test-utils';
+import { render } from '../../../../test-utils';
 import Loading from '../../lib/components/Loading';
 import Detail from './Detail';
 import RemovedDetail from './RemovedDetail';
-import { ResourceComponent } from './Resource';
+import { ResourceComponent, type ResourceComponentProps } from './Resource';
 import { TestI18N } from '../../i18n/I18NContext';
 // @ts-expect-error TS7016
 import { StyleSheetTestUtils } from 'aphrodite';
@@ -18,7 +18,7 @@ jest.mock('react-redux', () => ({
 }));
 
 describe('<Resource />', () => {
-    const defaultProps = {
+    const defaultProps: ResourceComponentProps = {
         loading: true,
         preLoadResource: () => null,
         preLoadPublication: () => null,
@@ -34,17 +34,17 @@ describe('<Resource />', () => {
     });
 
     it('should display Loading if loading prop is true', () => {
-        const props = {
+        const props: ResourceComponentProps = {
             ...defaultProps,
             loading: true,
         };
 
-        const wrapper = render(
+        const screen = render(
             <TestI18N>
                 <ResourceComponent {...props} />
             </TestI18N>,
         );
-        expect(wrapper.queryByText('loading_resource')).toBeInTheDocument();
+        expect(screen.queryByText('loading_resource')).toBeInTheDocument();
     });
 
     it('should display not found message if no resource', () => {
@@ -53,15 +53,15 @@ describe('<Resource />', () => {
             loading: false,
         };
 
-        const wrapper = render(
+        const screen = render(
             <TestI18N>
                 <MemoryRouter>
                     <ResourceComponent {...props} />
                 </MemoryRouter>
             </TestI18N>,
         );
-        expect(wrapper.queryByText('loading_resource')).not.toBeInTheDocument();
-        expect(wrapper.queryByText('not_found')).toBeInTheDocument();
+        expect(screen.queryByText('loading_resource')).not.toBeInTheDocument();
+        expect(screen.queryByText('not_found')).toBeInTheDocument();
     });
 
     it('should display Detail if resource', () => {
@@ -72,10 +72,10 @@ describe('<Resource />', () => {
         };
 
         // @ts-expect-error TS2322
-        const wrapper = shallow(<ResourceComponent {...props} />);
-        expect(wrapper.find(Loading)).toHaveLength(0);
-        expect(wrapper.find('.not-found')).toHaveLength(0);
-        expect(wrapper.find(Detail)).toHaveLength(1);
+        const screen = shallow(<ResourceComponent {...props} />);
+        expect(screen.find(Loading)).toHaveLength(0);
+        expect(screen.find('.not-found')).toHaveLength(0);
+        expect(screen.find(Detail)).toHaveLength(1);
     });
 
     it('should display RemovedDetail if resource is removed', () => {
@@ -87,9 +87,9 @@ describe('<Resource />', () => {
         };
 
         // @ts-expect-error TS2322
-        const wrapper = shallow(<ResourceComponent {...props} />);
-        expect(wrapper.find(RemovedDetail)).toHaveLength(1);
-        expect(wrapper.find(Detail)).toHaveLength(0);
+        const screen = shallow(<ResourceComponent {...props} />);
+        expect(screen.find(RemovedDetail)).toHaveLength(1);
+        expect(screen.find(Detail)).toHaveLength(0);
     });
 
     it('should display datasetTitle in link', () => {
@@ -102,8 +102,8 @@ describe('<Resource />', () => {
         };
 
         // @ts-expect-error TS2322
-        const wrapper = shallow(<ResourceComponent {...props} />);
-        expect(wrapper.find(Detail).prop('backToListLabel')).toBe(
+        const screen = shallow(<ResourceComponent {...props} />);
+        expect(screen.find(Detail).prop('backToListLabel')).toBe(
             'dataset title',
         );
     });
@@ -134,10 +134,10 @@ describe('<Resource />', () => {
         };
 
         // @ts-expect-error TS2322
-        const { rerender } = render(<ResourceComponent {...props} />);
+        const screen = render(<ResourceComponent {...props} />);
         expect(preLoadResource).toHaveBeenCalledTimes(1);
 
-        rerender(
+        screen.rerender(
             // @ts-expect-error TS2322
             <ResourceComponent
                 {...props}
@@ -154,18 +154,19 @@ describe('<Resource />', () => {
             match: { params: { naan: 'naan', rest: 'rest' } },
             preLoadResource,
             loading: false,
-            resource: {},
+            resource: { uri: 'uri' },
         };
 
         // @ts-expect-error TS2322
-        const { rerender } = render(<ResourceComponent {...props} />);
+        const screen = render(<ResourceComponent {...props} />);
         expect(preLoadResource).toHaveBeenCalledTimes(1);
 
-        rerender(
-            // @ts-expect-error TS2322
+        screen.rerender(
             <ResourceComponent
                 {...props}
-                match={{ params: { naan: 'naan', rest: 'changed' } }}
+                match={{
+                    params: { uri: 'uri', naan: 'naan', rest: 'changed' },
+                }}
             />,
         );
 
@@ -194,10 +195,10 @@ describe('<Resource />', () => {
             </ThemeProvider>
         );
 
-        const { rerender } = render(<TestResourceComponent {...props} />);
+        const screen = render(<TestResourceComponent {...props} />);
 
-        // Setting last uri state requires a rerender
-        rerender(<TestResourceComponent {...props} />);
+        // Setting last uri state requires a screen.rerender
+        screen.rerender(<TestResourceComponent {...props} />);
 
         expect(
             screen.queryAllByRole('button', {
@@ -205,7 +206,7 @@ describe('<Resource />', () => {
             }),
         ).toHaveLength(0);
 
-        rerender(
+        screen.rerender(
             <TestResourceComponent
                 {...props}
                 match={{
@@ -243,10 +244,10 @@ describe('<Resource />', () => {
             </ThemeProvider>
         );
 
-        const { rerender } = render(<TestResourceComponent {...props} />);
+        const screen = render(<TestResourceComponent {...props} />);
 
-        // Setting last uri state requires a rerender
-        rerender(<TestResourceComponent {...props} />);
+        // Setting last uri state requires a screen.rerender
+        screen.rerender(<TestResourceComponent {...props} />);
 
         expect(
             screen.queryAllByRole('button', {
@@ -254,7 +255,7 @@ describe('<Resource />', () => {
             }),
         ).toHaveLength(0);
 
-        rerender(
+        screen.rerender(
             <TestResourceComponent
                 {...props}
                 match={{

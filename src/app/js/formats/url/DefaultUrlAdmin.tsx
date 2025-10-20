@@ -1,6 +1,5 @@
 // @ts-expect-error TS6133
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { translate } from '../../i18n/I18NContext';
 import { MenuItem, TextField } from '@mui/material';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
@@ -12,39 +11,34 @@ export const defaultArgs = {
     value: '',
 };
 
-class DefaultUrlAdmin extends Component {
-    static propTypes = {
-        args: PropTypes.shape({
-            type: PropTypes.oneOf(['value', 'text', 'column']),
-            value: PropTypes.string,
-        }),
-        onChange: PropTypes.func.isRequired,
-        p: polyglotPropTypes.isRequired,
+interface DefaultUrlAdminProps {
+    args?: {
+        type?: "value" | "text" | "column";
+        value?: string;
     };
+    onChange(...args: unknown[]): unknown;
+    p: unknown;
+}
 
+class DefaultUrlAdmin extends Component<DefaultUrlAdminProps> {
     static defaultProps = {
         args: defaultArgs,
     };
 
     // @ts-expect-error TS7006
     handleType = (e) => {
-        // @ts-expect-error TS2339
         const newArgs = { ...this.props.args, type: e.target.value };
-        // @ts-expect-error TS2339
         this.props.onChange(newArgs);
     };
 
     // @ts-expect-error TS7006
     handleValue = (e) => {
-        // @ts-expect-error TS2339
         const newArgs = { ...this.props.args, value: e.target.value };
-        // @ts-expect-error TS2339
         this.props.onChange(newArgs);
     };
 
     render() {
         const {
-            // @ts-expect-error TS2339
             p: polyglot,
             // @ts-expect-error TS2339
             args: { type, value },

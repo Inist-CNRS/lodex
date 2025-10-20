@@ -1,9 +1,5 @@
 import { renderHook } from '@testing-library/react-hooks';
-import PropTypes from 'prop-types';
-// @ts-expect-error TS6133
-import React from 'react';
 
-import { waitFor } from '@testing-library/react';
 import {
     AnnotationStorageProvider,
     useGetAnnotatedResourceUris,
@@ -17,6 +13,7 @@ import configureStore from '../configureStore';
 import reducers from '../public/reducers';
 import { createMemoryHistory } from 'history';
 import { newResourceAnnotated } from '../public/search/reducer';
+import type { Dispatch } from 'redux';
 
 // @ts-expect-error TS7017
 global.__DEBUG__ = false;
@@ -28,18 +25,18 @@ const { store } = configureStore(
     memoryHistory,
 );
 
-// @ts-expect-error TS7031
-function TestWrapper({ children, dispatch }) {
+interface TestWrapperProps {
+    children?: React.ReactNode;
+    dispatch: Dispatch<any>;
+}
+
+function TestWrapper({ children, dispatch }: TestWrapperProps) {
     return (
         <Provider store={{ ...store, dispatch }}>
             <AnnotationStorageProvider>{children}</AnnotationStorageProvider>
         </Provider>
     );
 }
-TestWrapper.propTypes = {
-    children: PropTypes.node,
-    dispatch: PropTypes.func,
-};
 
 describe('annotationStorage', () => {
     beforeEach(() => {
@@ -87,7 +84,6 @@ describe('annotationStorage', () => {
                     }),
                 {
                     wrapper: TestWrapper,
-                    // @ts-expect-error TS2741
                     initialProps: {
                         dispatch: jest.fn(),
                     },
@@ -101,10 +97,9 @@ describe('annotationStorage', () => {
     describe('useSaveAnnotationId', () => {
         it('should append to existing field annotations', async () => {
             const dispatch = jest.fn();
-            const { result, rerender } = renderHook(
+            const { result, rerender, waitFor } = renderHook(
                 () => useSaveAnnotationId(),
                 {
-                    // @ts-expect-error TS2322
                     wrapper: TestWrapper,
                     initialProps: {
                         dispatch,
@@ -136,10 +131,9 @@ describe('annotationStorage', () => {
 
         it('should create a new  resource entry and dispatch newResourceAnnotated event', async () => {
             const dispatch = jest.fn();
-            const { result, rerender } = renderHook(
+            const { result, rerender, waitFor } = renderHook(
                 () => useSaveAnnotationId(),
                 {
-                    // @ts-expect-error TS2322
                     wrapper: TestWrapper,
                     initialProps: {
                         dispatch,
@@ -177,7 +171,7 @@ describe('annotationStorage', () => {
 
     describe('useSetFieldAnnotationIds', () => {
         it('should overwrite annotations for a field', async () => {
-            const { result, rerender } = renderHook(
+            const { result, rerender, waitFor } = renderHook(
                 () =>
                     useSetFieldAnnotationIds({
                         fieldId: 'fieldId',

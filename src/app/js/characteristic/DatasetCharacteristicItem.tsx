@@ -1,6 +1,5 @@
 // @ts-expect-error TS6133
 import React from 'react';
-import PropTypes from 'prop-types';
 import camelCase from 'lodash/camelCase';
 import { connect } from 'react-redux';
 import { useInView } from 'react-intersection-observer';
@@ -22,14 +21,21 @@ const styles = {
     },
 };
 
+interface DatasetCharacteristicItemComponentProps {
+    resource: {
+        uri?: string;
+    };
+    field: unknown;
+    style: {};
+}
+
 export const DatasetCharacteristicItemComponent = ({
-    // @ts-expect-error TS7031
     resource,
-    // @ts-expect-error TS7031
+
     field,
-    // @ts-expect-error TS7031
-    style,
-}) => {
+
+    style
+}: DatasetCharacteristicItemComponentProps) => {
     const [ref, inView] = useInView({
         triggerOnce: true,
         rootMargin: `${LOADING_BOX_HEIGHT * 2}px 0px`,
@@ -49,14 +55,6 @@ export const DatasetCharacteristicItemComponent = ({
             )}
         </>
     );
-};
-
-DatasetCharacteristicItemComponent.propTypes = {
-    resource: PropTypes.shape({
-        uri: PropTypes.string,
-    }).isRequired,
-    field: fieldPropTypes.isRequired,
-    style: PropTypes.shape({}).isRequired,
 };
 
 // @ts-expect-error TS7006

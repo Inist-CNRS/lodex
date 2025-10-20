@@ -1,12 +1,7 @@
 import { useTranslate } from '../../../../i18n/I18NContext';
 import { MULTICHROMATIC_DEFAULT_COLORSET_STREAMGRAPH } from '../../../utils/colorUtils';
 import { ASPECT_RATIO_8_5 } from '../../../utils/aspectRatio';
-import PropTypes from 'prop-types';
-import { polyglot as polyglotPropTypes } from '../../../../propTypes';
-import TreeMap, {
-    TREE_MAP_LAYOUT,
-    type TreeMapLayout,
-} from '../../models/TreeMap';
+import TreeMap, { type TreeMapLayout } from '../../models/TreeMap';
 import { useCallback, useMemo, type ChangeEvent } from 'react';
 import RoutineParamsAdmin from '../../../utils/components/admin/RoutineParamsAdmin';
 import {
@@ -204,7 +199,7 @@ const TreeMapAdmin = ({
     );
 
     const handleAdvancedModeSpec = useCallback(
-        (advancedModeSpec) => {
+        (advancedModeSpec: string | null) => {
             onChange({
                 ...args,
                 advancedModeSpec,
@@ -267,7 +262,7 @@ const TreeMapAdmin = ({
     );
 
     const handleLayout = useCallback(
-        (e) => {
+        (e: ChangeEvent<HTMLInputElement>) => {
             onChange({
                 ...args,
                 layout: e.target.value as TreeMapLayout,
@@ -277,10 +272,10 @@ const TreeMapAdmin = ({
     );
 
     const handleRatio = useCallback(
-        (_, value) => {
+        (_: unknown, value: number | number[]) => {
             onChange({
                 ...args,
-                ratio: value as number,
+                ratio: Array.isArray(value) ? value[0] : value,
             });
         },
         [args, onChange],
@@ -430,35 +425,6 @@ const TreeMapAdmin = ({
             />
         </FormatGroupedFieldSet>
     );
-};
-
-TreeMapAdmin.propTypes = {
-    args: PropTypes.shape({
-        params: PropTypes.shape({
-            maxSize: PropTypes.number,
-            maxValue: PropTypes.number,
-            minValue: PropTypes.number,
-            orderBy: PropTypes.string,
-        }),
-        hierarchy: PropTypes.bool,
-        flatType: PropTypes.oneOf(['id/value', 'source/target/weight']),
-        advancedMode: PropTypes.bool,
-        advancedModeSpec: PropTypes.string,
-        tooltip: PropTypes.bool,
-        tooltipSource: PropTypes.string,
-        tooltipTarget: PropTypes.string,
-        tooltipWeight: PropTypes.string,
-        colors: PropTypes.string,
-        layout: PropTypes.oneOf(TREE_MAP_LAYOUT),
-        ratio: PropTypes.number,
-        aspectRatio: PropTypes.string,
-    }),
-    onChange: PropTypes.func.isRequired,
-    p: polyglotPropTypes.isRequired,
-    showMaxSize: PropTypes.bool.isRequired,
-    showMaxValue: PropTypes.bool.isRequired,
-    showMinValue: PropTypes.bool.isRequired,
-    showOrderBy: PropTypes.bool.isRequired,
 };
 
 TreeMapAdmin.defaultProps = {

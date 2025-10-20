@@ -1,4 +1,4 @@
-import { render, within } from '@testing-library/react';
+import { render } from '@testing-library/react';
 // @ts-expect-error TS6133
 import React from 'react';
 
@@ -7,7 +7,7 @@ import { AnnotationProposedValue } from './AnnotationProposedValue';
 
 describe('AnnotationProposedValue', () => {
     it('should render value array if field can have multiple proposed values', () => {
-        const wrapper = render(
+        const screen = render(
             <AnnotationProposedValue
                 proposedValue={['value1', 'value2']}
                 field={{
@@ -17,10 +17,10 @@ describe('AnnotationProposedValue', () => {
             />,
         );
 
-        const list = wrapper.getByRole('list');
+        const list = screen.getByRole('list');
         expect(list).toBeInTheDocument();
 
-        const items = within(list).queryAllByRole('listitem');
+        const items = screen.within(list).queryAllByRole('listitem');
 
         expect(items).toHaveLength(2);
         expect(items[0]).toHaveTextContent('value1');
@@ -28,7 +28,7 @@ describe('AnnotationProposedValue', () => {
     });
 
     it('should render value first value if field can only have one value', () => {
-        const wrapper = render(
+        const screen = render(
             <AnnotationProposedValue
                 proposedValue={['value1']}
                 field={{
@@ -38,11 +38,11 @@ describe('AnnotationProposedValue', () => {
             />,
         );
 
-        expect(wrapper.queryByText('value1')).toBeInTheDocument();
+        expect(screen.queryByText('value1')).toBeInTheDocument();
     });
 
     it('should support proposed value as string for compatibility', () => {
-        const wrapper = render(
+        const screen = render(
             <AnnotationProposedValue
                 proposedValue={'value1'}
                 field={{
@@ -52,11 +52,11 @@ describe('AnnotationProposedValue', () => {
             />,
         );
 
-        expect(wrapper.queryByText('value1')).toBeInTheDocument();
+        expect(screen.queryByText('value1')).toBeInTheDocument();
     });
 
     it('should support text format', () => {
-        const wrapper = render(
+        const screen = render(
             <AnnotationProposedValue
                 proposedValue={'value1'}
                 field={{
@@ -66,11 +66,11 @@ describe('AnnotationProposedValue', () => {
             />,
         );
 
-        expect(wrapper.queryByText('value1')).toBeInTheDocument();
+        expect(screen.queryByText('value1')).toBeInTheDocument();
     });
 
     it('should display add icon when value is not in the admin provided value list', () => {
-        const wrapper = render(
+        const screen = render(
             <TestI18N>
                 <AnnotationProposedValue
                     proposedValue={['value1', 'value2']}
@@ -83,17 +83,17 @@ describe('AnnotationProposedValue', () => {
             </TestI18N>,
         );
 
-        const list = wrapper.getByRole('list');
+        const list = screen.getByRole('list');
         expect(list).toBeInTheDocument();
 
-        const items = within(list).queryAllByRole('listitem');
+        const items = screen.within(list).queryAllByRole('listitem');
 
         expect(items).toHaveLength(2);
         expect(items[0]).toHaveTextContent('value1');
         expect(items[1]).toHaveTextContent('value2');
 
         expect(
-            wrapper.queryByLabelText(
+            screen.queryByLabelText(
                 'annotation_user_provided_value+{"value":"value2"}',
             ),
         ).toBeInTheDocument();

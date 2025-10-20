@@ -1,6 +1,5 @@
 // @ts-expect-error TS6133
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { translate } from '../../../../i18n/I18NContext';
 import { Box, Checkbox, FormControlLabel, TextField } from '@mui/material';
 import ContentAdd from '@mui/icons-material/Add';
@@ -37,23 +36,22 @@ WHERE
     },
 };
 
-class SparqlTextFieldAdmin extends Component {
-    static propTypes = {
-        args: PropTypes.shape({
-            sparql: PropTypes.shape({
-                endpoint: PropTypes.string,
-                maxValue: PropTypes.number,
-                request: PropTypes.string,
-                // @ts-expect-error TS2339
-                hiddenInfo: PropTypes.boolean,
-                separator: PropTypes.string,
-                subformat: PropTypes.arrayOf(PropTypes.object),
-            }),
-        }),
-        onChange: PropTypes.func.isRequired,
-        p: polyglotPropTypes.isRequired,
+interface SparqlTextFieldAdminProps {
+    args?: {
+        sparql?: {
+            endpoint?: string;
+            maxValue?: number;
+            request?: string;
+            hiddenInfo?: unknown;
+            separator?: string;
+            subformat?: object[];
+        };
     };
+    onChange(...args: unknown[]): unknown;
+    p: unknown;
+}
 
+class SparqlTextFieldAdmin extends Component<SparqlTextFieldAdminProps> {
     static defaultProps = {
         args: defaultArgs,
     };
@@ -64,7 +62,6 @@ class SparqlTextFieldAdmin extends Component {
         // @ts-expect-error TS2339
         const { sparql, ...args } = this.props.args;
         const newArgs = { ...args, sparql: { ...sparql, endpoint } };
-        // @ts-expect-error TS2339
         this.props.onChange(newArgs);
     };
 
@@ -74,7 +71,6 @@ class SparqlTextFieldAdmin extends Component {
         // @ts-expect-error TS2339
         const { sparql, ...args } = this.props.args;
         const newArgs = { ...args, sparql: { ...sparql, request } };
-        // @ts-expect-error TS2339
         this.props.onChange(newArgs);
     };
 
@@ -87,7 +83,6 @@ class SparqlTextFieldAdmin extends Component {
         // @ts-expect-error TS2339
         const { sparql, ...state } = this.props.args;
         const newState = { ...state, sparql: { ...sparql, maxValue } };
-        // @ts-expect-error TS2339
         this.props.onChange(newState);
     };
     // @ts-expect-error TS7006
@@ -96,7 +91,6 @@ class SparqlTextFieldAdmin extends Component {
         // @ts-expect-error TS2339
         const { sparql, ...state } = this.props.args;
         const newState = { ...state, sparql: { ...sparql, hiddenInfo } };
-        // @ts-expect-error TS2339
         this.props.onChange(newState);
     };
 
@@ -106,7 +100,6 @@ class SparqlTextFieldAdmin extends Component {
         // @ts-expect-error TS2339
         const { sparql, ...args } = this.props.args;
         const newArgs = { ...args, sparql: { ...sparql, separator } };
-        // @ts-expect-error TS2339
         this.props.onChange(newArgs);
     };
 
@@ -116,7 +109,6 @@ class SparqlTextFieldAdmin extends Component {
         const subformat = sparql.subformat;
         subformat.push({ attribute: '?example', sub: '', option: {} });
         const newState = { ...state, sparql: { ...sparql, subformat } };
-        // @ts-expect-error TS2339
         this.props.onChange(newState);
     };
 
@@ -127,7 +119,6 @@ class SparqlTextFieldAdmin extends Component {
         const subformat = sparql.subformat;
         subformat.splice(key.key, 1);
         const newState = { ...state, sparql: { ...sparql, subformat } };
-        // @ts-expect-error TS2339
         this.props.onChange(newState);
     };
 
@@ -138,7 +129,6 @@ class SparqlTextFieldAdmin extends Component {
         const subformat = sparql.subformat;
         subformat[key].attribute = attribute;
         const newState = { ...state, sparql: { ...sparql, subformat } };
-        // @ts-expect-error TS2339
         this.props.onChange(newState);
     };
 
@@ -149,7 +139,6 @@ class SparqlTextFieldAdmin extends Component {
         const subformat = sparql.subformat;
         subformat[key].sub = sub;
         const newState = { ...state, sparql: { ...sparql, subformat } };
-        // @ts-expect-error TS2339
         this.props.onChange(newState);
     };
 
@@ -160,7 +149,6 @@ class SparqlTextFieldAdmin extends Component {
         const subformat = sparql.subformat;
         subformat[key].option = option;
         const newState = { ...state, sparql: { ...sparql, subformat } };
-        // @ts-expect-error TS2339
         this.props.onChange(newState);
     };
 
@@ -170,12 +158,11 @@ class SparqlTextFieldAdmin extends Component {
 
     // @ts-expect-error TS7006
     loadSubformat = (result, key) => {
-        // @ts-expect-error TS2339
         const { p: polyglot } = this.props;
         const SubAdminComponent = getAdminComponent(result.sub);
 
         return (
-            <Box display="flex" flexDirection="column" flexGrow={1} gap={2}>
+            (<Box display="flex" flexDirection="column" flexGrow={1} gap={2}>
                 <TextField
                     fullWidth
                     label={polyglot.t('sparql_attribute')}
@@ -191,18 +178,17 @@ class SparqlTextFieldAdmin extends Component {
                 />
                 {result.sub && (
                     // @ts-expect-error TS2739 - Too complex union type from getAdminComponent
-                    <SubAdminComponent
+                    (<SubAdminComponent
                         onChange={(e) => this.handleSubformatOption(e, key)}
                         args={result.option}
-                    />
+                    />)
                 )}
-            </Box>
+            </Box>)
         );
     };
 
     render() {
         const {
-            // @ts-expect-error TS2339
             p: polyglot,
             // @ts-expect-error TS2339
             args: { sparql },

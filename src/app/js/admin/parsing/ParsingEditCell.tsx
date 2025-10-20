@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import ReactJson from 'react-json-view';
 import { Save as SaveIcon } from '@mui/icons-material';
 import datasetApi from '../api/dataset';
@@ -130,8 +129,15 @@ const isError = (value) => {
     );
 };
 
-// @ts-expect-error TS7031
-const ButtonEditCellWithDropdown = ({ loading, handleChange }) => {
+interface ButtonEditCellWithDropdownProps {
+    loading: boolean;
+    handleChange(...args: unknown[]): unknown;
+}
+
+const ButtonEditCellWithDropdown = ({
+    loading,
+    handleChange
+}: ButtonEditCellWithDropdownProps) => {
     const { translate } = useTranslate();
     const theme = useTheme();
     const [isOpen, setOpen] = React.useState(false);
@@ -207,13 +213,15 @@ const ButtonEditCellWithDropdown = ({ loading, handleChange }) => {
     );
 };
 
-ButtonEditCellWithDropdown.propTypes = {
-    loading: PropTypes.bool.isRequired,
-    handleChange: PropTypes.func.isRequired,
-};
+interface ParsingEditCellProps {
+    cell: object;
+    setToggleDrawer(...args: unknown[]): unknown;
+}
 
-// @ts-expect-error TS7031
-const ParsingEditCell = ({ cell, setToggleDrawer }) => {
+const ParsingEditCell = ({
+    cell,
+    setToggleDrawer
+}: ParsingEditCellProps) => {
     const { translate } = useTranslate();
     const theme = useTheme();
     const [loading, setLoading] = React.useState(false);
@@ -341,11 +349,6 @@ const ParsingEditCell = ({ cell, setToggleDrawer }) => {
             </div>
         </div>
     );
-};
-
-ParsingEditCell.propTypes = {
-    cell: PropTypes.object.isRequired,
-    setToggleDrawer: PropTypes.func.isRequired,
 };
 
 export default ParsingEditCell;

@@ -1,7 +1,6 @@
 // @ts-expect-error TS6133
 import React from 'react';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
-import PropTypes from 'prop-types';
 import { FixedSizeList } from 'react-window';
 import { useMeasure } from 'react-use';
 import {
@@ -34,8 +33,13 @@ const styles = {
     },
 };
 
-// @ts-expect-error TS7006
-const LogLine = (props) => {
+interface LogLineProps {
+    data: string[];
+    index: number;
+    style: object;
+}
+
+const LogLine = (props: LogLineProps) => {
     const { data, index, style } = props;
     const log = data[index];
     let parsedLog;
@@ -76,22 +80,22 @@ const LogLine = (props) => {
     );
 };
 
-LogLine.propTypes = {
-    data: PropTypes.arrayOf(PropTypes.string).isRequired,
-    index: PropTypes.number.isRequired,
-    style: PropTypes.object.isRequired,
-};
+interface PrecomputedLogsDialogProps {
+    isOpen: boolean;
+    handleClose(...args: unknown[]): unknown;
+    logs: string[];
+    p: unknown;
+}
 
 export const PrecomputedLogsDialog = ({
-    // @ts-expect-error TS7031
     isOpen,
-    // @ts-expect-error TS7031
+
     logs,
-    // @ts-expect-error TS7031
+
     p: polyglot,
-    // @ts-expect-error TS7031
-    handleClose,
-}) => {
+
+    handleClose
+}: PrecomputedLogsDialogProps) => {
     const [logsContainerRef, { width }] = useMeasure();
 
     const handleDownloadLogs = () => {
@@ -144,13 +148,6 @@ export const PrecomputedLogsDialog = ({
             </DialogActions>
         </Dialog>
     );
-};
-
-PrecomputedLogsDialog.propTypes = {
-    isOpen: PropTypes.bool.isRequired,
-    handleClose: PropTypes.func.isRequired,
-    logs: PropTypes.arrayOf(PropTypes.string).isRequired,
-    p: polyglotPropTypes.isRequired,
 };
 
 export default translate(PrecomputedLogsDialog);

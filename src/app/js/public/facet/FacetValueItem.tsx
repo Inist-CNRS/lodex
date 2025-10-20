@@ -6,7 +6,6 @@ import {
     ListItemText,
     Typography,
 } from '@mui/material';
-import PropTypes from 'prop-types';
 // @ts-expect-error TS6133
 import React from 'react';
 import { connect } from 'react-redux';
@@ -31,8 +30,21 @@ const styles = {
 const onCheck = (toggleFacetValue, name, facetValue) => () =>
     toggleFacetValue({ name, facetValue });
 
-// @ts-expect-error TS7031
-export const FacetValueItemView = ({ name, facetValue, isChecked }) => {
+interface FacetValueItemViewProps {
+    name: string;
+    isChecked: boolean;
+    facetValue: {
+        value?: Record<string, unknown> | string | null;
+        count?: number;
+        id?: string;
+    };
+}
+
+export const FacetValueItemView = ({
+    name,
+    facetValue,
+    isChecked,
+}: FacetValueItemViewProps) => {
     const { translate } = useTranslate();
 
     if (facetValue.value instanceof Object) {
@@ -112,16 +124,6 @@ export const FacetValueItemView = ({ name, facetValue, isChecked }) => {
             )}
         </FacetActionsContext.Consumer>
     );
-};
-
-FacetValueItemView.propTypes = {
-    name: PropTypes.string.isRequired,
-    isChecked: PropTypes.bool.isRequired,
-    facetValue: PropTypes.shape({
-        value: PropTypes.string,
-        count: PropTypes.number,
-        id: PropTypes.string,
-    }).isRequired,
 };
 
 // @ts-expect-error TS7006

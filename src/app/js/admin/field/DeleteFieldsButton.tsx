@@ -10,31 +10,35 @@ import {
     List,
     ListItem,
 } from '@mui/material';
-import PropTypes from 'prop-types';
-// @ts-expect-error TS6133
-import React, { useCallback, useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import { removeFieldList } from '../../fields';
 import FieldRepresentation from '../../fields/FieldRepresentation';
-import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { fromFields } from '../../sharedSelectors';
-import { translate } from '../../i18n/I18NContext';
+import { useTranslate } from '../../i18n/I18NContext';
+
+interface DeleteFieldsButtonComponentProps {
+    fields?: {
+        _id: string;
+    }[];
+    selectedFields: string[];
+    isFieldsLoading: boolean;
+    filter?: string;
+    subresourceId?: string;
+    removeFieldList(...args: unknown[]): unknown;
+    dispatch(...args: unknown[]): unknown;
+    isRemoveFieldListPending?: boolean;
+}
 
 const DeleteFieldsButtonComponent = ({
-    // @ts-expect-error TS7031
     fields,
-    // @ts-expect-error TS7031
     isRemoveFieldListPending,
-    // @ts-expect-error TS7031
     isFieldsLoading,
-    // @ts-expect-error TS7031
-    p: polyglot,
-    // @ts-expect-error TS7031
     selectedFields,
-    // @ts-expect-error TS7031
     removeFieldList,
-}) => {
+}: DeleteFieldsButtonComponentProps) => {
+    const { translate } = useTranslate();
     const [warningOpen, setWarningOpen] = useState(false);
 
     const fieldsToDelete = useMemo(() => {
@@ -76,9 +80,9 @@ const DeleteFieldsButtonComponent = ({
                         )
                     }
                     onClick={handleOpenModal}
-                    aria-label={polyglot.t('delete_selected_fields')}
+                    aria-label={translate('delete_selected_fields')}
                 >
-                    {polyglot.t('delete_selected_fields')}
+                    {translate('delete_selected_fields')}
                 </Button>
             )}
             <Dialog
@@ -88,19 +92,17 @@ const DeleteFieldsButtonComponent = ({
                 aria-describedby="delete-selected-fields-dialog-description"
             >
                 <DialogTitle id="delete-selected-fields-dialog-title">
-                    {polyglot.t('delete_selected_fields_title', {
+                    {translate('delete_selected_fields_title', {
                         smart_count: fieldsToDelete.length,
                     })}
                 </DialogTitle>
                 <DialogContent>
                     <DialogContentText>
-                        {polyglot.t('delete_selected_fields_helptext', {
+                        {translate('delete_selected_fields_helptext', {
                             smart_count: fieldsToDelete.length,
                         })}
                     </DialogContentText>
                     <List>
-                        {/*
-                         // @ts-expect-error TS7006 */}
                         {fieldsToDelete.map((field) => (
                             <ListItem
                                 key={field._id}
@@ -117,35 +119,23 @@ const DeleteFieldsButtonComponent = ({
                 <DialogActions>
                     <Button
                         onClick={handleCloseModal}
-                        aria-label={polyglot.t('cancel')}
+                        aria-label={translate('cancel')}
                     >
-                        {polyglot.t('cancel')}
+                        {translate('cancel')}
                     </Button>
                     <Button
                         onClick={handleDeleteFields}
                         variant="contained"
                         color="primary"
                         autoFocus
-                        aria-label={polyglot.t('delete')}
+                        aria-label={translate('delete')}
                     >
-                        {polyglot.t('delete')}
+                        {translate('delete')}
                     </Button>
                 </DialogActions>
             </Dialog>
         </>
     );
-};
-
-DeleteFieldsButtonComponent.propTypes = {
-    fields: PropTypes.array,
-    selectedFields: PropTypes.arrayOf(PropTypes.string).isRequired,
-    isFieldsLoading: PropTypes.bool.isRequired,
-    filter: PropTypes.string,
-    subresourceId: PropTypes.string,
-    p: polyglotPropTypes.isRequired,
-    removeFieldList: PropTypes.func.isRequired,
-    dispatch: PropTypes.func.isRequired,
-    isRemoveFieldListPending: PropTypes.bool,
 };
 
 // @ts-expect-error TS7006
@@ -167,6 +157,5 @@ const mapDispatchToProps = (dispatch) => {
 
 export const DeleteFieldsButton = compose(
     connect(mapStateToProps, mapDispatchToProps),
-    translate,
     // @ts-expect-error TS2345
 )(DeleteFieldsButtonComponent);

@@ -1,4 +1,4 @@
-import React, { memo, type CSSProperties } from 'react';
+import { memo, useState, type CSSProperties } from 'react';
 import classnames from 'classnames';
 
 import Link from '../../lib/components/Link';
@@ -72,16 +72,16 @@ const styles: Record<string, CSSProperties> = stylesToClassname(
 );
 
 type SearchResultProps = {
-    fields: Array<any>;
+    fields: { name: string }[];
     fieldNames: {
-        title: string;
-        description: string;
-        detail1: string;
-        detail2: string;
-        detail3: string;
+        title?: string;
+        description?: string;
+        detail1?: string;
+        detail2?: string;
+        detail3?: string;
     };
-    result: Record<string, any>;
-    closeDrawer: () => void;
+    result: { uri: string; [key: string]: any };
+    closeDrawer(): void;
 };
 
 const SearchResult = ({
@@ -91,7 +91,7 @@ const SearchResult = ({
     closeDrawer,
 }: SearchResultProps) => {
     const isVisited = useIsVisited(result);
-    const [showMore, setShowMore] = React.useState(false);
+    const [showMore, setShowMore] = useState(false);
     const titleField = fields.find((field) => field.name === fieldNames.title);
     const descriptionField = fields.find(
         (field) => field.name === fieldNames.description,
@@ -115,7 +115,6 @@ const SearchResult = ({
         ? { href: result.uri }
         : { to: getResourceUri(result) };
     return (
-        // @ts-expect-error TS2322
         <Link
             {...linkProps}
             routeAware

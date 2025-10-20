@@ -1,34 +1,36 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { MenuItem, Button, TextField, Box } from '@mui/material';
 import ListAltIcon from '@mui/icons-material/ListAlt';
-import { polyglot as polyglotPropTypes } from '../propTypes';
-import FormatCatalogDialog from './FormatCatalog';
-import { translate } from '../i18n/I18NContext';
+import FormatCatalogDialog, { type FormatProps } from './FormatCatalog';
+import { useTranslate } from '../i18n/I18NContext';
 
-// @ts-expect-error TS7031
-const SelectFormat = ({ formats, value, onChange, p: polyglot }) => {
+interface SelectFormatProps {
+    formats: FormatProps[];
+    value?: string;
+    onChange(value: string): void;
+}
+
+const SelectFormat = ({ formats, value, onChange }: SelectFormatProps) => {
+    const { translate } = useTranslate();
     const [openCatalog, setOpenCatalog] = React.useState(false);
     return (
         <Box sx={{ display: 'flex' }}>
             <TextField
                 select
                 className="select-format"
-                label={polyglot.t('select_a_format')}
+                label={translate('select_a_format')}
                 onChange={(e) => onChange(e.target.value)}
                 value={value}
                 fullWidth
             >
-                <MenuItem value="">{polyglot.t('none')}</MenuItem>
-                {/*
-                 // @ts-expect-error TS7006 */}
+                <MenuItem value="">{translate('none')}</MenuItem>
                 {formats.map((format) => (
                     <MenuItem
                         className="select-format-item"
                         key={format.name}
                         value={format.componentName}
                     >
-                        {polyglot.t(format.name)}
+                        {translate(format.name)}
                         <div data-value={format.componentName} />
                     </MenuItem>
                 ))}
@@ -58,11 +60,4 @@ SelectFormat.defaultProps = {
     value: null,
 };
 
-SelectFormat.propTypes = {
-    formats: PropTypes.arrayOf(PropTypes.object).isRequired,
-    value: PropTypes.string,
-    onChange: PropTypes.func.isRequired,
-    p: polyglotPropTypes.isRequired,
-};
-
-export default translate(SelectFormat);
+export default SelectFormat;

@@ -10,7 +10,6 @@ import { AdminComponent } from './Admin';
 describe('<Admin />', () => {
     it('should render spinner when loading', () => {
         const wrapper = shallow(
-            // @ts-expect-error TS2322
             <AdminComponent
                 // @ts-expect-error TS2322
                 hasUploadedFile
@@ -26,13 +25,11 @@ describe('<Admin />', () => {
             // @ts-expect-error TS2322
             <AdminComponent hasUploadedFile p={{ t: () => {} }} />,
         );
-        // @ts-expect-error TS2322
         expect(wrapper.contains(<ParsingResult />)).toBe(true);
     });
 
     it('should render the Upload when no file uploaded', () => {
         const wrapper = shallow(
-            // @ts-expect-error TS2322
             <AdminComponent
                 canUploadFile
                 // @ts-expect-error TS2322

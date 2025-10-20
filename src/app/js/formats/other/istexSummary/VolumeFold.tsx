@@ -1,30 +1,40 @@
 // @ts-expect-error TS6133
 import React from 'react';
-import PropTypes from 'prop-types';
 
 import FetchFold from './FetchFold';
 import { getIssueData } from './getIstexData';
 import { SEARCHED_FIELD_VALUES } from './constants';
 import { polyglot as polyglotPropTypes } from '../../../propTypes';
 
+interface VolumeFoldProps {
+    item: {
+        name: string;
+        count: number;
+    };
+    value: string;
+    year: string;
+    searchedField?: unknown[];
+    children(...args: unknown[]): unknown;
+    nbSiblings?: number;
+    polyglot: unknown;
+}
+
 const VolumeFold = ({
-    // @ts-expect-error TS7031
     item: { name: volume, count },
-    // @ts-expect-error TS7031
+
     nbSiblings,
-    // @ts-expect-error TS7031
+
     value,
-    // @ts-expect-error TS7031
+
     year,
-    // @ts-expect-error TS7031
+
     searchedField,
-    // @ts-expect-error TS7031
+
     children,
-    // @ts-expect-error TS7031
-    polyglot,
-}) => (
+
+    polyglot
+}: VolumeFoldProps) => (
     <FetchFold
-        // @ts-expect-error TS2769
         label={
             volume === 'other'
                 ? polyglot.t('other_volume')
@@ -44,18 +54,5 @@ const VolumeFold = ({
         {children}
     </FetchFold>
 );
-
-VolumeFold.propTypes = {
-    item: PropTypes.shape({
-        name: PropTypes.string.isRequired,
-        count: PropTypes.number.isRequired,
-    }).isRequired,
-    value: PropTypes.string.isRequired,
-    year: PropTypes.string.isRequired,
-    searchedField: PropTypes.oneOf(SEARCHED_FIELD_VALUES),
-    children: PropTypes.func.isRequired,
-    nbSiblings: PropTypes.number,
-    polyglot: polyglotPropTypes.isRequired,
-};
 
 export default VolumeFold;

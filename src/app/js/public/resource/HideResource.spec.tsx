@@ -1,5 +1,5 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { render, userEvent, waitFor } from '../../../../test-utils';
+import { render, userEvent } from '../../../../test-utils';
 import { HideResource } from './HideResource';
 import { ADMIN_ROLE } from '../../../../common/tools/tenantTools';
 import { hideResource } from '../api/hideResource';
@@ -38,7 +38,7 @@ describe('HideResourceForm', () => {
         await user.type(screen.getByLabelText('enter_reason *'), 'reason');
         await user.click(screen.getByText('save'));
 
-        await waitFor(() =>
+        await screen.waitFor(() =>
             expect(
                 screen.queryByText('enter_reason *'),
             ).not.toBeInTheDocument(),
@@ -66,13 +66,13 @@ describe('HideResourceForm', () => {
         );
         expect(screen.getByText('hide')).toBeInTheDocument();
         await user.click(screen.getByText('hide'));
-        await waitFor(() =>
+        await screen.waitFor(() =>
             expect(screen.getByLabelText('enter_reason *')).toBeInTheDocument(),
         );
 
         await user.click(screen.getByText('cancel'));
 
-        waitFor(() =>
+        await screen.waitFor(() =>
             expect(
                 screen.queryByText('enter_reason *'),
             ).not.toBeInTheDocument(),
@@ -97,7 +97,7 @@ describe('HideResourceForm', () => {
         );
         expect(screen.getByText('hide')).toBeInTheDocument();
         await user.click(screen.getByText('hide'));
-        await waitFor(() =>
+        await screen.waitFor(() =>
             expect(screen.getByLabelText('enter_reason *')).toBeInTheDocument(),
         );
 
@@ -141,7 +141,7 @@ describe('HideResourceForm', () => {
             reason: 'reason',
         });
 
-        await waitFor(() =>
+        await screen.waitFor(() =>
             expect(screen.getByText('hide resource error')).toBeInTheDocument(),
         );
     });

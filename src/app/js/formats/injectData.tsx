@@ -1,6 +1,5 @@
 // @ts-expect-error TS6133
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import { withRouter } from 'react-router';
@@ -83,27 +82,29 @@ const getCreateUrl = (url) => {
 // @ts-expect-error TS7006
 const isHomePage = (location) => get(location, 'pathname', '') === '/';
 
+interface GraphItemProps {
+    field: unknown;
+    resource: object;
+    preLoadFormatData(...args: unknown[]): unknown;
+    unLoadFormatData(...args: unknown[]): unknown;
+    loadFormatData(...args: unknown[]): unknown;
+    formatData?: any;
+    formatTotal?: any;
+    isLoaded: boolean;
+    isFormatLoading: boolean;
+    error?: unknown | unknown;
+    location?: {
+        pathname?: string;
+    };
+    p: unknown;
+}
+
 export default (url = null, checkFormatLoaded = null, withUri = false) =>
     // @ts-expect-error TS7006
     (FormatView) => {
         const createUrl = getCreateUrl(url);
 
-        class GraphItem extends Component {
-            static propTypes = {
-                field: fieldPropTypes.isRequired,
-                resource: PropTypes.object.isRequired,
-                preLoadFormatData: PropTypes.func.isRequired,
-                unLoadFormatData: PropTypes.func.isRequired,
-                loadFormatData: PropTypes.func.isRequired,
-                formatData: PropTypes.any,
-                formatTotal: PropTypes.any,
-                isLoaded: PropTypes.bool.isRequired,
-                isFormatLoading: PropTypes.bool.isRequired,
-                error: PropTypes.oneOf([PropTypes.string, PropTypes.object]),
-                location: PropTypes.shape({ pathname: PropTypes.string }),
-                p: polyglotPropTypes.isRequired,
-            };
-
+        class GraphItem extends Component<GraphItemProps> {
             // @ts-expect-error TS7006
             constructor(props) {
                 super(props);
@@ -114,7 +115,6 @@ export default (url = null, checkFormatLoaded = null, withUri = false) =>
             }
 
             loadFormatData = ({ ...args }) => {
-                // @ts-expect-error TS2339
                 const { loadFormatData, location } = this.props;
 
                 const value = createUrl(this.props);
@@ -141,13 +141,11 @@ export default (url = null, checkFormatLoaded = null, withUri = false) =>
             };
 
             unLoadFormatData = ({ ...args }) => {
-                // @ts-expect-error TS2339
                 const { unLoadFormatData } = this.props;
                 unLoadFormatData({ ...args });
             };
 
             UNSAFE_componentWillMount() {
-                // @ts-expect-error TS2339
                 const { field } = this.props;
                 if (!field) {
                     return;
@@ -156,7 +154,6 @@ export default (url = null, checkFormatLoaded = null, withUri = false) =>
             }
 
             componentWillUnmount() {
-                // @ts-expect-error TS2339
                 const { field } = this.props;
                 if (!field) {
                     return;
@@ -166,7 +163,6 @@ export default (url = null, checkFormatLoaded = null, withUri = false) =>
 
             // @ts-expect-error TS7006
             componentDidUpdate(prevProps) {
-                // @ts-expect-error TS2339
                 const { field, resource } = this.props;
 
                 // @ts-expect-error TS2339
@@ -199,21 +195,13 @@ export default (url = null, checkFormatLoaded = null, withUri = false) =>
 
             render() {
                 const {
-                    // @ts-expect-error TS2339
                     formatTotal,
-                    // @ts-expect-error TS2339
                     formatData,
-                    // @ts-expect-error TS2339
                     p: polyglot,
-                    // @ts-expect-error TS2339
                     field,
-                    // @ts-expect-error TS2339
                     isLoaded,
-                    // @ts-expect-error TS2339
                     isFormatLoading,
-                    // @ts-expect-error TS2339
                     error,
-                    // @ts-expect-error TS2339
                     resource,
                     ...props
                 } = this.props;
@@ -248,7 +236,7 @@ export default (url = null, checkFormatLoaded = null, withUri = false) =>
 
                 return (
                     // @ts-expect-error TS2322
-                    <div style={styles.format.container}>
+                    (<div style={styles.format.container}>
                         <style>{animationKeyframes}</style>
                         <div
                             onAnimationEnd={this.handleAnimationEnd}
@@ -278,7 +266,7 @@ export default (url = null, checkFormatLoaded = null, withUri = false) =>
                             formatTotal={formatTotal}
                             filterFormatData={this.filterFormatData}
                         />
-                    </div>
+                    </div>)
                 );
             }
         }

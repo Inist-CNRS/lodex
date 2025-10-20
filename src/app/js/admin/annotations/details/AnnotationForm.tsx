@@ -3,8 +3,6 @@ import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
 import { useForm, useStore } from '@tanstack/react-form';
-import PropTypes from 'prop-types';
-// @ts-expect-error TS6133
 import React, { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 
@@ -21,8 +19,14 @@ import { AnnotationHeader } from './AnnotationHeader';
 import { AnnotationInputs } from './AnnotationInputs';
 import { AnnotationItems } from './AnnotationItems';
 
-// @ts-expect-error TS7031
-export const AnnotationForm = ({ annotation }) => {
+interface AnnotationFormProps {
+    annotation: object;
+    children?: React.ReactNode;
+}
+
+export const AnnotationForm = ({
+    annotation
+}: AnnotationFormProps) => {
     const tenant = sessionStorage.getItem('lodex-tenant') || DEFAULT_TENANT;
 
     const { translate } = useTranslate();
@@ -212,9 +216,4 @@ export const AnnotationForm = ({ annotation }) => {
             </Box>
         </Stack>
     );
-};
-
-AnnotationForm.propTypes = {
-    annotation: PropTypes.object.isRequired,
-    children: PropTypes.node,
 };

@@ -123,13 +123,12 @@ describe('Property', () => {
 
         it('should render something if resource[field.name] and field format is list is a list of value', () => {
             const wrapper = shallow(
-                // @ts-expect-error TS2769
                 <PropertyComponent
                     {...defaultProps}
                     isAdmin={false}
                     field={{
                         name: 'field',
-                        // @ts-expect-error TS2353
+                        // @ts-expect-error TS2322
                         format: {
                             name: 'list',
                         },

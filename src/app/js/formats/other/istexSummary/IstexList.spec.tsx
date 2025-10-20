@@ -80,7 +80,6 @@ describe('IstexList', () => {
             // @ts-expect-error TS2769
             <IstexList
                 {...defaultProps}
-                // @ts-expect-error TS2322
                 data={{
                     hits: ['item1', 'item2', 'item3'],
                     total: 6,

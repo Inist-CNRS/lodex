@@ -1,6 +1,5 @@
 import AspectRatioIcon from '@mui/icons-material/AspectRatio';
 import StorageIcon from '@mui/icons-material/Storage';
-import PropTypes from 'prop-types';
 // @ts-expect-error TS6133
 import React from 'react';
 import { connect } from 'react-redux';
@@ -60,16 +59,19 @@ const styles = {
     },
 };
 
+interface AppbarComponentProps {
+    isLoading?: boolean;
+    isAdmin: boolean;
+    hasPublishedDataset?: boolean;
+    invalidFields?: object[];
+}
+
 const AppbarComponent = ({
-    // @ts-expect-error TS7031
     isLoading,
-    // @ts-expect-error TS7031
     isAdmin,
-    // @ts-expect-error TS7031
     hasPublishedDataset,
-    // @ts-expect-error TS7031
     invalidFields,
-}) => {
+}: AppbarComponentProps) => {
     const { translate } = useTranslate();
     const leftElement = (
         <Box sx={{ display: 'flex', paddingLeft: '80px' }}>
@@ -151,13 +153,6 @@ const AppbarComponent = ({
             </Toolbar>
         </AppBar>
     );
-};
-
-AppbarComponent.propTypes = {
-    isLoading: PropTypes.bool,
-    isAdmin: PropTypes.bool.isRequired,
-    hasPublishedDataset: PropTypes.bool,
-    invalidFields: PropTypes.arrayOf(PropTypes.object),
 };
 
 AppbarComponent.defaultProps = {

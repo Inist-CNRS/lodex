@@ -2,7 +2,6 @@
 import React, { useMemo, useState } from 'react';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
-import PropTypes from 'prop-types';
 
 import { CustomActionVega } from '../../../utils/components/vega-component';
 import RadarChart from '../../models/RadarChart';
@@ -24,28 +23,41 @@ const styles = {
     },
 };
 
+interface RadarChartViewProps {
+    field: unknown;
+    resource: object;
+    data?: any;
+    colors: string;
+    tooltip: boolean;
+    tooltipCategory: string;
+    tooltipValue: string;
+    scale: string;
+    advancedMode?: boolean;
+    advancedModeSpec?: string;
+    aspectRatio?: string;
+}
+
 const RadarChartView = ({
-    // @ts-expect-error TS7031
     advancedMode,
-    // @ts-expect-error TS7031
+
     advancedModeSpec,
-    // @ts-expect-error TS7031
+
     field,
-    // @ts-expect-error TS7031
+
     data,
-    // @ts-expect-error TS7031
+
     colors,
-    // @ts-expect-error TS7031
+
     tooltip,
-    // @ts-expect-error TS7031
+
     tooltipCategory,
-    // @ts-expect-error TS7031
+
     tooltipValue,
-    // @ts-expect-error TS7031
+
     scale,
-    // @ts-expect-error TS7031
-    aspectRatio,
-}) => {
+
+    aspectRatio
+}: RadarChartViewProps) => {
     const formattedData = useMemo(() => {
         if (!data) {
             return data;
@@ -109,29 +121,15 @@ const RadarChartView = ({
 
     return (
         // @ts-expect-error TS2322
-        <div style={styles.container} ref={ref}>
+        (<div style={styles.container} ref={ref}>
             <CustomActionVega
                 spec={spec}
                 data={formattedData}
                 injectType={VEGA_DATA_INJECT_TYPE_A}
                 aspectRatio={aspectRatio}
             />
-        </div>
+        </div>)
     );
-};
-
-RadarChartView.propTypes = {
-    field: fieldPropTypes.isRequired,
-    resource: PropTypes.object.isRequired,
-    data: PropTypes.any,
-    colors: PropTypes.string.isRequired,
-    tooltip: PropTypes.bool.isRequired,
-    tooltipCategory: PropTypes.string.isRequired,
-    tooltipValue: PropTypes.string.isRequired,
-    scale: PropTypes.string.isRequired,
-    advancedMode: PropTypes.bool,
-    advancedModeSpec: PropTypes.string,
-    aspectRatio: PropTypes.string,
 };
 
 RadarChartView.defaultProps = {

@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 // @ts-expect-error TS6133
 import React from 'react';
 
@@ -28,24 +27,37 @@ const styles = {
     },
 };
 
-// @ts-expect-error TS7031
-const DefaultView = ({ className, resource, field, fieldStatus, shrink }) => {
+interface DefaultViewProps {
+    className?: string;
+    field: unknown;
+    fieldStatus?: string;
+    resource: any;
+    shrink?: boolean;
+}
+
+const DefaultView = ({
+    className,
+    resource,
+    field,
+    fieldStatus,
+    shrink
+}: DefaultViewProps) => {
     const value = resource[field.name];
 
     if (isURL(value)) {
         return (
             // @ts-expect-error TS2739
-            <Link style={styles[fieldStatus]} href={`${value}`}>
+            (<Link style={styles[fieldStatus]} href={`${value}`}>
                 {value}
-            </Link>
+            </Link>)
         );
     }
     if (isLocalURL(value)) {
         return (
             // @ts-expect-error TS2739
-            <Link style={styles[fieldStatus]} href={`${canonicalURL(value)}`}>
+            (<Link style={styles[fieldStatus]} href={`${canonicalURL(value)}`}>
                 {value}
-            </Link>
+            </Link>)
         );
     }
 
@@ -60,14 +72,6 @@ const DefaultView = ({ className, resource, field, fieldStatus, shrink }) => {
             <span className={className}>{text}</span>
         </Typography>
     );
-};
-
-DefaultView.propTypes = {
-    className: PropTypes.string,
-    field: fieldPropTypes.isRequired,
-    fieldStatus: PropTypes.string,
-    resource: PropTypes.any.isRequired,
-    shrink: PropTypes.bool,
 };
 
 DefaultView.defaultProps = {

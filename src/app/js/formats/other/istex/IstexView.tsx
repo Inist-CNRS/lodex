@@ -1,6 +1,5 @@
 // @ts-expect-error TS6133
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, { type CSSProperties } from 'react';
 import memoize from 'lodash/memoize';
 import compose from 'recompose/compose';
 import FileDownload from '@mui/icons-material/GetApp';
@@ -9,20 +8,21 @@ import Link from '../../../lib/components/Link';
 import fetchPaginatedDataForComponent from '../../../lib/fetchPaginatedDataForComponent';
 import Alert from '../../../lib/components/Alert';
 import { REJECTED } from '../../../../../common/propositionStatus';
-import {
-    field as fieldPropTypes,
-    polyglot as polyglotPropTypes,
-} from '../../../propTypes';
 import { fetchForIstexFormat } from '../../utils/fetchIstexData';
-import IstexItem from './IstexItem';
+import IstexItem, { type IstexItemComponentProps } from './IstexItem';
 import { ISTEX_SITE_URL } from '../../../../../common/externals';
-import { translate } from '../../../i18n/I18NContext';
+import { useTranslate } from '../../../i18n/I18NContext';
 
-const styles = {
+const styles: {
+    text: (status?: string) => CSSProperties;
+    header: CSSProperties;
+    dl: CSSProperties;
+    total: CSSProperties;
+} = {
     text: memoize((status) => ({
         fontSize: '1rem',
         textDecoration: status === REJECTED ? 'line-through' : 'none',
-    })),
+    })) as (status?: string) => CSSProperties,
     header: {
         borderBottom: '1px solid lightgrey',
         marginBottom: '1rem',
@@ -37,68 +37,63 @@ const styles = {
     },
 };
 
+interface IstexViewProps {
+    fieldStatus?: string;
+    resource: Record<string, string>;
+    field: {
+        name: string;
+    };
+    data?: {
+        hits: ({
+            id: string;
+        } & IstexItemComponentProps)[];
+        total: number;
+    };
+    error?: string;
+}
+
 export const IstexView = ({
-    // @ts-expect-error TS7031
     fieldStatus,
-    // @ts-expect-error TS7031
     data,
-    // @ts-expect-error TS7031
     error,
-    // @ts-expect-error TS7031
     field,
-    // @ts-expect-error TS7031
     resource,
-    // @ts-expect-error TS7031
-    p: polyglot,
-}) => (
-    <div className="istex-list" style={styles.text(fieldStatus)}>
-        <div style={styles.header}>
-            <span style={styles.total}>
-                {polyglot.t('istex_total', {
-                    total: data ? data.total : 0,
-                })}
-            </span>
-            {/*
-             // @ts-expect-error TS2739 */}
-            <Link
-                style={styles.dl}
-                href={`${ISTEX_SITE_URL}/?q=`.concat(
-                    encodeURIComponent(resource[field.name]),
-                )}
-                target="_blank"
-            >
-                {/*
+}: IstexViewProps) => {
+    const { translate } = useTranslate();
+    return (
+        <div className="istex-list" style={styles.text(fieldStatus)}>
+            <div style={styles.header}>
+                <span style={styles.total}>
+                    {translate('istex_total', {
+                        total: data ? data.total : 0,
+                    })}
+                </span>
+                <Link
+                    style={styles.dl}
+                    href={`${ISTEX_SITE_URL}/?q=`.concat(
+                        encodeURIComponent(resource[field.name]),
+                    )}
+                    target="_blank"
+                >
+                    {/*
                  // @ts-expect-error TS2769 */}
-                <FileDownload tooltip={polyglot.t('download')} />
-            </Link>
-            {error && (
-                <Alert>
-                    <p>{polyglot.t(error)}</p>
-                </Alert>
+                    <FileDownload tooltip={translate('download')} />
+                </Link>
+                {error && (
+                    <Alert>
+                        <p>{translate(error)}</p>
+                    </Alert>
+                )}
+            </div>
+            {data && data.hits && (
+                <div>
+                    {data.hits.map((item) => (
+                        <IstexItem key={item.id} {...item} />
+                    ))}
+                </div>
             )}
         </div>
-        {data && data.hits && (
-            <div>
-                {/*
-                 // @ts-expect-error TS7006 */}
-                {data.hits.map((item) => (
-                    <IstexItem key={item.id} {...item} />
-                ))}
-            </div>
-        )}
-    </div>
-);
-
-IstexView.propTypes = {
-    fieldStatus: PropTypes.string,
-    resource: PropTypes.object.isRequired,
-    field: fieldPropTypes.isRequired,
-    data: PropTypes.shape({
-        hits: PropTypes.array.isRequired,
-        total: PropTypes.number.isRequired,
-    }),
-    error: PropTypes.string,
-    p: polyglotPropTypes.isRequired,
+    );
 };
 
 IstexView.defaultProps = {
@@ -110,7 +105,6 @@ IstexView.defaultProps = {
 };
 
 export default compose(
-    translate,
     fetchPaginatedDataForComponent(fetchForIstexFormat),
     // @ts-expect-error TS2345
 )(IstexView);

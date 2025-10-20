@@ -21,7 +21,6 @@ describe('<Publish />', () => {
         const onPublish = jest.fn();
 
         const wrapper = shallow(
-            // @ts-expect-error TS2769
             <PublishButton
                 // @ts-expect-error TS2322
                 p={{ t: (key) => key }}

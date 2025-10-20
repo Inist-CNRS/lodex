@@ -2,12 +2,20 @@ import { FormControl, InputLabel, NativeSelect } from '@mui/material';
 // @ts-expect-error TS6133
 import React from 'react';
 import { useTranslate } from '../../../i18n/I18NContext';
-import PropTypes from 'prop-types';
 
 const scopes = ['home', 'document', 'subRessource', 'facet', 'chart'];
 
-// @ts-expect-error TS7031
-export const FieldScopeFilter = ({ applyValue, item }) => {
+interface FieldScopeFilterProps {
+    applyValue(...args: unknown[]): unknown;
+    item: {
+        value?: string;
+    };
+}
+
+export const FieldScopeFilter = ({
+    applyValue,
+    item
+}: FieldScopeFilterProps) => {
     const { translate } = useTranslate();
 
     return (
@@ -35,11 +43,4 @@ export const FieldScopeFilter = ({ applyValue, item }) => {
             </NativeSelect>
         </FormControl>
     );
-};
-
-FieldScopeFilter.propTypes = {
-    applyValue: PropTypes.func.isRequired,
-    item: PropTypes.shape({
-        value: PropTypes.string,
-    }).isRequired,
 };

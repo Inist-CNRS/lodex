@@ -1,17 +1,17 @@
-// @ts-expect-error TS6133
-import React from 'react';
-import { act, fireEvent, render } from '@testing-library/react';
+import { act, render } from '@testing-library/react';
 import { z } from 'zod';
-import PropTypes from 'prop-types';
 import { useForm } from '@tanstack/react-form';
-import { TextField } from './TextField';
+import { TextField, type TextFieldProps } from './TextField';
 import { TestI18N } from '../../i18n/I18NContext';
 
 // @ts-expect-error TS7006
 const renderTextField = async (props) => {
     let form;
 
-    function TestTargetField({ formValue = 'value', ...props }) {
+    function TestTargetField({
+        formValue = 'value',
+        ...props
+    }: Omit<TextFieldProps, 'form'> & { formValue?: string }) {
         form = useForm({
             defaultValues: {
                 name: formValue,
@@ -19,97 +19,87 @@ const renderTextField = async (props) => {
         });
         return (
             <TestI18N>
-                {/* 
-                // @ts-expect-error TS2322 */}
                 <TextField form={form} {...props} />
             </TestI18N>
         );
     }
 
-    TestTargetField.propTypes = {
-        formValue: PropTypes.string,
-    };
-    let wrapper;
-
-    await act(async () => {
-        wrapper = render(<TestTargetField {...props} />);
+    const screen = await act(async () => {
+        return render(<TestTargetField {...props} />);
     });
 
     return {
         form,
-        // @ts-expect-error TS2698
-        ...wrapper,
+        ...screen,
     };
 };
 
 describe('TextField', () => {
     it('should render the TextField component', async () => {
-        const wrapper = await renderTextField({
+        const screen = await renderTextField({
             label: 'label',
             name: 'name',
             helperText: 'helperText',
         });
-        expect(wrapper.queryByLabelText('label')).toBeInTheDocument();
-        expect(wrapper.queryByLabelText('label')).toHaveValue('value');
-        expect(wrapper.queryByText('helperText')).toBeInTheDocument();
+        expect(screen.queryByLabelText('label')).toBeInTheDocument();
+        expect(screen.queryByLabelText('label')).toHaveValue('value');
+        expect(screen.queryByText('helperText')).toBeInTheDocument();
     });
     it('should render the TextField component with given initial value', async () => {
-        const wrapper = await renderTextField({
+        const screen = await renderTextField({
             label: 'label',
             name: 'name',
             helperText: 'helperText',
             initialValue: 'initialValue',
             formValue: null,
         });
-        expect(wrapper.queryByLabelText('label')).toBeInTheDocument();
-        expect(wrapper.queryByLabelText('label')).toHaveValue('initialValue');
+        expect(screen.queryByLabelText('label')).toBeInTheDocument();
+        expect(screen.queryByLabelText('label')).toHaveValue('initialValue');
     });
     it('should ignore initial value if form value is already set', async () => {
-        const wrapper = await renderTextField({
+        const screen = await renderTextField({
             label: 'label',
             name: 'name',
             helperText: 'helperText',
             initialValue: 'initialValue',
             formValue: 'formValue',
         });
-        expect(wrapper.queryByLabelText('label')).toBeInTheDocument();
-        expect(wrapper.queryByLabelText('label')).toHaveValue('formValue');
+        expect(screen.queryByLabelText('label')).toBeInTheDocument();
+        expect(screen.queryByLabelText('label')).toHaveValue('formValue');
     });
 
     it('should display a clear button if clearable is set', async () => {
-        const wrapper = await renderTextField({
+        const screen = await renderTextField({
             label: 'label',
             name: 'name',
             helperText: 'helperText',
             clearable: true,
         });
-        expect(wrapper.queryByLabelText('label')).toBeInTheDocument();
-        expect(wrapper.queryByLabelText('label')).toHaveValue('value');
-        expect(wrapper.queryByLabelText('clear')).toBeInTheDocument();
-        // @ts-expect-error TS2769
+        expect(screen.queryByLabelText('label')).toBeInTheDocument();
+        expect(screen.queryByLabelText('label')).toHaveValue('value');
+        expect(screen.queryByLabelText('clear')).toBeInTheDocument();
         await act(async () => {
-            return fireEvent.click(wrapper.queryByLabelText('clear'));
+            return screen.fireEvent.click(screen.queryByLabelText('clear'));
         });
-        expect(wrapper.queryByLabelText('label')).toHaveValue('');
+        expect(screen.queryByLabelText('label')).toHaveValue('');
     });
 
     it('should not display a clear button if clearable is not set', async () => {
-        const wrapper = await renderTextField({
+        const screen = await renderTextField({
             label: 'label',
             name: 'name',
             helperText: 'helperText',
         });
-        expect(wrapper.queryByLabelText('label')).toBeInTheDocument();
-        expect(wrapper.queryByLabelText('label')).toHaveValue('value');
-        expect(wrapper.queryByLabelText('clear')).not.toBeInTheDocument();
+        expect(screen.queryByLabelText('label')).toBeInTheDocument();
+        expect(screen.queryByLabelText('label')).toHaveValue('value');
+        expect(screen.queryByLabelText('clear')).not.toBeInTheDocument();
     });
 
     it('should render an error message in place of the helperText when field value become invalid', async () => {
         const schema = z.object({
             name: z.string().min(10, 'error_from_validator'),
         });
-        // @ts-expect-error TS7006
-        function TestTargetField(props) {
+        function TestTargetField(props: Omit<TextFieldProps, 'form'>) {
             const form = useForm({
                 validators: {
                     onChange: schema,
@@ -123,10 +113,10 @@ describe('TextField', () => {
         }
 
         // @ts-expect-error TS7034
-        let wrapper;
+        let screen;
 
         await act(async () => {
-            wrapper = render(
+            screen = render(
                 <TestTargetField
                     label="label"
                     name="name"
@@ -135,32 +125,32 @@ describe('TextField', () => {
             );
         });
         // @ts-expect-error TS18048
-        expect(wrapper.queryByText('helperText')).toBeInTheDocument();
+        expect(screen.queryByText('helperText')).toBeInTheDocument();
         await act(async () => {
             // @ts-expect-error TS7005
-            fireEvent.change(wrapper.getByLabelText('label'), {
+            screen.fireEvent.change(screen.getByLabelText('label'), {
                 target: { value: 'value' },
             });
         });
         // @ts-expect-error TS18048
-        expect(wrapper.queryByText('helperText')).not.toBeInTheDocument();
+        expect(screen.queryByText('helperText')).not.toBeInTheDocument();
         // @ts-expect-error TS18048
-        expect(wrapper.queryByText('error_from_validator')).toBeInTheDocument();
+        expect(screen.queryByText('error_from_validator')).toBeInTheDocument();
     });
     it('should render an error message in place of the helperText when required is true and there is no value independently of validators', async () => {
-        const wrapper = await renderTextField({
+        const screen = await renderTextField({
             label: 'label',
             name: 'name',
             helperText: 'helperText',
             required: true,
         });
-        expect(wrapper.queryByText('helperText')).toBeInTheDocument();
+        expect(screen.queryByText('helperText')).toBeInTheDocument();
         await act(async () => {
-            fireEvent.change(wrapper.getByLabelText('label'), {
+            screen.fireEvent.change(screen.getByLabelText('label'), {
                 target: { value: '' },
             });
         });
-        expect(wrapper.queryByText('helperText')).not.toBeInTheDocument();
-        expect(wrapper.queryByText('error_field_required')).toBeInTheDocument();
+        expect(screen.queryByText('helperText')).not.toBeInTheDocument();
+        expect(screen.queryByText('error_field_required')).toBeInTheDocument();
     });
 });

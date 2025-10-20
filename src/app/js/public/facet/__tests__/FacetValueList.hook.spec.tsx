@@ -36,7 +36,6 @@ describe('useDebouncedSearch hook', () => {
 
     it('debounces and respects MIN_SEARCH_LENGTH', () => {
         const wrapper = mount(
-            // @ts-expect-error TS2769
             <TestComponent changeFacetValue={defaultChange} />,
         );
         const input = wrapper.find('input').at(0);
@@ -79,7 +78,6 @@ describe('useDebouncedSearch hook', () => {
 
     it('shows loading indicator for the appropriate delay', () => {
         const wrapper = mount(
-            // @ts-expect-error TS2769
             <TestComponent changeFacetValue={defaultChange} />,
         );
         const input = wrapper.find('input').at(0);
@@ -110,7 +108,6 @@ describe('useDebouncedSearch hook', () => {
 
     it('calls search immediately when filter becomes empty', () => {
         const wrapper = mount(
-            // @ts-expect-error TS2769
             <TestComponent
                 changeFacetValue={defaultChange}
                 initialFilter="test"
@@ -145,7 +142,6 @@ describe('useDebouncedSearch hook', () => {
         global.AbortController = jest.fn(() => mockAbortController);
 
         const wrapper = mount(
-            // @ts-expect-error TS2769
             <TestComponent changeFacetValue={defaultChange} />,
         );
         const input = wrapper.find('input').at(0);

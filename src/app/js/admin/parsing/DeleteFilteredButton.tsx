@@ -1,6 +1,5 @@
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Button } from '@mui/material';
-import PropTypes from 'prop-types';
 // @ts-expect-error TS6133
 import React, { useEffect, useState } from 'react';
 
@@ -14,8 +13,15 @@ import { useTranslate } from '../../i18n/I18NContext';
 import { ConfirmPopup } from '../../lib/components/ConfirmPopup';
 import datasetApi from '../api/dataset';
 
-// @ts-expect-error TS7031
-export function DeleteFilteredButton({ filter, reloadDataset }) {
+interface DeleteFilteredButtonProps {
+    filter: object;
+    reloadDataset(...args: unknown[]): unknown;
+}
+
+export function DeleteFilteredButton({
+    filter,
+    reloadDataset
+}: DeleteFilteredButtonProps) {
     const apiRef = useGridApiContext();
     const rowCount = useGridSelector(apiRef, gridRowCountSelector);
 
@@ -92,8 +98,3 @@ export function DeleteFilteredButton({ filter, reloadDataset }) {
         </>
     );
 }
-
-DeleteFilteredButton.propTypes = {
-    filter: PropTypes.object.isRequired,
-    reloadDataset: PropTypes.func.isRequired,
-};

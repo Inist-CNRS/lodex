@@ -1,22 +1,20 @@
-// @ts-expect-error TS6133
-import React from 'react';
-import PropTypes from 'prop-types';
-
 import SearchResultPlaceholder from './SearchResultPlaceholder';
 
-// @ts-expect-error TS7031
-const SearchResultPlaceholders = ({ className, results }) => (
+type SearchResultPlaceholdersProps = {
+    className?: string;
+    results: number;
+};
+
+const SearchResultPlaceholders = ({
+    className,
+    results,
+}: SearchResultPlaceholdersProps) => (
     <div className={className}>
         {Array.from({ length: results }, (_, i) => (
             <SearchResultPlaceholder key={i} />
         ))}
     </div>
 );
-
-SearchResultPlaceholders.propTypes = {
-    className: PropTypes.string,
-    results: PropTypes.number,
-};
 
 SearchResultPlaceholders.defaultProps = {
     className: null,

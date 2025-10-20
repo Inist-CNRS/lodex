@@ -1,6 +1,5 @@
 // @ts-expect-error TS6133
 import React, { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
 import {
     Dialog,
     LinearProgress,
@@ -45,8 +44,22 @@ const renderProgressText = (props) => {
     );
 };
 
-// @ts-expect-error TS7006
-export const ProgressComponent = (props) => {
+interface ProgressComponentProps {
+    progress: {
+        status: string;
+        target?: number;
+        progress?: number;
+        symbol?: string;
+        label?: string;
+        isBackground?: boolean;
+        error?: boolean;
+    };
+    loadProgress(...args: unknown[]): unknown;
+    clearProgress(...args: unknown[]): unknown;
+    p?: unknown;
+}
+
+export const ProgressComponent = (props: ProgressComponentProps) => {
     const { clearProgress, p: polyglot, loadProgress, progress } = props;
 
     const [updatedProgress, setUpdatedProgress] = useState(progress);
@@ -102,20 +115,6 @@ export const ProgressComponent = (props) => {
             </DialogContent>
         </Dialog>
     );
-};
-ProgressComponent.propTypes = {
-    progress: PropTypes.shape({
-        status: PropTypes.string.isRequired,
-        target: PropTypes.number,
-        progress: PropTypes.number,
-        symbol: PropTypes.string,
-        label: PropTypes.string,
-        isBackground: PropTypes.bool,
-        error: PropTypes.bool,
-    }).isRequired,
-    loadProgress: PropTypes.func.isRequired,
-    clearProgress: PropTypes.func.isRequired,
-    p: polyglotPropTypes,
 };
 
 ProgressComponent.defaultProps = {

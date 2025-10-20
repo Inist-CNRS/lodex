@@ -9,7 +9,6 @@ import DialogContent from '@mui/material/DialogContent';
 import IconButton from '@mui/material/IconButton';
 import Container from '@mui/material/Container';
 import CloseIcon from '@mui/icons-material/Close';
-import PropTypes from 'prop-types';
 
 import { field as fieldPropTypes } from '../../../../propTypes';
 import InvalidFormat from '../../../InvalidFormat';
@@ -17,24 +16,34 @@ import getLabel from '../../../utils/getLabel';
 
 const markdown = new MarkdownIt();
 
+interface MarkdownModalViewProps {
+    className?: string;
+    fields: unknown[];
+    field: unknown;
+    resource: object;
+    type?: "text" | "column";
+    label: string;
+    fullScreen?: boolean;
+    maxWidth?: "xs" | "sm" | "md" | "lg" | "xl";
+}
+
 const MarkdownModalView = ({
-    // @ts-expect-error TS7031
     className,
-    // @ts-expect-error TS7031
+
     resource,
-    // @ts-expect-error TS7031
+
     field,
-    // @ts-expect-error TS7031
+
     fields,
-    // @ts-expect-error TS7031
+
     type,
-    // @ts-expect-error TS7031
+
     label,
-    // @ts-expect-error TS7031
+
     fullScreen,
-    // @ts-expect-error TS7031
-    maxWidth,
-}) => {
+
+    maxWidth
+}: MarkdownModalViewProps) => {
     const [open, setOpen] = useState(false);
 
     const buttonLabel = useMemo(() => {
@@ -125,17 +134,6 @@ const MarkdownModalView = ({
             <CustomDialog />
         </div>
     );
-};
-
-MarkdownModalView.propTypes = {
-    className: PropTypes.string,
-    fields: PropTypes.arrayOf(fieldPropTypes).isRequired,
-    field: fieldPropTypes.isRequired,
-    resource: PropTypes.object.isRequired,
-    type: PropTypes.oneOf(['text', 'column']),
-    label: PropTypes.string.isRequired,
-    fullScreen: PropTypes.bool,
-    maxWidth: PropTypes.oneOf(['xs', 'sm', 'md', 'lg', 'xl']),
 };
 
 MarkdownModalView.defaultProps = {

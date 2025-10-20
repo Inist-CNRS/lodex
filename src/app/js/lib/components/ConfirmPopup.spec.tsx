@@ -8,7 +8,6 @@ import CancelButton from './CancelButton';
 describe('<PopupConfirmUpload />', () => {
     it('should render a popup for confirm upload', () => {
         const wrapper = shallow(
-            // @ts-expect-error TS2769
             <ConfirmPopup
                 cancelLabel="Cancel"
                 confirmLabel="Confirm"
@@ -28,7 +27,6 @@ describe('<PopupConfirmUpload />', () => {
         const onConfirm = jest.fn();
         const onCancel = jest.fn();
         const wrapper = shallow(
-            // @ts-expect-error TS2769
             <ConfirmPopup
                 cancelLabel="Cancel"
                 confirmLabel="Confirm"
@@ -51,7 +49,6 @@ describe('<PopupConfirmUpload />', () => {
         const onCancel = jest.fn();
         const onConfirm = jest.fn();
         const wrapper = shallow(
-            // @ts-expect-error TS2769
             <ConfirmPopup
                 isOpen
                 cancelLabel="Cancel"

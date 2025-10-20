@@ -1,9 +1,5 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { waitFor } from '@testing-library/react';
 import { renderHook } from '@testing-library/react-hooks';
-import PropTypes from 'prop-types';
-// @ts-expect-error TS6133
-import React from 'react';
 import { toast } from '../../../common/tools/toast';
 import { TestI18N } from '../i18n/I18NContext';
 import fetch from '../lib/fetch';
@@ -19,8 +15,11 @@ const queryClient = new QueryClient({
     },
 });
 
-// @ts-expect-error TS7031
-function TestWrapper({ children }) {
+interface TestWrapperProps {
+    children?: React.ReactNode;
+}
+
+function TestWrapper({ children }: TestWrapperProps) {
     return (
         <TestI18N>
             <AnnotationStorageProvider>
@@ -31,9 +30,6 @@ function TestWrapper({ children }) {
         </TestI18N>
     );
 }
-TestWrapper.propTypes = {
-    children: PropTypes.node,
-};
 
 const annotations = [
     {
@@ -89,7 +85,7 @@ describe('useGetFieldAnnotation', () => {
     });
 
     it('should call GET /api/annotation/field-annotations with fieldId and resourceUri and add isMine false to all returned annotation when none present in localstorage', async () => {
-        const { result } = renderHook(
+        const { result, waitFor } = renderHook(
             () => useGetFieldAnnotation('fieldId3', 'resourceUri'),
             {
                 wrapper: TestWrapper,
@@ -115,7 +111,7 @@ describe('useGetFieldAnnotation', () => {
     });
 
     it('should set isMine to true for annotation present in localStorage', async () => {
-        const { result, rerender } = renderHook(
+        const { result, rerender, waitFor } = renderHook(
             () => useGetFieldAnnotation('fieldId2', 'resourceUri'),
             {
                 wrapper: TestWrapper,
@@ -156,7 +152,7 @@ describe('useGetFieldAnnotation', () => {
     });
 
     it('should remove ids from localStorage if they are absent in the response', async () => {
-        const { result, rerender } = renderHook(
+        const { result, rerender, waitFor } = renderHook(
             () => useGetFieldAnnotation('fieldId', 'resourceUri'),
             {
                 wrapper: TestWrapper,

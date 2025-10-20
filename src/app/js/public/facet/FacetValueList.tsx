@@ -1,7 +1,12 @@
-import { useState, useCallback, useRef, useEffect } from 'react';
-import PropTypes from 'prop-types';
+import {
+    useState,
+    useCallback,
+    useRef,
+    useEffect,
+    type ChangeEvent,
+} from 'react';
 import { connect } from 'react-redux';
-import { translate } from '../../i18n/I18NContext';
+import { useTranslate } from '../../i18n/I18NContext';
 import compose from 'recompose/compose';
 import {
     TextField,
@@ -10,10 +15,6 @@ import {
     InputAdornment,
     CircularProgress,
 } from '@mui/material';
-import {
-    facetValue as facetValuePropType,
-    polyglot as polyglotPropType,
-} from '../../propTypes';
 
 import { fromFacet } from '../selectors';
 import FacetValueItem from './FacetValueItem';
@@ -55,12 +56,17 @@ const onPageChange =
 
 /* Hook to manage the filter with debounce and cancellation */
 export const useDebouncedSearch = (
-    changeFacetValue: any,
-    name: any,
-    perPage: any,
-    initialFilter: any,
+    changeFacetValue: (facetValue: {
+        name: string;
+        currentPage: number;
+        perPage: number;
+        filter: string;
+    }) => void,
+    name: string,
+    perPage: number,
+    initialFilter: string,
 ) => {
-    const [localFilter, setLocalFilter] = useState(initialFilter);
+    const [localFilter, setLocalFilter] = useState<string>(initialFilter);
     const [isSearching, setIsSearching] = useState(false);
     const debounceTimeoutRef = useRef(null);
     const abortControllerRef = useRef(null);
@@ -70,7 +76,7 @@ export const useDebouncedSearch = (
     }, [initialFilter]);
 
     const performSearch = useCallback(
-        (filterValue) => {
+        (filterValue: string) => {
             if (abortControllerRef.current) {
                 // @ts-expect-error TS2339
                 abortControllerRef.current.abort();
@@ -104,7 +110,7 @@ export const useDebouncedSearch = (
     );
 
     const debouncedSearch = useCallback(
-        (filterValue) => {
+        (filterValue: string) => {
             if (debounceTimeoutRef.current) {
                 clearTimeout(debounceTimeoutRef.current);
             }
@@ -117,7 +123,7 @@ export const useDebouncedSearch = (
     );
 
     const handleFilterChange = useCallback(
-        (e) => {
+        (e: ChangeEvent<HTMLInputElement>) => {
             const newValue = e.target.value;
             setLocalFilter(newValue);
 
@@ -163,36 +169,42 @@ const onSortChange = (sortFacetValue, name) => (nextSortBy) =>
         nextSortBy,
     });
 
+interface FacetValueListProps {
+    facetValues: { value: string }[];
+    name: string;
+    label: string;
+    filter: string;
+    inverted: boolean;
+    total: number;
+    currentPage: number;
+    perPage: number;
+    sort: {
+        sortBy?: string;
+        sortDir?: 'ASC' | 'DESC';
+    };
+    p?: unknown;
+    page: 'dataset' | 'search';
+    changeFacetValue(...args: unknown[]): unknown;
+    invertFacet(...args: unknown[]): unknown;
+    sortFacetValue(...args: unknown[]): unknown;
+}
+
 export const FacetValueList = ({
-    // @ts-expect-error TS7031
     name,
-    // @ts-expect-error TS7031
     label,
-    // @ts-expect-error TS7031
     facetValues,
-    // @ts-expect-error TS7031
     total,
-    // @ts-expect-error TS7031
     currentPage,
-    // @ts-expect-error TS7031
     perPage,
-    // @ts-expect-error TS7031
     filter,
-    // @ts-expect-error TS7031
     inverted,
-    // @ts-expect-error TS7031
     sort,
-    // @ts-expect-error TS7031
-    p: polyglot,
-    // @ts-expect-error TS7031
     page,
-    // @ts-expect-error TS7031
     changeFacetValue,
-    // @ts-expect-error TS7031
     invertFacet,
-    // @ts-expect-error TS7031
     sortFacetValue,
-}) => {
+}: FacetValueListProps) => {
+    const { translate } = useTranslate();
     const { localFilter, isSearching, handleFilterChange } = useDebouncedSearch(
         changeFacetValue,
         name,
@@ -212,10 +224,10 @@ export const FacetValueList = ({
                         className="exclude-facet"
                     />
                 }
-                label={polyglot.t('exclude')}
+                label={translate('exclude')}
             />
             <TextField
-                placeholder={polyglot.t('filter_value', { field: label })}
+                placeholder={translate('filter_value', { field: label })}
                 value={localFilter}
                 fullWidth
                 onChange={handleFilterChange}
@@ -231,7 +243,7 @@ export const FacetValueList = ({
                     localFilter &&
                     localFilter.length > 0 &&
                     localFilter.length < MIN_SEARCH_LENGTH
-                        ? polyglot.t('minimum_2_characters')
+                        ? translate('minimum_2_characters')
                         : ''
                 }
             />
@@ -244,7 +256,7 @@ export const FacetValueList = ({
                             sortBy={sort.sortBy}
                             sort={onSortChange(sortFacetValue, name)}
                         >
-                            {polyglot.t('value')}
+                            {translate('value')}
                         </SortButton>
                     </div>
                     <div style={styles.totalHeader}>
@@ -254,7 +266,7 @@ export const FacetValueList = ({
                             sortBy={sort.sortBy}
                             sort={onSortChange(sortFacetValue, name)}
                         >
-                            {polyglot.t('count')}
+                            {translate('count')}
                         </SortButton>
                     </div>
                 </div>
@@ -262,8 +274,6 @@ export const FacetValueList = ({
                     {/*
                      // @ts-expect-error TS2322 */}
                     {filter && <FacetValueAll name={name} page={page} />}
-                    {/*
-                     // @ts-expect-error TS7006 */}
                     {facetValues.map((facetValue) => {
                         return (
                             <FacetValueItem
@@ -286,26 +296,6 @@ export const FacetValueList = ({
             />
         </div>
     );
-};
-
-FacetValueList.propTypes = {
-    facetValues: PropTypes.arrayOf(facetValuePropType).isRequired,
-    name: PropTypes.string.isRequired,
-    label: PropTypes.string.isRequired,
-    filter: PropTypes.string,
-    inverted: PropTypes.bool.isRequired,
-    total: PropTypes.number.isRequired,
-    currentPage: PropTypes.number.isRequired,
-    perPage: PropTypes.number.isRequired,
-    sort: PropTypes.shape({
-        sortBy: PropTypes.string,
-        sortDir: PropTypes.oneOf(['ASC', 'DESC']),
-    }).isRequired,
-    p: polyglotPropType,
-    page: PropTypes.oneOf(['dataset', 'search']).isRequired,
-    changeFacetValue: PropTypes.func.isRequired,
-    invertFacet: PropTypes.func.isRequired,
-    sortFacetValue: PropTypes.func.isRequired,
 };
 
 // @ts-expect-error TS7006
@@ -339,7 +329,4 @@ const mapStateToProps = (state, { name, page }) => {
     };
 };
 
-export default compose(
-    translate,
-    connect(mapStateToProps),
-)(ConnectFacetValueList);
+export default compose(connect(mapStateToProps))(ConnectFacetValueList);

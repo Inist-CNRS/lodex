@@ -1,6 +1,5 @@
 // @ts-expect-error TS6133
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { CircularProgress } from '@mui/material';
 
 import { polyglot as polyglotPropTypes } from '../../../propTypes';
@@ -18,7 +17,13 @@ const circularProgress = (
     />
 );
 
-class SkipFold extends Component {
+interface SkipFoldProps {
+    children(...args: unknown[]): unknown;
+    polyglot: unknown;
+    getData(...args: unknown[]): unknown;
+}
+
+class SkipFold extends Component<SkipFoldProps> {
     state = {
         data: null,
         error: null,
@@ -27,7 +32,6 @@ class SkipFold extends Component {
 
     UNSAFE_componentWillMount() {
         this.props
-            // @ts-expect-error TS2339
             .getData(this.props)
             // @ts-expect-error TS7006
             .then((data) => {
@@ -45,7 +49,6 @@ class SkipFold extends Component {
     }
 
     render() {
-        // @ts-expect-error TS2339
         const { polyglot, children } = this.props;
         const { data, isLoading, error } = this.state;
 
@@ -62,16 +65,8 @@ class SkipFold extends Component {
             return null;
         }
 
-        // @ts-expect-error TS2349
         return children({ ...this.props, data });
     }
 }
-
-// @ts-expect-error TS2339
-SkipFold.propTypes = {
-    children: PropTypes.func.isRequired,
-    polyglot: polyglotPropTypes.isRequired,
-    getData: PropTypes.func.isRequired,
-};
 
 export default SkipFold;

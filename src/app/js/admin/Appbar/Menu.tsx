@@ -6,7 +6,6 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import PropTypes from 'prop-types';
 // @ts-expect-error TS6133
 import React, { useCallback, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
@@ -30,22 +29,31 @@ const NESTED_MENU_ANNOTATIONS = 'annotations';
 const NESTED_MENU_ADVANCED = 'advanced';
 const NESTED_MENU_MODEL = 'model';
 
+interface MenuComponentProps {
+    hasPublishedDataset: boolean;
+    onSignOut(...args: unknown[]): unknown;
+    importSucceeded: boolean;
+    importHasEnrichments: boolean;
+    importHasPrecomputed: boolean;
+    importFailed: boolean;
+    history: object;
+}
+
 const MenuComponent = ({
-    // @ts-expect-error TS7031
     hasPublishedDataset,
-    // @ts-expect-error TS7031
+
     onSignOut,
-    // @ts-expect-error TS7031
+
     importSucceeded,
-    // @ts-expect-error TS7031
+
     importHasEnrichments,
-    // @ts-expect-error TS7031
+
     importHasPrecomputed,
-    // @ts-expect-error TS7031
+
     importFailed,
-    // @ts-expect-error TS7031
-    history,
-}) => {
+
+    history
+}: MenuComponentProps) => {
     const { translate } = useTranslate();
     const [anchorEl, setAnchorEl] = useState(null);
     const [subMenuToShow, setSubMenuToShow] = useState(null);
@@ -166,7 +174,6 @@ const MenuComponent = ({
                         onOpen={() => setSubMenuToShow(NESTED_MENU_MODEL)}
                         onClose={handleCloseSubMenu}
                         label={translate('model')}
-                        // @ts-expect-error TS2322
                         menu={
                             <ModelNestedMenu
                                 // @ts-expect-error TS2322
@@ -182,9 +189,7 @@ const MenuComponent = ({
                         onOpen={() => setSubMenuToShow(NESTED_MENU_ANNOTATIONS)}
                         onClose={handleCloseSubMenu}
                         label={translate('annotations')}
-                        // @ts-expect-error TS2322
                         menu={
-                            // @ts-expect-error TS2322
                             <AnnotationNestedMenu onClose={handleCloseMenu} />
                         }
                     />
@@ -195,7 +200,6 @@ const MenuComponent = ({
                         onOpen={() => setSubMenuToShow(NESTED_MENU_ADVANCED)}
                         onClose={handleCloseSubMenu}
                         label={translate('advanced')}
-                        // @ts-expect-error TS2322
                         menu={
                             <AdvancedNestedMenu
                                 // @ts-expect-error TS2322
@@ -255,15 +259,6 @@ const MenuComponent = ({
     );
 };
 
-MenuComponent.propTypes = {
-    hasPublishedDataset: PropTypes.bool.isRequired,
-    onSignOut: PropTypes.func.isRequired,
-    importSucceeded: PropTypes.bool.isRequired,
-    importHasEnrichments: PropTypes.bool.isRequired,
-    importHasPrecomputed: PropTypes.bool.isRequired,
-    importFailed: PropTypes.bool.isRequired,
-    history: PropTypes.object.isRequired,
-};
 // @ts-expect-error TS7006
 const mapDispatchToProps = (dispatch) =>
     bindActionCreators(

@@ -1,9 +1,5 @@
-// @ts-expect-error TS6133
-import React from 'react';
-import PropTypes from 'prop-types';
-import { translate } from '../../i18n/I18NContext';
+import { useTranslate } from '../../i18n/I18NContext';
 
-import { polyglot as polyglotPropTypes } from '../../propTypes';
 import stylesToClassname from '../../lib/stylesToClassName';
 import Link from '../../lib/components/Link';
 
@@ -32,9 +28,21 @@ const styles = stylesToClassname(
     'breadcrumb-item',
 );
 
-// @ts-expect-error TS7031
-const BreadcrumbItem = ({ value, p: polyglot }) => {
-    const label = value.label[polyglot.currentLocale];
+interface BreadcrumbItemProps {
+    value: {
+        label: {
+            en: string;
+            fr: string;
+        };
+        url: string;
+        isExternal?: boolean;
+    };
+    p: unknown;
+}
+
+const BreadcrumbItem = ({ value }: BreadcrumbItemProps) => {
+    const { locale } = useTranslate();
+    const label = value.label[locale];
     const to = String(value.url).trim() || './';
     let props = {
         to,
@@ -73,16 +81,4 @@ const BreadcrumbItem = ({ value, p: polyglot }) => {
     );
 };
 
-BreadcrumbItem.propTypes = {
-    value: PropTypes.shape({
-        label: PropTypes.shape({
-            en: PropTypes.string.isRequired,
-            fr: PropTypes.string.isRequired,
-        }).isRequired,
-        url: PropTypes.string.isRequired,
-        isExternal: PropTypes.bool,
-    }),
-    p: polyglotPropTypes.isRequired,
-};
-
-export default translate(BreadcrumbItem);
+export default BreadcrumbItem;

@@ -1,6 +1,5 @@
 // @ts-expect-error TS6133
 import React from 'react';
-import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import katex from 'katex';
 import Helmet from 'react-helmet';
@@ -19,8 +18,15 @@ const styles = stylesToClassname(
     'latex',
 );
 
-// @ts-expect-error TS7031
-const LatexView = ({ resource, field }) => {
+interface LatexViewProps {
+    field: unknown;
+    resource: object;
+}
+
+const LatexView = ({
+    resource,
+    field
+}: LatexViewProps) => {
     const KatexOptions = {
         displayMode: false,
         leqno: true,
@@ -59,7 +65,7 @@ const LatexView = ({ resource, field }) => {
 
     return (
         // @ts-expect-error TS2339
-        <div className={classnames('latex-container', styles.container)}>
+        (<div className={classnames('latex-container', styles.container)}>
             <Helmet>
                 <link
                     rel="stylesheet"
@@ -73,13 +79,8 @@ const LatexView = ({ resource, field }) => {
                     __html: html,
                 }}
             />
-        </div>
+        </div>)
     );
-};
-
-LatexView.propTypes = {
-    field: fieldPropTypes.isRequired,
-    resource: PropTypes.object.isRequired,
 };
 
 LatexView.defaultProps = {

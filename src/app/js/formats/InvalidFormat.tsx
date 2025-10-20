@@ -1,6 +1,5 @@
 // @ts-expect-error TS6133
 import React from 'react';
-import PropTypes from 'prop-types';
 import Warning from '@mui/icons-material/Warning';
 
 import { polyglot as polyglotPropTypes } from '../propTypes';
@@ -63,10 +62,20 @@ const renderDetails = (polyglot, format = {}, value) => {
     );
 };
 
-// @ts-expect-error TS7031
-const InvalidFormat = ({ p: polyglot, format, value }) => (
-    // @ts-expect-error TS2322
-    <AdminOnlyAlert className="invalid-format">
+interface InvalidFormatProps {
+    p: unknown;
+    format?: {
+        name: string;
+    };
+    value?: any;
+}
+
+const InvalidFormat = ({
+    p: polyglot,
+    format,
+    value
+}: InvalidFormatProps) => (
+    (<AdminOnlyAlert className="invalid-format">
         {/*
          // @ts-expect-error TS2339 */}
         <div className={styles.titleRow}>
@@ -85,20 +94,7 @@ const InvalidFormat = ({ p: polyglot, format, value }) => (
          // @ts-expect-error TS2339 */}
         <p className={styles.details}>{polyglot.t('bad_format_details')}</p>
         {renderDetails(polyglot, format, value)}
-    </AdminOnlyAlert>
+    </AdminOnlyAlert>)
 );
-
-InvalidFormat.propTypes = {
-    p: polyglotPropTypes.isRequired,
-    format: PropTypes.shape({
-        name: PropTypes.string.isRequired,
-    }),
-    value: PropTypes.any,
-};
-
-InvalidFormat.propTypes = {
-    format: undefined,
-    value: undefined,
-};
 
 export default translate(InvalidFormat);

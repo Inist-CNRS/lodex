@@ -1,11 +1,7 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import { useLogin } from './login';
-import {
-    Wrapper as DefaultWrapper,
-    getStore,
-    waitFor,
-} from '../../../test-utils';
+import { Wrapper as DefaultWrapper, getStore } from '../../../test-utils';
 import { renderHook } from '@testing-library/react-hooks';
 import { MemoryRouter, useHistory } from 'react-router';
 import { getUserSessionStorageInfo } from '../admin/api/tools';
@@ -96,7 +92,7 @@ describe('useLogin', () => {
                 ),
         );
 
-        const { result } = renderHook(() => useLogin(), {
+        const { result, waitFor } = renderHook(() => useLogin(), {
             wrapper: createWrapper('/?page=/admin/dashboard'),
         });
 
@@ -146,7 +142,7 @@ describe('useLogin', () => {
             response: mockResponse,
         });
 
-        const { result } = renderHook(() => useLogin(), {
+        const { result, waitFor } = renderHook(() => useLogin(), {
             wrapper: createWrapper('/login'),
         });
 
@@ -174,7 +170,7 @@ describe('useLogin', () => {
             response: mockResponse,
         });
 
-        const { result } = renderHook(() => useLogin(), {
+        const { result, waitFor } = renderHook(() => useLogin(), {
             wrapper: createWrapper('/admin/login?page=/some/page'),
         });
 
@@ -199,7 +195,7 @@ describe('useLogin', () => {
             response: null,
         });
 
-        const { result } = renderHook(() => useLogin(), {
+        const { result, waitFor } = renderHook(() => useLogin(), {
             wrapper: createWrapper('/login'),
         });
 

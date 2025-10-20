@@ -1,5 +1,4 @@
 import { field as fieldPropTypes } from '../../../../propTypes';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import injectData from '../../../injectData';
@@ -23,8 +22,25 @@ const styles = {
     },
 };
 
-// @ts-expect-error TS7006
-const TreeMapView = (props) => {
+interface TreeMapViewProps {
+    field?: unknown;
+    resource?: object;
+    data?: any;
+    hierarchy?: boolean;
+    flatType?: "id/value" | "source/target/weight";
+    advancedMode?: boolean;
+    advancedModeSpec?: string;
+    tooltip?: boolean;
+    tooltipSource?: string;
+    tooltipTarget?: string;
+    tooltipWeight?: string;
+    colors?: string;
+    layout?: unknown[];
+    ratio?: number;
+    aspectRatio?: string;
+}
+
+const TreeMapView = (props: TreeMapViewProps) => {
     const {
         data,
         field,
@@ -120,33 +136,15 @@ const TreeMapView = (props) => {
 
     return (
         // @ts-expect-error TS2322
-        <div style={styles.container} ref={ref}>
+        (<div style={styles.container} ref={ref}>
             <CustomActionVega
                 spec={spec}
                 data={formattedData}
                 injectType={VEGA_DATA_INJECT_TYPE_C}
                 aspectRatio={aspectRatio}
             />
-        </div>
+        </div>)
     );
-};
-
-TreeMapView.propTypes = {
-    field: fieldPropTypes,
-    resource: PropTypes.object,
-    data: PropTypes.any,
-    hierarchy: PropTypes.bool,
-    flatType: PropTypes.oneOf(['id/value', 'source/target/weight']),
-    advancedMode: PropTypes.bool,
-    advancedModeSpec: PropTypes.string,
-    tooltip: PropTypes.bool,
-    tooltipSource: PropTypes.string,
-    tooltipTarget: PropTypes.string,
-    tooltipWeight: PropTypes.string,
-    colors: PropTypes.string,
-    layout: PropTypes.oneOf(TREE_MAP_LAYOUT),
-    ratio: PropTypes.number,
-    aspectRatio: PropTypes.string,
 };
 
 TreeMapView.defaultProps = {

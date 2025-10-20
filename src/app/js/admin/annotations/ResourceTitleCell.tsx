@@ -1,12 +1,18 @@
 import { Typography } from '@mui/material';
-import PropTypes from 'prop-types';
 // @ts-expect-error TS6133
 import React from 'react';
 import { useTranslate } from '../../i18n/I18NContext';
 import { getResourceType } from './helpers/resourceType';
 
-// @ts-expect-error TS7031
-function ResourceTitleCellInternal({ label, italic }) {
+interface ResourceTitleCellInternalProps {
+    label: string;
+    italic?: boolean;
+}
+
+function ResourceTitleCellInternal({
+    label,
+    italic,
+}: ResourceTitleCellInternalProps) {
     return (
         <Typography
             title={label}
@@ -21,13 +27,20 @@ function ResourceTitleCellInternal({ label, italic }) {
     );
 }
 
-ResourceTitleCellInternal.propTypes = {
-    label: PropTypes.string.isRequired,
-    italic: PropTypes.bool,
-};
+interface ResourceTitleCellProps {
+    row: {
+        resourceUri: string;
+        resource?: {
+            title: string;
+        } | null;
+        field?: {
+            label: string;
+            scope: string;
+        };
+    };
+}
 
-// @ts-expect-error TS7031
-export const ResourceTitleCell = ({ row }) => {
+export const ResourceTitleCell = ({ row }: ResourceTitleCellProps) => {
     const { translate } = useTranslate();
 
     if (
@@ -46,17 +59,4 @@ export const ResourceTitleCell = ({ row }) => {
     }
 
     return <ResourceTitleCellInternal label={row.resource.title} />;
-};
-
-ResourceTitleCell.propTypes = {
-    row: PropTypes.shape({
-        resourceUri: PropTypes.string,
-        resource: PropTypes.shape({
-            title: PropTypes.string.isRequired,
-        }),
-        field: PropTypes.shape({
-            label: PropTypes.string.isRequired,
-            scope: PropTypes.string.isRequired,
-        }),
-    }),
 };

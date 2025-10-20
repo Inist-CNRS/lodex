@@ -1,24 +1,25 @@
-// @ts-expect-error TS6133
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Route, Redirect } from 'react-router-dom';
 import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
 
 import { fromUser } from '../sharedSelectors';
 
-// @ts-expect-error TS7031
-const PrivateRoute = ({ isAdmin, component: Component, ...rest }) => (
+interface PrivateRouteProps {
+    isAdmin: boolean;
+    component: React.ElementType;
+}
+
+const PrivateRoute = ({
+    isAdmin,
+    component: Component,
+    ...rest
+}: PrivateRouteProps) => (
     <Route
         {...rest}
         render={() => (isAdmin ? <Component /> : <Redirect to="/login" />)}
     />
 );
-
-PrivateRoute.propTypes = {
-    isAdmin: PropTypes.bool.isRequired,
-    component: PropTypes.elementType.isRequired,
-};
 
 // @ts-expect-error TS7006
 const mapStateToProps = (state) => ({

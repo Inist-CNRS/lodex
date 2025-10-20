@@ -82,7 +82,6 @@ describe('Detail', () => {
 
         const renderedFields = properties.map((element, index) => ({
             index,
-            // @ts-expect-error TS2571
             name: element.prop('field').name,
         }));
 

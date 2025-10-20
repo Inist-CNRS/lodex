@@ -29,9 +29,7 @@ function TestTitleView() {
 
 describe('<TitleView />', () => {
     it('should render', () => {
-        const wrapper = render(<TestTitleView />);
-        expect(wrapper.getByRole('heading')).toHaveTextContent(
-            'Run you fools!',
-        );
+        const screen = render(<TestTitleView />);
+        expect(screen.getByRole('heading')).toHaveTextContent('Run you fools!');
     });
 });

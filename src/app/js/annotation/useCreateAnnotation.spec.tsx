@@ -1,7 +1,5 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { renderHook } from '@testing-library/react-hooks';
-import PropTypes from 'prop-types';
-// @ts-expect-error TS6133
 import React from 'react';
 import { Provider } from 'react-redux';
 
@@ -26,8 +24,13 @@ const { store } = configureStore(
 );
 const queryClient = new QueryClient();
 
-// @ts-expect-error TS7031
-function TestWrapper({ children }) {
+interface TestWrapperProps {
+    children: React.ReactNode;
+}
+
+function TestWrapper({
+    children
+}: TestWrapperProps) {
     return (
         <Provider store={store}>
             <AnnotationStorageProvider>
@@ -40,10 +43,6 @@ function TestWrapper({ children }) {
         </Provider>
     );
 }
-
-TestWrapper.propTypes = {
-    children: PropTypes.node.isRequired,
-};
 
 const annotation = {
     comment: 'test',

@@ -1,6 +1,4 @@
-// @ts-expect-error TS6133
 import React from 'react';
-import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
 
@@ -19,23 +17,21 @@ const styles = stylesToClassname(
     'admin-only-alert',
 );
 
+interface AdminOnlyAlertComponentProps {
+    children: React.ReactNode;
+    isAdmin: boolean;
+    className?: string;
+}
+
 export const AdminOnlyAlertComponent = ({
-    // @ts-expect-error TS7031
     children,
-    // @ts-expect-error TS7031
     isAdmin,
     className = 'alert',
-}) =>
+}: AdminOnlyAlertComponentProps) =>
     isAdmin ? (
         // @ts-expect-error TS2339
         <div className={classnames(className, styles.alert)}>{children}</div>
     ) : null;
-
-AdminOnlyAlertComponent.propTypes = {
-    children: PropTypes.node.isRequired,
-    isAdmin: PropTypes.bool.isRequired,
-    className: PropTypes.string,
-};
 
 // @ts-expect-error TS7006
 const mapStateToProps = (state) => ({

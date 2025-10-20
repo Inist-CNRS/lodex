@@ -1,6 +1,5 @@
 // @ts-expect-error TS6133
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
 import { Menu, Button, MenuItem } from '@mui/material';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -8,7 +7,6 @@ import DownloadIcon from '@mui/icons-material/Download';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import compose from 'recompose/compose';
 
-import { polyglot as polyglotPropTypes } from '../propTypes';
 import {
     fromDisplayConfig,
     fromExport,
@@ -42,32 +40,35 @@ const styles = stylesToClassname(
     'export',
 );
 
+interface ExportButtonProps {
+    exporters?: object[];
+    onExport(...args: unknown[]): unknown;
+    uri?: string;
+    p: any;
+    isResourceExport: boolean;
+    displayExportPDF?: boolean;
+    maxExportPDFSize?: number;
+    match?: string;
+    facets: Record<string, unknown>;
+    locale: string;
+    sort?: any;
+    invertedFacets?: string[];
+}
+
 const ExportButton = ({
-    // @ts-expect-error TS7031
     exporters,
-    // @ts-expect-error TS7031
     onExport,
-    // @ts-expect-error TS7031
     uri,
-    // @ts-expect-error TS7031
     p: polyglot,
-    // @ts-expect-error TS7031
     isResourceExport,
-    // @ts-expect-error TS7031
     displayExportPDF,
-    // @ts-expect-error TS7031
     maxExportPDFSize,
-    // @ts-expect-error TS7031
     match,
-    // @ts-expect-error TS7031
     facets,
-    // @ts-expect-error TS7031
     locale,
-    // @ts-expect-error TS7031
     invertedFacets,
-    // @ts-expect-error TS7031
     sort,
-}) => {
+}: ExportButtonProps) => {
     const [popover, setPopover] = useState({ open: false });
 
     // @ts-expect-error TS7006
@@ -186,21 +187,6 @@ const ExportButton = ({
             </div>
         </>
     );
-};
-
-ExportButton.propTypes = {
-    exporters: PropTypes.arrayOf(PropTypes.object),
-    onExport: PropTypes.func.isRequired,
-    uri: PropTypes.string,
-    p: polyglotPropTypes.isRequired,
-    isResourceExport: PropTypes.bool.isRequired,
-    displayExportPDF: PropTypes.bool,
-    maxExportPDFSize: PropTypes.number,
-    match: PropTypes.string,
-    facets: PropTypes.arrayOf(PropTypes.object),
-    locale: PropTypes.string.isRequired,
-    sort: PropTypes.any,
-    invertedFacets: PropTypes.arrayOf(PropTypes.string),
 };
 
 ExportButton.defaultProps = {

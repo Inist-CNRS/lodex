@@ -1,18 +1,16 @@
-// @ts-expect-error TS6133
-import React from 'react';
-import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import * as icons from '@fortawesome/free-solid-svg-icons';
 import get from 'lodash/get';
 import classnames from 'classnames';
 import { Link, NavLink } from 'react-router-dom';
 
-import { polyglot as polyglotPropTypes } from '../../propTypes';
 import stylesToClassname from '../../lib/stylesToClassName';
 import {
     ADMIN_ROLE,
     extractTenantFromUrl,
 } from '../../../../common/tools/tenantTools';
+import { useTranslate } from '../../i18n/I18NContext';
+import type { ChangeEvent } from 'react';
 
 const styles = stylesToClassname(
     {
@@ -85,27 +83,55 @@ const getIcon = (icon) => {
     );
 };
 
+type Role = 'admin' | 'user' | 'not logged';
+
+export type ConfigRole =
+    | 'home'
+    | 'resources'
+    | 'advanced'
+    | 'graphs'
+    | 'search'
+    | 'admin'
+    | 'sign-in'
+    | 'sign-out'
+    | 'custom'
+    | 'advanced';
+
+interface MenuItemProps {
+    config: {
+        role?: ConfigRole;
+        label: {
+            en: string;
+            fr: string;
+        };
+        icon: string;
+        link?: string;
+        isExternal?: boolean;
+    };
+    onClick(
+        value: ConfigRole,
+        suppressEvent?: boolean,
+    ): (event: ChangeEvent<any>) => void;
+    graphDrawer?: 'open' | 'closing' | 'closed';
+    searchDrawer?: 'open' | 'closing' | 'closed';
+    advancedDrawer?: 'open' | 'closing' | 'closed';
+    role: Role;
+    canBeSearched: boolean;
+    hasGraph: boolean;
+}
+
 const MenuItem = ({
-    // @ts-expect-error TS7031
     config,
-    // @ts-expect-error TS7031
-    polyglot,
-    // @ts-expect-error TS7031
     hasGraph,
-    // @ts-expect-error TS7031
     graphDrawer,
-    // @ts-expect-error TS7031
     searchDrawer,
-    // @ts-expect-error TS7031
     advancedDrawer,
-    // @ts-expect-error TS7031
     canBeSearched,
-    // @ts-expect-error TS7031
     role,
-    // @ts-expect-error TS7031
     onClick,
-}) => {
-    const label = config.label[polyglot.currentLocale];
+}: MenuItemProps) => {
+    const { locale } = useTranslate();
+    const label = config.label[locale];
     const icon = getIcon(config.icon);
 
     switch (config.role) {
@@ -336,41 +362,6 @@ const MenuItem = ({
             );
             return null;
     }
-};
-
-MenuItem.propTypes = {
-    config: PropTypes.shape({
-        role: PropTypes.oneOf([
-            'home',
-            'resources',
-            'advanced',
-            'graphs',
-            'search',
-            'admin',
-            'sign-in',
-            'sign-out',
-            'custom',
-            'advanced',
-        ]),
-        label: PropTypes.shape({
-            en: PropTypes.string.isRequired,
-            fr: PropTypes.string.isRequired,
-        }).isRequired,
-        icon: PropTypes.string.isRequired,
-        link: PropTypes.shape({
-            startsWith: PropTypes.func.isRequired,
-            indexOf: PropTypes.func.isRequired,
-        }),
-        isExternal: PropTypes.bool,
-    }).isRequired,
-    onClick: PropTypes.func.isRequired,
-    graphDrawer: PropTypes.oneOf(['open', 'closing', 'closed']),
-    searchDrawer: PropTypes.oneOf(['open', 'closing', 'closed']),
-    advancedDrawer: PropTypes.oneOf(['open', 'closing', 'closed']),
-    role: PropTypes.oneOf(['admin', 'user', 'not logged']).isRequired,
-    canBeSearched: PropTypes.bool.isRequired,
-    hasGraph: PropTypes.bool.isRequired,
-    polyglot: polyglotPropTypes.isRequired,
 };
 
 export default MenuItem;

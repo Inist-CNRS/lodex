@@ -9,7 +9,6 @@ import {
     Stack,
     useTheme,
 } from '@mui/material';
-import PropTypes from 'prop-types';
 // @ts-expect-error TS6133
 import React from 'react';
 
@@ -23,8 +22,19 @@ import {
 import { useTranslate } from '../../i18n/I18NContext';
 import { COMMENT_STEP, VALUE_STEP } from '../steps';
 
-// @ts-expect-error TS7031
-export function TargetField({ form, field, initialValue, goToStep }) {
+interface TargetFieldProps {
+    form: object;
+    field: object;
+    initialValue?: any;
+    goToStep(...args: unknown[]): unknown;
+}
+
+export function TargetField({
+    form,
+    field,
+    initialValue,
+    goToStep
+}: TargetFieldProps) {
     const theme = useTheme();
     const { translate } = useTranslate();
 
@@ -215,10 +225,3 @@ export function TargetField({ form, field, initialValue, goToStep }) {
         </form.Field>
     );
 }
-
-TargetField.propTypes = {
-    form: PropTypes.object.isRequired,
-    field: PropTypes.object.isRequired,
-    initialValue: PropTypes.any,
-    goToStep: PropTypes.func.isRequired,
-};

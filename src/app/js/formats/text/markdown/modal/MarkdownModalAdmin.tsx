@@ -1,6 +1,5 @@
 // @ts-expect-error TS6133
 import React from 'react';
-import PropTypes from 'prop-types';
 import { polyglot as polyglotPropTypes } from '../../../../propTypes';
 import { FormatDefaultParamsFieldSet } from '../../../utils/components/field-set/FormatFieldSets';
 import TextField from '@mui/material/TextField';
@@ -17,8 +16,18 @@ export const defaultArgs = {
     maxWidth: 'sm',
 };
 
-// @ts-expect-error TS7006
-const MarkdownModalAdmin = (props) => {
+interface MarkdownModalAdminProps {
+    args?: {
+        type?: "text" | "column";
+        label?: string;
+        fullScreen?: boolean;
+        maxWidth?: "xs" | "sm" | "md" | "lg" | "xl";
+    };
+    onChange(...args: unknown[]): unknown;
+    p: unknown;
+}
+
+const MarkdownModalAdmin = (props: MarkdownModalAdminProps) => {
     const { args, p, onChange } = props;
     const { type, label, fullScreen, maxWidth } = args;
 
@@ -108,17 +117,6 @@ const MarkdownModalAdmin = (props) => {
             </FormatDefaultParamsFieldSet>
         </FormatGroupedFieldSet>
     );
-};
-
-MarkdownModalAdmin.propTypes = {
-    args: PropTypes.shape({
-        type: PropTypes.oneOf(['text', 'column']),
-        label: PropTypes.string,
-        fullScreen: PropTypes.bool,
-        maxWidth: PropTypes.oneOf(['xs', 'sm', 'md', 'lg', 'xl']),
-    }),
-    onChange: PropTypes.func.isRequired,
-    p: polyglotPropTypes.isRequired,
 };
 
 MarkdownModalAdmin.defaultProps = {

@@ -1,19 +1,12 @@
-// @ts-expect-error TS6133
-import React from 'react';
-import PropTypes from 'prop-types';
 import memoize from 'lodash/memoize';
-import { translate } from '../../../i18n/I18NContext';
+import { useTranslate } from '../../../i18n/I18NContext';
 import compose from 'recompose/compose';
 
 import fetchDataForComponent from './fetchDataForComponent';
 import Alert from '../../../lib/components/Alert';
 import { REJECTED } from '../../../../../common/propositionStatus';
-import {
-    field as fieldPropTypes,
-    polyglot as polyglotPropTypes,
-} from '../../../propTypes';
 import { fetchForIstexRefbibsFormat } from './fetchIstexRefbibsData';
-import IstexItem from '../istex/IstexItem';
+import IstexItem, { type IstexItemComponentProps } from '../istex/IstexItem';
 
 const styles = {
     text: memoize((status) =>
@@ -36,43 +29,48 @@ const styles = {
     },
 };
 
-// @ts-expect-error TS7031
-export const IstexRefbibsView = ({ fieldStatus, data, error, p: polyglot }) => (
-    <div className="istex-list" style={styles.text(fieldStatus)}>
-        <div style={styles.header}>
-            <span style={styles.total}>
-                {polyglot.t('istex_total', {
-                    total: data ? data.total : 0,
-                })}
-            </span>
-            {error && (
-                <Alert>
-                    <p>{polyglot.t(error)}</p>
-                </Alert>
+interface IstexRefbibsViewProps {
+    fieldStatus?: string;
+    resource: object;
+    field: unknown;
+    data?: {
+        hits: ({
+            id: string;
+        } & IstexItemComponentProps)[];
+        total: number;
+    };
+    error?: string;
+}
+
+export const IstexRefbibsView = ({
+    fieldStatus,
+    data,
+    error,
+}: IstexRefbibsViewProps) => {
+    const { translate } = useTranslate();
+    return (
+        <div className="istex-list" style={styles.text(fieldStatus)}>
+            <div style={styles.header}>
+                <span style={styles.total}>
+                    {translate('istex_total', {
+                        total: data ? data.total : 0,
+                    })}
+                </span>
+                {error && (
+                    <Alert>
+                        <p>{translate(error)}</p>
+                    </Alert>
+                )}
+            </div>
+            {data && data.hits && (
+                <div>
+                    {data.hits.map((item) => (
+                        <IstexItem key={item.id} {...item} />
+                    ))}
+                </div>
             )}
         </div>
-        {data && data.hits && (
-            <div>
-                {/*
-                 // @ts-expect-error TS7006 */}
-                {data.hits.map((item) => (
-                    <IstexItem key={item.id} {...item} />
-                ))}
-            </div>
-        )}
-    </div>
-);
-
-IstexRefbibsView.propTypes = {
-    fieldStatus: PropTypes.string,
-    resource: PropTypes.object.isRequired,
-    field: fieldPropTypes.isRequired,
-    data: PropTypes.shape({
-        hits: PropTypes.array.isRequired,
-        total: PropTypes.number.isRequired,
-    }),
-    error: PropTypes.string,
-    p: polyglotPropTypes.isRequired,
+    );
 };
 
 IstexRefbibsView.defaultProps = {
@@ -84,7 +82,6 @@ IstexRefbibsView.defaultProps = {
 };
 
 export default compose(
-    translate,
     fetchDataForComponent(fetchForIstexRefbibsFormat),
     // @ts-expect-error TS2345
 )(IstexRefbibsView);

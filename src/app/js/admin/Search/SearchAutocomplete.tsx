@@ -8,7 +8,6 @@ import {
     TextField,
 } from '@mui/material';
 
-import PropTypes from 'prop-types';
 import FieldRepresentation from '../../fields/FieldRepresentation';
 import { filterOptions } from './searchUtils';
 
@@ -48,21 +47,34 @@ const renderCheckboxItem = (props, option, selected) => {
     );
 };
 
+interface SearchAutocompleteProps {
+    translation: string;
+    value?: unknown[] | object;
+    fields: object[];
+    onChange(...args: unknown[]): unknown;
+    multiple?: boolean;
+    testId?: string;
+    clearText?: string;
+    limitTags?: number;
+    isLoading?: boolean;
+}
+
 const SearchAutocomplete = ({
     testId = 'search-autocomplete',
-    // @ts-expect-error TS7031
+
     fields,
-    // @ts-expect-error TS7031
+
     onChange,
-    // @ts-expect-error TS7031
+
     value,
-    // @ts-expect-error TS7031
+
     translation,
+
     multiple = false,
     clearText = 'Clear',
     limitTags = 6,
-    isLoading = false,
-}) => {
+    isLoading = false
+}: SearchAutocompleteProps) => {
     return (
         <Autocomplete
             data-testid={testId}
@@ -111,18 +123,6 @@ const SearchAutocomplete = ({
             onChange={onChange}
         />
     );
-};
-
-SearchAutocomplete.propTypes = {
-    translation: PropTypes.string.isRequired,
-    value: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
-    fields: PropTypes.arrayOf(PropTypes.object).isRequired,
-    onChange: PropTypes.func.isRequired,
-    multiple: PropTypes.bool,
-    testId: PropTypes.string,
-    clearText: PropTypes.string,
-    limitTags: PropTypes.number,
-    isLoading: PropTypes.bool,
 };
 
 export default SearchAutocomplete;

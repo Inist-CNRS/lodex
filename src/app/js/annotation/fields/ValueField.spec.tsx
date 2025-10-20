@@ -1,12 +1,15 @@
 import { useForm } from '@tanstack/react-form';
 // @ts-expect-error TS6133
 import React from 'react';
-import { fireEvent, render, waitFor } from '../../../../test-utils';
+import { render } from '../../../../test-utils';
 import { TestI18N } from '../../i18n/I18NContext';
 import { ValueField } from './ValueField';
 
-// @ts-expect-error TS7031
-function TestValueField({ choices }) {
+interface TestValueFieldProps {
+    choices: unknown[];
+}
+
+function TestValueField({ choices }: TestValueFieldProps) {
     const form = useForm({
         defaultValues: {
             kind: 'correction',
@@ -21,34 +24,30 @@ function TestValueField({ choices }) {
     );
 }
 
-TestValueField.propTypes = {
-    choices: ValueField.propTypes.choices,
-};
-
 describe('ValueField', () => {
     it('should support a list of string as choices', async () => {
-        const wrapper = render(
+        const screen = render(
             <TestValueField choices={['choice1', 'choice2']} />,
         );
 
-        await waitFor(() => {
-            fireEvent.mouseDown(
-                wrapper.getByRole('button', {
+        await screen.waitFor(() => {
+            screen.fireEvent.mouseDown(
+                screen.getByRole('button', {
                     name: 'annotation_choose_value_to_correct *',
                 }),
             );
         });
 
         expect(
-            wrapper.getByRole('option', { name: 'choice1' }),
+            screen.getByRole('option', { name: 'choice1' }),
         ).toBeInTheDocument();
         expect(
-            wrapper.getByRole('option', { name: 'choice2' }),
+            screen.getByRole('option', { name: 'choice2' }),
         ).toBeInTheDocument();
     });
 
     it('should support a list of string array as choices', async () => {
-        const wrapper = render(
+        const screen = render(
             <TestValueField
                 choices={[
                     ['choice1', 'choice2'],
@@ -57,19 +56,19 @@ describe('ValueField', () => {
             />,
         );
 
-        await waitFor(() => {
-            fireEvent.mouseDown(
-                wrapper.getByRole('button', {
+        await screen.waitFor(() => {
+            screen.fireEvent.mouseDown(
+                screen.getByRole('button', {
                     name: 'annotation_choose_value_to_correct *',
                 }),
             );
         });
 
         expect(
-            wrapper.getByRole('option', { name: 'choice1 ; choice2' }),
+            screen.getByRole('option', { name: 'choice1 ; choice2' }),
         ).toBeInTheDocument();
         expect(
-            wrapper.getByRole('option', { name: 'choice3 ; choice4' }),
+            screen.getByRole('option', { name: 'choice3 ; choice4' }),
         ).toBeInTheDocument();
     });
 });

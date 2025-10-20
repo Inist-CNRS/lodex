@@ -1,6 +1,5 @@
 // @ts-expect-error TS6133
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { LinearProgress } from '@mui/material';
 
@@ -22,18 +21,7 @@ export const withInitialDataHoc = (
     BaseComponent,
     onlyLoadIfNotInitialized = false,
 ) =>
-    class HocComponent extends Component {
-        static propTypes = {
-            loadParsingResult: PropTypes.func.isRequired,
-            loadPublication: PropTypes.func.isRequired,
-            loadSubresources: PropTypes.func.isRequired,
-            loadEnrichments: PropTypes.func.isRequired,
-            loadPrecomputed: PropTypes.func.isRequired,
-            loadConfigTenant: PropTypes.func.isRequired,
-            isLoading: PropTypes.bool.isRequired,
-            isInitialized: PropTypes.bool.isRequired,
-        };
-
+    (class HocComponent extends Component {
         UNSAFE_componentWillMount() {
             // @ts-expect-error TS2339
             if (this.props.isInitialized && onlyLoadIfNotInitialized) {
@@ -64,7 +52,7 @@ export const withInitialDataHoc = (
 
             return <BaseComponent {...props} />;
         }
-    };
+    });
 
 // @ts-expect-error TS7006
 export const mapStateToProps = (state) => ({
@@ -94,6 +82,5 @@ export default (BaseComponent, onlyLoadIfNotInitialized = false) => {
     return connect(
         mapStateToProps,
         mapDispatchToProps,
-        // @ts-expect-error TS2345
     )(withInitialDataHoc(BaseComponent, onlyLoadIfNotInitialized));
 };

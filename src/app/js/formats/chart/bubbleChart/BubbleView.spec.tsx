@@ -15,7 +15,6 @@ const colors = '#1D1A31 #4D2D52 #9A4C95 #F08CAE #C1A5A9';
 describe('BubbleView', () => {
     it('should render Bubble chart', () => {
         const wrapper = shallow(
-            // @ts-expect-error TS2769
             <BubbleView
                 data={data}
                 diameter={100}
@@ -35,7 +34,6 @@ describe('BubbleView', () => {
 
     it('should not fail to render if the diameter is a string', () => {
         const wrapper = shallow(
-            // @ts-expect-error TS2769
             <BubbleView
                 data={data}
                 diameter={'100'}

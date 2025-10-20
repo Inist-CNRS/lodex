@@ -5,7 +5,6 @@ Could not use it from npm at the time as it has not been compiled correctly
 
 // @ts-expect-error TS6133
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { IconButton, MenuItem, Select, TextField } from '@mui/material';
 import ChevronLeft from '@mui/icons-material/ChevronLeft';
 import ChevronRight from '@mui/icons-material/ChevronRight';
@@ -42,20 +41,20 @@ const texts = {
     showing: 'Showing {from} to {to} of {total}',
 };
 
-class Pagination extends Component {
-    static propTypes = {
-        onChange: PropTypes.func.isRequired,
-        total: PropTypes.number.isRequired,
-        currentPage: PropTypes.number.isRequired,
-        perPage: PropTypes.number.isRequired,
-        texts: PropTypes.shape({
-            page: PropTypes.string.isRequired,
-            perPage: PropTypes.string.isRequired,
-            showing: PropTypes.string.isRequired,
-        }),
-        column: PropTypes.any,
+interface PaginationProps {
+    onChange(...args: unknown[]): unknown;
+    total: number;
+    currentPage: number;
+    perPage: number;
+    texts: {
+        page: string;
+        perPage: string;
+        showing: string;
     };
+    column?: any;
+}
 
+class Pagination extends Component<PaginationProps> {
     static defaultProps = {
         total: 0,
         perPage: 10,
@@ -68,7 +67,6 @@ class Pagination extends Component {
     };
 
     componentDidMount() {
-        // @ts-expect-error TS2339
         this.calculatePageCount(this.props.total, this.props.perPage);
     }
 
@@ -92,9 +90,7 @@ class Pagination extends Component {
     // @ts-expect-error TS7006
     handleChangePerPage = (e) => {
         const perPage = e.target.value;
-        // @ts-expect-error TS2339
         const count = Math.ceil(this.props.total / perPage);
-        // @ts-expect-error TS2339
         let currentPage = this.props.currentPage;
 
         // @ts-expect-error TS2339
@@ -102,23 +98,19 @@ class Pagination extends Component {
             currentPage = count - 1;
         }
 
-        // @ts-expect-error TS2339
         this.props.onChange(currentPage, perPage);
     };
 
     handlePreviousPageClick = () => {
-        // @ts-expect-error TS2339
         this.handleChangePage(this.props.currentPage - 1);
     };
 
     handleNextPageClick = () => {
-        // @ts-expect-error TS2339
         this.handleChangePage(this.props.currentPage + 1);
     };
 
     // @ts-expect-error TS7006
     handleChangePage = (currentPage) => {
-        // @ts-expect-error TS2339
         this.props.onChange(currentPage, this.props.perPage);
     };
 
@@ -138,7 +130,6 @@ class Pagination extends Component {
     };
 
     render() {
-        // @ts-expect-error TS2339
         const { perPage, currentPage, total, texts, column } = this.props;
         // @ts-expect-error TS2339
         const { pages, count } = this.state;
@@ -152,9 +143,9 @@ class Pagination extends Component {
         }
 
         const showing = texts.showing
-            .replace('{total}', total)
-            .replace('{from}', from)
-            .replace('{to}', to);
+            .replace('{total}', total.toString())
+            .replace('{from}', from.toString())
+            .replace('{to}', to.toString());
 
         const navigationArrow = (
             <div style={styles.elements}>

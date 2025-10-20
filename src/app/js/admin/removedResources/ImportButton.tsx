@@ -20,8 +20,13 @@ const VisuallyHiddenInput = styled('input')({
     width: 1,
 });
 
-// @ts-expect-error TS7031
-const ImportButton = ({ p: polyglot }) => {
+interface ImportButtonProps {
+    p: unknown;
+}
+
+const ImportButton = ({
+    p: polyglot
+}: ImportButtonProps) => {
     const buttonLabel = polyglot.t('import');
     const location = useLocation();
     const [uploading, setUploading] = useState(false);
@@ -69,10 +74,6 @@ const ImportButton = ({ p: polyglot }) => {
             />
         </Button>
     );
-};
-
-ImportButton.propTypes = {
-    p: polyglotPropTypes.isRequired,
 };
 
 export default translate(ImportButton);

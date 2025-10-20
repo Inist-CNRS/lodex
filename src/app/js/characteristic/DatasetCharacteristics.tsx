@@ -1,10 +1,7 @@
 // @ts-expect-error TS6133
 import React from 'react';
-import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
-
-import { field as fieldPropTypes } from '../propTypes';
 
 import { fromFields, fromCharacteristic } from '../sharedSelectors';
 
@@ -23,16 +20,23 @@ const styles = {
     },
 };
 
+interface DatasetCharacteristicsViewProps {
+    characteristics: {
+        language?: string;
+        name: string;
+    }[];
+    isMultilingual: boolean;
+    locale: string;
+}
+
 const DatasetCharacteristicsView = ({
-    // @ts-expect-error TS7031
     characteristics,
-    // @ts-expect-error TS7031
+
     isMultilingual,
-    // @ts-expect-error TS7031
+
     locale,
-}) => {
+}: DatasetCharacteristicsViewProps) => {
     const filteredCharacteristics = characteristics.filter(
-        // @ts-expect-error TS7006
         (characteristic) =>
             !isMultilingual ||
             !characteristic.language ||
@@ -41,8 +45,6 @@ const DatasetCharacteristicsView = ({
     return (
         <div className="dataset-characteristics">
             <div style={styles.container}>
-                {/*
-                 // @ts-expect-error TS7006 */}
                 {filteredCharacteristics.map((characteristicField) => (
                     <DatasetCharacteristicItem
                         key={characteristicField.name}
@@ -53,12 +55,6 @@ const DatasetCharacteristicsView = ({
             </div>
         </div>
     );
-};
-
-DatasetCharacteristicsView.propTypes = {
-    characteristics: PropTypes.arrayOf(fieldPropTypes).isRequired,
-    isMultilingual: PropTypes.bool.isRequired,
-    locale: PropTypes.string.isRequired,
 };
 
 DatasetCharacteristicsView.defaultProps = {

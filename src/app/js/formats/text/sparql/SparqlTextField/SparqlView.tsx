@@ -1,6 +1,5 @@
 // @ts-expect-error TS6133
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { translate } from '../../../../i18n/I18NContext';
 import compose from 'recompose/compose';
 import SparqlRequest from '../SparqlRequest';
@@ -68,10 +67,17 @@ const styles = {
     },
 };
 
-export class SparqlTextField extends Component {
+interface SparqlTextFieldProps {
+    className?: string;
+    formatData?: object;
+    sparql?: object;
+    field: unknown;
+    resource: object;
+}
+
+export class SparqlTextField extends Component<SparqlTextFieldProps> {
     // @ts-expect-error TS7006
     renderSubformatComponent = (attrData, subformat) => {
-        // @ts-expect-error TS2339
         const { field } = this.props;
         // @ts-expect-error TS2554
         const { ViewComponent, args } = getViewComponent(subformat.sub);
@@ -94,7 +100,6 @@ export class SparqlTextField extends Component {
 
     // @ts-expect-error TS7006
     renderAttributeFormat = (attrName, attrData) => {
-        // @ts-expect-error TS2339
         const { sparql } = this.props;
 
         // @ts-expect-error TS7006
@@ -111,7 +116,6 @@ export class SparqlTextField extends Component {
 
     // @ts-expect-error TS7006
     renderDefaultAttributeFormat = (attrData) => {
-        // @ts-expect-error TS2339
         const { className, sparql } = this.props;
 
         if (attrData.value.includes(sparql.separator)) {
@@ -143,7 +147,6 @@ export class SparqlTextField extends Component {
     // @ts-expect-error TS7006
     renderAttributeValue = (value, type) => {
         if (isURL(value) && type === 'uri') {
-            // @ts-expect-error TS2739
             return <Link href={value}>{value}</Link>;
         }
         return <span>{value}</span>;
@@ -158,7 +161,6 @@ export class SparqlTextField extends Component {
     };
 
     render() {
-        // @ts-expect-error TS2339
         const { className, formatData } = this.props;
         if (!formatData) {
             return null;
@@ -210,15 +212,6 @@ export class SparqlTextField extends Component {
         );
     }
 }
-
-// @ts-expect-error TS2339
-SparqlTextField.propTypes = {
-    className: PropTypes.string,
-    formatData: PropTypes.object,
-    sparql: PropTypes.object,
-    field: fieldPropTypes.isRequired,
-    resource: PropTypes.object.isRequired,
-};
 
 // @ts-expect-error TS2339
 SparqlTextField.defaultProps = {

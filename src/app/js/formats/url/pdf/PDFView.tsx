@@ -1,6 +1,5 @@
 // @ts-expect-error TS6133
 import React from 'react';
-import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { field as fieldPropTypes } from '../../../propTypes';
 
@@ -17,8 +16,17 @@ const styles = stylesToClassname(
     'pdf',
 );
 
-// @ts-expect-error TS7031
-const PDFView = ({ resource, field, PDFWidth }) => {
+interface PDFViewProps {
+    field: unknown;
+    resource: object;
+    PDFWidth: string;
+}
+
+const PDFView = ({
+    resource,
+    field,
+    PDFWidth
+}: PDFViewProps) => {
     const PDFURL = resource[field.name];
 
     return (
@@ -33,12 +41,6 @@ const PDFView = ({ resource, field, PDFWidth }) => {
             webkitallowfullscreen=""
         ></iframe>
     );
-};
-
-PDFView.propTypes = {
-    field: fieldPropTypes.isRequired,
-    resource: PropTypes.object.isRequired,
-    PDFWidth: PropTypes.string.isRequired,
 };
 
 PDFView.defaultProps = {

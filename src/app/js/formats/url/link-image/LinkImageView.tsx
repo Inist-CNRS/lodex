@@ -1,12 +1,26 @@
 // @ts-expect-error TS6133
 import React from 'react';
-import PropTypes from 'prop-types';
 
 import { field as fieldPropTypes } from '../../../propTypes';
 import Link from '../../../lib/components/Link';
 
-// @ts-expect-error TS7031
-const LinkView = ({ className, resource, field, value }) => {
+interface LinkViewProps {
+    className?: string;
+    field: unknown;
+    fields: unknown[];
+    linkedResource?: object;
+    resource: object;
+    type: string;
+    value: string;
+    maxHeight: number;
+}
+
+const LinkView = ({
+    className,
+    resource,
+    field,
+    value
+}: LinkViewProps) => {
     const imageURL = value;
     const link = resource[field.name];
     const style = {};
@@ -17,22 +31,10 @@ const LinkView = ({ className, resource, field, value }) => {
     }
 
     return (
-        // @ts-expect-error TS2739
-        <Link className={className} href={`${link}`}>
+        (<Link className={className} href={`${link}`}>
             <img src={imageURL} style={style} />
-        </Link>
+        </Link>)
     );
-};
-
-LinkView.propTypes = {
-    className: PropTypes.string,
-    field: fieldPropTypes.isRequired,
-    fields: PropTypes.arrayOf(fieldPropTypes).isRequired,
-    linkedResource: PropTypes.object,
-    resource: PropTypes.object.isRequired,
-    type: PropTypes.string.isRequired,
-    value: PropTypes.string.isRequired,
-    maxHeight: PropTypes.number.isRequired,
 };
 
 LinkView.defaultProps = {

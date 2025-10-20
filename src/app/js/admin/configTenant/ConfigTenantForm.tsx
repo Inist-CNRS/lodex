@@ -14,7 +14,6 @@ import React from 'react';
 
 import HelpIcon from '@mui/icons-material/HelpOutline';
 import { useForm, useStore } from '@tanstack/react-form';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { z } from 'zod';
@@ -91,41 +90,51 @@ const configTenantSchema = z.object({
         })
         .nullish(),
 });
+type Config = z.infer<typeof configTenantSchema>;
+
+interface ConfigTenantFormViewProps {
+    initialConfig: Config & { _id: string };
+    availableThemes: {
+        defaultVariables: Record<string, string>;
+        description: {
+            [key: string]: string;
+        };
+        name: {
+            en: string;
+            fr: string;
+        };
+        value: string;
+    }[];
+    handleCancel(...args: unknown[]): unknown;
+    handleSave(...args: unknown[]): unknown;
+    isSubmitting?: boolean;
+}
 
 export const ConfigTenantFormView = ({
     initialConfig: {
-        // @ts-expect-error TS7031
         _id,
-        // @ts-expect-error TS7031
         enableAutoPublication,
-        // @ts-expect-error TS7031
         userAuth,
-        // @ts-expect-error TS7031
         contributorAuth,
-        // @ts-expect-error TS7031
         theme,
-        // @ts-expect-error TS7031
         antispamFilter,
-        // @ts-expect-error TS7031
         enrichmentBatchSize,
-        // @ts-expect-error TS7031
         notificationEmail,
         ...config
     },
-    // @ts-expect-error TS7031
     availableThemes,
-    // @ts-expect-error TS7031
     handleCancel,
-    // @ts-expect-error TS7031
     handleSave,
-    // @ts-expect-error TS7031
     isSubmitting,
-}) => {
+}: ConfigTenantFormViewProps) => {
     const { translate, locale } = useTranslate();
 
-    const form = useForm({
+    const form = useForm<
+        Config & {
+            _id?: string;
+        }
+    >({
         defaultValues: {
-            // @ts-expect-error TS2353
             _id,
             enableAutoPublication,
             userAuth,
@@ -145,7 +154,6 @@ export const ConfigTenantFormView = ({
                 theme,
                 antispamFilter,
                 enrichmentBatchSize,
-                // @ts-expect-error TS2339
                 _id,
                 notificationEmail,
                 config,
@@ -209,8 +217,6 @@ export const ConfigTenantFormView = ({
                 <h2 id="enableAutoPublication">
                     {translate('enableAutoPublication')}
                 </h2>
-                {/*
-                 // @ts-expect-error TS2786 */}
                 <form.Field name="enableAutoPublication">
                     {(field) => (
                         <Checkbox
@@ -240,8 +246,6 @@ export const ConfigTenantFormView = ({
                         <Tooltip title={translate('user_auth_help')}>
                             <HelpIcon />
                         </Tooltip>
-                        {/*
-                         // @ts-expect-error TS2786 */}
                         <form.Field name="userAuth.active">
                             {(field) => (
                                 <Checkbox
@@ -295,8 +299,6 @@ export const ConfigTenantFormView = ({
                         <Tooltip title={translate('contributor_auth_help')}>
                             <HelpIcon />
                         </Tooltip>
-                        {/*
-                         // @ts-expect-error TS2786 */}
                         <form.Field name="contributorAuth.active">
                             {(field) => (
                                 <Checkbox
@@ -368,8 +370,6 @@ export const ConfigTenantFormView = ({
             </Box>
 
             <h2 id="theme">{translate('theme')}</h2>
-            {/*
-             // @ts-expect-error TS2786 */}
             <form.Field name="theme">
                 {(field) => (
                     <Select
@@ -385,7 +385,6 @@ export const ConfigTenantFormView = ({
                             field.handleChange(event.target.value);
 
                             const themeValue = availableThemes.find(
-                                // @ts-expect-error TS7006
                                 (value) => value.value === event.target.value,
                             );
 
@@ -399,15 +398,13 @@ export const ConfigTenantFormView = ({
                                 front: {
                                     // @ts-expect-error TS2339
                                     ...(configToUpdate?.front || {}),
-                                    theme: themeValue.defaultVariables,
+                                    theme: themeValue!.defaultVariables,
                                 },
                             });
                             // @ts-expect-error TS2554
                             form.validateField('config');
                         }}
                     >
-                        {/*
-                         // @ts-expect-error TS7006 */}
                         {availableThemes.map((t) => (
                             <MenuItem key={t.value} value={t.value}>
                                 {t.name[locale]} - {t.description[locale]}
@@ -426,8 +423,6 @@ export const ConfigTenantFormView = ({
                 }}
             >
                 <h2 id="antispam_filter">{translate('antispam_filter')}</h2>
-                {/*
-                 // @ts-expect-error TS2786 */}
                 <form.Field name="antispamFilter.active">
                     {(field) => (
                         <Checkbox
@@ -493,8 +488,6 @@ export const ConfigTenantFormView = ({
                 sx={{ mb: 2 }}
             />
             <Box sx={{ mb: 10 }}>
-                {/*
-                 // @ts-expect-error TS2786 */}
                 <form.Field name="config">
                     {/*
                      // @ts-expect-error TS2322 */}
@@ -534,16 +527,13 @@ export const ConfigTenantFormView = ({
     );
 };
 
-ConfigTenantFormView.propTypes = {
-    initialConfig: PropTypes.object.isRequired,
-    availableThemes: PropTypes.array.isRequired,
-    handleCancel: PropTypes.func.isRequired,
-    handleSave: PropTypes.func.isRequired,
-    isSubmitting: PropTypes.bool,
-};
+interface ConfigTenantFormProps {
+    loadConfigTenant(...args: unknown[]): unknown;
+}
 
-// @ts-expect-error TS7031
-export const ConfigTenantForm = ({ loadConfigTenant }) => {
+export const ConfigTenantForm = ({
+    loadConfigTenant,
+}: ConfigTenantFormProps) => {
     const history = useHistory();
     const { translate } = useTranslate();
 
@@ -595,10 +585,6 @@ export const ConfigTenantForm = ({ loadConfigTenant }) => {
 const mapStateToProps = () => ({});
 const mapDispatchToProps = {
     loadConfigTenant: loadConfigTenant,
-};
-
-ConfigTenantForm.propTypes = {
-    loadConfigTenant: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ConfigTenantForm);

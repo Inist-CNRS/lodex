@@ -1,15 +1,23 @@
-// @ts-expect-error TS6133
 import React from 'react';
-import PropTypes from 'prop-types';
 import MenuItem from '@mui/material/MenuItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import { NavLink } from 'react-router-dom';
 
+interface MenuItemLinkProps {
+    to: string;
+    primaryText: string;
+    leftIcon: React.ReactElement;
+}
+
 // this component is not styled
 // style is herited from src/app/js/admin/Sidebar/Sidebar.js
 
-// @ts-expect-error TS7031
-export const MenuItemLink = ({ to, primaryText, leftIcon, ...rest }) => (
+export const MenuItemLink = ({
+    to,
+    primaryText,
+    leftIcon,
+    ...rest
+}: MenuItemLinkProps) => (
     <MenuItem
         component={NavLink}
         activeClassName="active"
@@ -21,9 +29,3 @@ export const MenuItemLink = ({ to, primaryText, leftIcon, ...rest }) => (
         {primaryText}
     </MenuItem>
 );
-
-MenuItemLink.propTypes = {
-    to: PropTypes.string.isRequired,
-    primaryText: PropTypes.string.isRequired,
-    leftIcon: PropTypes.element.isRequired,
-};

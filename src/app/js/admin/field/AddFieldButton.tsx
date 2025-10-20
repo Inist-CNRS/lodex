@@ -1,6 +1,5 @@
 // @ts-expect-error TS6133
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Button } from '@mui/material';
 import { Add as AddNewIcon } from '@mui/icons-material';
 import { connect } from 'react-redux';
@@ -10,8 +9,15 @@ import { addField } from '../../fields';
 import { fromFields } from '../../sharedSelectors';
 import { useTranslate } from '../../i18n/I18NContext';
 
-// @ts-expect-error TS7031
-export const AddFieldButtonComponent = ({ onAddNewField, isFieldsLoading }) => {
+interface AddFieldButtonComponentProps {
+    onAddNewField(...args: unknown[]): unknown;
+    isFieldsLoading?: boolean;
+}
+
+export const AddFieldButtonComponent = ({
+    onAddNewField,
+    isFieldsLoading
+}: AddFieldButtonComponentProps) => {
     const { translate } = useTranslate();
     // @ts-expect-error TS2339
     const { filter } = useParams();
@@ -29,11 +35,6 @@ export const AddFieldButtonComponent = ({ onAddNewField, isFieldsLoading }) => {
             {translate('new_field')}
         </Button>
     );
-};
-
-AddFieldButtonComponent.propTypes = {
-    onAddNewField: PropTypes.func.isRequired,
-    isFieldsLoading: PropTypes.bool,
 };
 
 // @ts-expect-error TS7006

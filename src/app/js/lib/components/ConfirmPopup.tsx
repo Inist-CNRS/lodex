@@ -6,7 +6,6 @@ import {
     DialogContent,
     DialogTitle,
 } from '@mui/material';
-import PropTypes from 'prop-types';
 // @ts-expect-error TS6133
 import React from 'react';
 
@@ -18,23 +17,34 @@ const styles = {
     },
 };
 
+interface ConfirmPopupProps {
+    title: string;
+    description?: string;
+    cancelLabel: string;
+    confirmLabel: string;
+    onConfirm(...args: unknown[]): unknown;
+    isOpen: boolean;
+    onCancel(...args: unknown[]): unknown;
+    isLoading?: boolean;
+}
+
 export const ConfirmPopup = ({
-    // @ts-expect-error TS7031
     isOpen,
-    // @ts-expect-error TS7031
+
     cancelLabel,
-    // @ts-expect-error TS7031
+
     confirmLabel,
-    // @ts-expect-error TS7031
+
     title,
-    // @ts-expect-error TS7031
+
     description,
-    // @ts-expect-error TS7031
+
     onConfirm,
-    // @ts-expect-error TS7031
+
     onCancel,
-    isLoading = false,
-}) => {
+
+    isLoading = false
+}: ConfirmPopupProps) => {
     return (
         <Dialog maxWidth="xl" open={isOpen} onClose={onCancel}>
             <DialogTitle>{title}</DialogTitle>
@@ -65,15 +75,4 @@ export const ConfirmPopup = ({
             </DialogActions>
         </Dialog>
     );
-};
-
-ConfirmPopup.propTypes = {
-    title: PropTypes.string.isRequired,
-    description: PropTypes.string,
-    cancelLabel: PropTypes.string.isRequired,
-    confirmLabel: PropTypes.string.isRequired,
-    onConfirm: PropTypes.func.isRequired,
-    isOpen: PropTypes.bool.isRequired,
-    onCancel: PropTypes.func.isRequired,
-    isLoading: PropTypes.bool,
 };

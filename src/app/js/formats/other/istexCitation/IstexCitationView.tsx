@@ -1,33 +1,27 @@
 // @ts-expect-error TS6133
 import React from 'react';
-import PropTypes from 'prop-types';
 import FileDownload from '@mui/icons-material/GetApp';
 import Link from '../../../lib/components/Link';
 
-import {
-    field as fieldPropTypes,
-    polyglot as polyglotPropTypes,
-} from '../../../propTypes';
 import injectData from '../../injectData';
 import InvalidFormat from '../../InvalidFormat';
 import { getCitationUrl, parseCitationData } from './getIstexCitationData';
-import {
-    SEARCHED_FIELD_VALUES,
-    CUSTOM_ISTEX_QUERY,
-} from '../istexSummary/constants';
+import { CUSTOM_ISTEX_QUERY } from '../istexSummary/constants';
 import composeRenderProps from '../../../lib/composeRenderProps';
 import IstexCitationList from './IstexCitationList';
 import JournalFold from './JournalFold';
-import IstexItem from '../istex/IstexItem';
+import IstexItem, { type IstexItemComponentProps } from '../istex/IstexItem';
 import stylesToClassname from '../../../lib/stylesToClassName';
 import { ISTEX_SITE_URL } from '../../../../../common/externals';
+import { useTranslate } from '../../../i18n/I18NContext';
 
-// @ts-expect-error TS7031
-export const IstexDocument = ({ item }) => <IstexItem {...item} />;
+interface IstexDocumentProps {
+    item: IstexItemComponentProps;
+}
 
-IstexDocument.propTypes = {
-    item: PropTypes.shape({ id: PropTypes.string.isRequired }).isRequired,
-};
+export const IstexDocument = ({ item }: IstexDocumentProps) => (
+    <IstexItem {...item} />
+);
 
 export const getComposedComponent = () =>
     composeRenderProps([
@@ -58,20 +52,31 @@ const styles = stylesToClassname(
     'istex-summary',
 );
 
+interface IstexCitationViewProps {
+    fieldStatus?: string;
+    resource: Record<string, unknown>;
+    field: {
+        name: string;
+        format: string;
+    };
+    formatData?: {
+        hits?: unknown[];
+        total?: number;
+    };
+    error?: string;
+    searchedField?: unknown[];
+    documentSortBy: string;
+    p: unknown;
+}
+
 export const IstexCitationView = ({
-    // @ts-expect-error TS7031
     formatData,
-    // @ts-expect-error TS7031
     field,
-    // @ts-expect-error TS7031
     resource,
-    // @ts-expect-error TS7031
     searchedField,
-    // @ts-expect-error TS7031
     documentSortBy,
-    // @ts-expect-error TS7031
-    p: polyglot,
-}) => {
+}: IstexCitationViewProps) => {
+    const { translate } = useTranslate();
     if (!resource[field.name] || !searchedField) {
         return (
             <InvalidFormat format={field.format} value={resource[field.name]} />
@@ -90,23 +95,21 @@ export const IstexCitationView = ({
                 {/*
                  // @ts-expect-error TS2339 */}
                 <span className={styles.total}>
-                    {polyglot.t('istex_total', {
+                    {translate('istex_total', {
                         total: formatData ? formatData.total : 0,
                     })}
                 </span>
-                {/*
-                 // @ts-expect-error TS2739 */}
                 <Link
                     // @ts-expect-error TS2339
                     className={styles.dl}
                     href={`${ISTEX_SITE_URL}/?q=`.concat(
-                        encodeURIComponent(resource[field.name]),
+                        encodeURIComponent(resource[field.name] as string),
                     )}
                     target="_blank"
                 >
                     {/*
                      // @ts-expect-error TS2769 */}
-                    <FileDownload tooltip={polyglot.t('download')} />
+                    <FileDownload tooltip={translate('download')} />
                 </Link>
             </div>
             <ComposedComponent
@@ -114,24 +117,9 @@ export const IstexCitationView = ({
                 value={resource[field.name]}
                 searchedField={searchedField}
                 documentSortBy={documentSortBy}
-                polyglot={polyglot}
             />
         </div>
     );
-};
-
-IstexCitationView.propTypes = {
-    fieldStatus: PropTypes.string,
-    resource: PropTypes.object.isRequired,
-    field: fieldPropTypes.isRequired,
-    formatData: PropTypes.shape({
-        hits: PropTypes.array,
-        total: PropTypes.number,
-    }),
-    error: PropTypes.string,
-    searchedField: PropTypes.oneOf(SEARCHED_FIELD_VALUES),
-    documentSortBy: PropTypes.string.isRequired,
-    p: polyglotPropTypes.isRequired,
 };
 
 IstexCitationView.defaultProps = {

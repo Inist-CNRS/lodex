@@ -5,7 +5,7 @@ import { shallow } from 'enzyme';
 import { StyleSheetTestUtils } from 'aphrodite';
 import { Link, NavLink } from 'react-router-dom';
 
-import MenuItem from './MenuItem';
+import MenuItem, { type ConfigRole } from './MenuItem';
 import {
     ADMIN_ROLE,
     DEFAULT_TENANT,
@@ -15,12 +15,11 @@ describe('MenuItem', () => {
     const onClick = jest.fn();
     const defaultProps = {
         config: {},
-        polyglot: { currentLocale: 'fr' },
         hasGraph: false,
-        graphDrawer: 'closed',
-        searchDrawer: 'closed',
+        graphDrawer: 'closed' as const,
+        searchDrawer: 'closed' as const,
         canBeSearched: false,
-        role: 'not logged',
+        role: 'not logged' as const,
         onClick: jest.fn(() => onClick),
     };
 
@@ -32,7 +31,6 @@ describe('MenuItem', () => {
 
     it('should translate label based on currentLocate fr', () => {
         const wrapper = shallow(
-            // @ts-expect-error TS2769
             <MenuItem
                 {...defaultProps}
                 config={{
@@ -40,8 +38,6 @@ describe('MenuItem', () => {
                     label: { fr: 'label fr', en: 'label en' },
                     icon: 'faHome',
                 }}
-                // @ts-expect-error TS2322
-                polyglot={{ currentLocale: 'fr' }}
             />,
         );
 
@@ -52,7 +48,6 @@ describe('MenuItem', () => {
 
     it('should translate label based on currentLocate en', () => {
         const wrapper = shallow(
-            // @ts-expect-error TS2769
             <MenuItem
                 {...defaultProps}
                 config={{
@@ -60,8 +55,6 @@ describe('MenuItem', () => {
                     label: { fr: 'label fr', en: 'label en' },
                     icon: 'faHome',
                 }}
-                // @ts-expect-error TS2322
-                polyglot={{ currentLocale: 'en' }}
             />,
         );
 
@@ -73,11 +66,10 @@ describe('MenuItem', () => {
     describe('role: unknown', () => {
         it('should not render the MenuItem', () => {
             const wrapper = shallow(
-                // @ts-expect-error TS2322
                 <MenuItem
                     {...defaultProps}
                     config={{
-                        role: 'unknown',
+                        role: 'unknown' as ConfigRole,
                         label: { fr: 'unknown fr', en: 'unknown en' },
                         icon: 'faList',
                     }}
@@ -94,7 +86,6 @@ describe('MenuItem', () => {
     describe('role: home', () => {
         it('should render MenuItem to home', () => {
             const wrapper = shallow(
-                // @ts-expect-error TS2322
                 <MenuItem
                     {...defaultProps}
                     config={{
@@ -115,7 +106,6 @@ describe('MenuItem', () => {
     describe('role: graphs', () => {
         it('should render MenuItem to open graphDrawer', () => {
             const wrapper = shallow(
-                // @ts-expect-error TS2322
                 <MenuItem
                     {...defaultProps}
                     config={{
@@ -134,7 +124,6 @@ describe('MenuItem', () => {
         });
         it('should not render MenuItem to open graphDrawer when hasGraph is false', () => {
             const wrapper = shallow(
-                // @ts-expect-error TS2322
                 <MenuItem
                     {...defaultProps}
                     config={{
@@ -153,7 +142,6 @@ describe('MenuItem', () => {
     describe('role: search', () => {
         it('should render MenuItem to open searchDrawer', () => {
             const wrapper = shallow(
-                // @ts-expect-error TS2322
                 <MenuItem
                     {...defaultProps}
                     config={{
@@ -173,7 +161,6 @@ describe('MenuItem', () => {
 
         it('should not render MenuItem to open graphDrawer when canBeSearched is false', () => {
             const wrapper = shallow(
-                // @ts-expect-error TS2322
                 <MenuItem
                     {...defaultProps}
                     config={{
@@ -192,7 +179,6 @@ describe('MenuItem', () => {
     describe('role: admin', () => {
         it('should render link to admin when role is admin', () => {
             const wrapper = shallow(
-                // @ts-expect-error TS2322
                 <MenuItem
                     {...defaultProps}
                     config={{
@@ -211,7 +197,6 @@ describe('MenuItem', () => {
 
         it('should not render MenuItem when role is not admin', () => {
             const wrapper = shallow(
-                // @ts-expect-error TS2322
                 <MenuItem
                     {...defaultProps}
                     config={{
@@ -230,7 +215,6 @@ describe('MenuItem', () => {
     describe('role: sign-in', () => {
         it('should render link to login when role is not logged', () => {
             const wrapper = shallow(
-                // @ts-expect-error TS2322
                 <MenuItem
                     {...defaultProps}
                     config={{
@@ -249,7 +233,6 @@ describe('MenuItem', () => {
 
         it('should not render MenuItem when role is not "not logged"', () => {
             const wrapper = shallow(
-                // @ts-expect-error TS2322
                 <MenuItem
                     {...defaultProps}
                     config={{
@@ -268,7 +251,6 @@ describe('MenuItem', () => {
     describe('role: sign-out', () => {
         it('should render link to logout when role is not "not logged"', () => {
             const wrapper = shallow(
-                // @ts-expect-error TS2322
                 <MenuItem
                     {...defaultProps}
                     config={{
@@ -288,7 +270,6 @@ describe('MenuItem', () => {
 
         it('should not render MenuItem when role is "not logged"', () => {
             const wrapper = shallow(
-                // @ts-expect-error TS2322
                 <MenuItem
                     {...defaultProps}
                     config={{
@@ -307,7 +288,6 @@ describe('MenuItem', () => {
     describe('role: custom', () => {
         it('should render a with href= config.link if link is an extenal link', () => {
             const wrapper = shallow(
-                // @ts-expect-error TS2322
                 <MenuItem
                     {...defaultProps}
                     config={{
@@ -326,7 +306,6 @@ describe('MenuItem', () => {
 
         it('should render NavLink to config.link', () => {
             const wrapper = shallow(
-                // @ts-expect-error TS2322
                 <MenuItem
                     {...defaultProps}
                     config={{
@@ -346,7 +325,6 @@ describe('MenuItem', () => {
 
         it('should render nothing if no config.link', () => {
             const wrapper = shallow(
-                // @ts-expect-error TS2322
                 <MenuItem
                     {...defaultProps}
                     config={{

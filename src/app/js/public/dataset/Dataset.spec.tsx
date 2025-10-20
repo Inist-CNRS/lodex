@@ -22,9 +22,7 @@ describe('<Dataset />', () => {
         const preLoadDatasetPage = jest.fn();
 
         shallow(
-            // @ts-expect-error TS2769
             <Dataset
-                // @ts-expect-error TS2769
                 currentPage={1}
                 perPage={10}
                 preLoadDatasetPage={preLoadDatasetPage}
@@ -43,9 +41,7 @@ describe('<Dataset />', () => {
 
     it('should render the TableCell for each column', () => {
         const wrapper = shallow(
-            // @ts-expect-error TS2769
             <Dataset
-                // @ts-expect-error TS2769
                 currentPage={1}
                 perPage={10}
                 columns={columns}
@@ -71,9 +67,7 @@ describe('<Dataset />', () => {
 
     it('should render the TableCell for each value for each column', () => {
         const wrapper = shallow(
-            // @ts-expect-error TS2769
             <Dataset
-                // @ts-expect-error TS2769
                 currentPage={1}
                 perPage={10}
                 columns={columns}
@@ -128,7 +122,6 @@ describe('<Dataset />', () => {
 
     it('should render the Pagination', () => {
         const wrapper = shallow(
-            // @ts-expect-error TS2769
             <Dataset
                 // @ts-expect-error TS2769
                 p={{ t: (key) => key }}
@@ -151,7 +144,6 @@ describe('<Dataset />', () => {
         const preLoadDatasetPage = jest.fn();
         const changePage = jest.fn();
         const wrapper = shallow(
-            // @ts-expect-error TS2769
             <Dataset
                 // @ts-expect-error TS2769
                 p={{ t: (key) => key }}

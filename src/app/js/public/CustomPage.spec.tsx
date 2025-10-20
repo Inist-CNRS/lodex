@@ -25,7 +25,6 @@ describe('getCustomPage CustomPage', () => {
     it('should render spinner at first', () => {
         // @ts-expect-error TS2339
         fetch.mockImplementation(() => Promise.resolve({ response: {} }));
-        // @ts-expect-error TS2769
         const wrapper = shallow(<CustomPage {...defaultProps} />);
         expect(wrapper.find(CircularProgress)).toHaveLength(1);
     });
@@ -39,7 +38,6 @@ describe('getCustomPage CustomPage', () => {
         });
         // @ts-expect-error TS2339
         fetch.mockImplementation(() => response);
-        // @ts-expect-error TS2769
         const wrapper = shallow(<CustomPage {...defaultProps} />);
         expect(fetch).toHaveBeenCalledWith({
             url: '/customPage/?page=custom%2Fpage',
@@ -63,7 +61,6 @@ describe('getCustomPage CustomPage', () => {
         const response = Promise.resolve({ error: new Error('nope') });
         // @ts-expect-error TS2339
         fetch.mockImplementation(() => response);
-        // @ts-expect-error TS2769
         const wrapper = shallow(<CustomPage {...defaultProps} />);
         expect(fetch).toHaveBeenCalledWith({
             url: '/customPage/?page=custom%2Fpage',
