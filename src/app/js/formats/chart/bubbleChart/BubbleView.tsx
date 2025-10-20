@@ -1,6 +1,5 @@
 // @ts-expect-error TS6133
 import React from 'react';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 // @ts-expect-error TS7016
@@ -21,8 +20,17 @@ const styles = {
     })),
 };
 
-// @ts-expect-error TS7031
-export const BubbleView = ({ data, diameter, colorSet }) => (
+interface BubbleViewProps {
+    data: unknown[];
+    diameter: number | string;
+    colorSet?: string[];
+}
+
+export const BubbleView = ({
+    data,
+    diameter,
+    colorSet
+}: BubbleViewProps) => (
     <FormatFullScreenMode>
         {/* 
         // @ts-expect-error TS7006 */}
@@ -43,13 +51,6 @@ export const BubbleView = ({ data, diameter, colorSet }) => (
         </div>
     </FormatFullScreenMode>
 );
-
-BubbleView.propTypes = {
-    data: PropTypes.array.isRequired,
-    diameter: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
-        .isRequired,
-    colorSet: PropTypes.arrayOf(PropTypes.string),
-};
 
 BubbleView.displayName = 'BubbleView';
 

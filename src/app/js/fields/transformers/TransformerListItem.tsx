@@ -1,6 +1,5 @@
 // @ts-expect-error TS6133
 import React from 'react';
-import PropTypes from 'prop-types';
 import { translate } from '../../i18n/I18NContext';
 
 import { Box, Chip, Typography } from '@mui/material';
@@ -14,20 +13,28 @@ import { useSortable } from '@dnd-kit/sortable';
 import { compose } from 'recompose';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 
+interface TransformerListItemProps {
+    transformer?: object;
+    id: string;
+    show: boolean;
+    onRemove(...args: unknown[]): unknown;
+    onEdit(...args: unknown[]): unknown;
+    p: unknown;
+}
+
 const TransformerListItem = ({
-    // @ts-expect-error TS7031
     transformer,
-    // @ts-expect-error TS7031
+
     id,
-    // @ts-expect-error TS7031
+
     show,
-    // @ts-expect-error TS7031
+
     onRemove,
-    // @ts-expect-error TS7031
+
     onEdit,
-    // @ts-expect-error TS7031
-    p: polyglot,
-}) => {
+
+    p: polyglot
+}: TransformerListItemProps) => {
     const { attributes, listeners, setNodeRef, transform, transition } =
         useSortable({ id });
 
@@ -158,15 +165,6 @@ const TransformerListItem = ({
             </Box>
         </Box>
     );
-};
-
-TransformerListItem.propTypes = {
-    transformer: PropTypes.object,
-    id: PropTypes.string.isRequired,
-    show: PropTypes.bool.isRequired,
-    onRemove: PropTypes.func.isRequired,
-    onEdit: PropTypes.func.isRequired,
-    p: polyglotPropTypes.isRequired,
 };
 
 // @ts-expect-error TS2345

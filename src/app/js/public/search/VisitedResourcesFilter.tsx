@@ -5,7 +5,6 @@ import {
     OutlinedInput,
     Select,
 } from '@mui/material';
-import PropTypes from 'prop-types';
 // @ts-expect-error TS6133
 import React from 'react';
 import { connect } from 'react-redux';
@@ -13,8 +12,15 @@ import { useTranslate } from '../../i18n/I18NContext';
 import { fromSearch } from '../selectors';
 import { searchVisited } from './reducer';
 
-// @ts-expect-error TS7031
-export const VisitedResourcesFilterComponent = ({ filter, onFilterChange }) => {
+type VisitedResourcesFilterComponentProps = {
+    filter?: string;
+    onFilterChange(filter: { value: string | null }): void;
+};
+
+export const VisitedResourcesFilterComponent = ({
+    filter,
+    onFilterChange,
+}: VisitedResourcesFilterComponentProps) => {
     const { translate } = useTranslate();
 
     return (
@@ -49,11 +55,6 @@ export const VisitedResourcesFilterComponent = ({ filter, onFilterChange }) => {
             </Select>
         </FormControl>
     );
-};
-
-VisitedResourcesFilterComponent.propTypes = {
-    filter: PropTypes.string,
-    onFilterChange: PropTypes.func.isRequired,
 };
 
 // @ts-expect-error TS7006

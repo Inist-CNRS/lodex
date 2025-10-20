@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 // @ts-expect-error TS6133
 import React, { useMemo } from 'react';
 
@@ -11,8 +10,13 @@ import {
 import { useField } from '@tanstack/react-form';
 import { useTranslate } from '../../i18n/I18NContext';
 
-// @ts-expect-error TS7031
-export function IsContributorNamePublicField({ form }) {
+interface IsContributorNamePublicFieldProps {
+    form: object;
+}
+
+export function IsContributorNamePublicField({
+    form
+}: IsContributorNamePublicFieldProps) {
     const { translate } = useTranslate();
     const field = useField({ name: 'isContributorNamePublic', form });
 
@@ -47,7 +51,3 @@ export function IsContributorNamePublicField({ form }) {
         </FormControl>
     );
 }
-
-IsContributorNamePublicField.propTypes = {
-    form: PropTypes.object.isRequired,
-};

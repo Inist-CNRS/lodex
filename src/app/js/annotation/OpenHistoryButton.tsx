@@ -1,14 +1,24 @@
 import { useTheme } from '@emotion/react';
 import { Link, Stack, Typography } from '@mui/material';
-import PropTypes from 'prop-types';
 // @ts-expect-error TS6133
 import React from 'react';
 import { useTranslate } from '../i18n/I18NContext';
 import AdminOnlyAlert from '../lib/components/AdminOnlyAlert';
 import { useGetFieldAnnotation } from './useGetFieldAnnotation';
 
-// @ts-expect-error TS7031
-export const OpenHistoryButton = ({ field, resourceUri, openHistory }) => {
+interface OpenHistoryButtonProps {
+    field: {
+        _id: string;
+    };
+    resourceUri?: string;
+    openHistory(...args: unknown[]): unknown;
+}
+
+export const OpenHistoryButton = ({
+    field,
+    resourceUri,
+    openHistory,
+}: OpenHistoryButtonProps) => {
     const { translate } = useTranslate();
     const theme = useTheme();
 
@@ -18,16 +28,15 @@ export const OpenHistoryButton = ({ field, resourceUri, openHistory }) => {
     );
 
     return (
-        <>
-            {/*
-             // @ts-expect-error TS2769 */}
-            <Stack
-                gap={0.5}
-                paddingBlockEnd={2}
-                borderBottom={1}
-                // @ts-expect-error TS2339
-                borderColor={theme.palette.grey[500]}
-            >
+        // @ts-expect-error TS2339
+        <Stack
+            gap={0.5}
+            paddingBlockEnd={2}
+            borderBottom={1}
+            // @ts-expect-error TS2339
+            borderColor={theme.palette.grey[500]}
+        >
+            <>
                 <Typography
                     variant="h6"
                     sx={{
@@ -75,13 +84,7 @@ export const OpenHistoryButton = ({ field, resourceUri, openHistory }) => {
                             {translate('annotation_no_history')}
                         </Typography>
                     ))}
-            </Stack>
-        </>
+            </>
+        </Stack>
     );
-};
-
-OpenHistoryButton.propTypes = {
-    field: PropTypes.object.isRequired,
-    resourceUri: PropTypes.string,
-    openHistory: PropTypes.func.isRequired,
 };

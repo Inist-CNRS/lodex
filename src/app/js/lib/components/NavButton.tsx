@@ -1,6 +1,5 @@
 // @ts-expect-error TS6133
 import React from 'react';
-import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import compose from 'recompose/compose';
 import { translate } from '../../i18n/I18NContext';
@@ -8,7 +7,6 @@ import { IconButton } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons';
 
-import { polyglot as polyglotPropTypes } from '../../propTypes';
 import stylesToClassname from '../../lib/stylesToClassName';
 
 const styles = stylesToClassname(
@@ -55,8 +53,13 @@ const renderIcon = (direction) =>
         />
     );
 
-// @ts-expect-error TS7031
-const NavButton = ({ p: polyglot, direction, navigate }) => {
+interface NavButtonProps {
+    p: any;
+    direction?: string;
+    navigate(direction: string): void;
+}
+
+const NavButton = ({ p: polyglot, direction, navigate }: NavButtonProps) => {
     if (!direction) {
         return null;
     }
@@ -77,12 +80,6 @@ const NavButton = ({ p: polyglot, direction, navigate }) => {
             {icon}
         </IconButton>
     );
-};
-
-NavButton.propTypes = {
-    p: polyglotPropTypes.isRequired,
-    direction: PropTypes.oneOf([NEXT, PREV, NONE]),
-    navigate: PropTypes.func,
 };
 
 NavButton.defaultProps = {

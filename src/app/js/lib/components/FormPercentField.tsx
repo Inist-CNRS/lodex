@@ -33,6 +33,4 @@ const FormPercentField = ({
     />
 );
 
-FormPercentField.propTypes = formFieldPropTypes;
-
 export default FormPercentField;

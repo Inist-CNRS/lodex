@@ -1,18 +1,16 @@
-// @ts-expect-error TS6133
-import React from 'react';
-import PropTypes from 'prop-types';
 import { IconButton } from '@mui/material';
 import RejectedIcon from '@mui/icons-material/Clear';
 import ProposedIcon from '@mui/icons-material/Remove';
 import ValidatedIcon from '@mui/icons-material/Done';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
-import { translate } from '../../i18n/I18NContext';
+import { useTranslate } from '../../i18n/I18NContext';
 import { red, yellow, green, grey } from '@mui/material/colors';
 import classnames from 'classnames';
 
-import propositionStatus from '../../../../common/propositionStatus';
-import { polyglot as polyglotPropTypes } from '../../propTypes';
+import propositionStatus, {
+    type PropositionStatus,
+} from '../../../../common/propositionStatus';
 import { fromResource } from '../selectors';
 import { fromUser } from '../../sharedSelectors';
 
@@ -50,18 +48,23 @@ const styles = {
     },
 };
 
+interface ModerateButtonComponentProps {
+    contributor?: string;
+    status?: PropositionStatus;
+    changeStatus(
+        status: PropositionStatus,
+        availableStatus: PropositionStatus,
+    ): void;
+    isAdmin: boolean;
+}
+
 export const ModerateButtonComponent = ({
-    // @ts-expect-error TS7031
     contributor,
-    // @ts-expect-error TS7031
     status,
-    // @ts-expect-error TS7031
     changeStatus,
-    // @ts-expect-error TS7031
     isAdmin,
-    // @ts-expect-error TS7031
-    p: polyglot,
-}) => {
+}: ModerateButtonComponentProps) => {
+    const { translate } = useTranslate();
     if (!isAdmin || !status || !contributor) {
         return null;
     }
@@ -75,7 +78,7 @@ export const ModerateButtonComponent = ({
                     })}
                     sx={styles.iconButton}
                     key={availableStatus}
-                    tooltip={polyglot.t(availableStatus)}
+                    tooltip={translate(availableStatus)}
                     onClick={(e) => {
                         e.preventDefault();
                         changeStatus(status, availableStatus);
@@ -94,14 +97,6 @@ ModerateButtonComponent.defaultProps = {
     status: null,
 };
 
-ModerateButtonComponent.propTypes = {
-    contributor: PropTypes.string,
-    status: PropTypes.oneOf(propositionStatus),
-    changeStatus: PropTypes.func.isRequired,
-    isAdmin: PropTypes.bool.isRequired,
-    p: polyglotPropTypes.isRequired,
-};
-
 // @ts-expect-error TS7006
 const mapStateToProps = (state, { fieldName }) => ({
     contributor: fromResource.getResourceContributorForField(state, fieldName),
@@ -109,7 +104,6 @@ const mapStateToProps = (state, { fieldName }) => ({
 });
 
 export default compose(
-    translate,
     connect(mapStateToProps),
     // @ts-expect-error TS2345
 )(ModerateButtonComponent);

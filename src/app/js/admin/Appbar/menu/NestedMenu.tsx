@@ -3,12 +3,23 @@ import Box from '@mui/material/Box';
 import Fade from '@mui/material/Fade';
 import MenuItem from '@mui/material/MenuItem';
 import Paper from '@mui/material/Paper';
-import PropTypes from 'prop-types';
-// @ts-expect-error TS6133
 import React from 'react';
 
-// @ts-expect-error TS7031
-export function NestedMenu({ isOpen, onOpen, onClose, label, menu }) {
+interface NestedMenuProps {
+    isOpen: boolean;
+    onOpen(...args: unknown[]): unknown;
+    onClose(...args: unknown[]): unknown;
+    label: string;
+    menu: React.ReactNode;
+}
+
+export function NestedMenu({
+    isOpen,
+    onOpen,
+    onClose,
+    label,
+    menu
+}: NestedMenuProps) {
     return (
         <Box
             onMouseEnter={onOpen}
@@ -43,11 +54,3 @@ export function NestedMenu({ isOpen, onOpen, onClose, label, menu }) {
         </Box>
     );
 }
-
-NestedMenu.propTypes = {
-    isOpen: PropTypes.bool.isRequired,
-    onOpen: PropTypes.func.isRequired,
-    onClose: PropTypes.func.isRequired,
-    label: PropTypes.string.isRequired,
-    menu: PropTypes.node.isRequired,
-};

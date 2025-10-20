@@ -14,9 +14,7 @@ describe('<Format />', () => {
     };
 
     const wrapper = shallow(
-        // @ts-expect-error TS2769
         <Format
-            // @ts-expect-error TS2769
             className={className}
             field={field}
             fieldStatus={null}

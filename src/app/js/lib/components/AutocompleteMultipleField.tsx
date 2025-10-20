@@ -8,8 +8,7 @@ import {
     ListItemText,
     TextField,
 } from '@mui/material';
-import { useField } from '@tanstack/react-form';
-import PropTypes from 'prop-types';
+import { FormApi, useField } from '@tanstack/react-form';
 // @ts-expect-error TS6133
 import { default as React, useCallback, useMemo } from 'react';
 
@@ -26,23 +25,26 @@ function optionToAutocompleteValue(option) {
     };
 }
 
+export type AutocompleteMultipleFieldProps = {
+    form: FormApi<any>;
+    name: string;
+    label: string;
+    helperText?: string;
+    required?: boolean;
+    options: string[];
+    supportsNewValues?: boolean;
+};
+
 // TextField component to use tanstack react form with material ui text field
 export function AutocompleteMultipleField({
-    // @ts-expect-error TS7031
     form,
-    // @ts-expect-error TS7031
     name,
-    // @ts-expect-error TS7031
     label,
-    // @ts-expect-error TS7031
     helperText,
-    // @ts-expect-error TS7031
     required,
-    // @ts-expect-error TS7031
     options,
-    // @ts-expect-error TS7031
     supportsNewValues,
-}) {
+}: AutocompleteMultipleFieldProps) {
     const { translate } = useTranslate();
     const field = useField({ name, form });
     const autocompleteTranslations = useAutocompleteTranslations();
@@ -51,7 +53,6 @@ export function AutocompleteMultipleField({
         // required is used for optionally required field based on a condition
         // since tanstack form does not support multi field validation on the field side
         if (required) {
-            // @ts-expect-error TS2339
             return field.state.meta.isTouched && !field.state.value?.length
                 ? 'error_field_required'
                 : null;
@@ -62,7 +63,6 @@ export function AutocompleteMultipleField({
     }, [required, field.state]);
 
     const values = useMemo(() => {
-        // @ts-expect-error TS2339
         return (field.state.value ?? []).map(optionToAutocompleteValue);
     }, [field.state.value]);
 
@@ -72,9 +72,19 @@ export function AutocompleteMultipleField({
         return options.map(optionToAutocompleteValue);
     }, [options]);
 
-    const isOptionEqualToValue = useCallback((option, value) => {
-        return option.value === value.value;
-    }, []);
+    const isOptionEqualToValue = useCallback(
+        (
+            option: {
+                value: string;
+            },
+            value: {
+                value: string;
+            },
+        ) => {
+            return option.value === value.value;
+        },
+        [],
+    );
 
     return (
         <FormControl fullWidth>
@@ -139,13 +149,3 @@ export function AutocompleteMultipleField({
         </FormControl>
     );
 }
-
-AutocompleteMultipleField.propTypes = {
-    form: PropTypes.object.isRequired,
-    name: PropTypes.string.isRequired,
-    label: PropTypes.string.isRequired,
-    helperText: PropTypes.string,
-    required: PropTypes.bool,
-    options: PropTypes.arrayOf(PropTypes.string),
-    supportsNewValues: PropTypes.bool,
-};

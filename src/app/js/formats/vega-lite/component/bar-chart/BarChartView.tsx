@@ -1,6 +1,5 @@
 // @ts-expect-error TS6133
 import React, { useMemo, useState } from 'react';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import { clamp } from 'lodash';
@@ -27,44 +26,68 @@ const styles = {
     },
 };
 
+interface BarChartViewProps {
+    field?: unknown;
+    resource?: object;
+    data?: {
+        values: any;
+    };
+    colors?: string;
+    direction?: string;
+    orderBy?: string;
+    diagonalCategoryAxis?: boolean;
+    diagonalValueAxis?: boolean;
+    scale?: string;
+    params?: any;
+    axisRoundValue?: boolean;
+    tooltip?: boolean;
+    tooltipCategory?: string;
+    tooltipValue?: string;
+    labels?: string;
+    labelOverlap?: string;
+    barSize?: number;
+    advancedMode?: boolean;
+    advancedModeSpec?: string;
+    aspectRatio?: string;
+}
+
 const BarChartView = ({
-    // @ts-expect-error TS7031
     advancedMode,
-    // @ts-expect-error TS7031
+
     advancedModeSpec,
-    // @ts-expect-error TS7031
+
     field,
-    // @ts-expect-error TS7031
+
     data,
-    // @ts-expect-error TS7031
+
     direction,
-    // @ts-expect-error TS7031
+
     params,
-    // @ts-expect-error TS7031
+
     scale,
-    // @ts-expect-error TS7031
+
     colors,
-    // @ts-expect-error TS7031
+
     axisRoundValue,
-    // @ts-expect-error TS7031
+
     tooltip,
-    // @ts-expect-error TS7031
+
     tooltipCategory,
-    // @ts-expect-error TS7031
+
     tooltipValue,
-    // @ts-expect-error TS7031
+
     labels,
-    // @ts-expect-error TS7031
+
     labelOverlap,
-    // @ts-expect-error TS7031
+
     barSize,
-    // @ts-expect-error TS7031
+
     diagonalCategoryAxis,
-    // @ts-expect-error TS7031
+
     diagonalValueAxis,
-    // @ts-expect-error TS7031
-    aspectRatio,
-}) => {
+
+    aspectRatio
+}: BarChartViewProps) => {
     const { ref, width } = useSizeObserver();
     const [error, setError] = useState('');
 
@@ -129,7 +152,7 @@ const BarChartView = ({
 
     return (
         // @ts-expect-error TS2322
-        <div style={styles.container} ref={ref}>
+        (<div style={styles.container} ref={ref}>
             <CustomActionVegaLite
                 // @ts-expect-error TS2322
                 spec={spec}
@@ -137,33 +160,8 @@ const BarChartView = ({
                 injectType={VEGA_LITE_DATA_INJECT_TYPE_A}
                 aspectRatio={aspectRatio}
             />
-        </div>
+        </div>)
     );
-};
-
-BarChartView.propTypes = {
-    field: fieldPropTypes,
-    resource: PropTypes.object,
-    data: PropTypes.shape({
-        values: PropTypes.any.isRequired,
-    }),
-    colors: PropTypes.string,
-    direction: PropTypes.string,
-    orderBy: PropTypes.string,
-    diagonalCategoryAxis: PropTypes.bool,
-    diagonalValueAxis: PropTypes.bool,
-    scale: PropTypes.string,
-    params: PropTypes.any,
-    axisRoundValue: PropTypes.bool,
-    tooltip: PropTypes.bool,
-    tooltipCategory: PropTypes.string,
-    tooltipValue: PropTypes.string,
-    labels: PropTypes.string,
-    labelOverlap: PropTypes.string,
-    barSize: PropTypes.number,
-    advancedMode: PropTypes.bool,
-    advancedModeSpec: PropTypes.string,
-    aspectRatio: PropTypes.string,
 };
 
 BarChartView.defaultProps = {

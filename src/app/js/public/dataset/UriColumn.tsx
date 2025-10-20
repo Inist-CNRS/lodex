@@ -1,16 +1,21 @@
 // @ts-expect-error TS6133
 import React from 'react';
-import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { TableCell, Button } from '@mui/material';
 import RightIcon from '@mui/icons-material/KeyboardArrowRight';
 
-import { field as fieldPropTypes } from '../../propTypes';
 import { getResourceUri } from '../../../../common/uris';
 import Link from '../../lib/components/Link';
 
-// @ts-expect-error TS7031
-const UriColumn = ({ column, resource, indice }) => (
+interface UriColumnProps {
+    column: {
+        name: string;
+    };
+    resource: object;
+    indice?: number;
+}
+
+const UriColumn = ({ column, resource, indice }: UriColumnProps) => (
     <TableCell
         className={classnames('dataset-column', `dataset-${column.name}`)}
     >
@@ -25,11 +30,5 @@ const UriColumn = ({ column, resource, indice }) => (
         </Button>
     </TableCell>
 );
-
-UriColumn.propTypes = {
-    column: fieldPropTypes.isRequired,
-    resource: PropTypes.object.isRequired,
-    indice: PropTypes.number,
-};
 
 export default UriColumn;

@@ -1,11 +1,19 @@
 // @ts-expect-error TS6133
 import React from 'react';
-import PropTypes from 'prop-types';
 import DOMPurify from 'dompurify';
 import { field as fieldPropTypes } from '../../../propTypes';
 
-// @ts-expect-error TS7031
-const HtmlView = ({ className, resource, field }) => {
+interface HtmlViewProps {
+    className?: string;
+    field: unknown;
+    resource: object;
+}
+
+const HtmlView = ({
+    className,
+    resource,
+    field
+}: HtmlViewProps) => {
     const sanitizedHTML = DOMPurify.sanitize(resource[field.name]);
     return (
         <div
@@ -13,12 +21,6 @@ const HtmlView = ({ className, resource, field }) => {
             dangerouslySetInnerHTML={{ __html: sanitizedHTML }}
         />
     );
-};
-
-HtmlView.propTypes = {
-    className: PropTypes.string,
-    field: fieldPropTypes.isRequired,
-    resource: PropTypes.object.isRequired,
 };
 
 HtmlView.defaultProps = {

@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {
     Dialog,
@@ -32,8 +31,22 @@ const TRANSLATION_KEY = new Map([
     ['model', 'clear_model'],
 ]);
 
-// @ts-expect-error TS7006
-const ClearDialogComponent = (props) => {
+interface ClearDialogComponentProps {
+    type: string;
+    succeeded: boolean;
+    onClose(...args: unknown[]): unknown;
+    clearDataset(...args: unknown[]): unknown;
+    clearPublished(...args: unknown[]): unknown;
+    reloadParsing?(...args: unknown[]): unknown;
+    isLoading: boolean;
+    hasFailed: boolean;
+    loadField(...args: unknown[]): unknown;
+    loadPublication(...args: unknown[]): unknown;
+    hasPublishedDataset: boolean;
+    loadSubResources(...args: unknown[]): unknown;
+}
+
+const ClearDialogComponent = (props: ClearDialogComponentProps) => {
     const { translate } = useTranslate();
     const [validName, setValidName] = React.useState(false);
     const {
@@ -168,21 +181,6 @@ const ClearDialogComponent = (props) => {
             <DialogActions>{actions}</DialogActions>
         </Dialog>
     );
-};
-
-ClearDialogComponent.propTypes = {
-    type: PropTypes.string.isRequired,
-    succeeded: PropTypes.bool.isRequired,
-    onClose: PropTypes.func.isRequired,
-    clearDataset: PropTypes.func.isRequired,
-    clearPublished: PropTypes.func.isRequired,
-    reloadParsing: PropTypes.func,
-    isLoading: PropTypes.bool.isRequired,
-    hasFailed: PropTypes.bool.isRequired,
-    loadField: PropTypes.func.isRequired,
-    loadPublication: PropTypes.func.isRequired,
-    hasPublishedDataset: PropTypes.bool.isRequired,
-    loadSubResources: PropTypes.func.isRequired,
 };
 
 // @ts-expect-error TS7006

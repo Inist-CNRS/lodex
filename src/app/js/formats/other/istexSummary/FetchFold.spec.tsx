@@ -28,7 +28,6 @@ describe('FetchFold', () => {
     });
 
     it('should render closed', () => {
-        // @ts-expect-error TS2769
         const wrapper = shallow(<FetchFold {...defaultProps} />);
         expect(wrapper.find(Folder)).toHaveLength(1);
         expect(wrapper.find(FolderOpen)).toHaveLength(0);
@@ -50,7 +49,6 @@ describe('FetchFold', () => {
         const getData = jest.fn(() => dataPromise);
 
         const wrapper = shallow(
-            // @ts-expect-error TS2769
             <FetchFold {...defaultProps} getData={getData} />,
         );
         const button = wrapper.find(Button);
@@ -84,7 +82,6 @@ describe('FetchFold', () => {
         const getData = jest.fn(() => dataPromise);
 
         const wrapper = shallow(
-            // @ts-expect-error TS2769
             <FetchFold {...defaultProps} getData={getData} />,
         );
         const button = wrapper.find(Button);
@@ -106,7 +103,6 @@ describe('FetchFold', () => {
     });
 
     it('should not render if count is 0', () => {
-        // @ts-expect-error TS2769
         const wrapper = shallow(<FetchFold {...defaultProps} count={0} />);
         expect(wrapper.find(Folder)).toHaveLength(0);
         expect(wrapper.find(FolderOpen)).toHaveLength(0);

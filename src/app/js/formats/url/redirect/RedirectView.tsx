@@ -1,6 +1,5 @@
 // @ts-expect-error TS6133
 import React, { useEffect } from 'react';
-import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
@@ -64,8 +63,17 @@ const styles = stylesToClassname(
     'redirect-view',
 );
 
-// @ts-expect-error TS7031
-export const RedirectViewLoader = ({ classes, title, url }) => (
+interface RedirectViewLoaderProps {
+    classes: object;
+    title: string;
+    url: string;
+}
+
+export const RedirectViewLoader = ({
+    classes,
+    title,
+    url
+}: RedirectViewLoaderProps) => (
     <div className={classes.loading}>
         <div>
             <h1 className={classes.typewriter}>{title}</h1>
@@ -76,24 +84,25 @@ export const RedirectViewLoader = ({ classes, title, url }) => (
     </div>
 );
 
-RedirectViewLoader.propTypes = {
-    classes: PropTypes.object.isRequired,
-    title: PropTypes.string.isRequired,
-    url: PropTypes.string.isRequired,
-};
+interface RedirectViewProps {
+    className?: string;
+    classes: object;
+    p: unknown;
+    field: unknown;
+    resource: object;
+}
 
 export const RedirectView = ({
-    // @ts-expect-error TS7031
     className,
-    // @ts-expect-error TS7031
+
     classes,
-    // @ts-expect-error TS7031
+
     p: polyglot,
-    // @ts-expect-error TS7031
+
     field,
-    // @ts-expect-error TS7031
-    resource,
-}) => {
+
+    resource
+}: RedirectViewProps) => {
     const url = resource[field.name];
 
     useEffect(() => {
@@ -117,14 +126,6 @@ export const RedirectView = ({
             />
         </div>
     );
-};
-
-RedirectView.propTypes = {
-    className: PropTypes.string,
-    classes: PropTypes.object.isRequired,
-    p: polyglotPropTypes.isRequired,
-    field: fieldPropTypes.isRequired,
-    resource: PropTypes.object.isRequired,
 };
 
 RedirectView.defaultProps = {

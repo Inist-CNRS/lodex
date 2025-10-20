@@ -1,6 +1,5 @@
 // @ts-expect-error TS6133
 import React from 'react';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import withHandlers from 'recompose/withHandlers';
@@ -9,16 +8,23 @@ import { Button } from '@mui/material';
 import { fromFields } from '../../sharedSelectors';
 import { useTranslate } from '../../i18n/I18NContext';
 
+interface ParsingExcerptAddColumnComponentProps {
+    atTop: boolean;
+    handleAddColumn(...args: unknown[]): unknown;
+    name: string;
+    style?: object;
+    isFieldsLoading?: boolean;
+}
+
 export const ParsingExcerptAddColumnComponent = ({
-    // @ts-expect-error TS7031
     handleAddColumn,
-    // @ts-expect-error TS7031
+
     name,
-    // @ts-expect-error TS7031
+
     atTop,
-    // @ts-expect-error TS7031
-    isFieldsLoading,
-}) => {
+
+    isFieldsLoading
+}: ParsingExcerptAddColumnComponentProps) => {
     const { translate } = useTranslate();
     return (
         <Button
@@ -44,14 +50,6 @@ export const ParsingExcerptAddColumnComponent = ({
             {translate('add_to_publication')}
         </Button>
     );
-};
-
-ParsingExcerptAddColumnComponent.propTypes = {
-    atTop: PropTypes.bool.isRequired,
-    handleAddColumn: PropTypes.func.isRequired,
-    name: PropTypes.string.isRequired,
-    style: PropTypes.object,
-    isFieldsLoading: PropTypes.bool,
 };
 
 ParsingExcerptAddColumnComponent.defaultProps = {

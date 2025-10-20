@@ -6,7 +6,7 @@ import { AnnotationHeader } from './AnnotationHeader';
 
 describe('AnnotationHeader', () => {
     it('should render header for home page if resourceUri is "/"', () => {
-        const wrapper = render(
+        const screen = render(
             <TestI18N>
                 <AnnotationHeader
                     annotation={{
@@ -33,14 +33,14 @@ describe('AnnotationHeader', () => {
         );
 
         expect(
-            wrapper.getByRole('heading', {
+            screen.getByRole('heading', {
                 name: 'annotation_header_comment annotation_home_page',
             }),
         ).toBeInTheDocument();
     });
 
     it('should render header for home page if resourceUri is null', () => {
-        const wrapper = render(
+        const screen = render(
             <TestI18N>
                 <AnnotationHeader
                     annotation={{
@@ -67,14 +67,14 @@ describe('AnnotationHeader', () => {
         );
 
         expect(
-            wrapper.getByRole('heading', {
+            screen.getByRole('heading', {
                 name: 'annotation_header_comment annotation_home_page',
             }),
         ).toBeInTheDocument();
     });
 
     it('should render header for graphic page if resourceUri is a graph URI', () => {
-        const wrapper = render(
+        const screen = render(
             <TestI18N>
                 <AnnotationHeader
                     annotation={{
@@ -96,20 +96,20 @@ describe('AnnotationHeader', () => {
         );
 
         expect(
-            wrapper.getByRole('heading', {
+            screen.getByRole('heading', {
                 name: 'annotation_header_comment annotation_graph_page',
             }),
         ).toBeInTheDocument();
 
         expect(
-            wrapper.getByRole('heading', {
+            screen.getByRole('heading', {
                 name: 'Annotated field',
             }),
         ).toBeInTheDocument();
     });
 
     it('should render header for graphic page if resourceUri is null', () => {
-        const wrapper = render(
+        const screen = render(
             <TestI18N>
                 <AnnotationHeader
                     annotation={{
@@ -131,20 +131,20 @@ describe('AnnotationHeader', () => {
         );
 
         expect(
-            wrapper.getByRole('heading', {
+            screen.getByRole('heading', {
                 name: 'annotation_header_comment annotation_graph_page',
             }),
         ).toBeInTheDocument();
 
         expect(
-            wrapper.getByRole('heading', {
+            screen.getByRole('heading', {
                 name: 'Annotated field',
             }),
         ).toBeInTheDocument();
     });
 
     it('should render header for resource page', () => {
-        const wrapper = render(
+        const screen = render(
             <TestI18N>
                 <AnnotationHeader
                     annotation={{
@@ -173,20 +173,20 @@ describe('AnnotationHeader', () => {
         );
 
         expect(
-            wrapper.getByRole('heading', {
+            screen.getByRole('heading', {
                 name: 'annotation_header_comment uid:/1234',
             }),
         ).toBeInTheDocument();
 
         expect(
-            wrapper.getByRole('heading', {
+            screen.getByRole('heading', {
                 name: 'The resource title',
             }),
         ).toBeInTheDocument();
     });
 
     it('should render title prefixed with comment when kind is comment', () => {
-        const wrapper = render(
+        const screen = render(
             <TestI18N>
                 <AnnotationHeader
                     annotation={{
@@ -215,14 +215,14 @@ describe('AnnotationHeader', () => {
         );
 
         expect(
-            wrapper.getByRole('heading', {
+            screen.getByRole('heading', {
                 name: 'annotation_header_comment uid:/1234',
             }),
         ).toBeInTheDocument();
     });
 
     it('should render title prefixed with removal when kind is removal', () => {
-        const wrapper = render(
+        const screen = render(
             <TestI18N>
                 <AnnotationHeader
                     annotation={{
@@ -251,14 +251,14 @@ describe('AnnotationHeader', () => {
         );
 
         expect(
-            wrapper.getByRole('heading', {
+            screen.getByRole('heading', {
                 name: 'annotation_header_removal uid:/1234',
             }),
         ).toBeInTheDocument();
     });
 
     it('should render header for deleted resource', () => {
-        const wrapper = render(
+        const screen = render(
             <TestI18N>
                 <AnnotationHeader
                     annotation={{
@@ -285,13 +285,13 @@ describe('AnnotationHeader', () => {
         );
 
         expect(
-            wrapper.getByRole('heading', {
+            screen.getByRole('heading', {
                 name: 'annotation_header_comment uid:/1234',
             }),
         ).toBeInTheDocument();
 
         expect(
-            wrapper.getByRole('heading', {
+            screen.getByRole('heading', {
                 name: 'annotation_resource_not_found',
             }),
         ).toBeInTheDocument();

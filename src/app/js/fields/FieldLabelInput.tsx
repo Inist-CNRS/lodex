@@ -1,6 +1,5 @@
 // @ts-expect-error TS6133
 import React from 'react';
-import PropTypes from 'prop-types';
 import get from 'lodash/get';
 
 import { useTranslate } from '../i18n/I18NContext';
@@ -23,11 +22,13 @@ export const uniqueField = (fields, polyglot) => (value, _, props) => {
         : undefined;
 };
 
-export const FieldLabelInputComponent = ({
-    disabled,
-}: {
+interface FieldLabelInputComponentProps {
     disabled?: boolean;
-}) => {
+}
+
+export const FieldLabelInputComponent = ({
+    disabled
+}: FieldLabelInputComponentProps) => {
     const { translate } = useTranslate();
 
     return (
@@ -38,10 +39,6 @@ export const FieldLabelInputComponent = ({
             disabled={disabled}
         />
     );
-};
-
-FieldLabelInputComponent.propTypes = {
-    disabled: PropTypes.bool,
 };
 
 FieldLabelInputComponent.defaultProps = {

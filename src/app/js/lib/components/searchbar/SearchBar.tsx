@@ -1,27 +1,33 @@
 import { Icon, IconButton, TextField } from '@mui/material';
-import PropTypes from 'prop-types';
 // @ts-expect-error TS6133
 import React, { useEffect, useRef } from 'react';
 import compose from 'recompose/compose';
 import { translate } from '../../../i18n/I18NContext';
 
 import { Clear as ClearIcon, Search as SearchIcon } from '@mui/icons-material';
-import { polyglot as polyglotPropTypes } from '../../../propTypes';
+
+interface SearchBarProps {
+    className: string;
+    p: any;
+    value: string;
+    onChange(...args: unknown[]): unknown;
+    onClear(...args: unknown[]): unknown;
+    maxWidth?: number;
+}
 
 const SearchBar = ({
-    // @ts-expect-error TS7031
     className,
-    // @ts-expect-error TS7031
+
     p: polyglot,
-    // @ts-expect-error TS7031
+
     value,
-    // @ts-expect-error TS7031
+
     onChange,
-    // @ts-expect-error TS7031
+
     onClear,
-    // @ts-expect-error TS7031
+
     maxWidth,
-}) => {
+}: SearchBarProps) => {
     const refTextField = useRef(null);
 
     useEffect(() => {
@@ -72,15 +78,6 @@ const SearchBar = ({
             }}
         />
     );
-};
-
-SearchBar.propTypes = {
-    className: PropTypes.string.isRequired,
-    p: polyglotPropTypes.isRequired,
-    value: PropTypes.string.isRequired,
-    onChange: PropTypes.func.isRequired,
-    onClear: PropTypes.func.isRequired,
-    maxWidth: PropTypes.number,
 };
 
 SearchBar.defaultProps = {

@@ -1,10 +1,18 @@
-import PropTypes from 'prop-types';
 import { useEffect } from 'react';
 import { withRouter } from 'react-router';
 
+interface ScrollToTopProps {
+    children?: React.ReactNode;
+    location: {
+        pathname?: string;
+    };
+}
+
 // @see https://reacttraining.com/react-router/web/guides/scroll-restoration/scroll-to-top
-// @ts-expect-error TS7031
-const ScrollToTop = ({ children, location: { pathname } }) => {
+const ScrollToTop = ({
+    children,
+    location: { pathname },
+}: ScrollToTopProps) => {
     useEffect(() => {
         window.scrollTo(0, 0);
     }, [pathname]);
@@ -12,12 +20,4 @@ const ScrollToTop = ({ children, location: { pathname } }) => {
     return children || null;
 };
 
-ScrollToTop.propTypes = {
-    children: PropTypes.node,
-    location: PropTypes.shape({
-        pathname: PropTypes.string,
-    }),
-};
-
-// @ts-expect-error TS2345
 export default withRouter(ScrollToTop);

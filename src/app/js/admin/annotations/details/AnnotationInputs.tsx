@@ -4,18 +4,20 @@ import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
-import PropTypes from 'prop-types';
 // @ts-expect-error TS6133
 import React from 'react';
 import { useStore } from '@tanstack/react-form';
 
 import { useTranslate } from '../../../i18n/I18NContext';
-import { AnnotationStatus } from '../AnnotationStatus';
+import { AnnotationStatusChip } from '../AnnotationStatus';
 import { FormHelperText } from '@mui/material';
 import { statuses } from '../../../../../common/validator/annotation.validator';
 
-// @ts-expect-error TS7031
-export function AnnotationInputs({ form }) {
+interface AnnotationInputsProps {
+    form: any;
+}
+
+export function AnnotationInputs({ form }: AnnotationInputsProps) {
     const { translate } = useTranslate();
     const isInternalCommentRequired = useStore(form.store, (state) => {
         // @ts-expect-error TS18046
@@ -47,7 +49,9 @@ export function AnnotationInputs({ form }) {
                             >
                                 {statuses.map((status) => (
                                     <MenuItem key={status} value={status}>
-                                        <AnnotationStatus status={status} />
+                                        {/* 
+                                        // @ts-expect-error TS2322 */}
+                                        <AnnotationStatusChip status={status} />
                                     </MenuItem>
                                 ))}
                             </Select>
@@ -129,7 +133,3 @@ export function AnnotationInputs({ form }) {
         </Stack>
     );
 }
-
-AnnotationInputs.propTypes = {
-    form: PropTypes.object.isRequired,
-};

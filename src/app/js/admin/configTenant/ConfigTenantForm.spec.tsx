@@ -1,8 +1,6 @@
-// @ts-expect-error TS6133
-import React from 'react';
 import { ConfigTenantFormView } from './ConfigTenantForm';
 import { TestI18N } from '../../i18n/I18NContext';
-import { fireEvent, render, waitFor } from '../../../../test-utils';
+import { render } from '../../../../test-utils';
 
 import configTenant from '../../../../../configTenant.json';
 
@@ -47,7 +45,7 @@ const availableThemes = [
 describe('ConfigTenantForm', () => {
     it('should render a form allowing to update config', async () => {
         const handleSave = jest.fn();
-        const wrapper = render(
+        const screen = render(
             <TestConfigTenantFormView
                 initialConfig={configTenant}
                 availableThemes={availableThemes}
@@ -57,61 +55,59 @@ describe('ConfigTenantForm', () => {
         );
 
         expect(
-            wrapper.getByLabelText('enableAutoPublication'),
+            screen.getByLabelText('enableAutoPublication'),
         ).toBeInTheDocument();
-        expect(wrapper.getByLabelText('enableAutoPublication')).toBeChecked();
+        expect(screen.getByLabelText('enableAutoPublication')).toBeChecked();
 
-        expect(wrapper.getByLabelText('user')).toBeInTheDocument();
-        expect(wrapper.getByLabelText('user')).toBeChecked();
-
-        expect(
-            wrapper.getAllByLabelText('Username', {}).at(0),
-        ).toBeInTheDocument();
-        expect(wrapper.getAllByLabelText('Username').at(0)).toHaveValue('user');
+        expect(screen.getByLabelText('user')).toBeInTheDocument();
+        expect(screen.getByLabelText('user')).toBeChecked();
 
         expect(
-            wrapper.getAllByLabelText('Password', {}).at(0),
+            screen.getAllByLabelText('Username', {}).at(0),
         ).toBeInTheDocument();
-        expect(wrapper.getAllByLabelText('Password').at(0)).toHaveValue(
+        expect(screen.getAllByLabelText('Username').at(0)).toHaveValue('user');
+
+        expect(
+            screen.getAllByLabelText('Password', {}).at(0),
+        ).toBeInTheDocument();
+        expect(screen.getAllByLabelText('Password').at(0)).toHaveValue(
             'secret',
         );
 
-        expect(wrapper.getByLabelText('contributor')).toBeInTheDocument();
-        expect(wrapper.getByLabelText('contributor')).not.toBeChecked();
+        expect(screen.getByLabelText('contributor')).toBeInTheDocument();
+        expect(screen.getByLabelText('contributor')).not.toBeChecked();
+
+        expect(screen.getByLabelText('notification_email')).toBeInTheDocument();
+        expect(screen.getByLabelText('notification_email')).toHaveValue('');
 
         expect(
-            wrapper.getByLabelText('notification_email'),
+            screen.getAllByLabelText('Username', {}).at(1),
         ).toBeInTheDocument();
-        expect(wrapper.getByLabelText('notification_email')).toHaveValue('');
-
-        expect(
-            wrapper.getAllByLabelText('Username', {}).at(1),
-        ).toBeInTheDocument();
-        expect(wrapper.getAllByLabelText('Username').at(1)).toHaveValue(
+        expect(screen.getAllByLabelText('Username').at(1)).toHaveValue(
             'contributor',
         );
 
         expect(
-            wrapper.getAllByLabelText('Password', {}).at(1),
+            screen.getAllByLabelText('Password', {}).at(1),
         ).toBeInTheDocument();
-        expect(wrapper.getAllByLabelText('Password').at(1)).toHaveValue(
+        expect(screen.getAllByLabelText('Password').at(1)).toHaveValue(
             'secret',
         );
 
-        expect(wrapper.getByLabelText('theme')).toBeInTheDocument();
-        expect(wrapper.getByLabelText('theme')).toHaveValue('default');
+        expect(screen.getByLabelText('theme')).toBeInTheDocument();
+        expect(screen.getByLabelText('theme')).toHaveValue('default');
 
         expect(
-            wrapper.getByLabelText('enrichment_batch_size'),
+            screen.getByLabelText('enrichment_batch_size'),
         ).toBeInTheDocument();
-        expect(wrapper.getByLabelText('enrichment_batch_size')).toHaveValue(10);
+        expect(screen.getByLabelText('enrichment_batch_size')).toHaveValue(10);
 
         // Cannot test AceEditor presence nor its value
 
-        expect(wrapper.getByText('save')).toBeInTheDocument();
+        expect(screen.getByText('save')).toBeInTheDocument();
 
-        await waitFor(() => {
-            fireEvent.click(wrapper.getByText('save'));
+        await screen.waitFor(() => {
+            screen.fireEvent.click(screen.getByText('save'));
         });
 
         expect(handleSave).toHaveBeenCalledTimes(1);
@@ -119,7 +115,7 @@ describe('ConfigTenantForm', () => {
     });
     it('should update front theme when changing theme', async () => {
         const handleSave = jest.fn();
-        const wrapper = render(
+        const screen = render(
             <TestConfigTenantFormView
                 initialConfig={configTenant}
                 availableThemes={availableThemes}
@@ -128,20 +124,20 @@ describe('ConfigTenantForm', () => {
             />,
         );
 
-        expect(wrapper.getByLabelText('theme')).toBeInTheDocument();
-        expect(wrapper.getByLabelText('theme')).toHaveValue('default');
+        expect(screen.getByLabelText('theme')).toBeInTheDocument();
+        expect(screen.getByLabelText('theme')).toHaveValue('default');
 
-        await waitFor(() => {
-            fireEvent.change(wrapper.getByLabelText('theme'), {
+        await screen.waitFor(() => {
+            screen.fireEvent.change(screen.getByLabelText('theme'), {
                 target: { value: 'nougat' },
             });
         });
-        expect(wrapper.getByLabelText('theme')).toHaveValue('nougat');
+        expect(screen.getByLabelText('theme')).toHaveValue('nougat');
 
-        expect(wrapper.getByText('save')).toBeInTheDocument();
+        expect(screen.getByText('save')).toBeInTheDocument();
 
-        await waitFor(() => {
-            fireEvent.click(wrapper.getByText('save'));
+        await screen.waitFor(() => {
+            screen.fireEvent.click(screen.getByText('save'));
         });
 
         expect(handleSave).toHaveBeenCalledTimes(1);
@@ -164,7 +160,7 @@ describe('ConfigTenantForm', () => {
         'should display "%s" when userAuth.active is %s and contributorAuth.active is %s',
         async (message, userAuthActive, contributorAuthActive) => {
             const handleSave = jest.fn();
-            const wrapper = render(
+            const screen = render(
                 <TestConfigTenantFormView
                     initialConfig={{
                         ...configTenant,
@@ -184,13 +180,13 @@ describe('ConfigTenantForm', () => {
                     handleSave={handleSave}
                 />,
             );
-            expect(wrapper.getByText(message)).toBeInTheDocument();
+            expect(screen.getByText(message)).toBeInTheDocument();
         },
     );
 
     it('should reject invalid notification email', async () => {
         const handleSave = jest.fn();
-        const wrapper = render(
+        const screen = render(
             <TestConfigTenantFormView
                 initialConfig={configTenant}
                 availableThemes={availableThemes}
@@ -199,24 +195,23 @@ describe('ConfigTenantForm', () => {
             />,
         );
 
-        await waitFor(() => {
-            fireEvent.change(
-                // @ts-expect-error TS2345
-                wrapper.getAllByLabelText('notification_email').at(0),
+        await screen.waitFor(() => {
+            screen.fireEvent.change(
+                screen.getAllByLabelText('notification_email').at(0),
                 {
                     target: { value: 'invalidEmail' },
                 },
             );
         });
         expect(
-            wrapper.getAllByLabelText('notification_email').at(0),
+            screen.getAllByLabelText('notification_email').at(0),
         ).toHaveValue('invalidEmail');
-        expect(wrapper.getByText('error_invalid_email')).toBeInTheDocument();
+        expect(screen.getByText('error_invalid_email')).toBeInTheDocument();
 
-        expect(wrapper.getByText('save')).toBeInTheDocument();
+        expect(screen.getByText('save')).toBeInTheDocument();
 
-        await waitFor(() => {
-            fireEvent.click(wrapper.getByText('save'));
+        await screen.waitFor(() => {
+            screen.fireEvent.click(screen.getByText('save'));
         });
 
         expect(handleSave).toHaveBeenCalledTimes(0);
@@ -224,7 +219,7 @@ describe('ConfigTenantForm', () => {
 
     it('should accept no notification email', async () => {
         const handleSave = jest.fn();
-        const wrapper = render(
+        const screen = render(
             <TestConfigTenantFormView
                 initialConfig={{
                     ...configTenant,
@@ -236,26 +231,25 @@ describe('ConfigTenantForm', () => {
             />,
         );
 
-        await waitFor(() => {
-            fireEvent.change(
-                // @ts-expect-error TS2345
-                wrapper.getAllByLabelText('notification_email').at(0),
+        await screen.waitFor(() => {
+            screen.fireEvent.change(
+                screen.getAllByLabelText('notification_email').at(0),
                 {
                     target: { value: '' },
                 },
             );
         });
         expect(
-            wrapper.getAllByLabelText('notification_email').at(0),
+            screen.getAllByLabelText('notification_email').at(0),
         ).toHaveValue('');
         expect(
-            wrapper.queryByText('error_invalid_email'),
+            screen.queryByText('error_invalid_email'),
         ).not.toBeInTheDocument();
 
-        expect(wrapper.queryByText('save')).toBeInTheDocument();
+        expect(screen.queryByText('save')).toBeInTheDocument();
 
-        await waitFor(() => {
-            fireEvent.click(wrapper.getByText('save'));
+        await screen.waitFor(() => {
+            screen.fireEvent.click(screen.getByText('save'));
         });
 
         expect(handleSave).toHaveBeenCalledTimes(1);
@@ -267,7 +261,7 @@ describe('ConfigTenantForm', () => {
 
     it('should reject null recaptchaClientKey and null recaptchaSecretKey when antispamFilter.active is true', async () => {
         const handleSave = jest.fn();
-        const wrapper = render(
+        const screen = render(
             <TestConfigTenantFormView
                 initialConfig={{
                     ...configTenant,
@@ -283,23 +277,23 @@ describe('ConfigTenantForm', () => {
             />,
         );
 
-        expect(wrapper.getByLabelText('antispam_filter')).toBeInTheDocument();
-        expect(wrapper.getByLabelText('antispam_filter')).toBeChecked();
+        expect(screen.getByLabelText('antispam_filter')).toBeInTheDocument();
+        expect(screen.getByLabelText('antispam_filter')).toBeChecked();
 
         expect(
-            wrapper.getByLabelText('recaptcha_client_key'),
+            screen.getByLabelText('recaptcha_client_key'),
         ).toBeInTheDocument();
-        expect(wrapper.getByLabelText('recaptcha_client_key')).toHaveValue('');
+        expect(screen.getByLabelText('recaptcha_client_key')).toHaveValue('');
 
         expect(
-            wrapper.getByLabelText('recaptcha_secret_key'),
+            screen.getByLabelText('recaptcha_secret_key'),
         ).toBeInTheDocument();
-        expect(wrapper.getByLabelText('recaptcha_secret_key')).toHaveValue('');
+        expect(screen.getByLabelText('recaptcha_secret_key')).toHaveValue('');
 
-        expect(wrapper.getByText('save')).toBeInTheDocument();
+        expect(screen.getByText('save')).toBeInTheDocument();
 
-        await waitFor(() => {
-            fireEvent.click(wrapper.getByText('save'));
+        await screen.waitFor(() => {
+            screen.fireEvent.click(screen.getByText('save'));
         });
 
         expect(handleSave).toHaveBeenCalledTimes(0);
@@ -307,7 +301,7 @@ describe('ConfigTenantForm', () => {
 
     it('should accept null recaptchaClientKey and null recaptchaSecretKey when antispamFilter.active is false', async () => {
         const handleSave = jest.fn();
-        const wrapper = render(
+        const screen = render(
             <TestConfigTenantFormView
                 initialConfig={{
                     ...configTenant,
@@ -323,23 +317,23 @@ describe('ConfigTenantForm', () => {
             />,
         );
 
-        expect(wrapper.getByLabelText('antispam_filter')).toBeInTheDocument();
-        expect(wrapper.getByLabelText('antispam_filter')).not.toBeChecked();
+        expect(screen.getByLabelText('antispam_filter')).toBeInTheDocument();
+        expect(screen.getByLabelText('antispam_filter')).not.toBeChecked();
 
         expect(
-            wrapper.getByLabelText('recaptcha_client_key'),
+            screen.getByLabelText('recaptcha_client_key'),
         ).toBeInTheDocument();
-        expect(wrapper.getByLabelText('recaptcha_client_key')).toHaveValue('');
+        expect(screen.getByLabelText('recaptcha_client_key')).toHaveValue('');
 
         expect(
-            wrapper.getByLabelText('recaptcha_secret_key'),
+            screen.getByLabelText('recaptcha_secret_key'),
         ).toBeInTheDocument();
-        expect(wrapper.getByLabelText('recaptcha_secret_key')).toHaveValue('');
+        expect(screen.getByLabelText('recaptcha_secret_key')).toHaveValue('');
 
-        expect(wrapper.getByText('save')).toBeInTheDocument();
+        expect(screen.getByText('save')).toBeInTheDocument();
 
-        await waitFor(() => {
-            fireEvent.click(wrapper.getByText('save'));
+        await screen.waitFor(() => {
+            screen.fireEvent.click(screen.getByText('save'));
         });
 
         expect(handleSave).toHaveBeenCalledTimes(1);
@@ -354,7 +348,7 @@ describe('ConfigTenantForm', () => {
     });
     it('should allow to update everything', async () => {
         const handleSave = jest.fn();
-        const wrapper = render(
+        const screen = render(
             <TestConfigTenantFormView
                 initialConfig={configTenant}
                 availableThemes={availableThemes}
@@ -364,97 +358,109 @@ describe('ConfigTenantForm', () => {
         );
 
         expect(
-            wrapper.getByLabelText('enableAutoPublication'),
+            screen.getByLabelText('enableAutoPublication'),
         ).toBeInTheDocument();
-        await waitFor(() => {
-            fireEvent.click(wrapper.getByLabelText('enableAutoPublication'));
+        await screen.waitFor(() => {
+            screen.fireEvent.click(
+                screen.getByLabelText('enableAutoPublication'),
+            );
         });
         expect(
-            wrapper.getByLabelText('enableAutoPublication'),
+            screen.getByLabelText('enableAutoPublication'),
         ).not.toBeChecked();
 
-        await waitFor(() => {
-            fireEvent.click(wrapper.getByLabelText('user'));
+        await screen.waitFor(() => {
+            screen.fireEvent.click(screen.getByLabelText('user'));
         });
-        expect(wrapper.getByLabelText('user')).not.toBeChecked();
+        expect(screen.getByLabelText('user')).not.toBeChecked();
 
-        await waitFor(() => {
-            // @ts-expect-error TS2345
-            fireEvent.change(wrapper.getAllByLabelText('Username').at(0), {
-                target: { value: 'newUser' },
-            });
+        await screen.waitFor(() => {
+            screen.fireEvent.change(
+                screen.getAllByLabelText('Username').at(0),
+                {
+                    target: { value: 'newUser' },
+                },
+            );
         });
-        expect(wrapper.getAllByLabelText('Username').at(0)).toHaveValue(
+        expect(screen.getAllByLabelText('Username').at(0)).toHaveValue(
             'newUser',
         );
 
-        await waitFor(() => {
-            // @ts-expect-error TS2345
-            fireEvent.change(wrapper.getAllByLabelText('Password').at(0), {
-                target: { value: 'userSecret' },
-            });
+        await screen.waitFor(() => {
+            screen.fireEvent.change(
+                screen.getAllByLabelText('Password').at(0),
+                {
+                    target: { value: 'userSecret' },
+                },
+            );
         });
-        expect(wrapper.getAllByLabelText('Password').at(0)).toHaveValue(
+        expect(screen.getAllByLabelText('Password').at(0)).toHaveValue(
             'userSecret',
         );
 
-        await waitFor(() => {
-            fireEvent.click(wrapper.getByLabelText('contributor'));
+        await screen.waitFor(() => {
+            screen.fireEvent.click(screen.getByLabelText('contributor'));
         });
-        expect(wrapper.getByLabelText('contributor')).toBeChecked();
+        expect(screen.getByLabelText('contributor')).toBeChecked();
 
-        await waitFor(() => {
-            // @ts-expect-error TS2345
-            fireEvent.change(wrapper.getAllByLabelText('Username').at(1), {
-                target: { value: 'newContributor' },
-            });
+        await screen.waitFor(() => {
+            screen.fireEvent.change(
+                screen.getAllByLabelText('Username').at(1),
+                {
+                    target: { value: 'newContributor' },
+                },
+            );
         });
-        expect(wrapper.getAllByLabelText('Username').at(1)).toHaveValue(
+        expect(screen.getAllByLabelText('Username').at(1)).toHaveValue(
             'newContributor',
         );
 
-        await waitFor(() => {
-            // @ts-expect-error TS2345
-            fireEvent.change(wrapper.getAllByLabelText('Password').at(1), {
-                target: { value: 'contributorSecret' },
-            });
+        await screen.waitFor(() => {
+            screen.fireEvent.change(
+                screen.getAllByLabelText('Password').at(1),
+                {
+                    target: { value: 'contributorSecret' },
+                },
+            );
         });
-        expect(wrapper.getAllByLabelText('Password').at(1)).toHaveValue(
+        expect(screen.getAllByLabelText('Password').at(1)).toHaveValue(
             'contributorSecret',
         );
 
-        await waitFor(() => {
-            fireEvent.change(
-                // @ts-expect-error TS2345
-                wrapper.getAllByLabelText('notification_email').at(0),
+        await screen.waitFor(() => {
+            screen.fireEvent.change(
+                screen.getAllByLabelText('notification_email').at(0),
                 {
                     target: { value: 'admin@inist.fr' },
                 },
             );
         });
         expect(
-            wrapper.getAllByLabelText('notification_email').at(0),
+            screen.getAllByLabelText('notification_email').at(0),
         ).toHaveValue('admin@inist.fr');
 
-        await waitFor(() => {
-            fireEvent.change(wrapper.getByLabelText('theme'), {
+        await screen.waitFor(() => {
+            screen.fireEvent.change(screen.getByLabelText('theme'), {
                 target: { value: 'nougat' },
             });
         });
-        expect(wrapper.getByLabelText('theme')).toHaveValue('nougat');
-        await waitFor(() => {
-            fireEvent.change(wrapper.getByLabelText('enrichment_batch_size'), {
-                target: { value: '20' },
-            });
+        expect(screen.getByLabelText('theme')).toHaveValue('nougat');
+        await screen.waitFor(() => {
+            screen.fireEvent.change(
+                screen.getByLabelText('enrichment_batch_size'),
+                {
+                    target: { value: '20' },
+                },
+            );
         });
-        expect(wrapper.getByLabelText('enrichment_batch_size')).toHaveValue(20);
+        expect(screen.getByLabelText('enrichment_batch_size')).toHaveValue(20);
 
         // Cannot test AceEditor presence nor its value
 
-        expect(wrapper.getByText('save')).toBeInTheDocument();
+        expect(screen.getByText('save')).toBeInTheDocument();
 
-        await waitFor(() => {
-            fireEvent.click(wrapper.getByText('save'));
+        await screen.waitFor(() => {
+            screen.fireEvent.click(screen.getByText('save'));
         });
 
         expect(handleSave).toHaveBeenCalledTimes(1);

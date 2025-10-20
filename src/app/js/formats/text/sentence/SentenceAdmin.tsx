@@ -1,6 +1,5 @@
 // @ts-expect-error TS6133
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { TextField } from '@mui/material';
 import { polyglot as polyglotPropTypes } from '../../../propTypes';
 import { FormatDefaultParamsFieldSet } from '../../utils/components/field-set/FormatFieldSets';
@@ -12,39 +11,34 @@ export const defaultArgs = {
     suffix: '',
 };
 
-class SentenceAdmin extends Component {
-    static propTypes = {
-        args: PropTypes.shape({
-            prefix: PropTypes.string,
-            suffix: PropTypes.string,
-        }),
-        onChange: PropTypes.func.isRequired,
-        p: polyglotPropTypes.isRequired,
+interface SentenceAdminProps {
+    args?: {
+        prefix?: string;
+        suffix?: string;
     };
+    onChange(...args: unknown[]): unknown;
+    p: unknown;
+}
 
+class SentenceAdmin extends Component<SentenceAdminProps> {
     static defaultProps = {
         args: defaultArgs,
     };
 
     // @ts-expect-error TS7006
     handlePrefix = (prefix) => {
-        // @ts-expect-error TS2339
         const newArgs = { ...this.props.args, prefix };
-        // @ts-expect-error TS2339
         this.props.onChange(newArgs);
     };
 
     // @ts-expect-error TS7006
     handleSuffix = (suffix) => {
-        // @ts-expect-error TS2339
         const newArgs = { ...this.props.args, suffix };
-        // @ts-expect-error TS2339
         this.props.onChange(newArgs);
     };
 
     render() {
         const {
-            // @ts-expect-error TS2339
             p: polyglot,
             // @ts-expect-error TS2339
             args: { prefix, suffix },

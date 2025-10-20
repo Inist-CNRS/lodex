@@ -1,32 +1,34 @@
-// @ts-expect-error TS6133
-import React from 'react';
+import { type ReactNode } from 'react';
 import { render } from '@testing-library/react';
-import PropTypes from 'prop-types';
 
 import composeRenderProps, { concat, neutral } from './composeRenderProps';
 
+interface DivProps {
+    children(props: Record<string, unknown>): ReactNode;
+}
+
+interface PProps {
+    name: string;
+    children(...args: unknown[]): unknown;
+}
+
+interface SpanProps {
+    name: string;
+}
+
 describe('composeRenderProps', () => {
+    const Div = ({ children, ...props }: DivProps) => (
+        <div>Div({children(props)})</div>
+    );
     // @ts-expect-error TS7031
-    const Div = ({ children, ...props }) => <div>Div({children(props)})</div>;
-    Div.propTypes = {
-        children: PropTypes.func.isRequired,
-    };
-    // @ts-expect-error TS7031
-    const P = ({ children, ...props }) => <p>P({children(props)})</p>;
-    P.propTypes = {
-        children: PropTypes.func.isRequired,
-    };
-    // @ts-expect-error TS7031
-    const Span = ({ name }) => <span>Span({name})</span>;
-    Span.propTypes = {
-        name: PropTypes.string.isRequired,
-    };
+    const P = ({ children, ...props }: PProps) => <p>P({children(props)})</p>;
+    const Span = ({ name }: SpanProps) => <span>Span({name})</span>;
     it('should compose renderProps', () => {
         const composedComponent = composeRenderProps([Div, P, Span])({
             name: 'nested',
         });
-        const wrapper = render(composedComponent);
-        expect(wrapper.container.textContent).toBe('Div(P(Span(nested)))');
+        const screen = render(composedComponent);
+        expect(screen.container.textContent).toBe('Div(P(Span(nested)))');
     });
 
     describe('concat', () => {

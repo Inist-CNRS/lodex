@@ -1,6 +1,5 @@
 // @ts-expect-error TS6133
 import React, { useContext } from 'react';
-import PropTypes from 'prop-types';
 import MenuList from '@mui/material/MenuList';
 import Drawer from '@mui/material/Drawer';
 import GridOnIcon from '@mui/icons-material/GridOn';
@@ -30,8 +29,15 @@ const DRAWER_CLOSED_WIDTH = 50;
 const DRAWER_OPEN_WIDTH = 205;
 const ACTIVE_BORDER_WIDTH = 3;
 
-// @ts-expect-error TS7031
-const Sidebar = ({ p: polyglot, hasPublishedDataset }) => {
+interface SidebarProps {
+    p: unknown;
+    hasPublishedDataset: boolean;
+}
+
+const Sidebar = ({
+    p: polyglot,
+    hasPublishedDataset
+}: SidebarProps) => {
     const matchDisplayRoute = useRouteMatch('/display');
     const matchConfigRoute = useRouteMatch('/config');
     const matchDataRoute = useRouteMatch('/data') || matchConfigRoute;
@@ -161,11 +167,6 @@ const Sidebar = ({ p: polyglot, hasPublishedDataset }) => {
             </Drawer>
         </>
     );
-};
-
-Sidebar.propTypes = {
-    p: polyglotPropTypes.isRequired,
-    hasPublishedDataset: PropTypes.bool.isRequired,
 };
 
 // @ts-expect-error TS7006

@@ -1,5 +1,4 @@
 import { polyglot as polyglotPropTypes } from '../../../propTypes';
-import PropTypes from 'prop-types';
 import { Box } from '@mui/material';
 import { lazy, Suspense } from 'react';
 import { translate, useTranslate } from '../../../i18n/I18NContext';
@@ -9,13 +8,16 @@ const SourceCodeField = lazy(
     () => import('../../../lib/components/SourceCodeField'),
 );
 
+interface EJSEditorProps {
+    p: unknown;
+    value: string;
+    onChange(...args: unknown[]): unknown;
+}
+
 const EJSEditor = ({
     value,
-    onChange,
-}: {
-    value: string;
-    onChange: (value: string) => void;
-}) => {
+    onChange
+}: EJSEditorProps) => {
     const { translate } = useTranslate();
 
     return (
@@ -36,12 +38,6 @@ const EJSEditor = ({
             </Suspense>
         </Box>
     );
-};
-
-EJSEditor.propTypes = {
-    p: polyglotPropTypes.isRequired,
-    value: PropTypes.string.isRequired,
-    onChange: PropTypes.func.isRequired,
 };
 
 export default translate(EJSEditor);

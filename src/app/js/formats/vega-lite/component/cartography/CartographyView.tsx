@@ -1,7 +1,6 @@
 // @ts-expect-error TS6133
 import React, { useMemo, useState } from 'react';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import { clamp } from 'lodash';
 import { schemeOrRd } from 'd3-scale-chromatic';
@@ -26,28 +25,43 @@ const styles = {
     },
 };
 
+interface CartographyViewProps {
+    field?: unknown;
+    resource?: object;
+    data?: {
+        values: any;
+    };
+    tooltip?: boolean;
+    tooltipCategory?: string;
+    tooltipValue?: string;
+    colorScheme?: string[];
+    worldPosition?: string;
+    advancedMode?: boolean;
+    advancedModeSpec?: string;
+    aspectRatio?: string;
+}
+
 const CartographyView = ({
-    // @ts-expect-error TS7031
     advancedMode,
-    // @ts-expect-error TS7031
+
     advancedModeSpec,
-    // @ts-expect-error TS7031
+
     field,
-    // @ts-expect-error TS7031
+
     data,
-    // @ts-expect-error TS7031
+
     tooltip,
-    // @ts-expect-error TS7031
+
     tooltipCategory,
-    // @ts-expect-error TS7031
+
     tooltipValue,
-    // @ts-expect-error TS7031
+
     worldPosition,
-    // @ts-expect-error TS7031
+
     colorScheme,
-    // @ts-expect-error TS7031
-    aspectRatio,
-}) => {
+
+    aspectRatio
+}: CartographyViewProps) => {
     const { ref, width } = useSizeObserver();
     const [error, setError] = useState('');
 
@@ -96,7 +110,7 @@ const CartographyView = ({
 
     return (
         // @ts-expect-error TS2322
-        <div style={styles.container} ref={ref}>
+        (<div style={styles.container} ref={ref}>
             <CustomActionVegaLite
                 // @ts-expect-error TS2322
                 spec={spec}
@@ -108,24 +122,8 @@ const CartographyView = ({
                 }
                 aspectRatio={aspectRatio}
             />
-        </div>
+        </div>)
     );
-};
-
-CartographyView.propTypes = {
-    field: fieldPropTypes,
-    resource: PropTypes.object,
-    data: PropTypes.shape({
-        values: PropTypes.any.isRequired,
-    }),
-    tooltip: PropTypes.bool,
-    tooltipCategory: PropTypes.string,
-    tooltipValue: PropTypes.string,
-    colorScheme: PropTypes.arrayOf(PropTypes.string),
-    worldPosition: PropTypes.string,
-    advancedMode: PropTypes.bool,
-    advancedModeSpec: PropTypes.string,
-    aspectRatio: PropTypes.string,
 };
 
 // @ts-expect-error TS7006

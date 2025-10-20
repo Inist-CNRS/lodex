@@ -5,24 +5,32 @@ import SaveIcon from '@mui/icons-material/Save';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { AUTHOR_STEP, COMMENT_STEP, TARGET_STEP, VALUE_STEP } from './steps';
 import { useTranslate } from '../i18n/I18NContext';
-import PropTypes from 'prop-types';
+
+interface NextButtonProps {
+    goToStep(...args: unknown[]): unknown;
+    currentStep: string;
+    isSubmitting: boolean;
+    disableSubmit: boolean;
+    isAuthorStepValid: boolean;
+    isValueStepValid: boolean;
+    isCommentStepValid: boolean;
+}
 
 export const NextButton = ({
-    // @ts-expect-error TS7031
     currentStep,
-    // @ts-expect-error TS7031
+
     disableSubmit,
-    // @ts-expect-error TS7031
+
     goToStep,
-    // @ts-expect-error TS7031
+
     isSubmitting,
-    // @ts-expect-error TS7031
+
     isValueStepValid,
-    // @ts-expect-error TS7031
+
     isCommentStepValid,
-    // @ts-expect-error TS7031
-    isAuthorStepValid,
-}) => {
+
+    isAuthorStepValid
+}: NextButtonProps) => {
     const { translate } = useTranslate();
     const handleNext = useCallback(
         (event) => {
@@ -89,14 +97,4 @@ export const NextButton = ({
             {translate('next')}
         </Button>
     );
-};
-
-NextButton.propTypes = {
-    goToStep: PropTypes.func.isRequired,
-    currentStep: PropTypes.string.isRequired,
-    isSubmitting: PropTypes.bool.isRequired,
-    disableSubmit: PropTypes.bool.isRequired,
-    isAuthorStepValid: PropTypes.bool.isRequired,
-    isValueStepValid: PropTypes.bool.isRequired,
-    isCommentStepValid: PropTypes.bool.isRequired,
 };

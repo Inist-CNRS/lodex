@@ -1,6 +1,5 @@
 // @ts-expect-error TS6133
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { translate } from '../../../i18n/I18NContext';
 
 import { polyglot as polyglotPropTypes } from '../../../propTypes';
@@ -12,15 +11,15 @@ export const defaultArgs = {
     PDFWidth: '100%',
 };
 
-class PDFAdmin extends Component {
-    static propTypes = {
-        args: PropTypes.shape({
-            PDFWidth: PropTypes.string,
-        }),
-        onChange: PropTypes.func.isRequired,
-        p: polyglotPropTypes.isRequired,
+interface PDFAdminProps {
+    args?: {
+        PDFWidth?: string;
     };
+    onChange(...args: unknown[]): unknown;
+    p: unknown;
+}
 
+class PDFAdmin extends Component<PDFAdminProps> {
     static defaultProps = {
         args: defaultArgs,
     };
@@ -28,17 +27,14 @@ class PDFAdmin extends Component {
     // @ts-expect-error TS7006
     handleWidth = (PDFWidth) => {
         const newArgs = {
-            // @ts-expect-error TS2339
             ...this.props.args,
             PDFWidth,
         };
-        // @ts-expect-error TS2339
         this.props.onChange(newArgs);
     };
 
     render() {
         const {
-            // @ts-expect-error TS2339
             p: polyglot,
             // @ts-expect-error TS2339
             args: { PDFWidth },

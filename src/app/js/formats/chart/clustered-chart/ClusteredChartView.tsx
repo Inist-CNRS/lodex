@@ -2,7 +2,6 @@
 import React, { useMemo } from 'react';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
 import _ from 'lodash';
 import { Grid, Paper } from '@mui/material';
 
@@ -11,6 +10,16 @@ import { field as fieldPropTypes } from '../../../propTypes';
 import ClusteredChart from './ClusteredChart';
 import { flip } from '../../utils/chartsUtils';
 import FormatFullScreenMode from '../../utils/components/FormatFullScreenMode';
+
+interface ClusteredChartViewProps {
+    field: unknown;
+    resource: object;
+    data?: any;
+    colors: string;
+    xTitle?: string;
+    yTitle?: string;
+    flipAxis?: boolean;
+}
 
 /**
  * Clustered chart view components use to render the chart with given parameters
@@ -21,8 +30,13 @@ import FormatFullScreenMode from '../../utils/components/FormatFullScreenMode';
  * @param flipAxis {boolean}
  * @returns {JSX.Element}
  */
-// @ts-expect-error TS7031
-const ClusteredChartView = ({ data, colors, xTitle, yTitle, flipAxis }) => {
+const ClusteredChartView = ({
+    data,
+    colors,
+    xTitle,
+    yTitle,
+    flipAxis
+}: ClusteredChartViewProps) => {
     const { values } = data;
 
     const topics = useMemo(() => {
@@ -85,16 +99,6 @@ const mapStateToProps = (state, { formatData }) => {
             values: formatData,
         },
     };
-};
-
-ClusteredChartView.propTypes = {
-    field: fieldPropTypes.isRequired,
-    resource: PropTypes.object.isRequired,
-    data: PropTypes.any,
-    colors: PropTypes.string.isRequired,
-    xTitle: PropTypes.string,
-    yTitle: PropTypes.string,
-    flipAxis: PropTypes.bool,
 };
 
 export default compose(

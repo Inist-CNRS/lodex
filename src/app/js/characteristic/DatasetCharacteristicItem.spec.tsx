@@ -46,12 +46,10 @@ describe('DatasetCharacteristicItem', () => {
         const property = wrapper.find(Property);
         expect(property).toHaveLength(1);
         const propertyProps = property.at(0).props();
-        // @ts-expect-error TS18046
         expect(propertyProps.field).toEqual({
             name: 'field1',
             scheme: 'scheme1',
         });
-        // @ts-expect-error TS18046
         expect(propertyProps.resource).toEqual({
             field1: 'value1',
             field2: 'value2',

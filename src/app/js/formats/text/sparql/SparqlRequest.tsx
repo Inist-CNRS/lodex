@@ -1,6 +1,5 @@
 // @ts-expect-error TS6133
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { translate } from '../../../i18n/I18NContext';
 import compose from 'recompose/compose';
@@ -62,25 +61,24 @@ const getCreateUrl = (url) => {
     return ({ field, resource }) => resource[field.name];
 };
 
+interface SparqlRequestProps {
+    field: unknown;
+    resource: object;
+    loadFormatData(...args: unknown[]): unknown;
+    formatData?: any;
+    isLoaded: boolean;
+    error?: object;
+    p: unknown;
+    sparql?: object;
+    onChange(...args: unknown[]): unknown;
+}
+
 // @ts-expect-error TS7006
 export default (url) => (FormatView) => {
     const createUrl = getCreateUrl(url);
 
-    class SparqlRequest extends Component {
-        static propTypes = {
-            field: fieldPropTypes.isRequired,
-            resource: PropTypes.object.isRequired,
-            loadFormatData: PropTypes.func.isRequired,
-            formatData: PropTypes.any,
-            isLoaded: PropTypes.bool.isRequired,
-            error: PropTypes.object,
-            p: polyglotPropTypes.isRequired,
-            sparql: PropTypes.object,
-            onChange: PropTypes.func.isRequired,
-        };
-
+    class SparqlRequest extends Component<SparqlRequestProps> {
         loadFormatData = () => {
-            // @ts-expect-error TS2339
             const { field, loadFormatData } = this.props;
             const value = createUrl(this.props);
             if (!value) {
@@ -91,7 +89,6 @@ export default (url) => (FormatView) => {
         };
 
         componentDidMount() {
-            // @ts-expect-error TS2339
             const { field } = this.props;
             if (!field) {
                 return;
@@ -101,7 +98,6 @@ export default (url) => (FormatView) => {
 
         // @ts-expect-error TS7006
         filterFormatData = (filter) => {
-            // @ts-expect-error TS2339
             const { field, loadFormatData } = this.props;
             loadFormatData({
                 field,
@@ -111,7 +107,6 @@ export default (url) => (FormatView) => {
         };
 
         redirectIfUrl = () => {
-            // @ts-expect-error TS2339
             const { resource, field } = this.props;
             const requestText = resource[field.name];
 
@@ -121,23 +116,21 @@ export default (url) => (FormatView) => {
         };
 
         ifUrl = () => {
-            // @ts-expect-error TS2339
             const { resource, field } = this.props;
             const requestText = resource[field.name];
 
             if (isURL(requestText)) {
                 return (
                     // @ts-expect-error TS2739
-                    <Link href={requestText} style={styles.link}>
+                    (<Link href={requestText} style={styles.link}>
                         {requestText}
-                    </Link>
+                    </Link>)
                 );
             }
             return <span> {requestText} </span>;
         };
 
         getHeaderFormat = () => {
-            // @ts-expect-error TS2339
             const { resource, field, sparql } = this.props;
             const requestText = resource[field.name];
             const endpoint = sparql.endpoint.substring(
@@ -171,7 +164,6 @@ export default (url) => (FormatView) => {
         };
 
         loadButton2ReloadInHttp = () => {
-            // @ts-expect-error TS2339
             const { p: polyglot } = this.props;
             const source = URL.parse(window.location.href);
             if (source.protocol == 'http:') {
@@ -198,17 +190,11 @@ export default (url) => (FormatView) => {
 
         render() {
             const {
-                // @ts-expect-error TS2339
                 loadFormatData,
-                // @ts-expect-error TS2339
                 formatData,
-                // @ts-expect-error TS2339
                 p: polyglot,
-                // @ts-expect-error TS2339
                 field,
-                // @ts-expect-error TS2339
                 isLoaded,
-                // @ts-expect-error TS2339
                 error,
                 ...props
             } = this.props;

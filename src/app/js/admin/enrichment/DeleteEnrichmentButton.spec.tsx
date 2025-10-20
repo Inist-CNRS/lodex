@@ -12,7 +12,6 @@ jest.mock('../api/enrichment', () => ({
 describe('DeleteEnrichmentButton', () => {
     it('should render a Delete button with closed dialog', () => {
         const wrapper = shallow(
-            // @ts-expect-error TS2769
             <DeleteEnrichmentButton
                 disabled={false}
                 history={{ push: jest.fn() }}
@@ -31,7 +30,6 @@ describe('DeleteEnrichmentButton', () => {
     });
     it('should open dialog when clicking on delete button', () => {
         const wrapper = shallow(
-            // @ts-expect-error TS2769
             <DeleteEnrichmentButton
                 disabled={false}
                 history={{ push: jest.fn() }}
@@ -56,7 +54,6 @@ describe('DeleteEnrichmentButton', () => {
         const historyPush = jest.fn();
 
         const wrapper = shallow(
-            // @ts-expect-error TS2769
             <DeleteEnrichmentButton
                 disabled={false}
                 history={{ push: historyPush }}
@@ -91,7 +88,6 @@ describe('DeleteEnrichmentButton', () => {
         const historyPush = jest.fn();
 
         const wrapper = shallow(
-            // @ts-expect-error TS2769
             <DeleteEnrichmentButton
                 disabled={false}
                 history={{ push: historyPush }}

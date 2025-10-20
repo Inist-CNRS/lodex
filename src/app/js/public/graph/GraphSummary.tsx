@@ -1,11 +1,7 @@
-// @ts-expect-error TS6133
-import React from 'react';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
 
 import { fromFields } from '../../sharedSelectors';
-import { field as fieldPropTypes } from '../../propTypes';
 import { getIconComponent } from '../../formats';
 import MixedChartIcon from './MixedChartIcon';
 import Link from '../../lib/components/Link';
@@ -85,18 +81,23 @@ const styles = stylesToClassname(
     'graph-summary',
 );
 
+type PureGraphSummaryProps = {
+    graphicFields: {
+        name: string;
+        language?: string;
+    }[];
+    closeDrawer(): void;
+    isMultilingual: boolean;
+    locale: string;
+};
+
 const PureGraphSummary = ({
-    // @ts-expect-error TS7031
     graphicFields,
-    // @ts-expect-error TS7031
     closeDrawer,
-    // @ts-expect-error TS7031
     isMultilingual,
-    // @ts-expect-error TS7031
     locale,
-}) => {
+}: PureGraphSummaryProps) => {
     const filteredGraphs = graphicFields.filter(
-        // @ts-expect-error TS7006
         (graph) =>
             !isMultilingual || !graph.language || graph.language === locale,
     );
@@ -106,12 +107,9 @@ const PureGraphSummary = ({
             {/*
              // @ts-expect-error TS2339 */}
             <div className={classnames('graph-summary', styles.links)}>
-                {/*
-                 // @ts-expect-error TS7006 */}
                 {filteredGraphs.map((field) => {
                     const Icon = getIconComponent(field);
                     return (
-                        // @ts-expect-error TS2741
                         <Link
                             routeAware
                             key={field.name}
@@ -146,13 +144,6 @@ const PureGraphSummary = ({
             </div>
         </div>
     );
-};
-
-PureGraphSummary.propTypes = {
-    graphicFields: PropTypes.arrayOf(fieldPropTypes).isRequired,
-    closeDrawer: PropTypes.func.isRequired,
-    isMultilingual: PropTypes.bool.isRequired,
-    locale: PropTypes.string.isRequired,
 };
 
 // @ts-expect-error TS7006

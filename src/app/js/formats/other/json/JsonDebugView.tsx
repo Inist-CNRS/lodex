@@ -2,7 +2,6 @@
 import React, { lazy, Suspense, useMemo } from 'react';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
 
 import { field as fieldPropTypes } from '../../../propTypes';
 import injectData from '../../injectData';
@@ -11,8 +10,15 @@ import { useTranslate } from '../../../i18n/I18NContext';
 
 const ReactJson = lazy(() => import('react-json-view'));
 
-// @ts-expect-error TS7006
-const JsonDebugView = (props) => {
+interface JsonDebugViewProps {
+    field: unknown;
+    resource: object;
+    data?: any;
+    params: any;
+    debugMode: boolean;
+}
+
+const JsonDebugView = (props: JsonDebugViewProps) => {
     const { debugMode } = props;
 
     const { translate } = useTranslate();
@@ -50,14 +56,6 @@ const mapStateToProps = (state, { formatData }) => {
             values: formatData,
         },
     };
-};
-
-JsonDebugView.propTypes = {
-    field: fieldPropTypes.isRequired,
-    resource: PropTypes.object.isRequired,
-    data: PropTypes.any,
-    params: PropTypes.any.isRequired,
-    debugMode: PropTypes.bool.isRequired,
 };
 
 export default compose(injectData(), connect(mapStateToProps))(JsonDebugView);

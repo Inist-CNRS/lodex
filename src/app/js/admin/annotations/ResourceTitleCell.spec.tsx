@@ -6,7 +6,7 @@ import { ResourceTitleCell } from './ResourceTitleCell';
 
 describe('ResourceTitleCell', () => {
     it('should render be empty when resourceUri is null', () => {
-        const wrapper = render(
+        const screen = render(
             <TestI18N>
                 <ResourceTitleCell
                     row={{
@@ -17,11 +17,11 @@ describe('ResourceTitleCell', () => {
             </TestI18N>,
         );
 
-        expect(wrapper.container).toBeEmptyDOMElement();
+        expect(screen.container).toBeEmptyDOMElement();
     });
 
     it('should render be empty when field scope is graphic', () => {
-        const wrapper = render(
+        const screen = render(
             <TestI18N>
                 <ResourceTitleCell
                     row={{
@@ -36,11 +36,11 @@ describe('ResourceTitleCell', () => {
             </TestI18N>,
         );
 
-        expect(wrapper.container).toBeEmptyDOMElement();
+        expect(screen.container).toBeEmptyDOMElement();
     });
 
     it('should render annotation_resource_not_found message when resource is null', () => {
-        const wrapper = render(
+        const screen = render(
             <TestI18N>
                 <ResourceTitleCell
                     row={{
@@ -52,12 +52,12 @@ describe('ResourceTitleCell', () => {
         );
 
         expect(
-            wrapper.queryByText('annotation_resource_not_found'),
+            screen.queryByText('annotation_resource_not_found'),
         ).toBeInTheDocument();
     });
 
     it('should render the resource title', () => {
-        const wrapper = render(
+        const screen = render(
             <TestI18N>
                 <ResourceTitleCell
                     row={{
@@ -73,9 +73,9 @@ describe('ResourceTitleCell', () => {
         );
 
         expect(
-            wrapper.queryByText('annotation_resource_not_found'),
+            screen.queryByText('annotation_resource_not_found'),
         ).not.toBeInTheDocument();
 
-        expect(wrapper.queryByText('The resource title')).toBeInTheDocument();
+        expect(screen.queryByText('The resource title')).toBeInTheDocument();
     });
 });

@@ -2,12 +2,20 @@ import { ASPECT_RATIO_NONE, ASPECT_RATIOS } from '../../aspectRatio';
 import { MenuItem, TextField } from '@mui/material';
 // @ts-expect-error TS6133
 import React, { useMemo, useState } from 'react';
-import PropTypes from 'prop-types';
 import { polyglot as polyglotPropTypes } from '../../../../propTypes';
 import { translate } from '../../../../i18n/I18NContext';
 
-// @ts-expect-error TS7031
-const AspectRatioSelector = ({ value, onChange, p }) => {
+interface AspectRatioSelectorProps {
+    value: string;
+    onChange(...args: unknown[]): unknown;
+    p: unknown;
+}
+
+const AspectRatioSelector = ({
+    value,
+    onChange,
+    p
+}: AspectRatioSelectorProps) => {
     const [aspectRatio, setAspectRatio] = useState(value);
 
     const aspectRatios = useMemo(() => {
@@ -46,12 +54,6 @@ const AspectRatioSelector = ({ value, onChange, p }) => {
             ))}
         </TextField>
     );
-};
-
-AspectRatioSelector.propTypes = {
-    value: PropTypes.string.isRequired,
-    onChange: PropTypes.func.isRequired,
-    p: polyglotPropTypes.isRequired,
 };
 
 export default translate(AspectRatioSelector);

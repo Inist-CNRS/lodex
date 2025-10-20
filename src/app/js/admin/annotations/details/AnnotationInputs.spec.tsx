@@ -1,5 +1,4 @@
 import { useForm } from '@tanstack/react-form';
-import PropTypes from 'prop-types';
 // @ts-expect-error TS6133
 import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
@@ -12,8 +11,11 @@ jest.mock('../hooks/useUpdateAnnotation', () => ({
     useUpdateAnnotation: jest.fn(),
 }));
 
-// @ts-expect-error TS7031
-const TestForm = ({ annotation }) => {
+interface TestFormProps {
+    annotation?: object;
+}
+
+const TestForm = ({ annotation }: TestFormProps) => {
     const form = useForm({
         defaultValues: {
             status: annotation.status,
@@ -30,10 +32,6 @@ const TestForm = ({ annotation }) => {
     );
 };
 
-TestForm.propTypes = {
-    annotation: PropTypes.object,
-};
-
 describe('AnnotationInputs', () => {
     it('should render form for status, internalComment, adminComment and administrator', () => {
         const handleUpdateAnnotation = jest.fn();
@@ -41,7 +39,7 @@ describe('AnnotationInputs', () => {
             handleUpdateAnnotation,
             isSubmitting: false,
         }));
-        const wrapper = render(
+        const screen = render(
             <TestI18N>
                 <MemoryRouter>
                     <TestForm
@@ -57,34 +55,30 @@ describe('AnnotationInputs', () => {
             </TestI18N>,
         );
 
-        const inputsRegion = wrapper.getByRole('group', {
+        const inputsRegion = screen.getByRole('group', {
             name: 'annotation_form_title',
         });
         expect(inputsRegion).toBeInTheDocument();
         expect(
-            wrapper.queryByLabelText('annotation_status', {
-                // @ts-expect-error TS2353
+            screen.queryByLabelText('annotation_status', {
                 container: inputsRegion,
             }),
         ).toHaveTextContent('annotation_status_to_review');
         expect(
-            wrapper.getByRole('textbox', {
+            screen.getByRole('textbox', {
                 name: 'annotation_internal_comment',
-                // @ts-expect-error TS2353
                 container: inputsRegion,
             }),
         ).toHaveValue('Internal test comment');
         expect(
-            wrapper.getByRole('textbox', {
+            screen.getByRole('textbox', {
                 name: 'annotation_admin_comment',
-                // @ts-expect-error TS2353
                 container: inputsRegion,
             }),
         ).toHaveValue('Admin comment visible to contributors');
         expect(
-            wrapper.getByRole('textbox', {
+            screen.getByRole('textbox', {
                 name: 'annotation_administrator',
-                // @ts-expect-error TS2353
                 container: inputsRegion,
             }),
         ).toHaveValue('Admin');
@@ -103,7 +97,7 @@ describe('AnnotationInputs', () => {
                 handleUpdateAnnotation,
                 isSubmitting: false,
             }));
-            const wrapper = render(
+            const screen = render(
                 <TestI18N>
                     <MemoryRouter>
                         <TestForm
@@ -119,23 +113,21 @@ describe('AnnotationInputs', () => {
                 </TestI18N>,
             );
 
-            const inputsRegion = wrapper.getByRole('group', {
+            const inputsRegion = screen.getByRole('group', {
                 name: 'annotation_form_title',
             });
 
             if (required) {
                 expect(
-                    wrapper.getByRole('textbox', {
+                    screen.getByRole('textbox', {
                         name: 'annotation_internal_comment',
-                        // @ts-expect-error TS2353
                         container: inputsRegion,
                     }),
                 ).toHaveAttribute('required');
             } else {
                 expect(
-                    wrapper.getByRole('textbox', {
+                    screen.getByRole('textbox', {
                         name: 'annotation_internal_comment',
-                        // @ts-expect-error TS2353
                         container: inputsRegion,
                     }),
                 ).not.toHaveAttribute('required');

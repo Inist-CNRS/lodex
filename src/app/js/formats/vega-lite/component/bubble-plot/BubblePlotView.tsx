@@ -3,7 +3,6 @@ import React, { useMemo, useState } from 'react';
 import { connect } from 'react-redux';
 import { clamp } from 'lodash';
 import compose from 'recompose/compose';
-import PropTypes from 'prop-types';
 
 import { field as fieldPropTypes } from '../../../../propTypes';
 import { CustomActionVegaLite } from '../../../utils/components/vega-lite-component';
@@ -24,32 +23,49 @@ const styles = {
     },
 };
 
+interface BubblePlotViewProps {
+    field?: unknown;
+    resource?: object;
+    data?: {
+        values: any;
+    };
+    params?: any;
+    colors?: string;
+    flipAxis?: boolean;
+    tooltip?: boolean;
+    tooltipSource?: string;
+    tooltipTarget?: string;
+    tooltipWeight?: string;
+    advancedMode?: boolean;
+    advancedModeSpec?: string;
+    aspectRatio?: string;
+}
+
 const BubblePlotView = ({
-    // @ts-expect-error TS7031
     advancedMode,
-    // @ts-expect-error TS7031
+
     advancedModeSpec,
-    // @ts-expect-error TS7031
+
     field,
-    // @ts-expect-error TS7031
+
     data,
-    // @ts-expect-error TS7031
+
     colors,
-    // @ts-expect-error TS7031
+
     params,
-    // @ts-expect-error TS7031
+
     flipAxis,
-    // @ts-expect-error TS7031
+
     tooltip,
-    // @ts-expect-error TS7031
+
     tooltipSource,
-    // @ts-expect-error TS7031
+
     tooltipTarget,
-    // @ts-expect-error TS7031
+
     tooltipWeight,
-    // @ts-expect-error TS7031
-    aspectRatio,
-}) => {
+
+    aspectRatio
+}: BubblePlotViewProps) => {
     const { ref, width } = useSizeObserver();
     const [error, setError] = useState('');
 
@@ -100,7 +116,7 @@ const BubblePlotView = ({
 
     return (
         // @ts-expect-error TS2322
-        <div style={styles.container} ref={ref}>
+        (<div style={styles.container} ref={ref}>
             <CustomActionVegaLite
                 // @ts-expect-error TS2322
                 spec={spec}
@@ -108,26 +124,8 @@ const BubblePlotView = ({
                 injectType={VEGA_LITE_DATA_INJECT_TYPE_A}
                 aspectRatio={aspectRatio}
             />
-        </div>
+        </div>)
     );
-};
-
-BubblePlotView.propTypes = {
-    field: fieldPropTypes,
-    resource: PropTypes.object,
-    data: PropTypes.shape({
-        values: PropTypes.any.isRequired,
-    }),
-    params: PropTypes.any,
-    colors: PropTypes.string,
-    flipAxis: PropTypes.bool,
-    tooltip: PropTypes.bool,
-    tooltipSource: PropTypes.string,
-    tooltipTarget: PropTypes.string,
-    tooltipWeight: PropTypes.string,
-    advancedMode: PropTypes.bool,
-    advancedModeSpec: PropTypes.string,
-    aspectRatio: PropTypes.string,
 };
 
 BubblePlotView.defaultProps = {

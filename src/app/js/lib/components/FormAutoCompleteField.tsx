@@ -63,8 +63,6 @@ const FormAutoCompleteField = ({
     );
 };
 
-FormAutoCompleteField.propTypes = formFieldPropTypes;
-
 // @ts-expect-error TS7031
 const mapStateToProps = ({ fetch }, { input: { name }, parseResponse }) => ({
     dataSource: parseResponse(fetch[name] && fetch[name].response),

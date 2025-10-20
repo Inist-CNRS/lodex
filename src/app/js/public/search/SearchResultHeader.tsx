@@ -1,12 +1,16 @@
 import { Box } from '@mui/material';
-// @ts-expect-error TS6133
-import React from 'react';
 import SearchStats from './SearchStats';
-import PropTypes from 'prop-types';
 import ExportButton from '../ExportButton';
 
-// @ts-expect-error TS7031
-const SearchResultHeader = ({ displayStats, sortComponent }) => {
+type SearchResultHeaderProps = {
+    displayStats?: boolean;
+    sortComponent?: React.ReactNode;
+};
+
+const SearchResultHeader = ({
+    displayStats,
+    sortComponent,
+}: SearchResultHeaderProps) => {
     return (
         <Box
             display="flex"
@@ -49,11 +53,6 @@ const SearchResultHeader = ({ displayStats, sortComponent }) => {
             </Box>
         </Box>
     );
-};
-
-SearchResultHeader.propTypes = {
-    displayStats: PropTypes.bool,
-    sortComponent: PropTypes.node,
 };
 
 export default SearchResultHeader;

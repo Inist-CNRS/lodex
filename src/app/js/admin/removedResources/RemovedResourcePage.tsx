@@ -10,8 +10,13 @@ import ExportButton from './ExportButton';
 import ImportButton from './ImportButton';
 import { translate } from '../../i18n/I18NContext';
 
-// @ts-expect-error TS7031
-export const RemovedResourcePageComponent = ({ p: polyglot }) => {
+interface RemovedResourcePageComponentProps {
+    p: unknown;
+}
+
+export const RemovedResourcePageComponent = ({
+    p: polyglot
+}: RemovedResourcePageComponentProps) => {
     return (
         <Card>
             <CardHeader
@@ -27,10 +32,6 @@ export const RemovedResourcePageComponent = ({ p: polyglot }) => {
             <RemovedResourceList />
         </Card>
     );
-};
-
-RemovedResourcePageComponent.propTypes = {
-    p: polyglotPropTypes.isRequired,
 };
 
 export default compose(

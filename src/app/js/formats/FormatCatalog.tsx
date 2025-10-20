@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
-import { polyglot as polyglotPropTypes } from '../propTypes';
 import FilterIcon from '@mui/icons-material/FilterList';
 import {
     List,
@@ -18,16 +16,25 @@ import {
 } from '@mui/material';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 import CancelButton from '../lib/components/CancelButton';
-import { translate } from '../i18n/I18NContext';
+import { useTranslate } from '../i18n/I18NContext';
 
-// @ts-expect-error TS7031
-const FormatCatalogDescription = ({ format, polyglot }) => {
+interface FormatCatalogDescriptionProps {
+    format: {
+        description: string;
+        docUrl?: string;
+    };
+}
+
+const FormatCatalogDescription = ({
+    format,
+}: FormatCatalogDescriptionProps) => {
+    const { translate } = useTranslate();
     return (
         <React.Fragment>
-            <Typography>{polyglot.t(`${format.description}`)}</Typography>
+            <Typography>{translate(`${format.description}`)}</Typography>
             <Box justifyContent="flex-end" display="flex" mt={2}>
                 {format.docUrl && (
-                    <Tooltip title={polyglot.t(`tooltip_documentation`)}>
+                    <Tooltip title={translate(`tooltip_documentation`)}>
                         <Link
                             href={format.docUrl}
                             target="_blank"
@@ -43,23 +50,32 @@ const FormatCatalogDescription = ({ format, polyglot }) => {
     );
 };
 
+export type FormatProps = {
+    name: string;
+    componentName: string;
+    type: string;
+    description: string;
+    docUrl?: string;
+};
+
+interface FormatCatalogProps {
+    formats: FormatProps[];
+    isOpen: boolean;
+    handleClose(...args: unknown[]): unknown;
+    onChange(...args: unknown[]): unknown;
+    currentValue?: string;
+}
+
 export const FormatCatalog = ({
-    // @ts-expect-error TS7031
-    p: polyglot,
-    // @ts-expect-error TS7031
     formats,
-    // @ts-expect-error TS7031
     isOpen,
-    // @ts-expect-error TS7031
     handleClose,
-    // @ts-expect-error TS7031
     onChange,
-    // @ts-expect-error TS7031
     currentValue,
-}) => {
-    // @ts-expect-error TS7006
+}: FormatCatalogProps) => {
+    const { translate } = useTranslate();
     const filters = [...new Set(formats.map((item) => item.type))].sort(
-        (x, y) => polyglot.t(x).localeCompare(polyglot.t(y)),
+        (x, y) => translate(x).localeCompare(translate(y)),
     );
     filters.unshift('all');
     filters.push(filters.splice(filters.indexOf('other'), 1)[0]);
@@ -70,8 +86,7 @@ export const FormatCatalog = ({
     useEffect(() => {
         setFilterFormats(
             selectedFilter && selectedFilter !== 'all'
-                ? // @ts-expect-error TS7006
-                  formats.filter((item) => item.type === selectedFilter)
+                ? formats.filter((item) => item.type === selectedFilter)
                 : formats,
         );
     }, [selectedFilter]);
@@ -107,12 +122,10 @@ export const FormatCatalog = ({
                         <FilterIcon fontSize="large" sx={{ marginRight: 10 }} />
                     </Box>
                     {filters.map((filter) => (
-                        // @ts-expect-error TS2769
                         <Box key={filter}>
                             <Button
                                 color="primary"
                                 className="format-category"
-                                // @ts-expect-error TS2345
                                 onClick={() => setSelectedFilter(filter)}
                                 variant={
                                     filter === selectedFilter
@@ -120,7 +133,7 @@ export const FormatCatalog = ({
                                         : 'outlined'
                                 }
                             >
-                                {polyglot.t(filter)}
+                                {translate(filter)}
                             </Button>
                         </Box>
                     ))}
@@ -130,8 +143,6 @@ export const FormatCatalog = ({
                     aria-label="format list"
                     style={{ height: '70vh' }}
                 >
-                    {/*
-                     // @ts-expect-error TS7006 */}
                     {filteredFormats.map((format) => (
                         <ListItem
                             key={format.name}
@@ -163,14 +174,11 @@ export const FormatCatalog = ({
                                 disableTypography
                                 primary={
                                     <Typography sx={{ fontWeight: 'bold' }}>
-                                        {polyglot.t(format.name)}
+                                        {translate(format.name)}
                                     </Typography>
                                 }
                                 secondary={
-                                    <FormatCatalogDescription
-                                        format={format}
-                                        polyglot={polyglot}
-                                    />
+                                    <FormatCatalogDescription format={format} />
                                 }
                             />
                         </ListItem>
@@ -179,28 +187,11 @@ export const FormatCatalog = ({
             </DialogContent>
             <DialogActions>
                 <CancelButton variant="text" onClick={handleClose}>
-                    {polyglot.t('cancel')}
+                    {translate('cancel')}
                 </CancelButton>
             </DialogActions>
         </Dialog>
     );
 };
 
-FormatCatalogDescription.propTypes = {
-    format: PropTypes.shape({
-        description: PropTypes.string.isRequired,
-        docUrl: PropTypes.string,
-    }).isRequired,
-    polyglot: polyglotPropTypes.isRequired,
-};
-
-FormatCatalog.propTypes = {
-    formats: PropTypes.arrayOf(PropTypes.object).isRequired,
-    isOpen: PropTypes.bool.isRequired,
-    handleClose: PropTypes.func.isRequired,
-    p: polyglotPropTypes.isRequired,
-    onChange: PropTypes.func.isRequired,
-    currentValue: PropTypes.string,
-};
-
-export default translate(FormatCatalog);
+export default FormatCatalog;

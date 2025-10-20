@@ -11,7 +11,7 @@ jest.mock('../api/dataset', () => ({
 
 describe('<ParsingResult />', () => {
     it('should render the DataGrid', () => {
-        const wrapper = render(
+        const screen = render(
             <MemoryRouter initialEntries={['/data/existing']} initialIndex={0}>
                 <Route
                     exact
@@ -27,7 +27,7 @@ describe('<ParsingResult />', () => {
                 />
             </MemoryRouter>,
         );
-        const dataGrid = wrapper.getByRole('grid');
+        const dataGrid = screen.getByRole('grid');
         expect(dataGrid).toBeInTheDocument();
     });
 });

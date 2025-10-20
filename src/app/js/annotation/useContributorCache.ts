@@ -21,6 +21,11 @@ export function useContributorCache() {
             authorEmail,
             authorRememberMe,
             isContributorNamePublic,
+        }: {
+            authorName: string;
+            authorEmail: string;
+            authorRememberMe: boolean;
+            isContributorNamePublic: boolean;
         }) => {
             if (!authorRememberMe) {
                 localStorage.removeItem(CONTRIBUTOR_LOCALSTORAGE_KEY);

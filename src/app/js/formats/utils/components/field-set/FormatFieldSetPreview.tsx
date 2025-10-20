@@ -1,5 +1,4 @@
 import { lazy, Suspense, useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
 import { formatAdminStyle } from '../../adminStyles';
 import { AllDataSets } from '../../dataSet';
 import MenuItem from '@mui/material/MenuItem';
@@ -125,19 +124,6 @@ FormatFieldSetPreview.defaultProps = {
     showDatasetsSelector: true,
     datasets: AllDataSets,
     defaultExpanded: false,
-};
-
-FormatFieldSetPreview.propTypes = {
-    args: PropTypes.any.isRequired,
-    showDatasetsSelector: PropTypes.bool,
-    defaultExpanded: PropTypes.bool,
-    datasets: PropTypes.arrayOf(
-        PropTypes.shape({
-            name: PropTypes.string.isRequired,
-            values: PropTypes.any.isRequired,
-        }),
-    ),
-    PreviewComponent: PropTypes.element.isRequired,
 };
 
 export default FormatFieldSetPreview;

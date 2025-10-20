@@ -14,22 +14,26 @@ import {
     Typography,
     useTheme,
 } from '@mui/material';
-import PropTypes from 'prop-types';
-// @ts-expect-error TS6133
-import React, { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import {
     ANNOTATION_KIND_ADDITION,
     ANNOTATION_KIND_COMMENT,
     ANNOTATION_KIND_CORRECTION,
     ANNOTATION_KIND_REMOVAL,
+    type AnnotationStatus,
 } from '../../../common/validator/annotation.validator';
-import { AnnotationStatus } from '../admin/annotations/AnnotationStatus';
+import { AnnotationStatusChip } from '../admin/annotations/AnnotationStatus';
 import { AnnotationValue } from '../admin/annotations/AnnotationValue';
 import { getResourceType } from '../admin/annotations/helpers/resourceType';
 import { useTranslate } from '../i18n/I18NContext';
 import { CloseAllIcon } from '../lib/components/icons/CloseAllIcon';
 import { OpenAllIcon } from '../lib/components/icons/OpenAllIcon';
-import { MODE_ALL, MODE_CLOSED, MODE_MINE, MODES } from './HistoryDrawer.const';
+import {
+    MODE_ALL,
+    MODE_CLOSED,
+    MODE_MINE,
+    type Mode,
+} from './HistoryDrawer.const';
 import { sanitize } from '../lib/sanitize';
 
 // @ts-expect-error TS7006
@@ -103,19 +107,53 @@ export const getAnnotationTitle = (annotation, translate) => {
     return annotation.resource.title;
 };
 
-// @ts-expect-error TS7031
-export const AnnotationList = ({ mode, setMode, annotations, field }) => {
+export type AnnotationListProps = {
+    annotations: {
+        _id: string;
+        isMine: boolean;
+        kind: string;
+        status: AnnotationStatus;
+        initialValue: unknown;
+        proposedValue: string;
+        authorName: string;
+        isContributorNamePublic: boolean;
+        comment: string;
+        adminComment?: string;
+        createdAt: string;
+        updatedAt: string;
+        resourceUri: string;
+        resource?: {
+            title: string;
+        } | null;
+        field: {
+            label: string;
+            scope: string;
+        };
+    }[];
+    field: {
+        label: string;
+    };
+    mode: Mode;
+    setMode(...args: unknown[]): unknown;
+};
+
+export const AnnotationList = ({
+    mode,
+    setMode,
+    annotations,
+    field,
+}: AnnotationListProps) => {
     const { translate } = useTranslate();
     const theme = useTheme();
 
     const myAnnotations = useMemo(() => {
-        // @ts-expect-error TS7006
         return annotations.filter((annotation) => annotation.isMine);
     }, [annotations]);
 
-    const [annotationsOpen, setAnnotationsOpen] = useState(
+    const [annotationsOpen, setAnnotationsOpen] = useState<
+        Record<string, boolean>
+    >(
         annotations.reduce(
-            // @ts-expect-error TS7006
             (acc, annotation) => ({
                 ...acc,
                 [annotation._id]: false,
@@ -125,10 +163,8 @@ export const AnnotationList = ({ mode, setMode, annotations, field }) => {
     );
 
     const openAllAnnotations = () => {
-        // @ts-expect-error TS7006
         setAnnotationsOpen((annotationsOpen) =>
             annotations.reduce(
-                // @ts-expect-error TS7006
                 (acc, annotation) => ({
                     ...acc,
                     [annotation._id]: true,
@@ -139,10 +175,8 @@ export const AnnotationList = ({ mode, setMode, annotations, field }) => {
     };
 
     const closeAllAnnotations = () => {
-        // @ts-expect-error TS7006
         setAnnotationsOpen((annotationsOpen) =>
             annotations.reduce(
-                // @ts-expect-error TS7006
                 (acc, annotation) => ({
                     ...acc,
                     [annotation._id]: false,
@@ -154,14 +188,12 @@ export const AnnotationList = ({ mode, setMode, annotations, field }) => {
 
     useEffect(() => {
         if (mode === MODE_ALL && annotations.length > 0) {
-            // @ts-expect-error TS7006
             setAnnotationsOpen((annotationsOpen) => ({
                 ...annotationsOpen,
                 [annotations[0]._id]: true,
             }));
         }
         if (mode === MODE_MINE && myAnnotations.length > 0) {
-            // @ts-expect-error TS7006
             setAnnotationsOpen((annotationsOpen) => ({
                 ...annotationsOpen,
                 [myAnnotations[0]._id]: true,
@@ -233,8 +265,6 @@ export const AnnotationList = ({ mode, setMode, annotations, field }) => {
                             aria-label={translate('collapse_all_annotations')}
                             onClick={closeAllAnnotations}
                         >
-                            {/*
-                             // @ts-expect-error TS2741 */}
                             <CloseAllIcon />
                         </IconButton>
                         <IconButton
@@ -242,8 +272,6 @@ export const AnnotationList = ({ mode, setMode, annotations, field }) => {
                             aria-label={translate('expand_all_annotations')}
                             onClick={openAllAnnotations}
                         >
-                            {/*
-                             // @ts-expect-error TS2741 */}
                             <OpenAllIcon />
                         </IconButton>
                     </Box>
@@ -251,13 +279,11 @@ export const AnnotationList = ({ mode, setMode, annotations, field }) => {
             </Stack>
             <Box>
                 {(mode === MODE_ALL ? annotations : myAnnotations).map(
-                    // @ts-expect-error TS7006
                     (annotation) => (
                         <Accordion
                             key={annotation._id}
                             expanded={annotationsOpen[annotation._id]}
                             onChange={() => {
-                                // @ts-expect-error TS7006
                                 setAnnotationsOpen((annotationsOpen) => ({
                                     ...annotationsOpen,
                                     [annotation._id]:
@@ -337,7 +363,7 @@ export const AnnotationList = ({ mode, setMode, annotations, field }) => {
                                         alignItems="center"
                                         display="flex"
                                     >
-                                        <AnnotationStatus
+                                        <AnnotationStatusChip
                                             arialLabel={translate(
                                                 'annotation_status',
                                             )}
@@ -389,10 +415,10 @@ export const AnnotationList = ({ mode, setMode, annotations, field }) => {
                                             </Typography>
                                             <Typography aria-labelledby="annotation_initial_value">
                                                 {['', null, undefined].includes(
-                                                    annotation.initialValue,
+                                                    annotation.initialValue as any,
                                                 )
                                                     ? '""'
-                                                    : annotation.initialValue.toString()}
+                                                    : annotation.initialValue!.toString()}
                                             </Typography>
                                         </Box>
                                     )}
@@ -421,7 +447,6 @@ export const AnnotationList = ({ mode, setMode, annotations, field }) => {
                                                     annotation.proposedValue,
                                                 )
                                                     ? annotation.proposedValue.map(
-                                                          // @ts-expect-error TS7006
                                                           (value) => (
                                                               <Typography
                                                                   key={value}
@@ -518,11 +543,4 @@ export const AnnotationList = ({ mode, setMode, annotations, field }) => {
             </Box>
         </Stack>
     );
-};
-
-AnnotationList.propTypes = {
-    annotations: PropTypes.array.isRequired,
-    field: PropTypes.object.isRequired,
-    mode: PropTypes.oneOf(MODES).isRequired,
-    setMode: PropTypes.func.isRequired,
 };

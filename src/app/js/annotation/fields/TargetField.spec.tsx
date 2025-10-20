@@ -1,17 +1,20 @@
 import { useForm } from '@tanstack/react-form';
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import PropTypes from 'prop-types';
+import { render } from '@testing-library/react';
 // @ts-expect-error TS6133
 import React from 'react';
 import { TestI18N } from '../../i18n/I18NContext';
 import { COMMENT_STEP, VALUE_STEP } from '../steps';
 import { TargetField } from './TargetField';
 
+interface TestTargetFieldProps {
+    field?: object;
+}
+
 // @ts-expect-error TS7006
 const renderTargetField = (props) => {
     let form;
 
-    function TestTargetField({ field = {}, ...props }) {
+    function TestTargetField({ field = {}, ...props }: TestTargetFieldProps) {
         form = useForm();
         return (
             <TestI18N>
@@ -26,21 +29,17 @@ const renderTargetField = (props) => {
         );
     }
 
-    TestTargetField.propTypes = {
-        field: PropTypes.object,
-    };
-
-    const wrapper = render(<TestTargetField {...props} />);
+    const screen = render(<TestTargetField {...props} />);
 
     return {
         form,
-        ...wrapper,
+        ...screen,
     };
 };
 
 describe('TargetField', () => {
     it('should display choice to comment, correct, add or remove', () => {
-        renderTargetField({});
+        const screen = renderTargetField({});
         expect(
             screen.getByText('annotation_annotate_field_choice'),
         ).toBeInTheDocument();
@@ -55,17 +54,16 @@ describe('TargetField', () => {
 
     it('should call goToStep with COMMENT_STEP when targeting title and set target to title, kind to comment, initialValue to null', async () => {
         const goToStep = jest.fn();
-        const { form } = renderTargetField({
+        const { form, ...screen } = renderTargetField({
             goToStep,
             initialValue: 'initial value',
         });
-        await waitFor(() => {
-            fireEvent.click(
+        await screen.waitFor(() => {
+            screen.fireEvent.click(
                 screen.getByText('annotation_annotate_field_choice'),
             );
         });
         expect(goToStep).toHaveBeenCalledWith(COMMENT_STEP);
-        // @ts-expect-error TS18048
         expect(form.state.values).toStrictEqual({
             target: 'title',
             kind: 'comment',
@@ -75,15 +73,16 @@ describe('TargetField', () => {
 
     it('should call goToStep with COMMENT_STEP when there is a single value and clicking on annotation_correct_content, and set target to value, kind to correction, initialValue to "initialValue"', async () => {
         const goToStep = jest.fn();
-        const { form } = renderTargetField({
+        const { form, ...screen } = renderTargetField({
             goToStep,
             initialValue: 'initial value',
         });
-        await waitFor(() => {
-            fireEvent.click(screen.getByText('annotation_correct_content'));
+        await screen.waitFor(() => {
+            screen.fireEvent.click(
+                screen.getByText('annotation_correct_content'),
+            );
         });
         expect(goToStep).toHaveBeenCalledWith(COMMENT_STEP);
-        // @ts-expect-error TS18048
         expect(form.state.values).toStrictEqual({
             target: 'value',
             kind: 'correction',
@@ -93,15 +92,16 @@ describe('TargetField', () => {
 
     it('should call goToStep with VALUE_STEP when there is an array of values and clicking on annotation_correct_content, and set target to value, kind to correction', async () => {
         const goToStep = jest.fn();
-        const { form } = renderTargetField({
+        const { form, ...screen } = renderTargetField({
             goToStep,
             initialValue: ['initial', 'value'],
         });
-        await waitFor(() => {
-            fireEvent.click(screen.getByText('annotation_correct_content'));
+        await screen.waitFor(() => {
+            screen.fireEvent.click(
+                screen.getByText('annotation_correct_content'),
+            );
         });
         expect(goToStep).toHaveBeenCalledWith(VALUE_STEP);
-        // @ts-expect-error TS18048
         expect(form.state.values).toStrictEqual({
             target: 'value',
             kind: 'correction',
@@ -110,17 +110,16 @@ describe('TargetField', () => {
 
     it('should call goToStep with COMMENT_STEP when there is a single value and clicking on annotation_remove_content_choice, and set target to value, kind to removal, initialValue to "initial value"', async () => {
         const goToStep = jest.fn();
-        const { form } = renderTargetField({
+        const { form, ...screen } = renderTargetField({
             goToStep,
             initialValue: 'initial value',
         });
-        await waitFor(() => {
-            fireEvent.click(
+        await screen.waitFor(() => {
+            screen.fireEvent.click(
                 screen.getByText('annotation_remove_content_choice'),
             );
         });
         expect(goToStep).toHaveBeenCalledWith(COMMENT_STEP);
-        // @ts-expect-error TS18048
         expect(form.state.values).toStrictEqual({
             target: 'value',
             kind: 'removal',
@@ -130,17 +129,16 @@ describe('TargetField', () => {
 
     it('should call goToStep with VALUE_STEP when there is an array of values and clicking on annotation_remove_content_choice, and set target to value, kind to removal', async () => {
         const goToStep = jest.fn();
-        const { form } = renderTargetField({
+        const { form, ...screen } = renderTargetField({
             goToStep,
             initialValue: ['initial', 'value'],
         });
-        await waitFor(() => {
-            fireEvent.click(
+        await screen.waitFor(() => {
+            screen.fireEvent.click(
                 screen.getByText('annotation_remove_content_choice'),
             );
         });
         expect(goToStep).toHaveBeenCalledWith(VALUE_STEP);
-        // @ts-expect-error TS18048
         expect(form.state.values).toStrictEqual({
             target: 'value',
             kind: 'removal',
@@ -149,15 +147,14 @@ describe('TargetField', () => {
 
     it('should call goToStep with COMMENT_STEP when there is a single value and clicking on annotation_add_content, and set target to value, kind to addition, initialValue to null', async () => {
         const goToStep = jest.fn();
-        const { form } = renderTargetField({
+        const { form, ...screen } = renderTargetField({
             goToStep,
             initialValue: 'initial value',
         });
-        await waitFor(() => {
-            fireEvent.click(screen.getByText('annotation_add_content'));
+        await screen.waitFor(() => {
+            screen.fireEvent.click(screen.getByText('annotation_add_content'));
         });
         expect(goToStep).toHaveBeenCalledWith(COMMENT_STEP);
-        // @ts-expect-error TS18048
         expect(form.state.values).toStrictEqual({
             target: 'value',
             kind: 'addition',
@@ -167,15 +164,14 @@ describe('TargetField', () => {
 
     it('should call goToStep with COMMENT_STEP when there is an array of values and clicking on annotation_add_content, and set target to value, kind to addition, initialValue to null', async () => {
         const goToStep = jest.fn();
-        const { form } = renderTargetField({
+        const { form, ...screen } = renderTargetField({
             goToStep,
             initialValue: ['initial', 'value'],
         });
-        await waitFor(() => {
-            fireEvent.click(screen.getByText('annotation_add_content'));
+        await screen.waitFor(() => {
+            screen.fireEvent.click(screen.getByText('annotation_add_content'));
         });
         expect(goToStep).toHaveBeenCalledWith(COMMENT_STEP);
-        // @ts-expect-error TS18048
         expect(form.state.values).toStrictEqual({
             target: 'value',
             kind: 'addition',
@@ -186,7 +182,7 @@ describe('TargetField', () => {
     describe('field configuration', () => {
         it('should not display add value button if disabled', () => {
             const goToStep = jest.fn();
-            const wrapper = renderTargetField({
+            const screen = renderTargetField({
                 goToStep,
                 initialValue: ['initial', 'value'],
                 field: {
@@ -195,19 +191,19 @@ describe('TargetField', () => {
             });
 
             expect(
-                wrapper.queryByRole('menuitem', {
+                screen.queryByRole('menuitem', {
                     name: 'annotation_add_content',
                 }),
             ).not.toBeInTheDocument();
 
             expect(
-                wrapper.queryByRole('menuitem', {
+                screen.queryByRole('menuitem', {
                     name: 'annotation_correct_content',
                 }),
             ).toBeInTheDocument();
 
             expect(
-                wrapper.queryByRole('menuitem', {
+                screen.queryByRole('menuitem', {
                     name: 'annotation_remove_content_choice',
                 }),
             ).toBeInTheDocument();
@@ -215,7 +211,7 @@ describe('TargetField', () => {
 
         it('should not display correct value button if disabled', () => {
             const goToStep = jest.fn();
-            const wrapper = renderTargetField({
+            const screen = renderTargetField({
                 goToStep,
                 initialValue: ['initial', 'value'],
                 field: {
@@ -224,19 +220,19 @@ describe('TargetField', () => {
             });
 
             expect(
-                wrapper.queryByRole('menuitem', {
+                screen.queryByRole('menuitem', {
                     name: 'annotation_add_content',
                 }),
             ).toBeInTheDocument();
 
             expect(
-                wrapper.queryByRole('menuitem', {
+                screen.queryByRole('menuitem', {
                     name: 'annotation_correct_content',
                 }),
             ).not.toBeInTheDocument();
 
             expect(
-                wrapper.queryByRole('menuitem', {
+                screen.queryByRole('menuitem', {
                     name: 'annotation_remove_content_choice',
                 }),
             ).toBeInTheDocument();
@@ -244,7 +240,7 @@ describe('TargetField', () => {
 
         it('should not display remove value button if disabled', () => {
             const goToStep = jest.fn();
-            const wrapper = renderTargetField({
+            const screen = renderTargetField({
                 goToStep,
                 initialValue: ['initial', 'value'],
                 field: {
@@ -253,19 +249,19 @@ describe('TargetField', () => {
             });
 
             expect(
-                wrapper.queryByRole('menuitem', {
+                screen.queryByRole('menuitem', {
                     name: 'annotation_add_content',
                 }),
             ).toBeInTheDocument();
 
             expect(
-                wrapper.queryByRole('menuitem', {
+                screen.queryByRole('menuitem', {
                     name: 'annotation_correct_content',
                 }),
             ).toBeInTheDocument();
 
             expect(
-                wrapper.queryByRole('menuitem', {
+                screen.queryByRole('menuitem', {
                     name: 'annotation_remove_content_choice',
                 }),
             ).not.toBeInTheDocument();

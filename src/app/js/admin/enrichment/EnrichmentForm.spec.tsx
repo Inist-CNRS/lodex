@@ -1,5 +1,5 @@
 import { act } from 'react-dom/test-utils';
-import { fireEvent, render, waitFor } from '../../../../test-utils';
+import { render } from '../../../../test-utils';
 import { EnrichmentForm, type EnrichmentFormProps } from './EnrichmentForm';
 import type { Enrichment } from '.';
 
@@ -95,7 +95,7 @@ describe('<EnrichmentFormComponent />', () => {
 
         const submitButton = screen.getByText('save');
         expect(submitButton).toBeInTheDocument();
-        await waitFor(() => {
+        await screen.waitFor(() => {
             expect(submitButton).not.toBeDisabled();
         });
     });
@@ -116,10 +116,10 @@ describe('<EnrichmentFormComponent />', () => {
         ).not.toBeInTheDocument();
 
         await act(async () => {
-            fireEvent.change(nameField, { target: { value: '' } });
+            screen.fireEvent.change(nameField, { target: { value: '' } });
         });
 
-        await waitFor(() => {
+        await screen.waitFor(() => {
             expect(
                 screen.getByText('error_field_required'),
             ).toBeInTheDocument();
@@ -144,10 +144,10 @@ describe('<EnrichmentFormComponent />', () => {
         ).not.toBeInTheDocument();
 
         await act(async () => {
-            fireEvent.change(field, { target: { value: '' } });
+            screen.fireEvent.change(field, { target: { value: '' } });
         });
 
-        await waitFor(() => {
+        await screen.waitFor(() => {
             expect(
                 screen.getByText('error_field_required'),
             ).toBeInTheDocument();
@@ -172,10 +172,10 @@ describe('<EnrichmentFormComponent />', () => {
         ).not.toBeInTheDocument();
 
         await act(async () => {
-            fireEvent.click(screen.getByLabelText('Clear'));
+            screen.fireEvent.click(screen.getByLabelText('Clear'));
         });
 
-        await waitFor(() => {
+        await screen.waitFor(() => {
             expect(
                 screen.getByText('error_field_required'),
             ).toBeInTheDocument();

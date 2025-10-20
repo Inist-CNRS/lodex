@@ -1,6 +1,4 @@
-// @ts-expect-error TS6133
-import React, { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
+import { useEffect, useState } from 'react';
 import {
     Dialog,
     DialogContent,
@@ -9,9 +7,21 @@ import {
     TextField,
     Box,
 } from '@mui/material';
+import type { Tenant } from './Tenants';
 
-// @ts-expect-error TS7031
-const UpdateTenantDialog = ({ isOpen, tenant, handleClose, updateAction }) => {
+type UpdateTenantDialogProps = {
+    isOpen: boolean;
+    tenant: Tenant | null;
+    handleClose(): void;
+    updateAction(value: string, tenant: Omit<Tenant, '_id'>): void;
+};
+
+const UpdateTenantDialog = ({
+    isOpen,
+    tenant,
+    handleClose,
+    updateAction,
+}: UpdateTenantDialogProps) => {
     const [description, setDescription] = useState('');
     const [author, setAuthor] = useState('');
     const [username, setUsername] = useState('');
@@ -49,6 +59,9 @@ const UpdateTenantDialog = ({ isOpen, tenant, handleClose, updateAction }) => {
     // @ts-expect-error TS7006
     const handleSubmit = (event) => {
         event.preventDefault();
+        if (!tenant) {
+            return;
+        }
         updateAction(tenant._id, {
             description,
             author,
@@ -145,13 +158,6 @@ const UpdateTenantDialog = ({ isOpen, tenant, handleClose, updateAction }) => {
             </DialogContent>
         </Dialog>
     );
-};
-
-UpdateTenantDialog.propTypes = {
-    isOpen: PropTypes.bool.isRequired,
-    tenant: PropTypes.object,
-    handleClose: PropTypes.func.isRequired,
-    updateAction: PropTypes.func.isRequired,
 };
 
 export default UpdateTenantDialog;

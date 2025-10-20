@@ -5,15 +5,25 @@ import {
     ListItemText,
     Tooltip,
 } from '@mui/material';
-import PropTypes from 'prop-types';
 // @ts-expect-error TS6133
 import React, { useMemo } from 'react';
 import { useTranslate } from '../../../i18n/I18NContext';
 import { hasFieldMultipleValues } from '../helpers/field';
 import { UserProvidedValueIcon } from './UserProvidedValueIcon';
 
-// @ts-expect-error TS7031
-export function AnnotationProposedValue({ proposedValue, field }) {
+interface AnnotationProposedValueProps {
+    field: {
+        annotationFormat?: 'text' | 'list';
+        annotationFormatListKind?: 'single' | 'multiple';
+        annotationFormatListOptions?: string[];
+    };
+    proposedValue: string | string[];
+}
+
+export function AnnotationProposedValue({
+    proposedValue,
+    field,
+}: AnnotationProposedValueProps) {
     const { translate } = useTranslate();
 
     const hasMultipleValues = useMemo(() => {
@@ -25,7 +35,7 @@ export function AnnotationProposedValue({ proposedValue, field }) {
     }, [field]);
 
     const proposedValueAsArray = useMemo(() => {
-        const proposedValues = []
+        const proposedValues = ([] as string[])
             .concat(proposedValue)
             .map((value) => ({
                 value,
@@ -35,7 +45,6 @@ export function AnnotationProposedValue({ proposedValue, field }) {
             }))
             .toSorted((a, b) => {
                 if (a.isAdminProvidedValue === b.isAdminProvidedValue) {
-                    // @ts-expect-error TS2239
                     return a.value.localeCompare(b.value);
                 }
 
@@ -95,15 +104,3 @@ export function AnnotationProposedValue({ proposedValue, field }) {
         </List>
     );
 }
-
-AnnotationProposedValue.propTypes = {
-    field: PropTypes.shape({
-        annotationFormat: PropTypes.oneOf(['text', 'list']),
-        annotationFormatListKind: PropTypes.oneOf(['single', 'multiple']),
-        annotationFormatListOptions: PropTypes.arrayOf(PropTypes.string),
-    }),
-    proposedValue: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.arrayOf(PropTypes.string),
-    ]).isRequired,
-};

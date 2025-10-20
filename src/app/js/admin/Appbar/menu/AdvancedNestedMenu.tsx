@@ -3,7 +3,6 @@ import DeleteSweepIcon from '@mui/icons-material/DeleteSweep';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import MenuItem from '@mui/material/MenuItem';
-import PropTypes from 'prop-types';
 import { default as React } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
@@ -63,14 +62,6 @@ export const AdvancedNestedMenuComponent = React.memo(
         );
     },
 );
-
-// @ts-expect-error TS2339
-AdvancedNestedMenuComponent.propTypes = {
-    onClose: PropTypes.func.isRequired,
-    hasLoadedDataset: PropTypes.bool.isRequired,
-    dumpDataset: PropTypes.func.isRequired,
-    showDatasetClearDialog: PropTypes.func.isRequired,
-};
 
 // @ts-expect-error TS7006
 const mapStateToProps = (state) => ({

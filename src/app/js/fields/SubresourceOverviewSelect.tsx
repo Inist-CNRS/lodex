@@ -2,7 +2,6 @@
 import React, { useMemo } from 'react';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
 import { TextField, MenuItem } from '@mui/material';
 import * as overview from '../../../common/overview';
 import {
@@ -15,16 +14,22 @@ import fieldApi from '../admin/api/field';
 import FieldRepresentation from './FieldRepresentation';
 import { translate } from '../i18n/I18NContext';
 
+interface SubresourceOverviewSelectComponentProps {
+    p: unknown;
+    fields?: unknown[];
+    loadField(...args: unknown[]): unknown;
+    subresourceId: string;
+}
+
 export const SubresourceOverviewSelectComponent = ({
-    // @ts-expect-error TS7031
     p: polyglot,
-    // @ts-expect-error TS7031
+
     fields,
-    // @ts-expect-error TS7031
+
     loadField,
-    // @ts-expect-error TS7031
-    subresourceId,
-}) => {
+
+    subresourceId
+}: SubresourceOverviewSelectComponentProps) => {
     const subresourceTitle = useMemo(() => {
         const subresourceTitleField = fields.find(
             // @ts-expect-error TS7006
@@ -79,13 +84,6 @@ export const SubresourceOverviewSelectComponent = ({
             ))}
         </TextField>
     );
-};
-
-SubresourceOverviewSelectComponent.propTypes = {
-    p: polyglotPropTypes.isRequired,
-    fields: PropTypes.arrayOf(fieldPropTypes),
-    loadField: PropTypes.func.isRequired,
-    subresourceId: PropTypes.string.isRequired,
 };
 
 // @ts-expect-error TS7006

@@ -1,6 +1,5 @@
 // @ts-expect-error TS6133
 import React from 'react';
-import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import memoize from 'lodash/memoize';
@@ -63,8 +62,15 @@ const ensureTextIsShort = (text) =>
 const isVisible = (field) =>
     field.display ? null : <HiddenIcon style={titleStyle.hidden} />;
 
-// @ts-expect-error TS7031
-const ComposedOf = ({ compositeFields, polyglot }) => {
+interface ComposedOfProps {
+    polyglot: unknown;
+    compositeFields: string[];
+}
+
+const ComposedOf = ({
+    compositeFields,
+    polyglot
+}: ComposedOfProps) => {
     if (!compositeFields.length) {
         return null;
     }
@@ -77,23 +83,24 @@ const ComposedOf = ({ compositeFields, polyglot }) => {
     );
 };
 
-ComposedOf.propTypes = {
-    polyglot: polyglotPropTypes.isRequired,
-    compositeFields: PropTypes.arrayOf(PropTypes.string).isRequired,
-};
+interface ExcerptHeaderComponentProps {
+    completedField?: unknown;
+    field: unknown;
+    p: unknown;
+    compositeFields?: string[];
+}
 
 const ExcerptHeaderComponent = ({
-    // @ts-expect-error TS7031
     completedField,
-    // @ts-expect-error TS7031
+
     compositeFields,
-    // @ts-expect-error TS7031
+
     field,
-    // @ts-expect-error TS7031
-    p: polyglot,
-}) => (
+
+    p: polyglot
+}: ExcerptHeaderComponentProps) => (
     // @ts-expect-error TS2322
-    <div style={getStyle(field)}>
+    (<div style={getStyle(field)}>
         {/*
          // @ts-expect-error TS2322 */}
         <p style={titleStyle.titleBlock}>
@@ -121,15 +128,8 @@ const ExcerptHeaderComponent = ({
                 ))}
             {field.internalName}
         </div>
-    </div>
+    </div>)
 );
-
-ExcerptHeaderComponent.propTypes = {
-    completedField: fieldPropTypes,
-    field: fieldPropTypes.isRequired,
-    p: polyglotPropTypes.isRequired,
-    compositeFields: PropTypes.arrayOf(PropTypes.string),
-};
 
 ExcerptHeaderComponent.defaultProps = {
     completedField: null,

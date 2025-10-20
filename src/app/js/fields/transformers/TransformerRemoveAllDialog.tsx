@@ -1,6 +1,5 @@
 // @ts-expect-error TS6133
 import React from 'react';
-import PropTypes from 'prop-types';
 import { translate } from '../../i18n/I18NContext';
 
 import {
@@ -16,15 +15,22 @@ import {
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import CancelButton from '../../lib/components/CancelButton';
 
+interface TransformerRemoveAllDialogProps {
+    removeAll(...args: unknown[]): unknown;
+    handleClose(...args: unknown[]): unknown;
+    isOpen?: boolean;
+    p: unknown;
+}
+
 const TransformerRemoveAllDialog = ({
-    // @ts-expect-error TS7031
     removeAll,
+
     isOpen = false,
-    // @ts-expect-error TS7031
+
     handleClose,
-    // @ts-expect-error TS7031
-    p: polyglot,
-}) => {
+
+    p: polyglot
+}: TransformerRemoveAllDialogProps) => {
     const handleRemoveAll = () => {
         removeAll();
         handleClose();
@@ -64,13 +70,6 @@ const TransformerRemoveAllDialog = ({
             </DialogActions>
         </Dialog>
     );
-};
-
-TransformerRemoveAllDialog.propTypes = {
-    removeAll: PropTypes.func.isRequired,
-    handleClose: PropTypes.func.isRequired,
-    isOpen: PropTypes.bool,
-    p: polyglotPropTypes.isRequired,
 };
 
 export default translate(TransformerRemoveAllDialog);

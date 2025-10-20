@@ -15,7 +15,6 @@ jest.mock('../../admin/api/field', () => ({
 describe('<FieldsEdit />', () => {
     it('should display page tab (FieldGrid) per default', () => {
         const wrapper = shallow(
-            // @ts-expect-error TS2322
             <FieldsEdit
                 showAddFromColumn={false}
                 fields={[]}
@@ -30,10 +29,8 @@ describe('<FieldsEdit />', () => {
 
     it('should display published tab (PublicationPreview) with published defaultTab prop', () => {
         const wrapper = shallow(
-            // @ts-expect-error TS2322
             <FieldsEdit
                 showAddFromColumn={false}
-                // @ts-expect-error TS2322
                 fields={[]}
                 filter={SCOPE_DOCUMENT}
                 addFieldButton={null}
@@ -47,7 +44,6 @@ describe('<FieldsEdit />', () => {
 
     it('should display FieldAddDropdownButton in page tab if filter === SCOPE_DOCUMENT', () => {
         const wrapper = shallow(
-            // @ts-expect-error TS2322
             <FieldsEdit
                 showAddFromColumn={false}
                 // @ts-expect-error TS2322
@@ -63,7 +59,6 @@ describe('<FieldsEdit />', () => {
 
     it('should display FieldGridComponent before statistic', () => {
         const wrapper = shallow(
-            // @ts-expect-error TS2322
             <FieldsEdit
                 showAddFromColumn={true}
                 // @ts-expect-error TS2322
@@ -83,7 +78,6 @@ describe('<FieldsEdit />', () => {
 
     it('should display Statistics after PublicationPreview', () => {
         const wrapper = shallow(
-            // @ts-expect-error TS2322
             <FieldsEdit
                 showAddFromColumn={false}
                 // @ts-expect-error TS2322

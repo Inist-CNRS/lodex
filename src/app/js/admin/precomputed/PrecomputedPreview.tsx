@@ -1,14 +1,22 @@
 // @ts-expect-error TS6133
 import React from 'react';
 import PreviewIcon from '@mui/icons-material/Preview';
-import PropTypes from 'prop-types';
 
 import { Box, Typography } from '@mui/material';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { translate } from '../../i18n/I18NContext';
 
-// @ts-expect-error TS7031
-const PrecomputedPreview = ({ lines, sourceColumns, p: polyglot }) => {
+interface PrecomputedPreviewProps {
+    lines: unknown[];
+    sourceColumns?: string[];
+    p: unknown;
+}
+
+const PrecomputedPreview = ({
+    lines,
+    sourceColumns,
+    p: polyglot
+}: PrecomputedPreviewProps) => {
     return (
         <Box
             id="value-preview"
@@ -39,7 +47,6 @@ const PrecomputedPreview = ({ lines, sourceColumns, p: polyglot }) => {
             </Box>
             <Box mb={4}>
                 {lines.length > 0 &&
-                    // @ts-expect-error TS7006
                     lines?.map((line, index) => (
                         <Box key={index} mb={3}>
                             <Typography
@@ -77,12 +84,6 @@ const PrecomputedPreview = ({ lines, sourceColumns, p: polyglot }) => {
             </Box>
         </Box>
     );
-};
-
-PrecomputedPreview.propTypes = {
-    lines: PropTypes.array.isRequired,
-    sourceColumns: PropTypes.arrayOf(PropTypes.string),
-    p: polyglotPropTypes.isRequired,
 };
 
 export default translate(PrecomputedPreview);

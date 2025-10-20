@@ -1,5 +1,7 @@
-// @ts-expect-error TS7006
-export function getResourceType(resourceUri, field) {
+export function getResourceType(
+    resourceUri: string | null | undefined,
+    field?: { scope: string },
+) {
     if (resourceUri?.startsWith('/graph') || field?.scope === 'graphic') {
         return 'graph';
     }

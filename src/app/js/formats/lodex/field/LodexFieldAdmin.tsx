@@ -1,6 +1,5 @@
 // @ts-expect-error TS6133
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { translate } from '../../../i18n/I18NContext';
 import { polyglot as polyglotPropTypes } from '../../../propTypes';
 import { Checkbox, FormControlLabel, TextField } from '@mui/material';
@@ -16,18 +15,18 @@ export const defaultArgs = {
     },
 };
 
-class LodexFieldAdmin extends Component {
-    static propTypes = {
-        args: PropTypes.shape({
-            param: PropTypes.shape({
-                labelArray: PropTypes.arrayOf(PropTypes.string),
-                hiddenInfo: PropTypes.object,
-            }),
-        }),
-        onChange: PropTypes.func.isRequired,
-        p: polyglotPropTypes.isRequired,
+interface LodexFieldAdminProps {
+    args?: {
+        param?: {
+            labelArray?: string[];
+            hiddenInfo?: object;
+        };
     };
+    onChange(...args: unknown[]): unknown;
+    p: unknown;
+}
 
+class LodexFieldAdmin extends Component<LodexFieldAdminProps> {
     static defaultProps = {
         args: defaultArgs,
     };
@@ -38,7 +37,6 @@ class LodexFieldAdmin extends Component {
         // @ts-expect-error TS2339
         const { param, ...args } = this.props.args;
         const newArgs = { ...args, param: { ...param, labelArray } };
-        // @ts-expect-error TS2339
         this.props.onChange(newArgs);
     };
 
@@ -48,13 +46,11 @@ class LodexFieldAdmin extends Component {
         // @ts-expect-error TS2339
         const { param, ...state } = this.props.args;
         const newState = { ...state, param: { ...param, hiddenInfo } };
-        // @ts-expect-error TS2339
         this.props.onChange(newState);
     };
 
     render() {
         const {
-            // @ts-expect-error TS2339
             p: polyglot,
             // @ts-expect-error TS2339
             args: { param },

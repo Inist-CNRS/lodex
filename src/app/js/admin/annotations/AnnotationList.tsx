@@ -8,8 +8,6 @@ import {
     GridToolbarDensitySelector,
     GridToolbarFilterButton,
 } from '@mui/x-data-grid';
-import PropTypes from 'prop-types';
-// @ts-expect-error TS6133
 import React, { useMemo, useState } from 'react';
 import { useHistory } from 'react-router';
 import FieldInternalIcon from '../../fields/FieldInternalIcon';
@@ -17,7 +15,7 @@ import { useTranslate } from '../../i18n/I18NContext';
 import AdminOnlyAlert from '../../lib/components/AdminOnlyAlert';
 import withInitialData from '../withInitialData';
 import { AnnotationProposedValue } from './AnnotationProposedValue';
-import { AnnotationStatus } from './AnnotationStatus';
+import { AnnotationStatusChip } from './AnnotationStatus';
 import { CellWithTooltip } from './CellWithTooltip';
 import { DeleteFilteredButton } from './DeleteFilteredButton';
 import { DeleteManyButton } from './DeleteManyButton';
@@ -28,8 +26,13 @@ import { useGetAnnotations } from './hooks/useGetAnnotations';
 import { ResourceTitleCell } from './ResourceTitleCell';
 import { ResourceUriCell } from './ResourceUriCell';
 
-// @ts-expect-error TS7031
-const AnnotationListToolBar = ({ deleteButton }) => {
+interface AnnotationListToolBarProps {
+    deleteButton: React.ReactNode;
+}
+
+const AnnotationListToolBar = ({
+    deleteButton,
+}: AnnotationListToolBarProps) => {
     const { translate } = useTranslate();
 
     return (
@@ -40,23 +43,19 @@ const AnnotationListToolBar = ({ deleteButton }) => {
                  // @ts-expect-error TS2741 */}
                 <GridToolbarColumnsButton />
             </Tooltip>
+            {/* 
+            // @ts-expect-error TS2322 */}
             <GridToolbarFilterButton />
             <Tooltip title={translate(`density_tooltip`)}>
                 {/*
                  // @ts-expect-error TS2741 */}
                 <GridToolbarDensitySelector />
             </Tooltip>
-
             <Box sx={{ flexGrow: 1 }} />
-
             <DeleteFilteredButton />
             {deleteButton}
         </GridToolbarContainer>
     );
-};
-
-AnnotationListToolBar.propTypes = {
-    deleteButton: PropTypes.node.isRequired,
 };
 
 export const AnnotationList = () => {
@@ -306,7 +305,7 @@ export const AnnotationList = () => {
                     })),
                 // @ts-expect-error TS7031
                 renderCell: ({ value }) => {
-                    return <AnnotationStatus status={value} />;
+                    return <AnnotationStatusChip status={value} />;
                 },
                 flex: 1,
                 sortable: true,
@@ -408,7 +407,6 @@ export const AnnotationList = () => {
             components={{
                 Toolbar: () => (
                     <AnnotationListToolBar
-                        // @ts-expect-error TS2322
                         deleteButton={
                             <DeleteManyButton selectedRowIds={selectedRowIds} />
                         }

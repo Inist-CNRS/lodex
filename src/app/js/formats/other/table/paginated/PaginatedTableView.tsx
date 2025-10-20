@@ -28,7 +28,6 @@ class PaginatedTableView extends AbstractTableView {
     }
 
     render() {
-        // @ts-expect-error TS2339
         const { data, pageSize, total, p, columnsParameters } = this.props;
 
         return (
@@ -40,8 +39,6 @@ class PaginatedTableView extends AbstractTableView {
                             // @ts-expect-error TS7006
                             (entry, index) => (
                                 <TableRow key={`${index}-table`}>
-                                    {/*
-                                     // @ts-expect-error TS7006 */}
                                     {columnsParameters.map((column) =>
                                         this.getCellInnerHtml(
                                             entry,

@@ -1,6 +1,5 @@
 // @ts-expect-error TS6133
 import React from 'react';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import compose from 'recompose/compose';
@@ -46,11 +45,20 @@ const prepareData = (data = [], history, polyglot) =>
         };
     });
 
-// @ts-expect-error TS7031
-const ParallelCoordinatesChartView = ({ fieldNames, data, colorSet }) => {
+interface ParallelCoordinatesChartViewProps {
+    fieldNames?: string[];
+    data: unknown[];
+    colorSet?: string[];
+}
+
+const ParallelCoordinatesChartView = ({
+    fieldNames,
+    data,
+    colorSet
+}: ParallelCoordinatesChartViewProps) => {
     return (
         // @ts-expect-error TS2339
-        <div className={styles.container}>
+        (<div className={styles.container}>
             <ParallelCoordinatesChart
                 fieldNames={fieldNames}
                 data={data}
@@ -58,14 +66,8 @@ const ParallelCoordinatesChartView = ({ fieldNames, data, colorSet }) => {
                 height={200}
                 colorSet={colorSet}
             />
-        </div>
+        </div>)
     );
-};
-
-ParallelCoordinatesChartView.propTypes = {
-    fieldNames: PropTypes.arrayOf(PropTypes.string),
-    data: PropTypes.array.isRequired,
-    colorSet: PropTypes.arrayOf(PropTypes.string),
 };
 
 // @ts-expect-error TS7006

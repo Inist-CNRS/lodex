@@ -8,7 +8,6 @@ import { zoomFunction, generateUniqueId } from './utils';
 import injectData from '../../injectData';
 // @ts-expect-error TS7016
 import cliTruncate from 'cli-truncate';
-import PropTypes from 'prop-types';
 import { polyglot as polyglotPropTypes } from '../../../propTypes';
 
 import { isValidColor } from '../../utils/colorUtils';
@@ -75,7 +74,15 @@ const stylesWithClassnames = stylesToClassname({
     },
 });
 
-class Hierarchy extends PureComponent {
+interface HierarchyProps {
+    params?: unknown;
+    formatData: unknown[];
+    colors: string;
+    p: unknown;
+    anchor: any;
+}
+
+class Hierarchy extends PureComponent<HierarchyProps> {
     _isMounted = false;
     mouseIcon = '';
     centerIcon = '';
@@ -129,7 +136,6 @@ class Hierarchy extends PureComponent {
     }
 
     setGraph() {
-        // @ts-expect-error TS2339
         if (this.props.formatData) {
             // @ts-expect-error TS2339
             this.setState({ width: this.divContainer.current.clientWidth });
@@ -157,7 +163,6 @@ class Hierarchy extends PureComponent {
 
             let myData;
 
-            // @ts-expect-error TS2339
             const treeData = this.props.formatData;
 
             try {
@@ -194,7 +199,6 @@ class Hierarchy extends PureComponent {
                 this.initialPosition.scale = this.initialPosition.scale * 0.8;
                 this.centerGraphClick();
             } catch (error) {
-                // @ts-expect-error TS2339
                 const { p: polyglot } = this.props;
                 this.tooltip()
                     .style('background-color', 'red')
@@ -211,7 +215,6 @@ class Hierarchy extends PureComponent {
     }
 
     update() {
-        // @ts-expect-error TS2339
         const color = this.props.colors;
         // update tree size
         // @ts-expect-error TS2339
@@ -808,7 +811,6 @@ class Hierarchy extends PureComponent {
     render() {
         // @ts-expect-error TS2339
         const { width, height } = this.state;
-        // @ts-expect-error TS2339
         const { p: polyglot } = this.props;
 
         return (
@@ -884,18 +886,5 @@ class Hierarchy extends PureComponent {
         );
     }
 }
-
-// @ts-expect-error TS2339
-Hierarchy.propTypes = {
-    params: {
-        minimumScaleValue: PropTypes.number.isRequired,
-        maxLabelLength: PropTypes.number.isRequired,
-        labelOffset: PropTypes.number.isRequired,
-    },
-    formatData: PropTypes.array.isRequired,
-    colors: PropTypes.string.isRequired,
-    p: polyglotPropTypes.isRequired,
-    anchor: PropTypes.any.isRequired,
-};
 
 export default compose(injectData())(Hierarchy);

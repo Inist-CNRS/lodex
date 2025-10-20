@@ -1,6 +1,3 @@
-// @ts-expect-error TS6133
-import React from 'react';
-import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import pure from 'recompose/pure';
 import withProps from 'recompose/withProps';
@@ -13,18 +10,15 @@ import {
     TableCell,
     TableRow,
     TableContainer,
+    type SxProps,
 } from '@mui/material';
 
-import {
-    polyglot as polyglotPropTypes,
-    field as fieldPropTypes,
-} from '../../propTypes';
 import ExcerptHeader from './ExcerptHeader';
 import ExcerptRemoveColumn from './ExcerptRemoveColumn';
 import ExcerptLine from './ExcerptLine';
 import getFieldClassName from '../../lib/getFieldClassName';
 import { URI_FIELD_NAME } from '../../../../common/uris';
-import { translate } from '../../i18n/I18NContext';
+import { useTranslate } from '../../i18n/I18NContext';
 
 const styles = {
     header: {
@@ -41,101 +35,94 @@ const styles = {
 
 const getColStyle = memoize((style) => ({ ...styles.header, ...style }));
 
+interface ExcerptComponentProps {
+    areHeadersClickable: boolean;
+    columns: {
+        _id: string;
+        name: string;
+    }[];
+    colStyle?: SxProps;
+    isPreview?: boolean;
+    lines: {
+        uri: string;
+    }[];
+    onCellClick(...args: unknown[]): unknown;
+    onHeaderClick(...args: unknown[]): unknown;
+    loadField?(...args: unknown[]): unknown;
+}
+
 export const ExcerptComponent = ({
-    // @ts-expect-error TS7031
     colStyle,
-    // @ts-expect-error TS7031
     areHeadersClickable,
-    // @ts-expect-error TS7031
     columns,
-    // @ts-expect-error TS7031
     lines,
-    // @ts-expect-error TS7031
     onCellClick,
-    // @ts-expect-error TS7031
     onHeaderClick,
-    // @ts-expect-error TS7031
-    p: polyglot,
     isPreview = false,
-}) => (
-    <TableContainer>
-        <Table className="publication-excerpt" sx={styles.table(isPreview)}>
-            <TableHead>
-                <TableRow>
-                    {/*
-                     // @ts-expect-error TS7006 */}
-                    {columns.map((field) => (
-                        <TableCell
-                            key={field.name}
-                            className={`publication-excerpt-column publication-excerpt-column-${getFieldClassName(
-                                field,
-                            )}`}
-                            sx={getColStyle({
-                                ...(areHeadersClickable
-                                    ? {}
-                                    : { cursor: 'default' }),
-                                ...colStyle,
-                            })}
-                            onClick={() =>
-                                field.name !== URI_FIELD_NAME &&
-                                onHeaderClick(field.name)
-                            }
-                            // @ts-expect-error TS2322
-                            tooltip={
-                                areHeadersClickable
-                                    ? polyglot.t(
-                                          'click_to_edit_publication_field',
-                                      )
-                                    : ''
-                            }
-                        >
-                            {/*
-                             // @ts-expect-error TS2322 */}
-                            <ExcerptHeader field={field} />
-                        </TableCell>
-                    ))}
-                </TableRow>
-            </TableHead>
-            <TableBody>
-                {areHeadersClickable && (
+}: ExcerptComponentProps) => {
+    const { translate } = useTranslate();
+    return (
+        <TableContainer>
+            <Table className="publication-excerpt" sx={styles.table(isPreview)}>
+                <TableHead>
                     <TableRow>
-                        {/*
-                         // @ts-expect-error TS7006 */}
-                        {columns.map((c) => (
-                            <ExcerptRemoveColumn
-                                key={`remove_column_${c._id}`}
+                        {columns.map((field) => (
+                            <TableCell
+                                key={field.name}
+                                className={`publication-excerpt-column publication-excerpt-column-${getFieldClassName(
+                                    field,
+                                )}`}
+                                sx={getColStyle({
+                                    ...(areHeadersClickable
+                                        ? {}
+                                        : { cursor: 'default' }),
+                                    ...colStyle,
+                                })}
+                                onClick={() =>
+                                    field.name !== URI_FIELD_NAME &&
+                                    onHeaderClick(field.name)
+                                }
                                 // @ts-expect-error TS2322
-                                field={c}
-                                onClick={onCellClick}
-                            />
+                                tooltip={
+                                    areHeadersClickable
+                                        ? translate(
+                                              'click_to_edit_publication_field',
+                                          )
+                                        : ''
+                                }
+                            >
+                                {/*
+                             // @ts-expect-error TS2322 */}
+                                <ExcerptHeader field={field} />
+                            </TableCell>
                         ))}
                     </TableRow>
-                )}
-                {/*
-                 // @ts-expect-error TS7006 */}
-                {lines.map((line, index) => (
-                    <ExcerptLine
-                        key={line ? `${line.uri}-${index}` : index}
-                        line={line}
-                        columns={columns}
-                        readonly
-                    />
-                ))}
-            </TableBody>
-        </Table>
-    </TableContainer>
-);
-
-ExcerptComponent.propTypes = {
-    areHeadersClickable: PropTypes.bool.isRequired,
-    columns: PropTypes.arrayOf(fieldPropTypes).isRequired,
-    colStyle: PropTypes.object,
-    isPreview: PropTypes.bool,
-    lines: PropTypes.arrayOf(PropTypes.object).isRequired,
-    onCellClick: PropTypes.func.isRequired,
-    onHeaderClick: PropTypes.func.isRequired,
-    p: polyglotPropTypes.isRequired,
-    loadField: PropTypes.func,
+                </TableHead>
+                <TableBody>
+                    {areHeadersClickable && (
+                        <TableRow>
+                            {columns.map((c) => (
+                                <ExcerptRemoveColumn
+                                    key={`remove_column_${c._id}`}
+                                    // @ts-expect-error TS2322
+                                    field={c}
+                                    onClick={onCellClick}
+                                />
+                            ))}
+                        </TableRow>
+                    )}
+                    {lines.map((line, index) => (
+                        <ExcerptLine
+                            key={line ? `${line.uri}-${index}` : index}
+                            line={line}
+                            columns={columns}
+                            readonly
+                        />
+                    ))}
+                </TableBody>
+            </Table>
+        </TableContainer>
+    );
 };
 
 ExcerptComponent.defaultProps = {
@@ -143,7 +130,6 @@ ExcerptComponent.defaultProps = {
 };
 
 export default compose(
-    translate,
     pure,
     // @ts-expect-error TS7031
     withProps(({ onHeaderClick }) => ({

@@ -1,9 +1,7 @@
-import PropTypes from 'prop-types';
 // @ts-expect-error TS6133
 import React from 'react';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
-import { translate } from '../../i18n/I18NContext';
 
 import { Grid, useMediaQuery } from '@mui/material';
 import { applyFilter as applyFilterAction } from '.';
@@ -11,7 +9,6 @@ import SearchBar from '../../lib/components/searchbar/SearchBar';
 import ToggleFacetsButton from '../../lib/components/searchbar/ToggleFacetsButton';
 import useSearchBar from '../../lib/components/searchbar/useSearchBar';
 import stylesToClassname from '../../lib/stylesToClassName';
-import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { fromFields } from '../../sharedSelectors';
 import { fromDataset } from '../selectors';
 
@@ -26,16 +23,19 @@ const styles = stylesToClassname(
     'dataset-searchbar',
 );
 
+interface DatasetSearchBarProps {
+    hasSearchableFields: boolean;
+    search(...args: unknown[]): unknown;
+    defaultQuery?: string;
+    onToggleFacets(...args: unknown[]): unknown;
+}
+
 const DatasetSearchBar = ({
-    // @ts-expect-error TS7031
     defaultQuery,
-    // @ts-expect-error TS7031
     search,
-    // @ts-expect-error TS7031
     hasSearchableFields,
-    // @ts-expect-error TS7031
     onToggleFacets,
-}) => {
+}: DatasetSearchBarProps) => {
     const showToggleFacetButton = useMediaQuery('@media (max-width: 991.5px)', {
         noSsr: true,
     });
@@ -85,14 +85,6 @@ DatasetSearchBar.defaultProps = {
     defaultQuery: '',
 };
 
-DatasetSearchBar.propTypes = {
-    p: polyglotPropTypes.isRequired,
-    hasSearchableFields: PropTypes.bool.isRequired,
-    search: PropTypes.func.isRequired,
-    defaultQuery: PropTypes.string,
-    onToggleFacets: PropTypes.func.isRequired,
-};
-
 // @ts-expect-error TS7006
 const mapStateToProps = (state) => ({
     hasSearchableFields: fromFields.hasSearchableFields(state),
@@ -105,6 +97,5 @@ const mapDispatchToProps = {
 
 export default compose(
     connect(mapStateToProps, mapDispatchToProps),
-    translate,
     // @ts-expect-error TS2345
 )(DatasetSearchBar);

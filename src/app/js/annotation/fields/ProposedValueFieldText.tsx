@@ -1,12 +1,18 @@
-import PropTypes from 'prop-types';
 // @ts-expect-error TS6133
 import React from 'react';
 
 import { useTranslate } from '../../i18n/I18NContext';
 import { TextField } from '../../lib/components/TextField';
 
-// @ts-expect-error TS7031
-export function ProposedValueFieldText({ form, initialValue }) {
+interface ProposedValueFieldTextProps {
+    form: object;
+    initialValue?: string;
+}
+
+export function ProposedValueFieldText({
+    form,
+    initialValue
+}: ProposedValueFieldTextProps) {
     const { translate } = useTranslate();
 
     return (
@@ -21,8 +27,3 @@ export function ProposedValueFieldText({ form, initialValue }) {
         />
     );
 }
-
-ProposedValueFieldText.propTypes = {
-    form: PropTypes.object.isRequired,
-    initialValue: PropTypes.string,
-};

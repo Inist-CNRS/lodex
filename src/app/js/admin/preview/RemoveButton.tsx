@@ -1,6 +1,5 @@
 // @ts-expect-error TS6133
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import compose from 'recompose/compose';
@@ -15,8 +14,17 @@ import {
 import CancelButton from '../../lib/components/CancelButton';
 import { translate } from '../../i18n/I18NContext';
 
-// @ts-expect-error TS7031
-export const RemoveButtonComponent = ({ onRemove, p: polyglot }) => {
+interface RemoveButtonComponentProps {
+    onRemove(...args: unknown[]): unknown;
+    field: unknown;
+    filter: string;
+    p: unknown;
+}
+
+export const RemoveButtonComponent = ({
+    onRemove,
+    p: polyglot
+}: RemoveButtonComponentProps) => {
     const [showDialog, setShowDialog] = useState(false);
 
     const handleShowDialog = () => setShowDialog(true);
@@ -53,13 +61,6 @@ export const RemoveButtonComponent = ({ onRemove, p: polyglot }) => {
             </Dialog>
         </>
     );
-};
-
-RemoveButtonComponent.propTypes = {
-    onRemove: PropTypes.func.isRequired,
-    field: fieldPropTypes.isRequired,
-    filter: PropTypes.string.isRequired,
-    p: polyglotPropTypes.isRequired,
 };
 
 // @ts-expect-error TS7006

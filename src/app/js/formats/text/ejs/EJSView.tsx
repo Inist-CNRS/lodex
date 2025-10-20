@@ -1,5 +1,4 @@
 import { field as fieldPropTypes } from '../../../propTypes';
-import PropTypes from 'prop-types';
 // @ts-expect-error TS6133
 import React, { useMemo, useState } from 'react';
 // @ts-expect-error TS7016
@@ -11,8 +10,21 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import _ from 'lodash';
 
-// @ts-expect-error TS7031
-const EJSView = ({ field, data, template }) => {
+interface EJSViewProps {
+    field: unknown;
+    resource: object;
+    data?: {
+        total?: number;
+        values?: any;
+    };
+    template: string;
+}
+
+const EJSView = ({
+    field,
+    data,
+    template
+}: EJSViewProps) => {
     const [onError, setOnError] = useState(false);
     const [error, setError] = useState(false);
 
@@ -52,16 +64,6 @@ const EJSView = ({ field, data, template }) => {
     }
 
     return <div dangerouslySetInnerHTML={{ __html: html }}></div>;
-};
-
-EJSView.propTypes = {
-    field: fieldPropTypes.isRequired,
-    resource: PropTypes.object.isRequired,
-    data: PropTypes.shape({
-        total: PropTypes.number,
-        values: PropTypes.any,
-    }),
-    template: PropTypes.string.isRequired,
 };
 
 EJSView.defaultProps = {

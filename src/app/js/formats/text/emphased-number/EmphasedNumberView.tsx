@@ -1,6 +1,5 @@
 // @ts-expect-error TS7016
 import commaNumber from 'comma-number';
-import PropTypes from 'prop-types';
 // @ts-expect-error TS6133
 import React, { Component } from 'react';
 import compose from 'recompose/compose';
@@ -36,9 +35,17 @@ function getNumber(numb) {
     return 0;
 }
 
-class EmphasedNumberView extends Component {
+interface EmphasedNumberViewProps {
+    field: unknown;
+    resource?: object;
+    formatData?: number;
+    className?: string;
+    size: number;
+    colors: string;
+}
+
+class EmphasedNumberView extends Component<EmphasedNumberViewProps> {
     render() {
-        // @ts-expect-error TS2339
         const { field, className, resource, formatData, size, colors } =
             this.props;
 
@@ -60,16 +67,6 @@ class EmphasedNumberView extends Component {
         );
     }
 }
-
-// @ts-expect-error TS2339
-EmphasedNumberView.propTypes = {
-    field: fieldPropTypes.isRequired,
-    resource: PropTypes.object,
-    formatData: PropTypes.number,
-    className: PropTypes.string,
-    size: PropTypes.number.isRequired,
-    colors: PropTypes.string.isRequired,
-};
 
 // @ts-expect-error TS2339
 EmphasedNumberView.defaultProps = {

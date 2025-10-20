@@ -1,21 +1,17 @@
-// @ts-expect-error TS6133
-import React from 'react';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
-import { translate } from '../../i18n/I18NContext';
+import { useTranslate } from '../../i18n/I18NContext';
 
 import { fromResource } from '../selectors';
-import { polyglot as polyglotPropTypes } from '../../propTypes';
-import propositionStatus, {
+import {
     PROPOSED,
     VALIDATED,
     REJECTED,
+    type PropositionStatus,
 } from '../../../../common/propositionStatus';
 
 const styles = {
-    // @ts-expect-error TS7006
-    container: (status) => ({
+    container: (status: PropositionStatus) => ({
         display: 'flex',
         marginRight: '1rem',
         color: status && status !== VALIDATED ? 'grey' : 'black',
@@ -36,14 +32,16 @@ const styles = {
     },
 };
 
+interface PropertyContributorComponentProps {
+    contributor?: string;
+    fieldStatus?: PropositionStatus;
+}
+
 const PropertyContributorComponent = ({
-    // @ts-expect-error TS7031
     contributor,
-    // @ts-expect-error TS7031
     fieldStatus,
-    // @ts-expect-error TS7031
-    p: polyglot,
-}) => {
+}: PropertyContributorComponentProps) => {
+    const { translate } = useTranslate();
     if (!contributor) {
         return null;
     }
@@ -51,8 +49,8 @@ const PropertyContributorComponent = ({
     return (
         <div className="property_contributor" style={styles.scheme}>
             {fieldStatus === PROPOSED
-                ? polyglot.t('contributed_by', { name: contributor })
-                : polyglot.t('added_by', { name: contributor })}
+                ? translate('contributed_by', { name: contributor })
+                : translate('added_by', { name: contributor })}
         </div>
     );
 };
@@ -62,19 +60,12 @@ PropertyContributorComponent.defaultProps = {
     contributor: null,
 };
 
-PropertyContributorComponent.propTypes = {
-    contributor: PropTypes.string,
-    p: polyglotPropTypes.isRequired,
-    fieldStatus: PropTypes.oneOf(propositionStatus),
-};
-
 // @ts-expect-error TS7006
 const mapStateToProps = (state, { fieldName }) => ({
     contributor: fromResource.getResourceContributorForField(state, fieldName),
 });
 
 export default compose(
-    translate,
     connect(mapStateToProps),
     // @ts-expect-error TS2345
 )(PropertyContributorComponent);

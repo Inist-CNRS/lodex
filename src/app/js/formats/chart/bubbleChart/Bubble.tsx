@@ -3,7 +3,6 @@ import React from 'react';
 import memoize from 'lodash/memoize';
 // @ts-expect-error TS7016
 import { hsl } from 'd3-color';
-import PropTypes from 'prop-types';
 import ReactTooltip from 'react-tooltip';
 
 const styles = {
@@ -30,8 +29,23 @@ const styles = {
     })),
 };
 
-// @ts-expect-error TS7031
-const Bubble = ({ r, x, y, name, value, color }) => (
+interface BubbleProps {
+    r: number;
+    x: number;
+    y: number;
+    name: string;
+    color: string;
+    value: number;
+}
+
+const Bubble = ({
+    r,
+    x,
+    y,
+    name,
+    value,
+    color
+}: BubbleProps) => (
     <div
         // @ts-expect-error TS7006
         style={styles.leaf({ r, x, y }, name, color)}
@@ -41,7 +55,7 @@ const Bubble = ({ r, x, y, name, value, color }) => (
     >
         {r > 10 && (
             // @ts-expect-error TS7006
-            <div style={styles.leafLabel({ r, x, y }, color)}>{name}</div>
+            (<div style={styles.leafLabel({ r, x, y }, color)}>{name}</div>)
         )}
         <ReactTooltip
             id={`bubble-${name}`}
@@ -52,14 +66,5 @@ const Bubble = ({ r, x, y, name, value, color }) => (
         />
     </div>
 );
-
-Bubble.propTypes = {
-    r: PropTypes.number.isRequired,
-    x: PropTypes.number.isRequired,
-    y: PropTypes.number.isRequired,
-    name: PropTypes.string.isRequired,
-    color: PropTypes.string.isRequired,
-    value: PropTypes.number.isRequired,
-};
 
 export default Bubble;
