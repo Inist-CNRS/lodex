@@ -1,15 +1,15 @@
-import count from './count';
-import distinct from './distinct';
-import groupby from './groupby';
-import keys from './keys';
-import min from './min';
-import max from './max';
-import merge from './merge';
-import stats from './stats';
-import ventilate from './ventilate';
-import graph from './graph';
-import pairing from './pairing';
-import total from './total';
+import count from './count.js';
+import distinct from './distinct.js';
+import groupby from './groupby.js';
+import keys from './keys.js';
+import min from './min.js';
+import max from './max.js';
+import merge from './merge.js';
+import stats from './stats.js';
+import ventilate from './ventilate.js';
+import graph from './graph.js';
+import pairing from './pairing.js';
+import total from './total.js';
 
 const reducers = {
     count,
