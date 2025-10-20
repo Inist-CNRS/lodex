@@ -1,4 +1,4 @@
-import mongoDatabase from './mongoDatabase';
+import mongoDatabase from './mongoDatabase.js';
 
 export const createFunction = () =>
     async function updateDocument(this: any, data: any, feed: any) {

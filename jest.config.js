@@ -80,7 +80,9 @@ module.exports = {
                 `<rootDir>/packages/ezsLodex/node_modules`,
                 'node_modules',
             ],
-            moduleNameMapper: {},
+            moduleNameMapper: {
+                '^(\\.{1,2}/.*)\\.js$': '$1',
+            },
             testMatch: [
                 '**/test?(s)/**/*.spec.[jt]s?(x)',
                 '**/__tests__/**/*.spec.[jt]s?(x)',

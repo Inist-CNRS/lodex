@@ -4,15 +4,15 @@
         "target": "ES2023",
         "useDefineForClassFields": true,
         "lib": ["ES2023", "DOM", "DOM.Iterable"],
-        "module": "ESNext",
+        "module": "Node16",
         "skipLibCheck": true,
+        "outDir": "lib",
+        "declaration": true,
 
-        /* Bundler mode */
-        "moduleResolution": "bundler",
-        "allowImportingTsExtensions": true,
+        "moduleResolution": "node16",
         "verbatimModuleSyntax": true,
+        "allowSyntheticDefaultImports": true,
         "moduleDetection": "force",
-        "noEmit": true,
         "allowJs": true,
         "jsx": "react-jsx",
 
@@ -23,11 +23,7 @@
         "erasableSyntaxOnly": true,
         "noFallthroughCasesInSwitch": true,
         "noUncheckedSideEffectImports": true,
-        "noImplicitAny": true,
+        "noImplicitAny": true
     },
-    "include": [
-        "vite.config.ts",
-        "src",
-    ],
-    "exclude": ["src/build"]
+    "include": ["src"]
 }

@@ -1,6 +1,6 @@
 import hasher from 'node-object-hash';
-import mongoDatabase from './mongoDatabase';
-import reducers from './reducers/index';
+import mongoDatabase from './mongoDatabase.js';
+import reducers from './reducers/index.js';
 
 const hashCoerce = hasher({ sort: false, coerce: true });
 
