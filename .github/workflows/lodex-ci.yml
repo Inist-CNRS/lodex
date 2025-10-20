@@ -37,6 +37,9 @@ jobs:
             - run: make copy-conf
             - run: npm ci --legacy-peer-deps
 
+            # Build project
+            - run: npm run build
+
             # Run unit test suite
             - run: npm run test:unit
 
@@ -71,6 +74,9 @@ jobs:
             # Install project dependencies (equivalent to make install)
             - run: make copy-conf
             - run: npm ci --legacy-peer-deps
+
+            # Build project
+            - run: npm run build
 
             # Start e2e environment
             - run: make test-e2e-start-dockers
@@ -114,6 +120,9 @@ jobs:
             - run: make copy-conf
             - run: npm ci --legacy-peer-deps
 
+            # Build project
+            - run: npm run build
+
             # Run lint
             - run: npm run lint:test
     type-check:
@@ -140,6 +149,9 @@ jobs:
             # Install project dependencies (equivalent to make install)
             - run: make copy-conf
             - run: npm ci --legacy-peer-deps
+
+            # Build project
+            - run: npm run build
 
             # Run lint
             - run: npm run type-check
