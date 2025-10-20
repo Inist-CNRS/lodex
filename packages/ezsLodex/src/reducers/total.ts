@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { js } from './template';
+import { js } from './template.js';
 
 //
 // MongoDB JS functions :  to sum all values from a field

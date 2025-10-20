@@ -1,4 +1,4 @@
-import mongoDatabase from './mongoDatabase';
+import mongoDatabase from './mongoDatabase.js';
 
 /**
  * Take `Object` containing a MongoDB query and throw the result
