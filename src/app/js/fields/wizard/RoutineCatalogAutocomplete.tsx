@@ -1,6 +1,5 @@
 // @ts-expect-error TS6133
 import React, { useEffect, useMemo, useState } from 'react';
-import PropTypes from 'prop-types';
 import { translate } from '../../i18n/I18NContext';
 import compose from 'recompose/compose';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
@@ -32,8 +31,24 @@ const GroupItems = styled('ul')({
     padding: 0,
 });
 
-// @ts-expect-error TS7031
-const RoutineOption = ({ key, option, polyglot, ...props }) => {
+interface RoutineOptionProps {
+    key: string;
+    option: {
+        title: string;
+        id: string;
+        doc?: string;
+        url?: string;
+        recommendedWith?: unknown[];
+    };
+    polyglot: unknown;
+}
+
+const RoutineOption = ({
+    key,
+    option,
+    polyglot,
+    ...props
+}: RoutineOptionProps) => {
     return (
         <Box key={key} {...props}>
             <Box sx={{ flexGrow: 1, overflow: 'hidden' }}>
@@ -88,29 +103,25 @@ const RoutineOption = ({ key, option, polyglot, ...props }) => {
     );
 };
 
-RoutineOption.propTypes = {
-    key: PropTypes.string.isRequired,
-    option: PropTypes.shape({
-        title: PropTypes.string.isRequired,
-        id: PropTypes.string.isRequired,
-        doc: PropTypes.string,
-        url: PropTypes.string,
-        recommendedWith: PropTypes.array,
-    }).isRequired,
-    polyglot: polyglotPropTypes.isRequired,
-};
+interface RoutineCatalogProps {
+    label: string;
+    p: unknown;
+    onChange(...args: unknown[]): unknown;
+    currentValue?: string;
+    precomputed?: boolean;
+}
 
 const RoutineCatalog = ({
-    // @ts-expect-error TS7031
     p: polyglot,
-    // @ts-expect-error TS7031
+
     label,
-    // @ts-expect-error TS7031
+
     onChange,
-    // @ts-expect-error TS7031
+
     currentValue,
-    precomputed = false,
-}) => {
+
+    precomputed = false
+}: RoutineCatalogProps) => {
     const [value, setValue] = useState(null);
 
     /**
@@ -161,7 +172,7 @@ const RoutineCatalog = ({
     };
 
     return (
-        <Autocomplete
+        (<Autocomplete
             value={value}
             onChange={handleChange}
             isOptionEqualToValue={(option1, option2) => {
@@ -176,7 +187,7 @@ const RoutineCatalog = ({
             getOptionLabel={(option) => option.title}
             renderOption={(props, option) => (
                 // @ts-expect-error TS2741
-                <RoutineOption option={option} polyglot={polyglot} {...props} />
+                (<RoutineOption option={option} polyglot={polyglot} {...props} />)
             )}
             renderInput={(params) => <TextField {...params} label={label} />}
             renderGroup={(params) => (
@@ -185,16 +196,8 @@ const RoutineCatalog = ({
                     <GroupItems>{params.children}</GroupItems>
                 </li>
             )}
-        />
+        />)
     );
-};
-
-RoutineCatalog.propTypes = {
-    label: PropTypes.string.isRequired,
-    p: polyglotPropTypes.isRequired,
-    onChange: PropTypes.func.isRequired,
-    currentValue: PropTypes.string,
-    precomputed: PropTypes.bool,
 };
 
 // @ts-expect-error TS2345

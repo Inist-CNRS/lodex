@@ -1,6 +1,5 @@
 // @ts-expect-error TS6133
 import React from 'react';
-import PropTypes from 'prop-types';
 
 import {
     field as fieldPropTypes,
@@ -26,12 +25,15 @@ import getDecadeFromData from './getDecadeFromData';
 import EmbedButton from './EmbedButton';
 import stylesToClassname from '../../../lib/stylesToClassName';
 
-// @ts-expect-error TS7031
-export const IstexDocument = ({ item }) => <IstexItem {...item} />;
+interface IstexDocumentProps {
+    item: {
+        id: string;
+    };
+}
 
-IstexDocument.propTypes = {
-    item: PropTypes.shape({ id: PropTypes.string.isRequired }).isRequired,
-};
+export const IstexDocument = ({
+    item
+}: IstexDocumentProps) => <IstexItem {...item} />;
 
 // @ts-expect-error TS7006
 export const getComposedComponent = (displayDecade) =>
@@ -61,26 +63,41 @@ const styles = stylesToClassname(
     'istex-summary',
 );
 
+interface IstexSummaryViewProps {
+    fieldStatus?: string;
+    resource: object;
+    field: unknown;
+    formatData?: {
+        hits?: unknown;
+    };
+    error?: string;
+    searchedField?: unknown[];
+    sortDir?: unknown[];
+    yearThreshold: number;
+    documentSortBy: string;
+    p: unknown;
+    showEmbedButton?: boolean;
+}
+
 export const IstexSummaryView = ({
-    // @ts-expect-error TS7031
     formatData,
-    // @ts-expect-error TS7031
+
     field,
-    // @ts-expect-error TS7031
+
     resource,
-    // @ts-expect-error TS7031
+
     searchedField,
-    // @ts-expect-error TS7031
+
     sortDir,
-    // @ts-expect-error TS7031
+
     yearThreshold,
-    // @ts-expect-error TS7031
+
     documentSortBy,
-    // @ts-expect-error TS7031
+
     p: polyglot,
-    // @ts-expect-error TS7031
-    showEmbedButton,
-}) => {
+
+    showEmbedButton
+}: IstexSummaryViewProps) => {
     if (!resource[field.name] || !searchedField) {
         return (
             <InvalidFormat format={field.format} value={resource[field.name]} />
@@ -94,7 +111,7 @@ export const IstexSummaryView = ({
 
     return (
         // @ts-expect-error TS2339
-        <div className={`istex-summary ${styles.container}`}>
+        (<div className={`istex-summary ${styles.container}`}>
             {showEmbedButton && (
                 <EmbedButton
                     // @ts-expect-error TS2769
@@ -116,23 +133,8 @@ export const IstexSummaryView = ({
                 documentSortBy={documentSortBy}
                 polyglot={polyglot}
             />
-        </div>
+        </div>)
     );
-};
-
-IstexSummaryView.propTypes = {
-    fieldStatus: PropTypes.string,
-    resource: PropTypes.object.isRequired,
-    field: fieldPropTypes.isRequired,
-    // @ts-expect-error TS2551
-    formatData: PropTypes.shape({ hits: PropTypes.Array }),
-    error: PropTypes.string,
-    searchedField: PropTypes.oneOf(SEARCHED_FIELD_VALUES),
-    sortDir: PropTypes.oneOf(SORT_YEAR_VALUES),
-    yearThreshold: PropTypes.number.isRequired,
-    documentSortBy: PropTypes.string.isRequired,
-    p: polyglotPropTypes.isRequired,
-    showEmbedButton: PropTypes.bool,
 };
 
 IstexSummaryView.defaultProps = {

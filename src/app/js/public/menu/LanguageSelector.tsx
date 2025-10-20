@@ -1,17 +1,19 @@
-// @ts-expect-error TS6133
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
-import { translate } from '../../i18n/I18NContext';
-import PropTypes from 'prop-types';
-import { polyglot as polyglotPropTypes } from '../../propTypes';
+import { translate, useTranslate } from '../../i18n/I18NContext';
 import { fromI18n } from '../selectors';
 import { setLanguage } from '../../i18n';
 import { Button, Menu, MenuItem } from '@mui/material';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 
-// @ts-expect-error TS7031
-const LanguageSelector = ({ locale, setLanguage, p: polyglot }) => {
+type LanguageSelectorProps = {
+    setLanguage(...args: unknown[]): unknown;
+    locale: string;
+};
+
+const LanguageSelector = ({ locale, setLanguage }: LanguageSelectorProps) => {
+    const { translate } = useTranslate();
     const [languageSelectorAnchorEl, setLanguageSelectorAnchorEl] =
         useState(null);
     const languageSelectorOpen = Boolean(languageSelectorAnchorEl);
@@ -38,7 +40,7 @@ const LanguageSelector = ({ locale, setLanguage, p: polyglot }) => {
                     marginRight: 2,
                 }}
             >
-                {polyglot.t('semantic_language')}
+                {translate('semantic_language')}
                 <br />
                 {locale === 'fr' ? 'français' : 'english'}
             </Button>
@@ -75,12 +77,6 @@ const LanguageSelector = ({ locale, setLanguage, p: polyglot }) => {
             </Menu>
         </>
     );
-};
-
-LanguageSelector.propTypes = {
-    setLanguage: PropTypes.func.isRequired,
-    locale: PropTypes.string.isRequired,
-    p: polyglotPropTypes.isRequired,
 };
 
 // @ts-expect-error TS7006

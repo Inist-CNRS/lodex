@@ -1,12 +1,18 @@
 import { renderHook } from '@testing-library/react-hooks';
-import PropTypes from 'prop-types';
-// @ts-expect-error TS6133
 import React from 'react';
 import { MemoryRouter, Route, Switch } from 'react-router-dom';
 import { useResourceUri } from './useResourceUri';
 
-// @ts-expect-error TS7031
-function TestRouter({ children, ...rest }) {
+interface TestRouterProps {
+    children: React.ReactNode;
+    initialEntries?: string[];
+    initialIndex?: number;
+}
+
+function TestRouter({
+    children,
+    ...rest
+}: TestRouterProps) {
     return (
         <MemoryRouter {...rest}>
             <Switch>
@@ -20,16 +26,9 @@ function TestRouter({ children, ...rest }) {
     );
 }
 
-TestRouter.propTypes = {
-    children: PropTypes.node.isRequired,
-    initialEntries: PropTypes.arrayOf(PropTypes.string),
-    initialIndex: PropTypes.number,
-};
-
 describe('useResourceUri', () => {
     it('should return resource id for UID resources', () => {
         const { result } = renderHook(() => useResourceUri(), {
-            // @ts-expect-error TS2322
             wrapper: TestRouter,
             initialProps: {
                 initialEntries: ['/uid:/0579J7JN'],
@@ -42,7 +41,6 @@ describe('useResourceUri', () => {
 
     it('should return resource id for ARK resources', () => {
         const { result } = renderHook(() => useResourceUri(), {
-            // @ts-expect-error TS2322
             wrapper: TestRouter,
             initialProps: {
                 initialEntries: ['/ark:/67375/1BB-1JGMFXJK-2'],
@@ -55,7 +53,6 @@ describe('useResourceUri', () => {
 
     it('should return "/graph/:name" for graph', () => {
         const { result } = renderHook(() => useResourceUri(), {
-            // @ts-expect-error TS2322
             wrapper: TestRouter,
             initialProps: {
                 initialEntries: ['/graph/gavF'],
@@ -68,7 +65,6 @@ describe('useResourceUri', () => {
 
     it('should return "/" for home', () => {
         const { result } = renderHook(() => useResourceUri(), {
-            // @ts-expect-error TS2322
             wrapper: TestRouter,
             initialProps: {
                 initialEntries: ['/'],
@@ -81,7 +77,6 @@ describe('useResourceUri', () => {
 
     it('should return null otherwise', () => {
         const { result } = renderHook(() => useResourceUri(), {
-            // @ts-expect-error TS2322
             wrapper: TestRouter,
             initialProps: {
                 initialEntries: ['/other'],

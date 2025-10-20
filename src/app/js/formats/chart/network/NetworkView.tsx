@@ -11,7 +11,6 @@ import React, {
 } from 'react';
 import compose from 'recompose/compose';
 
-import PropTypes from 'prop-types';
 import { useTranslate } from '../../../i18n/I18NContext';
 import Loading from '../../../lib/components/Loading';
 import injectData from '../../injectData';
@@ -30,8 +29,15 @@ const styles = {
     },
 };
 
-// @ts-expect-error TS7031
-const Network = ({ formatData, colorSet }) => {
+interface NetworkProps {
+    colorSet?: string[];
+    formatData?: unknown[];
+}
+
+const Network = ({
+    formatData,
+    colorSet
+}: NetworkProps) => {
     const { translate } = useTranslate();
     const [{ width, height }, setDimensions] = useState({
         width: 0,
@@ -117,7 +123,6 @@ const Network = ({ formatData, colorSet }) => {
             value: linkScale(weight),
         }));
 
-        // @ts-expect-error TS7006
         links.forEach((link) => {
             // @ts-expect-error TS18046
             const a = nodes.find((node) => node.id === link.source);
@@ -308,15 +313,6 @@ const Network = ({ formatData, colorSet }) => {
             </FormatFullScreenMode>
         </div>
     );
-};
-
-Network.propTypes = {
-    colorSet: PropTypes.arrayOf(PropTypes.string),
-    formatData: PropTypes.arrayOf({
-        // @ts-expect-error TS2353
-        source: PropTypes.string.isRequired,
-        target: PropTypes.string.isRequired,
-    }),
 };
 
 // @ts-expect-error TS2345

@@ -1,9 +1,9 @@
 import { default as z } from 'zod';
 
-export const ANNOTATION_KIND_REMOVAL = 'removal';
-export const ANNOTATION_KIND_COMMENT = 'comment';
-export const ANNOTATION_KIND_CORRECTION = 'correction';
-export const ANNOTATION_KIND_ADDITION = 'addition';
+export const ANNOTATION_KIND_REMOVAL = 'removal' as const;
+export const ANNOTATION_KIND_COMMENT = 'comment' as const;
+export const ANNOTATION_KIND_CORRECTION = 'correction' as const;
+export const ANNOTATION_KIND_ADDITION = 'addition' as const;
 
 export const kinds: [string, ...string[]] = [
     ANNOTATION_KIND_REMOVAL,
@@ -13,12 +13,24 @@ export const kinds: [string, ...string[]] = [
 ];
 
 export const statuses: [string, ...string[]] = [
-    'to_review',
-    'ongoing',
-    'validated',
-    'rejected',
-    'parking',
+    'to_review' as const,
+    'ongoing' as const,
+    'validated' as const,
+    'rejected' as const,
+    'parking' as const,
 ];
+
+export type AnnotationKind =
+    | typeof ANNOTATION_KIND_REMOVAL
+    | typeof ANNOTATION_KIND_COMMENT
+    | typeof ANNOTATION_KIND_CORRECTION
+    | typeof ANNOTATION_KIND_ADDITION;
+export type AnnotationStatus =
+    | 'to_review'
+    | 'ongoing'
+    | 'validated'
+    | 'rejected'
+    | 'parking';
 
 export const annotationCreationSchema = z
     .object({

@@ -2,12 +2,16 @@ import { useForm } from '@tanstack/react-form';
 // @ts-expect-error TS6133
 import React from 'react';
 
-import { fireEvent, render, userEvent, waitFor } from '../../../../test-utils';
+import { render, userEvent } from '../../../../test-utils';
 import { TestI18N } from '../../i18n/I18NContext';
-import { AutocompleteField } from './AutocompleteField';
+import {
+    AutocompleteField,
+    type AutocompleteFieldProps,
+} from './AutocompleteField';
 
-// @ts-expect-error TS7006
-function TestAutocompleteField(props) {
+function TestAutocompleteField(
+    props: Omit<AutocompleteFieldProps, 'form' | 'name' | 'label'>,
+) {
     const form = useForm({
         defaultValues: {
             name: '',
@@ -27,59 +31,55 @@ function TestAutocompleteField(props) {
     );
 }
 
-TestAutocompleteField.propTypes = {
-    supportsNewValues: AutocompleteField.propTypes.supportsNewValues,
-};
-
 describe('AutocompleteField', () => {
     describe('defined values', () => {
         it('should support to select a value', async () => {
-            const wrapper = render(<TestAutocompleteField />);
+            const screen = render(<TestAutocompleteField />);
 
-            const textbox = wrapper.getByRole('textbox', {
+            const textbox = screen.getByRole('textbox', {
                 name: 'Name',
             });
 
-            await waitFor(() => {
-                fireEvent.mouseDown(textbox);
+            await screen.waitFor(() => {
+                screen.fireEvent.mouseDown(textbox);
             });
 
-            const option = wrapper.getByRole('option', {
+            const option = screen.getByRole('option', {
                 name: 'John',
             });
 
             expect(option).toBeInTheDocument();
 
-            await waitFor(() => {
-                fireEvent.click(option);
+            await screen.waitFor(() => {
+                screen.fireEvent.click(option);
             });
 
             expect(textbox).toHaveValue('John');
         });
 
         it('should support filtering values', async () => {
-            const wrapper = render(<TestAutocompleteField />);
+            const screen = render(<TestAutocompleteField />);
 
-            const textbox = wrapper.getByRole('textbox', {
+            const textbox = screen.getByRole('textbox', {
                 name: 'Name',
             });
 
-            await waitFor(() => {
-                fireEvent.mouseDown(textbox);
+            await screen.waitFor(() => {
+                screen.fireEvent.mouseDown(textbox);
             });
 
-            await waitFor(() => {
+            await screen.waitFor(() => {
                 return userEvent.type(textbox, 'Jo');
             });
 
             expect(
-                wrapper.queryByRole('option', {
+                screen.queryByRole('option', {
                     name: 'John',
                 }),
             ).toBeInTheDocument();
 
             expect(
-                wrapper.queryByRole('option', {
+                screen.queryByRole('option', {
                     name: 'Paul',
                 }),
             ).not.toBeInTheDocument();
@@ -88,62 +88,62 @@ describe('AutocompleteField', () => {
 
     describe('free solo support', () => {
         it('should support to add a new value', async () => {
-            const wrapper = render(<TestAutocompleteField supportsNewValues />);
+            const screen = render(<TestAutocompleteField supportsNewValues />);
 
-            const textbox = wrapper.getByRole('textbox', {
+            const textbox = screen.getByRole('textbox', {
                 name: 'Name',
             });
 
-            await waitFor(() => {
-                fireEvent.mouseDown(textbox);
+            await screen.waitFor(() => {
+                screen.fireEvent.mouseDown(textbox);
             });
 
-            await waitFor(() => {
+            await screen.waitFor(() => {
                 return userEvent.type(textbox, 'Franck');
             });
 
-            await waitFor(() => {
-                const option = wrapper.getByRole('option', {
+            await screen.waitFor(() => {
+                const option = screen.getByRole('option', {
                     name: 'autocomplete_add+{"option":"Franck"}',
                 });
 
                 expect(option).toBeInTheDocument();
 
-                fireEvent.click(option);
+                screen.fireEvent.click(option);
             });
 
             expect(textbox).toHaveValue('Franck');
         });
 
         it('should not support to have a new value if does not support new values', async () => {
-            const wrapper = render(<TestAutocompleteField />);
+            const screen = render(<TestAutocompleteField />);
 
-            const textbox = wrapper.getByRole('textbox', {
+            const textbox = screen.getByRole('textbox', {
                 name: 'Name',
             });
 
-            await waitFor(() => {
-                fireEvent.mouseDown(textbox);
+            await screen.waitFor(() => {
+                screen.fireEvent.mouseDown(textbox);
             });
 
-            await waitFor(() => {
+            await screen.waitFor(() => {
                 return userEvent.type(textbox, 'Franck');
             });
 
-            await waitFor(() => {
+            await screen.waitFor(() => {
                 expect(
-                    wrapper.getByText('autocomplete_no_options'),
+                    screen.getByText('autocomplete_no_options'),
                 ).toBeInTheDocument();
             });
 
             expect(
-                wrapper.queryByRole('option', {
+                screen.queryByRole('option', {
                     name: 'autocomplete_add+{"option":"Franck"}',
                 }),
             ).not.toBeInTheDocument();
 
-            await waitFor(() => {
-                return fireEvent.blur(textbox);
+            await screen.waitFor(() => {
+                return screen.fireEvent.blur(textbox);
             });
 
             expect(textbox).toHaveValue('');

@@ -15,7 +15,6 @@ describe('<RedirectView />', () => {
             // @ts-expect-error TS2769
             <RedirectView
                 className={className}
-                // @ts-expect-error TS2322
                 p={p}
                 resource={resource}
                 field={field}
@@ -36,7 +35,6 @@ describe('<RedirectView />', () => {
             // @ts-expect-error TS2769
             <RedirectView
                 className={className}
-                // @ts-expect-error TS2322
                 p={p}
                 resource={resource}
                 field={field}
@@ -55,11 +53,9 @@ describe('<RedirectView />', () => {
         const field = { name: 'foo' };
 
         const wrapper = shallow(
-            // @ts-expect-error TS2769
             <RedirectView
                 className={className}
                 classes={classes}
-                // @ts-expect-error TS2322
                 p={p}
                 resource={resource}
                 field={field}
@@ -76,7 +72,6 @@ describe('<RedirectView />', () => {
             const url = 'http://myfakelink.com';
 
             const wrapper = shallow(
-                // @ts-expect-error TS2769
                 <RedirectViewLoader
                     classes={classes}
                     title={title}
@@ -93,7 +88,6 @@ describe('<RedirectView />', () => {
             const url = 'http://myfakelink.com';
 
             const wrapper = shallow(
-                // @ts-expect-error TS2769
                 <RedirectViewLoader
                     classes={classes}
                     title={title}

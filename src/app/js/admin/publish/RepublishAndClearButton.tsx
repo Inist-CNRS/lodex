@@ -13,7 +13,6 @@ import {
 } from '@mui/material';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
-import PropTypes from 'prop-types';
 import ClearAllIcon from '@mui/icons-material/ClearAll';
 import PublishedWithChangesIcon from '@mui/icons-material/PublishedWithChanges';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
@@ -28,12 +27,16 @@ const options = [
     { label: 'clear_publish', icon: <ClearAllIcon /> },
 ];
 
+interface RepublishAndClearButtonComponentProps {
+    p: unknown;
+    onPublish(...args: unknown[]): unknown;
+}
+
 export const RepublishAndClearButtonComponent = ({
-    // @ts-expect-error TS7031
     p: polyglot,
-    // @ts-expect-error TS7031
-    onPublish,
-}) => {
+
+    onPublish
+}: RepublishAndClearButtonComponentProps) => {
     const [open, setOpen] = React.useState(false);
     const [showClearDialog, setShowClearDialog] = useState(false);
 
@@ -161,11 +164,6 @@ export const RepublishAndClearButtonComponent = ({
             )}
         </React.Fragment>
     );
-};
-
-RepublishAndClearButtonComponent.propTypes = {
-    p: polyglotPropTypes.isRequired,
-    onPublish: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = () => ({});

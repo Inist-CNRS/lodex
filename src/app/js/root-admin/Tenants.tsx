@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
 // @ts-expect-error TS6133
 import 'react-toastify/dist/ReactToastify.css';
-import PropTypes from 'prop-types';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
@@ -32,8 +31,20 @@ import { sizeConverter } from './rootAdminUtils';
 
 const baseUrl = getHost();
 
-// @ts-expect-error TS7031
-const Tenants = ({ handleLogout }) => {
+export type Tenant = {
+    _id: string;
+    name?: string;
+    description: string;
+    author: string;
+    username: string;
+    password: string;
+};
+
+type TenantsProps = {
+    handleLogout(): void;
+};
+
+const Tenants = ({ handleLogout }: TenantsProps) => {
     const [tenants, setTenants] = useState([]);
     const [openCreateTenantDialog, setOpenCreateTenantDialog] = useState(false);
     const [openDeleteTenantDialog, setOpenDeleteTenantDialog] = useState(false);
@@ -222,6 +233,8 @@ const Tenants = ({ handleLogout }) => {
                      // @ts-expect-error TS2741 */}
                     <GridToolbarColumnsButton />
                 </Tooltip>
+                {/*
+                     // @ts-expect-error TS2741 */}
                 <GridToolbarFilterButton />
                 <Tooltip title={'Densité'}>
                     {/*
@@ -489,17 +502,13 @@ const Tenants = ({ handleLogout }) => {
 
             <DeleteTenantDialog
                 isOpen={!!openDeleteTenantDialog}
-                tenant={openDeleteTenantDialog}
+                tenant={tenantToUpdate}
                 handleClose={() => setOpenDeleteTenantDialog(false)}
                 deleteAction={deleteTenant}
             />
             <ToastContainer />
         </>
     );
-};
-
-Tenants.propTypes = {
-    handleLogout: PropTypes.func.isRequired,
 };
 
 export default Tenants;

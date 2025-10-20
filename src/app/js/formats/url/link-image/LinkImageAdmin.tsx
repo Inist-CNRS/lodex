@@ -1,6 +1,5 @@
 // @ts-expect-error TS6133
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { polyglot as polyglotPropTypes } from '../../../propTypes';
 import { TextField, MenuItem } from '@mui/material';
 import {
@@ -16,49 +15,42 @@ export const defaultArgs = {
     maxHeight: 200,
 };
 
-class LinkImageAdmin extends Component {
-    static propTypes = {
-        args: PropTypes.shape({
-            type: PropTypes.string,
-            value: PropTypes.string,
-            maxHeight: PropTypes.number,
-        }),
-        onChange: PropTypes.func.isRequired,
-        p: polyglotPropTypes.isRequired,
+interface LinkImageAdminProps {
+    args?: {
+        type?: string;
+        value?: string;
+        maxHeight?: number;
     };
+    onChange(...args: unknown[]): unknown;
+    p: unknown;
+}
 
+class LinkImageAdmin extends Component<LinkImageAdminProps> {
     static defaultProps = {
         args: defaultArgs,
     };
 
     // @ts-expect-error TS7006
     handleType = (e) => {
-        // @ts-expect-error TS2339
         const newArgs = { ...this.props.args, type: e.target.value };
-        // @ts-expect-error TS2339
         this.props.onChange(newArgs);
     };
 
     // @ts-expect-error TS7006
     handleValue = (e) => {
-        // @ts-expect-error TS2339
         const newArgs = { ...this.props.args, value: e.target.value };
-        // @ts-expect-error TS2339
         this.props.onChange(newArgs);
     };
 
     // @ts-expect-error TS7006
     handleMaxHeight = (e) => {
         const maxHeight = Math.max(e.target.value, 1);
-        // @ts-expect-error TS2339
         const newArgs = { ...this.props.args, maxHeight };
-        // @ts-expect-error TS2339
         this.props.onChange(newArgs);
     };
 
     render() {
         const {
-            // @ts-expect-error TS2339
             p: polyglot,
             // @ts-expect-error TS2339
             args: { type, value, maxHeight },

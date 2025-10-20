@@ -5,7 +5,6 @@ import zip from 'lodash/zip';
 import flatten from 'lodash/flatten';
 
 import injectData from '../../injectData';
-import PropTypes from 'prop-types';
 import Loading from '../../../lib/components/Loading';
 import { useTranslate } from '../../../i18n/I18NContext';
 import { ClientOnly, useClientOnly } from 'react-client-only';
@@ -22,14 +21,20 @@ const styles = {
 
 const LazyMap = React.lazy(() => import('./LeafletMap'));
 
+interface LeafletViewProps {
+    formatData: unknown[];
+    p: unknown;
+    zoom?: number;
+    center?: number[];
+}
+
 const LeafletView = ({
-    // @ts-expect-error TS7031
     formatData,
-    // @ts-expect-error TS7031
+
     zoom,
-    // @ts-expect-error TS7031
-    center,
-}) => {
+
+    center
+}: LeafletViewProps) => {
     const mounted = useClientOnly();
 
     const { translate } = useTranslate();
@@ -59,7 +64,6 @@ const LeafletView = ({
         }
         const formatDataNormalized = flatten(
             formatData
-                // @ts-expect-error TS7006
                 .map((x) => {
                     // Multi values for all cases
                     let a = x._id;
@@ -84,13 +88,11 @@ const LeafletView = ({
                         b,
                     };
                 })
-                // @ts-expect-error TS7006
                 .map((y) => {
                     return zip(y.a, y.b);
                 }),
         );
         return {
-            // @ts-expect-error TS7031
             input: formatDataNormalized.map(([_id, value]) => {
                 let latlng; // see https://leafletjs.com/reference.html#latlng
                 try {
@@ -158,13 +160,6 @@ const LeafletView = ({
             </ClientOnly>
         </div>
     );
-};
-
-LeafletView.propTypes = {
-    formatData: PropTypes.array.isRequired,
-    p: polyglotPropTypes.isRequired,
-    zoom: PropTypes.number,
-    center: PropTypes.arrayOf(PropTypes.number),
 };
 
 // @ts-expect-error TS2345

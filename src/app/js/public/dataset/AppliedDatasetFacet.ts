@@ -26,4 +26,5 @@ export default compose(
                 () =>
                     onClearFacet(name),
     }),
+    // @ts-expect-error TS2322
 )(AppliedFacet);

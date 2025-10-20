@@ -32,8 +32,6 @@ const theme = createTheme(defaultMuiTheme, {
 const App = (props) => (
     <MuiThemeProvider theme={theme}>
         <FieldProvider {...props}>
-            {/*
-             // @ts-expect-error TS7031 */}
             {({ resource, field, formatData }) => (
                 <IstexSummaryView
                     {...field.format.args}

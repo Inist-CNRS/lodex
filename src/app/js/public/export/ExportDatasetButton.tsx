@@ -17,7 +17,6 @@ import {
 } from '@mui/material';
 // @ts-expect-error TS7016
 import CancelIcon from '@mui/material/internal/svg-icons/Cancel';
-import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 
@@ -31,18 +30,21 @@ import CancelButton from '../../lib/components/CancelButton';
 
 import datasetApi from '../../admin/api/dataset';
 
+type ExportDatasetButtonComponentProps = {
+    dumpDataset(...args: unknown[]): unknown;
+    loading?: boolean;
+    disabled?: boolean;
+    onDone(...args: unknown[]): unknown;
+    choices: string[];
+};
+
 export const ExportDatasetButtonComponent = ({
-    // @ts-expect-error TS7031
     dumpDataset,
-    // @ts-expect-error TS7031
     loading,
-    // @ts-expect-error TS7031
     disabled,
-    // @ts-expect-error TS7031
     onDone,
-    // @ts-expect-error TS7031
     choices,
-}) => {
+}: ExportDatasetButtonComponentProps) => {
     const { translate } = useTranslate();
     const [isOpen, setIsOpen] = React.useState(false);
 
@@ -179,14 +181,6 @@ export const ExportDatasetButtonWithFetch = (props) => {
     }
 
     return <ExportDatasetButtonComponent {...props} choices={choices} />;
-};
-
-ExportDatasetButtonComponent.propTypes = {
-    dumpDataset: PropTypes.func.isRequired,
-    loading: PropTypes.bool,
-    disabled: PropTypes.bool,
-    onDone: PropTypes.func.isRequired,
-    choices: PropTypes.array,
 };
 
 export const ExportDatasetButton = connect(

@@ -1,11 +1,16 @@
 import { Grid, Typography, useTheme } from '@mui/material';
-// @ts-expect-error TS6133
 import React from 'react';
 import { useTranslate } from '../../i18n/I18NContext';
-import PropTypes from 'prop-types';
 
-// @ts-expect-error TS7031
-export const AnnotationValue = ({ value, label }) => {
+interface AnnotationValueProps {
+    label: string;
+    value?: React.ReactNode;
+}
+
+export const AnnotationValue = ({
+    value,
+    label
+}: AnnotationValueProps) => {
     const { translate } = useTranslate();
     const theme = useTheme();
 
@@ -29,9 +34,4 @@ export const AnnotationValue = ({ value, label }) => {
             </Grid>
         </>
     );
-};
-
-AnnotationValue.propTypes = {
-    label: PropTypes.string.isRequired,
-    value: PropTypes.node,
 };

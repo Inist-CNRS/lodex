@@ -1,13 +1,11 @@
 // @ts-expect-error TS6133
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import { push } from 'redux-first-history';
 import { Helmet } from 'react-helmet';
 import { Card } from '@mui/material';
 
-import { polyglot as polyglotPropTypes } from '../propTypes';
 import { preLoadPublication as preLoadPublicationAction } from '../fields';
 import { fromFields, fromCharacteristic } from '../sharedSelectors';
 import Alert from '../lib/components/Alert';
@@ -20,51 +18,41 @@ import { preLoadDatasetPage } from './dataset';
 import { preLoadExporters } from './export';
 import { translate } from '../i18n/I18NContext';
 
-export class HomeComponent extends Component {
+interface HomeComponentProps {
+    error?: string;
+    loading: boolean;
+    preLoadPublication(...args: unknown[]): unknown;
+    preLoadDatasetPage(...args: unknown[]): unknown;
+    preLoadExporters(...args: unknown[]): unknown;
+    hasPublishedDataset: boolean;
+    navigateTo(...args: unknown[]): unknown;
+    p: any;
+    title?: string;
+    description?: string;
+    tenant?: string;
+}
+
+export class HomeComponent extends Component<HomeComponentProps> {
     static defaultProps = {
         error: null,
         title: null,
         description: null,
     };
 
-    static propTypes = {
-        error: PropTypes.string,
-        loading: PropTypes.bool.isRequired,
-        preLoadPublication: PropTypes.func.isRequired,
-        preLoadDatasetPage: PropTypes.func.isRequired,
-        preLoadExporters: PropTypes.func.isRequired,
-        hasPublishedDataset: PropTypes.bool.isRequired,
-        navigateTo: PropTypes.func.isRequired,
-        p: polyglotPropTypes.isRequired,
-        title: PropTypes.string,
-        description: PropTypes.string,
-        tenant: PropTypes.string,
-    };
-
     UNSAFE_componentWillMount() {
-        // @ts-expect-error TS2339
         this.props.preLoadPublication();
-        // @ts-expect-error TS2339
         this.props.preLoadDatasetPage();
-        // @ts-expect-error TS2339
         this.props.preLoadExporters();
     }
 
     render() {
         const {
-            // @ts-expect-error TS2339
             error,
-            // @ts-expect-error TS2339
             hasPublishedDataset,
-            // @ts-expect-error TS2339
             loading,
-            // @ts-expect-error TS2339
             p: polyglot,
-            // @ts-expect-error TS2339
             title,
-            // @ts-expect-error TS2339
             description,
-            // @ts-expect-error TS2339
             tenant,
         } = this.props;
 

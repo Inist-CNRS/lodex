@@ -1,9 +1,5 @@
-// @ts-expect-error TS6133
-import React from 'react';
-import PropTypes from 'prop-types';
-import { translate } from '../../i18n/I18NContext';
+import { useTranslate } from '../../i18n/I18NContext';
 import compose from 'recompose/compose';
-import { polyglot as polyglotPropType } from '../../propTypes';
 import { Box, Button } from '@mui/material';
 
 import { fromFacet, fromDisplayConfig } from '../selectors';
@@ -13,20 +9,26 @@ import apiFacet from '../../admin/api/facet';
 import { facetActions as datasetActions } from '../dataset';
 import { facetActions as searchActions } from '../search/reducer';
 
+type FacetValueAllProps = {
+    facetData: {
+        filter: string;
+        sort?: Record<string, unknown>;
+    };
+    name: string;
+    setAllValueForFacet(value: { name: string; values: unknown }): unknown;
+    page: string;
+    total: number;
+    maxCheckAllValue: number;
+};
+
 const FacetValueAll = ({
-    // @ts-expect-error TS7031
     facetData,
-    // @ts-expect-error TS7031
     name,
-    // @ts-expect-error TS7031
-    p: polyglot,
-    // @ts-expect-error TS7031
     setAllValueForFacet,
-    // @ts-expect-error TS7031
     total,
-    // @ts-expect-error TS7031
     maxCheckAllValue,
-}) => {
+}: FacetValueAllProps) => {
+    const { translate } = useTranslate();
     const handleChange = async () => {
         const result = await apiFacet.getFacetsFiltered({
             field: name,
@@ -43,23 +45,13 @@ const FacetValueAll = ({
              // @ts-expect-error TS2769 */}
             <Button onClick={handleChange} variant="link" sx={{ paddingX: 0 }}>
                 {total > maxCheckAllValue
-                    ? polyglot.t('check_x_first_value_facet', {
+                    ? translate('check_x_first_value_facet', {
                           limit: maxCheckAllValue,
                       })
-                    : polyglot.t('check_all_value_facet')}
+                    : translate('check_all_value_facet')}
             </Button>
         </Box>
     );
-};
-
-FacetValueAll.propTypes = {
-    facetData: PropTypes.object.isRequired,
-    name: PropTypes.string.isRequired,
-    p: polyglotPropType.isRequired,
-    setAllValueForFacet: PropTypes.func.isRequired,
-    page: PropTypes.string.isRequired,
-    total: PropTypes.number.isRequired,
-    maxCheckAllValue: PropTypes.number.isRequired,
 };
 
 const actionsByPage = {
@@ -87,7 +79,6 @@ const mapDispatchToProps = (dispatch, { page }) => ({
 });
 
 export default compose(
-    translate,
     connect(mapStateToProps, mapDispatchToProps),
     // @ts-expect-error TS2345
 )(FacetValueAll);

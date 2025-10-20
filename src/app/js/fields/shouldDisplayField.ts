@@ -4,13 +4,21 @@ import isEmpty from '../../../common/lib/isEmpty';
 import { REJECTED } from '../../../common/propositionStatus';
 
 export const shouldDisplayField = (
-    // @ts-expect-error TS7006
-    resource,
-    // @ts-expect-error TS7006
-    field,
-    // @ts-expect-error TS7006
-    fieldStatus,
-    predicate = () => true,
+    resource: Record<string, unknown>,
+    field: {
+        name: string;
+        format: {
+            name: string;
+            args: {
+                value: string;
+            };
+        };
+        composedOf?: {
+            fields: string[];
+        };
+    },
+    fieldStatus: string,
+    predicate: (value: unknown) => boolean = () => true,
     isAdmin = false,
     canAnnotate = false,
 ) => {
@@ -32,7 +40,6 @@ export const shouldDisplayField = (
     const isComposedField = Boolean(field.composedOf);
 
     if (!isComposedField) {
-        // @ts-expect-error TS2554
         return !isFieldEmpty && predicate(value);
     }
 

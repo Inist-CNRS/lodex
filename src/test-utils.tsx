@@ -4,8 +4,7 @@ import {
 } from '@mui/material/styles';
 import { render } from '@testing-library/react';
 import { createMemoryHistory } from 'history';
-import PropTypes from 'prop-types';
-import { type ReactElement } from 'react';
+import { type ReactNode } from 'react';
 import { Provider } from 'react-redux';
 
 import userEvent from '@testing-library/user-event';
@@ -30,7 +29,7 @@ export const Wrapper = ({
     children,
     store,
 }: {
-    children: ReactElement;
+    children: ReactNode;
     store: Store;
 }) => (
     <Provider store={store}>
@@ -42,100 +41,21 @@ export const Wrapper = ({
     </Provider>
 );
 
-Wrapper.propTypes = {
-    children: PropTypes.node.isRequired,
-};
-
 export const getStore = (initialState = {}) =>
     configureStore(reducers, sagas, initialState, memoryHistory).store;
 
 const customRender = (
-    ui: ReactElement,
+    ui: ReactNode,
     { initialState = {}, ...options } = {},
 ) => {
     const store = getStore(initialState);
-    const WrapperWithStore = ({ children }: { children: ReactElement }) => (
+    const WrapperWithStore = ({ children }: { children: ReactNode }) => (
         <Wrapper store={store}>{children}</Wrapper>
     );
 
     return render(ui, { wrapper: WrapperWithStore, ...options });
 };
 
-export {
-    act,
-    buildQueries,
-    cleanup,
-    configure,
-    createEvent,
-    findAllByAltText,
-    findAllByDisplayValue,
-    findAllByLabelText,
-    findAllByPlaceholderText,
-    findAllByRole,
-    findAllByTestId,
-    findAllByText,
-    findAllByTitle,
-    findByAltText,
-    findByDisplayValue,
-    findByLabelText,
-    findByPlaceholderText,
-    findByRole,
-    findByTestId,
-    findByText,
-    findByTitle,
-    fireEvent,
-    getAllByAltText,
-    getAllByDisplayValue,
-    getAllByLabelText,
-    getAllByPlaceholderText,
-    getAllByRole,
-    getAllByTestId,
-    getAllByText,
-    getAllByTitle,
-    getByAltText,
-    getByDisplayValue,
-    getByLabelText,
-    getByPlaceholderText,
-    getByRole,
-    getByTestId,
-    getByText,
-    getByTitle,
-    getConfig,
-    getDefaultNormalizer,
-    getElementError,
-    getNodeText,
-    getQueriesForElement,
-    getRoles,
-    getSuggestedQuery,
-    isInaccessible,
-    logDOM,
-    logRoles,
-    prettyDOM,
-    prettyFormat,
-    queries,
-    queryAllByAltText,
-    queryAllByAttribute,
-    queryAllByDisplayValue,
-    queryAllByLabelText,
-    queryAllByPlaceholderText,
-    queryAllByRole,
-    queryAllByTestId,
-    queryAllByText,
-    queryAllByTitle,
-    queryByAltText,
-    queryByAttribute,
-    queryByDisplayValue,
-    queryByLabelText,
-    queryByPlaceholderText,
-    queryByRole,
-    queryByTestId,
-    queryByText,
-    queryByTitle,
-    queryHelpers,
-    screen,
-    waitFor,
-    waitForElementToBeRemoved,
-    within,
-} from '@testing-library/react';
+export { act, cleanup, configure, getConfig } from '@testing-library/react';
 
 export { customRender as render, userEvent };

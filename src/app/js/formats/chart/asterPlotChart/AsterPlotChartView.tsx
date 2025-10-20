@@ -1,6 +1,5 @@
 // @ts-expect-error TS6133
 import React from 'react';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import compose from 'recompose/compose';
@@ -63,24 +62,26 @@ const styles = stylesToClassname(
     'aster-plot-chart-view',
 );
 
-// @ts-expect-error TS7031
-const AsterPlotChartView = ({ data, colorSet }) => {
+interface AsterPlotChartViewProps {
+    data: unknown[];
+    colorSet?: string[];
+}
+
+const AsterPlotChartView = ({
+    data,
+    colorSet
+}: AsterPlotChartViewProps) => {
     return (
         // @ts-expect-error TS2339
-        <div className={styles.container}>
+        (<div className={styles.container}>
             <AsterPlot
                 data={data}
                 width={200}
                 height={200}
                 colorSet={colorSet}
             />
-        </div>
+        </div>)
     );
-};
-
-AsterPlotChartView.propTypes = {
-    data: PropTypes.array.isRequired,
-    colorSet: PropTypes.arrayOf(PropTypes.string),
 };
 
 // @ts-expect-error TS7006

@@ -1,6 +1,3 @@
-// @ts-expect-error TS6133
-import React from 'react';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import withHandlers from 'recompose/withHandlers';
@@ -10,15 +7,11 @@ import { List, Popover, IconButton, Tooltip, Box } from '@mui/material';
 import { fromFields } from '../../sharedSelectors';
 import ValidationField from './ValidationField';
 
-import {
-    validationField as validationFieldPropType,
-    polyglot as polyglotPropTypes,
-} from '../../propTypes';
 import { SCOPE_DOCUMENT } from '../../../../common/scope';
 import { useHistory } from 'react-router-dom';
 import { getEditFieldRedirectUrl } from '../../fields/FieldGrid';
 import WarningIcon from '@mui/icons-material/Warning';
-import { translate } from '../../i18n/I18NContext';
+import { useTranslate } from '../../i18n/I18NContext';
 
 const anchorOrigin = { horizontal: 'right', vertical: 'top' };
 const targetOrigin = { horizontal: 'right', vertical: 'bottom' };
@@ -31,25 +24,33 @@ const styles = {
     },
 };
 
+interface ValidationButtonComponentProps {
+    popover: {
+        show: boolean;
+        anchorEl?: HTMLElement;
+    };
+    handleEditField(...args: unknown[]): unknown;
+    fields: {
+        name: string;
+        scope: string;
+        subresourceId?: string;
+    }[];
+    handleHideErrors(...args: unknown[]): unknown;
+    handleShowErrorsClick(...args: unknown[]): unknown;
+}
+
 const ValidationButtonComponent = ({
-    // @ts-expect-error TS7031
     handleEditField,
-    // @ts-expect-error TS7031
     fields,
-    // @ts-expect-error TS7031
     handleHideErrors,
-    // @ts-expect-error TS7031
     handleShowErrorsClick,
-    // @ts-expect-error TS7031
     popover,
-    // @ts-expect-error TS7031
-    p: polyglot,
-}) => {
+}: ValidationButtonComponentProps) => {
+    const { translate } = useTranslate();
     const history = useHistory();
     // @TODO: Find a better way to handle fix error from data tab
     // @ts-expect-error TS7019
     const redirectAndHandleEditField = (...args) => {
-        // @ts-expect-error TS7031
         const field = fields.find(({ name }) => name === args[0]);
         handleEditField();
         const redirectUrl = getEditFieldRedirectUrl(
@@ -62,7 +63,7 @@ const ValidationButtonComponent = ({
 
     return (
         <Box sx={styles.container}>
-            <Tooltip title={polyglot.t(`show_publication_errors`)}>
+            <Tooltip title={translate(`show_publication_errors`)}>
                 {/*
                  // @ts-expect-error TS2769 */}
                 <IconButton
@@ -100,8 +101,6 @@ const ValidationButtonComponent = ({
                 onClose={handleHideErrors}
             >
                 <List className="validation">
-                    {/*
-                     // @ts-expect-error TS7006 */}
                     {fields.map((field) => (
                         <ValidationField
                             key={field.name}
@@ -116,14 +115,6 @@ const ValidationButtonComponent = ({
     );
 };
 
-ValidationButtonComponent.propTypes = {
-    popover: PropTypes.object,
-    handleEditField: PropTypes.func.isRequired,
-    fields: PropTypes.arrayOf(validationFieldPropType).isRequired,
-    handleHideErrors: PropTypes.func.isRequired,
-    handleShowErrorsClick: PropTypes.func.isRequired,
-    p: polyglotPropTypes.isRequired,
-};
 ValidationButtonComponent.defaultProps = {
     popover: { show: false },
 };
@@ -161,6 +152,5 @@ export default compose(
                 setShowPopover({ show: false });
             },
     }),
-    translate,
     // @ts-expect-error TS2345
 )(ValidationButtonComponent);

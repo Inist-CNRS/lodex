@@ -1,10 +1,8 @@
-// @ts-expect-error TS6133
-import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
 // @ts-expect-error TS7016
 import { StyleSheetTestUtils } from 'aphrodite';
 
-import { render, screen } from '../../../../test-utils';
+import { render } from '../../../../test-utils';
 import SearchResult from './SearchResult';
 
 describe('SearchResult', () => {
@@ -13,8 +11,8 @@ describe('SearchResult', () => {
         localStorage.clear();
     });
 
-    it('should render the search result using fieldNames as mapping and fields', () => {
-        render(
+    it('should const screen = render the search result using fieldNames as mapping and fields', () => {
+        const screen = render(
             <MemoryRouter>
                 <SearchResult
                     closeDrawer={() => {}}
@@ -51,9 +49,9 @@ describe('SearchResult', () => {
         expect(screen.getByText('Resource Detail 3')).toBeInTheDocument();
     });
 
-    it('should render the search result with no active class when resource uri is not in localStorage', () => {
+    it('should const screen = render the search result with no active class when resource uri is not in localStorage', () => {
         localStorage.setItem('default-viewed-resources', JSON.stringify([]));
-        const { container } = render(
+        const screen = render(
             <MemoryRouter>
                 <SearchResult
                     closeDrawer={() => {}}
@@ -85,17 +83,17 @@ describe('SearchResult', () => {
 
         screen.debug();
 
-        expect(container.querySelector('.search-result-link')).not.toHaveClass(
-            'search-result-activeLink',
-        );
+        expect(
+            screen.container.querySelector('.search-result-link'),
+        ).not.toHaveClass('search-result-activeLink');
     });
 
-    it('should render the search result with active class when resource uri is in localStorage', () => {
+    it('should const screen = render the search result with active class when resource uri is in localStorage', () => {
         localStorage.setItem(
             'default-viewed-resources',
             JSON.stringify(['resource/uri']),
         );
-        const { container } = render(
+        const screen = render(
             <MemoryRouter>
                 <SearchResult
                     closeDrawer={() => {}}
@@ -127,8 +125,8 @@ describe('SearchResult', () => {
 
         screen.debug();
 
-        expect(container.querySelector('.search-result-link')).toHaveClass(
-            'search-result-activeLink',
-        );
+        expect(
+            screen.container.querySelector('.search-result-link'),
+        ).toHaveClass('search-result-activeLink');
     });
 });

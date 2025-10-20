@@ -1,6 +1,5 @@
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import PropTypes from 'prop-types';
 // @ts-expect-error TS6133
 import React, { useMemo } from 'react';
 import { useTranslate } from '../../../i18n/I18NContext';
@@ -20,8 +19,13 @@ const getAnnotationResourceTitle = ({ resourceUri, field }, translate) => {
     return resourceUri;
 };
 
-// @ts-expect-error TS7031
-export function AnnotationHeader({ annotation }) {
+interface AnnotationHeaderProps {
+    annotation?: object;
+}
+
+export function AnnotationHeader({
+    annotation
+}: AnnotationHeaderProps) {
     const { translate } = useTranslate();
 
     const subtitle = useMemo(() => {
@@ -61,7 +65,3 @@ export function AnnotationHeader({ annotation }) {
         </Stack>
     );
 }
-
-AnnotationHeader.propTypes = {
-    annotation: PropTypes.object,
-};

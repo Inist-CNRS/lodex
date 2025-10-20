@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 // @ts-expect-error TS6133
 import React from 'react';
 
@@ -8,16 +7,19 @@ import { AutocompleteMultipleField } from '../../lib/components/AutocompleteMult
 
 const NAME = 'proposedValue';
 
+export type ProposedValueFieldListProps = {
+    form: object;
+    options: string[];
+    multiple?: boolean;
+    supportsNewValues?: boolean;
+};
+
 export function ProposedValueFieldList({
-    // @ts-expect-error TS7031
     form,
-    // @ts-expect-error TS7031
     options,
-    // @ts-expect-error TS7031
     multiple,
-    // @ts-expect-error TS7031
     supportsNewValues,
-}) {
+}: ProposedValueFieldListProps) {
     const { translate } = useTranslate();
     const label = `${translate('annotation.proposedValue')} *`;
 
@@ -45,10 +47,3 @@ export function ProposedValueFieldList({
         />
     );
 }
-
-ProposedValueFieldList.propTypes = {
-    form: PropTypes.object.isRequired,
-    options: PropTypes.arrayOf(PropTypes.string).isRequired,
-    multiple: PropTypes.bool,
-    supportsNewValues: PropTypes.bool,
-};

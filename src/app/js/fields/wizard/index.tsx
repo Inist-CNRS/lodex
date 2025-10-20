@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 import { connect, useDispatch } from 'react-redux';
 import { compose, withProps } from 'recompose';
@@ -33,28 +32,42 @@ import { FormProvider, useForm } from 'react-hook-form';
 const ACTIONS_BAR_HEIGHT = 70;
 const PREVIEW_WIDTH = 320;
 
+interface FieldEditionWizardComponentProps {
+    currentEditedField?: unknown;
+    fields?: unknown[];
+    fieldsFromFilter?: unknown[];
+    filter?: string;
+    saveField(...args: unknown[]): unknown;
+    handleHideExistingColumns(...args: unknown[]): unknown;
+    p: unknown;
+    fieldName?: string;
+    history?: {
+        push(...args: unknown[]): unknown;
+    };
+    isFieldsLoading: boolean;
+}
+
 const FieldEditionWizardComponent = ({
-    // @ts-expect-error TS7031
     currentEditedField,
-    // @ts-expect-error TS7031
+
     fields,
-    // @ts-expect-error TS7031
+
     fieldsFromFilter,
-    // @ts-expect-error TS7031
+
     filter,
-    // @ts-expect-error TS7031
+
     saveField,
-    // @ts-expect-error TS7031
+
     handleHideExistingColumns,
-    // @ts-expect-error TS7031
+
     fieldName,
-    // @ts-expect-error TS7031
+
     history,
-    // @ts-expect-error TS7031
+
     isFieldsLoading,
-    // @ts-expect-error TS7031
-    p: polyglot,
-}) => {
+
+    p: polyglot
+}: FieldEditionWizardComponentProps) => {
     const [tabValue, setTabValue] = useState(0);
 
     // handle page loading before the field has started loading
@@ -298,21 +311,6 @@ const FieldEditionWizardComponent = ({
             </form>
         </FormProvider>
     );
-};
-
-FieldEditionWizardComponent.propTypes = {
-    currentEditedField: fieldPropTypes,
-    fields: PropTypes.arrayOf(fieldPropTypes),
-    fieldsFromFilter: PropTypes.arrayOf(fieldPropTypes),
-    filter: PropTypes.string,
-    saveField: PropTypes.func.isRequired,
-    handleHideExistingColumns: PropTypes.func.isRequired,
-    p: polyglotPropTypes.isRequired,
-    fieldName: PropTypes.string,
-    history: PropTypes.shape({
-        push: PropTypes.func.isRequired,
-    }),
-    isFieldsLoading: PropTypes.bool.isRequired,
 };
 
 FieldEditionWizardComponent.defaultProps = {

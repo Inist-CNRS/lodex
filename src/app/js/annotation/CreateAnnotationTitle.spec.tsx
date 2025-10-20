@@ -5,10 +5,14 @@ import { CreateAnnotationTitle } from './CreateAnnotationTitle';
 import { useForm } from '@tanstack/react-form';
 import { render } from '../../../test-utils';
 import { COMMENT_STEP, TARGET_STEP } from './steps';
-import PropTypes from 'prop-types';
 
-// @ts-expect-error TS7031
-function TestTitle({ formTarget, ...props }) {
+interface TestTitleProps {
+    formTarget?: string;
+    step: string;
+    fieldLabel?: string;
+}
+
+function TestTitle({ formTarget, ...props }: TestTitleProps) {
     const form = useForm({
         defaultValues: {
             target: formTarget,
@@ -27,43 +31,37 @@ function TestTitle({ formTarget, ...props }) {
     );
 }
 
-TestTitle.propTypes = {
-    formTarget: PropTypes.string,
-};
-
 describe('CreateAnnotationTitle', () => {
     it('should render annotate field title with no label when step is TARGET_STEP', async () => {
-        // @ts-expect-error TS2741
-        const wrapper = render(<TestTitle step={TARGET_STEP} />);
+        const screen = render(<TestTitle step={TARGET_STEP} />);
         expect(
-            wrapper.queryByText(
+            screen.queryByText(
                 'annotation_title_annotate_field_no_field_label',
             ),
         ).toBeInTheDocument();
     });
     it('should render annotate field title with no label when step is TARGET_STEP', async () => {
-        const wrapper = render(
-            // @ts-expect-error TS2741
+        const screen = render(
             <TestTitle step={TARGET_STEP} fieldLabel="Field Label" />,
         );
         expect(
-            wrapper.queryByText(
+            screen.queryByText(
                 'annotation_title_annotate_field+{"field":"Field Label"}',
             ),
         ).toBeInTheDocument();
     });
     it('should render annotate field title with no label when target is title', async () => {
-        const wrapper = render(
+        const screen = render(
             <TestTitle step={COMMENT_STEP} formTarget="title" />,
         );
         expect(
-            wrapper.queryByText(
+            screen.queryByText(
                 'annotation_title_annotate_field_no_field_label',
             ),
         ).toBeInTheDocument();
     });
     it('should render annotate field title with no label when step is TARGET_STEP', async () => {
-        const wrapper = render(
+        const screen = render(
             <TestTitle
                 step={COMMENT_STEP}
                 formTarget="title"
@@ -71,29 +69,27 @@ describe('CreateAnnotationTitle', () => {
             />,
         );
         expect(
-            wrapper.queryByText(
+            screen.queryByText(
                 'annotation_title_annotate_field+{"field":"Field Label"}',
             ),
         ).toBeInTheDocument();
     });
 
     it('should render annotate content title with no label when step is not TARGET_STEP', async () => {
-        // @ts-expect-error TS2741
-        const wrapper = render(<TestTitle step={COMMENT_STEP} />);
+        const screen = render(<TestTitle step={COMMENT_STEP} />);
         expect(
-            wrapper.queryByText(
+            screen.queryByText(
                 'annotation_title_annotate_content_no_field_label',
             ),
         ).toBeInTheDocument();
     });
 
     it('should render annotate content title with label when step is not TARGET_STEP', async () => {
-        const wrapper = render(
-            // @ts-expect-error TS2741
+        const screen = render(
             <TestTitle step={COMMENT_STEP} fieldLabel="Field Label" />,
         );
         expect(
-            wrapper.queryByText(
+            screen.queryByText(
                 'annotation_title_annotate_content+{"field":"Field Label"}',
             ),
         ).toBeInTheDocument();

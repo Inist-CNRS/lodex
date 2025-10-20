@@ -1,9 +1,6 @@
-// @ts-expect-error TS6133
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import { useEffect } from 'react';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
-import { translate } from '../../i18n/I18NContext';
 import { grey } from '@mui/material/colors';
 
 import {
@@ -18,10 +15,10 @@ import DatasetColumn from './DatasetColumn';
 import DatasetColumnHeader from './DatasetColumnHeader';
 import Pagination from '../../lib/components/Pagination';
 import Loading from '../../lib/components/Loading';
-import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { preLoadDatasetPage, changePage } from './';
 import { fromDataset } from '../selectors';
 import { fromFields } from '../../sharedSelectors';
+import { useTranslate } from '../../i18n/I18NContext';
 
 const styles = {
     table: {
@@ -54,130 +51,111 @@ const styles = {
     },
 };
 
-export class DatasetComponent extends Component {
-    UNSAFE_componentWillMount() {
-        // @ts-expect-error TS2339
-        const { currentPage, perPage } = this.props;
-        // @ts-expect-error TS2339
-        this.props.preLoadDatasetPage({ page: currentPage, perPage });
-    }
-
-    // @ts-expect-error TS7006
-    handlePageChange = (page, perPage) => {
-        // @ts-expect-error TS2339
-        this.props.changePage({ page, perPage });
-    };
-
-    render() {
-        const {
-            // @ts-expect-error TS2339
-            columns,
-            // @ts-expect-error TS2339
-            dataset,
-            // @ts-expect-error TS2339
-            loading,
-            // @ts-expect-error TS2339
-            p: polyglot,
-            // @ts-expect-error TS2339
-            total,
-            // @ts-expect-error TS2339
-            perPage,
-            // @ts-expect-error TS2339
-            currentPage,
-        } = this.props;
-        if (loading) return <Loading>{polyglot.t('loading')}</Loading>;
-        return (
-            <div className="dataset" style={styles.wrapper}>
-                <div className="dataset" style={styles.wrapper}>
-                    <div style={styles.propertiesContainer}>
-                        <div style={styles.labelContainer}>
-                            <span
-                                className="property_label resources"
-                                style={styles.label}
-                            >
-                                {polyglot.t('resources')}
-                            </span>
-                        </div>
-                    </div>
-                </div>
-                <Table sx={styles.table}>
-                    <TableHead>
-                        <TableRow>
-                            {/*
-                             // @ts-expect-error TS7006 */}
-                            {columns.map((c) => (
-                                // @ts-expect-error TS2741
-                                <DatasetColumnHeader
-                                    key={c.name}
-                                    name={c.name}
-                                    label={c.label}
-                                />
-                            ))}
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {!dataset.length ? (
-                            <TableRow>
-                                <TableCell>{polyglot.t('no_result')}</TableCell>
-                            </TableRow>
-                        ) : (
-                            // @ts-expect-error TS7006
-                            dataset.map((data, indice) => (
-                                <TableRow key={data.uri}>
-                                    {/*
-                                     // @ts-expect-error TS7006 */}
-                                    {columns.map((column) => (
-                                        <DatasetColumn
-                                            key={column.name}
-                                            // @ts-expect-error TS2322
-                                            column={column}
-                                            columns={columns}
-                                            resource={data}
-                                            indice={
-                                                indice +
-                                                1 +
-                                                perPage * currentPage
-                                            }
-                                        />
-                                    ))}
-                                </TableRow>
-                            ))
-                        )}
-                    </TableBody>
-                </Table>
-                <Pagination
-                    onChange={this.handlePageChange}
-                    total={total}
-                    perPage={perPage}
-                    currentPage={currentPage}
-                    texts={{
-                        page: polyglot.t('page'),
-                        perPage: polyglot.t('perPage'),
-                        showing: polyglot.t('showing'),
-                    }}
-                />
-            </div>
-        );
-    }
+interface DatasetComponentProps {
+    columns?: {
+        name: string;
+        label: string;
+    }[];
+    currentPage: number;
+    perPage: number;
+    dataset?: any[];
+    preLoadDatasetPage(...args: unknown[]): unknown;
+    changePage(...args: unknown[]): unknown;
+    loading: boolean;
+    total: number;
 }
 
-// @ts-expect-error TS2339
-DatasetComponent.propTypes = {
-    columns: PropTypes.arrayOf(PropTypes.object),
-    currentPage: PropTypes.number.isRequired,
-    perPage: PropTypes.number.isRequired,
-    dataset: PropTypes.arrayOf(PropTypes.object),
-    preLoadDatasetPage: PropTypes.func.isRequired,
-    changePage: PropTypes.func.isRequired,
-    loading: PropTypes.bool.isRequired,
-    p: polyglotPropTypes.isRequired,
-    total: PropTypes.number.isRequired,
-};
+export const DatasetComponent = ({
+    columns = [],
+    currentPage,
+    perPage,
+    dataset = [],
+    preLoadDatasetPage,
+    changePage,
+    loading,
+    total,
+}: DatasetComponentProps) => {
+    const { translate } = useTranslate();
+    useEffect(() => {
+        preLoadDatasetPage({ page: currentPage, perPage });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []); // Empty dependency array for componentDidMount behavior
 
-// @ts-expect-error TS2339
-DatasetComponent.defaultProps = {
-    columns: [],
-    dataset: [],
+    // @ts-expect-error TS7006
+    const handlePageChange = (page, perPage) => {
+        changePage({ page, perPage });
+    };
+
+    if (loading) return <Loading>{translate('loading')}</Loading>;
+
+    return (
+        <div className="dataset" style={styles.wrapper}>
+            <div className="dataset" style={styles.wrapper}>
+                <div style={styles.propertiesContainer}>
+                    <div style={styles.labelContainer}>
+                        <span
+                            className="property_label resources"
+                            style={styles.label}
+                        >
+                            {translate('resources')}
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <Table sx={styles.table}>
+                <TableHead>
+                    <TableRow>
+                        {columns.map((c) => (
+                            // @ts-expect-error TS2741
+                            <DatasetColumnHeader
+                                // @ts-expect-error TS2322
+                                key={c.name}
+                                // @ts-expect-error TS2322
+                                name={c.name}
+                                // @ts-expect-error TS2322
+                                label={c.label}
+                            />
+                        ))}
+                    </TableRow>
+                </TableHead>
+                <TableBody>
+                    {!dataset.length ? (
+                        <TableRow>
+                            <TableCell>{translate('no_result')}</TableCell>
+                        </TableRow>
+                    ) : (
+                        dataset.map((data, indice) => (
+                            <TableRow key={data.uri}>
+                                {columns.map((column) => (
+                                    <DatasetColumn
+                                        key={column.name}
+                                        // @ts-expect-error TS2322
+                                        column={column}
+                                        columns={columns}
+                                        resource={data}
+                                        indice={
+                                            indice + 1 + perPage * currentPage
+                                        }
+                                    />
+                                ))}
+                            </TableRow>
+                        ))
+                    )}
+                </TableBody>
+            </Table>
+            <Pagination
+                onChange={handlePageChange}
+                total={total}
+                perPage={perPage}
+                currentPage={currentPage}
+                texts={{
+                    page: translate('page'),
+                    perPage: translate('perPage'),
+                    showing: translate('showing'),
+                }}
+            />
+        </div>
+    );
 };
 
 // @ts-expect-error TS7006
@@ -197,6 +175,5 @@ const mapDispatchToProps = {
 
 export default compose(
     connect(mapStateToProps, mapDispatchToProps),
-    translate,
     // @ts-expect-error TS2345
 )(DatasetComponent);

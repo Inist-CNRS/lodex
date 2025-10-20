@@ -1,18 +1,31 @@
 import { useTheme } from '@emotion/react';
 import CloseIcon from '@mui/icons-material/Close';
 import { Box, Drawer, IconButton, Typography } from '@mui/material';
-import PropTypes from 'prop-types';
 // @ts-expect-error TS6133
 import { default as React, useCallback, useMemo } from 'react';
 
 import { useTranslate } from '../i18n/I18NContext';
 import AdminOnlyAlert from '../lib/components/AdminOnlyAlert';
 import { AnnotationList } from './AnnotationList';
-import { MODE_CLOSED, MODES } from './HistoryDrawer.const';
+import { MODE_CLOSED, type Mode } from './HistoryDrawer.const';
 import { useGetFieldAnnotation } from './useGetFieldAnnotation';
 
-// @ts-expect-error TS7031
-export function HistoryDrawer({ mode, setMode, field, resourceUri }) {
+interface HistoryDrawerProps {
+    mode: Mode;
+    setMode(...args: unknown[]): unknown;
+    field: {
+        _id: string;
+        label: string;
+    };
+    resourceUri?: string;
+}
+
+export function HistoryDrawer({
+    mode,
+    setMode,
+    field,
+    resourceUri,
+}: HistoryDrawerProps) {
     const { translate } = useTranslate();
     const theme = useTheme();
 
@@ -74,10 +87,3 @@ export function HistoryDrawer({ mode, setMode, field, resourceUri }) {
         </Drawer>
     );
 }
-
-HistoryDrawer.propTypes = {
-    mode: PropTypes.oneOf(MODES).isRequired,
-    setMode: PropTypes.func.isRequired,
-    field: PropTypes.object.isRequired,
-    resourceUri: PropTypes.string,
-};

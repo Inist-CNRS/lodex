@@ -11,7 +11,6 @@ import {
     GridToolbarDensitySelector,
     GridToolbarFilterButton,
 } from '@mui/x-data-grid';
-import PropTypes from 'prop-types';
 // @ts-expect-error TS6133
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { connect } from 'react-redux';
@@ -114,8 +113,12 @@ const getFiltersOperatorsForType = (type) => {
     }
 };
 
-// @ts-expect-error TS7006
-export const ParsingResultComponent = (props) => {
+interface ParsingResultComponentProps {
+    loadingParsingResult: boolean;
+    enrichments?: object[];
+}
+
+export const ParsingResultComponent = (props: ParsingResultComponentProps) => {
     const { enrichments, loadingParsingResult } = props;
     const { translate } = useTranslate();
 
@@ -170,7 +173,6 @@ export const ParsingResultComponent = (props) => {
                     const isEnrichmentLoading =
                         isEnrichment &&
                         enrichments.some(
-                            // @ts-expect-error TS7006
                             (enrichment) =>
                                 enrichment.name === key &&
                                 enrichment.status === IN_PROGRESS,
@@ -348,9 +350,9 @@ export const ParsingResultComponent = (props) => {
     if (loadingParsingResult) {
         return (
             // @ts-expect-error TS2322
-            <Loading className="admin">
+            (<Loading className="admin">
                 {translate('loading_parsing_results')}
-            </Loading>
+            </Loading>)
         );
     }
 
@@ -445,7 +447,7 @@ export const ParsingResultComponent = (props) => {
     const CustomToolbar = () => {
         return (
             // @ts-expect-error TS2322
-            <GridToolbarContainer sx={{ gap: 1 }}>
+            (<GridToolbarContainer sx={{ gap: 1 }}>
                 <Tooltip title={translate(`column_tooltip`)}>
                     {/*
                      // @ts-expect-error TS2741 */}
@@ -472,9 +474,7 @@ export const ParsingResultComponent = (props) => {
                         {translate('add_more')}
                     </Button>
                 </Tooltip>
-
                 <Box sx={{ flexGrow: 1 }} />
-
                 <DeleteManyButton
                     selectedRowIds={selectedRowIds}
                     reloadDataset={fetchDataset}
@@ -485,7 +485,7 @@ export const ParsingResultComponent = (props) => {
                         reloadDataset={handleFilteredRowsDeleted}
                     />
                 )}
-            </GridToolbarContainer>
+            </GridToolbarContainer>)
         );
     };
 
@@ -538,11 +538,6 @@ export const ParsingResultComponent = (props) => {
             </Drawer>
         </Box>
     );
-};
-
-ParsingResultComponent.propTypes = {
-    loadingParsingResult: PropTypes.bool.isRequired,
-    enrichments: PropTypes.arrayOf(PropTypes.object),
 };
 
 // @ts-expect-error TS7006

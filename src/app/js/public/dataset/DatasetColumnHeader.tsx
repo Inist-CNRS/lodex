@@ -1,6 +1,3 @@
-// @ts-expect-error TS6133
-import React from 'react';
-import PropTypes from 'prop-types';
 import { TableCell } from '@mui/material';
 import { connect } from 'react-redux';
 
@@ -8,8 +5,21 @@ import { sortDataset as sortDatasetAction } from './';
 import { fromDataset } from '../selectors';
 import SortButton from '../../lib/components/SortButton';
 
-// @ts-expect-error TS7031
-const DatasetColumnHeader = ({ name, label, sortBy, sortDir, sortDataset }) => (
+type DatasetColumnHeaderProps = {
+    name: string;
+    label: string;
+    sortBy?: string;
+    sortDir?: 'ASC' | 'DESC';
+    sortDataset(...args: unknown[]): unknown;
+};
+
+const DatasetColumnHeader = ({
+    name,
+    label,
+    sortBy,
+    sortDir,
+    sortDataset,
+}: DatasetColumnHeaderProps) => (
     <TableCell>
         {label === 'uri' ? (
             <span>#</span>
@@ -33,14 +43,6 @@ DatasetColumnHeader.defaultProps = {
     sortDir: null,
 };
 
-DatasetColumnHeader.propTypes = {
-    name: PropTypes.string.isRequired,
-    label: PropTypes.string.isRequired,
-    sortBy: PropTypes.string,
-    sortDir: PropTypes.oneOf(['ASC', 'DESC']),
-    sortDataset: PropTypes.func.isRequired,
-};
-
 // @ts-expect-error TS7006
 const mapStateToProps = (state) => ({
     ...fromDataset.getSort(state),
@@ -53,4 +55,5 @@ const mapDispatchToProps = {
 export default connect(
     mapStateToProps,
     mapDispatchToProps,
+    // @ts-expect-error TS2345
 )(DatasetColumnHeader);

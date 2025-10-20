@@ -1,6 +1,5 @@
 // @ts-expect-error TS6133
 import React, { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
 import {
     TextField,
     Dialog,
@@ -11,9 +10,25 @@ import {
     Checkbox,
     Box,
 } from '@mui/material';
+import type { Tenant } from './Tenants';
 
-// @ts-expect-error TS7031
-const DeleteTenantDialog = ({ isOpen, tenant, handleClose, deleteAction }) => {
+type DeleteTenantDialogProps = {
+    isOpen: boolean;
+    tenant: Tenant | null;
+    handleClose(): void;
+    deleteAction(
+        id: string,
+        name: string | undefined,
+        deleteDataBase: boolean,
+    ): void;
+};
+
+const DeleteTenantDialog = ({
+    isOpen,
+    tenant,
+    handleClose,
+    deleteAction,
+}: DeleteTenantDialogProps) => {
     const [name, setName] = useState('');
     const [deleteDatabase, setDeleteDatabase] = useState(true);
     const [validationOnError, setValidationOnError] = useState(false);
@@ -28,7 +43,7 @@ const DeleteTenantDialog = ({ isOpen, tenant, handleClose, deleteAction }) => {
     // @ts-expect-error TS7006
     const handleTextValidation = (event) => {
         setName(event.target.value);
-        if (event.target.value !== tenant.name) {
+        if (event.target.value !== tenant?.name) {
             setValidationOnError(true);
         } else {
             setValidationOnError(false);
@@ -42,6 +57,9 @@ const DeleteTenantDialog = ({ isOpen, tenant, handleClose, deleteAction }) => {
     // @ts-expect-error TS7006
     const handleSubmit = (event) => {
         event.preventDefault();
+        if (!tenant) {
+            return;
+        }
         deleteAction(tenant._id, tenant.name, deleteDatabase);
     };
 
@@ -54,7 +72,7 @@ const DeleteTenantDialog = ({ isOpen, tenant, handleClose, deleteAction }) => {
             fullWidth
         >
             <DialogTitle>
-                Confirmer la suppression de : <b>{tenant.name}</b>
+                Confirmer la suppression de : <b>{tenant?.name}</b>
             </DialogTitle>
             <DialogContent
                 sx={{
@@ -118,13 +136,6 @@ const DeleteTenantDialog = ({ isOpen, tenant, handleClose, deleteAction }) => {
             </DialogContent>
         </Dialog>
     );
-};
-
-DeleteTenantDialog.propTypes = {
-    isOpen: PropTypes.bool.isRequired,
-    tenant: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]).isRequired,
-    handleClose: PropTypes.func.isRequired,
-    deleteAction: PropTypes.func.isRequired,
 };
 
 export default DeleteTenantDialog;

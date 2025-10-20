@@ -1,14 +1,26 @@
 // @ts-expect-error TS6133
 import React from 'react';
-import PropTypes from 'prop-types';
 
 import { field as fieldPropTypes } from '../../../propTypes';
 import InvalidFormat from '../../InvalidFormat';
 import { getViewComponent } from '../../index';
 import getColorSetFromField from '../../../lib/getColorSetFromField';
 
-// @ts-expect-error TS7031
-const FieldCloneView = ({ className, resource, field, fields, value }) => {
+interface FieldCloneViewProps {
+    className?: string;
+    field: unknown;
+    fields: unknown[];
+    resource: object;
+    value: string;
+}
+
+const FieldCloneView = ({
+    className,
+    resource,
+    field,
+    fields,
+    value
+}: FieldCloneViewProps) => {
     // @ts-expect-error TS7006
     const clonedField = fields.find((item) => item.name === value);
 
@@ -35,14 +47,6 @@ const FieldCloneView = ({ className, resource, field, fields, value }) => {
             {...otherProps}
         />
     );
-};
-
-FieldCloneView.propTypes = {
-    className: PropTypes.string,
-    field: fieldPropTypes.isRequired,
-    fields: PropTypes.arrayOf(fieldPropTypes).isRequired,
-    resource: PropTypes.object.isRequired,
-    value: PropTypes.string.isRequired,
 };
 
 FieldCloneView.defaultProps = {

@@ -3,7 +3,6 @@ import GetAppIcon from '@mui/icons-material/GetApp';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import MenuItem from '@mui/material/MenuItem';
-import PropTypes from 'prop-types';
 import React, { useRef } from 'react';
 
 import { useTranslate } from '../../../i18n/I18NContext';
@@ -11,10 +10,13 @@ import { useExportAnnotations } from '../../annotations/hooks/useExportAnnotatio
 import { useGetAnnotations } from '../../annotations/hooks/useGetAnnotations';
 import { useImportAnnotations } from '../../annotations/hooks/useImportAnnotations';
 
+interface AnnotationNestedMenuProps {
+    onClose(...args: unknown[]): unknown;
+}
+
 export const AnnotationNestedMenu = React.memo(function AnnotationNestedMenu({
-    // @ts-expect-error TS2339
-    onClose,
-}) {
+    onClose
+}: AnnotationNestedMenuProps) {
     const { translate } = useTranslate();
     const fileInputRef = useRef(null);
 
@@ -74,8 +76,3 @@ export const AnnotationNestedMenu = React.memo(function AnnotationNestedMenu({
         </>
     );
 });
-
-// @ts-expect-error TS2339
-AnnotationNestedMenu.propTypes = {
-    onClose: PropTypes.func.isRequired,
-};

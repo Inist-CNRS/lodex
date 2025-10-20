@@ -1,6 +1,5 @@
 // @ts-expect-error TS6133
 import React from 'react';
-import PropTypes from 'prop-types';
 import memoize from 'lodash/memoize';
 
 import { REJECTED } from '../../../../../common/propositionStatus';
@@ -15,21 +14,24 @@ const styles = {
     })),
 };
 
-// @ts-expect-error TS7031
-const IstexView = ({ fieldStatus, field, resource }) => {
+interface IstexViewProps {
+    fieldStatus?: string;
+    resource: object;
+    field: unknown;
+}
+
+const IstexView = ({
+    fieldStatus,
+    field,
+    resource
+}: IstexViewProps) => {
     const url = `${ISTEX_API_URL}/document/?q=${resource[field.name]}`;
     return (
         // @ts-expect-error TS2739
-        <Link style={styles.text(fieldStatus)} href={`${url}`}>
+        (<Link style={styles.text(fieldStatus)} href={`${url}`}>
             {url}
-        </Link>
+        </Link>)
     );
-};
-
-IstexView.propTypes = {
-    fieldStatus: PropTypes.string,
-    resource: PropTypes.object.isRequired,
-    field: fieldPropTypes.isRequired,
 };
 
 IstexView.defaultProps = {

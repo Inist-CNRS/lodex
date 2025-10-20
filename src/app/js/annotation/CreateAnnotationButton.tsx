@@ -7,7 +7,6 @@ import {
     Typography,
     useTheme,
 } from '@mui/material';
-import PropTypes from 'prop-types';
 // @ts-expect-error TS6133
 import React, { useCallback, useMemo, useRef, useState } from 'react';
 
@@ -21,8 +20,15 @@ import { useCanAnnotate } from './useCanAnnotate';
 import { useCreateAnnotation } from './useCreateAnnotation';
 import { useResourceUri } from './useResourceUri';
 
-// @ts-expect-error TS7031
-function UserAnnotationCount({ fieldAnnotationIds, openHistory }) {
+interface UserAnnotationCountProps {
+    fieldAnnotationIds: string[];
+    openHistory(...args: unknown[]): unknown;
+}
+
+function UserAnnotationCount({
+    fieldAnnotationIds,
+    openHistory
+}: UserAnnotationCountProps) {
     const { translate } = useTranslate();
     const theme = useTheme();
 
@@ -60,13 +66,15 @@ function UserAnnotationCount({ fieldAnnotationIds, openHistory }) {
     );
 }
 
-UserAnnotationCount.propTypes = {
-    fieldAnnotationIds: PropTypes.arrayOf(PropTypes.string).isRequired,
-    openHistory: PropTypes.func.isRequired,
-};
+interface CreateAnnotationButtonProps {
+    field?: object;
+    resource?: object;
+}
 
-// @ts-expect-error TS7031
-export function CreateAnnotationButton({ field, resource }) {
+export function CreateAnnotationButton({
+    field,
+    resource
+}: CreateAnnotationButtonProps) {
     const { translate } = useTranslate();
     const readableInitialValue = getReadableValue({
         field,
@@ -190,8 +198,3 @@ export function CreateAnnotationButton({ field, resource }) {
         </>
     );
 }
-
-CreateAnnotationButton.propTypes = {
-    field: PropTypes.object,
-    resource: PropTypes.object,
-};

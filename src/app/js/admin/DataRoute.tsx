@@ -1,6 +1,5 @@
 // @ts-expect-error TS6133
 import React from 'react';
-import PropTypes from 'prop-types';
 import { compose, lifecycle } from 'recompose';
 import { connect } from 'react-redux';
 
@@ -10,8 +9,14 @@ import Upload from './upload/Upload';
 import { preLoadLoaders } from './loader';
 import withInitialData from './withInitialData';
 
-// @ts-expect-error TS7031
-export const DataRouteComponent = ({ canUploadFile }) => {
+interface DataRouteComponentProps {
+    canUploadFile: boolean;
+    hasPublishedDataset: boolean;
+}
+
+export const DataRouteComponent = ({
+    canUploadFile
+}: DataRouteComponentProps) => {
     if (canUploadFile) {
         // @ts-expect-error TS2322
         return <Upload className="admin" isFirstFile={canUploadFile} />;
@@ -22,11 +27,6 @@ export const DataRouteComponent = ({ canUploadFile }) => {
             <ParsingResult />
         </div>
     );
-};
-
-DataRouteComponent.propTypes = {
-    canUploadFile: PropTypes.bool.isRequired,
-    hasPublishedDataset: PropTypes.bool.isRequired,
 };
 
 // @ts-expect-error TS7006

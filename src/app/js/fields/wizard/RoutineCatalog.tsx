@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { translate } from '../../i18n/I18NContext';
 import compose from 'recompose/compose';
 import { polyglot as polyglotPropTypes } from '../../propTypes';
@@ -42,8 +41,20 @@ const styles = {
     },
 };
 
-// @ts-expect-error TS7031
-const RoutineCatalogDescription = ({ routine, polyglot }) => {
+interface RoutineCatalogDescriptionProps {
+    routine: {
+        id: string;
+        doc?: string;
+        url?: string;
+        recommendedWith?: unknown[];
+    };
+    polyglot: unknown;
+}
+
+const RoutineCatalogDescription = ({
+    routine,
+    polyglot
+}: RoutineCatalogDescriptionProps) => {
     return (
         <React.Fragment>
             <Typography>{polyglot.t(`${routine.id}_description`)}</Typography>
@@ -75,19 +86,28 @@ const RoutineCatalogDescription = ({ routine, polyglot }) => {
     );
 };
 
+interface RoutineCatalogProps {
+    isOpen: boolean;
+    handleClose(...args: unknown[]): unknown;
+    p: unknown;
+    onChange(...args: unknown[]): unknown;
+    currentValue?: string;
+    precomputed?: boolean;
+}
+
 const RoutineCatalog = ({
-    // @ts-expect-error TS7031
     p: polyglot,
-    // @ts-expect-error TS7031
+
     isOpen,
-    // @ts-expect-error TS7031
+
     handleClose,
-    // @ts-expect-error TS7031
+
     onChange,
-    // @ts-expect-error TS7031
+
     currentValue,
-    precomputed = false,
-}) => {
+
+    precomputed = false
+}: RoutineCatalogProps) => {
     // @ts-expect-error TS7006
     const handleValueChange = (newValue) => {
         const event = { target: { value: newValue } };
@@ -153,25 +173,6 @@ const RoutineCatalog = ({
             </DialogActions>
         </Dialog>
     );
-};
-
-RoutineCatalog.propTypes = {
-    isOpen: PropTypes.bool.isRequired,
-    handleClose: PropTypes.func.isRequired,
-    p: polyglotPropTypes.isRequired,
-    onChange: PropTypes.func.isRequired,
-    currentValue: PropTypes.string,
-    precomputed: PropTypes.bool,
-};
-
-RoutineCatalogDescription.propTypes = {
-    routine: PropTypes.shape({
-        id: PropTypes.string.isRequired,
-        doc: PropTypes.string,
-        url: PropTypes.string,
-        recommendedWith: PropTypes.array,
-    }).isRequired,
-    polyglot: polyglotPropTypes.isRequired,
 };
 
 // @ts-expect-error TS2345

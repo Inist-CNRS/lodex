@@ -1,14 +1,20 @@
 import { useForm } from '@tanstack/react-form';
-import { render, screen, act } from '@testing-library/react';
+import { render, act } from '@testing-library/react';
 // @ts-expect-error TS6133
 import React from 'react';
 
-import PropTypes from 'prop-types';
 import { TestI18N } from '../../i18n/I18NContext';
 import { ProposedValueField } from './ProposedValueField';
 
-// @ts-expect-error TS7031
-function TestProposedValueField({ field, initialValue }) {
+interface TestProposedValueFieldProps {
+    field: object;
+    initialValue?: string;
+}
+
+function TestProposedValueField({
+    field,
+    initialValue,
+}: TestProposedValueFieldProps) {
     const form = useForm();
     return (
         <TestI18N>
@@ -21,11 +27,6 @@ function TestProposedValueField({ field, initialValue }) {
     );
 }
 
-TestProposedValueField.propTypes = {
-    field: PropTypes.object.isRequired,
-    initialValue: PropTypes.string,
-};
-
 describe('ProposedValueField', () => {
     describe('list', () => {
         it('should render ProposedValueFieldList if annotationFormat is list', () => {
@@ -33,10 +34,10 @@ describe('ProposedValueField', () => {
                 annotationFormat: 'list',
                 annotationFormatListOptions: ['option 1', 'option 2'],
             };
-            const wrapper = render(<TestProposedValueField field={field} />);
+            const screen = render(<TestProposedValueField field={field} />);
 
             expect(
-                wrapper.getByRole('combobox', {
+                screen.getByRole('combobox', {
                     name: 'annotation.proposedValue *',
                 }),
             ).toBeInTheDocument();
@@ -47,10 +48,10 @@ describe('ProposedValueField', () => {
                 annotationFormat: 'list',
                 annotationFormatListOptions: [],
             };
-            const wrapper = render(<TestProposedValueField field={field} />);
+            const screen = render(<TestProposedValueField field={field} />);
 
             expect(
-                wrapper.getByRole('textbox', {
+                screen.getByRole('textbox', {
                     name: 'annotation.proposedValue *',
                 }),
             ).toBeInTheDocument();
@@ -62,10 +63,10 @@ describe('ProposedValueField', () => {
             const field = {
                 annotationFormat: 'text',
             };
-            const wrapper = render(<TestProposedValueField field={field} />);
+            const screen = render(<TestProposedValueField field={field} />);
 
             expect(
-                wrapper.getByRole('textbox', {
+                screen.getByRole('textbox', {
                     name: 'annotation.proposedValue *',
                 }),
             ).toBeInTheDocument();
@@ -76,8 +77,8 @@ describe('ProposedValueField', () => {
                 annotationFormat: 'text',
             };
             const initialValue = 'initial value';
-            await act(async () => {
-                render(
+            const screen = await act(async () => {
+                return render(
                     <TestProposedValueField
                         field={field}
                         initialValue={initialValue}

@@ -1,22 +1,17 @@
-// @ts-expect-error TS6133
-import React from 'react';
-import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import withHandlers from 'recompose/withHandlers';
-import { translate } from '../../i18n/I18NContext';
 import { MenuItem } from '@mui/material';
+import { useTranslate } from '../../i18n/I18NContext';
 
-import { polyglot as polyglotPropTypes } from '../../propTypes';
+interface ExportMenuItemProps {
+    handleClick(): void;
+    label: string;
+}
 
-// @ts-expect-error TS7031
-const ExportMenuItem = ({ label, p: polyglot, handleClick }) => (
-    <MenuItem onClick={handleClick}>{polyglot.t(label)}</MenuItem>
-);
+const ExportMenuItem = ({ label, handleClick }: ExportMenuItemProps) => {
+    const { translate } = useTranslate();
 
-ExportMenuItem.propTypes = {
-    handleClick: PropTypes.func.isRequired,
-    p: polyglotPropTypes.isRequired,
-    label: PropTypes.string.isRequired,
+    return <MenuItem onClick={handleClick}>{translate(label)}</MenuItem>;
 };
 
 export default compose(
@@ -29,6 +24,5 @@ export default compose(
                 () =>
                     onClick({ uri, exportID }),
     }),
-    translate,
     // @ts-expect-error TS2345
 )(ExportMenuItem);

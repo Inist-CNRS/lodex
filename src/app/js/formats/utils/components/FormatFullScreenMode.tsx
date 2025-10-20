@@ -1,6 +1,4 @@
-// @ts-expect-error TS6133
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
 import Dialog from '@mui/material/Dialog';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
@@ -10,8 +8,15 @@ import Tooltip from '@mui/material/Tooltip';
 import { translate } from '../../../i18n/I18NContext';
 import { polyglot as polyglotPropTypes } from '../../../propTypes';
 
-// @ts-expect-error TS7031
-const FormatFullScreenMode = ({ children, p }) => {
+interface FormatFullScreenModeProps {
+    children: React.ReactNode;
+    p: unknown;
+}
+
+const FormatFullScreenMode = ({
+    children,
+    p
+}: FormatFullScreenModeProps) => {
     const [open, setOpen] = useState(false);
 
     const handleClickOpen = () => {
@@ -71,11 +76,6 @@ const FormatFullScreenMode = ({ children, p }) => {
             )}
         </>
     );
-};
-
-FormatFullScreenMode.propTypes = {
-    children: PropTypes.node.isRequired,
-    p: polyglotPropTypes.isRequired,
 };
 
 export default translate(FormatFullScreenMode);

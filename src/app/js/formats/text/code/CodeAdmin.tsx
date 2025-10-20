@@ -1,6 +1,5 @@
 // @ts-expect-error TS6133
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { MenuItem, TextField } from '@mui/material';
 import { polyglot as polyglotPropTypes } from '../../../propTypes';
 import { FormatDefaultParamsFieldSet } from '../../utils/components/field-set/FormatFieldSets';
@@ -11,27 +10,26 @@ export const defaultArgs = {
     languageToHighlight: '',
 };
 
-class AdminComponent extends Component {
-    static propTypes = {
-        args: PropTypes.shape({
-            languageToHighlight: PropTypes.string,
-        }),
-        onChange: PropTypes.func.isRequired,
-        p: polyglotPropTypes.isRequired,
+interface AdminComponentProps {
+    args?: {
+        languageToHighlight?: string;
     };
+    onChange(...args: unknown[]): unknown;
+    p: unknown;
+}
+
+class AdminComponent extends Component<AdminComponentProps> {
     static defaultProps = {
         args: defaultArgs,
     };
 
     // @ts-expect-error TS7006
     handleLanguageToHighlight = (languageToHighlight) => {
-        // @ts-expect-error TS2339
         this.props.onChange({ languageToHighlight });
     };
 
     render() {
         const {
-            // @ts-expect-error TS2339
             p: polyglot,
             // @ts-expect-error TS2339
             args: { languageToHighlight },

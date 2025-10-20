@@ -1,6 +1,5 @@
 // @ts-expect-error TS6133
 import React from 'react';
-import PropTypes from 'prop-types';
 
 import { field as fieldPropTypes } from '../../../propTypes';
 import { resolvers } from './index';
@@ -38,8 +37,19 @@ const styles = stylesToClassname({
     },
 });
 
-// @ts-expect-error TS7031
-const IdentifierBadgeView = ({ resource, field, typid, colors }) => {
+interface IdentifierBadgeViewProps {
+    field: unknown;
+    typid: string;
+    colors: string;
+    resource: object;
+}
+
+const IdentifierBadgeView = ({
+    resource,
+    field,
+    typid,
+    colors
+}: IdentifierBadgeViewProps) => {
     // @ts-expect-error TS7053
     const resolver = resolvers[typid] || '';
     const value = resource[field.name] || '';
@@ -55,8 +65,7 @@ const IdentifierBadgeView = ({ resource, field, typid, colors }) => {
     }
 
     return (
-        // @ts-expect-error TS2739
-        <Link href={target}>
+        (<Link href={target}>
             {/*
              // @ts-expect-error TS2339 */}
             <span className={styles.key}>{typid}</span>
@@ -65,15 +74,8 @@ const IdentifierBadgeView = ({ resource, field, typid, colors }) => {
             <span className={styles.value} style={colorStyle}>
                 {identifier}
             </span>
-        </Link>
+        </Link>)
     );
-};
-
-IdentifierBadgeView.propTypes = {
-    field: fieldPropTypes.isRequired,
-    typid: PropTypes.string.isRequired,
-    colors: PropTypes.string.isRequired,
-    resource: PropTypes.object.isRequired,
 };
 
 export default IdentifierBadgeView;

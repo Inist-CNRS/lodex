@@ -3,8 +3,7 @@ import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { fireEvent, render, waitFor } from '@testing-library/react';
-import PropTypes from 'prop-types';
+import { render } from '@testing-library/react';
 import { TestI18N } from '../../../i18n/I18NContext';
 import { useDeleteAnnotation } from '../hooks/useDeleteAnnotation';
 import { AnnotationDeleteButton } from './AnnotationDeleteButton';
@@ -20,7 +19,11 @@ jest.mock('./../hooks/useDeleteAnnotation', () => ({
     }),
 }));
 
-function TestButton({ isSubmitting = false }) {
+interface TestButtonProps {
+    isSubmitting?: boolean;
+}
+
+function TestButton({ isSubmitting = false }: TestButtonProps) {
     return (
         <QueryClientProvider client={queryClient}>
             <TestI18N>
@@ -35,10 +38,6 @@ function TestButton({ isSubmitting = false }) {
     );
 }
 
-TestButton.propTypes = {
-    isSubmitting: PropTypes.bool,
-};
-
 describe('AnnotationDeleteButton', () => {
     afterEach(() => {
         jest.clearAllMocks();
@@ -52,24 +51,24 @@ describe('AnnotationDeleteButton', () => {
             isLoading: false,
         });
 
-        const wrapper = render(<TestButton />);
+        const screen = render(<TestButton />);
 
-        const deleteButton = wrapper.getByRole('button', {
+        const deleteButton = screen.getByRole('button', {
             name: 'annotation_delete_button_label',
         });
         expect(deleteButton).toBeInTheDocument();
 
-        await waitFor(() => {
-            fireEvent.click(deleteButton);
+        await screen.waitFor(() => {
+            screen.fireEvent.click(deleteButton);
         });
 
         expect(
-            wrapper.queryByText('annotation_delete_modal_title'),
+            screen.queryByText('annotation_delete_modal_title'),
         ).toBeInTheDocument();
 
-        await waitFor(() => {
-            fireEvent.click(
-                wrapper.getByRole('button', {
+        await screen.waitFor(() => {
+            screen.fireEvent.click(
+                screen.getByRole('button', {
                     name: 'delete',
                 }),
             );
@@ -79,10 +78,10 @@ describe('AnnotationDeleteButton', () => {
     });
 
     it('should disable button when submitting', async () => {
-        const wrapper = render(<TestButton isSubmitting />);
+        const screen = render(<TestButton isSubmitting />);
 
         expect(
-            wrapper.getByRole('button', {
+            screen.getByRole('button', {
                 name: 'annotation_delete_button_label',
             }),
         ).toBeDisabled();
@@ -95,10 +94,10 @@ describe('AnnotationDeleteButton', () => {
             isLoading: true,
         });
 
-        const wrapper = render(<TestButton />);
+        const screen = render(<TestButton />);
 
         expect(
-            wrapper.getByRole('button', {
+            screen.getByRole('button', {
                 name: 'annotation_delete_button_label',
             }),
         ).toBeDisabled();
@@ -111,31 +110,31 @@ describe('AnnotationDeleteButton', () => {
             isLoading: false,
         });
 
-        const wrapper = render(<TestButton />);
+        const screen = render(<TestButton />);
 
-        const deleteButton = wrapper.getByRole('button', {
+        const deleteButton = screen.getByRole('button', {
             name: 'annotation_delete_button_label',
         });
         expect(deleteButton).toBeInTheDocument();
 
-        await waitFor(() => {
-            fireEvent.click(deleteButton);
+        await screen.waitFor(() => {
+            screen.fireEvent.click(deleteButton);
         });
 
         expect(
-            wrapper.queryByText('annotation_delete_modal_title'),
+            screen.queryByText('annotation_delete_modal_title'),
         ).toBeInTheDocument();
 
-        await waitFor(() => {
-            fireEvent.click(
-                wrapper.getByRole('button', {
+        await screen.waitFor(() => {
+            screen.fireEvent.click(
+                screen.getByRole('button', {
                     name: 'cancel',
                 }),
             );
         });
 
         expect(
-            wrapper.queryByText('annotation_delete_confirm_title'),
+            screen.queryByText('annotation_delete_confirm_title'),
         ).not.toBeInTheDocument();
     });
 });

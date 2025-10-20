@@ -1,6 +1,5 @@
 // @ts-expect-error TS6133
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import Folder from '@mui/icons-material/Folder';
 import FolderOpen from '@mui/icons-material/FolderOpen';
 import Arrow from '@mui/icons-material/KeyboardArrowDown';
@@ -53,7 +52,16 @@ const circularProgress = (
     />
 );
 
-class FetchFold extends Component {
+interface FetchFoldProps {
+    label: string;
+    polyglot: unknown;
+    getData(...args: unknown[]): unknown;
+    children(...args: unknown[]): unknown;
+    count: number;
+    skip?: number;
+}
+
+class FetchFold extends Component<FetchFoldProps> {
     state = {
         data: null,
         error: null,
@@ -71,7 +79,6 @@ class FetchFold extends Component {
 
         this.setState({ isLoading: true }, () => {
             this.props
-                // @ts-expect-error TS2339
                 .getData(this.props)
                 // @ts-expect-error TS7006
                 .then((data) => {
@@ -94,7 +101,6 @@ class FetchFold extends Component {
     };
 
     render() {
-        // @ts-expect-error TS2339
         const { label, count, polyglot, children, skip } = this.props;
         const { error, data, isOpen, isLoading } = this.state;
 
@@ -137,7 +143,6 @@ class FetchFold extends Component {
                         </div>
                     </Button>
                     {isOpen &&
-                        // @ts-expect-error TS2349
                         children({
                             ...this.props,
                             data,
@@ -148,15 +153,5 @@ class FetchFold extends Component {
         );
     }
 }
-
-// @ts-expect-error TS2339
-FetchFold.propTypes = {
-    label: PropTypes.string.isRequired,
-    polyglot: polyglotPropTypes.isRequired,
-    getData: PropTypes.func.isRequired,
-    children: PropTypes.func.isRequired,
-    count: PropTypes.number.isRequired,
-    skip: PropTypes.number,
-};
 
 export default FetchFold;

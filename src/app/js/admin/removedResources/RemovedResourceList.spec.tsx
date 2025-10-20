@@ -40,7 +40,6 @@ describe('<RemovedResourceList />', () => {
         shallow(
             // @ts-expect-error TS2769
             <RemovedResourceList
-                // @ts-expect-error TS2769
                 currentPage={1}
                 loadRemovedResourcePage={loadRemovedResourcePage}
                 loading
@@ -60,7 +59,6 @@ describe('<RemovedResourceList />', () => {
         const wrapper = shallow(
             // @ts-expect-error TS2769
             <RemovedResourceList
-                // @ts-expect-error TS2769
                 currentPage={1}
                 columns={columns}
                 resources={resources}
@@ -83,7 +81,6 @@ describe('<RemovedResourceList />', () => {
         const wrapper = shallow(
             // @ts-expect-error TS2769
             <RemovedResourceList
-                // @ts-expect-error TS2769
                 currentPage={1}
                 columns={columns}
                 resources={resources}
@@ -166,7 +163,6 @@ describe('<RemovedResourceList />', () => {
     it('should call restoreRessource on restore button click', () => {
         const restoreRessource = jest.fn();
         const wrapper = shallow(
-            // @ts-expect-error TS2769
             <RemovedResourceList
                 // @ts-expect-error TS2769
                 p={{ t: (key) => key }}

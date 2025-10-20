@@ -1,6 +1,4 @@
-// @ts-expect-error TS6133
 import React from 'react';
-import PropTypes from 'prop-types';
 
 import {
     Button,
@@ -25,32 +23,48 @@ const dialogStyle = {
     content: { maxHeight: 'calc(100vh - 298px)', width: 600 },
 };
 
+interface PureButtonWithDialogProps {
+    handleClose?(...args: unknown[]): unknown;
+    handleOpen?(...args: unknown[]): unknown;
+    p: unknown;
+    open?: boolean;
+    show?: boolean;
+    style?: object;
+    dialog: React.ReactNode;
+    label: object | string;
+    icon?: React.ReactNode;
+    className?: string;
+    actions?: React.ReactNode[];
+    openButton?: React.ReactNode;
+}
+
 export const PureButtonWithDialog = ({
-    // @ts-expect-error TS7031
     handleClose,
-    // @ts-expect-error TS7031
+
     handleOpen,
-    // @ts-expect-error TS7031
+
     open,
-    // @ts-expect-error TS7031
+
     show,
-    // @ts-expect-error TS7031
+
     style,
-    // @ts-expect-error TS7031
+
     dialog,
-    // @ts-expect-error TS7031
+
     className,
-    // @ts-expect-error TS7031
+
     label,
-    // @ts-expect-error TS7031
+
     icon,
-    // @ts-expect-error TS7031
+
     p: polyglot,
+
     actions = [
         <CancelButton key="cancel" onClick={handleClose}>
             {polyglot.t('close')}
         </CancelButton>,
     ],
+
     openButton = (
         <Button
             variant="text"
@@ -61,8 +75,8 @@ export const PureButtonWithDialog = ({
         >
             {label}
         </Button>
-    ),
-}) => {
+    )
+}: PureButtonWithDialogProps) => {
     if (!show) {
         return null;
     }
@@ -94,21 +108,6 @@ export const PureButtonWithDialog = ({
             </Dialog>
         </span>
     );
-};
-
-PureButtonWithDialog.propTypes = {
-    handleClose: PropTypes.func,
-    handleOpen: PropTypes.func,
-    p: polyglotPropTypes.isRequired,
-    open: PropTypes.bool,
-    show: PropTypes.bool,
-    style: PropTypes.object,
-    dialog: PropTypes.node.isRequired,
-    label: PropTypes.oneOfType([PropTypes.object, PropTypes.string]).isRequired,
-    icon: PropTypes.node,
-    className: PropTypes.string,
-    actions: PropTypes.arrayOf(PropTypes.node),
-    openButton: PropTypes.node,
 };
 
 PureButtonWithDialog.defaultProps = {

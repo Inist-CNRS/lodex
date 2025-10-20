@@ -41,7 +41,6 @@ describe('TabGeneral', () => {
 
         it('should render TabGeneral with all values when is resource field', () => {
             const wrapper = mount(
-                // @ts-expect-error TS2769
                 <Wrapper>
                     <TabGeneral {...defaultProps} />
                 </Wrapper>,

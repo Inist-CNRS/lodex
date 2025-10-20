@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import { translate } from '../../i18n/I18NContext';
 
@@ -25,17 +24,24 @@ import { polyglot as polyglotPropTypes } from '../../propTypes';
 import CancelButton from '../../lib/components/CancelButton';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 
+interface TransformerItemProps {
+    selected: boolean;
+    name: string;
+    docUrl?: string;
+    polyglot: unknown;
+}
+
 export const TransformerItem = ({
-    // @ts-expect-error TS7031
     selected,
-    // @ts-expect-error TS7031
+
     name,
-    // @ts-expect-error TS7031
+
     docUrl,
-    // @ts-expect-error TS7031
+
     polyglot,
+
     ...props
-}) => {
+}: TransformerItemProps) => {
     return (
         <ListItemButton
             {...props}
@@ -88,31 +94,36 @@ export const TransformerItem = ({
     );
 };
 
-TransformerItem.propTypes = {
-    selected: PropTypes.bool.isRequired,
-    name: PropTypes.string.isRequired,
-    docUrl: PropTypes.string,
-    polyglot: polyglotPropTypes.isRequired,
-};
+interface TransformerUpsertDialogProps {
+    availableTransformers?: unknown[];
+    docUrlByTransformer: Record<string, string>;
+    fields: unknown[];
+    append(...args: unknown[]): unknown;
+    update(...args: unknown[]): unknown;
+    handleClose(...args: unknown[]): unknown;
+    indexFieldToEdit?: number;
+    isOpen?: boolean;
+    p: unknown;
+}
 
 const TransformerUpsertDialog = ({
-    // @ts-expect-error TS7031
     availableTransformers,
-    // @ts-expect-error TS7031
+
     docUrlByTransformer,
-    // @ts-expect-error TS7031
+
     fields,
-    // @ts-expect-error TS7031
+
     append,
-    // @ts-expect-error TS7031
+
     update,
+
     indexFieldToEdit = null,
     isOpen = false,
-    // @ts-expect-error TS7031
+
     handleClose,
-    // @ts-expect-error TS7031
-    p: polyglot,
-}) => {
+
+    p: polyglot
+}: TransformerUpsertDialogProps) => {
     const [transformer, setTransformer] = React.useState(
         indexFieldToEdit !== null ? fields?.[indexFieldToEdit] ?? {} : {},
     );
@@ -185,7 +196,6 @@ const TransformerUpsertDialog = ({
                         transformerArgs={transformer.args}
                         // @ts-expect-error TS7006
                         onChange={(args) => {
-                            // @ts-expect-error TS7006
                             setTransformer((transformer) => ({
                                 ...transformer,
                                 args,
@@ -212,18 +222,6 @@ const TransformerUpsertDialog = ({
             </DialogActions>
         </Dialog>
     );
-};
-
-TransformerUpsertDialog.propTypes = {
-    availableTransformers: PropTypes.array,
-    docUrlByTransformer: PropTypes.objectOf(PropTypes.string).isRequired,
-    fields: PropTypes.array.isRequired,
-    append: PropTypes.func.isRequired,
-    update: PropTypes.func.isRequired,
-    handleClose: PropTypes.func.isRequired,
-    indexFieldToEdit: PropTypes.number,
-    isOpen: PropTypes.bool,
-    p: polyglotPropTypes.isRequired,
 };
 
 // @ts-expect-error TS7006

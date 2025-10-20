@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import { MenuItem, TextField } from '@mui/material';
 import { useTranslate } from '../../../i18n/I18NContext';
 
@@ -136,17 +135,6 @@ const ListAdmin = ({ args = defaultArgs, onChange }: ListAdminProps) => {
             </FormatSubFormatParamsFieldSet>
         </FormatGroupedFieldSet>
     );
-};
-
-ListAdmin.propTypes = {
-    args: PropTypes.shape({
-        type: PropTypes.string,
-        bullet: PropTypes.string,
-        subFormat: PropTypes.string,
-        subFormatOptions: PropTypes.any,
-    }),
-    onChange: PropTypes.func.isRequired,
-    p: polyglotPropTypes.isRequired,
 };
 
 export default ListAdmin;

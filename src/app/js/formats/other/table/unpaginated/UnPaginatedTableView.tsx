@@ -9,7 +9,6 @@ import { translate } from '../../../../i18n/I18NContext';
 
 class UnPaginatedTableView extends AbstractTableView {
     render() {
-        // @ts-expect-error TS2339
         const { data, columnsParameters } = this.props;
 
         return (
@@ -21,8 +20,6 @@ class UnPaginatedTableView extends AbstractTableView {
                             // @ts-expect-error TS7006
                             (entry, index) => (
                                 <TableRow key={`${index}-table`}>
-                                    {/*
-                                     // @ts-expect-error TS7006 */}
                                     {columnsParameters.map((column) =>
                                         this.getCellInnerHtml(
                                             entry,

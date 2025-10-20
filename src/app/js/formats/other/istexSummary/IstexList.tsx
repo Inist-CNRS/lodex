@@ -1,12 +1,11 @@
 // @ts-expect-error TS6133
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import React, { useState } from 'react';
 import classnames from 'classnames';
 
-import { polyglot as polyglotPropTypes } from '../../../propTypes';
 import { getMoreDocumentData } from './getIstexData';
 import ButtonWithStatus from '../../../lib/components/ButtonWithStatus';
 import stylesToClassname from '../../../lib/stylesToClassName';
+import { useTranslate } from '../../../i18n/I18NContext';
 
 const styles = stylesToClassname(
     {
@@ -23,98 +22,77 @@ const styles = stylesToClassname(
     'istex-list',
 );
 
-class IstexList extends Component {
-    // @ts-expect-error TS7006
-    constructor(props) {
-        super(props);
-        this.state = {
-            // @ts-expect-error TS2339
-            ...this.props.data,
-            isLoading: false,
-        };
-    }
+interface IstexListProps {
+    data: {
+        hits: unknown[];
+        total: number;
+        nextPageURI?: string;
+    };
+    children(...args: unknown[]): unknown;
+    skip: boolean;
+}
 
-    loadMore = () => {
-        this.setState({ isLoading: true }, () =>
-            // @ts-expect-error TS2339
-            getMoreDocumentData(this.state.nextPageURI).then(
-                ({ hits, total, nextPageURI }) =>
-                    this.setState((state) => ({
-                        ...state,
-                        // @ts-expect-error TS2339
-                        hits: state.hits.concat(hits),
-                        total,
-                        nextPageURI,
-                        isLoading: false,
-                    })),
-            ),
+const IstexList = ({ data, children, skip, ...props }: IstexListProps) => {
+    const { translate } = useTranslate();
+    const [hits, setHits] = useState(data.hits);
+    const [total, setTotal] = useState(data.total);
+    const [nextPageURI, setNextPageURI] = useState(data.nextPageURI);
+    const [isLoading, setIsLoading] = useState(false);
+
+    const loadMore = () => {
+        setIsLoading(true);
+        getMoreDocumentData(nextPageURI).then(
+            ({
+                hits: newHits,
+                total: newTotal,
+                nextPageURI: newNextPageURI,
+            }) => {
+                setHits([...hits, ...newHits]);
+                setTotal(newTotal);
+                setNextPageURI(newNextPageURI);
+                setIsLoading(false);
+            },
         );
     };
 
-    render() {
-        // @ts-expect-error TS2339
-        const { children, polyglot, data, skip, ...props } = this.props;
-        // @ts-expect-error TS2339
-        const { hits, total, nextPageURI, isLoading } = this.state;
-
-        if (!hits || !hits.length) {
-            return (
-                <ul>
-                    {/*
-                     // @ts-expect-error TS2339 */}
-                    <li className={styles.li}>
-                        {polyglot.t('istex_no_result')}
-                    </li>
-                </ul>
-            );
-        }
-
+    if (!hits || !hits.length) {
         return (
-            <div>
+            <ul>
                 {/*
                  // @ts-expect-error TS2339 */}
-                <ul className={classnames({ skip }, skip && styles.skip)}>
-                    {/*
-                     // @ts-expect-error TS7006 */}
-                    {hits.map((item, index) => (
-                        // @ts-expect-error TS2339
-                        <li className={styles.li} key={index}>
-                            {/*
-                             // @ts-expect-error TS2349 */}
-                            {children({ ...props, polyglot, item })}
-                        </li>
-                    ))}
-                </ul>
-                {nextPageURI && (
-                    // @ts-expect-error TS2339
-                    <div className={classnames('load-more', styles.loadMore)}>
-                        {/*
-                         // @ts-expect-error TS2740 */}
-                        <ButtonWithStatus
-                            fullWidth
-                            onClick={this.loadMore}
-                            loading={isLoading}
-                        >
-                            {polyglot.t('search_load_more')} (
-                            {total - hits.length})
-                        </ButtonWithStatus>
-                    </div>
-                )}
-            </div>
+                <li className={styles.li}>{polyglot.t('istex_no_result')}</li>
+            </ul>
         );
     }
-}
 
-// @ts-expect-error TS2339
-IstexList.propTypes = {
-    data: PropTypes.shape({
-        hits: PropTypes.array.isRequired,
-        total: PropTypes.number.isRequired,
-        nextPageURI: PropTypes.string,
-    }).isRequired,
-    children: PropTypes.func.isRequired,
-    polyglot: polyglotPropTypes.isRequired,
-    skip: PropTypes.bool.isRequired,
+    return (
+        <div>
+            {/*
+             // @ts-expect-error TS2339 */}
+            <ul className={classnames({ skip }, skip && styles.skip)}>
+                {hits.map((item, index) => (
+                    // @ts-expect-error TS2339
+                    <li className={styles.li} key={index}>
+                        {/*
+                         // @ts-expect-error TS2349 */}
+                        {children({ ...props, polyglot, item })}
+                    </li>
+                ))}
+            </ul>
+            {nextPageURI && (
+                // @ts-expect-error TS2339
+                <div className={classnames('load-more', styles.loadMore)}>
+                    <ButtonWithStatus
+                        fullWidth
+                        onClick={loadMore}
+                        loading={isLoading}
+                    >
+                        {translate('search_load_more')} ({total - hits.length})
+                    </ButtonWithStatus>
+                </div>
+            )}
+        </div>
+    );
 };
 
 export default IstexList;

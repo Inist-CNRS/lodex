@@ -1,6 +1,5 @@
 // @ts-expect-error TS6133
 import React from 'react';
-import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
 import stylesToClassname from '../../lib/stylesToClassName';
@@ -61,15 +60,14 @@ const styles = stylesToClassname(
     'search-result-placeholder',
 );
 
-// @ts-expect-error TS7031
-const Placeholder = ({ className }) => (
+type PlaceholderProps = {
+    className?: string;
+};
+
+const Placeholder = ({ className }: PlaceholderProps) => (
     // @ts-expect-error TS2339
     <div className={classnames(styles.placeholder, className)} />
 );
-
-Placeholder.propTypes = {
-    className: PropTypes.string,
-};
 
 const SearchResultPlaceholder = () => (
     // @ts-expect-error TS2339

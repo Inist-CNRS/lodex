@@ -1,20 +1,28 @@
-import { Component } from 'react';
-import PropTypes from 'prop-types';
+import { useState, useEffect, useCallback, type ReactNode } from 'react';
 
 import fetch from '../lib/fetch';
 import { getYearUrl } from '../formats/other/istexSummary/getIstexData';
 import { CUSTOM_ISTEX_QUERY } from '../formats/other/istexSummary/constants';
 
-class FieldProvider extends Component {
-    state = {
-        error: null,
-        loading: true,
-        data: null,
-    };
+interface FieldProviderProps {
+    children(...args: unknown[]): ReactNode;
+    api: string;
+    uri: string;
+    fieldName: string;
+}
 
-    getFirstIstexQuery = () => {
-        const { data } = this.state;
-        // @ts-expect-error TS2339
+const FieldProvider = ({
+    children,
+    api,
+    uri,
+    fieldName,
+}: FieldProviderProps) => {
+    const [error, setError] = useState<boolean | null>(null);
+    const [loading, setLoading] = useState<boolean>(true);
+    const [data, setData] = useState<any>(null);
+
+    const getFirstIstexQuery = useCallback(() => {
+        if (!data) return;
         const { field, resource } = data;
         const searchedField =
             field.format.args.searchedField || CUSTOM_ISTEX_QUERY;
@@ -28,25 +36,19 @@ class FieldProvider extends Component {
             // @ts-expect-error TS7031
         }).then(({ error, response }) => {
             if (error) {
-                this.setState({ error: true });
+                setError(true);
                 return;
             }
 
-            this.setState({
-                loading: false,
-                data: {
-                    // @ts-expect-error TS2698
-                    ...data,
-                    formatData: response,
-                },
-            });
+            setLoading(false);
+            setData((prevData: any) => ({
+                ...prevData,
+                formatData: response,
+            }));
         });
-    };
+    }, [data]);
 
-    componentDidMount() {
-        // @ts-expect-error TS2339
-        const { api, uri, fieldName } = this.props;
-
+    useEffect(() => {
         fetch({
             url: `${api}/embedded?uri=${encodeURIComponent(
                 uri,
@@ -54,41 +56,29 @@ class FieldProvider extends Component {
             // @ts-expect-error TS7031
         }).then(({ error, response }) => {
             if (error) {
-                this.setState({ error: true });
+                setError(true);
                 return;
             }
 
-            this.setState(
-                {
-                    data: {
-                        ...response,
-                        resource: { [response.field.name]: response.value },
-                    },
-                },
-                this.getFirstIstexQuery,
-            );
+            const newData = {
+                ...response,
+                resource: { [response.field.name]: response.value },
+            };
+            setData(newData);
         });
-    }
+    }, [api, uri, fieldName]);
 
-    render() {
-        const { children } = this.props;
-        const { error, loading, data } = this.state;
-
-        if (loading || error || !data) {
-            return null;
+    useEffect(() => {
+        if (data) {
+            getFirstIstexQuery();
         }
+    }, [data, getFirstIstexQuery]);
 
-        // @ts-expect-error TS2349
-        return children(data);
+    if (loading || error || !data) {
+        return null;
     }
-}
 
-// @ts-expect-error TS2339
-FieldProvider.propTypes = {
-    children: PropTypes.func.isRequired,
-    api: PropTypes.string.isRequired,
-    uri: PropTypes.string.isRequired,
-    fieldName: PropTypes.string.isRequired,
+    return children(data);
 };
 
 export default FieldProvider;

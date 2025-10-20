@@ -5,7 +5,6 @@ import * as d3 from 'd3';
 // @ts-expect-error TS6133
 import React, { useRef, useEffect } from 'react';
 import { getColor } from '../../utils/colorUtils';
-import PropTypes from 'prop-types';
 
 const margin = {
     top: 30,
@@ -14,15 +13,25 @@ const margin = {
     left: 0,
 };
 
-// @ts-expect-error TS7031
-const VennDiagram = ({ input, width, height, colorSet }) => {
+interface VennDiagramProps {
+    width?: number;
+    height?: number;
+    input?: unknown[];
+    colorSet?: string[];
+}
+
+const VennDiagram = ({
+    input,
+    width,
+    height,
+    colorSet
+}: VennDiagramProps) => {
     const ref = useRef(null);
     const chartWidth = width - margin.left - margin.right;
     const chartHeight = height - margin.top - margin.bottom;
     const sets = input
         // @ts-expect-error TS7006
         .filter((item, idex, all) => all.find((x) => item.target === x.source))
-        // @ts-expect-error TS7006
         .map((item) => {
             if (item.source === item.target) {
                 return { sets: [item.source], size: item.weight };
@@ -106,16 +115,6 @@ const VennDiagram = ({ input, width, height, colorSet }) => {
             xmlns="http://www.w3.org/2000/svg"
         />
     );
-};
-VennDiagram.propTypes = {
-    width: PropTypes.number,
-    height: PropTypes.number,
-    input: PropTypes.arrayOf({
-        // @ts-expect-error TS2353
-        source: PropTypes.string.isRequired,
-        target: PropTypes.string.isRequired,
-    }),
-    colorSet: PropTypes.arrayOf(PropTypes.string),
 };
 
 export default VennDiagram;

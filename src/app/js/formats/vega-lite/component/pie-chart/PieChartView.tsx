@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 // @ts-expect-error TS6133
@@ -23,28 +22,43 @@ const styles = {
     },
 };
 
+interface PieChartViewProps {
+    field?: unknown;
+    resource?: object;
+    data?: {
+        values: any;
+    };
+    colors?: string;
+    tooltip?: boolean;
+    tooltipCategory?: string;
+    tooltipValue?: string;
+    labels?: boolean;
+    advancedMode?: boolean;
+    advancedModeSpec?: string;
+    aspectRatio?: string;
+}
+
 const PieChartView = ({
-    // @ts-expect-error TS7031
     advancedMode,
-    // @ts-expect-error TS7031
+
     advancedModeSpec,
-    // @ts-expect-error TS7031
+
     field,
-    // @ts-expect-error TS7031
+
     data,
-    // @ts-expect-error TS7031
+
     tooltip,
-    // @ts-expect-error TS7031
+
     tooltipCategory,
-    // @ts-expect-error TS7031
+
     tooltipValue,
-    // @ts-expect-error TS7031
+
     colors,
-    // @ts-expect-error TS7031
+
     labels,
-    // @ts-expect-error TS7031
-    aspectRatio,
-}) => {
+
+    aspectRatio
+}: PieChartViewProps) => {
     const { ref, width } = useSizeObserver();
     const [error, setError] = useState('');
 
@@ -97,7 +111,7 @@ const PieChartView = ({
 
     return (
         // @ts-expect-error TS2322
-        <div style={styles.container} ref={ref}>
+        (<div style={styles.container} ref={ref}>
             <CustomActionVegaLite
                 // @ts-expect-error TS2322
                 spec={spec}
@@ -105,24 +119,8 @@ const PieChartView = ({
                 injectType={VEGA_LITE_DATA_INJECT_TYPE_A}
                 aspectRatio={aspectRatio}
             />
-        </div>
+        </div>)
     );
-};
-
-PieChartView.propTypes = {
-    field: fieldPropTypes,
-    resource: PropTypes.object,
-    data: PropTypes.shape({
-        values: PropTypes.any.isRequired,
-    }),
-    colors: PropTypes.string,
-    tooltip: PropTypes.bool,
-    tooltipCategory: PropTypes.string,
-    tooltipValue: PropTypes.string,
-    labels: PropTypes.bool,
-    advancedMode: PropTypes.bool,
-    advancedModeSpec: PropTypes.string,
-    aspectRatio: PropTypes.string,
 };
 
 PieChartView.defaultProps = {

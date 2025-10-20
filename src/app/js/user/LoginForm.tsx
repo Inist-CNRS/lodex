@@ -57,7 +57,6 @@ export const LoginFormComponent = () => {
                     />
                 </CardContent>
                 <CardActions>
-                    {/* @ts-expect-error TS2740 */}
                     <ButtonWithStatus
                         loading={isSubmitting}
                         type="submit"

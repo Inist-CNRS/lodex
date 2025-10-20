@@ -1,8 +1,7 @@
 // @ts-expect-error TS6133
-import React from 'react';
+import React, { type CSSProperties, type ReactNode } from 'react';
 import { Link as RouterLink, NavLink } from 'react-router-dom';
 import classnames from 'classnames';
-import PropTypes from 'prop-types';
 import stylesToClassname from '../../lib/stylesToClassName';
 
 const styles = stylesToClassname(
@@ -27,8 +26,27 @@ const styles = stylesToClassname(
     'link',
 );
 
-// @ts-expect-error TS7031
-const Link = ({ to, href, className, children, routeAware, ...rest }) => {
+type LinkProps = {
+    children?: ReactNode;
+    className?: string;
+    activeClassName?: string;
+    href?: string;
+    routeAware?: boolean;
+    to?: string | null;
+    onClick?: () => void;
+    target?: string;
+    rel?: string;
+    style?: CSSProperties;
+};
+
+const Link = ({
+    to,
+    href,
+    className,
+    children,
+    routeAware,
+    ...rest
+}: LinkProps) => {
     // @ts-expect-error TS2339
     const classname = classnames(className, 'link', styles.link);
     if (routeAware && to) {
@@ -51,15 +69,6 @@ const Link = ({ to, href, className, children, routeAware, ...rest }) => {
             {children}
         </a>
     );
-};
-
-// create PropTypes
-Link.propTypes = {
-    children: PropTypes.any,
-    className: PropTypes.string,
-    href: PropTypes.string,
-    routeAware: PropTypes.bool,
-    to: PropTypes.string,
 };
 
 export default Link;

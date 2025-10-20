@@ -1,6 +1,5 @@
 // @ts-expect-error TS6133
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { IconButton } from '@mui/material';
 import CodeIcon from '@mui/icons-material/Code';
 import classnames from 'classnames';
@@ -9,31 +8,36 @@ import { polyglot as polyglotPropTypes } from '../../../propTypes';
 import ButtonWithDialog from '../../../lib/components/ButtonWithDialog';
 import { getCleanHost } from '../../../../../common/uris';
 
-class EmbedButton extends Component {
+interface EmbedButtonProps {
+    className?: string;
+    p: unknown;
+    uri: string;
+    fieldName: string;
+}
+
+class EmbedButton extends Component<EmbedButtonProps> {
     state = { open: false };
 
     handleOpen = () => this.setState({ open: true });
     handleClose = () => this.setState({ open: false });
 
     renderOpenButton = () => {
-        // @ts-expect-error TS2339
         const { className, p: polyglot } = this.props;
 
         return (
             // @ts-expect-error TS2769
-            <IconButton
+            (<IconButton
                 className={classnames('embed-button', className)}
                 style={{ position: 'absolute' }}
                 tooltip={polyglot.t('embed_istex_summary')}
                 onClick={this.handleOpen}
             >
                 <CodeIcon />
-            </IconButton>
+            </IconButton>)
         );
     };
 
     renderDialog = () => {
-        // @ts-expect-error TS2339
         const { uri, fieldName, p: polyglot } = this.props;
         const host = getCleanHost();
 
@@ -52,7 +56,6 @@ class EmbedButton extends Component {
     };
 
     render() {
-        // @ts-expect-error TS2339
         const { p: polyglot } = this.props;
         const { open } = this.state;
 
@@ -68,14 +71,6 @@ class EmbedButton extends Component {
         );
     }
 }
-
-// @ts-expect-error TS2339
-EmbedButton.propTypes = {
-    className: PropTypes.string,
-    p: polyglotPropTypes.isRequired,
-    uri: PropTypes.string.isRequired,
-    fieldName: PropTypes.string.isRequired,
-};
 
 // @ts-expect-error TS2339
 EmbedButton.defaultProps = {

@@ -34,7 +34,6 @@ describe('Progress', () => {
                 status: PENDING,
             },
         };
-        // @ts-expect-error TS2322
         const wrapper = shallow(<Progress {...props} />);
 
         const dialog = wrapper.find(Dialog);
@@ -42,7 +41,6 @@ describe('Progress', () => {
     });
 
     it('should render opened dialog if status is not PENDING', () => {
-        // @ts-expect-error TS2322
         const wrapper = shallow(<Progress {...defaultProps} />);
 
         const dialog = wrapper.find(Dialog);
@@ -58,7 +56,6 @@ describe('Progress', () => {
                 progress: 700,
             },
         };
-        // @ts-expect-error TS2322
         const wrapper = shallow(<Progress {...props} />);
 
         const linearProgress = wrapper.find(LinearProgress);
@@ -106,7 +103,6 @@ describe('Progress', () => {
                 symbol: '%',
             },
         };
-        // @ts-expect-error TS2322
         const wrapper = shallow(<Progress {...props} />);
 
         const linearProgress = wrapper.find(LinearProgress);

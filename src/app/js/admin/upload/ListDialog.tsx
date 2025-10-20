@@ -1,5 +1,4 @@
 import { useState, useEffect, type ReactNode, type Ref } from 'react';
-import PropTypes from 'prop-types';
 import {
     Button,
     Grid,
@@ -172,13 +171,22 @@ type ListDialogComponentProps = {
     actions: ReactNode;
 };
 
+interface ListDialogComponentProps {
+    loaders?: unknown[];
+    setLoader(...args: unknown[]): unknown;
+    value: string;
+    open: boolean;
+    handleClose(...args: unknown[]): unknown;
+    actions?: React.ReactNode;
+}
+
 export const ListDialogComponent = ({
     loaders,
     value,
     setLoader,
     open,
     handleClose,
-    actions,
+    actions
 }: ListDialogComponentProps) => {
     const { translate } = useTranslate();
     const [filteredLoaders, setFilter] = useState(loaders.map((l) => l.name));
@@ -230,15 +238,6 @@ export const ListDialogComponent = ({
             <DialogActions>{actions}</DialogActions>
         </Dialog>
     );
-};
-
-ListDialogComponent.propTypes = {
-    loaders: PropTypes.array,
-    setLoader: PropTypes.func.isRequired,
-    value: PropTypes.string.isRequired,
-    open: PropTypes.bool.isRequired,
-    handleClose: PropTypes.func.isRequired,
-    actions: PropTypes.node,
 };
 
 export default ListDialogComponent;

@@ -1,5 +1,3 @@
-import PropTypes from 'prop-types';
-
 import { field as fieldPropTypes } from '../../propTypes';
 import FieldCaption from '../FieldCaption';
 import FieldComposedOf from '../FieldComposedOf';
@@ -7,15 +5,22 @@ import FieldDisplayInput from '../FieldDisplay';
 import FieldFormatInput from '../FieldFormatInput';
 import FieldWidthInput from '../FieldWidthInput';
 
+interface TabDisplayComponentProps {
+    keepMeta?: boolean;
+    filter: string;
+    fields: unknown[];
+    subresourceId?: string;
+}
+
 export const TabDisplayComponent = ({
     keepMeta = true,
-    // @ts-expect-error TS7031
+
     filter,
-    // @ts-expect-error TS7031
+
     fields,
-    // @ts-expect-error TS7031
-    subresourceId,
-}) => (
+
+    subresourceId
+}: TabDisplayComponentProps) => (
     <>
         {keepMeta && <FieldDisplayInput />}
         <FieldFormatInput />
@@ -32,12 +37,5 @@ export const TabDisplayComponent = ({
         />
     </>
 );
-
-TabDisplayComponent.propTypes = {
-    keepMeta: PropTypes.bool,
-    filter: PropTypes.string.isRequired,
-    fields: PropTypes.arrayOf(fieldPropTypes).isRequired,
-    subresourceId: PropTypes.string,
-};
 
 export default TabDisplayComponent;

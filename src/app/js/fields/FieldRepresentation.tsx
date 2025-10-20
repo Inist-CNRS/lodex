@@ -1,5 +1,4 @@
 import { Box, Checkbox, Tooltip, Typography, useTheme } from '@mui/material';
-import PropTypes from 'prop-types';
 // @ts-expect-error TS6133
 import React from 'react';
 import { AnnotationDisabledIcon } from '../annotation/AnnotationDisabledIcon';
@@ -7,18 +6,27 @@ import { translate, useTranslate } from '../i18n/I18NContext';
 import { polyglot as polyglotPropTypes } from '../propTypes';
 import FieldInternalIcon from './FieldInternalIcon';
 
+interface FieldRepresentationProps {
+    field: object;
+    shortMode?: boolean;
+    isFieldSelected?: boolean;
+    handleToggleSelectedField?(...args: unknown[]): unknown;
+    p: unknown;
+    showNotAnnotableIcon?: boolean;
+}
+
 function FieldRepresentation({
-    // @ts-expect-error TS7031
     field,
+
     shortMode = false,
     showNotAnnotableIcon = false,
-    // @ts-expect-error TS7031
+
     p: polyglot,
-    // @ts-expect-error TS7031
+
     isFieldSelected,
-    // @ts-expect-error TS7031
-    handleToggleSelectedField,
-}) {
+
+    handleToggleSelectedField
+}: FieldRepresentationProps) {
     const { translate } = useTranslate();
     const theme = useTheme();
     if (!field) {
@@ -167,14 +175,5 @@ function FieldRepresentation({
         </>
     );
 }
-
-FieldRepresentation.propTypes = {
-    field: PropTypes.object.isRequired,
-    shortMode: PropTypes.bool,
-    isFieldSelected: PropTypes.bool,
-    handleToggleSelectedField: PropTypes.func,
-    p: polyglotPropTypes.isRequired,
-    showNotAnnotableIcon: PropTypes.bool,
-};
 
 export default translate(FieldRepresentation);

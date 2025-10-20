@@ -4,12 +4,16 @@ import { useField, useStore } from '@tanstack/react-form';
 import React, { useEffect, useState } from 'react';
 import AceEditor from 'react-ace';
 import { useTranslate } from '../../../i18n/I18NContext';
-import PropTypes from 'prop-types';
 import 'ace-builds/src-noconflict/mode-json';
 import 'ace-builds/src-noconflict/theme-monokai';
 
-// @ts-expect-error TS7031
-export const ConfigField = ({ form }) => {
+interface ConfigFieldProps {
+    form: object;
+}
+
+export const ConfigField = ({
+    form
+}: ConfigFieldProps) => {
     const { translate } = useTranslate();
     const field = useField({ name: 'config', form });
     const [json, setJson] = useState(
@@ -67,8 +71,4 @@ export const ConfigField = ({ form }) => {
             {error && <Typography color="error">{translate(error)}</Typography>}
         </>
     );
-};
-
-ConfigField.propTypes = {
-    form: PropTypes.object.isRequired,
 };

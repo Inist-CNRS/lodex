@@ -11,7 +11,6 @@ import React, { useEffect, useState } from 'react';
 import { io } from 'socket.io-client';
 import { publish, publishSuccess, publishError } from '../publish';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
 import {
     PENDING,
     SAVING_DATASET,
@@ -73,8 +72,19 @@ const styles = {
     },
 };
 
-// @ts-expect-error TS7006
-const JobProgressComponent = (props) => {
+interface JobProgressComponentProps {
+    hasPublishedDataset: boolean;
+    handlePublishSuccess(...args: unknown[]): unknown;
+    handlePublishError(...args: unknown[]): unknown;
+    handleCancelPublication(...args: unknown[]): unknown;
+    loadParsingResult(...args: unknown[]): unknown;
+    handleRepublish(...args: unknown[]): unknown;
+    finishProgress(...args: unknown[]): unknown;
+    loadEnrichments(...args: unknown[]): unknown;
+    loadPrecomputed(...args: unknown[]): unknown;
+}
+
+const JobProgressComponent = (props: JobProgressComponentProps) => {
     const {
         hasPublishedDataset,
         handlePublishSuccess,
@@ -206,160 +216,147 @@ const JobProgressComponent = (props) => {
         }
     }, [progress, hasLoadedParsingResult]);
 
-    return (
-        <>
-            <Fade
-                // @ts-expect-error TS2339
-                in={progress && (progress.isJobProgress || progress.isJobError)}
+    return (<>
+        <Fade
+            // @ts-expect-error TS2339
+            in={progress && (progress.isJobProgress || progress.isJobError)}
+        >
+            <Box
+                className="progress-container"
+                sx={styles.progressContainer}
             >
                 <Box
-                    className="progress-container"
-                    sx={styles.progressContainer}
+                    sx={styles.progressLabelContainer}
+                    aria-label="job-progress"
                 >
-                    <Box
-                        sx={styles.progressLabelContainer}
-                        aria-label="job-progress"
-                    >
+                    {/*
+                     // @ts-expect-error TS2339 */}
+                    {progress?.isJobError ? (
+                        // @ts-expect-error TS2769
+                        (<Warning size={20} />)
+                    ) : (
+                        <CircularProgress
+                            variant="indeterminate"
+                            color="inherit"
+                            size={20}
+                        />
+                    )}
+                    <Box sx={styles.progressLabel}>
                         {/*
                          // @ts-expect-error TS2339 */}
-                        {progress?.isJobError ? (
-                            // @ts-expect-error TS2769
-                            <Warning size={20} />
-                        ) : (
-                            <CircularProgress
-                                variant="indeterminate"
-                                color="inherit"
-                                size={20}
-                            />
+                        {(progress?.label || progress?.status) && (
+                            <Typography variant="subtitle2">
+                                {translate(
+                                    // @ts-expect-error TS2339
+                                    progress?.label || progress?.status,
+                                )}
+                            </Typography>
                         )}
-                        <Box sx={styles.progressLabel}>
-                            {/*
-                             // @ts-expect-error TS2339 */}
-                            {(progress?.label || progress?.status) && (
-                                <Typography variant="subtitle2">
-                                    {translate(
-                                        // @ts-expect-error TS2339
-                                        progress?.label || progress?.status,
-                                    )}
+                        {progress &&
+                            // @ts-expect-error TS2339
+                            progress?.type === 'publisher' &&
+                            // @ts-expect-error TS2339
+                            progress.status && (
+                                <Typography
+                                    variant="caption"
+                                    // @ts-expect-error TS2339
+                                    title={progress?.status}
+                                    sx={styles.progressStatus}
+                                    noWrap={true}
+                                >
+                                    {/*
+                                     // @ts-expect-error TS2339 */}
+                                    {translate(progress.status)}
                                 </Typography>
                             )}
-                            {progress &&
-                                // @ts-expect-error TS2339
-                                progress?.type === 'publisher' &&
-                                // @ts-expect-error TS2339
-                                progress.status && (
-                                    <Typography
-                                        variant="caption"
-                                        // @ts-expect-error TS2339
-                                        title={progress?.status}
-                                        sx={styles.progressStatus}
-                                        noWrap={true}
-                                    >
-                                        {/*
-                                         // @ts-expect-error TS2339 */}
-                                        {translate(progress.status)}
-                                    </Typography>
-                                )}
 
-                            {/*
-                             // @ts-expect-error TS2339 */}
-                            {(progress?.type === 'enricher' ||
-                                // @ts-expect-error TS2339
-                                progress?.type === 'precomputer') && (
+                        {/*
+                         // @ts-expect-error TS2339 */}
+                        {(progress?.type === 'enricher' ||
+                            // @ts-expect-error TS2339
+                            progress?.type === 'precomputer') && (
+                            <Typography variant="caption">
+                                {/*
+                                 // @ts-expect-error TS2339 */}
+                                {progress.subLabel}
+                            </Typography>
+                        )}
+                        {/*
+                         // @ts-expect-error TS2339 */}
+                        {progress?.status === SAVING_DATASET &&
+                            // @ts-expect-error TS2339
+                            progress?.subLabel && (
                                 <Typography variant="caption">
                                     {/*
                                      // @ts-expect-error TS2339 */}
-                                    {progress.subLabel}
+                                    {`${progress.progress} ${translate(
+                                        // @ts-expect-error TS2339
+                                        progress.subLabel,
+                                    )}`}
                                 </Typography>
-                            )}
-                            {/*
-                             // @ts-expect-error TS2339 */}
-                            {progress?.status === SAVING_DATASET &&
-                                // @ts-expect-error TS2339
-                                progress?.subLabel && (
-                                    <Typography variant="caption">
-                                        {/*
-                                         // @ts-expect-error TS2339 */}
-                                        {`${progress.progress} ${translate(
-                                            // @ts-expect-error TS2339
-                                            progress.subLabel,
-                                        )}`}
-                                    </Typography>
-                                )}
-                        </Box>
-                        {/*
-                         // @ts-expect-error TS2339 */}
-                        {progress?.status !== UPLOADING_DATASET &&
-                            // @ts-expect-error TS2339
-                            progress?.type !== 'precomputer' && (
-                                <Button
-                                    sx={styles.cancelButton}
-                                    color="inherit"
-                                    onClick={() => {
-                                        setIsCancelDialogOpen(true);
-                                    }}
-                                >
-                                    <Cancel />
-                                </Button>
                             )}
                     </Box>
                     {/*
                      // @ts-expect-error TS2339 */}
-                    {!!progress?.progress && !!progress?.target && (
-                        <LinearProgress
-                            sx={{
-                                ...styles.progress,
-                                '& .MuiLinearProgress-colorPrimary': {
-                                    ...styles.colorPrimary,
-                                },
-                                '& .MuiLinearProgress-barColorPrimary': {
-                                    ...styles.barColorPrimary,
-                                },
-                            }}
-                            variant="determinate"
-                            // @ts-expect-error TS2339
-                            value={(progress.progress / progress.target) * 100}
-                        />
-                    )}
+                    {progress?.status !== UPLOADING_DATASET &&
+                        // @ts-expect-error TS2339
+                        progress?.type !== 'precomputer' && (
+                            <Button
+                                sx={styles.cancelButton}
+                                color="inherit"
+                                onClick={() => {
+                                    setIsCancelDialogOpen(true);
+                                }}
+                            >
+                                <Cancel />
+                            </Button>
+                        )}
                 </Box>
-            </Fade>
-            <CancelProcessDialog
-                isOpen={isCancelDialogOpen}
+                {/*
+                 // @ts-expect-error TS2339 */}
+                {!!progress?.progress && !!progress?.target && (
+                    <LinearProgress
+                        sx={{
+                            ...styles.progress,
+                            '& .MuiLinearProgress-colorPrimary': {
+                                ...styles.colorPrimary,
+                            },
+                            '& .MuiLinearProgress-barColorPrimary': {
+                                ...styles.barColorPrimary,
+                            },
+                        }}
+                        variant="determinate"
+                        // @ts-expect-error TS2339
+                        value={(progress.progress / progress.target) * 100}
+                    />
+                )}
+            </Box>
+        </Fade>
+        <CancelProcessDialog
+            isOpen={isCancelDialogOpen}
+            // @ts-expect-error TS2339
+            title={getTitle(progress?.type)}
+            // @ts-expect-error TS2339
+            content={getContent(progress?.type)}
+            onCancel={() => {
+                setIsCancelDialogOpen(false);
+            }}
+            onConfirm={() => {
+                if (!progress) {
+                    return;
+                }
                 // @ts-expect-error TS2339
-                title={getTitle(progress?.type)}
+                jobsApi.cancelJob(progress.type, progress.subLabel);
                 // @ts-expect-error TS2339
-                content={getContent(progress?.type)}
-                onCancel={() => {
-                    setIsCancelDialogOpen(false);
-                }}
-                onConfirm={() => {
-                    if (!progress) {
-                        return;
-                    }
-                    // @ts-expect-error TS2339
-                    jobsApi.cancelJob(progress.type, progress.subLabel);
-                    // @ts-expect-error TS2339
-                    if (progress.type === 'publisher') {
-                        handleCancelPublication();
-                        // @ts-expect-error TS2554
-                        setProgress();
-                    }
-                    setIsCancelDialogOpen(false);
-                }}
-            />
-        </>
-    );
-};
-JobProgressComponent.propTypes = {
-    hasPublishedDataset: PropTypes.bool.isRequired,
-    handlePublishSuccess: PropTypes.func.isRequired,
-    handlePublishError: PropTypes.func.isRequired,
-    handleCancelPublication: PropTypes.func.isRequired,
-    loadParsingResult: PropTypes.func.isRequired,
-    handleRepublish: PropTypes.func.isRequired,
-    finishProgress: PropTypes.func.isRequired,
-    loadEnrichments: PropTypes.func.isRequired,
-    loadPrecomputed: PropTypes.func.isRequired,
+                if (progress.type === 'publisher') {
+                    handleCancelPublication();
+                    // @ts-expect-error TS2554
+                    setProgress();
+                }
+                setIsCancelDialogOpen(false);
+            }}
+        />
+    </>);
 };
 
 // @ts-expect-error TS7006

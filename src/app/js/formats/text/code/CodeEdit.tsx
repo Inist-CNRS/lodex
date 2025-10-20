@@ -18,6 +18,4 @@ const CodeEdit = ({ input, label, meta: { touched, error }, ...custom }) => (
     />
 );
 
-CodeEdit.propTypes = formFieldPropTypes;
-
 export default CodeEdit;

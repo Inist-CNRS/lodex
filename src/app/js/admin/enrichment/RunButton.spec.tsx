@@ -1,7 +1,7 @@
 import { RunButton } from './RunButton';
 import { FINISHED, IN_PROGRESS, PENDING } from '../../../../common/taskStatus';
 import { toast } from '../../../../common/tools/toast';
-import { act, fireEvent, render } from '../../../../test-utils';
+import { act, render } from '../../../../test-utils';
 
 jest.mock('../../../../common/tools/toast');
 
@@ -24,7 +24,7 @@ describe('RunButton', () => {
         expect(getByText('run')).not.toBeDisabled();
 
         act(() => {
-            fireEvent.click(getByText('run'));
+            screen.fireEvent.click(getByText('run'));
         });
         expect(onLaunchEnrichment).toHaveBeenCalledWith({
             id: 'id',
@@ -47,7 +47,7 @@ describe('RunButton', () => {
         expect(getByText('run')).not.toBeDisabled();
 
         act(() => {
-            fireEvent.click(getByText('run'));
+            screen.fireEvent.click(getByText('run'));
         });
         expect(onLaunchEnrichment).toHaveBeenCalledWith({
             id: 'id',
@@ -73,7 +73,7 @@ describe('RunButton', () => {
         expect(getByText('run')).not.toBeDisabled();
 
         act(() => {
-            fireEvent.click(getByText('run'));
+            screen.fireEvent.click(getByText('run'));
         });
         expect(onLaunchEnrichment).toHaveBeenCalledWith({
             id: 'id',
@@ -96,7 +96,7 @@ describe('RunButton', () => {
         expect(getByText('run')).toBeDisabled();
 
         act(() => {
-            fireEvent.click(getByText('run'));
+            screen.fireEvent.click(getByText('run'));
         });
         expect(onLaunchEnrichment).toHaveBeenCalledTimes(0);
         expect(toast).toHaveBeenCalledTimes(0);
@@ -116,7 +116,7 @@ describe('RunButton', () => {
         expect(getByText('run')).toBeDisabled();
 
         act(() => {
-            fireEvent.click(getByText('run'));
+            screen.fireEvent.click(getByText('run'));
         });
         expect(onLaunchEnrichment).toHaveBeenCalledTimes(0);
         expect(toast).toHaveBeenCalledTimes(0);

@@ -6,8 +6,13 @@ import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { exportHiddenResources } from '../api/hiddenResource';
 import { translate } from '../../i18n/I18NContext';
 
-// @ts-expect-error TS7031
-const ExportButton = ({ p: polyglot }) => {
+interface ExportButtonProps {
+    p: unknown;
+}
+
+const ExportButton = ({
+    p: polyglot
+}: ExportButtonProps) => {
     const handleExport = async () => {
         const res = await exportHiddenResources();
         const file = window.URL.createObjectURL(res);
@@ -36,10 +41,6 @@ const ExportButton = ({ p: polyglot }) => {
             {buttonLabel}
         </Button>
     );
-};
-
-ExportButton.propTypes = {
-    p: polyglotPropTypes.isRequired,
 };
 
 export default translate(ExportButton);

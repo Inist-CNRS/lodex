@@ -5,8 +5,13 @@ import ReactTooltip from 'react-tooltip';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUndo } from '@fortawesome/free-solid-svg-icons';
 
-// @ts-expect-error TS7031
-const CenterIcon = ({ polyglot }) => (
+interface CenterIconProps {
+    polyglot: unknown;
+}
+
+const CenterIcon = ({
+    polyglot
+}: CenterIconProps) => (
     <>
         <FontAwesomeIcon
             data-tip
@@ -19,9 +24,5 @@ const CenterIcon = ({ polyglot }) => (
         </ReactTooltip>
     </>
 );
-
-CenterIcon.propTypes = {
-    polyglot: polyglotPropTypes.isRequired,
-};
 
 export default CenterIcon;

@@ -5,17 +5,21 @@ import {
     OutlinedInput,
     Select,
 } from '@mui/material';
-import PropTypes from 'prop-types';
-// @ts-expect-error TS6133
-import React from 'react';
 import { connect } from 'react-redux';
 import { useGetAnnotatedResourceUris } from '../../annotation/annotationStorage';
 import { useTranslate } from '../../i18n/I18NContext';
 import { fromSearch } from '../selectors';
 import { searchAnnotations } from './reducer';
 
-// @ts-expect-error TS7031
-export const AnnotationsFilterComponent = ({ filter, onFilterChange }) => {
+type AnnotationsFilterComponentProps = {
+    filter?: string;
+    onFilterChange(...args: unknown[]): unknown;
+};
+
+export const AnnotationsFilterComponent = ({
+    filter,
+    onFilterChange,
+}: AnnotationsFilterComponentProps) => {
     const { translate } = useTranslate();
 
     const resourceUris = useGetAnnotatedResourceUris();
@@ -62,11 +66,6 @@ export const AnnotationsFilterComponent = ({ filter, onFilterChange }) => {
             </Select>
         </FormControl>
     );
-};
-
-AnnotationsFilterComponent.propTypes = {
-    filter: PropTypes.string,
-    onFilterChange: PropTypes.func.isRequired,
 };
 
 // @ts-expect-error TS7006

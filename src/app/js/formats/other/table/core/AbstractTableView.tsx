@@ -4,7 +4,6 @@ import {
     field as fieldPropTypes,
     polyglot as polyglotPropTypes,
 } from '../../../../propTypes';
-import PropTypes from 'prop-types';
 import {
     TableCell,
     TableFooter,
@@ -16,26 +15,24 @@ import {
 import { getViewComponent } from '../../../index';
 import _ from 'lodash';
 
-class AbstractTableView extends Component {
-    static propTypes = {
-        field: fieldPropTypes.isRequired,
-        data: PropTypes.arrayOf(PropTypes.object).isRequired,
-        total: PropTypes.number.isRequired,
-        pageSize: PropTypes.number.isRequired,
-        p: polyglotPropTypes.isRequired,
-        columnsParameters: PropTypes.arrayOf(
-            PropTypes.shape({
-                id: PropTypes.number.isRequired,
-                title: PropTypes.string.isRequired,
-                field: PropTypes.string.isRequired,
-                format: PropTypes.shape({
-                    name: PropTypes.string.isRequired,
-                    option: PropTypes.any.isRequired,
-                }).isRequired,
-            }),
-        ).isRequired,
-    };
+interface AbstractTableViewProps {
+    field: unknown;
+    data: object[];
+    total: number;
+    pageSize: number;
+    p: unknown;
+    columnsParameters: {
+        id: number;
+        title: string;
+        field: string;
+        format: {
+            name: string;
+            option: any;
+        };
+    }[];
+}
 
+class AbstractTableView extends Component<AbstractTableViewProps> {
     // @ts-expect-error TS7006
     static mapStateToProps = (_, { formatData, formatTotal, spaceWidth }) => {
         if (!formatData) {
@@ -83,9 +80,7 @@ class AbstractTableView extends Component {
     }
 
     UNSAFE_componentWillMount() {
-        // @ts-expect-error TS2339
         if (this.props.columnsParameters.length >= 1) {
-            // @ts-expect-error TS2339
             this.onSort(this.props.columnsParameters[0]);
         }
     }

@@ -1,6 +1,5 @@
 // @ts-expect-error TS6133
 import React from 'react';
-import PropTypes from 'prop-types';
 import memoize from 'lodash/memoize';
 
 import { REJECTED } from '../../../../../common/propositionStatus';
@@ -14,8 +13,17 @@ const styles = {
     })),
 };
 
-// @ts-expect-error TS7031
-const IstexSummaryList = ({ fieldStatus, field, resource }) => {
+interface IstexSummaryListProps {
+    fieldStatus?: string;
+    resource: object;
+    field: unknown;
+}
+
+const IstexSummaryList = ({
+    fieldStatus,
+    field,
+    resource
+}: IstexSummaryListProps) => {
     const url = getSiteUrl(resource[field.name]);
 
     return (
@@ -28,12 +36,6 @@ const IstexSummaryList = ({ fieldStatus, field, resource }) => {
             {url}
         </a>
     );
-};
-
-IstexSummaryList.propTypes = {
-    fieldStatus: PropTypes.string,
-    resource: PropTypes.object.isRequired,
-    field: fieldPropTypes.isRequired,
 };
 
 IstexSummaryList.defaultProps = {

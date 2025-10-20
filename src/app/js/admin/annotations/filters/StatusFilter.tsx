@@ -2,11 +2,19 @@ import { FormControl, InputLabel, NativeSelect } from '@mui/material';
 // @ts-expect-error TS6133
 import React from 'react';
 import { useTranslate } from '../../../i18n/I18NContext';
-import PropTypes from 'prop-types';
 import { statuses } from '../../../../../common/validator/annotation.validator';
 
-// @ts-expect-error TS7031
-export const StatusFilter = ({ applyValue, item }) => {
+interface StatusFilterProps {
+    applyValue(...args: unknown[]): unknown;
+    item: {
+        value?: string;
+    };
+}
+
+export const StatusFilter = ({
+    applyValue,
+    item
+}: StatusFilterProps) => {
     const { translate } = useTranslate();
 
     return (
@@ -34,11 +42,4 @@ export const StatusFilter = ({ applyValue, item }) => {
             </NativeSelect>
         </FormControl>
     );
-};
-
-StatusFilter.propTypes = {
-    applyValue: PropTypes.func.isRequired,
-    item: PropTypes.shape({
-        value: PropTypes.string,
-    }).isRequired,
 };
