@@ -357,42 +357,39 @@ export const processEnrichment = async (
 ) => {
     const room = `${ctx.tenant}-enrichment-job-${ctx.job.id}`;
     await ctx.enrichment.updateStatus(enrichment._id, IN_PROGRESS);
-    try {
-        const fusible = await createFusible();
-        await enableFusible(fusible);
-        await ctx.job.update({
-            ...ctx.job.data,
-            fusible,
-        });
-        const errorCount = await processEnrichmentPipeline(
-            room,
-            fusible,
-            filter,
-            enrichment,
-            ctx,
-        );
 
-        if (!(await checkFusible(fusible))) {
-            const error = new CancelWorkerError('Job has been canceled');
-            error.errorCount = errorCount;
-            throw error;
-        }
+    const fusible = await createFusible();
+    await enableFusible(fusible);
+    await ctx.job.update({
+        ...ctx.job.data,
+        fusible,
+    });
+    const errorCount = await processEnrichmentPipeline(
+        room,
+        fusible,
+        filter,
+        enrichment,
+        ctx,
+    );
 
-        await ctx.enrichment.updateStatus(enrichment._id, FINISHED, {
-            errorCount,
-        });
-        progress.finish(ctx.tenant);
-        const logData = JSON.stringify({
-            level: 'ok',
-            message: `[Instance: ${ctx.tenant}] Enrichement finished`,
-            timestamp: new Date(),
-            status: FINISHED,
-        });
-        jobLogger.info(ctx.job, logData);
-        notifyListeners(room, logData);
-    } catch (err) {
-        await setEnrichmentError(ctx, err);
+    if (!(await checkFusible(fusible))) {
+        const error = new CancelWorkerError('Job has been canceled');
+        error.errorCount = errorCount;
+        throw error;
     }
+
+    await ctx.enrichment.updateStatus(enrichment._id, FINISHED, {
+        errorCount,
+    });
+    progress.finish(ctx.tenant);
+    const logData = JSON.stringify({
+        level: 'ok',
+        message: `[Instance: ${ctx.tenant}] Enrichement finished`,
+        timestamp: new Date(),
+        status: FINISHED,
+    });
+    jobLogger.info(ctx.job, logData);
+    notifyListeners(room, logData);
 };
 
 export const setEnrichmentJobId = async (
