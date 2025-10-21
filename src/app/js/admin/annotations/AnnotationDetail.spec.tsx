@@ -5,6 +5,7 @@ import { render } from '../../../../test-utils';
 import { TestI18N } from '../../i18n/I18NContext';
 import { AnnotationDetail } from './AnnotationDetail';
 import { useGetAnnotation } from './hooks/useGetAnnotation';
+import { within } from '@testing-library/dom';
 
 jest.mock('./hooks/useGetAnnotation', () => ({ useGetAnnotation: jest.fn() }));
 jest.mock('./hooks/useUpdateAnnotation', () => ({
@@ -83,20 +84,12 @@ describe('AnnotationDetail', () => {
             name: 'annotation_field_section',
         });
         expect(fieldRegion).toBeInTheDocument();
+        expect(within(fieldRegion).getByText('[GaZr]')).toBeInTheDocument();
         expect(
-            screen.getByText('[GaZr]', {
-                container: fieldRegion,
-            }),
+            within(fieldRegion).getByText('Annotated field'),
         ).toBeInTheDocument();
         expect(
-            screen.getByText('Annotated field', {
-                container: fieldRegion,
-            }),
-        ).toBeInTheDocument();
-        expect(
-            screen.getByText('annotated_field', {
-                container: fieldRegion,
-            }),
+            within(fieldRegion).getByText('annotated_field'),
         ).toBeInTheDocument();
 
         // Comment region
@@ -105,9 +98,9 @@ describe('AnnotationDetail', () => {
         });
         expect(commentRegion).toBeInTheDocument();
         expect(
-            screen.getByText('Just testing the annotation system', {
-                container: commentRegion,
-            }),
+            within(commentRegion).getByText(
+                'Just testing the annotation system',
+            ),
         ).toBeInTheDocument();
 
         // Comment region
@@ -116,15 +109,12 @@ describe('AnnotationDetail', () => {
         });
         expect(authorRegion).toBeInTheDocument();
         expect(
-            screen.getByText('Count Ributor', {
-                container: authorRegion,
-            }),
+            within(authorRegion).getByText('Count Ributor'),
         ).toBeInTheDocument();
 
         expect(
-            screen.getByRole('link', {
+            within(authorRegion).getByRole('link', {
                 name: 'ributor@gmail.com',
-                container: authorRegion,
             }),
         ).toHaveAttribute('href', 'mailto:ributor@gmail.com');
 
@@ -132,14 +122,14 @@ describe('AnnotationDetail', () => {
             name: 'annotation_complementary_infos_section',
         });
         expect(
-            screen.queryByLabelText('annotation_created_at', {
-                container: complementaryInfosRegion,
-            }),
+            within(complementaryInfosRegion).queryByLabelText(
+                'annotation_created_at',
+            ),
         ).toHaveTextContent('1/1/2025');
         expect(
-            screen.queryByLabelText('annotation_updated_at', {
-                container: complementaryInfosRegion,
-            }),
+            within(complementaryInfosRegion).queryByLabelText(
+                'annotation_updated_at',
+            ),
         ).toHaveTextContent('10/1/2025');
 
         const inputsRegion = screen.getByRole('group', {
@@ -147,20 +137,16 @@ describe('AnnotationDetail', () => {
         });
         expect(inputsRegion).toBeInTheDocument();
         expect(
-            screen.queryByLabelText('annotation_status', {
-                container: inputsRegion,
-            }),
+            within(inputsRegion).queryByLabelText('annotation_status'),
         ).toHaveTextContent('annotation_status_ongoing');
         expect(
-            screen.getByRole('textbox', {
+            within(inputsRegion).getByRole('textbox', {
                 name: 'annotation_internal_comment',
-                container: inputsRegion,
             }),
         ).toHaveValue('Just testing the annotation admin');
         expect(
-            screen.getByRole('textbox', {
+            within(inputsRegion).getByRole('textbox', {
                 name: 'annotation_administrator',
-                container: inputsRegion,
             }),
         ).toHaveValue('The administrator');
     });

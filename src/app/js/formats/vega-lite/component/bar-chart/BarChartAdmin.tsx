@@ -81,7 +81,7 @@ type BarChartArgs = {
     labels?: boolean;
     labelOverlap?: boolean;
     barSize?: number;
-    aspectRatio?: AspectRatio;
+    aspectRatio: AspectRatio;
 };
 
 type BarChartAdminProps = {

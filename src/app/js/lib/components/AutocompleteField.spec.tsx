@@ -6,6 +6,7 @@ import {
     AutocompleteField,
     type AutocompleteFieldProps,
 } from './AutocompleteField';
+import { fireEvent, waitFor } from '@testing-library/dom';
 
 function TestAutocompleteField(
     props: Omit<AutocompleteFieldProps, 'form' | 'name' | 'label'>,
@@ -38,8 +39,8 @@ describe('AutocompleteField', () => {
                 name: 'Name',
             });
 
-            await screen.waitFor(() => {
-                screen.fireEvent.mouseDown(textbox);
+            await waitFor(() => {
+                fireEvent.mouseDown(textbox);
             });
 
             const option = screen.getByRole('option', {
@@ -48,8 +49,8 @@ describe('AutocompleteField', () => {
 
             expect(option).toBeInTheDocument();
 
-            await screen.waitFor(() => {
-                screen.fireEvent.click(option);
+            await waitFor(() => {
+                fireEvent.click(option);
             });
 
             expect(textbox).toHaveValue('John');
@@ -62,11 +63,11 @@ describe('AutocompleteField', () => {
                 name: 'Name',
             });
 
-            await screen.waitFor(() => {
-                screen.fireEvent.mouseDown(textbox);
+            await waitFor(() => {
+                fireEvent.mouseDown(textbox);
             });
 
-            await screen.waitFor(() => {
+            await waitFor(() => {
                 return userEvent.type(textbox, 'Jo');
             });
 
@@ -92,22 +93,22 @@ describe('AutocompleteField', () => {
                 name: 'Name',
             });
 
-            await screen.waitFor(() => {
-                screen.fireEvent.mouseDown(textbox);
+            await waitFor(() => {
+                fireEvent.mouseDown(textbox);
             });
 
-            await screen.waitFor(() => {
+            await waitFor(() => {
                 return userEvent.type(textbox, 'Franck');
             });
 
-            await screen.waitFor(() => {
+            await waitFor(() => {
                 const option = screen.getByRole('option', {
                     name: 'autocomplete_add+{"option":"Franck"}',
                 });
 
                 expect(option).toBeInTheDocument();
 
-                screen.fireEvent.click(option);
+                fireEvent.click(option);
             });
 
             expect(textbox).toHaveValue('Franck');
@@ -120,15 +121,15 @@ describe('AutocompleteField', () => {
                 name: 'Name',
             });
 
-            await screen.waitFor(() => {
-                screen.fireEvent.mouseDown(textbox);
+            await waitFor(() => {
+                fireEvent.mouseDown(textbox);
             });
 
-            await screen.waitFor(() => {
+            await waitFor(() => {
                 return userEvent.type(textbox, 'Franck');
             });
 
-            await screen.waitFor(() => {
+            await waitFor(() => {
                 expect(
                     screen.getByText('autocomplete_no_options'),
                 ).toBeInTheDocument();
@@ -140,8 +141,8 @@ describe('AutocompleteField', () => {
                 }),
             ).not.toBeInTheDocument();
 
-            await screen.waitFor(() => {
-                return screen.fireEvent.blur(textbox);
+            await waitFor(() => {
+                return fireEvent.blur(textbox);
             });
 
             expect(textbox).toHaveValue('');

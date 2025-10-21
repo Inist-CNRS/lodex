@@ -1,4 +1,4 @@
-import { render } from '@testing-library/react';
+import { render, within } from '@testing-library/react';
 
 import { TestI18N } from '../../../i18n/I18NContext';
 import { AnnotationProposedValue } from './AnnotationProposedValue';
@@ -18,7 +18,7 @@ describe('AnnotationProposedValue', () => {
         const list = screen.getByRole('list');
         expect(list).toBeInTheDocument();
 
-        const items = screen.within(list).queryAllByRole('listitem');
+        const items = within(list).queryAllByRole('listitem');
 
         expect(items).toHaveLength(2);
         expect(items[0]).toHaveTextContent('value1');
@@ -84,7 +84,7 @@ describe('AnnotationProposedValue', () => {
         const list = screen.getByRole('list');
         expect(list).toBeInTheDocument();
 
-        const items = screen.within(list).queryAllByRole('listitem');
+        const items = within(list).queryAllByRole('listitem');
 
         expect(items).toHaveLength(2);
         expect(items[0]).toHaveTextContent('value1');

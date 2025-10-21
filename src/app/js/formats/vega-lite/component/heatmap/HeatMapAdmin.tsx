@@ -16,7 +16,7 @@ import {
 import VegaFieldPreview from '../../../utils/components/field-set/FormatFieldSetPreview';
 import { StandardSourceTargetWeight } from '../../../utils/dataSet';
 import AspectRatioSelector from '../../../utils/components/admin/AspectRatioSelector';
-import { ASPECT_RATIO_1_1 } from '../../../utils/aspectRatio';
+import { ASPECT_RATIO_1_1, type AspectRatio } from '../../../utils/aspectRatio';
 import FormatGroupedFieldSet from '../../../utils/components/field-set/FormatGroupedFieldSet';
 import { useTranslate } from '../../../../i18n/I18NContext';
 
@@ -53,7 +53,7 @@ type HeatMapArgs = {
     tooltipSource: string;
     tooltipTarget: string;
     tooltipWeight?: string;
-    aspectRatio?: string;
+    aspectRatio: AspectRatio;
 };
 
 type HeatMapAdminProps = {
@@ -218,7 +218,7 @@ const HeatMapAdmin = ({
     );
 
     const handleAspectRatio = useCallback(
-        (value: string) => {
+        (value: AspectRatio) => {
             onChange({
                 ...args,
                 aspectRatio: value,
