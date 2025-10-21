@@ -4,6 +4,7 @@ import { DatasetComponent as Dataset } from './Dataset';
 import Pagination from '../../lib/components/Pagination';
 import DatasetColumn from './DatasetColumn';
 import DatasetColumnHeader from './DatasetColumnHeader';
+import { render } from '../../../../test-utils';
 
 describe('<Dataset />', () => {
     const columns = [
@@ -19,15 +20,14 @@ describe('<Dataset />', () => {
     it('should call preLoadDatasetPage on mount', () => {
         const preLoadDatasetPage = jest.fn();
 
-        shallow(
+        render(
             <Dataset
                 currentPage={1}
                 perPage={10}
                 preLoadDatasetPage={preLoadDatasetPage}
                 loading
-                // @ts-expect-error TS7006
-                p={{ t: (key) => key }}
                 total={0}
+                changePage={() => {}}
             />,
         );
 

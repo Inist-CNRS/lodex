@@ -162,7 +162,6 @@ export type Loader = {
     name: string;
 };
 
-// @ts-expect-error TS2300
 type ListDialogComponentProps = {
     loaders: Loader[];
     value: string;
@@ -171,16 +170,6 @@ type ListDialogComponentProps = {
     handleClose: () => void;
     actions: ReactNode;
 };
-
-// @ts-expect-error TS2300
-interface ListDialogComponentProps {
-    loaders?: unknown[];
-    setLoader(...args: unknown[]): unknown;
-    value: string;
-    open: boolean;
-    handleClose(...args: unknown[]): unknown;
-    actions?: React.ReactNode;
-}
 
 export const ListDialogComponent = ({
     loaders,

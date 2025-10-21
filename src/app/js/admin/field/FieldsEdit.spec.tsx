@@ -70,7 +70,7 @@ describe('<FieldsEdit />', () => {
 
         expect(
             wrapper.find(
-                'Translated(Connect(FieldGridComponent)) + Connect(StatisticsComponent)',
+                'Connect(FieldGridComponent) + Connect(StatisticsComponent)',
             ),
         ).toHaveLength(1);
     });

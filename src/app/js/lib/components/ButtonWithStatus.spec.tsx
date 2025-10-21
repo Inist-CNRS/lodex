@@ -163,7 +163,7 @@ describe('<ButtonWithStatus />', () => {
             expect(button.children).toContain('Foo');
             const progressBar = wrapper.find(LinearProgress).dive().props();
             // @ts-expect-error TS2339
-            expect(progressBar.ownerState.value).toBe(50);
+            expect(progressBar.ownerState.value).toBe(1000);
             // @ts-expect-error TS2339
             expect(progressBar.ownerState.variant).toBe('determinate');
         });

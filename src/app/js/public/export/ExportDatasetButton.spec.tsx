@@ -1,5 +1,5 @@
 import { fireEvent, waitFor } from '@testing-library/dom';
-import { act, render } from '../../../../test-utils';
+import { render } from '../../../../test-utils';
 import datasetApi from '../../admin/api/dataset';
 import { TestI18N } from '../../i18n/I18NContext';
 import {
@@ -207,18 +207,20 @@ describe('ExportDatasetButton', () => {
             });
             const dumpDataset = jest.fn();
             const onDone = jest.fn();
-            const screen = await act(() => {
-                return render(
-                    <TestI18N>
-                        <ExportDatasetButtonWithFetch
-                            dumpDataset={dumpDataset}
-                            onDone={onDone}
-                        />
-                    </TestI18N>,
-                );
-            });
+            const screen = render(
+                <TestI18N>
+                    <ExportDatasetButtonWithFetch
+                        dumpDataset={dumpDataset}
+                        onDone={onDone}
+                    />
+                </TestI18N>,
+            );
 
-            expect(screen.getByText('export_raw_dataset')).toBeInTheDocument();
+            await waitFor(() => {
+                expect(
+                    screen.getByText('export_raw_dataset'),
+                ).toBeInTheDocument();
+            });
             expect(screen.getByText('export_raw_dataset')).not.toBeDisabled();
 
             await waitFor(() => {

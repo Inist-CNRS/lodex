@@ -96,12 +96,4 @@ const getIcon = (error, success, loading) => {
     return null;
 };
 
-ButtonWithStatus.defaultProps = {
-    raised: false,
-    error: false,
-    disabled: false,
-    success: false,
-    loading: false,
-};
-
 export default ButtonWithStatus;

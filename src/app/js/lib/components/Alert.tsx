@@ -19,7 +19,7 @@ type AlertProps = {
 };
 
 const Alert = ({ children, style }: AlertProps) => (
-    <div className="alert" style={getStyle(style)}>
+    <div role="alert" className="alert" style={getStyle(style)}>
         {children}
     </div>
 );

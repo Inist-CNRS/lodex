@@ -1,6 +1,6 @@
 import { useForm } from '@tanstack/react-form';
 
-import { render, userEvent } from '../../../../test-utils';
+import { act, render, userEvent } from '../../../../test-utils';
 import { TestI18N } from '../../i18n/I18NContext';
 import {
     AutocompleteField,
@@ -121,12 +121,12 @@ describe('AutocompleteField', () => {
                 name: 'Name',
             });
 
-            await waitFor(() => {
+            act(() => {
                 fireEvent.mouseDown(textbox);
             });
 
-            await waitFor(() => {
-                return userEvent.type(textbox, 'Franck');
+            act(() => {
+                userEvent.type(textbox, 'Franck');
             });
 
             await waitFor(() => {
@@ -141,11 +141,13 @@ describe('AutocompleteField', () => {
                 }),
             ).not.toBeInTheDocument();
 
-            await waitFor(() => {
-                return fireEvent.blur(textbox);
+            act(() => {
+                userEvent.tab();
             });
 
-            expect(textbox).toHaveValue('');
+            await waitFor(() => {
+                expect(textbox).toHaveValue('');
+            });
         });
     });
 });
