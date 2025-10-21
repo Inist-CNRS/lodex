@@ -1,5 +1,5 @@
-import mongoDatabase from './mongoDatabase';
-import getPublishedDatasetFilter from './getPublishedDatasetFilter';
+import mongoDatabase from './mongoDatabase.js';
+import getPublishedDatasetFilter from './getPublishedDatasetFilter.js';
 
 const findAll = async (collection: any) =>
     collection.find({}).sort({ position: 1, cover: 1 }).toArray();

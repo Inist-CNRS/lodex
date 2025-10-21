@@ -1,7 +1,7 @@
 import get from 'lodash/get.js';
 import set from 'lodash/set.js';
 import QuickLRU from 'quick-lru';
-import mongoDatabase from './mongoDatabase';
+import mongoDatabase from './mongoDatabase.js';
 
 /**
  * Inject in each item the last characteristics (the dataset covering fields) of a LODEX.

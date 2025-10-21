@@ -38,8 +38,8 @@ export const getCsvFieldFactory =
         quoted: true,
     });
 
-// @ts-expect-error TS(2304): Cannot find name 'Object'.
 export const getDefaultDocuments = (fields: any) =>
+    // @ts-expect-error TS(2304): Cannot find name 'Object'.
     Object.keys(fields).reduce((acc, key) => ({
         [key]: '',
     }));

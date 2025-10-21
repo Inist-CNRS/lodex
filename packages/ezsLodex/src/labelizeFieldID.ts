@@ -1,6 +1,6 @@
 import mapKeys from 'lodash/mapKeys.js';
 import find from 'lodash/find.js';
-import mongoDatabase from './mongoDatabase';
+import mongoDatabase from './mongoDatabase.js';
 
 /**
  * Inject in each item the last characteristics (the dataset covering fields) of a LODEX.

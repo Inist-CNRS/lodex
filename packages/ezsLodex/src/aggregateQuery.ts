@@ -1,6 +1,6 @@
 // @ts-expect-error TS(2792): Cannot find module 'relaxed-json'. Did you mean to... Remove this comment to see the full error message
 import RJSON from 'relaxed-json';
-import mongoDatabase from './mongoDatabase';
+import mongoDatabase from './mongoDatabase.js';
 
 const stageNameTest = /^\$/;
 /**

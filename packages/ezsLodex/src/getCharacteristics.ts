@@ -1,4 +1,4 @@
-import mongoDatabase from './mongoDatabase';
+import mongoDatabase from './mongoDatabase.js';
 
 /**
  * Return the last characteristics (the dataset covering fields) of a LODEX.

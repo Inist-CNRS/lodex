@@ -32,7 +32,7 @@ services:
         ports:
             - "3000:3000"
             - "9229:9229" # Enable Nodemon inspect to attach to Docker Node
-        command: npm run development:api
+        command: npm run development:backend
         deploy:
             resources:
                 limits:
