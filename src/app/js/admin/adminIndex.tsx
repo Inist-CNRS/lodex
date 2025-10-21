@@ -2,7 +2,7 @@ import '@babel/polyfill';
 import 'url-api-polyfill';
 
 import { createHashHistory } from 'history';
-import { hydrateRoot } from 'react-dom/client';
+import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { Redirect, Route } from 'react-router';
 
@@ -67,8 +67,9 @@ if (process.env.NODE_ENV === 'e2e') {
 
 const queryClient = new QueryClient();
 
-hydrateRoot(
-    document.getElementById('root')!,
+const root = createRoot(document.getElementById('root')!);
+
+root.render(
     <Provider store={store}>
         <QueryClientProvider client={queryClient}>
             <ThemeProvider
