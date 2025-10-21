@@ -1,13 +1,8 @@
-// @ts-expect-error TS6133
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import { TextField, MenuItem } from '@mui/material';
 import * as overview from '../../../common/overview';
-import {
-    polyglot as polyglotPropTypes,
-    field as fieldPropTypes,
-} from '../propTypes';
 import { loadField } from '.';
 import { fromFields } from '../sharedSelectors';
 import fieldApi from '../admin/api/field';
@@ -28,13 +23,15 @@ export const SubresourceOverviewSelectComponent = ({
 
     loadField,
 
-    subresourceId
+    subresourceId,
 }: SubresourceOverviewSelectComponentProps) => {
     const subresourceTitle = useMemo(() => {
+        // @ts-expect-error TS18048
         const subresourceTitleField = fields.find(
             // @ts-expect-error TS7006
             (field) => field.overview === overview.SUBRESOURCE_TITLE,
         );
+        // @ts-expect-error TS2339
         return subresourceTitleField?._id;
     }, [fields]);
 
@@ -53,6 +50,7 @@ export const SubresourceOverviewSelectComponent = ({
         <TextField
             select
             value={subresourceTitle || ''}
+            // @ts-expect-error TS18046
             label={polyglot.t('overviewSubresourceTitle')}
             onChange={handleSubresourceTitleChange}
             sx={{ minWidth: 220 }}
@@ -66,6 +64,8 @@ export const SubresourceOverviewSelectComponent = ({
                 ),
             }}
         >
+            {/*
+             // @ts-expect-error TS18046 */}
             <MenuItem value={undefined}>{polyglot.t('none')}</MenuItem>
             {/*
              // @ts-expect-error TS7006 */}
@@ -76,7 +76,9 @@ export const SubresourceOverviewSelectComponent = ({
                         alignItems: 'center',
                         gap: 2,
                     }}
+                    // @ts-expect-error TS18046
                     key={field._id}
+                    // @ts-expect-error TS18046
                     value={field._id}
                 >
                     <FieldRepresentation field={field} />

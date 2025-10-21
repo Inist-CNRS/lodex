@@ -18,7 +18,6 @@ import PublishedWithChangesIcon from '@mui/icons-material/PublishedWithChanges';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 
 import ClearDialog from '../Appbar/ClearDialog';
-import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { publish } from '.';
 import { translate } from '../../i18n/I18NContext';
 
@@ -35,7 +34,7 @@ interface RepublishAndClearButtonComponentProps {
 export const RepublishAndClearButtonComponent = ({
     p: polyglot,
 
-    onPublish
+    onPublish,
 }: RepublishAndClearButtonComponentProps) => {
     const [open, setOpen] = React.useState(false);
     const [showClearDialog, setShowClearDialog] = useState(false);
@@ -92,6 +91,8 @@ export const RepublishAndClearButtonComponent = ({
                     startIcon={options[0].icon}
                     size="small"
                 >
+                    {/*
+                     // @ts-expect-error TS18046 */}
                     {polyglot.t(options[0].label)}
                 </Button>
                 <Button
@@ -106,6 +107,8 @@ export const RepublishAndClearButtonComponent = ({
                     <ArrowDropDownIcon />
                 </Button>
             </ButtonGroup>
+            {/*
+             // @ts-expect-error TS2739 */}
             <Popper
                 style={{
                     zIndex: 9999999,
@@ -145,6 +148,8 @@ export const RepublishAndClearButtonComponent = ({
                                                         {option.icon}
                                                     </ListItemIcon>
                                                     <ListItemText>
+                                                        {/*
+                                                         // @ts-expect-error TS18046 */}
                                                         {polyglot.t(
                                                             option.label,
                                                         )}

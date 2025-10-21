@@ -1,5 +1,3 @@
-// @ts-expect-error TS6133
-import React from 'react';
 import { connect } from 'react-redux';
 import { Dialog, Button, DialogContent, DialogActions } from '@mui/material';
 
@@ -27,7 +25,7 @@ interface ImportModelDialogComponentProps {
 
 const ImportModelDialogComponent = ({
     onClose,
-    importFields
+    importFields,
 }: ImportModelDialogComponentProps) => {
     const { translate } = useTranslate();
     // @ts-expect-error TS7006

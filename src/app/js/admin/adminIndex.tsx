@@ -2,8 +2,6 @@ import '@babel/polyfill';
 import 'url-api-polyfill';
 
 import { createHashHistory } from 'history';
-// @ts-expect-error TS6133
-import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { Redirect, Route } from 'react-router';

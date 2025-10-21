@@ -1,10 +1,7 @@
-// @ts-expect-error TS6133
-import React from 'react';
-
 import FetchFold from './FetchFold';
 import { getVolumeData } from './getIstexData';
-import { SEARCHED_FIELD_VALUES } from './constants';
-import { polyglot as polyglotPropTypes } from '../../../propTypes';
+import { type SearchedField } from './constants';
+import type { ReactNode } from 'react';
 
 interface YearFoldProps {
     value: string;
@@ -12,8 +9,8 @@ interface YearFoldProps {
         name: string;
         count: number;
     };
-    searchedField?: unknown[];
-    children(...args: unknown[]): unknown;
+    searchedField?: SearchedField;
+    children(...args: unknown[]): ReactNode;
     polyglot: unknown;
 }
 
@@ -26,11 +23,12 @@ const YearFold = ({
 
     polyglot,
 
-    children
+    children,
 }: YearFoldProps) => (
     <FetchFold
         label={year}
         count={count}
+        // @ts-expect-error TS7031
         year={year}
         polyglot={polyglot}
         getData={getVolumeData({

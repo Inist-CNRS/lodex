@@ -1,12 +1,10 @@
-// @ts-expect-error TS6133
-import React from 'react';
-
 interface SVGProps {
     width?: number;
 }
 
 const SVG = ({
-    width = '100%'
+    // @ts-expect-error TS2322
+    width = '100%',
 }: SVGProps) => (
     <svg width={width} height={width} viewBox="0 0 197.896 197.896">
         <path

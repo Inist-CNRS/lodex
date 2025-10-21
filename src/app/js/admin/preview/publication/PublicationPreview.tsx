@@ -1,13 +1,10 @@
-// @ts-expect-error TS6133
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 
 import PublicationExcerpt from './PublicationExcerpt';
 import { loadField } from '../../../fields';
 import { fromFields } from '../../../sharedSelectors';
-
-import { field as fieldPropTypes } from '../../../propTypes';
 
 const styles = {
     container: {
@@ -32,7 +29,7 @@ interface PublicationPreviewComponentProps {
 
 const PublicationPreviewComponent = ({
     fields,
-    loadField
+    loadField,
 }: PublicationPreviewComponentProps) => {
     useEffect(() => {
         loadField();
@@ -40,11 +37,11 @@ const PublicationPreviewComponent = ({
 
     return (
         // @ts-expect-error TS2322
-        (<div style={styles.container} className="publication-preview">
+        <div style={styles.container} className="publication-preview">
             {/*
              // @ts-expect-error TS2322 */}
             <PublicationExcerpt onHeaderClick={null} fields={fields} />
-        </div>)
+        </div>
     );
 };
 

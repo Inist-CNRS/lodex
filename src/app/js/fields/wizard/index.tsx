@@ -15,10 +15,7 @@ import {
 } from '../../../../common/scope';
 import { toast } from '../../../../common/tools/toast';
 import { hideAddColumns } from '../../admin/parsing';
-import {
-    field as fieldPropTypes,
-    polyglot as polyglotPropTypes,
-} from '../../propTypes';
+import { type Field } from '../../propTypes';
 import { fromFields } from '../../sharedSelectors';
 import Actions from './Actions';
 import TabAnnotations from './TabAnnotations';
@@ -33,9 +30,9 @@ const ACTIONS_BAR_HEIGHT = 70;
 const PREVIEW_WIDTH = 320;
 
 interface FieldEditionWizardComponentProps {
-    currentEditedField?: unknown;
-    fields?: unknown[];
-    fieldsFromFilter?: unknown[];
+    currentEditedField?: Field;
+    fields?: Field[];
+    fieldsFromFilter?: Field[];
     filter?: string;
     saveField(...args: unknown[]): unknown;
     handleHideExistingColumns(...args: unknown[]): unknown;
@@ -66,7 +63,7 @@ const FieldEditionWizardComponent = ({
 
     isFieldsLoading,
 
-    p: polyglot
+    p: polyglot,
 }: FieldEditionWizardComponentProps) => {
     const [tabValue, setTabValue] = useState(0);
 
@@ -83,14 +80,17 @@ const FieldEditionWizardComponent = ({
     }, [isInitialized, setIsInitialized, isFieldsLoading]);
     useEffect(() => {
         if (!fieldName) {
+            // @ts-expect-error TS18048
             history.push(`/display/${filter}`);
             return;
         }
 
         if (isInitialized && !isFieldsLoading && !currentEditedField) {
+            // @ts-expect-error TS18046
             toast(polyglot.t('no_field', { fieldName }), {
                 type: toast.TYPE.ERROR,
             });
+            // @ts-expect-error TS18048
             history.push(`/display/${filter}`);
         }
         if (
@@ -98,9 +98,11 @@ const FieldEditionWizardComponent = ({
             // @ts-expect-error TS7006
             !fieldsFromFilter.some((f) => f.name === currentEditedField.name)
         ) {
+            // @ts-expect-error TS18046
             toast(polyglot.t('no_field_in_scope', { fieldName, filter }), {
                 type: toast.TYPE.ERROR,
             });
+            // @ts-expect-error TS18048
             history.push(`/display/${filter}`);
         }
     }, [
@@ -139,10 +141,13 @@ const FieldEditionWizardComponent = ({
 
     const handleCancel = () => {
         handleHideExistingColumns();
+        // @ts-expect-error TS18048
         history.push(
             `/display/${filter}${
+                // @ts-expect-error TS18046
                 filter === SCOPE_DOCUMENT && currentEditedField.subresourceId
-                    ? `/subresource/${currentEditedField.subresourceId}`
+                    ? // @ts-expect-error TS18046
+                      `/subresource/${currentEditedField.subresourceId}`
                     : ''
             }`,
         );
@@ -164,8 +169,10 @@ const FieldEditionWizardComponent = ({
             id: 'tab-general',
             component: (
                 <TabGeneral
+                    // @ts-expect-error TS2339
                     subresourceUri={currentEditedField.subresourceId}
                     arbitraryMode={[SCOPE_DATASET, SCOPE_GRAPHIC].includes(
+                        // @ts-expect-error TS2345
                         filter,
                     )}
                 />
@@ -176,8 +183,11 @@ const FieldEditionWizardComponent = ({
             id: 'tab-display',
             component: (
                 <TabDisplay
+                    // @ts-expect-error TS2322
                     filter={filter}
+                    // @ts-expect-error TS2322
                     fields={fields}
+                    // @ts-expect-error TS2339
                     subresourceId={currentEditedField.subresourceId}
                 />
             ),
@@ -190,6 +200,7 @@ const FieldEditionWizardComponent = ({
         {
             label: 'field_wizard_tab_semantic',
             id: 'tab-semantics',
+            // @ts-expect-error TS2739
             component: <TabSemantics currentEditedField={currentEditedField} />,
         },
     ].filter((x) => x);
@@ -243,6 +254,7 @@ const FieldEditionWizardComponent = ({
                                 >
                                     {tabs.map((tab, index) => (
                                         <Tab
+                                            // @ts-expect-error TS18046
                                             label={polyglot.t(tab.label)}
                                             value={index}
                                             key={index}
@@ -283,6 +295,8 @@ const FieldEditionWizardComponent = ({
                         }}
                         className="mui-fixed"
                     >
+                        {/*
+                         // @ts-expect-error TS2322 */}
                         <ValuePreviewConnected scope={filter} />
                     </Box>
                     <Box
@@ -301,6 +315,7 @@ const FieldEditionWizardComponent = ({
                     >
                         <Box className="container">
                             <Actions
+                                // @ts-expect-error TS2322
                                 currentEditedField={currentEditedField}
                                 onCancel={handleCancel}
                                 onSave={handleSave}

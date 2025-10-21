@@ -1,6 +1,4 @@
-// @ts-expect-error TS6133
-import React, { useState } from 'react';
-import { polyglot as polyglotPropTypes } from '../../propTypes';
+import { useState } from 'react';
 import UploadIcon from '@mui/icons-material/Upload';
 import { Button, CircularProgress, styled } from '@mui/material';
 import { importHiddenResources } from '../api/hiddenResource';
@@ -24,9 +22,8 @@ interface ImportButtonProps {
     p: unknown;
 }
 
-const ImportButton = ({
-    p: polyglot
-}: ImportButtonProps) => {
+const ImportButton = ({ p: polyglot }: ImportButtonProps) => {
+    // @ts-expect-error TS18046
     const buttonLabel = polyglot.t('import');
     const location = useLocation();
     const [uploading, setUploading] = useState(false);
@@ -41,11 +38,13 @@ const ImportButton = ({
         const response = await importHiddenResources(formData);
         setUploading(false);
         if (response.error) {
+            // @ts-expect-error TS18046
             toast(polyglot.t('import_error'), {
                 type: toast.TYPE.ERROR,
             });
         } else {
             setDone(true);
+            // @ts-expect-error TS18046
             toast(polyglot.t('import_successful'), {
                 type: toast.TYPE.SUCCESS,
             });

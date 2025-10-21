@@ -1,5 +1,3 @@
-// @ts-expect-error TS6133
-import React from 'react';
 import FileDownload from '@mui/icons-material/GetApp';
 import Link from '../../../lib/components/Link';
 

@@ -1,8 +1,7 @@
 import { Box, IconButton, Stack, Tooltip } from '@mui/material';
 import copy from 'copy-to-clipboard';
 import compose from 'lodash/flowRight';
-// @ts-expect-error TS6133
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import GridLayout from 'react-grid-layout';
 // @ts-expect-error TS7016
 import 'react-grid-layout/css/styles.css';

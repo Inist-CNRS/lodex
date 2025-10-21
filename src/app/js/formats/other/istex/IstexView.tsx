@@ -1,5 +1,4 @@
-// @ts-expect-error TS6133
-import React, { type CSSProperties } from 'react';
+import { type CSSProperties } from 'react';
 import memoize from 'lodash/memoize';
 import compose from 'recompose/compose';
 import FileDownload from '@mui/icons-material/GetApp';

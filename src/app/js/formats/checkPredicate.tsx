@@ -1,9 +1,6 @@
-// @ts-expect-error TS6133
-import React from 'react';
 import get from 'lodash/get';
 
 import { translate } from '../i18n/I18NContext';
-import { polyglot as polyglotPropTypes } from '../propTypes';
 import InvalidFormat from './InvalidFormat';
 
 // @ts-expect-error TS7006

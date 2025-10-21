@@ -1,23 +1,22 @@
-// @ts-expect-error TS6133
-import React from 'react';
 import { Typography } from '@mui/material';
 import { useTranslate } from '../i18n/I18NContext';
-import { AUTHOR_STEP, COMMENT_STEP, TARGET_STEP, VALUE_STEP } from './steps';
+import { TARGET_STEP, type Step } from './steps';
 import { useStore } from '@tanstack/react-form';
 
 interface CreateAnnotationTitleProps {
     fieldLabel?: string;
-    step?: unknown | unknown | unknown | unknown;
+    step?: Step;
     form: object;
 }
 
 export const CreateAnnotationTitle = ({
     fieldLabel,
     step,
-    form
+    form,
 }: CreateAnnotationTitleProps) => {
     const { translate } = useTranslate();
 
+    // @ts-expect-error TS2339
     const target = useStore(form.store, (state) => {
         // @ts-expect-error TS18046
         return state.values.target;

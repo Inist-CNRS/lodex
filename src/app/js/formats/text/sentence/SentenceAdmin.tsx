@@ -1,7 +1,5 @@
-// @ts-expect-error TS6133
-import React, { Component } from 'react';
+import { Component } from 'react';
 import { TextField } from '@mui/material';
-import { polyglot as polyglotPropTypes } from '../../../propTypes';
 import { FormatDefaultParamsFieldSet } from '../../utils/components/field-set/FormatFieldSets';
 import FormatGroupedFieldSet from '../../utils/components/field-set/FormatGroupedFieldSet';
 import { translate } from '../../../i18n/I18NContext';
@@ -49,6 +47,7 @@ class SentenceAdmin extends Component<SentenceAdminProps> {
                 <FormatDefaultParamsFieldSet defaultExpanded>
                     <TextField
                         key="prefix"
+                        // @ts-expect-error TS18046
                         label={polyglot.t('prefix')}
                         onChange={(e) => this.handlePrefix(e.target.value)}
                         value={prefix}
@@ -56,6 +55,7 @@ class SentenceAdmin extends Component<SentenceAdminProps> {
                     />
                     <TextField
                         key="suffix"
+                        // @ts-expect-error TS18046
                         label={polyglot.t('suffix')}
                         onChange={(e) => this.handleSuffix(e.target.value)}
                         value={suffix}

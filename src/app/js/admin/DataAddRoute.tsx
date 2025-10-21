@@ -1,5 +1,3 @@
-// @ts-expect-error TS6133
-import React from 'react';
 import { compose, lifecycle } from 'recompose';
 import { connect } from 'react-redux';
 
@@ -13,7 +11,7 @@ interface DataAddRouteComponentProps {
 }
 
 export const DataAddRouteComponent = ({
-    canUploadFile
+    canUploadFile,
 }: DataAddRouteComponentProps) => {
     // @ts-expect-error TS2322
     return <Upload className="admin" isFirstFile={canUploadFile} />;

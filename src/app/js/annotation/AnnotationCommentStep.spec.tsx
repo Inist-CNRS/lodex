@@ -1,6 +1,5 @@
 import { useForm } from '@tanstack/react-form';
-// @ts-expect-error TS6133
-import React from 'react';
+
 import { render } from '../../../test-utils';
 import { TestI18N } from '../i18n/I18NContext';
 import {
@@ -29,6 +28,7 @@ const renderAnnotationCommentStep = ({
                     form={form}
                     initialValue="initialValue"
                     field={{
+                        // @ts-expect-error TS2353
                         annotationFormat: 'text',
                         format: { name: formatName },
                     }}

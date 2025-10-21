@@ -1,5 +1,3 @@
-// @ts-expect-error TS6133
-import React from 'react';
 import ViewQuiltIcon from '@mui/icons-material/ViewQuilt';
 
 // @ts-expect-error TS7006

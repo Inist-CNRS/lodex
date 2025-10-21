@@ -1,6 +1,3 @@
-// @ts-expect-error TS6133
-import React from 'react';
-import { polyglot as polyglotPropTypes } from '../../../../propTypes';
 import { FormatDefaultParamsFieldSet } from '../../../utils/components/field-set/FormatFieldSets';
 import TextField from '@mui/material/TextField';
 import FormatGroupedFieldSet from '../../../utils/components/field-set/FormatGroupedFieldSet';
@@ -18,10 +15,10 @@ export const defaultArgs = {
 
 interface MarkdownModalAdminProps {
     args?: {
-        type?: "text" | "column";
+        type?: 'text' | 'column';
         label?: string;
         fullScreen?: boolean;
-        maxWidth?: "xs" | "sm" | "md" | "lg" | "xl";
+        maxWidth?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
     };
     onChange(...args: unknown[]): unknown;
     p: unknown;
@@ -29,6 +26,7 @@ interface MarkdownModalAdminProps {
 
 const MarkdownModalAdmin = (props: MarkdownModalAdminProps) => {
     const { args, p, onChange } = props;
+    // @ts-expect-error TS2339
     const { type, label, fullScreen, maxWidth } = args;
 
     // @ts-expect-error TS7006
@@ -69,14 +67,19 @@ const MarkdownModalAdmin = (props: MarkdownModalAdminProps) => {
                 <TextField
                     fullWidth
                     select
+                    // @ts-expect-error TS18046
                     label={p.t('label_format_select_type')}
                     onChange={handleType}
                     value={type}
                 >
                     <MenuItem value="text">
+                        {/*
+                         // @ts-expect-error TS18046 */}
                         {p.t('label_format_custom')}
                     </MenuItem>
                     <MenuItem value="column">
+                        {/*
+                         // @ts-expect-error TS18046 */}
                         {p.t('label_format_another_column')}
                     </MenuItem>
                 </TextField>
@@ -84,8 +87,10 @@ const MarkdownModalAdmin = (props: MarkdownModalAdminProps) => {
                     fullWidth
                     label={
                         type === 'text'
-                            ? p.t('label_format_custom_value')
-                            : p.t('label_format_another_column_value')
+                            ? // @ts-expect-error TS18046
+                              p.t('label_format_custom_value')
+                            : // @ts-expect-error TS18046
+                              p.t('label_format_another_column_value')
                     }
                     onChange={handleLabel}
                     value={label}
@@ -97,12 +102,14 @@ const MarkdownModalAdmin = (props: MarkdownModalAdminProps) => {
                             onChange={handleFullScreen}
                         />
                     }
+                    // @ts-expect-error TS18046
                     label={p.t('label_format_fullscreen')}
                 />
                 {!fullScreen ? (
                     <TextField
                         fullWidth
                         select
+                        // @ts-expect-error TS18046
                         label={p.t('label_format_size')}
                         onChange={handleSize}
                         value={maxWidth}

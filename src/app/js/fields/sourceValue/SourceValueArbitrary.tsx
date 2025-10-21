@@ -4,13 +4,13 @@ import { useTranslate } from '../../i18n/I18NContext';
 import type { TransformerDraft } from '../types.ts';
 
 interface SourceValueArbitraryProps {
-    updateDefaultValueTransformers(...args: unknown[]): unknown;
+    updateDefaultValueTransformers(draft: TransformerDraft[]): unknown;
     value?: string;
 }
 
 const SourceValueArbitrary = ({
     updateDefaultValueTransformers,
-    value
+    value,
 }: SourceValueArbitraryProps) => {
     const { translate } = useTranslate();
 

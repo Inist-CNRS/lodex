@@ -9,8 +9,6 @@ import {
     Tooltip,
     Typography,
 } from '@mui/material';
-// @ts-expect-error TS6133
-import React from 'react';
 
 import HelpIcon from '@mui/icons-material/HelpOutline';
 import { useForm, useStore } from '@tanstack/react-form';

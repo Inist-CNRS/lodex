@@ -30,6 +30,7 @@ describe('useResourceUri', () => {
     it('should return resource id for UID resources', () => {
         const { result } = renderHook(() => useResourceUri(), {
             wrapper: TestRouter,
+            // @ts-expect-error TS2741
             initialProps: {
                 initialEntries: ['/uid:/0579J7JN'],
                 initialIndex: 0,
@@ -42,6 +43,7 @@ describe('useResourceUri', () => {
     it('should return resource id for ARK resources', () => {
         const { result } = renderHook(() => useResourceUri(), {
             wrapper: TestRouter,
+            // @ts-expect-error TS2741
             initialProps: {
                 initialEntries: ['/ark:/67375/1BB-1JGMFXJK-2'],
                 initialIndex: 0,
@@ -54,6 +56,7 @@ describe('useResourceUri', () => {
     it('should return "/graph/:name" for graph', () => {
         const { result } = renderHook(() => useResourceUri(), {
             wrapper: TestRouter,
+            // @ts-expect-error TS2741
             initialProps: {
                 initialEntries: ['/graph/gavF'],
                 initialIndex: 0,
@@ -66,6 +69,7 @@ describe('useResourceUri', () => {
     it('should return "/" for home', () => {
         const { result } = renderHook(() => useResourceUri(), {
             wrapper: TestRouter,
+            // @ts-expect-error TS2741
             initialProps: {
                 initialEntries: ['/'],
                 initialIndex: 0,
@@ -78,6 +82,7 @@ describe('useResourceUri', () => {
     it('should return null otherwise', () => {
         const { result } = renderHook(() => useResourceUri(), {
             wrapper: TestRouter,
+            // @ts-expect-error TS2741
             initialProps: {
                 initialEntries: ['/other'],
                 initialIndex: 0,

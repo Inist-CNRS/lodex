@@ -18,7 +18,6 @@ import moment from 'moment';
 
 import { MULTICHROMATIC_DEFAULT_COLORSET_STREAMGRAPH } from '../../utils/colorUtils';
 
-import { polyglot as polyglotPropTypes } from '../../../propTypes';
 import LoadingGraph from '../../utils/components/LoadingGraph';
 import MouseIcon from '../../utils/components/MouseIcon';
 

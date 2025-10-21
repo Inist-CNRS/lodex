@@ -1,13 +1,10 @@
-// @ts-expect-error TS6133
-import React from 'react';
-
-import { field as fieldPropTypes } from '../../../propTypes';
+import { type Field } from '../../../propTypes';
 import Link from '../../../lib/components/Link';
 
 interface LinkViewProps {
     className?: string;
-    field: unknown;
-    fields: unknown[];
+    field: Field;
+    fields: Field[];
     linkedResource?: object;
     resource: object;
     type: string;
@@ -15,25 +12,22 @@ interface LinkViewProps {
     maxHeight: number;
 }
 
-const LinkView = ({
-    className,
-    resource,
-    field,
-    value
-}: LinkViewProps) => {
+const LinkView = ({ className, resource, field, value }: LinkViewProps) => {
     const imageURL = value;
+    // @ts-expect-error TS7053
     const link = resource[field.name];
     const style = {};
 
+    // @ts-expect-error TS18046
     if (field.format.args.maxHeight) {
         // @ts-expect-error TS2339
         style.maxHeight = field.format.args.maxHeight + 'px';
     }
 
     return (
-        (<Link className={className} href={`${link}`}>
+        <Link className={className} href={`${link}`}>
             <img src={imageURL} style={style} />
-        </Link>)
+        </Link>
     );
 };
 

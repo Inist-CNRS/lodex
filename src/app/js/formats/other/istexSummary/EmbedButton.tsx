@@ -1,10 +1,8 @@
-// @ts-expect-error TS6133
-import React, { Component } from 'react';
+import { Component } from 'react';
 import { IconButton } from '@mui/material';
 import CodeIcon from '@mui/icons-material/Code';
 import classnames from 'classnames';
 
-import { polyglot as polyglotPropTypes } from '../../../propTypes';
 import ButtonWithDialog from '../../../lib/components/ButtonWithDialog';
 import { getCleanHost } from '../../../../../common/uris';
 
@@ -26,14 +24,15 @@ class EmbedButton extends Component<EmbedButtonProps> {
 
         return (
             // @ts-expect-error TS2769
-            (<IconButton
+            <IconButton
                 className={classnames('embed-button', className)}
                 style={{ position: 'absolute' }}
+                // @ts-expect-error TS18046
                 tooltip={polyglot.t('embed_istex_summary')}
                 onClick={this.handleOpen}
             >
                 <CodeIcon />
-            </IconButton>)
+            </IconButton>
         );
     };
 
@@ -43,10 +42,14 @@ class EmbedButton extends Component<EmbedButtonProps> {
 
         return (
             <>
+                {/*
+                 // @ts-expect-error TS18046 */}
                 <p>{polyglot.t('embed_step_head')}</p>
                 <pre>
                     {`<script src="${host}/embeddedIstexSummary.js" defer></script>`}
                 </pre>
+                {/*
+                 // @ts-expect-error TS18046 */}
                 <p>{polyglot.t('embed_step_div')}</p>
                 <pre>
                     {`<div class="embedded-istex-summary" data-api="${host}" data-uri="${uri}" data-field-name="${fieldName}"></div>`}
@@ -61,6 +64,7 @@ class EmbedButton extends Component<EmbedButtonProps> {
 
         return (
             <ButtonWithDialog
+                // @ts-expect-error TS18046
                 label={polyglot.t('embed_istex_summary')}
                 open={open}
                 handleOpen={this.handleOpen}

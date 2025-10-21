@@ -1,5 +1,3 @@
-// @ts-expect-error TS6133
-import React from 'react';
 import { Button } from '@mui/material';
 import ArrowUp from '@mui/icons-material/ArrowUpward';
 import withHandlers from 'recompose/withHandlers';

@@ -1,6 +1,5 @@
 import { Button, CircularProgress } from '@mui/material';
-// @ts-expect-error TS6133
-import React, { useCallback, useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 import SaveIcon from '@mui/icons-material/Save';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { AUTHOR_STEP, COMMENT_STEP, TARGET_STEP, VALUE_STEP } from './steps';
@@ -29,10 +28,11 @@ export const NextButton = ({
 
     isCommentStepValid,
 
-    isAuthorStepValid
+    isAuthorStepValid,
 }: NextButtonProps) => {
     const { translate } = useTranslate();
     const handleNext = useCallback(
+        // @ts-expect-error TS7006
         (event) => {
             event.preventDefault();
             event.stopPropagation();

@@ -1,5 +1,3 @@
-// @ts-expect-error TS6133
-import React from 'react';
 import DefaultFormat from '../../utils/components/default-format';
 import Component from './JsonDebugView';
 import AdminComponent, { defaultArgs } from './JsonDebugAdmin';

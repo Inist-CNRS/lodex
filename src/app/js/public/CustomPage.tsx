@@ -1,5 +1,4 @@
-// @ts-expect-error TS6133
-import React, { Component } from 'react';
+import { Component } from 'react';
 import Helmet from 'react-helmet';
 import { CircularProgress } from '@mui/material';
 

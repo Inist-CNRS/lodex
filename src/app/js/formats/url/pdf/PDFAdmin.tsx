@@ -1,8 +1,6 @@
-// @ts-expect-error TS6133
-import React, { Component } from 'react';
+import { Component } from 'react';
 import { translate } from '../../../i18n/I18NContext';
 
-import { polyglot as polyglotPropTypes } from '../../../propTypes';
 import { TextField, MenuItem } from '@mui/material';
 import { FormatDefaultParamsFieldSet } from '../../utils/components/field-set/FormatFieldSets';
 import FormatGroupedFieldSet from '../../utils/components/field-set/FormatGroupedFieldSet';
@@ -46,26 +44,39 @@ class PDFAdmin extends Component<PDFAdminProps> {
                     <TextField
                         fullWidth
                         select
+                        // @ts-expect-error TS18046
                         label={polyglot.t('list_format_select_image_width')}
                         onChange={(e) => this.handleWidth(e.target.value)}
                         value={PDFWidth}
                     >
                         <MenuItem value="10%">
+                            {/*
+                             // @ts-expect-error TS18046 */}
                             {polyglot.t('ten_percent')}
                         </MenuItem>
                         <MenuItem value="20%">
+                            {/*
+                             // @ts-expect-error TS18046 */}
                             {polyglot.t('twenty_percent')}
                         </MenuItem>
                         <MenuItem value="30%">
+                            {/*
+                             // @ts-expect-error TS18046 */}
                             {polyglot.t('thirty_percent')}
                         </MenuItem>
                         <MenuItem value="50%">
+                            {/*
+                             // @ts-expect-error TS18046 */}
                             {polyglot.t('fifty_percent')}
                         </MenuItem>
                         <MenuItem value="80%">
+                            {/*
+                             // @ts-expect-error TS18046 */}
                             {polyglot.t('eighty_percent')}
                         </MenuItem>
                         <MenuItem value="100%">
+                            {/*
+                             // @ts-expect-error TS18046 */}
                             {polyglot.t('hundred_percent')}
                         </MenuItem>
                     </TextField>

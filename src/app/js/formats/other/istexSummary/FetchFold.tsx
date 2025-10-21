@@ -1,12 +1,10 @@
-// @ts-expect-error TS6133
-import React, { Component } from 'react';
+import { Component, type ReactNode } from 'react';
 import Folder from '@mui/icons-material/Folder';
 import FolderOpen from '@mui/icons-material/FolderOpen';
 import Arrow from '@mui/icons-material/KeyboardArrowDown';
 import { Button, CircularProgress } from '@mui/material';
 import get from 'lodash/get';
 
-import { polyglot as polyglotPropTypes } from '../../../propTypes';
 import AdminOnlyAlert from '../../../lib/components/AdminOnlyAlert';
 import SkipFold from './SkipFold';
 import stylesToClassname from '../../../lib/stylesToClassName';
@@ -56,7 +54,7 @@ interface FetchFoldProps {
     label: string;
     polyglot: unknown;
     getData(...args: unknown[]): unknown;
-    children(...args: unknown[]): unknown;
+    children(...args: unknown[]): ReactNode;
     count: number;
     skip?: number;
 }
@@ -78,6 +76,7 @@ class FetchFold extends Component<FetchFoldProps> {
         }
 
         this.setState({ isLoading: true }, () => {
+            // @ts-expect-error TS2571
             this.props
                 .getData(this.props)
                 // @ts-expect-error TS7006
@@ -105,10 +104,12 @@ class FetchFold extends Component<FetchFoldProps> {
         const { error, data, isOpen, isLoading } = this.state;
 
         if (skip) {
+            // @ts-expect-error TS2786
             return <SkipFold {...this.props} />;
         }
 
         if (error) {
+            // @ts-expect-error TS18046
             return <AdminOnlyAlert>{polyglot.t('istex_error')}</AdminOnlyAlert>;
         }
         if (count === 0) {

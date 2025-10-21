@@ -1,6 +1,5 @@
 import { Vega } from 'react-vega';
-// @ts-expect-error TS6133
-import React from 'react';
+
 import { connect } from 'react-redux';
 import deepClone from 'lodash/cloneDeep';
 import {
@@ -8,10 +7,9 @@ import {
     VEGA_LITE_DATA_INJECT_TYPE_B,
     VEGA_LITE_DATA_INJECT_TYPE_C,
 } from '../../chartsUtils';
-import { ASPECT_RATIO_NONE, ASPECT_RATIOS } from '../../aspectRatio';
+import { ASPECT_RATIO_NONE, type AspectRatio } from '../../aspectRatio';
 import FormatFullScreenMode from '../FormatFullScreenMode';
 import { translate } from '../../../../i18n/I18NContext';
-import { polyglot as polyglotPropTypes } from '../../../../propTypes';
 import { compose } from 'recompose';
 import { useVegaCsvExport } from '../useVegaCsvExport';
 import { useVegaActions } from '../useVegaActions';
@@ -22,7 +20,7 @@ interface CustomActionVegaLiteProps {
     spec: any;
     data?: any;
     injectType: number;
-    aspectRatio?: unknown[];
+    aspectRatio?: AspectRatio;
     p: unknown;
 }
 
@@ -44,7 +42,7 @@ function CustomActionVegaLite({
 
     disableZoom,
 
-    p: polyglot
+    p: polyglot,
 }: CustomActionVegaLiteProps) {
     const actions = useVegaActions(user);
     const graphParentRef = useVegaCsvExport(data);
@@ -77,8 +75,11 @@ function CustomActionVegaLite({
     }
 
     const vegaGraphElement = (
+        // @ts-expect-error TS2786
         <Vega
+            // @ts-expect-error TS2769
             style={
+                // @ts-expect-error TS2367
                 aspectRatio === ASPECT_RATIO_NONE
                     ? {
                           width: '100%',
@@ -93,11 +94,17 @@ function CustomActionVegaLite({
             actions={actions}
             mode="vega-lite"
             i18n={{
+                // @ts-expect-error TS18046
                 SVG_ACTION: polyglot.t('vega_export_svg'),
+                // @ts-expect-error TS18046
                 PNG_ACTION: polyglot.t('vega_export_png'),
+                // @ts-expect-error TS18046
                 CLICK_TO_VIEW_ACTIONS: polyglot.t('vega_click_to_view_actions'),
+                // @ts-expect-error TS18046
                 COMPILED_ACTION: polyglot.t('vega_compiled_action'),
+                // @ts-expect-error TS18046
                 EDITOR_ACTION: polyglot.t('vega_editor_action'),
+                // @ts-expect-error TS18046
                 SOURCE_ACTION: polyglot.t('vega_source_action'),
             }}
         />

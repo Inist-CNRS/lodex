@@ -137,6 +137,7 @@ const ClearDialogComponent = (props: ClearDialogComponentProps) => {
             raised
             key="submit"
             className="btn-save"
+            // @ts-expect-error TS2322
             onClick={handleClear(type)}
             color="primary"
             error={hasFailed}
@@ -173,6 +174,7 @@ const ClearDialogComponent = (props: ClearDialogComponentProps) => {
                         fullWidth
                         onChange={handleChangeField}
                         onKeyPress={(e) => handleKeyPress(e, type)}
+                        // @ts-expect-error TS2322
                         error={hasFailed && translate('error')}
                         variant="standard"
                     />

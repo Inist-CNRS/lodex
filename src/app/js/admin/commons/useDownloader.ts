@@ -1,6 +1,7 @@
 import { useCallback, useMemo } from 'react';
 
 export function useDownloader() {
+    // @ts-expect-error TS7006
     const download = useCallback((filename, blob) => {
         const date = new Date()
             .toISOString()

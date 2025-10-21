@@ -1,8 +1,5 @@
-// @ts-expect-error TS6133
-import React from 'react';
 import compose from 'recompose/compose';
 import { Card, CardHeader, Divider } from '@mui/material';
-import { polyglot as polyglotPropTypes } from '../../propTypes';
 import RemovedResourceList from './RemovedResourceList';
 import withInitialData from '../withInitialData';
 import redirectToDashboardIfNoField from '../../admin/redirectToDashboardIfNoField';
@@ -15,11 +12,12 @@ interface RemovedResourcePageComponentProps {
 }
 
 export const RemovedResourcePageComponent = ({
-    p: polyglot
+    p: polyglot,
 }: RemovedResourcePageComponentProps) => {
     return (
         <Card>
             <CardHeader
+                // @ts-expect-error TS18046
                 title={<h3>{polyglot.t('hidden_resources')}</h3>}
                 action={
                     <>

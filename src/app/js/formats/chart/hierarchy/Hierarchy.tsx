@@ -8,7 +8,6 @@ import { zoomFunction, generateUniqueId } from './utils';
 import injectData from '../../injectData';
 // @ts-expect-error TS7016
 import cliTruncate from 'cli-truncate';
-import { polyglot as polyglotPropTypes } from '../../../propTypes';
 
 import { isValidColor } from '../../utils/colorUtils';
 import MouseIcon from '../../utils/components/MouseIcon';
@@ -208,6 +207,7 @@ class Hierarchy extends PureComponent<HierarchyProps> {
                     .style('top', `${+this.svg().attr('height') / 2}px`)
                     .style('left', `${+this.svg().attr('width') / 2 - 140}px`)
                     .html(
+                        // @ts-expect-error TS18046
                         `${polyglot.t('error_rendering_chart')}:<br>${error}`,
                     );
             }
@@ -860,6 +860,8 @@ class Hierarchy extends PureComponent<HierarchyProps> {
                         color: 'black',
                     }}
                 >
+                    {/*
+                     // @ts-expect-error TS18046 */}
                     {polyglot.t('graph_reinit')}
                 </div>
 

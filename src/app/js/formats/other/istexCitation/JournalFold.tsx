@@ -1,10 +1,6 @@
-// @ts-expect-error TS6133
-import React from 'react';
-
 import FetchFold from '../istexSummary/FetchFold';
 import { getCitationDocumentData } from './getIstexCitationData';
-import { SEARCHED_FIELD_VALUES } from '../istexSummary/constants';
-import { polyglot as polyglotPropTypes } from '../../../propTypes';
+import { type SearchedField } from '../istexSummary/constants';
 
 interface JournalFoldProps {
     item: {
@@ -12,7 +8,7 @@ interface JournalFoldProps {
         count: number;
     };
     value: string;
-    searchedField?: unknown[];
+    searchedField?: SearchedField;
     children(...args: unknown[]): unknown;
     polyglot: unknown;
     documentSortBy: string;
@@ -29,8 +25,9 @@ const JournalFold = ({
 
     children,
 
-    documentSortBy
+    documentSortBy,
 }: JournalFoldProps) => (
+    // @ts-expect-error TS2769
     <FetchFold
         label={name}
         skip={name === 'other'}

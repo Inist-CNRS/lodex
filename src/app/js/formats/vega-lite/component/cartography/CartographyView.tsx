@@ -1,5 +1,4 @@
-// @ts-expect-error TS6133
-import React, { useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import { clamp } from 'lodash';
@@ -13,7 +12,7 @@ import {
     VEGA_LITE_DATA_INJECT_TYPE_B,
     VEGA_LITE_DATA_INJECT_TYPE_C,
 } from '../../../utils/chartsUtils';
-import { field as fieldPropTypes } from '../../../../propTypes';
+import { type Field } from '../../../../propTypes';
 import injectData from '../../../injectData';
 import Cartography from '../../models/Cartography';
 import InvalidFormat from '../../../InvalidFormat';
@@ -26,7 +25,7 @@ const styles = {
 };
 
 interface CartographyViewProps {
-    field?: unknown;
+    field?: Field;
     resource?: object;
     data?: {
         values: any;
@@ -60,7 +59,7 @@ const CartographyView = ({
 
     colorScheme,
 
-    aspectRatio
+    aspectRatio,
 }: CartographyViewProps) => {
     const { ref, width } = useSizeObserver();
     const [error, setError] = useState('');
@@ -105,12 +104,13 @@ const CartographyView = ({
     ]);
 
     if (!spec) {
+        // @ts-expect-error TS18046
         return <InvalidFormat format={field.format} value={error} />;
     }
 
     return (
         // @ts-expect-error TS2322
-        (<div style={styles.container} ref={ref}>
+        <div style={styles.container} ref={ref}>
             <CustomActionVegaLite
                 // @ts-expect-error TS2322
                 spec={spec}
@@ -122,7 +122,7 @@ const CartographyView = ({
                 }
                 aspectRatio={aspectRatio}
             />
-        </div>)
+        </div>
     );
 };
 
@@ -142,8 +142,7 @@ const mapStateToProps = (state, { formatData }) => {
     };
 };
 
-// @ts-expect-error TS6133
-export const CartographyAdminView = connect((state, props) => {
+export const CartographyAdminView = connect((_state, props) => {
     return {
         ...props,
         field: {
@@ -154,6 +153,7 @@ export const CartographyAdminView = connect((state, props) => {
             values: props.dataset.values ?? [],
         },
     };
+    // @ts-expect-error TS2345
 })(CartographyView);
 
 // @ts-expect-error TS2345

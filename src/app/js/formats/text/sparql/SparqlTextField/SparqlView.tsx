@@ -1,10 +1,9 @@
-// @ts-expect-error TS6133
-import React, { Component } from 'react';
+import { Component } from 'react';
 import { translate } from '../../../../i18n/I18NContext';
 import compose from 'recompose/compose';
 import SparqlRequest from '../SparqlRequest';
 import { isURL } from '../../../../../../common/uris';
-import { field as fieldPropTypes } from '../../../../propTypes';
+import { type Field } from '../../../../propTypes';
 import URL from 'url';
 import toPairs from 'lodash/toPairs';
 // @ts-expect-error TS7016
@@ -71,7 +70,7 @@ interface SparqlTextFieldProps {
     className?: string;
     formatData?: object;
     sparql?: object;
-    field: unknown;
+    field: Field;
     resource: object;
 }
 
@@ -118,7 +117,9 @@ export class SparqlTextField extends Component<SparqlTextFieldProps> {
     renderDefaultAttributeFormat = (attrData) => {
         const { className, sparql } = this.props;
 
+        // @ts-expect-error TS18048
         if (attrData.value.includes(sparql.separator)) {
+            // @ts-expect-error TS18048
             const values = attrData.value.split(sparql.separator);
             return (
                 <ul

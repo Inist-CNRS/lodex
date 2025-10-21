@@ -40,6 +40,7 @@ export function useUpdateConfigTenant() {
     });
 
     const handleUpdateConfigTenant = useCallback(
+        // @ts-expect-error TS7006
         async (configTenant) => {
             return mutation.mutateAsync(configTenant);
         },

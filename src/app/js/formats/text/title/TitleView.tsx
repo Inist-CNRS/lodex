@@ -1,7 +1,6 @@
 import { Typography } from '@mui/material';
-// @ts-expect-error TS6133
-import React from 'react';
-import { field as fieldPropTypes } from '../../../propTypes';
+
+import { type Field } from '../../../propTypes';
 
 interface TitleViewInternalProps {
     value: string;
@@ -12,7 +11,7 @@ interface TitleViewInternalProps {
 const TitleViewInternal = ({
     level,
     value,
-    colors
+    colors,
 }: TitleViewInternalProps) => {
     const style = {
         display: 'inline-block',
@@ -37,18 +36,14 @@ const TitleViewInternal = ({
 };
 
 interface TitleViewProps {
-    field: unknown;
+    field: Field;
     resource: object;
     level: 1 | 2 | 3 | 4 | 5 | 6;
     colors: string;
 }
 
-const TitleView = ({
-    resource,
-    field,
-    level,
-    colors
-}: TitleViewProps) => {
+const TitleView = ({ resource, field, level, colors }: TitleViewProps) => {
+    // @ts-expect-error TS7053
     const value = resource[field.name];
     return (
         <Typography

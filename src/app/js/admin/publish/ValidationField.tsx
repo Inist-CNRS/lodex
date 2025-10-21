@@ -1,14 +1,9 @@
-// @ts-expect-error TS6133
-import React from 'react';
 import compose from 'recompose/compose';
 import withHandlers from 'recompose/withHandlers';
 import { ListItem, IconButton, Grid, Box } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 
-import {
-    polyglot as polyglotPropTypes,
-    validationField as validationFieldPropType,
-} from '../../propTypes';
+import { type ValidationFieldProps } from '../../propTypes';
 import { fromFields } from '../../sharedSelectors';
 import { connect } from 'react-redux';
 import { translate } from '../../i18n/I18NContext';
@@ -26,23 +21,20 @@ const styles = {
 };
 
 interface ValidationFieldComponentProps {
-    field: unknown;
-    onEditField(...args: unknown[]): unknown;
+    field: ValidationFieldProps;
+    onEditField(field: ValidationFieldProps): void;
     p: unknown;
     isFieldsLoading?: boolean;
 }
 
 const ValidationFieldComponent = ({
     onEditField,
-
-    // @ts-expect-error TS7031
     field: { label, properties },
-
     p: polyglot,
-
-    isFieldsLoading
+    isFieldsLoading,
 }: ValidationFieldComponentProps) => (
     <ListItem
+        // @ts-expect-error TS2769
         onClick={!isFieldsLoading && onEditField}
         disabled={isFieldsLoading}
     >
@@ -53,13 +45,14 @@ const ValidationFieldComponent = ({
             <Grid item>
                 <ul>
                     {properties
-                        // @ts-expect-error TS7006
                         .filter((p) => !p.isValid)
-                        // @ts-expect-error TS7006
                         .map((p) => (
                             <li key={`${p.name}_${p.error}`}>
+                                {/*
+                                 // @ts-expect-error TS18046 */}
                                 {polyglot.t(
                                     `error_${p.name}_${p.error}`,
+                                    // @ts-expect-error TS18046
                                     p.meta,
                                 )}
                             </li>

@@ -1,5 +1,3 @@
-// @ts-expect-error TS6133
-import React from 'react';
 import { shallow } from 'enzyme';
 
 import {
@@ -24,6 +22,7 @@ describe('<Publish />', () => {
             <PublishButton
                 // @ts-expect-error TS2322
                 p={{ t: (key) => key }}
+                // @ts-expect-error TS2322
                 loadField={() => {}}
                 isPublishing={false}
                 onPublish={onPublish}

@@ -1,15 +1,11 @@
-// @ts-expect-error TS6133
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import { translate } from '../../../i18n/I18NContext';
 
 import stylesToClassname from '../../../lib/stylesToClassName';
-import {
-    field as fieldPropTypes,
-    polyglot as polyglotPropTypes,
-} from '../../../propTypes';
+import { type Field } from '../../../propTypes';
 
 const typing = {
     '0%': {
@@ -72,12 +68,17 @@ interface RedirectViewLoaderProps {
 export const RedirectViewLoader = ({
     classes,
     title,
-    url
+    url,
 }: RedirectViewLoaderProps) => (
+    // @ts-expect-error TS2339
     <div className={classes.loading}>
         <div>
+            {/*
+             // @ts-expect-error TS2339 */}
             <h1 className={classes.typewriter}>{title}</h1>
         </div>
+        {/*
+         // @ts-expect-error TS2339 */}
         <div className={classes.link}>
             <a href={url}>{url}</a>
         </div>
@@ -88,7 +89,7 @@ interface RedirectViewProps {
     className?: string;
     classes: object;
     p: unknown;
-    field: unknown;
+    field: Field;
     resource: object;
 }
 
@@ -101,8 +102,9 @@ export const RedirectView = ({
 
     field,
 
-    resource
+    resource,
 }: RedirectViewProps) => {
+    // @ts-expect-error TS7053
     const url = resource[field.name];
 
     useEffect(() => {
@@ -121,6 +123,7 @@ export const RedirectView = ({
             </Helmet>
             <RedirectViewLoader
                 classes={classes}
+                // @ts-expect-error TS18046
                 title={polyglot.t('loading_redirecting')}
                 url={url}
             />

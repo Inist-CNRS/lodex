@@ -1,15 +1,8 @@
-// @ts-expect-error TS6133
-import React from 'react';
-
 interface OpenAllIconProps {
     fill?: string;
 }
 
-
-export const OpenAllIcon = ({
-    fill,
-    ...props
-}: OpenAllIconProps) => {
+export const OpenAllIcon = ({ fill, ...props }: OpenAllIconProps) => {
     return (
         <svg
             width="24"

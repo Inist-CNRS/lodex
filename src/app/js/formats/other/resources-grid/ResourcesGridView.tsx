@@ -1,5 +1,4 @@
-// @ts-expect-error TS6133
-import React, { useState } from 'react';
+import { useState } from 'react';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import { Button } from '@mui/material';

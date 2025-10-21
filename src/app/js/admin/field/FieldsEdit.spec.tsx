@@ -1,5 +1,3 @@
-// @ts-expect-error TS6133
-import React from 'react';
 import { shallow } from 'enzyme';
 
 import { FieldsEditComponent as FieldsEdit } from './FieldsEdit';
@@ -33,6 +31,7 @@ describe('<FieldsEdit />', () => {
                 showAddFromColumn={false}
                 fields={[]}
                 filter={SCOPE_DOCUMENT}
+                // @ts-expect-error TS2322
                 addFieldButton={null}
                 defaultTab="published"
                 p={{ t: () => {} }}

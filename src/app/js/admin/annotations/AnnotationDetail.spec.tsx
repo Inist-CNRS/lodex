@@ -1,6 +1,5 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-// @ts-expect-error TS6133
-import React from 'react';
+
 import { MemoryRouter } from 'react-router-dom';
 import { render } from '../../../../test-utils';
 import { TestI18N } from '../../i18n/I18NContext';

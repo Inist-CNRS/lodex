@@ -1,5 +1,3 @@
-// @ts-expect-error TS6133
-import React from 'react';
 import { Button } from '@mui/material';
 import { Add as AddNewIcon } from '@mui/icons-material';
 import { connect } from 'react-redux';
@@ -16,7 +14,7 @@ interface AddFieldButtonComponentProps {
 
 export const AddFieldButtonComponent = ({
     onAddNewField,
-    isFieldsLoading
+    isFieldsLoading,
 }: AddFieldButtonComponentProps) => {
     const { translate } = useTranslate();
     // @ts-expect-error TS2339

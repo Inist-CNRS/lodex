@@ -3,8 +3,7 @@ Taken from https://raw.githubusercontent.com/ENDiGo/pagination-material-ui
 Could not use it from npm at the time as it has not been compiled correctly
 */
 
-// @ts-expect-error TS6133
-import React, { Component } from 'react';
+import { Component } from 'react';
 import { IconButton, MenuItem, Select, TextField } from '@mui/material';
 import ChevronLeft from '@mui/icons-material/ChevronLeft';
 import ChevronRight from '@mui/icons-material/ChevronRight';

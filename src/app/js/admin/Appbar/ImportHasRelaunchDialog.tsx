@@ -1,6 +1,3 @@
-// @ts-expect-error TS6133
-import React from 'react';
-
 import {
     Button,
     Dialog,
@@ -20,7 +17,7 @@ interface ImportHasRelaunchDialogProps {
 
 const ImportHasRelaunchDialog = ({
     onClose,
-    data
+    data,
 }: ImportHasRelaunchDialogProps) => {
     const { translate } = useTranslate();
     const actions = [

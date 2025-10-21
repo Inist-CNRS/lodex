@@ -6,8 +6,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-// @ts-expect-error TS6133
-import React, { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { compose } from 'recompose';
@@ -52,7 +51,7 @@ const MenuComponent = ({
 
     importFailed,
 
-    history
+    history,
 }: MenuComponentProps) => {
     const { translate } = useTranslate();
     const [anchorEl, setAnchorEl] = useState(null);
@@ -95,6 +94,7 @@ const MenuComponent = ({
         setAnchorEl(event.currentTarget);
     };
 
+    // @ts-expect-error TS7006
     const handleCloseMenu = useCallback((callback) => {
         setAnchorEl(null);
 
@@ -108,9 +108,11 @@ const MenuComponent = ({
     }, []);
 
     const onConfig = () => {
+        // @ts-expect-error TS2339
         history.push('/config');
     };
 
+    // @ts-expect-error TS7006
     const handleShowClearDialog = useCallback((type) => {
         setClearDialogType(type);
         setShowClearDialog(true);

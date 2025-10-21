@@ -1,9 +1,5 @@
-// @ts-expect-error TS6133
-import React, { Component } from 'react';
-import {
-    field as fieldPropTypes,
-    polyglot as polyglotPropTypes,
-} from '../../../../propTypes';
+import { Component } from 'react';
+import { type Field } from '../../../../propTypes';
 import {
     TableCell,
     TableFooter,
@@ -16,7 +12,7 @@ import { getViewComponent } from '../../../index';
 import _ from 'lodash';
 
 interface AbstractTableViewProps {
-    field: unknown;
+    field: Field;
     data: object[];
     total: number;
     pageSize: number;
@@ -234,6 +230,8 @@ class AbstractTableView extends Component<AbstractTableViewProps> {
                 .replace('{to}', to);
         return (
             <TableFooter>
+                {/*
+                 // @ts-expect-error TS2769 */}
                 <TablePagination
                     rowsPerPageOptions={[
                         pageSize,

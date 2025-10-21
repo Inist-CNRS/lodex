@@ -8,8 +8,7 @@ import {
     TextField,
 } from '@mui/material';
 import { FormApi, useField } from '@tanstack/react-form';
-// @ts-expect-error TS6133
-import React, { useCallback, useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 
 import { useTranslate } from '../../i18n/I18NContext';
 import { useAutocompleteTranslations } from './useAutocompleteTranslations';
@@ -68,9 +67,11 @@ export function AutocompleteField({
 
     const mappedOptions = useMemo(() => {
         // We need to have an empty value to avoid warnings from the Autocomplete component
+        // @ts-expect-error TS2488
         return ['', ...options].map(optionToAutocompleteValue);
     }, [options]);
 
+    // @ts-expect-error TS7006
     const isOptionEqualToValue = useCallback((option, value) => {
         return option.value === value.value;
     }, []);

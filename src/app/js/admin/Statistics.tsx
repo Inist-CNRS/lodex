@@ -1,5 +1,3 @@
-// @ts-expect-error TS6133
-import React from 'react';
 import { connect } from 'react-redux';
 import { Box, CircularProgress } from '@mui/material';
 
@@ -34,7 +32,7 @@ interface StatisticsComponentProps {
 
 export const StatisticsComponent = ({
     isComputing,
-    totalPublishedFields
+    totalPublishedFields,
 }: StatisticsComponentProps) => {
     const { translate } = useTranslate();
     return (

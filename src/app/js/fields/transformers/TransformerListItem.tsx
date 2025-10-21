@@ -1,5 +1,3 @@
-// @ts-expect-error TS6133
-import React from 'react';
 import { translate } from '../../i18n/I18NContext';
 
 import { Box, Chip, Typography } from '@mui/material';
@@ -11,7 +9,6 @@ import {
 import { CSS } from '@dnd-kit/utilities';
 import { useSortable } from '@dnd-kit/sortable';
 import { compose } from 'recompose';
-import { polyglot as polyglotPropTypes } from '../../propTypes';
 
 interface TransformerListItemProps {
     transformer?: object;
@@ -33,7 +30,7 @@ const TransformerListItem = ({
 
     onEdit,
 
-    p: polyglot
+    p: polyglot,
 }: TransformerListItemProps) => {
     const { attributes, listeners, setNodeRef, transform, transition } =
         useSortable({ id });
@@ -44,6 +41,7 @@ const TransformerListItem = ({
             return (
                 <Chip
                     key={name}
+                    // @ts-expect-error TS18046
                     label={polyglot.t('empty')}
                     sx={{
                         fontStyle: 'italic',
@@ -56,6 +54,7 @@ const TransformerListItem = ({
             return (
                 <Chip
                     key={name}
+                    // @ts-expect-error TS18046
                     label={polyglot.t('blank_space')}
                     sx={{
                         fontStyle: 'italic',
@@ -137,8 +136,12 @@ const TransformerListItem = ({
             >
                 <DragIndicatorIcon sx={{ cursor: 'grab', marginRight: 1 }} />
                 <Typography noWrap sx={{ marginRight: 1 }}>
+                    {/*
+                     // @ts-expect-error TS2339 */}
                     {transformer?.operation}
                 </Typography>
+                {/*
+                 // @ts-expect-error TS2339 */}
                 {transformer?.args && renderTransformersArgs(transformer.args)}
             </Box>
             <Box

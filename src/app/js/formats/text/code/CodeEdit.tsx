@@ -1,10 +1,12 @@
-// @ts-expect-error TS6133
-import React from 'react';
 import { TextField } from '@mui/material';
-import { formField as formFieldPropTypes } from '../../../propTypes';
+import { type FormField } from '../../../propTypes';
 
-// @ts-expect-error TS7031
-const CodeEdit = ({ input, label, meta: { touched, error }, ...custom }) => (
+const CodeEdit = ({
+    input,
+    label,
+    meta: { touched, error },
+    ...custom
+}: FormField) => (
     <TextField
         variant="standard"
         placeholder={label}

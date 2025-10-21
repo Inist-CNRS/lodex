@@ -1,7 +1,6 @@
 import { MenuItem, TextField } from '@mui/material';
 import { useTranslate } from '../../../i18n/I18NContext';
 
-import { polyglot as polyglotPropTypes } from '../../../propTypes';
 import SelectFormat from '../../SelectFormat';
 import { getAdminComponent, FORMATS, getFormatInitialArgs } from '../../index';
 import {

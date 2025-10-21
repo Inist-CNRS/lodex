@@ -5,8 +5,7 @@ import {
     ListItemText,
     Tooltip,
 } from '@mui/material';
-// @ts-expect-error TS6133
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import { useTranslate } from '../../../i18n/I18NContext';
 import { hasFieldMultipleValues } from '../helpers/field';
 import { UserProvidedValueIcon } from './UserProvidedValueIcon';

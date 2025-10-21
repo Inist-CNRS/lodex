@@ -1,5 +1,3 @@
-// @ts-expect-error TS6133
-import React from 'react';
 import { shallow } from 'enzyme';
 import moment from 'moment';
 import { TableCell, TableBody } from '@mui/material';
@@ -38,7 +36,6 @@ describe('<RemovedResourceList />', () => {
         const loadRemovedResourcePage = jest.fn();
 
         shallow(
-            // @ts-expect-error TS2769
             <RemovedResourceList
                 currentPage={1}
                 loadRemovedResourcePage={loadRemovedResourcePage}
@@ -57,7 +54,6 @@ describe('<RemovedResourceList />', () => {
 
     it('should render the TableCell for each column', () => {
         const wrapper = shallow(
-            // @ts-expect-error TS2769
             <RemovedResourceList
                 currentPage={1}
                 columns={columns}
@@ -79,7 +75,6 @@ describe('<RemovedResourceList />', () => {
 
     it('should render the TableCell for each value for each column', () => {
         const wrapper = shallow(
-            // @ts-expect-error TS2769
             <RemovedResourceList
                 currentPage={1}
                 columns={columns}
@@ -119,7 +114,6 @@ describe('<RemovedResourceList />', () => {
 
     it('should render the Pagination', () => {
         const wrapper = shallow(
-            // @ts-expect-error TS2769
             <RemovedResourceList
                 // @ts-expect-error TS2769
                 p={{ t: (key) => key }}
@@ -140,7 +134,6 @@ describe('<RemovedResourceList />', () => {
     it('should call loadRemovedResourcePage on pagination change', () => {
         const loadRemovedResourcePage = jest.fn();
         const wrapper = shallow(
-            // @ts-expect-error TS2769
             <RemovedResourceList
                 // @ts-expect-error TS2769
                 p={{ t: (key) => key }}

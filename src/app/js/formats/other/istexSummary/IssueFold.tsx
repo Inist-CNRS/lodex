@@ -1,10 +1,6 @@
-// @ts-expect-error TS6133
-import React from 'react';
-
 import FetchFold from './FetchFold';
 import { getDocumentData } from './getIstexData';
-import { SEARCHED_FIELD_VALUES } from './constants';
-import { polyglot as polyglotPropTypes } from '../../../propTypes';
+import { type SearchedField } from './constants';
 
 interface IssueFoldProps {
     item: {
@@ -14,7 +10,7 @@ interface IssueFoldProps {
     value: string;
     year: string;
     volume: string;
-    searchedField?: unknown[];
+    searchedField?: SearchedField;
     children(...args: unknown[]): unknown;
     isOther?: boolean;
     polyglot: unknown;
@@ -23,26 +19,22 @@ interface IssueFoldProps {
 
 const IssueFold = ({
     item: { name: issue, count },
-
     value,
-
     year,
-
     volume,
-
     searchedField,
-
     polyglot,
-
     children,
-
-    documentSortBy
+    documentSortBy,
 }: IssueFoldProps) => (
+    // @ts-expect-error TS2769
     <FetchFold
         label={
             issue === 'other'
-                ? polyglot.t('other_issue')
-                : `${polyglot.t('issue')}: ${issue}`
+                ? // @ts-expect-error TS18046
+                  polyglot.t('other_issue')
+                : // @ts-expect-error TS18046
+                  `${polyglot.t('issue')}: ${issue}`
         }
         skip={issue === 'other'}
         count={count}

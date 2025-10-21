@@ -1,5 +1,3 @@
-// @ts-expect-error TS6133
-import React from 'react';
 import {
     Dialog,
     DialogActions,
@@ -17,7 +15,7 @@ interface AddFromColumnDialogComponentProps {
 }
 
 export const AddFromColumnDialogComponent = ({
-    onClose
+    onClose,
 }: AddFromColumnDialogComponentProps) => {
     const { translate } = useTranslate();
 

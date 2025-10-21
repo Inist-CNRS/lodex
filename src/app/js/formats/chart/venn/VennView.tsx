@@ -1,5 +1,4 @@
-// @ts-expect-error TS6133
-import React, { useMemo, useState, Suspense, useCallback } from 'react';
+import { useMemo, useState, Suspense, useCallback } from 'react';
 import compose from 'recompose/compose';
 
 import injectData from '../../injectData';
@@ -24,16 +23,14 @@ interface VennProps {
     formatData?: unknown[];
 }
 
-const Venn = ({
-    formatData,
-    colorSet
-}: VennProps) => {
+const Venn = ({ formatData, colorSet }: VennProps) => {
     const { translate } = useTranslate();
     const [{ width, height }, setDimensions] = useState({
         width: 0,
         height: 0,
     });
 
+    // @ts-expect-error TS7006
     const containerRef = useCallback((node) => {
         if (!node) return;
         const resizeObserver = new ResizeObserver(() => {

@@ -1,5 +1,4 @@
-// @ts-expect-error TS6133
-import React, { useContext } from 'react';
+import { useContext } from 'react';
 import MenuList from '@mui/material/MenuList';
 import Drawer from '@mui/material/Drawer';
 import GridOnIcon from '@mui/icons-material/GridOn';
@@ -13,7 +12,6 @@ import DocumentScannerIcon from '@mui/icons-material/DocumentScanner';
 import ManageSearchIcon from '@mui/icons-material/ManageSearch';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
-import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { fromPublication } from '../selectors';
 import { SidebarContext } from './SidebarContext';
 import { useRouteMatch } from 'react-router-dom';
@@ -34,10 +32,7 @@ interface SidebarProps {
     hasPublishedDataset: boolean;
 }
 
-const Sidebar = ({
-    p: polyglot,
-    hasPublishedDataset
-}: SidebarProps) => {
+const Sidebar = ({ p: polyglot, hasPublishedDataset }: SidebarProps) => {
     const matchDisplayRoute = useRouteMatch('/display');
     const matchConfigRoute = useRouteMatch('/config');
     const matchDataRoute = useRouteMatch('/data') || matchConfigRoute;
@@ -52,6 +47,7 @@ const Sidebar = ({
         matchDataRoute && (
             <MenuItemLink
                 to="/data/existing"
+                // @ts-expect-error TS18046
                 primaryText={polyglot.t('data')}
                 leftIcon={<GridOnIcon />}
                 key="data-existing"
@@ -60,6 +56,7 @@ const Sidebar = ({
         matchDataRoute && (
             <MenuItemLink
                 to="/data/enrichment"
+                // @ts-expect-error TS18046
                 primaryText={polyglot.t('enrichment')}
                 leftIcon={<PostAddIcon />}
                 key="data-enrichment"
@@ -68,6 +65,7 @@ const Sidebar = ({
         matchDataRoute && (
             <MenuItemLink
                 to="/data/precomputed"
+                // @ts-expect-error TS18046
                 primaryText={polyglot.t('precomputed')}
                 leftIcon={<MediationIcon />}
                 key="data-precomputed"
@@ -76,6 +74,7 @@ const Sidebar = ({
         matchDataRoute && hasPublishedDataset && (
             <MenuItemLink
                 to="/data/removed"
+                // @ts-expect-error TS18046
                 primaryText={polyglot.t('hidden_resources')}
                 leftIcon={<VisibilityOffIcon />}
                 key="data-removed"
@@ -84,6 +83,7 @@ const Sidebar = ({
         matchDisplayRoute && (
             <MenuItemLink
                 to={`/display/${SCOPE_DATASET}`}
+                // @ts-expect-error TS18046
                 primaryText={polyglot.t('home')}
                 leftIcon={<HomeIcon />}
                 key="display-home"
@@ -92,6 +92,7 @@ const Sidebar = ({
         matchDisplayRoute && (
             <MenuItemLink
                 to={`/display/${SCOPE_DOCUMENT}/main`}
+                // @ts-expect-error TS18046
                 primaryText={polyglot.t('main_resource')}
                 leftIcon={<ArticleIcon />}
                 key="display-main-resource"
@@ -100,6 +101,7 @@ const Sidebar = ({
         matchDisplayRoute && (
             <MenuItemLink
                 to={`/display/${SCOPE_DOCUMENT}/subresource`}
+                // @ts-expect-error TS18046
                 primaryText={polyglot.t('subresources')}
                 leftIcon={<DocumentScannerIcon />}
                 key="display-subresources"
@@ -108,6 +110,7 @@ const Sidebar = ({
         matchDisplayRoute && (
             <MenuItemLink
                 to={`/display/${SCOPE_GRAPHIC}`}
+                // @ts-expect-error TS18046
                 primaryText={polyglot.t('graph_pages')}
                 leftIcon={<EqualizerIcon />}
                 key="display-graph-pages"
@@ -117,6 +120,7 @@ const Sidebar = ({
         matchDisplayRoute && (
             <MenuItemLink
                 to={`/display/search`}
+                // @ts-expect-error TS18046
                 primaryText={polyglot.t('search_page')}
                 leftIcon={<ManageSearchIcon />}
                 key="display-search-page"

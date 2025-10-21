@@ -1,5 +1,4 @@
-// @ts-expect-error TS6133
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
     TextField,
     Dialog,

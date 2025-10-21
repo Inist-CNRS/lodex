@@ -1,9 +1,8 @@
-// @ts-expect-error TS6133
-import React, { lazy, Suspense, useMemo } from 'react';
+import { lazy, Suspense, useMemo } from 'react';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 
-import { field as fieldPropTypes } from '../../../propTypes';
+import { type Field } from '../../../propTypes';
 import injectData from '../../injectData';
 import Loading from '../../../lib/components/Loading';
 import { useTranslate } from '../../../i18n/I18NContext';
@@ -11,7 +10,7 @@ import { useTranslate } from '../../../i18n/I18NContext';
 const ReactJson = lazy(() => import('react-json-view'));
 
 interface JsonDebugViewProps {
-    field: unknown;
+    field: Field;
     resource: object;
     data?: any;
     params: any;
@@ -58,4 +57,5 @@ const mapStateToProps = (state, { formatData }) => {
     };
 };
 
+// @ts-expect-error TS2345
 export default compose(injectData(), connect(mapStateToProps))(JsonDebugView);

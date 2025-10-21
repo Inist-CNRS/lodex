@@ -67,6 +67,7 @@ export function useUpdateAnnotation() {
     });
 
     const handleUpdateAnnotation = useCallback(
+        // @ts-expect-error TS7006
         async (id, annotation) => {
             // @ts-expect-error TS2345
             return mutation.mutateAsync({ id, annotation });

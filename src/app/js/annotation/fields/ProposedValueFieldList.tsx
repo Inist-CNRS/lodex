@@ -1,6 +1,3 @@
-// @ts-expect-error TS6133
-import React from 'react';
-
 import { useTranslate } from '../../i18n/I18NContext';
 import { AutocompleteField } from '../../lib/components/AutocompleteField';
 import { AutocompleteMultipleField } from '../../lib/components/AutocompleteMultipleField';
@@ -26,6 +23,7 @@ export function ProposedValueFieldList({
     if (multiple) {
         return (
             <AutocompleteMultipleField
+                // @ts-expect-error TS2740
                 form={form}
                 name={NAME}
                 label={label}
@@ -38,6 +36,7 @@ export function ProposedValueFieldList({
 
     return (
         <AutocompleteField
+            // @ts-expect-error TS2322
             form={form}
             name={NAME}
             label={label}

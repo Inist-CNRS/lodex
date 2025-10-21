@@ -1,5 +1,3 @@
-// @ts-expect-error TS6133
-import React from 'react';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import withHandlers from 'recompose/withHandlers';
@@ -23,7 +21,7 @@ export const ParsingExcerptAddColumnComponent = ({
 
     atTop,
 
-    isFieldsLoading
+    isFieldsLoading,
 }: ParsingExcerptAddColumnComponentProps) => {
     const { translate } = useTranslate();
     return (

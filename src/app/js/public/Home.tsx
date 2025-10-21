@@ -1,5 +1,4 @@
-// @ts-expect-error TS6133
-import React, { Component } from 'react';
+import { Component } from 'react';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import { push } from 'redux-first-history';

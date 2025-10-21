@@ -1,14 +1,10 @@
-// @ts-expect-error TS6133
-import React from 'react';
 import { Typography } from '@mui/material';
 
 interface CellWithTooltipProps {
     value: string;
 }
 
-export const CellWithTooltip = ({
-    value
-}: CellWithTooltipProps) => {
+export const CellWithTooltip = ({ value }: CellWithTooltipProps) => {
     return (
         <Typography
             title={value}

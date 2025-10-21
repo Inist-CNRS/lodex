@@ -1,7 +1,5 @@
-// @ts-expect-error TS6133
-import React, { Component } from 'react';
+import { Component } from 'react';
 import { translate } from '../../../i18n/I18NContext';
-import { polyglot as polyglotPropTypes } from '../../../propTypes';
 import { Checkbox, FormControlLabel, TextField } from '@mui/material';
 import FormatGroupedFieldSet from '../../utils/components/field-set/FormatGroupedFieldSet';
 import {
@@ -62,6 +60,7 @@ class LodexFieldAdmin extends Component<LodexFieldAdminProps> {
             <FormatGroupedFieldSet>
                 <FormatDataParamsFieldSet>
                     <TextField
+                        // @ts-expect-error TS18046
                         label={polyglot.t('param_labels')}
                         multiline
                         onChange={this.handleRequest}
@@ -77,6 +76,7 @@ class LodexFieldAdmin extends Component<LodexFieldAdminProps> {
                                 checked={hiddenInfo}
                             />
                         }
+                        // @ts-expect-error TS18046
                         label={polyglot.t('hidden_info')}
                     />
                 </FormatDefaultParamsFieldSet>

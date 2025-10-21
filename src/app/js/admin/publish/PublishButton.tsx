@@ -1,10 +1,7 @@
-// @ts-expect-error TS6133
-import React from 'react';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import { Button, Box } from '@mui/material';
 
-import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { publish as publishAction } from './';
 import { fromFields } from '../../sharedSelectors';
 import { fromPublish } from '../selectors';
@@ -24,7 +21,7 @@ export const PublishButtonComponent = ({
 
     onPublish,
 
-    isPublishing
+    isPublishing,
 }: PublishButtonComponentProps) => {
     const handleClick = () => {
         onPublish();
@@ -49,6 +46,8 @@ export const PublishButtonComponent = ({
                     height: 40,
                 }}
             >
+                {/*
+                 // @ts-expect-error TS18046 */}
                 {polyglot.t('publish')}
             </Button>
         </Box>
