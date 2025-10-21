@@ -15,7 +15,7 @@ interface AnnotationNestedMenuProps {
 }
 
 export const AnnotationNestedMenu = React.memo(function AnnotationNestedMenu({
-    onClose
+    onClose,
 }: AnnotationNestedMenuProps) {
     const { translate } = useTranslate();
     const fileInputRef = useRef(null);

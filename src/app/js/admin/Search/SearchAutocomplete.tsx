@@ -73,7 +73,7 @@ const SearchAutocomplete = ({
     multiple = false,
     clearText = 'Clear',
     limitTags = 6,
-    isLoading = false
+    isLoading = false,
 }: SearchAutocompleteProps) => {
     return (
         <Autocomplete

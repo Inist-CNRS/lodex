@@ -30,7 +30,7 @@ export const PrecomputedList = ({
 
     isPrecomputedRunning,
 
-    onLaunchPrecomputed
+    onLaunchPrecomputed,
 }: PrecomputedListProps) => {
     const { translate } = useTranslate();
     const history = useHistory();

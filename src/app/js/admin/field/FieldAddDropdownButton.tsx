@@ -39,7 +39,7 @@ export const FieldAddDropdownButtonComponent = ({
 
     isFieldsLoading,
 
-    subresourceId
+    subresourceId,
 }: FieldAddDropdownButtonComponentProps) => {
     const { translate } = useTranslate();
     const [open, setOpen] = React.useState(false);

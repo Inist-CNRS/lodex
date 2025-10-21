@@ -24,9 +24,7 @@ interface AnnotationFormProps {
     children?: React.ReactNode;
 }
 
-export const AnnotationForm = ({
-    annotation
-}: AnnotationFormProps) => {
+export const AnnotationForm = ({ annotation }: AnnotationFormProps) => {
     const tenant = sessionStorage.getItem('lodex-tenant') || DEFAULT_TENANT;
 
     const { translate } = useTranslate();
@@ -49,10 +47,10 @@ export const AnnotationForm = ({
                 resourceType,
                 // @ts-expect-error TS2339
                 frontUrl: annotation.resourceUri
-                    // @ts-expect-error TS2339
-                    ? `/instance/${tenant}${annotation.resourceUri}`
-                    // @ts-expect-error TS2339
-                    : `/instance/${tenant}/graph/${annotation.field.name}`,
+                    ? // @ts-expect-error TS2339
+                      `/instance/${tenant}${annotation.resourceUri}`
+                    : // @ts-expect-error TS2339
+                      `/instance/${tenant}/graph/${annotation.field.name}`,
             };
         }
 
@@ -67,13 +65,13 @@ export const AnnotationForm = ({
             resourceType,
             // @ts-expect-error TS2339
             frontUrl: annotation.resource
-                // @ts-expect-error TS2339
-                ? `/instance/${tenant}/${annotation.resourceUri}${redirectFieldHash}`
+                ? // @ts-expect-error TS2339
+                  `/instance/${tenant}/${annotation.resourceUri}${redirectFieldHash}`
                 : null,
             // @ts-expect-error TS2339
             adminUrl: annotation.resource
-                // @ts-expect-error TS2339
-                ? `/instance/${tenant}/admin#/data/existing?uri=${encodeURIComponent(annotation.resourceUri)}`
+                ? // @ts-expect-error TS2339
+                  `/instance/${tenant}/admin#/data/existing?uri=${encodeURIComponent(annotation.resourceUri)}`
                 : null,
         };
     }, [annotation]);

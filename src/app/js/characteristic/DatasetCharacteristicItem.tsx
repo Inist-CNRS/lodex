@@ -4,6 +4,7 @@ import { useInView } from 'react-intersection-observer';
 
 import Property from '../public/Property';
 import { fromFields, fromCharacteristic } from '../sharedSelectors';
+import type { CSSProperties } from 'react';
 
 const LOADING_BOX_HEIGHT = 250;
 
@@ -23,7 +24,7 @@ interface DatasetCharacteristicItemComponentProps {
         uri?: string;
     };
     field: unknown;
-    style: {};
+    style: CSSProperties;
 }
 
 export const DatasetCharacteristicItemComponent = ({
