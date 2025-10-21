@@ -1,9 +1,9 @@
 import { shallow } from 'enzyme';
 import { List } from '@mui/material';
 
-import Alert from '../../../lib/components/Alert';
 import { IstexRefbibsView } from './IstexRefbibsView';
 import IstexItem from '../istex/IstexItem';
+import { render } from '../../../../../test-utils';
 
 describe('<IstexView />', () => {
     it('should display .istex-list if data.hits', () => {
@@ -114,45 +114,44 @@ describe('<IstexView />', () => {
         const istexItems = list.find(IstexItem);
         expect(istexItems).toHaveLength(2);
         expect(istexItems.at(0).props()).toEqual({
-            id: 1,
+            id: '1',
             title: 'title1',
             publicationDate: '1901',
             url: 'url1',
-            authors: 'authors1',
+            authors: ['authors1'],
             hostTitle: 'hostTitle1',
             hostGenre: 'hostGenre1',
+            hostVolume: 'hostVolume1',
         });
         expect(istexItems.at(1).props()).toEqual({
-            id: 2,
+            id: '2',
             title: 'title2',
             publicationDate: '1902',
             url: 'url2',
-            authors: 'authors2',
+            authors: ['authors2'],
             hostTitle: 'hostTitle2',
             hostGenre: 'hostGenre2',
+            hostVolume: 'hostVolume2',
         });
     });
 
     it('should display a span with `Istex result for value`', () => {
-        const wrapper = shallow(
+        const screen = render(
             <IstexRefbibsView
                 fieldStatus=""
-                // @ts-expect-error TS2322
                 data={{
                     hits: [],
+                    total: 0,
                 }}
                 field={{ name: 'name' }}
                 resource={{ name: 'value' }}
-                // @ts-expect-error TS2322
-                p={{ t: (v) => v }}
             />,
         );
-        const span = wrapper.find('span');
-        expect(span.text()).toBe('istex_total');
+        expect(screen.getByText('istex_total+{"total":0}')).toBeInTheDocument();
     });
 
     it('should dislay Alert with error if there is one error', () => {
-        const wrapper = shallow(
+        const screen = render(
             <IstexRefbibsView
                 fieldStatus=""
                 // @ts-expect-error TS2322
@@ -162,18 +161,15 @@ describe('<IstexView />', () => {
                 field={{ name: 'name' }}
                 resource={{ name: 'value' }}
                 error="error message"
-                // @ts-expect-error TS2322
-                p={{ t: (v) => v }}
             />,
         );
 
-        const alert = wrapper.find(Alert);
-        expect(alert).toHaveLength(1);
-        expect(alert.find('p').text()).toBe('error message');
+        expect(screen.queryByRole('alert')).toBeInTheDocument();
+        expect(screen.queryByText('error message')).toBeInTheDocument();
     });
 
     it('should not dislay Alert if no error', () => {
-        const wrapper = shallow(
+        const screen = render(
             <IstexRefbibsView
                 fieldStatus=""
                 // @ts-expect-error TS2322
@@ -187,7 +183,6 @@ describe('<IstexView />', () => {
             />,
         );
 
-        const alert = wrapper.find(Alert);
-        expect(alert).toHaveLength(0);
+        expect(screen.queryByRole('alert')).not.toBeInTheDocument();
     });
 });

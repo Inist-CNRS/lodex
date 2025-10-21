@@ -5,6 +5,7 @@ import { StyleSheetTestUtils } from 'aphrodite';
 import IstexList from './IstexList';
 import { getMoreDocumentData } from './getIstexData';
 import ButtonWithStatus from '../../../lib/components/ButtonWithStatus';
+import { render } from '../../../../../test-utils';
 
 jest.mock('./getIstexData');
 
@@ -12,8 +13,6 @@ describe('IstexList', () => {
     const defaultProps = {
         data: { hits: ['item1', 'item2', 'item3'], total: 3 },
         other: 'props',
-        // @ts-expect-error TS7006
-        polyglot: { t: (v) => v },
     };
 
     beforeEach(() => StyleSheetTestUtils.suppressStyleInjection());
@@ -35,31 +34,28 @@ describe('IstexList', () => {
         expect(children).toHaveBeenCalledWith({
             item: 'item1',
             other: 'props',
-            polyglot: defaultProps.polyglot,
         });
         expect(children).toHaveBeenCalledWith({
             item: 'item2',
             other: 'props',
-            polyglot: defaultProps.polyglot,
         });
         expect(children).toHaveBeenCalledWith({
             item: 'item3',
             other: 'props',
-            polyglot: defaultProps.polyglot,
         });
     });
 
     it('should display no result message if data.hits is empty', () => {
         const children = jest.fn();
-        const wrapper = shallow(
+        const screen = render(
             // @ts-expect-error TS2322
             <IstexList {...defaultProps} data={{ hits: [] }}>
                 {children}
             </IstexList>,
         );
 
-        expect(wrapper.find('li')).toHaveLength(1);
-        expect(wrapper.find('li').text()).toBe('istex_no_result');
+        expect(screen.getAllByRole('listitem')).toHaveLength(1);
+        expect(screen.getByText('istex_no_result')).toBeInTheDocument();
         expect(children).toHaveBeenCalledTimes(0);
     });
 

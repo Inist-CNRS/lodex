@@ -99,9 +99,11 @@ describe('AnnotationForm', () => {
 
         // Comment region
         const authorRegion = screen.getByRole('region', {
-            name: 'annotation_comment_section',
+            name: 'annotation_contributor_section',
         });
+
         expect(authorRegion).toBeInTheDocument();
+
         expect(
             within(authorRegion).getByText('Count Ributor'),
         ).toBeInTheDocument();

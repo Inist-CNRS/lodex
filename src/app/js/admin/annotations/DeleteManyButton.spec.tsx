@@ -1,3 +1,4 @@
+import { waitFor } from '@testing-library/dom';
 import { render } from '../../../../test-utils';
 import { TestI18N } from '../../i18n/I18NContext';
 import { DeleteManyButton } from './DeleteManyButton';
@@ -43,6 +44,14 @@ describe('DeleteManyButton', () => {
             })
             .click();
 
+        await waitFor(() =>
+            expect(
+                screen.getByText(
+                    'annotation_delete_many_modal_title+{"smart_count":2}',
+                ),
+            ).toBeInTheDocument(),
+        );
+
         screen
             .getByRole('button', {
                 name: 'delete',
@@ -69,6 +78,14 @@ describe('DeleteManyButton', () => {
             })
             .click();
 
+        await waitFor(() =>
+            expect(
+                screen.getByText(
+                    'annotation_delete_many_modal_title+{"smart_count":2}',
+                ),
+            ).toBeInTheDocument(),
+        );
+
         screen
             .getByRole('button', {
                 name: 'cancel',
@@ -94,6 +111,14 @@ describe('DeleteManyButton', () => {
                 name: 'annotation_delete_many_button_label',
             })
             .click();
+
+        await waitFor(() => {
+            expect(
+                screen.getByRole('button', {
+                    name: 'delete',
+                }),
+            ).toBeInTheDocument();
+        });
 
         expect(
             screen.getByRole('button', {
