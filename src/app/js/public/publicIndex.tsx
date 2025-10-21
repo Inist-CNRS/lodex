@@ -1,7 +1,7 @@
 import '@babel/polyfill';
 import { createBrowserHistory } from 'history';
 
-import { hydrateRoot } from 'react-dom/client';
+import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
 import 'url-api-polyfill';
 
@@ -45,9 +45,8 @@ const { store, history } = configureStore(
 );
 
 const queryClient = new QueryClient();
-
-hydrateRoot(
-    document.getElementById('root')!,
+const root = createRoot(document.getElementById('root')!);
+root.render(
     <Provider {...{ store }}>
         <I18N>
             <QueryClientProvider client={queryClient}>
