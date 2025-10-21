@@ -1,7 +1,6 @@
 import React from 'react';
 import { translate } from '../../i18n/I18NContext';
 import compose from 'recompose/compose';
-import { polyglot as polyglotPropTypes } from '../../propTypes';
 
 import {
     List,
@@ -53,13 +52,16 @@ interface RoutineCatalogDescriptionProps {
 
 const RoutineCatalogDescription = ({
     routine,
-    polyglot
+    polyglot,
 }: RoutineCatalogDescriptionProps) => {
     return (
         <React.Fragment>
+            {/*
+             // @ts-expect-error TS18046 */}
             <Typography>{polyglot.t(`${routine.id}_description`)}</Typography>
             <Box justifyContent="space-between" display="flex" mt={2}>
                 {routine.recommendedWith && (
+                    // @ts-expect-error TS18046
                     <Tooltip title={polyglot.t(`tooltip_recommendedWith`)}>
                         <Box sx={{ display: 'flex', gap: '10px' }}>
                             <ThumbUpIcon color="primary" />
@@ -70,6 +72,7 @@ const RoutineCatalogDescription = ({
                     </Tooltip>
                 )}
                 {routine.doc && (
+                    // @ts-expect-error TS18046
                     <Tooltip title={polyglot.t(`tooltip_documentation`)}>
                         <Link
                             href={routine.doc}
@@ -106,7 +109,7 @@ const RoutineCatalog = ({
 
     currentValue,
 
-    precomputed = false
+    precomputed = false,
 }: RoutineCatalogProps) => {
     // @ts-expect-error TS7006
     const handleValueChange = (newValue) => {
@@ -151,6 +154,8 @@ const RoutineCatalog = ({
                                     disableTypography
                                     primary={
                                         <Typography sx={{ fontWeight: 'bold' }}>
+                                            {/*
+                                             // @ts-expect-error TS18046 */}
                                             {polyglot.t(`${routine.id}_title`)}
                                         </Typography>
                                     }
@@ -168,6 +173,8 @@ const RoutineCatalog = ({
             </DialogContent>
             <DialogActions>
                 <CancelButton key="cancel" onClick={handleClose}>
+                    {/*
+                     // @ts-expect-error TS18046 */}
                     {polyglot.t('cancel')}
                 </CancelButton>
             </DialogActions>

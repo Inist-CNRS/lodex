@@ -1,16 +1,10 @@
-// @ts-expect-error TS6133
-import React from 'react';
-
-import {
-    field as fieldPropTypes,
-    polyglot as polyglotPropTypes,
-} from '../../../propTypes';
+import { type Field } from '../../../propTypes';
 import injectData from '../../injectData';
 import InvalidFormat from '../../InvalidFormat';
 import { getYearUrl, parseYearData } from './getIstexData';
 import {
-    SEARCHED_FIELD_VALUES,
-    SORT_YEAR_VALUES,
+    type SearchedField,
+    type SortYear,
     SORT_YEAR_DESC,
     CUSTOM_ISTEX_QUERY,
 } from './constants';
@@ -32,7 +26,8 @@ interface IstexDocumentProps {
 }
 
 export const IstexDocument = ({
-    item
+    item,
+    // @ts-expect-error TS2740
 }: IstexDocumentProps) => <IstexItem {...item} />;
 
 // @ts-expect-error TS7006
@@ -66,13 +61,13 @@ const styles = stylesToClassname(
 interface IstexSummaryViewProps {
     fieldStatus?: string;
     resource: object;
-    field: unknown;
+    field: Field;
     formatData?: {
         hits?: unknown;
     };
     error?: string;
-    searchedField?: unknown[];
-    sortDir?: unknown[];
+    searchedField?: SearchedField;
+    sortDir?: SortYear;
     yearThreshold: number;
     documentSortBy: string;
     p: unknown;
@@ -96,14 +91,17 @@ export const IstexSummaryView = ({
 
     p: polyglot,
 
-    showEmbedButton
+    showEmbedButton,
 }: IstexSummaryViewProps) => {
+    // @ts-expect-error TS7053
     if (!resource[field.name] || !searchedField) {
         return (
+            // @ts-expect-error TS18046
             <InvalidFormat format={field.format} value={resource[field.name]} />
         );
     }
 
+    // @ts-expect-error TS2345
     const data = parseYearData(formatData, sortDir);
 
     const displayDecade = yearThreshold && data.hits.length > yearThreshold;
@@ -111,11 +109,12 @@ export const IstexSummaryView = ({
 
     return (
         // @ts-expect-error TS2339
-        (<div className={`istex-summary ${styles.container}`}>
+        <div className={`istex-summary ${styles.container}`}>
             {showEmbedButton && (
                 <EmbedButton
                     // @ts-expect-error TS2769
                     className={styles.embedButton}
+                    // @ts-expect-error TS2339
                     uri={resource.uri}
                     fieldName={field.name}
                     p={polyglot}
@@ -127,13 +126,14 @@ export const IstexSummaryView = ({
                         ? getDecadeFromData(data, sortDir === SORT_YEAR_DESC)
                         : data
                 }
+                // @ts-expect-error TS7053
                 value={resource[field.name]}
                 searchedField={searchedField}
                 sortDir={sortDir}
                 documentSortBy={documentSortBy}
                 polyglot={polyglot}
             />
-        </div>)
+        </div>
     );
 };
 

@@ -1,5 +1,4 @@
-// @ts-expect-error TS6133
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 
 import {
     Checkbox,
@@ -15,9 +14,10 @@ interface IsContributorNamePublicFieldProps {
 }
 
 export function IsContributorNamePublicField({
-    form
+    form,
 }: IsContributorNamePublicFieldProps) {
     const { translate } = useTranslate();
+    // @ts-expect-error TS2740
     const field = useField({ name: 'isContributorNamePublic', form });
 
     // @ts-expect-error TS7006

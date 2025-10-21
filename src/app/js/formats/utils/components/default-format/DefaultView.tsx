@@ -1,6 +1,3 @@
-// @ts-expect-error TS6133
-import React from 'react';
-
 import { Typography } from '@mui/material';
 import {
     PROPOSED,
@@ -10,7 +7,7 @@ import {
 import { canonicalURL, isLocalURL, isURL } from '../../../../../../common/uris';
 import Link from '../../../../lib/components/Link';
 import { getShortText, isLongText } from '../../../../lib/longTexts';
-import { field as fieldPropTypes } from '../../../../propTypes';
+import { type Field } from '../../../../propTypes';
 
 const styles = {
     [REJECTED]: {
@@ -29,7 +26,7 @@ const styles = {
 
 interface DefaultViewProps {
     className?: string;
-    field: unknown;
+    field: Field;
     fieldStatus?: string;
     resource: any;
     shrink?: boolean;
@@ -40,24 +37,24 @@ const DefaultView = ({
     resource,
     field,
     fieldStatus,
-    shrink
+    shrink,
 }: DefaultViewProps) => {
     const value = resource[field.name];
 
     if (isURL(value)) {
         return (
             // @ts-expect-error TS2739
-            (<Link style={styles[fieldStatus]} href={`${value}`}>
+            <Link style={styles[fieldStatus]} href={`${value}`}>
                 {value}
-            </Link>)
+            </Link>
         );
     }
     if (isLocalURL(value)) {
         return (
             // @ts-expect-error TS2739
-            (<Link style={styles[fieldStatus]} href={`${canonicalURL(value)}`}>
+            <Link style={styles[fieldStatus]} href={`${canonicalURL(value)}`}>
                 {value}
-            </Link>)
+            </Link>
         );
     }
 

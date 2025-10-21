@@ -1,5 +1,3 @@
-// @ts-expect-error TS6133
-import React from 'react';
 import { shallow } from 'enzyme';
 import { List } from '@mui/material';
 
@@ -12,7 +10,6 @@ describe('<IstexView />', () => {
         const wrapper = shallow(
             <IstexRefbibsView
                 fieldStatus=""
-                // @ts-expect-error TS2322
                 data={{
                     hits: [
                         {
@@ -79,7 +76,6 @@ describe('<IstexView />', () => {
         const wrapper = shallow(
             <IstexRefbibsView
                 fieldStatus=""
-                // @ts-expect-error TS2322
                 data={{
                     hits: [
                         {

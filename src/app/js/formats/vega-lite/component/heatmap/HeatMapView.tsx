@@ -1,11 +1,10 @@
-// @ts-expect-error TS6133
-import React, { useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { clamp } from 'lodash';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 
 import HeatMap from '../../models/HeatMap';
-import { field as fieldPropTypes } from '../../../../propTypes';
+import { type Field } from '../../../../propTypes';
 import {
     convertSpecTemplate,
     lodexOrderToIdOrder,
@@ -25,7 +24,7 @@ const styles = {
 
 interface HeatMapViewProps {
     field?: unknown;
-    resource?: object;
+    resource?: Field;
     data?: {
         values: any;
     };
@@ -64,7 +63,7 @@ const HeatMapView = ({
 
     tooltipWeight,
 
-    aspectRatio
+    aspectRatio,
 }: HeatMapViewProps) => {
     const { ref, width } = useSizeObserver();
     const [error, setError] = useState('');
@@ -86,6 +85,7 @@ const HeatMapView = ({
 
         const specBuilder = new HeatMap();
 
+        // @ts-expect-error TS18048
         specBuilder.setColor(colorScheme.join(' '));
         specBuilder.setOrderBy(lodexOrderToIdOrder(params.orderBy));
         specBuilder.flipAxis(flipAxis);
@@ -111,12 +111,13 @@ const HeatMapView = ({
     ]);
 
     if (!spec) {
+        // @ts-expect-error TS18046
         return <InvalidFormat format={field.format} value={error} />;
     }
 
     return (
         // @ts-expect-error TS2322
-        (<div style={styles.container} ref={ref}>
+        <div style={styles.container} ref={ref}>
             <CustomActionVegaLite
                 // @ts-expect-error TS2322
                 spec={spec}
@@ -124,7 +125,7 @@ const HeatMapView = ({
                 injectType={VEGA_LITE_DATA_INJECT_TYPE_A}
                 aspectRatio={aspectRatio}
             />
-        </div>)
+        </div>
     );
 };
 
@@ -144,8 +145,7 @@ const mapStateToProps = (state, { formatData }) => {
     };
 };
 
-// @ts-expect-error TS6133
-export const HeatMapAdminView = connect((state, props) => {
+export const HeatMapAdminView = connect((_state, props) => {
     return {
         ...props,
         field: {

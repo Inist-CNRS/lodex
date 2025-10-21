@@ -1,5 +1,4 @@
 import React, { useMemo, useState, Suspense, useCallback } from 'react';
-import { polyglot as polyglotPropTypes } from '../../../propTypes';
 import compose from 'recompose/compose';
 import zip from 'lodash/zip';
 import flatten from 'lodash/flatten';
@@ -33,7 +32,7 @@ const LeafletView = ({
 
     zoom,
 
-    center
+    center,
 }: LeafletViewProps) => {
     const mounted = useClientOnly();
 
@@ -44,6 +43,7 @@ const LeafletView = ({
         height: '500px',
     });
 
+    // @ts-expect-error TS7006
     const containerRef = useCallback((node) => {
         if (!node) return;
         const resizeObserver = new ResizeObserver(() => {
@@ -66,21 +66,30 @@ const LeafletView = ({
             formatData
                 .map((x) => {
                     // Multi values for all cases
+                    // @ts-expect-error TS18046
                     let a = x._id;
+                    // @ts-expect-error TS18046
                     let b = x.value;
                     // @ts-expect-error TS2304
                     if (typeof _id === 'string') {
+                        // @ts-expect-error TS18046
                         a = [x._id]; // '["39.5015541259931","-99.0602406280213"]'
                     }
+                    // @ts-expect-error TS18046
                     if (Array.isArray(x._id) && x._id.length === 2) {
                         // example: [46.123, 23.344]
+                        // @ts-expect-error TS18046
                         a = [x._id];
                     }
+                    // @ts-expect-error TS18046
                     if (!Array.isArray(x._id)) {
                         // example: { lat: 46.123, lnt : 23.344 }
+                        // @ts-expect-error TS18046
                         a = [x._id];
                     }
+                    // @ts-expect-error TS18046
                     if (!Array.isArray(x.value)) {
+                        // @ts-expect-error TS18046
                         b = [x.value];
                     }
                     return {
@@ -140,6 +149,8 @@ const LeafletView = ({
     }
     return (
         <div style={{ height }}>
+            {/*
+             // @ts-expect-error TS2559 */}
             <ClientOnly>
                 {/*
                  // @ts-expect-error TS2322 */}

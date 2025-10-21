@@ -1,5 +1,4 @@
-// @ts-expect-error TS6133
-import React, { Component } from 'react';
+import { Component } from 'react';
 import { connect } from 'react-redux';
 import { translate } from '../../../i18n/I18NContext';
 import compose from 'recompose/compose';
@@ -7,10 +6,7 @@ import LinkIcon from '@mui/icons-material/Link';
 import { TextField } from '@mui/material';
 import URL from 'url';
 
-import {
-    field as fieldPropTypes,
-    polyglot as polyglotPropTypes,
-} from '../../../propTypes';
+import { type Field } from '../../../propTypes';
 
 import { fromFormat } from '../../../public/selectors';
 import { loadFormatData } from '../../reducer';
@@ -62,14 +58,17 @@ const getCreateUrl = (url) => {
 };
 
 interface SparqlRequestProps {
-    field: unknown;
-    resource: object;
+    field: Field;
+    resource: Record<string, string>;
     loadFormatData(...args: unknown[]): unknown;
     formatData?: any;
     isLoaded: boolean;
     error?: object;
-    p: unknown;
-    sparql?: object;
+    p: any;
+    sparql: {
+        endpoint: string;
+        hiddenInfo: boolean;
+    };
     onChange(...args: unknown[]): unknown;
 }
 
@@ -121,10 +120,9 @@ export default (url) => (FormatView) => {
 
             if (isURL(requestText)) {
                 return (
-                    // @ts-expect-error TS2739
-                    (<Link href={requestText} style={styles.link}>
+                    <Link href={requestText} style={styles.link}>
                         {requestText}
-                    </Link>)
+                    </Link>
                 );
             }
             return <span> {requestText} </span>;
@@ -181,8 +179,6 @@ export default (url) => (FormatView) => {
             return (
                 <p>
                     {polyglot.t('sparql_http_retry')}
-                    {/*
-                     // @ts-expect-error TS2739 */}
                     <Link href={url}> {polyglot.t('here')} </Link>
                 </p>
             );

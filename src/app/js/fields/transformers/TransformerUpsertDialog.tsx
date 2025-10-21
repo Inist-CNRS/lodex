@@ -20,7 +20,6 @@ import {
 } from '@mui/material';
 
 import TransformerArg from './TransformerArg';
-import { polyglot as polyglotPropTypes } from '../../propTypes';
 import CancelButton from '../../lib/components/CancelButton';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 
@@ -71,6 +70,8 @@ export const TransformerItem = ({
                 color="textSecondary"
                 sx={{ width: '100%' }}
             >
+                {/*
+                 // @ts-expect-error TS18046 */}
                 {polyglot.t(`transformer_${name}`)}
             </Typography>
             {docUrl && (
@@ -84,6 +85,7 @@ export const TransformerItem = ({
                     href={docUrl}
                     target="_blank"
                     rel="noopener noreferrer"
+                    // @ts-expect-error TS18046
                     aria-label={polyglot.t('tooltip_documentation')}
                     onClick={(e) => e.stopPropagation()}
                 >
@@ -117,12 +119,13 @@ const TransformerUpsertDialog = ({
 
     update,
 
+    // @ts-expect-error TS2322
     indexFieldToEdit = null,
     isOpen = false,
 
     handleClose,
 
-    p: polyglot
+    p: polyglot,
 }: TransformerUpsertDialogProps) => {
     const [transformer, setTransformer] = React.useState(
         indexFieldToEdit !== null ? fields?.[indexFieldToEdit] ?? {} : {},
@@ -156,23 +159,28 @@ const TransformerUpsertDialog = ({
         <Dialog open={isOpen} onClose={handleClose} scroll="body" maxWidth="lg">
             <DialogTitle>
                 {indexFieldToEdit !== null
-                    ? polyglot.t('edit_transformer')
-                    : polyglot.t('add_transformer')}
+                    ? // @ts-expect-error TS18046
+                      polyglot.t('edit_transformer')
+                    : // @ts-expect-error TS18046
+                      polyglot.t('add_transformer')}
             </DialogTitle>
 
             <DialogContent style={{ padding: 10, width: '800px' }}>
                 <Box display={'flex'} flexDirection="column">
                     <Autocomplete
+                        // @ts-expect-error TS18046
                         aria-label={polyglot.t('select_an_operation')}
+                        // @ts-expect-error TS2339
                         value={transformer.operation || ''}
-                        // @ts-expect-error TS6133
-                        onChange={(event, newValue) => {
+                        onChange={(_event, newValue) => {
                             handleChangeOperation(newValue);
                         }}
+                        // @ts-expect-error TS2322
                         options={availableTransformers}
                         renderInput={(params) => (
                             <TextField
                                 {...params}
+                                // @ts-expect-error TS18046
                                 label={polyglot.t('select_an_operation')}
                                 variant="outlined"
                             />
@@ -193,6 +201,7 @@ const TransformerUpsertDialog = ({
                     <TransformerArg
                         // @ts-expect-error TS2322
                         operation={transformer.operation}
+                        // @ts-expect-error TS2339
                         transformerArgs={transformer.args}
                         // @ts-expect-error TS7006
                         onChange={(args) => {
@@ -206,17 +215,23 @@ const TransformerUpsertDialog = ({
             </DialogContent>
             <DialogActions>
                 <CancelButton
+                    // @ts-expect-error TS18046
                     aria-label={polyglot.t('cancel')}
                     onClick={handleClose}
                 >
+                    {/*
+                     // @ts-expect-error TS18046 */}
                     {polyglot.t('cancel')}
                 </CancelButton>
                 <Button
+                    // @ts-expect-error TS18046
                     aria-label={polyglot.t('confirm')}
                     color="primary"
                     variant="contained"
                     onClick={handleUpsert}
                 >
+                    {/*
+                     // @ts-expect-error TS18046 */}
                     {polyglot.t('confirm')}
                 </Button>
             </DialogActions>

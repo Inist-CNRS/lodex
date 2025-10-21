@@ -1,7 +1,6 @@
 import { scaleLinear } from 'd3-scale';
 import get from 'lodash/get';
-// @ts-expect-error TS6133
-import React, {
+import {
     lazy,
     Suspense,
     useCallback,
@@ -34,10 +33,7 @@ interface NetworkProps {
     formatData?: unknown[];
 }
 
-const Network = ({
-    formatData,
-    colorSet
-}: NetworkProps) => {
+const Network = ({ formatData, colorSet }: NetworkProps) => {
     const { translate } = useTranslate();
     const [{ width, height }, setDimensions] = useState({
         width: 0,
@@ -48,6 +44,7 @@ const Network = ({
     const [highlightedNodes, setHighlightedNodes] = useState([]);
     const [highlightedLinks, setHighlightedLinks] = useState([]);
 
+    // @ts-expect-error TS7006
     const containerRef = useCallback((node) => {
         if (!node) return;
         const resizeObserver = new ResizeObserver(() => {
@@ -82,6 +79,7 @@ const Network = ({
         const nodesDic = sanitizedFormatData.reduce(
             // @ts-expect-error TS7006
             (acc, { source, target }) => ({
+                // @ts-expect-error TS2698
                 ...acc,
                 [source]: {
                     id: source,
@@ -97,6 +95,7 @@ const Network = ({
             {},
         );
 
+        // @ts-expect-error TS2769
         const nodes = Object.values(nodesDic);
         // @ts-expect-error TS2345
         const radiusList = nodes.map(({ radius }) => radius);
@@ -109,7 +108,9 @@ const Network = ({
 
         // @ts-expect-error TS7031
         const weightList = sanitizedFormatData.map(({ weight }) => weight);
+        // @ts-expect-error TS2345
         const maxWeight = Math.max(...weightList);
+        // @ts-expect-error TS2345
         const minWeight = Math.min(...weightList);
 
         const linkScale = scaleLinear()
@@ -238,6 +239,7 @@ const Network = ({
                         <ForceGraph2D
                             width={width}
                             height={height}
+                            // @ts-expect-error TS2322
                             graphData={{ nodes, links }}
                             nodeCanvasObject={(node, ctx, globalScale) => {
                                 if (
@@ -266,6 +268,7 @@ const Network = ({
                                     node.y + circleRadius + fontSize,
                                 );
 
+                                // @ts-expect-error TS18048
                                 ctx.fillStyle = colorSet[0];
                                 ctx.beginPath();
                                 ctx.arc(

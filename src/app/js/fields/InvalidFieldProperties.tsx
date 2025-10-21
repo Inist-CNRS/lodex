@@ -1,11 +1,8 @@
-// @ts-expect-error TS6133
-import React from 'react';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 
 import Alert from '../lib/components/Alert';
 import { fromFields } from '../sharedSelectors';
-import { field as fieldPropTypes } from '../propTypes';
 import { translate } from '../i18n/I18NContext';
 
 interface InvalidFieldPropertiesProps {
@@ -18,8 +15,9 @@ interface InvalidFieldPropertiesProps {
 
 const InvalidFieldProperties = ({
     invalidProperties,
-    p: polyglot
+    p: polyglot,
 }: InvalidFieldPropertiesProps) => {
+    // @ts-expect-error TS18048
     if (!invalidProperties.length) {
         return null;
     }
@@ -31,6 +29,8 @@ const InvalidFieldProperties = ({
                  // @ts-expect-error TS7031 */}
                 {invalidProperties.map(({ name, error }, index) => (
                     <li key={`${name}-${index}`}>
+                        {/*
+                         // @ts-expect-error TS18046 */}
                         {polyglot.t(`error_${name}_${error}`)}
                     </li>
                 ))}

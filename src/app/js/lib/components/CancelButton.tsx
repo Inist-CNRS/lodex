@@ -1,5 +1,3 @@
-// @ts-expect-error TS6133
-import React from 'react';
 import { styled } from '@mui/material/styles';
 import MuiButton from '@mui/material/Button';
 

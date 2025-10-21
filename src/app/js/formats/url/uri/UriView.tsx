@@ -68,8 +68,7 @@ export const getReadableValue = ({ resource, field, type, value }) => {
     const uri = resource[field.name];
 
     if (Array.isArray(uri)) {
-        // @ts-expect-error TS6133
-        return uri.map((uriItem, index) => {
+        return uri.map((_uriItem, index) => {
             const label = getLabel(field, resource, null, type, value);
 
             const currentLabel = Array.isArray(label) ? label[index] : label;

@@ -1,5 +1,4 @@
-// @ts-expect-error TS6133
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import { useTranslate } from '../../i18n/I18NContext';

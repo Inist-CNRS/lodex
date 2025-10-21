@@ -1,5 +1,3 @@
-// @ts-expect-error TS6133
-import React from 'react';
 import { Helmet } from 'react-helmet';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';

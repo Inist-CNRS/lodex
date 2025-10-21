@@ -1,6 +1,5 @@
 import { FormControl, InputLabel, NativeSelect } from '@mui/material';
-// @ts-expect-error TS6133
-import React from 'react';
+
 import { kinds } from '../../../../../common/validator/annotation.validator';
 import { useTranslate } from '../../../i18n/I18NContext';
 
@@ -11,10 +10,7 @@ interface KindFilterProps {
     };
 }
 
-export const KindFilter = ({
-    applyValue,
-    item
-}: KindFilterProps) => {
+export const KindFilter = ({ applyValue, item }: KindFilterProps) => {
     const { translate } = useTranslate();
 
     return (

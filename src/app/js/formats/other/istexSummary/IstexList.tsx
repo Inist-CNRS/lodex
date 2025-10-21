@@ -1,5 +1,4 @@
-// @ts-expect-error TS6133
-import React, { useState } from 'react';
+import { useState } from 'react';
 import classnames from 'classnames';
 
 import { getMoreDocumentData } from './getIstexData';

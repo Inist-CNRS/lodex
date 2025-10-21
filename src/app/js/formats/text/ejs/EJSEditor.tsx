@@ -1,4 +1,3 @@
-import { polyglot as polyglotPropTypes } from '../../../propTypes';
 import { Box } from '@mui/material';
 import { lazy, Suspense } from 'react';
 import { translate, useTranslate } from '../../../i18n/I18NContext';
@@ -14,10 +13,7 @@ interface EJSEditorProps {
     onChange(...args: unknown[]): unknown;
 }
 
-const EJSEditor = ({
-    value,
-    onChange
-}: EJSEditorProps) => {
+const EJSEditor = ({ value, onChange }: EJSEditorProps) => {
     const { translate } = useTranslate();
 
     return (

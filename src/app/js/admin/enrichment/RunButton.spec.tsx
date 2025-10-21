@@ -24,6 +24,7 @@ describe('RunButton', () => {
         expect(getByText('run')).not.toBeDisabled();
 
         act(() => {
+            // @ts-expect-error TS2339
             screen.fireEvent.click(getByText('run'));
         });
         expect(onLaunchEnrichment).toHaveBeenCalledWith({
@@ -47,6 +48,7 @@ describe('RunButton', () => {
         expect(getByText('run')).not.toBeDisabled();
 
         act(() => {
+            // @ts-expect-error TS2339
             screen.fireEvent.click(getByText('run'));
         });
         expect(onLaunchEnrichment).toHaveBeenCalledWith({
@@ -73,6 +75,7 @@ describe('RunButton', () => {
         expect(getByText('run')).not.toBeDisabled();
 
         act(() => {
+            // @ts-expect-error TS2339
             screen.fireEvent.click(getByText('run'));
         });
         expect(onLaunchEnrichment).toHaveBeenCalledWith({
@@ -96,6 +99,7 @@ describe('RunButton', () => {
         expect(getByText('run')).toBeDisabled();
 
         act(() => {
+            // @ts-expect-error TS2339
             screen.fireEvent.click(getByText('run'));
         });
         expect(onLaunchEnrichment).toHaveBeenCalledTimes(0);
@@ -116,6 +120,7 @@ describe('RunButton', () => {
         expect(getByText('run')).toBeDisabled();
 
         act(() => {
+            // @ts-expect-error TS2339
             screen.fireEvent.click(getByText('run'));
         });
         expect(onLaunchEnrichment).toHaveBeenCalledTimes(0);

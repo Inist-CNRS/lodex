@@ -1,5 +1,3 @@
-// @ts-expect-error TS6133
-import React from 'react';
 import classnames from 'classnames';
 import { TableCell, Button } from '@mui/material';
 import RightIcon from '@mui/icons-material/KeyboardArrowRight';

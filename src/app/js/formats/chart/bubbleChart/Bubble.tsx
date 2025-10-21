@@ -1,13 +1,10 @@
-// @ts-expect-error TS6133
-import React from 'react';
 import memoize from 'lodash/memoize';
 // @ts-expect-error TS7016
 import { hsl } from 'd3-color';
 import ReactTooltip from 'react-tooltip';
 
 const styles = {
-    // @ts-expect-error TS6133
-    leaf: memoize(({ x, y, r }, name, color) => ({
+    leaf: memoize(({ x, y, r }, _name, color) => ({
         position: 'absolute',
         top: x - r,
         left: y - r,
@@ -38,14 +35,7 @@ interface BubbleProps {
     value: number;
 }
 
-const Bubble = ({
-    r,
-    x,
-    y,
-    name,
-    value,
-    color
-}: BubbleProps) => (
+const Bubble = ({ r, x, y, name, value, color }: BubbleProps) => (
     <div
         // @ts-expect-error TS7006
         style={styles.leaf({ r, x, y }, name, color)}
@@ -55,7 +45,7 @@ const Bubble = ({
     >
         {r > 10 && (
             // @ts-expect-error TS7006
-            (<div style={styles.leafLabel({ r, x, y }, color)}>{name}</div>)
+            <div style={styles.leafLabel({ r, x, y }, color)}>{name}</div>
         )}
         <ReactTooltip
             id={`bubble-${name}`}

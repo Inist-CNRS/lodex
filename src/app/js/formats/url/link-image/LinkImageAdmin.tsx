@@ -1,6 +1,4 @@
-// @ts-expect-error TS6133
-import React, { Component } from 'react';
-import { polyglot as polyglotPropTypes } from '../../../propTypes';
+import { Component } from 'react';
 import { TextField, MenuItem } from '@mui/material';
 import {
     FormatDataParamsFieldSet,
@@ -62,14 +60,19 @@ class LinkImageAdmin extends Component<LinkImageAdminProps> {
                     <TextField
                         fullWidth
                         select
+                        // @ts-expect-error TS18046
                         label={polyglot.t('select_a_format')}
                         onChange={this.handleType}
                         value={type}
                     >
                         <MenuItem value="text">
+                            {/*
+                             // @ts-expect-error TS18046 */}
                             {polyglot.t('item_other_column_content')}
                         </MenuItem>
                         <MenuItem value="column">
+                            {/*
+                             // @ts-expect-error TS18046 */}
                             {polyglot.t('item_custom_url')}
                         </MenuItem>
                     </TextField>
@@ -78,14 +81,17 @@ class LinkImageAdmin extends Component<LinkImageAdminProps> {
                     <TextField
                         label={
                             type !== 'text'
-                                ? polyglot.t('Custom URL')
-                                : polyglot.t("Column's name")
+                                ? // @ts-expect-error TS18046
+                                  polyglot.t('Custom URL')
+                                : // @ts-expect-error TS18046
+                                  polyglot.t("Column's name")
                         }
                         onChange={this.handleValue}
                         value={value}
                         sx={{ flexGrow: 1 }}
                     />
                     <TextField
+                        // @ts-expect-error TS18046
                         label={polyglot.t('height_px')}
                         type="number"
                         onChange={this.handleMaxHeight}

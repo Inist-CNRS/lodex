@@ -1,5 +1,3 @@
-// @ts-expect-error TS6133
-import React from 'react';
 // @ts-expect-error: TS7016
 import { StyleSheetServer } from 'aphrodite/no-important';
 import { renderToString } from 'react-dom/server';

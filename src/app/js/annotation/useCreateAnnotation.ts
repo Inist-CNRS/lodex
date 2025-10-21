@@ -55,6 +55,7 @@ export function useCreateAnnotation() {
     });
 
     const handleCreateAnnotation = useCallback(
+        // @ts-expect-error TS7006
         async (annotation) => {
             return mutation.mutateAsync(annotation);
         },

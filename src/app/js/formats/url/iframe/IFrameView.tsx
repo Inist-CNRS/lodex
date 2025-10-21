@@ -1,9 +1,7 @@
-// @ts-expect-error TS6133
-import React from 'react';
-import { field as fieldPropTypes } from '../../../propTypes';
+import { type Field } from '../../../propTypes';
 
 interface IFrameViewProps {
-    field: unknown;
+    field: Field;
     resource: object;
     viewWidth: string;
     aspectRatio: string;
@@ -13,8 +11,9 @@ const IFrameView = ({
     resource,
     field,
     viewWidth,
-    aspectRatio
+    aspectRatio,
 }: IFrameViewProps) => {
+    // @ts-expect-error TS7053
     const srcURL = resource[field.name];
     const style = {
         overflow: 'hidden',

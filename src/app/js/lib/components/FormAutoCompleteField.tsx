@@ -1,5 +1,3 @@
-// @ts-expect-error TS6133
-import React from 'react';
 import { bindActionCreators } from 'redux';
 import compose from 'recompose/compose';
 import withHandlers from 'recompose/withHandlers';
@@ -13,24 +11,27 @@ import {
 import { translate } from '../../i18n/I18NContext';
 
 import { fetch as fetchAction } from '../../fetch';
-import { formField as formFieldPropTypes } from '../../propTypes';
+import { type FormFieldProps } from '../../propTypes';
+
+type FormAutoCompleteFieldProps = {
+    handleComplete: (event: object, value: string) => void;
+    handleValueChosen: (event: object, value: any) => void;
+    dataSource: unknown[];
+    p: {
+        t: (key: string) => string;
+    };
+    allowNewItem?: boolean;
+} & FormFieldProps;
 
 const FormAutoCompleteField = ({
-    // @ts-expect-error TS7031
     handleComplete,
-    // @ts-expect-error TS7031
     handleValueChosen,
-    // @ts-expect-error TS7031
     dataSource,
-    // @ts-expect-error TS7031
     input,
-    // @ts-expect-error TS7031
     label,
-    // @ts-expect-error TS7031
     meta: { error },
-    // @ts-expect-error TS7031
     p: polyglot,
-}) => {
+}: FormAutoCompleteFieldProps) => {
     const source = dataSource || [];
 
     return (
@@ -46,8 +47,10 @@ const FormAutoCompleteField = ({
                         {...params}
                         label={label}
                         helperText={
+                            // @ts-expect-error TS18046
                             input.value
-                                ? `(${polyglot.t('actually')} ${input.value})`
+                                ? // @ts-expect-error TS18046
+                                  `(${polyglot.t('actually')} ${input.value})`
                                 : undefined
                         }
                     />

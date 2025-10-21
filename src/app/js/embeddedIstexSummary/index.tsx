@@ -1,9 +1,6 @@
 import '@babel/polyfill';
 import 'url-api-polyfill';
 
-// @ts-expect-error TS6133
-import React from 'react';
-
 import { createRoot } from 'react-dom/client';
 import Polyglot from 'node-polyglot';
 

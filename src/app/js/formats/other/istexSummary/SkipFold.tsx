@@ -1,8 +1,6 @@
-// @ts-expect-error TS6133
-import React, { Component } from 'react';
+import { Component } from 'react';
 import { CircularProgress } from '@mui/material';
 
-import { polyglot as polyglotPropTypes } from '../../../propTypes';
 import AdminOnlyAlert from '../../../lib/components/AdminOnlyAlert';
 
 const circularProgress = (
@@ -31,6 +29,7 @@ class SkipFold extends Component<SkipFoldProps> {
     };
 
     UNSAFE_componentWillMount() {
+        // @ts-expect-error TS2571
         this.props
             .getData(this.props)
             // @ts-expect-error TS7006
@@ -48,11 +47,13 @@ class SkipFold extends Component<SkipFoldProps> {
             });
     }
 
+    // @ts-expect-error TS2416
     render() {
         const { polyglot, children } = this.props;
         const { data, isLoading, error } = this.state;
 
         if (error) {
+            // @ts-expect-error TS18046
             return <AdminOnlyAlert>{polyglot.t('istex_error')}</AdminOnlyAlert>;
         }
 

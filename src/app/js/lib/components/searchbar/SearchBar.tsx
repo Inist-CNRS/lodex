@@ -1,6 +1,5 @@
 import { Icon, IconButton, TextField } from '@mui/material';
-// @ts-expect-error TS6133
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import compose from 'recompose/compose';
 import { translate } from '../../../i18n/I18NContext';
 

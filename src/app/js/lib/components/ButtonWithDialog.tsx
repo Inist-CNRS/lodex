@@ -9,7 +9,6 @@ import {
     Box,
 } from '@mui/material';
 
-import { polyglot as polyglotPropTypes } from '../../propTypes';
 import CancelButton from './CancelButton';
 import { translate } from '../../i18n/I18NContext';
 
@@ -61,6 +60,8 @@ export const PureButtonWithDialog = ({
 
     actions = [
         <CancelButton key="cancel" onClick={handleClose}>
+            {/*
+             // @ts-expect-error TS18046 */}
             {polyglot.t('close')}
         </CancelButton>,
     ],
@@ -73,9 +74,11 @@ export const PureButtonWithDialog = ({
             startIcon={icon}
             onClick={handleOpen}
         >
+            {/*
+             // @ts-expect-error TS2769 */}
             {label}
         </Button>
-    )
+    ),
 }: PureButtonWithDialogProps) => {
     if (!show) {
         return null;
@@ -86,10 +89,13 @@ export const PureButtonWithDialog = ({
             {openButton}
             <Dialog
                 style={dialogStyle.container}
+                // @ts-expect-error TS2322
                 open={open}
                 onClose={handleClose}
                 scroll="body"
             >
+                {/*
+                 // @ts-expect-error TS2322 */}
                 <DialogTitle>{label}</DialogTitle>
                 <DialogContent style={dialogStyle.content}>
                     <div className="dialog-body">

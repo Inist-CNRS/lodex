@@ -1,7 +1,5 @@
-// @ts-expect-error TS6133
-import React, { Component } from 'react';
+import { Component } from 'react';
 import { MenuItem, TextField } from '@mui/material';
-import { polyglot as polyglotPropTypes } from '../../../propTypes';
 import { FormatDefaultParamsFieldSet } from '../../utils/components/field-set/FormatFieldSets';
 import FormatGroupedFieldSet from '../../utils/components/field-set/FormatGroupedFieldSet';
 import { translate } from '../../../i18n/I18NContext';
@@ -41,6 +39,7 @@ class AdminComponent extends Component<AdminComponentProps> {
                     <TextField
                         fullWidth
                         select
+                        // @ts-expect-error TS18046
                         label={polyglot.t('list_of_language')}
                         onChange={(e) =>
                             this.handleLanguageToHighlight(e.target.value)

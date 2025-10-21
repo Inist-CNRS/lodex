@@ -1,19 +1,14 @@
-// @ts-expect-error TS6133
-import React from 'react';
 import DOMPurify from 'dompurify';
-import { field as fieldPropTypes } from '../../../propTypes';
+import { type Field } from '../../../propTypes';
 
 interface HtmlViewProps {
     className?: string;
-    field: unknown;
+    field: Field;
     resource: object;
 }
 
-const HtmlView = ({
-    className,
-    resource,
-    field
-}: HtmlViewProps) => {
+const HtmlView = ({ className, resource, field }: HtmlViewProps) => {
+    // @ts-expect-error TS7053
     const sanitizedHTML = DOMPurify.sanitize(resource[field.name]);
     return (
         <div

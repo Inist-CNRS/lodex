@@ -1,6 +1,5 @@
 import { useForm } from '@tanstack/react-form';
-// @ts-expect-error TS6133
-import React from 'react';
+
 import { render } from '../../../../test-utils';
 import { TestI18N } from '../../i18n/I18NContext';
 import { ValueField } from './ValueField';
@@ -19,6 +18,8 @@ function TestValueField({ choices }: TestValueFieldProps) {
 
     return (
         <TestI18N>
+            {/*
+             // @ts-expect-error TS2322 */}
             <ValueField form={form} choices={choices} />
         </TestI18N>
     );

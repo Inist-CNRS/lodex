@@ -1,8 +1,7 @@
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import { Button } from '@mui/material';
 import { useStore } from '@tanstack/react-form';
-// @ts-expect-error TS6133
-import React, { useCallback } from 'react';
+import { useCallback } from 'react';
 import { useTranslate } from '../i18n/I18NContext';
 import { AUTHOR_STEP, COMMENT_STEP, TARGET_STEP, VALUE_STEP } from './steps';
 
@@ -29,21 +28,24 @@ export const PreviousButton = ({
 
     form,
 
-    skipAnnotationKindStep
+    skipAnnotationKindStep,
 }: PreviousButtonProps) => {
     const { translate } = useTranslate();
 
+    // @ts-expect-error TS2339
     const kind = useStore(form.store, (state) => {
         // @ts-expect-error TS18046
         return state.values.kind;
     });
 
+    // @ts-expect-error TS2339
     const target = useStore(form.store, (state) => {
         // @ts-expect-error TS18046
         return state.values.target;
     });
 
     const handleBack = useCallback(
+        // @ts-expect-error TS7006
         (event) => {
             event.preventDefault();
             event.stopPropagation();

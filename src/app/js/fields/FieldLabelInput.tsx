@@ -1,5 +1,3 @@
-// @ts-expect-error TS6133
-import React from 'react';
 import get from 'lodash/get';
 
 import { useTranslate } from '../i18n/I18NContext';
@@ -27,7 +25,7 @@ interface FieldLabelInputComponentProps {
 }
 
 export const FieldLabelInputComponent = ({
-    disabled
+    disabled,
 }: FieldLabelInputComponentProps) => {
     const { translate } = useTranslate();
 

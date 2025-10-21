@@ -1,5 +1,3 @@
-// @ts-expect-error TS6133
-import React from 'react';
 import { compose, lifecycle } from 'recompose';
 import { connect } from 'react-redux';
 
@@ -15,7 +13,7 @@ interface DataRouteComponentProps {
 }
 
 export const DataRouteComponent = ({
-    canUploadFile
+    canUploadFile,
 }: DataRouteComponentProps) => {
     if (canUploadFile) {
         // @ts-expect-error TS2322

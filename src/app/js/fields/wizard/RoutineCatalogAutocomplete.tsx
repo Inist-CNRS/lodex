@@ -1,8 +1,6 @@
-// @ts-expect-error TS6133
-import React, { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { translate } from '../../i18n/I18NContext';
 import compose from 'recompose/compose';
-import { polyglot as polyglotPropTypes } from '../../propTypes';
 
 import { Typography, Box, Link, Tooltip } from '@mui/material';
 
@@ -70,12 +68,15 @@ const RoutineOption = ({
                     alignItems="center"
                 >
                     <Typography>
+                        {/*
+                         // @ts-expect-error TS18046 */}
                         {polyglot.t(`${option.id}_description`)}
                     </Typography>
                 </Box>
 
                 <Box justifyContent="space-between" display="flex" mt={2}>
                     {option.recommendedWith && (
+                        // @ts-expect-error TS18046
                         <Tooltip title={polyglot.t(`tooltip_recommendedWith`)}>
                             <Box sx={{ display: 'flex', gap: '10px' }}>
                                 <ThumbUpIcon color="primary" />
@@ -86,6 +87,7 @@ const RoutineOption = ({
                         </Tooltip>
                     )}
                     {option.doc && (
+                        // @ts-expect-error TS18046
                         <Tooltip title={polyglot.t(`tooltip_documentation`)}>
                             <Link
                                 href={option.doc}
@@ -120,7 +122,7 @@ const RoutineCatalog = ({
 
     currentValue,
 
-    precomputed = false
+    precomputed = false,
 }: RoutineCatalogProps) => {
     const [value, setValue] = useState(null);
 
@@ -130,6 +132,7 @@ const RoutineCatalog = ({
     const catalog = useMemo(() => {
         const routineCatalog = precomputed ? routinesPrecomputed : routines;
         const formatedRoutineCatalog = routineCatalog.map((routine) => {
+            // @ts-expect-error TS18046
             const title = polyglot.t(`${routine.id}_title`);
             const firstLetter = title[0].toUpperCase();
             const formatedFirstLetter = /[0-9]/.test(firstLetter)
@@ -137,10 +140,12 @@ const RoutineCatalog = ({
                 : firstLetter;
             return {
                 ...routine,
+                // @ts-expect-error TS18046
                 title: polyglot.t(`${routine.id}_title`),
                 firstLetter: formatedFirstLetter,
             };
         });
+        // @ts-expect-error TS18046
         const sorter = new Intl.Collator(polyglot.currentLocale, {
             numeric: true,
             ignorePunctuation: true,
@@ -172,7 +177,7 @@ const RoutineCatalog = ({
     };
 
     return (
-        (<Autocomplete
+        <Autocomplete
             value={value}
             onChange={handleChange}
             isOptionEqualToValue={(option1, option2) => {
@@ -187,7 +192,7 @@ const RoutineCatalog = ({
             getOptionLabel={(option) => option.title}
             renderOption={(props, option) => (
                 // @ts-expect-error TS2741
-                (<RoutineOption option={option} polyglot={polyglot} {...props} />)
+                <RoutineOption option={option} polyglot={polyglot} {...props} />
             )}
             renderInput={(params) => <TextField {...params} label={label} />}
             renderGroup={(params) => (
@@ -196,7 +201,7 @@ const RoutineCatalog = ({
                     <GroupItems>{params.children}</GroupItems>
                 </li>
             )}
-        />)
+        />
     );
 };
 

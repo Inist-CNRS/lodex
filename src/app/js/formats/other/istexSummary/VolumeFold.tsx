@@ -1,10 +1,6 @@
-// @ts-expect-error TS6133
-import React from 'react';
-
 import FetchFold from './FetchFold';
 import { getIssueData } from './getIstexData';
-import { SEARCHED_FIELD_VALUES } from './constants';
-import { polyglot as polyglotPropTypes } from '../../../propTypes';
+import { type SearchedField } from './constants';
 
 interface VolumeFoldProps {
     item: {
@@ -13,7 +9,7 @@ interface VolumeFoldProps {
     };
     value: string;
     year: string;
-    searchedField?: unknown[];
+    searchedField?: SearchedField;
     children(...args: unknown[]): unknown;
     nbSiblings?: number;
     polyglot: unknown;
@@ -32,13 +28,16 @@ const VolumeFold = ({
 
     children,
 
-    polyglot
+    polyglot,
 }: VolumeFoldProps) => (
+    // @ts-expect-error TS2769
     <FetchFold
         label={
             volume === 'other'
-                ? polyglot.t('other_volume')
-                : `${polyglot.t('volume')}: ${volume}`
+                ? // @ts-expect-error TS18046
+                  polyglot.t('other_volume')
+                : // @ts-expect-error TS18046
+                  `${polyglot.t('volume')}: ${volume}`
         }
         skip={volume === 'other' && nbSiblings === 1}
         count={count}

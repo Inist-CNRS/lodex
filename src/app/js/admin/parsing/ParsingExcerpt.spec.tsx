@@ -1,5 +1,3 @@
-// @ts-expect-error TS6133
-import React from 'react';
 import { render } from '../../../../test-utils';
 
 import {
@@ -74,9 +72,9 @@ describe('<ParsingExcerpt />', () => {
             { foo: 'foo2', bar: 'bar2' },
         ];
         const screen = render(
-            // @ts-expect-error TS2739
             <ParsingExcerpt
                 columns={columns}
+                // @ts-expect-error TS7005
                 lines={lines}
                 subresources={[]}
             />,
@@ -92,9 +90,9 @@ describe('<ParsingExcerpt />', () => {
             { foo: 'foo2', bar: 'bar2' },
         ];
         const screen = render(
-            // @ts-expect-error TS2739
             <ParsingExcerpt
                 columns={columns}
+                // @ts-expect-error TS7005
                 lines={lines}
                 subresources={[]}
             />,
@@ -143,10 +141,10 @@ describe('<ParsingExcerpt />', () => {
         ];
 
         const screen = render(
-            // @ts-expect-error TS2739
             <ParsingExcerpt
                 // @ts-expect-error TS7005
                 columns={columns}
+                // @ts-expect-error TS7005
                 lines={lines}
                 subresources={subresources}
             />,
@@ -192,10 +190,10 @@ describe('<ParsingExcerpt />', () => {
             },
         ];
         const screen = render(
-            // @ts-expect-error TS2739
             <ParsingExcerpt
                 // @ts-expect-error TS7005
                 columns={columns}
+                // @ts-expect-error TS7005
                 lines={lines}
                 subresources={subresources}
             />,
@@ -214,10 +212,9 @@ describe('<ParsingExcerpt />', () => {
         ];
         const screen = render(
             <TestI18N>
-                {/*
-                 // @ts-expect-error TS2322 */}
                 <ParsingExcerpt
                     columns={columns}
+                    // @ts-expect-error TS7005
                     lines={lines}
                     subresources={[]}
                     showAddFromColumn
@@ -243,6 +240,7 @@ describe('<ParsingExcerpt />', () => {
             <TestI18N>
                 <ParsingExcerpt
                     columns={columns}
+                    // @ts-expect-error TS7005
                     lines={lines}
                     subresources={[]}
                     showAddFromColumn
@@ -303,6 +301,7 @@ describe('<ParsingExcerpt />', () => {
                 <ParsingExcerpt
                     // @ts-expect-error TS7005
                     columns={columns}
+                    // @ts-expect-error TS7005
                     lines={lines}
                     subresources={subresources}
                     showAddFromColumn

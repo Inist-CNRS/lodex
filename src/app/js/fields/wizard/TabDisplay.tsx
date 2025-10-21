@@ -1,4 +1,3 @@
-import { field as fieldPropTypes } from '../../propTypes';
 import FieldCaption from '../FieldCaption';
 import FieldComposedOf from '../FieldComposedOf';
 import FieldDisplayInput from '../FieldDisplay';
@@ -14,23 +13,22 @@ interface TabDisplayComponentProps {
 
 export const TabDisplayComponent = ({
     keepMeta = true,
-
     filter,
-
     fields,
-
-    subresourceId
+    subresourceId,
 }: TabDisplayComponentProps) => (
     <>
         {keepMeta && <FieldDisplayInput />}
         <FieldFormatInput />
         <FieldWidthInput />
         <FieldCaption
+            // @ts-expect-error TS2322
             fields={fields}
             scope={filter}
             subresourceId={subresourceId}
         />
         <FieldComposedOf
+            // @ts-expect-error TS2322
             fields={fields}
             scope={filter}
             subresourceId={subresourceId}

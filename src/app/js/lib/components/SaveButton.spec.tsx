@@ -1,6 +1,4 @@
-// @ts-expect-error TS6133
-import React from 'react';
-
+// @ts-expect-error TS2305
 import { render, screen } from '../../../../test-utils';
 import { SaveButton } from './SaveButton';
 import { TestI18N } from '../../i18n/I18NContext';

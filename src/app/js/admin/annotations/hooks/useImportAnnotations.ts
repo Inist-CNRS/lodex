@@ -71,6 +71,7 @@ export function useImportAnnotations() {
     });
 
     const importAnnotations = useCallback(
+        // @ts-expect-error TS7006
         async (file) => {
             return mutation.mutateAsync(file);
         },

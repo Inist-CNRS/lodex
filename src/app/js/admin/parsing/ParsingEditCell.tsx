@@ -225,6 +225,7 @@ const ParsingEditCell = ({
     const { translate } = useTranslate();
     const theme = useTheme();
     const [loading, setLoading] = React.useState(false);
+    // @ts-expect-error TS2339
     const [value, setValue] = React.useState(cell.value);
 
     // @ts-expect-error TS7006
@@ -233,6 +234,7 @@ const ParsingEditCell = ({
         try {
             let valueToSave;
             try {
+                // @ts-expect-error TS2339
                 valueToSave = getValueBySavingType(value, type, cell.value);
             } catch (e) {
                 // @ts-expect-error TS18046
@@ -243,10 +245,13 @@ const ParsingEditCell = ({
                 throw new Error(translate(e.message));
             }
             await datasetApi.updateDataset({
+                // @ts-expect-error TS2339
                 uri: cell.row.uri,
+                // @ts-expect-error TS2339
                 field: cell.field,
                 value: valueToSave,
             });
+            // @ts-expect-error TS2339
             cell.row[cell.field] = valueToSave;
             toast(translate('dataset_edit_success'), {
                 type: toast.TYPE.SUCCESS,
@@ -271,10 +276,14 @@ const ParsingEditCell = ({
                     }}
                 >
                     {translate('dataset_edit_enrichment_title', {
+                        // @ts-expect-error TS2339
                         column_name: cell.field,
+                        // @ts-expect-error TS2339
                         row_name: cell?.row?.uri || cell?.row?.ark,
                     })}
                 </h2>
+                {/*
+                 // @ts-expect-error TS2339 */}
                 <Box sx={style.container}>{cell.value}</Box>
             </div>
         );
@@ -285,10 +294,14 @@ const ParsingEditCell = ({
             <h2 style={{ textAlign: 'center' }}>
                 {translate('column')}{' '}
                 <span style={{ color: theme.palette.primary.main }}>
+                    {/*
+                     // @ts-expect-error TS2339 */}
                     {cell.field}
                 </span>{' '}
                 {translate('for_row')}{' '}
                 <span style={{ color: theme.palette.secondary.main }}>
+                    {/*
+                     // @ts-expect-error TS2339 */}
                     {cell?.row?.uri || cell?.row?.ark}
                 </span>
             </h2>

@@ -1,5 +1,3 @@
-// @ts-expect-error TS6133
-import React from 'react';
 import memoize from 'lodash/memoize';
 
 import { REJECTED } from '../../../../../common/propositionStatus';
@@ -20,17 +18,12 @@ interface IstexViewProps {
     field: unknown;
 }
 
-const IstexView = ({
-    fieldStatus,
-    field,
-    resource
-}: IstexViewProps) => {
+const IstexView = ({ fieldStatus, field, resource }: IstexViewProps) => {
     const url = `${ISTEX_API_URL}/document/?q=${resource[field.name]}`;
     return (
-        // @ts-expect-error TS2739
-        (<Link style={styles.text(fieldStatus)} href={`${url}`}>
+        <Link style={styles.text(fieldStatus)} href={`${url}`}>
             {url}
-        </Link>)
+        </Link>
     );
 };
 

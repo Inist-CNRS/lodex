@@ -1,7 +1,5 @@
 import '@babel/polyfill';
 import { createBrowserHistory } from 'history';
-// @ts-expect-error TS6133
-import React from 'react';
 
 import { hydrateRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
@@ -17,7 +15,7 @@ import LodexThemeProvider from './LodexThemeProvider';
 import reducers from './reducers';
 import Routes from './Routes';
 import sagas from './sagas';
-// @ts-expect-error TS6133
+// @ts-expect-error TS2882
 import 'react-toastify/dist/ReactToastify.css';
 import { AnnotationStorageProvider } from '../annotation/annotationStorage';
 

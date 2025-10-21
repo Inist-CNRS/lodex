@@ -179,6 +179,7 @@ const SourceValueRoutine = ({
                             onChange={(_, newValue) => {
                                 handleRoutineFieldChange(index, newValue);
                             }}
+                            // @ts-expect-error TS2322
                             value={field}
                             clearText={translate('clear')}
                         />

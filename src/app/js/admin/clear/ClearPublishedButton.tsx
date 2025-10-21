@@ -1,5 +1,4 @@
-// @ts-expect-error TS6133
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Button, Box } from '@mui/material';
 import { connect } from 'react-redux';
 import ClearAllIcon from '@mui/icons-material/ClearAll';
@@ -13,7 +12,7 @@ interface ClearPublishedButtonComponentProps {
 }
 
 export const ClearPublishedButtonComponent = ({
-    hasPublishedDataset
+    hasPublishedDataset,
 }: ClearPublishedButtonComponentProps) => {
     const { translate } = useTranslate();
     const [show, setShow] = useState(false);

@@ -1,6 +1,5 @@
-import { field as fieldPropTypes } from '../../../propTypes';
-// @ts-expect-error TS6133
-import React, { useMemo, useState } from 'react';
+import { type Field } from '../../../propTypes';
+import { useMemo, useState } from 'react';
 // @ts-expect-error TS7016
 import ejs from 'ejs/ejs.min.js'; // import the browser-friendly build from ejs
 import injectData from '../../injectData';
@@ -11,7 +10,7 @@ import compose from 'recompose/compose';
 import _ from 'lodash';
 
 interface EJSViewProps {
-    field: unknown;
+    field: Field;
     resource: object;
     data?: {
         total?: number;
@@ -20,11 +19,7 @@ interface EJSViewProps {
     template: string;
 }
 
-const EJSView = ({
-    field,
-    data,
-    template
-}: EJSViewProps) => {
+const EJSView = ({ field, data, template }: EJSViewProps) => {
     const [onError, setOnError] = useState(false);
     const [error, setError] = useState(false);
 

@@ -1,5 +1,3 @@
-// @ts-expect-error TS6133
-import React from 'react';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 // @ts-expect-error TS7016
@@ -26,11 +24,7 @@ interface BubbleViewProps {
     colorSet?: string[];
 }
 
-export const BubbleView = ({
-    data,
-    diameter,
-    colorSet
-}: BubbleViewProps) => (
+export const BubbleView = ({ data, diameter, colorSet }: BubbleViewProps) => (
     <FormatFullScreenMode>
         {/* 
         // @ts-expect-error TS7006 */}

@@ -5,8 +5,7 @@ import {
     OutlinedInput,
     Select,
 } from '@mui/material';
-// @ts-expect-error TS6133
-import React from 'react';
+
 import { connect } from 'react-redux';
 import { useTranslate } from '../../i18n/I18NContext';
 import { fromSearch } from '../selectors';

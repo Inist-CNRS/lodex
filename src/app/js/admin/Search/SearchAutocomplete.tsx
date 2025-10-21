@@ -79,7 +79,9 @@ const SearchAutocomplete = ({
         <Autocomplete
             data-testid={testId}
             fullWidth
+            // @ts-expect-error TS2322
             options={fields}
+            // @ts-expect-error TS2322
             value={value}
             disableCloseOnSelect={multiple}
             multiple={multiple}

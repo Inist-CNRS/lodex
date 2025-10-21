@@ -1,9 +1,6 @@
-// @ts-expect-error TS6133
-import React from 'react';
 import PreviewIcon from '@mui/icons-material/Preview';
 
 import { Box, Typography } from '@mui/material';
-import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { translate } from '../../i18n/I18NContext';
 
 interface PrecomputedPreviewProps {
@@ -15,7 +12,7 @@ interface PrecomputedPreviewProps {
 const PrecomputedPreview = ({
     lines,
     sourceColumns,
-    p: polyglot
+    p: polyglot,
 }: PrecomputedPreviewProps) => {
     return (
         <Box
@@ -36,6 +33,8 @@ const PrecomputedPreview = ({
                  // @ts-expect-error TS2769 */}
                 <PreviewIcon mr={1} />
                 <Typography variant="h6">
+                    {/*
+                     // @ts-expect-error TS18046 */}
                     {polyglot.t('value_preview_title')}
                 </Typography>
             </Box>
@@ -59,6 +58,8 @@ const PrecomputedPreview = ({
                                 }}
                                 title={JSON.stringify(line)}
                             >
+                                {/*
+                                 // @ts-expect-error TS2769 */}
                                 {Object.values(line)
                                     .map((value) =>
                                         value !== undefined
@@ -72,6 +73,8 @@ const PrecomputedPreview = ({
                 {lines.length === 0 && (
                     <Box textAlign={'center'} mb={2}>
                         <Typography variant="body1">
+                            {/*
+                             // @ts-expect-error TS18046 */}
                             {polyglot.t('preview_no_data')}
                         </Typography>
                     </Box>
@@ -79,6 +82,8 @@ const PrecomputedPreview = ({
             </Box>
             <Box mb={1}>
                 <Typography variant="body1" sx={{ fontStyle: 'italic' }}>
+                    {/*
+                     // @ts-expect-error TS18046 */}
                     {polyglot.t('precomputed_preview_description')}
                 </Typography>
             </Box>

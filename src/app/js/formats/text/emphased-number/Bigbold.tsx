@@ -1,6 +1,3 @@
-// @ts-expect-error TS6133
-import React from 'react';
-
 import stylesToClassname from '../../../lib/stylesToClassName';
 import { MONOCHROMATIC_DEFAULT_COLORSET } from '../../utils/colorUtils';
 
@@ -38,17 +35,13 @@ interface BigboldProps {
     size: number;
 }
 
-const Bigbold = ({
-    value,
-    colors,
-    size
-}: BigboldProps) => (
+const Bigbold = ({ value, colors, size }: BigboldProps) => (
     // @ts-expect-error TS2339
-    (<div className={styles.ribbon}>
+    <div className={styles.ribbon}>
         <div className="content" style={getContentInlineStyle(colors, size)}>
             {value}
         </div>
-    </div>)
+    </div>
 );
 
 export default Bigbold;

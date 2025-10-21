@@ -1,5 +1,3 @@
-// @ts-expect-error TS6133
-import React from 'react';
 import classnames from 'classnames';
 import compose from 'recompose/compose';
 import { TableCell } from '@mui/material';
@@ -8,7 +6,6 @@ import { connect } from 'react-redux';
 import { fromFields } from '../../sharedSelectors';
 import { isLongText, getShortText } from '../../lib/longTexts';
 import getFieldClassName from '../../lib/getFieldClassName';
-import { field as fieldPropTypes } from '../../propTypes';
 import parseValue from '../../../../common/tools/parseValue';
 import { translate } from '../../i18n/I18NContext';
 
@@ -29,7 +26,7 @@ interface ExcerptLineColComponentProps {
 export const ExcerptLineColComponent = ({
     field,
     value = '',
-    readonly
+    readonly,
 }: ExcerptLineColComponentProps) =>
     isLongText(value) ? (
         <TableCell

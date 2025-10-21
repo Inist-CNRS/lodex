@@ -1,9 +1,7 @@
 import classnames from 'classnames';
-// @ts-expect-error TS6133
-import React from 'react';
 
 import stylesToClassname from '../../../lib/stylesToClassName';
-import { field as fieldPropTypes } from '../../../propTypes';
+import { type Field } from '../../../propTypes';
 import { getViewComponent } from '../../index';
 
 // @ts-expect-error TS7006
@@ -57,10 +55,7 @@ interface ULProps {
     children: any;
 }
 
-export const UL = ({
-    className,
-    children
-}: ULProps) => (
+export const UL = ({ className, children }: ULProps) => (
     <ul className={className}>{children}</ul>
 );
 
@@ -69,16 +64,13 @@ interface OLProps {
     children: any;
 }
 
-export const OL = ({
-    className,
-    children
-}: OLProps) => (
+export const OL = ({ className, children }: OLProps) => (
     <ol className={className}>{children}</ol>
 );
 
 interface ListViewProps {
     className?: string;
-    field: unknown;
+    field: Field;
     resource: object;
     type?: string;
     bullet?: string;
@@ -99,8 +91,9 @@ const ListView = ({
 
     subFormat,
 
-    subFormatOptions
+    subFormatOptions,
 }: ListViewProps) => {
+    // @ts-expect-error TS7053
     const values = resource[field.name];
     if (values == null || values === '' || !Array.isArray(values)) {
         return null;
@@ -115,7 +108,7 @@ const ListView = ({
 
     return (
         // @ts-expect-error TS7053
-        (<List className={classnames(localStyles[type], className)}>
+        <List className={classnames(localStyles[type], className)}>
             {values.map((value, index) => (
                 <li
                     key={value}
@@ -142,7 +135,7 @@ const ListView = ({
                     )}
                 </li>
             ))}
-        </List>)
+        </List>
     );
 };
 

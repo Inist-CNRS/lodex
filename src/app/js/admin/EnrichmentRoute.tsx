@@ -1,6 +1,3 @@
-// @ts-expect-error TS6133
-import React from 'react';
-
 import withInitialData from './withInitialData';
 
 import { Route, useRouteMatch, Switch } from 'react-router';

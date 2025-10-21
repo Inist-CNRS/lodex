@@ -1,12 +1,10 @@
-// @ts-expect-error TS6133
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import { Grid, Paper } from '@mui/material';
 
 import injectData from '../../injectData';
-import { field as fieldPropTypes } from '../../../propTypes';
 import ClusteredChart from './ClusteredChart';
 import { flip } from '../../utils/chartsUtils';
 import FormatFullScreenMode from '../../utils/components/FormatFullScreenMode';
@@ -35,7 +33,7 @@ const ClusteredChartView = ({
     colors,
     xTitle,
     yTitle,
-    flipAxis
+    flipAxis,
 }: ClusteredChartViewProps) => {
     const { values } = data;
 

@@ -1,15 +1,10 @@
-// @ts-expect-error TS6133
-import React, { Component } from 'react';
+import { Component } from 'react';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import { withRouter } from 'react-router';
 import isEqual from 'lodash/isEqual';
 import get from 'lodash/get';
 
-import {
-    field as fieldPropTypes,
-    polyglot as polyglotPropTypes,
-} from '../propTypes';
 import { fromFormat } from '../public/selectors';
 import { preLoadFormatData, loadFormatData, unLoadFormatData } from './reducer';
 import Loading from '../lib/components/Loading';
@@ -175,6 +170,7 @@ export default (url = null, checkFormatLoaded = null, withUri = false) =>
                 if (
                     !field ||
                     (isEqual(field, prevProps.field) &&
+                        // @ts-expect-error TS7053
                         resource[field.name] ===
                             prevProps.resource[prevProps.field.name])
                 ) {
@@ -209,11 +205,15 @@ export default (url = null, checkFormatLoaded = null, withUri = false) =>
                 if (error) {
                     return error === 'bad value' ? (
                         <InvalidFormat
+                            // @ts-expect-error TS18046
                             format={field.format}
+                            // @ts-expect-error TS7053
                             value={resource[field.name]}
                         />
                     ) : (
                         <p style={styles.message}>
+                            {/*
+                             // @ts-expect-error TS18046 */}
                             {polyglot.t('chart_error')}
                         </p>
                     );
@@ -225,18 +225,21 @@ export default (url = null, checkFormatLoaded = null, withUri = false) =>
                 ) {
                     return (
                         <p style={styles.message}>
+                            {/*
+                             // @ts-expect-error TS18046 */}
                             {polyglot.t('no_chart_data')}
                         </p>
                     );
                 }
 
                 if (!isLoaded) {
+                    // @ts-expect-error TS18046
                     return <Loading>{polyglot.t('loading')}</Loading>;
                 }
 
                 return (
                     // @ts-expect-error TS2322
-                    (<div style={styles.format.container}>
+                    <div style={styles.format.container}>
                         <style>{animationKeyframes}</style>
                         <div
                             onAnimationEnd={this.handleAnimationEnd}
@@ -266,7 +269,7 @@ export default (url = null, checkFormatLoaded = null, withUri = false) =>
                             formatTotal={formatTotal}
                             filterFormatData={this.filterFormatData}
                         />
-                    </div>)
+                    </div>
                 );
             }
         }

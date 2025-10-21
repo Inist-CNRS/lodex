@@ -1,9 +1,7 @@
-// @ts-expect-error TS6133
-import React from 'react';
 import memoize from 'lodash/memoize';
 
 import { REJECTED } from '../../../../../common/propositionStatus';
-import { field as fieldPropTypes } from '../../../propTypes';
+import { type Field } from '../../../propTypes';
 import { getSiteUrl } from '../../utils/fetchIstexData';
 
 const styles = {
@@ -16,14 +14,15 @@ const styles = {
 interface IstexSummaryListProps {
     fieldStatus?: string;
     resource: object;
-    field: unknown;
+    field: Field;
 }
 
 const IstexSummaryList = ({
     fieldStatus,
     field,
-    resource
+    resource,
 }: IstexSummaryListProps) => {
+    // @ts-expect-error TS7053
     const url = getSiteUrl(resource[field.name]);
 
     return (

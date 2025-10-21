@@ -1,6 +1,3 @@
-// @ts-expect-error TS6133
-import React from 'react';
-import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { FixedSizeList } from 'react-window';
 import { useMeasure } from 'react-use';
 import {
@@ -94,7 +91,7 @@ export const PrecomputedLogsDialog = ({
 
     p: polyglot,
 
-    handleClose
+    handleClose,
 }: PrecomputedLogsDialogProps) => {
     const [logsContainerRef, { width }] = useMeasure();
 
@@ -111,6 +108,8 @@ export const PrecomputedLogsDialog = ({
 
     return (
         <Dialog open={isOpen} onClose={handleClose} scroll="body" maxWidth="lg">
+            {/*
+             // @ts-expect-error TS18046 */}
             <DialogTitle>{polyglot.t('precomputed_logs')}</DialogTitle>
             <DialogContent
                 style={{
@@ -135,6 +134,8 @@ export const PrecomputedLogsDialog = ({
             <DialogActions>
                 <Box display="flex" justifyContent="flex-end">
                     <CancelButton onClick={handleClose}>
+                        {/*
+                         // @ts-expect-error TS18046 */}
                         {polyglot.t('close')}
                     </CancelButton>
                     <Button
@@ -142,6 +143,8 @@ export const PrecomputedLogsDialog = ({
                         color="primary"
                         variant="contained"
                     >
+                        {/*
+                         // @ts-expect-error TS18046 */}
                         {polyglot.t('download_logs')}
                     </Button>
                 </Box>

@@ -1,25 +1,21 @@
-// @ts-expect-error TS6133
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 // @ts-expect-error TS7016
 import MarkdownIt from 'markdown-it';
 
-import { field as fieldPropTypes } from '../../../../propTypes';
+import { type Field } from '../../../../propTypes';
 import InvalidFormat from '../../../InvalidFormat';
 
 const markdown = new MarkdownIt();
 
 interface MarkdownViewProps {
     className?: string;
-    field: unknown;
+    field: Field;
     resource: object;
 }
 
-const MarkdownView = ({
-    className,
-    resource,
-    field
-}: MarkdownViewProps) => {
+const MarkdownView = ({ className, resource, field }: MarkdownViewProps) => {
     const [value, content] = useMemo(() => {
+        // @ts-expect-error TS7053
         const value = resource[field.name];
 
         try {
@@ -30,6 +26,7 @@ const MarkdownView = ({
     }, [resource, field.name]);
 
     if (content == null) {
+        // @ts-expect-error TS18046
         return <InvalidFormat format={field.format} value={value} />;
     }
 

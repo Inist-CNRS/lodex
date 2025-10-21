@@ -1,5 +1,4 @@
-// @ts-expect-error TS6133
-import React, { useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 
@@ -13,7 +12,7 @@ import {
 } from '../../../utils/chartsUtils';
 import InvalidFormat from '../../../InvalidFormat';
 import { useSizeObserver } from '../../../utils/chartsHooks';
-import { field as fieldPropTypes } from '../../../../propTypes';
+import { type Field } from '../../../../propTypes';
 import injectData from '../../../injectData';
 
 const styles = {
@@ -24,7 +23,7 @@ const styles = {
 };
 
 interface RadarChartViewProps {
-    field: unknown;
+    field: Field;
     resource: object;
     data?: any;
     colors: string;
@@ -56,7 +55,7 @@ const RadarChartView = ({
 
     scale,
 
-    aspectRatio
+    aspectRatio,
 }: RadarChartViewProps) => {
     const formattedData = useMemo(() => {
         if (!data) {
@@ -116,19 +115,21 @@ const RadarChartView = ({
     ]);
 
     if (spec === null) {
+        // @ts-expect-error TS18046
         return <InvalidFormat format={field.format} value={error} />;
     }
 
     return (
         // @ts-expect-error TS2322
-        (<div style={styles.container} ref={ref}>
+        <div style={styles.container} ref={ref}>
             <CustomActionVega
                 spec={spec}
                 data={formattedData}
                 injectType={VEGA_DATA_INJECT_TYPE_A}
+                // @ts-expect-error TS2322
                 aspectRatio={aspectRatio}
             />
-        </div>)
+        </div>
     );
 };
 
@@ -152,8 +153,7 @@ const mapStateToProps = (state, { formatData }) => {
     };
 };
 
-// @ts-expect-error TS6133
-export const RadarChartAdminView = connect((state, props) => {
+export const RadarChartAdminView = connect((_state, props) => {
     return {
         ...props,
         field: {

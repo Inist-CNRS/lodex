@@ -1,11 +1,10 @@
-// @ts-expect-error TS6133
-import React, { Component } from 'react';
+import { Component } from 'react';
 import { translate } from '../../../i18n/I18NContext';
 import compose from 'recompose/compose';
 import URL from 'url';
 
 import { isURL } from '../../../../../common/uris';
-import { field as fieldPropTypes } from '../../../propTypes';
+import { type Field } from '../../../propTypes';
 import injectData from '../../injectData';
 import Link from '../../../lib/components/Link';
 
@@ -73,7 +72,7 @@ const buildValue = (field, resource) => {
 interface LodexFieldViewProps {
     className?: string;
     formatData?: object[];
-    field: unknown;
+    field: Field;
     resource: object;
 }
 
@@ -176,6 +175,7 @@ export class LodexFieldView extends Component<LodexFieldViewProps> {
     getHeaderFormat = () => {
         const { field } = this.props;
         const linkText = this.getValue();
+        // @ts-expect-error TS18046
         if (!field.format.args.param.hiddenInfo) {
             return (
                 <div>

@@ -5,8 +5,7 @@ import {
     MenuItem,
     Select,
 } from '@mui/material';
-// @ts-expect-error TS6133
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 
 import { useStore } from '@tanstack/react-form';
 import { useTranslate } from '../../i18n/I18NContext';

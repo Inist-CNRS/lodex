@@ -1,11 +1,10 @@
-// @ts-expect-error TS6133
-import React, { useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import { clamp } from 'lodash';
 
 import injectData from '../../../injectData';
-import { field as fieldPropTypes } from '../../../../propTypes';
+import { type Field } from '../../../../propTypes';
 import {
     AXIS_X,
     AXIS_Y,
@@ -27,7 +26,7 @@ const styles = {
 };
 
 interface BarChartViewProps {
-    field?: unknown;
+    field?: Field;
     resource?: object;
     data?: {
         values: any;
@@ -86,7 +85,7 @@ const BarChartView = ({
 
     diagonalValueAxis,
 
-    aspectRatio
+    aspectRatio,
 }: BarChartViewProps) => {
     const { ref, width } = useSizeObserver();
     const [error, setError] = useState('');
@@ -130,6 +129,7 @@ const BarChartView = ({
         advancedMode,
         advancedModeSpec,
         field,
+        // @ts-expect-error TS18048
         data.values,
         direction,
         params,
@@ -147,12 +147,13 @@ const BarChartView = ({
     ]);
 
     if (!spec) {
+        // @ts-expect-error TS18046
         return <InvalidFormat format={field.format} value={error} />;
     }
 
     return (
         // @ts-expect-error TS2322
-        (<div style={styles.container} ref={ref}>
+        <div style={styles.container} ref={ref}>
             <CustomActionVegaLite
                 // @ts-expect-error TS2322
                 spec={spec}
@@ -160,7 +161,7 @@ const BarChartView = ({
                 injectType={VEGA_LITE_DATA_INJECT_TYPE_A}
                 aspectRatio={aspectRatio}
             />
-        </div>)
+        </div>
     );
 };
 
@@ -184,8 +185,7 @@ const mapStateToProps = (state, { formatData }) => {
     };
 };
 
-// @ts-expect-error TS6133
-export const BarChartAdminView = connect((state, props) => {
+export const BarChartAdminView = connect((_state, props) => {
     return {
         ...props,
         field: {

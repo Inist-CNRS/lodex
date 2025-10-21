@@ -1,5 +1,3 @@
-// @ts-expect-error TS6133
-import React from 'react';
 import classnames from 'classnames';
 import { TableCell } from '@mui/material';
 

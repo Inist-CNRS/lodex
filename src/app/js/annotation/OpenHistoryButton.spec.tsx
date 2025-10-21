@@ -34,6 +34,7 @@ describe('OpenHistoryButton', () => {
         const screen = render(
             <TestI18N>
                 <OpenHistoryButton
+                    // @ts-expect-error TS2353
                     field={{ _id: 'fieldId', label: 'fieldLabel' }}
                     resourceUri="resourceUri"
                     openHistory={openHistory}
@@ -71,6 +72,7 @@ describe('OpenHistoryButton', () => {
         const screen = render(
             <TestI18N>
                 <OpenHistoryButton
+                    // @ts-expect-error TS2353
                     field={{ _id: 'fieldId', label: 'fieldLabel' }}
                     resourceUri="resourceUri"
                     openHistory={openHistory}
@@ -99,6 +101,7 @@ describe('OpenHistoryButton', () => {
         const screen = render(
             <TestI18N>
                 <OpenHistoryButton
+                    // @ts-expect-error TS2353
                     field={{ _id: 'fieldId', label: 'fieldLabel' }}
                     resourceUri="resourceUri"
                     openHistory={openHistory}
