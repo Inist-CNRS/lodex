@@ -25,8 +25,7 @@ interface MarkdownModalAdminProps {
 
 const MarkdownModalAdmin = (props: MarkdownModalAdminProps) => {
     const { translate } = useTranslate();
-    const { args, onChange } = props;
-    // @ts-expect-error TS2339
+    const { args = defaultArgs, onChange } = props;
     const { type, label, fullScreen, maxWidth } = args;
 
     // @ts-expect-error TS7006
@@ -115,10 +114,6 @@ const MarkdownModalAdmin = (props: MarkdownModalAdminProps) => {
             </FormatDefaultParamsFieldSet>
         </FormatGroupedFieldSet>
     );
-};
-
-MarkdownModalAdmin.defaultProps = {
-    args: defaultArgs,
 };
 
 export default MarkdownModalAdmin;

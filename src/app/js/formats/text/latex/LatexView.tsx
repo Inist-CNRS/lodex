@@ -83,8 +83,4 @@ const LatexView = ({ resource, field }: LatexViewProps) => {
     );
 };
 
-LatexView.defaultProps = {
-    className: null,
-};
-
 export default LatexView;

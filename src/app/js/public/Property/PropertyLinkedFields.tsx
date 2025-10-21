@@ -55,10 +55,6 @@ const PropertyLinkedFieldsComponent = ({
     );
 };
 
-PropertyLinkedFieldsComponent.defaultProps = {
-    fieldStatus: null,
-};
-
 // @ts-expect-error TS7006
 const mapStateToProps = (state, { fieldName, parents = [] }) => {
     const allLinkedFields = fromFields.getLinkedFields(state, fieldName);
@@ -89,7 +85,6 @@ const PropertyLinkedFields = connect(
     mapStateToProps,
     // @ts-expect-error TS2769
     mapDispatchToProps,
-    // @ts-expect-error TS2345
 )(PropertyLinkedFieldsComponent);
 
 export default PropertyLinkedFields;

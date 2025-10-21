@@ -72,10 +72,6 @@ const VegaLiteView = ({
     );
 };
 
-VegaLiteView.defaultProps = {
-    className: null,
-};
-
 // @ts-expect-error TS7006
 const mapStateToProps = (state, { formatData }) => {
     if (!formatData) {

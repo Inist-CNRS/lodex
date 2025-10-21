@@ -134,9 +134,4 @@ class SearchResultList extends Component<SearchResultListProps> {
     }
 }
 
-// @ts-expect-error TS2339
-SearchResultList.defaultProps = {
-    placeholders: false,
-};
-
 export default SearchResultList;

@@ -18,8 +18,4 @@ const HtmlView = ({ className, resource, field }: HtmlViewProps) => {
     );
 };
 
-HtmlView.defaultProps = {
-    className: null,
-};
-
 export default HtmlView;

@@ -214,11 +214,6 @@ export class SparqlTextField extends Component<SparqlTextFieldProps> {
     }
 }
 
-// @ts-expect-error TS2339
-SparqlTextField.defaultProps = {
-    className: null,
-};
-
 export default compose(
     translate,
     // @ts-expect-error TS7031

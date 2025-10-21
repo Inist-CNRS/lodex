@@ -55,10 +55,6 @@ export const CompositePropertyComponent = ({
     );
 };
 
-CompositePropertyComponent.defaultProps = {
-    className: null,
-};
-
 // @ts-expect-error TS7006
 const mapStateToProps = (state, { field, resource, parents }) => {
     const allCompositeFields = fromFields.getCompositeFieldsByField(

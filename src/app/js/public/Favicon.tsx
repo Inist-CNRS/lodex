@@ -31,9 +31,4 @@ class Favicon extends Component<FaviconProps> {
     }
 }
 
-// @ts-expect-error TS2339
-Favicon.defaultProps = {
-    className: null,
-};
-
 export default Favicon;

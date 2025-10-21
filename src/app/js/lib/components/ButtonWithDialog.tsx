@@ -39,25 +39,15 @@ interface PureButtonWithDialogProps {
 
 export const PureButtonWithDialog = ({
     handleClose,
-
     handleOpen,
-
-    open,
-
-    show,
-
+    open = false,
+    show = true,
     style,
-
     dialog,
-
     className,
-
     label,
-
     icon,
-
     p: polyglot,
-
     actions = [
         <CancelButton key="cancel" onClick={handleClose}>
             {/*
@@ -65,7 +55,6 @@ export const PureButtonWithDialog = ({
             {polyglot.t('close')}
         </CancelButton>,
     ],
-
     openButton = (
         <Button
             variant="text"
@@ -114,12 +103,6 @@ export const PureButtonWithDialog = ({
             </Dialog>
         </span>
     );
-};
-
-PureButtonWithDialog.defaultProps = {
-    show: true,
-    open: false,
-    className: null,
 };
 
 export default translate(PureButtonWithDialog);

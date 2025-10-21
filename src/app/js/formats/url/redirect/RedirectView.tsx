@@ -131,10 +131,6 @@ export const RedirectView = ({
     );
 };
 
-RedirectView.defaultProps = {
-    className: '',
-};
-
 const mapStateToProps = () => ({
     classes: styles,
 });

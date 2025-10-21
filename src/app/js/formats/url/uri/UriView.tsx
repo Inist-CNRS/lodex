@@ -57,10 +57,6 @@ const UriView = ({
     );
 };
 
-UriView.defaultProps = {
-    className: null,
-};
-
 export default UriView;
 
 // @ts-expect-error TS7031

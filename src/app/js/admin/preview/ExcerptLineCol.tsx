@@ -51,10 +51,6 @@ export const ExcerptLineColComponent = ({
         </TableCell>
     );
 
-ExcerptLineColComponent.defaultProps = {
-    value: '',
-};
-
 // @ts-expect-error TS7006
 const mapStateToProps = (state, { field, line }) => {
     const getLineCol = fromFields.getLineColGetter(state, field);

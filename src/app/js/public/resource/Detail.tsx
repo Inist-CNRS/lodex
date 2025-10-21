@@ -210,13 +210,6 @@ export const DetailComponent = ({
     );
 };
 
-DetailComponent.defaultProps = {
-    resource: null,
-    title: null,
-    description: null,
-    backToListLabel: null,
-};
-
 // @ts-expect-error TS7006
 const mapStateToProps = (state) => {
     const resource = fromResource.getResourceSelectedVersion(state);

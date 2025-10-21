@@ -71,12 +71,6 @@ const DefaultView = ({
     );
 };
 
-DefaultView.defaultProps = {
-    className: null,
-    fieldStatus: null,
-    shrink: false,
-};
-
 export default DefaultView;
 
 // @ts-expect-error TS7031

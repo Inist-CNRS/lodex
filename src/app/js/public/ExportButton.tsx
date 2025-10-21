@@ -188,10 +188,6 @@ const ExportButton = ({
     );
 };
 
-ExportButton.defaultProps = {
-    isResourceExport: false,
-};
-
 // @ts-expect-error TS7006
 const mapStateToProps = (state) => ({
     exporters: fromExport.getExporters(state),

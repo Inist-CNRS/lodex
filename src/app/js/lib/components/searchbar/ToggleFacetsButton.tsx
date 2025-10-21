@@ -19,7 +19,7 @@ interface ToggleFacetsButtonProps {
 }
 
 const ToggleFacetsButton = ({
-    className,
+    className = 'searchbar-facets-toggler',
     onChange,
 }: ToggleFacetsButtonProps) => (
     <IconButton className={className} onClick={onChange}>
@@ -28,9 +28,5 @@ const ToggleFacetsButton = ({
         <FontAwesomeIcon className={styles.icon} icon={faFilter} height={20} />
     </IconButton>
 );
-
-ToggleFacetsButton.defaultProps = {
-    className: 'searchbar-facets-toggler',
-};
 
 export default ToggleFacetsButton;

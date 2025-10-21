@@ -15,16 +15,11 @@ interface SearchBarProps {
 }
 
 const SearchBar = ({
-    className,
-
+    className = 'searchbar',
     p: polyglot,
-
     value,
-
     onChange,
-
     onClear,
-
     maxWidth,
 }: SearchBarProps) => {
     const refTextField = useRef(null);
@@ -77,10 +72,6 @@ const SearchBar = ({
             }}
         />
     );
-};
-
-SearchBar.defaultProps = {
-    className: 'searchbar',
 };
 
 // @ts-expect-error TS2345

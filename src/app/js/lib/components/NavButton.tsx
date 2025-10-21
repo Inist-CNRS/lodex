@@ -57,7 +57,11 @@ interface NavButtonProps {
     navigate(direction: string): void;
 }
 
-const NavButton = ({ p: polyglot, direction, navigate }: NavButtonProps) => {
+const NavButton = ({
+    p: polyglot,
+    direction = NONE,
+    navigate = () => {},
+}: NavButtonProps) => {
     if (!direction) {
         return null;
     }
@@ -78,11 +82,6 @@ const NavButton = ({ p: polyglot, direction, navigate }: NavButtonProps) => {
             {icon}
         </IconButton>
     );
-};
-
-NavButton.defaultProps = {
-    direction: NONE,
-    navigate: () => {},
 };
 
 // @ts-expect-error TS2345

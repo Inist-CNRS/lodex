@@ -29,7 +29,7 @@ interface DatasetSearchBarProps {
 }
 
 const DatasetSearchBar = ({
-    defaultQuery,
+    defaultQuery = '',
     search,
     hasSearchableFields,
     onToggleFacets,
@@ -77,10 +77,6 @@ const DatasetSearchBar = ({
             )}
         </Grid>
     );
-};
-
-DatasetSearchBar.defaultProps = {
-    defaultQuery: '',
 };
 
 // @ts-expect-error TS7006

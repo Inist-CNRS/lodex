@@ -47,8 +47,4 @@ const FieldCloneView = ({
     );
 };
 
-FieldCloneView.defaultProps = {
-    className: null,
-};
-
 export default FieldCloneView;

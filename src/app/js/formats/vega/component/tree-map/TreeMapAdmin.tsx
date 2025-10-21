@@ -427,12 +427,4 @@ const TreeMapAdmin = ({
     );
 };
 
-TreeMapAdmin.defaultProps = {
-    args: defaultArgs,
-    showMaxSize: true,
-    showMaxValue: true,
-    showMinValue: true,
-    showOrderBy: true,
-};
-
 export default TreeMapAdmin;

@@ -53,7 +53,11 @@ interface FieldCloneAdminProps {
     }[];
 }
 
-const FieldCloneAdmin = ({ args, onChange, fields }: FieldCloneAdminProps) => {
+const FieldCloneAdmin = ({
+    args = defaultArgs,
+    onChange,
+    fields = [],
+}: FieldCloneAdminProps) => {
     const { translate } = useTranslate();
     // @ts-expect-error TS2339
     const { filter } = useParams();
@@ -88,11 +92,6 @@ const FieldCloneAdmin = ({ args, onChange, fields }: FieldCloneAdminProps) => {
             </FormatDefaultParamsFieldSet>
         </FormatGroupedFieldSet>
     );
-};
-
-FieldCloneAdmin.defaultProps = {
-    args: defaultArgs,
-    fields: [],
 };
 
 // @ts-expect-error TS7006

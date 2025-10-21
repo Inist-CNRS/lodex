@@ -178,8 +178,4 @@ const Drawer = ({ children, status, onClose, disabled }: DrawerProps) => {
     );
 };
 
-Drawer.defaultProps = {
-    disabled: false,
-};
-
 export default Drawer;
