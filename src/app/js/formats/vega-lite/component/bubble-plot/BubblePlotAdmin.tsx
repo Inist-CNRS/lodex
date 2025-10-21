@@ -17,7 +17,7 @@ import { BubblePlotAdminView } from './BubblePlotView';
 import VegaFieldPreview from '../../../utils/components/field-set/FormatFieldSetPreview';
 import { StandardSourceTargetWeight } from '../../../utils/dataSet';
 import AspectRatioSelector from '../../../utils/components/admin/AspectRatioSelector';
-import { ASPECT_RATIO_1_1 } from '../../../utils/aspectRatio';
+import { ASPECT_RATIO_1_1, type AspectRatio } from '../../../utils/aspectRatio';
 import FormatGroupedFieldSet from '../../../utils/components/field-set/FormatGroupedFieldSet';
 
 export const defaultArgs = {
@@ -53,7 +53,7 @@ type BubblePlotArgs = {
     tooltipSource?: string;
     tooltipTarget?: string;
     tooltipWeight?: string;
-    aspectRatio?: string;
+    aspectRatio: AspectRatio;
 };
 
 type BubblePlotAdminProps = {
@@ -219,7 +219,7 @@ const BubblePlotAdmin = ({
     );
 
     const handleAspectRatio = useCallback(
-        (value: string) => {
+        (value: AspectRatio) => {
             onChange({
                 ...args,
                 aspectRatio: value,

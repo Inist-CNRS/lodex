@@ -1,5 +1,5 @@
 import { useForm } from '@tanstack/react-form';
-import { render, act } from '@testing-library/react';
+import { render, act, waitFor, fireEvent } from '@testing-library/react';
 
 import { TestI18N } from '../../i18n/I18NContext';
 import { ProposedValueFieldText } from './ProposedValueFieldText';
@@ -78,8 +78,8 @@ describe('ProposedValueFieldText', () => {
 
         expect(textBox).toHaveValue('');
 
-        await screen.waitFor(() => {
-            screen.fireEvent.change(textBox, {
+        await waitFor(() => {
+            fireEvent.change(textBox, {
                 target: { value: 'test' },
             });
         });

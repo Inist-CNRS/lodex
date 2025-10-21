@@ -5,6 +5,7 @@ import { render } from '../../../../../test-utils';
 import { TestI18N } from '../../../i18n/I18NContext';
 import { useUpdateAnnotation } from './../hooks/useUpdateAnnotation';
 import { AnnotationInputs } from './AnnotationInputs';
+import { within } from '@testing-library/dom';
 
 jest.mock('../hooks/useUpdateAnnotation', () => ({
     useUpdateAnnotation: jest.fn(),
@@ -63,26 +64,21 @@ describe('AnnotationInputs', () => {
         });
         expect(inputsRegion).toBeInTheDocument();
         expect(
-            screen.queryByLabelText('annotation_status', {
-                container: inputsRegion,
-            }),
+            within(inputsRegion).queryByLabelText('annotation_status'),
         ).toHaveTextContent('annotation_status_to_review');
         expect(
-            screen.getByRole('textbox', {
+            within(inputsRegion).getByRole('textbox', {
                 name: 'annotation_internal_comment',
-                container: inputsRegion,
             }),
         ).toHaveValue('Internal test comment');
         expect(
-            screen.getByRole('textbox', {
+            within(inputsRegion).getByRole('textbox', {
                 name: 'annotation_admin_comment',
-                container: inputsRegion,
             }),
         ).toHaveValue('Admin comment visible to contributors');
         expect(
-            screen.getByRole('textbox', {
+            within(inputsRegion).getByRole('textbox', {
                 name: 'annotation_administrator',
-                container: inputsRegion,
             }),
         ).toHaveValue('Admin');
     });
@@ -122,16 +118,14 @@ describe('AnnotationInputs', () => {
 
             if (required) {
                 expect(
-                    screen.getByRole('textbox', {
+                    within(inputsRegion).getByRole('textbox', {
                         name: 'annotation_internal_comment',
-                        container: inputsRegion,
                     }),
                 ).toHaveAttribute('required');
             } else {
                 expect(
-                    screen.getByRole('textbox', {
+                    within(inputsRegion).getByRole('textbox', {
                         name: 'annotation_internal_comment',
-                        container: inputsRegion,
                     }),
                 ).not.toHaveAttribute('required');
             }

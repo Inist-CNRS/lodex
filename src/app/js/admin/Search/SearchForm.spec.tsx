@@ -5,6 +5,7 @@ import * as overview from '../../../../common/overview';
 import fieldApi from '../../admin/api/field';
 import { render } from '../../../../test-utils.tsx';
 import { I18NContext } from '../../i18n/I18NContext.tsx';
+import { fireEvent, waitFor, within } from '@testing-library/dom';
 
 jest.mock('../../admin/api/field', () => ({
     patchSearchableFields: jest.fn(),
@@ -54,22 +55,22 @@ describe('handleSearchInFieldsChange', () => {
         const autocomplete = screen.getByTestId(
             'autocomplete_search_in_fields',
         );
-        const input = screen.within(autocomplete).getByRole('textbox');
+        const input = within(autocomplete).getByRole('textbox');
 
-        await screen.waitFor(() => {
+        await waitFor(() => {
             autocomplete.focus();
         });
 
-        await screen.waitFor(() => {
-            screen.fireEvent.change(input, { target: { value: 'a' } });
+        await waitFor(() => {
+            fireEvent.change(input, { target: { value: 'a' } });
         });
 
-        await screen.waitFor(() => {
-            screen.fireEvent.keyDown(autocomplete, { key: 'ArrowDown' });
+        await waitFor(() => {
+            fireEvent.keyDown(autocomplete, { key: 'ArrowDown' });
         });
 
-        await screen.waitFor(() => {
-            screen.fireEvent.keyDown(autocomplete, { key: 'Enter' });
+        await waitFor(() => {
+            fireEvent.keyDown(autocomplete, { key: 'Enter' });
         });
 
         expect(fieldApi.patchSearchableFields).toHaveBeenCalledWith([
@@ -113,23 +114,23 @@ describe('saveSyndication', () => {
         const autocomplete = screen.getByTestId(
             `autocomplete_search_syndication_${overview.RESOURCE_TITLE}`,
         );
-        const input = screen.within(autocomplete).getByRole('textbox');
+        const input = within(autocomplete).getByRole('textbox');
         autocomplete.focus();
 
-        await screen.waitFor(() => {
-            screen.fireEvent.change(input, { target: { value: 'abstract' } });
+        await waitFor(() => {
+            fireEvent.change(input, { target: { value: 'abstract' } });
         });
 
-        await screen.waitFor(() => {
-            screen.fireEvent.keyDown(autocomplete, { key: 'ArrowDown' });
+        await waitFor(() => {
+            fireEvent.keyDown(autocomplete, { key: 'ArrowDown' });
         });
 
-        await screen.waitFor(() => {
-            screen.fireEvent.keyDown(autocomplete, { key: 'ArrowDown' });
+        await waitFor(() => {
+            fireEvent.keyDown(autocomplete, { key: 'ArrowDown' });
         });
 
-        await screen.waitFor(() => {
-            screen.fireEvent.keyDown(autocomplete, { key: 'Enter' });
+        await waitFor(() => {
+            fireEvent.keyDown(autocomplete, { key: 'Enter' });
         });
 
         expect(fieldApi.patchOverview).toHaveBeenCalledWith({
@@ -166,23 +167,23 @@ describe('saveSyndication', () => {
         const autocomplete = screen.getByTestId(
             `autocomplete_search_syndication_${overview.RESOURCE_DESCRIPTION}`,
         );
-        const input = screen.within(autocomplete).getByRole('textbox');
+        const input = within(autocomplete).getByRole('textbox');
         autocomplete.focus();
 
-        await screen.waitFor(() => {
-            screen.fireEvent.change(input, { target: { value: 'a' } });
+        await waitFor(() => {
+            fireEvent.change(input, { target: { value: 'a' } });
         });
 
-        await screen.waitFor(() => {
-            screen.fireEvent.keyDown(autocomplete, { key: 'ArrowDown' });
+        await waitFor(() => {
+            fireEvent.keyDown(autocomplete, { key: 'ArrowDown' });
         });
 
-        await screen.waitFor(() => {
-            screen.fireEvent.keyDown(autocomplete, { key: 'ArrowDown' });
+        await waitFor(() => {
+            fireEvent.keyDown(autocomplete, { key: 'ArrowDown' });
         });
 
-        await screen.waitFor(() => {
-            screen.fireEvent.keyDown(autocomplete, { key: 'Enter' });
+        await waitFor(() => {
+            fireEvent.keyDown(autocomplete, { key: 'Enter' });
         });
 
         expect(fieldApi.patchOverview).toHaveBeenCalledWith({
@@ -219,23 +220,23 @@ describe('saveSyndication', () => {
         const autocomplete = screen.getByTestId(
             `autocomplete_search_syndication_${overview.RESOURCE_DETAIL_1}`,
         );
-        const input = screen.within(autocomplete).getByRole('textbox');
+        const input = within(autocomplete).getByRole('textbox');
         autocomplete.focus();
 
-        await screen.waitFor(() => {
-            screen.fireEvent.change(input, { target: { value: 'a' } });
+        await waitFor(() => {
+            fireEvent.change(input, { target: { value: 'a' } });
         });
 
-        await screen.waitFor(() => {
-            screen.fireEvent.keyDown(autocomplete, { key: 'ArrowDown' });
+        await waitFor(() => {
+            fireEvent.keyDown(autocomplete, { key: 'ArrowDown' });
         });
 
-        await screen.waitFor(() => {
-            screen.fireEvent.keyDown(autocomplete, { key: 'ArrowDown' });
+        await waitFor(() => {
+            fireEvent.keyDown(autocomplete, { key: 'ArrowDown' });
         });
 
-        await screen.waitFor(() => {
-            screen.fireEvent.keyDown(autocomplete, { key: 'Enter' });
+        await waitFor(() => {
+            fireEvent.keyDown(autocomplete, { key: 'Enter' });
         });
 
         expect(fieldApi.patchOverview).toHaveBeenCalledWith({
@@ -273,23 +274,23 @@ describe('saveSyndication', () => {
         const autocomplete = screen.getByTestId(
             `autocomplete_search_syndication_${overview.RESOURCE_DETAIL_2}`,
         );
-        const input = screen.within(autocomplete).getByRole('textbox');
+        const input = within(autocomplete).getByRole('textbox');
         autocomplete.focus();
 
-        await screen.waitFor(() => {
-            screen.fireEvent.change(input, { target: { value: 'a' } });
+        await waitFor(() => {
+            fireEvent.change(input, { target: { value: 'a' } });
         });
 
-        await screen.waitFor(() => {
-            screen.fireEvent.keyDown(autocomplete, { key: 'ArrowDown' });
+        await waitFor(() => {
+            fireEvent.keyDown(autocomplete, { key: 'ArrowDown' });
         });
 
-        await screen.waitFor(() => {
-            screen.fireEvent.keyDown(autocomplete, { key: 'ArrowDown' });
+        await waitFor(() => {
+            fireEvent.keyDown(autocomplete, { key: 'ArrowDown' });
         });
 
-        await screen.waitFor(() => {
-            screen.fireEvent.keyDown(autocomplete, { key: 'Enter' });
+        await waitFor(() => {
+            fireEvent.keyDown(autocomplete, { key: 'Enter' });
         });
 
         expect(fieldApi.patchOverview).toHaveBeenCalledWith({

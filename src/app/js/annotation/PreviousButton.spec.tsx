@@ -1,4 +1,4 @@
-import { render } from '@testing-library/react';
+import { fireEvent, render } from '@testing-library/react';
 
 import { useForm } from '@tanstack/react-form';
 import { TestI18N } from '../i18n/I18NContext';
@@ -47,7 +47,7 @@ describe('PreviousButton', () => {
         });
         expect(screen.queryByText('cancel')).toBeInTheDocument();
         expect(screen.queryByText('back')).not.toBeInTheDocument();
-        screen.fireEvent.click(screen.queryByText('cancel'));
+        fireEvent.click(screen.getByText('cancel'));
         expect(onCancel).toHaveBeenCalledTimes(1);
     });
     it('should display cancel button when currentStep is COMMENT_STEP and isFieldValueAnnotable is false', async () => {
@@ -60,7 +60,7 @@ describe('PreviousButton', () => {
         });
         expect(screen.queryByText('cancel')).toBeInTheDocument();
         expect(screen.queryByText('back')).not.toBeInTheDocument();
-        screen.fireEvent.click(screen.queryByText('cancel'));
+        fireEvent.click(screen.getByText('cancel'));
         expect(onCancel).toHaveBeenCalledTimes(1);
     });
     it('should display back button returning to TARGET_STEP when currentStep is VALUE_STEP', async () => {
@@ -74,7 +74,7 @@ describe('PreviousButton', () => {
         });
         expect(screen.queryByText('back')).toBeInTheDocument();
         expect(screen.queryByText('cancel')).not.toBeInTheDocument();
-        screen.fireEvent.click(screen.queryByText('back'));
+        fireEvent.click(screen.getByText('back'));
         expect(goToStep).toHaveBeenCalledTimes(1);
         expect(goToStep).toHaveBeenCalledWith(TARGET_STEP);
     });
@@ -90,7 +90,7 @@ describe('PreviousButton', () => {
         });
         expect(screen.queryByText('back')).toBeInTheDocument();
         expect(screen.queryByText('cancel')).not.toBeInTheDocument();
-        screen.fireEvent.click(screen.queryByText('back'));
+        fireEvent.click(screen.getByText('back'));
         expect(goToStep).toHaveBeenCalledTimes(1);
         expect(goToStep).toHaveBeenCalledWith(TARGET_STEP);
     });
@@ -107,7 +107,7 @@ describe('PreviousButton', () => {
         });
         expect(screen.queryByText('back')).toBeInTheDocument();
         expect(screen.queryByText('cancel')).not.toBeInTheDocument();
-        screen.fireEvent.click(screen.queryByText('back'));
+        fireEvent.click(screen.getByText('back'));
         expect(goToStep).toHaveBeenCalledTimes(1);
         expect(goToStep).toHaveBeenCalledWith(TARGET_STEP);
     });
@@ -123,7 +123,7 @@ describe('PreviousButton', () => {
         });
         expect(screen.queryByText('back')).toBeInTheDocument();
         expect(screen.queryByText('cancel')).not.toBeInTheDocument();
-        screen.fireEvent.click(screen.queryByText('back'));
+        fireEvent.click(screen.getByText('back'));
         expect(goToStep).toHaveBeenCalledTimes(1);
         expect(goToStep).toHaveBeenCalledWith(VALUE_STEP);
     });
@@ -140,7 +140,7 @@ describe('PreviousButton', () => {
         });
         expect(screen.queryByText('back')).toBeInTheDocument();
         expect(screen.queryByText('cancel')).not.toBeInTheDocument();
-        screen.fireEvent.click(screen.queryByText('back'));
+        fireEvent.click(screen.getByText('back'));
         expect(goToStep).toHaveBeenCalledTimes(1);
         expect(goToStep).toHaveBeenCalledWith(TARGET_STEP);
     });
@@ -156,7 +156,7 @@ describe('PreviousButton', () => {
         });
         expect(screen.queryByText('back')).toBeInTheDocument();
         expect(screen.queryByText('cancel')).not.toBeInTheDocument();
-        screen.fireEvent.click(screen.queryByText('back'));
+        fireEvent.click(screen.getByText('back'));
         expect(goToStep).toHaveBeenCalledTimes(1);
         expect(goToStep).toHaveBeenCalledWith(TARGET_STEP);
     });
@@ -173,7 +173,7 @@ describe('PreviousButton', () => {
         });
         expect(screen.queryByText('back')).toBeInTheDocument();
         expect(screen.queryByText('cancel')).not.toBeInTheDocument();
-        screen.fireEvent.click(screen.queryByText('back'));
+        fireEvent.click(screen.getByText('back'));
         expect(goToStep).toHaveBeenCalledTimes(1);
         expect(goToStep).toHaveBeenCalledWith(TARGET_STEP);
     });
@@ -188,7 +188,7 @@ describe('PreviousButton', () => {
         });
         expect(screen.queryByText('back')).toBeInTheDocument();
         expect(screen.queryByText('cancel')).not.toBeInTheDocument();
-        screen.fireEvent.click(screen.queryByText('back'));
+        fireEvent.click(screen.getByText('back'));
         expect(goToStep).toHaveBeenCalledTimes(1);
         expect(goToStep).toHaveBeenCalledWith(COMMENT_STEP);
     });

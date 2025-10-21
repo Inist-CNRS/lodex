@@ -3,6 +3,7 @@ import { render, userEvent } from '../../../../test-utils';
 import { HideResource } from './HideResource';
 import { ADMIN_ROLE } from '../../../../common/tools/tenantTools';
 import { hideResource } from '../api/hideResource';
+import { waitFor } from '@testing-library/dom';
 
 jest.mock('../api/hideResource', () => ({
     hideResource: jest.fn(),
@@ -38,7 +39,7 @@ describe('HideResourceForm', () => {
         await user.type(screen.getByLabelText('enter_reason *'), 'reason');
         await user.click(screen.getByText('save'));
 
-        await screen.waitFor(() =>
+        await waitFor(() =>
             expect(
                 screen.queryByText('enter_reason *'),
             ).not.toBeInTheDocument(),
@@ -66,13 +67,13 @@ describe('HideResourceForm', () => {
         );
         expect(screen.getByText('hide')).toBeInTheDocument();
         await user.click(screen.getByText('hide'));
-        await screen.waitFor(() =>
+        await waitFor(() =>
             expect(screen.getByLabelText('enter_reason *')).toBeInTheDocument(),
         );
 
         await user.click(screen.getByText('cancel'));
 
-        await screen.waitFor(() =>
+        await waitFor(() =>
             expect(
                 screen.queryByText('enter_reason *'),
             ).not.toBeInTheDocument(),
@@ -97,7 +98,7 @@ describe('HideResourceForm', () => {
         );
         expect(screen.getByText('hide')).toBeInTheDocument();
         await user.click(screen.getByText('hide'));
-        await screen.waitFor(() =>
+        await waitFor(() =>
             expect(screen.getByLabelText('enter_reason *')).toBeInTheDocument(),
         );
 
@@ -141,7 +142,7 @@ describe('HideResourceForm', () => {
             reason: 'reason',
         });
 
-        await screen.waitFor(() =>
+        await waitFor(() =>
             expect(screen.getByText('hide resource error')).toBeInTheDocument(),
         );
     });

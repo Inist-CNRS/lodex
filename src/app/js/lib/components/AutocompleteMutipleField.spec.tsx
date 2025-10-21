@@ -6,6 +6,7 @@ import {
     AutocompleteMultipleField,
     type AutocompleteMultipleFieldProps,
 } from './AutocompleteMultipleField';
+import { fireEvent, waitFor } from '@testing-library/dom';
 
 function TestAutocompleteMultipleField(
     props: Omit<
@@ -41,8 +42,8 @@ describe('AutocompleteMultipleField', () => {
                 name: 'Name',
             });
 
-            await screen.waitFor(() => {
-                screen.fireEvent.mouseDown(textbox);
+            await waitFor(() => {
+                fireEvent.mouseDown(textbox);
             });
 
             const option = screen.getByRole('option', {
@@ -51,8 +52,8 @@ describe('AutocompleteMultipleField', () => {
 
             expect(option).toBeInTheDocument();
 
-            await screen.waitFor(() => {
-                screen.fireEvent.click(option);
+            await waitFor(() => {
+                fireEvent.click(option);
             });
 
             expect(
@@ -69,24 +70,24 @@ describe('AutocompleteMultipleField', () => {
                 name: 'Name',
             });
 
-            await screen.waitFor(() => {
-                screen.fireEvent.mouseDown(textbox);
+            await waitFor(() => {
+                fireEvent.mouseDown(textbox);
             });
 
-            await screen.waitFor(() => {
-                screen.fireEvent.click(
+            await waitFor(() => {
+                fireEvent.click(
                     screen.getByRole('option', {
                         name: 'John',
                     }),
                 );
             });
 
-            await screen.waitFor(() => {
-                screen.fireEvent.mouseDown(textbox);
+            await waitFor(() => {
+                fireEvent.mouseDown(textbox);
             });
 
-            await screen.waitFor(() => {
-                screen.fireEvent.click(
+            await waitFor(() => {
+                fireEvent.click(
                     screen.getByRole('option', {
                         name: 'Paul',
                     }),
@@ -113,11 +114,11 @@ describe('AutocompleteMultipleField', () => {
                 name: 'Name',
             });
 
-            await screen.waitFor(() => {
-                screen.fireEvent.mouseDown(textbox);
+            await waitFor(() => {
+                fireEvent.mouseDown(textbox);
             });
 
-            await screen.waitFor(() => {
+            await waitFor(() => {
                 return userEvent.type(textbox, 'Jo');
             });
 
@@ -145,22 +146,22 @@ describe('AutocompleteMultipleField', () => {
                 name: 'Name',
             });
 
-            await screen.waitFor(() => {
-                screen.fireEvent.mouseDown(textbox);
+            await waitFor(() => {
+                fireEvent.mouseDown(textbox);
             });
 
-            await screen.waitFor(() => {
+            await waitFor(() => {
                 return userEvent.type(textbox, 'Franck');
             });
 
-            await screen.waitFor(() => {
+            await waitFor(() => {
                 const option = screen.getByRole('option', {
                     name: 'autocomplete_add+{"option":"Franck"}',
                 });
 
                 expect(option).toBeInTheDocument();
 
-                screen.fireEvent.click(option);
+                fireEvent.click(option);
             });
 
             expect(
@@ -177,15 +178,15 @@ describe('AutocompleteMultipleField', () => {
                 name: 'Name',
             });
 
-            await screen.waitFor(() => {
-                screen.fireEvent.mouseDown(textbox);
+            await waitFor(() => {
+                fireEvent.mouseDown(textbox);
             });
 
-            await screen.waitFor(() => {
+            await waitFor(() => {
                 return userEvent.type(textbox, 'Franck');
             });
 
-            await screen.waitFor(() => {
+            await waitFor(() => {
                 expect(
                     screen.getByText('autocomplete_no_options'),
                 ).toBeInTheDocument();
@@ -197,8 +198,8 @@ describe('AutocompleteMultipleField', () => {
                 }),
             ).not.toBeInTheDocument();
 
-            await screen.waitFor(() => {
-                return screen.fireEvent.blur(textbox);
+            await waitFor(() => {
+                return fireEvent.blur(textbox);
             });
 
             expect(

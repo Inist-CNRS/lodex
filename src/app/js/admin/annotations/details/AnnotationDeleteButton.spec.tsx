@@ -1,7 +1,7 @@
 import { MemoryRouter } from 'react-router-dom';
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { render } from '@testing-library/react';
+import { fireEvent, render, waitFor } from '@testing-library/react';
 import { TestI18N } from '../../../i18n/I18NContext';
 import { useDeleteAnnotation } from '../hooks/useDeleteAnnotation';
 import { AnnotationDeleteButton } from './AnnotationDeleteButton';
@@ -56,16 +56,16 @@ describe('AnnotationDeleteButton', () => {
         });
         expect(deleteButton).toBeInTheDocument();
 
-        await screen.waitFor(() => {
-            screen.fireEvent.click(deleteButton);
+        await waitFor(() => {
+            fireEvent.click(deleteButton);
         });
 
         expect(
             screen.queryByText('annotation_delete_modal_title'),
         ).toBeInTheDocument();
 
-        await screen.waitFor(() => {
-            screen.fireEvent.click(
+        await waitFor(() => {
+            fireEvent.click(
                 screen.getByRole('button', {
                     name: 'delete',
                 }),
@@ -115,16 +115,16 @@ describe('AnnotationDeleteButton', () => {
         });
         expect(deleteButton).toBeInTheDocument();
 
-        await screen.waitFor(() => {
-            screen.fireEvent.click(deleteButton);
+        await waitFor(() => {
+            fireEvent.click(deleteButton);
         });
 
         expect(
             screen.queryByText('annotation_delete_modal_title'),
         ).toBeInTheDocument();
 
-        await screen.waitFor(() => {
-            screen.fireEvent.click(
+        await waitFor(() => {
+            fireEvent.click(
                 screen.getByRole('button', {
                     name: 'cancel',
                 }),

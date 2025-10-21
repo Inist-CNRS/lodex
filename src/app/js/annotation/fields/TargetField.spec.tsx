@@ -1,5 +1,5 @@
 import { useForm } from '@tanstack/react-form';
-import { render } from '@testing-library/react';
+import { fireEvent, render, waitFor } from '@testing-library/react';
 
 import { TestI18N } from '../../i18n/I18NContext';
 import { COMMENT_STEP, VALUE_STEP } from '../steps';
@@ -11,7 +11,7 @@ interface TestTargetFieldProps {
 
 // @ts-expect-error TS7006
 const renderTargetField = (props) => {
-    let form;
+    let form: any;
 
     function TestTargetField({ field = {}, ...props }: TestTargetFieldProps) {
         form = useForm();
@@ -57,8 +57,8 @@ describe('TargetField', () => {
             goToStep,
             initialValue: 'initial value',
         });
-        await screen.waitFor(() => {
-            screen.fireEvent.click(
+        await waitFor(() => {
+            fireEvent.click(
                 screen.getByText('annotation_annotate_field_choice'),
             );
         });
@@ -76,10 +76,8 @@ describe('TargetField', () => {
             goToStep,
             initialValue: 'initial value',
         });
-        await screen.waitFor(() => {
-            screen.fireEvent.click(
-                screen.getByText('annotation_correct_content'),
-            );
+        await waitFor(() => {
+            fireEvent.click(screen.getByText('annotation_correct_content'));
         });
         expect(goToStep).toHaveBeenCalledWith(COMMENT_STEP);
         expect(form.state.values).toStrictEqual({
@@ -95,10 +93,8 @@ describe('TargetField', () => {
             goToStep,
             initialValue: ['initial', 'value'],
         });
-        await screen.waitFor(() => {
-            screen.fireEvent.click(
-                screen.getByText('annotation_correct_content'),
-            );
+        await waitFor(() => {
+            fireEvent.click(screen.getByText('annotation_correct_content'));
         });
         expect(goToStep).toHaveBeenCalledWith(VALUE_STEP);
         expect(form.state.values).toStrictEqual({
@@ -113,8 +109,8 @@ describe('TargetField', () => {
             goToStep,
             initialValue: 'initial value',
         });
-        await screen.waitFor(() => {
-            screen.fireEvent.click(
+        await waitFor(() => {
+            fireEvent.click(
                 screen.getByText('annotation_remove_content_choice'),
             );
         });
@@ -132,8 +128,8 @@ describe('TargetField', () => {
             goToStep,
             initialValue: ['initial', 'value'],
         });
-        await screen.waitFor(() => {
-            screen.fireEvent.click(
+        await waitFor(() => {
+            fireEvent.click(
                 screen.getByText('annotation_remove_content_choice'),
             );
         });
@@ -150,8 +146,8 @@ describe('TargetField', () => {
             goToStep,
             initialValue: 'initial value',
         });
-        await screen.waitFor(() => {
-            screen.fireEvent.click(screen.getByText('annotation_add_content'));
+        await waitFor(() => {
+            fireEvent.click(screen.getByText('annotation_add_content'));
         });
         expect(goToStep).toHaveBeenCalledWith(COMMENT_STEP);
         expect(form.state.values).toStrictEqual({
@@ -167,8 +163,8 @@ describe('TargetField', () => {
             goToStep,
             initialValue: ['initial', 'value'],
         });
-        await screen.waitFor(() => {
-            screen.fireEvent.click(screen.getByText('annotation_add_content'));
+        await waitFor(() => {
+            fireEvent.click(screen.getByText('annotation_add_content'));
         });
         expect(goToStep).toHaveBeenCalledWith(COMMENT_STEP);
         expect(form.state.values).toStrictEqual({

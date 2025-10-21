@@ -25,7 +25,7 @@ describe('RunButton', () => {
 
         act(() => {
             // @ts-expect-error TS2339
-            screen.fireEvent.click(getByText('run'));
+            fireEvent.click(getByText('run'));
         });
         expect(onLaunchEnrichment).toHaveBeenCalledWith({
             id: 'id',
@@ -49,7 +49,7 @@ describe('RunButton', () => {
 
         act(() => {
             // @ts-expect-error TS2339
-            screen.fireEvent.click(getByText('run'));
+            fireEvent.click(getByText('run'));
         });
         expect(onLaunchEnrichment).toHaveBeenCalledWith({
             id: 'id',
@@ -76,7 +76,7 @@ describe('RunButton', () => {
 
         act(() => {
             // @ts-expect-error TS2339
-            screen.fireEvent.click(getByText('run'));
+            fireEvent.click(getByText('run'));
         });
         expect(onLaunchEnrichment).toHaveBeenCalledWith({
             id: 'id',
@@ -100,7 +100,7 @@ describe('RunButton', () => {
 
         act(() => {
             // @ts-expect-error TS2339
-            screen.fireEvent.click(getByText('run'));
+            fireEvent.click(getByText('run'));
         });
         expect(onLaunchEnrichment).toHaveBeenCalledTimes(0);
         expect(toast).toHaveBeenCalledTimes(0);
@@ -121,7 +121,7 @@ describe('RunButton', () => {
 
         act(() => {
             // @ts-expect-error TS2339
-            screen.fireEvent.click(getByText('run'));
+            fireEvent.click(getByText('run'));
         });
         expect(onLaunchEnrichment).toHaveBeenCalledTimes(0);
         expect(toast).toHaveBeenCalledTimes(0);

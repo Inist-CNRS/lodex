@@ -14,7 +14,7 @@ import {
 import VegaFieldPreview from '../../../utils/components/field-set/FormatFieldSetPreview';
 import { PieChartAdminView } from './PieChartView';
 import { StandardIdValue } from '../../../utils/dataSet';
-import { ASPECT_RATIO_8_5 } from '../../../utils/aspectRatio';
+import { ASPECT_RATIO_8_5, type AspectRatio } from '../../../utils/aspectRatio';
 import AspectRatioSelector from '../../../utils/components/admin/AspectRatioSelector';
 import FormatGroupedFieldSet from '../../../utils/components/field-set/FormatGroupedFieldSet';
 import { useTranslate } from '../../../../i18n/I18NContext';
@@ -50,7 +50,7 @@ type PieChartArgs = {
     tooltipCategory: string;
     tooltipValue: string;
     labels?: boolean;
-    aspectRatio?: string;
+    aspectRatio: AspectRatio;
 };
 
 type PieChartAdminProps = {
@@ -199,7 +199,7 @@ const PieChartAdmin = ({
     );
 
     const handleAspectRatio = useCallback(
-        (value: string) => {
+        (value: AspectRatio) => {
             onChange({
                 ...args,
                 aspectRatio: value,

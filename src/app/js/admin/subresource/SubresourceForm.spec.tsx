@@ -1,3 +1,4 @@
+import { fireEvent, waitFor } from '@testing-library/dom';
 import { render, userEvent, act } from '../../../../test-utils';
 import { SubresourceFormComponent } from './SubresourceForm';
 
@@ -9,13 +10,13 @@ const changeAutocomplete = async (
     const user = userEvent.setup();
     await user.clear(screen.getByLabelText(label));
     await user.type(screen.getByLabelText(label), value);
-    await screen.waitFor(() => {
+    await waitFor(() => {
         expect(screen.getByRole('listbox')).toBeInTheDocument();
     });
 
     await user.click(screen.getByRole('option', { name: value }));
 
-    await screen.waitFor(() => {
+    await waitFor(() => {
         expect(screen.getByLabelText(label)).toHaveValue(value);
     });
 };
@@ -57,11 +58,11 @@ describe('SubresourceForm', () => {
         await changeAutocomplete(screen, 'subresource_path', 'name');
         await changeAutocomplete(screen, 'subresource_id', 'first');
 
-        await screen.waitFor(async () => {
+        await waitFor(async () => {
             expect(screen.getByText('save')).not.toBeDisabled();
         });
         await user.click(screen.getByText('save'));
-        await screen.waitFor(async () => {
+        await waitFor(async () => {
             expect(onSubmit).toHaveBeenCalledWith(
                 {
                     name: 'My subresource',
@@ -103,7 +104,7 @@ describe('SubresourceForm', () => {
         expect(screen.getByLabelText('subresource_path')).toHaveValue('name');
 
         await user.click(screen.getByLabelText('subresource_id'));
-        await screen.waitFor(() => {
+        await waitFor(() => {
             expect(screen.getByRole('listbox')).toBeInTheDocument();
         });
         expect(screen.getAllByRole('option')).toHaveLength(3);
@@ -122,7 +123,7 @@ describe('SubresourceForm', () => {
         expect(screen.getByLabelText('subresource_path')).toHaveValue('title');
 
         await user.click(screen.getByLabelText('subresource_id'));
-        await screen.waitFor(() => {
+        await waitFor(() => {
             expect(screen.getByRole('listbox')).toBeInTheDocument();
         });
         expect(screen.getAllByRole('option')).toHaveLength(2);
@@ -169,17 +170,17 @@ describe('SubresourceForm', () => {
 
         expect(screen.getByLabelText('subresource_id')).toBeInTheDocument();
         expect(screen.getByLabelText('subresource_id')).toHaveValue('value1');
-        await screen.waitFor(async () => {
+        await waitFor(async () => {
             expect(screen.getByText('save')).not.toBeDisabled();
         });
 
         await user.type(screen.getByLabelText('subresource_name *'), ' edited');
-        await screen.waitFor(async () => {
+        await waitFor(async () => {
             expect(screen.getByText('save')).not.toBeDisabled();
         });
 
         await user.click(screen.getByText('save'));
-        await screen.waitFor(async () => {
+        await waitFor(async () => {
             expect(onSubmit).toHaveBeenCalledWith(
                 {
                     _id: '12345',
@@ -212,7 +213,7 @@ describe('SubresourceForm', () => {
             'My subresource',
         );
 
-        await screen.waitFor(async () => {
+        await waitFor(async () => {
             expect(screen.getByLabelText('subresource_name *')).toHaveValue(
                 'My subresource',
             );
@@ -221,7 +222,7 @@ describe('SubresourceForm', () => {
 
         await user.clear(screen.getByLabelText('subresource_name *'));
 
-        await screen.waitFor(async () => {
+        await waitFor(async () => {
             expect(screen.getByText('save')).toBeDisabled();
             expect(
                 screen.getByText('error_field_required'),
@@ -229,7 +230,7 @@ describe('SubresourceForm', () => {
         });
         // Using fireEvent.click because userEvent.click refuse to click on a disabled element
         await act(async () => {
-            screen.fireEvent.click(screen.getByText('save'));
+            fireEvent.click(screen.getByText('save'));
         });
         expect(onSubmit).not.toHaveBeenCalled();
     });
@@ -267,25 +268,25 @@ describe('SubresourceForm', () => {
 
         expect(screen.getByLabelText('subresource_path')).toBeInTheDocument();
         expect(screen.getByLabelText('subresource_path')).toHaveValue('path1');
-        await screen.waitFor(async () => {
+        await waitFor(async () => {
             expect(screen.getByText('save')).not.toBeDisabled();
         });
 
         await user.clear(screen.getByLabelText('subresource_path'));
         await user.type(screen.getByLabelText('subresource_path'), 'path2');
-        await screen.waitFor(() => {
+        await waitFor(() => {
             expect(screen.getByRole('listbox')).toBeInTheDocument();
         });
 
         await user.click(screen.getByRole('option', { name: 'path2' }));
 
-        await screen.waitFor(async () => {
+        await waitFor(async () => {
             expect(screen.getByLabelText('subresource_path')).toHaveValue(
                 'path2',
             );
         });
 
-        await screen.waitFor(async () => {
+        await waitFor(async () => {
             expect(screen.getByText('save')).toBeDisabled();
             expect(
                 screen.getByText('subresource_path_validation_error'),
@@ -294,13 +295,13 @@ describe('SubresourceForm', () => {
 
         await user.clear(screen.getByLabelText('subresource_path'));
         await user.type(screen.getByLabelText('subresource_path'), 'path3');
-        await screen.waitFor(() => {
+        await waitFor(() => {
             expect(screen.getByRole('listbox')).toBeInTheDocument();
         });
 
         await user.click(screen.getByRole('option', { name: 'path3' }));
 
-        await screen.waitFor(async () => {
+        await waitFor(async () => {
             expect(
                 screen.queryByText('subresource_path_validation_error'),
             ).not.toBeInTheDocument();
@@ -308,7 +309,7 @@ describe('SubresourceForm', () => {
         });
 
         await user.click(screen.getByText('save'));
-        await screen.waitFor(async () => {
+        await waitFor(async () => {
             expect(onSubmit).toHaveBeenCalledWith(
                 {
                     _id: '1',

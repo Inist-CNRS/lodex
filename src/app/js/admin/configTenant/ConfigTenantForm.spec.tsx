@@ -3,6 +3,7 @@ import { TestI18N } from '../../i18n/I18NContext';
 import { render } from '../../../../test-utils';
 
 import configTenant from '../../../../../configTenant.json';
+import { fireEvent, waitFor } from '@testing-library/dom';
 
 // @ts-expect-error TS7006
 function TestConfigTenantFormView(props) {
@@ -63,12 +64,12 @@ describe('ConfigTenantForm', () => {
         expect(screen.getByLabelText('user')).toBeChecked();
 
         expect(
-            screen.getAllByLabelText('Username', {}).at(0),
+            screen.getAllByLabelText('Username', {}).at(0)!,
         ).toBeInTheDocument();
         expect(screen.getAllByLabelText('Username').at(0)).toHaveValue('user');
 
         expect(
-            screen.getAllByLabelText('Password', {}).at(0),
+            screen.getAllByLabelText('Password', {}).at(0)!,
         ).toBeInTheDocument();
         expect(screen.getAllByLabelText('Password').at(0)).toHaveValue(
             'secret',
@@ -106,8 +107,8 @@ describe('ConfigTenantForm', () => {
 
         expect(screen.getByText('save')).toBeInTheDocument();
 
-        await screen.waitFor(() => {
-            screen.fireEvent.click(screen.getByText('save'));
+        await waitFor(() => {
+            fireEvent.click(screen.getByText('save'));
         });
 
         expect(handleSave).toHaveBeenCalledTimes(1);
@@ -127,8 +128,8 @@ describe('ConfigTenantForm', () => {
         expect(screen.getByLabelText('theme')).toBeInTheDocument();
         expect(screen.getByLabelText('theme')).toHaveValue('default');
 
-        await screen.waitFor(() => {
-            screen.fireEvent.change(screen.getByLabelText('theme'), {
+        await waitFor(() => {
+            fireEvent.change(screen.getByLabelText('theme'), {
                 target: { value: 'nougat' },
             });
         });
@@ -136,8 +137,8 @@ describe('ConfigTenantForm', () => {
 
         expect(screen.getByText('save')).toBeInTheDocument();
 
-        await screen.waitFor(() => {
-            screen.fireEvent.click(screen.getByText('save'));
+        await waitFor(() => {
+            fireEvent.click(screen.getByText('save'));
         });
 
         expect(handleSave).toHaveBeenCalledTimes(1);
@@ -195,23 +196,23 @@ describe('ConfigTenantForm', () => {
             />,
         );
 
-        await screen.waitFor(() => {
-            screen.fireEvent.change(
-                screen.getAllByLabelText('notification_email').at(0),
+        await waitFor(() => {
+            fireEvent.change(
+                screen.getAllByLabelText('notification_email').at(0)!,
                 {
                     target: { value: 'invalidEmail' },
                 },
             );
         });
         expect(
-            screen.getAllByLabelText('notification_email').at(0),
+            screen.getAllByLabelText('notification_email').at(0)!,
         ).toHaveValue('invalidEmail');
         expect(screen.getByText('error_invalid_email')).toBeInTheDocument();
 
         expect(screen.getByText('save')).toBeInTheDocument();
 
-        await screen.waitFor(() => {
-            screen.fireEvent.click(screen.getByText('save'));
+        await waitFor(() => {
+            fireEvent.click(screen.getByText('save'));
         });
 
         expect(handleSave).toHaveBeenCalledTimes(0);
@@ -231,16 +232,16 @@ describe('ConfigTenantForm', () => {
             />,
         );
 
-        await screen.waitFor(() => {
-            screen.fireEvent.change(
-                screen.getAllByLabelText('notification_email').at(0),
+        await waitFor(() => {
+            fireEvent.change(
+                screen.getAllByLabelText('notification_email').at(0)!,
                 {
                     target: { value: '' },
                 },
             );
         });
         expect(
-            screen.getAllByLabelText('notification_email').at(0),
+            screen.getAllByLabelText('notification_email').at(0)!,
         ).toHaveValue('');
         expect(
             screen.queryByText('error_invalid_email'),
@@ -248,8 +249,8 @@ describe('ConfigTenantForm', () => {
 
         expect(screen.queryByText('save')).toBeInTheDocument();
 
-        await screen.waitFor(() => {
-            screen.fireEvent.click(screen.getByText('save'));
+        await waitFor(() => {
+            fireEvent.click(screen.getByText('save'));
         });
 
         expect(handleSave).toHaveBeenCalledTimes(1);
@@ -292,8 +293,8 @@ describe('ConfigTenantForm', () => {
 
         expect(screen.getByText('save')).toBeInTheDocument();
 
-        await screen.waitFor(() => {
-            screen.fireEvent.click(screen.getByText('save'));
+        await waitFor(() => {
+            fireEvent.click(screen.getByText('save'));
         });
 
         expect(handleSave).toHaveBeenCalledTimes(0);
@@ -332,8 +333,8 @@ describe('ConfigTenantForm', () => {
 
         expect(screen.getByText('save')).toBeInTheDocument();
 
-        await screen.waitFor(() => {
-            screen.fireEvent.click(screen.getByText('save'));
+        await waitFor(() => {
+            fireEvent.click(screen.getByText('save'));
         });
 
         expect(handleSave).toHaveBeenCalledTimes(1);
@@ -360,98 +361,81 @@ describe('ConfigTenantForm', () => {
         expect(
             screen.getByLabelText('enableAutoPublication'),
         ).toBeInTheDocument();
-        await screen.waitFor(() => {
-            screen.fireEvent.click(
-                screen.getByLabelText('enableAutoPublication'),
-            );
+        await waitFor(() => {
+            fireEvent.click(screen.getByLabelText('enableAutoPublication'));
         });
         expect(
             screen.getByLabelText('enableAutoPublication'),
         ).not.toBeChecked();
 
-        await screen.waitFor(() => {
-            screen.fireEvent.click(screen.getByLabelText('user'));
+        await waitFor(() => {
+            fireEvent.click(screen.getByLabelText('user'));
         });
         expect(screen.getByLabelText('user')).not.toBeChecked();
 
-        await screen.waitFor(() => {
-            screen.fireEvent.change(
-                screen.getAllByLabelText('Username').at(0),
-                {
-                    target: { value: 'newUser' },
-                },
-            );
+        await waitFor(() => {
+            fireEvent.change(screen.getAllByLabelText('Username').at(0)!, {
+                target: { value: 'newUser' },
+            });
         });
         expect(screen.getAllByLabelText('Username').at(0)).toHaveValue(
             'newUser',
         );
 
-        await screen.waitFor(() => {
-            screen.fireEvent.change(
-                screen.getAllByLabelText('Password').at(0),
-                {
-                    target: { value: 'userSecret' },
-                },
-            );
+        await waitFor(() => {
+            fireEvent.change(screen.getAllByLabelText('Password').at(0)!, {
+                target: { value: 'userSecret' },
+            });
         });
         expect(screen.getAllByLabelText('Password').at(0)).toHaveValue(
             'userSecret',
         );
 
-        await screen.waitFor(() => {
-            screen.fireEvent.click(screen.getByLabelText('contributor'));
+        await waitFor(() => {
+            fireEvent.click(screen.getByLabelText('contributor'));
         });
         expect(screen.getByLabelText('contributor')).toBeChecked();
 
-        await screen.waitFor(() => {
-            screen.fireEvent.change(
-                screen.getAllByLabelText('Username').at(1),
-                {
-                    target: { value: 'newContributor' },
-                },
-            );
+        await waitFor(() => {
+            fireEvent.change(screen.getAllByLabelText('Username').at(1)!, {
+                target: { value: 'newContributor' },
+            });
         });
         expect(screen.getAllByLabelText('Username').at(1)).toHaveValue(
             'newContributor',
         );
 
-        await screen.waitFor(() => {
-            screen.fireEvent.change(
-                screen.getAllByLabelText('Password').at(1),
-                {
-                    target: { value: 'contributorSecret' },
-                },
-            );
+        await waitFor(() => {
+            fireEvent.change(screen.getAllByLabelText('Password').at(1)!, {
+                target: { value: 'contributorSecret' },
+            });
         });
         expect(screen.getAllByLabelText('Password').at(1)).toHaveValue(
             'contributorSecret',
         );
 
-        await screen.waitFor(() => {
-            screen.fireEvent.change(
-                screen.getAllByLabelText('notification_email').at(0),
+        await waitFor(() => {
+            fireEvent.change(
+                screen.getAllByLabelText('notification_email').at(0)!,
                 {
                     target: { value: 'admin@inist.fr' },
                 },
             );
         });
         expect(
-            screen.getAllByLabelText('notification_email').at(0),
+            screen.getAllByLabelText('notification_email').at(0)!,
         ).toHaveValue('admin@inist.fr');
 
-        await screen.waitFor(() => {
-            screen.fireEvent.change(screen.getByLabelText('theme'), {
+        await waitFor(() => {
+            fireEvent.change(screen.getByLabelText('theme'), {
                 target: { value: 'nougat' },
             });
         });
         expect(screen.getByLabelText('theme')).toHaveValue('nougat');
-        await screen.waitFor(() => {
-            screen.fireEvent.change(
-                screen.getByLabelText('enrichment_batch_size'),
-                {
-                    target: { value: '20' },
-                },
-            );
+        await waitFor(() => {
+            fireEvent.change(screen.getByLabelText('enrichment_batch_size'), {
+                target: { value: '20' },
+            });
         });
         expect(screen.getByLabelText('enrichment_batch_size')).toHaveValue(20);
 
@@ -459,8 +443,8 @@ describe('ConfigTenantForm', () => {
 
         expect(screen.getByText('save')).toBeInTheDocument();
 
-        await screen.waitFor(() => {
-            screen.fireEvent.click(screen.getByText('save'));
+        await waitFor(() => {
+            fireEvent.click(screen.getByText('save'));
         });
 
         expect(handleSave).toHaveBeenCalledTimes(1);
