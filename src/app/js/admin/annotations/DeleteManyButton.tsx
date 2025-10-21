@@ -10,9 +10,7 @@ interface DeleteManyButtonProps {
     selectedRowIds: string[];
 }
 
-export function DeleteManyButton({
-    selectedRowIds
-}: DeleteManyButtonProps) {
+export function DeleteManyButton({ selectedRowIds }: DeleteManyButtonProps) {
     const { translate } = useTranslate();
     const { mutate, isLoading } = useDeleteManyAnnotation();
 

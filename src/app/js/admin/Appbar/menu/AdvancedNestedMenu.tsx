@@ -14,15 +14,18 @@ import jobsApi from '../../api/job';
 import { fromParsing } from '../../selectors';
 import { ExportDatasetButton } from '../../../public/export/ExportDatasetButton';
 
+type AdvancedNestedMenuProps = {
+    onClose: (callback?: () => void) => void;
+    showDatasetClearDialog: () => void;
+    hasLoadedDataset: boolean;
+};
+
 export const AdvancedNestedMenuComponent = React.memo(
     function AnnotationNestedMenu({
-        // @ts-expect-error TS2339
         onClose,
-        // @ts-expect-error TS2339
         showDatasetClearDialog,
-        // @ts-expect-error TS2339
         hasLoadedDataset,
-    }) {
+    }: AdvancedNestedMenuProps) {
         const { translate } = useTranslate();
 
         const handleClearJobs = async () => {
@@ -71,5 +74,5 @@ const mapStateToProps = (state) => ({
 export const AdvancedNestedMenu = compose(
     connect(mapStateToProps),
     withRouter,
-// @ts-expect-error TS2345
+    // @ts-expect-error TS2345
 )(AdvancedNestedMenuComponent);

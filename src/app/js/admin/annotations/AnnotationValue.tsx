@@ -7,10 +7,7 @@ interface AnnotationValueProps {
     value?: React.ReactNode;
 }
 
-export const AnnotationValue = ({
-    value,
-    label
-}: AnnotationValueProps) => {
+export const AnnotationValue = ({ value, label }: AnnotationValueProps) => {
     const { translate } = useTranslate();
     const theme = useTheme();
 

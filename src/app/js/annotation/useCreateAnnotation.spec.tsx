@@ -28,9 +28,7 @@ interface TestWrapperProps {
     children: React.ReactNode;
 }
 
-function TestWrapper({
-    children
-}: TestWrapperProps) {
+function TestWrapper({ children }: TestWrapperProps) {
     return (
         <Provider store={store}>
             <AnnotationStorageProvider>

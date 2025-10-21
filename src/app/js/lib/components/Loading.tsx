@@ -19,9 +19,7 @@ interface LoadingProps {
     children: React.ReactNode;
 }
 
-const Loading = ({
-    children
-}: LoadingProps) => (
+const Loading = ({ children }: LoadingProps) => (
     <div className="loading" style={styles.container}>
         <div style={styles.textContainer}>
             <CircularProgress

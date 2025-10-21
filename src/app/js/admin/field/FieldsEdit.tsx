@@ -18,7 +18,7 @@ import { useTranslate } from '../../i18n/I18NContext';
 
 interface FieldsEditComponentProps {
     addFieldButton?: React.ReactElement;
-    defaultTab?: "page" | "published";
+    defaultTab?: 'page' | 'published';
     filter?: string;
     hideAddColumns(...args: unknown[]): unknown;
     showAddFromColumn: boolean;
@@ -34,7 +34,7 @@ export const FieldsEditComponent = ({
 
     showAddFromColumn,
 
-    subresourceId
+    subresourceId,
 }: FieldsEditComponentProps) => {
     const { translate } = useTranslate();
     const [tab, setTab] = useState(defaultTab);

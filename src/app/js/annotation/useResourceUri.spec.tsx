@@ -9,10 +9,7 @@ interface TestRouterProps {
     initialIndex?: number;
 }
 
-function TestRouter({
-    children,
-    ...rest
-}: TestRouterProps) {
+function TestRouter({ children, ...rest }: TestRouterProps) {
     return (
         <MemoryRouter {...rest}>
             <Switch>

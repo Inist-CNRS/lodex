@@ -136,7 +136,7 @@ interface ButtonEditCellWithDropdownProps {
 
 const ButtonEditCellWithDropdown = ({
     loading,
-    handleChange
+    handleChange,
 }: ButtonEditCellWithDropdownProps) => {
     const { translate } = useTranslate();
     const theme = useTheme();
@@ -218,10 +218,7 @@ interface ParsingEditCellProps {
     setToggleDrawer(...args: unknown[]): unknown;
 }
 
-const ParsingEditCell = ({
-    cell,
-    setToggleDrawer
-}: ParsingEditCellProps) => {
+const ParsingEditCell = ({ cell, setToggleDrawer }: ParsingEditCellProps) => {
     const { translate } = useTranslate();
     const theme = useTheme();
     const [loading, setLoading] = React.useState(false);

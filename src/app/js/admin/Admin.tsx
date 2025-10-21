@@ -32,15 +32,15 @@ interface AdminComponentProps {
 
 export const AdminComponent = ({
     loadingParsingResult,
-    canUploadFile
+    canUploadFile,
 }: AdminComponentProps) => {
     const { translate } = useTranslate();
     if (loadingParsingResult) {
         return (
             // @ts-expect-error TS2322
-            (<Loading className="admin">
+            <Loading className="admin">
                 {translate('loading_parsing_results')}
-            </Loading>)
+            </Loading>
         );
     }
 
