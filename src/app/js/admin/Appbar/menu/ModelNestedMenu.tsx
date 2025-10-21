@@ -16,23 +16,26 @@ import { fromFields } from '../../../sharedSelectors';
 import { importFields } from '../../import';
 import { fromParsing, fromPublication } from '../../selectors';
 
+type ModelNestedMenuProps = {
+    onClose: (callback?: () => void) => void;
+    hasPublishedDataset: boolean;
+    hasLoadedDataset: boolean;
+    exportFields: () => void;
+    importFields: (file: File) => void;
+    showModelClearDialog: () => void;
+    nbFields: number;
+};
+
 export const ModelNestedMenuComponent = React.memo(
     function AnnotationNestedMenu({
-        // @ts-expect-error TS2339
         onClose,
-        // @ts-expect-error TS2339
         hasPublishedDataset,
-        // @ts-expect-error TS2339
         hasLoadedDataset,
-        // @ts-expect-error TS2339
         exportFields,
-        // @ts-expect-error TS2339
         importFields,
-        // @ts-expect-error TS2339
         showModelClearDialog,
-        // @ts-expect-error TS2339
         nbFields,
-    }) {
+    }: ModelNestedMenuProps) {
         const { translate } = useTranslate();
         const fileInputRef = useRef(null);
 
@@ -124,5 +127,5 @@ const mapStateToProps = (state) => ({
 export const ModelNestedMenu = compose(
     connect(mapStateToProps, mapDispatchToProps),
     withRouter,
-// @ts-expect-error TS2345
+    // @ts-expect-error TS2345
 )(ModelNestedMenuComponent);

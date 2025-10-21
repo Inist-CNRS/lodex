@@ -13,7 +13,7 @@ interface AnnotationDeleteButtonProps {
 
 export function AnnotationDeleteButton({
     id,
-    isSubmitting
+    isSubmitting,
 }: AnnotationDeleteButtonProps) {
     const { translate } = useTranslate();
     const { mutateAsync, isLoading } = useDeleteAnnotation(id);

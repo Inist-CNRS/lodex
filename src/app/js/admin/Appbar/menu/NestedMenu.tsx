@@ -18,7 +18,7 @@ export function NestedMenu({
     onOpen,
     onClose,
     label,
-    menu
+    menu,
 }: NestedMenuProps) {
     return (
         <Box

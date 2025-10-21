@@ -1,9 +1,11 @@
-// @ts-expect-error TS6196
 interface AnnotationDisabledIconProps {
     fill?: string;
 }
 
-export function AnnotationDisabledIcon({ fill = '#000', ...props } = {}) {
+export function AnnotationDisabledIcon({
+    fill = '#000',
+    ...props
+}: AnnotationDisabledIconProps = {}) {
     return (
         <svg
             xmlns="http://www.w3.org/2000/svg"

@@ -18,10 +18,7 @@ interface NoFieldComponentProps {
     label: string;
 }
 
-const NoFieldComponent = ({
-    label,
-    addFieldButton
-}: NoFieldComponentProps) => {
+const NoFieldComponent = ({ label, addFieldButton }: NoFieldComponentProps) => {
     return (
         <Box sx={styles.noFieldZone}>
             <div>

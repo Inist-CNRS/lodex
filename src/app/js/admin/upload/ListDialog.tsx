@@ -188,7 +188,7 @@ export const ListDialogComponent = ({
     setLoader,
     open,
     handleClose,
-    actions
+    actions,
 }: ListDialogComponentProps) => {
     const { translate } = useTranslate();
     const [filteredLoaders, setFilter] = useState(loaders.map((l) => l.name));
