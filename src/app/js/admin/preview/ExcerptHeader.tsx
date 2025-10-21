@@ -109,8 +109,6 @@ const ExcerptHeaderComponent = ({
                 })}
             </div>
         )}
-        {/*
-         // @ts-expect-error TS2322 */}
         <ComposedOf compositeFields={compositeFields} polyglot={polyglot} />
         <div style={titleStyle.internal}>
             {/*
