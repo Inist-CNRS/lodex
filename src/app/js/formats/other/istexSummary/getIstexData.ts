@@ -6,7 +6,7 @@ import { parseFetchResult, output } from '../../utils/fetchIstexData';
 import { ISTEX_API_URL } from '../../../../../common/externals';
 import fetch from '../../../lib/fetch';
 import alphabeticalSort from '../../../lib/alphabeticalSort';
-import { CUSTOM_ISTEX_QUERY, SORT_YEAR_DESC } from './constants';
+import { CUSTOM_ISTEX_QUERY, SORT_YEAR_DESC, type SortYear } from './constants';
 
 const defaultQueryOptions = {
     query: '',
@@ -98,8 +98,11 @@ export const getDecadeYearData = ({
         }),
     );
 
-// @ts-expect-error TS7006
-export const parseYearData = (formatData, sortDir = SORT_YEAR_DESC) => ({
+export const parseYearData = (
+    // @ts-expect-error TS7006
+    formatData,
+    sortDir: SortYear = SORT_YEAR_DESC,
+) => ({
     hits: get(formatData, 'aggregations.publicationDate.buckets', [])
         // @ts-expect-error TS7006
         .sort((a, b) =>

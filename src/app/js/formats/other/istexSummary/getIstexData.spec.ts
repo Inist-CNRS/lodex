@@ -110,7 +110,7 @@ describe('getIstexData', () => {
                             },
                         },
                     },
-                    'YEAR_ASC',
+                    'YEAR_ASC' as const,
                 ),
             ).toEqual({
                 hits: [

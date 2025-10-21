@@ -24,7 +24,6 @@ describe('JournalFold', () => {
     };
 
     it('should render FetchFold to fetch Journal name', () => {
-        // @ts-expect-error TS2322
         const wrapper = shallow(<JournalFold {...defaultProps} />);
 
         const fetchFold = wrapper.find(FetchFold);

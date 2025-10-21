@@ -101,7 +101,6 @@ export const IstexSummaryView = ({
         );
     }
 
-    // @ts-expect-error TS2345
     const data = parseYearData(formatData, sortDir);
 
     const displayDecade = yearThreshold && data.hits.length > yearThreshold;

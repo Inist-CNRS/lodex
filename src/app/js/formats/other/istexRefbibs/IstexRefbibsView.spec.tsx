@@ -13,24 +13,27 @@ describe('<IstexView />', () => {
                 data={{
                     hits: [
                         {
-                            id: 1,
+                            id: '1',
                             title: 'title1',
                             publicationDate: '1901',
                             url: 'url1',
-                            authors: 'authors1',
+                            authors: ['authors1'],
                             hostTitle: 'hostTitle1',
                             hostGenre: 'hostGenre1',
+                            hostVolume: 'hostVolume1',
                         },
                         {
-                            id: 2,
+                            id: '2',
                             title: 'title2',
                             publicationDate: '1902',
                             url: 'url2',
-                            authors: 'authors2',
+                            authors: ['authors2'],
                             hostTitle: 'hostTitle2',
                             hostGenre: 'hostGenre2',
+                            hostVolume: 'hostVolume2',
                         },
                     ],
+                    total: 2,
                 }}
                 field={{ name: 'name' }}
                 resource={{ name: 'value' }}
@@ -79,24 +82,27 @@ describe('<IstexView />', () => {
                 data={{
                     hits: [
                         {
-                            id: 1,
+                            id: '1',
                             title: 'title1',
                             publicationDate: '1901',
                             url: 'url1',
-                            authors: 'authors1',
+                            authors: ['authors1'],
                             hostTitle: 'hostTitle1',
                             hostGenre: 'hostGenre1',
+                            hostVolume: 'hostVolume1',
                         },
                         {
-                            id: 2,
+                            id: '2',
                             title: 'title2',
                             publicationDate: '1902',
                             url: 'url2',
-                            authors: 'authors2',
+                            authors: ['authors2'],
                             hostTitle: 'hostTitle2',
                             hostGenre: 'hostGenre2',
+                            hostVolume: 'hostVolume2',
                         },
                     ],
+                    total: 2,
                 }}
                 field={{ name: 'name' }}
                 resource={{ name: 'value' }}

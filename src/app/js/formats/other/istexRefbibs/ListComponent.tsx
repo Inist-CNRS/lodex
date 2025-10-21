@@ -1,7 +1,7 @@
 import memoize from 'lodash/memoize';
 
 import { REJECTED } from '../../../../../common/propositionStatus';
-import { field as fieldPropTypes } from '../../../propTypes';
+import { type Field } from '../../../propTypes';
 import { ISTEX_API_URL } from '../../../../../common/externals';
 import Link from '../../../lib/components/Link';
 
@@ -16,8 +16,8 @@ const styles = {
 
 interface IstexRefbibsViewProps {
     fieldStatus?: string;
-    resource: object;
-    field: unknown;
+    resource: Record<string, unknown>;
+    field: Field;
 }
 
 const IstexRefbibsView = ({

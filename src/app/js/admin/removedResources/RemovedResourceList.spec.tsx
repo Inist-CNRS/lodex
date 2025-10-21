@@ -57,6 +57,7 @@ describe('<RemovedResourceList />', () => {
             <RemovedResourceList
                 currentPage={1}
                 columns={columns}
+                // @ts-expect-error TS7006
                 resources={resources}
                 loadRemovedResourcePage={() => {}}
                 loading={false}
@@ -78,6 +79,7 @@ describe('<RemovedResourceList />', () => {
             <RemovedResourceList
                 currentPage={1}
                 columns={columns}
+                // @ts-expect-error TS7006
                 resources={resources}
                 loadRemovedResourcePage={() => {}}
                 loading={false}
@@ -119,6 +121,7 @@ describe('<RemovedResourceList />', () => {
                 p={{ t: (key) => key }}
                 columns={columns}
                 currentPage={1}
+                // @ts-expect-error TS7006
                 resources={resources}
                 loadRemovedResourcePage={() => {}}
                 loading={false}
@@ -141,6 +144,7 @@ describe('<RemovedResourceList />', () => {
                 currentPage={1}
                 loadRemovedResourcePage={loadRemovedResourcePage}
                 loading={false}
+                // @ts-expect-error TS7006
                 resources={resources}
                 total={3}
             />,
@@ -164,6 +168,7 @@ describe('<RemovedResourceList />', () => {
                 loadRemovedResourcePage={() => {}}
                 restoreRessource={restoreRessource}
                 loading={false}
+                // @ts-expect-error TS7006
                 resources={resources}
                 total={3}
             />,
