@@ -1,12 +1,12 @@
 import { TextField } from '@mui/material';
-import { type FormField } from '../../../propTypes';
+import { type FormFieldProps } from '../../../propTypes';
 
 const CodeEdit = ({
     input,
     label,
     meta: { touched, error },
     ...custom
-}: FormField) => (
+}: FormFieldProps) => (
     <TextField
         variant="standard"
         placeholder={label}
@@ -14,6 +14,7 @@ const CodeEdit = ({
         multiline
         rows={4}
         error={touched && !!error}
+        // @ts-expect-error TS2322
         helperText={touched && error}
         {...input}
         {...custom}

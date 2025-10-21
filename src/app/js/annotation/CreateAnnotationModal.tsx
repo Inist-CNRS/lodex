@@ -34,6 +34,7 @@ import {
     progressByStep,
     TARGET_STEP,
     VALUE_STEP,
+    type Step,
 } from './steps';
 import { useContributorCache } from './useContributorCache';
 import { useReCaptcha } from './useReCaptacha';
@@ -135,7 +136,7 @@ export function CreateAnnotationModal({
         );
     }, [isFieldValueAnnotable, field]);
 
-    const [currentStep, setCurrentStep] = useState(
+    const [currentStep, setCurrentStep] = useState<Step>(
         skipAnnotationKindStep ? COMMENT_STEP : TARGET_STEP,
     );
 
@@ -301,7 +302,6 @@ export function CreateAnnotationModal({
                         <Box flexGrow={1}>
                             <LinearProgress
                                 variant="determinate"
-                                // @ts-expect-error TS7053
                                 value={progressByStep[currentStep]}
                             />
                         </Box>
