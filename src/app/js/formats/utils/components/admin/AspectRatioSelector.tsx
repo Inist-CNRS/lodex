@@ -1,19 +1,15 @@
 import { ASPECT_RATIO_NONE, ASPECT_RATIOS } from '../../aspectRatio';
 import { MenuItem, TextField } from '@mui/material';
 import { useMemo, useState } from 'react';
-import { translate } from '../../../../i18n/I18NContext';
+import { useTranslate } from '../../../../i18n/I18NContext';
 
 interface AspectRatioSelectorProps {
     value: string;
     onChange(...args: unknown[]): unknown;
-    p: unknown;
 }
 
-const AspectRatioSelector = ({
-    value,
-    onChange,
-    p,
-}: AspectRatioSelectorProps) => {
+const AspectRatioSelector = ({ value, onChange }: AspectRatioSelectorProps) => {
+    const { translate } = useTranslate();
     const [aspectRatio, setAspectRatio] = useState(value);
 
     const aspectRatios = useMemo(() => {
@@ -21,8 +17,7 @@ const AspectRatioSelector = ({
             if (ratio === ASPECT_RATIO_NONE) {
                 return {
                     id: ASPECT_RATIO_NONE,
-                    // @ts-expect-error TS18046
-                    label: p.t('aspect_ratio_none'),
+                    label: translate('aspect_ratio_none'),
                 };
             }
             return {
@@ -42,8 +37,7 @@ const AspectRatioSelector = ({
         <TextField
             fullWidth
             select
-            // @ts-expect-error TS18046
-            label={p.t('aspect_ratio')}
+            label={translate('aspect_ratio')}
             onChange={handleAspectRatio}
             value={aspectRatio}
         >
@@ -56,4 +50,4 @@ const AspectRatioSelector = ({
     );
 };
 
-export default translate(AspectRatioSelector);
+export default AspectRatioSelector;
