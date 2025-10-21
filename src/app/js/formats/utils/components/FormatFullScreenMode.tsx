@@ -5,14 +5,14 @@ import CloseIcon from '@mui/icons-material/Close';
 import DialogContent from '@mui/material/DialogContent';
 import OpenInFullIcon from '@mui/icons-material/OpenInFull';
 import Tooltip from '@mui/material/Tooltip';
-import { translate } from '../../../i18n/I18NContext';
+import { useTranslate } from '../../../i18n/I18NContext';
 
 interface FormatFullScreenModeProps {
     children: React.ReactNode;
-    p: unknown;
 }
 
-const FormatFullScreenMode = ({ children, p }: FormatFullScreenModeProps) => {
+const FormatFullScreenMode = ({ children }: FormatFullScreenModeProps) => {
+    const { translate } = useTranslate();
     const [open, setOpen] = useState(false);
 
     const handleClickOpen = () => {
@@ -26,9 +26,7 @@ const FormatFullScreenMode = ({ children, p }: FormatFullScreenModeProps) => {
         <>
             {open === false && children}
 
-            {/*
-             // @ts-expect-error TS18046 */}
-            <Tooltip title={p.t('fullscreen')} placement="left">
+            <Tooltip title={translate('fullscreen')} placement="left">
                 <IconButton
                     onClick={handleClickOpen}
                     sx={{
@@ -76,4 +74,4 @@ const FormatFullScreenMode = ({ children, p }: FormatFullScreenModeProps) => {
     );
 };
 
-export default translate(FormatFullScreenMode);
+export default FormatFullScreenMode;

@@ -1,13 +1,9 @@
 import { Alert } from '@mui/material';
-import { translate } from '../../../../i18n/I18NContext';
+import { useTranslate } from '../../../../i18n/I18NContext';
 
-interface DefaultAdminProps {
-    p: unknown;
-}
-
-const DefaultAdmin = ({ p }: DefaultAdminProps) => {
-    // @ts-expect-error TS18046
-    return <Alert severity="info">{p.t('format_without_params')}</Alert>;
+const DefaultAdmin = () => {
+    const { translate } = useTranslate();
+    return <Alert severity="info">{translate('format_without_params')}</Alert>;
 };
 
-export default translate(DefaultAdmin);
+export default DefaultAdmin;
