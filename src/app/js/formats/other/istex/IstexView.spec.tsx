@@ -4,6 +4,7 @@ import { List } from '@mui/material';
 import Alert from '../../../lib/components/Alert';
 import { IstexView } from './IstexView';
 import IstexItem from './IstexItem';
+import { render } from '../../../../../test-utils';
 
 describe('<IstexView />', () => {
     it('should display .istex-list if data.hits', () => {
@@ -151,8 +152,8 @@ describe('<IstexView />', () => {
         expect(span.text()).toBe('istex_total');
     });
 
-    it('should dislay Alert with error if there is one error', () => {
-        const wrapper = shallow(
+    it('should display Alert with error if there is one error', () => {
+        const screen = render(
             <IstexView
                 fieldStatus=""
                 // @ts-expect-error TS2322
@@ -167,9 +168,7 @@ describe('<IstexView />', () => {
             />,
         );
 
-        const alert = wrapper.find(Alert);
-        expect(alert).toHaveLength(1);
-        expect(alert.find('p').text()).toBe('error message');
+        expect(screen.getByText('error message')).toBeInTheDocument();
     });
 
     it('should not dislay Alert if no error', () => {

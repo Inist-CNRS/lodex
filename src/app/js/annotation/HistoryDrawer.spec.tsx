@@ -1,5 +1,5 @@
 import { createTheme, ThemeProvider } from '@mui/material';
-import { render } from '@testing-library/react';
+import { render, waitFor } from '@testing-library/react';
 import React from 'react';
 import defaultTheme from '../../custom/themes/default/defaultTheme';
 import { TestI18N } from '../i18n/I18NContext';
@@ -185,7 +185,7 @@ describe('HistoryDrawer', () => {
         ).toHaveTextContent('annotation_status_rejected');
     });
 
-    it('should close the drawer when clicking on close button', () => {
+    it('should close the drawer when clicking on close button', async () => {
         // @ts-expect-error TS2339
         useGetFieldAnnotation.mockReturnValue({
             data: [],
@@ -205,6 +205,8 @@ describe('HistoryDrawer', () => {
             })
             .click();
 
-        expect(screen.queryByRole('presentation')).not.toBeInTheDocument();
+        await waitFor(() => {
+            expect(screen.queryByRole('presentation')).not.toBeInTheDocument();
+        });
     });
 });

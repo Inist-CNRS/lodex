@@ -59,22 +59,24 @@ const IstexList = ({ data, children, skip, ...props }: IstexListProps) => {
             <ul>
                 {/*
                  // @ts-expect-error TS2339 */}
-                <li className={styles.li}>{polyglot.t('istex_no_result')}</li>
+                <li className={styles.li}>{translate('istex_no_result')}</li>
             </ul>
         );
     }
 
     return (
         <div>
-            {/*
-             // @ts-expect-error TS2339 */}
-            <ul className={classnames({ skip }, skip && styles.skip)}>
+            <ul
+                role="list"
+                // @ts-expect-error TS2339
+                className={classnames({ skip }, skip && styles.skip)}
+            >
                 {hits.map((item, index) => (
                     // @ts-expect-error TS2339
-                    <li className={styles.li} key={index}>
+                    <li role="listitem" className={styles.li} key={index}>
                         {/*
                          // @ts-expect-error TS2349 */}
-                        {children({ ...props, polyglot, item })}
+                        {children({ ...props, item })}
                     </li>
                 ))}
             </ul>
