@@ -23,7 +23,7 @@ interface RemovedDetailComponentProps {
 }
 
 export const RemovedDetailComponent = ({
-    reason,
+    reason = '',
     removedAt,
 }: RemovedDetailComponentProps) => {
     const { translate } = useTranslate();
@@ -38,8 +38,6 @@ export const RemovedDetailComponent = ({
                 <dl style={styles.container}>
                     <dt style={styles.reason}>{translate('reason')}</dt>
                     <dd className="reason">
-                        {/*
-                     // @ts-expect-error TS7006 */}
                         {reason.split('\n').map((line, index) => (
                             <p key={index}>{line}</p>
                         ))}
@@ -48,11 +46,6 @@ export const RemovedDetailComponent = ({
             </CardContent>
         </Card>
     );
-};
-
-RemovedDetailComponent.defaultProps = {
-    reason: '',
-    removedAt: null,
 };
 
 const mapStateToProps = fromResource.getRemovedData;

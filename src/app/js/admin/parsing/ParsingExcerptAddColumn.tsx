@@ -50,10 +50,6 @@ export const ParsingExcerptAddColumnComponent = ({
     );
 };
 
-ParsingExcerptAddColumnComponent.defaultProps = {
-    style: null,
-};
-
 // @ts-expect-error TS7006
 const mapStateToProps = (state) => ({
     isFieldsLoading: fromFields.isLoading(state),

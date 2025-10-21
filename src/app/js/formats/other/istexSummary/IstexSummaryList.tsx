@@ -37,12 +37,4 @@ const IstexSummaryList = ({
     );
 };
 
-IstexSummaryList.defaultProps = {
-    className: null,
-    fieldStatus: null,
-    shrink: false,
-    data: null,
-    error: null,
-};
-
 export default IstexSummaryList;

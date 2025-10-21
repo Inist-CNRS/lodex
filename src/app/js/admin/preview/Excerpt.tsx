@@ -125,10 +125,6 @@ export const ExcerptComponent = ({
     );
 };
 
-ExcerptComponent.defaultProps = {
-    colStyle: null,
-};
-
 export default compose(
     pure,
     // @ts-expect-error TS7031

@@ -25,8 +25,4 @@ const ImageView = ({ resource, field, imageWidth }: ImageViewProps) => {
     return <ImageZoom key={imageWidth} image={image} zoomImage={zoomImage} />;
 };
 
-ImageView.defaultProps = {
-    className: null,
-};
-
 export default ImageView;

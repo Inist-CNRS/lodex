@@ -61,10 +61,6 @@ const EJSView = ({ field, data, template }: EJSViewProps) => {
     return <div dangerouslySetInnerHTML={{ __html: html }}></div>;
 };
 
-EJSView.defaultProps = {
-    className: null,
-};
-
 // @ts-expect-error TS7006
 const mapStateToProps = (state, { formatData, formatTotal }) => {
     if (!formatData) {
@@ -103,7 +99,6 @@ export const EJSAdminView = connect((state, { dataset }) => {
             values: dataset.values,
         },
     };
-    // @ts-expect-error TS2345
 })(EJSView);
 
 // @ts-expect-error TS2345

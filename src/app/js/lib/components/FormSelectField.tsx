@@ -19,7 +19,7 @@ type FormSelectFieldProps = {
 
 const FormSelectField = ({
     input,
-    label,
+    label = '',
     hint,
     meta: { touched, error },
     ...props
@@ -35,9 +35,5 @@ const FormSelectField = ({
         {...props}
     />
 );
-
-FormSelectField.defaultProps = {
-    label: '',
-};
 
 export default FormSelectField;

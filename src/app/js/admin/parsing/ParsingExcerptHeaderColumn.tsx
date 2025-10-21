@@ -27,8 +27,4 @@ export const ParsingExcerptHeaderColumnComponent = ({
     </TableCell>
 );
 
-ParsingExcerptHeaderColumnComponent.defaultProps = {
-    sx: null,
-};
-
 export default pure(ParsingExcerptHeaderColumnComponent);

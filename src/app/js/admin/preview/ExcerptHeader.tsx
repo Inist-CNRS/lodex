@@ -85,11 +85,8 @@ interface ExcerptHeaderComponentProps {
 
 const ExcerptHeaderComponent = ({
     completedField,
-
-    compositeFields,
-
+    compositeFields = [],
     field,
-
     p: polyglot,
 }: ExcerptHeaderComponentProps) => (
     // @ts-expect-error TS2322
@@ -133,11 +130,6 @@ const ExcerptHeaderComponent = ({
         </div>
     </div>
 );
-
-ExcerptHeaderComponent.defaultProps = {
-    completedField: null,
-    compositeFields: [],
-};
 
 // @ts-expect-error TS7006
 const mapStateToProps = (state, { field }) => ({

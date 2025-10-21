@@ -54,11 +54,18 @@ interface LodexResourceProps {
 }
 
 // see https://jsonfeed.org/version/1#items
-const LodexResource = (props: LodexResourceProps) => {
-    const { id, url, openInNewTab } = props;
+const LodexResource = ({
+    title: titleProps = 'n/a',
+    id,
+    url,
+    openInNewTab = false,
+    summary: summaryProps = '',
+    titleSize = -1,
+    summarySize = -1,
+}: LodexResourceProps) => {
     const { translate } = useTranslate();
-    const summary = truncateByWords(props.summary, props.summarySize);
-    const title = truncateByWords(props.title, props.titleSize);
+    const summary = truncateByWords(summaryProps, summarySize);
+    const title = truncateByWords(titleProps, titleSize);
 
     if (!id) {
         return null;
@@ -119,15 +126,6 @@ const LodexResource = (props: LodexResourceProps) => {
             </Link>
         </div>
     );
-};
-
-LodexResource.defaultProps = {
-    title: 'n/a',
-    titleSize: -1,
-    summary: '',
-    summarySize: -1,
-    openInNewTab: false,
-    polyglot: undefined,
 };
 
 export default LodexResource;

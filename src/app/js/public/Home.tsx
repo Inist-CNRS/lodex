@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { useEffect } from 'react';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import { push } from 'redux-first-history';
@@ -15,7 +15,7 @@ import getTitle from '../lib/getTitle';
 
 import { preLoadDatasetPage } from './dataset';
 import { preLoadExporters } from './export';
-import { translate } from '../i18n/I18NContext';
+import { useTranslate } from '../i18n/I18NContext';
 
 interface HomeComponentProps {
     error?: string;
@@ -25,65 +25,57 @@ interface HomeComponentProps {
     preLoadExporters(...args: unknown[]): unknown;
     hasPublishedDataset: boolean;
     navigateTo(...args: unknown[]): unknown;
-    p: any;
     title?: string;
     description?: string;
     tenant?: string;
 }
 
-export class HomeComponent extends Component<HomeComponentProps> {
-    static defaultProps = {
-        error: null,
-        title: null,
-        description: null,
-    };
+export const HomeComponent = ({
+    error,
+    loading,
+    preLoadPublication,
+    preLoadDatasetPage,
+    preLoadExporters,
+    hasPublishedDataset,
+    title,
+    description,
+    tenant,
+}: HomeComponentProps) => {
+    const { translate } = useTranslate();
+    useEffect(() => {
+        preLoadPublication();
+        preLoadDatasetPage();
+        preLoadExporters();
+    }, [preLoadPublication, preLoadDatasetPage, preLoadExporters]);
 
-    UNSAFE_componentWillMount() {
-        this.props.preLoadPublication();
-        this.props.preLoadDatasetPage();
-        this.props.preLoadExporters();
+    if (loading) {
+        return <Loading>{translate('loading')}</Loading>;
     }
 
-    render() {
-        const {
-            error,
-            hasPublishedDataset,
-            loading,
-            p: polyglot,
-            title,
-            description,
-            tenant,
-        } = this.props;
+    if (error) {
+        return (
+            <Card sx={{ marginTop: '0.5rem' }}>
+                <Alert>{error}</Alert>
+            </Card>
+        );
+    }
 
-        if (loading) {
-            return <Loading>{polyglot.t('loading')}</Loading>;
-        }
-
-        if (error) {
-            return (
-                <Card sx={{ marginTop: '0.5rem' }}>
-                    <Alert>{error}</Alert>
-                </Card>
-            );
-        }
-
-        if (hasPublishedDataset) {
-            return (
-                <div id="home-page">
-                    <Helmet>
-                        <title>{getTitle(tenant, title || 'LODEX')}</title>
-                        <meta name="description" content={description || ''} />
-                    </Helmet>
-                    <div className="header-dataset-section">
-                        <DatasetCharacteristics />
-                    </div>
+    if (hasPublishedDataset) {
+        return (
+            <div id="home-page">
+                <Helmet>
+                    <title>{getTitle(tenant, title || 'LODEX')}</title>
+                    <meta name="description" content={description || ''} />
+                </Helmet>
+                <div className="header-dataset-section">
+                    <DatasetCharacteristics />
                 </div>
-            );
-        }
-
-        return <NoDataset />;
+            </div>
+        );
     }
-}
+
+    return <NoDataset />;
+};
 
 // @ts-expect-error TS7006
 const mapStateToProps = (state) => {
@@ -112,6 +104,5 @@ const mapDispatchToProps = {
 
 export default compose(
     connect(mapStateToProps, mapDispatchToProps),
-    translate,
     // @ts-expect-error TS2345
 )(HomeComponent);

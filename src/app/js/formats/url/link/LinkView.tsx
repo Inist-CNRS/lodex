@@ -59,8 +59,4 @@ const LinkView = ({
     );
 };
 
-LinkView.defaultProps = {
-    className: null,
-};
-
 export default LinkView;

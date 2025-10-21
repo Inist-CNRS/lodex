@@ -59,8 +59,4 @@ const TitleView = ({ resource, field, level, colors }: TitleViewProps) => {
     );
 };
 
-TitleView.defaultProps = {
-    className: null,
-};
-
 export default TitleView;

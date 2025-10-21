@@ -7,7 +7,7 @@ type SearchResultPlaceholdersProps = {
 
 const SearchResultPlaceholders = ({
     className,
-    results,
+    results = 8,
 }: SearchResultPlaceholdersProps) => (
     <div className={className}>
         {Array.from({ length: results }, (_, i) => (
@@ -15,10 +15,5 @@ const SearchResultPlaceholders = ({
         ))}
     </div>
 );
-
-SearchResultPlaceholders.defaultProps = {
-    className: null,
-    results: 8,
-};
 
 export default SearchResultPlaceholders;

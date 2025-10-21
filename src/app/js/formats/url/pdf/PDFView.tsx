@@ -38,8 +38,4 @@ const PDFView = ({ resource, field, PDFWidth }: PDFViewProps) => {
     );
 };
 
-PDFView.defaultProps = {
-    className: null,
-};
-
 export default PDFView;

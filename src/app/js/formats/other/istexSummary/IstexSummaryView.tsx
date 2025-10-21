@@ -76,22 +76,14 @@ interface IstexSummaryViewProps {
 
 export const IstexSummaryView = ({
     formatData,
-
     field,
-
     resource,
-
-    searchedField,
-
-    sortDir,
-
-    yearThreshold,
-
+    searchedField = CUSTOM_ISTEX_QUERY,
+    sortDir = SORT_YEAR_DESC,
+    yearThreshold = 50,
     documentSortBy,
-
     p: polyglot,
-
-    showEmbedButton,
+    showEmbedButton = true,
 }: IstexSummaryViewProps) => {
     // @ts-expect-error TS7053
     if (!resource[field.name] || !searchedField) {
@@ -134,17 +126,6 @@ export const IstexSummaryView = ({
             />
         </div>
     );
-};
-
-IstexSummaryView.defaultProps = {
-    className: null,
-    fieldStatus: null,
-    formatData: null,
-    error: null,
-    yearThreshold: 50,
-    searchedField: CUSTOM_ISTEX_QUERY,
-    sortDir: SORT_YEAR_DESC,
-    showEmbedButton: true,
 };
 
 // @ts-expect-error TS2345

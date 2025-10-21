@@ -71,7 +71,7 @@ export const IstexCitationView = ({
     formatData,
     field,
     resource,
-    searchedField,
+    searchedField = CUSTOM_ISTEX_QUERY,
     documentSortBy,
 }: IstexCitationViewProps) => {
     const { translate } = useTranslate();
@@ -118,14 +118,6 @@ export const IstexCitationView = ({
             />
         </div>
     );
-};
-
-IstexCitationView.defaultProps = {
-    className: null,
-    fieldStatus: null,
-    formatData: null,
-    error: null,
-    searchedField: CUSTOM_ISTEX_QUERY,
 };
 
 // @ts-expect-error TS2345

@@ -121,12 +121,6 @@ export const ProgressComponent = (props: ProgressComponentProps) => {
     );
 };
 
-ProgressComponent.defaultProps = {
-    symbol: null,
-    text: null,
-    target: null,
-};
-
 // @ts-expect-error TS7006
 const mapStateToProps = (state) => ({
     progress: fromProgress.getProgress(state),

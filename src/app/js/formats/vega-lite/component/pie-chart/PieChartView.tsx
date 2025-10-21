@@ -123,10 +123,6 @@ const PieChartView = ({
     );
 };
 
-PieChartView.defaultProps = {
-    className: null,
-};
-
 // @ts-expect-error TS7006
 const mapStateToProps = (state, { formatData }) => {
     if (!formatData) {

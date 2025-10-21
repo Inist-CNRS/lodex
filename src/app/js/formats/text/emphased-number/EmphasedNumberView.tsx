@@ -68,11 +68,6 @@ class EmphasedNumberView extends Component<EmphasedNumberViewProps> {
     }
 }
 
-// @ts-expect-error TS2339
-EmphasedNumberView.defaultProps = {
-    className: null,
-};
-
 export default compose(
     translate,
     // @ts-expect-error TS2345

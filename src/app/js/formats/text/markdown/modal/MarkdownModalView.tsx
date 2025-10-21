@@ -137,8 +137,4 @@ const MarkdownModalView = ({
     );
 };
 
-MarkdownModalView.defaultProps = {
-    className: null,
-};
-
 export default MarkdownModalView;

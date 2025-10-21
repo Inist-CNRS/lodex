@@ -92,11 +92,6 @@ export const ModerateButtonComponent = ({
     );
 };
 
-ModerateButtonComponent.defaultProps = {
-    contributor: null,
-    status: null,
-};
-
 // @ts-expect-error TS7006
 const mapStateToProps = (state, { fieldName }) => ({
     contributor: fromResource.getResourceContributorForField(state, fieldName),

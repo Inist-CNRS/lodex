@@ -25,7 +25,7 @@ interface FieldLabelInputComponentProps {
 }
 
 export const FieldLabelInputComponent = ({
-    disabled,
+    disabled = false,
 }: FieldLabelInputComponentProps) => {
     const { translate } = useTranslate();
 
@@ -37,10 +37,6 @@ export const FieldLabelInputComponent = ({
             disabled={disabled}
         />
     );
-};
-
-FieldLabelInputComponent.defaultProps = {
-    disabled: false,
 };
 
 export default FieldLabelInputComponent;

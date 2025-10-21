@@ -217,11 +217,6 @@ export class LodexFieldView extends Component<LodexFieldViewProps> {
     }
 }
 
-// @ts-expect-error TS2339
-LodexFieldView.defaultProps = {
-    className: null,
-};
-
 export default compose(
     translate,
     // @ts-expect-error TS2345
