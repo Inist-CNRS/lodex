@@ -152,8 +152,8 @@ const JobProgressComponent = (props) => {
         });
 
         socket.on(`${dbName}_${tenant}-enricher`, (data) => {
+            loadEnrichments();
             if (!data.isEnriching) {
-                loadEnrichments();
                 // @ts-expect-error TS2554
                 setProgress();
             }
