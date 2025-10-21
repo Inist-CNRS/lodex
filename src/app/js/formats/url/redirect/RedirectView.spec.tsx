@@ -10,11 +10,11 @@ describe('<RedirectView />', () => {
         const field = {};
 
         const wrapper = shallow(
-            // @ts-expect-error TS2769
             <RedirectView
                 className={className}
                 p={p}
                 resource={resource}
+                // @ts-expect-error TS2741
                 field={field}
             />,
         );
