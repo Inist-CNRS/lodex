@@ -156,7 +156,7 @@ export const EnrichmentForm = ({
         setIsLoading(false);
     };
 
-    const handleCancel = () => {
+    const handleBack = () => {
         history.push('/data/enrichment');
     };
 
@@ -389,9 +389,9 @@ export const EnrichmentForm = ({
                             <Box>
                                 <CancelButton
                                     sx={{ height: '100%' }}
-                                    onClick={handleCancel}
+                                    onClick={handleBack}
                                 >
-                                    {translate('cancel')}
+                                    {translate('back')}
                                 </CancelButton>
                                 <Button
                                     variant="contained"
