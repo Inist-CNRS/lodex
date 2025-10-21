@@ -1,5 +1,4 @@
-// @ts-expect-error TS6133
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 
 import {
     Checkbox,
@@ -18,10 +17,9 @@ interface AuthorRememberMeFieldProps {
     form: object;
 }
 
-export function AuthorRememberMeField({
-    form
-}: AuthorRememberMeFieldProps) {
+export function AuthorRememberMeField({ form }: AuthorRememberMeFieldProps) {
     const { translate } = useTranslate();
+    // @ts-expect-error TS2740
     const field = useField({ name: 'authorRememberMe', form });
 
     // @ts-expect-error TS7006

@@ -1,22 +1,22 @@
-// @ts-expect-error TS6133
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 
 import { CellWithTooltip } from './CellWithTooltip';
 import { hasFieldMultipleValues } from './helpers/field';
 
 interface AnnotationProposedValueProps {
     field?: {
-        annotationFormat?: "text" | "list";
-        annotationFormatListKind?: "single" | "multiple";
+        annotationFormat?: 'text' | 'list';
+        annotationFormatListKind?: 'single' | 'multiple';
     };
     proposedValue: string | string[];
 }
 
 export function AnnotationProposedValue({
     proposedValue,
-    field
+    field,
 }: AnnotationProposedValueProps) {
     const valueText = useMemo(() => {
+        // @ts-expect-error TS2769
         const proposedValueAsArray = [].concat(proposedValue);
 
         if (hasFieldMultipleValues(field)) {

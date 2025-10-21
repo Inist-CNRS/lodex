@@ -1,8 +1,7 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import '@testing-library/jest-dom';
 import { render } from '@testing-library/react';
-// @ts-expect-error TS6133
-import React from 'react';
+
 import { MemoryRouter } from 'react-router-dom';
 
 import TitleView from './TitleView';

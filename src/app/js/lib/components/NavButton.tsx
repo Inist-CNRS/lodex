@@ -1,5 +1,3 @@
-// @ts-expect-error TS6133
-import React from 'react';
 import classnames from 'classnames';
 import compose from 'recompose/compose';
 import { translate } from '../../i18n/I18NContext';

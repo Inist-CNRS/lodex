@@ -1,5 +1,4 @@
-// @ts-expect-error TS6133
-import React, { useRef, useEffect } from 'react';
+import { useRef, useEffect } from 'react';
 // @ts-expect-error TS7016
 import * as d3 from 'd3';
 import ReactTooltip from 'react-tooltip';
@@ -31,7 +30,7 @@ const ParallelCoordinates = ({
     data,
     width,
     height,
-    colorSet
+    colorSet,
 }: ParallelCoordinatesProps) => {
     const ref = useRef(null);
 

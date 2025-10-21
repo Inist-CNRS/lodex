@@ -4,8 +4,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
-// @ts-expect-error TS6133
-import React from 'react';
+
 import { useStore } from '@tanstack/react-form';
 
 import { useTranslate } from '../../../i18n/I18NContext';

@@ -9,8 +9,7 @@ import {
     TextField,
 } from '@mui/material';
 import { FormApi, useField } from '@tanstack/react-form';
-// @ts-expect-error TS6133
-import { default as React, useCallback, useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 
 import { useTranslate } from '../../i18n/I18NContext';
 import { useAutocompleteTranslations } from './useAutocompleteTranslations';
@@ -93,6 +92,7 @@ export function AutocompleteMultipleField({
                 value={values}
                 onBlur={field.handleBlur}
                 onChange={(_, value) => {
+                    // @ts-expect-error TS2551
                     field.handleChange(value.map((v) => v.value));
                 }}
                 options={mappedOptions}
@@ -106,11 +106,14 @@ export function AutocompleteMultipleField({
                     />
                 )}
                 freeSolo={supportsNewValues}
+                // @ts-expect-error TS2322
                 filterOptions={(options, params) => {
+                    // @ts-expect-error TS2345
                     const filtered = filter(options, params);
 
                     const { inputValue } = params;
                     const isExisting = options.some(
+                        // @ts-expect-error TS2339
                         (option) => inputValue === option.title,
                     );
                     if (inputValue !== '' && !isExisting && supportsNewValues) {
@@ -131,6 +134,8 @@ export function AutocompleteMultipleField({
                     return (
                         <ListItem {...props} key={option.value}>
                             <Checkbox checked={selected} />
+                            {/*
+                             // @ts-expect-error TS2339 */}
                             <ListItemText primary={option.title} />
                         </ListItem>
                     );

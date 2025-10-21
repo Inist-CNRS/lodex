@@ -1,7 +1,6 @@
-// @ts-expect-error TS6133
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
-// @ts-expect-error TS6133
+// @ts-expect-error TS2882
 import 'react-toastify/dist/ReactToastify.css';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import DeleteIcon from '@mui/icons-material/Delete';

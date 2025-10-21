@@ -9,8 +9,6 @@ import {
     Stack,
     useTheme,
 } from '@mui/material';
-// @ts-expect-error TS6133
-import React from 'react';
 
 import CommentIcon from '@mui/icons-material/Comment';
 import { useField } from '@tanstack/react-form';
@@ -33,21 +31,24 @@ export function TargetField({
     form,
     field,
     initialValue,
-    goToStep
+    goToStep,
 }: TargetFieldProps) {
     const theme = useTheme();
     const { translate } = useTranslate();
 
     const initialValueField = useField({
         name: 'initialValue',
+        // @ts-expect-error TS2740
         form,
     });
     const kindField = useField({
         name: 'kind',
+        // @ts-expect-error TS2322
         form,
     });
 
     return (
+        // @ts-expect-error TS2339
         <form.Field name="target">
             {/*
              // @ts-expect-error TS7006 */}
@@ -90,6 +91,8 @@ export function TargetField({
                                 htmlColor={theme.palette.primary.main}
                             />
                         </MenuItem>
+                        {/*
+                         // @ts-expect-error TS2339 */}
                         {field.enableAnnotationKindCorrection !== false && (
                             <MenuItem
                                 sx={{
@@ -134,6 +137,8 @@ export function TargetField({
                                 />
                             </MenuItem>
                         )}
+                        {/*
+                         // @ts-expect-error TS2339 */}
                         {field.enableAnnotationKindAddition !== false && (
                             <MenuItem
                                 sx={{
@@ -173,6 +178,8 @@ export function TargetField({
                             </MenuItem>
                         )}
 
+                        {/*
+                         // @ts-expect-error TS2339 */}
                         {field.enableAnnotationKindRemoval !== false && (
                             <MenuItem
                                 sx={{
@@ -222,6 +229,8 @@ export function TargetField({
                     </MenuList>
                 );
             }}
+            {/*
+         // @ts-expect-error TS2339 */}
         </form.Field>
     );
 }

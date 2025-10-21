@@ -1,5 +1,4 @@
-// @ts-expect-error TS6133
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Menu, Button, MenuItem } from '@mui/material';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';

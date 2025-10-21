@@ -162,6 +162,7 @@ export type Loader = {
     name: string;
 };
 
+// @ts-expect-error TS2300
 type ListDialogComponentProps = {
     loaders: Loader[];
     value: string;
@@ -171,6 +172,7 @@ type ListDialogComponentProps = {
     actions: ReactNode;
 };
 
+// @ts-expect-error TS2300
 interface ListDialogComponentProps {
     loaders?: unknown[];
     setLoader(...args: unknown[]): unknown;

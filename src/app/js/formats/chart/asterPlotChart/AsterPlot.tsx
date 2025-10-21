@@ -1,5 +1,4 @@
-// @ts-expect-error TS6133
-import React, { useRef, useEffect } from 'react';
+import { useRef, useEffect } from 'react';
 // @ts-expect-error TS7016
 import * as d3 from 'd3';
 import ReactTooltip from 'react-tooltip';
@@ -31,12 +30,7 @@ interface AsterPlotProps {
     colorSet?: string[];
 }
 
-const AsterPlot = ({
-    data,
-    width,
-    height,
-    colorSet
-}: AsterPlotProps) => {
+const AsterPlot = ({ data, width, height, colorSet }: AsterPlotProps) => {
     const ref = useRef(null);
     // @ts-expect-error TS7006
     const createPie = d3.pie().value((d) => d.value);

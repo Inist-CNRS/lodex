@@ -1,5 +1,4 @@
-// @ts-expect-error TS6133
-import React, { useContext } from 'react';
+import { useContext } from 'react';
 import { Box, IconButton, Tooltip } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import { SidebarContext } from '../Sidebar/SidebarContext';

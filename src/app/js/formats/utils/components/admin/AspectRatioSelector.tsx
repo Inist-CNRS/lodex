@@ -1,8 +1,6 @@
 import { ASPECT_RATIO_NONE, ASPECT_RATIOS } from '../../aspectRatio';
 import { MenuItem, TextField } from '@mui/material';
-// @ts-expect-error TS6133
-import React, { useMemo, useState } from 'react';
-import { polyglot as polyglotPropTypes } from '../../../../propTypes';
+import { useMemo, useState } from 'react';
 import { translate } from '../../../../i18n/I18NContext';
 
 interface AspectRatioSelectorProps {
@@ -14,7 +12,7 @@ interface AspectRatioSelectorProps {
 const AspectRatioSelector = ({
     value,
     onChange,
-    p
+    p,
 }: AspectRatioSelectorProps) => {
     const [aspectRatio, setAspectRatio] = useState(value);
 
@@ -23,6 +21,7 @@ const AspectRatioSelector = ({
             if (ratio === ASPECT_RATIO_NONE) {
                 return {
                     id: ASPECT_RATIO_NONE,
+                    // @ts-expect-error TS18046
                     label: p.t('aspect_ratio_none'),
                 };
             }
@@ -43,6 +42,7 @@ const AspectRatioSelector = ({
         <TextField
             fullWidth
             select
+            // @ts-expect-error TS18046
             label={p.t('aspect_ratio')}
             onChange={handleAspectRatio}
             value={aspectRatio}

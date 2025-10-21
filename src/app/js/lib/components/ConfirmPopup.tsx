@@ -6,8 +6,6 @@ import {
     DialogContent,
     DialogTitle,
 } from '@mui/material';
-// @ts-expect-error TS6133
-import React from 'react';
 
 import CancelButton from './CancelButton';
 
@@ -43,7 +41,7 @@ export const ConfirmPopup = ({
 
     onCancel,
 
-    isLoading = false
+    isLoading = false,
 }: ConfirmPopupProps) => {
     return (
         <Dialog maxWidth="xl" open={isOpen} onClose={onCancel}>

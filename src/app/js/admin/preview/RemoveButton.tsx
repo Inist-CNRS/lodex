@@ -1,16 +1,9 @@
-// @ts-expect-error TS6133
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import compose from 'recompose/compose';
 import { Button, Dialog, DialogActions, DialogTitle } from '@mui/material';
-
 import { removeField } from '../../fields';
-
-import {
-    polyglot as polyglotPropTypes,
-    field as fieldPropTypes,
-} from '../../propTypes';
 import CancelButton from '../../lib/components/CancelButton';
 import { translate } from '../../i18n/I18NContext';
 
@@ -23,7 +16,7 @@ interface RemoveButtonComponentProps {
 
 export const RemoveButtonComponent = ({
     onRemove,
-    p: polyglot
+    p: polyglot,
 }: RemoveButtonComponentProps) => {
     const [showDialog, setShowDialog] = useState(false);
 
@@ -37,6 +30,8 @@ export const RemoveButtonComponent = ({
                 onClick={handleShowDialog}
                 color="warning"
             >
+                {/*
+                 // @ts-expect-error TS18046 */}
                 {polyglot.t('remove_from_publication')}
             </Button>
             <Dialog
@@ -45,9 +40,13 @@ export const RemoveButtonComponent = ({
                 maxWidth="sm"
                 fullWidth
             >
+                {/*
+                 // @ts-expect-error TS18046 */}
                 <DialogTitle>{polyglot.t('remove_field')}</DialogTitle>
                 <DialogActions>
                     <CancelButton onClick={handleCloseDialog}>
+                        {/*
+                         // @ts-expect-error TS18046 */}
                         {polyglot.t('Cancel')}
                     </CancelButton>
                     <Button
@@ -55,6 +54,8 @@ export const RemoveButtonComponent = ({
                         variant="contained"
                         onClick={onRemove}
                     >
+                        {/*
+                         // @ts-expect-error TS18046 */}
                         {polyglot.t('Accept')}
                     </Button>
                 </DialogActions>

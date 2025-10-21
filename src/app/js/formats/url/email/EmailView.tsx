@@ -1,14 +1,11 @@
-// @ts-expect-error TS6133
-import React from 'react';
-
-import { field as fieldPropTypes } from '../../../propTypes';
+import { type Field } from '../../../propTypes';
 import getLabel from '../../utils/getLabel';
 import Link from '../../../lib/components/Link';
 
 interface EmailViewProps {
     className?: string;
-    field: unknown;
-    fields: unknown[];
+    field: Field;
+    fields: Field[];
     resource: object;
     type: string;
     value: string;
@@ -20,15 +17,16 @@ const EmailView = ({
     field,
     fields,
     type,
-    value
+    value,
 }: EmailViewProps) => {
     const label = getLabel(field, resource, fields, type, value);
+    // @ts-expect-error TS7053
     const email = resource[field.name];
 
     return (
-        (<Link className={className} to={`mailto:${email}`}>
+        <Link className={className} to={`mailto:${email}`}>
             {label}
-        </Link>)
+        </Link>
     );
 };
 

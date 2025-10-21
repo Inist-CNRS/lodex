@@ -1,6 +1,3 @@
-// @ts-expect-error TS6133
-import React from 'react';
-
 // @ts-expect-error TS7006
 const GlobeByAlrigelFromTheNounProject = (props) => (
     <svg viewBox="0 0 900 1125" width="1em" height="1em" {...props}>

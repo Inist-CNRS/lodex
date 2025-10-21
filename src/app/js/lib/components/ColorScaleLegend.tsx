@@ -1,6 +1,3 @@
-// @ts-expect-error TS6133
-import React from 'react';
-
 const styles = {
     // @ts-expect-error TS7006
     legendColor: (color) => ({
@@ -27,10 +24,7 @@ interface ColorScaleLegendProps {
     nullColor?: string;
 }
 
-const ColorScaleLegend = ({
-    colorScale,
-    nullColor
-}: ColorScaleLegendProps) => (
+const ColorScaleLegend = ({ colorScale, nullColor }: ColorScaleLegendProps) => (
     <div style={styles.legend}>
         {nullColor && (
             <div style={styles.legendItem}>
@@ -43,6 +37,7 @@ const ColorScaleLegend = ({
         {/*
          // @ts-expect-error TS7006 */}
         {colorScale.range().map((value) => {
+            // @ts-expect-error TS2339
             const [start, end] = colorScale.invertExtent(value);
             return (
                 <div key={value} style={styles.legendItem}>
@@ -56,6 +51,8 @@ const ColorScaleLegend = ({
         })}
         <div style={styles.legendItem}>
             <div style={styles.last} />
+            {/*
+             // @ts-expect-error TS2339 */}
             <div>{colorScale.domain()[1]}</div>
         </div>
     </div>

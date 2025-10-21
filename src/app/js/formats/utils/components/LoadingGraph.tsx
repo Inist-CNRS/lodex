@@ -1,6 +1,4 @@
-// @ts-expect-error TS6133
-import React, { Component } from 'react';
-import { polyglot as polyglotPropTypes } from '../../../propTypes';
+import { Component } from 'react';
 import { CircularProgress } from '@mui/material';
 
 interface LoadingGraphProps {
@@ -13,6 +11,8 @@ class LoadingGraph extends Component<LoadingGraphProps> {
 
         return (
             <>
+                {/*
+                 // @ts-expect-error TS18046 */}
                 {polyglot.t('loading')}
                 <CircularProgress variant="indeterminate" size={28} />
             </>

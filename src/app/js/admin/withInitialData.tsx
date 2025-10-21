@@ -1,5 +1,4 @@
-// @ts-expect-error TS6133
-import React, { Component } from 'react';
+import { Component } from 'react';
 import { connect } from 'react-redux';
 import { LinearProgress } from '@mui/material';
 
@@ -21,7 +20,7 @@ export const withInitialDataHoc = (
     BaseComponent,
     onlyLoadIfNotInitialized = false,
 ) =>
-    (class HocComponent extends Component {
+    class HocComponent extends Component {
         UNSAFE_componentWillMount() {
             // @ts-expect-error TS2339
             if (this.props.isInitialized && onlyLoadIfNotInitialized) {
@@ -52,7 +51,7 @@ export const withInitialDataHoc = (
 
             return <BaseComponent {...props} />;
         }
-    });
+    };
 
 // @ts-expect-error TS7006
 export const mapStateToProps = (state) => ({

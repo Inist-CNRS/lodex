@@ -1,7 +1,5 @@
-// @ts-expect-error TS6133
-import React from 'react';
 import classnames from 'classnames';
-import { field as fieldPropTypes } from '../../../propTypes';
+import { type Field } from '../../../propTypes';
 
 import stylesToClassname from '../../../lib/stylesToClassName';
 
@@ -17,16 +15,13 @@ const styles = stylesToClassname(
 );
 
 interface PDFViewProps {
-    field: unknown;
+    field: Field;
     resource: object;
     PDFWidth: string;
 }
 
-const PDFView = ({
-    resource,
-    field,
-    PDFWidth
-}: PDFViewProps) => {
+const PDFView = ({ resource, field, PDFWidth }: PDFViewProps) => {
+    // @ts-expect-error TS7053
     const PDFURL = resource[field.name];
 
     return (

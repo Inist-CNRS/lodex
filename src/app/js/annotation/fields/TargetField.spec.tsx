@@ -1,7 +1,6 @@
 import { useForm } from '@tanstack/react-form';
 import { render } from '@testing-library/react';
-// @ts-expect-error TS6133
-import React from 'react';
+
 import { TestI18N } from '../../i18n/I18NContext';
 import { COMMENT_STEP, VALUE_STEP } from '../steps';
 import { TargetField } from './TargetField';

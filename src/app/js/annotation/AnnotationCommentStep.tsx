@@ -1,6 +1,3 @@
-// @ts-expect-error TS6133
-import React from 'react';
-
 import { Tooltip, Typography } from '@mui/material';
 import { FormApi, useStore } from '@tanstack/react-form';
 import {

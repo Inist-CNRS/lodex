@@ -1,7 +1,6 @@
 import AspectRatioIcon from '@mui/icons-material/AspectRatio';
 import StorageIcon from '@mui/icons-material/Storage';
-// @ts-expect-error TS6133
-import React from 'react';
+
 import { connect } from 'react-redux';
 import { Link, NavLink } from 'react-router-dom';
 
@@ -115,6 +114,8 @@ const AppbarComponent = ({
                 <div style={{ display: 'flex' }}>
                     <JobProgress />
                     {hasPublishedDataset && <GoToPublicationButton />}
+                    {/*
+                     // @ts-expect-error TS18048 */}
                     {invalidFields.length > 0 && <ValidationButton />}
                     <PublicationButton />
                     <Menu />

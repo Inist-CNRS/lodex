@@ -1,5 +1,4 @@
-// @ts-expect-error TS6133
-import React, { Component } from 'react';
+import { Component } from 'react';
 import { translate } from '../../../../i18n/I18NContext';
 import { Box, Checkbox, FormControlLabel, TextField } from '@mui/material';
 import ContentAdd from '@mui/icons-material/Add';
@@ -7,7 +6,6 @@ import ContentClear from '@mui/icons-material/Clear';
 
 import config from '../../../../../../../config.json';
 import SelectFormat from '../../../SelectFormat';
-import { polyglot as polyglotPropTypes } from '../../../../propTypes';
 import { FORMATS, getAdminComponent } from '../../../index';
 import {
     FormatDataParamsFieldSet,
@@ -48,7 +46,7 @@ interface SparqlTextFieldAdminProps {
         };
     };
     onChange(...args: unknown[]): unknown;
-    p: unknown;
+    p: any;
 }
 
 class SparqlTextFieldAdmin extends Component<SparqlTextFieldAdminProps> {
@@ -162,7 +160,7 @@ class SparqlTextFieldAdmin extends Component<SparqlTextFieldAdminProps> {
         const SubAdminComponent = getAdminComponent(result.sub);
 
         return (
-            (<Box display="flex" flexDirection="column" flexGrow={1} gap={2}>
+            <Box display="flex" flexDirection="column" flexGrow={1} gap={2}>
                 <TextField
                     fullWidth
                     label={polyglot.t('sparql_attribute')}
@@ -171,19 +169,18 @@ class SparqlTextFieldAdmin extends Component<SparqlTextFieldAdminProps> {
                     value={result.attribute}
                 />
                 <SelectFormat
-                    // @ts-expect-error TS7006
                     onChange={(e) => this.handleSubformat(e, key)}
                     formats={FORMATS}
                     value={result.sub}
                 />
                 {result.sub && (
                     // @ts-expect-error TS2739 - Too complex union type from getAdminComponent
-                    (<SubAdminComponent
+                    <SubAdminComponent
                         onChange={(e) => this.handleSubformatOption(e, key)}
                         args={result.option}
-                    />)
+                    />
                 )}
-            </Box>)
+            </Box>
         );
     };
 

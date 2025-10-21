@@ -1,9 +1,7 @@
-// @ts-expect-error TS6133
-import React from 'react';
-import { field as fieldPropTypes } from '../../../propTypes';
+import { type Field } from '../../../propTypes';
 
 interface SentenceViewProps {
-    field: unknown;
+    field: Field;
     resource: object;
     prefix: string;
     suffix: string;
@@ -13,8 +11,9 @@ const SentenceView = ({
     resource,
     field,
     prefix,
-    suffix
+    suffix,
 }: SentenceViewProps) => {
+    // @ts-expect-error TS7053
     const output = resource[field.name];
     return <span>{`${prefix}${output}${suffix}`}</span>;
 };

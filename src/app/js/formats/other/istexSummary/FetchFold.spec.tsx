@@ -1,5 +1,3 @@
-// @ts-expect-error TS6133
-import React from 'react';
 import { shallow } from 'enzyme';
 import Folder from '@mui/icons-material/Folder';
 import FolderOpen from '@mui/icons-material/FolderOpen';

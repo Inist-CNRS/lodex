@@ -1,5 +1,3 @@
-// @ts-expect-error TS6133
-import React from 'react';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import MarkerClusterGroup from 'react-leaflet-markercluster'; // see vite.config.js
 // @ts-expect-error TS7016
@@ -43,10 +41,10 @@ export default function Map({
     width,
     height,
     zoom,
-    center
+    center,
 }: MapProps) {
     return (
-        (<MapContainer
+        <MapContainer
             // @ts-expect-error TS2322
             center={center}
             zoom={zoom}
@@ -59,20 +57,21 @@ export default function Map({
             />
             <MarkerClusterGroup>
                 {[]
+                    // @ts-expect-error TS2769
                     .concat(input)
                     // @ts-expect-error TS7031
                     .filter((item) => item.lat && item.lng)
                     .map((item, index) => {
                         return (
                             // @ts-expect-error TS2322
-                            (<Marker key={index} position={[item.lat, item.lng]}>
+                            <Marker key={index} position={[item.lat, item.lng]}>
                                 {/* 
                                 // @ts-expect-error TS2322 */}
                                 {item.txt && <Popup>{item.txt}</Popup>}
-                            </Marker>)
+                            </Marker>
                         );
                     })}
             </MarkerClusterGroup>
-        </MapContainer>)
+        </MapContainer>
     );
 }

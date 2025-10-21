@@ -1,5 +1,3 @@
-// @ts-expect-error TS6133
-import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import compose from 'recompose/compose';
@@ -54,19 +52,20 @@ interface ParallelCoordinatesChartViewProps {
 const ParallelCoordinatesChartView = ({
     fieldNames,
     data,
-    colorSet
+    colorSet,
 }: ParallelCoordinatesChartViewProps) => {
     return (
         // @ts-expect-error TS2339
-        (<div className={styles.container}>
+        <div className={styles.container}>
             <ParallelCoordinatesChart
                 fieldNames={fieldNames}
+                // @ts-expect-error TS2322
                 data={data}
                 width={600}
                 height={200}
                 colorSet={colorSet}
             />
-        </div>)
+        </div>
     );
 };
 

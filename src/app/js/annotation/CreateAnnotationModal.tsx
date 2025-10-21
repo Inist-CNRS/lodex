@@ -170,6 +170,7 @@ export function CreateAnnotationModal({
 
         if (
             [ANNOTATION_KIND_CORRECTION, ANNOTATION_KIND_ADDITION].includes(
+                // @ts-expect-error TS2345
                 state.values.kind!,
             )
         ) {
@@ -380,6 +381,7 @@ export function CreateAnnotationModal({
                                 <Stack spacing={2}>
                                     <AnnotationCommentStep
                                         form={form}
+                                        // @ts-expect-error TS2559
                                         field={field}
                                         initialValue={initialValue}
                                     />

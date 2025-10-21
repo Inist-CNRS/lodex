@@ -1,5 +1,4 @@
-// @ts-expect-error TS6133
-import React, { type CSSProperties, type ReactNode } from 'react';
+import { type CSSProperties, type ReactNode } from 'react';
 import { Link as RouterLink, NavLink } from 'react-router-dom';
 import classnames from 'classnames';
 import stylesToClassname from '../../lib/stylesToClassName';

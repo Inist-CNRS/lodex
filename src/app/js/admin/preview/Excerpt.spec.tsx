@@ -1,5 +1,3 @@
-// @ts-expect-error TS6133
-import React from 'react';
 import { shallow } from 'enzyme';
 import { TableCell, TableContainer } from '@mui/material';
 import ExcerptLine from './ExcerptLine';

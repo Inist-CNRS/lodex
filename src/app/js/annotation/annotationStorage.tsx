@@ -64,6 +64,7 @@ export const useSaveAnnotationId = () => {
     const dispatch = useDispatch();
 
     return useCallback(
+        // @ts-expect-error TS7031
         ({ fieldId, resourceUri, _id }) => {
             // @ts-expect-error TS7006
             setAnnotations((annotations) => {
@@ -92,6 +93,7 @@ export const useSetFieldAnnotationIds = ({ fieldId, resourceUri }) => {
     const { setAnnotations } = useContext(AnnotationStorageContext);
 
     return useCallback(
+        // @ts-expect-error TS7006
         (ids) => {
             // @ts-expect-error TS7006
             setAnnotations((annotations) => ({

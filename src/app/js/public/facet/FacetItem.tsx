@@ -1,5 +1,3 @@
-// @ts-expect-error TS6133
-import React from 'react';
 import classnames from 'classnames';
 import { ListItem, Grid, ListItemText } from '@mui/material';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';

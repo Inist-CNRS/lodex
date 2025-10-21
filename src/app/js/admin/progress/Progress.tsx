@@ -1,5 +1,4 @@
-// @ts-expect-error TS6133
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
     Dialog,
     LinearProgress,
@@ -12,7 +11,6 @@ import compose from 'recompose/compose';
 import { fromProgress } from '../selectors';
 import { loadProgress, clearProgress } from './reducer';
 import { PENDING } from '../../../../common/progressStatus';
-import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { io } from 'socket.io-client';
 import { DEFAULT_TENANT } from '../../../../common/tools/tenantTools';
 import { translate } from '../../i18n/I18NContext';
@@ -83,8 +81,12 @@ export const ProgressComponent = (props: ProgressComponentProps) => {
     if (updatedProgress.error) {
         return (
             <Dialog open={isOpen} onClose={clearProgress}>
+                {/*
+                 // @ts-expect-error TS18046 */}
                 <DialogTitle>{polyglot.t(updatedProgress.status)}</DialogTitle>
                 <DialogContent>
+                    {/*
+                     // @ts-expect-error TS18046 */}
                     <div>{polyglot.t('progress_error')}</div>
                 </DialogContent>
             </Dialog>
@@ -93,6 +95,8 @@ export const ProgressComponent = (props: ProgressComponentProps) => {
 
     return (
         <Dialog open={isOpen}>
+            {/*
+             // @ts-expect-error TS18046 */}
             <DialogTitle>{polyglot.t(updatedProgress.status)}</DialogTitle>
             <DialogContent>
                 <div className="progress">
@@ -136,4 +140,5 @@ const mapDispatchToProps = {
 export const Progress = compose(
     translate,
     connect(mapStateToProps, mapDispatchToProps),
+    // @ts-expect-error TS2345
 )(ProgressComponent);

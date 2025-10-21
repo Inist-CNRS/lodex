@@ -1,12 +1,9 @@
-// @ts-expect-error TS6133
-import React from 'react';
 import camelCase from 'lodash/camelCase';
 import { connect } from 'react-redux';
 import { useInView } from 'react-intersection-observer';
 
 import Property from '../public/Property';
 import { fromFields, fromCharacteristic } from '../sharedSelectors';
-import { field as fieldPropTypes } from '../propTypes';
 
 const LOADING_BOX_HEIGHT = 250;
 
@@ -34,7 +31,7 @@ export const DatasetCharacteristicItemComponent = ({
 
     field,
 
-    style
+    style,
 }: DatasetCharacteristicItemComponentProps) => {
     const [ref, inView] = useInView({
         triggerOnce: true,
@@ -50,6 +47,7 @@ export const DatasetCharacteristicItemComponent = ({
                     resource={resource}
                     field={field}
                     style={style}
+                    // @ts-expect-error TS18046
                     className={camelCase(field.internalName || '')}
                 />
             )}

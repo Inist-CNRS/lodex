@@ -1,15 +1,12 @@
-// @ts-expect-error TS6133
-import React from 'react';
-
-import { field as fieldPropTypes } from '../../../propTypes';
 import InvalidFormat from '../../InvalidFormat';
 import { getViewComponent } from '../../index';
 import getColorSetFromField from '../../../lib/getColorSetFromField';
+import type { Field } from '../../../propTypes';
 
 interface FieldCloneViewProps {
     className?: string;
-    field: unknown;
-    fields: unknown[];
+    field: Field;
+    fields: Field[];
     resource: object;
     value: string;
 }
@@ -19,9 +16,8 @@ const FieldCloneView = ({
     resource,
     field,
     fields,
-    value
+    value,
 }: FieldCloneViewProps) => {
-    // @ts-expect-error TS7006
     const clonedField = fields.find((item) => item.name === value);
 
     const colorSet = getColorSetFromField(clonedField);
@@ -30,8 +26,10 @@ const FieldCloneView = ({
     if (
         !clonedField ||
         typeof clonedField !== 'object' ||
+        // @ts-expect-error TS2339
         (clonedField.format && clonedField.format.name === 'fieldClone')
     ) {
+        // @ts-expect-error TS18046
         return <InvalidFormat format={field.format} value={value} />;
     }
 

@@ -1,5 +1,3 @@
-// @ts-expect-error TS6133
-import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import compose from 'recompose/compose';
@@ -67,20 +65,18 @@ interface AsterPlotChartViewProps {
     colorSet?: string[];
 }
 
-const AsterPlotChartView = ({
-    data,
-    colorSet
-}: AsterPlotChartViewProps) => {
+const AsterPlotChartView = ({ data, colorSet }: AsterPlotChartViewProps) => {
     return (
         // @ts-expect-error TS2339
-        (<div className={styles.container}>
+        <div className={styles.container}>
             <AsterPlot
+                // @ts-expect-error TS2322
                 data={data}
                 width={200}
                 height={200}
                 colorSet={colorSet}
             />
-        </div>)
+        </div>
     );
 };
 

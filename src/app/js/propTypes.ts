@@ -7,6 +7,12 @@ export const polyglot = PropTypes.shape({
     t: PropTypes.func.isRequired,
 });
 
+export type Field = {
+    name: string;
+    label?: string;
+    scheme?: string;
+};
+
 export const field = PropTypes.shape({
     name: PropTypes.string,
     label: PropTypes.string,
@@ -36,17 +42,40 @@ export const property = PropTypes.shape({
     validatedFields: PropTypes.arrayOf(PropTypes.string),
 });
 
+export type ValidationFieldProperty = {
+    error?: string;
+    isValid: boolean;
+    name: string;
+};
+
 export const validationFieldProperty = PropTypes.shape({
     error: PropTypes.string,
     isValid: PropTypes.bool.isRequired,
     name: PropTypes.string.isRequired,
 });
 
+export type ValidationFieldProps = {
+    isValid: boolean;
+    name: string;
+    label: string;
+    properties: ValidationFieldProperty[];
+};
+
 export const validationField = PropTypes.shape({
     isValid: PropTypes.bool.isRequired,
     name: PropTypes.string.isRequired,
     properties: PropTypes.arrayOf(validationFieldProperty).isRequired,
 });
+
+export type FormFieldProps = {
+    input: object;
+    label?: string;
+    meta: {
+        touched: boolean;
+        error?: Error;
+    };
+    multiple?: boolean;
+};
 
 export const formField = {
     input: PropTypes.shape({}).isRequired,

@@ -1,9 +1,7 @@
-// @ts-expect-error TS6133
-import React from 'react';
 import classnames from 'classnames';
 import katex from 'katex';
 import Helmet from 'react-helmet';
-import { field as fieldPropTypes } from '../../../propTypes';
+import { type Field } from '../../../propTypes';
 import InvalidFormat from '../../InvalidFormat';
 
 import stylesToClassname from '../../../lib/stylesToClassName';
@@ -19,14 +17,11 @@ const styles = stylesToClassname(
 );
 
 interface LatexViewProps {
-    field: unknown;
+    field: Field;
     resource: object;
 }
 
-const LatexView = ({
-    resource,
-    field
-}: LatexViewProps) => {
+const LatexView = ({ resource, field }: LatexViewProps) => {
     const KatexOptions = {
         displayMode: false,
         leqno: true,
@@ -37,12 +32,16 @@ const LatexView = ({
         output: 'html',
         trust: false,
     };
+    // @ts-expect-error TS7053
     const value = resource[field.name];
+    // @ts-expect-error TS18046
     const delimiter = field.format.args.delimiter.trim();
     const parts =
         delimiter !== ''
-            ? resource[field.name].split(delimiter)
-            : ['', resource[field.name]];
+            ? // @ts-expect-error TS7053
+              resource[field.name].split(delimiter)
+            : // @ts-expect-error TS7053
+              ['', resource[field.name]];
 
     let html;
     try {
@@ -60,12 +59,13 @@ const LatexView = ({
             )
             .join('');
     } catch (e) {
+        // @ts-expect-error TS18046
         return <InvalidFormat format={field.format} value={value} />;
     }
 
     return (
         // @ts-expect-error TS2339
-        (<div className={classnames('latex-container', styles.container)}>
+        <div className={classnames('latex-container', styles.container)}>
             <Helmet>
                 <link
                     rel="stylesheet"
@@ -79,7 +79,7 @@ const LatexView = ({
                     __html: html,
                 }}
             />
-        </div>)
+        </div>
     );
 };
 

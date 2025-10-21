@@ -1,6 +1,5 @@
 import '@babel/polyfill';
-// @ts-expect-error TS6133
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import {
     BrowserRouter as Router,

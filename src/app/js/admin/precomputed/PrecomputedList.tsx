@@ -61,6 +61,8 @@ export const PrecomputedList = ({
                      // @ts-expect-error TS2741 */}
                     <GridToolbarColumnsButton />
                 </Tooltip>
+                {/*
+                 // @ts-expect-error TS2739 */}
                 <GridToolbarFilterButton />
                 <Tooltip title={translate(`density_tooltip`)}>
                     {/*
@@ -133,6 +135,7 @@ export const PrecomputedList = ({
                         },
                     },
                 ]}
+                // @ts-expect-error TS2322
                 rows={precomputedList}
                 getRowId={(row) => row._id}
                 autoHeight

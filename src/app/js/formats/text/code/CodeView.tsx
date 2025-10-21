@@ -1,13 +1,11 @@
-// @ts-expect-error TS6133
-import React from 'react';
 // @ts-expect-error TS7016
 import SyntaxHighlighter from 'react-syntax-highlighter';
 // @ts-expect-error TS7016
 import { tomorrow } from 'react-syntax-highlighter/dist/cjs/styles/hljs';
-import { field as fieldPropTypes } from '../../../propTypes';
+import { type Field } from '../../../propTypes';
 
 interface ComponentProps {
-    field: unknown;
+    field: Field;
     resource: object;
     languageToHighlight: string;
 }
@@ -15,9 +13,11 @@ interface ComponentProps {
 const Component = ({
     resource,
     field,
-    languageToHighlight
+    languageToHighlight,
 }: ComponentProps) => (
     <SyntaxHighlighter language={languageToHighlight} style={tomorrow}>
+        {/*
+         // @ts-expect-error TS7053 */}
         {resource[field.name]}
     </SyntaxHighlighter>
 );

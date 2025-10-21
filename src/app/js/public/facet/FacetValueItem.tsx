@@ -6,8 +6,7 @@ import {
     ListItemText,
     Typography,
 } from '@mui/material';
-// @ts-expect-error TS6133
-import React from 'react';
+
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import { translate, useTranslate } from '../../i18n/I18NContext';

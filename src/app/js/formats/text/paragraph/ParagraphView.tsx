@@ -1,6 +1,4 @@
-// @ts-expect-error TS6133
-import React from 'react';
-import { field as fieldPropTypes } from '../../../propTypes';
+import { type Field } from '../../../propTypes';
 
 // @ts-expect-error TS7006
 const getParagraphWidth = (paragraphWidth, field) => {
@@ -11,7 +9,7 @@ const getParagraphWidth = (paragraphWidth, field) => {
 };
 
 interface ParagraphViewProps {
-    field: unknown;
+    field: Field;
     resource: object;
     paragraphWidth: string;
     colors: string;
@@ -21,7 +19,7 @@ const ParagraphView = ({
     resource,
     field,
     paragraphWidth,
-    colors
+    colors,
 }: ParagraphViewProps) => {
     const style = {
         maxWidth: getParagraphWidth(paragraphWidth, field),

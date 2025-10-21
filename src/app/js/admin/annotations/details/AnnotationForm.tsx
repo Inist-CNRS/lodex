@@ -35,17 +35,23 @@ export const AnnotationForm = ({
 
     const { resourceType, frontUrl, adminUrl } = useMemo(() => {
         const resourceType = getResourceType(
+            // @ts-expect-error TS2339
             annotation.resourceUri,
+            // @ts-expect-error TS2339
             annotation.field,
         );
 
+        // @ts-expect-error TS2339
         const redirectFieldHash = getRedirectFieldHash(annotation.field);
 
         if (resourceType === 'graph') {
             return {
                 resourceType,
+                // @ts-expect-error TS2339
                 frontUrl: annotation.resourceUri
+                    // @ts-expect-error TS2339
                     ? `/instance/${tenant}${annotation.resourceUri}`
+                    // @ts-expect-error TS2339
                     : `/instance/${tenant}/graph/${annotation.field.name}`,
             };
         }
@@ -59,10 +65,14 @@ export const AnnotationForm = ({
 
         return {
             resourceType,
+            // @ts-expect-error TS2339
             frontUrl: annotation.resource
+                // @ts-expect-error TS2339
                 ? `/instance/${tenant}/${annotation.resourceUri}${redirectFieldHash}`
                 : null,
+            // @ts-expect-error TS2339
             adminUrl: annotation.resource
+                // @ts-expect-error TS2339
                 ? `/instance/${tenant}/admin#/data/existing?uri=${encodeURIComponent(annotation.resourceUri)}`
                 : null,
         };
@@ -70,12 +80,17 @@ export const AnnotationForm = ({
 
     const form = useForm({
         defaultValues: {
+            // @ts-expect-error TS2339
             status: annotation.status ?? 'to_review',
+            // @ts-expect-error TS2339
             internalComment: annotation.internalComment ?? '',
+            // @ts-expect-error TS2339
             adminComment: annotation.adminComment ?? '',
+            // @ts-expect-error TS2339
             administrator: annotation.administrator ?? '',
         },
         onSubmit: async ({ value }) => {
+            // @ts-expect-error TS2339
             await handleUpdateAnnotation(annotation._id, value);
         },
         validators: {
@@ -118,6 +133,8 @@ export const AnnotationForm = ({
                         paddingInlineEnd: 2,
                     }}
                 >
+                    {/*
+                     // @ts-expect-error TS2740 */}
                     <AnnotationItems annotation={annotation} />
                 </Grid>
 
@@ -194,6 +211,7 @@ export const AnnotationForm = ({
             >
                 <Stack direction="row" justifyContent="space-between">
                     <AnnotationDeleteButton
+                        // @ts-expect-error TS2339
                         id={annotation._id}
                         isSubmitting={isSubmitting}
                     />

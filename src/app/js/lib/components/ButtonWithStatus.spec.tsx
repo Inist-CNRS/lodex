@@ -1,5 +1,3 @@
-// @ts-expect-error TS6133
-import React from 'react';
 import { shallow } from 'enzyme';
 import { lightGreen, red } from '@mui/material/colors';
 import { CircularProgress, Button, LinearProgress } from '@mui/material';

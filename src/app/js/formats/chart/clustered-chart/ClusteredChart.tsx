@@ -1,5 +1,4 @@
-// @ts-expect-error TS6133
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 
 import { CustomActionVegaLite } from '../../utils/components/vega-lite-component';
 import { VEGA_LITE_DATA_INJECT_TYPE_A, flip } from '../../utils/chartsUtils';
@@ -22,22 +21,22 @@ interface ClusteredChartProps {
  * @returns {JSX.Element}
  * @constructor
  */
-const ClusteredChart = ({
-    data,
-    topic,
-    params
-}: ClusteredChartProps) => {
+const ClusteredChart = ({ data, topic, params }: ClusteredChartProps) => {
     const values = useMemo(() => {
         return data.filter((value) =>
             flip(
+                // @ts-expect-error TS18048
                 params.flipAxis,
+                // @ts-expect-error TS18046
                 value.target === topic,
+                // @ts-expect-error TS18046
                 value.source === topic,
             ),
         );
     }, [data, topic]);
 
     const spec = useMemo(() => {
+        // @ts-expect-error TS2339
         const { colors, xTitle, yTitle, flipAxis } = params;
         const specToReturn = {
             $schema: 'https://vega.github.io/schema/vega-lite/v5.json',

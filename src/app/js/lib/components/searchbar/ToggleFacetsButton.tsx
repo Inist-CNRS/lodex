@@ -1,5 +1,3 @@
-// @ts-expect-error TS6133
-import React from 'react';
 import { IconButton } from '@mui/material';
 import { faFilter } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -22,7 +20,7 @@ interface ToggleFacetsButtonProps {
 
 const ToggleFacetsButton = ({
     className,
-    onChange
+    onChange,
 }: ToggleFacetsButtonProps) => (
     <IconButton className={className} onClick={onChange}>
         {/*

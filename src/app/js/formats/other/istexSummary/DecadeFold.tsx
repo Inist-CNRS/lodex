@@ -1,10 +1,7 @@
-// @ts-expect-error TS6133
-import React from 'react';
-
 import FetchFold from './FetchFold';
 import { getDecadeYearData } from './getIstexData';
-import { SEARCHED_FIELD_VALUES, SORT_YEAR_VALUES } from './constants';
-import { polyglot as polyglotPropTypes } from '../../../propTypes';
+import type { SearchedField, SortYear } from './constants';
+import type { ReactNode } from 'react';
 
 interface DecadeFoldProps {
     value: string;
@@ -12,9 +9,9 @@ interface DecadeFoldProps {
         name: string;
         count: number;
     };
-    searchedField?: unknown[];
-    sortDir?: unknown[];
-    children(...args: unknown[]): unknown;
+    searchedField?: SearchedField;
+    sortDir?: SortYear;
+    children(...args: unknown[]): ReactNode;
     polyglot: unknown;
 }
 
@@ -33,11 +30,12 @@ const DecadeFold = ({
 
     polyglot,
 
-    children
+    children,
 }: DecadeFoldProps) => (
     <FetchFold
         label={`${from}-${to}`}
         count={count}
+        // @ts-expect-error TS2769
         from={from}
         to={to}
         polyglot={polyglot}

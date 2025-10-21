@@ -1,8 +1,6 @@
-// @ts-expect-error TS6133
-import React, { Component } from 'react';
+import { Component } from 'react';
 import { translate } from '../../i18n/I18NContext';
 import { MenuItem, TextField } from '@mui/material';
-import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { FormatDefaultParamsFieldSet } from '../utils/components/field-set/FormatFieldSets';
 import FormatGroupedFieldSet from '../utils/components/field-set/FormatGroupedFieldSet';
 
@@ -13,7 +11,7 @@ export const defaultArgs = {
 
 interface DefaultUrlAdminProps {
     args?: {
-        type?: "value" | "text" | "column";
+        type?: 'value' | 'text' | 'column';
         value?: string;
     };
     onChange(...args: unknown[]): unknown;
@@ -50,17 +48,24 @@ class DefaultUrlAdmin extends Component<DefaultUrlAdminProps> {
                     <TextField
                         fullWidth
                         select
+                        // @ts-expect-error TS18046
                         label={polyglot.t('label_format_select_type')}
                         onChange={this.handleType}
                         value={type}
                     >
                         <MenuItem value="value">
+                            {/*
+                             // @ts-expect-error TS18046 */}
                             {polyglot.t('label_format_column')}
                         </MenuItem>
                         <MenuItem value="text">
+                            {/*
+                             // @ts-expect-error TS18046 */}
                             {polyglot.t('label_format_custom')}
                         </MenuItem>
                         <MenuItem value="column">
+                            {/*
+                             // @ts-expect-error TS18046 */}
                             {polyglot.t('label_format_another_column')}
                         </MenuItem>
                     </TextField>
@@ -69,8 +74,10 @@ class DefaultUrlAdmin extends Component<DefaultUrlAdminProps> {
                             fullWidth
                             label={
                                 type === 'text'
-                                    ? polyglot.t('label_format_custom_value')
-                                    : polyglot.t(
+                                    ? // @ts-expect-error TS18046
+                                      polyglot.t('label_format_custom_value')
+                                    : // @ts-expect-error TS18046
+                                      polyglot.t(
                                           'label_format_another_column_value',
                                       )
                             }

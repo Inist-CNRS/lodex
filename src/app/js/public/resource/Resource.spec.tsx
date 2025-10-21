@@ -1,6 +1,5 @@
 import { ThemeProvider, createTheme } from '@mui/material';
-// @ts-expect-error TS6133
-import React from 'react';
+
 import { render } from '../../../../test-utils';
 import Loading from '../../lib/components/Loading';
 import Detail from './Detail';

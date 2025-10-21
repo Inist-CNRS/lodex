@@ -1,6 +1,5 @@
 import { useForm } from '@tanstack/react-form';
-// @ts-expect-error TS6133
-import React from 'react';
+
 import { MemoryRouter } from 'react-router-dom';
 import { render } from '../../../../../test-utils';
 import { TestI18N } from '../../../i18n/I18NContext';
@@ -18,9 +17,13 @@ interface TestFormProps {
 const TestForm = ({ annotation }: TestFormProps) => {
     const form = useForm({
         defaultValues: {
+            // @ts-expect-error TS18048
             status: annotation.status,
+            // @ts-expect-error TS18048
             internalComment: annotation.internalComment,
+            // @ts-expect-error TS18048
             administrator: annotation.administrator,
+            // @ts-expect-error TS18048
             adminComment: annotation.adminComment,
         },
         onSubmit: () => {},

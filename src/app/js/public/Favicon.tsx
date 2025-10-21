@@ -1,5 +1,4 @@
-// @ts-expect-error TS6133
-import React, { Component } from 'react';
+import { Component } from 'react';
 
 interface FaviconProps {
     className?: string;

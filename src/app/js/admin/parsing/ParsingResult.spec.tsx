@@ -1,5 +1,3 @@
-// @ts-expect-error TS6133
-import React from 'react';
 import { MemoryRouter, Route } from 'react-router-dom';
 import { render } from '../../../../test-utils';
 import { ParsingResultComponent } from './ParsingResult';

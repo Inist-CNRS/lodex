@@ -2,8 +2,7 @@
 import * as venn from 'venn.js';
 // @ts-expect-error TS7016
 import * as d3 from 'd3';
-// @ts-expect-error TS6133
-import React, { useRef, useEffect } from 'react';
+import { useRef, useEffect } from 'react';
 import { getColor } from '../../utils/colorUtils';
 
 const margin = {
@@ -20,22 +19,23 @@ interface VennDiagramProps {
     colorSet?: string[];
 }
 
-const VennDiagram = ({
-    input,
-    width,
-    height,
-    colorSet
-}: VennDiagramProps) => {
+const VennDiagram = ({ input, width, height, colorSet }: VennDiagramProps) => {
     const ref = useRef(null);
+    // @ts-expect-error TS18048
     const chartWidth = width - margin.left - margin.right;
+    // @ts-expect-error TS18048
     const chartHeight = height - margin.top - margin.bottom;
+    // @ts-expect-error TS18048
     const sets = input
         // @ts-expect-error TS7006
         .filter((item, idex, all) => all.find((x) => item.target === x.source))
         .map((item) => {
+            // @ts-expect-error TS18046
             if (item.source === item.target) {
+                // @ts-expect-error TS18046
                 return { sets: [item.source], size: item.weight };
             }
+            // @ts-expect-error TS18046
             return { sets: [item.source, item.target], size: item.weight };
         });
     useEffect(() => {

@@ -1,14 +1,8 @@
-// @ts-expect-error TS6133
-import React from 'react';
-
 interface CloseAllIconProps {
     fill?: string;
 }
 
-export const CloseAllIcon = ({
-    fill,
-    ...props
-}: CloseAllIconProps) => {
+export const CloseAllIcon = ({ fill, ...props }: CloseAllIconProps) => {
     return (
         <svg
             width="24"

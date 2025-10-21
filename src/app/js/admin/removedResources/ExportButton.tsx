@@ -1,8 +1,5 @@
-// @ts-expect-error TS6133
-import React from 'react';
 import { Button } from '@mui/material';
 import DownloadIcon from '@mui/icons-material/Download';
-import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { exportHiddenResources } from '../api/hiddenResource';
 import { translate } from '../../i18n/I18NContext';
 
@@ -10,9 +7,7 @@ interface ExportButtonProps {
     p: unknown;
 }
 
-const ExportButton = ({
-    p: polyglot
-}: ExportButtonProps) => {
+const ExportButton = ({ p: polyglot }: ExportButtonProps) => {
     const handleExport = async () => {
         const res = await exportHiddenResources();
         const file = window.URL.createObjectURL(res);
@@ -30,6 +25,7 @@ const ExportButton = ({
         link.remove();
     };
 
+    // @ts-expect-error TS18046
     const buttonLabel = polyglot.t('export');
     return (
         <Button

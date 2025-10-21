@@ -1,7 +1,6 @@
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Button } from '@mui/material';
-// @ts-expect-error TS6133
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { toast } from '../../../../common/tools/toast';
 import { useTranslate } from '../../i18n/I18NContext';
@@ -15,7 +14,7 @@ interface DeleteManyButtonProps {
 
 export function DeleteManyButton({
     selectedRowIds,
-    reloadDataset
+    reloadDataset,
 }: DeleteManyButtonProps) {
     const { translate } = useTranslate();
 

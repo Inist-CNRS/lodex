@@ -1,5 +1,4 @@
-// @ts-expect-error TS6133
-import React, { type PropsWithChildren } from 'react';
+import { type PropsWithChildren } from 'react';
 import { render } from '@testing-library/react';
 import { TransformerListComponent as TransformerList } from './TransformerList';
 import { TestI18N } from '../../i18n/I18NContext.tsx';

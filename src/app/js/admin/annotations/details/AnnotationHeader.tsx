@@ -1,7 +1,6 @@
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-// @ts-expect-error TS6133
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import { useTranslate } from '../../../i18n/I18NContext';
 import { getResourceType } from '../helpers/resourceType';
 
@@ -23,18 +22,19 @@ interface AnnotationHeaderProps {
     annotation?: object;
 }
 
-export function AnnotationHeader({
-    annotation
-}: AnnotationHeaderProps) {
+export function AnnotationHeader({ annotation }: AnnotationHeaderProps) {
     const { translate } = useTranslate();
 
     const subtitle = useMemo(() => {
         const resourceType = getResourceType(
+            // @ts-expect-error TS18048
             annotation.resourceUri,
+            // @ts-expect-error TS18048
             annotation.field,
         );
 
         if (resourceType === 'graph') {
+            // @ts-expect-error TS18048
             return annotation.field.label;
         }
 
@@ -43,6 +43,7 @@ export function AnnotationHeader({
         }
 
         return (
+            // @ts-expect-error TS18048
             annotation.resource?.title ??
             translate('annotation_resource_not_found')
         );
@@ -52,7 +53,11 @@ export function AnnotationHeader({
         <Stack gap={1}>
             <Stack direction="row" gap={1} alignItems="center">
                 <Typography variant="h1" fontSize={24} fontWeight={700}>
+                    {/*
+                     // @ts-expect-error TS18048 */}
                     {translate(`annotation_header_${annotation.kind}`)}{' '}
+                    {/*
+                     // @ts-expect-error TS2345 */}
                     {getAnnotationResourceTitle(annotation, translate)}
                 </Typography>
             </Stack>

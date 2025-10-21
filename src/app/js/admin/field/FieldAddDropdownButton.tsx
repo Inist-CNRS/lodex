@@ -101,6 +101,8 @@ export const FieldAddDropdownButtonComponent = ({
                     <ArrowDropDownIcon />
                 </Button>
             </ButtonGroup>
+            {/*
+             // @ts-expect-error TS2739 */}
             <Popper
                 style={{
                     zIndex: 9999999,

@@ -124,4 +124,5 @@ const mapStateToProps = (state) => ({
 export const ModelNestedMenu = compose(
     connect(mapStateToProps, mapDispatchToProps),
     withRouter,
+// @ts-expect-error TS2345
 )(ModelNestedMenuComponent);

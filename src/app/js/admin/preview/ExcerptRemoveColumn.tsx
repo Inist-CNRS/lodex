@@ -1,31 +1,23 @@
-// @ts-expect-error TS6133
-import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import compose from 'recompose/compose';
 import { TableCell, Button } from '@mui/material';
 
 import { removeField } from '../../fields';
-import {
-    polyglot as polyglotPropTypes,
-    field as fieldPropTypes,
-} from '../../propTypes';
+import { type Field } from '../../propTypes';
 import getFieldClassName from '../../lib/getFieldClassName';
 import { translate } from '../../i18n/I18NContext';
 
 interface ExcerptRemoveColumnComponentProps {
     removeColumn(...args: unknown[]): unknown;
-    field: unknown;
+    field: Field;
     p: unknown;
 }
 
 export const ExcerptRemoveColumnComponent = ({
     removeColumn,
-
-    // @ts-expect-error TS7031
     field: { name },
-
-    p: polyglot
+    p: polyglot,
 }: ExcerptRemoveColumnComponentProps) => (
     <TableCell>
         {name !== 'uri' ? (
@@ -37,6 +29,8 @@ export const ExcerptRemoveColumnComponent = ({
                 onClick={removeColumn}
                 color="warning"
             >
+                {/*
+                 // @ts-expect-error TS18046 */}
                 {polyglot.t('remove_from_publication')}
             </Button>
         ) : null}

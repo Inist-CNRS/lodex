@@ -1,10 +1,9 @@
-// @ts-expect-error TS6133
-import React, { useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { connect } from 'react-redux';
 import { clamp } from 'lodash';
 import compose from 'recompose/compose';
 
-import { field as fieldPropTypes } from '../../../../propTypes';
+import { type Field } from '../../../../propTypes';
 import { CustomActionVegaLite } from '../../../utils/components/vega-lite-component';
 import injectData from '../../../injectData';
 import {
@@ -24,7 +23,7 @@ const styles = {
 };
 
 interface BubblePlotViewProps {
-    field?: unknown;
+    field?: Field;
     resource?: object;
     data?: {
         values: any;
@@ -64,7 +63,7 @@ const BubblePlotView = ({
 
     tooltipWeight,
 
-    aspectRatio
+    aspectRatio,
 }: BubblePlotViewProps) => {
     const { ref, width } = useSizeObserver();
     const [error, setError] = useState('');
@@ -111,12 +110,13 @@ const BubblePlotView = ({
     ]);
 
     if (!spec) {
+        // @ts-expect-error TS18046
         return <InvalidFormat format={field.format} value={error} />;
     }
 
     return (
         // @ts-expect-error TS2322
-        (<div style={styles.container} ref={ref}>
+        <div style={styles.container} ref={ref}>
             <CustomActionVegaLite
                 // @ts-expect-error TS2322
                 spec={spec}
@@ -124,7 +124,7 @@ const BubblePlotView = ({
                 injectType={VEGA_LITE_DATA_INJECT_TYPE_A}
                 aspectRatio={aspectRatio}
             />
-        </div>)
+        </div>
     );
 };
 
@@ -144,8 +144,7 @@ const mapStateToProps = (state, { formatData }) => {
     };
 };
 
-// @ts-expect-error TS6133
-export const BubblePlotAdminView = connect((state, props) => {
+export const BubblePlotAdminView = connect((_state, props) => {
     return {
         ...props,
         field: {

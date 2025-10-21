@@ -6,8 +6,7 @@ import {
     TextField as MuiTextField,
     Tooltip,
 } from '@mui/material';
-// @ts-expect-error TS6133
-import React, { useEffect, useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { FormApi, useField } from '@tanstack/react-form';
 

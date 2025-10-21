@@ -1,7 +1,6 @@
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Button } from '@mui/material';
-// @ts-expect-error TS6133
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import {
     gridRowCountSelector,
@@ -20,7 +19,7 @@ interface DeleteFilteredButtonProps {
 
 export function DeleteFilteredButton({
     filter,
-    reloadDataset
+    reloadDataset,
 }: DeleteFilteredButtonProps) {
     const apiRef = useGridApiContext();
     const rowCount = useGridSelector(apiRef, gridRowCountSelector);
@@ -71,6 +70,7 @@ export function DeleteFilteredButton({
         handleCloseModal();
     };
 
+    // @ts-expect-error TS2339
     if (filter.value === undefined || rowCount === 0) {
         return null;
     }

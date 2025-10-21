@@ -1,6 +1,5 @@
 import { FormControl, InputLabel, NativeSelect } from '@mui/material';
-// @ts-expect-error TS6133
-import React from 'react';
+
 import { useTranslate } from '../../../i18n/I18NContext';
 
 const scopes = ['home', 'document', 'subRessource', 'facet', 'chart'];
@@ -14,7 +13,7 @@ interface FieldScopeFilterProps {
 
 export const FieldScopeFilter = ({
     applyValue,
-    item
+    item,
 }: FieldScopeFilterProps) => {
     const { translate } = useTranslate();
 
