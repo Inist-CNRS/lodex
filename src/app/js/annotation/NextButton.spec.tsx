@@ -1,4 +1,4 @@
-import { render } from '@testing-library/react';
+import { fireEvent, render } from '@testing-library/react';
 
 import { TestI18N } from '../i18n/I18NContext';
 import { AUTHOR_STEP, COMMENT_STEP, TARGET_STEP, VALUE_STEP } from './steps';
@@ -90,7 +90,7 @@ describe('NextButton', () => {
             });
             expect(screen.queryByText('next')).toBeInTheDocument();
             expect(screen.queryByText('validate')).not.toBeInTheDocument();
-            screen.fireEvent.click(screen.queryByText('next'));
+            fireEvent.click(screen.getByText('next'));
             expect(goToStep).toHaveBeenCalledWith(COMMENT_STEP);
         });
         it('should display disabled next button when isValueStepValid is false', async () => {
@@ -130,7 +130,7 @@ describe('NextButton', () => {
             });
             expect(screen.queryByText('next')).toBeInTheDocument();
             expect(screen.queryByText('validate')).not.toBeInTheDocument();
-            screen.fireEvent.click(screen.queryByText('next'));
+            fireEvent.click(screen.getByText('next'));
             expect(goToStep).toHaveBeenCalledWith(AUTHOR_STEP);
         });
         it('should display disabled next button when isCommentStepValid is false', async () => {

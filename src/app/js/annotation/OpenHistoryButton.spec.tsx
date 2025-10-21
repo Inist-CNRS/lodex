@@ -1,3 +1,4 @@
+import { fireEvent, waitFor } from '@testing-library/dom';
 import { render } from '../../../test-utils';
 import { TestI18N } from '../i18n/I18NContext';
 import { OpenHistoryButton } from './OpenHistoryButton';
@@ -53,9 +54,9 @@ describe('OpenHistoryButton', () => {
         expect(
             screen.queryByText('annotation_open_history+{"smart_count":1}'),
         ).not.toBeDisabled();
-        await screen.waitFor(() => {
-            screen.fireEvent.click(
-                screen.queryByText('annotation_open_history+{"smart_count":1}'),
+        await waitFor(() => {
+            fireEvent.click(
+                screen.getByText('annotation_open_history+{"smart_count":1}'),
             );
         });
         expect(openHistory).toHaveBeenCalled();

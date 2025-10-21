@@ -4,6 +4,7 @@ import { render } from '../../../../../test-utils';
 import { TestI18N } from '../../../i18n/I18NContext';
 import { useUpdateAnnotation } from '../hooks/useUpdateAnnotation';
 import { AnnotationForm } from './AnnotationForm';
+import { fireEvent, waitFor, within } from '@testing-library/dom';
 
 jest.mock('./../hooks/useUpdateAnnotation', () => ({
     useUpdateAnnotation: jest.fn().mockReturnValue({
@@ -77,20 +78,12 @@ describe('AnnotationForm', () => {
             name: 'annotation_field_section',
         });
         expect(fieldRegion).toBeInTheDocument();
+        expect(within(fieldRegion).getByText('[GaZr]')).toBeInTheDocument();
         expect(
-            screen.getByText('[GaZr]', {
-                container: fieldRegion,
-            }),
+            within(fieldRegion).getByText('Annotated field'),
         ).toBeInTheDocument();
         expect(
-            screen.getByText('Annotated field', {
-                container: fieldRegion,
-            }),
-        ).toBeInTheDocument();
-        expect(
-            screen.getByText('annotated_field', {
-                container: fieldRegion,
-            }),
+            within(fieldRegion).getByText('annotated_field'),
         ).toBeInTheDocument();
 
         // Comment region
@@ -99,9 +92,9 @@ describe('AnnotationForm', () => {
         });
         expect(commentRegion).toBeInTheDocument();
         expect(
-            screen.getByText('Just testing the annotation system', {
-                container: commentRegion,
-            }),
+            within(commentRegion).getByText(
+                'Just testing the annotation system',
+            ),
         ).toBeInTheDocument();
 
         // Comment region
@@ -110,15 +103,12 @@ describe('AnnotationForm', () => {
         });
         expect(authorRegion).toBeInTheDocument();
         expect(
-            screen.getByText('Count Ributor', {
-                container: authorRegion,
-            }),
+            within(authorRegion).getByText('Count Ributor'),
         ).toBeInTheDocument();
 
         expect(
-            screen.getByRole('link', {
+            within(authorRegion).getByRole('link', {
                 name: 'ributor@gmail.com',
-                container: authorRegion,
             }),
         ).toHaveAttribute('href', 'mailto:ributor@gmail.com');
 
@@ -126,14 +116,14 @@ describe('AnnotationForm', () => {
             name: 'annotation_complementary_infos_section',
         });
         expect(
-            screen.queryByLabelText('annotation_created_at', {
-                container: complementaryInfosRegion,
-            }),
+            within(complementaryInfosRegion).queryByLabelText(
+                'annotation_created_at',
+            ),
         ).toHaveTextContent('1/1/2025');
         expect(
-            screen.queryByLabelText('annotation_updated_at', {
-                container: complementaryInfosRegion,
-            }),
+            within(complementaryInfosRegion).queryByLabelText(
+                'annotation_updated_at',
+            ),
         ).toHaveTextContent('10/1/2025');
     });
 
@@ -176,20 +166,16 @@ describe('AnnotationForm', () => {
         });
         expect(inputsRegion).toBeInTheDocument();
         expect(
-            screen.queryByLabelText('annotation_status', {
-                container: inputsRegion,
-            }),
+            within(inputsRegion).queryByLabelText('annotation_status'),
         ).toHaveTextContent('annotation_status_ongoing');
         expect(
-            screen.getByRole('textbox', {
+            within(inputsRegion).getByRole('textbox', {
                 name: 'annotation_internal_comment',
-                container: inputsRegion,
             }),
         ).toHaveValue('Just testing the annotation admin');
         expect(
-            screen.getByRole('textbox', {
+            within(inputsRegion).getByRole('textbox', {
                 name: 'annotation_administrator',
-                container: inputsRegion,
             }),
         ).toHaveValue('The administrator');
     });
@@ -239,31 +225,25 @@ describe('AnnotationForm', () => {
         });
         expect(inputsRegion).toBeInTheDocument();
 
-        await screen.waitFor(() => {
-            screen.fireEvent.mouseDown(
-                screen.getByRole('button', {
+        await waitFor(() => {
+            fireEvent.mouseDown(
+                within(inputsRegion).getByRole('button', {
                     name: 'annotation_status',
-                    container: inputsRegion,
                 }),
             );
         });
 
-        await screen.waitFor(() => {
-            screen.fireEvent.click(
-                screen.getByText('annotation_status_ongoing'),
-            );
+        await waitFor(() => {
+            fireEvent.click(screen.getByText('annotation_status_ongoing'));
         });
         expect(
-            screen.queryByLabelText('annotation_status', {
-                container: inputsRegion,
-            }),
+            within(inputsRegion).queryByLabelText('annotation_status'),
         ).toHaveTextContent('annotation_status_ongoing');
 
-        await screen.waitFor(() => {
-            screen.fireEvent.change(
-                screen.getByRole('textbox', {
+        await waitFor(() => {
+            fireEvent.change(
+                within(inputsRegion).getByRole('textbox', {
                     name: 'annotation_internal_comment',
-                    container: inputsRegion,
                 }),
                 {
                     target: {
@@ -274,17 +254,15 @@ describe('AnnotationForm', () => {
         });
 
         expect(
-            screen.getByRole('textbox', {
+            within(inputsRegion).getByRole('textbox', {
                 name: 'annotation_internal_comment',
-                container: inputsRegion,
             }),
         ).toHaveValue('Just testing the annotation admin');
 
-        await screen.waitFor(() => {
-            screen.fireEvent.change(
-                screen.getByRole('textbox', {
+        await waitFor(() => {
+            fireEvent.change(
+                within(inputsRegion).getByRole('textbox', {
                     name: 'annotation_administrator',
-                    container: inputsRegion,
                 }),
                 {
                     target: {
@@ -294,10 +272,8 @@ describe('AnnotationForm', () => {
             );
         });
 
-        await screen.waitFor(() => {
-            screen.fireEvent.click(
-                screen.getByRole('button', { name: 'save' }),
-            );
+        await waitFor(() => {
+            fireEvent.click(screen.getByRole('button', { name: 'save' }));
         });
 
         expect(handleUpdateAnnotation).toHaveBeenCalledTimes(1);

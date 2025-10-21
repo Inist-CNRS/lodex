@@ -6,6 +6,7 @@ import { act, render } from '../../../test-utils';
 import { MemoryRouter } from 'react-router';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useLogin } from '../api/login';
+import { fireEvent } from '@testing-library/dom';
 
 jest.mock('../api/login', () => ({
     useLogin: jest
@@ -47,10 +48,10 @@ describe('<LoginForm />', () => {
         expect(screen.getByLabelText('Username *')).toHaveValue('');
         expect(screen.getByLabelText('Password *')).toHaveValue('');
         await act(async () => {
-            screen.fireEvent.change(screen.getByLabelText('Username *'), {
+            fireEvent.change(screen.getByLabelText('Username *'), {
                 target: { value: 'testuser' },
             });
-            screen.fireEvent.change(screen.getByLabelText('Password *'), {
+            fireEvent.change(screen.getByLabelText('Password *'), {
                 target: { value: 'testpassword' },
             });
         });
@@ -60,7 +61,7 @@ describe('<LoginForm />', () => {
         expect(screen.getByText('Sign in')).not.toBeDisabled();
 
         await act(async () => {
-            screen.fireEvent.click(screen.getByText('Sign in'));
+            fireEvent.click(screen.getByText('Sign in'));
         });
         expect(login).toHaveBeenCalledTimes(1);
         expect(login).toHaveBeenCalledWith({
@@ -80,10 +81,10 @@ describe('<LoginForm />', () => {
         expect(screen.getByLabelText('Username *')).toHaveValue('');
         expect(screen.getByLabelText('Password *')).toHaveValue('');
         await act(async () => {
-            screen.fireEvent.change(screen.getByLabelText('Username *'), {
+            fireEvent.change(screen.getByLabelText('Username *'), {
                 target: { value: 'testuser' },
             });
-            screen.fireEvent.change(screen.getByLabelText('Password *'), {
+            fireEvent.change(screen.getByLabelText('Password *'), {
                 target: { value: 'testpassword' },
             });
         });
@@ -92,7 +93,7 @@ describe('<LoginForm />', () => {
         expect(screen.queryAllByText('This field is required')).toHaveLength(0);
         expect(screen.getByText('Sign in')).not.toBeDisabled();
         await act(async () => {
-            screen.fireEvent.change(screen.getByLabelText('Password *'), {
+            fireEvent.change(screen.getByLabelText('Password *'), {
                 target: { value: '' },
             });
         });
@@ -100,7 +101,7 @@ describe('<LoginForm />', () => {
 
         expect(screen.getAllByText('error_field_required')).toHaveLength(1);
         await act(async () => {
-            screen.fireEvent.change(screen.getByLabelText('Username *'), {
+            fireEvent.change(screen.getByLabelText('Username *'), {
                 target: { value: '' },
             });
         });

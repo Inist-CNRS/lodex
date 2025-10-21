@@ -1,4 +1,4 @@
-import { act, render } from '@testing-library/react';
+import { act, fireEvent, render } from '@testing-library/react';
 import { z } from 'zod';
 import { useForm } from '@tanstack/react-form';
 import { TextField, type TextFieldProps } from './TextField';
@@ -79,7 +79,7 @@ describe('TextField', () => {
         expect(screen.queryByLabelText('label')).toHaveValue('value');
         expect(screen.queryByLabelText('clear')).toBeInTheDocument();
         await act(async () => {
-            return screen.fireEvent.click(screen.queryByLabelText('clear'));
+            return fireEvent.click(screen.getByLabelText('clear'));
         });
         expect(screen.queryByLabelText('label')).toHaveValue('');
     });
@@ -128,7 +128,7 @@ describe('TextField', () => {
         expect(screen.queryByText('helperText')).toBeInTheDocument();
         await act(async () => {
             // @ts-expect-error TS7005
-            screen.fireEvent.change(screen.getByLabelText('label'), {
+            fireEvent.change(screen.getByLabelText('label'), {
                 target: { value: 'value' },
             });
         });
@@ -146,7 +146,7 @@ describe('TextField', () => {
         });
         expect(screen.queryByText('helperText')).toBeInTheDocument();
         await act(async () => {
-            screen.fireEvent.change(screen.getByLabelText('label'), {
+            fireEvent.change(screen.getByLabelText('label'), {
                 target: { value: '' },
             });
         });

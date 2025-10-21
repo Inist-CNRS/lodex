@@ -8,6 +8,7 @@ import fetch from '../lib/fetch';
 import { getStorageKey } from './annotationStorage';
 import { CreateAnnotationButton } from './CreateAnnotationButton';
 import { useCanAnnotate } from './useCanAnnotate';
+import { fireEvent, waitFor } from '@testing-library/dom';
 
 const queryClient = new QueryClient();
 
@@ -118,8 +119,8 @@ describe('CreateAnnotationButton', () => {
     it('should open the modal when clicking on the button', async () => {
         const screen = render(<TestButton annotable={true} />);
 
-        await screen.waitFor(() => {
-            screen.fireEvent.click(
+        await waitFor(() => {
+            fireEvent.click(
                 screen.getByRole('button', {
                     name: 'annotation_create_button_label+{"field":"Titre du corpus"}',
                 }),
@@ -132,8 +133,8 @@ describe('CreateAnnotationButton', () => {
     it('should call api when submitting annotation form for annotation on title', async () => {
         const screen = render(<TestButton />);
 
-        await screen.waitFor(() => {
-            screen.fireEvent.click(
+        await waitFor(() => {
+            fireEvent.click(
                 screen.getByRole('button', {
                     name: `annotation_create_button_label+{"field":"Titre du corpus"}`,
                 }),
@@ -142,8 +143,8 @@ describe('CreateAnnotationButton', () => {
 
         expect(screen.getByRole('dialog')).toBeInTheDocument();
 
-        await screen.waitFor(() => {
-            screen.fireEvent.change(
+        await waitFor(() => {
+            fireEvent.change(
                 screen.getByRole('textbox', {
                     name: 'annotation.comment *',
                 }),
@@ -153,14 +154,12 @@ describe('CreateAnnotationButton', () => {
             );
         });
 
-        await screen.waitFor(() => {
-            screen.fireEvent.click(
-                screen.getByRole('button', { name: 'next' }),
-            );
+        await waitFor(() => {
+            fireEvent.click(screen.getByRole('button', { name: 'next' }));
         });
 
-        await screen.waitFor(() => {
-            screen.fireEvent.change(
+        await waitFor(() => {
+            fireEvent.change(
                 screen.getByRole('textbox', {
                     name: 'annotation.authorName *',
                 }),
@@ -170,8 +169,8 @@ describe('CreateAnnotationButton', () => {
             );
         });
 
-        await screen.waitFor(() => {
-            screen.fireEvent.change(
+        await waitFor(() => {
+            fireEvent.change(
                 screen.getByRole('textbox', {
                     name: 'annotation.authorEmail',
                 }),
@@ -182,16 +181,14 @@ describe('CreateAnnotationButton', () => {
         });
 
         // Wait for the submit button to be enabled
-        await screen.waitFor(() => {
+        await waitFor(() => {
             expect(
                 screen.getByRole('button', { name: 'validate' }),
             ).toBeEnabled();
         });
 
-        await screen.waitFor(() => {
-            screen.fireEvent.click(
-                screen.getByRole('button', { name: 'validate' }),
-            );
+        await waitFor(() => {
+            fireEvent.click(screen.getByRole('button', { name: 'validate' }));
         });
 
         expect(fetch).toHaveBeenCalledWith(
@@ -214,8 +211,8 @@ describe('CreateAnnotationButton', () => {
             />,
         );
 
-        await screen.waitFor(() => {
-            screen.fireEvent.click(
+        await waitFor(() => {
+            fireEvent.click(
                 screen.getByRole('button', {
                     name: `annotation_create_button_label+{"field":"Titre du corpus"}`,
                 }),
@@ -224,16 +221,16 @@ describe('CreateAnnotationButton', () => {
 
         expect(screen.getByRole('dialog')).toBeInTheDocument();
 
-        await screen.waitFor(() => {
-            screen.fireEvent.click(
+        await waitFor(() => {
+            fireEvent.click(
                 screen.getByRole('menuitem', {
                     name: 'annotation_remove_content_choice',
                 }),
             );
         });
 
-        await screen.waitFor(() => {
-            screen.fireEvent.change(
+        await waitFor(() => {
+            fireEvent.change(
                 screen.getByRole('textbox', {
                     name: 'annotation.comment *',
                 }),
@@ -243,14 +240,12 @@ describe('CreateAnnotationButton', () => {
             );
         });
 
-        await screen.waitFor(() => {
-            screen.fireEvent.click(
-                screen.getByRole('button', { name: 'next' }),
-            );
+        await waitFor(() => {
+            fireEvent.click(screen.getByRole('button', { name: 'next' }));
         });
 
-        await screen.waitFor(() => {
-            screen.fireEvent.change(
+        await waitFor(() => {
+            fireEvent.change(
                 screen.getByRole('textbox', {
                     name: 'annotation.authorName *',
                 }),
@@ -260,8 +255,8 @@ describe('CreateAnnotationButton', () => {
             );
         });
 
-        await screen.waitFor(() => {
-            screen.fireEvent.change(
+        await waitFor(() => {
+            fireEvent.change(
                 screen.getByRole('textbox', {
                     name: 'annotation.authorEmail',
                 }),
@@ -272,16 +267,14 @@ describe('CreateAnnotationButton', () => {
         });
 
         // Wait for the submit button to be enabled
-        await screen.waitFor(() => {
+        await waitFor(() => {
             expect(
                 screen.getByRole('button', { name: 'validate' }),
             ).toBeEnabled();
         });
 
-        await screen.waitFor(() => {
-            screen.fireEvent.click(
-                screen.getByRole('button', { name: 'validate' }),
-            );
+        await waitFor(() => {
+            fireEvent.click(screen.getByRole('button', { name: 'validate' }));
         });
 
         expect(fetch).toHaveBeenCalledWith(

@@ -1,5 +1,5 @@
 import { useForm } from '@tanstack/react-form';
-import { render } from '@testing-library/react';
+import { fireEvent, render, waitFor } from '@testing-library/react';
 
 import { TestI18N } from '../../i18n/I18NContext';
 import {
@@ -30,8 +30,8 @@ describe('ProposedValueFieldList', () => {
             name: 'annotation.proposedValue *',
         });
 
-        await screen.waitFor(() => {
-            screen.fireEvent.mouseDown(textbox);
+        await waitFor(() => {
+            fireEvent.mouseDown(textbox);
         });
 
         const option = screen.getByRole('option', {
@@ -40,8 +40,8 @@ describe('ProposedValueFieldList', () => {
 
         expect(option).toBeInTheDocument();
 
-        await screen.waitFor(() => {
-            screen.fireEvent.click(option);
+        await waitFor(() => {
+            fireEvent.click(option);
         });
 
         expect(textbox).toHaveValue('option2');
@@ -59,24 +59,24 @@ describe('ProposedValueFieldList', () => {
             name: 'annotation.proposedValue *',
         });
 
-        await screen.waitFor(() => {
-            screen.fireEvent.mouseDown(textbox);
+        await waitFor(() => {
+            fireEvent.mouseDown(textbox);
         });
 
-        await screen.waitFor(() => {
-            screen.fireEvent.click(
+        await waitFor(() => {
+            fireEvent.click(
                 screen.getByRole('option', {
                     name: 'option1',
                 }),
             );
         });
 
-        await screen.waitFor(() => {
-            screen.fireEvent.mouseDown(textbox);
+        await waitFor(() => {
+            fireEvent.mouseDown(textbox);
         });
 
-        await screen.waitFor(() => {
-            screen.fireEvent.click(
+        await waitFor(() => {
+            fireEvent.click(
                 screen.getByRole('option', {
                     name: 'option2',
                 }),

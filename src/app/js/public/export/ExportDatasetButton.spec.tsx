@@ -1,3 +1,4 @@
+import { fireEvent, waitFor } from '@testing-library/dom';
 import { act, render } from '../../../../test-utils';
 import datasetApi from '../../admin/api/dataset';
 import { TestI18N } from '../../i18n/I18NContext';
@@ -35,8 +36,8 @@ describe('ExportDatasetButton', () => {
 
         expect(screen.getByText('export_raw_dataset')).toBeInTheDocument();
         expect(screen.getByText('export_raw_dataset')).not.toBeDisabled();
-        await screen.waitFor(() => {
-            screen.fireEvent.click(screen.getByText('export_raw_dataset'));
+        await waitFor(() => {
+            fireEvent.click(screen.getByText('export_raw_dataset'));
         });
 
         expect(
@@ -50,8 +51,8 @@ describe('ExportDatasetButton', () => {
         expect(screen.getByText('field2')).toBeInTheDocument();
         expect(screen.getByText('field3')).toBeInTheDocument();
 
-        await screen.waitFor(() => {
-            screen.fireEvent.click(screen.getByText('confirm'));
+        await waitFor(() => {
+            fireEvent.click(screen.getByText('confirm'));
         });
 
         expect(dumpDataset).toHaveBeenCalledWith([
@@ -71,24 +72,20 @@ describe('ExportDatasetButton', () => {
             />,
         );
 
-        await screen.waitFor(() => {
-            screen.fireEvent.click(screen.getByText('export_raw_dataset'));
+        await waitFor(() => {
+            fireEvent.click(screen.getByText('export_raw_dataset'));
         });
 
-        await screen.waitFor(() => {
-            screen.fireEvent.mouseDown(
-                screen.getByLabelText('export_choose_fields'),
-            );
+        await waitFor(() => {
+            fireEvent.mouseDown(screen.getByLabelText('export_choose_fields'));
         });
 
-        await screen.waitFor(() => {
-            screen.fireEvent.click(
-                screen.getByRole('option', { name: 'field1' }),
-            );
+        await waitFor(() => {
+            fireEvent.click(screen.getByRole('option', { name: 'field1' }));
         });
 
-        await screen.waitFor(() => {
-            screen.fireEvent.click(screen.getByText('confirm'));
+        await waitFor(() => {
+            fireEvent.click(screen.getByText('confirm'));
         });
 
         expect(dumpDataset).toHaveBeenCalledWith(['field2', 'field3']);
@@ -104,30 +101,26 @@ describe('ExportDatasetButton', () => {
             />,
         );
 
-        await screen.waitFor(() => {
-            screen.fireEvent.click(screen.getByText('export_raw_dataset'));
+        await waitFor(() => {
+            fireEvent.click(screen.getByText('export_raw_dataset'));
         });
         expect(screen.getByText('confirm')).not.toBeDisabled();
 
-        await screen.waitFor(() => {
-            screen.fireEvent.click(screen.getByTitle('clear_all'));
+        await waitFor(() => {
+            fireEvent.click(screen.getByTitle('clear_all'));
         });
         expect(screen.getByText('confirm')).toBeDisabled();
 
-        await screen.waitFor(() => {
-            screen.fireEvent.mouseDown(
-                screen.getByLabelText('export_choose_fields'),
-            );
+        await waitFor(() => {
+            fireEvent.mouseDown(screen.getByLabelText('export_choose_fields'));
         });
 
-        await screen.waitFor(() => {
-            screen.fireEvent.click(
-                screen.getByRole('option', { name: 'field1' }),
-            );
+        await waitFor(() => {
+            fireEvent.click(screen.getByRole('option', { name: 'field1' }));
         });
 
-        await screen.waitFor(() => {
-            screen.fireEvent.click(screen.getByText('confirm'));
+        await waitFor(() => {
+            fireEvent.click(screen.getByText('confirm'));
         });
 
         expect(dumpDataset).toHaveBeenCalledWith(['field1']);
@@ -143,23 +136,23 @@ describe('ExportDatasetButton', () => {
             />,
         );
 
-        await screen.waitFor(() => {
-            screen.fireEvent.click(screen.getByText('export_raw_dataset'));
+        await waitFor(() => {
+            fireEvent.click(screen.getByText('export_raw_dataset'));
         });
 
-        await screen.waitFor(() => {
-            screen.fireEvent.click(screen.getByTitle('clear_all'));
+        await waitFor(() => {
+            fireEvent.click(screen.getByTitle('clear_all'));
         });
 
         expect(screen.getByText('confirm')).toBeDisabled();
 
-        await screen.waitFor(() => {
-            screen.fireEvent.click(screen.getByTitle('select_all'));
+        await waitFor(() => {
+            fireEvent.click(screen.getByTitle('select_all'));
         });
         expect(screen.getByText('confirm')).not.toBeDisabled();
 
-        await screen.waitFor(() => {
-            screen.fireEvent.click(screen.getByText('confirm'));
+        await waitFor(() => {
+            fireEvent.click(screen.getByText('confirm'));
         });
 
         expect(dumpDataset).toHaveBeenCalledWith([
@@ -179,20 +172,20 @@ describe('ExportDatasetButton', () => {
             />,
         );
 
-        await screen.waitFor(() => {
-            screen.fireEvent.click(screen.getByText('export_raw_dataset'));
+        await waitFor(() => {
+            fireEvent.click(screen.getByText('export_raw_dataset'));
         });
 
-        await screen.waitFor(() => {
-            screen.fireEvent.click(
+        await waitFor(() => {
+            fireEvent.click(
                 screen.getByLabelText(
                     'remove_field_from_export+{"field":"field2"}',
                 ),
             );
         });
 
-        await screen.waitFor(() => {
-            screen.fireEvent.click(screen.getByText('confirm'));
+        await waitFor(() => {
+            fireEvent.click(screen.getByText('confirm'));
         });
 
         expect(dumpDataset).toHaveBeenCalledWith(['field1', 'field3']);
@@ -228,8 +221,8 @@ describe('ExportDatasetButton', () => {
             expect(screen.getByText('export_raw_dataset')).toBeInTheDocument();
             expect(screen.getByText('export_raw_dataset')).not.toBeDisabled();
 
-            await screen.waitFor(() => {
-                screen.fireEvent.click(screen.getByText('export_raw_dataset'));
+            await waitFor(() => {
+                fireEvent.click(screen.getByText('export_raw_dataset'));
             });
             expect(
                 screen.getByText('what_data_do_you_want_to_export'),
@@ -243,8 +236,8 @@ describe('ExportDatasetButton', () => {
             expect(screen.getByText('field3')).toBeInTheDocument();
             expect(screen.queryByText('_id')).not.toBeInTheDocument();
 
-            await screen.waitFor(() => {
-                screen.fireEvent.click(screen.getByText('confirm'));
+            await waitFor(() => {
+                fireEvent.click(screen.getByText('confirm'));
             });
 
             expect(dumpDataset).toHaveBeenCalledWith([

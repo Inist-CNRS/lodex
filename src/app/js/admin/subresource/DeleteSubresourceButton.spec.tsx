@@ -1,5 +1,6 @@
 import { DeleteSubresourceButton } from './DeleteSubresourceButton';
 import { act, render } from '../../../../test-utils';
+import { within } from '@testing-library/dom';
 
 describe('<DeleteSubresourceButton />', () => {
     it('should display a dialog on button click and call onClick when the dialog is confirmed', async () => {
@@ -18,10 +19,7 @@ describe('<DeleteSubresourceButton />', () => {
         expect(onClick).not.toHaveBeenCalled();
 
         act(() =>
-            screen
-                .within(screen.getByRole('dialog'))
-                .getByText('delete')
-                .click(),
+            within(screen.getByRole('dialog')).getByText('delete').click(),
         );
 
         expect(onClick).toHaveBeenCalledTimes(1);
@@ -42,10 +40,7 @@ describe('<DeleteSubresourceButton />', () => {
         expect(onClick).not.toHaveBeenCalled();
 
         act(() =>
-            screen
-                .within(screen.getByRole('dialog'))
-                .getByText('cancel')
-                .click(),
+            within(screen.getByRole('dialog')).getByText('cancel').click(),
         );
 
         expect(onClick).not.toHaveBeenCalled();

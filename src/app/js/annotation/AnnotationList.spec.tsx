@@ -635,7 +635,6 @@ describe('AnnotationList', () => {
             ).toHaveLength(2);
             screen
                 .queryAllByLabelText('annotation_initial_value')
-                // @ts-expect-error TS7006
                 .forEach((element) => {
                     expect(element).not.toBeVisible();
                 });
@@ -649,7 +648,6 @@ describe('AnnotationList', () => {
                 .queryAllByLabelText(
                     'annotation_proposed_value+{"smart_count":1}',
                 )
-                // @ts-expect-error TS7006
                 .forEach((element) => {
                     expect(element).not.toBeVisible();
                 });
@@ -658,7 +656,6 @@ describe('AnnotationList', () => {
             ).toHaveLength(4);
             screen
                 .queryAllByLabelText('annotation_comment_section')
-                // @ts-expect-error TS7006
                 .forEach((element) => {
                     expect(element).not.toBeVisible();
                 });
@@ -667,7 +664,6 @@ describe('AnnotationList', () => {
             ).toHaveLength(4);
             screen
                 .queryAllByLabelText('annotation_updated_at')
-                // @ts-expect-error TS7006
                 .forEach((element) => {
                     expect(element).not.toBeVisible();
                 });
@@ -676,7 +672,6 @@ describe('AnnotationList', () => {
             ).toHaveLength(4);
             screen
                 .queryAllByLabelText('annotation_created_at')
-                // @ts-expect-error TS7006
                 .forEach((element) => {
                     expect(element).not.toBeVisible();
                 });
@@ -690,7 +685,6 @@ describe('AnnotationList', () => {
             ).toHaveLength(2);
             screen
                 .queryAllByLabelText('annotation_initial_value')
-                // @ts-expect-error TS7006
                 .forEach((element) => {
                     expect(element).toBeVisible();
                 });
@@ -704,7 +698,6 @@ describe('AnnotationList', () => {
                 .queryAllByLabelText(
                     'annotation_proposed_value+{"smart_count":1}',
                 )
-                // @ts-expect-error TS7006
                 .forEach((element) => {
                     expect(element).toBeVisible();
                 });
@@ -713,7 +706,6 @@ describe('AnnotationList', () => {
             ).toHaveLength(4);
             screen
                 .queryAllByLabelText('annotation_comment_section')
-                // @ts-expect-error TS7006
                 .forEach((element) => {
                     expect(element).toBeVisible();
                 });
@@ -722,7 +714,6 @@ describe('AnnotationList', () => {
             ).toHaveLength(4);
             screen
                 .queryAllByLabelText('annotation_updated_at')
-                // @ts-expect-error TS7006
                 .forEach((element) => {
                     expect(element).toBeVisible();
                 });
@@ -731,7 +722,6 @@ describe('AnnotationList', () => {
             ).toHaveLength(4);
             screen
                 .queryAllByLabelText('annotation_created_at')
-                // @ts-expect-error TS7006
                 .forEach((element) => {
                     expect(element).toBeVisible();
                 });

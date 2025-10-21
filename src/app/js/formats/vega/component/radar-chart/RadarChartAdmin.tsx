@@ -57,7 +57,7 @@ type RadarChartArgs = {
     tooltip: boolean;
     tooltipCategory: string;
     tooltipValue: string;
-    aspectRatio?: AspectRatio;
+    aspectRatio: AspectRatio;
 };
 
 type RadarChartAdminProps = {

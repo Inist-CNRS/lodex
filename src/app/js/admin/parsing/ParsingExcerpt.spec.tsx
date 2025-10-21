@@ -6,6 +6,7 @@ import {
     getColumnStyle,
 } from './ParsingExcerpt';
 import { TestI18N } from '../../i18n/I18NContext';
+import { fireEvent } from '@testing-library/dom';
 
 let mockedParams = {
     filter: undefined,
@@ -250,7 +251,7 @@ describe('<ParsingExcerpt />', () => {
         );
 
         expect(screen.queryAllByText('add_to_publication')).toHaveLength(2);
-        screen.fireEvent.click(screen.queryAllByText('add_to_publication')[0]);
+        fireEvent.click(screen.queryAllByText('add_to_publication')[0]);
         expect(handleAddColumn).toHaveBeenCalledWith({
             name: 'foo',
             scope: 'document',
@@ -310,7 +311,7 @@ describe('<ParsingExcerpt />', () => {
             </TestI18N>,
         );
         expect(screen.queryAllByText('add_to_publication')).toHaveLength(2);
-        screen.fireEvent.click(screen.queryAllByText('add_to_publication')[0]);
+        fireEvent.click(screen.queryAllByText('add_to_publication')[0]);
         expect(handleAddColumn).toHaveBeenCalledWith({
             name: 'column1',
             scope: 'document',

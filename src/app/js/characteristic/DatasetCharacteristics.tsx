@@ -5,8 +5,9 @@ import { fromFields, fromCharacteristic } from '../sharedSelectors';
 
 import DatasetCharacteristicItem from './DatasetCharacteristicItem';
 import { fromDisplayConfig, fromI18n } from '../public/selectors';
+import type { CSSProperties } from 'react';
 
-const styles = {
+const styles: Record<string, CSSProperties> = {
     container: {
         display: 'flex',
         flexFlow: 'row wrap',

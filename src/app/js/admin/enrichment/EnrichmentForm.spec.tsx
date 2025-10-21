@@ -2,6 +2,7 @@ import { act } from 'react-dom/test-utils';
 import { render } from '../../../../test-utils';
 import { EnrichmentForm, type EnrichmentFormProps } from './EnrichmentForm';
 import type { Enrichment } from '.';
+import { fireEvent, waitFor } from '@testing-library/dom';
 
 const EXCERPT_LINES = [{ columnOne: 'TEST' }];
 
@@ -95,7 +96,7 @@ describe('<EnrichmentFormComponent />', () => {
 
         const submitButton = screen.getByText('save');
         expect(submitButton).toBeInTheDocument();
-        await screen.waitFor(() => {
+        await waitFor(() => {
             expect(submitButton).not.toBeDisabled();
         });
     });
@@ -116,10 +117,10 @@ describe('<EnrichmentFormComponent />', () => {
         ).not.toBeInTheDocument();
 
         await act(async () => {
-            screen.fireEvent.change(nameField, { target: { value: '' } });
+            fireEvent.change(nameField, { target: { value: '' } });
         });
 
-        await screen.waitFor(() => {
+        await waitFor(() => {
             expect(
                 screen.getByText('error_field_required'),
             ).toBeInTheDocument();
@@ -144,10 +145,10 @@ describe('<EnrichmentFormComponent />', () => {
         ).not.toBeInTheDocument();
 
         await act(async () => {
-            screen.fireEvent.change(field, { target: { value: '' } });
+            fireEvent.change(field, { target: { value: '' } });
         });
 
-        await screen.waitFor(() => {
+        await waitFor(() => {
             expect(
                 screen.getByText('error_field_required'),
             ).toBeInTheDocument();
@@ -172,10 +173,10 @@ describe('<EnrichmentFormComponent />', () => {
         ).not.toBeInTheDocument();
 
         await act(async () => {
-            screen.fireEvent.click(screen.getByLabelText('Clear'));
+            fireEvent.click(screen.getByLabelText('Clear'));
         });
 
-        await screen.waitFor(() => {
+        await waitFor(() => {
             expect(
                 screen.getByText('error_field_required'),
             ).toBeInTheDocument();

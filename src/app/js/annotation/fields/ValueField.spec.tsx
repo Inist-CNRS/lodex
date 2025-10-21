@@ -3,6 +3,7 @@ import { useForm } from '@tanstack/react-form';
 import { render } from '../../../../test-utils';
 import { TestI18N } from '../../i18n/I18NContext';
 import { ValueField } from './ValueField';
+import { fireEvent, waitFor } from '@testing-library/dom';
 
 interface TestValueFieldProps {
     choices: unknown[];
@@ -31,8 +32,8 @@ describe('ValueField', () => {
             <TestValueField choices={['choice1', 'choice2']} />,
         );
 
-        await screen.waitFor(() => {
-            screen.fireEvent.mouseDown(
+        await waitFor(() => {
+            fireEvent.mouseDown(
                 screen.getByRole('button', {
                     name: 'annotation_choose_value_to_correct *',
                 }),
@@ -57,8 +58,8 @@ describe('ValueField', () => {
             />,
         );
 
-        await screen.waitFor(() => {
-            screen.fireEvent.mouseDown(
+        await waitFor(() => {
+            fireEvent.mouseDown(
                 screen.getByRole('button', {
                     name: 'annotation_choose_value_to_correct *',
                 }),

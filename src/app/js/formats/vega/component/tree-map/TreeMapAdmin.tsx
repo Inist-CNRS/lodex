@@ -1,6 +1,6 @@
 import { useTranslate } from '../../../../i18n/I18NContext';
 import { MULTICHROMATIC_DEFAULT_COLORSET_STREAMGRAPH } from '../../../utils/colorUtils';
-import { ASPECT_RATIO_8_5 } from '../../../utils/aspectRatio';
+import { ASPECT_RATIO_8_5, type AspectRatio } from '../../../utils/aspectRatio';
 import TreeMap, { type TreeMapLayout } from '../../models/TreeMap';
 import { useCallback, useMemo, type ChangeEvent } from 'react';
 import RoutineParamsAdmin from '../../../utils/components/admin/RoutineParamsAdmin';
@@ -67,7 +67,7 @@ type TreeMapArgs = {
     colors?: string;
     layout?: TreeMapLayout;
     ratio?: number;
-    aspectRatio?: string;
+    aspectRatio: AspectRatio;
 };
 
 type TreeMapAdminProps = {
@@ -282,7 +282,7 @@ const TreeMapAdmin = ({
     );
 
     const handleAspectRatio = useCallback(
-        (aspectRatio: string) => {
+        (aspectRatio: AspectRatio) => {
             onChange({
                 ...args,
                 aspectRatio,
