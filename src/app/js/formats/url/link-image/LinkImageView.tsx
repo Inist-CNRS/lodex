@@ -31,8 +31,4 @@ const LinkView = ({ className, resource, field, value }: LinkViewProps) => {
     );
 };
 
-LinkView.defaultProps = {
-    className: null,
-};
-
 export default LinkView;

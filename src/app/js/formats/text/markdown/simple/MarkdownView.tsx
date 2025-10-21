@@ -40,8 +40,4 @@ const MarkdownView = ({ className, resource, field }: MarkdownViewProps) => {
     );
 };
 
-MarkdownView.defaultProps = {
-    className: null,
-};
-
 export default MarkdownView;

@@ -20,10 +20,6 @@ const GraphPage = ({ name, onSearch, tenant }: GraphPageProps) => (
     </>
 );
 
-GraphPage.defaultProps = {
-    name: null,
-};
-
 const mapStateToProps = (
     // @ts-expect-error TS7006
     _,

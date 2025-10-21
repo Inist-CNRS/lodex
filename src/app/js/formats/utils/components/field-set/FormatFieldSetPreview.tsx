@@ -30,10 +30,10 @@ type FormatFieldSetPreviewProps = {
 
 const FormatFieldSetPreview = ({
     args,
-    showDatasetsSelector,
-    datasets,
+    showDatasetsSelector = true,
+    datasets = AllDataSets,
     PreviewComponent,
-    defaultExpanded,
+    defaultExpanded = false,
 }: FormatFieldSetPreviewProps) => {
     const { translate } = useTranslate();
 
@@ -118,12 +118,6 @@ const FormatFieldSetPreview = ({
             </AccordionDetails>
         </Accordion>
     );
-};
-
-FormatFieldSetPreview.defaultProps = {
-    showDatasetsSelector: true,
-    datasets: AllDataSets,
-    defaultExpanded: false,
 };
 
 export default FormatFieldSetPreview;

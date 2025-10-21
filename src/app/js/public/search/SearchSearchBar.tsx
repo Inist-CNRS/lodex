@@ -35,7 +35,7 @@ type SearchSearchBarComponentProps = {
 };
 
 export const SearchSearchBarComponent = ({
-    defaultQuery,
+    defaultQuery = '',
     search,
     hasSearchableFields,
     onToggleFacets,
@@ -117,10 +117,6 @@ export const SearchSearchBarComponent = ({
             </Grid>
         </Box>
     );
-};
-
-SearchSearchBarComponent.defaultProps = {
-    defaultQuery: '',
 };
 
 // @ts-expect-error TS7006

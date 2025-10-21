@@ -17,9 +17,9 @@ interface SelectDatasetFieldComponentProps {
 export const SelectDatasetFieldComponent = ({
     datasetFields,
     handleChange,
-    column,
+    column = '',
     label,
-    id,
+    id = 'select_column',
 }: SelectDatasetFieldComponentProps) => {
     const { translate } = useTranslate();
     return (
@@ -42,11 +42,6 @@ export const SelectDatasetFieldComponent = ({
             ))}
         </TextField>
     );
-};
-
-SelectDatasetFieldComponent.defaultProps = {
-    column: '',
-    id: 'select_column',
 };
 
 // @ts-expect-error TS7006

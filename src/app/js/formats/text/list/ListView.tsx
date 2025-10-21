@@ -139,8 +139,4 @@ const ListView = ({
     );
 };
 
-ListView.defaultProps = {
-    className: null,
-};
-
 export default ListView;

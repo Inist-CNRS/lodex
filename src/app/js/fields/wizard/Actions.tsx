@@ -47,8 +47,4 @@ export const ActionsComponent = ({
     );
 };
 
-ActionsComponent.defaultProps = {
-    currentEditedField: null,
-};
-
 export default ActionsComponent;

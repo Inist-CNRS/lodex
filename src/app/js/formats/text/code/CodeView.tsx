@@ -22,8 +22,4 @@ const Component = ({
     </SyntaxHighlighter>
 );
 
-Component.defaultProps = {
-    className: null,
-};
-
 export default Component;

@@ -38,11 +38,6 @@ const DatasetColumnHeader = ({
     </TableCell>
 );
 
-DatasetColumnHeader.defaultProps = {
-    sortBy: null,
-    sortDir: null,
-};
-
 // @ts-expect-error TS7006
 const mapStateToProps = (state) => ({
     ...fromDataset.getSort(state),

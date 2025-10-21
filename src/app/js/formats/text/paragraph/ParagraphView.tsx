@@ -32,8 +32,4 @@ const ParagraphView = ({
     return <p style={style}>{resource[field.name]}</p>;
 };
 
-ParagraphView.defaultProps = {
-    className: null,
-};
-
 export default ParagraphView;

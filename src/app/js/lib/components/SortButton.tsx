@@ -52,11 +52,6 @@ const SortButton = ({
     </Button>
 );
 
-SortButton.defaultProps = {
-    sortBy: null,
-    sortDir: null,
-};
-
 export default withHandlers({
     sort:
         // @ts-expect-error TS7031

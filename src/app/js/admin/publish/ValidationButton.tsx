@@ -44,7 +44,7 @@ const ValidationButtonComponent = ({
     fields,
     handleHideErrors,
     handleShowErrorsClick,
-    popover,
+    popover = { show: false },
 }: ValidationButtonComponentProps) => {
     const { translate } = useTranslate();
     const history = useHistory();
@@ -113,10 +113,6 @@ const ValidationButtonComponent = ({
             </Popover>
         </Box>
     );
-};
-
-ValidationButtonComponent.defaultProps = {
-    popover: { show: false },
 };
 
 // @ts-expect-error TS7006

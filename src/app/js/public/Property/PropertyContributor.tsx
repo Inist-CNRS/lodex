@@ -55,11 +55,6 @@ const PropertyContributorComponent = ({
     );
 };
 
-PropertyContributorComponent.defaultProps = {
-    fieldStatus: null,
-    contributor: null,
-};
-
 // @ts-expect-error TS7006
 const mapStateToProps = (state, { fieldName }) => ({
     contributor: fromResource.getResourceContributorForField(state, fieldName),

@@ -88,7 +88,7 @@ export const ParsingExcerptComponent = ({
     showAddFromColumn,
     onAddField,
     enrichments,
-    maxLines,
+    maxLines = 6,
     subresources,
 }: ParsingExcerptComponentProps) => {
     const enrichmentsNames = useMemo(
@@ -220,10 +220,6 @@ export const ParsingExcerptComponent = ({
             </TableBody>
         </Table>
     );
-};
-
-ParsingExcerptComponent.defaultProps = {
-    maxLines: 6,
 };
 
 // @ts-expect-error TS7006

@@ -76,9 +76,4 @@ class EmbedButton extends Component<EmbedButtonProps> {
     }
 }
 
-// @ts-expect-error TS2339
-EmbedButton.defaultProps = {
-    className: null,
-};
-
 export default EmbedButton;

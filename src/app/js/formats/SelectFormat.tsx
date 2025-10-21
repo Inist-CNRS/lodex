@@ -56,8 +56,4 @@ const SelectFormat = ({ formats, value, onChange }: SelectFormatProps) => {
     );
 };
 
-SelectFormat.defaultProps = {
-    value: null,
-};
-
 export default SelectFormat;

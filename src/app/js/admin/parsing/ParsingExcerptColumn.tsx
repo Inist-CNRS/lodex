@@ -42,9 +42,4 @@ export const ParsingExcerptColumnComponent = ({
     </TableCell>
 );
 
-ParsingExcerptColumnComponent.defaultProps = {
-    children: null,
-    style: null,
-};
-
 export default pure(ParsingExcerptColumnComponent);

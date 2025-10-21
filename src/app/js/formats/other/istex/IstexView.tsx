@@ -95,14 +95,6 @@ export const IstexView = ({
     );
 };
 
-IstexView.defaultProps = {
-    className: null,
-    fieldStatus: null,
-    shrink: false,
-    data: null,
-    error: null,
-};
-
 export default compose(
     fetchPaginatedDataForComponent(fetchForIstexFormat),
     // @ts-expect-error TS2345

@@ -30,8 +30,4 @@ const EmailView = ({
     );
 };
 
-EmailView.defaultProps = {
-    className: null,
-};
-
 export default EmailView;

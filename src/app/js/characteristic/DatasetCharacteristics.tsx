@@ -29,10 +29,8 @@ interface DatasetCharacteristicsViewProps {
 }
 
 const DatasetCharacteristicsView = ({
-    characteristics,
-
+    characteristics = [],
     isMultilingual,
-
     locale,
 }: DatasetCharacteristicsViewProps) => {
     const filteredCharacteristics = characteristics.filter(
@@ -54,11 +52,6 @@ const DatasetCharacteristicsView = ({
             </div>
         </div>
     );
-};
-
-DatasetCharacteristicsView.defaultProps = {
-    characteristics: [],
-    newCharacteristics: [],
 };
 
 // @ts-expect-error TS7006

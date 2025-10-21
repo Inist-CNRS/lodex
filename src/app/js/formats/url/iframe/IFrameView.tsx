@@ -31,8 +31,4 @@ const IFrameView = ({
     );
 };
 
-IFrameView.defaultProps = {
-    className: null,
-};
-
 export default IFrameView;

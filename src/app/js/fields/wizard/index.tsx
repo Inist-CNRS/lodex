@@ -328,11 +328,6 @@ const FieldEditionWizardComponent = ({
     );
 };
 
-FieldEditionWizardComponent.defaultProps = {
-    currentEditedField: null,
-    fields: null,
-};
-
 // @ts-expect-error TS7006
 const mapStateToProps = (state, { match, filter }) => {
     const { fieldName } = match.params;

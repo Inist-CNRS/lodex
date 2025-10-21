@@ -157,7 +157,7 @@ interface PropertyComponentProps {
 export const PropertyComponent = ({
     className,
     field,
-    predicate,
+    predicate = () => true,
     isSub,
     resource,
     fieldStatus,
@@ -323,13 +323,6 @@ export const PropertyComponent = ({
             />
         </Box>
     );
-};
-
-PropertyComponent.defaultProps = {
-    className: null,
-    fieldStatus: null,
-    predicate: () => true,
-    isSub: false,
 };
 
 // @ts-expect-error TS7006

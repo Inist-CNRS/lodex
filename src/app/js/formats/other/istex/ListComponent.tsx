@@ -27,12 +27,4 @@ const IstexView = ({ fieldStatus, field, resource }: IstexViewProps) => {
     );
 };
 
-IstexView.defaultProps = {
-    className: null,
-    fieldStatus: null,
-    shrink: false,
-    data: null,
-    error: null,
-};
-
 export default IstexView;

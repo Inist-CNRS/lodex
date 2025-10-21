@@ -66,7 +66,7 @@ interface AppbarComponentProps {
 }
 
 const AppbarComponent = ({
-    isLoading,
+    isLoading = false,
     isAdmin,
     hasPublishedDataset,
     invalidFields,
@@ -154,10 +154,6 @@ const AppbarComponent = ({
             </Toolbar>
         </AppBar>
     );
-};
-
-AppbarComponent.defaultProps = {
-    isLoading: false,
 };
 
 // @ts-expect-error TS7006

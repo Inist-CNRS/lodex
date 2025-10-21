@@ -30,18 +30,12 @@ interface CustomActionVegaLiteProps {
  * @returns {*} React-Vega component
  */
 function CustomActionVegaLite({
-    aspectRatio,
-
+    aspectRatio = ASPECT_RATIO_NONE,
     user,
-
     spec,
-
     data,
-
     injectType,
-
-    disableZoom,
-
+    disableZoom = false,
     p: polyglot,
 }: CustomActionVegaLiteProps) {
     const actions = useVegaActions(user);
@@ -126,11 +120,6 @@ function CustomActionVegaLite({
         </>
     );
 }
-
-CustomActionVegaLite.defaultProps = {
-    disableZoom: false,
-    aspectRatio: ASPECT_RATIO_NONE,
-};
 
 /**
  * Function use to get the user state
