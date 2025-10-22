@@ -117,6 +117,11 @@ interface StreamgraphProps {
     formatData: unknown[];
     maxLegendLength: number;
     height: number;
+    args: {
+        colors: string;
+        maxLegendLength: number;
+        height: number;
+    };
 }
 
 class Streamgraph extends PureComponent<StreamgraphProps> {
@@ -126,6 +131,7 @@ class Streamgraph extends PureComponent<StreamgraphProps> {
 
     // @ts-expect-error TS7006
     constructor(props) {
+        props.args = props.args || defaultArgs;
         super(props);
         this.state = {
             width: 800,
@@ -147,10 +153,6 @@ class Streamgraph extends PureComponent<StreamgraphProps> {
         // @ts-expect-error TS2339
         this.uniqueId = generateUniqueId();
     }
-
-    static defaultProps = {
-        args: defaultArgs,
-    };
 
     centerGraphClick() {
         this.updateDimensions();
