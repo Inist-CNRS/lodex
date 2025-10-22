@@ -1,8 +1,7 @@
-import { Component } from 'react';
 import { TextField } from '@mui/material';
-import { translate } from '../../../i18n/I18NContext';
 import { FormatDefaultParamsFieldSet } from '../../utils/components/field-set/FormatFieldSets';
 import FormatGroupedFieldSet from '../../utils/components/field-set/FormatGroupedFieldSet';
+import { useTranslate } from '../../../i18n/I18NContext';
 
 export const defaultArgs = {
     delimiter: '',
@@ -13,43 +12,32 @@ interface LatexAdminProps {
         delimiter?: string;
     };
     onChange(...args: unknown[]): unknown;
-    p: unknown;
 }
 
-class LatexAdmin extends Component<LatexAdminProps> {
-    static defaultProps = {
-        args: defaultArgs,
-    };
-
+const LatexAdmin = ({ args = defaultArgs, onChange }: LatexAdminProps) => {
+    const { translate } = useTranslate();
     // @ts-expect-error TS7006
-    handleDelimiter = (e) => {
+    const handleDelimiter = (e) => {
         const delimiter = String(e.target.value);
-        const newArgs = { ...this.props.args, delimiter };
-        this.props.onChange(newArgs);
+        const newArgs = { ...args, delimiter };
+        onChange(newArgs);
     };
 
-    render() {
-        const {
-            p: polyglot,
-            // @ts-expect-error TS2339
-            args: { delimiter },
-        } = this.props;
+    const { delimiter } = args || defaultArgs;
 
-        return (
-            <FormatGroupedFieldSet>
-                <FormatDefaultParamsFieldSet defaultExpanded>
-                    <TextField
-                        // @ts-expect-error TS18046
-                        label={polyglot.t('choose_delimiter')}
-                        type="string"
-                        onChange={this.handleDelimiter}
-                        value={delimiter}
-                        fullWidth
-                    />
-                </FormatDefaultParamsFieldSet>
-            </FormatGroupedFieldSet>
-        );
-    }
-}
+    return (
+        <FormatGroupedFieldSet>
+            <FormatDefaultParamsFieldSet defaultExpanded>
+                <TextField
+                    label={translate('choose_delimiter')}
+                    type="string"
+                    onChange={handleDelimiter}
+                    value={delimiter}
+                    fullWidth
+                />
+            </FormatDefaultParamsFieldSet>
+        </FormatGroupedFieldSet>
+    );
+};
 
-export default translate(LatexAdmin);
+export default LatexAdmin;
