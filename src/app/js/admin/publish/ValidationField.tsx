@@ -6,8 +6,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import { type ValidationFieldProps } from '../../propTypes';
 import { fromFields } from '../../sharedSelectors';
 import { connect } from 'react-redux';
-import { translate } from '../../i18n/I18NContext';
-
+import { useTranslate } from '../../i18n/I18NContext';
 const styles = {
     label: {
         background: 'none',
@@ -30,43 +29,43 @@ interface ValidationFieldComponentProps {
 const ValidationFieldComponent = ({
     onEditField,
     field: { label, properties },
-    p: polyglot,
     isFieldsLoading,
-}: ValidationFieldComponentProps) => (
-    <ListItem
-        // @ts-expect-error TS2769
-        onClick={!isFieldsLoading && onEditField}
-        disabled={isFieldsLoading}
-    >
-        <Grid container alignItems="center">
-            <Grid item sx={{ minWidth: 250 }}>
-                <Box sx={styles.label}>{label}:</Box>
+}: ValidationFieldComponentProps) => {
+    const { translate } = useTranslate();
+    return (
+        <ListItem
+            // @ts-expect-error TS2769
+            onClick={!isFieldsLoading && onEditField}
+            disabled={isFieldsLoading}
+        >
+            <Grid container alignItems="center">
+                <Grid item sx={{ minWidth: 250 }}>
+                    <Box sx={styles.label}>{label}:</Box>
+                </Grid>
+                <Grid item>
+                    <ul>
+                        {properties
+                            .filter((p) => !p.isValid)
+                            .map((p) => (
+                                <li key={`${p.name}_${p.error}`}>
+                                    {translate(
+                                        `error_${p.name}_${p.error}`,
+                                        // @ts-expect-error TS18046
+                                        p.meta,
+                                    )}
+                                </li>
+                            ))}
+                    </ul>
+                </Grid>
+                <Grid item sx={{ width: 70, textAlign: 'center' }}>
+                    <IconButton disabled={isFieldsLoading}>
+                        <EditIcon />
+                    </IconButton>
+                </Grid>
             </Grid>
-            <Grid item>
-                <ul>
-                    {properties
-                        .filter((p) => !p.isValid)
-                        .map((p) => (
-                            <li key={`${p.name}_${p.error}`}>
-                                {/*
-                                 // @ts-expect-error TS18046 */}
-                                {polyglot.t(
-                                    `error_${p.name}_${p.error}`,
-                                    // @ts-expect-error TS18046
-                                    p.meta,
-                                )}
-                            </li>
-                        ))}
-                </ul>
-            </Grid>
-            <Grid item sx={{ width: 70, textAlign: 'center' }}>
-                <IconButton disabled={isFieldsLoading}>
-                    <EditIcon />
-                </IconButton>
-            </Grid>
-        </Grid>
-    </ListItem>
-);
+        </ListItem>
+    );
+};
 
 // @ts-expect-error TS7006
 const mapStateToProps = (state) => ({
@@ -83,6 +82,5 @@ export default compose(
             props.onEditField(props.field.name);
         },
     }),
-    translate,
     // @ts-expect-error TS2345
 )(ValidationFieldComponent);

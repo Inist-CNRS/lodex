@@ -11,7 +11,7 @@ import { URI_FIELD_NAME } from '../../../../common/uris';
 
 import { type Field } from '../../propTypes';
 import FieldInternalIcon from '../../fields/FieldInternalIcon';
-import { translate } from '../../i18n/I18NContext';
+import { useTranslate } from '../../i18n/I18NContext';
 
 const getStyle = memoize((field) => {
     if (field.scope === SCOPE_DATASET) {
@@ -58,16 +58,15 @@ const isVisible = (field) =>
     field.display ? null : <HiddenIcon style={titleStyle.hidden} />;
 
 interface ComposedOfProps {
-    polyglot: unknown;
     compositeFields: string[];
 }
 
-const ComposedOf = ({ compositeFields, polyglot }: ComposedOfProps) => {
+const ComposedOf = ({ compositeFields }: ComposedOfProps) => {
     if (!compositeFields.length) {
         return null;
     }
     // @ts-expect-error TS18046
-    const composedOfText = polyglot.t('composed_of_fields', {
+    const composedOfText = translate('composed_of_fields', {
         fields: compositeFields.join(', '),
     });
 
@@ -79,7 +78,6 @@ const ComposedOf = ({ compositeFields, polyglot }: ComposedOfProps) => {
 interface ExcerptHeaderComponentProps {
     completedField?: unknown;
     field: Field;
-    p: unknown;
     compositeFields?: string[];
 }
 
@@ -87,47 +85,50 @@ const ExcerptHeaderComponent = ({
     completedField,
     compositeFields = [],
     field,
-    p: polyglot,
-}: ExcerptHeaderComponentProps) => (
-    // @ts-expect-error TS2322
-    <div style={getStyle(field)}>
-        {/*
+}: ExcerptHeaderComponentProps) => {
+    const { translate } = useTranslate();
+    return (
+        // @ts-expect-error TS2322
+        <div style={getStyle(field)}>
+            {/*
          // @ts-expect-error TS2322 */}
-        <p style={titleStyle.titleBlock}>
-            <span>{ensureTextIsShort(field.label)}</span>
-            <span style={titleStyle.titleId} data-field-name={field.name}>
-                (&nbsp;{ensureTextIsShort(field.name)}&nbsp;) {isVisible(field)}
-            </span>
-        </p>
-        {completedField && (
-            <div className={`completes_${getFieldClassName(completedField)}`}>
+            <p style={titleStyle.titleBlock}>
+                <span>{ensureTextIsShort(field.label)}</span>
+                <span style={titleStyle.titleId} data-field-name={field.name}>
+                    (&nbsp;{ensureTextIsShort(field.name)}&nbsp;){' '}
+                    {isVisible(field)}
+                </span>
+            </p>
+            {completedField && (
+                <div
+                    className={`completes_${getFieldClassName(completedField)}`}
+                >
+                    {translate('completes_field_X', {
+                        // @ts-expect-error TS2339
+                        field: completedField.label,
+                    })}
+                </div>
+            )}
+            <ComposedOf compositeFields={compositeFields} />
+            <div style={titleStyle.internal}>
                 {/*
-                 // @ts-expect-error TS18046 */}
-                {polyglot.t('completes_field_X', {
-                    // @ts-expect-error TS2339
-                    field: completedField.label,
-                })}
+             // @ts-expect-error TS18046 */}
+                {field.internalScopes &&
+                    // @ts-expect-error TS7006
+                    field.internalScopes.map((internalScope) => (
+                        // @ts-expect-error TS2741
+                        <FieldInternalIcon
+                            key={internalScope}
+                            scope={internalScope}
+                        />
+                    ))}
+                {/*
+             // @ts-expect-error TS18046 */}
+                {field.internalName}
             </div>
-        )}
-        <ComposedOf compositeFields={compositeFields} polyglot={polyglot} />
-        <div style={titleStyle.internal}>
-            {/*
-             // @ts-expect-error TS18046 */}
-            {field.internalScopes &&
-                // @ts-expect-error TS7006
-                field.internalScopes.map((internalScope) => (
-                    // @ts-expect-error TS2741
-                    <FieldInternalIcon
-                        key={internalScope}
-                        scope={internalScope}
-                    />
-                ))}
-            {/*
-             // @ts-expect-error TS18046 */}
-            {field.internalName}
         </div>
-    </div>
-);
+    );
+};
 
 // @ts-expect-error TS7006
 const mapStateToProps = (state, { field }) => ({
@@ -137,6 +138,5 @@ const mapStateToProps = (state, { field }) => ({
 
 export default compose(
     connect(mapStateToProps),
-    translate,
     // @ts-expect-error TS2345
 )(ExcerptHeaderComponent);

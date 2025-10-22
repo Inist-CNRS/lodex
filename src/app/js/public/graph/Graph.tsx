@@ -198,26 +198,16 @@ const Graph = ({
                                 }
                             />
                             <Format field={graphField} resource={resource} />
-                            {/* 
-                            // @ts-expect-error TS2322 */}
                             <CompositeProperty
-                                // @ts-expect-error TS2322
                                 key="composite"
-                                // @ts-expect-error TS2322
                                 field={graphField}
-                                // @ts-expect-error TS2322
                                 resource={resource}
-                                // @ts-expect-error TS2322
                                 parents={[]}
                             />
-                            {/* 
-                            // @ts-expect-error TS2322 */}
                             <PropertyLinkedFields
-                                // @ts-expect-error TS2322
                                 fieldName={graphField.name}
                                 // @ts-expect-error TS2322
                                 resource={resource}
-                                // @ts-expect-error TS2322
                                 parents={[]}
                             />
                         </Card>

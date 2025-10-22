@@ -319,7 +319,6 @@ interface DraggableItemGridProps {
         internalScopes?: string;
         internalName?: string;
     }[];
-    polyglot: object;
     loadField(): void;
     filter: string;
     isFieldsLoading?: boolean;
@@ -455,8 +454,6 @@ const DraggableItemGrid = compose(
                         <FieldGridItem
                             // @ts-expect-error TS2322
                             field={field}
-                            // @ts-expect-error TS2322
-                            polyglot={polyglot}
                             isFieldsLoading={isFieldsLoading}
                             isFieldSelected={selectedFields.includes(
                                 field.name,

@@ -5,14 +5,10 @@ import { TestI18N } from '../../i18n/I18NContext';
 
 describe('<FieldAddDropdownButton />', () => {
     // @ts-expect-error TS7034
-    let mockAddField, mockShowAddFromColumn, polyglot;
+    let mockAddField, mockShowAddFromColumn;
     beforeEach(() => {
         mockAddField = jest.fn();
         mockShowAddFromColumn = jest.fn();
-        polyglot = {
-            // @ts-expect-error TS7006
-            t: (key) => key,
-        };
     });
     afterEach(() => {
         jest.clearAllMocks();
@@ -26,8 +22,6 @@ describe('<FieldAddDropdownButton />', () => {
                     onAddNewField={mockAddField}
                     // @ts-expect-error TS7005
                     onShowExistingColumns={mockShowAddFromColumn}
-                    // @ts-expect-error TS2322
-                    p={polyglot}
                 />
             </TestI18N>,
         );
@@ -50,8 +44,6 @@ describe('<FieldAddDropdownButton />', () => {
                     onAddNewField={mockAddField}
                     // @ts-expect-error TS7005
                     onShowExistingColumns={mockShowAddFromColumn}
-                    // @ts-expect-error TS2322
-                    p={polyglot}
                 />
             </TestI18N>,
         );
@@ -77,8 +69,6 @@ describe('<FieldAddDropdownButton />', () => {
                     onAddNewField={mockAddField}
                     // @ts-expect-error TS7005
                     onShowExistingColumns={mockShowAddFromColumn}
-                    // @ts-expect-error TS2322
-                    p={polyglot}
                 />
             </TestI18N>,
         );
@@ -101,8 +91,6 @@ describe('<FieldAddDropdownButton />', () => {
                     onAddNewField={mockAddField}
                     // @ts-expect-error TS7005
                     onShowExistingColumns={mockShowAddFromColumn}
-                    // @ts-expect-error TS2322
-                    p={polyglot}
                     subresourceId="1"
                 />
             </TestI18N>,
@@ -126,8 +114,6 @@ describe('<FieldAddDropdownButton />', () => {
                     onAddNewField={mockAddField}
                     // @ts-expect-error TS7005
                     onShowExistingColumns={mockShowAddFromColumn}
-                    // @ts-expect-error TS2322
-                    p={polyglot}
                     subresourceId="1"
                 />
             </TestI18N>,

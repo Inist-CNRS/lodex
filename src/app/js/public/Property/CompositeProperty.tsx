@@ -73,7 +73,6 @@ const mapStateToProps = (state, { field, resource, parents }) => {
     };
 };
 
-// @ts-expect-error TS2345
 const CompositeProperty = connect(mapStateToProps)(CompositePropertyComponent);
 
 export default CompositeProperty;

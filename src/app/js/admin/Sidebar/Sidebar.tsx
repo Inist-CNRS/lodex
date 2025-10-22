@@ -21,18 +21,18 @@ import {
     SCOPE_GRAPHIC,
 } from '../../../../common/scope';
 import { MenuItemLink } from './MenuItemLink';
-import { translate } from '../../i18n/I18NContext';
+import { useTranslate } from '../../i18n/I18NContext';
 
 const DRAWER_CLOSED_WIDTH = 50;
 const DRAWER_OPEN_WIDTH = 205;
 const ACTIVE_BORDER_WIDTH = 3;
 
 interface SidebarProps {
-    p: unknown;
     hasPublishedDataset: boolean;
 }
 
-const Sidebar = ({ p: polyglot, hasPublishedDataset }: SidebarProps) => {
+const Sidebar = ({ hasPublishedDataset }: SidebarProps) => {
+    const { translate } = useTranslate();
     const matchDisplayRoute = useRouteMatch('/display');
     const matchConfigRoute = useRouteMatch('/config');
     const matchDataRoute = useRouteMatch('/data') || matchConfigRoute;
@@ -47,8 +47,7 @@ const Sidebar = ({ p: polyglot, hasPublishedDataset }: SidebarProps) => {
         matchDataRoute && (
             <MenuItemLink
                 to="/data/existing"
-                // @ts-expect-error TS18046
-                primaryText={polyglot.t('data')}
+                primaryText={translate('data')}
                 leftIcon={<GridOnIcon />}
                 key="data-existing"
             />
@@ -56,8 +55,7 @@ const Sidebar = ({ p: polyglot, hasPublishedDataset }: SidebarProps) => {
         matchDataRoute && (
             <MenuItemLink
                 to="/data/enrichment"
-                // @ts-expect-error TS18046
-                primaryText={polyglot.t('enrichment')}
+                primaryText={translate('enrichment')}
                 leftIcon={<PostAddIcon />}
                 key="data-enrichment"
             />
@@ -65,8 +63,7 @@ const Sidebar = ({ p: polyglot, hasPublishedDataset }: SidebarProps) => {
         matchDataRoute && (
             <MenuItemLink
                 to="/data/precomputed"
-                // @ts-expect-error TS18046
-                primaryText={polyglot.t('precomputed')}
+                primaryText={translate('precomputed')}
                 leftIcon={<MediationIcon />}
                 key="data-precomputed"
             />
@@ -74,8 +71,7 @@ const Sidebar = ({ p: polyglot, hasPublishedDataset }: SidebarProps) => {
         matchDataRoute && hasPublishedDataset && (
             <MenuItemLink
                 to="/data/removed"
-                // @ts-expect-error TS18046
-                primaryText={polyglot.t('hidden_resources')}
+                primaryText={translate('hidden_resources')}
                 leftIcon={<VisibilityOffIcon />}
                 key="data-removed"
             />
@@ -83,8 +79,7 @@ const Sidebar = ({ p: polyglot, hasPublishedDataset }: SidebarProps) => {
         matchDisplayRoute && (
             <MenuItemLink
                 to={`/display/${SCOPE_DATASET}`}
-                // @ts-expect-error TS18046
-                primaryText={polyglot.t('home')}
+                primaryText={translate('home')}
                 leftIcon={<HomeIcon />}
                 key="display-home"
             />
@@ -92,8 +87,7 @@ const Sidebar = ({ p: polyglot, hasPublishedDataset }: SidebarProps) => {
         matchDisplayRoute && (
             <MenuItemLink
                 to={`/display/${SCOPE_DOCUMENT}/main`}
-                // @ts-expect-error TS18046
-                primaryText={polyglot.t('main_resource')}
+                primaryText={translate('main_resource')}
                 leftIcon={<ArticleIcon />}
                 key="display-main-resource"
             />
@@ -101,8 +95,7 @@ const Sidebar = ({ p: polyglot, hasPublishedDataset }: SidebarProps) => {
         matchDisplayRoute && (
             <MenuItemLink
                 to={`/display/${SCOPE_DOCUMENT}/subresource`}
-                // @ts-expect-error TS18046
-                primaryText={polyglot.t('subresources')}
+                primaryText={translate('subresources')}
                 leftIcon={<DocumentScannerIcon />}
                 key="display-subresources"
             />
@@ -110,8 +103,7 @@ const Sidebar = ({ p: polyglot, hasPublishedDataset }: SidebarProps) => {
         matchDisplayRoute && (
             <MenuItemLink
                 to={`/display/${SCOPE_GRAPHIC}`}
-                // @ts-expect-error TS18046
-                primaryText={polyglot.t('graph_pages')}
+                primaryText={translate('graph_pages')}
                 leftIcon={<EqualizerIcon />}
                 key="display-graph-pages"
             />
@@ -120,8 +112,7 @@ const Sidebar = ({ p: polyglot, hasPublishedDataset }: SidebarProps) => {
         matchDisplayRoute && (
             <MenuItemLink
                 to={`/display/search`}
-                // @ts-expect-error TS18046
-                primaryText={polyglot.t('search_page')}
+                primaryText={translate('search_page')}
                 leftIcon={<ManageSearchIcon />}
                 key="display-search-page"
             />
@@ -179,4 +170,4 @@ const mapStateToProps = (state) => ({
 });
 
 // @ts-expect-error TS2345
-export default compose(connect(mapStateToProps), translate)(Sidebar);
+export default compose(connect(mapStateToProps))(Sidebar);

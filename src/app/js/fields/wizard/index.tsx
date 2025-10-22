@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { connect, useDispatch } from 'react-redux';
 import { compose, withProps } from 'recompose';
-import { translate } from '../../i18n/I18NContext';
 
 import { Box, Tab, Tabs } from '@mui/material';
 
@@ -25,6 +24,7 @@ import { TabPanel } from './TabPanel';
 import TabSemantics from './TabSemantics';
 import ValuePreviewConnected from './ValuePreview';
 import { FormProvider, useForm } from 'react-hook-form';
+import { useTranslate } from '../../i18n/I18NContext';
 
 const ACTIONS_BAR_HEIGHT = 70;
 const PREVIEW_WIDTH = 320;
@@ -36,7 +36,6 @@ interface FieldEditionWizardComponentProps {
     filter?: string;
     saveField(...args: unknown[]): unknown;
     handleHideExistingColumns(...args: unknown[]): unknown;
-    p: unknown;
     fieldName?: string;
     history?: {
         push(...args: unknown[]): unknown;
@@ -62,9 +61,8 @@ const FieldEditionWizardComponent = ({
     history,
 
     isFieldsLoading,
-
-    p: polyglot,
 }: FieldEditionWizardComponentProps) => {
+    const { translate } = useTranslate();
     const [tabValue, setTabValue] = useState(0);
 
     // handle page loading before the field has started loading
@@ -86,8 +84,7 @@ const FieldEditionWizardComponent = ({
         }
 
         if (isInitialized && !isFieldsLoading && !currentEditedField) {
-            // @ts-expect-error TS18046
-            toast(polyglot.t('no_field', { fieldName }), {
+            toast(translate('no_field', { fieldName }), {
                 type: toast.TYPE.ERROR,
             });
             // @ts-expect-error TS18048
@@ -98,8 +95,7 @@ const FieldEditionWizardComponent = ({
             // @ts-expect-error TS7006
             !fieldsFromFilter.some((f) => f.name === currentEditedField.name)
         ) {
-            // @ts-expect-error TS18046
-            toast(polyglot.t('no_field_in_scope', { fieldName, filter }), {
+            toast(translate('no_field_in_scope', { fieldName, filter }), {
                 type: toast.TYPE.ERROR,
             });
             // @ts-expect-error TS18048
@@ -113,7 +109,7 @@ const FieldEditionWizardComponent = ({
         isFieldsLoading,
         fieldsFromFilter,
         history,
-        polyglot,
+        translate,
     ]);
 
     const dispatch = useDispatch();
@@ -254,8 +250,7 @@ const FieldEditionWizardComponent = ({
                                 >
                                     {tabs.map((tab, index) => (
                                         <Tab
-                                            // @ts-expect-error TS18046
-                                            label={polyglot.t(tab.label)}
+                                            label={translate(tab.label)}
                                             value={index}
                                             key={index}
                                             id={tab.id}
@@ -390,6 +385,5 @@ export default compose(
             },
         };
     }),
-    translate,
     // @ts-expect-error TS2345
 )(FieldEditionWizardComponent);

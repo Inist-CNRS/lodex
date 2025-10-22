@@ -19,7 +19,7 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 
 import ClearDialog from '../Appbar/ClearDialog';
 import { publish } from '.';
-import { translate } from '../../i18n/I18NContext';
+import { useTranslate } from '../../i18n/I18NContext';
 
 const options = [
     { label: 'republish', icon: <PublishedWithChangesIcon /> },
@@ -27,15 +27,13 @@ const options = [
 ];
 
 interface RepublishAndClearButtonComponentProps {
-    p: unknown;
     onPublish(...args: unknown[]): unknown;
 }
 
 export const RepublishAndClearButtonComponent = ({
-    p: polyglot,
-
     onPublish,
 }: RepublishAndClearButtonComponentProps) => {
+    const { translate } = useTranslate();
     const [open, setOpen] = React.useState(false);
     const [showClearDialog, setShowClearDialog] = useState(false);
 
@@ -91,9 +89,7 @@ export const RepublishAndClearButtonComponent = ({
                     startIcon={options[0].icon}
                     size="small"
                 >
-                    {/*
-                     // @ts-expect-error TS18046 */}
-                    {polyglot.t(options[0].label)}
+                    {translate(options[0].label)}
                 </Button>
                 <Button
                     size="small"
@@ -148,9 +144,7 @@ export const RepublishAndClearButtonComponent = ({
                                                         {option.icon}
                                                     </ListItemIcon>
                                                     <ListItemText>
-                                                        {/*
-                                                         // @ts-expect-error TS18046 */}
-                                                        {polyglot.t(
+                                                        {translate(
                                                             option.label,
                                                         )}
                                                     </ListItemText>
@@ -178,7 +172,6 @@ const mapDispatchToProps = {
 };
 
 export const RepublishAndClearButton = compose(
-    translate,
     connect(mapStateToProps, mapDispatchToProps),
     // @ts-expect-error TS2345
 )(RepublishAndClearButtonComponent);

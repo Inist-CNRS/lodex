@@ -8,21 +8,19 @@ import { fromFields } from '../sharedSelectors';
 import { SCOPE_DATASET } from '../../../common/scope';
 import fieldApi from '../admin/api/field';
 import FieldRepresentation from './FieldRepresentation';
-import { translate } from '../i18n/I18NContext';
+import { useTranslate } from '../i18n/I18NContext';
+import type { Field } from '../propTypes';
 
 interface DatasetOverviewSelectComponentProps {
-    p: unknown;
-    fields?: unknown[];
+    fields?: Field[];
     loadField(...args: unknown[]): unknown;
 }
 
 export const DatasetOverviewSelectComponent = ({
-    p: polyglot,
-
     fields,
-
     loadField,
 }: DatasetOverviewSelectComponentProps) => {
+    const { translate } = useTranslate();
     const [datasetTitle, datasetDescription] = useMemo(() => {
         // @ts-expect-error TS18048
         const datasetTitleField = fields.find(
@@ -63,8 +61,7 @@ export const DatasetOverviewSelectComponent = ({
             <TextField
                 select
                 value={datasetTitle || ''}
-                // @ts-expect-error TS18046
-                label={polyglot.t('overviewDatasetTitle')}
+                label={translate('overviewDatasetTitle')}
                 onChange={handleDatasetTitleChange}
                 sx={{ minWidth: 220 }}
                 SelectProps={{
@@ -77,9 +74,7 @@ export const DatasetOverviewSelectComponent = ({
                     ),
                 }}
             >
-                {/*
-                 // @ts-expect-error TS18046 */}
-                <MenuItem value={undefined}>{polyglot.t('none')}</MenuItem>
+                <MenuItem value={undefined}>{translate('none')}</MenuItem>
                 {/*
                  // @ts-expect-error TS7006 */}
                 {fields.map((field) => (
@@ -101,8 +96,7 @@ export const DatasetOverviewSelectComponent = ({
             <TextField
                 select
                 value={datasetDescription || ''}
-                // @ts-expect-error TS18046
-                label={polyglot.t('overviewDatasetDescription')}
+                label={translate('overviewDatasetDescription')}
                 onChange={handleDatasetDescriptionChange}
                 sx={{ minWidth: 220 }}
                 SelectProps={{
@@ -115,9 +109,7 @@ export const DatasetOverviewSelectComponent = ({
                     ),
                 }}
             >
-                {/*
-                 // @ts-expect-error TS18046 */}
-                <MenuItem value={undefined}>{polyglot.t('none')}</MenuItem>
+                <MenuItem value={undefined}>{translate('none')}</MenuItem>
                 {/*
                  // @ts-expect-error TS7006 */}
                 {fields.map((field) => (
@@ -152,7 +144,6 @@ const mapDispatchToProps = {
 };
 
 export default compose(
-    translate,
     connect(mapStateToProps, mapDispatchToProps),
     // @ts-expect-error TS2345
 )(DatasetOverviewSelectComponent);

@@ -13,7 +13,7 @@ import { loadProgress, clearProgress } from './reducer';
 import { PENDING } from '../../../../common/progressStatus';
 import { io } from 'socket.io-client';
 import { DEFAULT_TENANT } from '../../../../common/tools/tenantTools';
-import { translate } from '../../i18n/I18NContext';
+import { useTranslate } from '../../i18n/I18NContext';
 
 // @ts-expect-error TS7006
 const formatProgress = (progress, target, symbol, label) => {
@@ -23,9 +23,20 @@ const formatProgress = (progress, target, symbol, label) => {
     return progress + formatedTarget + formatedSymbol + formatedLabel;
 };
 
-// @ts-expect-error TS7006
-const renderProgressText = (props) => {
-    const { progress, target, symbol, label, p: polyglot } = props;
+type ProgressTextProps = {
+    progress?: number;
+    target?: number;
+    symbol?: string;
+    label?: string;
+};
+
+const ProgressText = ({
+    progress,
+    target,
+    symbol,
+    label,
+}: ProgressTextProps) => {
+    const { translate } = useTranslate();
     if (!progress) {
         return null;
     }
@@ -36,7 +47,7 @@ const renderProgressText = (props) => {
                 progress,
                 target,
                 symbol,
-                label ? polyglot.t(label) : undefined,
+                label ? translate(label) : undefined,
             )}
         </p>
     );
@@ -58,7 +69,8 @@ interface ProgressComponentProps {
 }
 
 export const ProgressComponent = (props: ProgressComponentProps) => {
-    const { clearProgress, p: polyglot, loadProgress, progress } = props;
+    const { translate } = useTranslate();
+    const { clearProgress, loadProgress, progress } = props;
 
     const [updatedProgress, setUpdatedProgress] = useState(progress);
     const isOpen =
@@ -81,13 +93,9 @@ export const ProgressComponent = (props: ProgressComponentProps) => {
     if (updatedProgress.error) {
         return (
             <Dialog open={isOpen} onClose={clearProgress}>
-                {/*
-                 // @ts-expect-error TS18046 */}
-                <DialogTitle>{polyglot.t(updatedProgress.status)}</DialogTitle>
+                <DialogTitle>{translate(updatedProgress.status)}</DialogTitle>
                 <DialogContent>
-                    {/*
-                     // @ts-expect-error TS18046 */}
-                    <div>{polyglot.t('progress_error')}</div>
+                    <div>{translate('progress_error')}</div>
                 </DialogContent>
             </Dialog>
         );
@@ -95,9 +103,7 @@ export const ProgressComponent = (props: ProgressComponentProps) => {
 
     return (
         <Dialog open={isOpen}>
-            {/*
-             // @ts-expect-error TS18046 */}
-            <DialogTitle>{polyglot.t(updatedProgress.status)}</DialogTitle>
+            <DialogTitle>{translate(updatedProgress.status)}</DialogTitle>
             <DialogContent>
                 <div className="progress">
                     <LinearProgress
@@ -114,7 +120,7 @@ export const ProgressComponent = (props: ProgressComponentProps) => {
                                 : 0
                         }
                     />
-                    {renderProgressText({ ...updatedProgress, p: polyglot })}
+                    <ProgressText {...updatedProgress} />
                 </div>
             </DialogContent>
         </Dialog>
@@ -132,7 +138,6 @@ const mapDispatchToProps = {
 };
 
 export const Progress = compose(
-    translate,
     connect(mapStateToProps, mapDispatchToProps),
     // @ts-expect-error TS2345
 )(ProgressComponent);

@@ -5,24 +5,20 @@ import { Button, Box } from '@mui/material';
 import { publish as publishAction } from './';
 import { fromFields } from '../../sharedSelectors';
 import { fromPublish } from '../selectors';
-import { translate } from '../../i18n/I18NContext';
+import { useTranslate } from '../../i18n/I18NContext';
 
 interface PublishButtonComponentProps {
-    canPublish: boolean;
-    onPublish(...args: unknown[]): unknown;
+    canPublish?: boolean;
+    onPublish(): void;
     isPublishing?: boolean;
-    p: unknown;
 }
 
 export const PublishButtonComponent = ({
     canPublish,
-
-    p: polyglot,
-
     onPublish,
-
     isPublishing,
 }: PublishButtonComponentProps) => {
+    const { translate } = useTranslate();
     const handleClick = () => {
         onPublish();
     };
@@ -46,9 +42,7 @@ export const PublishButtonComponent = ({
                     height: 40,
                 }}
             >
-                {/*
-                 // @ts-expect-error TS18046 */}
-                {polyglot.t('publish')}
+                {translate('publish')}
             </Button>
         </Box>
     );
@@ -75,6 +69,5 @@ const mapDispatchToProps = {
 
 export default compose(
     connect(mapStateToProps, mapDispatchToProps),
-    translate,
     // @ts-expect-error TS2345
 )(PublishButtonComponent);

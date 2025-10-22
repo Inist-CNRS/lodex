@@ -1,13 +1,10 @@
 import { Button } from '@mui/material';
 import DownloadIcon from '@mui/icons-material/Download';
 import { exportHiddenResources } from '../api/hiddenResource';
-import { translate } from '../../i18n/I18NContext';
+import { useTranslate } from '../../i18n/I18NContext';
 
-interface ExportButtonProps {
-    p: unknown;
-}
-
-const ExportButton = ({ p: polyglot }: ExportButtonProps) => {
+const ExportButton = () => {
+    const { translate } = useTranslate();
     const handleExport = async () => {
         const res = await exportHiddenResources();
         const file = window.URL.createObjectURL(res);
@@ -25,8 +22,6 @@ const ExportButton = ({ p: polyglot }: ExportButtonProps) => {
         link.remove();
     };
 
-    // @ts-expect-error TS18046
-    const buttonLabel = polyglot.t('export');
     return (
         <Button
             variant="text"
@@ -34,9 +29,9 @@ const ExportButton = ({ p: polyglot }: ExportButtonProps) => {
             className="export"
             startIcon={<DownloadIcon />}
         >
-            {buttonLabel}
+            {translate('export')}
         </Button>
     );
 };
 
-export default translate(ExportButton);
+export default ExportButton;

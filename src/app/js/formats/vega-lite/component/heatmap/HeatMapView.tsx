@@ -152,7 +152,6 @@ export const HeatMapAdminView = connect((_state, props) => {
             values: props.dataset.values ?? [],
         },
     };
-    // @ts-expect-error TS2345
 })(HeatMapView);
 
 // @ts-expect-error TS2345

@@ -1,5 +1,3 @@
-import { translate } from '../../i18n/I18NContext';
-
 import {
     Box,
     Button,
@@ -11,23 +9,20 @@ import {
 } from '@mui/material';
 
 import CancelButton from '../../lib/components/CancelButton';
+import { useTranslate } from '../../i18n/I18NContext';
 
 interface TransformerRemoveAllDialogProps {
     removeAll(...args: unknown[]): unknown;
     handleClose(...args: unknown[]): unknown;
     isOpen?: boolean;
-    p: unknown;
 }
 
 const TransformerRemoveAllDialog = ({
     removeAll,
-
     isOpen = false,
-
     handleClose,
-
-    p: polyglot,
 }: TransformerRemoveAllDialogProps) => {
+    const { translate } = useTranslate();
     const handleRemoveAll = () => {
         removeAll();
         handleClose();
@@ -39,9 +34,7 @@ const TransformerRemoveAllDialog = ({
     return (
         <Dialog open={isOpen} onClose={handleClose} scroll="body" maxWidth="lg">
             <DialogTitle>
-                {/*
-                 // @ts-expect-error TS18046 */}
-                {polyglot.t('transformer_delete_all_title')}
+                {translate('transformer_delete_all_title')}
             </DialogTitle>
             <DialogContent
                 style={{
@@ -50,26 +43,20 @@ const TransformerRemoveAllDialog = ({
                 }}
             >
                 <Typography variant="body1">
-                    {/*
-                     // @ts-expect-error TS18046 */}
-                    {polyglot.t('transformer_delete_all_description')}
+                    {translate('transformer_delete_all_description')}
                 </Typography>
             </DialogContent>
             <DialogActions>
                 <Box display="flex" justifyContent="flex-end">
                     <CancelButton onClick={handleClose}>
-                        {/*
-                         // @ts-expect-error TS18046 */}
-                        {polyglot.t('cancel')}
+                        {translate('cancel')}
                     </CancelButton>
                     <Button
                         onClick={handleRemoveAll}
                         variant="contained"
                         className="confirm-delete-all"
                     >
-                        {/*
-                         // @ts-expect-error TS18046 */}
-                        {polyglot.t('confirm')}
+                        {translate('confirm')}
                     </Button>
                 </Box>
             </DialogActions>
@@ -77,4 +64,4 @@ const TransformerRemoveAllDialog = ({
     );
 };
 
-export default translate(TransformerRemoveAllDialog);
+export default TransformerRemoveAllDialog;

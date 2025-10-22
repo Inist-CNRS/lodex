@@ -60,5 +60,4 @@ export default withHandlers({
             ({ sort, name }) =>
             () =>
                 sort(name),
-    // @ts-expect-error TS2769
 })(SortButton);
