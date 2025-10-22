@@ -50,5 +50,4 @@ const mapDispatchToProps = {
 export default connect(
     mapStateToProps,
     mapDispatchToProps,
-    // @ts-expect-error TS2345
 )(DatasetColumnHeader);

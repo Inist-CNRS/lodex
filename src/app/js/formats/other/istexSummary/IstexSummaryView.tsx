@@ -82,7 +82,6 @@ export const IstexSummaryView = ({
     sortDir = SORT_YEAR_DESC,
     yearThreshold = 50,
     documentSortBy,
-    p: polyglot,
     showEmbedButton = true,
 }: IstexSummaryViewProps) => {
     // @ts-expect-error TS7053
@@ -108,7 +107,6 @@ export const IstexSummaryView = ({
                     // @ts-expect-error TS2339
                     uri={resource.uri}
                     fieldName={field.name}
-                    p={polyglot}
                 />
             )}
             <ComposedComponent
@@ -122,7 +120,6 @@ export const IstexSummaryView = ({
                 searchedField={searchedField}
                 sortDir={sortDir}
                 documentSortBy={documentSortBy}
-                polyglot={polyglot}
             />
         </div>
     );

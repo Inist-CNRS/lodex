@@ -17,11 +17,12 @@ import { removeFieldList } from '../../fields';
 import FieldRepresentation from '../../fields/FieldRepresentation';
 import { fromFields } from '../../sharedSelectors';
 import { useTranslate } from '../../i18n/I18NContext';
+import type { Field } from '../../propTypes';
 
 interface DeleteFieldsButtonComponentProps {
-    fields?: {
+    fields?: (Field & {
         _id: string;
-    }[];
+    })[];
     selectedFields: string[];
     isFieldsLoading: boolean;
     filter?: string;

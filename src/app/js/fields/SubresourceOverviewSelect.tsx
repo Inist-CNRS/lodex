@@ -7,24 +7,21 @@ import { loadField } from '.';
 import { fromFields } from '../sharedSelectors';
 import fieldApi from '../admin/api/field';
 import FieldRepresentation from './FieldRepresentation';
-import { translate } from '../i18n/I18NContext';
+import { useTranslate } from '../i18n/I18NContext';
+import type { Field } from '../propTypes';
 
 interface SubresourceOverviewSelectComponentProps {
-    p: unknown;
-    fields?: unknown[];
-    loadField(...args: unknown[]): unknown;
+    fields?: Field[];
+    loadField(): void;
     subresourceId: string;
 }
 
 export const SubresourceOverviewSelectComponent = ({
-    p: polyglot,
-
     fields,
-
     loadField,
-
     subresourceId,
 }: SubresourceOverviewSelectComponentProps) => {
+    const { translate } = useTranslate();
     const subresourceTitle = useMemo(() => {
         // @ts-expect-error TS18048
         const subresourceTitleField = fields.find(
@@ -50,8 +47,7 @@ export const SubresourceOverviewSelectComponent = ({
         <TextField
             select
             value={subresourceTitle || ''}
-            // @ts-expect-error TS18046
-            label={polyglot.t('overviewSubresourceTitle')}
+            label={translate('overviewSubresourceTitle')}
             onChange={handleSubresourceTitleChange}
             sx={{ minWidth: 220 }}
             SelectProps={{
@@ -64,9 +60,7 @@ export const SubresourceOverviewSelectComponent = ({
                 ),
             }}
         >
-            {/*
-             // @ts-expect-error TS18046 */}
-            <MenuItem value={undefined}>{polyglot.t('none')}</MenuItem>
+            <MenuItem value={undefined}>{translate('none')}</MenuItem>
             {/*
              // @ts-expect-error TS7006 */}
             {fields.map((field) => (
@@ -98,7 +92,6 @@ const mapDispatchToProps = {
 };
 
 export default compose(
-    translate,
     connect(mapStateToProps, mapDispatchToProps),
     // @ts-expect-error TS2345
 )(SubresourceOverviewSelectComponent);

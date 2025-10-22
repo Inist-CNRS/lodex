@@ -176,7 +176,6 @@ export const TransformerListComponent = ({
                             {fieldsToDrag?.map((fieldName, index) => (
                                 <TransformerListItem
                                     key={fieldName}
-                                    // @ts-expect-error TS2322
                                     id={fieldName}
                                     transformer={fields[index]}
                                     onRemove={() => remove(index)}

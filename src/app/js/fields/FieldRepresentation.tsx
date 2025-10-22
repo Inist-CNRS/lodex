@@ -1,26 +1,22 @@
 import { Box, Checkbox, Tooltip, Typography, useTheme } from '@mui/material';
 
 import { AnnotationDisabledIcon } from '../annotation/AnnotationDisabledIcon';
-import { translate, useTranslate } from '../i18n/I18NContext';
+import { useTranslate } from '../i18n/I18NContext';
 import FieldInternalIcon from './FieldInternalIcon';
+import type { Field } from '../propTypes';
 
 interface FieldRepresentationProps {
-    field: object;
+    field?: Field;
     shortMode?: boolean;
     isFieldSelected?: boolean;
     handleToggleSelectedField?(...args: unknown[]): unknown;
-    p: unknown;
     showNotAnnotableIcon?: boolean;
 }
 
 function FieldRepresentation({
     field,
-
     shortMode = false,
     showNotAnnotableIcon = false,
-
-    p: polyglot,
-
     isFieldSelected,
 
     handleToggleSelectedField,
@@ -35,9 +31,7 @@ function FieldRepresentation({
                 variant="body2"
                 sx={{ color: 'neutralDark.light' }}
             >
-                {/*
-                 // @ts-expect-error TS18046 */}
-                {polyglot.t('field_not_found')}
+                {translate('field_not_found')}
             </Typography>
         );
     }
@@ -66,23 +60,16 @@ function FieldRepresentation({
                             paddingX: 0,
                         }}
                         disableRipple
-                        // @ts-expect-error TS18046
-                        aria-label={polyglot.t('select_field')}
+                        aria-label={translate('select_field')}
                     />
                 )}
 
-                {/*
-                 // @ts-expect-error TS2339 */}
                 {field.name && (
                     <Typography variant="body2" sx={{ color: 'info.main' }}>
-                        {/*
-                         // @ts-expect-error TS2339 */}
                         [{field.name}]
                     </Typography>
                 )}
 
-                {/*
-                 // @ts-expect-error TS2339 */}
                 {field.label && (
                     <Typography
                         variant="body2"
@@ -95,14 +82,11 @@ function FieldRepresentation({
                         }}
                     >
                         <Tooltip
-                            // @ts-expect-error TS2339
                             title={field.label}
                             enterDelay={300}
                             placement="top"
                             arrow
                         >
-                            {/*
-                             // @ts-expect-error TS2339 */}
                             <span>{field.label}</span>
                         </Tooltip>
                     </Typography>
@@ -199,4 +183,4 @@ function FieldRepresentation({
     );
 }
 
-export default translate(FieldRepresentation);
+export default FieldRepresentation;

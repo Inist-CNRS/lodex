@@ -5,19 +5,18 @@ import compose from 'recompose/compose';
 import { Button, Dialog, DialogActions, DialogTitle } from '@mui/material';
 import { removeField } from '../../fields';
 import CancelButton from '../../lib/components/CancelButton';
-import { translate } from '../../i18n/I18NContext';
+import { useTranslate } from '../../i18n/I18NContext';
 
 interface RemoveButtonComponentProps {
     onRemove(...args: unknown[]): unknown;
     field: unknown;
     filter: string;
-    p: unknown;
 }
 
 export const RemoveButtonComponent = ({
     onRemove,
-    p: polyglot,
 }: RemoveButtonComponentProps) => {
+    const { translate } = useTranslate();
     const [showDialog, setShowDialog] = useState(false);
 
     const handleShowDialog = () => setShowDialog(true);
@@ -30,9 +29,7 @@ export const RemoveButtonComponent = ({
                 onClick={handleShowDialog}
                 color="warning"
             >
-                {/*
-                 // @ts-expect-error TS18046 */}
-                {polyglot.t('remove_from_publication')}
+                {translate('remove_from_publication')}
             </Button>
             <Dialog
                 open={showDialog}
@@ -40,23 +37,17 @@ export const RemoveButtonComponent = ({
                 maxWidth="sm"
                 fullWidth
             >
-                {/*
-                 // @ts-expect-error TS18046 */}
-                <DialogTitle>{polyglot.t('remove_field')}</DialogTitle>
+                <DialogTitle>{translate('remove_field')}</DialogTitle>
                 <DialogActions>
                     <CancelButton onClick={handleCloseDialog}>
-                        {/*
-                         // @ts-expect-error TS18046 */}
-                        {polyglot.t('Cancel')}
+                        {translate('Cancel')}
                     </CancelButton>
                     <Button
                         color="primary"
                         variant="contained"
                         onClick={onRemove}
                     >
-                        {/*
-                         // @ts-expect-error TS18046 */}
-                        {polyglot.t('Accept')}
+                        {translate('Accept')}
                     </Button>
                 </DialogActions>
             </Dialog>
@@ -75,6 +66,5 @@ const mapDispatchtoProps = (dispatch, { field, filter }) =>
 
 export default compose(
     connect(undefined, mapDispatchtoProps),
-    translate,
     // @ts-expect-error TS2345
 )(RemoveButtonComponent);

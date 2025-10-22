@@ -10,7 +10,7 @@ import {
     Typography,
 } from '@mui/material';
 import CancelButton from '../../lib/components/CancelButton';
-import { translate } from '../../i18n/I18NContext';
+import { useTranslate } from '../../i18n/I18NContext';
 
 const styles = {
     info: {
@@ -81,18 +81,14 @@ interface PrecomputedLogsDialogProps {
     isOpen: boolean;
     handleClose(...args: unknown[]): unknown;
     logs: string[];
-    p: unknown;
 }
 
 export const PrecomputedLogsDialog = ({
     isOpen,
-
     logs,
-
-    p: polyglot,
-
     handleClose,
 }: PrecomputedLogsDialogProps) => {
+    const { translate } = useTranslate();
     const [logsContainerRef, { width }] = useMeasure();
 
     const handleDownloadLogs = () => {
@@ -108,9 +104,7 @@ export const PrecomputedLogsDialog = ({
 
     return (
         <Dialog open={isOpen} onClose={handleClose} scroll="body" maxWidth="lg">
-            {/*
-             // @ts-expect-error TS18046 */}
-            <DialogTitle>{polyglot.t('precomputed_logs')}</DialogTitle>
+            <DialogTitle>{translate('precomputed_logs')}</DialogTitle>
             <DialogContent
                 style={{
                     margin: 20,
@@ -134,18 +128,14 @@ export const PrecomputedLogsDialog = ({
             <DialogActions>
                 <Box display="flex" justifyContent="flex-end">
                     <CancelButton onClick={handleClose}>
-                        {/*
-                         // @ts-expect-error TS18046 */}
-                        {polyglot.t('close')}
+                        {translate('close')}
                     </CancelButton>
                     <Button
                         onClick={handleDownloadLogs}
                         color="primary"
                         variant="contained"
                     >
-                        {/*
-                         // @ts-expect-error TS18046 */}
-                        {polyglot.t('download_logs')}
+                        {translate('download_logs')}
                     </Button>
                 </Box>
             </DialogActions>
@@ -153,4 +143,4 @@ export const PrecomputedLogsDialog = ({
     );
 };
 
-export default translate(PrecomputedLogsDialog);
+export default PrecomputedLogsDialog;

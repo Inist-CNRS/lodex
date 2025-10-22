@@ -1,5 +1,3 @@
-import { translate } from '../../i18n/I18NContext';
-
 import { Box, Chip, Typography } from '@mui/material';
 import {
     Delete as DeleteIcon,
@@ -8,7 +6,7 @@ import {
 } from '@mui/icons-material';
 import { CSS } from '@dnd-kit/utilities';
 import { useSortable } from '@dnd-kit/sortable';
-import { compose } from 'recompose';
+import { useTranslate } from '../../i18n/I18NContext';
 
 interface TransformerListItemProps {
     transformer?: object;
@@ -16,22 +14,16 @@ interface TransformerListItemProps {
     show: boolean;
     onRemove(...args: unknown[]): unknown;
     onEdit(...args: unknown[]): unknown;
-    p: unknown;
 }
 
 const TransformerListItem = ({
     transformer,
-
     id,
-
     show,
-
     onRemove,
-
     onEdit,
-
-    p: polyglot,
 }: TransformerListItemProps) => {
+    const { translate } = useTranslate();
     const { attributes, listeners, setNodeRef, transform, transition } =
         useSortable({ id });
 
@@ -41,8 +33,7 @@ const TransformerListItem = ({
             return (
                 <Chip
                     key={name}
-                    // @ts-expect-error TS18046
-                    label={polyglot.t('empty')}
+                    label={translate('empty')}
                     sx={{
                         fontStyle: 'italic',
                     }}
@@ -54,8 +45,7 @@ const TransformerListItem = ({
             return (
                 <Chip
                     key={name}
-                    // @ts-expect-error TS18046
-                    label={polyglot.t('blank_space')}
+                    label={translate('blank_space')}
                     sx={{
                         fontStyle: 'italic',
                     }}
@@ -170,5 +160,4 @@ const TransformerListItem = ({
     );
 };
 
-// @ts-expect-error TS2345
-export default compose(translate)(TransformerListItem);
+export default TransformerListItem;

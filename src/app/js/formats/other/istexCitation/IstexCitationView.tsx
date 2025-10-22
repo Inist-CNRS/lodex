@@ -4,7 +4,10 @@ import Link from '../../../lib/components/Link';
 import injectData from '../../injectData';
 import InvalidFormat from '../../InvalidFormat';
 import { getCitationUrl, parseCitationData } from './getIstexCitationData';
-import { CUSTOM_ISTEX_QUERY } from '../istexSummary/constants';
+import {
+    CUSTOM_ISTEX_QUERY,
+    type SearchedField,
+} from '../istexSummary/constants';
 import composeRenderProps from '../../../lib/composeRenderProps';
 import IstexCitationList from './IstexCitationList';
 import JournalFold from './JournalFold';
@@ -62,9 +65,8 @@ interface IstexCitationViewProps {
         total?: number;
     };
     error?: string;
-    searchedField?: unknown[];
+    searchedField?: SearchedField;
     documentSortBy: string;
-    p: unknown;
 }
 
 export const IstexCitationView = ({

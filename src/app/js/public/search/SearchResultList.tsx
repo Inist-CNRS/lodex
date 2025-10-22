@@ -122,6 +122,8 @@ class SearchResultList extends Component<SearchResultListProps> {
                         closeDrawer={closeDrawer}
                     />
                 ))}
+                {/* 
+                // @ts-expect-error TS2339 */}
                 <SearchResultPlaceholders
                     // @ts-expect-error TS2339
                     className={classnames(styles.placeholders, {

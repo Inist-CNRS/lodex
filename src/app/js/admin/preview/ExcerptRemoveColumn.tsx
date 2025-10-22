@@ -6,7 +6,7 @@ import { TableCell, Button } from '@mui/material';
 import { removeField } from '../../fields';
 import { type Field } from '../../propTypes';
 import getFieldClassName from '../../lib/getFieldClassName';
-import { translate } from '../../i18n/I18NContext';
+import { useTranslate } from '../../i18n/I18NContext';
 
 interface ExcerptRemoveColumnComponentProps {
     removeColumn(...args: unknown[]): unknown;
@@ -17,25 +17,25 @@ interface ExcerptRemoveColumnComponentProps {
 export const ExcerptRemoveColumnComponent = ({
     removeColumn,
     field: { name },
-    p: polyglot,
-}: ExcerptRemoveColumnComponentProps) => (
-    <TableCell>
-        {name !== 'uri' ? (
-            <Button
-                variant="text"
-                className={`btn-excerpt-remove-column btn-excerpt-remove-column-${getFieldClassName(
-                    { name },
-                )}`}
-                onClick={removeColumn}
-                color="warning"
-            >
-                {/*
-                 // @ts-expect-error TS18046 */}
-                {polyglot.t('remove_from_publication')}
-            </Button>
-        ) : null}
-    </TableCell>
-);
+}: ExcerptRemoveColumnComponentProps) => {
+    const { translate } = useTranslate();
+    return (
+        <TableCell>
+            {name !== 'uri' ? (
+                <Button
+                    variant="text"
+                    className={`btn-excerpt-remove-column btn-excerpt-remove-column-${getFieldClassName(
+                        { name },
+                    )}`}
+                    onClick={removeColumn}
+                    color="warning"
+                >
+                    {translate('remove_from_publication')}
+                </Button>
+            ) : null}
+        </TableCell>
+    );
+};
 
 // @ts-expect-error TS7006
 const mapDispatchtoProps = (dispatch, { field: { name } }) =>
@@ -48,6 +48,5 @@ const mapDispatchtoProps = (dispatch, { field: { name } }) =>
 
 export default compose(
     connect(undefined, mapDispatchtoProps),
-    translate,
     // @ts-expect-error TS2345
 )(ExcerptRemoveColumnComponent);
