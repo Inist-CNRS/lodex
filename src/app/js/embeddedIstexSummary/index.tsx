@@ -2,24 +2,16 @@ import '@babel/polyfill';
 import 'url-api-polyfill';
 
 import { createRoot } from 'react-dom/client';
-import Polyglot from 'node-polyglot';
 
 import {
     createTheme,
     ThemeProvider as MuiThemeProvider,
 } from '@mui/material/styles';
 
-import phrasesFor from '../i18n/translations';
-import getLocale from '../../../common/getLocale';
 import defaultMuiTheme from '../../custom/themes/default/defaultTheme';
 import FieldProvider from './FieldProvider';
 import { IstexSummaryView } from '../formats/other/istexSummary/IstexSummaryView';
-
-const locale = getLocale();
-const polyglot = new Polyglot({
-    locale,
-    phrases: phrasesFor(locale),
-});
+import { I18N } from '../i18n/I18NContext';
 
 const theme = createTheme(defaultMuiTheme, {
     userAgent: navigator.userAgent,
@@ -28,18 +20,20 @@ const theme = createTheme(defaultMuiTheme, {
 // @ts-expect-error TS7006
 const App = (props) => (
     <MuiThemeProvider theme={theme}>
-        <FieldProvider {...props}>
-            {({ resource, field, formatData }) => (
-                <IstexSummaryView
-                    {...field.format.args}
-                    field={field}
-                    resource={resource}
-                    formatData={formatData}
-                    p={polyglot}
-                    showEmbedButton={false}
-                />
-            )}
-        </FieldProvider>
+        <I18N>
+            <FieldProvider {...props}>
+                {({ resource, field, formatData }) => (
+                    // @ts-expect-error TS2322
+                    <IstexSummaryView
+                        {...field.format.args}
+                        field={field}
+                        resource={resource}
+                        formatData={formatData}
+                        showEmbedButton={false}
+                    />
+                )}
+            </FieldProvider>
+        </I18N>
     </MuiThemeProvider>
 );
 

@@ -1,56 +1,49 @@
-import { Component } from 'react';
+import { useState } from 'react';
 import { IconButton } from '@mui/material';
 import CodeIcon from '@mui/icons-material/Code';
 import classnames from 'classnames';
 
 import ButtonWithDialog from '../../../lib/components/ButtonWithDialog';
 import { getCleanHost } from '../../../../../common/uris';
+import { useTranslate } from '../../../i18n/I18NContext';
 
 interface EmbedButtonProps {
     className?: string;
-    p: unknown;
     uri: string;
     fieldName: string;
 }
 
-class EmbedButton extends Component<EmbedButtonProps> {
-    state = { open: false };
+const EmbedButton = ({ className, uri, fieldName }: EmbedButtonProps) => {
+    const { translate } = useTranslate();
+    const [open, setOpen] = useState(false);
 
-    handleOpen = () => this.setState({ open: true });
-    handleClose = () => this.setState({ open: false });
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
 
-    renderOpenButton = () => {
-        const { className, p: polyglot } = this.props;
-
+    const renderOpenButton = () => {
         return (
             // @ts-expect-error TS2769
             <IconButton
                 className={classnames('embed-button', className)}
                 style={{ position: 'absolute' }}
-                // @ts-expect-error TS18046
-                tooltip={polyglot.t('embed_istex_summary')}
-                onClick={this.handleOpen}
+                tooltip={translate('embed_istex_summary')}
+                onClick={handleOpen}
             >
                 <CodeIcon />
             </IconButton>
         );
     };
 
-    renderDialog = () => {
-        const { uri, fieldName, p: polyglot } = this.props;
+    const renderDialog = () => {
         const host = getCleanHost();
 
         return (
             <>
-                {/*
-                 // @ts-expect-error TS18046 */}
-                <p>{polyglot.t('embed_step_head')}</p>
+                <p>{translate('embed_step_head')}</p>
                 <pre>
                     {`<script src="${host}/embeddedIstexSummary.js" defer></script>`}
                 </pre>
-                {/*
-                 // @ts-expect-error TS18046 */}
-                <p>{polyglot.t('embed_step_div')}</p>
+                <p>{translate('embed_step_div')}</p>
                 <pre>
                     {`<div class="embedded-istex-summary" data-api="${host}" data-uri="${uri}" data-field-name="${fieldName}"></div>`}
                 </pre>
@@ -58,22 +51,16 @@ class EmbedButton extends Component<EmbedButtonProps> {
         );
     };
 
-    render() {
-        const { p: polyglot } = this.props;
-        const { open } = this.state;
-
-        return (
-            <ButtonWithDialog
-                // @ts-expect-error TS18046
-                label={polyglot.t('embed_istex_summary')}
-                open={open}
-                handleOpen={this.handleOpen}
-                handleClose={this.handleClose}
-                openButton={this.renderOpenButton()}
-                dialog={this.renderDialog()}
-            />
-        );
-    }
-}
+    return (
+        <ButtonWithDialog
+            label={translate('embed_istex_summary')}
+            open={open}
+            handleOpen={handleOpen}
+            handleClose={handleClose}
+            openButton={renderOpenButton()}
+            dialog={renderDialog()}
+        />
+    );
+};
 
 export default EmbedButton;

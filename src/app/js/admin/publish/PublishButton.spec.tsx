@@ -19,14 +19,7 @@ describe('<Publish />', () => {
         const onPublish = jest.fn();
 
         const wrapper = shallow(
-            <PublishButton
-                // @ts-expect-error TS2322
-                p={{ t: (key) => key }}
-                // @ts-expect-error TS2322
-                loadField={() => {}}
-                isPublishing={false}
-                onPublish={onPublish}
-            />,
+            <PublishButton isPublishing={false} onPublish={onPublish} />,
         );
 
         wrapper.find(Button).simulate('click');

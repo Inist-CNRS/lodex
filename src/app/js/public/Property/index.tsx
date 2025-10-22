@@ -202,26 +202,17 @@ export const PropertyComponent = ({
             fieldStatus={fieldStatus}
             graphLink={field.scope === SCOPE_GRAPHIC}
         />,
-        // @ts-expect-error TS2322
         <CompositeProperty
-            // @ts-expect-error TS2322
             key="composite"
-            // @ts-expect-error TS2322
             field={field}
-            // @ts-expect-error TS2322
             resource={resource}
-            // @ts-expect-error TS2322
             parents={parents}
         />,
-        // @ts-expect-error TS2322
         <PropertyLinkedFields
-            // @ts-expect-error TS2322
             key="linked-fields"
-            // @ts-expect-error TS2322
             fieldName={field.name}
             // @ts-expect-error TS2322
             resource={resource}
-            // @ts-expect-error TS2322
             parents={parents}
         />,
     ];

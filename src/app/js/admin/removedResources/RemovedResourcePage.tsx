@@ -5,20 +5,14 @@ import withInitialData from '../withInitialData';
 import redirectToDashboardIfNoField from '../../admin/redirectToDashboardIfNoField';
 import ExportButton from './ExportButton';
 import ImportButton from './ImportButton';
-import { translate } from '../../i18n/I18NContext';
+import { useTranslate } from '../../i18n/I18NContext';
 
-interface RemovedResourcePageComponentProps {
-    p: unknown;
-}
-
-export const RemovedResourcePageComponent = ({
-    p: polyglot,
-}: RemovedResourcePageComponentProps) => {
+export const RemovedResourcePageComponent = () => {
+    const { translate } = useTranslate();
     return (
         <Card>
             <CardHeader
-                // @ts-expect-error TS18046
-                title={<h3>{polyglot.t('hidden_resources')}</h3>}
+                title={<h3>{translate('hidden_resources')}</h3>}
                 action={
                     <>
                         <ImportButton />
@@ -35,6 +29,4 @@ export const RemovedResourcePageComponent = ({
 export default compose(
     redirectToDashboardIfNoField,
     withInitialData,
-    translate,
-    // @ts-expect-error TS2345
 )(RemovedResourcePageComponent);

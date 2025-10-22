@@ -3,9 +3,16 @@ import { useState, useEffect, useCallback, type ReactNode } from 'react';
 import fetch from '../lib/fetch';
 import { getYearUrl } from '../formats/other/istexSummary/getIstexData';
 import { CUSTOM_ISTEX_QUERY } from '../formats/other/istexSummary/constants';
+import type { Field } from '../propTypes';
 
 interface FieldProviderProps {
-    children(...args: unknown[]): ReactNode;
+    children(props: {
+        resource: Record<string, unknown>;
+        field: Field & {
+            format: { args: { searchedField: string } };
+        };
+        formatData: Record<string, unknown>;
+    }): ReactNode;
     api: string;
     uri: string;
     fieldName: string;

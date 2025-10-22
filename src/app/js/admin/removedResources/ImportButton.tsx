@@ -4,7 +4,7 @@ import { Button, CircularProgress, styled } from '@mui/material';
 import { importHiddenResources } from '../api/hiddenResource';
 import { toast } from '../../../../common/tools/toast';
 import { useLocation, Redirect } from 'react-router-dom';
-import { translate } from '../../i18n/I18NContext';
+import { useTranslate } from '../../i18n/I18NContext';
 
 const VisuallyHiddenInput = styled('input')({
     clip: 'rect(0 0 0 0)',
@@ -18,13 +18,9 @@ const VisuallyHiddenInput = styled('input')({
     width: 1,
 });
 
-interface ImportButtonProps {
-    p: unknown;
-}
-
-const ImportButton = ({ p: polyglot }: ImportButtonProps) => {
-    // @ts-expect-error TS18046
-    const buttonLabel = polyglot.t('import');
+const ImportButton = () => {
+    const { translate } = useTranslate();
+    const buttonLabel = translate('import');
     const location = useLocation();
     const [uploading, setUploading] = useState(false);
     const [done, setDone] = useState(false);
@@ -38,14 +34,12 @@ const ImportButton = ({ p: polyglot }: ImportButtonProps) => {
         const response = await importHiddenResources(formData);
         setUploading(false);
         if (response.error) {
-            // @ts-expect-error TS18046
-            toast(polyglot.t('import_error'), {
+            toast(translate('import_error'), {
                 type: toast.TYPE.ERROR,
             });
         } else {
             setDone(true);
-            // @ts-expect-error TS18046
-            toast(polyglot.t('import_successful'), {
+            toast(translate('import_successful'), {
                 type: toast.TYPE.SUCCESS,
             });
         }
@@ -75,4 +69,4 @@ const ImportButton = ({ p: polyglot }: ImportButtonProps) => {
     );
 };
 
-export default translate(ImportButton);
+export default ImportButton;

@@ -78,7 +78,6 @@ export const PureButtonWithDialog = ({
             {openButton}
             <Dialog
                 style={dialogStyle.container}
-                // @ts-expect-error TS2322
                 open={open}
                 onClose={handleClose}
                 scroll="body"

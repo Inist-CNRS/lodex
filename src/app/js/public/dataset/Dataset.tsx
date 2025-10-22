@@ -108,11 +108,8 @@ export const DatasetComponent = ({
                         {columns.map((c) => (
                             // @ts-expect-error TS2741
                             <DatasetColumnHeader
-                                // @ts-expect-error TS2322
                                 key={c.name}
-                                // @ts-expect-error TS2322
                                 name={c.name}
-                                // @ts-expect-error TS2322
                                 label={c.label}
                             />
                         ))}

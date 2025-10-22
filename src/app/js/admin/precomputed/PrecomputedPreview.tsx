@@ -1,19 +1,18 @@
 import PreviewIcon from '@mui/icons-material/Preview';
 
 import { Box, Typography } from '@mui/material';
-import { translate } from '../../i18n/I18NContext';
+import { useTranslate } from '../../i18n/I18NContext';
 
 interface PrecomputedPreviewProps {
     lines: unknown[];
     sourceColumns?: string[];
-    p: unknown;
 }
 
 const PrecomputedPreview = ({
     lines,
     sourceColumns,
-    p: polyglot,
 }: PrecomputedPreviewProps) => {
+    const { translate } = useTranslate();
     return (
         <Box
             id="value-preview"
@@ -33,9 +32,7 @@ const PrecomputedPreview = ({
                  // @ts-expect-error TS2769 */}
                 <PreviewIcon mr={1} />
                 <Typography variant="h6">
-                    {/*
-                     // @ts-expect-error TS18046 */}
-                    {polyglot.t('value_preview_title')}
+                    {translate('value_preview_title')}
                 </Typography>
             </Box>
 
@@ -73,22 +70,18 @@ const PrecomputedPreview = ({
                 {lines.length === 0 && (
                     <Box textAlign={'center'} mb={2}>
                         <Typography variant="body1">
-                            {/*
-                             // @ts-expect-error TS18046 */}
-                            {polyglot.t('preview_no_data')}
+                            {translate('preview_no_data')}
                         </Typography>
                     </Box>
                 )}
             </Box>
             <Box mb={1}>
                 <Typography variant="body1" sx={{ fontStyle: 'italic' }}>
-                    {/*
-                     // @ts-expect-error TS18046 */}
-                    {polyglot.t('precomputed_preview_description')}
+                    {translate('precomputed_preview_description')}
                 </Typography>
             </Box>
         </Box>
     );
 };
 
-export default translate(PrecomputedPreview);
+export default PrecomputedPreview;
