@@ -6,8 +6,36 @@ import {
 } from './enrichment';
 import * as fs from 'fs';
 import path from 'path';
-import { ObjectId } from 'mongodb';
+import { MongoClient, ObjectId } from 'mongodb';
 import progress from '../../services/progress';
+// @ts-expect-error TS7016
+import { disableFusible } from '@ezs/core/fusible';
+import { CancelWorkerError } from '../../workers';
+
+const waitFor = async (
+    fn: () => Promise<boolean> | boolean,
+    {
+        checkEvery = 100,
+        timeout = 10000,
+    }: {
+        checkEvery?: number;
+        timeout?: number;
+    } = {},
+) => {
+    expect(
+        await (async () => {
+            const startTime = Date.now();
+            while (Date.now() - startTime < timeout) {
+                await new Promise((resolve) => setTimeout(resolve, checkEvery));
+
+                if (await fn()) {
+                    return true;
+                }
+            }
+            return false;
+        })(),
+    ).toBeTruthy();
+};
 
 describe('enrichment', () => {
     describe('getEnrichmentRuleModel', () => {
@@ -360,6 +388,91 @@ describe('enrichment', () => {
     });
 
     describe('processEnrichment', () => {
+        const connectionStringURI = process.env.MONGO_URL;
+        let db: any;
+        let connection: any;
+        let dbName: string;
+
+        beforeAll(async () => {
+            connection = await MongoClient.connect(connectionStringURI!);
+            db = connection.db();
+            dbName = connection.s.options.dbName;
+        });
+
+        afterAll(async () => {
+            await connection.close();
+        });
+
+        afterEach(async () => db.dropDatabase());
+
+        it('should throw a CancelWorkerError when the job is canceled', async () => {
+            // Insert a big enough dataset to have time to cancel the job before the end of the enrichment.
+            await db.collection('dataset').insertMany(
+                [...Array(100000)].map((_, i) => ({
+                    testField: `name${i}`,
+                })),
+            );
+
+            // ezs cannot be mock in the same way, one day this test will have to be rewritten differently
+            progress.initialize(dbName);
+
+            let jobFusible: any;
+
+            // GIVEN
+            const ezsRule = fs
+                .readFileSync(
+                    path.resolve(__dirname, './directPathSingleValue.txt'),
+                )
+                .toString()
+                .replace(/\[\[SOURCE COLUMN\]\]/g, 'name')
+                .replace(/\[\[BATCH SIZE\]\]/g, '10')
+                .replace(/\[\[WEB SERVICE TIMEOUT\]\]/g, '10000')
+                .replace(
+                    '[[WEB SERVICE URL]]',
+                    'http://a-fake-url.to.raise.an.error',
+                );
+            const enrichment = {
+                name: 'test',
+                rule: ezsRule,
+            };
+            const ctx = {
+                configTenant: {},
+                tenant: dbName,
+                job: {
+                    id: 1,
+                    log: jest.fn(),
+                    isActive: jest.fn().mockReturnValue(true),
+                    data: {
+                        tenant: dbName,
+                    },
+                    update: jest.fn().mockImplementation(({ fusible }: any) => {
+                        jobFusible = fusible;
+                        return Promise.resolve();
+                    }),
+                },
+                enrichment: {
+                    updateOne: jest.fn(),
+                    updateStatus: jest.fn(),
+                },
+            };
+
+            // WHEN
+            let catchedError: any;
+            processEnrichment(enrichment, false, ctx).catch(
+                (error) => (catchedError = error),
+            );
+
+            // Wait for the fusible to be created and enabled.
+            await waitFor(() => !!jobFusible);
+            await disableFusible(jobFusible);
+
+            // Wait for an error to be thrown.
+            await waitFor(() => !!catchedError);
+
+            // THEN
+            expect(catchedError).toBeInstanceOf(CancelWorkerError);
+        }, 60000);
+
         it.skip('should log error when ws is out', async () => {
             // ezs cannot be mock in the same way, one day this test will have to be rewritten differently
             progress.initialize('lodex_test');
