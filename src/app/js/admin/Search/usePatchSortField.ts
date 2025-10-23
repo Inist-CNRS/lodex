@@ -16,7 +16,7 @@ export function usePatchSortField() {
         onSuccess(res, payload) {
             if (!res.ok) {
                 toast(translate('syndication_error'), {
-                    type: toast.TYPE.ERROR,
+                    type: 'error',
                 });
                 return;
             }

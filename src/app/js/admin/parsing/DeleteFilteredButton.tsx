@@ -51,7 +51,7 @@ export function DeleteFilteredButton({
 
         if (res.status === 'deleted') {
             toast(translate('parsing_delete_rows_success'), {
-                type: toast.TYPE.SUCCESS,
+                type: 'success',
             });
             apiRef.current.setFilterModel({
                 items: [],
@@ -63,7 +63,7 @@ export function DeleteFilteredButton({
             setIsLoading(false);
         } else {
             toast(translate('parsing_delete_rows_error'), {
-                type: toast.TYPE.ERROR,
+                type: 'error',
             });
         }
         setIsLoading(false);

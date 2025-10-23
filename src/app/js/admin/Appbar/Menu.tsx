@@ -67,11 +67,11 @@ const MenuComponent = ({
     useEffect(() => {
         if (importFailed) {
             toast(translate('import_fields_failed'), {
-                type: toast.TYPE.ERROR,
+                type: 'error',
             });
         } else if (importSucceeded) {
             toast(translate('model_imported_with_success'), {
-                type: toast.TYPE.SUCCESS,
+                type: 'success',
             });
         }
     }, [importSucceeded, importFailed]);

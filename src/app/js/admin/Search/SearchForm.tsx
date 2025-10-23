@@ -164,7 +164,7 @@ export const SearchForm = ({ fields, loadField }: SearchFormProps) => {
         const res = await fieldApi.patchSearchableFields(value);
         if (!res) {
             toast(translate('searchable_error'), {
-                type: toast.TYPE.ERROR,
+                type: 'error',
             });
         }
     };
@@ -283,7 +283,7 @@ export const SearchForm = ({ fields, loadField }: SearchFormProps) => {
         });
         if (!res) {
             toast(translate('facet_error'), {
-                type: toast.TYPE.ERROR,
+                type: 'error',
             });
             setFacetChecked(oldChecked);
         }
