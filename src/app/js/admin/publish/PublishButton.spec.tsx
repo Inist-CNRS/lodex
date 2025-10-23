@@ -5,14 +5,13 @@ import {
     PublishButtonComponent as PublishButton,
 } from './PublishButton';
 import { Button } from '@mui/material';
+import { render } from '../../../../test-utils';
 
 describe('<Publish />', () => {
     it('should render a publish button', () => {
-        // @ts-expect-error TS2322
-        const wrapper = shallow(<PublishButton p={{ t: (key) => key }} />);
+        const screen = render(<PublishButton onPublish={() => {}} />);
 
-        const button = wrapper.find(Button).at(0);
-        expect(button.prop('children')).toBe('publish');
+        expect(screen.getByText('publish')).toBeInTheDocument();
     });
 
     it('should trigger the onPublish action on click', () => {
