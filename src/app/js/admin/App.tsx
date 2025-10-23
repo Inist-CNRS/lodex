@@ -8,7 +8,7 @@ import { SidebarContext } from './Sidebar/SidebarContext';
 import Sidebar from './Sidebar/Sidebar';
 import { ToastContainer } from 'react-toastify';
 // @ts-expect-error TS2882
-import 'react-toastify/dist/ReactToastify.css';
+import 'react-toastify/ReactToastify.css';
 
 const styles = {
     layout: {

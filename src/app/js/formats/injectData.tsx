@@ -1,16 +1,17 @@
-import { Component } from 'react';
-import { connect } from 'react-redux';
-import compose from 'recompose/compose';
-import { withRouter } from 'react-router';
-import isEqual from 'lodash/isEqual';
+import { useState, useEffect, useCallback, memo, useMemo } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { useLocation } from 'react-router';
 import get from 'lodash/get';
 
-import { fromFormat } from '../public/selectors';
-import { preLoadFormatData, loadFormatData, unLoadFormatData } from './reducer';
+import {
+    loadFormatData as loadFormatDataAction,
+    unLoadFormatData as unLoadFormatDataAction,
+} from './reducer';
 import Loading from '../lib/components/Loading';
 import InvalidFormat from './InvalidFormat';
 import { CircularProgress } from '@mui/material';
-import { translate } from '../i18n/I18NContext';
+import type { Field } from '../propTypes';
+import { useTranslate } from '../i18n/I18NContext';
 
 const styles = {
     message: {
@@ -78,20 +79,8 @@ const getCreateUrl = (url) => {
 const isHomePage = (location) => get(location, 'pathname', '') === '/';
 
 interface GraphItemProps {
-    field: unknown;
+    field: Field;
     resource: object;
-    preLoadFormatData(...args: unknown[]): unknown;
-    unLoadFormatData(...args: unknown[]): unknown;
-    loadFormatData(...args: unknown[]): unknown;
-    formatData?: any;
-    formatTotal?: any;
-    isLoaded: boolean;
-    isFormatLoading: boolean;
-    error?: unknown | unknown;
-    location?: {
-        pathname?: string;
-    };
-    p: unknown;
 }
 
 export default (url = null, checkFormatLoaded = null, withUri = false) =>
@@ -99,210 +88,166 @@ export default (url = null, checkFormatLoaded = null, withUri = false) =>
     (FormatView) => {
         const createUrl = getCreateUrl(url);
 
-        class GraphItem extends Component<GraphItemProps> {
-            // @ts-expect-error TS7006
-            constructor(props) {
-                super(props);
-                this.state = {
-                    isLoading: true,
+        const GraphItem = (props: GraphItemProps) => {
+            const location = useLocation();
+            const dispatch = useDispatch();
+            const formatState = useSelector(
+                (state: any) => state.format[props.field.name],
+            );
+
+            const isFormatLoading = useSelector((state: any) =>
+                get(state, 'dataset.formatLoading', false),
+            );
+            const { isFormatLoaded, formatData, formatTotal, formatError } =
+                useMemo(() => {
+                    if (!formatState || formatState === 'loading') {
+                        return {
+                            isFormatDataLoaded: false,
+                            isFormatLoading: true,
+                        };
+                    }
+                    return {
+                        isFormatLoaded: true,
+                        formatData: formatState.data,
+                        formatTotal: formatState.total,
+                        formatError: formatState.error,
+                    };
+                }, [formatState]);
+            const isLoaded = useMemo(
+                () =>
+                    typeof checkFormatLoaded == 'function'
+                        ? // @ts-expect-error TS2349
+                          checkFormatLoaded(props.field)
+                        : props.field && isFormatLoaded,
+                [props.field, isFormatLoaded],
+            );
+            const { translate } = useTranslate();
+
+            const [isAnimationPLaying, setIsAnimationPlaying] = useState(true);
+
+            const loadFormatData = useCallback(
+                (values: object) => {
+                    const value = createUrl({
+                        field: props.field,
+                        resource: props.resource,
+                    });
+
+                    if (!value) {
+                        return;
+                    }
+
+                    const withFacets = !isHomePage(location);
+                    dispatch(
+                        loadFormatDataAction({
+                            field: props.field,
+                            resource: props.resource,
+                            value,
+                            withUri,
+                            withFacets,
+                            ...values,
+                        }),
+                    );
+                },
+                [dispatch, props.field, location, props.resource],
+            );
+
+            const filterFormatData = useCallback(
+                (filter: Record<string, unknown>) => {
+                    loadFormatData({
+                        filter,
+                    });
+                },
+                [loadFormatData],
+            );
+
+            const handleAnimationEnd = useCallback(() => {
+                setIsAnimationPlaying(false);
+            }, []);
+
+            // // Effect for component unmount (replaces componentWillUnmount)
+            useEffect(() => {
+                return () => {
+                    if (!props.field) {
+                        return;
+                    }
+                    dispatch(unLoadFormatDataAction(props.field));
                 };
-                this.handleAnimationEnd = this.handleAnimationEnd.bind(this);
-            }
+            }, []);
 
-            loadFormatData = ({ ...args }) => {
-                const { loadFormatData, location } = this.props;
-
-                const value = createUrl(this.props);
-
-                if (!value) {
+            // Effect to handle field/resource changes
+            useEffect(() => {
+                if (!props.field) {
                     return;
                 }
 
-                const withFacets = !isHomePage(location);
-                loadFormatData({
-                    ...this.props,
-                    value,
-                    withUri,
-                    withFacets,
-                    ...args,
-                });
-            };
+                // This effect will run when field or resource changes
+                loadFormatData({});
+            }, [loadFormatData, props.field]);
 
-            // @ts-expect-error TS7006
-            filterFormatData = (filter) => {
-                this.loadFormatData({
-                    filter,
-                });
-            };
+            const { field, resource, ...restProps } = props;
 
-            unLoadFormatData = ({ ...args }) => {
-                const { unLoadFormatData } = this.props;
-                unLoadFormatData({ ...args });
-            };
-
-            UNSAFE_componentWillMount() {
-                const { field } = this.props;
-                if (!field) {
-                    return;
-                }
-                this.loadFormatData({});
-            }
-
-            componentWillUnmount() {
-                const { field } = this.props;
-                if (!field) {
-                    return;
-                }
-                this.unLoadFormatData(field);
-            }
-
-            // @ts-expect-error TS7006
-            componentDidUpdate(prevProps) {
-                const { field, resource } = this.props;
-
-                // @ts-expect-error TS2339
-                if (!this.state.isLoading && this.props.isFormatLoading) {
-                    this.setState({
-                        isLoading: true,
-                    });
-                }
-
-                if (
-                    !field ||
-                    (isEqual(field, prevProps.field) &&
+            if (formatError) {
+                return formatError === 'bad value' ? (
+                    <InvalidFormat
+                        // @ts-expect-error TS18046
+                        format={field.format}
                         // @ts-expect-error TS7053
-                        resource[field.name] ===
-                            prevProps.resource[prevProps.field.name])
-                ) {
-                    return;
-                }
-
-                this.loadFormatData({});
-            }
-
-            handleAnimationEnd() {
-                // @ts-expect-error TS2339
-                if (this.state.isLoading && !this.props.isFormatLoading) {
-                    this.setState({
-                        isLoading: false,
-                    });
-                }
-            }
-
-            render() {
-                const {
-                    formatTotal,
-                    formatData,
-                    p: polyglot,
-                    field,
-                    isLoaded,
-                    isFormatLoading,
-                    error,
-                    resource,
-                    ...props
-                } = this.props;
-
-                if (error) {
-                    return error === 'bad value' ? (
-                        <InvalidFormat
-                            // @ts-expect-error TS18046
-                            format={field.format}
-                            // @ts-expect-error TS7053
-                            value={resource[field.name]}
-                        />
-                    ) : (
-                        <p style={styles.message}>
-                            {/*
-                             // @ts-expect-error TS18046 */}
-                            {polyglot.t('chart_error')}
-                        </p>
-                    );
-                }
-
-                if (
-                    formatData === 'no result' ||
-                    (formatData != undefined && formatData.length === 0)
-                ) {
-                    return (
-                        <p style={styles.message}>
-                            {/*
-                             // @ts-expect-error TS18046 */}
-                            {polyglot.t('no_chart_data')}
-                        </p>
-                    );
-                }
-
-                if (!isLoaded) {
-                    // @ts-expect-error TS18046
-                    return <Loading>{polyglot.t('loading')}</Loading>;
-                }
-
-                return (
-                    // @ts-expect-error TS2322
-                    <div style={styles.format.container}>
-                        <style>{animationKeyframes}</style>
-                        <div
-                            onAnimationEnd={this.handleAnimationEnd}
-                            // @ts-expect-error TS2322
-                            style={{
-                                ...styles.format.loading,
-                                animationName: isFormatLoading
-                                    ? 'injectDataLoadingStart'
-                                    : 'injectDataLoadingEnd',
-                            }}
-                        ></div>
-                        {/*
-                         // @ts-expect-error TS2339 */}
-                        {this.state.isLoading ? (
-                            <CircularProgress
-                                sx={styles.format.progress}
-                                variant="indeterminate"
-                                size={40}
-                            />
-                        ) : null}
-                        <FormatView
-                            {...props}
-                            p={polyglot}
-                            field={field}
-                            resource={resource}
-                            formatData={formatData}
-                            formatTotal={formatTotal}
-                            filterFormatData={this.filterFormatData}
-                        />
-                    </div>
+                        value={resource[field.name]}
+                    />
+                ) : (
+                    <p style={styles.message}>{translate('chart_error')}</p>
                 );
             }
-        }
 
-        // @ts-expect-error TS2339
+            if (
+                formatData === 'no result' ||
+                (formatData != undefined && formatData.length === 0)
+            ) {
+                return (
+                    <p style={styles.message}>{translate('no_chart_data')}</p>
+                );
+            }
+
+            if (!isLoaded) {
+                return <Loading>{translate('loading')}</Loading>;
+            }
+
+            return (
+                // @ts-expect-error TS2322
+                <div style={styles.format.container}>
+                    <style>{animationKeyframes}</style>
+                    <div
+                        onAnimationEnd={handleAnimationEnd}
+                        // @ts-expect-error TS2322
+                        style={{
+                            ...styles.format.loading,
+                            animationName: isFormatLoading
+                                ? 'injectDataLoadingStart'
+                                : 'injectDataLoadingEnd',
+                        }}
+                    ></div>
+                    {isAnimationPLaying || isFormatLoading ? (
+                        <CircularProgress
+                            sx={styles.format.progress}
+                            variant="indeterminate"
+                            size={40}
+                        />
+                    ) : null}
+                    <FormatView
+                        {...restProps}
+                        field={field}
+                        resource={resource}
+                        formatData={formatData}
+                        formatTotal={formatTotal}
+                        filterFormatData={filterFormatData}
+                    />
+                </div>
+            );
+        };
+
         GraphItem.WrappedComponent = FormatView;
 
-        // @ts-expect-error TS7006
-        const mapStateToProps = (state, { field, resource }) => {
-            const isLoaded =
-                typeof checkFormatLoaded == 'function'
-                    ? // @ts-expect-error TS2349
-                      checkFormatLoaded(field)
-                    : field && fromFormat.isFormatDataLoaded(state, field.name);
-            return {
-                resource,
-                formatData: fromFormat.getFormatData(state, field.name),
-                formatTotal: fromFormat.getFormatTotal(state, field.name),
-                isLoaded,
-                isFormatLoading: get(state, 'dataset.formatLoading', false),
-                error: fromFormat.getFormatError(state, field.name),
-            };
-        };
-
-        const mapDispatchToProps = {
-            preLoadFormatData,
-            unLoadFormatData,
-            loadFormatData,
-        };
-
-        return compose(
-            connect(mapStateToProps, mapDispatchToProps),
-            translate,
-            withRouter,
-        )(GraphItem);
+        return memo(GraphItem, (prevProps, nextProps) => {
+            return JSON.stringify(prevProps) === JSON.stringify(nextProps);
+        });
     };
