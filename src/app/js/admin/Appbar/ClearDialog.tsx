@@ -97,13 +97,13 @@ const ClearDialogComponent = (props: ClearDialogComponentProps) => {
                 loadField();
                 loadSubResources();
                 toast(translate('model_cleared'), {
-                    type: toast.TYPE.SUCCESS,
+                    type: 'success',
                 });
                 onClose();
             }
         } else {
             toast(translate('model_not_cleared'), {
-                type: toast.TYPE.ERROR,
+                type: 'error',
             });
         }
     };

@@ -85,7 +85,7 @@ const FieldEditionWizardComponent = ({
 
         if (isInitialized && !isFieldsLoading && !currentEditedField) {
             toast(translate('no_field', { fieldName }), {
-                type: toast.TYPE.ERROR,
+                type: 'error',
             });
             // @ts-expect-error TS18048
             history.push(`/display/${filter}`);
@@ -96,7 +96,7 @@ const FieldEditionWizardComponent = ({
             !fieldsFromFilter.some((f) => f.name === currentEditedField.name)
         ) {
             toast(translate('no_field_in_scope', { fieldName, filter }), {
-                type: toast.TYPE.ERROR,
+                type: 'error',
             });
             // @ts-expect-error TS18048
             history.push(`/display/${filter}`);

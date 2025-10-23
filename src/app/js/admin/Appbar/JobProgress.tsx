@@ -128,11 +128,11 @@ const JobProgressComponent = (props: JobProgressComponentProps) => {
                 handlePublishError(data);
                 if (data.message === 'cancelled_publish') {
                     toast(translate('cancelled_publish'), {
-                        type: toast.TYPE.SUCCESS,
+                        type: 'success',
                     });
                 } else {
                     toast(`${translate('error')} : ${data.message}`, {
-                        type: toast.TYPE.ERROR,
+                        type: 'error',
                     });
                 }
             }
@@ -148,14 +148,14 @@ const JobProgressComponent = (props: JobProgressComponentProps) => {
             }
             if (data.message && data.message !== 'cancelled_import') {
                 toast(`${translate('error')} : ${data.message}`, {
-                    type: toast.TYPE.ERROR,
+                    type: 'error',
                 });
             }
             if (data.message === 'cancelled_import') {
                 loadParsingResult();
                 setHasLoadedParsingResult(false);
                 toast(translate('cancelled_import'), {
-                    type: toast.TYPE.SUCCESS,
+                    type: 'success',
                 });
             }
         });
@@ -168,12 +168,12 @@ const JobProgressComponent = (props: JobProgressComponentProps) => {
             }
             if (data.message && data.message !== 'cancelled_enricher') {
                 toast(`${translate('error')} : ${data.message}`, {
-                    type: toast.TYPE.ERROR,
+                    type: 'error',
                 });
             }
             if (data.message === 'cancelled_enricher') {
                 toast(translate('cancelled_enricher'), {
-                    type: toast.TYPE.SUCCESS,
+                    type: 'success',
                 });
             }
         });
@@ -186,12 +186,12 @@ const JobProgressComponent = (props: JobProgressComponentProps) => {
             }
             if (data.message && data.message !== 'cancelled_precomputer') {
                 toast(`${translate('error')} : ${data.message}`, {
-                    type: toast.TYPE.ERROR,
+                    type: 'error',
                 });
             }
             if (data.message === 'cancelled_precomputer') {
                 toast(translate('cancelled_precomputer'), {
-                    type: toast.TYPE.SUCCESS,
+                    type: 'success',
                 });
             }
         });

@@ -236,7 +236,7 @@ const ParsingEditCell = ({ cell, setToggleDrawer }: ParsingEditCellProps) => {
             } catch (e) {
                 // @ts-expect-error TS18046
                 toast(translate(e.message), {
-                    type: toast.TYPE.ERROR,
+                    type: 'error',
                 });
                 // @ts-expect-error TS18046
                 throw new Error(translate(e.message));
@@ -251,7 +251,7 @@ const ParsingEditCell = ({ cell, setToggleDrawer }: ParsingEditCellProps) => {
             // @ts-expect-error TS2339
             cell.row[cell.field] = valueToSave;
             toast(translate('dataset_edit_success'), {
-                type: toast.TYPE.SUCCESS,
+                type: 'success',
             });
             setToggleDrawer(false);
         } catch (e) {

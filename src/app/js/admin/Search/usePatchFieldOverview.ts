@@ -16,7 +16,7 @@ export function usePatchFieldOverview() {
         onSuccess(res, payload) {
             if (!res) {
                 toast(translate('syndication_error'), {
-                    type: toast.TYPE.ERROR,
+                    type: 'error',
                 });
                 return;
             }

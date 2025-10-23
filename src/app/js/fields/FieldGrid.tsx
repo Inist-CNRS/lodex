@@ -201,7 +201,7 @@ const FieldGridItem = connect(
 
         copy(text);
         toast(translate('fieldidentifier_copied_clipboard'), {
-            type: toast.TYPE.SUCCESS,
+            type: 'success',
         });
     };
 
@@ -410,13 +410,13 @@ const DraggableItemGrid = compose(
 
         if (!res) {
             toast(`${translate('duplicate_field_error')}`, {
-                type: toast.TYPE.ERROR,
+                type: 'error',
             });
         }
 
         loadField();
         toast(`${translate('duplicate_field_success')}`, {
-            type: toast.TYPE.SUCCESS,
+            type: 'success',
         });
     };
 

@@ -218,7 +218,7 @@ export const UploadComponent = ({
 
         setFiles([...list]);
         toast(translate('add_file_success', { name: list[0].file.name }), {
-            type: toast.TYPE.SUCCESS,
+            type: 'success',
         });
     };
 

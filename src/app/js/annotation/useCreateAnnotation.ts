@@ -44,12 +44,12 @@ export function useCreateAnnotation() {
 
             saveAnnotationId(data);
             toast(translate('annotation_create_success'), {
-                type: toast.TYPE.SUCCESS,
+                type: 'success',
             });
         },
         onError: () => {
             toast(translate('annotation_create_error'), {
-                type: toast.TYPE.ERROR,
+                type: 'error',
             });
         },
     });

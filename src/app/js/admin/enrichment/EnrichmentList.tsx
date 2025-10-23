@@ -142,7 +142,7 @@ export const EnrichmentList = ({
         }
 
         toast(translate(runAllEnrichmentError), {
-            type: toast.TYPE.ERROR,
+            type: 'error',
         });
     }, [runAllEnrichmentError, translate]);
 

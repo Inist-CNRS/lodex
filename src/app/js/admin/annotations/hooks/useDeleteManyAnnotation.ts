@@ -41,7 +41,7 @@ export function useDeleteManyAnnotation() {
                     smart_count: deletedCount,
                 }),
                 {
-                    type: toast.TYPE.SUCCESS,
+                    type: 'success',
                 },
             );
 
@@ -55,7 +55,7 @@ export function useDeleteManyAnnotation() {
             }
 
             toast(translate('annotation_delete_many_error'), {
-                type: toast.TYPE.ERROR,
+                type: 'error',
             });
         },
     });

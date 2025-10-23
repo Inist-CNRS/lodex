@@ -32,7 +32,7 @@ export const AdvancedNestedMenuComponent = React.memo(
             const result = await jobsApi.clearJobs();
             if (result.response.status === 'success') {
                 toast(translate('jobs_cleared'), {
-                    type: toast.TYPE.SUCCESS,
+                    type: 'success',
                 });
             }
             onClose();
