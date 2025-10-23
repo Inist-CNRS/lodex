@@ -1,8 +1,8 @@
-import { shallow } from 'enzyme';
-
 import { HomeComponent as Home } from './Home';
 import Loading from '../lib/components/Loading';
 import NoDataset from './NoDataset';
+import { render } from '../../../test-utils';
+import { shallow } from 'enzyme';
 
 describe('<Home />', () => {
     it('should call preLoadPublication on mount', () => {
@@ -10,7 +10,7 @@ describe('<Home />', () => {
         const preLoadDatasetPage = jest.fn();
         const preLoadExporters = jest.fn();
 
-        shallow(
+        render(
             <Home
                 // @ts-expect-error TS2769
                 p={{ t: (key) => key }}

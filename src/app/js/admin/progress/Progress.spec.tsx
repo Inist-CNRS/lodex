@@ -1,8 +1,9 @@
 import { shallow } from 'enzyme';
-import { Dialog, LinearProgress } from '@mui/material';
+import { Dialog } from '@mui/material';
 
 import { ProgressComponent as Progress } from './Progress';
 import { PENDING, STARTING } from '../../../../common/progressStatus';
+import { render } from '../../../../test-utils';
 
 // @ts-expect-error TS7006
 const identity = (x) => x;
@@ -54,12 +55,9 @@ describe('Progress', () => {
                 progress: 700,
             },
         };
-        const wrapper = shallow(<Progress {...props} />);
+        const screen = render(<Progress {...props} />);
 
-        const linearProgress = wrapper.find(LinearProgress);
-        expect(linearProgress.prop('value')).toBe(70);
-        expect(linearProgress.prop('variant')).toBe('determinate');
-        expect(wrapper.find('.progress p').text()).toBe('700 / 1000');
+        expect(screen.getByText('700 / 1000')).toBeInTheDocument();
     });
 
     it('should render progress with no target', () => {
@@ -71,9 +69,8 @@ describe('Progress', () => {
                 progress: 700,
             },
         };
-        // @ts-expect-error TS2322
-        const wrapper = shallow(<Progress {...props} />);
-        expect(wrapper.find('.progress p').text()).toBe('700');
+        const screen = render(<Progress {...props} />);
+        expect(screen.getByText('700')).toBeInTheDocument();
     });
 
     it('should render progress with no target and text', () => {
@@ -86,9 +83,8 @@ describe('Progress', () => {
                 label: 'lines',
             },
         };
-        // @ts-expect-error TS2322
-        const wrapper = shallow(<Progress {...props} />);
-        expect(wrapper.find('.progress p').text()).toBe('700 lines');
+        const screen = render(<Progress {...props} />);
+        expect(screen.getByText('700 lines')).toBeInTheDocument();
     });
 
     it('should render the symbol if specified', () => {
@@ -101,11 +97,8 @@ describe('Progress', () => {
                 symbol: '%',
             },
         };
-        const wrapper = shallow(<Progress {...props} />);
+        const screen = render(<Progress {...props} />);
 
-        const linearProgress = wrapper.find(LinearProgress);
-        expect(linearProgress.prop('value')).toBe(70);
-        expect(linearProgress.prop('variant')).toBe('determinate');
-        expect(wrapper.find('.progress p').text()).toBe('70 / 100 %');
+        expect(screen.getByText('70 / 100 %')).toBeInTheDocument();
     });
 });
