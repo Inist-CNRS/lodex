@@ -37,7 +37,7 @@ export function useDeleteAnnotation(id) {
             });
 
             toast(translate('annotation_delete_success'), {
-                type: toast.TYPE.SUCCESS,
+                type: 'success',
             });
 
             history.push('/annotations');
@@ -50,7 +50,7 @@ export function useDeleteAnnotation(id) {
             }
 
             toast(translate('annotation_delete_error'), {
-                type: toast.TYPE.ERROR,
+                type: 'error',
             });
         },
     });

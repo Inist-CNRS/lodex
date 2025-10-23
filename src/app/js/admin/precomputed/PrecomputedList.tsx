@@ -44,7 +44,7 @@ export const PrecomputedList = ({
         event.stopPropagation();
         if (isPrecomputedRunning) {
             toast(translate('pending_precomputed'), {
-                type: toast.TYPE.INFO,
+                type: 'info',
             });
         }
         onLaunchPrecomputed({

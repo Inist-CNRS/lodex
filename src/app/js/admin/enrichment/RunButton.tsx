@@ -43,7 +43,7 @@ export const RunButton = ({
         setIsOngoing(true);
         if (areEnrichmentsRunning) {
             toast(translate('pending_enrichment'), {
-                type: toast.TYPE.INFO,
+                type: 'info',
             });
         }
         onLaunchEnrichment({

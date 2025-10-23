@@ -35,12 +35,12 @@ const ImportButton = () => {
         setUploading(false);
         if (response.error) {
             toast(translate('import_error'), {
-                type: toast.TYPE.ERROR,
+                type: 'error',
             });
         } else {
             setDone(true);
             toast(translate('import_successful'), {
-                type: toast.TYPE.SUCCESS,
+                type: 'success',
             });
         }
     };

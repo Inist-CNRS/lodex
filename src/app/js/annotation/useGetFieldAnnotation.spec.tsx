@@ -172,7 +172,7 @@ describe('useGetFieldAnnotation', () => {
             }),
         );
         expect(toast).toHaveBeenCalledWith('annotation_deleted_by_admin', {
-            type: toast.TYPE.INFO,
+            type: 'info',
         });
     });
 });

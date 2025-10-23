@@ -43,14 +43,14 @@ export function DeleteManyButton({
 
         if (res.status === 'deleted') {
             toast(translate('parsing_delete_rows_success'), {
-                type: toast.TYPE.SUCCESS,
+                type: 'success',
             });
             reloadDataset();
             handleCloseModal();
             setIsLoading(false);
         } else {
             toast(translate('parsing_delete_rows_error'), {
-                type: toast.TYPE.ERROR,
+                type: 'error',
             });
         }
         setIsLoading(false);

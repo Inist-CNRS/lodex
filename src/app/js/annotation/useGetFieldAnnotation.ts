@@ -69,7 +69,7 @@ export const useGetFieldAnnotation = (fieldId, resourceUri, enabled = true) => {
             setFieldAnnotationIds(existingAnnotationIds);
 
             toast(translate('annotation_deleted_by_admin'), {
-                type: toast.TYPE.INFO,
+                type: 'info',
             });
         }
     }, [

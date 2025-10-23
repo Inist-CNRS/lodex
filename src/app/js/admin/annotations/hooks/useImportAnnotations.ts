@@ -42,7 +42,7 @@ export function useImportAnnotations() {
                         filename: file.name,
                     }),
                     {
-                        type: toast.TYPE.SUCCESS,
+                        type: 'success',
                     },
                 );
             }
@@ -59,13 +59,13 @@ export function useImportAnnotations() {
                     filename: errorFilename,
                 }),
                 {
-                    type: toast.TYPE.ERROR,
+                    type: 'error',
                 },
             );
         },
         onError: () => {
             toast(translate('annotations_import_error'), {
-                type: toast.TYPE.ERROR,
+                type: 'error',
             });
         },
     });
