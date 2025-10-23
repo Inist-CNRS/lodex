@@ -71,6 +71,7 @@ const getCreateUrl = (url) => {
     if (typeof url === 'string') {
         return () => url;
     }
+
     // @ts-expect-error TS7031
     return ({ field, resource }) => resource[field.name];
 };
@@ -123,14 +124,11 @@ export default (url = null, checkFormatLoaded = null, withUri = false) =>
             );
             const { translate } = useTranslate();
 
-            const [isAnimationPLaying, setIsAnimationPlaying] = useState(true);
+            const [isAnimationPlaying, setIsAnimationPlaying] = useState(true);
 
             const loadFormatData = useCallback(
                 (values: object) => {
-                    const value = createUrl({
-                        field: props.field,
-                        resource: props.resource,
-                    });
+                    const value = createUrl(props);
 
                     if (!value) {
                         return;
@@ -148,7 +146,7 @@ export default (url = null, checkFormatLoaded = null, withUri = false) =>
                         }),
                     );
                 },
-                [dispatch, props.field, location, props.resource],
+                [dispatch, props, location],
             );
 
             const filterFormatData = useCallback(
@@ -226,7 +224,7 @@ export default (url = null, checkFormatLoaded = null, withUri = false) =>
                                 : 'injectDataLoadingEnd',
                         }}
                     ></div>
-                    {isAnimationPLaying || isFormatLoading ? (
+                    {isAnimationPlaying || isFormatLoading ? (
                         <CircularProgress
                             sx={styles.format.progress}
                             variant="indeterminate"
