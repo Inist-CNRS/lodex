@@ -63,7 +63,6 @@ describe('IstexSummaryView', () => {
             value: 'value',
             searchedField: 'host.issn',
             sortDir: 'sortDir',
-            polyglot: defaultProps.p,
         });
         expect(parseYearData).toHaveBeenCalledWith(
             { hits: [1, 2, 3] },
@@ -98,7 +97,6 @@ describe('IstexSummaryView', () => {
             value: 'value',
             searchedField: 'host.issn',
             sortDir: 'sortDir',
-            polyglot: defaultProps.p,
         });
         expect(parseYearData).toHaveBeenCalledWith(
             { hits: { length: 51 } },

@@ -25,7 +25,7 @@ const formatProgress = (progress, target, symbol, label) => {
 
 type ProgressTextProps = {
     progress?: number;
-    target?: number;
+    target?: number | null;
     symbol?: string;
     label?: string;
 };
@@ -56,7 +56,7 @@ const ProgressText = ({
 interface ProgressComponentProps {
     progress: {
         status: string;
-        target?: number;
+        target?: number | null;
         progress?: number;
         symbol?: string;
         label?: string;
