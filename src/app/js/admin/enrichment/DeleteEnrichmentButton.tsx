@@ -29,12 +29,12 @@ export function DeleteEnrichmentButton({
         const res = await deleteEnrichment(id);
         if (res.response) {
             toast(translate('enrichment_deleted_success'), {
-                type: toast.TYPE.SUCCESS,
+                type: 'success',
             });
             history.push('/data/enrichment');
         } else {
             toast(`${res.error}`, {
-                type: toast.TYPE.ERROR,
+                type: 'error',
             });
         }
         onDeleteEnd();

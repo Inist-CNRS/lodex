@@ -45,6 +45,8 @@ interface TitleViewProps {
 const TitleView = ({ resource, field, level, colors }: TitleViewProps) => {
     // @ts-expect-error TS7053
     const value = resource[field.name];
+
+    return null;
     return (
         <Typography
             className="property_value_item property_value_heading"

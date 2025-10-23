@@ -16,7 +16,7 @@ import reducers from './reducers';
 import Routes from './Routes';
 import sagas from './sagas';
 // @ts-expect-error TS2882
-import 'react-toastify/dist/ReactToastify.css';
+import 'react-toastify/ReactToastify.css';
 import { AnnotationStorageProvider } from '../annotation/annotationStorage';
 
 const locale = getLocale();
