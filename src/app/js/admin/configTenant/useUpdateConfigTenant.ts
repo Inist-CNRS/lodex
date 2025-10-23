@@ -29,12 +29,12 @@ export function useUpdateConfigTenant() {
         onSuccess: (data) => {
             queryClient.setQueryData(['get-config-tenant'], data);
             toast(translate('config_tenant_update_success'), {
-                type: toast.TYPE.SUCCESS,
+                type: 'success',
             });
         },
         onError: () => {
             toast(translate('config_tenant_update_error'), {
-                type: toast.TYPE.ERROR,
+                type: 'error',
             });
         },
     });

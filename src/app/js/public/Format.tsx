@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { connect } from 'react-redux';
 
 import { fromUser, fromFields } from '../sharedSelectors';
@@ -32,7 +32,10 @@ export const FormatComponent = ({
     colorSet,
     graphLink,
 }: FormatComponentProps) => {
-    const { ViewComponent, args } = getViewComponent(field, isList);
+    const { ViewComponent, args } = useMemo(
+        () => getViewComponent(field, isList),
+        [field, isList],
+    );
 
     return (
         <ViewComponent
