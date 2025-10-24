@@ -135,9 +135,10 @@ export function AutocompleteMultipleField({
                     return (
                         <ListItem {...props} key={option.value}>
                             <Checkbox checked={selected} />
-                            {/*
-                             // @ts-expect-error TS2339 */}
-                            <ListItemText primary={option.title} />
+                            <ListItemText
+                                // @ts-expect-error TS2339
+                                primary={option.title}
+                            />
                         </ListItem>
                     );
                 }}
