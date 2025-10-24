@@ -191,7 +191,6 @@ const RoutineCatalog = ({
             groupBy={(option) => option.firstLetter}
             getOptionLabel={(option) => option.title}
             renderOption={(props, option) => (
-                // @ts-expect-error TS2741
                 <RoutineOption option={option} polyglot={polyglot} {...props} />
             )}
             renderInput={(params) => <TextField {...params} label={label} />}

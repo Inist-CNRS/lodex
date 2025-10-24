@@ -120,6 +120,7 @@ export function AutocompleteField({
                     return filtered;
                 }}
                 getOptionLabel={(option) => {
+                    // @ts-expect-error TS2339
                     return option.value ?? '';
                 }}
                 renderOption={(props, option) => {
