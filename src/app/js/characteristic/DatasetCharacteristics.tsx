@@ -1,11 +1,12 @@
-import compose from 'recompose/compose';
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import { fromFields, fromCharacteristic } from '../sharedSelectors';
 
 import DatasetCharacteristicItem from './DatasetCharacteristicItem';
-import { fromDisplayConfig, fromI18n } from '../public/selectors';
-import type { CSSProperties } from 'react';
+import { fromDisplayConfig } from '../public/selectors';
+import { useEffect, type CSSProperties } from 'react';
+import type { State } from '../admin/reducers';
+import { useTranslate } from '../i18n/I18NContext';
 
 const styles: Record<string, CSSProperties> = {
     container: {
@@ -19,20 +20,18 @@ const styles: Record<string, CSSProperties> = {
     },
 };
 
-interface DatasetCharacteristicsViewProps {
-    characteristics: {
-        language?: string;
-        name: string;
-    }[];
-    isMultilingual: boolean;
-    locale: string;
-}
-
-const DatasetCharacteristicsView = ({
-    characteristics = [],
-    isMultilingual,
-    locale,
-}: DatasetCharacteristicsViewProps) => {
+const DatasetCharacteristicsView = () => {
+    console.log('DatasetCharacteristicsView render');
+    useEffect(() => {
+        console.log('DatasetCharacteristicsView mount useEffect');
+    }, []);
+    const fields = useSelector(fromFields.getDatasetFields);
+    const characteristics =
+        useSelector((state: State) =>
+            fromCharacteristic.getRootCharacteristics(state, fields),
+        ) || [];
+    const isMultilingual = useSelector(fromDisplayConfig.isMultilingual);
+    const { locale } = useTranslate();
     const filteredCharacteristics = characteristics.filter(
         (characteristic) =>
             !isMultilingual ||
@@ -54,20 +53,4 @@ const DatasetCharacteristicsView = ({
     );
 };
 
-// @ts-expect-error TS7006
-const mapStateToProps = (state) => {
-    const fields = fromFields.getDatasetFields(state);
-
-    return {
-        characteristics: fromCharacteristic.getRootCharacteristics(
-            state,
-            fields,
-        ),
-        fields,
-        isMultilingual: fromDisplayConfig.isMultilingual(state),
-        locale: fromI18n.getLocale(state),
-    };
-};
-
-// @ts-expect-error TS2345
-export default compose(connect(mapStateToProps))(DatasetCharacteristicsView);
+export default DatasetCharacteristicsView;

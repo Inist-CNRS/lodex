@@ -3,11 +3,7 @@ import classnames from 'classnames';
 import get from 'lodash/get';
 import memoize from 'lodash/memoize';
 
-import { connect } from 'react-redux';
-import compose from 'recompose/compose';
-import withProps from 'recompose/withProps';
-import { bindActionCreators } from 'redux';
-import { translate } from '../../i18n/I18NContext';
+import { useDispatch, useSelector } from 'react-redux';
 
 import {
     SCOPE_DATASET,
@@ -22,23 +18,22 @@ import getFieldClassName from '../../lib/getFieldClassName';
 import { fromUser } from '../../sharedSelectors';
 import Format from '../Format';
 import GraphLink from '../graph/GraphLink';
-import { changeFieldStatus } from '../resource';
+import { changeFieldStatus as changeFieldStatusAction } from '../resource';
 import { fromDisplayConfig, fromResource } from '../selectors';
 import CompositeProperty from './CompositeProperty';
 import ModerateButton from './ModerateButton';
 import PropertyContributor from './PropertyContributor';
 import PropertyLinkedFields from './PropertyLinkedFields';
 
-import {
-    type PropositionStatus,
-    REJECTED,
-} from '../../../../common/propositionStatus';
+import { REJECTED } from '../../../../common/propositionStatus';
 
 import { Settings } from '@mui/icons-material';
 import { Box, IconButton } from '@mui/material';
 import { extractTenantFromUrl } from '../../../../common/tools/tenantTools';
 import { CreateAnnotationButton } from '../../annotation/CreateAnnotationButton';
 import { useCanAnnotate } from '../../annotation/useCanAnnotate';
+import { useMemo } from 'react';
+import type { State } from '../../admin/reducers';
 
 const styles = {
     container: memoize(
@@ -121,7 +116,6 @@ export const getEditFieldRedirectUrl = (fieldName, scope, subresourceId) => {
 };
 
 interface PropertyComponentProps {
-    changeStatus(status: PropositionStatus): void;
     className?: string;
     field: {
         name: string;
@@ -142,38 +136,47 @@ interface PropertyComponentProps {
         width?: string;
         language?: string;
     };
-    fieldStatus: string;
-    predicate?(value: unknown): boolean;
     isSub?: boolean;
-    isAdmin: boolean;
     resource: Record<string, unknown>;
     parents: string[];
     style?: object;
-    p: unknown;
-    dense?: boolean;
-    isMultilingual?: boolean;
 }
 
 export const PropertyComponent = ({
     className,
     field,
-    predicate = () => true,
     isSub,
     resource,
-    fieldStatus,
-    isAdmin,
-    changeStatus,
     style,
-    parents,
-    dense,
-    isMultilingual,
+    parents = [],
 }: PropertyComponentProps) => {
     const canAnnotate = useCanAnnotate();
+    const isAdmin = useSelector(fromUser.isAdmin);
+    const fieldStatus = useSelector((state: State) =>
+        fromResource.getFieldStatus(state, field),
+    );
+    const predicate = useMemo(
+        () => getPredicate(field) ?? (() => true),
+        [field],
+    );
+    const dense = useSelector(fromDisplayConfig.isDense);
+    const isMultilingual = useSelector(fromDisplayConfig.isMultilingual);
+    const formatParents = useMemo(
+        () => [field.name, ...parents],
+        [field.name, parents],
+    );
+
+    const dispatch = useDispatch();
+
+    const changeStatus = (payload: any) =>
+        dispatch(changeFieldStatusAction(payload));
+
     if (
         !shouldDisplayField(
             resource,
             field,
             fieldStatus,
+            // @ts-expect-error TS7006
             predicate,
             isAdmin,
             canAnnotate,
@@ -206,14 +209,14 @@ export const PropertyComponent = ({
             key="composite"
             field={field}
             resource={resource}
-            parents={parents}
+            parents={formatParents}
         />,
         <PropertyLinkedFields
             key="linked-fields"
             fieldName={field.name}
             // @ts-expect-error TS2322
             resource={resource}
-            parents={parents}
+            parents={formatParents}
         />,
     ];
 
@@ -316,38 +319,4 @@ export const PropertyComponent = ({
     );
 };
 
-// @ts-expect-error TS7006
-const mapStateToProps = (state, { field }) => ({
-    isAdmin: fromUser.isAdmin(state),
-    fieldStatus: fromResource.getFieldStatus(state, field),
-    predicate: getPredicate(field),
-    dense: fromDisplayConfig.isDense(state),
-    isMultilingual: fromDisplayConfig.isMultilingual(state),
-});
-
-// @ts-expect-error TS7006
-const mapDispatchToProps = (dispatch, { field, resource: { uri } }) =>
-    bindActionCreators(
-        {
-            changeStatus: (prevStatus, status) =>
-                changeFieldStatus({
-                    uri,
-                    field: field.name,
-                    status,
-                    prevStatus,
-                }),
-        },
-        dispatch,
-    );
-
-const Property = compose(
-    translate,
-    connect(mapStateToProps, mapDispatchToProps),
-    // @ts-expect-error TS7031
-    withProps(({ field, parents = [] }) => ({
-        parents: [field.name, ...parents],
-    })),
-    // @ts-expect-error TS2345
-)(PropertyComponent);
-
-export default Property;
+export default PropertyComponent;
