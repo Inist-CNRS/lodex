@@ -16,8 +16,15 @@ export const updateCharacteristicsError = createAction(
 export const updateCharacteristicsSuccess = createAction(
     UPDATE_CHARACTERISTICS_SUCCESS,
 );
+type CharacteristicState = {
+    characteristics: { language: string; [key: string]: unknown }[];
+    error: string | null;
+    newCharacteristics: unknown | null;
+    isSaving: boolean;
+    isAdding: boolean;
+};
 
-export const defaultState = {
+export const defaultState: CharacteristicState = {
     characteristics: [],
     error: null,
     newCharacteristics: null,
@@ -25,8 +32,7 @@ export const defaultState = {
     isAdding: false,
 };
 
-// @ts-expect-error TS2769
-export default handleActions(
+export default handleActions<CharacteristicState, any>(
     {
         LOAD_PUBLICATION_SUCCESS: (
             state,
@@ -38,7 +44,6 @@ export default handleActions(
         }),
         SET_CHARACTERISTIC_VALUE: (
             { newCharacteristics, ...state },
-            // @ts-expect-error TS7031
             { payload: { name, value } },
         ) => ({
             ...state,
@@ -72,23 +77,21 @@ export default handleActions(
     defaultState,
 );
 
-// @ts-expect-error TS7006
-const getCharacteristicError = (state) => state.error;
+const getCharacteristicError = (state: CharacteristicState) => state.error;
 
-// @ts-expect-error TS7006
-const getCharacteristicsAsResource = (state) => state.characteristics[0] || {};
-// @ts-expect-error TS7006
-const getNewCharacteristicsAsResource = (state) =>
+const getCharacteristicsAsResource = (
+    state: CharacteristicState,
+): Record<string, unknown> => state.characteristics[0] || {};
+
+const getNewCharacteristicsAsResource = (state: CharacteristicState) =>
     state.newCharacteristics || {};
 
-// @ts-expect-error TS7006
-const getParams = (state, params) => params;
+const getParams = <T>(_state: CharacteristicState, params: T): T => params;
 
 const getCharacteristics = createSelector(
     getCharacteristicsAsResource,
-    getParams,
-    (characteristics, fields) =>
-        // @ts-expect-error TS7006
+    getParams<{ name: string }[]>,
+    (characteristics, fields: { name: string }[]) =>
         fields.map((field) => ({
             ...field,
             value: characteristics[field.name],
@@ -97,27 +100,37 @@ const getCharacteristics = createSelector(
 
 const getNewCharacteristics = createSelector(
     getNewCharacteristicsAsResource,
-    getParams,
+    getParams<
+        {
+            name: string;
+        }[]
+    >,
     (characteristics, fields) =>
-        // @ts-expect-error TS7006
         fields.map((field) => ({
             ...field,
+            // @ts-expect-error TS7053
             value: characteristics[field.name],
         })),
 );
 
 const getRootCharacteristics = createSelector(
     getCharacteristicsAsResource,
-    getParams,
+    getParams<
+        {
+            name: string;
+            completes?: boolean;
+            scope?: string;
+            display?: boolean;
+            language?: string;
+        }[]
+    >,
     (characteristics, fields) =>
         fields
-            // @ts-expect-error TS7006
             .map((field) => ({
                 ...field,
                 value: characteristics[field.name],
             }))
             .filter(
-                // @ts-expect-error TS7006
                 (field) =>
                     !field.completes &&
                     field.scope === SCOPE_DATASET &&
@@ -127,18 +140,15 @@ const getRootCharacteristics = createSelector(
 
 const getCharacteristicByName = createSelector(
     getCharacteristicsAsResource,
-    getParams,
+    getParams<string>,
     (characteristics, name) => characteristics[name],
 );
 
-// @ts-expect-error TS7006
-const isSaving = (state) => state.isSaving;
+const isSaving = (state: CharacteristicState) => state.isSaving;
 
-// @ts-expect-error TS7006
-const isAdding = (state) => state.isAdding;
+const isAdding = (state: CharacteristicState) => state.isAdding;
 
-// @ts-expect-error TS7006
-const getError = (state) => state.error;
+const getError = (state: CharacteristicState) => state.error;
 
 export const selectors = {
     getNewCharacteristics,

@@ -54,6 +54,7 @@ const TitleView = ({ resource, field, level, colors }: TitleViewProps) => {
                 display: 'inline-block',
                 width: 'fit-content',
             }}
+            component="div"
         >
             <TitleViewInternal level={level} value={value} colors={colors} />
         </Typography>

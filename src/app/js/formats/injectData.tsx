@@ -12,6 +12,7 @@ import InvalidFormat from './InvalidFormat';
 import { CircularProgress } from '@mui/material';
 import type { Field } from '../propTypes';
 import { useTranslate } from '../i18n/I18NContext';
+import { isEqual } from 'lodash';
 
 const styles = {
     message: {
@@ -95,6 +96,7 @@ export default (url = null, checkFormatLoaded = null, withUri = false) =>
             const formatState = useSelector(
                 (state: any) => state.format[props.field.name],
             );
+            const [initialLoadingDone, setInitialLoadingDone] = useState(false);
 
             const isFormatLoading = useSelector((state: any) =>
                 get(state, 'dataset.formatLoading', false),
@@ -174,13 +176,19 @@ export default (url = null, checkFormatLoaded = null, withUri = false) =>
 
             // Effect to handle field/resource changes
             useEffect(() => {
-                if (!props.field) {
+                if (!props.field || initialLoadingDone) {
                     return;
                 }
 
                 // This effect will run when field or resource changes
+                setInitialLoadingDone(true);
                 loadFormatData({});
-            }, [loadFormatData, props.field, props.resource]);
+            }, [
+                loadFormatData,
+                props.field,
+                initialLoadingDone,
+                props.resource,
+            ]);
 
             const { field, resource, ...restProps } = props;
 
@@ -246,6 +254,6 @@ export default (url = null, checkFormatLoaded = null, withUri = false) =>
         GraphItem.WrappedComponent = FormatView;
 
         return memo(GraphItem, (prevProps, nextProps) => {
-            return JSON.stringify(prevProps) === JSON.stringify(nextProps);
+            return isEqual(prevProps, nextProps);
         });
     };
