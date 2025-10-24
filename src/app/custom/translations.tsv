@@ -999,7 +999,7 @@
 "resource_description"	"Resource description"	"Description de la ressource"
 "resource_detail_first"	"Resource detail first"	"Premier détail de la ressource"
 "resource_detail_second"	"Resource detail second"	"Second détail de la ressource"
-"resource_detail_third"	"Resource detail third"	"Troisième détail de la ressource"
+"resource_detail_third"	"Resource subtitle (e.g. author)"	"Sous-titre de la ressource (exemple : auteur)"
 "resource_sort_field"	"Resource sort field"	"Champ de tri de la ressource"
 "resource_sort_order"	"Sort order"	"Ordre de tri"
 "dialog_import_has_enrichments"	"Import has enrichments"	"L'import a des enrichissements"

@@ -3,6 +3,9 @@ export const RESOURCE_TITLE = 1;
 export const RESOURCE_DESCRIPTION = 2;
 export const RESOURCE_DETAIL_1 = 3;
 export const RESOURCE_DETAIL_2 = 4;
+/**
+ * Resource detail 3 is used as subtitle.
+ */
 export const RESOURCE_DETAIL_3 = 6;
 export const SUBRESOURCE_TITLE = 5;
 
