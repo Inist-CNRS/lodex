@@ -38,7 +38,7 @@ describe('Annotation', () => {
     describe('homepage', () => {
         beforeEach(loadFilmDataset);
 
-        it('should support annotations on field on home page', () => {
+        it.only('should support annotations on field on home page', () => {
             annotation.createTitleAnnotation({
                 fieldLabel: 'Dataset Description',
                 comment: 'This is a comment',

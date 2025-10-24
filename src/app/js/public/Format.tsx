@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { fromUser, fromFields } from '../sharedSelectors';
 import { getViewComponent } from '../formats';
 import getColorSetFromField from '../lib/getColorSetFromField';
+import { isEqual } from 'lodash';
 
 interface FormatComponentProps {
     className?: string;
@@ -55,7 +56,12 @@ export const FormatComponent = ({
 };
 
 // Memoize component to replace shouldComponentUpdate optimization
-const MemoizedFormatComponent = React.memo(FormatComponent);
+const MemoizedFormatComponent = React.memo(
+    FormatComponent,
+    (prevProps, nextProps) => {
+        return isEqual(prevProps, nextProps);
+    },
+);
 
 // @ts-expect-error TS7006
 const mapStateToProps = (state, { field }) => ({

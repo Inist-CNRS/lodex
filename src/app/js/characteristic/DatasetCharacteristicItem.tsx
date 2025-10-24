@@ -1,10 +1,11 @@
 import camelCase from 'lodash/camelCase';
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useInView } from 'react-intersection-observer';
 
 import Property from '../public/Property';
 import { fromFields, fromCharacteristic } from '../sharedSelectors';
 import type { CSSProperties } from 'react';
+import type { State } from '../admin/reducers';
 
 const LOADING_BOX_HEIGHT = 250;
 
@@ -20,18 +21,14 @@ const styles = {
 };
 
 interface DatasetCharacteristicItemComponentProps {
-    resource: {
-        uri?: string;
+    characteristic: {
+        name: string;
     };
-    field: unknown;
     style: CSSProperties;
 }
 
 export const DatasetCharacteristicItemComponent = ({
-    resource,
-
-    field,
-
+    characteristic: { name },
     style,
 }: DatasetCharacteristicItemComponentProps) => {
     const [ref, inView] = useInView({
@@ -39,16 +36,27 @@ export const DatasetCharacteristicItemComponent = ({
         rootMargin: `${LOADING_BOX_HEIGHT * 2}px 0px`,
     });
 
+    const field = useSelector((state: State) =>
+        fromFields.getFieldByName(state, name),
+    );
+
+    const getCharacteristicsAsResource = useSelector(
+        fromCharacteristic.getCharacteristicsAsResource,
+    );
+    const resource = {
+        name,
+        ...getCharacteristicsAsResource,
+    };
+
     return (
         <>
             <div ref={ref} style={inView ? styles.loaded : styles.loading} />
             {inView && (
+                // @ts-expect-error TS2322
                 <Property
-                    // @ts-expect-error TS2322
                     resource={resource}
                     field={field}
                     style={style}
-                    // @ts-expect-error TS18046
                     className={camelCase(field.internalName || '')}
                 />
             )}
@@ -56,13 +64,4 @@ export const DatasetCharacteristicItemComponent = ({
     );
 };
 
-// @ts-expect-error TS7006
-const mapStateToProps = (state, { characteristic: { name } }) => ({
-    field: fromFields.getFieldByName(state, name),
-    resource: {
-        name,
-        ...fromCharacteristic.getCharacteristicsAsResource(state),
-    },
-});
-
-export default connect(mapStateToProps)(DatasetCharacteristicItemComponent);
+export default DatasetCharacteristicItemComponent;
