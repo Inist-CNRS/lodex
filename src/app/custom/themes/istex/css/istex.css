@@ -590,19 +590,16 @@ div.property div.MuiBox-root > div > * + div {
     background-color: transparent !important;
 }
 /*stats graph*/
-.graph-header .graph-advanced {
-    max-width: 875px;
-}
 .graph-header .graph-advanced .stats {
     min-width: 400px;
     height: auto !important;
     line-height: 1.2rem !important;
-    margin: 3rem auto 1rem 1%;
+    margin: 1rem auto 1rem 1%;
 }
 /*contents sous search*/
 .graph-content,
 .search-content {
-    gap: 4%;
+    gap: 1%;
 }
 .graph-results,
 .search-results {
