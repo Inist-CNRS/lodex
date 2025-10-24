@@ -1,26 +1,113 @@
-import { shallow } from 'enzyme';
-
 import { REJECTED, VALIDATED } from '../../../../common/propositionStatus';
 import { useCanAnnotate } from '../../annotation/useCanAnnotate';
-import { PropertyComponent } from './index';
+import { PropertyComponent, type PropertyComponentProps } from './index';
+import { render } from '../../../../test-utils';
+import { getPredicate } from '../../formats';
+// @ts-expect-error TS2322
+import { StyleSheetTestUtils } from 'aphrodite';
+import { ADMIN_ROLE, USER_ROLE } from '../../../../common/tools/tenantTools';
 
 jest.mock('../../annotation/useCanAnnotate');
 
+jest.mock('react-vega');
+
+jest.mock('../../formats', () => {
+    const originalModule = jest.requireActual('../../formats');
+    return {
+        __esModule: true,
+        ...originalModule,
+        getPredicate: jest.fn().mockReturnValue(() => true),
+    };
+});
+
+jest.mock('../Format', () => ({
+    __esModule: true,
+    default: () => {
+        return <></>;
+    },
+}));
+
+jest.mock('./CompositeProperty', () => ({
+    __esModule: true,
+    default: () => {
+        return <></>;
+    },
+}));
+
+jest.mock('./PropertyLinkedFields', () => ({
+    __esModule: true,
+    default: () => {
+        return <></>;
+    },
+}));
+
+jest.mock('../../annotation/CreateAnnotationButton', () => ({
+    __esModule: true,
+    CreateAnnotationButton: () => <></>,
+}));
+
 describe('Property', () => {
-    const defaultProps = {
+    const defaultProps: PropertyComponentProps = {
         className: 'class',
-        field: { name: 'field' },
+        field: {
+            name: 'field',
+            label: 'My label',
+            format: {
+                name: 'text',
+                args: {
+                    value: 'formatValue',
+                },
+            },
+            scope: 'graph',
+        },
         resource: {
             field: 'value',
         },
-        fieldStatus: VALIDATED,
-        isAdmin: true,
-        changeStatus: () => null,
         parents: [],
     };
 
     beforeEach(() => {
+        StyleSheetTestUtils.suppressStyleInjection();
         jest.clearAllMocks();
+        jest.mocked(getPredicate).mockReturnValue(() => true);
+    });
+
+    describe('is admin', () => {
+        beforeEach(() => {
+            jest.mocked(useCanAnnotate).mockReturnValue(false);
+        });
+        it('should always render something', () => {
+            [null, undefined, '', [], 'value', ['value1', 'value2']].forEach(
+                (value) => {
+                    const screen = render(
+                        <PropertyComponent
+                            {...defaultProps}
+                            resource={{ field: value }}
+                        />,
+                        {
+                            initialState: {
+                                resource: {
+                                    resource: {
+                                        contributions: [
+                                            {
+                                                fieldName: 'field',
+                                                status: VALIDATED,
+                                            },
+                                        ],
+                                    },
+                                },
+                                user: {
+                                    role: ADMIN_ROLE,
+                                },
+                            },
+                        },
+                    );
+                    expect(
+                        screen.getAllByText('My label')[0],
+                    ).toBeInTheDocument();
+                },
+            );
+        });
     });
 
     describe('is not admin', () => {
@@ -29,103 +116,195 @@ describe('Property', () => {
         });
 
         it('should render nothing if resource[field.name] is null', () => {
-            const wrapper = shallow(
-                // @ts-expect-error TS2741
+            const screen = render(
                 <PropertyComponent
                     {...defaultProps}
-                    isAdmin={false}
                     resource={{ field: null }}
                 />,
+                {
+                    initialState: {
+                        resource: {
+                            resource: {
+                                contributions: [
+                                    {
+                                        fieldName: 'field',
+                                        status: VALIDATED,
+                                    },
+                                ],
+                            },
+                        },
+                        user: {
+                            role: USER_ROLE,
+                        },
+                    },
+                },
             );
 
-            expect(wrapper.getElement()).toBeNull();
+            expect(screen.queryByText('My Label')).not.toBeInTheDocument();
         });
 
         it('should render nothing if resource[field.name] is undefined', () => {
-            const wrapper = shallow(
-                // @ts-expect-error TS2741
-                <PropertyComponent
-                    {...defaultProps}
-                    isAdmin={false}
-                    resource={{}}
-                />,
+            const screen = render(
+                <PropertyComponent {...defaultProps} resource={{}} />,
+                {
+                    initialState: {
+                        resource: {
+                            resource: {
+                                contributions: [
+                                    {
+                                        fieldName: 'field',
+                                        status: VALIDATED,
+                                    },
+                                ],
+                            },
+                        },
+                        user: {
+                            role: USER_ROLE,
+                        },
+                    },
+                },
             );
 
-            expect(wrapper.getElement()).toBeNull();
+            expect(screen.queryByText('My Label')).not.toBeInTheDocument();
         });
 
         it('should render nothing if resource[field.name] is an empty string', () => {
-            const wrapper = shallow(
-                // @ts-expect-error TS2741
+            const screen = render(
                 <PropertyComponent
                     {...defaultProps}
-                    isAdmin={false}
                     resource={{ field: '' }}
                 />,
+                {
+                    initialState: {
+                        resource: {
+                            resource: {
+                                contributions: [
+                                    {
+                                        fieldName: 'field',
+                                        status: VALIDATED,
+                                    },
+                                ],
+                            },
+                        },
+                        user: {
+                            role: USER_ROLE,
+                        },
+                    },
+                },
             );
 
-            expect(wrapper.getElement()).toBeNull();
+            expect(screen.queryByText('My Label')).not.toBeInTheDocument();
         });
 
         it('should render nothing if resource[field.name] is an empty array', () => {
-            const wrapper = shallow(
-                // @ts-expect-error TS2741
+            const screen = render(
                 <PropertyComponent
                     {...defaultProps}
-                    isAdmin={false}
                     resource={{ field: [] }}
                 />,
+                {
+                    initialState: {
+                        resource: {
+                            resource: {
+                                contributions: [
+                                    {
+                                        fieldName: 'field',
+                                        status: VALIDATED,
+                                    },
+                                ],
+                            },
+                        },
+                        user: {
+                            role: USER_ROLE,
+                        },
+                    },
+                },
             );
 
-            expect(wrapper.getElement()).toBeNull();
+            expect(screen.queryByText('My Label')).not.toBeInTheDocument();
         });
 
         it('should render nothing if fieldStatus is rejected', () => {
-            const wrapper = shallow(
-                // @ts-expect-error TS2741
-                <PropertyComponent
-                    {...defaultProps}
-                    fieldStatus={REJECTED}
-                    isAdmin={false}
-                />,
-            );
+            const screen = render(<PropertyComponent {...defaultProps} />, {
+                initialState: {
+                    resource: {
+                        resource: {
+                            contributions: [
+                                {
+                                    fieldName: 'field',
+                                    status: REJECTED,
+                                },
+                            ],
+                        },
+                    },
+                    user: {
+                        role: USER_ROLE,
+                    },
+                },
+            });
 
-            expect(wrapper.getElement()).toBeNull();
+            expect(screen.queryByText('My Label')).not.toBeInTheDocument();
         });
 
         it('should render nothing if predicate is false', () => {
-            const wrapper = shallow(
-                // @ts-expect-error TS2741
-                <PropertyComponent
-                    {...defaultProps}
-                    predicate={() => false}
-                    isAdmin={false}
-                />,
-            );
+            (getPredicate as jest.Mock).mockReturnValue(() => false);
+            const screen = render(<PropertyComponent {...defaultProps} />, {
+                initialState: {
+                    resource: {
+                        resource: {
+                            contributions: [
+                                {
+                                    fieldName: 'field',
+                                    status: VALIDATED,
+                                },
+                            ],
+                        },
+                    },
+                    user: {
+                        role: USER_ROLE,
+                    },
+                },
+            });
 
-            expect(wrapper.getElement()).toBeNull();
+            expect(screen.queryByText('My Label')).not.toBeInTheDocument();
         });
 
         it('should render something if resource[field.name] is a value', () => {
-            const wrapper = shallow(
-                // @ts-expect-error TS2741
+            const screen = render(
                 <PropertyComponent
                     {...defaultProps}
-                    isAdmin={false}
                     resource={{ field: 'value' }}
                 />,
+                {
+                    initialState: {
+                        resource: {
+                            resource: {
+                                contributions: [
+                                    {
+                                        fieldName: 'field',
+                                        status: VALIDATED,
+                                    },
+                                ],
+                            },
+                        },
+                        user: {
+                            role: USER_ROLE,
+                        },
+                    },
+                },
             );
 
-            expect(wrapper.getElement()).not.toBeNull();
+            expect(screen.getByText('My label')).toBeInTheDocument();
         });
 
         it('should render something if resource[field.name] and field format is list is a list of value', () => {
-            const wrapper = shallow(
+            const screen = render(
                 <PropertyComponent
                     {...defaultProps}
                     isAdmin={false}
                     field={{
                         name: 'field',
+                        label: 'My label with list',
                         // @ts-expect-error TS2322
                         format: {
                             name: 'list',
@@ -133,34 +312,26 @@ describe('Property', () => {
                     }}
                     resource={{ field: ['value1', 'value2'] }}
                 />,
-            );
-
-            expect(wrapper.getElement()).not.toBeNull();
-        });
-    });
-
-    describe('is admin', () => {
-        beforeEach(() => {
-            jest.mocked(useCanAnnotate).mockReturnValue(false);
-        });
-
-        it('should always render something', () => {
-            [null, undefined, '', [], 'value', ['value1', 'value2']].forEach(
-                (value) => {
-                    const wrapper = shallow(
-                        // @ts-expect-error TS2769
-                        <PropertyComponent
-                            {...defaultProps}
-                            // @ts-expect-error TS2322
-                            p={{ t: (x) => x }}
-                            isAdmin={true}
-                            resource={{ field: value }}
-                        />,
-                    );
-
-                    expect(wrapper.getElement()).not.toBeNull();
+                {
+                    initialState: {
+                        resource: {
+                            resource: {
+                                contributions: [
+                                    {
+                                        fieldName: 'field',
+                                        status: VALIDATED,
+                                    },
+                                ],
+                            },
+                        },
+                        user: {
+                            role: USER_ROLE,
+                        },
+                    },
                 },
             );
+
+            expect(screen.getByText('My label with list')).toBeInTheDocument();
         });
     });
 
@@ -168,22 +339,35 @@ describe('Property', () => {
         beforeEach(() => {
             jest.mocked(useCanAnnotate).mockReturnValue(true);
         });
-
-        it('should always render something', () => {
+        it('should always render something value', () => {
             [null, undefined, '', [], 'value', ['value1', 'value2']].forEach(
                 (value) => {
-                    const wrapper = shallow(
-                        // @ts-expect-error TS2769
+                    const screen = render(
                         <PropertyComponent
                             {...defaultProps}
-                            // @ts-expect-error TS2322
-                            p={{ t: (x) => x }}
-                            isAdmin={false}
                             resource={{ field: value }}
                         />,
+                        {
+                            initialState: {
+                                resource: {
+                                    resource: {
+                                        contributions: [
+                                            {
+                                                fieldName: 'field',
+                                                status: VALIDATED,
+                                            },
+                                        ],
+                                    },
+                                },
+                                user: {
+                                    role: USER_ROLE,
+                                },
+                            },
+                        },
                     );
-
-                    expect(wrapper.getElement()).not.toBeNull();
+                    expect(
+                        screen.getAllByText('My label')[0],
+                    ).toBeInTheDocument();
                 },
             );
         });
