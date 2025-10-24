@@ -62,7 +62,7 @@ module.exports = {
         },
         {
             displayName: 'workers',
-            rootDir: `${__dirname}/workers`,
+            rootDir: `${__dirname}/packages/workers/src`,
             transform,
             testMatch: [
                 '/**/*.spec.js',

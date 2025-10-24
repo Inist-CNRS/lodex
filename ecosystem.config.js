@@ -13,7 +13,7 @@ module.exports = {
         },
         {
             name: 'worker',
-            script: 'workers',
+            script: 'packages/workers/src',
             interpreter: 'node',
             interpreter_args: '--import tsx',
             exec_mode: 'fork',
