@@ -107,7 +107,6 @@ export const FacetValueItemView = ({
                             }}
                             componentsProps={{
                                 typography: {
-                                    // @ts-expect-error TS2353
                                     component: 'div',
                                     sx: {
                                         display: 'flex',

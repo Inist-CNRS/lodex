@@ -263,9 +263,8 @@ export function CreateAnnotationModal({
                     horizontal: 'left',
                 }}
                 PaperProps={{
-                    // @ts-expect-error TS2353
                     component: 'form',
-                    onSubmit: (event) => {
+                    onSubmit: (event: any) => {
                         event.preventDefault();
                         event.stopPropagation();
 
