@@ -1,8 +1,10 @@
 import from from 'from';
 // @ts-expect-error TS7016
 import ezs from '@ezs/core';
+// @ts-expect-error TS7016
+import Basics from '@ezs/basics';
 
-ezs.use(require('@ezs/basics'));
+ezs.use(Basics);
 
 test.skip('export one resource in a two-lines CSV', (done) => {
     let outputString = '';

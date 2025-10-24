@@ -1,0 +1,19 @@
+{
+    "private": true,
+    "name": "@lodex/api",
+    "description": "Lodex API",
+    "version": "16.0.3",
+    "main": "./src/index.ts",
+    "scripts": {
+        "dev": "NODE_CONFIG_DIR=../../config tsx watch --max-http-header-size=32768 src",
+        "start": "NODE_CONFIG_DIR=../../config tsx --max-http-header-size=32768 src"
+    },
+    "dependencies": {
+        "@ezs/transformers": "file:../transformers",
+        "lodash": "4.17.21"
+    },
+    "devDependencies": {
+        "tsx": "^4.20.6",
+        "typescript": "^5.9.3"
+    }
+}

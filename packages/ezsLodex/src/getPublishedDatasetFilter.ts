@@ -1,30 +1,32 @@
 import compose from 'lodash/flowRight.js';
 
-export const addMatchToFilters = (match: any, searchableFieldNames: any) => (filters: any) => {
-    if (!match || !searchableFieldNames || !searchableFieldNames.length) {
-        return filters;
-    }
+export const addMatchToFilters =
+    (match: any, searchableFieldNames: any) => (filters: any) => {
+        if (!match || !searchableFieldNames || !searchableFieldNames.length) {
+            return filters;
+        }
 
-    return {
-        ...filters,
-        $text: { $search: match },
+        return {
+            ...filters,
+            $text: { $search: match },
+        };
     };
-};
 
-export const addRegexToFilters = (match: any, searchableFieldNames: any) => (filters: any) => {
-    if (!match || !searchableFieldNames || !searchableFieldNames.length) {
-        return filters;
-    }
+export const addRegexToFilters =
+    (match: any, searchableFieldNames: any) => (filters: any) => {
+        if (!match || !searchableFieldNames || !searchableFieldNames.length) {
+            return filters;
+        }
 
-    const regexMatch = new RegExp(match);
+        const regexMatch = new RegExp(match);
 
-    return {
-        ...filters,
-        $or: searchableFieldNames.map((name: any) => ({
-            [`versions.${name}`]: { $regex: regexMatch, $options: 'i' }
-        })),
+        return {
+            ...filters,
+            $or: searchableFieldNames.map((name: any) => ({
+                [`versions.${name}`]: { $regex: regexMatch, $options: 'i' },
+            })),
+        };
     };
-};
 
 export const addFieldsToFilters = (matchableFields: any) => (filters: any) => {
     if (!matchableFields) {
@@ -39,7 +41,7 @@ export const addFieldsToFilters = (matchableFields: any) => (filters: any) => {
     return {
         ...filters,
         $or: matchableFieldNames.map((fieldName: any) => ({
-            [`versions.${fieldName}`]: matchableFields[fieldName]
+            [`versions.${fieldName}`]: matchableFields[fieldName],
         })),
     };
 };
@@ -48,7 +50,7 @@ export const getValueQueryFragment = (name: any, value: any, inverted: any) => {
     if (Array.isArray(value) && value.length > 1) {
         return {
             [inverted ? '$nor' : '$or']: value.map((v: any) => ({
-                [`versions.${name}`]: v
+                [`versions.${name}`]: v,
             })),
         };
     }
@@ -109,7 +111,7 @@ const getPublishedDatasetFilter = ({
     facets,
     facetFieldNames,
     invertedFacets,
-    regexSearch = false
+    regexSearch = false,
 }: any) => {
     const addSearchFilters = regexSearch
         ? addRegexToFilters

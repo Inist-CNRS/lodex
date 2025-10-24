@@ -36,7 +36,7 @@ module.exports = {
         {
             preset: '@shelf/jest-mongodb',
             displayName: 'api',
-            rootDir: `${__dirname}/src/api`,
+            rootDir: `${__dirname}/packages/api/src`,
             testEnvironment: 'node',
             testPathIgnorePatterns: ['e2e'],
             testMatch: [
