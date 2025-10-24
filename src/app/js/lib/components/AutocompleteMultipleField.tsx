@@ -128,6 +128,7 @@ export function AutocompleteMultipleField({
                     return filtered;
                 }}
                 getOptionLabel={(option) => {
+                    // @ts-expect-error TS2339
                     return option.value ?? '';
                 }}
                 renderOption={(props, option, { selected }) => {

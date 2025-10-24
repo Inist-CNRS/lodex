@@ -30,7 +30,6 @@ export const AnnotationsFilterComponent = ({
             </InputLabel>
             <Select
                 displayEmpty
-                // @ts-expect-error TS2322
                 notched
                 labelId="annotations-filter"
                 value={filter ?? ''}
