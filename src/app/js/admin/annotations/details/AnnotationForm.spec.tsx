@@ -1,6 +1,6 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { MemoryRouter } from 'react-router-dom';
-import { render } from '../../../../../test-utils';
+import { render, userEvent } from '../../../../../test-utils';
 import { TestI18N } from '../../../i18n/I18NContext';
 import { useUpdateAnnotation } from '../hooks/useUpdateAnnotation';
 import { AnnotationForm } from './AnnotationForm';
@@ -183,6 +183,7 @@ describe('AnnotationForm', () => {
     });
 
     it('should submit form', async () => {
+        const user = userEvent.setup();
         const handleUpdateAnnotation = jest.fn();
         jest.mocked(useUpdateAnnotation).mockImplementation(() => ({
             handleUpdateAnnotation,
@@ -228,10 +229,8 @@ describe('AnnotationForm', () => {
         expect(inputsRegion).toBeInTheDocument();
 
         await waitFor(() => {
-            fireEvent.mouseDown(
-                within(inputsRegion).getByRole('button', {
-                    name: 'annotation_status',
-                }),
+            user.click(
+                within(inputsRegion).getByLabelText('annotation_status'),
             );
         });
 

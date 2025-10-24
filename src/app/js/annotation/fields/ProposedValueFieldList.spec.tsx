@@ -26,7 +26,7 @@ describe('ProposedValueFieldList', () => {
             />,
         );
 
-        const textbox = screen.getByRole('textbox', {
+        const textbox = screen.getByRole('combobox', {
             name: 'annotation.proposedValue *',
         });
 
@@ -55,7 +55,7 @@ describe('ProposedValueFieldList', () => {
             />,
         );
 
-        const textbox = screen.getByRole('textbox', {
+        const textbox = screen.getByRole('combobox', {
             name: 'annotation.proposedValue *',
         });
 

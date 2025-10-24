@@ -34,7 +34,7 @@ describe('ValueField', () => {
 
         await waitFor(() => {
             fireEvent.mouseDown(
-                screen.getByRole('button', {
+                screen.getByRole('combobox', {
                     name: 'annotation_choose_value_to_correct *',
                 }),
             );
@@ -60,7 +60,7 @@ describe('ValueField', () => {
 
         await waitFor(() => {
             fireEvent.mouseDown(
-                screen.getByRole('button', {
+                screen.getByRole('combobox', {
                     name: 'annotation_choose_value_to_correct *',
                 }),
             );

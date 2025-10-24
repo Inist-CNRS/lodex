@@ -35,7 +35,7 @@ describe('AutocompleteField', () => {
         it('should support to select a value', async () => {
             const screen = render(<TestAutocompleteField />);
 
-            const textbox = screen.getByRole('textbox', {
+            const textbox = screen.getByRole('combobox', {
                 name: 'Name',
             });
 
@@ -59,7 +59,7 @@ describe('AutocompleteField', () => {
         it('should support filtering values', async () => {
             const screen = render(<TestAutocompleteField />);
 
-            const textbox = screen.getByRole('textbox', {
+            const textbox = screen.getByRole('combobox', {
                 name: 'Name',
             });
 
@@ -89,7 +89,7 @@ describe('AutocompleteField', () => {
         it('should support to add a new value', async () => {
             const screen = render(<TestAutocompleteField supportsNewValues />);
 
-            const textbox = screen.getByRole('textbox', {
+            const textbox = screen.getByRole('combobox', {
                 name: 'Name',
             });
 
@@ -117,7 +117,7 @@ describe('AutocompleteField', () => {
         it('should not support to have a new value if does not support new values', async () => {
             const screen = render(<TestAutocompleteField />);
 
-            const textbox = screen.getByRole('textbox', {
+            const textbox = screen.getByRole('combobox', {
                 name: 'Name',
             });
 
