@@ -31,7 +31,7 @@ export const getExpandedFacet = (name) =>
     cy.get('.facet-item').contains('span', name);
 
 export const getFacetItem = (name, value) =>
-    getExpandedFacet(name).next().contains('span', value).parent();
+    getExpandedFacet(name).next().contains('span', value).parent().parent();
 
 export const getFacetExcludeItem = (name) =>
     getExpandedFacet(name).parent().find('.facet-value-list .exclude-facet');
