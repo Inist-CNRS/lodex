@@ -12,7 +12,7 @@ export default class Script {
     constructor(source: any) {
         const routineLocalDirectory = Path.resolve(
             __dirname,
-            '../../../../workers',
+            '../../../workers/src',
             `${source}/`,
         );
 
