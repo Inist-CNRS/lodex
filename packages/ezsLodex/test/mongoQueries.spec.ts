@@ -1004,7 +1004,7 @@ describe('mongo queries', () => {
                 .on('error', (e: any) => {
                     expect(() => {
                         throw e.sourceError;
-                    // @ts-expect-error TS(2551): Property 'toThrow' does not exist on type 'Asserti... Remove this comment to see the full error message
+                        // @ts-expect-error TS(2551): Property 'toThrow' does not exist on type 'Asserti... Remove this comment to see the full error message
                     }).toThrow('Invalid scheme');
                     done();
                 })

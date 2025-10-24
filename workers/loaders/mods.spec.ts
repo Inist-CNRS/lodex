@@ -15,7 +15,7 @@ describe('mods.ini', () => {
             .on('end', () => {
                 expect(res).toMatchObject([
                     { 'any/_t': 'value', 'other/_t': 'thing' },
-                ]); // eslint-disable-line
+                ]);
                 done();
             });
     });

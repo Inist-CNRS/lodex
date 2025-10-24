@@ -27,7 +27,7 @@ function homogenizedObject(this: any, data: any, feed: any) {
         }
         // try to obtain only the lodash error message
         const errorMessage =
-            Array()
+            []
                 .concat(error?.traceback)
                 .filter((x: any) => x.search(/Error:/) >= 0)
                 .shift() || error?.message;

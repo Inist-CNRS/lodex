@@ -21,7 +21,7 @@ describe('getPublishedDatasetFilter', () => {
                 )({
                     filter: 'data',
                 }),
-            // @ts-expect-error TS(2551): Property 'toEqual' does not exist on type 'Asserti... Remove this comment to see the full error message
+                // @ts-expect-error TS(2551): Property 'toEqual' does not exist on type 'Asserti... Remove this comment to see the full error message
             ).toEqual({
                 filter: 'data',
                 $and: [
@@ -44,7 +44,7 @@ describe('getPublishedDatasetFilter', () => {
                 )({
                     filter: 'data',
                 }),
-            // @ts-expect-error TS(2551): Property 'toEqual' does not exist on type 'Asserti... Remove this comment to see the full error message
+                // @ts-expect-error TS(2551): Property 'toEqual' does not exist on type 'Asserti... Remove this comment to see the full error message
             ).toEqual({
                 filter: 'data',
                 $and: [
@@ -66,7 +66,7 @@ describe('getPublishedDatasetFilter', () => {
                 )({
                     filter: 'data',
                 }),
-            // @ts-expect-error TS(2551): Property 'toEqual' does not exist on type 'Asserti... Remove this comment to see the full error message
+                // @ts-expect-error TS(2551): Property 'toEqual' does not exist on type 'Asserti... Remove this comment to see the full error message
             ).toEqual({
                 filter: 'data',
                 $and: [
@@ -93,7 +93,7 @@ describe('getPublishedDatasetFilter', () => {
                 )({
                     filter: 'data',
                 }),
-            // @ts-expect-error TS(2551): Property 'toEqual' does not exist on type 'Asserti... Remove this comment to see the full error message
+                // @ts-expect-error TS(2551): Property 'toEqual' does not exist on type 'Asserti... Remove this comment to see the full error message
             ).toEqual({
                 filter: 'data',
                 $and: [{ 'versions.otherFacet': 'other value' }],
@@ -110,7 +110,7 @@ describe('getPublishedDatasetFilter', () => {
                 )({
                     filter: 'data',
                 }),
-            // @ts-expect-error TS(2551): Property 'toEqual' does not exist on type 'Asserti... Remove this comment to see the full error message
+                // @ts-expect-error TS(2551): Property 'toEqual' does not exist on type 'Asserti... Remove this comment to see the full error message
             ).toEqual({
                 filter: 'data',
             });
@@ -129,7 +129,7 @@ describe('getPublishedDatasetFilter', () => {
                 )({
                     filter: 'data',
                 }),
-            // @ts-expect-error TS(2551): Property 'toEqual' does not exist on type 'Asserti... Remove this comment to see the full error message
+                // @ts-expect-error TS(2551): Property 'toEqual' does not exist on type 'Asserti... Remove this comment to see the full error message
             ).toEqual({
                 filter: 'data',
             });
@@ -154,7 +154,7 @@ describe('getPublishedDatasetFilter', () => {
         it('should return query fragment for fieldName with [value]', () => {
             expect(
                 getValueQueryFragment('fieldName', ['value'], false),
-            // @ts-expect-error TS(2551): Property 'toEqual' does not exist on type 'Asserti... Remove this comment to see the full error message
+                // @ts-expect-error TS(2551): Property 'toEqual' does not exist on type 'Asserti... Remove this comment to see the full error message
             ).toEqual({
                 'versions.fieldName': 'value',
             });
@@ -172,7 +172,7 @@ describe('getPublishedDatasetFilter', () => {
         it('should return query fragment for fieldName with value1 or value2', () => {
             expect(
                 getValueQueryFragment('fieldName', ['value1', 'value2'], false),
-            // @ts-expect-error TS(2551): Property 'toEqual' does not exist on type 'Asserti... Remove this comment to see the full error message
+                // @ts-expect-error TS(2551): Property 'toEqual' does not exist on type 'Asserti... Remove this comment to see the full error message
             ).toEqual({
                 $or: [
                     { 'versions.fieldName': 'value1' },
@@ -184,7 +184,7 @@ describe('getPublishedDatasetFilter', () => {
         it('should return query fragment for filedName not with value if inverted is true', () => {
             expect(
                 getValueQueryFragment('fieldName', ['value1', 'value2'], true),
-            // @ts-expect-error TS(2551): Property 'toEqual' does not exist on type 'Asserti... Remove this comment to see the full error message
+                // @ts-expect-error TS(2551): Property 'toEqual' does not exist on type 'Asserti... Remove this comment to see the full error message
             ).toEqual({
                 $nor: [
                     { 'versions.fieldName': 'value1' },
@@ -200,7 +200,7 @@ describe('getPublishedDatasetFilter', () => {
             const searchableFields = ['field1', 'field2'];
             expect(
                 addMatchToFilters(match, searchableFields)({ filter: 'data' }),
-            // @ts-expect-error TS(2551): Property 'toEqual' does not exist on type 'Asserti... Remove this comment to see the full error message
+                // @ts-expect-error TS(2551): Property 'toEqual' does not exist on type 'Asserti... Remove this comment to see the full error message
             ).toEqual({
                 filter: 'data',
                 $text: { $search: 'match' },
@@ -212,7 +212,7 @@ describe('getPublishedDatasetFilter', () => {
             const searchableFields = ['field1', 'field2'];
             expect(
                 addMatchToFilters(match, searchableFields)({ filter: 'data' }),
-            // @ts-expect-error TS(2551): Property 'toEqual' does not exist on type 'Asserti... Remove this comment to see the full error message
+                // @ts-expect-error TS(2551): Property 'toEqual' does not exist on type 'Asserti... Remove this comment to see the full error message
             ).toEqual({
                 filter: 'data',
             });
@@ -223,7 +223,7 @@ describe('getPublishedDatasetFilter', () => {
             const searchableFields = null;
             expect(
                 addMatchToFilters(match, searchableFields)({ filter: 'data' }),
-            // @ts-expect-error TS(2551): Property 'toEqual' does not exist on type 'Asserti... Remove this comment to see the full error message
+                // @ts-expect-error TS(2551): Property 'toEqual' does not exist on type 'Asserti... Remove this comment to see the full error message
             ).toEqual({
                 filter: 'data',
             });
@@ -236,7 +236,7 @@ describe('getPublishedDatasetFilter', () => {
             const searchableFields = ['field1', 'field2'];
             expect(
                 addRegexToFilters(match, searchableFields)({ filter: 'data' }),
-            // @ts-expect-error TS(2551): Property 'toEqual' does not exist on type 'Asserti... Remove this comment to see the full error message
+                // @ts-expect-error TS(2551): Property 'toEqual' does not exist on type 'Asserti... Remove this comment to see the full error message
             ).toEqual({
                 filter: 'data',
                 $or: [
@@ -251,7 +251,7 @@ describe('getPublishedDatasetFilter', () => {
             const searchableFields = ['field1', 'field2'];
             expect(
                 addRegexToFilters(match, searchableFields)({ filter: 'data' }),
-            // @ts-expect-error TS(2551): Property 'toEqual' does not exist on type 'Asserti... Remove this comment to see the full error message
+                // @ts-expect-error TS(2551): Property 'toEqual' does not exist on type 'Asserti... Remove this comment to see the full error message
             ).toEqual({
                 filter: 'data',
             });
@@ -262,7 +262,7 @@ describe('getPublishedDatasetFilter', () => {
             const searchableFields = null;
             expect(
                 addMatchToFilters(match, searchableFields)({ filter: 'data' }),
-            // @ts-expect-error TS(2551): Property 'toEqual' does not exist on type 'Asserti... Remove this comment to see the full error message
+                // @ts-expect-error TS(2551): Property 'toEqual' does not exist on type 'Asserti... Remove this comment to see the full error message
             ).toEqual({
                 filter: 'data',
             });
@@ -278,7 +278,7 @@ describe('getPublishedDatasetFilter', () => {
                 )({
                     filter: 'data',
                 }),
-            // @ts-expect-error TS(2551): Property 'toEqual' does not exist on type 'Asserti... Remove this comment to see the full error message
+                // @ts-expect-error TS(2551): Property 'toEqual' does not exist on type 'Asserti... Remove this comment to see the full error message
             ).toEqual({
                 filter: 'data',
                 key: 'value',
@@ -293,7 +293,7 @@ describe('getPublishedDatasetFilter', () => {
                 )({
                     filter: 'data',
                 }),
-            // @ts-expect-error TS(2551): Property 'toEqual' does not exist on type 'Asserti... Remove this comment to see the full error message
+                // @ts-expect-error TS(2551): Property 'toEqual' does not exist on type 'Asserti... Remove this comment to see the full error message
             ).toEqual({
                 filter: 'data',
             });
