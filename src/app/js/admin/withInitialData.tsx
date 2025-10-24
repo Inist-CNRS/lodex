@@ -14,7 +14,6 @@ import {
     fromParsing,
     fromPublication,
     fromSubresources,
-    fromPrecomputed,
     fromConfigTenant,
 } from './selectors';
 
@@ -73,13 +72,11 @@ export const mapStateToProps = (state) => ({
         fromParsing.isInitialized(state) ||
         fromPublication.isInitialized(state) ||
         fromSubresources.isInitialized(state) ||
-        fromPrecomputed.isInitialized(state) ||
         fromConfigTenant.isInitialized(state),
     isLoading:
         fromParsing.isParsingLoading(state) ||
         fromPublication.isPublicationLoading(state) ||
         fromSubresources.isLoading(state) ||
-        fromPrecomputed.isLoading(state) ||
         fromConfigTenant.isLoading(state),
 });
 

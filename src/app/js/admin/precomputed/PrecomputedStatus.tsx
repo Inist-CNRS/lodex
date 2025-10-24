@@ -66,6 +66,7 @@ export const StatusChip = ({
     );
     useEffect(() => {
         if (!startedAt) return;
+        setSpentTime(getDisplayTimeStartedAt(startedAt));
         const interval = setInterval(() => {
             setSpentTime(getDisplayTimeStartedAt(startedAt));
         }, 59000);

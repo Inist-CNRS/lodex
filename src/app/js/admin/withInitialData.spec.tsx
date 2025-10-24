@@ -221,7 +221,7 @@ describe('withInitialData HOC', () => {
                 }),
             ).toStrictEqual({ isLoading: true, isInitialized: false });
         });
-        it('should return isLoading true if precomputed.loading is true', () => {
+        it('should not return isLoading true if precomputed.loading is true', () => {
             expect(
                 mapStateToProps({
                     parsing: {
@@ -249,7 +249,7 @@ describe('withInitialData HOC', () => {
                         initialized: false,
                     },
                 }),
-            ).toStrictEqual({ isLoading: true, isInitialized: false });
+            ).toStrictEqual({ isLoading: false, isInitialized: false });
         });
         it('should return isLoading true if configTenant.loading is true', () => {
             expect(
