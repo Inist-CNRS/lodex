@@ -11,7 +11,7 @@ import Conditor from '@ezs/conditor';
 import Istex from '@ezs/istex';
 // @ts-expect-error TS(2792): Cannot find module '@ezs/storage'. Did you mean to... Remove this comment to see the full error message
 import Storage from '@ezs/storage';
-import localConfig from '../config.json';
+import localConfig from '../../../config.json';
 
 ezs.settings.feed.timeout = Number(localConfig.timeout) || 120000;
 ezs.use(Basics);
