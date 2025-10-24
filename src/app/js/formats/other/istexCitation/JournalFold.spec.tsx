@@ -18,8 +18,6 @@ describe('JournalFold', () => {
         item: { name: 'The Lancet', count: 9908 },
         searchedField: CUSTOM_ISTEX_QUERY,
         documentSortBy: 'publicationDate[desc]',
-        // @ts-expect-error TS7006
-        polyglot: { t: (v) => v },
         children,
     };
 
@@ -35,7 +33,6 @@ describe('JournalFold', () => {
             name: 'The Lancet',
             getData,
             children,
-            polyglot: defaultProps.polyglot,
             skip: false,
         });
         expect(getCitationDocumentData).toHaveBeenCalledWith({

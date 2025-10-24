@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, type ReactNode } from 'react';
 import classnames from 'classnames';
 import FileDownload from '@mui/icons-material/GetApp';
 import Link from '../../../lib/components/Link';
@@ -29,9 +29,9 @@ interface IstexCitationListProps {
     data: {
         hits: unknown[];
         total: number;
-        nextPageURI?: string;
+        nextPageURI: string;
     };
-    children(...args: unknown[]): unknown;
+    children(...args: unknown[]): ReactNode;
     skip: boolean;
     name?: string;
     value?: string;
@@ -120,9 +120,7 @@ const IstexCitationList = ({
                 {hits.map((item, index) => (
                     // @ts-expect-error TS2339
                     <li className={styles.li} key={index}>
-                        {/*
-                         // @ts-expect-error TS2349 */}
-                        {children({ ...props, polyglot, item })}
+                        {children({ ...props, item })}
                     </li>
                 ))}
             </ul>
