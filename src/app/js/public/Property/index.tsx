@@ -115,7 +115,7 @@ export const getEditFieldRedirectUrl = (fieldName, scope, subresourceId) => {
     }
 };
 
-interface PropertyComponentProps {
+export interface PropertyComponentProps {
     className?: string;
     field: {
         name: string;
