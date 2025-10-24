@@ -26,11 +26,12 @@ const FieldProvider = ({
 }: FieldProviderProps) => {
     const [error, setError] = useState<boolean | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
-    const [data, setData] = useState<any>(null);
+    const [embeddedData, setEmbeddedData] = useState<any>(null);
+    const [formatData, setFormatData] = useState<any>(null);
 
     const getFirstIstexQuery = useCallback(() => {
-        if (!data) return;
-        const { field, resource } = data;
+        if (!embeddedData) return;
+        const { field, resource } = embeddedData;
         const searchedField =
             field.format.args.searchedField || CUSTOM_ISTEX_QUERY;
 
@@ -48,12 +49,9 @@ const FieldProvider = ({
             }
 
             setLoading(false);
-            setData((prevData: any) => ({
-                ...prevData,
-                formatData: response,
-            }));
+            setFormatData(response);
         });
-    }, [data]);
+    }, [embeddedData]);
 
     useEffect(() => {
         fetch({
@@ -71,21 +69,21 @@ const FieldProvider = ({
                 ...response,
                 resource: { [response.field.name]: response.value },
             };
-            setData(newData);
+            setEmbeddedData(newData);
         });
     }, [api, uri, fieldName]);
 
     useEffect(() => {
-        if (data) {
+        if (embeddedData) {
             getFirstIstexQuery();
         }
-    }, [data, getFirstIstexQuery]);
+    }, [embeddedData, getFirstIstexQuery]);
 
-    if (loading || error || !data) {
+    if (loading || error || !embeddedData || !formatData) {
         return null;
     }
 
-    return children(data);
+    return children({ ...embeddedData, formatData });
 };
 
 export default FieldProvider;
