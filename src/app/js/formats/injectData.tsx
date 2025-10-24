@@ -180,7 +180,7 @@ export default (url = null, checkFormatLoaded = null, withUri = false) =>
 
                 // This effect will run when field or resource changes
                 loadFormatData({});
-            }, [loadFormatData, props.field]);
+            }, [loadFormatData, props.field, props.resource]);
 
             const { field, resource, ...restProps } = props;
 
