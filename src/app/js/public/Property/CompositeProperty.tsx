@@ -44,6 +44,7 @@ export const CompositePropertyComponent = ({
                     // @ts-expect-error TS2322
                     className={`compose_${getFieldClassName(field)} ${camelCase(f.internalName || '')}`}
                     key={f.name}
+                    // @ts-expect-error TS2322
                     field={f}
                     isSub
                     parents={parents}
