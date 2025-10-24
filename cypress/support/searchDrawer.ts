@@ -84,7 +84,7 @@ export const getFacet = (name) =>
     cy.get('.search .search-facets .facet-item').contains('span', name);
 
 export const getFacetItem = (name, value) =>
-    getFacet(name).parent().contains('span', value).parent();
+    getFacet(name).parent().contains('span', value).parent().parent();
 
 export const getFacetExcludeItem = (name) =>
     getFacet(name).next().find('.facet-value-list .exclude-facet');
