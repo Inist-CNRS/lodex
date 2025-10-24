@@ -1,0 +1,15 @@
+{
+    "private": true,
+    "name": "@lodex/workers",
+    "description": "Lodex API",
+    "version": "16.0.3",
+    "main": "./src/index.ts",
+    "scripts": {
+        "dev": "NODE_CONFIG_DIR=../../config tsx watch src",
+        "start": "NODE_CONFIG_DIR=../../config tsx src"
+    },
+    "devDependencies": {
+        "tsx": "^4.20.6",
+        "typescript": "^5.9.3"
+    }
+}
