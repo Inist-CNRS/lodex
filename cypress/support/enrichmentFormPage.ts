@@ -43,6 +43,7 @@ export const updateNameEnrichment = () => {
     cy.contains('Save', { timeout: 500 }).click({
         force: true,
     });
+    cy.wait(3000);
     cy.reload();
     cy.findByLabelText('Name *', { timeout: 3500 }).should(
         'have.value',
