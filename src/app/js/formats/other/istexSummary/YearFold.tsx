@@ -9,20 +9,14 @@ interface YearFoldProps {
         name: string;
         count: number;
     };
-    searchedField?: SearchedField;
+    searchedField: SearchedField;
     children(...args: unknown[]): ReactNode;
-    polyglot: unknown;
 }
 
 const YearFold = ({
     value,
-
     item: { name: year, count },
-
     searchedField,
-
-    polyglot,
-
     children,
 }: YearFoldProps) => (
     <FetchFold
@@ -30,7 +24,6 @@ const YearFold = ({
         count={count}
         // @ts-expect-error TS7031
         year={year}
-        polyglot={polyglot}
         getData={getVolumeData({
             value,
             year,

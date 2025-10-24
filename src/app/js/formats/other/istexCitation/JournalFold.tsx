@@ -1,6 +1,7 @@
 import FetchFold from '../istexSummary/FetchFold';
 import { getCitationDocumentData } from './getIstexCitationData';
 import { type SearchedField } from '../istexSummary/constants';
+import type { ReactNode } from 'react';
 
 interface JournalFoldProps {
     item: {
@@ -9,8 +10,7 @@ interface JournalFoldProps {
     };
     value: string;
     searchedField?: SearchedField;
-    children(...args: unknown[]): unknown;
-    polyglot: unknown;
+    children(...args: unknown[]): ReactNode;
     documentSortBy: string;
 }
 
@@ -21,19 +21,15 @@ const JournalFold = ({
 
     searchedField,
 
-    polyglot,
-
     children,
 
     documentSortBy,
 }: JournalFoldProps) => (
-    // @ts-expect-error TS2769
     <FetchFold
         label={name}
         skip={name === 'other'}
         count={count}
         name={name}
-        polyglot={polyglot}
         getData={getCitationDocumentData({
             value,
             name,

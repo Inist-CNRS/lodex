@@ -25,7 +25,7 @@ interface IstexListProps {
     data: {
         hits: unknown[];
         total: number;
-        nextPageURI?: string;
+        nextPageURI: string;
     };
     children(...args: unknown[]): unknown;
     skip: boolean;
@@ -35,7 +35,7 @@ const IstexList = ({ data, children, skip, ...props }: IstexListProps) => {
     const { translate } = useTranslate();
     const [hits, setHits] = useState(data.hits);
     const [total, setTotal] = useState(data.total);
-    const [nextPageURI, setNextPageURI] = useState(data.nextPageURI);
+    const [nextPageURI, setNextPageURI] = useState<string>(data.nextPageURI);
     const [isLoading, setIsLoading] = useState(false);
 
     const loadMore = () => {

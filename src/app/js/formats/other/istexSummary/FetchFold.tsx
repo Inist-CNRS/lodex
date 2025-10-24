@@ -1,4 +1,4 @@
-import { Component, type ReactNode } from 'react';
+import { useState, type ReactNode } from 'react';
 import Folder from '@mui/icons-material/Folder';
 import FolderOpen from '@mui/icons-material/FolderOpen';
 import Arrow from '@mui/icons-material/KeyboardArrowDown';
@@ -8,6 +8,7 @@ import get from 'lodash/get';
 import AdminOnlyAlert from '../../../lib/components/AdminOnlyAlert';
 import SkipFold from './SkipFold';
 import stylesToClassname from '../../../lib/stylesToClassName';
+import { useTranslate } from '../../../i18n/I18NContext';
 
 const styles = stylesToClassname(
     {
@@ -52,107 +53,115 @@ const circularProgress = (
 
 interface FetchFoldProps {
     label: string;
-    polyglot: unknown;
     getData(...args: unknown[]): unknown;
     children(...args: unknown[]): ReactNode;
     count: number;
-    skip?: number;
+    skip?: boolean;
+    volume?: string;
+    issue?: string;
+    name?: string;
 }
 
-class FetchFold extends Component<FetchFoldProps> {
-    state = {
-        data: null,
-        error: null,
-        isLoading: false,
-        isOpen: false,
-    };
+const FetchFold = ({
+    label,
+    count,
+    children,
+    skip,
+    getData,
+    ...restProps
+}: FetchFoldProps) => {
+    const { translate } = useTranslate();
+    const [data, setData] = useState(null);
+    const [error, setError] = useState<boolean | null>(null);
+    const [isLoading, setIsLoading] = useState(false);
+    const [isOpen, setIsOpen] = useState(false);
 
-    open = () => {
-        if (this.state.data) {
-            this.setState({
-                isOpen: true,
-            });
+    const open = () => {
+        if (data) {
+            setIsOpen(true);
             return;
         }
 
-        this.setState({ isLoading: true }, () => {
-            // @ts-expect-error TS2571
-            this.props
-                .getData(this.props)
-                // @ts-expect-error TS7006
-                .then((data) => {
-                    this.setState({
-                        data,
-                        isLoading: false,
-                        isOpen: true,
-                    });
-                })
-                // @ts-expect-error TS7006
-                .catch((error) => {
-                    console.error(error);
-                    this.setState({ error: true });
-                });
-        });
+        setIsLoading(true);
+        // @ts-expect-error TS2571
+        getData({
+            label,
+            count,
+            children,
+            skip,
+            getData,
+            ...restProps,
+        })
+            // @ts-expect-error TS7006
+            .then((fetchedData) => {
+                setData(fetchedData);
+                setIsLoading(false);
+                setIsOpen(true);
+            })
+            // @ts-expect-error TS7006
+            .catch((fetchError) => {
+                console.error(fetchError);
+                setError(true);
+            });
     };
 
-    close = () => {
-        this.setState({ isOpen: false });
+    const close = () => {
+        setIsOpen(false);
     };
 
-    render() {
-        const { label, count, polyglot, children, skip } = this.props;
-        const { error, data, isOpen, isLoading } = this.state;
+    if (skip) {
+        return <SkipFold getData={getData}>{children}</SkipFold>;
+    }
 
-        if (skip) {
-            // @ts-expect-error TS2786
-            return <SkipFold {...this.props} />;
-        }
+    if (error) {
+        return <AdminOnlyAlert>{translate('istex_error')}</AdminOnlyAlert>;
+    }
 
-        if (error) {
-            // @ts-expect-error TS18046
-            return <AdminOnlyAlert>{polyglot.t('istex_error')}</AdminOnlyAlert>;
-        }
-        if (count === 0) {
-            return null;
-        }
+    if (count === 0) {
+        return null;
+    }
 
-        return (
-            <div className="istex-fold">
-                <div>
-                    <Button
-                        // @ts-expect-error TS2769
-                        color="text"
-                        onClick={isOpen ? this.close : this.open}
-                    >
+    return (
+        <div className="istex-fold">
+            <div>
+                <Button
+                    // @ts-expect-error TS2769
+                    color="text"
+                    onClick={isOpen ? close : open}
+                >
+                    {/*
+                     // @ts-expect-error TS2339 */}
+                    <div className={styles.buttonLabel}>
+                        <Arrow
+                            className={
+                                // @ts-expect-error TS2339
+                                isOpen ? undefined : styles.arrowClose
+                            }
+                        />
+                        {isOpen ? <FolderOpen /> : <Folder />}
                         {/*
                          // @ts-expect-error TS2339 */}
-                        <div className={styles.buttonLabel}>
-                            <Arrow
-                                className={
-                                    // @ts-expect-error TS2339
-                                    isOpen ? undefined : styles.arrowClose
-                                }
-                            />
-                            {isOpen ? <FolderOpen /> : <Folder />}
-                            {/*
-                             // @ts-expect-error TS2339 */}
-                            <span className={styles.labelText}>{label}</span>
-                            {/*
-                             // @ts-expect-error TS2339 */}
-                            <span className={styles.count}>{count}</span>
-                            {isLoading && circularProgress}
-                        </div>
-                    </Button>
-                    {isOpen &&
-                        children({
-                            ...this.props,
-                            data,
-                            nbSiblings: get(data, 'hits.length', 0),
-                        })}
-                </div>
+                        <span className={styles.labelText}>{label}</span>
+                        {/*
+                         // @ts-expect-error TS2339 */}
+                        <span className={styles.count}>{count}</span>
+                        {isLoading && circularProgress}
+                    </div>
+                </Button>
+                {isOpen &&
+                    children({
+                        label,
+                        count,
+                        children,
+                        skip,
+                        getData,
+                        ...restProps,
+                        data,
+                        nbSiblings: get(data, 'hits.length', 0),
+                    })}
             </div>
-        );
-    }
-}
+        </div>
+    );
+};
 
 export default FetchFold;

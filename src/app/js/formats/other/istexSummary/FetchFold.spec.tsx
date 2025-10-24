@@ -8,6 +8,12 @@ import { StyleSheetTestUtils } from 'aphrodite';
 import FetchFold from './FetchFold';
 import AdminOnlyAlert from '../../../lib/components/AdminOnlyAlert';
 
+jest.mock('../../../i18n/I18NContext', () => ({
+    useTranslate: () => ({
+        translate: (key: string) => key,
+    }),
+}));
+
 describe('FetchFold', () => {
     const defaultProps = {
         getData: jest.fn(() => Promise.resolve({ hits: [] })),
@@ -16,8 +22,6 @@ describe('FetchFold', () => {
         )),
         label: 'label',
         count: 10,
-        // @ts-expect-error TS7006
-        polyglot: { t: (v) => v },
     };
 
     beforeEach(() => {

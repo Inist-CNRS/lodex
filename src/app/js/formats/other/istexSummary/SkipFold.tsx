@@ -1,7 +1,8 @@
-import { Component } from 'react';
+import { useState, useEffect, type ReactNode } from 'react';
 import { CircularProgress } from '@mui/material';
 
 import AdminOnlyAlert from '../../../lib/components/AdminOnlyAlert';
+import { useTranslate } from '../../../i18n/I18NContext';
 
 const circularProgress = (
     <CircularProgress
@@ -16,58 +17,46 @@ const circularProgress = (
 );
 
 interface SkipFoldProps {
-    children(...args: unknown[]): unknown;
-    polyglot: unknown;
+    children(...args: unknown[]): ReactNode;
     getData(...args: unknown[]): unknown;
 }
 
-class SkipFold extends Component<SkipFoldProps> {
-    state = {
-        data: null,
-        error: null,
-        isLoading: true,
-    };
+const SkipFold = ({ children, getData }: SkipFoldProps) => {
+    const { translate } = useTranslate();
+    const [data, setData] = useState(null);
+    const [error, setError] = useState<boolean | null>(null);
+    const [isLoading, setIsLoading] = useState(true);
 
-    UNSAFE_componentWillMount() {
+    useEffect(() => {
         // @ts-expect-error TS2571
-        this.props
-            .getData(this.props)
+        getData({ children, getData })
             // @ts-expect-error TS7006
-            .then((data) => {
-                this.setState({
-                    data,
-                    isLoading: false,
-                    isOpen: true,
-                });
+            .then((fetchedData) => {
+                setData(fetchedData);
+                setIsLoading(false);
             })
             // @ts-expect-error TS7006
-            .catch((error) => {
-                console.error(error);
-                this.setState({ error: true, isLoading: false });
+            .catch((fetchError) => {
+                console.error(fetchError);
+                setError(true);
+                setIsLoading(false);
             });
+    }, [children, getData]);
+
+    if (error) {
+        return <AdminOnlyAlert>{translate('istex_error')}</AdminOnlyAlert>;
     }
 
-    // @ts-expect-error TS2416
-    render() {
-        const { polyglot, children } = this.props;
-        const { data, isLoading, error } = this.state;
-
-        if (error) {
-            // @ts-expect-error TS18046
-            return <AdminOnlyAlert>{polyglot.t('istex_error')}</AdminOnlyAlert>;
-        }
-
-        if (isLoading) {
-            return circularProgress;
-        }
-
-        // @ts-expect-error TS18047
-        if (!data.hits.length) {
-            return null;
-        }
-
-        return children({ ...this.props, data });
+    if (isLoading) {
+        return circularProgress;
     }
-}
+
+    // @ts-expect-error TS18047
+    if (!data.hits.length) {
+        return null;
+    }
+
+    return children({ children, getData, data });
+};
 
 export default SkipFold;

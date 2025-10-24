@@ -1,19 +1,20 @@
 import FetchFold from './FetchFold';
 import { getDocumentData } from './getIstexData';
 import { type SearchedField } from './constants';
+import type { ReactNode } from 'react';
+import { useTranslate } from '../../../i18n/I18NContext';
 
 interface IssueFoldProps {
     item: {
         name: string;
         count: number;
+        issue: string;
     };
     value: string;
     year: string;
     volume: string;
-    searchedField?: SearchedField;
-    children(...args: unknown[]): unknown;
-    isOther?: boolean;
-    polyglot: unknown;
+    searchedField: SearchedField;
+    children(...args: unknown[]): ReactNode;
     documentSortBy: string;
 }
 
@@ -23,34 +24,32 @@ const IssueFold = ({
     year,
     volume,
     searchedField,
-    polyglot,
     children,
     documentSortBy,
-}: IssueFoldProps) => (
-    // @ts-expect-error TS2769
-    <FetchFold
-        label={
-            issue === 'other'
-                ? // @ts-expect-error TS18046
-                  polyglot.t('other_issue')
-                : // @ts-expect-error TS18046
-                  `${polyglot.t('issue')}: ${issue}`
-        }
-        skip={issue === 'other'}
-        count={count}
-        issue={issue}
-        polyglot={polyglot}
-        getData={getDocumentData({
-            value,
-            year,
-            volume,
-            issue,
-            searchedField,
-            documentSortBy,
-        })}
-    >
-        {children}
-    </FetchFold>
-);
+}: IssueFoldProps) => {
+    const { translate } = useTranslate();
+    return (
+        <FetchFold
+            label={
+                issue === 'other'
+                    ? translate('other_issue')
+                    : `${translate('issue')}: ${issue}`
+            }
+            skip={issue === 'other'}
+            count={count}
+            issue={issue}
+            getData={getDocumentData({
+                value,
+                year,
+                volume,
+                issue,
+                searchedField,
+                documentSortBy,
+            })}
+        >
+            {children}
+        </FetchFold>
+    );
+};
 
 export default IssueFold;
