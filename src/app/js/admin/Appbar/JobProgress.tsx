@@ -170,8 +170,10 @@ const JobProgressComponent = (props) => {
         });
 
         socket.on(`${dbName}_${tenant}-precomputer`, (data) => {
+            loadPrecomputed();
             if (!data.isPrecomputing) {
-                loadPrecomputed();
+                // @ts-expect-error TS2554
+                setProgress();
             }
             if (data.message && data.message !== 'cancelled_precomputer') {
                 toast(`${translate('error')} : ${data.message}`, {
