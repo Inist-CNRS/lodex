@@ -5,6 +5,12 @@ import VolumeFold from './VolumeFold';
 import { getIssueData } from './getIstexData';
 jest.mock('./getIstexData');
 
+jest.mock('../../../i18n/I18NContext', () => ({
+    useTranslate: () => ({
+        translate: (key: string) => key,
+    }),
+}));
+
 const getData = () => 'data';
 // @ts-expect-error TS2339
 getIssueData.mockImplementation(() => getData);
@@ -16,8 +22,6 @@ describe('VolumeFold', () => {
         year: 'year',
         item: { name: 'volume', count: 1 },
         searchedField: 'host.issn',
-        // @ts-expect-error TS7006
-        polyglot: { t: (v) => v },
         children,
     };
 
@@ -35,7 +39,6 @@ describe('VolumeFold', () => {
             getData,
             children,
             skip: false,
-            polyglot: defaultProps.polyglot,
         });
         expect(getIssueData).toHaveBeenCalledWith({
             value: 'issn',

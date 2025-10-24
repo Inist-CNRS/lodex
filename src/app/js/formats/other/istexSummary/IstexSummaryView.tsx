@@ -62,7 +62,7 @@ interface IstexSummaryViewProps {
     fieldStatus?: string;
     resource: object;
     field: Field;
-    formatData?: {
+    formatData: {
         hits?: unknown;
     };
     error?: string;

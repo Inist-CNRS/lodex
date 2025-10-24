@@ -19,7 +19,6 @@ export const getUrl = ({ props: { resource, field } }) => {
     return {
         url: buildIstexQuery({
             query: value,
-            // @ts-expect-error TS2322
             facet: `${REFBIBS_TITLE}[50]>${TOP_HITS}[1]`,
             output,
             size: 0,

@@ -15,8 +15,6 @@ describe('YearFold', () => {
         value: 'value',
         item: { name: 'year', count: 1 },
         searchedField: 'host.issn',
-        // @ts-expect-error TS7006
-        polyglot: { t: (v) => v },
         children,
     };
 
@@ -33,7 +31,6 @@ describe('YearFold', () => {
             year: 'year',
             getData,
             children,
-            polyglot: defaultProps.polyglot,
         });
         expect(getVolumeData).toHaveBeenCalledWith({
             value: 'value',

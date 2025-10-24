@@ -16,7 +16,6 @@ export const getCitationUrl = ({ resource, field, searchedField }) => {
 
     return buildIstexQuery({
         query: getFilterQuery(searchedField, value),
-        // @ts-expect-error TS2322
         facet: `${HOST_TITLE}[10]`,
         output,
         size: 10,
@@ -46,7 +45,6 @@ export const getCitationDocumentUrl =
                     value,
                 )} AND ${HOST_TITLE_RAW}:"${name}"`,
                 output,
-                // @ts-expect-error TS2353
                 sortBy: documentSortBy,
                 size: 10,
             }),

@@ -9,10 +9,9 @@ interface DecadeFoldProps {
         name: string;
         count: number;
     };
-    searchedField?: SearchedField;
-    sortDir?: SortYear;
+    searchedField: SearchedField;
+    sortDir: SortYear;
     children(...args: unknown[]): ReactNode;
-    polyglot: unknown;
 }
 
 const DecadeFold = ({
@@ -28,8 +27,6 @@ const DecadeFold = ({
 
     sortDir,
 
-    polyglot,
-
     children,
 }: DecadeFoldProps) => (
     <FetchFold
@@ -38,7 +35,6 @@ const DecadeFold = ({
         // @ts-expect-error TS2769
         from={from}
         to={to}
-        polyglot={polyglot}
         getData={getDecadeYearData({
             value,
             from,

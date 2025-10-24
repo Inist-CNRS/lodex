@@ -236,7 +236,6 @@ describe('getIstexData', () => {
     describe('parseOtherData', () => {
         it('should count hits `key` values and convert it to an array', () => {
             expect(
-                // @ts-expect-error TS2345
                 parseOtherData('key')({
                     response: {
                         total: 10,
