@@ -11,16 +11,31 @@ import {
 import defaultMuiTheme from '../../custom/themes/default/defaultTheme';
 import FieldProvider from './FieldProvider';
 import { IstexSummaryView } from '../formats/other/istexSummary/IstexSummaryView';
-import { I18N } from '../i18n/I18NContext';
+import { I18NContext } from '../i18n/I18NContext';
+import getLocale from '../../../common/getLocale';
+import Polyglot from 'node-polyglot';
+import phrasesFor from '../i18n/translations';
 
 const theme = createTheme(defaultMuiTheme, {
     userAgent: navigator.userAgent,
 });
 
+const locale = getLocale();
+const polyglot = new Polyglot({
+    locale,
+    phrases: phrasesFor(locale),
+});
+
 // @ts-expect-error TS7006
 const App = (props) => (
     <MuiThemeProvider theme={theme}>
-        <I18N>
+        <I18NContext.Provider
+            value={{
+                locale,
+                translate: polyglot.t.bind(polyglot),
+                setLanguage: () => {},
+            }}
+        >
             <FieldProvider {...props}>
                 {({ resource, field, formatData }) => (
                     // @ts-expect-error TS2322
@@ -33,7 +48,7 @@ const App = (props) => (
                     />
                 )}
             </FieldProvider>
-        </I18N>
+        </I18NContext.Provider>
     </MuiThemeProvider>
 );
 
