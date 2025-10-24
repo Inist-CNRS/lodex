@@ -55,7 +55,7 @@ describe('handleSearchInFieldsChange', () => {
         const autocomplete = screen.getByTestId(
             'autocomplete_search_in_fields',
         );
-        const input = within(autocomplete).getByRole('textbox');
+        const input = within(autocomplete).getByRole('combobox');
 
         await waitFor(() => {
             autocomplete.focus();
@@ -114,7 +114,7 @@ describe('saveSyndication', () => {
         const autocomplete = screen.getByTestId(
             `autocomplete_search_syndication_${overview.RESOURCE_TITLE}`,
         );
-        const input = within(autocomplete).getByRole('textbox');
+        const input = within(autocomplete).getByRole('combobox');
         autocomplete.focus();
 
         await waitFor(() => {
@@ -167,7 +167,7 @@ describe('saveSyndication', () => {
         const autocomplete = screen.getByTestId(
             `autocomplete_search_syndication_${overview.RESOURCE_DESCRIPTION}`,
         );
-        const input = within(autocomplete).getByRole('textbox');
+        const input = within(autocomplete).getByRole('combobox');
         autocomplete.focus();
 
         await waitFor(() => {
@@ -220,7 +220,7 @@ describe('saveSyndication', () => {
         const autocomplete = screen.getByTestId(
             `autocomplete_search_syndication_${overview.RESOURCE_DETAIL_1}`,
         );
-        const input = within(autocomplete).getByRole('textbox');
+        const input = within(autocomplete).getByRole('combobox');
         autocomplete.focus();
 
         await waitFor(() => {
@@ -274,7 +274,7 @@ describe('saveSyndication', () => {
         const autocomplete = screen.getByTestId(
             `autocomplete_search_syndication_${overview.RESOURCE_DETAIL_2}`,
         );
-        const input = within(autocomplete).getByRole('textbox');
+        const input = within(autocomplete).getByRole('combobox');
         autocomplete.focus();
 
         await waitFor(() => {
