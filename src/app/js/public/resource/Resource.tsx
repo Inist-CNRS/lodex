@@ -2,7 +2,7 @@ import BackIcon from '@mui/icons-material/ArrowBack';
 import HomeIcon from '@mui/icons-material/Home';
 import { Button, Card, CardActions, CardContent } from '@mui/material';
 import classnames from 'classnames';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { Swipeable } from 'react-swipeable';
@@ -22,6 +22,7 @@ import { preLoadResource } from './';
 import Detail from './Detail';
 import RemovedDetail from './RemovedDetail';
 import { useRememberVisit } from './useRememberVisit';
+import { usePrevious } from 'react-use';
 
 const navStyles = stylesToClassname(
     {
@@ -108,8 +109,6 @@ export const ResourceComponent = ({
     useRememberVisit(resource);
     const { translate } = useTranslate();
 
-    const [lastResourceUri, setLastResourceUri] = useState<string | null>(null);
-
     const newLastResourceUri = useMemo(() => {
         return match.params
             ? match.params.naan && match.params.rest
@@ -118,36 +117,16 @@ export const ResourceComponent = ({
             : null;
     }, [match.params]);
 
+    const lastResourceUri = usePrevious(newLastResourceUri);
+
     useEffect(() => {
         preLoadPublication();
         preLoadExporters();
-    }, [preLoadExporters, preLoadPublication, preLoadResource]);
+    }, [preLoadExporters, preLoadPublication]);
 
     useEffect(() => {
         preLoadResource();
     }, [match.params, preLoadResource]);
-
-    useEffect(() => {
-        // Is not a subresource
-        if (
-            match.params &&
-            match.params.uri &&
-            match.params.uri.length !== 32 &&
-            !match.params.uri.includes('%2F') && // md5 length for subresources uuid
-            match.params.uri !== lastResourceUri
-        ) {
-            setLastResourceUri(match.params.uri);
-        } else if (match.params && match.params.naan && match.params.rest) {
-            // Ark resources
-            const newLastResourceUri = getArkResourceUrl(
-                match.params.naan,
-                match.params.rest,
-            );
-            if (newLastResourceUri !== lastResourceUri) {
-                setLastResourceUri(newLastResourceUri);
-            }
-        }
-    }, [lastResourceUri, match.params]);
 
     if (loading) {
         return (
