@@ -57,10 +57,16 @@ const useHideResource = ({
             );
 
             toast(translate('resource_hide_success'), {
-                type: toast.TYPE.SUCCESS,
+                type: 'success',
             });
 
             onClose();
+        },
+        onError() {
+            toast(translate('resource_hide_error'), {
+                type: 'error',
+            });
+            console.error(error);
         },
     });
 
