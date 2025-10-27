@@ -350,6 +350,7 @@
 "level4"	"Title 4"	"Titre 4"
 "list_format_select_level"	"Choose title level"	"Niveau du titre"
 "dataset"	"Dataset"	"Jeu de données"
+"precomputation"	"PreComputation"	"Données Précalculées"
 "formatParagraph"	"Text - Paragraph"	"Texte - Paragraphe"
 "formatParagraphDescription"	"The paragraph format displays text on several lines. Its particularity is that it can be edited in paragraph format, unlike the default format, which puts all the text on one line."	"Le format paragraphe affiche un texte sur plusieurs lignes. Sa particularité est qu’il soit éditable en paragraphe contrairement au format par défaut, qui met tout le texte sur une seule ligne."
 "formatLatex"	"Text - LaTeX"	"Texte - LaTeX"
