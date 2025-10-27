@@ -28,7 +28,7 @@ export function* handleLoadResource(forceReload: boolean) {
     }
 
     // @ts-expect-error TS7057
-    if (yield select(fromResource.isResourceLoaded, uri) && !forceReload) {
+    if ((yield select(fromResource.isResourceLoaded, uri)) && !forceReload) {
         return;
     }
 
@@ -45,15 +45,15 @@ export function* handleLoadResource(forceReload: boolean) {
     yield put(loadResourceSuccess(response));
 }
 
-export function* handleForceLoadResource() {
-    yield handleLoadResource(true);
+export function* handleForceLoadResource(_action: unknown) {
+    yield* handleLoadResource(true);
 }
 
-export function* handleReloadResource() {
-    yield handleLoadResource(false);
+export function* handlePreloadResource(_action: unknown) {
+    yield* handleLoadResource(false);
 }
 
 export default function* watchLocationChangeToResource() {
-    yield takeLatest([PRE_LOAD_RESOURCE], handleReloadResource);
+    yield takeLatest([PRE_LOAD_RESOURCE], handlePreloadResource);
     yield takeLatest([HIDE_RESOURCE_SUCCESS], handleForceLoadResource);
 }
