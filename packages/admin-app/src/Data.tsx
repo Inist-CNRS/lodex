@@ -10,16 +10,8 @@ const DataComponent = () => {
     const { path } = useRouteMatch();
     return (
         <Switch>
-            <Route
-                path={`${path}/existing`}
-                exact
-                component={() => <DataRoute />}
-            />
-            <Route
-                path={`${path}/add`}
-                exact
-                component={() => <DataAddRoute />}
-            />
+            <Route path={`${path}/existing`} component={() => <DataRoute />} />
+            <Route path={`${path}/add`} component={() => <DataAddRoute />} />
             <Route
                 path={`${path}/removed`}
                 exact
