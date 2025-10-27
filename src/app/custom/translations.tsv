@@ -901,6 +901,8 @@
 "r-count-all_description"	"Counts the number of documents in the corpus."	"Compte le nombre de documents du corpus."
 "r-count-by-fields_title"	"count-by-fields"	"count-by-fields"
 "r-count-by-fields_description"	"Counts the number of documents in the corpus for each of the field identifiers declared in the model."	"Compte le nombre de documents du corpus pour chacun des identifiants des champs déclarés dans le modèle."
+"r-count-distinct-by_title"	"count-distinct-by"	"count-distinct-by"
+"r-count-distinct-by_description"	"Counts the number of distinct values in the selected field."	"Compte le nombre de valeurs distinctes dans le champ sélectionné."
 "r-cross-by_title"	"cross-by"	"cross-by"
 "r-cross-by_description"	"Crosses items for one or more fields and counts the number of occurrences of each cross."	"Croise les éléments pour un champ ou plusieurs champs et compte le nombre d’occurences de chaque croisement."
 "r-distance-with_title"	"distance-with"	"distance-with"
