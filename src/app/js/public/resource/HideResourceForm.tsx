@@ -17,7 +17,6 @@ import { hideResourceSuccess } from '.';
 import Alert from '../../lib/components/Alert';
 import { useMutation } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
-import { useHistory } from 'react-router';
 
 type HideResourceFormComponentProps = {
     isOpen: boolean;
@@ -37,7 +36,6 @@ const useHideResource = ({
 } => {
     const { translate } = useTranslate();
     const dispatch = useDispatch();
-    const history = useHistory();
     const { mutate, error, isLoading } = useMutation<
         {
             reason: string;
