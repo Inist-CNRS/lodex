@@ -1,12 +1,12 @@
 import { compose, lifecycle } from 'recompose';
 import { connect } from 'react-redux';
 
-import ParsingResult from './parsing/ParsingResult';
-import { fromParsing, fromPublication } from './selectors';
-import Upload from './upload/Upload';
-import { preLoadLoaders } from './loader';
-import withInitialData from './withInitialData';
-import { Select, Tab, Tabs } from '@mui/material';
+import ParsingResult from '../parsing/ParsingResult';
+import { fromParsing, fromPublication } from '../selectors';
+import Upload from '../upload/Upload';
+import { preLoadLoaders } from '../loader';
+import withInitialData from '../withInitialData';
+import { Grid, Tab, Tabs } from '@mui/material';
 import { useMemo } from 'react';
 import {
     Redirect,
@@ -16,7 +16,8 @@ import {
     useLocation,
     useRouteMatch,
 } from 'react-router';
-import { useTranslate } from '../i18n/I18NContext';
+import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
+import { PreComputationSelector } from './PreComputationSelector';
 
 interface DataRouteComponentProps {
     canUploadFile: boolean;
@@ -27,9 +28,28 @@ export const DataRouteComponent = ({
     canUploadFile,
 }: DataRouteComponentProps) => {
     const { translate } = useTranslate();
-    const { pathname } = useLocation();
+    const { pathname, search } = useLocation();
+
     const { path } = useRouteMatch();
     const history = useHistory();
+
+    const selectedPrecomputation = useMemo(() => {
+        const params = new URLSearchParams(search);
+        return params.get('precomputation');
+    }, [search]);
+
+    const setSelectedPrecomputation = (precomputationId: string) => {
+        if (precomputationId === selectedPrecomputation) return;
+        const params = new URLSearchParams(search);
+        if (precomputationId) {
+            params.set('precomputation', precomputationId);
+        } else {
+            params.delete('precomputation');
+        }
+        const newSearch = params.toString();
+        const newPath = `${pathname}${newSearch ? `?${newSearch}` : ''}`;
+        history.replace(newPath);
+    };
 
     const tab = useMemo(() => {
         const activePath: string = pathname.split('/').pop() as string;
@@ -40,7 +60,9 @@ export const DataRouteComponent = ({
 
     const switchTab = (newTab: string) => {
         if (newTab === tab) return;
-        history.push(`${pathname.split('/').slice(0, -1).join('/')}/${newTab}`);
+        history.push(
+            `${pathname.split('/').slice(0, -1).join('/')}/${newTab}${search}`,
+        );
     };
     if (canUploadFile) {
         // @ts-expect-error TS2322
@@ -61,10 +83,18 @@ export const DataRouteComponent = ({
                 <Tab label={translate('dataset')} value="dataset" />
                 <Tab
                     label={
-                        <div>
-                            {translate('precomputed_data')}
-                            <Select />
-                        </div>
+                        <Grid container justifyContent="center">
+                            <Grid item xs={6} alignContent="center">
+                                {translate('precomputed_data')}
+                            </Grid>
+                            <Grid item xs={6}>
+                                <PreComputationSelector
+                                    disabled={tab !== 'precomputation'}
+                                    value={selectedPrecomputation}
+                                    onChange={setSelectedPrecomputation}
+                                />
+                            </Grid>
+                        </Grid>
                     }
                     value="precomputation"
                 />
