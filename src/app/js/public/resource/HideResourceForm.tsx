@@ -62,9 +62,9 @@ const useHideResource = ({
                 type: 'success',
             });
 
-            onClose();
+            console.log({ response });
 
-            history.go(0);
+            onClose();
         },
         onError() {
             toast(translate('hide_resource_error'), {
