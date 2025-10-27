@@ -432,6 +432,7 @@ export const SourceValueToggle = ({
                     updateDefaultValueTransformers={
                         handleDefaultValueTransformersUpdate
                     }
+                    // @ts-expect-error TS2322
                     value={value}
                 />
             )}

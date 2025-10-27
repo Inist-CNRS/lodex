@@ -6,9 +6,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import PropTypes from 'prop-types';
-// @ts-expect-error TS6133
-import React, { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { compose } from 'recompose';
@@ -30,22 +28,31 @@ const NESTED_MENU_ANNOTATIONS = 'annotations';
 const NESTED_MENU_ADVANCED = 'advanced';
 const NESTED_MENU_MODEL = 'model';
 
+interface MenuComponentProps {
+    hasPublishedDataset: boolean;
+    onSignOut(...args: unknown[]): unknown;
+    importSucceeded: boolean;
+    importHasEnrichments: boolean;
+    importHasPrecomputed: boolean;
+    importFailed: boolean;
+    history: object;
+}
+
 const MenuComponent = ({
-    // @ts-expect-error TS7031
     hasPublishedDataset,
-    // @ts-expect-error TS7031
+
     onSignOut,
-    // @ts-expect-error TS7031
+
     importSucceeded,
-    // @ts-expect-error TS7031
+
     importHasEnrichments,
-    // @ts-expect-error TS7031
+
     importHasPrecomputed,
-    // @ts-expect-error TS7031
+
     importFailed,
-    // @ts-expect-error TS7031
+
     history,
-}) => {
+}: MenuComponentProps) => {
     const { translate } = useTranslate();
     const [anchorEl, setAnchorEl] = useState(null);
     const [subMenuToShow, setSubMenuToShow] = useState(null);
@@ -60,11 +67,11 @@ const MenuComponent = ({
     useEffect(() => {
         if (importFailed) {
             toast(translate('import_fields_failed'), {
-                type: toast.TYPE.ERROR,
+                type: 'error',
             });
         } else if (importSucceeded) {
             toast(translate('model_imported_with_success'), {
-                type: toast.TYPE.SUCCESS,
+                type: 'success',
             });
         }
     }, [importSucceeded, importFailed]);
@@ -87,6 +94,7 @@ const MenuComponent = ({
         setAnchorEl(event.currentTarget);
     };
 
+    // @ts-expect-error TS7006
     const handleCloseMenu = useCallback((callback) => {
         setAnchorEl(null);
 
@@ -100,9 +108,11 @@ const MenuComponent = ({
     }, []);
 
     const onConfig = () => {
+        // @ts-expect-error TS2339
         history.push('/config');
     };
 
+    // @ts-expect-error TS7006
     const handleShowClearDialog = useCallback((type) => {
         setClearDialogType(type);
         setShowClearDialog(true);
@@ -166,7 +176,6 @@ const MenuComponent = ({
                         onOpen={() => setSubMenuToShow(NESTED_MENU_MODEL)}
                         onClose={handleCloseSubMenu}
                         label={translate('model')}
-                        // @ts-expect-error TS2322
                         menu={
                             <ModelNestedMenu
                                 // @ts-expect-error TS2322
@@ -182,9 +191,7 @@ const MenuComponent = ({
                         onOpen={() => setSubMenuToShow(NESTED_MENU_ANNOTATIONS)}
                         onClose={handleCloseSubMenu}
                         label={translate('annotations')}
-                        // @ts-expect-error TS2322
                         menu={
-                            // @ts-expect-error TS2322
                             <AnnotationNestedMenu onClose={handleCloseMenu} />
                         }
                     />
@@ -195,7 +202,6 @@ const MenuComponent = ({
                         onOpen={() => setSubMenuToShow(NESTED_MENU_ADVANCED)}
                         onClose={handleCloseSubMenu}
                         label={translate('advanced')}
-                        // @ts-expect-error TS2322
                         menu={
                             <AdvancedNestedMenu
                                 // @ts-expect-error TS2322
@@ -255,15 +261,6 @@ const MenuComponent = ({
     );
 };
 
-MenuComponent.propTypes = {
-    hasPublishedDataset: PropTypes.bool.isRequired,
-    onSignOut: PropTypes.func.isRequired,
-    importSucceeded: PropTypes.bool.isRequired,
-    importHasEnrichments: PropTypes.bool.isRequired,
-    importHasPrecomputed: PropTypes.bool.isRequired,
-    importFailed: PropTypes.bool.isRequired,
-    history: PropTypes.object.isRequired,
-};
 // @ts-expect-error TS7006
 const mapDispatchToProps = (dispatch) =>
     bindActionCreators(

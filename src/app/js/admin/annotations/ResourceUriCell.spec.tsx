@@ -1,5 +1,3 @@
-// @ts-expect-error TS6133
-import React from 'react';
 import { render } from '../../../../test-utils';
 import { TestI18N } from '../../i18n/I18NContext';
 import { ResourceUriCell } from './ResourceUriCell';
@@ -8,7 +6,7 @@ describe('ResourceUriCell', () => {
     it.each([[null], ['/']])(
         'should not display "/" for home page',
         (resourceUri) => {
-            const wrapper = render(
+            const screen = render(
                 <TestI18N>
                     <ResourceUriCell
                         row={{
@@ -19,12 +17,12 @@ describe('ResourceUriCell', () => {
                 </TestI18N>,
             );
 
-            expect(wrapper.queryByText('/')).toBeInTheDocument();
+            expect(screen.queryByText('/')).toBeInTheDocument();
         },
     );
 
     it('should display resourceUri when set if field is a graph', () => {
-        const wrapper = render(
+        const screen = render(
             <TestI18N>
                 <ResourceUriCell
                     row={{
@@ -39,11 +37,11 @@ describe('ResourceUriCell', () => {
             </TestI18N>,
         );
 
-        expect(wrapper.queryByText('/graph/HDpz')).toBeInTheDocument();
+        expect(screen.queryByText('/graph/HDpz')).toBeInTheDocument();
     });
 
     it('should construct graph uri from field when resourceUri is not set', () => {
-        const wrapper = render(
+        const screen = render(
             <TestI18N>
                 <ResourceUriCell
                     row={{
@@ -58,11 +56,11 @@ describe('ResourceUriCell', () => {
             </TestI18N>,
         );
 
-        expect(wrapper.queryByText('/graph/HDpz')).toBeInTheDocument();
+        expect(screen.queryByText('/graph/HDpz')).toBeInTheDocument();
     });
 
     it('should display the resourceUri with a button to the resource if the resource still exist', () => {
-        const wrapper = render(
+        const screen = render(
             <TestI18N>
                 <ResourceUriCell
                     row={{
@@ -76,16 +74,17 @@ describe('ResourceUriCell', () => {
         );
 
         expect(
-            wrapper.queryByText('annotation_home_page'),
+            screen.queryByText('annotation_home_page'),
         ).not.toBeInTheDocument();
-        expect(wrapper.queryByText('uid:/0579J7JN')).toBeInTheDocument();
-        expect(
-            wrapper.queryByTitle('annotation_resource_link'),
-        ).toHaveAttribute('href', '/instance/default/uid:/0579J7JN');
+        expect(screen.queryByText('uid:/0579J7JN')).toBeInTheDocument();
+        expect(screen.queryByTitle('annotation_resource_link')).toHaveAttribute(
+            'href',
+            '/instance/default/uid:/0579J7JN',
+        );
     });
 
     it('should only display the resourceUri if the resource does not exist anymore', () => {
-        const wrapper = render(
+        const screen = render(
             <TestI18N>
                 <ResourceUriCell
                     row={{
@@ -97,11 +96,11 @@ describe('ResourceUriCell', () => {
         );
 
         expect(
-            wrapper.queryByText('annotation_home_page'),
+            screen.queryByText('annotation_home_page'),
         ).not.toBeInTheDocument();
-        expect(wrapper.queryByText('uid:/0579J7JN')).toBeInTheDocument();
+        expect(screen.queryByText('uid:/0579J7JN')).toBeInTheDocument();
         expect(
-            wrapper.queryByTitle('annotation_resource_link'),
+            screen.queryByTitle('annotation_resource_link'),
         ).not.toBeInTheDocument();
     });
 });

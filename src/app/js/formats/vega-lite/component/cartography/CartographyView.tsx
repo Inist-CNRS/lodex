@@ -1,7 +1,5 @@
-// @ts-expect-error TS6133
-import React, { useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import { clamp } from 'lodash';
 import { schemeOrRd } from 'd3-scale-chromatic';
@@ -14,7 +12,7 @@ import {
     VEGA_LITE_DATA_INJECT_TYPE_B,
     VEGA_LITE_DATA_INJECT_TYPE_C,
 } from '../../../utils/chartsUtils';
-import { field as fieldPropTypes } from '../../../../propTypes';
+import { type Field } from '../../../../propTypes';
 import injectData from '../../../injectData';
 import Cartography from '../../models/Cartography';
 import InvalidFormat from '../../../InvalidFormat';
@@ -26,28 +24,43 @@ const styles = {
     },
 };
 
+interface CartographyViewProps {
+    field?: Field;
+    resource?: object;
+    data?: {
+        values: any;
+    };
+    tooltip?: boolean;
+    tooltipCategory?: string;
+    tooltipValue?: string;
+    colorScheme?: string[];
+    worldPosition?: string;
+    advancedMode?: boolean;
+    advancedModeSpec?: string;
+    aspectRatio?: string;
+}
+
 const CartographyView = ({
-    // @ts-expect-error TS7031
     advancedMode,
-    // @ts-expect-error TS7031
+
     advancedModeSpec,
-    // @ts-expect-error TS7031
+
     field,
-    // @ts-expect-error TS7031
+
     data,
-    // @ts-expect-error TS7031
+
     tooltip,
-    // @ts-expect-error TS7031
+
     tooltipCategory,
-    // @ts-expect-error TS7031
+
     tooltipValue,
-    // @ts-expect-error TS7031
+
     worldPosition,
-    // @ts-expect-error TS7031
+
     colorScheme,
-    // @ts-expect-error TS7031
+
     aspectRatio,
-}) => {
+}: CartographyViewProps) => {
     const { ref, width } = useSizeObserver();
     const [error, setError] = useState('');
 
@@ -91,6 +104,7 @@ const CartographyView = ({
     ]);
 
     if (!spec) {
+        // @ts-expect-error TS18046
         return <InvalidFormat format={field.format} value={error} />;
     }
 
@@ -112,22 +126,6 @@ const CartographyView = ({
     );
 };
 
-CartographyView.propTypes = {
-    field: fieldPropTypes,
-    resource: PropTypes.object,
-    data: PropTypes.shape({
-        values: PropTypes.any.isRequired,
-    }),
-    tooltip: PropTypes.bool,
-    tooltipCategory: PropTypes.string,
-    tooltipValue: PropTypes.string,
-    colorScheme: PropTypes.arrayOf(PropTypes.string),
-    worldPosition: PropTypes.string,
-    advancedMode: PropTypes.bool,
-    advancedModeSpec: PropTypes.string,
-    aspectRatio: PropTypes.string,
-};
-
 // @ts-expect-error TS7006
 const mapStateToProps = (state, { formatData }) => {
     if (!formatData) {
@@ -144,8 +142,7 @@ const mapStateToProps = (state, { formatData }) => {
     };
 };
 
-// @ts-expect-error TS6133
-export const CartographyAdminView = connect((state, props) => {
+export const CartographyAdminView = connect((_state, props) => {
     return {
         ...props,
         field: {
@@ -156,6 +153,7 @@ export const CartographyAdminView = connect((state, props) => {
             values: props.dataset.values ?? [],
         },
     };
+    // @ts-expect-error TS2345
 })(CartographyView);
 
 // @ts-expect-error TS2345

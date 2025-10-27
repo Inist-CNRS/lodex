@@ -1,7 +1,3 @@
-// @ts-expect-error TS6133
-import React from 'react';
-import { polyglot as polyglotPropTypes } from '../../propTypes';
-import PropTypes from 'prop-types';
 import { FixedSizeList } from 'react-window';
 import { useMeasure } from 'react-use';
 import {
@@ -14,7 +10,7 @@ import {
     Typography,
 } from '@mui/material';
 import CancelButton from '../../lib/components/CancelButton';
-import { translate } from '../../i18n/I18NContext';
+import { useTranslate } from '../../i18n/I18NContext';
 
 const styles = {
     info: {
@@ -34,8 +30,13 @@ const styles = {
     },
 };
 
-// @ts-expect-error TS7006
-const LogLine = (props) => {
+interface LogLineProps {
+    data: string[];
+    index: number;
+    style: object;
+}
+
+const LogLine = (props: LogLineProps) => {
     const { data, index, style } = props;
     const log = data[index];
     let parsedLog;
@@ -76,22 +77,18 @@ const LogLine = (props) => {
     );
 };
 
-LogLine.propTypes = {
-    data: PropTypes.arrayOf(PropTypes.string).isRequired,
-    index: PropTypes.number.isRequired,
-    style: PropTypes.object.isRequired,
-};
+interface PrecomputedLogsDialogProps {
+    isOpen: boolean;
+    handleClose(...args: unknown[]): unknown;
+    logs: string[];
+}
 
 export const PrecomputedLogsDialog = ({
-    // @ts-expect-error TS7031
     isOpen,
-    // @ts-expect-error TS7031
     logs,
-    // @ts-expect-error TS7031
-    p: polyglot,
-    // @ts-expect-error TS7031
     handleClose,
-}) => {
+}: PrecomputedLogsDialogProps) => {
+    const { translate } = useTranslate();
     const [logsContainerRef, { width }] = useMeasure();
 
     const handleDownloadLogs = () => {
@@ -107,7 +104,7 @@ export const PrecomputedLogsDialog = ({
 
     return (
         <Dialog open={isOpen} onClose={handleClose} scroll="body" maxWidth="lg">
-            <DialogTitle>{polyglot.t('precomputed_logs')}</DialogTitle>
+            <DialogTitle>{translate('precomputed_logs')}</DialogTitle>
             <DialogContent
                 style={{
                     margin: 20,
@@ -131,14 +128,14 @@ export const PrecomputedLogsDialog = ({
             <DialogActions>
                 <Box display="flex" justifyContent="flex-end">
                     <CancelButton onClick={handleClose}>
-                        {polyglot.t('close')}
+                        {translate('close')}
                     </CancelButton>
                     <Button
                         onClick={handleDownloadLogs}
                         color="primary"
                         variant="contained"
                     >
-                        {polyglot.t('download_logs')}
+                        {translate('download_logs')}
                     </Button>
                 </Box>
             </DialogActions>
@@ -146,11 +143,4 @@ export const PrecomputedLogsDialog = ({
     );
 };
 
-PrecomputedLogsDialog.propTypes = {
-    isOpen: PropTypes.bool.isRequired,
-    handleClose: PropTypes.func.isRequired,
-    logs: PropTypes.arrayOf(PropTypes.string).isRequired,
-    p: polyglotPropTypes.isRequired,
-};
-
-export default translate(PrecomputedLogsDialog);
+export default PrecomputedLogsDialog;

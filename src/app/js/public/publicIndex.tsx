@@ -1,11 +1,7 @@
 import '@babel/polyfill';
 import { createBrowserHistory } from 'history';
-// @ts-expect-error TS6133
-import React from 'react';
 
-// ignoring deprecation warning react 18 we are using version 17
-// eslint-disable-next-line react/no-deprecated
-import { hydrate } from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
 import 'url-api-polyfill';
 
@@ -19,8 +15,8 @@ import LodexThemeProvider from './LodexThemeProvider';
 import reducers from './reducers';
 import Routes from './Routes';
 import sagas from './sagas';
-// @ts-expect-error TS6133
-import 'react-toastify/dist/ReactToastify.css';
+// @ts-expect-error TS2882
+import 'react-toastify/ReactToastify.css';
 import { AnnotationStorageProvider } from '../annotation/annotationStorage';
 
 const locale = getLocale();
@@ -49,8 +45,8 @@ const { store, history } = configureStore(
 );
 
 const queryClient = new QueryClient();
-
-hydrate(
+const root = createRoot(document.getElementById('root')!);
+root.render(
     <Provider {...{ store }}>
         <I18N>
             <QueryClientProvider client={queryClient}>
@@ -68,5 +64,4 @@ hydrate(
             </QueryClientProvider>
         </I18N>
     </Provider>,
-    document.getElementById('root'),
 );

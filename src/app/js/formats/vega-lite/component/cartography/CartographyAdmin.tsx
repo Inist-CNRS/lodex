@@ -23,7 +23,10 @@ import { MapFranceIdValue, MapIdValue } from '../../../utils/dataSet';
 import VegaFieldPreview from '../../../utils/components/field-set/FormatFieldSetPreview';
 import { CartographyAdminView } from './CartographyView';
 import AspectRatioSelector from '../../../utils/components/admin/AspectRatioSelector';
-import { ASPECT_RATIO_16_9 } from '../../../utils/aspectRatio';
+import {
+    ASPECT_RATIO_16_9,
+    type AspectRatio,
+} from '../../../utils/aspectRatio';
 import FormatGroupedFieldSet from '../../../utils/components/field-set/FormatGroupedFieldSet';
 
 export const defaultArgs = {
@@ -57,7 +60,7 @@ type CartographyArgs = {
     tooltipCategory: string;
     tooltipValue: string;
     worldPosition?: string;
-    aspectRatio?: string;
+    aspectRatio: AspectRatio;
 };
 
 type CartographyAdminProps = {
@@ -209,7 +212,7 @@ const CartographyAdmin = ({
     );
 
     const handleAspectRatio = useCallback(
-        (value: string) => {
+        (value: AspectRatio) => {
             onChange({
                 ...args,
                 aspectRatio: value,

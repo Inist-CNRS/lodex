@@ -1,6 +1,5 @@
-// @ts-expect-error TS6133
-import React from 'react';
-import { fireEvent, render, waitFor } from '../../../test-utils';
+import { fireEvent, waitFor } from '@testing-library/dom';
+import { render } from '../../../test-utils';
 import { TestI18N } from '../i18n/I18NContext';
 import { OpenHistoryButton } from './OpenHistoryButton';
 import { useGetFieldAnnotation } from './useGetFieldAnnotation';
@@ -33,9 +32,10 @@ describe('OpenHistoryButton', () => {
             error: null,
             isLoading: false,
         });
-        const wrapper = render(
+        const screen = render(
             <TestI18N>
                 <OpenHistoryButton
+                    // @ts-expect-error TS2353
                     field={{ _id: 'fieldId', label: 'fieldLabel' }}
                     resourceUri="resourceUri"
                     openHistory={openHistory}
@@ -47,19 +47,16 @@ describe('OpenHistoryButton', () => {
             'resourceUri',
         );
 
-        expect(wrapper.queryByText('annotation_history')).toBeInTheDocument();
+        expect(screen.queryByText('annotation_history')).toBeInTheDocument();
         expect(
-            wrapper.queryByText('annotation_open_history+{"smart_count":1}'),
+            screen.queryByText('annotation_open_history+{"smart_count":1}'),
         ).toBeInTheDocument();
         expect(
-            wrapper.queryByText('annotation_open_history+{"smart_count":1}'),
+            screen.queryByText('annotation_open_history+{"smart_count":1}'),
         ).not.toBeDisabled();
         await waitFor(() => {
             fireEvent.click(
-                // @ts-expect-error TS2345
-                wrapper.queryByText(
-                    'annotation_open_history+{"smart_count":1}',
-                ),
+                screen.getByText('annotation_open_history+{"smart_count":1}'),
             );
         });
         expect(openHistory).toHaveBeenCalled();
@@ -73,9 +70,10 @@ describe('OpenHistoryButton', () => {
             error: null,
             isLoading: false,
         });
-        const wrapper = render(
+        const screen = render(
             <TestI18N>
                 <OpenHistoryButton
+                    // @ts-expect-error TS2353
                     field={{ _id: 'fieldId', label: 'fieldLabel' }}
                     resourceUri="resourceUri"
                     openHistory={openHistory}
@@ -87,13 +85,9 @@ describe('OpenHistoryButton', () => {
             'resourceUri',
         );
 
-        expect(wrapper.queryByText('annotation_history')).toBeInTheDocument();
-        expect(
-            wrapper.queryByText('annotation_no_history'),
-        ).toBeInTheDocument();
-        expect(
-            wrapper.queryByText('annotation_no_history'),
-        ).toBeInTheDocument();
+        expect(screen.queryByText('annotation_history')).toBeInTheDocument();
+        expect(screen.queryByText('annotation_no_history')).toBeInTheDocument();
+        expect(screen.queryByText('annotation_no_history')).toBeInTheDocument();
         expect(openHistory).not.toHaveBeenCalled();
     });
 
@@ -105,9 +99,10 @@ describe('OpenHistoryButton', () => {
             error: null,
             isLoading: true,
         });
-        const wrapper = render(
+        const screen = render(
             <TestI18N>
                 <OpenHistoryButton
+                    // @ts-expect-error TS2353
                     field={{ _id: 'fieldId', label: 'fieldLabel' }}
                     resourceUri="resourceUri"
                     openHistory={openHistory}
@@ -119,8 +114,8 @@ describe('OpenHistoryButton', () => {
             'resourceUri',
         );
 
-        expect(wrapper.queryByText('annotation_history')).toBeInTheDocument();
-        expect(wrapper.queryByText('loading')).toBeInTheDocument();
+        expect(screen.queryByText('annotation_history')).toBeInTheDocument();
+        expect(screen.queryByText('loading')).toBeInTheDocument();
         expect(openHistory).not.toHaveBeenCalled();
     });
 });

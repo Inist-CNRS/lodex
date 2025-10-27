@@ -1,5 +1,3 @@
-// @ts-expect-error TS6133
-import React from 'react';
 import { shallow } from 'enzyme';
 
 import {
@@ -7,28 +5,20 @@ import {
     PublishButtonComponent as PublishButton,
 } from './PublishButton';
 import { Button } from '@mui/material';
+import { render } from '../../../../test-utils';
 
 describe('<Publish />', () => {
     it('should render a publish button', () => {
-        // @ts-expect-error TS2322
-        const wrapper = shallow(<PublishButton p={{ t: (key) => key }} />);
+        const screen = render(<PublishButton onPublish={() => {}} />);
 
-        const button = wrapper.find(Button).at(0);
-        expect(button.prop('children')).toBe('publish');
+        expect(screen.getByText('publish')).toBeInTheDocument();
     });
 
     it('should trigger the onPublish action on click', () => {
         const onPublish = jest.fn();
 
         const wrapper = shallow(
-            // @ts-expect-error TS2769
-            <PublishButton
-                // @ts-expect-error TS2322
-                p={{ t: (key) => key }}
-                loadField={() => {}}
-                isPublishing={false}
-                onPublish={onPublish}
-            />,
+            <PublishButton isPublishing={false} onPublish={onPublish} />,
         );
 
         wrapper.find(Button).simulate('click');

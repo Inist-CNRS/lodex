@@ -1,5 +1,3 @@
-// @ts-expect-error TS6133
-import React from 'react';
 import { shallow } from 'enzyme';
 import { Button } from '@mui/material';
 
@@ -16,7 +14,6 @@ describe('<AddFieldButton />', () => {
         const onAddNewField = jest.fn();
 
         const wrapper = shallow(
-            // @ts-expect-error TS7006
             <AddFieldButton
                 onAddNewField={onAddNewField}
                 // @ts-expect-error TS2322

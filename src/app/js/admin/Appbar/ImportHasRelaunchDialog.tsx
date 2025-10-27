@@ -1,7 +1,3 @@
-// @ts-expect-error TS6133
-import React from 'react';
-import PropTypes from 'prop-types';
-
 import {
     Button,
     Dialog,
@@ -11,8 +7,18 @@ import {
 } from '@mui/material';
 import { useTranslate } from '../../i18n/I18NContext';
 
-// @ts-expect-error TS7031
-const ImportHasRelaunchDialog = ({ onClose, data }) => {
+interface ImportHasRelaunchDialogProps {
+    onClose(...args: unknown[]): unknown;
+    data: {
+        hasEnrichments: boolean;
+        hasPrecomputed: boolean;
+    };
+}
+
+const ImportHasRelaunchDialog = ({
+    onClose,
+    data,
+}: ImportHasRelaunchDialogProps) => {
     const { translate } = useTranslate();
     const actions = [
         // @ts-expect-error TS2769
@@ -65,14 +71,6 @@ const ImportHasRelaunchDialog = ({ onClose, data }) => {
             <DialogActions>{actions}</DialogActions>
         </Dialog>
     );
-};
-
-ImportHasRelaunchDialog.propTypes = {
-    onClose: PropTypes.func.isRequired,
-    data: PropTypes.shape({
-        hasEnrichments: PropTypes.bool.isRequired,
-        hasPrecomputed: PropTypes.bool.isRequired,
-    }).isRequired,
 };
 
 export default ImportHasRelaunchDialog;

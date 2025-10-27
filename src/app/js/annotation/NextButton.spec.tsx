@@ -1,6 +1,5 @@
-import { fireEvent, render, screen } from '@testing-library/react';
-// @ts-expect-error TS6133
-import React from 'react';
+import { fireEvent, render } from '@testing-library/react';
+
 import { TestI18N } from '../i18n/I18NContext';
 import { AUTHOR_STEP, COMMENT_STEP, TARGET_STEP, VALUE_STEP } from './steps';
 import { NextButton } from './NextButton';
@@ -27,7 +26,7 @@ const renderNextButton = (props) => {
 describe('NextButton', () => {
     describe('TARGET_STEP', () => {
         it('should render no button when currentStep is TARGET_STEP', () => {
-            renderNextButton({
+            const screen = renderNextButton({
                 currentStep: TARGET_STEP,
             });
             expect(screen.queryByText('validate')).not.toBeInTheDocument();
@@ -37,7 +36,7 @@ describe('NextButton', () => {
 
     describe('AUTHOR_STEP', () => {
         it('should display enabled validate button when and isAuthorStepValid is true', async () => {
-            renderNextButton({
+            const screen = renderNextButton({
                 currentStep: AUTHOR_STEP,
                 isAuthorStepValid: true,
             });
@@ -46,7 +45,7 @@ describe('NextButton', () => {
             expect(screen.queryByText('next')).not.toBeInTheDocument();
         });
         it('should display disabled validate button when and isAuthorStepValid is false', async () => {
-            renderNextButton({
+            const screen = renderNextButton({
                 currentStep: AUTHOR_STEP,
                 isAuthorStepValid: false,
                 isSubmitting: false,
@@ -57,7 +56,7 @@ describe('NextButton', () => {
             expect(screen.queryByText('next')).not.toBeInTheDocument();
         });
         it('should display disabled validate button when isSubmitting is true', async () => {
-            renderNextButton({
+            const screen = renderNextButton({
                 currentStep: AUTHOR_STEP,
                 isAuthorStepValid: true,
                 isSubmitting: true,
@@ -68,7 +67,7 @@ describe('NextButton', () => {
             expect(screen.queryByText('next')).not.toBeInTheDocument();
         });
         it('should display disabled validate button when disableSubmit is true', async () => {
-            renderNextButton({
+            const screen = renderNextButton({
                 currentStep: AUTHOR_STEP,
                 isAuthorStepValid: true,
                 isSubmitting: false,
@@ -83,7 +82,7 @@ describe('NextButton', () => {
     describe('VALUE_STEP', () => {
         it('should display next button leading to COMMENT_STEP when isValueStepValid is true', async () => {
             const goToStep = jest.fn();
-            renderNextButton({
+            const screen = renderNextButton({
                 currentStep: VALUE_STEP,
                 goToStep,
                 isValueStepValid: true,
@@ -91,13 +90,12 @@ describe('NextButton', () => {
             });
             expect(screen.queryByText('next')).toBeInTheDocument();
             expect(screen.queryByText('validate')).not.toBeInTheDocument();
-            // @ts-expect-error TS2345
-            fireEvent.click(screen.queryByText('next'));
+            fireEvent.click(screen.getByText('next'));
             expect(goToStep).toHaveBeenCalledWith(COMMENT_STEP);
         });
         it('should display disabled next button when isValueStepValid is false', async () => {
             const goToStep = jest.fn();
-            renderNextButton({
+            const screen = renderNextButton({
                 currentStep: VALUE_STEP,
                 goToStep,
                 isValueStepValid: false,
@@ -109,7 +107,7 @@ describe('NextButton', () => {
         });
         it('should display disabled next button when isSubmitting is true', async () => {
             const goToStep = jest.fn();
-            renderNextButton({
+            const screen = renderNextButton({
                 currentStep: VALUE_STEP,
                 goToStep,
                 isValueStepValid: true,
@@ -124,7 +122,7 @@ describe('NextButton', () => {
     describe('COMMENT_STEP', () => {
         it('should display next button leading to AUTHOR_STEP when isCommentStepValid is true', async () => {
             const goToStep = jest.fn();
-            renderNextButton({
+            const screen = renderNextButton({
                 currentStep: COMMENT_STEP,
                 goToStep,
                 isCommentStepValid: true,
@@ -132,13 +130,12 @@ describe('NextButton', () => {
             });
             expect(screen.queryByText('next')).toBeInTheDocument();
             expect(screen.queryByText('validate')).not.toBeInTheDocument();
-            // @ts-expect-error TS2345
-            fireEvent.click(screen.queryByText('next'));
+            fireEvent.click(screen.getByText('next'));
             expect(goToStep).toHaveBeenCalledWith(AUTHOR_STEP);
         });
         it('should display disabled next button when isCommentStepValid is false', async () => {
             const goToStep = jest.fn();
-            renderNextButton({
+            const screen = renderNextButton({
                 currentStep: COMMENT_STEP,
                 goToStep,
                 isCommentStepValid: false,
@@ -150,7 +147,7 @@ describe('NextButton', () => {
         });
         it('should display disabled next button when isSubmitting is true', async () => {
             const goToStep = jest.fn();
-            renderNextButton({
+            const screen = renderNextButton({
                 currentStep: COMMENT_STEP,
                 goToStep,
                 isCommentStepValid: true,

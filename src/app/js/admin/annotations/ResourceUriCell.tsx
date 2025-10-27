@@ -1,8 +1,5 @@
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import { Box, Link, Typography } from '@mui/material';
-import PropTypes from 'prop-types';
-// @ts-expect-error TS6133
-import React from 'react';
 
 import { DEFAULT_TENANT } from '../../../../common/tools/tenantTools';
 import { useTranslate } from '../../i18n/I18NContext';
@@ -11,8 +8,21 @@ import { getResourceType } from './helpers/resourceType';
 
 const tenant = sessionStorage.getItem('lodex-tenant') || DEFAULT_TENANT;
 
-// @ts-expect-error TS7031
-function ResourceUriCellInternal({ label, linkLabel, linkUrl, italic, color }) {
+interface ResourceUriCellInternalProps {
+    label: string;
+    linkUrl?: string | null;
+    linkLabel?: string;
+    italic?: boolean;
+    color?: string;
+}
+
+function ResourceUriCellInternal({
+    label,
+    linkLabel,
+    linkUrl,
+    italic,
+    color,
+}: ResourceUriCellInternalProps) {
     return (
         <Box
             gap={1}
@@ -55,16 +65,20 @@ function ResourceUriCellInternal({ label, linkLabel, linkUrl, italic, color }) {
     );
 }
 
-ResourceUriCellInternal.propTypes = {
-    label: PropTypes.string.isRequired,
-    linkUrl: PropTypes.string,
-    linkLabel: PropTypes.string,
-    italic: PropTypes.bool,
-    color: PropTypes.string,
-};
+interface ResourceUriCellProps {
+    row: {
+        resourceUri?: string | null;
+        resource?: {
+            title: string;
+        } | null;
+        field?: {
+            name: string;
+            scope: string;
+        };
+    };
+}
 
-// @ts-expect-error TS7031
-export function ResourceUriCell({ row }) {
+export function ResourceUriCell({ row }: ResourceUriCellProps) {
     const { translate } = useTranslate();
     const resourceType = getResourceType(row.resourceUri, row.field);
     const redirectFieldHash = getRedirectFieldHash(row.field);
@@ -72,8 +86,8 @@ export function ResourceUriCell({ row }) {
     if (resourceType === 'graph') {
         return (
             <ResourceUriCellInternal
-                label={row.resourceUri ?? `/graph/${row.field.name}`}
-                linkUrl={`/instance/${tenant}${row.resourceUri ?? `/graph/${row.field.name}`}`}
+                label={row.resourceUri ?? `/graph/${row.field!.name}`}
+                linkUrl={`/instance/${tenant}${row.resourceUri ?? `/graph/${row.field!.name}`}`}
             />
         );
     }
@@ -89,7 +103,7 @@ export function ResourceUriCell({ row }) {
 
     return (
         <ResourceUriCellInternal
-            label={row.resourceUri}
+            label={row.resourceUri!}
             linkUrl={
                 row.resource
                     ? `/instance/${tenant}/${row.resourceUri}${redirectFieldHash}`
@@ -100,16 +114,3 @@ export function ResourceUriCell({ row }) {
         />
     );
 }
-
-ResourceUriCell.propTypes = {
-    row: PropTypes.shape({
-        resourceUri: PropTypes.string,
-        resource: PropTypes.shape({
-            title: PropTypes.string.isRequired,
-        }),
-        field: PropTypes.shape({
-            name: PropTypes.string.isRequired,
-            scope: PropTypes.string.isRequired,
-        }),
-    }),
-};

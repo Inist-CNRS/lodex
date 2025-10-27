@@ -1,10 +1,10 @@
 import { createTheme, ThemeProvider } from '@mui/material';
-import { render } from '@testing-library/react';
+import { render, waitFor } from '@testing-library/react';
 import React from 'react';
 import defaultTheme from '../../custom/themes/default/defaultTheme';
 import { TestI18N } from '../i18n/I18NContext';
 import { HistoryDrawer } from './HistoryDrawer';
-import { MODE_ALL, MODE_CLOSED } from './HistoryDrawer.const';
+import { MODE_ALL, MODE_CLOSED, type Mode } from './HistoryDrawer.const';
 import { useGetFieldAnnotation } from './useGetFieldAnnotation';
 
 jest.mock('./useGetFieldAnnotation', () => ({
@@ -17,8 +17,11 @@ jest.mock('./useGetFieldAnnotation', () => ({
 
 const theme = createTheme(defaultTheme);
 
-// @ts-expect-error TS7031
-function TestHistoryDrawer({ mode: defaultMode }) {
+interface TestHistoryDrawerProps {
+    mode: Mode;
+}
+
+function TestHistoryDrawer({ mode: defaultMode }: TestHistoryDrawerProps) {
     const [mode, setMode] = React.useState(defaultMode);
     return (
         <ThemeProvider theme={theme}>
@@ -34,10 +37,6 @@ function TestHistoryDrawer({ mode: defaultMode }) {
     );
 }
 
-TestHistoryDrawer.propTypes = {
-    mode: HistoryDrawer.propTypes.mode,
-};
-
 describe('HistoryDrawer', () => {
     it('should not prefetch annotations if the drawer is closed', () => {
         const onClose = jest.fn();
@@ -47,7 +46,7 @@ describe('HistoryDrawer', () => {
             error: null,
             isLoading: false,
         });
-        const wrapper = render(
+        const screen = render(
             // @ts-expect-error TS2322
             <TestHistoryDrawer mode={MODE_CLOSED} onClose={onClose} />,
         );
@@ -56,7 +55,7 @@ describe('HistoryDrawer', () => {
             'resourceUri',
             false,
         );
-        expect(wrapper.queryByText('loading')).not.toBeInTheDocument();
+        expect(screen.queryByText('loading')).not.toBeInTheDocument();
     });
 
     it('should show annotations when mode is all', () => {
@@ -116,98 +115,98 @@ describe('HistoryDrawer', () => {
             isLoading: false,
         });
 
-        const wrapper = render(<TestHistoryDrawer mode={MODE_ALL} />);
-        expect(wrapper.queryByRole('presentation')).toBeInTheDocument();
+        const screen = render(<TestHistoryDrawer mode={MODE_ALL} />);
+        expect(screen.queryByRole('presentation')).toBeInTheDocument();
 
         expect(useGetFieldAnnotation).toHaveBeenCalledWith(
             'fieldId',
             'resourceUri',
             true,
         );
-        expect(wrapper.queryByText('loading')).not.toBeInTheDocument();
+        expect(screen.queryByText('loading')).not.toBeInTheDocument();
 
         expect(
-            wrapper.queryByText(
+            screen.queryByText(
                 'annotation_history_for_field+{"fieldLabel":"fieldLabel"}',
             ),
         ).toBeInTheDocument();
         expect(
-            wrapper.queryByLabelText('annotation_resource'),
+            screen.queryByLabelText('annotation_resource'),
         ).toHaveTextContent('resourceTitle');
 
-        expect(wrapper.queryAllByLabelText('annotation_kind')).toHaveLength(4);
+        expect(screen.queryAllByLabelText('annotation_kind')).toHaveLength(4);
 
         expect(
-            wrapper.queryAllByLabelText('annotation_summary_value'),
+            screen.queryAllByLabelText('annotation_summary_value'),
         ).toHaveLength(4);
 
-        expect(wrapper.queryAllByLabelText('annotation_status')).toHaveLength(
-            4,
-        );
+        expect(screen.queryAllByLabelText('annotation_status')).toHaveLength(4);
 
-        expect(wrapper.queryAllByLabelText('own_annotation')).toHaveLength(1);
+        expect(screen.queryAllByLabelText('own_annotation')).toHaveLength(1);
 
         expect(
-            wrapper.queryAllByLabelText('annotation_kind')[0],
+            screen.queryAllByLabelText('annotation_kind')[0],
         ).toHaveTextContent('comment');
         expect(
-            wrapper.queryAllByLabelText('annotation_summary_value')[0],
+            screen.queryAllByLabelText('annotation_summary_value')[0],
         ).toHaveTextContent('A comment');
         expect(
-            wrapper.queryAllByLabelText('annotation_status')[0],
+            screen.queryAllByLabelText('annotation_status')[0],
         ).toHaveTextContent('annotation_status_ongoing');
 
         expect(
-            wrapper.queryAllByLabelText('annotation_kind')[1],
+            screen.queryAllByLabelText('annotation_kind')[1],
         ).toHaveTextContent('addition');
         expect(
-            wrapper.queryAllByLabelText('annotation_summary_value')[1],
+            screen.queryAllByLabelText('annotation_summary_value')[1],
         ).toHaveTextContent('this');
         expect(
-            wrapper.queryAllByLabelText('annotation_status')[1],
+            screen.queryAllByLabelText('annotation_status')[1],
         ).toHaveTextContent('annotation_status_ongoing');
 
         expect(
-            wrapper.queryAllByLabelText('annotation_kind')[2],
+            screen.queryAllByLabelText('annotation_kind')[2],
         ).toHaveTextContent('removal');
         expect(
-            wrapper.queryAllByLabelText('annotation_summary_value')[2],
+            screen.queryAllByLabelText('annotation_summary_value')[2],
         ).toHaveTextContent('that');
         expect(
-            wrapper.queryAllByLabelText('annotation_status')[2],
+            screen.queryAllByLabelText('annotation_status')[2],
         ).toHaveTextContent('annotation_status_validated');
 
         expect(
-            wrapper.queryAllByLabelText('annotation_kind')[3],
+            screen.queryAllByLabelText('annotation_kind')[3],
         ).toHaveTextContent('correction');
         expect(
-            wrapper.queryAllByLabelText('annotation_summary_value')[3],
+            screen.queryAllByLabelText('annotation_summary_value')[3],
         ).toHaveTextContent('that -> this');
         expect(
-            wrapper.queryAllByLabelText('annotation_status')[3],
+            screen.queryAllByLabelText('annotation_status')[3],
         ).toHaveTextContent('annotation_status_rejected');
     });
 
-    it('should close the drawer when clicking on close button', () => {
+    it('should close the drawer when clicking on close button', async () => {
         // @ts-expect-error TS2339
         useGetFieldAnnotation.mockReturnValue({
             data: [],
             error: null,
             isLoading: false,
         });
-        const wrapper = render(<TestHistoryDrawer mode={MODE_ALL} />);
+        const screen = render(<TestHistoryDrawer mode={MODE_ALL} />);
         expect(useGetFieldAnnotation).toHaveBeenCalledWith(
             'fieldId',
             'resourceUri',
             true,
         );
 
-        wrapper
+        screen
             .getByRole('button', {
                 name: 'close',
             })
             .click();
 
-        expect(wrapper.queryByRole('presentation')).not.toBeInTheDocument();
+        await waitFor(() => {
+            expect(screen.queryByRole('presentation')).not.toBeInTheDocument();
+        });
     });
 });

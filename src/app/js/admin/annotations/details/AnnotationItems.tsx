@@ -2,8 +2,6 @@ import Grid from '@mui/material/Grid';
 import Link from '@mui/material/Link';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import PropTypes from 'prop-types';
-// @ts-expect-error TS6133
 import React from 'react';
 
 import FieldRepresentation from '../../../fields/FieldRepresentation';
@@ -14,8 +12,13 @@ import { ANNOTATION_GRID_COLUMNS, AnnotationValue } from './AnnotationValue';
 
 const ANNOTATION_GRID_SPACING = 1;
 
-// @ts-expect-error TS7031
-function Section({ label, children, translateOptions }) {
+interface SectionProps {
+    label: string;
+    children: React.ReactNode;
+    translateOptions?: object;
+}
+
+function Section({ label, children, translateOptions }: SectionProps) {
     const { translate } = useTranslate();
 
     const translatedLabel = translate(label, translateOptions);
@@ -30,21 +33,34 @@ function Section({ label, children, translateOptions }) {
     );
 }
 
-Section.propTypes = {
-    label: PropTypes.string.isRequired,
-    children: PropTypes.node.isRequired,
-    translateOptions: PropTypes.object,
-};
+interface AnnotationItemsProps {
+    annotation: {
+        _id: string;
+        kind: string;
+        field?: {
+            _id: string;
+            name: string;
+            multiple: boolean;
+            annotationFormat?: 'text' | 'list';
+            annotationFormatListKind?: 'single' | 'multiple';
+            annotationFormatListOptions?: string[];
+        };
+        initialValue: any;
+        proposedValue: any;
+        comment: string;
+        authorName: string;
+        authorEmail?: string;
+        createdAt: string;
+        updatedAt: string;
+    };
+}
 
-// @ts-expect-error TS7031
-export function AnnotationItems({ annotation }) {
+export function AnnotationItems({ annotation }: AnnotationItemsProps) {
     const { translate } = useTranslate();
 
     return (
         <Stack gap={6}>
             <Section label="annotation_field_section">
-                {/*
-                 // @ts-expect-error TS2322 */}
                 {annotation.field ? (
                     <FieldRepresentation field={annotation.field} />
                 ) : (
@@ -54,8 +70,6 @@ export function AnnotationItems({ annotation }) {
 
             {['removal', 'correction'].includes(annotation.kind) && (
                 <Section label="annotation_initial_value">
-                    {/*
-                     // @ts-expect-error TS2322 */}
                     <Typography
                         aria-labelledby="annotation_initial_value"
                         component="pre"
@@ -64,7 +78,9 @@ export function AnnotationItems({ annotation }) {
                             textAlign: 'justify',
                         }}
                     >
-                        {[null, undefined, ''].includes(annotation.initialValue)
+                        {[null, undefined, ''].includes(
+                            annotation.initialValue as string,
+                        )
                             ? '""'
                             : annotation.initialValue.toString()}
                     </Typography>
@@ -80,18 +96,15 @@ export function AnnotationItems({ annotation }) {
                             : 1,
                     }}
                 >
-                    {/*
-                     // @ts-expect-error TS2322 */}
                     <AnnotationProposedValue
                         proposedValue={annotation.proposedValue}
+                        // @ts-expect-error TS2322
                         field={annotation.field}
                     />
                 </Section>
             )}
 
             <Section label="annotation_comment_section">
-                {/*
-                 // @ts-expect-error TS2322 */}
                 <Typography
                     aria-labelledby="annotation_comment_section"
                     component="pre"
@@ -102,8 +115,6 @@ export function AnnotationItems({ annotation }) {
             </Section>
 
             <Section label="annotation_contributor_section">
-                {/*
-                 // @ts-expect-error TS2322 */}
                 <Stack gap={1}>
                     <Typography>{annotation.authorName}</Typography>
                     {annotation.authorEmail && (
@@ -120,8 +131,6 @@ export function AnnotationItems({ annotation }) {
             </Section>
 
             <Section label="annotation_complementary_infos_section">
-                {/*
-                 // @ts-expect-error TS2322 */}
                 <Grid
                     container
                     spacing={ANNOTATION_GRID_SPACING}
@@ -144,7 +153,3 @@ export function AnnotationItems({ annotation }) {
         </Stack>
     );
 }
-
-AnnotationItems.propTypes = {
-    annotation: PropTypes.object.isRequired,
-};

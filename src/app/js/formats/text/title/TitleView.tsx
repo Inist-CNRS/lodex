@@ -1,11 +1,18 @@
 import { Typography } from '@mui/material';
-import PropTypes from 'prop-types';
-// @ts-expect-error TS6133
-import React from 'react';
-import { field as fieldPropTypes } from '../../../propTypes';
 
-// @ts-expect-error TS7031
-const TitleViewInternal = ({ level, value, colors }) => {
+import { type Field } from '../../../propTypes';
+
+interface TitleViewInternalProps {
+    value: string;
+    level: 1 | 2 | 3 | 4 | 5 | 6;
+    colors: string;
+}
+
+const TitleViewInternal = ({
+    level,
+    value,
+    colors,
+}: TitleViewInternalProps) => {
     const style = {
         display: 'inline-block',
         width: 'fit-content',
@@ -27,15 +34,18 @@ const TitleViewInternal = ({ level, value, colors }) => {
             return <h1 style={style}>{value}</h1>;
     }
 };
-TitleViewInternal.propTypes = {
-    value: PropTypes.string.isRequired,
-    level: PropTypes.oneOf([1, 2, 3, 4, 5, 6]).isRequired,
-    colors: PropTypes.string.isRequired,
-};
 
-// @ts-expect-error TS7031
-const TitleView = ({ resource, field, level, colors }) => {
+interface TitleViewProps {
+    field: Field;
+    resource: object;
+    level: 1 | 2 | 3 | 4 | 5 | 6;
+    colors: string;
+}
+
+const TitleView = ({ resource, field, level, colors }: TitleViewProps) => {
+    // @ts-expect-error TS7053
     const value = resource[field.name];
+
     return (
         <Typography
             className="property_value_item property_value_heading"
@@ -44,21 +54,11 @@ const TitleView = ({ resource, field, level, colors }) => {
                 display: 'inline-block',
                 width: 'fit-content',
             }}
+            component="div"
         >
             <TitleViewInternal level={level} value={value} colors={colors} />
         </Typography>
     );
-};
-
-TitleView.propTypes = {
-    field: fieldPropTypes.isRequired,
-    resource: PropTypes.object.isRequired,
-    level: PropTypes.oneOf([1, 2, 3, 4, 5, 6]).isRequired,
-    colors: PropTypes.string.isRequired,
-};
-
-TitleView.defaultProps = {
-    className: null,
 };
 
 export default TitleView;

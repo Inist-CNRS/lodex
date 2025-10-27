@@ -3,8 +3,6 @@ import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
 import { useForm, useStore } from '@tanstack/react-form';
-import PropTypes from 'prop-types';
-// @ts-expect-error TS6133
 import React, { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 
@@ -21,8 +19,12 @@ import { AnnotationHeader } from './AnnotationHeader';
 import { AnnotationInputs } from './AnnotationInputs';
 import { AnnotationItems } from './AnnotationItems';
 
-// @ts-expect-error TS7031
-export const AnnotationForm = ({ annotation }) => {
+interface AnnotationFormProps {
+    annotation: object;
+    children?: React.ReactNode;
+}
+
+export const AnnotationForm = ({ annotation }: AnnotationFormProps) => {
     const tenant = sessionStorage.getItem('lodex-tenant') || DEFAULT_TENANT;
 
     const { translate } = useTranslate();
@@ -31,18 +33,24 @@ export const AnnotationForm = ({ annotation }) => {
 
     const { resourceType, frontUrl, adminUrl } = useMemo(() => {
         const resourceType = getResourceType(
+            // @ts-expect-error TS2339
             annotation.resourceUri,
+            // @ts-expect-error TS2339
             annotation.field,
         );
 
+        // @ts-expect-error TS2339
         const redirectFieldHash = getRedirectFieldHash(annotation.field);
 
         if (resourceType === 'graph') {
             return {
                 resourceType,
+                // @ts-expect-error TS2339
                 frontUrl: annotation.resourceUri
-                    ? `/instance/${tenant}${annotation.resourceUri}`
-                    : `/instance/${tenant}/graph/${annotation.field.name}`,
+                    ? // @ts-expect-error TS2339
+                      `/instance/${tenant}${annotation.resourceUri}`
+                    : // @ts-expect-error TS2339
+                      `/instance/${tenant}/graph/${annotation.field.name}`,
             };
         }
 
@@ -55,23 +63,32 @@ export const AnnotationForm = ({ annotation }) => {
 
         return {
             resourceType,
+            // @ts-expect-error TS2339
             frontUrl: annotation.resource
-                ? `/instance/${tenant}/${annotation.resourceUri}${redirectFieldHash}`
+                ? // @ts-expect-error TS2339
+                  `/instance/${tenant}/${annotation.resourceUri}${redirectFieldHash}`
                 : null,
+            // @ts-expect-error TS2339
             adminUrl: annotation.resource
-                ? `/instance/${tenant}/admin#/data/existing?uri=${encodeURIComponent(annotation.resourceUri)}`
+                ? // @ts-expect-error TS2339
+                  `/instance/${tenant}/admin#/data/existing?uri=${encodeURIComponent(annotation.resourceUri)}`
                 : null,
         };
     }, [annotation]);
 
     const form = useForm({
         defaultValues: {
+            // @ts-expect-error TS2339
             status: annotation.status ?? 'to_review',
+            // @ts-expect-error TS2339
             internalComment: annotation.internalComment ?? '',
+            // @ts-expect-error TS2339
             adminComment: annotation.adminComment ?? '',
+            // @ts-expect-error TS2339
             administrator: annotation.administrator ?? '',
         },
         onSubmit: async ({ value }) => {
+            // @ts-expect-error TS2339
             await handleUpdateAnnotation(annotation._id, value);
         },
         validators: {
@@ -114,6 +131,8 @@ export const AnnotationForm = ({ annotation }) => {
                         paddingInlineEnd: 2,
                     }}
                 >
+                    {/*
+                     // @ts-expect-error TS2740 */}
                     <AnnotationItems annotation={annotation} />
                 </Grid>
 
@@ -190,6 +209,7 @@ export const AnnotationForm = ({ annotation }) => {
             >
                 <Stack direction="row" justifyContent="space-between">
                     <AnnotationDeleteButton
+                        // @ts-expect-error TS2339
                         id={annotation._id}
                         isSubmitting={isSubmitting}
                     />
@@ -212,9 +232,4 @@ export const AnnotationForm = ({ annotation }) => {
             </Box>
         </Stack>
     );
-};
-
-AnnotationForm.propTypes = {
-    annotation: PropTypes.object.isRequired,
-    children: PropTypes.node,
 };

@@ -1,8 +1,4 @@
-// @ts-expect-error TS6133
-import React from 'react';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { translate } from '../../i18n/I18NContext';
 import compose from 'recompose/compose';
 import { CardActions } from '@mui/material';
 import { grey } from '@mui/material/colors';
@@ -11,7 +7,6 @@ import camelCase from 'lodash/camelCase';
 import { Helmet } from 'react-helmet';
 import get from 'lodash/get';
 
-import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { fromDisplayConfig, fromI18n, fromResource } from '../selectors';
 import { fromFields } from '../../sharedSelectors';
 import Property from '../Property';
@@ -113,29 +108,41 @@ const styles = {
     },
 };
 
+interface DetailComponentProps {
+    fields: {
+        name: string;
+        language: string;
+        position: number;
+        internalName: string;
+    }[];
+    p: unknown;
+    resource: {
+        uri: string;
+        subresourceId: string;
+    };
+    title?: string;
+    description?: string;
+    backToListLabel?: string;
+    dense?: boolean;
+    isMultilingual?: boolean;
+    locale?: string;
+    tenant?: string;
+}
+
 export const DetailComponent = ({
-    // @ts-expect-error TS7031
     fields,
-    // @ts-expect-error TS7031
     resource,
-    // @ts-expect-error TS7031
     title,
-    // @ts-expect-error TS7031
     description,
-    // @ts-expect-error TS7031
     dense,
-    // @ts-expect-error TS7031
     isMultilingual,
-    // @ts-expect-error TS7031
     locale,
-    // @ts-expect-error TS7031
     tenant,
-}) => {
+}: DetailComponentProps) => {
     if (!resource) {
         return null;
     }
     const filteredFields = fields.filter(
-        // @ts-expect-error TS7006
         (field) =>
             !isMultilingual || !field.language || field.language === locale,
     );
@@ -203,29 +210,6 @@ export const DetailComponent = ({
     );
 };
 
-DetailComponent.defaultProps = {
-    resource: null,
-    title: null,
-    description: null,
-    backToListLabel: null,
-};
-
-DetailComponent.propTypes = {
-    fields: PropTypes.arrayOf(PropTypes.object).isRequired,
-    p: polyglotPropTypes.isRequired,
-    resource: PropTypes.shape({
-        uri: PropTypes.string.isRequired,
-        subresourceId: PropTypes.string.isRequired,
-    }).isRequired,
-    title: PropTypes.string,
-    description: PropTypes.string,
-    backToListLabel: PropTypes.string,
-    dense: PropTypes.bool,
-    isMultilingual: PropTypes.bool,
-    locale: PropTypes.string,
-    tenant: PropTypes.string,
-};
-
 // @ts-expect-error TS7006
 const mapStateToProps = (state) => {
     const resource = fromResource.getResourceSelectedVersion(state);
@@ -262,4 +246,4 @@ const mapStateToProps = (state) => {
 };
 
 // @ts-expect-error TS2345
-export default compose(connect(mapStateToProps), translate)(DetailComponent);
+export default compose(connect(mapStateToProps))(DetailComponent);

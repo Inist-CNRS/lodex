@@ -1,6 +1,4 @@
-// @ts-expect-error TS6133
-import React from 'react';
-import { render, fireEvent } from '../../../../test-utils';
+import { render } from '../../../../test-utils';
 
 import {
     ParsingExcerptComponent as ParsingExcerpt,
@@ -8,6 +6,7 @@ import {
     getColumnStyle,
 } from './ParsingExcerpt';
 import { TestI18N } from '../../i18n/I18NContext';
+import { fireEvent } from '@testing-library/dom';
 
 let mockedParams = {
     filter: undefined,
@@ -73,16 +72,16 @@ describe('<ParsingExcerpt />', () => {
             { foo: 'foo1', bar: 'bar1' },
             { foo: 'foo2', bar: 'bar2' },
         ];
-        const wrapper = render(
-            // @ts-expect-error TS2739
+        const screen = render(
             <ParsingExcerpt
                 columns={columns}
+                // @ts-expect-error TS7005
                 lines={lines}
                 subresources={[]}
             />,
         );
-        expect(wrapper.queryByText('foo')).toBeInTheDocument();
-        expect(wrapper.queryByText('bar')).toBeInTheDocument();
+        expect(screen.queryByText('foo')).toBeInTheDocument();
+        expect(screen.queryByText('bar')).toBeInTheDocument();
     });
 
     it('should render lines', () => {
@@ -91,18 +90,18 @@ describe('<ParsingExcerpt />', () => {
             { foo: 'foo1', bar: 'bar1' },
             { foo: 'foo2', bar: 'bar2' },
         ];
-        const wrapper = render(
-            // @ts-expect-error TS2739
+        const screen = render(
             <ParsingExcerpt
                 columns={columns}
+                // @ts-expect-error TS7005
                 lines={lines}
                 subresources={[]}
             />,
         );
-        expect(wrapper.queryByText('"foo1"')).toBeInTheDocument();
-        expect(wrapper.queryByText('"foo2"')).toBeInTheDocument();
-        expect(wrapper.queryByText('"bar1"')).toBeInTheDocument();
-        expect(wrapper.queryByText('"bar2"')).toBeInTheDocument();
+        expect(screen.queryByText('"foo1"')).toBeInTheDocument();
+        expect(screen.queryByText('"foo2"')).toBeInTheDocument();
+        expect(screen.queryByText('"bar1"')).toBeInTheDocument();
+        expect(screen.queryByText('"bar2"')).toBeInTheDocument();
     });
 
     it('should render headers with subresource', () => {
@@ -142,17 +141,17 @@ describe('<ParsingExcerpt />', () => {
             },
         ];
 
-        const wrapper = render(
-            // @ts-expect-error TS2739
+        const screen = render(
             <ParsingExcerpt
                 // @ts-expect-error TS7005
                 columns={columns}
+                // @ts-expect-error TS7005
                 lines={lines}
                 subresources={subresources}
             />,
         );
-        expect(wrapper.queryByText('column1')).toBeInTheDocument();
-        expect(wrapper.queryByText('column2')).toBeInTheDocument();
+        expect(screen.queryByText('column1')).toBeInTheDocument();
+        expect(screen.queryByText('column2')).toBeInTheDocument();
     });
 
     it('should render lines with subresource', () => {
@@ -191,19 +190,19 @@ describe('<ParsingExcerpt />', () => {
                 ],
             },
         ];
-        const wrapper = render(
-            // @ts-expect-error TS2739
+        const screen = render(
             <ParsingExcerpt
                 // @ts-expect-error TS7005
                 columns={columns}
+                // @ts-expect-error TS7005
                 lines={lines}
                 subresources={subresources}
             />,
         );
-        expect(wrapper.queryByText('["value1","value3"]')).toBeInTheDocument();
-        expect(wrapper.queryByText('["value2","value4"]')).toBeInTheDocument();
-        expect(wrapper.queryByText('["value5","value7"]')).toBeInTheDocument();
-        expect(wrapper.queryByText('["value6","value8"]')).toBeInTheDocument();
+        expect(screen.queryByText('["value1","value3"]')).toBeInTheDocument();
+        expect(screen.queryByText('["value2","value4"]')).toBeInTheDocument();
+        expect(screen.queryByText('["value5","value7"]')).toBeInTheDocument();
+        expect(screen.queryByText('["value6","value8"]')).toBeInTheDocument();
     });
 
     it('should render ParsingExcerptAddColumn when showAddFromColumn is true', () => {
@@ -212,19 +211,18 @@ describe('<ParsingExcerpt />', () => {
             { foo: 'foo1', bar: 'bar1' },
             { foo: 'foo2', bar: 'bar2' },
         ];
-        const wrapper = render(
+        const screen = render(
             <TestI18N>
-                {/*
-                 // @ts-expect-error TS2322 */}
                 <ParsingExcerpt
                     columns={columns}
+                    // @ts-expect-error TS7005
                     lines={lines}
                     subresources={[]}
                     showAddFromColumn
                 />
             </TestI18N>,
         );
-        expect(wrapper.queryAllByText('add_to_publication')).toHaveLength(2);
+        expect(screen.queryAllByText('add_to_publication')).toHaveLength(2);
     });
 
     it('should call handleAddColumn without subresourcePath when ParsingExcerptAddColumn is clicked and this not a subresource', () => {
@@ -239,10 +237,11 @@ describe('<ParsingExcerpt />', () => {
             { foo: 'foo1', bar: 'bar1' },
             { foo: 'foo2', bar: 'bar2' },
         ];
-        const wrapper = render(
+        const screen = render(
             <TestI18N>
                 <ParsingExcerpt
                     columns={columns}
+                    // @ts-expect-error TS7005
                     lines={lines}
                     subresources={[]}
                     showAddFromColumn
@@ -251,8 +250,8 @@ describe('<ParsingExcerpt />', () => {
             </TestI18N>,
         );
 
-        expect(wrapper.queryAllByText('add_to_publication')).toHaveLength(2);
-        fireEvent.click(wrapper.queryAllByText('add_to_publication')[0]);
+        expect(screen.queryAllByText('add_to_publication')).toHaveLength(2);
+        fireEvent.click(screen.queryAllByText('add_to_publication')[0]);
         expect(handleAddColumn).toHaveBeenCalledWith({
             name: 'foo',
             scope: 'document',
@@ -298,11 +297,12 @@ describe('<ParsingExcerpt />', () => {
                 ],
             },
         ];
-        const wrapper = render(
+        const screen = render(
             <TestI18N>
                 <ParsingExcerpt
                     // @ts-expect-error TS7005
                     columns={columns}
+                    // @ts-expect-error TS7005
                     lines={lines}
                     subresources={subresources}
                     showAddFromColumn
@@ -310,8 +310,8 @@ describe('<ParsingExcerpt />', () => {
                 />
             </TestI18N>,
         );
-        expect(wrapper.queryAllByText('add_to_publication')).toHaveLength(2);
-        fireEvent.click(wrapper.queryAllByText('add_to_publication')[0]);
+        expect(screen.queryAllByText('add_to_publication')).toHaveLength(2);
+        fireEvent.click(screen.queryAllByText('add_to_publication')[0]);
         expect(handleAddColumn).toHaveBeenCalledWith({
             name: 'column1',
             scope: 'document',

@@ -1,7 +1,3 @@
-// @ts-expect-error TS6133
-import React from 'react';
-import PropTypes from 'prop-types';
-
 const styles = {
     // @ts-expect-error TS7006
     legendColor: (color) => ({
@@ -23,8 +19,12 @@ const styles = {
     },
 };
 
-// @ts-expect-error TS7031
-const ColorScaleLegend = ({ colorScale, nullColor }) => (
+interface ColorScaleLegendProps {
+    colorScale(...args: unknown[]): unknown;
+    nullColor?: string;
+}
+
+const ColorScaleLegend = ({ colorScale, nullColor }: ColorScaleLegendProps) => (
     <div style={styles.legend}>
         {nullColor && (
             <div style={styles.legendItem}>
@@ -37,6 +37,7 @@ const ColorScaleLegend = ({ colorScale, nullColor }) => (
         {/*
          // @ts-expect-error TS7006 */}
         {colorScale.range().map((value) => {
+            // @ts-expect-error TS2339
             const [start, end] = colorScale.invertExtent(value);
             return (
                 <div key={value} style={styles.legendItem}>
@@ -50,14 +51,11 @@ const ColorScaleLegend = ({ colorScale, nullColor }) => (
         })}
         <div style={styles.legendItem}>
             <div style={styles.last} />
+            {/*
+             // @ts-expect-error TS2339 */}
             <div>{colorScale.domain()[1]}</div>
         </div>
     </div>
 );
-
-ColorScaleLegend.propTypes = {
-    colorScale: PropTypes.func.isRequired,
-    nullColor: PropTypes.string,
-};
 
 export default ColorScaleLegend;

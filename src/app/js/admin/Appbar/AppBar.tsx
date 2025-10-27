@@ -1,8 +1,6 @@
 import AspectRatioIcon from '@mui/icons-material/AspectRatio';
 import StorageIcon from '@mui/icons-material/Storage';
-import PropTypes from 'prop-types';
-// @ts-expect-error TS6133
-import React from 'react';
+
 import { connect } from 'react-redux';
 import { Link, NavLink } from 'react-router-dom';
 
@@ -60,16 +58,19 @@ const styles = {
     },
 };
 
+interface AppbarComponentProps {
+    isLoading?: boolean;
+    isAdmin: boolean;
+    hasPublishedDataset?: boolean;
+    invalidFields?: object[];
+}
+
 const AppbarComponent = ({
-    // @ts-expect-error TS7031
-    isLoading,
-    // @ts-expect-error TS7031
+    isLoading = false,
     isAdmin,
-    // @ts-expect-error TS7031
     hasPublishedDataset,
-    // @ts-expect-error TS7031
     invalidFields,
-}) => {
+}: AppbarComponentProps) => {
     const { translate } = useTranslate();
     const leftElement = (
         <Box sx={{ display: 'flex', paddingLeft: '80px' }}>
@@ -113,6 +114,8 @@ const AppbarComponent = ({
                 <div style={{ display: 'flex' }}>
                     <JobProgress />
                     {hasPublishedDataset && <GoToPublicationButton />}
+                    {/*
+                     // @ts-expect-error TS18048 */}
                     {invalidFields.length > 0 && <ValidationButton />}
                     <PublicationButton />
                     <Menu />
@@ -151,17 +154,6 @@ const AppbarComponent = ({
             </Toolbar>
         </AppBar>
     );
-};
-
-AppbarComponent.propTypes = {
-    isLoading: PropTypes.bool,
-    isAdmin: PropTypes.bool.isRequired,
-    hasPublishedDataset: PropTypes.bool,
-    invalidFields: PropTypes.arrayOf(PropTypes.object),
-};
-
-AppbarComponent.defaultProps = {
-    isLoading: false,
 };
 
 // @ts-expect-error TS7006

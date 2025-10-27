@@ -5,7 +5,7 @@ import { fromI18n } from '../public/selectors';
 import { setLanguage as setLanguageAction } from './index';
 import type { State } from '../admin/reducers';
 
-const I18NContext = createContext<{
+export const I18NContext = createContext<{
     translate: (
         label: string,
         option?: number | InterpolationOptions | undefined,
@@ -58,15 +58,16 @@ export const I18N = connect(mapStateToProps, mapDispatchToProps)(I18NComponent);
 
 type TestI18NProps = {
     children: React.ReactNode;
+    locale?: 'fr' | 'en';
 };
 
-export const TestI18N = ({ children }: TestI18NProps) => {
+export const TestI18N = ({ children, locale = 'en' }: TestI18NProps) => {
     return (
         <I18NContext.Provider
             value={{
                 translate: (v: string, options: any) =>
                     options ? `${v}+${JSON.stringify(options)}` : v,
-                locale: 'en',
+                locale,
                 setLanguage: () => {},
             }}
         >

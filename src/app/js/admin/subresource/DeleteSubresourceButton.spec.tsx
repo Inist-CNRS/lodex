@@ -1,5 +1,6 @@
 import { DeleteSubresourceButton } from './DeleteSubresourceButton';
-import { act, render, within } from '../../../../test-utils';
+import { act, render } from '../../../../test-utils';
+import { within } from '@testing-library/dom';
 
 describe('<DeleteSubresourceButton />', () => {
     it('should display a dialog on button click and call onClick when the dialog is confirmed', async () => {

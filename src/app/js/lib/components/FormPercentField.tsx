@@ -1,17 +1,12 @@
-// @ts-expect-error TS6133
-import React from 'react';
 import { TextField } from '@mui/material';
-import { formField as formFieldPropTypes } from '../../propTypes';
+import { type FormFieldProps } from '../../propTypes';
 
 const FormPercentField = ({
-    // @ts-expect-error TS7031
     input,
-    // @ts-expect-error TS7031
     label,
-    // @ts-expect-error TS7031
     meta: { touched, error },
     ...custom
-}) => (
+}: FormFieldProps) => (
     <TextField
         sx={{
             width: '30%',
@@ -24,6 +19,7 @@ const FormPercentField = ({
         placeholder={label}
         label={label}
         error={touched && !!error}
+        // @ts-expect-error TS2322
         helperText={touched && error}
         InputProps={{
             endAdornment: '%',
@@ -32,7 +28,5 @@ const FormPercentField = ({
         {...custom}
     />
 );
-
-FormPercentField.propTypes = formFieldPropTypes;
 
 export default FormPercentField;

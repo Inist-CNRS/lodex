@@ -1,10 +1,19 @@
-// @ts-expect-error TS6133
-import React from 'react';
-import PropTypes from 'prop-types';
-import { field as fieldPropTypes } from '../../../propTypes';
+import { type Field } from '../../../propTypes';
 
-// @ts-expect-error TS7031
-const IFrameView = ({ resource, field, viewWidth, aspectRatio }) => {
+interface IFrameViewProps {
+    field: Field;
+    resource: object;
+    viewWidth: string;
+    aspectRatio: string;
+}
+
+const IFrameView = ({
+    resource,
+    field,
+    viewWidth,
+    aspectRatio,
+}: IFrameViewProps) => {
+    // @ts-expect-error TS7053
     const srcURL = resource[field.name];
     const style = {
         overflow: 'hidden',
@@ -20,17 +29,6 @@ const IFrameView = ({ resource, field, viewWidth, aspectRatio }) => {
             sandbox="allow-scripts allow-same-origin"
         />
     );
-};
-
-IFrameView.propTypes = {
-    field: fieldPropTypes.isRequired,
-    resource: PropTypes.object.isRequired,
-    viewWidth: PropTypes.string.isRequired,
-    aspectRatio: PropTypes.string.isRequired,
-};
-
-IFrameView.defaultProps = {
-    className: null,
 };
 
 export default IFrameView;

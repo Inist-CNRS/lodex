@@ -1,9 +1,5 @@
-// @ts-expect-error TS6133
-import React from 'react';
-
 import { Tooltip, Typography } from '@mui/material';
-import { useStore } from '@tanstack/react-form';
-import PropTypes from 'prop-types';
+import { FormApi, useStore } from '@tanstack/react-form';
 import {
     ANNOTATION_KIND_ADDITION,
     ANNOTATION_KIND_COMMENT,
@@ -16,16 +12,22 @@ import { ProposedValueField } from './fields/ProposedValueField';
 import { getIsFieldValueAnUrl } from '../formats';
 import { sanitize } from '../lib/sanitize';
 
+interface CommentDescriptionProps {
+    isFieldAnUrl: boolean;
+    kind: string;
+    annotationInitialValue: string;
+    fieldInitialValue?: unknown;
+}
+
 export const CommentDescription = ({
-    // @ts-expect-error TS7031
     kind,
-    // @ts-expect-error TS7031
+
     isFieldAnUrl,
-    // @ts-expect-error TS7031
+
     annotationInitialValue,
-    // @ts-expect-error TS7031
+
     fieldInitialValue,
-}) => {
+}: CommentDescriptionProps) => {
     const { translate } = useTranslate();
     switch (kind) {
         case ANNOTATION_KIND_CORRECTION: {
@@ -133,34 +135,35 @@ export const CommentDescription = ({
     }
 };
 
-CommentDescription.propTypes = {
-    isFieldAnUrl: PropTypes.bool.isRequired,
-    kind: PropTypes.string.isRequired,
-    annotationInitialValue: PropTypes.string,
-    fieldInitialValue: PropTypes.any,
-};
+interface AnnotationCommentStepProps {
+    field: {
+        format?: {
+            name: string;
+        };
+    };
+    form: FormApi<any>;
+    initialValue?: any;
+}
 
-// @ts-expect-error TS7031
-export function AnnotationCommentStep({ field, form, initialValue }) {
+export function AnnotationCommentStep({
+    field,
+    form,
+    initialValue,
+}: AnnotationCommentStepProps) {
     const isFieldAnUrl = getIsFieldValueAnUrl(field.format?.name);
 
     const annotationInitialValue = useStore(form.store, (state) => {
-        // @ts-expect-error TS18046
         return state.values.initialValue
-            ? // @ts-expect-error TS18046
-              sanitize(state.values.initialValue)
+            ? sanitize(state.values.initialValue)
             : '';
     });
 
     const kind = useStore(form.store, (state) => {
-        // @ts-expect-error TS18046
         return state.values.kind;
     });
 
     return (
         <>
-            {/*
-             // @ts-expect-error TS2786 */}
             <CommentDescription
                 annotationInitialValue={annotationInitialValue}
                 fieldInitialValue={initialValue}
@@ -180,9 +183,3 @@ export function AnnotationCommentStep({ field, form, initialValue }) {
         </>
     );
 }
-
-AnnotationCommentStep.propTypes = {
-    field: PropTypes.object.isRequired,
-    form: PropTypes.object.isRequired,
-    initialValue: PropTypes.any,
-};

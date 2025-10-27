@@ -1,6 +1,3 @@
-// @ts-expect-error TS6133
-import React from 'react';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -31,8 +28,22 @@ const styles = stylesToClassname(
     'breadcrumb',
 );
 
-// @ts-expect-error TS7031
-export const Breadcrumb = ({ breadcrumb, location }) => {
+interface BreadcrumbProps {
+    location: {
+        pathname: string;
+    };
+    breadcrumb?: {
+        value?: {
+            label: {
+                en: string;
+                fr: string;
+            };
+            url: string;
+        };
+    }[];
+}
+
+export const Breadcrumb = ({ breadcrumb, location }: BreadcrumbProps) => {
     const isRoot = location.pathname === '/';
 
     if (
@@ -60,12 +71,11 @@ export const Breadcrumb = ({ breadcrumb, location }) => {
                 {/*
                  // @ts-expect-error TS2339 */}
                 <div className={styles.trail}>
-                    {/*
-                     // @ts-expect-error TS7006 */}
                     {items.map((item, index) => (
                         <>
                             <BreadcrumbItem
                                 key={index}
+                                // @ts-expect-error TS2339
                                 value={item}
                                 // @ts-expect-error TS2339
                                 className={styles.item}
@@ -77,23 +87,6 @@ export const Breadcrumb = ({ breadcrumb, location }) => {
             </Container>
         </div>
     );
-};
-
-Breadcrumb.propTypes = {
-    location: PropTypes.shape({
-        pathname: PropTypes.string.isRequired,
-    }).isRequired,
-    breadcrumb: PropTypes.arrayOf(
-        PropTypes.shape({
-            value: PropTypes.shape({
-                label: PropTypes.shape({
-                    en: PropTypes.string.isRequired,
-                    fr: PropTypes.string.isRequired,
-                }).isRequired,
-                url: PropTypes.string.isRequired,
-            }),
-        }),
-    ),
 };
 
 // @ts-expect-error TS7006

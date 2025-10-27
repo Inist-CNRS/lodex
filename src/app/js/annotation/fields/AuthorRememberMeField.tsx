@@ -1,6 +1,4 @@
-import PropTypes from 'prop-types';
-// @ts-expect-error TS6133
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 
 import {
     Checkbox,
@@ -15,9 +13,13 @@ const formControlStyle = {
     marginTop: '0px',
 };
 
-// @ts-expect-error TS7031
-export function AuthorRememberMeField({ form }) {
+interface AuthorRememberMeFieldProps {
+    form: object;
+}
+
+export function AuthorRememberMeField({ form }: AuthorRememberMeFieldProps) {
     const { translate } = useTranslate();
+    // @ts-expect-error TS2740
     const field = useField({ name: 'authorRememberMe', form });
 
     // @ts-expect-error TS7006
@@ -51,7 +53,3 @@ export function AuthorRememberMeField({ form }) {
         </FormControl>
     );
 }
-
-AuthorRememberMeField.propTypes = {
-    form: PropTypes.object.isRequired,
-};

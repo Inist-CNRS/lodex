@@ -1,9 +1,7 @@
 import { Box, IconButton, Stack, Tooltip } from '@mui/material';
 import copy from 'copy-to-clipboard';
 import compose from 'lodash/flowRight';
-import PropTypes from 'prop-types';
-// @ts-expect-error TS6133
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import GridLayout from 'react-grid-layout';
 // @ts-expect-error TS7016
 import 'react-grid-layout/css/styles.css';
@@ -18,7 +16,6 @@ import {
 import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
 
 import { useDidUpdateEffect } from '../lib/useDidUpdateEffect';
-import { polyglot as polyglotPropTypes } from '../propTypes';
 import { fromFields } from '../sharedSelectors';
 import { NoField } from './NoField';
 
@@ -28,8 +25,9 @@ import { useHistory, useLocation } from 'react-router';
 import { SCOPE_DOCUMENT } from '../../../common/scope';
 import { toast } from '../../../common/tools/toast';
 import fieldApi from '../admin/api/field';
-import { translate } from '../i18n/I18NContext';
 import FieldRepresentation from './FieldRepresentation';
+import { useTranslate } from '../i18n/I18NContext';
+import type { State } from '../admin/reducers';
 
 const ROOT_PADDING = 16;
 
@@ -143,19 +141,42 @@ const itemsFromLayout = (layout) =>
             position: index + 1,
         }));
 
-// @ts-expect-error TS2339
-const FieldGridItem = connect((state, { field }) => ({
-    // @ts-expect-error TS2339
-    completedField: fromFields.getCompletedField(state, field),
-}))(({
+type FieldGridItemProps = {
+    field: {
+        name: string;
+        label: string;
+        _id: string;
+    };
+    completedField?: {
+        name: string;
+        label: string;
+    };
+    isFieldsLoading?: boolean;
+    isFieldSelected: boolean;
+    handleToggleSelectedField(...args: unknown[]): unknown;
+    handleDuplicateField(...args: unknown[]): unknown;
+};
+
+const FieldGridItem = connect(
+    (
+        state: State,
+        {
+            field,
+        }: {
+            field: { name: string; label: string; _id: string };
+        },
+    ) => ({
+        completedField: fromFields.getCompletedField(state, field),
+    }),
+)(({
     field,
     completedField,
-    polyglot,
     isFieldsLoading,
     isFieldSelected,
     handleToggleSelectedField,
     handleDuplicateField,
-}) => {
+}: FieldGridItemProps) => {
+    const { translate } = useTranslate();
     const rowCount = useMemo(() => {
         let rowCount = 2;
         if (completedField) {
@@ -179,9 +200,8 @@ const FieldGridItem = connect((state, { field }) => ({
         event.preventDefault();
 
         copy(text);
-        // @ts-expect-error TS2339
-        toast(polyglot.t('fieldidentifier_copied_clipboard'), {
-            type: toast.TYPE.SUCCESS,
+        toast(translate('fieldidentifier_copied_clipboard'), {
+            type: 'success',
         });
     };
 
@@ -195,8 +215,6 @@ const FieldGridItem = connect((state, { field }) => ({
             width="100%"
         >
             <Stack direction="row" gap={1} alignItems="center">
-                {/*
-                 // @ts-expect-error TS2339 */}
                 <Box onClick={(e) => handleCopyToClipboard(e, field.name)}>
                     <FieldRepresentation
                         field={field}
@@ -222,17 +240,12 @@ const FieldGridItem = connect((state, { field }) => ({
                         enterDelay={300}
                         placement="top"
                         arrow
-                        // @ts-expect-error TS2339
-                        title={polyglot.t('completes_field_X', {
-                            // @ts-expect-error TS2339
+                        title={translate('completes_field_X', {
                             field: completedField.label,
                         })}
                     >
                         <span>
-                            {/*
-                             // @ts-expect-error TS2339 */}
-                            {polyglot.t('completes_field_X', {
-                                // @ts-expect-error TS2339
+                            {translate('completes_field_X', {
                                 field: completedField.label,
                             })}
                         </span>
@@ -254,13 +267,10 @@ const FieldGridItem = connect((state, { field }) => ({
                     <DragIndicatorIcon sx={styles.otherIcon} />
                 </IconButton>
 
-                {/*
-                 // @ts-expect-error TS2339 */}
-                <Tooltip title={polyglot.t('duplicate_field_tooltip')}>
+                <Tooltip title={translate('duplicate_field_tooltip')}>
                     <IconButton
                         sx={styles.otherIcon}
                         onClick={handleDuplicateField}
-                        // @ts-expect-error TS2339
                         aria-label={`duplicate-${field.label}`}
                         disabled={isFieldsLoading}
                         color="primary"
@@ -270,12 +280,9 @@ const FieldGridItem = connect((state, { field }) => ({
                         <FileCopyIcon />
                     </IconButton>
                 </Tooltip>
-                {/*
-                 // @ts-expect-error TS2339 */}
-                <Tooltip title={polyglot.t('setting_field_tooltip')}>
+                <Tooltip title={translate('setting_field_tooltip')}>
                     <IconButton
                         sx={styles.otherIcon}
-                        // @ts-expect-error TS2339
                         aria-label={`edit-${field.label}`}
                         disabled={isFieldsLoading}
                         color="primary"
@@ -298,34 +305,45 @@ export const buildFieldsDefinitionsArray = (fields) =>
         position: field.position,
     }));
 
+interface DraggableItemGridProps {
+    onEditField?(...args: unknown[]): unknown;
+    onChangeWidth(...args: unknown[]): unknown;
+    onChangePositions(...args: unknown[]): unknown;
+    allowResize?: boolean;
+    fields: {
+        name: string;
+        label: string;
+        width?: string;
+        position?: number;
+        display?: boolean;
+        internalScopes?: string;
+        internalName?: string;
+    }[];
+    loadField(): void;
+    filter: string;
+    isFieldsLoading?: boolean;
+    subresourceId?: string;
+    selectedFields: string[];
+    toggleSelectedField(...args: unknown[]): unknown;
+}
+
 const DraggableItemGrid = compose(
     connect(null, {
         loadField,
     }),
 )(({
-    // @ts-expect-error TS7031
     onChangeWidth,
-    // @ts-expect-error TS7031
     onChangePositions,
-    // @ts-expect-error TS7031
     allowResize,
-    // @ts-expect-error TS7031
     fields,
-    // @ts-expect-error TS7031
-    polyglot,
-    // @ts-expect-error TS7031
     loadField,
-    // @ts-expect-error TS7031
     filter,
-    // @ts-expect-error TS7031
     isFieldsLoading,
-    // @ts-expect-error TS7031
     subresourceId,
-    // @ts-expect-error TS7031
     selectedFields,
-    // @ts-expect-error TS7031
     toggleSelectedField,
-}) => {
+}: DraggableItemGridProps) => {
+    const { translate } = useTranslate();
     const history = useHistory();
 
     const [items, setItems] = useState(buildFieldsDefinitionsArray(fields));
@@ -391,14 +409,14 @@ const DraggableItemGrid = compose(
         });
 
         if (!res) {
-            toast(`${polyglot.t('duplicate_field_error')}`, {
-                type: toast.TYPE.ERROR,
+            toast(`${translate('duplicate_field_error')}`, {
+                type: 'error',
             });
         }
 
         loadField();
-        toast(`${polyglot.t('duplicate_field_success')}`, {
-            type: toast.TYPE.SUCCESS,
+        toast(`${translate('duplicate_field_success')}`, {
+            type: 'success',
         });
     };
 
@@ -415,8 +433,6 @@ const DraggableItemGrid = compose(
                 onResizeStop={handleResize}
                 isResizable={allowResize}
             >
-                {/*
-                 // @ts-expect-error TS7006 */}
                 {fields.map((field) => (
                     <Box
                         key={field.name}
@@ -438,19 +454,13 @@ const DraggableItemGrid = compose(
                         <FieldGridItem
                             // @ts-expect-error TS2322
                             field={field}
-                            // @ts-expect-error TS2322
-                            polyglot={polyglot}
-                            // @ts-expect-error TS2322
                             isFieldsLoading={isFieldsLoading}
-                            // @ts-expect-error TS2322
                             isFieldSelected={selectedFields.includes(
                                 field.name,
                             )}
-                            // @ts-expect-error TS2322
                             handleToggleSelectedField={() =>
                                 toggleSelectedField(field.name)
                             }
-                            // @ts-expect-error TS2322
                             handleDuplicateField={(e) =>
                                 handleDuplicateField(e, field)
                             }
@@ -462,51 +472,33 @@ const DraggableItemGrid = compose(
     );
 });
 
-DraggableItemGrid.propTypes = {
-    onEditField: PropTypes.func,
-    onChangeWidth: PropTypes.func.isRequired,
-    onChangePositions: PropTypes.func.isRequired,
-    allowResize: PropTypes.bool,
-    fields: PropTypes.arrayOf(
-        PropTypes.shape({
-            name: PropTypes.string.isRequired,
-            label: PropTypes.string.isRequired,
-            width: PropTypes.string,
-            position: PropTypes.number,
-            display: PropTypes.bool,
-            internalScopes: PropTypes.string,
-            internalName: PropTypes.string,
-        }),
-    ).isRequired,
-    polyglot: PropTypes.object.isRequired,
-    loadField: PropTypes.func,
-    filter: PropTypes.string.isRequired,
-    isFieldsLoading: PropTypes.bool,
-    subresourceId: PropTypes.string,
-};
+interface FieldGridComponentProps {
+    fields: {
+        name: string;
+        label: string;
+    }[];
+    filter?: string;
+    loadField(...args: unknown[]): unknown;
+    changePositions(...args: unknown[]): unknown;
+    saveFieldFromData(...args: unknown[]): unknown;
+    isFieldsLoading?: boolean;
+    subresourceId?: string;
+    selectedFields: string[];
+    toggleSelectedField(...args: unknown[]): unknown;
+}
 
 const FieldGridComponent = ({
-    // @ts-expect-error TS7031
     fields,
-    // @ts-expect-error TS7031
     filter,
-    // @ts-expect-error TS7031
     loadField,
-    // @ts-expect-error TS7031
     changePositions,
-    // @ts-expect-error TS7031
     saveFieldFromData,
-    // @ts-expect-error TS7031
-    p: polyglot,
-    // @ts-expect-error TS7031
     isFieldsLoading,
-    // @ts-expect-error TS7031
     subresourceId,
-    // @ts-expect-error TS7031
     selectedFields,
-    // @ts-expect-error TS7031
     toggleSelectedField,
-}) => {
+}: FieldGridComponentProps) => {
+    const { translate } = useTranslate();
     const { pathname } = useLocation();
 
     const previousFieldsRef = useRef(fields);
@@ -519,7 +511,6 @@ const FieldGridComponent = ({
         const previousFields = previousFieldsRef.current;
 
         const newFields = fields.filter(
-            // @ts-expect-error TS7006
             (field) => !previousFields.find((f) => f.name === field.name),
         );
 
@@ -554,7 +545,7 @@ const FieldGridComponent = ({
         <Box sx={styles.root} className="field-grid">
             {fields.length === 0 ? (
                 <NoField
-                    label={polyglot.t(
+                    label={translate(
                         pathname.includes('/document/main')
                             ? 'no_field_add_resource'
                             : 'no_field_add',
@@ -567,7 +558,6 @@ const FieldGridComponent = ({
                     onChangeWidth={handleChangeWidth}
                     onChangePositions={handleChangePositions}
                     allowResize={true}
-                    polyglot={polyglot}
                     filter={filter}
                     isFieldsLoading={isFieldsLoading}
                     subresourceId={subresourceId}
@@ -579,19 +569,6 @@ const FieldGridComponent = ({
     );
 };
 
-FieldGridComponent.propTypes = {
-    fields: PropTypes.array,
-    filter: PropTypes.string,
-    loadField: PropTypes.func.isRequired,
-    p: polyglotPropTypes.isRequired,
-    changePositions: PropTypes.func.isRequired,
-    saveFieldFromData: PropTypes.func.isRequired,
-    isFieldsLoading: PropTypes.bool,
-    subresourceId: PropTypes.string,
-    selectedFields: PropTypes.arrayOf(PropTypes.string).isRequired,
-    toggleSelectedField: PropTypes.func.isRequired,
-};
-
 // @ts-expect-error TS7006
 const mapStateToProps = (state, { subresourceId, filter }) => ({
     fields: fromFields.getEditingFields(state, { filter, subresourceId }),
@@ -599,7 +576,6 @@ const mapStateToProps = (state, { subresourceId, filter }) => ({
 });
 
 export const FieldGrid = compose(
-    translate,
     connect(mapStateToProps, {
         loadField,
         changePositions,

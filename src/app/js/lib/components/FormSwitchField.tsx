@@ -1,8 +1,5 @@
-// @ts-expect-error TS6133
-import React from 'react';
 import { Switch, FormControlLabel } from '@mui/material';
 import memoize from 'lodash/memoize';
-import { formField as formFieldPropTypes } from '../../propTypes';
 
 const isChecked = memoize((value) => {
     if (typeof value === 'boolean') {
@@ -12,8 +9,28 @@ const isChecked = memoize((value) => {
     return value.toString().toLowerCase() === 'true';
 });
 
-// @ts-expect-error TS7031
-const FormSwitchField = ({ input, label, meta, ...custom }) => (
+type FormSwitchFieldProps = {
+    input: {
+        name: string;
+        value: any;
+        onChange(...args: unknown[]): unknown;
+        onBlur(...args: unknown[]): unknown;
+        onFocus(...args: unknown[]): unknown;
+    };
+    label: string;
+    meta?: {
+        touched?: boolean;
+        error?: string;
+    };
+    [key: string]: any;
+};
+
+const FormSwitchField = ({
+    input,
+    label,
+    meta,
+    ...custom
+}: FormSwitchFieldProps) => (
     <FormControlLabel
         control={
             <Switch
@@ -26,7 +43,5 @@ const FormSwitchField = ({ input, label, meta, ...custom }) => (
         label={label}
     />
 );
-
-FormSwitchField.propTypes = formFieldPropTypes;
 
 export default FormSwitchField;

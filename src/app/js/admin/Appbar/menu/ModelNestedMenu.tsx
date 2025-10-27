@@ -4,7 +4,6 @@ import ClearAllIcon from '@mui/icons-material/ClearAll';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import MenuItem from '@mui/material/MenuItem';
-import PropTypes from 'prop-types';
 import { default as React, useRef } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
@@ -17,23 +16,26 @@ import { fromFields } from '../../../sharedSelectors';
 import { importFields } from '../../import';
 import { fromParsing, fromPublication } from '../../selectors';
 
+type ModelNestedMenuProps = {
+    onClose: (callback?: () => void) => void;
+    hasPublishedDataset: boolean;
+    hasLoadedDataset: boolean;
+    exportFields: () => void;
+    importFields: (file: File) => void;
+    showModelClearDialog: () => void;
+    nbFields: number;
+};
+
 export const ModelNestedMenuComponent = React.memo(
     function AnnotationNestedMenu({
-        // @ts-expect-error TS2339
         onClose,
-        // @ts-expect-error TS2339
         hasPublishedDataset,
-        // @ts-expect-error TS2339
         hasLoadedDataset,
-        // @ts-expect-error TS2339
         exportFields,
-        // @ts-expect-error TS2339
         importFields,
-        // @ts-expect-error TS2339
         showModelClearDialog,
-        // @ts-expect-error TS2339
         nbFields,
-    }) {
+    }: ModelNestedMenuProps) {
         const { translate } = useTranslate();
         const fileInputRef = useRef(null);
 
@@ -104,17 +106,6 @@ export const ModelNestedMenuComponent = React.memo(
     },
 );
 
-// @ts-expect-error TS2339
-ModelNestedMenuComponent.propTypes = {
-    onClose: PropTypes.func.isRequired,
-    hasLoadedDataset: PropTypes.bool.isRequired,
-    hasPublishedDataset: PropTypes.bool.isRequired,
-    nbFields: PropTypes.number.isRequired,
-    importFields: PropTypes.func.isRequired,
-    exportFields: PropTypes.func.isRequired,
-    showModelClearDialog: PropTypes.func.isRequired,
-};
-
 // @ts-expect-error TS7006
 const mapDispatchToProps = (dispatch) =>
     bindActionCreators(
@@ -136,4 +127,5 @@ const mapStateToProps = (state) => ({
 export const ModelNestedMenu = compose(
     connect(mapStateToProps, mapDispatchToProps),
     withRouter,
+    // @ts-expect-error TS2345
 )(ModelNestedMenuComponent);

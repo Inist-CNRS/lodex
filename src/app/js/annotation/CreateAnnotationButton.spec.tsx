@@ -1,15 +1,14 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import PropTypes from 'prop-types';
-// @ts-expect-error TS6133
-import React from 'react';
+
 import { MemoryRouter, Route, Switch } from 'react-router-dom';
-import { fireEvent, render, screen, waitFor } from '../../../test-utils';
+import { render } from '../../../test-utils';
 
 import { TestI18N } from '../i18n/I18NContext';
 import fetch from '../lib/fetch';
 import { getStorageKey } from './annotationStorage';
 import { CreateAnnotationButton } from './CreateAnnotationButton';
 import { useCanAnnotate } from './useCanAnnotate';
+import { fireEvent, waitFor } from '@testing-library/dom';
 
 const queryClient = new QueryClient();
 
@@ -26,12 +25,16 @@ jest.mock('./useCanAnnotate', () => ({
     useCanAnnotate: jest.fn().mockReturnValue(true),
 }));
 
+interface TestButtonProps {
+    annotable?: boolean;
+    fieldFormatName?: string;
+}
+
 function TestButton({
-    // @ts-expect-error TS7031
     annotable,
     fieldFormatName = 'formatParagraph',
     ...props
-}) {
+}: TestButtonProps) {
     return (
         <QueryClientProvider client={queryClient}>
             <TestI18N>
@@ -64,11 +67,6 @@ function TestButton({
     );
 }
 
-TestButton.propTypes = {
-    ...CreateAnnotationButton.propTypes,
-    annotable: PropTypes.bool,
-};
-
 describe('CreateAnnotationButton', () => {
     beforeEach(() => {
         localStorage.clear();
@@ -88,8 +86,7 @@ describe('CreateAnnotationButton', () => {
     it('should not render the button if useCanAccess return false', async () => {
         // @ts-expect-error TS2339
         useCanAnnotate.mockReturnValue(false);
-        // @ts-expect-error TS2741
-        render(<TestButton />);
+        const screen = render(<TestButton />);
         expect(
             screen.queryByRole('button', {
                 name: 'annotation_create_button_label',
@@ -106,21 +103,21 @@ describe('CreateAnnotationButton', () => {
                 },
             }),
         );
-        render(<TestButton annotable={true} />);
+        const screen = render(<TestButton annotable={true} />);
         expect(
             screen.getByText('annotation_sent_count+{"smart_count":3}'),
         ).toBeInTheDocument();
     });
 
     it('should not render the number of annotations sent by the user when there is none', async () => {
-        render(<TestButton annotable={true} />);
+        const screen = render(<TestButton annotable={true} />);
         expect(
             screen.queryByText('annotation_sent_count+{"smart_count":0}'),
         ).not.toBeInTheDocument();
     });
 
     it('should open the modal when clicking on the button', async () => {
-        render(<TestButton annotable={true} />);
+        const screen = render(<TestButton annotable={true} />);
 
         await waitFor(() => {
             fireEvent.click(
@@ -134,8 +131,7 @@ describe('CreateAnnotationButton', () => {
     });
 
     it('should call api when submitting annotation form for annotation on title', async () => {
-        // @ts-expect-error TS2741
-        render(<TestButton />);
+        const screen = render(<TestButton />);
 
         await waitFor(() => {
             fireEvent.click(
@@ -205,8 +201,7 @@ describe('CreateAnnotationButton', () => {
     });
 
     it('should call api when submiting annotation form for value', async () => {
-        render(
-            // @ts-expect-error TS2741
+        const screen = render(
             <TestButton
                 {...{
                     target: 'value',
@@ -292,7 +287,7 @@ describe('CreateAnnotationButton', () => {
     });
 
     it('should not display button if field is not annotable', async () => {
-        render(<TestButton annotable={false} />);
+        const screen = render(<TestButton annotable={false} />);
 
         expect(
             screen.queryAllByRole('button', {

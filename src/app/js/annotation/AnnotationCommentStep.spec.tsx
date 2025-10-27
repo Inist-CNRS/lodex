@@ -1,6 +1,5 @@
 import { useForm } from '@tanstack/react-form';
-// @ts-expect-error TS6133
-import React from 'react';
+
 import { render } from '../../../test-utils';
 import { TestI18N } from '../i18n/I18NContext';
 import {
@@ -29,6 +28,7 @@ const renderAnnotationCommentStep = ({
                     form={form}
                     initialValue="initialValue"
                     field={{
+                        // @ts-expect-error TS2353
                         annotationFormat: 'text',
                         format: { name: formatName },
                     }}
@@ -37,126 +37,126 @@ const renderAnnotationCommentStep = ({
             </TestI18N>
         );
     }
-    const wrapper = render(<TestAnnotationCommentStep {...props} />);
+    const screen = render(<TestAnnotationCommentStep {...props} />);
 
     return {
         form,
-        ...wrapper,
+        ...screen,
     };
 };
 
 describe('AnnotationCommentStep', () => {
     it('should render only the comment input when kind is comment', () => {
-        const wrapper = renderAnnotationCommentStep({ kind: 'comment' });
+        const screen = renderAnnotationCommentStep({ kind: 'comment' });
         expect(
-            wrapper.queryByLabelText('annotation.comment *'),
+            screen.queryByLabelText('annotation.comment *'),
         ).toBeInTheDocument();
         expect(
-            wrapper.queryByRole('textbox', {
+            screen.queryByRole('textbox', {
                 name: 'annotation.proposedValue *',
             }),
         ).not.toBeInTheDocument();
     });
     it('should render only the comment input when kind is removal', () => {
-        const wrapper = renderAnnotationCommentStep({ kind: 'removal' });
+        const screen = renderAnnotationCommentStep({ kind: 'removal' });
         expect(
-            wrapper.queryByText(
+            screen.queryByText(
                 'annotation_remove_content_from+{"value":"initialValue"}',
             ),
         ).toBeInTheDocument();
         expect(
-            wrapper.queryByLabelText('annotation.comment *'),
+            screen.queryByLabelText('annotation.comment *'),
         ).toBeInTheDocument();
         expect(
-            wrapper.queryByRole('textbox', {
+            screen.queryByRole('textbox', {
                 name: 'annotation.proposedValue *',
             }),
         ).not.toBeInTheDocument();
     });
     it('should render annotate value message when initialValue is an array', () => {
-        const wrapper = renderAnnotationCommentStep({
+        const screen = renderAnnotationCommentStep({
             kind: 'removal',
             initialValue: ['initial', 'value'],
         });
         expect(
-            wrapper.queryByText(
+            screen.queryByText(
                 'annotation_remove_value+{"value":"initialValue"}',
             ),
         ).toBeInTheDocument();
         expect(
-            wrapper.queryByLabelText('annotation.comment *'),
+            screen.queryByLabelText('annotation.comment *'),
         ).toBeInTheDocument();
         expect(
-            wrapper.queryByRole('textbox', {
+            screen.queryByRole('textbox', {
                 name: 'annotation.proposedValue *',
             }),
         ).not.toBeInTheDocument();
     });
 
     it('should render annotation_remove_content instead of annotation_remove_value when field format is for url and kind is removal', () => {
-        const wrapper = renderAnnotationCommentStep({
+        const screen = renderAnnotationCommentStep({
             kind: 'removal',
             formatName: 'sparqlTextField',
         });
         expect(
-            wrapper.queryByText('annotation_remove_content'),
+            screen.queryByText('annotation_remove_content'),
         ).toBeInTheDocument();
     });
 
     it('should render the comment and proposedValue input when kind is correction', () => {
-        const wrapper = renderAnnotationCommentStep({ kind: 'correction' });
+        const screen = renderAnnotationCommentStep({ kind: 'correction' });
         expect(
-            wrapper.queryByText(
+            screen.queryByText(
                 'annotation_correct_value+{"value":"initialValue"}',
             ),
         ).toBeInTheDocument();
         expect(
-            wrapper.queryByLabelText('annotation.comment *'),
+            screen.queryByLabelText('annotation.comment *'),
         ).toBeInTheDocument();
         expect(
-            wrapper.queryByRole('textbox', {
+            screen.queryByRole('textbox', {
                 name: 'annotation.proposedValue *',
             }),
         ).toBeInTheDocument();
     });
 
     it('should render annotation_add_content instead of annotation_remove_value when field format is for url and kind is correction', () => {
-        const wrapper = renderAnnotationCommentStep({
+        const screen = renderAnnotationCommentStep({
             kind: 'correction',
             formatName: 'sparqlTextField',
         });
         expect(
-            wrapper.queryByText('annotation_correct_content'),
+            screen.queryByText('annotation_correct_content'),
         ).toBeInTheDocument();
     });
 
     it('should render the comment and proposedValue input when kind is addition', () => {
-        const wrapper = renderAnnotationCommentStep({ kind: 'addition' });
-        expect(wrapper.queryByText('annotation_add_value')).toBeInTheDocument();
+        const screen = renderAnnotationCommentStep({ kind: 'addition' });
+        expect(screen.queryByText('annotation_add_value')).toBeInTheDocument();
         expect(
-            wrapper.queryByLabelText('annotation.comment *'),
+            screen.queryByLabelText('annotation.comment *'),
         ).toBeInTheDocument();
         expect(
-            wrapper.queryByRole('textbox', {
+            screen.queryByRole('textbox', {
                 name: 'annotation.proposedValue *',
             }),
         ).toBeInTheDocument();
     });
 
     it('should render the proposedValue as select if field is a list', () => {
-        const wrapper = renderAnnotationCommentStep({
+        const screen = renderAnnotationCommentStep({
             kind: 'addition',
             field: {
                 annotationFormat: 'list',
                 annotationFormatListOptions: ['option 1'],
             },
         });
-        expect(wrapper.queryByText('annotation_add_value')).toBeInTheDocument();
+        expect(screen.queryByText('annotation_add_value')).toBeInTheDocument();
         expect(
-            wrapper.queryByLabelText('annotation.comment *'),
+            screen.queryByLabelText('annotation.comment *'),
         ).toBeInTheDocument();
         expect(
-            wrapper.queryByRole('combobox', {
+            screen.queryByRole('combobox', {
                 name: 'annotation.proposedValue *',
             }),
         ).toBeInTheDocument();
@@ -167,17 +167,13 @@ describe('AnnotationCommentStep', () => {
         function TestCommentDescription(props) {
             return (
                 <TestI18N>
-                    {/*
-                     // @ts-expect-error TS2322 */}
                     <CommentDescription {...props} />
                 </TestI18N>
             );
         }
 
-        TestCommentDescription.propTypes = CommentDescription.propTypes;
-
         it('should render annotation_remove_content_from when kind is removal field not an url and initialValue not an array', () => {
-            const wrapper = render(
+            const screen = render(
                 <TestCommentDescription
                     kind="removal"
                     annotationInitialValue="initialValue"
@@ -186,14 +182,14 @@ describe('AnnotationCommentStep', () => {
                 />,
             );
             expect(
-                wrapper.queryByText(
+                screen.queryByText(
                     'annotation_remove_content_from+{"value":"initialValue"}',
                 ),
             ).toBeInTheDocument();
         });
 
         it('should render annotation_remove_value when kind is removal field not an url and initialValue is an array', () => {
-            const wrapper = render(
+            const screen = render(
                 <TestCommentDescription
                     kind="removal"
                     annotationInitialValue="initial"
@@ -202,14 +198,14 @@ describe('AnnotationCommentStep', () => {
                 />,
             );
             expect(
-                wrapper.queryByText(
+                screen.queryByText(
                     'annotation_remove_value+{"value":"initial"}',
                 ),
             ).toBeInTheDocument();
         });
 
         it('should render annotation_remove_content when kind is removal field is an url', () => {
-            const wrapper = render(
+            const screen = render(
                 <TestCommentDescription
                     kind="removal"
                     annotationInitialValue="initialValue"
@@ -218,27 +214,26 @@ describe('AnnotationCommentStep', () => {
                 />,
             );
             expect(
-                wrapper.queryByText('annotation_remove_content'),
+                screen.queryByText('annotation_remove_content'),
             ).toBeInTheDocument();
         });
 
         it('should render annotation_remove_content when kind is removal field is an url even when initialValue is an array', () => {
-            const wrapper = render(
+            const screen = render(
                 <TestCommentDescription
                     kind="removal"
-                    // @ts-expect-error TS2322
                     annotationInitialValue={['initialValue']}
                     fieldInitialValue="initialValue"
                     isFieldAnUrl
                 />,
             );
             expect(
-                wrapper.queryByText('annotation_remove_content'),
+                screen.queryByText('annotation_remove_content'),
             ).toBeInTheDocument();
         });
 
         it('should render annotation_correct_content when kind is correction and field is an url', () => {
-            const wrapper = render(
+            const screen = render(
                 <TestCommentDescription
                     kind="correction"
                     annotationInitialValue="initialValue"
@@ -247,12 +242,12 @@ describe('AnnotationCommentStep', () => {
                 />,
             );
             expect(
-                wrapper.queryByText('annotation_correct_content'),
+                screen.queryByText('annotation_correct_content'),
             ).toBeInTheDocument();
         });
 
         it('should render annotation_correct_value when kind is correction and field not an url', () => {
-            const wrapper = render(
+            const screen = render(
                 <TestCommentDescription
                     kind="correction"
                     annotationInitialValue="initialValue"
@@ -261,14 +256,14 @@ describe('AnnotationCommentStep', () => {
                 />,
             );
             expect(
-                wrapper.queryByText(
+                screen.queryByText(
                     'annotation_correct_value+{"value":"initialValue"}',
                 ),
             ).toBeInTheDocument();
         });
 
         it('should render annotation_add_value when kind is addition', () => {
-            const wrapper = render(
+            const screen = render(
                 <TestCommentDescription
                     kind="addition"
                     annotationInitialValue="initialValue"
@@ -277,12 +272,12 @@ describe('AnnotationCommentStep', () => {
                 />,
             );
             expect(
-                wrapper.queryByText('annotation_add_value'),
+                screen.queryByText('annotation_add_value'),
             ).toBeInTheDocument();
         });
 
         it('should render annotation_general_comment when kind is comment', () => {
-            const wrapper = render(
+            const screen = render(
                 <TestCommentDescription
                     kind="comment"
                     annotationInitialValue="initialValue"
@@ -291,7 +286,7 @@ describe('AnnotationCommentStep', () => {
                 />,
             );
             expect(
-                wrapper.queryByText('annotation_general_comment'),
+                screen.queryByText('annotation_general_comment'),
             ).toBeInTheDocument();
         });
     });

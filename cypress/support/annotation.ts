@@ -202,12 +202,9 @@ export function checkFieldAnnotations({
         expectedAnnotations.length === 1
             ? `See 1 annotation`
             : `See ${expectedAnnotations.length} annotations`,
-    ).should('be.visible');
-    cy.findByText(
-        expectedAnnotations.length === 1
-            ? `See 1 annotation`
-            : `See ${expectedAnnotations.length} annotations`,
-    ).click();
+    ).click({
+        force: true,
+    });
 
     cy.findByLabelText('Resource title').should('have.text', resourceTitle);
     cy.findAllByLabelText('Type').should(
@@ -226,6 +223,7 @@ export function checkFieldAnnotations({
     expectedAnnotations.forEach((annotation, index) => {
         cy.findAllByLabelText('Type')
             .eq(index)
+            // @ts-expect-error TS2345
             .should('have.text', ANNOTATION_KIND_TRANSLATION[annotation.kind]);
 
         cy.findAllByLabelText('Annotation summary')

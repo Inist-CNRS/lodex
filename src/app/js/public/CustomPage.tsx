@@ -1,17 +1,21 @@
-// @ts-expect-error TS6133
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import { Component } from 'react';
 import Helmet from 'react-helmet';
 import { CircularProgress } from '@mui/material';
 
 import fetch from '../lib/fetch';
-import { polyglot as polyglotPropTypes } from '../propTypes';
 
-export class CustomPage extends Component {
+interface CustomPageProps {
+    link: string;
+    location: {
+        pathname: string;
+    };
+    p: unknown;
+}
+
+export class CustomPage extends Component<CustomPageProps> {
     state = {};
 
     UNSAFE_componentWillMount() {
-        // @ts-expect-error TS2339
         const { pathname } = this.props.location;
         fetch({
             url: `/customPage/?page=${encodeURIComponent(
@@ -59,14 +63,5 @@ export class CustomPage extends Component {
         );
     }
 }
-
-// @ts-expect-error TS2339
-CustomPage.propTypes = {
-    link: PropTypes.string.isRequired,
-    location: PropTypes.shape({
-        pathname: PropTypes.string.isRequired,
-    }).isRequired,
-    p: polyglotPropTypes.isRequired,
-};
 
 export default CustomPage;

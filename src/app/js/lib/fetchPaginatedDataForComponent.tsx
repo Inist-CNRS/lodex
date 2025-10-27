@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { CircularProgress } from '@mui/material';
 
 import Pagination from './components/Pagination';
@@ -10,20 +9,20 @@ const styles = {
     },
 };
 
+type FetchPaginatedDataForComponentProps = {
+    initialData?: {
+        total: number;
+    };
+};
+
 // @ts-expect-error TS7006
 export default (fetchProps) => (Component) =>
-    class FetchPaginatedDataForComponent extends React.Component {
+    class FetchPaginatedDataForComponent extends React.Component<FetchPaginatedDataForComponentProps> {
         state = {
-            // @ts-expect-error TS2339
             isLoading: !this.props.initialData,
-            // @ts-expect-error TS2339
             data: this.props.initialData,
             page: 0,
             perPage: 10,
-        };
-
-        static propTypes = {
-            initialData: PropTypes.any,
         };
 
         UNSAFE_componentWillMount() {

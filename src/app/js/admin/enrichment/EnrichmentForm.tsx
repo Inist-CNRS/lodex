@@ -118,12 +118,12 @@ export const EnrichmentForm = ({
         const res = await createEnrichment(enrichment);
         if (res.response) {
             toast(translate('enrichment_added_success'), {
-                type: toast.TYPE.SUCCESS,
+                type: 'success',
             });
             history.push(`/data/enrichment/${res.response._id}`);
         } else {
             toast(`${res.error}`, {
-                type: toast.TYPE.ERROR,
+                type: 'error',
             });
         }
     };
@@ -135,12 +135,12 @@ export const EnrichmentForm = ({
         });
         if (res.response) {
             toast(translate('enrichment_updated_success'), {
-                type: toast.TYPE.SUCCESS,
+                type: 'success',
             });
             onLoadEnrichments();
         } else {
             toast(`${res.error}`, {
-                type: toast.TYPE.ERROR,
+                type: 'error',
             });
         }
     };
@@ -172,7 +172,7 @@ export const EnrichmentForm = ({
                 },
                 () => {
                     toast(translate('logs_error'), {
-                        type: toast.TYPE.ERROR,
+                        type: 'error',
                     });
                 },
             );

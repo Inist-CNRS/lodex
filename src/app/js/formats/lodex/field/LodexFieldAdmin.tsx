@@ -1,14 +1,10 @@
-// @ts-expect-error TS6133
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { translate } from '../../../i18n/I18NContext';
-import { polyglot as polyglotPropTypes } from '../../../propTypes';
 import { Checkbox, FormControlLabel, TextField } from '@mui/material';
 import FormatGroupedFieldSet from '../../utils/components/field-set/FormatGroupedFieldSet';
 import {
     FormatDataParamsFieldSet,
     FormatDefaultParamsFieldSet,
 } from '../../utils/components/field-set/FormatFieldSets';
+import { useTranslate } from '../../../i18n/I18NContext';
 
 export const defaultArgs = {
     param: {
@@ -16,77 +12,65 @@ export const defaultArgs = {
     },
 };
 
-class LodexFieldAdmin extends Component {
-    static propTypes = {
-        args: PropTypes.shape({
-            param: PropTypes.shape({
-                labelArray: PropTypes.arrayOf(PropTypes.string),
-                hiddenInfo: PropTypes.object,
-            }),
-        }),
-        onChange: PropTypes.func.isRequired,
-        p: polyglotPropTypes.isRequired,
+interface LodexFieldAdminProps {
+    args?: {
+        param?: {
+            labelArray?: string[];
+            hiddenInfo?: object;
+        };
     };
-
-    static defaultProps = {
-        args: defaultArgs,
-    };
-
-    // @ts-expect-error TS7006
-    handleRequest = (e) => {
-        const labelArray = (e.target.value || '').split(';');
-        // @ts-expect-error TS2339
-        const { param, ...args } = this.props.args;
-        const newArgs = { ...args, param: { ...param, labelArray } };
-        // @ts-expect-error TS2339
-        this.props.onChange(newArgs);
-    };
-
-    // @ts-expect-error TS7006
-    handleHiddenInfo = (event) => {
-        const hiddenInfo = event.target.checked;
-        // @ts-expect-error TS2339
-        const { param, ...state } = this.props.args;
-        const newState = { ...state, param: { ...param, hiddenInfo } };
-        // @ts-expect-error TS2339
-        this.props.onChange(newState);
-    };
-
-    render() {
-        const {
-            // @ts-expect-error TS2339
-            p: polyglot,
-            // @ts-expect-error TS2339
-            args: { param },
-        } = this.props;
-        const { labelArray, hiddenInfo } = param || defaultArgs.param;
-        const label = labelArray.join(';');
-
-        return (
-            <FormatGroupedFieldSet>
-                <FormatDataParamsFieldSet>
-                    <TextField
-                        label={polyglot.t('param_labels')}
-                        multiline
-                        onChange={this.handleRequest}
-                        value={label}
-                        fullWidth
-                    />
-                </FormatDataParamsFieldSet>
-                <FormatDefaultParamsFieldSet defaultExpanded>
-                    <FormControlLabel
-                        control={
-                            <Checkbox
-                                onChange={this.handleHiddenInfo}
-                                checked={hiddenInfo}
-                            />
-                        }
-                        label={polyglot.t('hidden_info')}
-                    />
-                </FormatDefaultParamsFieldSet>
-            </FormatGroupedFieldSet>
-        );
-    }
+    onChange(...args: unknown[]): unknown;
 }
 
-export default translate(LodexFieldAdmin);
+const LodexFieldAdmin = ({
+    args = defaultArgs,
+    onChange,
+}: LodexFieldAdminProps) => {
+    const { translate } = useTranslate();
+    // @ts-expect-error TS7006
+    const handleRequest = (e) => {
+        const labelArray = (e.target.value || '').split(';');
+        const { param, ...argsRest } = args;
+        const newArgs = { ...argsRest, param: { ...param, labelArray } };
+        onChange(newArgs);
+    };
+
+    // @ts-expect-error TS7006
+    const handleHiddenInfo = (event) => {
+        const hiddenInfo = event.target.checked;
+        const { param, ...state } = args;
+        const newState = { ...state, param: { ...param, hiddenInfo } };
+        onChange(newState);
+    };
+
+    const { param } = args || defaultArgs;
+    const { labelArray = [], hiddenInfo = false } = param || {};
+    const label = labelArray.join(';');
+
+    return (
+        <FormatGroupedFieldSet>
+            <FormatDataParamsFieldSet>
+                <TextField
+                    label={translate('param_labels')}
+                    multiline
+                    onChange={handleRequest}
+                    value={label}
+                    fullWidth
+                />
+            </FormatDataParamsFieldSet>
+            <FormatDefaultParamsFieldSet defaultExpanded>
+                <FormControlLabel
+                    control={
+                        <Checkbox
+                            onChange={handleHiddenInfo}
+                            checked={Boolean(hiddenInfo)}
+                        />
+                    }
+                    label={translate('hidden_info')}
+                />
+            </FormatDefaultParamsFieldSet>
+        </FormatGroupedFieldSet>
+    );
+};
+
+export default LodexFieldAdmin;

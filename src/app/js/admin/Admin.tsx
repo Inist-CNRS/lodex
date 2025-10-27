@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import { compose, lifecycle } from 'recompose';
 import { connect } from 'react-redux';
 import { Card } from '@mui/material';
@@ -25,8 +24,16 @@ const styles = {
     },
 };
 
-// @ts-expect-error TS7031
-export const AdminComponent = ({ loadingParsingResult, canUploadFile }) => {
+interface AdminComponentProps {
+    loadingParsingResult: boolean;
+    hasPublishedDataset: boolean;
+    canUploadFile: boolean;
+}
+
+export const AdminComponent = ({
+    loadingParsingResult,
+    canUploadFile,
+}: AdminComponentProps) => {
     const { translate } = useTranslate();
     if (loadingParsingResult) {
         return (
@@ -51,12 +58,6 @@ export const AdminComponent = ({ loadingParsingResult, canUploadFile }) => {
             <div style={styles.punchLine}>{translate('publish-punchline')}</div>
         </Card>
     );
-};
-
-AdminComponent.propTypes = {
-    loadingParsingResult: PropTypes.bool.isRequired,
-    hasPublishedDataset: PropTypes.bool.isRequired,
-    canUploadFile: PropTypes.bool.isRequired,
 };
 
 // @ts-expect-error TS7006

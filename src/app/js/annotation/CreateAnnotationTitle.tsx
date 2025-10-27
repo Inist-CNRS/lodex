@@ -1,15 +1,22 @@
-// @ts-expect-error TS6133
-import React from 'react';
 import { Typography } from '@mui/material';
 import { useTranslate } from '../i18n/I18NContext';
-import PropTypes from 'prop-types';
-import { AUTHOR_STEP, COMMENT_STEP, TARGET_STEP, VALUE_STEP } from './steps';
+import { TARGET_STEP, type Step } from './steps';
 import { useStore } from '@tanstack/react-form';
 
-// @ts-expect-error TS7031
-export const CreateAnnotationTitle = ({ fieldLabel, step, form }) => {
+interface CreateAnnotationTitleProps {
+    fieldLabel?: string;
+    step?: Step;
+    form: object;
+}
+
+export const CreateAnnotationTitle = ({
+    fieldLabel,
+    step,
+    form,
+}: CreateAnnotationTitleProps) => {
     const { translate } = useTranslate();
 
+    // @ts-expect-error TS2339
     const target = useStore(form.store, (state) => {
         // @ts-expect-error TS18046
         return state.values.target;
@@ -38,10 +45,4 @@ export const CreateAnnotationTitle = ({ fieldLabel, step, form }) => {
                 : translate('annotation_title_annotate_content_no_field_label')}
         </Typography>
     );
-};
-
-CreateAnnotationTitle.propTypes = {
-    fieldLabel: PropTypes.string,
-    step: PropTypes.oneOf([TARGET_STEP, VALUE_STEP, COMMENT_STEP, AUTHOR_STEP]),
-    form: PropTypes.object.isRequired,
 };

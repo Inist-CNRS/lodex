@@ -1,17 +1,10 @@
-// @ts-expect-error TS6133
-import React from 'react';
-import PropTypes from 'prop-types';
-
-import {
-    field as fieldPropTypes,
-    polyglot as polyglotPropTypes,
-} from '../../../propTypes';
+import { type Field } from '../../../propTypes';
 import injectData from '../../injectData';
 import InvalidFormat from '../../InvalidFormat';
 import { getYearUrl, parseYearData } from './getIstexData';
 import {
-    SEARCHED_FIELD_VALUES,
-    SORT_YEAR_VALUES,
+    type SearchedField,
+    type SortYear,
     SORT_YEAR_DESC,
     CUSTOM_ISTEX_QUERY,
 } from './constants';
@@ -26,12 +19,16 @@ import getDecadeFromData from './getDecadeFromData';
 import EmbedButton from './EmbedButton';
 import stylesToClassname from '../../../lib/stylesToClassName';
 
-// @ts-expect-error TS7031
-export const IstexDocument = ({ item }) => <IstexItem {...item} />;
+interface IstexDocumentProps {
+    item: {
+        id: string;
+    };
+}
 
-IstexDocument.propTypes = {
-    item: PropTypes.shape({ id: PropTypes.string.isRequired }).isRequired,
-};
+export const IstexDocument = ({
+    item,
+    // @ts-expect-error TS2740
+}: IstexDocumentProps) => <IstexItem {...item} />;
 
 // @ts-expect-error TS7006
 export const getComposedComponent = (displayDecade) =>
@@ -61,28 +58,36 @@ const styles = stylesToClassname(
     'istex-summary',
 );
 
+interface IstexSummaryViewProps {
+    fieldStatus?: string;
+    resource: object;
+    field: Field;
+    formatData: {
+        hits?: unknown;
+    };
+    error?: string;
+    searchedField?: SearchedField;
+    sortDir?: SortYear;
+    yearThreshold: number;
+    documentSortBy: string;
+    p: unknown;
+    showEmbedButton?: boolean;
+}
+
 export const IstexSummaryView = ({
-    // @ts-expect-error TS7031
     formatData,
-    // @ts-expect-error TS7031
     field,
-    // @ts-expect-error TS7031
     resource,
-    // @ts-expect-error TS7031
-    searchedField,
-    // @ts-expect-error TS7031
-    sortDir,
-    // @ts-expect-error TS7031
-    yearThreshold,
-    // @ts-expect-error TS7031
+    searchedField = CUSTOM_ISTEX_QUERY,
+    sortDir = SORT_YEAR_DESC,
+    yearThreshold = 50,
     documentSortBy,
-    // @ts-expect-error TS7031
-    p: polyglot,
-    // @ts-expect-error TS7031
-    showEmbedButton,
-}) => {
+    showEmbedButton = true,
+}: IstexSummaryViewProps) => {
+    // @ts-expect-error TS7053
     if (!resource[field.name] || !searchedField) {
         return (
+            // @ts-expect-error TS18046
             <InvalidFormat format={field.format} value={resource[field.name]} />
         );
     }
@@ -99,9 +104,9 @@ export const IstexSummaryView = ({
                 <EmbedButton
                     // @ts-expect-error TS2769
                     className={styles.embedButton}
+                    // @ts-expect-error TS2339
                     uri={resource.uri}
                     fieldName={field.name}
-                    p={polyglot}
                 />
             )}
             <ComposedComponent
@@ -110,40 +115,14 @@ export const IstexSummaryView = ({
                         ? getDecadeFromData(data, sortDir === SORT_YEAR_DESC)
                         : data
                 }
+                // @ts-expect-error TS7053
                 value={resource[field.name]}
                 searchedField={searchedField}
                 sortDir={sortDir}
                 documentSortBy={documentSortBy}
-                polyglot={polyglot}
             />
         </div>
     );
-};
-
-IstexSummaryView.propTypes = {
-    fieldStatus: PropTypes.string,
-    resource: PropTypes.object.isRequired,
-    field: fieldPropTypes.isRequired,
-    // @ts-expect-error TS2551
-    formatData: PropTypes.shape({ hits: PropTypes.Array }),
-    error: PropTypes.string,
-    searchedField: PropTypes.oneOf(SEARCHED_FIELD_VALUES),
-    sortDir: PropTypes.oneOf(SORT_YEAR_VALUES),
-    yearThreshold: PropTypes.number.isRequired,
-    documentSortBy: PropTypes.string.isRequired,
-    p: polyglotPropTypes.isRequired,
-    showEmbedButton: PropTypes.bool,
-};
-
-IstexSummaryView.defaultProps = {
-    className: null,
-    fieldStatus: null,
-    formatData: null,
-    error: null,
-    yearThreshold: 50,
-    searchedField: CUSTOM_ISTEX_QUERY,
-    sortDir: SORT_YEAR_DESC,
-    showEmbedButton: true,
 };
 
 // @ts-expect-error TS2345

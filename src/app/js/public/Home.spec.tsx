@@ -1,10 +1,8 @@
-// @ts-expect-error TS6133
-import React from 'react';
-import { shallow } from 'enzyme';
-
 import { HomeComponent as Home } from './Home';
 import Loading from '../lib/components/Loading';
 import NoDataset from './NoDataset';
+import { render } from '../../../test-utils';
+import { shallow } from 'enzyme';
 
 describe('<Home />', () => {
     it('should call preLoadPublication on mount', () => {
@@ -12,8 +10,7 @@ describe('<Home />', () => {
         const preLoadDatasetPage = jest.fn();
         const preLoadExporters = jest.fn();
 
-        shallow(
-            // @ts-expect-error TS2769
+        render(
             <Home
                 // @ts-expect-error TS2769
                 p={{ t: (key) => key }}
@@ -31,7 +28,6 @@ describe('<Home />', () => {
 
     it('should render Loading if loading', () => {
         const wrapper = shallow(
-            // @ts-expect-error TS2769
             <Home
                 // @ts-expect-error TS2769
                 p={{ t: (key) => key }}
@@ -48,7 +44,6 @@ describe('<Home />', () => {
 
     it('should render a NoDataset component if no dataset present', () => {
         const wrapper = shallow(
-            // @ts-expect-error TS2769
             <Home
                 // @ts-expect-error TS2769
                 p={{ t: (key) => key }}

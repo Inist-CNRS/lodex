@@ -1,8 +1,11 @@
-import PropTypes from 'prop-types';
-// @ts-expect-error TS6133
-import React from 'react';
+interface AnnotationDisabledIconProps {
+    fill?: string;
+}
 
-export function AnnotationDisabledIcon({ fill = '#000', ...props } = {}) {
+export function AnnotationDisabledIcon({
+    fill = '#000',
+    ...props
+}: AnnotationDisabledIconProps = {}) {
     return (
         <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -40,7 +43,3 @@ export function AnnotationDisabledIcon({ fill = '#000', ...props } = {}) {
         </svg>
     );
 }
-
-AnnotationDisabledIcon.propTypes = {
-    fill: PropTypes.string,
-};

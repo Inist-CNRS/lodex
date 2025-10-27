@@ -1,10 +1,6 @@
-// @ts-expect-error TS6133
-import React from 'react';
 import get from 'lodash/get';
 
-import PropTypes from 'prop-types';
 import { translate } from '../i18n/I18NContext';
-import { polyglot as polyglotPropTypes } from '../propTypes';
 import InvalidFormat from './InvalidFormat';
 
 // @ts-expect-error TS7006
@@ -42,19 +38,27 @@ export const getFieldValue = ({ type, field, meta, resource }) => {
     return get(resource, field.name);
 };
 
+interface CheckedComponentProps {
+    meta: object;
+    label: string;
+    resource: string;
+    field: object;
+    p: unknown;
+}
+
 // @ts-expect-error TS7006
 export default (predicate, Component, format, type) => {
     const CheckedComponent = ({
-        // @ts-expect-error TS7031
         meta,
-        // @ts-expect-error TS7031
+
         label,
-        // @ts-expect-error TS7031
+
         resource,
-        // @ts-expect-error TS7031
+
         field,
+
         ...props
-    }) => {
+    }: CheckedComponentProps) => {
         const value = getFieldValue({
             type,
             field,
@@ -78,14 +82,6 @@ export default (predicate, Component, format, type) => {
                 field={field}
             />
         );
-    };
-
-    CheckedComponent.propTypes = {
-        meta: PropTypes.object.isRequired,
-        label: PropTypes.string.isRequired,
-        resource: PropTypes.string.isRequired,
-        field: PropTypes.object.isRequired,
-        p: polyglotPropTypes.isRequired,
     };
 
     return translate(CheckedComponent);

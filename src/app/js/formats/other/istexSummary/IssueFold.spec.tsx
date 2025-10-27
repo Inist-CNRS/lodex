@@ -1,11 +1,15 @@
-// @ts-expect-error TS6133
-import React from 'react';
 import { shallow } from 'enzyme';
 
 import FetchFold from './FetchFold';
 import IssueFold from './IssueFold';
 import { getDocumentData } from './getIstexData';
 jest.mock('./getIstexData');
+
+jest.mock('../../../i18n/I18NContext', () => ({
+    useTranslate: () => ({
+        translate: (key: string) => key,
+    }),
+}));
 
 const getData = () => 'data';
 // @ts-expect-error TS2339
@@ -19,8 +23,6 @@ describe('IssueFold', () => {
         volume: 'volume',
         item: { name: 'issue', count: 1 },
         searchedField: 'host.issn',
-        // @ts-expect-error TS7006
-        polyglot: { t: (v) => v },
         children,
     };
 
@@ -37,7 +39,6 @@ describe('IssueFold', () => {
             issue: 'issue',
             getData,
             children,
-            polyglot: defaultProps.polyglot,
             skip: false,
         });
         expect(getDocumentData).toHaveBeenCalledWith({

@@ -1,5 +1,3 @@
-// @ts-expect-error TS6133
-import React from 'react';
 import { shallow } from 'enzyme';
 import moment from 'moment';
 import { TableCell, TableBody } from '@mui/material';
@@ -7,6 +5,7 @@ import { TableCell, TableBody } from '@mui/material';
 import { RemovedResourceListComponent as RemovedResourceList } from './RemovedResourceList';
 import Pagination from '../../lib/components/Pagination';
 import ButtonWithStatus from '../../lib/components/ButtonWithStatus';
+import { render } from '../../../../test-utils';
 
 describe('<RemovedResourceList />', () => {
     const columns = [
@@ -37,16 +36,15 @@ describe('<RemovedResourceList />', () => {
     it('should call loadRemovedResourcePage on mount', () => {
         const loadRemovedResourcePage = jest.fn();
 
-        shallow(
-            // @ts-expect-error TS2769
+        render(
             <RemovedResourceList
-                // @ts-expect-error TS2769
                 currentPage={1}
                 loadRemovedResourcePage={loadRemovedResourcePage}
                 loading
-                // @ts-expect-error TS7006
-                p={{ t: (key) => key }}
                 total={0}
+                columns={[]}
+                resources={[]}
+                restoreRessource={() => {}}
             />,
         );
 
@@ -57,12 +55,11 @@ describe('<RemovedResourceList />', () => {
     });
 
     it('should render the TableCell for each column', () => {
-        const wrapper = shallow(
-            // @ts-expect-error TS2769
+        const screen = render(
             <RemovedResourceList
-                // @ts-expect-error TS2769
                 currentPage={1}
                 columns={columns}
+                // @ts-expect-error TS7006
                 resources={resources}
                 loadRemovedResourcePage={() => {}}
                 loading={false}
@@ -72,20 +69,18 @@ describe('<RemovedResourceList />', () => {
             />,
         );
 
-        const headers = wrapper.find(TableCell);
-        expect(headers.at(0).children().text()).toBe('removed_at');
-        expect(headers.at(1).children().text()).toBe('removed_reason');
-        expect(headers.at(3).children().text()).toBe('Uri');
-        expect(headers.at(4).children().text()).toBe('Col 2');
+        expect(screen.getByText('removed_at')).toBeInTheDocument();
+        expect(screen.getByText('removed_reason')).toBeInTheDocument();
+        expect(screen.getByText('Uri')).toBeInTheDocument();
+        expect(screen.getByText('Col 2')).toBeInTheDocument();
     });
 
     it('should render the TableCell for each value for each column', () => {
         const wrapper = shallow(
-            // @ts-expect-error TS2769
             <RemovedResourceList
-                // @ts-expect-error TS2769
                 currentPage={1}
                 columns={columns}
+                // @ts-expect-error TS7006
                 resources={resources}
                 loadRemovedResourcePage={() => {}}
                 loading={false}
@@ -122,12 +117,12 @@ describe('<RemovedResourceList />', () => {
 
     it('should render the Pagination', () => {
         const wrapper = shallow(
-            // @ts-expect-error TS2769
             <RemovedResourceList
                 // @ts-expect-error TS2769
                 p={{ t: (key) => key }}
                 columns={columns}
                 currentPage={1}
+                // @ts-expect-error TS7006
                 resources={resources}
                 loadRemovedResourcePage={() => {}}
                 loading={false}
@@ -143,7 +138,6 @@ describe('<RemovedResourceList />', () => {
     it('should call loadRemovedResourcePage on pagination change', () => {
         const loadRemovedResourcePage = jest.fn();
         const wrapper = shallow(
-            // @ts-expect-error TS2769
             <RemovedResourceList
                 // @ts-expect-error TS2769
                 p={{ t: (key) => key }}
@@ -151,6 +145,7 @@ describe('<RemovedResourceList />', () => {
                 currentPage={1}
                 loadRemovedResourcePage={loadRemovedResourcePage}
                 loading={false}
+                // @ts-expect-error TS7006
                 resources={resources}
                 total={3}
             />,
@@ -166,7 +161,6 @@ describe('<RemovedResourceList />', () => {
     it('should call restoreRessource on restore button click', () => {
         const restoreRessource = jest.fn();
         const wrapper = shallow(
-            // @ts-expect-error TS2769
             <RemovedResourceList
                 // @ts-expect-error TS2769
                 p={{ t: (key) => key }}
@@ -175,6 +169,7 @@ describe('<RemovedResourceList />', () => {
                 loadRemovedResourcePage={() => {}}
                 restoreRessource={restoreRessource}
                 loading={false}
+                // @ts-expect-error TS7006
                 resources={resources}
                 total={3}
             />,

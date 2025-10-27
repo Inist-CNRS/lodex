@@ -1,7 +1,5 @@
 import { Vega } from 'react-vega';
-// @ts-expect-error TS6133
-import React from 'react';
-import PropTypes from 'prop-types';
+
 import { connect } from 'react-redux';
 import deepClone from 'lodash/cloneDeep';
 import {
@@ -9,13 +7,22 @@ import {
     VEGA_LITE_DATA_INJECT_TYPE_B,
     VEGA_LITE_DATA_INJECT_TYPE_C,
 } from '../../chartsUtils';
-import { ASPECT_RATIO_NONE, ASPECT_RATIOS } from '../../aspectRatio';
+import { ASPECT_RATIO_NONE, type AspectRatio } from '../../aspectRatio';
 import FormatFullScreenMode from '../FormatFullScreenMode';
 import { translate } from '../../../../i18n/I18NContext';
-import { polyglot as polyglotPropTypes } from '../../../../propTypes';
 import { compose } from 'recompose';
 import { useVegaCsvExport } from '../useVegaCsvExport';
 import { useVegaActions } from '../useVegaActions';
+
+interface CustomActionVegaLiteProps {
+    disableZoom?: boolean;
+    user?: any;
+    spec: any;
+    data?: any;
+    injectType: number;
+    aspectRatio?: AspectRatio;
+    p: unknown;
+}
 
 /**
  * small component use to handle vega lite display
@@ -23,21 +30,14 @@ import { useVegaActions } from '../useVegaActions';
  * @returns {*} React-Vega component
  */
 function CustomActionVegaLite({
-    // @ts-expect-error TS7031
-    aspectRatio,
-    // @ts-expect-error TS7031
+    aspectRatio = ASPECT_RATIO_NONE,
     user,
-    // @ts-expect-error TS7031
     spec,
-    // @ts-expect-error TS7031
     data,
-    // @ts-expect-error TS7031
     injectType,
-    // @ts-expect-error TS7031
-    disableZoom,
-    // @ts-expect-error TS7031
+    disableZoom = false,
     p: polyglot,
-}) {
+}: CustomActionVegaLiteProps) {
     const actions = useVegaActions(user);
     const graphParentRef = useVegaCsvExport(data);
 
@@ -69,6 +69,7 @@ function CustomActionVegaLite({
     }
 
     const vegaGraphElement = (
+        // @ts-expect-error TS2786
         <Vega
             style={
                 aspectRatio === ASPECT_RATIO_NONE
@@ -85,11 +86,17 @@ function CustomActionVegaLite({
             actions={actions}
             mode="vega-lite"
             i18n={{
+                // @ts-expect-error TS18046
                 SVG_ACTION: polyglot.t('vega_export_svg'),
+                // @ts-expect-error TS18046
                 PNG_ACTION: polyglot.t('vega_export_png'),
+                // @ts-expect-error TS18046
                 CLICK_TO_VIEW_ACTIONS: polyglot.t('vega_click_to_view_actions'),
+                // @ts-expect-error TS18046
                 COMPILED_ACTION: polyglot.t('vega_compiled_action'),
+                // @ts-expect-error TS18046
                 EDITOR_ACTION: polyglot.t('vega_editor_action'),
+                // @ts-expect-error TS18046
                 SOURCE_ACTION: polyglot.t('vega_source_action'),
             }}
         />
@@ -113,25 +120,6 @@ function CustomActionVegaLite({
         </>
     );
 }
-
-CustomActionVegaLite.defaultProps = {
-    disableZoom: false,
-    aspectRatio: ASPECT_RATIO_NONE,
-};
-
-/**
- * Element required in the props
- * @type {{data: Requireable<any>, user: Requireable<any>, spec: Validator<NonNullable<any>>}}
- */
-CustomActionVegaLite.propTypes = {
-    disableZoom: PropTypes.bool,
-    user: PropTypes.any,
-    spec: PropTypes.any.isRequired,
-    data: PropTypes.any,
-    injectType: PropTypes.number.isRequired,
-    aspectRatio: PropTypes.oneOf(ASPECT_RATIOS),
-    p: polyglotPropTypes.isRequired,
-};
 
 /**
  * Function use to get the user state

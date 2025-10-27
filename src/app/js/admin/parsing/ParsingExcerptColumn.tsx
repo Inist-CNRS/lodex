@@ -1,30 +1,32 @@
-// @ts-expect-error TS6133
-import React from 'react';
-import PropTypes from 'prop-types';
 import pure from 'recompose/pure';
-import { CircularProgress, TableCell } from '@mui/material';
+import { CircularProgress, TableCell, type SxProps } from '@mui/material';
 import { isLongText, getShortText } from '../../lib/longTexts';
 
+interface ParsingExcerptColumnComponentProps {
+    children?: React.ReactNode;
+    sx?: SxProps;
+    value: string;
+    isEnrichmentLoading?: boolean;
+}
+
 export const ParsingExcerptColumnComponent = ({
-    // @ts-expect-error TS7031
     children,
-    // @ts-expect-error TS7031
     sx,
-    // @ts-expect-error TS7031
     value,
-    // @ts-expect-error TS7031
     isEnrichmentLoading,
-}) => (
+}: ParsingExcerptColumnComponentProps) => (
     <TableCell
-        sx={[
-            {
-                position: 'relative',
-                minWidth: '10rem',
-                overflow: 'visible',
-                height: '6rem',
-            },
-            ...(Array.isArray(sx) ? sx : [sx]),
-        ]}
+        sx={
+            [
+                {
+                    position: 'relative',
+                    minWidth: '10rem',
+                    overflow: 'visible',
+                    height: '6rem',
+                },
+                ...(Array.isArray(sx) ? sx : [sx]),
+            ] as SxProps
+        }
         title={value}
     >
         {isEnrichmentLoading && value === undefined ? (
@@ -39,27 +41,5 @@ export const ParsingExcerptColumnComponent = ({
         )}
     </TableCell>
 );
-
-ParsingExcerptColumnComponent.propTypes = {
-    children: PropTypes.node,
-    sx: PropTypes.oneOfType([
-        PropTypes.arrayOf(
-            PropTypes.oneOfType([
-                PropTypes.func,
-                PropTypes.object,
-                PropTypes.bool,
-            ]),
-        ),
-        PropTypes.func,
-        PropTypes.object,
-    ]),
-    value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-    isEnrichmentLoading: PropTypes.bool,
-};
-
-ParsingExcerptColumnComponent.defaultProps = {
-    children: null,
-    style: null,
-};
 
 export default pure(ParsingExcerptColumnComponent);

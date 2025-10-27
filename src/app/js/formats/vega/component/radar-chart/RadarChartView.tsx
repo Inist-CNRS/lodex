@@ -1,8 +1,6 @@
-// @ts-expect-error TS6133
-import React, { useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
-import PropTypes from 'prop-types';
 
 import { CustomActionVega } from '../../../utils/components/vega-component';
 import RadarChart from '../../models/RadarChart';
@@ -14,7 +12,7 @@ import {
 } from '../../../utils/chartsUtils';
 import InvalidFormat from '../../../InvalidFormat';
 import { useSizeObserver } from '../../../utils/chartsHooks';
-import { field as fieldPropTypes } from '../../../../propTypes';
+import { type Field } from '../../../../propTypes';
 import injectData from '../../../injectData';
 
 const styles = {
@@ -24,28 +22,41 @@ const styles = {
     },
 };
 
+interface RadarChartViewProps {
+    field: Field;
+    resource: object;
+    data?: any;
+    colors: string;
+    tooltip: boolean;
+    tooltipCategory: string;
+    tooltipValue: string;
+    scale: string;
+    advancedMode?: boolean;
+    advancedModeSpec?: string;
+    aspectRatio?: string;
+}
+
 const RadarChartView = ({
-    // @ts-expect-error TS7031
     advancedMode,
-    // @ts-expect-error TS7031
+
     advancedModeSpec,
-    // @ts-expect-error TS7031
+
     field,
-    // @ts-expect-error TS7031
+
     data,
-    // @ts-expect-error TS7031
+
     colors,
-    // @ts-expect-error TS7031
+
     tooltip,
-    // @ts-expect-error TS7031
+
     tooltipCategory,
-    // @ts-expect-error TS7031
+
     tooltipValue,
-    // @ts-expect-error TS7031
+
     scale,
-    // @ts-expect-error TS7031
+
     aspectRatio,
-}) => {
+}: RadarChartViewProps) => {
     const formattedData = useMemo(() => {
         if (!data) {
             return data;
@@ -104,6 +115,7 @@ const RadarChartView = ({
     ]);
 
     if (spec === null) {
+        // @ts-expect-error TS18046
         return <InvalidFormat format={field.format} value={error} />;
     }
 
@@ -114,28 +126,11 @@ const RadarChartView = ({
                 spec={spec}
                 data={formattedData}
                 injectType={VEGA_DATA_INJECT_TYPE_A}
+                // @ts-expect-error TS2322
                 aspectRatio={aspectRatio}
             />
         </div>
     );
-};
-
-RadarChartView.propTypes = {
-    field: fieldPropTypes.isRequired,
-    resource: PropTypes.object.isRequired,
-    data: PropTypes.any,
-    colors: PropTypes.string.isRequired,
-    tooltip: PropTypes.bool.isRequired,
-    tooltipCategory: PropTypes.string.isRequired,
-    tooltipValue: PropTypes.string.isRequired,
-    scale: PropTypes.string.isRequired,
-    advancedMode: PropTypes.bool,
-    advancedModeSpec: PropTypes.string,
-    aspectRatio: PropTypes.string,
-};
-
-RadarChartView.defaultProps = {
-    className: null,
 };
 
 // @ts-expect-error TS7006
@@ -154,8 +149,7 @@ const mapStateToProps = (state, { formatData }) => {
     };
 };
 
-// @ts-expect-error TS6133
-export const RadarChartAdminView = connect((state, props) => {
+export const RadarChartAdminView = connect((_state, props) => {
     return {
         ...props,
         field: {

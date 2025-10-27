@@ -1,82 +1,62 @@
-// @ts-expect-error TS6133
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { translate } from '../../../i18n/I18NContext';
-
-import { polyglot as polyglotPropTypes } from '../../../propTypes';
 import { TextField, MenuItem } from '@mui/material';
 import { FormatDefaultParamsFieldSet } from '../../utils/components/field-set/FormatFieldSets';
 import FormatGroupedFieldSet from '../../utils/components/field-set/FormatGroupedFieldSet';
+import { useTranslate } from '../../../i18n/I18NContext';
 
 export const defaultArgs = {
     PDFWidth: '100%',
 };
 
-class PDFAdmin extends Component {
-    static propTypes = {
-        args: PropTypes.shape({
-            PDFWidth: PropTypes.string,
-        }),
-        onChange: PropTypes.func.isRequired,
-        p: polyglotPropTypes.isRequired,
+interface PDFAdminProps {
+    args?: {
+        PDFWidth?: string;
     };
-
-    static defaultProps = {
-        args: defaultArgs,
-    };
-
-    // @ts-expect-error TS7006
-    handleWidth = (PDFWidth) => {
-        const newArgs = {
-            // @ts-expect-error TS2339
-            ...this.props.args,
-            PDFWidth,
-        };
-        // @ts-expect-error TS2339
-        this.props.onChange(newArgs);
-    };
-
-    render() {
-        const {
-            // @ts-expect-error TS2339
-            p: polyglot,
-            // @ts-expect-error TS2339
-            args: { PDFWidth },
-        } = this.props;
-
-        return (
-            <FormatGroupedFieldSet>
-                <FormatDefaultParamsFieldSet defaultExpanded>
-                    <TextField
-                        fullWidth
-                        select
-                        label={polyglot.t('list_format_select_image_width')}
-                        onChange={(e) => this.handleWidth(e.target.value)}
-                        value={PDFWidth}
-                    >
-                        <MenuItem value="10%">
-                            {polyglot.t('ten_percent')}
-                        </MenuItem>
-                        <MenuItem value="20%">
-                            {polyglot.t('twenty_percent')}
-                        </MenuItem>
-                        <MenuItem value="30%">
-                            {polyglot.t('thirty_percent')}
-                        </MenuItem>
-                        <MenuItem value="50%">
-                            {polyglot.t('fifty_percent')}
-                        </MenuItem>
-                        <MenuItem value="80%">
-                            {polyglot.t('eighty_percent')}
-                        </MenuItem>
-                        <MenuItem value="100%">
-                            {polyglot.t('hundred_percent')}
-                        </MenuItem>
-                    </TextField>
-                </FormatDefaultParamsFieldSet>
-            </FormatGroupedFieldSet>
-        );
-    }
+    onChange(...args: unknown[]): unknown;
 }
 
-export default translate(PDFAdmin);
+const PDFAdmin = ({ args = defaultArgs, onChange }: PDFAdminProps) => {
+    const { translate } = useTranslate();
+    // @ts-expect-error TS7006
+    const handleWidth = (PDFWidth) => {
+        const newArgs = {
+            ...args,
+            PDFWidth,
+        };
+        onChange(newArgs);
+    };
+
+    const { PDFWidth } = args || defaultArgs;
+
+    return (
+        <FormatGroupedFieldSet>
+            <FormatDefaultParamsFieldSet defaultExpanded>
+                <TextField
+                    fullWidth
+                    select
+                    label={translate('list_format_select_image_width')}
+                    onChange={(e) => handleWidth(e.target.value)}
+                    value={PDFWidth}
+                >
+                    <MenuItem value="10%">{translate('ten_percent')}</MenuItem>
+                    <MenuItem value="20%">
+                        {translate('twenty_percent')}
+                    </MenuItem>
+                    <MenuItem value="30%">
+                        {translate('thirty_percent')}
+                    </MenuItem>
+                    <MenuItem value="50%">
+                        {translate('fifty_percent')}
+                    </MenuItem>
+                    <MenuItem value="80%">
+                        {translate('eighty_percent')}
+                    </MenuItem>
+                    <MenuItem value="100%">
+                        {translate('hundred_percent')}
+                    </MenuItem>
+                </TextField>
+            </FormatDefaultParamsFieldSet>
+        </FormatGroupedFieldSet>
+    );
+};
+
+export default PDFAdmin;

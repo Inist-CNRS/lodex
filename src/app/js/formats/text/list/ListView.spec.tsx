@@ -1,5 +1,3 @@
-// @ts-expect-error TS6133
-import React from 'react';
 import { shallow } from 'enzyme';
 // @ts-expect-error TS7016
 import { StyleSheetTestUtils } from 'aphrodite';
@@ -39,7 +37,6 @@ describe('list format view <ListView />', () => {
 
         wrongValues.forEach((value) => {
             const component = shallow(
-                // @ts-expect-error TS2769
                 <ListView {...defaultProps} resource={{ name: value }} />,
             );
             const listComponent = component.find(UL);
@@ -48,7 +45,6 @@ describe('list format view <ListView />', () => {
     });
 
     it('should render list of value', () => {
-        // @ts-expect-error TS2769
         const component = shallow(<ListView {...defaultProps} />);
 
         const listComponent = component.find(UL);
@@ -85,7 +81,6 @@ describe('list format view <ListView />', () => {
                 level: 2,
             },
         };
-        // @ts-expect-error TS2769
         const component = shallow(<ListView {...props} />);
         const title = component.find('Translated(CheckedComponent)');
         expect(title).toHaveLength(3);
@@ -101,7 +96,6 @@ describe('list format view <ListView />', () => {
     });
 
     it('should wrap list in UL if no format type provided', () => {
-        // @ts-expect-error TS2769
         const component = shallow(<ListView {...defaultProps} />);
         const ul = component.find(UL);
         expect(ul).toHaveLength(1);
@@ -125,7 +119,6 @@ describe('list format view <ListView />', () => {
             },
             type: 'ordered',
         };
-        // @ts-expect-error TS2769
         const component = shallow(<ListView {...props} />);
         const ul = component.find(UL);
         expect(ul).toHaveLength(0);
@@ -149,7 +142,6 @@ describe('list format view <ListView />', () => {
             },
             type: 'unordered_without_bullet',
         };
-        // @ts-expect-error TS2769
         const component = shallow(<ListView {...props} />);
         const ul = component.find(UL);
         expect(ul).toHaveLength(1);

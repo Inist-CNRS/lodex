@@ -1,6 +1,4 @@
-import PropTypes from 'prop-types';
-// @ts-expect-error TS6133
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { connect } from 'react-redux';
 
 import { Box, Grid, useMediaQuery } from '@mui/material';
@@ -9,7 +7,6 @@ import SearchBar from '../../lib/components/searchbar/SearchBar';
 import ToggleFacetsButton from '../../lib/components/searchbar/ToggleFacetsButton';
 import useSearchBar from '../../lib/components/searchbar/useSearchBar';
 import stylesToClassName from '../../lib/stylesToClassName';
-import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { fromFields } from '../../sharedSelectors';
 import { fromSearch } from '../selectors';
 import AnnotationsFilter from './AnnotationsFilter';
@@ -27,20 +24,24 @@ const styles = stylesToClassName(
     'search-searchbar',
 );
 
+type SearchSearchBarComponentProps = {
+    p: unknown;
+    hasSearchableFields: boolean;
+    search(...args: unknown[]): unknown;
+    defaultQuery?: string;
+    onToggleFacets(...args: unknown[]): unknown;
+    withFacets?: boolean;
+    resetAnnotationFilter(...args: unknown[]): unknown;
+};
+
 export const SearchSearchBarComponent = ({
-    // @ts-expect-error TS7031
-    defaultQuery,
-    // @ts-expect-error TS7031
+    defaultQuery = '',
     search,
-    // @ts-expect-error TS7031
     hasSearchableFields,
-    // @ts-expect-error TS7031
     onToggleFacets,
-    // @ts-expect-error TS7031
     withFacets,
-    // @ts-expect-error TS7031
     resetAnnotationFilter,
-}) => {
+}: SearchSearchBarComponentProps) => {
     const matches = useMediaQuery('@media (max-width: 991.5px)', {
         noSsr: true,
     });
@@ -116,20 +117,6 @@ export const SearchSearchBarComponent = ({
             </Grid>
         </Box>
     );
-};
-
-SearchSearchBarComponent.defaultProps = {
-    defaultQuery: '',
-};
-
-SearchSearchBarComponent.propTypes = {
-    p: polyglotPropTypes.isRequired,
-    hasSearchableFields: PropTypes.bool.isRequired,
-    search: PropTypes.func.isRequired,
-    defaultQuery: PropTypes.string,
-    onToggleFacets: PropTypes.func.isRequired,
-    withFacets: PropTypes.bool,
-    resetAnnotationFilter: PropTypes.func.isRequired,
 };
 
 // @ts-expect-error TS7006

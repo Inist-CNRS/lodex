@@ -1,11 +1,11 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-// @ts-expect-error TS6133
-import React from 'react';
+
 import { MemoryRouter } from 'react-router-dom';
 import { render } from '../../../../test-utils';
 import { TestI18N } from '../../i18n/I18NContext';
 import { AnnotationDetail } from './AnnotationDetail';
 import { useGetAnnotation } from './hooks/useGetAnnotation';
+import { within } from '@testing-library/dom';
 
 jest.mock('./hooks/useGetAnnotation', () => ({ useGetAnnotation: jest.fn() }));
 jest.mock('./hooks/useUpdateAnnotation', () => ({
@@ -61,118 +61,92 @@ describe('AnnotationDetail', () => {
             isLoading: false,
             error: null,
         }));
-        const wrapper = render(<TestAnnotationDetail />);
+        const screen = render(<TestAnnotationDetail />);
 
         expect(
-            wrapper.getByRole('heading', {
+            screen.getByRole('heading', {
                 name: 'annotation_header_comment uid:/1234',
             }),
         ).toBeInTheDocument();
 
         expect(
-            wrapper.getByRole('heading', {
+            screen.getByRole('heading', {
                 name: 'The resource title',
             }),
         ).toBeInTheDocument();
 
         expect(
-            wrapper.getByRole('link', { name: 'annotation_see_resource' }),
+            screen.getByRole('link', { name: 'annotation_see_resource' }),
         ).toHaveAttribute('href', '/instance/default/uid:/1234#field-GaZr');
 
         // Field region
-        const fieldRegion = wrapper.getByRole('region', {
+        const fieldRegion = screen.getByRole('region', {
             name: 'annotation_field_section',
         });
         expect(fieldRegion).toBeInTheDocument();
+        expect(within(fieldRegion).getByText('[GaZr]')).toBeInTheDocument();
         expect(
-            wrapper.getByText('[GaZr]', {
-                // @ts-expect-error TS2353
-                container: fieldRegion,
-            }),
+            within(fieldRegion).getByText('Annotated field'),
         ).toBeInTheDocument();
         expect(
-            wrapper.getByText('Annotated field', {
-                // @ts-expect-error TS2353
-                container: fieldRegion,
-            }),
-        ).toBeInTheDocument();
-        expect(
-            wrapper.getByText('annotated_field', {
-                // @ts-expect-error TS2353
-                container: fieldRegion,
-            }),
+            within(fieldRegion).getByText('annotated_field'),
         ).toBeInTheDocument();
 
         // Comment region
-        const commentRegion = wrapper.getByRole('region', {
+        const commentRegion = screen.getByRole('region', {
             name: 'annotation_comment_section',
         });
         expect(commentRegion).toBeInTheDocument();
         expect(
-            wrapper.getByText('Just testing the annotation system', {
-                // @ts-expect-error TS2353
-                container: commentRegion,
-            }),
+            within(commentRegion).getByText(
+                'Just testing the annotation system',
+            ),
         ).toBeInTheDocument();
 
-        // Comment region
-        const authorRegion = wrapper.getByRole('region', {
-            name: 'annotation_comment_section',
+        // Author region
+        const authorRegion = screen.getByRole('region', {
+            name: 'annotation_contributor_section',
         });
         expect(authorRegion).toBeInTheDocument();
         expect(
-            wrapper.getByText('Count Ributor', {
-                // @ts-expect-error TS2353
-                container: authorRegion,
-            }),
+            within(authorRegion).queryByText('Count Ributor'),
         ).toBeInTheDocument();
 
         expect(
-            wrapper.getByRole('link', {
+            within(authorRegion).getByRole('link', {
                 name: 'ributor@gmail.com',
-                // @ts-expect-error TS2353
-                container: authorRegion,
             }),
         ).toHaveAttribute('href', 'mailto:ributor@gmail.com');
 
-        const complementaryInfosRegion = wrapper.getByRole('region', {
+        const complementaryInfosRegion = screen.getByRole('region', {
             name: 'annotation_complementary_infos_section',
         });
         expect(
-            wrapper.queryByLabelText('annotation_created_at', {
-                // @ts-expect-error TS2353
-                container: complementaryInfosRegion,
-            }),
+            within(complementaryInfosRegion).queryByLabelText(
+                'annotation_created_at',
+            ),
         ).toHaveTextContent('1/1/2025');
         expect(
-            wrapper.queryByLabelText('annotation_updated_at', {
-                // @ts-expect-error TS2353
-                container: complementaryInfosRegion,
-            }),
+            within(complementaryInfosRegion).queryByLabelText(
+                'annotation_updated_at',
+            ),
         ).toHaveTextContent('10/1/2025');
 
-        const inputsRegion = wrapper.getByRole('group', {
+        const inputsRegion = screen.getByRole('group', {
             name: 'annotation_form_title',
         });
         expect(inputsRegion).toBeInTheDocument();
         expect(
-            wrapper.queryByLabelText('annotation_status', {
-                // @ts-expect-error TS2353
-                container: inputsRegion,
-            }),
+            within(inputsRegion).queryByLabelText('annotation_status'),
         ).toHaveTextContent('annotation_status_ongoing');
         expect(
-            wrapper.getByRole('textbox', {
+            within(inputsRegion).getByRole('textbox', {
                 name: 'annotation_internal_comment',
-                // @ts-expect-error TS2353
-                container: inputsRegion,
             }),
         ).toHaveValue('Just testing the annotation admin');
         expect(
-            wrapper.getByRole('textbox', {
+            within(inputsRegion).getByRole('textbox', {
                 name: 'annotation_administrator',
-                // @ts-expect-error TS2353
-                container: inputsRegion,
             }),
         ).toHaveValue('The administrator');
     });
@@ -197,16 +171,16 @@ describe('AnnotationDetail', () => {
             error: null,
         }));
 
-        const wrapper = render(<TestAnnotationDetail />);
+        const screen = render(<TestAnnotationDetail />);
 
         expect(
-            wrapper.getByRole('heading', {
+            screen.getByRole('heading', {
                 name: 'annotation_header_comment annotation_home_page',
             }),
         ).toBeInTheDocument();
 
         expect(
-            wrapper.getByRole('link', { name: 'annotation_see_home' }),
+            screen.getByRole('link', { name: 'annotation_see_home' }),
         ).toHaveAttribute('href', '/instance/default#field-GaZr');
     });
 
@@ -230,22 +204,22 @@ describe('AnnotationDetail', () => {
             error: null,
         }));
 
-        const wrapper = render(<TestAnnotationDetail />);
+        const screen = render(<TestAnnotationDetail />);
 
         expect(
-            wrapper.getByRole('heading', {
+            screen.getByRole('heading', {
                 name: 'annotation_header_comment uid:/404',
             }),
         ).toBeInTheDocument();
 
         expect(
-            wrapper.getByRole('heading', {
+            screen.getByRole('heading', {
                 name: 'annotation_resource_not_found',
             }),
         ).toBeInTheDocument();
 
         expect(
-            wrapper.queryByTitle('annotation_resource_link'),
+            screen.queryByTitle('annotation_resource_link'),
         ).not.toBeInTheDocument();
     });
 
@@ -266,22 +240,22 @@ describe('AnnotationDetail', () => {
             error: null,
         }));
 
-        const wrapper = render(<TestAnnotationDetail />);
+        const screen = render(<TestAnnotationDetail />);
 
         expect(
-            wrapper.getByRole('heading', {
+            screen.getByRole('heading', {
                 name: 'annotation_header_comment uid:/1234',
             }),
         ).toBeInTheDocument();
 
         expect(
-            wrapper.getByRole('heading', {
+            screen.getByRole('heading', {
                 name: 'The resource title',
             }),
         ).toBeInTheDocument();
 
         expect(
-            wrapper.getByRole('region', {
+            screen.getByRole('region', {
                 name: 'annotation_field_section',
             }),
         ).toHaveTextContent('annotation_field_not_found');
@@ -295,20 +269,20 @@ describe('AnnotationDetail', () => {
             error: null,
         }));
 
-        const wrapper = render(<TestAnnotationDetail />);
+        const screen = render(<TestAnnotationDetail />);
 
         expect(
-            wrapper.queryByRole('heading', {
+            screen.queryByRole('heading', {
                 name: 'annotation_header_comment uid:/1234',
             }),
         ).not.toBeInTheDocument();
 
         expect(
-            wrapper.queryByRole('heading', {
+            screen.queryByRole('heading', {
                 name: 'The resource title',
             }),
         ).not.toBeInTheDocument();
 
-        expect(wrapper.queryByText('loading')).toBeInTheDocument();
+        expect(screen.queryByText('loading')).toBeInTheDocument();
     });
 });

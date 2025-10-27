@@ -1,9 +1,7 @@
-// @ts-expect-error TS6133
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import CircularProgress from '@mui/material/CircularProgress';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-import PropTypes from 'prop-types';
 import { sizeConverter } from './rootAdminUtils';
 import { Tooltip } from '@mui/material';
 import MemoryIcon from '@mui/icons-material/Memory';
@@ -57,8 +55,18 @@ const colorGradient = (fadeFraction, rgbColor1, rgbColor2, rgbColor3) => {
     return `rgb(${red},${green},${blue})`;
 };
 
-// @ts-expect-error TS7031
-const CircularProgressWithLabel = ({ value }) => {
+interface CircularProgressWithLabelProps {
+    /**
+     * The value of the progress indicator for the determinate variant.
+     * Value between 0 and 100.
+     * @default 0
+     */
+    value: number;
+}
+
+const CircularProgressWithLabel = ({
+    value,
+}: CircularProgressWithLabelProps) => {
     return (
         <Box
             sx={{
@@ -112,15 +120,6 @@ const CircularProgressWithLabel = ({ value }) => {
             </Box>
         </Box>
     );
-};
-
-CircularProgressWithLabel.propTypes = {
-    /**
-     * The value of the progress indicator for the determinate variant.
-     * Value between 0 and 100.
-     * @default 0
-     */
-    value: PropTypes.number.isRequired,
 };
 
 const SystemLoad = () => {

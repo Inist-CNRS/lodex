@@ -1,8 +1,6 @@
 // @ts-expect-error TS7016
 import { StyleSheetTestUtils } from 'aphrodite';
 import { shallow } from 'enzyme';
-// @ts-expect-error TS6133
-import React from 'react';
 
 import composeRenderProps from '../../../lib/composeRenderProps';
 import InvalidFormat from '../../InvalidFormat';
@@ -26,8 +24,6 @@ describe('IstexCitationView', () => {
         resource: { uri: 'uri', field: 'refBibs.host.title:"The Lancet"' },
         searchedField: CUSTOM_ISTEX_QUERY,
         documentSortBy: 'publicationDate[desc]',
-        // @ts-expect-error TS7006
-        p: { t: (v) => v },
     };
     const ComposedComponent = () => <div>Composed Child</div>;
 
@@ -54,7 +50,6 @@ describe('IstexCitationView', () => {
             value: 'refBibs.host.title:"The Lancet"',
             searchedField: CUSTOM_ISTEX_QUERY,
             documentSortBy: 'publicationDate[desc]',
-            polyglot: defaultProps.p,
         });
         expect(parseCitationData).toHaveBeenCalledWith({ hits: [1, 2, 3] });
     });

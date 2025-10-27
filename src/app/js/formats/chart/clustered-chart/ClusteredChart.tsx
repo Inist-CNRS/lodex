@@ -1,9 +1,18 @@
-// @ts-expect-error TS6133
-import React, { useMemo } from 'react';
-import PropTypes from 'prop-types';
+import { useMemo } from 'react';
 
 import { CustomActionVegaLite } from '../../utils/components/vega-lite-component';
 import { VEGA_LITE_DATA_INJECT_TYPE_A, flip } from '../../utils/chartsUtils';
+
+interface ClusteredChartProps {
+    data: unknown[];
+    topic: string;
+    params?: {
+        colors: string;
+        xTitle?: string;
+        yTitle?: string;
+        flipAxis?: boolean;
+    };
+}
 
 /**
  * @param data {{values: Array<{_id: string, source: string, target: string, weight: string}>}}
@@ -12,20 +21,22 @@ import { VEGA_LITE_DATA_INJECT_TYPE_A, flip } from '../../utils/chartsUtils';
  * @returns {JSX.Element}
  * @constructor
  */
-// @ts-expect-error TS7031
-const ClusteredChart = ({ data, topic, params }) => {
+const ClusteredChart = ({ data, topic, params }: ClusteredChartProps) => {
     const values = useMemo(() => {
-        // @ts-expect-error TS7006
         return data.filter((value) =>
             flip(
+                // @ts-expect-error TS18048
                 params.flipAxis,
+                // @ts-expect-error TS18046
                 value.target === topic,
+                // @ts-expect-error TS18046
                 value.source === topic,
             ),
         );
     }, [data, topic]);
 
     const spec = useMemo(() => {
+        // @ts-expect-error TS2339
         const { colors, xTitle, yTitle, flipAxis } = params;
         const specToReturn = {
             $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
@@ -72,17 +83,6 @@ const ClusteredChart = ({ data, topic, params }) => {
             disableZoom
         />
     );
-};
-
-ClusteredChart.propTypes = {
-    data: PropTypes.array.isRequired,
-    topic: PropTypes.string.isRequired,
-    params: PropTypes.shape({
-        colors: PropTypes.string.isRequired,
-        xTitle: PropTypes.string,
-        yTitle: PropTypes.string,
-        flipAxis: PropTypes.bool,
-    }),
 };
 
 export default ClusteredChart;

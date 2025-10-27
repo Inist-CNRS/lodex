@@ -1,20 +1,13 @@
-// @ts-expect-error TS6133
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import { useState } from 'react';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
-import { translate } from '../../../i18n/I18NContext';
-import { Button, CircularProgress } from '@mui/material';
+import { Button } from '@mui/material';
 import memoize from 'lodash/memoize';
 
 import LodexResource from '../../utils/components/LodexResource';
 import injectData from '../../injectData';
 import stylesToClassname from '../../../lib/stylesToClassName';
-
-import {
-    field as fieldPropTypes,
-    polyglot as polyglotPropTypes,
-} from '../../../propTypes';
+import { useTranslate } from '../../../i18n/I18NContext';
 
 const createStyles = memoize((spaceWidth) =>
     stylesToClassname(
@@ -55,114 +48,82 @@ const createStyles = memoize((spaceWidth) =>
     ),
 );
 
-class ResourcesGridView extends Component {
-    static propTypes = {
-        field: fieldPropTypes.isRequired,
-        data: PropTypes.arrayOf(PropTypes.object).isRequired,
-        total: PropTypes.number.isRequired,
-        pageSize: PropTypes.number.isRequired,
-        titleSize: PropTypes.number.isRequired,
-        summarySize: PropTypes.number.isRequired,
-        openInNewTab: PropTypes.bool.isRequired,
-        spaceWidth: PropTypes.string.isRequired,
-        filterFormatData: PropTypes.func.isRequired,
-        allowToLoadMore: PropTypes.bool.isRequired,
-        p: polyglotPropTypes.isRequired,
-    };
-
-    // @ts-expect-error TS7006
-    constructor(props) {
-        super(props);
-        this.state = {
-            fetch: false,
-            more: props.pageSize,
-        };
-    }
-
-    handleMore = () => {
-        // @ts-expect-error TS2339
-        const { filterFormatData, pageSize } = this.props;
-
-        this.setState(
-            // @ts-expect-error TS2339
-            (prevState) => ({ more: prevState.more + pageSize }),
-            // @ts-expect-error TS2339
-            () => filterFormatData({ maxSize: this.state.more }),
-        );
-    };
-
-    render() {
-        const {
-            // @ts-expect-error TS2339
-            data,
-            // @ts-expect-error TS2339
-            spaceWidth,
-            // @ts-expect-error TS2339
-            total,
-            // @ts-expect-error TS2339
-            allowToLoadMore,
-            // @ts-expect-error TS2339
-            p: polyglot,
-        } = this.props;
-        // @ts-expect-error TS2339
-        const { more, fetch } = this.state;
-        const styles = createStyles(spaceWidth);
-
-        const filteredData = allowToLoadMore ? data.slice(0, more) : data;
-
-        return (
-            <div>
-                {/* 
-                // @ts-expect-error TS2322 */}
-                <ul className={styles.list}>
-                    {/*
-                     // @ts-expect-error TS7006 */}
-                    {filteredData.map((entry, index) => (
-                        <li
-                            key={`${index}-resources-grid`}
-                            // @ts-expect-error TS2322
-                            className={styles.item}
-                        >
-                            {/* 
-                            // @ts-expect-error TS2322 */}
-                            <div className={styles.content}>
-                                <LodexResource
-                                    {...entry}
-                                    // @ts-expect-error TS2339
-                                    titleSize={this.props.titleSize}
-                                    // @ts-expect-error TS2339
-                                    summarySize={this.props.summarySize}
-                                    // @ts-expect-error TS2339
-                                    openInNewTab={this.props.openInNewTab}
-                                    polyglot={polyglot}
-                                />
-                            </div>
-                        </li>
-                    ))}
-                </ul>
-                {allowToLoadMore && more < total && (
-                    // @ts-expect-error TS2322
-                    <div className={styles.button}>
-                        <Button
-                            variant="contained"
-                            onClick={this.handleMore}
-                            startIcon={
-                                fetch ? (
-                                    <CircularProgress
-                                        variant="indeterminate"
-                                        size={20}
-                                    />
-                                ) : null
-                            }
-                        >
-                            {polyglot.t('see_more_result')}
-                        </Button>
-                    </div>
-                )}
-            </div>
-        );
-    }
+interface ResourcesGridViewProps {
+    field: unknown;
+    data: object[];
+    total: number;
+    pageSize: number;
+    titleSize: number;
+    summarySize: number;
+    openInNewTab: boolean;
+    spaceWidth: string;
+    filterFormatData(...args: unknown[]): unknown;
+    allowToLoadMore: boolean;
 }
+
+const ResourcesGridView = ({
+    field: _field,
+    data,
+    total,
+    pageSize,
+    titleSize,
+    summarySize,
+    openInNewTab,
+    spaceWidth,
+    filterFormatData,
+    allowToLoadMore,
+}: ResourcesGridViewProps) => {
+    const { translate } = useTranslate();
+    const [more, setMore] = useState(pageSize);
+
+    const handleMore = () => {
+        const newMore = more + pageSize;
+        setMore(newMore);
+        filterFormatData({ maxSize: newMore });
+    };
+
+    const styles = createStyles(spaceWidth);
+    const filteredData = allowToLoadMore ? data.slice(0, more) : data;
+
+    return (
+        <div>
+            {/* 
+            // @ts-expect-error TS2322 */}
+            <ul className={styles.list}>
+                {filteredData.map((entry, index) => (
+                    <li
+                        key={`${index}-resources-grid`}
+                        // @ts-expect-error TS2322
+                        className={styles.item}
+                    >
+                        {/* 
+                        // @ts-expect-error TS2322 */}
+                        <div className={styles.content}>
+                            <LodexResource
+                                {...entry}
+                                titleSize={titleSize}
+                                summarySize={summarySize}
+                                openInNewTab={openInNewTab}
+                            />
+                        </div>
+                    </li>
+                ))}
+            </ul>
+            {allowToLoadMore && more < total && (
+                // @ts-expect-error TS2322
+                <div className={styles.button}>
+                    <Button
+                        variant="contained"
+                        onClick={handleMore}
+                        startIcon={null}
+                    >
+                        {translate('see_more_result')}
+                    </Button>
+                </div>
+            )}
+        </div>
+    );
+};
 
 // @ts-expect-error TS7006
 const mapStateToProps = (_, { formatData, spaceWidth }) => {
@@ -184,5 +145,5 @@ export default compose(
     // @ts-expect-error TS2345
     injectData(null, (field) => !!field),
     connect(mapStateToProps),
-    translate,
+    // @ts-expect-error TS2345
 )(ResourcesGridView);

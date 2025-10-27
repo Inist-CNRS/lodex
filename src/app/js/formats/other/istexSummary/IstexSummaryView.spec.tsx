@@ -1,8 +1,6 @@
 // @ts-expect-error TS7016
 import { StyleSheetTestUtils } from 'aphrodite';
 import { shallow } from 'enzyme';
-// @ts-expect-error TS6133
-import React from 'react';
 
 import composeRenderProps from '../../../lib/composeRenderProps';
 import InvalidFormat from '../../InvalidFormat';
@@ -65,7 +63,6 @@ describe('IstexSummaryView', () => {
             value: 'value',
             searchedField: 'host.issn',
             sortDir: 'sortDir',
-            polyglot: defaultProps.p,
         });
         expect(parseYearData).toHaveBeenCalledWith(
             { hits: [1, 2, 3] },
@@ -100,7 +97,6 @@ describe('IstexSummaryView', () => {
             value: 'value',
             searchedField: 'host.issn',
             sortDir: 'sortDir',
-            polyglot: defaultProps.p,
         });
         expect(parseYearData).toHaveBeenCalledWith(
             { hits: { length: 51 } },

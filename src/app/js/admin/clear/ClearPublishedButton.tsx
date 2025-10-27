@@ -1,16 +1,19 @@
-// @ts-expect-error TS6133
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Button, Box } from '@mui/material';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
 import ClearAllIcon from '@mui/icons-material/ClearAll';
 
 import ClearDialog from '../Appbar/ClearDialog';
 import { fromPublication } from '../selectors';
 import { useTranslate } from '../../i18n/I18NContext';
 
-// @ts-expect-error TS7031
-export const ClearPublishedButtonComponent = ({ hasPublishedDataset }) => {
+interface ClearPublishedButtonComponentProps {
+    hasPublishedDataset: boolean;
+}
+
+export const ClearPublishedButtonComponent = ({
+    hasPublishedDataset,
+}: ClearPublishedButtonComponentProps) => {
     const { translate } = useTranslate();
     const [show, setShow] = useState(false);
 
@@ -45,10 +48,6 @@ export const ClearPublishedButtonComponent = ({ hasPublishedDataset }) => {
             {show && <ClearDialog type="published" onClose={handleHide} />}
         </Box>
     );
-};
-
-ClearPublishedButtonComponent.propTypes = {
-    hasPublishedDataset: PropTypes.bool.isRequired,
 };
 
 // @ts-expect-error TS7006

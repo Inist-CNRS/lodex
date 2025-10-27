@@ -1,12 +1,12 @@
-// @ts-expect-error TS6133
-import React from 'react';
-import { polyglot as polyglotPropTypes } from '../../../propTypes';
 import ReactTooltip from 'react-tooltip';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUndo } from '@fortawesome/free-solid-svg-icons';
 
-// @ts-expect-error TS7031
-const CenterIcon = ({ polyglot }) => (
+interface CenterIconProps {
+    polyglot: unknown;
+}
+
+const CenterIcon = ({ polyglot }: CenterIconProps) => (
     <>
         <FontAwesomeIcon
             data-tip
@@ -15,13 +15,11 @@ const CenterIcon = ({ polyglot }) => (
             height={30}
         />
         <ReactTooltip id="centerIconTooltip" place="right" effect="solid">
+            {/*
+             // @ts-expect-error TS18046 */}
             {polyglot.t('graph_reinit')}
         </ReactTooltip>
     </>
 );
-
-CenterIcon.propTypes = {
-    polyglot: polyglotPropTypes.isRequired,
-};
 
 export default CenterIcon;

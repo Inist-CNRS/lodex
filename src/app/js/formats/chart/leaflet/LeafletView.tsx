@@ -1,11 +1,9 @@
 import React, { useMemo, useState, Suspense, useCallback } from 'react';
-import { polyglot as polyglotPropTypes } from '../../../propTypes';
 import compose from 'recompose/compose';
 import zip from 'lodash/zip';
 import flatten from 'lodash/flatten';
 
 import injectData from '../../injectData';
-import PropTypes from 'prop-types';
 import Loading from '../../../lib/components/Loading';
 import { useTranslate } from '../../../i18n/I18NContext';
 import { ClientOnly, useClientOnly } from 'react-client-only';
@@ -22,14 +20,20 @@ const styles = {
 
 const LazyMap = React.lazy(() => import('./LeafletMap'));
 
+interface LeafletViewProps {
+    formatData: unknown[];
+    p: unknown;
+    zoom?: number;
+    center?: number[];
+}
+
 const LeafletView = ({
-    // @ts-expect-error TS7031
     formatData,
-    // @ts-expect-error TS7031
+
     zoom,
-    // @ts-expect-error TS7031
+
     center,
-}) => {
+}: LeafletViewProps) => {
     const mounted = useClientOnly();
 
     const { translate } = useTranslate();
@@ -39,6 +43,7 @@ const LeafletView = ({
         height: '500px',
     });
 
+    // @ts-expect-error TS7006
     const containerRef = useCallback((node) => {
         if (!node) return;
         const resizeObserver = new ResizeObserver(() => {
@@ -59,24 +64,32 @@ const LeafletView = ({
         }
         const formatDataNormalized = flatten(
             formatData
-                // @ts-expect-error TS7006
                 .map((x) => {
                     // Multi values for all cases
+                    // @ts-expect-error TS18046
                     let a = x._id;
+                    // @ts-expect-error TS18046
                     let b = x.value;
                     // @ts-expect-error TS2304
                     if (typeof _id === 'string') {
+                        // @ts-expect-error TS18046
                         a = [x._id]; // '["39.5015541259931","-99.0602406280213"]'
                     }
+                    // @ts-expect-error TS18046
                     if (Array.isArray(x._id) && x._id.length === 2) {
                         // example: [46.123, 23.344]
+                        // @ts-expect-error TS18046
                         a = [x._id];
                     }
+                    // @ts-expect-error TS18046
                     if (!Array.isArray(x._id)) {
                         // example: { lat: 46.123, lnt : 23.344 }
+                        // @ts-expect-error TS18046
                         a = [x._id];
                     }
+                    // @ts-expect-error TS18046
                     if (!Array.isArray(x.value)) {
+                        // @ts-expect-error TS18046
                         b = [x.value];
                     }
                     return {
@@ -84,13 +97,11 @@ const LeafletView = ({
                         b,
                     };
                 })
-                // @ts-expect-error TS7006
                 .map((y) => {
                     return zip(y.a, y.b);
                 }),
         );
         return {
-            // @ts-expect-error TS7031
             input: formatDataNormalized.map(([_id, value]) => {
                 let latlng; // see https://leafletjs.com/reference.html#latlng
                 try {
@@ -138,6 +149,8 @@ const LeafletView = ({
     }
     return (
         <div style={{ height }}>
+            {/*
+             // @ts-expect-error TS2559 */}
             <ClientOnly>
                 {/*
                  // @ts-expect-error TS2322 */}
@@ -158,13 +171,6 @@ const LeafletView = ({
             </ClientOnly>
         </div>
     );
-};
-
-LeafletView.propTypes = {
-    formatData: PropTypes.array.isRequired,
-    p: polyglotPropTypes.isRequired,
-    zoom: PropTypes.number,
-    center: PropTypes.arrayOf(PropTypes.number),
 };
 
 // @ts-expect-error TS2345

@@ -11,9 +11,7 @@ import {
     GridToolbarDensitySelector,
     GridToolbarFilterButton,
 } from '@mui/x-data-grid';
-import PropTypes from 'prop-types';
-// @ts-expect-error TS6133
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { connect } from 'react-redux';
 import { IN_PROGRESS } from '../../../../common/taskStatus';
 
@@ -114,8 +112,12 @@ const getFiltersOperatorsForType = (type) => {
     }
 };
 
-// @ts-expect-error TS7006
-export const ParsingResultComponent = (props) => {
+interface ParsingResultComponentProps {
+    loadingParsingResult: boolean;
+    enrichments?: object[];
+}
+
+export const ParsingResultComponent = (props: ParsingResultComponentProps) => {
     const { enrichments, loadingParsingResult } = props;
     const { translate } = useTranslate();
 
@@ -149,6 +151,7 @@ export const ParsingResultComponent = (props) => {
 
     const columnsToShow = useMemo(() => {
         const getColumnsToShow = () => {
+            // @ts-expect-error TS18048
             const enrichmentsNames = enrichments.map(
                 // @ts-expect-error TS7006
                 (enrichment) => enrichment.name,
@@ -169,16 +172,20 @@ export const ParsingResultComponent = (props) => {
                     const isEnrichment = enrichmentsNames.includes(key);
                     const isEnrichmentLoading =
                         isEnrichment &&
+                        // @ts-expect-error TS18048
                         enrichments.some(
-                            // @ts-expect-error TS7006
                             (enrichment) =>
+                                // @ts-expect-error TS2339
                                 enrichment.name === key &&
+                                // @ts-expect-error TS2339
                                 enrichment.status === IN_PROGRESS,
                         );
                     const errorCount = isEnrichment
-                        ? enrichments.find(
+                        ? // @ts-expect-error TS18048
+                          enrichments.find(
                               // @ts-expect-error TS7006
                               (enrichment) => enrichment.name === key,
+                              // @ts-expect-error TS2339
                           )?.errorCount
                         : null;
                     return {
@@ -251,6 +258,7 @@ export const ParsingResultComponent = (props) => {
     ]);
 
     const numberOfColumns = useCallback(
+        // @ts-expect-error TS7006
         (columnType) => {
             if (!columns || columns.length === 0 || !enrichments) return 0;
             return columns.filter(({ key }) => {
@@ -305,6 +313,7 @@ export const ParsingResultComponent = (props) => {
         setSkip(0);
     };
 
+    // @ts-expect-error TS7006
     const handleFilterModelChange = useCallback((filterModel) => {
         setFilterModel(filterModel);
         setSkip(0);
@@ -421,8 +430,7 @@ export const ParsingResultComponent = (props) => {
                                         count={rowCount}
                                         page={skip / limit}
                                         rowsPerPage={limit}
-                                        // @ts-expect-error TS6133
-                                        onPageChange={(e, page) =>
+                                        onPageChange={(_e, page) =>
                                             onPageChange(page)
                                         }
                                         rowsPerPageOptions={[25, 50, 100]}
@@ -451,6 +459,8 @@ export const ParsingResultComponent = (props) => {
                      // @ts-expect-error TS2741 */}
                     <GridToolbarColumnsButton />
                 </Tooltip>
+                {/*
+                 // @ts-expect-error TS2739 */}
                 <GridToolbarFilterButton />
                 <Tooltip title={translate(`density_tooltip`)}>
                     {/*
@@ -472,9 +482,7 @@ export const ParsingResultComponent = (props) => {
                         {translate('add_more')}
                     </Button>
                 </Tooltip>
-
                 <Box sx={{ flexGrow: 1 }} />
-
                 <DeleteManyButton
                     selectedRowIds={selectedRowIds}
                     reloadDataset={fetchDataset}
@@ -492,6 +500,7 @@ export const ParsingResultComponent = (props) => {
     return (
         <Box sx={styles.container}>
             <DataGrid
+                // @ts-expect-error TS2322
                 columns={columnsToShow}
                 rows={rows}
                 rowCount={rowCount}
@@ -538,11 +547,6 @@ export const ParsingResultComponent = (props) => {
             </Drawer>
         </Box>
     );
-};
-
-ParsingResultComponent.propTypes = {
-    loadingParsingResult: PropTypes.bool.isRequired,
-    enrichments: PropTypes.arrayOf(PropTypes.object),
 };
 
 // @ts-expect-error TS7006

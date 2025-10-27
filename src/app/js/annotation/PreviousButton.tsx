@@ -1,41 +1,51 @@
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import { Button } from '@mui/material';
 import { useStore } from '@tanstack/react-form';
-import PropTypes from 'prop-types';
-// @ts-expect-error TS6133
-import React, { useCallback } from 'react';
+import { useCallback } from 'react';
 import { useTranslate } from '../i18n/I18NContext';
 import { AUTHOR_STEP, COMMENT_STEP, TARGET_STEP, VALUE_STEP } from './steps';
 
+interface PreviousButtonProps {
+    form: object;
+    goToStep(...args: unknown[]): unknown;
+    onCancel(...args: unknown[]): unknown;
+    currentStep: string;
+    initialValue?: any;
+    isSubmitting: boolean;
+    skipAnnotationKindStep: boolean;
+}
+
 export const PreviousButton = ({
-    // @ts-expect-error TS7031
     currentStep,
-    // @ts-expect-error TS7031
+
     initialValue,
-    // @ts-expect-error TS7031
+
     goToStep,
-    // @ts-expect-error TS7031
+
     onCancel,
-    // @ts-expect-error TS7031
+
     isSubmitting,
-    // @ts-expect-error TS7031
+
     form,
-    // @ts-expect-error TS7031
+
     skipAnnotationKindStep,
-}) => {
+}: PreviousButtonProps) => {
     const { translate } = useTranslate();
 
+    // @ts-expect-error TS2339
     const kind = useStore(form.store, (state) => {
         // @ts-expect-error TS18046
         return state.values.kind;
     });
 
+    // @ts-expect-error TS2339
     const target = useStore(form.store, (state) => {
         // @ts-expect-error TS18046
         return state.values.target;
     });
 
     const handleBack = useCallback(
+        // @ts-expect-error TS7006
         (event) => {
             event.preventDefault();
             event.stopPropagation();
@@ -103,14 +113,4 @@ export const PreviousButton = ({
             {translate('back')}
         </Button>
     );
-};
-
-PreviousButton.propTypes = {
-    form: PropTypes.object.isRequired,
-    goToStep: PropTypes.func.isRequired,
-    onCancel: PropTypes.func.isRequired,
-    currentStep: PropTypes.string.isRequired,
-    initialValue: PropTypes.any,
-    isSubmitting: PropTypes.bool.isRequired,
-    skipAnnotationKindStep: PropTypes.bool.isRequired,
 };

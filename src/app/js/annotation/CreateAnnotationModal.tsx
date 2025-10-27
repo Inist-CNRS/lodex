@@ -10,9 +10,7 @@ import {
     Typography,
 } from '@mui/material';
 import { useForm, useStore } from '@tanstack/react-form';
-import PropTypes from 'prop-types';
-// @ts-expect-error TS6133
-import React, { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import {
     ANNOTATION_KIND_ADDITION,
     ANNOTATION_KIND_CORRECTION,
@@ -36,6 +34,7 @@ import {
     progressByStep,
     TARGET_STEP,
     VALUE_STEP,
+    type Step,
 } from './steps';
 import { useContributorCache } from './useContributorCache';
 import { useReCaptcha } from './useReCaptacha';
@@ -61,26 +60,36 @@ const isOptionalFieldValid = (formState, fieldName) => {
     return !fieldState.isTouched || fieldState.errors.length === 0;
 };
 
+export type CreateAnnotationModalProps = {
+    isSubmitting: boolean;
+    onClose(...args: unknown[]): unknown;
+    onSubmit(...args: unknown[]): unknown;
+    anchorEl: unknown;
+    initialValue: unknown;
+    field: {
+        _id: string;
+        name: string;
+        label: string;
+        enableAnnotationKindCorrection?: boolean;
+        enableAnnotationKindAddition?: boolean;
+        enableAnnotationKindRemoval?: boolean;
+    };
+    resourceUri: string;
+    isFieldValueAnnotable: boolean;
+    openHistory(...args: unknown[]): unknown;
+};
+
 export function CreateAnnotationModal({
-    // @ts-expect-error TS7031
     isSubmitting,
-    // @ts-expect-error TS7031
     onSubmit,
-    // @ts-expect-error TS7031
     anchorEl,
-    // @ts-expect-error TS7031
     onClose,
-    // @ts-expect-error TS7031
     initialValue,
-    // @ts-expect-error TS7031
     field,
-    // @ts-expect-error TS7031
     resourceUri,
-    // @ts-expect-error TS7031
     isFieldValueAnnotable,
-    // @ts-expect-error TS7031
     openHistory,
-}) {
+}: CreateAnnotationModalProps) {
     const { translate } = useTranslate();
     const { requestReCaptchaToken } = useReCaptcha();
 
@@ -99,6 +108,7 @@ export function CreateAnnotationModal({
         // @ts-expect-error TS2339
         onSubmit: async ({ value: { authorRememberMe, ...value } }) => {
             const reCaptchaToken = await requestReCaptchaToken();
+            // @ts-expect-error TS2345
             updateContributorCache({ authorRememberMe, ...value });
             await onSubmit({
                 ...value,
@@ -126,7 +136,7 @@ export function CreateAnnotationModal({
         );
     }, [isFieldValueAnnotable, field]);
 
-    const [currentStep, setCurrentStep] = useState(
+    const [currentStep, setCurrentStep] = useState<Step>(
         skipAnnotationKindStep ? COMMENT_STEP : TARGET_STEP,
     );
 
@@ -161,6 +171,7 @@ export function CreateAnnotationModal({
 
         if (
             [ANNOTATION_KIND_CORRECTION, ANNOTATION_KIND_ADDITION].includes(
+                // @ts-expect-error TS2345
                 state.values.kind!,
             )
         ) {
@@ -241,6 +252,7 @@ export function CreateAnnotationModal({
 
             <Popover
                 open={true}
+                // @ts-expect-error TS2322
                 anchorEl={anchorEl}
                 anchorOrigin={{
                     vertical: 'top',
@@ -251,9 +263,8 @@ export function CreateAnnotationModal({
                     horizontal: 'left',
                 }}
                 PaperProps={{
-                    // @ts-expect-error TS2353
                     component: 'form',
-                    onSubmit: (event) => {
+                    onSubmit: (event: any) => {
                         event.preventDefault();
                         event.stopPropagation();
 
@@ -276,8 +287,6 @@ export function CreateAnnotationModal({
                 }}
                 role="dialog"
             >
-                {/*
-                 // @ts-expect-error TS2786 */}
                 <form.Field name="resourceUri">
                     {(field) => (
                         <input
@@ -292,7 +301,6 @@ export function CreateAnnotationModal({
                         <Box flexGrow={1}>
                             <LinearProgress
                                 variant="determinate"
-                                // @ts-expect-error TS7053
                                 value={progressByStep[currentStep]}
                             />
                         </Box>
@@ -349,7 +357,7 @@ export function CreateAnnotationModal({
                                 role="tab"
                             >
                                 <ValueField
-                                    choices={initialValue}
+                                    choices={initialValue as string[]}
                                     form={form}
                                 />
                             </Stack>
@@ -372,6 +380,7 @@ export function CreateAnnotationModal({
                                 <Stack spacing={2}>
                                     <AnnotationCommentStep
                                         form={form}
+                                        // @ts-expect-error TS2559
                                         field={field}
                                         initialValue={initialValue}
                                     />
@@ -441,15 +450,3 @@ export function CreateAnnotationModal({
         </>
     );
 }
-
-CreateAnnotationModal.propTypes = {
-    isSubmitting: PropTypes.bool.isRequired,
-    onClose: PropTypes.func.isRequired,
-    onSubmit: PropTypes.func.isRequired,
-    anchorEl: PropTypes.object.isRequired,
-    initialValue: PropTypes.any,
-    field: PropTypes.object.isRequired,
-    resourceUri: PropTypes.string,
-    isFieldValueAnnotable: PropTypes.bool.isRequired,
-    openHistory: PropTypes.func.isRequired,
-};

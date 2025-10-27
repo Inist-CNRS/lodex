@@ -9,7 +9,6 @@ import Paper from '@mui/material/Paper';
 import Popper from '@mui/material/Popper';
 import MenuItem from '@mui/material/MenuItem';
 import MenuList from '@mui/material/MenuList';
-import PropTypes from 'prop-types';
 
 import { connect } from 'react-redux';
 import { Add } from '@mui/icons-material';
@@ -26,16 +25,22 @@ const options = [
     { label: 'from_original_dataset', icon: <AddFromDatasetIcon /> },
 ];
 
+interface FieldAddDropdownButtonComponentProps {
+    onAddNewField(...args: unknown[]): unknown;
+    onShowExistingColumns(...args: unknown[]): unknown;
+    isFieldsLoading?: boolean;
+    subresourceId?: string;
+}
+
 export const FieldAddDropdownButtonComponent = ({
-    // @ts-expect-error TS7031
     onAddNewField,
-    // @ts-expect-error TS7031
+
     onShowExistingColumns,
-    // @ts-expect-error TS7031
+
     isFieldsLoading,
-    // @ts-expect-error TS7031
+
     subresourceId,
-}) => {
+}: FieldAddDropdownButtonComponentProps) => {
     const { translate } = useTranslate();
     const [open, setOpen] = React.useState(false);
     const anchorRef = React.useRef();
@@ -161,13 +166,6 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
     onShowExistingColumns: showAddFromColumn,
     onAddNewField: addField,
-};
-
-FieldAddDropdownButtonComponent.propTypes = {
-    onAddNewField: PropTypes.func.isRequired,
-    onShowExistingColumns: PropTypes.func.isRequired,
-    isFieldsLoading: PropTypes.bool,
-    subresourceId: PropTypes.string,
 };
 
 export default connect(

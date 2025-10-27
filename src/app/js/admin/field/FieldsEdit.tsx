@@ -1,7 +1,5 @@
-// @ts-expect-error TS6133
 import React, { useEffect, useState } from 'react';
 import { Tab, Tabs, Box } from '@mui/material';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import AddFromColumnDialog from './AddFromColumnDialog';
@@ -18,17 +16,26 @@ import { AddFieldButton } from './AddFieldButton';
 import { DeleteFieldsButton } from './DeleteFieldsButton';
 import { useTranslate } from '../../i18n/I18NContext';
 
+interface FieldsEditComponentProps {
+    addFieldButton?: React.ReactElement;
+    defaultTab?: 'page' | 'published';
+    filter?: string;
+    hideAddColumns(...args: unknown[]): unknown;
+    showAddFromColumn: boolean;
+    subresourceId?: string;
+}
+
 export const FieldsEditComponent = ({
     defaultTab = 'page',
-    // @ts-expect-error TS7031
+
     filter,
-    // @ts-expect-error TS7031
+
     hideAddColumns,
-    // @ts-expect-error TS7031
+
     showAddFromColumn,
-    // @ts-expect-error TS7031
+
     subresourceId,
-}) => {
+}: FieldsEditComponentProps) => {
     const { translate } = useTranslate();
     const [tab, setTab] = useState(defaultTab);
     const [showAddFromColumnDialog, setAddFromColumnDialog] = useState(false);
@@ -154,15 +161,6 @@ export const FieldsEditComponent = ({
             )}
         </div>
     );
-};
-
-FieldsEditComponent.propTypes = {
-    addFieldButton: PropTypes.element,
-    defaultTab: PropTypes.oneOf(['page', 'published']),
-    filter: PropTypes.string,
-    hideAddColumns: PropTypes.func.isRequired,
-    showAddFromColumn: PropTypes.bool.isRequired,
-    subresourceId: PropTypes.string,
 };
 
 // @ts-expect-error TS7006

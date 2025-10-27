@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import ReactJson from 'react-json-view';
 import { Save as SaveIcon } from '@mui/icons-material';
 import datasetApi from '../api/dataset';
@@ -130,8 +129,15 @@ const isError = (value) => {
     );
 };
 
-// @ts-expect-error TS7031
-const ButtonEditCellWithDropdown = ({ loading, handleChange }) => {
+interface ButtonEditCellWithDropdownProps {
+    loading: boolean;
+    handleChange(...args: unknown[]): unknown;
+}
+
+const ButtonEditCellWithDropdown = ({
+    loading,
+    handleChange,
+}: ButtonEditCellWithDropdownProps) => {
     const { translate } = useTranslate();
     const theme = useTheme();
     const [isOpen, setOpen] = React.useState(false);
@@ -207,16 +213,16 @@ const ButtonEditCellWithDropdown = ({ loading, handleChange }) => {
     );
 };
 
-ButtonEditCellWithDropdown.propTypes = {
-    loading: PropTypes.bool.isRequired,
-    handleChange: PropTypes.func.isRequired,
-};
+interface ParsingEditCellProps {
+    cell: object;
+    setToggleDrawer(...args: unknown[]): unknown;
+}
 
-// @ts-expect-error TS7031
-const ParsingEditCell = ({ cell, setToggleDrawer }) => {
+const ParsingEditCell = ({ cell, setToggleDrawer }: ParsingEditCellProps) => {
     const { translate } = useTranslate();
     const theme = useTheme();
     const [loading, setLoading] = React.useState(false);
+    // @ts-expect-error TS2339
     const [value, setValue] = React.useState(cell.value);
 
     // @ts-expect-error TS7006
@@ -225,23 +231,27 @@ const ParsingEditCell = ({ cell, setToggleDrawer }) => {
         try {
             let valueToSave;
             try {
+                // @ts-expect-error TS2339
                 valueToSave = getValueBySavingType(value, type, cell.value);
             } catch (e) {
                 // @ts-expect-error TS18046
                 toast(translate(e.message), {
-                    type: toast.TYPE.ERROR,
+                    type: 'error',
                 });
                 // @ts-expect-error TS18046
                 throw new Error(translate(e.message));
             }
             await datasetApi.updateDataset({
+                // @ts-expect-error TS2339
                 uri: cell.row.uri,
+                // @ts-expect-error TS2339
                 field: cell.field,
                 value: valueToSave,
             });
+            // @ts-expect-error TS2339
             cell.row[cell.field] = valueToSave;
             toast(translate('dataset_edit_success'), {
-                type: toast.TYPE.SUCCESS,
+                type: 'success',
             });
             setToggleDrawer(false);
         } catch (e) {
@@ -263,10 +273,14 @@ const ParsingEditCell = ({ cell, setToggleDrawer }) => {
                     }}
                 >
                     {translate('dataset_edit_enrichment_title', {
+                        // @ts-expect-error TS2339
                         column_name: cell.field,
+                        // @ts-expect-error TS2339
                         row_name: cell?.row?.uri || cell?.row?.ark,
                     })}
                 </h2>
+                {/*
+                 // @ts-expect-error TS2339 */}
                 <Box sx={style.container}>{cell.value}</Box>
             </div>
         );
@@ -277,10 +291,14 @@ const ParsingEditCell = ({ cell, setToggleDrawer }) => {
             <h2 style={{ textAlign: 'center' }}>
                 {translate('column')}{' '}
                 <span style={{ color: theme.palette.primary.main }}>
+                    {/*
+                     // @ts-expect-error TS2339 */}
                     {cell.field}
                 </span>{' '}
                 {translate('for_row')}{' '}
                 <span style={{ color: theme.palette.secondary.main }}>
+                    {/*
+                     // @ts-expect-error TS2339 */}
                     {cell?.row?.uri || cell?.row?.ark}
                 </span>
             </h2>
@@ -341,11 +359,6 @@ const ParsingEditCell = ({ cell, setToggleDrawer }) => {
             </div>
         </div>
     );
-};
-
-ParsingEditCell.propTypes = {
-    cell: PropTypes.object.isRequired,
-    setToggleDrawer: PropTypes.func.isRequired,
 };
 
 export default ParsingEditCell;

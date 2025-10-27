@@ -1,14 +1,10 @@
-// @ts-expect-error TS6133
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { polyglot as polyglotPropTypes } from '../../../propTypes';
 import { TextField, MenuItem } from '@mui/material';
 import {
     FormatDataParamsFieldSet,
     FormatDefaultParamsFieldSet,
 } from '../../utils/components/field-set/FormatFieldSets';
 import FormatGroupedFieldSet from '../../utils/components/field-set/FormatGroupedFieldSet';
-import { translate } from '../../../i18n/I18NContext';
+import { useTranslate } from '../../../i18n/I18NContext';
 
 export const defaultArgs = {
     type: 'value',
@@ -16,94 +12,80 @@ export const defaultArgs = {
     maxHeight: 200,
 };
 
-class LinkImageAdmin extends Component {
-    static propTypes = {
-        args: PropTypes.shape({
-            type: PropTypes.string,
-            value: PropTypes.string,
-            maxHeight: PropTypes.number,
-        }),
-        onChange: PropTypes.func.isRequired,
-        p: polyglotPropTypes.isRequired,
+interface LinkImageAdminProps {
+    args?: {
+        type?: string;
+        value?: string;
+        maxHeight?: number;
     };
-
-    static defaultProps = {
-        args: defaultArgs,
-    };
-
-    // @ts-expect-error TS7006
-    handleType = (e) => {
-        // @ts-expect-error TS2339
-        const newArgs = { ...this.props.args, type: e.target.value };
-        // @ts-expect-error TS2339
-        this.props.onChange(newArgs);
-    };
-
-    // @ts-expect-error TS7006
-    handleValue = (e) => {
-        // @ts-expect-error TS2339
-        const newArgs = { ...this.props.args, value: e.target.value };
-        // @ts-expect-error TS2339
-        this.props.onChange(newArgs);
-    };
-
-    // @ts-expect-error TS7006
-    handleMaxHeight = (e) => {
-        const maxHeight = Math.max(e.target.value, 1);
-        // @ts-expect-error TS2339
-        const newArgs = { ...this.props.args, maxHeight };
-        // @ts-expect-error TS2339
-        this.props.onChange(newArgs);
-    };
-
-    render() {
-        const {
-            // @ts-expect-error TS2339
-            p: polyglot,
-            // @ts-expect-error TS2339
-            args: { type, value, maxHeight },
-        } = this.props;
-
-        return (
-            <FormatGroupedFieldSet>
-                <FormatDataParamsFieldSet>
-                    <TextField
-                        fullWidth
-                        select
-                        label={polyglot.t('select_a_format')}
-                        onChange={this.handleType}
-                        value={type}
-                    >
-                        <MenuItem value="text">
-                            {polyglot.t('item_other_column_content')}
-                        </MenuItem>
-                        <MenuItem value="column">
-                            {polyglot.t('item_custom_url')}
-                        </MenuItem>
-                    </TextField>
-                </FormatDataParamsFieldSet>
-                <FormatDefaultParamsFieldSet defaultExpanded>
-                    <TextField
-                        label={
-                            type !== 'text'
-                                ? polyglot.t('Custom URL')
-                                : polyglot.t("Column's name")
-                        }
-                        onChange={this.handleValue}
-                        value={value}
-                        sx={{ flexGrow: 1 }}
-                    />
-                    <TextField
-                        label={polyglot.t('height_px')}
-                        type="number"
-                        onChange={this.handleMaxHeight}
-                        value={maxHeight}
-                        sx={{ flexGrow: 1 }}
-                    />
-                </FormatDefaultParamsFieldSet>
-            </FormatGroupedFieldSet>
-        );
-    }
+    onChange(...args: unknown[]): unknown;
 }
 
-export default translate(LinkImageAdmin);
+const LinkImageAdmin = ({
+    args = defaultArgs,
+    onChange,
+}: LinkImageAdminProps) => {
+    const { translate } = useTranslate();
+    // @ts-expect-error TS7006
+    const handleType = (e) => {
+        const newArgs = { ...args, type: e.target.value };
+        onChange(newArgs);
+    };
+
+    // @ts-expect-error TS7006
+    const handleValue = (e) => {
+        const newArgs = { ...args, value: e.target.value };
+        onChange(newArgs);
+    };
+
+    // @ts-expect-error TS7006
+    const handleMaxHeight = (e) => {
+        const maxHeight = Math.max(e.target.value, 1);
+        const newArgs = { ...args, maxHeight };
+        onChange(newArgs);
+    };
+
+    const { type, value, maxHeight } = args || defaultArgs;
+
+    return (
+        <FormatGroupedFieldSet>
+            <FormatDataParamsFieldSet>
+                <TextField
+                    fullWidth
+                    select
+                    label={translate('select_a_format')}
+                    onChange={handleType}
+                    value={type}
+                >
+                    <MenuItem value="text">
+                        {translate('item_other_column_content')}
+                    </MenuItem>
+                    <MenuItem value="column">
+                        {translate('item_custom_url')}
+                    </MenuItem>
+                </TextField>
+            </FormatDataParamsFieldSet>
+            <FormatDefaultParamsFieldSet defaultExpanded>
+                <TextField
+                    label={
+                        type !== 'text'
+                            ? translate('Custom URL')
+                            : translate("Column's name")
+                    }
+                    onChange={handleValue}
+                    value={value}
+                    sx={{ flexGrow: 1 }}
+                />
+                <TextField
+                    label={translate('height_px')}
+                    type="number"
+                    onChange={handleMaxHeight}
+                    value={maxHeight}
+                    sx={{ flexGrow: 1 }}
+                />
+            </FormatDefaultParamsFieldSet>
+        </FormatGroupedFieldSet>
+    );
+};
+
+export default LinkImageAdmin;

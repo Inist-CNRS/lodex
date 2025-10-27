@@ -1,6 +1,3 @@
-// @ts-expect-error TS6133
-import React from 'react';
-import PropTypes from 'prop-types';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import MarkerClusterGroup from 'react-leaflet-markercluster'; // see vite.config.js
 // @ts-expect-error TS7016
@@ -27,8 +24,25 @@ L.Icon.Default.mergeOptions({
     ).toString(),
 });
 
-// @ts-expect-error TS7031
-export default function Map({ input = [], width, height, zoom, center }) {
+interface MapProps {
+    center?: unknown[];
+    zoom?: number;
+    width?: string;
+    height?: string;
+    input?: {
+        lat: number;
+        lng: number;
+        txt: unknown;
+    }[];
+}
+
+export default function Map({
+    input = [],
+    width,
+    height,
+    zoom,
+    center,
+}: MapProps) {
     return (
         <MapContainer
             // @ts-expect-error TS2322
@@ -43,6 +57,7 @@ export default function Map({ input = [], width, height, zoom, center }) {
             />
             <MarkerClusterGroup>
                 {[]
+                    // @ts-expect-error TS2769
                     .concat(input)
                     // @ts-expect-error TS7031
                     .filter((item) => item.lat && item.lng)
@@ -60,17 +75,3 @@ export default function Map({ input = [], width, height, zoom, center }) {
         </MapContainer>
     );
 }
-Map.propTypes = {
-    center: PropTypes.array,
-    zoom: PropTypes.number,
-    width: PropTypes.string,
-    height: PropTypes.string,
-    input: PropTypes.arrayOf(
-        PropTypes.shape({
-            lat: PropTypes.number.isRequired,
-            lng: PropTypes.number.isRequired,
-            // @ts-expect-error TS2339
-            txt: PropTypes.isRequired,
-        }),
-    ),
-};

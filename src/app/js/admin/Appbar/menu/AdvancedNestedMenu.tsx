@@ -3,7 +3,6 @@ import DeleteSweepIcon from '@mui/icons-material/DeleteSweep';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import MenuItem from '@mui/material/MenuItem';
-import PropTypes from 'prop-types';
 import { default as React } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
@@ -15,22 +14,25 @@ import jobsApi from '../../api/job';
 import { fromParsing } from '../../selectors';
 import { ExportDatasetButton } from '../../../public/export/ExportDatasetButton';
 
+type AdvancedNestedMenuProps = {
+    onClose: (callback?: () => void) => void;
+    showDatasetClearDialog: () => void;
+    hasLoadedDataset: boolean;
+};
+
 export const AdvancedNestedMenuComponent = React.memo(
     function AnnotationNestedMenu({
-        // @ts-expect-error TS2339
         onClose,
-        // @ts-expect-error TS2339
         showDatasetClearDialog,
-        // @ts-expect-error TS2339
         hasLoadedDataset,
-    }) {
+    }: AdvancedNestedMenuProps) {
         const { translate } = useTranslate();
 
         const handleClearJobs = async () => {
             const result = await jobsApi.clearJobs();
             if (result.response.status === 'success') {
                 toast(translate('jobs_cleared'), {
-                    type: toast.TYPE.SUCCESS,
+                    type: 'success',
                 });
             }
             onClose();
@@ -64,14 +66,6 @@ export const AdvancedNestedMenuComponent = React.memo(
     },
 );
 
-// @ts-expect-error TS2339
-AdvancedNestedMenuComponent.propTypes = {
-    onClose: PropTypes.func.isRequired,
-    hasLoadedDataset: PropTypes.bool.isRequired,
-    dumpDataset: PropTypes.func.isRequired,
-    showDatasetClearDialog: PropTypes.func.isRequired,
-};
-
 // @ts-expect-error TS7006
 const mapStateToProps = (state) => ({
     hasLoadedDataset: fromParsing.hasUploadedFile(state),
@@ -80,4 +74,5 @@ const mapStateToProps = (state) => ({
 export const AdvancedNestedMenu = compose(
     connect(mapStateToProps),
     withRouter,
+    // @ts-expect-error TS2345
 )(AdvancedNestedMenuComponent);

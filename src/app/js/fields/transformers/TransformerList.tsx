@@ -1,5 +1,4 @@
-// @ts-expect-error TS6133
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import memoize from 'lodash/memoize';
 import pure from 'recompose/pure';
 import { useTranslate } from '../../i18n/I18NContext';
@@ -177,7 +176,6 @@ export const TransformerListComponent = ({
                             {fieldsToDrag?.map((fieldName, index) => (
                                 <TransformerListItem
                                     key={fieldName}
-                                    // @ts-expect-error TS2322
                                     id={fieldName}
                                     transformer={fields[index]}
                                     onRemove={() => remove(index)}

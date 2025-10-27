@@ -1,15 +1,8 @@
-// @ts-expect-error TS6133
-import React from 'react';
-import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import { useParams } from 'react-router';
 
 import { MenuItem, TextField } from '@mui/material';
-import {
-    polyglot as polyglotPropTypes,
-    field as fieldPropTypes,
-} from '../../../propTypes';
 import { fromFields } from '../../../sharedSelectors';
 import {
     SCOPE_DATASET,
@@ -19,70 +12,11 @@ import {
 } from '../../../../../common/scope';
 import { FormatDefaultParamsFieldSet } from '../../utils/components/field-set/FormatFieldSets';
 import FormatGroupedFieldSet from '../../utils/components/field-set/FormatGroupedFieldSet';
-import { translate } from '../../../i18n/I18NContext';
+import { useTranslate } from '../../../i18n/I18NContext';
 
 export const defaultArgs = {
     value: '',
 };
-
-// @ts-expect-error TS7031
-const FieldCloneAdmin = ({ args, onChange, p: polyglot, fields }) => {
-    // @ts-expect-error TS2339
-    const { filter } = useParams();
-    // @ts-expect-error TS7006
-    const handleValue = (e) => {
-        const newArgs = { value: e.target.value };
-        onChange(newArgs);
-    };
-
-    // @ts-expect-error TS7006
-    const filteredFields = fields.filter((f) =>
-        isValidClonableField(f, filter),
-    );
-
-    return (
-        <FormatGroupedFieldSet>
-            <FormatDefaultParamsFieldSet defaultExpanded>
-                <TextField
-                    fullWidth
-                    select
-                    onChange={handleValue}
-                    value={args.value}
-                    label={polyglot.t('fieldclone_format_value')}
-                >
-                    {/*
-                     // @ts-expect-error TS7006 */}
-                    {filteredFields.map((field) => {
-                        return (
-                            <MenuItem value={field.name} key={field.name}>
-                                {field.name} - {field.label}
-                            </MenuItem>
-                        );
-                    })}
-                </TextField>
-            </FormatDefaultParamsFieldSet>
-        </FormatGroupedFieldSet>
-    );
-};
-
-FieldCloneAdmin.propTypes = {
-    args: PropTypes.shape({
-        value: PropTypes.string,
-    }),
-    onChange: PropTypes.func.isRequired,
-    p: polyglotPropTypes.isRequired,
-    fields: PropTypes.arrayOf(fieldPropTypes).isRequired,
-};
-
-FieldCloneAdmin.defaultProps = {
-    args: defaultArgs,
-    fields: [],
-};
-
-// @ts-expect-error TS7006
-const mapStateToProps = (state) => ({
-    fields: fromFields.getFields(state),
-});
 
 // @ts-expect-error TS7006
 export const isValidClonableField = (field, filter) => {
@@ -108,5 +42,62 @@ export const isValidClonableField = (field, filter) => {
     return true;
 };
 
+interface FieldCloneAdminProps {
+    args: {
+        value?: string;
+    };
+    onChange(...args: unknown[]): unknown;
+    fields: {
+        name: string;
+        label: string;
+    }[];
+}
+
+const FieldCloneAdmin = ({
+    args = defaultArgs,
+    onChange,
+    fields = [],
+}: FieldCloneAdminProps) => {
+    const { translate } = useTranslate();
+    // @ts-expect-error TS2339
+    const { filter } = useParams();
+    // @ts-expect-error TS7006
+    const handleValue = (e) => {
+        const newArgs = { value: e.target.value };
+        onChange(newArgs);
+    };
+
+    const filteredFields = fields.filter((f) =>
+        isValidClonableField(f, filter),
+    );
+
+    return (
+        <FormatGroupedFieldSet>
+            <FormatDefaultParamsFieldSet defaultExpanded>
+                <TextField
+                    fullWidth
+                    select
+                    onChange={handleValue}
+                    value={args.value}
+                    label={translate('fieldclone_format_value')}
+                >
+                    {filteredFields.map((field) => {
+                        return (
+                            <MenuItem value={field.name} key={field.name}>
+                                {field.name} - {field.label}
+                            </MenuItem>
+                        );
+                    })}
+                </TextField>
+            </FormatDefaultParamsFieldSet>
+        </FormatGroupedFieldSet>
+    );
+};
+
+// @ts-expect-error TS7006
+const mapStateToProps = (state) => ({
+    fields: fromFields.getFields(state),
+});
+
 // @ts-expect-error TS2345
-export default compose(connect(mapStateToProps), translate)(FieldCloneAdmin);
+export default compose(connect(mapStateToProps))(FieldCloneAdmin);

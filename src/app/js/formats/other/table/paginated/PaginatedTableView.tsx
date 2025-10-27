@@ -3,8 +3,7 @@ import injectData from '../../../injectData';
 import { connect } from 'react-redux';
 import AbstractTableView from '../core/AbstractTableView';
 import { Table, TableBody, TableContainer, TableRow } from '@mui/material';
-// @ts-expect-error TS6133
-import React from 'react';
+
 import { translate } from '../../../../i18n/I18NContext';
 
 class PaginatedTableView extends AbstractTableView {
@@ -28,7 +27,6 @@ class PaginatedTableView extends AbstractTableView {
     }
 
     render() {
-        // @ts-expect-error TS2339
         const { data, pageSize, total, p, columnsParameters } = this.props;
 
         return (
@@ -40,8 +38,6 @@ class PaginatedTableView extends AbstractTableView {
                             // @ts-expect-error TS7006
                             (entry, index) => (
                                 <TableRow key={`${index}-table`}>
-                                    {/*
-                                     // @ts-expect-error TS7006 */}
                                     {columnsParameters.map((column) =>
                                         this.getCellInnerHtml(
                                             entry,

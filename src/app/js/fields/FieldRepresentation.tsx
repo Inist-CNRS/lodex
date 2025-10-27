@@ -1,24 +1,26 @@
 import { Box, Checkbox, Tooltip, Typography, useTheme } from '@mui/material';
-import PropTypes from 'prop-types';
-// @ts-expect-error TS6133
-import React from 'react';
+
 import { AnnotationDisabledIcon } from '../annotation/AnnotationDisabledIcon';
-import { translate, useTranslate } from '../i18n/I18NContext';
-import { polyglot as polyglotPropTypes } from '../propTypes';
+import { useTranslate } from '../i18n/I18NContext';
 import FieldInternalIcon from './FieldInternalIcon';
+import type { Field } from '../propTypes';
+
+interface FieldRepresentationProps {
+    field?: Field;
+    shortMode?: boolean;
+    isFieldSelected?: boolean;
+    handleToggleSelectedField?(...args: unknown[]): unknown;
+    showNotAnnotableIcon?: boolean;
+}
 
 function FieldRepresentation({
-    // @ts-expect-error TS7031
     field,
     shortMode = false,
     showNotAnnotableIcon = false,
-    // @ts-expect-error TS7031
-    p: polyglot,
-    // @ts-expect-error TS7031
     isFieldSelected,
-    // @ts-expect-error TS7031
+
     handleToggleSelectedField,
-}) {
+}: FieldRepresentationProps) {
     const { translate } = useTranslate();
     const theme = useTheme();
     if (!field) {
@@ -29,7 +31,7 @@ function FieldRepresentation({
                 variant="body2"
                 sx={{ color: 'neutralDark.light' }}
             >
-                {polyglot.t('field_not_found')}
+                {translate('field_not_found')}
             </Typography>
         );
     }
@@ -58,7 +60,7 @@ function FieldRepresentation({
                             paddingX: 0,
                         }}
                         disableRipple
-                        aria-label={polyglot.t('select_field')}
+                        aria-label={translate('select_field')}
                     />
                 )}
 
@@ -90,6 +92,8 @@ function FieldRepresentation({
                     </Typography>
                 )}
 
+                {/*
+                 // @ts-expect-error TS2339 */}
                 {showNotAnnotableIcon && field.annotable === false && (
                     <Tooltip title={translate('annotation_disabled_tooltip')}>
                         <Box
@@ -110,10 +114,13 @@ function FieldRepresentation({
                 )}
             </Box>
 
+            {/*
+             // @ts-expect-error TS2339 */}
             {(field.internalScopes || field.internalName) && !shortMode && (
                 <Box
                     display="grid"
                     gridTemplateColumns={
+                        // @ts-expect-error TS2339
                         field.internalScopes && field.internalName
                             ? 'auto 1fr'
                             : '1fr'
@@ -121,6 +128,8 @@ function FieldRepresentation({
                     gap={0.5}
                     color="text.secondary"
                 >
+                    {/*
+                     // @ts-expect-error TS2339 */}
                     {field.internalScopes?.length > 0 && (
                         <Box
                             display="flex"
@@ -134,12 +143,15 @@ function FieldRepresentation({
                                 <FieldInternalIcon
                                     key={internalScope}
                                     scope={internalScope}
+                                    // @ts-expect-error TS2322
                                     fontSize="small"
                                 />
                             ))}
                         </Box>
                     )}
 
+                    {/*
+                     // @ts-expect-error TS2339 */}
                     {field.internalName && (
                         <Typography
                             variant="body2"
@@ -153,11 +165,14 @@ function FieldRepresentation({
                             }}
                         >
                             <Tooltip
+                                // @ts-expect-error TS2339
                                 title={field.internalName}
                                 enterDelay={300}
                                 placement="top"
                                 arrow
                             >
+                                {/*
+                                 // @ts-expect-error TS2339 */}
                                 <span>{field.internalName}</span>
                             </Tooltip>
                         </Typography>
@@ -168,13 +183,4 @@ function FieldRepresentation({
     );
 }
 
-FieldRepresentation.propTypes = {
-    field: PropTypes.object.isRequired,
-    shortMode: PropTypes.bool,
-    isFieldSelected: PropTypes.bool,
-    handleToggleSelectedField: PropTypes.func,
-    p: polyglotPropTypes.isRequired,
-    showNotAnnotableIcon: PropTypes.bool,
-};
-
-export default translate(FieldRepresentation);
+export default FieldRepresentation;

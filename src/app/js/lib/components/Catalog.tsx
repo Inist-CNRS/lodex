@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
 import {
     List,
     ListItemText,
@@ -40,8 +39,21 @@ const styles = {
     },
 };
 
-// @ts-expect-error TS7031
-const EnricherDescription = ({ enricher, translatePrefix }) => {
+interface EnricherDescriptionProps {
+    enricher: {
+        id: string;
+        doc?: string;
+        swagger?: string;
+        objectifTDM?: string;
+        code?: string;
+    };
+    translatePrefix: string;
+}
+
+const EnricherDescription = ({
+    enricher,
+    translatePrefix,
+}: EnricherDescriptionProps) => {
     const { translate } = useTranslate();
     return (
         <React.Fragment>
@@ -92,20 +104,36 @@ const EnricherDescription = ({ enricher, translatePrefix }) => {
     );
 };
 
+interface EnrichmentCatalogProps {
+    isOpen: boolean;
+    handleClose(...args: unknown[]): unknown;
+    onChange(...args: unknown[]): unknown;
+    selectedWebServiceUrl?: string;
+    enrichers: {
+        id: string;
+        type: string;
+        url: string;
+        doc?: string;
+        swagger?: string;
+        objectifTDM?: string;
+        code?: string;
+    }[];
+    translatePrefix: string;
+}
+
 export const EnrichmentCatalog = ({
-    // @ts-expect-error TS7031
     isOpen,
-    // @ts-expect-error TS7031
+
     handleClose,
-    // @ts-expect-error TS7031
+
     onChange,
-    // @ts-expect-error TS7031
+
     selectedWebServiceUrl,
-    // @ts-expect-error TS7031
+
     enrichers,
-    // @ts-expect-error TS7031
+
     translatePrefix,
-}) => {
+}: EnrichmentCatalogProps) => {
     const { translate } = useTranslate();
     const filters = (
         [
@@ -123,8 +151,7 @@ export const EnrichmentCatalog = ({
     useEffect(() => {
         setFilterEnricher(
             selectedFilter && selectedFilter !== 'all'
-                ? // @ts-expect-error TS7006
-                  enrichers.filter((item) => item.type === selectedFilter)
+                ? enrichers.filter((item) => item.type === selectedFilter)
                 : enrichers,
         );
     }, [selectedFilter]);
@@ -185,8 +212,6 @@ export const EnrichmentCatalog = ({
                     aria-label="format list"
                     style={{ height: '70vh' }}
                 >
-                    {/*
-                     // @ts-expect-error TS7006 */}
                     {filteredEnricher.map((enricher) => (
                         <ListItem
                             key={enricher.id}
@@ -230,36 +255,6 @@ export const EnrichmentCatalog = ({
             </DialogActions>
         </Dialog>
     );
-};
-
-EnrichmentCatalog.propTypes = {
-    isOpen: PropTypes.bool.isRequired,
-    handleClose: PropTypes.func.isRequired,
-    onChange: PropTypes.func.isRequired,
-    selectedWebServiceUrl: PropTypes.string,
-    enrichers: PropTypes.arrayOf(
-        PropTypes.shape({
-            id: PropTypes.string.isRequired,
-            type: PropTypes.string.isRequired,
-            url: PropTypes.string.isRequired,
-            doc: PropTypes.string,
-            swagger: PropTypes.string,
-            objectifTDM: PropTypes.string,
-            code: PropTypes.string,
-        }).isRequired,
-    ).isRequired,
-    translatePrefix: PropTypes.string.isRequired,
-};
-
-EnricherDescription.propTypes = {
-    enricher: PropTypes.shape({
-        id: PropTypes.string.isRequired,
-        doc: PropTypes.string,
-        swagger: PropTypes.string,
-        objectifTDM: PropTypes.string,
-        code: PropTypes.string,
-    }).isRequired,
-    translatePrefix: PropTypes.string.isRequired,
 };
 
 export default EnrichmentCatalog;

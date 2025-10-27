@@ -5,11 +5,11 @@ import {
     AnnotationList,
     getAnnotationSummaryValue,
     getAnnotationTitle,
+    type AnnotationListProps,
 } from './AnnotationList';
 import { MODE_ALL } from './HistoryDrawer.const';
 
-// @ts-expect-error TS7031
-function TestAnnotationList({ field, annotations }) {
+function TestAnnotationList({ field, annotations }: AnnotationListProps) {
     const [mode, setMode] = React.useState(MODE_ALL);
     return (
         <TestI18N>
@@ -22,11 +22,6 @@ function TestAnnotationList({ field, annotations }) {
         </TestI18N>
     );
 }
-
-TestAnnotationList.propTypes = {
-    field: AnnotationList.propTypes.field,
-    annotations: AnnotationList.propTypes.annotations,
-};
 
 describe('AnnotationList', () => {
     describe('getAnnotationSummaryValue', () => {
@@ -302,72 +297,73 @@ describe('AnnotationList', () => {
                 },
             ];
             const field = { label: 'fieldLabel' };
-            const wrapper = render(
+            const screen = render(
+                // @ts-expect-error TS7006
                 <TestAnnotationList annotations={annotations} field={field} />,
             );
             expect(
-                wrapper.queryByText(
+                screen.queryByText(
                     'annotation_history_for_field+{"fieldLabel":"fieldLabel"}',
                 ),
             ).toBeInTheDocument();
             expect(
-                wrapper.queryByLabelText('annotation_resource'),
+                screen.queryByLabelText('annotation_resource'),
             ).toHaveTextContent('resourceTitle');
 
-            expect(wrapper.queryAllByLabelText('annotation_kind')).toHaveLength(
+            expect(screen.queryAllByLabelText('annotation_kind')).toHaveLength(
                 4,
             );
 
             expect(
-                wrapper.queryAllByLabelText('annotation_summary_value'),
+                screen.queryAllByLabelText('annotation_summary_value'),
             ).toHaveLength(4);
 
             expect(
-                wrapper.queryAllByLabelText('annotation_status'),
+                screen.queryAllByLabelText('annotation_status'),
             ).toHaveLength(4);
 
-            expect(wrapper.queryAllByLabelText('own_annotation')).toHaveLength(
+            expect(screen.queryAllByLabelText('own_annotation')).toHaveLength(
                 1,
             );
 
             expect(
-                wrapper.queryAllByLabelText('annotation_kind')[0],
+                screen.queryAllByLabelText('annotation_kind')[0],
             ).toHaveTextContent('comment');
             expect(
-                wrapper.queryAllByLabelText('annotation_summary_value')[0],
+                screen.queryAllByLabelText('annotation_summary_value')[0],
             ).toHaveTextContent('A comment');
             expect(
-                wrapper.queryAllByLabelText('annotation_status')[0],
+                screen.queryAllByLabelText('annotation_status')[0],
             ).toHaveTextContent('annotation_status_ongoing');
 
             expect(
-                wrapper.queryAllByLabelText('annotation_kind')[1],
+                screen.queryAllByLabelText('annotation_kind')[1],
             ).toHaveTextContent('addition');
             expect(
-                wrapper.queryAllByLabelText('annotation_summary_value')[1],
+                screen.queryAllByLabelText('annotation_summary_value')[1],
             ).toHaveTextContent('this');
             expect(
-                wrapper.queryAllByLabelText('annotation_status')[1],
+                screen.queryAllByLabelText('annotation_status')[1],
             ).toHaveTextContent('annotation_status_ongoing');
 
             expect(
-                wrapper.queryAllByLabelText('annotation_kind')[2],
+                screen.queryAllByLabelText('annotation_kind')[2],
             ).toHaveTextContent('removal');
             expect(
-                wrapper.queryAllByLabelText('annotation_summary_value')[2],
+                screen.queryAllByLabelText('annotation_summary_value')[2],
             ).toHaveTextContent('that');
             expect(
-                wrapper.queryAllByLabelText('annotation_status')[2],
+                screen.queryAllByLabelText('annotation_status')[2],
             ).toHaveTextContent('annotation_status_validated');
 
             expect(
-                wrapper.queryAllByLabelText('annotation_kind')[3],
+                screen.queryAllByLabelText('annotation_kind')[3],
             ).toHaveTextContent('correction');
             expect(
-                wrapper.queryAllByLabelText('annotation_summary_value')[3],
+                screen.queryAllByLabelText('annotation_summary_value')[3],
             ).toHaveTextContent('that -> this');
             expect(
-                wrapper.queryAllByLabelText('annotation_status')[3],
+                screen.queryAllByLabelText('annotation_status')[3],
             ).toHaveTextContent('annotation_status_rejected');
         });
         it('should display an annotation details', () => {
@@ -390,34 +386,35 @@ describe('AnnotationList', () => {
                 },
             ];
             const field = { label: 'fieldLabel' };
-            const wrapper = render(
+            const screen = render(
+                // @ts-expect-error TS7006
                 <TestAnnotationList annotations={annotations} field={field} />,
             );
             expect(
-                wrapper.queryByText('own_annotation'),
+                screen.queryByText('own_annotation'),
             ).not.toBeInTheDocument();
             expect(
-                wrapper.queryByLabelText('annotation_initial_value'),
+                screen.queryByLabelText('annotation_initial_value'),
             ).toHaveTextContent('this');
             expect(
-                wrapper.queryByLabelText(
+                screen.queryByLabelText(
                     'annotation_proposed_value+{"smart_count":1}',
                 ),
             ).toHaveTextContent('that');
             expect(
-                wrapper.queryByLabelText('annotation_contributor_section'),
+                screen.queryByLabelText('annotation_contributor_section'),
             ).toHaveTextContent('hidden');
             expect(
-                wrapper.queryByLabelText('annotation_comment_section'),
+                screen.queryByLabelText('annotation_comment_section'),
             ).toHaveTextContent('replace this with that');
             expect(
-                wrapper.queryByLabelText('annotation_admin_comment_section'),
+                screen.queryByLabelText('annotation_admin_comment_section'),
             ).toHaveTextContent('Can you please provide more context?');
             expect(
-                wrapper.queryByLabelText('annotation_updated_at'),
+                screen.queryByLabelText('annotation_updated_at'),
             ).toHaveTextContent('10/1/2025');
             expect(
-                wrapper.queryByLabelText('annotation_created_at'),
+                screen.queryByLabelText('annotation_created_at'),
             ).toHaveTextContent('9/1/2025');
         });
 
@@ -442,34 +439,35 @@ describe('AnnotationList', () => {
                 },
             ];
             const field = { label: 'fieldLabel' };
-            const wrapper = render(
+            const screen = render(
+                // @ts-expect-error TS7006
                 <TestAnnotationList annotations={annotations} field={field} />,
             );
             expect(
-                wrapper.queryByText('own_annotation'),
+                screen.queryByText('own_annotation'),
             ).not.toBeInTheDocument();
             expect(
-                wrapper.queryByLabelText('annotation_initial_value'),
+                screen.queryByLabelText('annotation_initial_value'),
             ).toHaveTextContent('this');
             expect(
-                wrapper.queryByLabelText(
+                screen.queryByLabelText(
                     'annotation_proposed_value+{"smart_count":1}',
                 ),
             ).toHaveTextContent('that');
             expect(
-                wrapper.queryByLabelText('annotation_contributor_section'),
+                screen.queryByLabelText('annotation_contributor_section'),
             ).toHaveTextContent('author name');
             expect(
-                wrapper.queryByLabelText('annotation_comment_section'),
+                screen.queryByLabelText('annotation_comment_section'),
             ).toHaveTextContent('replace this with that');
             expect(
-                wrapper.queryByLabelText('annotation_admin_comment_section'),
+                screen.queryByLabelText('annotation_admin_comment_section'),
             ).toHaveTextContent('Can you please provide more context?');
             expect(
-                wrapper.queryByLabelText('annotation_updated_at'),
+                screen.queryByLabelText('annotation_updated_at'),
             ).toHaveTextContent('10/1/2025');
             expect(
-                wrapper.queryByLabelText('annotation_created_at'),
+                screen.queryByLabelText('annotation_created_at'),
             ).toHaveTextContent('9/1/2025');
         });
 
@@ -492,11 +490,12 @@ describe('AnnotationList', () => {
                 },
             ];
             const field = { label: 'fieldLabel' };
-            const wrapper = render(
+            const screen = render(
+                // @ts-expect-error TS7006
                 <TestAnnotationList annotations={annotations} field={field} />,
             );
             expect(
-                wrapper.queryByLabelText('annotation_initial_value'),
+                screen.queryByLabelText('annotation_initial_value'),
             ).not.toBeInTheDocument();
         });
         it('should hide initial value when kind is comment', () => {
@@ -518,11 +517,12 @@ describe('AnnotationList', () => {
                 },
             ];
             const field = { label: 'fieldLabel' };
-            const wrapper = render(
+            const screen = render(
+                // @ts-expect-error TS7006
                 <TestAnnotationList annotations={annotations} field={field} />,
             );
             expect(
-                wrapper.queryByLabelText('annotation_initial_value'),
+                screen.queryByLabelText('annotation_initial_value'),
             ).not.toBeInTheDocument();
         });
         it.each([
@@ -556,14 +556,15 @@ describe('AnnotationList', () => {
                     },
                 ];
                 const field = { label: 'fieldLabel' };
-                const wrapper = render(
+                const screen = render(
                     <TestAnnotationList
+                        // @ts-expect-error TS7006
                         annotations={annotations}
                         field={field}
                     />,
                 );
                 expect(
-                    wrapper.queryByLabelText('annotation_initial_value'),
+                    screen.queryByLabelText('annotation_initial_value'),
                 ).toHaveTextContent('""');
             },
         );
@@ -620,29 +621,30 @@ describe('AnnotationList', () => {
                 },
             ];
             const field = { label: 'fieldLabel' };
-            const wrapper = render(
+            const screen = render(
+                // @ts-expect-error TS7006
                 <TestAnnotationList annotations={annotations} field={field} />,
             );
 
             await act(async () => {
-                wrapper.getByLabelText('collapse_all_annotations').click();
+                screen.getByLabelText('collapse_all_annotations').click();
             });
 
             expect(
-                wrapper.queryAllByLabelText('annotation_initial_value'),
+                screen.queryAllByLabelText('annotation_initial_value'),
             ).toHaveLength(2);
-            wrapper
+            screen
                 .queryAllByLabelText('annotation_initial_value')
                 .forEach((element) => {
                     expect(element).not.toBeVisible();
                 });
             expect(
-                wrapper.queryAllByLabelText(
+                screen.queryAllByLabelText(
                     'annotation_proposed_value+{"smart_count":1}',
                 ),
             ).toHaveLength(2);
 
-            wrapper
+            screen
                 .queryAllByLabelText(
                     'annotation_proposed_value+{"smart_count":1}',
                 )
@@ -650,49 +652,49 @@ describe('AnnotationList', () => {
                     expect(element).not.toBeVisible();
                 });
             expect(
-                wrapper.queryAllByLabelText('annotation_comment_section'),
+                screen.queryAllByLabelText('annotation_comment_section'),
             ).toHaveLength(4);
-            wrapper
+            screen
                 .queryAllByLabelText('annotation_comment_section')
                 .forEach((element) => {
                     expect(element).not.toBeVisible();
                 });
             expect(
-                wrapper.queryAllByLabelText('annotation_updated_at'),
+                screen.queryAllByLabelText('annotation_updated_at'),
             ).toHaveLength(4);
-            wrapper
+            screen
                 .queryAllByLabelText('annotation_updated_at')
                 .forEach((element) => {
                     expect(element).not.toBeVisible();
                 });
             expect(
-                wrapper.queryAllByLabelText('annotation_created_at'),
+                screen.queryAllByLabelText('annotation_created_at'),
             ).toHaveLength(4);
-            wrapper
+            screen
                 .queryAllByLabelText('annotation_created_at')
                 .forEach((element) => {
                     expect(element).not.toBeVisible();
                 });
 
             await act(async () => {
-                wrapper.getByLabelText('expand_all_annotations').click();
+                screen.getByLabelText('expand_all_annotations').click();
             });
 
             expect(
-                wrapper.queryAllByLabelText('annotation_initial_value'),
+                screen.queryAllByLabelText('annotation_initial_value'),
             ).toHaveLength(2);
-            wrapper
+            screen
                 .queryAllByLabelText('annotation_initial_value')
                 .forEach((element) => {
                     expect(element).toBeVisible();
                 });
             expect(
-                wrapper.queryAllByLabelText(
+                screen.queryAllByLabelText(
                     'annotation_proposed_value+{"smart_count":1}',
                 ),
             ).toHaveLength(2);
 
-            wrapper
+            screen
                 .queryAllByLabelText(
                     'annotation_proposed_value+{"smart_count":1}',
                 )
@@ -700,25 +702,25 @@ describe('AnnotationList', () => {
                     expect(element).toBeVisible();
                 });
             expect(
-                wrapper.queryAllByLabelText('annotation_comment_section'),
+                screen.queryAllByLabelText('annotation_comment_section'),
             ).toHaveLength(4);
-            wrapper
+            screen
                 .queryAllByLabelText('annotation_comment_section')
                 .forEach((element) => {
                     expect(element).toBeVisible();
                 });
             expect(
-                wrapper.queryAllByLabelText('annotation_updated_at'),
+                screen.queryAllByLabelText('annotation_updated_at'),
             ).toHaveLength(4);
-            wrapper
+            screen
                 .queryAllByLabelText('annotation_updated_at')
                 .forEach((element) => {
                     expect(element).toBeVisible();
                 });
             expect(
-                wrapper.queryAllByLabelText('annotation_created_at'),
+                screen.queryAllByLabelText('annotation_created_at'),
             ).toHaveLength(4);
-            wrapper
+            screen
                 .queryAllByLabelText('annotation_created_at')
                 .forEach((element) => {
                     expect(element).toBeVisible();
@@ -742,10 +744,11 @@ describe('AnnotationList', () => {
                 },
             ];
             const field = { label: 'fieldLabel' };
-            const wrapper = render(
+            const screen = render(
+                // @ts-expect-error TS7006
                 <TestAnnotationList annotations={annotations} field={field} />,
             );
-            expect(wrapper.queryByText('own_annotation')).toBeInTheDocument();
+            expect(screen.queryByText('own_annotation')).toBeInTheDocument();
         });
 
         it('should convert to_review status to ongoing', () => {
@@ -763,11 +766,12 @@ describe('AnnotationList', () => {
                 },
             ];
             const field = { label: 'fieldLabel' };
-            const wrapper = render(
+            const screen = render(
+                // @ts-expect-error TS7006
                 <TestAnnotationList annotations={annotations} field={field} />,
             );
             expect(
-                wrapper.queryAllByLabelText('annotation_status')[0],
+                screen.queryAllByLabelText('annotation_status')[0],
             ).toHaveTextContent('annotation_status_ongoing');
         });
     });

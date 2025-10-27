@@ -1,7 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
-import { translate } from '../../i18n/I18NContext';
 
 import { fromFields } from '../../sharedSelectors';
 
@@ -21,21 +19,23 @@ import {
 } from '@mui/material';
 
 import TransformerArg from './TransformerArg';
-import { polyglot as polyglotPropTypes } from '../../propTypes';
 import CancelButton from '../../lib/components/CancelButton';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
+import { useTranslate } from '../../i18n/I18NContext';
+
+interface TransformerItemProps {
+    selected?: boolean;
+    name: string;
+    docUrl?: string;
+}
 
 export const TransformerItem = ({
-    // @ts-expect-error TS7031
     selected,
-    // @ts-expect-error TS7031
     name,
-    // @ts-expect-error TS7031
     docUrl,
-    // @ts-expect-error TS7031
-    polyglot,
     ...props
-}) => {
+}: TransformerItemProps) => {
+    const { translate } = useTranslate();
     return (
         <ListItemButton
             {...props}
@@ -65,7 +65,7 @@ export const TransformerItem = ({
                 color="textSecondary"
                 sx={{ width: '100%' }}
             >
-                {polyglot.t(`transformer_${name}`)}
+                {translate(`transformer_${name}`)}
             </Typography>
             {docUrl && (
                 <Link
@@ -78,7 +78,7 @@ export const TransformerItem = ({
                     href={docUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    aria-label={polyglot.t('tooltip_documentation')}
+                    aria-label={translate('tooltip_documentation')}
                     onClick={(e) => e.stopPropagation()}
                 >
                     <MenuBookIcon />
@@ -88,31 +88,36 @@ export const TransformerItem = ({
     );
 };
 
-TransformerItem.propTypes = {
-    selected: PropTypes.bool.isRequired,
-    name: PropTypes.string.isRequired,
-    docUrl: PropTypes.string,
-    polyglot: polyglotPropTypes.isRequired,
-};
+interface TransformerUpsertDialogProps {
+    availableTransformers?: unknown[];
+    docUrlByTransformer: Record<string, string>;
+    fields: unknown[];
+    append(...args: unknown[]): unknown;
+    update(...args: unknown[]): unknown;
+    handleClose(...args: unknown[]): unknown;
+    indexFieldToEdit?: number;
+    isOpen?: boolean;
+    p: unknown;
+}
 
 const TransformerUpsertDialog = ({
-    // @ts-expect-error TS7031
     availableTransformers,
-    // @ts-expect-error TS7031
+
     docUrlByTransformer,
-    // @ts-expect-error TS7031
+
     fields,
-    // @ts-expect-error TS7031
+
     append,
-    // @ts-expect-error TS7031
+
     update,
+
+    // @ts-expect-error TS2322
     indexFieldToEdit = null,
     isOpen = false,
-    // @ts-expect-error TS7031
+
     handleClose,
-    // @ts-expect-error TS7031
-    p: polyglot,
-}) => {
+}: TransformerUpsertDialogProps) => {
+    const { translate } = useTranslate();
     const [transformer, setTransformer] = React.useState(
         indexFieldToEdit !== null ? fields?.[indexFieldToEdit] ?? {} : {},
     );
@@ -145,24 +150,25 @@ const TransformerUpsertDialog = ({
         <Dialog open={isOpen} onClose={handleClose} scroll="body" maxWidth="lg">
             <DialogTitle>
                 {indexFieldToEdit !== null
-                    ? polyglot.t('edit_transformer')
-                    : polyglot.t('add_transformer')}
+                    ? translate('edit_transformer')
+                    : translate('add_transformer')}
             </DialogTitle>
 
             <DialogContent style={{ padding: 10, width: '800px' }}>
                 <Box display={'flex'} flexDirection="column">
                     <Autocomplete
-                        aria-label={polyglot.t('select_an_operation')}
+                        aria-label={translate('select_an_operation')}
+                        // @ts-expect-error TS2339
                         value={transformer.operation || ''}
-                        // @ts-expect-error TS6133
-                        onChange={(event, newValue) => {
+                        onChange={(_event, newValue) => {
                             handleChangeOperation(newValue);
                         }}
+                        // @ts-expect-error TS2322
                         options={availableTransformers}
                         renderInput={(params) => (
                             <TextField
                                 {...params}
-                                label={polyglot.t('select_an_operation')}
+                                label={translate('select_an_operation')}
                                 variant="outlined"
                             />
                         )}
@@ -174,7 +180,6 @@ const TransformerUpsertDialog = ({
                                     name={option}
                                     docUrl={docUrlByTransformer[option]}
                                     selected={state.selected}
-                                    polyglot={polyglot}
                                 />
                             );
                         }}
@@ -182,10 +187,10 @@ const TransformerUpsertDialog = ({
                     <TransformerArg
                         // @ts-expect-error TS2322
                         operation={transformer.operation}
+                        // @ts-expect-error TS2339
                         transformerArgs={transformer.args}
                         // @ts-expect-error TS7006
                         onChange={(args) => {
-                            // @ts-expect-error TS7006
                             setTransformer((transformer) => ({
                                 ...transformer,
                                 args,
@@ -196,34 +201,22 @@ const TransformerUpsertDialog = ({
             </DialogContent>
             <DialogActions>
                 <CancelButton
-                    aria-label={polyglot.t('cancel')}
+                    aria-label={translate('cancel')}
                     onClick={handleClose}
                 >
-                    {polyglot.t('cancel')}
+                    {translate('cancel')}
                 </CancelButton>
                 <Button
-                    aria-label={polyglot.t('confirm')}
+                    aria-label={translate('confirm')}
                     color="primary"
                     variant="contained"
                     onClick={handleUpsert}
                 >
-                    {polyglot.t('confirm')}
+                    {translate('confirm')}
                 </Button>
             </DialogActions>
         </Dialog>
     );
-};
-
-TransformerUpsertDialog.propTypes = {
-    availableTransformers: PropTypes.array,
-    docUrlByTransformer: PropTypes.objectOf(PropTypes.string).isRequired,
-    fields: PropTypes.array.isRequired,
-    append: PropTypes.func.isRequired,
-    update: PropTypes.func.isRequired,
-    handleClose: PropTypes.func.isRequired,
-    indexFieldToEdit: PropTypes.number,
-    isOpen: PropTypes.bool,
-    p: polyglotPropTypes.isRequired,
 };
 
 // @ts-expect-error TS7006
@@ -243,6 +236,5 @@ const mapStateToProps = (state, { type }) => {
 
 export default compose(
     connect(mapStateToProps, null),
-    translate,
     // @ts-expect-error TS2345
 )(TransformerUpsertDialog);

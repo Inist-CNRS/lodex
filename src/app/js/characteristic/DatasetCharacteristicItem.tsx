@@ -1,13 +1,11 @@
-// @ts-expect-error TS6133
-import React from 'react';
-import PropTypes from 'prop-types';
 import camelCase from 'lodash/camelCase';
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useInView } from 'react-intersection-observer';
 
 import Property from '../public/Property';
 import { fromFields, fromCharacteristic } from '../sharedSelectors';
-import { field as fieldPropTypes } from '../propTypes';
+import type { CSSProperties } from 'react';
+import type { State } from '../admin/reducers';
 
 const LOADING_BOX_HEIGHT = 250;
 
@@ -22,25 +20,40 @@ const styles = {
     },
 };
 
+interface DatasetCharacteristicItemComponentProps {
+    characteristic: {
+        name: string;
+    };
+    style: CSSProperties;
+}
+
 export const DatasetCharacteristicItemComponent = ({
-    // @ts-expect-error TS7031
-    resource,
-    // @ts-expect-error TS7031
-    field,
-    // @ts-expect-error TS7031
+    characteristic: { name },
     style,
-}) => {
+}: DatasetCharacteristicItemComponentProps) => {
     const [ref, inView] = useInView({
         triggerOnce: true,
         rootMargin: `${LOADING_BOX_HEIGHT * 2}px 0px`,
     });
 
+    const field = useSelector((state: State) =>
+        fromFields.getFieldByName(state, name),
+    );
+
+    const getCharacteristicsAsResource = useSelector(
+        fromCharacteristic.getCharacteristicsAsResource,
+    );
+    const resource = {
+        name,
+        ...getCharacteristicsAsResource,
+    };
+
     return (
         <>
             <div ref={ref} style={inView ? styles.loaded : styles.loading} />
             {inView && (
+                // @ts-expect-error TS2322
                 <Property
-                    // @ts-expect-error TS2322
                     resource={resource}
                     field={field}
                     style={style}
@@ -51,21 +64,4 @@ export const DatasetCharacteristicItemComponent = ({
     );
 };
 
-DatasetCharacteristicItemComponent.propTypes = {
-    resource: PropTypes.shape({
-        uri: PropTypes.string,
-    }).isRequired,
-    field: fieldPropTypes.isRequired,
-    style: PropTypes.shape({}).isRequired,
-};
-
-// @ts-expect-error TS7006
-const mapStateToProps = (state, { characteristic: { name } }) => ({
-    field: fromFields.getFieldByName(state, name),
-    resource: {
-        name,
-        ...fromCharacteristic.getCharacteristicsAsResource(state),
-    },
-});
-
-export default connect(mapStateToProps)(DatasetCharacteristicItemComponent);
+export default DatasetCharacteristicItemComponent;

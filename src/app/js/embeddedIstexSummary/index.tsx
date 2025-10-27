@@ -1,24 +1,24 @@
 import '@babel/polyfill';
 import 'url-api-polyfill';
 
-// @ts-expect-error TS6133
-import React from 'react';
-
-// ignoring deprecation warning react 18 we are using version 17
-// eslint-disable-next-line react/no-deprecated
-import { render } from 'react-dom';
-import Polyglot from 'node-polyglot';
+import { createRoot } from 'react-dom/client';
 
 import {
     createTheme,
     ThemeProvider as MuiThemeProvider,
 } from '@mui/material/styles';
 
-import phrasesFor from '../i18n/translations';
-import getLocale from '../../../common/getLocale';
 import defaultMuiTheme from '../../custom/themes/default/defaultTheme';
 import FieldProvider from './FieldProvider';
 import { IstexSummaryView } from '../formats/other/istexSummary/IstexSummaryView';
+import { I18NContext } from '../i18n/I18NContext';
+import getLocale from '../../../common/getLocale';
+import Polyglot from 'node-polyglot';
+import phrasesFor from '../i18n/translations';
+
+const theme = createTheme(defaultMuiTheme, {
+    userAgent: navigator.userAgent,
+});
 
 const locale = getLocale();
 const polyglot = new Polyglot({
@@ -26,38 +26,41 @@ const polyglot = new Polyglot({
     phrases: phrasesFor(locale),
 });
 
-const theme = createTheme(defaultMuiTheme, {
-    userAgent: navigator.userAgent,
-});
-
 // @ts-expect-error TS7006
 const App = (props) => (
     <MuiThemeProvider theme={theme}>
-        <FieldProvider {...props}>
-            {/*
-             // @ts-expect-error TS7031 */}
-            {({ resource, field, formatData }) => (
-                <IstexSummaryView
-                    {...field.format.args}
-                    field={field}
-                    resource={resource}
-                    formatData={formatData}
-                    p={polyglot}
-                    showEmbedButton={false}
-                />
-            )}
-        </FieldProvider>
+        <I18NContext.Provider
+            value={{
+                locale,
+                translate: polyglot.t.bind(polyglot),
+                setLanguage: () => {},
+            }}
+        >
+            <FieldProvider {...props}>
+                {({ resource, field, formatData }) => (
+                    // @ts-expect-error TS2322
+                    <IstexSummaryView
+                        {...field.format.args}
+                        field={field}
+                        resource={resource}
+                        formatData={formatData}
+                        showEmbedButton={false}
+                    />
+                )}
+            </FieldProvider>
+        </I18NContext.Provider>
     </MuiThemeProvider>
 );
 
 const elements = document.querySelectorAll('.embedded-istex-summary');
 
 elements.forEach((element) => {
+    const root = createRoot(element);
     const props = {
         api: element.getAttribute('data-api'),
         uri: element.getAttribute('data-uri'),
         fieldName: element.getAttribute('data-field-name'),
     };
 
-    render(<App {...props} />, element);
+    root.render(<App {...props} />);
 });

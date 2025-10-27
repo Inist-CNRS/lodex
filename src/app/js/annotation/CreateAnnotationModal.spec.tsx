@@ -1,12 +1,13 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { setTimeout } from 'node:timers/promises';
-import PropTypes from 'prop-types';
-// @ts-expect-error TS6133
-import React from 'react';
 
-import { fireEvent, render, screen, waitFor } from '../../../test-utils';
+import { render } from '../../../test-utils';
 import { TestI18N } from '../i18n/I18NContext';
-import { CreateAnnotationModal } from './CreateAnnotationModal';
+import {
+    CreateAnnotationModal,
+    type CreateAnnotationModalProps,
+} from './CreateAnnotationModal';
+import { fireEvent, waitFor } from '@testing-library/dom';
 
 jest.mock('./useGetFieldAnnotation', () => ({
     useGetFieldAnnotation: jest.fn().mockReturnValue({
@@ -18,16 +19,14 @@ jest.mock('./useGetFieldAnnotation', () => ({
 
 const queryClient = new QueryClient();
 
-// @ts-expect-error TS7031
-function TestModal({ field, ...props }) {
+function TestModal({ field, ...props }: Partial<CreateAnnotationModalProps>) {
     return (
         <TestI18N>
             <QueryClientProvider client={queryClient}>
-                {/*
-                 // @ts-expect-error TS2739 */}
                 <CreateAnnotationModal
                     initialValue={null}
                     resourceUri="/"
+                    // @ts-expect-error TS2322
                     field={{
                         _id: '87a3b1c0-0b1b-4b1b-8b1b-1b1b1b1b1b1b',
                         label: 'Field Label',
@@ -43,14 +42,6 @@ function TestModal({ field, ...props }) {
     );
 }
 
-TestModal.propTypes = {
-    onClose: PropTypes.func.isRequired,
-    onSubmit: PropTypes.func.isRequired,
-    isSubmitting: PropTypes.bool.isRequired,
-    openHistory: PropTypes.func,
-    field: PropTypes.object,
-};
-
 describe('CreateAnnotationModal', () => {
     const onClose = jest.fn();
     const onSubmit = jest.fn();
@@ -63,8 +54,7 @@ describe('CreateAnnotationModal', () => {
 
     describe('actions', () => {
         it('should enable cancel action when not submitting', async () => {
-            render(
-                // @ts-expect-error TS2741
+            const screen = render(
                 <TestModal
                     onClose={onClose}
                     onSubmit={onSubmit}
@@ -80,8 +70,7 @@ describe('CreateAnnotationModal', () => {
         });
 
         it('should enable next button if comment is valid', async () => {
-            render(
-                // @ts-expect-error TS2741
+            const screen = render(
                 <TestModal
                     onClose={onClose}
                     onSubmit={onSubmit}
@@ -110,8 +99,7 @@ describe('CreateAnnotationModal', () => {
         });
 
         it('should disable actions when submitting', async () => {
-            render(
-                // @ts-expect-error TS2741
+            const screen = render(
                 <TestModal
                     onClose={onClose}
                     onSubmit={onSubmit}
@@ -143,8 +131,7 @@ describe('CreateAnnotationModal', () => {
         });
 
         it('should submit form values', async () => {
-            render(
-                // @ts-expect-error TS2741
+            const screen = render(
                 <TestModal
                     onClose={onClose}
                     onSubmit={onSubmit}
@@ -213,8 +200,7 @@ describe('CreateAnnotationModal', () => {
 
     describe('step orders', () => {
         it('should start on COMMENT_STEP when isFieldValueAnnotable is false', () => {
-            const wrapper = render(
-                // @ts-expect-error TS2741
+            const screen = render(
                 <TestModal
                     onClose={onClose}
                     onSubmit={onSubmit}
@@ -224,34 +210,33 @@ describe('CreateAnnotationModal', () => {
             );
 
             expect(
-                wrapper.getByRole('tab', {
+                screen.getByRole('tab', {
                     name: 'annotation_step_comment',
                 }),
             ).toBeInTheDocument();
 
-            expect(wrapper.getByText('annotation_history')).toBeInTheDocument();
+            expect(screen.getByText('annotation_history')).toBeInTheDocument();
 
             expect(
-                wrapper.queryByRole('tab', {
+                screen.queryByRole('tab', {
                     name: 'annotation_step_target',
                 }),
             ).not.toBeInTheDocument();
 
             expect(
-                wrapper.queryByRole('tab', {
+                screen.queryByRole('tab', {
                     name: 'annotation_step_author',
                 }),
             ).not.toBeInTheDocument();
 
             expect(
-                wrapper.queryByRole('tab', {
+                screen.queryByRole('tab', {
                     name: 'annotation_step_value',
                 }),
             ).not.toBeInTheDocument();
         });
         it('should start on TARGET_STEP when isFieldValueAnnotable is true', () => {
-            const wrapper = render(
-                // @ts-expect-error TS2741
+            const screen = render(
                 <TestModal
                     onClose={onClose}
                     onSubmit={onSubmit}
@@ -262,38 +247,39 @@ describe('CreateAnnotationModal', () => {
             );
 
             expect(
-                wrapper.queryByRole('tab', {
+                screen.queryByRole('tab', {
                     name: 'annotation_step_target',
                 }),
             ).toBeInTheDocument();
 
             expect(
-                wrapper.queryByRole('tab', {
+                screen.queryByRole('tab', {
                     name: 'annotation_step_comment',
                 }),
             ).not.toBeInTheDocument();
 
             expect(
-                wrapper.queryByRole('tab', {
+                screen.queryByRole('tab', {
                     name: 'annotation_step_author',
                 }),
             ).not.toBeInTheDocument();
 
             expect(
-                wrapper.queryByRole('tab', {
+                screen.queryByRole('tab', {
                     name: 'annotation_step_value',
                 }),
             ).not.toBeInTheDocument();
         });
 
         it('should start on COMMENT_STEP when no annotation kind other than comment is enabled', () => {
-            const wrapper = render(
+            const screen = render(
                 <TestModal
                     onClose={onClose}
                     onSubmit={onSubmit}
                     isSubmitting={false}
                     initialValue="initialValue"
                     isFieldValueAnnotable={true}
+                    // @ts-expect-error TS2739
                     field={{
                         enableAnnotationKindAddition: false,
                         enableAnnotationKindCorrection: false,
@@ -303,25 +289,25 @@ describe('CreateAnnotationModal', () => {
             );
 
             expect(
-                wrapper.queryByRole('tab', {
+                screen.queryByRole('tab', {
                     name: 'annotation_step_target',
                 }),
             ).not.toBeInTheDocument();
 
             expect(
-                wrapper.queryByRole('tab', {
+                screen.queryByRole('tab', {
                     name: 'annotation_step_comment',
                 }),
             ).toBeInTheDocument();
 
             expect(
-                wrapper.queryByRole('tab', {
+                screen.queryByRole('tab', {
                     name: 'annotation_step_author',
                 }),
             ).not.toBeInTheDocument();
 
             expect(
-                wrapper.queryByRole('tab', {
+                screen.queryByRole('tab', {
                     name: 'annotation_step_value',
                 }),
             ).not.toBeInTheDocument();
@@ -329,9 +315,9 @@ describe('CreateAnnotationModal', () => {
     });
 
     describe('value tab', () => {
+        let screen: ReturnType<typeof render>;
         beforeEach(async () => {
-            render(
-                // @ts-expect-error TS2741
+            screen = render(
                 <TestModal
                     onClose={onClose}
                     onSubmit={onSubmit}
@@ -384,8 +370,7 @@ describe('CreateAnnotationModal', () => {
         it.each([['close', 'cancel']])(
             'should call onClose when clicking on %s button when form is not dirty',
             async (label) => {
-                render(
-                    // @ts-expect-error TS2741
+                const screen = render(
                     <TestModal
                         onClose={onClose}
                         onSubmit={onSubmit}
@@ -405,8 +390,7 @@ describe('CreateAnnotationModal', () => {
         it.each([['close', 'cancel']])(
             'should call onClose after confirm when clicking on %s button when form is dirty',
             async (label) => {
-                render(
-                    // @ts-expect-error TS2741
+                const screen = render(
                     <TestModal
                         onClose={onClose}
                         onSubmit={onSubmit}
@@ -444,108 +428,111 @@ describe('CreateAnnotationModal', () => {
 
     describe('target tab', () => {
         it('should not display add value button if disabled', () => {
-            const wrapper = render(
+            const screen = render(
                 <TestModal
                     onClose={onClose}
                     onSubmit={onSubmit}
                     isSubmitting={false}
                     isFieldValueAnnotable={true}
+                    // @ts-expect-error TS2322
                     field={{ enableAnnotationKindAddition: false }}
                 />,
             );
 
             expect(
-                wrapper.queryByRole('tab', {
+                screen.queryByRole('tab', {
                     name: 'annotation_step_target',
                 }),
             ).toBeInTheDocument();
 
             expect(
-                wrapper.queryByRole('menuitem', {
+                screen.queryByRole('menuitem', {
                     name: 'annotation_add_content',
                 }),
             ).not.toBeInTheDocument();
 
             expect(
-                wrapper.queryByRole('menuitem', {
+                screen.queryByRole('menuitem', {
                     name: 'annotation_correct_content',
                 }),
             ).toBeInTheDocument();
 
             expect(
-                wrapper.queryByRole('menuitem', {
+                screen.queryByRole('menuitem', {
                     name: 'annotation_remove_content_choice',
                 }),
             ).toBeInTheDocument();
         });
 
         it('should not display correct value button if disabled', () => {
-            const wrapper = render(
+            const screen = render(
                 <TestModal
                     onClose={onClose}
                     onSubmit={onSubmit}
                     isSubmitting={false}
                     isFieldValueAnnotable={true}
+                    // @ts-expect-error TS2322
                     field={{ enableAnnotationKindCorrection: false }}
                 />,
             );
 
             expect(
-                wrapper.queryByRole('tab', {
+                screen.queryByRole('tab', {
                     name: 'annotation_step_target',
                 }),
             ).toBeInTheDocument();
 
             expect(
-                wrapper.queryByRole('menuitem', {
+                screen.queryByRole('menuitem', {
                     name: 'annotation_add_content',
                 }),
             ).toBeInTheDocument();
 
             expect(
-                wrapper.queryByRole('menuitem', {
+                screen.queryByRole('menuitem', {
                     name: 'annotation_correct_content',
                 }),
             ).not.toBeInTheDocument();
 
             expect(
-                wrapper.queryByRole('menuitem', {
+                screen.queryByRole('menuitem', {
                     name: 'annotation_remove_content_choice',
                 }),
             ).toBeInTheDocument();
         });
 
         it('should not display remove value button if disabled', () => {
-            const wrapper = render(
+            const screen = render(
                 <TestModal
                     onClose={onClose}
                     onSubmit={onSubmit}
                     isSubmitting={false}
                     isFieldValueAnnotable={true}
+                    // @ts-expect-error TS2322
                     field={{ enableAnnotationKindRemoval: false }}
                 />,
             );
 
             expect(
-                wrapper.queryByRole('tab', {
+                screen.queryByRole('tab', {
                     name: 'annotation_step_target',
                 }),
             ).toBeInTheDocument();
 
             expect(
-                wrapper.queryByRole('menuitem', {
+                screen.queryByRole('menuitem', {
                     name: 'annotation_add_content',
                 }),
             ).toBeInTheDocument();
 
             expect(
-                wrapper.queryByRole('menuitem', {
+                screen.queryByRole('menuitem', {
                     name: 'annotation_correct_content',
                 }),
             ).toBeInTheDocument();
 
             expect(
-                wrapper.queryByRole('menuitem', {
+                screen.queryByRole('menuitem', {
                     name: 'annotation_remove_content_choice',
                 }),
             ).not.toBeInTheDocument();
@@ -553,9 +540,9 @@ describe('CreateAnnotationModal', () => {
     });
 
     describe('comment tab', () => {
+        let screen: ReturnType<typeof render>;
         beforeEach(() => {
-            render(
-                // @ts-expect-error TS2741
+            screen = render(
                 <TestModal
                     onClose={onClose}
                     onSubmit={onSubmit}
@@ -664,8 +651,7 @@ describe('CreateAnnotationModal', () => {
 
         describe('correction comment', () => {
             beforeEach(async () => {
-                render(
-                    // @ts-expect-error TS2741
+                const screen = render(
                     <TestModal
                         onClose={onClose}
                         onSubmit={onSubmit}
@@ -677,8 +663,7 @@ describe('CreateAnnotationModal', () => {
 
                 await waitFor(() => {
                     fireEvent.click(
-                        // @ts-expect-error TS2345
-                        screen.queryByText('annotation_correct_content'),
+                        screen.getByText('annotation_correct_content'),
                     );
                 });
 
@@ -761,8 +746,7 @@ describe('CreateAnnotationModal', () => {
 
         describe('addition comment', () => {
             beforeEach(async () => {
-                render(
-                    // @ts-expect-error TS2741
+                const screen = render(
                     <TestModal
                         onClose={onClose}
                         onSubmit={onSubmit}
@@ -773,10 +757,7 @@ describe('CreateAnnotationModal', () => {
                 );
 
                 await waitFor(() => {
-                    fireEvent.click(
-                        // @ts-expect-error TS2345
-                        screen.queryByText('annotation_add_content'),
-                    );
+                    fireEvent.click(screen.getByText('annotation_add_content'));
                 });
 
                 expect(
@@ -838,9 +819,9 @@ describe('CreateAnnotationModal', () => {
     });
 
     describe('author tab', () => {
+        let screen: ReturnType<typeof render>;
         beforeEach(async () => {
-            render(
-                // @ts-expect-error TS2741
+            screen = render(
                 <TestModal
                     onClose={onClose}
                     onSubmit={onSubmit}
@@ -1053,8 +1034,7 @@ describe('CreateAnnotationModal', () => {
     });
 
     it('should allow to create a comment annotation on the field when field value is not editable', async () => {
-        const wrapper = render(
-            // @ts-expect-error TS2741
+        const screen = render(
             <TestModal
                 onClose={onClose}
                 onSubmit={onSubmit}
@@ -1066,7 +1046,7 @@ describe('CreateAnnotationModal', () => {
 
         await waitFor(() => {
             fireEvent.change(
-                wrapper.getByRole('textbox', {
+                screen.getByRole('textbox', {
                     name: 'annotation.comment *',
                 }),
                 {
@@ -1076,12 +1056,12 @@ describe('CreateAnnotationModal', () => {
         });
 
         await waitFor(() => {
-            fireEvent.click(wrapper.getByRole('button', { name: 'next' }));
+            fireEvent.click(screen.getByRole('button', { name: 'next' }));
         });
 
         await waitFor(() => {
             fireEvent.change(
-                wrapper.getByRole('textbox', {
+                screen.getByRole('textbox', {
                     name: 'annotation.authorName *',
                 }),
                 {
@@ -1094,7 +1074,7 @@ describe('CreateAnnotationModal', () => {
         await waitFor(() => setTimeout(500));
 
         await waitFor(() => {
-            fireEvent.click(wrapper.getByRole('button', { name: 'validate' }));
+            fireEvent.click(screen.getByRole('button', { name: 'validate' }));
         });
 
         expect(onSubmit).toHaveBeenCalledTimes(1);
@@ -1109,8 +1089,7 @@ describe('CreateAnnotationModal', () => {
     });
 
     it('should allow to create a comment annotation on the field when there is an initial value', async () => {
-        render(
-            // @ts-expect-error TS2741
+        const screen = render(
             <TestModal
                 onClose={onClose}
                 onSubmit={onSubmit}
@@ -1174,8 +1153,7 @@ describe('CreateAnnotationModal', () => {
     });
 
     it('should allow to create a removal annotation on the value when there is a single initial value', async () => {
-        render(
-            // @ts-expect-error TS2741
+        const screen = render(
             <TestModal
                 onClose={onClose}
                 onSubmit={onSubmit}
@@ -1239,8 +1217,7 @@ describe('CreateAnnotationModal', () => {
     });
 
     it('should allow to create a removal annotation on the value when initial value is a number', async () => {
-        render(
-            // @ts-expect-error TS2741
+        const screen = render(
             <TestModal
                 onClose={onClose}
                 onSubmit={onSubmit}
@@ -1304,8 +1281,7 @@ describe('CreateAnnotationModal', () => {
     });
 
     it('should allow to create a removal annotation on a selected value when there is multiple initial value', async () => {
-        render(
-            // @ts-expect-error TS2741
+        const screen = render(
             <TestModal
                 onClose={onClose}
                 onSubmit={onSubmit}
@@ -1385,8 +1361,7 @@ describe('CreateAnnotationModal', () => {
     });
 
     it('should allow to create a removal annotation on a selected value when initial value is an array of number', async () => {
-        render(
-            // @ts-expect-error TS2741
+        const screen = render(
             <TestModal
                 onClose={onClose}
                 onSubmit={onSubmit}
@@ -1464,8 +1439,7 @@ describe('CreateAnnotationModal', () => {
     });
 
     it('should allow to create a correct annotation on the value when there is a single initial value', async () => {
-        render(
-            // @ts-expect-error TS2741
+        const screen = render(
             <TestModal
                 onClose={onClose}
                 onSubmit={onSubmit}
@@ -1541,8 +1515,7 @@ describe('CreateAnnotationModal', () => {
     });
 
     it('should allow to create a correct annotation on the value when initial value is a number', async () => {
-        render(
-            // @ts-expect-error TS2741
+        const screen = render(
             <TestModal
                 onClose={onClose}
                 onSubmit={onSubmit}
@@ -1618,8 +1591,7 @@ describe('CreateAnnotationModal', () => {
     });
 
     it('should allow to create a correct annotation on a selected value when there is multiple initial value', async () => {
-        render(
-            // @ts-expect-error TS2741
+        const screen = render(
             <TestModal
                 onClose={onClose}
                 onSubmit={onSubmit}
@@ -1711,8 +1683,7 @@ describe('CreateAnnotationModal', () => {
     });
 
     it('should allow to create a correct annotation on a selected value when initial value is an array of number', async () => {
-        render(
-            // @ts-expect-error TS2741
+        const screen = render(
             <TestModal
                 onClose={onClose}
                 onSubmit={onSubmit}
@@ -1802,8 +1773,7 @@ describe('CreateAnnotationModal', () => {
     });
 
     it('should allow to create an add annotation when there is a single initial value', async () => {
-        render(
-            // @ts-expect-error TS2741
+        const screen = render(
             <TestModal
                 onClose={onClose}
                 onSubmit={onSubmit}
@@ -1878,8 +1848,7 @@ describe('CreateAnnotationModal', () => {
         });
     });
     it('should allow to create an add annotation when initial value is a number', async () => {
-        render(
-            // @ts-expect-error TS2741
+        const screen = render(
             <TestModal
                 onClose={onClose}
                 onSubmit={onSubmit}
@@ -1954,8 +1923,7 @@ describe('CreateAnnotationModal', () => {
         });
     });
     it('should allow to create a add annotation when there is multiple initial value', async () => {
-        render(
-            // @ts-expect-error TS2741
+        const screen = render(
             <TestModal
                 onClose={onClose}
                 onSubmit={onSubmit}
@@ -2034,8 +2002,7 @@ describe('CreateAnnotationModal', () => {
         });
     });
     it('should allow to create a add annotation when initial value is an array of number', async () => {
-        render(
-            // @ts-expect-error TS2741
+        const screen = render(
             <TestModal
                 onClose={onClose}
                 onSubmit={onSubmit}

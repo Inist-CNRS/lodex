@@ -1,7 +1,6 @@
 import { scaleLinear } from 'd3-scale';
 import get from 'lodash/get';
-// @ts-expect-error TS6133
-import React, {
+import {
     lazy,
     Suspense,
     useCallback,
@@ -11,7 +10,6 @@ import React, {
 } from 'react';
 import compose from 'recompose/compose';
 
-import PropTypes from 'prop-types';
 import { useTranslate } from '../../../i18n/I18NContext';
 import Loading from '../../../lib/components/Loading';
 import injectData from '../../injectData';
@@ -30,8 +28,12 @@ const styles = {
     },
 };
 
-// @ts-expect-error TS7031
-const Network = ({ formatData, colorSet }) => {
+interface NetworkProps {
+    colorSet?: string[];
+    formatData?: unknown[];
+}
+
+const Network = ({ formatData, colorSet }: NetworkProps) => {
     const { translate } = useTranslate();
     const [{ width, height }, setDimensions] = useState({
         width: 0,
@@ -42,6 +44,7 @@ const Network = ({ formatData, colorSet }) => {
     const [highlightedNodes, setHighlightedNodes] = useState([]);
     const [highlightedLinks, setHighlightedLinks] = useState([]);
 
+    // @ts-expect-error TS7006
     const containerRef = useCallback((node) => {
         if (!node) return;
         const resizeObserver = new ResizeObserver(() => {
@@ -76,6 +79,7 @@ const Network = ({ formatData, colorSet }) => {
         const nodesDic = sanitizedFormatData.reduce(
             // @ts-expect-error TS7006
             (acc, { source, target }) => ({
+                // @ts-expect-error TS2698
                 ...acc,
                 [source]: {
                     id: source,
@@ -91,6 +95,7 @@ const Network = ({ formatData, colorSet }) => {
             {},
         );
 
+        // @ts-expect-error TS2769
         const nodes = Object.values(nodesDic);
         // @ts-expect-error TS2345
         const radiusList = nodes.map(({ radius }) => radius);
@@ -103,7 +108,9 @@ const Network = ({ formatData, colorSet }) => {
 
         // @ts-expect-error TS7031
         const weightList = sanitizedFormatData.map(({ weight }) => weight);
+        // @ts-expect-error TS2345
         const maxWeight = Math.max(...weightList);
+        // @ts-expect-error TS2345
         const minWeight = Math.min(...weightList);
 
         const linkScale = scaleLinear()
@@ -117,7 +124,6 @@ const Network = ({ formatData, colorSet }) => {
             value: linkScale(weight),
         }));
 
-        // @ts-expect-error TS7006
         links.forEach((link) => {
             // @ts-expect-error TS18046
             const a = nodes.find((node) => node.id === link.source);
@@ -233,6 +239,7 @@ const Network = ({ formatData, colorSet }) => {
                         <ForceGraph2D
                             width={width}
                             height={height}
+                            // @ts-expect-error TS2322
                             graphData={{ nodes, links }}
                             nodeCanvasObject={(node, ctx, globalScale) => {
                                 if (
@@ -261,6 +268,7 @@ const Network = ({ formatData, colorSet }) => {
                                     node.y + circleRadius + fontSize,
                                 );
 
+                                // @ts-expect-error TS18048
                                 ctx.fillStyle = colorSet[0];
                                 ctx.beginPath();
                                 ctx.arc(
@@ -308,15 +316,6 @@ const Network = ({ formatData, colorSet }) => {
             </FormatFullScreenMode>
         </div>
     );
-};
-
-Network.propTypes = {
-    colorSet: PropTypes.arrayOf(PropTypes.string),
-    formatData: PropTypes.arrayOf({
-        // @ts-expect-error TS2353
-        source: PropTypes.string.isRequired,
-        target: PropTypes.string.isRequired,
-    }),
 };
 
 // @ts-expect-error TS2345

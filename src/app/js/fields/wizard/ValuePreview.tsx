@@ -69,8 +69,7 @@ const ValuePreview = ({ scope }: { scope?: ScopeType }) => {
                                     ? 'undefined'
                                     : JSON.stringify(
                                           line[editedField.name],
-                                          // @ts-expect-error TS6133
-                                          (k, v) =>
+                                          (_k, v) =>
                                               v === undefined
                                                   ? '__undefined'
                                                   : v,

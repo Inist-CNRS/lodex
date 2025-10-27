@@ -1,8 +1,6 @@
-import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
-// @ts-expect-error TS6133
-import React, { useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { clamp } from 'lodash';
 
 import PieChart from '../../models/PieChart';
@@ -14,7 +12,7 @@ import {
 } from '../../../utils/chartsUtils';
 import InvalidFormat from '../../../InvalidFormat';
 import { useSizeObserver } from '../../../utils/chartsHooks';
-import { field as fieldPropTypes } from '../../../../propTypes';
+import { type Field } from '../../../../propTypes';
 import injectData from '../../../injectData';
 
 const styles = {
@@ -23,28 +21,43 @@ const styles = {
     },
 };
 
+interface PieChartViewProps {
+    field?: Field;
+    resource?: object;
+    data?: {
+        values: any;
+    };
+    colors?: string;
+    tooltip?: boolean;
+    tooltipCategory?: string;
+    tooltipValue?: string;
+    labels?: boolean;
+    advancedMode?: boolean;
+    advancedModeSpec?: string;
+    aspectRatio?: string;
+}
+
 const PieChartView = ({
-    // @ts-expect-error TS7031
     advancedMode,
-    // @ts-expect-error TS7031
+
     advancedModeSpec,
-    // @ts-expect-error TS7031
+
     field,
-    // @ts-expect-error TS7031
+
     data,
-    // @ts-expect-error TS7031
+
     tooltip,
-    // @ts-expect-error TS7031
+
     tooltipCategory,
-    // @ts-expect-error TS7031
+
     tooltipValue,
-    // @ts-expect-error TS7031
+
     colors,
-    // @ts-expect-error TS7031
+
     labels,
-    // @ts-expect-error TS7031
+
     aspectRatio,
-}) => {
+}: PieChartViewProps) => {
     const { ref, width } = useSizeObserver();
     const [error, setError] = useState('');
 
@@ -92,6 +105,7 @@ const PieChartView = ({
     ]);
 
     if (!spec) {
+        // @ts-expect-error TS18046
         return <InvalidFormat format={field.format} value={error} />;
     }
 
@@ -107,26 +121,6 @@ const PieChartView = ({
             />
         </div>
     );
-};
-
-PieChartView.propTypes = {
-    field: fieldPropTypes,
-    resource: PropTypes.object,
-    data: PropTypes.shape({
-        values: PropTypes.any.isRequired,
-    }),
-    colors: PropTypes.string,
-    tooltip: PropTypes.bool,
-    tooltipCategory: PropTypes.string,
-    tooltipValue: PropTypes.string,
-    labels: PropTypes.bool,
-    advancedMode: PropTypes.bool,
-    advancedModeSpec: PropTypes.string,
-    aspectRatio: PropTypes.string,
-};
-
-PieChartView.defaultProps = {
-    className: null,
 };
 
 // @ts-expect-error TS7006
@@ -145,8 +139,7 @@ const mapStateToProps = (state, { formatData }) => {
     };
 };
 
-// @ts-expect-error TS6133
-export const PieChartAdminView = connect((state, props) => {
+export const PieChartAdminView = connect((_state, props) => {
     return {
         ...props,
         field: {

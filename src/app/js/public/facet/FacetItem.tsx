@@ -1,13 +1,9 @@
-// @ts-expect-error TS6133
-import React from 'react';
-import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { ListItem, Grid, ListItemText } from '@mui/material';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { connect } from 'react-redux';
 
-import { field as fieldPropType } from '../../propTypes';
 import { fromFacet } from '../selectors';
 import getFieldClassName from '../../lib/getFieldClassName';
 import FacetValueListComponent from './FacetValueList';
@@ -26,8 +22,13 @@ const styles = {
     },
 };
 
-// @ts-expect-error TS7031
-const FacetTitle = ({ title, total, isOpen }) => {
+type FacetTitleProps = {
+    title: string;
+    total?: number;
+    isOpen: boolean;
+};
+
+const FacetTitle = ({ title, total, isOpen }: FacetTitleProps) => {
     return (
         // @ts-expect-error TS2769
         <Grid container justify="space-between" sx={styles.facetTitle}>
@@ -37,8 +38,24 @@ const FacetTitle = ({ title, total, isOpen }) => {
     );
 };
 
-// @ts-expect-error TS7031
-const FacetItem = ({ className, isOpen, field, total, page }) => (
+type FacetItemProps = {
+    className?: string;
+    isOpen: boolean;
+    field: {
+        name: string;
+        label: string;
+    };
+    total?: number;
+    page: 'dataset' | 'search';
+};
+
+const FacetItem = ({
+    className,
+    isOpen,
+    field,
+    total,
+    page,
+}: FacetItemProps) => (
     <FacetActionsContext.Consumer>
         {/*
          // @ts-expect-error TS2339 */}
@@ -78,20 +95,6 @@ const FacetItem = ({ className, isOpen, field, total, page }) => (
         )}
     </FacetActionsContext.Consumer>
 );
-
-FacetTitle.propTypes = {
-    title: PropTypes.string.isRequired,
-    total: PropTypes.number,
-    isOpen: PropTypes.bool.isRequired,
-};
-
-FacetItem.propTypes = {
-    className: PropTypes.string,
-    isOpen: PropTypes.bool.isRequired,
-    field: fieldPropType.isRequired,
-    total: PropTypes.number,
-    page: PropTypes.oneOf(['dataset', 'search']).isRequired,
-};
 
 // @ts-expect-error TS7006
 const mapStateToProps = (state, { field, page }) => {

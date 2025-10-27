@@ -1,8 +1,9 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { render, userEvent, waitFor } from '../../../../test-utils';
+import { render, userEvent } from '../../../../test-utils';
 import { HideResource } from './HideResource';
 import { ADMIN_ROLE } from '../../../../common/tools/tenantTools';
 import { hideResource } from '../api/hideResource';
+import { waitFor } from '@testing-library/dom';
 
 jest.mock('../api/hideResource', () => ({
     hideResource: jest.fn(),
@@ -72,7 +73,7 @@ describe('HideResourceForm', () => {
 
         await user.click(screen.getByText('cancel'));
 
-        waitFor(() =>
+        await waitFor(() =>
             expect(
                 screen.queryByText('enter_reason *'),
             ).not.toBeInTheDocument(),

@@ -1,21 +1,37 @@
-import { Component } from 'react';
-import PropTypes from 'prop-types';
+import { useState, useEffect, useCallback, type ReactNode } from 'react';
 
 import fetch from '../lib/fetch';
 import { getYearUrl } from '../formats/other/istexSummary/getIstexData';
 import { CUSTOM_ISTEX_QUERY } from '../formats/other/istexSummary/constants';
+import type { Field } from '../propTypes';
 
-class FieldProvider extends Component {
-    state = {
-        error: null,
-        loading: true,
-        data: null,
-    };
+interface FieldProviderProps {
+    children(props: {
+        resource: Record<string, unknown>;
+        field: Field & {
+            format: { args: { searchedField: string } };
+        };
+        formatData: Record<string, unknown>;
+    }): ReactNode;
+    api: string;
+    uri: string;
+    fieldName: string;
+}
 
-    getFirstIstexQuery = () => {
-        const { data } = this.state;
-        // @ts-expect-error TS2339
-        const { field, resource } = data;
+const FieldProvider = ({
+    children,
+    api,
+    uri,
+    fieldName,
+}: FieldProviderProps) => {
+    const [error, setError] = useState<boolean | null>(null);
+    const [loading, setLoading] = useState<boolean>(true);
+    const [embeddedData, setEmbeddedData] = useState<any>(null);
+    const [formatData, setFormatData] = useState<any>(null);
+
+    const getFirstIstexQuery = useCallback(() => {
+        if (!embeddedData) return;
+        const { field, resource } = embeddedData;
         const searchedField =
             field.format.args.searchedField || CUSTOM_ISTEX_QUERY;
 
@@ -28,25 +44,16 @@ class FieldProvider extends Component {
             // @ts-expect-error TS7031
         }).then(({ error, response }) => {
             if (error) {
-                this.setState({ error: true });
+                setError(true);
                 return;
             }
 
-            this.setState({
-                loading: false,
-                data: {
-                    // @ts-expect-error TS2698
-                    ...data,
-                    formatData: response,
-                },
-            });
+            setLoading(false);
+            setFormatData(response);
         });
-    };
+    }, [embeddedData]);
 
-    componentDidMount() {
-        // @ts-expect-error TS2339
-        const { api, uri, fieldName } = this.props;
-
+    useEffect(() => {
         fetch({
             url: `${api}/embedded?uri=${encodeURIComponent(
                 uri,
@@ -54,41 +61,29 @@ class FieldProvider extends Component {
             // @ts-expect-error TS7031
         }).then(({ error, response }) => {
             if (error) {
-                this.setState({ error: true });
+                setError(true);
                 return;
             }
 
-            this.setState(
-                {
-                    data: {
-                        ...response,
-                        resource: { [response.field.name]: response.value },
-                    },
-                },
-                this.getFirstIstexQuery,
-            );
+            const newData = {
+                ...response,
+                resource: { [response.field.name]: response.value },
+            };
+            setEmbeddedData(newData);
         });
-    }
+    }, [api, uri, fieldName]);
 
-    render() {
-        const { children } = this.props;
-        const { error, loading, data } = this.state;
-
-        if (loading || error || !data) {
-            return null;
+    useEffect(() => {
+        if (embeddedData) {
+            getFirstIstexQuery();
         }
+    }, [embeddedData, getFirstIstexQuery]);
 
-        // @ts-expect-error TS2349
-        return children(data);
+    if (loading || error || !embeddedData || !formatData) {
+        return null;
     }
-}
 
-// @ts-expect-error TS2339
-FieldProvider.propTypes = {
-    children: PropTypes.func.isRequired,
-    api: PropTypes.string.isRequired,
-    uri: PropTypes.string.isRequired,
-    fieldName: PropTypes.string.isRequired,
+    return children({ ...embeddedData, formatData });
 };
 
 export default FieldProvider;

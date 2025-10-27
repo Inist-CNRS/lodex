@@ -7,9 +7,7 @@ import {
     Typography,
     useTheme,
 } from '@mui/material';
-import PropTypes from 'prop-types';
-// @ts-expect-error TS6133
-import React, { useCallback, useMemo, useRef, useState } from 'react';
+import { useCallback, useMemo, useRef, useState } from 'react';
 
 import { getIsFieldValueAnnotable, getReadableValue } from '../formats';
 import { useTranslate } from '../i18n/I18NContext';
@@ -21,8 +19,15 @@ import { useCanAnnotate } from './useCanAnnotate';
 import { useCreateAnnotation } from './useCreateAnnotation';
 import { useResourceUri } from './useResourceUri';
 
-// @ts-expect-error TS7031
-function UserAnnotationCount({ fieldAnnotationIds, openHistory }) {
+interface UserAnnotationCountProps {
+    fieldAnnotationIds: string[];
+    openHistory(...args: unknown[]): unknown;
+}
+
+function UserAnnotationCount({
+    fieldAnnotationIds,
+    openHistory,
+}: UserAnnotationCountProps) {
     const { translate } = useTranslate();
     const theme = useTheme();
 
@@ -60,13 +65,15 @@ function UserAnnotationCount({ fieldAnnotationIds, openHistory }) {
     );
 }
 
-UserAnnotationCount.propTypes = {
-    fieldAnnotationIds: PropTypes.arrayOf(PropTypes.string).isRequired,
-    openHistory: PropTypes.func.isRequired,
-};
+interface CreateAnnotationButtonProps {
+    field?: object;
+    resource?: object;
+}
 
-// @ts-expect-error TS7031
-export function CreateAnnotationButton({ field, resource }) {
+export function CreateAnnotationButton({
+    field,
+    resource,
+}: CreateAnnotationButtonProps) {
     const { translate } = useTranslate();
     const readableInitialValue = getReadableValue({
         field,
@@ -92,10 +99,12 @@ export function CreateAnnotationButton({ field, resource }) {
     }, []);
 
     const handleSubmitAnnotation = useCallback(
+        // @ts-expect-error TS7006
         async (annotation) => {
             await handleCreateAnnotation({
                 ...annotation,
                 resourceUri,
+                // @ts-expect-error TS2339
                 fieldId: field ? field._id : null,
             });
 
@@ -105,6 +114,7 @@ export function CreateAnnotationButton({ field, resource }) {
     );
 
     const handleOpenHistory = useCallback((mode = MODE_ALL) => {
+        // @ts-expect-error TS2345
         setHistoryDrawerMode(mode);
     }, []);
 
@@ -117,17 +127,22 @@ export function CreateAnnotationButton({ field, resource }) {
     };
 
     const buttonLabel = translate(`annotation_create_button_label`, {
+        // @ts-expect-error TS18048
         field: field.label,
     });
 
     const fieldAnnotationIds = useGetFieldAnnotationIds({
+        // @ts-expect-error TS18048
         fieldId: field._id,
         resourceUri,
     });
     const isFieldValueAnnotable = useMemo(() => {
+        // @ts-expect-error TS18048
         return getIsFieldValueAnnotable(field.format?.name);
+        // @ts-expect-error TS18048
     }, [field.format?.name]);
 
+    // @ts-expect-error TS18048
     if (field.annotable === false) {
         return null;
     }
@@ -175,7 +190,9 @@ export function CreateAnnotationButton({ field, resource }) {
                     anchorEl={anchorButton.current}
                     initialValue={readableInitialValue}
                     isFieldValueAnnotable={isFieldValueAnnotable}
+                    // @ts-expect-error TS2322
                     field={field}
+                    // @ts-expect-error TS2322
                     resourceUri={resourceUri}
                     openHistory={handleOpenHistory}
                 />
@@ -184,14 +201,11 @@ export function CreateAnnotationButton({ field, resource }) {
             <HistoryDrawer
                 mode={historyDrawerMode}
                 setMode={setHistoryDrawerMode}
+                // @ts-expect-error TS2322
                 field={field}
+                // @ts-expect-error TS2322
                 resourceUri={resourceUri}
             />
         </>
     );
 }
-
-CreateAnnotationButton.propTypes = {
-    field: PropTypes.object,
-    resource: PropTypes.object,
-};

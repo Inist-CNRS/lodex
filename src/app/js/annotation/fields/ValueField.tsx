@@ -5,31 +5,32 @@ import {
     MenuItem,
     Select,
 } from '@mui/material';
-import PropTypes from 'prop-types';
-// @ts-expect-error TS6133
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 
 import { useStore } from '@tanstack/react-form';
 import { useTranslate } from '../../i18n/I18NContext';
+
+interface ValueFieldProps {
+    form: any;
+    choices: string[];
+}
 
 /**
  * @param {Object} props
  * @param {Object} props.form
  * @param {string[] | string[][]} props.choices
  */
-// @ts-expect-error TS7031
-export function ValueField({ form, choices }) {
+export function ValueField({ form, choices }: ValueFieldProps) {
     const { translate } = useTranslate();
 
     const kind = useStore(form.store, (state) => {
-        // @ts-expect-error TS18046
+        // @ts-expect-error TS7034
         return state.values.kind;
     });
 
     const formattedChoices = useMemo(() => {
-        // @ts-expect-error TS7006
-        return choices.map((choice) => {
-            return [].concat(choice).join(' ; ');
+        return choices.map((choice): string => {
+            return ([] as string[]).concat(choice).join(' ; ');
         });
     }, [choices]);
 
@@ -66,8 +67,6 @@ export function ValueField({ form, choices }) {
                                 'aria-labelledby': 'annotation_choose_value',
                             }}
                         >
-                            {/*
-                             // @ts-expect-error TS7006 */}
                             {formattedChoices.map((choice) => (
                                 <MenuItem key={choice} value={choice}>
                                     {choice}
@@ -85,8 +84,3 @@ export function ValueField({ form, choices }) {
         </form.Field>
     );
 }
-
-ValueField.propTypes = {
-    form: PropTypes.object.isRequired,
-    choices: PropTypes.array.isRequired,
-};

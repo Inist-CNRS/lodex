@@ -1,8 +1,7 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import '@testing-library/jest-dom';
 import { render } from '@testing-library/react';
-// @ts-expect-error TS6133
-import React from 'react';
+
 import { MemoryRouter } from 'react-router-dom';
 
 import TitleView from './TitleView';
@@ -29,9 +28,7 @@ function TestTitleView() {
 
 describe('<TitleView />', () => {
     it('should render', () => {
-        const wrapper = render(<TestTitleView />);
-        expect(wrapper.getByRole('heading')).toHaveTextContent(
-            'Run you fools!',
-        );
+        const screen = render(<TestTitleView />);
+        expect(screen.getByRole('heading')).toHaveTextContent('Run you fools!');
     });
 });

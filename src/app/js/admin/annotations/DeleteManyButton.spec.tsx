@@ -1,5 +1,4 @@
-// @ts-expect-error TS6133
-import React from 'react';
+import { waitFor } from '@testing-library/dom';
 import { render } from '../../../../test-utils';
 import { TestI18N } from '../../i18n/I18NContext';
 import { DeleteManyButton } from './DeleteManyButton';
@@ -7,16 +6,13 @@ import { useDeleteManyAnnotation } from './hooks/useDeleteManyAnnotation';
 
 jest.mock('./hooks/useDeleteManyAnnotation');
 
-// @ts-expect-error TS7031
-function TestButton({ selectedRowIds }) {
+function TestButton({ selectedRowIds }: { selectedRowIds: string[] }) {
     return (
         <TestI18N>
             <DeleteManyButton selectedRowIds={selectedRowIds} />
         </TestI18N>
     );
 }
-
-TestButton.propTypes = DeleteManyButton.propTypes;
 
 describe('DeleteManyButton', () => {
     it('should not render button if no annotation is selected', async () => {
@@ -26,9 +22,9 @@ describe('DeleteManyButton', () => {
             isLoading: false,
         }));
 
-        const wrapper = render(<TestButton selectedRowIds={[]} />);
+        const screen = render(<TestButton selectedRowIds={[]} />);
 
-        expect(wrapper.container).toBeEmptyDOMElement();
+        expect(screen.container).toBeEmptyDOMElement();
     });
 
     it('should delete selected annotations', async () => {
@@ -40,15 +36,23 @@ describe('DeleteManyButton', () => {
             isLoading: false,
         }));
 
-        const wrapper = render(<TestButton selectedRowIds={['1', '2']} />);
+        const screen = render(<TestButton selectedRowIds={['1', '2']} />);
 
-        wrapper
+        screen
             .getByRole('button', {
                 name: 'annotation_delete_many_button_label',
             })
             .click();
 
-        wrapper
+        await waitFor(() =>
+            expect(
+                screen.getByText(
+                    'annotation_delete_many_modal_title+{"smart_count":2}',
+                ),
+            ).toBeInTheDocument(),
+        );
+
+        screen
             .getByRole('button', {
                 name: 'delete',
             })
@@ -66,15 +70,23 @@ describe('DeleteManyButton', () => {
             isLoading: false,
         }));
 
-        const wrapper = render(<TestButton selectedRowIds={['1', '2']} />);
+        const screen = render(<TestButton selectedRowIds={['1', '2']} />);
 
-        wrapper
+        screen
             .getByRole('button', {
                 name: 'annotation_delete_many_button_label',
             })
             .click();
 
-        wrapper
+        await waitFor(() =>
+            expect(
+                screen.getByText(
+                    'annotation_delete_many_modal_title+{"smart_count":2}',
+                ),
+            ).toBeInTheDocument(),
+        );
+
+        screen
             .getByRole('button', {
                 name: 'cancel',
             })
@@ -92,22 +104,30 @@ describe('DeleteManyButton', () => {
             isLoading: true,
         }));
 
-        const wrapper = render(<TestButton selectedRowIds={['1', '2']} />);
+        const screen = render(<TestButton selectedRowIds={['1', '2']} />);
 
-        wrapper
+        screen
             .getByRole('button', {
                 name: 'annotation_delete_many_button_label',
             })
             .click();
 
+        await waitFor(() => {
+            expect(
+                screen.getByRole('button', {
+                    name: 'delete',
+                }),
+            ).toBeInTheDocument();
+        });
+
         expect(
-            wrapper.getByRole('button', {
+            screen.getByRole('button', {
                 name: 'delete',
             }),
         ).toBeDisabled();
 
         expect(
-            wrapper.getByRole('button', {
+            screen.getByRole('button', {
                 name: 'cancel',
             }),
         ).toBeDisabled();

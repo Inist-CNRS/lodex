@@ -1,6 +1,4 @@
-// @ts-expect-error TS6133
-import React, { useRef, useEffect } from 'react';
-import PropTypes from 'prop-types';
+import { useRef, useEffect } from 'react';
 // @ts-expect-error TS7016
 import * as d3 from 'd3';
 import ReactTooltip from 'react-tooltip';
@@ -15,8 +13,25 @@ const margin = {
     left: 0,
 };
 
-// @ts-expect-error TS7031
-const ParallelCoordinates = ({ fieldNames, data, width, height, colorSet }) => {
+interface ParallelCoordinatesProps {
+    fieldNames?: string[];
+    data: {
+        label?: string;
+        weights?: number[];
+        onClick?(...args: unknown[]): unknown;
+    }[];
+    width: number;
+    height: number;
+    colorSet?: string[];
+}
+
+const ParallelCoordinates = ({
+    fieldNames,
+    data,
+    width,
+    height,
+    colorSet,
+}: ParallelCoordinatesProps) => {
     const ref = useRef(null);
 
     const chartWidth = width - margin.left - margin.right;
@@ -133,20 +148,6 @@ const ParallelCoordinates = ({ fieldNames, data, width, height, colorSet }) => {
             <ReactTooltip />
         </>
     );
-};
-
-ParallelCoordinates.propTypes = {
-    fieldNames: PropTypes.arrayOf(PropTypes.string),
-    data: PropTypes.arrayOf(
-        PropTypes.shape({
-            label: PropTypes.string,
-            weights: PropTypes.arrayOf(PropTypes.number),
-            onClick: PropTypes.func,
-        }),
-    ).isRequired,
-    width: PropTypes.number.isRequired,
-    height: PropTypes.number.isRequired,
-    colorSet: PropTypes.arrayOf(PropTypes.string),
 };
 
 export default ParallelCoordinates;

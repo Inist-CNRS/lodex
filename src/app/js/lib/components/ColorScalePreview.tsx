@@ -1,7 +1,3 @@
-// @ts-expect-error TS6133
-import React from 'react';
-import PropTypes from 'prop-types';
-
 const styles = {
     // @ts-expect-error TS7006
     previewColor: (color) => ({
@@ -18,8 +14,11 @@ const styles = {
     },
 };
 
-// @ts-expect-error TS7031
-const ColorScalePreview = ({ colorScale }) => (
+interface ColorScalePreviewProps {
+    colorScale(...args: unknown[]): unknown;
+}
+
+const ColorScalePreview = ({ colorScale }: ColorScalePreviewProps) => (
     <div style={styles.preview}>
         {/*
          // @ts-expect-error TS7006 */}
@@ -28,9 +27,5 @@ const ColorScalePreview = ({ colorScale }) => (
         ))}
     </div>
 );
-
-ColorScalePreview.propTypes = {
-    colorScale: PropTypes.func.isRequired,
-};
 
 export default ColorScalePreview;

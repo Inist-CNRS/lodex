@@ -1,6 +1,3 @@
-// @ts-expect-error TS6133
-import React from 'react';
-import PropTypes from 'prop-types';
 import { Button } from '@mui/material';
 import ArrowUp from '@mui/icons-material/ArrowUpward';
 import withHandlers from 'recompose/withHandlers';
@@ -19,8 +16,21 @@ const styles = {
     },
 };
 
-// @ts-expect-error TS7031
-const SortButton = ({ name, children, sortBy, sortDir, sort }) => (
+interface SortButtonProps {
+    name: string;
+    children: string;
+    sortDir?: 'ASC' | 'DESC';
+    sortBy?: string;
+    sort(...args: unknown[]): unknown;
+}
+
+const SortButton = ({
+    name,
+    children,
+    sortBy,
+    sortDir,
+    sort,
+}: SortButtonProps) => (
     <Button
         variant="text"
         // @ts-expect-error TS2769
@@ -41,19 +51,6 @@ const SortButton = ({ name, children, sortBy, sortDir, sort }) => (
         )}
     </Button>
 );
-
-SortButton.defaultProps = {
-    sortBy: null,
-    sortDir: null,
-};
-
-SortButton.propTypes = {
-    name: PropTypes.string.isRequired,
-    children: PropTypes.string.isRequired,
-    sortDir: PropTypes.oneOf(['ASC', 'DESC']),
-    sortBy: PropTypes.string,
-    sort: PropTypes.func.isRequired,
-};
 
 export default withHandlers({
     sort:

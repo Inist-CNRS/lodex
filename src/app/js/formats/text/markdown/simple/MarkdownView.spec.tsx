@@ -1,5 +1,3 @@
-// @ts-expect-error TS6133
-import React from 'react';
 import { shallow } from 'enzyme';
 
 import MarkdownView from './MarkdownView';
@@ -10,7 +8,6 @@ describe('<MarkdownView />', () => {
         const resource = { foo: '__Run you fools!__' };
         const field = { name: 'foo' };
         const wrapper = shallow(
-            // @ts-expect-error TS2769
             <MarkdownView resource={resource} field={field} />,
         );
         expect(wrapper.find('div')).toHaveLength(1);
@@ -23,7 +20,6 @@ describe('<MarkdownView />', () => {
         const resource = { foo: [1, 2, 3] };
         const field = { name: 'foo' };
         const wrapper = shallow(
-            // @ts-expect-error TS2769
             <MarkdownView resource={resource} field={field} />,
         );
         expect(wrapper.find(InvalidFormat)).toHaveLength(1);

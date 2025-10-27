@@ -1,6 +1,5 @@
-import { fireEvent, render, screen } from '@testing-library/react';
-// @ts-expect-error TS6133
-import React from 'react';
+import { fireEvent, render } from '@testing-library/react';
+
 import { useForm } from '@tanstack/react-form';
 import { TestI18N } from '../i18n/I18NContext';
 import { PreviousButton } from './PreviousButton';
@@ -29,11 +28,11 @@ const renderPreviousButton = ({ formTarget, formKind, ...props }) => {
             </TestI18N>
         );
     }
-    const wrapper = render(<TestPreviousButton {...props} />);
+    const screen = render(<TestPreviousButton {...props} />);
 
     return {
         form,
-        ...wrapper,
+        ...screen,
     };
 };
 
@@ -41,44 +40,41 @@ describe('PreviousButton', () => {
     it('should display cancel button when currentStep is TARGET_STEP', async () => {
         const onCancel = jest.fn();
         // @ts-expect-error TS2345
-        renderPreviousButton({
+        const screen = renderPreviousButton({
             currentStep: TARGET_STEP,
             onCancel,
             isFieldValueAnnotable: true,
         });
         expect(screen.queryByText('cancel')).toBeInTheDocument();
         expect(screen.queryByText('back')).not.toBeInTheDocument();
-        // @ts-expect-error TS2345
-        fireEvent.click(screen.queryByText('cancel'));
+        fireEvent.click(screen.getByText('cancel'));
         expect(onCancel).toHaveBeenCalledTimes(1);
     });
     it('should display cancel button when currentStep is COMMENT_STEP and isFieldValueAnnotable is false', async () => {
         const onCancel = jest.fn();
         // @ts-expect-error TS2345
-        renderPreviousButton({
+        const screen = renderPreviousButton({
             currentStep: TARGET_STEP,
             onCancel,
             isFieldValueAnnotable: false,
         });
         expect(screen.queryByText('cancel')).toBeInTheDocument();
         expect(screen.queryByText('back')).not.toBeInTheDocument();
-        // @ts-expect-error TS2345
-        fireEvent.click(screen.queryByText('cancel'));
+        fireEvent.click(screen.getByText('cancel'));
         expect(onCancel).toHaveBeenCalledTimes(1);
     });
     it('should display back button returning to TARGET_STEP when currentStep is VALUE_STEP', async () => {
         const goToStep = jest.fn();
 
         // @ts-expect-error TS2345
-        renderPreviousButton({
+        const screen = renderPreviousButton({
             currentStep: VALUE_STEP,
             goToStep,
             isFieldValueAnnotable: true,
         });
         expect(screen.queryByText('back')).toBeInTheDocument();
         expect(screen.queryByText('cancel')).not.toBeInTheDocument();
-        // @ts-expect-error TS2345
-        fireEvent.click(screen.queryByText('back'));
+        fireEvent.click(screen.getByText('back'));
         expect(goToStep).toHaveBeenCalledTimes(1);
         expect(goToStep).toHaveBeenCalledWith(TARGET_STEP);
     });
@@ -86,7 +82,7 @@ describe('PreviousButton', () => {
         const goToStep = jest.fn();
 
         // @ts-expect-error TS2345
-        renderPreviousButton({
+        const screen = renderPreviousButton({
             currentStep: COMMENT_STEP,
             goToStep,
             formTarget: 'title',
@@ -94,8 +90,7 @@ describe('PreviousButton', () => {
         });
         expect(screen.queryByText('back')).toBeInTheDocument();
         expect(screen.queryByText('cancel')).not.toBeInTheDocument();
-        // @ts-expect-error TS2345
-        fireEvent.click(screen.queryByText('back'));
+        fireEvent.click(screen.getByText('back'));
         expect(goToStep).toHaveBeenCalledTimes(1);
         expect(goToStep).toHaveBeenCalledWith(TARGET_STEP);
     });
@@ -103,7 +98,7 @@ describe('PreviousButton', () => {
         const goToStep = jest.fn();
 
         // @ts-expect-error TS2345
-        renderPreviousButton({
+        const screen = renderPreviousButton({
             currentStep: COMMENT_STEP,
             goToStep,
             formTarget: 'title',
@@ -112,8 +107,7 @@ describe('PreviousButton', () => {
         });
         expect(screen.queryByText('back')).toBeInTheDocument();
         expect(screen.queryByText('cancel')).not.toBeInTheDocument();
-        // @ts-expect-error TS2345
-        fireEvent.click(screen.queryByText('back'));
+        fireEvent.click(screen.getByText('back'));
         expect(goToStep).toHaveBeenCalledTimes(1);
         expect(goToStep).toHaveBeenCalledWith(TARGET_STEP);
     });
@@ -121,7 +115,7 @@ describe('PreviousButton', () => {
         const goToStep = jest.fn();
 
         // @ts-expect-error TS2345
-        renderPreviousButton({
+        const screen = renderPreviousButton({
             currentStep: COMMENT_STEP,
             initialValue: ['a', 'b'],
             goToStep,
@@ -129,8 +123,7 @@ describe('PreviousButton', () => {
         });
         expect(screen.queryByText('back')).toBeInTheDocument();
         expect(screen.queryByText('cancel')).not.toBeInTheDocument();
-        // @ts-expect-error TS2345
-        fireEvent.click(screen.queryByText('back'));
+        fireEvent.click(screen.getByText('back'));
         expect(goToStep).toHaveBeenCalledTimes(1);
         expect(goToStep).toHaveBeenCalledWith(VALUE_STEP);
     });
@@ -138,7 +131,7 @@ describe('PreviousButton', () => {
         const goToStep = jest.fn();
 
         // @ts-expect-error TS2345
-        renderPreviousButton({
+        const screen = renderPreviousButton({
             currentStep: COMMENT_STEP,
             initialValue: ['a', 'b'],
             goToStep,
@@ -147,8 +140,7 @@ describe('PreviousButton', () => {
         });
         expect(screen.queryByText('back')).toBeInTheDocument();
         expect(screen.queryByText('cancel')).not.toBeInTheDocument();
-        // @ts-expect-error TS2345
-        fireEvent.click(screen.queryByText('back'));
+        fireEvent.click(screen.getByText('back'));
         expect(goToStep).toHaveBeenCalledTimes(1);
         expect(goToStep).toHaveBeenCalledWith(TARGET_STEP);
     });
@@ -156,7 +148,7 @@ describe('PreviousButton', () => {
         const goToStep = jest.fn();
 
         // @ts-expect-error TS2345
-        renderPreviousButton({
+        const screen = renderPreviousButton({
             currentStep: COMMENT_STEP,
             initialValue: 'initialValue',
             goToStep,
@@ -164,8 +156,7 @@ describe('PreviousButton', () => {
         });
         expect(screen.queryByText('back')).toBeInTheDocument();
         expect(screen.queryByText('cancel')).not.toBeInTheDocument();
-        // @ts-expect-error TS2345
-        fireEvent.click(screen.queryByText('back'));
+        fireEvent.click(screen.getByText('back'));
         expect(goToStep).toHaveBeenCalledTimes(1);
         expect(goToStep).toHaveBeenCalledWith(TARGET_STEP);
     });
@@ -173,7 +164,7 @@ describe('PreviousButton', () => {
         const goToStep = jest.fn();
 
         // @ts-expect-error TS2345
-        renderPreviousButton({
+        const screen = renderPreviousButton({
             currentStep: COMMENT_STEP,
             initialValue: ['initialValue'],
             formTarget: 'title',
@@ -182,8 +173,7 @@ describe('PreviousButton', () => {
         });
         expect(screen.queryByText('back')).toBeInTheDocument();
         expect(screen.queryByText('cancel')).not.toBeInTheDocument();
-        // @ts-expect-error TS2345
-        fireEvent.click(screen.queryByText('back'));
+        fireEvent.click(screen.getByText('back'));
         expect(goToStep).toHaveBeenCalledTimes(1);
         expect(goToStep).toHaveBeenCalledWith(TARGET_STEP);
     });
@@ -191,21 +181,20 @@ describe('PreviousButton', () => {
         const goToStep = jest.fn();
 
         // @ts-expect-error TS2345
-        renderPreviousButton({
+        const screen = renderPreviousButton({
             currentStep: AUTHOR_STEP,
             goToStep,
             isFieldValueAnnotable: true,
         });
         expect(screen.queryByText('back')).toBeInTheDocument();
         expect(screen.queryByText('cancel')).not.toBeInTheDocument();
-        // @ts-expect-error TS2345
-        fireEvent.click(screen.queryByText('back'));
+        fireEvent.click(screen.getByText('back'));
         expect(goToStep).toHaveBeenCalledTimes(1);
         expect(goToStep).toHaveBeenCalledWith(COMMENT_STEP);
     });
     it('should disable cancel button when isSubmitting is true', () => {
         // @ts-expect-error TS2345
-        renderPreviousButton({
+        const screen = renderPreviousButton({
             currentStep: TARGET_STEP,
             isSubmitting: true,
             isFieldValueAnnotable: true,
@@ -216,7 +205,7 @@ describe('PreviousButton', () => {
     });
     it('should disable back button when isSubmitting is true', () => {
         // @ts-expect-error TS2345
-        renderPreviousButton({
+        const screen = renderPreviousButton({
             currentStep: AUTHOR_STEP,
             isSubmitting: true,
             isFieldValueAnnotable: true,

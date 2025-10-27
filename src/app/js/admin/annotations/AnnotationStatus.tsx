@@ -1,13 +1,18 @@
 import { Chip } from '@mui/material';
-import PropTypes from 'prop-types';
-// @ts-expect-error TS6133
-import React from 'react';
+
 import { grey } from '@mui/material/colors';
 import { useTranslate } from '../../i18n/I18NContext';
-import { statuses } from '../../../../common/validator/annotation.validator';
+import { type AnnotationStatus as Status } from '../../../../common/validator/annotation.validator';
 
-// @ts-expect-error TS7031
-export const AnnotationStatus = ({ status, arialLabel }) => {
+interface AnnotationStatusProps {
+    status?: Status;
+    arialLabel?: string;
+}
+
+export const AnnotationStatusChip = ({
+    status,
+    arialLabel,
+}: AnnotationStatusProps) => {
     const { translate } = useTranslate();
 
     switch (status) {
@@ -55,9 +60,4 @@ export const AnnotationStatus = ({ status, arialLabel }) => {
         default:
             return null;
     }
-};
-
-AnnotationStatus.propTypes = {
-    status: PropTypes.oneOf(statuses),
-    arialLabel: PropTypes.string,
 };

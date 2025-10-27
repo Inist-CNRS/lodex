@@ -1,5 +1,3 @@
-// @ts-expect-error TS6133
-import React from 'react';
 import { shallow } from 'enzyme';
 
 import { DetailComponent as Detail } from './Detail';
@@ -82,7 +80,6 @@ describe('Detail', () => {
 
         const renderedFields = properties.map((element, index) => ({
             index,
-            // @ts-expect-error TS2571
             name: element.prop('field').name,
         }));
 

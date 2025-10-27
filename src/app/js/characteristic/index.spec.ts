@@ -138,6 +138,7 @@ describe('characteristic', () => {
                 ];
 
                 const characteristics = selectors.getRootCharacteristics(
+                    // @ts-expect-error TS2345
                     state,
                     fields,
                 );

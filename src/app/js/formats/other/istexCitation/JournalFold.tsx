@@ -1,33 +1,35 @@
-// @ts-expect-error TS6133
-import React from 'react';
-import PropTypes from 'prop-types';
-
 import FetchFold from '../istexSummary/FetchFold';
 import { getCitationDocumentData } from './getIstexCitationData';
-import { SEARCHED_FIELD_VALUES } from '../istexSummary/constants';
-import { polyglot as polyglotPropTypes } from '../../../propTypes';
+import { type SearchedField } from '../istexSummary/constants';
+import type { ReactNode } from 'react';
+
+interface JournalFoldProps {
+    item: {
+        name: string;
+        count: number;
+    };
+    value: string;
+    searchedField?: SearchedField;
+    children(...args: unknown[]): ReactNode;
+    documentSortBy: string;
+}
 
 const JournalFold = ({
-    // @ts-expect-error TS7031
     item: { name, count },
-    // @ts-expect-error TS7031
+
     value,
-    // @ts-expect-error TS7031
+
     searchedField,
-    // @ts-expect-error TS7031
-    polyglot,
-    // @ts-expect-error TS7031
+
     children,
-    // @ts-expect-error TS7031
+
     documentSortBy,
-}) => (
+}: JournalFoldProps) => (
     <FetchFold
-        // @ts-expect-error TS2769
         label={name}
         skip={name === 'other'}
         count={count}
         name={name}
-        polyglot={polyglot}
         getData={getCitationDocumentData({
             value,
             name,
@@ -38,17 +40,5 @@ const JournalFold = ({
         {children}
     </FetchFold>
 );
-
-JournalFold.propTypes = {
-    item: PropTypes.shape({
-        name: PropTypes.string.isRequired,
-        count: PropTypes.number.isRequired,
-    }).isRequired,
-    value: PropTypes.string.isRequired,
-    searchedField: PropTypes.oneOf(SEARCHED_FIELD_VALUES),
-    children: PropTypes.func.isRequired,
-    polyglot: polyglotPropTypes.isRequired,
-    documentSortBy: PropTypes.string.isRequired,
-};
 
 export default JournalFold;

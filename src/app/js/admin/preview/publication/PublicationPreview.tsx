@@ -1,14 +1,10 @@
-// @ts-expect-error TS6133
-import React, { useEffect } from 'react';
-import PropTypes from 'prop-types';
+import { useEffect } from 'react';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 
 import PublicationExcerpt from './PublicationExcerpt';
 import { loadField } from '../../../fields';
 import { fromFields } from '../../../sharedSelectors';
-
-import { field as fieldPropTypes } from '../../../propTypes';
 
 const styles = {
     container: {
@@ -26,8 +22,15 @@ const styles = {
     },
 };
 
-// @ts-expect-error TS7031
-const PublicationPreviewComponent = ({ fields, loadField }) => {
+interface PublicationPreviewComponentProps {
+    loadField(...args: unknown[]): unknown;
+    fields: unknown[];
+}
+
+const PublicationPreviewComponent = ({
+    fields,
+    loadField,
+}: PublicationPreviewComponentProps) => {
     useEffect(() => {
         loadField();
     }, []);
@@ -40,11 +43,6 @@ const PublicationPreviewComponent = ({ fields, loadField }) => {
             <PublicationExcerpt onHeaderClick={null} fields={fields} />
         </div>
     );
-};
-
-PublicationPreviewComponent.propTypes = {
-    loadField: PropTypes.func.isRequired,
-    fields: PropTypes.arrayOf(fieldPropTypes).isRequired,
 };
 
 // @ts-expect-error TS7006

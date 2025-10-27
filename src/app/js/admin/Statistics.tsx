@@ -1,6 +1,3 @@
-// @ts-expect-error TS6133
-import React from 'react';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Box, CircularProgress } from '@mui/material';
 
@@ -28,8 +25,15 @@ const styles = {
     },
 };
 
-// @ts-expect-error TS7031
-export const StatisticsComponent = ({ isComputing, totalPublishedFields }) => {
+interface StatisticsComponentProps {
+    isComputing: boolean;
+    totalPublishedFields: number;
+}
+
+export const StatisticsComponent = ({
+    isComputing,
+    totalPublishedFields,
+}: StatisticsComponentProps) => {
     const { translate } = useTranslate();
     return (
         <Box sx={styles.container}>
@@ -47,11 +51,6 @@ export const StatisticsComponent = ({ isComputing, totalPublishedFields }) => {
             </Box>
         </Box>
     );
-};
-
-StatisticsComponent.propTypes = {
-    isComputing: PropTypes.bool.isRequired,
-    totalPublishedFields: PropTypes.number.isRequired,
 };
 
 // @ts-expect-error TS7006

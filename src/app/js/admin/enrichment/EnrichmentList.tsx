@@ -65,6 +65,8 @@ const EnrichmentListToolBar = ({
                      // @ts-expect-error TS2741 */}
                     <GridToolbarColumnsButton />
                 </Tooltip>
+                {/*
+                 // @ts-expect-error TS2739 */}
                 <GridToolbarFilterButton />
                 <Tooltip title={translate(`density_tooltip`)}>
                     {/*
@@ -140,7 +142,7 @@ export const EnrichmentList = ({
         }
 
         toast(translate(runAllEnrichmentError), {
-            type: toast.TYPE.ERROR,
+            type: 'error',
         });
     }, [runAllEnrichmentError, translate]);
 

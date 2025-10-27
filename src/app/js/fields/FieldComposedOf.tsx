@@ -1,5 +1,4 @@
 import React, { useMemo } from 'react';
-import PropTypes from 'prop-types';
 import {
     Box,
     Typography,
@@ -8,7 +7,6 @@ import {
     MenuItem,
     Chip,
 } from '@mui/material';
-import { field as fieldPropTypes } from '../propTypes';
 import FieldRepresentation from './FieldRepresentation';
 import { getFieldForSpecificScope } from '../../../common/scope';
 import {
@@ -33,8 +31,15 @@ import { useTranslate } from '../i18n/I18NContext';
 import type { Field } from './types.ts';
 import { useController, useFormContext } from 'react-hook-form';
 
-// @ts-expect-error TS7031
-const SortableItem = ({ option, onDelete, isActive }) => {
+interface SortableItemProps {
+    option: {
+        name: string;
+    };
+    onDelete(name: string): void;
+    isActive?: boolean;
+}
+
+const SortableItem = ({ option, onDelete, isActive }: SortableItemProps) => {
     const { attributes, listeners, setNodeRef, transform, isDragging } =
         useSortable({
             id: option.name,
@@ -63,14 +68,15 @@ const SortableItem = ({ option, onDelete, isActive }) => {
     );
 };
 
-SortableItem.propTypes = {
-    option: fieldPropTypes.isRequired,
-    onDelete: PropTypes.func,
-    isActive: PropTypes.bool,
-};
+interface SortableChipsProps {
+    options: {
+        name: string;
+    }[];
+    onDelete(name: string): void;
+    onChange(values: { isComposedOf: boolean; fields: string[] }): void;
+}
 
-// @ts-expect-error TS7031
-const SortableChips = ({ onChange, onDelete, options }) => {
+const SortableChips = ({ onChange, onDelete, options }: SortableChipsProps) => {
     const [activeId, setActiveId] = React.useState(null);
     const sensors = useSensors(
         useSensor(PointerSensor, {
@@ -93,17 +99,14 @@ const SortableChips = ({ onChange, onDelete, options }) => {
         const { active, over } = event;
         if (active && over && active.id !== over.id) {
             const oldIndex = options.findIndex(
-                // @ts-expect-error TS7006
                 (option) => option.name === active.id,
             );
             const newIndex = options.findIndex(
-                // @ts-expect-error TS7006
                 (option) => option.name === over.id,
             );
             const newFields = arrayMove(options, oldIndex, newIndex);
             onChange({
                 isComposedOf: newFields.length > 0,
-                // @ts-expect-error TS18046
                 fields: newFields.map((field) => field.name),
             });
         }
@@ -129,12 +132,9 @@ const SortableChips = ({ onChange, onDelete, options }) => {
             onDragCancel={handleDragCancel}
         >
             <SortableContext
-                // @ts-expect-error TS7006
                 items={options.map((option) => option.name)}
                 strategy={horizontalListSortingStrategy}
             >
-                {/*
-                 // @ts-expect-error TS7006 */}
                 {options.map((option) => (
                     <SortableItem
                         key={option.name}
@@ -147,8 +147,8 @@ const SortableChips = ({ onChange, onDelete, options }) => {
                 {activeId ? (
                     <SortableItem
                         isActive={true}
+                        // @ts-expect-error TS7006
                         option={options.find(
-                            // @ts-expect-error TS7006
                             (option) => option.name === activeId,
                         )}
                     />
@@ -156,12 +156,6 @@ const SortableChips = ({ onChange, onDelete, options }) => {
             </DragOverlay>
         </DndContext>
     );
-};
-
-SortableChips.propTypes = {
-    options: PropTypes.arrayOf(fieldPropTypes).isRequired,
-    onDelete: PropTypes.func.isRequired,
-    onChange: PropTypes.func.isRequired,
 };
 
 const FieldComposedOf = ({

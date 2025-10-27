@@ -1,6 +1,3 @@
-// @ts-expect-error TS6133
-import React from 'react';
-
 // @ts-expect-error TS7006
 const StreamgraphIcon = (props) => (
     <svg baseProfile="tiny" viewBox="0 0 100 125" {...props}>

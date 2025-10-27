@@ -1,5 +1,4 @@
 import AddBoxIcon from '@mui/icons-material/AddBox';
-import PropTypes from 'prop-types';
 
 import { connect } from 'react-redux';
 import { Box, Button, Tooltip } from '@mui/material';
@@ -20,14 +19,19 @@ import { toast } from '../../../../common/tools/toast';
 import { useTranslate } from '../../i18n/I18NContext';
 import { PrecomputedStatus } from './PrecomputedStatus';
 
+interface PrecomputedListProps {
+    precomputedList: unknown[];
+    onLaunchPrecomputed(...args: unknown[]): unknown;
+    isPrecomputedRunning?: boolean;
+}
+
 export const PrecomputedList = ({
-    // @ts-expect-error TS7031
     precomputedList,
-    // @ts-expect-error TS7031
+
     isPrecomputedRunning,
-    // @ts-expect-error TS7031
+
     onLaunchPrecomputed,
-}) => {
+}: PrecomputedListProps) => {
     const { translate } = useTranslate();
     const history = useHistory();
     // @ts-expect-error TS7006
@@ -40,7 +44,7 @@ export const PrecomputedList = ({
         event.stopPropagation();
         if (isPrecomputedRunning) {
             toast(translate('pending_precomputed'), {
-                type: toast.TYPE.INFO,
+                type: 'info',
             });
         }
         onLaunchPrecomputed({
@@ -57,6 +61,8 @@ export const PrecomputedList = ({
                      // @ts-expect-error TS2741 */}
                     <GridToolbarColumnsButton />
                 </Tooltip>
+                {/*
+                 // @ts-expect-error TS2739 */}
                 <GridToolbarFilterButton />
                 <Tooltip title={translate(`density_tooltip`)}>
                     {/*
@@ -129,10 +135,10 @@ export const PrecomputedList = ({
                         },
                     },
                 ]}
+                // @ts-expect-error TS2322
                 rows={precomputedList}
                 getRowId={(row) => row._id}
                 autoHeight
-                // @ts-expect-error TS2322
                 width="100%"
                 onRowClick={handleRowClick}
                 components={{
@@ -146,12 +152,6 @@ export const PrecomputedList = ({
             />
         </Box>
     );
-};
-
-PrecomputedList.propTypes = {
-    precomputedList: PropTypes.array.isRequired,
-    onLaunchPrecomputed: PropTypes.func.isRequired,
-    isPrecomputedRunning: PropTypes.bool,
 };
 
 // @ts-expect-error TS7006

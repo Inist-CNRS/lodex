@@ -1,12 +1,14 @@
-// @ts-expect-error TS6133
-import React from 'react';
-import { shallow } from 'enzyme';
-
 import { DatasetCharacteristicItemComponent as DatasetCharacteristicItem } from './DatasetCharacteristicItem';
 import Property from '../public/Property';
 
 import { useInView } from 'react-intersection-observer';
+import { render } from '../../../test-utils';
 jest.mock('react-intersection-observer');
+
+jest.mock('../public/Property', () => ({
+    __esModule: true,
+    default: jest.fn(() => <div>Mocked Property</div>),
+}));
 
 describe('DatasetCharacteristicItem', () => {
     it('should not render a Property when it is not visible', () => {
@@ -19,13 +21,30 @@ describe('DatasetCharacteristicItem', () => {
                 field1: 'value1',
                 field2: 'value2',
             },
+            characteristic: { name: 'field1' },
         };
 
         // @ts-expect-error TS2741
-        const wrapper = shallow(<DatasetCharacteristicItem {...props} />);
+        const screen = render(<DatasetCharacteristicItem {...props} />, {
+            initialState: {
+                field: {
+                    list: ['field1'],
+                    byName: {
+                        field1: { name: 'field1', scheme: 'scheme1' },
+                    },
+                },
+                characteristic: {
+                    characteristics: [
+                        {
+                            field1: 'value1',
+                            field2: 'value2',
+                        },
+                    ],
+                },
+            },
+        });
 
-        const property = wrapper.find(Property);
-        expect(property).toHaveLength(0);
+        expect(screen.queryByText('Mocked Property')).not.toBeInTheDocument();
     });
 
     it('should render a Property when it is visible', () => {
@@ -38,23 +57,40 @@ describe('DatasetCharacteristicItem', () => {
                 field1: 'value1',
                 field2: 'value2',
             },
+            characteristic: { name: 'field1' },
         };
 
         // @ts-expect-error TS2741
-        const wrapper = shallow(<DatasetCharacteristicItem {...props} />);
+        const screen = render(<DatasetCharacteristicItem {...props} />, {
+            initialState: {
+                fields: {
+                    list: ['field1'],
+                    byName: {
+                        field1: { name: 'field1', scheme: 'scheme1' },
+                    },
+                },
+                characteristic: {
+                    characteristics: [
+                        {
+                            field1: 'value1',
+                            field2: 'value2',
+                        },
+                    ],
+                },
+            },
+        });
 
-        const property = wrapper.find(Property);
-        expect(property).toHaveLength(1);
-        const propertyProps = property.at(0).props();
-        // @ts-expect-error TS18046
-        expect(propertyProps.field).toEqual({
-            name: 'field1',
-            scheme: 'scheme1',
-        });
-        // @ts-expect-error TS18046
-        expect(propertyProps.resource).toEqual({
-            field1: 'value1',
-            field2: 'value2',
-        });
+        expect(screen.getByText('Mocked Property')).toBeInTheDocument();
+        expect(Property).toHaveBeenCalledWith(
+            expect.objectContaining({
+                field: { name: 'field1', scheme: 'scheme1' },
+                resource: {
+                    name: 'field1',
+                    field1: 'value1',
+                    field2: 'value2',
+                },
+            }),
+            {},
+        );
     });
 });

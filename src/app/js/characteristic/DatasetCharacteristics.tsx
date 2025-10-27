@@ -1,17 +1,14 @@
-// @ts-expect-error TS6133
-import React from 'react';
-import PropTypes from 'prop-types';
-import compose from 'recompose/compose';
-import { connect } from 'react-redux';
-
-import { field as fieldPropTypes } from '../propTypes';
+import { useSelector } from 'react-redux';
 
 import { fromFields, fromCharacteristic } from '../sharedSelectors';
 
 import DatasetCharacteristicItem from './DatasetCharacteristicItem';
-import { fromDisplayConfig, fromI18n } from '../public/selectors';
+import { fromDisplayConfig } from '../public/selectors';
+import { useEffect, type CSSProperties } from 'react';
+import type { State } from '../admin/reducers';
+import { useTranslate } from '../i18n/I18NContext';
 
-const styles = {
+const styles: Record<string, CSSProperties> = {
     container: {
         display: 'flex',
         flexFlow: 'row wrap',
@@ -23,16 +20,19 @@ const styles = {
     },
 };
 
-const DatasetCharacteristicsView = ({
-    // @ts-expect-error TS7031
-    characteristics,
-    // @ts-expect-error TS7031
-    isMultilingual,
-    // @ts-expect-error TS7031
-    locale,
-}) => {
+const DatasetCharacteristicsView = () => {
+    console.log('DatasetCharacteristicsView render');
+    useEffect(() => {
+        console.log('DatasetCharacteristicsView mount useEffect');
+    }, []);
+    const fields = useSelector(fromFields.getDatasetFields);
+    const characteristics =
+        useSelector((state: State) =>
+            fromCharacteristic.getRootCharacteristics(state, fields),
+        ) || [];
+    const isMultilingual = useSelector(fromDisplayConfig.isMultilingual);
+    const { locale } = useTranslate();
     const filteredCharacteristics = characteristics.filter(
-        // @ts-expect-error TS7006
         (characteristic) =>
             !isMultilingual ||
             !characteristic.language ||
@@ -41,8 +41,6 @@ const DatasetCharacteristicsView = ({
     return (
         <div className="dataset-characteristics">
             <div style={styles.container}>
-                {/*
-                 // @ts-expect-error TS7006 */}
                 {filteredCharacteristics.map((characteristicField) => (
                     <DatasetCharacteristicItem
                         key={characteristicField.name}
@@ -55,31 +53,4 @@ const DatasetCharacteristicsView = ({
     );
 };
 
-DatasetCharacteristicsView.propTypes = {
-    characteristics: PropTypes.arrayOf(fieldPropTypes).isRequired,
-    isMultilingual: PropTypes.bool.isRequired,
-    locale: PropTypes.string.isRequired,
-};
-
-DatasetCharacteristicsView.defaultProps = {
-    characteristics: [],
-    newCharacteristics: [],
-};
-
-// @ts-expect-error TS7006
-const mapStateToProps = (state) => {
-    const fields = fromFields.getDatasetFields(state);
-
-    return {
-        characteristics: fromCharacteristic.getRootCharacteristics(
-            state,
-            fields,
-        ),
-        fields,
-        isMultilingual: fromDisplayConfig.isMultilingual(state),
-        locale: fromI18n.getLocale(state),
-    };
-};
-
-// @ts-expect-error TS2345
-export default compose(connect(mapStateToProps))(DatasetCharacteristicsView);
+export default DatasetCharacteristicsView;

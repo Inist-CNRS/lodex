@@ -1,12 +1,10 @@
 // @ts-expect-error TS7016
 import commaNumber from 'comma-number';
-import PropTypes from 'prop-types';
-// @ts-expect-error TS6133
-import React, { Component } from 'react';
+import { Component } from 'react';
 import compose from 'recompose/compose';
 import { translate } from '../../../i18n/I18NContext';
 
-import { field as fieldPropTypes } from '../../../propTypes';
+import { type Field } from '../../../propTypes';
 import injectData from '../../injectData';
 import Bigbold from './Bigbold';
 
@@ -36,12 +34,21 @@ function getNumber(numb) {
     return 0;
 }
 
-class EmphasedNumberView extends Component {
+interface EmphasedNumberViewProps {
+    field: Field;
+    resource?: object;
+    formatData?: number;
+    className?: string;
+    size: number;
+    colors: string;
+}
+
+class EmphasedNumberView extends Component<EmphasedNumberViewProps> {
     render() {
-        // @ts-expect-error TS2339
         const { field, className, resource, formatData, size, colors } =
             this.props;
 
+        // @ts-expect-error TS18048
         const value = getNumber(formatData || resource[field.name]);
         return (
             <div
@@ -60,21 +67,6 @@ class EmphasedNumberView extends Component {
         );
     }
 }
-
-// @ts-expect-error TS2339
-EmphasedNumberView.propTypes = {
-    field: fieldPropTypes.isRequired,
-    resource: PropTypes.object,
-    formatData: PropTypes.number,
-    className: PropTypes.string,
-    size: PropTypes.number.isRequired,
-    colors: PropTypes.string.isRequired,
-};
-
-// @ts-expect-error TS2339
-EmphasedNumberView.defaultProps = {
-    className: null,
-};
 
 export default compose(
     translate,

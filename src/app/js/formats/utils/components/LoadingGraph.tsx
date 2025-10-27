@@ -1,19 +1,18 @@
-// @ts-expect-error TS6133
-import React, { Component } from 'react';
-import { polyglot as polyglotPropTypes } from '../../../propTypes';
+import { Component } from 'react';
 import { CircularProgress } from '@mui/material';
 
-class LoadingGraph extends Component {
-    static propTypes = {
-        polyglot: polyglotPropTypes.isRequired,
-    };
+interface LoadingGraphProps {
+    polyglot: unknown;
+}
 
+class LoadingGraph extends Component<LoadingGraphProps> {
     render() {
-        // @ts-expect-error TS2339
         const { polyglot } = this.props;
 
         return (
             <>
+                {/*
+                 // @ts-expect-error TS18046 */}
                 {polyglot.t('loading')}
                 <CircularProgress variant="indeterminate" size={28} />
             </>

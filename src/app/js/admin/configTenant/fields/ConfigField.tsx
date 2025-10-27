@@ -1,16 +1,18 @@
 import { Typography } from '@mui/material';
 import { useField, useStore } from '@tanstack/react-form';
-// @ts-expect-error TS6133
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import AceEditor from 'react-ace';
 import { useTranslate } from '../../../i18n/I18NContext';
-import PropTypes from 'prop-types';
 import 'ace-builds/src-noconflict/mode-json';
 import 'ace-builds/src-noconflict/theme-monokai';
 
-// @ts-expect-error TS7031
-export const ConfigField = ({ form }) => {
+interface ConfigFieldProps {
+    form: object;
+}
+
+export const ConfigField = ({ form }: ConfigFieldProps) => {
     const { translate } = useTranslate();
+    // @ts-expect-error TS2740
     const field = useField({ name: 'config', form });
     const [json, setJson] = useState(
         field.state.value ? JSON.stringify(field.state.value, null, 2) : '',
@@ -67,8 +69,4 @@ export const ConfigField = ({ form }) => {
             {error && <Typography color="error">{translate(error)}</Typography>}
         </>
     );
-};
-
-ConfigField.propTypes = {
-    form: PropTypes.object.isRequired,
 };

@@ -1,14 +1,11 @@
 import { List } from '@mui/material';
 import classnames from 'classnames';
-import PropTypes from 'prop-types';
-// @ts-expect-error TS6133
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import { translate } from '../../i18n/I18NContext';
 
 import stylesToClassname from '../../lib/stylesToClassName';
-import { field as fieldPropTypes } from '../../propTypes';
 import { fromFields } from '../../sharedSelectors';
 import { facetActions as datasetActions } from '../dataset';
 import { facetActions as searchActions } from '../search/reducer';
@@ -51,32 +48,35 @@ const styles = stylesToClassname(
     'facets',
 );
 
+type FacetListProps = {
+    className?: string;
+    open?: boolean;
+    fields: { name: string; language: string }[];
+    hasFacetFields: boolean;
+    page: 'dataset' | 'search';
+    changeFacetValue(): void;
+    invertFacet(): void;
+    openFacet(): void;
+    sortFacetValue(): void;
+    toggleFacetValue(): void;
+    isMultilingual: boolean;
+    locale: string;
+};
+
 const FacetList = ({
-    // @ts-expect-error TS7031
     className,
-    // @ts-expect-error TS7031
     open,
-    // @ts-expect-error TS7031
     hasFacetFields,
-    // @ts-expect-error TS7031
     fields,
-    // @ts-expect-error TS7031
     page,
-    // @ts-expect-error TS7031
     changeFacetValue,
-    // @ts-expect-error TS7031
     invertFacet,
-    // @ts-expect-error TS7031
     openFacet,
-    // @ts-expect-error TS7031
     sortFacetValue,
-    // @ts-expect-error TS7031
     toggleFacetValue,
-    // @ts-expect-error TS7031
     isMultilingual,
-    // @ts-expect-error TS7031
     locale,
-}) => {
+}: FacetListProps) => {
     const actions = {
         changeFacetValue,
         invertFacet,
@@ -86,7 +86,6 @@ const FacetList = ({
     };
 
     const filteredFieldsByLocale = useMemo(() => {
-        // @ts-expect-error TS7006
         return fields.filter((field) => {
             return (
                 !isMultilingual || !field.language || field.language === locale
@@ -107,8 +106,6 @@ const FacetList = ({
             })}
         >
             <FacetActionsContext.Provider value={actions}>
-                {/*
-                 // @ts-expect-error TS7006 */}
                 {filteredFieldsByLocale.map((field) => (
                     <FacetItem
                         key={`${page}-${field.name}`}
@@ -124,21 +121,6 @@ const FacetList = ({
             </FacetActionsContext.Provider>
         </List>
     );
-};
-
-FacetList.propTypes = {
-    className: PropTypes.string,
-    open: PropTypes.bool,
-    fields: PropTypes.arrayOf(fieldPropTypes).isRequired,
-    hasFacetFields: PropTypes.bool.isRequired,
-    page: PropTypes.oneOf(['dataset', 'search']).isRequired,
-    changeFacetValue: PropTypes.func.isRequired,
-    invertFacet: PropTypes.func.isRequired,
-    openFacet: PropTypes.func.isRequired,
-    sortFacetValue: PropTypes.func.isRequired,
-    toggleFacetValue: PropTypes.func.isRequired,
-    isMultilingual: PropTypes.bool.isRequired,
-    locale: PropTypes.string.isRequired,
 };
 
 // @ts-expect-error TS7006

@@ -1,13 +1,15 @@
 import { useForm } from '@tanstack/react-form';
 import { fireEvent, render, waitFor } from '@testing-library/react';
-// @ts-expect-error TS6133
-import React from 'react';
 
 import { TestI18N } from '../../i18n/I18NContext';
-import { ProposedValueFieldList } from './ProposedValueFieldList';
+import {
+    ProposedValueFieldList,
+    type ProposedValueFieldListProps,
+} from './ProposedValueFieldList';
 
-// @ts-expect-error TS7006
-function TestProposedValueFieldList(props) {
+function TestProposedValueFieldList(
+    props: Omit<ProposedValueFieldListProps, 'form'>,
+) {
     const form = useForm();
     return (
         <TestI18N>
@@ -16,20 +18,15 @@ function TestProposedValueFieldList(props) {
     );
 }
 
-TestProposedValueFieldList.propTypes = {
-    options: ProposedValueFieldList.propTypes.options,
-    multiple: ProposedValueFieldList.propTypes.multiple,
-};
-
 describe('ProposedValueFieldList', () => {
     it('should support value change when options are defined', async () => {
-        const wrapper = render(
+        const screen = render(
             <TestProposedValueFieldList
                 options={['option1', 'option2', 'option3']}
             />,
         );
 
-        const textbox = wrapper.getByRole('textbox', {
+        const textbox = screen.getByRole('combobox', {
             name: 'annotation.proposedValue *',
         });
 
@@ -37,7 +34,7 @@ describe('ProposedValueFieldList', () => {
             fireEvent.mouseDown(textbox);
         });
 
-        const option = wrapper.getByRole('option', {
+        const option = screen.getByRole('option', {
             name: 'option2',
         });
 
@@ -51,14 +48,14 @@ describe('ProposedValueFieldList', () => {
     });
 
     it('should support mutiple values change when options are defined', async () => {
-        const wrapper = render(
+        const screen = render(
             <TestProposedValueFieldList
                 options={['option1', 'option2', 'option3']}
                 multiple
             />,
         );
 
-        const textbox = wrapper.getByRole('textbox', {
+        const textbox = screen.getByRole('combobox', {
             name: 'annotation.proposedValue *',
         });
 
@@ -68,7 +65,7 @@ describe('ProposedValueFieldList', () => {
 
         await waitFor(() => {
             fireEvent.click(
-                wrapper.getByRole('option', {
+                screen.getByRole('option', {
                     name: 'option1',
                 }),
             );
@@ -80,20 +77,20 @@ describe('ProposedValueFieldList', () => {
 
         await waitFor(() => {
             fireEvent.click(
-                wrapper.getByRole('option', {
+                screen.getByRole('option', {
                     name: 'option2',
                 }),
             );
         });
 
         expect(
-            wrapper.getByRole('button', {
+            screen.getByRole('button', {
                 name: 'option1',
             }),
         ).toBeInTheDocument();
 
         expect(
-            wrapper.getByRole('button', {
+            screen.getByRole('button', {
                 name: 'option2',
             }),
         ).toBeInTheDocument();

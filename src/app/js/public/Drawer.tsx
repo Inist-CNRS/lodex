@@ -1,5 +1,9 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
+import React, {
+    useCallback,
+    useEffect,
+    useState,
+    type ReactElement,
+} from 'react';
 import classnames from 'classnames';
 
 import stylesToClassname from '../lib/stylesToClassName';
@@ -130,8 +134,14 @@ const removePreventScroll = () => {
     document.body.style['-webkit-overflow-scrolling'] = '';
 };
 
-// @ts-expect-error TS7031
-const Drawer = ({ children, status, onClose, disabled }) => {
+interface DrawerProps {
+    children: ReactElement;
+    status: unknown | unknown | unknown;
+    onClose(...args: unknown[]): unknown;
+    disabled?: boolean;
+}
+
+const Drawer = ({ children, status, onClose, disabled }: DrawerProps) => {
     useEffect(() => {
         if (status === 'open') {
             preventScroll();
@@ -166,18 +176,6 @@ const Drawer = ({ children, status, onClose, disabled }) => {
             />
         </>
     );
-};
-
-Drawer.propTypes = {
-    children: PropTypes.node.isRequired,
-    status: PropTypes.oneOf([DRAWER_OPEN, DRAWER_CLOSING, DRAWER_CLOSED])
-        .isRequired,
-    onClose: PropTypes.func.isRequired,
-    disabled: PropTypes.bool,
-};
-
-Drawer.defaultProps = {
-    disabled: false,
 };
 
 export default Drawer;

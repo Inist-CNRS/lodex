@@ -1,22 +1,18 @@
-// @ts-expect-error TS6133
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import compose from 'recompose/compose';
-import { withRouter } from 'react-router';
-import isEqual from 'lodash/isEqual';
+import { useState, useEffect, useCallback, memo, useMemo } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { useLocation } from 'react-router';
 import get from 'lodash/get';
 
 import {
-    field as fieldPropTypes,
-    polyglot as polyglotPropTypes,
-} from '../propTypes';
-import { fromFormat } from '../public/selectors';
-import { preLoadFormatData, loadFormatData, unLoadFormatData } from './reducer';
+    loadFormatData as loadFormatDataAction,
+    unLoadFormatData as unLoadFormatDataAction,
+} from './reducer';
 import Loading from '../lib/components/Loading';
 import InvalidFormat from './InvalidFormat';
 import { CircularProgress } from '@mui/material';
-import { translate } from '../i18n/I18NContext';
+import type { Field } from '../propTypes';
+import { useTranslate } from '../i18n/I18NContext';
+import { isEqual } from 'lodash';
 
 const styles = {
     message: {
@@ -76,6 +72,7 @@ const getCreateUrl = (url) => {
     if (typeof url === 'string') {
         return () => url;
     }
+
     // @ts-expect-error TS7031
     return ({ field, resource }) => resource[field.name];
 };
@@ -83,235 +80,180 @@ const getCreateUrl = (url) => {
 // @ts-expect-error TS7006
 const isHomePage = (location) => get(location, 'pathname', '') === '/';
 
+interface GraphItemProps {
+    field: Field;
+    resource: object;
+}
+
 export default (url = null, checkFormatLoaded = null, withUri = false) =>
     // @ts-expect-error TS7006
     (FormatView) => {
         const createUrl = getCreateUrl(url);
 
-        class GraphItem extends Component {
-            static propTypes = {
-                field: fieldPropTypes.isRequired,
-                resource: PropTypes.object.isRequired,
-                preLoadFormatData: PropTypes.func.isRequired,
-                unLoadFormatData: PropTypes.func.isRequired,
-                loadFormatData: PropTypes.func.isRequired,
-                formatData: PropTypes.any,
-                formatTotal: PropTypes.any,
-                isLoaded: PropTypes.bool.isRequired,
-                isFormatLoading: PropTypes.bool.isRequired,
-                error: PropTypes.oneOf([PropTypes.string, PropTypes.object]),
-                location: PropTypes.shape({ pathname: PropTypes.string }),
-                p: polyglotPropTypes.isRequired,
-            };
+        const GraphItem = (props: GraphItemProps) => {
+            const location = useLocation();
+            const dispatch = useDispatch();
+            const formatState = useSelector(
+                (state: any) => state.format[props.field.name],
+            );
+            const [initialLoadingDone, setInitialLoadingDone] = useState(false);
 
-            // @ts-expect-error TS7006
-            constructor(props) {
-                super(props);
-                this.state = {
-                    isLoading: true,
+            const isFormatLoading = useSelector((state: any) =>
+                get(state, 'dataset.formatLoading', false),
+            );
+            const { isFormatLoaded, formatData, formatTotal, formatError } =
+                useMemo(() => {
+                    if (!formatState || formatState === 'loading') {
+                        return {
+                            isFormatDataLoaded: false,
+                            isFormatLoading: true,
+                        };
+                    }
+                    return {
+                        isFormatLoaded: true,
+                        formatData: formatState.data,
+                        formatTotal: formatState.total,
+                        formatError: formatState.error,
+                    };
+                }, [formatState]);
+            const isLoaded = useMemo(
+                () =>
+                    typeof checkFormatLoaded == 'function'
+                        ? // @ts-expect-error TS2349
+                          checkFormatLoaded(props.field)
+                        : props.field && isFormatLoaded,
+                [props.field, isFormatLoaded],
+            );
+            const { translate } = useTranslate();
+
+            const [isAnimationPlaying, setIsAnimationPlaying] = useState(true);
+
+            const loadFormatData = useCallback(
+                (values: object) => {
+                    const value = createUrl(props);
+
+                    if (!value) {
+                        return;
+                    }
+
+                    const withFacets = !isHomePage(location);
+                    dispatch(
+                        loadFormatDataAction({
+                            field: props.field,
+                            resource: props.resource,
+                            value,
+                            withUri,
+                            withFacets,
+                            ...values,
+                        }),
+                    );
+                },
+                [dispatch, props, location],
+            );
+
+            const filterFormatData = useCallback(
+                (filter: Record<string, unknown>) => {
+                    loadFormatData({
+                        filter,
+                    });
+                },
+                [loadFormatData],
+            );
+
+            const handleAnimationEnd = useCallback(() => {
+                setIsAnimationPlaying(false);
+            }, []);
+
+            // // Effect for component unmount (replaces componentWillUnmount)
+            useEffect(() => {
+                return () => {
+                    if (!props.field) {
+                        return;
+                    }
+                    dispatch(unLoadFormatDataAction(props.field));
                 };
-                this.handleAnimationEnd = this.handleAnimationEnd.bind(this);
-            }
+            }, []);
 
-            loadFormatData = ({ ...args }) => {
-                // @ts-expect-error TS2339
-                const { loadFormatData, location } = this.props;
-
-                const value = createUrl(this.props);
-
-                if (!value) {
+            // Effect to handle field/resource changes
+            useEffect(() => {
+                if (!props.field || initialLoadingDone) {
                     return;
                 }
 
-                const withFacets = !isHomePage(location);
-                loadFormatData({
-                    ...this.props,
-                    value,
-                    withUri,
-                    withFacets,
-                    ...args,
-                });
-            };
+                // This effect will run when field or resource changes
+                setInitialLoadingDone(true);
+                loadFormatData({});
+            }, [
+                loadFormatData,
+                props.field,
+                initialLoadingDone,
+                props.resource,
+            ]);
 
-            // @ts-expect-error TS7006
-            filterFormatData = (filter) => {
-                this.loadFormatData({
-                    filter,
-                });
-            };
+            const { field, resource, ...restProps } = props;
 
-            unLoadFormatData = ({ ...args }) => {
-                // @ts-expect-error TS2339
-                const { unLoadFormatData } = this.props;
-                unLoadFormatData({ ...args });
-            };
-
-            UNSAFE_componentWillMount() {
-                // @ts-expect-error TS2339
-                const { field } = this.props;
-                if (!field) {
-                    return;
-                }
-                this.loadFormatData({});
-            }
-
-            componentWillUnmount() {
-                // @ts-expect-error TS2339
-                const { field } = this.props;
-                if (!field) {
-                    return;
-                }
-                this.unLoadFormatData(field);
-            }
-
-            // @ts-expect-error TS7006
-            componentDidUpdate(prevProps) {
-                // @ts-expect-error TS2339
-                const { field, resource } = this.props;
-
-                // @ts-expect-error TS2339
-                if (!this.state.isLoading && this.props.isFormatLoading) {
-                    this.setState({
-                        isLoading: true,
-                    });
-                }
-
-                if (
-                    !field ||
-                    (isEqual(field, prevProps.field) &&
-                        resource[field.name] ===
-                            prevProps.resource[prevProps.field.name])
-                ) {
-                    return;
-                }
-
-                this.loadFormatData({});
-            }
-
-            handleAnimationEnd() {
-                // @ts-expect-error TS2339
-                if (this.state.isLoading && !this.props.isFormatLoading) {
-                    this.setState({
-                        isLoading: false,
-                    });
-                }
-            }
-
-            render() {
-                const {
-                    // @ts-expect-error TS2339
-                    formatTotal,
-                    // @ts-expect-error TS2339
-                    formatData,
-                    // @ts-expect-error TS2339
-                    p: polyglot,
-                    // @ts-expect-error TS2339
-                    field,
-                    // @ts-expect-error TS2339
-                    isLoaded,
-                    // @ts-expect-error TS2339
-                    isFormatLoading,
-                    // @ts-expect-error TS2339
-                    error,
-                    // @ts-expect-error TS2339
-                    resource,
-                    ...props
-                } = this.props;
-
-                if (error) {
-                    return error === 'bad value' ? (
-                        <InvalidFormat
-                            format={field.format}
-                            value={resource[field.name]}
-                        />
-                    ) : (
-                        <p style={styles.message}>
-                            {polyglot.t('chart_error')}
-                        </p>
-                    );
-                }
-
-                if (
-                    formatData === 'no result' ||
-                    (formatData != undefined && formatData.length === 0)
-                ) {
-                    return (
-                        <p style={styles.message}>
-                            {polyglot.t('no_chart_data')}
-                        </p>
-                    );
-                }
-
-                if (!isLoaded) {
-                    return <Loading>{polyglot.t('loading')}</Loading>;
-                }
-
-                return (
-                    // @ts-expect-error TS2322
-                    <div style={styles.format.container}>
-                        <style>{animationKeyframes}</style>
-                        <div
-                            onAnimationEnd={this.handleAnimationEnd}
-                            // @ts-expect-error TS2322
-                            style={{
-                                ...styles.format.loading,
-                                animationName: isFormatLoading
-                                    ? 'injectDataLoadingStart'
-                                    : 'injectDataLoadingEnd',
-                            }}
-                        ></div>
-                        {/*
-                         // @ts-expect-error TS2339 */}
-                        {this.state.isLoading ? (
-                            <CircularProgress
-                                sx={styles.format.progress}
-                                variant="indeterminate"
-                                size={40}
-                            />
-                        ) : null}
-                        <FormatView
-                            {...props}
-                            p={polyglot}
-                            field={field}
-                            resource={resource}
-                            formatData={formatData}
-                            formatTotal={formatTotal}
-                            filterFormatData={this.filterFormatData}
-                        />
-                    </div>
+            if (formatError) {
+                return formatError === 'bad value' ? (
+                    <InvalidFormat
+                        // @ts-expect-error TS18046
+                        format={field.format}
+                        // @ts-expect-error TS7053
+                        value={resource[field.name]}
+                    />
+                ) : (
+                    <p style={styles.message}>{translate('chart_error')}</p>
                 );
             }
-        }
 
-        // @ts-expect-error TS2339
+            if (
+                formatData === 'no result' ||
+                (formatData != undefined && formatData.length === 0)
+            ) {
+                return (
+                    <p style={styles.message}>{translate('no_chart_data')}</p>
+                );
+            }
+
+            if (!isLoaded) {
+                return <Loading>{translate('loading')}</Loading>;
+            }
+
+            return (
+                // @ts-expect-error TS2322
+                <div style={styles.format.container}>
+                    <style>{animationKeyframes}</style>
+                    <div
+                        onAnimationEnd={handleAnimationEnd}
+                        // @ts-expect-error TS2322
+                        style={{
+                            ...styles.format.loading,
+                            animationName: isFormatLoading
+                                ? 'injectDataLoadingStart'
+                                : 'injectDataLoadingEnd',
+                        }}
+                    ></div>
+                    {isAnimationPlaying || isFormatLoading ? (
+                        <CircularProgress
+                            sx={styles.format.progress}
+                            variant="indeterminate"
+                            size={40}
+                        />
+                    ) : null}
+                    <FormatView
+                        {...restProps}
+                        field={field}
+                        resource={resource}
+                        formatData={formatData}
+                        formatTotal={formatTotal}
+                        filterFormatData={filterFormatData}
+                    />
+                </div>
+            );
+        };
+
         GraphItem.WrappedComponent = FormatView;
 
-        // @ts-expect-error TS7006
-        const mapStateToProps = (state, { field, resource }) => {
-            const isLoaded =
-                typeof checkFormatLoaded == 'function'
-                    ? // @ts-expect-error TS2349
-                      checkFormatLoaded(field)
-                    : field && fromFormat.isFormatDataLoaded(state, field.name);
-            return {
-                resource,
-                formatData: fromFormat.getFormatData(state, field.name),
-                formatTotal: fromFormat.getFormatTotal(state, field.name),
-                isLoaded,
-                isFormatLoading: get(state, 'dataset.formatLoading', false),
-                error: fromFormat.getFormatError(state, field.name),
-            };
-        };
-
-        const mapDispatchToProps = {
-            preLoadFormatData,
-            unLoadFormatData,
-            loadFormatData,
-        };
-
-        return compose(
-            connect(mapStateToProps, mapDispatchToProps),
-            translate,
-            withRouter,
-        )(GraphItem);
+        return memo(GraphItem, (prevProps, nextProps) => {
+            return isEqual(prevProps, nextProps);
+        });
     };

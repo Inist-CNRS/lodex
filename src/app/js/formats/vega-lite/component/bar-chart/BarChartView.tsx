@@ -1,12 +1,10 @@
-// @ts-expect-error TS6133
-import React, { useMemo, useState } from 'react';
-import PropTypes from 'prop-types';
+import { useMemo, useState } from 'react';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import { clamp } from 'lodash';
 
 import injectData from '../../../injectData';
-import { field as fieldPropTypes } from '../../../../propTypes';
+import { type Field } from '../../../../propTypes';
 import {
     AXIS_X,
     AXIS_Y,
@@ -27,44 +25,68 @@ const styles = {
     },
 };
 
+interface BarChartViewProps {
+    field?: Field;
+    resource?: object;
+    data?: {
+        values: any;
+    };
+    colors?: string;
+    direction?: string;
+    orderBy?: string;
+    diagonalCategoryAxis?: boolean;
+    diagonalValueAxis?: boolean;
+    scale?: string;
+    params?: any;
+    axisRoundValue?: boolean;
+    tooltip?: boolean;
+    tooltipCategory?: string;
+    tooltipValue?: string;
+    labels?: string;
+    labelOverlap?: string;
+    barSize?: number;
+    advancedMode?: boolean;
+    advancedModeSpec?: string;
+    aspectRatio?: string;
+}
+
 const BarChartView = ({
-    // @ts-expect-error TS7031
     advancedMode,
-    // @ts-expect-error TS7031
+
     advancedModeSpec,
-    // @ts-expect-error TS7031
+
     field,
-    // @ts-expect-error TS7031
+
     data,
-    // @ts-expect-error TS7031
+
     direction,
-    // @ts-expect-error TS7031
+
     params,
-    // @ts-expect-error TS7031
+
     scale,
-    // @ts-expect-error TS7031
+
     colors,
-    // @ts-expect-error TS7031
+
     axisRoundValue,
-    // @ts-expect-error TS7031
+
     tooltip,
-    // @ts-expect-error TS7031
+
     tooltipCategory,
-    // @ts-expect-error TS7031
+
     tooltipValue,
-    // @ts-expect-error TS7031
+
     labels,
-    // @ts-expect-error TS7031
+
     labelOverlap,
-    // @ts-expect-error TS7031
+
     barSize,
-    // @ts-expect-error TS7031
+
     diagonalCategoryAxis,
-    // @ts-expect-error TS7031
+
     diagonalValueAxis,
-    // @ts-expect-error TS7031
+
     aspectRatio,
-}) => {
+}: BarChartViewProps) => {
     const { ref, width } = useSizeObserver();
     const [error, setError] = useState('');
 
@@ -107,6 +129,7 @@ const BarChartView = ({
         advancedMode,
         advancedModeSpec,
         field,
+        // @ts-expect-error TS18048
         data.values,
         direction,
         params,
@@ -124,6 +147,7 @@ const BarChartView = ({
     ]);
 
     if (!spec) {
+        // @ts-expect-error TS18046
         return <InvalidFormat format={field.format} value={error} />;
     }
 
@@ -139,35 +163,6 @@ const BarChartView = ({
             />
         </div>
     );
-};
-
-BarChartView.propTypes = {
-    field: fieldPropTypes,
-    resource: PropTypes.object,
-    data: PropTypes.shape({
-        values: PropTypes.any.isRequired,
-    }),
-    colors: PropTypes.string,
-    direction: PropTypes.string,
-    orderBy: PropTypes.string,
-    diagonalCategoryAxis: PropTypes.bool,
-    diagonalValueAxis: PropTypes.bool,
-    scale: PropTypes.string,
-    params: PropTypes.any,
-    axisRoundValue: PropTypes.bool,
-    tooltip: PropTypes.bool,
-    tooltipCategory: PropTypes.string,
-    tooltipValue: PropTypes.string,
-    labels: PropTypes.string,
-    labelOverlap: PropTypes.string,
-    barSize: PropTypes.number,
-    advancedMode: PropTypes.bool,
-    advancedModeSpec: PropTypes.string,
-    aspectRatio: PropTypes.string,
-};
-
-BarChartView.defaultProps = {
-    className: null,
 };
 
 // @ts-expect-error TS7006
@@ -186,8 +181,7 @@ const mapStateToProps = (state, { formatData }) => {
     };
 };
 
-// @ts-expect-error TS6133
-export const BarChartAdminView = connect((state, props) => {
+export const BarChartAdminView = connect((_state, props) => {
     return {
         ...props,
         field: {

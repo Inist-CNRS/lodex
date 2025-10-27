@@ -1,8 +1,11 @@
-// @ts-expect-error TS6133
-import React from 'react';
-import PropTypes from 'prop-types';
 import { lightGreen, red } from '@mui/material/colors';
-import { CircularProgress, LinearProgress, Button, Box } from '@mui/material';
+import {
+    CircularProgress,
+    LinearProgress,
+    Button,
+    type ButtonProps,
+    Box,
+} from '@mui/material';
 import Warning from '@mui/icons-material/Warning';
 import Success from '@mui/icons-material/Done';
 
@@ -22,25 +25,29 @@ const styles = {
     barColorPrimary: { backgroundColor: 'var(--primary-secondary)' },
 };
 
+type ButtonWithStatusProps = {
+    raised?: boolean;
+    error?: boolean;
+    disabled?: boolean;
+    loading?: boolean;
+    success?: boolean;
+    progress?: number;
+    target?: number;
+    className?: string;
+    data?: string;
+} & ButtonProps;
+
 const ButtonWithStatus = ({
-    // @ts-expect-error TS7031
     raised,
-    // @ts-expect-error TS7031
     error,
-    // @ts-expect-error TS7031
     loading,
-    // @ts-expect-error TS7031
     disabled,
-    // @ts-expect-error TS7031
     success,
-    // @ts-expect-error TS7031
     progress,
-    // @ts-expect-error TS7031
     target,
-    // @ts-expect-error TS7031
     className,
     ...props
-}) => {
+}: ButtonWithStatusProps) => {
     return (
         <Box sx={styles.container}>
             {raised ? (
@@ -72,7 +79,7 @@ const ButtonWithStatus = ({
                             styles.barColorPrimary,
                     }}
                     variant="determinate"
-                    value={target ? (progress / target) * 100 : 0}
+                    value={target ? (progress ?? 0 / target) * 100 : 0}
                 />
             ) : undefined}
         </Box>
@@ -87,25 +94,6 @@ const getIcon = (error, success, loading) => {
     // @ts-expect-error TS2769
     if (success) return <Success color={lightGreen.A400} />;
     return null;
-};
-
-ButtonWithStatus.propTypes = {
-    raised: PropTypes.bool,
-    error: PropTypes.bool,
-    disabled: PropTypes.bool,
-    loading: PropTypes.bool,
-    success: PropTypes.bool,
-    progress: PropTypes.number,
-    target: PropTypes.number,
-    className: PropTypes.string,
-};
-
-ButtonWithStatus.defaultProps = {
-    raised: false,
-    error: false,
-    disabled: false,
-    success: false,
-    loading: false,
 };
 
 export default ButtonWithStatus;

@@ -1,10 +1,7 @@
-// @ts-expect-error TS6133
-import React from 'react';
-import PropTypes from 'prop-types';
 import memoize from 'lodash/memoize';
 
 import { REJECTED } from '../../../../../common/propositionStatus';
-import { field as fieldPropTypes } from '../../../propTypes';
+import { type Field } from '../../../propTypes';
 import { getSiteUrl } from '../../utils/fetchIstexData';
 
 const styles = {
@@ -14,8 +11,18 @@ const styles = {
     })),
 };
 
-// @ts-expect-error TS7031
-const IstexSummaryList = ({ fieldStatus, field, resource }) => {
+interface IstexSummaryListProps {
+    fieldStatus?: string;
+    resource: object;
+    field: Field;
+}
+
+const IstexSummaryList = ({
+    fieldStatus,
+    field,
+    resource,
+}: IstexSummaryListProps) => {
+    // @ts-expect-error TS7053
     const url = getSiteUrl(resource[field.name]);
 
     return (
@@ -28,20 +35,6 @@ const IstexSummaryList = ({ fieldStatus, field, resource }) => {
             {url}
         </a>
     );
-};
-
-IstexSummaryList.propTypes = {
-    fieldStatus: PropTypes.string,
-    resource: PropTypes.object.isRequired,
-    field: fieldPropTypes.isRequired,
-};
-
-IstexSummaryList.defaultProps = {
-    className: null,
-    fieldStatus: null,
-    shrink: false,
-    data: null,
-    error: null,
 };
 
 export default IstexSummaryList;

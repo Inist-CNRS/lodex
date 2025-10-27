@@ -1,12 +1,10 @@
-// @ts-expect-error TS6133
-import React, { useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { clamp } from 'lodash';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
 import compose from 'recompose/compose';
 
 import HeatMap from '../../models/HeatMap';
-import { field as fieldPropTypes } from '../../../../propTypes';
+import { type Field } from '../../../../propTypes';
 import {
     convertSpecTemplate,
     lodexOrderToIdOrder,
@@ -24,32 +22,49 @@ const styles = {
     },
 };
 
+interface HeatMapViewProps {
+    field?: unknown;
+    resource?: Field;
+    data?: {
+        values: any;
+    };
+    params?: any;
+    colorScheme?: string[];
+    flipAxis?: boolean;
+    tooltip?: boolean;
+    tooltipSource?: string;
+    tooltipTarget?: string;
+    tooltipWeight?: string;
+    advancedMode?: boolean;
+    advancedModeSpec?: string;
+    aspectRatio?: string;
+}
+
 const HeatMapView = ({
-    // @ts-expect-error TS7031
     advancedMode,
-    // @ts-expect-error TS7031
+
     advancedModeSpec,
-    // @ts-expect-error TS7031
+
     field,
-    // @ts-expect-error TS7031
+
     data,
-    // @ts-expect-error TS7031
+
     colorScheme,
-    // @ts-expect-error TS7031
+
     params,
-    // @ts-expect-error TS7031
+
     flipAxis,
-    // @ts-expect-error TS7031
+
     tooltip,
-    // @ts-expect-error TS7031
+
     tooltipSource,
-    // @ts-expect-error TS7031
+
     tooltipTarget,
-    // @ts-expect-error TS7031
+
     tooltipWeight,
-    // @ts-expect-error TS7031
+
     aspectRatio,
-}) => {
+}: HeatMapViewProps) => {
     const { ref, width } = useSizeObserver();
     const [error, setError] = useState('');
 
@@ -70,6 +85,7 @@ const HeatMapView = ({
 
         const specBuilder = new HeatMap();
 
+        // @ts-expect-error TS18048
         specBuilder.setColor(colorScheme.join(' '));
         specBuilder.setOrderBy(lodexOrderToIdOrder(params.orderBy));
         specBuilder.flipAxis(flipAxis);
@@ -95,6 +111,7 @@ const HeatMapView = ({
     ]);
 
     if (!spec) {
+        // @ts-expect-error TS18046
         return <InvalidFormat format={field.format} value={error} />;
     }
 
@@ -112,28 +129,6 @@ const HeatMapView = ({
     );
 };
 
-HeatMapView.propTypes = {
-    field: fieldPropTypes,
-    resource: PropTypes.object,
-    data: PropTypes.shape({
-        values: PropTypes.any.isRequired,
-    }),
-    params: PropTypes.any,
-    colorScheme: PropTypes.arrayOf(PropTypes.string),
-    flipAxis: PropTypes.bool,
-    tooltip: PropTypes.bool,
-    tooltipSource: PropTypes.string,
-    tooltipTarget: PropTypes.string,
-    tooltipWeight: PropTypes.string,
-    advancedMode: PropTypes.bool,
-    advancedModeSpec: PropTypes.string,
-    aspectRatio: PropTypes.string,
-};
-
-HeatMapView.defaultProps = {
-    className: null,
-};
-
 // @ts-expect-error TS7006
 const mapStateToProps = (state, { formatData }) => {
     if (!formatData) {
@@ -146,8 +141,7 @@ const mapStateToProps = (state, { formatData }) => {
     };
 };
 
-// @ts-expect-error TS6133
-export const HeatMapAdminView = connect((state, props) => {
+export const HeatMapAdminView = connect((_state, props) => {
     return {
         ...props,
         field: {
@@ -158,7 +152,6 @@ export const HeatMapAdminView = connect((state, props) => {
             values: props.dataset.values ?? [],
         },
     };
-    // @ts-expect-error TS2345
 })(HeatMapView);
 
 // @ts-expect-error TS2345

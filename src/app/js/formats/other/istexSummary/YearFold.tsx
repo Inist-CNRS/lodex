@@ -1,30 +1,29 @@
-// @ts-expect-error TS6133
-import React from 'react';
-import PropTypes from 'prop-types';
-
 import FetchFold from './FetchFold';
 import { getVolumeData } from './getIstexData';
-import { SEARCHED_FIELD_VALUES } from './constants';
-import { polyglot as polyglotPropTypes } from '../../../propTypes';
+import { type SearchedField } from './constants';
+import type { ReactNode } from 'react';
+
+interface YearFoldProps {
+    value: string;
+    item: {
+        name: string;
+        count: number;
+    };
+    searchedField: SearchedField;
+    children(...args: unknown[]): ReactNode;
+}
 
 const YearFold = ({
-    // @ts-expect-error TS7031
     value,
-    // @ts-expect-error TS7031
     item: { name: year, count },
-    // @ts-expect-error TS7031
     searchedField,
-    // @ts-expect-error TS7031
-    polyglot,
-    // @ts-expect-error TS7031
     children,
-}) => (
+}: YearFoldProps) => (
     <FetchFold
-        // @ts-expect-error TS2769
         label={year}
         count={count}
+        // @ts-expect-error TS7031
         year={year}
-        polyglot={polyglot}
         getData={getVolumeData({
             value,
             year,
@@ -34,16 +33,5 @@ const YearFold = ({
         {children}
     </FetchFold>
 );
-
-YearFold.propTypes = {
-    value: PropTypes.string.isRequired,
-    item: PropTypes.shape({
-        name: PropTypes.string.isRequired,
-        count: PropTypes.number.isRequired,
-    }).isRequired,
-    searchedField: PropTypes.oneOf(SEARCHED_FIELD_VALUES),
-    children: PropTypes.func.isRequired,
-    polyglot: polyglotPropTypes.isRequired,
-};
 
 export default YearFold;

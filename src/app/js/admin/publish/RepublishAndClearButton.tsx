@@ -13,27 +13,27 @@ import {
 } from '@mui/material';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
-import PropTypes from 'prop-types';
 import ClearAllIcon from '@mui/icons-material/ClearAll';
 import PublishedWithChangesIcon from '@mui/icons-material/PublishedWithChanges';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 
 import ClearDialog from '../Appbar/ClearDialog';
-import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { publish } from '.';
-import { translate } from '../../i18n/I18NContext';
+import { useTranslate } from '../../i18n/I18NContext';
 
 const options = [
     { label: 'republish', icon: <PublishedWithChangesIcon /> },
     { label: 'clear_publish', icon: <ClearAllIcon /> },
 ];
 
+interface RepublishAndClearButtonComponentProps {
+    onPublish(...args: unknown[]): unknown;
+}
+
 export const RepublishAndClearButtonComponent = ({
-    // @ts-expect-error TS7031
-    p: polyglot,
-    // @ts-expect-error TS7031
     onPublish,
-}) => {
+}: RepublishAndClearButtonComponentProps) => {
+    const { translate } = useTranslate();
     const [open, setOpen] = React.useState(false);
     const [showClearDialog, setShowClearDialog] = useState(false);
 
@@ -89,7 +89,7 @@ export const RepublishAndClearButtonComponent = ({
                     startIcon={options[0].icon}
                     size="small"
                 >
-                    {polyglot.t(options[0].label)}
+                    {translate(options[0].label)}
                 </Button>
                 <Button
                     size="small"
@@ -142,7 +142,7 @@ export const RepublishAndClearButtonComponent = ({
                                                         {option.icon}
                                                     </ListItemIcon>
                                                     <ListItemText>
-                                                        {polyglot.t(
+                                                        {translate(
                                                             option.label,
                                                         )}
                                                     </ListItemText>
@@ -163,11 +163,6 @@ export const RepublishAndClearButtonComponent = ({
     );
 };
 
-RepublishAndClearButtonComponent.propTypes = {
-    p: polyglotPropTypes.isRequired,
-    onPublish: PropTypes.func.isRequired,
-};
-
 const mapStateToProps = () => ({});
 
 const mapDispatchToProps = {
@@ -175,7 +170,6 @@ const mapDispatchToProps = {
 };
 
 export const RepublishAndClearButton = compose(
-    translate,
     connect(mapStateToProps, mapDispatchToProps),
     // @ts-expect-error TS2345
 )(RepublishAndClearButtonComponent);

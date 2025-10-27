@@ -1,10 +1,14 @@
-// @ts-expect-error TS6133
-import React, { useMemo } from 'react';
-import PropTypes from 'prop-types';
+import { useMemo } from 'react';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import pure from 'recompose/pure';
-import { Table, TableBody, TableHead, TableRow } from '@mui/material';
+import {
+    Table,
+    TableBody,
+    TableHead,
+    TableRow,
+    type SxProps,
+} from '@mui/material';
 
 import ParsingExcerptColumn from './ParsingExcerptColumn';
 import ParsingExcerptHeaderColumn from './ParsingExcerptHeaderColumn';
@@ -37,7 +41,7 @@ export const getEnrichmentsNames = (enrichments) => {
 };
 
 // @ts-expect-error TS7006
-export const getColumnStyle = (enrichmentsNames, column) => {
+export const getColumnStyle = (enrichmentsNames, column): SxProps => {
     return enrichmentsNames?.includes(column)
         ? {
               backgroundColor: 'var(--primary-light)',
@@ -50,24 +54,43 @@ const formatValue = (value) => {
     return JSON.stringify(value);
 };
 
+interface ParsingExcerptComponentProps {
+    columns: string[];
+    lines: {
+        uri: string;
+        [key: string]:
+            | string
+            | {
+                  path?: string;
+              };
+    }[];
+    enrichments?: {
+        status: string;
+    }[];
+    handleAddColumn(column: {
+        name: string;
+        scope?: string;
+        subresourceId?: string;
+        subresourcePath?: string;
+    }): void;
+    showAddFromColumn: boolean;
+    onAddField?(): void;
+    maxLines?: number;
+    subresources: {
+        path: string;
+    }[];
+}
+
 export const ParsingExcerptComponent = ({
-    // @ts-expect-error TS7031
     columns,
-    // @ts-expect-error TS7031
     handleAddColumn,
-    // @ts-expect-error TS7031
     lines,
-    // @ts-expect-error TS7031
     showAddFromColumn,
-    // @ts-expect-error TS7031
     onAddField,
-    // @ts-expect-error TS7031
     enrichments,
-    // @ts-expect-error TS7031
-    maxLines,
-    // @ts-expect-error TS7031
+    maxLines = 6,
     subresources,
-}) => {
+}: ParsingExcerptComponentProps) => {
     const enrichmentsNames = useMemo(
         () => getEnrichmentsNames(enrichments),
         [enrichments],
@@ -81,7 +104,9 @@ export const ParsingExcerptComponent = ({
         (subresource) => subresource._id === subresourceId,
     );
 
-    const subresourceData = parseValue(lines[0][subresource?.path] || '');
+    const subresourceData = parseValue(
+        lines[0][subresource?.path as string] || '',
+    );
 
     const displayedLines = subresourceId
         ? lines
@@ -122,8 +147,6 @@ export const ParsingExcerptComponent = ({
         >
             <TableHead>
                 <TableRow>
-                    {/*
-                     // @ts-expect-error TS7006 */}
                     {displayedColumns.map((column) => (
                         <ParsingExcerptHeaderColumn
                             key={`header_${column}`}
@@ -138,15 +161,11 @@ export const ParsingExcerptComponent = ({
                     position: 'relative',
                 }}
             >
-                {/*
-                 // @ts-expect-error TS7006 */}
                 {displayedLines.map((line, index) => (
                     <TableRow
                         key={`${line._id || index}_data_row`}
                         style={getRowStyle(index, total)}
                     >
-                        {/*
-                         // @ts-expect-error TS7006 */}
                         {displayedColumns.map((column) => {
                             const showAddColumnButton =
                                 showAddFromColumn &&
@@ -201,21 +220,6 @@ export const ParsingExcerptComponent = ({
             </TableBody>
         </Table>
     );
-};
-
-ParsingExcerptComponent.propTypes = {
-    columns: PropTypes.arrayOf(PropTypes.string).isRequired,
-    lines: PropTypes.arrayOf(PropTypes.object).isRequired,
-    enrichments: PropTypes.arrayOf(PropTypes.object),
-    handleAddColumn: PropTypes.func.isRequired,
-    showAddFromColumn: PropTypes.bool.isRequired,
-    onAddField: PropTypes.func,
-    maxLines: PropTypes.number,
-    subresources: PropTypes.arrayOf(PropTypes.object).isRequired,
-};
-
-ParsingExcerptComponent.defaultProps = {
-    maxLines: 6,
 };
 
 // @ts-expect-error TS7006

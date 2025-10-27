@@ -1,7 +1,8 @@
 import { RunButton } from './RunButton';
 import { FINISHED, IN_PROGRESS, PENDING } from '../../../../common/taskStatus';
 import { toast } from '../../../../common/tools/toast';
-import { act, fireEvent, render } from '../../../../test-utils';
+import { act, render } from '../../../../test-utils';
+import { fireEvent } from '@testing-library/dom';
 
 jest.mock('../../../../common/tools/toast');
 

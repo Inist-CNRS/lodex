@@ -1,6 +1,3 @@
-// @ts-expect-error TS6133
-import React from 'react';
-
 // @ts-expect-error TS7006
 const ClusteredChartIcon = (props) => {
     return (

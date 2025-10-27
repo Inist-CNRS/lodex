@@ -1,5 +1,3 @@
-// @ts-expect-error TS6133
-import React from 'react';
 import { shallow } from 'enzyme';
 // @ts-expect-error TS7016
 import { StyleSheetTestUtils } from 'aphrodite';
@@ -12,7 +10,6 @@ describe('LodexResource', () => {
 
     it('should render Link with to=id if id is of type uid', () => {
         const wrapper = shallow(
-            // @ts-expect-error TS2769
             <LodexResource
                 id="uid:/id"
                 url="http://localhost:3000/uid:/id"
@@ -28,7 +25,6 @@ describe('LodexResource', () => {
 
     it('should render Link with to=id if id is of type ark', () => {
         const wrapper = shallow(
-            // @ts-expect-error TS2769
             <LodexResource
                 id="ark:/id"
                 url="http://localhost:3000/ark:/uid"
@@ -44,7 +40,6 @@ describe('LodexResource', () => {
 
     it('should render a with href=url if id is not local', () => {
         const wrapper = shallow(
-            // @ts-expect-error TS2769
             <LodexResource
                 id="id"
                 url="http://otherSiteUrl"

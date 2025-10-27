@@ -1,6 +1,4 @@
-// @ts-expect-error TS6133
 import React from 'react';
-import PropTypes from 'prop-types';
 import { CircularProgress } from '@mui/material';
 
 const styles = {
@@ -17,8 +15,11 @@ const styles = {
     },
 };
 
-// @ts-expect-error TS7031
-const Loading = ({ children }) => (
+interface LoadingProps {
+    children: React.ReactNode;
+}
+
+const Loading = ({ children }: LoadingProps) => (
     <div className="loading" style={styles.container}>
         <div style={styles.textContainer}>
             <CircularProgress
@@ -30,9 +31,5 @@ const Loading = ({ children }) => (
         </div>
     </div>
 );
-
-Loading.propTypes = {
-    children: PropTypes.node.isRequired,
-};
 
 export default Loading;

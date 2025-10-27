@@ -1,8 +1,4 @@
-// @ts-expect-error TS6133
-import React from 'react';
-import PropTypes from 'prop-types';
-
-import { field as fieldPropTypes } from '../../../propTypes';
+import { type Field } from '../../../propTypes';
 import { resolvers } from './index';
 import Link from '../../../lib/components/Link';
 import stylesToClassname from '../../../lib/stylesToClassName';
@@ -38,10 +34,22 @@ const styles = stylesToClassname({
     },
 });
 
-// @ts-expect-error TS7031
-const IdentifierBadgeView = ({ resource, field, typid, colors }) => {
+interface IdentifierBadgeViewProps {
+    field: Field;
+    typid: string;
+    colors: string;
+    resource: object;
+}
+
+const IdentifierBadgeView = ({
+    resource,
+    field,
+    typid,
+    colors,
+}: IdentifierBadgeViewProps) => {
     // @ts-expect-error TS7053
     const resolver = resolvers[typid] || '';
+    // @ts-expect-error TS7053
     const value = resource[field.name] || '';
 
     const identifier = value.replace(resolver, '');
@@ -55,7 +63,6 @@ const IdentifierBadgeView = ({ resource, field, typid, colors }) => {
     }
 
     return (
-        // @ts-expect-error TS2739
         <Link href={target}>
             {/*
              // @ts-expect-error TS2339 */}
@@ -67,13 +74,6 @@ const IdentifierBadgeView = ({ resource, field, typid, colors }) => {
             </span>
         </Link>
     );
-};
-
-IdentifierBadgeView.propTypes = {
-    field: fieldPropTypes.isRequired,
-    typid: PropTypes.string.isRequired,
-    colors: PropTypes.string.isRequired,
-    resource: PropTypes.object.isRequired,
 };
 
 export default IdentifierBadgeView;

@@ -1,11 +1,9 @@
-import { field as fieldPropTypes } from '../../../../propTypes';
-import PropTypes from 'prop-types';
+import { type Field } from '../../../../propTypes';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import injectData from '../../../injectData';
-import TreeMap, { TREE_MAP_LAYOUT } from '../../models/TreeMap';
-// @ts-expect-error TS6133
-import React, { useMemo, useState } from 'react';
+import TreeMap, { type TreeMapLayout } from '../../models/TreeMap';
+import { useMemo, useState } from 'react';
 import { useSizeObserver } from '../../../utils/chartsHooks';
 import {
     convertSpecTemplate,
@@ -23,8 +21,25 @@ const styles = {
     },
 };
 
-// @ts-expect-error TS7006
-const TreeMapView = (props) => {
+interface TreeMapViewProps {
+    field?: Field;
+    resource?: object;
+    data?: any;
+    hierarchy?: boolean;
+    flatType?: 'id/value' | 'source/target/weight';
+    advancedMode?: boolean;
+    advancedModeSpec?: string;
+    tooltip?: boolean;
+    tooltipSource?: string;
+    tooltipTarget?: string;
+    tooltipWeight?: string;
+    colors?: string;
+    layout?: TreeMapLayout;
+    ratio?: number;
+    aspectRatio?: string;
+}
+
+const TreeMapView = (props: TreeMapViewProps) => {
     const {
         data,
         field,
@@ -87,6 +102,7 @@ const TreeMapView = (props) => {
         const specBuilder = new TreeMap();
 
         specBuilder.setHierarchy(hierarchy);
+        // @ts-expect-error TS18048
         specBuilder.setColors(colors.split(' '));
         specBuilder.setTooltip(tooltip);
         specBuilder.setThirdTooltip(
@@ -115,6 +131,7 @@ const TreeMapView = (props) => {
     ]);
 
     if (spec === null) {
+        // @ts-expect-error TS18046
         return <InvalidFormat format={field.format} value={error} />;
     }
 
@@ -125,32 +142,11 @@ const TreeMapView = (props) => {
                 spec={spec}
                 data={formattedData}
                 injectType={VEGA_DATA_INJECT_TYPE_C}
+                // @ts-expect-error TS2322
                 aspectRatio={aspectRatio}
             />
         </div>
     );
-};
-
-TreeMapView.propTypes = {
-    field: fieldPropTypes,
-    resource: PropTypes.object,
-    data: PropTypes.any,
-    hierarchy: PropTypes.bool,
-    flatType: PropTypes.oneOf(['id/value', 'source/target/weight']),
-    advancedMode: PropTypes.bool,
-    advancedModeSpec: PropTypes.string,
-    tooltip: PropTypes.bool,
-    tooltipSource: PropTypes.string,
-    tooltipTarget: PropTypes.string,
-    tooltipWeight: PropTypes.string,
-    colors: PropTypes.string,
-    layout: PropTypes.oneOf(TREE_MAP_LAYOUT),
-    ratio: PropTypes.number,
-    aspectRatio: PropTypes.string,
-};
-
-TreeMapView.defaultProps = {
-    className: null,
 };
 
 // @ts-expect-error TS7006
@@ -170,8 +166,7 @@ const mapStateToProps = (state, { formatData }) => {
     };
 };
 
-// @ts-expect-error TS6133
-export const TreeMapAdminView = connect((state, props) => {
+export const TreeMapAdminView = connect((_state, props) => {
     return {
         ...props,
         field: {
@@ -182,6 +177,8 @@ export const TreeMapAdminView = connect((state, props) => {
             values: props.dataset.values ?? [],
         },
     };
+    // @ts-expect-error TS2345
 })(TreeMapView);
 
+// @ts-expect-error TS2345
 export default compose(injectData(), connect(mapStateToProps))(TreeMapView);

@@ -1,12 +1,8 @@
-// @ts-expect-error TS6133
-import React from 'react';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
 import { bindActionCreators } from 'redux';
 
 import { fromFields } from '../../sharedSelectors';
-import { field as fieldPropTypes } from '../../propTypes';
 import { changeFieldStatus } from '../resource';
 import Property from './';
 
@@ -18,31 +14,37 @@ const styles = {
     },
 };
 
+interface PropertyLinkedFieldsComponentProps {
+    fieldName: string;
+    linkedFields: {
+        _id: string;
+    }[];
+    parents: string[];
+    resource: Record<string, unknown>;
+}
+
 const PropertyLinkedFieldsComponent = ({
-    // @ts-expect-error TS7031
     fieldName,
-    // @ts-expect-error TS7031
+
     linkedFields,
-    // @ts-expect-error TS7031
+
     parents,
-    // @ts-expect-error TS7031
+
     resource,
-}) => {
+}: PropertyLinkedFieldsComponentProps) => {
     if (!linkedFields.length) {
         return null;
     }
     return (
         <div className="linked_fields" style={styles.container}>
-            {/*
-             // @ts-expect-error TS7006 */}
             {linkedFields.map((linkedField) => (
                 <Property
                     key={linkedField._id}
-                    // @ts-expect-error TS2322
                     className={classnames(
                         'completes',
                         `completes_${fieldName}`,
                     )}
+                    // @ts-expect-error TS2322
                     field={linkedField}
                     isSub
                     resource={resource}
@@ -51,17 +53,6 @@ const PropertyLinkedFieldsComponent = ({
             ))}
         </div>
     );
-};
-
-PropertyLinkedFieldsComponent.propTypes = {
-    fieldName: PropTypes.string.isRequired,
-    linkedFields: PropTypes.arrayOf(fieldPropTypes).isRequired,
-    parents: PropTypes.arrayOf(PropTypes.string).isRequired,
-    resource: PropTypes.shape({}).isRequired,
-};
-
-PropertyLinkedFieldsComponent.defaultProps = {
-    fieldStatus: null,
 };
 
 // @ts-expect-error TS7006
@@ -94,7 +85,6 @@ const PropertyLinkedFields = connect(
     mapStateToProps,
     // @ts-expect-error TS2769
     mapDispatchToProps,
-    // @ts-expect-error TS2345
 )(PropertyLinkedFieldsComponent);
 
 export default PropertyLinkedFields;

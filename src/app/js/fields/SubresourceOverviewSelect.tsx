@@ -1,35 +1,34 @@
-// @ts-expect-error TS6133
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
 import { TextField, MenuItem } from '@mui/material';
 import * as overview from '../../../common/overview';
-import {
-    polyglot as polyglotPropTypes,
-    field as fieldPropTypes,
-} from '../propTypes';
 import { loadField } from '.';
 import { fromFields } from '../sharedSelectors';
 import fieldApi from '../admin/api/field';
 import FieldRepresentation from './FieldRepresentation';
-import { translate } from '../i18n/I18NContext';
+import { useTranslate } from '../i18n/I18NContext';
+import type { Field } from '../propTypes';
+
+interface SubresourceOverviewSelectComponentProps {
+    fields?: Field[];
+    loadField(): void;
+    subresourceId: string;
+}
 
 export const SubresourceOverviewSelectComponent = ({
-    // @ts-expect-error TS7031
-    p: polyglot,
-    // @ts-expect-error TS7031
     fields,
-    // @ts-expect-error TS7031
     loadField,
-    // @ts-expect-error TS7031
     subresourceId,
-}) => {
+}: SubresourceOverviewSelectComponentProps) => {
+    const { translate } = useTranslate();
     const subresourceTitle = useMemo(() => {
+        // @ts-expect-error TS18048
         const subresourceTitleField = fields.find(
             // @ts-expect-error TS7006
             (field) => field.overview === overview.SUBRESOURCE_TITLE,
         );
+        // @ts-expect-error TS2339
         return subresourceTitleField?._id;
     }, [fields]);
 
@@ -48,7 +47,7 @@ export const SubresourceOverviewSelectComponent = ({
         <TextField
             select
             value={subresourceTitle || ''}
-            label={polyglot.t('overviewSubresourceTitle')}
+            label={translate('overviewSubresourceTitle')}
             onChange={handleSubresourceTitleChange}
             sx={{ minWidth: 220 }}
             SelectProps={{
@@ -61,7 +60,7 @@ export const SubresourceOverviewSelectComponent = ({
                 ),
             }}
         >
-            <MenuItem value={undefined}>{polyglot.t('none')}</MenuItem>
+            <MenuItem value={undefined}>{translate('none')}</MenuItem>
             {/*
              // @ts-expect-error TS7006 */}
             {fields.map((field) => (
@@ -71,7 +70,9 @@ export const SubresourceOverviewSelectComponent = ({
                         alignItems: 'center',
                         gap: 2,
                     }}
+                    // @ts-expect-error TS18046
                     key={field._id}
+                    // @ts-expect-error TS18046
                     value={field._id}
                 >
                     <FieldRepresentation field={field} />
@@ -79,13 +80,6 @@ export const SubresourceOverviewSelectComponent = ({
             ))}
         </TextField>
     );
-};
-
-SubresourceOverviewSelectComponent.propTypes = {
-    p: polyglotPropTypes.isRequired,
-    fields: PropTypes.arrayOf(fieldPropTypes),
-    loadField: PropTypes.func.isRequired,
-    subresourceId: PropTypes.string.isRequired,
 };
 
 // @ts-expect-error TS7006
@@ -98,7 +92,6 @@ const mapDispatchToProps = {
 };
 
 export default compose(
-    translate,
     connect(mapStateToProps, mapDispatchToProps),
     // @ts-expect-error TS2345
 )(SubresourceOverviewSelectComponent);

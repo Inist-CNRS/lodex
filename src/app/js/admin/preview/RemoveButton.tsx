@@ -1,22 +1,22 @@
-// @ts-expect-error TS6133
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
+import { useState } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import compose from 'recompose/compose';
 import { Button, Dialog, DialogActions, DialogTitle } from '@mui/material';
-
 import { removeField } from '../../fields';
-
-import {
-    polyglot as polyglotPropTypes,
-    field as fieldPropTypes,
-} from '../../propTypes';
 import CancelButton from '../../lib/components/CancelButton';
-import { translate } from '../../i18n/I18NContext';
+import { useTranslate } from '../../i18n/I18NContext';
 
-// @ts-expect-error TS7031
-export const RemoveButtonComponent = ({ onRemove, p: polyglot }) => {
+interface RemoveButtonComponentProps {
+    onRemove(...args: unknown[]): unknown;
+    field: unknown;
+    filter: string;
+}
+
+export const RemoveButtonComponent = ({
+    onRemove,
+}: RemoveButtonComponentProps) => {
+    const { translate } = useTranslate();
     const [showDialog, setShowDialog] = useState(false);
 
     const handleShowDialog = () => setShowDialog(true);
@@ -29,7 +29,7 @@ export const RemoveButtonComponent = ({ onRemove, p: polyglot }) => {
                 onClick={handleShowDialog}
                 color="warning"
             >
-                {polyglot.t('remove_from_publication')}
+                {translate('remove_from_publication')}
             </Button>
             <Dialog
                 open={showDialog}
@@ -37,29 +37,22 @@ export const RemoveButtonComponent = ({ onRemove, p: polyglot }) => {
                 maxWidth="sm"
                 fullWidth
             >
-                <DialogTitle>{polyglot.t('remove_field')}</DialogTitle>
+                <DialogTitle>{translate('remove_field')}</DialogTitle>
                 <DialogActions>
                     <CancelButton onClick={handleCloseDialog}>
-                        {polyglot.t('Cancel')}
+                        {translate('Cancel')}
                     </CancelButton>
                     <Button
                         color="primary"
                         variant="contained"
                         onClick={onRemove}
                     >
-                        {polyglot.t('Accept')}
+                        {translate('Accept')}
                     </Button>
                 </DialogActions>
             </Dialog>
         </>
     );
-};
-
-RemoveButtonComponent.propTypes = {
-    onRemove: PropTypes.func.isRequired,
-    field: fieldPropTypes.isRequired,
-    filter: PropTypes.string.isRequired,
-    p: polyglotPropTypes.isRequired,
 };
 
 // @ts-expect-error TS7006
@@ -73,6 +66,5 @@ const mapDispatchtoProps = (dispatch, { field, filter }) =>
 
 export default compose(
     connect(undefined, mapDispatchtoProps),
-    translate,
     // @ts-expect-error TS2345
 )(RemoveButtonComponent);

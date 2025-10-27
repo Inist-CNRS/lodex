@@ -1,16 +1,17 @@
 import { useState } from 'react';
-import PropTypes from 'prop-types';
 import { Box, TextField } from '@mui/material';
 import { useTranslate } from '../../i18n/I18NContext';
 import type { TransformerDraft } from '../types.ts';
 
+interface SourceValueArbitraryProps {
+    updateDefaultValueTransformers(draft: TransformerDraft[]): unknown;
+    value?: string;
+}
+
 const SourceValueArbitrary = ({
     updateDefaultValueTransformers,
     value,
-}: {
-    updateDefaultValueTransformers: (transformers: TransformerDraft[]) => void;
-    value?: string | null;
-}) => {
+}: SourceValueArbitraryProps) => {
     const { translate } = useTranslate();
 
     const [valueInput, setValueInput] = useState(value || '');
@@ -43,11 +44,6 @@ const SourceValueArbitrary = ({
             />
         </Box>
     );
-};
-
-SourceValueArbitrary.propTypes = {
-    updateDefaultValueTransformers: PropTypes.func.isRequired,
-    value: PropTypes.string,
 };
 
 export default SourceValueArbitrary;

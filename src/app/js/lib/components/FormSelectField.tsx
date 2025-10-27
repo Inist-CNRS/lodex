@@ -1,21 +1,29 @@
-// @ts-expect-error TS6133
-import React from 'react';
-
 import { TextField } from '@mui/material';
 
-import { formField as formFieldPropTypes } from '../../propTypes';
+type FormSelectFieldProps = {
+    input: {
+        name: string;
+        value: any;
+        onChange(...args: unknown[]): unknown;
+        onBlur(...args: unknown[]): unknown;
+        onFocus(...args: unknown[]): unknown;
+    };
+    label: string;
+    hint?: string;
+    meta: {
+        touched: boolean;
+        error?: boolean;
+    };
+    [key: string]: any;
+};
 
 const FormSelectField = ({
-    // @ts-expect-error TS7031
     input,
-    // @ts-expect-error TS7031
-    label,
-    // @ts-expect-error TS7031
+    label = '',
     hint,
-    // @ts-expect-error TS7031
     meta: { touched, error },
     ...props
-}) => (
+}: FormSelectFieldProps) => (
     <TextField
         select
         fullWidth
@@ -27,11 +35,5 @@ const FormSelectField = ({
         {...props}
     />
 );
-
-FormSelectField.propTypes = formFieldPropTypes;
-
-FormSelectField.defaultProps = {
-    label: '',
-};
 
 export default FormSelectField;

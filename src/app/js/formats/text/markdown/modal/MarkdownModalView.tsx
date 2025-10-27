@@ -1,7 +1,6 @@
 // @ts-expect-error TS7016
 import MarkdownIt from 'markdown-it';
-// @ts-expect-error TS6133
-import React, { useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
@@ -9,32 +8,41 @@ import DialogContent from '@mui/material/DialogContent';
 import IconButton from '@mui/material/IconButton';
 import Container from '@mui/material/Container';
 import CloseIcon from '@mui/icons-material/Close';
-import PropTypes from 'prop-types';
 
-import { field as fieldPropTypes } from '../../../../propTypes';
+import { type Field } from '../../../../propTypes';
 import InvalidFormat from '../../../InvalidFormat';
 import getLabel from '../../../utils/getLabel';
 
 const markdown = new MarkdownIt();
 
+interface MarkdownModalViewProps {
+    className?: string;
+    fields: Field[];
+    field: Field;
+    resource: object;
+    type?: 'text' | 'column';
+    label: string;
+    fullScreen?: boolean;
+    maxWidth?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+}
+
 const MarkdownModalView = ({
-    // @ts-expect-error TS7031
     className,
-    // @ts-expect-error TS7031
+
     resource,
-    // @ts-expect-error TS7031
+
     field,
-    // @ts-expect-error TS7031
+
     fields,
-    // @ts-expect-error TS7031
+
     type,
-    // @ts-expect-error TS7031
+
     label,
-    // @ts-expect-error TS7031
+
     fullScreen,
-    // @ts-expect-error TS7031
+
     maxWidth,
-}) => {
+}: MarkdownModalViewProps) => {
     const [open, setOpen] = useState(false);
 
     const buttonLabel = useMemo(() => {
@@ -42,6 +50,7 @@ const MarkdownModalView = ({
     }, [field, resource, fields, type, label]);
 
     const [value, content] = useMemo(() => {
+        // @ts-expect-error TS7053
         const value = resource[field.name];
 
         try {
@@ -59,6 +68,7 @@ const MarkdownModalView = ({
     };
 
     if (content == null) {
+        // @ts-expect-error TS18046
         return <InvalidFormat format={field.format} value={value} />;
     }
 
@@ -125,21 +135,6 @@ const MarkdownModalView = ({
             <CustomDialog />
         </div>
     );
-};
-
-MarkdownModalView.propTypes = {
-    className: PropTypes.string,
-    fields: PropTypes.arrayOf(fieldPropTypes).isRequired,
-    field: fieldPropTypes.isRequired,
-    resource: PropTypes.object.isRequired,
-    type: PropTypes.oneOf(['text', 'column']),
-    label: PropTypes.string.isRequired,
-    fullScreen: PropTypes.bool,
-    maxWidth: PropTypes.oneOf(['xs', 'sm', 'md', 'lg', 'xl']),
-};
-
-MarkdownModalView.defaultProps = {
-    className: null,
 };
 
 export default MarkdownModalView;

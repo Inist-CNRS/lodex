@@ -1,6 +1,4 @@
-// @ts-expect-error TS6133
-import React, { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
+import { useEffect, useState } from 'react';
 import {
     Dialog,
     LinearProgress,
@@ -13,10 +11,9 @@ import compose from 'recompose/compose';
 import { fromProgress } from '../selectors';
 import { loadProgress, clearProgress } from './reducer';
 import { PENDING } from '../../../../common/progressStatus';
-import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { io } from 'socket.io-client';
 import { DEFAULT_TENANT } from '../../../../common/tools/tenantTools';
-import { translate } from '../../i18n/I18NContext';
+import { useTranslate } from '../../i18n/I18NContext';
 
 // @ts-expect-error TS7006
 const formatProgress = (progress, target, symbol, label) => {
@@ -26,9 +23,20 @@ const formatProgress = (progress, target, symbol, label) => {
     return progress + formatedTarget + formatedSymbol + formatedLabel;
 };
 
-// @ts-expect-error TS7006
-const renderProgressText = (props) => {
-    const { progress, target, symbol, label, p: polyglot } = props;
+type ProgressTextProps = {
+    progress?: number;
+    target?: number | null;
+    symbol?: string;
+    label?: string;
+};
+
+const ProgressText = ({
+    progress,
+    target,
+    symbol,
+    label,
+}: ProgressTextProps) => {
+    const { translate } = useTranslate();
     if (!progress) {
         return null;
     }
@@ -39,15 +47,30 @@ const renderProgressText = (props) => {
                 progress,
                 target,
                 symbol,
-                label ? polyglot.t(label) : undefined,
+                label ? translate(label) : undefined,
             )}
         </p>
     );
 };
 
-// @ts-expect-error TS7006
-export const ProgressComponent = (props) => {
-    const { clearProgress, p: polyglot, loadProgress, progress } = props;
+interface ProgressComponentProps {
+    progress: {
+        status: string;
+        target?: number | null;
+        progress?: number;
+        symbol?: string;
+        label?: string;
+        isBackground?: boolean;
+        error?: boolean;
+    };
+    loadProgress(...args: unknown[]): unknown;
+    clearProgress(...args: unknown[]): unknown;
+    p?: unknown;
+}
+
+export const ProgressComponent = (props: ProgressComponentProps) => {
+    const { translate } = useTranslate();
+    const { clearProgress, loadProgress, progress } = props;
 
     const [updatedProgress, setUpdatedProgress] = useState(progress);
     const isOpen =
@@ -70,9 +93,9 @@ export const ProgressComponent = (props) => {
     if (updatedProgress.error) {
         return (
             <Dialog open={isOpen} onClose={clearProgress}>
-                <DialogTitle>{polyglot.t(updatedProgress.status)}</DialogTitle>
+                <DialogTitle>{translate(updatedProgress.status)}</DialogTitle>
                 <DialogContent>
-                    <div>{polyglot.t('progress_error')}</div>
+                    <div>{translate('progress_error')}</div>
                 </DialogContent>
             </Dialog>
         );
@@ -80,7 +103,7 @@ export const ProgressComponent = (props) => {
 
     return (
         <Dialog open={isOpen}>
-            <DialogTitle>{polyglot.t(updatedProgress.status)}</DialogTitle>
+            <DialogTitle>{translate(updatedProgress.status)}</DialogTitle>
             <DialogContent>
                 <div className="progress">
                     <LinearProgress
@@ -97,31 +120,11 @@ export const ProgressComponent = (props) => {
                                 : 0
                         }
                     />
-                    {renderProgressText({ ...updatedProgress, p: polyglot })}
+                    <ProgressText {...updatedProgress} />
                 </div>
             </DialogContent>
         </Dialog>
     );
-};
-ProgressComponent.propTypes = {
-    progress: PropTypes.shape({
-        status: PropTypes.string.isRequired,
-        target: PropTypes.number,
-        progress: PropTypes.number,
-        symbol: PropTypes.string,
-        label: PropTypes.string,
-        isBackground: PropTypes.bool,
-        error: PropTypes.bool,
-    }).isRequired,
-    loadProgress: PropTypes.func.isRequired,
-    clearProgress: PropTypes.func.isRequired,
-    p: polyglotPropTypes,
-};
-
-ProgressComponent.defaultProps = {
-    symbol: null,
-    text: null,
-    target: null,
 };
 
 // @ts-expect-error TS7006
@@ -135,6 +138,6 @@ const mapDispatchToProps = {
 };
 
 export const Progress = compose(
-    translate,
     connect(mapStateToProps, mapDispatchToProps),
+    // @ts-expect-error TS2345
 )(ProgressComponent);

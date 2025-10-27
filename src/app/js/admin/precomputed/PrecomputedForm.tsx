@@ -126,12 +126,12 @@ export const PrecomputedForm = ({
         const res = await createPrecomputed(formValues);
         if (res.response) {
             toast(translate('precomputed_added_success'), {
-                type: toast.TYPE.SUCCESS,
+                type: 'success',
             });
             history.push(`/data/precomputed/${res.response._id}`);
         } else {
             toast(`${res.error}`, {
-                type: toast.TYPE.ERROR,
+                type: 'error',
             });
         }
     };
@@ -147,12 +147,12 @@ export const PrecomputedForm = ({
         const res = await updatePrecomputed(precomputedDataToUpdate);
         if (res.response) {
             toast(translate('precomputed_updated_success'), {
-                type: toast.TYPE.SUCCESS,
+                type: 'success',
             });
             onLoadPrecomputedData();
         } else {
             toast(`${res.error}`, {
-                type: toast.TYPE.ERROR,
+                type: 'error',
             });
         }
     };
@@ -175,12 +175,12 @@ export const PrecomputedForm = ({
         const res = await deletePrecomputed(initialValues?._id);
         if (res.response) {
             toast(translate('precomputed_deleted_success'), {
-                type: toast.TYPE.SUCCESS,
+                type: 'success',
             });
             history.push('/data/precomputed');
         } else {
             toast(`${res.error}`, {
-                type: toast.TYPE.ERROR,
+                type: 'error',
             });
         }
         setIsLoading(false);
@@ -197,7 +197,7 @@ export const PrecomputedForm = ({
         }
         if (isPrecomputedRunning) {
             toast(translate('pending_precomputed'), {
-                type: toast.TYPE.INFO,
+                type: 'info',
             });
         }
         onLaunchPrecomputed({
@@ -214,7 +214,7 @@ export const PrecomputedForm = ({
                 },
                 () => {
                     toast(translate('logs_error'), {
-                        type: toast.TYPE.ERROR,
+                        type: 'error',
                     });
                 },
             );

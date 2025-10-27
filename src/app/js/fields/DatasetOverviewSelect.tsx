@@ -1,38 +1,38 @@
-// @ts-expect-error TS6133
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
 import { TextField, MenuItem, Box } from '@mui/material';
 import * as overview from '../../../common/overview';
-import {
-    polyglot as polyglotPropTypes,
-    field as fieldPropTypes,
-} from '../propTypes';
 import { loadField } from '.';
 import { fromFields } from '../sharedSelectors';
 import { SCOPE_DATASET } from '../../../common/scope';
 import fieldApi from '../admin/api/field';
 import FieldRepresentation from './FieldRepresentation';
-import { translate } from '../i18n/I18NContext';
+import { useTranslate } from '../i18n/I18NContext';
+import type { Field } from '../propTypes';
+
+interface DatasetOverviewSelectComponentProps {
+    fields?: Field[];
+    loadField(...args: unknown[]): unknown;
+}
 
 export const DatasetOverviewSelectComponent = ({
-    // @ts-expect-error TS7031
-    p: polyglot,
-    // @ts-expect-error TS7031
     fields,
-    // @ts-expect-error TS7031
     loadField,
-}) => {
+}: DatasetOverviewSelectComponentProps) => {
+    const { translate } = useTranslate();
     const [datasetTitle, datasetDescription] = useMemo(() => {
+        // @ts-expect-error TS18048
         const datasetTitleField = fields.find(
             // @ts-expect-error TS7006
             (field) => field.overview === overview.DATASET_TITLE,
         );
+        // @ts-expect-error TS18048
         const datasetDescriptionField = fields.find(
             // @ts-expect-error TS7006
             (field) => field.overview === overview.DATASET_DESCRIPTION,
         );
+        // @ts-expect-error TS2339
         return [datasetTitleField?._id, datasetDescriptionField?._id];
     }, [fields]);
 
@@ -61,7 +61,7 @@ export const DatasetOverviewSelectComponent = ({
             <TextField
                 select
                 value={datasetTitle || ''}
-                label={polyglot.t('overviewDatasetTitle')}
+                label={translate('overviewDatasetTitle')}
                 onChange={handleDatasetTitleChange}
                 sx={{ minWidth: 220 }}
                 SelectProps={{
@@ -74,7 +74,7 @@ export const DatasetOverviewSelectComponent = ({
                     ),
                 }}
             >
-                <MenuItem value={undefined}>{polyglot.t('none')}</MenuItem>
+                <MenuItem value={undefined}>{translate('none')}</MenuItem>
                 {/*
                  // @ts-expect-error TS7006 */}
                 {fields.map((field) => (
@@ -84,7 +84,9 @@ export const DatasetOverviewSelectComponent = ({
                             alignItems: 'center',
                             gap: 2,
                         }}
+                        // @ts-expect-error TS18046
                         value={field._id}
+                        // @ts-expect-error TS18046
                         key={field._id}
                     >
                         <FieldRepresentation field={field} />
@@ -94,7 +96,7 @@ export const DatasetOverviewSelectComponent = ({
             <TextField
                 select
                 value={datasetDescription || ''}
-                label={polyglot.t('overviewDatasetDescription')}
+                label={translate('overviewDatasetDescription')}
                 onChange={handleDatasetDescriptionChange}
                 sx={{ minWidth: 220 }}
                 SelectProps={{
@@ -107,7 +109,7 @@ export const DatasetOverviewSelectComponent = ({
                     ),
                 }}
             >
-                <MenuItem value={undefined}>{polyglot.t('none')}</MenuItem>
+                <MenuItem value={undefined}>{translate('none')}</MenuItem>
                 {/*
                  // @ts-expect-error TS7006 */}
                 {fields.map((field) => (
@@ -117,7 +119,9 @@ export const DatasetOverviewSelectComponent = ({
                             alignItems: 'center',
                             gap: 2,
                         }}
+                        // @ts-expect-error TS18046
                         value={field._id}
+                        // @ts-expect-error TS18046
                         key={field._id}
                     >
                         <FieldRepresentation field={field} />
@@ -126,12 +130,6 @@ export const DatasetOverviewSelectComponent = ({
             </TextField>
         </Box>
     );
-};
-
-DatasetOverviewSelectComponent.propTypes = {
-    p: polyglotPropTypes.isRequired,
-    fields: PropTypes.arrayOf(fieldPropTypes),
-    loadField: PropTypes.func.isRequired,
 };
 
 // @ts-expect-error TS7006
@@ -146,7 +144,6 @@ const mapDispatchToProps = {
 };
 
 export default compose(
-    translate,
     connect(mapStateToProps, mapDispatchToProps),
     // @ts-expect-error TS2345
 )(DatasetOverviewSelectComponent);

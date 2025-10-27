@@ -1,21 +1,31 @@
-// @ts-expect-error TS6133
-import React from 'react';
 import { TextField } from '@mui/material';
-import { formField as formFieldPropTypes } from '../../propTypes';
+
+type FormTextFieldProps = {
+    input: {
+        name: string;
+        value: any;
+        onChange(...args: unknown[]): unknown;
+        onBlur(...args: unknown[]): unknown;
+        onFocus(...args: unknown[]): unknown;
+    };
+    label: string;
+    meta: {
+        touched: boolean;
+        error?: string;
+    };
+    p?: any;
+    dispatch?: (...args: unknown[]) => unknown;
+    [key: string]: any;
+};
 
 const FormTextField = ({
-    // @ts-expect-error TS7031
     input,
-    // @ts-expect-error TS7031
     label,
-    // @ts-expect-error TS7031
     meta: { touched, error },
-    // @ts-expect-error TS7031
     p,
-    // @ts-expect-error TS7031
     dispatch,
     ...custom
-}) => (
+}: FormTextFieldProps) => (
     <TextField
         placeholder={label}
         label={label}
@@ -26,7 +36,5 @@ const FormTextField = ({
         {...custom}
     />
 );
-
-FormTextField.propTypes = formFieldPropTypes;
 
 export default FormTextField;

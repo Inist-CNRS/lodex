@@ -1,13 +1,11 @@
-// @ts-expect-error TS6133
-import React, { useMemo, useState } from 'react';
-import PropTypes from 'prop-types';
+import { useMemo, useState } from 'react';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import { clamp } from 'lodash';
 
 import InvalidFormat from '../InvalidFormat';
 import injectData from '../injectData';
-import { field as fieldPropTypes } from '../../propTypes';
+import { type Field } from '../../propTypes';
 import { CustomActionVegaLite } from '../utils/components/vega-lite-component';
 import {
     convertSpecTemplate,
@@ -24,8 +22,20 @@ const styles = stylesToClassName({
     },
 });
 
-// @ts-expect-error TS7031
-const VegaLiteView = ({ field, data, aspectRatio, specTemplate }) => {
+interface VegaLiteViewProps {
+    field: Field;
+    resource: object;
+    data?: any;
+    specTemplate: string;
+    aspectRatio?: string;
+}
+
+const VegaLiteView = ({
+    field,
+    data,
+    aspectRatio,
+    specTemplate,
+}: VegaLiteViewProps) => {
     const { ref, width } = useSizeObserver();
     const [error, setError] = useState('');
 
@@ -44,6 +54,7 @@ const VegaLiteView = ({ field, data, aspectRatio, specTemplate }) => {
     }, [specTemplate, width]);
 
     if (!spec) {
+        // @ts-expect-error TS18046
         return <InvalidFormat format={field.format} value={error} />;
     }
 
@@ -61,18 +72,6 @@ const VegaLiteView = ({ field, data, aspectRatio, specTemplate }) => {
     );
 };
 
-VegaLiteView.propTypes = {
-    field: fieldPropTypes.isRequired,
-    resource: PropTypes.object.isRequired,
-    data: PropTypes.any,
-    specTemplate: PropTypes.string.isRequired,
-    aspectRatio: PropTypes.string,
-};
-
-VegaLiteView.defaultProps = {
-    className: null,
-};
-
 // @ts-expect-error TS7006
 const mapStateToProps = (state, { formatData }) => {
     if (!formatData) {
@@ -85,8 +84,7 @@ const mapStateToProps = (state, { formatData }) => {
     };
 };
 
-// @ts-expect-error TS6133
-export const VegaLiteAdminView = connect((state, props) => {
+export const VegaLiteAdminView = connect((_state, props) => {
     return {
         ...props,
         field: {

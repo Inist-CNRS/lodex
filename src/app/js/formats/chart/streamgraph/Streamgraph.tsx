@@ -18,8 +18,6 @@ import moment from 'moment';
 
 import { MULTICHROMATIC_DEFAULT_COLORSET_STREAMGRAPH } from '../../utils/colorUtils';
 
-import PropTypes from 'prop-types';
-import { polyglot as polyglotPropTypes } from '../../../propTypes';
 import LoadingGraph from '../../utils/components/LoadingGraph';
 import MouseIcon from '../../utils/components/MouseIcon';
 
@@ -113,17 +111,30 @@ const stylesWithClassnames = stylesToClassname({
     },
 });
 
-class Streamgraph extends PureComponent {
+interface StreamgraphProps {
+    p: unknown;
+    colors: string;
+    formatData: unknown[];
+    maxLegendLength: number;
+    height: number;
+    args: {
+        colors: string;
+        maxLegendLength: number;
+        height: number;
+    };
+}
+
+class Streamgraph extends PureComponent<StreamgraphProps> {
     _isMounted = false;
     mouseIcon = '';
     centerIcon = '';
 
     // @ts-expect-error TS7006
     constructor(props) {
+        props.args = props.args || defaultArgs;
         super(props);
         this.state = {
             width: 800,
-            // @ts-expect-error TS2339
             height: this.props.height || defaultArgs.height,
             margin: { top: 60, right: 40, bottom: 50, left: 60 },
         };
@@ -142,10 +153,6 @@ class Streamgraph extends PureComponent {
         // @ts-expect-error TS2339
         this.uniqueId = generateUniqueId();
     }
-
-    static defaultProps = {
-        args: defaultArgs,
-    };
 
     centerGraphClick() {
         this.updateDimensions();
@@ -295,7 +302,6 @@ class Streamgraph extends PureComponent {
         // @ts-expect-error TS7034
         const colorNameList = [];
         if (stackedData) {
-            // @ts-expect-error TS2339
             let colorList = this.props.colors;
             if (!colorList) {
                 colorList = defaultArgs.colors;
@@ -409,7 +415,6 @@ class Streamgraph extends PureComponent {
                 .text(
                     cliTruncate(
                         element.name,
-                        // @ts-expect-error TS2339
                         this.props.maxLegendLength ||
                             defaultArgs.maxLegendLength,
                     ),
@@ -664,7 +669,6 @@ class Streamgraph extends PureComponent {
 
     setGraph() {
         const { valuesObjectsArray, valuesArray, dateMin, dateMax, namesList } =
-            // @ts-expect-error TS2339
             transformDataIntoMapArray(this.props.formatData);
 
         // @ts-expect-error TS2339
@@ -783,13 +787,10 @@ class Streamgraph extends PureComponent {
     render() {
         // @ts-expect-error TS2339
         const { width } = this.state;
-        // @ts-expect-error TS2339
         const height = this.props.height || defaultArgs.height;
 
         // since the data comes in the form of an Array, we wait for that to hide the loading label
-        // @ts-expect-error TS2339
         let loading = <LoadingGraph polyglot={this.props.p} />;
-        // @ts-expect-error TS2339
         if (Array.isArray(this.props.formatData)) {
             // @ts-expect-error TS2322
             loading = '';
@@ -853,14 +854,5 @@ class Streamgraph extends PureComponent {
         );
     }
 }
-
-// @ts-expect-error TS2339
-Streamgraph.propTypes = {
-    p: polyglotPropTypes.isRequired,
-    colors: PropTypes.string.isRequired,
-    formatData: PropTypes.array.isRequired,
-    maxLegendLength: PropTypes.number.isRequired,
-    height: PropTypes.number.isRequired,
-};
 
 export default compose(injectData())(Streamgraph);

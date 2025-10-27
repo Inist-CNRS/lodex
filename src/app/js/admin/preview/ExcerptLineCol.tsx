@@ -1,6 +1,3 @@
-// @ts-expect-error TS6133
-import React from 'react';
-import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import compose from 'recompose/compose';
 import { TableCell } from '@mui/material';
@@ -9,7 +6,6 @@ import { connect } from 'react-redux';
 import { fromFields } from '../../sharedSelectors';
 import { isLongText, getShortText } from '../../lib/longTexts';
 import getFieldClassName from '../../lib/getFieldClassName';
-import { field as fieldPropTypes } from '../../propTypes';
 import parseValue from '../../../../common/tools/parseValue';
 import { translate } from '../../i18n/I18NContext';
 
@@ -21,8 +17,17 @@ const styles = {
     }),
 };
 
-// @ts-expect-error TS7031
-export const ExcerptLineColComponent = ({ field, value = '', readonly }) =>
+interface ExcerptLineColComponentProps {
+    field: unknown;
+    value?: string;
+    readonly?: boolean;
+}
+
+export const ExcerptLineColComponent = ({
+    field,
+    value = '',
+    readonly,
+}: ExcerptLineColComponentProps) =>
     isLongText(value) ? (
         <TableCell
             title={value}
@@ -45,16 +50,6 @@ export const ExcerptLineColComponent = ({ field, value = '', readonly }) =>
             {`${value}`}
         </TableCell>
     );
-
-ExcerptLineColComponent.propTypes = {
-    field: fieldPropTypes.isRequired,
-    value: PropTypes.string,
-    readonly: PropTypes.bool,
-};
-
-ExcerptLineColComponent.defaultProps = {
-    value: '',
-};
 
 // @ts-expect-error TS7006
 const mapStateToProps = (state, { field, line }) => {

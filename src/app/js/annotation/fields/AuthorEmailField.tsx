@@ -1,15 +1,15 @@
-import PropTypes from 'prop-types';
-// @ts-expect-error TS6133
-import React from 'react';
-
 import { useTranslate } from '../../i18n/I18NContext';
 import { TextField } from '../../lib/components/TextField';
 
-// @ts-expect-error TS7031
-export function AuthorEmailField({ form }) {
+interface AuthorEmailFieldProps {
+    form: object;
+}
+
+export function AuthorEmailField({ form }: AuthorEmailFieldProps) {
     const { translate } = useTranslate();
     return (
         <TextField
+            // @ts-expect-error TS2740
             form={form}
             name="authorEmail"
             label={translate('annotation.authorEmail')}
@@ -17,7 +17,3 @@ export function AuthorEmailField({ form }) {
         />
     );
 }
-
-AuthorEmailField.propTypes = {
-    form: PropTypes.object.isRequired,
-};

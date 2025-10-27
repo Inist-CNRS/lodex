@@ -1,16 +1,21 @@
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Button } from '@mui/material';
-import PropTypes from 'prop-types';
-// @ts-expect-error TS6133
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { toast } from '../../../../common/tools/toast';
 import { useTranslate } from '../../i18n/I18NContext';
 import { ConfirmPopup } from '../../lib/components/ConfirmPopup';
 import datasetApi from '../api/dataset';
 
-// @ts-expect-error TS7031
-export function DeleteManyButton({ selectedRowIds, reloadDataset }) {
+interface DeleteManyButtonProps {
+    selectedRowIds: string[];
+    reloadDataset(...args: unknown[]): unknown;
+}
+
+export function DeleteManyButton({
+    selectedRowIds,
+    reloadDataset,
+}: DeleteManyButtonProps) {
     const { translate } = useTranslate();
 
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -38,14 +43,14 @@ export function DeleteManyButton({ selectedRowIds, reloadDataset }) {
 
         if (res.status === 'deleted') {
             toast(translate('parsing_delete_rows_success'), {
-                type: toast.TYPE.SUCCESS,
+                type: 'success',
             });
             reloadDataset();
             handleCloseModal();
             setIsLoading(false);
         } else {
             toast(translate('parsing_delete_rows_error'), {
-                type: toast.TYPE.ERROR,
+                type: 'error',
             });
         }
         setIsLoading(false);
@@ -81,8 +86,3 @@ export function DeleteManyButton({ selectedRowIds, reloadDataset }) {
         </>
     );
 }
-
-DeleteManyButton.propTypes = {
-    selectedRowIds: PropTypes.arrayOf(PropTypes.string).isRequired,
-    reloadDataset: PropTypes.func.isRequired,
-};

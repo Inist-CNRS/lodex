@@ -1,7 +1,10 @@
-import { toast as reactToast } from 'react-toastify';
+import { toast as reactToast, type ToastOptions } from 'react-toastify';
 
-export const toast = (message: any, options: any) => {
-    if (options?.type === reactToast.TYPE.ERROR) {
+export const toast = (
+    message: string,
+    options: ToastOptions<unknown> | undefined,
+) => {
+    if (options?.type === 'error') {
         options = {
             ...options,
             autoClose: false,
@@ -13,5 +16,3 @@ export const toast = (message: any, options: any) => {
     }
     reactToast(message, options);
 };
-
-toast.TYPE = reactToast.TYPE;

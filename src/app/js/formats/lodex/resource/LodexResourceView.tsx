@@ -1,6 +1,3 @@
-// @ts-expect-error TS6133
-import React from 'react';
-import PropTypes from 'prop-types';
 import { translate } from '../../../i18n/I18NContext';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
@@ -9,7 +6,7 @@ import URL from 'url';
 
 import { isURL } from '../../../../../common/uris';
 import LodexResource from '../../utils/components/LodexResource';
-import { field as fieldPropTypes } from '../../../propTypes';
+import { type Field } from '../../../propTypes';
 import injectData from '../../injectData';
 import stylesToClassname from '../../../lib/stylesToClassName';
 
@@ -25,22 +22,19 @@ const styles = stylesToClassname(
     'lodex-resource',
 );
 
-// @ts-expect-error TS7006
-const LodexResourceView = (props) => (
+interface LodexResourceViewProps {
+    field: Field;
+    resource: object;
+}
+
+const LodexResourceView = (props: LodexResourceViewProps) => (
     // @ts-expect-error TS2339
     <div className={styles.wrapper}>
+        {/*
+         // @ts-expect-error TS2559 */}
         <LodexResource {...props} />
     </div>
 );
-
-LodexResourceView.propTypes = {
-    field: fieldPropTypes.isRequired,
-    resource: PropTypes.object.isRequired,
-};
-
-LodexResourceView.defaultProps = {
-    className: null,
-};
 
 // @ts-expect-error TS7006
 const mapStateToProps = (state, { formatData = {} }) => {
@@ -94,4 +88,5 @@ export default compose(
         )}`;
     }),
     connect(mapStateToProps),
+    // @ts-expect-error TS2345
 )(LodexResourceView);

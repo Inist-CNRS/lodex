@@ -1,5 +1,3 @@
-// @ts-expect-error TS6133
-import React from 'react';
 import { shallow } from 'enzyme';
 
 import ExcerptLine from './ExcerptLine';
@@ -13,7 +11,6 @@ describe('<ExcerptLine />', () => {
         ];
         const line = { uri: 'uri1', foo: 'foo', bar: 'bar' };
         const wrapper = shallow(
-            // @ts-expect-error TS2769
             <ExcerptLine
                 columns={columns}
                 line={line}

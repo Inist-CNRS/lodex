@@ -6,39 +6,40 @@ import {
     TextField as MuiTextField,
     Tooltip,
 } from '@mui/material';
-import PropTypes from 'prop-types';
-// @ts-expect-error TS6133
-import React, { useEffect, useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { useField } from '@tanstack/react-form';
+import { FormApi, useField } from '@tanstack/react-form';
 
 import { useTranslate } from '../../i18n/I18NContext';
 
+export type TextFieldProps = {
+    form: FormApi<any>;
+    type?: string;
+    name: string;
+    label: string;
+    helperText?: string;
+    multiline?: boolean;
+    required?: boolean;
+    disabled?: boolean;
+    sx?: object;
+    initialValue?: string;
+    clearable?: boolean;
+};
+
 // TextField component to use tanstack react form with material ui text field
 export function TextField({
-    // @ts-expect-error TS7031
     form,
-    // @ts-expect-error TS7031
     name,
-    // @ts-expect-error TS7031
     label,
-    // @ts-expect-error TS7031
     disabled,
-    // @ts-expect-error TS7031
     helperText,
-    // @ts-expect-error TS7031
     multiline,
-    // @ts-expect-error TS7031
     required,
-    // @ts-expect-error TS7031
     type,
-    // @ts-expect-error TS7031
     sx,
-    // @ts-expect-error TS7031
     initialValue,
-    // @ts-expect-error TS7031
     clearable,
-}) {
+}: TextFieldProps) {
     const { translate } = useTranslate();
     const field = useField({ name, form });
 
@@ -109,17 +110,3 @@ export function TextField({
         </FormControl>
     );
 }
-
-TextField.propTypes = {
-    form: PropTypes.object.isRequired,
-    type: PropTypes.string,
-    name: PropTypes.string.isRequired,
-    label: PropTypes.string.isRequired,
-    helperText: PropTypes.string,
-    multiline: PropTypes.bool,
-    required: PropTypes.bool,
-    disabled: PropTypes.bool,
-    sx: PropTypes.object,
-    initialValue: PropTypes.string,
-    clearable: PropTypes.bool,
-};

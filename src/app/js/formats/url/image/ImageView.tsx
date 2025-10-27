@@ -1,12 +1,15 @@
-// @ts-expect-error TS6133
-import React from 'react';
-import PropTypes from 'prop-types';
 // @ts-expect-error TS7016
 import ImageZoom from 'react-medium-image-zoom';
-import { field as fieldPropTypes } from '../../../propTypes';
+import { type Field } from '../../../propTypes';
 
-// @ts-expect-error TS7031
-const ImageView = ({ resource, field, imageWidth }) => {
+interface ImageViewProps {
+    field: Field;
+    resource: object;
+    imageWidth: string;
+}
+
+const ImageView = ({ resource, field, imageWidth }: ImageViewProps) => {
+    // @ts-expect-error TS7053
     const imageURL = resource[field.name];
     const image = {
         src: imageURL,
@@ -20,16 +23,6 @@ const ImageView = ({ resource, field, imageWidth }) => {
     };
 
     return <ImageZoom key={imageWidth} image={image} zoomImage={zoomImage} />;
-};
-
-ImageView.propTypes = {
-    field: fieldPropTypes.isRequired,
-    resource: PropTypes.object.isRequired,
-    imageWidth: PropTypes.string.isRequired,
-};
-
-ImageView.defaultProps = {
-    className: null,
 };
 
 export default ImageView;

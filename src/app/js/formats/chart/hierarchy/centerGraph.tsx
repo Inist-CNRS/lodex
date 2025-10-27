@@ -1,8 +1,8 @@
-// @ts-expect-error TS6133
-import React from 'react';
-import PropTypes from 'prop-types';
+interface SVGProps {
+    width?: number | string;
+}
 
-const SVG = ({ width = '100%' }) => (
+const SVG = ({ width = '100%' }: SVGProps) => (
     <svg width={width} height={width} viewBox="0 0 100 125">
         <g fill="#000" fillRule="evenodd">
             <path d="M50 59c-4.962 0-9-4.038-9-9s4.038-9 9-9 9 4.038 9 9-4.038 9-9 9m0-22c-7.18 0-13 5.82-13 13s5.82 13 13 13 13-5.82 13-13-5.82-13-13-13" />
@@ -10,9 +10,5 @@ const SVG = ({ width = '100%' }) => (
         </g>
     </svg>
 );
-
-SVG.propTypes = {
-    width: PropTypes.number,
-};
 
 export default SVG;

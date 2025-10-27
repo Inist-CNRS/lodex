@@ -1,5 +1,3 @@
-// @ts-expect-error TS6133
-import React from 'react';
 import { shallow } from 'enzyme';
 import { Button } from '@mui/material';
 
@@ -10,7 +8,6 @@ describe('<ExcerptRemoveColumn />', () => {
         const field = { name: 'foo', label: 'foo' };
 
         const wrapper = shallow(
-            // @ts-expect-error TS2769
             <ExcerptRemoveColumn
                 field={field}
                 removeColumn={() => {}}
@@ -26,7 +23,6 @@ describe('<ExcerptRemoveColumn />', () => {
         const field = { name: 'uri', label: 'foo' };
 
         const wrapper = shallow(
-            // @ts-expect-error TS2769
             <ExcerptRemoveColumn
                 field={field}
                 removeColumn={() => {}}

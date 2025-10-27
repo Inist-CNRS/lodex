@@ -1,10 +1,8 @@
-import PropTypes from 'prop-types';
-// @ts-expect-error TS6133
-import React from 'react';
+interface OpenAllIconProps {
+    fill?: string;
+}
 
-// @ts-expect-error TS7031
-
-export const OpenAllIcon = ({ fill, ...props }) => {
+export const OpenAllIcon = ({ fill, ...props }: OpenAllIconProps) => {
     return (
         <svg
             width="24"
@@ -20,8 +18,4 @@ export const OpenAllIcon = ({ fill, ...props }) => {
             />
         </svg>
     );
-};
-
-OpenAllIcon.propTypes = {
-    fill: PropTypes.string,
 };

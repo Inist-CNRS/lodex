@@ -1,6 +1,3 @@
-// @ts-expect-error TS6133
-import React from 'react';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Dialog, Button, DialogContent, DialogActions } from '@mui/material';
 
@@ -21,8 +18,15 @@ const styles = {
     },
 };
 
-// @ts-expect-error TS7031
-const ImportModelDialogComponent = ({ onClose, importFields }) => {
+interface ImportModelDialogComponentProps {
+    importFields(...args: unknown[]): unknown;
+    onClose(...args: unknown[]): unknown;
+}
+
+const ImportModelDialogComponent = ({
+    onClose,
+    importFields,
+}: ImportModelDialogComponentProps) => {
     const { translate } = useTranslate();
     // @ts-expect-error TS7006
     const handleFileUpload = (event) => {
@@ -77,11 +81,6 @@ const ImportModelDialogComponent = ({ onClose, importFields }) => {
             <DialogActions>{actions}</DialogActions>
         </Dialog>
     );
-};
-
-ImportModelDialogComponent.propTypes = {
-    importFields: PropTypes.func.isRequired,
-    onClose: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = () => ({});

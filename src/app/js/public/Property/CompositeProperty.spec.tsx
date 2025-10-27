@@ -1,5 +1,3 @@
-// @ts-expect-error TS6133
-import React from 'react';
 import { shallow } from 'enzyme';
 
 import { CompositePropertyComponent as CompositeProperty } from './CompositeProperty';
@@ -23,9 +21,7 @@ describe('CompositeProperty', () => {
         const compositeProperty = shallow(<CompositeProperty {...props} />);
         const property = compositeProperty.find(Property);
         expect(property).toHaveLength(2);
-        // @ts-expect-error TS2571
         expect(property.at(0).props().field).toBe('field1');
-        // @ts-expect-error TS2571
         expect(property.at(1).props().field).toBe('field2');
     });
 });

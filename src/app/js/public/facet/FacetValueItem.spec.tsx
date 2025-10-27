@@ -1,12 +1,10 @@
-// @ts-expect-error TS6133
-import React from 'react';
-import { render, screen } from '../../../../test-utils';
+import { render } from '../../../../test-utils';
 import { TestI18N } from '../../i18n/I18NContext';
 import { FacetValueItemView } from './FacetValueItem';
 
 describe('FacetValueItem', () => {
     it('should render a null facet value as empty', () => {
-        render(
+        const screen = render(
             <TestI18N>
                 <FacetValueItemView
                     facetValue={{
@@ -23,7 +21,7 @@ describe('FacetValueItem', () => {
         expect(screen.getByText('10')).toBeInTheDocument();
     });
     it('should render a "" facet value as empty', () => {
-        render(
+        const screen = render(
             <TestI18N>
                 <FacetValueItemView
                     facetValue={{
@@ -40,7 +38,7 @@ describe('FacetValueItem', () => {
         expect(screen.getByText('10')).toBeInTheDocument();
     });
     it('should render facet.value otherwise', () => {
-        render(
+        const screen = render(
             <TestI18N>
                 <FacetValueItemView
                     facetValue={{

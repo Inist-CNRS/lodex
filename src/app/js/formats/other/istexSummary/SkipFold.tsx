@@ -1,10 +1,8 @@
-// @ts-expect-error TS6133
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import { useState, useEffect, type ReactNode } from 'react';
 import { CircularProgress } from '@mui/material';
 
-import { polyglot as polyglotPropTypes } from '../../../propTypes';
 import AdminOnlyAlert from '../../../lib/components/AdminOnlyAlert';
+import { useTranslate } from '../../../i18n/I18NContext';
 
 const circularProgress = (
     <CircularProgress
@@ -18,60 +16,47 @@ const circularProgress = (
     />
 );
 
-class SkipFold extends Component {
-    state = {
-        data: null,
-        error: null,
-        isLoading: true,
-    };
-
-    UNSAFE_componentWillMount() {
-        this.props
-            // @ts-expect-error TS2339
-            .getData(this.props)
-            // @ts-expect-error TS7006
-            .then((data) => {
-                this.setState({
-                    data,
-                    isLoading: false,
-                    isOpen: true,
-                });
-            })
-            // @ts-expect-error TS7006
-            .catch((error) => {
-                console.error(error);
-                this.setState({ error: true, isLoading: false });
-            });
-    }
-
-    render() {
-        // @ts-expect-error TS2339
-        const { polyglot, children } = this.props;
-        const { data, isLoading, error } = this.state;
-
-        if (error) {
-            return <AdminOnlyAlert>{polyglot.t('istex_error')}</AdminOnlyAlert>;
-        }
-
-        if (isLoading) {
-            return circularProgress;
-        }
-
-        // @ts-expect-error TS18047
-        if (!data.hits.length) {
-            return null;
-        }
-
-        // @ts-expect-error TS2349
-        return children({ ...this.props, data });
-    }
+interface SkipFoldProps {
+    children(...args: unknown[]): ReactNode;
+    getData(...args: unknown[]): unknown;
 }
 
-// @ts-expect-error TS2339
-SkipFold.propTypes = {
-    children: PropTypes.func.isRequired,
-    polyglot: polyglotPropTypes.isRequired,
-    getData: PropTypes.func.isRequired,
+const SkipFold = ({ children, getData }: SkipFoldProps) => {
+    const { translate } = useTranslate();
+    const [data, setData] = useState(null);
+    const [error, setError] = useState<boolean | null>(null);
+    const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+        // @ts-expect-error TS2571
+        getData({ children, getData })
+            // @ts-expect-error TS7006
+            .then((fetchedData) => {
+                setData(fetchedData);
+                setIsLoading(false);
+            })
+            // @ts-expect-error TS7006
+            .catch((fetchError) => {
+                console.error(fetchError);
+                setError(true);
+                setIsLoading(false);
+            });
+    }, [children, getData]);
+
+    if (error) {
+        return <AdminOnlyAlert>{translate('istex_error')}</AdminOnlyAlert>;
+    }
+
+    if (isLoading) {
+        return circularProgress;
+    }
+
+    // @ts-expect-error TS18047
+    if (!data.hits.length) {
+        return null;
+    }
+
+    return children({ children, getData, data });
 };
 
 export default SkipFold;

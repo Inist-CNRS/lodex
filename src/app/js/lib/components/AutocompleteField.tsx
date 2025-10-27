@@ -7,10 +7,8 @@ import {
     ListItemText,
     TextField,
 } from '@mui/material';
-import { useField } from '@tanstack/react-form';
-import PropTypes from 'prop-types';
-// @ts-expect-error TS6133
-import React, { useCallback, useMemo } from 'react';
+import { FormApi, useField } from '@tanstack/react-form';
+import { useCallback, useMemo } from 'react';
 
 import { useTranslate } from '../../i18n/I18NContext';
 import { useAutocompleteTranslations } from './useAutocompleteTranslations';
@@ -24,23 +22,26 @@ function optionToAutocompleteValue(option) {
     };
 }
 
+export type AutocompleteFieldProps = {
+    form: FormApi<any>;
+    name: string;
+    label: string;
+    helperText?: string;
+    required?: boolean;
+    options?: string[];
+    supportsNewValues?: boolean;
+};
+
 // TextField component to use tanstack react form with material ui text field
 export function AutocompleteField({
-    // @ts-expect-error TS7031
     form,
-    // @ts-expect-error TS7031
     name,
-    // @ts-expect-error TS7031
     label,
-    // @ts-expect-error TS7031
     helperText,
-    // @ts-expect-error TS7031
     required,
-    // @ts-expect-error TS7031
     options,
-    // @ts-expect-error TS7031
     supportsNewValues,
-}) {
+}: AutocompleteFieldProps) {
     const { translate } = useTranslate();
     const field = useField({ name, form });
     const autocompleteTranslations = useAutocompleteTranslations();
@@ -66,9 +67,11 @@ export function AutocompleteField({
 
     const mappedOptions = useMemo(() => {
         // We need to have an empty value to avoid warnings from the Autocomplete component
+        // @ts-expect-error TS2488
         return ['', ...options].map(optionToAutocompleteValue);
     }, [options]);
 
+    // @ts-expect-error TS7006
     const isOptionEqualToValue = useCallback((option, value) => {
         return option.value === value.value;
     }, []);
@@ -117,6 +120,7 @@ export function AutocompleteField({
                     return filtered;
                 }}
                 getOptionLabel={(option) => {
+                    // @ts-expect-error TS2339
                     return option.value ?? '';
                 }}
                 renderOption={(props, option) => {
@@ -140,13 +144,3 @@ export function AutocompleteField({
         </FormControl>
     );
 }
-
-AutocompleteField.propTypes = {
-    form: PropTypes.object.isRequired,
-    name: PropTypes.string.isRequired,
-    label: PropTypes.string.isRequired,
-    helperText: PropTypes.string,
-    required: PropTypes.bool,
-    options: PropTypes.arrayOf(PropTypes.string),
-    supportsNewValues: PropTypes.bool,
-};

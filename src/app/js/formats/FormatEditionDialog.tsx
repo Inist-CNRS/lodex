@@ -83,6 +83,7 @@ const FormatEditionDialog = ({
             <DialogContent style={{ padding: 10, width: '800px' }}>
                 <Box mb={3}>
                     <SelectFormat
+                        // @ts-expect-error TS2322
                         formats={formats}
                         value={name}
                         onChange={setFormat}

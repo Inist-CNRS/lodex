@@ -1,14 +1,16 @@
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Button } from '@mui/material';
-import PropTypes from 'prop-types';
 import React, { useEffect } from 'react';
 
 import { useTranslate } from '../../i18n/I18NContext';
 import { ConfirmPopup } from '../../lib/components/ConfirmPopup';
 import { useDeleteManyAnnotation } from './hooks/useDeleteManyAnnotation';
 
-// @ts-expect-error TS7031
-export function DeleteManyButton({ selectedRowIds }) {
+interface DeleteManyButtonProps {
+    selectedRowIds: string[];
+}
+
+export function DeleteManyButton({ selectedRowIds }: DeleteManyButtonProps) {
     const { translate } = useTranslate();
     const { mutate, isLoading } = useDeleteManyAnnotation();
 
@@ -63,7 +65,3 @@ export function DeleteManyButton({ selectedRowIds }) {
         </>
     );
 }
-
-DeleteManyButton.propTypes = {
-    selectedRowIds: PropTypes.arrayOf(PropTypes.string).isRequired,
-};

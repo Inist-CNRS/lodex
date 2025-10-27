@@ -1,6 +1,3 @@
-// @ts-expect-error TS6133
-import React from 'react';
-import PropTypes from 'prop-types';
 import Book from '@mui/icons-material/LibraryBooks';
 
 import Link from '../../../lib/components/Link';
@@ -33,28 +30,31 @@ const styles = stylesToClassname(
     'istex-item',
 );
 
+export type IstexItemComponentProps = {
+    title: string;
+    publicationDate: string;
+    url: string;
+    authors?: string[];
+    hostTitle: string;
+    hostGenre: string;
+    hostPagesFirst?: string;
+    hostPagesLast?: string;
+    hostVolume: string;
+    hostIssue?: string;
+};
+
 export const IstexItemComponent = ({
-    // @ts-expect-error TS7031
     title,
-    // @ts-expect-error TS7031
     publicationDate,
-    // @ts-expect-error TS7031
     url,
-    // @ts-expect-error TS7031
     authors,
-    // @ts-expect-error TS7031
     hostTitle,
-    // @ts-expect-error TS7031
     hostGenre,
-    // @ts-expect-error TS7031
     hostPagesFirst,
-    // @ts-expect-error TS7031
     hostPagesLast,
-    // @ts-expect-error TS7031
     hostVolume,
-    // @ts-expect-error TS7031
     hostIssue,
-}) => (
+}: IstexItemComponentProps) => (
     <article>
         {/*
          // @ts-expect-error TS2339 */}
@@ -65,8 +65,6 @@ export const IstexItemComponent = ({
                 {/*
                  // @ts-expect-error TS2769 */}
                 <Book size="20" className={styles.titleIcon} />
-                {/*
-                 // @ts-expect-error TS2739 */}
                 <Link href={url} target="_blank">
                     {title}
                 </Link>
@@ -107,18 +105,5 @@ export const IstexItemComponent = ({
         </div>
     </article>
 );
-
-IstexItemComponent.propTypes = {
-    title: PropTypes.string.isRequired,
-    publicationDate: PropTypes.string.isRequired,
-    url: PropTypes.string.isRequired,
-    authors: PropTypes.arrayOf(PropTypes.string),
-    hostTitle: PropTypes.string.isRequired,
-    hostGenre: PropTypes.string.isRequired,
-    hostPagesFirst: PropTypes.string,
-    hostPagesLast: PropTypes.string,
-    hostVolume: PropTypes.string.isRequired,
-    hostIssue: PropTypes.string,
-};
 
 export default IstexItemComponent;

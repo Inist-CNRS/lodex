@@ -1,8 +1,6 @@
-import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 import { connect, useDispatch } from 'react-redux';
 import { compose, withProps } from 'recompose';
-import { translate } from '../../i18n/I18NContext';
 
 import { Box, Tab, Tabs } from '@mui/material';
 
@@ -16,10 +14,7 @@ import {
 } from '../../../../common/scope';
 import { toast } from '../../../../common/tools/toast';
 import { hideAddColumns } from '../../admin/parsing';
-import {
-    field as fieldPropTypes,
-    polyglot as polyglotPropTypes,
-} from '../../propTypes';
+import { type Field } from '../../propTypes';
 import { fromFields } from '../../sharedSelectors';
 import Actions from './Actions';
 import TabAnnotations from './TabAnnotations';
@@ -29,32 +24,45 @@ import { TabPanel } from './TabPanel';
 import TabSemantics from './TabSemantics';
 import ValuePreviewConnected from './ValuePreview';
 import { FormProvider, useForm } from 'react-hook-form';
+import { useTranslate } from '../../i18n/I18NContext';
 
 const ACTIONS_BAR_HEIGHT = 70;
 const PREVIEW_WIDTH = 320;
 
+interface FieldEditionWizardComponentProps {
+    currentEditedField?: Field;
+    fields?: Field[];
+    fieldsFromFilter?: Field[];
+    filter?: string;
+    saveField(...args: unknown[]): unknown;
+    handleHideExistingColumns(...args: unknown[]): unknown;
+    fieldName?: string;
+    history?: {
+        push(...args: unknown[]): unknown;
+    };
+    isFieldsLoading: boolean;
+}
+
 const FieldEditionWizardComponent = ({
-    // @ts-expect-error TS7031
     currentEditedField,
-    // @ts-expect-error TS7031
+
     fields,
-    // @ts-expect-error TS7031
+
     fieldsFromFilter,
-    // @ts-expect-error TS7031
+
     filter,
-    // @ts-expect-error TS7031
+
     saveField,
-    // @ts-expect-error TS7031
+
     handleHideExistingColumns,
-    // @ts-expect-error TS7031
+
     fieldName,
-    // @ts-expect-error TS7031
+
     history,
-    // @ts-expect-error TS7031
+
     isFieldsLoading,
-    // @ts-expect-error TS7031
-    p: polyglot,
-}) => {
+}: FieldEditionWizardComponentProps) => {
+    const { translate } = useTranslate();
     const [tabValue, setTabValue] = useState(0);
 
     // handle page loading before the field has started loading
@@ -70,14 +78,16 @@ const FieldEditionWizardComponent = ({
     }, [isInitialized, setIsInitialized, isFieldsLoading]);
     useEffect(() => {
         if (!fieldName) {
+            // @ts-expect-error TS18048
             history.push(`/display/${filter}`);
             return;
         }
 
         if (isInitialized && !isFieldsLoading && !currentEditedField) {
-            toast(polyglot.t('no_field', { fieldName }), {
-                type: toast.TYPE.ERROR,
+            toast(translate('no_field', { fieldName }), {
+                type: 'error',
             });
+            // @ts-expect-error TS18048
             history.push(`/display/${filter}`);
         }
         if (
@@ -85,9 +95,10 @@ const FieldEditionWizardComponent = ({
             // @ts-expect-error TS7006
             !fieldsFromFilter.some((f) => f.name === currentEditedField.name)
         ) {
-            toast(polyglot.t('no_field_in_scope', { fieldName, filter }), {
-                type: toast.TYPE.ERROR,
+            toast(translate('no_field_in_scope', { fieldName, filter }), {
+                type: 'error',
             });
+            // @ts-expect-error TS18048
             history.push(`/display/${filter}`);
         }
     }, [
@@ -98,7 +109,7 @@ const FieldEditionWizardComponent = ({
         isFieldsLoading,
         fieldsFromFilter,
         history,
-        polyglot,
+        translate,
     ]);
 
     const dispatch = useDispatch();
@@ -126,10 +137,13 @@ const FieldEditionWizardComponent = ({
 
     const handleCancel = () => {
         handleHideExistingColumns();
+        // @ts-expect-error TS18048
         history.push(
             `/display/${filter}${
+                // @ts-expect-error TS18046
                 filter === SCOPE_DOCUMENT && currentEditedField.subresourceId
-                    ? `/subresource/${currentEditedField.subresourceId}`
+                    ? // @ts-expect-error TS18046
+                      `/subresource/${currentEditedField.subresourceId}`
                     : ''
             }`,
         );
@@ -151,8 +165,10 @@ const FieldEditionWizardComponent = ({
             id: 'tab-general',
             component: (
                 <TabGeneral
+                    // @ts-expect-error TS2339
                     subresourceUri={currentEditedField.subresourceId}
                     arbitraryMode={[SCOPE_DATASET, SCOPE_GRAPHIC].includes(
+                        // @ts-expect-error TS2345
                         filter,
                     )}
                 />
@@ -163,8 +179,11 @@ const FieldEditionWizardComponent = ({
             id: 'tab-display',
             component: (
                 <TabDisplay
+                    // @ts-expect-error TS2322
                     filter={filter}
+                    // @ts-expect-error TS2322
                     fields={fields}
+                    // @ts-expect-error TS2339
                     subresourceId={currentEditedField.subresourceId}
                 />
             ),
@@ -177,6 +196,7 @@ const FieldEditionWizardComponent = ({
         {
             label: 'field_wizard_tab_semantic',
             id: 'tab-semantics',
+            // @ts-expect-error TS2739
             component: <TabSemantics currentEditedField={currentEditedField} />,
         },
     ].filter((x) => x);
@@ -230,7 +250,7 @@ const FieldEditionWizardComponent = ({
                                 >
                                     {tabs.map((tab, index) => (
                                         <Tab
-                                            label={polyglot.t(tab.label)}
+                                            label={translate(tab.label)}
                                             value={index}
                                             key={index}
                                             id={tab.id}
@@ -270,6 +290,8 @@ const FieldEditionWizardComponent = ({
                         }}
                         className="mui-fixed"
                     >
+                        {/*
+                         // @ts-expect-error TS2322 */}
                         <ValuePreviewConnected scope={filter} />
                     </Box>
                     <Box
@@ -288,6 +310,7 @@ const FieldEditionWizardComponent = ({
                     >
                         <Box className="container">
                             <Actions
+                                // @ts-expect-error TS2322
                                 currentEditedField={currentEditedField}
                                 onCancel={handleCancel}
                                 onSave={handleSave}
@@ -298,26 +321,6 @@ const FieldEditionWizardComponent = ({
             </form>
         </FormProvider>
     );
-};
-
-FieldEditionWizardComponent.propTypes = {
-    currentEditedField: fieldPropTypes,
-    fields: PropTypes.arrayOf(fieldPropTypes),
-    fieldsFromFilter: PropTypes.arrayOf(fieldPropTypes),
-    filter: PropTypes.string,
-    saveField: PropTypes.func.isRequired,
-    handleHideExistingColumns: PropTypes.func.isRequired,
-    p: polyglotPropTypes.isRequired,
-    fieldName: PropTypes.string,
-    history: PropTypes.shape({
-        push: PropTypes.func.isRequired,
-    }),
-    isFieldsLoading: PropTypes.bool.isRequired,
-};
-
-FieldEditionWizardComponent.defaultProps = {
-    currentEditedField: null,
-    fields: null,
 };
 
 // @ts-expect-error TS7006
@@ -382,6 +385,5 @@ export default compose(
             },
         };
     }),
-    translate,
     // @ts-expect-error TS2345
 )(FieldEditionWizardComponent);

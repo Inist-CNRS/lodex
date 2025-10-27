@@ -1,6 +1,4 @@
-// @ts-expect-error TS6133
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import { Component } from 'react';
 import { connect } from 'react-redux';
 import { LinearProgress } from '@mui/material';
 
@@ -17,44 +15,36 @@ import {
     fromConfigTenant,
 } from './selectors';
 
+type WithInitialDataHocProps = {
+    isInitialized: boolean;
+    isLoading: boolean;
+    loadParsingResult(...args: unknown[]): unknown;
+    loadPublication(...args: unknown[]): unknown;
+    loadSubresources(...args: unknown[]): unknown;
+    loadEnrichments(...args: unknown[]): unknown;
+    loadPrecomputed(...args: unknown[]): unknown;
+    loadConfigTenant(...args: unknown[]): unknown;
+};
+
 export const withInitialDataHoc = (
     // @ts-expect-error TS7006
     BaseComponent,
     onlyLoadIfNotInitialized = false,
 ) =>
-    class HocComponent extends Component {
-        static propTypes = {
-            loadParsingResult: PropTypes.func.isRequired,
-            loadPublication: PropTypes.func.isRequired,
-            loadSubresources: PropTypes.func.isRequired,
-            loadEnrichments: PropTypes.func.isRequired,
-            loadPrecomputed: PropTypes.func.isRequired,
-            loadConfigTenant: PropTypes.func.isRequired,
-            isLoading: PropTypes.bool.isRequired,
-            isInitialized: PropTypes.bool.isRequired,
-        };
-
+    class HocComponent extends Component<WithInitialDataHocProps> {
         UNSAFE_componentWillMount() {
-            // @ts-expect-error TS2339
             if (this.props.isInitialized && onlyLoadIfNotInitialized) {
                 return;
             }
-            // @ts-expect-error TS2339
             this.props.loadPublication();
-            // @ts-expect-error TS2339
             this.props.loadParsingResult();
-            // @ts-expect-error TS2339
             this.props.loadSubresources();
-            // @ts-expect-error TS2339
             this.props.loadEnrichments();
-            // @ts-expect-error TS2339
             this.props.loadPrecomputed();
-            // @ts-expect-error TS2339
             this.props.loadConfigTenant();
         }
 
         render() {
-            // @ts-expect-error TS2339
             const { loadPublication, loadParsingResult, isLoading, ...props } =
                 this.props;
 
@@ -94,6 +84,5 @@ export default (BaseComponent, onlyLoadIfNotInitialized = false) => {
     return connect(
         mapStateToProps,
         mapDispatchToProps,
-        // @ts-expect-error TS2345
     )(withInitialDataHoc(BaseComponent, onlyLoadIfNotInitialized));
 };

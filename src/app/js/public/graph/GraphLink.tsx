@@ -1,12 +1,9 @@
-// @ts-expect-error TS6133
-import React from 'react';
-import PropTypes from 'prop-types';
+import { type ReactNode } from 'react';
 import { Card, CardMedia, CardActions, Button } from '@mui/material';
 import Forward from '@mui/icons-material/Forward';
-import { translate } from '../../i18n/I18NContext';
 
-import { polyglot as polyglotPropTypes } from '../../propTypes';
 import Link from '../../lib/components/Link';
+import { useTranslate } from '../../i18n/I18NContext';
 
 const styles = {
     media: {
@@ -29,33 +26,31 @@ const styles = {
     },
 };
 
-// @ts-expect-error TS7031
-const GraphLink = ({ link, children, p: polyglot }) => (
-    <Card>
-        <CardMedia sx={styles.media}>{children}</CardMedia>
-        <CardActions sx={styles.actions}>
-            <Button
-                variant="text"
-                color="primary"
-                fullWidth
-                sx={styles.detailsButton}
-                component={(props) => <Link to={link} {...props} />}
-                to={link}
-                endIcon={<Forward sx={styles.icon} />}
-            >
-                {polyglot.t('view_details')}
-            </Button>
-        </CardActions>
-    </Card>
-);
-
-GraphLink.propTypes = {
-    link: PropTypes.string.isRequired,
-    children: PropTypes.oneOfType([
-        PropTypes.element.isRequired,
-        PropTypes.arrayOf(PropTypes.element.isRequired),
-    ]),
-    p: polyglotPropTypes,
+type GraphLinkProps = {
+    link: string;
+    children?: ReactNode;
 };
 
-export default translate(GraphLink);
+const GraphLink = ({ link, children }: GraphLinkProps) => {
+    const { translate } = useTranslate();
+    return (
+        <Card>
+            <CardMedia sx={styles.media}>{children}</CardMedia>
+            <CardActions sx={styles.actions}>
+                <Button
+                    variant="text"
+                    color="primary"
+                    fullWidth
+                    sx={styles.detailsButton}
+                    component={(props) => <Link to={link} {...props} />}
+                    to={link}
+                    endIcon={<Forward sx={styles.icon} />}
+                >
+                    {translate('view_details')}
+                </Button>
+            </CardActions>
+        </Card>
+    );
+};
+
+export default GraphLink;

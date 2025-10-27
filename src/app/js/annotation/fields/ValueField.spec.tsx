@@ -1,12 +1,15 @@
 import { useForm } from '@tanstack/react-form';
-// @ts-expect-error TS6133
-import React from 'react';
-import { fireEvent, render, waitFor } from '../../../../test-utils';
+
+import { render } from '../../../../test-utils';
 import { TestI18N } from '../../i18n/I18NContext';
 import { ValueField } from './ValueField';
+import { fireEvent, waitFor } from '@testing-library/dom';
 
-// @ts-expect-error TS7031
-function TestValueField({ choices }) {
+interface TestValueFieldProps {
+    choices: unknown[];
+}
+
+function TestValueField({ choices }: TestValueFieldProps) {
     const form = useForm({
         defaultValues: {
             kind: 'correction',
@@ -16,39 +19,37 @@ function TestValueField({ choices }) {
 
     return (
         <TestI18N>
+            {/*
+             // @ts-expect-error TS2322 */}
             <ValueField form={form} choices={choices} />
         </TestI18N>
     );
 }
 
-TestValueField.propTypes = {
-    choices: ValueField.propTypes.choices,
-};
-
 describe('ValueField', () => {
     it('should support a list of string as choices', async () => {
-        const wrapper = render(
+        const screen = render(
             <TestValueField choices={['choice1', 'choice2']} />,
         );
 
         await waitFor(() => {
             fireEvent.mouseDown(
-                wrapper.getByRole('button', {
+                screen.getByRole('combobox', {
                     name: 'annotation_choose_value_to_correct *',
                 }),
             );
         });
 
         expect(
-            wrapper.getByRole('option', { name: 'choice1' }),
+            screen.getByRole('option', { name: 'choice1' }),
         ).toBeInTheDocument();
         expect(
-            wrapper.getByRole('option', { name: 'choice2' }),
+            screen.getByRole('option', { name: 'choice2' }),
         ).toBeInTheDocument();
     });
 
     it('should support a list of string array as choices', async () => {
-        const wrapper = render(
+        const screen = render(
             <TestValueField
                 choices={[
                     ['choice1', 'choice2'],
@@ -59,17 +60,17 @@ describe('ValueField', () => {
 
         await waitFor(() => {
             fireEvent.mouseDown(
-                wrapper.getByRole('button', {
+                screen.getByRole('combobox', {
                     name: 'annotation_choose_value_to_correct *',
                 }),
             );
         });
 
         expect(
-            wrapper.getByRole('option', { name: 'choice1 ; choice2' }),
+            screen.getByRole('option', { name: 'choice1 ; choice2' }),
         ).toBeInTheDocument();
         expect(
-            wrapper.getByRole('option', { name: 'choice3 ; choice4' }),
+            screen.getByRole('option', { name: 'choice3 ; choice4' }),
         ).toBeInTheDocument();
     });
 });

@@ -1,6 +1,4 @@
-// @ts-expect-error TS6133
-import React, { useRef, useEffect } from 'react';
-import PropTypes from 'prop-types';
+import { useRef, useEffect } from 'react';
 // @ts-expect-error TS7016
 import * as d3 from 'd3';
 import ReactTooltip from 'react-tooltip';
@@ -22,8 +20,17 @@ const styles = stylesToClassname(
     'aster-plot-chart',
 );
 
-// @ts-expect-error TS7031
-const AsterPlot = ({ data, width, height, colorSet }) => {
+interface AsterPlotProps {
+    data: {
+        label: string;
+        value: number;
+    }[];
+    width: number;
+    height: number;
+    colorSet?: string[];
+}
+
+const AsterPlot = ({ data, width, height, colorSet }: AsterPlotProps) => {
     const ref = useRef(null);
     // @ts-expect-error TS7006
     const createPie = d3.pie().value((d) => d.value);
@@ -158,18 +165,6 @@ const AsterPlot = ({ data, width, height, colorSet }) => {
             <ReactTooltip />
         </>
     );
-};
-
-AsterPlot.propTypes = {
-    data: PropTypes.arrayOf(
-        PropTypes.shape({
-            label: PropTypes.string.isRequired,
-            value: PropTypes.number.isRequired,
-        }),
-    ).isRequired,
-    width: PropTypes.number.isRequired,
-    height: PropTypes.number.isRequired,
-    colorSet: PropTypes.arrayOf(PropTypes.string),
 };
 
 export default AsterPlot;

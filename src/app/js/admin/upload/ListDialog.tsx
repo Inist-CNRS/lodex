@@ -1,5 +1,4 @@
 import { useState, useEffect, type ReactNode, type Ref } from 'react';
-import PropTypes from 'prop-types';
 import {
     Button,
     Grid,
@@ -230,15 +229,6 @@ export const ListDialogComponent = ({
             <DialogActions>{actions}</DialogActions>
         </Dialog>
     );
-};
-
-ListDialogComponent.propTypes = {
-    loaders: PropTypes.array,
-    setLoader: PropTypes.func.isRequired,
-    value: PropTypes.string.isRequired,
-    open: PropTypes.bool.isRequired,
-    handleClose: PropTypes.func.isRequired,
-    actions: PropTypes.node,
 };
 
 export default ListDialogComponent;

@@ -54,19 +54,20 @@ export function useUpdateAnnotation() {
                 predicate: (query) => query.queryKey[0] === 'get-annotations',
             });
             toast(translate('annotation_update_success'), {
-                type: toast.TYPE.SUCCESS,
+                type: 'success',
             });
 
             history.push('/annotations');
         },
         onError: () => {
             toast(translate('annotation_update_error'), {
-                type: toast.TYPE.ERROR,
+                type: 'error',
             });
         },
     });
 
     const handleUpdateAnnotation = useCallback(
+        // @ts-expect-error TS7006
         async (id, annotation) => {
             // @ts-expect-error TS2345
             return mutation.mutateAsync({ id, annotation });

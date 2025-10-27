@@ -1,10 +1,7 @@
 import classnames from 'classnames';
-import PropTypes from 'prop-types';
-// @ts-expect-error TS6133
-import React from 'react';
 
 import stylesToClassname from '../../../lib/stylesToClassName';
-import { field as fieldPropTypes } from '../../../propTypes';
+import { type Field } from '../../../propTypes';
 import { getViewComponent } from '../../index';
 
 // @ts-expect-error TS7006
@@ -53,42 +50,50 @@ const styles = (bullet) =>
         'list-format',
     );
 
-// @ts-expect-error TS7031
-export const UL = ({ className, children }) => (
+interface ULProps {
+    className?: string;
+    children: any;
+}
+
+export const UL = ({ className, children }: ULProps) => (
     <ul className={className}>{children}</ul>
 );
 
-UL.propTypes = {
-    className: PropTypes.string,
-    children: PropTypes.any.isRequired,
-};
+interface OLProps {
+    className?: string;
+    children: any;
+}
 
-// @ts-expect-error TS7031
-export const OL = ({ className, children }) => (
+export const OL = ({ className, children }: OLProps) => (
     <ol className={className}>{children}</ol>
 );
 
-OL.propTypes = {
-    className: PropTypes.string,
-    children: PropTypes.any.isRequired,
-};
+interface ListViewProps {
+    className?: string;
+    field: Field;
+    resource: object;
+    type?: string;
+    bullet?: string;
+    subFormat?: string;
+    subFormatOptions?: any;
+}
 
 const ListView = ({
-    // @ts-expect-error TS7031
     className,
-    // @ts-expect-error TS7031
+
     resource,
-    // @ts-expect-error TS7031
+
     field,
-    // @ts-expect-error TS7031
+
     type,
-    // @ts-expect-error TS7031
+
     bullet,
-    // @ts-expect-error TS7031
+
     subFormat,
-    // @ts-expect-error TS7031
+
     subFormatOptions,
-}) => {
+}: ListViewProps) => {
+    // @ts-expect-error TS7053
     const values = resource[field.name];
     if (values == null || values === '' || !Array.isArray(values)) {
         return null;
@@ -132,20 +137,6 @@ const ListView = ({
             ))}
         </List>
     );
-};
-
-ListView.propTypes = {
-    className: PropTypes.string,
-    field: fieldPropTypes.isRequired,
-    resource: PropTypes.object.isRequired,
-    type: PropTypes.string,
-    bullet: PropTypes.string,
-    subFormat: PropTypes.string,
-    subFormatOptions: PropTypes.any,
-};
-
-ListView.defaultProps = {
-    className: null,
 };
 
 export default ListView;

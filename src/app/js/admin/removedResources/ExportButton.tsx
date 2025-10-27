@@ -1,13 +1,10 @@
-// @ts-expect-error TS6133
-import React from 'react';
 import { Button } from '@mui/material';
 import DownloadIcon from '@mui/icons-material/Download';
-import { polyglot as polyglotPropTypes } from '../../propTypes';
 import { exportHiddenResources } from '../api/hiddenResource';
-import { translate } from '../../i18n/I18NContext';
+import { useTranslate } from '../../i18n/I18NContext';
 
-// @ts-expect-error TS7031
-const ExportButton = ({ p: polyglot }) => {
+const ExportButton = () => {
+    const { translate } = useTranslate();
     const handleExport = async () => {
         const res = await exportHiddenResources();
         const file = window.URL.createObjectURL(res);
@@ -25,7 +22,6 @@ const ExportButton = ({ p: polyglot }) => {
         link.remove();
     };
 
-    const buttonLabel = polyglot.t('export');
     return (
         <Button
             variant="text"
@@ -33,13 +29,9 @@ const ExportButton = ({ p: polyglot }) => {
             className="export"
             startIcon={<DownloadIcon />}
         >
-            {buttonLabel}
+            {translate('export')}
         </Button>
     );
 };
 
-ExportButton.propTypes = {
-    p: polyglotPropTypes.isRequired,
-};
-
-export default translate(ExportButton);
+export default ExportButton;

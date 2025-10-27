@@ -1,7 +1,3 @@
-import PropTypes from 'prop-types';
-// @ts-expect-error TS6133
-import React from 'react';
-
 import { Typography } from '@mui/material';
 import {
     PROPOSED,
@@ -11,7 +7,7 @@ import {
 import { canonicalURL, isLocalURL, isURL } from '../../../../../../common/uris';
 import Link from '../../../../lib/components/Link';
 import { getShortText, isLongText } from '../../../../lib/longTexts';
-import { field as fieldPropTypes } from '../../../../propTypes';
+import { type Field } from '../../../../propTypes';
 
 const styles = {
     [REJECTED]: {
@@ -28,8 +24,21 @@ const styles = {
     },
 };
 
-// @ts-expect-error TS7031
-const DefaultView = ({ className, resource, field, fieldStatus, shrink }) => {
+interface DefaultViewProps {
+    className?: string;
+    field: Field;
+    fieldStatus?: string;
+    resource: any;
+    shrink?: boolean;
+}
+
+const DefaultView = ({
+    className,
+    resource,
+    field,
+    fieldStatus,
+    shrink,
+}: DefaultViewProps) => {
     const value = resource[field.name];
 
     if (isURL(value)) {
@@ -60,20 +69,6 @@ const DefaultView = ({ className, resource, field, fieldStatus, shrink }) => {
             <span className={className}>{text}</span>
         </Typography>
     );
-};
-
-DefaultView.propTypes = {
-    className: PropTypes.string,
-    field: fieldPropTypes.isRequired,
-    fieldStatus: PropTypes.string,
-    resource: PropTypes.any.isRequired,
-    shrink: PropTypes.bool,
-};
-
-DefaultView.defaultProps = {
-    className: null,
-    fieldStatus: null,
-    shrink: false,
 };
 
 export default DefaultView;

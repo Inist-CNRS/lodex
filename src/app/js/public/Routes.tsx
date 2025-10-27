@@ -1,6 +1,4 @@
-import PropTypes from 'prop-types';
-// @ts-expect-error TS6133
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { Route } from 'react-router-dom';
 
@@ -22,8 +20,16 @@ import { fromMenu } from './selectors';
 
 const notLogin = new RegExp('^(?!.*(/login)).*$');
 
-// @ts-expect-error TS7006
-const Routes = (props) => {
+interface RoutesProps {
+    customRoutes?: string[];
+    loadMenu(...args: unknown[]): unknown;
+    loadDisplayConfig(...args: unknown[]): unknown;
+    initializeLanguage(...args: unknown[]): unknown;
+    history: object;
+    tenant?: string;
+}
+
+const Routes = (props: RoutesProps) => {
     const [search, setSearch] = useState(false);
 
     useEffect(() => {
@@ -49,9 +55,8 @@ const Routes = (props) => {
         <>
             <ScrollToTop />
             {/*
-             // @ts-expect-error TS2769 */}
+         // @ts-expect-error TS2769 */}
             <Route path={notLogin} component={Breadcrumb} />
-
             <div id="content">
                 <Container maxWidth="xl" className="container">
                     <Route
@@ -77,7 +82,6 @@ const Routes = (props) => {
                     <Route
                         path="/uid:/:uri"
                         render={(props) => (
-                            // @ts-expect-error TS2322
                             <Resource {...props} tenant={tenant} />
                         )}
                     />
@@ -95,8 +99,6 @@ const Routes = (props) => {
 
                     <Route path="/login" component={Login} />
 
-                    {/*
-                     // @ts-expect-error TS7006 */}
                     {customRoutes.map((link) => (
                         <Route
                             key={link}
@@ -123,7 +125,6 @@ const Routes = (props) => {
                     }}
                 />
             </div>
-
             {/* Nav Bar and version footer */}
             <Route
                 // @ts-expect-error TS2769
@@ -137,19 +138,9 @@ const Routes = (props) => {
                     />
                 )}
             />
-
             <Version />
         </>
     );
-};
-
-Routes.propTypes = {
-    customRoutes: PropTypes.arrayOf(PropTypes.string),
-    loadMenu: PropTypes.func.isRequired,
-    loadDisplayConfig: PropTypes.func.isRequired,
-    initializeLanguage: PropTypes.func.isRequired,
-    history: PropTypes.object.isRequired,
-    tenant: PropTypes.string,
 };
 
 // @ts-expect-error TS7006

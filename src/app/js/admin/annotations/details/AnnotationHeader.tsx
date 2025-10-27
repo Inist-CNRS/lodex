@@ -1,8 +1,6 @@
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import PropTypes from 'prop-types';
-// @ts-expect-error TS6133
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import { useTranslate } from '../../../i18n/I18NContext';
 import { getResourceType } from '../helpers/resourceType';
 
@@ -20,17 +18,23 @@ const getAnnotationResourceTitle = ({ resourceUri, field }, translate) => {
     return resourceUri;
 };
 
-// @ts-expect-error TS7031
-export function AnnotationHeader({ annotation }) {
+interface AnnotationHeaderProps {
+    annotation?: object;
+}
+
+export function AnnotationHeader({ annotation }: AnnotationHeaderProps) {
     const { translate } = useTranslate();
 
     const subtitle = useMemo(() => {
         const resourceType = getResourceType(
+            // @ts-expect-error TS18048
             annotation.resourceUri,
+            // @ts-expect-error TS18048
             annotation.field,
         );
 
         if (resourceType === 'graph') {
+            // @ts-expect-error TS18048
             return annotation.field.label;
         }
 
@@ -39,6 +43,7 @@ export function AnnotationHeader({ annotation }) {
         }
 
         return (
+            // @ts-expect-error TS18048
             annotation.resource?.title ??
             translate('annotation_resource_not_found')
         );
@@ -48,7 +53,11 @@ export function AnnotationHeader({ annotation }) {
         <Stack gap={1}>
             <Stack direction="row" gap={1} alignItems="center">
                 <Typography variant="h1" fontSize={24} fontWeight={700}>
+                    {/*
+                     // @ts-expect-error TS18048 */}
                     {translate(`annotation_header_${annotation.kind}`)}{' '}
+                    {/*
+                     // @ts-expect-error TS2345 */}
                     {getAnnotationResourceTitle(annotation, translate)}
                 </Typography>
             </Stack>
@@ -61,7 +70,3 @@ export function AnnotationHeader({ annotation }) {
         </Stack>
     );
 }
-
-AnnotationHeader.propTypes = {
-    annotation: PropTypes.object,
-};

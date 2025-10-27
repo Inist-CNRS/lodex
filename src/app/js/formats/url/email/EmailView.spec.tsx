@@ -1,5 +1,3 @@
-// @ts-expect-error TS6133
-import React from 'react';
 import { shallow } from 'enzyme';
 
 import EmailView from './EmailView';
@@ -11,7 +9,6 @@ describe('<EmailView />', () => {
         // @ts-expect-error TS7034
         const fields = [];
         const wrapper = shallow(
-            // @ts-expect-error TS2769
             <EmailView
                 resource={resource}
                 field={field}

@@ -1,6 +1,3 @@
-// @ts-expect-error TS6133
-import React from 'react';
-import PropTypes from 'prop-types';
 import {
     Dialog,
     DialogActions,
@@ -13,8 +10,13 @@ import ParsingExcerpt from '../parsing/ParsingExcerpt';
 import CancelButton from '../../lib/components/CancelButton';
 import { useTranslate } from '../../i18n/I18NContext';
 
-// @ts-expect-error TS7031
-export const AddFromColumnDialogComponent = ({ onClose }) => {
+interface AddFromColumnDialogComponentProps {
+    onClose(...args: unknown[]): unknown;
+}
+
+export const AddFromColumnDialogComponent = ({
+    onClose,
+}: AddFromColumnDialogComponentProps) => {
     const { translate } = useTranslate();
 
     return (
@@ -39,10 +41,6 @@ export const AddFromColumnDialogComponent = ({ onClose }) => {
             </DialogActions>
         </Dialog>
     );
-};
-
-AddFromColumnDialogComponent.propTypes = {
-    onClose: PropTypes.func.isRequired,
 };
 
 export default AddFromColumnDialogComponent;

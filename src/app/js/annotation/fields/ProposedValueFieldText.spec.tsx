@@ -1,21 +1,18 @@
 import { useForm } from '@tanstack/react-form';
-import {
-    fireEvent,
-    render,
-    waitFor,
-    act,
-    screen,
-} from '@testing-library/react';
-// @ts-expect-error TS6133
-import React from 'react';
+import { render, act, waitFor, fireEvent } from '@testing-library/react';
 
 import { TestI18N } from '../../i18n/I18NContext';
 import { ProposedValueFieldText } from './ProposedValueFieldText';
 
-import PropTypes from 'prop-types';
+interface TestProposedValueFieldTextProps {
+    field: object;
+    initialValue?: string;
+}
 
-// @ts-expect-error TS7031
-function TestProposedValueFieldText({ field, initialValue }) {
+function TestProposedValueFieldText({
+    field,
+    initialValue,
+}: TestProposedValueFieldTextProps) {
     const form = useForm();
     return (
         <TestI18N>
@@ -29,17 +26,12 @@ function TestProposedValueFieldText({ field, initialValue }) {
     );
 }
 
-TestProposedValueFieldText.propTypes = {
-    field: PropTypes.object.isRequired,
-    initialValue: PropTypes.string,
-};
-
 describe('ProposedValueFieldText', () => {
     it('should render as text field if annotationFormat is text', () => {
         const field = {
             annotationFormat: 'text',
         };
-        render(<TestProposedValueFieldText field={field} />);
+        const screen = render(<TestProposedValueFieldText field={field} />);
 
         expect(
             screen.getByRole('textbox', {
@@ -52,9 +44,9 @@ describe('ProposedValueFieldText', () => {
         const field = {
             annotationFormat: 'text',
         };
-        let wrapper;
+        let screen;
         await act(async () => {
-            wrapper = render(
+            screen = render(
                 <TestProposedValueFieldText
                     field={field}
                     initialValue="test"
@@ -63,7 +55,7 @@ describe('ProposedValueFieldText', () => {
         });
 
         // @ts-expect-error TS18048
-        const textBox = wrapper.queryByRole('textbox', {
+        const textBox = screen.queryByRole('textbox', {
             name: 'annotation.proposedValue *',
         });
 
@@ -76,9 +68,9 @@ describe('ProposedValueFieldText', () => {
         const field = {
             annotationFormat: 'text',
         };
-        const wrapper = render(<TestProposedValueFieldText field={field} />);
+        const screen = render(<TestProposedValueFieldText field={field} />);
 
-        const textBox = wrapper.getByRole('textbox', {
+        const textBox = screen.getByRole('textbox', {
             name: 'annotation.proposedValue *',
         });
 

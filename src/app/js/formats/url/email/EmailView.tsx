@@ -1,35 +1,33 @@
-// @ts-expect-error TS6133
-import React from 'react';
-import PropTypes from 'prop-types';
-
-import { field as fieldPropTypes } from '../../../propTypes';
+import { type Field } from '../../../propTypes';
 import getLabel from '../../utils/getLabel';
 import Link from '../../../lib/components/Link';
 
-// @ts-expect-error TS7031
-const EmailView = ({ className, resource, field, fields, type, value }) => {
+interface EmailViewProps {
+    className?: string;
+    field: Field;
+    fields: Field[];
+    resource: object;
+    type: string;
+    value: string;
+}
+
+const EmailView = ({
+    className,
+    resource,
+    field,
+    fields,
+    type,
+    value,
+}: EmailViewProps) => {
     const label = getLabel(field, resource, fields, type, value);
+    // @ts-expect-error TS7053
     const email = resource[field.name];
 
     return (
-        // @ts-expect-error TS2739
         <Link className={className} to={`mailto:${email}`}>
             {label}
         </Link>
     );
-};
-
-EmailView.propTypes = {
-    className: PropTypes.string,
-    field: fieldPropTypes.isRequired,
-    fields: PropTypes.arrayOf(fieldPropTypes).isRequired,
-    resource: PropTypes.object.isRequired,
-    type: PropTypes.string.isRequired,
-    value: PropTypes.string.isRequired,
-};
-
-EmailView.defaultProps = {
-    className: null,
 };
 
 export default EmailView;

@@ -1,5 +1,3 @@
-// @ts-expect-error TS6133
-import React from 'react';
 import { shallow } from 'enzyme';
 
 import LinkView from './LinkView';
@@ -14,7 +12,6 @@ describe('<LinkView />', () => {
         // @ts-expect-error TS7034
         const fields = [];
         const wrapper = shallow(
-            // @ts-expect-error TS2769
             <LinkView
                 resource={resource}
                 field={field}

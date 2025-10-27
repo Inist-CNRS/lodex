@@ -1,15 +1,28 @@
-// @ts-expect-error TS6133
-import React from 'react';
-import PropTypes from 'prop-types';
-
-import { field as fieldPropTypes } from '../../../propTypes';
 import { getResourceUri } from '../../../../../common/uris';
 import getLabel from '../../utils/getLabel';
 import InvalidFormat from '../../InvalidFormat';
 import Link from '../../../lib/components/Link';
 
-// @ts-expect-error TS7031
-const UriView = ({ className, resource, field, fields, type, value }) => {
+interface UriViewProps {
+    className?: string;
+    field: {
+        name: string;
+        format: string;
+    };
+    fields: unknown[];
+    resource: Record<string, any>;
+    type?: 'value' | 'text' | 'column';
+    value: string;
+}
+
+const UriView = ({
+    className,
+    resource,
+    field,
+    fields,
+    type,
+    value,
+}: UriViewProps) => {
     const uri = resource[field.name];
 
     if (Array.isArray(uri)) {
@@ -20,8 +33,6 @@ const UriView = ({ className, resource, field, fields, type, value }) => {
 
             return (
                 <div key={uriItem}>
-                    {/*
-                     // @ts-expect-error TS2739 */}
                     <Link
                         className={className}
                         to={getResourceUri({ uri: uriItem })}
@@ -40,24 +51,10 @@ const UriView = ({ className, resource, field, fields, type, value }) => {
     const label = getLabel(field, resource, fields, type, value);
 
     return (
-        // @ts-expect-error TS2739
         <Link className={className} to={getResourceUri({ uri })}>
             {label}
         </Link>
     );
-};
-
-UriView.propTypes = {
-    className: PropTypes.string,
-    field: fieldPropTypes.isRequired,
-    fields: PropTypes.arrayOf(fieldPropTypes).isRequired,
-    resource: PropTypes.object.isRequired,
-    type: PropTypes.oneOf(['value', 'text', 'column']),
-    value: PropTypes.string.isRequired,
-};
-
-UriView.defaultProps = {
-    className: null,
 };
 
 export default UriView;
@@ -67,8 +64,7 @@ export const getReadableValue = ({ resource, field, type, value }) => {
     const uri = resource[field.name];
 
     if (Array.isArray(uri)) {
-        // @ts-expect-error TS6133
-        return uri.map((uriItem, index) => {
+        return uri.map((_uriItem, index) => {
             const label = getLabel(field, resource, null, type, value);
 
             const currentLabel = Array.isArray(label) ? label[index] : label;

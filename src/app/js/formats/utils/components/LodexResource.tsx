@@ -1,14 +1,10 @@
-// @ts-expect-error TS6133
-import React from 'react';
-import PropTypes from 'prop-types';
-
 import { isLocalURL, getResourceUri } from '../../../../../common/uris';
 import Link from '../../../lib/components/Link';
 import stylesToClassname from '../../../lib/stylesToClassName';
 import { truncateByWords } from '../../stringUtils';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faExternalLinkAlt } from '@fortawesome/free-solid-svg-icons';
-import { polyglot as polyglotPropTypes } from '../../../propTypes';
+import { useTranslate } from '../../../i18n/I18NContext';
 
 const styles = stylesToClassname(
     {
@@ -47,12 +43,29 @@ const styles = stylesToClassname(
     'lodex-resource',
 );
 
+interface LodexResourceProps {
+    id?: string;
+    url?: string;
+    title?: string;
+    titleSize?: number;
+    summary?: string;
+    summarySize?: number;
+    openInNewTab?: boolean;
+}
+
 // see https://jsonfeed.org/version/1#items
-// @ts-expect-error TS7006
-const LodexResource = (props) => {
-    const { id, url, openInNewTab, polyglot } = props;
-    const summary = truncateByWords(props.summary, props.summarySize);
-    const title = truncateByWords(props.title, props.titleSize);
+const LodexResource = ({
+    title: titleProps = 'n/a',
+    id,
+    url,
+    openInNewTab = false,
+    summary: summaryProps = '',
+    titleSize = -1,
+    summarySize = -1,
+}: LodexResourceProps) => {
+    const { translate } = useTranslate();
+    const summary = truncateByWords(summaryProps, summarySize);
+    const title = truncateByWords(titleProps, titleSize);
 
     if (!id) {
         return null;
@@ -77,8 +90,6 @@ const LodexResource = (props) => {
     if (isLocalURL(id)) {
         return (
             <div id={id}>
-                {/*
-                 // @ts-expect-error TS2739 */}
                 <Link
                     // @ts-expect-error TS2339
                     className={styles.contentLink}
@@ -88,14 +99,13 @@ const LodexResource = (props) => {
                     {content}
                 </Link>
                 {openInNewTab && (
-                    // @ts-expect-error TS2739
                     <Link
                         // @ts-expect-error TS2339
                         className={styles.newTab}
                         to={getResourceUri({ uri: id })}
                         target={target}
                     >
-                        <abbr title={polyglot.t('new_tab_label')}>
+                        <abbr title={translate('new_tab_label')}>
                             <FontAwesomeIcon
                                 icon={faExternalLinkAlt}
                                 height={12}
@@ -116,26 +126,6 @@ const LodexResource = (props) => {
             </Link>
         </div>
     );
-};
-
-LodexResource.propTypes = {
-    id: PropTypes.string.isRequired,
-    url: PropTypes.string.isRequired,
-    title: PropTypes.string,
-    titleSize: PropTypes.number,
-    summary: PropTypes.string,
-    summarySize: PropTypes.number,
-    openInNewTab: PropTypes.bool,
-    polyglot: polyglotPropTypes,
-};
-
-LodexResource.defaultProps = {
-    title: 'n/a',
-    titleSize: -1,
-    summary: '',
-    summarySize: -1,
-    openInNewTab: false,
-    polyglot: undefined,
 };
 
 export default LodexResource;

@@ -2,9 +2,7 @@ import BackIcon from '@mui/icons-material/ArrowBack';
 import HomeIcon from '@mui/icons-material/Home';
 import { Button, Card, CardActions, CardContent } from '@mui/material';
 import classnames from 'classnames';
-import PropTypes from 'prop-types';
-// @ts-expect-error TS6133
-import React, { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { Swipeable } from 'react-swipeable';
@@ -24,6 +22,7 @@ import { preLoadResource } from './';
 import Detail from './Detail';
 import RemovedDetail from './RemovedDetail';
 import { useRememberVisit } from './useRememberVisit';
+import { usePrevious } from 'react-use';
 
 const navStyles = stylesToClassname(
     {
@@ -64,38 +63,51 @@ const getArkResourceUrl = (naan, rest) => {
     return `${naan}/${rest}`;
 };
 
+export type ResourceComponentProps = {
+    characteristics: Record<string, unknown>;
+    resource?: {
+        uri: string;
+        subresourceId?: string;
+    };
+    datasetTitleKey?: string;
+    loading: boolean;
+    removed: boolean;
+    preLoadResource(...args: unknown[]): unknown;
+    preLoadPublication(...args: unknown[]): unknown;
+    preLoadExporters(...args: unknown[]): unknown;
+    history: {
+        push(...args: unknown[]): unknown;
+        goBack(...args: unknown[]): unknown;
+    };
+    match: {
+        params?: {
+            uri: string;
+            naan?: string;
+            rest?: string;
+        };
+    };
+    prevResource?: object;
+    nextResource?: object;
+    tenant?: string;
+};
+
 export const ResourceComponent = ({
-    // @ts-expect-error TS7031
     history,
-    // @ts-expect-error TS7031
     resource,
-    // @ts-expect-error TS7031
     datasetTitleKey,
-    // @ts-expect-error TS7031
     characteristics,
-    // @ts-expect-error TS7031
     loading,
-    // @ts-expect-error TS7031
     removed,
-    // @ts-expect-error TS7031
     prevResource,
-    // @ts-expect-error TS7031
     nextResource,
-    // @ts-expect-error TS7031
     match,
-    // @ts-expect-error TS7031
     tenant,
-    // @ts-expect-error TS7031
     preLoadResource,
-    // @ts-expect-error TS7031
     preLoadPublication,
-    // @ts-expect-error TS7031
     preLoadExporters,
-}) => {
+}: ResourceComponentProps) => {
     useRememberVisit(resource);
     const { translate } = useTranslate();
-
-    const [lastResourceUri, setLastResourceUri] = useState(null);
 
     const newLastResourceUri = useMemo(() => {
         return match.params
@@ -105,37 +117,16 @@ export const ResourceComponent = ({
             : null;
     }, [match.params]);
 
+    const lastResourceUri = usePrevious(newLastResourceUri);
+
     useEffect(() => {
         preLoadPublication();
         preLoadExporters();
-    }, [preLoadExporters, preLoadPublication, preLoadResource]);
+    }, [preLoadExporters, preLoadPublication]);
 
     useEffect(() => {
         preLoadResource();
     }, [match.params, preLoadResource]);
-
-    useEffect(() => {
-        // Is not a subresource
-        if (
-            match.params &&
-            match.params.uri &&
-            match.params.uri.length !== 32 &&
-            !match.params.uri.includes('%2F') && // md5 length for subresources uuid
-            match.params.uri !== lastResourceUri
-        ) {
-            setLastResourceUri(match.params.uri);
-        } else if (match.params && match.params.naan && match.params.rest) {
-            // Ark resources
-            const newLastResourceUri = getArkResourceUrl(
-                match.params.naan,
-                match.params.rest,
-            );
-            if (newLastResourceUri !== lastResourceUri) {
-                // @ts-expect-error TS2345
-                setLastResourceUri(newLastResourceUri);
-            }
-        }
-    }, [lastResourceUri, match.params]);
 
     if (loading) {
         return (
@@ -147,7 +138,7 @@ export const ResourceComponent = ({
     }
 
     const backToListLabel =
-        (datasetTitleKey && characteristics[datasetTitleKey]) ||
+        (datasetTitleKey && (characteristics[datasetTitleKey] as string)) ||
         translate('back_to_list');
 
     const backToListButton = (
@@ -237,45 +228,6 @@ export const ResourceComponent = ({
     );
 };
 
-ResourceComponent.defaultProps = {
-    characteristics: null,
-    resource: null,
-    datasetTitle: null,
-    datasetTitleKey: null,
-    titleKey: null,
-    prevResource: null,
-    nextResource: null,
-    removed: false,
-};
-
-ResourceComponent.propTypes = {
-    characteristics: PropTypes.shape({}),
-    resource: PropTypes.shape({
-        uri: PropTypes.string.isRequired,
-        subresourceId: PropTypes.string,
-    }),
-    datasetTitleKey: PropTypes.string,
-    loading: PropTypes.bool.isRequired,
-    removed: PropTypes.bool.isRequired,
-    preLoadResource: PropTypes.func.isRequired,
-    preLoadPublication: PropTypes.func.isRequired,
-    preLoadExporters: PropTypes.func.isRequired,
-    history: PropTypes.shape({
-        push: PropTypes.func.isRequired,
-        goBack: PropTypes.func.isRequired,
-    }),
-    match: PropTypes.shape({
-        params: PropTypes.shape({
-            uri: PropTypes.string,
-            naan: PropTypes.string,
-            rest: PropTypes.string,
-        }),
-    }).isRequired,
-    prevResource: PropTypes.object,
-    nextResource: PropTypes.object,
-    tenant: PropTypes.string,
-};
-
 // @ts-expect-error TS7006
 const mapStateToProps = (state) => {
     const resource = fromResource.getResourceLastVersion(state);
@@ -298,8 +250,23 @@ const mapDispatchToProps = {
     preLoadExporters,
 };
 
-export default compose(
+export default compose<
+    ResourceComponentProps,
+    Omit<
+        ResourceComponentProps,
+        | 'resource'
+        | 'removed'
+        | 'characteristics'
+        | 'datasetTitleKey'
+        | 'fields'
+        | 'loading'
+        | 'prevResource'
+        | 'nextResource'
+        | 'preLoadResource'
+        | 'preLoadPublication'
+        | 'preLoadExporters'
+    >
+>(
     connect(mapStateToProps, mapDispatchToProps),
     withRouter,
-    // @ts-expect-error TS2345
 )(ResourceComponent);
