@@ -30,9 +30,18 @@ import { getPublication } from './api/publication';
 
 const auth = config.get('auth');
 const istexApiUrl = config.get('istexApiUrl');
-const jsHost = config.get('jsHost');
 const mongo = config.get('mongo');
 const themesHost = config.get('themesHost');
+const jsHost = config.get('jsHost');
+const rootAdminJsHost = config.has('jsHosts.rootAdmin')
+    ? config.get('jsHosts.rootAdmin')
+    : jsHost;
+const adminJsHost = config.has('jsHosts.admin')
+    ? config.get('jsHosts.admin')
+    : jsHost;
+const publicJsHost = config.has('jsHosts.public')
+    ? config.get('jsHosts.public')
+    : jsHost;
 
 // @ts-expect-error: TS7006
 const getDefaultInitialState = (ctx, token, cookie, locale) => ({
@@ -223,7 +232,7 @@ const handleRender = async (ctx: Koa.Context, next: any) => {
     renderPublic(ctx.configTenant.theme, {
         preload: JSON.stringify(preloadedState),
         tenant: ctx.tenant,
-        jsHost: jsHost,
+        jsHost: publicJsHost,
         themesHost: themesHost,
         istexApi: istexApiUrl,
         customTemplateVariables,
@@ -246,7 +255,7 @@ const renderAdminIndexHtml = (ctx: any) => {
         tenant: ctx.tenant,
         // @ts-expect-error: TS7006
         dbName: mongo.dbName,
-        jsHost: jsHost,
+        jsHost: adminJsHost,
         themesHost: themesHost,
     }).then((html) => {
         ctx.body = html;
@@ -258,7 +267,7 @@ const renderRootAdminIndexHtml = (ctx: any) => {
         tenant: ctx.tenant,
         // @ts-expect-error: TS7006
         dbName: mongo.dbName,
-        jsHost: jsHost,
+        jsHost: rootAdminJsHost,
         themesHost: themesHost,
     }).then((html) => {
         ctx.body = html;
@@ -338,6 +347,9 @@ app.use(
 
 app.use(
     mount('/', serve(path.resolve(__dirname, '../../../../src/app/build'))),
+);
+app.use(
+    mount('/', serve(path.resolve(__dirname, '../../../root-admin-app/build'))),
 );
 app.use(
     mount('/', serve(path.resolve(__dirname, '../../../../src/app/custom'))),

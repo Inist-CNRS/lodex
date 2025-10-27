@@ -16,7 +16,7 @@ import {
 import { getLocale, ROOT_ROLE } from '@lodex/common';
 import { frFR as frFRDatagrid, enUS as enUSDatagrid } from '@mui/x-data-grid';
 import { frFR, enUS } from '@mui/material/locale';
-import rootTheme from '../../custom/themes/rootTheme';
+import rootTheme from '../../../src/app/custom/themes/rootTheme';
 import { AppBar, Box, Button, Toolbar, Typography } from '@mui/material';
 
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';

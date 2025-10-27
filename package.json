@@ -13,11 +13,12 @@
         "start": "concurrently \"npm:production:*\"",
         "production:api": "(cd packages/api && npm run start)",
         "production:workers": "(cd packages/workers && npm run start)",
-        "build": "npx vite build --config ./vite.config.ts && (cd packages/ezsLodex && npm run build)",
+        "build": "npx vite build --config ./vite.config.ts && (cd packages/ezsLodex && npm run build) && (cd packages/root-admin-app && npm run build)",
         "development:ezs-lodex": "(cd packages/ezsLodex && npm run dev)",
         "development:api": "(cd packages/api && npm run dev)",
         "development:backend": "concurrently \"npm:development:api\" \"npm:development:ezs-lodex\"",
-        "development:app": "npx vite --port=8080 --host=0.0.0.0",
+        "development:app": "concurrently \"vite\" \"npm:development:app:root-admin\"",
+        "development:app:root-admin": "(cd packages/root-admin-app && npm run dev)",
         "type-check": "tsc --noEmit && (cd packages/ezsLodex && tsc --noEmit) && (cd packages/api && tsc --noEmit) && (cd packages/workers && tsc --noEmit)",
         "lint": "eslint --fix",
         "lint:test": "eslint",
@@ -31,15 +32,16 @@
         "test:e2e:phase:three": "cypress run --browser chrome --config-file cypress.config.ts  --spec \"cypress/e2e/phase_3/*.cy.ts\"",
         "test:e2e:phase:four": "cypress run --browser chrome --config-file cypress.config.ts --spec \"cypress/e2e/phase_4/*.cy.ts\"",
         "test:e2e:all": "cypress run --browser chrome",
+        "version": "npm run insertversion:readme && npm run insertversion:makefile && npm run insertversion:docker && npm run setversion:common && npm run setversion:api && npm run setversion:workers && git add README.md Makefile packages/api/package*.json packages/common/package*.json packages/workers/package*.json",
         "insertversion:readme": "sed -i \"s#\\(lodex:\\)\\([\\.a-z0-9]\\+\\)#\\1${npm_package_version}#g\" README.md",
         "insertversion:makefile": "sed -i \"s#\\(lodex:\\)\\([\\.a-z0-9]\\+\\)#\\1${npm_package_version}#g\" Makefile",
         "insertversion:docker": "sed -i \"s#\\(lodex:\\)\\([\\.a-z0-9]\\+\\)#\\1${npm_package_version}#g\" docker-compose*.yml",
         "setversion:common": "(cd packages/common && npm version \"${npm_package_version}\")",
         "setversion:api": "(cd packages/api && npm version \"${npm_package_version}\")",
         "setversion:workers": "(cd packages/workers && npm version \"${npm_package_version}\")",
-        "version": "npm run insertversion:readme && npm run insertversion:makefile && npm run insertversion:docker && npm run setversion:common && npm run setversion:api && npm run setversion:workers && git add README.md Makefile packages/api/package*.json packages/common/package*.json packages/workers/package*.json",
+        "setversion:root-admin-app": "(cd packages/root-admin-app && npm version \"${npm_package_version}\")",
         "postversion": "git push && git push --tags",
-        "postinstall": "cd ./packages/ezsLodex/ && npm install --production --install-strategy=nested --legacy-peer-deps && cd ../transformers/ && npm install --production --install-strategy=nested --legacy-peer-deps && cd ../common/ && npm install --install-strategy=nested --legacy-peer-deps && cd ../api/ && npm install --install-strategy=nested --legacy-peer-deps && cd ../workers/ && npm install --install-strategy=nested --legacy-peer-deps"
+        "postinstall": "cd ./packages/ezsLodex/ && npm install --production --install-strategy=nested --legacy-peer-deps && cd ../transformers/ && npm install --production --install-strategy=nested --legacy-peer-deps && cd ../common/ && npm install --install-strategy=nested --legacy-peer-deps && cd ../api/ && npm install --install-strategy=nested --legacy-peer-deps && cd ../workers/ && npm install --install-strategy=nested --legacy-peer-deps && cd ../root-admin-app/ && npm install --install-strategy=nested --legacy-peer-deps"
     },
     "nodemonConfig": {
         "ignore": [
