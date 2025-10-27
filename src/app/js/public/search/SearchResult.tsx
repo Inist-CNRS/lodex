@@ -145,6 +145,24 @@ const SearchResult = ({
                         {result[titleField.name]}
                     </Box>
                 )}
+                {thirdDetailField && result[thirdDetailField.name] && (
+                    <div
+                        className={classnames(
+                            'search-result-detail-third',
+                            styles.details,
+                        )}
+                    >
+                        <div
+                            className={classnames(
+                                'search-result-detail-3',
+                                styles.detailsColumn,
+                            )}
+                            title={result[thirdDetailField.name]}
+                        >
+                            {result[thirdDetailField.name]}
+                        </div>
+                    </div>
+                )}
                 {descriptionField && result[descriptionField.name] && (
                     <Box
                         className={classnames(
@@ -211,24 +229,6 @@ const SearchResult = ({
                                     {result[secondDetailField.name]}
                                 </Box>
                             )}
-                        {thirdDetailField && result[thirdDetailField.name] && (
-                            <div
-                                className={classnames(
-                                    'search-result-detail-third',
-                                    styles.details,
-                                )}
-                            >
-                                <div
-                                    className={classnames(
-                                        'search-result-detail-3',
-                                        styles.detailsColumn,
-                                    )}
-                                    title={result[thirdDetailField.name]}
-                                >
-                                    {result[thirdDetailField.name]}
-                                </div>
-                            </div>
-                        )}
                     </div>
                 )}
                 <ExpandMoreIcon

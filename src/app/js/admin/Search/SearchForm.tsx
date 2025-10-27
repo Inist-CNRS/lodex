@@ -411,6 +411,16 @@ export const SearchForm = ({ fields, loadField }: SearchFormProps) => {
                             clearText={translate('clear')}
                             isLoading={isPending}
                         />
+                        {/* Resource detail 3 is used as subtitle. */}
+                        <SearchAutocomplete
+                            testId={`autocomplete_search_syndication_${overview.RESOURCE_DETAIL_3}`}
+                            translation={translate('resource_detail_third')}
+                            fields={fieldsForResourceSyndication}
+                            onChange={handleSResourceDetailThird}
+                            value={resourceDetailThird}
+                            clearText={translate('clear')}
+                            isLoading={isPending}
+                        />
                         <SearchAutocomplete
                             testId={`autocomplete_search_syndication_${overview.RESOURCE_DESCRIPTION}`}
                             translation={translate('resource_description')}
@@ -438,15 +448,6 @@ export const SearchForm = ({ fields, loadField }: SearchFormProps) => {
                                 fields={fieldsForResourceSyndication}
                                 onChange={handleSResourceDetailSecond}
                                 value={resourceDetailSecond}
-                                clearText={translate('clear')}
-                                isLoading={isPending}
-                            />
-                            <SearchAutocomplete
-                                testId={`autocomplete_search_syndication_${overview.RESOURCE_DETAIL_3}`}
-                                translation={translate('resource_detail_third')}
-                                fields={fieldsForResourceSyndication}
-                                onChange={handleSResourceDetailThird}
-                                value={resourceDetailThird}
                                 clearText={translate('clear')}
                                 isLoading={isPending}
                             />
