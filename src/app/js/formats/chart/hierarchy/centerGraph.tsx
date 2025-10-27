@@ -1,11 +1,8 @@
 interface SVGProps {
-    width?: number;
+    width?: number | string;
 }
 
-const SVG = ({
-    // @ts-expect-error TS2322
-    width = '100%',
-}: SVGProps) => (
+const SVG = ({ width = '100%' }: SVGProps) => (
     <svg width={width} height={width} viewBox="0 0 100 125">
         <g fill="#000" fillRule="evenodd">
             <path d="M50 59c-4.962 0-9-4.038-9-9s4.038-9 9-9 9 4.038 9 9-4.038 9-9 9m0-22c-7.18 0-13 5.82-13 13s5.82 13 13 13 13-5.82 13-13-5.82-13-13-13" />
