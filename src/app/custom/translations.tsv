@@ -653,8 +653,8 @@
 "import_file_text"	"Drop your file on this page or click here"	"Glisser un fichier sur cette page ou cliquer ici"
 "new_subresource"	"New subresource"	"Nouvelle sous-ressource"
 "delete"	"Delete"	"Supprimer"
-"confirm_delete_subresource"	"This subresource and all its fields will be definitively deleted, Are you sure?"	"Cette sous-ressource ainsi que tous les champs associés vont êtres supprimés. Êtes-vous sûr de vouloir continuer ?"
-"confirm_delete_subresource_details"	"This will not delete the fields on the main resource. If you want them gone, you will need to delete them by hand."	"Cela ne supprimera pas les champs dans la ressource principale. Si vous souhaitez les supprimer, vous devrez le faire manuellement."
+"confirm_delete_subresource"	"This subresource and all its fields will be definitively deleted, Are you sure?"	"Cette sous-ressource, ainsi que tous les champs associés, va être supprimée. Êtes-vous sûr de vouloir continuer ?"
+"confirm_delete_subresource_details"	"This will not delete the related fields on the main resource. If you want them gone, you will need to delete them by hand."	"Cela ne supprimera pas les champs reliés dans la ressource principale. Si vous souhaitez les supprimer, vous devrez le faire manuellement."
 
 "no_field_add"	"Configure your display by clicking on the button « New Field »"	"Configurez votre affichage  en cliquant sur le bouton « Nouveau champ »"
 "no_field_add_resource"	"Configure your display by clicking on one of the buttons above"	"Configurez votre affichage  en cliquant sur l'un des boutons ci-dessus"
