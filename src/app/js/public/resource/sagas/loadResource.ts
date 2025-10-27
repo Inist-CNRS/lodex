@@ -19,7 +19,7 @@ export const parsePathName = (pathname) => {
     return match && match[1];
 };
 
-export function* handleLoadResource() {
+export function* handleLoadResource(forceReload: boolean) {
     yield put(preLoadPublication());
     // @ts-expect-error TS7057
     const uri = yield select(fromRouter.getResourceUri);
@@ -28,7 +28,7 @@ export function* handleLoadResource() {
     }
 
     // @ts-expect-error TS7057
-    if (yield select(fromResource.isResourceLoaded, uri)) {
+    if (yield select(fromResource.isResourceLoaded, uri) && !forceReload) {
         return;
     }
 
@@ -45,9 +45,15 @@ export function* handleLoadResource() {
     yield put(loadResourceSuccess(response));
 }
 
+export function* handleForceLoadResource() {
+    yield handleLoadResource(true);
+}
+
+export function* handleReloadResource() {
+    yield handleLoadResource(false);
+}
+
 export default function* watchLocationChangeToResource() {
-    yield takeLatest(
-        [HIDE_RESOURCE_SUCCESS, PRE_LOAD_RESOURCE],
-        handleLoadResource,
-    );
+    yield takeLatest([PRE_LOAD_RESOURCE], handleReloadResource);
+    yield takeLatest([HIDE_RESOURCE_SUCCESS], handleForceLoadResource);
 }
