@@ -221,7 +221,7 @@ export const renderRootAdmin = (data) => {
     };
 
     return renderTemplate(
-        path.resolve(__dirname, '../../../../src/app/root-admin.ejs'),
+        path.resolve(__dirname, '../../../root-admin-app/index.ejs'),
         extendedData,
     );
 };

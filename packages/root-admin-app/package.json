@@ -1,0 +1,15 @@
+{
+    "private": true,
+    "name": "@lodex/root-admin-app",
+    "description": "Lodex root admin application",
+    "version": "16.0.5",
+    "main": "./src/index.ts",
+    "scripts": {
+        "dev": "vite",
+        "build": "vite build"
+    },
+    "devDependencies": {
+        "@types/node": "^24.9.1",
+        "typescript": "^5.9.3"
+    }
+}
