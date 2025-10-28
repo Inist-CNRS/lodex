@@ -1,4 +1,4 @@
-import { ObjectId } from 'mongodb';
+import { Collection, Db, ObjectId, type Document } from 'mongodb';
 
 export const castIdsFactory = (collection: any) => async () => {
     const items = await collection.find({}).toArray();
@@ -17,14 +17,17 @@ export const castIdsFactory = (collection: any) => async () => {
     );
 };
 
-const checkIfCollectionExists = async (db: any, collectionName: any) => {
+const checkIfCollectionExists = async (db: Db, collectionName: string) => {
     const found = await db
         .listCollections({ name: collectionName }, { nameOnly: true })
         .toArray();
     return found.length !== 0;
 };
 
-export const getCreatedCollection = async (db: any, collectionName: any) => {
+export const getCreatedCollection = async <Resource extends Document = any>(
+    db: Db,
+    collectionName: string,
+): Promise<Collection<Resource>> => {
     const collExists = await checkIfCollectionExists(db, collectionName);
     if (!collExists) {
         try {
@@ -40,5 +43,5 @@ export const getCreatedCollection = async (db: any, collectionName: any) => {
             }
         }
     }
-    return db.collection(collectionName);
+    return db.collection<Resource>(collectionName);
 };

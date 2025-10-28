@@ -3,7 +3,7 @@ import { ObjectId } from 'mongodb';
 import { castIdsFactory, getCreatedCollection } from './utils';
 
 export default async (db: any) => {
-    const collection = await getCreatedCollection(db, 'enrichment');
+    const collection: any = await getCreatedCollection(db, 'enrichment');
     await collection.createIndex({ name: 1 }, { unique: true });
 
     collection.findOneById = async (id: any) =>

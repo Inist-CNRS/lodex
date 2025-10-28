@@ -3,7 +3,7 @@ import { ObjectId } from 'mongodb';
 import { castIdsFactory, getCreatedCollection } from './utils';
 
 export default async (db: any) => {
-    const collection = await getCreatedCollection(db, 'tenant');
+    const collection: any = await getCreatedCollection(db, 'tenant');
 
     collection.findOneById = async (id: any) =>
         collection.findOne({ $or: [{ _id: new ObjectId(id) }, { _id: id }] });

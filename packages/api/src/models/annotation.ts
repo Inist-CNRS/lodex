@@ -2,7 +2,10 @@ import { ObjectId } from 'mongodb';
 import { getCreatedCollection } from './utils';
 
 export default async (db: any) => {
-    const annotationCollection = await getCreatedCollection(db, 'annotation');
+    const annotationCollection: any = await getCreatedCollection(
+        db,
+        'annotation',
+    );
     await annotationCollection.createIndex({ fieldId: 1 });
     await annotationCollection.createIndex({ resourceUri: 1 });
 

@@ -1,16 +1,31 @@
+import type { DefaultContext, DefaultState, ParameterizedContext } from 'koa';
 import annotation from '../models/annotation';
 import configTenant from '../models/configTenant';
 import dataset from '../models/dataset';
 import enrichment from '../models/enrichment';
 import field from '../models/field';
 import hiddenResource from '../models/hiddenResource';
-import precomputed from '../models/precomputed';
+import precomputed, { type PrecomputedCollection } from '../models/precomputed';
 import publishedCharacteristic from '../models/publishedCharacteristic';
 import publishedDataset from '../models/publishedDataset';
 import publishedFacet from '../models/publishedFacet';
 import subresource from '../models/subresource';
 import tenant from '../models/tenant';
 import mongoClient from './mongoClient';
+
+interface CustomContext extends DefaultContext {
+    precomputed: PrecomputedCollection;
+    // Add other custom context properties here
+}
+
+export type AppContext<
+    RequestBody = void,
+    ResponseBody = unknown,
+> = ParameterizedContext<
+    DefaultState,
+    DefaultContext & CustomContext & { request: { body: RequestBody } },
+    ResponseBody
+>;
 
 export const mongoClientFactory =
     (mongoClientImpl: any) => async (ctx: any, next: any) => {

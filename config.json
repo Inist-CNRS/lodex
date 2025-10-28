@@ -88,14 +88,24 @@
         "doi-list",
         "tar-gz"
     ],
-    "exporters": ["csv", "csv-full", "json", "tsv", "tsv-full"],
-    "formatExporters": ["jsonallvalue"],
+    "exporters": [
+        "csv",
+        "csv-full",
+        "json",
+        "tsv",
+        "tsv-full"
+    ],
+    "formatExporters": [
+        "jsonallvalue"
+    ],
     "datasetClass": "http://test.fr/datasetClass",
     "schemeForDatasetLink": "http://www.w3.org/2004/02/skos/core#inScheme",
     "exportDataset": "true",
     "collectionClass": "",
     "istexQuery": {
-        "labels": ["Cette ressource dans ISTEX"],
+        "labels": [
+            "Cette ressource dans ISTEX"
+        ],
         "linked": "categories.inist",
         "context": {
             "categories.inist": "istex:subjectInist",
@@ -112,7 +122,7 @@
         "https://query.wikidata.org/sparql",
         "http://www.lotico.com:3030/lotico/sparql"
     ],
-    "alternativePrecomputedBaseUrl": "https://9be525a0b46b.ngrok-free.app",
+    "alternativePrecomputedBaseUrl": "https://d6df22a171cf.ngrok-free.app",
     "activateBullDashboard": false,
     "themes": [
         "voscouleurs",

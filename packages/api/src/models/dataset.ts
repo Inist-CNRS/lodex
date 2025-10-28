@@ -11,7 +11,7 @@ import countNotUnique from './countNotUnique';
 import countNotUniqueSubresources from './countNotUniqueSubresources';
 
 export default async (db: any) => {
-    const collection = await getCreatedCollection(db, 'dataset');
+    const collection: any = await getCreatedCollection(db, 'dataset');
     collection.insertBatch = (documents: any) => {
         return Promise.all(
             chunk(documents, 100).map((data: any) => {
