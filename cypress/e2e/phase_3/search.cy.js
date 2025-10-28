@@ -106,11 +106,20 @@ describe('Search', () => {
 
             cy.url().should('contain', '/uid');
             cy.get('.loading').should('not.exist');
+
+            // Wait for the resource page to fully load before reopening search
+            cy.get('.property_value').should('be.visible');
             cy.wait(100);
+
             menu.openSearchDrawer();
 
-            searchDrawer.checkResultsCount(1);
+            // Wait for the search component opening animation to complete (300ms)
+            // and for the search state to be restored from Redux
+            cy.wait(400);
+
+            // The search input should have the previous query value
             searchDrawer.searchInput().should('have.value', query);
+            searchDrawer.checkResultsCount(1);
         });
 
         it.skip('should sort result by pertinence', () => {
@@ -292,6 +301,9 @@ describe('Search', () => {
                 name: 'Clear All',
                 timeout: 500,
             }).click();
+
+            // Wait for the async facet clearing saga to complete and search to re-execute
+            searchDrawer.checkResultsCount(10);
 
             // Première mise en ligne
             cy.findByPlaceholderText(/Première mise en ligne en/).should(

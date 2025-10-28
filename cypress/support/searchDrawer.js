@@ -145,7 +145,11 @@ export const checkStatsCount = (current, count) => {
 };
 
 export const checkResultsCount = (count) => {
-    cy.get('.search .search-result').should('have.length', count);
+    // Wait for search results to stabilize after async operations
+    cy.get('.search .search-result', { timeout: 10000 }).should(
+        'have.length',
+        count,
+    );
 };
 
 export const goToResourceNumber = (nb) => {
