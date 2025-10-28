@@ -30,9 +30,9 @@ import { DeleteEnrichmentButton } from './DeleteEnrichmentButton';
 import EnrichmentStatus from './EnrichmentStatus';
 import RunButton from './RunButton';
 import { FormProvider, useForm } from 'react-hook-form';
-import { TextField } from '../../../../src/app/js/reactHookFormFields/TextField';
-import { SwitchField } from '../../../../src/app/js/reactHookFormFields/SwitchField';
-import { AutoCompleteField } from '../../../../src/app/js/reactHookFormFields/AutoCompleteField.tsx';
+import { TextField } from '@lodex/frontend-common/form-fields/TextField';
+import { SwitchField } from '@lodex/frontend-common/form-fields/SwitchField';
+import { AutoCompleteField } from '@lodex/frontend-common/form-fields/AutoCompleteField.tsx';
 import FormSourceCodeField from '../../../../src/app/js/lib/components/FormSourceCodeField';
 import type { State } from '../reducers';
 

@@ -1,5 +1,5 @@
 import { useTranslate } from '../i18n/I18NContext.tsx';
-import { TextField } from '../reactHookFormFields/TextField.tsx';
+import { TextField } from '../../../../packages/frontend-common/form-fields/TextField.tsx';
 
 const FieldWidthInput = () => {
     const { translate } = useTranslate();

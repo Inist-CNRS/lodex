@@ -1,11 +1,11 @@
 import { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetch as fetchAction } from '../fetch';
+import { fetch as fetchAction } from '../../../src/app/js/fetch';
 import {
     AutoCompleteField,
     type AutoCompleteProps,
 } from './AutoCompleteField.tsx';
-import type { State } from '../../../../packages/admin-app/src/reducers.ts';
+import type { State } from '../../admin-app/src/reducers.ts';
 
 type AutoCompleteFetchedFieldProps = Omit<AutoCompleteProps, 'options'> & {
     getFetchRequest: (searchText: string) => { url: string };

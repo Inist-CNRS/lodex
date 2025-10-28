@@ -1,5 +1,5 @@
 import { useTranslate } from '../i18n/I18NContext';
-import { TextField } from '../reactHookFormFields/TextField.tsx';
+import { TextField } from '../../../../packages/frontend-common/form-fields/TextField.tsx';
 
 interface FieldLabelInputComponentProps {
     disabled?: boolean;

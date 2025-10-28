@@ -4,7 +4,7 @@ import { useTranslate } from '../i18n/I18NContext';
 import getFieldClassName from '../lib/getFieldClassName';
 import FieldRepresentation from './FieldRepresentation';
 import type { Field } from './types.ts';
-import { TextField } from '../reactHookFormFields/TextField.tsx';
+import { TextField } from '../../../../packages/frontend-common/form-fields/TextField.tsx';
 
 const FieldCaption = ({
     fields,

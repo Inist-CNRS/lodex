@@ -6,7 +6,7 @@ import PrecomputedFormLogsDialogComponent from './PrecomputedLogsDialog';
 import PrecomputedFormDataDialogComponent from './PrecomputedDataDialog';
 import SourceValueFromColumns from './SourceValueFromColumns';
 import { FormProvider, useForm } from 'react-hook-form';
-import { TextField } from '../../../../src/app/js/reactHookFormFields/TextField';
+import { TextField } from '@lodex/frontend-common/form-fields/TextField';
 import { type State } from '../reducers';
 
 import { launchPrecomputed, loadPrecomputed } from './index';

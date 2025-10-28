@@ -5,7 +5,7 @@ import {
 } from '@mui/material';
 import { useController } from 'react-hook-form';
 import memoize from 'lodash/memoize';
-import { useTranslate } from '../i18n/I18NContext.tsx';
+import { useTranslate } from '../../../src/app/js/i18n/I18NContext.tsx';
 
 const isChecked = memoize((value) => {
     if (typeof value === 'boolean') {

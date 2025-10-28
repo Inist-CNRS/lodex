@@ -1,6 +1,6 @@
 import { useTranslate } from '../i18n/I18NContext';
 import { FormProvider, useForm } from 'react-hook-form';
-import { TextField } from '../reactHookFormFields/TextField';
+import { TextField } from '../../../../packages/frontend-common/form-fields/TextField';
 import ButtonWithStatus from '../lib/components/ButtonWithStatus';
 import { CardActions, CardContent } from '@mui/material';
 import { useLogin } from '../api/login';
