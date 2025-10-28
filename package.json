@@ -18,7 +18,6 @@
         "development:api": "(cd packages/api && npm run dev)",
         "development:backend": "concurrently \"npm:development:api\" \"npm:development:ezs-lodex\"",
         "development:app": "npx vite --port=8080 --host=0.0.0.0",
-        "postversion": "git push && git push --tags",
         "type-check": "tsc --noEmit && (cd packages/ezsLodex && tsc --noEmit) && (cd packages/api && tsc --noEmit) && (cd packages/workers && tsc --noEmit)",
         "lint": "eslint --fix",
         "lint:test": "eslint",
@@ -35,7 +34,11 @@
         "insertversion:readme": "sed -i \"s#\\(lodex:\\)\\([\\.a-z0-9]\\+\\)#\\1${npm_package_version}#g\" README.md",
         "insertversion:makefile": "sed -i \"s#\\(lodex:\\)\\([\\.a-z0-9]\\+\\)#\\1${npm_package_version}#g\" Makefile",
         "insertversion:docker": "sed -i \"s#\\(lodex:\\)\\([\\.a-z0-9]\\+\\)#\\1${npm_package_version}#g\" docker-compose*.yml",
-        "version": "npm run insertversion:readme && npm run insertversion:makefile && npm run insertversion:docker && git add README.md Makefile",
+        "setversion:common": "sed -i \"s#\\(\\\"version\\\": \\)\\(\\\"[\\.a-z0-9]\\+\\\"\\)#\\1\\\"${npm_package_version}\\\"#g\" packages/common/package.json",
+        "setversion:api": "sed -i \"s#\\(\\\"version\\\": \\)\\(\\\"[\\.a-z0-9]\\+\\\"\\)#\\1\\\"${npm_package_version}\\\"#g\" packages/api/package.json",
+        "setversion:workers": "sed -i \"s#\\(\\\"version\\\": \\)\\(\\\"[\\.a-z0-9]\\+\\\"\\)#\\1\\\"${npm_package_version}\\\"#g\" packages/workers/package.json",
+        "version": "npm run insertversion:readme && npm run insertversion:makefile && npm run insertversion:docker && npm run setversion:common && npm run setversion:api && npm run setversion:workers && git add README.md Makefile packages/{api,common,workers}/package.json",
+        "postversion": "git push && git push --tags",
         "postinstall": "cd ./packages/ezsLodex/ && npm install --production --install-strategy=nested --legacy-peer-deps && cd ../transformers/ && npm install --production --install-strategy=nested --legacy-peer-deps && cd ../common/ && npm install --install-strategy=nested --legacy-peer-deps && cd ../api/ && npm install --install-strategy=nested --legacy-peer-deps"
     },
     "nodemonConfig": {
