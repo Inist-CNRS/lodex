@@ -2,10 +2,10 @@ import { shallow } from 'enzyme';
 import { LinearProgress } from '@mui/material';
 
 import { withInitialDataHoc, mapStateToProps } from './withInitialData';
-import { AdminComponent } from './Admin';
+import ParsingResult from './parsing/ParsingResult';
 
 describe('withInitialData HOC', () => {
-    const Component = withInitialDataHoc(AdminComponent);
+    const Component = withInitialDataHoc(ParsingResult);
     // @ts-expect-error TS7034
     let defaultProps;
 
@@ -44,7 +44,7 @@ describe('withInitialData HOC', () => {
     });
 
     it('should call loadParsingResult on mount when onlyLoadIfNotInitialized is true and isInitialized is false', () => {
-        const Component = withInitialDataHoc(AdminComponent, true);
+        const Component = withInitialDataHoc(ParsingResult, true);
         // @ts-expect-error TS7005
         shallow(<Component {...defaultProps} isInitialized={false} />);
         // @ts-expect-error TS7005
@@ -64,7 +64,7 @@ describe('withInitialData HOC', () => {
     });
 
     it('should not load any data on mount when onlyLoadIfNotInitialized is true and isInitialized is true', () => {
-        const Component = withInitialDataHoc(AdminComponent, true);
+        const Component = withInitialDataHoc(ParsingResult, true);
         // @ts-expect-error TS7005
         shallow(<Component {...defaultProps} isInitialized={true} />);
         // @ts-expect-error TS7005
@@ -83,19 +83,19 @@ describe('withInitialData HOC', () => {
         expect(defaultProps.loadConfigTenant).not.toHaveBeenCalled();
     });
 
-    it('should render AdminComponent when isLoading is false', () => {
+    it('should render ParsingResult when isLoading is false', () => {
         const wrapper = shallow(
             // @ts-expect-error TS7005
             <Component {...defaultProps} isLoading={false} />,
         );
-        expect(wrapper.find(AdminComponent)).toHaveLength(1);
+        expect(wrapper.find(ParsingResult)).toHaveLength(1);
         expect(wrapper.find(LinearProgress)).toHaveLength(0);
     });
 
     it('should render LinearProgess when isLoading is true', () => {
         // @ts-expect-error TS7005
         const wrapper = shallow(<Component {...defaultProps} isLoading />);
-        expect(wrapper.find(AdminComponent)).toHaveLength(0);
+        expect(wrapper.find(ParsingResult)).toHaveLength(0);
         expect(wrapper.find(LinearProgress)).toHaveLength(1);
     });
 
