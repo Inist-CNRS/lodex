@@ -25,5 +25,6 @@
         "noUncheckedSideEffectImports": true,
         "noImplicitAny": true
     },
-    "include": ["src"]
+    "include": ["src", "../../src/app"],
+    "exclude": ["../../src/app/build"]
 }
