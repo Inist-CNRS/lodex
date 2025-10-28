@@ -305,6 +305,10 @@ describe('Search', () => {
             // Wait for facets to be reset by checking that the search results count returns to 10
             searchDrawer.checkResultsCount(10);
 
+            // Reopen facets to reload their values after clearing
+            searchDrawer.getFacet('Première mise en ligne en').click();
+            cy.wait(500); // Wait for facet to load
+
             // Première mise en ligne
             cy.findByPlaceholderText(/Première mise en ligne en/).should(
                 'have.value',
@@ -314,6 +318,10 @@ describe('Search', () => {
                 name: '2011',
                 timeout: 2000,
             }).should('exist');
+
+            // Open the second facet
+            searchDrawer.getFacet('Dernière mise en ligne en').click();
+            cy.wait(500); // Wait for facet to load
 
             // Dernière mise en ligne
             cy.findByPlaceholderText(/Dernière mise en ligne en/).should(
@@ -350,6 +358,11 @@ describe('Search', () => {
                     })
                     .click(),
             );
+
+            // Wait for the facet to be cleared and reopen it to reload values
+            cy.wait(500);
+            searchDrawer.getFacet('Première mise en ligne en').click();
+            cy.wait(500); // Wait for facet to load
 
             // Première mise en ligne should be reset
             cy.findByPlaceholderText(/Première mise en ligne en/).should(
