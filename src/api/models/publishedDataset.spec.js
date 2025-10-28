@@ -369,8 +369,16 @@ describe('publishedDataset', () => {
             expect(emptyFind).toHaveBeenCalledWith({
                 removedAt: { $exists: false },
                 $or: [
-                    { 'versions.field1': { $regex: /match/, $options: 'i' } },
-                    { 'versions.field2': { $regex: /match/, $options: 'i' } },
+                    {
+                        'versions.field1': {
+                            $regex: /^.*[mƜ][aàáâãäåāăąǎǟǡǻȁȃȧȺ][tţťŧƫƭƮțȶȾ][cçćĉċčƈȼ][hĥħȟ].*$/i,
+                        },
+                    },
+                    {
+                        'versions.field2': {
+                            $regex: /^.*[mƜ][aàáâãäåāăąǎǟǡǻȁȃȧȺ][tţťŧƫƭƮțȶȾ][cçćĉċčƈȼ][hĥħȟ].*$/i,
+                        },
+                    },
                 ],
             });
         });

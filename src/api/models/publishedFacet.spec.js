@@ -41,10 +41,7 @@ describe('publishedFacet model', () => {
 
                 expect(collection.find).toHaveBeenCalledWith({
                     field: 'foo',
-                    value: {
-                        $regex: '(^|[^a-z0-9])f[iìíîïīĭįı][lĺļľłŀ][tţťŧ][eèéêëēĕėęě][rŕŗř]',
-                        $options: 'i',
-                    },
+                    value: /^.*[fƒ][iìíîïĩĭįıƖƗǐȉȋ][lĺļľŀłƚȴȽλƛ][tţťŧƫƭƮțȶȾ][eèéêëėęěēƎƏƐǝȅȇȩɇɛƩƪ][rŕŗřȑȓɍ].*$/i,
                 });
             });
         });
@@ -68,10 +65,7 @@ describe('publishedFacet model', () => {
 
                 expect(collection.count).toHaveBeenCalledWith({
                     field: 'foo',
-                    value: {
-                        $regex: '(^|[^a-z0-9])f[iìíîïīĭįı][lĺļľłŀ][tţťŧ][eèéêëēĕėęě][rŕŗř]',
-                        $options: 'i',
-                    },
+                    value: /^.*[fƒ][iìíîïĩĭįıƖƗǐȉȋ][lĺļľŀłƚȴȽλƛ][tţťŧƫƭƮțȶȾ][eèéêëėęěēƎƏƐǝȅȇȩɇɛƩƪ][rŕŗřȑȓɍ].*$/i,
                 });
             });
         });

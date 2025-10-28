@@ -146,7 +146,7 @@ describe('dataset API', () => {
 
             await deleteManyDatasetRowByFilter(ctx);
             expect(ctx.dataset.deleteMany).toHaveBeenCalledWith({
-                foo: /^.*[bƀƃƅƄɃ][aàáâãäåāăąǎǟǡǻȁȃȧȺ][rŕŗřȑȓɍ].*$/gi,
+                foo: /^.*[bƀƃƅƄɃ][aàáâãäåāăąǎǟǡǻȁȃȧȺ][rŕŗřȑȓɍ].*$/i,
             });
             expect(ctx.publishedDataset.countAll).toHaveBeenCalled();
             expect(workerQueues[tenant].add).toHaveBeenCalledWith(
@@ -180,7 +180,7 @@ describe('dataset API', () => {
 
             await deleteManyDatasetRowByFilter(ctx);
             expect(ctx.dataset.deleteMany).toHaveBeenCalledWith({
-                foo: /^.*[bƀƃƅƄɃ][aàáâãäåāăąǎǟǡǻȁȃȧȺ][rŕŗřȑȓɍ].*$/gi,
+                foo: /^.*[bƀƃƅƄɃ][aàáâãäåāăąǎǟǡǻȁȃȧȺ][rŕŗřȑȓɍ].*$/i,
             });
             expect(ctx.publishedDataset.countAll).toHaveBeenCalled();
             expect(workerQueues[tenant].add).toHaveBeenCalledTimes(0);

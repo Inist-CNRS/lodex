@@ -30,6 +30,8 @@ const singleCharsMappings = {
     y: '[yýÿŷȳƴɏȝ]',
     z: '[zźżžƶȥɀ]',
     ['5']: '[5ƽ]',
+    '-': '[-‐‑‒–—―]',
+    '/': '[/⁄∕]',
 };
 
 const multipleCharsMappings = {
@@ -73,14 +75,17 @@ const composedCharactersMappings = {
 };
 
 export function createDiacriticSafeContainRegex(value) {
-    // We normalize the value to avoid issues with accents
+    if (!value || value.trim() === '') {
+        return new RegExp('(?!.*)', 'i');
+    }
+
+    // First normalize the value to handle accents
     const normalizedValue = value
-        .replace(/[.*+?^${}()|[\]\\]/gi, '\\$&')
-        .toLocaleLowerCase()
+        .toLowerCase()
         .normalize('NFD')
         .replace(/\p{Diacritic}/gu, '');
 
-    // We split composed characters into their single characters
+    // Split composed characters into their single characters
     const normalizedValueWithComposedCharactersReplaced = Object.entries(
         composedCharactersMappings,
     ).reduce(
@@ -88,6 +93,7 @@ export function createDiacriticSafeContainRegex(value) {
         normalizedValue,
     );
 
+    // Replace single characters with their diacritic-safe equivalents
     const valueWithSingleCharactersDiacriticsReplaced = Object.entries(
         singleCharsMappings,
     ).reduce(
@@ -96,6 +102,7 @@ export function createDiacriticSafeContainRegex(value) {
         normalizedValueWithComposedCharactersReplaced,
     );
 
+    // Handle multiple character mappings
     const diacriticsSafeRegex = Object.entries(multipleCharsMappings).reduce(
         (newValue, [letters, diacritics]) =>
             newValue.replaceAll(
@@ -108,5 +115,5 @@ export function createDiacriticSafeContainRegex(value) {
         valueWithSingleCharactersDiacriticsReplaced,
     );
 
-    return new RegExp(`^.*${diacriticsSafeRegex}.*$`, 'gi');
+    return new RegExp(`^.*${diacriticsSafeRegex}.*$`, 'i');
 }

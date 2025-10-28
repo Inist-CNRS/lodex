@@ -1,4 +1,5 @@
 import compose from 'lodash/flowRight';
+import { createDiacriticSafeContainRegex } from '../services/createDiacriticSafeContainRegex';
 
 export const addMatchToFilters = (match, searchableFieldNames) => (filters) => {
     if (!match || !searchableFieldNames || !searchableFieldNames.length) {
@@ -16,12 +17,13 @@ export const addRegexToFilters = (match, searchableFieldNames) => (filters) => {
         return filters;
     }
 
-    const regexMatch = new RegExp(match);
+    // Use createDiacriticSafeContainRegex for better search with accents and special characters
+    const regexMatch = createDiacriticSafeContainRegex(match);
 
     return {
         ...filters,
         $or: searchableFieldNames.map((name) => ({
-            [`versions.${name}`]: { $regex: regexMatch, $options: 'i' },
+            [`versions.${name}`]: { $regex: regexMatch },
         })),
     };
 };

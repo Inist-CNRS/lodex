@@ -9,13 +9,16 @@ describe('useDebouncedSearch hook', () => {
     const defaultChange = jest.fn();
 
     const TestComponent = ({ changeFacetValue, initialFilter = '' }) => {
-        const { localFilter, isSearching, handleFilterChange } =
-            useDebouncedSearch(changeFacetValue, 'test', 10, initialFilter);
+        const { localFilter, handleFilterChange } = useDebouncedSearch(
+            changeFacetValue,
+            'test',
+            10,
+            initialFilter,
+        );
 
         return (
             <div>
                 <input value={localFilter} onChange={handleFilterChange} />
-                {isSearching && <span className="loading">loading</span>}
             </div>
         );
     };
@@ -29,16 +32,16 @@ describe('useDebouncedSearch hook', () => {
         jest.clearAllMocks();
     });
 
-    it('debounces and respects MIN_SEARCH_LENGTH', () => {
+    it('allows search with single character (no MIN_SEARCH_LENGTH)', () => {
         const wrapper = mount(
             <TestComponent changeFacetValue={defaultChange} />,
         );
         const input = wrapper.find('input').at(0);
 
-        // type one char -> should not call changeFacetValue because MIN_SEARCH_LENGTH = 2
+        // Test that single character search works
         act(() => {
             input.simulate('change', {
-                target: { value: 'a' },
+                target: { value: 'C' },
                 nativeEvent: { defaultPrevented: false },
             });
         });
@@ -47,31 +50,15 @@ describe('useDebouncedSearch hook', () => {
             jest.advanceTimersByTime(500);
         });
 
-        expect(defaultChange).not.toHaveBeenCalled();
-
-        // type two chars -> should trigger
-        act(() => {
-            input.simulate('change', {
-                target: { value: 'ab' },
-                nativeEvent: { defaultPrevented: false },
-            });
-        });
-
-        act(() => {
-            jest.advanceTimersByTime(500);
-        });
-
-        wrapper.update();
-        expect(defaultChange).toHaveBeenCalled();
         expect(defaultChange).toHaveBeenCalledWith({
             name: 'test',
             currentPage: 0,
             perPage: 10,
-            filter: 'ab',
+            filter: 'C',
         });
     });
 
-    it('shows loading indicator for the appropriate delay', () => {
+    it('debounces search requests', () => {
         const wrapper = mount(
             <TestComponent changeFacetValue={defaultChange} />,
         );
@@ -79,29 +66,29 @@ describe('useDebouncedSearch hook', () => {
 
         act(() => {
             input.simulate('change', {
-                target: { value: 'ab' },
+                target: { value: 'search' },
                 nativeEvent: { defaultPrevented: false },
             });
         });
 
-        // advance beyond debounce but before LOADING_DELAY
+        // Should not be called immediately
+        expect(defaultChange).not.toHaveBeenCalled();
+
+        // advance beyond debounce delay
         act(() => {
-            jest.advanceTimersByTime(350);
+            jest.advanceTimersByTime(500);
         });
 
-        wrapper.update();
-        expect(wrapper.find('.loading').exists()).toBe(true);
-
-        // after LOADING_DELAY the loader should be removed
-        act(() => {
-            jest.advanceTimersByTime(300);
+        // Should be called after debounce
+        expect(defaultChange).toHaveBeenCalledWith({
+            name: 'test',
+            currentPage: 0,
+            perPage: 10,
+            filter: 'search',
         });
-
-        wrapper.update();
-        expect(wrapper.find('.loading').exists()).toBe(false);
     });
 
-    it('calls search immediately when filter becomes empty', () => {
+    it('calls search when filter becomes empty', () => {
         const wrapper = mount(
             <TestComponent
                 changeFacetValue={defaultChange}
@@ -110,7 +97,7 @@ describe('useDebouncedSearch hook', () => {
         );
         const input = wrapper.find('input').at(0);
 
-        // Clear the input - should trigger immediate search without debounce
+        // Clear the input
         act(() => {
             input.simulate('change', {
                 target: { value: '' },
@@ -118,7 +105,12 @@ describe('useDebouncedSearch hook', () => {
             });
         });
 
-        // Should be called immediately, no need to advance timers
+        // Advance timers to trigger debounced search
+        act(() => {
+            jest.advanceTimersByTime(500);
+        });
+
+        // Should be called with empty filter
         expect(defaultChange).toHaveBeenCalledWith({
             name: 'test',
             currentPage: 0,
@@ -127,14 +119,7 @@ describe('useDebouncedSearch hook', () => {
         });
     });
 
-    it('cancels previous search when starting new one', () => {
-        // Mock AbortController
-        const mockAbort = jest.fn();
-        const mockAbortController = {
-            abort: mockAbort,
-        };
-        global.AbortController = jest.fn(() => mockAbortController);
-
+    it('handles multiple rapid searches correctly', () => {
         const wrapper = mount(
             <TestComponent changeFacetValue={defaultChange} />,
         );
@@ -148,10 +133,6 @@ describe('useDebouncedSearch hook', () => {
             });
         });
 
-        act(() => {
-            jest.advanceTimersByTime(350); // trigger first search
-        });
-
         // Start second search before first completes
         act(() => {
             input.simulate('change', {
@@ -160,12 +141,44 @@ describe('useDebouncedSearch hook', () => {
             });
         });
 
+        // Advance timers to trigger debounced search
         act(() => {
-            jest.advanceTimersByTime(350); // trigger second search
+            jest.advanceTimersByTime(500);
         });
 
-        // Should have called abort on the first controller
-        expect(mockAbort).toHaveBeenCalled();
-        expect(defaultChange).toHaveBeenCalledTimes(2);
+        // Should only call with the latest value due to debouncing
+        expect(defaultChange).toHaveBeenCalledTimes(1);
+        expect(defaultChange).toHaveBeenCalledWith({
+            name: 'test',
+            currentPage: 0,
+            perPage: 10,
+            filter: 'abc',
+        });
+    });
+
+    it('handles special characters in search', () => {
+        const wrapper = mount(
+            <TestComponent changeFacetValue={defaultChange} />,
+        );
+        const input = wrapper.find('input').at(0);
+
+        // Test search with special characters (dash)
+        act(() => {
+            input.simulate('change', {
+                target: { value: 'jean-paul' },
+                nativeEvent: { defaultPrevented: false },
+            });
+        });
+
+        act(() => {
+            jest.advanceTimersByTime(500);
+        });
+
+        expect(defaultChange).toHaveBeenCalledWith({
+            name: 'test',
+            currentPage: 0,
+            perPage: 10,
+            filter: 'jean-paul',
+        });
     });
 });
