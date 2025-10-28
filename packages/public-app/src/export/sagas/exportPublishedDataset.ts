@@ -1,6 +1,9 @@
 import { call, takeEvery, select, put } from 'redux-saga/effects';
 
-import { EXPORT_PUBLISHED_DATASET, exportPublishedDatasetError } from '../index';
+import {
+    EXPORT_PUBLISHED_DATASET,
+    exportPublishedDatasetError,
+} from '../index';
 import { fromSearch } from '../../selectors';
 import getQueryString from '../../../../../src/app/js/lib/getQueryString';
 import fetchSaga from '../../../../../src/app/js/lib/sagas/fetchSaga';

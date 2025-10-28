@@ -1,5 +1,8 @@
 import { getUserSessionStorageInfo } from './tools';
-import { getExportHiddenResources, getImportHiddenResources } from '../../../../src/app/js/user';
+import {
+    getExportHiddenResources,
+    getImportHiddenResources,
+} from '../../../../src/app/js/user';
 import fetch from '../../../../src/app/js/lib/fetch';
 
 export const exportHiddenResources = () => {
