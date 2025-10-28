@@ -1,6 +1,6 @@
 import { MenuItem, Box } from '@mui/material';
 import { useTranslate } from '../i18n/I18NContext';
-import AutoCompleteFetchedField from '../reactHookFormFields/AutoCompleteFetchedField.tsx';
+import AutoCompleteFetchedField from '../../../../packages/frontend-common/form-fields/AutoCompleteFetchedField.tsx';
 
 const getSchemeSearchRequest = (query: string) => ({
     url: `https://lov.linkeddata.es/dataset/lov/api/v2/term/search?q=${encodeURIComponent(query)}`,

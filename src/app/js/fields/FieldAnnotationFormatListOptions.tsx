@@ -3,7 +3,7 @@ import Stack from '@mui/material/Stack';
 import { useTranslate } from '../i18n/I18NContext';
 import { FIELD_ANNOTATION_FORMAT_LIST } from './FieldAnnotationFormat';
 import { useFormContext, useWatch } from 'react-hook-form';
-import { TextField } from '../reactHookFormFields/TextField';
+import { TextField } from '../../../../packages/frontend-common/form-fields/TextField';
 
 export function FieldAnnotationFormatListOptions() {
     const { translate } = useTranslate();

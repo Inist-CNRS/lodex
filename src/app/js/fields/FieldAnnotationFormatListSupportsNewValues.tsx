@@ -1,6 +1,6 @@
 import { Box } from '@mui/material';
 import { useFormContext, useWatch } from 'react-hook-form';
-import { SwitchField } from '../reactHookFormFields/SwitchField.tsx';
+import { SwitchField } from '../../../../packages/frontend-common/form-fields/SwitchField.tsx';
 import { useTranslate } from '../i18n/I18NContext.tsx';
 
 export function FieldAnnotationFormatListSupportsNewValues() {

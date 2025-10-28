@@ -9,7 +9,7 @@ import {
     DialogContent,
     DialogTitle,
 } from '@mui/material';
-import { TextField } from '../../../../src/app/js/reactHookFormFields/TextField';
+import { TextField } from '@lodex/frontend-common/form-fields/TextField';
 import CancelButton from '../../../../src/app/js/lib/components/CancelButton';
 import ButtonWithStatus from '../../../../src/app/js/lib/components/ButtonWithStatus';
 import { hideResource } from '../api/hideResource';

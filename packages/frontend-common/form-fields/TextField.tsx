@@ -4,7 +4,7 @@ import {
 } from '@mui/material';
 import { useMemo } from 'react';
 import { useController } from 'react-hook-form';
-import { useTranslate } from '../i18n/I18NContext';
+import { useTranslate } from '../../../src/app/js/i18n/I18NContext';
 
 export const TextField = ({
     name,
