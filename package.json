@@ -34,12 +34,12 @@
         "insertversion:readme": "sed -i \"s#\\(lodex:\\)\\([\\.a-z0-9]\\+\\)#\\1${npm_package_version}#g\" README.md",
         "insertversion:makefile": "sed -i \"s#\\(lodex:\\)\\([\\.a-z0-9]\\+\\)#\\1${npm_package_version}#g\" Makefile",
         "insertversion:docker": "sed -i \"s#\\(lodex:\\)\\([\\.a-z0-9]\\+\\)#\\1${npm_package_version}#g\" docker-compose*.yml",
-        "setversion:common": "sed -i \"s#\\(\\\"version\\\": \\)\\(\\\"[\\.a-z0-9]\\+\\\"\\)#\\1\\\"${npm_package_version}\\\"#g\" packages/common/package.json",
-        "setversion:api": "sed -i \"s#\\(\\\"version\\\": \\)\\(\\\"[\\.a-z0-9]\\+\\\"\\)#\\1\\\"${npm_package_version}\\\"#g\" packages/api/package.json",
-        "setversion:workers": "sed -i \"s#\\(\\\"version\\\": \\)\\(\\\"[\\.a-z0-9]\\+\\\"\\)#\\1\\\"${npm_package_version}\\\"#g\" packages/workers/package.json",
-        "version": "npm run insertversion:readme && npm run insertversion:makefile && npm run insertversion:docker && npm run setversion:common && npm run setversion:api && npm run setversion:workers && git add README.md Makefile packages/{api,common,workers}/package.json",
+        "setversion:common": "(cd packages/common && npm version \"${npm_package_version}\")",
+        "setversion:api": "(cd packages/api && npm version \"${npm_package_version}\")",
+        "setversion:workers": "(cd packages/workers && npm version \"${npm_package_version}\")",
+        "version": "npm run insertversion:readme && npm run insertversion:makefile && npm run insertversion:docker && npm run setversion:common && npm run setversion:api && npm run setversion:workers && git add README.md Makefile packages/{api,common,workers}/package*.json",
         "postversion": "git push && git push --tags",
-        "postinstall": "cd ./packages/ezsLodex/ && npm install --production --install-strategy=nested --legacy-peer-deps && cd ../transformers/ && npm install --production --install-strategy=nested --legacy-peer-deps && cd ../common/ && npm install --install-strategy=nested --legacy-peer-deps && cd ../api/ && npm install --install-strategy=nested --legacy-peer-deps"
+        "postinstall": "cd ./packages/ezsLodex/ && npm install --production --install-strategy=nested --legacy-peer-deps && cd ../transformers/ && npm install --production --install-strategy=nested --legacy-peer-deps && cd ../common/ && npm install --install-strategy=nested --legacy-peer-deps && cd ../api/ && npm install --install-strategy=nested --legacy-peer-deps && cd ../workers/ && npm install --install-strategy=nested --legacy-peer-deps"
     },
     "nodemonConfig": {
         "ignore": [
