@@ -1,11 +1,14 @@
+import type { FindOptions } from 'mongodb';
 import { createDiacriticSafeContainRegex } from '../../services/createDiacriticSafeContainRegex';
 
-export const buildQuery = (
-    filterBy: any,
-    filterOperator: any,
-    filterValue: any,
-) => {
-    if (!filterValue) {
+export const buildQuery = <
+    Document extends Record<string, unknown> = Record<string, unknown>,
+>(
+    filterBy?: keyof Document,
+    filterOperator?: 'is' | '=' | '>' | '<' | string,
+    filterValue?: any,
+): FindOptions<Document> => {
+    if (!filterValue || !filterBy || !filterOperator) {
         return {};
     }
     switch (filterOperator) {

@@ -2,7 +2,7 @@ import chunk from 'lodash/chunk';
 import { getCreatedCollection } from './utils';
 
 export default async (db: any) => {
-    const collection = await getCreatedCollection(db, 'publishedFacet');
+    const collection: any = await getCreatedCollection(db, 'publishedFacet');
 
     /**
      * Table de correspondance lettres → regex accent-insensible

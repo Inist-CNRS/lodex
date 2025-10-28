@@ -41,7 +41,7 @@ const getSort = (
 };
 
 export default async (db: any) => {
-    const collection = await getCreatedCollection(db, 'publishedDataset');
+    const collection: any = await getCreatedCollection(db, 'publishedDataset');
 
     await collection.createIndex({ uri: 1 }, { unique: true });
 

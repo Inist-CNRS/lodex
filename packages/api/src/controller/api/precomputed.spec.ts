@@ -1,8 +1,12 @@
+import { ObjectId } from 'mongodb';
 import {
     postPrecomputed,
     putPrecomputed,
     deletePrecomputed,
+    getPrecomputedResultList,
 } from './precomputed';
+import type { AppContext } from '../../services/repositoryMiddleware';
+import type { PreComputation } from '../../models/precomputed';
 
 jest.mock('../../workers/tools', () => ({
     getActiveJob: jest.fn(),
@@ -16,7 +20,7 @@ describe('Precomputed controller', () => {
                 configTenant: {},
                 request: { body: { name: 'test' } },
                 precomputed: { create: jest.fn() },
-            };
+            } as unknown as AppContext<any, any>;
 
             await postPrecomputed(ctx);
 
@@ -34,11 +38,10 @@ describe('Precomputed controller', () => {
                         return { name: 'test' };
                     }),
                 },
-            };
+            } as unknown as AppContext<any, any>;
 
             await postPrecomputed(ctx);
 
-            // @ts-expect-error TS(2304): Cannot find name 'expect'.
             expect(ctx.body).toStrictEqual({
                 name: 'test',
             });
@@ -51,11 +54,13 @@ describe('Precomputed controller', () => {
                 precomputed: {
                     create: jest.fn(() => null),
                 },
-            };
+            } as unknown as AppContext<
+                PreComputation,
+                PreComputation | { error: string }
+            >;
 
             await postPrecomputed(ctx);
 
-            // @ts-expect-error TS(2304): Cannot find name 'expect'.
             expect(ctx.status).toBe(403);
         });
     });
@@ -74,15 +79,15 @@ describe('Precomputed controller', () => {
                     ),
                 },
                 dataset: { removeAttribute: jest.fn() },
-            };
+            } as unknown as AppContext<any, any>;
 
-            await putPrecomputed(ctx, 42);
+            const objectId = new ObjectId();
+            await putPrecomputed(ctx, objectId.toString());
 
             expect(ctx.precomputed.update).toHaveBeenCalledWith(
-                42,
+                objectId,
                 'my updated precomputed',
             );
-            // @ts-expect-error TS(2304): Cannot find name 'expect'.
             expect(ctx.body).toBe('updated precomputed');
             return;
         });
@@ -96,13 +101,11 @@ describe('Precomputed controller', () => {
                         throw new Error('ERROR!');
                     },
                 },
-            };
+            } as unknown as AppContext<any, any>;
 
-            await putPrecomputed(ctx, 42);
+            await putPrecomputed(ctx, 42 as unknown as string);
 
-            // @ts-expect-error TS(2304): Cannot find name 'expect'.
             expect(ctx.status).toBe(403);
-            // @ts-expect-error TS(2304): Cannot find name 'expect'.
             expect(ctx.body).toEqual({ error: 'ERROR!' });
         });
     });
@@ -117,14 +120,54 @@ describe('Precomputed controller', () => {
                     },
                     findOneById: async () => ({ name: 'NAME' }),
                 },
-            };
+            } as unknown as AppContext<void, any>;
 
-            await deletePrecomputed(ctx, 42);
+            await deletePrecomputed(ctx, '42');
 
-            // @ts-expect-error TS(2304): Cannot find name 'expect'.
             expect(ctx.status).toBe(403);
-            // @ts-expect-error TS(2304): Cannot find name 'expect'.
             expect(ctx.body).toEqual({ error: 'ERROR!' });
+        });
+    });
+
+    describe('getPrecomputedResultList', () => {
+        it('should return a list of results from precomputed repository', async () => {
+            const ctx = {
+                configTenant: {},
+                query: {
+                    limit: '10',
+                    skip: '0',
+                    sortBy: 'field1',
+                    sortDir: 'ASC',
+                },
+                precomputed: {
+                    resultFindLimitFromSkip: jest.fn(() =>
+                        Promise.resolve([{ field1: 'value1' }]),
+                    ),
+                    resultCount: jest.fn(() => Promise.resolve(1)),
+                },
+            } as unknown as AppContext<any, any>;
+
+            const precomputedId = new ObjectId().toString();
+            await getPrecomputedResultList(ctx, precomputedId);
+
+            expect(
+                ctx.precomputed.resultFindLimitFromSkip,
+            ).toHaveBeenCalledWith({
+                precomputedId,
+                limit: 10,
+                skip: 0,
+                query: {},
+                sortBy: 'field1',
+                sortDir: 'ASC',
+            });
+            expect(ctx.precomputed.resultCount).toHaveBeenCalledWith(
+                precomputedId,
+                {},
+            );
+            expect(ctx.body).toEqual({
+                count: 1,
+                datas: [{ field1: 'value1' }],
+            });
         });
     });
 });
