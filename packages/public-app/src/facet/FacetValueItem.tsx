@@ -9,7 +9,10 @@ import {
 
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
-import { translate, useTranslate } from '../../../../src/app/js/i18n/I18NContext';
+import {
+    translate,
+    useTranslate,
+} from '../../../../src/app/js/i18n/I18NContext';
 
 import { fromFacet } from '../selectors';
 import FacetActionsContext from './FacetActionsContext';

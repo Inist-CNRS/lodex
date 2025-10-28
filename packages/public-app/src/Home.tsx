@@ -6,7 +6,10 @@ import { Helmet } from 'react-helmet';
 import { Card } from '@mui/material';
 
 import { preLoadPublication as preLoadPublicationAction } from '../../../src/app/js/fields';
-import { fromFields, fromCharacteristic } from '../../../src/app/js/sharedSelectors';
+import {
+    fromFields,
+    fromCharacteristic,
+} from '../../../src/app/js/sharedSelectors';
 import Alert from '../../../src/app/js/lib/components/Alert';
 import Loading from '../../../src/app/js/lib/components/Loading';
 import DatasetCharacteristics from '../../../src/app/js/characteristic/DatasetCharacteristics';

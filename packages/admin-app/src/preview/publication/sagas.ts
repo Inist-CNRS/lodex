@@ -1,7 +1,10 @@
 import { call, put, select, takeLatest, all } from 'redux-saga/effects';
 
 import getDocumentTransformer from '../../../../../src/app/js/lib/getDocumentTransformer';
-import { fromUser, fromFields } from '../../../../../src/app/js/sharedSelectors';
+import {
+    fromUser,
+    fromFields,
+} from '../../../../../src/app/js/sharedSelectors';
 import {
     fromConfigTenant,
     fromParsing,

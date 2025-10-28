@@ -1,7 +1,10 @@
 import { useState } from 'react';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
-import { translate, useTranslate } from '../../../../src/app/js/i18n/I18NContext';
+import {
+    translate,
+    useTranslate,
+} from '../../../../src/app/js/i18n/I18NContext';
 import { fromI18n } from '../selectors';
 import { setLanguage } from '../../../../src/app/js/i18n';
 import { Button, Menu, MenuItem } from '@mui/material';
