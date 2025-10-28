@@ -1,4 +1,4 @@
-import { TextField } from '../reactHookFormFields/TextField';
+import { TextField } from '../../../../packages/frontend-common/form-fields/TextField';
 import { useTranslate } from '../i18n/I18NContext';
 
 export const FieldInternalNameComponent = () => {

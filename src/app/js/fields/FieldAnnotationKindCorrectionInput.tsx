@@ -1,5 +1,5 @@
 import { useTranslate } from '../i18n/I18NContext.tsx';
-import { SwitchField } from '../reactHookFormFields/SwitchField.tsx';
+import { SwitchField } from '../../../../packages/frontend-common/form-fields/SwitchField.tsx';
 
 const FieldAnnotationKindCorrectionInput = () => {
     const { translate } = useTranslate();
