@@ -41,11 +41,12 @@
         "setversion:common": "(cd packages/common && npm version \"${npm_package_version}\")",
         "setversion:api": "(cd packages/api && npm version \"${npm_package_version}\")",
         "setversion:workers": "(cd packages/workers && npm version \"${npm_package_version}\")",
+        "setversion:frontend-common": "(cd packages/frontend-common && npm version \"${npm_package_version}\")",
         "setversion:root-admin-app": "(cd packages/root-admin-app && npm version \"${npm_package_version}\")",
         "setversion:admin-app": "(cd packages/admin-app && npm version \"${npm_package_version}\")",
         "setversion:public-app": "(cd packages/public-app && npm version \"${npm_package_version}\")",
         "postversion": "git push && git push --tags",
-        "postinstall": "cd ./packages/ezsLodex/ && npm install --production --install-strategy=nested --legacy-peer-deps && cd ../transformers/ && npm install --production --install-strategy=nested --legacy-peer-deps && cd ../common/ && npm install --install-strategy=nested --legacy-peer-deps && cd ../api/ && npm install --install-strategy=nested --legacy-peer-deps && cd ../workers/ && npm install --install-strategy=nested --legacy-peer-deps && cd ../root-admin-app/ && npm install --install-strategy=nested --legacy-peer-deps && cd ../admin-app/ && npm install --install-strategy=nested --legacy-peer-deps && cd ../public-app/ && npm install --install-strategy=nested --legacy-peer-deps"
+        "postinstall": "cd ./packages/ezsLodex/ && npm install --production --install-strategy=nested --legacy-peer-deps && cd ../transformers/ && npm install --production --install-strategy=nested --legacy-peer-deps && cd ../common/ && npm install --install-strategy=nested --legacy-peer-deps && cd ../api/ && npm install --install-strategy=nested --legacy-peer-deps && cd ../workers/ && npm install --install-strategy=nested --legacy-peer-deps && cd ../frontend-common/ && npm install --install-strategy=nested --legacy-peer-deps && cd ../root-admin-app/ && npm install --install-strategy=nested --legacy-peer-deps && cd ../admin-app/ && npm install --install-strategy=nested --legacy-peer-deps && cd ../public-app/ && npm install --install-strategy=nested --legacy-peer-deps"
     },
     "nodemonConfig": {
         "ignore": [

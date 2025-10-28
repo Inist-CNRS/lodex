@@ -8,6 +8,9 @@
         "dev": "vite",
         "build": "vite build"
     },
+    "dependencies": {
+        "@lodex/frontend-common": "file:../frontend-common"
+    },
     "devDependencies": {
         "@types/node": "^24.9.1",
         "typescript": "^5.9.3"
