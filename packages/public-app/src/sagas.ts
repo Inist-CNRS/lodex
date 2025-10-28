@@ -3,7 +3,7 @@ import { fork } from 'redux-saga/effects';
 import characteristicSaga from '../../../src/app/js/characteristic/sagas';
 import datasetSaga from './dataset/sagas';
 import exportSaga from './export/sagas';
-import exportFieldsSaga from '../../../src/app/js/exportFields/sagas';
+import exportFieldsSaga from '@lodex/frontend-common/export-fields/sagas';
 import fetchSaga from '../../../src/app/js/fetch/sagas';
 import i18nSaga from '../../../src/app/js/i18n/sagas';
 import fieldsSagas from '../../../src/app/js/fields/sagas';

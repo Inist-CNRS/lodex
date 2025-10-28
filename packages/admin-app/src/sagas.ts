@@ -1,6 +1,6 @@
 import { fork } from 'redux-saga/effects';
 
-import exportSaga from '../../../src/app/js/exportFields/sagas';
+import exportSaga from '@lodex/frontend-common/export-fields/sagas';
 import importSaga from './import/sagas';
 import fieldsSaga from '../../../src/app/js/fields/sagas';
 import parsingSaga from './parsing/sagas';

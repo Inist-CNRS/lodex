@@ -1,9 +1,9 @@
 import { call, select, put, takeEvery } from 'redux-saga/effects';
-import fetchSaga from '../lib/sagas/fetchSaga';
-import { fromUser } from '../sharedSelectors';
+import fetchSaga from '../../../src/app/js/lib/sagas/fetchSaga.ts';
+import { fromUser } from '../../../src/app/js/sharedSelectors.ts';
 
-import { EXPORT_FIELDS, exportFieldsError } from './';
-import downloadFile from '../lib/downloadFile';
+import { EXPORT_FIELDS, exportFieldsError } from './index.ts';
+import downloadFile from '../../../src/app/js/lib/downloadFile.ts';
 
 export function* handleExportFields() {
     // @ts-expect-error TS7057
