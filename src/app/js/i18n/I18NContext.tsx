@@ -1,9 +1,9 @@
 import Polyglot, { type InterpolationOptions } from 'node-polyglot';
 import React, { createContext, useContext, useMemo } from 'react';
 import { connect } from 'react-redux';
-import { fromI18n } from '../public/selectors';
+import { fromI18n } from '../../../../packages/public-app/src/selectors';
 import { setLanguage as setLanguageAction } from './index';
-import type { State } from '../admin/reducers';
+import type { State } from '../../../../packages/admin-app/src/reducers';
 
 export const I18NContext = createContext<{
     translate: (

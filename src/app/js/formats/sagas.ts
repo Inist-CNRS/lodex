@@ -16,9 +16,15 @@ import {
 } from './reducer';
 import getQueryString from '../lib/getQueryString';
 import fetchSaga from '../lib/sagas/fetchSaga';
-import { fromDataset, fromFormat } from '../public/selectors';
+import {
+    fromDataset,
+    fromFormat,
+} from '../../../../packages/public-app/src/selectors';
 import { fromFields, fromUser, fromCharacteristic } from '../sharedSelectors';
-import { APPLY_FILTER, facetActionTypes } from '../public/dataset';
+import {
+    APPLY_FILTER,
+    facetActionTypes,
+} from '../../../../packages/public-app/src/dataset';
 import { CONFIGURE_FIELD_SUCCESS } from '../fields';
 import { UPDATE_CHARACTERISTICS_SUCCESS } from '../characteristic';
 import { ISTEX_API_URL } from '../api/externals';

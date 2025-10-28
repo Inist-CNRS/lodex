@@ -1,7 +1,7 @@
 {
     "private": true,
     "name": "@lodex/workers",
-    "description": "Lodex API",
+    "description": "Lodex workers",
     "version": "16.0.6",
     "main": "./src/index.ts",
     "scripts": {

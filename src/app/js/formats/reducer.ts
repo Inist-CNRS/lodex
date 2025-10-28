@@ -1,6 +1,6 @@
 import { createAction, handleActions } from 'redux-actions';
 import get from 'lodash/get';
-import { LOAD_RESOURCE_SUCCESS } from '../public/resource';
+import { LOAD_RESOURCE_SUCCESS } from '../../../../packages/public-app/src/resource';
 
 export const PRE_LOAD_FORMAT_DATA = 'PRE_LOAD_FORMAT_DATA';
 export const UN_LOAD_FORMAT_DATA = 'UN_LOAD_FORMAT_DATA';

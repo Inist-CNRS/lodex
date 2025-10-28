@@ -2,7 +2,7 @@ import { useMutation } from '@tanstack/react-query';
 import qs from 'qs';
 import fetch from '../lib/fetch';
 import { getLoginRequest, loginSuccess } from '../user';
-import { getUserSessionStorageInfo } from '../admin/api/tools';
+import { getUserSessionStorageInfo } from '../../../../packages/admin-app/src/api/tools';
 import { useDispatch } from 'react-redux';
 import { useHistory, useLocation } from 'react-router';
 

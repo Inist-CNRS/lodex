@@ -1,0 +1,173 @@
+import AddBoxIcon from '@mui/icons-material/AddBox';
+
+import { connect } from 'react-redux';
+import { Box, Button, Tooltip } from '@mui/material';
+import {
+    DataGrid,
+    GridToolbarColumnsButton,
+    GridToolbarContainer,
+    GridToolbarDensitySelector,
+    GridToolbarFilterButton,
+} from '@mui/x-data-grid';
+import { Link } from 'react-router-dom';
+import { useHistory } from 'react-router';
+import { RunButton } from './RunButton';
+import { fromPrecomputed } from '../selectors';
+import { launchPrecomputed } from './index';
+import { TaskStatus, toast } from '@lodex/common';
+import { useTranslate } from '../../../../src/app/js/i18n/I18NContext';
+import { PrecomputedStatus } from './PrecomputedStatus';
+
+interface PrecomputedListProps {
+    precomputedList: unknown[];
+    onLaunchPrecomputed(...args: unknown[]): unknown;
+    isPrecomputedRunning?: boolean;
+}
+
+export const PrecomputedList = ({
+    precomputedList,
+
+    isPrecomputedRunning,
+
+    onLaunchPrecomputed,
+}: PrecomputedListProps) => {
+    const { translate } = useTranslate();
+    const history = useHistory();
+    // @ts-expect-error TS7006
+    const handleRowClick = (params) => {
+        history.push(`/data/precomputed/${params.row._id}`);
+    };
+
+    // @ts-expect-error TS7006
+    const handleLaunchPrecomputed = (params) => (event) => {
+        event.stopPropagation();
+        if (isPrecomputedRunning) {
+            toast(translate('pending_precomputed'), {
+                type: 'info',
+            });
+        }
+        onLaunchPrecomputed({
+            id: params._id,
+            action:
+                params.status === TaskStatus.FINISHED ? 'relaunch' : 'launch',
+        });
+    };
+
+    const CustomToolbar = () => {
+        return (
+            <GridToolbarContainer>
+                <Tooltip title={translate(`column_tooltip`)}>
+                    {/*
+                     // @ts-expect-error TS2741 */}
+                    <GridToolbarColumnsButton />
+                </Tooltip>
+                {/*
+                 // @ts-expect-error TS2739 */}
+                <GridToolbarFilterButton />
+                <Tooltip title={translate(`density_tooltip`)}>
+                    {/*
+                     // @ts-expect-error TS2741 */}
+                    <GridToolbarDensitySelector />
+                </Tooltip>
+                <Tooltip title={translate(`add_more_precomputed`)}>
+                    <Button
+                        component={Link}
+                        to="/data/precomputed/add"
+                        startIcon={<AddBoxIcon />}
+                        size="small"
+                        sx={{
+                            '&.MuiButtonBase-root:hover': {
+                                color: 'primary.main',
+                            },
+                        }}
+                    >
+                        {translate('add_more')}
+                    </Button>
+                </Tooltip>
+            </GridToolbarContainer>
+        );
+    };
+
+    return (
+        <Box>
+            <DataGrid
+                columns={[
+                    {
+                        field: 'name',
+                        headerName: translate('name'),
+                        flex: 3,
+                    },
+                    {
+                        field: 'webServiceUrl',
+                        headerName: translate('webServiceUrl'),
+                        flex: 4,
+                    },
+                    {
+                        field: 'sourceColumns',
+                        headerName: translate('sourceColumns'),
+                        flex: 3,
+                    },
+                    {
+                        field: 'status',
+                        headerName: translate('precomputed_status'),
+                        flex: 3,
+                        renderCell: (params) => (
+                            <PrecomputedStatus
+                                status={params.row.status}
+                                startedAt={params.row.startedAt}
+                            />
+                        ),
+                    },
+                    {
+                        field: 'run',
+                        headerName: translate('run'),
+                        flex: 2,
+                        renderCell: (params) => {
+                            return (
+                                <RunButton
+                                    handleLaunchPrecomputed={handleLaunchPrecomputed(
+                                        params.row,
+                                    )}
+                                    precomputedStatus={params.row.status}
+                                    variant="text"
+                                />
+                            );
+                        },
+                    },
+                ]}
+                // @ts-expect-error TS2322
+                rows={precomputedList}
+                getRowId={(row) => row._id}
+                autoHeight
+                width="100%"
+                onRowClick={handleRowClick}
+                components={{
+                    Toolbar: CustomToolbar,
+                }}
+                sx={{
+                    '& .MuiDataGrid-cell:hover': {
+                        cursor: 'pointer',
+                    },
+                }}
+            />
+        </Box>
+    );
+};
+
+// @ts-expect-error TS7006
+const mapStateToProps = (state) => ({
+    precomputedList: state.precomputed.precomputed,
+    isPrecomputedRunning: !!fromPrecomputed
+        .precomputed(state)
+        .find(
+            (precomputedData) =>
+                precomputedData.status === TaskStatus.IN_PROGRESS ||
+                precomputedData.status === TaskStatus.ON_HOLD,
+        ),
+});
+
+const mapDispatchToProps = {
+    onLaunchPrecomputed: launchPrecomputed,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(PrecomputedList);

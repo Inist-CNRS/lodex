@@ -1,0 +1,33 @@
+import characteristic from '../../../src/app/js/characteristic';
+import dataset from './dataset';
+import exportReducer from './export';
+import fetchReducer from '../../../src/app/js/fetch';
+import i18n from '../../../src/app/js/i18n';
+import fields from '../../../src/app/js/fields';
+import resource from './resource';
+import format from '../../../src/app/js/formats/reducer';
+import user from '../../../src/app/js/user';
+import searchReducer from './search/reducer';
+import breadcrumb from './breadcrumb/reducer';
+import menu from './menu/reducer';
+import displayConfig from './displayConfig/reducer';
+import configTenant from '../../admin-app/src/configTenant';
+
+const reducers = {
+    characteristic,
+    dataset,
+    export: exportReducer,
+    fetch: fetchReducer,
+    i18n,
+    fields,
+    resource,
+    format,
+    user,
+    search: searchReducer,
+    menu,
+    breadcrumb,
+    displayConfig,
+    configTenant,
+};
+
+export default reducers;

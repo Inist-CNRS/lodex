@@ -2,7 +2,7 @@ import { MenuItem, TextField } from '@mui/material';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 
-import { fromParsing } from '../../admin/selectors';
+import { fromParsing } from '../../../../../packages/admin-app/src/selectors';
 import { useTranslate } from '../../i18n/I18NContext';
 
 interface SelectDatasetFieldComponentProps {
