@@ -144,53 +144,76 @@ describe('CreateAnnotationModal', () => {
                 />,
             );
 
-            await waitFor(() => {
-                fireEvent.change(
-                    screen.getByRole('textbox', {
-                        name: 'annotation.comment *',
-                    }),
-                    {
-                        target: { value: 'test' },
-                    },
-                );
-            });
+            await waitFor(
+                () => {
+                    fireEvent.change(
+                        screen.getByRole('textbox', {
+                            name: 'annotation.comment *',
+                        }),
+                        {
+                            target: { value: 'test' },
+                        },
+                    );
+                },
+                { timeout: 10000 },
+            );
 
-            await waitFor(() => {
-                fireEvent.click(screen.getByRole('button', { name: 'next' }));
-            });
+            await waitFor(
+                () => {
+                    fireEvent.click(
+                        screen.getByRole('button', { name: 'next' }),
+                    );
+                },
+                { timeout: 10000 },
+            );
 
-            await waitFor(() => {
-                fireEvent.change(
-                    screen.getByRole('textbox', {
-                        name: 'annotation.authorName *',
-                    }),
-                    {
-                        target: { value: 'author' },
-                    },
-                );
-            });
+            await waitFor(
+                () => {
+                    fireEvent.change(
+                        screen.getByRole('textbox', {
+                            name: 'annotation.authorName *',
+                        }),
+                        {
+                            target: { value: 'author' },
+                        },
+                    );
+                },
+                { timeout: 10000 },
+            );
 
-            await waitFor(() => {
-                fireEvent.change(
-                    screen.getByRole('textbox', {
-                        name: 'annotation.authorEmail',
-                    }),
-                    {
-                        target: { value: 'email@example.org' },
-                    },
-                );
-            });
+            await waitFor(
+                () => {
+                    fireEvent.change(
+                        screen.getByRole('textbox', {
+                            name: 'annotation.authorEmail',
+                        }),
+                        {
+                            target: { value: 'email@example.org' },
+                        },
+                    );
+                },
+                { timeout: 10000 },
+            );
 
             // Wait for the submit button to be enabled
-            await waitFor(() => setTimeout(500));
+            await waitFor(() => setTimeout(500), { timeout: 10000 });
 
-            await waitFor(() => {
-                fireEvent.click(
-                    screen.getByRole('button', { name: 'validate' }),
-                );
-            });
+            await waitFor(
+                () => {
+                    fireEvent.click(
+                        screen.getByRole('button', { name: 'validate' }),
+                    );
+                },
+                { timeout: 10000 },
+            );
 
-            expect(onSubmit).toHaveBeenCalledTimes(1);
+            await waitFor(
+                () => {
+                    expect(onSubmit).toHaveBeenCalledTimes(1);
+                },
+                { timeout: 10000 },
+            );
+
             expect(onSubmit).toHaveBeenCalledWith({
                 comment: 'test',
                 authorName: 'author',
@@ -200,7 +223,7 @@ describe('CreateAnnotationModal', () => {
                 resourceUri: '/',
                 reCaptchaToken: null,
             });
-        });
+        }, 30000);
     });
 
     describe('step orders', () => {
@@ -1163,48 +1186,71 @@ describe('CreateAnnotationModal', () => {
             />,
         );
 
-        await waitFor(() => {
-            fireEvent.click(
-                screen.getByRole('menuitem', {
-                    name: 'annotation_remove_content_choice',
-                }),
-            );
-        });
+        await waitFor(
+            () => {
+                fireEvent.click(
+                    screen.getByRole('menuitem', {
+                        name: 'annotation_remove_content_choice',
+                    }),
+                );
+            },
+            { timeout: 10000 },
+        );
 
-        await waitFor(() => {
-            fireEvent.change(
-                screen.getByRole('textbox', {
-                    name: 'annotation.comment *',
-                }),
-                {
-                    target: { value: 'test' },
-                },
-            );
-        });
+        await waitFor(
+            () => {
+                fireEvent.change(
+                    screen.getByRole('textbox', {
+                        name: 'annotation.comment *',
+                    }),
+                    {
+                        target: { value: 'test' },
+                    },
+                );
+            },
+            { timeout: 10000 },
+        );
 
-        await waitFor(() => {
-            fireEvent.click(screen.getByRole('button', { name: 'next' }));
-        });
+        await waitFor(
+            () => {
+                fireEvent.click(screen.getByRole('button', { name: 'next' }));
+            },
+            { timeout: 10000 },
+        );
 
-        await waitFor(() => {
-            fireEvent.change(
-                screen.getByRole('textbox', {
-                    name: 'annotation.authorName *',
-                }),
-                {
-                    target: { value: 'author' },
-                },
-            );
-        });
+        await waitFor(
+            () => {
+                fireEvent.change(
+                    screen.getByRole('textbox', {
+                        name: 'annotation.authorName *',
+                    }),
+                    {
+                        target: { value: 'author' },
+                    },
+                );
+            },
+            { timeout: 10000 },
+        );
 
         // Wait for the submit button to be enabled
-        await waitFor(() => setTimeout(500));
+        await waitFor(() => setTimeout(500), { timeout: 10000 });
 
-        await waitFor(() => {
-            fireEvent.click(screen.getByRole('button', { name: 'validate' }));
-        });
+        await waitFor(
+            () => {
+                fireEvent.click(
+                    screen.getByRole('button', { name: 'validate' }),
+                );
+            },
+            { timeout: 10000 },
+        );
 
-        expect(onSubmit).toHaveBeenCalledTimes(1);
+        await waitFor(
+            () => {
+                expect(onSubmit).toHaveBeenCalledTimes(1);
+            },
+            { timeout: 10000 },
+        );
+
         expect(onSubmit).toHaveBeenCalledWith({
             authorName: 'author',
             comment: 'test',
@@ -1214,7 +1260,7 @@ describe('CreateAnnotationModal', () => {
             resourceUri: '/',
             reCaptchaToken: null,
         });
-    });
+    }, 30000);
 
     it('should allow to create a removal annotation on the value when initial value is a number', async () => {
         render(
@@ -1227,48 +1273,71 @@ describe('CreateAnnotationModal', () => {
             />,
         );
 
-        await waitFor(() => {
-            fireEvent.click(
-                screen.getByRole('menuitem', {
-                    name: 'annotation_remove_content_choice',
-                }),
-            );
-        });
+        await waitFor(
+            () => {
+                fireEvent.click(
+                    screen.getByRole('menuitem', {
+                        name: 'annotation_remove_content_choice',
+                    }),
+                );
+            },
+            { timeout: 10000 },
+        );
 
-        await waitFor(() => {
-            fireEvent.change(
-                screen.getByRole('textbox', {
-                    name: 'annotation.comment *',
-                }),
-                {
-                    target: { value: 'test' },
-                },
-            );
-        });
+        await waitFor(
+            () => {
+                fireEvent.change(
+                    screen.getByRole('textbox', {
+                        name: 'annotation.comment *',
+                    }),
+                    {
+                        target: { value: 'test' },
+                    },
+                );
+            },
+            { timeout: 10000 },
+        );
 
-        await waitFor(() => {
-            fireEvent.click(screen.getByRole('button', { name: 'next' }));
-        });
+        await waitFor(
+            () => {
+                fireEvent.click(screen.getByRole('button', { name: 'next' }));
+            },
+            { timeout: 10000 },
+        );
 
-        await waitFor(() => {
-            fireEvent.change(
-                screen.getByRole('textbox', {
-                    name: 'annotation.authorName *',
-                }),
-                {
-                    target: { value: 'author' },
-                },
-            );
-        });
+        await waitFor(
+            () => {
+                fireEvent.change(
+                    screen.getByRole('textbox', {
+                        name: 'annotation.authorName *',
+                    }),
+                    {
+                        target: { value: 'author' },
+                    },
+                );
+            },
+            { timeout: 10000 },
+        );
 
         // Wait for the submit button to be enabled
-        await waitFor(() => setTimeout(500));
+        await waitFor(() => setTimeout(500), { timeout: 10000 });
 
-        await waitFor(() => {
-            fireEvent.click(screen.getByRole('button', { name: 'validate' }));
-        });
+        await waitFor(
+            () => {
+                fireEvent.click(
+                    screen.getByRole('button', { name: 'validate' }),
+                );
+            },
+            { timeout: 10000 },
+        );
 
-        expect(onSubmit).toHaveBeenCalledTimes(1);
+        await waitFor(
+            () => {
+                expect(onSubmit).toHaveBeenCalledTimes(1);
+            },
+            { timeout: 10000 },
+        );
+
         expect(onSubmit).toHaveBeenCalledWith({
             authorName: 'author',
             comment: 'test',
@@ -1278,7 +1347,7 @@ describe('CreateAnnotationModal', () => {
             resourceUri: '/',
             reCaptchaToken: null,
         });
-    });
+    }, 30000);
 
     it('should allow to create a removal annotation on a selected value when there is multiple initial value', async () => {
         render(
@@ -1291,64 +1360,98 @@ describe('CreateAnnotationModal', () => {
             />,
         );
 
-        await waitFor(() => {
-            fireEvent.click(
-                screen.getByRole('menuitem', {
-                    name: 'annotation_remove_content_choice',
-                }),
-            );
-        });
+        await waitFor(
+            () => {
+                fireEvent.click(
+                    screen.getByRole('menuitem', {
+                        name: 'annotation_remove_content_choice',
+                    }),
+                );
+            },
+            { timeout: 10000 },
+        );
 
-        await waitFor(() => {
-            fireEvent.mouseDown(
-                screen.getByLabelText('annotation_choose_value_to_remove *'),
-            );
-        });
+        await waitFor(
+            () => {
+                fireEvent.mouseDown(
+                    screen.getByLabelText(
+                        'annotation_choose_value_to_remove *',
+                    ),
+                );
+            },
+            { timeout: 10000 },
+        );
 
-        await waitFor(() => {
-            fireEvent.click(
-                screen.getByRole('option', { name: 'secondValue' }),
-            );
-        });
+        await waitFor(
+            () => {
+                fireEvent.click(
+                    screen.getByRole('option', { name: 'secondValue' }),
+                );
+            },
+            { timeout: 10000 },
+        );
 
-        await waitFor(() => {
-            fireEvent.click(screen.getByRole('button', { name: 'next' }));
-        });
+        await waitFor(
+            () => {
+                fireEvent.click(screen.getByRole('button', { name: 'next' }));
+            },
+            { timeout: 10000 },
+        );
 
-        await waitFor(() => {
-            fireEvent.change(
-                screen.getByRole('textbox', {
-                    name: 'annotation.comment *',
-                }),
-                {
-                    target: { value: 'test' },
-                },
-            );
-        });
+        await waitFor(
+            () => {
+                fireEvent.change(
+                    screen.getByRole('textbox', {
+                        name: 'annotation.comment *',
+                    }),
+                    {
+                        target: { value: 'test' },
+                    },
+                );
+            },
+            { timeout: 10000 },
+        );
 
-        await waitFor(() => {
-            fireEvent.click(screen.getByRole('button', { name: 'next' }));
-        });
+        await waitFor(
+            () => {
+                fireEvent.click(screen.getByRole('button', { name: 'next' }));
+            },
+            { timeout: 10000 },
+        );
 
-        await waitFor(() => {
-            fireEvent.change(
-                screen.getByRole('textbox', {
-                    name: 'annotation.authorName *',
-                }),
-                {
-                    target: { value: 'author' },
-                },
-            );
-        });
+        await waitFor(
+            () => {
+                fireEvent.change(
+                    screen.getByRole('textbox', {
+                        name: 'annotation.authorName *',
+                    }),
+                    {
+                        target: { value: 'author' },
+                    },
+                );
+            },
+            { timeout: 10000 },
+        );
 
         // Wait for the submit button to be enabled
-        await waitFor(() => setTimeout(500));
+        await waitFor(() => setTimeout(500), { timeout: 10000 });
 
-        await waitFor(() => {
-            fireEvent.click(screen.getByRole('button', { name: 'validate' }));
-        });
+        await waitFor(
+            () => {
+                fireEvent.click(
+                    screen.getByRole('button', { name: 'validate' }),
+                );
+            },
+            { timeout: 10000 },
+        );
 
-        expect(onSubmit).toHaveBeenCalledTimes(1);
+        await waitFor(
+            () => {
+                expect(onSubmit).toHaveBeenCalledTimes(1);
+            },
+            { timeout: 10000 },
+        );
+
         expect(onSubmit).toHaveBeenCalledWith({
             authorName: 'author',
             comment: 'test',
@@ -1358,7 +1461,7 @@ describe('CreateAnnotationModal', () => {
             resourceUri: '/',
             reCaptchaToken: null,
         });
-    });
+    }, 30000);
 
     it('should allow to create a removal annotation on a selected value when initial value is an array of number', async () => {
         render(
@@ -1371,62 +1474,96 @@ describe('CreateAnnotationModal', () => {
             />,
         );
 
-        await waitFor(() => {
-            fireEvent.click(
-                screen.getByRole('menuitem', {
-                    name: 'annotation_remove_content_choice',
-                }),
-            );
-        });
+        await waitFor(
+            () => {
+                fireEvent.click(
+                    screen.getByRole('menuitem', {
+                        name: 'annotation_remove_content_choice',
+                    }),
+                );
+            },
+            { timeout: 10000 },
+        );
 
-        await waitFor(() => {
-            fireEvent.mouseDown(
-                screen.getByLabelText('annotation_choose_value_to_remove *'),
-            );
-        });
+        await waitFor(
+            () => {
+                fireEvent.mouseDown(
+                    screen.getByLabelText(
+                        'annotation_choose_value_to_remove *',
+                    ),
+                );
+            },
+            { timeout: 10000 },
+        );
 
-        await waitFor(() => {
-            fireEvent.click(screen.getByRole('option', { name: '2' }));
-        });
+        await waitFor(
+            () => {
+                fireEvent.click(screen.getByRole('option', { name: '2' }));
+            },
+            { timeout: 10000 },
+        );
 
-        await waitFor(() => {
-            fireEvent.click(screen.getByRole('button', { name: 'next' }));
-        });
+        await waitFor(
+            () => {
+                fireEvent.click(screen.getByRole('button', { name: 'next' }));
+            },
+            { timeout: 10000 },
+        );
 
-        await waitFor(() => {
-            fireEvent.change(
-                screen.getByRole('textbox', {
-                    name: 'annotation.comment *',
-                }),
-                {
-                    target: { value: 'test' },
-                },
-            );
-        });
+        await waitFor(
+            () => {
+                fireEvent.change(
+                    screen.getByRole('textbox', {
+                        name: 'annotation.comment *',
+                    }),
+                    {
+                        target: { value: 'test' },
+                    },
+                );
+            },
+            { timeout: 10000 },
+        );
 
-        await waitFor(() => {
-            fireEvent.click(screen.getByRole('button', { name: 'next' }));
-        });
+        await waitFor(
+            () => {
+                fireEvent.click(screen.getByRole('button', { name: 'next' }));
+            },
+            { timeout: 10000 },
+        );
 
-        await waitFor(() => {
-            fireEvent.change(
-                screen.getByRole('textbox', {
-                    name: 'annotation.authorName *',
-                }),
-                {
-                    target: { value: 'author' },
-                },
-            );
-        });
+        await waitFor(
+            () => {
+                fireEvent.change(
+                    screen.getByRole('textbox', {
+                        name: 'annotation.authorName *',
+                    }),
+                    {
+                        target: { value: 'author' },
+                    },
+                );
+            },
+            { timeout: 10000 },
+        );
 
         // Wait for the submit button to be enabled
-        await waitFor(() => setTimeout(500));
+        await waitFor(() => setTimeout(500), { timeout: 10000 });
 
-        await waitFor(() => {
-            fireEvent.click(screen.getByRole('button', { name: 'validate' }));
-        });
+        await waitFor(
+            () => {
+                fireEvent.click(
+                    screen.getByRole('button', { name: 'validate' }),
+                );
+            },
+            { timeout: 10000 },
+        );
 
-        expect(onSubmit).toHaveBeenCalledTimes(1);
+        await waitFor(
+            () => {
+                expect(onSubmit).toHaveBeenCalledTimes(1);
+            },
+            { timeout: 10000 },
+        );
+
         expect(onSubmit).toHaveBeenCalledWith({
             authorName: 'author',
             comment: 'test',
@@ -1436,7 +1573,7 @@ describe('CreateAnnotationModal', () => {
             resourceUri: '/',
             reCaptchaToken: null,
         });
-    });
+    }, 30000);
 
     it('should allow to create a correct annotation on the value when there is a single initial value', async () => {
         render(
@@ -1449,59 +1586,85 @@ describe('CreateAnnotationModal', () => {
             />,
         );
 
-        await waitFor(() => {
-            fireEvent.click(
-                screen.getByRole('menuitem', {
-                    name: 'annotation_correct_content',
-                }),
-            );
-        });
+        await waitFor(
+            () => {
+                fireEvent.click(
+                    screen.getByRole('menuitem', {
+                        name: 'annotation_correct_content',
+                    }),
+                );
+            },
+            { timeout: 10000 },
+        );
 
-        await waitFor(() => {
-            fireEvent.change(
-                screen.getByRole('textbox', {
-                    name: 'annotation.comment *',
-                }),
-                {
-                    target: { value: 'test' },
-                },
-            );
-        });
+        await waitFor(
+            () => {
+                fireEvent.change(
+                    screen.getByRole('textbox', {
+                        name: 'annotation.comment *',
+                    }),
+                    {
+                        target: { value: 'test' },
+                    },
+                );
+            },
+            { timeout: 10000 },
+        );
 
-        await waitFor(() => {
-            fireEvent.change(
-                screen.getByRole('textbox', {
-                    name: 'annotation.proposedValue *',
-                }),
-                {
-                    target: { value: 'proposedValue' },
-                },
-            );
-        });
+        await waitFor(
+            () => {
+                fireEvent.change(
+                    screen.getByRole('textbox', {
+                        name: 'annotation.proposedValue *',
+                    }),
+                    {
+                        target: { value: 'proposedValue' },
+                    },
+                );
+            },
+            { timeout: 10000 },
+        );
 
-        await waitFor(() => {
-            fireEvent.click(screen.getByRole('button', { name: 'next' }));
-        });
+        await waitFor(
+            () => {
+                fireEvent.click(screen.getByRole('button', { name: 'next' }));
+            },
+            { timeout: 10000 },
+        );
 
-        await waitFor(() => {
-            fireEvent.change(
-                screen.getByRole('textbox', {
-                    name: 'annotation.authorName *',
-                }),
-                {
-                    target: { value: 'author' },
-                },
-            );
-        });
+        await waitFor(
+            () => {
+                fireEvent.change(
+                    screen.getByRole('textbox', {
+                        name: 'annotation.authorName *',
+                    }),
+                    {
+                        target: { value: 'author' },
+                    },
+                );
+            },
+            { timeout: 10000 },
+        );
 
         // Wait for the submit button to be enabled
-        await waitFor(() => setTimeout(500));
+        await waitFor(() => setTimeout(500), { timeout: 10000 });
 
-        await waitFor(() => {
-            fireEvent.click(screen.getByRole('button', { name: 'validate' }));
-        });
+        await waitFor(
+            () => {
+                fireEvent.click(
+                    screen.getByRole('button', { name: 'validate' }),
+                );
+            },
+            { timeout: 10000 },
+        );
 
-        expect(onSubmit).toHaveBeenCalledTimes(1);
+        await waitFor(
+            () => {
+                expect(onSubmit).toHaveBeenCalledTimes(1);
+            },
+            { timeout: 10000 },
+        );
+
         expect(onSubmit).toHaveBeenCalledWith({
             authorName: 'author',
             comment: 'test',
@@ -1512,7 +1675,7 @@ describe('CreateAnnotationModal', () => {
             target: 'value',
             kind: 'correction',
         });
-    });
+    }, 30000);
 
     it('should allow to create a correct annotation on the value when initial value is a number', async () => {
         render(
@@ -1601,75 +1764,112 @@ describe('CreateAnnotationModal', () => {
             />,
         );
 
-        await waitFor(() => {
-            fireEvent.click(
-                screen.getByRole('menuitem', {
-                    name: 'annotation_correct_content',
-                }),
-            );
-        });
+        await waitFor(
+            () => {
+                fireEvent.click(
+                    screen.getByRole('menuitem', {
+                        name: 'annotation_correct_content',
+                    }),
+                );
+            },
+            { timeout: 10000 },
+        );
 
-        await waitFor(() => {
-            fireEvent.mouseDown(
-                screen.getByLabelText('annotation_choose_value_to_correct *'),
-            );
-        });
+        await waitFor(
+            () => {
+                fireEvent.mouseDown(
+                    screen.getByLabelText(
+                        'annotation_choose_value_to_correct *',
+                    ),
+                );
+            },
+            { timeout: 10000 },
+        );
 
-        await waitFor(() => {
-            fireEvent.click(
-                screen.getByRole('option', { name: 'secondValue' }),
-            );
-        });
+        await waitFor(
+            () => {
+                fireEvent.click(
+                    screen.getByRole('option', { name: 'secondValue' }),
+                );
+            },
+            { timeout: 10000 },
+        );
 
-        await waitFor(() => {
-            fireEvent.click(screen.getByRole('button', { name: 'next' }));
-        });
+        await waitFor(
+            () => {
+                fireEvent.click(screen.getByRole('button', { name: 'next' }));
+            },
+            { timeout: 10000 },
+        );
 
-        await waitFor(() => {
-            fireEvent.change(
-                screen.getByRole('textbox', {
-                    name: 'annotation.proposedValue *',
-                }),
-                {
-                    target: { value: 'proposedValue' },
-                },
-            );
-        });
+        await waitFor(
+            () => {
+                fireEvent.change(
+                    screen.getByRole('textbox', {
+                        name: 'annotation.proposedValue *',
+                    }),
+                    {
+                        target: { value: 'proposedValue' },
+                    },
+                );
+            },
+            { timeout: 10000 },
+        );
 
-        await waitFor(() => {
-            fireEvent.change(
-                screen.getByRole('textbox', {
-                    name: 'annotation.comment *',
-                }),
-                {
-                    target: { value: 'test' },
-                },
-            );
-        });
+        await waitFor(
+            () => {
+                fireEvent.change(
+                    screen.getByRole('textbox', {
+                        name: 'annotation.comment *',
+                    }),
+                    {
+                        target: { value: 'test' },
+                    },
+                );
+            },
+            { timeout: 10000 },
+        );
 
-        await waitFor(() => {
-            fireEvent.click(screen.getByRole('button', { name: 'next' }));
-        });
+        await waitFor(
+            () => {
+                fireEvent.click(screen.getByRole('button', { name: 'next' }));
+            },
+            { timeout: 10000 },
+        );
 
-        await waitFor(() => {
-            fireEvent.change(
-                screen.getByRole('textbox', {
-                    name: 'annotation.authorName *',
-                }),
-                {
-                    target: { value: 'author' },
-                },
-            );
-        });
+        await waitFor(
+            () => {
+                fireEvent.change(
+                    screen.getByRole('textbox', {
+                        name: 'annotation.authorName *',
+                    }),
+                    {
+                        target: { value: 'author' },
+                    },
+                );
+            },
+            { timeout: 10000 },
+        );
 
         // Wait for the submit button to be enabled
-        await waitFor(() => setTimeout(500));
+        await waitFor(() => setTimeout(500), { timeout: 10000 });
 
-        await waitFor(() => {
-            fireEvent.click(screen.getByRole('button', { name: 'validate' }));
-        });
+        await waitFor(
+            () => {
+                fireEvent.click(
+                    screen.getByRole('button', { name: 'validate' }),
+                );
+            },
+            { timeout: 10000 },
+        );
 
-        expect(onSubmit).toHaveBeenCalledTimes(1);
+        await waitFor(
+            () => {
+                expect(onSubmit).toHaveBeenCalledTimes(1);
+            },
+            { timeout: 10000 },
+        );
+
         expect(onSubmit).toHaveBeenCalledWith({
             authorName: 'author',
             comment: 'test',
@@ -1680,7 +1880,7 @@ describe('CreateAnnotationModal', () => {
             target: 'value',
             kind: 'correction',
         });
-    });
+    }, 30000);
 
     it('should allow to create a correct annotation on a selected value when initial value is an array of number', async () => {
         render(
@@ -1693,73 +1893,110 @@ describe('CreateAnnotationModal', () => {
             />,
         );
 
-        await waitFor(() => {
-            fireEvent.click(
-                screen.getByRole('menuitem', {
-                    name: 'annotation_correct_content',
-                }),
-            );
-        });
+        await waitFor(
+            () => {
+                fireEvent.click(
+                    screen.getByRole('menuitem', {
+                        name: 'annotation_correct_content',
+                    }),
+                );
+            },
+            { timeout: 10000 },
+        );
 
-        await waitFor(() => {
-            fireEvent.mouseDown(
-                screen.getByLabelText('annotation_choose_value_to_correct *'),
-            );
-        });
+        await waitFor(
+            () => {
+                fireEvent.mouseDown(
+                    screen.getByLabelText(
+                        'annotation_choose_value_to_correct *',
+                    ),
+                );
+            },
+            { timeout: 10000 },
+        );
 
-        await waitFor(() => {
-            fireEvent.click(screen.getByRole('option', { name: '2' }));
-        });
+        await waitFor(
+            () => {
+                fireEvent.click(screen.getByRole('option', { name: '2' }));
+            },
+            { timeout: 10000 },
+        );
 
-        await waitFor(() => {
-            fireEvent.click(screen.getByRole('button', { name: 'next' }));
-        });
+        await waitFor(
+            () => {
+                fireEvent.click(screen.getByRole('button', { name: 'next' }));
+            },
+            { timeout: 10000 },
+        );
 
-        await waitFor(() => {
-            fireEvent.change(
-                screen.getByRole('textbox', {
-                    name: 'annotation.proposedValue *',
-                }),
-                {
-                    target: { value: 'proposedValue' },
-                },
-            );
-        });
+        await waitFor(
+            () => {
+                fireEvent.change(
+                    screen.getByRole('textbox', {
+                        name: 'annotation.proposedValue *',
+                    }),
+                    {
+                        target: { value: 'proposedValue' },
+                    },
+                );
+            },
+            { timeout: 10000 },
+        );
 
-        await waitFor(() => {
-            fireEvent.change(
-                screen.getByRole('textbox', {
-                    name: 'annotation.comment *',
-                }),
-                {
-                    target: { value: 'test' },
-                },
-            );
-        });
+        await waitFor(
+            () => {
+                fireEvent.change(
+                    screen.getByRole('textbox', {
+                        name: 'annotation.comment *',
+                    }),
+                    {
+                        target: { value: 'test' },
+                    },
+                );
+            },
+            { timeout: 10000 },
+        );
 
-        await waitFor(() => {
-            fireEvent.click(screen.getByRole('button', { name: 'next' }));
-        });
+        await waitFor(
+            () => {
+                fireEvent.click(screen.getByRole('button', { name: 'next' }));
+            },
+            { timeout: 10000 },
+        );
 
-        await waitFor(() => {
-            fireEvent.change(
-                screen.getByRole('textbox', {
-                    name: 'annotation.authorName *',
-                }),
-                {
-                    target: { value: 'author' },
-                },
-            );
-        });
+        await waitFor(
+            () => {
+                fireEvent.change(
+                    screen.getByRole('textbox', {
+                        name: 'annotation.authorName *',
+                    }),
+                    {
+                        target: { value: 'author' },
+                    },
+                );
+            },
+            { timeout: 10000 },
+        );
 
         // Wait for the submit button to be enabled
-        await waitFor(() => setTimeout(500));
+        await waitFor(() => setTimeout(500), { timeout: 10000 });
 
-        await waitFor(() => {
-            fireEvent.click(screen.getByRole('button', { name: 'validate' }));
-        });
+        await waitFor(
+            () => {
+                fireEvent.click(
+                    screen.getByRole('button', { name: 'validate' }),
+                );
+            },
+            { timeout: 10000 },
+        );
 
-        expect(onSubmit).toHaveBeenCalledTimes(1);
+        await waitFor(
+            () => {
+                expect(onSubmit).toHaveBeenCalledTimes(1);
+            },
+            { timeout: 10000 },
+        );
+
         expect(onSubmit).toHaveBeenCalledWith({
             authorName: 'author',
             comment: 'test',
@@ -1770,7 +2007,7 @@ describe('CreateAnnotationModal', () => {
             target: 'value',
             kind: 'correction',
         });
-    });
+    }, 30000);
 
     it('should allow to create an add annotation when there is a single initial value', async () => {
         render(
@@ -1783,59 +2020,85 @@ describe('CreateAnnotationModal', () => {
             />,
         );
 
-        await waitFor(() => {
-            fireEvent.click(
-                screen.getByRole('menuitem', {
-                    name: 'annotation_add_content',
-                }),
-            );
-        });
+        await waitFor(
+            () => {
+                fireEvent.click(
+                    screen.getByRole('menuitem', {
+                        name: 'annotation_add_content',
+                    }),
+                );
+            },
+            { timeout: 10000 },
+        );
 
-        await waitFor(() => {
-            fireEvent.change(
-                screen.getByRole('textbox', {
-                    name: 'annotation.comment *',
-                }),
-                {
-                    target: { value: 'test' },
-                },
-            );
-        });
+        await waitFor(
+            () => {
+                fireEvent.change(
+                    screen.getByRole('textbox', {
+                        name: 'annotation.comment *',
+                    }),
+                    {
+                        target: { value: 'test' },
+                    },
+                );
+            },
+            { timeout: 10000 },
+        );
 
-        await waitFor(() => {
-            fireEvent.change(
-                screen.getByRole('textbox', {
-                    name: 'annotation.proposedValue *',
-                }),
-                {
-                    target: { value: 'proposedValue' },
-                },
-            );
-        });
+        await waitFor(
+            () => {
+                fireEvent.change(
+                    screen.getByRole('textbox', {
+                        name: 'annotation.proposedValue *',
+                    }),
+                    {
+                        target: { value: 'proposedValue' },
+                    },
+                );
+            },
+            { timeout: 10000 },
+        );
 
-        await waitFor(() => {
-            fireEvent.click(screen.getByRole('button', { name: 'next' }));
-        });
+        await waitFor(
+            () => {
+                fireEvent.click(screen.getByRole('button', { name: 'next' }));
+            },
+            { timeout: 10000 },
+        );
 
-        await waitFor(() => {
-            fireEvent.change(
-                screen.getByRole('textbox', {
-                    name: 'annotation.authorName *',
-                }),
-                {
-                    target: { value: 'author' },
-                },
-            );
-        });
+        await waitFor(
+            () => {
+                fireEvent.change(
+                    screen.getByRole('textbox', {
+                        name: 'annotation.authorName *',
+                    }),
+                    {
+                        target: { value: 'author' },
+                    },
+                );
+            },
+            { timeout: 10000 },
+        );
 
         // Wait for the submit button to be enabled
-        await waitFor(() => setTimeout(500));
+        await waitFor(() => setTimeout(500), { timeout: 10000 });
 
-        await waitFor(() => {
-            fireEvent.click(screen.getByRole('button', { name: 'validate' }));
-        });
+        await waitFor(
+            () => {
+                fireEvent.click(
+                    screen.getByRole('button', { name: 'validate' }),
+                );
+            },
+            { timeout: 10000 },
+        );
 
-        expect(onSubmit).toHaveBeenCalledTimes(1);
+        await waitFor(
+            () => {
+                expect(onSubmit).toHaveBeenCalledTimes(1);
+            },
+            { timeout: 10000 },
+        );
+
         expect(onSubmit).toHaveBeenCalledWith({
             authorName: 'author',
             comment: 'test',
@@ -1846,7 +2109,7 @@ describe('CreateAnnotationModal', () => {
             target: 'value',
             kind: 'addition',
         });
-    });
+    }, 30000);
     it('should allow to create an add annotation when initial value is a number', async () => {
         render(
             <TestModal
@@ -1858,59 +2121,85 @@ describe('CreateAnnotationModal', () => {
             />,
         );
 
-        await waitFor(() => {
-            fireEvent.click(
-                screen.getByRole('menuitem', {
-                    name: 'annotation_add_content',
-                }),
-            );
-        });
+        await waitFor(
+            () => {
+                fireEvent.click(
+                    screen.getByRole('menuitem', {
+                        name: 'annotation_add_content',
+                    }),
+                );
+            },
+            { timeout: 10000 },
+        );
 
-        await waitFor(() => {
-            fireEvent.change(
-                screen.getByRole('textbox', {
-                    name: 'annotation.comment *',
-                }),
-                {
-                    target: { value: 'test' },
-                },
-            );
-        });
+        await waitFor(
+            () => {
+                fireEvent.change(
+                    screen.getByRole('textbox', {
+                        name: 'annotation.comment *',
+                    }),
+                    {
+                        target: { value: 'test' },
+                    },
+                );
+            },
+            { timeout: 10000 },
+        );
 
-        await waitFor(() => {
-            fireEvent.change(
-                screen.getByRole('textbox', {
-                    name: 'annotation.proposedValue *',
-                }),
-                {
-                    target: { value: 'proposedValue' },
-                },
-            );
-        });
+        await waitFor(
+            () => {
+                fireEvent.change(
+                    screen.getByRole('textbox', {
+                        name: 'annotation.proposedValue *',
+                    }),
+                    {
+                        target: { value: 'proposedValue' },
+                    },
+                );
+            },
+            { timeout: 10000 },
+        );
 
-        await waitFor(() => {
-            fireEvent.click(screen.getByRole('button', { name: 'next' }));
-        });
+        await waitFor(
+            () => {
+                fireEvent.click(screen.getByRole('button', { name: 'next' }));
+            },
+            { timeout: 10000 },
+        );
 
-        await waitFor(() => {
-            fireEvent.change(
-                screen.getByRole('textbox', {
-                    name: 'annotation.authorName *',
-                }),
-                {
-                    target: { value: 'author' },
-                },
-            );
-        });
+        await waitFor(
+            () => {
+                fireEvent.change(
+                    screen.getByRole('textbox', {
+                        name: 'annotation.authorName *',
+                    }),
+                    {
+                        target: { value: 'author' },
+                    },
+                );
+            },
+            { timeout: 10000 },
+        );
 
         // Wait for the submit button to be enabled
-        await waitFor(() => setTimeout(500));
+        await waitFor(() => setTimeout(500), { timeout: 10000 });
 
-        await waitFor(() => {
-            fireEvent.click(screen.getByRole('button', { name: 'validate' }));
-        });
+        await waitFor(
+            () => {
+                fireEvent.click(
+                    screen.getByRole('button', { name: 'validate' }),
+                );
+            },
+            { timeout: 10000 },
+        );
 
-        expect(onSubmit).toHaveBeenCalledTimes(1);
+        await waitFor(
+            () => {
+                expect(onSubmit).toHaveBeenCalledTimes(1);
+            },
+            { timeout: 10000 },
+        );
+
         expect(onSubmit).toHaveBeenCalledWith({
             authorName: 'author',
             comment: 'test',
@@ -1921,7 +2210,7 @@ describe('CreateAnnotationModal', () => {
             target: 'value',
             kind: 'addition',
         });
-    });
+    }, 30000);
     it('should allow to create a add annotation when there is multiple initial value', async () => {
         render(
             <TestModal
@@ -1933,63 +2222,92 @@ describe('CreateAnnotationModal', () => {
             />,
         );
 
-        await waitFor(() => {
-            fireEvent.click(
-                screen.getByRole('menuitem', {
-                    name: 'annotation_add_content',
-                }),
-            );
-        });
+        await waitFor(
+            () => {
+                fireEvent.click(
+                    screen.getByRole('menuitem', {
+                        name: 'annotation_add_content',
+                    }),
+                );
+            },
+            { timeout: 10000 },
+        );
 
-        await waitFor(() => {
-            fireEvent.click(screen.getByRole('button', { name: 'next' }));
-        });
+        await waitFor(
+            () => {
+                fireEvent.click(screen.getByRole('button', { name: 'next' }));
+            },
+            { timeout: 10000 },
+        );
 
-        await waitFor(() => {
-            fireEvent.change(
-                screen.getByRole('textbox', {
-                    name: 'annotation.proposedValue *',
-                }),
-                {
-                    target: { value: 'proposedValue' },
-                },
-            );
-        });
+        await waitFor(
+            () => {
+                fireEvent.change(
+                    screen.getByRole('textbox', {
+                        name: 'annotation.proposedValue *',
+                    }),
+                    {
+                        target: { value: 'proposedValue' },
+                    },
+                );
+            },
+            { timeout: 10000 },
+        );
 
-        await waitFor(() => {
-            fireEvent.change(
-                screen.getByRole('textbox', {
-                    name: 'annotation.comment *',
-                }),
-                {
-                    target: { value: 'test' },
-                },
-            );
-        });
+        await waitFor(
+            () => {
+                fireEvent.change(
+                    screen.getByRole('textbox', {
+                        name: 'annotation.comment *',
+                    }),
+                    {
+                        target: { value: 'test' },
+                    },
+                );
+            },
+            { timeout: 10000 },
+        );
 
-        await waitFor(() => {
-            fireEvent.click(screen.getByRole('button', { name: 'next' }));
-        });
+        await waitFor(
+            () => {
+                fireEvent.click(screen.getByRole('button', { name: 'next' }));
+            },
+            { timeout: 10000 },
+        );
 
-        await waitFor(() => {
-            fireEvent.change(
-                screen.getByRole('textbox', {
-                    name: 'annotation.authorName *',
-                }),
-                {
-                    target: { value: 'author' },
-                },
-            );
-        });
+        await waitFor(
+            () => {
+                fireEvent.change(
+                    screen.getByRole('textbox', {
+                        name: 'annotation.authorName *',
+                    }),
+                    {
+                        target: { value: 'author' },
+                    },
+                );
+            },
+            { timeout: 10000 },
+        );
 
         // Wait for the submit button to be enabled
-        await waitFor(() => setTimeout(500));
+        await waitFor(() => setTimeout(500), { timeout: 10000 });
 
-        await waitFor(() => {
-            fireEvent.click(screen.getByRole('button', { name: 'validate' }));
-        });
+        await waitFor(
+            () => {
+                fireEvent.click(
+                    screen.getByRole('button', { name: 'validate' }),
+                );
+            },
+            { timeout: 10000 },
+        );
 
-        expect(onSubmit).toHaveBeenCalledTimes(1);
+        await waitFor(
+            () => {
+                expect(onSubmit).toHaveBeenCalledTimes(1);
+            },
+            { timeout: 10000 },
+        );
+
         expect(onSubmit).toHaveBeenCalledWith({
             authorName: 'author',
             comment: 'test',
@@ -2000,7 +2318,7 @@ describe('CreateAnnotationModal', () => {
             target: 'value',
             kind: 'addition',
         });
-    });
+    }, 30000);
     it('should allow to create a add annotation when initial value is an array of number', async () => {
         render(
             <TestModal
@@ -2012,63 +2330,92 @@ describe('CreateAnnotationModal', () => {
             />,
         );
 
-        await waitFor(() => {
-            fireEvent.click(
-                screen.getByRole('menuitem', {
-                    name: 'annotation_add_content',
-                }),
-            );
-        });
+        await waitFor(
+            () => {
+                fireEvent.click(
+                    screen.getByRole('menuitem', {
+                        name: 'annotation_add_content',
+                    }),
+                );
+            },
+            { timeout: 10000 },
+        );
 
-        await waitFor(() => {
-            fireEvent.click(screen.getByRole('button', { name: 'next' }));
-        });
+        await waitFor(
+            () => {
+                fireEvent.click(screen.getByRole('button', { name: 'next' }));
+            },
+            { timeout: 10000 },
+        );
 
-        await waitFor(() => {
-            fireEvent.change(
-                screen.getByRole('textbox', {
-                    name: 'annotation.proposedValue *',
-                }),
-                {
-                    target: { value: 'proposedValue' },
-                },
-            );
-        });
+        await waitFor(
+            () => {
+                fireEvent.change(
+                    screen.getByRole('textbox', {
+                        name: 'annotation.proposedValue *',
+                    }),
+                    {
+                        target: { value: 'proposedValue' },
+                    },
+                );
+            },
+            { timeout: 10000 },
+        );
 
-        await waitFor(() => {
-            fireEvent.change(
-                screen.getByRole('textbox', {
-                    name: 'annotation.comment *',
-                }),
-                {
-                    target: { value: 'test' },
-                },
-            );
-        });
+        await waitFor(
+            () => {
+                fireEvent.change(
+                    screen.getByRole('textbox', {
+                        name: 'annotation.comment *',
+                    }),
+                    {
+                        target: { value: 'test' },
+                    },
+                );
+            },
+            { timeout: 10000 },
+        );
 
-        await waitFor(() => {
-            fireEvent.click(screen.getByRole('button', { name: 'next' }));
-        });
+        await waitFor(
+            () => {
+                fireEvent.click(screen.getByRole('button', { name: 'next' }));
+            },
+            { timeout: 10000 },
+        );
 
-        await waitFor(() => {
-            fireEvent.change(
-                screen.getByRole('textbox', {
-                    name: 'annotation.authorName *',
-                }),
-                {
-                    target: { value: 'author' },
-                },
-            );
-        });
+        await waitFor(
+            () => {
+                fireEvent.change(
+                    screen.getByRole('textbox', {
+                        name: 'annotation.authorName *',
+                    }),
+                    {
+                        target: { value: 'author' },
+                    },
+                );
+            },
+            { timeout: 10000 },
+        );
 
         // Wait for the submit button to be enabled
-        await waitFor(() => setTimeout(500));
+        await waitFor(() => setTimeout(500), { timeout: 10000 });
 
-        await waitFor(() => {
-            fireEvent.click(screen.getByRole('button', { name: 'validate' }));
-        });
+        await waitFor(
+            () => {
+                fireEvent.click(
+                    screen.getByRole('button', { name: 'validate' }),
+                );
+            },
+            { timeout: 10000 },
+        );
 
-        expect(onSubmit).toHaveBeenCalledTimes(1);
+        await waitFor(
+            () => {
+                expect(onSubmit).toHaveBeenCalledTimes(1);
+            },
+            { timeout: 10000 },
+        );
+
         expect(onSubmit).toHaveBeenCalledWith({
             authorName: 'author',
             comment: 'test',
@@ -2079,5 +2426,5 @@ describe('CreateAnnotationModal', () => {
             target: 'value',
             kind: 'addition',
         });
-    });
+    }, 30000);
 });

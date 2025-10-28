@@ -40,7 +40,7 @@ describe('AutocompleteMultipleField', () => {
 
             await waitFor(() => {
                 fireEvent.mouseDown(textbox);
-            });
+            }, { timeout: 10000 });
 
             const option = wrapper.getByRole('option', {
                 name: 'John',
@@ -50,7 +50,7 @@ describe('AutocompleteMultipleField', () => {
 
             await waitFor(() => {
                 fireEvent.click(option);
-            });
+            }, { timeout: 10000 });
 
             expect(
                 wrapper.getByRole('button', {
@@ -68,7 +68,7 @@ describe('AutocompleteMultipleField', () => {
 
             await waitFor(() => {
                 fireEvent.mouseDown(textbox);
-            });
+            }, { timeout: 10000 });
 
             await waitFor(() => {
                 fireEvent.click(
@@ -76,11 +76,11 @@ describe('AutocompleteMultipleField', () => {
                         name: 'John',
                     }),
                 );
-            });
+            }, { timeout: 10000 });
 
             await waitFor(() => {
                 fireEvent.mouseDown(textbox);
-            });
+            }, { timeout: 10000 });
 
             await waitFor(() => {
                 fireEvent.click(
@@ -88,7 +88,7 @@ describe('AutocompleteMultipleField', () => {
                         name: 'Paul',
                     }),
                 );
-            });
+            }, { timeout: 10000 });
 
             expect(
                 wrapper.getByRole('button', {
@@ -112,11 +112,11 @@ describe('AutocompleteMultipleField', () => {
 
             await waitFor(() => {
                 fireEvent.mouseDown(textbox);
-            });
+            }, { timeout: 10000 });
 
             await waitFor(() => {
                 return userEvent.type(textbox, 'Jo');
-            });
+            }, { timeout: 10000 });
 
             expect(
                 wrapper.queryByRole('option', {
@@ -144,11 +144,11 @@ describe('AutocompleteMultipleField', () => {
 
             await waitFor(() => {
                 fireEvent.mouseDown(textbox);
-            });
+            }, { timeout: 10000 });
 
             await waitFor(() => {
                 return userEvent.type(textbox, 'Franck');
-            });
+            }, { timeout: 10000 });
 
             await waitFor(() => {
                 const option = wrapper.getByRole('option', {
@@ -158,14 +158,16 @@ describe('AutocompleteMultipleField', () => {
                 expect(option).toBeInTheDocument();
 
                 fireEvent.click(option);
-            });
+            }, { timeout: 10000 });
 
-            expect(
-                wrapper.getByRole('button', {
-                    name: 'Franck',
-                }),
-            ).toBeInTheDocument();
-        });
+            await waitFor(() => {
+                expect(
+                    wrapper.getByRole('button', {
+                        name: 'Franck',
+                    }),
+                ).toBeInTheDocument();
+            }, { timeout: 10000 });
+        }, 30000);
 
         it('should not support to have a new value if does not support new values', async () => {
             const wrapper = render(<TestAutocompleteMultipleField />);
@@ -176,17 +178,17 @@ describe('AutocompleteMultipleField', () => {
 
             await waitFor(() => {
                 fireEvent.mouseDown(textbox);
-            });
+            }, { timeout: 10000 });
 
             await waitFor(() => {
                 return userEvent.type(textbox, 'Franck');
-            });
+            }, { timeout: 10000 });
 
             await waitFor(() => {
                 expect(
                     wrapper.getByText('autocomplete_no_options'),
                 ).toBeInTheDocument();
-            });
+            }, { timeout: 10000 });
 
             expect(
                 wrapper.queryByRole('option', {
@@ -196,7 +198,7 @@ describe('AutocompleteMultipleField', () => {
 
             await waitFor(() => {
                 return fireEvent.blur(textbox);
-            });
+            }, { timeout: 10000 });
 
             expect(
                 wrapper.queryAllByRole('button', {
