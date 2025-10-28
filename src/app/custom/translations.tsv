@@ -1024,6 +1024,7 @@
 "enrichment_deleted_success"	"Enrichment deleted successfully"	"Enrichissement supprimé avec succès"
 "enrichment_status_pending"	"Pending"	"En attente"
 "enrichment_status_running"	"Running"	"En cours"
+"enrichment_status_in_progress"	"Running"	"En cours"
 "enrichment_status_paused"	"Paused"	"En pause"
 "enrichment_status_done"	"Done"	"Terminé"
 "enrichment_status_not_started"	"Not started"	"Non démarré"
