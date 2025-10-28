@@ -18,8 +18,6 @@ export default defineConfig(({ mode }) => {
             target: ['chrome107', 'edge107', 'firefox104', 'safari16'],
             rollupOptions: {
                 input: {
-                    public: resolve(__dirname, 'src/app/js/public/index.ts'),
-                    admin: resolve(__dirname, 'src/app/js/admin/index.ts'),
                     embeddedIstexSummary: resolve(
                         __dirname,
                         'src/app/js/embeddedIstexSummary/index.tsx',

@@ -5,7 +5,7 @@ import {
     AutoCompleteField,
     type AutoCompleteProps,
 } from './AutoCompleteField.tsx';
-import type { State } from '../admin/reducers.ts';
+import type { State } from '../../../../packages/admin-app/src/reducers.ts';
 
 type AutoCompleteFetchedFieldProps = Omit<AutoCompleteProps, 'options'> & {
     getFetchRequest: (searchText: string) => { url: string };

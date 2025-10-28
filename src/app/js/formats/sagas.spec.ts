@@ -12,7 +12,10 @@ import {
 import { loadFormatDataSuccess, loadFormatDataError } from './reducer';
 import getQueryString from '../lib/getQueryString';
 import fetchSaga from '../lib/sagas/fetchSaga';
-import { fromDataset, fromFormat } from '../public/selectors';
+import {
+    fromDataset,
+    fromFormat,
+} from '../../../../packages/public-app/src/selectors';
 import { fromFields, fromUser, fromCharacteristic } from '../sharedSelectors';
 import { SCOPE_DATASET } from '@lodex/common';
 

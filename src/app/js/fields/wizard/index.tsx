@@ -13,7 +13,7 @@ import {
     SCOPE_GRAPHIC,
     toast,
 } from '@lodex/common';
-import { hideAddColumns } from '../../admin/parsing';
+import { hideAddColumns } from '../../../../../packages/admin-app/src/parsing';
 import { type Field } from '../../propTypes';
 import { fromFields } from '../../sharedSelectors';
 import Actions from './Actions';

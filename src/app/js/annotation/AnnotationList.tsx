@@ -22,9 +22,9 @@ import {
     ANNOTATION_KIND_REMOVAL,
     type AnnotationStatus,
 } from '@lodex/common';
-import { AnnotationStatusChip } from '../admin/annotations/AnnotationStatus';
-import { AnnotationValue } from '../admin/annotations/AnnotationValue';
-import { getResourceType } from '../admin/annotations/helpers/resourceType';
+import { AnnotationStatusChip } from '../../../../packages/admin-app/src/annotations/AnnotationStatus';
+import { AnnotationValue } from '../../../../packages/admin-app/src/annotations/AnnotationValue';
+import { getResourceType } from '../../../../packages/admin-app/src/annotations/helpers/resourceType';
 import { useTranslate } from '../i18n/I18NContext';
 import { CloseAllIcon } from '../lib/components/icons/CloseAllIcon';
 import { OpenAllIcon } from '../lib/components/icons/OpenAllIcon';

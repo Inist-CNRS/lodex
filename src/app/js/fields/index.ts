@@ -12,7 +12,7 @@ import { UPDATE_CHARACTERISTICS_SUCCESS } from '../characteristic';
 import {
     ADD_FIELD_TO_RESOURCE_SUCCESS,
     SAVE_RESOURCE_SUCCESS,
-} from '../public/resource';
+} from '../../../../packages/public-app/src/resource';
 import fieldSelectors, {
     NEW_CHARACTERISTIC_FORM_NAME as formName,
 } from './selectors';

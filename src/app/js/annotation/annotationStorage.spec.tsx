@@ -10,9 +10,9 @@ import {
 } from './annotationStorage';
 import { Provider } from 'react-redux';
 import configureStore from '../configureStore';
-import reducers from '../public/reducers';
+import reducers from '../../../../packages/public-app/src/reducers';
 import { createMemoryHistory } from 'history';
-import { newResourceAnnotated } from '../public/search/reducer';
+import { newResourceAnnotated } from '../../../../packages/public-app/src/search/reducer';
 import type { Dispatch } from 'redux';
 
 // @ts-expect-error TS7017

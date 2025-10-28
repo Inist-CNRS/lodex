@@ -2,10 +2,10 @@ import camelCase from 'lodash/camelCase';
 import { useSelector } from 'react-redux';
 import { useInView } from 'react-intersection-observer';
 
-import Property from '../public/Property';
+import Property from '../../../../packages/public-app/src/Property';
 import { fromFields, fromCharacteristic } from '../sharedSelectors';
 import type { CSSProperties } from 'react';
-import type { State } from '../admin/reducers';
+import type { State } from '../../../../packages/admin-app/src/reducers';
 
 const LOADING_BOX_HEIGHT = 250;
 

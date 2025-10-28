@@ -4,10 +4,10 @@ import { useWatch } from 'react-hook-form';
 
 import { Box, Typography } from '@mui/material';
 import { useSelector } from 'react-redux';
-import { fromFieldPreview } from '../../admin/selectors';
+import { fromFieldPreview } from '../../../../../packages/admin-app/src/selectors';
 import { SCOPE_DATASET, type ScopeType } from '@lodex/common';
 import { prepareFieldFormData } from '../sagas/saveField.ts';
-import type { State } from '../../admin/reducers.ts';
+import type { State } from '../../../../../packages/admin-app/src/reducers.ts';
 import type { PreviewLine } from '../types.ts';
 
 const ValuePreview = ({ scope }: { scope?: ScopeType }) => {

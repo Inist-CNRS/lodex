@@ -3,9 +3,9 @@ import { useSelector } from 'react-redux';
 import { fromFields, fromCharacteristic } from '../sharedSelectors';
 
 import DatasetCharacteristicItem from './DatasetCharacteristicItem';
-import { fromDisplayConfig } from '../public/selectors';
+import { fromDisplayConfig } from '../../../../packages/public-app/src/selectors';
 import { useEffect, type CSSProperties } from 'react';
-import type { State } from '../admin/reducers';
+import type { State } from '../../../../packages/admin-app/src/reducers';
 import { useTranslate } from '../i18n/I18NContext';
 
 const styles: Record<string, CSSProperties> = {

@@ -6,6 +6,8 @@ import { visualizer } from 'rollup-plugin-visualizer';
 import translations from '../api/src/services/translations';
 import { loaders } from '../../config.json';
 
+const port = 8081;
+
 export default defineConfig(({ mode }) => {
     const isDevelopment = mode === 'development';
 
@@ -35,14 +37,14 @@ export default defineConfig(({ mode }) => {
         },
 
         server: {
-            port: 8081,
+            port: port,
             host: '0.0.0.0',
             hmr: {
                 overlay: false,
             },
             proxy: {
                 '/root-admin': {
-                    target: 'http://localhost:8081',
+                    target: `http://localhost:${port}`,
                     rewrite: (path) => path.replace(/^\/root-admin/, '/src'),
                 },
             },

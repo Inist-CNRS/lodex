@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useHistory } from 'react-router-dom';
 import fetch from '../lib/fetch';
 import { getRequest } from '../user';
-import { getUserSessionStorageInfo } from '../admin/api/tools';
+import { getUserSessionStorageInfo } from '../../../../packages/admin-app/src/api/tools';
 
 export function useCanAnnotate() {
     const history = useHistory();

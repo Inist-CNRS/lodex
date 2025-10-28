@@ -20,7 +20,7 @@ import reducer, {
     changePositionValue,
 } from './';
 
-import { addFieldToResourceSuccess } from '../public/resource';
+import { addFieldToResourceSuccess } from '../../../../packages/public-app/src/resource';
 import { SCOPE_DOCUMENT } from '@lodex/common';
 
 describe('field reducer', () => {

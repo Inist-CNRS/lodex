@@ -16,7 +16,7 @@ import { useSizeObserver } from '../../../utils/chartsHooks';
 import injectData from '../../../injectData';
 import type { VegaData } from '../../../utils/components/vega-component/VegaComponent';
 import type { AspectRatio } from '../../../utils/aspectRatio';
-import type { State } from '../../../../admin/reducers';
+import type { State } from '../../../../../../../packages/admin-app/src/reducers';
 
 const styles = {
     container: {

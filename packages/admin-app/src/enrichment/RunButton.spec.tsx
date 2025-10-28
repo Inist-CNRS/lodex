@@ -1,0 +1,124 @@
+import { RunButton } from './RunButton';
+import { TaskStatus, toast } from '@lodex/common';
+import { act, render } from '../../../../src/test-utils';
+import { fireEvent } from '@testing-library/dom';
+
+jest.mock('@lodex/common/src/tools/toast');
+
+describe('RunButton', () => {
+    beforeEach(() => {
+        (toast as unknown as jest.Mock).mockClear();
+    });
+    it('should render a run button calling onLaunchEnrichment on click', () => {
+        const onLaunchEnrichment = jest.fn();
+        const { getByText } = render(
+            <RunButton
+                areEnrichmentsRunning={false}
+                enrichmentStatus={''}
+                id="id"
+                onLaunchEnrichment={onLaunchEnrichment}
+            />,
+        );
+
+        expect(getByText('run')).toBeInTheDocument();
+        expect(getByText('run')).not.toBeDisabled();
+
+        act(() => {
+            fireEvent.click(getByText('run'));
+        });
+        expect(onLaunchEnrichment).toHaveBeenCalledWith({
+            id: 'id',
+            action: 'launch',
+        });
+        expect(toast).toHaveBeenCalledTimes(0);
+    });
+    it('should render a run button calling onLaunchEnrichment on click and displaying a notification when other enrichments are running', () => {
+        const onLaunchEnrichment = jest.fn();
+        const { getByText } = render(
+            <RunButton
+                areEnrichmentsRunning={true}
+                enrichmentStatus={''}
+                id="id"
+                onLaunchEnrichment={onLaunchEnrichment}
+            />,
+        );
+
+        expect(getByText('run')).toBeInTheDocument();
+        expect(getByText('run')).not.toBeDisabled();
+
+        act(() => {
+            fireEvent.click(getByText('run'));
+        });
+        expect(onLaunchEnrichment).toHaveBeenCalledWith({
+            id: 'id',
+            action: 'launch',
+        });
+
+        expect(toast).toHaveBeenCalledWith('pending_enrichment', {
+            type: 'info',
+        });
+    });
+    it('should render a run button calling onLaunchEnrichment on click with relaunch action when status is FINISHED', () => {
+        const onLaunchEnrichment = jest.fn();
+        const { getByText } = render(
+            <RunButton
+                areEnrichmentsRunning={false}
+                enrichmentStatus={TaskStatus.FINISHED}
+                id="id"
+                onLaunchEnrichment={onLaunchEnrichment}
+            />,
+        );
+
+        expect(getByText('run')).toBeInTheDocument();
+        expect(getByText('run')).not.toBeDisabled();
+
+        act(() => {
+            fireEvent.click(getByText('run'));
+        });
+        expect(onLaunchEnrichment).toHaveBeenCalledWith({
+            id: 'id',
+            action: 'relaunch',
+        });
+        expect(toast).toHaveBeenCalledTimes(0);
+    });
+    it('should disable RunBUtton when status is PENDING', () => {
+        const onLaunchEnrichment = jest.fn();
+        const { getByText } = render(
+            <RunButton
+                areEnrichmentsRunning={false}
+                enrichmentStatus={TaskStatus.PENDING}
+                id="id"
+                onLaunchEnrichment={onLaunchEnrichment}
+            />,
+        );
+
+        expect(getByText('run')).toBeInTheDocument();
+        expect(getByText('run')).toBeDisabled();
+
+        act(() => {
+            fireEvent.click(getByText('run'));
+        });
+        expect(onLaunchEnrichment).toHaveBeenCalledTimes(0);
+        expect(toast).toHaveBeenCalledTimes(0);
+    });
+    it('should disable RunBUtton when status is IN_PROGRESS', () => {
+        const onLaunchEnrichment = jest.fn();
+        const { getByText } = render(
+            <RunButton
+                areEnrichmentsRunning={false}
+                enrichmentStatus={TaskStatus.IN_PROGRESS}
+                id="id"
+                onLaunchEnrichment={onLaunchEnrichment}
+            />,
+        );
+
+        expect(getByText('run')).toBeInTheDocument();
+        expect(getByText('run')).toBeDisabled();
+
+        act(() => {
+            fireEvent.click(getByText('run'));
+        });
+        expect(onLaunchEnrichment).toHaveBeenCalledTimes(0);
+        expect(toast).toHaveBeenCalledTimes(0);
+    });
+});
