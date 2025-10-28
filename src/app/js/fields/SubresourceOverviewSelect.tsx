@@ -5,7 +5,7 @@ import { TextField, MenuItem } from '@mui/material';
 import { Overview } from '@lodex/common';
 import { loadField } from '.';
 import { fromFields } from '../sharedSelectors';
-import fieldApi from '../admin/api/field';
+import fieldApi from '../../../../packages/admin-app/src/api/field';
 import FieldRepresentation from './FieldRepresentation';
 import { useTranslate } from '../i18n/I18NContext';
 import type { Field } from '../propTypes';

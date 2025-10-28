@@ -17,9 +17,9 @@ import path from 'path';
 import { END } from 'redux-saga';
 
 import configureStoreServer from '../../../../src/app/js/configureStoreServer';
-import reducers from '../../../../src/app/js/public/reducers';
-import Routes from '../../../../src/app/js/public/Routes';
-import sagas from '../../../../src/app/js/public/sagas';
+import reducers from '../../../public-app/src/reducers';
+import Routes from '../../../public-app/src/Routes';
+import sagas from '../../../public-app/src/sagas';
 import { getLocale, getCatalogFromArray, DEFAULT_TENANT } from '@lodex/common';
 import translations from '../services/translations';
 
@@ -350,6 +350,10 @@ app.use(
 );
 app.use(
     mount('/', serve(path.resolve(__dirname, '../../../root-admin-app/build'))),
+);
+app.use(mount('/', serve(path.resolve(__dirname, '../../../admin-app/build'))));
+app.use(
+    mount('/', serve(path.resolve(__dirname, '../../../public-app/build'))),
 );
 app.use(
     mount('/', serve(path.resolve(__dirname, '../../../../src/app/custom'))),

@@ -1,11 +1,11 @@
 import { DatasetCharacteristicItemComponent as DatasetCharacteristicItem } from './DatasetCharacteristicItem';
-import Property from '../public/Property';
+import Property from '../../../../packages/public-app/src/Property';
 
 import { useInView } from 'react-intersection-observer';
 import { render } from '../../../test-utils';
 jest.mock('react-intersection-observer');
 
-jest.mock('../public/Property', () => ({
+jest.mock('../../../../packages/public-app/src/Property', () => ({
     __esModule: true,
     default: jest.fn(() => <div>Mocked Property</div>),
 }));

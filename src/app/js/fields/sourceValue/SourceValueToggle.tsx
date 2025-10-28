@@ -21,7 +21,7 @@ import SourceValueRoutine from './SourceValueRoutine';
 import { useTranslate } from '../../i18n/I18NContext';
 import { useSelector } from 'react-redux';
 import type { Transformer, TransformerDraft } from '../types';
-import type { SubResource } from '../../admin/subresource';
+import type { SubResource } from '../../../../../packages/admin-app/src/subresource';
 
 const TRANSFORMERS_FORM_STATUS = new Map([
     [

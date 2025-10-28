@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Autocomplete, Box, TextField } from '@mui/material';
 import { useSelector } from 'react-redux';
-import { fromParsing } from '../../admin/selectors';
+import { fromParsing } from '../../../../../packages/admin-app/src/selectors';
 import { useTranslate } from '../../i18n/I18NContext';
 import type { TransformerDraft } from '../types.ts';
 

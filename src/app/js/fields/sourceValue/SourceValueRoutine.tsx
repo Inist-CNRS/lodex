@@ -5,7 +5,7 @@ import { Box, Button, IconButton, Tooltip, Typography } from '@mui/material';
 import { fromFields } from '../../sharedSelectors';
 import { useSelector } from 'react-redux';
 import { getFieldForSpecificScope } from '@lodex/common';
-import SearchAutocomplete from '../../admin/Search/SearchAutocomplete';
+import SearchAutocomplete from '../../../../../packages/admin-app/src/Search/SearchAutocomplete';
 import RoutineCatalogAutocomplete from '../wizard/RoutineCatalogAutocomplete';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';

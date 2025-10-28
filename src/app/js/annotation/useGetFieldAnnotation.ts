@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { toast } from '@lodex/common';
-import { getUserSessionStorageInfo } from '../admin/api/tools';
+import { getUserSessionStorageInfo } from '../../../../packages/admin-app/src/api/tools';
 import { useTranslate } from '../i18n/I18NContext';
 import fetch from '../lib/fetch';
 import { getRequest } from '../user';

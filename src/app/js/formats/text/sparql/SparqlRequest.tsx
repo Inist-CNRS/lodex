@@ -8,7 +8,7 @@ import URL from 'url';
 
 import { type Field } from '../../../propTypes';
 
-import { fromFormat } from '../../../public/selectors';
+import { fromFormat } from '../../../../../../packages/public-app/src/selectors';
 import { loadFormatData } from '../../reducer';
 import Loading from '../../../lib/components/Loading';
 import { isURL } from '@lodex/common';
