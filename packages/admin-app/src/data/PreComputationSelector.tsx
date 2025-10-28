@@ -5,6 +5,11 @@ import { getUserSessionStorageInfo } from '@lodex/frontend-common/getUserSession
 import { useEffect, useMemo } from 'react';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 import { getRequest } from '@lodex/frontend-common/user/reducer';
+import {
+    FINISHED,
+    labelByStatus,
+    type TaskStatusType,
+} from '@lodex/common/src/taskStatusType';
 
 type PreComputationSelectorProps = {
     disabled?: boolean;
@@ -31,11 +36,22 @@ export const PreComputationSelector = ({
             );
             const { response } = await fetch(request);
 
+            console.log({ response });
+
             // Fetch precomputations from API
             return response.map(
-                ({ name, _id }: { name: string; _id: string }) => ({
+                ({
+                    name,
+                    _id,
+                    status,
+                }: {
+                    name: string;
+                    _id: string;
+                    status: '';
+                }) => ({
                     name,
                     id: _id,
+                    status,
                 }),
             );
         },
@@ -68,11 +84,25 @@ export const PreComputationSelector = ({
             value={value}
             onChange={(e) => onChange(e.target.value as string)}
         >
-            {data?.map((precomp: { name: string; id: string }) => (
-                <MenuItem key={precomp.id} value={precomp.id}>
-                    {precomp.name}
-                </MenuItem>
-            )) || null}
+            {data?.map(
+                ({
+                    name,
+                    id,
+                    status,
+                }: {
+                    name: string;
+                    id: string;
+                    status: TaskStatusType | '';
+                }) => (
+                    <MenuItem
+                        key={id}
+                        value={id}
+                        disabled={status !== FINISHED}
+                    >
+                        {name} ({translate(labelByStatus[status ?? ''])})
+                    </MenuItem>
+                ),
+            ) || null}
         </Select>
     );
 };
