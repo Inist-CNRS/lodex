@@ -43,6 +43,9 @@ export const SearchSearchBarComponent = ({
     const [localQuery, handleSearch, handleClearSearch] = useSearchBar(
         defaultQuery,
         search,
+        () => {}, // onSearchClear
+        500, // debounceTimeout
+        true, // serverSideSearch - let server handle normalization
     );
 
     const canAnnotate = useCanAnnotate();

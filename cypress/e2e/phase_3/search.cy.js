@@ -302,7 +302,7 @@ describe('Search', () => {
                 timeout: 500,
             }).click();
 
-            // Wait for the async facet clearing saga to complete and search to re-execute
+            // Wait for facets to be reset by checking that the search results count returns to 10
             searchDrawer.checkResultsCount(10);
 
             // Première mise en ligne
@@ -312,7 +312,7 @@ describe('Search', () => {
             );
             cy.findByRole('checkbox', {
                 name: '2011',
-                timeout: 500,
+                timeout: 2000,
             }).should('exist');
 
             // Dernière mise en ligne
@@ -323,7 +323,7 @@ describe('Search', () => {
 
             cy.findByRole('checkbox', {
                 name: '2014',
-                timeout: 500,
+                timeout: 2000,
             }).should('exist');
         });
 
@@ -351,7 +351,7 @@ describe('Search', () => {
                     .click(),
             );
 
-            // Première mise en ligne
+            // Première mise en ligne should be reset
             cy.findByPlaceholderText(/Première mise en ligne en/).should(
                 'have.value',
                 '',
@@ -359,10 +359,10 @@ describe('Search', () => {
 
             cy.findByRole('checkbox', {
                 name: '2011',
-                timeout: 500,
+                timeout: 2000,
             }).should('exist');
 
-            // Dernière mise en ligne
+            // Dernière mise en ligne should still be filtered
             cy.findByPlaceholderText(/Dernière mise en ligne en/).should(
                 'have.value',
                 '2013',
@@ -370,7 +370,7 @@ describe('Search', () => {
 
             cy.findByRole('checkbox', {
                 name: '2014',
-                timeout: 500,
+                timeout: 2000,
             }).should('not.exist');
         });
 
