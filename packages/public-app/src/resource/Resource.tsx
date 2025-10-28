@@ -13,9 +13,15 @@ import { getResourceUri } from '@lodex/common';
 import { preLoadPublication } from '../../../../src/app/js/fields';
 import Link from '../../../../src/app/js/lib/components/Link';
 import Loading from '../../../../src/app/js/lib/components/Loading';
-import NavButton, { NEXT, PREV } from '../../../../src/app/js/lib/components/NavButton';
+import NavButton, {
+    NEXT,
+    PREV,
+} from '../../../../src/app/js/lib/components/NavButton';
 import stylesToClassname from '../../../../src/app/js/lib/stylesToClassName';
-import { fromCharacteristic, fromFields } from '../../../../src/app/js/sharedSelectors';
+import {
+    fromCharacteristic,
+    fromFields,
+} from '../../../../src/app/js/sharedSelectors';
 import { preLoadExporters } from '../export';
 import { fromResource, fromSearch } from '../selectors';
 import { preLoadResource } from './index';

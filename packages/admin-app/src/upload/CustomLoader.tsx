@@ -20,7 +20,10 @@ import {
 } from './index';
 import loaderApi from '../api/loader';
 import CancelButton from '../../../../src/app/js/lib/components/CancelButton';
-import { translate, useTranslate } from '../../../../src/app/js/i18n/I18NContext';
+import {
+    translate,
+    useTranslate,
+} from '../../../../src/app/js/i18n/I18NContext';
 import type { State } from '../reducers';
 
 type CustomLoaderFormData = {
