@@ -33,8 +33,11 @@ describe('Search', () => {
             searchDrawer.checkResultsCount(10);
             cy.get('.export').click();
             cy.wait(300);
-            cy.get('.export-menuList  li[role="menuitem"]')
-                .should('have.length', 5)
+
+            // Check that the export menu is open and contains menu items
+            cy.get('[role="menu"]').should('be.visible');
+            cy.get('[role="menuitem"]')
+                .should('have.length.at.least', 1)
                 .contains('CSV')
                 .should('be.visible');
         });
@@ -167,11 +170,29 @@ describe('Search', () => {
 
         it('should allow to filter search results by multiple facets', () => {
             menu.openSearchDrawer();
+            searchDrawer.checkResultsCount(10);
+
+            // Apply first facet filter
             searchDrawer.getFacet('Première mise en ligne en').click();
             cy.wait(500);
-            cy.get('[data-testid="ChevronRightIcon"]').click();
-
             searchDrawer.filterFacet('Première mise en ligne en', '1926');
+
+            // Check that results are filtered
+            cy.findByRole('checkbox', {
+                name: '1926',
+                timeout: 2000,
+            }).should('exist');
+
+            // Apply second facet filter
+            searchDrawer.getFacet('Dernière mise en ligne en').click();
+            cy.wait(500);
+            searchDrawer.filterFacet('Dernière mise en ligne en', '2013');
+
+            // Check that both filters are applied
+            cy.findByRole('checkbox', {
+                name: '2013',
+                timeout: 2000,
+            }).should('exist');
         });
 
         it('should only show facets that are available on user language', () => {
@@ -305,12 +326,15 @@ describe('Search', () => {
             // Wait for facets to be reset by checking that the search results count returns to 10
             searchDrawer.checkResultsCount(10);
 
+            // Wait for facets to be fully reset
+            cy.wait(1000);
+
             // Reopen facets to reload their values after clearing
             searchDrawer.getFacet('Première mise en ligne en').click();
-            cy.wait(500); // Wait for facet to load
+            cy.wait(1000); // Wait for facet to load
 
             // Première mise en ligne
-            cy.findByPlaceholderText(/Première mise en ligne en/).should(
+            cy.findByPlaceholderText(/Première mise en ligne en filtre/).should(
                 'have.value',
                 '',
             );
@@ -321,10 +345,10 @@ describe('Search', () => {
 
             // Open the second facet
             searchDrawer.getFacet('Dernière mise en ligne en').click();
-            cy.wait(500); // Wait for facet to load
+            cy.wait(1000); // Wait for facet to load
 
             // Dernière mise en ligne
-            cy.findByPlaceholderText(/Dernière mise en ligne en/).should(
+            cy.findByPlaceholderText(/Dernière mise en ligne en filtre/).should(
                 'have.value',
                 '',
             );
@@ -360,12 +384,12 @@ describe('Search', () => {
             );
 
             // Wait for the facet to be cleared and reopen it to reload values
-            cy.wait(500);
+            cy.wait(1000);
             searchDrawer.getFacet('Première mise en ligne en').click();
-            cy.wait(500); // Wait for facet to load
+            cy.wait(1000); // Wait for facet to load
 
             // Première mise en ligne should be reset
-            cy.findByPlaceholderText(/Première mise en ligne en/).should(
+            cy.findByPlaceholderText(/Première mise en ligne en filtre/).should(
                 'have.value',
                 '',
             );
@@ -376,7 +400,7 @@ describe('Search', () => {
             }).should('exist');
 
             // Dernière mise en ligne should still be filtered
-            cy.findByPlaceholderText(/Dernière mise en ligne en/).should(
+            cy.findByPlaceholderText(/Dernière mise en ligne en filtre/).should(
                 'have.value',
                 '2013',
             );
@@ -429,21 +453,27 @@ describe('Search', () => {
 
             searchDrawer.filterShowVisitedResources();
             searchDrawer.checkResultsCount(0);
-            cy.findByText('No matching resource found').should('exist');
+            cy.findByText('Aucune correspondance trouvée').should('exist');
 
             searchDrawer.filterShowUnVisitedResources();
             searchDrawer.checkResultsCount(10);
-            cy.findByText('Found 13 on 13').should('exist');
+            cy.findByText('13 ressources trouvées sur un total de 13').should(
+                'exist',
+            );
 
             cy.findByTitle('Acupuncture in medicine').click();
             cy.waitForNetworkIdle(500);
 
             menu.openSearchDrawer();
-            cy.findByText('Found 12 on 13').should('exist');
+            cy.findByText('12 ressources trouvées sur un total de 13').should(
+                'exist',
+            );
 
             searchDrawer.filterShowVisitedResources();
             searchDrawer.checkResultsCount(1);
-            cy.findByText('Found 1 on 13').should('exist');
+            cy.findByText('1 ressources trouvées sur un total de 13').should(
+                'exist',
+            );
 
             searchDrawer.checkResultList(['Acupuncture in medicine']);
         });

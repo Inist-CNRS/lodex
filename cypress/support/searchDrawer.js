@@ -119,7 +119,7 @@ export const sortFacet = (name, sortName) => {
 };
 
 export const filterFacet = (name, filter) => {
-    getFacet(name).get(`input[placeholder$="${name}"`).type(filter);
+    getFacet(name).get(`input[placeholder*="${name}"]`).type(filter);
     cy.wait(1000);
 };
 
