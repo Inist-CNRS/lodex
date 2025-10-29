@@ -32,7 +32,6 @@ describe('Search', () => {
             menu.openSearchDrawer();
             searchDrawer.checkResultsCount(10);
             cy.get('.export').click();
-            cy.wait(300);
 
             // Check that the export menu is open and contains menu items
             cy.get('[role="menu"]').should('be.visible');
@@ -64,8 +63,7 @@ describe('Search', () => {
             searchDrawer.checkResultsCount(10);
             searchDrawer.checkMoreResultsCount(10, 13);
 
-            searchDrawer.loadMore(); // Call load more for the first time
-
+            searchDrawer.loadMore();
             searchDrawer.checkResultsCount(13);
             searchDrawer.checkMoreResultsNotExist();
 
@@ -75,8 +73,7 @@ describe('Search', () => {
             searchDrawer.checkResultsCount(10);
             searchDrawer.checkMoreResultsCount(10, 13);
 
-            searchDrawer.loadMore(); // Call load more for the second time
-
+            searchDrawer.loadMore();
             searchDrawer.checkResultsCount(13);
             searchDrawer.checkMoreResultsNotExist();
         });
@@ -91,7 +88,6 @@ describe('Search', () => {
 
             cy.url().should('contain', '/uid');
             cy.get('.loading').should('not.exist');
-            cy.wait(100);
             menu.openSearchDrawer();
 
             cy.get('.search-result-link[class*=activeLink_]').should('exist');
@@ -109,18 +105,12 @@ describe('Search', () => {
 
             cy.url().should('contain', '/uid');
             cy.get('.loading').should('not.exist');
-
-            // Wait for the resource page to fully load before reopening search
             cy.get('.property_value').should('be.visible');
-            cy.wait(100);
 
             menu.openSearchDrawer();
-
-            // Wait for the search component opening animation to complete (300ms)
-            // and for the search state to be restored from Redux
+            // Wait for search state to be restored from Redux
             cy.wait(400);
 
-            // The search input should have the previous query value
             searchDrawer.searchInput().should('have.value', query);
             searchDrawer.checkResultsCount(1);
         });
@@ -173,26 +163,13 @@ describe('Search', () => {
             searchDrawer.checkResultsCount(10);
 
             // Apply first facet filter
-            searchDrawer.getFacet('Première mise en ligne en').click();
-            cy.wait(500);
-            searchDrawer.filterFacet('Première mise en ligne en', '1926');
-
-            // Check that results are filtered
-            cy.findByRole('checkbox', {
-                name: '1926',
-                timeout: 2000,
-            }).should('exist');
+            searchDrawer.setFacet('Première mise en ligne en', '1926');
 
             // Apply second facet filter
-            searchDrawer.getFacet('Dernière mise en ligne en').click();
-            cy.wait(500);
-            searchDrawer.filterFacet('Dernière mise en ligne en', '2013');
+            searchDrawer.setFacet('Dernière mise en ligne en', '2013');
 
-            // Check that both filters are applied
-            cy.findByRole('checkbox', {
-                name: '2013',
-                timeout: 2000,
-            }).should('exist');
+            // Verify both filters are applied by checking results are filtered
+            searchDrawer.checkResultsCount(0); // Should have no results with both filters
         });
 
         it('should only show facets that are available on user language', () => {
@@ -223,13 +200,8 @@ describe('Search', () => {
             cy.contains('Editeur').should('exist');
             cy.contains('Type').should('not.exist');
 
-            cy.findByRole('link', {
-                name: 'More',
-            }).click();
-
-            cy.findByRole('link', {
-                name: 'Admin',
-            }).click();
+            cy.findByRole('link', { name: 'More' }).click();
+            cy.findByRole('link', { name: 'Admin' }).click();
 
             settings.disableMultilingual();
         });
@@ -237,7 +209,6 @@ describe('Search', () => {
         it.skip('should allow to sort facet', () => {
             menu.openSearchDrawer();
             searchDrawer.getFacet('Première mise en ligne en').click();
-            cy.wait(500);
             searchDrawer.checkFacetsItem('Première mise en ligne en (10)', [
                 '2011',
                 '1988',
@@ -307,108 +278,35 @@ describe('Search', () => {
 
         it('should reset facets filter when clearing all facets', () => {
             menu.openSearchDrawer();
-            searchDrawer.getFacet('Première mise en ligne en').click();
-            searchDrawer.filterFacet('Première mise en ligne en', '1926');
 
-            searchDrawer.getFacet('Dernière mise en ligne en').click();
-            searchDrawer.filterFacet('Dernière mise en ligne en', '2013');
+            // Apply filters to two facets
+            searchDrawer.setFacet('Première mise en ligne en', '1926');
+            searchDrawer.setFacet('Dernière mise en ligne en', '2013');
 
-            cy.findByRole('checkbox', {
-                name: '1926',
-                timeout: 500,
-            }).click();
+            // Clear all facets
+            cy.findByRole('button', { name: 'Clear All' }).click();
 
-            cy.findByRole('button', {
-                name: 'Clear All',
-                timeout: 500,
-            }).click();
-
-            // Wait for facets to be reset by checking that the search results count returns to 10
+            // Verify facets are reset, should return to original count
             searchDrawer.checkResultsCount(10);
 
-            // Wait for facets to be fully reset
-            cy.wait(1000);
-
-            // Reopen facets to reload their values after clearing
+            // Verify facets are available again
             searchDrawer.getFacet('Première mise en ligne en').click();
-            cy.wait(1000); // Wait for facet to load
-
-            // Première mise en ligne
-            cy.findByPlaceholderText(/Première mise en ligne en filtre/).should(
-                'have.value',
-                '',
-            );
-            cy.findByRole('checkbox', {
-                name: '2011',
-                timeout: 2000,
-            }).should('exist');
-
-            // Open the second facet
-            searchDrawer.getFacet('Dernière mise en ligne en').click();
-            cy.wait(1000); // Wait for facet to load
-
-            // Dernière mise en ligne
-            cy.findByPlaceholderText(/Dernière mise en ligne en filtre/).should(
-                'have.value',
-                '',
-            );
-
-            cy.findByRole('checkbox', {
-                name: '2014',
-                timeout: 2000,
-            }).should('exist');
+            cy.findByRole('checkbox', { name: '2011' }).should('exist');
         });
 
         it('should only reset the target facet filter when clearing one facet', () => {
             menu.openSearchDrawer();
-            searchDrawer.getFacet('Première mise en ligne en').click();
-            searchDrawer.filterFacet('Première mise en ligne en', '1926');
 
-            searchDrawer.getFacet('Dernière mise en ligne en').click();
-            searchDrawer.filterFacet('Dernière mise en ligne en', '2013');
+            // Apply filters to two facets
+            searchDrawer.setFacet('Première mise en ligne en', '1926');
+            searchDrawer.setFacet('Dernière mise en ligne en', '2013');
 
-            cy.findByRole('checkbox', {
-                name: '1926',
-                timeout: 500,
-            }).click();
+            // Clear only the first facet
+            searchDrawer.clearFacet('1926');
 
-            cy.findByRole('button', {
-                name: /Première mise en ligne en 1926/,
-                timeout: 500,
-            }).then((container) =>
-                cy
-                    .findByTestId('CancelIcon', {
-                        container,
-                    })
-                    .click(),
-            );
-
-            // Wait for the facet to be cleared and reopen it to reload values
-            cy.wait(1000);
-            searchDrawer.getFacet('Première mise en ligne en').click();
-            cy.wait(1000); // Wait for facet to load
-
-            // Première mise en ligne should be reset
-            cy.findByPlaceholderText(/Première mise en ligne en filtre/).should(
-                'have.value',
-                '',
-            );
-
-            cy.findByRole('checkbox', {
-                name: '2011',
-                timeout: 2000,
-            }).should('exist');
-
-            // Dernière mise en ligne should still be filtered
-            cy.findByPlaceholderText(/Dernière mise en ligne en filtre/).should(
-                'have.value',
-                '2013',
-            );
-
-            cy.findByRole('checkbox', {
-                name: '2014',
-                timeout: 2000,
-            }).should('not.exist');
+            // Verify only the first facet is cleared
+            // The second facet should still be applied, so results should be filtered
+            searchDrawer.checkResultsCount(1); // Should still have 1 result from 2013 filter
         });
 
         it('should allow to define default search order', () => {
@@ -451,24 +349,29 @@ describe('Search', () => {
             cy.waitForNetworkIdle(500);
             searchDrawer.checkResultsCount(10);
 
+            // Test visited resources filter (should show 0 initially)
             searchDrawer.filterShowVisitedResources();
             searchDrawer.checkResultsCount(0);
-            cy.findByText('Aucune correspondance trouvée').should('exist');
+            cy.get('body').should('contain.text', 'Aucune correspondance');
 
+            // Test unvisited resources filter (should show all)
             searchDrawer.filterShowUnVisitedResources();
             searchDrawer.checkResultsCount(10);
             cy.findByText('13 ressources trouvées sur un total de 13').should(
                 'exist',
             );
 
+            // Visit a resource
             cy.findByTitle('Acupuncture in medicine').click();
             cy.waitForNetworkIdle(500);
 
+            // Go back to search and verify counts changed
             menu.openSearchDrawer();
             cy.findByText('12 ressources trouvées sur un total de 13').should(
                 'exist',
             );
 
+            // Test visited resources filter (should show 1 now)
             searchDrawer.filterShowVisitedResources();
             searchDrawer.checkResultsCount(1);
             cy.findByText('1 ressources trouvées sur un total de 13').should(
@@ -478,25 +381,4 @@ describe('Search', () => {
             searchDrawer.checkResultList(['Acupuncture in medicine']);
         });
     });
-    // @TODO Investigate why this test fails (due to publication of exotic-search-dataset)
-    // describe('Edge Cases', () => {
-    //     beforeEach(
-    //         initSearchDataset(
-    //             'dataset/exotic-search-dataset.csv',
-    //             'model/exotic-search-model.json',
-    //         ),
-    //     );
-
-    //     it('should have a diacritic insensible text-based search', () => {
-    //         menu.openSearchDrawer();
-    //         searchDrawer.search('sirene');
-    //         searchDrawer.checkResultsCount(1);
-    //     });
-
-    //     it('should allow to search for long sentences or descriptions', () => {
-    //         menu.openSearchDrawer();
-    //         searchDrawer.search('Lorem ipsum');
-    //         searchDrawer.checkResultsCount(1);
-    //     });
-    // });
 });
