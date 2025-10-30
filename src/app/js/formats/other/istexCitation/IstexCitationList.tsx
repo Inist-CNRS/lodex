@@ -4,7 +4,7 @@ import FileDownload from '@mui/icons-material/GetApp';
 import Link from '../../../lib/components/Link';
 
 import { getMoreDocumentData } from '../istexSummary/getIstexData';
-import ButtonWithStatus from '../../../lib/components/ButtonWithStatus';
+import ButtonWithStatus from '@lodex/frontend-common/components/ButtonWithStatus';
 import stylesToClassname from '../../../lib/stylesToClassName';
 import { HOST_TITLE_RAW } from '../istexSummary/constants';
 import { ISTEX_SITE_URL } from '@lodex/common';

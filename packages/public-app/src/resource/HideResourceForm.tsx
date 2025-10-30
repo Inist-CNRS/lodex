@@ -11,7 +11,7 @@ import {
 } from '@mui/material';
 import { TextField } from '@lodex/frontend-common/form-fields/TextField';
 import CancelButton from '../../../../src/app/js/lib/components/CancelButton';
-import ButtonWithStatus from '../../../../src/app/js/lib/components/ButtonWithStatus';
+import ButtonWithStatus from '@lodex/frontend-common/components/ButtonWithStatus';
 import { hideResource } from '../api/hideResource';
 import { hideResourceSuccess } from './index';
 import Alert from '@lodex/frontend-common/components/Alert';

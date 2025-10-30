@@ -26,14 +26,6 @@
         "noImplicitAny": true,
         "types": ["cypress", "@testing-library/cypress"]
     },
-    "include": [
-        "vite.config.ts",
-        "test-utils.tsx",
-        "src/app",
-        "packages/frontend-common/components/Alert.tsx",
-        "packages/frontend-common/components/Alert.spec.tsx",
-        "packages/frontend-common/components/ButtonWithDialog.tsx",
-        "packages/frontend-common/components/ButtonWithStatus.spec.tsx"
-    ],
+    "include": ["vite.config.ts", "test-utils.tsx", "src/app"],
     "exclude": ["src/build", "src/app/build"]
 }
