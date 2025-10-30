@@ -6,7 +6,7 @@ import {
     TextField,
 } from '@mui/material';
 import { useController } from 'react-hook-form';
-import { useTranslate } from '../../../../src/app/js/i18n/I18NContext';
+import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 
 type SourceValueFromColumnsProps = {
     name: string;

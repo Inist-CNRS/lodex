@@ -3,7 +3,7 @@ import compose from 'recompose/compose';
 
 import Alert from '../lib/components/Alert';
 import { fromFields } from '../sharedSelectors';
-import { useTranslate } from '../i18n/I18NContext';
+import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 
 interface InvalidFieldPropertiesProps {
     invalidProperties?: {

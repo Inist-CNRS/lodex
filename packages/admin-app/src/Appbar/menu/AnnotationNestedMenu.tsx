@@ -5,7 +5,7 @@ import ListItemText from '@mui/material/ListItemText';
 import MenuItem from '@mui/material/MenuItem';
 import React, { useRef } from 'react';
 
-import { useTranslate } from '../../../../../src/app/js/i18n/I18NContext';
+import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 import { useExportAnnotations } from '../../annotations/hooks/useExportAnnotations';
 import { useGetAnnotations } from '../../annotations/hooks/useGetAnnotations';
 import { useImportAnnotations } from '../../annotations/hooks/useImportAnnotations';

@@ -6,7 +6,7 @@ import { render } from '../../../../src/test-utils';
 import MenuItem, { type ConfigRole } from './MenuItem';
 import { ADMIN_ROLE, DEFAULT_TENANT } from '@lodex/common';
 import { MemoryRouter } from 'react-router';
-import { I18NContext } from '../../../../src/app/js/i18n/I18NContext';
+import { I18NContext } from '@lodex/frontend-common/i18n/I18NContext';
 
 describe('MenuItem', () => {
     const onClick = jest.fn();

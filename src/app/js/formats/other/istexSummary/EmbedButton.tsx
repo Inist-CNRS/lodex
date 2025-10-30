@@ -5,7 +5,7 @@ import classnames from 'classnames';
 
 import ButtonWithDialog from '../../../lib/components/ButtonWithDialog';
 import { getCleanHost } from '@lodex/common';
-import { useTranslate } from '../../../i18n/I18NContext';
+import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 
 interface EmbedButtonProps {
     className?: string;

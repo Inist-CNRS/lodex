@@ -5,7 +5,7 @@ import { useParams } from 'react-router';
 
 import { addField } from '../../../../src/app/js/fields';
 import { fromFields } from '../../../../src/app/js/sharedSelectors';
-import { useTranslate } from '../../../../src/app/js/i18n/I18NContext';
+import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 
 interface AddFieldButtonComponentProps {
     onAddNewField(...args: unknown[]): unknown;

@@ -2,7 +2,7 @@ import React from 'react';
 import { MenuItem, Button, TextField, Box } from '@mui/material';
 import ListAltIcon from '@mui/icons-material/ListAlt';
 import FormatCatalogDialog, { type FormatProps } from './FormatCatalog';
-import { useTranslate } from '../i18n/I18NContext';
+import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 
 interface SelectFormatProps {
     formats: FormatProps[];

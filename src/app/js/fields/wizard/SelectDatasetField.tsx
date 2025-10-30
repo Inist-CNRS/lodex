@@ -3,7 +3,7 @@ import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 
 import { fromParsing } from '../../../../../packages/admin-app/src/selectors';
-import { useTranslate } from '../../i18n/I18NContext';
+import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 
 interface SelectDatasetFieldComponentProps {
     datasetFields: string[];

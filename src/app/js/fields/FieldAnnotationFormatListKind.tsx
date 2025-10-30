@@ -1,5 +1,5 @@
 import { MenuItem } from '@mui/material';
-import { useTranslate } from '../i18n/I18NContext';
+import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 import { FIELD_ANNOTATION_FORMAT_LIST } from './FieldAnnotationFormat';
 import { useFormContext, useWatch } from 'react-hook-form';
 import { TextField } from '../../../../packages/frontend-common/form-fields/TextField.tsx';

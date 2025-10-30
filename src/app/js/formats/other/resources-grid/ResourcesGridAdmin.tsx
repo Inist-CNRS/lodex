@@ -1,6 +1,6 @@
 import React, { useCallback, type ChangeEvent } from 'react';
 import { MenuItem, Checkbox, TextField, FormControlLabel } from '@mui/material';
-import { useTranslate } from '../../../i18n/I18NContext';
+import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 
 import { FormatDefaultParamsFieldSet } from '../../utils/components/field-set/FormatFieldSets';
 import FormatGroupedFieldSet from '../../utils/components/field-set/FormatGroupedFieldSet';

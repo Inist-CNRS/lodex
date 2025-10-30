@@ -1,5 +1,5 @@
 import { Stack, Typography } from '@mui/material';
-import { useTranslate } from '../i18n/I18NContext';
+import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 import FieldAnnotationKindAdditionInput from './FieldAnnotationKindAdditionInput';
 import FieldAnnotationKindCorrectionInput from './FieldAnnotationKindCorrectionInput';
 import FieldAnnotationKindRemovalInput from './FieldAnnotationKindRemovalInput';

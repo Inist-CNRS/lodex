@@ -10,7 +10,7 @@ import { isLongText, getShortText } from '../../../../src/app/js/lib/longTexts';
 
 import { type Field } from '../../../../src/app/js/propTypes';
 import FieldInternalIcon from '../../../../src/app/js/fields/FieldInternalIcon';
-import { useTranslate } from '../../../../src/app/js/i18n/I18NContext';
+import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 
 const getStyle = memoize((field) => {
     if (field.scope === SCOPE_DATASET) {

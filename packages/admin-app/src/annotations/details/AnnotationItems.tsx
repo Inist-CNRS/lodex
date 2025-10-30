@@ -5,7 +5,7 @@ import Typography from '@mui/material/Typography';
 import React from 'react';
 
 import FieldRepresentation from '../../../../../src/app/js/fields/FieldRepresentation';
-import { useTranslate } from '../../../../../src/app/js/i18n/I18NContext';
+import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 import { hasFieldMultipleValues } from '../helpers/field';
 import { AnnotationProposedValue } from './AnnotationProposedValue';
 import { ANNOTATION_GRID_COLUMNS, AnnotationValue } from './AnnotationValue';

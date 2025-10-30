@@ -9,7 +9,7 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Typography from '@mui/material/Typography';
 import Loading from '../../../../lib/components/Loading';
-import { useTranslate } from '../../../../i18n/I18NContext';
+import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 import type { InteractionProps } from 'react-json-view';
 
 const ReactJson = lazy(() => import('react-json-view'));

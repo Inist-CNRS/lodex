@@ -15,7 +15,7 @@ import { RunButton } from './RunButton';
 import { fromPrecomputed } from '../selectors';
 import { launchPrecomputed } from './index';
 import { TaskStatus, toast } from '@lodex/common';
-import { useTranslate } from '../../../../src/app/js/i18n/I18NContext';
+import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 import { PrecomputedStatus } from './PrecomputedStatus';
 
 interface PrecomputedListProps {

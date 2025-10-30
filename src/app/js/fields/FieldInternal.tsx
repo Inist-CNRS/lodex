@@ -2,7 +2,7 @@ import { Box, Typography } from '@mui/material';
 
 import FieldToggleInternalScope from './FieldToggleInternalScope';
 import FieldInternalName from './FieldInternalName';
-import { useTranslate } from '../i18n/I18NContext.tsx';
+import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 
 export const FieldInternalComponent = () => {
     const { translate } = useTranslate();

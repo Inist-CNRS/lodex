@@ -1,4 +1,4 @@
-import { useTranslate } from '../../../../src/app/js/i18n/I18NContext';
+import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 
 import stylesToClassname from '../../../../src/app/js/lib/stylesToClassName';
 import Link from '../../../../src/app/js/lib/components/Link';

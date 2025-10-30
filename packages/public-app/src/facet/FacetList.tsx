@@ -3,7 +3,7 @@ import classnames from 'classnames';
 import { useMemo } from 'react';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
-import { translate } from '../../../../src/app/js/i18n/I18NContext';
+import { translate } from '@lodex/frontend-common/i18n/I18NContext';
 
 import stylesToClassname from '../../../../src/app/js/lib/stylesToClassName';
 import { fromFields } from '../../../../src/app/js/sharedSelectors';

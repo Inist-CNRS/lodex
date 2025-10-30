@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { Swipeable } from 'react-swipeable';
 import compose from 'recompose/compose';
-import { useTranslate } from '../../../../src/app/js/i18n/I18NContext';
+import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 
 import { getResourceUri } from '@lodex/common';
 import { preLoadPublication } from '../../../../src/app/js/fields';

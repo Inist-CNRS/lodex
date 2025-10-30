@@ -4,7 +4,7 @@ import classnames from 'classnames';
 import { getMoreDocumentData } from './getIstexData';
 import ButtonWithStatus from '../../../lib/components/ButtonWithStatus';
 import stylesToClassname from '../../../lib/stylesToClassName';
-import { useTranslate } from '../../../i18n/I18NContext';
+import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 
 const styles = stylesToClassname(
     {

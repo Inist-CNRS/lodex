@@ -7,7 +7,7 @@ import DocumentScannerIcon from '@mui/icons-material/DocumentScanner';
 import EqualizerIcon from '@mui/icons-material/Equalizer';
 import HomeIcon from '@mui/icons-material/Home';
 import { ToggleButton, ToggleButtonGroup, Tooltip } from '@mui/material';
-import { useTranslate } from '../i18n/I18NContext';
+import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 
 export const FieldToggleInternalScopeComponent = ({
     name,

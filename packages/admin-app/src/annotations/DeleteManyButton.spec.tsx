@@ -1,6 +1,6 @@
 import { waitFor } from '@testing-library/dom';
 import { render } from '../../../../src/test-utils';
-import { TestI18N } from '../../../../src/app/js/i18n/I18NContext';
+import { TestI18N } from '@lodex/frontend-common/i18n/I18NContext';
 import { DeleteManyButton } from './DeleteManyButton';
 import { useDeleteManyAnnotation } from './hooks/useDeleteManyAnnotation';
 

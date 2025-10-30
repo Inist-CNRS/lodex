@@ -2,7 +2,7 @@ import { createTheme, ThemeProvider } from '@mui/material';
 import { render, waitFor } from '@testing-library/react';
 import React from 'react';
 import defaultTheme from '../../custom/themes/default/defaultTheme';
-import { TestI18N } from '../i18n/I18NContext';
+import { TestI18N } from '@lodex/frontend-common/i18n/I18NContext';
 import { HistoryDrawer } from './HistoryDrawer';
 import { MODE_ALL, MODE_CLOSED, type Mode } from './HistoryDrawer.const';
 import { useGetFieldAnnotation } from './useGetFieldAnnotation';

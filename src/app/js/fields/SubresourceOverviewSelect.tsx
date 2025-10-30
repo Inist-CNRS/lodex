@@ -7,7 +7,7 @@ import { loadField } from '.';
 import { fromFields } from '../sharedSelectors';
 import fieldApi from '../../../../packages/admin-app/src/api/field';
 import FieldRepresentation from './FieldRepresentation';
-import { useTranslate } from '../i18n/I18NContext';
+import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 import type { Field } from '../propTypes';
 
 interface SubresourceOverviewSelectComponentProps {

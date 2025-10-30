@@ -8,7 +8,7 @@ import {
 
 import ParsingExcerpt from '../parsing/ParsingExcerpt';
 import CancelButton from '../../../../src/app/js/lib/components/CancelButton';
-import { useTranslate } from '../../../../src/app/js/i18n/I18NContext';
+import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 
 interface AddFromColumnDialogComponentProps {
     onClose(...args: unknown[]): unknown;

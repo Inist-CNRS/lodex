@@ -1,4 +1,4 @@
-import { useTranslate } from '../../../../i18n/I18NContext';
+import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 import { MULTICHROMATIC_DEFAULT_COLORSET_STREAMGRAPH } from '../../../utils/colorUtils';
 import { ASPECT_RATIO_8_5, type AspectRatio } from '../../../utils/aspectRatio';
 import TreeMap, { type TreeMapLayout } from '../../models/TreeMap';

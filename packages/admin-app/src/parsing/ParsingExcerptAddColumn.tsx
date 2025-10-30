@@ -4,7 +4,7 @@ import withHandlers from 'recompose/withHandlers';
 import { Button } from '@mui/material';
 
 import { fromFields } from '../../../../src/app/js/sharedSelectors';
-import { useTranslate } from '../../../../src/app/js/i18n/I18NContext';
+import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 
 interface ParsingExcerptAddColumnComponentProps {
     atTop: boolean;

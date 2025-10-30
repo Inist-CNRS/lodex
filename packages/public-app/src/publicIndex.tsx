@@ -9,7 +9,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Router } from 'react-router-dom';
 import { getLocale } from '@lodex/common';
 import configureStore from '../../../src/app/js/configureStore';
-import { I18N } from '../../../src/app/js/i18n/I18NContext';
+import { I18N } from '@lodex/frontend-common/i18n/I18NContext';
 import phrasesFor from '../../../src/app/js/i18n/translations';
 import LodexThemeProvider from './LodexThemeProvider';
 import reducers from './reducers';

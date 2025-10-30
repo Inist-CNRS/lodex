@@ -1,5 +1,5 @@
 import { Component } from 'react';
-import { translate } from '../../../i18n/I18NContext';
+import { translate } from '@lodex/frontend-common/i18n/I18NContext';
 import compose from 'recompose/compose';
 import URL from 'url';
 

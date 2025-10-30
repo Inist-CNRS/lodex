@@ -1,7 +1,7 @@
 import compose from 'recompose/compose';
 import withHandlers from 'recompose/withHandlers';
 import { MenuItem } from '@mui/material';
-import { useTranslate } from '../../../../src/app/js/i18n/I18NContext';
+import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 
 interface ExportMenuItemProps {
     handleClick(): void;

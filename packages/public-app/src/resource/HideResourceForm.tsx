@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { useTranslate } from '../../../../src/app/js/i18n/I18NContext';
+import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 
 import { fromResource } from '../selectors';
 import { FormProvider, useForm } from 'react-hook-form';

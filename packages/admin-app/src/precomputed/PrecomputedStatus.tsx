@@ -1,7 +1,7 @@
 import { Chip } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { getLocale, TaskStatus, type TaskStatusType } from '@lodex/common';
-import { useTranslate } from '../../../../src/app/js/i18n/I18NContext';
+import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 
 function getDisplayTimeStartedAt(startedAt: string) {
     if (!startedAt) {

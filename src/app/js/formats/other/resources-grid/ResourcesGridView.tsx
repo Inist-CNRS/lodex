@@ -7,7 +7,7 @@ import memoize from 'lodash/memoize';
 import LodexResource from '../../utils/components/LodexResource';
 import injectData from '../../injectData';
 import stylesToClassname from '../../../lib/stylesToClassName';
-import { useTranslate } from '../../../i18n/I18NContext';
+import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 
 const createStyles = memoize((spaceWidth) =>
     stylesToClassname(

@@ -1,4 +1,4 @@
-import { useTranslate } from '../i18n/I18NContext.tsx';
+import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 import { SwitchField } from '../../../../packages/frontend-common/form-fields/SwitchField.tsx';
 
 const FieldAnnotationKindRemovalInput = () => {

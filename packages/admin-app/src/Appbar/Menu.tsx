@@ -12,7 +12,7 @@ import { withRouter } from 'react-router';
 import { compose } from 'recompose';
 import { bindActionCreators } from 'redux';
 import { DEFAULT_TENANT, toast } from '@lodex/common';
-import { useTranslate } from '../../../../src/app/js/i18n/I18NContext';
+import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 import { signOut } from '../../../../src/app/js/user';
 import ImportModelDialog from '../ImportModelDialog';
 import { fromImport, fromPublication } from '../selectors';

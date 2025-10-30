@@ -99,6 +99,7 @@
         "@fortawesome/free-solid-svg-icons": "^5.11.2",
         "@fortawesome/react-fontawesome": "^3.1.0",
         "@lodex/common": "file:packages/common",
+        "@lodex/frontend-common": "file:packages/frontend-common",
         "@lodex/api": "file:packages/api",
         "@mui/icons-material": "5.14.19",
         "@mui/material": "^5.5.2",

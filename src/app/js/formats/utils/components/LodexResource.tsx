@@ -4,7 +4,7 @@ import stylesToClassname from '../../../lib/stylesToClassName';
 import { truncateByWords } from '../../stringUtils';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faExternalLinkAlt } from '@fortawesome/free-solid-svg-icons';
-import { useTranslate } from '../../../i18n/I18NContext';
+import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 
 const styles = stylesToClassname(
     {

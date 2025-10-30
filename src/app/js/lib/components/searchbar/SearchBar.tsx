@@ -1,7 +1,7 @@
 import { Icon, IconButton, TextField } from '@mui/material';
 import { useEffect, useRef } from 'react';
 import compose from 'recompose/compose';
-import { translate } from '../../../i18n/I18NContext';
+import { translate } from '@lodex/frontend-common/i18n/I18NContext';
 
 import { Clear as ClearIcon, Search as SearchIcon } from '@mui/icons-material';
 

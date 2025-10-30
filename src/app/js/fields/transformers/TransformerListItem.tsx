@@ -6,7 +6,7 @@ import {
 } from '@mui/icons-material';
 import { CSS } from '@dnd-kit/utilities';
 import { useSortable } from '@dnd-kit/sortable';
-import { useTranslate } from '../../i18n/I18NContext';
+import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 
 interface TransformerListItemProps {
     transformer?: object;

@@ -8,7 +8,7 @@ import { fromBreadcrumb as localFromBreadcrumb } from './breadcrumb/reducer';
 import { fromMenu as localFromMenu } from './menu/reducer';
 import { fromSearch as localFromSearch } from './search/reducer';
 import { fromDisplayConfig as localFromDisplayConfig } from './displayConfig/reducer';
-import { fromI18n as localFromI18n } from '../../../src/app/js/i18n';
+import { fromI18n as localFromI18n } from '@lodex/frontend-common/i18n';
 import localFromFacet from './facet/selectors';
 
 // @ts-expect-error TS7006

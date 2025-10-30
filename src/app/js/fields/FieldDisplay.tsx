@@ -1,5 +1,5 @@
 import { SwitchField } from '../../../../packages/frontend-common/form-fields/SwitchField.tsx';
-import { useTranslate } from '../i18n/I18NContext.tsx';
+import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 
 const FieldDisplayInput = () => {
     const { translate } = useTranslate();

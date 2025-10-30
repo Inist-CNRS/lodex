@@ -1,7 +1,7 @@
 import { useCallback, useEffect, type ChangeEvent } from 'react';
 import { connect } from 'react-redux';
 import { config } from '@fortawesome/fontawesome-svg-core';
-import { translate } from '../../../../src/app/js/i18n/I18NContext';
+import { translate } from '@lodex/frontend-common/i18n/I18NContext';
 import compose from 'recompose/compose';
 import classnames from 'classnames';
 

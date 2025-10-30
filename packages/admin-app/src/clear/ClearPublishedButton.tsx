@@ -5,7 +5,7 @@ import ClearAllIcon from '@mui/icons-material/ClearAll';
 
 import ClearDialog from '../Appbar/ClearDialog';
 import { fromPublication } from '../selectors';
-import { useTranslate } from '../../../../src/app/js/i18n/I18NContext';
+import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 
 interface ClearPublishedButtonComponentProps {
     hasPublishedDataset: boolean;

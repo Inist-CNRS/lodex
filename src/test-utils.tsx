@@ -13,7 +13,7 @@ import sagas from '../packages/admin-app/src/sagas';
 import { AnnotationStorageProvider } from './app/js/annotation/annotationStorage';
 import configureStore from './app/js/configureStore';
 import reducers from '../packages/public-app/src/reducers';
-import { TestI18N } from './app/js/i18n/I18NContext';
+import { TestI18N } from '@lodex/frontend-common/i18n/I18NContext';
 import type { Store } from 'redux';
 
 // @ts-expect-error TS7017

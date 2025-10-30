@@ -12,7 +12,7 @@ import { fromProgress } from '../selectors';
 import { loadProgress, clearProgress } from './reducer';
 import { DEFAULT_TENANT, ProgressStatus } from '@lodex/common';
 import { io } from 'socket.io-client';
-import { useTranslate } from '../../../../src/app/js/i18n/I18NContext';
+import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 
 // @ts-expect-error TS7006
 const formatProgress = (progress, target, symbol, label) => {

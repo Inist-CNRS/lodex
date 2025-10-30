@@ -1,4 +1,4 @@
-import { useTranslate } from '../i18n/I18NContext';
+import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 import { FormProvider, useForm } from 'react-hook-form';
 import { TextField } from '../../../../packages/frontend-common/form-fields/TextField';
 import ButtonWithStatus from '../lib/components/ButtonWithStatus';

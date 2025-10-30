@@ -7,7 +7,7 @@ import {
 } from '@mui/material';
 import { connect } from 'react-redux';
 import { useGetAnnotatedResourceUris } from '../../../../src/app/js/annotation/annotationStorage';
-import { useTranslate } from '../../../../src/app/js/i18n/I18NContext';
+import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 import { fromSearch } from '../selectors';
 import { searchAnnotations } from './reducer';
 

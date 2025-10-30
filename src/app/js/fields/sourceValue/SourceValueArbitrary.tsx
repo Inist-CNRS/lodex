@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Box, TextField } from '@mui/material';
-import { useTranslate } from '../../i18n/I18NContext';
+import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 import type { TransformerDraft } from '../types.ts';
 
 interface SourceValueArbitraryProps {

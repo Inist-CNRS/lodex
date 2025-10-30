@@ -1,5 +1,5 @@
 import { useCallback, useMemo, type ChangeEvent } from 'react';
-import { useTranslate } from '../../../../i18n/I18NContext';
+import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 import { Checkbox, FormControlLabel, FormGroup, Switch } from '@mui/material';
 
 import RoutineParamsAdmin from '../../../utils/components/admin/RoutineParamsAdmin';

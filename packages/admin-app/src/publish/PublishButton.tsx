@@ -5,7 +5,7 @@ import { Button, Box } from '@mui/material';
 import { publish as publishAction } from './index';
 import { fromFields } from '../../../../src/app/js/sharedSelectors';
 import { fromPublish } from '../selectors';
-import { useTranslate } from '../../../../src/app/js/i18n/I18NContext';
+import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 
 interface PublishButtonComponentProps {
     canPublish?: boolean;

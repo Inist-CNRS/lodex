@@ -1,6 +1,6 @@
 import { fireEvent, waitFor } from '@testing-library/dom';
 import { render } from '../../../test-utils';
-import { TestI18N } from '../i18n/I18NContext';
+import { TestI18N } from '@lodex/frontend-common/i18n/I18NContext';
 import { OpenHistoryButton } from './OpenHistoryButton';
 import { useGetFieldAnnotation } from './useGetFieldAnnotation';
 

@@ -14,7 +14,7 @@ import PublicationPreview from './preview/publication/PublicationPreview';
 import Upload from './upload/Upload';
 import Loading from '../../../src/app/js/lib/components/Loading';
 import { preLoadLoaders } from './loader';
-import { useTranslate } from '../../../src/app/js/i18n/I18NContext';
+import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 
 const styles = {
     punchLine: {

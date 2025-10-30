@@ -1,7 +1,7 @@
 import { useForm } from '@tanstack/react-form';
 import { fireEvent, render, waitFor } from '@testing-library/react';
 
-import { TestI18N } from '../../i18n/I18NContext';
+import { TestI18N } from '@lodex/frontend-common/i18n/I18NContext';
 import {
     ProposedValueFieldList,
     type ProposedValueFieldListProps,

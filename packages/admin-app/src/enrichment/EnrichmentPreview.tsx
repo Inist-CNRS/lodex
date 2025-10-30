@@ -1,7 +1,7 @@
 import PreviewIcon from '@mui/icons-material/Preview';
 
 import { Box, Typography } from '@mui/material';
-import { useTranslate } from '../../../../src/app/js/i18n/I18NContext';
+import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 
 type EnrichmentPreviewProps = {
     lines: unknown[];

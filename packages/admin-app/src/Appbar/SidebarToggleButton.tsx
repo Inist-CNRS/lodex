@@ -2,7 +2,7 @@ import { useContext } from 'react';
 import { Box, IconButton, Tooltip } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import { SidebarContext } from '../Sidebar/SidebarContext';
-import { useTranslate } from '../../../../src/app/js/i18n/I18NContext';
+import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 
 const SidebarToggleButton = () => {
     const { translate } = useTranslate();

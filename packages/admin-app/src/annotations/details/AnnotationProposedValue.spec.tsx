@@ -1,6 +1,6 @@
 import { render, within } from '@testing-library/react';
 
-import { TestI18N } from '../../../../../src/app/js/i18n/I18NContext';
+import { TestI18N } from '@lodex/frontend-common/i18n/I18NContext';
 import { AnnotationProposedValue } from './AnnotationProposedValue';
 
 describe('AnnotationProposedValue', () => {
