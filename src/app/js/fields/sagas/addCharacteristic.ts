@@ -7,7 +7,7 @@ import {
 } from '../';
 import { getNewCharacteristicFormData } from '../selectors';
 import { fromUser } from '../../sharedSelectors';
-import fetchSaga from '../../lib/sagas/fetchSaga';
+import fetchSaga from '@lodex/frontend-common/fetch/fetchSaga';
 import validateField from './validateField';
 
 export function* handleAddCharacteristic() {

@@ -1,6 +1,6 @@
 import { call, fork, put, select, takeLatest } from 'redux-saga/effects';
 
-import fetchSaga from '../../../../src/app/js/lib/sagas/fetchSaga';
+import fetchSaga from '@lodex/frontend-common/fetch/fetchSaga';
 
 import {
     LOAD_PARSING_RESULT,

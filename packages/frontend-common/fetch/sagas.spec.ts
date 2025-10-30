@@ -1,6 +1,6 @@
 import { race, call, put, take, delay } from 'redux-saga/effects';
 
-import fetchSaga from '../lib/sagas/fetchSaga';
+import fetchSaga from '@lodex/frontend-common/fetch/fetchSaga';
 
 import { fetchError, fetchSuccess } from './';
 

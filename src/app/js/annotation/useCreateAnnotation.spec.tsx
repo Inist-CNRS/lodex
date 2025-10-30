@@ -3,7 +3,7 @@ import { renderHook } from '@testing-library/react-hooks';
 import React from 'react';
 import { Provider } from 'react-redux';
 
-import fetch from '../lib/fetch';
+import fetch from '@lodex/frontend-common/fetch/fetch';
 import { useCreateAnnotation } from './useCreateAnnotation';
 import { AnnotationStorageProvider } from './annotationStorage';
 import { TestI18N } from '@lodex/frontend-common/i18n/I18NContext';

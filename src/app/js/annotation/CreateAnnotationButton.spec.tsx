@@ -4,7 +4,7 @@ import { MemoryRouter, Route, Switch } from 'react-router-dom';
 import { render } from '../../../test-utils';
 
 import { TestI18N } from '@lodex/frontend-common/i18n/I18NContext';
-import fetch from '../lib/fetch';
+import fetch from '@lodex/frontend-common/fetch/fetch';
 import { getStorageKey } from './annotationStorage';
 import { CreateAnnotationButton } from './CreateAnnotationButton';
 import { useCanAnnotate } from './useCanAnnotate';

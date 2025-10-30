@@ -5,7 +5,7 @@ import {
     getAnnotationsFilter,
 } from './sagas';
 import { fromUser } from '../../../../src/app/js/sharedSelectors';
-import fetchSaga from '../../../../src/app/js/lib/sagas/fetchSaga';
+import fetchSaga from '@lodex/frontend-common/fetch/fetchSaga';
 import { fromSearch } from '../selectors';
 import { getVisitedUris } from '../resource/useRememberVisit';
 

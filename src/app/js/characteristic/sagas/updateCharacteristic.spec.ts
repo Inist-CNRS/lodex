@@ -2,7 +2,7 @@ import { call, put, select } from 'redux-saga/effects';
 
 import { updateCharacteristicsError, updateCharacteristicsSuccess } from '../';
 import { fromUser } from '../../sharedSelectors';
-import fetchSaga from '../../lib/sagas/fetchSaga';
+import fetchSaga from '@lodex/frontend-common/fetch/fetchSaga';
 
 import { handleUpdateCharacteristics } from './updateCharacteristic';
 import { configureFieldSuccess } from '../../fields/index';

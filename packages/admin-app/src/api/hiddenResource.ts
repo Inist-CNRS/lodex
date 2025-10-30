@@ -3,7 +3,7 @@ import {
     getExportHiddenResources,
     getImportHiddenResources,
 } from '../../../../src/app/js/user';
-import fetch from '../../../../src/app/js/lib/fetch';
+import fetch from '@lodex/frontend-common/fetch/fetch';
 
 export const exportHiddenResources = () => {
     const { token } = getUserSessionStorageInfo();

@@ -6,7 +6,7 @@ import {
 } from '../index';
 import { fromSearch } from '../../selectors';
 import getQueryString from '../../../../../src/app/js/lib/getQueryString';
-import fetchSaga from '../../../../../src/app/js/lib/sagas/fetchSaga';
+import fetchSaga from '@lodex/frontend-common/fetch/fetchSaga';
 import downloadFile from '../../../../../src/app/js/lib/downloadFile';
 import { fromUser } from '../../../../../src/app/js/sharedSelectors';
 

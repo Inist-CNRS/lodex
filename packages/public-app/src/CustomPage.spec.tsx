@@ -2,8 +2,8 @@ import { shallow } from 'enzyme';
 import { CircularProgress } from '@mui/material';
 
 import { CustomPage } from './CustomPage';
-import fetch from '../../../src/app/js/lib/fetch';
-jest.mock('../../../src/app/js/lib/fetch');
+import fetch from '@lodex/frontend-common/fetch/fetch';
+jest.mock('@lodex/frontend-common/fetch/fetch');
 
 describe('getCustomPage CustomPage', () => {
     const defaultProps = {

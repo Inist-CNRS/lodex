@@ -3,7 +3,7 @@ import { useCallback, useMemo } from 'react';
 import { toast } from '@lodex/common';
 import { getUserSessionStorageInfo } from '../../../../packages/admin-app/src/api/tools';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
-import fetch from '../lib/fetch';
+import fetch from '@lodex/frontend-common/fetch/fetch';
 import { getRequest } from '../user';
 import { useSaveAnnotationId } from './annotationStorage';
 

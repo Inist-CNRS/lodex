@@ -1,4 +1,4 @@
-import fetchReducer, { type FetchState } from '../../../src/app/js/fetch';
+import fetchReducer, { type FetchState } from '@lodex/frontend-common/fetch';
 import fields from '../../../src/app/js/fields';
 import i18n from '@lodex/frontend-common/i18n';
 import importReducer from './import';

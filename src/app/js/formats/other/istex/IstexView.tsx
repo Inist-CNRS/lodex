@@ -4,7 +4,7 @@ import compose from 'recompose/compose';
 import FileDownload from '@mui/icons-material/GetApp';
 import Link from '../../../lib/components/Link';
 
-import fetchPaginatedDataForComponent from '../../../lib/fetchPaginatedDataForComponent';
+import fetchPaginatedDataForComponent from '@lodex/frontend-common/fetch/fetchPaginatedDataForComponent';
 import Alert from '../../../lib/components/Alert';
 import { PropositionStatus, ISTEX_SITE_URL } from '@lodex/common';
 import { fetchForIstexFormat } from '../../utils/fetchIstexData';
