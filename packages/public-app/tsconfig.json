@@ -23,7 +23,8 @@
         "erasableSyntaxOnly": true,
         "noFallthroughCasesInSwitch": true,
         "noUncheckedSideEffectImports": true,
-        "noImplicitAny": true
+        "noImplicitAny": true,
+        "types": ["jest", "@testing-library/jest-dom"]
     },
     "include": ["vite.config.ts", "src"],
     "exclude": ["build"]
