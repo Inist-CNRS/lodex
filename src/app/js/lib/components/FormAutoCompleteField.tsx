@@ -10,7 +10,7 @@ import {
 } from '@mui/material';
 import { translate } from '@lodex/frontend-common/i18n/I18NContext';
 
-import { fetch as fetchAction } from '@lodex/frontend-common/fetch';
+import { fetch as fetchAction } from '@lodex/frontend-common/fetch/reducer';
 import { type FormFieldProps } from '../../propTypes';
 
 type FormAutoCompleteFieldProps = {
