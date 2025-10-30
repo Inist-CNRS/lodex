@@ -6,7 +6,7 @@ import { MemoryRouter } from 'react-router-dom';
 import SourceValueToggle from '../sourceValue/SourceValueToggle.tsx';
 import { Provider } from 'react-redux';
 import { createMemoryHistory } from 'history';
-import configureStore from '../../configureStore.ts';
+import configureStore from '@lodex/frontend-common/configureStore.ts';
 import reducers from '../../../../../packages/admin-app/src/reducers.ts';
 
 describe('TabGeneral', () => {
