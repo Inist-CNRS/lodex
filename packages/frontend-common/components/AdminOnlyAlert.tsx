@@ -2,8 +2,8 @@ import React from 'react';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
 
-import { fromUser } from '../../sharedSelectors';
-import stylesToClassname from '../../lib/stylesToClassName';
+import { fromUser } from '../../../src/app/js/sharedSelectors';
+import stylesToClassname from '../../../src/app/js/lib/stylesToClassName';
 
 const styles = stylesToClassname(
     {

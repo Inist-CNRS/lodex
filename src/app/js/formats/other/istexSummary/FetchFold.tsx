@@ -5,7 +5,7 @@ import Arrow from '@mui/icons-material/KeyboardArrowDown';
 import { Button, CircularProgress } from '@mui/material';
 import get from 'lodash/get';
 
-import AdminOnlyAlert from '../../../lib/components/AdminOnlyAlert';
+import AdminOnlyAlert from '@lodex/frontend-common/components/AdminOnlyAlert';
 import SkipFold from './SkipFold';
 import stylesToClassname from '../../../lib/stylesToClassName';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';

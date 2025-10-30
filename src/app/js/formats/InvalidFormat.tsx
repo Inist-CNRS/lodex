@@ -1,6 +1,6 @@
 import Warning from '@mui/icons-material/Warning';
 
-import AdminOnlyAlert from '../lib/components/AdminOnlyAlert';
+import AdminOnlyAlert from '@lodex/frontend-common/components/AdminOnlyAlert';
 import stylesToClassname from '../lib/stylesToClassName';
 import { translate } from '@lodex/frontend-common/i18n/I18NContext';
 

@@ -2,7 +2,7 @@ import { useTheme } from '@emotion/react';
 import { Link, Stack, Typography } from '@mui/material';
 
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
-import AdminOnlyAlert from '../lib/components/AdminOnlyAlert';
+import AdminOnlyAlert from '@lodex/frontend-common/components/AdminOnlyAlert';
 import { useGetFieldAnnotation } from './useGetFieldAnnotation';
 
 interface OpenHistoryButtonProps {

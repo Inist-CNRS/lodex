@@ -1,7 +1,7 @@
 import { useState, useEffect, type ReactNode } from 'react';
 import { CircularProgress } from '@mui/material';
 
-import AdminOnlyAlert from '../../../lib/components/AdminOnlyAlert';
+import AdminOnlyAlert from '@lodex/frontend-common/components/AdminOnlyAlert';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 
 const circularProgress = (

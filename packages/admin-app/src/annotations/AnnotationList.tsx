@@ -12,7 +12,7 @@ import React, { useMemo, useState } from 'react';
 import { useHistory } from 'react-router';
 import FieldInternalIcon from '../../../../src/app/js/fields/FieldInternalIcon';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
-import AdminOnlyAlert from '../../../../src/app/js/lib/components/AdminOnlyAlert';
+import AdminOnlyAlert from '@lodex/frontend-common/components/AdminOnlyAlert';
 import withInitialData from '../withInitialData';
 import { AnnotationProposedValue } from './AnnotationProposedValue';
 import { AnnotationStatusChip } from './AnnotationStatus';
