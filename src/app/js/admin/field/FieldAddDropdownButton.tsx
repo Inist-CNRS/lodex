@@ -16,7 +16,7 @@ import { ListItemIcon, ListItemText } from '@mui/material';
 import { showAddFromColumn } from '../parsing';
 import { fromFields } from '../../sharedSelectors';
 import { addField } from '../../fields';
-import { SCOPE_DOCUMENT } from '@lodex/common';
+import { SCOPE_DOCUMENT } from '../../../../common/scope';
 import { useTranslate } from '../../i18n/I18NContext';
 
 const options = [

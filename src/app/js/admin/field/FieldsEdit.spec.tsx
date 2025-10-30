@@ -3,7 +3,7 @@ import { shallow } from 'enzyme';
 import { FieldsEditComponent as FieldsEdit } from './FieldsEdit';
 import { FieldGrid } from '../../fields/FieldGrid';
 import PublicationPreview from '../preview/publication/PublicationPreview';
-import { SCOPE_DOCUMENT } from '@lodex/common';
+import { SCOPE_DOCUMENT } from '../../../../common/scope';
 import FieldAddDropdownButton from './FieldAddDropdownButton';
 
 jest.mock('../../admin/api/field', () => ({

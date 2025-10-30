@@ -2,7 +2,7 @@ import { Component } from 'react';
 import { translate } from '../../../../i18n/I18NContext';
 import compose from 'recompose/compose';
 import SparqlRequest from '../SparqlRequest';
-import { isURL } from '@lodex/common';
+import { isURL } from '../../../../../../common/uris';
 import { type Field } from '../../../../propTypes';
 import URL from 'url';
 import toPairs from 'lodash/toPairs';

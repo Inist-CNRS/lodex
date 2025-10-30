@@ -1,6 +1,6 @@
 import { createAction, handleActions } from 'redux-actions';
 import { createSelector } from 'reselect';
-import { SCOPE_DATASET } from '@lodex/common';
+import { SCOPE_DATASET } from '../../../common/scope';
 
 export const SET_CHARACTERISTIC_VALUE = 'SET_CHARACTERISTIC_VALUE';
 

@@ -1,15 +1,14 @@
 import memoize from 'lodash/memoize';
 
-import { PropositionStatus } from '@lodex/common';
+import { REJECTED } from '../../../../../common/propositionStatus';
 import { type Field } from '../../../propTypes';
+import { ISTEX_API_URL } from '../../../../../common/externals';
 import Link from '../../../lib/components/Link';
-import { ISTEX_API_URL } from '../../../api/externals.ts';
 
 const styles = {
     text: memoize((status) => ({
         fontSize: '1rem',
-        textDecoration:
-            status === PropositionStatus.REJECTED ? 'line-through' : 'none',
+        textDecoration: status === REJECTED ? 'line-through' : 'none',
     })),
 };
 

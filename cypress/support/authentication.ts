@@ -1,4 +1,4 @@
-import { ADMIN_ROLE, DEFAULT_TENANT } from '@lodex/common';
+import { ADMIN_ROLE, DEFAULT_TENANT } from '../../src/common/tools/tenantTools';
 
 export const login = (username = 'admin', password = 'secret') => {
     cy.visit('http://localhost:3000');

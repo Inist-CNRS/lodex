@@ -11,7 +11,7 @@ import { type Field } from '../../../propTypes';
 import { fromFormat } from '../../../public/selectors';
 import { loadFormatData } from '../../reducer';
 import Loading from '../../../lib/components/Loading';
-import { isURL } from '@lodex/common';
+import { isURL } from '../../../../../common/uris';
 import Link from '../../../lib/components/Link';
 
 const styles = {

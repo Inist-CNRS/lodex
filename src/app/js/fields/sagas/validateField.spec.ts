@@ -2,7 +2,7 @@ import validateFieldSaga from './validateField';
 import { select, call, put } from 'redux-saga/effects';
 import { fromFields } from '../../sharedSelectors';
 import { fieldInvalid } from '../index';
-import { validateAddedField } from '@lodex/common';
+import { validateAddedField } from '../../../../common/validateFields';
 
 describe('fields saga', () => {
     describe('validateField', () => {

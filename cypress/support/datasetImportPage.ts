@@ -1,6 +1,6 @@
 import { fillInputWithFixture } from './forms';
 import * as adminNavigation from './adminNavigation';
-import { DEFAULT_TENANT } from '@lodex/common';
+import { DEFAULT_TENANT } from '../../src/common/tools/tenantTools';
 
 export const openImport = () => {
     adminNavigation.goToData();

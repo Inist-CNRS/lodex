@@ -2,9 +2,10 @@ import { useMemo } from 'react';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import { TextField, MenuItem, Box } from '@mui/material';
-import { Overview, SCOPE_DATASET } from '@lodex/common';
+import * as overview from '../../../common/overview';
 import { loadField } from '.';
 import { fromFields } from '../sharedSelectors';
+import { SCOPE_DATASET } from '../../../common/scope';
 import fieldApi from '../admin/api/field';
 import FieldRepresentation from './FieldRepresentation';
 import { useTranslate } from '../i18n/I18NContext';
@@ -24,12 +25,12 @@ export const DatasetOverviewSelectComponent = ({
         // @ts-expect-error TS18048
         const datasetTitleField = fields.find(
             // @ts-expect-error TS7006
-            (field) => field.overview === Overview.DATASET_TITLE,
+            (field) => field.overview === overview.DATASET_TITLE,
         );
         // @ts-expect-error TS18048
         const datasetDescriptionField = fields.find(
             // @ts-expect-error TS7006
-            (field) => field.overview === Overview.DATASET_DESCRIPTION,
+            (field) => field.overview === overview.DATASET_DESCRIPTION,
         );
         // @ts-expect-error TS2339
         return [datasetTitleField?._id, datasetDescriptionField?._id];
@@ -40,7 +41,7 @@ export const DatasetOverviewSelectComponent = ({
         const { value: _id } = event.target;
         await fieldApi.patchOverview({
             _id,
-            overview: Overview.DATASET_TITLE,
+            overview: overview.DATASET_TITLE,
         });
         loadField();
     };
@@ -50,7 +51,7 @@ export const DatasetOverviewSelectComponent = ({
         const { value: _id } = event.target;
         await fieldApi.patchOverview({
             _id,
-            overview: Overview.DATASET_DESCRIPTION,
+            overview: overview.DATASET_DESCRIPTION,
         });
         loadField();
     };

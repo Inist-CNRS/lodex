@@ -9,7 +9,7 @@ import {
     errorProgress,
     finishProgress,
 } from './reducer';
-import { ProgressStatus } from '@lodex/common';
+import { PENDING } from '../../../../common/progressStatus';
 
 describe('progress sagas handleStartProgressSaga', () => {
     it('should get progress and trigger loadProgress action', () => {
@@ -32,10 +32,10 @@ describe('progress sagas handleStartProgressSaga', () => {
         expect(it.next().value).toEqual(select(fromUser.getProgressRequest));
         // @ts-expect-error TS2345
         expect(it.next('request').value).toEqual(call(fetchSaga, 'request'));
-        expect(
-            // @ts-expect-error TS2345
-            it.next({ response: { status: ProgressStatus.PENDING } }).value,
-        ).toEqual(put(updateProgress({ status: ProgressStatus.PENDING })));
+        // @ts-expect-error TS2345
+        expect(it.next({ response: { status: PENDING } }).value).toEqual(
+            put(updateProgress({ status: PENDING })),
+        );
         expect(it.next().value).toEqual(put(finishProgress()));
         expect(it.next()).toEqual({ value: undefined, done: true });
     });

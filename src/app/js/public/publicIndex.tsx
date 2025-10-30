@@ -7,7 +7,7 @@ import 'url-api-polyfill';
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Router } from 'react-router-dom';
-import { getLocale } from '@lodex/common';
+import getLocale from '../../../common/getLocale';
 import configureStore from '../configureStore';
 import { I18N } from '../i18n/I18NContext';
 import phrasesFor from '../i18n/translations';

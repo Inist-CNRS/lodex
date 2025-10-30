@@ -13,7 +13,7 @@ import {
 import { fromFields, fromUser } from '../../sharedSelectors';
 
 import { push } from 'redux-first-history';
-import { SCOPE_DOCUMENT } from '@lodex/common';
+import { SCOPE_DOCUMENT } from '../../../../common/scope';
 import fetchSaga from '../../lib/sagas/fetchSaga';
 import {
     FIELD_ANNOTATION_FORMAT_LIST,

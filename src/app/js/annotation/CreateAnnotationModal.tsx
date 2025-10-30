@@ -15,7 +15,7 @@ import {
     ANNOTATION_KIND_ADDITION,
     ANNOTATION_KIND_CORRECTION,
     annotationCreationSchema,
-} from '@lodex/common';
+} from '../../../common/validator/annotation.validator';
 import { useTranslate } from '../i18n/I18NContext';
 import { ConfirmPopup } from '../lib/components/ConfirmPopup';
 import { AnnotationCommentStep } from './AnnotationCommentStep';

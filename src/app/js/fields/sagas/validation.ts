@@ -1,5 +1,5 @@
 import { call, put, select, takeLatest } from 'redux-saga/effects';
-import { validateFields } from '@lodex/common';
+import validateFields from '../../../../common/validateFields';
 
 import {
     setValidation,

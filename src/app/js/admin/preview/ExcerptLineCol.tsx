@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { fromFields } from '../../sharedSelectors';
 import { isLongText, getShortText } from '../../lib/longTexts';
 import getFieldClassName from '../../lib/getFieldClassName';
-import { parseValue } from '@lodex/common';
+import parseValue from '../../../../common/tools/parseValue';
 import { translate } from '../../i18n/I18NContext';
 
 const styles = {

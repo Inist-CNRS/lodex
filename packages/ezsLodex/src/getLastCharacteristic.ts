@@ -39,11 +39,7 @@
  * @returns
  * @name getLastCharacteristic
  */
-export default function getLastCharacteristic(
-    this: any,
-    chunk: any,
-    feed: any,
-) {
+export default function getLastCharacteristic(this: any, chunk: any, feed: any) {
     if (this.isLast()) {
         feed.write(this.previousChunk);
         feed.close();

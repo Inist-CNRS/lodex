@@ -1,7 +1,7 @@
 import { put, takeEvery } from 'redux-saga/effects';
 
 import { INITIALIZE_LANGUAGE, setLanguage } from '../';
-import { getLocale } from '@lodex/common';
+import getLocale from '../../../../common/getLocale';
 
 export function* handleInitializeLanguage() {
     const locale = getLocale();

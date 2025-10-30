@@ -6,7 +6,11 @@ import selectors, {
     isACompositeFields,
 } from './selectors';
 
-import { SCOPE_COLLECTION, SCOPE_DATASET, SCOPE_DOCUMENT } from '@lodex/common';
+import {
+    SCOPE_COLLECTION,
+    SCOPE_DATASET,
+    SCOPE_DOCUMENT,
+} from '../../../common/scope';
 
 describe('field selectors', () => {
     describe('getFields', () => {

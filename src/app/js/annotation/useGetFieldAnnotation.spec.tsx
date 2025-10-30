@@ -1,12 +1,12 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { renderHook } from '@testing-library/react-hooks';
-import { toast } from '@lodex/common';
+import { toast } from '../../../common/tools/toast';
 import { TestI18N } from '../i18n/I18NContext';
 import fetch from '../lib/fetch';
 import { AnnotationStorageProvider, getStorageKey } from './annotationStorage';
 import { useGetFieldAnnotation } from './useGetFieldAnnotation';
 
-jest.mock('../../../../packages/common/src/tools/toast');
+jest.mock('../../../common/tools/toast');
 
 const queryClient = new QueryClient({
     defaultOptions: {

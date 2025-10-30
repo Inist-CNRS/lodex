@@ -14,7 +14,7 @@ import getQueryString from '../lib/getQueryString';
 import fetchSaga from '../lib/sagas/fetchSaga';
 import { fromDataset, fromFormat } from '../public/selectors';
 import { fromFields, fromUser, fromCharacteristic } from '../sharedSelectors';
-import { SCOPE_DATASET } from '@lodex/common';
+import { SCOPE_DATASET } from '../../../common/scope';
 
 describe('format sagas', () => {
     describe('handleFilterFormatDataRequest', () => {
