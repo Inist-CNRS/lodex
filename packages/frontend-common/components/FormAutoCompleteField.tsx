@@ -11,7 +11,7 @@ import {
 import { translate } from '@lodex/frontend-common/i18n/I18NContext';
 
 import { fetch as fetchAction } from '@lodex/frontend-common/fetch/reducer';
-import { type FormFieldProps } from '../../propTypes';
+import { type FormFieldProps } from '../../../src/app/js/propTypes';
 
 type FormAutoCompleteFieldProps = {
     handleComplete: (event: object, value: string) => void;

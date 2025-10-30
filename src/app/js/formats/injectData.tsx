@@ -7,7 +7,7 @@ import {
     loadFormatData as loadFormatDataAction,
     unLoadFormatData as unLoadFormatDataAction,
 } from './reducer';
-import Loading from '../lib/components/Loading';
+import Loading from '@lodex/frontend-common/components/Loading';
 import InvalidFormat from './InvalidFormat';
 import { CircularProgress } from '@mui/material';
 import type { Field } from '../propTypes';

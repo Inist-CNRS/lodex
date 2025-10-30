@@ -10,9 +10,9 @@ import { type Field } from '../../../propTypes';
 
 import { fromFormat } from '../../../../../../packages/public-app/src/selectors';
 import { loadFormatData } from '../../reducer';
-import Loading from '../../../lib/components/Loading';
+import Loading from '@lodex/frontend-common/components/Loading';
 import { isURL } from '@lodex/common';
-import Link from '../../../lib/components/Link';
+import Link from '@lodex/frontend-common/components/Link';
 
 const styles = {
     message: {

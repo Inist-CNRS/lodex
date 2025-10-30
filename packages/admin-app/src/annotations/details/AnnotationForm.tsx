@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom';
 import { Tooltip } from '@mui/material';
 import { DEFAULT_TENANT, annotationUpdateSchema } from '@lodex/common';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
-import { SaveButton } from '../../../../../src/app/js/lib/components/SaveButton';
+import { SaveButton } from '@lodex/frontend-common/components/SaveButton';
 import { getRedirectFieldHash } from '../helpers/field';
 import { getResourceType } from '../helpers/resourceType';
 import { useUpdateAnnotation } from '../hooks/useUpdateAnnotation';

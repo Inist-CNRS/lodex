@@ -15,7 +15,7 @@ import {
 import { shouldDisplayField } from '../../../../src/app/js/fields/shouldDisplayField';
 import { getPredicate } from '../../../../src/app/js/formats';
 import addSchemePrefix from '../../../../src/app/js/lib/addSchemePrefix';
-import Link from '../../../../src/app/js/lib/components/Link';
+import Link from '@lodex/frontend-common/components/Link';
 import getFieldClassName from '../../../../src/app/js/lib/getFieldClassName';
 import { fromUser } from '../../../../src/app/js/sharedSelectors';
 import Format from '../Format';

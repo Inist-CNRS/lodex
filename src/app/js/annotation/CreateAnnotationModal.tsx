@@ -17,7 +17,7 @@ import {
     annotationCreationSchema,
 } from '@lodex/common';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
-import { ConfirmPopup } from '../lib/components/ConfirmPopup';
+import { ConfirmPopup } from '@lodex/frontend-common/components/ConfirmPopup';
 import { AnnotationCommentStep } from './AnnotationCommentStep';
 import { CreateAnnotationTitle } from './CreateAnnotationTitle';
 import { AuthorEmailField } from './fields/AuthorEmailField';

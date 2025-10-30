@@ -3,7 +3,7 @@ import { Button } from '@mui/material';
 import React, { useEffect } from 'react';
 
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
-import { ConfirmPopup } from '../../../../src/app/js/lib/components/ConfirmPopup';
+import { ConfirmPopup } from '@lodex/frontend-common/components/ConfirmPopup';
 import { useDeleteManyAnnotation } from './hooks/useDeleteManyAnnotation';
 
 interface DeleteManyButtonProps {

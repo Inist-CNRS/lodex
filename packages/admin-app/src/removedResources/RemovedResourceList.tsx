@@ -13,8 +13,8 @@ import {
 } from '@mui/material';
 
 import ButtonWithStatus from '@lodex/frontend-common/components/ButtonWithStatus';
-import Loading from '../../../../src/app/js/lib/components/Loading';
-import Pagination from '../../../../src/app/js/lib/components/Pagination';
+import Loading from '@lodex/frontend-common/components/Loading';
+import Pagination from '@lodex/frontend-common/components/Pagination';
 import {
     loadRemovedResourcePage as loadRemovedResourcePageAction,
     restoreRessource as restoreRessourceAction,

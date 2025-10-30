@@ -32,7 +32,7 @@ import {
 } from '@mui/material';
 import { Link, useLocation } from 'react-router-dom';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
-import Loading from '../../../../src/app/js/lib/components/Loading';
+import Loading from '@lodex/frontend-common/components/Loading';
 import datasetApi from '../api/dataset';
 import { fromEnrichments, fromParsing } from '../selectors';
 import { DeleteFilteredButton } from './DeleteFilteredButton';

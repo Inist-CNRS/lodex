@@ -2,7 +2,7 @@ import { Redirect } from 'react-router';
 import { useRouteMatch } from 'react-router-dom';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 import AdminOnlyAlert from '@lodex/frontend-common/components/AdminOnlyAlert';
-import Loading from '../../../../src/app/js/lib/components/Loading';
+import Loading from '@lodex/frontend-common/components/Loading';
 import withInitialData from '../withInitialData';
 import { AnnotationForm } from './details/AnnotationForm';
 import { useGetAnnotation } from './hooks/useGetAnnotation';

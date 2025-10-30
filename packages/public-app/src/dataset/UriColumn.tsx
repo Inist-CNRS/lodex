@@ -3,7 +3,7 @@ import { TableCell, Button } from '@mui/material';
 import RightIcon from '@mui/icons-material/KeyboardArrowRight';
 
 import { getResourceUri } from '@lodex/common';
-import Link from '../../../../src/app/js/lib/components/Link';
+import Link from '@lodex/frontend-common/components/Link';
 
 interface UriColumnProps {
     column: {

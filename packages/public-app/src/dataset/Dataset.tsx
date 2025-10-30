@@ -13,8 +13,8 @@ import {
 
 import DatasetColumn from './DatasetColumn';
 import DatasetColumnHeader from './DatasetColumnHeader';
-import Pagination from '../../../../src/app/js/lib/components/Pagination';
-import Loading from '../../../../src/app/js/lib/components/Loading';
+import Pagination from '@lodex/frontend-common/components/Pagination';
+import Loading from '@lodex/frontend-common/components/Loading';
 import { preLoadDatasetPage, changePage } from './index';
 import { fromDataset } from '../selectors';
 import { fromFields } from '../../../../src/app/js/sharedSelectors';

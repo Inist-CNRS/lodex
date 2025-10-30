@@ -4,10 +4,10 @@ import {
     translate,
     useTranslate,
 } from '@lodex/frontend-common/i18n/I18NContext';
-import Loading from '../../../lib/components/Loading';
+import Loading from '@lodex/frontend-common/components/Loading';
 
 const SourceCodeField = lazy(
-    () => import('../../../lib/components/SourceCodeField'),
+    () => import('@lodex/frontend-common/components/SourceCodeField'),
 );
 
 interface EJSEditorProps {

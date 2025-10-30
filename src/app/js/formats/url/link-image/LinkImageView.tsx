@@ -1,5 +1,5 @@
 import { type Field } from '../../../propTypes';
-import Link from '../../../lib/components/Link';
+import Link from '@lodex/frontend-common/components/Link';
 
 interface LinkViewProps {
     className?: string;

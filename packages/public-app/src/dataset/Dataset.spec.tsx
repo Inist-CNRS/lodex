@@ -1,7 +1,7 @@
 import { shallow } from 'enzyme';
 
 import { DatasetComponent as Dataset } from './Dataset';
-import Pagination from '../../../../src/app/js/lib/components/Pagination';
+import Pagination from '@lodex/frontend-common/components/Pagination';
 import DatasetColumn from './DatasetColumn';
 import DatasetColumnHeader from './DatasetColumnHeader';
 import { render } from '../../../../src/test-utils';

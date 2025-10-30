@@ -4,7 +4,7 @@ import zip from 'lodash/zip';
 import flatten from 'lodash/flatten';
 
 import injectData from '../../injectData';
-import Loading from '../../../lib/components/Loading';
+import Loading from '@lodex/frontend-common/components/Loading';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 import { ClientOnly, useClientOnly } from 'react-client-only';
 

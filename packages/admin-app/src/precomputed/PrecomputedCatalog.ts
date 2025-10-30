@@ -1,5 +1,5 @@
 import enrichers from '../../../../src/app/custom/precomputers/precomputers-catalog.json';
-import Catalog from '../../../../src/app/js/lib/components/Catalog';
+import Catalog from '@lodex/frontend-common/components/Catalog';
 
 const translatePrefix = 'pc';
 

@@ -11,7 +11,7 @@ import {
     fromCharacteristic,
 } from '../../../src/app/js/sharedSelectors';
 import Alert from '@lodex/frontend-common/components/Alert';
-import Loading from '../../../src/app/js/lib/components/Loading';
+import Loading from '@lodex/frontend-common/components/Loading';
 import DatasetCharacteristics from '../../../src/app/js/characteristic/DatasetCharacteristics';
 import NoDataset from './NoDataset';
 import getTitle from '../../../src/app/js/lib/getTitle';

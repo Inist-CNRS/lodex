@@ -1,5 +1,5 @@
 import { isLocalURL, getResourceUri } from '@lodex/common';
-import Link from '../../../lib/components/Link';
+import Link from '@lodex/frontend-common/components/Link';
 import stylesToClassname from '../../../lib/stylesToClassName';
 import { truncateByWords } from '../../stringUtils';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
