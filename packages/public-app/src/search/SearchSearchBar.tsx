@@ -3,9 +3,9 @@ import { connect } from 'react-redux';
 
 import { Box, Grid, useMediaQuery } from '@mui/material';
 import { useCanAnnotate } from '../../../../src/app/js/annotation/useCanAnnotate';
-import SearchBar from '../../../../src/app/js/lib/components/searchbar/SearchBar';
-import ToggleFacetsButton from '../../../../src/app/js/lib/components/searchbar/ToggleFacetsButton';
-import useSearchBar from '../../../../src/app/js/lib/components/searchbar/useSearchBar';
+import SearchBar from '../searchbar/SearchBar';
+import ToggleFacetsButton from '../searchbar/ToggleFacetsButton';
+import useSearchBar from '../searchbar/useSearchBar';
 import stylesToClassName from '../../../../src/app/js/lib/stylesToClassName';
 import { fromFields } from '../../../../src/app/js/sharedSelectors';
 import { fromSearch } from '../selectors';

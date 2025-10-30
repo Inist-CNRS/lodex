@@ -3,9 +3,9 @@ import compose from 'recompose/compose';
 
 import { Grid, useMediaQuery } from '@mui/material';
 import { applyFilter as applyFilterAction } from './index';
-import SearchBar from '../../../../src/app/js/lib/components/searchbar/SearchBar';
-import ToggleFacetsButton from '../../../../src/app/js/lib/components/searchbar/ToggleFacetsButton';
-import useSearchBar from '../../../../src/app/js/lib/components/searchbar/useSearchBar';
+import SearchBar from '../searchbar/SearchBar';
+import ToggleFacetsButton from '../searchbar/ToggleFacetsButton';
+import useSearchBar from '../searchbar/useSearchBar';
 import stylesToClassname from '../../../../src/app/js/lib/stylesToClassName';
 import { fromFields } from '../../../../src/app/js/sharedSelectors';
 import { fromDataset } from '../selectors';

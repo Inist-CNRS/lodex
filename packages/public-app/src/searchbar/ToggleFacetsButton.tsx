@@ -1,10 +1,9 @@
 import { IconButton } from '@mui/material';
 import { faFilter } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import stylesToClassName from '../../../../src/app/js/lib/stylesToClassName';
 
-import stylesToClassname from '../../../lib/stylesToClassName';
-
-const styles = stylesToClassname(
+const styles = stylesToClassName(
     {
         icon: {
             color: 'var(--primary-main)',
