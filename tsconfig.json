@@ -78,7 +78,8 @@
         "packages/frontend-common/utils/selectors.ts",
         "packages/frontend-common/utils/streamFile.ts",
         "packages/frontend-common/utils/stylesToClassName.ts",
-        "packages/frontend-common/utils/useDidUpdateEffect.ts"
+        "packages/frontend-common/utils/useDidUpdateEffect.ts",
+        "packages/api/src/controller/configureStoreServer.ts"
     ],
     "exclude": ["src/build", "src/app/build"]
 }
