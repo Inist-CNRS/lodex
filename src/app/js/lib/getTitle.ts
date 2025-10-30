@@ -1,4 +1,4 @@
-import { getCleanHost } from '@lodex/common';
+import { getCleanHost } from '../../../common/uris';
 
 const HOST_REGEX = /https?:\/\/([\w-]+)/;
 

@@ -9,7 +9,7 @@ import {
     SCOPE_GRAPHIC,
     SCOPE_DOCUMENT,
     SCOPE_COLLECTION,
-} from '@lodex/common';
+} from '../../../../../common/scope';
 import { FormatDefaultParamsFieldSet } from '../../utils/components/field-set/FormatFieldSets';
 import FormatGroupedFieldSet from '../../utils/components/field-set/FormatGroupedFieldSet';
 import { useTranslate } from '../../../i18n/I18NContext';

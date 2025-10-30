@@ -1,7 +1,7 @@
 import fetch from '../../lib/fetch';
-import { composeAsync, ISTEX_SITE_URL } from '@lodex/common';
-import { ISTEX_API_URL } from '../../api/externals';
+import composeAsync from '../../../../common/lib/composeAsync';
 import URL from 'url';
+import { ISTEX_SITE_URL, ISTEX_API_URL } from '../../../../common/externals';
 
 export const output = [
     'id',

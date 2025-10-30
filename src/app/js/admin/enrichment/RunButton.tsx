@@ -1,9 +1,10 @@
 import { useEffect, useState, type MouseEventHandler } from 'react';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import { Button } from '@mui/material';
+import { FINISHED, IN_PROGRESS, ON_HOLD } from '../../../../common/taskStatus';
 import { fromEnrichments } from '../selectors';
 import { launchEnrichment } from '.';
-import { TaskStatus, toast } from '@lodex/common';
+import { toast } from '../../../../common/tools/toast';
 import { connect } from 'react-redux';
 import { useTranslate } from '../../i18n/I18NContext';
 import type { State } from '../reducers';
@@ -47,10 +48,7 @@ export const RunButton = ({
         }
         onLaunchEnrichment({
             id,
-            action:
-                enrichmentStatus === TaskStatus.FINISHED
-                    ? 'relaunch'
-                    : 'launch',
+            action: enrichmentStatus === FINISHED ? 'relaunch' : 'launch',
         });
     };
 
@@ -84,8 +82,8 @@ const mapStateToProps = (
         .enrichments(state)
         .find(
             (enrichment) =>
-                enrichment.status === TaskStatus.IN_PROGRESS ||
-                enrichment.status === TaskStatus.ON_HOLD,
+                enrichment.status === IN_PROGRESS ||
+                enrichment.status === ON_HOLD,
         ),
     enrichmentStatus: fromEnrichments
         .enrichments(state)

@@ -6,9 +6,10 @@ import Link from '../../../lib/components/Link';
 
 import fetchPaginatedDataForComponent from '../../../lib/fetchPaginatedDataForComponent';
 import Alert from '../../../lib/components/Alert';
-import { PropositionStatus, ISTEX_SITE_URL } from '@lodex/common';
+import { REJECTED } from '../../../../../common/propositionStatus';
 import { fetchForIstexFormat } from '../../utils/fetchIstexData';
 import IstexItem, { type IstexItemComponentProps } from './IstexItem';
+import { ISTEX_SITE_URL } from '../../../../../common/externals';
 import { useTranslate } from '../../../i18n/I18NContext';
 
 const styles: {
@@ -19,8 +20,7 @@ const styles: {
 } = {
     text: memoize((status) => ({
         fontSize: '1rem',
-        textDecoration:
-            status === PropositionStatus.REJECTED ? 'line-through' : 'none',
+        textDecoration: status === REJECTED ? 'line-through' : 'none',
     })) as (status?: string) => CSSProperties,
     header: {
         borderBottom: '1px solid lightgrey',

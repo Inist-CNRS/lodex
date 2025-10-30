@@ -8,7 +8,7 @@ import {
     Chip,
 } from '@mui/material';
 import FieldRepresentation from './FieldRepresentation';
-import { getFieldForSpecificScope } from '@lodex/common';
+import { getFieldForSpecificScope } from '../../../common/scope';
 import {
     SortableContext,
     arrayMove,

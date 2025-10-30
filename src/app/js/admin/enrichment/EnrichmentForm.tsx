@@ -15,7 +15,8 @@ import {
     retryEnrichment,
     type Enrichment,
 } from '.';
-import { TaskStatus, toast } from '@lodex/common';
+import { IN_PROGRESS, PENDING } from '../../../../common/taskStatus';
+import { toast } from '../../../../common/tools/toast';
 import { useTranslate } from '../../i18n/I18NContext';
 import CancelButton from '../../lib/components/CancelButton';
 import {
@@ -184,7 +185,7 @@ export const EnrichmentForm = ({
 
     useEffect(() => {
         // We skip preview update if the enrichment has not completed
-        if (status === TaskStatus.IN_PROGRESS) {
+        if (status === IN_PROGRESS) {
             return;
         }
 
@@ -373,10 +374,8 @@ export const EnrichmentForm = ({
                             {isEditMode && (
                                 <DeleteEnrichmentButton
                                     disabled={
-                                        initialValues?.status ===
-                                            TaskStatus.IN_PROGRESS ||
-                                        initialValues?.status ===
-                                            TaskStatus.PENDING ||
+                                        initialValues?.status === IN_PROGRESS ||
+                                        initialValues?.status === PENDING ||
                                         isLoading
                                     }
                                     id={initialValues._id}
@@ -401,10 +400,8 @@ export const EnrichmentForm = ({
                                     type="submit"
                                     disabled={
                                         isLoading ||
-                                        initialValues?.status ===
-                                            TaskStatus.IN_PROGRESS ||
-                                        initialValues?.status ===
-                                            TaskStatus.PENDING ||
+                                        initialValues?.status === IN_PROGRESS ||
+                                        initialValues?.status === PENDING ||
                                         formState.isValid === false
                                     }
                                 >

@@ -7,7 +7,7 @@ import {
     type ReducerMapValue,
 } from 'redux-actions';
 
-import { getCatalogFromArray } from '@lodex/common';
+import getCatalogFromArray from '../../../common/fields/getCatalogFromArray';
 import { UPDATE_CHARACTERISTICS_SUCCESS } from '../characteristic';
 import {
     ADD_FIELD_TO_RESOURCE_SUCCESS,

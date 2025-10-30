@@ -1,4 +1,4 @@
-import { isLocalURL, getResourceUri } from '@lodex/common';
+import { isLocalURL, getResourceUri } from '../../../../../common/uris';
 import Link from '../../../lib/components/Link';
 import stylesToClassname from '../../../lib/stylesToClassName';
 import { truncateByWords } from '../../stringUtils';

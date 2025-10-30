@@ -10,7 +10,11 @@ import { useEffect, useState } from 'react';
 import { io } from 'socket.io-client';
 import { publish, publishSuccess, publishError } from '../publish';
 import { connect } from 'react-redux';
-import { DEFAULT_TENANT, ProgressStatus, toast } from '@lodex/common';
+import {
+    PENDING,
+    SAVING_DATASET,
+    UPLOADING_DATASET,
+} from '../../../../common/progressStatus';
 import { Cancel } from '@mui/icons-material';
 import jobsApi from '../api/job';
 import CancelProcessDialog from './CancelProcessDialog';
@@ -19,9 +23,11 @@ import Warning from '@mui/icons-material/Warning';
 import { loadParsingResult } from '../parsing';
 import { clearPublished } from '../clear';
 import { fromPublication } from '../selectors';
+import { toast } from '../../../../common/tools/toast';
 import { finishProgress } from '../progress/reducer';
 import { loadEnrichments } from '../enrichment';
 import { loadPrecomputed } from '../precomputed';
+import { DEFAULT_TENANT } from '../../../../common/tools/tenantTools';
 import { useTranslate } from '../../i18n/I18NContext';
 
 const styles = {
@@ -101,13 +107,13 @@ const JobProgressComponent = (props: JobProgressComponentProps) => {
 
         socket.on(`${dbName}_${tenant}-progress`, (data) => {
             data.isJobProgress =
-                data.status !== ProgressStatus.PENDING &&
+                data.status !== PENDING &&
                 (data.type === 'enricher' ||
                     data.type === 'precomputer' ||
                     data.type === 'publisher' ||
                     data.type === 'import');
             setProgress(data);
-            if (data.status === ProgressStatus.PENDING) {
+            if (data.status === PENDING) {
                 finishProgress();
             }
         });
@@ -199,7 +205,7 @@ const JobProgressComponent = (props: JobProgressComponentProps) => {
         if (
             progress &&
             // @ts-expect-error TS2339
-            progress.status === ProgressStatus.SAVING_DATASET &&
+            progress.status === SAVING_DATASET &&
             // @ts-expect-error TS2339
             progress.progress > 0 &&
             !hasLoadedParsingResult
@@ -275,9 +281,9 @@ const JobProgressComponent = (props: JobProgressComponentProps) => {
                                     {progress.subLabel}
                                 </Typography>
                             )}
-                            {/* @ts-expect-error TS2339 */}
-                            {progress?.status ===
-                                ProgressStatus.SAVING_DATASET &&
+                            {/*
+                         // @ts-expect-error TS2339 */}
+                            {progress?.status === SAVING_DATASET &&
                                 // @ts-expect-error TS2339
                                 progress?.subLabel && (
                                     <Typography variant="caption">
@@ -290,9 +296,9 @@ const JobProgressComponent = (props: JobProgressComponentProps) => {
                                     </Typography>
                                 )}
                         </Box>
-                        {/* @ts-expect-error TS2339 */}
-                        {progress?.status !==
-                            ProgressStatus.UPLOADING_DATASET &&
+                        {/*
+                     // @ts-expect-error TS2339 */}
+                        {progress?.status !== UPLOADING_DATASET &&
                             // @ts-expect-error TS2339
                             progress?.type !== 'precomputer' && (
                                 <Button

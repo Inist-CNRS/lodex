@@ -1,7 +1,14 @@
 import { connect } from 'react-redux';
 import { fromEnrichments } from '../selectors';
 import { Chip } from '@mui/material';
-import { TaskStatus } from '@lodex/common';
+import {
+    FINISHED,
+    IN_PROGRESS,
+    PENDING,
+    ERROR,
+    CANCELED,
+    PAUSED,
+} from '../../../../common/taskStatus';
 import { useTranslate } from '../../i18n/I18NContext';
 import type { State } from '../reducers';
 
@@ -18,7 +25,7 @@ type EnrichmentStatusProps = {
 
 export const EnrichmentStatus = ({ status }: EnrichmentStatusProps) => {
     const { translate } = useTranslate();
-    if (status === TaskStatus.PENDING) {
+    if (status === PENDING) {
         return (
             <Chip
                 component="span"
@@ -27,7 +34,7 @@ export const EnrichmentStatus = ({ status }: EnrichmentStatusProps) => {
             />
         );
     }
-    if (status === TaskStatus.IN_PROGRESS) {
+    if (status === IN_PROGRESS) {
         return (
             <Chip
                 component="span"
@@ -37,7 +44,7 @@ export const EnrichmentStatus = ({ status }: EnrichmentStatusProps) => {
         );
     }
 
-    if (status === TaskStatus.PAUSED) {
+    if (status === PAUSED) {
         return (
             <Chip
                 component="span"
@@ -47,7 +54,7 @@ export const EnrichmentStatus = ({ status }: EnrichmentStatusProps) => {
         );
     }
 
-    if (status === TaskStatus.FINISHED) {
+    if (status === FINISHED) {
         return (
             <Chip
                 component="span"
@@ -57,7 +64,7 @@ export const EnrichmentStatus = ({ status }: EnrichmentStatusProps) => {
         );
     }
 
-    if (status === TaskStatus.ERROR) {
+    if (status === ERROR) {
         return (
             <Chip
                 component="span"
@@ -67,7 +74,7 @@ export const EnrichmentStatus = ({ status }: EnrichmentStatusProps) => {
         );
     }
 
-    if (status === TaskStatus.CANCELED) {
+    if (status === CANCELED) {
         return (
             <Chip
                 component="span"

@@ -8,7 +8,6 @@ import {
 } from 'redux-saga/effects';
 import get from 'lodash/get';
 
-import { SCOPE_DATASET, SCOPE_GRAPHIC } from '@lodex/common';
 import {
     LOAD_FORMAT_DATA,
     loadFormatDataSuccess,
@@ -21,7 +20,8 @@ import { fromFields, fromUser, fromCharacteristic } from '../sharedSelectors';
 import { APPLY_FILTER, facetActionTypes } from '../public/dataset';
 import { CONFIGURE_FIELD_SUCCESS } from '../fields';
 import { UPDATE_CHARACTERISTICS_SUCCESS } from '../characteristic';
-import { ISTEX_API_URL } from '../api/externals';
+import { SCOPE_DATASET, SCOPE_GRAPHIC } from '../../../common/scope';
+import { ISTEX_API_URL } from '../../../common/externals';
 import { isPrecomputed } from './checkPredicate';
 
 // @ts-expect-error TS7006

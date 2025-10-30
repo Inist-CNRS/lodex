@@ -16,7 +16,7 @@ import {
     checkForbiddenNames,
     forbiddenNamesMessage,
     getTenantMaxSize,
-} from '@lodex/common';
+} from '../../../common/tools/tenantTools';
 
 // @ts-expect-error TS7006
 const cleanUpName = (name) => {

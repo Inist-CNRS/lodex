@@ -5,7 +5,7 @@ import {
     SCOPE_GRAPHIC,
     SCOPE_DOCUMENT,
     SCOPE_COLLECTION,
-} from '@lodex/common';
+} from '../../../../../common/scope';
 
 describe('isValidClonableField', () => {
     it('a "fieldClone" field should not be clonable (infinite loop)', () => {
