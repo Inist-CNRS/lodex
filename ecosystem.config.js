@@ -2,7 +2,7 @@ module.exports = {
     apps: [
         {
             name: 'lodex',
-            script: 'src/api',
+            script: 'packages/api/src',
             interpreter: 'node',
             interpreter_args: '--import tsx --max-http-header-size=32768',
             exec_mode: 'cluster',
@@ -13,7 +13,7 @@ module.exports = {
         },
         {
             name: 'worker',
-            script: 'workers',
+            script: 'packages/workers/src',
             interpreter: 'node',
             interpreter_args: '--import tsx',
             exec_mode: 'fork',

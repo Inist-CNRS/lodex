@@ -23,20 +23,18 @@ import {
     updatePrecomputed,
 } from '../api/precomputed';
 import { getJobLogs } from '../api/job';
-import { toast } from '../../../../common/tools/toast';
 import {
-    FINISHED,
-    IN_PROGRESS,
-    PENDING,
-    type TaskStatus,
-} from '../../../../common/taskStatus';
+    DEFAULT_TENANT,
+    TaskStatus,
+    type TaskStatusType,
+    type NewPreComputation,
+    toast,
+} from '@lodex/common';
 import { io } from 'socket.io-client';
 import CancelButton from '../../lib/components/CancelButton';
-import { DEFAULT_TENANT } from '../../../../common/tools/tenantTools';
 import { useTranslate } from '../../i18n/I18NContext';
 import { PrecomputedStatus } from './PrecomputedStatus';
 import { RunButton } from './RunButton';
-import type { NewPreComputation } from '../../../../common/types/precomputation';
 
 export type PrecomputedFormProps = {
     datasetFields: string[];
@@ -46,7 +44,7 @@ export type PrecomputedFormProps = {
     };
     initialValues?: {
         _id: string;
-        status: TaskStatus;
+        status: TaskStatusType;
         jobId: string;
         startedAt: string;
         name: string;
@@ -82,7 +80,7 @@ export const PrecomputedForm = ({
     );
     const [precomputedLogs, setPrecomputedLogs] = React.useState<string[]>([]);
     const [precomputedStatus, setPrecomputedStatus] = React.useState<
-        TaskStatus | undefined
+        TaskStatusType | undefined
     >(initialValues?.status);
 
     const formMethods = useForm<NewPreComputation>({
@@ -202,7 +200,10 @@ export const PrecomputedForm = ({
         }
         onLaunchPrecomputed({
             id: initialValues._id,
-            action: precomputedStatus === FINISHED ? 'relaunch' : 'launch',
+            action:
+                precomputedStatus === TaskStatus.FINISHED
+                    ? 'relaunch'
+                    : 'launch',
         });
     };
 
@@ -337,7 +338,8 @@ export const PrecomputedForm = ({
                                             }
                                         />
                                         {isEditMode &&
-                                            precomputedStatus === FINISHED && (
+                                            precomputedStatus ===
+                                                TaskStatus.FINISHED && (
                                                 <>
                                                     <Button
                                                         variant={
@@ -452,8 +454,9 @@ export const PrecomputedForm = ({
                                     disabled={
                                         submitting ||
                                         isLoading ||
-                                        precomputedStatus === IN_PROGRESS ||
-                                        precomputedStatus === PENDING
+                                        precomputedStatus ===
+                                            TaskStatus.IN_PROGRESS ||
+                                        precomputedStatus === TaskStatus.PENDING
                                     }
                                 >
                                     {translate('save')}
@@ -487,7 +490,10 @@ const mapStateToProps = (
     datasetFields: fromParsing.getParsedExcerptColumns(state),
     isPrecomputedRunning: !!fromPrecomputed
         .precomputed(state)
-        .find((precomputedData) => precomputedData.status === IN_PROGRESS),
+        .find(
+            (precomputedData) =>
+                precomputedData.status === TaskStatus.IN_PROGRESS,
+        ),
 });
 const mapDispatchToProps = {
     onLaunchPrecomputed: launchPrecomputed,

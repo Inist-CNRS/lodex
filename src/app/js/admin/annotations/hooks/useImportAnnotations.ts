@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useCallback, useMemo } from 'react';
 
-import { toast } from '../../../../../common/tools/toast';
+import { toast } from '@lodex/common';
 import { useTranslate } from '../../../i18n/I18NContext';
 import { loadFile } from '../../../lib/loadFile';
 import { getUserSessionStorageInfo } from '../../api/tools';

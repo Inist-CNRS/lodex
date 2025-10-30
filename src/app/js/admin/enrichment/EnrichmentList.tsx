@@ -15,8 +15,7 @@ import { connect } from 'react-redux';
 import { useHistory } from 'react-router';
 import { Link } from 'react-router-dom';
 import { launchAllEnrichment, retryEnrichment, type Enrichment } from '.';
-import { IN_PROGRESS } from '../../../../common/taskStatus';
-import { toast } from '../../../../common/tools/toast';
+import { TaskStatus, toast } from '@lodex/common';
 import { useTranslate } from '../../i18n/I18NContext';
 import { ConfirmPopup } from '../../lib/components/ConfirmPopup';
 import EnrichmentStatus from './EnrichmentStatus';
@@ -128,7 +127,9 @@ export const EnrichmentList = ({
     const { translate } = useTranslate();
     const history = useHistory();
     const areEnrichmentsRunning =
-        enrichments.some((enrichment) => enrichment.status === IN_PROGRESS) ||
+        enrichments.some(
+            (enrichment) => enrichment.status === TaskStatus.IN_PROGRESS,
+        ) ||
         isLoadEnrichmentsPending ||
         isRunAllEnrichmentPending;
     // @ts-expect-error TS7006

@@ -2,7 +2,7 @@ import { shallow } from 'enzyme';
 import { Dialog } from '@mui/material';
 
 import { ProgressComponent as Progress } from './Progress';
-import { PENDING, STARTING } from '../../../../common/progressStatus';
+import { ProgressStatus } from '@lodex/common';
 import { render } from '../../../../test-utils';
 
 // @ts-expect-error TS7006
@@ -13,7 +13,7 @@ describe('Progress', () => {
         loadProgress: () => null,
         clearProgress: () => null,
         progress: {
-            status: STARTING,
+            status: ProgressStatus.STARTING,
             target: 0,
             progress: 0,
         },
@@ -30,7 +30,7 @@ describe('Progress', () => {
             ...defaultProps,
             progress: {
                 ...defaultProps.progress,
-                status: PENDING,
+                status: ProgressStatus.PENDING,
             },
         };
         const wrapper = shallow(<Progress {...props} />);
