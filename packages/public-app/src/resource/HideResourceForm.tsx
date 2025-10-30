@@ -14,7 +14,7 @@ import CancelButton from '../../../../src/app/js/lib/components/CancelButton';
 import ButtonWithStatus from '../../../../src/app/js/lib/components/ButtonWithStatus';
 import { hideResource } from '../api/hideResource';
 import { hideResourceSuccess } from './index';
-import Alert from '../../../../src/app/js/lib/components/Alert';
+import Alert from '@lodex/frontend-common/components/Alert';
 import { useMutation } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
 

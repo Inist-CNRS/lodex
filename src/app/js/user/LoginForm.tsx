@@ -4,7 +4,7 @@ import { TextField } from '../../../../packages/frontend-common/form-fields/Text
 import ButtonWithStatus from '../lib/components/ButtonWithStatus';
 import { CardActions, CardContent } from '@mui/material';
 import { useLogin } from '../api/login';
-import Alert from '../lib/components/Alert';
+import Alert from '@lodex/frontend-common/components/Alert';
 
 const styles = {
     alert: {
