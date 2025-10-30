@@ -1,4 +1,4 @@
-import { render } from '../../../../src/test-utils';
+import { render } from '../test-utils';
 
 import {
     ParsingExcerptComponent as ParsingExcerpt,

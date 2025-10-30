@@ -2,7 +2,7 @@ import { MemoryRouter } from 'react-router-dom';
 // @ts-expect-error TS7016
 import { StyleSheetTestUtils } from 'aphrodite';
 
-import { render } from '../../../../src/test-utils';
+import { render } from '@lodex/frontend-common/test-utils';
 import SearchResult from './SearchResult';
 
 describe('SearchResult', () => {

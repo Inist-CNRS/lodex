@@ -1,5 +1,5 @@
 import { MemoryRouter, Route } from 'react-router-dom';
-import { render } from '../../../../src/test-utils';
+import { render } from '../test-utils';
 import { ParsingResultComponent } from './ParsingResult';
 
 jest.mock('../api/dataset', () => ({

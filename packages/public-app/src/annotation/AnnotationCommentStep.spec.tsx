@@ -1,11 +1,11 @@
 import { useForm } from '@tanstack/react-form';
 
-import { render } from '../../../test-utils';
 import { TestI18N } from '@lodex/frontend-common/i18n/I18NContext';
 import {
     AnnotationCommentStep,
     CommentDescription,
 } from './AnnotationCommentStep';
+import { render } from '../test-utils';
 
 const renderAnnotationCommentStep = ({
     // @ts-expect-error TS7031

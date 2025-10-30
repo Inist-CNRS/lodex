@@ -1,5 +1,5 @@
 import { act } from 'react-dom/test-utils';
-import { render } from '../../../../src/test-utils';
+import { render } from '../test-utils';
 import { EnrichmentForm, type EnrichmentFormProps } from './EnrichmentForm';
 import type { Enrichment } from './index';
 import { fireEvent, waitFor } from '@testing-library/dom';

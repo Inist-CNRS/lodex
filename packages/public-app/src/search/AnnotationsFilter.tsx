@@ -6,10 +6,10 @@ import {
     Select,
 } from '@mui/material';
 import { connect } from 'react-redux';
-import { useGetAnnotatedResourceUris } from '../../../../src/app/js/annotation/annotationStorage';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 import { fromSearch } from '../selectors';
 import { searchAnnotations } from './reducer';
+import { useGetAnnotatedResourceUris } from '../annotation/annotationStorage';
 
 type AnnotationsFilterComponentProps = {
     filter?: string;

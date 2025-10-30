@@ -17,7 +17,7 @@ import Routes from './Routes';
 import sagas from './sagas';
 // @ts-expect-error TS2882
 import 'react-toastify/ReactToastify.css';
-import { AnnotationStorageProvider } from '../../../src/app/js/annotation/annotationStorage';
+import { AnnotationStorageProvider } from './annotation/annotationStorage';
 
 const locale = getLocale();
 const initialState = {

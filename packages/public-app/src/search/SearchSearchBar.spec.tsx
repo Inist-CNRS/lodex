@@ -1,6 +1,6 @@
+import { useCanAnnotate } from '../annotation/useCanAnnotate';
 import { SearchSearchBarComponent } from './SearchSearchBar';
-import { useCanAnnotate } from '../../../../src/app/js/annotation/useCanAnnotate';
-import { render } from '../../../../src/test-utils';
+import { render } from '@lodex/frontend-common/test-utils';
 
 jest.mock('../../../../src/app/js/annotation/useCanAnnotate', () => ({
     useCanAnnotate: jest.fn(),

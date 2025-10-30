@@ -1,6 +1,6 @@
 import { ConfigTenantFormView } from './ConfigTenantForm';
 import { TestI18N } from '@lodex/frontend-common/i18n/I18NContext';
-import { render } from '../../../../src/test-utils';
+import { render } from '../test-utils';
 
 import configTenant from '../../../../configTenant.json';
 import { fireEvent, waitFor } from '@testing-library/dom';

@@ -1,8 +1,8 @@
 import { TestI18N } from '@lodex/frontend-common/i18n/I18NContext';
 import { CreateAnnotationTitle } from './CreateAnnotationTitle';
 import { useForm } from '@tanstack/react-form';
-import { render } from '../../../test-utils';
 import { COMMENT_STEP, TARGET_STEP } from './steps';
+import { render } from '../test-utils';
 
 interface TestTitleProps {
     formTarget?: string;

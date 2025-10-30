@@ -4,7 +4,7 @@ import { List } from '@mui/material';
 import Alert from '@lodex/frontend-common/components/Alert';
 import { IstexView } from './IstexView';
 import IstexItem from './IstexItem';
-import { render } from '../../../../../test-utils';
+import { render } from '@lodex/frontend-common/test-utils';
 
 jest.mock('../../../lib/stylesToClassName', () => ({
     __esModule: true,
