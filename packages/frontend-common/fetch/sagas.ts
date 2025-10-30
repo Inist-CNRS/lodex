@@ -2,7 +2,7 @@ import { race, call, put, take, takeLatest, delay } from 'redux-saga/effects';
 
 import fetchSaga from './fetchSaga';
 
-import { FETCH, fetchError, fetchSuccess } from './';
+import { FETCH, fetchError, fetchSuccess } from './reducer';
 
 // @ts-expect-error TS7006
 export const filterAction = (action) =>
