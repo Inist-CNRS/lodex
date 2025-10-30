@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import { withRouter } from 'react-router';
 import { DropzoneAreaBase, type FileObject } from 'mui-file-dropzone';
-import Alert from '../../../../src/app/js/lib/components/Alert';
+import Alert from '@lodex/frontend-common/components/Alert';
 import {
     Box,
     Button,

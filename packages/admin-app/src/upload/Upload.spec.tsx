@@ -1,6 +1,6 @@
 import { shallow } from 'enzyme';
 import { Button } from '@mui/material';
-import Alert from '../../../../src/app/js/lib/components/Alert';
+import Alert from '@lodex/frontend-common/components/Alert';
 
 import { UploadComponent as Upload, type UploadComponentProps } from './Upload';
 

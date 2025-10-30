@@ -1,7 +1,7 @@
 import { shallow } from 'enzyme';
 import { List } from '@mui/material';
 
-import Alert from '../../../lib/components/Alert';
+import Alert from '@lodex/frontend-common/components/Alert';
 import { IstexView } from './IstexView';
 import IstexItem from './IstexItem';
 import { render } from '../../../../../test-utils';
