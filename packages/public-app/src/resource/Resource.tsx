@@ -17,7 +17,7 @@ import NavButton, {
     NEXT,
     PREV,
 } from '@lodex/frontend-common/components/NavButton';
-import stylesToClassname from '../../../../src/app/js/lib/stylesToClassName';
+import stylesToClassname from '@lodex/frontend-common/utils/stylesToClassName';
 import {
     fromCharacteristic,
     fromFields,

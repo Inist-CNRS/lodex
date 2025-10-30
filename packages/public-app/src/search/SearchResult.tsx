@@ -3,7 +3,7 @@ import classnames from 'classnames';
 
 import Link from '@lodex/frontend-common/components/Link';
 import { isURL, getResourceUri } from '@lodex/common';
-import stylesToClassname from '../../../../src/app/js/lib/stylesToClassName';
+import stylesToClassname from '@lodex/frontend-common/utils/stylesToClassName';
 import { Box } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useIsVisited } from '../resource/useRememberVisit';

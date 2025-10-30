@@ -3,9 +3,9 @@ import { withRouter } from 'react-router';
 import compose from 'recompose/compose';
 import get from 'lodash/get';
 
-import { getPercentValue } from '../../../lib/getPercentage';
-import { getShortText } from '../../../lib/longTexts';
-import stylesToClassname from '../../../lib/stylesToClassName';
+import { getPercentValue } from '@lodex/frontend-common/utils/getPercentage';
+import { getShortText } from '@lodex/frontend-common/utils/longTexts';
+import stylesToClassname from '@lodex/frontend-common/utils/stylesToClassName';
 import injectData from '../../injectData';
 import AsterPlot from './AsterPlot';
 import { getResourceUri } from '@lodex/common';

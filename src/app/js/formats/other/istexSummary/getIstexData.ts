@@ -5,7 +5,7 @@ import { composeAsync } from '@lodex/common';
 import { ISTEX_API_URL } from '../../../api/externals';
 import { parseFetchResult, output } from '../../utils/fetchIstexData';
 import fetch from '@lodex/frontend-common/fetch/fetch';
-import alphabeticalSort from '../../../lib/alphabeticalSort';
+import alphabeticalSort from '@lodex/frontend-common/utils/alphabeticalSort';
 import { CUSTOM_ISTEX_QUERY, SORT_YEAR_DESC, type SortYear } from './constants';
 
 const defaultQueryOptions = {

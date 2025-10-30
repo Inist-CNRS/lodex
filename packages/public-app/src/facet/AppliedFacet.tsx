@@ -1,7 +1,7 @@
 import { Chip } from '@mui/material';
 
-import getFieldClassName from '../../../../src/app/js/lib/getFieldClassName';
-import interleave from '../../../../src/app/js/lib/interleave';
+import getFieldClassName from '@lodex/frontend-common/utils/getFieldClassName';
+import interleave from '@lodex/frontend-common/utils/interleave';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 
 const styles = {

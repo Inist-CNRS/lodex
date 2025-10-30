@@ -1,4 +1,4 @@
-import { shouldDisplayField } from './shouldDisplayField';
+import { shouldDisplayField } from '../../../../packages/public-app/src/Property/shouldDisplayField';
 import { PropositionStatus } from '@lodex/common';
 
 describe('shouldDisplayField', () => {

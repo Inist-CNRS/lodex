@@ -16,7 +16,7 @@ import {
 import ExcerptHeader from './ExcerptHeader';
 import ExcerptRemoveColumn from './ExcerptRemoveColumn';
 import ExcerptLine from './ExcerptLine';
-import getFieldClassName from '../../../../src/app/js/lib/getFieldClassName';
+import getFieldClassName from '@lodex/frontend-common/utils/getFieldClassName';
 import { URI_FIELD_NAME } from '@lodex/common';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 

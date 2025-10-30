@@ -4,7 +4,7 @@ import get from 'lodash/get';
 import classnames from 'classnames';
 import { Link, NavLink } from 'react-router-dom';
 
-import stylesToClassname from '../../../../src/app/js/lib/stylesToClassName';
+import stylesToClassname from '@lodex/frontend-common/utils/stylesToClassName';
 import { ADMIN_ROLE, extractTenantFromUrl } from '@lodex/common';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 import type { ChangeEvent } from 'react';

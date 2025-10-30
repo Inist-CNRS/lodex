@@ -2,7 +2,7 @@ import { Helmet } from 'react-helmet';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 
-import getTitle from '../../../../src/app/js/lib/getTitle';
+import getTitle from '@lodex/frontend-common/utils/getTitle';
 import Graph from './Graph';
 
 type GraphPageProps = {

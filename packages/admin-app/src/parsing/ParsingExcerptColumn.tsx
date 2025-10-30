@@ -1,6 +1,9 @@
 import pure from 'recompose/pure';
 import { CircularProgress, TableCell, type SxProps } from '@mui/material';
-import { isLongText, getShortText } from '../../../../src/app/js/lib/longTexts';
+import {
+    isLongText,
+    getShortText,
+} from '@lodex/frontend-common/utils/longTexts';
 
 interface ParsingExcerptColumnComponentProps {
     children?: React.ReactNode;

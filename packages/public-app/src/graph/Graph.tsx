@@ -10,7 +10,7 @@ import compose from 'recompose/compose';
 import { Settings } from '@mui/icons-material';
 import { CreateAnnotationButton } from '../../../../src/app/js/annotation/CreateAnnotationButton';
 import { preLoadPublication } from '../../../../src/app/js/fields';
-import stylesToClassname from '../../../../src/app/js/lib/stylesToClassName';
+import stylesToClassname from '@lodex/frontend-common/utils/stylesToClassName';
 import {
     fromCharacteristic,
     fromFields,

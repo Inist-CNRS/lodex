@@ -1,7 +1,7 @@
 import { Box, MenuItem, Typography } from '@mui/material';
 import { getFieldToCaptionForSpecificScope } from '@lodex/common';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
-import getFieldClassName from '../lib/getFieldClassName';
+import getFieldClassName from '@lodex/frontend-common/utils/getFieldClassName.ts';
 import FieldRepresentation from './FieldRepresentation';
 import type { Field } from './types.ts';
 import { TextField } from '../../../../packages/frontend-common/form-fields/TextField.tsx';

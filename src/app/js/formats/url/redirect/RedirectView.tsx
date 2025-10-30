@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import { translate } from '@lodex/frontend-common/i18n/I18NContext';
 
-import stylesToClassname from '../../../lib/stylesToClassName';
+import stylesToClassname from '@lodex/frontend-common/utils/stylesToClassName';
 import { type Field } from '../../../propTypes';
 
 const typing = {

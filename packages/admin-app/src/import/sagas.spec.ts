@@ -8,7 +8,7 @@ import {
     importFieldsClosed,
 } from './index';
 
-import { loadModelFile } from '../../../../src/app/js/lib/loadFile';
+import { loadModelFile } from '@lodex/frontend-common/utils/loadFile';
 
 import { handleLoadModel as handleLoadModelSaga } from './sagas';
 

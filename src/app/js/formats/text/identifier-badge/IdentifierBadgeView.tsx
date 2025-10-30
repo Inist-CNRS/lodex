@@ -1,7 +1,7 @@
 import { type Field } from '../../../propTypes';
 import { resolvers } from './index';
 import Link from '@lodex/frontend-common/components/Link';
-import stylesToClassname from '../../../lib/stylesToClassName';
+import stylesToClassname from '@lodex/frontend-common/utils/stylesToClassName';
 
 // @ts-expect-error TS2554
 const styles = stylesToClassname({

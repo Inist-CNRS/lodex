@@ -15,7 +15,7 @@ import { preLoadPublication as preLoadPublicationAction } from '../../../../src/
 import { fromFields } from '../../../../src/app/js/sharedSelectors';
 import { fromSearch, fromDataset } from '../selectors';
 import AdminOnlyAlert from '@lodex/frontend-common/components/AdminOnlyAlert';
-import stylesToClassname from '../../../../src/app/js/lib/stylesToClassName';
+import stylesToClassname from '@lodex/frontend-common/utils/stylesToClassName';
 import AppliedFacetList from './AppliedSearchFacetList';
 import FacetList from '../facet/FacetList';
 import SearchResultList from './SearchResultList';

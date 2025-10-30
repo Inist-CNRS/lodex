@@ -5,7 +5,7 @@ import { useState } from 'react';
 
 import { ArrowUpward } from '@mui/icons-material';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
-import stylesToClassname from '../../../../src/app/js/lib/stylesToClassName';
+import stylesToClassname from '@lodex/frontend-common/utils/stylesToClassName';
 import type { Field } from '../../../../src/app/js/fields/types';
 
 const styles = stylesToClassname(

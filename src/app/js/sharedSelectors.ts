@@ -1,6 +1,6 @@
 import get from 'lodash/get';
 
-import { createGlobalSelectors } from './lib/selectors';
+import { createGlobalSelectors } from '@lodex/frontend-common/utils/selectors';
 import { selectors as fieldsSelectors } from './fields';
 import { selectors as userSelectors } from './user';
 import { selectors as characteristicSelectors } from './characteristic';

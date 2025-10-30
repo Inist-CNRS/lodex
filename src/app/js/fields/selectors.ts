@@ -12,7 +12,7 @@ import {
     SCOPE_GRAPHIC,
     URI_FIELD_NAME,
 } from '@lodex/common';
-import { getProps } from '../lib/selectors';
+import { getProps } from '@lodex/frontend-common/utils/selectors';
 
 import { splitAnnotationFormatListOptions } from './annotations';
 import {

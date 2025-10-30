@@ -1,6 +1,6 @@
 import { isLocalURL, getResourceUri } from '@lodex/common';
 import Link from '@lodex/frontend-common/components/Link';
-import stylesToClassname from '../../../lib/stylesToClassName';
+import stylesToClassname from '@lodex/frontend-common/utils/stylesToClassName';
 import { truncateByWords } from '../../stringUtils';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faExternalLinkAlt } from '@fortawesome/free-solid-svg-icons';

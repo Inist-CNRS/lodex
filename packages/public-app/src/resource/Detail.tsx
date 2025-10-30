@@ -12,7 +12,7 @@ import { fromFields } from '../../../../src/app/js/sharedSelectors';
 import Property from '../Property';
 import { HideResource } from './HideResource';
 import SelectVersion from './SelectVersion';
-import getTitle from '../../../../src/app/js/lib/getTitle';
+import getTitle from '@lodex/frontend-common/utils/getTitle';
 import ExportButton from '../ExportButton';
 
 const TOP_FIELDS_LIMIT = 1;

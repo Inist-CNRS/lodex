@@ -1,7 +1,7 @@
 import { shallow } from 'enzyme';
 import { TableCell, CircularProgress } from '@mui/material';
 
-import { getShortText } from '../../../../src/app/js/lib/longTexts';
+import { getShortText } from '@lodex/frontend-common/utils/longTexts';
 import { ParsingExcerptColumnComponent as ParsingExcerptColumn } from './ParsingExcerptColumn';
 
 describe('<ParsingExcerptColumn />', () => {

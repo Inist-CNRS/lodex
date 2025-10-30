@@ -1,7 +1,7 @@
 import { IconButton } from '@mui/material';
 import { faFilter } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import stylesToClassName from '../../../../src/app/js/lib/stylesToClassName';
+import stylesToClassName from '@lodex/frontend-common/utils/stylesToClassName';
 
 const styles = stylesToClassName(
     {
