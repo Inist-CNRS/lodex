@@ -3,7 +3,7 @@ import { Dialog } from '@mui/material';
 
 import { ProgressComponent as Progress } from './Progress';
 import { ProgressStatus } from '@lodex/common';
-import { render } from '../../../../src/test-utils';
+import { render } from '../test-utils';
 
 // @ts-expect-error TS7006
 const identity = (x) => x;

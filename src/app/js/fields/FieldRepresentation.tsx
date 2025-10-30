@@ -1,6 +1,6 @@
 import { Box, Checkbox, Tooltip, Typography, useTheme } from '@mui/material';
 
-import { AnnotationDisabledIcon } from '../annotation/AnnotationDisabledIcon';
+import { AnnotationDisabledIcon } from '@lodex/frontend-common/components/AnnotationDisabledIcon';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 import FieldInternalIcon from './FieldInternalIcon';
 import type { Field } from './types';

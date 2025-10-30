@@ -2,8 +2,8 @@ import { useQuery } from '@tanstack/react-query';
 
 import { useHistory } from 'react-router-dom';
 import fetch from '@lodex/frontend-common/fetch/fetch';
-import { getRequest } from '../user';
 import { getUserSessionStorageInfo } from '../../../../packages/admin-app/src/api/tools';
+import { getRequest } from '../../../../src/app/js/user';
 
 export function useCanAnnotate() {
     const history = useHistory();

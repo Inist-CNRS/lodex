@@ -1,5 +1,5 @@
 import '@testing-library/jest-dom';
-import { render } from '../../../../src/test-utils';
+import { render } from '../test-utils';
 
 import { PrecomputedForm, type PrecomputedFormProps } from './PrecomputedForm';
 

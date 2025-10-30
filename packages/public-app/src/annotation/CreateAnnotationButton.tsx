@@ -9,7 +9,6 @@ import {
 } from '@mui/material';
 import { useCallback, useMemo, useRef, useState } from 'react';
 
-import { getIsFieldValueAnnotable, getReadableValue } from '../formats';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 import { useGetFieldAnnotationIds } from './annotationStorage';
 import { CreateAnnotationModal } from './CreateAnnotationModal';
@@ -18,6 +17,7 @@ import { MODE_ALL, MODE_CLOSED, MODE_MINE } from './HistoryDrawer.const';
 import { useCanAnnotate } from './useCanAnnotate';
 import { useCreateAnnotation } from './useCreateAnnotation';
 import { useResourceUri } from './useResourceUri';
+import { getReadableValue } from '../../../../src/app/js/formats';
 
 interface UserAnnotationCountProps {
     fieldAnnotationIds: string[];

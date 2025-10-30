@@ -1,10 +1,10 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { MemoryRouter } from 'react-router-dom';
-import { render, userEvent } from '../../../../../src/test-utils';
 import { TestI18N } from '@lodex/frontend-common/i18n/I18NContext';
 import { useUpdateAnnotation } from '../hooks/useUpdateAnnotation';
 import { AnnotationForm } from './AnnotationForm';
 import { fireEvent, waitFor, within } from '@testing-library/dom';
+import { render, userEvent } from '../../test-utils';
 
 jest.mock('../hooks/useUpdateAnnotation', () => ({
     useUpdateAnnotation: jest.fn().mockReturnValue({

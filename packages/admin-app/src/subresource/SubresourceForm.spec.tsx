@@ -1,5 +1,5 @@
 import { fireEvent, waitFor } from '@testing-library/dom';
-import { render, userEvent, act } from '../../../../src/test-utils';
+import { render, userEvent, act } from '../test-utils';
 import { SubresourceFormComponent } from './SubresourceForm';
 
 const changeAutocomplete = async (

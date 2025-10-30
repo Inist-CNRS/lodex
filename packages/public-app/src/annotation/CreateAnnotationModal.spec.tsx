@@ -1,13 +1,13 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { setTimeout } from 'node:timers/promises';
 
-import { render } from '../../../test-utils';
 import { TestI18N } from '@lodex/frontend-common/i18n/I18NContext';
 import {
     CreateAnnotationModal,
     type CreateAnnotationModalProps,
 } from './CreateAnnotationModal';
 import { fireEvent, waitFor } from '@testing-library/dom';
+import { render } from '../test-utils';
 
 jest.mock('./useGetFieldAnnotation', () => ({
     useGetFieldAnnotation: jest.fn().mockReturnValue({

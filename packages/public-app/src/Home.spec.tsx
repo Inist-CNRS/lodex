@@ -1,7 +1,7 @@
 import { HomeComponent as Home } from './Home';
 import Loading from '@lodex/frontend-common/components/Loading';
 import NoDataset from './NoDataset';
-import { render } from '../../../src/test-utils';
+import { render } from '@lodex/frontend-common/test-utils';
 import { shallow } from 'enzyme';
 
 describe('<Home />', () => {

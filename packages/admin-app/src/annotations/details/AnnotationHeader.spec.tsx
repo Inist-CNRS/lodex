@@ -1,6 +1,6 @@
-import { render } from '../../../../../src/test-utils';
 import { TestI18N } from '@lodex/frontend-common/i18n/I18NContext';
 import { AnnotationHeader } from './AnnotationHeader';
+import { render } from '../../test-utils';
 
 describe('AnnotationHeader', () => {
     it('should render header for home page if resourceUri is "/"', () => {

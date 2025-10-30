@@ -8,7 +8,6 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 
 import { Settings } from '@mui/icons-material';
-import { CreateAnnotationButton } from '../../../../src/app/js/annotation/CreateAnnotationButton';
 import { preLoadPublication } from '../../../../src/app/js/fields';
 import stylesToClassname from '@lodex/frontend-common/utils/stylesToClassName';
 import {
@@ -27,6 +26,7 @@ import CompositeProperty from '../Property/CompositeProperty';
 import PropertyLinkedFields from '../Property/PropertyLinkedFields';
 import type { Field } from '../../../../src/app/js/fields/types';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
+import { CreateAnnotationButton } from '../annotation/CreateAnnotationButton';
 
 const styles = stylesToClassname(
     {
