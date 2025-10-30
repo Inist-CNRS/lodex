@@ -66,9 +66,7 @@ describe('AutocompleteField', () => {
                 fireEvent.mouseDown(textbox);
             });
 
-            await waitFor(() => {
-                return userEvent.type(textbox, 'Jo');
-            });
+            await userEvent.type(textbox, 'Jo');
 
             expect(
                 wrapper.queryByRole('option', {
@@ -96,9 +94,7 @@ describe('AutocompleteField', () => {
                 fireEvent.mouseDown(textbox);
             });
 
-            await waitFor(() => {
-                return userEvent.type(textbox, 'Franck');
-            });
+            await userEvent.type(textbox, 'Franck');
 
             await waitFor(() => {
                 const option = wrapper.getByRole('option', {
@@ -124,9 +120,7 @@ describe('AutocompleteField', () => {
                 fireEvent.mouseDown(textbox);
             });
 
-            await waitFor(() => {
-                return userEvent.type(textbox, 'Franck');
-            });
+            await userEvent.type(textbox, 'Franck');
 
             await waitFor(() => {
                 expect(
@@ -140,9 +134,7 @@ describe('AutocompleteField', () => {
                 }),
             ).not.toBeInTheDocument();
 
-            await waitFor(() => {
-                return fireEvent.blur(textbox);
-            });
+            fireEvent.blur(textbox);
 
             expect(textbox).toHaveValue('');
         });

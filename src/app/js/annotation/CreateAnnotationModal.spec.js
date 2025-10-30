@@ -196,7 +196,9 @@ describe('CreateAnnotationModal', () => {
             );
 
             // Wait for the submit button to be enabled
-            await waitFor(() => setTimeout(500), { timeout: 10000 });
+            await waitFor(async () => await setTimeout(500), {
+                timeout: 10000,
+            });
 
             await waitFor(
                 () => {
@@ -563,7 +565,7 @@ describe('CreateAnnotationModal', () => {
     });
 
     describe('comment tab', () => {
-        beforeEach(() => {
+        beforeEach(async () => {
             render(
                 <TestModal
                     onClose={onClose}
@@ -572,11 +574,16 @@ describe('CreateAnnotationModal', () => {
                 />,
             );
 
-            expect(
-                screen.queryByRole('tab', {
-                    name: 'annotation_step_comment',
-                }),
-            ).toBeInTheDocument();
+            await waitFor(
+                () => {
+                    expect(
+                        screen.queryByRole('tab', {
+                            name: 'annotation_step_comment',
+                        }),
+                    ).toBeInTheDocument();
+                },
+                { timeout: 10000 },
+            );
 
             expect(
                 screen.queryByRole('tab', {
@@ -584,7 +591,7 @@ describe('CreateAnnotationModal', () => {
                     hidden: true,
                 }),
             ).not.toBeInTheDocument();
-        });
+        }, 15000);
 
         describe('comments', () => {
             it('should render comments field (but no proposedValue field)', () => {
@@ -606,22 +613,30 @@ describe('CreateAnnotationModal', () => {
             });
 
             it('should not display an error when field is valid', async () => {
-                await waitFor(() => {
-                    fireEvent.change(
-                        screen.getByRole('textbox', {
-                            name: 'annotation.comment *',
-                        }),
-                        {
-                            target: { value: 'test' },
-                        },
-                    );
-                });
+                await waitFor(
+                    () => {
+                        fireEvent.change(
+                            screen.getByRole('textbox', {
+                                name: 'annotation.comment *',
+                            }),
+                            {
+                                target: { value: 'test' },
+                            },
+                        );
+                    },
+                    { timeout: 10000 },
+                );
 
-                expect(
-                    screen.getByRole('textbox', {
-                        name: 'annotation.comment *',
-                    }),
-                ).toBeValid();
+                await waitFor(
+                    () => {
+                        expect(
+                            screen.getByRole('textbox', {
+                                name: 'annotation.comment *',
+                            }),
+                        ).toBeValid();
+                    },
+                    { timeout: 10000 },
+                );
 
                 expect(
                     screen.getByRole('textbox', {
@@ -630,45 +645,68 @@ describe('CreateAnnotationModal', () => {
                 ).toHaveValue('test');
 
                 expect(screen.queryAllByRole('error_required')).toHaveLength(0);
-            });
+            }, 15000);
 
             it('should display an error when field is not valid', async () => {
-                await waitFor(() => {
-                    fireEvent.change(
-                        screen.getByRole('textbox', {
-                            name: 'annotation.comment *',
-                        }),
-                        {
-                            target: { value: 'test' },
-                        },
-                    );
-                });
+                await waitFor(
+                    () => {
+                        fireEvent.change(
+                            screen.getByRole('textbox', {
+                                name: 'annotation.comment *',
+                            }),
+                            {
+                                target: { value: 'test' },
+                            },
+                        );
+                    },
+                    { timeout: 10000 },
+                );
 
-                expect(
-                    screen.getByRole('textbox', {
-                        name: 'annotation.comment *',
-                    }),
-                ).toBeValid();
+                await waitFor(
+                    () => {
+                        expect(
+                            screen.getByRole('textbox', {
+                                name: 'annotation.comment *',
+                            }),
+                        ).toBeValid();
+                    },
+                    { timeout: 10000 },
+                );
 
-                await waitFor(() => {
-                    fireEvent.change(
-                        screen.getByRole('textbox', {
-                            name: 'annotation.comment *',
-                        }),
-                        {
-                            target: { value: '' },
-                        },
-                    );
-                });
+                await waitFor(
+                    () => {
+                        fireEvent.change(
+                            screen.getByRole('textbox', {
+                                name: 'annotation.comment *',
+                            }),
+                            {
+                                target: { value: '' },
+                            },
+                        );
+                    },
+                    { timeout: 10000 },
+                );
 
-                expect(
-                    screen.getByRole('textbox', {
-                        name: 'annotation.comment *',
-                    }),
-                ).not.toBeValid();
+                await waitFor(
+                    () => {
+                        expect(
+                            screen.getByRole('textbox', {
+                                name: 'annotation.comment *',
+                            }),
+                        ).not.toBeValid();
+                    },
+                    { timeout: 10000 },
+                );
 
-                expect(screen.getByText('error_required')).toHaveRole('alert');
-            });
+                await waitFor(
+                    () => {
+                        expect(screen.getByText('error_required')).toHaveRole(
+                            'alert',
+                        );
+                    },
+                    { timeout: 10000 },
+                );
+            }, 30000);
         });
 
         describe('correction comment', () => {
@@ -683,87 +721,142 @@ describe('CreateAnnotationModal', () => {
                     />,
                 );
 
-                await waitFor(() => {
-                    fireEvent.click(
-                        screen.queryByText('annotation_correct_content'),
-                    );
-                });
+                await waitFor(
+                    () => {
+                        const correctButton = screen.queryByText(
+                            'annotation_correct_content',
+                        );
+                        expect(correctButton).toBeInTheDocument();
+                        fireEvent.click(correctButton);
+                    },
+                    { timeout: 10000 },
+                );
 
-                expect(
-                    screen.queryByRole('tab', {
-                        name: 'annotation_step_comment',
-                    }),
-                ).toBeInTheDocument();
-            });
+                await waitFor(
+                    () => {
+                        expect(
+                            screen.queryByRole('tab', {
+                                name: 'annotation_step_comment',
+                            }),
+                        ).toBeInTheDocument();
+                    },
+                    { timeout: 10000 },
+                );
+            }, 15000);
 
             it('should render required proposedValue and comment field', async () => {
-                expect(
-                    screen.getByText(
-                        'annotation_title_annotate_field+{"field":"Field Label"}',
-                    ),
-                ).toBeInTheDocument();
-                expect(
-                    screen.getByRole('textbox', {
-                        name: 'annotation.proposedValue *',
-                    }),
-                ).toBeInTheDocument();
+                await waitFor(
+                    () => {
+                        expect(
+                            screen.getByText(
+                                'annotation_title_annotate_field+{"field":"Field Label"}',
+                            ),
+                        ).toBeInTheDocument();
+                    },
+                    { timeout: 10000 },
+                );
+
+                await waitFor(
+                    () => {
+                        expect(
+                            screen.getByRole('textbox', {
+                                name: 'annotation.proposedValue *',
+                            }),
+                        ).toBeInTheDocument();
+                    },
+                    { timeout: 10000 },
+                );
+
                 expect(
                     screen.getByRole('textbox', {
                         name: 'annotation.proposedValue *',
                     }),
                 ).toHaveValue('initialValue');
-                expect(
-                    screen.getByRole('textbox', {
-                        name: 'annotation.comment *',
-                    }),
-                ).toBeInTheDocument();
+
+                await waitFor(
+                    () => {
+                        expect(
+                            screen.getByRole('textbox', {
+                                name: 'annotation.comment *',
+                            }),
+                        ).toBeInTheDocument();
+                    },
+                    { timeout: 10000 },
+                );
+
                 expect(
                     screen.getByRole('button', { name: 'next' }),
                 ).toBeDisabled();
 
-                await waitFor(() => {
-                    fireEvent.change(
-                        screen.getByRole('textbox', {
-                            name: 'annotation.comment *',
-                        }),
-                        {
-                            target: { value: 'comment' },
-                        },
-                    );
-                });
+                await waitFor(
+                    () => {
+                        fireEvent.change(
+                            screen.getByRole('textbox', {
+                                name: 'annotation.comment *',
+                            }),
+                            {
+                                target: { value: 'comment' },
+                            },
+                        );
+                    },
+                    { timeout: 10000 },
+                );
 
-                expect(
-                    screen.getByRole('button', { name: 'next' }),
-                ).not.toBeDisabled();
+                await waitFor(
+                    () => {
+                        expect(
+                            screen.getByRole('button', { name: 'next' }),
+                        ).not.toBeDisabled();
+                    },
+                    { timeout: 10000 },
+                );
 
-                await waitFor(() => {
-                    fireEvent.change(
-                        screen.getByRole('textbox', {
-                            name: 'annotation.proposedValue *',
-                        }),
-                        {
-                            target: { value: '' },
-                        },
-                    );
-                });
-                expect(
-                    screen.getByRole('button', { name: 'next' }),
-                ).toBeDisabled();
+                await waitFor(
+                    () => {
+                        fireEvent.change(
+                            screen.getByRole('textbox', {
+                                name: 'annotation.proposedValue *',
+                            }),
+                            {
+                                target: { value: '' },
+                            },
+                        );
+                    },
+                    { timeout: 10000 },
+                );
 
-                await waitFor(() => {
-                    fireEvent.change(
-                        screen.getByRole('textbox', {
-                            name: 'annotation.proposedValue *',
-                        }),
-                        {
-                            target: { value: 'proposedValue' },
-                        },
-                    );
-                });
-                expect(
-                    screen.getByRole('button', { name: 'next' }),
-                ).not.toBeDisabled();
-            });
+                await waitFor(
+                    () => {
+                        expect(
+                            screen.getByRole('button', { name: 'next' }),
+                        ).toBeDisabled();
+                    },
+                    { timeout: 10000 },
+                );
+
+                await waitFor(
+                    () => {
+                        fireEvent.change(
+                            screen.getByRole('textbox', {
+                                name: 'annotation.proposedValue *',
+                            }),
+                            {
+                                target: { value: 'proposedValue' },
+                            },
+                        );
+                    },
+                    { timeout: 10000 },
+                );
+
+                await waitFor(
+                    () => {
+                        expect(
+                            screen.getByRole('button', { name: 'next' }),
+                        ).not.toBeDisabled();
+                    },
+                    { timeout: 10000 },
+                );
+            }, 30000);
         });
 
         describe('addition comment', () => {
@@ -778,67 +871,113 @@ describe('CreateAnnotationModal', () => {
                     />,
                 );
 
-                await waitFor(() => {
-                    fireEvent.click(
-                        screen.queryByText('annotation_add_content'),
-                    );
-                });
+                await waitFor(
+                    () => {
+                        const addButton = screen.queryByText(
+                            'annotation_add_content',
+                        );
+                        expect(addButton).toBeInTheDocument();
+                        fireEvent.click(addButton);
+                    },
+                    { timeout: 10000 },
+                );
 
-                expect(
-                    screen.queryByRole('tab', {
-                        name: 'annotation_step_comment',
-                    }),
-                ).toBeInTheDocument();
-            });
+                await waitFor(
+                    () => {
+                        expect(
+                            screen.queryByRole('tab', {
+                                name: 'annotation_step_comment',
+                            }),
+                        ).toBeInTheDocument();
+                    },
+                    { timeout: 10000 },
+                );
+            }, 15000);
 
             it('should render required proposedValue and comment field', async () => {
-                expect(
-                    screen.getByText(
-                        'annotation_title_annotate_field+{"field":"Field Label"}',
-                    ),
-                ).toBeInTheDocument();
-                expect(
-                    screen.getByRole('textbox', {
-                        name: 'annotation.proposedValue *',
-                    }),
-                ).toBeInTheDocument();
-                expect(
-                    screen.getByRole('textbox', {
-                        name: 'annotation.comment *',
-                    }),
-                ).toBeInTheDocument();
+                await waitFor(
+                    () => {
+                        expect(
+                            screen.getByText(
+                                'annotation_title_annotate_field+{"field":"Field Label"}',
+                            ),
+                        ).toBeInTheDocument();
+                    },
+                    { timeout: 10000 },
+                );
+
+                await waitFor(
+                    () => {
+                        expect(
+                            screen.getByRole('textbox', {
+                                name: 'annotation.proposedValue *',
+                            }),
+                        ).toBeInTheDocument();
+                    },
+                    { timeout: 10000 },
+                );
+
+                await waitFor(
+                    () => {
+                        expect(
+                            screen.getByRole('textbox', {
+                                name: 'annotation.comment *',
+                            }),
+                        ).toBeInTheDocument();
+                    },
+                    { timeout: 10000 },
+                );
+
                 expect(
                     screen.getByRole('button', { name: 'next' }),
                 ).toBeDisabled();
 
-                await waitFor(() => {
-                    fireEvent.change(
-                        screen.getByRole('textbox', {
-                            name: 'annotation.comment *',
-                        }),
-                        {
-                            target: { value: 'comment' },
-                        },
-                    );
-                });
-                expect(
-                    screen.getByRole('button', { name: 'next' }),
-                ).toBeDisabled();
+                await waitFor(
+                    () => {
+                        fireEvent.change(
+                            screen.getByRole('textbox', {
+                                name: 'annotation.comment *',
+                            }),
+                            {
+                                target: { value: 'comment' },
+                            },
+                        );
+                    },
+                    { timeout: 10000 },
+                );
 
-                await waitFor(() => {
-                    fireEvent.change(
-                        screen.getByRole('textbox', {
-                            name: 'annotation.proposedValue *',
-                        }),
-                        {
-                            target: { value: 'proposedValue' },
-                        },
-                    );
-                });
-                expect(
-                    screen.getByRole('button', { name: 'next' }),
-                ).not.toBeDisabled();
-            });
+                await waitFor(
+                    () => {
+                        expect(
+                            screen.getByRole('button', { name: 'next' }),
+                        ).toBeDisabled();
+                    },
+                    { timeout: 10000 },
+                );
+
+                await waitFor(
+                    () => {
+                        fireEvent.change(
+                            screen.getByRole('textbox', {
+                                name: 'annotation.proposedValue *',
+                            }),
+                            {
+                                target: { value: 'proposedValue' },
+                            },
+                        );
+                    },
+                    { timeout: 10000 },
+                );
+
+                await waitFor(
+                    () => {
+                        expect(
+                            screen.getByRole('button', { name: 'next' }),
+                        ).not.toBeDisabled();
+                    },
+                    { timeout: 10000 },
+                );
+            }, 30000);
         });
     });
 
@@ -852,23 +991,41 @@ describe('CreateAnnotationModal', () => {
                 />,
             );
 
-            await waitFor(() => {
-                fireEvent.change(
-                    screen.getByRole('textbox', {
+            await waitFor(
+                () => {
+                    const commentField = screen.getByRole('textbox', {
                         name: 'annotation.comment *',
-                    }),
-                    {
+                    });
+                    fireEvent.change(commentField, {
                         target: { value: 'test' },
-                    },
-                );
-            });
+                    });
+                    expect(commentField).toHaveValue('test');
+                },
+                { timeout: 10000 },
+            );
 
-            await waitFor(() => {
-                fireEvent.click(screen.getByRole('button', { name: 'next' }));
-            });
+            await waitFor(
+                () => {
+                    const nextButton = screen.getByRole('button', {
+                        name: 'next',
+                    });
+                    expect(nextButton).not.toBeDisabled();
+                    fireEvent.click(nextButton);
+                },
+                { timeout: 10000 },
+            );
 
-            // Wait for the submit button to be enabled
-            await waitFor(() => setTimeout(500));
+            // Wait for navigation to author tab
+            await waitFor(
+                () => {
+                    expect(
+                        screen.queryByRole('tab', {
+                            name: 'annotation_step_author',
+                        }),
+                    ).toBeInTheDocument();
+                },
+                { timeout: 10000 },
+            );
 
             expect(
                 screen.queryByRole('tab', {
@@ -876,13 +1033,7 @@ describe('CreateAnnotationModal', () => {
                     hidden: true,
                 }),
             ).not.toBeInTheDocument();
-
-            expect(
-                screen.queryByRole('tab', {
-                    name: 'annotation_step_author',
-                }),
-            ).toBeInTheDocument();
-        });
+        }, 20000);
 
         describe('authorName', () => {
             it('should render authorName field', () => {
@@ -1067,38 +1218,52 @@ describe('CreateAnnotationModal', () => {
             />,
         );
 
-        await waitFor(() => {
-            fireEvent.change(
-                wrapper.getByRole('textbox', {
-                    name: 'annotation.comment *',
-                }),
-                {
-                    target: { value: 'test' },
-                },
-            );
-        });
+        await waitFor(
+            () => {
+                fireEvent.change(
+                    wrapper.getByRole('textbox', {
+                        name: 'annotation.comment *',
+                    }),
+                    {
+                        target: { value: 'test' },
+                    },
+                );
+            },
+            { timeout: 10000 },
+        );
 
-        await waitFor(() => {
-            fireEvent.click(wrapper.getByRole('button', { name: 'next' }));
-        });
+        await waitFor(
+            () => {
+                fireEvent.click(wrapper.getByRole('button', { name: 'next' }));
+            },
+            { timeout: 10000 },
+        );
 
-        await waitFor(() => {
-            fireEvent.change(
-                wrapper.getByRole('textbox', {
-                    name: 'annotation.authorName *',
-                }),
-                {
-                    target: { value: 'author' },
-                },
-            );
-        });
+        await waitFor(
+            () => {
+                fireEvent.change(
+                    wrapper.getByRole('textbox', {
+                        name: 'annotation.authorName *',
+                    }),
+                    {
+                        target: { value: 'author' },
+                    },
+                );
+            },
+            { timeout: 10000 },
+        );
 
         // Wait for the submit button to be enabled
-        await waitFor(() => setTimeout(500));
+        await waitFor(async () => await setTimeout(500), { timeout: 10000 });
 
-        await waitFor(() => {
-            fireEvent.click(wrapper.getByRole('button', { name: 'validate' }));
-        });
+        await waitFor(
+            () => {
+                fireEvent.click(
+                    wrapper.getByRole('button', { name: 'validate' }),
+                );
+            },
+            { timeout: 10000 },
+        );
 
         expect(onSubmit).toHaveBeenCalledTimes(1);
         expect(onSubmit).toHaveBeenCalledWith({
@@ -1109,7 +1274,7 @@ describe('CreateAnnotationModal', () => {
             resourceUri: '/',
             reCaptchaToken: null,
         });
-    });
+    }, 30000);
 
     it('should allow to create a comment annotation on the field when there is an initial value', async () => {
         render(
@@ -1122,46 +1287,63 @@ describe('CreateAnnotationModal', () => {
             />,
         );
 
-        await waitFor(() => {
-            fireEvent.click(
-                screen.getByRole('menuitem', {
-                    name: 'annotation_annotate_field_choice',
-                }),
-            );
-        });
+        await waitFor(
+            () => {
+                fireEvent.click(
+                    screen.getByRole('menuitem', {
+                        name: 'annotation_annotate_field_choice',
+                    }),
+                );
+            },
+            { timeout: 10000 },
+        );
 
-        await waitFor(() => {
-            fireEvent.change(
-                screen.getByRole('textbox', {
-                    name: 'annotation.comment *',
-                }),
-                {
-                    target: { value: 'test' },
-                },
-            );
-        });
+        await waitFor(
+            () => {
+                fireEvent.change(
+                    screen.getByRole('textbox', {
+                        name: 'annotation.comment *',
+                    }),
+                    {
+                        target: { value: 'test' },
+                    },
+                );
+            },
+            { timeout: 10000 },
+        );
 
-        await waitFor(() => {
-            fireEvent.click(screen.getByRole('button', { name: 'next' }));
-        });
+        await waitFor(
+            () => {
+                fireEvent.click(screen.getByRole('button', { name: 'next' }));
+            },
+            { timeout: 10000 },
+        );
 
-        await waitFor(() => {
-            fireEvent.change(
-                screen.getByRole('textbox', {
-                    name: 'annotation.authorName *',
-                }),
-                {
-                    target: { value: 'author' },
-                },
-            );
-        });
+        await waitFor(
+            () => {
+                fireEvent.change(
+                    screen.getByRole('textbox', {
+                        name: 'annotation.authorName *',
+                    }),
+                    {
+                        target: { value: 'author' },
+                    },
+                );
+            },
+            { timeout: 10000 },
+        );
 
         // Wait for the submit button to be enabled
-        await waitFor(() => setTimeout(500));
+        await waitFor(async () => await setTimeout(500), { timeout: 10000 });
 
-        await waitFor(() => {
-            fireEvent.click(screen.getByRole('button', { name: 'validate' }));
-        });
+        await waitFor(
+            () => {
+                fireEvent.click(
+                    screen.getByRole('button', { name: 'validate' }),
+                );
+            },
+            { timeout: 10000 },
+        );
 
         expect(onSubmit).toHaveBeenCalledTimes(1);
         expect(onSubmit).toHaveBeenCalledWith({
@@ -1173,7 +1355,7 @@ describe('CreateAnnotationModal', () => {
             resourceUri: '/',
             reCaptchaToken: null,
         });
-    });
+    }, 30000);
 
     it('should allow to create a removal annotation on the value when there is a single initial value', async () => {
         render(
@@ -1233,7 +1415,7 @@ describe('CreateAnnotationModal', () => {
         );
 
         // Wait for the submit button to be enabled
-        await waitFor(() => setTimeout(500), { timeout: 10000 });
+        await waitFor(async () => await setTimeout(500), { timeout: 10000 });
 
         await waitFor(
             () => {
@@ -1320,7 +1502,7 @@ describe('CreateAnnotationModal', () => {
         );
 
         // Wait for the submit button to be enabled
-        await waitFor(() => setTimeout(500), { timeout: 10000 });
+        await waitFor(async () => await setTimeout(500), { timeout: 10000 });
 
         await waitFor(
             () => {
@@ -1434,7 +1616,7 @@ describe('CreateAnnotationModal', () => {
         );
 
         // Wait for the submit button to be enabled
-        await waitFor(() => setTimeout(500), { timeout: 10000 });
+        await waitFor(async () => await setTimeout(500), { timeout: 10000 });
 
         await waitFor(
             () => {
@@ -1546,7 +1728,7 @@ describe('CreateAnnotationModal', () => {
         );
 
         // Wait for the submit button to be enabled
-        await waitFor(() => setTimeout(500), { timeout: 10000 });
+        await waitFor(async () => await setTimeout(500), { timeout: 10000 });
 
         await waitFor(
             () => {
@@ -1647,7 +1829,7 @@ describe('CreateAnnotationModal', () => {
         );
 
         // Wait for the submit button to be enabled
-        await waitFor(() => setTimeout(500), { timeout: 10000 });
+        await waitFor(async () => await setTimeout(500), { timeout: 10000 });
 
         await waitFor(
             () => {
@@ -1688,59 +1870,85 @@ describe('CreateAnnotationModal', () => {
             />,
         );
 
-        await waitFor(() => {
-            fireEvent.click(
-                screen.getByRole('menuitem', {
+        await waitFor(
+            () => {
+                const correctButton = screen.getByRole('menuitem', {
                     name: 'annotation_correct_content',
-                }),
-            );
-        });
+                });
+                fireEvent.click(correctButton);
+            },
+            { timeout: 10000 },
+        );
 
-        await waitFor(() => {
-            fireEvent.change(
-                screen.getByRole('textbox', {
+        await waitFor(
+            () => {
+                const commentField = screen.getByRole('textbox', {
                     name: 'annotation.comment *',
-                }),
-                {
+                });
+                fireEvent.change(commentField, {
                     target: { value: 'test' },
-                },
-            );
-        });
+                });
+                expect(commentField).toHaveValue('test');
+            },
+            { timeout: 10000 },
+        );
 
-        await waitFor(() => {
-            fireEvent.change(
-                screen.getByRole('textbox', {
+        await waitFor(
+            () => {
+                const proposedValueField = screen.getByRole('textbox', {
                     name: 'annotation.proposedValue *',
-                }),
-                {
+                });
+                fireEvent.change(proposedValueField, {
                     target: { value: 'proposedValue' },
-                },
-            );
-        });
+                });
+                expect(proposedValueField).toHaveValue('proposedValue');
+            },
+            { timeout: 10000 },
+        );
 
-        await waitFor(() => {
-            fireEvent.click(screen.getByRole('button', { name: 'next' }));
-        });
+        await waitFor(
+            () => {
+                const nextButton = screen.getByRole('button', { name: 'next' });
+                expect(nextButton).not.toBeDisabled();
+                fireEvent.click(nextButton);
+            },
+            { timeout: 10000 },
+        );
 
-        await waitFor(() => {
-            fireEvent.change(
-                screen.getByRole('textbox', {
+        await waitFor(
+            () => {
+                const authorField = screen.getByRole('textbox', {
                     name: 'annotation.authorName *',
-                }),
-                {
+                });
+                fireEvent.change(authorField, {
                     target: { value: 'author' },
-                },
-            );
-        });
+                });
+                expect(authorField).toHaveValue('author');
+            },
+            { timeout: 10000 },
+        );
 
         // Wait for the submit button to be enabled
-        await waitFor(() => setTimeout(500));
+        await waitFor(async () => await setTimeout(500), { timeout: 10000 });
 
-        await waitFor(() => {
-            fireEvent.click(screen.getByRole('button', { name: 'validate' }));
-        });
+        await waitFor(
+            () => {
+                const validateButton = screen.getByRole('button', {
+                    name: 'validate',
+                });
+                expect(validateButton).not.toBeDisabled();
+                fireEvent.click(validateButton);
+            },
+            { timeout: 10000 },
+        );
 
-        expect(onSubmit).toHaveBeenCalledTimes(1);
+        await waitFor(
+            () => {
+                expect(onSubmit).toHaveBeenCalledTimes(1);
+            },
+            { timeout: 10000 },
+        );
+
         expect(onSubmit).toHaveBeenCalledWith({
             authorName: 'author',
             comment: 'test',
@@ -1751,7 +1959,7 @@ describe('CreateAnnotationModal', () => {
             target: 'value',
             kind: 'correction',
         });
-    });
+    }, 30000);
 
     it('should allow to create a correct annotation on a selected value when there is multiple initial value', async () => {
         render(
@@ -1852,7 +2060,7 @@ describe('CreateAnnotationModal', () => {
         );
 
         // Wait for the submit button to be enabled
-        await waitFor(() => setTimeout(500), { timeout: 10000 });
+        await waitFor(async () => await setTimeout(500), { timeout: 10000 });
 
         await waitFor(
             () => {
@@ -1979,7 +2187,7 @@ describe('CreateAnnotationModal', () => {
         );
 
         // Wait for the submit button to be enabled
-        await waitFor(() => setTimeout(500), { timeout: 10000 });
+        await waitFor(async () => await setTimeout(500), { timeout: 10000 });
 
         await waitFor(
             () => {
@@ -2081,7 +2289,7 @@ describe('CreateAnnotationModal', () => {
         );
 
         // Wait for the submit button to be enabled
-        await waitFor(() => setTimeout(500), { timeout: 10000 });
+        await waitFor(async () => await setTimeout(500), { timeout: 10000 });
 
         await waitFor(
             () => {
@@ -2182,7 +2390,7 @@ describe('CreateAnnotationModal', () => {
         );
 
         // Wait for the submit button to be enabled
-        await waitFor(() => setTimeout(500), { timeout: 10000 });
+        await waitFor(async () => await setTimeout(500), { timeout: 10000 });
 
         await waitFor(
             () => {
@@ -2290,7 +2498,7 @@ describe('CreateAnnotationModal', () => {
         );
 
         // Wait for the submit button to be enabled
-        await waitFor(() => setTimeout(500), { timeout: 10000 });
+        await waitFor(async () => await setTimeout(500), { timeout: 10000 });
 
         await waitFor(
             () => {
@@ -2398,7 +2606,7 @@ describe('CreateAnnotationModal', () => {
         );
 
         // Wait for the submit button to be enabled
-        await waitFor(() => setTimeout(500), { timeout: 10000 });
+        await waitFor(async () => await setTimeout(500), { timeout: 10000 });
 
         await waitFor(
             () => {

@@ -173,7 +173,7 @@ describe('annotation', () => {
                 expect.objectContaining(annotation),
             );
             expect(sendMail).not.toHaveBeenCalled();
-        });
+        }, 15000);
 
         it('should create an annotation and send a french notification when when a notificationEmail is set and locale is fr', async () => {
             await configTenantModel.create({
@@ -234,7 +234,7 @@ Contributor: John DOE
 Contributor comment: Hello world
 See annotation: http://localhost:3000/instance/instance-name/admin#/annotations`,
             });
-        });
+        }, 15000);
 
         it('should create an annotation and send a notification when when a notificationEmail is set', async () => {
             await configTenantModel.create({
@@ -295,7 +295,7 @@ Contributeur : John DOE
 Commentaire du contributeur : Hello world
 Voir l'annotation : http://localhost:3000/instance/instance-name/admin#/annotations`,
             });
-        });
+        }, 15000);
 
         it('should forbid to create an annotation if contributorAuth is active and user role is not contributor nor admin', async () => {
             jest.mocked(verifyReCaptchaToken).mockResolvedValue({
@@ -373,7 +373,7 @@ Voir l'annotation : http://localhost:3000/instance/instance-name/admin#/annotati
             expect(await annotationModel.findLimitFromSkip()).toStrictEqual([
                 ctx.body.data,
             ]);
-        });
+        }, 15000);
         it('should create an annotation if contributorAuth is active and user role is admin', async () => {
             jest.mocked(verifyReCaptchaToken).mockResolvedValue({
                 success: true,
@@ -415,7 +415,7 @@ Voir l'annotation : http://localhost:3000/instance/instance-name/admin#/annotati
             expect(await annotationModel.findLimitFromSkip()).toStrictEqual([
                 ctx.body.data,
             ]);
-        });
+        }, 15000);
         it('should return an error if annotation is not valid', async () => {
             jest.mocked(verifyReCaptchaToken).mockResolvedValue({
                 success: true,

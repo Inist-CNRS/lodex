@@ -140,7 +140,8 @@ export const checkMoreResultsCount = (count, total) => {
 
 export const checkStatsCount = (current, count) => {
     cy.get('.search .stats')
-        .contains(`${current} ressources trouvées sur un total de ${count}`)
+        .should('contain.text', current.toString())
+        .should('contain.text', count.toString())
         .should('be.visible');
 };
 

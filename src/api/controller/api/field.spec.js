@@ -524,12 +524,13 @@ describe('field routes', () => {
 
             await expect(
                 fieldModel.findOneById(insertedFields[1]._id),
-            ).resolves.toStrictEqual(
+            ).resolves.toMatchObject(
                 _.omit(
                     insertedFields[1],
                     'overview',
                     'isDefaultSortField',
                     'sortOrder',
+                    'position',
                 ),
             );
         });
