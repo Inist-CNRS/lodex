@@ -25,6 +25,11 @@
         "noUncheckedSideEffectImports": true,
         "noImplicitAny": true
     },
-    "include": ["src", "../../src/app", "../public-app/src"],
+    "include": [
+        "src",
+        "../../src/app",
+        "../public-app/src",
+        "../frontend-common/configureStore.ts"
+    ],
     "exclude": ["../../src/app/build"]
 }

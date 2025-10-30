@@ -8,7 +8,7 @@ import 'url-api-polyfill';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Router } from 'react-router-dom';
 import { getLocale } from '@lodex/common';
-import configureStore from '../../../src/app/js/configureStore';
+import configureStore from '@lodex/frontend-common/configureStore';
 import { I18N } from '@lodex/frontend-common/i18n/I18NContext';
 import phrasesFor from '@lodex/frontend-common/i18n/translations';
 import LodexThemeProvider from './LodexThemeProvider';

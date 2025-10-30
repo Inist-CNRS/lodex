@@ -11,7 +11,7 @@ import userEvent from '@testing-library/user-event';
 import defaultMuiTheme from './app/custom/themes/default/defaultTheme';
 import sagas from '../packages/admin-app/src/sagas';
 import { AnnotationStorageProvider } from './app/js/annotation/annotationStorage';
-import configureStore from './app/js/configureStore';
+import configureStore from '@lodex/frontend-common/configureStore';
 import reducers from '../packages/public-app/src/reducers';
 import { TestI18N } from '@lodex/frontend-common/i18n/I18NContext';
 import type { Store } from 'redux';
