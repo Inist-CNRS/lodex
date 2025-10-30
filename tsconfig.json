@@ -31,7 +31,9 @@
         "test-utils.tsx",
         "src/app",
         "packages/frontend-common/components/Alert.tsx",
-        "packages/frontend-common/components/Alert.spec.tsx"
+        "packages/frontend-common/components/Alert.spec.tsx",
+        "packages/frontend-common/components/ButtonWithDialog.tsx",
+        "packages/frontend-common/components/ButtonWithStatus.spec.tsx"
     ],
     "exclude": ["src/build", "src/app/build"]
 }
