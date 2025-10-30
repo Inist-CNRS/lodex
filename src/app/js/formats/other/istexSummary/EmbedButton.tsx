@@ -3,7 +3,7 @@ import { IconButton } from '@mui/material';
 import CodeIcon from '@mui/icons-material/Code';
 import classnames from 'classnames';
 
-import ButtonWithDialog from '../../../lib/components/ButtonWithDialog';
+import ButtonWithDialog from '@lodex/frontend-common/components/ButtonWithDialog';
 import { getCleanHost } from '@lodex/common';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 

@@ -4,7 +4,7 @@ import { CircularProgress, Button, LinearProgress } from '@mui/material';
 import Warning from '@mui/icons-material/Warning';
 import Success from '@mui/icons-material/Done';
 
-import ButtonWithStatus from './ButtonWithStatus';
+import ButtonWithStatus from '../../../src/app/js/lib/components/ButtonWithStatus';
 
 describe('<ButtonWithStatus />', () => {
     describe('<ButtonWithStatus raised={false} />', () => {
