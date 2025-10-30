@@ -4,10 +4,7 @@ import { StyleSheetTestUtils } from 'aphrodite';
 import { render } from '../../../../test-utils';
 
 import MenuItem, { type ConfigRole } from './MenuItem';
-import {
-    ADMIN_ROLE,
-    DEFAULT_TENANT,
-} from '../../../../common/tools/tenantTools';
+import { ADMIN_ROLE, DEFAULT_TENANT } from '@lodex/common';
 import { MemoryRouter } from 'react-router';
 import { I18NContext } from '../../i18n/I18NContext';
 

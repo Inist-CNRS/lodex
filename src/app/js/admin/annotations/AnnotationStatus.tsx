@@ -2,7 +2,7 @@ import { Chip } from '@mui/material';
 
 import { grey } from '@mui/material/colors';
 import { useTranslate } from '../../i18n/I18NContext';
-import { type AnnotationStatus as Status } from '../../../../common/validator/annotation.validator';
+import { type AnnotationStatus as Status } from '@lodex/common';
 
 interface AnnotationStatusProps {
     status?: Status;

@@ -16,7 +16,7 @@ import {
     ANNOTATION_KIND_ADDITION,
     ANNOTATION_KIND_CORRECTION,
     ANNOTATION_KIND_REMOVAL,
-} from '../../../../common/validator/annotation.validator';
+} from '@lodex/common';
 import { useTranslate } from '../../i18n/I18NContext';
 import { COMMENT_STEP, VALUE_STEP } from '../steps';
 

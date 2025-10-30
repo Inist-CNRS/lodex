@@ -21,9 +21,7 @@ import { compose } from 'recompose';
 import { loadField } from '../../fields';
 import { fromFields } from '../../sharedSelectors';
 
-import * as overview from '../../../../common/overview';
-import { getFieldForSpecificScope } from '../../../../common/scope';
-import { toast } from '../../../../common/tools/toast';
+import { Overview, getFieldForSpecificScope, toast } from '@lodex/common';
 import FieldRepresentation from '../../fields/FieldRepresentation';
 import withInitialData from '../withInitialData';
 import { usePatchFieldOverview } from './usePatchFieldOverview';
@@ -42,23 +40,23 @@ const getFacetFields = (fields) => fields?.filter((f) => f.isFacet) || [];
 // @ts-expect-error TS7006
 const getResourceTitle = (fields) =>
     // @ts-expect-error TS7006
-    fields?.find((f) => f.overview === overview.RESOURCE_TITLE) || null;
+    fields?.find((f) => f.overview === Overview.RESOURCE_TITLE) || null;
 // @ts-expect-error TS7006
 const getResourceDescription = (fields) =>
     // @ts-expect-error TS7006
-    fields?.find((f) => f.overview === overview.RESOURCE_DESCRIPTION) || null;
+    fields?.find((f) => f.overview === Overview.RESOURCE_DESCRIPTION) || null;
 // @ts-expect-error TS7006
 const getResourceDetailFirst = (fields) =>
     // @ts-expect-error TS7006
-    fields?.find((f) => f.overview === overview.RESOURCE_DETAIL_1) || null;
+    fields?.find((f) => f.overview === Overview.RESOURCE_DETAIL_1) || null;
 // @ts-expect-error TS7006
 const getResourceDetailSecond = (fields) =>
     // @ts-expect-error TS7006
-    fields?.find((f) => f.overview === overview.RESOURCE_DETAIL_2) || null;
+    fields?.find((f) => f.overview === Overview.RESOURCE_DETAIL_2) || null;
 // @ts-expect-error TS7006
 const getResourceDetailThird = (fields) =>
     // @ts-expect-error TS7006
-    fields?.find((f) => f.overview === overview.RESOURCE_DETAIL_3) || null;
+    fields?.find((f) => f.overview === Overview.RESOURCE_DETAIL_3) || null;
 // @ts-expect-error TS7006
 const getResourceSortField = (fields) =>
     // @ts-expect-error TS7006
@@ -178,7 +176,7 @@ export const SearchForm = ({ fields, loadField }: SearchFormProps) => {
         // @ts-expect-error TS2345
         patchFieldOverviewMutation.mutate({
             _id: value?._id,
-            overview: overview.RESOURCE_TITLE,
+            overview: Overview.RESOURCE_TITLE,
         });
     };
     // @ts-expect-error TS7006
@@ -186,7 +184,7 @@ export const SearchForm = ({ fields, loadField }: SearchFormProps) => {
         // @ts-expect-error TS2345
         patchFieldOverviewMutation.mutate({
             _id: value?._id,
-            overview: overview.RESOURCE_DESCRIPTION,
+            overview: Overview.RESOURCE_DESCRIPTION,
         });
     };
 
@@ -195,7 +193,7 @@ export const SearchForm = ({ fields, loadField }: SearchFormProps) => {
         // @ts-expect-error TS2345
         patchFieldOverviewMutation.mutate({
             _id: value?._id,
-            overview: overview.RESOURCE_DETAIL_1,
+            overview: Overview.RESOURCE_DETAIL_1,
         });
     };
 
@@ -204,7 +202,7 @@ export const SearchForm = ({ fields, loadField }: SearchFormProps) => {
         // @ts-expect-error TS2345
         patchFieldOverviewMutation.mutate({
             _id: value?._id,
-            overview: overview.RESOURCE_DETAIL_2,
+            overview: Overview.RESOURCE_DETAIL_2,
         });
     };
     // @ts-expect-error TS7006
@@ -212,7 +210,7 @@ export const SearchForm = ({ fields, loadField }: SearchFormProps) => {
         // @ts-expect-error TS2345
         patchFieldOverviewMutation.mutate({
             _id: value?._id,
-            overview: overview.RESOURCE_DETAIL_3,
+            overview: Overview.RESOURCE_DETAIL_3,
         });
     };
 
@@ -403,7 +401,7 @@ export const SearchForm = ({ fields, loadField }: SearchFormProps) => {
                         }}
                     >
                         <SearchAutocomplete
-                            testId={`autocomplete_search_syndication_${overview.RESOURCE_TITLE}`}
+                            testId={`autocomplete_search_syndication_${Overview.RESOURCE_TITLE}`}
                             translation={translate('resource_title')}
                             fields={fieldsForResourceSyndication}
                             onChange={handleSResourceTitle}
@@ -413,7 +411,7 @@ export const SearchForm = ({ fields, loadField }: SearchFormProps) => {
                         />
                         {/* Resource detail 3 is used as subtitle. */}
                         <SearchAutocomplete
-                            testId={`autocomplete_search_syndication_${overview.RESOURCE_DETAIL_3}`}
+                            testId={`autocomplete_search_syndication_${Overview.RESOURCE_DETAIL_3}`}
                             translation={translate('resource_detail_third')}
                             fields={fieldsForResourceSyndication}
                             onChange={handleSResourceDetailThird}
@@ -422,7 +420,7 @@ export const SearchForm = ({ fields, loadField }: SearchFormProps) => {
                             isLoading={isPending}
                         />
                         <SearchAutocomplete
-                            testId={`autocomplete_search_syndication_${overview.RESOURCE_DESCRIPTION}`}
+                            testId={`autocomplete_search_syndication_${Overview.RESOURCE_DESCRIPTION}`}
                             translation={translate('resource_description')}
                             fields={fieldsForResourceSyndication}
                             onChange={handleSResourceDescription}
@@ -432,7 +430,7 @@ export const SearchForm = ({ fields, loadField }: SearchFormProps) => {
                         />
                         <Box display="flex" gap={2}>
                             <SearchAutocomplete
-                                testId={`autocomplete_search_syndication_${overview.RESOURCE_DETAIL_1}`}
+                                testId={`autocomplete_search_syndication_${Overview.RESOURCE_DETAIL_1}`}
                                 translation={translate('resource_detail_first')}
                                 fields={fieldsForResourceSyndication}
                                 onChange={handleSResourceDetailFirst}
@@ -441,7 +439,7 @@ export const SearchForm = ({ fields, loadField }: SearchFormProps) => {
                                 isLoading={isPending}
                             />
                             <SearchAutocomplete
-                                testId={`autocomplete_search_syndication_${overview.RESOURCE_DETAIL_2}`}
+                                testId={`autocomplete_search_syndication_${Overview.RESOURCE_DETAIL_2}`}
                                 translation={translate(
                                     'resource_detail_second',
                                 )}

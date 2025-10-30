@@ -21,7 +21,7 @@ import reducer, {
 } from './';
 
 import { addFieldToResourceSuccess } from '../public/resource';
-import { SCOPE_DOCUMENT } from '../../../common/scope';
+import { SCOPE_DOCUMENT } from '@lodex/common';
 
 describe('field reducer', () => {
     it('should initialize with correct state', () => {
