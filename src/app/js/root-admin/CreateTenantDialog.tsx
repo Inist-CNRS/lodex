@@ -16,7 +16,7 @@ import {
     checkForbiddenNames,
     forbiddenNamesMessage,
     getTenantMaxSize,
-} from '../../../common/tools/tenantTools';
+} from '@lodex/common';
 import { useAddTenant } from './useAddTenant';
 
 // @ts-expect-error TS7006

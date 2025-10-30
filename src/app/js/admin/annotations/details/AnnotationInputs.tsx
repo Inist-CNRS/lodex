@@ -10,7 +10,7 @@ import { useStore } from '@tanstack/react-form';
 import { useTranslate } from '../../../i18n/I18NContext';
 import { AnnotationStatusChip } from '../AnnotationStatus';
 import { FormHelperText } from '@mui/material';
-import { statuses } from '../../../../../common/validator/annotation.validator';
+import { statuses } from '@lodex/common';
 
 interface AnnotationInputsProps {
     form: any;

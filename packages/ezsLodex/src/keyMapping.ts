@@ -51,7 +51,7 @@ export default function keyMapping(this: any, data: any, feed: any) {
     const res = Object.keys(data).reduce(
         (o, key) => ({
             ...o,
-            [mapping[key] ? mapping[key] : key]: data[key]
+            [mapping[key] ? mapping[key] : key]: data[key],
         }),
         {},
     );
