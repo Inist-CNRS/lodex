@@ -1,4 +1,4 @@
-import { type Field } from '../../../propTypes';
+import type { Field } from '../../../fields/types';
 
 // @ts-expect-error TS7006
 const getParagraphWidth = (paragraphWidth, field) => {

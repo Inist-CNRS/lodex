@@ -107,6 +107,7 @@ const SearchAutocomplete = ({
                             {...tagProps}
                             label={
                                 <FieldRepresentation
+                                    // @ts-expect-error TS2322
                                     field={option}
                                     shortMode
                                     {...tagProps}

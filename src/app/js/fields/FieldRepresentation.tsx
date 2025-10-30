@@ -3,7 +3,7 @@ import { Box, Checkbox, Tooltip, Typography, useTheme } from '@mui/material';
 import { AnnotationDisabledIcon } from '../annotation/AnnotationDisabledIcon';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 import FieldInternalIcon from './FieldInternalIcon';
-import type { Field } from '../propTypes';
+import type { Field } from './types';
 
 interface FieldRepresentationProps {
     field?: Field;

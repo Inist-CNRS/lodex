@@ -1,4 +1,3 @@
-import { type Field } from '../../../propTypes';
 import injectData from '../../injectData';
 import InvalidFormat from '../../InvalidFormat';
 import { getYearUrl, parseYearData } from './getIstexData';
@@ -18,6 +17,7 @@ import DecadeFold from './DecadeFold';
 import getDecadeFromData from './getDecadeFromData';
 import EmbedButton from './EmbedButton';
 import stylesToClassname from '@lodex/frontend-common/utils/stylesToClassName';
+import type { Field } from '../../../fields/types';
 
 interface IstexDocumentProps {
     item: {

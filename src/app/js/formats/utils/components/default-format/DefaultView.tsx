@@ -10,7 +10,7 @@ import {
     getShortText,
     isLongText,
 } from '@lodex/frontend-common/utils/longTexts';
-import { type Field } from '../../../../propTypes';
+import type { Field } from '../../../../fields/types';
 
 const styles = {
     [PropositionStatus.REJECTED]: {

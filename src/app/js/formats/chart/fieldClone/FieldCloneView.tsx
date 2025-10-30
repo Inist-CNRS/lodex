@@ -1,7 +1,7 @@
+import type { Field } from '../../../fields/types';
 import InvalidFormat from '../../InvalidFormat';
 import { getViewComponent } from '../../index';
 import getColorSetFromField from '@lodex/frontend-common/utils/getColorSetFromField';
-import type { Field } from '../../../propTypes';
 
 interface FieldCloneViewProps {
     className?: string;

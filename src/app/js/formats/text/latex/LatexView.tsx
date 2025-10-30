@@ -1,10 +1,10 @@
 import classnames from 'classnames';
 import katex from 'katex';
 import Helmet from 'react-helmet';
-import { type Field } from '../../../propTypes';
 import InvalidFormat from '../../InvalidFormat';
 
 import stylesToClassname from '@lodex/frontend-common/utils/stylesToClassName';
+import type { Field } from '../../../fields/types';
 
 const styles = stylesToClassname(
     {

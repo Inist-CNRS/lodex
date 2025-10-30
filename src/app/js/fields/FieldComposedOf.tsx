@@ -52,6 +52,7 @@ const SortableItem = ({ option, onDelete, isActive }: SortableItemProps) => {
     return (
         <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
             <Chip
+                // @ts-expect-error TS2322
                 label={<FieldRepresentation field={option} />}
                 onDelete={() => onDelete(option.name)}
                 sx={{

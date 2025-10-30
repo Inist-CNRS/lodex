@@ -4,9 +4,9 @@ import { Component } from 'react';
 import compose from 'recompose/compose';
 import { translate } from '@lodex/frontend-common/i18n/I18NContext';
 
-import { type Field } from '../../../propTypes';
 import injectData from '../../injectData';
 import Bigbold from './Bigbold';
+import type { Field } from '../../../fields/types';
 
 // @ts-expect-error TS7006
 function getNumber(numb) {

@@ -14,7 +14,6 @@ import {
     toast,
 } from '@lodex/common';
 import { hideAddColumns } from '../../../../../packages/admin-app/src/parsing';
-import { type Field } from '../../propTypes';
 import { fromFields } from '../../sharedSelectors';
 import Actions from './Actions';
 import TabAnnotations from './TabAnnotations';
@@ -25,6 +24,7 @@ import TabSemantics from './TabSemantics';
 import ValuePreviewConnected from './ValuePreview';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
+import type { Field } from '../types';
 
 const ACTIONS_BAR_HEIGHT = 70;
 const PREVIEW_WIDTH = 320;
@@ -165,7 +165,6 @@ const FieldEditionWizardComponent = ({
             id: 'tab-general',
             component: (
                 <TabGeneral
-                    // @ts-expect-error TS2339
                     subresourceUri={currentEditedField.subresourceId}
                     arbitraryMode={[SCOPE_DATASET, SCOPE_GRAPHIC].includes(
                         // @ts-expect-error TS2345
@@ -183,7 +182,6 @@ const FieldEditionWizardComponent = ({
                     filter={filter}
                     // @ts-expect-error TS2322
                     fields={fields}
-                    // @ts-expect-error TS2339
                     subresourceId={currentEditedField.subresourceId}
                 />
             ),
@@ -196,7 +194,6 @@ const FieldEditionWizardComponent = ({
         {
             label: 'field_wizard_tab_semantic',
             id: 'tab-semantics',
-            // @ts-expect-error TS2739
             component: <TabSemantics currentEditedField={currentEditedField} />,
         },
     ].filter((x) => x);
@@ -310,7 +307,6 @@ const FieldEditionWizardComponent = ({
                     >
                         <Box className="container">
                             <Actions
-                                // @ts-expect-error TS2322
                                 currentEditedField={currentEditedField}
                                 onCancel={handleCancel}
                                 onSave={handleSave}
