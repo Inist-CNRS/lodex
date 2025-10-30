@@ -18,7 +18,7 @@ import { Router } from 'react-router-dom';
 import { getLocale } from '@lodex/common';
 import '../../../src/app/ace-vite-loader';
 import defaultTheme from '../../../src/app/custom/themes/default/defaultTheme';
-import configureStore from '../../../src/app/js/configureStore';
+import configureStore from '@lodex/frontend-common/configureStore';
 import { I18N } from '@lodex/frontend-common/i18n/I18NContext';
 import phrasesFor from '@lodex/frontend-common/i18n/translations';
 import { default as AnnotationDetail } from './annotations/AnnotationDetail';
