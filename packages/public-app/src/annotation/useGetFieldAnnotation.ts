@@ -4,11 +4,11 @@ import { toast } from '@lodex/common';
 import { getUserSessionStorageInfo } from '../../../../packages/admin-app/src/api/tools';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 import fetch from '@lodex/frontend-common/fetch/fetch';
-import { getRequest } from '../user';
 import {
     useGetFieldAnnotationIds,
     useSetFieldAnnotationIds,
 } from './annotationStorage';
+import { getRequest } from '../../../../src/app/js/user';
 
 // @ts-expect-error TS7006
 export const useGetFieldAnnotation = (fieldId, resourceUri, enabled = true) => {

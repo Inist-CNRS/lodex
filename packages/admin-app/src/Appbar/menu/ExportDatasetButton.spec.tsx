@@ -1,11 +1,11 @@
 import { fireEvent, waitFor } from '@testing-library/dom';
-import { render } from '../../../../../src/test-utils.tsx';
 import datasetApi from '../../api/dataset.ts';
 import { TestI18N } from '@lodex/frontend-common/i18n/I18NContext.tsx';
 import {
     ExportDatasetButtonComponent,
     ExportDatasetButtonWithFetch,
 } from './ExportDatasetButton.tsx';
+import { render } from '../../test-utils.tsx';
 
 jest.mock('../../api/dataset.ts', () => ({
     getDatasetColumns: jest.fn(),

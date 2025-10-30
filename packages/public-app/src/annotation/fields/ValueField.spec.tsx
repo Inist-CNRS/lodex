@@ -1,9 +1,9 @@
 import { useForm } from '@tanstack/react-form';
 
-import { render } from '../../../../test-utils';
 import { TestI18N } from '@lodex/frontend-common/i18n/I18NContext';
 import { ValueField } from './ValueField';
 import { fireEvent, waitFor } from '@testing-library/dom';
+import { render } from '../../test-utils';
 
 interface TestValueFieldProps {
     choices: unknown[];

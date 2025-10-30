@@ -1,5 +1,4 @@
 import React from 'react';
-import { act, render } from '../../../test-utils';
 import { TestI18N } from '@lodex/frontend-common/i18n/I18NContext';
 import {
     AnnotationList,
@@ -8,6 +7,7 @@ import {
     type AnnotationListProps,
 } from './AnnotationList';
 import { MODE_ALL } from './HistoryDrawer.const';
+import { act, render } from '../test-utils';
 
 function TestAnnotationList({ field, annotations }: AnnotationListProps) {
     const [mode, setMode] = React.useState(MODE_ALL);

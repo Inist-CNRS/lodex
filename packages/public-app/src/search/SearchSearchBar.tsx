@@ -2,7 +2,6 @@ import { useEffect } from 'react';
 import { connect } from 'react-redux';
 
 import { Box, Grid, useMediaQuery } from '@mui/material';
-import { useCanAnnotate } from '../../../../src/app/js/annotation/useCanAnnotate';
 import SearchBar from '../searchbar/SearchBar';
 import ToggleFacetsButton from '../searchbar/ToggleFacetsButton';
 import useSearchBar from '../searchbar/useSearchBar';
@@ -12,6 +11,7 @@ import { fromSearch } from '../selectors';
 import AnnotationsFilter from './AnnotationsFilter';
 import { search as searchAction, searchAnnotations } from './reducer';
 import VisitedResourcesFilter from './VisitedResourcesFilter';
+import { useCanAnnotate } from '../annotation/useCanAnnotate';
 
 const styles = stylesToClassName(
     {

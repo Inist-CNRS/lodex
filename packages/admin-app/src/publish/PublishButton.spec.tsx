@@ -5,7 +5,7 @@ import {
     PublishButtonComponent as PublishButton,
 } from './PublishButton';
 import { Button } from '@mui/material';
-import { render } from '../../../../src/test-utils';
+import { render } from '../test-utils';
 
 describe('<Publish />', () => {
     it('should render a publish button', () => {

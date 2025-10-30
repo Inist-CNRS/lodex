@@ -1,7 +1,10 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import { useLogin } from './login';
-import { Wrapper as DefaultWrapper, getStore } from '../../../test-utils';
+import {
+    Wrapper as DefaultWrapper,
+    getStore,
+} from '@lodex/frontend-common/test-utils';
 import { renderHook } from '@testing-library/react-hooks';
 import { MemoryRouter, useHistory } from 'react-router';
 import { getUserSessionStorageInfo } from '../../../../packages/admin-app/src/api/tools';

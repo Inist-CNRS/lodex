@@ -1,6 +1,6 @@
 import { RunButton } from './RunButton';
 import { TaskStatus, toast } from '@lodex/common';
-import { act, render } from '../../../../src/test-utils';
+import { act, render } from '../test-utils';
 import { fireEvent } from '@testing-library/dom';
 
 jest.mock('@lodex/common/src/tools/toast');

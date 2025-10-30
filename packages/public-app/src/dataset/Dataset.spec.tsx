@@ -4,7 +4,7 @@ import { DatasetComponent as Dataset } from './Dataset';
 import Pagination from '@lodex/frontend-common/components/Pagination';
 import DatasetColumn from './DatasetColumn';
 import DatasetColumnHeader from './DatasetColumnHeader';
-import { render } from '../../../../src/test-utils';
+import { render } from '@lodex/frontend-common/test-utils';
 
 describe('<Dataset />', () => {
     const columns = [

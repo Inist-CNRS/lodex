@@ -8,13 +8,13 @@ import { type ReactNode } from 'react';
 import { Provider } from 'react-redux';
 
 import userEvent from '@testing-library/user-event';
-import defaultMuiTheme from './app/custom/themes/default/defaultTheme';
-import sagas from '../packages/admin-app/src/sagas';
-import { AnnotationStorageProvider } from './app/js/annotation/annotationStorage';
+import defaultMuiTheme from '../../../src/app/custom/themes/default/defaultTheme';
+import sagas from '../../admin-app/src/sagas';
 import configureStore from '@lodex/frontend-common/configureStore';
-import reducers from '../packages/public-app/src/reducers';
+import reducers from './reducers';
 import { TestI18N } from '@lodex/frontend-common/i18n/I18NContext';
 import type { Store } from 'redux';
+import { AnnotationStorageProvider } from './annotation/annotationStorage';
 
 // @ts-expect-error TS7017
 global.__DEBUG__ = false;

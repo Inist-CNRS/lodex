@@ -1,7 +1,6 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import { MemoryRouter, Route, Switch } from 'react-router-dom';
-import { render } from '../../../test-utils';
 
 import { TestI18N } from '@lodex/frontend-common/i18n/I18NContext';
 import fetch from '@lodex/frontend-common/fetch/fetch';
@@ -9,6 +8,7 @@ import { getStorageKey } from './annotationStorage';
 import { CreateAnnotationButton } from './CreateAnnotationButton';
 import { useCanAnnotate } from './useCanAnnotate';
 import { fireEvent, waitFor } from '@testing-library/dom';
+import { render } from '../test-utils';
 
 const queryClient = new QueryClient();
 

@@ -1,5 +1,5 @@
 import { DeleteSubresourceButton } from './DeleteSubresourceButton';
-import { act, render } from '../../../../src/test-utils';
+import { act, render } from '../test-utils';
 import { within } from '@testing-library/dom';
 
 describe('<DeleteSubresourceButton />', () => {

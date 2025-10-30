@@ -3,9 +3,9 @@ import { SearchForm, type SearchFormProps } from './SearchForm';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Overview } from '@lodex/common';
 import fieldApi from '../api/field';
-import { render } from '../../../../src/test-utils.tsx';
 import { I18NContext } from '@lodex/frontend-common/i18n/I18NContext.tsx';
 import { fireEvent, waitFor, within } from '@testing-library/dom';
+import { render } from '../test-utils';
 
 jest.mock('../api/field', () => ({
     patchSearchableFields: jest.fn(),
