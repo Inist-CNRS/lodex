@@ -26,7 +26,7 @@ import StorageIcon from '@mui/icons-material/Storage';
 import { dumpDataset } from '../../dump';
 import { fromDump } from '../../selectors.ts';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext.tsx';
-import CancelButton from '../../../../../src/app/js/lib/components/CancelButton.tsx';
+import CancelButton from '@lodex/frontend-common/components/CancelButton.tsx';
 
 import datasetApi from '../../api/dataset.ts';
 

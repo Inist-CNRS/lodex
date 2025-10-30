@@ -31,7 +31,7 @@ import {
     toast,
 } from '@lodex/common';
 import { io } from 'socket.io-client';
-import CancelButton from '../../../../src/app/js/lib/components/CancelButton';
+import CancelButton from '@lodex/frontend-common/components/CancelButton';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 import { PrecomputedStatus } from './PrecomputedStatus';
 import { RunButton } from './RunButton';

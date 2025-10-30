@@ -2,7 +2,7 @@ import { shallow } from 'enzyme';
 import { DeleteEnrichmentButton } from './DeleteEnrichmentButton';
 import { Button } from '@mui/material';
 import { ConfirmPopup } from '../../../../src/app/js/lib/components/ConfirmPopup';
-import CancelButton from '../../../../src/app/js/lib/components/CancelButton';
+import CancelButton from '@lodex/frontend-common/components/CancelButton';
 import { deleteEnrichment } from '../api/enrichment';
 
 jest.mock('../api/enrichment', () => ({

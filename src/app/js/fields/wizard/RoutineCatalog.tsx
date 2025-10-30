@@ -19,7 +19,7 @@ import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 
 import routines from '../../../custom/routines/routines-catalog.json';
 import routinesPrecomputed from '../../../custom/routines/routines-precomputed-catalog.json';
-import CancelButton from '../../lib/components/CancelButton';
+import CancelButton from '@lodex/frontend-common/components/CancelButton';
 
 const styles = {
     item: {

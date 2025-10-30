@@ -20,7 +20,7 @@ import fieldApi from '../api/field';
 import { toast, extractTenantFromUrl } from '@lodex/common';
 import { loadField } from '../../../../src/app/js/fields';
 import { loadPublication } from '../publication';
-import CancelButton from '../../../../src/app/js/lib/components/CancelButton';
+import CancelButton from '@lodex/frontend-common/components/CancelButton';
 import { loadSubresources } from '../subresource';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 

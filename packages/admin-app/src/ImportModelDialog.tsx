@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import { Dialog, Button, DialogContent, DialogActions } from '@mui/material';
 
 import { importFields as importFieldsAction } from './import';
-import CancelButton from '../../../src/app/js/lib/components/CancelButton';
+import CancelButton from '@lodex/frontend-common/components/CancelButton';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 
 const styles = {
