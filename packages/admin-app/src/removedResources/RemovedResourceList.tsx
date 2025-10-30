@@ -12,7 +12,7 @@ import {
     TableRow,
 } from '@mui/material';
 
-import ButtonWithStatus from '../../../../src/app/js/lib/components/ButtonWithStatus';
+import ButtonWithStatus from '@lodex/frontend-common/components/ButtonWithStatus';
 import Loading from '../../../../src/app/js/lib/components/Loading';
 import Pagination from '../../../../src/app/js/lib/components/Pagination';
 import {
