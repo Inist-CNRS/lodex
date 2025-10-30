@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import { fromUser, fromFields } from '../../../src/app/js/sharedSelectors';
 import { getViewComponent } from '../../../src/app/js/formats';
-import getColorSetFromField from '../../../src/app/js/lib/getColorSetFromField';
+import getColorSetFromField from '@lodex/frontend-common/utils/getColorSetFromField';
 import { isEqual } from 'lodash';
 
 interface FormatComponentProps {

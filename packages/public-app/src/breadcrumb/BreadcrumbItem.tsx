@@ -1,6 +1,6 @@
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 
-import stylesToClassname from '../../../../src/app/js/lib/stylesToClassName';
+import stylesToClassname from '@lodex/frontend-common/utils/stylesToClassName';
 import Link from '@lodex/frontend-common/components/Link';
 
 const styles = stylesToClassname(

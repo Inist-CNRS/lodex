@@ -10,7 +10,7 @@ import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 import { CommentField } from './fields/CommentField';
 import { ProposedValueField } from './fields/ProposedValueField';
 import { getIsFieldValueAnUrl } from '../formats';
-import { sanitize } from '../lib/sanitize';
+import { sanitize } from '@lodex/frontend-common/utils/sanitize';
 
 interface CommentDescriptionProps {
     isFieldAnUrl: boolean;

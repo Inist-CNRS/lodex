@@ -15,7 +15,7 @@ import {
 
 import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
 
-import { useDidUpdateEffect } from '../lib/useDidUpdateEffect';
+import { useDidUpdateEffect } from '@lodex/frontend-common/utils/useDidUpdateEffect';
 import { fromFields } from '../sharedSelectors';
 import { NoField } from './NoField';
 

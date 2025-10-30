@@ -5,8 +5,11 @@ import HiddenIcon from '@mui/icons-material/VisibilityOff';
 
 import { SCOPE_DATASET, URI_FIELD_NAME } from '@lodex/common';
 import { fromFields } from '../../../../src/app/js/sharedSelectors';
-import getFieldClassName from '../../../../src/app/js/lib/getFieldClassName';
-import { isLongText, getShortText } from '../../../../src/app/js/lib/longTexts';
+import getFieldClassName from '@lodex/frontend-common/utils/getFieldClassName';
+import {
+    isLongText,
+    getShortText,
+} from '@lodex/frontend-common/utils/longTexts';
 
 import { type Field } from '../../../../src/app/js/propTypes';
 import FieldInternalIcon from '../../../../src/app/js/fields/FieldInternalIcon';

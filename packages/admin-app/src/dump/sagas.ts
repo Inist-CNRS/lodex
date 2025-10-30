@@ -3,7 +3,7 @@ import { call, select, takeLatest, fork, put } from 'redux-saga/effects';
 import { dumpDatasetError, dumpDatasetSuccess, DUMP_DATASET } from './index';
 import { fromUser } from '../../../../src/app/js/sharedSelectors';
 import fetchSaga from '@lodex/frontend-common/fetch/fetchSaga';
-import streamFile from '../../../../src/app/js/lib/streamFile';
+import streamFile from '@lodex/frontend-common/utils/streamFile';
 
 // @ts-expect-error TS7031
 export function* handleDumpDatasetRequest({ payload }) {

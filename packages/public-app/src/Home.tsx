@@ -14,7 +14,7 @@ import Alert from '@lodex/frontend-common/components/Alert';
 import Loading from '@lodex/frontend-common/components/Loading';
 import DatasetCharacteristics from '../../../src/app/js/characteristic/DatasetCharacteristics';
 import NoDataset from './NoDataset';
-import getTitle from '../../../src/app/js/lib/getTitle';
+import getTitle from '@lodex/frontend-common/utils/getTitle';
 
 import { preLoadDatasetPage } from './dataset';
 import { preLoadExporters } from './export';

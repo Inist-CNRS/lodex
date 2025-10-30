@@ -6,7 +6,7 @@ import React, {
 } from 'react';
 import classnames from 'classnames';
 
-import stylesToClassname from '../../../src/app/js/lib/stylesToClassName';
+import stylesToClassname from '@lodex/frontend-common/utils/stylesToClassName';
 import { useDispatch, useSelector } from 'react-redux';
 import { fromSearch } from './selectors';
 import { triggerSearch } from './search/reducer';

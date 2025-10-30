@@ -1,5 +1,5 @@
 import qs from 'qs';
-import { createGlobalSelectors } from '../../../src/app/js/lib/selectors';
+import { createGlobalSelectors } from '@lodex/frontend-common/utils/selectors';
 import { fromDataset as localFromDataset } from './dataset';
 import { fromExport as localFromExport } from './export';
 import { fromResource as localFromResource } from './resource';

@@ -1,11 +1,11 @@
 import { call, select } from 'redux-saga/effects';
 
 import { handleExportPublishedDatasetSuccess } from './exportPublishedDataset';
-import getQueryString from '../../../../../src/app/js/lib/getQueryString';
+import getQueryString from '@lodex/frontend-common/utils/getQueryString';
 import { fromSearch } from '../../selectors';
 import { fromUser } from '../../../../../src/app/js/sharedSelectors';
 import fetchSaga from '@lodex/frontend-common/fetch/fetchSaga';
-import downloadFile from '../../../../../src/app/js/lib/downloadFile';
+import downloadFile from '@lodex/frontend-common/utils/downloadFile';
 
 describe('export saga', () => {
     describe('handleExportPublishedDatasetSuccess', () => {

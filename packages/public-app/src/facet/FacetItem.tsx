@@ -5,7 +5,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { connect } from 'react-redux';
 
 import { fromFacet } from '../selectors';
-import getFieldClassName from '../../../../src/app/js/lib/getFieldClassName';
+import getFieldClassName from '@lodex/frontend-common/utils/getFieldClassName';
 import FacetValueListComponent from './FacetValueList';
 import FacetActionsContext from './FacetActionsContext';
 

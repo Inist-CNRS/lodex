@@ -3,7 +3,7 @@ import classnames from 'classnames';
 import { connect } from 'react-redux';
 
 import { fromUser } from '../../../src/app/js/sharedSelectors';
-import stylesToClassname from '../../../src/app/js/lib/stylesToClassName';
+import stylesToClassname from '../utils/stylesToClassName';
 
 const styles = stylesToClassname(
     {

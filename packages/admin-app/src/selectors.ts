@@ -1,4 +1,4 @@
-import { createGlobalSelectors } from '../../../src/app/js/lib/selectors';
+import { createGlobalSelectors } from '@lodex/frontend-common/utils/selectors';
 
 import { selectors as importSelectors } from './import';
 import { selectors as parsingSelectors } from './parsing';

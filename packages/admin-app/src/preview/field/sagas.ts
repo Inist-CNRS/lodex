@@ -1,7 +1,7 @@
 import { call, all, put, select, takeLatest } from 'redux-saga/effects';
 import cloneDeep from 'lodash/cloneDeep';
 
-import getDocumentTransformer from '../../../../../src/app/js/lib/getDocumentTransformer';
+import getDocumentTransformer from '@lodex/frontend-common/utils/getDocumentTransformer.ts';
 import { fromUser } from '../../../../../src/app/js/sharedSelectors';
 import { computeFieldPreviewSuccess, computeFieldPreviewError } from './index';
 import { fromParsing } from '../../selectors';

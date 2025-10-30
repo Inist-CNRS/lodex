@@ -13,7 +13,7 @@ import { isValidColor } from '../../utils/colorUtils';
 import MouseIcon from '../../utils/components/MouseIcon';
 
 import CenterIcon from '../../utils/components/CenterIcon';
-import stylesToClassname from '../../../lib/stylesToClassName';
+import stylesToClassname from '@lodex/frontend-common/utils/stylesToClassName';
 
 const styles = StyleSheet.create({
     divContainer: {

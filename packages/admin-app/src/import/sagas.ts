@@ -8,7 +8,7 @@ import {
     importFieldsSuccess,
     importFieldsClosed,
 } from './index';
-import { loadModelFile } from '../../../../src/app/js/lib/loadFile';
+import { loadModelFile } from '@lodex/frontend-common/utils/loadFile';
 
 // @ts-expect-error TS7006
 export function* handleLoadModel(action) {

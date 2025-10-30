@@ -13,7 +13,7 @@ import {
     VEGA_LITE_DATA_INJECT_TYPE_A,
 } from '../utils/chartsUtils';
 import { useSizeObserver } from '../utils/chartsHooks';
-import stylesToClassName from '../../lib/stylesToClassName';
+import stylesToClassName from '@lodex/frontend-common/utils/stylesToClassName';
 
 // @ts-expect-error TS2554
 const styles = stylesToClassName({

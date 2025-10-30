@@ -3,7 +3,7 @@ import fetchSaga from '@lodex/frontend-common/fetch/fetchSaga';
 import { fromUser } from '../../../src/app/js/sharedSelectors.ts';
 
 import { EXPORT_FIELDS, exportFieldsError } from './index.ts';
-import downloadFile from '../../../src/app/js/lib/downloadFile.ts';
+import downloadFile from '../utils/downloadFile.ts';
 
 export function* handleExportFields() {
     // @ts-expect-error TS7057

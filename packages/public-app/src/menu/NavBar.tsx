@@ -14,7 +14,7 @@ import GraphSummary from '../graph/GraphSummary';
 import AdvancedPage from './AdvancedPage';
 import Favicon from '../Favicon';
 import MenuItem, { type ConfigRole } from './MenuItem';
-import stylesToClassname from '../../../../src/app/js/lib/stylesToClassName';
+import stylesToClassname from '@lodex/frontend-common/utils/stylesToClassName';
 import LanguageSelector from './LanguageSelector';
 import Container from '@mui/material/Container';
 

@@ -6,7 +6,7 @@ import { useCanAnnotate } from '../../../../src/app/js/annotation/useCanAnnotate
 import SearchBar from '../searchbar/SearchBar';
 import ToggleFacetsButton from '../searchbar/ToggleFacetsButton';
 import useSearchBar from '../searchbar/useSearchBar';
-import stylesToClassName from '../../../../src/app/js/lib/stylesToClassName';
+import stylesToClassName from '@lodex/frontend-common/utils/stylesToClassName';
 import { fromFields } from '../../../../src/app/js/sharedSelectors';
 import { fromSearch } from '../selectors';
 import AnnotationsFilter from './AnnotationsFilter';

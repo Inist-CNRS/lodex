@@ -1,6 +1,6 @@
 import classnames from 'classnames';
 
-import stylesToClassname from '../../../../src/app/js/lib/stylesToClassName';
+import stylesToClassname from '@lodex/frontend-common/utils/stylesToClassName';
 
 const pulseKeyframes = {
     '0%': {

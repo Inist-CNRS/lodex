@@ -8,7 +8,7 @@ import { isURL } from '@lodex/common';
 import LodexResource from '../../utils/components/LodexResource';
 import { type Field } from '../../../propTypes';
 import injectData from '../../injectData';
-import stylesToClassname from '../../../lib/stylesToClassName';
+import stylesToClassname from '@lodex/frontend-common/utils/stylesToClassName';
 
 const styles = stylesToClassname(
     {
