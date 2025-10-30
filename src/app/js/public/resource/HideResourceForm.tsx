@@ -60,8 +60,6 @@ const useHideResource = ({
                 type: 'success',
             });
 
-            console.log({ response });
-
             onClose();
         },
         onError() {
