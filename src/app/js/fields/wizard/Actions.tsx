@@ -5,7 +5,7 @@ import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 import isEqual from 'lodash/isEqual';
 import RemoveButton from '../../../../../packages/admin-app/src/preview/RemoveButton';
 import CancelButton from '@lodex/frontend-common/components/CancelButton.tsx';
-import { SaveButton } from '../../lib/components/SaveButton';
+import { SaveButton } from '@lodex/frontend-common/components/SaveButton.tsx';
 import type { Field } from '../types.ts';
 
 export const ActionsComponent = ({

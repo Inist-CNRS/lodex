@@ -8,7 +8,7 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Typography from '@mui/material/Typography';
-import Loading from '../../../../lib/components/Loading';
+import Loading from '@lodex/frontend-common/components/Loading';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 import type { InteractionProps } from 'react-json-view';
 

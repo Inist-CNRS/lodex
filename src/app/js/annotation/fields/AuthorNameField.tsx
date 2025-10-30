@@ -1,5 +1,5 @@
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
-import { TextField } from '../../lib/components/TextField';
+import { TextField } from '@lodex/frontend-common/components/TextField';
 
 interface AuthorNameFieldProps {
     form: object;

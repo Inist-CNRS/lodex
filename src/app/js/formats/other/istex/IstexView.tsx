@@ -2,7 +2,7 @@ import { type CSSProperties } from 'react';
 import memoize from 'lodash/memoize';
 import compose from 'recompose/compose';
 import FileDownload from '@mui/icons-material/GetApp';
-import Link from '../../../lib/components/Link';
+import Link from '@lodex/frontend-common/components/Link';
 
 import fetchPaginatedDataForComponent from '@lodex/frontend-common/fetch/fetchPaginatedDataForComponent';
 import Alert from '@lodex/frontend-common/components/Alert';

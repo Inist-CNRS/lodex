@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import { sortDataset as sortDatasetAction } from './index';
 import { fromDataset } from '../selectors';
-import SortButton from '../../../../src/app/js/lib/components/SortButton';
+import SortButton from '@lodex/frontend-common/components/SortButton';
 
 type DatasetColumnHeaderProps = {
     name: string;

@@ -1,5 +1,5 @@
 import FileDownload from '@mui/icons-material/GetApp';
-import Link from '../../../lib/components/Link';
+import Link from '@lodex/frontend-common/components/Link';
 
 import injectData from '../../injectData';
 import InvalidFormat from '../../InvalidFormat';

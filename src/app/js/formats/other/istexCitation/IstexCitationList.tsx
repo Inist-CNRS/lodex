@@ -1,7 +1,7 @@
 import { useState, type ReactNode } from 'react';
 import classnames from 'classnames';
 import FileDownload from '@mui/icons-material/GetApp';
-import Link from '../../../lib/components/Link';
+import Link from '@lodex/frontend-common/components/Link';
 
 import { getMoreDocumentData } from '../istexSummary/getIstexData';
 import ButtonWithStatus from '@lodex/frontend-common/components/ButtonWithStatus';

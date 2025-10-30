@@ -3,7 +3,7 @@ import { schemeOrRd } from 'd3-scale-chromatic';
 import { Checkbox, FormControlLabel, Switch, FormGroup } from '@mui/material';
 
 import RoutineParamsAdmin from '../../../utils/components/admin/RoutineParamsAdmin';
-import { GradientSchemeSelector } from '../../../../lib/components/ColorSchemeSelector';
+import { GradientSchemeSelector } from '@lodex/frontend-common/components/ColorSchemeSelector';
 import VegaToolTips from '../../../utils/components/admin/VegaToolTips';
 import HeatMap from '../../models/HeatMap';
 import { lodexOrderToIdOrder } from '../../../utils/chartsUtils';

@@ -2,7 +2,7 @@ import { type ReactNode } from 'react';
 import { Card, CardMedia, CardActions, Button } from '@mui/material';
 import Forward from '@mui/icons-material/Forward';
 
-import Link from '../../../../src/app/js/lib/components/Link';
+import Link from '@lodex/frontend-common/components/Link';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 
 const styles = {

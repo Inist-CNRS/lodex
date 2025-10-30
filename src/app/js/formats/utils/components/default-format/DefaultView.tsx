@@ -5,7 +5,7 @@ import {
     isLocalURL,
     isURL,
 } from '@lodex/common';
-import Link from '../../../../lib/components/Link';
+import Link from '@lodex/frontend-common/components/Link';
 import { getShortText, isLongText } from '../../../../lib/longTexts';
 import { type Field } from '../../../../propTypes';
 

@@ -1,6 +1,6 @@
 import { useController } from 'react-hook-form';
 import enrichers from '../../../../src/app/custom/enrichers/enrichers-catalog.json';
-import Catalog from '../../../../src/app/js/lib/components/Catalog';
+import Catalog from '@lodex/frontend-common/components/Catalog';
 
 const translatePrefix = 'ws';
 

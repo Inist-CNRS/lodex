@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import compose from 'recompose/compose';
-import FormSourceCodeField from '../../../../src/app/js/lib/components/FormSourceCodeField';
+import FormSourceCodeField from '@lodex/frontend-common/components/FormSourceCodeField';
 import {
     Box,
     Button,

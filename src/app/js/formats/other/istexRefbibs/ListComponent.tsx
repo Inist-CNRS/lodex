@@ -3,7 +3,7 @@ import memoize from 'lodash/memoize';
 import { PropositionStatus } from '@lodex/common';
 import { ISTEX_API_URL } from '../../../api/externals';
 import { type Field } from '../../../propTypes';
-import Link from '../../../lib/components/Link';
+import Link from '@lodex/frontend-common/components/Link';
 
 const styles = {
     text: memoize((status) =>

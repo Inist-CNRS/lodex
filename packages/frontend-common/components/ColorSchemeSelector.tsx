@@ -57,7 +57,7 @@ const categorySchemes = [
     schemeSet3,
 ];
 
-import ColorScalePreview from '../../lib/components/ColorScalePreview';
+import ColorScalePreview from './ColorScalePreview';
 
 const getColorSchemeSelector = (schemes: (readonly string[])[]) => {
     const ColorSchemeSelector = ({

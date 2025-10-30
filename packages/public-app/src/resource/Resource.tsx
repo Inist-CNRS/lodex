@@ -11,12 +11,12 @@ import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 
 import { getResourceUri } from '@lodex/common';
 import { preLoadPublication } from '../../../../src/app/js/fields';
-import Link from '../../../../src/app/js/lib/components/Link';
-import Loading from '../../../../src/app/js/lib/components/Loading';
+import Link from '@lodex/frontend-common/components/Link';
+import Loading from '@lodex/frontend-common/components/Loading';
 import NavButton, {
     NEXT,
     PREV,
-} from '../../../../src/app/js/lib/components/NavButton';
+} from '@lodex/frontend-common/components/NavButton';
 import stylesToClassname from '../../../../src/app/js/lib/stylesToClassName';
 import {
     fromCharacteristic,

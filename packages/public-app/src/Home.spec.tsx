@@ -1,5 +1,5 @@
 import { HomeComponent as Home } from './Home';
-import Loading from '../../../src/app/js/lib/components/Loading';
+import Loading from '@lodex/frontend-common/components/Loading';
 import NoDataset from './NoDataset';
 import { render } from '../../../src/test-utils';
 import { shallow } from 'enzyme';

@@ -30,8 +30,8 @@ import {
 import { fromUpload, fromLoaders } from '../selectors';
 import LoaderSelect from './LoaderSelect';
 import { toast } from '@lodex/common';
-import SourceCodeField from '../../../../src/app/js/lib/components/SourceCodeField';
-import { ConfirmPopup } from '../../../../src/app/js/lib/components/ConfirmPopup';
+import SourceCodeField from '@lodex/frontend-common/components/SourceCodeField';
+import { ConfirmPopup } from '@lodex/frontend-common/components/ConfirmPopup';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 import type { State } from '../reducers';
 import type { Loader } from './ListDialog';

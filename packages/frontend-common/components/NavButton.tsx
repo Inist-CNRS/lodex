@@ -5,7 +5,7 @@ import { IconButton } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons';
 
-import stylesToClassname from '../../lib/stylesToClassName';
+import stylesToClassname from '../../../src/app/js/lib/stylesToClassName';
 
 const styles = stylesToClassname(
     {

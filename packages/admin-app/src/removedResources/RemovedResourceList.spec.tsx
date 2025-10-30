@@ -3,7 +3,7 @@ import moment from 'moment';
 import { TableCell, TableBody } from '@mui/material';
 
 import { RemovedResourceListComponent as RemovedResourceList } from './RemovedResourceList';
-import Pagination from '../../../../src/app/js/lib/components/Pagination';
+import Pagination from '@lodex/frontend-common/components/Pagination';
 import ButtonWithStatus from '@lodex/frontend-common/components/ButtonWithStatus';
 import { render } from '../../../../src/test-utils';
 

@@ -1,6 +1,6 @@
 import Book from '@mui/icons-material/LibraryBooks';
 
-import Link from '../../../lib/components/Link';
+import Link from '@lodex/frontend-common/components/Link';
 import stylesToClassname from '../../../lib/stylesToClassName';
 
 const styles = stylesToClassname(
