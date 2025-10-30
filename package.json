@@ -37,7 +37,7 @@
         "setversion:common": "(cd packages/common && npm version \"${npm_package_version}\")",
         "setversion:api": "(cd packages/api && npm version \"${npm_package_version}\")",
         "setversion:workers": "(cd packages/workers && npm version \"${npm_package_version}\")",
-        "version": "npm run insertversion:readme && npm run insertversion:makefile && npm run insertversion:docker && npm run setversion:common && npm run setversion:api && npm run setversion:workers && git add README.md Makefile packages/{api,common,workers}/package*.json",
+        "version": "npm run insertversion:readme && npm run insertversion:makefile && npm run insertversion:docker && npm run setversion:common && npm run setversion:api && npm run setversion:workers && git add README.md Makefile packages/api/package.json packages/common/package.json packages/workers/package.json",
         "postversion": "git push && git push --tags",
         "postinstall": "cd ./packages/ezsLodex/ && npm install --production --install-strategy=nested --legacy-peer-deps && cd ../transformers/ && npm install --production --install-strategy=nested --legacy-peer-deps && cd ../common/ && npm install --install-strategy=nested --legacy-peer-deps && cd ../api/ && npm install --install-strategy=nested --legacy-peer-deps && cd ../workers/ && npm install --install-strategy=nested --legacy-peer-deps"
     },
