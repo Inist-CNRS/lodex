@@ -16,7 +16,7 @@ import pick from 'lodash/pick';
 import path from 'path';
 import { END } from 'redux-saga';
 
-import configureStoreServer from '../../../../src/app/js/configureStoreServer';
+import configureStoreServer from './configureStoreServer';
 import reducers from '../../../public-app/src/reducers';
 import Routes from '../../../public-app/src/Routes';
 import sagas from '../../../public-app/src/sagas';
