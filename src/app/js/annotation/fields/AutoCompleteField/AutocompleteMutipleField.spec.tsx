@@ -1,25 +1,28 @@
 import { useForm } from '@tanstack/react-form';
 
-import { act, render, userEvent } from '../../../../test-utils';
+import { render, userEvent } from '../../../../../test-utils';
 import { TestI18N } from '@lodex/frontend-common/i18n/I18NContext';
 import {
-    AutocompleteField,
-    type AutocompleteFieldProps,
-} from './AutocompleteField';
+    AutocompleteMultipleField,
+    type AutocompleteMultipleFieldProps,
+} from './AutocompleteMultipleField';
 import { fireEvent, waitFor } from '@testing-library/dom';
 
-function TestAutocompleteField(
-    props: Omit<AutocompleteFieldProps, 'form' | 'name' | 'label'>,
+function TestAutocompleteMultipleField(
+    props: Omit<
+        AutocompleteMultipleFieldProps,
+        'form' | 'name' | 'label' | 'options'
+    >,
 ) {
     const form = useForm({
         defaultValues: {
-            name: '',
+            name: [],
         },
     });
 
     return (
         <TestI18N>
-            <AutocompleteField
+            <AutocompleteMultipleField
                 form={form}
                 name="name"
                 label="Name"
@@ -30,10 +33,10 @@ function TestAutocompleteField(
     );
 }
 
-describe('AutocompleteField', () => {
+describe('AutocompleteMultipleField', () => {
     describe('defined values', () => {
         it('should support to select a value', async () => {
-            const screen = render(<TestAutocompleteField />);
+            const screen = render(<TestAutocompleteMultipleField />);
 
             const textbox = screen.getByRole('combobox', {
                 name: 'Name',
@@ -53,11 +56,59 @@ describe('AutocompleteField', () => {
                 fireEvent.click(option);
             });
 
-            expect(textbox).toHaveValue('John');
+            expect(
+                screen.getByRole('button', {
+                    name: 'John',
+                }),
+            ).toBeInTheDocument();
+        });
+
+        it('should support to select multiple values', async () => {
+            const screen = render(<TestAutocompleteMultipleField />);
+
+            const textbox = screen.getByRole('combobox', {
+                name: 'Name',
+            });
+
+            await waitFor(() => {
+                fireEvent.mouseDown(textbox);
+            });
+
+            await waitFor(() => {
+                fireEvent.click(
+                    screen.getByRole('option', {
+                        name: 'John',
+                    }),
+                );
+            });
+
+            await waitFor(() => {
+                fireEvent.mouseDown(textbox);
+            });
+
+            await waitFor(() => {
+                fireEvent.click(
+                    screen.getByRole('option', {
+                        name: 'Paul',
+                    }),
+                );
+            });
+
+            expect(
+                screen.getByRole('button', {
+                    name: 'John',
+                }),
+            ).toBeInTheDocument();
+
+            expect(
+                screen.getByRole('button', {
+                    name: 'Paul',
+                }),
+            ).toBeInTheDocument();
         });
 
         it('should support filtering values', async () => {
-            const screen = render(<TestAutocompleteField />);
+            const screen = render(<TestAutocompleteMultipleField />);
 
             const textbox = screen.getByRole('combobox', {
                 name: 'Name',
@@ -87,7 +138,9 @@ describe('AutocompleteField', () => {
 
     describe('free solo support', () => {
         it('should support to add a new value', async () => {
-            const screen = render(<TestAutocompleteField supportsNewValues />);
+            const screen = render(
+                <TestAutocompleteMultipleField supportsNewValues />,
+            );
 
             const textbox = screen.getByRole('combobox', {
                 name: 'Name',
@@ -111,22 +164,26 @@ describe('AutocompleteField', () => {
                 fireEvent.click(option);
             });
 
-            expect(textbox).toHaveValue('Franck');
+            expect(
+                screen.getByRole('button', {
+                    name: 'Franck',
+                }),
+            ).toBeInTheDocument();
         });
 
         it('should not support to have a new value if does not support new values', async () => {
-            const screen = render(<TestAutocompleteField />);
+            const screen = render(<TestAutocompleteMultipleField />);
 
             const textbox = screen.getByRole('combobox', {
                 name: 'Name',
             });
 
-            act(() => {
+            await waitFor(() => {
                 fireEvent.mouseDown(textbox);
             });
 
-            act(() => {
-                userEvent.type(textbox, 'Franck');
+            await waitFor(() => {
+                return userEvent.type(textbox, 'Franck');
             });
 
             await waitFor(() => {
@@ -141,13 +198,15 @@ describe('AutocompleteField', () => {
                 }),
             ).not.toBeInTheDocument();
 
-            act(() => {
-                userEvent.tab();
+            await waitFor(() => {
+                return fireEvent.blur(textbox);
             });
 
-            await waitFor(() => {
-                expect(textbox).toHaveValue('');
-            });
+            expect(
+                screen.queryAllByRole('button', {
+                    name: 'Franck',
+                }),
+            ).toHaveLength(0);
         });
     });
 });

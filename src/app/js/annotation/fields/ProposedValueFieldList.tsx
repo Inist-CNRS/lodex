@@ -1,6 +1,6 @@
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
-import { AutocompleteField } from '../../lib/components/AutocompleteField';
-import { AutocompleteMultipleField } from '../../lib/components/AutocompleteMultipleField';
+import { AutocompleteField } from './AutoCompleteField/AutocompleteField';
+import { AutocompleteMultipleField } from './AutoCompleteField/AutocompleteMultipleField';
 
 const NAME = 'proposedValue';
 
