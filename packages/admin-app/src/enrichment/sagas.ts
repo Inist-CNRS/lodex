@@ -13,7 +13,7 @@ import {
     RETRY_ENRICHMENT,
 } from './index';
 
-import fetchSaga from '../../../../src/app/js/lib/sagas/fetchSaga';
+import fetchSaga from '@lodex/frontend-common/fetch/fetchSaga';
 import { fromUser } from '../../../../src/app/js/sharedSelectors';
 
 export function* handleLoadEnrichmentsRequest() {

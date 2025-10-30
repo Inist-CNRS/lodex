@@ -5,7 +5,7 @@ import { Wrapper as DefaultWrapper, getStore } from '../../../test-utils';
 import { renderHook } from '@testing-library/react-hooks';
 import { MemoryRouter, useHistory } from 'react-router';
 import { getUserSessionStorageInfo } from '../../../../packages/admin-app/src/api/tools';
-import fetch from '../lib/fetch';
+import fetch from '@lodex/frontend-common/fetch/fetch';
 import { loginSuccess } from '../user';
 
 jest.mock('../../../../packages/admin-app/src/api/tools', () => ({

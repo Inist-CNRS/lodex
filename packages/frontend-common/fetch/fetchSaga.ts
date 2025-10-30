@@ -1,8 +1,8 @@
 import { call, put, race, select, take } from 'redux-saga/effects';
 import { replace } from 'redux-first-history';
-import fetch from '../fetch';
-import { logout } from '../../user';
-import { getCurrentQuery } from '../../sharedSelectors';
+import fetch from './fetch';
+import { logout } from '../../../src/app/js/user';
+import { getCurrentQuery } from '../../../src/app/js/sharedSelectors';
 
 export default function* fetchSaga(
     // @ts-expect-error TS7006

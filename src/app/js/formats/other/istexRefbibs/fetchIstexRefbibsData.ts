@@ -1,6 +1,6 @@
 import get from 'lodash/get';
 
-import fetch from '../../../lib/fetch';
+import fetch from '@lodex/frontend-common/fetch/fetch';
 import { composeAsync } from '@lodex/common';
 import { ISTEX_API_URL } from '../../../api/externals';
 import { output } from '../../utils/fetchIstexData';

@@ -7,7 +7,7 @@ import {
     loadPublicationError,
 } from '../';
 import { fromUser, fromFields } from '../../sharedSelectors';
-import fetchSaga from '../../lib/sagas/fetchSaga';
+import fetchSaga from '@lodex/frontend-common/fetch/fetchSaga';
 
 export function* handleLoadPublicationRequest() {
     // @ts-expect-error TS7057

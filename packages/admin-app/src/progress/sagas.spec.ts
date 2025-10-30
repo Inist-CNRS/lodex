@@ -2,7 +2,7 @@ import { call, select, put } from 'redux-saga/effects';
 
 import { handleStartProgressSaga } from './sagas';
 import { fromUser } from '../../../../src/app/js/sharedSelectors';
-import fetchSaga from '../../../../src/app/js/lib/sagas/fetchSaga';
+import fetchSaga from '@lodex/frontend-common/fetch/fetchSaga';
 import {
     updateProgress,
     loadProgress,

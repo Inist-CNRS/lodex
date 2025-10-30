@@ -2,7 +2,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { renderHook } from '@testing-library/react-hooks';
 import { toast } from '@lodex/common';
 import { TestI18N } from '@lodex/frontend-common/i18n/I18NContext';
-import fetch from '../lib/fetch';
+import fetch from '@lodex/frontend-common/fetch/fetch';
 import { AnnotationStorageProvider, getStorageKey } from './annotationStorage';
 import { useGetFieldAnnotation } from './useGetFieldAnnotation';
 

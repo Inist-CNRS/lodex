@@ -7,7 +7,7 @@ import {
     LOAD_PROGRESS,
     finishProgress,
 } from './reducer';
-import fetchSaga from '../../../../src/app/js/lib/sagas/fetchSaga';
+import fetchSaga from '@lodex/frontend-common/fetch/fetchSaga';
 import { fromUser } from '../../../../src/app/js/sharedSelectors';
 import { ProgressStatus } from '@lodex/common';
 import { CLEAR_PUBLISHED } from '../clear';

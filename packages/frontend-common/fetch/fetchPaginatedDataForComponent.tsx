@@ -1,7 +1,7 @@
 import React from 'react';
 import { CircularProgress } from '@mui/material';
 
-import Pagination from './components/Pagination';
+import Pagination from '../../../src/app/js/lib/components/Pagination';
 
 const styles = {
     container: {

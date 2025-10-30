@@ -4,7 +4,7 @@ import { useHistory } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
-import fetch from '../../../../../src/app/js/lib/fetch';
+import fetch from '@lodex/frontend-common/fetch/fetch';
 import { getRequest } from '../../../../../src/app/js/user';
 import { getUserSessionStorageInfo } from '../../api/tools';
 

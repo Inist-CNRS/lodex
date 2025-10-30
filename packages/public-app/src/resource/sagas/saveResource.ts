@@ -8,7 +8,7 @@ import {
 } from '../index';
 
 import { fromUser } from '../../../../../src/app/js/sharedSelectors';
-import fetchSaga from '../../../../../src/app/js/lib/sagas/fetchSaga';
+import fetchSaga from '@lodex/frontend-common/fetch/fetchSaga';
 import { fromResource } from '../../selectors';
 
 // @ts-expect-error TS7031

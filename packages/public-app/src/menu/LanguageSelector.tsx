@@ -6,9 +6,9 @@ import {
     useTranslate,
 } from '@lodex/frontend-common/i18n/I18NContext';
 import { fromI18n } from '../selectors';
-import { setLanguage } from '../../../../src/app/js/i18n';
 import { Button, Menu, MenuItem } from '@mui/material';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import { setLanguage } from '@lodex/frontend-common/i18n';
 
 type LanguageSelectorProps = {
     setLanguage(...args: unknown[]): unknown;

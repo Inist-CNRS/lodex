@@ -1,5 +1,5 @@
 import { getThemeRequest } from '../../../../src/app/js/user';
-import fetch from '../../../../src/app/js/lib/fetch';
+import fetch from '@lodex/frontend-common/fetch/fetch';
 import { getUserSessionStorageInfo } from '../../../admin-app/src/api/tools';
 
 export const themeLoader = async () => {

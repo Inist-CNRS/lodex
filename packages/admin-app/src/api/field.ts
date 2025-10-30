@@ -10,7 +10,7 @@ import {
 
 import { store } from '../adminIndex';
 import { saveFieldSuccess } from '../../../../src/app/js/fields';
-import fetch from '../../../../src/app/js/lib/fetch';
+import fetch from '@lodex/frontend-common/fetch/fetch';
 import { getUserSessionStorageInfo } from './tools';
 
 // @ts-expect-error TS7031

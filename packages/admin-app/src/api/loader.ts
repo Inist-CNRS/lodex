@@ -1,4 +1,4 @@
-import fetch from '../../../../src/app/js/lib/fetch';
+import fetch from '@lodex/frontend-common/fetch/fetch';
 import { getLoaderWithScriptRequest } from '../../../../src/app/js/user';
 import { getUserSessionStorageInfo } from './tools';
 

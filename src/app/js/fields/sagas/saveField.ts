@@ -14,7 +14,7 @@ import { fromFields, fromUser } from '../../sharedSelectors';
 
 import { push } from 'redux-first-history';
 import { SCOPE_DOCUMENT } from '@lodex/common';
-import fetchSaga from '../../lib/sagas/fetchSaga';
+import fetchSaga from '@lodex/frontend-common/fetch/fetchSaga';
 import {
     FIELD_ANNOTATION_FORMAT_LIST,
     FIELD_ANNOTATION_FORMAT_TEXT,

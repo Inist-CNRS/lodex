@@ -1,7 +1,7 @@
 import { fireEvent, waitFor } from '@testing-library/dom';
 import { render } from '../../../../../src/test-utils.tsx';
 import datasetApi from '../../api/dataset.ts';
-import { TestI18N } from '../../../../../src/app/js/i18n/I18NContext.tsx';
+import { TestI18N } from '@lodex/frontend-common/i18n/I18NContext.tsx';
 import {
     ExportDatasetButtonComponent,
     ExportDatasetButtonWithFetch,

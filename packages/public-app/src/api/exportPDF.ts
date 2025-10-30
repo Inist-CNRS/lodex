@@ -1,5 +1,5 @@
 import { getUserSessionStorageInfo } from '../../../admin-app/src/api/tools';
-import fetch from '../../../../src/app/js/lib/fetch';
+import fetch from '@lodex/frontend-common/fetch/fetch';
 import { getExportPDFRequest } from '../../../../src/app/js/user';
 
 // @ts-expect-error TS7006

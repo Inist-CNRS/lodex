@@ -6,7 +6,7 @@ import {
     restoreRessourceError,
 } from '../index';
 import { fromUser } from '../../../../../src/app/js/sharedSelectors';
-import fetchSaga from '../../../../../src/app/js/lib/sagas/fetchSaga';
+import fetchSaga from '@lodex/frontend-common/fetch/fetchSaga';
 
 // @ts-expect-error TS7031
 export function* handleRestoreResourceRequest({ payload: uri }) {
