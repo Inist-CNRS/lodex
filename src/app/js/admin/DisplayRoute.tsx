@@ -9,7 +9,7 @@ import {
 import withInitialData from './withInitialData';
 import { AddSubresource } from './subresource/AddSubresource';
 import { EditSubresource } from './subresource/EditSubresource';
-import { SCOPE_DOCUMENT } from '../../../common/scope';
+import { SCOPE_DOCUMENT } from '@lodex/common';
 import { FieldsEdit } from './field/FieldsEdit';
 import FieldEditForm from '../fields/wizard';
 import SubresourceListConnected from './subresource/SubresourceList';

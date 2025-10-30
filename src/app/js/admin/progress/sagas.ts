@@ -9,7 +9,7 @@ import {
 } from './reducer';
 import fetchSaga from '../../lib/sagas/fetchSaga';
 import { fromUser } from '../../sharedSelectors';
-import { PENDING } from '../../../../common/progressStatus';
+import { ProgressStatus } from '@lodex/common';
 import { CLEAR_PUBLISHED } from '../clear';
 
 export function* handleStartProgressSaga() {
@@ -23,7 +23,7 @@ export function* handleStartProgressSaga() {
     }
     yield put(updateProgress(response));
 
-    if (response.status === PENDING) {
+    if (response.status === ProgressStatus.PENDING) {
         yield put(finishProgress());
         return;
     }

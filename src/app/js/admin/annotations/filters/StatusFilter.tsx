@@ -1,7 +1,7 @@
 import { FormControl, InputLabel, NativeSelect } from '@mui/material';
 
 import { useTranslate } from '../../../i18n/I18NContext';
-import { statuses } from '../../../../../common/validator/annotation.validator';
+import { statuses } from '@lodex/common';
 
 interface StatusFilterProps {
     applyValue(...args: unknown[]): unknown;

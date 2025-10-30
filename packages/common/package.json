@@ -1,0 +1,13 @@
+{
+    "private": true,
+    "name": "@lodex/common",
+    "description": "Lodex common utilities",
+    "version": "16.0.5",
+    "main": "./src/index.ts",
+    "dependencies": {
+        "@ezs/transformers": "file:../transformers"
+    },
+    "devDependencies": {
+        "typescript": "^5.9.3"
+    }
+}

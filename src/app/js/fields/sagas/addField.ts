@@ -2,7 +2,7 @@ import { put, takeLatest } from 'redux-saga/effects';
 import { push } from 'redux-first-history';
 
 import { ADD_FIELD } from '../';
-import { SCOPE_DOCUMENT } from '../../../../common/scope';
+import { SCOPE_DOCUMENT } from '@lodex/common';
 
 // @ts-expect-error TS7006
 const getAddFieldRedirectUrl = (scope, subresourceId) => {

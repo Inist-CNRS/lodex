@@ -1,5 +1,5 @@
 import { createAction, handleActions } from 'redux-actions';
-import { PENDING, STARTING, ERROR } from '../../../../common/progressStatus';
+import { ProgressStatus } from '@lodex/common';
 import {
     CLEAR_DATASET,
     CLEAR_DATASET_ERROR,
@@ -21,7 +21,7 @@ export const finishProgress = createAction(FINISH_PROGRESS);
 export const clearProgress = createAction(CLEAR_PROGRESS);
 
 export const defaultState = {
-    status: PENDING,
+    status: ProgressStatus.PENDING,
     progress: undefined,
     target: undefined,
     error: false,
@@ -57,14 +57,14 @@ export default handleActions(
         }),
         [UPLOAD_FILE]: (state) => ({
             ...state,
-            status: STARTING,
+            status: ProgressStatus.STARTING,
             progress: undefined,
             target: undefined,
             error: undefined,
         }),
         [PUBLISH]: (state) => ({
             ...state,
-            status: STARTING,
+            status: ProgressStatus.STARTING,
             progress: undefined,
             target: undefined,
             error: undefined,
@@ -72,35 +72,35 @@ export default handleActions(
         }),
         [CLEAR_DATASET]: (state) => ({
             ...state,
-            status: STARTING,
+            status: ProgressStatus.STARTING,
             progress: undefined,
             target: undefined,
             error: undefined,
         }),
         [CLEAR_DATASET_ERROR]: (state) => ({
             ...state,
-            status: PENDING,
+            status: ProgressStatus.PENDING,
             progress: undefined,
             target: undefined,
             error: undefined,
         }),
         [CLEAR_PUBLISHED_ERROR]: (state) => ({
             ...state,
-            status: PENDING,
+            status: ProgressStatus.PENDING,
             progress: undefined,
             target: undefined,
             error: undefined,
         }),
         [ERROR_PROGRESS]: (state) => ({
             ...state,
-            status: ERROR,
+            status: ProgressStatus.ERROR,
             progress: undefined,
             target: undefined,
             error: true,
         }),
         [CLEAR_PROGRESS]: (state) => ({
             ...state,
-            status: PENDING,
+            status: ProgressStatus.PENDING,
             progress: undefined,
             target: undefined,
             error: false,

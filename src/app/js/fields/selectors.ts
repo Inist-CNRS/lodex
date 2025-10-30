@@ -2,22 +2,18 @@ import get from 'lodash/get';
 import omit from 'lodash/omit';
 import { createSelector } from 'reselect';
 
-import * as overview from '../../../common/overview';
-import { getProps } from '../lib/selectors';
-
 import {
+    Overview,
     getTransformerMetas,
     getTransformersMetas,
-} from '../../../common/transformers';
-
-import {
     SCOPE_COLLECTION,
     SCOPE_DATASET,
     SCOPE_DOCUMENT,
     SCOPE_GRAPHIC,
-} from '../../../common/scope';
+    URI_FIELD_NAME,
+} from '@lodex/common';
+import { getProps } from '../lib/selectors';
 
-import { URI_FIELD_NAME } from '../../../common/uris';
 import { splitAnnotationFormatListOptions } from './annotations';
 import {
     FIELD_ANNOTATION_FORMAT_LIST,
@@ -363,42 +359,42 @@ const getLinkedFields = createSelector(
 
 const getDatasetTitleFieldName = createSelector(
     getDatasetFields,
-    findFieldWithOverviewID(overview.DATASET_TITLE),
+    findFieldWithOverviewID(Overview.DATASET_TITLE),
 );
 
 const getDatasetDescriptionFieldName = createSelector(
     getDatasetFields,
-    findFieldWithOverviewID(overview.DATASET_DESCRIPTION),
+    findFieldWithOverviewID(Overview.DATASET_DESCRIPTION),
 );
 
 const getResourceTitleFieldName = createSelector(
     getCollectionFields,
-    findFieldWithOverviewID(overview.RESOURCE_TITLE),
+    findFieldWithOverviewID(Overview.RESOURCE_TITLE),
 );
 
 const getSubresourceTitleFieldName = createSelector(
     getCollectionFields,
-    findFieldWithOverviewID(overview.SUBRESOURCE_TITLE),
+    findFieldWithOverviewID(Overview.SUBRESOURCE_TITLE),
 );
 
 const getResourceDescriptionFieldName = createSelector(
     getCollectionFields,
-    findFieldWithOverviewID(overview.RESOURCE_DESCRIPTION),
+    findFieldWithOverviewID(Overview.RESOURCE_DESCRIPTION),
 );
 
 const getResourceDetail1FieldName = createSelector(
     getAllListFields,
-    findFieldWithOverviewID(overview.RESOURCE_DETAIL_1),
+    findFieldWithOverviewID(Overview.RESOURCE_DETAIL_1),
 );
 
 const getResourceDetail2FieldName = createSelector(
     getAllListFields,
-    findFieldWithOverviewID(overview.RESOURCE_DETAIL_2),
+    findFieldWithOverviewID(Overview.RESOURCE_DETAIL_2),
 );
 
 const getResourceDetail3FieldName = createSelector(
     getAllListFields,
-    findFieldWithOverviewID(overview.RESOURCE_DETAIL_3),
+    findFieldWithOverviewID(Overview.RESOURCE_DETAIL_3),
 );
 
 const getResourceSortFieldName = createSelector(getAllListFields, (fields) => {

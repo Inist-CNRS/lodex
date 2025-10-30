@@ -14,8 +14,7 @@ import { useHistory } from 'react-router';
 import { RunButton } from './RunButton';
 import { fromPrecomputed } from '../selectors';
 import { launchPrecomputed } from '.';
-import { IN_PROGRESS, FINISHED, ON_HOLD } from '../../../../common/taskStatus';
-import { toast } from '../../../../common/tools/toast';
+import { TaskStatus, toast } from '@lodex/common';
 import { useTranslate } from '../../i18n/I18NContext';
 import { PrecomputedStatus } from './PrecomputedStatus';
 
@@ -49,7 +48,8 @@ export const PrecomputedList = ({
         }
         onLaunchPrecomputed({
             id: params._id,
-            action: params.status === FINISHED ? 'relaunch' : 'launch',
+            action:
+                params.status === TaskStatus.FINISHED ? 'relaunch' : 'launch',
         });
     };
 
@@ -161,8 +161,8 @@ const mapStateToProps = (state) => ({
         .precomputed(state)
         .find(
             (precomputedData) =>
-                precomputedData.status === IN_PROGRESS ||
-                precomputedData.status === ON_HOLD,
+                precomputedData.status === TaskStatus.IN_PROGRESS ||
+                precomputedData.status === TaskStatus.ON_HOLD,
         ),
 });
 

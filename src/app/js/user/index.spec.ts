@@ -1,5 +1,5 @@
 import type { Action } from 'redux-actions';
-import { ADMIN_ROLE, USER_ROLE } from '../../../common/tools/tenantTools';
+import { ADMIN_ROLE, USER_ROLE } from '@lodex/common';
 import reducer, {
     defaultState,
     getToken,
