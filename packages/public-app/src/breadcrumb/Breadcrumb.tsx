@@ -6,7 +6,7 @@ import { withRouter } from 'react-router';
 
 import { fromBreadcrumb } from '../selectors';
 import BreadcrumbItem from './BreadcrumbItem';
-import stylesToClassname from '../../../../src/app/js/lib/stylesToClassName';
+import stylesToClassname from '@lodex/frontend-common/utils/stylesToClassName';
 import Container from '@mui/material/Container';
 
 const styles = stylesToClassname(

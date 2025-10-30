@@ -1,7 +1,7 @@
 import { Button } from '@mui/material';
 import ArrowUp from '@mui/icons-material/ArrowUpward';
 import withHandlers from 'recompose/withHandlers';
-import { isLongText, getShortText } from '../../../src/app/js/lib/longTexts';
+import { isLongText, getShortText } from '../utils/longTexts';
 
 const styles = {
     sortButton: {

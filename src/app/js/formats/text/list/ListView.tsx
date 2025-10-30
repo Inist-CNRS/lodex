@@ -1,6 +1,6 @@
 import classnames from 'classnames';
 
-import stylesToClassname from '../../../lib/stylesToClassName';
+import stylesToClassname from '@lodex/frontend-common/utils/stylesToClassName';
 import { type Field } from '../../../propTypes';
 import { getViewComponent } from '../../index';
 

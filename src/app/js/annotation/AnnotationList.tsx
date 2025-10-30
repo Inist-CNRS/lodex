@@ -34,7 +34,7 @@ import {
     MODE_MINE,
     type Mode,
 } from './HistoryDrawer.const';
-import { sanitize } from '../lib/sanitize';
+import { sanitize } from '@lodex/frontend-common/utils/sanitize';
 
 // @ts-expect-error TS7006
 export const getAnnotationSummaryValue = (annotation) => {

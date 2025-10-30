@@ -6,7 +6,10 @@ import {
     isURL,
 } from '@lodex/common';
 import Link from '@lodex/frontend-common/components/Link';
-import { getShortText, isLongText } from '../../../../lib/longTexts';
+import {
+    getShortText,
+    isLongText,
+} from '@lodex/frontend-common/utils/longTexts';
 import { type Field } from '../../../../propTypes';
 
 const styles = {

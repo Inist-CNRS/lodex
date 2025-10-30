@@ -2,7 +2,7 @@ import React, { useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet';
 
 import AppBar from './Appbar/AppBar';
-import getTitle from '../../../src/app/js/lib/getTitle';
+import getTitle from '@lodex/frontend-common/utils/getTitle';
 import { Progress } from './progress/Progress';
 import { SidebarContext } from './Sidebar/SidebarContext';
 import Sidebar from './Sidebar/Sidebar';

@@ -3,7 +3,7 @@ import { call, put, select } from 'redux-saga/effects';
 import { fromUser } from '../../../../../src/app/js/sharedSelectors';
 import { fromUpload, fromPublication } from '../../selectors';
 import { uploadSuccess, uploadError } from '../index';
-import { loadDatasetFile } from '../../../../../src/app/js/lib/loadFile';
+import { loadDatasetFile } from '@lodex/frontend-common/utils/loadFile';
 import { handleFinishUpload, handleUploadFile } from './uploadFile';
 import { handleUploadUrl } from './uploadUrl';
 import { handleUploadText } from './uploadText';

@@ -5,7 +5,7 @@ import Link from '@lodex/frontend-common/components/Link';
 
 import { getMoreDocumentData } from '../istexSummary/getIstexData';
 import ButtonWithStatus from '@lodex/frontend-common/components/ButtonWithStatus';
-import stylesToClassname from '../../../lib/stylesToClassName';
+import stylesToClassname from '@lodex/frontend-common/utils/stylesToClassName';
 import { HOST_TITLE_RAW } from '../istexSummary/constants';
 import { ISTEX_SITE_URL } from '@lodex/common';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';

@@ -6,7 +6,7 @@ import { applyFilter as applyFilterAction } from './index';
 import SearchBar from '../searchbar/SearchBar';
 import ToggleFacetsButton from '../searchbar/ToggleFacetsButton';
 import useSearchBar from '../searchbar/useSearchBar';
-import stylesToClassname from '../../../../src/app/js/lib/stylesToClassName';
+import stylesToClassname from '@lodex/frontend-common/utils/stylesToClassName';
 import { fromFields } from '../../../../src/app/js/sharedSelectors';
 import { fromDataset } from '../selectors';
 

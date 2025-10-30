@@ -8,11 +8,11 @@ import {
     CUSTOM_ISTEX_QUERY,
     type SearchedField,
 } from '../istexSummary/constants';
-import composeRenderProps from '../../../lib/composeRenderProps';
+import composeRenderProps from '@lodex/frontend-common/utils/composeRenderProps';
 import IstexCitationList from './IstexCitationList';
 import JournalFold from './JournalFold';
 import IstexItem, { type IstexItemComponentProps } from '../istex/IstexItem';
-import stylesToClassname from '../../../lib/stylesToClassName';
+import stylesToClassname from '@lodex/frontend-common/utils/stylesToClassName';
 import { ISTEX_SITE_URL } from '@lodex/common';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 

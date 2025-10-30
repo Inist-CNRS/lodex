@@ -5,7 +5,7 @@ import { fromFields } from '../../../../src/app/js/sharedSelectors';
 import { getIconComponent } from '../../../../src/app/js/formats';
 import MixedChartIcon from './MixedChartIcon';
 import Link from '@lodex/frontend-common/components/Link';
-import stylesToClassname from '../../../../src/app/js/lib/stylesToClassName';
+import stylesToClassname from '@lodex/frontend-common/utils/stylesToClassName';
 import { fromDisplayConfig, fromI18n } from '../selectors';
 
 const styles = stylesToClassname(

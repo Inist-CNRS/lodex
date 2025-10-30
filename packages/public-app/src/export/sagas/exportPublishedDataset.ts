@@ -5,9 +5,9 @@ import {
     exportPublishedDatasetError,
 } from '../index';
 import { fromSearch } from '../../selectors';
-import getQueryString from '../../../../../src/app/js/lib/getQueryString';
+import getQueryString from '@lodex/frontend-common/utils/getQueryString';
 import fetchSaga from '@lodex/frontend-common/fetch/fetchSaga';
-import downloadFile from '../../../../../src/app/js/lib/downloadFile';
+import downloadFile from '@lodex/frontend-common/utils/downloadFile';
 import { fromUser } from '../../../../../src/app/js/sharedSelectors';
 
 // @ts-expect-error TS7006

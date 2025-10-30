@@ -2,7 +2,7 @@ import classnames from 'classnames';
 import { TableCell } from '@mui/material';
 
 import Format from '../Format';
-import getFieldClassName from '../../../../src/app/js/lib/getFieldClassName';
+import getFieldClassName from '@lodex/frontend-common/utils/getFieldClassName';
 
 interface DatasetColumnProps {
     column: unknown;

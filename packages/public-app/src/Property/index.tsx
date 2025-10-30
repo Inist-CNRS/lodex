@@ -12,11 +12,11 @@ import {
     SCOPE_DOCUMENT,
     SCOPE_GRAPHIC,
 } from '@lodex/common';
-import { shouldDisplayField } from '../../../../src/app/js/fields/shouldDisplayField';
+import { shouldDisplayField } from './shouldDisplayField';
 import { getPredicate } from '../../../../src/app/js/formats';
-import addSchemePrefix from '../../../../src/app/js/lib/addSchemePrefix';
+import addSchemePrefix from './addSchemePrefix';
 import Link from '@lodex/frontend-common/components/Link';
-import getFieldClassName from '../../../../src/app/js/lib/getFieldClassName';
+import getFieldClassName from '@lodex/frontend-common/utils/getFieldClassName';
 import { fromUser } from '../../../../src/app/js/sharedSelectors';
 import Format from '../Format';
 import GraphLink from '../graph/GraphLink';

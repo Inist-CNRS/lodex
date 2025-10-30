@@ -4,9 +4,9 @@ import compose from 'recompose/compose';
 import { translate } from '@lodex/frontend-common/i18n/I18NContext';
 import get from 'lodash/get';
 
-import { getPercentValue } from '../../../lib/getPercentage';
-import { getShortText } from '../../../lib/longTexts';
-import stylesToClassname from '../../../lib/stylesToClassName';
+import { getPercentValue } from '@lodex/frontend-common/utils/getPercentage';
+import { getShortText } from '@lodex/frontend-common/utils/longTexts';
+import stylesToClassname from '@lodex/frontend-common/utils/stylesToClassName';
 import injectData from '../../injectData';
 import ParallelCoordinatesChart from './ParallelCoordinatesChart';
 

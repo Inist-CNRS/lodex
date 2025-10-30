@@ -1,5 +1,5 @@
 import { dumpDatasetError, dumpDatasetSuccess } from './index';
-import streamFile from '../../../../src/app/js/lib/streamFile';
+import streamFile from '@lodex/frontend-common/utils/streamFile';
 import fetchSaga from '@lodex/frontend-common/fetch/fetchSaga';
 import { fromUser } from '../../../../src/app/js/sharedSelectors';
 import { handleDumpDatasetRequest } from './sagas';

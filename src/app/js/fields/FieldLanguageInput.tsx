@@ -1,7 +1,7 @@
 import { MenuItem } from '@mui/material';
 
 import { languages } from '@lodex/common';
-import getFieldClassName from '../lib/getFieldClassName';
+import getFieldClassName from '@lodex/frontend-common/utils/getFieldClassName.ts';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 import { TextField } from '../../../../packages/frontend-common/form-fields/TextField.tsx';
 import type { ComponentProps } from 'react';

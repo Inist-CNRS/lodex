@@ -8,7 +8,7 @@ import {
     SORT_YEAR_DESC,
     CUSTOM_ISTEX_QUERY,
 } from './constants';
-import composeRenderProps from '../../../lib/composeRenderProps';
+import composeRenderProps from '@lodex/frontend-common/utils/composeRenderProps';
 import IstexList from './IstexList';
 import IssueFold from './IssueFold';
 import VolumeFold from './VolumeFold';
@@ -17,7 +17,7 @@ import IstexItem from '../istex/IstexItem';
 import DecadeFold from './DecadeFold';
 import getDecadeFromData from './getDecadeFromData';
 import EmbedButton from './EmbedButton';
-import stylesToClassname from '../../../lib/stylesToClassName';
+import stylesToClassname from '@lodex/frontend-common/utils/stylesToClassName';
 
 interface IstexDocumentProps {
     item: {

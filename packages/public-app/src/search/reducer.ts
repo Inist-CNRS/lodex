@@ -1,6 +1,6 @@
 import { combineActions, createAction, handleActions } from 'redux-actions';
 
-import { createGlobalSelectors } from '../../../../src/app/js/lib/selectors';
+import { createGlobalSelectors } from '@lodex/frontend-common/utils/selectors';
 import createFacetReducer from '../facet';
 import facetSelectors from '../facet/selectors';
 

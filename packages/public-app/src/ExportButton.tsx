@@ -13,7 +13,7 @@ import {
     fromSearch,
 } from './selectors';
 import ExportItem from './export/ExportMenuItem';
-import stylesToClassname from '../../../src/app/js/lib/stylesToClassName';
+import stylesToClassname from '@lodex/frontend-common/utils/stylesToClassName';
 
 import { exportPublishedDataset as exportPublishedDatasetAction } from './export';
 

@@ -1,6 +1,6 @@
 import { all, call, put, select } from 'redux-saga/effects';
 
-import getDocumentTransformer from '../../../../../src/app/js/lib/getDocumentTransformer';
+import getDocumentTransformer from '@lodex/frontend-common/utils/getDocumentTransformer';
 import {
     fromFields,
     fromUser,

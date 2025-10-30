@@ -1,5 +1,5 @@
 import { createSelector } from 'reselect';
-import type { State } from '../../../../packages/admin-app/src/reducers';
+import type { State } from '../../admin-app/src/reducers';
 
 // @ts-expect-error TS7006
 export const getProps = (state, props) => props;

@@ -2,7 +2,7 @@ import { call, put, select, takeEvery } from 'redux-saga/effects';
 
 import { fromUser } from '../../../../../src/app/js/sharedSelectors';
 import { fromUpload, fromPublication } from '../../selectors';
-import { loadDatasetFile } from '../../../../../src/app/js/lib/loadFile';
+import { loadDatasetFile } from '@lodex/frontend-common/utils/loadFile';
 import { UPLOAD_FILE, uploadError, uploadSuccess } from '../index';
 import { preventUnload, allowUnload } from './unload';
 import { FINISH_PROGRESS } from '../../progress/reducer';

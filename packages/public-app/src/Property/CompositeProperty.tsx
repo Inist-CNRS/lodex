@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import camelCase from 'lodash/camelCase';
 import { fromFields } from '../../../../src/app/js/sharedSelectors';
 import Property from './index';
-import getFieldClassName from '../../../../src/app/js/lib/getFieldClassName';
+import getFieldClassName from '@lodex/frontend-common/utils/getFieldClassName';
 
 const styles = {
     container: {

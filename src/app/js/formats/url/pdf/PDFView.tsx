@@ -1,7 +1,7 @@
 import classnames from 'classnames';
 import { type Field } from '../../../propTypes';
 
-import stylesToClassname from '../../../lib/stylesToClassName';
+import stylesToClassname from '@lodex/frontend-common/utils/stylesToClassName';
 
 const styles = stylesToClassname(
     {

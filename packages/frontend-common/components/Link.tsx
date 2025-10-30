@@ -1,7 +1,7 @@
 import { type CSSProperties, type ReactNode } from 'react';
 import { Link as RouterLink, NavLink } from 'react-router-dom';
 import classnames from 'classnames';
-import stylesToClassname from '../../../src/app/js/lib/stylesToClassName';
+import stylesToClassname from '../utils/stylesToClassName';
 
 const styles = stylesToClassname(
     {

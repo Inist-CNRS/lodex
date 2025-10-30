@@ -1,6 +1,9 @@
 import pure from 'recompose/pure';
 import { TableCell, type SxProps } from '@mui/material';
-import { isLongText, getShortText } from '../../../../src/app/js/lib/longTexts';
+import {
+    isLongText,
+    getShortText,
+} from '@lodex/frontend-common/utils/longTexts';
 
 interface ParsingExcerptHeaderColumnComponentProps {
     column: string;

@@ -3,7 +3,7 @@ import { useCallback, useMemo } from 'react';
 
 import { toast } from '@lodex/common';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
-import { loadFile } from '../../../../../src/app/js/lib/loadFile';
+import { loadFile } from '@lodex/frontend-common/utils/loadFile';
 import { getUserSessionStorageInfo } from '../../api/tools';
 import { useDownloader } from '../../commons/useDownloader';
 

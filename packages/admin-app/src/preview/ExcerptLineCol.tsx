@@ -4,8 +4,11 @@ import { TableCell } from '@mui/material';
 import { connect } from 'react-redux';
 
 import { fromFields } from '../../../../src/app/js/sharedSelectors';
-import { isLongText, getShortText } from '../../../../src/app/js/lib/longTexts';
-import getFieldClassName from '../../../../src/app/js/lib/getFieldClassName';
+import {
+    isLongText,
+    getShortText,
+} from '@lodex/frontend-common/utils/longTexts';
+import getFieldClassName from '@lodex/frontend-common/utils/getFieldClassName';
 import { parseValue } from '@lodex/common';
 import { translate } from '@lodex/frontend-common/i18n/I18NContext';
 

@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import { translate } from '@lodex/frontend-common/i18n/I18NContext';
 
-import stylesToClassname from '../../../../src/app/js/lib/stylesToClassName';
+import stylesToClassname from '@lodex/frontend-common/utils/stylesToClassName';
 import { fromFields } from '../../../../src/app/js/sharedSelectors';
 import { facetActions as datasetActions } from '../dataset';
 import { facetActions as searchActions } from '../search/reducer';

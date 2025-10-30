@@ -1,5 +1,5 @@
 import React from 'react';
-import merge from '../lib/merge';
+import merge from '@lodex/frontend-common/utils/merge';
 import {
     Box,
     Button,
