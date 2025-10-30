@@ -8,7 +8,9 @@ import { useTranslate } from '../../i18n/I18NContext';
 import { red, yellow, green, grey } from '@mui/material/colors';
 import classnames from 'classnames';
 
-import { propositionStatuses, type PropositionStatusType } from '@lodex/common';
+import propositionStatus, {
+    type PropositionStatus,
+} from '../../../../common/propositionStatus';
 import { fromResource } from '../selectors';
 import { fromUser } from '../../sharedSelectors';
 
@@ -48,10 +50,10 @@ const styles = {
 
 interface ModerateButtonComponentProps {
     contributor?: string;
-    status?: PropositionStatusType;
+    status?: PropositionStatus;
     changeStatus(
-        status: PropositionStatusType,
-        availableStatus: PropositionStatusType,
+        status: PropositionStatus,
+        availableStatus: PropositionStatus,
     ): void;
     isAdmin: boolean;
 }
@@ -68,7 +70,7 @@ export const ModerateButtonComponent = ({
     }
     return (
         <div className="moderate">
-            {propositionStatuses.map((availableStatus) => (
+            {propositionStatus.map((availableStatus) => (
                 // @ts-expect-error TS2769
                 <IconButton
                     className={classnames(availableStatus, {

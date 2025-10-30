@@ -6,12 +6,10 @@ import memoize from 'lodash/memoize';
 import { useDispatch, useSelector } from 'react-redux';
 
 import {
-    extractTenantFromUrl,
-    PropositionStatus,
     SCOPE_DATASET,
     SCOPE_DOCUMENT,
     SCOPE_GRAPHIC,
-} from '@lodex/common';
+} from '../../../../common/scope';
 import { shouldDisplayField } from '../../fields/shouldDisplayField';
 import { getPredicate } from '../../formats';
 import addSchemePrefix from '../../lib/addSchemePrefix';
@@ -26,8 +24,12 @@ import CompositeProperty from './CompositeProperty';
 import ModerateButton from './ModerateButton';
 import PropertyContributor from './PropertyContributor';
 import PropertyLinkedFields from './PropertyLinkedFields';
+
+import { REJECTED } from '../../../../common/propositionStatus';
+
 import { Settings } from '@mui/icons-material';
 import { Box, IconButton } from '@mui/material';
+import { extractTenantFromUrl } from '../../../../common/tools/tenantTools';
 import { CreateAnnotationButton } from '../../annotation/CreateAnnotationButton';
 import { useCanAnnotate } from '../../annotation/useCanAnnotate';
 import { useMemo } from 'react';
@@ -56,8 +58,7 @@ const styles = {
         flexGrow: 2,
         fontWeight: 'bold',
         fontSize: isSub === true ? '1rem' : '1.25rem',
-        textDecoration:
-            status === PropositionStatus.REJECTED ? 'line-through' : 'none',
+        textDecoration: status === REJECTED ? 'line-through' : 'none',
         fontFamily: 'Quicksand, sans-serif',
         display: 'flex',
         justifyContent: 'flex-start',

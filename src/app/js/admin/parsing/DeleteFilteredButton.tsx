@@ -7,7 +7,7 @@ import {
     useGridApiContext,
     useGridSelector,
 } from '@mui/x-data-grid';
-import { toast } from '@lodex/common';
+import { toast } from '../../../../common/tools/toast';
 import { useTranslate } from '../../i18n/I18NContext';
 import { ConfirmPopup } from '../../lib/components/ConfirmPopup';
 import datasetApi from '../api/dataset';

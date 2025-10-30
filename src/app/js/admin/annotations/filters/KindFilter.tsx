@@ -1,5 +1,6 @@
 import { FormControl, InputLabel, NativeSelect } from '@mui/material';
-import { kinds } from '@lodex/common';
+
+import { kinds } from '../../../../../common/validator/annotation.validator';
 import { useTranslate } from '../../../i18n/I18NContext';
 
 interface KindFilterProps {

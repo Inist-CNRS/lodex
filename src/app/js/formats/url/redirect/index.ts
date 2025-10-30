@@ -1,6 +1,6 @@
 import Component from './RedirectView';
 import DefaultFormat from '../../utils/components/default-format';
-import { isURL } from '@lodex/common';
+import { isURL } from '../../../../../common/uris';
 
 export default {
     ...DefaultFormat,

@@ -87,7 +87,7 @@ export const createFunction = () =>
                 $match: postFilter,
             },
         ];
-        const cursor = collection.aggregate(
+        let cursor = collection.aggregate(
             aggregatePipeline,
             fields.length > 0
                 ? { ...projection, allowDiskUse: true }

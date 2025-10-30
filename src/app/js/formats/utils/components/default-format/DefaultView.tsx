@@ -1,24 +1,24 @@
 import { Typography } from '@mui/material';
 import {
-    PropositionStatus,
-    canonicalURL,
-    isLocalURL,
-    isURL,
-} from '@lodex/common';
+    PROPOSED,
+    REJECTED,
+    VALIDATED,
+} from '../../../../../../common/propositionStatus';
+import { canonicalURL, isLocalURL, isURL } from '../../../../../../common/uris';
 import Link from '../../../../lib/components/Link';
 import { getShortText, isLongText } from '../../../../lib/longTexts';
 import { type Field } from '../../../../propTypes';
 
 const styles = {
-    [PropositionStatus.REJECTED]: {
+    [REJECTED]: {
         fontSize: '1rem',
         textDecoration: 'line-through',
     },
-    [PropositionStatus.PROPOSED]: {
+    [PROPOSED]: {
         fontSize: '1rem',
         textDecoration: 'none',
     },
-    [PropositionStatus.VALIDATED]: {
+    [VALIDATED]: {
         fontSize: '1rem',
         textDecoration: 'none',
     },

@@ -6,7 +6,7 @@ import AddBoxIcon from '@mui/icons-material/AddBox';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 
-import { getHost } from '@lodex/common';
+import { getHost } from '../../../common/uris';
 import CreateTenantDialog from './CreateTenantDialog';
 import DeleteTenantDialog from './DeleteTenantDialog';
 import UpdateTenantDialog from './UpdateTenantDialog';

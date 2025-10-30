@@ -2,7 +2,7 @@ import classnames from 'classnames';
 import { TableCell, Button } from '@mui/material';
 import RightIcon from '@mui/icons-material/KeyboardArrowRight';
 
-import { getResourceUri } from '@lodex/common';
+import { getResourceUri } from '../../../../common/uris';
 import Link from '../../lib/components/Link';
 
 interface UriColumnProps {

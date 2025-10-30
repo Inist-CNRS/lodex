@@ -10,7 +10,7 @@ export default function useFieldNames(this: any, data: any, feed: any) {
             // @ts-expect-error TS(7006): Parameter 'prev' implicitly has an 'any' type.
             (prev, field) => ({
                 ...prev,
-                [field.label || field.name]: data[field.name],
+                [field.label || field.name]: data[field.name]
             }),
             {},
         );

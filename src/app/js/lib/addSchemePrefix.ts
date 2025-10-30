@@ -1,4 +1,4 @@
-import { prefixes } from '@lodex/common';
+import prefixes from '../../../common/prefixes';
 
 // @ts-expect-error TS7006
 export default (input) => {

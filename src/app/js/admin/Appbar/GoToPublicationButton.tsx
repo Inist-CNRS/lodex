@@ -1,6 +1,6 @@
 import { Box, IconButton, Tooltip } from '@mui/material';
 import VisibilityIcon from '@mui/icons-material/Visibility';
-import { DEFAULT_TENANT } from '@lodex/common';
+import { DEFAULT_TENANT } from '../../../../common/tools/tenantTools';
 import { useTranslate } from '../../i18n/I18NContext';
 
 const GoToPublicationButtonComponent = () => {

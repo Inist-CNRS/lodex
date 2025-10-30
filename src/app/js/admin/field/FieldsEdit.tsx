@@ -8,7 +8,7 @@ import Statistics from '../Statistics';
 import { fromParsing } from '../selectors';
 import { FieldGrid } from '../../fields/FieldGrid';
 import { hideAddColumns } from '../parsing';
-import { SCOPE_DATASET, SCOPE_DOCUMENT } from '@lodex/common';
+import { SCOPE_DATASET, SCOPE_DOCUMENT } from '../../../../common/scope';
 import DatasetOverviewSelect from '../../fields/DatasetOverviewSelect';
 import SubresourceOverviewSelect from '../../fields/SubresourceOverviewSelect';
 import FieldAddDropdownButtonConnected from './FieldAddDropdownButton';

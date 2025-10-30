@@ -2,7 +2,7 @@ import omit from 'lodash/omit';
 import { createAction, handleActions } from 'redux-actions';
 import { createSelector } from 'reselect';
 
-import { ADMIN_ROLE } from '@lodex/common';
+import { ADMIN_ROLE } from '../../../common/tools/tenantTools';
 import getQueryString from '../lib/getQueryString';
 
 export const LOGIN = 'LOGIN';

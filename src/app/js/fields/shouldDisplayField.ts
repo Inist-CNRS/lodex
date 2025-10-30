@@ -1,6 +1,7 @@
 import get from 'lodash/get';
 
-import { isEmpty, PropositionStatus } from '@lodex/common';
+import isEmpty from '../../../common/lib/isEmpty';
+import { REJECTED } from '../../../common/propositionStatus';
 
 export const shouldDisplayField = (
     resource: Record<string, unknown>,
@@ -25,7 +26,7 @@ export const shouldDisplayField = (
         return true;
     }
 
-    if (fieldStatus === PropositionStatus.REJECTED) {
+    if (fieldStatus === REJECTED) {
         return false;
     }
 

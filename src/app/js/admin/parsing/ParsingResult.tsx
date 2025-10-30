@@ -13,7 +13,7 @@ import {
 } from '@mui/x-data-grid';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { connect } from 'react-redux';
-import { TaskStatus } from '@lodex/common';
+import { IN_PROGRESS } from '../../../../common/taskStatus';
 
 import { AddBox as AddBoxIcon } from '@mui/icons-material';
 import {
@@ -178,7 +178,7 @@ export const ParsingResultComponent = (props: ParsingResultComponentProps) => {
                                 // @ts-expect-error TS2339
                                 enrichment.name === key &&
                                 // @ts-expect-error TS2339
-                                enrichment.status === TaskStatus.IN_PROGRESS,
+                                enrichment.status === IN_PROGRESS,
                         );
                     const errorCount = isEnrichment
                         ? // @ts-expect-error TS18048

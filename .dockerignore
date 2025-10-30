@@ -17,4 +17,5 @@
 !packages
 !typings.json
 !docker-entrypoint.sh
+!workers*
 !vite.config.ts

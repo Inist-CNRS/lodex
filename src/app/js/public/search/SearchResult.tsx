@@ -2,7 +2,7 @@ import { memo, useState, type CSSProperties } from 'react';
 import classnames from 'classnames';
 
 import Link from '../../lib/components/Link';
-import { isURL, getResourceUri } from '@lodex/common';
+import { isURL, getResourceUri } from '../../../../common/uris';
 import stylesToClassname from '../../lib/stylesToClassName';
 import { Box } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';

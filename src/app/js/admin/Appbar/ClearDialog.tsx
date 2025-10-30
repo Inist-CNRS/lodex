@@ -17,11 +17,12 @@ import {
 
 import { fromClear, fromPublication } from '../selectors';
 import fieldApi from '../api/field';
-import { toast, extractTenantFromUrl } from '@lodex/common';
+import { toast } from '../../../../common/tools/toast';
 import { loadField } from '../../fields';
 import { loadPublication } from '../publication';
 import CancelButton from '../../lib/components/CancelButton';
 import { loadSubresources } from '../subresource';
+import { extractTenantFromUrl } from '../../../../common/tools/tenantTools';
 import { useTranslate } from '../../i18n/I18NContext';
 
 const TRANSLATION_KEY = new Map([
