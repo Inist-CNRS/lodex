@@ -2,7 +2,7 @@ import { race, call, take, put, select } from 'redux-saga/effects';
 import { replace } from 'redux-first-history';
 
 import fetchSaga from './fetchSaga';
-import fetch from '../fetch';
+import fetch from './reducer';
 import { logout } from '../../user';
 import { getCurrentQuery } from '../../sharedSelectors';
 
