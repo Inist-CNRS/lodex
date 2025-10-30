@@ -9,7 +9,7 @@ import {
     Box,
 } from '@mui/material';
 
-import CancelButton from './CancelButton';
+import CancelButton from '../../../src/app/js/lib/components/CancelButton';
 import { translate } from '@lodex/frontend-common/i18n/I18NContext';
 
 const dialogStyle = {
