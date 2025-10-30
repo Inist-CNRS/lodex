@@ -18,7 +18,7 @@ import Loading from '../../../../src/app/js/lib/components/Loading';
 import { preLoadDatasetPage, changePage } from './index';
 import { fromDataset } from '../selectors';
 import { fromFields } from '../../../../src/app/js/sharedSelectors';
-import { useTranslate } from '../../../../src/app/js/i18n/I18NContext';
+import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 
 const styles = {
     table: {

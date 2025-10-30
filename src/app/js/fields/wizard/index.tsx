@@ -24,7 +24,7 @@ import { TabPanel } from './TabPanel';
 import TabSemantics from './TabSemantics';
 import ValuePreviewConnected from './ValuePreview';
 import { FormProvider, useForm } from 'react-hook-form';
-import { useTranslate } from '../../i18n/I18NContext';
+import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 
 const ACTIONS_BAR_HEIGHT = 70;
 const PREVIEW_WIDTH = 320;

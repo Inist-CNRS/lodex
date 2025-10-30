@@ -18,7 +18,7 @@ import ExcerptRemoveColumn from './ExcerptRemoveColumn';
 import ExcerptLine from './ExcerptLine';
 import getFieldClassName from '../../../../src/app/js/lib/getFieldClassName';
 import { URI_FIELD_NAME } from '@lodex/common';
-import { useTranslate } from '../../../../src/app/js/i18n/I18NContext';
+import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 
 const styles = {
     header: {

@@ -27,7 +27,7 @@ import withInitialData from '../withInitialData';
 import { usePatchFieldOverview } from './usePatchFieldOverview';
 import { usePatchSortField } from './usePatchSortField';
 import { usePatchSortOrder } from './usePatchSortOrder';
-import { useTranslate } from '../../../../src/app/js/i18n/I18NContext';
+import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 
 // @ts-expect-error TS7006
 const getSearchableFields = (fields) =>

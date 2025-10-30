@@ -2,7 +2,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { setTimeout } from 'node:timers/promises';
 
 import { render } from '../../../test-utils';
-import { TestI18N } from '../i18n/I18NContext';
+import { TestI18N } from '@lodex/frontend-common/i18n/I18NContext';
 import {
     CreateAnnotationModal,
     type CreateAnnotationModalProps,

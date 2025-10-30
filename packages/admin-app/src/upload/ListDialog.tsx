@@ -12,7 +12,7 @@ import {
 } from '@mui/material';
 import FilterIcon from '@mui/icons-material/FilterList';
 
-import { useTranslate } from '../../../../src/app/js/i18n/I18NContext';
+import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 
 const styles = {
     item: {

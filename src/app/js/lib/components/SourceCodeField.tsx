@@ -5,7 +5,7 @@ import 'ace-builds/src-noconflict/mode-ini';
 import 'ace-builds/src-noconflict/mode-json';
 import 'ace-builds/src-noconflict/mode-ejs';
 import 'ace-builds/src-noconflict/theme-monokai';
-import { useTranslate } from '../../i18n/I18NContext';
+import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 
 type SourceCodeFieldProps = {
     input: {

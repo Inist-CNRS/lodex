@@ -5,7 +5,7 @@ import compose from 'recompose/compose';
 import { Button, Dialog, DialogActions, DialogTitle } from '@mui/material';
 import { removeField } from '../../../../src/app/js/fields';
 import CancelButton from '../../../../src/app/js/lib/components/CancelButton';
-import { useTranslate } from '../../../../src/app/js/i18n/I18NContext';
+import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 
 interface RemoveButtonComponentProps {
     onRemove(...args: unknown[]): unknown;

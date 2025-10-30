@@ -2,7 +2,7 @@ import FetchFold from './FetchFold';
 import { getDocumentData } from './getIstexData';
 import { type SearchedField } from './constants';
 import type { ReactNode } from 'react';
-import { useTranslate } from '../../../i18n/I18NContext';
+import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 
 interface IssueFoldProps {
     item: {

@@ -4,7 +4,7 @@ import { Button, CircularProgress, styled } from '@mui/material';
 import { importHiddenResources } from '../api/hiddenResource';
 import { toast } from '@lodex/common';
 import { useLocation, Redirect } from 'react-router-dom';
-import { useTranslate } from '../../../../src/app/js/i18n/I18NContext';
+import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 
 const VisuallyHiddenInput = styled('input')({
     clip: 'rect(0 0 0 0)',

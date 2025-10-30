@@ -4,7 +4,7 @@ import {
     FormatChartParamsFieldSet,
 } from '../../utils/components/field-set/FormatFieldSets';
 import FormatGroupedFieldSet from '../../utils/components/field-set/FormatGroupedFieldSet';
-import { useTranslate } from '../../../i18n/I18NContext';
+import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 import { TextField } from '@mui/material';
 import { useCallback, type ChangeEvent } from 'react';
 

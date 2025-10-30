@@ -11,7 +11,7 @@ import { compose } from 'recompose';
 import { bindActionCreators } from 'redux';
 
 import { exportFields } from '@lodex/frontend-common/export-fields';
-import { useTranslate } from '../../../../../src/app/js/i18n/I18NContext';
+import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 import { fromFields } from '../../../../../src/app/js/sharedSelectors';
 import { importFields } from '../../import';
 import { fromParsing, fromPublication } from '../../selectors';

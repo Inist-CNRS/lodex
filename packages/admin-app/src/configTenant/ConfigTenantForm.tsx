@@ -16,7 +16,7 @@ import { connect } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { z } from 'zod';
 import { loadConfigTenant } from './index';
-import { useTranslate } from '../../../../src/app/js/i18n/I18NContext';
+import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 import AdminOnlyAlert from '../../../../src/app/js/lib/components/AdminOnlyAlert';
 import CancelButton from '../../../../src/app/js/lib/components/CancelButton';
 import Loading from '../../../../src/app/js/lib/components/Loading';

@@ -5,7 +5,7 @@ import withInitialData from '../withInitialData';
 import redirectToDashboardIfNoField from '../redirectToDashboardIfNoField';
 import ExportButton from './ExportButton';
 import ImportButton from './ImportButton';
-import { useTranslate } from '../../../../src/app/js/i18n/I18NContext';
+import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 
 export const RemovedResourcePageComponent = () => {
     const { translate } = useTranslate();

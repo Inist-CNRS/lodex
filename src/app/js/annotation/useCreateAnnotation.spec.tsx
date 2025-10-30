@@ -6,7 +6,7 @@ import { Provider } from 'react-redux';
 import fetch from '../lib/fetch';
 import { useCreateAnnotation } from './useCreateAnnotation';
 import { AnnotationStorageProvider } from './annotationStorage';
-import { TestI18N } from '../i18n/I18NContext';
+import { TestI18N } from '@lodex/frontend-common/i18n/I18NContext';
 import configureStore from '../configureStore';
 import reducers from '../../../../packages/public-app/src/reducers';
 import { createMemoryHistory } from 'history';

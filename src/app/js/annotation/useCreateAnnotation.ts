@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useCallback, useMemo } from 'react';
 import { toast } from '@lodex/common';
 import { getUserSessionStorageInfo } from '../../../../packages/admin-app/src/api/tools';
-import { useTranslate } from '../i18n/I18NContext';
+import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 import fetch from '../lib/fetch';
 import { getRequest } from '../user';
 import { useSaveAnnotationId } from './annotationStorage';

@@ -1,7 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
 import { toast } from '@lodex/common';
 import fieldApi from '../api/field';
-import { useTranslate } from '../../../../src/app/js/i18n/I18NContext';
+import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 import { useDispatch } from 'react-redux';
 import { changeSortOrder } from '../../../../src/app/js/fields';
 

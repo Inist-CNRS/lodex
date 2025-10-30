@@ -3,7 +3,7 @@ import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import { Box, TextField } from '@mui/material';
 import { fromFields } from '../../sharedSelectors';
-import { translate } from '../../i18n/I18NContext';
+import { translate } from '@lodex/frontend-common/i18n/I18NContext';
 
 interface TransformerArgsProps {
     availableArgs?: {

@@ -1,6 +1,6 @@
 import { fireEvent, render } from '@testing-library/react';
 
-import { TestI18N } from '../i18n/I18NContext';
+import { TestI18N } from '@lodex/frontend-common/i18n/I18NContext';
 import { AUTHOR_STEP, COMMENT_STEP, TARGET_STEP, VALUE_STEP } from './steps';
 import { NextButton } from './NextButton';
 

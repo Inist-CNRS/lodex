@@ -18,7 +18,7 @@ import stylesToClassname from '../../../src/app/js/lib/stylesToClassName';
 import { exportPublishedDataset as exportPublishedDatasetAction } from './export';
 
 import PDFApi from './api/exportPDF';
-import { translate } from '../../../src/app/js/i18n/I18NContext';
+import { translate } from '@lodex/frontend-common/i18n/I18NContext';
 
 const styles = stylesToClassname(
     {

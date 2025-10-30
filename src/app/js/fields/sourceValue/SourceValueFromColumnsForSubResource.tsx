@@ -3,7 +3,7 @@ import { Autocomplete, Box, TextField } from '@mui/material';
 import { useSelector } from 'react-redux';
 import { fromParsing } from '../../../../../packages/admin-app/src/selectors';
 import { parseValue } from '@lodex/common';
-import { useTranslate } from '../../i18n/I18NContext';
+import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 import { fromI18n } from '../../../../../packages/public-app/src/selectors';
 import type { TransformerDraft } from '../types.ts';
 import type { SubResource } from '../../../../../packages/admin-app/src/subresource';

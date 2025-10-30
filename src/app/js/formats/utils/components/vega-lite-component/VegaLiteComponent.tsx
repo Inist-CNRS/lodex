@@ -9,7 +9,7 @@ import {
 } from '../../chartsUtils';
 import { ASPECT_RATIO_NONE, type AspectRatio } from '../../aspectRatio';
 import FormatFullScreenMode from '../FormatFullScreenMode';
-import { translate } from '../../../../i18n/I18NContext';
+import { translate } from '@lodex/frontend-common/i18n/I18NContext';
 import { compose } from 'recompose';
 import { useVegaCsvExport } from '../useVegaCsvExport';
 import { useVegaActions } from '../useVegaActions';

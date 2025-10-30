@@ -11,7 +11,7 @@ import removedResourcesSagas from './removedResources/sagas';
 import uploadFileSaga from './upload/sagas';
 import userSagas from '../../../src/app/js/user/sagas';
 import fetchSaga from '../../../src/app/js/fetch/sagas';
-import i18nSagas from '../../../src/app/js/i18n/sagas';
+import i18nSagas from '@lodex/frontend-common/i18n/sagas';
 import clearSaga from './clear/sagas';
 import progressSaga from './progress/sagas';
 import characteristicSaga from '../../../src/app/js/characteristic/sagas';

@@ -1,6 +1,6 @@
 import { FormControl, InputLabel, NativeSelect } from '@mui/material';
 import { kinds } from '@lodex/common';
-import { useTranslate } from '../../../../../src/app/js/i18n/I18NContext';
+import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 
 interface KindFilterProps {
     applyValue(...args: unknown[]): unknown;

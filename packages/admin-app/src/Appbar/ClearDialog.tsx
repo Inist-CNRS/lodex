@@ -22,7 +22,7 @@ import { loadField } from '../../../../src/app/js/fields';
 import { loadPublication } from '../publication';
 import CancelButton from '../../../../src/app/js/lib/components/CancelButton';
 import { loadSubresources } from '../subresource';
-import { useTranslate } from '../../../../src/app/js/i18n/I18NContext';
+import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 
 const TRANSLATION_KEY = new Map([
     ['dataset', 'clear_dataset'],

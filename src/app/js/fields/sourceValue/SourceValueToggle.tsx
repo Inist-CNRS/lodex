@@ -18,7 +18,7 @@ import {
 } from '@mui/material';
 import SourceValueFromSubResource from './SourceValueFromSubResource';
 import SourceValueRoutine from './SourceValueRoutine';
-import { useTranslate } from '../../i18n/I18NContext';
+import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 import { useSelector } from 'react-redux';
 import type { Transformer, TransformerDraft } from '../types';
 import type { SubResource } from '../../../../../packages/admin-app/src/subresource';

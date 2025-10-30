@@ -6,7 +6,7 @@ import { TableCell, Button } from '@mui/material';
 import { removeField } from '../../../../src/app/js/fields';
 import { type Field } from '../../../../src/app/js/propTypes';
 import getFieldClassName from '../../../../src/app/js/lib/getFieldClassName';
-import { useTranslate } from '../../../../src/app/js/i18n/I18NContext';
+import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 
 interface ExcerptRemoveColumnComponentProps {
     removeColumn(...args: unknown[]): unknown;

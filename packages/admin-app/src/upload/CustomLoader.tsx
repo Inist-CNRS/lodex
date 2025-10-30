@@ -23,7 +23,7 @@ import CancelButton from '../../../../src/app/js/lib/components/CancelButton';
 import {
     translate,
     useTranslate,
-} from '../../../../src/app/js/i18n/I18NContext';
+} from '@lodex/frontend-common/i18n/I18NContext';
 import type { State } from '../reducers';
 
 type CustomLoaderFormData = {

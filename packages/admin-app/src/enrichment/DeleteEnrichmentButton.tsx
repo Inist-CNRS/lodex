@@ -3,7 +3,7 @@ import { Button } from '@mui/material';
 import { deleteEnrichment } from '../api/enrichment';
 import { toast } from 'react-toastify';
 import { ConfirmPopup } from '../../../../src/app/js/lib/components/ConfirmPopup';
-import { useTranslate } from '../../../../src/app/js/i18n/I18NContext';
+import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 
 type DeleteEnrichmentButtonProps = {
     disabled?: boolean;

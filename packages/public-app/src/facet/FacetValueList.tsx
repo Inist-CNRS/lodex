@@ -6,7 +6,7 @@ import {
     type ChangeEvent,
 } from 'react';
 import { connect } from 'react-redux';
-import { useTranslate } from '../../../../src/app/js/i18n/I18NContext';
+import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 import compose from 'recompose/compose';
 import {
     TextField,

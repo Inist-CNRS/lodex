@@ -1,5 +1,5 @@
 import memoize from 'lodash/memoize';
-import { useTranslate } from '../../../i18n/I18NContext';
+import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 import compose from 'recompose/compose';
 
 import fetchDataForComponent from './fetchDataForComponent';

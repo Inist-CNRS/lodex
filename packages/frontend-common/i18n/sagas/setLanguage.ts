@@ -1,6 +1,6 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
 
-import fetchSaga from '../../lib/sagas/fetchSaga';
+import fetchSaga from '../../../../src/app/js/lib/sagas/fetchSaga';
 
 import {
     SET_LANGUAGE_REQUEST,

@@ -12,9 +12,9 @@ import { getLocale } from '@lodex/common';
 import defaultMuiTheme from '../../custom/themes/default/defaultTheme';
 import FieldProvider from './FieldProvider';
 import { IstexSummaryView } from '../formats/other/istexSummary/IstexSummaryView';
-import { I18NContext } from '../i18n/I18NContext';
+import { I18NContext } from '@lodex/frontend-common/i18n/I18NContext';
 import Polyglot from 'node-polyglot';
-import phrasesFor from '../i18n/translations';
+import phrasesFor from '@lodex/frontend-common/i18n/translations';
 
 const theme = createTheme(defaultMuiTheme, {
     userAgent: navigator.userAgent,

@@ -7,7 +7,7 @@ import { Autocomplete, Box, Button, TextField } from '@mui/material';
 import { toast } from 'react-toastify';
 import RoutineCatalogAutocomplete from '../wizard/RoutineCatalogAutocomplete';
 import type { State } from '../../../../../packages/admin-app/src/reducers';
-import { useTranslate } from '../../i18n/I18NContext';
+import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 import type { TransformerDraft } from '../types.ts';
 
 const SourceValuePrecomputed = ({

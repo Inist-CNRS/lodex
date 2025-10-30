@@ -8,7 +8,10 @@ import FormatFieldSetPreview from '../../utils/components/field-set/FormatFieldS
 import { AllDataSets } from '../../utils/dataSet';
 import { EJSAdminView } from './EJSView';
 import FormatGroupedFieldSet from '../../utils/components/field-set/FormatGroupedFieldSet';
-import { translate, useTranslate } from '../../../i18n/I18NContext';
+import {
+    translate,
+    useTranslate,
+} from '@lodex/frontend-common/i18n/I18NContext';
 import { useCallback } from 'react';
 
 type EJSArgs = {

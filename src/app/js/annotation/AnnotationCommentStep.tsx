@@ -6,7 +6,7 @@ import {
     ANNOTATION_KIND_CORRECTION,
     ANNOTATION_KIND_REMOVAL,
 } from '@lodex/common';
-import { useTranslate } from '../i18n/I18NContext';
+import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 import { CommentField } from './fields/CommentField';
 import { ProposedValueField } from './fields/ProposedValueField';
 import { getIsFieldValueAnUrl } from '../formats';

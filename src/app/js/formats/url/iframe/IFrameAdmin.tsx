@@ -4,7 +4,7 @@ import { FormatDefaultParamsFieldSet } from '../../utils/components/field-set/Fo
 import FormatGroupedFieldSet from '../../utils/components/field-set/FormatGroupedFieldSet';
 import { ASPECT_RATIO_16_9 } from '../../utils/aspectRatio';
 import AspectRatioSelector from '../../utils/components/admin/AspectRatioSelector';
-import { useTranslate } from '../../../i18n/I18NContext';
+import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 
 export const defaultArgs = {
     viewWidth: '100%',

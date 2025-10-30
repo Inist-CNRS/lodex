@@ -1,6 +1,6 @@
 import { FormControl, InputLabel, NativeSelect } from '@mui/material';
 
-import { useTranslate } from '../../../../../src/app/js/i18n/I18NContext';
+import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 import { statuses } from '@lodex/common';
 
 interface StatusFilterProps {

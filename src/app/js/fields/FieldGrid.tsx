@@ -25,7 +25,7 @@ import { useHistory, useLocation } from 'react-router';
 import { SCOPE_DOCUMENT, toast } from '@lodex/common';
 import fieldApi from '../../../../packages/admin-app/src/api/field';
 import FieldRepresentation from './FieldRepresentation';
-import { useTranslate } from '../i18n/I18NContext';
+import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 import type { State } from '../../../../packages/admin-app/src/reducers';
 
 const ROOT_PADDING = 16;

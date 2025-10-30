@@ -1,6 +1,6 @@
 import fetchReducer, { type FetchState } from '../../../src/app/js/fetch';
 import fields from '../../../src/app/js/fields';
-import i18n from '../../../src/app/js/i18n';
+import i18n from '@lodex/frontend-common/i18n';
 import importReducer from './import';
 import parsing from './parsing';
 import publication from './publication';

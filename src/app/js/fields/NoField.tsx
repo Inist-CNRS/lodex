@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box } from '@mui/material';
-import { translate } from '../i18n/I18NContext';
+import { translate } from '@lodex/frontend-common/i18n/I18NContext';
 
 const styles = {
     noFieldZone: {

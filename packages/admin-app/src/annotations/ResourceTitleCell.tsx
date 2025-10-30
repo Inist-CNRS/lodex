@@ -1,6 +1,6 @@
 import { Typography } from '@mui/material';
 
-import { useTranslate } from '../../../../src/app/js/i18n/I18NContext';
+import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 import { getResourceType } from './helpers/resourceType';
 
 interface ResourceTitleCellInternalProps {

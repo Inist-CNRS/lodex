@@ -9,7 +9,7 @@ import stylesToClassname from '../../../lib/stylesToClassName';
 import injectData from '../../injectData';
 import AsterPlot from './AsterPlot';
 import { getResourceUri } from '@lodex/common';
-import { translate } from '../../../i18n/I18NContext';
+import { translate } from '@lodex/frontend-common/i18n/I18NContext';
 
 const sortByKey =
     (key = '') =>

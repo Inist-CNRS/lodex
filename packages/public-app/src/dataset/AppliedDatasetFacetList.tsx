@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Box, Chip } from '@mui/material';
 import { compose } from 'recompose';
 import { facetActions } from './index';
-import { useTranslate } from '../../../../src/app/js/i18n/I18NContext';
+import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 import { fromDataset } from '../selectors';
 import AppliedDatasetFacet from './AppliedDatasetFacet';
 

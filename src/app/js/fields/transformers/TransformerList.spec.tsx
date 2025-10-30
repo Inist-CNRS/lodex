@@ -1,7 +1,7 @@
 import { type PropsWithChildren } from 'react';
 import { render } from '@testing-library/react';
 import { TransformerListComponent as TransformerList } from './TransformerList';
-import { TestI18N } from '../../i18n/I18NContext.tsx';
+import { TestI18N } from '@lodex/frontend-common/i18n/I18NContext';
 
 jest.mock(
     './TransformerListItem',

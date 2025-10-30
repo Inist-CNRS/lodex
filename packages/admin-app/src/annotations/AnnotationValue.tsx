@@ -1,6 +1,6 @@
 import { Grid, Typography, useTheme } from '@mui/material';
 import React from 'react';
-import { useTranslate } from '../../../../src/app/js/i18n/I18NContext';
+import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 
 interface AnnotationValueProps {
     label: string;

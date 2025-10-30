@@ -2,7 +2,7 @@ import { Button, type ButtonProps } from '@mui/material';
 import { type MouseEvent, useState } from 'react';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import { TaskStatus, type TaskStatusType } from '@lodex/common';
-import { useTranslate } from '../../../../src/app/js/i18n/I18NContext';
+import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 
 export const RunButton = ({
     handleLaunchPrecomputed,

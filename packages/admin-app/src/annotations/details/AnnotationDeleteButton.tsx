@@ -2,7 +2,7 @@ import Button from '@mui/material/Button';
 
 import React from 'react';
 
-import { useTranslate } from '../../../../../src/app/js/i18n/I18NContext';
+import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 import { ConfirmPopup } from '../../../../../src/app/js/lib/components/ConfirmPopup';
 import { useDeleteAnnotation } from '../hooks/useDeleteAnnotation';
 

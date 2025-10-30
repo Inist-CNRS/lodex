@@ -2,7 +2,7 @@ import Link from '../../../src/app/js/lib/components/Link';
 import Container from '@mui/material/Container';
 
 import { version } from '../../../package.json';
-import { useTranslate } from '../../../src/app/js/i18n/I18NContext';
+import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 
 const link = `//github.com/Inist-CNRS/lodex/releases/tag/v${version}`;
 

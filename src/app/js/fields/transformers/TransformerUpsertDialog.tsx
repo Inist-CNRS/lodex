@@ -21,7 +21,7 @@ import {
 import TransformerArg from './TransformerArg';
 import CancelButton from '../../lib/components/CancelButton';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
-import { useTranslate } from '../../i18n/I18NContext';
+import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 
 interface TransformerItemProps {
     selected?: boolean;

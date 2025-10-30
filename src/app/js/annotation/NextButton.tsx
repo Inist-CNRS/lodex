@@ -9,7 +9,7 @@ import {
     VALUE_STEP,
     type Step,
 } from './steps';
-import { useTranslate } from '../i18n/I18NContext';
+import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 
 interface NextButtonProps {
     goToStep(step: Step): void;

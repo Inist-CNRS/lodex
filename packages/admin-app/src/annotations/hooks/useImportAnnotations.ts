@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useCallback, useMemo } from 'react';
 
 import { toast } from '@lodex/common';
-import { useTranslate } from '../../../../../src/app/js/i18n/I18NContext';
+import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 import { loadFile } from '../../../../../src/app/js/lib/loadFile';
 import { getUserSessionStorageInfo } from '../../api/tools';
 import { useDownloader } from '../../commons/useDownloader';

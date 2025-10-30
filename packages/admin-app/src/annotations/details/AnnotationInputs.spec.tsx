@@ -2,7 +2,7 @@ import { useForm } from '@tanstack/react-form';
 
 import { MemoryRouter } from 'react-router-dom';
 import { render } from '../../../../../src/test-utils';
-import { TestI18N } from '../../../../../src/app/js/i18n/I18NContext';
+import { TestI18N } from '@lodex/frontend-common/i18n/I18NContext';
 import { useUpdateAnnotation } from '../hooks/useUpdateAnnotation';
 import { AnnotationInputs } from './AnnotationInputs';
 import { within } from '@testing-library/dom';
