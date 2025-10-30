@@ -8,7 +8,7 @@ import {
     DialogTitle,
 } from '@mui/material';
 
-import ButtonWithStatus from '../../../../src/app/js/lib/components/ButtonWithStatus';
+import ButtonWithStatus from '@lodex/frontend-common/components/ButtonWithStatus';
 
 import {
     clearDataset as clearDatasetAction,

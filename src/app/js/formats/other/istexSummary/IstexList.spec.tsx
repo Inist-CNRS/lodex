@@ -4,7 +4,7 @@ import { StyleSheetTestUtils } from 'aphrodite';
 
 import IstexList from './IstexList';
 import { getMoreDocumentData } from './getIstexData';
-import ButtonWithStatus from '../../../lib/components/ButtonWithStatus';
+import ButtonWithStatus from '@lodex/frontend-common/components/ButtonWithStatus';
 import { render } from '../../../../../test-utils';
 
 jest.mock('./getIstexData');

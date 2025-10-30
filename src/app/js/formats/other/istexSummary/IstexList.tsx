@@ -2,7 +2,7 @@ import { useState } from 'react';
 import classnames from 'classnames';
 
 import { getMoreDocumentData } from './getIstexData';
-import ButtonWithStatus from '../../../lib/components/ButtonWithStatus';
+import ButtonWithStatus from '@lodex/frontend-common/components/ButtonWithStatus';
 import stylesToClassname from '../../../lib/stylesToClassName';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 
