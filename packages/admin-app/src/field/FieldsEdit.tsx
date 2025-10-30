@@ -14,7 +14,7 @@ import SubresourceOverviewSelect from '../../../../src/app/js/fields/Subresource
 import FieldAddDropdownButtonConnected from './FieldAddDropdownButton';
 import { AddFieldButton } from './AddFieldButton';
 import { DeleteFieldsButton } from './DeleteFieldsButton';
-import { useTranslate } from '../../../../src/app/js/i18n/I18NContext';
+import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 
 interface FieldsEditComponentProps {
     addFieldButton?: React.ReactElement;

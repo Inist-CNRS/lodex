@@ -18,7 +18,7 @@ import getTitle from '../../../src/app/js/lib/getTitle';
 
 import { preLoadDatasetPage } from './dataset';
 import { preLoadExporters } from './export';
-import { useTranslate } from '../../../src/app/js/i18n/I18NContext';
+import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 
 interface HomeComponentProps {
     error?: string;

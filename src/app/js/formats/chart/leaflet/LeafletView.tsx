@@ -5,7 +5,7 @@ import flatten from 'lodash/flatten';
 
 import injectData from '../../injectData';
 import Loading from '../../../lib/components/Loading';
-import { useTranslate } from '../../../i18n/I18NContext';
+import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 import { ClientOnly, useClientOnly } from 'react-client-only';
 
 const styles = {

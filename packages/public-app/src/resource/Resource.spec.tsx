@@ -5,7 +5,7 @@ import Loading from '../../../../src/app/js/lib/components/Loading';
 import Detail from './Detail';
 import RemovedDetail from './RemovedDetail';
 import { ResourceComponent, type ResourceComponentProps } from './Resource';
-import { TestI18N } from '../../../../src/app/js/i18n/I18NContext';
+import { TestI18N } from '@lodex/frontend-common/i18n/I18NContext';
 // @ts-expect-error TS7016
 import { StyleSheetTestUtils } from 'aphrodite';
 import { MemoryRouter } from 'react-router-dom';

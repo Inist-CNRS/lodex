@@ -7,7 +7,7 @@ import ArrowDown from '@mui/icons-material/KeyboardArrowDown';
 
 import { selectVersion } from './index';
 import { fromResource } from '../selectors';
-import { useTranslate } from '../../../../src/app/js/i18n/I18NContext';
+import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 
 // @ts-expect-error TS7006
 const getFormat = (latest, length) => (dateString, index) =>

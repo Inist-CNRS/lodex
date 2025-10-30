@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
-import { translate } from '../../../i18n/I18NContext';
+import { translate } from '@lodex/frontend-common/i18n/I18NContext';
 
 import stylesToClassname from '../../../lib/stylesToClassName';
 import { type Field } from '../../../propTypes';

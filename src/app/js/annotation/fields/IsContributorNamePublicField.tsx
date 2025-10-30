@@ -7,7 +7,7 @@ import {
     FormHelperText,
 } from '@mui/material';
 import { useField } from '@tanstack/react-form';
-import { useTranslate } from '../../i18n/I18NContext';
+import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 
 interface IsContributorNamePublicFieldProps {
     form: object;

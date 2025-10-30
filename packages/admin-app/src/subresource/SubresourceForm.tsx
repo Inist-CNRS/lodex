@@ -6,7 +6,7 @@ import { fromParsing, fromSubresources } from '../selectors';
 import { Box, Button } from '@mui/material';
 import CancelButton from '../../../../src/app/js/lib/components/CancelButton';
 import { useHistory } from 'react-router';
-import { useTranslate } from '../../../../src/app/js/i18n/I18NContext';
+import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 import type { State } from '../reducers';
 import { TextField } from '@lodex/frontend-common/form-fields/TextField';
 import { AutoCompleteField } from '@lodex/frontend-common/form-fields/AutoCompleteField.tsx';

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
-import { useTranslate } from '../../../../src/app/js/i18n/I18NContext';
+import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 import classnames from 'classnames';
 import { CircularProgress, Button } from '@mui/material';
 

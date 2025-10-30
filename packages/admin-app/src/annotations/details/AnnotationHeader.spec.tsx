@@ -1,5 +1,5 @@
 import { render } from '../../../../../src/test-utils';
-import { TestI18N } from '../../../../../src/app/js/i18n/I18NContext';
+import { TestI18N } from '@lodex/frontend-common/i18n/I18NContext';
 import { AnnotationHeader } from './AnnotationHeader';
 
 describe('AnnotationHeader', () => {

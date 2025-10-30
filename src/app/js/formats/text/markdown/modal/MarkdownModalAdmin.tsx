@@ -4,7 +4,7 @@ import FormatGroupedFieldSet from '../../../utils/components/field-set/FormatGro
 import MenuItem from '@mui/material/MenuItem';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
-import { useTranslate } from '../../../../i18n/I18NContext';
+import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 
 export const defaultArgs = {
     type: 'text',

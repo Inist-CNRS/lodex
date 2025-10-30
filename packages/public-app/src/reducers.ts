@@ -2,7 +2,7 @@ import characteristic from '../../../src/app/js/characteristic';
 import dataset from './dataset';
 import exportReducer from './export';
 import fetchReducer from '../../../src/app/js/fetch';
-import i18n from '../../../src/app/js/i18n';
+import i18n from '@lodex/frontend-common/i18n';
 import fields from '../../../src/app/js/fields';
 import resource from './resource';
 import format from '../../../src/app/js/formats/reducer';

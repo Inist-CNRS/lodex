@@ -5,7 +5,7 @@ import IssueFold from './IssueFold';
 import { getDocumentData } from './getIstexData';
 jest.mock('./getIstexData');
 
-jest.mock('../../../i18n/I18NContext', () => ({
+jest.mock('@lodex/frontend-common/i18n/I18NContext', () => ({
     useTranslate: () => ({
         translate: (key: string) => key,
     }),

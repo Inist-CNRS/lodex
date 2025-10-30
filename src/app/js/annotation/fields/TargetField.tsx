@@ -17,7 +17,7 @@ import {
     ANNOTATION_KIND_CORRECTION,
     ANNOTATION_KIND_REMOVAL,
 } from '@lodex/common';
-import { useTranslate } from '../../i18n/I18NContext';
+import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 import { COMMENT_STEP, VALUE_STEP } from '../steps';
 
 interface TargetFieldProps {

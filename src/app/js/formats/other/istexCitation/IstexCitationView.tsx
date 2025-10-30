@@ -14,7 +14,7 @@ import JournalFold from './JournalFold';
 import IstexItem, { type IstexItemComponentProps } from '../istex/IstexItem';
 import stylesToClassname from '../../../lib/stylesToClassName';
 import { ISTEX_SITE_URL } from '@lodex/common';
-import { useTranslate } from '../../../i18n/I18NContext';
+import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 
 interface IstexDocumentProps {
     item: IstexItemComponentProps;

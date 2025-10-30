@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import memoize from 'lodash/memoize';
 import pure from 'recompose/pure';
-import { useTranslate } from '../../i18n/I18NContext';
+import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 import TransformerListItem from './TransformerListItem';
 import TransformerUpsertDialog from './TransformerUpsertDialog';
 

@@ -2,7 +2,7 @@
 import commaNumber from 'comma-number';
 import { Component } from 'react';
 import compose from 'recompose/compose';
-import { translate } from '../../../i18n/I18NContext';
+import { translate } from '@lodex/frontend-common/i18n/I18NContext';
 
 import { type Field } from '../../../propTypes';
 import injectData from '../../injectData';

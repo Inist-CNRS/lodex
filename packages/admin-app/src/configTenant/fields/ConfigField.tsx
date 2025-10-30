@@ -2,7 +2,7 @@ import { Typography } from '@mui/material';
 import { useField, useStore } from '@tanstack/react-form';
 import { useEffect, useState } from 'react';
 import AceEditor from 'react-ace';
-import { useTranslate } from '../../../../../src/app/js/i18n/I18NContext';
+import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 import 'ace-builds/src-noconflict/mode-json';
 import 'ace-builds/src-noconflict/theme-monokai';
 

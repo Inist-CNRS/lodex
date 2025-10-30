@@ -9,7 +9,7 @@ import { withRouter } from 'react-router';
 import { compose } from 'recompose';
 
 import { toast } from '@lodex/common';
-import { useTranslate } from '../../../../../src/app/js/i18n/I18NContext';
+import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 import jobsApi from '../../api/job';
 import { fromParsing } from '../../selectors';
 import { ExportDatasetButton } from './ExportDatasetButton.tsx';

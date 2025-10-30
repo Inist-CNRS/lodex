@@ -3,7 +3,7 @@ import { Box, CircularProgress } from '@mui/material';
 
 import { fromPublicationPreview } from './selectors';
 import { fromFields } from '../../../src/app/js/sharedSelectors';
-import { useTranslate } from '../../../src/app/js/i18n/I18NContext';
+import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 
 const styles = {
     container: {

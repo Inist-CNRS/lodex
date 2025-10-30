@@ -10,7 +10,7 @@ import {
 } from '@mui/material';
 
 import CancelButton from './CancelButton';
-import { translate } from '../../i18n/I18NContext';
+import { translate } from '@lodex/frontend-common/i18n/I18NContext';
 
 const dialogStyle = {
     container: {

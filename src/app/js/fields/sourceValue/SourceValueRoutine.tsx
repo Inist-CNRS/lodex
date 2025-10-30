@@ -10,7 +10,7 @@ import RoutineCatalogAutocomplete from '../wizard/RoutineCatalogAutocomplete';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 import type { TransformerDraft } from '../types.ts';
-import { useTranslate } from '../../i18n/I18NContext.tsx';
+import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 
 const SourceValueRoutine = ({
     updateDefaultValueTransformers,

@@ -3,7 +3,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { MemoryRouter, Route, Switch } from 'react-router-dom';
 import { render } from '../../../test-utils';
 
-import { TestI18N } from '../i18n/I18NContext';
+import { TestI18N } from '@lodex/frontend-common/i18n/I18NContext';
 import fetch from '../lib/fetch';
 import { getStorageKey } from './annotationStorage';
 import { CreateAnnotationButton } from './CreateAnnotationButton';

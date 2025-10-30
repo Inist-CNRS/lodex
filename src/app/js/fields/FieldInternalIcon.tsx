@@ -5,7 +5,7 @@ import EqualizerIcon from '@mui/icons-material/Equalizer';
 import HomeIcon from '@mui/icons-material/Home';
 import { Tooltip } from '@mui/material';
 import React from 'react';
-import { useTranslate } from '../i18n/I18NContext';
+import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 
 interface IconProps {
     scope: string;

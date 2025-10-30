@@ -1,6 +1,9 @@
 import { Box } from '@mui/material';
 import { lazy, Suspense } from 'react';
-import { translate, useTranslate } from '../../../i18n/I18NContext';
+import {
+    translate,
+    useTranslate,
+} from '@lodex/frontend-common/i18n/I18NContext';
 import Loading from '../../../lib/components/Loading';
 
 const SourceCodeField = lazy(

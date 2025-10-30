@@ -2,7 +2,7 @@ import Warning from '@mui/icons-material/Warning';
 
 import AdminOnlyAlert from '../lib/components/AdminOnlyAlert';
 import stylesToClassname from '../lib/stylesToClassName';
-import { translate } from '../i18n/I18NContext';
+import { translate } from '@lodex/frontend-common/i18n/I18NContext';
 
 // @ts-expect-error TS7006
 const capitalize = (str) =>

@@ -11,7 +11,7 @@ import Loading from '../lib/components/Loading';
 import InvalidFormat from './InvalidFormat';
 import { CircularProgress } from '@mui/material';
 import type { Field } from '../propTypes';
-import { useTranslate } from '../i18n/I18NContext';
+import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 import { isEqual } from 'lodash';
 
 const styles = {

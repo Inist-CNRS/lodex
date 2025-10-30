@@ -8,7 +8,7 @@ import get from 'lodash/get';
 import AdminOnlyAlert from '../../../lib/components/AdminOnlyAlert';
 import SkipFold from './SkipFold';
 import stylesToClassname from '../../../lib/stylesToClassName';
-import { useTranslate } from '../../../i18n/I18NContext';
+import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 
 const styles = stylesToClassname(
     {

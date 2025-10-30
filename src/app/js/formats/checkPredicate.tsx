@@ -1,6 +1,6 @@
 import get from 'lodash/get';
 
-import { translate } from '../i18n/I18NContext';
+import { translate } from '@lodex/frontend-common/i18n/I18NContext';
 import InvalidFormat from './InvalidFormat';
 
 // @ts-expect-error TS7006

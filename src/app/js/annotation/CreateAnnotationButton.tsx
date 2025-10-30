@@ -10,7 +10,7 @@ import {
 import { useCallback, useMemo, useRef, useState } from 'react';
 
 import { getIsFieldValueAnnotable, getReadableValue } from '../formats';
-import { useTranslate } from '../i18n/I18NContext';
+import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 import { useGetFieldAnnotationIds } from './annotationStorage';
 import { CreateAnnotationModal } from './CreateAnnotationModal';
 import { HistoryDrawer } from './HistoryDrawer';

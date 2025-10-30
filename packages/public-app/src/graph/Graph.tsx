@@ -26,7 +26,7 @@ import { getEditFieldRedirectUrl } from '../Property';
 import CompositeProperty from '../Property/CompositeProperty';
 import PropertyLinkedFields from '../Property/PropertyLinkedFields';
 import type { Field } from '../../../../src/app/js/fields/types';
-import { useTranslate } from '../../../../src/app/js/i18n/I18NContext';
+import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 
 const styles = stylesToClassname(
     {

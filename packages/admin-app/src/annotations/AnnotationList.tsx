@@ -11,7 +11,7 @@ import {
 import React, { useMemo, useState } from 'react';
 import { useHistory } from 'react-router';
 import FieldInternalIcon from '../../../../src/app/js/fields/FieldInternalIcon';
-import { useTranslate } from '../../../../src/app/js/i18n/I18NContext';
+import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 import AdminOnlyAlert from '../../../../src/app/js/lib/components/AdminOnlyAlert';
 import withInitialData from '../withInitialData';
 import { AnnotationProposedValue } from './AnnotationProposedValue';

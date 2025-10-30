@@ -16,7 +16,7 @@ import {
     ANNOTATION_KIND_CORRECTION,
     annotationCreationSchema,
 } from '@lodex/common';
-import { useTranslate } from '../i18n/I18NContext';
+import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 import { ConfirmPopup } from '../lib/components/ConfirmPopup';
 import { AnnotationCommentStep } from './AnnotationCommentStep';
 import { CreateAnnotationTitle } from './CreateAnnotationTitle';

@@ -10,7 +10,7 @@ import {
 import { FormApi, useField } from '@tanstack/react-form';
 import { useCallback, useMemo } from 'react';
 
-import { useTranslate } from '../../i18n/I18NContext';
+import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 import { useAutocompleteTranslations } from './useAutocompleteTranslations';
 
 const filter = createFilterOptions();

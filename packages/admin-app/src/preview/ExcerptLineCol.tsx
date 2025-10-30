@@ -7,7 +7,7 @@ import { fromFields } from '../../../../src/app/js/sharedSelectors';
 import { isLongText, getShortText } from '../../../../src/app/js/lib/longTexts';
 import getFieldClassName from '../../../../src/app/js/lib/getFieldClassName';
 import { parseValue } from '@lodex/common';
-import { translate } from '../../../../src/app/js/i18n/I18NContext';
+import { translate } from '@lodex/frontend-common/i18n/I18NContext';
 
 const styles = {
     // @ts-expect-error TS7006

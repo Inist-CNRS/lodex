@@ -16,7 +16,7 @@ import { useHistory } from 'react-router';
 import { Link } from 'react-router-dom';
 import { launchAllEnrichment, retryEnrichment, type Enrichment } from './index';
 import { TaskStatus, toast } from '@lodex/common';
-import { useTranslate } from '../../../../src/app/js/i18n/I18NContext';
+import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 import { ConfirmPopup } from '../../../../src/app/js/lib/components/ConfirmPopup';
 import EnrichmentStatus from './EnrichmentStatus';
 import RunButton from './RunButton';

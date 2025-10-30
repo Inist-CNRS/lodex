@@ -4,7 +4,7 @@ import { useMemo } from 'react';
 import { connect } from 'react-redux';
 
 import LoginForm from './LoginForm';
-import { useTranslate } from '../i18n/I18NContext';
+import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 
 const styles = {
     container: {

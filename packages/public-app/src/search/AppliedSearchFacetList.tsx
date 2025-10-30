@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 
 import { Box, Chip } from '@mui/material';
 import { compose } from 'recompose';
-import { useTranslate } from '../../../../src/app/js/i18n/I18NContext';
+import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 import { fromSearch } from '../selectors';
 import AppliedSearchFacet from './AppliedSearchFacet';
 import { facetActions } from './reducer';

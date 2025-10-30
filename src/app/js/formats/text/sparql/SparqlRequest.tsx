@@ -1,6 +1,6 @@
 import { Component } from 'react';
 import { connect } from 'react-redux';
-import { translate } from '../../../i18n/I18NContext';
+import { translate } from '@lodex/frontend-common/i18n/I18NContext';
 import compose from 'recompose/compose';
 import LinkIcon from '@mui/icons-material/Link';
 import { TextField } from '@mui/material';

@@ -31,7 +31,7 @@ import {
     Tooltip,
 } from '@mui/material';
 import { Link, useLocation } from 'react-router-dom';
-import { useTranslate } from '../../../../src/app/js/i18n/I18NContext';
+import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 import Loading from '../../../../src/app/js/lib/components/Loading';
 import datasetApi from '../api/dataset';
 import { fromEnrichments, fromParsing } from '../selectors';

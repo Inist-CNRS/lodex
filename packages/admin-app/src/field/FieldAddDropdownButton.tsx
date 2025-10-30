@@ -17,7 +17,7 @@ import { showAddFromColumn } from '../parsing';
 import { fromFields } from '../../../../src/app/js/sharedSelectors';
 import { addField } from '../../../../src/app/js/fields';
 import { SCOPE_DOCUMENT } from '@lodex/common';
-import { useTranslate } from '../../../../src/app/js/i18n/I18NContext';
+import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 
 const options = [
     { label: 'new_field', icon: <Add /> },

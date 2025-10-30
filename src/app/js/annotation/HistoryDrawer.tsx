@@ -3,7 +3,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import { Box, Drawer, IconButton, Typography } from '@mui/material';
 import { useCallback, useMemo } from 'react';
 
-import { useTranslate } from '../i18n/I18NContext';
+import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 import AdminOnlyAlert from '../lib/components/AdminOnlyAlert';
 import { AnnotationList } from './AnnotationList';
 import { MODE_CLOSED, type Mode } from './HistoryDrawer.const';

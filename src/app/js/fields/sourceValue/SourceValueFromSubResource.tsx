@@ -11,7 +11,7 @@ import {
 import { useSelector } from 'react-redux';
 import { fromParsing } from '../../../../../packages/admin-app/src/selectors';
 import { parseValue } from '@lodex/common';
-import { useTranslate } from '../../i18n/I18NContext';
+import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 import type { TransformerDraft } from '../types.ts';
 
 export const GET_TRANSFORMERS_FROM_SUBRESOURCE = (

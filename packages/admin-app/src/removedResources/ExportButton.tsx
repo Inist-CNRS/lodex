@@ -1,7 +1,7 @@
 import { Button } from '@mui/material';
 import DownloadIcon from '@mui/icons-material/Download';
 import { exportHiddenResources } from '../api/hiddenResource';
-import { useTranslate } from '../../../../src/app/js/i18n/I18NContext';
+import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 
 const ExportButton = () => {
     const { translate } = useTranslate();

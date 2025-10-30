@@ -1,7 +1,7 @@
 import { Chip } from '@mui/material';
 
 import { grey } from '@mui/material/colors';
-import { useTranslate } from '../../../../src/app/js/i18n/I18NContext';
+import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 import { type AnnotationStatus as Status } from '@lodex/common';
 
 interface AnnotationStatusProps {

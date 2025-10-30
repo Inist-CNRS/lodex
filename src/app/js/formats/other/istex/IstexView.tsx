@@ -9,7 +9,7 @@ import Alert from '../../../lib/components/Alert';
 import { PropositionStatus, ISTEX_SITE_URL } from '@lodex/common';
 import { fetchForIstexFormat } from '../../utils/fetchIstexData';
 import IstexItem, { type IstexItemComponentProps } from './IstexItem';
-import { useTranslate } from '../../../i18n/I18NContext';
+import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 
 const styles: {
     text: (status?: string) => CSSProperties;

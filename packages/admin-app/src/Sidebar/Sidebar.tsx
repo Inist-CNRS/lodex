@@ -17,7 +17,7 @@ import { SidebarContext } from './SidebarContext';
 import { useRouteMatch } from 'react-router-dom';
 import { SCOPE_DATASET, SCOPE_DOCUMENT, SCOPE_GRAPHIC } from '@lodex/common';
 import { MenuItemLink } from './MenuItemLink';
-import { useTranslate } from '../../../../src/app/js/i18n/I18NContext';
+import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 
 const DRAWER_CLOSED_WIDTH = 50;
 const DRAWER_OPEN_WIDTH = 205;
