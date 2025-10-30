@@ -1,7 +1,7 @@
 import { shallow } from 'enzyme';
 import { Button, Dialog } from '@mui/material';
 import { ConfirmPopup } from './ConfirmPopup';
-import CancelButton from './CancelButton';
+import CancelButton from '@lodex/frontend-common/components/CancelButton';
 
 describe('<PopupConfirmUpload />', () => {
     it('should render a popup for confirm upload', () => {

@@ -7,7 +7,7 @@ import {
 } from '@mui/material';
 
 import ParsingExcerpt from '../parsing/ParsingExcerpt';
-import CancelButton from '../../../../src/app/js/lib/components/CancelButton';
+import CancelButton from '@lodex/frontend-common/components/CancelButton';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 
 interface AddFromColumnDialogComponentProps {

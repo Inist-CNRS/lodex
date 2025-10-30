@@ -3,7 +3,7 @@ import ListAltIcon from '@mui/icons-material/ListAlt';
 import { Box, Button, MenuItem, TextField } from '@mui/material';
 import ListDialog from './ListDialog';
 import CustomLoader from './CustomLoader';
-import CancelButton from '../../../../src/app/js/lib/components/CancelButton';
+import CancelButton from '@lodex/frontend-common/components/CancelButton';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 
 const styles = {

@@ -14,7 +14,7 @@ import {
     useTheme,
 } from '@mui/material';
 import { toast } from '@lodex/common';
-import CancelButton from '../../../../src/app/js/lib/components/CancelButton';
+import CancelButton from '@lodex/frontend-common/components/CancelButton';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 
 const style = {
