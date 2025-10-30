@@ -1,6 +1,6 @@
 import get from 'lodash/get';
 
-import { composeAsync } from '@lodex/common';
+import composeAsync from '../../../../../common/lib/composeAsync';
 import { parseFetchResult, output } from '../../utils/fetchIstexData';
 import fetch from '../../../lib/fetch';
 import { HOST_TITLE, HOST_TITLE_RAW } from '../istexSummary/constants';

@@ -1,8 +1,8 @@
 import get from 'lodash/get';
 
 import fetch from '../../../lib/fetch';
-import { composeAsync } from '@lodex/common';
-import { ISTEX_API_URL } from '../../../api/externals';
+import composeAsync from '../../../../../common/lib/composeAsync';
+import { ISTEX_API_URL } from '../../../../../common/externals';
 import { output } from '../../utils/fetchIstexData';
 import { buildIstexQuery } from '../istexSummary/getIstexData';
 import { TOP_HITS, REFBIBS_TITLE } from '../istexSummary/constants';

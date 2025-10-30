@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Button, Container, TextField, Typography } from '@mui/material';
-import { ROOT_ROLE } from '@lodex/common';
+import { ROOT_ROLE } from '../../../common/tools/tenantTools';
 
 const LoginForm = () => {
     const [username, setUsername] = useState('');

@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { compose } from 'recompose';
 
-import { toast } from '@lodex/common';
+import { toast } from '../../../../../common/tools/toast';
 import { useTranslate } from '../../../i18n/I18NContext';
 import jobsApi from '../../api/job';
 import { fromParsing } from '../../selectors';

@@ -39,7 +39,7 @@ export const createFunction = () =>
         const collectionName = `pc_${precomputedObject._id.toString()}`;
 
         const collection = db.collection(collectionName);
-        const cursor = collection.find(filter);
+        let cursor = collection.find(filter);
 
         const total = await cursor.count();
         if (total === 0) {

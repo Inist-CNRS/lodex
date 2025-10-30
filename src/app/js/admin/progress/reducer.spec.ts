@@ -5,7 +5,7 @@ import reducer, {
 } from './reducer';
 import { publish } from '../publish';
 import { uploadFile } from '../upload';
-import { ProgressStatus } from '@lodex/common';
+import { PENDING, ERROR } from '../../../../common/progressStatus';
 
 describe('progress reducer', () => {
     describe('UPDATE_PROGRESS', () => {
@@ -69,7 +69,7 @@ describe('progress reducer', () => {
             // @ts-expect-error TS2345
             expect(reducer(state, errorProgress())).toEqual({
                 error: true,
-                status: ProgressStatus.ERROR,
+                status: ERROR,
                 progress: undefined,
                 target: undefined,
             });
@@ -83,7 +83,7 @@ describe('progress reducer', () => {
             // @ts-expect-error TS2345
             expect(reducer(state, clearProgress())).toEqual({
                 error: false,
-                status: ProgressStatus.PENDING,
+                status: PENDING,
                 progress: undefined,
                 target: undefined,
             });

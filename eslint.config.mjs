@@ -21,9 +21,6 @@ export default defineConfig([
         'src/app/custom/themes/**/js/*.js',
         'node_modules',
         '**/build',
-        'packages/transformers',
-        'packages/@recuperateur',
-        'packages/ezsLodex/lib',
     ]),
     {
         name: 'eslint-js-recommended-rules',
@@ -89,24 +86,15 @@ export default defineConfig([
     eslintPluginPrettierRecommended,
     {
         name: 'react',
-        files: [
-            'src/**/*.js',
-            'src/**/*.jsx',
-            'src/**/*.ts',
-            'src/**/*.tsx',
-            'config/*.js',
-            'packages/*/src/**/*.js',
-            'packages/*/src/**/*.jsx',
-            'packages/*/src/**/*.ts',
-            'packages/*/src/**/*.tsx',
-            '*.js',
-        ],
+        files: ['src/**/*.js', 'src/**/*.jsx', 'src/**/*.ts', 'src/**/*.tsx'],
         ...react.configs.flat.recommended,
         rules: {
             ...react.configs.flat.recommended.rules,
             'react/react-in-jsx-scope': 'off',
             'react/jsx-uses-react': 'off',
         },
+        files: ['**/*.jsx', '**/*.tsx'],
+        ignores: ['**/*.js', '**/*.ts'],
         plugins: { react },
         languageOptions: {
             globals: {

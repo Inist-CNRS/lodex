@@ -5,7 +5,10 @@ import classnames from 'classnames';
 import { Link, NavLink } from 'react-router-dom';
 
 import stylesToClassname from '../../lib/stylesToClassName';
-import { ADMIN_ROLE, extractTenantFromUrl } from '@lodex/common';
+import {
+    ADMIN_ROLE,
+    extractTenantFromUrl,
+} from '../../../../common/tools/tenantTools';
 import { useTranslate } from '../../i18n/I18NContext';
 import type { ChangeEvent } from 'react';
 

@@ -19,7 +19,11 @@ import reducer, {
     fromResource,
     type ResourceState,
 } from './index';
-import { PropositionStatus } from '@lodex/common';
+import {
+    PROPOSED,
+    VALIDATED,
+    REJECTED,
+} from '../../../../common/propositionStatus';
 import type { Action } from 'redux-actions';
 
 describe('resourceReducer', () => {
@@ -334,26 +338,17 @@ describe('resourceReducer', () => {
                 const state: ResourceState = {
                     resource: {
                         contributions: [
-                            {
-                                fieldName: 'validatedField',
-                                status: PropositionStatus.VALIDATED,
-                            },
-                            {
-                                fieldName: 'proposedField',
-                                status: PropositionStatus.PROPOSED,
-                            },
+                            { fieldName: 'validatedField', status: VALIDATED },
+                            { fieldName: 'proposedField', status: PROPOSED },
                             {
                                 fieldName: 'othervalidatedField',
-                                status: PropositionStatus.VALIDATED,
+                                status: VALIDATED,
                             },
                             {
                                 fieldName: 'otherProposedField',
-                                status: PropositionStatus.PROPOSED,
+                                status: PROPOSED,
                             },
-                            {
-                                fieldName: 'rejectedField',
-                                status: PropositionStatus.REJECTED,
-                            },
+                            { fieldName: 'rejectedField', status: REJECTED },
                         ],
                     },
                 } as ResourceState;

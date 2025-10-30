@@ -7,12 +7,12 @@ import {
     createTheme,
     ThemeProvider as MuiThemeProvider,
 } from '@mui/material/styles';
-import { getLocale } from '@lodex/common';
 
 import defaultMuiTheme from '../../custom/themes/default/defaultTheme';
 import FieldProvider from './FieldProvider';
 import { IstexSummaryView } from '../formats/other/istexSummary/IstexSummaryView';
 import { I18NContext } from '../i18n/I18NContext';
+import getLocale from '../../../common/getLocale';
 import Polyglot from 'node-polyglot';
 import phrasesFor from '../i18n/translations';
 

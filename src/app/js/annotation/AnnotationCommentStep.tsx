@@ -5,7 +5,7 @@ import {
     ANNOTATION_KIND_COMMENT,
     ANNOTATION_KIND_CORRECTION,
     ANNOTATION_KIND_REMOVAL,
-} from '@lodex/common';
+} from '../../../common/validator/annotation.validator';
 import { useTranslate } from '../i18n/I18NContext';
 import { CommentField } from './fields/CommentField';
 import { ProposedValueField } from './fields/ProposedValueField';

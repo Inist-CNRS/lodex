@@ -29,7 +29,7 @@ import {
 } from './';
 import { fromUpload, fromLoaders } from '../selectors';
 import LoaderSelect from './LoaderSelect';
-import { toast } from '@lodex/common';
+import { toast } from '../../../../common/tools/toast';
 import SourceCodeField from '../../lib/components/SourceCodeField';
 import { ConfirmPopup } from '../../lib/components/ConfirmPopup';
 import { useTranslate } from '../../i18n/I18NContext';

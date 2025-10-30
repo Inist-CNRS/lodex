@@ -36,7 +36,7 @@ module.exports = {
         {
             preset: '@shelf/jest-mongodb',
             displayName: 'api',
-            rootDir: `${__dirname}/packages/api/src`,
+            rootDir: `${__dirname}/src/api`,
             testEnvironment: 'node',
             testPathIgnorePatterns: ['e2e'],
             testMatch: [
@@ -50,19 +50,7 @@ module.exports = {
         },
         {
             displayName: 'common',
-            rootDir: `${__dirname}/packages/common/src`,
-            transform,
-            testMatch: [
-                '/**/*.spec.js',
-                '/**/*.spec.jsx',
-                '/**/*.spec.tsx',
-                '/**/*.spec.ts',
-            ],
-            workerIdleMemoryLimit,
-        },
-        {
-            displayName: 'workers',
-            rootDir: `${__dirname}/packages/workers/src`,
+            rootDir: `${__dirname}/src/common`,
             transform,
             testMatch: [
                 '/**/*.spec.js',

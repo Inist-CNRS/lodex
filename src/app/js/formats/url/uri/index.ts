@@ -1,7 +1,7 @@
 import Component, { getReadableValue } from './UriView';
 import AdminComponent, { defaultArgs } from '../DefaultUrlAdmin';
 import DefaultFormat from '../../utils/components/default-format';
-import { isLink } from '@lodex/common';
+import { isLink } from '../../../../../common/uris';
 
 export default {
     ...DefaultFormat,

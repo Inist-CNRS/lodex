@@ -8,7 +8,10 @@ import {
     getUpdatePrecomputedRequest,
 } from '../../user';
 import { getUserSessionStorageInfo } from './tools';
-import { type NewPreComputation, type PreComputation } from '@lodex/common';
+import {
+    type NewPreComputation,
+    type PreComputation,
+} from '../../../../common/types/precomputation';
 
 // @ts-expect-error TS7006
 export const getPreviewPrecomputed = (previewPrecomputed) => {

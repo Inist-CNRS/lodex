@@ -1,5 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
-import { toast } from '@lodex/common';
+import { toast } from '../../../../common/tools/toast';
 import fieldApi from '../../admin/api/field';
 import { useTranslate } from '../../i18n/I18NContext';
 import { useDispatch } from 'react-redux';

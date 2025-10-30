@@ -7,7 +7,8 @@ import React, { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 
 import { Tooltip } from '@mui/material';
-import { DEFAULT_TENANT, annotationUpdateSchema } from '@lodex/common';
+import { DEFAULT_TENANT } from '../../../../../common/tools/tenantTools';
+import { annotationUpdateSchema } from '../../../../../common/validator/annotation.validator';
 import { useTranslate } from '../../../i18n/I18NContext';
 import { SaveButton } from '../../../lib/components/SaveButton';
 import { getRedirectFieldHash } from '../helpers/field';

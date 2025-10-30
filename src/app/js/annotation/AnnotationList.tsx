@@ -21,7 +21,7 @@ import {
     ANNOTATION_KIND_CORRECTION,
     ANNOTATION_KIND_REMOVAL,
     type AnnotationStatus,
-} from '@lodex/common';
+} from '../../../common/validator/annotation.validator';
 import { AnnotationStatusChip } from '../admin/annotations/AnnotationStatus';
 import { AnnotationValue } from '../admin/annotations/AnnotationValue';
 import { getResourceType } from '../admin/annotations/helpers/resourceType';
