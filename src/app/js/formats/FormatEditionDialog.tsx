@@ -13,7 +13,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import type { ControllerRenderProps } from 'react-hook-form';
 import SelectFormat from './SelectFormat';
 import { getAdminComponent, getFormatInitialArgs } from '.';
-import CancelButton from '../lib/components/CancelButton';
+import CancelButton from '@lodex/frontend-common/components/CancelButton';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 
 const FormatEditionDialog = ({

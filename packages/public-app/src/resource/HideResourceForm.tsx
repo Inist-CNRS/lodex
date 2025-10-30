@@ -10,7 +10,7 @@ import {
     DialogTitle,
 } from '@mui/material';
 import { TextField } from '@lodex/frontend-common/form-fields/TextField';
-import CancelButton from '../../../../src/app/js/lib/components/CancelButton';
+import CancelButton from '@lodex/frontend-common/components/CancelButton';
 import ButtonWithStatus from '@lodex/frontend-common/components/ButtonWithStatus';
 import { hideResource } from '../api/hideResource';
 import { hideResourceSuccess } from './index';

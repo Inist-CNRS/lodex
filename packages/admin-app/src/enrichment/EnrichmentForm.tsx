@@ -17,7 +17,7 @@ import {
 } from './index';
 import { TaskStatus, toast } from '@lodex/common';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
-import CancelButton from '../../../../src/app/js/lib/components/CancelButton';
+import CancelButton from '@lodex/frontend-common/components/CancelButton';
 import {
     createEnrichment,
     getPreviewEnrichment,

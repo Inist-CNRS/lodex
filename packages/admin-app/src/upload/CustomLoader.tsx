@@ -19,7 +19,7 @@ import {
     upsertCustomLoader,
 } from './index';
 import loaderApi from '../api/loader';
-import CancelButton from '../../../../src/app/js/lib/components/CancelButton';
+import CancelButton from '@lodex/frontend-common/components/CancelButton';
 import {
     translate,
     useTranslate,

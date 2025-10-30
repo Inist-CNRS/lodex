@@ -18,7 +18,7 @@ import { z } from 'zod';
 import { loadConfigTenant } from './index';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 import AdminOnlyAlert from '@lodex/frontend-common/components/AdminOnlyAlert';
-import CancelButton from '../../../../src/app/js/lib/components/CancelButton';
+import CancelButton from '@lodex/frontend-common/components/CancelButton';
 import Loading from '../../../../src/app/js/lib/components/Loading';
 import { SaveButton } from '../../../../src/app/js/lib/components/SaveButton';
 import { TextField } from '../../../../src/app/js/lib/components/TextField';

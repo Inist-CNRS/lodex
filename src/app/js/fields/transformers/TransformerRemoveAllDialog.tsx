@@ -8,7 +8,7 @@ import {
     DialogActions,
 } from '@mui/material';
 
-import CancelButton from '../../lib/components/CancelButton';
+import CancelButton from '@lodex/frontend-common/components/CancelButton';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 
 interface TransformerRemoveAllDialogProps {

@@ -4,7 +4,7 @@ import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import { fromParsing, fromSubresources } from '../selectors';
 import { Box, Button } from '@mui/material';
-import CancelButton from '../../../../src/app/js/lib/components/CancelButton';
+import CancelButton from '@lodex/frontend-common/components/CancelButton';
 import { useHistory } from 'react-router';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 import type { State } from '../reducers';

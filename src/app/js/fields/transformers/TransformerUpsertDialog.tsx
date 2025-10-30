@@ -19,7 +19,7 @@ import {
 } from '@mui/material';
 
 import TransformerArg from './TransformerArg';
-import CancelButton from '../../lib/components/CancelButton';
+import CancelButton from '@lodex/frontend-common/components/CancelButton';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 
