@@ -26,8 +26,8 @@ import { AnnotationStatusChip } from '../../../../packages/admin-app/src/annotat
 import { AnnotationValue } from '../../../../packages/admin-app/src/annotations/AnnotationValue';
 import { getResourceType } from '../../../../packages/admin-app/src/annotations/helpers/resourceType';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
-import { CloseAllIcon } from '../lib/components/icons/CloseAllIcon';
-import { OpenAllIcon } from '../lib/components/icons/OpenAllIcon';
+import { CloseAllIcon } from './icons/CloseAllIcon';
+import { OpenAllIcon } from './icons/OpenAllIcon';
 import {
     MODE_ALL,
     MODE_CLOSED,
