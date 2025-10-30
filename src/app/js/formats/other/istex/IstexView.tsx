@@ -5,7 +5,7 @@ import FileDownload from '@mui/icons-material/GetApp';
 import Link from '../../../lib/components/Link';
 
 import fetchPaginatedDataForComponent from '@lodex/frontend-common/fetch/fetchPaginatedDataForComponent';
-import Alert from '../../../lib/components/Alert';
+import Alert from '@lodex/frontend-common/components/Alert';
 import { PropositionStatus, ISTEX_SITE_URL } from '@lodex/common';
 import { fetchForIstexFormat } from '../../utils/fetchIstexData';
 import IstexItem, { type IstexItemComponentProps } from './IstexItem';

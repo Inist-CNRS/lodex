@@ -3,7 +3,7 @@ import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 import compose from 'recompose/compose';
 
 import fetchDataForComponent from './fetchDataForComponent';
-import Alert from '../../../lib/components/Alert';
+import Alert from '@lodex/frontend-common/components/Alert';
 import { PropositionStatus } from '@lodex/common';
 import { fetchForIstexRefbibsFormat } from './fetchIstexRefbibsData';
 import IstexItem, { type IstexItemComponentProps } from '../istex/IstexItem';

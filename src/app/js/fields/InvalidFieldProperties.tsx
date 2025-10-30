@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 
-import Alert from '../lib/components/Alert';
+import Alert from '@lodex/frontend-common/components/Alert';
 import { fromFields } from '../sharedSelectors';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 

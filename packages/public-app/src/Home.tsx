@@ -10,7 +10,7 @@ import {
     fromFields,
     fromCharacteristic,
 } from '../../../src/app/js/sharedSelectors';
-import Alert from '../../../src/app/js/lib/components/Alert';
+import Alert from '@lodex/frontend-common/components/Alert';
 import Loading from '../../../src/app/js/lib/components/Loading';
 import DatasetCharacteristics from '../../../src/app/js/characteristic/DatasetCharacteristics';
 import NoDataset from './NoDataset';
