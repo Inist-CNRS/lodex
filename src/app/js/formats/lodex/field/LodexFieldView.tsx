@@ -4,9 +4,9 @@ import compose from 'recompose/compose';
 import URL from 'url';
 
 import { isURL } from '@lodex/common';
-import { type Field } from '../../../propTypes';
 import injectData from '../../injectData';
 import Link from '@lodex/frontend-common/components/Link';
+import type { Field } from '../../../fields/types';
 
 const styles = {
     container: {

@@ -5,7 +5,6 @@ import { clamp } from 'lodash';
 
 import InvalidFormat from '../InvalidFormat';
 import injectData from '../injectData';
-import { type Field } from '../../propTypes';
 import { CustomActionVegaLite } from '../utils/components/vega-lite-component';
 import {
     convertSpecTemplate,
@@ -14,6 +13,7 @@ import {
 } from '../utils/chartsUtils';
 import { useSizeObserver } from '../utils/chartsHooks';
 import stylesToClassName from '@lodex/frontend-common/utils/stylesToClassName';
+import type { Field } from '../../fields/types';
 
 // @ts-expect-error TS2554
 const styles = stylesToClassName({

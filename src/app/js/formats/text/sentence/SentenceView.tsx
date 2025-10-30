@@ -1,4 +1,4 @@
-import { type Field } from '../../../propTypes';
+import type { Field } from '../../../fields/types';
 
 interface SentenceViewProps {
     field: Field;

@@ -11,6 +11,7 @@ describe('<EmailView />', () => {
         const wrapper = shallow(
             <EmailView
                 resource={resource}
+                // @ts-expect-error TS7005
                 field={field}
                 // @ts-expect-error TS7005
                 fields={fields}

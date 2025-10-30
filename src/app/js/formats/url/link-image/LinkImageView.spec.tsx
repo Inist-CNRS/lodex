@@ -11,9 +11,9 @@ describe('<LinkImageView />', () => {
             format: { args: { maxHeight: 500 } },
         };
         const wrapper = shallow(
-            // @ts-expect-error TS2739
             <LinkImageView
                 resource={resource}
+                // @ts-expect-error TS2739
                 field={field}
                 value="http://image.com"
             />,

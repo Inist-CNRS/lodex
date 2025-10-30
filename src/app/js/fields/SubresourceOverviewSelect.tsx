@@ -8,7 +8,7 @@ import { fromFields } from '../sharedSelectors';
 import fieldApi from '../../../../packages/admin-app/src/api/field';
 import FieldRepresentation from './FieldRepresentation';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
-import type { Field } from '../propTypes';
+import type { Field } from './types';
 
 interface SubresourceOverviewSelectComponentProps {
     fields?: Field[];
@@ -25,10 +25,8 @@ export const SubresourceOverviewSelectComponent = ({
     const subresourceTitle = useMemo(() => {
         // @ts-expect-error TS18048
         const subresourceTitleField = fields.find(
-            // @ts-expect-error TS7006
             (field) => field.overview === Overview.SUBRESOURCE_TITLE,
         );
-        // @ts-expect-error TS2339
         return subresourceTitleField?._id;
     }, [fields]);
 
@@ -70,9 +68,7 @@ export const SubresourceOverviewSelectComponent = ({
                         alignItems: 'center',
                         gap: 2,
                     }}
-                    // @ts-expect-error TS18046
                     key={field._id}
-                    // @ts-expect-error TS18046
                     value={field._id}
                 >
                     <FieldRepresentation field={field} />

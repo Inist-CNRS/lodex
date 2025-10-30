@@ -3,10 +3,23 @@ import withHandlers from 'recompose/withHandlers';
 import { ListItem, IconButton, Grid, Box } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 
-import { type ValidationFieldProps } from '../../../../src/app/js/propTypes';
 import { fromFields } from '../../../../src/app/js/sharedSelectors';
 import { connect } from 'react-redux';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
+
+export type ValidationFieldProperty = {
+    error?: string;
+    isValid: boolean;
+    name: string;
+};
+
+export type ValidationFieldProps = {
+    isValid: boolean;
+    name: string;
+    label: string;
+    properties: ValidationFieldProperty[];
+};
+
 const styles = {
     label: {
         background: 'none',

@@ -1,6 +1,5 @@
 import { Typography } from '@mui/material';
-
-import { type Field } from '../../../propTypes';
+import type { Field } from '../../../fields/types';
 
 interface TitleViewInternalProps {
     value: string;

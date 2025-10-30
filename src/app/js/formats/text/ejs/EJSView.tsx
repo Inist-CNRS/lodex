@@ -1,4 +1,3 @@
-import { type Field } from '../../../propTypes';
 import { useMemo, useState } from 'react';
 // @ts-expect-error TS7016
 import ejs from 'ejs/ejs.min.js'; // import the browser-friendly build from ejs
@@ -8,6 +7,7 @@ import InvalidFormat from '../../InvalidFormat';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import _ from 'lodash';
+import type { Field } from '../../../fields/types';
 
 interface EJSViewProps {
     field: Field;
@@ -99,6 +99,7 @@ export const EJSAdminView = connect((state, { dataset }) => {
             values: dataset.values,
         },
     };
+    // @ts-expect-error TS2345
 })(EJSView);
 
 // @ts-expect-error TS2345

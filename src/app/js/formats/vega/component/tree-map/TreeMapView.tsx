@@ -1,4 +1,3 @@
-import { type Field } from '../../../../propTypes';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import injectData from '../../../injectData';
@@ -13,6 +12,7 @@ import {
 import InvalidFormat from '../../../InvalidFormat';
 import { CustomActionVega } from '../../../utils/components/vega-component';
 import TreeMapData from './TreeMapData';
+import type { Field } from '../../../../fields/types';
 
 const styles = {
     container: {

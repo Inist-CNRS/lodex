@@ -8,7 +8,7 @@ import { fromFields } from '../sharedSelectors';
 import fieldApi from '../../../../packages/admin-app/src/api/field';
 import FieldRepresentation from './FieldRepresentation';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
-import type { Field } from '../propTypes';
+import type { Field } from './types';
 
 interface DatasetOverviewSelectComponentProps {
     fields?: Field[];
@@ -23,15 +23,12 @@ export const DatasetOverviewSelectComponent = ({
     const [datasetTitle, datasetDescription] = useMemo(() => {
         // @ts-expect-error TS18048
         const datasetTitleField = fields.find(
-            // @ts-expect-error TS7006
             (field) => field.overview === Overview.DATASET_TITLE,
         );
         // @ts-expect-error TS18048
         const datasetDescriptionField = fields.find(
-            // @ts-expect-error TS7006
             (field) => field.overview === Overview.DATASET_DESCRIPTION,
         );
-        // @ts-expect-error TS2339
         return [datasetTitleField?._id, datasetDescriptionField?._id];
     }, [fields]);
 
@@ -83,9 +80,7 @@ export const DatasetOverviewSelectComponent = ({
                             alignItems: 'center',
                             gap: 2,
                         }}
-                        // @ts-expect-error TS18046
                         value={field._id}
-                        // @ts-expect-error TS18046
                         key={field._id}
                     >
                         <FieldRepresentation field={field} />
@@ -118,9 +113,7 @@ export const DatasetOverviewSelectComponent = ({
                             alignItems: 'center',
                             gap: 2,
                         }}
-                        // @ts-expect-error TS18046
                         value={field._id}
-                        // @ts-expect-error TS18046
                         key={field._id}
                     >
                         <FieldRepresentation field={field} />

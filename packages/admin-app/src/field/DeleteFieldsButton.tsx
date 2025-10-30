@@ -17,7 +17,7 @@ import { removeFieldList } from '../../../../src/app/js/fields';
 import FieldRepresentation from '../../../../src/app/js/fields/FieldRepresentation';
 import { fromFields } from '../../../../src/app/js/sharedSelectors';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
-import type { Field } from '../../../../src/app/js/propTypes';
+import type { Field } from '../../../../src/app/js/fields/types';
 
 interface DeleteFieldsButtonComponentProps {
     fields?: (Field & {

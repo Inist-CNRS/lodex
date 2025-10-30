@@ -2,10 +2,11 @@ import { shallow } from 'enzyme';
 import { Button } from '@mui/material';
 
 import { ExcerptRemoveColumnComponent as ExcerptRemoveColumn } from './ExcerptRemoveColumn';
+import type { Field } from '../../../../src/app/js/fields/types';
 
 describe('<ExcerptRemoveColumn />', () => {
     it('renders a remove button if column is not uri', () => {
-        const field = { name: 'foo', label: 'foo' };
+        const field = { name: 'foo', label: 'foo' } as Field;
 
         const wrapper = shallow(
             <ExcerptRemoveColumn
@@ -20,7 +21,7 @@ describe('<ExcerptRemoveColumn />', () => {
     });
 
     it('does not render a remove button if column is uri', () => {
-        const field = { name: 'uri', label: 'foo' };
+        const field = { name: 'uri', label: 'foo' } as Field;
 
         const wrapper = shallow(
             <ExcerptRemoveColumn

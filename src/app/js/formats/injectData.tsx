@@ -10,9 +10,9 @@ import {
 import Loading from '@lodex/frontend-common/components/Loading';
 import InvalidFormat from './InvalidFormat';
 import { CircularProgress } from '@mui/material';
-import type { Field } from '../propTypes';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 import { isEqual } from 'lodash';
+import type { Field } from '../fields/types';
 
 const styles = {
     message: {

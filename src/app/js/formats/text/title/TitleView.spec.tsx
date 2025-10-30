@@ -17,6 +17,7 @@ function TestTitleView() {
             <QueryClientProvider client={queryClient}>
                 <TitleView
                     resource={resource}
+                    // @ts-expect-error TS2739
                     field={field}
                     level={1}
                     colors={'#ff6347'}
