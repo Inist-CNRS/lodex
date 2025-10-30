@@ -1,4 +1,4 @@
-import { render } from '../../../../test-utils';
+import { render } from '../../../src/test-utils';
 import { SaveButton } from './SaveButton';
 import { TestI18N } from '@lodex/frontend-common/i18n/I18NContext';
 

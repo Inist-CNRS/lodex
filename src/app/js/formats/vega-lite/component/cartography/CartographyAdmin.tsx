@@ -9,7 +9,7 @@ import {
     TextField,
 } from '@mui/material';
 
-import { GradientSchemeSelector } from '../../../../lib/components/ColorSchemeSelector';
+import { GradientSchemeSelector } from '@lodex/frontend-common/components/ColorSchemeSelector';
 import RoutineParamsAdmin from '../../../utils/components/admin/RoutineParamsAdmin';
 import VegaToolTips from '../../../utils/components/admin/VegaToolTips';
 import { MAP_EUROPE, MAP_FRANCE, MAP_WORLD } from '../../../utils/chartsUtils';

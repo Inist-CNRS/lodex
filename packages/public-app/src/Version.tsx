@@ -1,4 +1,4 @@
-import Link from '../../../src/app/js/lib/components/Link';
+import Link from '@lodex/frontend-common/components/Link';
 import Container from '@mui/material/Container';
 
 import { version } from '../../../package.json';

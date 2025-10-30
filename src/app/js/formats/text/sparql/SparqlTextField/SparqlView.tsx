@@ -9,7 +9,7 @@ import toPairs from 'lodash/toPairs';
 // @ts-expect-error TS7016
 import toSentenceCase from 'js-sentencecase';
 import { getViewComponent } from '../../../index';
-import Link from '../../../../lib/components/Link';
+import Link from '@lodex/frontend-common/components/Link';
 
 const styles = {
     container2: {

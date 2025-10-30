@@ -1,6 +1,6 @@
 import { shallow } from 'enzyme';
 
-import Loading from '../../../src/app/js/lib/components/Loading';
+import Loading from '@lodex/frontend-common/components/Loading';
 import ParsingResult from './parsing/ParsingResult';
 import Upload from './upload/Upload';
 import { AdminComponent } from './Admin';

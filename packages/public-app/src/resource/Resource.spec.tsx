@@ -1,7 +1,7 @@
 import { ThemeProvider, createTheme } from '@mui/material';
 
 import { render } from '../../../../src/test-utils';
-import Loading from '../../../../src/app/js/lib/components/Loading';
+import Loading from '@lodex/frontend-common/components/Loading';
 import Detail from './Detail';
 import RemovedDetail from './RemovedDetail';
 import { ResourceComponent, type ResourceComponentProps } from './Resource';

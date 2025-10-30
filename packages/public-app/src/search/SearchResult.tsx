@@ -1,7 +1,7 @@
 import { memo, useState, type CSSProperties } from 'react';
 import classnames from 'classnames';
 
-import Link from '../../../../src/app/js/lib/components/Link';
+import Link from '@lodex/frontend-common/components/Link';
 import { isURL, getResourceUri } from '@lodex/common';
 import stylesToClassname from '../../../../src/app/js/lib/stylesToClassName';
 import { Box } from '@mui/material';

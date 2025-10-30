@@ -2,7 +2,7 @@ import { shallow } from 'enzyme';
 import { Button } from '@mui/material';
 
 import { FacetValueList } from './FacetValueList';
-import SortButton from '../../../../src/app/js/lib/components/SortButton';
+import SortButton from '@lodex/frontend-common/components/SortButton';
 
 describe('FacetValueList', () => {
     const defaultProps = {

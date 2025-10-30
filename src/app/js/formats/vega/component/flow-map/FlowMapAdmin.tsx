@@ -3,7 +3,7 @@ import RoutineParamsAdmin from '../../../utils/components/admin/RoutineParamsAdm
 import VegaToolTips from '../../../utils/components/admin/VegaToolTips';
 import ColorPickerParamsAdmin from '../../../utils/components/admin/ColorPickerParamsAdmin';
 import { schemeBlues } from 'd3-scale-chromatic';
-import { GradientSchemeSelector } from '../../../../lib/components/ColorSchemeSelector';
+import { GradientSchemeSelector } from '@lodex/frontend-common/components/ColorSchemeSelector';
 import { FormControlLabel, FormGroup, Switch } from '@mui/material';
 import FlowMap from '../../models/FlowMap';
 import VegaAdvancedMode from '../../../utils/components/admin/VegaAdvancedMode';

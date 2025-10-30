@@ -1,6 +1,6 @@
 import { type Field } from '../../../propTypes';
 import { resolvers } from './index';
-import Link from '../../../lib/components/Link';
+import Link from '@lodex/frontend-common/components/Link';
 import stylesToClassname from '../../../lib/stylesToClassName';
 
 // @ts-expect-error TS2554

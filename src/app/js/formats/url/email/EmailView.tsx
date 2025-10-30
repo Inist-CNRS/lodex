@@ -1,6 +1,6 @@
 import { type Field } from '../../../propTypes';
 import getLabel from '../../utils/getLabel';
-import Link from '../../../lib/components/Link';
+import Link from '@lodex/frontend-common/components/Link';
 
 interface EmailViewProps {
     className?: string;

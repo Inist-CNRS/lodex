@@ -18,8 +18,8 @@ import {
 
 import { fromFacet } from '../selectors';
 import FacetValueItem from './FacetValueItem';
-import Pagination from '../../../../src/app/js/lib/components/Pagination';
-import SortButton from '../../../../src/app/js/lib/components/SortButton';
+import Pagination from '@lodex/frontend-common/components/Pagination';
+import SortButton from '@lodex/frontend-common/components/SortButton';
 import FacetActionsContext from './FacetActionsContext';
 import FacetValueAll from './FacetValueAll';
 

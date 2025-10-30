@@ -6,7 +6,7 @@ import URL from 'url';
 import { isURL } from '@lodex/common';
 import { type Field } from '../../../propTypes';
 import injectData from '../../injectData';
-import Link from '../../../lib/components/Link';
+import Link from '@lodex/frontend-common/components/Link';
 
 const styles = {
     container: {

@@ -12,7 +12,7 @@ import { fromParsing, fromPublication, fromUpload } from './selectors';
 import ParsingResult from './parsing/ParsingResult';
 import PublicationPreview from './preview/publication/PublicationPreview';
 import Upload from './upload/Upload';
-import Loading from '../../../src/app/js/lib/components/Loading';
+import Loading from '@lodex/frontend-common/components/Loading';
 import { preLoadLoaders } from './loader';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 
