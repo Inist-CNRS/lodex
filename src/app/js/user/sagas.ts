@@ -2,7 +2,7 @@ import { call, select, takeEvery, fork } from 'redux-saga/effects';
 
 import { LOGOUT, SIGNOUT } from './';
 import { fromUser } from '../sharedSelectors';
-import fetchSaga from '../lib/sagas/fetchSaga';
+import fetchSaga from '@lodex/frontend-common/fetch/fetchSaga';
 
 export function* handleLogoutRequest() {
     // @ts-expect-error TS7057

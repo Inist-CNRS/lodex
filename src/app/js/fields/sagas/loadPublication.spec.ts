@@ -6,7 +6,7 @@ import {
     loadPublicationSuccess,
 } from '../';
 import { fromUser, fromFields } from '../../sharedSelectors';
-import fetchSaga from '../../lib/sagas/fetchSaga';
+import fetchSaga from '@lodex/frontend-common/fetch/fetchSaga';
 
 import { handleLoadPublicationRequest } from './loadPublication';
 

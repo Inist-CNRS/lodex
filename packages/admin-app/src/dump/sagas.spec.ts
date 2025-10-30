@@ -1,6 +1,6 @@
 import { dumpDatasetError, dumpDatasetSuccess } from './index';
 import streamFile from '../../../../src/app/js/lib/streamFile';
-import fetchSaga from '../../../../src/app/js/lib/sagas/fetchSaga';
+import fetchSaga from '@lodex/frontend-common/fetch/fetchSaga';
 import { fromUser } from '../../../../src/app/js/sharedSelectors';
 import { handleDumpDatasetRequest } from './sagas';
 import { call, select, put } from 'redux-saga/effects';

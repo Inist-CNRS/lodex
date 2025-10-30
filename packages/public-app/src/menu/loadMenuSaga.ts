@@ -3,7 +3,7 @@ import { call, put, select, takeLatest } from 'redux-saga/effects';
 import { LOAD_MENU, loadMenuSuccess, loadMenuError } from './reducer';
 import { fromMenu } from '../selectors';
 import { fromUser } from '../../../../src/app/js/sharedSelectors';
-import fetchSaga from '../../../../src/app/js/lib/sagas/fetchSaga';
+import fetchSaga from '@lodex/frontend-common/fetch/fetchSaga';
 
 export function* handleLoadMenu() {
     // @ts-expect-error TS7057

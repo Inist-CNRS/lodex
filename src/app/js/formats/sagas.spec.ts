@@ -11,7 +11,7 @@ import {
 } from './sagas';
 import { loadFormatDataSuccess, loadFormatDataError } from './reducer';
 import getQueryString from '../lib/getQueryString';
-import fetchSaga from '../lib/sagas/fetchSaga';
+import fetchSaga from '@lodex/frontend-common/fetch/fetchSaga';
 import {
     fromDataset,
     fromFormat,

@@ -2,7 +2,7 @@ import { call, select, takeLatest, fork, put } from 'redux-saga/effects';
 
 import { dumpDatasetError, dumpDatasetSuccess, DUMP_DATASET } from './index';
 import { fromUser } from '../../../../src/app/js/sharedSelectors';
-import fetchSaga from '../../../../src/app/js/lib/sagas/fetchSaga';
+import fetchSaga from '@lodex/frontend-common/fetch/fetchSaga';
 import streamFile from '../../../../src/app/js/lib/streamFile';
 
 // @ts-expect-error TS7031

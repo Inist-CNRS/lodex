@@ -3,7 +3,7 @@ import { call, put, select, takeEvery } from 'redux-saga/effects';
 import { fromUser } from '../../../../../src/app/js/sharedSelectors';
 import { fromUpload } from '../../selectors';
 import { UPLOAD_URL, uploadError, uploadSuccess } from '../index';
-import fetch from '../../../../../src/app/js/lib/fetch';
+import fetch from '@lodex/frontend-common/fetch/fetch';
 import { preventUnload, allowUnload } from './unload';
 
 export function* handleUploadUrl() {

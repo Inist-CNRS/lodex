@@ -7,7 +7,7 @@ import {
 } from './reducer';
 import { fromBreadcrumb } from '../selectors';
 import { fromUser } from '../../../../src/app/js/sharedSelectors';
-import fetchSaga from '../../../../src/app/js/lib/sagas/fetchSaga';
+import fetchSaga from '@lodex/frontend-common/fetch/fetchSaga';
 
 export function* handleLoadBreadcrumb() {
     // @ts-expect-error TS7057

@@ -2,7 +2,7 @@ import { Component } from 'react';
 import Helmet from 'react-helmet';
 import { CircularProgress } from '@mui/material';
 
-import fetch from '../../../src/app/js/lib/fetch';
+import fetch from '@lodex/frontend-common/fetch/fetch';
 
 interface CustomPageProps {
     link: string;

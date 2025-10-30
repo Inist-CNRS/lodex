@@ -6,7 +6,7 @@ import {
     updateCharacteristicsSuccess,
 } from '../';
 import { fromUser } from '../../sharedSelectors';
-import fetchSaga from '../../lib/sagas/fetchSaga';
+import fetchSaga from '@lodex/frontend-common/fetch/fetchSaga';
 import { configureFieldSuccess } from '../../fields/index';
 
 // @ts-expect-error TS7031

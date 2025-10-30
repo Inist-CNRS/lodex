@@ -11,7 +11,7 @@ import {
     handlePreLoadDatasetPage,
 } from './sagas';
 import { fromUser } from '../../../../src/app/js/sharedSelectors';
-import fetchSaga from '../../../../src/app/js/lib/sagas/fetchSaga';
+import fetchSaga from '@lodex/frontend-common/fetch/fetchSaga';
 import { fromDataset } from '../selectors';
 
 describe('dataset saga', () => {

@@ -26,7 +26,7 @@ import {
 } from './reducer';
 
 import { LOAD_PUBLICATION_SUCCESS } from '../../../../src/app/js/fields';
-import fetchSaga from '../../../../src/app/js/lib/sagas/fetchSaga';
+import fetchSaga from '@lodex/frontend-common/fetch/fetchSaga';
 import { fromFields, fromUser } from '../../../../src/app/js/sharedSelectors';
 import facetSagasFactory from '../facet/sagas';
 import { LOAD_RESOURCE_SUCCESS } from '../resource';

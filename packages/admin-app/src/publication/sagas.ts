@@ -8,7 +8,7 @@ import {
 } from './index';
 import { PUBLISH_ERROR, PUBLISH_SUCCESS } from '../publish';
 import { fromUser } from '../../../../src/app/js/sharedSelectors';
-import fetchSaga from '../../../../src/app/js/lib/sagas/fetchSaga';
+import fetchSaga from '@lodex/frontend-common/fetch/fetchSaga';
 
 // @ts-expect-error TS7031
 export function* handleLoadPublicationRequest({ payload }) {

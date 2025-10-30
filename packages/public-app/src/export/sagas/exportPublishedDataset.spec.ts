@@ -4,7 +4,7 @@ import { handleExportPublishedDatasetSuccess } from './exportPublishedDataset';
 import getQueryString from '../../../../../src/app/js/lib/getQueryString';
 import { fromSearch } from '../../selectors';
 import { fromUser } from '../../../../../src/app/js/sharedSelectors';
-import fetchSaga from '../../../../../src/app/js/lib/sagas/fetchSaga';
+import fetchSaga from '@lodex/frontend-common/fetch/fetchSaga';
 import downloadFile from '../../../../../src/app/js/lib/downloadFile';
 
 describe('export saga', () => {
