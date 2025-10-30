@@ -2,8 +2,8 @@ import { useMemo } from 'react';
 // @ts-expect-error TS7016
 import MarkdownIt from 'markdown-it';
 
-import { type Field } from '../../../../propTypes';
 import InvalidFormat from '../../../InvalidFormat';
+import type { Field } from '../../../../fields/types';
 
 const markdown = new MarkdownIt();
 

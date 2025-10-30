@@ -12,8 +12,8 @@ import {
 } from '../../../utils/chartsUtils';
 import InvalidFormat from '../../../InvalidFormat';
 import { useSizeObserver } from '../../../utils/chartsHooks';
-import { type Field } from '../../../../propTypes';
 import injectData from '../../../injectData';
+import type { Field } from '../../../../fields/types';
 
 const styles = {
     container: {

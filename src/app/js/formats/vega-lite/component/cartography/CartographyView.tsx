@@ -12,11 +12,11 @@ import {
     VEGA_LITE_DATA_INJECT_TYPE_B,
     VEGA_LITE_DATA_INJECT_TYPE_C,
 } from '../../../utils/chartsUtils';
-import { type Field } from '../../../../propTypes';
 import injectData from '../../../injectData';
 import Cartography from '../../models/Cartography';
 import InvalidFormat from '../../../InvalidFormat';
 import { useSizeObserver } from '../../../utils/chartsHooks';
+import type { Field } from '../../../../fields/types';
 
 const styles = {
     container: {

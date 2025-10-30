@@ -4,9 +4,9 @@ import compose from 'recompose/compose';
 import { TableCell, Button } from '@mui/material';
 
 import { removeField } from '../../../../src/app/js/fields';
-import { type Field } from '../../../../src/app/js/propTypes';
 import getFieldClassName from '@lodex/frontend-common/utils/getFieldClassName';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
+import type { Field } from '../../../../src/app/js/fields/types';
 
 interface ExcerptRemoveColumnComponentProps {
     removeColumn(...args: unknown[]): unknown;

@@ -4,7 +4,6 @@ import compose from 'recompose/compose';
 import { clamp } from 'lodash';
 
 import injectData from '../../../injectData';
-import { type Field } from '../../../../propTypes';
 import {
     AXIS_X,
     AXIS_Y,
@@ -18,6 +17,7 @@ import BarChart from '../../models/BarChart';
 import { CustomActionVegaLite } from '../../../utils/components/vega-lite-component';
 import InvalidFormat from '../../../InvalidFormat';
 import { useSizeObserver } from '../../../utils/chartsHooks';
+import type { Field } from '../../../../fields/types';
 
 const styles = {
     container: {

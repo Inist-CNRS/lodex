@@ -1,8 +1,8 @@
 import memoize from 'lodash/memoize';
 
 import { PropositionStatus } from '@lodex/common';
-import { type Field } from '../../../propTypes';
 import { getSiteUrl } from '../../utils/fetchIstexData';
+import type { Field } from '../../../fields/types';
 
 const styles = {
     text: memoize((status) => ({

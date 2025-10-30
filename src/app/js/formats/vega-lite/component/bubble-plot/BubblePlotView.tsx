@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { clamp } from 'lodash';
 import compose from 'recompose/compose';
 
-import { type Field } from '../../../../propTypes';
 import { CustomActionVegaLite } from '../../../utils/components/vega-lite-component';
 import injectData from '../../../injectData';
 import {
@@ -15,6 +14,7 @@ import {
 import BubblePlot from '../../models/BubblePlot';
 import InvalidFormat from '../../../InvalidFormat';
 import { useSizeObserver } from '../../../utils/chartsHooks';
+import type { Field } from '../../../../fields/types';
 
 const styles = {
     container: {

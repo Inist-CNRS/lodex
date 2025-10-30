@@ -1,4 +1,4 @@
-export interface Field {
+export type Field = {
     _id: string;
     name: string;
     label?: string;
@@ -8,7 +8,7 @@ export interface Field {
     position?: number;
     isDefaultSortField?: boolean;
     sortOrder?: 'asc' | 'desc';
-}
+};
 
 export interface TransformerDraft {
     operation: string;

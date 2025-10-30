@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 
 import HeatMap from '../../models/HeatMap';
-import { type Field } from '../../../../propTypes';
 import {
     convertSpecTemplate,
     lodexOrderToIdOrder,
@@ -15,6 +14,7 @@ import InvalidFormat from '../../../InvalidFormat';
 import { useSizeObserver } from '../../../utils/chartsHooks';
 import { CustomActionVegaLite } from '../../../utils/components/vega-lite-component';
 import injectData from '../../../injectData';
+import type { Field } from '../../../../fields/types';
 
 const styles = {
     container: {

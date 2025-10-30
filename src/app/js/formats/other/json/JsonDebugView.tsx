@@ -2,10 +2,10 @@ import { lazy, Suspense, useMemo } from 'react';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 
-import { type Field } from '../../../propTypes';
 import injectData from '../../injectData';
 import Loading from '@lodex/frontend-common/components/Loading';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
+import type { Field } from '../../../fields/types';
 
 const ReactJson = lazy(() => import('react-json-view'));
 

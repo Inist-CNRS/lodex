@@ -1,5 +1,4 @@
 import { Component } from 'react';
-import { type Field } from '../../../../propTypes';
 import {
     TableCell,
     TableFooter,
@@ -10,6 +9,7 @@ import {
 } from '@mui/material';
 import { getViewComponent } from '../../../index';
 import _ from 'lodash';
+import type { Field } from '../../../../fields/types';
 
 interface AbstractTableViewProps {
     field: Field;

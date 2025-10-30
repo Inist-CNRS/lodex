@@ -9,9 +9,9 @@ import IconButton from '@mui/material/IconButton';
 import Container from '@mui/material/Container';
 import CloseIcon from '@mui/icons-material/Close';
 
-import { type Field } from '../../../../propTypes';
 import InvalidFormat from '../../../InvalidFormat';
 import getLabel from '../../../utils/getLabel';
+import type { Field } from '../../../../fields/types';
 
 const markdown = new MarkdownIt();
 

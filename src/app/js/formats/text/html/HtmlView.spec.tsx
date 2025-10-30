@@ -6,6 +6,7 @@ describe('<HtmlView />', () => {
     it('should render', () => {
         const resource = { foo: '<b>Run you fools!</b>' };
         const field = { name: 'foo' };
+        // @ts-expect-error TS2322
         const wrapper = shallow(<HtmlView resource={resource} field={field} />);
         expect(wrapper.find('div')).toHaveLength(1);
         expect(wrapper.prop('dangerouslySetInnerHTML')).toEqual({
