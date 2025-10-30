@@ -11,7 +11,7 @@ import { FormApi, useField } from '@tanstack/react-form';
 import { useCallback, useMemo } from 'react';
 
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
-import { useAutocompleteTranslations } from './useAutocompleteTranslations';
+import { useAutocompleteTranslations } from './useAutocompleteTranslations.ts';
 
 const filter = createFilterOptions();
 // @ts-expect-error TS7006
