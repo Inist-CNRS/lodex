@@ -12,7 +12,7 @@ import {
 } from '../../../src/app/js/sharedSelectors';
 import Alert from '@lodex/frontend-common/components/Alert';
 import Loading from '@lodex/frontend-common/components/Loading';
-import DatasetCharacteristics from '../../../src/app/js/characteristic/DatasetCharacteristics';
+import DatasetCharacteristics from './characteristics/DatasetCharacteristics';
 import NoDataset from './NoDataset';
 import getTitle from '@lodex/frontend-common/utils/getTitle';
 
