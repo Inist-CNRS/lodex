@@ -1,11 +1,14 @@
 import { call, put, select } from 'redux-saga/effects';
 
-import { updateCharacteristicsError, updateCharacteristicsSuccess } from '../';
+import {
+    updateCharacteristicsError,
+    updateCharacteristicsSuccess,
+} from '../reducer';
 import { fromUser } from '../../sharedSelectors';
 import fetchSaga from '@lodex/frontend-common/fetch/fetchSaga';
 
 import { handleUpdateCharacteristics } from './updateCharacteristic';
-import { configureFieldSuccess } from '../../fields/index';
+import { configureFieldSuccess } from '../../fields/reducer';
 
 describe('characteristic saga', () => {
     describe('handleUpdateCharacteristics', () => {

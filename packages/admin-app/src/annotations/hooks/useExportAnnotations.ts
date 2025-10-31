@@ -3,7 +3,7 @@ import { useCallback, useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
 
 import fetch from '@lodex/frontend-common/fetch/fetch';
-import { getRequest } from '../../../../../src/app/js/user';
+import { getRequest } from '../../../../../src/app/js/user/reducer';
 import { getUserSessionStorageInfo } from '../../api/tools';
 import { useDownloader } from '../../commons/useDownloader';
 

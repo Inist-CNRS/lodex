@@ -7,7 +7,7 @@ import { computeFieldPreviewSuccess, computeFieldPreviewError } from './index';
 import { fromParsing } from '../../selectors';
 import { GET_SOURCE_VALUE_FROM_TRANSFORMERS } from '../../../../../src/app/js/fields/sourceValue/SourceValueToggle';
 import { prepareFieldFormData } from '../../../../../src/app/js/fields/sagas/saveField.ts';
-import { LODEX_FIELD_FORM_CHANGE } from '../../../../../src/app/js/fields';
+import { LODEX_FIELD_FORM_CHANGE } from '../../../../../src/app/js/fields/reducer.ts';
 import type { PreviewLine } from '../../../../../src/app/js/fields/types.ts';
 
 // @ts-expect-error TS7031

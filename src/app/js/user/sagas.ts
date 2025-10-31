@@ -1,6 +1,6 @@
 import { call, select, takeEvery, fork } from 'redux-saga/effects';
 
-import { LOGOUT, SIGNOUT } from './';
+import { LOGOUT, SIGNOUT } from './reducer';
 import { fromUser } from '../sharedSelectors';
 import fetchSaga from '@lodex/frontend-common/fetch/fetchSaga';
 

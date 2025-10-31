@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 
 import PublicationExcerpt from './PublicationExcerpt';
-import { loadField } from '../../../../../src/app/js/fields';
+import { loadField } from '../../../../../src/app/js/fields/reducer';
 import { fromFields } from '../../../../../src/app/js/sharedSelectors';
 
 const styles = {

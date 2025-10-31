@@ -25,8 +25,8 @@ import {
     APPLY_FILTER,
     facetActionTypes,
 } from '../../../../packages/public-app/src/dataset';
-import { CONFIGURE_FIELD_SUCCESS } from '../fields';
-import { UPDATE_CHARACTERISTICS_SUCCESS } from '../characteristic';
+import { CONFIGURE_FIELD_SUCCESS } from '../fields/reducer';
+import { UPDATE_CHARACTERISTICS_SUCCESS } from '../characteristic/reducer';
 import { ISTEX_API_URL } from '../api/externals';
 import { isPrecomputed } from './checkPredicate';
 

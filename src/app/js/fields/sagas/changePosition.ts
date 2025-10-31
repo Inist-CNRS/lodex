@@ -1,5 +1,5 @@
 import { takeEvery, call, select, put } from 'redux-saga/effects';
-import { changePositionValue, CHANGE_POSITIONS } from '../';
+import { changePositionValue, CHANGE_POSITIONS } from '../reducer';
 
 import { fromFields, fromUser } from '../../sharedSelectors';
 import fetchSaga from '@lodex/frontend-common/fetch/fetchSaga';

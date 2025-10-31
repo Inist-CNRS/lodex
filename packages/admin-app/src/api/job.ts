@@ -3,7 +3,7 @@ import {
     getCancelJobRequest,
     getClearJobsRequest,
     getJobLogsRequest,
-} from '../../../../src/app/js/user';
+} from '../../../../src/app/js/user/reducer';
 import { getUserSessionStorageInfo } from './tools';
 
 export const getJobLogs = (jobId: string) => {

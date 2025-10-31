@@ -3,7 +3,7 @@ import { combineActions, createAction, handleActions } from 'redux-actions';
 import {
     SAVE_FIELD_SUCCESS,
     SAVE_FIELD_ERROR,
-} from '../../../../src/app/js/fields';
+} from '../../../../src/app/js/fields/reducer';
 
 export const PUBLISH = 'PUBLISH';
 export const PUBLISH_SUCCESS = 'PUBLISH_SUCCESS';

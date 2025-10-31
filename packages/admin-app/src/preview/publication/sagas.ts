@@ -24,7 +24,7 @@ import {
     REMOVE_FIELD_LIST_SUCCESS,
     REMOVE_FIELD_SUCCESS,
     SAVE_FIELD_SUCCESS,
-} from '../../../../../src/app/js/fields';
+} from '../../../../../src/app/js/fields/reducer';
 
 export function* handleComputePublicationPreview() {
     try {

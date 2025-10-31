@@ -1,9 +1,9 @@
 import get from 'lodash/get';
 
 import { createGlobalSelectors } from '@lodex/frontend-common/utils/selectors';
-import { selectors as fieldsSelectors } from './fields';
-import { selectors as userSelectors } from './user';
-import { selectors as characteristicSelectors } from './characteristic';
+import { selectors as fieldsSelectors } from './fields/reducer';
+import { selectors as userSelectors } from './user/reducer';
+import { selectors as characteristicSelectors } from './characteristic/reducer';
 
 export const fromCharacteristic = createGlobalSelectors(
     (s) => s.characteristic,

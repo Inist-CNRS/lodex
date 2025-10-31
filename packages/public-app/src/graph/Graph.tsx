@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 
 import { Settings } from '@mui/icons-material';
-import { preLoadPublication } from '../../../../src/app/js/fields';
+import { preLoadPublication } from '../../../../src/app/js/fields/reducer';
 import stylesToClassname from '@lodex/frontend-common/utils/stylesToClassName';
 import {
     fromCharacteristic,

@@ -18,7 +18,7 @@ import {
 import { Box } from '@mui/system';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
-import { loadField } from '../../../../src/app/js/fields';
+import { loadField } from '../../../../src/app/js/fields/reducer';
 import { fromFields } from '../../../../src/app/js/sharedSelectors';
 
 import { Overview, getFieldForSpecificScope, toast } from '@lodex/common';

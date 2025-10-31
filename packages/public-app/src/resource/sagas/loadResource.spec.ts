@@ -2,7 +2,7 @@ import { call, put, select } from 'redux-saga/effects';
 import { LOCATION_CHANGE } from 'redux-first-history';
 
 import { loadResource, loadResourceSuccess, loadResourceError } from '../index';
-import { preLoadPublication } from '../../../../../src/app/js/fields';
+import { preLoadPublication } from '../../../../../src/app/js/fields/reducer';
 import fetchSaga from '@lodex/frontend-common/fetch/fetchSaga';
 import { fromUser } from '../../../../../src/app/js/sharedSelectors';
 import { fromResource, fromRouter } from '../../selectors';
