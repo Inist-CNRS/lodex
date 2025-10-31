@@ -46,7 +46,7 @@ type TenantsProps = {
 const Tenants = ({ handleLogout }: TenantsProps) => {
     const [tenants, setTenants] = useState([]);
     const [openCreateTenantDialog, setOpenCreateTenantDialog] = useState(false);
-    const [openDeleteTenantDialog, setOpenDeleteTenantDialog] = useState(false);
+    const [tenantToDelete, setTenantToDelete] = useState<null | Tenant>(null);
     const [tenantToUpdate, setTenantToUpdate] = useState(null);
 
     // @ts-expect-error TS7006
@@ -74,7 +74,7 @@ const Tenants = ({ handleLogout }: TenantsProps) => {
             // @ts-expect-error TS18048
             .then((response) => response.json())
             .then(onChangeTenants);
-    }, []);
+    }, [handleLogout]);
 
     // @ts-expect-error TS7031
     const addTenant = ({ name, description, author }) => {
@@ -220,7 +220,7 @@ const Tenants = ({ handleLogout }: TenantsProps) => {
             })
             .then((data) => {
                 onChangeTenants(data);
-                setOpenDeleteTenantDialog(false);
+                setTenantToDelete(null);
             });
     };
 
@@ -454,7 +454,9 @@ const Tenants = ({ handleLogout }: TenantsProps) => {
                     <IconButton
                         color="error"
                         size="large"
-                        onClick={() => setOpenDeleteTenantDialog(params.row)}
+                        onClick={() => {
+                            setTenantToDelete(params.row);
+                        }}
                     >
                         <DeleteIcon />
                     </IconButton>
@@ -500,9 +502,9 @@ const Tenants = ({ handleLogout }: TenantsProps) => {
             />
 
             <DeleteTenantDialog
-                isOpen={!!openDeleteTenantDialog}
-                tenant={tenantToUpdate}
-                handleClose={() => setOpenDeleteTenantDialog(false)}
+                isOpen={!!tenantToDelete}
+                tenant={tenantToDelete}
+                handleClose={() => setTenantToDelete(null)}
                 deleteAction={deleteTenant}
             />
             <ToastContainer />
