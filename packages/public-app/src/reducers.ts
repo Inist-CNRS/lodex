@@ -1,4 +1,4 @@
-import characteristic from '../../../src/app/js/characteristic/reducer';
+import characteristic from '@lodex/frontend-common/characteristics/reducer';
 import dataset from './dataset';
 import exportReducer from './export';
 import fetchReducer from '@lodex/frontend-common/fetch/reducer';

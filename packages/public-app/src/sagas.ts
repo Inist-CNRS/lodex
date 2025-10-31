@@ -1,6 +1,6 @@
 import { fork } from 'redux-saga/effects';
 
-import characteristicSaga from '../../../src/app/js/characteristic/sagas';
+import characteristicSaga from '@lodex/frontend-common/characteristics/sagas';
 import datasetSaga from './dataset/sagas';
 import exportSaga from './export/sagas';
 import exportFieldsSaga from '@lodex/frontend-common/export-fields/sagas';

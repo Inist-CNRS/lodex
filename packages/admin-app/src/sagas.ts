@@ -14,7 +14,7 @@ import fetchSaga from '@lodex/frontend-common/fetch/sagas';
 import i18nSagas from '@lodex/frontend-common/i18n/sagas';
 import clearSaga from './clear/sagas';
 import progressSaga from './progress/sagas';
-import characteristicSaga from '../../../src/app/js/characteristic/sagas';
+import characteristicSaga from '@lodex/frontend-common/characteristics/sagas';
 import loaderSaga from './loader/sagas';
 import subresourceSaga from './subresource/sagas';
 import enrichmentSaga from './enrichment/sagas';

@@ -13,7 +13,7 @@ import upload from './upload';
 import user from '../../../src/app/js/user/reducer';
 import clear from './clear';
 import dump from './dump';
-import characteristic from '../../../src/app/js/characteristic/reducer';
+import characteristic from '@lodex/frontend-common/characteristics/reducer';
 import progress from './progress/reducer';
 import loaders from './loader';
 import subresource, { type SubresourceState } from './subresource';
