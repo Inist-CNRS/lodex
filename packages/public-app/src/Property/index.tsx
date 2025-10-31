@@ -17,7 +17,7 @@ import { getPredicate } from '../../../../src/app/js/formats';
 import addSchemePrefix from './addSchemePrefix';
 import Link from '@lodex/frontend-common/components/Link';
 import getFieldClassName from '@lodex/frontend-common/utils/getFieldClassName';
-import { fromUser } from '../../../../src/app/js/sharedSelectors';
+import { fromUser } from '@lodex/frontend-common/sharedSelectors';
 import Format from '../Format';
 import GraphLink from '../graph/GraphLink';
 import { changeFieldStatus as changeFieldStatusAction } from '../resource';

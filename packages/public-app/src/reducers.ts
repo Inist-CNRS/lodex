@@ -3,7 +3,7 @@ import dataset from './dataset';
 import exportReducer from './export';
 import fetchReducer from '@lodex/frontend-common/fetch/reducer';
 import i18n from '@lodex/frontend-common/i18n';
-import fields from '../../../src/app/js/fields/reducer';
+import fields from '@lodex/frontend-common/fields/reducer';
 import resource from './resource';
 import format from '../../../src/app/js/formats/reducer';
 import user from '../../../src/app/js/user/reducer';

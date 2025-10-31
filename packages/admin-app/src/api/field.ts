@@ -9,7 +9,7 @@ import {
 } from '../../../../src/app/js/user/reducer';
 
 import { store } from '../adminIndex';
-import { saveFieldSuccess } from '../../../../src/app/js/fields/reducer';
+import { saveFieldSuccess } from '@lodex/frontend-common/fields/reducer';
 import fetch from '@lodex/frontend-common/fetch/fetch';
 import { getUserSessionStorageInfo } from './tools';
 

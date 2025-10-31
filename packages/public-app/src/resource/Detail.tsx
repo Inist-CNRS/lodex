@@ -8,12 +8,12 @@ import { Helmet } from 'react-helmet';
 import get from 'lodash/get';
 
 import { fromDisplayConfig, fromI18n, fromResource } from '../selectors';
-import { fromFields } from '../../../../src/app/js/sharedSelectors';
+import { fromFields } from '@lodex/frontend-common/sharedSelectors';
 import Property from '../Property';
 import { HideResource } from './HideResource';
 import SelectVersion from './SelectVersion';
-import getTitle from '@lodex/frontend-common/utils/getTitle';
 import ExportButton from '../ExportButton';
+import getTitle from '@lodex/frontend-common/utils/getTitle';
 
 const TOP_FIELDS_LIMIT = 1;
 

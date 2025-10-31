@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import camelCase from 'lodash/camelCase';
-import { fromFields } from '../../../../src/app/js/sharedSelectors';
+import { fromFields } from '@lodex/frontend-common/sharedSelectors';
 import Property from './index';
 import getFieldClassName from '@lodex/frontend-common/utils/getFieldClassName';
 

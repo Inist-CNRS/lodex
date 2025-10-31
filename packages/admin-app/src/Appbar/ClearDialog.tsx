@@ -18,7 +18,7 @@ import {
 import { fromClear, fromPublication } from '../selectors';
 import fieldApi from '../api/field';
 import { toast, extractTenantFromUrl } from '@lodex/common';
-import { loadField } from '../../../../src/app/js/fields/reducer';
+import { loadField } from '@lodex/frontend-common/fields/reducer';
 import { loadPublication } from '../publication';
 import CancelButton from '@lodex/frontend-common/components/CancelButton';
 import { loadSubresources } from '../subresource';

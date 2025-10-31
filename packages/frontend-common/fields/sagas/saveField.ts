@@ -10,17 +10,17 @@ import {
     saveFieldSuccess,
 } from '../reducer.ts';
 
-import { fromFields, fromUser } from '../../sharedSelectors';
+import { fromFields, fromUser } from '../../sharedSelectors.ts';
 
 import { push } from 'redux-first-history';
 import { SCOPE_DOCUMENT } from '@lodex/common';
-import fetchSaga from '@lodex/frontend-common/fetch/fetchSaga';
+import fetchSaga from '../../fetch/fetchSaga';
 import {
     FIELD_ANNOTATION_FORMAT_LIST,
     FIELD_ANNOTATION_FORMAT_TEXT,
-} from '../FieldAnnotationFormat.tsx';
+} from '../../../../src/app/js/fields/FieldAnnotationFormat.tsx';
 import { splitAnnotationFormatListOptions } from '../annotations.ts';
-import { FIELD_ANNOTATION_FORMAT_LIST_KIND_SINGLE } from '../FieldAnnotationFormatListKind.tsx';
+import { FIELD_ANNOTATION_FORMAT_LIST_KIND_SINGLE } from '../../../../src/app/js/fields/FieldAnnotationFormatListKind.tsx';
 
 export const prepareFieldFormData = (values: any) => {
     try {

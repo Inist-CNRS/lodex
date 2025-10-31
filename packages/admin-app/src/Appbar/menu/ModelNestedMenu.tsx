@@ -12,7 +12,7 @@ import { bindActionCreators } from 'redux';
 
 import { exportFields } from '@lodex/frontend-common/export-fields';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
-import { fromFields } from '../../../../../src/app/js/sharedSelectors';
+import { fromFields } from '@lodex/frontend-common/sharedSelectors';
 import { importFields } from '../../import';
 import { fromParsing, fromPublication } from '../../selectors';
 

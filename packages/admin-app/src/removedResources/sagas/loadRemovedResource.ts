@@ -6,7 +6,7 @@ import {
     loadRemovedResourcePageError,
 } from '../index';
 import fetchSaga from '@lodex/frontend-common/fetch/fetchSaga';
-import { fromUser } from '../../../../../src/app/js/sharedSelectors';
+import { fromUser } from '@lodex/frontend-common/sharedSelectors';
 
 // @ts-expect-error TS7031
 export function* handleLoadRemovedResourcePageRequest({ payload }) {

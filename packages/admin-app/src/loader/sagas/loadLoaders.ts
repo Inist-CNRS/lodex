@@ -6,7 +6,7 @@ import {
     loadLoadersError,
     loadLoadersSuccess,
 } from '../index';
-import { fromUser } from '../../../../../src/app/js/sharedSelectors';
+import { fromUser } from '@lodex/frontend-common/sharedSelectors';
 import { fromLoaders } from '../../selectors';
 import fetchSaga from '@lodex/frontend-common/fetch/fetchSaga';
 

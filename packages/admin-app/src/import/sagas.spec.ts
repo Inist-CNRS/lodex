@@ -1,7 +1,7 @@
 import { call, take, put, select, race } from 'redux-saga/effects';
 import { LOCATION_CHANGE } from 'redux-first-history';
 
-import { fromUser } from '../../../../src/app/js/sharedSelectors';
+import { fromUser } from '@lodex/frontend-common/sharedSelectors';
 import {
     importFieldsSuccess,
     importFieldsError,

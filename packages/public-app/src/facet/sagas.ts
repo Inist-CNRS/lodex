@@ -1,7 +1,7 @@
 import { call, put, select, take, takeLatest } from 'redux-saga/effects';
 
 import fetchSaga from '@lodex/frontend-common/fetch/fetchSaga';
-import { fromUser } from '../../../../src/app/js/sharedSelectors';
+import { fromUser } from '@lodex/frontend-common/sharedSelectors';
 
 // @ts-expect-error TS7031
 export default ({ actionTypes, actions, selectors }) => {

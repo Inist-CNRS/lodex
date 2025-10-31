@@ -1,6 +1,6 @@
 import { call, select, put, takeEvery } from 'redux-saga/effects';
 import fetchSaga from '@lodex/frontend-common/fetch/fetchSaga';
-import { fromUser } from '../../../src/app/js/sharedSelectors.ts';
+import { fromUser } from '../sharedSelectors.ts';
 
 import { EXPORT_FIELDS, exportFieldsError } from './index.ts';
 import downloadFile from '../utils/downloadFile.ts';

@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux';
 import compose from 'recompose/compose';
 import { TableCell, Button } from '@mui/material';
 
-import { removeField } from '../../../../src/app/js/fields/reducer';
+import { removeField } from '@lodex/frontend-common/fields/reducer';
 import getFieldClassName from '@lodex/frontend-common/utils/getFieldClassName';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 import type { Field } from '../../../../src/app/js/fields/types';

@@ -17,7 +17,7 @@ import Pagination from '@lodex/frontend-common/components/Pagination';
 import Loading from '@lodex/frontend-common/components/Loading';
 import { preLoadDatasetPage, changePage } from './index';
 import { fromDataset } from '../selectors';
-import { fromFields } from '../../../../src/app/js/sharedSelectors';
+import { fromFields } from '@lodex/frontend-common/sharedSelectors';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 
 const styles = {

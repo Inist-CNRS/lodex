@@ -6,7 +6,7 @@ import Property from '../Property';
 import {
     fromFields,
     fromCharacteristic,
-} from '../../../../src/app/js/sharedSelectors';
+} from '@lodex/frontend-common/sharedSelectors';
 import type { CSSProperties } from 'react';
 import type { State } from '../../../admin-app/src/reducers';
 

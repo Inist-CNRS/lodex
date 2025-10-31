@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import ListAltIcon from '@mui/icons-material/ListAlt';
 import RoutineCatalog from '../wizard/RoutineCatalog';
 import { Box, Button, IconButton, Tooltip, Typography } from '@mui/material';
-import { fromFields } from '../../sharedSelectors';
+import { fromFields } from '@lodex/frontend-common/sharedSelectors.ts';
 import { useSelector } from 'react-redux';
 import { getFieldForSpecificScope } from '@lodex/common';
 import SearchAutocomplete from '../../../../../packages/admin-app/src/Search/SearchAutocomplete';

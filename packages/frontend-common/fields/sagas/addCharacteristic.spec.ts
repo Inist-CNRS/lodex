@@ -5,7 +5,7 @@ import { addCharacteristicError, addCharacteristicSuccess } from '../reducer';
 import { getNewCharacteristicFormData } from '../selectors';
 
 import { fromUser } from '../../sharedSelectors';
-import fetchSaga from '@lodex/frontend-common/fetch/fetchSaga';
+import fetchSaga from '../../fetch/fetchSaga';
 
 import { handleAddCharacteristic } from './addCharacteristic';
 import validateField from './validateField';

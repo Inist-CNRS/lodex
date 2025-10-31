@@ -6,7 +6,7 @@ import compose from 'recompose/compose';
 import { translate } from '@lodex/frontend-common/i18n/I18NContext';
 
 import stylesToClassname from '@lodex/frontend-common/utils/stylesToClassName';
-import { fromFields } from '../../../../src/app/js/sharedSelectors';
+import { fromFields } from '@lodex/frontend-common/sharedSelectors';
 import { facetActions as datasetActions } from '../dataset';
 import { facetActions as searchActions } from '../search/reducer';
 import { fromDisplayConfig, fromI18n } from '../selectors';

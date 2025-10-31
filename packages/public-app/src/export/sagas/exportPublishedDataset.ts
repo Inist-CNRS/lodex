@@ -8,7 +8,7 @@ import { fromSearch } from '../../selectors';
 import getQueryString from '@lodex/frontend-common/utils/getQueryString';
 import fetchSaga from '@lodex/frontend-common/fetch/fetchSaga';
 import downloadFile from '@lodex/frontend-common/utils/downloadFile';
-import { fromUser } from '../../../../../src/app/js/sharedSelectors';
+import { fromUser } from '@lodex/frontend-common/sharedSelectors';
 
 // @ts-expect-error TS7006
 export const open = (url) => window.open(url); // Warning: does not work with authentication and token

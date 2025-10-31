@@ -2,7 +2,7 @@ import compose from 'recompose/compose';
 
 import { connect } from 'react-redux';
 import { Box, TextField } from '@mui/material';
-import { fromFields } from '../../sharedSelectors';
+import { fromFields } from '@lodex/frontend-common/sharedSelectors';
 import { translate } from '@lodex/frontend-common/i18n/I18NContext';
 
 interface TransformerArgsProps {

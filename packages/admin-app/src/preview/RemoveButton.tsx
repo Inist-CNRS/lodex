@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import compose from 'recompose/compose';
 import { Button, Dialog, DialogActions, DialogTitle } from '@mui/material';
-import { removeField } from '../../../../src/app/js/fields/reducer';
+import { removeField } from '@lodex/frontend-common/fields/reducer';
 import CancelButton from '@lodex/frontend-common/components/CancelButton';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 

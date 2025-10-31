@@ -3,7 +3,7 @@ import { HideResourceForm } from './HideResourceForm';
 import { Button } from '@mui/material';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 import { useSelector } from 'react-redux';
-import { fromUser } from '../../../../src/app/js/sharedSelectors';
+import { fromUser } from '@lodex/frontend-common/sharedSelectors';
 
 export const HideResource = () => {
     const { translate } = useTranslate();

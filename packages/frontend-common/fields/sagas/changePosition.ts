@@ -2,7 +2,7 @@ import { takeEvery, call, select, put } from 'redux-saga/effects';
 import { changePositionValue, CHANGE_POSITIONS } from '../reducer';
 
 import { fromFields, fromUser } from '../../sharedSelectors';
-import fetchSaga from '@lodex/frontend-common/fetch/fetchSaga';
+import fetchSaga from '../../fetch/fetchSaga';
 
 // @ts-expect-error TS7006
 export const movePosition = (fields, oldPosition, newPosition) => {

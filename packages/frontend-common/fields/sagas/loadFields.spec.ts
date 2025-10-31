@@ -1,6 +1,6 @@
 import { call, put, select } from 'redux-saga/effects';
 
-import fetchSaga from '@lodex/frontend-common/fetch/fetchSaga';
+import fetchSaga from '../../fetch/fetchSaga';
 
 import { loadFieldError, loadFieldSuccess } from '../reducer';
 

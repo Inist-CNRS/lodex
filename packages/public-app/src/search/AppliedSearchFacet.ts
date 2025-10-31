@@ -3,7 +3,7 @@ import compose from 'recompose/compose';
 import withHandlers from 'recompose/withHandlers';
 
 import AppliedFacet, { type AppliedFacetProps } from '../facet/AppliedFacet';
-import { fromFields } from '../../../../src/app/js/sharedSelectors';
+import { fromFields } from '@lodex/frontend-common/sharedSelectors';
 import { fromSearch } from '../selectors';
 import { facetActions } from './reducer';
 

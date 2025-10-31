@@ -1,7 +1,7 @@
 import { call, select, takeLatest, fork, put } from 'redux-saga/effects';
 
 import { dumpDatasetError, dumpDatasetSuccess, DUMP_DATASET } from './index';
-import { fromUser } from '../../../../src/app/js/sharedSelectors';
+import { fromUser } from '@lodex/frontend-common/sharedSelectors';
 import fetchSaga from '@lodex/frontend-common/fetch/fetchSaga';
 import streamFile from '@lodex/frontend-common/utils/streamFile';
 

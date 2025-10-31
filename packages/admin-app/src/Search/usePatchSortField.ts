@@ -3,7 +3,7 @@ import { toast } from '@lodex/common';
 import fieldApi from '../api/field';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 import { useDispatch } from 'react-redux';
-import { changeSortField } from '../../../../src/app/js/fields/reducer';
+import { changeSortField } from '@lodex/frontend-common/fields/reducer';
 
 export function usePatchSortField() {
     const { translate } = useTranslate();

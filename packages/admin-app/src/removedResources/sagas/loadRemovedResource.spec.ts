@@ -7,7 +7,7 @@ import {
 
 import { handleLoadRemovedResourcePageRequest } from './loadRemovedResource';
 import fetchSaga from '@lodex/frontend-common/fetch/fetchSaga';
-import { fromUser } from '../../../../../src/app/js/sharedSelectors';
+import { fromUser } from '@lodex/frontend-common/sharedSelectors';
 
 describe('load removed resources saga', () => {
     describe('handleLoadRemovedResourcePageRequest', () => {

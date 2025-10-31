@@ -5,11 +5,11 @@ import { push } from 'redux-first-history';
 import { Helmet } from 'react-helmet';
 import { Card } from '@mui/material';
 
-import { preLoadPublication as preLoadPublicationAction } from '../../../src/app/js/fields/reducer';
+import { preLoadPublication as preLoadPublicationAction } from '@lodex/frontend-common/fields/reducer';
 import {
     fromFields,
     fromCharacteristic,
-} from '../../../src/app/js/sharedSelectors';
+} from '@lodex/frontend-common/sharedSelectors';
 import Alert from '@lodex/frontend-common/components/Alert';
 import Loading from '@lodex/frontend-common/components/Loading';
 import DatasetCharacteristics from './characteristics/DatasetCharacteristics';
