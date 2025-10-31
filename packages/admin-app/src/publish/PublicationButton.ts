@@ -2,7 +2,7 @@ import branch from 'recompose/branch';
 import renderComponent from 'recompose/renderComponent';
 import { connect } from 'react-redux';
 
-import { fromFields } from '../../../../src/app/js/sharedSelectors';
+import { fromFields } from '@lodex/frontend-common/sharedSelectors';
 import PublishButton from './PublishButton';
 import { fromConfigTenant, fromPublication } from '../selectors';
 import compose from 'recompose/compose';

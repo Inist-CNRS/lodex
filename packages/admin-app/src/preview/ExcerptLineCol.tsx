@@ -3,7 +3,7 @@ import compose from 'recompose/compose';
 import { TableCell } from '@mui/material';
 import { connect } from 'react-redux';
 
-import { fromFields } from '../../../../src/app/js/sharedSelectors';
+import { fromFields } from '@lodex/frontend-common/sharedSelectors';
 import {
     isLongText,
     getShortText,

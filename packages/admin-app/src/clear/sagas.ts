@@ -9,7 +9,7 @@ import {
     clearDatasetSuccess,
 } from './index';
 
-import { fromUser } from '../../../../src/app/js/sharedSelectors';
+import { fromUser } from '@lodex/frontend-common/sharedSelectors';
 import fetchSaga from '@lodex/frontend-common/fetch/fetchSaga';
 
 export function* handleClearDatasetRequest() {

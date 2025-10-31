@@ -6,9 +6,9 @@ import { Box, Typography } from '@mui/material';
 import { useSelector } from 'react-redux';
 import { fromFieldPreview } from '../../../../../packages/admin-app/src/selectors';
 import { SCOPE_DATASET, type ScopeType } from '@lodex/common';
-import { prepareFieldFormData } from '../sagas/saveField.ts';
 import type { State } from '../../../../../packages/admin-app/src/reducers.ts';
 import type { PreviewLine } from '../types.ts';
+import { prepareFieldFormData } from '@lodex/frontend-common/fields/sagas/saveField.ts';
 
 const ValuePreview = ({ scope }: { scope?: ScopeType }) => {
     const { translate } = useTranslate();

@@ -10,7 +10,7 @@ import compose from 'recompose/compose';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 
 import { getResourceUri } from '@lodex/common';
-import { preLoadPublication } from '../../../../src/app/js/fields/reducer';
+import { preLoadPublication } from '@lodex/frontend-common/fields/reducer';
 import Link from '@lodex/frontend-common/components/Link';
 import Loading from '@lodex/frontend-common/components/Loading';
 import NavButton, {
@@ -21,7 +21,7 @@ import stylesToClassname from '@lodex/frontend-common/utils/stylesToClassName';
 import {
     fromCharacteristic,
     fromFields,
-} from '../../../../src/app/js/sharedSelectors';
+} from '@lodex/frontend-common/sharedSelectors';
 import { preLoadExporters } from '../export';
 import { fromResource, fromSearch } from '../selectors';
 import { preLoadResource } from './index';

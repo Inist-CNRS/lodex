@@ -5,9 +5,9 @@ import {
     updateCharacteristicsError,
     updateCharacteristicsSuccess,
 } from '../reducer';
-import { fromUser } from '../../../../src/app/js/sharedSelectors';
+import { fromUser } from '../../sharedSelectors';
 import fetchSaga from '@lodex/frontend-common/fetch/fetchSaga';
-import { configureFieldSuccess } from '../../../../src/app/js/fields/reducer';
+import { configureFieldSuccess } from '../../fields/reducer';
 
 // @ts-expect-error TS7031
 export function* handleUpdateCharacteristics({ payload }) {

@@ -6,7 +6,7 @@ import {
     loadBreadcrumbError,
 } from './reducer';
 import { fromBreadcrumb } from '../selectors';
-import { fromUser } from '../../../../src/app/js/sharedSelectors';
+import { fromUser } from '@lodex/frontend-common/sharedSelectors';
 import fetchSaga from '@lodex/frontend-common/fetch/fetchSaga';
 
 export function* handleLoadBreadcrumb() {

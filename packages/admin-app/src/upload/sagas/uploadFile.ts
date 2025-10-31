@@ -1,6 +1,6 @@
 import { call, put, select, takeEvery } from 'redux-saga/effects';
 
-import { fromUser } from '../../../../../src/app/js/sharedSelectors';
+import { fromUser } from '@lodex/frontend-common/sharedSelectors';
 import { fromUpload, fromPublication } from '../../selectors';
 import { loadDatasetFile } from '@lodex/frontend-common/utils/loadFile';
 import { UPLOAD_FILE, uploadError, uploadSuccess } from '../index';

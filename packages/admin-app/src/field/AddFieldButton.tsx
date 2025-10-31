@@ -3,8 +3,8 @@ import { Add as AddNewIcon } from '@mui/icons-material';
 import { connect } from 'react-redux';
 import { useParams } from 'react-router';
 
-import { addField } from '../../../../src/app/js/fields/reducer';
-import { fromFields } from '../../../../src/app/js/sharedSelectors';
+import { addField } from '@lodex/frontend-common/fields/reducer';
+import { fromFields } from '@lodex/frontend-common/sharedSelectors';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 
 interface AddFieldButtonComponentProps {

@@ -14,8 +14,8 @@ import { connect } from 'react-redux';
 import { Add } from '@mui/icons-material';
 import { ListItemIcon, ListItemText } from '@mui/material';
 import { showAddFromColumn } from '../parsing';
-import { fromFields } from '../../../../src/app/js/sharedSelectors';
-import { addField } from '../../../../src/app/js/fields/reducer';
+import { fromFields } from '@lodex/frontend-common/sharedSelectors';
+import { addField } from '@lodex/frontend-common/fields/reducer';
 import { SCOPE_DOCUMENT } from '@lodex/common';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 

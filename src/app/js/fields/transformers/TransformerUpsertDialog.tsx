@@ -1,7 +1,7 @@
 import React from 'react';
 import compose from 'recompose/compose';
 
-import { fromFields } from '../../sharedSelectors';
+import { fromFields } from '@lodex/frontend-common/sharedSelectors';
 
 import { connect } from 'react-redux';
 import {

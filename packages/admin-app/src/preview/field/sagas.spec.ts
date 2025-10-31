@@ -1,11 +1,11 @@
 import { all, call, put, select } from 'redux-saga/effects';
 
 import getDocumentTransformer from '@lodex/frontend-common/utils/getDocumentTransformer.ts';
-import { fromUser } from '../../../../../src/app/js/sharedSelectors';
+import { fromUser } from '@lodex/frontend-common/sharedSelectors';
 import { computeFieldPreviewSuccess, computeFieldPreviewError } from './index';
 import { fromParsing } from '../../selectors';
 import { handleComputeFieldPreview } from './sagas';
-import { prepareFieldFormData } from '../../../../../src/app/js/fields/sagas/saveField.ts';
+import { prepareFieldFormData } from '@lodex/frontend-common/fields/sagas/saveField.ts';
 
 describe('field saga', () => {
     describe('handleComputeFieldPreview', () => {

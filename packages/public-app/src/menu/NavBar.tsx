@@ -5,7 +5,7 @@ import { translate } from '@lodex/frontend-common/i18n/I18NContext';
 import compose from 'recompose/compose';
 import classnames from 'classnames';
 
-import { fromUser, fromFields } from '../../../../src/app/js/sharedSelectors';
+import { fromUser, fromFields } from '@lodex/frontend-common/sharedSelectors';
 import { fromDisplayConfig, fromMenu } from '../selectors';
 import { logout } from '../../../../src/app/js/user/reducer';
 import Drawer, { useDrawer, DRAWER_CLOSED } from '../Drawer';

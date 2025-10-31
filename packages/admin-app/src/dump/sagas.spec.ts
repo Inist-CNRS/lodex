@@ -1,7 +1,7 @@
 import { dumpDatasetError, dumpDatasetSuccess } from './index';
 import streamFile from '@lodex/frontend-common/utils/streamFile';
 import fetchSaga from '@lodex/frontend-common/fetch/fetchSaga';
-import { fromUser } from '../../../../src/app/js/sharedSelectors';
+import { fromUser } from '@lodex/frontend-common/sharedSelectors';
 import { handleDumpDatasetRequest } from './sagas';
 import { call, select, put } from 'redux-saga/effects';
 

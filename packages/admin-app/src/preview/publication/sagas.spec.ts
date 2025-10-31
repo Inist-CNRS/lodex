@@ -1,10 +1,7 @@
 import { all, call, put, select } from 'redux-saga/effects';
 
 import getDocumentTransformer from '@lodex/frontend-common/utils/getDocumentTransformer';
-import {
-    fromFields,
-    fromUser,
-} from '../../../../../src/app/js/sharedSelectors';
+import { fromFields, fromUser } from '@lodex/frontend-common/sharedSelectors';
 import {
     fromParsing,
     fromPublication,

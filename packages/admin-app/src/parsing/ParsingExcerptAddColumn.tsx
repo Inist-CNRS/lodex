@@ -3,7 +3,7 @@ import compose from 'recompose/compose';
 import withHandlers from 'recompose/withHandlers';
 import { Button } from '@mui/material';
 
-import { fromFields } from '../../../../src/app/js/sharedSelectors';
+import { fromFields } from '@lodex/frontend-common/sharedSelectors';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 
 interface ParsingExcerptAddColumnComponentProps {

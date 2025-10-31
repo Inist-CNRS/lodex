@@ -18,8 +18,8 @@ import {
 import { Box } from '@mui/system';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
-import { loadField } from '../../../../src/app/js/fields/reducer';
-import { fromFields } from '../../../../src/app/js/sharedSelectors';
+import { loadField } from '@lodex/frontend-common/fields/reducer';
+import { fromFields } from '@lodex/frontend-common/sharedSelectors';
 
 import { Overview, getFieldForSpecificScope, toast } from '@lodex/common';
 import FieldRepresentation from '../../../../src/app/js/fields/FieldRepresentation';

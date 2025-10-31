@@ -16,7 +16,11 @@ import {
     fromDataset,
     fromFormat,
 } from '../../../../packages/public-app/src/selectors';
-import { fromFields, fromUser, fromCharacteristic } from '../sharedSelectors';
+import {
+    fromFields,
+    fromUser,
+    fromCharacteristic,
+} from '@lodex/frontend-common/sharedSelectors';
 import { SCOPE_DATASET } from '@lodex/common';
 
 describe('format sagas', () => {

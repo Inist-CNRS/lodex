@@ -7,7 +7,7 @@ import {
     loadParsingResultError,
     loadParsingResultSuccess,
 } from './index';
-import { fromUser } from '../../../../src/app/js/sharedSelectors';
+import { fromUser } from '@lodex/frontend-common/sharedSelectors';
 
 export function* handleLoadParsingResult() {
     // @ts-expect-error TS7057

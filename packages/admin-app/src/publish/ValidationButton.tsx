@@ -4,7 +4,7 @@ import withHandlers from 'recompose/withHandlers';
 import withState from 'recompose/withState';
 import { List, Popover, IconButton, Tooltip, Box } from '@mui/material';
 
-import { fromFields } from '../../../../src/app/js/sharedSelectors';
+import { fromFields } from '@lodex/frontend-common/sharedSelectors';
 import ValidationField from './ValidationField';
 
 import { SCOPE_DOCUMENT } from '@lodex/common';

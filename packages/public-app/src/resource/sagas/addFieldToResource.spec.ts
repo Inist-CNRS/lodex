@@ -6,7 +6,7 @@ import {
     getNewResourceFieldFormData,
 } from '../index';
 import fetchSaga from '@lodex/frontend-common/fetch/fetchSaga';
-import { fromUser } from '../../../../../src/app/js/sharedSelectors';
+import { fromUser } from '@lodex/frontend-common/sharedSelectors';
 import { handleAddFieldToResource } from './addFieldToResource';
 
 describe('handleAddFieldToResource', () => {

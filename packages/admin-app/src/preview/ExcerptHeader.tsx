@@ -4,7 +4,7 @@ import memoize from 'lodash/memoize';
 import HiddenIcon from '@mui/icons-material/VisibilityOff';
 
 import { SCOPE_DATASET, URI_FIELD_NAME } from '@lodex/common';
-import { fromFields } from '../../../../src/app/js/sharedSelectors';
+import { fromFields } from '@lodex/frontend-common/sharedSelectors';
 import getFieldClassName from '@lodex/frontend-common/utils/getFieldClassName';
 import {
     isLongText,

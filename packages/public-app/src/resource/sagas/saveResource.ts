@@ -7,7 +7,7 @@ import {
     SAVE_RESOURCE,
 } from '../index';
 
-import { fromUser } from '../../../../../src/app/js/sharedSelectors';
+import { fromUser } from '@lodex/frontend-common/sharedSelectors';
 import fetchSaga from '@lodex/frontend-common/fetch/fetchSaga';
 import { fromResource } from '../../selectors';
 

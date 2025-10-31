@@ -14,7 +14,7 @@ import ParsingExcerptColumn from './ParsingExcerptColumn';
 import ParsingExcerptHeaderColumn from './ParsingExcerptHeaderColumn';
 import ParsingExcerptAddColumn from './ParsingExcerptAddColumn';
 import { fromEnrichments, fromParsing, fromSubresources } from '../selectors';
-import { addField } from '../../../../src/app/js/fields/reducer';
+import { addField } from '@lodex/frontend-common/fields/reducer';
 import { useParams } from 'react-router';
 import { parseValue, TaskStatus } from '@lodex/common';
 

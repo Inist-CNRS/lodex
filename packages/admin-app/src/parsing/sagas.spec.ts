@@ -8,7 +8,7 @@ import {
     LOAD_PARSING_RESULT,
 } from './index';
 
-import { fromUser } from '../../../../src/app/js/sharedSelectors';
+import { fromUser } from '@lodex/frontend-common/sharedSelectors';
 
 import { handleLoadParsingResult } from './sagas';
 

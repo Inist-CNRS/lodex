@@ -13,9 +13,9 @@ import {
 import { useCallback, useMemo, useState } from 'react';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
-import { removeFieldList } from '../../../../src/app/js/fields/reducer';
+import { removeFieldList } from '@lodex/frontend-common/fields/reducer';
 import FieldRepresentation from '../../../../src/app/js/fields/FieldRepresentation';
-import { fromFields } from '../../../../src/app/js/sharedSelectors';
+import { fromFields } from '@lodex/frontend-common/sharedSelectors';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 import type { Field } from '../../../../src/app/js/fields/types';
 
