@@ -8,24 +8,111 @@ import {
     Box,
 } from '@mui/material';
 import type { Tenant } from './Tenants';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { toast } from 'react-toastify';
 
+const useUpdateTenant = ({
+    handleLogout,
+    onSuccess,
+}: {
+    handleLogout: () => void;
+    onSuccess: () => void;
+}) => {
+    const queryClient = useQueryClient();
+
+    const { mutate } = useMutation({
+        mutationFn: async ({
+            id,
+            tenant,
+        }: {
+            id: string;
+            tenant: Partial<Tenant>;
+        }): Promise<Tenant[]> => {
+            const response = await fetch(`/rootAdmin/tenant/${id}`, {
+                credentials: 'include',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Lodex-Tenant': 'admin',
+                },
+                method: 'PUT',
+                body: JSON.stringify(tenant),
+            });
+
+            if (response.status === 401) {
+                throw new Error('Unauthorized');
+            }
+
+            if (response.status === 403) {
+                throw new Error('Forbidden');
+            }
+
+            if (!response.ok) {
+                throw new Error('Failed to update tenant');
+            }
+
+            return response.json();
+        },
+        onSuccess: (data) => {
+            queryClient.setQueryData(['tenants'], data);
+            toast.success('Instance modifiée', {
+                position: 'top-right',
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                theme: 'light',
+            });
+            onSuccess();
+        },
+        onError: (error: Error) => {
+            if (error.message === 'Forbidden') {
+                toast.error('Action non autorisée', {
+                    position: 'top-right',
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    theme: 'light',
+                });
+            } else if (error.message === 'Unauthorized') {
+                handleLogout();
+            } else {
+                toast.error("Erreur lors de la modification de l'instance", {
+                    position: 'top-right',
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    theme: 'light',
+                });
+            }
+        },
+    });
+
+    return mutate;
+};
 type UpdateTenantDialogProps = {
     isOpen: boolean;
     tenant: Tenant | null;
     handleClose(): void;
-    updateAction(value: string, tenant: Omit<Tenant, '_id'>): void;
+    handleLogout(): void;
 };
 
 const UpdateTenantDialog = ({
     isOpen,
     tenant,
     handleClose,
-    updateAction,
+    handleLogout,
 }: UpdateTenantDialogProps) => {
     const [description, setDescription] = useState('');
     const [author, setAuthor] = useState('');
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+
+    const updateTenant = useUpdateTenant({
+        handleLogout,
+        onSuccess: handleClose,
+    });
 
     useEffect(() => {
         if (isOpen) {
@@ -62,11 +149,14 @@ const UpdateTenantDialog = ({
         if (!tenant) {
             return;
         }
-        updateAction(tenant._id, {
-            description,
-            author,
-            username,
-            password,
+        updateTenant({
+            id: tenant._id,
+            tenant: {
+                description,
+                author,
+                username,
+                password,
+            },
         });
     };
 
