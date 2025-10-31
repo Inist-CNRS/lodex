@@ -40,7 +40,9 @@ function isGraphExportableInCSV(data) {
 
 export function useVegaCsvExport(data: { values: unknown }) {
     const { translate } = useTranslate();
-    const graphParentRef = useRef<any>();
+
+    // Callback ref that triggers when the element changes
+    const graphParentRef = useRef<HTMLDivElement | null>(null);
 
     const exportData = useCallback(() => {
         if (!Array.isArray(data.values) || !data.values.length) {
@@ -56,19 +58,28 @@ export function useVegaCsvExport(data: { values: unknown }) {
     }, [data]);
 
     useEffect(() => {
-        if (!graphParentRef.current) {
-            return;
-        }
+        let timer: ReturnType<typeof setTimeout>;
+        // We need to rerun this function until the graphParentRef is set
+        const initialize = () => {
+            if (!graphParentRef.current) {
+                timer = setTimeout(initialize, 100);
+                return;
+            }
 
-        if (!isGraphExportableInCSV(data)) {
-            return;
-        }
+            if (!isGraphExportableInCSV(data)) {
+                return;
+            }
 
-        // This timeout is required for the vega actions to be rendered
-        const timer = setTimeout(() => {
             const vegaActionsList =
                 graphParentRef.current.querySelector('.vega-actions');
-
+            if (!vegaActionsList) {
+                timer = setTimeout(initialize, 100);
+                return;
+            }
+            // Check if the action is already present
+            if (vegaActionsList.querySelector('.vega-export-csv')) {
+                return;
+            }
             // Create a new action
             // @see https://github.com/vega/vega-embed/issues/156
             const exportCsvAction = document.createElement('a');
@@ -81,22 +92,16 @@ export function useVegaCsvExport(data: { values: unknown }) {
             });
 
             vegaActionsList.appendChild(exportCsvAction);
-        }, 0);
+        };
+
+        timer = setTimeout(initialize, 100);
 
         return () => {
-            clearTimeout(timer);
-
-            if (!graphParentRef.current) {
-                return;
-            }
-
-            const vegaExportCsvButton =
-                graphParentRef.current.querySelector('.vega-export-csv');
-            if (vegaExportCsvButton) {
-                vegaExportCsvButton.remove();
+            if (timer) {
+                clearTimeout(timer);
             }
         };
-    }, [data, exportData, translate]);
+    }, [data, exportData, translate, graphParentRef]);
 
     return graphParentRef;
 }
