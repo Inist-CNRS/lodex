@@ -4,7 +4,7 @@ import {
     getDeleteEnrichmentRequest,
     getPreviewDataEnrichmentRequest,
     getUpdateEnrichmentRequest,
-} from '../../../../src/app/js/user';
+} from '../../../../src/app/js/user/reducer';
 import { getUserSessionStorageInfo } from './tools';
 
 // @ts-expect-error TS7006

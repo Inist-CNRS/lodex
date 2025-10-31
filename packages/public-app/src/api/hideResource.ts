@@ -1,6 +1,6 @@
 import { getUserSessionStorageInfo } from '../../../admin-app/src/api/tools';
 import fetch from '@lodex/frontend-common/fetch/fetch';
-import { getHideResourceRequest } from '../../../../src/app/js/user';
+import { getHideResourceRequest } from '../../../../src/app/js/user/reducer';
 
 export const hideResource = async ({
     uri,

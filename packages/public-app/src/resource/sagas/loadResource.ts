@@ -7,7 +7,7 @@ import {
     loadResourceSuccess,
     loadResourceError,
 } from '../index';
-import { preLoadPublication } from '../../../../../src/app/js/fields';
+import { preLoadPublication } from '../../../../../src/app/js/fields/reducer';
 import { fromUser } from '../../../../../src/app/js/sharedSelectors';
 import fetchSaga from '@lodex/frontend-common/fetch/fetchSaga';
 import { fromResource, fromRouter } from '../../selectors';

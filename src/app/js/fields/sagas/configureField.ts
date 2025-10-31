@@ -6,7 +6,7 @@ import {
     configureFieldError,
     preLoadPublication,
     loadPublication,
-} from '../';
+} from '../reducer';
 import { getFieldOntologyFormData } from '../selectors';
 import { fromUser, fromFields } from '../../sharedSelectors';
 import fetchSaga from '@lodex/frontend-common/fetch/fetchSaga';

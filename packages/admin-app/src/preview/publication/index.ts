@@ -4,7 +4,7 @@ import {
     LOAD_FIELD_SUCCESS,
     REMOVE_FIELD_SUCCESS,
     SAVE_FIELD_SUCCESS,
-} from '../../../../../src/app/js/fields';
+} from '../../../../../src/app/js/fields/reducer';
 
 import { LOAD_PARSING_RESULT_SUCCESS } from '../../parsing';
 

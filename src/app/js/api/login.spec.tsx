@@ -9,7 +9,7 @@ import { renderHook } from '@testing-library/react-hooks';
 import { MemoryRouter, useHistory } from 'react-router';
 import { getUserSessionStorageInfo } from '../../../../packages/admin-app/src/api/tools';
 import fetch from '@lodex/frontend-common/fetch/fetch';
-import { loginSuccess } from '../user';
+import { loginSuccess } from '../user/reducer';
 
 jest.mock('../../../../packages/admin-app/src/api/tools', () => ({
     getUserSessionStorageInfo: jest.fn(),

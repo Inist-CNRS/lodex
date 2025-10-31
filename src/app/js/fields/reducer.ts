@@ -8,14 +8,14 @@ import {
 } from 'redux-actions';
 
 import { getCatalogFromArray } from '@lodex/common';
-import { UPDATE_CHARACTERISTICS_SUCCESS } from '../characteristic';
+import { UPDATE_CHARACTERISTICS_SUCCESS } from '../characteristic/reducer.ts';
 import {
     ADD_FIELD_TO_RESOURCE_SUCCESS,
     SAVE_RESOURCE_SUCCESS,
-} from '../../../../packages/public-app/src/resource';
+} from '../../../../packages/public-app/src/resource/index.ts';
 import fieldSelectors, {
     NEW_CHARACTERISTIC_FORM_NAME as formName,
-} from './selectors';
+} from './selectors.ts';
 import type { Field } from './types.ts';
 
 export const selectors = fieldSelectors;

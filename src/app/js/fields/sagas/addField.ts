@@ -1,7 +1,7 @@
 import { put, takeLatest } from 'redux-saga/effects';
 import { push } from 'redux-first-history';
 
-import { ADD_FIELD } from '../';
+import { ADD_FIELD } from '../reducer';
 import { SCOPE_DOCUMENT } from '@lodex/common';
 
 // @ts-expect-error TS7006

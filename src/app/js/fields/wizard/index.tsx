@@ -4,7 +4,7 @@ import { compose, withProps } from 'recompose';
 
 import { Box, Tab, Tabs } from '@mui/material';
 
-import { lodexFieldFormChange, saveField as saveFieldAction } from '../';
+import { lodexFieldFormChange, saveField as saveFieldAction } from '../reducer';
 
 import { withRouter } from 'react-router';
 import {

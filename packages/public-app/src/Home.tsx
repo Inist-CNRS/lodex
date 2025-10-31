@@ -5,7 +5,7 @@ import { push } from 'redux-first-history';
 import { Helmet } from 'react-helmet';
 import { Card } from '@mui/material';
 
-import { preLoadPublication as preLoadPublicationAction } from '../../../src/app/js/fields';
+import { preLoadPublication as preLoadPublicationAction } from '../../../src/app/js/fields/reducer';
 import {
     fromFields,
     fromCharacteristic,

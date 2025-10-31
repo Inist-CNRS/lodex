@@ -3,7 +3,7 @@ import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import { TextField, MenuItem, Box } from '@mui/material';
 import { Overview, SCOPE_DATASET } from '@lodex/common';
-import { loadField } from '.';
+import { loadField } from './reducer';
 import { fromFields } from '../sharedSelectors';
 import fieldApi from '../../../../packages/admin-app/src/api/field';
 import FieldRepresentation from './FieldRepresentation';

@@ -9,7 +9,7 @@ import {
     configureFieldError,
     preLoadPublication,
     loadPublication,
-} from '../';
+} from '../reducer';
 import validateField from './validateField';
 
 describe('fields saga', () => {

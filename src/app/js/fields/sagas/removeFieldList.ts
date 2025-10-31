@@ -5,7 +5,7 @@ import {
     removeFieldListError,
     removeFieldListStarted,
     removeFieldListSuccess,
-} from '../';
+} from '../reducer';
 import fetchSaga from '@lodex/frontend-common/fetch/fetchSaga';
 import { fromFields, fromUser } from '../../sharedSelectors';
 

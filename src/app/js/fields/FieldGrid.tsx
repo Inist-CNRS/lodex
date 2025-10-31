@@ -19,7 +19,7 @@ import { useDidUpdateEffect } from '@lodex/frontend-common/utils/useDidUpdateEff
 import { fromFields } from '../sharedSelectors';
 import { NoField } from './NoField';
 
-import { changePositions, loadField, saveFieldFromData } from '../fields';
+import { changePositions, loadField, saveFieldFromData } from './reducer';
 
 import { useHistory, useLocation } from 'react-router';
 import { SCOPE_DOCUMENT, toast } from '@lodex/common';

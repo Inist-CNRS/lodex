@@ -25,7 +25,7 @@ import {
     TRIGGER_SEARCH,
 } from './reducer';
 
-import { LOAD_PUBLICATION_SUCCESS } from '../../../../src/app/js/fields';
+import { LOAD_PUBLICATION_SUCCESS } from '../../../../src/app/js/fields/reducer';
 import fetchSaga from '@lodex/frontend-common/fetch/fetchSaga';
 import { fromFields, fromUser } from '../../../../src/app/js/sharedSelectors';
 import facetSagasFactory from '../facet/sagas';

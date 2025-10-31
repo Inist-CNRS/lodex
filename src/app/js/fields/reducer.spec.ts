@@ -18,7 +18,7 @@ import reducer, {
     addCharacteristicSuccess,
     fieldInvalid,
     changePositionValue,
-} from './';
+} from './reducer';
 
 import { addFieldToResourceSuccess } from '../../../../packages/public-app/src/resource';
 import { SCOPE_DOCUMENT } from '@lodex/common';

@@ -5,9 +5,9 @@ import reducer, {
     updateCharacteristicsError,
     updateCharacteristicsSuccess,
     selectors,
-} from './';
+} from './reducer';
 
-import { loadPublicationSuccess } from '../fields';
+import { loadPublicationSuccess } from '../fields/reducer';
 
 describe('characteristic', () => {
     describe('reducer', () => {

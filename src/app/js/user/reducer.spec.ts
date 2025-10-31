@@ -8,7 +8,7 @@ import reducer, {
     logout,
     getRequest,
     getDumpDatasetRequest,
-} from './';
+} from './reducer';
 
 describe('user reducer', () => {
     it('should initialize with correct state', () => {

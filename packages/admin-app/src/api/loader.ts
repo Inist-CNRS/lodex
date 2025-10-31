@@ -1,5 +1,5 @@
 import fetch from '@lodex/frontend-common/fetch/fetch';
-import { getLoaderWithScriptRequest } from '../../../../src/app/js/user';
+import { getLoaderWithScriptRequest } from '../../../../src/app/js/user/reducer';
 import { getUserSessionStorageInfo } from './tools';
 
 const getLoaderWithScript = async ({ name }: { name: string }) => {
