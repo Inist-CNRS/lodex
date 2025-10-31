@@ -31,7 +31,7 @@
         "test:e2e:phase:one": "cypress run --browser chrome --config-file cypress.config.ts  --spec \"cypress/e2e/phase_1/*.cy.ts\"",
         "test:e2e:phase:two": "cypress run --browser chrome --config-file cypress.config.ts  --spec \"cypress/e2e/phase_2/*.cy.ts\"",
         "test:e2e:phase:three": "cypress run --browser chrome --config-file cypress.config.ts  --spec \"cypress/e2e/phase_3/*.cy.ts\"",
-        "test:e2e:phase:four": "cypress run --browser chrome --config-file cypress.config.ts --spec \"cypress/e2e/phase_4/annotation.cy.ts\"",
+        "test:e2e:phase:four": "cypress run --browser chrome --config-file cypress.config.ts --spec \"cypress/e2e/phase_4/*.cy.ts\"",
         "test:e2e:all": "cypress run --browser chrome",
         "insertversion:readme": "sed -i \"s#\\(lodex:\\)\\([\\.a-z0-9]\\+\\)#\\1${npm_package_version}#g\" README.md",
         "insertversion:makefile": "sed -i \"s#\\(lodex:\\)\\([\\.a-z0-9]\\+\\)#\\1${npm_package_version}#g\" Makefile",

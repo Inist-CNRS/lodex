@@ -99,7 +99,7 @@ const postTenant = async (ctx: any) => {
         });
 
         // Open configTenant files as json and save it in mongo
-        insertConfigTenant(name);
+        await insertConfigTenant(name);
 
         const queue = createWorkerQueue(name, 1);
         bullBoard.addDashboardQueue(name, queue);
@@ -120,7 +120,7 @@ const putTenant = async (ctx: any, id: any) => {
     ctx.body = await getTenants(ctx, { createdAt: -1 });
 };
 
-const deleteTenant = async (ctx: any) => {
+export const deleteTenant = async (ctx: any) => {
     const { _id, name, deleteDatabase } = ctx.request.body;
     const tenantExists = await ctx.tenantCollection.findOne({
         _id: new ObjectId(_id),

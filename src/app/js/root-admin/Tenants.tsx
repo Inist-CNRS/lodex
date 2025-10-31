@@ -314,6 +314,7 @@ const Tenants = ({ handleLogout }: TenantsProps) => {
                         color="warning"
                         size="large"
                         onClick={() => setTenantToUpdate(params.row)}
+                        title={`Editer ${params.row.name}`}
                     >
                         <EditIcon />
                     </IconButton>
