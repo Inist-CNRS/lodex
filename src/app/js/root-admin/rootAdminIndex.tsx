@@ -24,6 +24,7 @@ import Tenants from './Tenants';
 import LoginForm from './LoginForm';
 import { ROOT_ROLE } from '../../../common/tools/tenantTools';
 import SystemLoad from './SystemLoad';
+import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 
 const localesMUI = new Map([
     ['fr', { ...frFR, ...frFRDatagrid }],
@@ -31,6 +32,8 @@ const localesMUI = new Map([
 ]);
 
 const locale = getLocale();
+
+const client = new QueryClient();
 
 function RootAdmin() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -60,76 +63,78 @@ function RootAdmin() {
     };
 
     return (
-        <ThemeProvider
-            // @ts-expect-error TS2345
-            theme={createThemeMui(rootTheme, localesMUI.get(locale))} // TODO: Replace theme to be blue
-        >
-            <Router basename="/instances">
-                <div>
-                    <AppBar position="static">
-                        <Toolbar>
-                            <Box
-                                sx={{
-                                    display: 'flex',
-                                    flex: 1,
-                                    alignItems: 'stretch',
-                                }}
-                            >
-                                <Typography
-                                    variant="h6"
-                                    color="inherit"
+        <QueryClientProvider client={client}>
+            <ThemeProvider
+                // @ts-expect-error TS2345
+                theme={createThemeMui(rootTheme, localesMUI.get(locale))} // TODO: Replace theme to be blue
+            >
+                <Router basename="/instances">
+                    <div>
+                        <AppBar position="static">
+                            <Toolbar>
+                                <Box
                                     sx={{
-                                        marginTop: 'auto',
-                                        marginBottom: 'auto',
-                                        marginRight: 'auto',
+                                        display: 'flex',
+                                        flex: 1,
+                                        alignItems: 'stretch',
                                     }}
                                 >
-                                    Configuration des instances
-                                </Typography>
-                                {isLoggedIn && (
-                                    <>
-                                        <SystemLoad />
-                                        <Button
-                                            onClick={handleLogout}
-                                            aria-label="signout"
-                                            color="inherit"
-                                        >
-                                            <ExitToAppIcon />
-                                            <Box component="span" ml={1}>
-                                                Déconnexion
-                                            </Box>
-                                        </Button>
-                                    </>
+                                    <Typography
+                                        variant="h6"
+                                        color="inherit"
+                                        sx={{
+                                            marginTop: 'auto',
+                                            marginBottom: 'auto',
+                                            marginRight: 'auto',
+                                        }}
+                                    >
+                                        Configuration des instances
+                                    </Typography>
+                                    {isLoggedIn && (
+                                        <>
+                                            <SystemLoad />
+                                            <Button
+                                                onClick={handleLogout}
+                                                aria-label="signout"
+                                                color="inherit"
+                                            >
+                                                <ExitToAppIcon />
+                                                <Box component="span" ml={1}>
+                                                    Déconnexion
+                                                </Box>
+                                            </Button>
+                                        </>
+                                    )}
+                                </Box>
+                            </Toolbar>
+                        </AppBar>
+                        <Switch>
+                            <Route exact path="/">
+                                {isLoggedIn ? (
+                                    <Redirect to="/admin" />
+                                ) : (
+                                    <Redirect to="/login" />
                                 )}
-                            </Box>
-                        </Toolbar>
-                    </AppBar>
-                    <Switch>
-                        <Route exact path="/">
-                            {isLoggedIn ? (
-                                <Redirect to="/admin" />
-                            ) : (
-                                <Redirect to="/login" />
-                            )}
-                        </Route>
-                        <Route exact path="/login">
-                            {isLoggedIn ? (
-                                <Redirect to="/admin" />
-                            ) : (
-                                <LoginForm />
-                            )}
-                        </Route>
-                        <Route path="/admin">
-                            {isLoggedIn && role === ROOT_ROLE ? (
-                                <Tenants handleLogout={handleLogout} />
-                            ) : (
-                                <Redirect to="/login" />
-                            )}
-                        </Route>
-                    </Switch>
-                </div>
-            </Router>
-        </ThemeProvider>
+                            </Route>
+                            <Route exact path="/login">
+                                {isLoggedIn ? (
+                                    <Redirect to="/admin" />
+                                ) : (
+                                    <LoginForm />
+                                )}
+                            </Route>
+                            <Route path="/admin">
+                                {isLoggedIn && role === ROOT_ROLE ? (
+                                    <Tenants handleLogout={handleLogout} />
+                                ) : (
+                                    <Redirect to="/login" />
+                                )}
+                            </Route>
+                        </Switch>
+                    </div>
+                </Router>
+            </ThemeProvider>
+        </QueryClientProvider>
     );
 }
 

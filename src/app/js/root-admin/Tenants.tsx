@@ -1,10 +1,11 @@
-import { useEffect, useState } from 'react';
-import { toast, ToastContainer } from 'react-toastify';
+import { useState } from 'react';
+import { ToastContainer } from 'react-toastify';
 // @ts-expect-error TS2882
 import 'react-toastify/dist/ReactToastify.css';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
+import { useQuery } from '@tanstack/react-query';
 
 import { getHost } from '../../../common/uris';
 import CreateTenantDialog from './CreateTenantDialog';
@@ -24,6 +25,7 @@ import {
     Link,
     Tooltip,
     Typography,
+    Alert,
 } from '@mui/material';
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import { sizeConverter } from './rootAdminUtils';
@@ -37,195 +39,20 @@ export type Tenant = {
     author: string;
     username: string;
     password: string;
+    createdAt?: string;
+    dataset?: number;
+    published?: boolean;
+    totalSize?: number;
 };
 
-type TenantsProps = {
+type CustomToolbarProps = {
     handleLogout(): void;
 };
 
-const Tenants = ({ handleLogout }: TenantsProps) => {
-    const [tenants, setTenants] = useState([]);
+const CustomToolbar = ({ handleLogout }: CustomToolbarProps) => {
     const [openCreateTenantDialog, setOpenCreateTenantDialog] = useState(false);
-    const [tenantToDelete, setTenantToDelete] = useState<null | Tenant>(null);
-    const [tenantToUpdate, setTenantToUpdate] = useState(null);
-
-    // @ts-expect-error TS7006
-    const onChangeTenants = (changedTenants) => {
-        if (changedTenants instanceof Array) {
-            // @ts-expect-error TS2345
-            setTenants(changedTenants);
-        }
-    };
-
-    useEffect(() => {
-        fetch('/rootAdmin/tenant', {
-            credentials: 'include',
-            headers: {
-                'X-Lodex-Tenant': 'admin',
-            },
-        })
-            .then((response) => {
-                if (response.status === 401) {
-                    handleLogout();
-                    return;
-                }
-                return response;
-            })
-            // @ts-expect-error TS18048
-            .then((response) => response.json())
-            .then(onChangeTenants);
-    }, [handleLogout]);
-
-    // @ts-expect-error TS7031
-    const addTenant = ({ name, description, author }) => {
-        fetch('/rootAdmin/tenant', {
-            credentials: 'include',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-Lodex-Tenant': 'admin',
-            },
-            method: 'POST',
-            body: JSON.stringify({ name, description, author }),
-        })
-            .then((response) => {
-                if (response.status === 401) {
-                    handleLogout();
-                    return;
-                }
-
-                if (response.status === 403) {
-                    toast.error('Action non autorisée', {
-                        position: 'top-right',
-                        autoClose: 5000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        theme: 'light',
-                    });
-                    return;
-                }
-
-                if (response.status === 200) {
-                    toast.success('Instance créée', {
-                        position: 'top-right',
-                        autoClose: 5000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        theme: 'light',
-                    });
-                }
-
-                return response.json();
-            })
-            .then((data) => {
-                onChangeTenants(data);
-                setOpenCreateTenantDialog(false);
-            });
-    };
-
-    // @ts-expect-error TS7006
-    const updateTenant = (id, updatedTenant) => {
-        fetch(`/rootAdmin/tenant/${id}`, {
-            credentials: 'include',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-Lodex-Tenant': 'admin',
-            },
-            method: 'PUT',
-            body: JSON.stringify(updatedTenant),
-        })
-            .then((response) => {
-                if (response.status === 401) {
-                    handleLogout();
-                    return;
-                }
-
-                if (response.status === 403) {
-                    toast.error('Action non autorisée', {
-                        position: 'top-right',
-                        autoClose: 5000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        theme: 'light',
-                    });
-                    return;
-                }
-
-                if (response.status === 200) {
-                    if (response.status === 200) {
-                        toast.success('Instance modifiée', {
-                            position: 'top-right',
-                            autoClose: 5000,
-                            hideProgressBar: false,
-                            closeOnClick: true,
-                            pauseOnHover: true,
-                            theme: 'light',
-                        });
-                    }
-                }
-
-                return response.json();
-            })
-            .then((data) => {
-                onChangeTenants(data);
-                setTenantToUpdate(null);
-            });
-    };
-
-    // @ts-expect-error TS7006
-    const deleteTenant = (_id, name, deleteDatabase) => {
-        fetch('/rootAdmin/tenant', {
-            credentials: 'include',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-Lodex-Tenant': 'admin',
-            },
-            method: 'DELETE',
-            body: JSON.stringify({ _id, name, deleteDatabase }),
-        })
-            .then((response) => {
-                if (response.status === 401) {
-                    handleLogout();
-                    return;
-                }
-
-                if (response.status === 403) {
-                    toast.error('Action non autorisée', {
-                        position: 'top-right',
-                        autoClose: 5000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: true,
-                        theme: 'light',
-                    });
-                    return;
-                }
-
-                if (response.status === 200) {
-                    if (response.status === 200) {
-                        toast.success('Instance supprimée', {
-                            position: 'top-right',
-                            autoClose: 5000,
-                            hideProgressBar: false,
-                            closeOnClick: true,
-                            pauseOnHover: true,
-                            theme: 'light',
-                        });
-                    }
-                }
-
-                return response.json();
-            })
-            .then((data) => {
-                onChangeTenants(data);
-                setTenantToDelete(null);
-            });
-    };
-
-    const CustomToolbar = () => {
-        return (
+    return (
+        <>
             <GridToolbarContainer>
                 <Tooltip title={'Colonnes'}>
                     {/*
@@ -255,11 +82,63 @@ const Tenants = ({ handleLogout }: TenantsProps) => {
                     </Button>
                 </Tooltip>
             </GridToolbarContainer>
-        );
-    };
 
-    // @ts-expect-error TS7006
-    const formatValue = (value) => {
+            <CreateTenantDialog
+                isOpen={openCreateTenantDialog}
+                handleClose={() => setOpenCreateTenantDialog(false)}
+                onError={handleLogout}
+            />
+        </>
+    );
+};
+
+// Query keys
+const QUERY_KEYS = {
+    tenants: ['tenants'] as const,
+};
+
+// Custom hook for fetching tenants
+const useTenants = (handleLogout: () => void) => {
+    return useQuery({
+        queryKey: QUERY_KEYS.tenants,
+        queryFn: async (): Promise<Tenant[]> => {
+            const response = await fetch('/rootAdmin/tenant', {
+                credentials: 'include',
+                headers: {
+                    'X-Lodex-Tenant': 'admin',
+                },
+            });
+
+            if (response.status === 401) {
+                handleLogout();
+                throw new Error('Unauthorized');
+            }
+
+            if (!response.ok) {
+                throw new Error('Failed to fetch tenants');
+            }
+
+            return response.json();
+        },
+    });
+};
+
+type TenantsProps = {
+    handleLogout(): void;
+};
+
+const Tenants = ({ handleLogout }: TenantsProps) => {
+    const [tenantToDelete, setTenantToDelete] = useState<null | Tenant>(null);
+    const [tenantToUpdate, setTenantToUpdate] = useState<Tenant | null>(null);
+
+    const {
+        data: tenants = [],
+        isLoading,
+        isError,
+        error,
+    } = useTenants(handleLogout);
+
+    const formatValue = (value: string | null) => {
         if (value == null) {
             return '-';
         }
@@ -465,6 +344,18 @@ const Tenants = ({ handleLogout }: TenantsProps) => {
         },
     ];
 
+    // Handle error state
+    if (isError) {
+        return (
+            <Box sx={{ p: 3 }}>
+                <Alert severity="error">
+                    Erreur lors du chargement des instances:{' '}
+                    {(error as Error)?.message || 'Erreur inconnue'}
+                </Alert>
+            </Box>
+        );
+    }
+
     return (
         <>
             <div
@@ -475,12 +366,14 @@ const Tenants = ({ handleLogout }: TenantsProps) => {
                 }}
             >
                 <DataGrid
-                    // @ts-expect-error TS2339
                     getRowId={(row) => row._id}
                     rows={tenants}
                     columns={columns}
+                    loading={isLoading}
                     components={{
-                        Toolbar: CustomToolbar,
+                        Toolbar: () => (
+                            <CustomToolbar handleLogout={handleLogout} />
+                        ),
                     }}
                     sx={{
                         "& .MuiDataGrid-cell[data-field='name']": {
@@ -489,23 +382,18 @@ const Tenants = ({ handleLogout }: TenantsProps) => {
                     }}
                 />
             </div>
-            <CreateTenantDialog
-                isOpen={openCreateTenantDialog}
-                handleClose={() => setOpenCreateTenantDialog(false)}
-                createAction={addTenant}
-            />
             <UpdateTenantDialog
                 isOpen={!!tenantToUpdate}
                 tenant={tenantToUpdate}
                 handleClose={() => setTenantToUpdate(null)}
-                updateAction={updateTenant}
+                handleLogout={handleLogout}
             />
 
             <DeleteTenantDialog
                 isOpen={!!tenantToDelete}
                 tenant={tenantToDelete}
-                handleClose={() => setTenantToDelete(null)}
-                deleteAction={deleteTenant}
+                onClose={() => setTenantToDelete(null)}
+                onError={handleLogout}
             />
             <ToastContainer />
         </>
