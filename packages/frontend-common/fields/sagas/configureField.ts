@@ -9,7 +9,7 @@ import {
 } from '../reducer';
 import { getFieldOntologyFormData } from '../selectors';
 import { fromUser, fromFields } from '../../sharedSelectors';
-import fetchSaga from '@lodex/frontend-common/fetch/fetchSaga';
+import fetchSaga from '../../fetch/fetchSaga';
 import validateField from './validateField';
 
 export function* handleConfigureField() {

@@ -20,12 +20,16 @@ import {
     fromDataset,
     fromFormat,
 } from '../../../../packages/public-app/src/selectors';
-import { fromFields, fromUser, fromCharacteristic } from '../sharedSelectors';
+import {
+    fromFields,
+    fromUser,
+    fromCharacteristic,
+} from '@lodex/frontend-common/sharedSelectors';
 import {
     APPLY_FILTER,
     facetActionTypes,
 } from '../../../../packages/public-app/src/dataset';
-import { CONFIGURE_FIELD_SUCCESS } from '../fields/reducer';
+import { CONFIGURE_FIELD_SUCCESS } from '@lodex/frontend-common/fields/reducer';
 import { UPDATE_CHARACTERISTICS_SUCCESS } from '@lodex/frontend-common/characteristics/reducer';
 import { ISTEX_API_URL } from '../api/externals';
 import { isPrecomputed } from './checkPredicate';

@@ -12,11 +12,11 @@ import { UPDATE_CHARACTERISTICS_SUCCESS } from '@lodex/frontend-common/character
 import {
     ADD_FIELD_TO_RESOURCE_SUCCESS,
     SAVE_RESOURCE_SUCCESS,
-} from '../../../../packages/public-app/src/resource/index.ts';
+} from '../../public-app/src/resource/index.ts';
 import fieldSelectors, {
     NEW_CHARACTERISTIC_FORM_NAME as formName,
 } from './selectors.ts';
-import type { Field } from './types.ts';
+import type { Field } from '../../../src/app/js/fields/types.ts';
 
 export const selectors = fieldSelectors;
 export const NEW_CHARACTERISTIC_FORM_NAME = formName;

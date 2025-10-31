@@ -3,7 +3,7 @@ import { Route, Redirect } from 'react-router-dom';
 import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
 
-import { fromUser } from '../../../src/app/js/sharedSelectors';
+import { fromUser } from '@lodex/frontend-common/sharedSelectors';
 
 interface PrivateRouteProps {
     isAdmin: boolean;

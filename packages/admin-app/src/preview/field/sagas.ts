@@ -2,12 +2,12 @@ import { call, all, put, select, takeLatest } from 'redux-saga/effects';
 import cloneDeep from 'lodash/cloneDeep';
 
 import getDocumentTransformer from '@lodex/frontend-common/utils/getDocumentTransformer.ts';
-import { fromUser } from '../../../../../src/app/js/sharedSelectors';
+import { fromUser } from '@lodex/frontend-common/sharedSelectors.ts';
 import { computeFieldPreviewSuccess, computeFieldPreviewError } from './index';
 import { fromParsing } from '../../selectors';
 import { GET_SOURCE_VALUE_FROM_TRANSFORMERS } from '../../../../../src/app/js/fields/sourceValue/SourceValueToggle';
-import { prepareFieldFormData } from '../../../../../src/app/js/fields/sagas/saveField.ts';
-import { LODEX_FIELD_FORM_CHANGE } from '../../../../../src/app/js/fields/reducer.ts';
+import { prepareFieldFormData } from '@lodex/frontend-common/fields/sagas/saveField.ts';
+import { LODEX_FIELD_FORM_CHANGE } from '@lodex/frontend-common/fields/reducer.ts';
 import type { PreviewLine } from '../../../../../src/app/js/fields/types.ts';
 
 // @ts-expect-error TS7031

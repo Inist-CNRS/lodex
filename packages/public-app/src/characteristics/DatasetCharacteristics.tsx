@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import {
     fromFields,
     fromCharacteristic,
-} from '../../../../src/app/js/sharedSelectors';
+} from '@lodex/frontend-common/sharedSelectors';
 
 import DatasetCharacteristicItem from './DatasetCharacteristicItem';
 import { fromDisplayConfig } from '../selectors';

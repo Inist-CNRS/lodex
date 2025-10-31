@@ -4,7 +4,10 @@ import { compose, withProps } from 'recompose';
 
 import { Box, Tab, Tabs } from '@mui/material';
 
-import { lodexFieldFormChange, saveField as saveFieldAction } from '../reducer';
+import {
+    lodexFieldFormChange,
+    saveField as saveFieldAction,
+} from '@lodex/frontend-common/fields/reducer';
 
 import { withRouter } from 'react-router';
 import {
@@ -14,7 +17,7 @@ import {
     toast,
 } from '@lodex/common';
 import { hideAddColumns } from '../../../../../packages/admin-app/src/parsing';
-import { fromFields } from '../../sharedSelectors';
+import { fromFields } from '@lodex/frontend-common/sharedSelectors';
 import Actions from './Actions';
 import TabAnnotations from './TabAnnotations';
 import TabDisplay from './TabDisplay';

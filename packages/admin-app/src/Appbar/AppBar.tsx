@@ -14,7 +14,7 @@ import {
     Toolbar,
 } from '@mui/material';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
-import { fromFields, fromUser } from '../../../../src/app/js/sharedSelectors';
+import { fromFields, fromUser } from '@lodex/frontend-common/sharedSelectors';
 import PublicationButton from '../publish/PublicationButton';
 import ValidationButton from '../publish/ValidationButton';
 import { fromPublication } from '../selectors';

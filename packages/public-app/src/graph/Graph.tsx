@@ -8,13 +8,13 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 
 import { Settings } from '@mui/icons-material';
-import { preLoadPublication } from '../../../../src/app/js/fields/reducer';
+import { preLoadPublication } from '@lodex/frontend-common/fields/reducer';
 import stylesToClassname from '@lodex/frontend-common/utils/stylesToClassName';
 import {
     fromCharacteristic,
     fromFields,
     fromUser,
-} from '../../../../src/app/js/sharedSelectors';
+} from '@lodex/frontend-common/sharedSelectors';
 import { preLoadDatasetPage as preLoadDatasetPageAction } from '../dataset';
 import AppliedFacetList from '../dataset/AppliedDatasetFacetList';
 import DatasetSearchBar from '../dataset/DatasetSearchBar';

@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import { Box, CircularProgress } from '@mui/material';
 
 import { fromPublicationPreview } from './selectors';
-import { fromFields } from '../../../src/app/js/sharedSelectors';
+import { fromFields } from '@lodex/frontend-common/sharedSelectors';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 
 const styles = {

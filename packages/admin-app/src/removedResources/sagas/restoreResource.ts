@@ -5,7 +5,7 @@ import {
     restoreRessourceSuccess,
     restoreRessourceError,
 } from '../index';
-import { fromUser } from '../../../../../src/app/js/sharedSelectors';
+import { fromUser } from '@lodex/frontend-common/sharedSelectors';
 import fetchSaga from '@lodex/frontend-common/fetch/fetchSaga';
 
 // @ts-expect-error TS7031

@@ -10,7 +10,7 @@ import classnames from 'classnames';
 
 import { propositionStatuses, type PropositionStatusType } from '@lodex/common';
 import { fromResource } from '../selectors';
-import { fromUser } from '../../../../src/app/js/sharedSelectors';
+import { fromUser } from '@lodex/frontend-common/sharedSelectors';
 
 const icons = {
     PROPOSED: ProposedIcon,

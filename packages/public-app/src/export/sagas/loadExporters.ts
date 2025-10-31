@@ -6,7 +6,7 @@ import {
     loadExportersError,
     loadExportersSuccess,
 } from '../index';
-import { fromUser } from '../../../../../src/app/js/sharedSelectors';
+import { fromUser } from '@lodex/frontend-common/sharedSelectors';
 import { fromExport } from '../../selectors';
 import fetchSaga from '@lodex/frontend-common/fetch/fetchSaga';
 

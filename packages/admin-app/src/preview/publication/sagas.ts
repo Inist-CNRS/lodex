@@ -1,10 +1,7 @@
 import { call, put, select, takeLatest, all } from 'redux-saga/effects';
 
 import getDocumentTransformer from '@lodex/frontend-common/utils/getDocumentTransformer';
-import {
-    fromUser,
-    fromFields,
-} from '../../../../../src/app/js/sharedSelectors';
+import { fromUser, fromFields } from '@lodex/frontend-common/sharedSelectors';
 import {
     fromConfigTenant,
     fromParsing,
@@ -24,7 +21,7 @@ import {
     REMOVE_FIELD_LIST_SUCCESS,
     REMOVE_FIELD_SUCCESS,
     SAVE_FIELD_SUCCESS,
-} from '../../../../../src/app/js/fields/reducer';
+} from '@lodex/frontend-common/fields/reducer';
 
 export function* handleComputePublicationPreview() {
     try {

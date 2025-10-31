@@ -14,7 +14,7 @@ import {
 } from './index';
 
 import fetchSaga from '@lodex/frontend-common/fetch/fetchSaga';
-import { fromUser } from '../../../../src/app/js/sharedSelectors';
+import { fromUser } from '@lodex/frontend-common/sharedSelectors';
 
 export function* handleLoadEnrichmentsRequest() {
     // @ts-expect-error TS7057

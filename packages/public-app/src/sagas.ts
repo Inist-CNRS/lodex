@@ -6,7 +6,7 @@ import exportSaga from './export/sagas';
 import exportFieldsSaga from '@lodex/frontend-common/export-fields/sagas';
 import fetchSaga from '@lodex/frontend-common/fetch/sagas';
 import i18nSaga from '@lodex/frontend-common/i18n/sagas';
-import fieldsSagas from '../../../src/app/js/fields/sagas';
+import fieldsSagas from '@lodex/frontend-common/fields/sagas';
 import resourceSagas from './resource/sagas';
 import graphSagas from '../../../src/app/js/formats/sagas';
 import userSagas from '../../../src/app/js/user/sagas';

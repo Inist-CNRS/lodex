@@ -3,7 +3,7 @@ import { call, select, put } from 'redux-saga/effects';
 import { handleConfigureField } from './configureField';
 import { getFieldOntologyFormData } from '../selectors';
 import { fromUser, fromFields } from '../../sharedSelectors';
-import fetchSaga from '@lodex/frontend-common/fetch/fetchSaga';
+import fetchSaga from '../../fetch/fetchSaga';
 import {
     configureFieldSuccess,
     configureFieldError,

@@ -12,14 +12,14 @@ import {
     SCOPE_GRAPHIC,
     URI_FIELD_NAME,
 } from '@lodex/common';
-import { getProps } from '@lodex/frontend-common/utils/selectors';
+import { getProps } from '../utils/selectors';
 
 import { splitAnnotationFormatListOptions } from './annotations';
 import {
     FIELD_ANNOTATION_FORMAT_LIST,
     FIELD_ANNOTATION_FORMAT_TEXT,
-} from './FieldAnnotationFormat';
-import { FIELD_ANNOTATION_FORMAT_LIST_KIND_SINGLE } from './FieldAnnotationFormatListKind';
+} from '../../../src/app/js/fields/FieldAnnotationFormat';
+import { FIELD_ANNOTATION_FORMAT_LIST_KIND_SINGLE } from '../../../src/app/js/fields/FieldAnnotationFormatListKind';
 
 export const NEW_CHARACTERISTIC_FORM_NAME = 'NEW_CHARACTERISTIC_FORM_NAME';
 

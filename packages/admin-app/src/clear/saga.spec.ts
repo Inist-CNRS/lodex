@@ -6,7 +6,7 @@ import {
 } from './sagas';
 
 import fetchSaga from '@lodex/frontend-common/fetch/fetchSaga';
-import { fromUser } from '../../../../src/app/js/sharedSelectors';
+import { fromUser } from '@lodex/frontend-common/sharedSelectors';
 
 describe('load clear saga', () => {
     describe('handleClearDatasetRequest', () => {

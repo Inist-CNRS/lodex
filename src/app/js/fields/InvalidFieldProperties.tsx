@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 
 import Alert from '@lodex/frontend-common/components/Alert';
-import { fromFields } from '../sharedSelectors';
+import { fromFields } from '@lodex/frontend-common/sharedSelectors';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 
 interface InvalidFieldPropertiesProps {

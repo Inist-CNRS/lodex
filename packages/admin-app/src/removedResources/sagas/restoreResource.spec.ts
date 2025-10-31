@@ -1,7 +1,7 @@
 import { call, put, select } from 'redux-saga/effects';
 
 import { restoreRessourceError, restoreRessourceSuccess } from '../index';
-import { fromUser } from '../../../../../src/app/js/sharedSelectors';
+import { fromUser } from '@lodex/frontend-common/sharedSelectors';
 import { handleRestoreResourceRequest } from './restoreResource';
 import fetchSaga from '@lodex/frontend-common/fetch/fetchSaga';
 

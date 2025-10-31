@@ -4,7 +4,7 @@ import { push } from 'redux-first-history';
 import { REMOVE_FIELD, removeFieldError, removeFieldSuccess } from '../reducer';
 
 import { fromFields, fromUser } from '../../sharedSelectors';
-import fetchSaga from '@lodex/frontend-common/fetch/fetchSaga';
+import fetchSaga from '../../fetch/fetchSaga';
 import { SCOPE_DOCUMENT } from '@lodex/common';
 
 // @ts-expect-error TS7031

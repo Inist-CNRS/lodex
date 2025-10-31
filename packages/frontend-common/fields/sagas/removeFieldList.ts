@@ -6,7 +6,7 @@ import {
     removeFieldListStarted,
     removeFieldListSuccess,
 } from '../reducer';
-import fetchSaga from '@lodex/frontend-common/fetch/fetchSaga';
+import fetchSaga from '../../fetch/fetchSaga';
 import { fromFields, fromUser } from '../../sharedSelectors';
 
 // @ts-expect-error TS7031

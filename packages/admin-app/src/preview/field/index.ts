@@ -1,5 +1,5 @@
 import { createAction, combineActions, handleActions } from 'redux-actions';
-import { LODEX_FIELD_FORM_CHANGE } from '../../../../../src/app/js/fields/reducer';
+import { LODEX_FIELD_FORM_CHANGE } from '@lodex/frontend-common/fields/reducer';
 
 export const COMPUTE_FIELD_PREVIEW_SUCCESS = 'COMPUTE_FIELD_PREVIEW_SUCCESS';
 export const COMPUTE_FIELD_PREVIEW_ERROR = 'COMPUTE_FIELD_PREVIEW_ERROR';

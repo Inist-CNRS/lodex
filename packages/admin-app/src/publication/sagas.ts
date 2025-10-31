@@ -7,7 +7,7 @@ import {
     computePublication,
 } from './index';
 import { PUBLISH_ERROR, PUBLISH_SUCCESS } from '../publish';
-import { fromUser } from '../../../../src/app/js/sharedSelectors';
+import { fromUser } from '@lodex/frontend-common/sharedSelectors';
 import fetchSaga from '@lodex/frontend-common/fetch/fetchSaga';
 
 // @ts-expect-error TS7031

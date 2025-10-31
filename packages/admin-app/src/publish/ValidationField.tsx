@@ -3,7 +3,7 @@ import withHandlers from 'recompose/withHandlers';
 import { ListItem, IconButton, Grid, Box } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 
-import { fromFields } from '../../../../src/app/js/sharedSelectors';
+import { fromFields } from '@lodex/frontend-common/sharedSelectors';
 import { connect } from 'react-redux';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 

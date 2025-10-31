@@ -26,6 +26,16 @@
         "noImplicitAny": true,
         "types": ["cypress", "@testing-library/cypress"]
     },
-    "include": ["vite.config.ts", "test-utils.tsx", "src/app"],
+    "include": [
+        "vite.config.ts",
+        "test-utils.tsx",
+        "src/app",
+        "packages/frontend-common/fields/reducer.spec.ts",
+        "packages/frontend-common/fields/reducer.ts",
+        "packages/frontend-common/fields/selectors.spec.ts",
+        "packages/frontend-common/fields/selectors.ts",
+        "packages/frontend-common/fields/annotations.ts",
+        "packages/frontend-common/sharedSelectors.ts"
+    ],
     "exclude": ["src/build", "src/app/build"]
 }

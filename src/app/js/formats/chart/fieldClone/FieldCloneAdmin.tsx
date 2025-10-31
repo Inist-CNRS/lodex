@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { useParams } from 'react-router';
 
 import { MenuItem, TextField } from '@mui/material';
-import { fromFields } from '../../../sharedSelectors';
+import { fromFields } from '@lodex/frontend-common/sharedSelectors';
 import {
     SCOPE_DATASET,
     SCOPE_GRAPHIC,

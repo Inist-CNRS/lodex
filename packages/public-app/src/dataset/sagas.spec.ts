@@ -10,7 +10,7 @@ import {
     handleLoadDatasetPageRequest,
     handlePreLoadDatasetPage,
 } from './sagas';
-import { fromUser } from '../../../../src/app/js/sharedSelectors';
+import { fromUser } from '@lodex/frontend-common/sharedSelectors';
 import fetchSaga from '@lodex/frontend-common/fetch/fetchSaga';
 import { fromDataset } from '../selectors';
 

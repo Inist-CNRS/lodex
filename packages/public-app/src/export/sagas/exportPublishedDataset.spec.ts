@@ -3,7 +3,7 @@ import { call, select } from 'redux-saga/effects';
 import { handleExportPublishedDatasetSuccess } from './exportPublishedDataset';
 import getQueryString from '@lodex/frontend-common/utils/getQueryString';
 import { fromSearch } from '../../selectors';
-import { fromUser } from '../../../../../src/app/js/sharedSelectors';
+import { fromUser } from '@lodex/frontend-common/sharedSelectors';
 import fetchSaga from '@lodex/frontend-common/fetch/fetchSaga';
 import downloadFile from '@lodex/frontend-common/utils/downloadFile';
 

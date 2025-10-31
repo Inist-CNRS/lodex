@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import { Redirect } from 'react-router';
 import { compose, branch, renderComponent } from 'recompose';
 
-import { fromFields } from '../../../src/app/js/sharedSelectors';
+import { fromFields } from '@lodex/frontend-common/sharedSelectors';
 
 // @ts-expect-error TS7006
 const mapStateToProps = (state) => ({

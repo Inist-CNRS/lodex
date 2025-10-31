@@ -7,7 +7,7 @@ import SearchBar from '../searchbar/SearchBar';
 import ToggleFacetsButton from '../searchbar/ToggleFacetsButton';
 import useSearchBar from '../searchbar/useSearchBar';
 import stylesToClassname from '@lodex/frontend-common/utils/stylesToClassName';
-import { fromFields } from '../../../../src/app/js/sharedSelectors';
+import { fromFields } from '@lodex/frontend-common/sharedSelectors';
 import { fromDataset } from '../selectors';
 
 const styles = stylesToClassname(

@@ -16,10 +16,14 @@ import {
 import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
 
 import { useDidUpdateEffect } from '@lodex/frontend-common/utils/useDidUpdateEffect';
-import { fromFields } from '../sharedSelectors';
+import { fromFields } from '@lodex/frontend-common/sharedSelectors';
 import { NoField } from './NoField';
 
-import { changePositions, loadField, saveFieldFromData } from './reducer';
+import {
+    changePositions,
+    loadField,
+    saveFieldFromData,
+} from '@lodex/frontend-common/fields/reducer';
 
 import { useHistory, useLocation } from 'react-router';
 import { SCOPE_DOCUMENT, toast } from '@lodex/common';
