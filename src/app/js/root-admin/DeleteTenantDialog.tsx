@@ -10,27 +10,113 @@ import {
     Box,
 } from '@mui/material';
 import type { Tenant } from './Tenants';
+import { toast } from 'react-toastify';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+
+const useRemoveTenant = ({
+    onSuccess,
+    onError,
+}: {
+    onSuccess: () => void;
+    onError: () => void;
+}) => {
+    const queryClient = useQueryClient();
+
+    const { mutate } = useMutation({
+        mutationFn: async ({
+            id,
+            name,
+            deleteDatabase,
+        }: {
+            id: string;
+            name: string;
+            deleteDatabase: boolean;
+        }): Promise<Tenant[]> => {
+            const response = await fetch('/rootAdmin/tenant', {
+                credentials: 'include',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Lodex-Tenant': 'admin',
+                },
+                method: 'DELETE',
+                body: JSON.stringify({ _id: id, name, deleteDatabase }),
+            });
+
+            if (response.status === 401) {
+                throw new Error('Unauthorized');
+            }
+
+            if (response.status === 403) {
+                throw new Error('Forbidden');
+            }
+
+            if (!response.ok) {
+                throw new Error('Failed to delete tenant');
+            }
+
+            return response.json();
+        },
+        onSuccess: (data) => {
+            queryClient.setQueryData(['tenants'], data);
+            toast.success('Instance supprimée', {
+                position: 'top-right',
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                theme: 'light',
+            });
+            onSuccess();
+        },
+        onError: (error: Error) => {
+            if (error.message === 'Forbidden') {
+                toast.error('Action non autorisée', {
+                    position: 'top-right',
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    theme: 'light',
+                });
+            } else if (error.message === 'Unauthorized') {
+                onError();
+            } else {
+                toast.error("Erreur lors de la suppression de l'instance", {
+                    position: 'top-right',
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    theme: 'light',
+                });
+            }
+        },
+    });
+
+    return mutate;
+};
 
 type DeleteTenantDialogProps = {
     isOpen: boolean;
     tenant: Tenant | null;
-    handleClose(): void;
-    deleteAction(
-        id: string,
-        name: string | undefined,
-        deleteDataBase: boolean,
-    ): void;
+    onClose(): void;
+    onError(): void;
 };
 
 const DeleteTenantDialog = ({
     isOpen,
     tenant,
-    handleClose,
-    deleteAction,
+    onClose,
+    onError,
 }: DeleteTenantDialogProps) => {
     const [name, setName] = useState('');
     const [deleteDatabase, setDeleteDatabase] = useState(true);
     const [validationOnError, setValidationOnError] = useState(false);
+
+    const removeTenant = useRemoveTenant({
+        onSuccess: onClose,
+        onError,
+    });
 
     useEffect(() => {
         if (isOpen) {
@@ -42,7 +128,7 @@ const DeleteTenantDialog = ({
     // @ts-expect-error TS7006
     const handleTextValidation = (event) => {
         setName(event.target.value);
-        if (event.target.value !== tenant?.name) {
+        if (!event.target.value || event.target.value !== tenant?.name) {
             setValidationOnError(true);
         } else {
             setValidationOnError(false);
@@ -59,13 +145,17 @@ const DeleteTenantDialog = ({
         if (!tenant) {
             return;
         }
-        deleteAction(tenant._id, tenant.name, deleteDatabase);
+        removeTenant({
+            id: tenant._id,
+            name: tenant.name!,
+            deleteDatabase,
+        });
     };
 
     return (
         <Dialog
             open={isOpen}
-            onClose={handleClose}
+            onClose={onClose}
             scroll="body"
             maxWidth="md"
             fullWidth
@@ -114,7 +204,7 @@ const DeleteTenantDialog = ({
                             }}
                             variant="contained"
                             color="warning"
-                            onClick={handleClose}
+                            onClick={onClose}
                         >
                             Annuler
                         </Button>
@@ -123,7 +213,7 @@ const DeleteTenantDialog = ({
                                 width: 'calc(50% - 4px)',
                                 marginLeft: '4px',
                             }}
-                            disabled={validationOnError}
+                            disabled={validationOnError || !name}
                             variant="contained"
                             color="error"
                             type="submit"
