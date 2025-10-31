@@ -6,10 +6,10 @@ import { preLoadPublication } from '../../../fields';
 import fetchSaga from '../../../lib/sagas/fetchSaga';
 import { fromUser } from '../../../sharedSelectors';
 import { fromResource, fromRouter } from '../../selectors';
-import { handleLoadResource } from './loadResource';
+import { handleForceLoadResource, handlePreloadResource } from './loadResource';
 
 describe('resource saga', () => {
-    describe('handleLoadResource', () => {
+    describe('handlePreloadResource', () => {
         const action = {
             type: LOCATION_CHANGE,
             payload: {
@@ -23,14 +23,12 @@ describe('resource saga', () => {
         };
 
         it('should put preLoadPublication', () => {
-            // @ts-expect-error TS2554
-            const saga = handleLoadResource(action);
+            const saga = handlePreloadResource(action);
             expect(saga.next().value).toEqual(put(preLoadPublication()));
         });
 
         it('should select getUri from router', () => {
-            // @ts-expect-error TS2554
-            const saga = handleLoadResource(action);
+            const saga = handlePreloadResource(action);
             saga.next();
             expect(saga.next().value).toEqual(
                 select(fromRouter.getResourceUri),
@@ -38,8 +36,7 @@ describe('resource saga', () => {
         });
 
         it('should end if receiving no uri', () => {
-            // @ts-expect-error TS2554
-            const saga = handleLoadResource(action);
+            const saga = handlePreloadResource(action);
             saga.next();
             saga.next();
             const next = saga.next();
@@ -47,11 +44,10 @@ describe('resource saga', () => {
         });
 
         it('should select isResourceLoaded', () => {
-            // @ts-expect-error TS2554
-            const saga = handleLoadResource(action);
+            const saga = handlePreloadResource(action);
             saga.next();
             saga.next();
-            // @ts-expect-error TS2345
+            // @ts-expect-error TS7006
             const next = saga.next('uri');
             expect(next.value).toEqual(
                 select(fromResource.isResourceLoaded, 'uri'),
@@ -59,37 +55,34 @@ describe('resource saga', () => {
         });
 
         it('should end if resource is loaded', () => {
-            // @ts-expect-error TS2554
-            const saga = handleLoadResource(action);
+            const saga = handlePreloadResource(action);
             saga.next();
             saga.next();
-            // @ts-expect-error TS2345
+            // @ts-expect-error TS7006
             saga.next('uri');
-            // @ts-expect-error TS2345
+            // @ts-expect-error TS7006
             const next = saga.next(true);
             expect(next.done).toBe(true);
         });
 
         it('should put loadResource if resource is not loaded', () => {
-            // @ts-expect-error TS2554
-            const saga = handleLoadResource(action);
+            const saga = handlePreloadResource(action);
             saga.next();
             saga.next();
-            // @ts-expect-error TS2345
+            // @ts-expect-error TS7006
             saga.next('uri');
-            // @ts-expect-error TS2345
+            // @ts-expect-error TS7006
             const next = saga.next(false);
             expect(next.value).toEqual(put(loadResource()));
         });
 
         it('should select getLoadResourceRequest with uri returned from getUri', () => {
-            // @ts-expect-error TS2554
-            const saga = handleLoadResource(action);
+            const saga = handlePreloadResource(action);
             saga.next();
             saga.next();
-            // @ts-expect-error TS2345
+            // @ts-expect-error TS7006
             saga.next('uri');
-            // @ts-expect-error TS2345
+            // @ts-expect-error TS7006
             saga.next(false);
             const next = saga.next();
             expect(next.value).toEqual(
@@ -98,50 +91,153 @@ describe('resource saga', () => {
         });
 
         it('should call fetchSaga with returned request', () => {
-            // @ts-expect-error TS2554
-            const saga = handleLoadResource(action);
+            const saga = handlePreloadResource(action);
             saga.next();
             saga.next();
-            // @ts-expect-error TS2345
+            // @ts-expect-error TS7006
             saga.next('uri');
-            // @ts-expect-error TS2345
+            // @ts-expect-error TS7006
             saga.next(false);
             saga.next();
-            // @ts-expect-error TS2345
+            // @ts-expect-error TS7006
             const next = saga.next('request');
             expect(next.value).toEqual(call(fetchSaga, 'request'));
         });
 
         it('should put loadResourceError if fetchSaga returned an error', () => {
-            // @ts-expect-error TS2554
-            const saga = handleLoadResource(action);
+            const saga = handlePreloadResource(action);
             saga.next();
             saga.next();
-            // @ts-expect-error TS2345
+            // @ts-expect-error TS7006
             saga.next('uri');
-            // @ts-expect-error TS2345
+            // @ts-expect-error TS7006
             saga.next(false);
             saga.next();
-            // @ts-expect-error TS2345
+            // @ts-expect-error TS7006
             saga.next('request');
-            // @ts-expect-error TS2345
+            // @ts-expect-error TS7006
             const next = saga.next({ error: 'error' });
             expect(next.value).toEqual(put(loadResourceError('error')));
         });
 
         it('should put loadResourceSuccess if fetchSaga succeeded', () => {
-            // @ts-expect-error TS2554
-            const saga = handleLoadResource(action);
+            const saga = handlePreloadResource(action);
             saga.next();
             saga.next();
-            // @ts-expect-error TS2345
+            // @ts-expect-error TS7006
             saga.next('uri');
-            // @ts-expect-error TS2345
+            // @ts-expect-error TS7006
             saga.next(false);
             saga.next();
-            // @ts-expect-error TS2345
+            // @ts-expect-error TS7006
             saga.next('request');
-            // @ts-expect-error TS2345
+            // @ts-expect-error TS7006
+            const next = saga.next({ response: 'response' });
+            expect(next.value).toEqual(put(loadResourceSuccess('response')));
+        });
+    });
+
+    describe('handleForceLoadResource', () => {
+        const action = {
+            type: LOCATION_CHANGE,
+            payload: {
+                location: {
+                    pathname: '/ark:/naan/publisher-id',
+                    query: {
+                        uri: 'uri',
+                    },
+                },
+            },
+        };
+
+        it('should put preLoadPublication', () => {
+            const saga = handleForceLoadResource(action);
+            expect(saga.next().value).toEqual(put(preLoadPublication()));
+        });
+
+        it('should select getUri from router', () => {
+            const saga = handleForceLoadResource(action);
+            saga.next();
+            expect(saga.next().value).toEqual(
+                select(fromRouter.getResourceUri),
+            );
+        });
+
+        it('should end if receiving no uri', () => {
+            const saga = handleForceLoadResource(action);
+            saga.next();
+            saga.next();
+            const next = saga.next();
+            expect(next.done).toBe(true);
+        });
+
+        it('should put loadResource if resource is not loaded', () => {
+            const saga = handleForceLoadResource(action);
+            saga.next();
+            saga.next();
+            // @ts-expect-error TS7006
+            saga.next('uri');
+            // @ts-expect-error TS7006
+            const next = saga.next(false);
+            expect(next.value).toEqual(put(loadResource()));
+        });
+
+        it('should select getLoadResourceRequest with uri returned from getUri', () => {
+            const saga = handleForceLoadResource(action);
+            saga.next();
+            saga.next();
+            // @ts-expect-error TS7006
+            saga.next('uri');
+            // @ts-expect-error TS7006
+            saga.next(false);
+            const next = saga.next();
+            expect(next.value).toEqual(
+                select(fromUser.getLoadResourceRequest, 'uri'),
+            );
+        });
+
+        it('should call fetchSaga with returned request', () => {
+            const saga = handleForceLoadResource(action);
+            saga.next();
+            saga.next();
+            // @ts-expect-error TS7006
+            saga.next('uri');
+            // @ts-expect-error TS7006
+            saga.next(false);
+            saga.next();
+            // @ts-expect-error TS7006
+            const next = saga.next('request');
+            expect(next.value).toEqual(call(fetchSaga, 'request'));
+        });
+
+        it('should put loadResourceError if fetchSaga returned an error', () => {
+            const saga = handleForceLoadResource(action);
+            saga.next();
+            saga.next();
+            // @ts-expect-error TS7006
+            saga.next('uri');
+            // @ts-expect-error TS7006
+            saga.next(false);
+            saga.next();
+            // @ts-expect-error TS7006
+            saga.next('request');
+            // @ts-expect-error TS7006
+            const next = saga.next({ error: 'error' });
+            expect(next.value).toEqual(put(loadResourceError('error')));
+        });
+
+        it('should put loadResourceSuccess if fetchSaga succeeded', () => {
+            const saga = handleForceLoadResource(action);
+            saga.next();
+            saga.next();
+            // @ts-expect-error TS7006
+            saga.next('uri');
+            // @ts-expect-error TS7006
+            saga.next(false);
+            saga.next();
+            // @ts-expect-error TS7006
+            saga.next('request');
+            // @ts-expect-error TS7006
             const next = saga.next({ response: 'response' });
             expect(next.value).toEqual(put(loadResourceSuccess('response')));
         });

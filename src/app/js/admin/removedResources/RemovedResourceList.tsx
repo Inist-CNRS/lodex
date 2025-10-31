@@ -113,7 +113,16 @@ export const RemovedResourceListComponent = ({
                                 </ButtonWithStatus>
                             </TableCell>
                             {columns.map(({ name }) => (
-                                <TableCell key={data[name] as string}>
+                                <TableCell
+                                    key={data[name] as string}
+                                    sx={{
+                                        maxHeight: '1rem',
+                                        overflow: 'hidden',
+                                        textOverflow: 'ellipsis',
+                                        whiteSpace: 'nowrap',
+                                        maxWidth: '200px',
+                                    }}
+                                >
                                     {data[name] as string}
                                 </TableCell>
                             ))}

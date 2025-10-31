@@ -102,6 +102,8 @@
 "edit_ontology_field"	"%{field} settings"	"paramètre pour %{field}"
 "save"	"Save"	"Sauvegarder"
 "hide"	"Hide"	"Cacher"
+"hide_resource_success"	"Resource successfully hidden"	"Resource cachée avec succés"
+"hide_resource_error"	"An error occured while trying to hide the resource"	"Une erreur est survenue en essayant de cacher cette resource"
 "add-field"	"Add a field"	"Ajouter un champ"
 "restore"	"Restore"	"Restaurer"
 "removed_at"	"Date removed: "	"Date enlevée :"

@@ -16,6 +16,7 @@ import { hideResource } from '../api/hideResource';
 import { hideResourceSuccess } from '.';
 import Alert from '../../lib/components/Alert';
 import { useMutation } from '@tanstack/react-query';
+import { toast } from 'react-toastify';
 
 type HideResourceFormComponentProps = {
     isOpen: boolean;
@@ -33,6 +34,7 @@ const useHideResource = ({
     error: Error | null;
     isLoading: boolean;
 } => {
+    const { translate } = useTranslate();
     const dispatch = useDispatch();
     const { mutate, error, isLoading } = useMutation<
         {
@@ -53,7 +55,18 @@ const useHideResource = ({
                     ...response,
                 }),
             );
+
+            toast(translate('hide_resource_success'), {
+                type: 'success',
+            });
+
             onClose();
+        },
+        onError() {
+            toast(translate('hide_resource_error'), {
+                type: 'error',
+            });
+            console.error(error);
         },
     });
 
