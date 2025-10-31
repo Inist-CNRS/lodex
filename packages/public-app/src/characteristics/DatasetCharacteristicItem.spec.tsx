@@ -1,5 +1,5 @@
 import { DatasetCharacteristicItemComponent as DatasetCharacteristicItem } from './DatasetCharacteristicItem';
-import Property from '../../../../packages/public-app/src/Property';
+import Property from '../Property';
 
 import { useInView } from 'react-intersection-observer';
 import { render } from '@lodex/frontend-common/test-utils';

@@ -1,11 +1,14 @@
 import { useSelector } from 'react-redux';
 
-import { fromFields, fromCharacteristic } from '../sharedSelectors';
+import {
+    fromFields,
+    fromCharacteristic,
+} from '../../../../src/app/js/sharedSelectors';
 
 import DatasetCharacteristicItem from './DatasetCharacteristicItem';
-import { fromDisplayConfig } from '../../../../packages/public-app/src/selectors';
+import { fromDisplayConfig } from '../selectors';
 import { useEffect, type CSSProperties } from 'react';
-import type { State } from '../../../../packages/admin-app/src/reducers';
+import type { State } from '../../../admin-app/src/reducers';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 
 const styles: Record<string, CSSProperties> = {
