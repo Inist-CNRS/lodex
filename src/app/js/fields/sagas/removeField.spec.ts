@@ -2,7 +2,7 @@ import { call, put, select } from 'redux-saga/effects';
 
 import fetchSaga from '@lodex/frontend-common/fetch/fetchSaga';
 
-import { removeFieldError, removeFieldSuccess } from '../';
+import { removeFieldError, removeFieldSuccess } from '../reducer';
 import { handleRemoveField } from './removeField';
 import { fromFields, fromUser } from '../../sharedSelectors';
 

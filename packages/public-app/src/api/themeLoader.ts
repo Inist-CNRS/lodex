@@ -1,4 +1,4 @@
-import { getThemeRequest } from '../../../../src/app/js/user';
+import { getThemeRequest } from '../../../../src/app/js/user/reducer';
 import fetch from '@lodex/frontend-common/fetch/fetch';
 import { getUserSessionStorageInfo } from '../../../admin-app/src/api/tools';
 

@@ -4,10 +4,10 @@ import {
     UPDATE_CHARACTERISTICS,
     updateCharacteristicsError,
     updateCharacteristicsSuccess,
-} from '../';
+} from '../reducer';
 import { fromUser } from '../../sharedSelectors';
 import fetchSaga from '@lodex/frontend-common/fetch/fetchSaga';
-import { configureFieldSuccess } from '../../fields/index';
+import { configureFieldSuccess } from '../../fields/reducer';
 
 // @ts-expect-error TS7031
 export function* handleUpdateCharacteristics({ payload }) {

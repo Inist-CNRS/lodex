@@ -8,7 +8,7 @@ import {
     SAVE_FIELD_FROM_DATA,
     saveFieldError,
     saveFieldSuccess,
-} from '../';
+} from '../reducer.ts';
 
 import { fromFields, fromUser } from '../../sharedSelectors';
 

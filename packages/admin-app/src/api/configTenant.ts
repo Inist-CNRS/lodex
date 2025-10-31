@@ -3,7 +3,7 @@ import {
     getConfigTenantAvailableThemeRequest,
     getConfigTenantRequest,
     getUpdateConfigTenantRequest,
-} from '../../../../src/app/js/user';
+} from '../../../../src/app/js/user/reducer';
 import { getUserSessionStorageInfo } from './tools';
 
 export const getConfigTenantAvailableTheme = () => {

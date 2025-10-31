@@ -7,7 +7,7 @@ import classnames from 'classnames';
 
 import { fromUser, fromFields } from '../../../../src/app/js/sharedSelectors';
 import { fromDisplayConfig, fromMenu } from '../selectors';
-import { logout } from '../../../../src/app/js/user';
+import { logout } from '../../../../src/app/js/user/reducer';
 import Drawer, { useDrawer, DRAWER_CLOSED } from '../Drawer';
 import Search from '../search/Search';
 import GraphSummary from '../graph/GraphSummary';

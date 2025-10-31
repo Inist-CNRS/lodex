@@ -1,6 +1,6 @@
 import { call, put, select } from 'redux-saga/effects';
 
-import { fieldInvalid } from '../';
+import { fieldInvalid } from '../reducer';
 import { fromFields } from '../../sharedSelectors';
 import { validateAddedField } from '@lodex/common';
 

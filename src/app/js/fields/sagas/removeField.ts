@@ -1,7 +1,7 @@
 import { call, put, select, takeLatest } from 'redux-saga/effects';
 import { push } from 'redux-first-history';
 
-import { REMOVE_FIELD, removeFieldError, removeFieldSuccess } from '../';
+import { REMOVE_FIELD, removeFieldError, removeFieldSuccess } from '../reducer';
 
 import { fromFields, fromUser } from '../../sharedSelectors';
 import fetchSaga from '@lodex/frontend-common/fetch/fetchSaga';

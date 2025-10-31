@@ -4,7 +4,7 @@ import {
     ADD_CHARACTERISTIC,
     addCharacteristicError,
     addCharacteristicSuccess,
-} from '../';
+} from '../reducer';
 import { getNewCharacteristicFormData } from '../selectors';
 import { fromUser } from '../../sharedSelectors';
 import fetchSaga from '@lodex/frontend-common/fetch/fetchSaga';

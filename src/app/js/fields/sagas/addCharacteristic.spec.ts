@@ -1,6 +1,6 @@
 import { call, put, select } from 'redux-saga/effects';
 
-import { addCharacteristicError, addCharacteristicSuccess } from '../';
+import { addCharacteristicError, addCharacteristicSuccess } from '../reducer';
 
 import { getNewCharacteristicFormData } from '../selectors';
 

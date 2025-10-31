@@ -1,5 +1,5 @@
 import fetch from '@lodex/frontend-common/fetch/fetch';
-import { getPublishRequest } from '../../../../src/app/js/user';
+import { getPublishRequest } from '../../../../src/app/js/user/reducer';
 import { getUserSessionStorageInfo } from './tools';
 
 const publish = async () => {

@@ -6,7 +6,7 @@ import {
     LOAD_FIELD_SUCCESS,
     REMOVE_FIELD_SUCCESS,
     LOAD_PUBLICATION_SUCCESS,
-} from '../';
+} from '../reducer';
 
 import { fromFields } from '../../sharedSelectors';
 

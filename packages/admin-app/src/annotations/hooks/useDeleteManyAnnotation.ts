@@ -4,7 +4,7 @@ import { useHistory } from 'react-router-dom';
 import { toast } from '@lodex/common';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 import fetch from '@lodex/frontend-common/fetch/fetch';
-import { getRequest } from '../../../../../src/app/js/user';
+import { getRequest } from '../../../../../src/app/js/user/reducer';
 import { getUserSessionStorageInfo } from '../../api/tools';
 
 export function useDeleteManyAnnotation() {

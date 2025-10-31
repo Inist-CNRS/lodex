@@ -11,7 +11,7 @@ import {
     sort as sortAction,
     loadMore as loadMoreAction,
 } from './reducer';
-import { preLoadPublication as preLoadPublicationAction } from '../../../../src/app/js/fields';
+import { preLoadPublication as preLoadPublicationAction } from '../../../../src/app/js/fields/reducer';
 import { fromFields } from '../../../../src/app/js/sharedSelectors';
 import { fromSearch, fromDataset } from '../selectors';
 import AdminOnlyAlert from '@lodex/frontend-common/components/AdminOnlyAlert';

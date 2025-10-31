@@ -7,7 +7,7 @@ import {
     removeFieldListError,
     removeFieldListStarted,
     removeFieldListSuccess,
-} from '../';
+} from '../reducer';
 import { fromFields, fromUser } from '../../sharedSelectors';
 import { handleRemoveFieldList } from './removeFieldList';
 
