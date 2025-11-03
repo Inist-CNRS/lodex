@@ -4,7 +4,7 @@ import { Box, Link, Typography } from '@mui/material';
 import { DEFAULT_TENANT } from '@lodex/common';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 import { getRedirectFieldHash } from './helpers/field';
-import { getResourceType } from './helpers/resourceType';
+import { getResourceType } from '@lodex/frontend-common/annotations/resourceType';
 
 const tenant = sessionStorage.getItem('lodex-tenant') || DEFAULT_TENANT;
 

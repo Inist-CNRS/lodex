@@ -29,9 +29,9 @@ import PropertyLinkedFields from './PropertyLinkedFields';
 import { Settings } from '@mui/icons-material';
 import { Box, IconButton } from '@mui/material';
 import { useMemo } from 'react';
-import type { State } from '../../../admin-app/src/reducers';
 import { useCanAnnotate } from '../annotation/useCanAnnotate';
 import { CreateAnnotationButton } from '../annotation/CreateAnnotationButton';
+import type { State } from '../reducers';
 
 const styles = {
     container: memoize(

@@ -29,7 +29,11 @@
         "vite.config.ts",
         "src",
         "../frontend-common/fields/splitAnnotationFormatListOptions.ts",
-        "../frontend-common/getUserSessionStorageInfo.ts"
+        "../frontend-common/getUserSessionStorageInfo.ts",
+        "../frontend-common/annotations/AnnotationStatus.tsx",
+        "../frontend-common/annotations/AnnotationValue.tsx",
+        "../frontend-common/annotations/resourceType.ts",
+        "../frontend-common/api/facet.ts"
     ],
     "exclude": ["build"]
 }
