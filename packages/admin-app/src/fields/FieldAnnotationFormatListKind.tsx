@@ -1,9 +1,9 @@
 import { MenuItem } from '@mui/material';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
-import { FIELD_ANNOTATION_FORMAT_LIST } from './FieldAnnotationFormat.tsx';
 import { useFormContext, useWatch } from 'react-hook-form';
 import { TextField } from '@lodex/frontend-common/form-fields/TextField.tsx';
 import {
+    FIELD_ANNOTATION_FORMAT_LIST,
     FIELD_ANNOTATION_FORMAT_LIST_KIND_MULTIPLE,
     FIELD_ANNOTATION_FORMAT_LIST_KIND_SINGLE,
 } from '@lodex/frontend-common/fields/selectors.ts';

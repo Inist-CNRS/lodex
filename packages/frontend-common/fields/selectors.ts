@@ -15,15 +15,14 @@ import {
 import { getProps } from '../utils/selectors';
 
 import { splitAnnotationFormatListOptions } from './splitAnnotationFormatListOptions';
-import {
-    FIELD_ANNOTATION_FORMAT_LIST,
-    FIELD_ANNOTATION_FORMAT_TEXT,
-} from '../../admin-app/src/fields/FieldAnnotationFormat';
 
 export const NEW_CHARACTERISTIC_FORM_NAME = 'NEW_CHARACTERISTIC_FORM_NAME';
 
 export const FIELD_ANNOTATION_FORMAT_LIST_KIND_SINGLE = 'single';
 export const FIELD_ANNOTATION_FORMAT_LIST_KIND_MULTIPLE = 'multiple';
+
+export const FIELD_ANNOTATION_FORMAT_TEXT = 'text';
+export const FIELD_ANNOTATION_FORMAT_LIST = 'list';
 
 // @ts-expect-error TS7031
 export const getFields = ({ byName, list = [] }) =>

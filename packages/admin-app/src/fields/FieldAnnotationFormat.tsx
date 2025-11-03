@@ -2,9 +2,10 @@ import { MenuItem } from '@mui/material';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 import { useFormContext, useWatch } from 'react-hook-form';
 import { TextField } from '@lodex/frontend-common/form-fields/TextField.tsx';
-
-export const FIELD_ANNOTATION_FORMAT_TEXT = 'text';
-export const FIELD_ANNOTATION_FORMAT_LIST = 'list';
+import {
+    FIELD_ANNOTATION_FORMAT_LIST,
+    FIELD_ANNOTATION_FORMAT_TEXT,
+} from '@lodex/frontend-common/fields/selectors';
 
 export function FieldAnnotationFormat() {
     const { translate } = useTranslate();
