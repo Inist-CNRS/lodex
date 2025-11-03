@@ -2,7 +2,7 @@ import { DatasetCharacteristicItemComponent as DatasetCharacteristicItem } from 
 import Property from '../Property';
 
 import { useInView } from 'react-intersection-observer';
-import { render } from '@lodex/frontend-common/test-utils';
+import { render } from '../test-utils';
 jest.mock('react-intersection-observer');
 
 jest.mock('../Property', () => ({

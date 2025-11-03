@@ -1,6 +1,6 @@
 import { ThemeProvider, createTheme } from '@mui/material';
 
-import { render } from '@lodex/frontend-common/test-utils';
+import { render } from '../test-utils';
 import Loading from '@lodex/frontend-common/components/Loading';
 import Detail from './Detail';
 import RemovedDetail from './RemovedDetail';
