@@ -1,4 +1,4 @@
-import { getUserSessionStorageInfo } from '../../../admin-app/src/api/tools';
+import { getUserSessionStorageInfo } from '@lodex/frontend-common/getUserSessionStorageInfo';
 import fetch from '@lodex/frontend-common/fetch/fetch';
 import { getExportPDFRequest } from '@lodex/frontend-common/user/reducer';
 

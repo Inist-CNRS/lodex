@@ -28,7 +28,8 @@
     "include": [
         "vite.config.ts",
         "src",
-        "../frontend-common/fields/splitAnnotationFormatListOptions.ts"
+        "../frontend-common/fields/splitAnnotationFormatListOptions.ts",
+        "../frontend-common/getUserSessionStorageInfo.ts"
     ],
     "exclude": ["build"]
 }

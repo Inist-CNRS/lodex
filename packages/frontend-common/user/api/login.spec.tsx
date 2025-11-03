@@ -4,11 +4,11 @@ import { useLogin } from './login';
 import { Wrapper as DefaultWrapper, getStore } from '../../test-utils';
 import { renderHook } from '@testing-library/react-hooks';
 import { MemoryRouter, useHistory } from 'react-router';
-import { getUserSessionStorageInfo } from '../../../admin-app/src/api/tools';
+import { getUserSessionStorageInfo } from '../../getUserSessionStorageInfo';
 import fetch from '../../fetch/fetch';
 import { loginSuccess } from '../../user/reducer';
 
-jest.mock('../../../../packages/admin-app/src/api/tools', () => ({
+jest.mock('../../getUserSessionStorageInfo', () => ({
     getUserSessionStorageInfo: jest.fn(),
 }));
 

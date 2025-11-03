@@ -16,7 +16,7 @@ import { useSizeObserver } from '../../../utils/chartsHooks';
 import injectData from '../../../injectData';
 import type { VegaData } from '../../../utils/components/vega-component/VegaComponent';
 import type { AspectRatio } from '../../../utils/aspectRatio';
-import type { State } from '../../../../../admin-app/src/reducers';
+import type { SharedState } from '../../../../sharedReducers';
 
 const styles = {
     container: {
@@ -109,7 +109,7 @@ const FlowMapView = ({
 };
 
 const mapStateToProps = (
-    _state: State,
+    _state: SharedState,
     {
         formatData,
     }: {

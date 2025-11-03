@@ -15,7 +15,9 @@ import subresource, { type SubresourceState } from './subresource';
 import enrichment from './enrichment';
 import precomputed, { type PrecomputedState } from './precomputed';
 import configTenant from './configTenant';
-import sharedReducers from '@lodex/frontend-common/sharedReducers';
+import sharedReducers, {
+    type SharedState,
+} from '@lodex/frontend-common/sharedReducers';
 
 export type State = {
     fetch: FetchState;
@@ -40,7 +42,7 @@ export type State = {
     precomputed: PrecomputedState;
     configTenant: unknown;
     format: unknown;
-};
+} & SharedState;
 
 const reducers = {
     ...sharedReducers,

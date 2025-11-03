@@ -12,7 +12,7 @@ import { useVegaActions } from '../useVegaActions';
 import { useVegaCsvExport } from '../useVegaCsvExport';
 import { compose } from 'recompose';
 import { useTranslate } from '../../../../i18n/I18NContext';
-import type { State } from '../../../../../admin-app/src/reducers';
+import type { SharedState } from '../../../../sharedReducers';
 
 export type VegaData = {
     values: { source: string; target: string; weight: number }[];
@@ -114,7 +114,7 @@ function CustomActionVega(props: CustomActionVegaProps) {
     );
 }
 
-const mapStateToProps = (state: State) => {
+const mapStateToProps = (state: SharedState) => {
     return {
         user: state.user,
     };

@@ -6,7 +6,7 @@ import { toast } from 'react-toastify';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 import fetch from '@lodex/frontend-common/fetch/fetch';
 import { getRequest } from '@lodex/frontend-common/user/reducer';
-import { getUserSessionStorageInfo } from '../../api/tools';
+import { getUserSessionStorageInfo } from '@lodex/frontend-common/getUserSessionStorageInfo';
 
 export function useUpdateAnnotation() {
     const { translate } = useTranslate();

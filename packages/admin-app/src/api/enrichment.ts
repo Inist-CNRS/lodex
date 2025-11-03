@@ -5,7 +5,7 @@ import {
     getPreviewDataEnrichmentRequest,
     getUpdateEnrichmentRequest,
 } from '@lodex/frontend-common/user/reducer';
-import { getUserSessionStorageInfo } from './tools';
+import { getUserSessionStorageInfo } from '@lodex/frontend-common/getUserSessionStorageInfo';
 
 // @ts-expect-error TS7006
 export const getPreviewEnrichment = (previewEnrichment) => {

@@ -2,8 +2,8 @@ import Polyglot, { type InterpolationOptions } from 'node-polyglot';
 import React, { createContext, useContext, useMemo } from 'react';
 import { connect } from 'react-redux';
 import { setLanguage as setLanguageAction } from './index';
-import type { State } from '../../admin-app/src/reducers';
 import { fromI18n } from '../sharedSelectors';
+import type { SharedState } from '../sharedReducers';
 
 export const I18NContext = createContext<{
     translate: (
@@ -45,7 +45,7 @@ export const I18NComponent = ({
     );
 };
 
-const mapStateToProps = (state: State) => ({
+const mapStateToProps = (state: SharedState) => ({
     phrases: fromI18n.getPhrases(state),
     locale: fromI18n.getLocale(state),
 });

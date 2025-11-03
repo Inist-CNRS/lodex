@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 
 import fetch from '@lodex/frontend-common/fetch/fetch';
 import { getRequest } from '@lodex/frontend-common/user/reducer';
-import { getUserSessionStorageInfo } from '../../api/tools';
+import { getUserSessionStorageInfo } from '@lodex/frontend-common/getUserSessionStorageInfo';
 
 // @ts-expect-error TS7006
 export function useGetResourceByUri(uri) {

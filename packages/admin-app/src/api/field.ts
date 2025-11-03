@@ -11,7 +11,7 @@ import {
 import { store } from '../adminIndex';
 import { saveFieldSuccess } from '@lodex/frontend-common/fields/reducer';
 import fetch from '@lodex/frontend-common/fetch/fetch';
-import { getUserSessionStorageInfo } from './tools';
+import { getUserSessionStorageInfo } from '@lodex/frontend-common/getUserSessionStorageInfo';
 
 // @ts-expect-error TS7031
 const duplicateField = async ({ fieldId }) => {
