@@ -11,7 +11,7 @@ import { loadFormatData } from '../../reducer';
 import Loading from '@lodex/frontend-common/components/Loading';
 import { isURL } from '@lodex/common';
 import Link from '@lodex/frontend-common/components/Link';
-import type { Field } from '../../../fields/types';
+import type { Field } from '@lodex/frontend-common/fields/types';
 
 const styles = {
     message: {

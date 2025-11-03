@@ -13,7 +13,7 @@ import {
 } from '../utils/chartsUtils';
 import { useSizeObserver } from '../utils/chartsHooks';
 import stylesToClassName from '@lodex/frontend-common/utils/stylesToClassName';
-import type { Field } from '../../fields/types';
+import type { Field } from '@lodex/frontend-common/fields/types';
 
 // @ts-expect-error TS2554
 const styles = stylesToClassName({

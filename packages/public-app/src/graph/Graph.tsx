@@ -24,7 +24,7 @@ import Format from '../Format';
 import { getEditFieldRedirectUrl } from '../Property';
 import CompositeProperty from '../Property/CompositeProperty';
 import PropertyLinkedFields from '../Property/PropertyLinkedFields';
-import type { Field } from '../../../../src/app/js/fields/types';
+import type { Field } from '@lodex/frontend-common/fields/types';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 import { CreateAnnotationButton } from '../annotation/CreateAnnotationButton';
 

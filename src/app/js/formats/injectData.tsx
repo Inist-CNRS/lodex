@@ -12,7 +12,7 @@ import InvalidFormat from './InvalidFormat';
 import { CircularProgress } from '@mui/material';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 import { isEqual } from 'lodash';
-import type { Field } from '../fields/types';
+import type { Field } from '@lodex/frontend-common/fields/types';
 
 const styles = {
     message: {

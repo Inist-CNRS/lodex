@@ -11,9 +11,9 @@ import {
     getShortText,
 } from '@lodex/frontend-common/utils/longTexts';
 
-import FieldInternalIcon from '../../../../src/app/js/fields/FieldInternalIcon';
+import FieldInternalIcon from '../fields/FieldInternalIcon';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
-import type { Field } from '../../../../src/app/js/fields/types';
+import type { Field } from '@lodex/frontend-common/fields/types';
 
 const getStyle = memoize((field) => {
     if (field.scope === SCOPE_DATASET) {

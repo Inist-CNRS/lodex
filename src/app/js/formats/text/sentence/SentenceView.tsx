@@ -1,4 +1,4 @@
-import type { Field } from '../../../fields/types';
+import type { Field } from '@lodex/frontend-common/fields/types';
 
 interface SentenceViewProps {
     field: Field;

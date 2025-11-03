@@ -16,7 +16,7 @@ import injectData from '../../../injectData';
 import Cartography from '../../models/Cartography';
 import InvalidFormat from '../../../InvalidFormat';
 import { useSizeObserver } from '../../../utils/chartsHooks';
-import type { Field } from '../../../../fields/types';
+import type { Field } from '@lodex/frontend-common/fields/types';
 
 const styles = {
     container: {

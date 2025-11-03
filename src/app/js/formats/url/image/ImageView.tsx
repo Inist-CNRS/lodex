@@ -1,6 +1,6 @@
 // @ts-expect-error TS7016
 import ImageZoom from 'react-medium-image-zoom';
-import type { Field } from '../../../fields/types';
+import type { Field } from '@lodex/frontend-common/fields/types';
 
 interface ImageViewProps {
     field: Field;

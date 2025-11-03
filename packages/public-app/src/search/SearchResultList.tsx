@@ -5,7 +5,7 @@ import classnames from 'classnames';
 import SearchResult from './SearchResult';
 import SearchResultPlaceholders from './SearchResultPlaceholders';
 import stylesToClassname from '@lodex/frontend-common/utils/stylesToClassName';
-import type { Field } from '../../../../src/app/js/fields/types';
+import type { Field } from '@lodex/frontend-common/fields/types';
 
 const DEFAULT_PLACEHOLDER_NUMBER = 8;
 const PLACEHOLDER_WIDTH = 75;

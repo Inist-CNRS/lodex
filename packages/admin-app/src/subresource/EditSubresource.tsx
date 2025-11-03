@@ -1,6 +1,6 @@
 import { useParams, withRouter } from 'react-router';
 
-import { FieldsEdit } from '../field/FieldsEdit';
+import { FieldsEdit } from '../fields/FieldsEdit';
 import { EditSubresourceForm } from './EditSubresourceForm';
 
 export const EditSubresource = withRouter(() => {

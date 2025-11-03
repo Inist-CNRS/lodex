@@ -10,8 +10,8 @@ import withInitialData from './withInitialData';
 import { AddSubresource } from './subresource/AddSubresource';
 import { EditSubresource } from './subresource/EditSubresource';
 import { SCOPE_DOCUMENT } from '@lodex/common';
-import { FieldsEdit } from './field/FieldsEdit';
-import FieldEditForm from '../../../src/app/js/fields/wizard';
+import { FieldsEdit } from './fields/FieldsEdit';
+import FieldEditForm from './fields/wizard';
 import SubresourceListConnected from './subresource/SubresourceList';
 
 const DisplayRouteComponent = () => {

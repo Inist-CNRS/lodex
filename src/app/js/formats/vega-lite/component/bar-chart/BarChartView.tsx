@@ -17,7 +17,7 @@ import BarChart from '../../models/BarChart';
 import { CustomActionVegaLite } from '../../../utils/components/vega-lite-component';
 import InvalidFormat from '../../../InvalidFormat';
 import { useSizeObserver } from '../../../utils/chartsHooks';
-import type { Field } from '../../../../fields/types';
+import type { Field } from '@lodex/frontend-common/fields/types';
 
 const styles = {
     container: {

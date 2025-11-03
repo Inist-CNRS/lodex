@@ -9,7 +9,7 @@ import ValidationField from './ValidationField';
 
 import { SCOPE_DOCUMENT } from '@lodex/common';
 import { useHistory } from 'react-router-dom';
-import { getEditFieldRedirectUrl } from '../../../../src/app/js/fields/FieldGrid';
+import { getEditFieldRedirectUrl } from '../fields/FieldGrid';
 import WarningIcon from '@mui/icons-material/Warning';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 

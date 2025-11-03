@@ -1,4 +1,4 @@
-import type { Field } from '../../../fields/types';
+import type { Field } from '@lodex/frontend-common/fields/types';
 
 // @ts-expect-error TS7006
 const getParagraphWidth = (paragraphWidth, field) => {
