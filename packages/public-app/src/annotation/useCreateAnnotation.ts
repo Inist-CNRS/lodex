@@ -5,7 +5,7 @@ import { getUserSessionStorageInfo } from '../../../../packages/admin-app/src/ap
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 import fetch from '@lodex/frontend-common/fetch/fetch';
 import { useSaveAnnotationId } from './annotationStorage';
-import { getRequest } from '../../../../src/app/js/user/reducer';
+import { getRequest } from '@lodex/frontend-common/user/reducer';
 
 export function useCreateAnnotation() {
     const { translate, locale } = useTranslate();

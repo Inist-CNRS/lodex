@@ -5,7 +5,7 @@ import {
     putUpdateDataset,
     getDeleteManyDatasetRowRequest,
     getDeleteFilteredDatasetRowRequest,
-} from '../../../../src/app/js/user/reducer';
+} from '@lodex/frontend-common/user/reducer';
 import { getUserSessionStorageInfo } from './tools';
 
 // @ts-expect-error TS7031

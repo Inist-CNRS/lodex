@@ -9,7 +9,7 @@ import previewSaga from './preview/sagas';
 import publishSaga from './publish/sagas';
 import removedResourcesSagas from './removedResources/sagas';
 import uploadFileSaga from './upload/sagas';
-import userSagas from '../../../src/app/js/user/sagas';
+import userSagas from '@lodex/frontend-common/user/sagas';
 import fetchSaga from '@lodex/frontend-common/fetch/sagas';
 import i18nSagas from '@lodex/frontend-common/i18n/sagas';
 import clearSaga from './clear/sagas';

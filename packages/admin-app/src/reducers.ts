@@ -10,7 +10,7 @@ import preview from './preview';
 import publishReducer from './publish';
 import removedResources from './removedResources';
 import upload from './upload';
-import user from '../../../src/app/js/user/reducer';
+import user from '@lodex/frontend-common/user/reducer';
 import clear from './clear';
 import dump from './dump';
 import characteristic from '@lodex/frontend-common/characteristics/reducer';
