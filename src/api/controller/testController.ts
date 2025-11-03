@@ -32,7 +32,6 @@ app.use(
             .collection('tenant')
             .find({ name: { $ne: DEFAULT_TENANT } })
             .toArray();
-        console.log({ tenantsToDelete });
 
         for (const tenant of tenantsToDelete) {
             await deleteTenant({
