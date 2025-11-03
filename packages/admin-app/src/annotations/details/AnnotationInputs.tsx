@@ -8,7 +8,7 @@ import TextField from '@mui/material/TextField';
 import { useStore } from '@tanstack/react-form';
 
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
-import { AnnotationStatusChip } from '../AnnotationStatus';
+import { AnnotationStatusChip } from '@lodex/frontend-common/annotations/AnnotationStatus';
 import { FormHelperText } from '@mui/material';
 import { statuses } from '@lodex/common';
 

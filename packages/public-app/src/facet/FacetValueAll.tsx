@@ -5,7 +5,7 @@ import { Box, Button } from '@mui/material';
 import { fromFacet, fromDisplayConfig } from '../selectors';
 import { connect } from 'react-redux';
 
-import apiFacet from '../../../admin-app/src/api/facet';
+import apiFacet from '@lodex/frontend-common/api/facet';
 import { facetActions as datasetActions } from '../dataset';
 import { facetActions as searchActions } from '../search/reducer';
 

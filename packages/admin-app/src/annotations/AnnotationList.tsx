@@ -15,7 +15,7 @@ import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 import AdminOnlyAlert from '@lodex/frontend-common/components/AdminOnlyAlert';
 import withInitialData from '../withInitialData';
 import { AnnotationProposedValue } from './AnnotationProposedValue';
-import { AnnotationStatusChip } from './AnnotationStatus';
+import { AnnotationStatusChip } from '@lodex/frontend-common/annotations/AnnotationStatus';
 import { CellWithTooltip } from './CellWithTooltip';
 import { DeleteFilteredButton } from './DeleteFilteredButton';
 import { DeleteManyButton } from './DeleteManyButton';
