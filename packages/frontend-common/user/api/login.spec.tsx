@@ -12,7 +12,7 @@ jest.mock('../../getUserSessionStorageInfo', () => ({
     getUserSessionStorageInfo: jest.fn(),
 }));
 
-jest.mock('../lib/fetch', () => jest.fn());
+jest.mock('@lodex/frontend-common/fetch/fetch', () => jest.fn());
 
 jest.mock('../user', () => ({
     ...jest.requireActual('../user'),

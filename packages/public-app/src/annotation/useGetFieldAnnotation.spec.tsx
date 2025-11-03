@@ -49,7 +49,7 @@ const annotations = [
     },
 ];
 
-jest.mock('../lib/fetch', () =>
+jest.mock('@lodex/frontend-common/fetch/fetch', () =>
     jest.fn().mockImplementation(() => {
         return Promise.resolve({
             response: annotations,
