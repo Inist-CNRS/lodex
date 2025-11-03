@@ -6,12 +6,16 @@ import LinkIcon from '@mui/icons-material/Link';
 import { TextField } from '@mui/material';
 import URL from 'url';
 
-import { loadFormatData } from '../../reducer';
 import Loading from '../../../components/Loading';
 import { isURL } from '@lodex/common';
 import Link from '../../../components/Link';
 import type { Field } from '../../../fields/types';
-import { fromFormat } from '../../../sharedSelectors';
+import { get } from 'lodash';
+import { createAction } from 'redux-actions';
+
+// redeclaring action reactor here to avoid circular dependency
+// Nice to have: refactor format to use injectData
+export const loadFormatData = createAction('LOAD_FORMAT_DATA');
 
 const styles = {
     message: {
@@ -238,9 +242,9 @@ export default (url) => (FormatView) => {
 
     // @ts-expect-error TS7006
     const mapStateToProps = (state, { field }) => ({
-        formatData: fromFormat.getFormatData(state, field.name),
-        isLoaded: field && fromFormat.isFormatDataLoaded(state, field.name),
-        error: fromFormat.getFormatError(state, field.name),
+        formatData: get(state.format, [field.name, 'data']),
+        isLoaded: field && state.format[field.name] !== 'loading',
+        error: get(state.format, [field.name, 'error']),
     });
 
     const mapDispatchToProps = {

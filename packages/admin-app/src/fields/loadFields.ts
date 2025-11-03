@@ -1,10 +1,14 @@
 import { call, put, select, takeLatest } from 'redux-saga/effects';
 
-import fetchSaga from '../../fetch/fetchSaga';
-import { LOAD_FIELD, loadFieldError, loadFieldSuccess } from '../reducer';
-import { UPLOAD_SUCCESS } from '../../../admin-app/src/upload';
-import { IMPORT_FIELDS_SUCCESS } from '../../../admin-app/src/import';
-import { fromUser } from '../../sharedSelectors';
+import fetchSaga from '@lodex/frontend-common/fetch/fetchSaga';
+import {
+    LOAD_FIELD,
+    loadFieldError,
+    loadFieldSuccess,
+} from '@lodex/frontend-common/fields/reducer';
+import { UPLOAD_SUCCESS } from '../upload';
+import { IMPORT_FIELDS_SUCCESS } from '../import';
+import { fromUser } from '@lodex/frontend-common/sharedSelectors';
 
 export function* handleLoadField() {
     // @ts-expect-error TS7057
