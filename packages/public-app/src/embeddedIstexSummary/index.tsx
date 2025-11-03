@@ -9,7 +9,7 @@ import {
 } from '@mui/material/styles';
 import { getLocale } from '@lodex/common';
 
-import defaultMuiTheme from '../../custom/themes/default/defaultTheme';
+import defaultMuiTheme from '../../../../src/app/custom/themes/default/defaultTheme';
 import FieldProvider from './FieldProvider';
 import { IstexSummaryView } from '@lodex/frontend-common/formats/other/istexSummary/IstexSummaryView';
 import { I18NContext } from '@lodex/frontend-common/i18n/I18NContext';

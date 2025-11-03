@@ -20,9 +20,19 @@ export default defineConfig(({ mode }) => {
             rollupOptions: {
                 input: {
                     public: resolve(__dirname, 'src/index.ts'),
+                    embeddedIstexSummary: resolve(
+                        __dirname,
+                        'src/app/js/embeddedIstexSummary/index.tsx',
+                    ),
                 },
                 output: {
-                    entryFileNames: '[name]/index.js',
+                    entryFileNames: (chunkInfo) => {
+                        if (chunkInfo.name === 'embeddedIstexSummary') {
+                            // we need to keep same path as on ezmaster
+                            return 'embeddedIstexSummary.js';
+                        }
+                        return '[name]/index.js';
+                    },
                     chunkFileNames: '[name]/index.js',
                     assetFileNames: 'css/[name].[ext]',
                     manualChunks: undefined,
