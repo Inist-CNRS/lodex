@@ -1,9 +1,11 @@
 import get from 'lodash/get';
 
-import { createGlobalSelectors } from '@lodex/frontend-common/utils/selectors';
-import { selectors as fieldsSelectors } from '@lodex/frontend-common/fields/reducer';
-import { selectors as userSelectors } from '@lodex/frontend-common/user/reducer';
-import { selectors as characteristicSelectors } from '@lodex/frontend-common/characteristics/reducer';
+import { createGlobalSelectors } from './utils/selectors';
+import { selectors as fieldsSelectors } from './fields/reducer';
+import { selectors as userSelectors } from './user/reducer';
+import { selectors as characteristicSelectors } from './characteristics/reducer';
+import { fromFormat as localFromFormat } from './formats/reducer';
+import { fromI18n as localFromI18n } from './i18n';
 
 export const fromCharacteristic = createGlobalSelectors(
     (s) => s.characteristic,
@@ -31,3 +33,14 @@ export const getCurrentQuery = (state) => {
 
     return search ? `${location}${search}` : location;
 };
+
+// @ts-expect-error TS7006
+const getFormatState = (state) => state.format;
+export const fromFormat = createGlobalSelectors(
+    getFormatState,
+    localFromFormat,
+);
+
+// @ts-expect-error TS7006
+const getI18nState = (state) => state.i18n;
+export const fromI18n = createGlobalSelectors(getI18nState, localFromI18n);

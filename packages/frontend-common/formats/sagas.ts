@@ -16,19 +16,14 @@ import {
 } from './reducer';
 import getQueryString from '@lodex/frontend-common/utils/getQueryString';
 import fetchSaga from '@lodex/frontend-common/fetch/fetchSaga';
-import {
-    fromDataset,
-    fromFormat,
-} from '../../../../packages/public-app/src/selectors';
+import { fromDataset } from '../../public-app/src/selectors';
 import {
     fromFields,
     fromUser,
     fromCharacteristic,
+    fromFormat,
 } from '@lodex/frontend-common/sharedSelectors';
-import {
-    APPLY_FILTER,
-    facetActionTypes,
-} from '../../../../packages/public-app/src/dataset';
+import { APPLY_FILTER, facetActionTypes } from '../../public-app/src/dataset';
 import { CONFIGURE_FIELD_SUCCESS } from '@lodex/frontend-common/fields/reducer';
 import { UPDATE_CHARACTERISTICS_SUCCESS } from '@lodex/frontend-common/characteristics/reducer';
 import { ISTEX_API_URL } from './api/externals';

@@ -4,9 +4,9 @@ import { useSelector } from 'react-redux';
 import { fromParsing } from '../../selectors.ts';
 import { parseValue } from '@lodex/common';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
-import { fromI18n } from '../../../../public-app/src/selectors';
 import type { TransformerDraft } from '@lodex/frontend-common/fields/types.ts';
 import type { SubResource } from '../../subresource/index.ts';
+import { fromI18n } from '@lodex/frontend-common/sharedSelectors.ts';
 
 const SourceValueFromColumnsForSubResource = ({
     updateDefaultValueTransformers,

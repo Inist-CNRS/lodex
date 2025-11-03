@@ -6,12 +6,7 @@ import DownloadIcon from '@mui/icons-material/Download';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import compose from 'recompose/compose';
 
-import {
-    fromDisplayConfig,
-    fromExport,
-    fromI18n,
-    fromSearch,
-} from './selectors';
+import { fromDisplayConfig, fromExport, fromSearch } from './selectors';
 import ExportItem from './export/ExportMenuItem';
 import stylesToClassname from '@lodex/frontend-common/utils/stylesToClassName';
 
@@ -19,6 +14,7 @@ import { exportPublishedDataset as exportPublishedDatasetAction } from './export
 
 import PDFApi from './api/exportPDF';
 import { translate } from '@lodex/frontend-common/i18n/I18NContext';
+import { fromI18n } from '@lodex/frontend-common/sharedSelectors';
 
 const styles = stylesToClassname(
     {

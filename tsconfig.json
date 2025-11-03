@@ -32,7 +32,8 @@
         "src/app",
         "packages/admin-app/src/ace-vite-loader.ts",
         "packages/frontend-common/user/api/login.ts",
-        "packages/frontend-common/user/api/login.spec.tsx"
+        "packages/frontend-common/user/api/login.spec.tsx",
+        "packages/frontend-common/formats"
     ],
     "exclude": ["src/build", "src/app/build"]
 }

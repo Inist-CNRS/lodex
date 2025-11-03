@@ -5,7 +5,7 @@ import fetchReducer from '@lodex/frontend-common/fetch/reducer';
 import i18n from '@lodex/frontend-common/i18n';
 import fields from '@lodex/frontend-common/fields/reducer';
 import resource from './resource';
-import format from '../../../src/app/js/formats/reducer';
+import format from '@lodex/frontend-common/formats/reducer';
 import user from '@lodex/frontend-common/user/reducer';
 import searchReducer from './search/reducer';
 import breadcrumb from './breadcrumb/reducer';
