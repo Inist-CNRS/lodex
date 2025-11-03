@@ -6,7 +6,7 @@ import {
     getPatchOverviewRequest,
     getPatchSortFieldRequest,
     getPatchSortOrderRequest,
-} from '../../../../src/app/js/user/reducer';
+} from '@lodex/frontend-common/user/reducer';
 
 import { store } from '../adminIndex';
 import { saveFieldSuccess } from '@lodex/frontend-common/fields/reducer';

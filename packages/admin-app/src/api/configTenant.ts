@@ -3,7 +3,7 @@ import {
     getConfigTenantAvailableThemeRequest,
     getConfigTenantRequest,
     getUpdateConfigTenantRequest,
-} from '../../../../src/app/js/user/reducer';
+} from '@lodex/frontend-common/user/reducer';
 import { getUserSessionStorageInfo } from './tools';
 
 export const getConfigTenantAvailableTheme = () => {

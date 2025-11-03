@@ -8,7 +8,7 @@ import {
     useGetFieldAnnotationIds,
     useSetFieldAnnotationIds,
 } from './annotationStorage';
-import { getRequest } from '../../../../src/app/js/user/reducer';
+import { getRequest } from '@lodex/frontend-common/user/reducer';
 
 // @ts-expect-error TS7006
 export const useGetFieldAnnotation = (fieldId, resourceUri, enabled = true) => {

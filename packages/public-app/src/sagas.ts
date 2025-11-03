@@ -9,7 +9,7 @@ import i18nSaga from '@lodex/frontend-common/i18n/sagas';
 import fieldsSagas from '@lodex/frontend-common/fields/sagas';
 import resourceSagas from './resource/sagas';
 import graphSagas from '../../../src/app/js/formats/sagas';
-import userSagas from '../../../src/app/js/user/sagas';
+import userSagas from '@lodex/frontend-common/user/sagas';
 import searchSagas from './search/sagas';
 import breadcrumbSagas from './breadcrumb/loadBreadcrumbSaga';
 import menuSagas from './menu/loadMenuSaga';

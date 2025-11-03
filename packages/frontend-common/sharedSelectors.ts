@@ -2,7 +2,7 @@ import get from 'lodash/get';
 
 import { createGlobalSelectors } from '@lodex/frontend-common/utils/selectors';
 import { selectors as fieldsSelectors } from '@lodex/frontend-common/fields/reducer';
-import { selectors as userSelectors } from '../../src/app/js/user/reducer';
+import { selectors as userSelectors } from '@lodex/frontend-common/user/reducer';
 import { selectors as characteristicSelectors } from '@lodex/frontend-common/characteristics/reducer';
 
 export const fromCharacteristic = createGlobalSelectors(

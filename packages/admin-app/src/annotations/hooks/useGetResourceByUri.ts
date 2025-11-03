@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 
 import fetch from '@lodex/frontend-common/fetch/fetch';
-import { getRequest } from '../../../../../src/app/js/user/reducer';
+import { getRequest } from '@lodex/frontend-common/user/reducer';
 import { getUserSessionStorageInfo } from '../../api/tools';
 
 // @ts-expect-error TS7006
