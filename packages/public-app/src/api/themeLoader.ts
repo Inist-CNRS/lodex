@@ -1,6 +1,6 @@
 import { getThemeRequest } from '@lodex/frontend-common/user/reducer';
 import fetch from '@lodex/frontend-common/fetch/fetch';
-import { getUserSessionStorageInfo } from '../../../admin-app/src/api/tools';
+import { getUserSessionStorageInfo } from '@lodex/frontend-common/getUserSessionStorageInfo';
 
 export const themeLoader = async () => {
     const { token } = getUserSessionStorageInfo();

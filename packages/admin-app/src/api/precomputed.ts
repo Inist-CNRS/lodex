@@ -7,7 +7,7 @@ import {
     getPreviewPrecomputedDataRequest,
     getUpdatePrecomputedRequest,
 } from '@lodex/frontend-common/user/reducer';
-import { getUserSessionStorageInfo } from './tools';
+import { getUserSessionStorageInfo } from '@lodex/frontend-common/getUserSessionStorageInfo';
 import { type NewPreComputation, type PreComputation } from '@lodex/common';
 
 // @ts-expect-error TS7006

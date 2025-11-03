@@ -1,6 +1,6 @@
 import fetch from '@lodex/frontend-common/fetch/fetch';
 import { getLoaderWithScriptRequest } from '@lodex/frontend-common/user/reducer';
-import { getUserSessionStorageInfo } from './tools';
+import { getUserSessionStorageInfo } from '@lodex/frontend-common/getUserSessionStorageInfo';
 
 const getLoaderWithScript = async ({ name }: { name: string }) => {
     const { token } = getUserSessionStorageInfo();

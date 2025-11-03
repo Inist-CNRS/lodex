@@ -1,6 +1,5 @@
 import { fork } from 'redux-saga/effects';
 
-import loadFields from '../../../admin-app/src/fields/loadFields';
 import removeField from './removeField';
 import saveField from './saveField';
 import validation from './validation';
@@ -12,7 +11,6 @@ import addField from './addField';
 import removeFieldList from './removeFieldList';
 
 export default function* () {
-    yield fork(loadFields);
     yield fork(removeField);
     yield fork(removeFieldList);
     yield fork(saveField);

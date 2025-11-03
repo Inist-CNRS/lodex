@@ -4,7 +4,7 @@ import {
     getClearJobsRequest,
     getJobLogsRequest,
 } from '@lodex/frontend-common/user/reducer';
-import { getUserSessionStorageInfo } from './tools';
+import { getUserSessionStorageInfo } from '@lodex/frontend-common/getUserSessionStorageInfo';
 
 export const getJobLogs = (jobId: string) => {
     const { token } = getUserSessionStorageInfo();

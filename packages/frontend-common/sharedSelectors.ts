@@ -5,11 +5,12 @@ import { selectors as fieldsSelectors } from './fields/reducer';
 import { selectors as userSelectors } from './user/reducer';
 import { selectors as characteristicSelectors } from './characteristics/reducer';
 import { fromI18n as localFromI18n } from './i18n';
+import type { SharedState } from './sharedReducers';
 
-export const fromCharacteristic = createGlobalSelectors(
-    (s) => s.characteristic,
-    characteristicSelectors,
-);
+export const fromCharacteristic = createGlobalSelectors<
+    typeof characteristicSelectors,
+    SharedState
+>((s) => s.characteristic, characteristicSelectors);
 
 export const fromFields = createGlobalSelectors(
     (s) => s.fields,

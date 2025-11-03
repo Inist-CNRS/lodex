@@ -4,7 +4,7 @@ import { useHistory } from 'react-router-dom';
 
 import fetch from '@lodex/frontend-common/fetch/fetch';
 import { getRequest } from '@lodex/frontend-common/user/reducer';
-import { getUserSessionStorageInfo } from '../../api/tools';
+import { getUserSessionStorageInfo } from '@lodex/frontend-common/getUserSessionStorageInfo';
 import { useDownloader } from '../../commons/useDownloader';
 
 export function useExportAnnotations() {

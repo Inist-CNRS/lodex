@@ -4,7 +4,7 @@ import { useCallback, useMemo } from 'react';
 import { toast } from '@lodex/common';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 import { loadFile } from '@lodex/frontend-common/utils/loadFile';
-import { getUserSessionStorageInfo } from '../../api/tools';
+import { getUserSessionStorageInfo } from '@lodex/frontend-common/getUserSessionStorageInfo';
 import { useDownloader } from '../../commons/useDownloader';
 
 export function useImportAnnotations() {
