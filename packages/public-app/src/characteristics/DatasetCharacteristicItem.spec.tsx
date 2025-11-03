@@ -5,7 +5,7 @@ import { useInView } from 'react-intersection-observer';
 import { render } from '@lodex/frontend-common/test-utils';
 jest.mock('react-intersection-observer');
 
-jest.mock('../../../../packages/public-app/src/Property', () => ({
+jest.mock('../Property', () => ({
     __esModule: true,
     default: jest.fn(() => <div>Mocked Property</div>),
 }));
