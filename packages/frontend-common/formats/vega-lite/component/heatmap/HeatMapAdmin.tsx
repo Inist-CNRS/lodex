@@ -3,7 +3,7 @@ import { schemeOrRd } from 'd3-scale-chromatic';
 import { Checkbox, FormControlLabel, Switch, FormGroup } from '@mui/material';
 
 import RoutineParamsAdmin from '../../../utils/components/admin/RoutineParamsAdmin';
-import { GradientSchemeSelector } from '@lodex/frontend-common/components/ColorSchemeSelector';
+import { GradientSchemeSelector } from '../../../../components/ColorSchemeSelector';
 import VegaToolTips from '../../../utils/components/admin/VegaToolTips';
 import HeatMap from '../../models/HeatMap';
 import { lodexOrderToIdOrder } from '../../../utils/chartsUtils';
@@ -18,7 +18,7 @@ import { StandardSourceTargetWeight } from '../../../utils/dataSet';
 import AspectRatioSelector from '../../../utils/components/admin/AspectRatioSelector';
 import { ASPECT_RATIO_1_1, type AspectRatio } from '../../../utils/aspectRatio';
 import FormatGroupedFieldSet from '../../../utils/components/field-set/FormatGroupedFieldSet';
-import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
+import { useTranslate } from '../../../../i18n/I18NContext';
 
 export const defaultArgs = {
     params: {

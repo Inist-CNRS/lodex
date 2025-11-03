@@ -2,7 +2,7 @@
 import SyntaxHighlighter from 'react-syntax-highlighter';
 // @ts-expect-error TS7016
 import { tomorrow } from 'react-syntax-highlighter/dist/cjs/styles/hljs';
-import type { Field } from '@lodex/frontend-common/fields/types';
+import type { Field } from '../../../fields/types';
 
 interface ComponentProps {
     field: Field;

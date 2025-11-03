@@ -1,5 +1,5 @@
 import getLabel from '../../utils/getLabel';
-import Link from '@lodex/frontend-common/components/Link';
+import Link from '../../../components/Link';
 
 interface LinkViewProps {
     className?: string;

@@ -6,7 +6,7 @@ import {
     updateCharacteristicsSuccess,
 } from '../reducer';
 import { fromUser } from '../../sharedSelectors';
-import fetchSaga from '@lodex/frontend-common/fetch/fetchSaga';
+import fetchSaga from '../../fetch/fetchSaga';
 import { configureFieldSuccess } from '../../fields/reducer';
 
 // @ts-expect-error TS7031

@@ -3,9 +3,9 @@ import { IconButton } from '@mui/material';
 import CodeIcon from '@mui/icons-material/Code';
 import classnames from 'classnames';
 
-import ButtonWithDialog from '@lodex/frontend-common/components/ButtonWithDialog';
+import ButtonWithDialog from '../../../components/ButtonWithDialog';
 import { getCleanHost } from '@lodex/common';
-import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
+import { useTranslate } from '../../../i18n/I18NContext';
 
 interface EmbedButtonProps {
     className?: string;

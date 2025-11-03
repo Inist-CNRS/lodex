@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { useParams } from 'react-router';
 
 import { MenuItem, TextField } from '@mui/material';
-import { fromFields } from '@lodex/frontend-common/sharedSelectors';
+import { fromFields } from '../../../sharedSelectors';
 import {
     SCOPE_DATASET,
     SCOPE_GRAPHIC,
@@ -12,7 +12,7 @@ import {
 } from '@lodex/common';
 import { FormatDefaultParamsFieldSet } from '../../utils/components/field-set/FormatFieldSets';
 import FormatGroupedFieldSet from '../../utils/components/field-set/FormatGroupedFieldSet';
-import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
+import { useTranslate } from '../../../i18n/I18NContext';
 
 export const defaultArgs = {
     value: '',

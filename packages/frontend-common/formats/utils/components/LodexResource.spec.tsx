@@ -3,7 +3,7 @@ import { shallow } from 'enzyme';
 import { StyleSheetTestUtils } from 'aphrodite';
 
 import LodexResource from './LodexResource';
-import Link from '@lodex/frontend-common/components/Link';
+import Link from '../../../components/Link';
 
 describe('LodexResource', () => {
     beforeEach(() => StyleSheetTestUtils.suppressStyleInjection());

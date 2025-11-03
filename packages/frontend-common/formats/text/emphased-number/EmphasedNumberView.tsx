@@ -2,11 +2,11 @@
 import commaNumber from 'comma-number';
 import { Component } from 'react';
 import compose from 'recompose/compose';
-import { translate } from '@lodex/frontend-common/i18n/I18NContext';
+import { translate } from '../../../i18n/I18NContext';
 
 import injectData from '../../injectData';
 import Bigbold from './Bigbold';
-import type { Field } from '@lodex/frontend-common/fields/types';
+import type { Field } from '../../../fields/types';
 
 // @ts-expect-error TS7006
 function getNumber(numb) {

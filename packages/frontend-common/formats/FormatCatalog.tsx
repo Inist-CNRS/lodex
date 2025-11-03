@@ -15,8 +15,8 @@ import {
     Link,
 } from '@mui/material';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
-import CancelButton from '@lodex/frontend-common/components/CancelButton';
-import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
+import CancelButton from '../components/CancelButton';
+import { useTranslate } from '../i18n/I18NContext';
 
 interface FormatCatalogDescriptionProps {
     format: {

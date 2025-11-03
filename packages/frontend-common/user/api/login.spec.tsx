@@ -1,15 +1,12 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import { useLogin } from './login';
-import {
-    Wrapper as DefaultWrapper,
-    getStore,
-} from '@lodex/frontend-common/test-utils';
+import { Wrapper as DefaultWrapper, getStore } from '../../test-utils';
 import { renderHook } from '@testing-library/react-hooks';
 import { MemoryRouter, useHistory } from 'react-router';
 import { getUserSessionStorageInfo } from '../../../admin-app/src/api/tools';
-import fetch from '@lodex/frontend-common/fetch/fetch';
-import { loginSuccess } from '@lodex/frontend-common/user/reducer';
+import fetch from '../../fetch/fetch';
+import { loginSuccess } from '../../user/reducer';
 
 jest.mock('../../../../packages/admin-app/src/api/tools', () => ({
     getUserSessionStorageInfo: jest.fn(),

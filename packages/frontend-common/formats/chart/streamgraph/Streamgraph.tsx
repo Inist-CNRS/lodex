@@ -22,7 +22,7 @@ import LoadingGraph from '../../utils/components/LoadingGraph';
 import MouseIcon from '../../utils/components/MouseIcon';
 
 import CenterIcon from '../../utils/components/CenterIcon';
-import stylesToClassname from '@lodex/frontend-common/utils/stylesToClassName';
+import stylesToClassname from '../../../utils/stylesToClassName';
 import FormatFullScreenMode from '../../utils/components/FormatFullScreenMode';
 
 const styles = StyleSheet.create({

@@ -10,7 +10,7 @@ import { useEffect, useMemo } from 'react';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { FormApi, useField } from '@tanstack/react-form';
 
-import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
+import { useTranslate } from '../i18n/I18NContext';
 
 export type TextFieldProps = {
     form: FormApi<any>;

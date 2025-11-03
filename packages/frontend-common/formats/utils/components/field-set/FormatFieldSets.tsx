@@ -7,7 +7,7 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
+import { useTranslate } from '../../../../i18n/I18NContext';
 
 type FormatFieldSetProps = {
     children: ReactNode;

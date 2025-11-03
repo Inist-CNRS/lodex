@@ -5,10 +5,10 @@ import Arrow from '@mui/icons-material/KeyboardArrowDown';
 import { Button, CircularProgress } from '@mui/material';
 import get from 'lodash/get';
 
-import AdminOnlyAlert from '@lodex/frontend-common/components/AdminOnlyAlert';
+import AdminOnlyAlert from '../../../components/AdminOnlyAlert';
 import SkipFold from './SkipFold';
-import stylesToClassname from '@lodex/frontend-common/utils/stylesToClassName';
-import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
+import stylesToClassname from '../../../utils/stylesToClassName';
+import { useTranslate } from '../../../i18n/I18NContext';
 
 const styles = stylesToClassname(
     {

@@ -3,7 +3,7 @@ import RoutineParamsAdmin from '../../../utils/components/admin/RoutineParamsAdm
 import VegaToolTips from '../../../utils/components/admin/VegaToolTips';
 import ColorPickerParamsAdmin from '../../../utils/components/admin/ColorPickerParamsAdmin';
 import { schemeBlues } from 'd3-scale-chromatic';
-import { GradientSchemeSelector } from '@lodex/frontend-common/components/ColorSchemeSelector';
+import { GradientSchemeSelector } from '../../../../components/ColorSchemeSelector';
 import { FormControlLabel, FormGroup, Switch } from '@mui/material';
 import FlowMap from '../../models/FlowMap';
 import VegaAdvancedMode from '../../../utils/components/admin/VegaAdvancedMode';
@@ -17,7 +17,7 @@ import { MapSourceTargetWeight } from '../../../utils/dataSet';
 import AspectRatioSelector from '../../../utils/components/admin/AspectRatioSelector';
 import { ASPECT_RATIO_16_9 } from '../../../utils/aspectRatio';
 import FormatGroupedFieldSet from '../../../utils/components/field-set/FormatGroupedFieldSet';
-import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
+import { useTranslate } from '../../../../i18n/I18NContext';
 
 export const defaultArgs = {
     params: {

@@ -2,7 +2,7 @@ import { act, fireEvent, render } from '@testing-library/react';
 import { z } from 'zod';
 import { useForm } from '@tanstack/react-form';
 import { TextField, type TextFieldProps } from './TextField';
-import { TestI18N } from '@lodex/frontend-common/i18n/I18NContext';
+import { TestI18N } from '../i18n/I18NContext';
 
 // @ts-expect-error TS7006
 const renderTextField = async (props) => {

@@ -7,7 +7,7 @@ import InvalidFormat from '../../InvalidFormat';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 import _ from 'lodash';
-import type { Field } from '@lodex/frontend-common/fields/types';
+import type { Field } from '../../../fields/types';
 
 interface EJSViewProps {
     field: Field;

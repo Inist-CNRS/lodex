@@ -7,7 +7,7 @@ import {
     Switch,
     FormGroup,
 } from '@mui/material';
-import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
+import { useTranslate } from '../../../../i18n/I18NContext';
 
 import RoutineParamsAdmin from '../../../utils/components/admin/RoutineParamsAdmin';
 import ColorPickerParamsAdmin from '../../../utils/components/admin/ColorPickerParamsAdmin';

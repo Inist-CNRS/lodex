@@ -7,12 +7,12 @@ import {
     loadFormatData as loadFormatDataAction,
     unLoadFormatData as unLoadFormatDataAction,
 } from './reducer';
-import Loading from '@lodex/frontend-common/components/Loading';
+import Loading from '../components/Loading';
 import InvalidFormat from './InvalidFormat';
 import { CircularProgress } from '@mui/material';
-import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
+import { useTranslate } from '../i18n/I18NContext';
 import { isEqual } from 'lodash';
-import type { Field } from '@lodex/frontend-common/fields/types';
+import type { Field } from '../fields/types';
 
 const styles = {
     message: {

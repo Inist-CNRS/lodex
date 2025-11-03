@@ -1,5 +1,5 @@
 import { useCallback, useMemo, type ChangeEvent } from 'react';
-import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
+import { useTranslate } from '../../../../i18n/I18NContext';
 import { schemeOrRd } from 'd3-scale-chromatic';
 import {
     FormControlLabel,
@@ -9,7 +9,7 @@ import {
     TextField,
 } from '@mui/material';
 
-import { GradientSchemeSelector } from '@lodex/frontend-common/components/ColorSchemeSelector';
+import { GradientSchemeSelector } from '../../../../components/ColorSchemeSelector';
 import RoutineParamsAdmin from '../../../utils/components/admin/RoutineParamsAdmin';
 import VegaToolTips from '../../../utils/components/admin/VegaToolTips';
 import { MAP_EUROPE, MAP_FRANCE, MAP_WORLD } from '../../../utils/chartsUtils';

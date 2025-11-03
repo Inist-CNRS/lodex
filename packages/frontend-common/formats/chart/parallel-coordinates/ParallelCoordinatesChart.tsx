@@ -3,10 +3,7 @@ import { useRef, useEffect } from 'react';
 import * as d3 from 'd3';
 import ReactTooltip from 'react-tooltip';
 
-import {
-    isLongText,
-    getShortText,
-} from '@lodex/frontend-common/utils/longTexts';
+import { isLongText, getShortText } from '../../../utils/longTexts';
 import { getColor } from '../../utils/colorUtils';
 
 const margin = {

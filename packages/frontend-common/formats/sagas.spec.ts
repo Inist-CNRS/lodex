@@ -10,14 +10,10 @@ import {
     splitPrecomputedNameAndRoutine,
 } from './sagas';
 import { loadFormatDataSuccess, loadFormatDataError } from './reducer';
-import getQueryString from '@lodex/frontend-common/utils/getQueryString';
-import fetchSaga from '@lodex/frontend-common/fetch/fetchSaga';
+import getQueryString from '../utils/getQueryString';
+import fetchSaga from '../fetch/fetchSaga';
 import { fromDataset } from '../../public-app/src/selectors';
-import {
-    fromFields,
-    fromUser,
-    fromCharacteristic,
-} from '@lodex/frontend-common/sharedSelectors';
+import { fromFields, fromUser, fromCharacteristic } from '../sharedSelectors';
 import { SCOPE_DATASET } from '@lodex/common';
 import { fromFormat } from '../sharedSelectors';
 

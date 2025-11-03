@@ -3,9 +3,9 @@ import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 
 import injectData from '../../injectData';
-import Loading from '@lodex/frontend-common/components/Loading';
-import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
-import type { Field } from '@lodex/frontend-common/fields/types';
+import Loading from '../../../components/Loading';
+import { useTranslate } from '../../../i18n/I18NContext';
+import type { Field } from '../../../fields/types';
 
 const ReactJson = lazy(() => import('react-json-view'));
 
