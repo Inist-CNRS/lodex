@@ -1,4 +1,4 @@
-import { getUserSessionStorageInfo } from './tools';
+import { getUserSessionStorageInfo } from '@lodex/frontend-common/getUserSessionStorageInfo';
 import {
     getExportHiddenResources,
     getImportHiddenResources,

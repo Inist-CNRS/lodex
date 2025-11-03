@@ -5,7 +5,7 @@ import {
     AutoCompleteField,
     type AutoCompleteProps,
 } from './AutoCompleteField.tsx';
-import type { State } from '../../admin-app/src/reducers.ts';
+import type { SharedState } from '../sharedReducers.ts';
 
 type AutoCompleteFetchedFieldProps = Omit<AutoCompleteProps, 'options'> & {
     getFetchRequest: (searchText: string) => { url: string };
@@ -19,7 +19,7 @@ const AutoCompleteFetchedField = ({
     parseResponse,
     ...props
 }: AutoCompleteFetchedFieldProps) => {
-    const fetch = useSelector((state: State) => state.fetch);
+    const fetch = useSelector((state: SharedState) => state.fetch);
     const dataSource = parseResponse(fetch[name] && fetch[name].response);
     const source = dataSource || [];
 

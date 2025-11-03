@@ -1,5 +1,5 @@
 import { createSelector } from 'reselect';
-import type { State } from '../../admin-app/src/reducers';
+import type { SharedState } from '../sharedReducers';
 
 // @ts-expect-error TS7006
 export const getProps = (state, props) => props;
@@ -12,6 +12,7 @@ export const createGlobalSelector = (getLocalState, selector) =>
 
 export const createGlobalSelectors = <
     T extends Record<string, (localState: any, props?: any) => any>,
+    State = SharedState,
     LocalState = any,
     Props = any,
 >(

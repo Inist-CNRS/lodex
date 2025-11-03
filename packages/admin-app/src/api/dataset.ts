@@ -6,7 +6,7 @@ import {
     getDeleteManyDatasetRowRequest,
     getDeleteFilteredDatasetRowRequest,
 } from '@lodex/frontend-common/user/reducer';
-import { getUserSessionStorageInfo } from './tools';
+import { getUserSessionStorageInfo } from '@lodex/frontend-common/getUserSessionStorageInfo';
 
 // @ts-expect-error TS7031
 const getDataset = async ({ filter, skip, limit, sort }) => {

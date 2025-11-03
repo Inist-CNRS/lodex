@@ -4,7 +4,7 @@ import {
     getConfigTenantRequest,
     getUpdateConfigTenantRequest,
 } from '@lodex/frontend-common/user/reducer';
-import { getUserSessionStorageInfo } from './tools';
+import { getUserSessionStorageInfo } from '@lodex/frontend-common/getUserSessionStorageInfo';
 
 export const getConfigTenantAvailableTheme = () => {
     const { token } = getUserSessionStorageInfo();

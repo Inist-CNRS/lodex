@@ -1,6 +1,6 @@
 import fetch from '@lodex/frontend-common/fetch/fetch';
 import { getPublishRequest } from '@lodex/frontend-common/user/reducer';
-import { getUserSessionStorageInfo } from './tools';
+import { getUserSessionStorageInfo } from '@lodex/frontend-common/getUserSessionStorageInfo';
 
 const publish = async () => {
     const { token } = getUserSessionStorageInfo();
