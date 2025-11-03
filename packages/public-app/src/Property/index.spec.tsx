@@ -10,8 +10,10 @@ jest.mock('../annotation/useCanAnnotate');
 
 jest.mock('react-vega');
 
-jest.mock('../../../../src/app/js/formats', () => {
-    const originalModule = jest.requireActual('../../formats');
+jest.mock('@lodex/frontend-common/formats/getFormat', () => {
+    const originalModule = jest.requireActual(
+        '@lodex/frontend-common/formats/getFormat',
+    );
     return {
         __esModule: true,
         ...originalModule,
@@ -40,7 +42,7 @@ jest.mock('./PropertyLinkedFields', () => ({
     },
 }));
 
-jest.mock('../../../../src/app/js/annotation/CreateAnnotationButton', () => ({
+jest.mock('../annotation/CreateAnnotationButton', () => ({
     __esModule: true,
     CreateAnnotationButton: () => <></>,
 }));
