@@ -10,9 +10,9 @@ import {
 } from './annotationStorage';
 import { Provider } from 'react-redux';
 import configureStore from '@lodex/frontend-common/configureStore';
-import reducers from '../../../../packages/public-app/src/reducers';
+import reducers from '../reducers';
 import { createMemoryHistory } from 'history';
-import { newResourceAnnotated } from '../../../../packages/public-app/src/search/reducer';
+import { newResourceAnnotated } from '../search/reducer';
 import type { Dispatch } from 'redux';
 
 // @ts-expect-error TS7017

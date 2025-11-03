@@ -22,10 +22,7 @@ import {
     fromUser,
     fromCharacteristic,
 } from '@lodex/frontend-common/sharedSelectors';
-import {
-    APPLY_FILTER,
-    facetActionTypes,
-} from '../../../public-app/src/dataset';
+import { APPLY_FILTER, facetActionTypes } from '../dataset';
 import { CONFIGURE_FIELD_SUCCESS } from '@lodex/frontend-common/fields/reducer';
 import { UPDATE_CHARACTERISTICS_SUCCESS } from '@lodex/frontend-common/characteristics/reducer';
 import { ISTEX_API_URL } from '@lodex/frontend-common/formats/api/externals';
