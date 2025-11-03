@@ -17,7 +17,7 @@ import { MODE_ALL, MODE_CLOSED, MODE_MINE } from './HistoryDrawer.const';
 import { useCanAnnotate } from './useCanAnnotate';
 import { useCreateAnnotation } from './useCreateAnnotation';
 import { useResourceUri } from './useResourceUri';
-import { getReadableValue } from '../../../../src/app/js/formats/getFormat';
+import { getReadableValue } from '@lodex/frontend-common/formats/getFormat';
 
 interface UserAnnotationCountProps {
     fieldAnnotationIds: string[];

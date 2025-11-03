@@ -12,7 +12,7 @@ import { useVegaActions } from '../useVegaActions';
 import { useVegaCsvExport } from '../useVegaCsvExport';
 import { compose } from 'recompose';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
-import type { State } from '../../../../../../../packages/admin-app/src/reducers';
+import type { State } from '../../../../../admin-app/src/reducers';
 
 export type VegaData = {
     values: { source: string; target: string; weight: number }[];

@@ -6,12 +6,12 @@ import LinkIcon from '@mui/icons-material/Link';
 import { TextField } from '@mui/material';
 import URL from 'url';
 
-import { fromFormat } from '../../../../../../packages/public-app/src/selectors';
 import { loadFormatData } from '../../reducer';
 import Loading from '@lodex/frontend-common/components/Loading';
 import { isURL } from '@lodex/common';
 import Link from '@lodex/frontend-common/components/Link';
 import type { Field } from '@lodex/frontend-common/fields/types';
+import { fromFormat } from '../../../sharedSelectors';
 
 const styles = {
     message: {

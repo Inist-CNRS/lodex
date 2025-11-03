@@ -1,6 +1,6 @@
 import { Box, Typography } from '@mui/material';
 
-import FormatEdition from '../../../../src/app/js/formats/FormatEdition';
+import FormatEdition from '@lodex/frontend-common/formats/FormatEdition';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 
 const FieldFormatInput = () => {
