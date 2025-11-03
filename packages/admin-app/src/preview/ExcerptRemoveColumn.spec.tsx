@@ -2,7 +2,7 @@ import { shallow } from 'enzyme';
 import { Button } from '@mui/material';
 
 import { ExcerptRemoveColumnComponent as ExcerptRemoveColumn } from './ExcerptRemoveColumn';
-import type { Field } from '../../../../src/app/js/fields/types';
+import type { Field } from '@lodex/frontend-common/fields/types';
 
 describe('<ExcerptRemoveColumn />', () => {
     it('renders a remove button if column is not uri', () => {

@@ -4,7 +4,7 @@ import Helmet from 'react-helmet';
 import InvalidFormat from '../../InvalidFormat';
 
 import stylesToClassname from '@lodex/frontend-common/utils/stylesToClassName';
-import type { Field } from '../../../fields/types';
+import type { Field } from '@lodex/frontend-common/fields/types';
 
 const styles = stylesToClassname(
     {

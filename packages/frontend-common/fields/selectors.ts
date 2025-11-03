@@ -14,12 +14,12 @@ import {
 } from '@lodex/common';
 import { getProps } from '../utils/selectors';
 
-import { splitAnnotationFormatListOptions } from './annotations';
+import { splitAnnotationFormatListOptions } from '../../admin-app/src/fields/splitAnnotationFormatListOptions';
 import {
     FIELD_ANNOTATION_FORMAT_LIST,
     FIELD_ANNOTATION_FORMAT_TEXT,
-} from '../../../src/app/js/fields/FieldAnnotationFormat';
-import { FIELD_ANNOTATION_FORMAT_LIST_KIND_SINGLE } from '../../../src/app/js/fields/FieldAnnotationFormatListKind';
+} from '../../admin-app/src/fields/FieldAnnotationFormat';
+import { FIELD_ANNOTATION_FORMAT_LIST_KIND_SINGLE } from '../../admin-app/src/fields/FieldAnnotationFormatListKind';
 
 export const NEW_CHARACTERISTIC_FORM_NAME = 'NEW_CHARACTERISTIC_FORM_NAME';
 

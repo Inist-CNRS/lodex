@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import injectData from '../../injectData';
 import Loading from '@lodex/frontend-common/components/Loading';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
-import type { Field } from '../../../fields/types';
+import type { Field } from '@lodex/frontend-common/fields/types';
 
 const ReactJson = lazy(() => import('react-json-view'));
 

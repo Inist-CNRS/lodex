@@ -12,7 +12,7 @@ import {
 import InvalidFormat from '../../../InvalidFormat';
 import { CustomActionVega } from '../../../utils/components/vega-component';
 import TreeMapData from './TreeMapData';
-import type { Field } from '../../../../fields/types';
+import type { Field } from '@lodex/frontend-common/fields/types';
 
 const styles = {
     container: {

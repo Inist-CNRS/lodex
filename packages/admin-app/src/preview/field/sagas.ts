@@ -1,14 +1,14 @@
 import { call, all, put, select, takeLatest } from 'redux-saga/effects';
 import cloneDeep from 'lodash/cloneDeep';
 
-import getDocumentTransformer from '@lodex/frontend-common/utils/getDocumentTransformer.ts';
-import { fromUser } from '@lodex/frontend-common/sharedSelectors.ts';
+import getDocumentTransformer from '@lodex/frontend-common/utils/getDocumentTransformer';
+import { fromUser } from '@lodex/frontend-common/sharedSelectors';
 import { computeFieldPreviewSuccess, computeFieldPreviewError } from './index';
 import { fromParsing } from '../../selectors';
-import { GET_SOURCE_VALUE_FROM_TRANSFORMERS } from '../../../../../src/app/js/fields/sourceValue/SourceValueToggle';
-import { prepareFieldFormData } from '@lodex/frontend-common/fields/sagas/saveField.ts';
-import { LODEX_FIELD_FORM_CHANGE } from '@lodex/frontend-common/fields/reducer.ts';
-import type { PreviewLine } from '../../../../../src/app/js/fields/types.ts';
+import { GET_SOURCE_VALUE_FROM_TRANSFORMERS } from '../../fields/sourceValue/SourceValueToggle';
+import { prepareFieldFormData } from '@lodex/frontend-common/fields/sagas/saveField';
+import { LODEX_FIELD_FORM_CHANGE } from '@lodex/frontend-common/fields/reducer';
+import type { PreviewLine } from '@lodex/frontend-common/fields/types';
 
 // @ts-expect-error TS7031
 export function* handleComputeFieldPreview({ payload: { values } }) {

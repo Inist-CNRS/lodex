@@ -10,7 +10,7 @@ import {
 } from '@mui/x-data-grid';
 import React, { useMemo, useState } from 'react';
 import { useHistory } from 'react-router';
-import FieldInternalIcon from '../../../../src/app/js/fields/FieldInternalIcon';
+import FieldInternalIcon from '../fields/FieldInternalIcon';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 import AdminOnlyAlert from '@lodex/frontend-common/components/AdminOnlyAlert';
 import withInitialData from '../withInitialData';
