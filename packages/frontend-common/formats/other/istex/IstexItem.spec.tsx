@@ -4,7 +4,7 @@ import { StyleSheetTestUtils } from 'aphrodite';
 
 import { IstexItemComponent } from './IstexItem';
 
-import Link from '@lodex/frontend-common/components/Link';
+import Link from '../../../components/Link';
 
 describe('<IstexItem />', () => {
     beforeEach(() => StyleSheetTestUtils.suppressStyleInjection());

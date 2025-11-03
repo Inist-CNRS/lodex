@@ -14,7 +14,7 @@ import {
 import BubblePlot from '../../models/BubblePlot';
 import InvalidFormat from '../../../InvalidFormat';
 import { useSizeObserver } from '../../../utils/chartsHooks';
-import type { Field } from '@lodex/frontend-common/fields/types';
+import type { Field } from '../../../../fields/types';
 
 const styles = {
     container: {

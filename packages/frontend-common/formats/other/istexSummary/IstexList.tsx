@@ -2,9 +2,9 @@ import { useState } from 'react';
 import classnames from 'classnames';
 
 import { getMoreDocumentData } from './getIstexData';
-import ButtonWithStatus from '@lodex/frontend-common/components/ButtonWithStatus';
-import stylesToClassname from '@lodex/frontend-common/utils/stylesToClassName';
-import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
+import ButtonWithStatus from '../../../components/ButtonWithStatus';
+import stylesToClassname from '../../../utils/stylesToClassName';
+import { useTranslate } from '../../../i18n/I18NContext';
 
 const styles = stylesToClassname(
     {

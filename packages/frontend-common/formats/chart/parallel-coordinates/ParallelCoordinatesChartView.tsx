@@ -1,12 +1,12 @@
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import compose from 'recompose/compose';
-import { translate } from '@lodex/frontend-common/i18n/I18NContext';
+import { translate } from '../../../i18n/I18NContext';
 import get from 'lodash/get';
 
-import { getPercentValue } from '@lodex/frontend-common/utils/getPercentage';
-import { getShortText } from '@lodex/frontend-common/utils/longTexts';
-import stylesToClassname from '@lodex/frontend-common/utils/stylesToClassName';
+import { getPercentValue } from '../../../utils/getPercentage';
+import { getShortText } from '../../../utils/longTexts';
+import stylesToClassname from '../../../utils/stylesToClassName';
 import injectData from '../../injectData';
 import ParallelCoordinatesChart from './ParallelCoordinatesChart';
 

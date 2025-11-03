@@ -10,8 +10,8 @@ import {
 } from 'react';
 import compose from 'recompose/compose';
 
-import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
-import Loading from '@lodex/frontend-common/components/Loading';
+import { useTranslate } from '../../../i18n/I18NContext';
+import Loading from '../../../components/Loading';
 import injectData from '../../injectData';
 import FormatFullScreenMode from '../../utils/components/FormatFullScreenMode';
 import MouseIcon from '../../utils/components/MouseIcon';

@@ -1,6 +1,6 @@
 import classnames from 'classnames';
 import compose from 'recompose/compose';
-import { translate } from '@lodex/frontend-common/i18n/I18NContext';
+import { translate } from '../i18n/I18NContext';
 import { IconButton } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons';

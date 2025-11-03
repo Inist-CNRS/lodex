@@ -1,10 +1,10 @@
-import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
+import { useTranslate } from '../i18n/I18NContext';
 import { FormProvider, useForm } from 'react-hook-form';
 import { TextField } from '../form-fields/TextField';
-import ButtonWithStatus from '@lodex/frontend-common/components/ButtonWithStatus';
+import ButtonWithStatus from '../components/ButtonWithStatus';
 import { CardActions, CardContent } from '@mui/material';
 import { useLogin } from './api/login';
-import Alert from '@lodex/frontend-common/components/Alert';
+import Alert from '../components/Alert';
 
 const styles = {
     alert: {

@@ -5,7 +5,7 @@ import VolumeFold from './VolumeFold';
 import { getIssueData } from './getIstexData';
 jest.mock('./getIstexData');
 
-jest.mock('@lodex/frontend-common/i18n/I18NContext', () => ({
+jest.mock('../../../i18n/I18NContext', () => ({
     useTranslate: () => ({
         translate: (key: string) => key,
     }),

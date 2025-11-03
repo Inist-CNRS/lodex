@@ -1,5 +1,5 @@
 import { call, select, put, takeEvery } from 'redux-saga/effects';
-import fetchSaga from '@lodex/frontend-common/fetch/fetchSaga';
+import fetchSaga from '../fetch/fetchSaga';
 import { fromUser } from '../sharedSelectors.ts';
 
 import { EXPORT_FIELDS, exportFieldsError } from './index.ts';

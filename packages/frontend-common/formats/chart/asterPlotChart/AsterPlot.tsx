@@ -4,7 +4,7 @@ import * as d3 from 'd3';
 import ReactTooltip from 'react-tooltip';
 
 import { getColor } from '../../utils/colorUtils';
-import stylesToClassname from '@lodex/frontend-common/utils/stylesToClassName';
+import stylesToClassname from '../../../utils/stylesToClassName';
 
 const styles = stylesToClassname(
     {

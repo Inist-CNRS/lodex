@@ -8,9 +8,9 @@ import {
     TextField,
     Autocomplete,
 } from '@mui/material';
-import { translate } from '@lodex/frontend-common/i18n/I18NContext';
+import { translate } from '../i18n/I18NContext';
 
-import { fetch as fetchAction } from '@lodex/frontend-common/fetch/reducer';
+import { fetch as fetchAction } from '../fetch/reducer';
 import { FormFieldProps } from './type';
 
 type FormAutoCompleteFieldProps = {

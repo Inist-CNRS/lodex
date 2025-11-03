@@ -1,10 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
 import qs from 'qs';
-import fetch from '@lodex/frontend-common/fetch/fetch';
-import {
-    getLoginRequest,
-    loginSuccess,
-} from '@lodex/frontend-common/user/reducer';
+import fetch from '../../fetch/fetch';
+import { getLoginRequest, loginSuccess } from '../../user/reducer';
 import { getUserSessionStorageInfo } from '../../../admin-app/src/api/tools';
 import { useDispatch } from 'react-redux';
 import { useHistory, useLocation } from 'react-router';

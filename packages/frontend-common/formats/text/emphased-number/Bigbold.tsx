@@ -1,4 +1,4 @@
-import stylesToClassname from '@lodex/frontend-common/utils/stylesToClassName';
+import stylesToClassname from '../../../utils/stylesToClassName';
 import { MONOCHROMATIC_DEFAULT_COLORSET } from '../../utils/colorUtils';
 
 const sizes = ['7rem', '5rem', '2rem'];

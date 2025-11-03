@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import AbstractTableView from '../core/AbstractTableView';
 import { Table, TableBody, TableContainer, TableRow } from '@mui/material';
 
-import { translate } from '@lodex/frontend-common/i18n/I18NContext';
+import { translate } from '../../../../i18n/I18NContext';
 
 class UnPaginatedTableView extends AbstractTableView {
     render() {

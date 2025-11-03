@@ -2,10 +2,10 @@ import React from 'react';
 import '@testing-library/jest-dom';
 
 import { LoginFormComponent } from './LoginForm';
-import { act, render } from '@lodex/frontend-common/test-utils';
+import { act, render } from '../test-utils';
 import { MemoryRouter } from 'react-router';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { useLogin } from '../api/login';
+import { useLogin } from './api/login';
 import { fireEvent } from '@testing-library/dom';
 
 jest.mock('../api/login', () => ({

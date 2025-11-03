@@ -2,14 +2,14 @@ import { type CSSProperties } from 'react';
 import memoize from 'lodash/memoize';
 import compose from 'recompose/compose';
 import FileDownload from '@mui/icons-material/GetApp';
-import Link from '@lodex/frontend-common/components/Link';
+import Link from '../../../components/Link';
 
-import fetchPaginatedDataForComponent from '@lodex/frontend-common/fetch/fetchPaginatedDataForComponent';
-import Alert from '@lodex/frontend-common/components/Alert';
+import fetchPaginatedDataForComponent from '../../../fetch/fetchPaginatedDataForComponent';
+import Alert from '../../../components/Alert';
 import { PropositionStatus, ISTEX_SITE_URL } from '@lodex/common';
 import { fetchForIstexFormat } from '../../utils/fetchIstexData';
 import IstexItem, { type IstexItemComponentProps } from './IstexItem';
-import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
+import { useTranslate } from '../../../i18n/I18NContext';
 
 const styles: {
     text: (status?: string) => CSSProperties;

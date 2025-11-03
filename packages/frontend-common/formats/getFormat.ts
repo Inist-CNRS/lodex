@@ -1,6 +1,6 @@
 import get from 'lodash/get';
 
-import merge from '@lodex/frontend-common/utils/merge';
+import merge from '../utils/merge';
 import { FORMATS_CATALOG } from './formats';
 import checkPredicate from './checkPredicate';
 import DefaultFormat from './utils/components/default-format';

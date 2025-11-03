@@ -2,7 +2,7 @@
 import { StyleSheetTestUtils } from 'aphrodite';
 import { shallow } from 'enzyme';
 
-import composeRenderProps from '@lodex/frontend-common/utils/composeRenderProps';
+import composeRenderProps from '../../../utils/composeRenderProps';
 import InvalidFormat from '../../InvalidFormat';
 import { CUSTOM_ISTEX_QUERY } from '../istexSummary/constants';
 import { parseCitationData } from './getIstexCitationData';

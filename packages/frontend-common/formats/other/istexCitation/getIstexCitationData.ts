@@ -2,7 +2,7 @@ import get from 'lodash/get';
 
 import { composeAsync } from '@lodex/common';
 import { parseFetchResult, output } from '../../utils/fetchIstexData';
-import fetch from '@lodex/frontend-common/fetch/fetch';
+import fetch from '../../../fetch/fetch';
 import { HOST_TITLE, HOST_TITLE_RAW } from '../istexSummary/constants';
 import { buildIstexQuery, getFilterQuery } from '../istexSummary/getIstexData';
 

@@ -5,12 +5,9 @@ import {
     isLocalURL,
     isURL,
 } from '@lodex/common';
-import Link from '@lodex/frontend-common/components/Link';
-import {
-    getShortText,
-    isLongText,
-} from '@lodex/frontend-common/utils/longTexts';
-import type { Field } from '@lodex/frontend-common/fields/types';
+import Link from '../../../../components/Link';
+import { getShortText, isLongText } from '../../../../utils/longTexts';
+import type { Field } from '../../../../fields/types';
 
 const styles = {
     [PropositionStatus.REJECTED]: {

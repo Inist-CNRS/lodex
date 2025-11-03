@@ -17,8 +17,8 @@ import FilterIcon from '@mui/icons-material/FilterList';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import SettingsEthernetIcon from '@mui/icons-material/SettingsEthernet';
-import CancelButton from '@lodex/frontend-common/components/CancelButton';
-import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
+import CancelButton from '../components/CancelButton';
+import { useTranslate } from '../i18n/I18NContext';
 
 const styles = {
     item: {

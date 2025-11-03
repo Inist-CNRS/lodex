@@ -1,5 +1,5 @@
 import FileDownload from '@mui/icons-material/GetApp';
-import Link from '@lodex/frontend-common/components/Link';
+import Link from '../../../components/Link';
 
 import injectData from '../../injectData';
 import InvalidFormat from '../../InvalidFormat';
@@ -8,13 +8,13 @@ import {
     CUSTOM_ISTEX_QUERY,
     type SearchedField,
 } from '../istexSummary/constants';
-import composeRenderProps from '@lodex/frontend-common/utils/composeRenderProps';
+import composeRenderProps from '../../../utils/composeRenderProps';
 import IstexCitationList from './IstexCitationList';
 import JournalFold from './JournalFold';
 import IstexItem, { type IstexItemComponentProps } from '../istex/IstexItem';
-import stylesToClassname from '@lodex/frontend-common/utils/stylesToClassName';
+import stylesToClassname from '../../../utils/stylesToClassName';
 import { ISTEX_SITE_URL } from '@lodex/common';
-import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
+import { useTranslate } from '../../../i18n/I18NContext';
 
 interface IstexDocumentProps {
     item: IstexItemComponentProps;

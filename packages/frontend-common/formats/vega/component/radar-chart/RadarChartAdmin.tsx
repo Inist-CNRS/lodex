@@ -24,7 +24,7 @@ import { StandardIdValue } from '../../../utils/dataSet';
 import { ASPECT_RATIO_8_5, type AspectRatio } from '../../../utils/aspectRatio';
 import AspectRatioSelector from '../../../utils/components/admin/AspectRatioSelector';
 import FormatGroupedFieldSet from '../../../utils/components/field-set/FormatGroupedFieldSet';
-import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
+import { useTranslate } from '../../../../i18n/I18NContext';
 
 export const defaultArgs = {
     params: {

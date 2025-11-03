@@ -1,7 +1,7 @@
 import FetchFold from './FetchFold';
 import { getIssueData } from './getIstexData';
 import { type SearchedField } from './constants';
-import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
+import { useTranslate } from '../../../i18n/I18NContext';
 import type { ReactNode } from 'react';
 
 interface VolumeFoldProps {
