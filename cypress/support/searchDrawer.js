@@ -19,16 +19,19 @@ export const filterShowResourcesIAnnotated = () => {
     cy.findByRole('option', {
         name: 'Resources that I have annotated',
     }).click();
+    waitForLoading();
 };
 export const filterShowResourcesIHaveNotAnnotated = () => {
     cy.findByLabelText('Annotations').click();
     cy.findByRole('option', {
         name: 'Resources that I have not annotated',
     }).click();
+    waitForLoading();
 };
 export const filterClearMyAnnotationsFilter = () => {
     cy.findByLabelText('Annotations').click();
     cy.findByRole('option', { name: 'All resources' }).click();
+    waitForLoading();
 };
 
 export const filterShowVisitedResources = () => {
@@ -36,6 +39,7 @@ export const filterShowVisitedResources = () => {
     cy.findByRole('option', {
         name: 'Resources I have already seen',
     }).click();
+    waitForLoading();
 };
 
 export const filterShowUnVisitedResources = () => {
@@ -43,6 +47,7 @@ export const filterShowUnVisitedResources = () => {
     cy.findByRole('option', {
         name: 'Resources I did not see',
     }).click();
+    waitForLoading();
 };
 
 export const clearSearch = () =>
