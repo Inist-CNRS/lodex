@@ -9,10 +9,6 @@ import {
 
 import { getCatalogFromArray } from '@lodex/common';
 import { UPDATE_CHARACTERISTICS_SUCCESS } from '../characteristics/reducer.ts';
-import {
-    ADD_FIELD_TO_RESOURCE_SUCCESS,
-    SAVE_RESOURCE_SUCCESS,
-} from '../../public-app/src/resource/index.ts';
 import fieldSelectors, {
     NEW_CHARACTERISTIC_FORM_NAME as formName,
 } from './selectors.ts';
@@ -68,6 +64,9 @@ export const ADD_CHARACTERISTIC_SUCCESS = 'ADD_CHARACTERISTIC_SUCCESS';
 export const ADD_CHARACTERISTIC_ERROR = 'ADD_CHARACTERISTIC_ERROR';
 export const ADD_CHARACTERISTIC_CANCEL = 'ADD_CHARACTERISTIC_CANCEL';
 
+export const ADD_FIELD_TO_RESOURCE_SUCCESS = 'ADD_FIELD_TO_RESOURCE_SUCCESS';
+export const SAVE_RESOURCE_SUCCESS = 'SAVE_RESOURCE_SUCCESS';
+
 export const lodexFieldFormChange = createAction(LODEX_FIELD_FORM_CHANGE);
 
 export const addField = createAction(ADD_FIELD);
@@ -115,6 +114,10 @@ export const addCharacteristicSuccess = createAction(
 );
 export const addCharacteristicError = createAction(ADD_CHARACTERISTIC_ERROR);
 export const addCharacteristicCancel = createAction(ADD_CHARACTERISTIC_CANCEL);
+
+export const addFieldToResourceSuccess = createAction(
+    ADD_FIELD_TO_RESOURCE_SUCCESS,
+);
 
 export const defaultState = {
     loading: false,
