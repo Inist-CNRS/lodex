@@ -9,7 +9,7 @@ import { Provider } from 'react-redux';
 
 import userEvent from '@testing-library/user-event';
 import defaultMuiTheme from '../../../src/app/custom/themes/default/defaultTheme';
-import sagas from '../../admin-app/src/sagas';
+import sagas from './sagas';
 import configureStore from '@lodex/frontend-common/configureStore';
 import reducers from './reducers';
 import { TestI18N } from '@lodex/frontend-common/i18n/I18NContext';
