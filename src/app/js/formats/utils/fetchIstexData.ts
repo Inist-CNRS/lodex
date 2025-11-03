@@ -1,6 +1,6 @@
 import fetch from '@lodex/frontend-common/fetch/fetch';
 import { composeAsync, ISTEX_SITE_URL } from '@lodex/common';
-import { ISTEX_API_URL } from '../../api/externals';
+import { ISTEX_API_URL } from '../api/externals';
 import URL from 'url';
 
 export const output = [
