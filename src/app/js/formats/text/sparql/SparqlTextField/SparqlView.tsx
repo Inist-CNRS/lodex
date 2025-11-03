@@ -7,7 +7,7 @@ import URL from 'url';
 import toPairs from 'lodash/toPairs';
 // @ts-expect-error TS7016
 import toSentenceCase from 'js-sentencecase';
-import { getViewComponent } from '../../../index';
+import { getViewComponent } from '../../../getFormat';
 import Link from '@lodex/frontend-common/components/Link';
 import type { Field } from '@lodex/frontend-common/fields/types';
 

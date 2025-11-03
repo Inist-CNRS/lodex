@@ -7,7 +7,7 @@ import {
     TableRow,
     TableSortLabel,
 } from '@mui/material';
-import { getViewComponent } from '../../../index';
+import { getViewComponent } from '../../../getFormat';
 import _ from 'lodash';
 import type { Field } from '@lodex/frontend-common/fields/types';
 

@@ -13,7 +13,7 @@ import {
     SCOPE_GRAPHIC,
 } from '@lodex/common';
 import { shouldDisplayField } from './shouldDisplayField';
-import { getPredicate } from '../../../../src/app/js/formats';
+import { getPredicate } from '../../../../src/app/js/formats/getFormat';
 import addSchemePrefix from './addSchemePrefix';
 import Link from '@lodex/frontend-common/components/Link';
 import getFieldClassName from '@lodex/frontend-common/utils/getFieldClassName';

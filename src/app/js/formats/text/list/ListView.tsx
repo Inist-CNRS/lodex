@@ -1,7 +1,7 @@
 import classnames from 'classnames';
 
 import stylesToClassname from '@lodex/frontend-common/utils/stylesToClassName';
-import { getViewComponent } from '../../index';
+import { getViewComponent } from '../../getFormat';
 import type { Field } from '@lodex/frontend-common/fields/types';
 
 // @ts-expect-error TS7006
