@@ -11,7 +11,7 @@ import userEvent from '@testing-library/user-event';
 import defaultMuiTheme from '../../src/app/custom/themes/default/defaultTheme';
 import sagas from './sharedSagas';
 import configureStore from './configureStore';
-import reducers from './reducers';
+import reducers from './sharedReducers';
 import { TestI18N } from './i18n/I18NContext';
 import type { Store } from 'redux';
 
