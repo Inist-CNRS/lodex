@@ -2,7 +2,7 @@ import get from 'lodash/get';
 import omit from 'lodash/omit';
 
 import { composeAsync } from '@lodex/common';
-import { ISTEX_API_URL } from '../../../api/externals';
+import { ISTEX_API_URL } from '../../api/externals';
 import { parseFetchResult, output } from '../../utils/fetchIstexData';
 import fetch from '@lodex/frontend-common/fetch/fetch';
 import alphabeticalSort from '@lodex/frontend-common/utils/alphabeticalSort';
