@@ -12,7 +12,7 @@ import { render } from '../test-utils';
 
 const queryClient = new QueryClient();
 
-jest.mock('../lib/fetch', () =>
+jest.mock('@lodex/frontend-common/fetch/fetch', () =>
     jest.fn().mockImplementation(({ body }) => {
         return Promise.resolve({
             response: { total: 1, data: body },

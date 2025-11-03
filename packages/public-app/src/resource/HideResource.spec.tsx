@@ -1,5 +1,5 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { render, userEvent } from '@lodex/frontend-common/test-utils';
+import { render, userEvent } from '../test-utils';
 import { HideResource } from './HideResource';
 import { ADMIN_ROLE } from '@lodex/common';
 import { hideResource } from '../api/hideResource';

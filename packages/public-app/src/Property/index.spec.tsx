@@ -1,12 +1,12 @@
 import { PropositionStatus, ADMIN_ROLE, USER_ROLE } from '@lodex/common';
 import { PropertyComponent, type PropertyComponentProps } from './index';
-import { render } from '@lodex/frontend-common/test-utils';
+import { render } from '../test-utils';
 import { getPredicate } from '@lodex/frontend-common/formats/getFormat';
 // @ts-expect-error TS2322
 import { StyleSheetTestUtils } from 'aphrodite';
 import { useCanAnnotate } from '../annotation/useCanAnnotate';
 
-jest.mock('../../../../src/app/js/annotation/useCanAnnotate');
+jest.mock('../annotation/useCanAnnotate');
 
 jest.mock('react-vega');
 

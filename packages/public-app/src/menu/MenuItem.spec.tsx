@@ -1,7 +1,7 @@
 import { screen } from '@testing-library/react';
 // @ts-expect-error TS7016
 import { StyleSheetTestUtils } from 'aphrodite';
-import { render } from '@lodex/frontend-common/test-utils';
+import { render } from '../test-utils';
 
 import MenuItem, { type ConfigRole } from './MenuItem';
 import { ADMIN_ROLE, DEFAULT_TENANT } from '@lodex/common';

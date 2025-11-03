@@ -1,4 +1,4 @@
-import { render } from '@lodex/frontend-common/test-utils';
+import { render } from '../../test-utils';
 import { TransformerItem } from './TransformerUpsertDialog';
 
 describe('TransformerUpsertDialog', () => {
