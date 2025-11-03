@@ -3,9 +3,9 @@ name: Lodex CI
 # Run this ci only on pull request who targets master and on master branch only
 on:
     push:
-        branches: [master, v14, v16]
+        branches: [master, v14, v16, 'revert-3047-revert-package-split']
     pull_request:
-        branches: [master, v14, v16]
+        branches: [master, v14, v16, 'revert-3047-revert-package-split']
 
 jobs:
     # Job use to create the test environment and run unit test suite
