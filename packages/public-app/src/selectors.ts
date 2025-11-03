@@ -6,6 +6,7 @@ import { fromResource as localFromResource } from './resource';
 import { fromBreadcrumb as localFromBreadcrumb } from './breadcrumb/reducer';
 import { fromMenu as localFromMenu } from './menu/reducer';
 import { fromSearch as localFromSearch } from './search/reducer';
+import { fromFormat as localFromFormat } from './formats/reducer';
 import { fromDisplayConfig as localFromDisplayConfig } from './displayConfig/reducer';
 import localFromFacet from './facet/selectors';
 
@@ -63,6 +64,13 @@ const facetSelectorsByPage = {
 };
 // @ts-expect-error TS7006
 export const fromFacet = (page) => facetSelectorsByPage[page];
+
+// @ts-expect-error TS7006
+const getFormatState = (state) => state.format;
+export const fromFormat = createGlobalSelectors(
+    getFormatState,
+    localFromFormat,
+);
 
 export const fromRouter = {
     // @ts-expect-error TS7006

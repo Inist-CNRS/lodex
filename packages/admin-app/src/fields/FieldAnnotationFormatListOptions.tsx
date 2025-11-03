@@ -1,9 +1,9 @@
 import FormHelperText from '@mui/material/FormHelperText';
 import Stack from '@mui/material/Stack';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
-import { FIELD_ANNOTATION_FORMAT_LIST } from './FieldAnnotationFormat';
 import { useFormContext, useWatch } from 'react-hook-form';
 import { TextField } from '@lodex/frontend-common/form-fields/TextField';
+import { FIELD_ANNOTATION_FORMAT_LIST } from '@lodex/frontend-common/fields/selectors';
 
 export function FieldAnnotationFormatListOptions() {
     const { translate } = useTranslate();

@@ -14,20 +14,22 @@ import {
     loadFormatDataSuccess,
     loadFormatDataError,
 } from './reducer';
-import getQueryString from '../utils/getQueryString';
-import fetchSaga from '../fetch/fetchSaga';
-import { fromDataset } from '../../public-app/src/selectors';
+import getQueryString from '@lodex/frontend-common/utils/getQueryString';
+import fetchSaga from '@lodex/frontend-common/fetch/fetchSaga';
+import { fromDataset, fromFormat } from '../selectors';
 import {
     fromFields,
     fromUser,
     fromCharacteristic,
-    fromFormat,
-} from '../sharedSelectors';
-import { APPLY_FILTER, facetActionTypes } from '../../public-app/src/dataset';
-import { CONFIGURE_FIELD_SUCCESS } from '../fields/reducer';
-import { UPDATE_CHARACTERISTICS_SUCCESS } from '../characteristics/reducer';
-import { ISTEX_API_URL } from './api/externals';
-import { isPrecomputed } from './checkPredicate';
+} from '@lodex/frontend-common/sharedSelectors';
+import {
+    APPLY_FILTER,
+    facetActionTypes,
+} from '../../../public-app/src/dataset';
+import { CONFIGURE_FIELD_SUCCESS } from '@lodex/frontend-common/fields/reducer';
+import { UPDATE_CHARACTERISTICS_SUCCESS } from '@lodex/frontend-common/characteristics/reducer';
+import { ISTEX_API_URL } from '@lodex/frontend-common/formats/api/externals';
+import { isPrecomputed } from '@lodex/frontend-common/formats/checkPredicate';
 
 // @ts-expect-error TS7006
 const isSparqlQuery = (url) =>

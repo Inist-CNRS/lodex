@@ -1,8 +1,11 @@
+import characteristic from '@lodex/frontend-common/characteristics/reducer';
 import fetchReducer, {
     type FetchState,
 } from '@lodex/frontend-common/fetch/reducer';
 import fields from '@lodex/frontend-common/fields/reducer';
 import i18n from '@lodex/frontend-common/i18n';
+import user from '@lodex/frontend-common/user/reducer';
+
 import importReducer from './import';
 import parsing from './parsing';
 import publication from './publication';
@@ -10,10 +13,8 @@ import preview from './preview';
 import publishReducer from './publish';
 import removedResources from './removedResources';
 import upload from './upload';
-import user from '@lodex/frontend-common/user/reducer';
 import clear from './clear';
 import dump from './dump';
-import characteristic from '@lodex/frontend-common/characteristics/reducer';
 import progress from './progress/reducer';
 import loaders from './loader';
 import subresource, { type SubresourceState } from './subresource';
@@ -43,6 +44,7 @@ export type State = {
     enrichment: unknown;
     precomputed: PrecomputedState;
     configTenant: unknown;
+    format: unknown;
 };
 
 const reducers = {
