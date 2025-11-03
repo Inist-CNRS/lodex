@@ -27,9 +27,9 @@
     },
     "include": [
         "src",
-        "../../src/app",
         "../public-app/src",
-        "../frontend-common/configureStore.ts"
+        "../frontend-common",
+        "../admin-app/src"
     ],
     "exclude": ["../../src/app/build"]
 }
