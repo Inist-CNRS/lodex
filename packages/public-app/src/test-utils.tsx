@@ -9,12 +9,12 @@ import { Provider } from 'react-redux';
 
 import userEvent from '@testing-library/user-event';
 import defaultMuiTheme from '../../../src/app/custom/themes/default/defaultTheme';
-import sagas from '../../admin-app/src/sagas';
 import configureStore from '@lodex/frontend-common/configureStore';
 import reducers from './reducers';
 import { TestI18N } from '@lodex/frontend-common/i18n/I18NContext';
 import type { Store } from 'redux';
 import { AnnotationStorageProvider } from './annotation/annotationStorage';
+import sagas from './sagas';
 
 // @ts-expect-error TS7017
 global.__DEBUG__ = false;

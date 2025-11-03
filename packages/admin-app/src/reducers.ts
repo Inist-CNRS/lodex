@@ -1,10 +1,4 @@
-import characteristic from '@lodex/frontend-common/characteristics/reducer';
-import fetchReducer, {
-    type FetchState,
-} from '@lodex/frontend-common/fetch/reducer';
-import fields from '@lodex/frontend-common/fields/reducer';
-import i18n from '@lodex/frontend-common/i18n';
-import user from '@lodex/frontend-common/user/reducer';
+import { type FetchState } from '@lodex/frontend-common/fetch/reducer';
 
 import importReducer from './import';
 import parsing from './parsing';
@@ -21,6 +15,7 @@ import subresource, { type SubresourceState } from './subresource';
 import enrichment from './enrichment';
 import precomputed, { type PrecomputedState } from './precomputed';
 import configTenant from './configTenant';
+import sharedReducers from '@lodex/frontend-common/sharedReducers';
 
 export type State = {
     fetch: FetchState;
@@ -48,9 +43,7 @@ export type State = {
 };
 
 const reducers = {
-    fetch: fetchReducer,
-    fields,
-    i18n,
+    ...sharedReducers,
     import: importReducer,
     dump,
     parsing,
@@ -59,9 +52,7 @@ const reducers = {
     publish: publishReducer,
     removedResources,
     upload,
-    user,
     clear,
-    characteristic,
     progress,
     loaders,
     subresource,
