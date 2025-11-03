@@ -3,9 +3,10 @@ import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 import { FIELD_ANNOTATION_FORMAT_LIST } from './FieldAnnotationFormat.tsx';
 import { useFormContext, useWatch } from 'react-hook-form';
 import { TextField } from '@lodex/frontend-common/form-fields/TextField.tsx';
-
-export const FIELD_ANNOTATION_FORMAT_LIST_KIND_SINGLE = 'single';
-export const FIELD_ANNOTATION_FORMAT_LIST_KIND_MULTIPLE = 'multiple';
+import {
+    FIELD_ANNOTATION_FORMAT_LIST_KIND_MULTIPLE,
+    FIELD_ANNOTATION_FORMAT_LIST_KIND_SINGLE,
+} from '@lodex/frontend-common/fields/selectors.ts';
 
 export function FieldAnnotationFormatListKind() {
     const { translate } = useTranslate();
