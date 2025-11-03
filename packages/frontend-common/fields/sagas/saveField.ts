@@ -19,8 +19,8 @@ import {
     FIELD_ANNOTATION_FORMAT_LIST,
     FIELD_ANNOTATION_FORMAT_TEXT,
 } from '../../../admin-app/src/fields/FieldAnnotationFormat.tsx';
-import { splitAnnotationFormatListOptions } from '../../../admin-app/src/fields/splitAnnotationFormatListOptions.ts';
-import { FIELD_ANNOTATION_FORMAT_LIST_KIND_SINGLE } from '../../../admin-app/src/fields/FieldAnnotationFormatListKind.tsx';
+import { splitAnnotationFormatListOptions } from '../splitAnnotationFormatListOptions.ts';
+import { FIELD_ANNOTATION_FORMAT_LIST_KIND_SINGLE } from '../selectors.ts';
 
 export const prepareFieldFormData = (values: any) => {
     try {
