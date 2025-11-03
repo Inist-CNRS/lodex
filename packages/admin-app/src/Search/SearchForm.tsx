@@ -22,7 +22,7 @@ import { loadField } from '@lodex/frontend-common/fields/reducer';
 import { fromFields } from '@lodex/frontend-common/sharedSelectors';
 
 import { Overview, getFieldForSpecificScope, toast } from '@lodex/common';
-import FieldRepresentation from '../../../../src/app/js/fields/FieldRepresentation';
+import FieldRepresentation from '../fields/FieldRepresentation';
 import withInitialData from '../withInitialData';
 import { usePatchFieldOverview } from './usePatchFieldOverview';
 import { usePatchSortField } from './usePatchSortField';

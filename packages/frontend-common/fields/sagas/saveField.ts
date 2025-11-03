@@ -18,9 +18,9 @@ import fetchSaga from '../../fetch/fetchSaga';
 import {
     FIELD_ANNOTATION_FORMAT_LIST,
     FIELD_ANNOTATION_FORMAT_TEXT,
-} from '../../../../src/app/js/fields/FieldAnnotationFormat.tsx';
-import { splitAnnotationFormatListOptions } from '../annotations.ts';
-import { FIELD_ANNOTATION_FORMAT_LIST_KIND_SINGLE } from '../../../../src/app/js/fields/FieldAnnotationFormatListKind.tsx';
+} from '../../../admin-app/src/fields/FieldAnnotationFormat.tsx';
+import { splitAnnotationFormatListOptions } from '../../../admin-app/src/fields/splitAnnotationFormatListOptions.ts';
+import { FIELD_ANNOTATION_FORMAT_LIST_KIND_SINGLE } from '../../../admin-app/src/fields/FieldAnnotationFormatListKind.tsx';
 
 export const prepareFieldFormData = (values: any) => {
     try {

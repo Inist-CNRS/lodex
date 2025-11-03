@@ -9,7 +9,7 @@ import toPairs from 'lodash/toPairs';
 import toSentenceCase from 'js-sentencecase';
 import { getViewComponent } from '../../../index';
 import Link from '@lodex/frontend-common/components/Link';
-import type { Field } from '../../../../fields/types';
+import type { Field } from '@lodex/frontend-common/fields/types';
 
 const styles = {
     container2: {

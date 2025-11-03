@@ -16,7 +16,7 @@ import {
 import fieldSelectors, {
     NEW_CHARACTERISTIC_FORM_NAME as formName,
 } from './selectors.ts';
-import type { Field } from '../../../src/app/js/fields/types.ts';
+import type { Field } from './types.ts';
 
 export const selectors = fieldSelectors;
 export const NEW_CHARACTERISTIC_FORM_NAME = formName;

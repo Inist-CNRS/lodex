@@ -9,7 +9,7 @@ import {
 } from '@mui/material';
 import { getViewComponent } from '../../../index';
 import _ from 'lodash';
-import type { Field } from '../../../../fields/types';
+import type { Field } from '@lodex/frontend-common/fields/types';
 
 interface AbstractTableViewProps {
     field: Field;

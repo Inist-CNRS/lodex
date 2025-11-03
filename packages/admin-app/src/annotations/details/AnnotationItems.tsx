@@ -4,7 +4,7 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import React from 'react';
 
-import FieldRepresentation from '../../../../../src/app/js/fields/FieldRepresentation';
+import FieldRepresentation from '../../fields/FieldRepresentation';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 import { hasFieldMultipleValues } from '../helpers/field';
 import { AnnotationProposedValue } from './AnnotationProposedValue';

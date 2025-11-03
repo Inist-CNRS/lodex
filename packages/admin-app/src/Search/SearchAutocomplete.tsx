@@ -8,7 +8,7 @@ import {
     TextField,
 } from '@mui/material';
 
-import FieldRepresentation from '../../../../src/app/js/fields/FieldRepresentation';
+import FieldRepresentation from '../fields/FieldRepresentation';
 import { filterOptions } from './searchUtils';
 
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;

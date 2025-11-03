@@ -6,7 +6,7 @@ import { translate } from '@lodex/frontend-common/i18n/I18NContext';
 
 import injectData from '../../injectData';
 import Bigbold from './Bigbold';
-import type { Field } from '../../../fields/types';
+import type { Field } from '@lodex/frontend-common/fields/types';
 
 // @ts-expect-error TS7006
 function getNumber(numb) {

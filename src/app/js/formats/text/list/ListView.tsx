@@ -2,7 +2,7 @@ import classnames from 'classnames';
 
 import stylesToClassname from '@lodex/frontend-common/utils/stylesToClassName';
 import { getViewComponent } from '../../index';
-import type { Field } from '../../../fields/types';
+import type { Field } from '@lodex/frontend-common/fields/types';
 
 // @ts-expect-error TS7006
 const styles = (bullet) =>

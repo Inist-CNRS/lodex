@@ -22,7 +22,7 @@ import SearchResultList from './SearchResultList';
 import SearchResultSort from './SearchResultSort';
 import SearchSearchBar from './SearchSearchBar';
 import SearchResultHeader from './SearchResultHeader';
-import type { Field } from '../../../../src/app/js/fields/types';
+import type { Field } from '@lodex/frontend-common/fields/types';
 
 const styles = stylesToClassname(
     {

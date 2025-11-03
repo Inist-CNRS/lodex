@@ -3,7 +3,7 @@ import { useState, useEffect, useCallback, type ReactNode } from 'react';
 import fetch from '@lodex/frontend-common/fetch/fetch';
 import { getYearUrl } from '../formats/other/istexSummary/getIstexData';
 import { CUSTOM_ISTEX_QUERY } from '../formats/other/istexSummary/constants';
-import type { Field } from '../fields/types';
+import type { Field } from '@lodex/frontend-common/fields/types';
 
 interface FieldProviderProps {
     children(props: {
