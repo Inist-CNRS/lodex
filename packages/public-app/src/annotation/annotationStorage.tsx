@@ -7,7 +7,7 @@ import React, {
     useState,
 } from 'react';
 import { useDispatch } from 'react-redux';
-import { newResourceAnnotated } from '../../../../packages/public-app/src/search/reducer';
+import { newResourceAnnotated } from '../search/reducer';
 
 export const getStorageKey = () =>
     // @ts-expect-error TS2339
