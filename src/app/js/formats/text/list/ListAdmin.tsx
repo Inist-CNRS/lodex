@@ -2,7 +2,11 @@ import { MenuItem, TextField } from '@mui/material';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 
 import SelectFormat from '../../SelectFormat';
-import { getAdminComponent, FORMATS, getFormatInitialArgs } from '../../index';
+import {
+    getAdminComponent,
+    FORMATS,
+    getFormatInitialArgs,
+} from '../../getFormat';
 import {
     FormatDefaultParamsFieldSet,
     FormatSubFormatParamsFieldSet,

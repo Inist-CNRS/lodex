@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import { connect } from 'react-redux';
 
 import { fromUser, fromFields } from '@lodex/frontend-common/sharedSelectors';
-import { getViewComponent } from '../../../src/app/js/formats';
+import { getViewComponent } from '../../../src/app/js/formats/getFormat';
 import getColorSetFromField from '@lodex/frontend-common/utils/getColorSetFromField';
 import { isEqual } from 'lodash';
 

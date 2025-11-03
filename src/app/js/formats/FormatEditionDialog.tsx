@@ -12,7 +12,7 @@ import {
 import CloseIcon from '@mui/icons-material/Close';
 import type { ControllerRenderProps } from 'react-hook-form';
 import SelectFormat from './SelectFormat';
-import { getAdminComponent, getFormatInitialArgs } from '.';
+import { getAdminComponent, getFormatInitialArgs } from './getFormat';
 import CancelButton from '@lodex/frontend-common/components/CancelButton';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 
