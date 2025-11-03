@@ -1,6 +1,6 @@
 import { getUserSessionStorageInfo } from '../../../admin-app/src/api/tools';
 import fetch from '@lodex/frontend-common/fetch/fetch';
-import { getExportPDFRequest } from '../../../../src/app/js/user/reducer';
+import { getExportPDFRequest } from '@lodex/frontend-common/user/reducer';
 
 // @ts-expect-error TS7006
 const exportPDF = async (options) => {

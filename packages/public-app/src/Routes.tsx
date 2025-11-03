@@ -5,7 +5,7 @@ import { Route } from 'react-router-dom';
 import Container from '@mui/material/Container';
 import { ToastContainer } from 'react-toastify';
 import { initializeLanguage } from '@lodex/frontend-common/i18n';
-import Login from '../../../src/app/js/user/Login';
+import Login from '@lodex/frontend-common/user/Login';
 import { default as CustomPage } from './CustomPage';
 import Home from './Home';
 import ScrollToTop from './ScrollToTop';

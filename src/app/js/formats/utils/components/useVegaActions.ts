@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { isAdmin } from '../../../user/reducer';
+import { isAdmin } from '@lodex/frontend-common/user/reducer';
 
 // @ts-expect-error TS7006
 export function useVegaActions(user) {

@@ -6,7 +6,7 @@ import {
     getPreviewDataPrecomputedRequest,
     getPreviewPrecomputedDataRequest,
     getUpdatePrecomputedRequest,
-} from '../../../../src/app/js/user/reducer';
+} from '@lodex/frontend-common/user/reducer';
 import { getUserSessionStorageInfo } from './tools';
 import { type NewPreComputation, type PreComputation } from '@lodex/common';
 

@@ -13,7 +13,7 @@ import { compose } from 'recompose';
 import { bindActionCreators } from 'redux';
 import { DEFAULT_TENANT, toast } from '@lodex/common';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
-import { signOut } from '../../../../src/app/js/user/reducer';
+import { signOut } from '@lodex/frontend-common/user/reducer';
 import ImportModelDialog from '../ImportModelDialog';
 import { fromImport, fromPublication } from '../selectors';
 import ClearDialog from './ClearDialog';
