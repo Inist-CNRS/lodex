@@ -1,5 +1,5 @@
 import DOMPurify from 'dompurify';
-import type { Field } from '@lodex/frontend-common/fields/types';
+import type { Field } from '../../../fields/types';
 
 interface HtmlViewProps {
     className?: string;

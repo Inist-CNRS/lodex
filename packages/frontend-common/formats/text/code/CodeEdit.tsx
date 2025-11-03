@@ -1,5 +1,5 @@
 import { TextField } from '@mui/material';
-import { type FormFieldProps } from '@lodex/frontend-common/components/type';
+import { type FormFieldProps } from '../../../components/type';
 
 const CodeEdit = ({
     input,

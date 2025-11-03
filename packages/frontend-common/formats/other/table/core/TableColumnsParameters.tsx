@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { Box, TextField } from '@mui/material';
 import TableColumnParameter from './TableColumnParameter';
 import _ from 'lodash';
-import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
+import { useTranslate } from '../../../../i18n/I18NContext';
 
 type ColumnParameter = {
     id: number;

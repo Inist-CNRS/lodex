@@ -1,10 +1,10 @@
 import { shallow } from 'enzyme';
 import { List } from '@mui/material';
 
-import Alert from '@lodex/frontend-common/components/Alert';
+import Alert from '../../../components/Alert';
 import { IstexView } from './IstexView';
 import IstexItem from './IstexItem';
-import { render } from '@lodex/frontend-common/test-utils';
+import { render } from '../../../test-utils';
 
 jest.mock('../../../lib/stylesToClassName', () => ({
     __esModule: true,

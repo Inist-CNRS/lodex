@@ -1,4 +1,4 @@
-import { translate } from '@lodex/frontend-common/i18n/I18NContext';
+import { translate } from '../../../i18n/I18NContext';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
 import get from 'lodash/get';
@@ -7,8 +7,8 @@ import URL from 'url';
 import { isURL } from '@lodex/common';
 import LodexResource from '../../utils/components/LodexResource';
 import injectData from '../../injectData';
-import stylesToClassname from '@lodex/frontend-common/utils/stylesToClassName';
-import type { Field } from '@lodex/frontend-common/fields/types';
+import stylesToClassname from '../../../utils/stylesToClassName';
+import type { Field } from '../../../fields/types';
 
 const styles = stylesToClassname(
     {

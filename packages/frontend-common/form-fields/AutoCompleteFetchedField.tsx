@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetch as fetchAction } from '@lodex/frontend-common/fetch/reducer';
+import { fetch as fetchAction } from '../fetch/reducer';
 import {
     AutoCompleteField,
     type AutoCompleteProps,

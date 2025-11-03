@@ -11,7 +11,7 @@ import FormatFullScreenMode from '../FormatFullScreenMode';
 import { useVegaActions } from '../useVegaActions';
 import { useVegaCsvExport } from '../useVegaCsvExport';
 import { compose } from 'recompose';
-import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
+import { useTranslate } from '../../../../i18n/I18NContext';
 import type { State } from '../../../../../admin-app/src/reducers';
 
 export type VegaData = {

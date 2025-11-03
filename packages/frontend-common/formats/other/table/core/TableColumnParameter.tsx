@@ -6,7 +6,7 @@ import {
     getAdminComponent,
     getFormatInitialArgs,
 } from '../../../getFormat';
-import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
+import { useTranslate } from '../../../../i18n/I18NContext';
 
 type ColumnParameterFormat = {
     name: string;

@@ -3,7 +3,7 @@ import { List } from '@mui/material';
 
 import { IstexRefbibsView } from './IstexRefbibsView';
 import IstexItem from '../istex/IstexItem';
-import { render } from '@lodex/frontend-common/test-utils';
+import { render } from '../../../test-utils';
 
 describe('<IstexView />', () => {
     it('should display .istex-list if data.hits', () => {

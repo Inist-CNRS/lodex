@@ -1,5 +1,5 @@
 import { Typography } from '@mui/material';
-import type { Field } from '@lodex/frontend-common/fields/types';
+import type { Field } from '../../../fields/types';
 
 interface TitleViewInternalProps {
     value: string;

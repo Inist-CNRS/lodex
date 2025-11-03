@@ -1,5 +1,5 @@
 import React from 'react';
-import merge from '@lodex/frontend-common/utils/merge';
+import merge from '../utils/merge';
 import {
     Box,
     Button,
@@ -13,8 +13,8 @@ import CloseIcon from '@mui/icons-material/Close';
 import type { ControllerRenderProps } from 'react-hook-form';
 import SelectFormat from './SelectFormat';
 import { getAdminComponent, getFormatInitialArgs } from './getFormat';
-import CancelButton from '@lodex/frontend-common/components/CancelButton';
-import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
+import CancelButton from '../components/CancelButton';
+import { useTranslate } from '../i18n/I18NContext';
 
 const FormatEditionDialog = ({
     isOpen,

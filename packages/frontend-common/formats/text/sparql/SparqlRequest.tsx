@@ -1,16 +1,16 @@
 import { Component } from 'react';
 import { connect } from 'react-redux';
-import { translate } from '@lodex/frontend-common/i18n/I18NContext';
+import { translate } from '../../../i18n/I18NContext';
 import compose from 'recompose/compose';
 import LinkIcon from '@mui/icons-material/Link';
 import { TextField } from '@mui/material';
 import URL from 'url';
 
 import { loadFormatData } from '../../reducer';
-import Loading from '@lodex/frontend-common/components/Loading';
+import Loading from '../../../components/Loading';
 import { isURL } from '@lodex/common';
-import Link from '@lodex/frontend-common/components/Link';
-import type { Field } from '@lodex/frontend-common/fields/types';
+import Link from '../../../components/Link';
+import type { Field } from '../../../fields/types';
 import { fromFormat } from '../../../sharedSelectors';
 
 const styles = {

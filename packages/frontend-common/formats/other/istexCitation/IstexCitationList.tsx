@@ -1,14 +1,14 @@
 import { useState, type ReactNode } from 'react';
 import classnames from 'classnames';
 import FileDownload from '@mui/icons-material/GetApp';
-import Link from '@lodex/frontend-common/components/Link';
+import Link from '../../../components/Link';
 
 import { getMoreDocumentData } from '../istexSummary/getIstexData';
-import ButtonWithStatus from '@lodex/frontend-common/components/ButtonWithStatus';
-import stylesToClassname from '@lodex/frontend-common/utils/stylesToClassName';
+import ButtonWithStatus from '../../../components/ButtonWithStatus';
+import stylesToClassname from '../../../utils/stylesToClassName';
 import { HOST_TITLE_RAW } from '../istexSummary/constants';
 import { ISTEX_SITE_URL } from '@lodex/common';
-import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
+import { useTranslate } from '../../../i18n/I18NContext';
 
 const styles = stylesToClassname(
     {

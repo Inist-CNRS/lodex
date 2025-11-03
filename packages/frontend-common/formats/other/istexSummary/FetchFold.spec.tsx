@@ -6,9 +6,9 @@ import { CircularProgress, Button } from '@mui/material';
 import { StyleSheetTestUtils } from 'aphrodite';
 
 import FetchFold from './FetchFold';
-import AdminOnlyAlert from '@lodex/frontend-common/components/AdminOnlyAlert';
+import AdminOnlyAlert from '../../../components/AdminOnlyAlert';
 
-jest.mock('@lodex/frontend-common/i18n/I18NContext', () => ({
+jest.mock('../../../i18n/I18NContext', () => ({
     useTranslate: () => ({
         translate: (key: string) => key,
     }),

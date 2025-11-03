@@ -3,8 +3,8 @@ import katex from 'katex';
 import Helmet from 'react-helmet';
 import InvalidFormat from '../../InvalidFormat';
 
-import stylesToClassname from '@lodex/frontend-common/utils/stylesToClassName';
-import type { Field } from '@lodex/frontend-common/fields/types';
+import stylesToClassname from '../../../utils/stylesToClassName';
+import type { Field } from '../../../fields/types';
 
 const styles = stylesToClassname(
     {

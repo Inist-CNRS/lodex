@@ -3,7 +3,7 @@ import { createAction, handleActions } from 'redux-actions';
 import { createSelector } from 'reselect';
 
 import { ADMIN_ROLE } from '@lodex/common';
-import getQueryString from '@lodex/frontend-common/utils/getQueryString';
+import getQueryString from '../utils/getQueryString';
 
 export const LOGIN = 'LOGIN';
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';

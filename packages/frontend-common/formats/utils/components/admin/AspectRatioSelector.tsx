@@ -1,7 +1,7 @@
 import { ASPECT_RATIO_NONE, ASPECT_RATIOS } from '../../aspectRatio';
 import { MenuItem, TextField } from '@mui/material';
 import { useMemo, useState } from 'react';
-import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
+import { useTranslate } from '../../../../i18n/I18NContext';
 
 interface AspectRatioSelectorProps {
     value: string;

@@ -8,7 +8,7 @@ import {
 } from 'redux-actions';
 
 import { getCatalogFromArray } from '@lodex/common';
-import { UPDATE_CHARACTERISTICS_SUCCESS } from '@lodex/frontend-common/characteristics/reducer.ts';
+import { UPDATE_CHARACTERISTICS_SUCCESS } from '../characteristics/reducer.ts';
 import {
     ADD_FIELD_TO_RESOURCE_SUCCESS,
     SAVE_RESOURCE_SUCCESS,

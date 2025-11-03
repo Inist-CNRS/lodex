@@ -1,7 +1,7 @@
 // @ts-expect-error TS7016
 import * as Papa from 'papaparse';
 import { useCallback, useEffect, useRef } from 'react';
-import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
+import { useTranslate } from '../../../i18n/I18NContext';
 
 // @ts-expect-error TS7006
 function download(name, data) {

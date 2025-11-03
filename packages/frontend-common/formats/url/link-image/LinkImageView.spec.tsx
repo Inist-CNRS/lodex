@@ -1,7 +1,7 @@
 import { shallow } from 'enzyme';
 
 import LinkImageView from './LinkImageView';
-import Link from '@lodex/frontend-common/components/Link';
+import Link from '../../../components/Link';
 
 describe('<LinkImageView />', () => {
     it('should render', () => {

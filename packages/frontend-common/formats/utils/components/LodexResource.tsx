@@ -1,10 +1,10 @@
 import { isLocalURL, getResourceUri } from '@lodex/common';
-import Link from '@lodex/frontend-common/components/Link';
-import stylesToClassname from '@lodex/frontend-common/utils/stylesToClassName';
+import Link from '../../../components/Link';
+import stylesToClassname from '../../../utils/stylesToClassName';
 import { truncateByWords } from '../../stringUtils';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faExternalLinkAlt } from '@fortawesome/free-solid-svg-icons';
-import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
+import { useTranslate } from '../../../i18n/I18NContext';
 
 const styles = stylesToClassname(
     {

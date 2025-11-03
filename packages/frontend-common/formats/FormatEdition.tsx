@@ -8,7 +8,7 @@ import {
 } from '@mui/icons-material';
 import FormatCatalogDialog from './FormatCatalog';
 import FormatEditionDialog from './FormatEditionDialog';
-import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
+import { useTranslate } from '../i18n/I18NContext';
 import { useController, useFormContext } from 'react-hook-form';
 
 const FormatEdition = () => {

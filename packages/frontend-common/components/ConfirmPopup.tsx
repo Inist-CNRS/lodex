@@ -7,7 +7,7 @@ import {
     DialogTitle,
 } from '@mui/material';
 
-import CancelButton from '@lodex/frontend-common/components/CancelButton';
+import CancelButton from '../components/CancelButton';
 
 const styles = {
     container: {

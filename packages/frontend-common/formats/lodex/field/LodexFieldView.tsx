@@ -1,12 +1,12 @@
 import { Component } from 'react';
-import { translate } from '@lodex/frontend-common/i18n/I18NContext';
+import { translate } from '../../../i18n/I18NContext';
 import compose from 'recompose/compose';
 import URL from 'url';
 
 import { isURL } from '@lodex/common';
 import injectData from '../../injectData';
-import Link from '@lodex/frontend-common/components/Link';
-import type { Field } from '@lodex/frontend-common/fields/types';
+import Link from '../../../components/Link';
+import type { Field } from '../../../fields/types';
 
 const styles = {
     container: {
