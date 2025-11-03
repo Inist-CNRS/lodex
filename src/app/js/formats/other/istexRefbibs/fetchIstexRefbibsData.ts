@@ -2,7 +2,7 @@ import get from 'lodash/get';
 
 import fetch from '@lodex/frontend-common/fetch/fetch';
 import { composeAsync } from '@lodex/common';
-import { ISTEX_API_URL } from '../../../api/externals';
+import { ISTEX_API_URL } from '../../api/externals';
 import { output } from '../../utils/fetchIstexData';
 import { buildIstexQuery } from '../istexSummary/getIstexData';
 import { TOP_HITS, REFBIBS_TITLE } from '../istexSummary/constants';

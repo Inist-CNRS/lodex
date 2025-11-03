@@ -31,7 +31,7 @@ import {
 } from '../../../../packages/public-app/src/dataset';
 import { CONFIGURE_FIELD_SUCCESS } from '@lodex/frontend-common/fields/reducer';
 import { UPDATE_CHARACTERISTICS_SUCCESS } from '@lodex/frontend-common/characteristics/reducer';
-import { ISTEX_API_URL } from '../api/externals';
+import { ISTEX_API_URL } from './api/externals';
 import { isPrecomputed } from './checkPredicate';
 
 // @ts-expect-error TS7006
