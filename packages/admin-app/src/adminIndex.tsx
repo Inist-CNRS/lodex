@@ -16,7 +16,7 @@ import { enUS as enUSDatagrid, frFR as frFRDatagrid } from '@mui/x-data-grid';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Router } from 'react-router-dom';
 import { getLocale } from '@lodex/common';
-import '../../../src/app/ace-vite-loader';
+import './ace-vite-loader';
 import defaultTheme from '../../../src/app/custom/themes/default/defaultTheme';
 import configureStore from '@lodex/frontend-common/configureStore';
 import { I18N } from '@lodex/frontend-common/i18n/I18NContext';
