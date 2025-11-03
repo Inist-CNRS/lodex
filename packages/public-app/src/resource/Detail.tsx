@@ -7,8 +7,8 @@ import camelCase from 'lodash/camelCase';
 import { Helmet } from 'react-helmet';
 import get from 'lodash/get';
 
-import { fromDisplayConfig, fromI18n, fromResource } from '../selectors';
-import { fromFields } from '@lodex/frontend-common/sharedSelectors';
+import { fromDisplayConfig, fromResource } from '../selectors';
+import { fromFields, fromI18n } from '@lodex/frontend-common/sharedSelectors';
 import Property from '../Property';
 import { HideResource } from './HideResource';
 import SelectVersion from './SelectVersion';

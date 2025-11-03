@@ -3,7 +3,7 @@ import { Box, Checkbox, FormControlLabel, TextField } from '@mui/material';
 import ContentAdd from '@mui/icons-material/Add';
 import ContentClear from '@mui/icons-material/Clear';
 
-import config from '../../../../../../../config.json';
+import config from '../../../../../../config.json';
 import SelectFormat from '../../../SelectFormat';
 import { FORMATS, getAdminComponent } from '../../../getFormat';
 import {

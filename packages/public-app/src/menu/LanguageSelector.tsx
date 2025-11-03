@@ -5,10 +5,10 @@ import {
     translate,
     useTranslate,
 } from '@lodex/frontend-common/i18n/I18NContext';
-import { fromI18n } from '../selectors';
 import { Button, Menu, MenuItem } from '@mui/material';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { setLanguage } from '@lodex/frontend-common/i18n';
+import { fromI18n } from '@lodex/frontend-common/sharedSelectors';
 
 type LanguageSelectorProps = {
     setLanguage(...args: unknown[]): unknown;

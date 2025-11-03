@@ -12,16 +12,14 @@ import {
 import { loadFormatDataSuccess, loadFormatDataError } from './reducer';
 import getQueryString from '@lodex/frontend-common/utils/getQueryString';
 import fetchSaga from '@lodex/frontend-common/fetch/fetchSaga';
-import {
-    fromDataset,
-    fromFormat,
-} from '../../../../packages/public-app/src/selectors';
+import { fromDataset } from '../../public-app/src/selectors';
 import {
     fromFields,
     fromUser,
     fromCharacteristic,
 } from '@lodex/frontend-common/sharedSelectors';
 import { SCOPE_DATASET } from '@lodex/common';
+import { fromFormat } from '../sharedSelectors';
 
 describe('format sagas', () => {
     describe('handleFilterFormatDataRequest', () => {

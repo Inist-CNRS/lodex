@@ -1,12 +1,12 @@
 import { connect } from 'react-redux';
 import classnames from 'classnames';
 
-import { fromFields } from '@lodex/frontend-common/sharedSelectors';
-import { getIconComponent } from '../../../../src/app/js/formats/getFormat';
+import { fromFields, fromI18n } from '@lodex/frontend-common/sharedSelectors';
+import { getIconComponent } from '@lodex/frontend-common/formats/getFormat';
 import MixedChartIcon from './MixedChartIcon';
 import Link from '@lodex/frontend-common/components/Link';
 import stylesToClassname from '@lodex/frontend-common/utils/stylesToClassName';
-import { fromDisplayConfig, fromI18n } from '../selectors';
+import { fromDisplayConfig } from '../selectors';
 
 const styles = stylesToClassname(
     {

@@ -8,7 +8,7 @@ import fetchSaga from '@lodex/frontend-common/fetch/sagas';
 import i18nSaga from '@lodex/frontend-common/i18n/sagas';
 import fieldsSagas from '@lodex/frontend-common/fields/sagas';
 import resourceSagas from './resource/sagas';
-import graphSagas from '../../../src/app/js/formats/sagas';
+import graphSagas from '@lodex/frontend-common/formats/sagas';
 import userSagas from '@lodex/frontend-common/user/sagas';
 import searchSagas from './search/sagas';
 import breadcrumbSagas from './breadcrumb/loadBreadcrumbSaga';
