@@ -8,7 +8,7 @@ import {
     fromCharacteristic,
 } from '@lodex/frontend-common/sharedSelectors';
 import type { CSSProperties } from 'react';
-import type { State } from '../../../admin-app/src/reducers';
+import type { State } from '../reducers';
 
 const LOADING_BOX_HEIGHT = 250;
 

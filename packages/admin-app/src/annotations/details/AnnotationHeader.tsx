@@ -2,7 +2,7 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { useMemo } from 'react';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
-import { getResourceType } from '../helpers/resourceType';
+import { getResourceType } from '@lodex/frontend-common/annotations/resourceType';
 
 // @ts-expect-error TS7031
 const getAnnotationResourceTitle = ({ resourceUri, field }, translate) => {

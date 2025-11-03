@@ -1,7 +1,7 @@
 import { Typography } from '@mui/material';
 
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
-import { getResourceType } from './helpers/resourceType';
+import { getResourceType } from '@lodex/frontend-common/annotations/resourceType';
 
 interface ResourceTitleCellInternalProps {
     label: string;

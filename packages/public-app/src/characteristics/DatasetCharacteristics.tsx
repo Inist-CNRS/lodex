@@ -8,8 +8,8 @@ import {
 import DatasetCharacteristicItem from './DatasetCharacteristicItem';
 import { fromDisplayConfig } from '../selectors';
 import { useEffect, type CSSProperties } from 'react';
-import type { State } from '../../../admin-app/src/reducers';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
+import type { State } from '../reducers';
 
 const styles: Record<string, CSSProperties> = {
     container: {

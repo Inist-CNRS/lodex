@@ -11,7 +11,7 @@ import { DEFAULT_TENANT, annotationUpdateSchema } from '@lodex/common';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 import { SaveButton } from '@lodex/frontend-common/components/SaveButton';
 import { getRedirectFieldHash } from '../helpers/field';
-import { getResourceType } from '../helpers/resourceType';
+import { getResourceType } from '@lodex/frontend-common/annotations/resourceType';
 import { useUpdateAnnotation } from '../hooks/useUpdateAnnotation';
 import { AnnotationDeleteButton } from './AnnotationDeleteButton';
 import { AnnotationHeader } from './AnnotationHeader';
