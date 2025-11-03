@@ -9,28 +9,30 @@ import {
     Checkbox,
     Box,
 } from '@mui/material';
-import type { Tenant } from './Tenants';
+import type { Tenant } from './types';
+import { useRemoveTenant } from './useRemoveTenant';
 
 type DeleteTenantDialogProps = {
     isOpen: boolean;
     tenant: Tenant | null;
-    handleClose(): void;
-    deleteAction(
-        id: string,
-        name: string | undefined,
-        deleteDataBase: boolean,
-    ): void;
+    onClose(): void;
+    onError(): void;
 };
 
 const DeleteTenantDialog = ({
     isOpen,
     tenant,
-    handleClose,
-    deleteAction,
+    onClose,
+    onError,
 }: DeleteTenantDialogProps) => {
     const [name, setName] = useState('');
     const [deleteDatabase, setDeleteDatabase] = useState(true);
     const [validationOnError, setValidationOnError] = useState(false);
+
+    const removeTenant = useRemoveTenant({
+        onSuccess: onClose,
+        onError,
+    });
 
     useEffect(() => {
         if (isOpen) {
@@ -42,7 +44,7 @@ const DeleteTenantDialog = ({
     // @ts-expect-error TS7006
     const handleTextValidation = (event) => {
         setName(event.target.value);
-        if (event.target.value !== tenant?.name) {
+        if (!event.target.value || event.target.value !== tenant?.name) {
             setValidationOnError(true);
         } else {
             setValidationOnError(false);
@@ -59,13 +61,17 @@ const DeleteTenantDialog = ({
         if (!tenant) {
             return;
         }
-        deleteAction(tenant._id, tenant.name, deleteDatabase);
+        removeTenant({
+            id: tenant._id,
+            name: tenant.name!,
+            deleteDatabase,
+        });
     };
 
     return (
         <Dialog
             open={isOpen}
-            onClose={handleClose}
+            onClose={onClose}
             scroll="body"
             maxWidth="md"
             fullWidth
@@ -114,7 +120,7 @@ const DeleteTenantDialog = ({
                             }}
                             variant="contained"
                             color="warning"
-                            onClick={handleClose}
+                            onClick={onClose}
                         >
                             Annuler
                         </Button>
@@ -123,7 +129,7 @@ const DeleteTenantDialog = ({
                                 width: 'calc(50% - 4px)',
                                 marginLeft: '4px',
                             }}
-                            disabled={validationOnError}
+                            disabled={validationOnError || !name}
                             variant="contained"
                             color="error"
                             type="submit"

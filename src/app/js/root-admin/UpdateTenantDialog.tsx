@@ -7,25 +7,31 @@ import {
     TextField,
     Box,
 } from '@mui/material';
-import type { Tenant } from './Tenants';
+import type { Tenant } from './types';
+import { useUpdateTenant } from './useUpdateTenant';
 
 type UpdateTenantDialogProps = {
     isOpen: boolean;
     tenant: Tenant | null;
     handleClose(): void;
-    updateAction(value: string, tenant: Omit<Tenant, '_id'>): void;
+    handleLogout(): void;
 };
 
 const UpdateTenantDialog = ({
     isOpen,
     tenant,
     handleClose,
-    updateAction,
+    handleLogout,
 }: UpdateTenantDialogProps) => {
     const [description, setDescription] = useState('');
     const [author, setAuthor] = useState('');
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+
+    const updateTenant = useUpdateTenant({
+        handleLogout,
+        onSuccess: handleClose,
+    });
 
     useEffect(() => {
         if (isOpen) {
@@ -62,11 +68,14 @@ const UpdateTenantDialog = ({
         if (!tenant) {
             return;
         }
-        updateAction(tenant._id, {
-            description,
-            author,
-            username,
-            password,
+        updateTenant({
+            id: tenant._id,
+            tenant: {
+                description,
+                author,
+                username,
+                password,
+            },
         });
     };
 

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, type FormEventHandler } from 'react';
 import {
     Dialog,
     DialogContent,
@@ -17,6 +17,7 @@ import {
     forbiddenNamesMessage,
     getTenantMaxSize,
 } from '../../../common/tools/tenantTools';
+import { useAddTenant } from './useAddTenant';
 
 // @ts-expect-error TS7006
 const cleanUpName = (name) => {
@@ -36,21 +37,22 @@ const cleanUpName = (name) => {
 type CreateTenantDialogProps = {
     isOpen: boolean;
     handleClose(): void;
-    createAction(action: {
-        name: string;
-        description: string;
-        author: string;
-    }): void;
+    onError(): void;
 };
 
 const CreateTenantDialog = ({
     isOpen,
     handleClose,
-    createAction,
+    onError,
 }: CreateTenantDialogProps) => {
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
     const [author, setAuthor] = useState('');
+
+    const createTenant = useAddTenant({
+        onSuccess: handleClose,
+        onError,
+    });
 
     useEffect(() => {
         if (isOpen) {
@@ -75,10 +77,9 @@ const CreateTenantDialog = ({
         setAuthor(event.target.value);
     };
 
-    // @ts-expect-error TS7006
-    const handleSubmit = (event) => {
+    const handleSubmit: FormEventHandler<HTMLFormElement> = (event) => {
         event.preventDefault();
-        createAction({ name: cleanUpName(name), description, author });
+        createTenant({ name: cleanUpName(name), description, author });
     };
 
     return (

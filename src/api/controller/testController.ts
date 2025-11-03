@@ -8,6 +8,7 @@ import { DEFAULT_TENANT } from '../../common/tools/tenantTools';
 import repositoryMiddleware, {
     mongoRootAdminClient,
 } from '../services/repositoryMiddleware';
+import { deleteTenant } from './rootAdmin';
 
 const app = new koa();
 
@@ -27,9 +28,23 @@ app.use(
         await ctx.db.collection('precomputed').deleteMany();
         await ctx.db.collection('annotation').deleteMany();
 
-        await ctx.rootAdminDb
+        const tenantsToDelete = await ctx.rootAdminDb
             .collection('tenant')
-            .deleteOne({ name: { $ne: DEFAULT_TENANT } });
+            .find({ name: { $ne: DEFAULT_TENANT } })
+            .toArray();
+
+        for (const tenant of tenantsToDelete) {
+            await deleteTenant({
+                tenantCollection: ctx.tenantCollection,
+                request: {
+                    body: {
+                        _id: tenant._id,
+                        name: tenant.name,
+                        deleteDatabase: true,
+                    },
+                },
+            });
+        }
         ctx.body = { status: 'ok' };
     }),
 );
