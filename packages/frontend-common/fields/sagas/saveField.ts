@@ -15,12 +15,12 @@ import { fromFields, fromUser } from '../../sharedSelectors.ts';
 import { push } from 'redux-first-history';
 import { SCOPE_DOCUMENT } from '@lodex/common';
 import fetchSaga from '../../fetch/fetchSaga';
+import { splitAnnotationFormatListOptions } from '../splitAnnotationFormatListOptions.ts';
 import {
     FIELD_ANNOTATION_FORMAT_LIST,
+    FIELD_ANNOTATION_FORMAT_LIST_KIND_SINGLE,
     FIELD_ANNOTATION_FORMAT_TEXT,
-} from '../../../admin-app/src/fields/FieldAnnotationFormat.tsx';
-import { splitAnnotationFormatListOptions } from '../splitAnnotationFormatListOptions.ts';
-import { FIELD_ANNOTATION_FORMAT_LIST_KIND_SINGLE } from '../selectors.ts';
+} from '../selectors.ts';
 
 export const prepareFieldFormData = (values: any) => {
     try {
