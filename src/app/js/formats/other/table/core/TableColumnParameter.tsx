@@ -5,7 +5,7 @@ import {
     COMPATIBLE_FORMATS,
     getAdminComponent,
     getFormatInitialArgs,
-} from '../../../index';
+} from '../../../getFormat';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 
 type ColumnParameterFormat = {

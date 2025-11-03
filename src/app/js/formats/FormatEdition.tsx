@@ -1,5 +1,5 @@
 import React from 'react';
-import { FORMATS } from '../formats';
+import { FORMATS } from './getFormat';
 import { Box, Button, Typography } from '@mui/material';
 import {
     Delete as DeleteIcon,

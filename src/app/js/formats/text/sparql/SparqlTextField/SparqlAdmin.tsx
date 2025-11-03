@@ -5,7 +5,7 @@ import ContentClear from '@mui/icons-material/Clear';
 
 import config from '../../../../../../../config.json';
 import SelectFormat from '../../../SelectFormat';
-import { FORMATS, getAdminComponent } from '../../../index';
+import { FORMATS, getAdminComponent } from '../../../getFormat';
 import {
     FormatDataParamsFieldSet,
     FormatDefaultParamsFieldSet,
