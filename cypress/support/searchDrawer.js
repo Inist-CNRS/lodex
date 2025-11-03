@@ -7,6 +7,13 @@ export const search = (value) => {
     cy.wait(500); // Wait for the debounce
 };
 
+export const waitForLoading = () => {
+    // This is the best way to wait for the loading to disappear so far
+    // Because sometimes the loading doesn't appear at all
+    cy.wait(1000);
+    cy.get('.search .load-more .search-loading').should('not.exist');
+};
+
 export const filterShowResourcesIAnnotated = () => {
     cy.findByLabelText('Annotations').click();
     cy.findByRole('option', {
@@ -63,13 +70,6 @@ export const checkResultList = (titles) => {
 
 export const loadMore = () => {
     cy.get('.search .load-more button').scrollIntoView().click();
-};
-
-export const waitForLoading = () => {
-    // This is the best way to wait for the loading to disappear so far
-    // Because sometimes the loading doesn't appear at all
-    cy.wait(1000);
-    cy.get('.search .load-more .search-loading').should('not.exist');
 };
 
 export const getFacetsOrder = (facets) => {

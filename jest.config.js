@@ -11,6 +11,9 @@ const workerIdleMemoryLimit = '2048MB';
 
 module.exports = {
     workerIdleMemoryLimit,
+    collectCoverage: true,
+    coverageReporters: ['lcov', 'text-summary'],
+    testTimeout: 8000,
     projects: [
         {
             displayName: 'frontend',
@@ -73,19 +76,16 @@ module.exports = {
                 'testAll.js',
                 '/data/',
             ],
-            collectCoverage: true,
             coveragePathIgnorePatterns: [
                 '/node_modules/',
                 '/test/',
                 '/lib/',
-                '/lodex/src/reducers/',
+                '/src/reducers/',
             ],
-            coverageReporters: ['lcov', 'text-summary'],
             transformIgnorePatterns: [
                 '<rootDir>/node_modules/',
                 '/node_modules/(?!quick-lru)',
             ],
-            testTimeout: 8000,
             workerIdleMemoryLimit,
         },
     ],

@@ -74,6 +74,16 @@ const composedCharactersMappings = {
     ['Ʀ']: 'yr',
 };
 
+/**
+ * Escapes special regex characters to prevent regex syntax errors
+ * @param {string} str - The string to escape
+ * @returns {string} The escaped string
+ */
+function escapeRegexSpecialChars(str) {
+    // Escape all regex special characters except those already in character classes
+    return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
 export function createDiacriticSafeContainRegex(value) {
     if (!value || value.trim() === '') {
         return new RegExp('(?!.*)', 'i');
@@ -85,12 +95,16 @@ export function createDiacriticSafeContainRegex(value) {
         .normalize('NFD')
         .replace(/\p{Diacritic}/gu, '');
 
+    // Escape regex special characters before processing
+    // This must be done BEFORE replacing with character classes
+    const escapedValue = escapeRegexSpecialChars(normalizedValue);
+
     // Split composed characters into their single characters
     const normalizedValueWithComposedCharactersReplaced = Object.entries(
         composedCharactersMappings,
     ).reduce(
         (newValue, [letter, composed]) => newValue.replaceAll(letter, composed),
-        normalizedValue,
+        escapedValue,
     );
 
     // Replace single characters with their diacritic-safe equivalents

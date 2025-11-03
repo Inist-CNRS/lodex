@@ -13,6 +13,7 @@ const useSearchBar = (
     const [query, setQuery] = useState(defaultQuery || '');
     const isUserInputRef = useRef(false);
     const lastDefaultQueryRef = useRef(defaultQuery);
+    const timeoutRef = useRef(null);
 
     const normalizeAccents = useCallback(
         (text) => {
@@ -47,14 +48,29 @@ const useSearchBar = (
         }
     }, [defaultQuery]);
 
+    // Cleanup effect to cancel debounced function and clear timeouts on unmount
+    useEffect(() => {
+        return () => {
+            debouncedSearch.cancel();
+            if (timeoutRef.current) {
+                clearTimeout(timeoutRef.current);
+            }
+        };
+    }, [debouncedSearch]);
+
     const search = useCallback(
         (value) => {
             isUserInputRef.current = true;
             setQuery(value);
             debouncedSearch(value);
 
-            setTimeout(() => {
+            // Clear any existing timeout before setting a new one
+            if (timeoutRef.current) {
+                clearTimeout(timeoutRef.current);
+            }
+            timeoutRef.current = setTimeout(() => {
                 isUserInputRef.current = false;
+                timeoutRef.current = null;
             }, debounceTimeout + 100);
         },
         [debouncedSearch, debounceTimeout],
@@ -67,8 +83,13 @@ const useSearchBar = (
         onSearch('');
         onSearchClear();
 
-        setTimeout(() => {
+        // Clear any existing timeout before setting a new one
+        if (timeoutRef.current) {
+            clearTimeout(timeoutRef.current);
+        }
+        timeoutRef.current = setTimeout(() => {
             isUserInputRef.current = false;
+            timeoutRef.current = null;
         }, 100);
     }, [debouncedSearch, onSearch, onSearchClear]);
 
