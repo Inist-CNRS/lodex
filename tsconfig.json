@@ -26,6 +26,11 @@
         "noImplicitAny": true,
         "types": ["cypress", "@testing-library/cypress"]
     },
-    "include": ["vite.config.ts", "test-utils.tsx", "src/app"],
+    "include": [
+        "vite.config.ts",
+        "test-utils.tsx",
+        "src/app",
+        "packages/admin-app/src/ace-vite-loader.ts"
+    ],
     "exclude": ["src/build", "src/app/build"]
 }
