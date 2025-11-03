@@ -25,6 +25,10 @@
         "noUncheckedSideEffectImports": true,
         "noImplicitAny": true
     },
-    "include": ["vite.config.ts", "src"],
+    "include": [
+        "vite.config.ts",
+        "src",
+        "../frontend-common/fields/splitAnnotationFormatListOptions.ts"
+    ],
     "exclude": ["build"]
 }
