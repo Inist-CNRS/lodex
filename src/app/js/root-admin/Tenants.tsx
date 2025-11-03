@@ -5,7 +5,6 @@ import 'react-toastify/dist/ReactToastify.css';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
-import { useQuery } from '@tanstack/react-query';
 
 import { getHost } from '../../../common/uris';
 import CreateTenantDialog from './CreateTenantDialog';
@@ -29,21 +28,10 @@ import {
 } from '@mui/material';
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import { sizeConverter } from './rootAdminUtils';
+import type { Tenant } from './types';
+import { useTenants } from './useTenants';
 
 const baseUrl = getHost();
-
-export type Tenant = {
-    _id: string;
-    name?: string;
-    description: string;
-    author: string;
-    username: string;
-    password: string;
-    createdAt?: string;
-    dataset?: number;
-    published?: boolean;
-    totalSize?: number;
-};
 
 type CustomToolbarProps = {
     handleLogout(): void;
@@ -90,37 +78,6 @@ const CustomToolbar = ({ handleLogout }: CustomToolbarProps) => {
             />
         </>
     );
-};
-
-// Query keys
-const QUERY_KEYS = {
-    tenants: ['tenants'] as const,
-};
-
-// Custom hook for fetching tenants
-const useTenants = (handleLogout: () => void) => {
-    return useQuery({
-        queryKey: QUERY_KEYS.tenants,
-        queryFn: async (): Promise<Tenant[]> => {
-            const response = await fetch('/rootAdmin/tenant', {
-                credentials: 'include',
-                headers: {
-                    'X-Lodex-Tenant': 'admin',
-                },
-            });
-
-            if (response.status === 401) {
-                handleLogout();
-                throw new Error('Unauthorized');
-            }
-
-            if (!response.ok) {
-                throw new Error('Failed to fetch tenants');
-            }
-
-            return response.json();
-        },
-    });
 };
 
 type TenantsProps = {
