@@ -4,7 +4,6 @@ import { createGlobalSelectors } from './utils/selectors';
 import { selectors as fieldsSelectors } from './fields/reducer';
 import { selectors as userSelectors } from './user/reducer';
 import { selectors as characteristicSelectors } from './characteristics/reducer';
-import { fromFormat as localFromFormat } from './formats/reducer';
 import { fromI18n as localFromI18n } from './i18n';
 
 export const fromCharacteristic = createGlobalSelectors(
@@ -33,13 +32,6 @@ export const getCurrentQuery = (state) => {
 
     return search ? `${location}${search}` : location;
 };
-
-// @ts-expect-error TS7006
-const getFormatState = (state) => state.format;
-export const fromFormat = createGlobalSelectors(
-    getFormatState,
-    localFromFormat,
-);
 
 // @ts-expect-error TS7006
 const getI18nState = (state) => state.i18n;

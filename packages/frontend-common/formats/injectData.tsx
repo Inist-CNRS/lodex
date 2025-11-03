@@ -3,16 +3,18 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useLocation } from 'react-router';
 import get from 'lodash/get';
 
-import {
-    loadFormatData as loadFormatDataAction,
-    unLoadFormatData as unLoadFormatDataAction,
-} from './reducer';
 import Loading from '../components/Loading';
 import InvalidFormat from './InvalidFormat';
 import { CircularProgress } from '@mui/material';
 import { useTranslate } from '../i18n/I18NContext';
 import { isEqual } from 'lodash';
 import type { Field } from '../fields/types';
+import { createAction } from 'redux-actions';
+
+// redeclaring action reactors here to avoid moving every reducer inside frontend-common
+// Nice to have: refactor to use react-query
+export const unLoadFormatDataAction = createAction('UN_LOAD_FORMAT_DATA');
+export const loadFormatDataAction = createAction('LOAD_FORMAT_DATA');
 
 const styles = {
     message: {

@@ -1,10 +1,13 @@
 import { call, put, select } from 'redux-saga/effects';
 
-import fetchSaga from '../../fetch/fetchSaga';
+import fetchSaga from '@lodex/frontend-common/fetch/fetchSaga';
 
-import { loadFieldError, loadFieldSuccess } from '../reducer';
+import {
+    loadFieldError,
+    loadFieldSuccess,
+} from '@lodex/frontend-common/fields/reducer';
 
-import { fromUser } from '../../sharedSelectors';
+import { fromUser } from '@lodex/frontend-common/sharedSelectors';
 
 import { handleLoadField } from './loadFields';
 
