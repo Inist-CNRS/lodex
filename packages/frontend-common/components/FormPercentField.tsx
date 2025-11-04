@@ -1,5 +1,5 @@
 import { TextField } from '@mui/material';
-import { FormFieldProps } from './type';
+import { type FormFieldProps } from './type';
 
 const FormPercentField = ({
     input,
