@@ -22,7 +22,7 @@ export default defineConfig(({ mode }) => {
                     public: resolve(__dirname, 'src/index.ts'),
                     embeddedIstexSummary: resolve(
                         __dirname,
-                        'src/app/js/embeddedIstexSummary/index.tsx',
+                        'src/embeddedIstexSummary/index.tsx',
                     ),
                 },
                 output: {
