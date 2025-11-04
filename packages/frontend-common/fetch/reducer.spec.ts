@@ -1,4 +1,9 @@
-import reducer, { defaultState, fetch, fetchSuccess, fetchError } from './';
+import reducer, {
+    defaultState,
+    fetch,
+    fetchSuccess,
+    fetchError,
+} from './reducer';
 
 describe('fetch', () => {
     describe('reducer', () => {
