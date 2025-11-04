@@ -187,7 +187,7 @@ export const renderAdmin = (data) => {
     };
 
     return renderTemplate(
-        path.resolve(__dirname, '../../../../src/app/admin.ejs'),
+        path.resolve(__dirname, '../admin.ejs'),
         extendedData,
     );
 };
