@@ -18,11 +18,9 @@ import precomputedSaga from './precomputed/sagas';
 import dumpSaga from './dump/sagas';
 import navigationSaga from './navigation/sagas';
 import configTenantSaga from './configTenant/sagas';
-import fieldsSaga from './fields/sagas';
 
 export default function* () {
-    yield fork(sharedSagas);
-    yield fork(fieldsSaga);
+    yield* sharedSagas();
     yield fork(importSaga);
     yield fork(parsingSaga);
     yield fork(publicationSaga);

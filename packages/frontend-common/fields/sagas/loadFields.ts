@@ -6,14 +6,16 @@ import {
     loadFieldError,
     loadFieldSuccess,
 } from '@lodex/frontend-common/fields/reducer';
-import { UPLOAD_SUCCESS } from '../upload';
-import { IMPORT_FIELDS_SUCCESS } from '../import';
+import { UPLOAD_SUCCESS } from '../../../admin-app/src/upload';
+import { IMPORT_FIELDS_SUCCESS } from '../../../admin-app/src/import';
 import { fromUser } from '@lodex/frontend-common/sharedSelectors';
 
 export function* handleLoadField() {
     // @ts-expect-error TS7057
     const request = yield select(fromUser.getLoadFieldRequest);
     const { error, response } = yield call(fetchSaga, request);
+
+    console.log('handleLoadField', { error, response });
 
     if (error) {
         // @ts-expect-error TS7057

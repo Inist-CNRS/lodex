@@ -46,9 +46,7 @@ describe('selectors', () => {
                 local2: localSelector2,
             });
 
-            // @ts-expect-error TS2339
             expect(globalSelectors.local({ local: { foo: 'bar' } })).toBe(true);
-            // @ts-expect-error TS2339
             expect(globalSelectors.local2({ local: { foo: 'bar' } })).toBe(
                 false,
             );
@@ -68,11 +66,9 @@ describe('selectors', () => {
             });
 
             expect(
-                // @ts-expect-error TS2339
                 globalSelectors.local({ local: { foo: 'bar' } }, 'bar'),
             ).toBe(true);
             expect(
-                // @ts-expect-error TS2339
                 globalSelectors.local2({ local: { foo: 'bar' } }, 'bar'),
             ).toBe(false);
         });

@@ -11,7 +11,7 @@ import {
 import { translate } from '../i18n/I18NContext';
 
 import { fetch as fetchAction } from '../fetch/reducer';
-import { FormFieldProps } from './type';
+import { type FormFieldProps } from './type';
 
 type FormAutoCompleteFieldProps = {
     handleComplete: (event: object, value: string) => void;

@@ -9,6 +9,7 @@ import configureField from './configureField';
 import addCharacteristic from './addCharacteristic';
 import addField from './addField';
 import removeFieldList from './removeFieldList';
+import loadField from './loadFields';
 
 export default function* () {
     yield fork(removeField);
@@ -20,4 +21,5 @@ export default function* () {
     yield fork(configureField);
     yield fork(addCharacteristic);
     yield fork(addField);
+    yield fork(loadField);
 }

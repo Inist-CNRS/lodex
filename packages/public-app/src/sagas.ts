@@ -12,7 +12,7 @@ import displayConfigSagas from './displayConfig/loadDisplayConfigSaga';
 import formatSagas from './formats/sagas';
 
 export default function* () {
-    yield fork(sharedSagas);
+    yield* sharedSagas();
     yield fork(datasetSaga);
     yield fork(exportSaga);
     yield fork(resourceSagas);
