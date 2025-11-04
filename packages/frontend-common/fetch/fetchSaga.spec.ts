@@ -2,9 +2,9 @@ import { race, call, take, put, select } from 'redux-saga/effects';
 import { replace } from 'redux-first-history';
 
 import fetchSaga from './fetchSaga';
-import fetch from './reducer';
-import { logout } from '../../user';
-import { getCurrentQuery } from '../../sharedSelectors';
+import fetch from '../fetch/fetch';
+import { logout } from '../user/reducer';
+import { getCurrentQuery } from '../sharedSelectors';
 
 describe('sagas fetch', () => {
     // @ts-expect-error TS7034

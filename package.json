@@ -13,7 +13,7 @@
         "start": "concurrently \"npm:production:*\"",
         "production:api": "(cd packages/api && npm run start)",
         "production:workers": "(cd packages/workers && npm run start)",
-        "build": "npx vite build --config ./vite.config.ts && (cd packages/ezsLodex && npm run build) && (cd packages/root-admin-app && npm run build) && (cd packages/admin-app && npm run build) && (cd packages/public-app && npm run build)",
+        "build": "(cd packages/ezsLodex && npm run build) && (cd packages/root-admin-app && npm run build) && (cd packages/admin-app && npm run build) && (cd packages/public-app && npm run build)",
         "development:ezs-lodex": "(cd packages/ezsLodex && npm run dev)",
         "development:api": "(cd packages/api && npm run dev)",
         "development:backend": "concurrently \"npm:development:api\" \"npm:development:ezs-lodex\"",
