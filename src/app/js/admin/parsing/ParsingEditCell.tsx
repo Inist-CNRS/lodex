@@ -13,7 +13,7 @@ import {
     MenuItem,
     useTheme,
 } from '@mui/material';
-import { toast } from '../../../../common/tools/toast';
+import { toast } from '@lodex/common';
 import CancelButton from '../../lib/components/CancelButton';
 import { useTranslate } from '../../i18n/I18NContext';
 

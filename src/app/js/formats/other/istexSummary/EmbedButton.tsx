@@ -4,7 +4,7 @@ import CodeIcon from '@mui/icons-material/Code';
 import classnames from 'classnames';
 
 import ButtonWithDialog from '../../../lib/components/ButtonWithDialog';
-import { getCleanHost } from '../../../../../common/uris';
+import { getCleanHost } from '@lodex/common';
 import { useTranslate } from '../../../i18n/I18NContext';
 
 interface EmbedButtonProps {

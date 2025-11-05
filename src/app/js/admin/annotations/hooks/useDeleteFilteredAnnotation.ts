@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { omitBy } from 'lodash';
 import qs from 'qs';
 import { useHistory } from 'react-router-dom';
-import { toast } from '../../../../../common/tools/toast';
+import { toast } from '@lodex/common';
 import { useTranslate } from '../../../i18n/I18NContext';
 import fetch from '../../../lib/fetch';
 import { getRequest } from '../../../user';

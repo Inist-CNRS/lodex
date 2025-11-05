@@ -3,19 +3,16 @@ import compose from 'recompose/compose';
 import { useTranslate } from '../../i18n/I18NContext';
 
 import { fromResource } from '../selectors';
-import {
-    PROPOSED,
-    VALIDATED,
-    REJECTED,
-    type PropositionStatus,
-} from '../../../../common/propositionStatus';
+import { PropositionStatus, type PropositionStatusType } from '@lodex/common';
 
 const styles = {
-    container: (status: PropositionStatus) => ({
+    container: (status: PropositionStatusType) => ({
         display: 'flex',
         marginRight: '1rem',
-        color: status && status !== VALIDATED ? 'grey' : 'black',
-        textDecoration: status === REJECTED ? 'line-through' : 'none',
+        color:
+            status && status !== PropositionStatus.VALIDATED ? 'grey' : 'black',
+        textDecoration:
+            status === PropositionStatus.REJECTED ? 'line-through' : 'none',
     }),
     name: {
         fontWeight: 'bold',
@@ -34,7 +31,7 @@ const styles = {
 
 interface PropertyContributorComponentProps {
     contributor?: string;
-    fieldStatus?: PropositionStatus;
+    fieldStatus?: PropositionStatusType;
 }
 
 const PropertyContributorComponent = ({
@@ -48,7 +45,7 @@ const PropertyContributorComponent = ({
 
     return (
         <div className="property_contributor" style={styles.scheme}>
-            {fieldStatus === PROPOSED
+            {fieldStatus === PropositionStatus.PROPOSED
                 ? translate('contributed_by', { name: contributor })
                 : translate('added_by', { name: contributor })}
         </div>

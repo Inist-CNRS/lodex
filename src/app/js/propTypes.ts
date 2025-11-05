@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 
-import { PROPOSED, VALIDATED, REJECTED } from '../../common/propositionStatus';
+import { PropositionStatus } from '@lodex/common';
 
 export const polyglot = PropTypes.shape({
     currentLocale: PropTypes.string.isRequired,
@@ -38,7 +38,11 @@ export const contributor = PropTypes.object;
 export const property = PropTypes.shape({
     name: PropTypes.string.isRequired,
     scheme: PropTypes.string,
-    status: PropTypes.oneOf([PROPOSED, VALIDATED, REJECTED]),
+    status: PropTypes.oneOf([
+        PropositionStatus.PROPOSED,
+        PropositionStatus.VALIDATED,
+        PropositionStatus.REJECTED,
+    ]),
     validatedFields: PropTypes.arrayOf(PropTypes.string),
 });
 
