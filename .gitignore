@@ -70,3 +70,6 @@ globalConfig.json
 
 # bundle analyzer result
 stats.html
+
+# turbo cache
+.turbo
