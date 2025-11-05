@@ -191,10 +191,10 @@ h2 {
 }
 /*link in text*/
 a {
-    color: var(--linkText);
+    color: var(--linkText) !important;
 }
 a:is(:hover, :focus) {
-    color: var(--linkTextHover);
+    color: var(--linkTextHover) !important;
 }
 /*icon : a+svg*/
 a.nav-item,
