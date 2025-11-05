@@ -1,13 +1,13 @@
+import * as fs from 'fs';
+import { MongoClient, ObjectId } from 'mongodb';
+import path from 'path';
+import progress from '../progress';
 import {
     getEnrichmentDataPreview,
     getEnrichmentRuleModel,
     getSourceError,
     processEnrichment,
 } from './enrichment';
-import * as fs from 'fs';
-import path from 'path';
-import { MongoClient, ObjectId } from 'mongodb';
-import progress from '../progress';
 // @ts-expect-error TS7016
 import { disableFusible } from '@ezs/core/fusible';
 import { CancelWorkerError } from '../../workers';
@@ -36,6 +36,23 @@ const waitFor = async (
         })(),
     ).toBeTruthy();
 };
+
+function mockDb(data: unknown[]) {
+    return {
+        db: {
+            collection: jest.fn().mockImplementation((collectionName) => ({
+                collectionName,
+                idField: '_id',
+                count: () => Promise.resolve(1),
+                find: () => ({
+                    limit: () => ({
+                        toArray: () => Promise.resolve(data),
+                    }),
+                }),
+            })),
+        },
+    };
+}
 
 describe('enrichment', () => {
     describe('getEnrichmentRuleModel', () => {
@@ -129,15 +146,11 @@ describe('enrichment', () => {
                         sourceColumn: 'simpleValue',
                     },
                 },
-                dataset: {
-                    getExcerpt: () => {
-                        return [
-                            { uri: '1', simpleValue: 'plop' },
-                            { uri: '2', simpleValue: 'plip' },
-                            { uri: '3', simpleValue: 'ploup' },
-                        ];
-                    },
-                },
+                ...mockDb([
+                    { uri: '1', simpleValue: 'plop' },
+                    { uri: '2', simpleValue: 'plip' },
+                    { uri: '3', simpleValue: 'ploup' },
+                ]),
             };
 
             // WHEN
@@ -159,15 +172,26 @@ describe('enrichment', () => {
                         subPath: 'subPath',
                     },
                 },
-                dataset: {
-                    getExcerpt: () => {
-                        return [
-                            { uri: '1', objectValue: { subPath: 'plop' } },
-                            { uri: '2', objectValue: { subPath: 'plip' } },
-                            { uri: '3', objectValue: { subPath: 'ploup' } },
-                        ];
+                ...mockDb([
+                    {
+                        uri: '1',
+                        objectValue: {
+                            subPath: 'plop',
+                        },
                     },
-                },
+                    {
+                        uri: '2',
+                        objectValue: {
+                            subPath: 'plip',
+                        },
+                    },
+                    {
+                        uri: '3',
+                        objectValue: {
+                            subPath: 'ploup',
+                        },
+                    },
+                ]),
             };
 
             // WHEN
@@ -192,30 +216,26 @@ describe('enrichment', () => {
                         subPath: 'subPath',
                     },
                 },
-                dataset: {
-                    getExcerpt: () => {
-                        return [
-                            {
-                                uri: '1',
-                                objectValue: JSON.stringify({
-                                    subPath: 'plop',
-                                }),
-                            },
-                            {
-                                uri: '2',
-                                objectValue: JSON.stringify({
-                                    subPath: 'plip',
-                                }),
-                            },
-                            {
-                                uri: '3',
-                                objectValue: JSON.stringify({
-                                    subPath: 'ploup',
-                                }),
-                            },
-                        ];
+                ...mockDb([
+                    {
+                        uri: '1',
+                        objectValue: JSON.stringify({
+                            subPath: 'plop',
+                        }),
                     },
-                },
+                    {
+                        uri: '2',
+                        objectValue: JSON.stringify({
+                            subPath: 'plip',
+                        }),
+                    },
+                    {
+                        uri: '3',
+                        objectValue: JSON.stringify({
+                            subPath: 'ploup',
+                        }),
+                    },
+                ]),
             };
 
             // WHEN
@@ -239,15 +259,14 @@ describe('enrichment', () => {
                         sourceColumn: 'arrayValue',
                     },
                 },
-                dataset: {
-                    getExcerpt: () => {
-                        return [
-                            { uri: '1', arrayValue: ['plop', 'plup'] },
-                            { uri: '2', arrayValue: ['plip'] },
-                            { uri: '3', arrayValue: ['ploup'] },
-                        ];
+                ...mockDb([
+                    {
+                        uri: '1',
+                        arrayValue: ['plop', 'plup'],
                     },
-                },
+                    { uri: '2', arrayValue: ['plip'] },
+                    { uri: '3', arrayValue: ['ploup'] },
+                ]),
             };
 
             // WHEN
@@ -268,18 +287,20 @@ describe('enrichment', () => {
                         sourceColumn: 'arrayValue',
                     },
                 },
-                dataset: {
-                    getExcerpt: () => {
-                        return [
-                            {
-                                uri: '1',
-                                arrayValue: JSON.stringify(['plop', 'plup']),
-                            },
-                            { uri: '2', arrayValue: JSON.stringify(['plip']) },
-                            { uri: '3', arrayValue: JSON.stringify(['ploup']) },
-                        ];
+                ...mockDb([
+                    {
+                        uri: '1',
+                        arrayValue: JSON.stringify(['plop', 'plup']),
                     },
-                },
+                    {
+                        uri: '2',
+                        arrayValue: JSON.stringify(['plip']),
+                    },
+                    {
+                        uri: '3',
+                        arrayValue: JSON.stringify(['ploup']),
+                    },
+                ]),
             };
 
             // WHEN
@@ -301,27 +322,20 @@ describe('enrichment', () => {
                         subPath: 'subPath',
                     },
                 },
-                dataset: {
-                    getExcerpt: () => {
-                        return [
-                            {
-                                uri: '1',
-                                arrayValue: [
-                                    { subPath: 'plop' },
-                                    { subPath: 'plup' },
-                                ],
-                            },
-                            {
-                                uri: '2',
-                                arrayValue: [{ subPath: 'plip' }],
-                            },
-                            {
-                                uri: '3',
-                                arrayValue: [{ subPath: 'ploup' }],
-                            },
-                        ];
+                ...mockDb([
+                    {
+                        uri: '1',
+                        arrayValue: [{ subPath: 'plop' }, { subPath: 'plup' }],
                     },
-                },
+                    {
+                        uri: '2',
+                        arrayValue: [{ subPath: 'plip' }],
+                    },
+                    {
+                        uri: '3',
+                        arrayValue: [{ subPath: 'ploup' }],
+                    },
+                ]),
             };
 
             // WHEN
@@ -454,6 +468,12 @@ describe('enrichment', () => {
                     updateOne: jest.fn(),
                     updateStatus: jest.fn(),
                 },
+                ...mockDb([
+                    {
+                        uri: '1',
+                        arrayValue: [{ subPath: 'plop' }, { subPath: 'plup' }],
+                    },
+                ]),
             };
 
             // WHEN

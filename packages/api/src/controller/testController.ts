@@ -5,6 +5,7 @@ import serve from 'koa-static';
 import path from 'path';
 
 import { DEFAULT_TENANT } from '@lodex/common';
+import bodyParser from 'koa-bodyparser';
 import repositoryMiddleware, {
     mongoRootAdminClient,
 } from '../services/repositoryMiddleware';
@@ -51,6 +52,15 @@ app.use(
 
 app.use(
     mount('/external', serve(path.resolve(__dirname, '../../../../external'))),
+);
+
+app.use(bodyParser());
+
+app.use(
+    route.all('/enrichment/idempotent', async (ctx: koa.Context) => {
+        ctx.type = 'application/json';
+        ctx.body = ctx.request.body;
+    }),
 );
 
 export default app;

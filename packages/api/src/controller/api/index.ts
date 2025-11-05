@@ -14,6 +14,7 @@ import breadcrumbs from './breadcrumb';
 import characteristic from './characteristic';
 import configTenant from './configTenant';
 import dataset from './dataset';
+import dataSource from './dataSource';
 import displayConfig from './displayConfig';
 import dump from './dump';
 import enrichment from './enrichment';
@@ -166,6 +167,7 @@ app.use(route.get('/progress', progress));
 app.use(mount('/loader', loader));
 app.use(route.get('/dump', dump));
 app.use(mount('/hiddenResource', hiddenResource));
+app.use(mount('/dataSource', dataSource));
 
 app.use(async (ctx: any) => {
     ctx.status = 404;

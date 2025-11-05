@@ -29,6 +29,7 @@ export const launchAllEnrichmentError = createAction(
 
 export type Enrichment = {
     _id: string;
+    dataSource?: string;
     sourceColumn: string;
     status: string;
     subPath: string;
