@@ -14,7 +14,6 @@ import { cancelJob } from '../../workers/tools';
 import { getLocale } from '@lodex/common';
 import { buildQuery } from './buildQuery';
 import type { PreComputation } from '../../models/precomputed';
-import { ObjectId } from 'mongodb';
 import type { AppContext } from '../../services/repositoryMiddleware';
 
 export const setup = async (
@@ -71,10 +70,7 @@ export const putPrecomputed = async (
     const newPrecomputed = ctx.request.body;
 
     try {
-        ctx.body = await ctx.precomputed.update(
-            new ObjectId(id),
-            newPrecomputed,
-        );
+        ctx.body = await ctx.precomputed.update(id, newPrecomputed);
     } catch (error) {
         ctx.status = 403;
         ctx.body = { error: (error as Error).message };
