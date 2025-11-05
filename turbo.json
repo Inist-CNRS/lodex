@@ -10,12 +10,12 @@
                 "packages/public-app/build/**"
             ]
         },
-        "type-check": {
-            "dependsOn": [
-                "^type-check"
-            ]
+        "type-check": {},
+        "dev:front": {
+            "persistent": true,
+            "cache": false
         },
-        "dev": {
+        "dev:back": {
             "persistent": true,
             "cache": false
         }

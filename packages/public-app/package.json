@@ -5,7 +5,7 @@
     "version": "16.0.5",
     "main": "./src/index.ts",
     "scripts": {
-        "dev": "vite",
+        "dev:front": "vite",
         "build": "vite build",
         "type-check": "tsc --noEmit"
     },
