@@ -500,6 +500,21 @@ export const getGetDatasetRequest = (
         method: 'GET',
     });
 };
+export const getGetPrecomputedResultListRequest = ({
+    state,
+    precomputedId,
+    params,
+}: {
+    state: UserState;
+    precomputedId: string;
+    params: Record<string, unknown>;
+}) => {
+    const paramString = getQueryString(params);
+    return getRequest(state, {
+        url: `/api/precomputed/${precomputedId}/result?${paramString}`,
+        method: 'GET',
+    });
+};
 
 export const putUpdateDataset = (
     state: UserState,
@@ -514,6 +529,16 @@ export const putUpdateDataset = (
 export const getGetDatasetColumnsRequest = (state: UserState) => {
     return getRequest(state, {
         url: `/api/dataset/columns`,
+        method: 'GET',
+    });
+};
+
+export const getGetPrecomputedResultColumnsRequest = (
+    state: UserState,
+    precomputedId: string,
+) => {
+    return getRequest(state, {
+        url: `/api/precomputed/${precomputedId}/result/columns`,
         method: 'GET',
     });
 };

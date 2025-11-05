@@ -1,10 +1,10 @@
 import { compose, lifecycle } from 'recompose';
 import { connect } from 'react-redux';
 
-import Upload from './upload/Upload';
-import { fromParsing } from './selectors';
-import { preLoadLoaders } from './loader';
-import withInitialData from './withInitialData';
+import Upload from '../upload/Upload';
+import { fromParsing } from '../selectors';
+import { preLoadLoaders } from '../loader';
+import withInitialData from '../withInitialData';
 
 interface DataAddRouteComponentProps {
     canUploadFile: boolean;

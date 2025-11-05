@@ -59,6 +59,9 @@ export type PrecomputedCollection = Collection<PreComputation> & {
         precomputedId: string,
         query?: FindOptions<PreComputation>,
     ) => Promise<number>;
+    getResultColumns: (
+        precomputedId: string,
+    ) => Promise<{ key: string; type: string }[]>;
 };
 
 export default async (db: Db): Promise<PrecomputedCollection> => {
@@ -70,7 +73,8 @@ export default async (db: Db): Promise<PrecomputedCollection> => {
     ): Promise<PreComputation | null> =>
         collection.findOne<PreComputation>(
             {
-                _id: id instanceof ObjectId ? id : new ObjectId(id),
+                // @ts-expect-error TS2345
+                $or: [{ _id: new ObjectId(id) }, { _id: id }],
             },
             { projection: { data: { $slice: 10 } } }, // Limit the size of the data field to 10 elements
         );
@@ -98,7 +102,8 @@ export default async (db: Db): Promise<PrecomputedCollection> => {
             console.warn(`Failed to drop collection 'pc_${id}'`);
         }
         return collection.deleteOne({
-            _id: id instanceof ObjectId ? id : new ObjectId(id),
+            // @ts-expect-error TS2345
+            $or: [{ _id: new ObjectId(id) }, { _id: id }],
         });
     };
 
@@ -112,7 +117,8 @@ export default async (db: Db): Promise<PrecomputedCollection> => {
 
         return collection.findOneAndUpdate(
             {
-                _id: id instanceof ObjectId ? id : new ObjectId(id),
+                // @ts-expect-error TS2345
+                $or: [{ _id: new ObjectId(id) }, { _id: id }],
             },
             {
                 $set: omit(data, ['_id']),
@@ -129,7 +135,8 @@ export default async (db: Db): Promise<PrecomputedCollection> => {
         const newData = { status, ...data };
         collection.updateOne(
             {
-                _id: id instanceof ObjectId ? id : new ObjectId(id),
+                // @ts-expect-error TS2345
+                $or: [{ _id: new ObjectId(id) }, { _id: id }],
             },
             { $set: newData },
         );
@@ -141,7 +148,8 @@ export default async (db: Db): Promise<PrecomputedCollection> => {
     ): Promise<void> => {
         collection.updateOne(
             {
-                _id: id instanceof ObjectId ? id : new ObjectId(id),
+                // @ts-expect-error TS2345
+                $or: [{ _id: new ObjectId(id) }, { _id: id }],
             },
             { $set: { startedAt } },
         );
@@ -178,8 +186,8 @@ export default async (db: Db): Promise<PrecomputedCollection> => {
         query?: FindOptions<Record<string, unknown>>;
         sortBy?: string;
         sortDir: 'ASC' | 'DESC';
-    }): Promise<Record<string, unknown>[]> =>
-        db
+    }): Promise<Record<string, unknown>[]> => {
+        return db
             .collection(`pc_${precomputedId}`)
             .find(query)
             .sort(
@@ -190,12 +198,124 @@ export default async (db: Db): Promise<PrecomputedCollection> => {
             .skip(skip)
             .limit(limit)
             .toArray();
+    };
 
     const resultCount = async (
         precomputedId: string,
         query = {},
     ): Promise<number> => {
         return db.collection(`pc_${precomputedId}`).find(query).count();
+    };
+
+    const getResultColumns = async (
+        precomputedId: string,
+    ): Promise<
+        {
+            key: string;
+            type: string;
+        }[]
+    > => {
+        const pipeline = [
+            { $sample: { size: 1000 } },
+            {
+                $project: {
+                    fields: { $objectToArray: '$$ROOT' },
+                },
+            },
+            { $unwind: '$fields' },
+            {
+                $match: {
+                    'fields.k': { $ne: '_id' }, // Exclude the _id field
+                },
+            },
+            {
+                $group: {
+                    _id: '$fields.k',
+                    types: {
+                        $addToSet: {
+                            $switch: {
+                                branches: [
+                                    {
+                                        case: {
+                                            $eq: [
+                                                { $type: '$fields.v' },
+                                                'null',
+                                            ],
+                                        },
+                                        then: 'null',
+                                    },
+                                    {
+                                        case: {
+                                            $eq: [
+                                                { $type: '$fields.v' },
+                                                'bool',
+                                            ],
+                                        },
+                                        then: 'boolean',
+                                    },
+                                    {
+                                        case: {
+                                            $in: [
+                                                { $type: '$fields.v' },
+                                                [
+                                                    'int',
+                                                    'long',
+                                                    'double',
+                                                    'decimal',
+                                                ],
+                                            ],
+                                        },
+                                        then: 'number',
+                                    },
+                                    {
+                                        case: {
+                                            $eq: [
+                                                { $type: '$fields.v' },
+                                                'string',
+                                            ],
+                                        },
+                                        then: 'string',
+                                    },
+                                ],
+                                default: 'string',
+                            },
+                        },
+                    },
+                },
+            },
+            {
+                $project: {
+                    key: '$_id',
+                    type: {
+                        $cond: {
+                            if: { $eq: [{ $size: '$types' }, 1] },
+                            then: { $arrayElemAt: ['$types', 0] },
+                            else: {
+                                $cond: {
+                                    if: { $in: ['string', '$types'] },
+                                    then: 'string',
+                                    else: { $arrayElemAt: ['$types', 0] },
+                                },
+                            },
+                        },
+                    },
+                    _id: 0,
+                },
+            },
+            { $sort: { key: 1 } },
+        ];
+
+        try {
+            return db
+                .collection(`pc_${precomputedId}`)
+                .aggregate<{
+                    key: string;
+                    type: string;
+                }>(pipeline)
+                .toArray();
+        } catch (error) {
+            return [{ key: 'value', type: 'string' }];
+        }
     };
 
     return Object.assign(collection, {
@@ -211,5 +331,6 @@ export default async (db: Db): Promise<PrecomputedCollection> => {
         getStreamOfResult,
         resultFindLimitFromSkip,
         resultCount,
+        getResultColumns,
     });
 };

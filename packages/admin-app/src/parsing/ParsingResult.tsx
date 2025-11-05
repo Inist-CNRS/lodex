@@ -113,12 +113,16 @@ const getFiltersOperatorsForType = (type) => {
 };
 
 interface ParsingResultComponentProps {
+    precomputedId?: string;
     loadingParsingResult: boolean;
     enrichments?: object[];
 }
 
-export const ParsingResultComponent = (props: ParsingResultComponentProps) => {
-    const { enrichments, loadingParsingResult } = props;
+export const ParsingResultComponent = ({
+    precomputedId,
+    enrichments,
+    loadingParsingResult,
+}: ParsingResultComponentProps) => {
     const { translate } = useTranslate();
 
     const { search } = useLocation();
@@ -198,7 +202,8 @@ export const ParsingResultComponent = (props: ParsingResultComponentProps) => {
                             : key,
                         headerClassName: errorCount && 'error-header',
                         cellClassName: isEnrichment && 'enriched-column',
-                        width: 150,
+                        flex: 1,
+                        minWidth: 150,
                         filterable: type !== 'object',
                         sortable: type !== 'object',
                         filterOperators: getFiltersOperatorsForType(type),
@@ -292,7 +297,8 @@ export const ParsingResultComponent = (props: ParsingResultComponentProps) => {
     const [filterModel, setFilterModel] = useState(initialFilterModel);
 
     const fetchDataset = useCallback(async () => {
-        const { count: datasCount, datas } = await datasetApi.getDataset({
+        const { count: datasCount, datas } = await datasetApi.getData({
+            precomputedId,
             skip,
             limit,
             filter: filterModel.items.at(0),
@@ -300,7 +306,7 @@ export const ParsingResultComponent = (props: ParsingResultComponentProps) => {
         });
         setRowCount(datasCount);
         setDatas(datas);
-    }, [skip, limit, filterModel, sort]);
+    }, [skip, limit, filterModel, sort, precomputedId]);
 
     // @ts-expect-error TS7006
     const onPageChange = (page) => {
@@ -325,13 +331,13 @@ export const ParsingResultComponent = (props: ParsingResultComponentProps) => {
 
     useEffect(() => {
         const fetchDataColumns = async () => {
-            const { columns } = await datasetApi.getDatasetColumns();
+            const { columns } = await datasetApi.getDataColumns(precomputedId);
             setColumns(columns);
             // We need to initialize the filter model with the columns otherwise it gets erased by MUI datagrid somehow.
             handleFilterModelChange(initialFilterModel);
         };
         fetchDataColumns();
-    }, [handleFilterModelChange, initialFilterModel]);
+    }, [handleFilterModelChange, initialFilterModel, precomputedId]);
 
     useEffect(() => {
         fetchDataset();
@@ -503,6 +509,7 @@ export const ParsingResultComponent = (props: ParsingResultComponentProps) => {
                 // @ts-expect-error TS2322
                 columns={columnsToShow}
                 rows={rows}
+                getRowId={(row) => row._id}
                 rowCount={rowCount}
                 pageSize={limit}
                 checkboxSelection

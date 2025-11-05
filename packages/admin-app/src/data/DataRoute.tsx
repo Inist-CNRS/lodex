@@ -108,7 +108,13 @@ export const DataRouteComponent = ({
                 <Route
                     path={`${path}/precomputation`}
                     exact
-                    component={() => <p>SOON</p>}
+                    component={() =>
+                        selectedPrecomputation && (
+                            <ParsingResult
+                                precomputedId={selectedPrecomputation}
+                            />
+                        )
+                    }
                 />
             </Switch>
         </div>
