@@ -6,7 +6,8 @@
     "main": "./src/index.ts",
     "scripts": {
         "dev": "NODE_CONFIG_DIR=../../config tsx watch src",
-        "start": "NODE_CONFIG_DIR=../../config tsx src"
+        "start": "NODE_CONFIG_DIR=../../config tsx src",
+        "type-check": "tsc --noEmit"
     },
     "devDependencies": {
         "tsx": "^4.20.6",

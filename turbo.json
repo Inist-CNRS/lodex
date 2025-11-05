@@ -10,9 +10,9 @@
                 "packages/public-app/build/**"
             ]
         },
-        "check-types": {
+        "type-check": {
             "dependsOn": [
-                "^check-types"
+                "^type-check"
             ]
         },
         "dev": {

@@ -1,6 +1,6 @@
 {
     "engines": {
-        "node": ">= 16"
+        "node": ">= 22"
     },
     "name": "lodex",
     "version": "16.0.7",
@@ -9,6 +9,10 @@
     "browser": {
         "config": false
     },
+    "packageManager": "npm@11.5.1",
+    "workspaces": [
+        "packages/*"
+    ],
     "scripts": {
         "start": "concurrently \"npm:production:*\"",
         "production:api": "(cd packages/api && npm run start)",
@@ -21,7 +25,7 @@
         "development:app:root-admin": "(cd packages/root-admin-app && npm run dev)",
         "development:app:admin": "(cd packages/admin-app && npm run dev)",
         "development:app:public": "(cd packages/public-app && npm run dev)",
-        "type-check": "tsc --noEmit && (cd packages/ezsLodex && tsc --noEmit) && (cd packages/common && tsc --noEmit) && (cd packages/api && tsc --noEmit) && (cd packages/workers && tsc --noEmit) && (cd packages/frontend-common && tsc --noEmit) && (cd packages/root-admin-app && tsc --noEmit) && (cd packages/admin-app && tsc --noEmit) && (cd packages/public-app && tsc --noEmit)",
+        "type-check": "tsc --noEmit",
         "lint": "eslint --fix",
         "lint:test": "eslint",
         "clean": "concurrently \"npm:clean:*\"",
@@ -45,8 +49,7 @@
         "setversion:root-admin-app": "(cd packages/root-admin-app && npm version \"${npm_package_version}\")",
         "setversion:admin-app": "(cd packages/admin-app && npm version \"${npm_package_version}\")",
         "setversion:public-app": "(cd packages/public-app && npm version \"${npm_package_version}\")",
-        "postversion": "git push && git push --tags",
-        "postinstall": "cd ./packages/ezsLodex/ && npm install --production --install-strategy=nested --legacy-peer-deps && cd ../transformers/ && npm install --production --install-strategy=nested --legacy-peer-deps && cd ../common/ && npm install --install-strategy=nested --legacy-peer-deps && cd ../api/ && npm install --install-strategy=nested --legacy-peer-deps && cd ../workers/ && npm install --install-strategy=nested --legacy-peer-deps && cd ../frontend-common/ && npm install --install-strategy=nested --legacy-peer-deps && cd ../root-admin-app/ && npm install --install-strategy=nested --legacy-peer-deps && cd ../admin-app/ && npm install --install-strategy=nested --legacy-peer-deps && cd ../public-app/ && npm install --install-strategy=nested --legacy-peer-deps"
+        "postversion": "git push && git push --tags"
     },
     "nodemonConfig": {
         "ignore": [

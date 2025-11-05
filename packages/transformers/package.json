@@ -30,6 +30,7 @@
         "lint": "eslint --ext=.js ./test/*.js ./src/*.js",
         "prepublish": "npm run build",
         "pretest": "npm run build",
-        "preversion": "npm run doc"
+        "preversion": "npm run doc",
+        "type-check": "tsc --noEmit"
     }
 }

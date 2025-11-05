@@ -2,6 +2,7 @@ FROM node:22.12-alpine AS build
 RUN apk add --no-cache make gcc g++ python3 bash git openssh jq
 WORKDIR /app
 COPY ./package.json /app
+COPY ./turbo.json /app
 COPY ./package-lock.json /app
 COPY ./packages /app/packages
 
@@ -13,9 +14,11 @@ ENV NODE_ENV="production"
 ENV CYPRESS_CACHE_FOLDER=/app/.cache
 ENV npm_config_cache=/app/.npm
 
-RUN npm run build && \
+RUN npm install -g turbo
+
+RUN turbo build && \
     npm cache clean --force  && \
-    npm run clean  && \
+    turbo clean  && \
     npm prune --production --legacy-peer-deps
 
 FROM node:22.12-alpine AS release

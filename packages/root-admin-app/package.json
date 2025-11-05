@@ -6,7 +6,8 @@
     "main": "./src/index.ts",
     "scripts": {
         "dev": "vite",
-        "build": "vite build"
+        "build": "vite build",
+        "type-check": "tsc --noEmit"
     },
     "devDependencies": {
         "@types/node": "^24.9.1",

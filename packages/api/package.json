@@ -6,7 +6,8 @@
     "main": "./src/index.ts",
     "scripts": {
         "dev": "NODE_CONFIG_DIR=../../config tsx watch --max-http-header-size=32768 src",
-        "start": "NODE_CONFIG_DIR=../../config tsx --max-http-header-size=32768 src"
+        "start": "NODE_CONFIG_DIR=../../config tsx --max-http-header-size=32768 src",
+        "type-check": "tsc --noEmit"
     },
     "dependencies": {
         "@ezs/transformers": "file:../transformers",

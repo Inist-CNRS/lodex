@@ -4,6 +4,9 @@
     "description": "Lodex common utilities",
     "version": "16.0.6",
     "main": "./src/index.ts",
+    "scripts": {
+        "type-check": "tsc --noEmit"
+    },
     "dependencies": {
         "@ezs/transformers": "file:../transformers"
     },
