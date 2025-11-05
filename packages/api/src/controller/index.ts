@@ -44,7 +44,7 @@ app.use(mount('/rootAdmin', rootAdmin));
 
 const render404IndexHtml = (ctx: any) => {
     ctx.body = fs
-        .readFileSync(path.resolve(__dirname, '../../../../src/app/404.html'))
+        .readFileSync(path.resolve(__dirname, '../../404.html'))
         .toString();
 };
 

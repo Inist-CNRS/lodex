@@ -29,7 +29,6 @@
     "include": [
         "vite.config.ts",
         "test-utils.tsx",
-        "src/app",
         "packages/frontend-common",
         "packages/admin-app/src",
         "packages/public-app/src",
