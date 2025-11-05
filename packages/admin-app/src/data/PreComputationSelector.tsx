@@ -36,8 +36,6 @@ export const PreComputationSelector = ({
             );
             const { response } = await fetch(request);
 
-            console.log({ response });
-
             // Fetch precomputations from API
             return response.map(
                 ({

@@ -1,7 +1,7 @@
 import { Switch, Route, useRouteMatch, Redirect } from 'react-router';
 
 import { DataRoute } from './data/DataRoute';
-import { DataAddRoute } from './DataAddRoute';
+import { DataAddRoute } from './data/DataAddRoute';
 import RemovedResourcePage from './removedResources/RemovedResourcePage';
 import { EnrichmentRoute } from './EnrichmentRoute';
 import { PrecomputedRoute } from './PrecomputedRoute';

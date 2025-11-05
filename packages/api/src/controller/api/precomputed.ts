@@ -247,6 +247,14 @@ export const getPrecomputedResultList = async (
     ctx.body = { count, datas };
 };
 
+export const getPrecomputedResultColumns = async (
+    ctx: AppContext,
+    id: string,
+) => {
+    const columns = await ctx.precomputed.getResultColumns(id);
+    ctx.body = { columns };
+};
+
 export const previewDataPrecomputed = async (ctx: AppContext, id: string) => {
     try {
         const data = await ctx.precomputed.getSample(id);
@@ -257,43 +265,6 @@ export const previewDataPrecomputed = async (ctx: AppContext, id: string) => {
         // @ts-expect-error TS(2571): Object is of type 'unknown'.
         ctx.body = { error: error.message };
     }
-};
-
-export const getPrecomputedList = async (ctx: AppContext) => {
-    const {
-        precomputedId,
-        skip,
-        limit,
-        sortBy,
-        sortDir,
-        filterBy,
-        filterOperator,
-        filterValue,
-    } = ctx.query as {
-        precomputedId: string;
-        skip?: string;
-        limit?: string;
-        sortBy?: string;
-        sortDir?: string;
-        filterBy?: keyof PreComputation;
-        filterOperator?: string;
-        filterValue?: string;
-    };
-    const query = buildQuery<PreComputation>(
-        filterBy,
-        filterOperator,
-        filterValue,
-    );
-    const datas = await ctx.precomputed.resultFindLimitFromSkip({
-        precomputedId,
-        limit: limit ? parseInt(limit, 10) : 10,
-        skip: skip ? parseInt(skip) : 0,
-        query,
-        sortBy,
-        sortDir: sortDir?.toUpperCase() as 'ASC' | 'DESC',
-    });
-    const count = await ctx.precomputed.resultCount(precomputedId, query);
-    ctx.body = { count, datas };
 };
 
 const app = new Koa();
@@ -322,5 +293,9 @@ app.use(route.post('/preview', precomputedDataPreview));
 
 // @ts-expect-error TS2345
 app.use(route.get('/:precomputedId/result', getPrecomputedResultList));
+app.use(
+    // @ts-expect-error TS2345
+    route.get('/:precomputedId/result/columns', getPrecomputedResultColumns),
+);
 
 export default app;
