@@ -1,13 +1,13 @@
-import { MongoClient, type Db } from 'mongodb';
-import config from 'config';
 import { DEFAULT_TENANT } from '@lodex/common';
+import config from 'config';
+import { MongoClient, type Db } from 'mongodb';
 
 /**
  * @type {Map<string, MongoClient>}
  */
 const clients = new Map();
 
-export const mongoConnectionString = (tenant: any) =>
+export const mongoConnectionString = (tenant: string) =>
     process.env.NODE_ENV === 'test' && process.env.MONGO_URL
         ? process.env.MONGO_URL
         : `mongodb://${config.get('mongo.host')}/${config.get('mongo.dbName')}_${
@@ -19,7 +19,7 @@ export const mongoConnectionString = (tenant: any) =>
  * @param tenant Name of the Lodex instance
  * @returns {Promise<MongoClient>}
  */
-const mongoClientConnectionFactory = async (tenant: any) => {
+const mongoClientConnectionFactory = async (tenant: string) => {
     if (!tenant) {
         throw new Error(
             `L'instance n'est pas renseigné, impossible de se connecter à la base de données.`,
@@ -53,5 +53,7 @@ export const closeDb = async (tenant: string) => {
         await clients.get(tenant).close();
     }
 };
+
+export type MongoClientFactory = typeof mongoClientFactory;
 
 export default mongoClientFactory;

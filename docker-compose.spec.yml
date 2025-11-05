@@ -25,6 +25,11 @@ services:
             - "3000:3000"
         volumes:
             - ./cypress/mocks/external:/app/external
+
+            - ./packages/api/src/services/enrichment/directPathMultipleValues.txt:/app/packages/api/src/services/enrichment/directPathMultipleValues.txt:ro
+            - ./packages/api/src/services/enrichment/directPathSingleValue.txt:/app/packages/api/src/services/enrichment/directPathSingleValue.txt:ro
+            - ./packages/api/src/services/enrichment/subPathMultipleValues.txt:/app/packages/api/src/services/enrichment/subPathMultipleValues.txt:ro
+            - ./packages/api/src/services/enrichment/subPathSingleValue.txt:/app/packages/api/src/services/enrichment/subPathSingleValue.txt:ro
         deploy:
             resources:
                 limits:

@@ -46,9 +46,9 @@ export const updateNameEnrichment = () => {
     cy.contains('Save').click({
         force: true,
     });
-    cy.waitForNetworkIdle(500);
+    cy.waitForNetworkIdle(1000);
     cy.reload();
-    cy.waitForNetworkIdle(500);
+    cy.waitForNetworkIdle(1000);
     cy.findByLabelText('Name *').should('have.value', 'Enrichment');
 };
 

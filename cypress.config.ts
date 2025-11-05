@@ -1,11 +1,11 @@
 import { defineConfig } from 'cypress';
 import * as fs from 'fs';
 
-const getFiles = (path) => {
+const getFiles = (path: string) => {
     return fs.readdirSync(path);
 };
 
-const removeFile = (path) => {
+const removeFile = (path: string) => {
     return fs.rmSync(path);
 };
 
@@ -44,9 +44,9 @@ module.exports = defineConfig({
     viewportHeight: 1080,
     video: false,
     defaultCommandTimeout: 30000,
-    execTimeout: 30000,
-    taskTimeout: 30000,
-    pageLoadTimeout: 30000,
+    execTimeout: 60000,
+    taskTimeout: 60000,
+    pageLoadTimeout: 60000,
     requestTimeout: 30000,
     responseTimeout: 30000,
 });

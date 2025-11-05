@@ -1,3 +1,4 @@
+import { TaskStatus } from '@lodex/common';
 import omit from 'lodash/omit';
 import {
     Collection,
@@ -7,7 +8,6 @@ import {
     type UpdateResult,
 } from 'mongodb';
 import { castIdsFactory, getCreatedCollection } from './utils';
-import { TaskStatus } from '@lodex/common';
 
 const checkMissingFields = (data: Partial<PreComputation>) =>
     !data.name ||
@@ -26,6 +26,7 @@ export type PreComputationStatus =
     | '';
 
 export type PreComputation = {
+    _id: ObjectId;
     name: string;
     webServiceUrl: string;
     sourceColumns: string[];
@@ -34,6 +35,7 @@ export type PreComputation = {
     startedAt?: Date;
     finishedAt?: Date;
     data?: unknown[];
+    hasData?: boolean;
 };
 
 export type PrecomputedCollection = Collection<PreComputation> & {
@@ -52,7 +54,7 @@ export type PrecomputedCollection = Collection<PreComputation> & {
     ) => Promise<void>;
     updateStartedAt: (id: ObjectId | string, startedAt: Date) => Promise<void>;
     castIds: () => Promise<void>;
-    getSample: (id: ObjectId | string) => Promise<unknown[]>;
+    getSample: (id: ObjectId | string) => Promise<Record<string, unknown>[]>;
     getStreamOfResult: (id: ObjectId | string) => NodeJS.ReadableStream;
     resultFindLimitFromSkip: <Result extends Record<string, unknown>>(params: {
         precomputedId: string;
@@ -101,7 +103,12 @@ export default async (db: Db): Promise<PrecomputedCollection> => {
         if (checkMissingFields(data)) {
             throw new Error('Missing required fields');
         }
-        const { insertedId } = await collection.insertOne(data);
+
+        const { insertedId } = await collection.insertOne(
+            // This is required for typing because insertOne should accept document without _id,
+            // but this is not the case
+            data as PreComputation,
+        );
         return collection.findOne({
             _id: insertedId,
         }) as Promise<PreComputation>;

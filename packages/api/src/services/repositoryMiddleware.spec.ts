@@ -1,3 +1,4 @@
+import type Koa from 'koa';
 import { mongoClientFactory } from './repositoryMiddleware';
 
 describe('mongoClient middleware', () => {
@@ -13,7 +14,7 @@ describe('mongoClient middleware', () => {
         const next = () => Promise.resolve();
 
         const mongoClientImpl = jest.fn().mockImplementation(() => db);
-        const ctx = {};
+        const ctx = {} as Koa.Context;
         await mongoClientFactory(mongoClientImpl)(ctx, next);
 
         expect(mongoClientImpl).toHaveBeenCalled();

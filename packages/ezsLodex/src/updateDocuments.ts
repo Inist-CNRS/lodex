@@ -5,10 +5,12 @@ export const createFunction = () =>
         if (this.isLast()) {
             return feed.close();
         }
+        const idField = this.getParam('idField', 'uri');
         const field = this.getParam(
             'field',
             data.field || data.$field || 'uri',
         );
+
         const collectionName = String(
             this.getParam('collection', data.collection || 'publishedDataset'),
         );
@@ -25,7 +27,7 @@ export const createFunction = () =>
         const query = items.map(({ id, value }: any) => ({
             updateOne: {
                 filter: {
-                    uri: id,
+                    [idField]: id,
                 },
                 update: { $set: { [fieldname]: value } },
             },
