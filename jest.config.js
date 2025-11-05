@@ -15,8 +15,8 @@ module.exports = {
         {
             displayName: 'frontend',
             rootDir: `${__dirname}/src/app`,
-            setupFiles: [`${__dirname}/src/app/setupTest.ts`],
-            setupFilesAfterEnv: [`${__dirname}/src/app/setupTestAfterEnv.ts`],
+            setupFiles: [`${__dirname}/setupTest.ts`],
+            setupFilesAfterEnv: [`${__dirname}/setupTestAfterEnv.ts`],
             testMatch: [
                 '/**/*.spec.js',
                 '/**/*.spec.jsx',
@@ -46,6 +46,27 @@ module.exports = {
                 '/**/*.spec.ts',
             ],
             transform,
+            workerIdleMemoryLimit,
+        },
+        {
+            displayName: 'public-app',
+            rootDir: `${__dirname}/packages/public-app`,
+            setupFiles: [`${__dirname}/setupTest.ts`],
+            setupFilesAfterEnv: [`${__dirname}/setupTestAfterEnv.ts`],
+            testMatch: [
+                '/**/*.spec.js',
+                '/**/*.spec.jsx',
+                '/**/*.spec.tsx',
+                '/**/*.spec.ts',
+            ],
+            testPathIgnorePatterns: ['build'],
+            moduleNameMapper: {
+                '\\.(css|less|scss|sass)$': 'identity-obj-proxy',
+            },
+            moduleFileExtensions: ['js', 'json', 'jsx', 'mjs', 'ts', 'tsx'],
+            transformIgnorePatterns: ['<rootDir>/node_modules/d3'],
+            transform,
+            testEnvironment: 'jsdom',
             workerIdleMemoryLimit,
         },
         {

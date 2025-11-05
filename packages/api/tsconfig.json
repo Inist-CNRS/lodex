@@ -25,6 +25,11 @@
         "noUncheckedSideEffectImports": true,
         "noImplicitAny": true
     },
-    "include": ["src", "../../src/app"],
+    "include": [
+        "src",
+        "../public-app/src",
+        "../frontend-common",
+        "../admin-app/src"
+    ],
     "exclude": ["../../src/app/build"]
 }

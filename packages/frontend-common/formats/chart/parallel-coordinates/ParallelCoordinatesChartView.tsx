@@ -1,0 +1,109 @@
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router';
+import compose from 'recompose/compose';
+import { translate } from '../../../i18n/I18NContext';
+import get from 'lodash/get';
+
+import { getPercentValue } from '../../../utils/getPercentage';
+import { getShortText } from '../../../utils/longTexts';
+import stylesToClassname from '../../../utils/stylesToClassName';
+import injectData from '../../injectData';
+import ParallelCoordinatesChart from './ParallelCoordinatesChart';
+
+const styles = stylesToClassname(
+    {
+        container: {
+            margin: '10px',
+        },
+    },
+    'parallel-coordinates-chart-view',
+);
+
+// @ts-expect-error TS7006
+const prepareData = (data = [], history, polyglot) =>
+    data.map((d) => {
+        const title = getShortText(d['target-title']);
+        const onClick = () => {
+            history.push({
+                // @ts-expect-error TS2339
+                pathname: `/${d.target}`,
+                state: {},
+            });
+        };
+        const weight = get(d, 'weight', 0);
+        const value = getPercentValue(weight, 2);
+        const label = `<div>${title}<br/><br/>${value}% ${polyglot.t(
+            'similar',
+        )}</div>`;
+        return {
+            label,
+            // @ts-expect-error TS2339
+            weights: d.weights.map((weight) => weight * 100),
+            onClick,
+        };
+    });
+
+interface ParallelCoordinatesChartViewProps {
+    fieldNames?: string[];
+    data: unknown[];
+    colorSet?: string[];
+}
+
+const ParallelCoordinatesChartView = ({
+    fieldNames,
+    data,
+    colorSet,
+}: ParallelCoordinatesChartViewProps) => {
+    return (
+        // @ts-expect-error TS2339
+        <div className={styles.container}>
+            <ParallelCoordinatesChart
+                fieldNames={fieldNames}
+                // @ts-expect-error TS2322
+                data={data}
+                width={600}
+                height={200}
+                colorSet={colorSet}
+            />
+        </div>
+    );
+};
+
+// @ts-expect-error TS7006
+const getFieldNames = (field, fields, resource) => {
+    /**
+     * @type {string}
+     */
+    const characteristicPath = get(resource, field.name, '');
+    const characteristics = characteristicPath.split('/');
+    if (characteristics.length <= 3) {
+        return [];
+    }
+    characteristics.splice(0, 4);
+    // @ts-expect-error TS7006
+    return characteristics.map((characteristic) => {
+        // @ts-expect-error TS7006
+        const fieldName = fields.find((field) => field.name === characteristic);
+        return get(fieldName, 'label', '');
+    });
+};
+
+const mapStateToProps = (
+    // @ts-expect-error TS7006
+    _,
+    // @ts-expect-error TS7031
+    { field, fields, resource, formatData, history, p: polyglot },
+) => {
+    return {
+        fieldNames: getFieldNames(field, fields, resource),
+        data: prepareData(formatData, history, polyglot),
+    };
+};
+
+export default compose(
+    translate,
+    withRouter,
+    injectData(null, null, true),
+    connect(mapStateToProps),
+    // @ts-expect-error TS2345
+)(ParallelCoordinatesChartView);

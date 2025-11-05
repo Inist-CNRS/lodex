@@ -1,0 +1,46 @@
+import fetch from '@lodex/frontend-common/fetch/fetch';
+import {
+    getCreateEnrichmentRequest,
+    getDeleteEnrichmentRequest,
+    getPreviewDataEnrichmentRequest,
+    getUpdateEnrichmentRequest,
+} from '@lodex/frontend-common/user/reducer';
+import { getUserSessionStorageInfo } from '@lodex/frontend-common/getUserSessionStorageInfo';
+
+// @ts-expect-error TS7006
+export const getPreviewEnrichment = (previewEnrichment) => {
+    const { token } = getUserSessionStorageInfo();
+    const request = getPreviewDataEnrichmentRequest(
+        { token },
+        previewEnrichment,
+    );
+    return fetch(request);
+};
+
+// @ts-expect-error TS7006
+export const createEnrichment = (enrichment) => {
+    const { token } = getUserSessionStorageInfo();
+    const request = getCreateEnrichmentRequest({ token }, enrichment);
+    return fetch(request);
+};
+
+// @ts-expect-error TS7006
+export const updateEnrichment = (enrichment) => {
+    const { token } = getUserSessionStorageInfo();
+    const request = getUpdateEnrichmentRequest({ token }, enrichment);
+    return fetch(request);
+};
+
+// @ts-expect-error TS7006
+export const deleteEnrichment = (id) => {
+    const { token } = getUserSessionStorageInfo();
+    const request = getDeleteEnrichmentRequest({ token }, id);
+    return fetch(request);
+};
+
+export default {
+    getPreviewEnrichment,
+    createEnrichment,
+    updateEnrichment,
+    deleteEnrichment,
+};

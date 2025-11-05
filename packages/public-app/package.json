@@ -1,0 +1,18 @@
+{
+    "private": true,
+    "name": "@lodex/public-app",
+    "description": "Lodex public application",
+    "version": "16.0.5",
+    "main": "./src/index.ts",
+    "scripts": {
+        "dev": "vite",
+        "build": "vite build"
+    },
+    "dependencies": {
+        "@lodex/frontend-common": "file:../frontend-common"
+    },
+    "devDependencies": {
+        "@types/node": "^24.9.1",
+        "typescript": "^5.9.3"
+    }
+}

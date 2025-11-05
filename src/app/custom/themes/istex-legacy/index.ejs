@@ -132,13 +132,13 @@
         <!-- Footer - bloc-8 END -->
     <% if (isDev) { %>
         <script type="module">
-            import RefreshRuntime from 'http://localhost:8080/@react-refresh'
+            import RefreshRuntime from '<%= lodex.base.href %>/@react-refresh'
             RefreshRuntime.injectIntoGlobalHook(window)
             window.$RefreshReg$ = () => {}
             window.$RefreshSig$ = () => (type) => type
             window.__vite_plugin_react_preamble_installed__ = true
         </script>
-        <script type="module" src="http://localhost:8080/@vite/client"></script>
+        <script type="module" src="<%= lodex.base.href %>/@vite/client"></script>
     <% } %>
 	<script src="<%= theme.base.href %>/istex/js/jquery-3.6.0.min.js"></script>
 	<script src="<%= theme.base.href %>/istex/js/responsiveMenu.js"></script>

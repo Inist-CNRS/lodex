@@ -1,5 +1,5 @@
 import * as path from 'path';
-import { getExportDateFormat } from '../../../src/app/js/formats/utils/components/useVegaCsvExport';
+import { getExportDateFormat } from '../../../packages/frontend-common/formats/utils/components/useVegaCsvExport';
 import { teardown } from '../../support/authentication';
 import * as datasetImportPage from '../../support/datasetImportPage';
 import * as graphPage from '../../support/graphPage';
