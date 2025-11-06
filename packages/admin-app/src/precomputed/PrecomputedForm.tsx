@@ -100,6 +100,12 @@ export const PrecomputedForm = ({
 
     const isEditMode = !!initialValues?._id;
 
+    useEffect(() => {
+        if (initialValues?.status) {
+            setPrecomputedStatus(initialValues.status);
+        }
+    }, [initialValues?.status]);
+
     const handleSourcePreview = async (formValues: {
         name?: string;
         webServiceUrl?: string;
@@ -225,34 +231,22 @@ export const PrecomputedForm = ({
     useEffect(() => {
         handleGetLogs();
         const socket = io();
+
         const tenant = sessionStorage.getItem('lodex-tenant') || DEFAULT_TENANT;
         const dbName = sessionStorage.getItem('lodex-dbName');
         socket.on(
             `${dbName}_${tenant}-precomputed-job-${initialValues?.jobId}`,
             (data) => {
-                let lastLine;
-                let parsedData;
                 if (Array.isArray(data)) {
                     setPrecomputedLogs((currentState) => [
                         ...data,
                         ...currentState,
                     ]);
-                    lastLine = data[0];
                 } else {
                     setPrecomputedLogs((currentState) => [
                         data,
                         ...currentState,
                     ]);
-                    lastLine = data;
-                }
-                try {
-                    parsedData = JSON.parse(lastLine);
-                } catch {
-                    console.error('Error parsing data', lastLine);
-                }
-
-                if (parsedData && parsedData.status) {
-                    setPrecomputedStatus(parsedData.status);
                 }
             },
         );
