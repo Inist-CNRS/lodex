@@ -72,7 +72,7 @@ describe('Precomputation', () => {
         cy.findByRole('columnheader', { name: 'value' }).should('be.visible');
     });
 
-    it.only('should allow to edit precomputed data cells', () => {
+    it('should allow to edit precomputed data cells', () => {
         cy.contains('No rows').should('be.visible');
         precomputation.createPrecomputation({
             name: 'Statistics',
