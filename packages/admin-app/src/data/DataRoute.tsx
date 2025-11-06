@@ -70,7 +70,7 @@ export const DataRouteComponent = ({
     }
 
     if (!pathname.endsWith('dataset') && !pathname.endsWith('precomputation')) {
-        return <Redirect to={`${pathname}/dataset`} />;
+        return <Redirect to={`${pathname}/dataset${search}`} />;
     }
 
     return (
