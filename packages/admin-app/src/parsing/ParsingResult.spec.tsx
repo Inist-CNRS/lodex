@@ -3,8 +3,8 @@ import { render } from '../test-utils';
 import { ParsingResultComponent } from './ParsingResult';
 
 jest.mock('../api/dataset', () => ({
-    getDatasetColumns: jest.fn(() => Promise.resolve({ columns: [] })),
-    getDataset: jest.fn(() => Promise.resolve({ count: 0, datas: [] })),
+    getDataColumns: jest.fn(() => Promise.resolve({ columns: [] })),
+    getData: jest.fn(() => Promise.resolve({ count: 0, datas: [] })),
 }));
 
 describe('<ParsingResult />', () => {
