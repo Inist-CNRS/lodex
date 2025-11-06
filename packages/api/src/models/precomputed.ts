@@ -62,6 +62,11 @@ export type PrecomputedCollection = Collection<PreComputation> & {
     getResultColumns: (
         precomputedId: string,
     ) => Promise<{ key: string; type: string }[]>;
+    updateResult: (params: {
+        precomputedId: string;
+        id: string;
+        data: Record<string, unknown>;
+    }) => Promise<Record<string, unknown> | null>;
 };
 
 export default async (db: Db): Promise<PrecomputedCollection> => {
@@ -336,6 +341,27 @@ export default async (db: Db): Promise<PrecomputedCollection> => {
         }
     };
 
+    const updateResult = async ({
+        precomputedId,
+        id,
+        data,
+    }: {
+        precomputedId: string;
+        id: string;
+        data: Record<string, unknown>;
+    }) => {
+        return db.collection(`pc_${precomputedId}`).findOneAndUpdate(
+            {
+                // @ts-expect-error TS2345
+                $or: [{ _id: new ObjectId(id) }, { _id: id }],
+            },
+            {
+                $set: omit(data, ['_id']),
+            },
+            { returnDocument: 'after' },
+        ) as Promise<Record<string, unknown> | null>;
+    };
+
     return Object.assign(collection, {
         findOneById,
         findAll,
@@ -350,5 +376,6 @@ export default async (db: Db): Promise<PrecomputedCollection> => {
         resultFindLimitFromSkip,
         resultCount,
         getResultColumns,
+        updateResult,
     });
 };

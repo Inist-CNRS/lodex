@@ -149,4 +149,61 @@ describe('PrecomputedModel', () => {
             ).resolves.toStrictEqual(documents.filter((doc) => !doc.isEven));
         });
     });
+
+    describe('updateResult', () => {
+        const collectionId = new ObjectId().toString();
+        const documents = Array.from({ length: 5 }, (_, i) => ({
+            _id: new ObjectId(),
+            col1: `value${i}`,
+            col2: i,
+        }));
+        beforeEach(async () => {
+            const collection = db.collection(`pc_${collectionId}`);
+            await collection.insertMany(documents);
+        });
+
+        it('should update and return the updated document', async () => {
+            const docToUpdate = documents[2];
+            const updatedData = { col1: 'updatedValue', col2: 42 };
+
+            const updatedDoc = await precomputedCollection.updateResult({
+                precomputedId: collectionId,
+                id: docToUpdate._id.toString(),
+                data: updatedData,
+            });
+
+            expect(updatedDoc).toEqual({
+                _id: docToUpdate._id,
+                ...updatedData,
+            });
+
+            const collection = db.collection(`pc_${collectionId}`);
+            const dbDoc = await collection.findOne({ _id: docToUpdate._id });
+            expect(dbDoc).toEqual({
+                _id: docToUpdate._id,
+                ...updatedData,
+            });
+        });
+
+        it('should return null when trying to update a non-existent document', async () => {
+            const updatedDoc = await precomputedCollection.updateResult({
+                precomputedId: collectionId,
+                id: new ObjectId().toString(),
+                data: { col1: 'newValue', col2: 99 },
+            });
+
+            expect(updatedDoc).toBeNull();
+        });
+
+        it('should return null when trying to update a document on an unexisting collection', async () => {
+            const collectionId = new ObjectId().toString();
+            const updatedDoc = await precomputedCollection.updateResult({
+                precomputedId: collectionId,
+                id: new ObjectId().toString(),
+                data: { col1: 'newValue', col2: 99 },
+            });
+
+            expect(updatedDoc).toBeNull();
+        });
+    });
 });

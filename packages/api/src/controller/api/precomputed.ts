@@ -251,6 +251,29 @@ export const getPrecomputedResultColumns = async (
     ctx.body = { columns };
 };
 
+export const putPrecomputedResult = async (
+    ctx: AppContext<
+        Record<string, unknown>,
+        Record<string, unknown> | null | { error: string }
+    >,
+    precomputedId: string,
+    id: string,
+) => {
+    const data = ctx.request.body;
+
+    try {
+        ctx.body = await ctx.precomputed.updateResult({
+            id,
+            precomputedId,
+            data,
+        });
+    } catch (error) {
+        ctx.status = 403;
+        ctx.body = { error: (error as Error).message };
+        return;
+    }
+};
+
 export const previewDataPrecomputed = async (ctx: AppContext, id: string) => {
     try {
         const data = await ctx.precomputed.getSample(id);
@@ -292,6 +315,10 @@ app.use(route.get('/:precomputedId/result', getPrecomputedResultList));
 app.use(
     // @ts-expect-error TS2345
     route.get('/:precomputedId/result/columns', getPrecomputedResultColumns),
+);
+app.use(
+    // @ts-expect-error TS2345
+    route.put('/:precomputedId/result/:id', putPrecomputedResult),
 );
 
 export default app;
