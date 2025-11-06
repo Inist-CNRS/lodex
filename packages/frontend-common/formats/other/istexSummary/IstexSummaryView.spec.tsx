@@ -13,7 +13,7 @@ import { IstexDocument, IstexSummaryView } from './IstexSummaryView';
 import VolumeFold from './VolumeFold';
 import YearFold from './YearFold';
 
-jest.mock('../../../lib/composeRenderProps');
+jest.mock('../../../utils/composeRenderProps');
 jest.mock('./getIstexData');
 jest.mock('./getDecadeFromData');
 

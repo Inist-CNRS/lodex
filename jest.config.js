@@ -96,6 +96,7 @@ module.exports = {
             workerIdleMemoryLimit,
             moduleFileExtensions: ['js', 'json', 'jsx', 'mjs', 'ts', 'tsx'],
             testEnvironment: 'jsdom',
+            transformIgnorePatterns: ['<rootDir>/node_modules/d3'],
         },
         {
             displayName: 'workers',

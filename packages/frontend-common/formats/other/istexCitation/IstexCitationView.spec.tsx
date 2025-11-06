@@ -10,7 +10,7 @@ import IstexCitationList from './IstexCitationList';
 import { IstexCitationView, IstexDocument } from './IstexCitationView';
 import JournalFold from './JournalFold';
 
-jest.mock('../../../lib/composeRenderProps');
+jest.mock('../../../utils/composeRenderProps');
 jest.mock('./getIstexCitationData');
 
 describe('IstexCitationView', () => {

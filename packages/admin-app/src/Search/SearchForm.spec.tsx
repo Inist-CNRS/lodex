@@ -1,10 +1,10 @@
 import { SearchForm, type SearchFormProps } from './SearchForm';
 
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Overview } from '@lodex/common';
-import fieldApi from '../api/field';
 import { I18NContext } from '@lodex/frontend-common/i18n/I18NContext.tsx';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { fireEvent, waitFor, within } from '@testing-library/dom';
+import fieldApi from '../api/field';
 import { render } from '../test-utils';
 
 jest.mock('../api/field', () => ({
@@ -13,7 +13,7 @@ jest.mock('../api/field', () => ({
 }));
 
 // eslint-disable-next-line react/display-name
-jest.mock('../../../../src/app/js/fields/FieldRepresentation', () => () => (
+jest.mock('../fields/FieldRepresentation', () => () => (
     <div>FieldRepresentation</div>
 ));
 
