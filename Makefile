@@ -36,9 +36,9 @@ endif
 install-npm-dependencies:
 	echo "Installing Node dependencies"
 ifeq "$(CI)" "true"
-	docker compose -f docker-compose.dev.yml run --no-deps --rm node npm ci --legacy-peer-deps
+	docker compose -f docker-compose.dev.yml run --no-deps --rm api npm ci --legacy-peer-deps
 else
-	docker compose -f docker-compose.dev.yml run --no-deps --rm node npm install --legacy-peer-deps
+	docker compose -f docker-compose.dev.yml run --no-deps --rm api npm install --legacy-peer-deps
 endif
 
 install: copy-conf install-npm-dependencies ## Install npm dependencies for the node, admin, and frontend apps
@@ -64,10 +64,10 @@ run-dev: ## Run the project in dev mode
 start-dev: run-dev ## Start the project (alias of make run-dev)
 
 build-app:
-	docker compose -f docker-compose.dev.yml run --no-deps --rm node npm run build
+	docker compose -f docker-compose.dev.yml run --no-deps --rm api npm run build
 
 npm: ## allow to run dockerized npm command eg make npm 'install koa --save'
-	docker compose -f docker-compose.dev.yml run --no-deps --rm node npm $(COMMAND_ARGS)
+	docker compose -f docker-compose.dev.yml run --no-deps --rm api npm $(COMMAND_ARGS)
 
 ## Tests =======================================================================
 
