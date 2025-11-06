@@ -1,7 +1,7 @@
 version: '3'
 
 services:
-    node:
+    api:
         image: node:22.12-bookworm
         extra_hosts: # for linux hosts since version 20.10
             - host.docker.internal:host-gateway
@@ -117,7 +117,7 @@ services:
         extra_hosts: # for linux hosts since version 20.10
             - host.docker.internal:host-gateway
         links:
-            - node
+            - api
 
     maildev:
         image: maildev/maildev

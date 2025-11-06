@@ -81,6 +81,7 @@ export const PreComputationSelector = ({
             fullWidth
             value={value}
             onChange={(e) => onChange(e.target.value as string)}
+            aria-label={translate('select_precomputed_data')}
         >
             {data?.map(
                 ({

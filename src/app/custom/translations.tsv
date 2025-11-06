@@ -1445,3 +1445,4 @@
 "visited_filter_visited_choice"	"Resources I have already seen"	"Ressources que j'ai déjà vues"
 "visited_filter_not_visited_choice"	"Resources I did not see"	"Ressources que je n'ai pas vues"
 "hidden"	"Hidden"	"Masqué"
+"select_precomputed_data"	"Select precomputed data"	"Sélectionner les données précalculés"
