@@ -1,12 +1,12 @@
-import { shallow } from 'enzyme';
 import { List } from '@mui/material';
+import { shallow } from 'enzyme';
 
 import Alert from '../../../components/Alert';
-import { IstexView } from './IstexView';
-import IstexItem from './IstexItem';
 import { render } from '../../../test-utils';
+import IstexItem from './IstexItem';
+import { IstexView } from './IstexView';
 
-jest.mock('../../../lib/stylesToClassName', () => ({
+jest.mock('../../../utils/stylesToClassName', () => ({
     __esModule: true,
     default: (styles: Record<string, unknown>, prefix: string) => {
         const classes: Record<string, string> = {};

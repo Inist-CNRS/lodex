@@ -1,16 +1,16 @@
 import React from 'react';
 
 import {
+    Box,
     Button,
     Dialog,
-    DialogTitle,
-    DialogContent,
     DialogActions,
-    Box,
+    DialogContent,
+    DialogTitle,
 } from '@mui/material';
 
-import CancelButton from './CancelButton';
 import { translate } from '../i18n/I18NContext';
+import CancelButton from './CancelButton';
 
 const dialogStyle = {
     container: {
@@ -81,10 +81,11 @@ export const PureButtonWithDialog = ({
                 open={open}
                 onClose={handleClose}
                 scroll="body"
+                aria-labelledby="dialog-title"
             >
                 {/*
                  // @ts-expect-error TS2322 */}
-                <DialogTitle>{label}</DialogTitle>
+                <DialogTitle id="dialog-title">{label}</DialogTitle>
                 <DialogContent style={dialogStyle.content}>
                     <div className="dialog-body">
                         <div className="dialog-content">{dialog}</div>

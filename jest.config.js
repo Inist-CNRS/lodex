@@ -13,8 +13,8 @@ module.exports = {
     workerIdleMemoryLimit,
     projects: [
         {
-            displayName: 'frontend',
-            rootDir: `${__dirname}/src/app`,
+            displayName: 'admin-app',
+            rootDir: `${__dirname}/packages/admin-app`,
             setupFiles: [`${__dirname}/setupTest.ts`],
             setupFilesAfterEnv: [`${__dirname}/setupTestAfterEnv.ts`],
             testMatch: [
@@ -80,6 +80,23 @@ module.exports = {
                 '/**/*.spec.ts',
             ],
             workerIdleMemoryLimit,
+        },
+        {
+            displayName: 'frontend-common',
+            setupFiles: [`${__dirname}/setupTest.ts`],
+            setupFilesAfterEnv: [`${__dirname}/setupTestAfterEnv.ts`],
+            rootDir: `${__dirname}/packages/frontend-common`,
+            transform,
+            testMatch: [
+                '/**/*.spec.js',
+                '/**/*.spec.jsx',
+                '/**/*.spec.tsx',
+                '/**/*.spec.ts',
+            ],
+            workerIdleMemoryLimit,
+            moduleFileExtensions: ['js', 'json', 'jsx', 'mjs', 'ts', 'tsx'],
+            testEnvironment: 'jsdom',
+            transformIgnorePatterns: ['<rootDir>/node_modules/d3'],
         },
         {
             displayName: 'workers',

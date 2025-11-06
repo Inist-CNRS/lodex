@@ -1,8 +1,16 @@
-import { Button, type ButtonProps } from '@mui/material';
-import { type MouseEvent, useState } from 'react';
-import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import { TaskStatus, type TaskStatusType } from '@lodex/common';
+import { ButtonWithConfirm } from '@lodex/frontend-common/components/ButtonWithConfirm';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
+import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import { Button, type ButtonProps } from '@mui/material';
+import { useEffect, useState, type MouseEvent } from 'react';
+
+const RUNNABLE_STATUSES: (TaskStatusType | undefined)[] = [
+    undefined,
+    TaskStatus.FINISHED,
+    TaskStatus.ERROR,
+    TaskStatus.CANCELED,
+];
 
 export const RunButton = ({
     handleLaunchPrecomputed,
@@ -15,10 +23,31 @@ export const RunButton = ({
 }) => {
     const { translate } = useTranslate();
     const [isClicked, setIsClicked] = useState<boolean>(false);
-    const handleClick = (event: MouseEvent) => {
-        handleLaunchPrecomputed(event);
+
+    const handleConfirm = (event: MouseEvent) => {
         setIsClicked(true);
+        handleLaunchPrecomputed(event);
     };
+
+    useEffect(() => {
+        if (!RUNNABLE_STATUSES.includes(precomputedStatus)) {
+            return;
+        }
+        setIsClicked(false);
+    }, [precomputedStatus]);
+
+    if (precomputedStatus === TaskStatus.FINISHED) {
+        return (
+            <ButtonWithConfirm
+                onConfirm={handleConfirm}
+                buttonLabel={translate('run')}
+                buttonIcon={<PlayArrowIcon />}
+                buttonVariant={variant}
+                dialogTitle={translate('precomputed_confirm_run')}
+                dialogContent={translate('precomputed_confirm_run_description')}
+            />
+        );
+    }
 
     return (
         <Button
@@ -26,12 +55,9 @@ export const RunButton = ({
             variant={variant}
             sx={{ height: '100%' }}
             startIcon={<PlayArrowIcon />}
-            onClick={handleClick}
+            onClick={handleConfirm}
             disabled={
-                isClicked ||
-                precomputedStatus === TaskStatus.IN_PROGRESS ||
-                precomputedStatus === TaskStatus.PENDING ||
-                precomputedStatus === TaskStatus.ON_HOLD
+                isClicked || !RUNNABLE_STATUSES.includes(precomputedStatus)
             }
         >
             {translate('run')}
