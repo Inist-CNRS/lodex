@@ -1,5 +1,5 @@
 import omit from 'lodash/omit';
-import { Collection, Db, ObjectId, type FindOptions } from 'mongodb';
+import { Collection, Db, ObjectId, type Filter } from 'mongodb';
 import { castIdsFactory, getCreatedCollection } from './utils';
 
 const checkMissingFields = (data: Partial<PreComputation>) =>
@@ -47,17 +47,17 @@ export type PrecomputedCollection = Collection<PreComputation> & {
     castIds: () => Promise<void>;
     getSample: (id: ObjectId | string) => Promise<unknown[]>;
     getStreamOfResult: (id: ObjectId | string) => NodeJS.ReadableStream;
-    resultFindLimitFromSkip: (params: {
+    resultFindLimitFromSkip: <Result extends Record<string, unknown>>(params: {
         precomputedId: string;
         limit: number;
         skip: number;
-        query?: FindOptions<PreComputation>;
+        query?: Filter<Result>;
         sortBy?: string;
         sortDir: 'ASC' | 'DESC';
-    }) => Promise<Record<string, unknown>[]>;
+    }) => Promise<Result[]>;
     resultCount: (
         precomputedId: string,
-        query?: FindOptions<PreComputation>,
+        query?: Filter<PreComputation>,
     ) => Promise<number>;
     getResultColumns: (
         precomputedId: string,
@@ -172,7 +172,7 @@ export default async (db: Db): Promise<PrecomputedCollection> => {
             .stream();
     };
 
-    const resultFindLimitFromSkip = ({
+    const resultFindLimitFromSkip = <Result extends Record<string, unknown>>({
         precomputedId,
         limit,
         skip,
@@ -183,12 +183,12 @@ export default async (db: Db): Promise<PrecomputedCollection> => {
         precomputedId: string;
         limit: number;
         skip: number;
-        query?: FindOptions<Record<string, unknown>>;
+        query?: Filter<Result>;
         sortBy?: string;
         sortDir: 'ASC' | 'DESC';
-    }): Promise<Record<string, unknown>[]> => {
+    }): Promise<Result[]> => {
         return db
-            .collection(`pc_${precomputedId}`)
+            .collection<Result>(`pc_${precomputedId}`)
             .find(query)
             .sort(
                 sortBy && sortDir
@@ -197,7 +197,7 @@ export default async (db: Db): Promise<PrecomputedCollection> => {
             )
             .skip(skip)
             .limit(limit)
-            .toArray();
+            .toArray() as Promise<Result[]>;
     };
 
     const resultCount = async (
