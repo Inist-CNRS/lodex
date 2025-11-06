@@ -7,6 +7,7 @@ import {
     getDeleteFilteredDatasetRowRequest,
     getGetPrecomputedResultListRequest,
     getGetPrecomputedResultColumnsRequest,
+    putUpdatePrecomputedResult,
 } from '@lodex/frontend-common/user/reducer';
 import { getUserSessionStorageInfo } from '@lodex/frontend-common/getUserSessionStorageInfo';
 
@@ -82,11 +83,29 @@ const getDatasetColumns = async () => {
     return getDataColumns();
 };
 
-// @ts-expect-error TS7031
-const updateDataset = async ({ uri, field, value }) => {
+const updateData = async ({
+    precomputedId,
+    row,
+    field,
+    value,
+}: {
+    precomputedId?: string;
+    row: { uri?: string; _id?: string };
+    field: string;
+    value: unknown;
+}) => {
     const { token } = getUserSessionStorageInfo();
 
-    const request = putUpdateDataset({ token }, { uri, field, value });
+    const request = precomputedId
+        ? putUpdatePrecomputedResult({
+              state: {
+                  token,
+              },
+              precomputedId,
+              id: row._id!,
+              data: { [field]: value },
+          })
+        : putUpdateDataset({ token }, { uri: row.uri!, field, value });
     // @ts-expect-error TS7031
     return fetch(request).then(({ response, error }) => {
         if (error) {
@@ -94,6 +113,18 @@ const updateDataset = async ({ uri, field, value }) => {
         }
         return response;
     });
+};
+
+export const updateDataset = async ({
+    uri,
+    field,
+    value,
+}: {
+    uri: string;
+    field: string;
+    value: unknown;
+}) => {
+    return updateData({ row: { uri }, field, value });
 };
 
 // @ts-expect-error TS7006
@@ -130,6 +161,7 @@ export default {
     getDatasetColumns,
     getDataColumns,
     updateDataset,
+    updateData,
     deleteManyDatasetRows,
     deleteFilteredDatasetRows,
 };

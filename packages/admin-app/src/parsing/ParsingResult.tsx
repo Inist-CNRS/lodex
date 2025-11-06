@@ -548,6 +548,7 @@ export const ParsingResultComponent = ({
                 {selectedCell ? (
                     <ParsingEditCell
                         cell={selectedCell}
+                        precomputedId={precomputedId}
                         setToggleDrawer={setToggleDrawer}
                     />
                 ) : null}
