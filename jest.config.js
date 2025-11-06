@@ -82,6 +82,22 @@ module.exports = {
             workerIdleMemoryLimit,
         },
         {
+            displayName: 'frontend-common',
+            setupFiles: [`${__dirname}/setupTest.ts`],
+            setupFilesAfterEnv: [`${__dirname}/setupTestAfterEnv.ts`],
+            rootDir: `${__dirname}/packages/frontend-common`,
+            transform,
+            testMatch: [
+                '/**/*.spec.js',
+                '/**/*.spec.jsx',
+                '/**/*.spec.tsx',
+                '/**/*.spec.ts',
+            ],
+            workerIdleMemoryLimit,
+            moduleFileExtensions: ['js', 'json', 'jsx', 'mjs', 'ts', 'tsx'],
+            testEnvironment: 'jsdom',
+        },
+        {
             displayName: 'workers',
             rootDir: `${__dirname}/packages/workers/src`,
             transform,
