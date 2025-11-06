@@ -4,6 +4,7 @@ import {
     putPrecomputed,
     deletePrecomputed,
     getPrecomputedResultList,
+    getPrecomputedResultColumns,
 } from './precomputed';
 import type { AppContext } from '../../services/repositoryMiddleware';
 import type { PreComputation } from '../../models/precomputed';
@@ -81,8 +82,8 @@ describe('Precomputed controller', () => {
                 dataset: { removeAttribute: jest.fn() },
             } as unknown as AppContext<any, any>;
 
-            const objectId = new ObjectId();
-            await putPrecomputed(ctx, objectId.toString());
+            const objectId = new ObjectId().toString();
+            await putPrecomputed(ctx, objectId);
 
             expect(ctx.precomputed.update).toHaveBeenCalledWith(
                 objectId,
@@ -167,6 +168,29 @@ describe('Precomputed controller', () => {
             expect(ctx.body).toEqual({
                 count: 1,
                 datas: [{ field1: 'value1' }],
+            });
+        });
+    });
+
+    describe('getPrecomputedResultColumns', () => {
+        it('should return result columns from precomputed repository', async () => {
+            const ctx = {
+                configTenant: {},
+                precomputed: {
+                    getResultColumns: jest.fn(() =>
+                        Promise.resolve(['column1', 'column2']),
+                    ),
+                },
+            } as unknown as AppContext<any, any>;
+
+            const precomputedId = new ObjectId().toString();
+            await getPrecomputedResultColumns(ctx, precomputedId);
+
+            expect(ctx.precomputed.getResultColumns).toHaveBeenCalledWith(
+                precomputedId,
+            );
+            expect(ctx.body).toEqual({
+                columns: ['column1', 'column2'],
             });
         });
     });
