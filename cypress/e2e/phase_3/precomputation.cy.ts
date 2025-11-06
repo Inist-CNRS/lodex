@@ -71,4 +71,33 @@ describe('Precomputation', () => {
         cy.findByRole('columnheader', { name: 'id' }).should('be.visible');
         cy.findByRole('columnheader', { name: 'value' }).should('be.visible');
     });
+
+    it.only('should allow to edit precomputed data cells', () => {
+        cy.contains('No rows').should('be.visible');
+        precomputation.createPrecomputation({
+            name: 'Statistics',
+            url: 'http://data-computer:31976/v1/statistics',
+            sourceColumns: ['actors'],
+        });
+        cy.waitForNetworkIdle(500);
+        cy.findByRole('button', { name: 'Run' }).click();
+        precomputation.checkPrecomputationFormValues({
+            name: 'Statistics',
+            url: 'http://data-computer:31976/v1/statistics',
+            sourceColumns: ['actors'],
+            status: 'Done',
+        });
+        adminNavigation.goToData();
+        cy.waitForNetworkIdle(500);
+        cy.contains('Precomputed data').click();
+        cy.waitForNetworkIdle(500);
+        cy.contains('1–25 of 30').should('be.visible');
+
+        // Edit a cell
+        cy.findAllByRole('cell').eq(1).should('be.visible').click();
+        cy.contains('Column id for row').should('be.visible');
+        cy.get('textarea').eq(0).clear().type('new_id_value');
+        cy.findByRole('button', { name: 'Save' }).click();
+        cy.findAllByRole('cell').eq(1).should('contain', 'new_id_value');
+    });
 });
