@@ -51,6 +51,12 @@ describe('Precomputation', () => {
             status: 'Not started',
         });
         cy.findByRole('button', { name: 'Run' }).click();
+        precomputation.checkPrecomputationFormValues({
+            name: 'Statistics',
+            url: 'http://data-computer:31976/v1/statistics',
+            sourceColumns: ['actors'],
+            status: 'Done',
+        });
         adminNavigation.goToData();
         cy.waitForNetworkIdle(500);
         cy.contains('Precomputed data').click();

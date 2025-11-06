@@ -3,7 +3,7 @@ import { ButtonWithConfirm } from '@lodex/frontend-common/components/ButtonWithC
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import { Button, type ButtonProps } from '@mui/material';
-import { useEffect, useState, type MouseEvent } from 'react';
+import { type MouseEvent } from 'react';
 
 const RUNNABLE_STATUSES: (TaskStatusType | undefined)[] = [
     undefined,
@@ -22,19 +22,10 @@ export const RunButton = ({
     variant: ButtonProps['variant'];
 }) => {
     const { translate } = useTranslate();
-    const [isClicked, setIsClicked] = useState<boolean>(false);
 
     const handleConfirm = (event: MouseEvent) => {
-        setIsClicked(true);
         handleLaunchPrecomputed(event);
     };
-
-    useEffect(() => {
-        if (!RUNNABLE_STATUSES.includes(precomputedStatus)) {
-            return;
-        }
-        setIsClicked(false);
-    }, [precomputedStatus]);
 
     if (precomputedStatus === TaskStatus.FINISHED) {
         return (
@@ -56,9 +47,7 @@ export const RunButton = ({
             sx={{ height: '100%' }}
             startIcon={<PlayArrowIcon />}
             onClick={handleConfirm}
-            disabled={
-                isClicked || !RUNNABLE_STATUSES.includes(precomputedStatus)
-            }
+            disabled={!RUNNABLE_STATUSES.includes(precomputedStatus)}
         >
             {translate('run')}
         </Button>

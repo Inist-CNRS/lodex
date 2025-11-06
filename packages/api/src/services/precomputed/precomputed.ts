@@ -222,7 +222,7 @@ export const getComputedFromWebservice = async (ctx: any) => {
         level: 'ok',
         message: `[Instance: ${tenant}] 10/10 - Precomputing finished ${insertCount} items saved.`,
         timestamp: new Date(),
-        status: TaskStatus.IN_PROGRESS,
+        status: TaskStatus.FINISHED,
     });
     jobLogger.info(askForPrecomputedJob, logData);
     notifyListeners(room, logData);
