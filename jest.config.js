@@ -13,8 +13,8 @@ module.exports = {
     workerIdleMemoryLimit,
     projects: [
         {
-            displayName: 'frontend',
-            rootDir: `${__dirname}/src/app`,
+            displayName: 'admin-app',
+            rootDir: `${__dirname}/packages/admin-app`,
             setupFiles: [`${__dirname}/setupTest.ts`],
             setupFilesAfterEnv: [`${__dirname}/setupTestAfterEnv.ts`],
             testMatch: [
