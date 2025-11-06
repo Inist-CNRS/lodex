@@ -7,12 +7,12 @@ export const openImport = () => {
     cy.location('pathname').should('equal', '/data/existing');
 };
 
-export const importDataset = (filename, mimeType = 'text/csv') => {
+export const importDataset = (filename: string, mimeType = 'text/csv') => {
     addFile(filename, mimeType);
     cy.get('[role="grid"]', { timeout: 12000 }).should('exist');
 };
 
-export const importOtherDataset = (filename, mimeType = 'text/csv') => {
+export const importOtherDataset = (filename: string, mimeType = 'text/csv') => {
     fillInputWithFixture('input[type=file]', filename, mimeType);
     cy.wait(300);
     selectLoader();
@@ -24,7 +24,7 @@ export const importOtherDataset = (filename, mimeType = 'text/csv') => {
     cy.get('[role="grid"]', { timeout: 12000 }).should('exist');
 };
 
-export const importMoreDataset = (filename, mimeType = 'text/csv') => {
+export const importMoreDataset = (filename: string, mimeType = 'text/csv') => {
     cy.contains('Add more').click({ force: true });
 
     fillInputWithFixture('input[type=file]', filename, mimeType);
@@ -38,7 +38,7 @@ export const importMoreDataset = (filename, mimeType = 'text/csv') => {
     cy.get('[aria-label="unpublish"]', { timeout: 2000 }).should('be.visible');
 };
 
-export const fillTabDisplayFormat = (format, save = true) => {
+export const fillTabDisplayFormat = (format: string, save = true) => {
     cy.get('[data-testid="open-format-catalog"]').click();
     cy.get(`li[data-value="${format}"]`).click();
     const editDialog = cy.get('#format-edit-dialog');
@@ -48,7 +48,7 @@ export const fillTabDisplayFormat = (format, save = true) => {
     }
 };
 
-export const fillSyndication = (syndication, columnName) => {
+export const fillSyndication = (syndication: string, columnName: string) => {
     cy.get('.sidebar').contains('Search & Facet').click();
     cy.get(
         `[data-testid="autocomplete_search_syndication_${syndication}"]`,
@@ -56,7 +56,7 @@ export const fillSyndication = (syndication, columnName) => {
     cy.get('[role="listbox"]').contains(columnName).click({ force: true });
 };
 
-export const addColumn = (columnName, options: any = {}) => {
+export const addColumn = (columnName: string, options: any = {}) => {
     const name = columnName.replaceAll(' ', '-');
     cy.get(`[data-testid="add-field-dropdown"]`).click();
     cy.contains('From a column').click();
@@ -69,7 +69,7 @@ export const addColumn = (columnName, options: any = {}) => {
         cy.contains('Existing Column(s)').click();
         cy.get('[data-testid="source-value-from-columns"]').click();
 
-        options.composedOf.map((value) => {
+        options.composedOf.map((value: string) => {
             if (value !== columnName) {
                 cy.get('[role="listbox"]').contains(value).click();
             }
@@ -129,7 +129,10 @@ export const goToModel = () => {
     cy.get('button').contains('add characteristic').should('be.visible');
 };
 
-export const importModel = (filename, mimeType = 'application/json') => {
+export const importModel = (
+    filename: string,
+    mimeType = 'application/json',
+) => {
     adminNavigation.goToDisplay();
     cy.get('[aria-label="Open menu"]').click();
     cy.contains('Model').trigger('mouseover');
@@ -138,7 +141,7 @@ export const importModel = (filename, mimeType = 'application/json') => {
     cy.wait(300);
 };
 
-const checkLoaderItem = (label) => {
+const checkLoaderItem = (label: string) => {
     cy.get('li>div').contains(label).scrollIntoView().should('be.visible');
 };
 
@@ -160,13 +163,16 @@ export const checkListOfFiltererFileFormats = () => {
     cy.get('li>div>span').should('have.length', 4);
     cy.get('button').contains('Cancel').click({ force: true });
 };
-export const addFile = (filename, mimeType = 'text/csv') => {
+export const addFile = (filename: string, mimeType = 'text/csv') => {
     fillInputWithFixture('input[type=file]', filename, mimeType);
     cy.wait(300);
     selectLoader();
     cy.get('.btn-upload-dataset').click({ force: true });
 };
-export const addFileWithoutClick = (filename, mimeType = 'text/csv') => {
+export const addFileWithoutClick = (
+    filename: string,
+    mimeType = 'text/csv',
+) => {
     fillInputWithFixture('input[type=file]', filename, mimeType);
     cy.wait(300);
 };
@@ -176,7 +182,7 @@ export const selectLoader = (loaderName = 'automatic') => {
     cy.get(`[role="listbox"] li[data-value="${loaderName}"]`).click();
 };
 
-export const importAnnotations = (filename) => {
+export const importAnnotations = (filename: string) => {
     fillInputWithFixture(
         'input[name="import_annotations"]',
         filename,

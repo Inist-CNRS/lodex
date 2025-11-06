@@ -122,7 +122,7 @@
         "https://query.wikidata.org/sparql",
         "http://www.lotico.com:3030/lotico/sparql"
     ],
-    "alternativePrecomputedBaseUrl": "http://node:3000",
+    "alternativePrecomputedBaseUrl": "http://api:3000",
     "activateBullDashboard": false,
     "themes": [
         "voscouleurs",
