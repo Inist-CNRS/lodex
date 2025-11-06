@@ -1,8 +1,10 @@
 import React, { useCallback } from 'react';
 
-import RoutineParamsAdmin from '../../utils/components/admin/RoutineParamsAdmin';
-import ColorPickerParamsAdmin from '../../utils/components/admin/ColorPickerParamsAdmin';
+import { FormControlLabel, Switch } from '@mui/material';
+import { useTranslate } from '../../../i18n/I18NContext';
 import { MONOCHROMATIC_DEFAULT_COLORSET } from '../../utils/colorUtils';
+import ColorPickerParamsAdmin from '../../utils/components/admin/ColorPickerParamsAdmin';
+import RoutineParamsAdmin from '../../utils/components/admin/RoutineParamsAdmin';
 import {
     FormatChartParamsFieldSet,
     FormatDataParamsFieldSet,
@@ -17,6 +19,7 @@ type NetworkArgs = {
         orderBy?: string;
         uri?: string;
     };
+    displayWeighted?: boolean;
     colors?: string;
 };
 
@@ -28,6 +31,7 @@ export const defaultArgs = {
         minValue: undefined,
         uri: undefined,
     },
+    displayWeighted: true,
     colors: MONOCHROMATIC_DEFAULT_COLORSET,
 };
 
@@ -48,11 +52,23 @@ const NetworkAdmin: React.FC<NetworkAdminProps> = ({
     showMinValue = true,
     showOrderBy = true,
 }) => {
+    const { translate } = useTranslate();
+
     const handleParams = useCallback(
         (params: NetworkArgs['params']) => {
             onChange({
                 ...args,
                 params,
+            });
+        },
+        [onChange, args],
+    );
+
+    const handleChangeDisplayWeighted = useCallback(
+        (_: unknown, checked: boolean) => {
+            onChange({
+                ...args,
+                displayWeighted: checked,
             });
         },
         [onChange, args],
@@ -69,6 +85,8 @@ const NetworkAdmin: React.FC<NetworkAdminProps> = ({
     );
 
     const { params } = args;
+
+    console.log('NetworkAdmin render', args);
 
     return (
         <FormatGroupedFieldSet>
@@ -87,6 +105,12 @@ const NetworkAdmin: React.FC<NetworkAdminProps> = ({
                 />
             </FormatDataParamsFieldSet>
             <FormatChartParamsFieldSet defaultExpanded>
+                <FormControlLabel
+                    control={<Switch defaultChecked />}
+                    checked={args.displayWeighted ?? true}
+                    onChange={handleChangeDisplayWeighted}
+                    label={translate('display_weighted')}
+                />
                 <ColorPickerParamsAdmin
                     colors={args.colors}
                     onChange={handleColors}
