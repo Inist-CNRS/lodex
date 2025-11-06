@@ -59,4 +59,94 @@ describe('PrecomputedModel', () => {
             expect(columns).toEqual([]);
         });
     });
+
+    describe('resultFindLimitFromSkip', () => {
+        const collectionId = new ObjectId().toString();
+        const documents = Array.from({ length: 10 }, (_, i) => ({
+            _id: new ObjectId(),
+            col1: `value${i}`,
+            col2: i,
+            isEven: i % 2 === 0,
+        }));
+        beforeEach(async () => {
+            const collection = db.collection(`pc_${collectionId}`);
+            await collection.insertMany(documents);
+        });
+        it('should return all documents', async () => {
+            await expect(
+                precomputedCollection.resultFindLimitFromSkip({
+                    limit: 10,
+                    skip: 0,
+                    precomputedId: collectionId,
+                    sortDir: 'ASC',
+                    sortBy: 'col1',
+                }),
+            ).resolves.toStrictEqual(documents);
+        });
+
+        it('should allow to sort documents', async () => {
+            await expect(
+                precomputedCollection.resultFindLimitFromSkip({
+                    limit: 10,
+                    skip: 0,
+                    precomputedId: collectionId,
+                    sortDir: 'DESC',
+                    sortBy: 'col1',
+                }),
+            ).resolves.toStrictEqual([...documents].reverse());
+        });
+
+        it('should return limited documents with skip and limit', async () => {
+            await expect(
+                precomputedCollection.resultFindLimitFromSkip({
+                    limit: 3,
+                    skip: 4,
+                    precomputedId: collectionId,
+                    sortDir: 'ASC',
+                    sortBy: 'col1',
+                }),
+            ).resolves.toStrictEqual(documents.slice(4, 7));
+        });
+
+        it('should allow to filter documents', async () => {
+            await expect(
+                precomputedCollection.resultFindLimitFromSkip<{
+                    _id: ObjectId;
+                    col1: string;
+                    col2: number;
+                    isEven: boolean;
+                }>({
+                    limit: 10,
+                    skip: 0,
+                    precomputedId: collectionId,
+                    sortDir: 'ASC',
+                    sortBy: 'col1',
+                    query: {
+                        isEven: {
+                            $eq: true,
+                        },
+                    },
+                }),
+            ).resolves.toStrictEqual(documents.filter((doc) => doc.isEven));
+            await expect(
+                precomputedCollection.resultFindLimitFromSkip<{
+                    _id: ObjectId;
+                    col1: string;
+                    col2: number;
+                    isEven: boolean;
+                }>({
+                    limit: 10,
+                    skip: 0,
+                    precomputedId: collectionId,
+                    sortDir: 'ASC',
+                    sortBy: 'col1',
+                    query: {
+                        isEven: {
+                            $eq: false,
+                        },
+                    },
+                }),
+            ).resolves.toStrictEqual(documents.filter((doc) => !doc.isEven));
+        });
+    });
 });
