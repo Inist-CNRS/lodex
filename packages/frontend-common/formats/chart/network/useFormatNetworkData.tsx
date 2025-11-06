@@ -9,6 +9,7 @@ import type {
 
 export function useFormatNetworkData({
     formatData,
+    displayWeighted = true,
 }: UseFormatNetworkDataParams) {
     return useMemo(() => {
         if (!formatData) {
@@ -57,7 +58,7 @@ export function useFormatNetworkData({
         const links = sanitizedFormatData.map(({ source, target, weight }) => ({
             source,
             target,
-            value: linkScale(weight),
+            value: displayWeighted ? linkScale(weight) : 1,
         }));
 
         links.forEach((link) => {
@@ -93,11 +94,11 @@ export function useFormatNetworkData({
         return {
             nodes: nodes.map((node) => ({
                 ...node,
-                radius: nodeScale(node.radius),
+                radius: displayWeighted ? nodeScale(node.radius) : 1,
             })),
             links,
         };
-    }, [formatData]);
+    }, [formatData, displayWeighted]);
 }
 
 export type NetworkData = {
