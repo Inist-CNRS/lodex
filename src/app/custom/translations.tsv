@@ -743,6 +743,8 @@
 "precomputed_logs"	"Precomputed data logs"	"Logs des données précalculées"
 "precomputed_data"	"Precomputed data"	"Données précalculées"
 "precomputed_data_limit"	"We limit the sample to the first 10 results"	"Nous limitons l'échantillon aux 10 premiers résultats"
+"precomputed_confirm_run"	"Confirm running precomputed ?"	"Confirmer l'exécution du précalcul ?"
+"precomputed_confirm_run_description"	"By running this precomputed, this will erase existing results."	"En exécutant ce précalcul, vous effacerez les résultats existants."
 "published_data"	"Published data"	"Données publiées"
 "toggle_loaded"	"Show/hide loaded columns"	"Afficher/cacher les colonnes chargées"
 "toggle_enriched"	"Show/hide enriched columns"	"Afficher/cacher les colonnes enrichies"
