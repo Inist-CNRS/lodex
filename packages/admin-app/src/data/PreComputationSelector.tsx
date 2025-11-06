@@ -45,7 +45,7 @@ export const PreComputationSelector = ({
                 }: {
                     name: string;
                     _id: string;
-                    status: '';
+                    status: TaskStatusType | '';
                 }) => ({
                     name,
                     id: _id,
