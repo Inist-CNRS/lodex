@@ -3,16 +3,16 @@ import path from 'path';
 // @ts-expect-error TS(2792): Cannot find module '@ezs/core'. Did you mean to se... Remove this comment to see the full error message
 import ezs from '@ezs/core';
 // @ts-expect-error TS(2792): Cannot find module '@ezs/compile'. Did you mean to ... Remove this comment to see the full error message
-import { createFusible, enableFusible, checkFusible } from '@ezs/core/fusible';
+import { checkFusible, createFusible, enableFusible } from '@ezs/core/fusible';
 import { PassThrough } from 'stream';
-import progress from '../progress';
 import localConfig from '../../../../../config.json';
 import { mongoConnectionString } from '../mongoClient';
+import progress from '../progress';
 
+import { ProgressStatus, TaskStatus } from '@lodex/common';
 import from from 'from';
-import { TaskStatus, ProgressStatus } from '@lodex/common';
-import { jobLogger } from '../../workers/tools';
 import { CancelWorkerError } from '../../workers';
+import { jobLogger } from '../../workers/tools';
 import getLogger from '../logger';
 
 const getSourceData = async (ctx: any, sourceColumn: any) => {
@@ -291,6 +291,10 @@ const processEnrichmentPipeline = (
 
     [group]
     length = ${BATCH_SIZE}
+    
+    # Ensures that EZS does not write to the database if the job has been canceled
+    [breaker]
+    fusible = ${fusible}
 
     [LodexUpdateDocuments]
     collection = dataset
