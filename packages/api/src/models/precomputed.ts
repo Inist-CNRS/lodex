@@ -276,6 +276,24 @@ export default async (db: Db): Promise<PrecomputedCollection> => {
                                         },
                                         then: 'string',
                                     },
+                                    {
+                                        case: {
+                                            $eq: [
+                                                { $type: '$fields.v' },
+                                                'array',
+                                            ],
+                                        },
+                                        then: 'array',
+                                    },
+                                    {
+                                        case: {
+                                            $eq: [
+                                                { $type: '$fields.v' },
+                                                'object',
+                                            ],
+                                        },
+                                        then: 'object',
+                                    },
                                 ],
                                 default: 'string',
                             },
