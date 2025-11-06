@@ -1,14 +1,14 @@
-import React from 'react';
 import '@testing-library/jest-dom';
+import React from 'react';
 
-import { LoginFormComponent } from './LoginForm';
-import { act, render } from '../test-utils';
-import { MemoryRouter } from 'react-router';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { useLogin } from './api/login';
 import { fireEvent } from '@testing-library/dom';
+import { MemoryRouter } from 'react-router';
+import { act, render } from '../test-utils';
+import { useLogin } from './api/login';
+import { LoginFormComponent } from './LoginForm';
 
-jest.mock('../api/login', () => ({
+jest.mock('./api/login', () => ({
     useLogin: jest
         .fn()
         .mockReturnValue({ login: jest.fn(), error: null, isLoading: false }),
