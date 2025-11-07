@@ -2,12 +2,16 @@ module.exports = {
     apps: [
         {
             name: 'lodex',
-            script: 'packages/api/src',
+            script: './src',
             interpreter: 'node',
             interpreter_args: '--import tsx --max-http-header-size=32768',
             exec_mode: 'cluster',
+            cwd: './packages/api',
             wait_ready: true,
             listen_timeout: 10000,
+            env: {
+                NODE_CONFIG_DIR: '../../config',
+            },
             err_file: '/dev/null',
             out_file: '/dev/null',
         },
