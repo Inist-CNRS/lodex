@@ -1,3 +1,4 @@
+import path from 'path';
 import mongoClient from './mongoClient';
 import fs from 'fs';
 
@@ -8,7 +9,9 @@ export async function insertConfigTenant(tenantName: any) {
         return;
     }
 
-    const file = fs.readFileSync('../../configTenant.json');
+    const file = fs.readFileSync(
+        path.join(__dirname, '../../../../configTenant.json'),
+    );
     // @ts-expect-error TS(2304): Cannot find name 'JSON'.
     const data = JSON.parse(file);
     await configCollection.insertOne(data);
