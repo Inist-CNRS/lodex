@@ -115,17 +115,13 @@ describe('useFormatNetworkData', () => {
         expect(linkAB?.value).toBe(1);
         expect(linkAC?.value).toBe(20);
 
-        // @ts-expect-error: value is number
-        expect(linkAC?.value > linkAB?.value).toBe(true);
+        expect(linkAC!.value > linkAB!.value).toBe(true);
 
         expect(A?.radius).toBe(10);
         expect(B?.radius).toBe(1);
         expect(C?.radius).toBe(1);
-
-        // @ts-expect-error: radius is number
-        expect(A?.radius > B?.radius).toBe(true);
-        // @ts-expect-error: radius is number
-        expect(A?.radius > C?.radius).toBe(true);
+        expect(A!.radius > B!.radius).toBe(true);
+        expect(A!.radius > C!.radius).toBe(true);
     });
 
     it('updates output when formatData changes', () => {
