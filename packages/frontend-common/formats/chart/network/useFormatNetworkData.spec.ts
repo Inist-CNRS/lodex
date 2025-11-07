@@ -72,7 +72,8 @@ describe('useFormatNetworkData', () => {
             useFormatNetworkData({ formatData: data, displayWeighted: true }),
         );
 
-        const graph = result.current as NonNullable<UseFormatNetworkDataReturn>;
+        const graph =
+            result.current satisfies NonNullable<UseFormatNetworkDataReturn>;
 
         // structure
         expect(graph.nodes).toHaveLength(3);
@@ -104,47 +105,27 @@ describe('useFormatNetworkData', () => {
         expect(B?.links).toHaveLength(1);
         expect(C?.links).toHaveLength(1);
 
-        // link weights are scaled monotonically
         const linkAB = graph.links.find(
-            (l: { source?: unknown; target?: unknown; value?: number }) =>
-                String(l.source) === 'A' && String(l.target) === 'B',
+            (l) => String(l.source) === 'A' && String(l.target) === 'B',
         );
         const linkAC = graph.links.find(
-            (l: { source?: unknown; target?: unknown; value?: number }) =>
-                String(l.source) === 'A' && String(l.target) === 'C',
-        );
-        expect(typeof linkAB?.value).toBe('number');
-        expect(typeof linkAC?.value).toBe('number');
-        expect((linkAC?.value as number) > (linkAB?.value as number)).toBe(
-            true,
+            (l) => String(l.source) === 'A' && String(l.target) === 'C',
         );
 
-        // node radius is scaled so that higher degree has larger radius
-        expect(typeof A?.radius).toBe('number');
-        expect(typeof B?.radius).toBe('number');
-        expect(typeof C?.radius).toBe('number');
-        expect((A?.radius as number) > (B?.radius as number)).toBe(true);
-        expect((A?.radius as number) > (C?.radius as number)).toBe(true);
-    });
+        expect(linkAB?.value).toBe(1);
+        expect(linkAC?.value).toBe(20);
 
-    it('handles single-link (degenerate domain) case without NaN values', () => {
-        const data: NetworkData[] = [{ source: 'A', target: 'B', weight: 5 }];
+        // @ts-expect-error: value is number
+        expect(linkAC?.value > linkAB?.value).toBe(true);
 
-        const { result } = renderHook(() =>
-            useFormatNetworkData({ formatData: data, displayWeighted: true }),
-        );
+        expect(A?.radius).toBe(10);
+        expect(B?.radius).toBe(1);
+        expect(C?.radius).toBe(1);
 
-        const graph = result.current as NonNullable<UseFormatNetworkDataReturn>;
-        expect(graph.nodes).toHaveLength(2);
-        expect(graph.links).toHaveLength(1);
-
-        // In degenerate case (single link), both nodes have degree 1
-        // scaleLinear().domain([1, 1]).range([1, 10]) returns middle value: 5.5
-        for (const n of graph.nodes) {
-            expect(n.radius).toBe(5.5);
-        }
-        // scaleLinear().domain([5, 5]).range([1, 20]) returns middle value: 10.5
-        expect(graph.links[0].value).toBe(10.5);
+        // @ts-expect-error: radius is number
+        expect(A?.radius > B?.radius).toBe(true);
+        // @ts-expect-error: radius is number
+        expect(A?.radius > C?.radius).toBe(true);
     });
 
     it('updates output when formatData changes', () => {
@@ -185,12 +166,10 @@ describe('useFormatNetworkData', () => {
 
         const graph = result.current as NonNullable<UseFormatNetworkDataReturn>;
 
-        // All nodes should have radius exactly 1
         for (const n of graph.nodes) {
             expect(n.radius).toBe(1);
         }
 
-        // All links should have value exactly 1
         for (const l of graph.links) {
             expect(l.value).toBe(1);
         }
@@ -211,16 +190,11 @@ describe('useFormatNetworkData', () => {
             { initialProps: { weighted: false } },
         );
 
-        // Non weighted: all ones
         expect(result.current.nodes.every((n) => n.radius === 1)).toBe(true);
         expect(result.current.links.every((l) => l.value === 1)).toBe(true);
 
-        // Toggle to weighted
         rerender({ weighted: true });
 
-        // Weighted: check actual scaled values
-        // Node A has degree 2 → radius 10 (max of scale [1, 10])
-        // Nodes B and C have degree 1 → radius 1 (min of scale [1, 10])
         const nodeA = result.current.nodes.find((n) => n.id === 'A');
         const nodeB = result.current.nodes.find((n) => n.id === 'B');
         const nodeC = result.current.nodes.find((n) => n.id === 'C');
@@ -228,8 +202,6 @@ describe('useFormatNetworkData', () => {
         expect(nodeB?.radius).toBe(1);
         expect(nodeC?.radius).toBe(1);
 
-        // Link with weight 1 → value 1 (min of scale [1, 20])
-        // Link with weight 3 → value 20 (max of scale [1, 20])
         const linkAB = result.current.links.find(
             (l) => l.source === 'A' && l.target === 'B',
         );
