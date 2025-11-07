@@ -3,8 +3,8 @@ import katex from 'katex';
 import Helmet from 'react-helmet';
 import InvalidFormat from '../../InvalidFormat';
 
-import stylesToClassname from '../../../utils/stylesToClassName';
 import type { Field } from '../../../fields/types';
+import stylesToClassname from '../../../utils/stylesToClassName';
 
 const styles = stylesToClassname(
     {
@@ -59,7 +59,6 @@ const LatexView = ({ resource, field }: LatexViewProps) => {
             )
             .join('');
     } catch (e) {
-        // @ts-expect-error TS18046
         return <InvalidFormat format={field.format} value={value} />;
     }
 

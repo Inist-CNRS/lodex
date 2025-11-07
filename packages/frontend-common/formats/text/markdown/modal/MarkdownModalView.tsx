@@ -1,17 +1,17 @@
+import CloseIcon from '@mui/icons-material/Close';
+import Button from '@mui/material/Button';
+import Container from '@mui/material/Container';
+import Dialog from '@mui/material/Dialog';
+import DialogContent from '@mui/material/DialogContent';
+import DialogTitle from '@mui/material/DialogTitle';
+import IconButton from '@mui/material/IconButton';
 // @ts-expect-error TS7016
 import MarkdownIt from 'markdown-it';
 import { useMemo, useState } from 'react';
-import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
-import DialogTitle from '@mui/material/DialogTitle';
-import DialogContent from '@mui/material/DialogContent';
-import IconButton from '@mui/material/IconButton';
-import Container from '@mui/material/Container';
-import CloseIcon from '@mui/icons-material/Close';
 
+import type { Field } from '../../../../fields/types';
 import InvalidFormat from '../../../InvalidFormat';
 import getLabel from '../../../utils/getLabel';
-import type { Field } from '../../../../fields/types';
 
 const markdown = new MarkdownIt();
 
@@ -68,7 +68,6 @@ const MarkdownModalView = ({
     };
 
     if (content == null) {
-        // @ts-expect-error TS18046
         return <InvalidFormat format={field.format} value={value} />;
     }
 

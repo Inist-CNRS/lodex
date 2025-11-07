@@ -1,19 +1,19 @@
+import { clamp } from 'lodash';
 import { useMemo, useState } from 'react';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
-import { clamp } from 'lodash';
 
+import type { Field } from '../../fields/types';
+import stylesToClassName from '../../utils/stylesToClassName';
 import InvalidFormat from '../InvalidFormat';
 import injectData from '../injectData';
-import { CustomActionVegaLite } from '../utils/components/vega-lite-component';
+import { useSizeObserver } from '../utils/chartsHooks';
 import {
     convertSpecTemplate,
     VEGA_ACTIONS_WIDTH,
     VEGA_LITE_DATA_INJECT_TYPE_A,
 } from '../utils/chartsUtils';
-import { useSizeObserver } from '../utils/chartsHooks';
-import stylesToClassName from '../../utils/stylesToClassName';
-import type { Field } from '../../fields/types';
+import { CustomActionVegaLite } from '../utils/components/vega-lite-component';
 
 // @ts-expect-error TS2554
 const styles = stylesToClassName({
@@ -54,7 +54,6 @@ const VegaLiteView = ({
     }, [specTemplate, width]);
 
     if (!spec) {
-        // @ts-expect-error TS18046
         return <InvalidFormat format={field.format} value={error} />;
     }
 
