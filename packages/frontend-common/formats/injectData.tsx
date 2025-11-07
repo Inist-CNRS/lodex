@@ -1,15 +1,15 @@
-import { useState, useEffect, useCallback, memo, useMemo } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { useLocation } from 'react-router';
 import get from 'lodash/get';
+import { memo, useCallback, useEffect, useMemo, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useLocation } from 'react-router';
 
-import Loading from '../components/Loading';
-import InvalidFormat from './InvalidFormat';
 import { CircularProgress } from '@mui/material';
-import { useTranslate } from '../i18n/I18NContext';
 import { isEqual } from 'lodash';
-import type { Field } from '../fields/types';
 import { createAction } from 'redux-actions';
+import Loading from '../components/Loading';
+import type { Field } from '../fields/types';
+import { useTranslate } from '../i18n/I18NContext';
+import InvalidFormat from './InvalidFormat';
 
 // redeclaring action reactors here to avoid moving every reducer inside frontend-common
 // Nice to have: refactor to use react-query
@@ -197,7 +197,6 @@ export default (url = null, checkFormatLoaded = null, withUri = false) =>
             if (formatError) {
                 return formatError === 'bad value' ? (
                     <InvalidFormat
-                        // @ts-expect-error TS18046
                         format={field.format}
                         // @ts-expect-error TS7053
                         value={resource[field.name]}

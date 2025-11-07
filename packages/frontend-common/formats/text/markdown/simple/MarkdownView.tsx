@@ -2,8 +2,8 @@ import { useMemo } from 'react';
 // @ts-expect-error TS7016
 import MarkdownIt from 'markdown-it';
 
-import InvalidFormat from '../../../InvalidFormat';
 import type { Field } from '../../../../fields/types';
+import InvalidFormat from '../../../InvalidFormat';
 
 const markdown = new MarkdownIt();
 
@@ -26,7 +26,6 @@ const MarkdownView = ({ className, resource, field }: MarkdownViewProps) => {
     }, [resource, field.name]);
 
     if (content == null) {
-        // @ts-expect-error TS18046
         return <InvalidFormat format={field.format} value={value} />;
     }
 
