@@ -1,20 +1,13 @@
-import { scaleLinear } from 'd3-scale';
-import get from 'lodash/get';
-import {
-    lazy,
-    Suspense,
-    useCallback,
-    useEffect,
-    useMemo,
-    useState,
-} from 'react';
+import { lazy, Suspense, useCallback, useEffect, useState } from 'react';
 import compose from 'recompose/compose';
 
-import { useTranslate } from '../../../i18n/I18NContext';
 import Loading from '../../../components/Loading';
+import type { Field } from '../../../fields/types';
+import { useTranslate } from '../../../i18n/I18NContext';
 import injectData from '../../injectData';
 import FormatFullScreenMode from '../../utils/components/FormatFullScreenMode';
 import MouseIcon from '../../utils/components/MouseIcon';
+import { useFormatNetworkData, type NetworkData } from './useFormatNetworkData';
 
 const ForceGraph2D = lazy(() => import('react-force-graph-2d'));
 
@@ -30,10 +23,11 @@ const styles = {
 
 interface NetworkProps {
     colorSet?: string[];
-    formatData?: unknown[];
+    formatData?: NetworkData[];
+    field: Field;
 }
 
-const Network = ({ formatData, colorSet }: NetworkProps) => {
+const Network = ({ formatData, colorSet, field }: NetworkProps) => {
     const { translate } = useTranslate();
     const [{ width, height }, setDimensions] = useState({
         width: 0,
@@ -64,112 +58,13 @@ const Network = ({ formatData, colorSet }: NetworkProps) => {
         setHighlightedLinks([]);
     }, [formatData]);
 
-    const { nodes, links } = useMemo(() => {
-        if (!formatData) {
-            return {
-                nodes: [],
-                links: [],
-            };
-        }
-        const sanitizedFormatData = formatData.filter(
-            // @ts-expect-error TS7031
-            ({ source, target }) => source && target,
-        );
-
-        const nodesDic = sanitizedFormatData.reduce(
-            // @ts-expect-error TS7006
-            (acc, { source, target }) => ({
-                // @ts-expect-error TS2698
-                ...acc,
-                [source]: {
-                    id: source,
-                    label: source,
-                    radius: get(acc, [source, 'radius'], 0) + 1,
-                },
-                [target]: {
-                    id: target,
-                    label: target,
-                    radius: get(acc, [target, 'radius'], 0) + 1,
-                },
-            }),
-            {},
-        );
-
-        // @ts-expect-error TS2769
-        const nodes = Object.values(nodesDic);
-        // @ts-expect-error TS2345
-        const radiusList = nodes.map(({ radius }) => radius);
-        // @ts-expect-error TS2345
-        const max = Math.max(...radiusList);
-        // @ts-expect-error TS2345
-        const min = Math.min(...radiusList);
-
-        const nodeScale = scaleLinear().domain([min, max]).range([1, 10]);
-
-        // @ts-expect-error TS7031
-        const weightList = sanitizedFormatData.map(({ weight }) => weight);
-        // @ts-expect-error TS2345
-        const maxWeight = Math.max(...weightList);
-        // @ts-expect-error TS2345
-        const minWeight = Math.min(...weightList);
-
-        const linkScale = scaleLinear()
-            .domain([minWeight, maxWeight])
-            .range([1, 20]);
-
-        // @ts-expect-error TS7031
-        const links = sanitizedFormatData.map(({ source, target, weight }) => ({
-            source,
-            target,
-            value: linkScale(weight),
-        }));
-
-        links.forEach((link) => {
-            // @ts-expect-error TS18046
-            const a = nodes.find((node) => node.id === link.source);
-            // @ts-expect-error TS18046
-            const b = nodes.find((node) => node.id === link.target);
-            // @ts-expect-error TS18046
-            if (!a.neighbors) {
-                // @ts-expect-error TS18046
-                a.neighbors = [];
-            }
-            // @ts-expect-error TS18046
-            if (!b.neighbors) {
-                // @ts-expect-error TS18046
-                b.neighbors = [];
-            }
-            // @ts-expect-error TS18046
-            a.neighbors.push(b);
-            // @ts-expect-error TS18046
-            b.neighbors.push(a);
-
-            // @ts-expect-error TS18046
-            if (!a.links) {
-                // @ts-expect-error TS18046
-                a.links = [];
-            }
-            // @ts-expect-error TS18046
-            if (!b.links) {
-                // @ts-expect-error TS18046
-                b.links = [];
-            }
-            // @ts-expect-error TS18046
-            a.links.push(link);
-            // @ts-expect-error TS18046
-            b.links.push(link);
-        });
-
-        return {
-            nodes: nodes.map((node) => ({
-                // @ts-expect-error TS2698
-                ...node,
-                // @ts-expect-error TS18046
-                radius: nodeScale(node.radius),
-            })),
-            links,
-        };
-    }, [formatData]);
+    const { nodes, links } = useFormatNetworkData({
+        formatData,
+        displayWeighted:
+            typeof field?.format?.args?.displayWeighted === 'boolean'
+                ? field.format.args.displayWeighted
+                : true,
+    });
 
     // @ts-expect-error TS7006
     const handleNodeHover = (node) => {
@@ -239,7 +134,6 @@ const Network = ({ formatData, colorSet }: NetworkProps) => {
                         <ForceGraph2D
                             width={width}
                             height={height}
-                            // @ts-expect-error TS2322
                             graphData={{ nodes, links }}
                             nodeCanvasObject={(node, ctx, globalScale) => {
                                 if (

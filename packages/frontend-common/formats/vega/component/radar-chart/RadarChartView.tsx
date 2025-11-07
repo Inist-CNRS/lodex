@@ -2,18 +2,18 @@ import { useMemo, useState } from 'react';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
 
-import { CustomActionVega } from '../../../utils/components/vega-component';
-import RadarChart from '../../models/RadarChart';
+import type { Field } from '../../../../fields/types';
+import injectData from '../../../injectData';
+import InvalidFormat from '../../../InvalidFormat';
+import { useSizeObserver } from '../../../utils/chartsHooks';
 import {
     convertSpecTemplate,
     lodexScaleToIdScale,
     VEGA_ACTIONS_WIDTH,
     VEGA_DATA_INJECT_TYPE_A,
 } from '../../../utils/chartsUtils';
-import InvalidFormat from '../../../InvalidFormat';
-import { useSizeObserver } from '../../../utils/chartsHooks';
-import injectData from '../../../injectData';
-import type { Field } from '../../../../fields/types';
+import { CustomActionVega } from '../../../utils/components/vega-component';
+import RadarChart from '../../models/RadarChart';
 
 const styles = {
     container: {
@@ -115,7 +115,6 @@ const RadarChartView = ({
     ]);
 
     if (spec === null) {
-        // @ts-expect-error TS18046
         return <InvalidFormat format={field.format} value={error} />;
     }
 

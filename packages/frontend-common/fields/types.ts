@@ -8,6 +8,12 @@ export type Field = {
     position?: number;
     isDefaultSortField?: boolean;
     sortOrder?: 'asc' | 'desc';
+    format?: {
+        name: string;
+        args?: {
+            [key: string]: unknown;
+        };
+    };
 };
 
 export interface TransformerDraft {

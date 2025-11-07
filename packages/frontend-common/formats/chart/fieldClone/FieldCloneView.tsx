@@ -1,7 +1,7 @@
 import type { Field } from '../../../fields/types';
+import getColorSetFromField from '../../../utils/getColorSetFromField';
 import InvalidFormat from '../../InvalidFormat';
 import { getViewComponent } from '../../getFormat';
-import getColorSetFromField from '../../../utils/getColorSetFromField';
 
 interface FieldCloneViewProps {
     className?: string;
@@ -26,10 +26,8 @@ const FieldCloneView = ({
     if (
         !clonedField ||
         typeof clonedField !== 'object' ||
-        // @ts-expect-error TS2339
         (clonedField.format && clonedField.format.name === 'fieldClone')
     ) {
-        // @ts-expect-error TS18046
         return <InvalidFormat format={field.format} value={value} />;
     }
 
