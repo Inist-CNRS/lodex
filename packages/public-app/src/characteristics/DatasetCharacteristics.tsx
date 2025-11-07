@@ -1,15 +1,15 @@
 import { useSelector } from 'react-redux';
 
 import {
-    fromFields,
     fromCharacteristic,
+    fromFields,
 } from '@lodex/frontend-common/sharedSelectors';
 
-import DatasetCharacteristicItem from './DatasetCharacteristicItem';
-import { fromDisplayConfig } from '../selectors';
-import { useEffect, type CSSProperties } from 'react';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
+import { type CSSProperties } from 'react';
 import type { State } from '../reducers';
+import { fromDisplayConfig } from '../selectors';
+import DatasetCharacteristicItem from './DatasetCharacteristicItem';
 
 const styles: Record<string, CSSProperties> = {
     container: {
@@ -24,10 +24,6 @@ const styles: Record<string, CSSProperties> = {
 };
 
 const DatasetCharacteristicsView = () => {
-    console.log('DatasetCharacteristicsView render');
-    useEffect(() => {
-        console.log('DatasetCharacteristicsView mount useEffect');
-    }, []);
     const fields = useSelector(fromFields.getDatasetFields);
     const characteristics =
         useSelector((state: State) =>

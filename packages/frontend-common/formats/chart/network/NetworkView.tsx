@@ -66,8 +66,6 @@ const Network = ({ formatData, colorSet, field }: NetworkProps) => {
                 : true,
     });
 
-    console.log({ formatData, field, nodes, links });
-
     // @ts-expect-error TS7006
     const handleNodeHover = (node) => {
         // freeze the chart so that it does not rearrange itself every time we interact with it

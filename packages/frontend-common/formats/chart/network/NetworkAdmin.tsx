@@ -86,8 +86,6 @@ const NetworkAdmin: React.FC<NetworkAdminProps> = ({
 
     const { params } = args;
 
-    console.log('NetworkAdmin render', args);
-
     return (
         <FormatGroupedFieldSet>
             <FormatDataParamsFieldSet>
