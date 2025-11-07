@@ -5,6 +5,7 @@ import * as datasetImportPage from '../../support/datasetImportPage';
 import * as graphPage from '../../support/graphPage';
 import * as menu from '../../support/menu';
 import * as searchDrawer from '../../support/searchDrawer';
+import * as browseResultDrawer from '../../support/browseResultDrawer';
 
 describe('Graph Page', () => {
     beforeEach(() => {
@@ -56,7 +57,7 @@ describe('Graph Page', () => {
             .should('be.checked');
     });
 
-    it.only('should copy filters to browse result drawer', () => {
+    it('should copy filters to browse-result drawer', () => {
         menu.openChartDrawer();
         menu.goToChart('Bar Chart');
 
@@ -76,19 +77,19 @@ describe('Graph Page', () => {
         menu.closeSearchDrawer();
         graphPage.browseResults();
 
-        searchDrawer.getFacet('Publication Year').click();
-        searchDrawer.searchInput().should('have.value', 'Biodiversity');
-        searchDrawer
+        browseResultDrawer.getFacet('Publication Year').click();
+        browseResultDrawer.searchInput().should('have.value', 'Biodiversity');
+        browseResultDrawer
             .getFacetItem('Publication Year', '2011')
             .find('input[type=checkbox]')
             .should('be.checked');
 
-        menu.closeSearchDrawer();
+        menu.closeBrowseResultDrawer();
         graphPage.setFacetExclude('Publication Year');
         graphPage.browseResults();
-        searchDrawer.getFacet('Publication Year (14)').click();
-        searchDrawer.searchInput().should('have.value', 'Biodiversity');
-        searchDrawer
+        browseResultDrawer.getFacet('Publication Year (14)').click();
+        browseResultDrawer.searchInput().should('have.value', 'Biodiversity');
+        browseResultDrawer
             .getFacetExcludeItem('Publication Year')
             .find('input[type=checkbox]')
             .should('be.checked');
