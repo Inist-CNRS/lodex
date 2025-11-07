@@ -4,6 +4,7 @@ import { teardown } from '../../support/authentication';
 import * as datasetImportPage from '../../support/datasetImportPage';
 import * as graphPage from '../../support/graphPage';
 import * as menu from '../../support/menu';
+import * as searchDrawer from '../../support/searchDrawer';
 
 describe('Graph Page', () => {
     beforeEach(() => {
@@ -51,6 +52,44 @@ describe('Graph Page', () => {
         cy.wait(500);
         graphPage
             .getFacetItem('Publication Year', '2011')
+            .find('input[type=checkbox]')
+            .should('be.checked');
+    });
+
+    it.only('should copy filters to browse result drawer', () => {
+        menu.openChartDrawer();
+        menu.goToChart('Bar Chart');
+
+        graphPage.searchFor('Biodiversity');
+        graphPage.getStats().should('have.text', 'Found 5 on 50');
+        graphPage.setFacet('Publication Year', '2011');
+        graphPage.getStats().should('have.text', 'Found 4 on 50');
+
+        menu.openSearchDrawer();
+        searchDrawer.getFacet('Publication Year').click();
+        searchDrawer
+            .getFacetItem('Publication Year', '2011')
+            .find('input[type=checkbox]')
+            .should('not.checked');
+        searchDrawer.searchInput().should('have.value', '');
+
+        menu.closeSearchDrawer();
+        graphPage.browseResults();
+
+        searchDrawer.getFacet('Publication Year').click();
+        searchDrawer.searchInput().should('have.value', 'Biodiversity');
+        searchDrawer
+            .getFacetItem('Publication Year', '2011')
+            .find('input[type=checkbox]')
+            .should('be.checked');
+
+        menu.closeSearchDrawer();
+        graphPage.setFacetExclude('Publication Year');
+        graphPage.browseResults();
+        searchDrawer.getFacet('Publication Year (14)').click();
+        searchDrawer.searchInput().should('have.value', 'Biodiversity');
+        searchDrawer
+            .getFacetExcludeItem('Publication Year')
             .find('input[type=checkbox]')
             .should('be.checked');
     });
