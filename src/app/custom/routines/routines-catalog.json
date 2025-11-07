@@ -204,6 +204,12 @@
         "recommendedWith": ["HierarchicalGraph"]
     },
     {
+        "id": "r-hierarchy-by",
+        "url": "/api/run/hierarchy-by/",
+        "doc": "https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/les-routines-et-graphes/les-routines/#hierarchy-by",
+        "recommendedWith": []
+    },
+    {
         "id": "r-ventilate-by",
         "url": "/api/run/ventilate-by/",
         "doc": "https://www.lodex.fr/docs/documentation/principales-fonctionnalites-disponibles/les-routines-et-graphes/les-routines/#ventilate-by",
