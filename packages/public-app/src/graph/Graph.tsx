@@ -249,7 +249,7 @@ const Graph = ({
                 onClose={() => setBrowseResultDrawerStatus(DRAWER_CLOSING)}
             >
                 <BrowseResult
-                    className="search"
+                    className="browse-result-drawer"
                     closeDrawer={() =>
                         setBrowseResultDrawerStatus(DRAWER_CLOSING)
                     }
