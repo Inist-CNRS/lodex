@@ -3,7 +3,7 @@ import omit from 'lodash/omit';
 import { castIdsFactory, getCreatedCollection } from './utils';
 
 export default async (db: any) => {
-    const collection = await getCreatedCollection(db, 'configTenant');
+    const collection: any = await getCreatedCollection(db, 'configTenant');
 
     collection.findOneById = async (id: any) =>
         collection.findOne({ $or: [{ _id: new ObjectId(id) }, { _id: id }] });

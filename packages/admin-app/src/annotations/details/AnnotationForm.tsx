@@ -70,7 +70,7 @@ export const AnnotationForm = ({ annotation }: AnnotationFormProps) => {
             // @ts-expect-error TS2339
             adminUrl: annotation.resource
                 ? // @ts-expect-error TS2339
-                  `/instance/${tenant}/admin#/data/existing?uri=${encodeURIComponent(annotation.resourceUri)}`
+                  `/instance/${tenant}/admin#/data/existing/dataset?uri=${encodeURIComponent(annotation.resourceUri)}`
                 : null,
         };
     }, [annotation]);

@@ -1,25 +1,36 @@
+import type { Filter } from 'mongodb';
 import { createDiacriticSafeContainRegex } from '../../services/createDiacriticSafeContainRegex';
 
-export const buildQuery = (
-    filterBy: any,
-    filterOperator: any,
-    filterValue: any,
-) => {
-    if (!filterValue) {
+export const buildQuery = <
+    Document extends Record<string, unknown> = Record<string, unknown>,
+>(
+    filterBy?: keyof Document,
+    filterOperator?: 'is' | '=' | '>' | '<' | string,
+    filterValue?: any,
+): Filter<Document> => {
+    if (!filterValue || !filterBy || !filterOperator) {
         return {};
     }
     switch (filterOperator) {
         case 'is':
-            return { [filterBy]: { $eq: filterValue === 'true' } };
+            return {
+                [filterBy]: { $eq: filterValue === 'true' },
+            } as Filter<Document>;
         case '=':
-            return { [filterBy]: { $eq: parseFloat(filterValue) } };
+            return {
+                [filterBy]: { $eq: parseFloat(filterValue) },
+            } as Filter<Document>;
         case '>':
-            return { [filterBy]: { $gt: parseFloat(filterValue) } };
+            return {
+                [filterBy]: { $gt: parseFloat(filterValue) },
+            } as Filter<Document>;
         case '<':
-            return { [filterBy]: { $lt: parseFloat(filterValue) } };
+            return {
+                [filterBy]: { $lt: parseFloat(filterValue) },
+            } as Filter<Document>;
         default:
             return {
                 [filterBy]: createDiacriticSafeContainRegex(filterValue),
-            };
+            } as Filter<Document>;
     }
 };

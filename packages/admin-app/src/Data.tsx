@@ -1,7 +1,7 @@
 import { Switch, Route, useRouteMatch, Redirect } from 'react-router';
 
-import { DataRoute } from './DataRoute';
-import { DataAddRoute } from './DataAddRoute';
+import { DataRoute } from './data/DataRoute';
+import { DataAddRoute } from './data/DataAddRoute';
 import RemovedResourcePage from './removedResources/RemovedResourcePage';
 import { EnrichmentRoute } from './EnrichmentRoute';
 import { PrecomputedRoute } from './PrecomputedRoute';
@@ -10,16 +10,8 @@ const DataComponent = () => {
     const { path } = useRouteMatch();
     return (
         <Switch>
-            <Route
-                path={`${path}/existing`}
-                exact
-                component={() => <DataRoute />}
-            />
-            <Route
-                path={`${path}/add`}
-                exact
-                component={() => <DataAddRoute />}
-            />
+            <Route path={`${path}/existing`} component={() => <DataRoute />} />
+            <Route path={`${path}/add`} component={() => <DataAddRoute />} />
             <Route
                 path={`${path}/removed`}
                 exact

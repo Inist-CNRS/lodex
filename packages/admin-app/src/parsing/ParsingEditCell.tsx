@@ -216,9 +216,14 @@ const ButtonEditCellWithDropdown = ({
 interface ParsingEditCellProps {
     cell: object;
     setToggleDrawer(...args: unknown[]): unknown;
+    precomputedId?: string;
 }
 
-const ParsingEditCell = ({ cell, setToggleDrawer }: ParsingEditCellProps) => {
+const ParsingEditCell = ({
+    cell,
+    setToggleDrawer,
+    precomputedId,
+}: ParsingEditCellProps) => {
     const { translate } = useTranslate();
     const theme = useTheme();
     const [loading, setLoading] = React.useState(false);
@@ -241,9 +246,11 @@ const ParsingEditCell = ({ cell, setToggleDrawer }: ParsingEditCellProps) => {
                 // @ts-expect-error TS18046
                 throw new Error(translate(e.message));
             }
-            await datasetApi.updateDataset({
+            console.log({ cell });
+            await datasetApi.updateData({
+                precomputedId,
                 // @ts-expect-error TS2339
-                uri: cell.row.uri,
+                row: cell.row,
                 // @ts-expect-error TS2339
                 field: cell.field,
                 value: valueToSave,

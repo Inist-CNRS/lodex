@@ -5,17 +5,44 @@ import {
     putUpdateDataset,
     getDeleteManyDatasetRowRequest,
     getDeleteFilteredDatasetRowRequest,
+    getGetPrecomputedResultListRequest,
+    getGetPrecomputedResultColumnsRequest,
+    putUpdatePrecomputedResult,
 } from '@lodex/frontend-common/user/reducer';
 import { getUserSessionStorageInfo } from '@lodex/frontend-common/getUserSessionStorageInfo';
 
-// @ts-expect-error TS7031
-const getDataset = async ({ filter, skip, limit, sort }) => {
+const getData = async ({
+    precomputedId,
+    filter,
+    skip,
+    limit,
+    sort,
+}: {
+    precomputedId?: string;
+    filter?: Record<string, unknown>;
+    skip?: number;
+    limit?: number;
+    sort?: {
+        sortBy?: string;
+        sortDir?: string;
+    };
+}) => {
     const { token } = getUserSessionStorageInfo();
 
-    const request = getGetDatasetRequest(
-        { token },
-        { filter, skip, limit, sort },
-    );
+    const request = precomputedId
+        ? getGetPrecomputedResultListRequest({
+              state: {
+                  token,
+              },
+              precomputedId,
+              params: {
+                  filter,
+                  skip,
+                  limit,
+                  sort,
+              },
+          })
+        : getGetDatasetRequest({ token }, { filter, skip, limit, sort });
     // @ts-expect-error TS7031
     return fetch(request).then(({ response, error }) => {
         if (error) {
@@ -25,9 +52,24 @@ const getDataset = async ({ filter, skip, limit, sort }) => {
     });
 };
 
-const getDatasetColumns = async () => {
+const getDataset = async (params: {
+    filter?: Record<string, unknown>;
+    skip?: number;
+    limit?: number;
+    sort?: {
+        sortBy?: string;
+        sortDir?: string;
+    };
+}) => {
+    return getData(params);
+};
+
+const getDataColumns = async (precomputedId?: string) => {
     const { token } = getUserSessionStorageInfo();
-    const request = getGetDatasetColumnsRequest({ token });
+
+    const request = precomputedId
+        ? getGetPrecomputedResultColumnsRequest({ token }, precomputedId)
+        : getGetDatasetColumnsRequest({ token });
     // @ts-expect-error TS7031
     return fetch(request).then(({ response, error }) => {
         if (error) {
@@ -37,11 +79,33 @@ const getDatasetColumns = async () => {
     });
 };
 
-// @ts-expect-error TS7031
-const updateDataset = async ({ uri, field, value }) => {
+const getDatasetColumns = async () => {
+    return getDataColumns();
+};
+
+const updateData = async ({
+    precomputedId,
+    row,
+    field,
+    value,
+}: {
+    precomputedId?: string;
+    row: { uri?: string; _id?: string };
+    field: string;
+    value: unknown;
+}) => {
     const { token } = getUserSessionStorageInfo();
 
-    const request = putUpdateDataset({ token }, { uri, field, value });
+    const request = precomputedId
+        ? putUpdatePrecomputedResult({
+              state: {
+                  token,
+              },
+              precomputedId,
+              id: row._id!,
+              data: { [field]: value },
+          })
+        : putUpdateDataset({ token }, { uri: row.uri!, field, value });
     // @ts-expect-error TS7031
     return fetch(request).then(({ response, error }) => {
         if (error) {
@@ -49,6 +113,18 @@ const updateDataset = async ({ uri, field, value }) => {
         }
         return response;
     });
+};
+
+export const updateDataset = async ({
+    uri,
+    field,
+    value,
+}: {
+    uri: string;
+    field: string;
+    value: unknown;
+}) => {
+    return updateData({ row: { uri }, field, value });
 };
 
 // @ts-expect-error TS7006
@@ -81,8 +157,11 @@ const deleteFilteredDatasetRows = async (filter) => {
 
 export default {
     getDataset,
+    getData,
     getDatasetColumns,
+    getDataColumns,
     updateDataset,
+    updateData,
     deleteManyDatasetRows,
     deleteFilteredDatasetRows,
 };

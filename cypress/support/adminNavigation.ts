@@ -3,13 +3,18 @@ import { goToPublishedResources } from './datasetImportPage';
 export const goToData = () => {
     cy.get('.appbar').contains('Data').click({ force: true }); // avoid bug due of detached DOM element
 
-    cy.location('hash').should('equal', '#/data/existing');
+    cy.location('hash').should('contains', '#/data/existing');
 };
 
 export const goToDisplay = () => {
     cy.get('.appbar').contains('Display').click({ force: true }); // avoid bug due of detached DOM element
 
     cy.location('hash').should('equal', '#/display/dataset');
+};
+export const goToPreComputation = () => {
+    cy.get('.sidebar').contains('Precomputed').click({ force: true }); // avoid bug due of detached DOM element
+
+    cy.location('hash').should('equal', '#/data/precomputed');
 };
 
 export const goToResourcePage = () => {

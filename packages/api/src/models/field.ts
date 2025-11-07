@@ -102,7 +102,7 @@ const createSubresourceUriField = (subresource: any) => ({
 });
 
 export default async (db: any) => {
-    const collection = await getCreatedCollection(db, 'field');
+    const collection: any = await getCreatedCollection(db, 'field');
 
     await collection.createIndex({ name: 1 }, { unique: true });
 

@@ -70,7 +70,7 @@ describe('AnnotationForm', () => {
             screen.getByRole('link', { name: 'annotation_update_resource' }),
         ).toHaveAttribute(
             'href',
-            '/instance/default/admin#/data/existing?uri=uid%3A%2F1234',
+            '/instance/default/admin#/data/existing/dataset?uri=uid%3A%2F1234',
         );
 
         // Field region

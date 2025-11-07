@@ -1,7 +1,7 @@
 import { getCreatedCollection } from './utils';
 
 export default async (db: any) => {
-    const collection = await getCreatedCollection(
+    const collection: any = await getCreatedCollection(
         db,
         'publishedCharacteristic',
     );

@@ -1,7 +1,7 @@
 version: '3'
 
 services:
-    node:
+    api:
         image: node:22.12-bookworm
         extra_hosts: # for linux hosts since version 20.10
             - host.docker.internal:host-gateway
@@ -112,6 +112,12 @@ services:
                 limits:
                     cpus: '2'
                     memory: 2G
+    data-computer:
+        image: cnrsinist/ws-data-computer:2.18.1
+        extra_hosts: # for linux hosts since version 20.10
+            - host.docker.internal:host-gateway
+        links:
+            - api
 
     maildev:
         image: maildev/maildev

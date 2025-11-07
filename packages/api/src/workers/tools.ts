@@ -63,7 +63,11 @@ export const getWaitingJobs = async (tenant: any) => {
     return waitingJobs;
 };
 
-export const cancelJob = async (ctx: any, jobType: any, subLabel = null) => {
+export const cancelJob = async (
+    ctx: any,
+    jobType: any,
+    subLabel: string | undefined | null = null,
+) => {
     const activeJob = await getActiveJob(ctx.tenant);
     if (activeJob?.data?.fusible) {
         await disableFusible(activeJob.data.fusible);
