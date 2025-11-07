@@ -17,11 +17,15 @@ module.exports = {
         },
         {
             name: 'worker',
-            script: 'packages/workers/src',
+            script: './src',
+            cwd: './packages/workers',
             interpreter: 'node',
             interpreter_args: '--import tsx',
             exec_mode: 'fork',
             instances: 1,
+            env: {
+                NODE_CONFIG_DIR: '../../config',
+            },
             err_file: '/dev/null',
             out_file: '/dev/null',
         },
