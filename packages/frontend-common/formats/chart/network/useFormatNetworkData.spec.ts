@@ -138,11 +138,13 @@ describe('useFormatNetworkData', () => {
         expect(graph.nodes).toHaveLength(2);
         expect(graph.links).toHaveLength(1);
 
-        // values should be finite numbers
+        // In degenerate case (single link), both nodes have degree 1
+        // scaleLinear().domain([1, 1]).range([1, 10]) returns middle value: 5.5
         for (const n of graph.nodes) {
-            expect(Number.isFinite(n.radius as number)).toBe(true);
+            expect(n.radius).toBe(5.5);
         }
-        expect(Number.isFinite(graph.links[0].value as number)).toBe(true);
+        // scaleLinear().domain([5, 5]).range([1, 20]) returns middle value: 10.5
+        expect(graph.links[0].value).toBe(10.5);
     });
 
     it('updates output when formatData changes', () => {
@@ -216,10 +218,25 @@ describe('useFormatNetworkData', () => {
         // Toggle to weighted
         rerender({ weighted: true });
 
-        // Weighted: at least one node should not be 1 (A has higher degree), and link values should not all be 1
-        const radii = result.current.nodes.map((n) => n.radius as number);
-        expect(radii.some((r) => r !== 1)).toBe(true);
-        const values = result.current.links.map((l) => l.value as number);
-        expect(values.some((v) => v !== 1)).toBe(true);
+        // Weighted: check actual scaled values
+        // Node A has degree 2 → radius 10 (max of scale [1, 10])
+        // Nodes B and C have degree 1 → radius 1 (min of scale [1, 10])
+        const nodeA = result.current.nodes.find((n) => n.id === 'A');
+        const nodeB = result.current.nodes.find((n) => n.id === 'B');
+        const nodeC = result.current.nodes.find((n) => n.id === 'C');
+        expect(nodeA?.radius).toBe(10);
+        expect(nodeB?.radius).toBe(1);
+        expect(nodeC?.radius).toBe(1);
+
+        // Link with weight 1 → value 1 (min of scale [1, 20])
+        // Link with weight 3 → value 20 (max of scale [1, 20])
+        const linkAB = result.current.links.find(
+            (l) => l.source === 'A' && l.target === 'B',
+        );
+        const linkAC = result.current.links.find(
+            (l) => l.source === 'A' && l.target === 'C',
+        );
+        expect(linkAB?.value).toBe(1);
+        expect(linkAC?.value).toBe(20);
     });
 });
