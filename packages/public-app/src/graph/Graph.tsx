@@ -27,6 +27,8 @@ import PropertyLinkedFields from '../Property/PropertyLinkedFields';
 import type { Field } from '@lodex/frontend-common/fields/types';
 import { useTranslate } from '@lodex/frontend-common/i18n/I18NContext';
 import { CreateAnnotationButton } from '../annotation/CreateAnnotationButton';
+import Drawer, { DRAWER_CLOSED, DRAWER_CLOSING, DRAWER_OPEN } from '../Drawer';
+import BrowseResult from './BrowseResult';
 
 const styles = stylesToClassname(
     {
@@ -93,7 +95,6 @@ interface GraphProps {
     resource: object;
     preLoadPublication(...args: unknown[]): unknown;
     preLoadDatasetPage(...args: unknown[]): unknown;
-    onSearch(): void;
     isAdmin?: boolean;
 }
 
@@ -104,11 +105,12 @@ const Graph = ({
     resource,
     preLoadPublication,
     preLoadDatasetPage,
-    onSearch,
     isAdmin,
 }: GraphProps) => {
     const { translate } = useTranslate();
     const [showFacets, setShowFacets] = useState(false);
+    const [browseResultDrawerStatus, setBrowseResultDrawerStatus] =
+        useState(DRAWER_CLOSED);
 
     useEffect(() => {
         preLoadPublication();
@@ -134,99 +136,125 @@ const Graph = ({
     };
 
     return (
-        // @ts-expect-error TS2339
-        <div className={classnames(className, styles.container)}>
-            {/*
-             // @ts-expect-error TS2339 */}
-            <div className={styles.content}>
+        <>
+            {/* // 
+            @ts-expect-error TS2339 */}
+            <div className={classnames(className, styles.container)}>
                 {/*
              // @ts-expect-error TS2339 */}
-                <div className={styles.header}>
-                    <DatasetSearchBar
-                        // @ts-expect-error TS2339
-                        onToggleFacets={handleToggleFacets}
-                    />
-                    {/* 
+                <div className={styles.content}>
+                    {/*
+             // @ts-expect-error TS2339 */}
+                    <div className={styles.header}>
+                        <DatasetSearchBar
+                            // @ts-expect-error TS2339
+                            onToggleFacets={handleToggleFacets}
+                        />
+                        {/* 
                     // @ts-expect-error TS2339 */}
-                    <div className={classnames(styles.advanced)}>
-                        <DatasetStats />
+                        <div className={classnames(styles.advanced)}>
+                            <DatasetStats />
+                        </div>
+                        <AppliedFacetList />
                     </div>
-                    <AppliedFacetList />
-                </div>
-                <FacetList
-                    // @ts-expect-error TS2339
-                    className={classnames('graph-facets', styles.facets)}
-                    page="dataset"
-                    open={showFacets}
-                />
-                {/*
+                    <FacetList
+                        // @ts-expect-error TS2339
+                        className={classnames('graph-facets', styles.facets)}
+                        page="dataset"
+                        open={showFacets}
+                    />
+                    {/*
                  // @ts-expect-error TS2339 */}
-                <div className={styles.results}>
-                    {graphField && (
-                        <Card className="graph" sx={muiStyles.graphContainer}>
-                            <CardHeader
-                                className="title"
-                                sx={muiStyles.graphTitle}
-                                title={
-                                    <Stack
-                                        direction="row"
-                                        gap={2}
-                                        alignItems="center"
-                                    >
-                                        {graphField.label}
+                    <div className={styles.results}>
+                        {graphField && (
+                            <Card
+                                className="graph"
+                                sx={muiStyles.graphContainer}
+                            >
+                                <CardHeader
+                                    className="title"
+                                    sx={muiStyles.graphTitle}
+                                    title={
+                                        <Stack
+                                            direction="row"
+                                            gap={2}
+                                            alignItems="center"
+                                        >
+                                            {graphField.label}
 
-                                        {isAdmin && (
-                                            // @ts-expect-error TS2769
-                                            <IconButton
-                                                onClick={() =>
-                                                    handleEditField(graphField)
-                                                }
-                                                classnames={'edit-field-icon'}
-                                            >
-                                                <Settings
-                                                    sx={{
-                                                        fontSize: '1.2rem',
-                                                    }}
-                                                />
-                                            </IconButton>
-                                        )}
-                                        <CreateAnnotationButton
-                                            field={graphField}
-                                            resource={resource}
-                                        />
-                                    </Stack>
-                                }
-                            />
-                            <Format field={graphField} resource={resource} />
-                            <CompositeProperty
-                                key="composite"
-                                field={graphField}
-                                resource={resource}
-                                parents={[]}
-                            />
-                            <PropertyLinkedFields
-                                fieldName={graphField.name}
-                                // @ts-expect-error TS2322
-                                resource={resource}
-                                parents={[]}
-                            />
-                        </Card>
-                    )}
-                    <Button
-                        variant="contained"
-                        className="browse-result"
-                        onClick={onSearch}
-                        color="primary"
-                        fullWidth
-                        startIcon={
-                            <FontAwesomeIcon icon={faSearch} height={20} />
-                        }
-                    >
-                        {translate('browse_results')}
-                    </Button>
+                                            {isAdmin && (
+                                                // @ts-expect-error TS2769
+                                                <IconButton
+                                                    onClick={() =>
+                                                        handleEditField(
+                                                            graphField,
+                                                        )
+                                                    }
+                                                    classnames={
+                                                        'edit-field-icon'
+                                                    }
+                                                >
+                                                    <Settings
+                                                        sx={{
+                                                            fontSize: '1.2rem',
+                                                        }}
+                                                    />
+                                                </IconButton>
+                                            )}
+                                            <CreateAnnotationButton
+                                                field={graphField}
+                                                resource={resource}
+                                            />
+                                        </Stack>
+                                    }
+                                />
+                                <Format
+                                    field={graphField}
+                                    resource={resource}
+                                />
+                                <CompositeProperty
+                                    key="composite"
+                                    field={graphField}
+                                    resource={resource}
+                                    parents={[]}
+                                />
+                                <PropertyLinkedFields
+                                    fieldName={graphField.name}
+                                    // @ts-expect-error TS2322
+                                    resource={resource}
+                                    parents={[]}
+                                />
+                            </Card>
+                        )}
+                        <Button
+                            variant="contained"
+                            className="browse-result"
+                            onClick={() =>
+                                setBrowseResultDrawerStatus(DRAWER_OPEN)
+                            }
+                            color="primary"
+                            fullWidth
+                            startIcon={
+                                <FontAwesomeIcon icon={faSearch} height={20} />
+                            }
+                        >
+                            {translate('browse_results')}
+                        </Button>
+                    </div>
                 </div>
             </div>
-        </div>
+
+            <Drawer
+                status={browseResultDrawerStatus}
+                onClose={() => setBrowseResultDrawerStatus(DRAWER_CLOSING)}
+            >
+                <BrowseResult
+                    closeDrawer={() =>
+                        setBrowseResultDrawerStatus(DRAWER_CLOSING)
+                    }
+                />
+            </Drawer>
+        </>
     );
 };
 
