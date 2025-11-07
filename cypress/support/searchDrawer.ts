@@ -1,7 +1,7 @@
 export const searchInput = () =>
     cy.get('.search .search-searchbar input[type="text"]');
 
-export const search = (value) => {
+export const search = (value: string) => {
     cy.get('.search .search-searchbar').scrollIntoView().should('be.visible');
     searchInput().type(value);
     cy.wait(500); // Wait for the debounce
@@ -41,14 +41,14 @@ export const filterShowUnVisitedResources = () => {
 export const clearSearch = () =>
     cy.get('.search .search-searchbar button.searchbar-clear').click();
 
-export const findSearchResultByTitle = (value) =>
+export const findSearchResultByTitle = (value: string) =>
     cy
         .get('.search .search-result-title')
         .contains(value)
         .should('be.visible')
         .parent();
 
-export const checkResultList = (titles) => {
+export const checkResultList = (titles: string[]) => {
     titles.forEach((title, index) => {
         cy.get(
             `.search .search-result-link:nth-child(${
@@ -72,7 +72,7 @@ export const waitForLoading = () => {
     cy.get('.search .load-more .search-loading').should('not.exist');
 };
 
-export const getFacetsOrder = (facets) => {
+export const getFacetsOrder = (facets: string[]) => {
     facets.forEach((name, index) => {
         cy.get(`.search .search-facets > li:nth-child(${index + 1})`)
             .contains(name)
@@ -80,22 +80,22 @@ export const getFacetsOrder = (facets) => {
     });
 };
 
-export const getFacet = (name) =>
+export const getFacet = (name: string) =>
     cy.get('.search .search-facets .facet-item').contains('span', name);
 
-export const getFacetItem = (name, value) =>
+export const getFacetItem = (name: string, value: string) =>
     getFacet(name).parent().contains('span', value).parent().parent();
 
-export const getFacetExcludeItem = (name) =>
+export const getFacetExcludeItem = (name: string) =>
     getFacet(name).next().find('.facet-value-list .exclude-facet');
 
-export const setFacet = (name, value) => {
+export const setFacet = (name: string, value: string) => {
     getFacet(name).click();
     getFacetItem(name, value).click();
     waitForLoading();
 };
 
-export const clearFacet = (value) => {
+export const clearFacet = (value: string) => {
     cy.get('.search .applied-facet-container')
         .contains(value)
         .parent()
@@ -105,7 +105,7 @@ export const clearFacet = (value) => {
     waitForLoading();
 };
 
-export const checkFacetsItem = (name, facets) => {
+export const checkFacetsItem = (name: string, facets: string[]) => {
     const facetValueItems = getFacet(name).next().find('.facet-value-item');
 
     facetValueItems.each((facetValueItem, index) => {
@@ -113,12 +113,12 @@ export const checkFacetsItem = (name, facets) => {
     });
 };
 
-export const sortFacet = (name, sortName) => {
+export const sortFacet = (name: string, sortName: string) => {
     getFacet(name).get(`.sort_${sortName}`).first().click();
     cy.wait(1000);
 };
 
-export const filterFacet = (name, filter) => {
+export const filterFacet = (name: string, filter: string) => {
     getFacet(name).get(`input[placeholder$="${name}"`).type(filter);
     cy.wait(1000);
 };
@@ -131,24 +131,24 @@ export const checkMoreResultsNotExist = () => {
     cy.get('.search .load-more button').should('not.exist');
 };
 
-export const checkMoreResultsCount = (count, total) => {
+export const checkMoreResultsCount = (count: number, total: number) => {
     cy.get('.search .load-more button')
         .scrollIntoView()
         .should('be.visible')
         .contains(`${count} / ${total}`);
 };
 
-export const checkStatsCount = (current, count) => {
+export const checkStatsCount = (current: number, count: number) => {
     cy.get('.search .stats')
         .contains(`Found ${current} on ${count}`)
         .should('be.visible');
 };
 
-export const checkResultsCount = (count) => {
+export const checkResultsCount = (count: number) => {
     cy.get('.search .search-result').should('have.length', count);
 };
 
-export const goToResourceNumber = (nb) => {
+export const goToResourceNumber = (nb: number) => {
     cy.get(
         `.search .search-result-list-container > a:nth-child(${nb}) .search-result`,
     ).click();
