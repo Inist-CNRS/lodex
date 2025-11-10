@@ -80,8 +80,8 @@ export const PrecomputedForm = ({
     );
     const [precomputedLogs, setPrecomputedLogs] = React.useState<string[]>([]);
     const [precomputedStatus, setPrecomputedStatus] = React.useState<
-        TaskStatusType | undefined
-    >(initialValues?.status);
+        TaskStatusType | ''
+    >(initialValues?.status ?? '');
 
     const formMethods = useForm<NewPreComputation>({
         defaultValues: {
