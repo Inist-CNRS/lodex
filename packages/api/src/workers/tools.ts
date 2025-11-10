@@ -11,6 +11,20 @@ import getLogger from '../services/logger';
 import progress from '../services/progress';
 import { notifyListeners } from './import';
 import { handleEnrichmentError } from './enricher';
+import type { AppContext } from '../services/repositoryMiddleware';
+
+type Job = {
+    id: string;
+    name: string;
+    data: {
+        id: string;
+        fusible?: string;
+        jobType: string;
+        tenant: string;
+    };
+    moveToFailed: (err: Error, bool: boolean) => void;
+    remove: () => void;
+};
 
 export const jobLogger = {
     info: (job: any, message: any) => {
@@ -31,18 +45,17 @@ export const jobLogger = {
     },
 };
 
-export const getActiveJob = async (tenant: any) => {
-    const activeJobs = await getActiveJobs(tenant);
-    return activeJobs?.[0] || undefined;
+export const getActiveJobs = async (tenant: string): Promise<Job[]> => {
+    const activeJobs = (await workerQueues[tenant]?.getActive()) || [];
+
+    return activeJobs;
 };
 
-export const getActiveJobs = async (tenant: any) => {
-    const activeJobs = (await workerQueues[tenant]?.getActive()) || null;
-
-    if (activeJobs.length === 0) {
-        return undefined;
-    }
-    return activeJobs;
+export const getActiveJob = async (
+    tenant: string,
+): Promise<Job | undefined> => {
+    const activeJobs = await getActiveJobs(tenant);
+    return activeJobs?.[0] || undefined;
 };
 
 export const getcompletedJobs = async (tenant: any) => {
@@ -54,18 +67,18 @@ export const getcompletedJobs = async (tenant: any) => {
     return completedJobs;
 };
 
-export const getWaitingJobs = async (tenant: any) => {
+export const getWaitingJobs = async (tenant: string): Promise<Job[]> => {
     const waitingJobs = await workerQueues[tenant].getWaiting();
 
     if (waitingJobs.length === 0) {
-        return undefined;
+        return [];
     }
     return waitingJobs;
 };
 
 export const cancelJob = async (
-    ctx: any,
-    jobType: any,
+    ctx: AppContext,
+    jobType: string,
     subLabel: string | undefined | null = null,
 ) => {
     const activeJob = await getActiveJob(ctx.tenant);
@@ -74,10 +87,10 @@ export const cancelJob = async (
     }
     if (activeJob?.data?.jobType === jobType) {
         if (jobType === 'publisher') {
-            await cleanWaitingJobsOfType(ctx.tenant, activeJob.data.jobType);
+            await cleanWaitingJobsOfType(ctx.tenant, activeJob!.data.jobType);
         }
 
-        activeJob.moveToFailed(new Error('cancelled'), true);
+        activeJob!.moveToFailed(new Error('cancelled'), true);
         progress.finish(ctx.tenant);
         return;
     }
@@ -99,31 +112,35 @@ export const cancelJob = async (
     }
 };
 
-export const dropJobs = async (tenant: any, jobType: any) => {
+export const dropJobs = async (tenant: string, jobType: string) => {
     const jobs = await workerQueues[tenant].getJobs();
-    jobs.forEach((job: any) => {
+    jobs.forEach((job: Job) => {
         if (!jobType || job?.data?.jobType === jobType) job.remove();
     });
 };
 
-export const clearJobs = async (ctx: any) => {
+export const clearJobs = async (ctx: AppContext) => {
     const waitingJobs = await getWaitingJobs(ctx.tenant);
-    if (waitingJobs) {
-        for (const waitingJob of waitingJobs) {
-            waitingJob.remove();
-            if (waitingJob.name === 'enricher') {
-                await handleEnrichmentError(waitingJob, CancelWorkerError);
-            }
+    const waitingJobIds = waitingJobs.map((job) => job.data.id) || [];
+    for (const waitingJob of waitingJobs) {
+        waitingJob.remove();
+        if (waitingJob.name === 'enricher') {
+            await handleEnrichmentError(waitingJob, CancelWorkerError);
         }
     }
     const activeJobs = await getActiveJobs(ctx.tenant);
-    if (activeJobs) {
-        for (const activeJob of activeJobs) {
-            if (activeJob.name === 'enricher') {
-                await handleEnrichmentError(activeJob, CancelWorkerError);
-            }
-            activeJob.moveToFailed(new Error('cancelled'), true);
+
+    const activeJobIds = activeJobs.map((job) => job.data.id) || [];
+
+    for (const activeJob of activeJobs) {
+        if (activeJob.name === 'enricher') {
+            await handleEnrichmentError(activeJob, CancelWorkerError);
         }
+        activeJob.moveToFailed(new Error('cancelled'), true);
     }
+
+    await ctx.precomputed.cancelByIds([...waitingJobIds, ...activeJobIds]);
+    await ctx.enrichment.cancelByIds([...waitingJobIds, ...activeJobIds]);
+
     progress.finish(ctx.tenant);
 };

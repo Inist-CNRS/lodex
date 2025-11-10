@@ -1,3 +1,18 @@
+export type ProgressStatusType =
+    | 'PENDING'
+    | 'ERROR'
+    | 'PUBLISH_FACET'
+    | 'PUBLISH_DOCUMENT'
+    | 'ENRICHING'
+    | 'PRECOMPUTING'
+    | 'UNPUBLISH_DOCUMENT'
+    | 'UPLOADING_DATASET'
+    | 'SAVING_DATASET'
+    | 'STARTING'
+    | 'CREATE_INDEX'
+    | 'INITIALIZING_URI'
+    | 'INDEXATION';
+
 export const ProgressStatus = {
     PENDING: 'PENDING',
     ERROR: 'ERROR',
@@ -12,4 +27,4 @@ export const ProgressStatus = {
     CREATE_INDEX: 'CREATE_INDEX',
     INITIALIZING_URI: 'INITIALIZING_URI',
     INDEXATION: 'INDEXATION',
-};
+} as const;
