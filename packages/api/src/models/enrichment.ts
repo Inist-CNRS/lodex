@@ -4,6 +4,7 @@ import {
     Db,
     ObjectId,
     type DeleteResult,
+    type UpdateResult,
     type WithId,
 } from 'mongodb';
 import { castIdsFactory, getCreatedCollection } from './utils';
@@ -33,7 +34,7 @@ export type EnrichmentCollection = {
         status: TaskStatusType,
         data?: Partial<Enrichment>,
     ) => Promise<void>;
-    cancelByIds: (jobIds: string[]) => Promise<void>;
+    cancelByIds: (jobIds: string[]) => Promise<UpdateResult | undefined>;
     castIds: () => void;
 };
 
@@ -82,7 +83,7 @@ export default async (db: Db): Promise<EnrichmentCollection> => {
         data: Partial<Enrichment> = {},
     ) => {
         const newData = { status, ...data };
-        collection.updateOne(
+        await collection.updateOne(
             {
                 // @ts-expect-error TS2345
                 $or: [{ _id: new ObjectId(id) }, { _id: id }],
@@ -95,8 +96,15 @@ export default async (db: Db): Promise<EnrichmentCollection> => {
         if (ids.length === 0) {
             return;
         }
-        await collection.updateMany(
-            { _id: { $in: ids as unknown as ObjectId[] } },
+        return collection.updateMany(
+            {
+                _id: {
+                    $in: [
+                        ...(ids as unknown as ObjectId[]),
+                        ...ids.map((id) => new ObjectId(id)),
+                    ],
+                },
+            },
             { $set: { status: TaskStatus.CANCELED } },
         );
     };
