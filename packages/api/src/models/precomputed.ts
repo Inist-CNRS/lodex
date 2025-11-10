@@ -1,5 +1,11 @@
 import omit from 'lodash/omit';
-import { Collection, Db, ObjectId, type Filter } from 'mongodb';
+import {
+    Collection,
+    Db,
+    ObjectId,
+    type Filter,
+    type UpdateResult,
+} from 'mongodb';
 import { castIdsFactory, getCreatedCollection } from './utils';
 import { TaskStatus } from '@lodex/common';
 
@@ -68,7 +74,7 @@ export type PrecomputedCollection = Collection<PreComputation> & {
         id: string;
         data: Record<string, unknown>;
     }) => Promise<Record<string, unknown> | null>;
-    cancelByIds: (jobIds: string[]) => Promise<void>;
+    cancelByIds: (jobIds: string[]) => Promise<UpdateResult | undefined>;
 };
 
 export default async (db: Db): Promise<PrecomputedCollection> => {
@@ -368,8 +374,15 @@ export default async (db: Db): Promise<PrecomputedCollection> => {
         if (ids.length === 0) {
             return;
         }
-        await collection.updateMany(
-            { _id: { $in: ids as unknown as ObjectId[] } },
+        return collection.updateMany(
+            {
+                _id: {
+                    $in: [
+                        ...(ids as unknown as ObjectId[]),
+                        ...ids.map((id) => new ObjectId(id)),
+                    ],
+                },
+            },
             { $set: { status: TaskStatus.CANCELED, finishedAt: new Date() } },
         );
     };
