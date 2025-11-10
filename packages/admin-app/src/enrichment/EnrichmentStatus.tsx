@@ -16,13 +16,26 @@ type EnrichmentStatusProps = {
         | '';
 };
 
+const colorByStatus: Record<
+    EnrichmentStatusProps['status'],
+    'default' | 'error' | 'info' | 'success' | 'warning'
+> = {
+    PENDING: 'warning',
+    IN_PROGRESS: 'info',
+    PAUSED: 'info',
+    FINISHED: 'success',
+    CANCELED: 'warning',
+    ERROR: 'error',
+    '': 'default',
+};
+
 export const EnrichmentStatus = ({ status }: EnrichmentStatusProps) => {
     const { translate } = useTranslate();
     return (
         <Chip
             component="span"
             label={translate(labelByStatus[status ?? ''])}
-            color="warning"
+            color={colorByStatus[status ?? '']}
         />
     );
 };
