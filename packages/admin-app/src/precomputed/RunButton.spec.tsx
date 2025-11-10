@@ -23,7 +23,7 @@ describe('<RunButton />', () => {
         expect(screen.getByRole('button', { name: 'run' })).toBeInTheDocument();
     });
 
-    it.each([TaskStatus.CANCELED, TaskStatus.ERROR, undefined])(
+    it.each([TaskStatus.CANCELED, TaskStatus.ERROR, undefined, ''] as const)(
         'calls handleLaunchPrecomputed  when status is %s and button is clicked',
         async (status) => {
             const user = userEvent.setup();

@@ -45,7 +45,7 @@ export const PreComputationSelector = ({
                 }: {
                     name: string;
                     _id: string;
-                    status: TaskStatusType | '';
+                    status: TaskStatusType | undefined | '';
                 }) => ({
                     name,
                     id: _id,
@@ -91,7 +91,7 @@ export const PreComputationSelector = ({
                 }: {
                     name: string;
                     id: string;
-                    status: TaskStatusType | '';
+                    status: TaskStatusType | undefined | '';
                 }) => (
                     <MenuItem
                         key={id}

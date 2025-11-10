@@ -67,7 +67,7 @@ export const StatusChip = ({
 };
 
 type PrecomputedStatusProps = {
-    status: TaskStatusType | '';
+    status: TaskStatusType | undefined | '';
     startedAt?: string | null;
 };
 
