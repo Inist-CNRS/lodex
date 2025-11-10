@@ -1,10 +1,10 @@
-import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { resolve } from 'path';
 import { visualizer } from 'rollup-plugin-visualizer';
+import { defineConfig } from 'vite';
 
-import translations from '../api/src/services/translations';
 import { loaders } from '../../config.json';
+import translations from '../api/src/services/translations';
 
 const port = 8083;
 
@@ -27,15 +27,17 @@ export default defineConfig(({ mode }) => {
                 },
                 output: {
                     entryFileNames: (chunkInfo) => {
+                        if (chunkInfo.name === 'public') {
+                            return 'public/index.js';
+                        }
                         if (chunkInfo.name === 'embeddedIstexSummary') {
                             // we need to keep same path as on ezmaster
                             return 'embeddedIstexSummary.js';
                         }
-                        return '[name]/index.js';
+                        return 'front-[name]/index.js';
                     },
-                    chunkFileNames: '[name]/index.js',
-                    assetFileNames: 'css/[name].[ext]',
-                    manualChunks: undefined,
+                    chunkFileNames: 'front-[name]/index.js',
+                    assetFileNames: 'css/front-[name].[ext]',
                 },
                 plugins: [
                     !process.env.CI &&
