@@ -5,8 +5,9 @@ import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import { Button, type ButtonProps } from '@mui/material';
 import { type MouseEvent } from 'react';
 
-const RUNNABLE_STATUSES: (TaskStatusType | undefined)[] = [
+const RUNNABLE_STATUSES: (TaskStatusType | undefined | '')[] = [
     undefined,
+    '',
     TaskStatus.FINISHED,
     TaskStatus.ERROR,
     TaskStatus.CANCELED,
@@ -18,7 +19,7 @@ export const RunButton = ({
     variant = 'contained',
 }: {
     handleLaunchPrecomputed: (event: MouseEvent) => void;
-    precomputedStatus: TaskStatusType | undefined;
+    precomputedStatus: TaskStatusType | undefined | '';
     variant: ButtonProps['variant'];
 }) => {
     const { translate } = useTranslate();

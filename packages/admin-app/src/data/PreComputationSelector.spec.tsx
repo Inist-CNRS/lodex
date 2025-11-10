@@ -14,7 +14,7 @@ describe('PreComputationSelector', () => {
         const precomputations: {
             _id: string;
             name: string;
-            status: TaskStatusType | '';
+            status: TaskStatusType | undefined | '';
         }[] = [
             {
                 _id: 'precomp1',

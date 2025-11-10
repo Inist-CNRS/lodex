@@ -59,6 +59,7 @@ export type PrecomputedFormProps = {
     handleSubmit: () => void;
     submitting: boolean;
     children?: React.ReactNode;
+    match: { params: { precomputedId?: string } };
 };
 
 export const PrecomputedForm = ({
@@ -80,8 +81,8 @@ export const PrecomputedForm = ({
     );
     const [precomputedLogs, setPrecomputedLogs] = React.useState<string[]>([]);
     const [precomputedStatus, setPrecomputedStatus] = React.useState<
-        TaskStatusType | undefined
-    >(initialValues?.status);
+        TaskStatusType | undefined | ''
+    >(initialValues?.status ?? '');
 
     const formMethods = useForm<NewPreComputation>({
         defaultValues: {
@@ -470,6 +471,24 @@ export const PrecomputedForm = ({
     );
 };
 
+export const PrecomputedFormLoading = ({
+    initialValues,
+    match,
+    ...props
+}: PrecomputedFormProps) => {
+    if (match.params.precomputedId && !initialValues) {
+        return null;
+    }
+
+    return (
+        <PrecomputedForm
+            {...props}
+            initialValues={initialValues}
+            match={match}
+        />
+    );
+};
+
 const mapStateToProps = (
     state: State,
     {
@@ -497,4 +516,4 @@ const mapDispatchToProps = {
 export default compose<PrecomputedFormProps, Record<string, never>>(
     withRouter,
     connect(mapStateToProps, mapDispatchToProps),
-)(PrecomputedForm);
+)(PrecomputedFormLoading);
