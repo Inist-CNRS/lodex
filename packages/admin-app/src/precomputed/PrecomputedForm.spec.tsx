@@ -25,6 +25,7 @@ const defaultProps: PrecomputedFormProps = {
     isPrecomputedRunning: false,
     handleSubmit: jest.fn(),
     submitting: false,
+    match: { params: {} },
 };
 
 describe('<PrecomputedForm />', () => {
