@@ -13,17 +13,13 @@ services:
             EZMASTER_PUBLIC_URL: ${EZMASTER_PUBLIC_URL}
             EZMASTER_MONGODB_HOST_PORT: mongo:27017
             EXPOSE_TEST_CONTROLLER: 'true'
-            REDIS_URL: 'redis://redis:6379'
-            WORKERS_URL: 'http://workers:31976'
+            REDIS_URL: 'redis://localhost:6379'
+            WORKERS_URL: 'http://localhost:31976'
         links:
             - mongo
-            - redis
-            - workers
             - maildev
         depends_on:
             - mongo
-            - redis
-            - workers
             - maildev
         ports:
             - "3000:3000"
