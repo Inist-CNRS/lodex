@@ -82,7 +82,7 @@ jobs:
             - run: make test-e2e-start-dockers
 
             # Wait for the e2e environment to start and then run e2e subset tests suite
-            - run: ./bin/wait-for -t 60 localhost:3000
+            - run: ./bin/wait-for -t 120 localhost:3000
             - run: npm run test:e2e:${{ matrix.test-phase }}
 
             # Stop e2e environment
