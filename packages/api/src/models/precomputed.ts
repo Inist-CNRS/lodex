@@ -1,6 +1,7 @@
 import omit from 'lodash/omit';
 import { Collection, Db, ObjectId, type Filter } from 'mongodb';
 import { castIdsFactory, getCreatedCollection } from './utils';
+import { TaskStatus } from '@lodex/common';
 
 const checkMissingFields = (data: Partial<PreComputation>) =>
     !data.name ||
@@ -67,6 +68,7 @@ export type PrecomputedCollection = Collection<PreComputation> & {
         id: string;
         data: Record<string, unknown>;
     }) => Promise<Record<string, unknown> | null>;
+    cancelByIds: (jobIds: string[]) => Promise<void>;
 };
 
 export default async (db: Db): Promise<PrecomputedCollection> => {
@@ -362,6 +364,16 @@ export default async (db: Db): Promise<PrecomputedCollection> => {
         ) as Promise<Record<string, unknown> | null>;
     };
 
+    const cancelByIds = async (ids: string[]) => {
+        if (ids.length === 0) {
+            return;
+        }
+        await collection.updateMany(
+            { _id: { $in: ids as unknown as ObjectId[] } },
+            { $set: { status: TaskStatus.CANCELED, finishedAt: new Date() } },
+        );
+    };
+
     return Object.assign(collection, {
         findOneById,
         findAll,
@@ -377,5 +389,6 @@ export default async (db: Db): Promise<PrecomputedCollection> => {
         resultCount,
         getResultColumns,
         updateResult,
+        cancelByIds,
     });
 };
