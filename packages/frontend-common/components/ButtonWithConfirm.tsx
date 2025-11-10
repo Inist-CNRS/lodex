@@ -16,7 +16,9 @@ export function ButtonWithConfirm({
 
     const [open, setOpen] = useState(false);
 
-    const handleOpen = () => {
+    const handleOpen = (e: MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
+        e.stopPropagation();
         setOpen(true);
     };
 
