@@ -7,31 +7,29 @@ import Graph from './Graph';
 
 type GraphPageProps = {
     name: string;
-    onSearch(): void;
-    tenant?: string;
+    tenant?: string | undefined;
 };
 
-const GraphPage = ({ name, onSearch, tenant }: GraphPageProps) => (
+const GraphPage = ({ name, tenant }: GraphPageProps) => (
     <>
         <Helmet>
             <title>{getTitle(tenant, 'Resources')}</title>
         </Helmet>
-        <Graph className="graph-page" name={name} onSearch={onSearch} />
+        <Graph className="graph-page" name={name} />
     </>
 );
 
 const mapStateToProps = (
-    // @ts-expect-error TS7006
-    _,
+    _: unknown,
     {
         match: {
-            // @ts-expect-error TS7031
             params: { name },
         },
-    },
+    }: { match: { params: { name: string } } },
 ) => ({
     name,
 });
 
-// @ts-expect-error TS2345
-export default compose(connect(mapStateToProps))(GraphPage);
+export default compose<GraphPageProps, GraphPageProps>(
+    connect(mapStateToProps),
+)(GraphPage);

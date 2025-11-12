@@ -1,4 +1,4 @@
-import { useCallback, useEffect, type ChangeEvent } from 'react';
+import { useCallback, type ChangeEvent } from 'react';
 import { connect } from 'react-redux';
 import { config } from '@fortawesome/fontawesome-svg-core';
 import { translate } from '@lodex/frontend-common/i18n/I18NContext';
@@ -92,8 +92,6 @@ type NavBarProps = {
         icon: string;
     };
     hasFacetFields: boolean;
-    search: boolean;
-    closeSearch(): void;
     isMultilingual: boolean;
 };
 
@@ -107,8 +105,6 @@ export const NavBar = ({
     advancedMenu,
     advancedMenuButton,
     hasFacetFields,
-    search,
-    closeSearch,
     isMultilingual,
 }: NavBarProps) => {
     const [searchDrawer, toggleSearchDrawer, closeSearchDrawer] =
@@ -130,18 +126,6 @@ export const NavBar = ({
         // @ts-expect-error TS2349
         toggleSearchDrawer();
     }, [closeAdvancedMenuDrawer, closeGraphDrawer, toggleSearchDrawer]);
-
-    useEffect(() => {
-        if (search) {
-            toggleSearch();
-        }
-    }, [search, toggleSearch]);
-
-    useEffect(() => {
-        if (searchDrawer == DRAWER_CLOSED) {
-            closeSearch();
-        }
-    }, [closeSearch, searchDrawer]);
 
     const toggleGraph = () => {
         // @ts-expect-error TS2349
@@ -284,11 +268,7 @@ export const NavBar = ({
             <Drawer status={searchDrawer} onClose={toggleSearch}>
                 {/*
                  // @ts-expect-error TS2322 */}
-                <Search
-                    className="search"
-                    withFacets={hasFacetFields}
-                    withDataset={search}
-                />
+                <Search className="search" withFacets={hasFacetFields} />
             </Drawer>
             <Drawer status={graphDrawer} onClose={toggleGraph}>
                 {/*
