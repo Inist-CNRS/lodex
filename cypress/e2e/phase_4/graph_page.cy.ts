@@ -4,6 +4,8 @@ import { teardown } from '../../support/authentication';
 import * as datasetImportPage from '../../support/datasetImportPage';
 import * as graphPage from '../../support/graphPage';
 import * as menu from '../../support/menu';
+import * as searchDrawer from '../../support/searchDrawer';
+import * as browseResultDrawer from '../../support/browseResultDrawer';
 
 describe('Graph Page', () => {
     beforeEach(() => {
@@ -51,6 +53,44 @@ describe('Graph Page', () => {
         cy.wait(500);
         graphPage
             .getFacetItem('Publication Year', '2011')
+            .find('input[type=checkbox]')
+            .should('be.checked');
+    });
+
+    it('should copy filters to browse-result drawer', () => {
+        menu.openChartDrawer();
+        menu.goToChart('Bar Chart');
+
+        graphPage.searchFor('Biodiversity');
+        graphPage.getStats().should('have.text', 'Found 5 on 50');
+        graphPage.setFacet('Publication Year', '2011');
+        graphPage.getStats().should('have.text', 'Found 4 on 50');
+
+        menu.openSearchDrawer();
+        searchDrawer.getFacet('Publication Year').click();
+        searchDrawer
+            .getFacetItem('Publication Year', '2011')
+            .find('input[type=checkbox]')
+            .should('not.checked');
+        searchDrawer.searchInput().should('have.value', '');
+
+        menu.closeSearchDrawer();
+        graphPage.browseResults();
+
+        browseResultDrawer.getFacet('Publication Year').click();
+        browseResultDrawer.searchInput().should('have.value', 'Biodiversity');
+        browseResultDrawer
+            .getFacetItem('Publication Year', '2011')
+            .find('input[type=checkbox]')
+            .should('be.checked');
+
+        menu.closeBrowseResultDrawer();
+        graphPage.setFacetExclude('Publication Year');
+        graphPage.browseResults();
+        browseResultDrawer.getFacet('Publication Year (14)').click();
+        browseResultDrawer.searchInput().should('have.value', 'Biodiversity');
+        browseResultDrawer
+            .getFacetExcludeItem('Publication Year')
             .find('input[type=checkbox]')
             .should('be.checked');
     });

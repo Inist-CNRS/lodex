@@ -10,21 +10,22 @@ import {
     search as searchAction,
     sort as sortAction,
     loadMore as loadMoreAction,
-} from './reducer';
+} from '../search/reducer';
 import { preLoadPublication as preLoadPublicationAction } from '@lodex/frontend-common/fields/reducer';
 import { fromFields } from '@lodex/frontend-common/sharedSelectors';
 import { fromSearch, fromDataset } from '../selectors';
 import AdminOnlyAlert from '@lodex/frontend-common/components/AdminOnlyAlert';
 import stylesToClassname from '@lodex/frontend-common/utils/stylesToClassName';
-import AppliedFacetList from './AppliedSearchFacetList';
+import AppliedFacetList from '../search/AppliedSearchFacetList';
 import FacetList from '../facet/FacetList';
-import SearchResultList from './SearchResultList';
-import SearchResultSort from './SearchResultSort';
-import SearchSearchBar from './SearchSearchBar';
-import SearchResultHeader from './SearchResultHeader';
+import SearchResultList from '../search/SearchResultList';
+import SearchResultSort from '../search/SearchResultSort';
+import SearchResultHeader from '../search/SearchResultHeader';
 import type { Field } from '@lodex/frontend-common/fields/types';
+import DatasetSearchBar from '../dataset/DatasetSearchBar';
+import type { State } from '../reducers';
 
-const styles = stylesToClassname(
+const styles: Record<string, string> = stylesToClassname(
     {
         container: {
             margin: '0 auto',
@@ -34,11 +35,6 @@ const styles = stylesToClassname(
             flexDirection: 'column',
             marginBottom: '15px',
             gap: '1rem',
-        },
-        advanced: {
-            display: 'flex',
-            flex: '0 0 auto',
-            flexDirection: 'column',
         },
         content: {
             backgroundColor: 'var(--neutral-dark-very-light)',
@@ -77,13 +73,14 @@ const styles = stylesToClassname(
 type SearchProps = {
     className?: string;
     search(...args: unknown[]): unknown;
-    searchQuery?: string;
     sort(...args: unknown[]): unknown;
     sortBy: string;
     sortDir: 'ASC' | 'DESC';
     preLoadPublication(...args: unknown[]): unknown;
     loading: boolean;
-    results: unknown[];
+    results: {
+        uri: string;
+    }[];
     fieldNames: {
         uri?: string;
         title?: string;
@@ -93,20 +90,17 @@ type SearchProps = {
     loadMore(...args: unknown[]): unknown;
     total: number;
     closeDrawer(...args: unknown[]): unknown;
-    withFacets: boolean;
-    withDataset: boolean;
     setFacets(...args: unknown[]): unknown;
-    datasetSearchTerm?: string;
-    datasetFacetsValues?: object;
-    datasetAppliedFacets?: Record<string, string | number | boolean[]>;
-    datasetInvertedFacets?: Record<string, string | number | boolean[]>;
-    datasetOpenedFacets?: Record<string, boolean>;
+    searchTerm: string;
+    facetsValues?: object;
+    appliedFacets?: Record<string, string | number | boolean[]>;
+    invertedFacets?: Record<string, string | number | boolean[]>;
+    openedFacets?: Record<string, boolean>;
 };
 
-const Search = ({
+const BrowseResult = ({
     className,
     search,
-    searchQuery,
     sort,
     sortBy,
     sortDir,
@@ -118,55 +112,51 @@ const Search = ({
     loadMore,
     total,
     closeDrawer,
-    withFacets,
-    withDataset,
     setFacets,
-    datasetSearchTerm,
-    datasetFacetsValues,
-    datasetAppliedFacets,
-    datasetInvertedFacets,
-    datasetOpenedFacets,
+    searchTerm,
+    facetsValues,
+    appliedFacets,
+    invertedFacets,
+    openedFacets,
 }: SearchProps) => {
     const [opening, setOpening] = useState(true);
-    const [showFacets, setShowFacets] = useState(false);
 
     const { translate } = useTranslate();
 
     useEffect(() => {
-        if (withDataset) {
-            setFacets({
-                facetsValues: datasetFacetsValues,
-                appliedFacets: datasetAppliedFacets,
-                invertedFacets: datasetInvertedFacets,
-                openedFacets: datasetOpenedFacets,
-            });
-            preLoadPublication();
-            search({ query: datasetSearchTerm || '' });
-        } else if (!results || results.length === 0) {
-            preLoadPublication();
-            search({ query: searchQuery || '' });
-        }
-
         const timer = setTimeout(() => {
             setOpening(false);
         }, 300);
 
         return () => clearTimeout(timer);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []); // Empty dependency array for componentDidMount behavior
+    }, []);
 
-    const handleToggleFacets = () => {
-        setShowFacets(!showFacets);
-    };
+    useEffect(() => {
+        setFacets({
+            facetsValues,
+            appliedFacets,
+            invertedFacets,
+            openedFacets,
+        });
+        preLoadPublication();
+        search({ query: searchTerm || '' });
+    }, [
+        appliedFacets,
+        facetsValues,
+        invertedFacets,
+        openedFacets,
+        searchTerm,
+        preLoadPublication,
+        search,
+        setFacets,
+    ]);
 
-    // @ts-expect-error TS7031
-    const handleSort = ({ sortBy }) => {
+    const handleSort = ({ sortBy }: { sortBy: string }) => {
         sort({ sortBy });
     };
 
     const renderNoResults = () => {
         return (
-            // @ts-expect-error TS2339
             <div className={styles.noResult}>
                 <div>
                     <strong>{translate('no_result')}</strong>
@@ -186,14 +176,12 @@ const Search = ({
 
     const renderLoadMore = () => {
         return (
-            // @ts-expect-error TS2339
             <div className={classnames('load-more', styles.loadMore)}>
                 {loading ? (
                     <>
                         <CircularProgress
                             variant="indeterminate"
                             size={20}
-                            // @ts-expect-error TS2339
                             className={styles.loading}
                         />{' '}
                         {translate('loading')}
@@ -218,33 +206,19 @@ const Search = ({
     const canLoadMore = everythingIsOk && results.length < total;
 
     return (
-        // @ts-expect-error TS2339
         <div className={classnames(className, styles.container)}>
-            {/*
-             // @ts-expect-error TS2339 */}
             <div className={styles.header}>
-                {/*
-                 // @ts-expect-error TS2741 */}
-                <SearchSearchBar
-                    withFacets={withFacets}
-                    onToggleFacets={handleToggleFacets}
-                />
+                <DatasetSearchBar />
             </div>
-            {withFacets && <AppliedFacetList />}
-            {/*
-             // @ts-expect-error TS2339 */}
+            <AppliedFacetList />
             <div className={styles.content}>
-                {withFacets && (
-                    <FacetList
-                        className="search-facets"
-                        page="search"
-                        open={showFacets}
-                    />
-                )}
+                <FacetList
+                    className="search-facets"
+                    page="search"
+                    open={true}
+                />
                 <div
-                    // @ts-expect-error TS2339
                     className={classnames(styles.results, {
-                        // @ts-expect-error TS2339
                         [styles.resultsOpening]: opening,
                     })}
                 >
@@ -265,7 +239,6 @@ const Search = ({
                                 }
                             />
                             <SearchResultList
-                                // @ts-expect-error TS2322
                                 results={results}
                                 fields={fields}
                                 fieldNames={fieldNames}
@@ -281,8 +254,7 @@ const Search = ({
     );
 };
 
-// @ts-expect-error TS7006
-const mapStateToProps = (state) => {
+const mapStateToProps = (state: State) => {
     const { sortBy, sortDir } = fromSearch.getSort(state);
 
     return {
@@ -291,14 +263,13 @@ const mapStateToProps = (state) => {
         fieldNames: fromSearch.getFieldNames(state),
         fields: fromFields.getFields(state),
         total: fromSearch.getTotal(state),
-        searchQuery: fromSearch.getQuery(state),
         sortBy,
         sortDir,
-        datasetSearchTerm: fromDataset.getFilter(state),
-        datasetFacetsValues: fromDataset.getFacetsValues(state),
-        datasetAppliedFacets: fromDataset.getAppliedFacets(state),
-        datasetInvertedFacets: fromDataset.getInvertedFacets(state),
-        datasetOpenedFacets: fromDataset.getOpenedFacets(state),
+        searchTerm: fromDataset.getFilter(state),
+        facetsValues: fromDataset.getFacetsValues(state),
+        appliedFacets: fromDataset.getAppliedFacets(state),
+        invertedFacets: fromDataset.getInvertedFacets(state),
+        openedFacets: fromDataset.getOpenedFacets(state),
     };
 };
 
@@ -324,13 +295,12 @@ export default compose<
         | 'fieldNames'
         | 'fields'
         | 'total'
-        | 'searchQuery'
         | 'sortBy'
         | 'sortDir'
-        | 'datasetSearchTerm'
-        | 'datasetFacetsValues'
-        | 'datasetAppliedFacets'
-        | 'datasetInvertedFacets'
-        | 'datasetOpenedFacets'
+        | 'searchTerm'
+        | 'facetsValues'
+        | 'appliedFacets'
+        | 'invertedFacets'
+        | 'openedFacets'
     >
->(connect(mapStateToProps, mapDispatchToProps))(Search);
+>(connect(mapStateToProps, mapDispatchToProps))(BrowseResult);

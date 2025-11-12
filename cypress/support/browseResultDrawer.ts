@@ -1,8 +1,10 @@
 export const searchInput = () =>
-    cy.get('.search .search-searchbar input[type="text"]');
+    cy.get('.browse-result-drawer .dataset-searchbar input[type="text"]');
 
 export const search = (value: string) => {
-    cy.get('.search .search-searchbar').scrollIntoView().should('be.visible');
+    cy.get('.browse-result-drawer .dataset-searchbar')
+        .scrollIntoView()
+        .should('be.visible');
     searchInput().type(value);
     cy.wait(500); // Wait for the debounce
 };
@@ -39,11 +41,13 @@ export const filterShowUnVisitedResources = () => {
 };
 
 export const clearSearch = () =>
-    cy.get('.search .search-searchbar button.searchbar-clear').click();
+    cy
+        .get('.browse-result-drawer .dataset-searchbar button.searchbar-clear')
+        .click();
 
 export const findSearchResultByTitle = (value: string) =>
     cy
-        .get('.search .search-result-title')
+        .get('.browse-result-drawer .search-result-title')
         .contains(value)
         .should('be.visible')
         .parent();
@@ -51,7 +55,7 @@ export const findSearchResultByTitle = (value: string) =>
 export const checkResultList = (titles: string[]) => {
     titles.forEach((title, index) => {
         cy.get(
-            `.search .search-result-link:nth-child(${
+            `.browse-result-drawer .search-result-link:nth-child(${
                 index + 1
             }) .search-result-title`,
         )
@@ -62,26 +66,32 @@ export const checkResultList = (titles: string[]) => {
 };
 
 export const loadMore = () => {
-    cy.get('.search .load-more button').scrollIntoView().click();
+    cy.get('.browse-result-drawer .load-more button').scrollIntoView().click();
 };
 
 export const waitForLoading = () => {
     // This is the best way to wait for the loading to disappear so far
     // Because sometimes the loading doesn't appear at all
     cy.wait(1000);
-    cy.get('.search .load-more .search-loading').should('not.exist');
+    cy.get('.browse-result-drawer .load-more .search-loading').should(
+        'not.exist',
+    );
 };
 
 export const getFacetsOrder = (facets: string[]) => {
     facets.forEach((name, index) => {
-        cy.get(`.search .search-facets > li:nth-child(${index + 1})`)
+        cy.get(
+            `.browse-result-drawer .search-facets > li:nth-child(${index + 1})`,
+        )
             .contains(name)
             .should('be.visible');
     });
 };
 
 export const getFacet = (name: string) =>
-    cy.get('.search .search-facets .facet-item').contains('span', name);
+    cy
+        .get('.browse-result-drawer .search-facets .facet-item')
+        .contains('span', name);
 
 export const getFacetItem = (name: string, value: string) =>
     getFacet(name).parent().contains('span', value).parent().parent();
@@ -96,7 +106,7 @@ export const setFacet = (name: string, value: string) => {
 };
 
 export const clearFacet = (value: string) => {
-    cy.get('.search .applied-facet-container')
+    cy.get('.browse-result-drawer .applied-facet-container')
         .contains(value)
         .parent()
         .parent()
@@ -124,33 +134,33 @@ export const filterFacet = (name: string, filter: string) => {
 };
 
 export const checkMoreResultsExist = () => {
-    cy.get('.search .load-more button').should('exist');
+    cy.get('.browse-result-drawer .load-more button').should('exist');
 };
 
 export const checkMoreResultsNotExist = () => {
-    cy.get('.search .load-more button').should('not.exist');
+    cy.get('.browse-result-drawer .load-more button').should('not.exist');
 };
 
 export const checkMoreResultsCount = (count: number, total: number) => {
-    cy.get('.search .load-more button')
+    cy.get('.browse-result-drawer .load-more button')
         .scrollIntoView()
         .should('be.visible')
         .contains(`${count} / ${total}`);
 };
 
 export const checkStatsCount = (current: number, count: number) => {
-    cy.get('.search .stats')
+    cy.get('.browse-result-drawer .stats')
         .contains(`Found ${current} on ${count}`)
         .should('be.visible');
 };
 
 export const checkResultsCount = (count: number) => {
-    cy.get('.search .search-result').should('have.length', count);
+    cy.get('.browse-result-drawer .search-result').should('have.length', count);
 };
 
 export const goToResourceNumber = (nb: number) => {
     cy.get(
-        `.search .search-result-list-container > a:nth-child(${nb}) .search-result`,
+        `.browse-result-drawer .search-result-list-container > a:nth-child(${nb}) .search-result`,
     ).click();
     cy.location('pathname').should('not.equal', '/');
 };

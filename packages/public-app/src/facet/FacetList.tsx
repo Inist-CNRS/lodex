@@ -158,8 +158,21 @@ const mapDispatchToProps = (dispatch, { page }) => ({
         dispatch(actionsByPage[page].toggleFacetValue(...args)),
 });
 
-export default compose(
+export default compose<
+    FacetListProps,
+    Omit<
+        FacetListProps,
+        | 'changeFacetValue'
+        | 'invertFacet'
+        | 'openFacet'
+        | 'sortFacetValue'
+        | 'toggleFacetValue'
+        | 'hasFacetFields'
+        | 'fields'
+        | 'isMultilingual'
+        | 'locale'
+    >
+>(
     connect(mapStateToProps, mapDispatchToProps),
     translate,
-    // @ts-expect-error TS2345
 )(FacetList);
