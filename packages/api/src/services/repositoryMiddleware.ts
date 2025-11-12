@@ -2,7 +2,7 @@ import type { DefaultContext, DefaultState, ParameterizedContext } from 'koa';
 import annotation from '../models/annotation';
 import configTenant from '../models/configTenant';
 import dataset from '../models/dataset';
-import enrichment from '../models/enrichment';
+import enrichment, { type EnrichmentCollection } from '../models/enrichment';
 import field from '../models/field';
 import hiddenResource from '../models/hiddenResource';
 import precomputed, { type PrecomputedCollection } from '../models/precomputed';
@@ -15,6 +15,7 @@ import mongoClient from './mongoClient';
 
 interface CustomContext extends DefaultContext {
     precomputed: PrecomputedCollection;
+    enrichment: EnrichmentCollection;
     // Add other custom context properties here
 }
 
