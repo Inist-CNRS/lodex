@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Route } from 'react-router-dom';
 
@@ -30,8 +30,6 @@ interface RoutesProps {
 }
 
 const Routes = (props: RoutesProps) => {
-    const [search, setSearch] = useState(false);
-
     useEffect(() => {
         props.loadMenu();
         props.loadDisplayConfig();
@@ -42,14 +40,6 @@ const Routes = (props: RoutesProps) => {
     if (!customRoutes) {
         return null;
     }
-
-    const handleSearchWithDataset = () => {
-        setSearch(true);
-    };
-
-    const handleCloseSearch = () => {
-        setSearch(false);
-    };
 
     return (
         <>
@@ -87,13 +77,8 @@ const Routes = (props: RoutesProps) => {
                     />
                     <Route
                         path="/graph/:name"
-                        render={(props) => (
-                            <GraphPage
-                                {...props}
-                                // @ts-expect-error TS2322
-                                onSearch={handleSearchWithDataset}
-                                tenant={tenant}
-                            />
+                        render={(props: any) => (
+                            <GraphPage {...props} tenant={tenant} />
                         )}
                     />
 
@@ -129,14 +114,7 @@ const Routes = (props: RoutesProps) => {
             <Route
                 // @ts-expect-error TS2769
                 path={notLogin}
-                render={(props) => (
-                    <NavBar
-                        {...props}
-                        // @ts-expect-error TS2322
-                        search={search}
-                        closeSearch={handleCloseSearch}
-                    />
-                )}
+                render={(props) => <NavBar {...props} />}
             />
             <Version />
         </>
