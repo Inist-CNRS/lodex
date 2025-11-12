@@ -1,10 +1,10 @@
-import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { resolve } from 'path';
 import { visualizer } from 'rollup-plugin-visualizer';
+import { defineConfig } from 'vite';
 
-import translations from '../api/src/services/translations';
 import { loaders } from '../../config.json';
+import translations from '../api/src/services/translations';
 
 const port = 8082;
 
@@ -22,9 +22,14 @@ export default defineConfig(({ mode }) => {
                     admin: resolve(__dirname, 'src/index.ts'),
                 },
                 output: {
-                    entryFileNames: '[name]/index.js',
-                    chunkFileNames: '[name]/index.js',
-                    assetFileNames: 'css/[name].[ext]',
+                    entryFileNames: (chunkInfo) => {
+                        if (chunkInfo.name === 'admin') {
+                            return 'admin/index.js';
+                        }
+                        return 'admin-[name]/index.js';
+                    },
+                    chunkFileNames: 'admin-[name]/index.js',
+                    assetFileNames: 'css/admin-[name].[ext]',
                     manualChunks: undefined,
                 },
                 plugins: [
